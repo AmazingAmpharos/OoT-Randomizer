@@ -1,0 +1,379 @@
+0x803A9F68: Location of Kokiri Sword in table
+
+First load GID. RAM address of 0x80389CA8. Load instruction is 80430002. It is followed by 04600003. ROM address of 0xBCECB8.
+
+Second load text. RAM address of 0x803A4AB0. Load instruction is 90450003. ROM address of 0xBE9AC0.
+
+Third load get item. RAM address of 0x803A4AD0. Instruction is 0C01BF73 and the reference to the get item is done during the delay. Replace jump with jump to extended space and instead of a return have the code in extended space jump to where the jump originally did.
+
+Hookshot address:
+
+0x8011A64D, Hookshot is 0x0A, Longshot is 0x0B, nothing is 0xFF.
+0x8011A670 is a 4 byte bitfield.
+
+Bits 3 and 4 of the last byte control bomb bag (0x00 for none, 0x01 for smallest, 0x10 for mid, 0x11 for largest).
+
+Bits 0 and 1 of the last byte control gauntlets. 0x00 for none, 0x01 for goron bracelet, 0x10 for silvers, 0x11 for golden.
+
+Bits 5 and 6 of the third byte control scale. 0x00 for none, 0x01 for silver, 0x10 for gold.
+
+Bits 2 and 3 of the third byte control wallet. 0x00 for kid, 0x01 for adult, 0x10 for giant.
+
+Bits 0 and 1 of the third byte control slingshot ammo. 0x00 for no bag, 0x01 for smallest, 0x10 for mid, 0x11 for largest.
+
+Bit 7 of the second byte seems to be a flag for having a quiver.
+
+Bits 5 and 6 of the second byte seem to be Deku Stick capacity. 0x01 for smallest, 0x10 for mid, 0x11 for largest.
+
+Bits 2 and 3 of the second byte seem to be Deku Nut capacity. 0x01 for smallest, 0x10 for mid, 0x11 for largest.
+
+
+37385
+
+80037385
+
+Replace 0x803A4AB0 with [0000 1100 0000 X] [0C100000]
+
+Replace 0x00BE9AE0 with 0C100081
+
+Start at address 0x80400000[ED400]
+
+Progressive Items (ASM):
+
+#Textbox change.
+
+LBU A1, $0003 (V0) [90450003]
+
+ANDI t2, t2, 0x0000 [0011 0001 0100 1010] [314A0000]
+
+ADDIU t2, t2, 0x004F [254A004F] #Text ID for Longshot
+
+BNE t2, a1, X [15450008] #Is the item Longshot?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA64D (t3) [916BA64D] 
+
+ADDIU t2, t2, 0xFF [254A00FF]
+
+BNE t2, t3, X [154B0003] #Is the player's Hookshot slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0036 [24A50036]
+
+X: ADDIU t2, t2, 0x005A [254A005A] #Text ID for Biggest Bomb Bag
+
+BNE t2, a1, Y [1545000C] #Is the item Bomb Bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x0018 [316B0018] # Mask bits to isolate bomb bags
+
+BNE t2, t3, A [154B0003] #Is the player's Bomb Bag slot empty?
+
+ADDIU t2, t2, 0x08 [254A0008]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0058 [24A50058]
+
+A: BNE t2, t3, Y [154B0003] #Is the player's Bomb Bag slot small bomb bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0059 [24A50059]
+
+Y: ADDIU t2, t2, 0x005C [254A005C] #Text ID for Gold Gauntlets
+
+BNE t2, a1, Z [1545000B] #Is the item Gold Gauntlets?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x00C0 [316B00C0] # Mask bits to isolate strength upgrades
+
+BNE t2, t3, A [154B0003] #Is the player's strength upgrade slot empty?
+
+ADDIU t2, t2, 0x40 [254A0040]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0079 [24A50079]
+
+A: BNE t2, t3, Y [154B0003] #Is the player's strength upgrade slot goron bracelet?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x005B [24A5005B]
+
+Z: ADDIU t2, t2, 0x00CE [254A00CE] #Text ID for Gold Scale
+
+BNE t2, a1, W [15450008] #Is the item Gold Scale?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA672 (t3) [916BA672]
+
+ANDI t3, t3, 0x0006 [316B0006] # Mask bits to isolate scales
+
+BNE t2, t3, W [154B0003] #Is the player's scale slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x00CD [24A500CD]
+
+W: ADDIU t2, t2, 0x005F [254A005F] #Text ID for Giant's Wallet
+
+BNE t2, a1, V [15450008] #Is the item Giant's Wallet?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA672 (t3) [916BA672]
+
+ANDI t3, t3, 0x0030 [316B0030] # Mask bits to isolate wallets
+
+BNE t2, t3, V [154B0003] #Is the player's wallet slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x005E [24A5005E]
+
+V: ADDIU t2, t2, 0x0090 [254A0090] #Text ID for mid Deku Stick cap upgrade
+
+BNE t2, a1, U [15450009] #Is the item mid Deku Stick cap upgrade?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA671 (t3) [916BA671]
+
+ANDI t3, t3, 0x0006 [316B0006] # Mask bits to isolate Deku Stick cap
+
+ADDIU t2, t2, 0x04 [254A0004]
+
+BNE t2, t3, U [154B0003] #Is the player's Deku Stick capacity medium?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0091 [24A50091]
+
+U: ADDIU t2, t2, 0x00A7 [254A00A7] #Text ID for mid Deku Nut cap upgrade
+
+BNE t2, a1, T [15450009] #Is the item mid Deku Nut cap upgrade?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA671 (t3) [916BA671]
+
+ANDI t3, t3, 0x0030 [316B0030] # Mask bits to isolate Deku Nut cap
+
+ADDIU t2, t2, 0x20 [254A0020]
+
+BNE t2, t3, T [154B0003] #Is the player's Deku Nut capacity medium?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x00A8 [24A500A8]
+
+T: JR $31 [03E00008]
+
+Now at 0x80400200:
+
+#Get Item change (affects what you actually get)
+
+NOP [00000000]
+
+ANDI t2, t2, 0x0000 [0011 0001 0100 1010] [314A0000]
+
+ADDIU t2, t2, 0x000B [254A000B] #Item ID for Longshot
+
+BNE t2, a1, X [15450008] #Is the item Longshot?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA64D (t3) [916BA64D] 
+
+ADDIU t2, t2, 0xFF [254A00FF]
+
+BNE t2, t3, X [154B0003] #Is the player's Hookshot slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x000A [24A5000A]
+
+X: ADDIU t2, t2, 0x004F [254A004F] #Item ID for Biggest Bomb Bag
+
+BNE t2, a1, Y [1545000C] #Is the item Bomb Bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x0018 [316B0018] # Mask bits to isolate bomb bags
+
+BNE t2, t3, A [154B0003] #Is the player's Bomb Bag slot empty?
+
+ADDIU t2, t2, 0x08 [254A0008]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x004D [24A5004D]
+
+A: BNE t2, t3, Y [154B0003] #Is the player's Bomb Bag slot small bomb bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x004E [24A5004E]
+
+Y: ADDIU t2, t2, 0x0052 [254A0052] #Item ID for Gold Gauntlets
+
+BNE t2, a1, Z [1545000C] #Is the item Gold Gauntlets?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x00C0 [316B00C0] # Mask bits to isolate strength upgrades
+
+BNE t2, t3, A [154B0003] #Is the player's strength upgrade slot empty?
+
+ADDIU t2, t2, 0x40 [254A0040]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0050 [24A50050]
+
+A: BNE t2, t3, Y [154B0003] #Is the player's strength upgrade slot goron bracelet?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0051 [24A50051]
+
+Z: ADDIU t2, t2, 0x0054 [254A0054] #Item ID for Gold Scale
+
+BNE t2, a1, W [15450008] #Is the item Gold Scale?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA672 (t3) [916BA672]
+
+ANDI t3, t3, 0x0006 [316B0006] # Mask bits to isolate scales
+
+BNE t2, t3, W [154B0003] #Is the player's scale slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0053 [24A50053]
+
+W: ADDIU t2, t2, 0x0057 [254A0057] #Item ID for Giant's Wallet
+
+BNE t2, a1, V [15450008] #Is the item Giant's Wallet?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA672 (t3) [916BA672]
+
+ANDI t3, t3, 0x0030 [316B0030] # Mask bits to isolate wallets
+
+BNE t2, t3, V [154B0003] #Is the player's wallet slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0056 [24A50056]
+
+V: ADDIU t2, t2, 0x0098 [254A0098] #Text ID for mid Deku Stick cap upgrade
+
+BNE t2, a1, U [15450009] #Is the item mid Deku Stick cap upgrade?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA671 (t3) [916BA671]
+
+ANDI t3, t3, 0x0006 [316B0006] # Mask bits to isolate Deku Stick cap
+
+ADDIU t2, t2, 0x04 [254A0004]
+
+BNE t2, t3, U [154B0003] #Is the player's Deku Stick capacity medium?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0099 [24A50099]
+
+U: ADDIU t2, t2, 0x009A [254A009A] #Text ID for mid Deku Nut cap upgrade
+
+BNE t2, a1, T [15450009] #Is the item mid Deku Nut cap upgrade?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU t3, 0xA671 (t3) [916BA671]
+
+ANDI t3, t3, 0x0030 [316B0030] # Mask bits to isolate Deku Nut cap
+
+ADDIU t2, t2, 0x20 [254A0020]
+
+BNE t2, t3, T [154B0003] #Is the player's Deku Nut capacity medium?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x009B [24A5009B]
+
+T: J 0x1BF73 [0201BF73]

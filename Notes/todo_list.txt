@@ -1,0 +1,56 @@
+Todo List:
+
+Shuffle NPC items. The following NPCs need their item found in the code:
+
+Child target shooting (Bullet Bag)
+Bombchu Bowling (Bomb Bag and Piece of Heart)
+Dog Lady reward (Piece of Heart)
+Saria's Song for Skull Kid (Piece of Heart)
+Ocarina memory game (Piece of Heart)
+House of Skulltulla (Piece of Heart, Stone of Agony, Walletx2, Bombchus)
+Man on Roof (Piece of Heart)
+Songs for Frogs (Piece of Heartx2)
+Horseback Archery (Quiver and Piece of Heart)
+Adult target shooting (Quiver)
+Target in woods (Bullet Bag)
+Deku Theater (Deku Stick capacity upgrade and Deku Nut capacity upgrade)
+Bottle from Anju (Bottle)
+Bottle from Talon (Bottle with Milk)
+Bottle from rupee guard (Bottle)
+Great Fairy Rewards (three spells, more randomization desired)
+Rolling Goron as child (Bomb Bag)
+Rolling Goron as adult (Goron Tunic)
+Thaw King Zora (Zora Tunic)
+Zelda (Light Arrows)
+
+Prevent sandstorm cutscene when getting Silver Gauntlets. Testing will be necessary to see if it's even an issue with the progressive code.
+
+Model adult Link portion of the game (next area: Bottom of the Well).
+
+Remove as many cutscenes as possible to speed gameplay
+
+Fix Bridge of Light to spawn upon having all six medallions instead of Light Arrow cutscene completion. Ideally build this to be a selectable option.
+
+Implement an "Open Door of Time" flag.
+
+Allow bombs to be purchased and bombchu bowling to be played if a bomb bag is owned instead of if Goron Ruby is held.
+
+Finish progressive item code for gfx of held up item and slingshot/bow progressives. Shift code to 0x803AF1C0 to remove expansion pak requirement and write code into RAM sometime when loading the game instead of relying on gameshark cheat hack.
+
+Solve project 64's pause menu crashing, likely by porting the debug rom's full subscreen fix code to 1.0 instead of using the one line code I'm using now.
+
+Likely will have to deal with checksum correction at some point.
+
+Model Song of Storms accessed grottos and Gold Skulltulla tokens into the logic.
+
+Recode great fairies substantially for the following ideal behavior:
+
+-Three of the six great fairies (selected randomly) give items. Zelda's Lullaby is required to activate the item get scene but a magic meter is no longer required.
+
+-Two of the six great fairies upgrade magic. The first the player encounters is the normal magic meter and the second is double magic in a progressive fashion.
+
+-The last great fairy doubles Link's life meter, again with no magic meter requirement.
+
+-This will require randomizing the items, randomizing which fairy has which behavior, removing magic meter requirements, and doing some substantial tweaking of the magic granting fairies to allow the meters to be progressive. This will, however, give significantly better play experience as the player can just get things from the fairy fountains reliably upon going inside with Lullaby, and having two chances to get a magic meter will significantly reduce the pain of hunting that down.
+
+Find a few chest addresses that are not evident from the interactive map. So far Forest Temple Boss Key chest and Dampe's Grave Piece of Heart at the known problems. These chests seem to be spawned non-conventionally and it's not clear where in memory to even look to deal with them.
