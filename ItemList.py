@@ -8,8 +8,8 @@ from Fill import FillError, fill_restrictive
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
 
-alwaysitems = ['Kokiri Sword', 'Slingshot', 'Bomb Bag', 'Boomerang', 'Deku Shield', 'Hylian Shield', 'Rupee (1)', 'Rupees (20)'] + ['Piece of Heart'] * 2 + ['Recovery Heart'] * 4 + ['Rupees (5)'] * 2 + ['Rupees (50)'] * 3 + ['Bombs (5)'] * 2
-songlist = ['Zeldas Lullaby', 'Suns Song', 'Sarias Song', 'Song of Time']
+alwaysitems = ['Kokiri Sword', 'Slingshot', 'Bomb Bag', 'Boomerang', 'Bow', 'Progressive Hookshot', 'Deku Shield', 'Hylian Shield', 'Rupee (1)', 'Rupees (20)'] + ['Progressive Strength Upgrade'] + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 4 + ['Recovery Heart'] * 5 + ['Rupees (5)'] * 2 + ['Rupees (50)'] * 3 + ['Bombs (5)'] * 2 + ['Arrows (5)'] + ['Arrows (10)'] + ['Arrows (30)']
+songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light']
 
 total_items_to_place = 5
 
@@ -23,6 +23,8 @@ def generate_itempool(world):
     world.get_location('King Dodongo').event = True
     world.push_item('Barinade', ItemFactory('Zora Sapphire'), False)
     world.get_location('Barinade').event = True
+    world.push_item('Phantom Ganon', ItemFactory('Forest Medallion'), False)
+    world.get_location('Phantom Ganon').event = True
     world.push_item('Gift from Saria', ItemFactory('Fairy Ocarina'), False)
     world.get_location('Gift from Saria').event = True
     world.push_item('Zeldas Letter', ItemFactory('Zeldas Letter'), False)
@@ -33,12 +35,6 @@ def generate_itempool(world):
     world.get_location('Hyrule Castle Fairy Reward').event = True
     world.push_item('Zoras Fountain Fairy Reward', ItemFactory('Farores Wind'), False)
     world.get_location('Zoras Fountain Fairy Reward').event = True
-    world.push_item('Darunias Sadness', ItemFactory('Darunia is Sad Event'), False)
-    world.get_location('Darunias Sadness').event = True
-    world.push_item('Darunias Joy', ItemFactory('Goron Bracelet'), False)
-    world.get_location('Darunias Joy').event = True
-    world.push_item('Diving Minigame', ItemFactory('Silver Scale'), False)
-    world.get_location('Diving Minigame').event = True
     world.push_item('Underwater Bottle', ItemFactory('Bottle with Letter'), False)
     world.get_location('Underwater Bottle').event = True
     world.push_item('King Zora Moves', ItemFactory('Bottle'), False)
@@ -69,7 +65,7 @@ def get_pool_core():
 
 def fill_songs(world, attempts=15):
     songs = ItemFactory(songlist)
-    song_locations = [world.get_location('Song from Composer Grave'), world.get_location('Impa at Castle'), world.get_location('Song from Saria'), world.get_location('Song from Ocarina of Time')]
+    song_locations = [world.get_location('Song from Composer Grave'), world.get_location('Impa at Castle'), world.get_location('Song from Malon'), world.get_location('Song from Saria'), world.get_location('Song from Ocarina of Time'), world.get_location('Song at Windmill'), world.get_location('Sheik Forest Song'), world.get_location('Sheik at Temple')]
     placed_prizes = [loc.item.name for loc in song_locations if loc.item is not None]
     unplaced_prizes = [song for song in songs if song.name not in placed_prizes]
     empty_song_locations = [loc for loc in song_locations if loc.item is None]
@@ -81,7 +77,7 @@ def fill_songs(world, attempts=15):
             prize_locs = list(empty_song_locations)
             random.shuffle(prizepool)
             random.shuffle(prize_locs)
-            fill_restrictive(world, world.get_all_state(keys=False), prize_locs, prizepool) #TODO: Set keys to true once keys are properly implemented
+            fill_restrictive(world, world.get_all_state(keys=True), prize_locs, prizepool) #TODO: Set keys to true once keys are properly implemented
         except FillError:
             logging.getLogger('').info("Failed to place songs. Will retry %s more times", attempts)
             for location in empty_song_locations:

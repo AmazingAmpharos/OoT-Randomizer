@@ -71,6 +71,10 @@ def int32_as_bytes(value):
     return [value & 0xFF, (value >> 8) & 0xFF, (value >> 16) & 0xFF, (value >> 24) & 0xFF]
 
 def patch_rom(world, rom):
+
+    # Can always return to youth
+    rom.write_byte(0xCB6844, 0x35)
+
     # patch items
     for location in world.get_locations():
         itemid = location.item.code
@@ -83,6 +87,41 @@ def patch_rom(world, rom):
             rom.write_byte(locationaddress, itemid)
             itemid = itemid + 0x0D
             rom.write_byte(secondaryaddress, itemid)
+            if location.name == 'Impa at Castle':
+                impa_fix = 0x65 - location.item.index
+                rom.write_byte(0xD12ECB, impa_fix)
+                impa_fix = 0x8C34 - (location.item.index * 4)
+                impa_fix_high = impa_fix >> 8
+                impa_fix_low = impa_fix & 0x00FF
+                rom.write_bytes(0xB063FE, [impa_fix_high, impa_fix_low])
+            elif location.name == 'Song from Malon':
+                malon_fix = 0x8C34 - (location.item.index * 4)
+                malon_fix_high = malon_fix >> 8
+                malon_fix_low = malon_fix & 0x00FF
+                rom.write_bytes(0xD7E142, [malon_fix_high, malon_fix_low])
+#                rom.write_bytes(0xD7E8D6, [malon_fix_high, malon_fix_low]) # I don't know what this does, may be useful?
+                rom.write_bytes(0xD7E786, [malon_fix_high, malon_fix_low])
+            elif location.name == 'Song from Composer Grave':
+                sun_fix = 0x8C34 - (location.item.index * 4)
+                sun_fix_high = sun_fix >> 8
+                sun_fix_low = sun_fix & 0x00FF
+                rom.write_bytes(0xE09F66, [sun_fix_high, sun_fix_low])
+            elif location.name == 'Song from Saria':
+                saria_fix = 0x8C34 - (location.item.index * 4)
+                saria_fix_high = saria_fix >> 8
+                saria_fix_low = saria_fix & 0x00FF
+                rom.write_bytes(0xE29382, [saria_fix_high, saria_fix_low])
+            elif location.name == 'Song at Windmill':
+                windmill_fix = 0x65 - location.item.index
+                rom.write_byte(0xE42ABF, windmill_fix)
+            elif location.name == 'Sheik Forest Song':
+                minuet_fix = 0x65 - location.item.index
+                rom.write_byte(0xC7BAA3, minuet_fix)
+            elif location.name == 'Sheik at Temple':
+                prelude_fix = 0x65 - location.item.index
+                rom.write_byte(0xC8060B, prelude_fix)
+        elif location.type == 'NPC':
+            rom.write_byte(locationaddress, location.item.index)
         else:
             locationdefault = location.default & 0xF01F
             itemid = itemid | locationdefault

@@ -78,11 +78,9 @@ class World(object):
 
         for item in self.itempool:
             soft_collect(item)
+        from Items import ItemFactory
         if keys:
-            from Items import ItemFactory
-            for item in ItemFactory(['Small Key (Escape)', 'Big Key (Eastern Palace)', 'Big Key (Desert Palace)', 'Small Key (Desert Palace)', 'Big Key (Tower of Hera)', 'Small Key (Tower of Hera)', 'Small Key (Agahnims Tower)', 'Small Key (Agahnims Tower)',
-                                     'Big Key (Palace of Darkness)'] + ['Small Key (Palace of Darkness)'] * 6 + ['Big Key (Thieves Town)', 'Small Key (Thieves Town)', 'Big Key (Skull Woods)'] + ['Small Key (Skull Woods)'] * 3 + ['Big Key (Swamp Palace)',
-                                     'Small Key (Swamp Palace)', 'Big Key (Ice Palace)'] + ['Small Key (Ice Palace)'] * 2 + ['Big Key (Misery Mire)', 'Big Key (Turtle Rock)', 'Big Key (Ganons Tower)'] + ['Small Key (Misery Mire)'] * 3 + ['Small Key (Turtle Rock)'] * 4 + ['Small Key (Ganons Tower)'] * 4):
+            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)']):
                 soft_collect(item)
         ret.sweep_for_events()
         ret.clear_cached_unreachable()
@@ -301,7 +299,7 @@ class CollectionState(object):
         return self.has('Bomb Bag') or (self.is_adult() and self.has('Hammer'))
 
     def can_dive(self):
-        return self.has('Silver Scale') or self.has('Gold Scale')
+        return self.has('Progressive Scale')
 
     def can_lift_rocks(self):
         return (self.has('Silver Gauntlets') or self.has('Gold Gauntlets')) and self.is_adult()
@@ -516,12 +514,13 @@ class Location(object):
 
 class Item(object):
 
-    def __init__(self, name='', advancement=False, priority=False, type=None, code=None):
+    def __init__(self, name='', advancement=False, priority=False, type=None, code=None, index=None):
         self.name = name
         self.advancement = advancement
         self.priority = priority
         self.type = type
         self.code = code
+        self.index = index
         self.location = None
 
     @property
