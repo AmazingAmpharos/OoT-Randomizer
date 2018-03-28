@@ -8,12 +8,22 @@ from Fill import FillError, fill_restrictive
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
 
-alwaysitems = ['Kokiri Sword', 'Slingshot', 'Bomb Bag', 'Boomerang', 'Bow', 'Progressive Hookshot', 'Deku Shield', 'Hylian Shield', 'Rupee (1)', 'Rupees (20)'] + ['Progressive Strength Upgrade'] + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 4 + ['Recovery Heart'] * 5 + ['Rupees (5)'] * 2 + ['Rupees (50)'] * 3 + ['Bombs (5)'] * 2 + ['Arrows (5)'] + ['Arrows (10)'] + ['Arrows (30)']
-songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light']
+alwaysitems = (['Kokiri Sword', 'Slingshot', 'Bomb Bag', 'Boomerang', 'Lens of Truth', 'Bow', 'Progressive Hookshot', 'Rupee (1)', 'Rupees (20)'] + ['Deku Shield'] * 2 +  ['Hylian Shield'] * 2 +
+              ['Progressive Strength Upgrade'] + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 4 + ['Recovery Heart'] * 6 + ['Rupees (5)'] * 2 + ['Rupees (50)'] * 3 + ['Rupees (200)'] +
+              ['Bombs (5)'] * 2 + ['Bombs (10)'] + ['Bombchus (10)'] + ['Arrows (5)'] + ['Arrows (10)'] + ['Arrows (30)'] + ['Deku Nuts (5)'] + ['Deku Nuts (10)'])
+songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light', 'Bolero of Fire']
+skulltulla_locations = (['GS1', 'GS2', 'GS3', 'GS4', 'GS5', 'GS6', 'GS7', 'GS8', 'GS9', 'GS10', 'GS11', 'GS12', 'GS13', 'GS14', 'GS15', 'GS16', 'GS17', 'GS18', 'GS19', 'GS20'] +
+                       ['GS21', 'GS22', 'GS23', 'GS24', 'GS25', 'GS26', 'GS27', 'GS28', 'GS29', 'GS30', 'GS31', 'GS32', 'GS33', 'GS34', 'GS35', 'GS36', 'GS37', 'GS38', 'GS39', 'GS40'] +
+                       ['GS41', 'GS42', 'GS43', 'GS44', 'GS45', 'GS46', 'GS47', 'GS48', 'GS49', 'GS50', 'GS51', 'GS52', 'GS53', 'GS54', 'GS55', 'GS56', 'GS57', 'GS58', 'GS59', 'GS60'] +
+                       ['GS61', 'GS62', 'GS63', 'GS64', 'GS78', 'GS79', 'GS80'])
 
-total_items_to_place = 5
+#total_items_to_place = 5
 
 def generate_itempool(world):
+
+    for location in skulltulla_locations:
+        world.push_item(location, ItemFactory('Gold Skulltulla Token'), False)
+        world.get_location(location).event = True
 
     world.push_item('Ganon', ItemFactory('Triforce'), False)
     world.get_location('Ganon').event = True
@@ -35,6 +45,8 @@ def generate_itempool(world):
     world.get_location('Hyrule Castle Fairy Reward').event = True
     world.push_item('Zoras Fountain Fairy Reward', ItemFactory('Farores Wind'), False)
     world.get_location('Zoras Fountain Fairy Reward').event = True
+    world.push_item('Magic Bean Salesman', ItemFactory('Magic Bean'), False)
+    world.get_location('Magic Bean Salesman').event = True
     world.push_item('Underwater Bottle', ItemFactory('Bottle with Letter'), False)
     world.get_location('Underwater Bottle').event = True
     world.push_item('King Zora Moves', ItemFactory('Bottle'), False)
@@ -45,6 +57,8 @@ def generate_itempool(world):
     world.get_location('Master Sword Pedestal').event = True
     world.push_item('Goron City Leftmost Maze Chest', ItemFactory('Rupees (200)'), False)
     world.get_location('Goron City Leftmost Maze Chest').event = True
+    world.push_item('Link the Goron', ItemFactory('Goron Tunic'), False)
+    world.get_location('Link the Goron').event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core()
@@ -65,7 +79,7 @@ def get_pool_core():
 
 def fill_songs(world, attempts=15):
     songs = ItemFactory(songlist)
-    song_locations = [world.get_location('Song from Composer Grave'), world.get_location('Impa at Castle'), world.get_location('Song from Malon'), world.get_location('Song from Saria'), world.get_location('Song from Ocarina of Time'), world.get_location('Song at Windmill'), world.get_location('Sheik Forest Song'), world.get_location('Sheik at Temple')]
+    song_locations = [world.get_location('Song from Composer Grave'), world.get_location('Impa at Castle'), world.get_location('Song from Malon'), world.get_location('Song from Saria'), world.get_location('Song from Ocarina of Time'), world.get_location('Song at Windmill'), world.get_location('Sheik Forest Song'), world.get_location('Sheik at Temple'), world.get_location('Sheik in Crater')]
     placed_prizes = [loc.item.name for loc in song_locations if loc.item is not None]
     unplaced_prizes = [song for song in songs if song.name not in placed_prizes]
     empty_song_locations = [loc for loc in song_locations if loc.item is None]

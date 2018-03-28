@@ -120,6 +120,9 @@ def patch_rom(world, rom):
             elif location.name == 'Sheik at Temple':
                 prelude_fix = 0x65 - location.item.index
                 rom.write_byte(0xC8060B, prelude_fix)
+            elif location.name == 'Sheik in Crater':
+                bolero_fix = 0x65 - location.item.index
+                rom.write_byte(0xC7BC57, bolero_fix)
         elif location.type == 'NPC':
             rom.write_byte(locationaddress, location.item.index)
         else:
