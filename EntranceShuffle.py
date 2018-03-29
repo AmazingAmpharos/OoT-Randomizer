@@ -1736,7 +1736,9 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Forest Temple Straightened Hall', 'Forest Temple Straightened Hall'),
                          ('Forest Temple Boss Key Chest Drop', 'Forest Temple Outside Upper Ledge'),
                          ('Forest Temple Outside Ledge Drop', 'Forest Temple NW Outdoors'),
-                         ('Forest Temple Drop to Falling Room', 'Forest Temple Falling Room')
+                         ('Forest Temple Drop to Falling Room', 'Forest Temple Falling Room'),
+                         ('Fire Temple Early Climb', 'Fire Temple Middle'),
+                         ('Fire Temple Fire Maze Escape', 'Fire Temple Upper'),
                         ]
 
 # non-shuffled entrance links
@@ -1826,8 +1828,10 @@ default_dungeon_connections = [('Deku Tree', 'Deku Tree Lobby'),
                                ('Forest Temple Exit', 'Forest Temple Entry Area'),
                                ('Bottom of the Well', 'Bottom of the Well'),
                                ('Bottom of the Well Exit', 'Kakariko Village'),
-                               ('Fire Temple Entrance', 'Fire Temple'),
-                               ('Fire Temple Exit', 'Death Mountain Crater Central')
+                               ('Fire Temple Entrance', 'Fire Temple Lower'),
+                               ('Fire Temple Exit', 'Death Mountain Crater Central'),
+                               ('Ice Cavern Entrance', 'Ice Cavern'),
+                               ('Ice Cavern Exit', 'Outside Ice Cavern')
                               ]
 
 
