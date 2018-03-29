@@ -25,7 +25,7 @@ Zelda (Light Arrows)
 
 Prevent sandstorm cutscene when getting Silver Gauntlets. Testing will be necessary to see if it's even an issue with the progressive code.
 
-Model adult Link portion of the game (next area: Bottom of the Well).
+Model adult Link portion of the game (next area: Water Temple).
 
 Remove as many cutscenes as possible to speed gameplay
 
@@ -41,7 +41,7 @@ Solve project 64's pause menu crashing, likely by porting the debug rom's full s
 
 Likely will have to deal with checksum correction at some point.
 
-Model Song of Storms accessed grottos and Gold Skulltulla tokens into the logic.
+Remove the locked door behind the hammer blocks in Fire Temple.
 
 Recode great fairies substantially for the following ideal behavior:
 
