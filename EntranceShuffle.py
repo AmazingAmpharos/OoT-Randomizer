@@ -1637,6 +1637,8 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Child Forest Warp Pad', 'Sacred Forest Meadow'),
                          ('Temple Warp Pad', 'Temple of Time'),
                          ('Crater Warp Pad', 'Death Mountain Crater Central'),
+                         ('Lake Warp Pad', 'Lake Hylia'),
+                         ('Graveyard Warp Pad', 'Shadow Temple Warp Region'),
                          ('Lost Woods', 'Lost Woods'),
                          ('Lost Woods Front', 'Kokiri Forest'),
                          ('Woods to Goron City', 'Goron City Woods Warp'),
@@ -1674,6 +1676,7 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Kakariko Exit', 'Hyrule Field'),
                          ('Graveyard Entrance', 'Graveyard'),
                          ('Graveyard Exit', 'Kakariko Village'),
+                         ('Drop to Graveyard', 'Graveyard'),
                          ('Death Mountain Entrance', 'Death Mountain'),
                          ('Death Mountain Exit', 'Kakariko Village'),
                          ('Goron City Entrance', 'Goron City'),
@@ -1739,6 +1742,12 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Forest Temple Drop to Falling Room', 'Forest Temple Falling Room'),
                          ('Fire Temple Early Climb', 'Fire Temple Middle'),
                          ('Fire Temple Fire Maze Escape', 'Fire Temple Upper'),
+                         ('Water Temple Central Pillar', 'Water Temple Middle Water Level'),
+                         ('Water Temple Upper Locked Door', 'Water Temple Dark Link Region'),
+                         ('Shadow Temple First Pit', 'Shadow Temple First Beamos'),
+                         ('Shadow Temple Bomb Wall', 'Shadow Temple Huge Pit'),
+                         ('Shadow Temple Hookshot Target', 'Shadow Temple Wind Tunnel'),
+                         ('Shadow Temple Boat', 'Shadow Temple Beyond Boat')
                         ]
 
 # non-shuffled entrance links
@@ -1831,7 +1840,11 @@ default_dungeon_connections = [('Deku Tree', 'Deku Tree Lobby'),
                                ('Fire Temple Entrance', 'Fire Temple Lower'),
                                ('Fire Temple Exit', 'Death Mountain Crater Central'),
                                ('Ice Cavern Entrance', 'Ice Cavern'),
-                               ('Ice Cavern Exit', 'Outside Ice Cavern')
+                               ('Ice Cavern Exit', 'Outside Ice Cavern'),
+                               ('Water Temple Entrance', 'Water Temple Lobby'),
+                               ('Water Temple Exit', 'Lake Hylia'),
+                               ('Shadow Temple Entrance', 'Shadow Temple Beginning'),
+                               ('Shadow Temple Exit', 'Shadow Temple Warp Region')
                               ]
 
 

@@ -19,9 +19,11 @@ def create_dungeons(world):
     BW = make_dungeon('Bottom of the Well', ['Bottom of the Well'], None, ItemFactory(['Small Key (Bottom of the Well)'] * 2), ItemFactory(['Map (Bottom of the Well)', 'Compass (Bottom of the Well)']))
     FiT = make_dungeon('Fire Temple', ['Fire Temple Lower', 'Fire Temple Middle', 'Fire Temple Upper'], ItemFactory('Boss Key (Fire Temple)'), ItemFactory(['Small Key (Fire Temple)'] * 8), ItemFactory(['Map (Fire Temple)', 'Compass (Fire Temple)']))
     IC = make_dungeon('Ice Cavern', ['Ice Cavern'], None, [], ItemFactory(['Map (Ice Cavern)', 'Compass (Ice Cavern)']))
+    WT = make_dungeon('Water Temple', ['Water Temple Lobby', 'Water Temple Middle Water Level', 'Water Temple Dark Link Region'], ItemFactory('Boss Key (Water Temple)'), ItemFactory(['Small Key (Water Temple)'] * 6), ItemFactory(['Map (Water Temple)', 'Compass (Water Temple)']))
+    ShT = make_dungeon('Shadow Temple', ['Shadow Temple Beginning', 'Shadow Temple First Beamos', 'Shadow Temple Huge Pit', 'Shadow Temple Wind Tunnel', 'Shadow Temple Beyond Boat'], ItemFactory('Boss Key (Shadow Temple)'), ItemFactory(['Small Key (Shadow Temple)'] * 4), ItemFactory(['Map (Shadow Temple)', 'Compass (Shadow Temple)']))
 
  
-    world.dungeons = [DT, DC, JB, FoT, BW, FiT, IC]
+    world.dungeons = [DT, DC, JB, FoT, BW, FiT, IC, WT, ShT]
 
 
 def get_dungeon_item_pool(world):

@@ -80,7 +80,7 @@ class World(object):
             soft_collect(item)
         from Items import ItemFactory
         if keys:
-            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)'] + ['Small Key (Bottom of the Well)'] * 2 + ['Small Key (Fire Temple)'] * 8):
+            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)'] + ['Small Key (Bottom of the Well)'] * 2 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 4):
                 soft_collect(item)
         ret.sweep_for_events()
         ret.clear_cached_unreachable()
