@@ -115,7 +115,7 @@ def patch_rom(world, rom):
     rom.wtite_byte(0x00C6CEDF, 0x18)
 
     # Change Bowling Alley check to Bomb Bag (Part 1)
-    rom.write_bytes(0x00E2D716, [0x72, 0xA6])
+    rom.write_bytes(0x00E2D716, [0xA6, 0x72])
     rom.write_byte(0x00E2D723, 0x18)
 
     # Change Bowling Alley check to Bomb Bag (Part 2)
