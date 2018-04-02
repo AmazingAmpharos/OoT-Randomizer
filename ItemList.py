@@ -8,9 +8,9 @@ from Fill import FillError, fill_restrictive
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
 
-alwaysitems = (['Kokiri Sword', 'Slingshot', 'Bomb Bag', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Hover Boots', 'Bow', 'Rupee (1)', 'Rupees (20)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 2 +  ['Hylian Shield'] * 2 +
-              ['Progressive Strength Upgrade'] + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 4 + ['Recovery Heart'] * 6 + ['Rupees (5)'] * 7 + ['Rupees (50)'] * 3 + ['Rupees (200)'] * 3 +
-              ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombchus (10)'] + ['Arrows (5)'] + ['Arrows (10)'] * 3 + ['Arrows (30)'] * 2 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'])
+alwaysitems = (['Kokiri Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Stone of Agony', 'Rupee (1)', 'Rupees (20)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 2 +  ['Hylian Shield'] * 2 +
+              ['Progressive Strength Upgrade'] + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 12 + ['Recovery Heart'] * 6 + ['Rupees (5)'] * 7 + ['Rupees (50)'] * 3 + ['Rupees (200)'] * 3 + ['Bow'] * 2 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle'] * 3 +
+              ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombchus (10)'] * 2 + ['Arrows (5)'] + ['Arrows (10)'] * 3 + ['Arrows (30)'] * 2 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2)
 songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light', 'Bolero of Fire', 'Serenade of Water', 'Nocturne of Shadow']
 skulltulla_locations = (['GS1', 'GS2', 'GS3', 'GS4', 'GS5', 'GS6', 'GS7', 'GS8', 'GS9', 'GS10', 'GS11', 'GS12', 'GS13', 'GS14', 'GS15', 'GS16', 'GS17', 'GS18', 'GS19', 'GS20'] +
                        ['GS21', 'GS22', 'GS23', 'GS24', 'GS25', 'GS26', 'GS27', 'GS28', 'GS29', 'GS30', 'GS31', 'GS32', 'GS33', 'GS34', 'GS35', 'GS36', 'GS37', 'GS38', 'GS39', 'GS40'] +
@@ -62,10 +62,8 @@ def generate_itempool(world):
     world.get_location('Ocarina of Time').event = True
     world.push_item('Master Sword Pedestal', ItemFactory('Master Sword'), False)
     world.get_location('Master Sword Pedestal').event = True
-    world.push_item('Link the Goron', ItemFactory('Goron Tunic'), False)
-    world.get_location('Link the Goron').event = True
-    world.push_item('King Zora Thawed', ItemFactory('Zora Tunic'), False)
-    world.get_location('King Zora Thawed').event = True
+    world.push_item('Epona', ItemFactory('Epona'), False)
+    world.get_location('Epona').event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core()

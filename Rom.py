@@ -75,6 +75,41 @@ def patch_rom(world, rom):
     # Can always return to youth
     rom.write_byte(0xCB6844, 0x35)
 
+    # Fix child shooting gallery reward to be static
+    rom.write_bytes(0xD35EFC, [0x00, 0x00, 0x00, 0x00])
+
+    # Fix target in woods reward to be static
+    rom.write_bytes(0xE59CD4, [0x00, 0x00, 0x00, 0x00])
+
+    # Fix GS rewards to be static
+    rom.write_bytes(0xEA3934, [0x00, 0x00, 0x00, 0x00])
+    rom.write_bytes(0xEA3940 , [0x10, 0x00])
+
+    # Fix horseback archery rewards to be static
+    rom.write_byte(0xE12BA5, 0x00)
+
+    # Fix adult shooting gallery reward to be static
+    rom.write_byte(0xD35F55, 0x00)
+
+    # Fix deku theater rewards to be static
+    rom.write_bytes(0xEC9A7C, [0x00, 0x00, 0x00, 0x00]) #Sticks
+    rom.write_byte(0xEC9CD5, 0x00) #Nuts
+
+    # Fix deku scrub who sells stick upgrade
+    rom.write_bytes(0xDF8060, [0x00, 0x00, 0x00, 0x00])
+
+    # Fix deku scrub who sells nut upgrade
+    rom.write_bytes(0xDF80D4, [0x00, 0x00, 0x00, 0x00])
+
+    # Fix rolling goron as child reward to be static
+    rom.write_bytes(0xED2960, [0x00, 0x00, 0x00, 0x00])
+
+    # Remove intro cutscene
+    rom.write_bytes(0xB06BBA, [0x00, 0x00])
+
+    # Remove locked door to Boss Key Chest in Fire Temple
+    rom.write_byte(0x22D82B7, 0x3F)
+
     # patch items
     for location in world.get_locations():
         itemid = location.item.code
