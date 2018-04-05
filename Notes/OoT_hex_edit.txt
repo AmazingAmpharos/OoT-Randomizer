@@ -106,7 +106,7 @@ LBU t3, 0xA673 (t3) [916BA673]
 
 ANDI t3, t3, 0x00C0 [316B00C0] # Mask bits to isolate strength upgrades
 
-BNE t2, t3, A [154B0003] #Is the player's strength upgrade slot empty?
+BNE t2, t3, B [154B0003] #Is the player's strength upgrade slot empty?
 
 ADDIU t2, t2, 0x40 [254A0040]
 
@@ -114,7 +114,7 @@ ANDI a1, a1, 0x0000 [30A50000]
 
 ADDIU a1, a1, 0x0079 [24A50079]
 
-A: BNE t2, t3, Y [154B0003] #Is the player's strength upgrade slot goron bracelet?
+B: BNE t2, t3, Y [154B0003] #Is the player's strength upgrade slot goron bracelet?
 
 ANDI t2, t2, 0x0000 [314A0000]
 
@@ -206,7 +206,65 @@ ANDI a1, a1, 0x0000 [30A50000]
 
 ADDIU a1, a1, 0x00A8 [24A500A8]
 
-T: JR $31 [03E00008]
+T: ADDIU t2, t2, 0x006C [254A006C] #Text ID for Biggest Bullet Bag
+
+BNE t2, a1, S [1545000C] #Is the item Biggest Bullet Bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA672 (t3) [916BA672]
+
+ANDI t3, t3, 0xC000 [316BC000] # Mask bits to isolate bullet bag upgrades
+
+BNE t2, t3, C [154B0003] #Is the player's bullet bag slot empty?
+
+ADDIU t2, t2, 0x4000 [254A4000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0030 [24A50030]
+
+C: BNE t2, t3, S [154B0003] #Is the player's bullet bag slot small bullet bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0007 [24A50007]
+
+S: ADDIU t2, t2, 0x0057 [254A0057] #Text ID for Biggest Quiver
+
+BNE t2, a1, R [1545000C] #Is the item Biggest Quiver?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x0003 [316B0003] # Mask bits to isolate quiver upgrades
+
+BNE t2, t3, D [154B0003] #Is the player's quiver slot empty?
+
+ADDIU t2, t2, 0x01 [254A0001]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0031 [24A50031]
+
+D: BNE t2, t3, R [154B0003] #Is the player's quiver slot small quiver?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0056 [24A50056]
+
+R: JR $31 [03E00008]
+
+
 
 Now at 0x80400200:
 
@@ -376,4 +434,60 @@ ANDI a1, a1, 0x0000 [30A50000]
 
 ADDIU a1, a1, 0x009B [24A5009B]
 
-T: J 0x1BF73 [0201BF73]
+T: ADDIU t2, t2, 0x0049 [254A0049] #Item ID for Biggest Bullet Bag
+
+BNE t2, a1, S [1545000C] #Is the item Biggest Bullet Bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA672 (t3) [916BA672]
+
+ANDI t3, t3, 0xC000 [316BC000] # Mask bits to isolate bullet bag upgrades
+
+BNE t2, t3, C [154B0003] #Is the player's bullet bag slot empty?
+
+ADDIU t2, t2, 0x4000 [254A4000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0006 [24A50006]
+
+C: BNE t2, t3, S [154B0003] #Is the player's bullet bag slot small bullet bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0048 [24A50048]
+
+S: ADDIU t2, t2, 0x004C [254A004C] #Item ID for Biggest Quiver
+
+BNE t2, a1, R [1545000C] #Is the item Biggest Quiver?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x0003 [316B0003] # Mask bits to isolate quiver upgrades
+
+BNE t2, t3, D [154B0003] #Is the player's quiver slot empty?
+
+ADDIU t2, t2, 0x01 [254A0001]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0003 [24A50003]
+
+D: BNE t2, t3, R [154B0003] #Is the player's quiver slot small quiver?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x004B [24A5004B]
+
+R: J 0x1BF73 [0201BF73]
