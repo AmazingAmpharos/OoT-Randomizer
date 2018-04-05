@@ -5,12 +5,15 @@ import logging
 def set_rules(world):
     global_rules(world)
 
-    #if world.goal == 'dungeons':
-        # require all dungeons to beat ganon
-        #add_rule(world.get_location('Ganon'), lambda state: state.can_reach('Master Sword Pedestal', 'Location') and state.has('Beat Agahnim 1') and state.has('Beat Agahnim 2'))
-    #elif world.goal == 'ganon':
-        # require aga2 to beat ganon
-        #add_rule(world.get_location('Ganon'), lambda state: state.has('Beat Agahnim 2'))
+    if world.bridge == 'medallions':
+        # require all medallions to form the bridge
+        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion'))
+    elif world.bridge == 'vanilla':
+        # require only what vanilla did to form the bridge
+        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Shadow Medallion') and state.has('Spirit Medallion'))
+    elif world.bridge == 'dungeons':
+        # require all medallions and stones to form the bridge
+        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion') and state.has('Kokiri Emerald') and state.has('Goron Ruby') and state.has('Zora Sapphire'))
 
 
 def set_rule(spot, rule):
@@ -104,6 +107,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Hyrule Castle Fairy'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Hyrule Castle Fairy Reward'), lambda state: state.has('Zeldas Lullaby') and state.has('Magic Meter'))
     set_rule(world.get_entrance('Ganons Castle Grounds'), lambda state: state.is_adult())
+    set_rule(world.get_entrance('Ganons Castle Fairy'), lambda state: state.has('Progressive Strength Upgrade', 3))
     set_rule(world.get_location('Bombchu Bowling Bomb Bag'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Bombchu Bowling Piece of Heart'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Child Shooting Gallery'), lambda state: state.has('Kokiri Sword'))
@@ -160,6 +164,7 @@ def global_rules(world):
     set_rule(world.get_location('Diving in the Lab'), lambda state: state.has('Progressive Scale', 2))
     set_rule(world.get_location('Child Fishing'), lambda state: state.has('Kokiri Sword'))
     set_rule(world.get_location('Adult Fishing'), lambda state: state.is_adult and (state.has('Progressive Hookshot') or state.has('Magic Bean')))
+    set_rule(world.get_location('Lake Hylia Sun'), lambda state: state.has('Water Medallion') and state.has('Bow') and state.is_adult())
     set_rule(world.get_entrance('Crater Hover Boots'), lambda state: state.is_adult() and state.has('Hover Boots'))
     set_rule(world.get_entrance('Crater Ascent'), lambda state: state.is_adult() and state.has('Goron Tunic') and (state.has('Hover Boots') or state.has('Hammer')))
     set_rule(world.get_entrance('Crater Scarecrow'), lambda state: state.is_adult() and state.has('Progressive Hookshot', 2) and state.has('Goron Tunic'))
@@ -271,6 +276,21 @@ def global_rules(world):
     set_rule(world.get_location('Spirit Temple Boss Key Chest'), lambda state: state.has('Zeldas Lullaby') and state.has('Bow') and state.has('Progressive Hookshot') and state.can_blast())
     set_rule(world.get_location('Spirit Temple Topmost Chest'), lambda state: state.has('Mirror Shield'))
     set_rule(world.get_location('Twinrova'), lambda state: state.has('Mirror Shield') and state.has('Bomb Bag') and state.has('Progressive Hookshot'))
+    set_rule(world.get_location('Zelda'), lambda state: state.has('Shadow Medallion') and state.has('Spirit Medallion'))
+    set_rule(world.get_entrance('Ganons Castle Light Trial'), lambda state: state.has('Progressive Strength Upgrade', 3))
+    set_rule(world.get_entrance('Ganons Castle Tower'), lambda state: state.has('Forest Trial Clear') and state.has('Fire Trial Clear') and state.has('Water Trial Clear') and state.has('Shadow Trial Clear') and state.has('Spirit Trial Clear') and state.has('Light Trial Clear'))
+    set_rule(world.get_location('Ganons Castle Forest Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows') and (state.has('Fire Arrows') or (state.has('Progressive Hookshot') and state.has('Dins Fire'))))
+    set_rule(world.get_location('Ganons Castle Fire Trial Clear'), lambda state: state.has('Goron Tunic') and state.has('Progressive Strength Upgrade', 3) and state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows'))
+    set_rule(world.get_location('Ganons Castle Water Trial Clear'), lambda state: state.has('Bottle') and state.has('Hammer') and state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows'))
+    set_rule(world.get_location('Ganons Castle Shadow Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows') and state.has('Hover Boots') and state.has('Lens of Truth') and state.has('Hammer') and (state.has('Fire Arrows') or (state.has('Dins Fire') and state.has('Progressive Hookshot', 2))))
+    set_rule(world.get_location('Ganons Castle Shadow Trial First Chest'), lambda state: (state.has('Magic Meter') and state.has('Bow') and state.has('Fire Arrows')) or state.has('Progressive Hookshot', 2))
+    set_rule(world.get_location('Ganons Castle Shadow Trial Second Chest'), lambda state: state.has('Magic Meter') and state.has('Hover Boots') and ((state.has('Bow') and state.has('Fire Arrows')) or (state.has('Progressive Hookshot', 2) and state.has('Dins Fire'))))
+    set_rule(world.get_location('Ganons Castle Spirit Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Fire Arrows') and state.has('Light Arrows') and state.has('Mirror Shield') and state.has('Bomb Bag') and state.has('Progressive Hookshot'))
+    set_rule(world.get_location('Ganons Castle Spirit Trial First Chest'), lambda state: state.has('Progressive Hookshot') and (state.has('Magic Meter') or state.has('Bomb Bag')))
+    set_rule(world.get_location('Ganons Castle Spirit Trial Second Chest'), lambda state: state.has('Progressive Hookshot') and state.has('Magic Meter') and state.has('Bomb Bag') and state.has('Lens of Truth'))
+    set_rule(world.get_location('Ganons Castle Light Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Progressive Hookshot') and state.has('Light Arrows') and state.has('Small Key (Ganons Castle)', 2))
+    set_rule(world.get_location('Ganons Castle Light Trail Invisible Enemies Chest'), lambda state: state.has('Magic Meter') and state.has('Lens of Truth'))
+    set_rule(world.get_location('Ganons Castle Light Trial Lullaby Chest'), lambda state: state.has('Zeldas Lullaby') and state.has('Small Key (Ganons Castle)', 1))
     set_rule(world.get_entrance('Forest Generic Grotto'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Forest Sales Grotto'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Front of Meadow Grotto'), lambda state: state.can_blast())

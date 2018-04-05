@@ -1771,7 +1771,14 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Adult Spirit Temple Passthrough', 'Spirit Temple Central Chamber'),
                          ('Spirit Temple to Hands', 'Spirit Temple Outdoor Hands'),
                          ('Spirit Temple Central Locked Door', 'Spirit Temple Beyond Central Locked Door'),
-                         ('Spirit Temple Final Locked Door', 'Spirit Temple Beyond Final Locked Door')
+                         ('Spirit Temple Final Locked Door', 'Spirit Temple Beyond Final Locked Door'),
+                         ('Ganons Castle Forest Trial', 'Ganons Castle Forest Trial'),
+                         ('Ganons Castle Fire Trial', 'Ganons Castle Fire Trial'),
+                         ('Ganons Castle Water Trial', 'Ganons Castle Water Trial'),
+                         ('Ganons Castle Shadow Trial', 'Ganons Castle Shadow Trial'),
+                         ('Ganons Castle Spirit Trial', 'Ganons Castle Spirit Trial'),
+                         ('Ganons Castle Light Trial', 'Ganons Castle Light Trial'),
+                         ('Ganons Castle Tower', 'Ganons Castle Tower')
                         ]
 
 # non-shuffled entrance links
@@ -1795,6 +1802,7 @@ default_connections = [('Links House Exit', 'Kokiri Forest'),
                        ('Door of Time', 'Beyond Door of Time'),
                        ('Emerge as Adult', 'Temple of Time'),
                        ('Hyrule Castle Fairy', 'Hyrule Castle Fairy'),
+                       ('Ganons Castle Fairy', 'Ganons Castle Fairy'),
                        ('Castle Town Rupee Room', 'Castle Town Rupee Room'),
                        ('Castle Town Bazaar', 'Castle Town Bazaar'),
                        ('Castle Town Mask Shop', 'Castle Town Mask Shop'),
@@ -1873,7 +1881,9 @@ default_dungeon_connections = [('Deku Tree', 'Deku Tree Lobby'),
                                ('Gerudo Training Grounds Entrance', 'Gerudo Training Grounds Lobby'),
                                ('Gerudo Training Grounds Exit', 'Gerudo Fortress'),
                                ('Spirit Temple Entrance', 'Spirit Temple Lobby'),
-                               ('Spirit Temple Exit', 'Desert Colossus')
+                               ('Spirit Temple Exit', 'Desert Colossus'),
+                               ('Rainbow Bridge', 'Ganons Castle Lobby'),
+                               ('Ganons Castle Exit', 'Ganons Castle Grounds')
                               ]
 
 

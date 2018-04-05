@@ -6,9 +6,9 @@ from collections import OrderedDict
 
 class World(object):
 
-    def __init__(self, shuffle, goal, open_forest, place_dungeon_items, check_beatable_only):
+    def __init__(self, shuffle, bridge, open_forest, place_dungeon_items, check_beatable_only):
         self.shuffle = shuffle
-        self.goal = goal
+        self.bridge = bridge
         self.dungeons = []
         self.regions = []
         self.itempool = []
@@ -80,7 +80,7 @@ class World(object):
             soft_collect(item)
         from Items import ItemFactory
         if keys:
-            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)', 'Boss Key (Spirit Temple)'] + ['Small Key (Bottom of the Well)'] * 2 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 4 + ['Small Key (Gerudo Training Grounds)'] * 8 + ['Small Key (Spirit Temple)'] * 5):
+            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)', 'Boss Key (Spirit Temple)'] + ['Small Key (Bottom of the Well)'] * 2 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 4 + ['Small Key (Gerudo Training Grounds)'] * 8 + ['Small Key (Spirit Temple)'] * 5 + ['Small Key (Ganons Castle)'] * 2):
                 soft_collect(item)
         ret.sweep_for_events()
         ret.clear_cached_unreachable()
@@ -189,7 +189,7 @@ class World(object):
             id_value += id_value_max * options.index(value)
             id_value_max *= len(options)
         markbool(self.place_dungeon_items)
-        marksequence(['ganon', 'pedestal', 'dungeons'], self.goal)
+        marksequence(['ganon', 'pedestal', 'dungeons'], self.bridge)
         marksequence(['vanilla', 'simple'], self.shuffle)
         markbool(self.check_beatable_only)
         assert id_value_max <= 0xFFFFFFFF
@@ -565,7 +565,7 @@ class Spoiler(object):
         from Main import __version__ as ERVersion
         self.metadata = {'version': ERVersion,
                          'seed': self.world.seed,
-                         'goal': self.world.goal,
+                         'bridge': self.world.bridge,
                          'shuffle': self.world.shuffle,
                          'completeable': not self.world.check_beatable_only,
                          'dungeonitems': self.world.place_dungeon_items}
@@ -574,7 +574,7 @@ class Spoiler(object):
         self.parse_data()
         with open(filename, 'w') as outfile:
             outfile.write('OoT Randomizer Version %s  -  Seed: %s\n\n' % (self.metadata['version'], self.metadata['seed']))
-            outfile.write('Goal:                            %s\n' % self.metadata['goal'])
+            outfile.write('Rainbow Bridge Requirement:                            %s\n' % self.metadata['bridge'])
             outfile.write('Entrance Shuffle:                %s\n' % self.metadata['shuffle'])
             outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
             outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))

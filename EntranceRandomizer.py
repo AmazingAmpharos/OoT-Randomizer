@@ -20,13 +20,13 @@ class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 def start():
     parser = argparse.ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument('--create_spoiler', help='Output a Spoiler File', action='store_true')
-    parser.add_argument('--goal', default='ganon', const='ganon', nargs='?', choices=['ganon', 'pedestal', 'dungeons'],
+    parser.add_argument('--bridge', default='medallions', const='medallions', nargs='?', choices=['medallions', 'vanilla', 'dungeons', 'open'],
                         help='''\
-                             Select completion goal. (default: %(default)s)
-                             Ganon:         Defeat Ganon and save Hyrule
-                             Pedestal:      Places the Triforce at the Master Sword Pedestal.
-                             All Dungeons:  Collect all spiritual stones and all medallions
-                                            and then defeat Ganon.
+                             Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
+                             Medallions:    Collect all six medallions to create the bridge.
+                             Vanilla:       Collect only the Shadow and Spirit Medallions and then view the Light Arrow cutscene.
+                             All Dungeons:  Collect all spiritual stones and all medallions to create the bridge.
+                             Open:          The bridge will spawn without an item requirement.
                              ''')
     parser.add_argument('--shuffle', default='vanilla', const='vanilla', nargs='?', choices=['vanilla', 'simple'],
                         help='''\

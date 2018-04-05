@@ -8,7 +8,7 @@ from Fill import FillError, fill_restrictive
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
 
-alwaysitems = (['Kokiri Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Ice Arrows', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + ['Ice Trap'] * 2 +
+alwaysitems = (['Kokiri Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Fire Arrows', 'Ice Arrows', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + ['Ice Trap'] * 2 +
               ['Progressive Strength Upgrade'] * 2 + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 14 + ['Recovery Heart'] * 9 + ['Rupees (5)'] * 10 + ['Rupees (20)'] * 2 + ['Rupees (50)'] * 5 + ['Rupees (200)'] * 4 + ['Bow'] * 3 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle'] * 3 +
               ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] + ['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Arrows (5)'] + ['Arrows (10)'] * 5 + ['Arrows (30)'] * 5 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2)
 songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light', 'Bolero of Fire', 'Serenade of Water', 'Nocturne of Shadow', 'Requiem of Spirit']
@@ -68,10 +68,20 @@ def generate_itempool(world):
     world.get_location('Epona').event = True
     world.push_item('Gerudo Fortress Carpenter Rescue', ItemFactory('Gerudo Membership Card'), False)
     world.get_location('Gerudo Fortress Carpenter Rescue').event = True
-    world.push_item('Mido Chest Top Left', ItemFactory('Progressive Strength Upgrade'), False)
-    world.get_location('Mido Chest Top Left').event = True
-    world.push_item('Mido Chest Top Right', ItemFactory('Progressive Strength Upgrade'), False)
-    world.get_location('Mido Chest Top Right').event = True
+    world.push_item('Zelda', ItemFactory('Light Arrows'), False)
+    world.get_location('Zelda').event = True
+    world.push_item('Ganons Castle Forest Trial Clear', ItemFactory('Forest Trial Clear'), False)
+    world.get_location('Ganons Castle Forest Trial Clear').event = True
+    world.push_item('Ganons Castle Fire Trial Clear', ItemFactory('Fire Trial Clear'), False)
+    world.get_location('Ganons Castle Fire Trial Clear').event = True
+    world.push_item('Ganons Castle Water Trial Clear', ItemFactory('Water Trial Clear'), False)
+    world.get_location('Ganons Castle Water Trial Clear').event = True
+    world.push_item('Ganons Castle Shadow Trial Clear', ItemFactory('Shadow Trial Clear'), False)
+    world.get_location('Ganons Castle Shadow Trial Clear').event = True
+    world.push_item('Ganons Castle Spirit Trial Clear', ItemFactory('Spirit Trial Clear'), False)
+    world.get_location('Ganons Castle Spirit Trial Clear').event = True
+    world.push_item('Ganons Castle Light Trial Clear', ItemFactory('Light Trial Clear'), False)
+    world.get_location('Ganons Castle Light Trial Clear').event = True
 
 
     # set up item pool

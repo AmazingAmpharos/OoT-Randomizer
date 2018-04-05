@@ -91,13 +91,13 @@ def guiMain(args=None):
     drowDownFrame = Frame(topFrame)
 
 
-    goalFrame = Frame(drowDownFrame)
-    goalVar = StringVar()
-    goalVar.set('ganon')
-    goalOptionMenu = OptionMenu(goalFrame, goalVar, 'ganon', 'pedestal', 'dungeons')
-    goalOptionMenu.pack(side=RIGHT)
-    goalLabel = Label(goalFrame, text='Game goal')
-    goalLabel.pack(side=LEFT)
+    bridgeFrame = Frame(drowDownFrame)
+    bridgeVar = StringVar()
+    bridgeVar.set('medallions')
+    bridgeOptionMenu = OptionMenu(bridgeFrame, bridgeVar, 'medallions', 'vanilla', 'dungeons', 'open')
+    bridgeOptionMenu.pack(side=RIGHT)
+    bridgeLabel = Label(bridgeFrame, text='Rainbow Bridge Requirement')
+    bridgeLabel.pack(side=LEFT)
 
     shuffleFrame = Frame(drowDownFrame)
     shuffleVar = StringVar()
@@ -107,7 +107,7 @@ def guiMain(args=None):
     shuffleLabel = Label(shuffleFrame, text='Entrance shuffle algorithm')
     shuffleLabel.pack(side=LEFT)
 
-    goalFrame.pack(expand=True, anchor=E)
+    bridgeFrame.pack(expand=True, anchor=E)
     shuffleFrame.pack(expand=True, anchor=E)
 
     bottomFrame = Frame(randomizerWindow)
@@ -123,7 +123,7 @@ def guiMain(args=None):
         guiargs = Namespace
         guiargs.seed = int(seedVar.get()) if seedVar.get() else None
         guiargs.count = int(countVar.get()) if countVar.get() != '1' else None
-        guiargs.goal = goalVar.get()
+        guiargs.bridge = bridgeVar.get()
         guiargs.shuffle = shuffleVar.get()
         guiargs.create_spoiler = bool(createSpoilerVar.get())
         guiargs.suppress_rom = bool(suppressRomVar.get())
@@ -171,7 +171,7 @@ def guiMain(args=None):
             countVar.set(str(args.count))
         if args.seed:
             seedVar.set(str(args.seed))
-        goalVar.set(args.goal)
+        bridgeVar.set(args.bridge)
         shuffleVar.set(args.shuffle)
         romVar.set(args.rom)
 
