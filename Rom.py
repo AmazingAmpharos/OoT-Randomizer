@@ -114,11 +114,11 @@ def patch_rom(world, rom):
     for location in world.get_locations():
         itemid = location.item.code
         locationaddress = location.address
+        secondaryaddress = location.address2
 
         if itemid is None or location.address is None:
             continue
         if location.type == 'Song':
-            secondaryaddress = location.default
             rom.write_byte(locationaddress, itemid)
             itemid = itemid + 0x0D
             rom.write_byte(secondaryaddress, itemid)
@@ -173,6 +173,8 @@ def patch_rom(world, rom):
             itemidlow = itemid & 0x00FF
 
             rom.write_bytes(locationaddress, [itemidhigh, itemidlow])
+            if secondaryaddress is not None:
+                rom.write_bytes(secondaryaddress, [itemidhigh, itemidlow])
 
     if world.open_forest:
         rom.write_byte(0x2081153, 0x00)

@@ -80,7 +80,7 @@ class World(object):
             soft_collect(item)
         from Items import ItemFactory
         if keys:
-            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)'] + ['Small Key (Bottom of the Well)'] * 2 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 4):
+            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)', 'Boss Key (Spirit Temple)'] + ['Small Key (Bottom of the Well)'] * 2 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 4 + ['Small Key (Gerudo Training Grounds)'] * 8 + ['Small Key (Spirit Temple)'] * 5):
                 soft_collect(item)
         ret.sweep_for_events()
         ret.clear_cached_unreachable()
@@ -326,7 +326,7 @@ class CollectionState(object):
         return self.has('Gold Gauntlets') and self.is_adult()
 
     def has_fire_source(self):
-        return self.has('Dins Fire') or (self.has('Bow') and self.has('Fire Arrows') and self.is_adult())
+        return (self.has('Dins Fire') or (self.has('Bow') and self.has('Fire Arrows') and self.is_adult()) and self.has('Magic Meter'))
 
     def collect(self, item, event=False, location=None):
         if location:
@@ -482,11 +482,12 @@ class Dungeon(object):
 
 class Location(object):
 
-    def __init__(self, name='', address=None, default=None, type='Chest', parent=None):
+    def __init__(self, name='', address=None, address2=None, default=None, type='Chest', parent=None):
         self.name = name
         self.parent_region = parent
         self.item = None
         self.address = address
+        self.address2 = address2
         self.default = default
         self.type = type
         self.spot_type = 'Location'

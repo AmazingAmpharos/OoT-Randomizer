@@ -8,15 +8,15 @@ from Fill import FillError, fill_restrictive
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
 
-alwaysitems = (['Kokiri Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Stone of Agony', 'Rupee (1)', 'Rupees (20)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 2 +  ['Hylian Shield'] * 2 +
-              ['Progressive Strength Upgrade'] + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 12 + ['Recovery Heart'] * 6 + ['Rupees (5)'] * 7 + ['Rupees (50)'] * 3 + ['Rupees (200)'] * 3 + ['Bow'] * 2 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle'] * 3 +
-              ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombchus (10)'] * 2 + ['Arrows (5)'] + ['Arrows (10)'] * 3 + ['Arrows (30)'] * 2 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2)
-songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light', 'Bolero of Fire', 'Serenade of Water', 'Nocturne of Shadow']
+alwaysitems = (['Kokiri Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Ice Arrows', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + ['Ice Trap'] * 2 +
+              ['Progressive Strength Upgrade'] * 2 + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 14 + ['Recovery Heart'] * 9 + ['Rupees (5)'] * 10 + ['Rupees (20)'] * 2 + ['Rupees (50)'] * 5 + ['Rupees (200)'] * 4 + ['Bow'] * 3 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle'] * 3 +
+              ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] + ['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Arrows (5)'] + ['Arrows (10)'] * 5 + ['Arrows (30)'] * 5 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2)
+songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light', 'Bolero of Fire', 'Serenade of Water', 'Nocturne of Shadow', 'Requiem of Spirit']
 skulltulla_locations = (['GS1', 'GS2', 'GS3', 'GS4', 'GS5', 'GS6', 'GS7', 'GS8', 'GS9', 'GS10', 'GS11', 'GS12', 'GS13', 'GS14', 'GS15', 'GS16', 'GS17', 'GS18', 'GS19', 'GS20'] +
                        ['GS21', 'GS22', 'GS23', 'GS24', 'GS25', 'GS26', 'GS27', 'GS28', 'GS29', 'GS30', 'GS31', 'GS32', 'GS33', 'GS34', 'GS35', 'GS36', 'GS37', 'GS38', 'GS39', 'GS40'] +
                        ['GS41', 'GS42', 'GS43', 'GS44', 'GS45', 'GS46', 'GS47', 'GS48', 'GS49', 'GS50', 'GS51', 'GS52', 'GS53', 'GS54', 'GS55', 'GS56', 'GS57', 'GS58', 'GS59', 'GS60'] +
                        ['GS61', 'GS62', 'GS63', 'GS64', 'GS65', 'GS66', 'GS67', 'GS68', 'GS69', 'GS70', 'GS71', 'GS72', 'GS73', 'GS74', 'GS75', 'GS76', 'GS77', 'GS78', 'GS79', 'GS80'] +
-                       ['GS81', 'GS82', 'GS83', 'GS84', 'GS85'])
+                       ['GS81', 'GS82', 'GS83', 'GS84', 'GS85', 'GS86', 'GS87', 'GS88', 'GS89', 'GS90', 'GS91', 'GS92', 'GS93', 'GS94', 'GS95', 'GS96', 'GS97', 'GS98', 'GS99', 'GS100'])
 
 #total_items_to_place = 5
 
@@ -42,6 +42,8 @@ def generate_itempool(world):
     world.get_location('Morpha').event = True
     world.push_item('Bongo Bongo', ItemFactory('Shadow Medallion'), False)
     world.get_location('Bongo Bongo').event = True
+    world.push_item('Twinrova', ItemFactory('Spirit Medallion'), False)
+    world.get_location('Twinrova').event = True
     world.push_item('Gift from Saria', ItemFactory('Fairy Ocarina'), False)
     world.get_location('Gift from Saria').event = True
     world.push_item('Zeldas Letter', ItemFactory('Zeldas Letter'), False)
@@ -64,6 +66,13 @@ def generate_itempool(world):
     world.get_location('Master Sword Pedestal').event = True
     world.push_item('Epona', ItemFactory('Epona'), False)
     world.get_location('Epona').event = True
+    world.push_item('Gerudo Fortress Carpenter Rescue', ItemFactory('Gerudo Membership Card'), False)
+    world.get_location('Gerudo Fortress Carpenter Rescue').event = True
+    world.push_item('Mido Chest Top Left', ItemFactory('Progressive Strength Upgrade'), False)
+    world.get_location('Mido Chest Top Left').event = True
+    world.push_item('Mido Chest Top Right', ItemFactory('Progressive Strength Upgrade'), False)
+    world.get_location('Mido Chest Top Right').event = True
+
 
     # set up item pool
     (pool, placed_items) = get_pool_core()
@@ -84,7 +93,7 @@ def get_pool_core():
 
 def fill_songs(world, attempts=15):
     songs = ItemFactory(songlist)
-    song_locations = [world.get_location('Song from Composer Grave'), world.get_location('Impa at Castle'), world.get_location('Song from Malon'), world.get_location('Song from Saria'), world.get_location('Song from Ocarina of Time'), world.get_location('Song at Windmill'), world.get_location('Sheik Forest Song'), world.get_location('Sheik at Temple'), world.get_location('Sheik in Crater'), world.get_location('Sheik in Ice Cavern'), world.get_location('Sheik in Kakariko')]
+    song_locations = [world.get_location('Song from Composer Grave'), world.get_location('Impa at Castle'), world.get_location('Song from Malon'), world.get_location('Song from Saria'), world.get_location('Song from Ocarina of Time'), world.get_location('Song at Windmill'), world.get_location('Sheik Forest Song'), world.get_location('Sheik at Temple'), world.get_location('Sheik in Crater'), world.get_location('Sheik in Ice Cavern'), world.get_location('Sheik in Kakariko'), world.get_location('Sheik at Colossus')]
     placed_prizes = [loc.item.name for loc in song_locations if loc.item is not None]
     unplaced_prizes = [song for song in songs if song.name not in placed_prizes]
     empty_song_locations = [loc for loc in song_locations if loc.item is None]

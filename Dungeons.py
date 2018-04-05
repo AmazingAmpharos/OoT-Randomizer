@@ -21,9 +21,11 @@ def create_dungeons(world):
     IC = make_dungeon('Ice Cavern', ['Ice Cavern'], None, [], ItemFactory(['Map (Ice Cavern)', 'Compass (Ice Cavern)']))
     WT = make_dungeon('Water Temple', ['Water Temple Lobby', 'Water Temple Middle Water Level', 'Water Temple Dark Link Region'], ItemFactory('Boss Key (Water Temple)'), ItemFactory(['Small Key (Water Temple)'] * 6), ItemFactory(['Map (Water Temple)', 'Compass (Water Temple)']))
     ShT = make_dungeon('Shadow Temple', ['Shadow Temple Beginning', 'Shadow Temple First Beamos', 'Shadow Temple Huge Pit', 'Shadow Temple Wind Tunnel', 'Shadow Temple Beyond Boat'], ItemFactory('Boss Key (Shadow Temple)'), ItemFactory(['Small Key (Shadow Temple)'] * 4), ItemFactory(['Map (Shadow Temple)', 'Compass (Shadow Temple)']))
+    GTG = make_dungeon('Gerudo Training Grounds', ['Gerudo Training Grounds Lobby', 'Gerudo Training Grounds Central Maze', 'Gerudo Training Grounds Central Maze Right', 'Gerudo Training Grounds Lava Room', 'Gerudo Training Grounds Hammer Room', 'Gerudo Training Grounds Eye Statue Lower', 'Gerudo Training Grounds Eye Statue Upper', 'Gerudo Training Grounds Heavy Block Room'], None, ItemFactory(['Small Key (Gerudo Training Grounds)'] * 8), [])
+    SpT = make_dungeon('Spirit Temple', ['Spirit Temple Lobby', 'Child Spirit Temple', 'Early Adult Spirit Temple', 'Spirit Temple Central Chamber', 'Spirit Temple Beyond Central Locked Door', 'Spirit Temple Beyond Final Locked Door'], ItemFactory('Boss Key (Spirit Temple)'), ItemFactory(['Small Key (Spirit Temple)'] * 5), ItemFactory(['Map (Spirit Temple)', 'Compass (Spirit Temple)']))
 
  
-    world.dungeons = [DT, DC, JB, FoT, BW, FiT, IC, WT, ShT]
+    world.dungeons = [DT, DC, JB, FoT, BW, FiT, IC, WT, ShT, GTG, SpT]
 
 
 def get_dungeon_item_pool(world):
