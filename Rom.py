@@ -120,7 +120,21 @@ def patch_rom(world, rom):
 
     # Change Bowling Alley check to Bomb Bag (Part 2)
     rom.write_bytes(0x00E2D892, [0xA6, 0x72])
-    rom.write_bytes(0x00E2D897, 0x18) 
+    rom.write_byte(0x00E2D897, 0x18)
+
+    # Change Bazaar check to Bomb Bag (Child?)
+    rom.write_bytes(0x00C0082A, [0x00, 0x18])
+    rom.write_bytes(0x00C0082C, [0x00, 0x0E, 0X74, 0X02])
+    rom.write_byte(0x00C00833, 0xA0)
+
+    # Change Bazaar check to Bomb Bag (Adult?)
+    rom.write_bytes(0x00DF7A8E, [0x00, 0x18])
+    rom.write_bytes(0x00DF7A90, [0x00, 0x0E, 0X74, 0X02])
+    rom.write_byte(0x00DF7A97, 0xA0)
+
+    # Change Goron Shop check to Bomb Bag
+    rom.write_bytes(0x00C6ED86, [0x00, 0xA2])
+    rom.write_bytes(0x00C6ED8A, [0x00, 0x18])
 
     # patch items
     for location in world.get_locations():
