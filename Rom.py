@@ -6,7 +6,7 @@ import struct
 import random
 
 from Utils import local_path
-from Items import ItemFactory
+from Items import ItemFactory, item_data
 
 
 JAP10HASH = '03a63945398191337e896e5771f77173'
@@ -118,7 +118,13 @@ def patch_rom(world, rom):
 
         if itemid is None or location.address is None:
             continue
-        if location.type == 'Song':
+        if location.type == 'Special':
+            if location.name == 'Treasure Chest Game':
+                rom.write_bytes(locationaddress, item_data[location.item.name])
+            else:
+                rom.write_byte(locationaddress, item_data[location.item.name][0])
+                rom.write_byte(secondaryaddress, item_data[location.item.name][3])
+        elif location.type == 'Song':
             rom.write_byte(locationaddress, itemid)
             itemid = itemid + 0x0D
             rom.write_byte(secondaryaddress, itemid)

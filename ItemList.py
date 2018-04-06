@@ -8,8 +8,8 @@ from Fill import FillError, fill_restrictive
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
 
-alwaysitems = (['Kokiri Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Fire Arrows', 'Ice Arrows', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + ['Ice Trap'] * 6 +
-              ['Progressive Strength Upgrade'] * 3 + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 14 + ['Recovery Heart'] * 11 + ['Rupees (5)'] * 13 + ['Rupees (20)'] * 2 + ['Rupees (50)'] * 5 + ['Rupees (200)'] * 4 + ['Bow'] * 3 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle'] * 3 +
+alwaysitems = (['Kokiri Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Fire Arrows', 'Ice Arrows', 'Light Arrows', 'Dins Fire', 'Farores Wind', 'Nayrus Love', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + ['Ice Trap'] * 6 +
+              ['Progressive Strength Upgrade'] * 3 + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 15 + ['Recovery Heart'] * 11 + ['Rupees (5)'] * 13 + ['Rupees (20)'] * 2 + ['Rupees (50)'] * 6 + ['Rupees (200)'] * 5 + ['Bow'] * 3 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle'] * 3 +
               ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] + ['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'] + ['Arrows (5)'] + ['Arrows (10)'] * 6 + ['Arrows (30)'] * 6 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2)
 songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light', 'Bolero of Fire', 'Serenade of Water', 'Nocturne of Shadow', 'Requiem of Spirit']
 skulltulla_locations = (['GS1', 'GS2', 'GS3', 'GS4', 'GS5', 'GS6', 'GS7', 'GS8', 'GS9', 'GS10', 'GS11', 'GS12', 'GS13', 'GS14', 'GS15', 'GS16', 'GS17', 'GS18', 'GS19', 'GS20'] +
@@ -50,10 +50,6 @@ def generate_itempool(world):
     world.get_location('Zeldas Letter').event = True
     world.push_item('Mountain Summit Fairy Reward', ItemFactory('Magic Meter'), False)
     world.get_location('Mountain Summit Fairy Reward').event = True
-    world.push_item('Hyrule Castle Fairy Reward', ItemFactory('Dins Fire'), False)
-    world.get_location('Hyrule Castle Fairy Reward').event = True
-    world.push_item('Zoras Fountain Fairy Reward', ItemFactory('Farores Wind'), False)
-    world.get_location('Zoras Fountain Fairy Reward').event = True
     world.push_item('Magic Bean Salesman', ItemFactory('Magic Bean'), False)
     world.get_location('Magic Bean Salesman').event = True
     world.push_item('Underwater Bottle', ItemFactory('Bottle with Letter'), False)
@@ -68,8 +64,6 @@ def generate_itempool(world):
     world.get_location('Epona').event = True
     world.push_item('Gerudo Fortress Carpenter Rescue', ItemFactory('Gerudo Membership Card'), False)
     world.get_location('Gerudo Fortress Carpenter Rescue').event = True
-    world.push_item('Zelda', ItemFactory('Light Arrows'), False)
-    world.get_location('Zelda').event = True
     world.push_item('Ganons Castle Forest Trial Clear', ItemFactory('Forest Trial Clear'), False)
     world.get_location('Ganons Castle Forest Trial Clear').event = True
     world.push_item('Ganons Castle Fire Trial Clear', ItemFactory('Fire Trial Clear'), False)
