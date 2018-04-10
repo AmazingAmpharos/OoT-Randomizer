@@ -305,7 +305,7 @@ class CollectionState(object):
         return (self.has('Silver Gauntlets') or self.has('Gold Gauntlets')) and self.is_adult()
 
     def has_bottle(self):
-        return self.bottle_count() > 0
+        return (self.has('Bottle') or self.has('Bottle with Milk'))
 
     def bottle_count(self):
         return len([pritem for pritem in self.prog_items if pritem.startswith('Bottle')])
