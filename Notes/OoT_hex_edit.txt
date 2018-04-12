@@ -32,9 +32,11 @@ Bits 2 and 3 of the second byte seem to be Deku Nut capacity. 0x01 for smallest,
 
 80037385
 
-Replace 0x803A4AB0 with [0000 1100 0000 X] [0C100000]
+Replace 0x00BE9AC0 (RAM 0x803A4AB0) with [0000 1100 0000 X] [0C100000]
 
 Replace 0x00BE9AE0 with 0C100081
+
+Replace 0x00B06C2C with 0C100180
 
 Start at address 0x80400000[ED400]
 
@@ -216,11 +218,11 @@ LUI t3, 0x8012 [3C0B8012]
 
 LBU t3, 0xA672 (t3) [916BA672]
 
-ANDI t3, t3, 0xC000 [316BC000] # Mask bits to isolate bullet bag upgrades
+ANDI t3, t3, 0x00C0 [316B00C0] # Mask bits to isolate bullet bag upgrades
 
 BNE t2, t3, C [154B0003] #Is the player's bullet bag slot empty?
 
-ADDIU t2, t2, 0x4000 [254A4000]
+ADDIU t2, t2, 0x0040 [254A0040]
 
 ANDI a1, a1, 0x0000 [30A50000]
 
@@ -444,11 +446,11 @@ LUI t3, 0x8012 [3C0B8012]
 
 LBU t3, 0xA672 (t3) [916BA672]
 
-ANDI t3, t3, 0xC000 [316BC000] # Mask bits to isolate bullet bag upgrades
+ANDI t3, t3, 0x00C0 [316B00C0] # Mask bits to isolate bullet bag upgrades
 
 BNE t2, t3, C [154B0003] #Is the player's bullet bag slot empty?
 
-ADDIU t2, t2, 0x4000 [254A4000]
+ADDIU t2, t2, 0x0040 [254A0040]
 
 ANDI a1, a1, 0x0000 [30A50000]
 
@@ -491,3 +493,52 @@ ANDI a1, a1, 0x0000 [30A50000]
 ADDIU a1, a1, 0x004B [24A5004B]
 
 R: J 0x1BF73 [0201BF73]
+
+Save file adjustments:
+
+SB A1, 0x0021 (S1) [A2280020]
+
+ADDIU A1, R0, 0x8002 [24058002]
+ADDIU T7, R0, 0x0084 [240F0084]
+ADDIU T8, R0, 0x0001 [24180001]
+ADDIU T9, R0, 0x0008 [24190008]
+ADDIU T0, R0, 0x0080 [24080080]
+
+SH A1, 0x00D8 (S1) [A62500D8] #Deku Tree Navi tutorials
+SB T7, 0x00DA (S1) [A22F00DA] #Deku Tree Navi tutorials
+SB T8, 0x0165 (S1) [A2380165] #Water Temple Ruto
+SB T9, 0x09B6 (S1) [A23909B6] #Owl Lake Hylia
+SB T0, 0x0A24 (S1) [A2280A24] #Kokiri blocking shop
+SB T8, 0x0ACE (S1) [A2380ACE] #Owl in Lost Woods
+SB T0, 0x0ACF (S1) [A2280ACF] #Owl in Lost Woods
+SB T0, 0x0AE8 (S1) [A2280AE8] #Owl at Colossus
+ADDIU A1, R0, 0x0020 [24050020]
+SB A1, 0x0B3F (S1) [A2250B3F] #Owl at Hyrule Castle
+
+SB T0, 0x0EDC (S1) [A2280EDC] #Navi at Master Sword pedestal
+SB A1, 0x0EDD (S1) [A2250EDD] #Have been an adult before
+SB A1, 0x0EEC (S1) [A2250EEC] #Sheik doesn't talk after becomming adult
+SB T8, 0x0EF9 (S1) [A2380EF9] #Saria at start
+SB A1, 0x00A7 (S1) [A22500A7] #Start with Light Medallion
+SB T0, 0x0EE0 (S1) [A2280EE0] #Owl in front of Lost Woods
+
+ADDIU A1, R0, 0x01FF [240501FF]
+ADDIU T7, R0, 0x01FB [240F01FB]
+ADDIU T8, R0, 0x07FF [241807FF]
+ADDIU T9, R0, 0x0004 [24190004]
+ADDIU T0, R0, 0x0030 [24080030]
+
+SH A1, 0x0EE2 (S1) [A6250EE2] #Boss intros
+SH T7, 0x0EE8 (S1) [A62F0EE8] #Enter areas for first time, p1
+SH T8, 0x0EEA (S1) [A6380EEA] #Enter areas for first time, p2
+SB T0, 0x0EE7 (S1) [A2280EE7] #Nabooru in Spirit Temple
+SB T9, 0x0F1A (S1) [A2390F1A] #Darunia in Fire Temple
+
+ADDIU T0, R0, 0x1020 [24081020]
+ADDIU T9, R0, 0x002C [2419002C]
+ADDIU T8, R0, 0x0049 [24180049]
+SH T0, 0x0ED4 [A6280ED4] #Deku Tree is opened from the start
+SB T9, 0x0081 (S1) [A2390081] #Sold Out in Lens of Truth slot
+SB T8, 0x00F6 (S1) [A23800F6] #Quiet Navi in Dodongo's Cavern
+
+JR $31 [03E00008]

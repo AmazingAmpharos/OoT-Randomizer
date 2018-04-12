@@ -501,6 +501,9 @@ class Location(object):
     def can_fill(self, state, item, check_access=True):
         return self.always_allow(item, self) or (self.parent_region.can_fill(item) and self.item_rule(item) and (not check_access or self.can_reach(state)))
 
+    def can_fill_fast(self, item):
+        return self.item_rule(item)
+
     def can_reach(self, state):
         if self.access_rule(state) and state.can_reach(self.parent_region):
             return True

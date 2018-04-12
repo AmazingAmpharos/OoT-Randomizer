@@ -10,7 +10,7 @@ def set_rules(world):
         set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion'))
     elif world.bridge == 'vanilla':
         # require only what vanilla did to form the bridge
-        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Shadow Medallion') and state.has('Spirit Medallion'))
+        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Light Arrows'))
     elif world.bridge == 'dungeons':
         # require all medallions and stones to form the bridge
         set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion') and state.has('Kokiri Emerald') and state.has('Goron Ruby') and state.has('Zora Sapphire'))
@@ -64,7 +64,7 @@ def global_rules(world):
     set_rule(world.get_location('Ocarina Memory Game'), lambda state: state.has('Fairy Ocarina') or state.has('Ocarina of Time'))
     set_rule(world.get_location('Target in Woods'), lambda state: state.has('Slingshot'))
     set_rule(world.get_location('Deku Theater Skull Mask'), lambda state: state.has('Zeldas Letter'))
-    set_rule(world.get_location('Deku Theater Mask of Truth'), lambda state: state.has('Zeldas Letter'))
+    set_rule(world.get_location('Deku Theater Mask of Truth'), lambda state: state.has('Zeldas Letter') and state.has('Sarias Song')) #Must befriend Skull Kid to sell Skull Mask.
     set_rule(world.get_location('Man on Roof'), lambda state: state.has('Progressive Hookshot') and state.is_adult())
     set_rule(world.get_location('10 Gold Skulltulla Reward'), lambda state: state.has('Gold Skulltulla Token', 10))
     set_rule(world.get_location('20 Gold Skulltulla Reward'), lambda state: state.has('Gold Skulltulla Token', 20))
@@ -396,3 +396,21 @@ def global_rules(world):
         forbid_item(world.get_location(location), 'Bomb Bag')
         forbid_item(world.get_location(location), 'Deku Stick Capacity')
         forbid_item(world.get_location(location), 'Deku Nut Capacity')
+        forbid_item(world.get_location(location), 'Ice Trap')
+
+    for location in ['Darunias Joy', 'Diving Minigame', 'Child Fishing', 'Adult Fishing', 'Diving in the Lab', 'Link the Goron', 'King Zora Thawed', 'Dog Lady', 'Skull Kid', 'Ocarina Memory Game', '10 Gold Skulltulla Reward', '20 Gold Skulltulla Reward', '30 Gold Skulltulla Reward', '40 Gold Skulltulla Reward', '50 Gold Skulltulla Reward', 'Man on Roof', 'Frog Ocarina Game', 'Frogs in the Rain', 'Horseback Archery 1000 Points', 'Horseback Archery 1500 Points', 'Child Shooting Gallery', 'Adult Shooting Gallery', 'Target in Woods', 'Deku Theater Skull Mask', 'Deku Theater Mask of Truth', 'Anjus Chickens', 'Talons Chickens', '10 Big Poes', 'Rolling Goron as Child']:
+        forbid_item(world.get_location(location), 'Recovery Heart')
+        forbid_item(world.get_location(location), 'Arrows (5)')
+        forbid_item(world.get_location(location), 'Arrows (10)')
+        forbid_item(world.get_location(location), 'Arrows (30)')
+        forbid_item(world.get_location(location), 'Bombs (5)')
+        forbid_item(world.get_location(location), 'Bombs (10)')
+        forbid_item(world.get_location(location), 'Bombs (20)')
+        forbid_item(world.get_location(location), 'Deku Nuts (5)')
+        forbid_item(world.get_location(location), 'Deku Nuts (10)')
+        forbid_item(world.get_location(location), 'Deku Shield')
+        forbid_item(world.get_location(location), 'Hylian Shield')
+        forbid_item(world.get_location(location), 'Ice Trap')
+
+    for location in ['Bombchu Bowling Bomb Bag', 'Bombchu Bowling Piece of Heart', 'Deku Salesman Woods', 'Deku Salesman Lost Woods Grotto', 'Deku Salesman Hyrule Field Grotto', 'Lake Hylia Sun', 'Underwater Bottle']:
+        forbid_item(world.get_location(location), 'Ice Trap')

@@ -1,24 +1,24 @@
 Todo List:
 
-Address the shuffle of Zelda's Light Arrows, Treasure Chest game, and the Great Fairy spells. They will require some careful and unique handling.
-
-Remove as many cutscenes as possible to speed gameplay. An area in ROM to target is 0xB06C1C (RAM 0x80090CBC). For note, 0xA6 is the first instruction in SH as opposed to 0xA2 for SB; it will be necessary to condense some other functions to make room. Need to document all flags for owls, navi, and other pointless cutscenes.
-
 Implement ROM side mechanics necessary for the Rainbow Bridge requirement dropdown to have correct mechanical function.
 
 Implement an "Open Door of Time" flag.
 
-Allow bombs to be purchased and bombchu bowling to be played if a bomb bag is owned instead of if Goron Ruby is held. Grant Man's pull request should be examined carefully as it addresses this point.
-
 Clean up the code to remove various artifacts from lttpr. Likely just remove all the entrance shuffle stuff as it's not coming anytime soon if I'm being real. Write a new README.
-
-Deferred to post-1.0:
-
-Finish progressive item code for gfx of held up item. Shift code to 0x803AF1C0 to remove expansion pak requirement and write code into RAM sometime when loading the game instead of relying on gameshark cheat hack.
 
 Add a flag for no subscreen delay on ROM side.
 
+Finish progressive item code for gfx of held up item. Shift code to 0x803AF1C0 to remove expansion pak requirement and write code into RAM sometime when loading the game instead of relying on gameshark cheat hack.
+
+Fix "Poacher's Saw" Bug.
+
+Look into what causes the DM gate to be opened early.
+
+Deferred to post-1.0:
+
 Likely will have to deal with checksum correction at some point.
+
+Figure out a good way to add Biggoron Sword to the shuffle.
 
 Recode great fairies substantially for the following ideal behavior (note: Likely post 1.0, seems VERY difficult):
 

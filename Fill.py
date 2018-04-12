@@ -59,7 +59,9 @@ def distribute_items_restrictive(world, fill_locations=None):
 
     random.shuffle(fill_locations)
 
-    fast_fill(world, prioitempool, fill_locations)
+    fill_restrictive_fast(world, world.state, fill_locations, prioitempool)
+
+    random.shuffle(fill_locations)
 
     fast_fill(world, restitempool, fill_locations)
 
@@ -71,3 +73,31 @@ def fast_fill(world, item_pool, fill_locations):
         spot_to_fill = fill_locations.pop()
         item_to_place = item_pool.pop()
         world.push_item(spot_to_fill, item_to_place, False)
+
+def fill_restrictive_fast(world, base_state, locations, itempool):
+    def sweep_from_pool():
+        new_state = base_state.copy()
+        for item in itempool:
+            new_state.collect(item, True)
+        new_state.sweep_for_events()
+        return new_state
+
+    while itempool and locations:
+        item_to_place = itempool.pop()
+
+        spot_to_fill = None
+        for location in locations:
+            if location.can_fill_fast(item_to_place):
+                spot_to_fill = location
+                break
+
+        if spot_to_fill is None:
+            # we filled all reachable spots. Maybe the game can be beaten anyway?
+            if world.can_beat_game():
+                logging.getLogger('').warning('Not all items placed. Game beatable anyway.')
+                break
+            raise FillError('No more spots to place %s' % item_to_place)
+
+        world.push_item(spot_to_fill, item_to_place, False)
+        locations.remove(spot_to_fill)
+        spot_to_fill.event = True
