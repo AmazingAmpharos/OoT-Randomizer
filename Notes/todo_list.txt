@@ -1,22 +1,14 @@
 Todo List:
 
-Implement ROM side mechanics necessary for the Rainbow Bridge requirement dropdown to have correct mechanical function.
+Implement mechanical support for the All Dungeons Rainbow Bridge setting.
 
-Implement an "Open Door of Time" flag.
+Clean up the code to remove various artifacts from lttpr. Likely just remove all the entrance shuffle stuff as it's not coming anytime soon if I'm being real.
 
-Clean up the code to remove various artifacts from lttpr. Likely just remove all the entrance shuffle stuff as it's not coming anytime soon if I'm being real. Write a new README.
+Finish progressive item code for gfx of held up item.
 
-Add a flag for no subscreen delay on ROM side.
-
-Finish progressive item code for gfx of held up item. Shift code to 0x803AF1C0 to remove expansion pak requirement and write code into RAM sometime when loading the game instead of relying on gameshark cheat hack.
-
-Fix "Poacher's Saw" Bug.
-
-Look into what causes the DM gate to be opened early.
+Implement text box speedups, removing as many as possible slower character drawing, disables of instant text, and disables of B button text scrolling as possible.
 
 Deferred to post-1.0:
-
-Likely will have to deal with checksum correction at some point.
 
 Figure out a good way to add Biggoron Sword to the shuffle.
 

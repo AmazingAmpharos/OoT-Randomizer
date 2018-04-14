@@ -56,6 +56,8 @@ def guiMain(args=None):
     suppressRomCheckbutton = Checkbutton(checkBoxFrame, text="Do not create patched Rom", variable=suppressRomVar)
     openForestVar = IntVar()
     openForestCheckbutton = Checkbutton(checkBoxFrame, text="Open Forest", variable=openForestVar)
+    openDoorVar = IntVar()
+    openDoorCheckbutton = Checkbutton(checkBoxFrame, text="Open Door of Time", variable=openDoorVar)
     dungeonItemsVar = IntVar()
     dungeonItemsCheckbutton = Checkbutton(checkBoxFrame, text="Place Dungeon Items (Compasses/Maps)", onvalue=0, offvalue=1, variable=dungeonItemsVar)
     beatableOnlyVar = IntVar()
@@ -64,6 +66,7 @@ def guiMain(args=None):
     createSpoilerCheckbutton.pack(expand=True, anchor=W)
     suppressRomCheckbutton.pack(expand=True, anchor=W)
     openForestCheckbutton.pack(expand=True, anchor=W)
+    openDoorCheckbutton.pack(expand=True, anchor=W)
     dungeonItemsCheckbutton.pack(expand=True, anchor=W)
     beatableOnlyCheckbutton.pack(expand=True, anchor=W)
 
@@ -128,6 +131,7 @@ def guiMain(args=None):
         guiargs.create_spoiler = bool(createSpoilerVar.get())
         guiargs.suppress_rom = bool(suppressRomVar.get())
         guiargs.open_forest = bool(openForestVar.get())
+        guiargs.open_door_of_time = bool(openDoorVar.get())
         guiargs.nodungeonitems = bool(dungeonItemsVar.get())
         guiargs.beatableonly = bool(beatableOnlyVar.get())
         guiargs.rom = romVar.get()
@@ -166,6 +170,7 @@ def guiMain(args=None):
         if args.nodungeonitems:
             dungeonItemsVar.set(int(not args.nodungeonitems))
         openForestVar.set(int(args.open_forest))
+        openDoorVar.set(int(args.open_door_of_time))
         beatableOnlyVar.set(int(args.beatableonly))
         if args.count:
             countVar.set(str(args.count))

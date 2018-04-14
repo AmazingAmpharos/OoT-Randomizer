@@ -98,7 +98,7 @@ ADDIU a1, a1, 0x0059 [24A50059]
 
 Y: ADDIU t2, t2, 0x005C [254A005C] #Text ID for Gold Gauntlets
 
-BNE t2, a1, Z [1545000B] #Is the item Gold Gauntlets?
+BNE t2, a1, Z [1545000C] #Is the item Gold Gauntlets?
 
 ANDI t2, t2, 0x0000 [314A0000]
 
@@ -492,7 +492,7 @@ ANDI a1, a1, 0x0000 [30A50000]
 
 ADDIU a1, a1, 0x004B [24A5004B]
 
-R: J 0x1BF73 [0201BF73]
+R: J 0x1BF73 [0801BF73]
 
 Save file adjustments:
 
@@ -517,10 +517,11 @@ SB A1, 0x0B3F (S1) [A2250B3F] #Owl at Hyrule Castle
 
 SB T0, 0x0EDC (S1) [A2280EDC] #Navi at Master Sword pedestal
 SB A1, 0x0EDD (S1) [A2250EDD] #Have been an adult before
-SB A1, 0x0EEC (S1) [A2250EEC] #Sheik doesn't talk after becomming adult
+SB A1, 0x0EED (S1) [A2250EED] #Sheik doesn't talk after becomming adult
 SB T8, 0x0EF9 (S1) [A2380EF9] #Saria at start
 SB A1, 0x00A7 (S1) [A22500A7] #Start with Light Medallion
 SB T0, 0x0EE0 (S1) [A2280EE0] #Owl in front of Lost Woods
+SB T8, 0x020E (S1) [A238020E] #Gerudo Training Grounds key pester
 
 ADDIU A1, R0, 0x01FF [240501FF]
 ADDIU T7, R0, 0x01FB [240F01FB]
@@ -537,8 +538,65 @@ SB T9, 0x0F1A (S1) [A2390F1A] #Darunia in Fire Temple
 ADDIU T0, R0, 0x1020 [24081020]
 ADDIU T9, R0, 0x002C [2419002C]
 ADDIU T8, R0, 0x0049 [24180049]
+ADDIU T7, R0, 0x0002 [240F0002]
+ADDIU A1, R0, 0x0040 [24050040]
+
 SH T0, 0x0ED4 [A6280ED4] #Deku Tree is opened from the start
 SB T9, 0x0081 (S1) [A2390081] #Sold Out in Lens of Truth slot
 SB T8, 0x00F6 (S1) [A23800F6] #Quiet Navi in Dodongo's Cavern
+SB T7, 0x003F (S1) [A22F003F] #Ocarina memory game starts at final stage
+SB A1, 0x0A42 (S1) [A2250A42] #Navi in adult Sacred Forest Meadow
 
 JR $31 [03E00008]
+
+DMA function:
+
+A0: 03480000
+A1: 80400000
+A2: 00001000
+T6: 80401000
+
+LUI A0, 0x0348
+LUI A1, 8040
+ADDIU A2, R0, 0x1000
+JAL 0x8000085C
+ADDIU T6, A1, 0x1000
+
+Start at 0x8000E70 (ROM 0x1A70)
+
+
+SW RA 0x001C (SP) [AFBF001C]
+LUI A0, 0x0348 [3C040348]
+LUI A1, 0x8040 [3C058040]
+ADDIU A2, R0, 0x1000 [24061000]
+JAL 0x8000085C [0C000217]
+ADDIU T6, A1, 0x1000 [24AE1000]
+JAL 0x80400800 [0C100200]
+LUI V0, 0x0000 [3C020000]
+
+At 0x80400800
+ADDIU V0, V0, 0x7430 [24427430]
+LUI T6, 0x0001 [3C0E0001]
+ADDIU T6, T6, 0xD390 [25CED390]
+LUI A1, 0x8001 [3C058001]
+ADDIU A1, A1, 0xB140 [24A5B140]
+SUBU A2, T6, V0 [01C23023]
+JR $31 [03E00008]
+
+For "open" Rainbow Bridge:
+
+LBU A1, 0x0EDC (S1) [92250EDC]
+ORI A1, A1, 0x0020 [34A50020]
+SB A1, 0x0EDC (S1) [A2250EDC]
+
+For Mido out of the way:
+
+LBU A1, 0x0ED5 (S1) [92250ED5]
+ORI A1, A1, 0x0001 [34A50001]
+SB A1, 0x0ED5 (S1) [A2250ED5]
+
+For open Door of Time:
+
+LBU A1, 0x0EDC (S1) [92250EDC]
+ORI A1, A1, 0x0008 [34A50008]
+SB A1, 0x0EDC (S1) [A2250EDC]

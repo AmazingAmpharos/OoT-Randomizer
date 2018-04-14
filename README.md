@@ -1,7 +1,6 @@
-# ALttPEntranceRandomizer
+# OoTRandomizer
 
-This is a entrance randomizer for _The Legend of Zelda: A Link to the Past_ for the SNES.
-See http://vt.alttp.run for more details on the normal randomizer.
+This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo 64.
 
 # Installation
 
@@ -9,244 +8,99 @@ Clone this repository and then run ```EntranceRandomizer.py``` (requires Python 
 
 Alternatively, run ```Gui.py``` for a simple graphical user interface.
 
-For releases, a Windows standalone executable is available for users without Python 3.
+For releases, a Windows standalone executable is available for users without Python 3. (Coming Soon)
+
+# General Description
+
+This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the locations of the items for a more dynamic play experience.
+Proper logic is used to ensure every seed is possible to complete without the use of glitches and will be safe from the possibility of softlocks
+with any possible usage of keys in dungeons.
+
+The items that randomize currently are all items within chests, items given as rewards by NPCs including from minigames and Deku Scrub salesmen, and
+the items obtained when getting the Bottle and the Fire Arrows at Lake Hylia. Due to technical limitations, chests in "generic" grottos are not randomized,
+but chests in unique grottos are (one in Kakariko, one in the Sacred Forest Meadow). Also due to technical limitations, the Boss Key is always in the final
+chest of Ganon's Castle. All dungeons will always have the same number of Maps, Compasses, Small Keys, and Boss Keys they had in the original game, but which
+chests within those dungeons have those things is random.
+
+Certain types of items are now "progressive", meaning that no matter what order the player encounters these items they will function as a series of upgrades.
+The following item types will be progressive chains:
+
+-Hookshot to Longshot
+-Bomb Bag to Big Bomb Bag to Biggest Bomb Bag
+-Goron Bracelet to Silver Gauntlets to Gold Gauntlets
+-Slingshot to Big Bullet Bag to Biggest Bullet Bag
+-Bow to Big Quiver to Biggest Quiver
+-Silver Scale to Gold Scale
+-Adult Wallet to Giant's Wallet
+-Deku Stick Capacity Upgrades
+-Deku Nut Capacity Upgrades
+
+Due to technical limitations, these progressive items will not be found as rewards from the three Great Fairies or from Zelda at the Temple of Time. Sorry!
+
+To be more clear about which NPC items are shuffled, it's NPCs who directly give you the item (so not the freestanding Pieces of Heart you can get from Dampe),
+and it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart or inventory items. The only exception is that
+even though in vanilla the reward for 40 Gold Skulltulla Tokens was just 10 Bombchus that is still a randomized reward in randomizer (but the 200 rupees for all
+100 Gold Skulltulla Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy to the player, the ocarina memory game
+in the Lost Woods will start on the final round as that minigame was very long originally. Additionally, any NPC who gives a trading quest item either for the child
+or for the adult does not have a randomized reward, and for now, the Biggoron Sword, Fairy Ocarina, and Ocarina of Time are not randomized.
+
+The Ocarina songs are shuffled in a pool amongst themselves, and each learn spot will still have the original conditions it has always had. These conditions may not
+have all been obvious, but here are some high points. Saria will teach her song after completing the events in the Castle Courtyard. The warp songs can mostly only
+be learned by an adult, but the location for Requiem of Spirit is available for even a child if the Desert Colossus can be reached. The location for the Prelude of
+Light requires the Forest Medallion, the location for the Nocturne of Shadow requires the Forest Medallion, Fire Medallion, and Water Medallions, and the location for
+the Serenade of Water requires the player to possess the Iron Boots even if they are not actually in their normal chest.
+
+To be very clear on this point, freestanding Pieces of Heart (those not in chests or given directly by NPCs) are not randomized, and while the rewards for up to 50
+Gold Skulltulla Tokens are randomized, the tokens themselves are not.
+
+As a service to the player in this very long game, many cutscenes have been greatly shortened or removed and text is as often as possible either omitted or sped up.
+We have been as thorough as our exploration of the game and various technical limitations will allow to make the parts of the game where you're watching and reading
+as short as possible to make as much of your time with this randomizer as possible actual gameplay. I'm sure someone somewhere will miss the owl's interjections; to
+that person, I'm sorry I guess?
+
+A few bugs or other undesirable behaviors in the original game have been fixed. Of note, obtaining the Poacher's Saw will no longer prevent the player from obtaining
+the reward in the Deku Theater for showing the Mask of Truth, and becoming and adult will not automatically equip the child with the Kokiri Sword. Sheik will no longer
+prevent the player from returning to childhood before obtaining the Forest Medallion. Princess Ruto will never disappear from Jabu Jabu's Belly, and the condition for
+the Castle Courtyard being sealed off is now completing the events within as opposed to seeing the Ocarina of Time be thrown into the moat.
+
+One small detail that is important to know is that the locked door in the Fire Temple leading to the section with the Boss Key Chest is removed. This was necessary
+due to the original design of the Fire Temple assuming that the player could not possibly have the Hammer before unlocking the doors leading into the depths of the
+dungeon. This is obviously not true in randomizer, and of all possible solutions to this problem, this seemed the least disruptive. A full clear of the Fire Temple will
+simply result in the player having one extra Small Key.
+
+To be clear about the logic rules of what can be where, the randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent
+the use of glitches for those players who enjoy that sort of thing though we offer no guarantees that all glitches will have identical behavior to the original game.
+Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or Scarecrow's Song that
+may not have been important options in the original game. The Lens of Truth is guaranteed available and useable before completion of the Treasure Chest Game is required
+or before walking through any invisible objects or opening any invisible chests is required with the exception of the one invisible wall that is required to enter
+the Bottom of the Well as the original game required passing that invisible wall to reach the Lens of Truth.
+
+Two last details that are evident very early in play are that the player always starts the game with the Light Medallion and that the player starts the game with a
+SOLD OUT item in the inventory. The former is necessary to accomodate there no longer being a cutscene upon first pulling the Master Sword, and the latter is required
+to deal with an unfortunate issue in the original game in which obtaining certain combinations of items could make it impossible to select every item in your inventory
+in the menu. The SOLD OUT will be replaced properly with the Lens of Truth when it is found.
 
 # Settings
 
-## Game Mode
+## Rainbow Bridge
 
-### Standard
+This determines the condition under which the rainbow bridge to Ganon's Castle will spawn.
 
-Fixes Hyrule Castle Secret Entrance and Front Door, but may lead to weird rain state issues if you exit through the Hyrule Castle side exits before rescuing Zelda in a full shuffle.
+### Medallions
 
-Gives lightcone in Hyrule Castle Sewers even without the Lamp.
-
-### Open
-
-This mode starts with the option to start in your house or the sanctuary, you are free to explore.
-
-Special notes:
-
-- Uncle already in sewers and most likely does not have a sword.
-- Sewers do not get a free light cone.
-- It may be a while before you find a sword, think of other ways to do damage to enemies. (bombs are a great tool, as well as picking up bushes in over world).
-
-### Swordless
-
-This mode removes all swords from the itempool. Otherwise just like open.
-
-Special notes:
-
-- The Medallions to open Misery Mire and Turtle Rock can be used without a sword if you stand on the symbol.
-- The curtains in Skull Woods and Hyrule Castle Tower that normally require a sword to cut have been removed.
-- Ganon takes damage from the Hammer.
-- The magic barrier to Hyrule Castle Tower can be broken with a Hammer.
-- The Hammer can be used to activate the Ether and Bombos tablets.
-
-## Game Logic
-This determines the Item Requirements for each location.
-
-### No Glitches
-
-The game can be completed without knowing how to perform glitches of any kind.
-
-### Minor Glitches
-
-May require Fake Flippers, Bunny Revival.
-
-## Game Goal
-
-### Ganon
-
-Standard game completion requiring you to collect the 7 crystals, defeat Agahnim 2 and then beat Ganon.
-
-### Pedestal
-
-Places the Triforce at the Master Sword Pedestal. Ganon cannot be damaged.
-
-### All Dungeons
-
-Ganon cannot be damaged until all dungeons (including Hyrule Castle Tower and Ganons Tower) are cleared.
-
-### Triforce Hunt
-
-Triforce Pieces are added to the item pool, and some number of them being found will trigger game completion. Ganon cannot be damaged.
-By default 30 Triforce Pieces are placed while 20 are needed to beat the game. Both values can be adjusted with the custom item pool feature.
-
-### Crystals
-
-Standard game completion requiring you to collect the 7 crystals and then beat Ganon.
-
-This is only noticeably different if the the Ganon shuffle option is enabled.
-
-## Game Difficulty
-
-### Easy
-
-This setting doubles the number of swords, shields, armors, bottles, and silver arrows in the item pool.
-This setting will also triple the number of Lamps available, and all will be obtainable before dark rooms.
-Within dungeons, the number of items found will be displayed on screen if there is no timer.
-
-### Normal
-
-This is the default setting that has an item pool most similar to the original
-The Legend of Zelda: A Link to the Past.
-
-### Hard
-
-This setting reduces the availability of a variety of minor helpful items, most notably
-limiting the player to two bottles, a Tempered Sword, and Blue Mail. Several minor game
-mechanics are adjusted to increase difficulty, most notably weakening potions and preventing
-the player from having fairies in bottles.
-
-### Expert
-
-This setting is a more extreme version of the Hard setting. Potions are further nerfed, the item
-pool is less helpful, and the player can find no armor, only a Master Sword, and only a single bottle.
-
-### Insane
-
-This setting is a modest step up from Expert. The main difference is that the player will never find any
-additional health.
-
-## Timer Setting
-
-### None
-
-Does not invoke a timer.
-
-### Display
-
-Displays a timer on-screen but does not alter the item pool.
-This will prevent the dungeon item count feature in Easy and Keysanity from working.
-
-### Timed
-
-Displays a count-up timer on screen that can be reduced with Green Clocks and Blue Clocks or
-increased with Red Clocks found in chests that will be added to the itempool.
-
-### Timed-OHKO
-
-Displays a countdown timer on screen that, when it hits zero, will put the player into a one hit
-knockout state until more time is added to the clock via some of the Green Clocks that will be added
-to the itempool.
-
-### OHKO
-
-The player will be in a one hit knockout state the entire game. This is the same as Timed-OHKO except
-without the Clock items and the timer permanently at zero.
-
-### Timed-countdown
-
-Displays a countdown timer on screen that can be increased with Green Clocks and Blue Clocks or
-decreased with Red Clocks found in chests that will be added to the itempool. The goal of this mode
-is to finish the game without the timer reaching zero, but the game will continue uninterrupted if
-the player runs out of time.
-
-## Progressive equipment
-
-Determines if Sword, Shield, and gloves are progressive (upgrading in sequence) or not.
-
-### On (Default)
-
-This setting makes swords, shields, armor, and gloves progressive. The first of any type of equipment found
-by the player will be the lowest level item, and each subsequent find of a category will upgrade that type of
-equipment.
-
-### Off
-
-This setting makes swords, shields, armor, and gloves non-progressive. All of the items of these types will be
-randomly placed in chests, and the player could find them in any order and thus instantly receive high level equipment.
-Downgrades are not possible; finding a lower level piece of equipment than what is already in the player's possession
-will simply do nothing.
-
-### Random
-
-This setting makes swords, shields, armor, and gloves randomly either progressive or not. Each category is independently
-randomized.
-
-## Item Distribution Algorithm
-
-Determines how the items are shuffled.
-
-### Balanced
-This is a variation of VT26 that aims to strike a balance between the overworld heavy VT25 and the dungeon heavy VT26 algorithm.
-It does this by reshuffling the remaining locations after placing dungeon items.
-
-### VT26
-Items and locations are shuffled like in VT25, and dungeon items are now placed using the same algorithm. When Ganon is not
-shuffled it includes a slight deliberate bias against having too many desireable items in Ganon's Tower to help counterbalance
-the sheer number of chests in that single location.
-
-### VT25
-Items and locations are shuffled and placed from the top of the lists. The only thing preventing an item from being placed into a spot
-is if is absolutely impossible to be there given the previous made placement choices. Leads to very uniform but guaranteed solvable distributions.
-
-### VT22
-The ordinary VT v8.22 algorithm. Fixes issues in placement in VT21 by discarding all previously skipped and unfilled locations
-after 2/3 of the progression items were placed to prevent stale late game locations from soaking up the same items all the time.
-
-### VT21
-The ordinary VT v8.21 algorithm. Unbiased placement of items into unlocked locations, placing items that unlock new locations first.
-May lead to distributions that seem a bit wonky (high likelyhood of ice rod in Turtle Rock, for instance)
-
-### Flood
-Pushes out items starting from Link's House and is slightly biased to placing progression items with less restrictions. Use for relatively simple distributions.
-
-### Freshness
-Alternative approach to VT22 to improve on VT21 flaws. Locations that are skipped because they are currently unreachable increase in
-staleness, decreasing the likelihood of receiving a progress item.
-
-## Entrance Shuffle Algorithm
-
-Determines how locations are shuffled. In all modes other than Insanity and the similar legacy versions, holes shuffle as a pair with the connecting cave and the front
-two sections of Skull Woods remain confined to the general Skull Woods area. Link's house is never shuffled as a design decision.
+All six of the medallions are required to open Ganon's Castle.
 
 ### Vanilla
 
-Places entrances in the same locations they were in the original The Legend of Zelda: A Link to the Past.
+The rainbow bridge spawns under the same conditions it did in the original game, possession of the Light Arrows.
 
-### Simple
+### All Dungeons
 
-Shuffles dungeon entrances between each other and keeps all 4-entrance dungeons confined to one location such that dungeons will one to one swap with each other.
-Other than on Light World Death Mountain, interiors are shuffled but still connect the same points on the overworld. On Death Mountain, entrances are connected more freely.
+The rainbow bridge spawns if all medallions and spiritual stones are in the player's possession.
 
-### Restricted
+### Open
 
-Uses dungeon shuffling from Simple but freely connects remaining entrances. Caves and dungeons with multiple entrances will be confined to one world.
-
-### Full
-
-Mixes cave and dungeon entrances freely. Caves and dungeons with multiple entrances will be confined to one world.
-
-### Crossed
-
-Mixes cave and dungeon entrances freely, but now connector caves and dungeons can link Light World and Dark World.
-
-### Insanity
-
-Decouples entrances and exits from each other and shuffles them freely. Caves that were single entrance in vanilla still can only exit to the same location from which they were entered.
-
-### Legacy Variants
-
-Similar to the base shuffles, but the distinction between single entrance and multi-entrance caves from older versions of the randomizer is maintained.
-Madness_Legacy is the more similar to the modern Insanity. Insanity_Legacy has fake worlds and guaranteed Moon Pearl and Magic Mirror for a very different experience.
-
-### Dungeon Variants
-
-The dungeon variants only mix up dungeons and keep the rest of the overworld vanilla.
-
-## Heartbeep Sound Rate
-
-Select frequency of beeps when on low health. Can completely disable them.
-
-## Heart Color
-
-Select the color of Link's hearts.
-
-## Menu Speed
-
-A setting that lets the player set the rate at which the menu opens and closes.
+The rainbow bridge is always present.
 
 ## Create Spoiler Log
 
@@ -257,36 +111,22 @@ Output a Spoiler File.
 If set, will not produce a patched rom as output. Useful in conjunction with the spoiler log option to batch
 generate spoilers for statistical analysis.
 
-## Enable L/R button quickswapping
+## Open Forest
 
-Use to enable quick item swap with L/R buttons
+Mido does not need to see a sword and shield to reach the Deku Tree and the Kokiri boy blocking the exit to the forest is gone.
 
-## Keysanity
+## Open Door of Time
 
-This setting allows dungeon specific items (Small Key, Big Key, Map, Compass) to be distributed anywhere in the world and not just
-in their native dungeon. Small Keys dropped by enemies or found in pots are not affected. The chest in southeast Skull Woods that
-is traditionally a guaranteed Small Key still is. These items will be distributed according to the v26/balanced algorithm, but
-the rest of the itempool will respect the algorithm setting. Music for dungeons is randomized so it cannot be used as a tell
-for which dungeons contain pendants and crystals; finding a Map for a dungeon will allow the overworld map to display its prize.
+The Door of Time is open from the beginning of the game. The Song of Time is only useful to move Song of Time blocks.
 
 ## Place Dungeon Items
 
-If not set, Compasses and Maps are removed from the dungeon item pools and replaced by empty chests that may end up anywhere in the world.
+If not set, Compasses and Maps are removed from the dungeon item pools and replaced by five rupee chests that may end up anywhere in the world.
 This may lead to different amount of itempool items being placed in a dungeon than you are used to.
 
 ## Only Ensure Seed Beatable
 
-If set, will only ensure the goal can be achieved, but not necessarily that all locations are reachable. Currently only affects VT25, VT26 and balanced algorithms.
-
-## Include Ganon's Tower and Pyramid Hole in Shuffle pool
-
-If set, Ganon's Tower is included in the dungeon shuffle pool and the Pyramid Hole/Exit pair is included in the Holes shuffle pool. Ganon can not be defeated until the primary goal is fulfilled.
-This setting removes any bias against Ganon's Tower that some algorithms may have.
-
-## Use Custom Item Pool
-
-If set, the item pool normally associated with your difficulty setting is replaced by the item pool specified in the custom tab. This feature is only supported when the randomizer is run
-via the GUI; attempting to set this via the command line does nothing.
+If set, will only ensure that Ganon can be defeated, but not necessarily that all locations are reachable.
 
 ## Seed
 
@@ -311,58 +151,17 @@ Show the help message and exit.
 Output a Spoiler File (default: False)
 
 ```
---logic [{noglitches,minorglitches}]
+--bridge [{medallions,vanilla,dungeons,open}]
 ```
 
-Select the game logic (default: noglitches)
+Select the condition to spawn the Rainbow Bridge to Ganon's Castle. (default: medallions)
 
-```
---mode [{standard,open,swordless}]
-```
-
-Select the game mode. (default: open)
-
-```
---goal [{ganon,pedestal,dungeons,triforcehunt,crystals}]
-```
-
-Select the game completion goal. (default: ganon)
-
-```
---difficulty [{easy,normal,hard,expert,insane}]
-```
-
-Select the game difficulty. Affects available itempool. (default: normal)
-
-```
---timer [{none,display,timed,timed-ohko,ohko,timed-countdown}]
-```
-
-Select the timer setting. (default: none)
-
-```
---progressive [{on,off,random}]
-```
-
-Select the setting for progressive equipment. (default: on)
-
-```
---algorithm [{freshness,flood,vt21,vt22,vt25,vt26,balanced}]
-```
-
-Select item distribution algorithm. (default: balanced)
-
-```
---shuffle [{default,simple,restricted,full,madness,insanity,dungeonsfull,dungeonssimple}]
-```
-
-Select entrance shuffle algorithm. (default: full)
 
 ```
 --rom ROM
 ```
 
-Path to a Japanese 1.0 A Link to the Past Rom. (default: Zelda no Densetsu - Kamigami no Triforce (Japan).sfc)
+Path to a decompressed The Legend of Zelda: Ocarina of Time ROM. (default: ZELOOTROMDEC.z64)
 
 ```
 --loglevel [{error,info,warning,debug}]
@@ -383,60 +182,29 @@ Define seed number to generate. (default: None)
 Set the count option (default: None)
 
 ```
---quickswap
+--open_forest
 ```
 
-Use to enable quick item swap with L/R buttons. (default: False)
+Set whether Kokiri children obstruct your path at the beginning of the game. (default: False)
 
 ```
---fastmenu [{normal,instant,double,triple,quadruple,half}]
+--open_door_of_time
 ```
 
-Alters the rate at which the menu opens and closes. (default: normal)
-
-
-```
---disablemusic
-```
-
-Disables game music, resulting in the game sound being just the SFX. (default: False)
-
-```
---keysanity
-```
-
-Enable Keysanity (default: False)
+Set whether the Door of Time is open from the beginning of the game. (default: False)
 
 ```
 --nodungeonitems
 ```
 
-If set, Compasses and Maps are removed from the dungeon item pools and replaced by empty chests that may end up anywhere in the world.
+If set, Compasses and Maps are removed from the dungeon item pools and replaced by five rupee chests that may end up anywhere in the world.
 This may lead to different amount of itempool items being placed in a dungeon than you are used to. (default: False)
-
-```
---heartbeep [{normal,half,quarter,off}]
-```
-
-Select frequency of beeps when on low health. (default: normal)
-
-```
---sprite SPRITE
-```
-
-Use to select a different sprite sheet to use for Link. Path to a binary file of length 0x7000 containing the sprite data stored at address 0x80000 in the rom. (default: None)
 
 ```
 --beatableonly
 ```
 
 Enables the "Only Ensure Seed Beatable" option (default: False)
-
-```
---no-shuffleganon
-```
-
-Disables the "Include Ganon's Tower and Pyramid Hole in Shuffle pool" option. (default: Enabled)
 
 ```
 --suppress_rom

@@ -49,6 +49,9 @@ def start():
                              Mido no longer blocks the path to the Deku Tree and
                              the Kokiri boy no longer blocks the path out of the forest.
                              ''', action='store_true')
+    parser.add_argument('--open_door_of_time', help='''\
+                             The Door of Time is open from the beginning of the game.
+                             ''', action='store_true')
     parser.add_argument('--nodungeonitems', help='''\
                              Remove Maps and Compasses from Itempool, replacing them by
                              empty slots.
