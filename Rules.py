@@ -165,7 +165,7 @@ def global_rules(world):
     set_rule(world.get_location('Sheik at Temple'), lambda state: state.has('Forest Medallion') and state.is_adult())
     set_rule(world.get_location('Diving in the Lab'), lambda state: state.has('Progressive Scale', 2))
     set_rule(world.get_location('Child Fishing'), lambda state: state.has('Kokiri Sword'))
-    set_rule(world.get_location('Adult Fishing'), lambda state: state.is_adult and (state.has('Progressive Hookshot') or state.has('Magic Bean')))
+    set_rule(world.get_location('Adult Fishing'), lambda state: state.is_adult() and (state.has('Progressive Hookshot') or state.has('Magic Bean')))
     set_rule(world.get_location('Lake Hylia Sun'), lambda state: state.has('Water Medallion') and state.has('Bow') and state.is_adult())
     set_rule(world.get_entrance('Crater Hover Boots'), lambda state: state.is_adult() and state.has('Hover Boots'))
     set_rule(world.get_entrance('Crater Ascent'), lambda state: state.is_adult() and state.has('Goron Tunic') and (state.has('Hover Boots') or state.has('Hammer')))
