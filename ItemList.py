@@ -76,7 +76,6 @@ def generate_itempool(world):
     world.push_item('Ganons Castle Light Trial Clear', ItemFactory('Light Trial Clear'), False)
     world.get_location('Ganons Castle Light Trial Clear').event = True
 
-
     # set up item pool
     (pool, placed_items) = get_pool_core(world.place_dungeon_items)
     world.itempool = ItemFactory(pool)
