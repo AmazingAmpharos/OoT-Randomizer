@@ -193,7 +193,7 @@ def global_rules(world):
     set_rule(world.get_location('Link the Goron'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade') or state.has('Bomb Bag')))
     set_rule(world.get_entrance('Crater Access'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade') or state.has('Bomb Bag')))
     set_rule(world.get_entrance('Lake Warp Pad'), lambda state: state.has('Serenade of Water'))
-    set_rule(world.get_location('King Zora Thawed'), lambda state: state.has_bottle())
+    set_rule(world.get_location('King Zora Thawed'), lambda state: state.has_bottle() and (state.can_reach('Zoras Fountain') or state.has('Progressive Wallet', 2)))
     set_rule(world.get_entrance('Water Temple Entrance'), lambda state: state.is_adult() and state.has('Zora Tunic') and state.has('Iron Boots') and state.has('Zeldas Lullaby') and state.has('Progressive Hookshot'))
     set_rule(world.get_entrance('Water Temple Central Pillar'), lambda state: state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter')) or state.has('Small Key (Water Temple)', 5))
     set_rule(world.get_entrance('Water Temple Upper Locked Door'), lambda state: state.has('Small Key (Water Temple)', 5))

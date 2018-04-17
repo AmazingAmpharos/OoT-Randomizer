@@ -7,6 +7,7 @@ import random
 
 from Utils import local_path
 from Items import ItemFactory, item_data
+from TextArray import text_array
 
 
 JAP10HASH = '03a63945398191337e896e5771f77173'
@@ -380,6 +381,26 @@ def patch_rom(world, rom):
     # Ruto never disappears from Jabu Jabu's Belly
     rom.write_byte(0xD01EA3, 0x00)
 
+    # Speed up Epona race start
+    rom.write_bytes(0x29BE984, [0xFF, 0xFF, 0xFF, 0xFF])
+
+    # Speed up Epona escape
+    rom.write_bytes(0x1FC8B36, [0x00, 0x2A])
+
+    # Speed up draining the well
+    rom.write_bytes(0xE0A010, [0x00, 0x2A, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
+    rom.write_bytes(0x2001110, [0x00, 0x2B, 0x00, 0xB7, 0x00, 0xB8, 0x00, 0xB8])
+
+    # Speed up opening the royal tomb for both child and adult
+    rom.write_bytes(0x2025026, [0x00, 0x01])
+    rom.write_bytes(0x2023C86, [0x00, 0x01])
+    rom.write_byte(0x2025159, 0x02)
+    rom.write_byte(0x2023E19, 0x02)
+
+    #Speed opening of Door of Time
+    rom.write_bytes(0xE0A176, [0x00, 0x02])
+    rom.write_bytes(0xE0A35A, [0x00, 0x01, 0x00, 0x02])
+
     # Poacher's Saw no longer messes up Deku Theater
     rom.write_bytes(0xAE72CC, [0x00, 0x00, 0x00, 0x00])
 
@@ -390,6 +411,10 @@ def patch_rom(world, rom):
 
     # Prevent kokriri sword from being added to inventory on game load
     rom.write_bytes(0xBAED6C, [0x00, 0x00, 0x00, 0x00])
+
+    # Speed text
+    for address in text_array:
+        rom.write_byte(address, 0x08)
 
     # DMA in extra code
     Block_code = [0xAF, 0xBF, 0x00, 0x1C, 0xAF, 0xA4, 0x01, 0x40, 0x3C, 0x05, 0x03, 0x48,
@@ -409,7 +434,9 @@ def patch_rom(world, rom):
     rom.write_bytes(0xBE9AC0, [0x0C, 0x10, 0x00, 0x00]) #Progressive Items Text Hook
     rom.write_bytes(0xBE9AE0, [0x0C, 0x10, 0x00, 0x81]) #Progressive Items Item ID Hook
     rom.write_bytes(0xBCECB4, [0x08, 0x10, 0x00, 0xFF, 0x03, 0x19, 0x10, 0x21]) #Progressive Items Graphic ID Hook
-    rom.write_bytes(0xBDA26C, [0x0C, 0x22, 0x9E, 0xF0]) #Progressive Items Object Hook, mechanics of parameter bizarre
+    rom.write_bytes(0xBDA26C, [0x0C, 0x22, 0x9E, 0xF0]) #Progressive Items Object Hook, mechanics of parameter bizarre, chests
+    rom.write_bytes(0xBDA0E0, [0x0C, 0x22, 0x9E, 0xF0]) #Progressive Items Object Hook, mechanics of parameter bizarre, NPCs
+#    rom.write_bytes(0xBD6C94, [0x0C, 0x22, 0x9E, 0xF0]) #Progressive Items Object Hook, unsure where this case is called
     rom.write_bytes(0xB06C2C, [0x0C, 0x10, 0x01, 0x80]) #Save Writing Hook
 
     # Progressive Items (Text)
