@@ -28,13 +28,6 @@ def start():
                              All Dungeons:  Collect all spiritual stones and all medallions to create the bridge.
                              Open:          The bridge will spawn without an item requirement.
                              ''')
-    parser.add_argument('--shuffle', default='vanilla', const='vanilla', nargs='?', choices=['vanilla', 'simple'],
-                        help='''\
-                             Select Entrance Shuffling Algorithm. (default: %(default)s)
-                             Vanilla:    All entrances are in the same locations they were
-                                         in the base game.
-                             Simple:     Only single entrance houses, caves, and dungeons move.
-                             ''')
     parser.add_argument('--rom', default='ZELOOTROMDEC.z64', help='Path to a decompressed OoT 1.0 rom to use as a base.')
     parser.add_argument('--loglevel', default='info', const='info', nargs='?', choices=['error', 'info', 'warning', 'debug'], help='Select level of logging for output.')
     parser.add_argument('--seed', help='Define seed number to generate.', type=int)

@@ -6,8 +6,8 @@ from collections import OrderedDict
 
 class World(object):
 
-    def __init__(self, shuffle, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only):
-        self.shuffle = shuffle
+    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only):
+        self.shuffle = 'vanilla'
         self.bridge = bridge
         self.dungeons = []
         self.regions = []
@@ -554,22 +554,26 @@ class Spoiler(object):
 
     def __init__(self, world):
         self.world = world
-        self.entrances = []
         self.playthrough = {}
         self.locations = {}
         self.paths = {}
         self.metadata = {}
 
-    def set_entrance(self, entrance, exit, direction):
-        self.entrances.append(OrderedDict([('entrance', entrance), ('exit', exit), ('direction', direction)]))
-
     def parse_data(self):
-        self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in self.world.get_locations()])}
-        from Main import __version__ as ERVersion
-        self.metadata = {'version': ERVersion,
+        spoiler_locations = []
+        for location in self.world.get_locations():
+            if location.item.name not in ['Gold Skulltulla Token', 'Epona', 'Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire', 'Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Shadow Medallion', 'Spirit Medallion', 'Triforce', 'Fairy Ocarina', 'Ocarina of Time',
+                                          'Magic Bean', 'Gerudo Membership Card', 'Forest Trial Clear', 'Fire Trial Clear', 'Water Trial Clear', 'Shadow Trial Clear', 'Spirit Trial Clear', 'Light Trial Clear', 'Master Sword', 'Zeldas Letter']:
+                spoiler_locations.append(location)
+        sort_order = {"Song": 0}
+        spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
+        self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}
+        from Main import __version__ as OoTRVersion
+        self.metadata = {'version': OoTRVersion,
                          'seed': self.world.seed,
                          'bridge': self.world.bridge,
-                         'shuffle': self.world.shuffle,
+                         'forest': self.world.open_forest,
+                         'door': self.world.open_door_of_time,
                          'completeable': not self.world.check_beatable_only,
                          'dungeonitems': self.world.place_dungeon_items}
 
@@ -577,13 +581,11 @@ class Spoiler(object):
         self.parse_data()
         with open(filename, 'w') as outfile:
             outfile.write('OoT Randomizer Version %s  -  Seed: %s\n\n' % (self.metadata['version'], self.metadata['seed']))
-            outfile.write('Rainbow Bridge Requirement:                            %s\n' % self.metadata['bridge'])
-            outfile.write('Entrance Shuffle:                %s\n' % self.metadata['shuffle'])
+            outfile.write('Rainbow Bridge Requirement:      %s\n' % self.metadata['bridge'])
+            outfile.write('Open Forest:                     %s\n' % ('Yes' if self.metadata['forest'] else 'No'))
+            outfile.write('Open Door of Time:               %s\n' % ('Yes' if self.metadata['door'] else 'No'))
             outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
             outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))
-            if self.entrances:
-                outfile.write('\n\nEntrances:\n\n')
-                outfile.write('\n'.join(['%s %s %s' % (entry['entrance'], '<=>' if entry['direction'] == 'both' else '<=' if entry['direction'] == 'exit' else '=>', entry['exit']) for entry in self.entrances]))
             outfile.write('\n\nLocations:\n\n')
             outfile.write('\n'.join(['%s: %s' % (location, item) for (location, item) in self.locations['other locations'].items()]))
             outfile.write('\n\nPlaythrough:\n\n')

@@ -21,7 +21,7 @@ def main(args, seed=None):
     start = time.clock()
 
     # initialize the world
-    world = World(args.shuffle, args.bridge, args.open_forest, args.open_door_of_time, not args.nodungeonitems, args.beatableonly)
+    world = World(args.bridge, args.open_forest, args.open_door_of_time, not args.nodungeonitems, args.beatableonly)
     logger = logging.getLogger('')
     if seed is None:
         random.seed(None)
@@ -65,7 +65,7 @@ def main(args, seed=None):
 
     logger.info('Patching ROM.')
 
-    outfilebase = 'OoT_%s_%s_%s' % (world.shuffle, world.bridge, world.seed)
+    outfilebase = 'OoT_%s%s%s%s_%s' % (world.bridge, "-openforest" if world.open_forest else "", "-opendoor" if world.open_door_of_time else "", "-beatableonly" if world.check_beatable_only else "",  world.seed)
 
     if not args.suppress_rom:
         rom = LocalRom(args.rom)
@@ -82,7 +82,7 @@ def main(args, seed=None):
 
 def copy_world(world):
     # ToDo: Not good yet
-    ret = World(world.shuffle, world.bridge, world.open_forest, world.open_door_of_time, world.place_dungeon_items, world.check_beatable_only)
+    ret = World(world.bridge, world.open_forest, world.open_door_of_time, world.place_dungeon_items, world.check_beatable_only)
     ret.seed = world.seed
     ret.can_take_damage = world.can_take_damage
     create_regions(ret)

@@ -102,16 +102,7 @@ def guiMain(args=None):
     bridgeLabel = Label(bridgeFrame, text='Rainbow Bridge Requirement')
     bridgeLabel.pack(side=LEFT)
 
-    shuffleFrame = Frame(drowDownFrame)
-    shuffleVar = StringVar()
-    shuffleVar.set('vanilla')
-    shuffleOptionMenu = OptionMenu(shuffleFrame, shuffleVar, 'vanilla', 'simple')
-    shuffleOptionMenu.pack(side=RIGHT)
-    shuffleLabel = Label(shuffleFrame, text='Entrance shuffle algorithm')
-    shuffleLabel.pack(side=LEFT)
-
     bridgeFrame.pack(expand=True, anchor=E)
-    shuffleFrame.pack(expand=True, anchor=E)
 
     bottomFrame = Frame(randomizerWindow)
 
@@ -127,7 +118,6 @@ def guiMain(args=None):
         guiargs.seed = int(seedVar.get()) if seedVar.get() else None
         guiargs.count = int(countVar.get()) if countVar.get() != '1' else None
         guiargs.bridge = bridgeVar.get()
-        guiargs.shuffle = shuffleVar.get()
         guiargs.create_spoiler = bool(createSpoilerVar.get())
         guiargs.suppress_rom = bool(suppressRomVar.get())
         guiargs.open_forest = bool(openForestVar.get())
@@ -177,7 +167,6 @@ def guiMain(args=None):
         if args.seed:
             seedVar.set(str(args.seed))
         bridgeVar.set(args.bridge)
-        shuffleVar.set(args.shuffle)
         romVar.set(args.rom)
 
     mainWindow.mainloop()
