@@ -1,12 +1,10 @@
 Todo List:
 
-Implement mechanical support for the All Dungeons Rainbow Bridge setting.
+Investigate remaining text-box speed-up issues better. Currently it looks like we may have to live with tiny amounts of slow text.
 
-Clean up the code to remove various artifacts from lttpr. Likely just remove all the entrance shuffle stuff as it's not coming anytime soon if I'm being real.
+Figure out why Wii VC is stupid. Convince someone with an everdrive to test for us.
 
-Finish progressive item code for gfx of held up item.
-
-Implement text box speedups, removing as many as possible slower character drawing, disables of instant text, and disables of B button text scrolling as possible.
+Make progressives work with great fairies. May be deferred to post-1.0.
 
 Deferred to post-1.0:
 

@@ -1,5 +1,7 @@
 0x803A9F68: Location of Kokiri Sword in table
 
+"Zeroth" load the object file. RAM address of 0x8039525C. This is a jump just like the item id.
+
 First load GID. RAM address of 0x80389CA8. Load instruction is 80430002. It is followed by 04600003. ROM address of 0xBCECB8.
 
 Second load text. RAM address of 0x803A4AB0. Load instruction is 90450003. ROM address of 0xBE9AC0.
@@ -36,7 +38,11 @@ Replace 0x00BE9AC0 (RAM 0x803A4AB0) with [0000 1100 0000 X] [0C100000]
 
 Replace 0x00BE9AE0 with 0C100081
 
-Replace 0x00B06C2C with 0C100180
+Replace 0x00B06C2C with 08100180
+
+Replace 0xBCECB4 with 0C1000FF. Write 03191021 to 0xBCECB8
+
+Replace 0xBDA26C with 0C229EF0. Something truly arcane happens here.
 
 Start at address 0x80400000[ED400]
 
@@ -494,6 +500,254 @@ ADDIU a1, a1, 0x004B [24A5004B]
 
 R: J 0x1BF73 [0801BF73]
 
+# Graphic ID change
+
+LB V1, 0x0002 (V0) [80430002]
+
+ANDI t2, t2, 0x0000 [0011 0001 0100 1010] [314A0000]
+
+ADDIU t2, t2, 0x002E [254A002E] #Graphic ID for Longshot
+
+BNE t2, v1, X [15430008] #Is the item Longshot?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA64D (t3) [916BA64D] 
+
+ADDIU t2, t2, 0xFF [254A00FF]
+
+BNE t2, t3, X [154B0003] #Is the player's Hookshot slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x002D [2463002D]
+
+X: ADDIU t2, t2, 0x001A [254A001A] #Graphic ID for Biggest Bomb Bag
+
+BNE t2, v1, Y [1543000C] #Is the item Bomb Bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x0018 [316B0018] # Mask bits to isolate bomb bags
+
+BNE t2, t3, A [154B0003] #Is the player's Bomb Bag slot empty?
+
+ADDIU t2, t2, 0x08 [254A0008]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x0018 [24630018]
+
+A: BNE t2, t3, Y [154B0003] #Is the player's Bomb Bag slot small bomb bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x0019 [24630019]
+
+Y: ADDIU t2, t2, 0x004A [254A004A] #Graphic ID for Gold Gauntlets
+
+BNE t2, v1, Z [1543000C] #Is the item Gold Gauntlets?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x00C0 [316B00C0] # Mask bits to isolate strength upgrades
+
+BNE t2, t3, B [154B0003] #Is the player's strength upgrade slot empty?
+
+ADDIU t2, t2, 0x40 [254A0040]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x0058 [24630058]
+
+B: BNE t2, t3, Y [154B0003] #Is the player's strength upgrade slot goron bracelet?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x0049 [24630049]
+
+Z: ADDIU t2, t2, 0x002B [254A002B] #Graphic ID for Gold Scale
+
+BNE t2, v1, W [15430008] #Is the item Gold Scale?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA672 (t3) [916BA672]
+
+ANDI t3, t3, 0x0006 [316B0006] # Mask bits to isolate scales
+
+BNE t2, t3, W [154B0003] #Is the player's scale slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x002A [2463002A]
+
+W: ADDIU t2, t2, 0x0023 [254A0023] #Graphic ID for Giant's Wallet
+
+BNE t2, v1, T [15430008] #Is the item Giant's Wallet?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA672 (t3) [916BA672]
+
+ANDI t3, t3, 0x0030 [316B0030] # Mask bits to isolate wallets
+
+BNE t2, t3, T [154B0003] #Is the player's wallet slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x0022 [24630022]
+
+T: ADDIU t2, t2, 0x0073 [254A0073] #Graphic ID for Biggest Bullet Bag
+
+BNE t2, v1, S [1543000C] #Is the item Biggest Bullet Bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA672 (t3) [916BA672]
+
+ANDI t3, t3, 0x00C0 [316B00C0] # Mask bits to isolate bullet bag upgrades
+
+BNE t2, t3, C [154B0003] #Is the player's bullet bag slot empty?
+
+ADDIU t2, t2, 0x0040 [254A0040]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x0033 [24630033]
+
+C: BNE t2, t3, S [154B0003] #Is the player's bullet bag slot small bullet bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x006C [2463006C]
+
+S: ADDIU t2, t2, 0x0017 [254A0017] #Graphic ID for Biggest Quiver
+
+BNE t2, v1, R [1543000C] #Is the item Biggest Quiver?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x0003 [316B0003] # Mask bits to isolate quiver upgrades
+
+BNE t2, t3, D [154B0003] #Is the player's quiver slot empty?
+
+ADDIU t2, t2, 0x01 [254A0001]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x0035 [24630035]
+
+D: BNE t2, t3, R [154B0003] #Is the player's quiver slot small quiver?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI v1, v1, 0x0000 [30630000]
+
+ADDIU v1, v1, 0x0016 [24630016]
+
+R: J 0xE272B [080E272B]
+
+# Object change
+
+NOP [00000000] (will be the buffer between previous code and this)
+
+ANDI t2, t2, 0x0000 [0011 0001 0100 1010] [314A0000]
+
+ADDIU t2, t2, 0x012D [254A012D] #Graphic ID for Gold Gauntlets
+
+BNE t2, a1, T [15450008] #Is the item Gold Gauntlets?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x00C0 [316B00C0] # Mask bits to isolate strength upgrades
+
+BNE t2, t3, T [154B0003] #Is the player's strength upgrade slot empty?
+
+ADDIU t2, t2, 0x00 [254A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0147 [24A50147]
+
+T: ADDIU t2, t2, 0x017B [254A017B] #Graphic ID for Biggest Bullet Bag
+
+BNE t2, a1, S [15450008] #Is the item Biggest Bullet Bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA672 (t3) [916BA672]
+
+ANDI t3, t3, 0x00C0 [316B00C0] # Mask bits to isolate bullet bag upgrades
+
+BNE t2, t3, S [154B0003] #Is the player's bullet bag slot empty?
+
+ADDIU t2, t2, 0x0000 [254A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x00E7 [24A500E7]
+
+S: ADDIU t2, t2, 0x00BE [254A00BE] #Graphic ID for Biggest Quiver
+
+BNE t2, a1, R [15450008] #Is the item Biggest Quiver?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI t3, 0x8012 [3C0B8012]
+
+LBU t3, 0xA673 (t3) [916BA673]
+
+ANDI t3, t3, 0x0003 [316B0003] # Mask bits to isolate quiver upgrades
+
+BNE t2, t3, R [154B0003] #Is the player's quiver slot empty?
+
+ADDIU t2, t2, 0x00 [254A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x00E9 [24A500E9]
+
+R: J 0xE4643 [080E4643] [0820E3DB]
+
 Save file adjustments:
 
 SB A1, 0x0021 (S1) [A2280020]
@@ -551,36 +805,28 @@ JR $31 [03E00008]
 
 DMA function:
 
-A0: 03480000
-A1: 80400000
+A1: 03480000
+A0: 80400000
 A2: 00001000
-T6: 80401000
 
-LUI A0, 0x0348
-LUI A1, 8040
-ADDIU A2, R0, 0x1000
-JAL 0x8000085C
-ADDIU T6, A1, 0x1000
+New DMA:
 
-Start at 0x8000E70 (ROM 0x1A70)
+At 0x800A1C54 (0xB17BB4):
 
-
-SW RA 0x001C (SP) [AFBF001C]
-LUI A0, 0x0348 [3C040348]
-LUI A1, 0x8040 [3C058040]
+SW RA, 0x001C (SP) [AFBF001C]
+SW A0, 0x0140 (SP) [AFA40140]
+LUI A1, 0x0348 [3C050348]
+LUI A0, 0x8040 [3C048040]
+JAL 0x80000DF0 [0C00037C]
 ADDIU A2, R0, 0x1000 [24061000]
-JAL 0x8000085C [0C000217]
-ADDIU T6, A1, 0x1000 [24AE1000]
 JAL 0x80400800 [0C100200]
-LUI V0, 0x0000 [3C020000]
 
-At 0x80400800
-ADDIU V0, V0, 0x7430 [24427430]
-LUI T6, 0x0001 [3C0E0001]
-ADDIU T6, T6, 0xD390 [25CED390]
-LUI A1, 0x8001 [3C058001]
-ADDIU A1, A1, 0xB140 [24A5B140]
-SUBU A2, T6, V0 [01C23023]
+At 0x80400800:
+
+LUI V0, 0x8012 [3C028012]
+ADDIU V0, V0, 0xD2A0 [2442D2A0]
+ADDIU T6, R0, 0x0140 [240E0140]
+SW T6, 0xE500 (AT) [AC2EE500]
 JR $31 [03E00008]
 
 For "open" Rainbow Bridge:
@@ -600,3 +846,12 @@ For open Door of Time:
 LBU A1, 0x0EDC (S1) [92250EDC]
 ORI A1, A1, 0x0008 [34A50008]
 SB A1, 0x0EDC (S1) [A2250EDC]
+
+For Darunia:
+
+ADDIU T9, R0, 0x0040 [24190040]
+LW T1, 0xB4A8 (T8) [8F09B4A8]
+AND T0, T1, T9 [01394024]
+OR T9, T1, T9 [0139C825]
+SW T9, 0xB4A8 (T8) [AF19B4A8]
+ADDIU T1, R0, 0x0006 [24090006]
