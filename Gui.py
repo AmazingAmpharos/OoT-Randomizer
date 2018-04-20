@@ -78,7 +78,7 @@ def guiMain(args=None):
     romEntry = Entry(romDialogFrame, textvariable=romVar)
 
     def RomSelect():
-        rom = filedialog.askopenfilename(filetypes=[("Rom Files", ".z64"), ("All Files", "*")])
+        rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")])
         romVar.set(rom)
     romSelectButton = Button(romDialogFrame, text='Select Rom', command=RomSelect)
 

@@ -10,6 +10,24 @@ Alternatively, run ```Gui.py``` for a simple graphical user interface.
 
 For releases, a Windows standalone executable is available for users without Python 3. (Coming Soon)
 
+For use, you will need a decompressed Ocarina of Time v1.0 (USA) ROM. For getting the ROM itself, you are on your own. Once you have that,
+you'll need zdec to decompress (other utilities will decompress differently and thus will be an issue). You can get it here:
+
+http://www.mediafire.com/file/jd8g3lit4c7tcm2/ext.rar
+
+You only have to do this once and can use that file as a base file for all randos.
+
+The randomizer will generate a decompressed ROM. If you wish to play on emulator, you will need to compress to avoid stability issues. The
+best program I've seen to do that is Aegh by Zoinkity which you can get here:
+
+http://www.mediafire.com/file/5o97uendasqtusy/Aegh.7z
+
+For the exception table that program asks for, you should use the one that is in the notes folder of this repository.
+
+For general use, the recommended emulators are Bizhawk and Mupen64plus. If you want to play on Project 64 for whatever reason, you can but
+you will need to set the rando to use 8 MB of RAM and will want to play with the cheat code 8109C58A 0000 to partially fix Project 64's tragically
+poor handling of OoT's pause menu.
+
 # General Description
 
 This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the locations of the items for a more dynamic play experience.
@@ -144,6 +162,7 @@ generate spoilers for statistical analysis.
 ## Open Forest
 
 Mido does not need to see a sword and shield to reach the Deku Tree and the Kokiri boy blocking the exit to the forest is gone.
+If this flag is not set, it is guaranteed that the Deku Tree can be completed without leaving the forest.
 
 ## Open Door of Time
 
