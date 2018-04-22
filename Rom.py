@@ -319,6 +319,12 @@ def patch_rom(world, rom):
 
     # Speed Nabooru defeat scene
     rom.write_bytes(0x2F5AF84, [0x00, 0x00, 0x00, 0x05])
+    #rom.write_bytes(0x2F5C7A2, [0x00, 0x01, 0x00, 0x02]) may cause issue on Everdrive commenting out for further testing.
+    #rom.write_byte(0x2F5B369, 0x09)
+    #rom.write_byte(0x2F5B491, 0x04)
+    #rom.write_byte(0x2F5B559, 0x04)
+    #rom.write_byte(0x2F5B621, 0x04)
+    #rom.write_byte(0x2F5CDD9, 0x07) cleaner nabooru clear scene, will add after potential issues with old code have been tested.
     rom.write_bytes(0x2F5B378, [0x80, 0x00])
     rom.write_bytes(0x2F5B384, [0x80, 0x00])
     rom.write_bytes(0x2F5B4A4, [0x80, 0x00])
@@ -329,7 +335,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0x2F5B63C, [0x80, 0x00])
     rom.write_bytes(0x2F5B770, [0x80, 0x00])
     rom.write_bytes(0x2F5B77C, [0x80, 0x00])
-    rom.write_bytes(0x2F5C7A2, [0x00, 0x01, 0x00, 0x02])
+
 
     # Speed scene with all medallions
     rom.write_bytes(0x2512680, [0x00, 0x74, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
