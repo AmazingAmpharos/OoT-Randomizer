@@ -465,7 +465,7 @@ def patch_rom(world, rom):
         rom.write_bytes(address, [0x08, 0x08, 0x08, 0x08, 0x47])
     
     # Make item descriptions into a single box
-    Short_item_descriptions = [0x92EC84, 0x92F9E3]
+    Short_item_descriptions = [0x92EC84, 0x92F9E3, 0x92F2B4, 0x92F37A]
     for address in Short_item_descriptions:
         rom.write_byte(address,0x02)
         
