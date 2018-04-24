@@ -695,7 +695,7 @@ def patch_rom(world, rom):
                 malon_fix_high = malon_fix >> 8
                 malon_fix_low = malon_fix & 0x00FF
                 rom.write_bytes(0xD7E142, [malon_fix_high, malon_fix_low])
-#                rom.write_bytes(0xD7E8D6, [malon_fix_high, malon_fix_low]) # I don't know what this does, may be useful?
+                #rom.write_bytes(0xD7E8D6, [malon_fix_high, malon_fix_low]) # I don't know what this does, may be useful?
                 rom.write_bytes(0xD7E786, [malon_fix_high, malon_fix_low])
                 rom.write_byte(0x29BECB9, item_data[location.item.name]) #Fix text box
             elif location.name == 'Song from Composer Grave':
@@ -724,7 +724,7 @@ def patch_rom(world, rom):
                 rom.write_byte(0x20B0815, item_data[location.item.name]) #Fix text box
             elif location.name == 'Sheik at Temple':
                 prelude_fix = 0x65 - location.item.index
-                rom.write_byte(0xC8060B, prelude_fix)
+                rom.write_byte(0xC805EF, prelude_fix)
                 rom.write_byte(0x2531335, item_data[location.item.name]) #Fix text box
             elif location.name == 'Sheik in Crater':
                 bolero_fix = 0x65 - location.item.index
