@@ -388,8 +388,8 @@ def patch_rom(world, rom):
     rom.write_bytes(0x29BE9CA, [0x00, 0x01, 0x00, 0x02])
 	
     # Speed start of Horseback Archery
-    rom.write_bytes(0x21B2064, [0x00, 0x00, 0x00, 0x02])
-    rom.write_bytes(0x21B20AA, [0x00, 0x01, 0x00, 0x02])
+    #rom.write_bytes(0x21B2064, [0x00, 0x00, 0x00, 0x02])
+    #rom.write_bytes(0x21B20AA, [0x00, 0x01, 0x00, 0x02])
 
     # Speed up Epona escape
     rom.write_bytes(0x1FC8B36, [0x00, 0x2A])
@@ -695,6 +695,8 @@ def patch_rom(world, rom):
                 rom.write_bytes(0xB063FE, [impa_fix_high, impa_fix_low])
                 rom.write_byte(0x2E8E931, item_data[location.item.name]) #Fix text box
             elif location.name == 'Song from Malon':
+                if location.item.name == 'Suns Song':
+                    rom.write_byte(locationaddress, itemid)
                 malon_fix = 0x8C34 - (location.item.index * 4)
                 malon_fix_high = malon_fix >> 8
                 malon_fix_low = malon_fix & 0x00FF
