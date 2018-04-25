@@ -10,7 +10,7 @@ def set_rules(world):
         set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion'))
     elif world.bridge == 'vanilla':
         # require only what vanilla did to form the bridge
-        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Light Arrows'))
+        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Light Arrows') and state.has('Shadow Medallion') and state.has('Spirit Medallion'))
     elif world.bridge == 'dungeons':
         # require all medallions and stones to form the bridge
         set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion') and state.has('Kokiri Emerald') and state.has('Goron Ruby') and state.has('Zora Sapphire'))
@@ -104,6 +104,7 @@ def global_rules(world):
     set_rule(world.get_location('Song from Saria'), lambda state: state.has('Zeldas Letter'))
     set_rule(world.get_entrance('Mountain Summit Fairy'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Mountain Summit Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
+    set_rule(world.get_entrance('Mountain Crater Entrance'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Hyrule Castle Fairy'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Hyrule Castle Fairy Reward'), lambda state: state.has('Zeldas Lullaby') and state.has('Magic Meter'))
     set_rule(world.get_entrance('Ganons Castle Grounds'), lambda state: state.is_adult())
@@ -165,7 +166,7 @@ def global_rules(world):
     set_rule(world.get_location('Diving in the Lab'), lambda state: state.has('Progressive Scale', 2))
     set_rule(world.get_location('Child Fishing'), lambda state: state.has('Kokiri Sword'))
     set_rule(world.get_location('Adult Fishing'), lambda state: state.is_adult() and (state.has('Progressive Hookshot') or state.has('Magic Bean')))
-    set_rule(world.get_location('Lake Hylia Sun'), lambda state: state.has('Water Medallion') and state.has('Bow') and state.is_adult())
+    set_rule(world.get_location('Lake Hylia Sun'), lambda state: (state.has('Water Medallion') or state.has('Progressive Hookshot', 2)) and state.has('Bow') and state.is_adult())
     set_rule(world.get_entrance('Crater Hover Boots'), lambda state: state.is_adult() and state.has('Hover Boots'))
     set_rule(world.get_entrance('Crater Ascent'), lambda state: state.is_adult() and (state.has('Goron Tunic') or (state.has('Progressive Wallet') and state.has('Bomb Bag'))) and (state.has('Hover Boots') or state.has('Hammer')))
     set_rule(world.get_entrance('Crater Scarecrow'), lambda state: state.is_adult() and state.has('Progressive Hookshot', 2) and (state.has('Goron Tunic') or (state.has('Progressive Wallet') and state.has('Bomb Bag'))))
