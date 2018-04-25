@@ -15,7 +15,7 @@ from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
 from Utils import output_path
 
-__version__ = '0.1.0'
+__version__ = '1.0.0'
 
 def main(args, seed=None):
     start = time.clock()
