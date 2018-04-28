@@ -211,7 +211,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Shadow Temple Entrance'), lambda state: state.has('Dins Fire') and state.has('Magic Meter') and state.has('Lens of Truth') and state.is_adult() and (state.has('Hover Boots') or state.has('Progressive Hookshot')))
     set_rule(world.get_entrance('Shadow Temple First Pit'), lambda state: state.has('Hover Boots'))
     set_rule(world.get_entrance('Shadow Temple Bomb Wall'), lambda state: state.has('Bomb Bag') and state.has('Small Key (Shadow Temple)', 1))
-    set_rule(world.get_entrance('Shadow Temple Hookshot Target'), lambda state: state.has('Progressive Hookshot') and state.has('Small Key (Shadow Temple)', 2))
+    set_rule(world.get_entrance('Shadow Temple Hookshot Target'), lambda state: state.has('Progressive Hookshot', 2) and state.has('Small Key (Shadow Temple)', 2))
     set_rule(world.get_entrance('Shadow Temple Boat'), lambda state: state.has('Progressive Strength Upgrade') and state.has('Zeldas Lullaby') and state.has('Small Key (Shadow Temple)', 3))
     set_rule(world.get_location('Shadow Temple Falling Spikes Upper Chest'), lambda state: state.has('Progressive Strength Upgrade'))
     set_rule(world.get_location('Shadow Temple Falling Spikes Switch Chest'), lambda state: state.has('Progressive Strength Upgrade'))
