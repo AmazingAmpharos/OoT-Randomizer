@@ -409,9 +409,7 @@ def global_rules(world):
         forbid_item(world.get_location(location), 'Bombs (20)')
         forbid_item(world.get_location(location), 'Deku Nuts (5)')
         forbid_item(world.get_location(location), 'Deku Nuts (10)')
-        forbid_item(world.get_location(location), 'Deku Shield')
-        forbid_item(world.get_location(location), 'Hylian Shield')
         forbid_item(world.get_location(location), 'Ice Trap')
 
-    for location in ['Bombchu Bowling Bomb Bag', 'Bombchu Bowling Piece of Heart', 'Deku Salesman Woods', 'Deku Salesman Lost Woods Grotto', 'Deku Salesman Hyrule Field Grotto', 'Lake Hylia Sun', 'Underwater Bottle']:
+    for location in ['Bombchu Bowling Bomb Bag', 'Bombchu Bowling Piece of Heart', 'Deku Salesman Woods', 'Deku Salesman Lost Woods Grotto', 'Deku Salesman Hyrule Field Grotto', 'Underwater Bottle']:
         forbid_item(world.get_location(location), 'Ice Trap')

@@ -327,7 +327,7 @@ class CollectionState(object):
         return self.has('Gold Gauntlets') and self.is_adult()
 
     def has_fire_source(self):
-        return (self.has('Dins Fire') or (self.has('Bow') and self.has('Fire Arrows') and self.is_adult()) and self.has('Magic Meter'))
+        return ((self.has('Dins Fire') or (self.has('Bow') and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
 
     def collect(self, item, event=False, location=None):
         if location:
