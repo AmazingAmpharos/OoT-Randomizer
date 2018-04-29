@@ -5,6 +5,7 @@ import os
 import struct
 import random
 
+from Hints import buildHints
 from Utils import local_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
@@ -649,6 +650,11 @@ def patch_rom(world, rom):
                   0x24, 0x01, 0x00, 0x1C, 0x31, 0x4A, 0x00, 0x1C, 0x08, 0x07, 0x88, 0xD9]
     rom.write_bytes(0x3480820, Block_code)
 
+    # Gossip stones resond to stone of agony
+    Block_code = [0x3C, 0x01, 0x80, 0x12, 0x80, 0x21, 0xA6, 0x75, 0x30, 0x21, 0x00, 0x20,
+                  0x03, 0xE0, 0x00, 0x08]
+    rom.write_bytes(0x3480840, Block_code)
+
     # Set up Rainbow Bridge conditions
     if world.bridge == 'medallions':
         Block_code = [0x80, 0xEA, 0x00, 0xA7, 0x24, 0x01, 0x00, 0x3F,
@@ -667,6 +673,12 @@ def patch_rom(world, rom):
 
     if world.open_door_of_time:
         rom.write_bytes(0x34806BC, [0x34, 0xA5, 0x00, 0x08])
+
+    #sets hooks for gossip stone changes
+    if world.hints:
+        rom.write_bytes(0xEE7B84, [0x0C, 0x10, 0x02, 0x10])
+        rom.write_bytes(0xEE7B8C, [0x24, 0x02, 0x00, 0x20])
+        buildHints(world, rom)
 
     # patch items
     for location in world.get_locations():

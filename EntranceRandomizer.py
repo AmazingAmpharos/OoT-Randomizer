@@ -54,6 +54,11 @@ def start():
                              ensure all locations are reachable. This only has an effect
                              on the restrictive algorithm currently.
                              ''', action='store_true')
+    parser.add_argument('--hints', help='''\
+                             Gossip stones provide helpful hints about which items are
+                             in inconvenient locations if the Stone of Agony is in
+                             the player's inventory.
+                             ''', action='store_true')
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')
     args = parser.parse_args()

@@ -62,6 +62,8 @@ def guiMain(args=None):
     dungeonItemsCheckbutton = Checkbutton(checkBoxFrame, text="Place Dungeon Items (Compasses/Maps)", onvalue=0, offvalue=1, variable=dungeonItemsVar)
     beatableOnlyVar = IntVar()
     beatableOnlyCheckbutton = Checkbutton(checkBoxFrame, text="Only ensure seed is beatable, not all items must be reachable", variable=beatableOnlyVar)
+    hintsVar = IntVar()
+    hintsCheckbutton = Checkbutton(checkBoxFrame, text="Gossip Stone Hints with Stone of Agony", variable=hintsVar)
 
     createSpoilerCheckbutton.pack(expand=True, anchor=W)
     suppressRomCheckbutton.pack(expand=True, anchor=W)
@@ -69,6 +71,7 @@ def guiMain(args=None):
     openDoorCheckbutton.pack(expand=True, anchor=W)
     dungeonItemsCheckbutton.pack(expand=True, anchor=W)
     beatableOnlyCheckbutton.pack(expand=True, anchor=W)
+    hintsCheckbutton.pack(expand=True, anchor=W)
 
     fileDialogFrame = Frame(rightHalfFrame)
 
@@ -124,6 +127,7 @@ def guiMain(args=None):
         guiargs.open_door_of_time = bool(openDoorVar.get())
         guiargs.nodungeonitems = bool(dungeonItemsVar.get())
         guiargs.beatableonly = bool(beatableOnlyVar.get())
+        guiargs.hints = bool(hintsVar.get())
         guiargs.rom = romVar.get()
         try:
             if guiargs.count is not None:
@@ -162,6 +166,7 @@ def guiMain(args=None):
         openForestVar.set(int(args.open_forest))
         openDoorVar.set(int(args.open_door_of_time))
         beatableOnlyVar.set(int(args.beatableonly))
+        hintsVar.set(int(args.hints))
         if args.count:
             countVar.set(str(args.count))
         if args.seed:
