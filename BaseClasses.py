@@ -329,6 +329,9 @@ class CollectionState(object):
     def has_fire_source(self):
         return ((self.has('Dins Fire') or (self.has('Bow') and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
 
+    def guarantee_hint(self):
+        return(self.has('Stone of Agony') or not self.world.hints)
+
     def collect(self, item, event=False, location=None):
         if location:
             self.locations_checked.add(location)
