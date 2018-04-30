@@ -77,7 +77,7 @@ as short as possible to make as much of your time with this randomizer as possib
 that person, I'm sorry I guess?
 
 A few bugs or other undesirable behaviors in the original game have been fixed. Of note, obtaining the Poacher's Saw will no longer prevent the player from obtaining
-the reward in the Deku Theater for showing the Mask of Truth, and becoming and adult will not automatically equip the child with the Kokiri Sword. Sheik will no longer
+the reward in the Deku Theater for showing the Mask of Truth, and becoming an adult will not automatically equip the child with the Kokiri Sword. Sheik will no longer
 prevent the player from returning to childhood before obtaining the Forest Medallion. Princess Ruto will never disappear from Jabu Jabu's Belly, and the condition for
 the Castle Courtyard being sealed off is now completing the events within as opposed to seeing the Ocarina of Time be thrown into the moat.
 
@@ -98,7 +98,7 @@ SOLD OUT item in the inventory. The former is necessary to accomodate there no l
 to deal with an unfortunate issue in the original game in which obtaining certain combinations of items could make it impossible to select every item in your inventory
 in the menu. The SOLD OUT will be replaced properly with the Lens of Truth when it is found.
 
-# Quirks to know
+# Quirks to Know
 
 While all the details of gameplay can't be detailed here, I want to inform you of a few non-obvious game sequences that are likely to get you stuck and one little
 glitch we can do nothing about.
