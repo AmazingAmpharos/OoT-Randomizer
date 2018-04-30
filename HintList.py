@@ -71,7 +71,7 @@ hintTable = {'Hammer':                                                (" the dra
              'Boomerang':                                             (" a banana.", 'item'),
              'Fire Arrows':                                           (" the furnace firearm.", 'item'),
              'Ocarina of Time':                                       (" blue flute.", 'item'),
-             'Bottle':                                                (" fairy prison.", 'item'),
+             'Bottle':                                                (" a fairy prison.", 'item'),
              'Bottle with Letter':                                    (" a call for help.", 'item'),
              'Bottle with Milk':                                      (" vitamin D.", 'item'),
              'Progressive Scale':                                     (" Zora Flippers.", 'item'),
@@ -138,13 +138,12 @@ hintTable = {'Hammer':                                                (" the dra
              'Chest Above King Dodongo':                              ("Above the Infernal Dinosaur&is", 'location'),
              'Forest Temple Floormaster Chest':                       ("Behind forest shadows&is", 'location'),
              'Fire Temple Scarecrow Chest':                           ("In the Fire Temple, Pierre&hides", 'location'),
-             'Fire Temple Megaton Hammer Chest':                      ("A gilded chest in the crater&holds", 'location'),
+             'Fire Temple Megaton Hammer Chest':                      ("Topmost chest in the crater&holds", 'location'),
              'Water Temple River Chest':                              ("Under the lake past currents&hides", 'location'),
              'Water Temple Boss Key Chest':                           ("Under the lake, the gilded chest&is", 'location'),
              'Gerudo Training Grounds Underwater Silver Rupee Chest': ("They say training underwater&grants", 'location'),
              'Gerudo Training Grounds Maze Path Final Chest':         ("Past all the locked doors&is", 'location'),
              'Bottom of the Well Defeat Boss':                        ("The say Dead Hand&holds", 'location'),
-             'Bottom of the Well Underwater Left Chest':              ("A watery prison holds", 'location'),
              'Silver Gauntlets Chest':                                ("Upon the Colossus's southern edge&is", 'location'),
              'Mirror Shield Chest':                                   ("Upon the Colossus's northern edge&is", 'location'),
              'Shadow Temple Hidden Floormaster Chest':                ("A shadow in the maze&hides", 'location'),
@@ -184,21 +183,16 @@ hintTable = {'Hammer':                                                (" the dra
              '1025':                                                  ("What happened to Sheik?", 'junkHint'),
              '1026':                                                  ("L2P @.", 'junkHint'),
              '1027':                                                  ("I heard @ isn't&very good at Zelda.", 'junkHint'),
-             '1028':                                                  ("I'm Lunk from Pennsylvania.", 'junkHint')}
-
-                        
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-                     
-                     
-                                                    
+             '1028':                                                  ("I'm Lunk from Pennsylvania.", 'junkHint'),
+             '1029':                                                  ("I bet you'd like to&have more bombs.", 'junkHint'),
+             '1030':                                                  ("When all else fails&use Fire.", 'junkHint'),
+             '1031':                                                  ("Here's a hint @.&Don't be bad.", 'junkHint'),
+             '1032':                                                  ("Game Over.&Return of Ganon.", 'junkHint'),
+             '1033':                                                  ("May the way of the Hero&lead to the Triforce.", 'junkHint'),
+             '1034':                                                  ("Can't find an item?&Scan an Amiibo.", 'junkHint'),
+             '1035':                                                  ("They say this game has&just a few glitches.", 'junkHint'),
+             '1036':                                                  ("BRRING BRRING This is Ulrira.&Wrong number?", 'junkHint'),
+             '1037':                                                  ("Tingle Tingle Kooloo Limpah", 'junkHint'),
+             '1038':                                                  ("L is real 2041", 'junkHint'),
+             '1039':                                                  ("They say that Ganondorf will&appear in the next Mario Tennis", 'junkHint'),
+             '1040':                                                  ("Medigoron sells the earliest&Breath of the Wild demo.", 'junkHint')}
