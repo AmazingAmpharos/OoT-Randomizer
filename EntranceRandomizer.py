@@ -60,6 +60,7 @@ def start():
                              the player's inventory.
                              ''', action='store_true')
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
+    parser.add_argument('--compress_rom', help='Create a compressed version of the output rom file.', action='store_true')
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')
     args = parser.parse_args()
 

@@ -99,7 +99,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Goron City from Woods'), lambda state: state.can_blast() and (world.open_forest or state.has('Kokiri Emerald')))
     set_rule(world.get_entrance('Dodongos Cavern Rocks'), lambda state: state.can_blast() or state.has('Progressive Strength Upgrade') or state.is_adult())
     set_rule(world.get_entrance('Dodongos Cavern Lobby'), lambda state: state.can_blast() or state.has('Progressive Strength Upgrade'))
-    set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: state.has('Slingshot') or (state.has('Bow') and state.is_adult()))
+    set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: state.has('Slingshot') or ((state.has('Bow') or state.has('Hover Boots')) and state.is_adult()))
     set_rule(world.get_entrance('Dodongos Cavern Bomb Drop'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Song from Saria'), lambda state: state.has('Zeldas Letter'))
     set_rule(world.get_entrance('Mountain Summit Fairy'), lambda state: state.has('Bomb Bag'))

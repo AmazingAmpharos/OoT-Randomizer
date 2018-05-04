@@ -54,6 +54,8 @@ def guiMain(args=None):
     createSpoilerCheckbutton = Checkbutton(checkBoxFrame, text="Create Spoiler Log", variable=createSpoilerVar)
     suppressRomVar = IntVar()
     suppressRomCheckbutton = Checkbutton(checkBoxFrame, text="Do not create patched Rom", variable=suppressRomVar)
+    compressRomVar = IntVar()
+    compressRomCheckbutton = Checkbutton(checkBoxFrame, text="Compress patched Rom", variable=compressRomVar)
     openForestVar = IntVar()
     openForestCheckbutton = Checkbutton(checkBoxFrame, text="Open Forest", variable=openForestVar)
     openDoorVar = IntVar()
@@ -67,6 +69,7 @@ def guiMain(args=None):
 
     createSpoilerCheckbutton.pack(expand=True, anchor=W)
     suppressRomCheckbutton.pack(expand=True, anchor=W)
+    compressRomCheckbutton.pack(expand=True, anchor=W)
     openForestCheckbutton.pack(expand=True, anchor=W)
     openDoorCheckbutton.pack(expand=True, anchor=W)
     dungeonItemsCheckbutton.pack(expand=True, anchor=W)
@@ -123,6 +126,7 @@ def guiMain(args=None):
         guiargs.bridge = bridgeVar.get()
         guiargs.create_spoiler = bool(createSpoilerVar.get())
         guiargs.suppress_rom = bool(suppressRomVar.get())
+        guiargs.compress_rom = bool(compressRomVar.get())
         guiargs.open_forest = bool(openForestVar.get())
         guiargs.open_door_of_time = bool(openDoorVar.get())
         guiargs.nodungeonitems = bool(dungeonItemsVar.get())
@@ -161,6 +165,7 @@ def guiMain(args=None):
         # load values from commandline args
         createSpoilerVar.set(int(args.create_spoiler))
         suppressRomVar.set(int(args.suppress_rom))
+        compressRomVar.set(int(args.compress_rom))
         if args.nodungeonitems:
             dungeonItemsVar.set(int(not args.nodungeonitems))
         openForestVar.set(int(args.open_forest))

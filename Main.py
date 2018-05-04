@@ -2,7 +2,9 @@ from collections import OrderedDict
 from itertools import zip_longest
 import json
 import logging
+import platform
 import random
+import subprocess
 import time
 
 from BaseClasses import World, CollectionState, Item
@@ -71,6 +73,16 @@ def main(args, seed=None):
         rom = LocalRom(args.rom)
         patch_rom(world, rom)
         rom.write_to_file(output_path('%s.z64' % outfilebase))
+        if args.compress_rom:
+            logger.info('Compressing ROM.')
+            if platform.system() == 'Windows':
+                subprocess.call(["Compress\Compress.exe", ('%s.z64' % outfilebase)])
+            elif platform.system() == 'Linux':
+                subprocess.call(["Compress\Compress", ('%s.z64' % outfilebase)])
+            elif platform.system() == 'Darwin':
+                subprocess.call(["Compress\Compress.out", ('%s.z64' % outfilebase)])
+            else:
+                logger.info('OS not supported for compression')
 
     if args.create_spoiler:
         world.spoiler.to_file(output_path('%s_Spoiler.txt' % outfilebase))
