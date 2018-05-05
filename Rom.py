@@ -23,12 +23,12 @@ class LocalRom(object):
             if platform.system() == 'Windows':
                 subprocess.call(["Decompress\Decompress.exe", file])
             elif platform.system() == 'Linux':
-                subprocess.call(["Decompress\Decompress", file])
+                subprocess.call(["Decompress/Decompress", file])
             elif platform.system() == 'Darwin':
-                subprocess.call(["Decompress\Decompress.out", file])
+                subprocess.call(["Decompress/Decompress.out", file])
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
-            with open((file_name[0] + "-decomp" + file_name[1]), 'rb') as stream:
+            with open((file_name[0] + "-decomp.z64"), 'rb') as stream:
                 self.buffer = read_rom(stream)
         # extend to 64MB
         self.buffer.extend(bytearray([0x00] * (67108864 - len(self.buffer))))
