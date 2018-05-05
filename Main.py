@@ -78,9 +78,9 @@ def main(args, seed=None):
             if platform.system() == 'Windows':
                 subprocess.call(["Compress\Compress.exe", ('%s.z64' % outfilebase)])
             elif platform.system() == 'Linux':
-                subprocess.call(["Compress\Compress", ('%s.z64' % outfilebase)])
+                subprocess.call(["Compress/Compress", ('%s.z64' % outfilebase)])
             elif platform.system() == 'Darwin':
-                subprocess.call(["Compress\Compress.out", ('%s.z64' % outfilebase)])
+                subprocess.call(["Compress/Compress.out", ('%s.z64' % outfilebase)])
             else:
                 logger.info('OS not supported for compression')
 
