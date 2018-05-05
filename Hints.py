@@ -39,7 +39,7 @@ def buildHints(world, rom):
     while locationData:
         currentLoc = locationData.pop(0)
         Block_code = getBytes((getHint(currentLoc.name).text))
-        if currentLoc.item.type == 'Map' or currentLoc.item.type == 'Compass' or currentLoc.item.type == 'Boss Key' or currentLoc.item.type == 'Small Key':
+        if currentLoc.item.type == 'Map' or currentLoc.item.type == 'Compass' or currentLoc.item.type == 'BossKey' or currentLoc.item.type == 'SmallKey':
             Block_code.extend(getBytes((getHint(currentLoc.item.type).text)))
         else:
             Block_code.extend(getBytes((getHint(currentLoc.item.name).text)))
