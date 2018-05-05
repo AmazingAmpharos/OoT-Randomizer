@@ -10,9 +10,10 @@ from Utils import local_path
 
 #builds out general hints based on location and whether an item is required or not
 def buildHints(world, rom):
-    stoneAddresses = [0x938E4C, 0x938E90, 0x938F0C, 0x938F54, 0x938F9C, 0x939000, 0x939058, 0x9390D0, 0x939138, 0x93919C, 0x9391E0,
-                      0x939248, 0x9392B0, 0x939308, 0x939378, 0x9393E8, 0x93943C, 0x939488, 0x9394FC, 0x939554, 0x939590, 0x9395D8,
-                      0x939630, 0x9396A0, 0x9396EC, 0x939758, 0x9397DC, 0x939834, 0x93988C, 0x9398DC, 0x939954, 0x939994] #address for gossip stone text boxes, byte limit is 60
+    stoneAddresses = [0x938e4c, 0x938ea7, 0x938f02, 0x938f5d, 0x938fb8, 0x939013, 0x93906e, 0x9390c9, 0x939124, 0x93917f,
+                      0x9391da, 0x939235, 0x939290, 0x9392eb, 0x939346, 0x9393a1, 0x9393fc, 0x939457, 0x9394b2, 0x93950d,
+                      0x939568, 0x9395c3, 0x93961e, 0x939679, 0x9396d4, 0x93972f, 0x93978a, 0x9397e5, 0x939840, 0x93989b,
+                      0x9398f6, 0x939951] #address for gossip stone text boxes, byte limit is 92
 
 
     alwaysLocations = getHintGroup('alwaysLocation')#These location will always have a hint somewhere in the world.
@@ -44,10 +45,11 @@ def buildHints(world, rom):
             Block_code.extend(getBytes((getHint(currentLoc.item.name).text)))
         endText(Block_code)
 
-        if len(Block_code) > 60:
+        if len(Block_code) > 92:
             print('Too many characters in hint')
             Block_code = getBytes("I am Error.")
             Block_code.extend(getBytes(currentLoc.name))
+            Block_code.extend(getBytes('&'))
             Block_code.extend(getBytes(currentLoc.item.name))
             
         rom.write_bytes(stoneAddresses.pop(0), Block_code)

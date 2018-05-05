@@ -23,12 +23,12 @@ class LocalRom(object):
             if platform.system() == 'Windows':
                 subprocess.call(["Decompress\Decompress.exe", file])
             elif platform.system() == 'Linux':
-                subprocess.call(["Decompress/Decompress", file])
+                subprocess.call(["Decompress\Decompress", file])
             elif platform.system() == 'Darwin':
-                subprocess.call(["Decompress/Decompress.out", file])
+                subprocess.call(["Decompress\Decompress.out", file])
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
-            with open((file_name[0] + "-decomp.z64"), 'rb') as stream:
+            with open((file_name[0] + "-decomp" + file_name[1]), 'rb') as stream:
                 self.buffer = read_rom(stream)
         # extend to 64MB
         self.buffer.extend(bytearray([0x00] * (67108864 - len(self.buffer))))
@@ -518,10 +518,10 @@ def patch_rom(world, rom):
     rom.write_bytes(0xBB77B4, [0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0xBB7BFC, [0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0xBB7BA0, [0x00, 0x00, 0x00, 0x00])
-    #rom.write_bytes(0xBB7C58, [0x08, 0x10, 0x02, 0x34])
-    #rom.write_bytes(0xBB7890, [0x08, 0x10, 0x02, 0x3C])
-    #rom.write_bytes(0xBB7950, [0x08, 0x10, 0x02, 0x44])
-    #rom.write_bytes(0xBB7C3C, [0x08, 0x10, 0x02, 0x4C])
+    rom.write_bytes(0xBB7C58, [0x08, 0x10, 0x02, 0x34])
+    rom.write_bytes(0xBB7890, [0x08, 0x10, 0x02, 0x3C])
+    rom.write_bytes(0xBB7950, [0x08, 0x10, 0x02, 0x44])
+    rom.write_bytes(0xBB7C3C, [0x08, 0x10, 0x02, 0x4C])
 
     # Progressive Items (Text)
     Block_code = [0x90, 0x45, 0x00, 0x03, 0x31, 0x4A, 0x00, 0x00, 0x25, 0x4A, 0x00, 0x4F,
@@ -707,8 +707,16 @@ def patch_rom(world, rom):
     if world.hints:
         rom.write_bytes(0xEE7B84, [0x0C, 0x10, 0x02, 0x10])
         rom.write_bytes(0xEE7B8C, [0x24, 0x02, 0x00, 0x20])
+        address = 0xB85B11
+        offset = 0xBE4C
+        for i in range(0,33):
+                offset_high = offset >> 8
+                offset_low = offset & 0x00FF
+                rom.write_bytes(address, [0x00, offset_high, offset_low])
+                offset = offset + 0x5B
+                address = address + 0x08
         buildHints(world, rom)
-
+        
     # patch items
     for location in world.get_locations():
         itemid = location.item.code
