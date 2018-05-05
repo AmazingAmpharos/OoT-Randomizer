@@ -716,7 +716,7 @@ def patch_rom(world, rom):
                 offset = offset + 0x5B
                 address = address + 0x08
         buildHints(world, rom)
-        
+
     # patch items
     for location in world.get_locations():
         itemid = location.item.code
