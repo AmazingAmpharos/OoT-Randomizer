@@ -1,21 +1,9 @@
 Todo List:
 
-Investigate remaining text-box speed-up issues better. Currently it looks like we may have to live with tiny amounts of slow text.
-
-Figure out why Wii VC is stupid. Convince someone with an everdrive to test for us.
-
-Make progressives work with great fairies. May be deferred to post-1.0.
-
-Deferred to post-1.0:
-
-Figure out a good way to add Biggoron Sword to the shuffle.
-
-Recode great fairies substantially for the following ideal behavior (note: Likely post 1.0, seems VERY difficult):
-
--Three of the six great fairies (selected randomly) give items. Zelda's Lullaby is required to activate the item get scene but a magic meter is no longer required.
-
--Two of the six great fairies upgrade magic. The first the player encounters is the normal magic meter and the second is double magic in a progressive fashion.
-
--The last great fairy doubles Link's life meter, again with no magic meter requirement.
-
--This will require randomizing the items, randomizing which fairy has which behavior, removing magic meter requirements, and doing some substantial tweaking of the magic granting fairies to allow the meters to be progressive. This will, however, give significantly better play experience as the player can just get things from the fairy fountains reliably upon going inside with Lullaby, and having two chances to get a magic meter will significantly reduce the pain of hunting that down.
+-Update Compressor to properly handle all rando ROMs. Grant Man is already working on this.
+-Integrate and finish the work for randomizing Great Fairies and shortening their cutscenes. Junglechief has a lot of work done here already.
+-Fix the Deku Sticks on B issue by preventing the swordless flag from ever being removed. Target areas are when equipping swords and when mounting a horse without the Bow.
+-Randomize Biggoron Sword. Right now the plan is to make one of the get item entries obsoleted by the progressive item code into a second Giant's Knife/Biggoron Sword, randomize that new item into the world, and use a hook similar to the hook that lets NPCs give shields at both NPC and shield point to set the Biggoron Sword flag when that item is found. This will allow Medigoron to still sell Giant's Knife and for a randomized Biggoron Sword to exist.
+-Randomize trading sequence entry point. First I need to do substantial mechanical testing with how every trading quest item in chests works. Also need to look into what it takes to randomize Anju's item and handle that.
+-Allow Great Fairies and Zelda to have progressive items. This will involve finding a new place to hook the progressive code and possibly duplicating the item part of it into the 0xA00 block of the rando code block.
+-Fix more bugs as they're inevitably found, of course.
