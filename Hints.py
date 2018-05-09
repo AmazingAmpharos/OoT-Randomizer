@@ -13,7 +13,7 @@ def buildHints(world, rom):
     stoneAddresses = [0x938e4c, 0x938ea7, 0x938f02, 0x938f5d, 0x938fb8, 0x939013, 0x93906e, 0x9390c9, 0x939124, 0x93917f,
                       0x9391da, 0x939235, 0x939290, 0x9392eb, 0x939346, 0x9393a1, 0x9393fc, 0x939457, 0x9394b2, 0x93950d,
                       0x939568, 0x9395c3, 0x93961e, 0x939679, 0x9396d4, 0x93972f, 0x93978a, 0x9397e5, 0x939840, 0x93989b,
-                      0x9398f6, 0x939951] #address for gossip stone text boxes, byte limit is 92
+                      0x9398f6, 0x939951] #address for gossip stone text boxes, byte limit is 91
 
 
     alwaysLocations = getHintGroup('alwaysLocation')#These location will always have a hint somewhere in the world.
@@ -45,7 +45,7 @@ def buildHints(world, rom):
             Block_code.extend(getBytes((getHint(currentLoc.item.name).text)))
         endText(Block_code)
 
-        if len(Block_code) > 92:
+        if len(Block_code) > 91:
             print('Too many characters in hint')
             Block_code = getBytes("I am Error.")
             Block_code.extend(getBytes(currentLoc.name))
