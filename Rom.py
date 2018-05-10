@@ -967,6 +967,9 @@ def patch_rom(world, rom):
             rom.write_byte(locationaddress, location.item.index)
             if secondaryaddress is not None:
                 rom.write_byte(secondaryaddress, location.item.index)
+        elif location.type == 'Boss':
+            itemid = itemid & 0x00FF
+            rom.write_bytes(locationaddress, [0x00, itemid])
         else:
             locationdefault = location.default & 0xF01F
             itemid = itemid | locationdefault
