@@ -76,8 +76,6 @@ def generate_itempool(world):
     world.get_location('Ganons Castle Spirit Trial Clear').event = True
     world.push_item('Ganons Castle Light Trial Clear', ItemFactory('Light Trial Clear'), False)
     world.get_location('Ganons Castle Light Trial Clear').event = True
-    world.push_item('Mido Chest Top Left', ItemFactory('Biggoron Sword'), False)
-    world.get_location('Mido Chest Top Left').event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world.place_dungeon_items)
