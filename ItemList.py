@@ -8,7 +8,7 @@ from Fill import FillError, fill_restrictive
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
 
-alwaysitems = (['Kokiri Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Fire Arrows', 'Ice Arrows', 'Light Arrows', 'Dins Fire', 'Farores Wind', 'Nayrus Love', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + ['Ice Trap'] * 6 +
+alwaysitems = (['Kokiri Sword', 'Biggoron Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Fire Arrows', 'Ice Arrows', 'Light Arrows', 'Dins Fire', 'Farores Wind', 'Nayrus Love', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + ['Ice Trap'] * 6 +
               ['Progressive Strength Upgrade'] * 3 + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 16 + ['Recovery Heart'] * 11 + ['Rupees (5)'] * 13 + ['Rupees (20)'] * 2 + ['Rupees (50)'] * 7 + ['Rupees (200)'] * 5 + ['Bow'] * 3 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle'] * 2 + ['Bottle with Letter'] + ['Bottle with Milk'] +
               ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] + ['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'] + ['Arrows (5)'] + ['Arrows (10)'] * 6 + ['Arrows (30)'] * 6 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2)
 notmapcompass = ['Rupees (5)'] * 20
@@ -18,6 +18,7 @@ skulltulla_locations = (['GS1', 'GS2', 'GS3', 'GS4', 'GS5', 'GS6', 'GS7', 'GS8',
                        ['GS41', 'GS42', 'GS43', 'GS44', 'GS45', 'GS46', 'GS47', 'GS48', 'GS49', 'GS50', 'GS51', 'GS52', 'GS53', 'GS54', 'GS55', 'GS56', 'GS57', 'GS58', 'GS59', 'GS60'] +
                        ['GS61', 'GS62', 'GS63', 'GS64', 'GS65', 'GS66', 'GS67', 'GS68', 'GS69', 'GS70', 'GS71', 'GS72', 'GS73', 'GS74', 'GS75', 'GS76', 'GS77', 'GS78', 'GS79', 'GS80'] +
                        ['GS81', 'GS82', 'GS83', 'GS84', 'GS85', 'GS86', 'GS87', 'GS88', 'GS89', 'GS90', 'GS91', 'GS92', 'GS93', 'GS94', 'GS95', 'GS96', 'GS97', 'GS98', 'GS99', 'GS100'])
+tradeitems = ['Pocket Egg', 'Pocket Cucco', 'Cojiro', 'Odd Mushroom', 'Poachers Saw', 'Broken Sword', 'Prescription', 'Eyeball Frog', 'Eyedrops', 'Claim Check']
 
 #total_items_to_place = 5
 
@@ -75,6 +76,8 @@ def generate_itempool(world):
     world.get_location('Ganons Castle Spirit Trial Clear').event = True
     world.push_item('Ganons Castle Light Trial Clear', ItemFactory('Light Trial Clear'), False)
     world.get_location('Ganons Castle Light Trial Clear').event = True
+    world.push_item('Mido Chest Top Left', ItemFactory('Biggoron Sword'), False)
+    world.get_location('Mido Chest Top Left').event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world.place_dungeon_items)
@@ -92,6 +95,8 @@ def get_pool_core(dungeon_items):
     if not dungeon_items:
         pool.extend(notmapcompass)
     pool.extend(alwaysitems)
+    tradeitem = random.choice(tradeitems)
+    pool.append(tradeitem)
 
     return (pool, placed_items)
 

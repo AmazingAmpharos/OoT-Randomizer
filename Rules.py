@@ -65,6 +65,7 @@ def global_rules(world):
     set_rule(world.get_location('Target in Woods'), lambda state: state.has('Slingshot'))
     set_rule(world.get_location('Deku Theater Skull Mask'), lambda state: state.has('Zeldas Letter'))
     set_rule(world.get_location('Deku Theater Mask of Truth'), lambda state: state.has('Zeldas Letter') and state.has('Sarias Song') and state.has('Kokiri Emerald') and state.has('Goron Ruby') and state.has('Zora Sapphire') and state.guarantee_hint()) #Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man.
+    set_rule(world.get_location('Anju as Adult'), lambda state: state.is_adult())
     set_rule(world.get_location('Man on Roof'), lambda state: state.has('Progressive Hookshot') and state.is_adult())
     set_rule(world.get_location('10 Gold Skulltulla Reward'), lambda state: state.has('Gold Skulltulla Token', 10))
     set_rule(world.get_location('20 Gold Skulltulla Reward'), lambda state: state.has('Gold Skulltulla Token', 20))
@@ -90,6 +91,7 @@ def global_rules(world):
     set_rule(world.get_location('Bottom of the Well Behind Right Grate'), lambda state: state.has('Small Key (Bottom of the Well)', 2) and state.has('Lens of Truth') and state.has('Magic Meter'))
     set_rule(world.get_entrance('Death Mountain Entrance'), lambda state: state.has('Zeldas Letter') or state.is_adult())
     set_rule(world.get_location('Death Mountain Bombable Chest'), lambda state: state.can_blast())
+    set_rule(world.get_location('Biggoron'), lambda state: state.can_blast() and state.is_adult() and state.can_finish_adult_trades())
     set_rule(world.get_location('Goron City Leftmost Maze Chest'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade', 2) or state.has('Hammer')))
     set_rule(world.get_location('Goron City Left Maze Chest'), lambda state: state.can_blast() or (state.has('Progressive Strength Upgrade', 2) and state.is_adult()))
     set_rule(world.get_location('Goron City Right Maze Chest'), lambda state: state.can_blast() or (state.has('Progressive Strength Upgrade', 2) and state.is_adult()))
@@ -295,6 +297,7 @@ def global_rules(world):
     set_rule(world.get_location('Ganons Castle Light Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Progressive Hookshot') and state.has('Light Arrows') and state.has('Small Key (Ganons Castle)', 2))
     set_rule(world.get_location('Ganons Castle Light Trail Invisible Enemies Chest'), lambda state: state.has('Magic Meter') and state.has('Lens of Truth'))
     set_rule(world.get_location('Ganons Castle Light Trial Lullaby Chest'), lambda state: state.has('Zeldas Lullaby') and state.has('Small Key (Ganons Castle)', 1))
+    set_rule(world.get_location('Ganon'), lambda state: state.has('Boss Key (Ganons Castle)'))
     set_rule(world.get_entrance('Forest Generic Grotto'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Forest Sales Grotto'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Front of Meadow Grotto'), lambda state: state.can_blast())
@@ -397,9 +400,10 @@ def global_rules(world):
         forbid_item(world.get_location(location), 'Bomb Bag')
         forbid_item(world.get_location(location), 'Deku Stick Capacity')
         forbid_item(world.get_location(location), 'Deku Nut Capacity')
+        forbid_item(world.get_location(location), 'Biggoron Sword')
         forbid_item(world.get_location(location), 'Ice Trap')
 
-    for location in ['Darunias Joy', 'Diving Minigame', 'Child Fishing', 'Adult Fishing', 'Diving in the Lab', 'Link the Goron', 'King Zora Thawed', 'Dog Lady', 'Skull Kid', 'Ocarina Memory Game', '10 Gold Skulltulla Reward', '20 Gold Skulltulla Reward', '30 Gold Skulltulla Reward', '40 Gold Skulltulla Reward', '50 Gold Skulltulla Reward', 'Man on Roof', 'Frog Ocarina Game', 'Frogs in the Rain', 'Horseback Archery 1000 Points', 'Horseback Archery 1500 Points', 'Child Shooting Gallery', 'Adult Shooting Gallery', 'Target in Woods', 'Deku Theater Skull Mask', 'Deku Theater Mask of Truth', 'Anjus Chickens', 'Talons Chickens', '10 Big Poes', 'Rolling Goron as Child']:
+    for location in ['Darunias Joy', 'Diving Minigame', 'Child Fishing', 'Adult Fishing', 'Diving in the Lab', 'Link the Goron', 'King Zora Thawed', 'Dog Lady', 'Skull Kid', 'Ocarina Memory Game', '10 Gold Skulltulla Reward', '20 Gold Skulltulla Reward', '30 Gold Skulltulla Reward', '40 Gold Skulltulla Reward', '50 Gold Skulltulla Reward', 'Man on Roof', 'Frog Ocarina Game', 'Frogs in the Rain', 'Horseback Archery 1000 Points', 'Horseback Archery 1500 Points', 'Child Shooting Gallery', 'Adult Shooting Gallery', 'Target in Woods', 'Deku Theater Skull Mask', 'Deku Theater Mask of Truth', 'Anju as Adult', 'Biggoron', 'Anjus Chickens', 'Talons Chickens', '10 Big Poes', 'Rolling Goron as Child']:
         forbid_item(world.get_location(location), 'Recovery Heart')
         forbid_item(world.get_location(location), 'Arrows (5)')
         forbid_item(world.get_location(location), 'Arrows (10)')

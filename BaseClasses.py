@@ -81,7 +81,7 @@ class World(object):
             soft_collect(item)
         from Items import ItemFactory
         if keys:
-            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)', 'Boss Key (Spirit Temple)'] + ['Small Key (Bottom of the Well)'] * 2 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 4 + ['Small Key (Gerudo Training Grounds)'] * 8 + ['Small Key (Spirit Temple)'] * 5 + ['Small Key (Ganons Castle)'] * 2):
+            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)', 'Boss Key (Spirit Temple)', 'Boss Key (Ganons Castle)'] + ['Small Key (Bottom of the Well)'] * 2 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 4 + ['Small Key (Gerudo Training Grounds)'] * 8 + ['Small Key (Spirit Temple)'] * 5 + ['Small Key (Ganons Castle)'] * 2):
                 soft_collect(item)
         ret.sweep_for_events()
         ret.clear_cached_unreachable()
@@ -304,6 +304,11 @@ class CollectionState(object):
 
     def can_lift_rocks(self):
         return (self.has('Silver Gauntlets') or self.has('Gold Gauntlets')) and self.is_adult()
+
+    def can_finish_adult_trades(self):
+        zora_thawed = self.has_bottle() and self.has('Zeldas Lullaby') and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
+        carpenter_access = self.has('Epona') or self.has('Progressive Hookshot', 2)
+        return (self.has('Claim Check') or ((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))
 
     def has_bottle(self):
         return (self.has('Bottle') or self.has('Bottle with Milk'))
