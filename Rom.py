@@ -549,7 +549,7 @@ def patch_rom(world, rom):
 
     # Fix Biggoron to check a different flag.
     rom.write_byte(0xED329B, 0x72)
-    rom.write_byte(0xED43E4, 0x72)
+    rom.write_byte(0xED43E7, 0x72)
     rom.write_bytes(0xED337C, [0x24, 0x06, 0x00, 0x01])
     rom.write_bytes(0xED3388, [0xA3, 0x06, 0xA6, 0x42])
     rom.write_bytes(0xED6574, [0x00, 0x00, 0x00, 0x00])
@@ -982,7 +982,4 @@ def patch_rom(world, rom):
                 rom.write_bytes(exit.addresses[1], [target1high, target1low])
                 rom.write_bytes(exit.addresses[2], [target1high, target1low])
                 rom.write_bytes(exit.target[1], [target2high, target2low])
-                print(exit.name)
-                print(exit.target)
-                print(exit.addresses)
     return rom
