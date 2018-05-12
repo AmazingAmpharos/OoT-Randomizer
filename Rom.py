@@ -549,6 +549,7 @@ def patch_rom(world, rom):
 
     # Fix Biggoron to check a different flag.
     rom.write_byte(0xED329B, 0x72)
+    rom.write_byte(0xED43E4, 0x72)
     rom.write_bytes(0xED337C, [0x24, 0x06, 0x00, 0x01])
     rom.write_bytes(0xED3388, [0xA3, 0x06, 0xA6, 0x42])
     rom.write_bytes(0xED6574, [0x00, 0x00, 0x00, 0x00])
@@ -665,6 +666,12 @@ def patch_rom(world, rom):
     rom.write_bytes(0xBB7BFC, [0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0xBB7C3C, [0x0C, 0x10, 0x02, 0x4C, 0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0xBB7C58, [0x0C, 0x10, 0x02, 0x34, 0x00, 0x00, 0x00, 0x00])
+
+    # Sticks on B fix
+    rom.write_bytes(0xAE4B14, [0x0C, 0x10, 0x02, 0x74])
+    Block_code = [0x90, 0xCE, 0x13, 0xE2, 0x15, 0xC0, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00,
+                  0x25, 0xCE, 0x00, 0xFF, 0xA0, 0xC8, 0x0F, 0x33, 0x03, 0xE0, 0x00, 0x08]
+    rom.write_bytes(0x34809D0, Block_code)
 
     # Progressive Items (Text)
     Block_code = [0x90, 0x45, 0x00, 0x03, 0x31, 0x4A, 0x00, 0x00, 0x25, 0x4A, 0x00, 0x4F,
@@ -963,4 +970,19 @@ def patch_rom(world, rom):
             if secondaryaddress is not None:
                 rom.write_bytes(secondaryaddress, [itemidhigh, itemidlow])
 
+    # patch fairy entrances
+    for region in world.regions:
+        for exit in region.exits:
+            if exit.target is not None:
+                target1high = exit.target[0] >> 8
+                target1low = exit.target[0] & 0x00FF
+                target2high = exit.addresses[3] >> 8
+                target2low = exit.addresses[3] & 0x00FF
+                rom.write_bytes(exit.addresses[0], [target1high, target1low])
+                rom.write_bytes(exit.addresses[1], [target1high, target1low])
+                rom.write_bytes(exit.addresses[2], [target1high, target1low])
+                rom.write_bytes(exit.target[1], [target2high, target2low])
+                print(exit.name)
+                print(exit.target)
+                print(exit.addresses)
     return rom

@@ -102,13 +102,15 @@ def global_rules(world):
     set_rule(world.get_entrance('Dodongos Cavern Rocks'), lambda state: state.can_blast() or state.has('Progressive Strength Upgrade') or state.is_adult())
     set_rule(world.get_entrance('Dodongos Cavern Lobby'), lambda state: state.can_blast() or state.has('Progressive Strength Upgrade'))
     set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: state.has('Slingshot') or ((state.has('Bow') or state.has('Hover Boots')) and state.is_adult()))
+    set_rule(world.get_location('Dodongos Cavern End of Bridge Chest'), lambda state: state.has('Bomb Bag') or ((state.has('Bow') or state.has('Hover Boots')) and state.is_adult() and state.has('Hammer')))
     set_rule(world.get_entrance('Dodongos Cavern Bomb Drop'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Song from Saria'), lambda state: state.has('Zeldas Letter'))
     set_rule(world.get_entrance('Mountain Summit Fairy'), lambda state: state.has('Bomb Bag'))
+    set_rule(world.get_location('Crater Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_location('Mountain Summit Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_entrance('Mountain Crater Entrance'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Hyrule Castle Fairy'), lambda state: state.has('Bomb Bag'))
-    set_rule(world.get_location('Hyrule Castle Fairy Reward'), lambda state: state.has('Zeldas Lullaby') and state.has('Magic Meter'))
+    set_rule(world.get_location('Hyrule Castle Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_entrance('Ganons Castle Grounds'), lambda state: state.is_adult())
     set_rule(world.get_entrance('Ganons Castle Fairy'), lambda state: state.has('Progressive Strength Upgrade', 3))
     set_rule(world.get_location('Bombchu Bowling Bomb Bag'), lambda state: state.has('Bomb Bag'))
@@ -132,7 +134,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Zoras Fountain Adult Access'), lambda state: state.can_reach('Zoras Fountain'))
     set_rule(world.get_entrance('Jabu Jabus Belly'), lambda state: state.has_bottle())
     set_rule(world.get_entrance('Zoras Fountain Fairy'), lambda state: state.has('Bomb Bag'))
-    set_rule(world.get_location('Zoras Fountain Fairy Reward'), lambda state: state.has('Zeldas Lullaby') and state.has('Magic Meter'))
+    set_rule(world.get_location('Zoras Fountain Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_entrance('Jabu Jabus Belly Ceiling Switch'), lambda state: state.has('Slingshot') or state.has('Bomb Bag') or state.has('Boomerang'))
     set_rule(world.get_entrance('Jabu Jabus Belly Tentacles'), lambda state: state.has('Boomerang'))
     set_rule(world.get_location('Ice Cavern Map Chest'), lambda state: state.has_bottle())
@@ -227,7 +229,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Haunted Wasteland Crossing'), lambda state: state.has('Lens of Truth') and state.has('Magic Meter'))
     set_rule(world.get_entrance('Colossus Warp Pad'), lambda state: state.has('Requiem of Spirit'))
     set_rule(world.get_entrance('Colossus Fairy'), lambda state: state.has('Bomb Bag'))
-    set_rule(world.get_location('Desert Colossus Fairy Reward'), lambda state: state.has('Zeldas Lullaby') and state.has('Magic Meter'))
+    set_rule(world.get_location('Desert Colossus Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_location('Gerudo Fortress Rooftop Chest'), lambda state: (state.has('Hover Boots') or state.has('Progressive Hookshot', 2)) and state.is_adult())
     set_rule(world.get_location('Horseback Archery 1000 Points'), lambda state: state.has('Gerudo Membership Card') and state.has('Epona') and state.has('Bow') and state.is_adult())
     set_rule(world.get_location('Horseback Archery 1500 Points'), lambda state: state.has('Gerudo Membership Card') and state.has('Epona') and state.has('Bow') and state.is_adult())
@@ -338,8 +340,8 @@ def global_rules(world):
     set_rule(world.get_location('GS34'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('GS35'), lambda state: state.is_adult())
     set_rule(world.get_location('GS37'), lambda state: state.has('Bolero of Fire') and state.has_bottle())
-    set_rule(world.get_location('GS39'), lambda state: state.has('Slingshot') or state.has('Bomb Bag') or state.has('Boomerang') or (state.has('Dins Fire') and state.has('Magic Meter')) or (state.is_adult and (state.has('Progressive Hookshot') or state.has('Bow')))) #Biggoron Sword also works, outside of logic for now
-    set_rule(world.get_location('GS41'), lambda state: (state.has('Progressive Hookshot') and state.is_adult()) or state.has('Boomerang'))
+    set_rule(world.get_location('GS39'), lambda state: state.has('Bomb Bag') or (state.has('Boomerang') or state.has('Slingshot') and state.has('Progressive Strength Upgrade')) or (state.has('Dins Fire') and state.has('Magic Meter')) or (state.is_adult and (state.has('Progressive Hookshot') or state.has('Bow') or state.has('Biggoron Sword'))))
+    set_rule(world.get_location('GS41'), lambda state: (state.has('Progressive Hookshot') and state.is_adult()) or (state.has('Boomerang') and (state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))))
     set_rule(world.get_location('GS42'), lambda state: state.has('Progressive Hookshot') and state.is_adult())
     set_rule(world.get_location('GS45'), lambda state: (state.has('Progressive Hookshot') and state.has('Magic Bean')) or state.has('Progressive Hookshot', 2))
     set_rule(world.get_location('GS46'), lambda state: state.has('Progressive Hookshot'))
@@ -417,3 +419,7 @@ def global_rules(world):
 
     for location in ['Bombchu Bowling Bomb Bag', 'Bombchu Bowling Piece of Heart', 'Deku Salesman Woods', 'Deku Salesman Lost Woods Grotto', 'Deku Salesman Hyrule Field Grotto', 'Underwater Bottle']:
         forbid_item(world.get_location(location), 'Ice Trap')
+
+    for location in ['Treasure Chest Game']:
+        forbid_item(world.get_location(location), 'Ice Trap')
+        forbid_item(world.get_location(location), 'Biggoron Sword')

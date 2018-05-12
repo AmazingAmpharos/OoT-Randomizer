@@ -563,10 +563,14 @@ class Spoiler(object):
 
     def __init__(self, world):
         self.world = world
+        self.entrances = []
         self.playthrough = {}
         self.locations = {}
         self.paths = {}
         self.metadata = {}
+
+    def set_entrance(self, entrance, exit, direction):
+        self.entrances.append(OrderedDict([('entrance', entrance), ('exit', exit), ('direction', direction)]))
 
     def parse_data(self):
         spoiler_locations = []
@@ -595,6 +599,8 @@ class Spoiler(object):
             outfile.write('Open Door of Time:               %s\n' % ('Yes' if self.metadata['door'] else 'No'))
             outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
             outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))
+            outfile.write('\n\nEntrances:\n\n')
+            outfile.write('\n'.join(['%s %s %s' % (entry['entrance'], '<=>' if entry['direction'] == 'both' else '<=' if entry['direction'] == 'exit' else '=>', entry['exit']) for entry in self.entrances]))
             outfile.write('\n\nLocations:\n\n')
             outfile.write('\n'.join(['%s: %s' % (location, item) for (location, item) in self.locations['other locations'].items()]))
             outfile.write('\n\nPlaythrough:\n\n')
