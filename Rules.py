@@ -91,7 +91,7 @@ def global_rules(world):
     set_rule(world.get_location('Bottom of the Well Behind Right Grate'), lambda state: state.has('Small Key (Bottom of the Well)', 2) and state.has('Lens of Truth') and state.has('Magic Meter'))
     set_rule(world.get_entrance('Death Mountain Entrance'), lambda state: state.has('Zeldas Letter') or state.is_adult())
     set_rule(world.get_location('Death Mountain Bombable Chest'), lambda state: state.can_blast())
-    set_rule(world.get_location('Biggoron'), lambda state: state.can_blast() and state.is_adult() and state.can_finish_adult_trades())
+    set_rule(world.get_location('Biggoron'), lambda state: state.can_blast() and state.is_adult() and state.can_finish_adult_trades() and state.guarantee_hint())
     set_rule(world.get_location('Goron City Leftmost Maze Chest'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade', 2) or state.has('Hammer')))
     set_rule(world.get_location('Goron City Left Maze Chest'), lambda state: state.can_blast() or (state.has('Progressive Strength Upgrade', 2) and state.is_adult()))
     set_rule(world.get_location('Goron City Right Maze Chest'), lambda state: state.can_blast() or (state.has('Progressive Strength Upgrade', 2) and state.is_adult()))
