@@ -1003,6 +1003,19 @@ def patch_rom(world, rom):
             if secondaryaddress is not None:
                 rom.write_bytes(secondaryaddress, [itemidhigh, itemidlow])
 
+    # patch fairy entrances
+    for region in world.regions:
+        for exit in region.exits:
+            if exit.target is not None:
+                target1high = exit.target[0] >> 8
+                target1low = exit.target[0] & 0x00FF
+                target2high = exit.addresses[3] >> 8
+                target2low = exit.addresses[3] & 0x00FF
+                rom.write_bytes(exit.addresses[0], [target1high, target1low])
+                rom.write_bytes(exit.addresses[1], [target1high, target1low])
+                rom.write_bytes(exit.addresses[2], [target1high, target1low])
+                rom.write_bytes(exit.target[1], [target2high, target2low])
+
     # Stone/Medallion hints section
     # Default Tablet Address, Raru's Text (The text that gets overridden)
     ChildTabletAddresses = [0x0095CD90, 0x0095D194] # Override text id 704F
