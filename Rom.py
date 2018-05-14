@@ -874,7 +874,7 @@ def patch_rom(world, rom):
                 offset_high = offset >> 8
                 offset_low = offset & 0x00FF
                 rom.write_bytes(address, [0x00, offset_high, offset_low])
-                offset = offset + 0x5B
+                offset = offset + 0x5C
                 address = address + 0x08
         buildHints(world, rom)
 
