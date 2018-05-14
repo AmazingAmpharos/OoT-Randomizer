@@ -31,7 +31,7 @@ def getHintGroup(string):
 #table of hints, format is (name, hint text, type of hint) there are special characters that are read for certain in game commands:
 #^ is a box break
 #& is a new line
-#@ will print the player name                                      
+#@ will print the player name
 hintTable = {'Hammer':                                                (" the dragon smasher.", 'item'),
              'Magic Meter':                                           (" pixie dust.", 'item'),
              'Progressive Hookshot':                                  (" Dampe's Keepsake.", 'item'),
