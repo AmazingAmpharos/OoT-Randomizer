@@ -1024,3 +1024,4 @@ def patch_rom(world, rom):
                 rom.write_bytes(exit.addresses[2], [target1high, target1low])
                 rom.write_bytes(exit.target[1], [target2high, target2low])
     return rom
+    
