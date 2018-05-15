@@ -10,10 +10,10 @@ from Utils import local_path
 
 #builds out general hints based on location and whether an item is required or not
 def buildHints(world, rom):
-    stoneAddresses = [0x938e4c, 0x938ea7, 0x938f02, 0x938f5d, 0x938fb8, 0x939013, 0x93906e, 0x9390c9, 0x939124, 0x93917f,
-                      0x9391da, 0x939235, 0x939290, 0x9392eb, 0x939346, 0x9393a1, 0x9393fc, 0x939457, 0x9394b2, 0x93950d,
-                      0x939568, 0x9395c3, 0x93961e, 0x939679, 0x9396d4, 0x93972f, 0x93978a, 0x9397e5, 0x939840, 0x93989b,
-                      0x9398f6, 0x939951] #address for gossip stone text boxes, byte limit is 91
+    stoneAddresses = [0x938e4c, 0x938EA8, 0x938F04, 0x938F60, 0x938FBC, 0x939018, 0x939074, 0x9390D0, 0x93912C, 0x939188,
+                      0x9391E4, 0x939240, 0x93929C, 0x9392F8, 0x939354, 0x9393B0, 0x93940C, 0x939468, 0x9394C4, 0x939520,
+                      0x93957C, 0x9395D8, 0x939634, 0x939690, 0x9396EC, 0x939748, 0x9397A4, 0x939800, 0x93985C, 0x9398B8,
+                      0x939914, 0x939970] #address for gossip stone text boxes, byte limit is 92
 
 
     alwaysLocations = getHintGroup('alwaysLocation')#These location will always have a hint somewhere in the world.
@@ -31,7 +31,11 @@ def buildHints(world, rom):
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
                 locationData.extend([locationWorld])         
-            
+
+    #hopefully fixes weird VC error where the last character from a previous text box would sometimes spill over into the next box.
+    for address in range(stoneAddresses[0], 0x9399D8):
+        rom.write_byte(address, 0x08)
+
     #shuffles the stone addresses for randomization, always locations will be placed first and twice
     random.shuffle(stoneAddresses)
 
@@ -45,13 +49,13 @@ def buildHints(world, rom):
             Block_code.extend(getBytes((getHint(currentLoc.item.name).text)))
         endText(Block_code)
 
-        if len(Block_code) > 91:
+        if len(Block_code) > 92:
             print('Too many characters in hint')
             Block_code = getBytes("I am Error.")
             Block_code.extend(getBytes(currentLoc.name))
             Block_code.extend(getBytes('&'))
             Block_code.extend(getBytes(currentLoc.item.name))
-            
+     
         rom.write_bytes(stoneAddresses.pop(0), Block_code)
 
     junkHints = getHintGroup('junkHint')

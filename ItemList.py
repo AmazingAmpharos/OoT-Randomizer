@@ -38,6 +38,8 @@ def generate_itempool(world):
     world.get_location('Zeldas Letter').event = True
     world.push_item('Mountain Summit Fairy Reward', ItemFactory('Magic Meter'), False)
     world.get_location('Mountain Summit Fairy Reward').event = True
+    world.push_item('Crater Fairy Reward', ItemFactory('Magic Meter'), False)
+    world.get_location('Crater Fairy Reward').event = True
     world.push_item('Magic Bean Salesman', ItemFactory('Magic Bean'), False)
     world.get_location('Magic Bean Salesman').event = True
     world.push_item('King Zora Moves', ItemFactory('Bottle'), False)

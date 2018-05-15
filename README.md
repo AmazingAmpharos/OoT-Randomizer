@@ -10,19 +10,11 @@ Alternatively, run ```Gui.py``` for a simple graphical user interface.
 
 For releases, a Windows standalone executable is available for users without Python 3. (Coming Soon)
 
-For use, you will need a decompressed Ocarina of Time v1.0 (USA) ROM. For getting the ROM itself, you are on your own. Once you have that,
-you'll need zdec to decompress (other utilities will decompress differently and thus will be an issue). You can get it here:
-
-http://www.mediafire.com/file/jd8g3lit4c7tcm2/ext.rar
-
-You only have to do this once and can use that file as a base file for all randos.
-
-The randomizer will generate a decompressed ROM. If you wish to play on emulator, you will need to compress to avoid stability issues. The
-best program I've seen to do that is Aegh by Zoinkity which you can get here:
-
-http://www.mediafire.com/file/5o97uendasqtusy/Aegh.7z
-
-For the exception table that program asks for, you should use the one that is in the notes folder of this repository.
+This randomizer requires The Legend of Zelda: Ocarina of Time version 1.0 NTSC-US version. Upon first being run, the randomizer will automatically
+create a decompressed version of this ROM that can be used for input for slightly faster seed generation times. Please be sure your input ROM filename
+does not contain a period and is either a .n64 or .z64 file. For users playing via any means other than on real N64 hardware, the use of the
+"Compress patched ROM" flag is strongly encouraged as uncompressed ROMs are impossible to inject for the Virtual Console and have random crashing problems
+on all emulators.
 
 For general use, the recommended emulators are Bizhawk and Mupen64plus. If you want to play on Project 64 for whatever reason, you can but
 you will need to set the rando to use 8 MB of RAM and will want to play with the cheat code 8109C58A 0000 to partially fix Project 64's tragically
@@ -36,9 +28,10 @@ with any possible usage of keys in dungeons.
 
 The items that randomize currently are all items within chests, items given as rewards by NPCs including from minigames and Deku Scrub salesmen, and
 the items obtained when getting the Bottle and the Fire Arrows at Lake Hylia. Due to technical limitations, chests in "generic" grottos are not randomized,
-but chests in unique grottos are (one in Kakariko, one in the Sacred Forest Meadow). Also due to technical limitations, the Boss Key is always in the final
-chest of Ganon's Castle. All dungeons will always have the same number of Maps, Compasses, Small Keys, and Boss Keys they had in the original game, but which
-chests within those dungeons have those things is random.
+but chests in unique grottos are (one in Kakariko, one in the Sacred Forest Meadow). All dungeons will always have the same number of Maps, Compasses,
+Small Keys, and Boss Keys they had in the original game, but which chests within those dungeons have those things is random. The item pool will contain a
+Biggoron Sword that will not interfere with Medigoron's sale of the Giant's Knife (which is always vanilla), and a randomly selected adult trading quest item
+other than the Odd Potion will be somewhere in the item pool.
 
 Certain types of items are now "progressive", meaning that no matter what order the player encounters these items they will function as a series of upgrades.
 The following item types will be progressive chains:
@@ -52,6 +45,7 @@ The following item types will be progressive chains:
 -Adult Wallet to Giant's Wallet
 -Deku Stick Capacity Upgrades
 -Deku Nut Capacity Upgrades
+-Magic Meter to Double Magic
 
 Due to technical limitations, these progressive items will not be found as rewards from the three Great Fairies or from Zelda at the Temple of Time. Sorry!
 
@@ -60,7 +54,12 @@ and it's only the one time permanent item rewards for the most part like NPCs wh
 even though in vanilla the reward for 40 Gold Skulltulla Tokens was just 10 Bombchus that is still a randomized reward in randomizer (but the 200 rupees for all
 100 Gold Skulltulla Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy to the player, the ocarina memory game
 in the Lost Woods will start on the final round as that minigame was very long originally. Additionally, any NPC who gives a trading quest item either for the child
-or for the adult does not have a randomized reward, and for now, the Biggoron Sword, Fairy Ocarina, and Ocarina of Time are not randomized.
+or for the adult other than Anju's initial gift as an adult does not have a randomized reward, and as a design decision, the Fairy Ocarina and Ocarina of Time are
+not randomized.
+
+A special note is needed for the six Great Fairy Fountains scattered across Hyrule. These six fountains are randomized amongst themselves, and while they all still
+require Zelda's Lullaby to utilize, none of them require a Magic Meter to obtain the reward. The two that give variations on the Magic Meter in vanilla are modeled
+as progressives; the first the player uses will give a Magic Meter and the magic spin attack while the second will give the Double Magic upgrade.
 
 The Ocarina songs are shuffled in a pool amongst themselves, and each learn spot will still have the original conditions it has always had. These conditions may not
 have all been obvious, but here are some high points. Saria will teach her song after completing the events in the Castle Courtyard. The warp songs can mostly only
@@ -93,10 +92,10 @@ may not have been important options in the original game. The Lens of Truth is g
 or before walking through any invisible objects or opening any invisible chests is required with the exception of the one invisible wall that is required to enter
 the Bottom of the Well as the original game required passing that invisible wall to reach the Lens of Truth.
 
-Two last details that are evident very early in play are that the player always starts the game with the Light Medallion and that the player starts the game with a
-SOLD OUT item in the inventory. The former is necessary to accomodate there no longer being a cutscene upon first pulling the Master Sword, and the latter is required
-to deal with an unfortunate issue in the original game in which obtaining certain combinations of items could make it impossible to select every item in your inventory
-in the menu. The SOLD OUT will be replaced properly with the Lens of Truth when it is found.
+Two last details that are evident very early in play are that the player always starts the game with the Light Medallion and that the menu is now more like the
+Majora's Mask menu in that the player can move the cursor through empty spaces. The former is necessary to accomodate there no longer being a cutscene upon first
+pulling the Master Sword, and the latter is required to deal with an unfortunate issue in the original game in which obtaining certain combinations of items could
+make it impossible to select every item in your inventory in the menu.
 
 # Quirks to Know
 
@@ -122,7 +121,7 @@ and using a combination of the Longshot and Scarecrow's Song. This allows access
 to the highest level of the central platform. Then a very well spaced rolling jump can reach the water changing station to raise the water to the highest level. If you
 make poor key choices in Water Temple, this may be what you need to do to untangle the situation.  
 -In the Shadow Temple, you can avoid the need for the Longshot in the room with the invisible spikes by backflipping onto the chest for extra height.  
--In the Spirit Temple, you can collect the silver rupees without Hover Boots by jumping directly onto the rolling boulder.  
+-In the Spirit Temple, you can collect the silver rupees without Hover Boots by jumping directly onto the rolling boulder or with a jump slash.  
 -In the Spirit Temple, you can use the Longshot to cross from the hand with the Mirror Shield in vanilla to the other hand.  
 -While we guarantee tunics for Fire Temple and Water Temple, you can possibly force yourself to do without if you seriously let a Like Like eat the tunic and
 then do not recover the tunic. It is almost always possible to do without, but it can make things really difficult on you.  
@@ -159,6 +158,12 @@ Output a Spoiler File.
 If set, will not produce a patched rom as output. Useful in conjunction with the spoiler log option to batch
 generate spoilers for statistical analysis.
 
+## Compress patched Rom
+
+If set, the randomizer will additionally output a compressed ROM using Grant Man's bundled compressor. This compressor is the fastest
+compressor out there and tuned specifically for this game, but in order to achieve its incredibly high speed, it does utilize every last bit
+of CPU your computer will give it so your computer will slow to a crawl otherwise during the couple of minutes this will take.
+
 ## Open Forest
 
 Mido does not need to see a sword and shield to reach the Deku Tree and the Kokiri boy blocking the exit to the forest is gone.
@@ -176,6 +181,18 @@ This may lead to different amount of itempool items being placed in a dungeon th
 ## Only Ensure Seed Beatable
 
 If set, will only ensure that Ganon can be defeated, but not necessarily that all locations are reachable.
+
+## Gossip Stone Hints with Stone of Agony
+
+If set, the 32 Gossip Stones scattered across Hyrule will have various hints informing the player of which items are in various inconvenient locations. The
+Stone of Agony is the condition to be able to talk to the Gossip Stones in this mode instead of the Mask of Truth out of mercy to the player. The nine locations
+we regarded as the most generally inconvenient for all medallions play will always have hints, those hints will appear in two places, and the logic will guarantee
+access to the Stone of Agony before those places must be checked. Those places are the rewards for 30, 40, and 50 Gold Skulltullas, both rewards from the fishing
+minigame, the song from the Ocarina of Time, the item from showing the Mask of Truth in the Deku Theater, the item for defeating 10 Big Poes, and the item for
+redeeming the Claim Check with Biggoron. There will be seven other hints that only exist once for other somewhat inconvenient places for which there is no
+guarantee of Stone of Agony access, and there will be seven other sorts of remarks from the Gossip Stones in the hint pool that may bring a smile to your face but
+will not provide you with unique information for your quest. The unreachable Gossip Stone in the Kokiri Forest is included in this 32 Gossip Stone hint shuffle as
+well so be aware that one instance of a hint will seem to effectively vanish every seed.
 
 ## Seed
 
@@ -205,12 +222,11 @@ Output a Spoiler File (default: False)
 
 Select the condition to spawn the Rainbow Bridge to Ganon's Castle. (default: medallions)
 
-
 ```
 --rom ROM
 ```
 
-Path to a decompressed The Legend of Zelda: Ocarina of Time ROM. (default: ZELOOTROMDEC.z64)
+Path to a The Legend of Zelda: Ocarina of Time NTSC-US v1.0 ROM. (default: ZELOOTROMDEC.z64)
 
 ```
 --loglevel [{error,info,warning,debug}]
@@ -256,10 +272,22 @@ This may lead to different amount of itempool items being placed in a dungeon th
 Enables the "Only Ensure Seed Beatable" option (default: False)
 
 ```
+--hints
+```
+
+Gossip Stones provide helpful hints about which items are in inconvenient locations if the Stone of Agony is in the player's inventory. (default: False)
+
+```
 --suppress_rom
 ```
 
 Enables the "Do not Create Patched Rom" option. (default: False)
+
+```
+--compress_rom
+```
+
+Create a compressed version of the output ROM file. (default: False)
 
 ```
 --gui
