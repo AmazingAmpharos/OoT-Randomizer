@@ -1023,5 +1023,60 @@ def patch_rom(world, rom):
                 rom.write_bytes(exit.addresses[1], [target1high, target1low])
                 rom.write_bytes(exit.addresses[2], [target1high, target1low])
                 rom.write_bytes(exit.target[1], [target2high, target2low])
-    return rom
+
+    # Stone/Medallion hints section
+    # Default Tablet Address, Raru's Text (The text that gets overridden)
+    ChildTabletAddresses = [0x0095CD90, 0x0095D194] # Override text id 704F
+    AdultTabletAddresses = [0x0095F750, 0x0095D3E4] # Override text id 7051
+    Colors = [0x45, 0x46, 0x43, 0x41, 0x42, 0x44, 0x43, 0x41, 0x42] # These are backwards to make pop work
+    reward_names = ["Kokiri Emerald", "Goron Ruby", "Zora Sapphire", "Light Medallion", "Forest Medallion", "Fire Medallion", "Water Medallion", "Spirit Medallion", "Shadow Medallion"]
+    reward_locations = []
+    i = 0
+
+    # Write the initial textbox and link it to the next one
+    Block_code = [0x08]
+    Block_code.extend(getBytes(rewardHints['Child']))
+    Block_code.extend([0x07, 0x70, 0x4F])
+    rom.write_bytes(ChildTabletAddresses[0], Block_code)
+    Block_code = [0x08]
+    Block_code.extend(getBytes(rewardHints['Adult']))
+    Block_code.extend([0x07, 0x70, 0x51])
+    rom.write_bytes(AdultTabletAddresses[0], Block_code)
+
+    # Find the location of each reward
+    for item in boss_rewards:
+        locName = item.location.name
+        if i == 3:
+            reward_locations.append("Pocket") # Temporary until Light Medallion gets randomised
+        reward_locations.append(locName)
+        i += 1
     
+    # Write the child portion of the reward hints
+    Block_code = [0x08]
+    for i in range(0, 3):
+        color = Colors.pop()
+        Block_code.extend([0x05, color])
+        Block_code.extend(getBytes(reward_names[i]))
+        Block_code.extend(getBytes(rewardHints[reward_locations[i]]))
+        if i < 2:
+            Block_code.append(0x01)
+        else:
+            Block_code.extend([0x0b, 0x02])
+    rom.write_bytes(ChildTabletAddresses[1], Block_code)
+
+    # Write the adult portion of the reward hints
+    Block_code = [0x08]
+    for i in range(3, 9):
+        color = Colors.pop()
+        Block_code.extend([0x05, color])
+        Block_code.extend(getBytes(reward_names[i]))
+        Block_code.extend(getBytes(rewardHints[reward_locations[i]]))
+        if i == 5:
+            Block_code.extend([0x04, 0x08])
+        elif i < 8:
+            Block_code.append(0x01)
+        else:
+            Block_code.extend([0x0b, 0x02])
+    rom.write_bytes(AdultTabletAddresses[1], Block_code)
+    
+    return rom
