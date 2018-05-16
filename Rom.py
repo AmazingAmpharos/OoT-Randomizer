@@ -170,6 +170,10 @@ def patch_rom(world, rom):
     rom.write_bytes(0x00E5369E, [0xB4, 0xAC])
     rom.write_bytes(0x00D5A83C, [0x80, 0x49, 0x0E, 0xDC])
 
+    # Change Pokey to check DT complete flag
+    rom.write_bytes(0x00e5400a, [0x8c, 0x4c])
+    rom.write_bytes(0x00e5400e, [0xb4, 0xa4])
+
     # Fix Link the Goron to always work
     rom.write_bytes(0xED2FAC, [0x80, 0x6E, 0x0F, 0x18])
     rom.write_bytes(0xED2FEC, [0x24, 0x0A, 0x00, 0x00])
@@ -1001,6 +1005,8 @@ def patch_rom(world, rom):
             rom.write_byte(locationaddress, location.item.index)
             if secondaryaddress is not None:
                 rom.write_byte(secondaryaddress, location.item.index)
+	elif location.type == 'Boss':
+            rom.write_byte(locationaddress, itemid)
         else:
             locationdefault = location.default & 0xF01F
             itemid = itemid | locationdefault
