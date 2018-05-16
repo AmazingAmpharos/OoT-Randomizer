@@ -171,8 +171,8 @@ def patch_rom(world, rom):
     rom.write_bytes(0x00D5A83C, [0x80, 0x49, 0x0E, 0xDC])
 
     # Change Pokey to check DT complete flag
-    rom.write_bytes(0x00e5400a, [0x8c, 0x4c])
-    rom.write_bytes(0x00e5400e, [0xb4, 0xa4])
+    rom.write_bytes(0x00e5400a, [0x8C, 0x4C])
+    rom.write_bytes(0x00e5400e, [0xB4, 0xA4])
 
     # Fix Link the Goron to always work
     rom.write_bytes(0xED2FAC, [0x80, 0x6E, 0x0F, 0x18])
