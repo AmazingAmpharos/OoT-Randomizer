@@ -1,0 +1,3 @@
+- Download the armips assembler: <https://github.com/Kingcom/armips>
+- Put the ROM you want to patch at `roms/base.z64`
+- Run `armips src/build.asm`, which will create `roms/patched.z64`
