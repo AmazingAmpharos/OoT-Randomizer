@@ -10,6 +10,9 @@ from Hints import buildHints
 from Utils import local_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
+from HintList import RewardHint, rewardHints
+from Hints import getBytes
+from ItemList import boss_rewards
 
 class LocalRom(object):
 
@@ -132,6 +135,44 @@ def patch_rom(world, rom):
     # Change Goron Shop check to Bomb Bag
     rom.write_bytes(0x00C6ED86, [0x00, 0xA2])
     rom.write_bytes(0x00C6ED8A, [0x00, 0x18])
+
+    # Change Prelude CS to check for medallion
+    rom.write_bytes(0x00C805E6, [0x00, 0xA6])
+    rom.write_bytes(0x00C805F2, [0x00, 0x01])
+
+    # Change Nocturne CS to check for medallions
+    rom.write_bytes(0x00ACCD8E, [0x00, 0xA6])
+    rom.write_bytes(0x00ACCD92, [0x00, 0x01])
+    rom.write_bytes(0x00ACCD9A, [0x00, 0x02])
+    rom.write_bytes(0x00ACCDA2, [0x00, 0x04])
+
+    # Change King Zora to move even if Zora Sapphire is in inventory
+    rom.write_bytes(0x00E55BB0, [0x85, 0xCE, 0x8C, 0x3C])
+    rom.write_bytes(0x00E55BB4, [0x84, 0x4F, 0x0E, 0xDA])
+
+    # Remove extra Forest Temple medallions
+    rom.write_bytes(0x00D4D37C, [0x00, 0x00, 0x00, 0x00])
+
+    # Remove extra Fire Temple medallions
+    rom.write_bytes(0x00AC9754, [0x00, 0x00, 0x00, 0x00])
+    rom.write_bytes(0x00D0DB8C, [0x00, 0x00, 0x00, 0x00])
+
+    # Remove extra Water Temple medallions
+    rom.write_bytes(0x00D57F94, [0x00, 0x00, 0x00, 0x00])
+
+    # Remove extra Spirit Temple medallions
+    rom.write_bytes(0x00D379C4, [0x00, 0x00, 0x00, 0x00])
+
+    # Remove extra Shadow Temple medallions
+    rom.write_bytes(0x00D116E0, [0x00, 0x00, 0x00, 0x00])
+
+    # Change Adult Kokiri Forest to check FT complete flag
+    rom.write_bytes(0x00E5369E, [0xB4, 0xAC])
+    rom.write_bytes(0x00D5A83C, [0x80, 0x49, 0x0E, 0xDC])
+
+    # Change Pokey to check DT complete flag
+    rom.write_bytes(0x00e5400a, [0x8C, 0x4C])
+    rom.write_bytes(0x00e5400e, [0xB4, 0xA4])
 
     # Fix Link the Goron to always work
     rom.write_bytes(0xED2FAC, [0x80, 0x6E, 0x0F, 0x18])
@@ -964,6 +1005,8 @@ def patch_rom(world, rom):
             rom.write_byte(locationaddress, location.item.index)
             if secondaryaddress is not None:
                 rom.write_byte(secondaryaddress, location.item.index)
+	elif location.type == 'Boss':
+            rom.write_byte(locationaddress, itemid)
         else:
             locationdefault = location.default & 0xF01F
             itemid = itemid | locationdefault
@@ -973,6 +1016,61 @@ def patch_rom(world, rom):
             rom.write_bytes(locationaddress, [itemidhigh, itemidlow])
             if secondaryaddress is not None:
                 rom.write_bytes(secondaryaddress, [itemidhigh, itemidlow])
+
+    # Stone/Medallion hints section
+    # Default Tablet Address, Raru's Text (The text that gets overridden)
+    ChildTabletAddresses = [0x0095CD90, 0x0095D194] # Override text id 704F
+    AdultTabletAddresses = [0x0095F750, 0x0095D3E4] # Override text id 7051
+    Colors = [0x45, 0x46, 0x43, 0x41, 0x42, 0x44, 0x43, 0x41, 0x42] # These are backwards to make pop work
+    reward_names = ["Kokiri Emerald", "Goron Ruby", "Zora Sapphire", "Light Medallion", "Forest Medallion", "Fire Medallion", "Water Medallion", "Spirit Medallion", "Shadow Medallion"]
+    reward_locations = []
+    i = 0
+
+    # Write the initial textbox and link it to the next one
+    Block_code = [0x08]
+    Block_code.extend(getBytes(rewardHints['Child']))
+    Block_code.extend([0x07, 0x70, 0x4F])
+    rom.write_bytes(ChildTabletAddresses[0], Block_code)
+    Block_code = [0x08]
+    Block_code.extend(getBytes(rewardHints['Adult']))
+    Block_code.extend([0x07, 0x70, 0x51])
+    rom.write_bytes(AdultTabletAddresses[0], Block_code)
+
+    # Find the location of each reward
+    for item in boss_rewards:
+        locName = item.location.name
+        if i == 3:
+            reward_locations.append("Pocket") # Temporary until Light Medallion gets randomised
+        reward_locations.append(locName)
+        i += 1
+    
+    # Write the child portion of the reward hints
+    Block_code = [0x08]
+    for i in range(0, 3):
+        color = Colors.pop()
+        Block_code.extend([0x05, color])
+        Block_code.extend(getBytes(reward_names[i]))
+        Block_code.extend(getBytes(rewardHints[reward_locations[i]]))
+        if i < 2:
+            Block_code.append(0x01)
+        else:
+            Block_code.extend([0x0b, 0x02])
+    rom.write_bytes(ChildTabletAddresses[1], Block_code)
+
+    # Write the adult portion of the reward hints
+    Block_code = [0x08]
+    for i in range(3, 9):
+        color = Colors.pop()
+        Block_code.extend([0x05, color])
+        Block_code.extend(getBytes(reward_names[i]))
+        Block_code.extend(getBytes(rewardHints[reward_locations[i]]))
+        if i == 5:
+            Block_code.extend([0x04, 0x08])
+        elif i < 8:
+            Block_code.append(0x01)
+        else:
+            Block_code.extend([0x0b, 0x02])
+    rom.write_bytes(AdultTabletAddresses[1], Block_code)
 
     # patch fairy entrances
     for region in world.regions:

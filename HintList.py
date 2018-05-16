@@ -210,3 +210,25 @@ hintTable = {'Hammer':                                                (" the dra
              '1040':                                                  ("There's a reason why I am special&inquisitor!", 'junkHint'),
              '1041':                                                  ("You were almost a @&sandwich.", 'junkHint'),
              '1042':                                                  ("I'm a helpful hint Gossip Stone!^See I'm helping.", 'junkHint')}
+
+class RewardHint(object):
+    name = ""
+    text = ""
+
+    def __init__(self, name, text):
+        self.name = name
+        self.text = text
+
+#table of reward hints, format is ('name': "hint text"):
+#^ is a box break, #& is a new line
+rewardHints = {'Queen Gohma':   (" is in a talking tree."),
+               'King Dodongo':  (" is in a mountain cave."),
+               'Barinade':      (" is in a fish's belly."),
+               'Phantom Ganon': (" is in a deep forest."),
+               'Volvagia':      (" is in a volcano."),
+               'Morpha':        (" is under a vast lake."),
+               'Twinrova':      (" is in a desert temple."),
+               'Bongo Bongo':   (" is in an ancient tomb."),
+               'Pocket':        (" is in your pocket."),
+               'Child':         ("Whoever seeks the three Spiritual&Stones should travel to these&locations:"),
+               'Adult':         ("Whoever seeks the six Medallions&should travel to these locations:")}
