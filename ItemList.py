@@ -12,6 +12,7 @@ alwaysitems = (['Kokiri Sword', 'Biggoron Sword', 'Boomerang', 'Lens of Truth', 
               ['Progressive Strength Upgrade'] * 3 + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 16 + ['Recovery Heart'] * 11 + ['Rupees (5)'] * 13 + ['Rupees (20)'] * 2 + ['Rupees (50)'] * 7 + ['Rupees (200)'] * 5 + ['Bow'] * 3 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle'] * 2 + ['Bottle with Letter'] + ['Bottle with Milk'] +
               ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] + ['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'] + ['Arrows (5)'] + ['Arrows (10)'] * 6 + ['Arrows (30)'] * 6 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2)
 notmapcompass = ['Rupees (5)'] * 20
+rewardlist = ['Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire', 'Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Spirit Medallion', 'Shadow Medallion', 'Light Medallion']
 songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light', 'Bolero of Fire', 'Serenade of Water', 'Nocturne of Shadow', 'Requiem of Spirit']
 skulltulla_locations = (['GS1', 'GS2', 'GS3', 'GS4', 'GS5', 'GS6', 'GS7', 'GS8', 'GS9', 'GS10', 'GS11', 'GS12', 'GS13', 'GS14', 'GS15', 'GS16', 'GS17', 'GS18', 'GS19', 'GS20'] +
                        ['GS21', 'GS22', 'GS23', 'GS24', 'GS25', 'GS26', 'GS27', 'GS28', 'GS29', 'GS30', 'GS31', 'GS32', 'GS33', 'GS34', 'GS35', 'GS36', 'GS37', 'GS38', 'GS39', 'GS40'] +
@@ -30,22 +31,6 @@ def generate_itempool(world):
 
     world.push_item('Ganon', ItemFactory('Triforce'), False)
     world.get_location('Ganon').event = True
-    world.push_item('Queen Gohma', ItemFactory('Kokiri Emerald'), False)
-    world.get_location('Queen Gohma').event = True
-    world.push_item('King Dodongo', ItemFactory('Goron Ruby'), False)
-    world.get_location('King Dodongo').event = True
-    world.push_item('Barinade', ItemFactory('Zora Sapphire'), False)
-    world.get_location('Barinade').event = True
-    world.push_item('Phantom Ganon', ItemFactory('Forest Medallion'), False)
-    world.get_location('Phantom Ganon').event = True
-    world.push_item('Volvagia', ItemFactory('Fire Medallion'), False)
-    world.get_location('Volvagia').event = True
-    world.push_item('Morpha', ItemFactory('Water Medallion'), False)
-    world.get_location('Morpha').event = True
-    world.push_item('Bongo Bongo', ItemFactory('Shadow Medallion'), False)
-    world.get_location('Bongo Bongo').event = True
-    world.push_item('Twinrova', ItemFactory('Spirit Medallion'), False)
-    world.get_location('Twinrova').event = True
     world.push_item('Gift from Saria', ItemFactory('Fairy Ocarina'), False)
     world.get_location('Gift from Saria').event = True
     world.push_item('Zeldas Letter', ItemFactory('Zeldas Letter'), False)
@@ -86,6 +71,7 @@ def generate_itempool(world):
         world.push_item(location, ItemFactory(item), False)
         world.get_location(location).event = True
 
+    fill_bosses(world)
     fill_songs(world)
 
 def get_pool_core(dungeon_items):
@@ -99,6 +85,25 @@ def get_pool_core(dungeon_items):
     pool.append(tradeitem)
 
     return (pool, placed_items)
+
+def fill_bosses(world, bossCount=9):
+    boss_rewards = ItemFactory(rewardlist)
+    boss_locations = [world.get_location('Queen Gohma'), world.get_location('King Dodongo'), world.get_location('Barinade'), world.get_location('Phantom Ganon'),
+                      world.get_location('Volvagia'), world.get_location('Morpha'), world.get_location('Bongo Bongo'), world.get_location('Twinrova'), world.get_location('Links Pocket')]
+    placed_prizes = [loc.item.name for loc in boss_locations if loc.item is not None]
+    unplaced_prizes = [item for item in boss_rewards if item.name not in placed_prizes]
+    empty_boss_locations = [loc for loc in boss_locations if loc.item is None]
+    prizepool = list(unplaced_prizes)
+    prize_locs = list(empty_boss_locations)
+
+    while bossCount:
+        bossCount -= 1
+        random.shuffle(prizepool)
+        random.shuffle(prize_locs)
+        item = prizepool.pop()
+        loc = prize_locs.pop()
+        world.push_item(loc, item, False)
+        world.get_location(loc).event = True
 
 def fill_songs(world, attempts=15):
     songs = ItemFactory(songlist)
