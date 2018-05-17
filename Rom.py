@@ -6,7 +6,7 @@ import struct
 import subprocess
 import random
 
-from Hints import buildGossipHints, buildDungeonRewardHints
+from Hints import buildGossipHints, buildBossRewardHints
 from Utils import local_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
@@ -932,7 +932,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0xE2ADB6, [0x70, 0x57])
     rom.write_byte(0xB8811E, 0x20)
     rom.write_byte(0xB88236, 0x20)
-    buildDungeonRewardHints(world, rom)
+    buildBossRewardHints(world, rom)
     
     # patch items
     for location in world.get_locations():
