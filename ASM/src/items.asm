@@ -89,11 +89,12 @@ NOP
 ; Override Action ID
 ORI a1, t1, 0
 
-SW ra, -0x04 (sp)
+
 SW a0, 0x00 (sp)
 SW a1, 0x04 (sp)
 SW a2, 0x08 (sp)
-ADDIU sp, sp, -0x14
+ADDIU sp, sp, -0x18
+SW ra, 0x10 (sp)
 
 ; Run effect function
 ; Conventions for effect functions:
@@ -106,8 +107,8 @@ LBU a2, 0x07 (t0)
 JALR t1
 NOP
 
-ADDIU sp, sp, 0x14
-LW ra, -0x04 (sp)
+LW ra, 0x10 (sp)
+ADDIU sp, sp, 0x18
 LW a0, 0x00 (sp)
 LW a1, 0x04 (sp)
 LW a2, 0x08 (sp)
@@ -156,10 +157,10 @@ ADDU a2, t7, t8 ; Displaced code
 
 Store_Item_Data:
 
-SW ra, -0x04 (sp)
-SW v0, -0x08 (sp)
-SW s0, -0x0C (sp)
-ADDIU sp, sp, -0x1C
+ADDIU sp, sp, -0x20
+SW s0, 0x10 (sp)
+SW v0, 0x14 (sp)
+SW ra, 0x18 (sp)
 
 SB a2, 0x0424 (a3) ; Displaced code
 BEQZ a2, @@return
@@ -249,10 +250,10 @@ SUBU s0, r0, s0
 SB s0, 0x0424 (a3)
 
 @@return:
-ADDIU sp, sp, 0x1C
-LW ra, -0x04 (sp)
-LW v0, -0x08 (sp)
-LW s0, -0x0C (sp)
+LW s0, 0x10 (sp)
+LW v0, 0x14 (sp)
+LW ra, 0x18 (sp)
+ADDIU sp, sp, 0x20
 JR ra
 NOP
 
