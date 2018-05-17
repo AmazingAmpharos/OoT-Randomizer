@@ -491,7 +491,7 @@ class Dungeon(object):
 
 class Location(object):
 
-    def __init__(self, name='', address=None, address2=None, default=None, type='Chest', parent=None):
+    def __init__(self, name='', address=None, address2=None, default=None, type='Chest', scene=None, parent=None):
         self.name = name
         self.parent_region = parent
         self.item = None
@@ -499,6 +499,7 @@ class Location(object):
         self.address2 = address2
         self.default = default
         self.type = type
+        self.scene = scene
         self.spot_type = 'Location'
         self.recursion_count = 0
         self.staleness_count = 0
