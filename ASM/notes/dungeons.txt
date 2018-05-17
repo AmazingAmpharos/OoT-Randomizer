@@ -7,7 +7,7 @@
 6: Spirit Temple
 7: Shadow Temple
 8: BOTW
-9: (nothing?)
+9: Ice Cavern
 10: Ganon's Tower
 11: Gerudo Training Ground
 12: Gerudo Fortress

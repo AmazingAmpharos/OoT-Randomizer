@@ -18,8 +18,6 @@
 .headersize 0x7CF80000
 .org 0x80400000
 
-NEW_CODE_BASE:
-
 ; 0x000 - 0x5FF: Settings and tables which the front-end may write
 .area 0x600, 0
 .include "config.asm"
@@ -31,7 +29,6 @@ NEW_CODE_BASE:
 
 ; 0xA00 - 0xFFF: New code blocks
 .area 0x600, 0
-.include "util.asm"
 .include "constants.asm"
 .include "state.asm"
 .include "items.asm"

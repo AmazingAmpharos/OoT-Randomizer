@@ -7,6 +7,12 @@
 ; This table changes the meaning of a given item ID within a given scene. It must be terminated with
 ; two 0x00 bytes (which will happen by default as long as you don't fill the allotted space).
 ;
+; Row format (4 bytes):
+; SSOONNNN
+; SS = Scene
+; OO = Old item ID
+; NN = New item ID
+;
 ; Generic grotto virtual scene numbers:
 ;   0x70: Hyrule Field: under boulder west of drawbridge
 ;   0x72: Hyrule Field: under boulder between Kokiri Forest and Lake Hylia
@@ -18,14 +24,10 @@
 ;   0x87: Death Mountain: SoS hole outside Goron City
 ;   0x8A: Death Mountain Crater: under boulder in circle of rocks near top entrance
 
-.area 0x180, 0
+.area 0x200, 0
 ITEM_OVERRIDES:
-; SS = Scene
-; OO = Old item ID
-; NN = New item ID
-;     SS    OO    NN
-.db 0x28, 0x2C, 0x84
-.db 0x28, 0x2D, 0x84
-.db 0x28, 0x29, 0x84
-.db 0x28, 0x2A, 0x84
+.byte 0x28, 0x6A, 0x00, 0x98
+.byte 0x28, 0x4B, 0x00, 0xA2
+.byte 0x28, 0x7B, 0x00, 0xAC
+.byte 0x28, 0x4A, 0x00, 0xB5
 .endarea

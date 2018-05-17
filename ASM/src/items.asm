@@ -89,30 +89,28 @@ NOP
 ; Override Action ID
 ORI a1, t1, 0
 
-Grow_Stack 4
-Push ra, 0
-Push a0, 1
-Push a1, 2
-Push a2, 3
+SW ra, -0x04 (sp)
+SW a0, 0x00 (sp)
+SW a1, 0x04 (sp)
+SW a2, 0x08 (sp)
+ADDIU sp, sp, -0x14
 
 ; Run effect function
 ; Conventions for effect functions:
 ; - They receive a pointer to the save context in a0
 ; - They receive their arguments in a1 and a2
-LUI t1, hi(NEW_CODE_BASE)
-LHU at, 0x08 (t0)
-OR t1, t1, at ; t1 = effect function
+LW t1, 0x08 (t0) ; t1 = effect function
 LI a0, SAVE_CONTEXT
-LBU a1, 0x0A (t0)
-LBU a2, 0x0B (t0)
+LBU a1, 0x06 (t0)
+LBU a2, 0x07 (t0)
 JALR t1
 NOP
 
-Pop ra, 0
-Pop a0, 1
-Pop a1, 2
-Pop a2, 3
-Shrink_Stack 4
+ADDIU sp, sp, 0x14
+LW ra, -0x04 (sp)
+LW a0, 0x00 (sp)
+LW a1, 0x04 (sp)
+LW a2, 0x08 (sp)
 
 @@return:
 JR ra
@@ -158,10 +156,10 @@ ADDU a2, t7, t8 ; Displaced code
 
 Store_Item_Data:
 
-Grow_Stack 3
-Push ra, 0
-Push v0, 1
-Push s0, 2
+SW ra, -0x04 (sp)
+SW v0, -0x08 (sp)
+SW s0, -0x0C (sp)
+ADDIU sp, sp, -0x1C
 
 SB a2, 0x0424 (a3) ; Displaced code
 BEQZ a2, @@return
@@ -194,19 +192,16 @@ SLL t0, t0, 8
 OR t0, t0, s0
 
 ; Look up override
-LI t1, (ITEM_OVERRIDES - 0x03)
+LI t1, (ITEM_OVERRIDES - 0x04)
 @@lookup_loop:
-ADDIU t1, t1, 0x03
-LBU t2, 0x00 (t1)
-SLL t2, t2, 8
-LBU at, 0x01 (t1)
-OR t2, t2, at ; t2 = ID column in table
+ADDIU t1, t1, 0x04
+LHU t2, 0x00 (t1) ; t2 = ID column in table
 BEQZ t2, @@not_extended ; Reached end of override table
 NOP
 BNE t2, t0, @@lookup_loop
 NOP
 
-LBU s0, 0x02 (t1) ; s0 = item ID found in ITEM_OVERRIDES
+LHU s0, 0x02 (t1) ; s0 = item ID found in ITEM_OVERRIDES
 ORI v0, s0, 0
 
 @@resolve_item:
@@ -218,18 +213,14 @@ NOP
 
 ; Load ITEM_TABLE row
 LI t1, ITEM_TABLE
-LI t2, 12
-MULT t0, t2
-MFLO t0
+SLL t0, t0, 4 ; t0 = offset into table = index * 16
 ADDU t1, t1, t0 ; t1 = pointer to ITEM_TABLE row
 ; Check whether this item will upgrade into another item
 ; Conventions for upgrade functions:
 ; - They receive a pointer to the save context in a0
 ; - They receive their item ID in s0
 ; - They store their result in v0
-LUI t2, hi(NEW_CODE_BASE)
-LHU at, 0x06 (t1) 
-OR t2, t2, at ; t2 = upgrade function
+LW t2, 0x0C (t1) ; t2 = upgrade function
 LI a0, SAVE_CONTEXT
 JALR t2
 NOP
@@ -258,10 +249,10 @@ SUBU s0, r0, s0
 SB s0, 0x0424 (a3)
 
 @@return:
-Pop ra, 0
-Pop v0, 1
-Pop s0, 2
-Shrink_Stack 3
+ADDIU sp, sp, 0x1C
+LW ra, -0x04 (sp)
+LW v0, -0x08 (sp)
+LW s0, -0x0C (sp)
 JR ra
 NOP
 
@@ -271,7 +262,7 @@ NOP
 
 No_Upgrade:
 JR ra
-NOP
+ORI v0, s0, 0
 
 ;==================================================================================================
 
@@ -353,12 +344,12 @@ LBU t0, 0xA2 (a0) ; Load bullet bag from inventory
 ANDI t0, t0, 0xC0 ; Mask bits to isolate bullet bag
 
 BEQZ t0, @@return
-LI v0, 0x05 ; Bow
+LI v0, 0x05 ; Slingshot
 
 BEQ t0, 0x40, @@return
-LI v0, 0x5F ; Bullet Bag (30)
-
 LI v0, 0x60 ; Bullet Bag (40)
+
+LI v0, 0x7B ; Bullet Bag (50)
 
 @@return:
 JR ra
@@ -441,17 +432,6 @@ NOP
 Give_Biggoron_Sword:
 LI t0, 0x01
 SB t0, 0x3E (a0) ; Set flag to make the sword durable
-JR ra
-NOP
-
-;==================================================================================================
-
-Give_Tunic:
-; a0 = save context
-; a1 = tunic mask
-LBU t0, 0x9C (a0) ; Load tunics from inventory
-OR t0, t0, a1
-SB t0, 0x9C (a0)
 JR ra
 NOP
 

@@ -3,4 +3,4 @@
 ;==================================================================================================
 
 CURRENT_ITEM_DATA:
-.dw 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF
+.word 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF
