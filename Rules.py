@@ -7,13 +7,13 @@ def set_rules(world):
 
     if world.bridge == 'medallions':
         # require all medallions to form the bridge
-        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion'))
+        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion') and state.has('Light Medallion'))
     elif world.bridge == 'vanilla':
         # require only what vanilla did to form the bridge
         set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Light Arrows') and state.has('Shadow Medallion') and state.has('Spirit Medallion'))
     elif world.bridge == 'dungeons':
         # require all medallions and stones to form the bridge
-        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion') and state.has('Kokiri Emerald') and state.has('Goron Ruby') and state.has('Zora Sapphire'))
+        set_rule(world.get_entrance('Rainbow Bridge'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion') and state.has('Light Medallion') and state.has('Kokiri Emerald') and state.has('Goron Ruby') and state.has('Zora Sapphire'))
 
 
 def set_rule(spot, rule):
@@ -58,7 +58,7 @@ def global_rules(world):
 
     # overworld requirements
     set_rule(world.get_entrance('Deku Tree'), lambda state: state.has('Kokiri Sword') or world.open_forest)
-    set_rule(world.get_entrance('Lost Woods Bridge'), lambda state: state.has('Kokiri Emerald') or world.open_forest)
+    set_rule(world.get_entrance('Lost Woods Bridge'), lambda state: world.open_forest or (state.has('Slingshot') and state.has('Kokiri Sword')))
     set_rule(world.get_entrance('Deku Tree Basement Path'), lambda state: state.has('Slingshot'))
     set_rule(world.get_location('Skull Kid'), lambda state: state.has('Sarias Song'))
     set_rule(world.get_location('Ocarina Memory Game'), lambda state: state.has('Fairy Ocarina') or state.has('Ocarina of Time'))
@@ -98,7 +98,7 @@ def global_rules(world):
     set_rule(world.get_location('Rolling Goron as Child'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_entrance('Darunias Chamber'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_location('Darunias Joy'), lambda state: state.has('Sarias Song'))
-    set_rule(world.get_entrance('Goron City from Woods'), lambda state: state.can_blast() and (world.open_forest or state.has('Kokiri Emerald')))
+    set_rule(world.get_entrance('Goron City from Woods'), lambda state: state.can_blast() and (world.open_forest or (state.has('Slingshot') and state.has('Kokiri Sword'))))
     set_rule(world.get_entrance('Dodongos Cavern Rocks'), lambda state: state.can_blast() or state.has('Progressive Strength Upgrade') or state.is_adult())
     set_rule(world.get_entrance('Dodongos Cavern Lobby'), lambda state: state.can_blast() or state.has('Progressive Strength Upgrade'))
     set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: state.has('Slingshot') or ((state.has('Bow') or state.has('Hover Boots')) and state.is_adult()))
@@ -118,7 +118,7 @@ def global_rules(world):
     set_rule(world.get_location('Adult Shooting Gallery'), lambda state: state.has('Bow') and state.is_adult())
     set_rule(world.get_location('10 Big Poes'), lambda state: state.has('Bow') and state.has('Epona') and state.has_bottle() and state.is_adult() and state.guarantee_hint())
     set_rule(world.get_location('Treasure Chest Game'), lambda state: state.has('Lens of Truth') and state.has('Magic Meter'))
-    set_rule(world.get_entrance('Lost Woods Dive Warp'), lambda state: state.can_dive() and (world.open_forest or state.has('Kokiri Emerald')))
+    set_rule(world.get_entrance('Lost Woods Dive Warp'), lambda state: state.can_dive() and (world.open_forest or (state.has('Slingshot') and state.has('Kokiri Sword'))))
     set_rule(world.get_entrance('Zora River Dive Warp'), lambda state: state.can_dive())
     set_rule(world.get_entrance('Lake Hylia Dive Warp'), lambda state: state.can_dive())
     set_rule(world.get_entrance('Zoras Domain Dive Warp'), lambda state: state.can_dive())
@@ -170,7 +170,7 @@ def global_rules(world):
     set_rule(world.get_location('Diving in the Lab'), lambda state: state.has('Progressive Scale', 2))
     set_rule(world.get_location('Child Fishing'), lambda state: state.has('Kokiri Sword') and state.guarantee_hint())
     set_rule(world.get_location('Adult Fishing'), lambda state: state.is_adult() and (state.has('Progressive Hookshot') or state.has('Magic Bean')) and state.guarantee_hint())
-    set_rule(world.get_location('Lake Hylia Sun'), lambda state: (state.has('Water Medallion') or state.has('Progressive Hookshot', 2)) and state.has('Bow') and state.is_adult())
+    set_rule(world.get_location('Lake Hylia Sun'), lambda state: state.has('Progressive Hookshot', 2) and state.has('Bow') and state.is_adult())
     set_rule(world.get_entrance('Crater Hover Boots'), lambda state: state.is_adult() and state.has('Hover Boots'))
     set_rule(world.get_entrance('Crater Ascent'), lambda state: state.is_adult() and (state.has('Goron Tunic') or (state.has('Progressive Wallet') and state.has('Bomb Bag'))) and (state.has('Hover Boots') or state.has('Hammer')))
     set_rule(world.get_entrance('Crater Scarecrow'), lambda state: state.is_adult() and state.has('Progressive Hookshot', 2) and (state.has('Goron Tunic') or (state.has('Progressive Wallet') and state.has('Bomb Bag'))))
@@ -198,18 +198,18 @@ def global_rules(world):
     set_rule(world.get_entrance('Crater Access'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade') or state.has('Bomb Bag')))
     set_rule(world.get_entrance('Lake Warp Pad'), lambda state: state.has('Serenade of Water'))
     set_rule(world.get_location('King Zora Thawed'), lambda state: state.has_bottle() and (state.can_reach('Ice Cavern') or state.can_reach('Ganons Castle Water Trial') or state.has('Progressive Wallet', 2)))
-    set_rule(world.get_entrance('Water Temple Entrance'), lambda state: state.is_adult() and (state.has('Zora Tunic') or (state.has('Progressive Wallet', 2) and state.has_bottle())) and state.has('Iron Boots') and state.has('Zeldas Lullaby') and state.has('Progressive Hookshot'))
-    set_rule(world.get_entrance('Water Temple Central Pillar'), lambda state: state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter')) or state.has('Small Key (Water Temple)', 5))
+    set_rule(world.get_entrance('Water Temple Entrance'), lambda state: state.is_adult() and (state.has('Zora Tunic') or (state.has('Progressive Wallet', 2) and state.has_bottle())) and state.has('Iron Boots') and state.has('Progressive Hookshot'))
+    set_rule(world.get_entrance('Water Temple Central Pillar'), lambda state: (state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter')) or state.has('Small Key (Water Temple)', 5)) and state.has('Zeldas Lullaby'))
     set_rule(world.get_entrance('Water Temple Upper Locked Door'), lambda state: state.has('Small Key (Water Temple)', 5))
-    set_rule(world.get_location('Water Temple Torches Chest'), lambda state: state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter')))
-    set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: state.has('Progressive Strength Upgrade') or (state.has('Small Key (Water Temple)', 6) and state.has('Song of Time')))
-    set_rule(world.get_location('Water Temple Central Bow Target Chest'), lambda state: state.has('Bow') and state.has('Progressive Strength Upgrade') and (state.has('Hover Boots') or state.has('Progressive Hookshot', 2)))
+    set_rule(world.get_location('Water Temple Torches Chest'), lambda state: (state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter'))) and state.has('Zeldas Lullaby'))
+    set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: (state.has('Progressive Strength Upgrade') and state.has('Zeldas Lullaby')) or (state.has('Small Key (Water Temple)', 6) and state.has('Song of Time') and state.has('Bow')))
+    set_rule(world.get_location('Water Temple Central Bow Target Chest'), lambda state: state.has('Bow') and state.has('Progressive Strength Upgrade') and state.has('Zeldas Lullaby') and (state.has('Hover Boots') or state.has('Progressive Hookshot', 2)))
     set_always_allow(world.get_location('Water Temple Boss Key Chest'), lambda state, item: item.name == 'Small Key (Water Temple)')
-    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and state.has('Bomb Bag') and state.has('Progressive Strength Upgrade') and state.has('Progressive Hookshot', 2)) or item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)') #If key for key, this lets the logic reduce the small key reqs for every other locked door.
+    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and ((state.has('Bomb Bag') and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.has('Progressive Hookshot', 2)) or item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)') #If key for key, this lets the logic reduce the small key reqs for every other locked door.
     set_rule(world.get_location('Morpha'), lambda state: state.has('Boss Key (Water Temple)') and state.has('Progressive Hookshot', 2))
     set_rule(world.get_location('Water Temple Cracked Wall Chest'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Water Temple Dark Link Chest'), lambda state: state.has('Small Key (Water Temple)', 6))
-    set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.has('Song of Time'))
+    set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.has('Song of Time') and state.has('Bow'))
     set_rule(world.get_location('Sheik in Kakariko'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion'))
     set_rule(world.get_entrance('Graveyard Warp Pad'), lambda state: state.has('Nocturne of Shadow'))
     set_rule(world.get_entrance('Shadow Temple Entrance'), lambda state: state.has('Dins Fire') and state.has('Magic Meter') and state.has('Lens of Truth') and state.is_adult() and (state.has('Hover Boots') or state.has('Progressive Hookshot')))
@@ -290,9 +290,9 @@ def global_rules(world):
     set_rule(world.get_location('Ganons Castle Forest Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows') and (state.has('Fire Arrows') or (state.has('Progressive Hookshot') and state.has('Dins Fire'))))
     set_rule(world.get_location('Ganons Castle Fire Trial Clear'), lambda state: (state.has('Goron Tunic') or (state.has('Progressive Wallet') and state.has('Bomb Bag'))) and state.has('Progressive Strength Upgrade', 3) and state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows') and state.has('Progressive Hookshot', 2))
     set_rule(world.get_location('Ganons Castle Water Trial Clear'), lambda state: state.has_bottle() and state.has('Hammer') and state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows'))
-    set_rule(world.get_location('Ganons Castle Shadow Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows') and state.has('Hover Boots') and state.has('Lens of Truth') and state.has('Hammer') and (state.has('Fire Arrows') or (state.has('Dins Fire') and state.has('Progressive Hookshot', 2))))
+    set_rule(world.get_location('Ganons Castle Shadow Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows') and state.has('Hammer') and (state.has('Fire Arrows') or state.has('Progressive Hookshot', 2)) and (state.has('Lens of Truth') or (state.has('Hover Boots') and state.has('Progressive Hookshot', 2))))
     set_rule(world.get_location('Ganons Castle Shadow Trial First Chest'), lambda state: (state.has('Magic Meter') and state.has('Bow') and state.has('Fire Arrows')) or state.has('Progressive Hookshot', 2))
-    set_rule(world.get_location('Ganons Castle Shadow Trial Second Chest'), lambda state: state.has('Magic Meter') and state.has('Hover Boots') and ((state.has('Bow') and state.has('Fire Arrows')) or (state.has('Progressive Hookshot', 2) and state.has('Dins Fire'))))
+    set_rule(world.get_location('Ganons Castle Shadow Trial Second Chest'), lambda state: (state.has('Magic Meter') and state.has('Bow') and state.has('Fire Arrows')) or (state.has('Progressive Hookshot', 2) and state.has('Hover Boots')))
     set_rule(world.get_location('Ganons Castle Spirit Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows') and state.has('Mirror Shield') and state.has('Bomb Bag') and state.has('Progressive Hookshot'))
     set_rule(world.get_location('Ganons Castle Spirit Trial First Chest'), lambda state: state.has('Progressive Hookshot') and (state.has('Magic Meter') or state.has('Bomb Bag')))
     set_rule(world.get_location('Ganons Castle Spirit Trial Second Chest'), lambda state: state.has('Progressive Hookshot') and state.has('Magic Meter') and state.has('Bomb Bag') and state.has('Lens of Truth'))
@@ -343,7 +343,7 @@ def global_rules(world):
     set_rule(world.get_location('GS39'), lambda state: state.has('Bomb Bag') or (state.has('Boomerang') or state.has('Slingshot') and state.has('Progressive Strength Upgrade')) or (state.has('Dins Fire') and state.has('Magic Meter')) or (state.is_adult and (state.has('Progressive Hookshot') or state.has('Bow') or state.has('Biggoron Sword'))))
     set_rule(world.get_location('GS41'), lambda state: (state.has('Progressive Hookshot') and state.is_adult()) or (state.has('Boomerang') and (state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))))
     set_rule(world.get_location('GS42'), lambda state: state.has('Progressive Hookshot') and state.is_adult())
-    set_rule(world.get_location('GS45'), lambda state: (state.has('Progressive Hookshot') and state.has('Magic Bean')) or state.has('Progressive Hookshot', 2))
+    set_rule(world.get_location('GS45'), lambda state: state.has('Progressive Hookshot'))
     set_rule(world.get_location('GS46'), lambda state: state.has('Progressive Hookshot'))
     set_rule(world.get_location('GS47'), lambda state: state.has('Progressive Hookshot') or state.has('Bow') or state.has('Magic Meter'))
     set_rule(world.get_location('GS49'), lambda state: state.has('Boomerang'))
@@ -370,7 +370,7 @@ def global_rules(world):
     set_rule(world.get_location('GS74'), lambda state: state.has('Song of Time') and state.has('Small Key (Water Temple)', 6))
     set_rule(world.get_location('GS75'), lambda state: state.has('Progressive Hookshot', 2))
     set_rule(world.get_location('GS76'), lambda state: state.has('Progressive Hookshot', 2))
-    set_rule(world.get_location('GS77'), lambda state: state.has('Progressive Hookshot', 2) and state.has('Bomb Bag') and state.has('Progressive Strength Upgrade') and state.has('Small Key (Water Temple)', 6)) #5 keys would be better but it wouldn't be compatible with the key for key scenarios, 6 will be identical pre-keysanity.
+    set_rule(world.get_location('GS77'), lambda state: state.has('Progressive Hookshot', 2) and ((state.has('Bomb Bag') and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.has('Small Key (Water Temple)', 6)) #5 keys would be better but it wouldn't be compatible with the key for key scenarios, 6 will be identical pre-keysanity.
     set_rule(world.get_location('GS78'), lambda state: state.has('Small Key (Bottom of the Well)', 2) and state.has('Boomerang') and (state.has('Progressive Strength Upgrade') or state.has('Bomb Bag') or (state.has('Lens of Truth') and state.has('Magic Meter'))))
     set_rule(world.get_location('GS79'), lambda state: state.has('Small Key (Bottom of the Well)', 2) and state.has('Boomerang'))
     set_rule(world.get_location('GS80'), lambda state: state.has('Small Key (Bottom of the Well)', 2) and state.has('Boomerang'))

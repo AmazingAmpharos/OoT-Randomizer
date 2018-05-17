@@ -6,7 +6,7 @@ import struct
 import subprocess
 import random
 
-from Hints import buildHints
+from Hints import buildGossipHints, buildDungeonRewardHints
 from Utils import local_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
@@ -157,7 +157,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0xC8986A, [0x07, 0x4C])
     rom.write_bytes(0xC898A6, [0x07, 0x4D])
 
-    # Link no longer get free magic meter from item fairies
+    # Link no longer gets free magic meter from item fairies
     rom.write_bytes(0xC8AFE8, [0x00, 0x00, 0x00, 0x00])
 
     # Speed Zelda's Letter scene
@@ -534,6 +534,44 @@ def patch_rom(world, rom):
                   0x01, 0x39, 0xC8, 0x25, 0xAF, 0x19, 0xB4, 0xA8, 0x24, 0x09, 0x00, 0x06]
     rom.write_bytes(0xCF1AB8, Block_code)
 
+    # Change Prelude CS to check for medallion
+    rom.write_bytes(0x00C805E6, [0x00, 0xA6])
+    rom.write_bytes(0x00C805F2, [0x00, 0x01])
+
+    # Change Nocturne CS to check for medallions
+    rom.write_bytes(0x00ACCD8E, [0x00, 0xA6])
+    rom.write_bytes(0x00ACCD92, [0x00, 0x01])
+    rom.write_bytes(0x00ACCD9A, [0x00, 0x02])
+    rom.write_bytes(0x00ACCDA2, [0x00, 0x04])
+
+    # Change King Zora to move even if Zora Sapphire is in inventory
+    rom.write_bytes(0x00E55BB0, [0x85, 0xCE, 0x8C, 0x3C])
+    rom.write_bytes(0x00E55BB4, [0x84, 0x4F, 0x0E, 0xDA])
+
+    # Remove extra Forest Temple medallions
+    rom.write_bytes(0x00D4D37C, [0x00, 0x00, 0x00, 0x00])
+
+    # Remove extra Fire Temple medallions
+    rom.write_bytes(0x00AC9754, [0x00, 0x00, 0x00, 0x00])
+    rom.write_bytes(0x00D0DB8C, [0x00, 0x00, 0x00, 0x00])
+
+    # Remove extra Water Temple medallions
+    rom.write_bytes(0x00D57F94, [0x00, 0x00, 0x00, 0x00])
+
+    # Remove extra Spirit Temple medallions
+    rom.write_bytes(0x00D379C4, [0x00, 0x00, 0x00, 0x00])
+
+    # Remove extra Shadow Temple medallions
+    rom.write_bytes(0x00D116E0, [0x00, 0x00, 0x00, 0x00])
+
+    # Change Adult Kokiri Forest to check FT complete flag
+    rom.write_bytes(0x00E5369E, [0xB4, 0xAC])
+    rom.write_bytes(0x00D5A83C, [0x80, 0x49, 0x0E, 0xDC])
+
+    # Change Pokey to check DT complete flag
+    rom.write_bytes(0xE5400A, [0x8C, 0x4C])
+    rom.write_bytes(0xE5400E, [0xB4, 0xA4])
+
     # Fire Arrows now in a chest, always spawn
     rom.write_bytes(0xE9E202, [0x00, 0x0A])
     rom.write_bytes(0xE9E1F2, [0x5B, 0x08])
@@ -643,7 +681,8 @@ def patch_rom(world, rom):
                   0x00, 0x00, 0x00, 0x00, 0x24, 0x08, 0x0F, 0x01, 0x24, 0x19, 0x00, 0x09,
                   0x24, 0x18, 0x00, 0x03, 0x24, 0x0F, 0x00, 0x04, 0x24, 0x05, 0x00, 0x06,
                   0xA6, 0x28, 0x01, 0x10, 0xA2, 0x39, 0x01, 0x2C, 0xA2, 0x38, 0x01, 0x2E,
-                  0xA2, 0x2F, 0x0F, 0x0A, 0xA2, 0x25, 0x0F, 0x21, 0x03, 0xE0, 0x00, 0x08]
+                  0xA2, 0x2F, 0x0F, 0x0A, 0xA2, 0x25, 0x0F, 0x21, 0x24, 0x05, 0x00, 0x00,
+                  0xA2, 0x25, 0x00, 0xA7, 0x03, 0xE0, 0x00, 0x08]
     rom.write_bytes(0x3480600, Block_code)
 
     # Set up for Rainbow Bridge dungeons condition
@@ -687,8 +726,15 @@ def patch_rom(world, rom):
                 rom.write_bytes(address, [0x00, offset_high, offset_low])
                 offset = offset + 0x5C
                 address = address + 0x08
-        buildHints(world, rom)
+        buildGossipHints(world, rom)
 
+    # Set hints for boss reward shuffle
+    rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
+    rom.write_bytes(0xE2ADB6, [0x70, 0x57])
+    rom.write_byte(0xB8811E, 0x20)
+    rom.write_byte(0xB88236, 0x20)
+    buildDungeonRewardHints(world, rom)
+    
     # patch items
     for location in world.get_locations():
         itemid = location.item.code
@@ -771,6 +817,13 @@ def patch_rom(world, rom):
             rom.write_byte(locationaddress, location.item.index)
             if secondaryaddress is not None:
                 rom.write_byte(secondaryaddress, location.item.index)
+        elif location.type == 'Boss':
+            if location.name == 'Links Pocket':
+                rom.write_byte(locationaddress, item_data[location.item.name][0])
+                rom.write_byte(secondaryaddress, item_data[location.item.name][1])
+            else:
+                rom.write_byte(locationaddress, itemid)
+                rom.write_byte(secondaryaddress, item_data[location.item.name][2])
         else:
             locationdefault = location.default & 0xF01F
             itemid = itemid | locationdefault

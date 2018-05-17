@@ -29,9 +29,10 @@ def getHintGroup(string):
     return ret
 
 #table of hints, format is (name, hint text, type of hint) there are special characters that are read for certain in game commands:
-#^ is a box break
-#& is a new line
-#@ will print the player name
+# ^ is a box break
+# & is a new line
+# @ will print the player name
+# # sets color to white (currently only used for dungeon reward hints).
 hintTable = {'Hammer':                                                (" the dragon smasher.", 'item'),
              'Magic Meter':                                           (" pixie dust.", 'item'),
              'Progressive Hookshot':                                  (" Dampe's Keepsake.", 'item'),
@@ -39,15 +40,6 @@ hintTable = {'Hammer':                                                (" the dra
              'Hover Boots':                                           (" butter boots.", 'item'),
              'Master Sword':                                          (" evil's bane.", 'item'),
              'Mirror Shield':                                         (" the reflective rampart.", 'item'),
-             'Forest Medallion':                                      (" the forest's power.", 'item'),
-             'Fire Medallion':                                        (" fire's power.", 'item'),
-             'Water Medallion':                                       (" water's power.", 'item'),
-             'Shadow Medallion':                                      (" shadow's power.", 'item'),
-             'Spirit Medallion':                                      (" spirit's power.", 'item'),
-             'Light Medallion':                                       (" light's power.", 'item'),
-             'Goron Ruby':                                            (" the Goron's treasure.", 'item'),
-             'Kokiri Emerald':                                        (" the Kokiri's gift.", 'item'),
-             'Zora Sapphire':                                         (" an engagement gift.", 'item'),
              'Farores Wind':                                          (" teleportation.", 'item'),
              'Nayrus Love':                                           (" a safe space.", 'item'),
              'Ice Arrows':                                            (" the refrigerator rocket.", 'item'),
@@ -209,4 +201,17 @@ hintTable = {'Hammer':                                                (" the dra
              '1039':                                                  ("Medigoron sells the earliest&Breath of the Wild demo.", 'junkHint'),
              '1040':                                                  ("There's a reason why I am special&inquisitor!", 'junkHint'),
              '1041':                                                  ("You were almost a @&sandwich.", 'junkHint'),
-             '1042':                                                  ("I'm a helpful hint Gossip Stone!^See I'm helping.", 'junkHint')}
+             '1042':                                                  ("I'm a helpful hint Gossip Stone!^See I'm helping.", 'junkHint'),
+                                                                       #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box
+             'Queen Gohma':                                           ("One inside an #ancient tree#...^", 'dungeon'),
+             'King Dodongo':                                          ("One within an #immense cavern#...^", 'dungeon'),
+             'Barinade':                                              ("One in the #belly of a deity#...^", 'dungeon'),
+             'Phantom Ganon':                                         ("One in a #deep forest#...^", 'dungeon'),
+             'Volvagia':                                              ("One on a #high mountain#...^", 'dungeon'),
+             'Morpha':                                                ("One under a #vast lake#...^", 'dungeon'),
+             'Bongo Bongo':                                           ("One within the #house of the dead#...^", 'dungeon'),
+             'Twinrova':                                              ("One inside a #goddess of the sand#...^", 'dungeon'),
+             'Links Pocket':                                          ("One in #@'s pocket#...^", 'dungeon'),
+             'Spiritual Stone Text Start':                            ("Ye who owns 3 Spiritual Stones...^", 'dungeon'),
+             'Spiritual Stone Text End':                              ("Stand with the Ocarina of Time&and play the Song of Time.", 'dungeon'),
+             'Medllion Text End':                                     ("Together with the Hero of Time,&the awakened ones will bind the&evil and return the light of peace&to the world.", 'dungeon')}

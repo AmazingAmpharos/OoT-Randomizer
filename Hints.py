@@ -9,7 +9,7 @@ from HintList import getHint, getHintGroup, Hint
 from Utils import local_path
 
 #builds out general hints based on location and whether an item is required or not
-def buildHints(world, rom):
+def buildGossipHints(world, rom):
     stoneAddresses = [0x938e4c, 0x938EA8, 0x938F04, 0x938F60, 0x938FBC, 0x939018, 0x939074, 0x9390D0, 0x93912C, 0x939188,
                       0x9391E4, 0x939240, 0x93929C, 0x9392F8, 0x939354, 0x9393B0, 0x93940C, 0x939468, 0x9394C4, 0x939520,
                       0x93957C, 0x9395D8, 0x939634, 0x939690, 0x9396EC, 0x939748, 0x9397A4, 0x939800, 0x93985C, 0x9398B8,
@@ -68,6 +68,54 @@ def buildHints(world, rom):
         
     return rom
 
+def buildDungeonRewardHints(world, rom):
+    dungeonRewardsSpiritualStones = ['Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire']
+    dungeonRewardsMedallions = ['Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Shadow Medallion', 'Spirit Medallion', 'Light Medallion']
+
+    Block_code = []
+    Block_code = getBytes(getHint('Spiritual Stone Text Start').text)
+    for reward in dungeonRewardsSpiritualStones:
+        buildDungeonString(Block_code, reward, world)
+
+    Block_code = setRewardColor(Block_code)
+    Block_code.extend(getBytes(getHint('Spiritual Stone Text End').text))
+    Block_code.extend([0x0B])
+    endText(Block_code)
+    rom.write_bytes(0x95ED95, Block_code)
+
+    Block_code = []    
+    for reward in dungeonRewardsMedallions:
+        buildDungeonString(Block_code, reward, world)
+
+    Block_code = setRewardColor(Block_code)
+    Block_code.extend(getBytes(getHint('Medllion Text End').text))
+    Block_code.extend([0x0B])
+    endText(Block_code)
+    rom.write_bytes(0x95DB94, Block_code)
+    
+    return rom
+
+def buildDungeonString(Block_code, reward, world):
+    for location in world.get_locations():
+        if location.item.name == reward:
+            Block_code.extend([0x08])
+            Block_code.extend(getBytes(getHint(location.name).text))
+
+    return Block_code
+
+def setRewardColor(Block_code):
+    rewardColors = [0x42, 0x41, 0x43, 0x45, 0x46, 0x44]
+
+    colorWhite = True
+    for i, byte in enumerate(Block_code):
+        if byte == 0x05 and colorWhite:
+            Block_code[i + 1] = rewardColors.pop(0)
+            colorWhite = False 
+        elif byte == 0x05 and not colorWhite:
+            colorWhite = True
+        
+    return Block_code
+
 def endText(byteArray):
     return byteArray.extend([0x02])
 
@@ -80,6 +128,8 @@ def getBytes(string):
             byteCode.extend([0x01])#new line
         elif char == '@':
             byteCode.extend([0x0F])#print player name
+        elif char == '#':
+            byteCode.extend([0x05, 0x40]) #sets color to white
         else:
             char = char.encode('utf-8')
             char = char.hex()

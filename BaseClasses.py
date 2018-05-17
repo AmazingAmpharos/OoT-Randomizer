@@ -575,10 +575,10 @@ class Spoiler(object):
     def parse_data(self):
         spoiler_locations = []
         for location in self.world.get_locations():
-            if location.item.name not in ['Gold Skulltulla Token', 'Epona', 'Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire', 'Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Shadow Medallion', 'Spirit Medallion', 'Triforce', 'Fairy Ocarina', 'Ocarina of Time',
-                                          'Magic Bean', 'Gerudo Membership Card', 'Forest Trial Clear', 'Fire Trial Clear', 'Water Trial Clear', 'Shadow Trial Clear', 'Spirit Trial Clear', 'Light Trial Clear', 'Master Sword', 'Zeldas Letter']:
+            if location.item.name not in ['Gold Skulltulla Token', 'Epona', 'Triforce', 'Fairy Ocarina', 'Ocarina of Time', 'Zeldas Letter', 'Master Sword',
+                                          'Magic Bean', 'Gerudo Membership Card', 'Forest Trial Clear', 'Fire Trial Clear', 'Water Trial Clear', 'Shadow Trial Clear', 'Spirit Trial Clear', 'Light Trial Clear']:
                 spoiler_locations.append(location)
-        sort_order = {"Song": 0}
+        sort_order = {"Song": 0, "Boss": -1}
         spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
         self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}
         from Main import __version__ as OoTRVersion
