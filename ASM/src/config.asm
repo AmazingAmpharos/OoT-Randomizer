@@ -15,10 +15,10 @@
 ;
 ; Generic grotto virtual scene numbers:
 ;   0x70: Hyrule Field: under boulder west of drawbridge
-;   0x72: Hyrule Field: under boulder between Kokiri Forest and Lake Hylia
+;   0x72: Hyrule Field: under boulder in remote southern trees
 ;   0x73: Hyrule Field: open hole outside Lake Hylia fences
 ;   0x78: Kakariko: open hole behind fence
-;   0x79: Zora River: open hole on the high ground
+;   0x79: Zora River: open hole on plateau
 ;   0x7C: Kokiri Forest: SoS hole by the gossip stone
 ;   0x84: Lost Woods: under boulder next to Goron City warp
 ;   0x87: Death Mountain: SoS hole outside Goron City
