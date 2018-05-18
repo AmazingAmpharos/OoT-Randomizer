@@ -6,7 +6,7 @@ import struct
 import subprocess
 import random
 
-from Hints import buildGossipHints, buildDungeonRewardHints
+from Hints import buildGossipHints, buildBossRewardHints
 from Utils import local_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
@@ -28,7 +28,7 @@ class LocalRom(object):
                 subprocess.call(["Decompress/Decompress.out", file])
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
-            with open((file_name[0] + "-decomp.z64"), 'rb') as stream:
+            with open(("ZOOTDEC.z64"), 'rb') as stream:
                 self.buffer = read_rom(stream)
         # extend to 64MB
         self.buffer.extend(bytearray([0x00] * (67108864 - len(self.buffer))))
@@ -572,6 +572,12 @@ def patch_rom(world, rom):
     rom.write_bytes(0xE5400A, [0x8C, 0x4C])
     rom.write_bytes(0xE5400E, [0xB4, 0xA4])
 
+    # Fix Shadow Temple to check for different rewards for scene
+    rom.write_bytes(0xCA3F32, [0x00, 0x00, 0x25, 0x4A, 0x00, 0x10])
+
+    # Fix Spirit Temple to check for different rewards for scene
+    rom.write_bytes(0xCA3EA2, [0x00, 0x00, 0x25, 0x4A, 0x00, 0x08])
+
     # Fire Arrows now in a chest, always spawn
     rom.write_bytes(0xE9E202, [0x00, 0x0A])
     rom.write_bytes(0xE9E1F2, [0x5B, 0x08])
@@ -667,7 +673,7 @@ def patch_rom(world, rom):
                   0xA2, 0x39, 0x09, 0xB6, 0xA2, 0x28, 0x0A, 0x24, 0xA2, 0x38, 0x0A, 0xCE,
                   0xA2, 0x28, 0x0A, 0xCF, 0xA2, 0x28, 0x0A, 0xE8, 0x24, 0x05, 0x00, 0x20,
                   0xA2, 0x25, 0x0B, 0x3F, 0xA2, 0x28, 0x0E, 0xDC, 0xA2, 0x25, 0x0E, 0xDD,
-                  0xA2, 0x25, 0x0E, 0xED, 0xA2, 0x38, 0x0E, 0xF9, 0xA2, 0x25, 0x00, 0xA7,
+                  0xA2, 0x25, 0x0E, 0xED, 0xA2, 0x38, 0x0E, 0xF9, 0x00, 0x00, 0x00, 0x00,
                   0xA2, 0x28, 0x0E, 0xE0, 0xA2, 0x38, 0x02, 0x0E, 0xA2, 0x39, 0x01, 0x49,
                   0xA2, 0x39, 0x0E, 0xD6, 0x24, 0x05, 0x01, 0xFF, 0x24, 0x0F, 0x01, 0xFB,
                   0x24, 0x18, 0x07, 0xFF, 0x24, 0x19, 0x00, 0x04, 0x24, 0x08, 0x00, 0x30,
@@ -733,7 +739,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0xE2ADB6, [0x70, 0x57])
     rom.write_byte(0xB8811E, 0x20)
     rom.write_byte(0xB88236, 0x20)
-    buildDungeonRewardHints(world, rom)
+    buildBossRewardHints(world, rom)
     
     # patch items
     for location in world.get_locations():
@@ -824,6 +830,12 @@ def patch_rom(world, rom):
             else:
                 rom.write_byte(locationaddress, itemid)
                 rom.write_byte(secondaryaddress, item_data[location.item.name][2])
+                if location.name == 'Bongo Bongo':
+                    rom.write_bytes(0xCA3F32, [item_data[location.item.name][3][0], item_data[location.item.name][3][1]])
+                    rom.write_bytes(0xCA3F36, [item_data[location.item.name][3][2], item_data[location.item.name][3][3]])
+                elif location.name == 'Twinrova':
+                    rom.write_bytes(0xCA3EA2, [item_data[location.item.name][3][0], item_data[location.item.name][3][1]])
+                    rom.write_bytes(0xCA3EA6, [item_data[location.item.name][3][2], item_data[location.item.name][3][3]])
         else:
             locationdefault = location.default & 0xF01F
             itemid = itemid | locationdefault
