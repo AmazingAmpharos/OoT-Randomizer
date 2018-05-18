@@ -1,4 +1,5 @@
 import io
+import json
 import logging
 import os
 import platform
@@ -67,6 +68,12 @@ def int32_as_bytes(value):
     return [value & 0xFF, (value >> 8) & 0xFF, (value >> 16) & 0xFF, (value >> 24) & 0xFF]
 
 def patch_rom(world, rom):
+    with open(local_path('data/base2current.json'), 'r') as stream:
+        patches = json.load(stream)
+    for patch in patches:
+        if isinstance(patch, dict):
+            for baseaddress, values in patch.items():
+                rom.write_bytes(int(baseaddress), values)
 
     # Can always return to youth
     rom.write_byte(0xCB6844, 0x35)
