@@ -9,6 +9,7 @@ import random
 from Hints import buildGossipHints, buildBossRewardHints
 from Utils import local_path
 from Items import ItemFactory, item_data
+from ItemOverrides import get_overrides
 from TextArray import text_array
 
 class LocalRom(object):
@@ -847,6 +848,12 @@ def patch_rom(world, rom):
             rom.write_bytes(locationaddress, [itemidhigh, itemidlow])
             if secondaryaddress is not None:
                 rom.write_bytes(secondaryaddress, [itemidhigh, itemidlow])
+
+    # write item overrides
+    override_table = []
+    for (scene, base_id, override_id) in get_overrides(world):
+        override_table += [scene, base_id, 0x00, override_id]
+    rom.write_bytes(0x3480000, override_table)
 
     # patch fairy entrances
     for region in world.regions:
