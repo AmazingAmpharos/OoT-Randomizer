@@ -311,7 +311,8 @@ class CollectionState(object):
         return (self.has('Claim Check') or ((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))
 
     def has_bottle(self):
-        return (self.has('Bottle') or self.has('Bottle with Milk'))
+        is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter')
+        return any(is_normal_bottle(pritem) for pritem in self.prog_items)
 
     def bottle_count(self):
         return len([pritem for pritem in self.prog_items if pritem.startswith('Bottle')])
