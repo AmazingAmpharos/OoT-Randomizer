@@ -422,4 +422,3 @@ def global_rules(world):
 
     for location in ['Treasure Chest Game']:
         forbid_item(world.get_location(location), 'Ice Trap')
-        forbid_item(world.get_location(location), 'Biggoron Sword')
