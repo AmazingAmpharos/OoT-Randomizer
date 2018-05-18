@@ -68,14 +68,16 @@ def buildGossipHints(world, rom):
         
     return rom
 
-def buildDungeonRewardHints(world, rom):
-    dungeonRewardsSpiritualStones = ['Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire']
-    dungeonRewardsMedallions = ['Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Shadow Medallion', 'Spirit Medallion', 'Light Medallion']
+# builds boss reward text that is displayed at the temple of time altar for child and adult, pull based off of item in a fixed order.
+def buildBossRewardHints(world, rom):
+    bossRewardsSpiritualStones = ['Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire']
+    bossRewardsMedallions = ['Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Shadow Medallion', 'Spirit Medallion', 'Light Medallion']
 
+    # text that appears at altar as a child.
     Block_code = []
     Block_code = getBytes(getHint('Spiritual Stone Text Start').text)
-    for reward in dungeonRewardsSpiritualStones:
-        buildDungeonString(Block_code, reward, world)
+    for reward in bossRewardsSpiritualStones:
+        buildBossString(Block_code, reward, world)
 
     Block_code = setRewardColor(Block_code)
     Block_code.extend(getBytes(getHint('Spiritual Stone Text End').text))
@@ -83,19 +85,21 @@ def buildDungeonRewardHints(world, rom):
     endText(Block_code)
     rom.write_bytes(0x95ED95, Block_code)
 
+    # text that appears at altar as an adult.
     Block_code = []    
-    for reward in dungeonRewardsMedallions:
-        buildDungeonString(Block_code, reward, world)
+    for reward in bossRewardsMedallions:
+        buildBossString(Block_code, reward, world)
 
     Block_code = setRewardColor(Block_code)
-    Block_code.extend(getBytes(getHint('Medllion Text End').text))
+    Block_code.extend(getBytes(getHint('Medallion Text End').text))
     Block_code.extend([0x0B])
     endText(Block_code)
     rom.write_bytes(0x95DB94, Block_code)
     
     return rom
 
-def buildDungeonString(Block_code, reward, world):
+# pulls text string from hintlist for reward after sending the location to hintlist.
+def buildBossString(Block_code, reward, world):
     for location in world.get_locations():
         if location.item.name == reward:
             Block_code.extend([0x08])
@@ -103,6 +107,8 @@ def buildDungeonString(Block_code, reward, world):
 
     return Block_code
 
+# alternates through color set commands in child and adult boss reward hint strings setting the colors at the start of the string to correspond with the reward found at the location.
+# skips over color commands at the end of stings to set color back to white.
 def setRewardColor(Block_code):
     rewardColors = [0x42, 0x41, 0x43, 0x45, 0x46, 0x44]
 
@@ -116,9 +122,11 @@ def setRewardColor(Block_code):
         
     return Block_code
 
+#sets the end of text byte in the text box.
 def endText(byteArray):
     return byteArray.extend([0x02])
 
+# reads array of characters and converts them to an array of bytes.
 def getBytes(string):
     byteCode = []
     for char in string:
