@@ -160,6 +160,10 @@ def patch_rom(world, rom):
     # Link no longer gets free magic meter from item fairies
     rom.write_bytes(0xC8AFE8, [0x00, 0x00, 0x00, 0x00])
 
+    # Cutscene for all medallions never triggers when leaving shadow or spirit temples(hopefully stops warp to collosus on shadow completion with boss reward shuffle)
+    rom.write_byte(0xACA409, 0xAD)
+    rom.write_byte(0xACA49D, 0xCE)
+    
     # Speed Zelda's Letter scene
     rom.write_bytes(0x290E08E, [0x05, 0xF0])
     rom.write_bytes(0x2E8C108, [0xFF, 0xFF, 0xFF, 0xFF])
