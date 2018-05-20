@@ -25,6 +25,7 @@ class World(object):
         self.open_forest = open_forest
         self.open_door_of_time = open_door_of_time
         self.hints = hints
+        self.keysanity = False
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
 
