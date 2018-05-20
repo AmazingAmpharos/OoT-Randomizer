@@ -47,8 +47,6 @@ The following item types will be progressive chains:
 -Deku Nut Capacity Upgrades
 -Magic Meter to Double Magic
 
-Due to technical limitations, these progressive items will not be found as rewards from the three Great Fairies or from Zelda at the Temple of Time. Sorry!
-
 To be more clear about which NPC items are shuffled, it's NPCs who directly give you the item (so not the freestanding Pieces of Heart you can get from Dampe),
 and it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart or inventory items. The only exception is that
 even though in vanilla the reward for 40 Gold Skulltulla Tokens was just 10 Bombchus that is still a randomized reward in randomizer (but the 200 rupees for all
@@ -64,8 +62,12 @@ as progressives; the first the player uses will give a Magic Meter and the magic
 The Ocarina songs are shuffled in a pool amongst themselves, and each learn spot will still have the original conditions it has always had. These conditions may not
 have all been obvious, but here are some high points. Saria will teach her song after completing the events in the Castle Courtyard. The warp songs can mostly only
 be learned by an adult, but the location for Requiem of Spirit is available for even a child if the Desert Colossus can be reached. The location for the Prelude of
-Light requires the Forest Medallion, the location for the Nocturne of Shadow requires the Forest Medallion, Fire Medallion, and Water Medallions, and the location for
-the Serenade of Water requires the player to possess the Iron Boots even if they are not actually in their normal chest.
+Light requires the Forest Medallion, and the location for the Nocturne of Shadow requires the Forest Medallion, Fire Medallion, and Water Medallions.
+
+Speaking of Medallions, each boss in the eight main dungeons will drop a random Spiritual Stone or Medallion, and instead of the Light Medallion being granted by the
+now removed "becoming an adult" cutscene, the player will start every seed with a random Spiritual Stone or Medallion. The pedestal in which the Spiritual Stones
+rest in the Temple of Time has hint text pointing to the locations of the Spiritual Stones and Medallions. A child will be able to read hints for the Spiritual
+Stones while an adult will be able to read hints for the Medallions.
 
 To be very clear on this point, freestanding Pieces of Heart (those not in chests or given directly by NPCs) are not randomized, and while the rewards for up to 50
 Gold Skulltulla Tokens are randomized, the tokens themselves are not.
@@ -92,10 +94,8 @@ may not have been important options in the original game. The Lens of Truth is g
 or before walking through any invisible objects or opening any invisible chests is required with the exception of the one invisible wall that is required to enter
 the Bottom of the Well as the original game required passing that invisible wall to reach the Lens of Truth.
 
-Two last details that are evident very early in play are that the player always starts the game with the Light Medallion and that the menu is now more like the
-Majora's Mask menu in that the player can move the cursor through empty spaces. The former is necessary to accomodate there no longer being a cutscene upon first
-pulling the Master Sword, and the latter is required to deal with an unfortunate issue in the original game in which obtaining certain combinations of items could
-make it impossible to select every item in your inventory in the menu.
+One last detail is that the menu is now more like the Majora's Mask menu in that the player can move the cursor through empty spaces. This fixes a major problem from
+the original game in that certain combinations of items would create menu shapes that would be impossible to fully menu through.
 
 # Quirks to Know
 
@@ -106,12 +106,12 @@ glitch we can do nothing about.
 of Light, playing the Song of Time will create a glitchy cutscene and will not open the door (but you're safe to exit and re-enter and open it properly).  
 -The condition to spawn the Ocarina of Time and learn that song is the three Spiritual Stones. The condition to learn a song from Sheik in the Temple of Time is
 possessing the Forest Medallion. The condition to learn a song from Sheik in Kakariko is possessing Forest, Fire, and Water Medallions.  
--The running man in Hyrule Field only spawns if you have Zora Sapphire.  
+-The running man in Hyrule Field only spawns if you have all three Spiritual Stones.  
 -Skull Kid will only buy the Skull Mask if you have played Saria's Song for him.  
 -The center of Death Mountain Crater as an adult can be reached from the summit as an adult by going around to the left with Hover Boots or by jumping down to the right
 and using a combination of the Longshot and Scarecrow's Song. This allows access to Sheik and the Fire Temple without a Bomb Bag.  
--A sword must be equipped to play any minigame that requires the B button. A Slingshot is not required for child target shooting, but the adult does need the Bow.  
--Other than those minigames, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.  
+-A sword must be equipped to play the fishing minigame. A Slingshot is not required for child target shooting, but the adult does need the Bow.  
+-Other than those minigames, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.
 -In the randomizer, possessing the Bomb Bag is the requirement to get bomb drops, buy bombs or Bombchus, or play Bombchu Bowling.  
 -Only the Hookshot, not the Longshot, is needed to do everything on the rooftops of Kakariko.  
 -Adult Link can fully clear Dodongo's Cavern. He can even skip the first section by virtue of being tall.  
@@ -139,11 +139,11 @@ All six of the medallions are required to open Ganon's Castle.
 
 ### Vanilla
 
-The rainbow bridge spawns under the same conditions it did in the original game, possession of the Light Arrows.
+The rainbow bridge spawns under the same conditions it did in the original game, possession of the Light Arrows and having viewed the Zelda cutscene.
 
 ### All Dungeons
 
-The rainbow bridge spawns if all medallions and spiritual stones are in the player's possession.
+The rainbow bridge spawn requires all medallions and spiritual stones to be in the player's possession.
 
 ### Open
 

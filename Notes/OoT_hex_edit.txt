@@ -855,3 +855,243 @@ AND T0, T1, T9 [01394024]
 OR T9, T1, T9 [0139C825]
 SW T9, 0xB4A8 (T8) [AF19B4A8]
 ADDIU T1, R0, 0x0006 [24090006]
+
+For Great Fairies (progressives):
+
+Write Hook:
+
+At RAM 0x801E5188 (ROM )
+
+JAL 0x80400A00 [0C100280]
+ADDU A1, A1, V1 [00A32821]
+
+Write code (3480A00):
+
+LBU A1, 0x5E48 (A1) [90A55E48]
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ADDIU t2, t2, 0x000B [254A000B] #Item ID for Longshot
+
+BNE t2, a1, X [15450008] #Is the item Longshot?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI a0, 0x8012 [3C048012]
+
+LBU a0, 0xA64D (a0) [9084A64D] 
+
+ADDIU t2, t2, 0xFF [254A00FF]
+
+BNE t2, a0, X [15440003] #Is the player's Hookshot slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x000A [24A5000A]
+
+X: ADDIU t2, t2, 0x004F [254A004F] #Item ID for Biggest Bomb Bag
+
+BNE t2, a1, Y [1545000C] #Is the item Bomb Bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI a0, 0x8012 [3C048012]
+
+LBU a0, 0xA673 (a0) [9084A673]
+
+ANDI a0, a0, 0x0018 [30840018] # Mask bits to isolate bomb bags
+
+BNE t2, a0, A [15440003] #Is the player's Bomb Bag slot empty?
+
+ADDIU t2, t2, 0x08 [254A0008]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x004D [24A5004D]
+
+A: BNE t2, a0, Y [15440003] #Is the player's Bomb Bag slot small bomb bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x004E [24A5004E]
+
+Y: ADDIU t2, t2, 0x0052 [254A0052] #Item ID for Gold Gauntlets
+
+BNE t2, a1, Z [1545000C] #Is the item Gold Gauntlets?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI a0, 0x8012 [3C048012]
+
+LBU a0, 0xA673 (a0) [9084A673]
+
+ANDI a0, a0, 0x00C0 [308400C0] # Mask bits to isolate strength upgrades
+
+BNE t2, a0, A [15440003] #Is the player's strength upgrade slot empty?
+
+ADDIU t2, t2, 0x40 [254A0040]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0050 [24A50050]
+
+A: BNE t2, a0, Y [15440003] #Is the player's strength upgrade slot goron bracelet?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0051 [24A50051]
+
+Z: ADDIU t2, t2, 0x0054 [254A0054] #Item ID for Gold Scale
+
+BNE t2, a1, W [15450008] #Is the item Gold Scale?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI a0, 0x8012 [3C048012]
+
+LBU a0, 0xA672 (a0) [9084A672]
+
+ANDI a0, a0, 0x0006 [30840006] # Mask bits to isolate scales
+
+BNE t2, a0, W [15440003] #Is the player's scale slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0053 [24A50053]
+
+W: ADDIU t2, t2, 0x0057 [254A0057] #Item ID for Giant's Wallet
+
+BNE t2, a1, V [15450008] #Is the item Giant's Wallet?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI a0, 0x8012 [3C048012]
+
+LBU a0, 0xA672 (a0) [9084A672]
+
+ANDI a0, a0, 0x0030 [30840030] # Mask bits to isolate wallets
+
+BNE t2, a0, V [15440003] #Is the player's wallet slot empty?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0056 [24A50056]
+
+V: ADDIU t2, t2, 0x0098 [254A0098] #Item ID for mid Deku Stick cap upgrade
+
+BNE t2, a1, U [15450009] #Is the item mid Deku Stick cap upgrade?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI a0, 0x8012 [3C048012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU a0, 0xA671 (a0) [9084A671]
+
+ANDI a0, a0, 0x0006 [30840006] # Mask bits to isolate Deku Stick cap
+
+ADDIU t2, t2, 0x04 [254A0004]
+
+BNE t2, a0, U [15440003] #Is the player's Deku Stick capacity medium?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0099 [24A50099]
+
+U: ADDIU t2, t2, 0x009A [254A009A] #Item ID for mid Deku Nut cap upgrade
+
+BNE t2, a1, T [15450009] #Is the item mid Deku Nut cap upgrade?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI a0, 0x8012 [3C048012] # I don't know why I have to point an extra unit forward, but somehow this makes it work.
+
+LBU a0, 0xA671 (a0) [9084A671]
+
+ANDI a0, a0, 0x0030 [30840030] # Mask bits to isolate Deku Nut cap
+
+ADDIU t2, t2, 0x20 [254A0020]
+
+BNE t2, a0, T [15440003] #Is the player's Deku Nut capacity medium?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x009B [24A5009B]
+
+T: ADDIU t2, t2, 0x0049 [254A0049] #Item ID for Biggest Bullet Bag
+
+BNE t2, a1, S [1545000C] #Is the item Biggest Bullet Bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI a0, 0x8012 [3C048012]
+
+LBU a0, 0xA672 (a0) [9084A672]
+
+ANDI a0, a0, 0x00C0 [308400C0] # Mask bits to isolate bullet bag upgrades
+
+BNE t2, a0, C [15440003] #Is the player's bullet bag slot empty?
+
+ADDIU t2, t2, 0x0040 [254A0040]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0006 [24A50006]
+
+C: BNE t2, a0, S [15440003] #Is the player's bullet bag slot small bullet bag?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0048 [24A50048]
+
+S: ADDIU t2, t2, 0x004C [254A004C] #Item ID for Biggest Quiver
+
+BNE t2, a1, R [1545000C] #Is the item Biggest Quiver?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+LUI a0, 0x8012 [3C048012]
+
+LBU a0, 0xA673 (a0) [9084A673]
+
+ANDI a0, a0, 0x0003 [30840003] # Mask bits to isolate quiver upgrades
+
+BNE t2, a0, D [15440003] #Is the player's quiver slot empty?
+
+ADDIU t2, t2, 0x01 [254A0001]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x0003 [24A50003]
+
+D: BNE t2, a0, R [15440003] #Is the player's quiver slot small quiver?
+
+ANDI t2, t2, 0x0000 [314A0000]
+
+ANDI a1, a1, 0x0000 [30A50000]
+
+ADDIU a1, a1, 0x004B [24A5004B]
+
+R: ADDIU t2, t2, 0x003D [254A003D] #Item ID for Biggoron Sword
+BNE t2, a1, Q [15450004] #Is the item Biggoron Sword?
+ADDIU T2, R0, 0x0001 [240A0001]
+LUI A0, 0x8012 [3C048012]
+ADDIU A0, A0, 0xA5D0 [2484A5D0]
+SB T2, 0x003E (A0) [A08A003E]
+
+Q: JR RA [03E00008]
