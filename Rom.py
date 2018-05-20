@@ -25,7 +25,6 @@ class LocalRom(object):
             elif platform.system() == 'Linux':
                 subprocess.call(["Decompress/Decompress", file])
             elif platform.system() == 'Darwin':
-                subprocess.call(["chmod 0744 Decompress/Decompress.out"])
                 subprocess.call(["Decompess/Decompress.out", file])
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
