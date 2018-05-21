@@ -576,6 +576,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0x00D57F94, [0x00, 0x00, 0x00, 0x00])
 
     # Remove extra Spirit Temple medallions
+    rom.write_bytes(0x00D370C4, [0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0x00D379C4, [0x00, 0x00, 0x00, 0x00])
 
     # Remove extra Shadow Temple medallions
