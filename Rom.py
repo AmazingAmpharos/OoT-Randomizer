@@ -25,7 +25,7 @@ class LocalRom(object):
             elif platform.system() == 'Linux':
                 subprocess.call(["Decompress/Decompress", file])
             elif platform.system() == 'Darwin':
-                subprocess.call(["Decompess/Decompress.out", file])
+                subprocess.call(["Decompress/Decompress.out", file])
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
             with open(("ZOOTDEC.z64"), 'rb') as stream:
@@ -587,6 +587,8 @@ def patch_rom(world, rom):
     # Change Pokey to check DT complete flag
     rom.write_bytes(0xE5400A, [0x8C, 0x4C])
     rom.write_bytes(0xE5400E, [0xB4, 0xA4])
+    if world.open_forest:
+        rom.write_bytes(0xE5401C, [0x14, 0x0B])
 
     # Fix Shadow Temple to check for different rewards for scene
     rom.write_bytes(0xCA3F32, [0x00, 0x00, 0x25, 0x4A, 0x00, 0x10])
@@ -1050,7 +1052,7 @@ def patch_rom(world, rom):
         rom.write_bytes(0xE2B454, Block_code)
 
     if world.open_forest:
-        rom.write_byte(0x2081148, 0x80)
+        #rom.write_byte(0x2081148, 0x80)
         rom.write_bytes(0x34806C4, [0x92, 0x25, 0x0E, 0xD5, 0x34, 0xA5, 0x00, 0x10, 0xA2, 0x25, 0x0E, 0xD5])
 
     if world.open_door_of_time:
