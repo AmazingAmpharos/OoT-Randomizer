@@ -2,15 +2,20 @@
 ; Item code
 ;==================================================================================================
 
-prevent_item_actor_clear:
+item_source_clear:
     addiu   sp, sp, -0x08
     sw      t0, 0x00 (sp)
     sw      t1, 0x04 (sp)
 
     li      t0, PLAYER_ACTOR
-    lw      t1, 0x0428 (t0)
-    beq     t0, t1, @@return
+    lb      t1, 0x0424 (t0)
+    beqz    t1, @@clear
     nop
+    lw      t1, 0x0428 (t0)
+    beq     t1, t0, @@return
+    nop
+
+@@clear:
     sw      r0, 0x0428 (t0)
 
 @@return:

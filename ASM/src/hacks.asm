@@ -127,14 +127,14 @@
 ;   sw      r0, 0x0428 (s0)
 ;   sw      r0, 0x0118 (v1)
 .org 0xBCDD6C ; In memory: 0x80388D5C
-    jal     prevent_item_actor_clear
+    jal     item_source_clear
     sw      r0, 0x0118 (v1)
 
 ; Replaces:
 ;   sw      r0, 0x0428 (s0)
 ;   sh      t0, 0x0426 (s0)
 .org 0xBE5730 ; In memory: 0x803A0720
-    jal     prevent_item_actor_clear
+    jal     item_source_clear
     sh      t0, 0x0426 (s0)
 
 ;==================================================================================================
