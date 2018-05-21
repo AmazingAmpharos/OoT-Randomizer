@@ -7,7 +7,7 @@
    +0x00A4 = current scene number (2 bytes)
 
 0x801DAA30 = player instance
-   +0x0424 = item to be obtained (set negative by chests)
+   +0x0424 = item to be obtained (set negative by chests) (801DAE54)
              gets written @ 0x80022CD0
 
 0x802190AC = Chest info as stored in ROM
