@@ -1,28 +1,27 @@
-.macro ItemMenu_Description_ID, dest_reg, base_reg
-LBU    dest_reg, 0x0074 (base_reg)     ; Load the item ID at the selected menu slot
-ADDIU  AT, R0, 0xFF                    ; 0xFF indicates an empty menu slot
-BNE    dest_reg, AT, @@return          ; If the slot is not empty, return to default behavior
-NOP
-ADDIU  dest_reg, R0, 0x2C              ; 0x2C = "SOLD OUT"
+.macro item_menu_description_id, dest_reg, base_reg
+    lbu     dest_reg, 0x0074 (base_reg) ; Load the item ID at the selected menu slot
+    bne     dest_reg, 0xFF, @@return ; If the slot is not empty, use default behavior
+    nop
+    li      dest_reg, 0x2C ; 0x2C = "SOLD OUT"
 @@return:
 .endmacro
 
-ItemMenu_Description_ID_Periodic:
-ItemMenu_Description_ID T9, T8
-JR     RA
-SH     T9, 0x009A (SP)
+item_menu_description_id_periodic:
+    item_menu_description_id    t9, t8
+    jr      ra
+    sh      t9, 0x009A (sp)
 
-ItemMenu_Description_ID_Immediate1:
-ItemMenu_Description_ID T4, T9
-JR     RA
-NOP
+item_menu_description_id_immediate_1:
+    item_menu_description_id    t4, t9
+    jr      ra
+    nop
 
-ItemMenu_Description_ID_Immediate2:
-ItemMenu_Description_ID T6, T5
-JR     RA
-SH     T6, 0x009A (SP)
+item_menu_description_id_immediate_2:
+    item_menu_description_id    t6, t5
+    jr      ra
+    sh      t6, 0x009A (sp)
 
-ItemMenu_Description_ID_Immediate3:
-ItemMenu_Description_ID T7, T6
-JR     RA
-SH     T7, 0x009A (SP)
+item_menu_description_id_immediate_3:
+    item_menu_description_id    t7, t6
+    jr      ra
+    sh      t7, 0x009A (sp)

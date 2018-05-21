@@ -4,119 +4,138 @@
 
 ; Child -> Adult: Don't save hard-coded 0x3B (Kokiri Sword) as child's B equip
 ; Replaces:
-;     SB a0, 0x0040 (v1)
+;   sb      a0, 0x0040 (v1)
 .org 0xAE57A8 ; In memory: 0x8006F848
-NOP
+    nop
 
 ; Adult -> Child: Don't skip restoring child's B equip if 0xFF is the saved value
 ; Replaces:
-;     ADDIU V1, R0, 0x00FF
+;   addiu   v1, r0, 0x00FF
 .org 0xAE58F4 ; In memory: 0x8006F994
-NOP
+    nop
 
 ; Child -> Adult: Save the child's B equip before it gets overwritten
 ; Replaces:
-;     SB t6, 0x0068 (t0)
-;     LW a0, 0x0030 (sp)
+;   sb      t6, 0x0068 (t0)
+;   lw      a0, 0x0030 (sp)
 .org 0xAE5F74 ; In memory: 0x80070014
-JAL Save_Child_B_Equip
-LW a0, 0x0030 (sp)
+    jal     save_child_b_equip
+    lw      a0, 0x0030 (sp)
 
 ; Prevent Kokiri Sword from being added to inventory on game load
 ; Replaces:
-;     SH t9, 0x009C (v0)
+;   sh      t9, 0x009C (v0)
 .org 0xBAED6C ; In memory: 0x803B2B6C
-NOP
+    nop
 
 ;==================================================================================================
-; Item hacks
+; Extended items
 ;==================================================================================================
 
 ; Runs when storing the pending item to the player instance
 ; Replaces:
-;     SB a2, 0x0424 (a3)
-;     SW a0, 0x0428 (a3)
+;   sb      a2, 0x0424 (a3)
+;   sw      a0, 0x0428 (a3)
 .org 0xA98C30 ; In memory: 0x80022CD0
-JAL Store_Item_Data
-SW a0, 0x0428 (a3)
+    jal     store_item_data_hook
+    sw      a0, 0x0428 (a3)
 
 ; Override object ID (NPCs)
 ; Replaces:
-;     LW a2, 0x0030 (sp)
-;     OR a0, s0, r0
-;     JAL ...
-;     LH a1, 0x0004 (a2)
+;   lw      a2, 0x0030 (sp)
+;   or      a0, s0, r0
+;   jal     ...
+;   lh      a1, 0x0004 (a2)
 .org 0xBDA0D8 ; In memory: 0x803950C8
-JAL Override_Object_NPC
-OR a0, s0, r0
+    jal     override_object_npc
+    or      a0, s0, r0
 .skip 4
-NOP
+    nop
 
 ; Override object ID (Chests)
 ; Replaces:
-;     LW t9, 0x002C (sp)
-;     OR a0, s0, r0
-;     JAL ...
-;     LH a1, 0x0004 (t9)
+;   lw      t9, 0x002C (sp)
+;   or      a0, s0, r0
+;   jal     ...
+;   lh      a1, 0x0004 (t9)
 .org 0xBDA264 ; In memory: 0x80395254
-JAL Override_Object_Chest
-OR a0, s0, r0
+    jal     override_object_chest
+    or      a0, s0, r0
 .skip 4
-NOP
+    nop
 
 ; Override graphic ID
 ; Replaces:
-;     BLTZ v1, A
-;     SUBU t0, r0, v1
-;     JR ra
-;     SB v1, 0x0852 (a0)
-;  A: SB t0, 0x0852 (a0)
-;     JR ra
+;   bltz    v1, A
+;   subu    t0, r0, v1
+;   jr      ra
+;   sb      v1, 0x0852 (a0)
+; A:
+;   sb      t0, 0x0852 (a0)
+;   jr      ra
 .org 0xBCECBC ; In memory: 0x80389CAC
-J Override_Graphic
-NOP
-NOP
-NOP
-NOP
-NOP
+    j       override_graphic
+    nop
+    nop
+    nop
+    nop
+    nop
 
 ; Override text ID
 ; Replaces:
-;     LBU a1, 0x03 (v0)
-;     SW a3, 0x0028 (sp)
+;   lbu     a1, 0x03 (v0)
+;   sw      a3, 0x0028 (sp)
 .org 0xBE9AC0 ; In memory: 0x803A4AB0
-JAL Override_Text
-SW a3, 0x0028 (sp)
+    jal     override_text
+    sw      a3, 0x0028 (sp)
 
 ; Override action ID
 ; Replaces:
-;     LW v0, 0x0024 (sp)
-;     LW a0, 0x0028 (sp)
-;     JAL 0x8006FDCC
-;     LBU a1, 0x0000 (v0)
+;   lw      v0, 0x0024 (sp)
+;   lw      a0, 0x0028 (sp)
+;   jal     0x8006FDCC
+;   lbu     a1, 0x0000 (v0)
 .org 0xBE9AD8 ; In memory: 0x803A4AC8
-JAL Override_Action
-LW a0, 0x0028 (sp)
+    jal     override_action
+    lw      a0, 0x0028 (sp)
 .skip 4
-NOP
+    nop
 
 ; Inventory fix
 ; Replaces:
-;     ADDU A2, T7, T8
-;     SW s0, 0x0118 (t9)
+;   addu    a2, t7, t8
+;   sw      s0, 0x0118 (t9)
 .org 0xBDA094 ; In memory: 0x80395084
-JAL Inventory_Fix
-SW s0, 0x0118 (t9)
+    jal     inventory_fix
+    sw      s0, 0x0118 (t9)
 
 ; Prevent Silver Gauntlets warp
 ; Replaces:
-;     ADDIU at, r0, 0x0035
+;   addiu   at, r0, 0x0035
 .org 0xBE9BDC ; In memory: 0x803A4BCC
-ADDIU at, r0, 0x8383 ; Make branch impossible
+    addiu   at, r0, 0x8383 ; Make branch impossible
 
 ; Replace all generic grotto prizes with 20 bombs
 .org 0xE9A550
 .fill 8, 0x67
+
+;==================================================================================================
+; Special item sources
+;==================================================================================================
+
+; Replaces:
+;   sw      r0, 0x0428 (s0)
+;   sw      r0, 0x0118 (v1)
+.org 0xBCDD6C ; In memory: 0x80388D5C
+    jal     prevent_item_actor_clear
+    sw      r0, 0x0118 (v1)
+
+; Replaces:
+;   sw      r0, 0x0428 (s0)
+;   sh      t0, 0x0426 (s0)
+.org 0xBE5730 ; In memory: 0x803A0720
+    jal     prevent_item_actor_clear
+    sh      t0, 0x0426 (s0)
 
 ;==================================================================================================
 ; Menu hacks
@@ -137,58 +156,58 @@ ADDIU at, r0, 0x8383 ; Make branch impossible
 
 ; Left movement check
 ; Replaces:
-;   BEQ    S4, T5, 0x8038F2B4
-;   NOP
+;   beq     s4, t5, 0x8038F2B4
+;   nop
 .org 0xBB77B4 ; In memory: 0x8038F134
-NOP
-NOP
+    nop
+    nop
 
 ; Right movement check AND an immediate description update
 ; Replaces:
-;   LBU    T4, 0x0074 (T9)
-;   BEQ    S4, T4, 0x8038F2B4
-;   NOP
+;   lbu     t4, 0x0074 (t9)
+;   beq     s4, t4, 0x8038F2B4
+;   nop
 .org 0xBB7890 ; In memory: 0x8038F210
-JAL    ItemMenu_Description_ID_Immediate1
-NOP
-NOP
+    jal     item_menu_description_id_immediate_1
+    nop
+    nop
 
 ; Immediate description update
 ; Replaces:
-;   LBU    T6, 0x0074 (T5)
-;   SH     T6, 0x009A (SP)
+;   lbu     t6, 0x0074 (t5)
+;   sh      t6, 0x009A (sp)
 .org 0xBB7950 ; In memory: 0x8038F2D0
-JAL    ItemMenu_Description_ID_Immediate2
-NOP
+    jal     item_menu_description_id_immediate_2
+    nop
 
 ; Upward movement check
 ; Replaces:
-;   BEQ    S4, T4, 0x8038F598
-;   NOP
+;   beq     s4, t4, 0x8038F598
+;   nop
 .org 0xBB7BA0 ; In memory: 0x8038F520
-NOP
-NOP
+    nop
+    nop
 
 ; Downward movement check
 ; Replaces:
-;   BEQ    S4, T4, 0x8038F598
-;   NOP
+;   beq     s4, t4, 0x8038F598
+;   nop
 .org 0xBB7BFC ; In memory: 0x8038F57C
-NOP
-NOP
+    nop
+    nop
 
 ; Immediate description update
 ; Replaces:
-;   LBU    T7, 0x0074 (T6)
-;   SH     T7, 0x009A (SP)
+;   lbu     t7, 0x0074 (t6)
+;   sh      t7, 0x009A (sp)
 .org 0xBB7C3C ; In memory: 0x8038F5BC
-JAL    ItemMenu_Description_ID_Immediate3
-NOP
+    jal     item_menu_description_id_immediate_3
+    nop
 
 ; Periodic description update
 ; Replaces:
-;   LBU    T9, 0x0074 (T8)
-;   SH     T9, 0x009A (SP)
+;   lbu     t9, 0x0074 (t8)
+;   sh      t9, 0x009A (sp)
 .org 0xBB7C58 ; In memory: 0x8038F5D8
-JAL    ItemMenu_Description_ID_Periodic
-NOP
+    jal     item_menu_description_id_periodic
+    nop
