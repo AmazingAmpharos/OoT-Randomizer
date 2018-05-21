@@ -12,9 +12,8 @@ def set_overrides(world):
         by_scene[loc.scene] = locations
 
     for scene, locations in by_scene.items():
-        base_items = list(valid_base_items)
         used_items = [loc.item.name for loc in locations]
-        available_base_items = [item for item in base_items if item not in used_items]
+        available_base_items = [item for item in valid_base_items if item not in used_items]
         for loc in locations:
             if loc.item.index is None:
                 continue
