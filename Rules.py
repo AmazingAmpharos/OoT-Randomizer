@@ -160,6 +160,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Forest Temple Twisted Hall'), lambda state: state.has('Small Key (Forest Temple)', 3))
     set_rule(world.get_entrance('Forest Temple Straightened Hall'), lambda state: state.has('Small Key (Forest Temple)', 2) and state.has('Bow'))
     set_rule(world.get_entrance('Forest Temple Drop to Falling Room'), lambda state: state.has('Small Key (Forest Temple)', 5) and (state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter'))))
+    set_rule(world.get_location('Forest Temple Block Push Chest'), lambda state: state.has('Bow') and state.is_adult())
     set_rule(world.get_location('Forest Temple Red Poe Chest'), lambda state: state.has('Bow') and state.is_adult())
     set_rule(world.get_location('Forest Temple Blue Poe Chest'), lambda state: state.has('Bow') and state.is_adult())
     set_rule(world.get_location('Phantom Ganon'), lambda state: state.has('Boss Key (Forest Temple)'))
