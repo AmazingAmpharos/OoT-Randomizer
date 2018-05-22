@@ -62,6 +62,7 @@ def start():
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
     parser.add_argument('--compress_rom', help='Create a compressed version of the output rom file.', action='store_true')
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')
+    parser.add_argument('--output',help='Specify the output directory')
     args = parser.parse_args()
 
     if is_bundled() and len(sys.argv) == 1:
@@ -77,6 +78,11 @@ def start():
     if not os.path.isfile(args.rom):
         input('Could not find valid base rom for patching at expected path %s. Please run with -h to see help for further information. \nPress Enter to exit.' % args.rom)
         sys.exit(1)
+		
+    if args.output is not None:
+	    if not os.path.isdir(args.output):
+		    input('Specified output path: %s is not a path.  \nPress Enter to exit.' % args.output)
+		    sys.exit(1)
 
     # set up logger
     loglevel = {'error': logging.ERROR, 'info': logging.INFO, 'warning': logging.WARNING, 'debug': logging.DEBUG}[args.loglevel]
