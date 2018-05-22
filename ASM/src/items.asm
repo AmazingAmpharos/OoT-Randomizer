@@ -1,29 +1,31 @@
-;==================================================================================================
-; Item code
-;==================================================================================================
+; Take away tunics/shields that are about to be received, to avoid breaking NPCs who give them
 
-item_source_clear:
-    addiu   sp, sp, -0x08
-    sw      t0, 0x00 (sp)
-    sw      t1, 0x04 (sp)
+inventory_fix:
+    ; v0 = item ID
+    li      t0, SAVE_CONTEXT
 
-    li      t0, PLAYER_ACTOR
-    lb      t1, 0x0424 (t0)
-    beqz    t1, @@clear
-    nop
-    lw      t1, 0x0428 (t0)
-    beq     t1, t0, @@return
-    nop
-
-@@clear:
-    sw      r0, 0x0428 (t0)
-
-@@return:
-    lw      t0, 0x00 (sp)
-    lw      t1, 0x04 (sp)
-    addiu   sp, sp, 0x08
+    bne     v0, 0x2C, @@not_goron_tunic
+    lb      t1, 0x9C (t0)
+    andi    t1, t1, 0xFD
+    sb      t1, 0x9C (t0)
+@@not_goron_tunic:
+    bne     v0, 0x2D, @@not_zora_tunic
+    lb      t1, 0x9C (t0)
+    andi    t1, t1, 0xFB
+    sb      t1, 0x9C (t0)
+@@not_zora_tunic:
+    bne     v0, 0x29, @@not_deku_shield
+    lb      t1, 0x9D (t0)
+    andi    t1, t1, 0xEF
+    sb      t1, 0x9D (t0)
+@@not_deku_shield:
+    bne     v0, 0x2A, @@not_hylian_shield
+    lb      t1, 0x9D (t0)
+    andi    t1, t1, 0xDF
+    sb      t1, 0x9D (t0)
+@@not_hylian_shield:
     jr      ra
-    nop
+    addu    a2, t7, t8 ; Displaced code
 
 ;==================================================================================================
 
@@ -41,15 +43,19 @@ override_object_chest:
 
 override_object:
     ; Load extended Object ID
-    li      t2, current_item_data
+    li      t2, CURRENT_ITEM_DATA
     lhu     t3, 0x04 (t2)
     beq     t3, 0xFFFF, @@return
     nop
 
-    ; override object id
+    ; Override object ID
     ori     a1, t3, 0
 
 @@return:
+    ; Clear any pending special item, now that it's being received
+    li      t3, PENDING_SPECIAL_ITEM
+    sb      r0, 0x00 (t3)
+
     jr ra
     nop
 
@@ -57,7 +63,7 @@ override_object:
 
 override_graphic:
     ; Load extended Graphic ID
-    li      t0, current_item_data
+    li      t0, CURRENT_ITEM_DATA
     lb      t1, 0x02 (t0)
     beq     t1, -1, @@return
     nop
@@ -135,46 +141,107 @@ override_action:
 
 ;==================================================================================================
 
-; Take away tunics/shields that are about to be received, to avoid breaking NPCs who give them
+every_frame:
+    sw      a0, 0x68 (sp)
+    sw      a1, 0x6C (sp)
+    sw      a2, 0x70 (sp)
+    sw      a3, 0x74 (sp)
+    addiu   sp, sp, -0x18
+    sw      v1, 0x10 (sp)
+    sw      ra, 0x14 (sp)
 
-inventory_fix:
-    ; v0 = item ID
-    li      t0, SAVE_CONTEXT
+    li      t0, PENDING_SPECIAL_ITEM
+    lb      t0, 0x00 (t0)
+    beqz    t0, @@no_pending_item
+    nop
+    li      t1, PLAYER_ACTOR
+    sb      t0, 0x0424 (t1)
+    sw      t1, 0x0428 (t1)
+    jal     store_item_data
+    nop
+@@no_pending_item:
 
-    bne     v0, 0x2C, @@not_goron_tunic
-    lb      t1, 0x9C (t0)
-    andi    t1, t1, 0xFD
-    sb      t1, 0x9C (t0)
-@@not_goron_tunic:
-    bne     v0, 0x2D, @@not_zora_tunic
-    lb      t1, 0x9C (t0)
-    andi    t1, t1, 0xFB
-    sb      t1, 0x9C (t0)
-@@not_zora_tunic:
-    bne     v0, 0x29, @@not_deku_shield
-    lb      t1, 0x9D (t0)
-    andi    t1, t1, 0xEF
-    sb      t1, 0x9D (t0)
-@@not_deku_shield:
-    bne     v0, 0x2A, @@not_hylian_shield
-    lb      t1, 0x9D (t0)
-    andi    t1, t1, 0xDF
-    sb      t1, 0x9D (t0)
-@@not_hylian_shield:
+    lw      v1, 0x10 (sp)
+    lw      ra, 0x14 (sp)
+    addiu   sp, sp, 0x18
+    lw      a0, 0x68 (sp)
+    lw      a1, 0x6C (sp)
+    lw      a2, 0x70 (sp)
+    lw      a3, 0x74 (sp)
+
+    lh      t6, 0x13C4 (v1) ; Displaced code
+
     jr      ra
-    addu    a2, t7, t8 ; displaced code
+    nop
+
+;==================================================================================================
+
+override_item_fairy_cutscene:
+    ; a0 = global context
+    ; a2 = fairy actor
+    lw      t0, 0x1D2C (a0) ; Load switch flags
+    li      t1, 1
+    sll     t1, t1, 0x18
+    and     v0, t0, t1 ; Isolate ZL switch
+    beqz    v0, @@return
+    nop
+
+    lhu     t2, 0xA4 (a0) ; Load scene number
+    bne     t2, 0x3D, @@return ; Use default behavior unless this is an item fairy
+    nop
+
+    lhu     t2, 0x02DC (a2) ; Load item fairy index
+    li      t3, 1
+    sllv    t3, t3, t2 ; t3 = fairy item mask
+    li      t4, SAVE_CONTEXT
+    lbu     t5, 0x0EF2 (t4) ; Load fairy item flags
+    and     t6, t5, t3
+    bnez    t6, @@return ; Use default behavior if the item is already obtained
+    nop
+    or      t5, t5, t3
+    sb      t5, 0x0EF2 (t4) ; Mark fairy item as obtained
+
+    nor     t1, t1, t1
+    and     t0, t0, t1 ; Unset ZL switch
+    sw      t0, 0x1D2C (a0)
+
+    ; Load fairy item and mark it as pending
+    li      t0, FAIRY_ITEMS
+    addu    t0, t0, t2
+    lb      t0, 0x00 (t0)
+    li      t1, PENDING_SPECIAL_ITEM
+    sb      t0, 0x00 (t1)
+
+    li      v0, 0 ; Prevent fairy animation
+
+@@return:
+    jr      ra
+    nop
+
+;==================================================================================================
+
+override_light_arrow_cutscene:
+    li      t0, LIGHT_ARROW_ITEM
+    lb      t0, 0x00 (t0)
+    li      t1, PENDING_SPECIAL_ITEM
+    sb      t0, 0x00 (t1)
+    jr      ra
+    nop
 
 ;==================================================================================================
 
 store_item_data_hook:
+    sb      a2, 0x0424 (a3) ; Displaced code
+
     addiu   sp, sp, -0x18
     sw      v0, 0x10 (sp)
+    sw      ra, 0x14 (sp)
 
-    sb      a2, 0x0424 (a3) ; Displaced code
     jal     store_item_data
     nop
 
     lw      v0, 0x10 (sp)
+    lw      ra, 0x14 (sp)
     addiu   sp, sp, 0x18
     jr      ra
     nop
@@ -245,9 +312,9 @@ store_item_data:
     ; - They receive a pointer to the save context in a0
     ; - They receive their item ID in s0
     ; - They store their result in v0
-    lw      t2, 0x0C (t1) ; t2 = upgrade function
+    lw      t0, 0x0C (s2) ; t0 = upgrade function
     li      a0, SAVE_CONTEXT
-    jalr    t2
+    jalr    t0
     nop
     ; If the upgrade function returned a new item ID, start resolution over again
     bne     v0, s0, @@resolve_item

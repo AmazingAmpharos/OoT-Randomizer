@@ -22,6 +22,7 @@
 .area 0x600, 0
 .include "config.asm"
 .include "item_data.asm" ; Placed here temporarily, won't fit in the code area
+.include "menu.asm" ; Placed here temporarily, won't fit in the code area
 .endarea
 
 ; 0x600 - 0x9FF: Currently reserved for code blocks written by Rom.py
@@ -33,7 +34,6 @@
 .include "state.asm"
 .include "items.asm"
 .include "fixes.asm"
-.include "menu.asm"
 .endarea
 
 .close

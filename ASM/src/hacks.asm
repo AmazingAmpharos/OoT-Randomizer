@@ -123,19 +123,35 @@
 ; Special item sources
 ;==================================================================================================
 
+; Runs every frame (part of player actor)
 ; Replaces:
-;   sw      r0, 0x0428 (s0)
-;   sw      r0, 0x0118 (v1)
-.org 0xBCDD6C ; In memory: 0x80388D5C
-    jal     item_source_clear
-    sw      r0, 0x0118 (v1)
+;   sw      a1, 0x006C (sp)
+;   lh      t6, 0x13C4 (v1)
+.org 0xBE5990 ; In memory: 0x803A0980
+    jal     every_frame
+    nop
 
+; Override cutscene for Great Fairy items
 ; Replaces:
-;   sw      r0, 0x0428 (s0)
-;   sh      t0, 0x0426 (s0)
-.org 0xBE5730 ; In memory: 0x803A0720
-    jal     item_source_clear
-    sh      t0, 0x0426 (s0)
+;   jal     0x8002049C
+;   addiu   a1, r0, 0x0038
+.org 0xC89744 ; In memory: 0x801E3884
+    jal     override_item_fairy_cutscene
+    addiu   a1, r0, 0x0038
+
+; Override Light Arrow cutscene
+; Replaces:
+;   addiu   t8, r0, 0x0053
+;   ori     t9, r0, 0xFFF8
+;   sw      t8, 0x0000 (s0)
+;   b       0x80056F84
+;   sw      t9, 0x0008 (s0)
+.org 0xACCE88 ; In memory: 0x80056F28
+    jal     override_light_arrow_cutscene
+    nop
+    nop
+    nop
+    nop
 
 ;==================================================================================================
 ; Menu hacks
