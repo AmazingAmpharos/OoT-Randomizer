@@ -20,12 +20,6 @@ def set_overrides(world):
 
             if loc.type == 'Grotto':
                 base_item = "Bombs (20)"
-            elif (0x89 <= loc.item.index <= 0x91) and (loc.scene == 0x3D or loc.name == "Zelda"):
-                # Temporary hack: Zelda and Great Fairies can't currently accept extended items,
-                # so if an extended bottle was placed there, replace it with milk.
-                loc.item = ItemFactory("Bottle with Milk")
-                loc.item.location = loc
-                continue
             elif loc.item.index >= 0x80:
                 base_item = available_base_items.pop(0)
                 if not base_item:
@@ -35,13 +29,11 @@ def set_overrides(world):
 
             if (scene is None):
                 raise RuntimeError("Can't place extended item %s in location %s" % (loc.item.name, loc.name))
-            loc.override_item = loc.item
-            loc.item = ItemFactory(base_item)
-            loc.item.location = loc
+            loc.base_item = ItemFactory(base_item)
 
 def get_overrides(world):
     filled = world.get_locations()
-    result = [(loc.scene, loc.item.index, loc.override_item.index) for loc in filled if loc.override_item]
+    result = [(loc.scene, loc.base_item.index, loc.item.index) for loc in filled if loc.base_item]
     result.sort()
     return result
 

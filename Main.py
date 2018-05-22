@@ -70,9 +70,6 @@ def main(args, seed=None):
 
     outfilebase = 'OoT_%s%s%s%s_%s' % (world.bridge, "-openforest" if world.open_forest else "", "-opendoor" if world.open_door_of_time else "", "-beatableonly" if world.check_beatable_only else "",  world.seed)
 
-    if args.create_spoiler:
-        world.spoiler.to_file(output_path('%s_Spoiler.txt' % outfilebase))
-
     if not args.suppress_rom:
         set_overrides(world)
         rom = LocalRom(args.rom)
@@ -88,6 +85,9 @@ def main(args, seed=None):
                 subprocess.call(["Compress/Compress.out", ('%s.z64' % outfilebase)])
             else:
                 logger.info('OS not supported for compression')
+
+    if args.create_spoiler:
+        world.spoiler.to_file(output_path('%s_Spoiler.txt' % outfilebase))
 
     logger.info('Done. Enjoy.')
     logger.debug('Total Time: %s', time.clock() - start)
