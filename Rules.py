@@ -392,21 +392,7 @@ def global_rules(world):
     set_rule(world.get_location('GS99'), lambda state: state.has('Song of Time') and (state.has('Bow') or state.has('Progressive Hookshot') or state.has('Bomb Bag')))
     set_rule(world.get_location('GS100'), lambda state: state.has('Progressive Strength Upgrade', 2) and state.has('Small Key (Spirit Temple)', 3) and state.is_adult() and (state.has('Progressive Hookshot') or state.has('Hover Boots')))
 
-    # Prevent progressive items from appearing in places they won't work.
-    for location in ['Hyrule Castle Fairy Reward', 'Zoras Fountain Fairy Reward', 'Desert Colossus Fairy Reward', 'Zelda']:
-        forbid_item(world.get_location(location), 'Progressive Hookshot')
-        forbid_item(world.get_location(location), 'Progressive Strength Upgrade')
-        forbid_item(world.get_location(location), 'Progressive Scale')
-        forbid_item(world.get_location(location), 'Progressive Wallet')
-        forbid_item(world.get_location(location), 'Bow')
-        forbid_item(world.get_location(location), 'Slingshot')
-        forbid_item(world.get_location(location), 'Bomb Bag')
-        forbid_item(world.get_location(location), 'Deku Stick Capacity')
-        forbid_item(world.get_location(location), 'Deku Nut Capacity')
-        forbid_item(world.get_location(location), 'Biggoron Sword')
-        forbid_item(world.get_location(location), 'Ice Trap')
-
-    for location in ['Darunias Joy', 'Diving Minigame', 'Child Fishing', 'Adult Fishing', 'Diving in the Lab', 'Link the Goron', 'King Zora Thawed', 'Dog Lady', 'Skull Kid', 'Ocarina Memory Game', '10 Gold Skulltulla Reward', '20 Gold Skulltulla Reward', '30 Gold Skulltulla Reward', '40 Gold Skulltulla Reward', '50 Gold Skulltulla Reward', 'Man on Roof', 'Frog Ocarina Game', 'Frogs in the Rain', 'Horseback Archery 1000 Points', 'Horseback Archery 1500 Points', 'Child Shooting Gallery', 'Adult Shooting Gallery', 'Target in Woods', 'Deku Theater Skull Mask', 'Deku Theater Mask of Truth', 'Anju as Adult', 'Biggoron', 'Anjus Chickens', 'Talons Chickens', '10 Big Poes', 'Rolling Goron as Child']:
+    for location in ['Darunias Joy', 'Diving Minigame', 'Child Fishing', 'Adult Fishing', 'Diving in the Lab', 'Link the Goron', 'King Zora Thawed', 'Dog Lady', 'Skull Kid', 'Ocarina Memory Game', '10 Gold Skulltulla Reward', '20 Gold Skulltulla Reward', '30 Gold Skulltulla Reward', '40 Gold Skulltulla Reward', '50 Gold Skulltulla Reward', 'Man on Roof', 'Frog Ocarina Game', 'Frogs in the Rain', 'Horseback Archery 1000 Points', 'Horseback Archery 1500 Points', 'Child Shooting Gallery', 'Adult Shooting Gallery', 'Target in Woods', 'Deku Theater Skull Mask', 'Deku Theater Mask of Truth', 'Anju as Adult', 'Biggoron', 'Anjus Chickens', 'Talons Chickens', '10 Big Poes', 'Rolling Goron as Child', 'Hyrule Castle Fairy Reward', 'Zoras Fountain Fairy Reward', 'Desert Colossus Fairy Reward', 'Zelda']:
         forbid_item(world.get_location(location), 'Recovery Heart')
         forbid_item(world.get_location(location), 'Arrows (5)')
         forbid_item(world.get_location(location), 'Arrows (10)')
