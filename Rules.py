@@ -105,7 +105,7 @@ def global_rules(world):
     set_rule(world.get_location('Dodongos Cavern End of Bridge Chest'), lambda state: state.has('Bomb Bag') or ((state.has('Bow') or state.has('Hover Boots')) and state.is_adult() and state.has('Hammer')))
     set_rule(world.get_entrance('Dodongos Cavern Bomb Drop'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Song from Saria'), lambda state: state.has('Zeldas Letter'))
-    set_rule(world.get_entrance('Mountain Summit Fairy'), lambda state: state.has('Bomb Bag'))
+    set_rule(world.get_entrance('Mountain Summit Fairy'), lambda state: state.can_blast())
     set_rule(world.get_location('Crater Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_location('Mountain Summit Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_entrance('Mountain Crater Entrance'), lambda state: state.can_blast())
@@ -160,6 +160,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Forest Temple Twisted Hall'), lambda state: state.has('Small Key (Forest Temple)', 3))
     set_rule(world.get_entrance('Forest Temple Straightened Hall'), lambda state: state.has('Small Key (Forest Temple)', 2) and state.has('Bow'))
     set_rule(world.get_entrance('Forest Temple Drop to Falling Room'), lambda state: state.has('Small Key (Forest Temple)', 5) and (state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter'))))
+    set_rule(world.get_location('Forest Temple Block Push Chest'), lambda state: state.has('Bow') and state.is_adult())
     set_rule(world.get_location('Forest Temple Red Poe Chest'), lambda state: state.has('Bow') and state.is_adult())
     set_rule(world.get_location('Forest Temple Blue Poe Chest'), lambda state: state.has('Bow') and state.is_adult())
     set_rule(world.get_location('Phantom Ganon'), lambda state: state.has('Boss Key (Forest Temple)'))
@@ -200,16 +201,16 @@ def global_rules(world):
     set_rule(world.get_location('King Zora Thawed'), lambda state: state.has_bottle() and (state.can_reach('Ice Cavern') or state.can_reach('Ganons Castle Water Trial') or state.has('Progressive Wallet', 2)))
     set_rule(world.get_entrance('Water Temple Entrance'), lambda state: state.is_adult() and (state.has('Zora Tunic') or (state.has('Progressive Wallet', 2) and state.has_bottle())) and state.has('Iron Boots') and state.has('Progressive Hookshot'))
     set_rule(world.get_entrance('Water Temple Central Pillar'), lambda state: (state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter')) or state.has('Small Key (Water Temple)', 5)) and state.has('Zeldas Lullaby'))
-    set_rule(world.get_entrance('Water Temple Upper Locked Door'), lambda state: state.has('Small Key (Water Temple)', 5))
+    set_rule(world.get_entrance('Water Temple Upper Locked Door'), lambda state: state.has('Small Key (Water Temple)', 5) and (state.has('Zeldas Lullaby') or world.keysanity))
     set_rule(world.get_location('Water Temple Torches Chest'), lambda state: (state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter'))) and state.has('Zeldas Lullaby'))
-    set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: (state.has('Progressive Strength Upgrade') and state.has('Zeldas Lullaby')) or (state.has('Small Key (Water Temple)', 6) and state.has('Song of Time') and state.has('Bow')))
+    set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: (state.has('Progressive Strength Upgrade') and state.has('Zeldas Lullaby')) or (state.has('Small Key (Water Temple)', 6) and (state.has('Zeldas Lullaby') or world.keysanity) and state.has('Song of Time') and state.has('Bow')))
     set_rule(world.get_location('Water Temple Central Bow Target Chest'), lambda state: state.has('Bow') and state.has('Progressive Strength Upgrade') and state.has('Zeldas Lullaby') and (state.has('Hover Boots') or state.has('Progressive Hookshot', 2)))
     set_always_allow(world.get_location('Water Temple Boss Key Chest'), lambda state, item: item.name == 'Small Key (Water Temple)')
-    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and ((state.has('Bomb Bag') and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.has('Progressive Hookshot', 2)) or item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)') #If key for key, this lets the logic reduce the small key reqs for every other locked door.
+    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and (state.has('Zeldas Lullaby') or world.keysanity) and ((state.has('Bomb Bag') and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.has('Progressive Hookshot', 2)) or item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)') #If key for key, this lets the logic reduce the small key reqs for every other locked door.
     set_rule(world.get_location('Morpha'), lambda state: state.has('Boss Key (Water Temple)') and state.has('Progressive Hookshot', 2))
     set_rule(world.get_location('Water Temple Cracked Wall Chest'), lambda state: state.has('Bomb Bag'))
-    set_rule(world.get_location('Water Temple Dark Link Chest'), lambda state: state.has('Small Key (Water Temple)', 6))
-    set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.has('Song of Time') and state.has('Bow'))
+    set_rule(world.get_location('Water Temple Dark Link Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and (state.has('Zeldas Lullaby') or world.keysanity))
+    set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.has('Song of Time') and state.has('Bow') and (state.has('Zeldas Lullaby') or world.keysanity))
     set_rule(world.get_location('Sheik in Kakariko'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion'))
     set_rule(world.get_entrance('Graveyard Warp Pad'), lambda state: state.has('Nocturne of Shadow'))
     set_rule(world.get_entrance('Shadow Temple Entrance'), lambda state: state.has('Dins Fire') and state.has('Magic Meter') and state.has('Lens of Truth') and state.is_adult() and (state.has('Hover Boots') or state.has('Progressive Hookshot')))
@@ -404,8 +405,8 @@ def global_rules(world):
         forbid_item(world.get_location(location), 'Deku Nuts (10)')
         forbid_item(world.get_location(location), 'Ice Trap')
 
-    for location in ['Bombchu Bowling Bomb Bag', 'Bombchu Bowling Piece of Heart', 'Deku Salesman Woods', 'Deku Salesman Lost Woods Grotto', 'Deku Salesman Hyrule Field Grotto', 'Underwater Bottle']:
+    for location in ['Bombchu Bowling Bomb Bag', 'Bombchu Bowling Piece of Heart', 'Deku Salesman Woods', 'Deku Salesman Lost Woods Grotto', 'Deku Salesman Hyrule Field Grotto', 'Underwater Bottle', 'Hyrule Castle Fairy Reward', 'Zoras Fountain Fairy Reward', 'Desert Colossus Fairy Reward']:
         forbid_item(world.get_location(location), 'Ice Trap')
 
-    for location in ['Treasure Chest Game']:
+    for location in ['Treasure Chest Game', 'Zelda']:
         forbid_item(world.get_location(location), 'Ice Trap')
