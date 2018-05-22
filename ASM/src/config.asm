@@ -2,7 +2,7 @@
 ; Settings and tables which the front-end may write
 ;==================================================================================================
 
-; 0x80400000: Item override table:
+; 0x03480000: Item override table:
 ;
 ; This table changes the meaning of a given item ID within a given scene. It must be terminated with
 ; two 0x00 bytes (which will happen by default as long as you don't fill the allotted space).
@@ -28,7 +28,7 @@
 ITEM_OVERRIDES:
 .endarea
 
-; 0x80400200: Special items
+; 0x03480200: Special items
 
 FAIRY_ITEMS:
 .byte 0x00 ; Farore's Wind Fairy
