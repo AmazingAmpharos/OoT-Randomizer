@@ -34,8 +34,27 @@ def guiMain(args=None):
     def open_output():
         open_file(output_path(''))
 
+    outputVar = StringVar()
+    outputLabel = Label(farBottomFrame, text='Output Directory')
+    outputEntry = Entry(farBottomFrame, textvariable=outputVar)
+	
+    
+	
+    def OutputDirectorySelect():
+        outputDirectory = filedialog.askdirectory()
+        outputVar.set(outputDirectory)
+		
+    outputDirectorySelectButton = Button(farBottomFrame, text='Select Output Directory', command=OutputDirectorySelect)
+    
+    
+		
     openOutputButton = Button(farBottomFrame, text='Open Output Directory', command=open_output)
-
+    
+    outputLabel.pack(side=LEFT)
+    outputEntry.pack(side=LEFT)
+    outputDirectorySelectButton.pack(side=LEFT)
+    openOutputButton.pack(side=RIGHT)		
+	
     if os.path.exists(local_path('README.html')):
         def open_readme():
             open_file(local_path('README.html'))
@@ -133,6 +152,7 @@ def guiMain(args=None):
         guiargs.beatableonly = bool(beatableOnlyVar.get())
         guiargs.hints = bool(hintsVar.get())
         guiargs.rom = romVar.get()
+        guiargs.output = outputVar.get()
         try:
             if guiargs.count is not None:
                 seed = guiargs.seed
@@ -152,9 +172,7 @@ def guiMain(args=None):
     seedEntry.pack(side=LEFT)
     countLabel.pack(side=LEFT, padx=(5, 0))
     countSpinbox.pack(side=LEFT)
-    generateButton.pack(side=LEFT, padx=(5, 0))
-
-    openOutputButton.pack(side=RIGHT)
+    generateButton.pack(side=LEFT, padx=(5, 0))    
 
     drowDownFrame.pack(side=LEFT)
     rightHalfFrame.pack(side=RIGHT)

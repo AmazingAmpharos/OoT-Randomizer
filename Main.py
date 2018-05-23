@@ -76,7 +76,6 @@ def main(args, seed=None):
         rompath = output_path('%s.z64' % outfilebase)
         if args.output is not None:
             rompath = os.path.join(args.output,'%s.z64' % outfilebase)
-            spoilerpath = os.path.join(args.output,'%s_Spoiler.txt' % outfilebase)
 
         rom.write_to_file(rompath)
         if args.compress_rom:
@@ -92,6 +91,8 @@ def main(args, seed=None):
 
     if args.create_spoiler:
         spoilerpath = output_path('%s_Spoiler.txt' % outfilebase)
+        if args.output is not None:
+            spoilerpath = os.path.join(args.output, '%s_Spoiler.txt' % outfilebase)
         world.spoiler.to_file(spoilerpath)
 
     logger.info('Done. Enjoy.')

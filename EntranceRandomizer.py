@@ -75,7 +75,7 @@ def start():
         sys.exit(0)
 
     # ToDo: Validate files further than mere existance
-    if not os.path.isfile(args.rom):
+    if not os.path.isfile(args.rom) and not args.suppress_rom:
         input('Could not find valid base rom for patching at expected path %s. Please run with -h to see help for further information. \nPress Enter to exit.' % args.rom)
         sys.exit(1)
 		
