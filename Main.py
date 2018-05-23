@@ -22,7 +22,7 @@ __version__ = '1.0.0'
 
 def main(args, seed=None):
     start = time.clock()
-
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     # initialize the world
     world = World(args.bridge, args.open_forest, args.open_door_of_time, not args.nodungeonitems, args.beatableonly, args.hints)
     logger = logging.getLogger('')
