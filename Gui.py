@@ -30,15 +30,16 @@ def guiMain(args=None):
     # Shared Controls
 
     farBottomFrame = Frame(mainWindow)
-
-    def open_output():
-        open_file(output_path(''))
-
+	
     outputVar = StringVar()
     outputLabel = Label(farBottomFrame, text='Output Directory')
     outputEntry = Entry(farBottomFrame, textvariable=outputVar)
-	
     
+    def open_output():
+        if os.path.isdir(outputVar.get()):
+            open_file(outputVar.get())
+        else:
+            open_file(output_path(''))
 	
     def OutputDirectorySelect():
         outputDirectory = filedialog.askdirectory()
