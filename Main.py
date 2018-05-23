@@ -69,12 +69,11 @@ def main(args, seed=None):
     logger.info('Patching ROM.')
 
     outfilebase = 'OoT_%s%s%s%s_%s' % (world.bridge, "-openforest" if world.open_forest else "", "-opendoor" if world.open_door_of_time else "", "-beatableonly" if world.check_beatable_only else "",  world.seed)
-
+	
     if not args.suppress_rom:
         rom = LocalRom(args.rom)
         patch_rom(world, rom)
         rompath = output_path('%s.z64' % outfilebase)
-        spoilerpath = output_path('%s_Spoiler.txt' % outfilebase)
         if args.output is not None:
             rompath = os.path.join(args.output,'%s.z64' % outfilebase)
             spoilerpath = os.path.join(args.output,'%s_Spoiler.txt' % outfilebase)
@@ -92,6 +91,7 @@ def main(args, seed=None):
                 logger.info('OS not supported for compression')
 
     if args.create_spoiler:
+        spoilerpath = output_path('%s_Spoiler.txt' % outfilebase)
         world.spoiler.to_file(spoilerpath)
 
     logger.info('Done. Enjoy.')
