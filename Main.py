@@ -6,6 +6,7 @@ import platform
 import random
 import subprocess
 import time
+import os
 
 from BaseClasses import World, CollectionState, Item
 from Regions import create_regions
@@ -21,7 +22,7 @@ __version__ = '1.0.0'
 
 def main(args, seed=None):
     start = time.clock()
-
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     # initialize the world
     world = World(args.bridge, args.open_forest, args.open_door_of_time, not args.nodungeonitems, args.beatableonly, args.hints)
     logger = logging.getLogger('')
@@ -68,24 +69,31 @@ def main(args, seed=None):
     logger.info('Patching ROM.')
 
     outfilebase = 'OoT_%s%s%s%s_%s' % (world.bridge, "-openforest" if world.open_forest else "", "-opendoor" if world.open_door_of_time else "", "-beatableonly" if world.check_beatable_only else "",  world.seed)
-
+	
     if not args.suppress_rom:
         rom = LocalRom(args.rom)
         patch_rom(world, rom)
-        rom.write_to_file(output_path('%s.z64' % outfilebase))
+        rompath = output_path('%s.z64' % outfilebase)
+        if args.output is not None:
+            rompath = os.path.join(args.output,'%s.z64' % outfilebase)
+
+        rom.write_to_file(rompath)
         if args.compress_rom:
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
-                subprocess.call(["Compress\Compress.exe", ('%s.z64' % outfilebase)])
+                subprocess.call(["Compress\Compress.exe", rompath])
             elif platform.system() == 'Linux':
-                subprocess.call(["Compress/Compress", ('%s.z64' % outfilebase)])
+                subprocess.call(["Compress/Compress", rompath])
             elif platform.system() == 'Darwin':
-                subprocess.call(["Compress/Compress.out", ('%s.z64' % outfilebase)])
+                subprocess.call(["Compress/Compress.out", rompath])
             else:
                 logger.info('OS not supported for compression')
 
     if args.create_spoiler:
-        world.spoiler.to_file(output_path('%s_Spoiler.txt' % outfilebase))
+        spoilerpath = output_path('%s_Spoiler.txt' % outfilebase)
+        if args.output is not None:
+            spoilerpath = os.path.join(args.output, '%s_Spoiler.txt' % outfilebase)
+        world.spoiler.to_file(spoilerpath)
 
     logger.info('Done. Enjoy.')
     logger.debug('Total Time: %s', time.clock() - start)

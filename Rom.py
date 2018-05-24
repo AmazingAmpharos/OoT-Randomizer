@@ -14,7 +14,6 @@ from TextArray import text_array
 class LocalRom(object):
 
     def __init__(self, file, patch=True):
-        os.chdir(os.path.dirname(os.path.realpath(__file__)))
         with open(file, 'rb') as stream:
             self.buffer = read_rom(stream)
         file_name = os.path.splitext(file)
