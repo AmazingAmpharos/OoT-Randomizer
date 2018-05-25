@@ -1,31 +1,33 @@
-; Take away tunics/shields that are about to be received, to avoid breaking NPCs who give them
-
-inventory_fix:
-    ; v0 = item ID
+inventory_check:
+    andi    a0, a0, 0xFF
     li      t0, SAVE_CONTEXT
 
-    bne     v0, 0x2C, @@not_goron_tunic
-    lb      t1, 0x9C (t0)
-    andi    t1, t1, 0xFD
-    sb      t1, 0x9C (t0)
-@@not_goron_tunic:
-    bne     v0, 0x2D, @@not_zora_tunic
-    lb      t1, 0x9C (t0)
-    andi    t1, t1, 0xFB
-    sb      t1, 0x9C (t0)
-@@not_zora_tunic:
-    bne     v0, 0x29, @@not_deku_shield
-    lb      t1, 0x9D (t0)
-    andi    t1, t1, 0xEF
-    sb      t1, 0x9D (t0)
-@@not_deku_shield:
-    bne     v0, 0x2A, @@not_hylian_shield
-    lb      t1, 0x9D (t0)
-    andi    t1, t1, 0xDF
-    sb      t1, 0x9D (t0)
-@@not_hylian_shield:
+    beq     a0, 0x8C, @@return ; Deku Nuts (5)
+    lbu     v0, 0x75 (t0)
+
+    beq     a0, 0x8D, @@return ; Deku Nuts (10)
+    lbu     v0, 0x75 (t0)
+
+    beq     a0, 0x00, @@return ; Deku Stick
+    lbu     v0, 0x74 (t0)
+
+    beq     a0, 0x8A, @@return ; Deku Sticks (5)
+    lbu     v0, 0x74 (t0)
+
+    beq     a0, 0x8B, @@return ; Deku Sticks (10)
+    lbu     v0, 0x74 (t0)
+
+    beq     a0, 0x78, @@return ; Small Magic Jar
+    li      v0, 0x00
+
+    beq     a0, 0x79, @@return ; Large Magic Jar
+    li      v0, 0x00
+
+    li      v0, 0xFF
+
+@@return:
     jr      ra
-    addu    a2, t7, t8 ; Displaced code
+    nop
 
 ;==================================================================================================
 
@@ -420,7 +422,7 @@ bomb_bag_upgrade:
 
 ;==================================================================================================
 
-Bow_Upgrade:
+bow_upgrade:
     lbu     t0, 0xA3 (a0) ; Load quiver from inventory
     andi    t0, t0, 0x03 ; Mask bits to isolate quiver
 

@@ -107,13 +107,13 @@
 .skip 4
     nop
 
-; Inventory fix
+; Inventory check
 ; Replaces:
-;   addu    a2, t7, t8
-;   sw      s0, 0x0118 (t9)
-.org 0xBDA094 ; In memory: 0x80395084
-    jal     inventory_fix
-    sw      s0, 0x0118 (t9)
+;   jal     0x80071420
+;   sw      a2, 0x0030 (sp)
+.org 0xBDA0A0 ; In memory: 0x80395090
+    jal     inventory_check
+    sw      a2, 0x0030 (sp)
 
 ; Prevent Silver Gauntlets warp
 ; Replaces:
