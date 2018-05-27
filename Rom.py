@@ -760,12 +760,11 @@ def patch_rom(world, rom):
     rom.write_bytes(0x10, Block_code)
 
     # Set hooks for various code
-#    rom.write_bytes(0xBD6C94, [0x0C, 0x22, 0x9E, 0xF0]) #Progressive Items Object Hook, unsure where this case is called
+#    rom.write_bytes(0xBD6C94, ...) #Progressive Items Object Hook, unsure where this case is called
     rom.write_bytes(0xB06C2C, [0x0C, 0x10, 0x01, 0x80]) #Save Writing Hook
     rom.write_bytes(0xC89A34, [0x0C, 0x10, 0x02, 0x54, 0x00, 0x00, 0x00, 0x00]) #Progessive magic meter from fairy at death mountain trail
     rom.write_bytes(0xC89A78, [0x0C, 0x10, 0x02, 0x60, 0x00, 0x00, 0x00, 0x00]) #Progessive magic meter from fairy at crater
     rom.write_bytes(0xC8B048, [0x0C, 0x10, 0x02, 0x80, 0x00, 0xA3, 0xAF, 0x21]) #Progressive items from Great Fairies (weirdness with 0xAF)
-    rom.write_bytes(0xC8D550, [0x0C, 0x10, 0x00, 0x81]) #Progressive Items Item ID Hook
 
     # Sticks on B fix
     rom.write_bytes(0xAE4B14, [0x0C, 0x10, 0x02, 0x74])
