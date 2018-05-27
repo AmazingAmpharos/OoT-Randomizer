@@ -32,7 +32,7 @@ def main(args, seed=None):
         world.seed = int(seed)
     random.seed(world.seed)
 
-    logger.info('ALttP Entrance Randomizer Version %s  -  Seed: %s\n\n', __version__, world.seed)
+    logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, world.seed)
 
     create_regions(world)
 
