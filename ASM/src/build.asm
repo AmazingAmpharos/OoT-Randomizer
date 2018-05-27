@@ -26,11 +26,19 @@
 
 ; 0x600 - 0x9FF: Currently reserved for code blocks written by Rom.py
 .skip 0x110
+
 .area 0xE0, 0
 .include "menu.asm" ; Placed here temporarily, won't fit in the code area
 .include "fixes.asm" ; Placed here temporarily, won't fit in the code area
 .endarea
-.skip 0x210
+
+.skip 0x70
+
+.area 0xC0, 0
+.include "every_frame.asm" ; Placed here temporarily, won't fit in the code area
+.endarea
+
+.skip 0xE0
 
 ; 0xA00 - 0xFFF: New code blocks
 .area 0x600, 0
