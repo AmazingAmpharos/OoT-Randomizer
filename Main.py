@@ -73,7 +73,6 @@ def main(args, seed=None):
         rom = LocalRom(args.rom)
         patch_rom(world, rom)
         rom.write_to_file(output_path('%s.z64' % outfilebase))
-        print(output_path('%s.z64' % outfilebase))
         if args.compress_rom:
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
