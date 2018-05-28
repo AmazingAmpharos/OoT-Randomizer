@@ -7,14 +7,15 @@ import subprocess
 import random
 
 from Hints import buildGossipHints, buildBossRewardHints
-from Utils import local_path
+from Utils import local_path, output_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
 
 class LocalRom(object):
 
     def __init__(self, file, patch=True):
-        os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        #os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        os.chdir(output_path(os.path.dirname(os.path.realpath(__file__))))
         with open(file, 'rb') as stream:
             self.buffer = read_rom(stream)
         file_name = os.path.splitext(file)
