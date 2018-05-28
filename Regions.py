@@ -381,7 +381,7 @@ location_table = {'Kokiri Sword Chest': (0x20A6142, None, 0x04E0, 'Chest', 0x55)
                   'Zoras Fountain Fairy Reward': (0x3480200, None, None, 'NPC', 0x3D),
                   'Desert Colossus Fairy Reward': (0x3480202, None, None, 'NPC', 0x3D),
                   'Zelda': (0x3480203, None, None, 'NPC', 0x43),
-                  'Treasure Chest Game': (0xBEF152, None, None, 'Special', 0x10),
+                  'Treasure Chest Game': (None, None, None, 'Special', 0x10),
                   'Darunias Joy': (0xCF1BFF, None, 0x54, 'NPC', 0x62),
                   'Diving Minigame': (0xE01A2B, 0xE01AA7, 0x37, 'NPC', 0x58),
                   'Child Fishing': (0xDCBFBF, None, 0x3E, 'NPC', 0x49),

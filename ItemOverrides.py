@@ -1,5 +1,3 @@
-import itertools
-
 from Items import ItemFactory
 
 
@@ -19,7 +17,9 @@ def set_overrides(world):
                 continue
 
             if loc.type == 'Grotto':
-                base_item = "Bombs (20)"
+                base_item = 'Boomerang'
+            elif loc.name == 'Treasure Chest Game':
+                base_item = 'Piece of Heart (Treasure Chest Game)'
             elif loc.item.index >= 0x80:
                 base_item = available_base_items.pop(0)
                 if not base_item:
@@ -42,24 +42,24 @@ valid_base_items = [
     'Lens of Truth',
     'Hammer',
     'Bottle',
-    'Bottle with Letter',
     'Bottle with Milk',
+    'Bottle with Letter',
+    'Skull Mask',
+    'Spooky Mask',
+    'Keaton Mask',
+    'Bunny Hood',
+    'Mask of Truth',
+    'Mirror Shield',
+    'Iron Boots',
+    'Hover Boots',
     'Stone of Agony',
+    'Goron Mask',
+    'Zora Mask',
+    'Gerudo Mask',
     'Fire Arrows',
     'Ice Arrows',
     'Light Arrows',
     'Dins Fire',
     'Farores Wind',
     'Nayrus Love',
-    'Mirror Shield',
-    'Iron Boots',
-    'Hover Boots',
-    'Keaton Mask',
-    'Skull Mask',
-    'Spooky Mask',
-    'Bunny Hood',
-    'Mask of Truth',
-    'Goron Mask',
-    'Zora Mask',
-    'Gerudo Mask',
 ]

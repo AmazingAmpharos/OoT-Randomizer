@@ -867,12 +867,8 @@ def patch_rom(world, rom):
 
         if itemid is None or location.address is None:
             continue
-        if location.type == 'Special':
-            if location.name == 'Treasure Chest Game':
-                rom.write_bytes(locationaddress, item_data[item.name])
-            else:
-                rom.write_byte(locationaddress, item_data[item.name][0])
-                rom.write_byte(secondaryaddress, item_data[item.name][3])
+        if location.type == 'Special' or location.type == 'Grotto':
+            pass # These must be handled with overrides
         elif location.type == 'Song':
             rom.write_byte(locationaddress, itemid)
             itemid = itemid + 0x0D
@@ -954,8 +950,6 @@ def patch_rom(world, rom):
                 elif location.name == 'Twinrova':
                     rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
                     rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
-        elif location.type == 'Grotto':
-            pass # These must be handled with overrides
         else:
             locationdefault = location.default & 0xF01F
             itemid = itemid | locationdefault
