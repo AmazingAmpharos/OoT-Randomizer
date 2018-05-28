@@ -14,8 +14,8 @@ from TextArray import text_array
 class LocalRom(object):
 
     def __init__(self, file, patch=True):
-        #os.chdir(os.path.dirname(os.path.realpath(__file__)))
-        os.chdir(output_path(os.path.dirname(os.path.realpath(__file__))))
+        os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        #os.chdir(output_path(os.path.dirname(os.path.realpath(__file__))))
         with open(file, 'rb') as stream:
             self.buffer = read_rom(stream)
         file_name = os.path.splitext(file)
@@ -24,14 +24,19 @@ class LocalRom(object):
         if len(self.buffer) == 33554432:
             if platform.system() == 'Windows':
                 subprocess.call(["Decompress\Decompress.exe", file, output_path('ZOOTDEC.z64')])
+                raise RuntimeError(open(output_path('ZOOTDEC.z64'))
+                with open(output_path('ZOOTDEC.z64'), 'rb') as stream:
+                    self.buffer = read_rom(stream)
             elif platform.system() == 'Linux':
                 subprocess.call(["Decompress/Decompress", file])
+                with open(("ZOOTDEC.z64"), 'rb') as stream:
+                    self.buffer = read_rom(stream)
             elif platform.system() == 'Darwin':
                 subprocess.call(["Decompress/Decompress.out", file])
+                with open(("ZOOTDEC.z64"), 'rb') as stream:
+                    self.buffer = read_rom(stream)
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
-            with open(("ZOOTDEC.z64"), 'rb') as stream:
-                self.buffer = read_rom(stream)
         # extend to 64MB
         self.buffer.extend(bytearray([0x00] * (67108864 - len(self.buffer))))
             
