@@ -24,7 +24,7 @@ class LocalRom(object):
         if len(self.buffer) == 33554432:
             if platform.system() == 'Windows':
                 subprocess.call(["Decompress\Decompress.exe", file, output_path('ZOOTDEC.z64')])
-                raise RuntimeError(open(output_path('ZOOTDEC.z64'))
+                raise RuntimeError(output_path('ZOOTDEC.z64'))
                 with open(output_path('ZOOTDEC.z64'), 'rb') as stream:
                     self.buffer = read_rom(stream)
             elif platform.system() == 'Linux':
