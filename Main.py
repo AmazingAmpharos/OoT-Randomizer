@@ -77,7 +77,6 @@ def main(args, seed=None):
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
                 subprocess.call(["Compress\Compress.exe", output_path('%s.z64' % outfilebase)])
-                raise RuntimeError(output_path('%s.z64' % outfilebase))
             elif platform.system() == 'Linux':
                 subprocess.call(["Compress/Compress", output_path('%s.z64' % outfilebase)])
             elif platform.system() == 'Darwin':
