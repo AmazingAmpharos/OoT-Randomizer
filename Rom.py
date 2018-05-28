@@ -23,7 +23,7 @@ class LocalRom(object):
             raise RuntimeError('ROM is not a valid OoT 1.0 ROM.')
         if len(self.buffer) == 33554432:
             if platform.system() == 'Windows':
-                subprocess.call(["Decompress\Decompress.exe", file])
+                subprocess.call(["Decompress\Decompress.exe", file, output_path('ZOOTDEC.z64')])
             elif platform.system() == 'Linux':
                 subprocess.call(["Decompress/Decompress", file])
             elif platform.system() == 'Darwin':
