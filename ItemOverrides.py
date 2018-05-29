@@ -1,3 +1,5 @@
+import logging
+
 from Items import ItemFactory
 
 
@@ -5,11 +7,13 @@ def set_overrides(world):
     filled = world.get_filled_locations()
     by_scene = {}
     for loc in filled:
+        if loc.scene is None:
+            continue
         locations = by_scene.get(loc.scene, [])
         locations.append(loc)
         by_scene[loc.scene] = locations
 
-    for scene, locations in by_scene.items():
+    for scene, locations in sorted(by_scene.items()):
         used_items = [loc.item.name for loc in locations]
         available_base_items = [item for item in valid_base_items if item not in used_items]
         for loc in locations:
@@ -30,6 +34,7 @@ def set_overrides(world):
             if (scene is None):
                 raise RuntimeError("Can't place extended item %s in location %s" % (loc.item.name, loc.name))
             loc.base_item = ItemFactory(base_item)
+            logging.getLogger('').debug('Override %s -> %s in scene %s', loc.base_item, loc.item, '0x{0:0{1}X}'.format(scene, 2))
 
 def get_overrides(world):
     filled = world.get_locations()
