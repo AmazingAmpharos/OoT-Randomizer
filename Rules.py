@@ -317,6 +317,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Mountain Bombable Grotto'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Mountain Storms Grotto'), lambda state: state.has('Song of Storms'))
     set_rule(world.get_entrance('Top of Crater Grotto'), lambda state: state.can_blast())
+    set_rule(world.get_entrance('Zora River Plateau Open Grotto'), lambda state: state.has('Bomb Bag') or state.has('Progressive Scale') or state.is_adult())
     set_rule(world.get_entrance('Zora River Plateau Bombable Grotto'), lambda state: state.can_blast())
     set_rule(world.get_location('GS2'), lambda state: state.has_bottle())
     set_rule(world.get_location('GS3'), lambda state: state.has('Progressive Hookshot') and state.is_adult())
