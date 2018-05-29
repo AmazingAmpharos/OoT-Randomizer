@@ -18,7 +18,7 @@ every_frame:
     ; giving the item. The game is not picky about this actor, it just needs to read a non-zero
     ; value at actor+0x0130, and it overwrites actor+0x0118. Construct a dummy actor in an usused
     ; memory area to satisfy these requirements.
-    li      t1, 0x80410000
+    li      t1, DUMMY_ACTOR
     li      t2, 1
     sw      t2, 0x130 (t1)
     li      t2, PLAYER_ACTOR
