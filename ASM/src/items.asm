@@ -17,6 +17,9 @@ inventory_check:
     beq     a0, 0x8B, @@return ; Deku Sticks (10)
     lbu     v0, 0x74 (t0)
 
+    beq     a0, 0x58, @@return ; Deku Seeds (5)
+    li      v0, 0x00
+
     beq     a0, 0x78, @@return ; Small Magic Jar
     li      v0, 0x00
 
