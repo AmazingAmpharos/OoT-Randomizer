@@ -4,21 +4,21 @@ This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
 
 # Installation
 
-Clone this repository and then run ```EntranceRandomizer.py``` (requires Python 3).
+Clone this repository and then run ```OoTRandomizer.py``` (requires Python 3).
 
 Alternatively, run ```Gui.py``` for a simple graphical user interface.
 
-For releases, a Windows standalone executable is available for users without Python 3. (Coming Soon)
+For releases, a Windows standalone executable is available for users without Python 3.
 
 This randomizer requires The Legend of Zelda: Ocarina of Time version 1.0 NTSC-US version. Upon first being run, the randomizer will automatically
 create a decompressed version of this ROM that can be used for input for slightly faster seed generation times. Please be sure your input ROM filename
-does not contain a period and is either a .n64 or .z64 file. For users playing via any means other than on real N64 hardware, the use of the
-"Compress patched ROM" flag is strongly encouraged as uncompressed ROMs are impossible to inject for the Virtual Console and have random crashing problems
-on all emulators.
+is either a .n64 or .z64 file. For users playing via any means other than on real N64 hardware, the use of the "Compress patched ROM" flag is strongly
+encouraged as uncompressed ROMs are impossible to inject for the Virtual Console and have random crashing problems on all emulators.
 
 For general use, the recommended emulators are Bizhawk and Mupen64plus. If you want to play on Project 64 for whatever reason, you can but
 you will need to set the rando to use 8 MB of RAM and will want to play with the cheat code 8109C58A 0000 to partially fix Project 64's tragically
-poor handling of OoT's pause menu.
+poor handling of OoT's pause menu. As of this 1.0 release, there are suspected crashing issues specifically with Project 64. I cannot emphasize enough
+that it is a discouraged emulator to use.
 
 # General Description
 
@@ -50,10 +50,10 @@ The following item types will be progressive chains:
 To be more clear about which NPC items are shuffled, it's NPCs who directly give you the item (so not the freestanding Pieces of Heart you can get from Dampe),
 and it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart or inventory items. The only exception is that
 even though in vanilla the reward for 40 Gold Skulltulla Tokens was just 10 Bombchus that is still a randomized reward in randomizer (but the 200 rupees for all
-100 Gold Skulltulla Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy to the player, the ocarina memory game
-in the Lost Woods will start on the final round as that minigame was very long originally. Additionally, any NPC who gives a trading quest item either for the child
-or for the adult other than Anju's initial gift as an adult does not have a randomized reward, and as a design decision, the Fairy Ocarina and Ocarina of Time are
-not randomized.
+100 Gold Skulltulla Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy to the player, the Ocarina Memory Game
+in the Lost Woods will start on the final round as that minigame was very long originally, the three day wait on the Claim Check is removed, and Bombchu Bowling will
+have a fixed sequence of prizes that is of maximum convenience to the player. Additionally, any NPC who gives a trading quest item either for the child or for the
+adult other than Anju's initial gift as an adult does not have a randomized reward, and as a design decision, the Fairy Ocarina and Ocarina of Time are not randomized.
 
 A special note is needed for the six Great Fairy Fountains scattered across Hyrule. These six fountains are randomized amongst themselves, and while they all still
 require Zelda's Lullaby to utilize, none of them require a Magic Meter to obtain the reward. The two that give variations on the Magic Meter in vanilla are modeled
@@ -111,21 +111,51 @@ possessing the Forest Medallion. The condition to learn a song from Sheik in Kak
 -The center of Death Mountain Crater as an adult can be reached from the summit as an adult by going around to the left with Hover Boots or by jumping down to the right
 and using a combination of the Longshot and Scarecrow's Song. This allows access to Sheik and the Fire Temple without a Bomb Bag.  
 -A sword must be equipped to play the fishing minigame. A Slingshot is not required for child target shooting, but the adult does need the Bow.  
--Other than those minigames, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.
+-Other than those minigames, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.  
 -In the randomizer, possessing the Bomb Bag is the requirement to get bomb drops, buy bombs or Bombchus, or play Bombchu Bowling.  
 -Only the Hookshot, not the Longshot, is needed to do everything on the rooftops of Kakariko.  
+-Grottos can be opened with either Bombs or the Hammer.  
+-The boulder maze in Goron City can be solved with the Hammer or partially with Bombs as is obvious, but less obvious is that it can be fully solved with Silver Gauntlets.  
+-The large colored blocks only encountered by the adult require Goron Bracelet to push.  
 -Adult Link can fully clear Dodongo's Cavern. He can even skip the first section by virtue of being tall.  
 -In the Forest Temple, you can reach the room with the Floormaster early by using Hover Boots in the block push room.  
 -In the Fire Temple, you can reach the Boss Key door from the beginning with Hover Boots.  
 -In the Water Temple, you can from the start with the water down jump to the middle platform level, very carefully aim the Hookshot to the target above, and pull yourself
 to the highest level of the central platform. Then a very well spaced rolling jump can reach the water changing station to raise the water to the highest level. If you
 make poor key choices in Water Temple, this may be what you need to do to untangle the situation.  
+-In the Water Temple, Hover Boots can be used to reach the vanilla Boss Key chest without going through the room that requires Bombs and block pushing. Hover Boots can
+also be used in this temple to avoid the Longshot requirement for the middle level chest that requires the Bow.  
 -In the Shadow Temple, you can avoid the need for the Longshot in the room with the invisible spikes by backflipping onto the chest for extra height.  
 -In the Spirit Temple, you can collect the silver rupees without Hover Boots by jumping directly onto the rolling boulder or with a jump slash.  
 -In the Spirit Temple, you can use the Longshot to cross from the hand with the Mirror Shield in vanilla to the other hand.  
 -While we guarantee tunics for Fire Temple and Water Temple, you can possibly force yourself to do without if you seriously let a Like Like eat the tunic and
 then do not recover the tunic. It is almost always possible to do without, but it can make things really difficult on you.  
--Several Gold Skulltulla Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).
+-Several Gold Skulltulla Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).  
+
+# Known issues
+
+Sadly for this 1.0 release a few known issues exist. These will hopefully be addressed in future versions.
+
+-The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and quit (NOT savestate) and return to fix the issue.  
+-Draining the Bottom of the Well with Song of Storms sometimes crashes on specific versions of Project 64. We aren't sure of the exact story, but this bug is easily
+avoided by playing on a different emulator.  
+-If the large rolling Goron in Goron City as a child has the same item as Link the Goron and the larger Goron's item is obtained first, Link the Goron will not give
+his item. This mostly results in items like Piece of Heart being rendered unobtainable, but if a progressive lands in both of these spots, it could make an impossible
+seed. The fix will simply be too complex to put in the 1.0 version, but this will be fixed soon.  
+-Buying the Giant's Knife may be risky in 1.0. This needs more investigation.  
+-Learning a warp song from Malon will break her script and cause Link to be unable to use the Ocarina until he leaves the current screen. Trying to switch which button
+the Ocarina is on and use it in this situation can softlock the game. This will probably be very, very hard to fix; just don't try to get cute and live with the limitation
+for now please.  
+-Learning a warp song from Guru-Guru in the Windmill also breaks his script, but there are no known significant consequences.  
+-Learning Sun's Song can warp Link out of the current cutscene in somewhat inconvenient ways. None of this should prevent completion of the seed, but it can be annoying.   
+-There's a funny bug where sometimes obtaining Biggoron Sword displays a second erroneous text box. This has no gameplay consequence.  
+-There's a reported but currently unconfirmed on modern code issue where somehow the child becomes erroneously equipped with Biggoron Sword. This should not be a disadvantage.
+-Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.  
+-The text for the Happy Mask Salesman is kinda wonky. Some of it is still slow, and one line flows out of the box. This should not impede your ability to play the game.  
+-The Gorons return to Goron City based on possessing the Fire Medallion and not based on clearing Fire Temple currently. They don't really do anything, but it may weird you
+out a bit.  
+-Mido blocks you and complains about the Deku Tree being dead based on possession of the Kokiri Emerald and not on whether you've cleared Deku Tree currently. Just talk to him
+to make him go away.  
 
 # Settings
 
@@ -196,7 +226,7 @@ well so be aware that one instance of a hint will seem to effectively vanish eve
 
 ## Seed
 
-Can be used to set a seed number to generate. Using the same seed with same settings on the same version of the entrance randomizer will always yield an identical output.
+Can be used to set a seed number to generate. Using the same seed with same settings on the same version of the randomizer will always yield an identical output.
 
 ## Count
 
