@@ -33,7 +33,7 @@ def main(args, seed=None):
         world.seed = int(seed)
     random.seed(world.seed)
 
-    logger.info('ALttP Entrance Randomizer Version %s  -  Seed: %s\n\n', __version__, world.seed)
+    logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, world.seed)
 
     create_regions(world)
 
@@ -78,7 +78,7 @@ def main(args, seed=None):
         if args.compress_rom:
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
-                subprocess.call(["Compress\Compress.exe", ('%s.z64' % outfilebase)])
+                subprocess.call(["Compress\Compress.exe", (output_path('%s.z64' % outfilebase)), (output_path('%s-comp.z64' % outfilebase))])
             elif platform.system() == 'Linux':
                 subprocess.call(["Compress/Compress", ('%s.z64' % outfilebase)])
             elif platform.system() == 'Darwin':

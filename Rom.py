@@ -8,7 +8,7 @@ import subprocess
 import random
 
 from Hints import buildGossipHints, buildBossRewardHints
-from Utils import local_path
+from Utils import local_path, output_path
 from Items import ItemFactory, item_data
 from ItemOverrides import get_overrides
 from TextArray import text_array
@@ -17,6 +17,7 @@ class LocalRom(object):
 
     def __init__(self, file, patch=True):
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        #os.chdir(output_path(os.path.dirname(os.path.realpath(__file__))))
         with open(file, 'rb') as stream:
             self.buffer = read_rom(stream)
         file_name = os.path.splitext(file)
@@ -24,15 +25,19 @@ class LocalRom(object):
             raise RuntimeError('ROM is not a valid OoT 1.0 ROM.')
         if len(self.buffer) == 33554432:
             if platform.system() == 'Windows':
-                subprocess.call(["Decompress\Decompress.exe", file])
+                subprocess.call(["Decompress\Decompress.exe", file, output_path('ZOOTDEC.z64')])
+                with open((output_path('ZOOTDEC.z64')), 'rb') as stream:
+                    self.buffer = read_rom(stream)
             elif platform.system() == 'Linux':
                 subprocess.call(["Decompress/Decompress", file])
+                with open(("ZOOTDEC.z64"), 'rb') as stream:
+                    self.buffer = read_rom(stream)
             elif platform.system() == 'Darwin':
                 subprocess.call(["Decompress/Decompress.out", file])
+                with open(("ZOOTDEC.z64"), 'rb') as stream:
+                    self.buffer = read_rom(stream)
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
-            with open(("ZOOTDEC.z64"), 'rb') as stream:
-                self.buffer = read_rom(stream)
         # extend to 64MB
         self.buffer.extend(bytearray([0x00] * (67108864 - len(self.buffer))))
             
@@ -141,6 +146,10 @@ def patch_rom(world, rom):
     # Change Goron Shop check to Bomb Bag
     rom.write_bytes(0x00C6ED86, [0x00, 0xA2])
     rom.write_bytes(0x00C6ED8A, [0x00, 0x18])
+
+    # Change graveyard graves to not allow grabbing on to the ledge
+    # rom.write_byte(0x0202039D, 0x20)
+    # rom.write_byte(0x0202043C, 0x24)
 
     # Fix Link the Goron to always work
     rom.write_bytes(0xED2FAC, [0x80, 0x6E, 0x0F, 0x18])

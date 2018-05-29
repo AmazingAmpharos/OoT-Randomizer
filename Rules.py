@@ -211,7 +211,7 @@ def global_rules(world):
     set_rule(world.get_location('Water Temple Cracked Wall Chest'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Water Temple Dark Link Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and (state.has('Zeldas Lullaby') or world.keysanity))
     set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.has('Song of Time') and state.has('Bow') and (state.has('Zeldas Lullaby') or world.keysanity))
-    set_rule(world.get_location('Sheik in Kakariko'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion'))
+    set_rule(world.get_location('Sheik in Kakariko'), lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.is_adult())
     set_rule(world.get_entrance('Graveyard Warp Pad'), lambda state: state.has('Nocturne of Shadow'))
     set_rule(world.get_entrance('Shadow Temple Entrance'), lambda state: state.has('Dins Fire') and state.has('Magic Meter') and state.has('Lens of Truth') and state.is_adult() and (state.has('Hover Boots') or state.has('Progressive Hookshot')))
     set_rule(world.get_entrance('Shadow Temple First Pit'), lambda state: state.has('Hover Boots'))
