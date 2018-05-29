@@ -15,6 +15,7 @@ from Rules import set_rules
 from Dungeons import create_dungeons, fill_dungeons_restrictive
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
+from ItemOverrides import set_overrides
 from Utils import output_path
 
 __version__ = '1.0.0'
@@ -70,6 +71,7 @@ def main(args, seed=None):
     outfilebase = 'OoT_%s%s%s%s_%s' % (world.bridge, "-openforest" if world.open_forest else "", "-opendoor" if world.open_door_of_time else "", "-beatableonly" if world.check_beatable_only else "",  world.seed)
 
     if not args.suppress_rom:
+        set_overrides(world)
         rom = LocalRom(args.rom)
         patch_rom(world, rom)
         rom.write_to_file(output_path('%s.z64' % outfilebase))

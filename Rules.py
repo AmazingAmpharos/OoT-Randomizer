@@ -301,8 +301,9 @@ def global_rules(world):
     set_rule(world.get_location('Ganons Castle Light Trail Invisible Enemies Chest'), lambda state: state.has('Magic Meter') and state.has('Lens of Truth'))
     set_rule(world.get_location('Ganons Castle Light Trial Lullaby Chest'), lambda state: state.has('Zeldas Lullaby') and state.has('Small Key (Ganons Castle)', 1))
     set_rule(world.get_location('Ganon'), lambda state: state.has('Boss Key (Ganons Castle)'))
-    set_rule(world.get_entrance('Forest Generic Grotto'), lambda state: state.can_blast())
-    set_rule(world.get_entrance('Forest Sales Grotto'), lambda state: state.can_blast())
+    set_rule(world.get_entrance('Kokiri Forest Storms Grotto'), lambda state: state.has('Song of Storms'))
+    set_rule(world.get_entrance('Lost Woods Generic Grotto'), lambda state: state.can_blast())
+    set_rule(world.get_entrance('Lost Woods Sales Grotto'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Front of Meadow Grotto'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Remote Southern Grotto'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Field Near Lake Inside Fence Grotto'), lambda state: state.can_blast())
@@ -314,9 +315,9 @@ def global_rules(world):
     set_rule(world.get_entrance('Castle Storms Grotto'), lambda state: state.has('Song of Storms'))
     set_rule(world.get_entrance('Kakariko Bombable Grotto'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Mountain Bombable Grotto'), lambda state: state.can_blast())
+    set_rule(world.get_entrance('Mountain Storms Grotto'), lambda state: state.has('Song of Storms'))
     set_rule(world.get_entrance('Top of Crater Grotto'), lambda state: state.can_blast())
     set_rule(world.get_entrance('Zora River Plateau Bombable Grotto'), lambda state: state.can_blast())
-
     set_rule(world.get_location('GS2'), lambda state: state.has_bottle())
     set_rule(world.get_location('GS3'), lambda state: state.has('Progressive Hookshot') and state.is_adult())
     set_rule(world.get_location('GS4'), lambda state: state.has_bottle())
@@ -392,22 +393,48 @@ def global_rules(world):
     set_rule(world.get_location('GS99'), lambda state: state.has('Song of Time') and (state.has('Bow') or state.has('Progressive Hookshot') or state.has('Bomb Bag')))
     set_rule(world.get_location('GS100'), lambda state: state.has('Progressive Strength Upgrade', 2) and state.has('Small Key (Spirit Temple)', 3) and state.is_adult() and (state.has('Progressive Hookshot') or state.has('Hover Boots')))
 
-    # Prevent progressive items from appearing in places they won't work.
-    for location in ['Darunias Joy', 'Diving Minigame', 'Child Fishing', 'Adult Fishing', 'Diving in the Lab', 'Link the Goron', 'King Zora Thawed', 'Dog Lady', 'Skull Kid', 'Ocarina Memory Game', '10 Gold Skulltulla Reward', '20 Gold Skulltulla Reward', '30 Gold Skulltulla Reward', '40 Gold Skulltulla Reward', '50 Gold Skulltulla Reward', 'Man on Roof', 'Frog Ocarina Game', 'Frogs in the Rain', 'Horseback Archery 1000 Points', 'Horseback Archery 1500 Points', 'Child Shooting Gallery', 'Adult Shooting Gallery', 'Target in Woods', 'Deku Theater Skull Mask', 'Deku Theater Mask of Truth', 'Anju as Adult', 'Biggoron', 'Anjus Chickens', 'Talons Chickens', '10 Big Poes', 'Rolling Goron as Child']:
-        forbid_item(world.get_location(location), 'Recovery Heart')
-        forbid_item(world.get_location(location), 'Arrows (5)')
-        forbid_item(world.get_location(location), 'Arrows (10)')
-        forbid_item(world.get_location(location), 'Arrows (30)')
-        forbid_item(world.get_location(location), 'Bombs (5)')
-        forbid_item(world.get_location(location), 'Bombs (10)')
-        forbid_item(world.get_location(location), 'Bombs (20)')
-        forbid_item(world.get_location(location), 'Deku Nuts (5)')
-        forbid_item(world.get_location(location), 'Deku Nuts (10)')
+    no_ice_traps = [
+        'Darunias Joy',
+        'Diving Minigame',
+        'Child Fishing',
+        'Adult Fishing',
+        'Diving in the Lab',
+        'Link the Goron',
+        'King Zora Thawed',
+        'Dog Lady',
+        'Skull Kid',
+        'Ocarina Memory Game',
+        '10 Gold Skulltulla Reward',
+        '20 Gold Skulltulla Reward',
+        '30 Gold Skulltulla Reward',
+        '40 Gold Skulltulla Reward',
+        '50 Gold Skulltulla Reward',
+        'Man on Roof',
+        'Frog Ocarina Game',
+        'Frogs in the Rain',
+        'Horseback Archery 1000 Points',
+        'Horseback Archery 1500 Points',
+        'Child Shooting Gallery',
+        'Adult Shooting Gallery',
+        'Target in Woods',
+        'Deku Theater Skull Mask',
+        'Deku Theater Mask of Truth',
+        'Anju as Adult',
+        'Biggoron',
+        'Anjus Chickens',
+        'Talons Chickens',
+        '10 Big Poes',
+        'Rolling Goron as Child',
+        'Hyrule Castle Fairy Reward',
+        'Zoras Fountain Fairy Reward',
+        'Desert Colossus Fairy Reward',
+        'Zelda',
+        'Bombchu Bowling Bomb Bag',
+        'Bombchu Bowling Piece of Heart',
+        'Deku Salesman Woods',
+        'Deku Salesman Lost Woods Grotto',
+        'Deku Salesman Hyrule Field Grotto',
+        'Underwater Bottle',
+    ]
+    for location in no_ice_traps:
         forbid_item(world.get_location(location), 'Ice Trap')
-
-    for location in ['Bombchu Bowling Bomb Bag', 'Bombchu Bowling Piece of Heart', 'Deku Salesman Woods', 'Deku Salesman Lost Woods Grotto', 'Deku Salesman Hyrule Field Grotto', 'Underwater Bottle', 'Hyrule Castle Fairy Reward', 'Zoras Fountain Fairy Reward', 'Desert Colossus Fairy Reward']:
-        forbid_item(world.get_location(location), 'Ice Trap')
-
-    for location in ['Treasure Chest Game', 'Zelda']:
-        forbid_item(world.get_location(location), 'Ice Trap')
-        forbid_item(world.get_location(location), 'Biggoron Sword')
