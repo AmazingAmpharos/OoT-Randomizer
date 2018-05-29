@@ -139,6 +139,10 @@ def patch_rom(world, rom):
     rom.write_bytes(0x00C6ED86, [0x00, 0xA2])
     rom.write_bytes(0x00C6ED8A, [0x00, 0x18])
 
+    # Change graveyard graves to not allow grabbing on to the ledge
+    # rom.write_byte(0x0202039D, 0x20)
+    # rom.write_byte(0x0202043C, 0x24)
+
     # Fix Link the Goron to always work
     rom.write_bytes(0xED2FAC, [0x80, 0x6E, 0x0F, 0x18])
     rom.write_bytes(0xED2FEC, [0x24, 0x0A, 0x00, 0x00])
