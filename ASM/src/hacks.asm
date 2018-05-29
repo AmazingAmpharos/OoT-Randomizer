@@ -16,8 +16,8 @@
 
 ; Adult -> Child: Don't skip restoring child's B equip if 0xFF is the saved value
 ; Replaces:
-;   addiu   v1, r0, 0x00FF
-.org 0xAE58F4 ; In memory: 0x8006F994
+;   beq     v1, t6, 0x8006FA28
+.org 0xAE58F8 ; In memory: 0x8006F998
     nop
 
 ; Child -> Adult: Save the child's B equip before it gets overwritten
