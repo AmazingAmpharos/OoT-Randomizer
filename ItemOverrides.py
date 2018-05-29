@@ -31,8 +31,6 @@ def set_overrides(world):
             else:
                 continue
 
-            if (scene is None):
-                raise RuntimeError("Can't place extended item %s in location %s" % (loc.item.name, loc.name))
             loc.base_item = ItemFactory(base_item)
             logging.getLogger('').debug('Override %s -> %s in scene %s', loc.base_item, loc.item, '0x{0:0{1}X}'.format(scene, 2))
 
