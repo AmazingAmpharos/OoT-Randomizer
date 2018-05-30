@@ -46,7 +46,7 @@ def set_overrides(world):
             byte2 = collectable_flag or loc.base_item.index
             byte3 = 0x01 if collectable_flag else 0x00
             byte4 = loc.item.index
-            loc.override_bytes = (byte1, byte2, byte3, byte4)
+            loc.override_bytes = [byte1, byte2, byte3, byte4]
 
 def get_overrides(world):
     filled = world.get_locations()

@@ -986,8 +986,8 @@ def patch_rom(world, rom):
 
     # write item overrides
     override_table = []
-    for (scene, base_id, override_id) in get_overrides(world):
-        override_table += [scene, base_id, 0x00, override_id]
+    for byte_list in get_overrides(world):
+        override_table += byte_list
     rom.write_bytes(0x3481000, override_table)
 
     # patch fairy entrances
