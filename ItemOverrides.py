@@ -20,10 +20,17 @@ def set_overrides(world):
             if loc.item.index is None:
                 continue
 
-            if loc.type == 'Grotto':
+            base_item = None
+            collectable_flag = None
+
+            if loc.type == 'Collectable':
+                collectable_flag = loc.default
+            elif loc.type == 'Grotto':
                 base_item = 'Boomerang'
             elif loc.name == 'Treasure Chest Game':
                 base_item = 'Piece of Heart (Treasure Chest Game)'
+            elif loc.type == 'BossHeart':
+                base_item = 'Heart Container (Boss)'
             elif loc.item.index >= 0x80:
                 base_item = available_base_items.pop(0)
                 if not base_item:
@@ -31,12 +38,19 @@ def set_overrides(world):
             else:
                 continue
 
-            loc.base_item = ItemFactory(base_item)
-            logging.getLogger('').debug('Override %s -> %s in scene %s', loc.base_item, loc.item, '0x{0:0{1}X}'.format(scene, 2))
+            if base_item:
+                loc.base_item = ItemFactory(base_item)
+                logging.getLogger('').debug('Override %s -> %s in scene %s', loc.base_item, loc.item, '0x{0:0{1}X}'.format(scene, 2))
+
+            byte1 = loc.scene
+            byte2 = collectable_flag or loc.base_item.index
+            byte3 = 0x01 if collectable_flag else 0x00
+            byte4 = loc.item.index
+            loc.override_bytes = [byte1, byte2, byte3, byte4]
 
 def get_overrides(world):
     filled = world.get_locations()
-    result = [(loc.scene, loc.base_item.index, loc.item.index) for loc in filled if loc.base_item]
+    result = [loc.override_bytes for loc in filled if loc.override_bytes]
     result.sort()
     return result
 
