@@ -171,7 +171,7 @@ def global_rules(world):
     set_rule(world.get_location('Phantom Ganon'), lambda state: state.has('Boss Key (Forest Temple)'))
     set_rule(world.get_location('Phantom Ganon Heart'), lambda state: state.has('Boss Key (Forest Temple)'))
     set_rule(world.get_entrance('Dampes Grave'), lambda state: state.is_adult())
-    set_rule(world.get_location('Graveyard Freestanding PoH'), lambda state: state.is_adult() and state.has('Magic Bean'))
+    set_rule(world.get_location('Graveyard Freestanding PoH'), lambda state: state.is_adult() and (state.has('Magic Bean') or state.has('Progressive Hookshot', 2)))
     set_rule(world.get_location('Song at Windmill'), lambda state: state.is_adult())
     set_rule(world.get_location('Windmill Freestanding PoH'), lambda state: (state.is_adult() and state.has('Song of Time')) or state.has('Boomerang'))
     set_rule(world.get_entrance('Temple Warp Pad'), lambda state: state.has('Prelude of Light'))
