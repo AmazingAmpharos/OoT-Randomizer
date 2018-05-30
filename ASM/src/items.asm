@@ -251,21 +251,37 @@ store_item_data:
     addiu   t0, t0, 0x70 ; Grotto virtual scene numbers will range from 0x70 to 0x8F
 @@not_grotto:
 
+    ; For free-standing collectibles, use their flag variable to look up an override
+    ; instead of a base item ID.
+    li      t1, 0x00 ; t1 will be 1 for collectibles, 0 otherwise
+    ori     t2, s0, 0 ; t2 will be collectible flag or the base item
+    lw      t3, 0x428 (s1) ; t3 = actor instance giving the item
+    lhu     t4, 0x00 (t3) ; t4 = actor ID
+    bne     t4, 0x0015, @@not_collectible
+    nop
+    li      t1, 0x01
+    lbu     t2, 0x0141 (t3) ; t2 = collectible flag
+@@not_collectible:
+
     ; Construct ID used to search the override table
+    ; t0 = (scene << 16) | (item_or_flag << 8) | is_collectible
     sll     t0, t0, 8
-    or      t0, t0, s0
+    or      t0, t0, t2
+    sll     t0, t0, 8
+    or      t0, t0, t1
 
     ; Look up override
     li      t1, (ITEM_OVERRIDES - 0x04)
 @@lookup_loop:
     addiu   t1, t1, 0x04
-    lhu     t2, 0x00 (t1) ; t2 = ID column in table
+    lw      t2, 0x00 (t1) ; t2 = override entry
+    srl     t2, t2, 8 ; t2 = ID part of entry (first 3 bytes)
     beqz    t2, @@not_extended ; Reached end of override table
     nop
     bne     t2, t0, @@lookup_loop
     nop
 
-    lhu     s0, 0x02 (t1) ; s0 = item ID found in ITEM_OVERRIDES
+    lbu     s0, 0x03 (t1) ; s0 = item ID found in ITEM_OVERRIDES
 
     ori     v0, s0, 0
 @@resolve_item:

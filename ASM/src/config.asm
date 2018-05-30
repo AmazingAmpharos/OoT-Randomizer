@@ -5,12 +5,13 @@
 ; 0x03481000: Item override table:
 ;
 ; This table changes the meaning of a given item ID within a given scene. It must be terminated with
-; two 0x00 bytes (which will happen by default as long as you don't fill the allotted space).
+; four 0x00 bytes (which will happen by default as long as you don't fill the allotted space).
 ;
 ; Row format (4 bytes):
-; SSOONNNN
+; SSOOCCNN
 ; SS = Scene
-; OO = Old item ID
+; OO = Old item ID or Collectible Flag (depending on value of CC)
+; CC = 0x01 for collectible overrides, 0x00 otherwise
 ; NN = New item ID
 ;
 ; Generic grotto virtual scene numbers:
