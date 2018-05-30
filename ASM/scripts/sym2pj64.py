@@ -12,7 +12,6 @@ in_file = open(in_path, 'r')
 out_file = open(out_path, 'w')
 
 for line in in_file:
-    line = line.strip()
     parts = line.strip().split(' ')
     if len(parts) < 2:
         continue
