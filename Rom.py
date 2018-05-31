@@ -647,6 +647,10 @@ def patch_rom(world, rom):
     rom.write_bytes(0xDCBF32, [0x42, 0x30]) #set child fish size requirement
     rom.write_bytes(0xDCBF9E, [0x42, 0x30]) #set child fish size requirement
 
+    # Dampe always digs something up and first dig is always the Piece of Heart
+    rom.write_bytes(0xCC3FA8, [0xA2, 0x01, 0x01, 0xF8])
+    rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00])
+    
     # Allow owl to always carry the kid down Death Mountain
     rom.write_bytes(0xE304F0, [0x24, 0x0E, 0x00, 0x01])
 
