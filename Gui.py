@@ -112,7 +112,7 @@ def guiMain(args=None):
     colorFrame = Frame(drowDownFrame)
     colorVar = StringVar()
     colorVar.set('vanilla')
-    colorOptionMenu = OptionMenu(colorFrame, colorVar, 'vanilla', 'purple / pink / light blue')
+    colorOptionMenu = OptionMenu(colorFrame, colorVar, 'vanilla', 'purple_pink_lightblue', 'black_gray_white')
     colorOptionMenu.pack(side=RIGHT)
     colorLabel = Label(colorFrame, text='Tunic Colors')
     colorLabel.pack(side=LEFT)

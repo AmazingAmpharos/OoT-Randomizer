@@ -59,6 +59,13 @@ def start():
                              in inconvenient locations if the Stone of Agony is in
                              the player's inventory.
                              ''', action='store_true')
+    parser.add_argument('--color', default='vanilla', const='vanilla', nargs='?', choices=['vanilla', 'purple_pink_lblue', 'black_gray_white'],
+                        help='''\
+                             Select a color set for Link's tunics. (default: %(default)s)
+                             Vanilla:               Green Kokiri tunic, Red Goron tunic, Blue Zora tunic
+                             Purple_Pink_LightBlue: Purple Kokiri tunic, Pink Goron tunic, Light Blue Zora tunic
+                             Black_Gray_White:      Black Kokiri tunic, Gray Goron tunic, White Zora tunic
+                             ''')
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
     parser.add_argument('--compress_rom', help='Create a compressed version of the output rom file.', action='store_true')
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')

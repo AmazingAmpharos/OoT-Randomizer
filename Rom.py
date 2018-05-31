@@ -868,6 +868,10 @@ def patch_rom(world, rom):
         Kokiri = [0x80, 0x00, 0x80]
         Goron =  [0xFF, 0x69, 0xB4]
         Zora =   [0x00, 0xB8, 0xFF]
+    elif world.color == 'black_gray_white':
+        Kokiri = [0x00, 0x00, 0x00]
+        Goron =  [0x80, 0x80, 0x80]
+        Zora =   [0xFF, 0xFF, 0xFF]
     rom.write_bytes(0x00B6DA38, Kokiri)
     rom.write_bytes(0x00B6DA3B, Goron)
     rom.write_bytes(0x00B6DA3E, Zora)
