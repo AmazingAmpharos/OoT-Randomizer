@@ -18,7 +18,8 @@
 .definelabel FORT,    12
 .definelabel CASTLE,  13
 
-; Item rows are 16 bytes long
+.definelabel ITEM_TABLE_ROW_SIZE, 0x10
+
 .macro Item_Row, action_id, graphic_id, text_id, object_id, upgrade_fn, effect_fn, effect_arg1, effect_arg2
   .halfword  action_id   ; 0x00
   .byte      graphic_id  ; 0x02

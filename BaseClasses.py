@@ -497,8 +497,6 @@ class Location(object):
         self.name = name
         self.parent_region = parent
         self.item = None
-        self.base_item = None
-        self.override_bytes = None
         self.address = address
         self.address2 = address2
         self.default = default

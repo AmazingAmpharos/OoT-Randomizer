@@ -8,30 +8,11 @@
 ; four 0x00 bytes (which will happen by default as long as you don't fill the allotted space).
 ;
 ; Row format (4 bytes):
-; SSOOCCNN
+; SSTTIINN
 ; SS = Scene
-; OO = Old item ID or Collectible Flag (depending on value of CC)
-; CC = 0x01 for collectible overrides, 0x00 otherwise
+; TT = Override Type (0x00 = base item, 0x01 = chest, 0x02 = collectable)
+; II = Override ID (base item or flag)
 ; NN = New item ID
-;
-; Generic grotto virtual scene numbers:
-;   0x70: Hyrule Field: under boulder west of drawbridge
-;   0x72: Hyrule Field: under boulder in remote southern trees
-;   0x73: Hyrule Field: open hole outside Lake Hylia fences
-;   0x78: Kakariko: open hole behind fence
-;   0x79: Zora River: open hole on plateau
-;   0x7C: Kokiri Forest: SoS hole by the gossip stone
-;   0x84: Lost Woods: under boulder next to Goron City warp
-;   0x87: Death Mountain: SoS hole outside Goron City
-;   0x8A: Death Mountain Crater: under boulder in circle of rocks near top entrance
-;
-; Other grotto virtual scene numbers:
-;   0x71: Hyrule Field: Underwater heart piece
-;   0x76: Hyrule Field: Salesman grotto
-;   0x77: Redead grotto
-;   0x7D: Wolfos grotto
-;   0x83: Deku Theater
-;   0x85: Lost Woods: Salesman grotto
 
 .area 0x400, 0
 ITEM_OVERRIDES:
@@ -40,9 +21,9 @@ ITEM_OVERRIDES:
 ; 0x03481400: Special items
 
 FAIRY_ITEMS:
-.byte 0x00 ; Farore's Wind Fairy
-.byte 0x00 ; Din's Fire Fairy
-.byte 0x00 ; Nayru's Love Fairy
+.byte 0x5D ; Farore's Wind Fairy
+.byte 0x5C ; Din's Fire Fairy
+.byte 0x5E ; Nayru's Love Fairy
 LIGHT_ARROW_ITEM:
-.byte 0x00
+.byte 0x5A
 .align 4

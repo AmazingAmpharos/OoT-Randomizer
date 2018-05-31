@@ -203,136 +203,212 @@ override_light_arrow_cutscene:
 store_item_data_hook:
     sb      a2, 0x0424 (a3) ; Displaced code
 
-    addiu   sp, sp, -0x18
+    addiu   sp, sp, -0x20
     sw      v0, 0x10 (sp)
-    sw      ra, 0x14 (sp)
+    sw      v1, 0x14 (sp)
+    sw      ra, 0x18 (sp)
 
     jal     store_item_data
     nop
 
     lw      v0, 0x10 (sp)
-    lw      ra, 0x14 (sp)
-    addiu   sp, sp, 0x18
+    lw      v1, 0x14 (sp)
+    lw      ra, 0x18 (sp)
+    addiu   sp, sp, 0x20
     jr      ra
     nop
 
 ;==================================================================================================
 
 store_item_data:
-    addiu   sp, sp, -0x28
-    sw      s0, 0x10 (sp)
-    sw      s1, 0x14 (sp)
-    sw      s2, 0x18 (sp)
-    sw      ra, 0x20 (sp)
-
-    li      s1, PLAYER_ACTOR
-    lb      t0, 0x0424 (s1)
-    beqz    t0, @@return
-
-    abs     s0, t0 ; s0 = item ID being received
+    addiu   sp, sp, -0x18
+    sw      ra, 0x10 (sp)
 
     ; Clear current item data
-    li      t0, -1
-    li      t1, CURRENT_ITEM_DATA
-    sw      t0, 0x00 (t1)
-    sw      t0, 0x04 (t1)
-    sw      t0, 0x08 (t1)
+    li      t0, CURRENT_ITEM_DATA
+    li      t1, -1
+    sw      t1, 0x00 (t0)
+    sw      t1, 0x04 (t0)
+    sw      t1, 0x08 (t0)
 
-    ; Load the current scene number
-    li      t0, GLOBAL_CONTEXT
-    lhu     t0, 0xA4 (t0)
-
-    ; If this is a generic grotto, construct a virtual scene number
-    bne     t0, 0x3E, @@not_grotto
-    nop
-    li      t0, SAVE_CONTEXT
-    lw      t0, 0x1394 (t0) ; Grotto chest contents + flags 
-    andi    t0, t0, 0x1F ; Isolate chest flags
-    addiu   t0, t0, 0x70 ; Grotto virtual scene numbers will range from 0x70 to 0x8F
-@@not_grotto:
-
-    ; For free-standing collectibles, use their flag variable to look up an override
-    ; instead of a base item ID.
-    li      t1, 0x00 ; t1 will be 1 for collectibles, 0 otherwise
-    ori     t2, s0, 0 ; t2 will be collectible flag or the base item
-    lw      t3, 0x428 (s1) ; t3 = actor instance giving the item
-    lhu     t4, 0x00 (t3) ; t4 = actor ID
-    bne     t4, 0x0015, @@not_collectible
-    nop
-    li      t1, 0x01
-    lbu     t2, 0x0141 (t3) ; t2 = collectible flag
-@@not_collectible:
-
-    ; Construct ID used to search the override table
-    ; t0 = (scene << 16) | (item_or_flag << 8) | is_collectible
-    sll     t0, t0, 8
-    or      t0, t0, t2
-    sll     t0, t0, 8
-    or      t0, t0, t1
-
-    ; Look up override
-    li      t1, (ITEM_OVERRIDES - 0x04)
-@@lookup_loop:
-    addiu   t1, t1, 0x04
-    lw      t2, 0x00 (t1) ; t2 = override entry
-    srl     t2, t2, 8 ; t2 = ID part of entry (first 3 bytes)
-    beqz    t2, @@not_extended ; Reached end of override table
-    nop
-    bne     t2, t0, @@lookup_loop
+    li      t0, PLAYER_ACTOR
+    lb      t1, 0x0424 (t0)
+    beqz    t1, @@return
     nop
 
-    lbu     s0, 0x03 (t1) ; s0 = item ID found in ITEM_OVERRIDES
+    abs     a0, t1
+    lw      a1, 0x0428 (t0)
+    jal     lookup_override ; v0 = new item ID from override
+    nop
+    bltz    v0, @@return
+    nop
 
-    ori     v0, s0, 0
-@@resolve_item:
-    ori     s0, v0, 0
-    addiu   t0, s0, -0x80 ; t0 = index into extended ITEM_TABLE
-    bltz    t0, @@not_extended ; Item IDs in range 0x00 - 0x7F are not extended
+    ori     a0, v0, 0
+    jal     resolve_extended_item ; v0 = resolved item ID, v1 = ITEM_TABLE entry
     nop
-    ; Load ITEM_TABLE row
-    li      s2, ITEM_TABLE
-    sll     t0, t0, 4 ; t0 = offset into table = index * 16
-    addu    s2, s2, t0 ; s2 = pointer to ITEM_TABLE row
-    ; Check whether this item will upgrade into another item
-    ; Conventions for upgrade functions:
-    ; - They receive a pointer to the save context in a0
-    ; - They receive their item ID in s0
-    ; - They store their result in v0
-    lw      t0, 0x0C (s2) ; t0 = upgrade function
-    li      a0, SAVE_CONTEXT
-    jalr    t0
-    nop
-    ; If the upgrade function returned a new item ID, start resolution over again
-    bne     v0, s0, @@resolve_item
+    beqz    v1, @@not_extended
     nop
 
     ; Store extended item data
-    li      t2, CURRENT_ITEM_DATA
-    lw      t3, 0x00 (s2)
-    sw      t3, 0x00 (t2)
-    lw      t3, 0x04 (s2)
-    sw      t3, 0x04 (t2)
-    lw      t3, 0x08 (s2)
-    sw      t3, 0x08 (t2)
+    li      t0, CURRENT_ITEM_DATA
+    lw      t1, 0x00 (v1)
+    sw      t1, 0x00 (t0)
+    lw      t1, 0x04 (v1)
+    sw      t1, 0x04 (t0)
+    lw      t1, 0x08 (v1)
+    sw      t1, 0x08 (t0)
     b       @@return
     nop
 
 @@not_extended:
     ; For non-extended item IDs, put it back in the player instance and let the game handle it
-    lb      t0, 0x0424 (s1)
-    bgez    t0, @@not_negative
+    li      t0, PLAYER_ACTOR
+    lb      t1, 0x0424 (t0)
+    bgez    t1, @@not_negative
     nop
     ; The input was negative (item is coming from a chest), so make the result negative
-    subu    s0, r0, s0
+    subu    v0, r0, v0
 @@not_negative:
-    sb      s0, 0x0424 (s1)
+    sb      v0, 0x0424 (t0)
+
+@@return:
+    lw      ra, 0x10 (sp)
+    addiu   sp, sp, 0x18
+    jr      ra
+    nop
+
+;==================================================================================================
+
+lookup_override:
+    ; a0 = item ID being received
+    ; a1 = actor giving the item
+
+    addiu   sp, sp, -0x18
+    sw      ra, 0x10 (sp)
+
+    jal     get_override_search_key
+    nop
+    ori     a0, v0, 0
+    jal     scan_override_table
+    nop
+
+    lw      ra, 0x10 (sp)
+    addiu   sp, sp, 0x18
+    jr      ra
+    nop
+
+;==================================================================================================
+
+get_override_search_key:
+    ; a0 = item ID being received
+    ; a1 = actor giving the item
+
+    ; Load the current scene number
+    li      v0, GLOBAL_CONTEXT
+    lhu     v0, 0xA4 (v0)
+
+    li      t0, 0x00 ; t0 = override type
+    ori     t1, a0, 0 ; t1 = override ID
+    lhu     t2, 0x00 (a1) ; t2 = actor ID
+
+    bne     t2, 0x000A, @@not_chest
+    nop
+    beq     v0, 0x10, @@not_chest ; Scene 0x10 = treasure chest game, use item-based override here
+    nop
+    li      t0, 0x01
+    lhu     t1, 0x1C (a1)
+    andi    t1, t1, 0x1F ; t1 = chest flag
+@@not_chest:
+
+    bne     t2, 0x0015, @@not_collectible
+    nop
+    li      t0, 0x02
+    lbu     t1, 0x0141 (a1) ; t1 = collectible flag
+@@not_collectible:
+
+    ; Construct ID used to search the override table
+    ; v0 = (scene << 16) | (override_type << 8) | override_id
+    sll     v0, v0, 8
+    or      v0, v0, t0
+    sll     v0, v0, 8
+    or      v0, v0, t1
+
+    jr      ra
+    nop
+
+;==================================================================================================
+
+scan_override_table:
+    ; a0 = override search key
+
+    li      v0, -1
+
+    ; Look up override
+    li      t0, (ITEM_OVERRIDES - 0x04)
+@@lookup_loop:
+    addiu   t0, t0, 0x04
+    lw      t1, 0x00 (t0) ; t1 = override entry
+    beqz    t1, @@return ; Reached end of override table
+    nop
+    srl     t2, t1, 8 ; t2 = override key
+    bne     t2, a0, @@lookup_loop
+    nop
+
+    andi    v0, t1, 0xFF ; v0 = found item ID
+
+@@return:
+    jr      ra
+    nop
+
+;==================================================================================================
+
+resolve_extended_item:
+    ; a0 = input item ID
+
+    addiu   sp, sp, -0x20
+    sw      s0, 0x10 (sp)
+    sw      s1, 0x14 (sp)
+    sw      ra, 0x18 (sp)
+
+    ori     v0, a0, 0 ; Return resolved item ID in v0
+
+@@loop:
+    ori     s0, v0, 0
+    addiu   t0, s0, -0x80 ; t0 = index into extended ITEM_TABLE
+    bltz    t0, @@not_extended ; Item IDs in range 0x00 - 0x7F are not extended
+    nop
+    ; Load table entry
+    li      s1, ITEM_TABLE
+    li      t1, ITEM_TABLE_ROW_SIZE
+    mult    t0, t1
+    mflo    t0
+    addu    s1, s1, t0 ; s1 = pointer to table entry
+    ; Check whether this item will upgrade into another item
+    ; Conventions for upgrade functions:
+    ; - They receive a pointer to the save context in a0
+    ; - They receive their item ID in a1
+    ; - They store their result in v0
+    li      a0, SAVE_CONTEXT
+    ori     a1, s0, 0
+    lw      t0, 0x0C (s1)
+    jalr    t0 ; v0 = upgraded item ID
+    nop
+    ; If the upgrade function returned a new item ID, start resolution over again
+    bne     v0, s0, @@loop
+    nop
+
+    ori     v1, s1, 0 ; Return pointer to ITEM_TABLE entry in v1
+    b       @@return
+    nop
+
+@@not_extended:
+    li      v1, 0
 
 @@return:
     lw      s0, 0x10 (sp)
     lw      s1, 0x14 (sp)
-    lw      s2, 0x18 (sp)
-    lw      ra, 0x20 (sp)
-    addiu   sp, sp, 0x28
+    lw      ra, 0x18 (sp)
+    addiu   sp, sp, 0x20
     jr      ra
     nop
 
@@ -342,7 +418,7 @@ store_item_data:
 
 no_upgrade:
     jr      ra
-    ori     v0, s0, 0
+    ori     v0, a1, 0
 
 ;==================================================================================================
 
@@ -499,7 +575,7 @@ arrows_to_rupee:
     beqz    t0, @@return
     li      v0, 0x4D ; Blue Rupee
 
-    ori     v0, s0, 0
+    ori     v0, a1, 0
 
 @@return:
     jr      ra
@@ -514,7 +590,7 @@ bombs_to_rupee:
     beqz    t0, @@return
     li      v0, 0x4D ; Blue Rupee
 
-    ori     v0, s0, 0
+    ori     v0, a1, 0
 
 @@return:
     jr      ra
@@ -531,6 +607,7 @@ no_effect:
 ;==================================================================================================
 
 give_biggoron_sword:
+    ; a0 = save context
     li      t0, 0x01
     sb      t0, 0x3E (a0) ; Set flag to make the sword durable
     jr      ra
