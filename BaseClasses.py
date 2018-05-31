@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 class World(object):
 
-    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints):
+    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints, color):
         self.shuffle = 'vanilla'
         self.bridge = bridge
         self.dungeons = []
@@ -28,6 +28,7 @@ class World(object):
         self.keysanity = False
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
+        self.color = color
 
     def intialize_regions(self):
         for region in self.regions:

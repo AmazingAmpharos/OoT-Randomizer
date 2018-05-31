@@ -99,7 +99,6 @@ def guiMain(args=None):
 
     drowDownFrame = Frame(topFrame)
 
-
     bridgeFrame = Frame(drowDownFrame)
     bridgeVar = StringVar()
     bridgeVar.set('medallions')
@@ -109,6 +108,16 @@ def guiMain(args=None):
     bridgeLabel.pack(side=LEFT)
 
     bridgeFrame.pack(expand=True, anchor=E)
+
+    colorFrame = Frame(drowDownFrame)
+    colorVar = StringVar()
+    colorVar.set('vanilla')
+    colorOptionMenu = OptionMenu(colorFrame, colorVar, 'vanilla', 'purple / pink / light blue')
+    colorOptionMenu.pack(side=RIGHT)
+    colorLabel = Label(colorFrame, text='Tunic Colors')
+    colorLabel.pack(side=LEFT)
+
+    colorFrame.pack(expand=True, anchor=E)
 
     bottomFrame = Frame(randomizerWindow)
 
@@ -133,6 +142,7 @@ def guiMain(args=None):
         guiargs.beatableonly = bool(beatableOnlyVar.get())
         guiargs.hints = bool(hintsVar.get())
         guiargs.rom = romVar.get()
+        guiargs.color = colorVar.get()
         try:
             if guiargs.count is not None:
                 seed = guiargs.seed
