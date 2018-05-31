@@ -35,8 +35,14 @@
     nop
 
 ;==================================================================================================
-; Extended items
+; Item Overrides
 ;==================================================================================================
+
+; Patch NPCs to give override-compatible items
+.org 0xDB13D3 :: .byte 0x76 ; Frog Ocarina Game
+.org 0xDF264F :: .byte 0x76 ; Ocarina memory game
+.org 0xE2F093 :: .byte 0x34 ; Bombchu Bowling Bomb Bag
+.org 0xEC9CE7 :: .byte 0x7A ; Deku Theater Mask of Truth
 
 ; Runs when storing the pending item to the player instance
 ; Replaces:
@@ -120,10 +126,6 @@
 ;   addiu   at, r0, 0x0035
 .org 0xBE9BDC ; In memory: 0x803A4BCC
     addiu   at, r0, 0x8383 ; Make branch impossible
-
-; Replace all generic grotto prizes with boomerangs
-.org 0xE9A550
-.fill 8, 0x06
 
 ;==================================================================================================
 ; Special item sources

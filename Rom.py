@@ -10,7 +10,6 @@ import random
 from Hints import buildGossipHints, buildBossRewardHints
 from Utils import local_path, output_path
 from Items import ItemFactory, item_data
-from ItemOverrides import get_overrides
 from TextArray import text_array
 
 class LocalRom(object):
@@ -884,19 +883,21 @@ def patch_rom(world, rom):
     rom.write_byte(0xB8811E, 0x20)
     rom.write_byte(0xB88236, 0x20)
     buildBossRewardHints(world, rom)
-    
-    # patch items
+
+    # Write item overrides
+    rom.write_bytes(0x3481000, get_override_table(world))
+
+    # Patch songs and boss rewards
     for location in world.get_locations():
-        item = location.base_item or location.item
+        item = location.item
         itemid = item.code
         locationaddress = location.address
         secondaryaddress = location.address2
 
         if itemid is None or location.address is None:
             continue
-        if location.type == 'Special' or location.type == 'Grotto':
-            pass # These must be handled with overrides
-        elif location.type == 'Song':
+
+        if location.type == 'Song':
             rom.write_byte(locationaddress, itemid)
             itemid = itemid + 0x0D
             rom.write_byte(secondaryaddress, itemid)
@@ -960,10 +961,6 @@ def patch_rom(world, rom):
                 rom.write_byte(0x2000FED, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik at Colossus':
                 rom.write_byte(0x218C589, item_data[item.name]) #Fix text box
-        elif location.type == 'NPC':
-            rom.write_byte(locationaddress, item.index)
-            if secondaryaddress is not None:
-                rom.write_byte(secondaryaddress, item.index)
         elif location.type == 'Boss':
             if location.name == 'Links Pocket':
                 rom.write_byte(locationaddress, item_data[item.name][0])
@@ -977,21 +974,6 @@ def patch_rom(world, rom):
                 elif location.name == 'Twinrova':
                     rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
                     rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
-        else:
-            locationdefault = location.default & 0xF01F
-            itemid = itemid | locationdefault
-            itemidhigh = itemid >> 8
-            itemidlow = itemid & 0x00FF
-
-            rom.write_bytes(locationaddress, [itemidhigh, itemidlow])
-            if secondaryaddress is not None:
-                rom.write_bytes(secondaryaddress, [itemidhigh, itemidlow])
-
-    # write item overrides
-    override_table = []
-    for byte_list in get_overrides(world):
-        override_table += byte_list
-    rom.write_bytes(0x3481000, override_table)
 
     # patch fairy entrances
     for region in world.regions:
@@ -1006,3 +988,27 @@ def patch_rom(world, rom):
                 rom.write_bytes(exit.addresses[2], [target1high, target1low])
                 rom.write_bytes(exit.target[1], [target2high, target2low])
     return rom
+
+def get_override_table(world):
+    override_entries = []
+    for location in world.get_locations():
+        override_entries.append(get_override_entry(location))
+    override_entries.sort()
+    return sum(override_entries, [])
+
+def get_override_entry(location):
+    scene = location.scene
+    default = location.default
+    item_id = location.item.index
+    if None in [scene, default, item_id]:
+        return []
+
+    if location.type in ['NPC', 'BossHeart', 'Special']:
+        return [scene, 0x00, default, item_id]
+    elif location.type == 'Chest':
+        flag = default & 0x1F
+        return [scene, 0x01, flag, item_id]
+    elif location.type == 'Collectable':
+        return [scene, 0x02, default, item_id]
+    else:
+        return []
