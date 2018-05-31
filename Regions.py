@@ -398,7 +398,7 @@ location_table = {'Kokiri Sword Chest': (0x20A6142, None, 0x04E0, 'Chest', 0x55)
                   'Diving in the Lab': (0xE2CB97, None, 0x3E, 'NPC', 0x38),
                   'Link the Goron': (0xED30EB, 0xED64F3, 0x2C, 'NPC', 0x62),
                   'King Zora Thawed': (0xE56AD7, None, 0x2D, 'NPC', 0x58),
-                  'Bombchu Bowling Bomb Bag': (0xE2F093, None, 0x32, 'NPC', 0x4B),
+                  'Bombchu Bowling Bomb Bag': (0xE2F093, None, 0x34, 'NPC', 0x4B),
                   'Bombchu Bowling Piece of Heart': (0xE2F097, None, 0x3E, 'NPC', 0x4B),
                   'Dog Lady': (0xE65163, 0xE661BB, 0x3E, 'NPC', 0x35),
                   'Skull Kid': (0xDF0F33, 0xDF0E9B, 0x3E, 'NPC', 0x5B),
