@@ -109,10 +109,10 @@ def guiMain(args=None):
 
     bridgeFrame.pack(expand=True, anchor=E)
 
-    colorVars = [0, 0, 0]
-    colorVars[0] = StringVar()
-    colorVars[1] = StringVar()
-    colorVars[2] = StringVar()
+    colorVars = []
+    colorVars.append(StringVar())
+    colorVars.append(StringVar())
+    colorVars.append(StringVar())
     colorVars[0].set('Green')
     colorVars[1].set('Red')
     colorVars[2].set('Blue')
