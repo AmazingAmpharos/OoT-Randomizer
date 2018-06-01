@@ -1001,10 +1001,10 @@ def patch_rom(world, rom):
     randomColors = random.choices(colorList, k=3)
 
     for i in range(len(Tunics)):
-        if world.colors[i].get() == 'Random':
+        if world.colors[i] == 'Random':
             thisColor = randomColors[i]
         else:
-            thisColor = world.colors[i].get()
+            thisColor = world.colors[i]
         randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
         if thisColor == 'Kokiri Green':
             color = [0x1E, 0x69, 0x1B]

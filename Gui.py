@@ -153,7 +153,9 @@ def guiMain(args=None):
         guiargs.seed = int(seedVar.get()) if seedVar.get() else None
         guiargs.count = int(countVar.get()) if countVar.get() != '1' else None
         guiargs.bridge = bridgeVar.get()
-        guiargs.colors = colorVars
+        guiargs.kokiricolor = colorVars[0].get()
+        guiargs.goroncolor = colorVars[1].get()
+        guiargs.zoracolor = colorVars[2].get()
         guiargs.create_spoiler = bool(createSpoilerVar.get())
         guiargs.suppress_rom = bool(suppressRomVar.get())
         guiargs.compress_rom = bool(compressRomVar.get())
@@ -207,6 +209,7 @@ def guiMain(args=None):
         if args.seed:
             seedVar.set(str(args.seed))
         bridgeVar.set(args.bridge)
+        colorVars.set([args.kokiricolor, args.goroncolor, args.zoracolor])
         romVar.set(args.rom)
 
     mainWindow.mainloop()

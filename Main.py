@@ -23,7 +23,7 @@ def main(args, seed=None):
     start = time.clock()
 
     # initialize the world
-    world = World(args.bridge, args.open_forest, args.open_door_of_time, not args.nodungeonitems, args.beatableonly, args.hints, args.colors)
+    world = World(args.bridge, args.open_forest, args.open_door_of_time, not args.nodungeonitems, args.beatableonly, args.hints, [args.kokiricolor, args.goroncolor, args.zoracolor])
     logger = logging.getLogger('')
     if seed is None:
         random.seed(None)
