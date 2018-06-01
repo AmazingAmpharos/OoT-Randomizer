@@ -860,6 +860,31 @@ def patch_rom(world, rom):
                       0x08, 0x10, 0x02, 0x08, 0x31, 0x4A, 0x00, 0x3F]
         rom.write_bytes(0xE2B454, Block_code)
 
+    # Custom color tunic stuff
+    Tunics = []
+    Tunics.append(0x00B6DA38) # Kokiri Tunic
+    Tunics.append(0x00B6DA3B) # Goron Tunic
+    Tunics.append(0x00B6DA3E) # Zora Tunic
+
+    for i in range(len(Tunics)):
+        if world.colors[i].get() == 'Green':
+            color = [0x1E, 0x69, 0x1B]
+        elif world.colors[i].get() == 'Purple':
+            color = [0x80, 0x00, 0x80]
+        elif world.colors[i].get() == 'Pink':
+            color = [0xFF, 0x69, 0xB4]
+        elif world.colors[i].get() == 'Blue':
+            color = [0x00, 0x3C, 0x64]
+        elif world.colors[i].get() == 'Red':
+            color = [0x64, 0x14, 0x00]
+        elif world.colors[i].get() == 'Orange':
+            color = [0x00, 0x00, 0x00]
+        elif world.colors[i].get() == 'Yellow':
+            color = [0x00, 0x00, 0x00]
+        # elif world.colors[i].get() == 'Random':
+            # Have fun AA
+        rom.write_bytes(Tunics[i], color)
+
     if world.open_forest:
         #rom.write_byte(0x2081148, 0x80)
         rom.write_bytes(0x34806C4, [0x92, 0x25, 0x0E, 0xD5, 0x34, 0xA5, 0x00, 0x10, 0xA2, 0x25, 0x0E, 0xD5])

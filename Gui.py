@@ -99,7 +99,6 @@ def guiMain(args=None):
 
     drowDownFrame = Frame(topFrame)
 
-
     bridgeFrame = Frame(drowDownFrame)
     bridgeVar = StringVar()
     bridgeVar.set('medallions')
@@ -109,6 +108,38 @@ def guiMain(args=None):
     bridgeLabel.pack(side=LEFT)
 
     bridgeFrame.pack(expand=True, anchor=E)
+
+    colorVars = []
+    colorVars.append(StringVar())
+    colorVars.append(StringVar())
+    colorVars.append(StringVar())
+    colorVars[0].set('Green')
+    colorVars[1].set('Red')
+    colorVars[2].set('Blue')
+
+    KokiriFrame = Frame(drowDownFrame)
+    KokiriOptionMenu = OptionMenu(KokiriFrame, colorVars[0], 'Green', 'Purple', 'Pink', 'Blue', 'Red', 'Orange', 'Yellow')
+    KokiriOptionMenu.pack(side=RIGHT)
+    KokiriLabel = Label(KokiriFrame, text='Kokiri Tunic Color')
+    KokiriLabel.pack(side=LEFT)
+
+    KokiriFrame.pack(expand=True, anchor=E)
+
+    GoronFrame = Frame(drowDownFrame)
+    GoronOptionMenu = OptionMenu(GoronFrame, colorVars[1], 'Green', 'Purple', 'Pink', 'Blue', 'Red', 'Orange', 'Yellow')
+    GoronOptionMenu.pack(side=RIGHT)
+    GoronLabel = Label(GoronFrame, text='Goron Tunic Color')
+    GoronLabel.pack(side=LEFT)
+
+    GoronFrame.pack(expand=True, anchor=E)
+
+    ZoraFrame = Frame(drowDownFrame)
+    ZoraOptionMenu = OptionMenu(ZoraFrame, colorVars[2], 'Green', 'Purple', 'Pink', 'Blue', 'Red', 'Orange', 'Yellow')
+    ZoraOptionMenu.pack(side=RIGHT)
+    ZoraLabel = Label(ZoraFrame, text='Zora Tunic Color')
+    ZoraLabel.pack(side=LEFT)
+
+    ZoraFrame.pack(expand=True, anchor=E)
 
     bottomFrame = Frame(randomizerWindow)
 
@@ -133,6 +164,7 @@ def guiMain(args=None):
         guiargs.beatableonly = bool(beatableOnlyVar.get())
         guiargs.hints = bool(hintsVar.get())
         guiargs.rom = romVar.get()
+        guiargs.colors = colorVars
         try:
             if guiargs.count is not None:
                 seed = guiargs.seed
