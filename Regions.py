@@ -82,7 +82,7 @@ def create_regions(world):
         create_interior_region('Odd Medicine Building'),
         create_dungeon_region('Bottom of the Well', ['Bottom of the Well Front Left Hidden Wall', 'Bottom of the Well Front Center Bombable', 'Bottom of the Well Right Bottom Hidden Wall', 'Bottom of the Well Center Large Chest', 'Bottom of the Well Center Small Chest', 'Bottom of the Well Back Left Bombable', 'Bottom of the Well Freestanding Key',
                                                      'Bottom of the Well Defeat Boss', 'Bottom of the Well Invisible Chest', 'Bottom of the Well Underwater Front Chest', 'Bottom of the Well Underwater Left Chest', 'Bottom of the Well Basement Chest', 'Bottom of the Well Locked Pits', 'Bottom of the Well Behind Right Grate', 'GS78', 'GS79', 'GS80'], ['Bottom of the Well Exit']),
-        create_ow_region('Graveyard', ['Graveyard Freestanding PoH', 'GS28', 'GS29'], ['Shield Grave', 'Composer Grave', 'Heart Piece Grave', 'Dampes Grave', 'Dampes House', 'Graveyard Exit']),
+        create_ow_region('Graveyard', ['Graveyard Freestanding PoH', 'Gravedigging Tour', 'GS28', 'GS29'], ['Shield Grave', 'Composer Grave', 'Heart Piece Grave', 'Dampes Grave', 'Dampes House', 'Graveyard Exit']),
         create_interior_region('Shield Grave', ['Shield Grave Chest']),
         create_interior_region('Heart Piece Grave', ['Heart Piece Grave Chest']),
         create_interior_region('Composer Grave', ['Composer Grave Chest', 'Song from Composer Grave']),

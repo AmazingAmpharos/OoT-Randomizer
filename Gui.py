@@ -97,10 +97,10 @@ def guiMain(args=None):
     checkBoxFrame.pack()
     fileDialogFrame.pack()
 
-    drowDownFrame = Frame(topFrame)
+    dropDownFrame = Frame(topFrame)
 
 
-    bridgeFrame = Frame(drowDownFrame)
+    bridgeFrame = Frame(dropDownFrame)
     bridgeVar = StringVar()
     bridgeVar.set('medallions')
     bridgeOptionMenu = OptionMenu(bridgeFrame, bridgeVar, 'medallions', 'vanilla', 'dungeons', 'open')
@@ -108,7 +108,36 @@ def guiMain(args=None):
     bridgeLabel = Label(bridgeFrame, text='Rainbow Bridge Requirement')
     bridgeLabel.pack(side=LEFT)
 
+    colorVars = []
+    colorVars.append(StringVar())
+    colorVars.append(StringVar())
+    colorVars.append(StringVar())
+    colorVars[0].set('Kokiri Green')
+    colorVars[1].set('Goron Red')
+    colorVars[2].set('Zora Blue')
+
+    kokiriFrame = Frame(dropDownFrame)
+    kokiriOptionMenu = OptionMenu(kokiriFrame, colorVars[0], 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Random', 'True Random')
+    kokiriOptionMenu.pack(side=RIGHT)
+    kokiriLabel = Label(kokiriFrame, text='Kokiri Tunic Color')
+    kokiriLabel.pack(side=LEFT)
+
+    goronFrame = Frame(dropDownFrame)
+    goronOptionMenu = OptionMenu(goronFrame, colorVars[1], 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Random', 'True Random')
+    goronOptionMenu.pack(side=RIGHT)
+    goronLabel = Label(goronFrame, text='Goron Tunic Color')
+    goronLabel.pack(side=LEFT)
+
+    zoraFrame = Frame(dropDownFrame)
+    zoraOptionMenu = OptionMenu(zoraFrame, colorVars[2], 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Random', 'True Random')
+    zoraOptionMenu.pack(side=RIGHT)
+    zoraLabel = Label(zoraFrame, text='Zora Tunic Color')
+    zoraLabel.pack(side=LEFT)
+
     bridgeFrame.pack(expand=True, anchor=E)
+    kokiriFrame.pack(expand=True, anchor=E)
+    goronFrame.pack(expand=True, anchor=E)
+    zoraFrame.pack(expand=True, anchor=E)
 
     bottomFrame = Frame(randomizerWindow)
 
@@ -124,6 +153,7 @@ def guiMain(args=None):
         guiargs.seed = int(seedVar.get()) if seedVar.get() else None
         guiargs.count = int(countVar.get()) if countVar.get() != '1' else None
         guiargs.bridge = bridgeVar.get()
+        guiargs.colors = colorVars
         guiargs.create_spoiler = bool(createSpoilerVar.get())
         guiargs.suppress_rom = bool(suppressRomVar.get())
         guiargs.compress_rom = bool(compressRomVar.get())
@@ -156,7 +186,7 @@ def guiMain(args=None):
 
     openOutputButton.pack(side=RIGHT)
 
-    drowDownFrame.pack(side=LEFT)
+    dropDownFrame.pack(side=LEFT)
     rightHalfFrame.pack(side=RIGHT)
     topFrame.pack(side=TOP)
     bottomFrame.pack(side=BOTTOM)

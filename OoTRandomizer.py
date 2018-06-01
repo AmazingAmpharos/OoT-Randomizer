@@ -59,6 +59,13 @@ def start():
                              in inconvenient locations if the Stone of Agony is in
                              the player's inventory.
                              ''', action='store_true')
+    parser.add_argument('--colors', default=['Kokiri Green', 'Goron Red', 'Zora Blue'], const='medallions', nargs='3', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Random', 'True Random'],
+                        help='''\
+                             Choose the color for each of Link's tunics. Please provide three colors. (default: %(default)s)
+                             Color:        Make the appropriate tunic this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
     parser.add_argument('--compress_rom', help='Create a compressed version of the output rom file.', action='store_true')
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')
