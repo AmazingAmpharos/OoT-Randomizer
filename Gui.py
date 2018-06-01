@@ -109,15 +109,37 @@ def guiMain(args=None):
 
     bridgeFrame.pack(expand=True, anchor=E)
 
-    colorFrame = Frame(drowDownFrame)
-    colorVar = StringVar()
-    colorVar.set('vanilla')
-    colorOptionMenu = OptionMenu(colorFrame, colorVar, 'vanilla', 'purple_pink_lightblue', 'black_gray_white')
-    colorOptionMenu.pack(side=RIGHT)
-    colorLabel = Label(colorFrame, text='Tunic Colors')
-    colorLabel.pack(side=LEFT)
+    colorVars = [0, 0, 0]
+    colorVars[0] = StringVar()
+    colorVars[1] = StringVar()
+    colorVars[2] = StringVar()
+    colorVars[0].set('Green')
+    colorVars[1].set('Red')
+    colorVars[2].set('Blue')
 
-    colorFrame.pack(expand=True, anchor=E)
+    KokiriFrame = Frame(drowDownFrame)
+    KokiriOptionMenu = OptionMenu(KokiriFrame, colorVars[0], 'Green', 'Purple', 'Pink', 'Blue', 'Red', 'Orange', 'Yellow')
+    KokiriOptionMenu.pack(side=RIGHT)
+    KokiriLabel = Label(KokiriFrame, text='Kokiri Tunic Color')
+    KokiriLabel.pack(side=LEFT)
+
+    KokiriFrame.pack(expand=True, anchor=E)
+
+    GoronFrame = Frame(drowDownFrame)
+    GoronOptionMenu = OptionMenu(GoronFrame, colorVars[1], 'Green', 'Purple', 'Pink', 'Blue', 'Red', 'Orange', 'Yellow')
+    GoronOptionMenu.pack(side=RIGHT)
+    GoronLabel = Label(GoronFrame, text='Goron Tunic Color')
+    GoronLabel.pack(side=LEFT)
+
+    GoronFrame.pack(expand=True, anchor=E)
+
+    ZoraFrame = Frame(drowDownFrame)
+    ZoraOptionMenu = OptionMenu(ZoraFrame, colorVars[2], 'Green', 'Purple', 'Pink', 'Blue', 'Red', 'Orange', 'Yellow')
+    ZoraOptionMenu.pack(side=RIGHT)
+    ZoraLabel = Label(ZoraFrame, text='Zora Tunic Color')
+    ZoraLabel.pack(side=LEFT)
+
+    ZoraFrame.pack(expand=True, anchor=E)
 
     bottomFrame = Frame(randomizerWindow)
 
@@ -142,7 +164,7 @@ def guiMain(args=None):
         guiargs.beatableonly = bool(beatableOnlyVar.get())
         guiargs.hints = bool(hintsVar.get())
         guiargs.rom = romVar.get()
-        guiargs.color = colorVar.get()
+        guiargs.colors = colorVars
         try:
             if guiargs.count is not None:
                 seed = guiargs.seed
