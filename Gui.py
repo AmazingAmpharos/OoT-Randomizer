@@ -134,10 +134,20 @@ def guiMain(args=None):
     zoraLabel = Label(zoraFrame, text='Zora Tunic Color')
     zoraLabel.pack(side=LEFT)
 
+    lowHealthSFXVar = StringVar()
+    lowHealthSFXVar.set('Default')
+    
+    lowHealthSFXFrame = Frame(dropDownFrame)
+    lowHealthSFXOptionMenu = OptionMenu(lowHealthSFXFrame, lowHealthSFXVar, 'Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recorvery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None')
+    lowHealthSFXOptionMenu.pack(side=RIGHT)
+    lowHealthSFXLabel = Label(lowHealthSFXFrame, text='Low Health SFX')
+    lowHealthSFXLabel.pack(side=LEFT)
+    
     bridgeFrame.pack(expand=True, anchor=E)
     kokiriFrame.pack(expand=True, anchor=E)
     goronFrame.pack(expand=True, anchor=E)
     zoraFrame.pack(expand=True, anchor=E)
+    lowHealthSFXFrame.pack(expand=True, anchor=E)
 
     bottomFrame = Frame(randomizerWindow)
 
@@ -156,6 +166,7 @@ def guiMain(args=None):
         guiargs.kokiricolor = colorVars[0].get()
         guiargs.goroncolor = colorVars[1].get()
         guiargs.zoracolor = colorVars[2].get()
+        guiargs.healthSFX = lowHealthSFXVar.get()
         guiargs.create_spoiler = bool(createSpoilerVar.get())
         guiargs.suppress_rom = bool(suppressRomVar.get())
         guiargs.compress_rom = bool(compressRomVar.get())
@@ -210,6 +221,7 @@ def guiMain(args=None):
             seedVar.set(str(args.seed))
         bridgeVar.set(args.bridge)
         colorVars.set([args.kokiricolor, args.goroncolor, args.zoracolor])
+        lowHealthSFXVar.set(args.healthSFX)
         romVar.set(args.rom)
 
     mainWindow.mainloop()

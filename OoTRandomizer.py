@@ -80,6 +80,14 @@ def start():
                              Random:       Choose a random color from this list of colors.
                              True Random:  Choose a random color from any color the N64 can draw.
                              ''')
+    parser.add_argument('--healthSFX', default='Default', const='medallions', nargs='?', choices=['medallions', 'vanilla', 'dungeons', 'open'],
+                        help='''\
+                             Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
+                             Medallions:    Collect all six medallions to create the bridge.
+                             Vanilla:       Collect only the Shadow and Spirit Medallions and then view the Light Arrow cutscene.
+                             All Dungeons:  Collect all spiritual stones and all medallions to create the bridge.
+                             Open:          The bridge will spawn without an item requirement.
+                             ''')
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
     parser.add_argument('--compress_rom', help='Create a compressed version of the output rom file.', action='store_true')
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')

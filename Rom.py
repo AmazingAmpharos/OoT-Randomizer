@@ -649,6 +649,13 @@ def patch_rom(world, rom):
     # Dampe always digs something up and first dig is always the Piece of Heart
     rom.write_bytes(0xCC3FA8, [0xA2, 0x01, 0x01, 0xF8])
     rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00])
+
+    # Ganon gets the last laugh sometimes
+    Block_code = [0x3C, 0x01, 0x80, 0x12, 0x80, 0x21, 0xA6, 0x09, 0x30, 0x21, 0x00, 0x03,
+                  0x14, 0x01, 0x00, 0x02, 0x24, 0x05, 0x68, 0x0B, 0x24, 0x05, 0x39, 0xC7,
+                  0x08, 0x0E, 0x24, 0x04]
+    rom.write_bytes(0x3480C40, Block_code)
+
     
     # Allow owl to always carry the kid down Death Mountain
     rom.write_bytes(0xE304F0, [0x24, 0x0E, 0x00, 0x01])
@@ -795,6 +802,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0xC89A34, [0x0C, 0x10, 0x02, 0x54, 0x00, 0x00, 0x00, 0x00]) #Progessive magic meter from fairy at death mountain trail
     rom.write_bytes(0xC89A78, [0x0C, 0x10, 0x02, 0x60, 0x00, 0x00, 0x00, 0x00]) #Progessive magic meter from fairy at crater
     rom.write_bytes(0xDBF428, [0x0C, 0x10, 0x03, 0x00]) #Set Fishing Hook
+    rom.write_bytes(0xBD1F68, [0x0C, 0x10, 0x03, 0x10]) #Set hook for Ganondorf laugh
 
     # Sticks on B fix
     rom.write_bytes(0xAE4B14, [0x0C, 0x10, 0x02, 0x74])
@@ -991,6 +999,7 @@ def patch_rom(world, rom):
                 rom.write_bytes(exit.addresses[1], [target1high, target1low])
                 rom.write_bytes(exit.addresses[2], [target1high, target1low])
                 rom.write_bytes(exit.target[1], [target2high, target2low])
+                
     # patch tunic colors
     # Custom color tunic stuff
     Tunics = []
@@ -1049,6 +1058,39 @@ def patch_rom(world, rom):
         elif thisColor == 'True Random':
             color = randColor
         rom.write_bytes(Tunics[i], color)
+
+    #Low health beep
+    healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recorvery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None']
+    randomSFX = random.choice(healthSFXList)
+
+    if world.healthSFX == 'Random':
+        thisHealthSFX = randomSFX
+    else:
+        thisHealthSFX = world.healthSFX
+    if thisHealthSFX == 'Default':
+        healthSFX = [0x48, 0x1B]
+    elif thisHealthSFX == 'Softer Beep':
+        healthSFX = [0x48, 0x04]
+    elif thisHealthSFX == 'Rupee':
+        healthSFX = [0x48, 0x03]
+    elif thisHealthSFX == 'Timer':
+        healthSFX = [0x48, 0x1A]
+    elif thisHealthSFX == 'Tamborine':
+        healthSFX = [0x48, 0x42]
+    elif thisHealthSFX == 'Recorvery Heart':
+        healthSFX = [0x48, 0x0B]
+    elif thisHealthSFX == 'Carrot Refill':
+        healthSFX = [0x48, 0x45]
+    elif thisHealthSFX == 'Navi - Hey!':
+        healthSFX = [0x68, 0x5F]
+    elif thisHealthSFX == 'Zelda - Gasp':
+        healthSFX = [0x68, 0x79]
+    elif thisHealthSFX == 'Mweep!':
+        healthSFX = [0x68, 0x7A]
+    elif thisHealthSFX == 'None':
+        healthSFX = [0x08, 0xE0]
+    rom.write_bytes(0xADBA1A, healthSFX)
+        
     return rom
 
 def get_override_table(world):
