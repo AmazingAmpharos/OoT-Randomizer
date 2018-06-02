@@ -535,7 +535,7 @@ scale_upgrade:
 
 nut_upgrade:
     lbu     t0, 0xA1 (a0) ; Load nut limit from inventory
-    andi    t0, t0, 0x30 ; Mask bits to isolate nut limit
+    andi    t0, t0, 0x20 ; Mask bits to isolate nut limit, upper bit only
 
     beqz    t0, @@return
     li      v0, 0x79 ; 30 Nuts
@@ -550,7 +550,7 @@ nut_upgrade:
 
 stick_upgrade:
     lbu     t0, 0xA1 (a0) ; Load stick limit from inventory
-    andi    t0, t0, 0x06 ; Mask bits to isolate stick limit
+    andi    t0, t0, 0x04 ; Mask bits to isolate stick limit, upper bit only
 
     beqz    t0, @@return
     li      v0, 0x77 ; 20 Sticks
