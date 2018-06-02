@@ -283,10 +283,14 @@ lookup_override:
 
     jal     get_override_search_key
     nop
+    beq     v0, -1, @@return
+    nop
+
     ori     a0, v0, 0
     jal     scan_override_table
     nop
 
+@@return:
     lw      ra, 0x10 (sp)
     addiu   sp, sp, 0x18
     jr      ra
@@ -315,11 +319,19 @@ get_override_search_key:
     andi    t1, t1, 0x1F ; t1 = chest flag
 @@not_chest:
 
-    bne     t2, 0x0015, @@not_collectible
+    bne     t2, 0x0015, @@not_collectable
     nop
+    beq     a0, 0x3E, @@valid_collectable
+    nop
+    beq     a0, 0x42, @@valid_collectable
+    nop
+    li      v0, -1
+    b       @@return
+    nop
+@@valid_collectable:
     li      t0, 0x02
-    lbu     t1, 0x0141 (a1) ; t1 = collectible flag
-@@not_collectible:
+    lbu     t1, 0x0141 (a1) ; t1 = collectable flag
+@@not_collectable:
 
     ; Construct ID used to search the override table
     ; v0 = (scene << 16) | (override_type << 8) | override_id
@@ -328,6 +340,7 @@ get_override_search_key:
     sll     v0, v0, 8
     or      v0, v0, t1
 
+@@return:
     jr      ra
     nop
 
