@@ -563,6 +563,20 @@ stick_upgrade:
 
 ;==================================================================================================
 
+magic_upgrade:
+    lbu     t0, 0x32 (a0) ; Load magic level from inventory
+
+    beqz    t0, @@return
+    li      v0, 0xC0 ; Single Magic
+
+    li      v0, 0xC1 ; Double Magic
+
+@@return:
+    jr      ra
+    nop
+
+;==================================================================================================
+
 arrows_to_rupee:
     lbu     t0, 0xA3 (a0) ; Load quiver from inventory
     andi    t0, t0, 0x03 ; Mask bits to isolate quiver
@@ -674,5 +688,29 @@ give_defense:
     lhu     t0, 0x2E (a0) ; Load health capacity (0x10 per heart container)
     srl     t0, t0, 4
     sb      t0, 0xCF (a0) ; Set number of hearts to display as double defense
+    jr      ra
+    nop
+
+give_magic:
+    ; a0 = save context
+    li      t0, 1
+    sb      t0, 0x32 (a0) ; Set meter level
+    sb      t0, 0x3A (a0) ; Required for meter to persist on save load
+    li      t0, 0x30
+    sh      t0, 0x13F4 (a0) ; Set meter size
+    sb      t0, 0x33 (a0) ; Fill meter
+    jr      ra
+    nop
+
+double_magic:
+    ; a0 = save context
+    li      t0, 2
+    sb      t0, 0x32 (a0) ; Set meter level
+    li      t0, 1
+    sb      t0, 0x3A (a0) ; Required for meter to persist on save load
+    sb      t0, 0x3C (a0) ; Required for meter to persist on save load
+    li      t0, 0x60
+    sh      t0, 0x13F4 (a0) ; Set meter size
+    sb      t0, 0x33 (a0) ; Fill meter
     jr      ra
     nop
