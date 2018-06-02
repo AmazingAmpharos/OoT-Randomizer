@@ -1165,7 +1165,8 @@ def patch_rom(world, rom):
     #Low health beep
     healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recorvery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None']
     randomSFX = random.choice(healthSFXList)
-
+    address = 0xADBA1A
+    
     if world.healthSFX == 'Random':
         thisHealthSFX = randomSFX
     else:
@@ -1191,8 +1192,9 @@ def patch_rom(world, rom):
     elif thisHealthSFX == 'Mweep!':
         healthSFX = [0x68, 0x7A]
     elif thisHealthSFX == 'None':
-        healthSFX = [0x08, 0xE0]
-    rom.write_bytes(0xADBA1A, healthSFX)
+        healthSFX = [0x00, 0x00, 0x00, 0x00]
+        address = 0xADBA14
+    rom.write_bytes(address, healthSFX)
         
     return rom
 
