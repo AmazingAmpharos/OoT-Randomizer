@@ -47,19 +47,18 @@ override_object_chest:
     nop
 
 override_object:
-    ; Load extended Object ID
-    li      t2, CURRENT_ITEM_DATA
-    lhu     t3, 0x04 (t2)
-    beq     t3, 0xFFFF, @@return
+    li      t2, EXTENDED_ITEM_DATA
+    lw      t3, ITEM_ROW_IS_EXTENDED (t2)
+    beqz    t3, @@return
     nop
 
-    ; Override object ID
-    ori     a1, t3, 0
+    ; Override Object ID
+    lhu     a1, ITEM_ROW_OBJECT_ID (t2)
 
 @@return:
     ; Clear any pending special item, now that it's being received
-    li      t3, PENDING_SPECIAL_ITEM
-    sb      r0, 0x00 (t3)
+    li      t2, PENDING_SPECIAL_ITEM
+    sb      r0, 0x00 (t2)
 
     jr ra
     nop
@@ -67,14 +66,13 @@ override_object:
 ;==================================================================================================
 
 override_graphic:
-    ; Load extended Graphic ID
-    li      t0, CURRENT_ITEM_DATA
-    lb      t1, 0x02 (t0)
-    beq     t1, -1, @@return
+    li      t0, EXTENDED_ITEM_DATA
+    lw      t1, ITEM_ROW_IS_EXTENDED (t0)
+    beqz    t1, @@return
     nop
 
     ; Override Graphic ID
-    ori     v1, t1, 0
+    lb      v1, ITEM_ROW_GRAPHIC_ID (t0)
 
 @@return:
     ; Displaced code
@@ -88,14 +86,13 @@ override_graphic:
 override_text:
     lbu     a1, 0x03 (v0) ; Displaced code
 
-    ; Load extended Text ID
-    li      t0, CURRENT_ITEM_DATA
-    lbu     t1, 0x03 (t0)
-    beq     t1, 0xFF, @@return
+    li      t0, EXTENDED_ITEM_DATA
+    lw      t1, ITEM_ROW_IS_EXTENDED (t0)
+    beqz    t1, @@return
     nop
 
     ; Override Text ID
-    ori     a1, t1, 0
+    lbu     a1, ITEM_ROW_TEXT_ID (t0)
 
 @@return:
     jr      ra
@@ -108,14 +105,13 @@ override_action:
     lw      v0, 0x24 (sp)
     lbu     a1, 0x0000 (v0)
 
-    ; Load extended Action ID
-    li      t0, CURRENT_ITEM_DATA
-    lhu     t1, 0x00 (t0)
-    beq     t1, 0xFFFF, @@return
+    li      t0, EXTENDED_ITEM_DATA
+    lw      t1, ITEM_ROW_IS_EXTENDED (t0)
+    beqz    t1, @@return
     nop
 
     ; Override Action ID
-    ori     a1, t1, 0
+    lbu     a1, ITEM_ROW_ACTION_ID (t0)
 
     sw      a0, 0x00 (sp)
     sw      a1, 0x04 (sp)
@@ -124,13 +120,10 @@ override_action:
     sw      ra, 0x10 (sp)
 
     ; Run effect function
-    ; Conventions for effect functions:
-    ; - They receive a pointer to the save context in a0
-    ; - They receive their arguments in a1 and a2
-    lw      t1, 0x08 (t0) ; t1 = effect function
     li      a0, SAVE_CONTEXT
-    lbu     a1, 0x06 (t0)
-    lbu     a2, 0x07 (t0)
+    lbu     a1, ITEM_ROW_EFFECT_ARG1 (t0)
+    lbu     a2, ITEM_ROW_EFFECT_ARG2 (t0)
+    lw      t1, ITEM_ROW_EFFECT_FN (t0)
     jalr    t1
     nop
 
@@ -225,19 +218,19 @@ store_item_data:
     sw      ra, 0x10 (sp)
 
     ; Clear current item data
-    li      t0, CURRENT_ITEM_DATA
-    li      t1, -1
-    sw      t1, 0x00 (t0)
-    sw      t1, 0x04 (t0)
-    sw      t1, 0x08 (t0)
+    li      t0, EXTENDED_ITEM_DATA
+    sw      r0, 0x00 (t0)
+    sw      r0, 0x04 (t0)
+    sw      r0, 0x08 (t0)
+    sw      r0, 0x0C (t0)
 
     li      t0, PLAYER_ACTOR
-    lb      t1, 0x0424 (t0)
+    lb      t1, 0x0424 (t0) ; t1 = item ID being received
     beqz    t1, @@return
     nop
 
     abs     a0, t1
-    lw      a1, 0x0428 (t0)
+    lw      a1, 0x0428 (t0) ; a1 = actor giving the item
     jal     lookup_override ; v0 = new item ID from override
     nop
     bltz    v0, @@return
@@ -246,22 +239,24 @@ store_item_data:
     ori     a0, v0, 0
     jal     resolve_extended_item ; v0 = resolved item ID, v1 = ITEM_TABLE entry
     nop
-    beqz    v1, @@not_extended
+    beqz    v1, @@update_player_actor
     nop
 
     ; Store extended item data
-    li      t0, CURRENT_ITEM_DATA
+    li      t0, EXTENDED_ITEM_DATA
     lw      t1, 0x00 (v1)
     sw      t1, 0x00 (t0)
     lw      t1, 0x04 (v1)
     sw      t1, 0x04 (t0)
     lw      t1, 0x08 (v1)
     sw      t1, 0x08 (t0)
-    b       @@return
-    nop
+    ; Mark the extended item data as active
+    li      t1, 1
+    sw      t1, ITEM_ROW_IS_EXTENDED (t0)
+    ; Load the base item to be stored back in the player actor
+    lbu     v0, ITEM_ROW_BASE_ITEM (v1)
 
-@@not_extended:
-    ; For non-extended item IDs, put it back in the player instance and let the game handle it
+@@update_player_actor:
     li      t0, PLAYER_ACTOR
     lb      t1, 0x0424 (t0)
     bgez    t1, @@not_negative
@@ -390,7 +385,7 @@ resolve_extended_item:
     ; - They store their result in v0
     li      a0, SAVE_CONTEXT
     ori     a1, s0, 0
-    lw      t0, 0x0C (s1)
+    lw      t0, ITEM_ROW_UPGRADE_FN (s1)
     jalr    t0 ; v0 = upgraded item ID
     nop
     ; If the upgrade function returned a new item ID, start resolution over again
@@ -667,5 +662,17 @@ give_small_key:
 @not_negative:
     addiu   t1, t1, 1
     sb      t1, 0x00 (t0)
+    jr      ra
+    nop
+
+;==================================================================================================
+
+give_defense:
+    ; a0 = save context
+    li      t0, 0x01
+    sb      t0, 0x3D (a0) ; Set double defense flag
+    lhu     t0, 0x2E (a0) ; Load health capacity (0x10 per heart container)
+    srl     t0, t0, 4
+    sb      t0, 0xCF (a0) ; Set number of hearts to display as double defense
     jr      ra
     nop
