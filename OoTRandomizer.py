@@ -80,13 +80,12 @@ def start():
                              Random:       Choose a random color from this list of colors.
                              True Random:  Choose a random color from any color the N64 can draw.
                              ''')
-    parser.add_argument('--healthSFX', default='Default', const='medallions', nargs='?', choices=['medallions', 'vanilla', 'dungeons', 'open'],
+    parser.add_argument('--healthSFX', default='Default', const='Default', nargs='?', choices=['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recorvery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None'],
                         help='''\
-                             Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
-                             Medallions:    Collect all six medallions to create the bridge.
-                             Vanilla:       Collect only the Shadow and Spirit Medallions and then view the Light Arrow cutscene.
-                             All Dungeons:  Collect all spiritual stones and all medallions to create the bridge.
-                             Open:          The bridge will spawn without an item requirement.
+                             Select the sound effect that loops at low health. (default: %(default)s)
+                             Sound:        Replace the sound effect with the chosen sound.
+                             Random:       Replace the sound effect with a random sound from this list.
+                             None:         Eliminate heart beeps.
                              ''')
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
     parser.add_argument('--compress_rom', help='Create a compressed version of the output rom file.', action='store_true')
