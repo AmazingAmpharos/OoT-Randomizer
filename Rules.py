@@ -115,6 +115,7 @@ def global_rules(world):
     set_rule(world.get_location('Hyrule Castle Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_entrance('Ganons Castle Grounds'), lambda state: state.is_adult())
     set_rule(world.get_entrance('Ganons Castle Fairy'), lambda state: state.has('Progressive Strength Upgrade', 3))
+    set_rule(world.get_location('Ganons Castle Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_location('Bombchu Bowling Bomb Bag'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Bombchu Bowling Piece of Heart'), lambda state: state.has('Bomb Bag'))
     set_rule(world.get_location('Adult Shooting Gallery'), lambda state: state.has('Bow') and state.is_adult())

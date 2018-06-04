@@ -20,10 +20,13 @@ ITEM_OVERRIDES:
 
 ; 0x03481400: Special items
 
-FAIRY_ITEMS:
-.byte 0x5D ; Farore's Wind Fairy
-.byte 0x5C ; Din's Fire Fairy
-.byte 0x5E ; Nayru's Love Fairy
 LIGHT_ARROW_ITEM:
 .byte 0x5A
+FAIRY_ITEMS:
+.byte 0x5D ; Zora's Domain
+.byte 0x5C ; Hyrule Castle
+.byte 0x5E ; Desert Colossus
+.byte 0x51 ; Mountain Summit
+.byte 0x52 ; Crater
+.byte 0x53 ; Ganon's Castle
 .align 4

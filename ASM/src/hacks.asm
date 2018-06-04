@@ -144,14 +144,6 @@
     jal     every_frame
     nop
 
-; Override cutscene for Great Fairy items
-; Replaces:
-;   jal     0x8002049C
-;   addiu   a1, r0, 0x0038
-.org 0xC89744 ; In memory: 0x801E3884
-    jal     override_item_fairy_cutscene
-    addiu   a1, r0, 0x0038
-
 ; Override Light Arrow cutscene
 ; Replaces:
 ;   addiu   t8, r0, 0x0053
@@ -165,6 +157,43 @@
     nop
     nop
     nop
+
+; Make all Great Fairies give an item
+; Replaces:
+;   jal     0x8002049C
+;   addiu   a1, r0, 0x0038
+.org 0xC89744 ; In memory: 0x801E3884
+    jal     override_great_fairy_cutscene
+    addiu   a1, r0, 0x0038
+
+; Upgrade fairies check scene chest flags instead of magic/defense
+; Mountain Summit Fairy
+; Replaces:
+;   lbu     t6, 0x3A (a1)
+.org 0xC89868 ; In memory: 0x801E39A8
+    lbu     t6, 0x1D28 (s0)
+; Crater Fairy
+; Replaces:
+;   lbu     t9, 0x3C (a1)
+.org 0xC898A4 ; In memory: 0x801E39E4
+    lbu     t9, 0x1D29 (s0)
+; Ganon's Castle Fairy
+; Replaces:
+;   lbu     t2, 0x3D (a1)
+.org 0xC898C8 ; In memory: 0x801E3A08
+    lbu     t2, 0x1D2A (s0)
+
+; Upgrade fairies never check for magic meter
+; Replaces:
+;   lbu     t6, 0xA60A (t6)
+.org 0xC892DC ; In memory: 0x801E341C
+    li      t6, 1
+
+; Item fairies never check for magic meter
+; Replaces:
+;   lbu     t2, 0xA60A (t2)
+.org 0xC8931C ; In memory: 0x801E345C
+    li      t2, 1
 
 ;==================================================================================================
 ; Menu hacks
