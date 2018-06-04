@@ -1,3 +1,15 @@
+restore_swordless_flag:
+    li      v1, 0xFF
+    bne     t6, v1, @@return
+    nop
+    li      v1, 1
+    sb      v1, 0x0F33 (a1) ; If restoring 0xFF to B equip, set the swordless flag
+@@return:
+    jr      ra
+    lw      ra, -0x04 (sp)
+
+;==================================================================================================
+
 save_child_b_equip:
     ; t0 = save context
     lw      t1, 0x04 (t0)

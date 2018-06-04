@@ -701,6 +701,8 @@ give_defense:
     lhu     t0, 0x2E (a0) ; Load health capacity (0x10 per heart container)
     srl     t0, t0, 4
     sb      t0, 0xCF (a0) ; Set number of hearts to display as double defense
+    li      t0, 0x0140
+    sh      t0, 0x1424 (a0) ; Give health refill
     jr      ra
     nop
 

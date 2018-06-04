@@ -14,11 +14,16 @@
 .org 0xAE57A8 ; In memory: 0x8006F848
     nop
 
-; Adult -> Child: Don't skip restoring child's B equip if 0xFF is the saved value
+; Adult -> Child: Don't skip restoring child's B equip if 0xFF is the saved value, and set the
+; swordless flag if needed
 ; Replaces:
+;   addiu   v1, r0, 0x00FF
 ;   beq     v1, t6, 0x8006FA28
-.org 0xAE58F8 ; In memory: 0x8006F998
-    nop
+;   sh      v0, 0x0052 (a1)
+.org 0xAE58F4 ; In memory: 0x8006F994
+    sw      ra, -0x04 (sp)
+    jal     restore_swordless_flag
+    sh      v0, 0x0052 (a1)
 
 ; Child -> Adult: Save the child's B equip before it gets overwritten
 ; Replaces:
