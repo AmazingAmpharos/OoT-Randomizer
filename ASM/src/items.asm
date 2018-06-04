@@ -254,7 +254,7 @@ store_item_data:
     ori     a0, v0, 0
     jal     resolve_extended_item ; v0 = resolved item ID, v1 = ITEM_TABLE entry
     nop
-    beqz    v1, @@update_player_actor
+    beqz    v1, @@update_base_game
     nop
 
     ; Store extended item data
@@ -268,15 +268,27 @@ store_item_data:
     ; Mark the extended item data as active
     li      t1, 1
     sw      t1, ITEM_ROW_IS_EXTENDED (t0)
-    ; Load the base item to be stored back in the player actor
+    ; Load the base item to be stored back in the player actor / chest
     lbu     v0, ITEM_ROW_BASE_ITEM (v1)
 
-@@update_player_actor:
+@@update_base_game:
     li      t0, PLAYER_ACTOR
+    ; If the giving actor is a chest, update it with new contents
+    lw      t1, 0x0428 (t0)
+    lhu     t2, 0x00 (t1)
+    bne     t2, 0x000A, @@not_chest
+    nop
+    lhu     t2, 0x1C (t1)
+    andi    t2, t2, 0xF01F
+    sll     t3, v0, 5
+    or      t2, t2, t3
+    sh      t2, 0x1C (t1)
+@@not_chest:
+    ; Update player actor
     lb      t1, 0x0424 (t0)
     bgez    t1, @@not_negative
     nop
-    ; The input was negative (item is coming from a chest), so make the result negative
+    ; The input was negative (item is in a nearby chest), so make the result negative
     subu    v0, r0, v0
 @@not_negative:
     sb      v0, 0x0424 (t0)
