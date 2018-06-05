@@ -1,4 +1,8 @@
 restore_swordless_flag:
+    ; Displaced code
+    lbu     t6, 0x0040 (a1)
+    lbu     v0, 0x0070 (a1)
+
     li      v1, 0xFF
     bne     t6, v1, @@return
     nop
@@ -6,7 +10,7 @@ restore_swordless_flag:
     sb      v1, 0x0F33 (a1) ; If restoring 0xFF to B equip, set the swordless flag
 @@return:
     jr      ra
-    lw      ra, -0x04 (sp)
+    nop
 
 ;==================================================================================================
 
