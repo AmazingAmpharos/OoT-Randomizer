@@ -103,6 +103,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Goron City from Woods'), lambda state: state.can_blast() and (world.open_forest or (state.has('Slingshot') and state.has('Kokiri Sword'))))
     set_rule(world.get_entrance('Dodongos Cavern Rocks'), lambda state: state.can_blast() or state.has('Progressive Strength Upgrade') or state.is_adult())
     set_rule(world.get_entrance('Dodongos Cavern Lobby'), lambda state: state.can_blast() or state.has('Progressive Strength Upgrade'))
+    set_rule(world.get_entrance('Dodongos Cavern Left Door'), lambda state: state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))
     set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: state.has('Slingshot') or ((state.has('Bow') or state.has('Hover Boots')) and state.is_adult()))
     set_rule(world.get_location('Dodongos Cavern End of Bridge Chest'), lambda state: state.has('Bomb Bag') or ((state.has('Bow') or state.has('Hover Boots')) and state.is_adult() and state.has('Hammer')))
     set_rule(world.get_entrance('Dodongos Cavern Bomb Drop'), lambda state: state.has('Bomb Bag'))
@@ -414,5 +415,5 @@ def global_rules(world):
     set_rule(world.get_location('GS100'), lambda state: state.has('Progressive Strength Upgrade', 2) and state.has('Small Key (Spirit Temple)', 3) and state.is_adult() and (state.has('Progressive Hookshot') or state.has('Hover Boots')))
 
     for location in world.get_locations():
-        if location.type != 'Chest':
+        if location.type != 'Chest' and location.name != 'Treasure Chest Game':
             forbid_item(location, 'Ice Trap')
