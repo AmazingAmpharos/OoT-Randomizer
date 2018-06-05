@@ -7,7 +7,7 @@ import struct
 import subprocess
 import random
 
-from Hints import buildGossipHints, buildBossRewardHints
+from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
 from Utils import local_path, output_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
@@ -15,11 +15,20 @@ from TextArray import text_array
 class LocalRom(object):
 
     def __init__(self, file, patch=True):
+
+        validCRC = []
+        validCRC.append(bytearray([0xEC, 0x70, 0x11, 0xB7, 0x76, 0x16, 0xD7, 0x2B])) # Compressed
+        validCRC.append(bytearray([0x70, 0xEC, 0xB7, 0x11, 0x16, 0x76, 0x2B, 0xD7])) # Byteswap compressed
+        validCRC.append(bytearray([0x93, 0x52, 0x2E, 0x7B, 0xE5, 0x06, 0xD4, 0x27])) # Decompressed
+
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         #os.chdir(output_path(os.path.dirname(os.path.realpath(__file__))))
         with open(file, 'rb') as stream:
             self.buffer = read_rom(stream)
         file_name = os.path.splitext(file)
+        romCRC = self.buffer[0x10:0x18]
+        if romCRC not in validCRC:
+            raise RuntimeError('ROM is not a valid OoT 1.0 US ROM.')
         if len(self.buffer) < 33554432 or len(self.buffer) > 67108864 or file_name[1] not in ['.z64', '.n64']:
             raise RuntimeError('ROM is not a valid OoT 1.0 ROM.')
         if len(self.buffer) == 33554432:
@@ -675,6 +684,7 @@ def patch_rom(world, rom):
     Block_code = [0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08]
     rom.write_bytes(0x94E639, Block_code)
     rom.write_bytes(0x92CBA9, Block_code)
+    rom.write_bytes(0x9650BC, [0x08, 0x08, 0x08, 0x08, 0x48])
 
     # Speed dig text for Dampe
     rom.write_bytes(0x9532F8, [0x08, 0x08, 0x08, 0x59])
@@ -791,6 +801,9 @@ def patch_rom(world, rom):
     rom.write_byte(0xB8811E, 0x20)
     rom.write_byte(0xB88236, 0x20)
     buildBossRewardHints(world, rom)
+
+    # build silly ganon lines
+    buildGanonText(world, rom)
 
     # Write item overrides
     rom.write_bytes(0x3481000, get_override_table(world))

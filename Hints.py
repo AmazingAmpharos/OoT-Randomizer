@@ -122,6 +122,35 @@ def setRewardColor(Block_code):
         
     return Block_code
 
+# fun new lines for Ganon during the final battle
+def buildGanonText(world, rom):
+    # reorganize text header files to make space for text
+    rom.write_bytes(0xB884B1, [0x03, 0x41, 0xED])
+    rom.write_bytes(0xB884B9, [0x03, 0x41, 0xEE])
+    rom.write_bytes(0xB884C1, [0x03, 0x41, 0xEF])
+    rom.write_bytes(0xB884C9, [0x03, 0x42, 0x99])
+
+    # clear space for new text
+    for address in range(0x9611EC, 0x961349):
+        rom.write_byte(address, 0x08)
+
+    Block_code = []
+    # lines before battle, 160 characters max
+    ganonLines = getHintGroup('ganonLine')
+    random.shuffle(ganonLines)
+    Block_code = getBytes(ganonLines.pop().text)
+    endText(Block_code)
+    rom.write_bytes(0x9611F1, Block_code)
+    
+    Block_code = getBytes(getHint('Validation Line').text)
+    for location in world.get_locations():
+        if location.name == 'Ganons Tower Boss Key Chest':
+            Block_code.extend(getBytes((getHint(location.item.name).text)))
+    endText(Block_code)
+    rom.write_bytes(0x96129D, Block_code)
+
+    return rom
+
 #sets the end of text byte in the text box.
 def endText(byteArray):
     return byteArray.extend([0x02])
