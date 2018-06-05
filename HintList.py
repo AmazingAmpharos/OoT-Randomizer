@@ -67,7 +67,7 @@ hintTable = {'Hammer':                                                (" the dra
              'Bottle':                                                (" a fairy prison.", 'item'),
              'Bottle with Letter':                                    (" a call for help.", 'item'),
              'Bottle with Milk':                                      (" cow juice.", 'item'),
-             'Bottle with Red Potion':                                (" a vitality vial.", 'item')
+             'Bottle with Red Potion':                                (" a vitality vial.", 'item'),
              'Bottle with Green Potion':                              (" a magic mixture.", 'item'),
              'Bottle with Blue Potion':                               (" an all-cure antidote.", 'item'),
              'Bottle with Fairy':                                     (" an imprisoned fairy.", 'item'),
