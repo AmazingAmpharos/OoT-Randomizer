@@ -7,7 +7,7 @@ import struct
 import subprocess
 import random
 
-from Hints import buildGossipHints, buildBossRewardHints
+from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
 from Utils import local_path, output_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
@@ -800,6 +800,9 @@ def patch_rom(world, rom):
     rom.write_byte(0xB8811E, 0x20)
     rom.write_byte(0xB88236, 0x20)
     buildBossRewardHints(world, rom)
+
+    # build silly ganon lines
+    buildGanonText(world, rom)
 
     # Write item overrides
     rom.write_bytes(0x3481000, get_override_table(world))
