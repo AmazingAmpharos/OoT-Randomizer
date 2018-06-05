@@ -415,5 +415,5 @@ def global_rules(world):
     set_rule(world.get_location('GS100'), lambda state: state.has('Progressive Strength Upgrade', 2) and state.has('Small Key (Spirit Temple)', 3) and state.is_adult() and (state.has('Progressive Hookshot') or state.has('Hover Boots')))
 
     for location in world.get_locations():
-        if location.type != 'Chest' and location.name != 'Treasure Chest Game':
+        if location.type != 'Chest':
             forbid_item(location, 'Ice Trap')

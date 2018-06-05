@@ -676,6 +676,7 @@ def patch_rom(world, rom):
     Block_code = [0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08]
     rom.write_bytes(0x94E639, Block_code)
     rom.write_bytes(0x92CBA9, Block_code)
+    rom.write_bytes(0x9650BC, [0x08, 0x08, 0x08, 0x08, 0x48])
 
     # Speed dig text for Dampe
     rom.write_bytes(0x9532F8, [0x08, 0x08, 0x08, 0x59])
@@ -995,7 +996,7 @@ def get_override_entry(location):
     if None in [scene, default, item_id]:
         return []
 
-    if location.type in ['NPC', 'BossHeart', 'Special']:
+    if location.type in ['NPC', 'BossHeart']:
         return [scene, 0x00, default, item_id]
     elif location.type == 'Chest':
         flag = default & 0x1F
