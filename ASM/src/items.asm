@@ -339,11 +339,20 @@ get_override_search_key:
 
     bne     t2, 0x000A, @@not_chest
     nop
-    beq     v0, 0x10, @@not_chest ; Scene 0x10 = treasure chest game, use item-based override here
+    lhu     t3, 0x1C (a1)
+    bne     v0, 0x10, @@valid_chest
     nop
+    ; Current scene is the treasure chest game.
+    ; Don't apply the override if the chest contains 0x75 (Winner! purple rupee)
+    andi    t4, t3, (0x7F << 5)
+    bne     t4, (0x75 << 5), @@valid_chest
+    nop
+    li      v0, -1
+    b       @@return
+    nop
+@@valid_chest:
     li      t0, 0x01
-    lhu     t1, 0x1C (a1)
-    andi    t1, t1, 0x1F ; t1 = chest flag
+    andi    t1, t3, 0x1F ; t1 = chest flag
 @@not_chest:
 
     bne     t2, 0x0015, @@not_collectable
