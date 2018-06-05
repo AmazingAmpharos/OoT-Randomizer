@@ -27,6 +27,7 @@
 .include "state.asm"
 .include "item_data.asm"
 .include "items.asm"
+.include "cutscenes.asm"
 .include "every_frame.asm"
 .include "menu.asm"
 .include "fixes.asm"
