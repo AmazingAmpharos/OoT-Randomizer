@@ -1005,7 +1005,7 @@ def get_override_entry(location):
     if None in [scene, default, item_id]:
         return []
 
-    if location.type in ['NPC', 'BossHeart', 'Special']:
+    if location.type in ['NPC', 'BossHeart']:
         return [scene, 0x00, default, item_id]
     elif location.type == 'Chest':
         flag = default & 0x1F
