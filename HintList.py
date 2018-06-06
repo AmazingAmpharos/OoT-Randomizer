@@ -231,11 +231,13 @@ hintTable = {'Hammer':                                                (" the dra
                                                                        #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box
              'Validation Line':                                       ("Hmph... Since you made it this far&I'll let you know what glorious&prize of Ganon's you likely&missed out on in my tower.^Behold...^", 'validation line'),
              '2001':                                                  ("Oh! It's @.&I was expecting someone called&Sheik. Do you know what&happened to them?", 'ganonLine'),
-             '2002':                                                  ("I knew I shouldn't have put the key&on the otherside of my door.", 'ganonLine'),
+             '2002':                                                  ("I knew I shouldn't have put the key&on the other side of my door.", 'ganonLine'),
              '2003':                                                  ("Looks like it's time for a&round of tennis.", 'ganonLine'),
              '2004':                                                  ("You'll never deflect my bolts of&energy with your sword,&then shot me with those Light&Arrows you happen to have.", 'ganonLine'),
              '2005':                                                  ("Why did I leave my trident&back in the desert?", 'ganonLine'),
              '2006':                                                  ("Zelda is probably going to do&something stupid, like send you&back to your own timeline.^So this is quite meaningless.&Do you really want&to save this moron?", 'ganonLine'),
-             '2007':                                                  ("What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungary,&and my castle floats.", 'ganonLine'),
+             '2007':                                                  ("What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungry,&and my castle floats.", 'ganonLine'),
              '2008':                                                  ("I've learned this spell,&it's really neat,&I'll keep it later&for your treat!", 'ganonLine'),
-             '2009':                                                  ("Many tricks are up my sleeve,&to save yourself&you'd better leave!", 'ganonLine')}
+             '2009':                                                  ("Many tricks are up my sleeve,&to save yourself&you'd better leave!", 'ganonLine'),
+             '2010':                                                  ("After what you did to&Koholint Island how can&you call me the bad guy?", 'ganonLine'),
+             '2011':                                                  ("Today let's begin down&'The Hero is Defeated' timeline.", 'ganonLine'),}
