@@ -240,4 +240,4 @@ hintTable = {'Hammer':                                                (" the dra
              '2008':                                                  ("I've learned this spell,&it's really neat,&I'll keep it later&for your treat!", 'ganonLine'),
              '2009':                                                  ("Many tricks are up my sleeve,&to save yourself&you'd better leave!", 'ganonLine'),
              '2010':                                                  ("After what you did to&Koholint Island how can&you call me the bad guy?", 'ganonLine'),
-             '2011':                                                  ("Today let's begin down&'The Hero is Defeated' timeline.", 'ganonLine'),}
+             '2011':                                                  ("Today let's begin down&'The Hero is Defeated' timeline.", 'ganonLine')}
