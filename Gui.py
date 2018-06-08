@@ -138,7 +138,7 @@ def guiMain(args=None):
     lowHealthSFXVar.set('Default')
     
     lowHealthSFXFrame = Frame(dropDownFrame)
-    lowHealthSFXOptionMenu = OptionMenu(lowHealthSFXFrame, lowHealthSFXVar, 'Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recorvery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None')
+    lowHealthSFXOptionMenu = OptionMenu(lowHealthSFXFrame, lowHealthSFXVar, 'Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None')
     lowHealthSFXOptionMenu.pack(side=RIGHT)
     lowHealthSFXLabel = Label(lowHealthSFXFrame, text='Low Health SFX')
     lowHealthSFXLabel.pack(side=LEFT)
