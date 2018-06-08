@@ -1,0 +1,25 @@
+// Location Table Types
+'NPC'
+'Event' Used for trial clears
+'Boss'
+'Chest'
+'Song'
+'Fairy'
+'Special' ? Used for Zelda, some fairies and Chest Game
+'GS Token' Definitely won't be using
+// Location Table Tuple
+?, ?, ?, Type
+// Item Tuple
+T?F, T?F, ?, ?, ?
+"advancement" - whether it's a progression item?
+"priority" - same but not?
+"type" - mostly None, else Map, Compass, BigKey, SmallKey, Song, Event
+"code" -
+"index" -
+Event types need to be set in ItemList.generate_itempool
+To add an item to the pool, an entry needs to exist in the ItemFactory in Items.py
+Regions can specify connections, chests, npcs, songs, events,
+Time might not need logical support if the fetch quest can be skipped
+But for the time being, just make a time sensitive rule flag somewhere
+Here's where I'll point to where it made sense to put a time flag.
+(Probably in World tho, after a significant refactor)
