@@ -25,11 +25,12 @@
 .area 0x1000, 0
 .include "constants.asm"
 .include "state.asm"
-.include "item_data.asm"
-.include "items.asm"
+.include "extended_items.asm"
+.include "item_overrides.asm"
+.include "cutscenes.asm"
 .include "every_frame.asm"
 .include "menu.asm"
-.include "fixes.asm"
+.include "time_travel.asm"
 .endarea
 
 .close

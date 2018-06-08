@@ -391,7 +391,7 @@ location_table = {'Kokiri Sword Chest': (0x20A6142, None, 0x04E0, 'Chest', 0x55)
                   'Mountain Summit Fairy Reward': (0x3481404, None, 0x51, 'NPC', 0x3B),
                   'Crater Fairy Reward': (0x3481405, None, 0x52, 'NPC', 0x3B),
                   'Ganons Castle Fairy Reward': (0x3481406, None, 0x53, 'NPC', 0x3B),
-                  'Treasure Chest Game': (None, None, 0x76, 'Chest', 0x10),
+                  'Treasure Chest Game': (None, None, 0x0A, 'Chest', 0x10),
                   'Darunias Joy': (0xCF1BFF, None, 0x54, 'NPC', 0x62),
                   'Diving Minigame': (0xE01A2B, 0xE01AA7, 0x37, 'NPC', 0x58),
                   'Child Fishing': (0xDCBFBF, None, 0x3E, 'NPC', 0x49),

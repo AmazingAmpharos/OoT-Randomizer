@@ -9,3 +9,10 @@ EXTENDED_ITEM_DATA:
 PENDING_SPECIAL_ITEM:
 .byte 0x00
 .align 4
+
+TIME_TRAVEL_SAVED_EQUIPS:
+.word 0x00000000 ; B and C buttons
+.word 0x00000000 ; C button indexes
+.halfword 0x0000 ; Equipment
+.halfword 0x0000 ; Owned equipment
+.align 4
