@@ -30,7 +30,7 @@
 .include "cutscenes.asm"
 .include "every_frame.asm"
 .include "menu.asm"
-.include "fixes.asm"
+.include "time_travel.asm"
 .endarea
 
 .close

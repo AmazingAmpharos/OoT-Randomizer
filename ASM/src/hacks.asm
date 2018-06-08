@@ -4,42 +4,27 @@
 .org 0xBDA2E8 ; In memory: 0x803952D8
     addiu   t2, r0, -1
 
-;==================================================================================================
-; Remove free Kokiri Sword
-;==================================================================================================
-
-; Child -> Adult: Don't save hard-coded 0x3B (Kokiri Sword) as child's B equip
-; Replaces:
-;   sb      a0, 0x0040 (v1)
-.org 0xAE57A8 ; In memory: 0x8006F848
-    nop
-
-; Adult -> Child: Don't skip restoring child's B equip if 0xFF is the saved value, and set the
-; swordless flag if needed
-; Replaces:
-;   lbu     t6, 0x0040 (a1)
-;   lbu     v0, 0x0070 (a1)
-;   addiu   v1, r0, 0x00FF
-;   beq     v1, t6, 0x8006FA28
-.org 0xAE58EC ; In memory: 0x8006F98C
-    ori     t7, ra, 0
-    jal     restore_swordless_flag
-    nop
-    ori     ra, t7, 0
-
-; Child -> Adult: Save the child's B equip before it gets overwritten
-; Replaces:
-;   sb      t6, 0x0068 (t0)
-;   lw      a0, 0x0030 (sp)
-.org 0xAE5F74 ; In memory: 0x80070014
-    jal     save_child_b_equip
-    lw      a0, 0x0030 (sp)
-
 ; Prevent Kokiri Sword from being added to inventory on game load
 ; Replaces:
 ;   sh      t9, 0x009C (v0)
 .org 0xBAED6C ; In memory: 0x803B2B6C
     nop
+
+;==================================================================================================
+; Time Travel
+;==================================================================================================
+
+; Before time travel
+; Replaces:
+;   lw      t6, 0x04 (s0)
+.org 0xCB6860 ; Bg_Toki_Swd in func_8091902C
+    jal     before_time_travel
+
+; After time travel
+; Replaces:
+;   jr      ra
+.org 0xAE59E0 ; In memory: 0x8006FA80
+    j       after_time_travel
 
 ;==================================================================================================
 ; Item Overrides
