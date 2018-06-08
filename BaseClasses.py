@@ -308,6 +308,9 @@ class CollectionState(object):
     def can_lift_rocks(self):
         return (self.has('Silver Gauntlets') or self.has('Gold Gauntlets')) and self.is_adult()
 
+    def has_GoronTunic(self):
+        return (self.has('Goron Tunic') or (self.has('Progressive Wallet') and (self.has('Bomb Bag') or self.has('Progressive Strength Upgrade') or self.has('Bow'))))
+
     def can_finish_adult_trades(self):
         zora_thawed = self.has_bottle() and self.has('Zeldas Lullaby') and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
         carpenter_access = self.has('Epona') or self.has('Progressive Hookshot', 2)

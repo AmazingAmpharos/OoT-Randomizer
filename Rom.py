@@ -984,7 +984,7 @@ def patch_rom(world, rom):
         rom.write_bytes(Tunics[i], color)
 
     #Low health beep
-    healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recorvery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None']
+    healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None']
     randomSFX = random.choice(healthSFXList)
     address = 0xADBA1A
     
@@ -1002,7 +1002,7 @@ def patch_rom(world, rom):
         healthSFX = [0x48, 0x1A]
     elif thisHealthSFX == 'Tamborine':
         healthSFX = [0x48, 0x42]
-    elif thisHealthSFX == 'Recorvery Heart':
+    elif thisHealthSFX == 'Recovery Heart':
         healthSFX = [0x48, 0x0B]
     elif thisHealthSFX == 'Carrot Refill':
         healthSFX = [0x48, 0x45]
