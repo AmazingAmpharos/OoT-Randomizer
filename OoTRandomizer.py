@@ -59,28 +59,28 @@ def start():
                              in inconvenient locations if the Stone of Agony is in
                              the player's inventory.
                              ''', action='store_true')
-    parser.add_argument('--kokiricolor', default='Kokiri Green', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Random', 'True Random'],
+    parser.add_argument('--kokiricolor', default='Kokiri Green', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
                         help='''\
                              Choose the color for Link's Kokiri Tunic. (default: %(default)s)
                              Color:        Make the Kokiri Tunic this color.
                              Random:       Choose a random color from this list of colors.
                              True Random:  Choose a random color from any color the N64 can draw.
                              ''')
-    parser.add_argument('--goroncolor', default='Goron Red', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Random', 'True Random'],
+    parser.add_argument('--goroncolor', default='Goron Red', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
                         help='''\
                              Choose the color for Link's Goron Tunic. (default: %(default)s)
                              Color:        Make the Goron Tunic this color.
                              Random:       Choose a random color from this list of colors.
                              True Random:  Choose a random color from any color the N64 can draw.
                              ''')
-    parser.add_argument('--zoracolor', default='Zora Blue', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Random', 'True Random'],
+    parser.add_argument('--zoracolor', default='Zora Blue', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
                         help='''\
                              Choose the color for Link's Zora Tunic. (default: %(default)s)
                              Color:        Make the Zora Tunic this color.
                              Random:       Choose a random color from this list of colors.
                              True Random:  Choose a random color from any color the N64 can draw.
                              ''')
-    parser.add_argument('--healthSFX', default='Default', const='Default', nargs='?', choices=['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None'],
+    parser.add_argument('--healthSFX', default='Default', const='Default', nargs='?', choices=['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'],
                         help='''\
                              Select the sound effect that loops at low health. (default: %(default)s)
                              Sound:        Replace the sound effect with the chosen sound.

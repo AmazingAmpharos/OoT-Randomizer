@@ -930,7 +930,7 @@ def patch_rom(world, rom):
     Tunics.append(0x00B6DA38) # Kokiri Tunic
     Tunics.append(0x00B6DA3B) # Goron Tunic
     Tunics.append(0x00B6DA3E) # Zora Tunic
-    colorList = ['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green']
+    colorList = ['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green']
     randomColors = random.choices(colorList, k=3)
 
     for i in range(len(Tunics)):
@@ -948,27 +948,27 @@ def patch_rom(world, rom):
         elif thisColor == 'Black':
             color = [0x30, 0x30, 0x30]
         elif thisColor == 'White':
-            color = [0xE0, 0xE8, 0xF0]
+            color = [0xF0, 0xF0, 0xFF]
         elif thisColor == 'Purple':
             color = [0x95, 0x30, 0x80]
         elif thisColor == 'Yellow':
-            color = [0xF0, 0xF0, 0x60]
+            color = [0xE0, 0xD8, 0x60]
         elif thisColor == 'Orange':
-            color = [0xFD, 0x79, 0x40]
+            color = [0xE0, 0x79, 0x40]
         elif thisColor == 'Pink':
-            color = [0xFD, 0x90, 0xB3]
+            color = [0xFF, 0x90, 0xB3]
         elif thisColor == 'Gray':
-            color = [0xA0, 0xA0, 0xA0]
+            color = [0xA0, 0xA0, 0xB0]
         elif thisColor == 'Brown':
             color = [0x95, 0x59, 0x0A]
         elif thisColor == 'Gold':
-            color = [0xC0, 0xB0, 0x60]
+            color = [0xD8, 0xB0, 0x60]
         elif thisColor == 'Silver':
             color = [0xD0, 0xF0, 0xFF]
         elif thisColor == 'Beige':
-            color = [0xF5, 0xC0, 0xC0]
+            color = [0xC0, 0xA0, 0xA0]
         elif thisColor == 'Teal':
-            color = [0x30, 0xF0, 0xD0]
+            color = [0x30, 0xD0, 0xB0]
         elif thisColor == 'Royal Blue':
             color = [0x40, 0x00, 0x90]
         elif thisColor == 'Sonic Blue':
@@ -979,12 +979,14 @@ def patch_rom(world, rom):
             color = [0xF0, 0x30, 0x30]
         elif thisColor == 'NES Green':
             color = [0x00, 0xD0, 0x00]
+        elif thisColor == 'Dark Green':
+            color = [0x00, 0x25, 0x18]
         elif thisColor == 'True Random':
             color = randColor
         rom.write_bytes(Tunics[i], color)
 
     #Low health beep
-    healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None']
+    healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recorvery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Random', 'None']
     randomSFX = random.choice(healthSFXList)
     address = 0xADBA1A
     
@@ -1002,7 +1004,7 @@ def patch_rom(world, rom):
         healthSFX = [0x48, 0x1A]
     elif thisHealthSFX == 'Tamborine':
         healthSFX = [0x48, 0x42]
-    elif thisHealthSFX == 'Recovery Heart':
+    elif thisHealthSFX == 'Recorvery Heart':
         healthSFX = [0x48, 0x0B]
     elif thisHealthSFX == 'Carrot Refill':
         healthSFX = [0x48, 0x45]
