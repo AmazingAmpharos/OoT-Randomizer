@@ -126,9 +126,6 @@ def patch_rom(world, rom):
     # Fix proximity text boxes (Navi) (Part 1)
     rom.write_bytes(0xDF8B84, [0x00, 0x00, 0x00, 0x00])
 
-    # Fix proximity text boxes (Wonder Text)
-    rom.write_bytes(0xE9EBEC, [0x00, 0x00, 0x00, 0x00])
-
     # Remove intro cutscene
     rom.write_bytes(0xB06BBA, [0x00, 0x00])
 
@@ -596,6 +593,19 @@ def patch_rom(world, rom):
     Suns_scenes = [0x2016FC9, 0x2017219, 0x20173D9, 0x20174C9, 0x2017679, 0x20C1539, 0x20C15D9, 0x21A0719, 0x21A07F9, 0x2E90129, 0x2E901B9, 0x2E90249, 0x225E829, 0x225E939, 0x306D009]
     for address in Suns_scenes:
         rom.write_byte(address,0x01)
+
+    # Remove forcible text triggers
+    Wonder_text = [0x27C00C6, 0x27C00D6, 0x27C00E6, 0x27C00F6, 0x27C0106, 0x27C0116, 0x27C0126, 0x27C0136]
+    for address in Wonder_text:
+        rom.write_byte(address, 0x02)
+    rom.write_byte(0x27CE08A, 0x09)
+    rom.write_byte(0x27CE09A, 0x0F)
+    Wonder_text = [0x288707A, 0x288708A, 0x288709A, 0x289707A, 0x28C713E, 0x28D91C6]
+        rom.write_byte(address, 0x0C)
+    Wonder_text = [0x28A60FE, 0x28AE08E, 0x28B917E, 0x28BF172, 0x28BF182, 0x28BF192]
+        rom.write_byte(address, 0x0D)
+    rom.write_byte(0x28A114E, 0x0E)
+    rom.write_byte(0x28A610E, 0x0E)
 
     # Speed text
     for address in text_array:
