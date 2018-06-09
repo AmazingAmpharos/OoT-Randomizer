@@ -126,6 +126,9 @@ def patch_rom(world, rom):
     # Fix proximity text boxes (Navi) (Part 1)
     rom.write_bytes(0xDF8B84, [0x00, 0x00, 0x00, 0x00])
 
+    # Fix proximity text boxes (Wonder Text)
+    rom.write_bytes(0xE9EBEC, [0x00, 0x00, 0x00, 0x00])
+
     # Remove intro cutscene
     rom.write_bytes(0xB06BBA, [0x00, 0x00])
 
@@ -320,6 +323,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0x2223308, [0x00, 0x81, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00])
 
     # Speed scene after Jabu Jabu's Belly
+    rom.write_bytes(0x2113340, [0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0x2113340, [0x00, 0x0D, 0x00, 0x3B, 0x00, 0x3C, 0x00, 0x3C])
     rom.write_bytes(0x2113C18, [0x00, 0x82, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00])
     rom.write_bytes(0x21131D0, [0x00, 0x01, 0x00, 0x00, 0x00, 0x3C, 0x00, 0x3C])
@@ -368,6 +372,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0xC94548, [0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0xC94730, [0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0xC945A8, [0x00, 0x00, 0x00, 0x00])
+    rom.write_bytes(0xC94594, [0x00, 0x00, 0x00, 0x00])
 
     # Speed Twinrova defeat scene
     rom.write_bytes(0xD678CC, [0x24, 0x01, 0x03, 0xA2, 0xA6, 0x01, 0x01, 0x42])
@@ -590,20 +595,7 @@ def patch_rom(world, rom):
     # Forbid Sun's Song from a bunch of cutscenes
     Suns_scenes = [0x2016FC9, 0x2017219, 0x20173D9, 0x20174C9, 0x2017679, 0x20C1539, 0x20C15D9, 0x21A0719, 0x21A07F9, 0x2E90129, 0x2E901B9, 0x2E90249, 0x225E829, 0x225E939, 0x306D009]
     for address in Suns_scenes:
-        rom.write_byte(address, 0x01)
-
-    # Remove forcible text triggers
-    Wonder_text = [0x27C00C6, 0x27C00D6, 0x27C00E6, 0x27C00F6, 0x27C0106, 0x27C0116, 0x27C0126, 0x27C0136]
-    for address in Wonder_text:
-        rom.write_byte(address, 0x02)
-    rom.write_byte(0x27CE08A, 0x09)
-    rom.write_byte(0x27CE09A, 0x0F)
-    Wonder_text = [0x288707A, 0x288708A, 0x288709A, 0x289707A, 0x28C713E, 0x28D91C6]
-        rom.write_byte(address, 0x0C)
-    Wonder_text = [0x28A60FE, 0x28AE08E, 0x28B917E, 0x28BF172, 0x28BF182, 0x28BF192]
-        rom.write_byte(address, 0x0D)
-    rom.write_byte(0x28A114E, 0x0E)
-    rom.write_byte(0x28A610E, 0x0E)
+        rom.write_byte(address,0x01)
 
     # Speed text
     for address in text_array:
@@ -940,7 +932,7 @@ def patch_rom(world, rom):
     Tunics.append(0x00B6DA38) # Kokiri Tunic
     Tunics.append(0x00B6DA3B) # Goron Tunic
     Tunics.append(0x00B6DA3E) # Zora Tunic
-    colorList = ['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green']
+    colorList = ['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green']
     randomColors = random.choices(colorList, k=3)
 
     for i in range(len(Tunics)):
@@ -958,27 +950,27 @@ def patch_rom(world, rom):
         elif thisColor == 'Black':
             color = [0x30, 0x30, 0x30]
         elif thisColor == 'White':
-            color = [0xE0, 0xE8, 0xF0]
+            color = [0xF0, 0xF0, 0xFF]
         elif thisColor == 'Purple':
             color = [0x95, 0x30, 0x80]
         elif thisColor == 'Yellow':
-            color = [0xF0, 0xF0, 0x60]
+            color = [0xE0, 0xD8, 0x60]
         elif thisColor == 'Orange':
-            color = [0xFD, 0x79, 0x40]
+            color = [0xE0, 0x79, 0x40]
         elif thisColor == 'Pink':
-            color = [0xFD, 0x90, 0xB3]
+            color = [0xFF, 0x90, 0xB3]
         elif thisColor == 'Gray':
-            color = [0xA0, 0xA0, 0xA0]
+            color = [0xA0, 0xA0, 0xB0]
         elif thisColor == 'Brown':
             color = [0x95, 0x59, 0x0A]
         elif thisColor == 'Gold':
-            color = [0xC0, 0xB0, 0x60]
+            color = [0xD8, 0xB0, 0x60]
         elif thisColor == 'Silver':
             color = [0xD0, 0xF0, 0xFF]
         elif thisColor == 'Beige':
-            color = [0xF5, 0xC0, 0xC0]
+            color = [0xC0, 0xA0, 0xA0]
         elif thisColor == 'Teal':
-            color = [0x30, 0xF0, 0xD0]
+            color = [0x30, 0xD0, 0xB0]
         elif thisColor == 'Royal Blue':
             color = [0x40, 0x00, 0x90]
         elif thisColor == 'Sonic Blue':
@@ -989,6 +981,8 @@ def patch_rom(world, rom):
             color = [0xF0, 0x30, 0x30]
         elif thisColor == 'NES Green':
             color = [0x00, 0xD0, 0x00]
+        elif thisColor == 'Dark Green':
+            color = [0x00, 0x25, 0x18]
         elif thisColor == 'True Random':
             color = randColor
         rom.write_bytes(Tunics[i], color)
