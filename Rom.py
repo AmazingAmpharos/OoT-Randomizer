@@ -608,6 +608,26 @@ def patch_rom(world, rom):
         rom.write_byte(address, 0x0D)
     rom.write_byte(0x28A114E, 0x0E)
     rom.write_byte(0x28A610E, 0x0E)
+    Wonder_text = [0x9367F6, 0x93673D, 0x93679D]
+    for address in Wonder_text:
+        rom.write_byte(address, 0x08)
+    Wonder_text = [0x289707B, 0x28AE08F, 0x28C713F]
+    for address in Wonder_text:
+        rom.write_byte(address, 0xAF)
+    rom.write_byte(0x28A114F, 0x6F)
+    rom.write_byte(0x28B917F, 0x6F)
+    rom.write_byte(0x28A60FF, 0xEF)
+    rom.write_byte(0x28D91C7, 0xEF)
+    Wonder_text = [0x28A610F, 0x28BF173, 0x28BF183, 0x28BF193]
+    for address in Wonder_text:
+        rom.write_byte(address, 0x2F)
+    Wonder_text = [0x27CE08B, 0x27C00C7, 0x27C00D7, 0x27C0117, 0x27C0127]
+    for address in Wonder_text:
+        rom.write_byte(address, 0x3D)
+    rom.write_byte(0x27C00E7, 0x7D)
+    rom.write_byte(0x27C00F7, 0x7D)
+    rom.write_byte(0x27C0107, 0xBD)
+    rom.write_byte(0x27C0137, 0xBD)   
 
     # Speed text
     for address in text_array:
