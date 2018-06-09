@@ -601,8 +601,10 @@ def patch_rom(world, rom):
     rom.write_byte(0x27CE08A, 0x09)
     rom.write_byte(0x27CE09A, 0x0F)
     Wonder_text = [0x288707A, 0x288708A, 0x288709A, 0x289707A, 0x28C713E, 0x28D91C6]
+    for address in Wonder_text:
         rom.write_byte(address, 0x0C)
     Wonder_text = [0x28A60FE, 0x28AE08E, 0x28B917E, 0x28BF172, 0x28BF182, 0x28BF192]
+    for address in Wonder_text:
         rom.write_byte(address, 0x0D)
     rom.write_byte(0x28A114E, 0x0E)
     rom.write_byte(0x28A610E, 0x0E)
