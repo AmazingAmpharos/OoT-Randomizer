@@ -377,7 +377,6 @@ def patch_rom(world, rom):
     
     # Speed scenes during final battle
     # Ganondorf battle end
-    rom.write_byte(0xD81F2F, 0x06)
     rom.write_byte(0xD82047, 0x09)
     # Zelda descends
     rom.write_byte(0xD82AB3, 0x66)
