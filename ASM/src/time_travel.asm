@@ -69,6 +69,8 @@ update_c_button:
     nop
     addu    t1, s0, t1 ; t1 = save context, offset by inventory index
     lbu     t1, 0x74 (t1) ; t1 = inventory contents
+    beq     t1, 0x2C, @@return ; Don't equip SOLD OUT
+    nop
     sb      t1, 0x69 (t0) ; update button item
 
 @@return:
