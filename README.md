@@ -4,11 +4,11 @@ This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
 
 # Installation
 
-Clone this repository and then run ```OoTRandomizer.py``` (requires Python 3).
+It is strongly suggested users get the latest release from here: https://github.com/AmazingAmpharos/OoT-Randomizer/releases .
+Simply download the .msi installer and run it if you have a Windows machine.
 
-Alternatively, run ```Gui.py``` for a simple graphical user interface.
-
-For releases, a Windows standalone executable is available for users without Python 3.
+If you do not have Windows or you simply wish to run the script raw, clone this repository and either run '''Gui.py''' for a
+graphical interface or '''OoTRandomizer.py''' for the command line version. Both require Python 3.5+.
 
 This randomizer requires The Legend of Zelda: Ocarina of Time version 1.0 NTSC-US version. Upon first being run, the randomizer will automatically
 create a decompressed version of this ROM that can be used for input for slightly faster seed generation times. Please be sure your input ROM filename
@@ -26,12 +26,11 @@ This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the loc
 Proper logic is used to ensure every seed is possible to complete without the use of glitches and will be safe from the possibility of softlocks
 with any possible usage of keys in dungeons.
 
-The items that randomize currently are all items within chests, items given as rewards by NPCs including from minigames and Deku Scrub salesmen, and
-the items obtained when getting the Bottle and the Fire Arrows at Lake Hylia. Due to technical limitations, chests in "generic" grottos are not randomized,
-but chests in unique grottos are (one in Kakariko, one in the Sacred Forest Meadow). All dungeons will always have the same number of Maps, Compasses,
-Small Keys, and Boss Keys they had in the original game, but which chests within those dungeons have those things is random. The item pool will contain a
-Biggoron Sword that will not interfere with Medigoron's sale of the Giant's Knife (which is always vanilla), and a randomly selected adult trading quest item
-other than the Odd Potion will be somewhere in the item pool.
+The items that randomize currently are all items within chests including those in grottos, items given as rewards by NPCs including from minigames and
+Deku Scrub salesmen, the items given by freestanding Pieces of Heart, Heart Containers, and Keys, and the items obtained when getting the Bottle and the
+Fire Arrows at Lake Hylia. All dungeons will always have the same number of Maps, Compasses, Small Keys, and Boss Keys they had in the original game, but
+which chests within those dungeons have those things is random. The item pool will contain a Biggoron Sword that will not interfere with Medigoron's sale
+of the Giant's Knife (which is always vanilla), and a randomly selected adult trading quest item other than the Odd Potion will be somewhere in the item pool.
 
 Certain types of items are now "progressive", meaning that no matter what order the player encounters these items they will function as a series of upgrades.
 The following item types will be progressive chains:
@@ -47,17 +46,17 @@ The following item types will be progressive chains:
 -Deku Nut Capacity Upgrades
 -Magic Meter to Double Magic
 
-To be more clear about which NPC items are shuffled, it's NPCs who directly give you the item (so not the freestanding Pieces of Heart you can get from Dampe),
-and it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart or inventory items. The only exception is that
-even though in vanilla the reward for 40 Gold Skulltulla Tokens was just 10 Bombchus that is still a randomized reward in randomizer (but the 200 rupees for all
-100 Gold Skulltulla Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy to the player, the Ocarina Memory Game
-in the Lost Woods will start on the final round as that minigame was very long originally, the three day wait on the Claim Check is removed, and Bombchu Bowling will
-have a fixed sequence of prizes that is of maximum convenience to the player. Additionally, any NPC who gives a trading quest item either for the child or for the
-adult other than Anju's initial gift as an adult does not have a randomized reward, and as a design decision, the Fairy Ocarina and Ocarina of Time are not randomized.
+To be more clear about which NPC items are shuffled, it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart
+or inventory items. The only exception is that even though in vanilla the reward for 40 Gold Skulltulla Tokens was just 10 Bombchus that is still a randomized reward
+in randomizer (but the 200 rupees for all 100 Gold Skulltulla Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy
+to the player, the Ocarina Memory Game in the Lost Woods will start on the final round as that minigame was very long originally, the three day wait on the Claim Check
+is removed, Bombchu Bowling will have a fixed sequence of prizes that is of maximum convenience to the player, Dampe's Gravedigging Tour will always be won on the first
+dig, and the fishing minigame is made much simpler (8 lb fish for child now, 10 lb for adult). Additionally, any NPC who gives a trading quest item either for the child
+or for the adult other than Anju's initial gift as an adult does not have a randomized reward, and as a design decision, the Fairy Ocarina and Ocarina of Time are not
+randomized.
 
-A special note is needed for the six Great Fairy Fountains scattered across Hyrule. These six fountains are randomized amongst themselves, and while they all still
-require Zelda's Lullaby to utilize, none of them require a Magic Meter to obtain the reward. The two that give variations on the Magic Meter in vanilla are modeled
-as progressives; the first the player uses will give a Magic Meter and the magic spin attack while the second will give the Double Magic upgrade.
+A special note is needed for the six Great Fairy Fountains scattered across Hyrule. All six of these fountains now give random item rewards, and the magic and life
+upgrades can now be found as normal items scattered around the world. Happy hunting!
 
 The Ocarina songs are shuffled in a pool amongst themselves, and each learn spot will still have the original conditions it has always had. These conditions may not
 have all been obvious, but here are some high points. Saria will teach her song after completing the events in the Castle Courtyard. The warp songs can mostly only
@@ -69,8 +68,7 @@ now removed "becoming an adult" cutscene, the player will start every seed with 
 rest in the Temple of Time has hint text pointing to the locations of the Spiritual Stones and Medallions. A child will be able to read hints for the Spiritual
 Stones while an adult will be able to read hints for the Medallions.
 
-To be very clear on this point, freestanding Pieces of Heart (those not in chests or given directly by NPCs) are not randomized, and while the rewards for up to 50
-Gold Skulltulla Tokens are randomized, the tokens themselves are not.
+To be very clear on this point, while the rewards for up to 50 Gold Skulltulla Tokens are randomized, the tokens themselves are not.
 
 As a service to the player in this very long game, many cutscenes have been greatly shortened or removed and text is as often as possible either omitted or sped up.
 We have been as thorough as our exploration of the game and various technical limitations will allow to make the parts of the game where you're watching and reading
@@ -117,6 +115,8 @@ and using a combination of the Longshot and Scarecrow's Song. This allows access
 -Grottos can be opened with either Bombs or the Hammer.  
 -The boulder maze in Goron City can be solved with the Hammer or partially with Bombs as is obvious, but less obvious is that it can be fully solved with Silver Gauntlets.  
 -The large colored blocks only encountered by the adult require Goron Bracelet to push.  
+-In a few places, out of sight Song of Time blocks can be summoned. The lava room in Gerudo Training Grounds, the beginning of Ganon's Castle Shadow Trial, and the last
+hallway with a caged Goron in Fire Temple are the main cases.
 -Adult Link can fully clear Dodongo's Cavern. He can even skip the first section by virtue of being tall.  
 -In the Forest Temple, you can reach the room with the Floormaster early by using Hover Boots in the block push room.  
 -In the Fire Temple, you can reach the Boss Key door from the beginning with Hover Boots.  
@@ -126,34 +126,30 @@ make poor key choices in Water Temple, this may be what you need to do to untang
 -In the Water Temple, Hover Boots can be used to reach the vanilla Boss Key chest without going through the room that requires Bombs and block pushing. Hover Boots can
 also be used in this temple to avoid the Longshot requirement for the middle level chest that requires the Bow.  
 -In the Shadow Temple, you can avoid the need for the Longshot in the room with the invisible spikes by backflipping onto the chest for extra height.  
+-In the Shadow Temple, you can Hookshot the ladder to avoid pushing the block to get on the boat.  
+-In the Shadow Temple, a combination of the scarecrow and the Longshot can be used to reach Bongo Bongo without needing the Bow.  
+-In the Spirit Temple, the child can obtain the vanilla Map chest with Deku Sticks. No fire magic is needed.  
 -In the Spirit Temple, you can collect the silver rupees without Hover Boots by jumping directly onto the rolling boulder or with a jump slash.  
 -In the Spirit Temple, you can use the Longshot to cross from the hand with the Mirror Shield in vanilla to the other hand.  
+-In Ganon's Castle Spirit Trial, the web can be burned with a precise shot through the torch by a normal arrow. Fire Arrows are not required.  
 -While we guarantee tunics for Fire Temple and Water Temple, you can possibly force yourself to do without if you seriously let a Like Like eat the tunic and
 then do not recover the tunic. It is almost always possible to do without, but it can make things really difficult on you.  
 -Several Gold Skulltulla Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).  
 
 # Known issues
 
-Sadly for this 1.0 release a few known issues exist. These will hopefully be addressed in future versions.
+Sadly for this 2.0 release a few known issues exist. These will hopefully be addressed in future versions.
 
 -The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and quit (NOT savestate) and return to fix the issue.  
 -Draining the Bottom of the Well with Song of Storms sometimes crashes on specific versions of Project 64. We aren't sure of the exact story, but this bug is easily
 avoided by playing on a different emulator.  
--If the large rolling Goron in Goron City as a child has the same item as Link the Goron and the larger Goron's item is obtained first, Link the Goron will not give
-his item. This mostly results in items like Piece of Heart being rendered unobtainable, but if a progressive lands in both of these spots, it could make an impossible
-seed. The fix will simply be too complex to put in the 1.0 version, but this will be fixed soon.  
--Buying the Giant's Knife may be risky in 1.0. This needs more investigation.  
 -Learning a warp song from Malon will break her script and cause Link to be unable to use the Ocarina until he leaves the current screen. Trying to switch which button
 the Ocarina is on and use it in this situation can softlock the game. This will probably be very, very hard to fix; just don't try to get cute and live with the limitation
 for now please.  
 -Learning a warp song from Guru-Guru in the Windmill also breaks his script, but there are no known significant consequences.  
 -Learning Sun's Song can warp Link out of the current cutscene in somewhat inconvenient ways. None of this should prevent completion of the seed, but it can be annoying.   
 -There's a funny bug where sometimes obtaining Biggoron Sword displays a second erroneous text box. This has no gameplay consequence.  
--There's a reported but currently unconfirmed on modern code issue where somehow the child becomes erroneously equipped with Biggoron Sword. This should not be a disadvantage.
 -Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.  
--The text for the Happy Mask Salesman is kinda wonky. Some of it is still slow, and one line flows out of the box. This should not impede your ability to play the game.  
--The Gorons return to Goron City based on possessing the Fire Medallion and not based on clearing Fire Temple currently. They don't really do anything, but it may weird you
-out a bit.  
 -Mido blocks you and complains about the Deku Tree being dead based on possession of the Kokiri Emerald and not on whether you've cleared Deku Tree currently. Just talk to him
 to make him go away.  
 
@@ -178,6 +174,47 @@ The rainbow bridge spawn requires all medallions and spiritual stones to be in t
 ### Open
 
 The rainbow bridge is always present.
+
+## Kokiri Tunic Color
+
+This determines the color of Link's default Kokiri Tunic. This only affects the color when he's wearing it, not the color of the icon in the menu.
+
+### Most Colors
+
+Simply get the particular color selected. Available colors are Kokiri Green, Goron Red, Zora Blue, Black, White, Purple, Yellow, Orange, Pink, Gray,
+Brown, Gold, Silver, Beige, Teal, Royal Blue, Sonic Blue, Blood Red, Blood Orange, NES Green, and Dark Green.
+
+### Random
+
+Choose a random color from the set of pre-made colors.
+
+### True Random
+
+Generate a random color with numerically random RGB values.
+
+## Goron Tunic Color
+
+This determines the color of Link's Goron Tunic. This only affects the color when he's wearing it, not the color of the icon in the menu or when
+holding it up after acquiring it. The options are identical to those for the Kokiri Tunic.
+
+## Zora Tunic Color
+
+This determines the color of Link's Zora Tunic. This only affects the color when he's wearing it, not the color of the icon in the menu or when
+holding it up after acquiring it. The options are identical to those for the Kokiri Tunic.
+
+## Low Health SFX
+
+This determines which sound effect to play repeatedly when Link is very low on health. Several of these options are designed to be potentially
+more pleasant to listen to while a few are designed to be more amusing.
+
+### Particular Sounds
+
+Set this particular sound for the heart beep. Available choices are Default, Softer Beep, Rupee, Timer, Tamborine, Recovery Heart, Carrot Refill,
+Navi - Hey!, Zelda - Gasp, Cluck, and Mweep!. The last of these is indeed the sound a king might make when moving... very slowly.
+
+### None
+
+Disable low health heart beeps altogether.
 
 ## Create Spoiler Log
 
@@ -251,6 +288,30 @@ Output a Spoiler File (default: False)
 ```
 
 Select the condition to spawn the Rainbow Bridge to Ganon's Castle. (default: medallions)
+
+```
+--kokiricolor [{'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'}]
+```
+
+Select the color of Link's Kokiri Tunic. (default: Kokiri Green)
+
+```
+--goroncolor [{'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'}]
+```
+
+Select the color of Link's Goron Tunic. (default: Goron Red)
+
+```
+--zoracolor [{'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'}]
+```
+
+Select the color of Link's Zora Tunic. (default: Zora Blue)
+
+```
+--healthSFX [{'Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'}]
+```
+
+Select the sound effect that loops at low health. (default: Default)
 
 ```
 --rom ROM
