@@ -529,9 +529,12 @@ def patch_rom(world, rom):
     # Remove extra Shadow Temple medallions
     rom.write_bytes(0x00D116E0, [0x00, 0x00, 0x00, 0x00])
 
-    # Change Adult Kokiri Forest to check FT complete flag
+    # Change adult Kokiri Forest to check for Forest Temple complete flag
     rom.write_bytes(0x00E5369E, [0xB4, 0xAC])
     rom.write_bytes(0x00D5A83C, [0x80, 0x49, 0x0E, 0xDC])
+
+    # Change adult Goron City to check for Fire Temple complete flag
+    rom.write_bytes(0x00ED59DC, [0x80, 0xC9, 0x0E, 0xDC])
 
     # Change Pokey to check DT complete flag
     rom.write_bytes(0xE5400A, [0x8C, 0x4C])
