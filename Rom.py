@@ -617,6 +617,9 @@ def patch_rom(world, rom):
 
     # Fix warp song learning to work outside of cutscenes
     rom.write_byte(0xB54B3F, 0x03)
+
+    # Fix sun's song learning in all scenes
+    rom.write_byte(0xB54E63, 0x03)
     
     # Forbid Sun's Song from a bunch of cutscenes
     Suns_scenes = [0x2016FC9, 0x2017219, 0x20173D9, 0x20174C9, 0x2017679, 0x20C1539, 0x20C15D9, 0x21A0719, 0x21A07F9, 0x2E90129, 0x2E901B9, 0x2E90249, 0x225E829, 0x225E939, 0x306D009]
