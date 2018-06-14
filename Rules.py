@@ -66,7 +66,6 @@ def global_rules(world):
     set_rule(world.get_location('Deku Theater Skull Mask'), lambda state: state.has('Zeldas Letter'))
     set_rule(world.get_location('Deku Theater Mask of Truth'), lambda state: state.has('Zeldas Letter') and state.has('Sarias Song') and state.has('Kokiri Emerald') and state.has('Goron Ruby') and state.has('Zora Sapphire') and state.guarantee_hint()) #Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man.
     set_rule(world.get_location('Anju as Adult'), lambda state: state.is_adult())
-    set_rule(world.get_location('Man on Roof'), lambda state: state.has('Progressive Hookshot') and state.is_adult())
     set_rule(world.get_location('Impa House Freestanding PoH'), lambda state: (state.has('Progressive Hookshot') and state.is_adult()) or state.has('Bomb Bag'))
     set_rule(world.get_location('10 Gold Skulltulla Reward'), lambda state: False)
     set_rule(world.get_location('20 Gold Skulltulla Reward'), lambda state: False)
