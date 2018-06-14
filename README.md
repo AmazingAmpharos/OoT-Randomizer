@@ -385,3 +385,8 @@ Create a compressed version of the output ROM file. (default: False)
 ```
 
 Open the graphical user interface. Preloads selections with set command line parameters.
+
+# Notable Changes on this fork
+
+-Removed Fishing minigame from logic
+-Removed Skulltulla rewards from logic
