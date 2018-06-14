@@ -391,3 +391,5 @@ Open the graphical user interface. Preloads selections with set command line par
 - Removed Fishing minigame from logic
 - Removed Skulltulla rewards from logic
 - Removed Forest Stage and Biggoron rewards from logic (trade quests)
+- Child Dead Hand fight no longer requires a sword
+- Underwater room in Training Grounds and underwater Zora Fountain now require Zora Tunic

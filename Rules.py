@@ -83,7 +83,7 @@ def global_rules(world):
     set_rule(world.get_location('Bottom of the Well Center Large Chest'), lambda state: state.has('Lens of Truth') and state.has('Magic Meter'))
     set_rule(world.get_location('Bottom of the Well Center Small Chest'), lambda state: state.has('Lens of Truth') and state.has('Magic Meter'))
     set_rule(world.get_location('Bottom of the Well Back Left Bombable'), lambda state: state.has('Bomb Bag'))
-    set_rule(world.get_location('Bottom of the Well Defeat Boss'), lambda state: state.has('Zeldas Lullaby') and state.has('Kokiri Sword')) #Sword not strictly necessary but frankly being forced to do this with sticks isn't fair
+    set_rule(world.get_location('Bottom of the Well Defeat Boss'), lambda state: state.has('Zeldas Lullaby')) #Sword not strictly necessary but frankly being forced to do this with sticks isn't fair
     set_rule(world.get_location('Bottom of the Well Invisible Chest'), lambda state: state.has('Zeldas Lullaby') and state.has('Lens of Truth') and state.has('Magic Meter'))
     set_rule(world.get_location('Bottom of the Well Underwater Front Chest'), lambda state: state.has('Zeldas Lullaby'))
     set_rule(world.get_location('Bottom of the Well Underwater Left Chest'), lambda state: state.has('Zeldas Lullaby'))
@@ -212,7 +212,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Crater Access'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade') or state.has('Bomb Bag')))
     set_rule(world.get_entrance('Lake Warp Pad'), lambda state: state.has('Serenade of Water'))
     set_rule(world.get_location('King Zora Thawed'), lambda state: state.has_bottle() and (state.can_reach('Ice Cavern') or state.can_reach('Ganons Castle Water Trial') or state.has('Progressive Wallet', 2)))
-    set_rule(world.get_location('Zoras Fountain Bottom Freestanding PoH'), lambda state: state.has('Iron Boots'))
+    set_rule(world.get_location('Zoras Fountain Bottom Freestanding PoH'), lambda state: state.has('Iron Boots') and state.has('Zora Tunic'))
     set_rule(world.get_entrance('Water Temple Entrance'), lambda state: state.is_adult() and (state.has('Zora Tunic') or (state.has('Progressive Wallet', 2) and state.has_bottle() and state.has('Zeldas Lullaby'))) and state.has('Iron Boots') and state.has('Progressive Hookshot'))
     set_rule(world.get_entrance('Water Temple Central Pillar'), lambda state: (state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter')) or state.has('Small Key (Water Temple)', 5)) and state.has('Zeldas Lullaby'))
     set_rule(world.get_entrance('Water Temple Upper Locked Door'), lambda state: state.has('Small Key (Water Temple)', 5) and (state.has('Zeldas Lullaby') or world.keysanity))
@@ -269,7 +269,7 @@ def global_rules(world):
     set_rule(world.get_location('Gerudo Training Grounds Maze Path Third Chest'), lambda state: state.has('Small Key (Gerudo Training Grounds)', 7))
     set_always_allow(world.get_location('Gerudo Training Grounds Maze Path Final Chest'), lambda state, item: item.name == 'Small Key (Gerudo Training Grounds)')
     set_rule(world.get_location('Gerudo Training Grounds Maze Path Final Chest'), lambda state: (state.has('Small Key (Gerudo Training Grounds)', 9)) or (item_name(state, 'Gerudo Training Grounds Maze Path Final Chest') == 'Small Key (Gerudo Training Grounds)' and state.has('Small Key (Gerudo Training Grounds)', 8))) #Allow key for key
-    set_rule(world.get_location('Gerudo Training Grounds Underwater Silver Rupee Chest'), lambda state: state.has('Progressive Hookshot') and state.has('Song of Time') and state.has('Iron Boots') and state.is_adult())
+    set_rule(world.get_location('Gerudo Training Grounds Underwater Silver Rupee Chest'), lambda state: state.has('Progressive Hookshot') and state.has('Song of Time') and state.has('Iron Boots') and state.has('Zora Tunic') and state.is_adult())
     set_rule(world.get_location('Gerudo Training Grounds Hammer Room Switch Chest'), lambda state: state.has('Hammer') and state.is_adult())
     set_rule(world.get_location('Gerudo Training Grounds Eye Statue Chest'), lambda state: state.has('Bow') and state.is_adult())
     set_rule(world.get_location('Gerudo Training Grounds Near Scarecrow Chest'), lambda state: state.has('Bow') and state.is_adult())
