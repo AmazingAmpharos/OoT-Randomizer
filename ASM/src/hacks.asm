@@ -256,3 +256,13 @@
 .org 0xBB7C58 ; In memory: 0x8038F5D8
     jal     item_menu_description_id_periodic
     nop
+
+; Replaces:
+;	addu	at, at, s3
+.org 0xB54E5C ; In memory: 800DEEFC
+	jal 	suns_song_fix 
+
+; Replaces:
+;	addu	at, at, s3
+.org 0xB54B38 ; In memory: 800DEBD8
+	jal		warp_song_fix

@@ -22,7 +22,7 @@
 .endarea
 
 .org 0x80402000
-.area 0x1000, 0
+.area 0x2000, 0
 .include "constants.asm"
 .include "state.asm"
 .include "extended_items.asm"
@@ -31,6 +31,7 @@
 .include "every_frame.asm"
 .include "menu.asm"
 .include "time_travel.asm"
+.include "song_fix.asm"
 .endarea
 
 .close
