@@ -388,5 +388,8 @@ Open the graphical user interface. Preloads selections with set command line par
 
 # Notable Changes on this fork
 
--Removed Fishing minigame from logic
--Removed Skulltulla rewards from logic
+- Removed Fishing minigame from logic
+- Removed Skulltulla rewards from logic
+- Removed Man of Roof requirements
+- Removed most Lens of Truth requirements
+- Added the DC jump to skip the slighshot room to logic
