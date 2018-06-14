@@ -390,6 +390,7 @@ Open the graphical user interface. Preloads selections with set command line par
 
 - Removed Fishing minigame from logic
 - Removed Skulltulla rewards from logic
+- Removed 10 Big Poes reward from logic
 - Removed Forest Stage and Biggoron rewards from logic (trade quests)
 - Removed Man of Roof requirements
 - Added the DC jump to skip the slighshot room to logic

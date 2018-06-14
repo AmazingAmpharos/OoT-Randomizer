@@ -1002,7 +1002,7 @@ def patch_rom(world, rom):
     Tunics.append(0x00B6DA38) # Kokiri Tunic
     Tunics.append(0x00B6DA3B) # Goron Tunic
     Tunics.append(0x00B6DA3E) # Zora Tunic
-    colorList = ['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green']
+    colorList = ['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Only']
     randomColors = random.choices(colorList, k=3)
 
     for i in range(len(Tunics)):
@@ -1055,6 +1055,8 @@ def patch_rom(world, rom):
             color = [0x00, 0x25, 0x18]
         elif thisColor == 'True Random':
             color = randColor
+        elif thisColor == 'Only':
+            color = [50, 190, 200]
         rom.write_bytes(Tunics[i], color)
 
     #Low health beep
