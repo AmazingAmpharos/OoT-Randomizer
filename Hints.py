@@ -7,6 +7,97 @@ import random
 
 from HintList import getHint, getHintGroup, Hint
 from Utils import local_path
+from Items import ItemFactory
+from ItemList import eventlocations
+
+requiredganonitems = [
+    'Bottle',
+    'Bottle with Milk',
+    'Bottle with Red Potion',
+    'Bottle with Green Potion',
+    'Bottle with Blue Potion',
+    'Bottle with Fairy',
+    'Bottle with Fish',
+    'Bottle with Blue Fire',
+    'Bottle with Bugs',
+    'Bottle with Poe',
+    'Hammer',
+    'Goron Tunic',
+    'Progressive Strength Upgrade',
+    'Bomb Bag',
+    'Progressive Hookshot',
+    'Mirror Shield',
+    'Magic Meter',
+    'Bow',
+    'Light Arrows',
+]
+
+gooditems = [
+    'Bow',
+    'Progressive Hookshot',
+    'Hammer',
+    'Slingshot',
+    'Boomerang',
+    'Bomb Bag',
+    'Lens of Truth',
+    'Dins Fire',
+    'Farores Wind',
+    'Nayrus Love',
+    'Fire Arrows',
+    'Ice Arrows',
+    'Light Arrows',
+    'Bottle',
+    'Bottle with Letter',
+    'Bottle with Milk',
+    'Bottle with Red Potion',
+    'Bottle with Green Potion',
+    'Bottle with Blue Potion',
+    'Bottle with Fairy',
+    'Bottle with Fish',
+    'Bottle with Blue Fire',
+    'Bottle with Bugs',
+    'Bottle with Poe',
+    'Pocket Egg',
+    'Pocket Cucco',
+    'Cojiro',
+    'Odd Mushroom',
+    'Odd Potion',
+    'Poachers Saw',
+    'Broken Sword',
+    'Prescription',
+    'Eyeball Frog',
+    'Eyedrops',
+    'Claim Check',
+    'Kokiri Sword',
+    'Biggoron Sword',
+    'Deku Shield',
+    'Hylian Shield',
+    'Mirror Shield',
+    'Goron Tunic',
+    'Zora Tunic',
+    'Iron Boots',
+    'Hover Boots',
+    'Progressive Strength Upgrade',
+    'Progressive Scale',
+    'Progressive Wallet',
+    'Deku Stick Capacity',
+    'Deku Nut Capacity',
+    'Magic Meter',
+    'Double Defense',
+    'Stone of Agony',
+    'Zeldas Lullaby',
+    'Eponas Song',
+    'Suns Song',
+    'Sarias Song',
+    'Song of Time',
+    'Song of Storms',
+    'Minuet of Forest',
+    'Prelude of Light',
+    'Bolero of Fire',
+    'Serenade of Water',
+    'Nocturne of Shadow',
+    'Requiem of Spirit',
+]
 
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(world, rom):
@@ -173,4 +264,4 @@ def getBytes(string):
             byte = int('0x' + char, 16)
             byteCode.extend([byte])
     return byteCode
-        
+
