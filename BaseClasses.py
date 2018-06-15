@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 class World(object):
 
-    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints, colors, healthSFX):
+    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints, fast_ganon, colors, healthSFX):
         self.shuffle = 'vanilla'
         self.bridge = bridge
         self.dungeons = []
@@ -28,6 +28,7 @@ class World(object):
         self.colors = colors
         self.healthSFX = healthSFX
         self.keysanity = False
+        self.fast_ganon = fast_ganon
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
 
@@ -498,7 +499,7 @@ class Dungeon(object):
 
 class Location(object):
 
-    def __init__(self, name='', address=None, address2=None, default=None, type='Chest', scene=None, parent=None):
+    def __init__(self, name='', address=None, address2=None, default=None, type='Chest', scene=None, hint='Termina', parent=None):
         self.name = name
         self.parent_region = parent
         self.item = None
@@ -507,6 +508,7 @@ class Location(object):
         self.default = default
         self.type = type
         self.scene = scene
+        self.hint = hint
         self.spot_type = 'Location'
         self.recursion_count = 0
         self.staleness_count = 0
@@ -595,6 +597,7 @@ class Spoiler(object):
                          'bridge': self.world.bridge,
                          'forest': self.world.open_forest,
                          'door': self.world.open_door_of_time,
+                         'ganon': self.world.fast_ganon,
                          'completeable': not self.world.check_beatable_only,
                          'dungeonitems': self.world.place_dungeon_items}
 
@@ -605,10 +608,9 @@ class Spoiler(object):
             outfile.write('Rainbow Bridge Requirement:      %s\n' % self.metadata['bridge'])
             outfile.write('Open Forest:                     %s\n' % ('Yes' if self.metadata['forest'] else 'No'))
             outfile.write('Open Door of Time:               %s\n' % ('Yes' if self.metadata['door'] else 'No'))
+            outfile.write('Fast Ganon\'s Castle:             %s\n' % ('Yes' if self.metadata['ganon'] else 'No'))
             outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
             outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))
-            outfile.write('\n\nEntrances:\n\n')
-            outfile.write('\n'.join(['%s %s %s' % (entry['entrance'], '<=>' if entry['direction'] == 'both' else '<=' if entry['direction'] == 'exit' else '=>', entry['exit']) for entry in self.entrances]))
             outfile.write('\n\nLocations:\n\n')
             outfile.write('\n'.join(['%s: %s' % (location, item) for (location, item) in self.locations['other locations'].items()]))
             outfile.write('\n\nPlaythrough:\n\n')

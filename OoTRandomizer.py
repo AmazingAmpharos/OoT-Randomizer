@@ -45,6 +45,12 @@ def start():
     parser.add_argument('--open_door_of_time', help='''\
                              The Door of Time is open from the beginning of the game.
                              ''', action='store_true')
+    parser.add_argument('--fast_ganon', help='''\
+                             The barrier within Ganon's Castle leading to Ganon's Tower is dispelled from the
+                             beginning of the game, the Boss Key is not required in Ganon's Tower, Ganondorf
+                             gives a hint for the location of Light Arrows, and the tower collapse sequence
+                             is removed.
+                             ''', action='store_true')
     parser.add_argument('--nodungeonitems', help='''\
                              Remove Maps and Compasses from Itempool, replacing them by
                              empty slots.

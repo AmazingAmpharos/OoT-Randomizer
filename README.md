@@ -17,7 +17,7 @@ encouraged as uncompressed ROMs are impossible to inject for the Virtual Console
 
 For general use, the recommended emulators are Bizhawk and Mupen64plus. If you want to play on Project 64 for whatever reason, you can but
 you will need to set the rando to use 8 MB of RAM and will want to play with the cheat code 8109C58A 0000 to partially fix Project 64's tragically
-poor handling of OoT's pause menu. As of this 1.0 release, there are suspected crashing issues specifically with Project 64. I cannot emphasize enough
+poor handling of OoT's pause menu. As of this 2.0 release, there are suspected crashing issues specifically with Project 64. I cannot emphasize enough
 that it is a discouraged emulator to use.
 
 # General Description
@@ -143,15 +143,8 @@ Sadly for this 2.0 release a few known issues exist. These will hopefully be add
 -The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and quit (NOT savestate) and return to fix the issue.  
 -Draining the Bottom of the Well with Song of Storms sometimes crashes on specific versions of Project 64. We aren't sure of the exact story, but this bug is easily
 avoided by playing on a different emulator.  
--Learning a warp song from Malon will break her script and cause Link to be unable to use the Ocarina until he leaves the current screen. Trying to switch which button
-the Ocarina is on and use it in this situation can softlock the game. This will probably be very, very hard to fix; just don't try to get cute and live with the limitation
-for now please.  
--Learning a warp song from Guru-Guru in the Windmill also breaks his script, but there are no known significant consequences.  
--Learning Sun's Song can warp Link out of the current cutscene in somewhat inconvenient ways. None of this should prevent completion of the seed, but it can be annoying.   
 -There's a funny bug where sometimes obtaining Biggoron Sword displays a second erroneous text box. This has no gameplay consequence.  
 -Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.  
--Mido blocks you and complains about the Deku Tree being dead based on possession of the Kokiri Emerald and not on whether you've cleared Deku Tree currently. Just talk to him
-to make him go away.  
 
 # Settings
 
@@ -239,6 +232,11 @@ If this flag is not set, it is guaranteed that the Deku Tree can be completed wi
 ## Open Door of Time
 
 The Door of Time is open from the beginning of the game. The Song of Time is only useful to move Song of Time blocks.
+
+## Skip most of Ganon's Castle
+
+The barrier protecting Ganon's Tower within Ganon's Castle is dispelled from the start, the Boss Key doors within Ganon's Tower are unlocked by
+default, Ganondorf will provide a hint for the location of Light Arrows, and the collapsing tower sequence is skipped.
 
 ## Place Dungeon Items
 
@@ -348,6 +346,12 @@ Set whether Kokiri children obstruct your path at the beginning of the game. (de
 ```
 
 Set whether the Door of Time is open from the beginning of the game. (default: False)
+
+```
+--fast_ganon
+```
+
+Set whether most of Ganon's Castle can be skipped. (default: False)
 
 ```
 --nodungeonitems
