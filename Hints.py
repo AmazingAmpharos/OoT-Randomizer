@@ -102,10 +102,6 @@ gooditems = [
 
 # build a formatted string with linebreaks appropriate textboxes
 def buildHintString(hintString):
-    formatString = ""
-    splitHintString = hintString.split()
-    lineLength = 0
-
     if len(hintString) < 77:
         hintString = "They say that " + hintString
     elif len(hintString) < 82:
@@ -113,6 +109,11 @@ def buildHintString(hintString):
     elif len(hintString) > 91:
         print('Too many characters in hint')
         hintString = hintString[:91]
+    hintString = hintString.capitalize()
+
+    formatString = ""
+    splitHintString = hintString.split()
+    lineLength = 0
 
     for word in splitHintString:
         # let's assume words are not 35 or more char long
