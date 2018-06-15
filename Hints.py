@@ -186,6 +186,19 @@ def buildGossipHints(world, rom):
                 checkedLocations.append(locationWorld.name)    
                 print(locationWorld.name, ',', locationWorld.item.name)
 
+    # add bad dungeon locations hints
+    for dungeon in random.sample(world.dungeons, random.randint(3,5)):
+        # Choose a randome dungeon location that is a non-dungeon item
+        locationWorld = random.choice([location for region in dungeon.regions for location in world.get_region(region).locations
+            if location.item.type != 'Event' and \
+            not location.name in eventlocations and \
+            not isDungeonItem(location.item) and \
+            location.item.name != 'Gold Skulltulla Token' and\
+            location.item.type != 'Song'])
+
+        checkedLocations.append(locationWorld.name)
+        print(dungeon.name, ",", locationWorld.item.name)
+
     
     sometimesSpace = (int((len(stoneAddresses) - len(alwaysLocations)*2)/2))
     sometimesLocations = getHintGroup('location')#A random selection of these locations will be in the hint pool.
