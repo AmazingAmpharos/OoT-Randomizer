@@ -140,8 +140,16 @@ def getItemGenericName(item):
     else:
         return item.name
 
+
 def isDungeonItem(item):
     return item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey'
+
+
+def writeHintToRom(hint, stoneAddress, rom):
+    hintBytes = getBytes(hint)
+    endText(hintBytes)
+    rom.write_bytes(stoneAddress, hintBytes)
+
 
 
 #builds out general hints based on location and whether an item is required or not
@@ -151,6 +159,12 @@ def buildGossipHints(world, rom):
                       0x93957C, 0x9395D8, 0x939634, 0x939690, 0x9396EC, 0x939748, 0x9397A4, 0x939800, 0x93985C, 0x9398B8,
                       0x939914, 0x939970] #address for gossip stone text boxes, byte limit is 92
 
+    #hopefully fixes weird VC error where the last character from a previous text box would sometimes spill over into the next box.
+    for address in range(stoneAddresses[0], 0x9399D8):
+        rom.write_byte(address, 0x08)
+
+    #shuffles the stone addresses for randomization, always locations will be placed first and twice
+    random.shuffle(stoneAddresses)
 
     # get list of required items that are not events or needed for Ganon's Castle
     requiredItems = [(location, item) for _,sphere in world.spoiler.playthrough.items() for location,item in sphere.items() 
@@ -159,9 +173,15 @@ def buildGossipHints(world, rom):
     # add required non-ganon items for hints (good hints)
     for location,item in random.sample(requiredItems, random.randint(2,4)):
         if random.choice([True, False]):
-            print(buildHintString(getHint(item).text + " will lead to the Triforce."))
+            writeHintToRom(buildHintString(getHint(item).text + " will lead to the Triforce."),\
+                stoneAddresses.pop(0), rom)
         else:
-            print(buildHintString(world.get_location(location).parent_region.name + " has a Piece of the Triforce."))
+            if world.get_location(location).parent_region.dungeon:
+                writeHintToRom(buildHintString(getHint(world.get_location(location).parent_region.dungeon.name).text + \
+                    "  a Piece of the Triforce."), stoneAddresses.pop(0), rom)
+            else:
+                writeHintToRom(buildHintString(world.get_location(location).parent_region.name + " has a Piece of the Triforce."),\
+                    stoneAddresses.pop(0), rom)
 
     # Don't repeat hints
     checkedLocations = []
@@ -171,8 +191,11 @@ def buildGossipHints(world, rom):
     for hint in alwaysLocations:
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
-                checkedLocations.append(hint.name)    
-                print(getHint(locationWorld.name).text + " " + getHint(getItemGenericName(locationWorld.item)).text + ".") 
+                checkedLocations.append(hint.name)   
+                writeHintToRom(getHint(locationWorld.name).text + " " + \
+                    getHint(getItemGenericName(locationWorld.item)).text + ".",\
+                    stoneAddresses.pop(0), rom)
+
 
     # Add good location hints
     sometimesLocations = getHintGroup('location')
@@ -185,7 +208,9 @@ def buildGossipHints(world, rom):
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
                 checkedLocations.append(locationWorld.name)    
-                print(getHint(locationWorld.name).text + " " + getHint(getItemGenericName(locationWorld.item)).text + ".") 
+                writeHintToRom(getHint(locationWorld.name).text + " " + \
+                    getHint(getItemGenericName(locationWorld.item)).text + ".",\
+                    stoneAddresses.pop(0), rom)
 
     # add bad dungeon locations hints
     for dungeon in random.sample(world.dungeons, random.randint(3,5)):
@@ -198,7 +223,9 @@ def buildGossipHints(world, rom):
             location.item.type != 'Song'])
 
         checkedLocations.append(locationWorld.name)
-        print(buildHintString(getHint(dungeon.name).text + " hordes " + getHint(getItemGenericName(locationWorld.item)).text + ".")) 
+        writeHintToRom(buildHintString(getHint(dungeon.name).text + \
+            " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."),\
+            stoneAddresses.pop(0), rom)
 
     # add bad overworld locations hints
     # only choose location if it is new and a proper item from the overworld
@@ -213,7 +240,9 @@ def buildGossipHints(world, rom):
             not locationWorld.name in checkedLocations]
     for locationWorld in random.sample(overworldlocations, random.randint(4,6)):
         checkedLocations.append(locationWorld.name)
-        print(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + " can be found at " + locationWorld.parent_region.name + ".")) 
+        writeHintToRom(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
+            " can be found at " + locationWorld.parent_region.name + "."),\
+            stoneAddresses.pop(0), rom) 
 
     # add good item hints
     # only choose location if it is new and a good item
@@ -223,52 +252,15 @@ def buildGossipHints(world, rom):
     for locationWorld in random.sample(gooditemlocations, random.randint(1,3)):
         checkedLocations.append(locationWorld.name)
         if locationWorld.parent_region.dungeon:
-            print(buildHintString(getHint(locationWorld.parent_region.dungeon.name).text + " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."))
+            writeHintToRom(buildHintString(getHint(locationWorld.parent_region.dungeon.name).text + \
+                " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."),\
+                stoneAddresses.pop(0), rom)
         else:
-            print(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + " can be found at " + locationWorld.parent_region.name + "."))
+            writeHintToRom(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
+                " can be found at " + locationWorld.parent_region.name + "."),\
+                stoneAddresses.pop(0), rom)
 
-    
-    
-    sometimesSpace = (int((len(stoneAddresses) - len(alwaysLocations)*2)/2))
-    sometimesLocations = getHintGroup('location')#A random selection of these locations will be in the hint pool.
-    random.shuffle(sometimesLocations)
-    sometimesLocations = sometimesLocations[0:sometimesSpace]
-    hintList = alwaysLocations
-    hintList.extend(alwaysLocations)
-    hintList.extend(sometimesLocations)
-
-    locationData = []
-    for hint in  hintList:
-        for locationWorld in world.get_locations():
-            if hint.name == locationWorld.name:
-                locationData.extend([locationWorld])         
-
-    #hopefully fixes weird VC error where the last character from a previous text box would sometimes spill over into the next box.
-    for address in range(stoneAddresses[0], 0x9399D8):
-        rom.write_byte(address, 0x08)
-
-    #shuffles the stone addresses for randomization, always locations will be placed first and twice
-    random.shuffle(stoneAddresses)
-
-    #loops through shuffled locations and addresses and builds hint.
-    while locationData:
-        currentLoc = locationData.pop(0)
-        Block_code = getBytes((getHint(currentLoc.name).text))
-        if currentLoc.item.type == 'Map' or currentLoc.item.type == 'Compass' or currentLoc.item.type == 'BossKey' or currentLoc.item.type == 'SmallKey':
-            Block_code.extend(getBytes((getHint(currentLoc.item.type).text)))
-        else:
-            Block_code.extend(getBytes((getHint(currentLoc.item.name).text)))
-        endText(Block_code)
-
-        if len(Block_code) > 92:
-            print('Too many characters in hint')
-            Block_code = getBytes("I am Error.")
-            Block_code.extend(getBytes(currentLoc.name))
-            Block_code.extend(getBytes('&'))
-            Block_code.extend(getBytes(currentLoc.item.name))
-     
-        rom.write_bytes(stoneAddresses.pop(0), Block_code)
-
+    # fill the remaining hints with junk    
     junkHints = getHintGroup('junkHint')
     random.shuffle(junkHints)
     while stoneAddresses:
@@ -384,4 +376,4 @@ def getBytes(string):
             byte = int('0x' + char, 16)
             byteCode.extend([byte])
     return byteCode
-
+        
