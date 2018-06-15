@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 class World(object):
 
-    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints, always_hints, colors, healthSFX, custom_logic):
+    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints, colors, healthSFX, custom_logic):
         self.shuffle = 'vanilla'
         self.bridge = bridge
         self.dungeons = []
@@ -25,7 +25,6 @@ class World(object):
         self.open_forest = open_forest
         self.open_door_of_time = open_door_of_time
         self.hints = hints
-        self.always_hints = always_hints
         self.custom_logic = custom_logic
         self.colors = colors
         self.healthSFX = healthSFX
@@ -344,7 +343,13 @@ class CollectionState(object):
         return ((self.has('Dins Fire') or (self.has('Bow') and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
 
     def guarantee_hint(self):
-        return(self.has('Stone of Agony') or not self.world.hints)
+        if(self.world.hints == 'mask'):
+            # has the mask of truth
+            return self.has('Zeldas Letter') and self.has('Sarias Song') and self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire')
+        elif(self.world.hints == 'agony'):
+            # has the stone of agony
+            return self.has('Stone of Agony')
+        return True
 
     def collect(self, item, event=False, location=None):
         if location:
@@ -598,7 +603,8 @@ class Spoiler(object):
                          'forest': self.world.open_forest,
                          'door': self.world.open_door_of_time,
                          'completeable': not self.world.check_beatable_only,
-                         'dungeonitems': self.world.place_dungeon_items}
+                         'dungeonitems': self.world.place_dungeon_items,
+                         'hints': self.world.hints}
 
     def to_file(self, filename):
         self.parse_data()
@@ -609,6 +615,7 @@ class Spoiler(object):
             outfile.write('Open Door of Time:               %s\n' % ('Yes' if self.metadata['door'] else 'No'))
             outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
             outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))
+            outfile.write('Hints:                           %s\n' % self.metadata['hints'])
             outfile.write('\n\nEntrances:\n\n')
             outfile.write('\n'.join(['%s %s %s' % (entry['entrance'], '<=>' if entry['direction'] == 'both' else '<=' if entry['direction'] == 'exit' else '=>', entry['exit']) for entry in self.entrances]))
             outfile.write('\n\nLocations:\n\n')

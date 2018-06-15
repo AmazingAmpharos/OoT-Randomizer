@@ -5,7 +5,7 @@ import json
 import random
 import os
 import shutil
-from tkinter import Checkbutton, OptionMenu, Toplevel, LabelFrame, PhotoImage, Tk, LEFT, RIGHT, BOTTOM, TOP, StringVar, IntVar, Frame, Label, W, E, X, Entry, Spinbox, Button, filedialog, messagebox, ttk
+from tkinter import Checkbutton, OptionMenu, Toplevel, LabelFrame, Radiobutton, PhotoImage, Tk, LEFT, RIGHT, BOTTOM, TOP, StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, Button, filedialog, messagebox, ttk
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
@@ -25,24 +25,24 @@ def guiMain(args=None):
     adjustWindow = ttk.Frame(notebook)
     customWindow = ttk.Frame(notebook)
     notebook.add(randomizerWindow, text='Randomize')
-    notebook.pack()
 
     # Shared Controls
 
-    farBottomFrame = Frame(mainWindow)
+    farTopFrame = Frame(mainWindow)
 
     def open_output():
         open_file(output_path(''))
 
-    openOutputButton = Button(farBottomFrame, text='Open Output Directory', command=open_output)
+    openOutputButton = Button(farTopFrame, text='Open Output Directory', command=open_output)
 
     if os.path.exists(local_path('README.html')):
         def open_readme():
             open_file(local_path('README.html'))
-        openReadmeButton = Button(farBottomFrame, text='Open Documentation', command=open_readme)
+        openReadmeButton = Button(farTopFrame, text='Open Documentation', command=open_readme)
         openReadmeButton.pack(side=LEFT)
 
-    farBottomFrame.pack(side=BOTTOM, fill=X, padx=5, pady=5)
+    farTopFrame.pack(side=TOP, fill=X, padx=5, pady=2)
+    notebook.pack(padx=5, pady=5)
 
     # randomizer controls
 
@@ -52,16 +52,14 @@ def guiMain(args=None):
 
     # refactoring repeated code for checkboxes...
     checkboxInfo = {
-        "create_spoiler":    { "text": "Create Spoiler Log",               "default": "checked"   },
-        "suppress_rom":      { "text": "Do not create patched Rom",        "default": "unchecked" },
-        "compress_rom":      { "text": "Compress patched Rom",             "default": "checked"   },
-        "open_forest":       { "text": "Open Forest",                      "default": "checked"   },
-        "open_door_of_time": { "text": "Open Door of Time",                "default": "checked"   },
-        "nodungeonitems":    { "text": "Removed Maps and Compasses",       "default": "checked"   },
-        "beatableonly":      { "text": "Only ensure seed is beatable",     "default": "checked"   },
-        "hints":             { "text": "Gossip Stones have useful hints",  "default": "checked"   },
-        "always_hints":      { "text": "Gossip Stones can always be read", "default": "checked"   },
-        "custom_logic":      { "text": "Use this fork's custom logic",     "default": "checked"   },
+        "create_spoiler":    { "text": "Create Spoiler Log",               "group": "output", "default": "checked"   },
+        "suppress_rom":      { "text": "Do not create patched Rom",        "group": "output", "default": "unchecked" },
+        "compress_rom":      { "text": "Compress patched Rom",             "group": "output", "default": "checked"   },
+        "open_forest":       { "text": "Open Forest",                      "group": "output", "default": "checked"   },
+        "open_door_of_time": { "text": "Open Door of Time",                "group": "output", "default": "checked"   },
+        "nodungeonitems":    { "text": "Remove Maps and Compasses",        "group": "output", "default": "checked"   },
+        "beatableonly":      { "text": "Only ensure seed is beatable",     "group": "output", "default": "checked"   },
+        "custom_logic":      { "text": "Use this fork's custom logic",     "group": "output", "default": "checked"   },
     }
 
     # create the checkboxes
@@ -76,37 +74,6 @@ def guiMain(args=None):
         checkboxes[var_name] = Checkbutton(checkBoxFrame, text=info["text"], variable=checkboxVars[var_name])
         checkboxes[var_name].pack(expand=True, anchor=W)
 
-    # createSpoilerVar = IntVar()
-    # createSpoilerCheckbutton = Checkbutton(checkBoxFrame, text="Create Spoiler Log", variable=createSpoilerVar)
-    # suppressRomVar = IntVar()
-    # suppressRomCheckbutton = Checkbutton(checkBoxFrame, text="Do not create patched Rom", variable=suppressRomVar)
-    # compressRomVar = IntVar()
-    # compressRomCheckbutton = Checkbutton(checkBoxFrame, text="Compress patched Rom", variable=compressRomVar)
-    # openForestVar = IntVar()
-    # openForestCheckbutton = Checkbutton(checkBoxFrame, text="Open Forest", variable=openForestVar)
-    # openDoorVar = IntVar()
-    # openDoorCheckbutton = Checkbutton(checkBoxFrame, text="Open Door of Time", variable=openDoorVar)
-    # dungeonItemsVar = IntVar()
-    # dungeonItemsCheckbutton = Checkbutton(checkBoxFrame, text="Place Dungeon Items (Compasses/Maps)", onvalue=0, offvalue=1, variable=dungeonItemsVar)
-    # beatableOnlyVar = IntVar()
-    # beatableOnlyCheckbutton = Checkbutton(checkBoxFrame, text="Only ensure seed is beatable, not all items must be reachable", variable=beatableOnlyVar)
-    # hintsVar = IntVar()
-    # hintsCheckbutton = Checkbutton(checkBoxFrame, text="Gossip Stone Hints with Stone of Agony", variable=hintsVar)
-    # alwaysHintsVar = IntVar()
-    # alwaysHintsCheckbutton = Checkbutton(checkBoxFrame, text="Gossip Stone Always Respond", variable=alwaysHintsVar)
-    # useCustomLogic = IntVar(value=1)
-    # useCustomLogicCheckbutton = Checkbutton(checkBoxFrame, text="Use Custom Logic", variable=useCustomLogic)
-
-    # createSpoilerCheckbutton.pack(expand=True, anchor=W)
-    # suppressRomCheckbutton.pack(expand=True, anchor=W)
-    # compressRomCheckbutton.pack(expand=True, anchor=W)
-    # openForestCheckbutton.pack(expand=True, anchor=W)
-    # openDoorCheckbutton.pack(expand=True, anchor=W)
-    # dungeonItemsCheckbutton.pack(expand=True, anchor=W)
-    # beatableOnlyCheckbutton.pack(expand=True, anchor=W)
-    # hintsCheckbutton.pack(expand=True, anchor=W)
-    # alwaysHintsCheckbutton.pack(expand=True, anchor=W)
-    # useCustomLogicCheckbutton.pack(expand=True, anchor=W)
 
     fileDialogFrame = Frame(rightHalfFrame)
 
@@ -131,14 +98,57 @@ def guiMain(args=None):
 
     dropDownFrame = Frame(topFrame)
 
+    # radio list has a name, a list of options, and a default option
+    bridge_requirements_data = {
+        "name": "Rainbow Bridge Requirement",
+        "options": [
+            { "value": "dungeons",   "description": "All dungeons" },
+            { "value": "medallions", "description": "All medallions" },
+            { "value": "vanilla",    "description": "Vanilla requirements" },
+            { "value": "open",       "description": "Always open" },
+        ],
+        "default": "medallions",
+        "wraplength": 180,
+    }
+    hint_options_data = {
+        "name": "Gossip Stones",
+        "options": [
+            { "value": "none",   "description": "Default Behavior" },
+            { "value": "mask",   "description": "Have useful hints; read with the Mask of Truth" },
+            { "value": "agony",  "description": "Have useful hints; read with Stone of Agony" },
+            { "value": "always", "description": "Have useful hints; can always be read" },
+        ],
+        "default": "always",
+        "wraplength": 140,
+    }
 
-    bridgeFrame = Frame(dropDownFrame)
-    bridgeVar = StringVar()
-    bridgeVar.set('medallions')
-    bridgeOptionMenu = OptionMenu(bridgeFrame, bridgeVar, 'medallions', 'vanilla', 'dungeons', 'open')
-    bridgeOptionMenu.pack(side=RIGHT)
-    bridgeLabel = Label(bridgeFrame, text='Rainbow Bridge Requirement')
-    bridgeLabel.pack(side=LEFT)
+    # adds a LabelFrame containing a list of radio buttons based on the given data
+    # returns the label_frame, and a variable associated with it
+    def MakeRadioList(parent, data):
+        # create a frame to hold the radio buttons
+        lable_frame = LabelFrame(parent, text=data["name"], labelanchor=NW)
+        # create a variable to hold the result of the user's decision
+        radio_var = StringVar(value=data["default"]);
+        # add the radio buttons
+        for option in data["options"]:
+            radio_button = Radiobutton(lable_frame, text=option["description"], value=option["value"], variable=radio_var,
+                                       justify=LEFT, wraplength=data["wraplength"])
+            radio_button.pack(side=TOP, anchor=W)
+        # return the frame so it can be packed, and the var so it can be used
+        return (lable_frame, radio_var)
+
+    (bridgeFrame, bridgeVar) = MakeRadioList(dropDownFrame, bridge_requirements_data)
+    (hintsFrame, hintsVar) = MakeRadioList(dropDownFrame, hint_options_data)
+    #bridgeFrame.pack(side=TOP, anchor=E)
+
+
+    # bridgeFrame = Frame(dropDownFrame)
+    # bridgeVar = StringVar()
+    # bridgeVar.set('medallions')
+    # bridgeOptionMenu = OptionMenu(bridgeFrame, bridgeVar, 'medallions', 'vanilla', 'dungeons', 'open')
+    # bridgeOptionMenu.pack(side=RIGHT)
+    # bridgeLabel = Label(bridgeFrame, text='Rainbow Bridge Requirement')
+    # bridgeLabel.pack(side=LEFT)
 
     colorVars = []
     colorVars.append(StringVar())
@@ -176,6 +186,7 @@ def guiMain(args=None):
     lowHealthSFXLabel.pack(side=LEFT)
     
     bridgeFrame.pack(expand=True, anchor=E)
+    hintsFrame.pack(expand=True, anchor=E)
     kokiriFrame.pack(expand=True, anchor=E)
     goronFrame.pack(expand=True, anchor=E)
     zoraFrame.pack(expand=True, anchor=E)
@@ -206,8 +217,7 @@ def guiMain(args=None):
         guiargs.open_door_of_time = bool(checkboxVars["open_door_of_time"].get())
         guiargs.nodungeonitems = bool(checkboxVars["nodungeonitems"].get())
         guiargs.beatableonly = bool(checkboxVars["beatableonly"].get())
-        guiargs.hints = bool(checkboxVars["hints"].get())
-        guiargs.always_hints = bool(checkboxVars["always_hints"].get())
+        guiargs.hints = hintsVar.get()
         guiargs.custom_logic = bool(checkboxVars["custom_logic"].get())
         guiargs.rom = romVar.get()
         try:
@@ -247,9 +257,8 @@ def guiMain(args=None):
         checkboxVars["open_door_of_time"].set(int(args.open_door_of_time))
         checkboxVars["nodungeonitems"].set(int(args.nodungeonitems))
         checkboxVars["beatableonly"].set(int(args.beatableonly))
-        checkboxVars["hints"].set(int(args.hints))
-        checkboxVars["always_hints"].set(int(args.always_hints))
         checkboxVars["custom_logic"].set(int(args.custom_logic))
+        hintsVar.set(args.hints)
         if args.count:
             countVar.set(str(args.count))
         if args.seed:
