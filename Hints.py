@@ -159,9 +159,9 @@ def buildGossipHints(world, rom):
     # add required non-ganon items for hints (good hints)
     for location,item in random.sample(requiredItems, random.randint(2,4)):
         if random.choice([True, False]):
-            print(item)
+            print(buildHintString(getHint(item).text + " will lead to the Triforce."))
         else:
-            print(location)
+            print(buildHintString(world.get_location(location).parent_region.name + " has a Piece of the Triforce."))
 
     # Don't repeat hints
     checkedLocations = []
@@ -172,7 +172,7 @@ def buildGossipHints(world, rom):
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
                 checkedLocations.append(hint.name)    
-                print(locationWorld.name, ',', locationWorld.item.name)
+                print(getHint(locationWorld.name).text + " " + getHint(getItemGenericName(locationWorld.item)).text + ".") 
 
     # Add good location hints
     sometimesLocations = getHintGroup('location')
@@ -185,7 +185,7 @@ def buildGossipHints(world, rom):
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
                 checkedLocations.append(locationWorld.name)    
-                print(locationWorld.name, ',', locationWorld.item.name)
+                print(getHint(locationWorld.name).text + " " + getHint(getItemGenericName(locationWorld.item)).text + ".") 
 
     # add bad dungeon locations hints
     for dungeon in random.sample(world.dungeons, random.randint(3,5)):
@@ -198,7 +198,7 @@ def buildGossipHints(world, rom):
             location.item.type != 'Song'])
 
         checkedLocations.append(locationWorld.name)
-        print(dungeon.name, ",", locationWorld.item.name)
+        print(buildHintString(getHint(dungeon.name).text + " hordes " + getHint(getItemGenericName(locationWorld.item)).text + ".")) 
 
     # add bad overworld locations hints
     # only choose location if it is new and a proper item from the overworld
@@ -213,7 +213,7 @@ def buildGossipHints(world, rom):
             not locationWorld.name in checkedLocations]
     for locationWorld in random.sample(overworldlocations, random.randint(4,6)):
         checkedLocations.append(locationWorld.name)
-        print(locationWorld.parent_region.name, ',', locationWorld.item.name)
+        print(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + " can be found at " + locationWorld.parent_region.name + ".")) 
 
     # add good item hints
     # only choose location if it is new and a good item
@@ -221,9 +221,13 @@ def buildGossipHints(world, rom):
             if not locationWorld.name in checkedLocations and \
             locationWorld.item.name in gooditems]
     for locationWorld in random.sample(gooditemlocations, random.randint(1,3)):
-        checkedLocations.append(locationWorld.name)    
-        print(locationWorld.parent_region.name, ',', locationWorld.item.name)
+        checkedLocations.append(locationWorld.name)
+        if locationWorld.parent_region.dungeon:
+            print(buildHintString(getHint(locationWorld.parent_region.dungeon.name).text + " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."))
+        else:
+            print(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + " can be found at " + locationWorld.parent_region.name + "."))
 
+    
     
     sometimesSpace = (int((len(stoneAddresses) - len(alwaysLocations)*2)/2))
     sometimesLocations = getHintGroup('location')#A random selection of these locations will be in the hint pool.
