@@ -173,6 +173,19 @@ def buildGossipHints(world, rom):
                 checkedLocations.append(hint.name)    
                 print(locationWorld.name, ',', locationWorld.item.name)
 
+    # Add good location hints
+    sometimesLocations = getHintGroup('location')
+    for _ in range(0, random.randint(9,11) - len(alwaysLocations)):
+        hint = random.choice(sometimesLocations)
+        # Repick if location isn't new
+        while hint.name in checkedLocations or hint.name in alwaysLocations:
+            hint = random.choice(sometimesLocations)
+
+        for locationWorld in world.get_locations():
+            if hint.name == locationWorld.name:
+                checkedLocations.append(locationWorld.name)    
+                print(locationWorld.name, ',', locationWorld.item.name)
+
     
     sometimesSpace = (int((len(stoneAddresses) - len(alwaysLocations)*2)/2))
     sometimesLocations = getHintGroup('location')#A random selection of these locations will be in the hint pool.
