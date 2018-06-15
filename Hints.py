@@ -132,6 +132,17 @@ def buildHintString(hintString):
 
     return formatString
 
+
+def getItemGenericName(item):
+    if item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey':
+        return item.type
+    else:
+        return item.name
+
+def isDungeonItem(item):
+    return item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey'
+
+
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(world, rom):
     stoneAddresses = [0x938e4c, 0x938EA8, 0x938F04, 0x938F60, 0x938FBC, 0x939018, 0x939074, 0x9390D0, 0x93912C, 0x939188,
