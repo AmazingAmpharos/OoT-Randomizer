@@ -151,7 +151,17 @@ def buildGossipHints(world, rom):
                       0x939914, 0x939970] #address for gossip stone text boxes, byte limit is 92
 
 
-    alwaysLocations = getHintGroup('alwaysLocation')#These location will always have a hint somewhere in the world.
+    # get list of required items that are not events or needed for Ganon's Castle
+    requiredItems = [(location, item) for _,sphere in world.spoiler.playthrough.items() for location,item in sphere.items() 
+        if ItemFactory(item).type != 'Event' and not location in eventlocations and not item in requiredganonitems]
+
+    # add required non-ganon items for hints (good hints)
+    for location,item in random.sample(requiredItems, random.randint(2,4)):
+        if random.choice([True, False]):
+            print(item)
+        else:
+            print(location)
+
     
     sometimesSpace = (int((len(stoneAddresses) - len(alwaysLocations)*2)/2))
     sometimesLocations = getHintGroup('location')#A random selection of these locations will be in the hint pool.
