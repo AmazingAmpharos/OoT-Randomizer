@@ -198,8 +198,8 @@ def _create_region(name, type, locations=None, exits=None):
     for exit in exits:
         ret.exits.append(Entrance(exit, ret))
     for location in locations:
-        address, address2, default, type, scene = location_table[location]
-        ret.locations.append(Location(location, address, address2, default, type, scene, ret))
+        address, address2, default, type, scene, hint = location_table[location]
+        ret.locations.append(Location(location, address, address2, default, type, scene, hint, ret))
     return ret
 
 location_table = {'Kokiri Sword Chest': (0x20A6142, None, 0x04E0, 'Chest', 0x55, 'Kokiri Forest'),
