@@ -50,31 +50,63 @@ def guiMain(args=None):
     rightHalfFrame = Frame(topFrame)
     checkBoxFrame = Frame(rightHalfFrame)
 
-    createSpoilerVar = IntVar()
-    createSpoilerCheckbutton = Checkbutton(checkBoxFrame, text="Create Spoiler Log", variable=createSpoilerVar)
-    suppressRomVar = IntVar()
-    suppressRomCheckbutton = Checkbutton(checkBoxFrame, text="Do not create patched Rom", variable=suppressRomVar)
-    compressRomVar = IntVar()
-    compressRomCheckbutton = Checkbutton(checkBoxFrame, text="Compress patched Rom", variable=compressRomVar)
-    openForestVar = IntVar()
-    openForestCheckbutton = Checkbutton(checkBoxFrame, text="Open Forest", variable=openForestVar)
-    openDoorVar = IntVar()
-    openDoorCheckbutton = Checkbutton(checkBoxFrame, text="Open Door of Time", variable=openDoorVar)
-    dungeonItemsVar = IntVar()
-    dungeonItemsCheckbutton = Checkbutton(checkBoxFrame, text="Place Dungeon Items (Compasses/Maps)", onvalue=0, offvalue=1, variable=dungeonItemsVar)
-    beatableOnlyVar = IntVar()
-    beatableOnlyCheckbutton = Checkbutton(checkBoxFrame, text="Only ensure seed is beatable, not all items must be reachable", variable=beatableOnlyVar)
-    hintsVar = IntVar()
-    hintsCheckbutton = Checkbutton(checkBoxFrame, text="Gossip Stone Hints with Stone of Agony", variable=hintsVar)
+    # refactoring repeated code for checkboxes...
+    checkboxInfo = {
+        "create_spoiler":    { "text": "Create Spoiler Log",               "default": "checked"   },
+        "suppress_rom":      { "text": "Do not create patched Rom",        "default": "unchecked" },
+        "compress_rom":      { "text": "Compress patched Rom",             "default": "checked"   },
+        "open_forest":       { "text": "Open Forest",                      "default": "checked"   },
+        "open_door_of_time": { "text": "Open Door of Time",                "default": "checked"   },
+        "nodungeonitems":    { "text": "Removed Maps and Compasses",       "default": "checked"   },
+        "beatableonly":      { "text": "Only ensure seed is beatable",     "default": "checked"   },
+        "hints":             { "text": "Gossip Stones have useful hints",  "default": "checked"   },
+        "always_hints":      { "text": "Gossip Stones can always be read", "default": "checked"   },
+        "custom_logic":      { "text": "Use this fork's custom logic",     "default": "checked"   },
+    }
 
-    createSpoilerCheckbutton.pack(expand=True, anchor=W)
-    suppressRomCheckbutton.pack(expand=True, anchor=W)
-    compressRomCheckbutton.pack(expand=True, anchor=W)
-    openForestCheckbutton.pack(expand=True, anchor=W)
-    openDoorCheckbutton.pack(expand=True, anchor=W)
-    dungeonItemsCheckbutton.pack(expand=True, anchor=W)
-    beatableOnlyCheckbutton.pack(expand=True, anchor=W)
-    hintsCheckbutton.pack(expand=True, anchor=W)
+    # create the checkboxes
+    checkboxes = {} # this isn't used later currently, but I'm holding on to the pointers in case it matters later on
+    checkboxVars = {}
+    for var_name, info in checkboxInfo.items():
+        # determine the initial value of the checkbox
+        default_value = 1 if info["default"] == "checked" else 0
+        # create a variable to access the box's state
+        checkboxVars[var_name] = IntVar(value=default_value)
+        # create the checkbox
+        checkboxes[var_name] = Checkbutton(checkBoxFrame, text=info["text"], variable=checkboxVars[var_name])
+        checkboxes[var_name].pack(expand=True, anchor=W)
+
+    # createSpoilerVar = IntVar()
+    # createSpoilerCheckbutton = Checkbutton(checkBoxFrame, text="Create Spoiler Log", variable=createSpoilerVar)
+    # suppressRomVar = IntVar()
+    # suppressRomCheckbutton = Checkbutton(checkBoxFrame, text="Do not create patched Rom", variable=suppressRomVar)
+    # compressRomVar = IntVar()
+    # compressRomCheckbutton = Checkbutton(checkBoxFrame, text="Compress patched Rom", variable=compressRomVar)
+    # openForestVar = IntVar()
+    # openForestCheckbutton = Checkbutton(checkBoxFrame, text="Open Forest", variable=openForestVar)
+    # openDoorVar = IntVar()
+    # openDoorCheckbutton = Checkbutton(checkBoxFrame, text="Open Door of Time", variable=openDoorVar)
+    # dungeonItemsVar = IntVar()
+    # dungeonItemsCheckbutton = Checkbutton(checkBoxFrame, text="Place Dungeon Items (Compasses/Maps)", onvalue=0, offvalue=1, variable=dungeonItemsVar)
+    # beatableOnlyVar = IntVar()
+    # beatableOnlyCheckbutton = Checkbutton(checkBoxFrame, text="Only ensure seed is beatable, not all items must be reachable", variable=beatableOnlyVar)
+    # hintsVar = IntVar()
+    # hintsCheckbutton = Checkbutton(checkBoxFrame, text="Gossip Stone Hints with Stone of Agony", variable=hintsVar)
+    # alwaysHintsVar = IntVar()
+    # alwaysHintsCheckbutton = Checkbutton(checkBoxFrame, text="Gossip Stone Always Respond", variable=alwaysHintsVar)
+    # useCustomLogic = IntVar(value=1)
+    # useCustomLogicCheckbutton = Checkbutton(checkBoxFrame, text="Use Custom Logic", variable=useCustomLogic)
+
+    # createSpoilerCheckbutton.pack(expand=True, anchor=W)
+    # suppressRomCheckbutton.pack(expand=True, anchor=W)
+    # compressRomCheckbutton.pack(expand=True, anchor=W)
+    # openForestCheckbutton.pack(expand=True, anchor=W)
+    # openDoorCheckbutton.pack(expand=True, anchor=W)
+    # dungeonItemsCheckbutton.pack(expand=True, anchor=W)
+    # beatableOnlyCheckbutton.pack(expand=True, anchor=W)
+    # hintsCheckbutton.pack(expand=True, anchor=W)
+    # alwaysHintsCheckbutton.pack(expand=True, anchor=W)
+    # useCustomLogicCheckbutton.pack(expand=True, anchor=W)
 
     fileDialogFrame = Frame(rightHalfFrame)
 
@@ -167,14 +199,16 @@ def guiMain(args=None):
         guiargs.goroncolor = colorVars[1].get()
         guiargs.zoracolor = colorVars[2].get()
         guiargs.healthSFX = lowHealthSFXVar.get()
-        guiargs.create_spoiler = bool(createSpoilerVar.get())
-        guiargs.suppress_rom = bool(suppressRomVar.get())
-        guiargs.compress_rom = bool(compressRomVar.get())
-        guiargs.open_forest = bool(openForestVar.get())
-        guiargs.open_door_of_time = bool(openDoorVar.get())
-        guiargs.nodungeonitems = bool(dungeonItemsVar.get())
-        guiargs.beatableonly = bool(beatableOnlyVar.get())
-        guiargs.hints = bool(hintsVar.get())
+        guiargs.create_spoiler = bool(checkboxVars["create_spoiler"].get())
+        guiargs.suppress_rom = bool(checkboxVars["suppress_rom"].get())
+        guiargs.compress_rom = bool(checkboxVars["compress_rom"].get())
+        guiargs.open_forest = bool(checkboxVars["open_forest"].get())
+        guiargs.open_door_of_time = bool(checkboxVars["open_door_of_time"].get())
+        guiargs.nodungeonitems = bool(checkboxVars["nodungeonitems"].get())
+        guiargs.beatableonly = bool(checkboxVars["beatableonly"].get())
+        guiargs.hints = bool(checkboxVars["hints"].get())
+        guiargs.always_hints = bool(checkboxVars["always_hints"].get())
+        guiargs.custom_logic = bool(checkboxVars["custom_logic"].get())
         guiargs.rom = romVar.get()
         try:
             if guiargs.count is not None:
@@ -206,15 +240,16 @@ def guiMain(args=None):
 
     if args is not None:
         # load values from commandline args
-        createSpoilerVar.set(int(args.create_spoiler))
-        suppressRomVar.set(int(args.suppress_rom))
-        compressRomVar.set(int(args.compress_rom))
-        if args.nodungeonitems:
-            dungeonItemsVar.set(int(not args.nodungeonitems))
-        openForestVar.set(int(args.open_forest))
-        openDoorVar.set(int(args.open_door_of_time))
-        beatableOnlyVar.set(int(args.beatableonly))
-        hintsVar.set(int(args.hints))
+        checkboxVars["create_spoiler"].set(int(args.create_spoiler))
+        checkboxVars["suppress_rom"].set(int(args.suppress_rom))
+        checkboxVars["compress_rom"].set(int(args.compress_rom))
+        checkboxVars["open_forest"].set(int(args.open_forest))
+        checkboxVars["open_door_of_time"].set(int(args.open_door_of_time))
+        checkboxVars["nodungeonitems"].set(int(args.nodungeonitems))
+        checkboxVars["beatableonly"].set(int(args.beatableonly))
+        checkboxVars["hints"].set(int(args.hints))
+        checkboxVars["always_hints"].set(int(args.always_hints))
+        checkboxVars["custom_logic"].set(int(args.custom_logic))
         if args.count:
             countVar.set(str(args.count))
         if args.seed:

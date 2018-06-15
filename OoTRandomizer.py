@@ -59,6 +59,9 @@ def start():
                              in inconvenient locations if the Stone of Agony is in
                              the player's inventory.
                              ''', action='store_true')
+    parser.add_argument('--always_hints', help='''\
+                             Gossip Stones can be read any time.
+                             ''', action='store_true')
     parser.add_argument('--kokiricolor', default='Kokiri Green', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
                         help='''\
                              Choose the color for Link's Kokiri Tunic. (default: %(default)s)
@@ -87,6 +90,10 @@ def start():
                              Random:       Replace the sound effect with a random sound from this list.
                              None:         Eliminate heart beeps.
                              ''')
+    parser.add_argument('--custom_logic', help='''\
+                             Removes a number of bad locations from logic,
+                             and adds a number allowed tricks
+                             ''', action='store_true')
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
     parser.add_argument('--compress_rom', help='Create a compressed version of the output rom file.', action='store_true')
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')
