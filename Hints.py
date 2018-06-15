@@ -99,6 +99,39 @@ gooditems = [
     'Requiem of Spirit',
 ]
 
+
+# build a formatted string with linebreaks appropriate textboxes
+def buildHintString(hintString):
+    formatString = ""
+    splitHintString = hintString.split()
+    lineLength = 0
+
+    if len(hintString) < 77:
+        hintString = "They say that " + hintString
+    elif len(hintString) < 82:
+        hintString = "They say " + hintString
+    elif len(hintString) > 91:
+        print('Too many characters in hint')
+        hintString = hintString[:91]
+
+    for word in splitHintString:
+        # let's assume words are not 35 or more char long
+        if lineLength + len(word) + 1 <= 35:
+            # add a space if line is not empty
+            if lineLength != 0:
+                lineLength = lineLength + 1
+                formatString = formatString + ' '
+
+            # append word
+            formatString = formatString + word
+            lineLength = lineLength + len(word)
+        else:
+            # word won'd fit, add to a new line
+            formatString = formatString + '&' + word
+            lineLength = len(word)
+
+    return formatString
+
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(world, rom):
     stoneAddresses = [0x938e4c, 0x938EA8, 0x938F04, 0x938F60, 0x938FBC, 0x939018, 0x939074, 0x9390D0, 0x93912C, 0x939188,
