@@ -199,6 +199,21 @@ def buildGossipHints(world, rom):
         checkedLocations.append(locationWorld.name)
         print(dungeon.name, ",", locationWorld.item.name)
 
+    # add bad overworld locations hints
+    # only choose location if it is new and a proper item from the overworld
+    overworldlocations = [locationWorld for locationWorld in world.get_locations()
+            if not locationWorld.name in checkedLocations and \
+            not locationWorld.name in alwaysLocations and \
+            not locationWorld.name in sometimesLocations and \
+            locationWorld.item.type != 'Event' and \
+            not locationWorld.name in eventlocations and \
+            locationWorld.item.name != 'Gold Skulltulla Token' and \
+            not locationWorld.parent_region.dungeon and \
+            not locationWorld.name in checkedLocations]
+    for locationWorld in random.sample(overworldlocations, random.randint(4,6)):
+        checkedLocations.append(locationWorld.name)
+        print(locationWorld.parent_region.name, ',', locationWorld.item.name)
+
     
     sometimesSpace = (int((len(stoneAddresses) - len(alwaysLocations)*2)/2))
     sometimesLocations = getHintGroup('location')#A random selection of these locations will be in the hint pool.
