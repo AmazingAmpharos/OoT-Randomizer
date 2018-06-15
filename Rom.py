@@ -12,6 +12,37 @@ from Utils import local_path, output_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
 
+TunicColors = {
+    "Kokiri Green": [0x1E, 0x69, 0x1B],
+    "Goron Red": [0x64, 0x14, 0x00],
+    "Zora Blue": [0x00, 0x3C, 0x64],
+    "Black": [0x30, 0x30, 0x30],
+    "White": [0xF0, 0xF0, 0xFF],
+    "Purple": [0x95, 0x30, 0x80],
+    "Yellow": [0xE0, 0xD8, 0x60],
+    "Orange": [0xE0, 0x79, 0x40],
+    "Pink": [0xFF, 0x90, 0xB3],
+    "Gray": [0xA0, 0xA0, 0xB0],
+    "Brown": [0x95, 0x59, 0x0A],
+    "Gold": [0xD8, 0xB0, 0x60],
+    "Silver": [0xD0, 0xF0, 0xFF],
+    "Beige": [0xC0, 0xA0, 0xA0],
+    "Teal": [0x30, 0xD0, 0xB0],
+    "Royal Blue": [0x40, 0x00, 0x90],
+    "Sonic Blue": [0x50, 0x90, 0xE0],
+    "Blood Red": [0x30, 0x10, 0x10],
+    "Blood Orange": [0xF0, 0x30, 0x30],
+    "NES Green": [0x00, 0xD0, 0x00],
+    "Dark Green": [0x00, 0x25, 0x18],
+    "Only": [50, 190, 200],
+}
+
+def get_tunic_colors():
+    return list(TunicColors.keys())
+
+def get_tunic_color_options():
+    return get_tunic_colors() + ["Random", "True Random"]
+
 class LocalRom(object):
 
     def __init__(self, file, patch=True):
@@ -1006,7 +1037,7 @@ def patch_rom(world, rom):
     Tunics.append(0x00B6DA38) # Kokiri Tunic
     Tunics.append(0x00B6DA3B) # Goron Tunic
     Tunics.append(0x00B6DA3E) # Zora Tunic
-    colorList = ['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Only']
+    colorList = get_tunic_colors()
     randomColors = random.choices(colorList, k=3)
 
     for i in range(len(Tunics)):
