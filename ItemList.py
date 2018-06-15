@@ -23,44 +23,34 @@ skulltulla_locations = (['GS1', 'GS2', 'GS3', 'GS4', 'GS5', 'GS6', 'GS7', 'GS8',
                        ['GS81', 'GS82', 'GS83', 'GS84', 'GS85', 'GS86', 'GS87', 'GS88', 'GS89', 'GS90', 'GS91', 'GS92', 'GS93', 'GS94', 'GS95', 'GS96', 'GS97', 'GS98', 'GS99', 'GS100'])
 tradeitems = ['Pocket Egg', 'Pocket Cucco', 'Cojiro', 'Odd Mushroom', 'Poachers Saw', 'Broken Sword', 'Prescription', 'Eyeball Frog', 'Eyedrops', 'Claim Check']
 
+eventlocations = {
+    'Ganon': 'Triforce',
+    'Gift from Saria': 'Fairy Ocarina',
+    'Zeldas Letter': 'Zeldas Letter',
+    'Magic Bean Salesman': 'Magic Bean',
+    'King Zora Moves': 'Bottle',
+    'Ocarina of Time': 'Ocarina of Time',
+    'Master Sword Pedestal': 'Master Sword',
+    'Epona': 'Epona',
+    'Gerudo Fortress Carpenter Rescue': 'Gerudo Membership Card',
+    'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
+    'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',
+    'Ganons Castle Water Trial Clear': 'Water Trial Clear',
+    'Ganons Castle Shadow Trial Clear': 'Shadow Trial Clear',
+    'Ganons Castle Spirit Trial Clear': 'Spirit Trial Clear',
+    'Ganons Castle Light Trial Clear': 'Light Trial Clear'
+}
+
 #total_items_to_place = 5
 
 def generate_itempool(world):
-
     for location in skulltulla_locations:
         world.push_item(location, ItemFactory('Gold Skulltulla Token'), False)
         world.get_location(location).event = True
 
-    world.push_item('Ganon', ItemFactory('Triforce'), False)
-    world.get_location('Ganon').event = True
-    world.push_item('Gift from Saria', ItemFactory('Fairy Ocarina'), False)
-    world.get_location('Gift from Saria').event = True
-    world.push_item('Zeldas Letter', ItemFactory('Zeldas Letter'), False)
-    world.get_location('Zeldas Letter').event = True
-    world.push_item('Magic Bean Salesman', ItemFactory('Magic Bean'), False)
-    world.get_location('Magic Bean Salesman').event = True
-    world.push_item('King Zora Moves', ItemFactory('Bottle'), False)
-    world.get_location('King Zora Moves').event = True
-    world.push_item('Ocarina of Time', ItemFactory('Ocarina of Time'), False)
-    world.get_location('Ocarina of Time').event = True
-    world.push_item('Master Sword Pedestal', ItemFactory('Master Sword'), False)
-    world.get_location('Master Sword Pedestal').event = True
-    world.push_item('Epona', ItemFactory('Epona'), False)
-    world.get_location('Epona').event = True
-    world.push_item('Gerudo Fortress Carpenter Rescue', ItemFactory('Gerudo Membership Card'), False)
-    world.get_location('Gerudo Fortress Carpenter Rescue').event = True
-    world.push_item('Ganons Castle Forest Trial Clear', ItemFactory('Forest Trial Clear'), False)
-    world.get_location('Ganons Castle Forest Trial Clear').event = True
-    world.push_item('Ganons Castle Fire Trial Clear', ItemFactory('Fire Trial Clear'), False)
-    world.get_location('Ganons Castle Fire Trial Clear').event = True
-    world.push_item('Ganons Castle Water Trial Clear', ItemFactory('Water Trial Clear'), False)
-    world.get_location('Ganons Castle Water Trial Clear').event = True
-    world.push_item('Ganons Castle Shadow Trial Clear', ItemFactory('Shadow Trial Clear'), False)
-    world.get_location('Ganons Castle Shadow Trial Clear').event = True
-    world.push_item('Ganons Castle Spirit Trial Clear', ItemFactory('Spirit Trial Clear'), False)
-    world.get_location('Ganons Castle Spirit Trial Clear').event = True
-    world.push_item('Ganons Castle Light Trial Clear', ItemFactory('Light Trial Clear'), False)
-    world.get_location('Ganons Castle Light Trial Clear').event = True
+    for location, item in eventlocations.items():
+        world.push_item(location, ItemFactory(item), False)
+        world.get_location(location).event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world.place_dungeon_items)
