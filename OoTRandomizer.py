@@ -9,6 +9,7 @@ import sys
 from Gui import guiMain
 from Main import main
 from Utils import is_bundled, close_console
+from Rom import get_tunic_color_options
 
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
@@ -54,29 +55,29 @@ def start():
                              ensure all locations are reachable. This only has an effect
                              on the restrictive algorithm currently.
                              ''', action='store_true')
-    parser.add_argument('--hints', help='''\
-                             Gossip Stones provide helpful hints about which items are
-                             in inconvenient locations if the Stone of Agony is in
-                             the player's inventory.
-                             ''', action='store_true')
-    parser.add_argument('--always_hints', help='''\
-                             Gossip Stones can be read any time.
-                             ''', action='store_true')
-    parser.add_argument('--kokiricolor', default='Kokiri Green', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
+    parser.add_argument('--hints', default='none', const='always', nargs='?', choices=['none', 'mask', 'agony', 'always'],
+                        help='''\
+                             Choose how Gossip Stones behave
+                             none:   Default behavior
+                             mask:   Have useful hints that are read with the Mask of Truth (untested)
+                             agony:  Have useful hints that are read with Stone of Agony
+                             always: Have useful hints which can always be read
+                             ''')
+    parser.add_argument('--kokiricolor', default='Kokiri Green', const='Kokiri Green', nargs='?', choices=get_tunic_color_options(),
                         help='''\
                              Choose the color for Link's Kokiri Tunic. (default: %(default)s)
                              Color:        Make the Kokiri Tunic this color.
                              Random:       Choose a random color from this list of colors.
                              True Random:  Choose a random color from any color the N64 can draw.
                              ''')
-    parser.add_argument('--goroncolor', default='Goron Red', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
+    parser.add_argument('--goroncolor', default='Goron Red', const='Goron Red', nargs='?', choices=get_tunic_color_options(),
                         help='''\
                              Choose the color for Link's Goron Tunic. (default: %(default)s)
                              Color:        Make the Goron Tunic this color.
                              Random:       Choose a random color from this list of colors.
                              True Random:  Choose a random color from any color the N64 can draw.
                              ''')
-    parser.add_argument('--zoracolor', default='Zora Blue', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
+    parser.add_argument('--zoracolor', default='Zora Blue', const='Zora Blue', nargs='?', choices=get_tunic_color_options(),
                         help='''\
                              Choose the color for Link's Zora Tunic. (default: %(default)s)
                              Color:        Make the Zora Tunic this color.
