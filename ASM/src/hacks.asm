@@ -258,10 +258,10 @@
     nop
 
 ; Replaces:
-;	addu	at, at, s3
-.org 0xB54E5C ; In memory: 800DEEFC
+;	lw		t5, 0x8AA0(t5)
+.org 0xAE5DF0 ; In memory: 8006FE90
 	jal 	suns_song_fix 
-
+	
 ; Replaces:
 ;	addu	at, at, s3
 .org 0xB54B38 ; In memory: 800DEBD8
