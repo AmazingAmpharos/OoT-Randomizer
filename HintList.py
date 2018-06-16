@@ -230,7 +230,8 @@ hintTable = {'Hammer':                                                (" the dra
              'Medallion Text End':                                    ("Together with the Hero of Time,&the awakened ones will bind the&evil and return the light of peace&to the world.", 'boss'),
                                                                        #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box
              'Validation Line':                                       ("Hmph... Since you made it this far&I'll let you know what glorious&prize of Ganon's you likely&missed out on in my tower.^Behold...^", 'validation line'),
-             '2001':                                                  ("Oh! It's @.&I was expecting someone called&Sheik. Do you know what&happened to them?", 'ganonLine'),
+             'Light Arrow Location':                                  ("Ha ha ha... You'll never beat me by&reflecting my lightning bolts&and unleashing the arrows from&", 'Light Arrow Location'),
+             '2001':                                                  ("Oh! It's @.&I was expecting someone called&Sheik. Do you know what&happened to them?", 'ganonLine'), 
              '2002':                                                  ("I knew I shouldn't have put the key&on the other side of my door.", 'ganonLine'),
              '2003':                                                  ("Looks like it's time for a&round of tennis.", 'ganonLine'),
              '2004':                                                  ("You'll never deflect my bolts of&energy with your sword,&then shot me with those Light&Arrows you happen to have.", 'ganonLine'),

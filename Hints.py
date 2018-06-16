@@ -141,12 +141,22 @@ def buildGanonText(world, rom):
     Block_code = getBytes(ganonLines.pop().text)
     endText(Block_code)
     rom.write_bytes(0x9611F1, Block_code)
+
+    if world.fast_ganon:
+        for location in world.get_locations():
+            if location.item.name == 'Light Arrows':
+                Block_code = getBytes(getHint('Light Arrow Location').text)
+                Block_code.extend(getBytes(location.hint))
+                Block_code.extend(getBytes('!'))
+                break
+        endText(Block_code)
+    else:
+        Block_code = getBytes(getHint('Validation Line').text)
+        for location in world.get_locations():
+            if location.name == 'Ganons Tower Boss Key Chest':
+                Block_code.extend(getBytes((getHint(location.item.name).text)))
+        endText(Block_code)
     
-    Block_code = getBytes(getHint('Validation Line').text)
-    for location in world.get_locations():
-        if location.name == 'Ganons Tower Boss Key Chest':
-            Block_code.extend(getBytes((getHint(location.item.name).text)))
-    endText(Block_code)
     rom.write_bytes(0x96129D, Block_code)
 
     return rom
