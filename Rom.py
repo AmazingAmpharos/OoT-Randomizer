@@ -1041,57 +1041,18 @@ def patch_rom(world, rom):
     randomColors = random.choices(colorList, k=3)
 
     for i in range(len(Tunics)):
-        if world.colors[i] == 'Random':
-            thisColor = randomColors[i]
-        else:
-            thisColor = world.colors[i]
+        # get the color option
+        thisColor = world.colors[i]
+        # handle true random
         randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
-        if thisColor == 'Kokiri Green':
-            color = [0x1E, 0x69, 0x1B]
-        elif thisColor == 'Goron Red':
-            color = [0x64, 0x14, 0x00]
-        elif thisColor == 'Zora Blue':
-            color = [0x00, 0x3C, 0x64]
-        elif thisColor == 'Black':
-            color = [0x30, 0x30, 0x30]
-        elif thisColor == 'White':
-            color = [0xF0, 0xF0, 0xFF]
-        elif thisColor == 'Purple':
-            color = [0x95, 0x30, 0x80]
-        elif thisColor == 'Yellow':
-            color = [0xE0, 0xD8, 0x60]
-        elif thisColor == 'Orange':
-            color = [0xE0, 0x79, 0x40]
-        elif thisColor == 'Pink':
-            color = [0xFF, 0x90, 0xB3]
-        elif thisColor == 'Gray':
-            color = [0xA0, 0xA0, 0xB0]
-        elif thisColor == 'Brown':
-            color = [0x95, 0x59, 0x0A]
-        elif thisColor == 'Gold':
-            color = [0xD8, 0xB0, 0x60]
-        elif thisColor == 'Silver':
-            color = [0xD0, 0xF0, 0xFF]
-        elif thisColor == 'Beige':
-            color = [0xC0, 0xA0, 0xA0]
-        elif thisColor == 'Teal':
-            color = [0x30, 0xD0, 0xB0]
-        elif thisColor == 'Royal Blue':
-            color = [0x40, 0x00, 0x90]
-        elif thisColor == 'Sonic Blue':
-            color = [0x50, 0x90, 0xE0]
-        elif thisColor == 'Blood Red':
-            color = [0x30, 0x10, 0x10]
-        elif thisColor == 'Blood Orange':
-            color = [0xF0, 0x30, 0x30]
-        elif thisColor == 'NES Green':
-            color = [0x00, 0xD0, 0x00]
-        elif thisColor == 'Dark Green':
-            color = [0x00, 0x25, 0x18]
-        elif thisColor == 'True Random':
+        if thisColor == 'True Random':
             color = randColor
-        elif thisColor == 'Only':
-            color = [50, 190, 200]
+        else:
+            # handle random
+            if world.colors[i] == 'Random':
+                thisColor = randomColors[i]
+            # grab the color from the list
+            color = TunicColors[thisColor]
         rom.write_bytes(Tunics[i], color)
 
     #Low health beep
