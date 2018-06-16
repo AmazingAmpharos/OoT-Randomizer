@@ -161,7 +161,7 @@ def buildGossipHints(world, rom):
     checkedLocations = []
 
     # Add required location hints
-    alwaysLocations = getHintGroup('alwaysLocation')
+    alwaysLocations = getHintGroup('alwaysLocation', world.custom_logic)
     for hint in alwaysLocations:
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
@@ -172,7 +172,7 @@ def buildGossipHints(world, rom):
 
 
     # Add good location hints
-    sometimesLocations = getHintGroup('location')
+    sometimesLocations = getHintGroup('location', world.custom_logic)
     for _ in range(0, random.randint(9,10) - len(alwaysLocations)):
         hint = random.choice(sometimesLocations)
         # Repick if location isn't new

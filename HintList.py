@@ -20,11 +20,12 @@ def getHint(string):
             ret = Hint(hint, text, type)
     return ret
 
-def getHintGroup(string):
+def getHintGroup(string, shouldExclude=False):
     ret = []
     for hint in hintTable:
         text, type = hintTable[hint]
-        if type == string:
+        if type == string and \
+           not (shouldExclude and hint in hintExclusions):
             ret.append(Hint(hint, text, type))
     return ret
 
@@ -255,6 +256,20 @@ hintTable = {'Hammer':                                                ("the drag
              '2008':                                                  ("I've learned this spell,&it's really neat,&I'll keep it later&for your treat!", 'ganonLine'),
              '2009':                                                  ("Many tricks are up my sleeve,&to save yourself&you'd better leave!", 'ganonLine'),
              '2010':                                                  ("After what you did to&Koholint Island how can&you call me the bad guy?", 'ganonLine'),
-             '2011':                                                  ("Today let's begin down&'The Hero is Defeated' timeline.", 'ganonLine')}
+             '2011':                                                  ("Today let's begin down&'The Hero is Defeated' timeline.", 'ganonLine'),
+}
 
-
+# exclusions from the list for custom logic
+hintExclusions = [
+    'Deku Theater Skull Mask',
+    'Deku Theater Mask of Truth',
+    'Biggoron',
+    'Child Fishing',
+    'Adult Fishing',
+    '10 Gold Skulltulla Reward',
+    '20 Gold Skulltulla Reward',
+    '30 Gold Skulltulla Reward',
+    '40 Gold Skulltulla Reward',
+    '50 Gold Skulltulla Reward',
+    '10 Big Poes',
+]
