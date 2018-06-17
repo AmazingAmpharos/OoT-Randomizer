@@ -2,6 +2,31 @@
 ; Fixes songs in certain scenes to allow for various song learning function to properly play
 ; through their scripts. 
 ;==================================================================================================
+suns_song_fix_event:
+	addu	at, at, s3
+	addi 	t7, r0, 0x0047
+	bne 	t7, t2, @@return
+	lui 	v0, 0x8012
+	lw 		v0, 0xA5D4(v0)
+	lw 		t7, 0x00A4(s3)
+	sra		t7,	t7, 8
+	bnez 	v0, @@child
+	li 		v0, 0x4830
+	bne 	t7, v0, @@return
+	nop
+	addiu 	t9, r0, 0x0003
+	b 		@@return
+
+@@child: 
+	lui 	v0, 0x6311
+	bne 	t7, v0, @@return
+	nop
+	addiu 	t9, r0, 0x0003
+
+@@return: 
+	jr 		ra
+	nop
+	
 suns_song_fix:
 	lw		t5, 0x8AA0(t5)
 	li		v0, 0x8000
@@ -29,19 +54,18 @@ suns_song_fix:
 warp_song_fix:
 	addu	at, at, s3
 	lui 	v0, 0x8012
-	lw 		v0, 0xa5d4(v0)
+	lw 		v0, 0xA5D4(v0)
+	lw 		t7, 0x00A4(s3)
+	sra		t7,	t7, 8
 	bnez 	v0, @@child
-	lw 		t7, 0x00a4(s3)
-	lui 	v0, 0x0048
-	addi 	v0, v0, 0x30e8
+	li 		v0, 0x4830
 	bne 	t7, v0, @@return
 	nop
 	addiu 	t9, r0, 0x0003
 	b 		@@return
 
 @@child: 
-	lui 	v0, 0x0063
-	addi 	v0, v0, 0x11e8
+	lui 	v0, 0x6311
 	bne 	t7, v0, @@return
 	nop
 	addiu 	t9, r0, 0x0003
