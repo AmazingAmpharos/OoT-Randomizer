@@ -51,7 +51,7 @@ def guiMain(args=None):
     checkBoxFrame = Frame(rightHalfFrame)
 
     createSpoilerVar = IntVar()
-    createSpoilerCheckbutton = Checkbutton(checkBoxFrame, text="Create Spoiler Log", variable=createSpoilerVar)
+    createSpoilerCheckbutton = Checkbutton(checkBoxFrame, text="Create Spoiler Log (affects item layout)", variable=createSpoilerVar)
     suppressRomVar = IntVar()
     suppressRomCheckbutton = Checkbutton(checkBoxFrame, text="Do not create patched Rom", variable=suppressRomVar)
     compressRomVar = IntVar()

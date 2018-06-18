@@ -219,7 +219,7 @@ def global_rules(world):
     set_rule(world.get_location('Water Temple Torches Chest'), lambda state: (state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter'))) and state.has('Zeldas Lullaby'))
     set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: (state.has('Progressive Strength Upgrade') and state.has('Zeldas Lullaby')) or (state.has('Small Key (Water Temple)', 6) and (state.has('Zeldas Lullaby') or world.keysanity) and state.has('Song of Time') and state.has('Bow')))
     set_rule(world.get_location('Water Temple Central Bow Target Chest'), lambda state: state.has('Bow') and state.has('Progressive Strength Upgrade') and state.has('Zeldas Lullaby') and (state.has('Hover Boots') or state.has('Progressive Hookshot', 2)))
-    set_always_allow(world.get_location('Water Temple Boss Key Chest'), lambda state, item: item.name == 'Small Key (Water Temple)')
+    set_always_allow(world.get_location('Water Temple Boss Key Chest'), lambda item, state: item.name == 'Small Key (Water Temple)')
     set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and (state.has('Zeldas Lullaby') or world.keysanity) and ((state.has('Bomb Bag') and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.has('Progressive Hookshot', 2)) or item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)') #If key for key, this lets the logic reduce the small key reqs for every other locked door.
     set_rule(world.get_location('Morpha'), lambda state: state.has('Boss Key (Water Temple)') and state.has('Progressive Hookshot', 2))
     set_rule(world.get_location('Morpha Heart'), lambda state: state.has('Boss Key (Water Temple)') and state.has('Progressive Hookshot', 2))
@@ -267,8 +267,8 @@ def global_rules(world):
     set_rule(world.get_location('Gerudo Training Grounds Maze Path First Chest'), lambda state: state.has('Small Key (Gerudo Training Grounds)', 4))
     set_rule(world.get_location('Gerudo Training Grounds Maze Path Second Chest'), lambda state: state.has('Small Key (Gerudo Training Grounds)', 6))
     set_rule(world.get_location('Gerudo Training Grounds Maze Path Third Chest'), lambda state: state.has('Small Key (Gerudo Training Grounds)', 7))
-    set_always_allow(world.get_location('Gerudo Training Grounds Maze Path Final Chest'), lambda state, item: item.name == 'Small Key (Gerudo Training Grounds)')
     set_rule(world.get_location('Gerudo Training Grounds Maze Path Final Chest'), lambda state: (state.has('Small Key (Gerudo Training Grounds)', 9)) or (item_name(state, 'Gerudo Training Grounds Maze Path Final Chest') == 'Small Key (Gerudo Training Grounds)' and state.has('Small Key (Gerudo Training Grounds)', 8))) #Allow key for key
+    set_always_allow(world.get_location('Gerudo Training Grounds Maze Path Final Chest'), lambda item, state: item.name == 'Small Key (Gerudo Training Grounds)')
     set_rule(world.get_location('Gerudo Training Grounds Underwater Silver Rupee Chest'), lambda state: state.has('Progressive Hookshot') and state.has('Song of Time') and state.has('Iron Boots') and state.is_adult())
     set_rule(world.get_location('Gerudo Training Grounds Hammer Room Switch Chest'), lambda state: state.has('Hammer') and state.is_adult())
     set_rule(world.get_location('Gerudo Training Grounds Eye Statue Chest'), lambda state: state.has('Bow') and state.is_adult())
