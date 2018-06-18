@@ -19,7 +19,7 @@ class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 
 def start():
     parser = argparse.ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--create_spoiler', help='Output a Spoiler File', action='store_true')
+    parser.add_argument('--race_rom', help='Place items differently and do not generate a spoiler', action='store_true')
     parser.add_argument('--bridge', default='medallions', const='medallions', nargs='?', choices=['medallions', 'vanilla', 'dungeons', 'open'],
                         help='''\
                              Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)

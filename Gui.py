@@ -50,8 +50,9 @@ def guiMain(args=None):
     rightHalfFrame = Frame(topFrame)
     checkBoxFrame = Frame(rightHalfFrame)
 
-    createSpoilerVar = IntVar()
-    createSpoilerCheckbutton = Checkbutton(checkBoxFrame, text="Create Spoiler Log (affects item layout)", variable=createSpoilerVar)
+    raceRomVar = IntVar()
+    raceRomCheckbutton = Checkbutton(checkBoxFrame, text="Generate race rom [?]", variable=raceRomVar)
+    ToolTips.register(raceRomCheckbutton, "If this box is checked, a spoiler log will not be generated and items will be placed differently")
     suppressRomVar = IntVar()
     suppressRomCheckbutton = Checkbutton(checkBoxFrame, text="Do not create patched Rom", variable=suppressRomVar)
     compressRomVar = IntVar()
@@ -69,7 +70,7 @@ def guiMain(args=None):
     hintsVar = IntVar()
     hintsCheckbutton = Checkbutton(checkBoxFrame, text="Gossip Stone Hints with Stone of Agony", variable=hintsVar)
 
-    createSpoilerCheckbutton.pack(expand=True, anchor=W)
+    raceRomCheckbutton.pack(expand=True, anchor=W)
     suppressRomCheckbutton.pack(expand=True, anchor=W)
     compressRomCheckbutton.pack(expand=True, anchor=W)
     openForestCheckbutton.pack(expand=True, anchor=W)
@@ -139,13 +140,13 @@ def guiMain(args=None):
 
     lowHealthSFXVar = StringVar()
     lowHealthSFXVar.set('Default')
-    
+
     lowHealthSFXFrame = Frame(dropDownFrame)
     lowHealthSFXOptionMenu = OptionMenu(lowHealthSFXFrame, lowHealthSFXVar, 'Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None')
     lowHealthSFXOptionMenu.pack(side=RIGHT)
     lowHealthSFXLabel = Label(lowHealthSFXFrame, text='Low Health SFX')
     lowHealthSFXLabel.pack(side=LEFT)
-    
+
     bridgeFrame.pack(expand=True, anchor=E)
     kokiriFrame.pack(expand=True, anchor=E)
     goronFrame.pack(expand=True, anchor=E)
@@ -170,7 +171,7 @@ def guiMain(args=None):
         guiargs.goroncolor = colorVars[1].get()
         guiargs.zoracolor = colorVars[2].get()
         guiargs.healthSFX = lowHealthSFXVar.get()
-        guiargs.create_spoiler = bool(createSpoilerVar.get())
+        guiargs.race_rom = bool(raceRomVar.get())
         guiargs.suppress_rom = bool(suppressRomVar.get())
         guiargs.compress_rom = bool(compressRomVar.get())
         guiargs.open_forest = bool(openForestVar.get())
@@ -210,7 +211,7 @@ def guiMain(args=None):
 
     if args is not None:
         # load values from commandline args
-        createSpoilerVar.set(int(args.create_spoiler))
+        raceRomVar.set(int(args.race_rom))
         suppressRomVar.set(int(args.suppress_rom))
         compressRomVar.set(int(args.compress_rom))
         if args.nodungeonitems:
