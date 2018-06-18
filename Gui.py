@@ -225,7 +225,9 @@ def guiMain(args=None):
         if args.seed:
             seedVar.set(str(args.seed))
         bridgeVar.set(args.bridge)
-        colorVars.set([args.kokiricolor, args.goroncolor, args.zoracolor])
+        colorVars[0].set(args.kokiricolor)
+        colorVars[1].set(args.goroncolor)
+        colorVars[2].set(args.zoracolor)
         lowHealthSFXVar.set(args.healthSFX)
         romVar.set(args.rom)
 
