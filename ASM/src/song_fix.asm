@@ -18,7 +18,7 @@ suns_song_fix_event:
 	b 		@@return
 
 @@child: 
-	lui 	v0, 0x6311
+	li 	v0, 0x6311
 	bne 	t7, v0, @@return
 	nop
 	addiu 	t9, r0, 0x0003
@@ -65,7 +65,7 @@ warp_song_fix:
 	b 		@@return
 
 @@child: 
-	lui 	v0, 0x6311
+	li 	v0, 0x6311
 	bne 	t7, v0, @@return
 	nop
 	addiu 	t9, r0, 0x0003
