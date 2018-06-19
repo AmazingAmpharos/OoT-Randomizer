@@ -91,6 +91,7 @@ hintTable = {'Hammer':                                                (" the dra
              'Serenade of Water':                                     (" a song of a damp ditch.", 'item'),
              'Heart Container':                                       (" a lot of love.", 'item'),
              'Piece of Heart':                                        (" love.", 'item'),
+             'Piece of Heart (Treasure Chest Game)':                  (" WINNER!", 'item'),
              'Recovery Heart':                                        (" a free heal.", 'item'),
              'Rupee (1)':                                             (" rare riches.", 'item'),
              'Rupees (5)':                                            (" a common coin.", 'item'),
