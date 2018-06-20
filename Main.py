@@ -31,7 +31,7 @@ def main(args, seed=None):
     else:
         world.seed = int(seed)
     random.seed(world.seed)
-    if args.create_spoiler: # Make game different if spoiler log is generated.
+    if not args.race_rom: # Make game different if spoiler log is not generated.
         for i in range (0, 10): # Generate many random numbers to increase volatility.
             new_base_seed = random.randint(0, 999999999)
         random.seed(new_base_seed)
@@ -88,7 +88,7 @@ def main(args, seed=None):
             else:
                 logger.info('OS not supported for compression')
 
-    if args.create_spoiler:
+    if not args.race_rom:
         world.spoiler.to_file(output_path('%s_Spoiler.txt' % outfilebase))
 
     logger.info('Done. Enjoy.')

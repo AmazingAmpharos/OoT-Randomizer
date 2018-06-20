@@ -276,10 +276,10 @@ Use to batch generate multiple seeds with same settings. If a seed number is pro
 Show the help message and exit.
 
 ```
---create_spoiler      
+--race_rom      
 ```
 
-Output a Spoiler File (default: False)
+Place items differently and do not generate a spoiler (default: False)
 
 ```
 --bridge [{medallions,vanilla,dungeons,open}]
