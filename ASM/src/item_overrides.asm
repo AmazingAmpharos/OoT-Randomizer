@@ -59,6 +59,9 @@ override_object:
     ; Clear any pending special item, now that it's being received
     li      t2, PENDING_SPECIAL_ITEM
     sb      r0, 0x00 (t2)
+    ; Re-enable warping (disabled by pending item)
+    li      t2, GLOBAL_CONTEXT + 0x104E4
+    sh      r0, 0x00 (t2)
 
     jr ra
     nop
