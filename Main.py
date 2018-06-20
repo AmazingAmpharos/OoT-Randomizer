@@ -74,6 +74,8 @@ def main(args, seed=None):
     outfilebase = 'OoT_%s%s%s%s%s_%s' % (world.bridge, "-openforest" if world.open_forest else "", "-opendoor" if world.open_door_of_time else "", "-fastganon" if world.fast_ganon else "", "-beatableonly" if world.check_beatable_only else "",  world.seed)
 
     if not args.suppress_rom:
+        if not args.rom:
+            args.rom="ZOOTDEC.z64"
         rom = LocalRom(args.rom)
         patch_rom(world, rom)
         rom.write_to_file(output_path('%s.z64' % outfilebase))
