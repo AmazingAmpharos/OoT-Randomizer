@@ -5,6 +5,7 @@ import json
 import random
 import os
 import shutil
+import logging
 from tkinter import Checkbutton, OptionMenu, Toplevel, LabelFrame, PhotoImage, Tk, LEFT, RIGHT, BOTTOM, TOP, StringVar, IntVar, Frame, Label, W, E, X, Entry, Spinbox, Button, filedialog, messagebox, ttk
 from urllib.parse import urlparse
 from urllib.request import urlopen
@@ -30,11 +31,6 @@ def guiMain(args=None):
     # Shared Controls
 
     farBottomFrame = Frame(mainWindow)
-
-    def open_output():
-        open_file(output_path(''))
-
-    openOutputButton = Button(farBottomFrame, text='Open Output Directory', command=open_output)
 
     if os.path.exists(local_path('README.html')):
         def open_readme():
@@ -79,26 +75,53 @@ def guiMain(args=None):
     beatableOnlyCheckbutton.pack(expand=True, anchor=W)
     hintsCheckbutton.pack(expand=True, anchor=W)
 
-    fileDialogFrame = Frame(rightHalfFrame)
+    bottomFrame = Frame(randomizerWindow)
+    topOfBottomFrame = Frame(bottomFrame)
+    bottomOfBottomFrame = Frame(bottomFrame)
 
-    romDialogFrame = Frame(fileDialogFrame)
-    baseRomLabel = Label(romDialogFrame, text='Base Rom')
+    outputDirLabel = Label(topOfBottomFrame, text='Set Output Dir')
+    dirVar = StringVar()
+    dirEntry = Entry(topOfBottomFrame, textvariable=dirVar)
+
+    def DirSelect():
+        outputDirectory = None
+        #check if a directory was selected already or not. If so, try to open it. 
+        #could also add trying to create it if it fails to open, but then that might create a lot of unnecessary directories for an end user.
+        if dirVar.get() is not None and dirVar.get() is not '':
+            try:
+                outputDirectory = filedialog.askdirectory(initialdir=dirVar.get(),title='Please select an output directory', mustexist=False)
+            except:
+                outputDirectory = filedialog.askdirectory(initialdir='.',title='Please select an output directory', mustexist=False)
+        else:
+            outputDirectory = filedialog.askdirectory(initialdir='.',title='Please select an output directory', mustexist=False)
+
+        dirVar.set(outputDirectory)
+    dirSelectButton = Button(topOfBottomFrame, text='Select Dir', command=DirSelect)
+
+
+    baseRomLabel = Label(topOfBottomFrame, text='Base Rom')
     romVar = StringVar()
-    romEntry = Entry(romDialogFrame, textvariable=romVar)
+    romEntry = Entry(topOfBottomFrame, textvariable=romVar)
 
     def RomSelect():
         rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")])
         romVar.set(rom)
-    romSelectButton = Button(romDialogFrame, text='Select Rom', command=RomSelect)
+    romSelectButton = Button(topOfBottomFrame, text='Select Rom', command=RomSelect)
 
-    baseRomLabel.pack(side=LEFT)
-    romEntry.pack(side=LEFT)
-    romSelectButton.pack(side=LEFT)
+    #for now, only include this in unbundled gui version, until custom output directories are added for bundled
+    if not is_bundled():
+        outputDirLabel.pack(side=LEFT)
+        dirEntry.pack(side=LEFT)
+        dirSelectButton.pack(side=LEFT)
 
-    romDialogFrame.pack()
+    romSelectButton.pack(side=RIGHT)
+    romEntry.pack(side=RIGHT)
+    baseRomLabel.pack(side=RIGHT)
+    
+
+    topOfBottomFrame.pack(side=TOP)
 
     checkBoxFrame.pack()
-    fileDialogFrame.pack()
 
     dropDownFrame = Frame(topFrame)
 
@@ -152,16 +175,15 @@ def guiMain(args=None):
     zoraFrame.pack(expand=True, anchor=E)
     lowHealthSFXFrame.pack(expand=True, anchor=E)
 
-    bottomFrame = Frame(randomizerWindow)
-
-    seedLabel = Label(bottomFrame, text='Seed #')
+    seedLabel = Label(bottomOfBottomFrame, text='Seed #')
     seedVar = StringVar()
-    seedEntry = Entry(bottomFrame, textvariable=seedVar)
-    countLabel = Label(bottomFrame, text='Count')
+    seedEntry = Entry(bottomOfBottomFrame, textvariable=seedVar)
+    countLabel = Label(bottomOfBottomFrame, text='Count')
     countVar = StringVar()
-    countSpinbox = Spinbox(bottomFrame, from_=1, to=100, textvariable=countVar)
+    countSpinbox = Spinbox(bottomOfBottomFrame, from_=1, to=100, textvariable=countVar)
 
     def generateRom():
+        nonlocal dirVar
         guiargs = Namespace
         guiargs.seed = int(seedVar.get()) if seedVar.get() else None
         guiargs.count = int(countVar.get()) if countVar.get() != '1' else None
@@ -180,6 +202,11 @@ def guiMain(args=None):
         guiargs.beatableonly = bool(beatableOnlyVar.get())
         guiargs.hints = bool(hintsVar.get())
         guiargs.rom = romVar.get()
+        if dirVar.get() is None:
+            guiargs.output = None
+        else:
+            guiargs.output = dirVar.get()
+            
         try:
             if guiargs.count is not None:
                 seed = guiargs.seed
@@ -193,13 +220,38 @@ def guiMain(args=None):
         else:
             messagebox.showinfo(title="Success", message="Rom patched successfully")
 
-    generateButton = Button(bottomFrame, text='Generate Patched Rom', command=generateRom)
+    generateButton = Button(bottomOfBottomFrame, text='Generate Patched Rom', command=generateRom)
+
+    bottomOfBottomFrame.pack(side=BOTTOM)
 
     seedLabel.pack(side=LEFT)
     seedEntry.pack(side=LEFT)
     countLabel.pack(side=LEFT, padx=(5, 0))
     countSpinbox.pack(side=LEFT)
     generateButton.pack(side=LEFT, padx=(5, 0))
+
+    def open_output():
+        logger = logging.getLogger('')
+        nonlocal dirVar
+        if dirVar is not None:
+            try:
+                open_file(output_path(dirVar.get()))
+            except:
+                logger.info('Unable to open file path, will attempt to create.')
+                try:
+                    os.mkdir(dirVar.get())
+                    logger.info('Directory created.')
+                    open_file(dirVar.get())
+                except:
+                    logger.info('Unable to create set output directory, resetting to default.')
+                    dirVar.set('')
+                    
+                    open_file(output_path(''))
+
+        else:
+            open_file(output_path(''))
+
+    openOutputButton = Button(farBottomFrame, text='Open Output Directory', command=open_output)
 
     openOutputButton.pack(side=RIGHT)
 
@@ -230,6 +282,8 @@ def guiMain(args=None):
         colorVars[2].set(args.zoracolor)
         lowHealthSFXVar.set(args.healthSFX)
         romVar.set(args.rom)
+        if args.output is not None:
+            dirVar.set(args.output)
 
     mainWindow.mainloop()
 

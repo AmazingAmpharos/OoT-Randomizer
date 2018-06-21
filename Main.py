@@ -76,11 +76,11 @@ def main(args, seed=None):
     if not args.suppress_rom:
         rom = LocalRom(args.rom)
         patch_rom(world, rom)
-        rom.write_to_file(output_path('%s.z64' % outfilebase))
+        rom.write_to_file(output_path('%s.z64' % outfilebase, args.output))
         if args.compress_rom:
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
-                subprocess.call(["Compress\Compress.exe", (output_path('%s.z64' % outfilebase)), (output_path('%s-comp.z64' % outfilebase))])
+                subprocess.call(["Compress\Compress.exe", (output_path('%s.z64' % outfilebase, args.output)), (output_path('%s-comp.z64' % outfilebase, args.output))])
             elif platform.system() == 'Linux':
                 subprocess.call(["Compress/Compress", ('%s.z64' % outfilebase)])
             elif platform.system() == 'Darwin':
@@ -89,7 +89,7 @@ def main(args, seed=None):
                 logger.info('OS not supported for compression')
 
     if args.create_spoiler:
-        world.spoiler.to_file(output_path('%s_Spoiler.txt' % outfilebase))
+        world.spoiler.to_file(output_path('%s_Spoiler.txt' % outfilebase, args.output))
 
     logger.info('Done. Enjoy.')
     logger.debug('Total Time: %s', time.clock() - start)
