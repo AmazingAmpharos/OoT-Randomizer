@@ -95,6 +95,8 @@ def guiMain(args=None):
         else:
             outputDirectory = filedialog.askdirectory(initialdir='.',title='Please select an output directory', mustexist=False)
 
+        #as a minor note, you can define a non-created dir in linux through the filedialog.askdirectory, hence the mustexist flag, but you can't do that in windows. 
+        #just tkinter things.
         dirVar.set(outputDirectory)
     dirSelectButton = Button(topOfBottomFrame, text='Select Dir', command=DirSelect)
 
