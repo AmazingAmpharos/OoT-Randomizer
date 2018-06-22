@@ -15,10 +15,10 @@ create a decompressed version of this ROM that can be used for input for slightl
 is either a .n64 or .z64 file. For users playing via any means other than on real N64 hardware, the use of the "Compress patched ROM" flag is strongly
 encouraged as uncompressed ROMs are impossible to inject for the Virtual Console and have random crashing problems on all emulators.
 
-For general use, the recommended emulators are Bizhawk and Mupen64plus. If you want to play on Project 64 for whatever reason, you can but
-you will need to set the rando to use 8 MB of RAM and will want to play with the cheat code 8109C58A 0000 to partially fix Project 64's tragically
-poor handling of OoT's pause menu. As of this 2.0 release, there are suspected crashing issues specifically with Project 64. I cannot emphasize enough
-that it is a discouraged emulator to use.
+For general use, the recommended emulator is RetroArch; it has been shown to work with minimal issues. Bizhawk and Mupen64plus are generally good choices
+too. If you want to play on Project 64 for whatever reason, you can but you will need to set the rando to use 8 MB of RAM and will want to play with the
+cheat code 8109C58A 0000 to partially fix Project 64's tragically poor handling of OoT's pause menu. Project 64 also has one particular crash that only
+happens for some unknown settings configurations; we cannot support this. I cannot emphasize enough that it is a discouraged emulator to use.
 
 # General Description
 
@@ -141,10 +141,13 @@ then do not recover the tunic. It is almost always possible to do without, but i
 Sadly for this 2.0 release a few known issues exist. These will hopefully be addressed in future versions.
 
 -The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and quit (NOT savestate) and return to fix the issue.  
--Draining the Bottom of the Well with Song of Storms sometimes crashes on specific versions of Project 64. We aren't sure of the exact story, but this bug is easily
-avoided by playing on a different emulator.  
+-Draining the Bottom of the Well with Song of Storms sometimes crashes on specific configurations of Project 64. We aren't sure of the exact story, but this bug is
+easily avoided by playing on a different emulator and probably also avoidable by changing your settings and maybe graphics plug-in.  
 -There's a funny bug where sometimes obtaining Biggoron Sword displays a second erroneous text box. This has no gameplay consequence.  
--Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.  
+-Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences. In particular this can be devastating with Biggoron;
+it is strongly suggested the player save before turning in the Claim Check.  
+-Saving and quitting on the very first frame after becomming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
+do that.  
 
 # Settings
 
