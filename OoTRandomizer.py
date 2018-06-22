@@ -91,6 +91,34 @@ def start():
                              Random:       Replace the sound effect with a random sound from this list.
                              None:         Eliminate heart beeps.
                              ''')
+    parser.add_argument('--navicolordefault', default='White', const='White', nargs='?', choices=get_navi_color_options(),
+                        help='''\
+                             Choose the color for Navi when she is idle. (default: %(default)s)
+                             Color:        Make the Navi this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
+    parser.add_argument('--navicolorenemy', default='Yellow', const='Yellow', nargs='?', choices=get_navi_color_options(),
+                        help='''\
+                             Choose the color for Navi when she is targeting an enemy. (default: %(default)s)
+                             Color:        Make the Navi this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
+    parser.add_argument('--navicolornpc', default='Light Blue', const='Light Blue', nargs='?', choices=get_navi_color_options(),
+                        help='''\
+                             Choose the color for Navi when she is targeting an NPC. (default: %(default)s)
+                             Color:        Make the Navi this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
+    parser.add_argument('--navicolorprop', default='Green', const='Green', nargs='?', choices=get_navi_color_options(),
+                        help='''\
+                             Choose the color for Navi when she is targeting a prop. (default: %(default)s)
+                             Color:        Make the Navi this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
     parser.add_argument('--custom_logic', help='''\
                              Removes a number of bad locations from logic,
                              and adds a number allowed tricks

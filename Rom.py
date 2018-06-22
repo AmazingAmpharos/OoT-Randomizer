@@ -38,11 +38,27 @@ TunicColors = {
     "Only": [80, 140, 240],
 }
 
+NaviColors = {
+    "White": [0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0xFF, 0x00],
+    "Green": [0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0x00],
+    "Light Blue": [0x96, 0x96, 0xFF, 0xFF, 0x96, 0x96, 0xFF, 0x00],
+    "Yellow": [0xFF, 0xFF, 0x00, 0xFF, 0xC8, 0x9B, 0x00, 0x00],
+    "Red": [0xFF, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00],
+    "Magenta": [0xFF, 0x00, 0xFF, 0xFF, 0xC8, 0x00, 0x9B, 0x00],
+    "Black": [0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00],
+}
+
 def get_tunic_colors():
     return list(TunicColors.keys())
 
 def get_tunic_color_options():
     return get_tunic_colors() + ["Random", "True Random"]
+
+def get_navi_colors():
+    return list(NaviColors.keys())
+
+def get_navi_color_options():
+    return get_navi_colors() + ["Random", "True Random"]
 
 class LocalRom(object):
 
@@ -1055,6 +1071,33 @@ def patch_rom(world, rom):
             # grab the color from the list
             color = TunicColors[thisColor]
         rom.write_bytes(Tunics[i], color)
+
+    # patch navi colors
+    Navi = []
+    Navi.append([0x00B5E184]) # Default
+    Navi.append([0x00B5E19C, 0x00B5E1BC]) # Enemy, Boss
+    Navi.append([0x00B5E194]) # NPC
+    Navi.append([0x00B5E174, 0x00B5E17C, 0x00B5E18C, 0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4, 0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]) # Everything else
+    naviList = get_navi_colors()
+    randomColors = random.choices(naviList, k=4)
+
+    for i in range(len(Navi)):
+        # do everything in the inner loop so that "true random" changes even for subcategories
+        for j in range(len(Navi[i])):
+            # get the color option
+            thisColor = world.navi_colors[i]
+            # handle true random
+            randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0xFF,
+                         random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0x00]
+            if thisColor == 'True Random':
+                color = randColor
+            else:
+                # handle random
+                if world.navi_colors[i] == 'Random':
+                    thisColor = randomColors[i]
+                # grab the color from the list
+                color = NaviColors[thisColor]
+            rom.write_bytes(Navi[i][j], color)
 
     #Low health beep
     healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']

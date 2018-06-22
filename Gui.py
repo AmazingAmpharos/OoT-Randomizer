@@ -12,7 +12,7 @@ from urllib.request import urlopen
 from GuiUtils import ToolTips, set_icon, BackgroundTaskProgress
 from Main import main, __version__ as ESVersion
 from Utils import is_bundled, local_path, output_path, open_file
-from Rom import get_tunic_color_options
+from Rom import get_tunic_color_options, get_navi_color_options
 
 def guiMain(args=None):
     mainWindow = Tk()
@@ -103,11 +103,16 @@ def guiMain(args=None):
     }
     # dropdown info
     color_options = get_tunic_color_options()
+    navi_options = get_navi_color_options()
     dropdownInfo = {
-        "kokiricolor": { "name": "Kokiri Tunic Color", "default": "Kokiri Green", "options": color_options },
-        "goroncolor":  { "name": "Goron Tunic Color",  "default": "Goron Red",    "options": color_options },
-        "zoracolor":   { "name": "Zora Tunic Color",   "default": "Zora Blue",    "options": color_options },
-        "healthSFX":   { "name": "Low Health SFX",     "default": "Default",      "options": ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'] },
+        "kokiricolor":   { "name": "Kokiri Tunic Color", "default": "Kokiri Green", "options": color_options, "row": "top" },
+        "goroncolor":    { "name": "Goron Tunic Color",  "default": "Goron Red",    "options": color_options, "row": "top" },
+        "zoracolor":     { "name": "Zora Tunic Color",   "default": "Zora Blue",    "options": color_options, "row": "top" },
+        "healthSFX":     { "name": "Low Health SFX",     "default": "Default",      "options": ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'], "row": "top" },
+        "navicolordefault":   { "name": "Navi Idle",            "default": "White",      "options": navi_options, "row": "bottom" },
+        "navicolorenemy":     { "name": "Navi Targeting Enemy", "default": "Yellow",     "options": navi_options, "row": "bottom" },
+        "navicolornpc":       { "name": "Navi Targeting NPC",   "default": "Light Blue", "options": navi_options, "row": "bottom" },
+        "navicolorprop":      { "name": "Navi Targeting Prop",  "default": "Green",      "options": navi_options, "row": "bottom" },
     }
 
     # hold the results of the user's decisions here
@@ -127,6 +132,9 @@ def guiMain(args=None):
         (hintsFrame,         resultVars['hints'])  = MakeRadioList(checkAndRadioFrame, hint_options_data)
 
     aestheticFrame = LabelFrame(randomizerWindow, text='Aesthetic', labelanchor=NW)
+    if True: # just indenting for hierarchy clarity
+        aestheticTopFrame = Frame(aestheticFrame)
+        aestheticBottomFrame = Frame(aestheticFrame)
 
     generateSeedFrame = Frame(randomizerWindow)
 
@@ -151,18 +159,20 @@ def guiMain(args=None):
         # create the variable to store the user's decision
         resultVars[var_name] = StringVar(value=info['default'])
         # create the option menu
-        dropdownFrames[var_name] = Frame(aestheticFrame)
-        dropdown = OptionMenu(dropdownFrames[var_name], resultVars[var_name], *(info['options']))
-        dropdown.pack(side=BOTTOM, anchor=E)
+        parent = { 'top': aestheticTopFrame, 'bottom': aestheticBottomFrame }[info["row"]]
+        dropdownFrames[var_name] = Frame(parent)
+        # dropdown = OptionMenu(dropdownFrames[var_name], resultVars[var_name], *(info['options']))
+        dropdown = ttk.Combobox(dropdownFrames[var_name], textvariable=resultVars[var_name], values=info['options'], state='readonly')
+        dropdown.pack(side=BOTTOM, anchor=W)
         # label the option
-        label = Label(dropdownFrames[var_name], text=info['name'], width=18)
-        label.pack(side=TOP, anchor=NW)
+        label = Label(dropdownFrames[var_name], text=info['name'])
+        label.pack(side=TOP, anchor=W)
         # pack the frame
-        dropdownFrames[var_name].pack(expand=True, side=LEFT, anchor=N)
+        dropdownFrames[var_name].pack(expand=True, side=LEFT, anchor=N, padx=3, pady=3)
 
     # pack the hierarchy
     outputOptionsFrame.pack(expand=True, anchor=E, side=TOP)
-    otherOptionsFrame.pack(expand=True, anchor=W, side=BOTTOM)
+    otherOptionsFrame.pack(expand=True, anchor=W, side=BOTTOM, pady=6)
     leftSideChecks.pack(expand=True, anchor=N, side=LEFT, padx=5)
     logicOptionsFrame.pack(expand=True, anchor=N, side=LEFT, padx=5)
     rainbowBridgeFrame.pack(expand=True, anchor=N, side=LEFT, padx=5)
@@ -170,6 +180,8 @@ def guiMain(args=None):
 
     checkAndRadioFrame.pack(side=TOP, anchor=N)
 
+    aestheticTopFrame.pack(expand=True, anchor=W, side=TOP)
+    aestheticBottomFrame.pack(expand=True, anchor=W, side=BOTTOM)
     aestheticFrame.pack(anchor=W, padx=5)
 
 
@@ -213,6 +225,11 @@ def guiMain(args=None):
         guiargs.goroncolor = resultVars["goroncolor"].get()
         guiargs.zoracolor = resultVars["zoracolor"].get()
         guiargs.healthSFX = resultVars["healthSFX"].get()
+        guiargs.navicolordefault = resultVars["navicolordefault"].get()
+        guiargs.navicolorenemy = resultVars["navicolorenemy"].get()
+        guiargs.navicolornpc = resultVars["navicolornpc"].get()
+        guiargs.navicolorprop = resultVars["navicolorprop"].get()
+
         guiargs.create_spoiler = bool(resultVars["create_spoiler"].get())
         guiargs.suppress_rom = bool(resultVars["suppress_rom"].get())
         guiargs.compress_rom = bool(resultVars["compress_rom"].get())
@@ -270,6 +287,10 @@ def guiMain(args=None):
         resultVars["goroncolor"].set(args.goroncolor)
         resultVars["zoracolor"].set(args.zoracolor)
         resultVars["healthSFX"].set(args.healthSFX)
+        resultVars["navicolordefault"].set(args.navicolordefault)
+        resultVars["navicolorenemy"].set(args.navicolorenemy)
+        resultVars["navicolornpc"].set(args.navicolornpc)
+        resultVars["navicolorprop"].set(args.navicolorprop)
         romVar.set(args.rom)
 
     mainWindow.mainloop()
