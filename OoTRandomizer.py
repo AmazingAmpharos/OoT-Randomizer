@@ -45,6 +45,12 @@ def start():
     parser.add_argument('--open_door_of_time', help='''\
                              The Door of Time is open from the beginning of the game.
                              ''', action='store_true')
+    parser.add_argument('--fast_ganon', help='''\
+                             The barrier within Ganon's Castle leading to Ganon's Tower is dispelled from the
+                             beginning of the game, the Boss Key is not required in Ganon's Tower, Ganondorf
+                             gives a hint for the location of Light Arrows, and the tower collapse sequence
+                             is removed.
+                             ''', action='store_true')
     parser.add_argument('--nodungeonitems', help='''\
                              Remove Maps and Compasses from Itempool, replacing them by
                              empty slots.
@@ -59,6 +65,34 @@ def start():
                              in inconvenient locations if the Stone of Agony is in
                              the player's inventory.
                              ''', action='store_true')
+    parser.add_argument('--kokiricolor', default='Kokiri Green', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
+                        help='''\
+                             Choose the color for Link's Kokiri Tunic. (default: %(default)s)
+                             Color:        Make the Kokiri Tunic this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
+    parser.add_argument('--goroncolor', default='Goron Red', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
+                        help='''\
+                             Choose the color for Link's Goron Tunic. (default: %(default)s)
+                             Color:        Make the Goron Tunic this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
+    parser.add_argument('--zoracolor', default='Zora Blue', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
+                        help='''\
+                             Choose the color for Link's Zora Tunic. (default: %(default)s)
+                             Color:        Make the Zora Tunic this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
+    parser.add_argument('--healthSFX', default='Default', const='Default', nargs='?', choices=['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'],
+                        help='''\
+                             Select the sound effect that loops at low health. (default: %(default)s)
+                             Sound:        Replace the sound effect with the chosen sound.
+                             Random:       Replace the sound effect with a random sound from this list.
+                             None:         Eliminate heart beeps.
+                             ''')
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
     parser.add_argument('--compress_rom', help='Create a compressed version of the output rom file.', action='store_true')
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')

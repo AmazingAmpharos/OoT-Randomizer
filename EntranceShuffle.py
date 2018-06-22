@@ -12,15 +12,6 @@ def link_entrances(world):
             connect_simple(world, exitname, regionname)
         for exitname, regionname in default_dungeon_connections:
             connect_simple(world, exitname, regionname)
-        targets = list(Fairy_List)
-        destinations = list(Fairy_List)
-        random.shuffle(targets)
-        random.shuffle(destinations)
-        Fairy_Pairs = []
-        for i in range (0, 6):
-            Fairy_Pairs.append((targets[i], destinations[i]))
-        for i in range (0, 6):
-            connect_fairy(world, Fairy_Pairs[i][0], Fairy_Pairs[i][1])
     else:
         raise NotImplementedError('Shuffling not supported yet')
 
@@ -80,14 +71,6 @@ def connect_doors(world, doors, targets):
         door = doors.pop()
         target = targets.pop()
         connect_entrance(world, door, target)
-
-
-def connect_fairy(world, entrancename, exitname):
-    entrance = world.get_entrance(entrancename)
-    exit = world.get_region(exitname)
-
-    entrance.connect(exit, Fairy_addresses[entrance.name], Fairy_IDs[exit.name])
-    world.spoiler.set_entrance(entrance.name, exit.name, 'both')
 
 # these are connections that cannot be shuffled and always exist. They link together separate parts of the world we need to divide into regions
 mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
@@ -253,10 +236,13 @@ default_connections = [('Links House Exit', 'Kokiri Forest'),
                        ('Kokiri Shop', 'Kokiri Shop'),
                        ('Lake Hylia Lab', 'Lake Hylia Lab'),
                        ('Fishing Hole', 'Fishing Hole'),
+                       ('Colossus Fairy', 'Colossus Fairy'),
                        ('Temple of Time', 'Temple of Time'),
                        ('Temple of Time Exit', 'Castle Town'),
                        ('Door of Time', 'Beyond Door of Time'),
                        ('Emerge as Adult', 'Temple of Time'),
+                       ('Hyrule Castle Fairy', 'Hyrule Castle Fairy'),
+                       ('Ganons Castle Fairy', 'Ganons Castle Fairy'),
                        ('Castle Town Rupee Room', 'Castle Town Rupee Room'),
                        ('Castle Town Bazaar', 'Castle Town Bazaar'),
                        ('Castle Town Mask Shop', 'Castle Town Mask Shop'),
@@ -281,14 +267,18 @@ default_connections = [('Links House Exit', 'Kokiri Forest'),
                        ('Heart Piece Grave', 'Heart Piece Grave'),
                        ('Composer Grave', 'Composer Grave'),
                        ('Dampes Grave', 'Dampes Grave'),
+                       ('Crater Fairy', 'Crater Fairy'),
+                       ('Mountain Summit Fairy', 'Mountain Summit Fairy'),
                        ('Dampes House', 'Dampes House'),
                        ('Talon House', 'Talon House'),
                        ('Ingo Barn', 'Ingo Barn'),
                        ('Lon Lon Corner Tower', 'Lon Lon Corner Tower'),
                        ('Zora Shop', 'Zora Shop'),
-                       ('Forest Generic Grotto', 'Forest Generic Grotto'),
+                       ('Zoras Fountain Fairy', 'Zoras Fountain Fairy'),
+                       ('Kokiri Forest Storms Grotto', 'Kokiri Forest Storms Grotto'),
+                       ('Lost Woods Generic Grotto', 'Lost Woods Generic Grotto'),
                        ('Deku Theater', 'Deku Theater'),
-                       ('Forest Sales Grotto', 'Forest Sales Grotto'),
+                       ('Lost Woods Sales Grotto', 'Lost Woods Sales Grotto'),
                        ('Meadow Fairy Grotto', 'Meadow Fairy Grotto'),
                        ('Front of Meadow Grotto', 'Front of Meadow Grotto'),
                        ('Lon Lon Grotto', 'Lon Lon Grotto'),
@@ -302,6 +292,7 @@ default_connections = [('Links House Exit', 'Kokiri Forest'),
                        ('Kakariko Bombable Grotto', 'Kakariko Bombable Grotto'),
                        ('Kakariko Back Grotto', 'Kakariko Back Grotto'),
                        ('Mountain Bombable Grotto', 'Mountain Bombable Grotto'),
+                       ('Mountain Storms Grotto', 'Mountain Storms Grotto'),
                        ('Top of Crater Grotto', 'Top of Crater Grotto'),
                        ('Field North Lon Lon Grotto', 'Field North Lon Lon Grotto'),
                        ('Castle Storms Grotto', 'Castle Storms Grotto'),
@@ -336,30 +327,3 @@ default_dungeon_connections = [('Deku Tree', 'Deku Tree Lobby'),
                                ('Rainbow Bridge', 'Ganons Castle Lobby'),
                                ('Ganons Castle Exit', 'Ganons Castle Grounds')
                               ]
-
-# Fairy Fountain exit IDs
-# (entrance, exit)
-
-Fairy_List = ['Colossus Fairy',
-              'Hyrule Castle Fairy',
-              'Ganons Castle Fairy',
-              'Crater Fairy',
-              'Mountain Summit Fairy',
-              'Zoras Fountain Fairy']
-
-Fairy_IDs = {'Colossus Fairy': (0x0588, 0xBEFD82),
-             'Hyrule Castle Fairy': (0x0578, 0xBEFD80),
-             'Ganons Castle Fairy': (0x04C2, 0xBEFD6C),
-             'Crater Fairy': (0x04BE, 0xBEFD6A),
-             'Mountain Summit Fairy': (0x0315, 0xBEFD68),
-             'Zoras Fountain Fairy': (0x0371, 0xBEFD7E)}
-
-# Fairy Fountain exit addresses
-# (entrance, exit)
-
-Fairy_addresses = {'Colossus Fairy': (0x2186114, 0x218D644, 0x218D644, 0x057C),
-                   'Hyrule Castle Fairy': (0x21F60E0, 0x21F60E0, 0x21F60E0, 0x0340),
-                   'Ganons Castle Fairy': (0x292B0B4, 0x292B0B4, 0x292B0B4, 0x0340),
-                   'Crater Fairy': (0x22470FE, 0x224E31A, 0x224E31A, 0x0482),
-                   'Mountain Summit Fairy': (0x221D104, 0x222467C, 0x222467C, 0x045B),
-                   'Zoras Fountain Fairy': (0x21100F4, 0x2114624, 0x2114444, 0x0394)}

@@ -17,13 +17,13 @@ from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
 from Utils import output_path
 
-__version__ = '1.0.0'
+__version__ = '2.0.0'
 
 def main(args, seed=None):
     start = time.clock()
 
     # initialize the world
-    world = World(args.bridge, args.open_forest, args.open_door_of_time, not args.nodungeonitems, args.beatableonly, args.hints)
+    world = World(args.bridge, args.open_forest, args.open_door_of_time, not args.nodungeonitems, args.beatableonly, args.hints, args.fast_ganon, [args.kokiricolor, args.goroncolor, args.zoracolor], args.healthSFX)
     logger = logging.getLogger('')
     if seed is None:
         random.seed(None)
@@ -31,6 +31,10 @@ def main(args, seed=None):
     else:
         world.seed = int(seed)
     random.seed(world.seed)
+    if args.create_spoiler: # Make game different if spoiler log is generated.
+        for i in range (0, 10): # Generate many random numbers to increase volatility.
+            new_base_seed = random.randint(0, 999999999)
+        random.seed(new_base_seed)
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, world.seed)
 
@@ -67,7 +71,7 @@ def main(args, seed=None):
 
     logger.info('Patching ROM.')
 
-    outfilebase = 'OoT_%s%s%s%s_%s' % (world.bridge, "-openforest" if world.open_forest else "", "-opendoor" if world.open_door_of_time else "", "-beatableonly" if world.check_beatable_only else "",  world.seed)
+    outfilebase = 'OoT_%s%s%s%s%s_%s' % (world.bridge, "-openforest" if world.open_forest else "", "-opendoor" if world.open_door_of_time else "", "-fastganon" if world.fast_ganon else "", "-beatableonly" if world.check_beatable_only else "",  world.seed)
 
     if not args.suppress_rom:
         rom = LocalRom(args.rom)
@@ -94,7 +98,7 @@ def main(args, seed=None):
 
 def copy_world(world):
     # ToDo: Not good yet
-    ret = World(world.bridge, world.open_forest, world.open_door_of_time, world.place_dungeon_items, world.check_beatable_only, world.hints)
+    ret = World(world.bridge, world.open_forest, world.open_door_of_time, world.place_dungeon_items, world.check_beatable_only, world.hints, world.fast_ganon, world.colors, world.healthSFX)
     ret.seed = world.seed
     ret.can_take_damage = world.can_take_damage
     create_regions(ret)

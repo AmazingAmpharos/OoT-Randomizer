@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 class World(object):
 
-    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints):
+    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints, fast_ganon, colors, healthSFX):
         self.shuffle = 'vanilla'
         self.bridge = bridge
         self.dungeons = []
@@ -25,7 +25,10 @@ class World(object):
         self.open_forest = open_forest
         self.open_door_of_time = open_door_of_time
         self.hints = hints
+        self.colors = colors
+        self.healthSFX = healthSFX
         self.keysanity = False
+        self.fast_ganon = fast_ganon
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
 
@@ -82,7 +85,7 @@ class World(object):
             soft_collect(item)
         from Items import ItemFactory
         if keys:
-            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)', 'Boss Key (Spirit Temple)', 'Boss Key (Ganons Castle)'] + ['Small Key (Bottom of the Well)'] * 2 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 4 + ['Small Key (Gerudo Training Grounds)'] * 8 + ['Small Key (Spirit Temple)'] * 5 + ['Small Key (Ganons Castle)'] * 2):
+            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)', 'Boss Key (Spirit Temple)', 'Boss Key (Ganons Castle)'] + ['Small Key (Bottom of the Well)'] * 3 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 5 + ['Small Key (Gerudo Training Grounds)'] * 9 + ['Small Key (Spirit Temple)'] * 5 + ['Small Key (Ganons Castle)'] * 2):
                 soft_collect(item)
         ret.sweep_for_events()
         ret.clear_cached_unreachable()
@@ -306,13 +309,17 @@ class CollectionState(object):
     def can_lift_rocks(self):
         return (self.has('Silver Gauntlets') or self.has('Gold Gauntlets')) and self.is_adult()
 
+    def has_GoronTunic(self):
+        return (self.has('Goron Tunic') or (self.has('Progressive Wallet') and (self.has('Bomb Bag') or self.has('Progressive Strength Upgrade') or self.has('Bow'))))
+
     def can_finish_adult_trades(self):
         zora_thawed = self.has_bottle() and self.has('Zeldas Lullaby') and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
         carpenter_access = self.has('Epona') or self.has('Progressive Hookshot', 2)
         return (self.has('Claim Check') or ((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))
 
     def has_bottle(self):
-        return (self.has('Bottle') or self.has('Bottle with Milk'))
+        is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter')
+        return any(is_normal_bottle(pritem) for pritem in self.prog_items)
 
     def bottle_count(self):
         return len([pritem for pritem in self.prog_items if pritem.startswith('Bottle')])
@@ -492,7 +499,7 @@ class Dungeon(object):
 
 class Location(object):
 
-    def __init__(self, name='', address=None, address2=None, default=None, type='Chest', parent=None):
+    def __init__(self, name='', address=None, address2=None, default=None, type='Chest', scene=None, hint='Termina', parent=None):
         self.name = name
         self.parent_region = parent
         self.item = None
@@ -500,6 +507,8 @@ class Location(object):
         self.address2 = address2
         self.default = default
         self.type = type
+        self.scene = scene
+        self.hint = hint
         self.spot_type = 'Location'
         self.recursion_count = 0
         self.staleness_count = 0
@@ -588,6 +597,7 @@ class Spoiler(object):
                          'bridge': self.world.bridge,
                          'forest': self.world.open_forest,
                          'door': self.world.open_door_of_time,
+                         'ganon': self.world.fast_ganon,
                          'completeable': not self.world.check_beatable_only,
                          'dungeonitems': self.world.place_dungeon_items}
 
@@ -598,10 +608,9 @@ class Spoiler(object):
             outfile.write('Rainbow Bridge Requirement:      %s\n' % self.metadata['bridge'])
             outfile.write('Open Forest:                     %s\n' % ('Yes' if self.metadata['forest'] else 'No'))
             outfile.write('Open Door of Time:               %s\n' % ('Yes' if self.metadata['door'] else 'No'))
+            outfile.write('Fast Ganon\'s Castle:             %s\n' % ('Yes' if self.metadata['ganon'] else 'No'))
             outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
             outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))
-            outfile.write('\n\nEntrances:\n\n')
-            outfile.write('\n'.join(['%s %s %s' % (entry['entrance'], '<=>' if entry['direction'] == 'both' else '<=' if entry['direction'] == 'exit' else '=>', entry['exit']) for entry in self.entrances]))
             outfile.write('\n\nLocations:\n\n')
             outfile.write('\n'.join(['%s: %s' % (location, item) for (location, item) in self.locations['other locations'].items()]))
             outfile.write('\n\nPlaythrough:\n\n')

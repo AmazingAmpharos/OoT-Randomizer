@@ -51,7 +51,7 @@ def guiMain(args=None):
     checkBoxFrame = Frame(rightHalfFrame)
 
     createSpoilerVar = IntVar()
-    createSpoilerCheckbutton = Checkbutton(checkBoxFrame, text="Create Spoiler Log", variable=createSpoilerVar)
+    createSpoilerCheckbutton = Checkbutton(checkBoxFrame, text="Create Spoiler Log (affects item layout)", variable=createSpoilerVar)
     suppressRomVar = IntVar()
     suppressRomCheckbutton = Checkbutton(checkBoxFrame, text="Do not create patched Rom", variable=suppressRomVar)
     compressRomVar = IntVar()
@@ -60,6 +60,8 @@ def guiMain(args=None):
     openForestCheckbutton = Checkbutton(checkBoxFrame, text="Open Forest", variable=openForestVar)
     openDoorVar = IntVar()
     openDoorCheckbutton = Checkbutton(checkBoxFrame, text="Open Door of Time", variable=openDoorVar)
+    fastGanonVar = IntVar()
+    fastGanonCheckbutton = Checkbutton(checkBoxFrame, text="Skip most of Ganon's Castle", variable=fastGanonVar)
     dungeonItemsVar = IntVar()
     dungeonItemsCheckbutton = Checkbutton(checkBoxFrame, text="Place Dungeon Items (Compasses/Maps)", onvalue=0, offvalue=1, variable=dungeonItemsVar)
     beatableOnlyVar = IntVar()
@@ -72,6 +74,7 @@ def guiMain(args=None):
     compressRomCheckbutton.pack(expand=True, anchor=W)
     openForestCheckbutton.pack(expand=True, anchor=W)
     openDoorCheckbutton.pack(expand=True, anchor=W)
+    fastGanonCheckbutton.pack(expand=True, anchor=W)
     dungeonItemsCheckbutton.pack(expand=True, anchor=W)
     beatableOnlyCheckbutton.pack(expand=True, anchor=W)
     hintsCheckbutton.pack(expand=True, anchor=W)
@@ -97,10 +100,10 @@ def guiMain(args=None):
     checkBoxFrame.pack()
     fileDialogFrame.pack()
 
-    drowDownFrame = Frame(topFrame)
+    dropDownFrame = Frame(topFrame)
 
 
-    bridgeFrame = Frame(drowDownFrame)
+    bridgeFrame = Frame(dropDownFrame)
     bridgeVar = StringVar()
     bridgeVar.set('medallions')
     bridgeOptionMenu = OptionMenu(bridgeFrame, bridgeVar, 'medallions', 'vanilla', 'dungeons', 'open')
@@ -108,7 +111,46 @@ def guiMain(args=None):
     bridgeLabel = Label(bridgeFrame, text='Rainbow Bridge Requirement')
     bridgeLabel.pack(side=LEFT)
 
+    colorVars = []
+    colorVars.append(StringVar())
+    colorVars.append(StringVar())
+    colorVars.append(StringVar())
+    colorVars[0].set('Kokiri Green')
+    colorVars[1].set('Goron Red')
+    colorVars[2].set('Zora Blue')
+
+    kokiriFrame = Frame(dropDownFrame)
+    kokiriOptionMenu = OptionMenu(kokiriFrame, colorVars[0], 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random')
+    kokiriOptionMenu.pack(side=RIGHT)
+    kokiriLabel = Label(kokiriFrame, text='Kokiri Tunic Color')
+    kokiriLabel.pack(side=LEFT)
+
+    goronFrame = Frame(dropDownFrame)
+    goronOptionMenu = OptionMenu(goronFrame, colorVars[1], 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random')
+    goronOptionMenu.pack(side=RIGHT)
+    goronLabel = Label(goronFrame, text='Goron Tunic Color')
+    goronLabel.pack(side=LEFT)
+
+    zoraFrame = Frame(dropDownFrame)
+    zoraOptionMenu = OptionMenu(zoraFrame, colorVars[2], 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random')
+    zoraOptionMenu.pack(side=RIGHT)
+    zoraLabel = Label(zoraFrame, text='Zora Tunic Color')
+    zoraLabel.pack(side=LEFT)
+
+    lowHealthSFXVar = StringVar()
+    lowHealthSFXVar.set('Default')
+    
+    lowHealthSFXFrame = Frame(dropDownFrame)
+    lowHealthSFXOptionMenu = OptionMenu(lowHealthSFXFrame, lowHealthSFXVar, 'Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None')
+    lowHealthSFXOptionMenu.pack(side=RIGHT)
+    lowHealthSFXLabel = Label(lowHealthSFXFrame, text='Low Health SFX')
+    lowHealthSFXLabel.pack(side=LEFT)
+    
     bridgeFrame.pack(expand=True, anchor=E)
+    kokiriFrame.pack(expand=True, anchor=E)
+    goronFrame.pack(expand=True, anchor=E)
+    zoraFrame.pack(expand=True, anchor=E)
+    lowHealthSFXFrame.pack(expand=True, anchor=E)
 
     bottomFrame = Frame(randomizerWindow)
 
@@ -124,11 +166,16 @@ def guiMain(args=None):
         guiargs.seed = int(seedVar.get()) if seedVar.get() else None
         guiargs.count = int(countVar.get()) if countVar.get() != '1' else None
         guiargs.bridge = bridgeVar.get()
+        guiargs.kokiricolor = colorVars[0].get()
+        guiargs.goroncolor = colorVars[1].get()
+        guiargs.zoracolor = colorVars[2].get()
+        guiargs.healthSFX = lowHealthSFXVar.get()
         guiargs.create_spoiler = bool(createSpoilerVar.get())
         guiargs.suppress_rom = bool(suppressRomVar.get())
         guiargs.compress_rom = bool(compressRomVar.get())
         guiargs.open_forest = bool(openForestVar.get())
         guiargs.open_door_of_time = bool(openDoorVar.get())
+        guiargs.fast_ganon = bool(fastGanonVar.get())
         guiargs.nodungeonitems = bool(dungeonItemsVar.get())
         guiargs.beatableonly = bool(beatableOnlyVar.get())
         guiargs.hints = bool(hintsVar.get())
@@ -156,7 +203,7 @@ def guiMain(args=None):
 
     openOutputButton.pack(side=RIGHT)
 
-    drowDownFrame.pack(side=LEFT)
+    dropDownFrame.pack(side=LEFT)
     rightHalfFrame.pack(side=RIGHT)
     topFrame.pack(side=TOP)
     bottomFrame.pack(side=BOTTOM)
@@ -170,6 +217,7 @@ def guiMain(args=None):
             dungeonItemsVar.set(int(not args.nodungeonitems))
         openForestVar.set(int(args.open_forest))
         openDoorVar.set(int(args.open_door_of_time))
+        fastGanonVar.set(int(args.fast_ganon))
         beatableOnlyVar.set(int(args.beatableonly))
         hintsVar.set(int(args.hints))
         if args.count:
@@ -177,6 +225,10 @@ def guiMain(args=None):
         if args.seed:
             seedVar.set(str(args.seed))
         bridgeVar.set(args.bridge)
+        colorVars[0].set(args.kokiricolor)
+        colorVars[1].set(args.goroncolor)
+        colorVars[2].set(args.zoracolor)
+        lowHealthSFXVar.set(args.healthSFX)
         romVar.set(args.rom)
 
     mainWindow.mainloop()
