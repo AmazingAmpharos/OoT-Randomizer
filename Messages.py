@@ -57,6 +57,11 @@ SPECIAL_CHARACTERS = {
     0xAA: '[Control Stick]',
 }
 
+GOSSIP_STONE_MESSAGES = list( range(0x0401, 0x0421) ) # ids of the actual hints
+GOSSIP_STONE_MESSAGES += [0x2053, 0x2054] # shared initial stone messages
+TEMPLE_HINTS_MESSAGES = [0x7057, 0x707A] # dungeon reward hints from the temple of time pedestal
+
+
 def display_code_list(codes):
     message = ""
     for code in codes:
@@ -117,23 +122,20 @@ class Message():
                 break
             if next_char == 0x07: # goto
                 self.has_goto = True
-                self.is_basic = False
             if next_char == 0x0A: # keep-open
                 self.has_keep_open = True
-                self.is_basic = False
             if next_char == 0x0B: # event
                 self.has_event = True
-                self.is_basic = False
             if next_char == 0x10: # ocarina
                 self.has_ocarina = True
-                self.is_basic = False
             if next_char == 0x1B: # two choice
                 self.has_two_choice = True
-                self.is_basic = False
             if next_char == 0x1C: # three choice
                 self.has_three_choice = True
-                self.is_basic = False
         self.text = display_code_list(self.text_codes)
+
+    def is_basic(self):
+        return not (self.has_goto or self.has_keep_open or self.has_event or self.has_ocarina or self.has_two_choice or self.has_three_choice)
 
     # read a single message
     def __init__(self, rom, offset, count):
@@ -155,7 +157,6 @@ class Message():
         self.has_ocarina = False
         self.has_two_choice = False
         self.has_three_choice = False
-        self.is_basic = True
 
         self.raw_text = read_bytes(rom, TEXT_START + self.offset, self.length)
         self.parse_text()
@@ -186,17 +187,20 @@ def read_messages(rom):
     return messages
 
 # shuffles the messages in the game, making sure to keep various message types in their own group
-def shuffle_messages(rom):
+def shuffle_messages(rom, except_hints=True):
 
     messages = read_messages(rom)
+
+    def is_not_exempt(m):
+        return not ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES) )
     
-    have_goto = list( filter( lambda m: m.has_goto, messages) ) # not shuffled yet
-    have_keep_open = list( filter( lambda m: m.has_keep_open, messages) )
-    have_event = list( filter( lambda m: m.has_event, messages) )
-    have_ocarina = list( filter( lambda m: m.has_ocarina, messages) )
-    have_two_choice = list( filter( lambda m: m.has_two_choice, messages) )
-    have_three_choice = list( filter( lambda m: m.has_three_choice, messages) )
-    basic_messages = list( filter( lambda m: m.is_basic, messages) )
+    have_goto =         list( filter( lambda m: is_not_exempt(m) and m.has_goto, messages) ) # not shuffled yet
+    have_keep_open =    list( filter( lambda m: is_not_exempt(m) and m.has_keep_open, messages) )
+    have_event =        list( filter( lambda m: is_not_exempt(m) and m.has_event, messages) )
+    have_ocarina =      list( filter( lambda m: is_not_exempt(m) and m.has_ocarina, messages) )
+    have_two_choice =   list( filter( lambda m: is_not_exempt(m) and m.has_two_choice, messages) )
+    have_three_choice = list( filter( lambda m: is_not_exempt(m) and m.has_three_choice, messages) )
+    basic_messages =    list( filter( lambda m: is_not_exempt(m) and m.is_basic(), messages) )
 
 
     def shuffle_group(group):

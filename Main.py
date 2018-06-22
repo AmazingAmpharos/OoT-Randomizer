@@ -33,7 +33,7 @@ def main(args, seed=None):
                   [args.navicolordefault, args.navicolorenemy, args.navicolornpc, args.navicolorprop],
                   args.healthSFX,
                   args.custom_logic,
-                  args.shuffle_text)
+                  args.text_shuffle)
     logger = logging.getLogger('')
     if seed is None:
         random.seed(None)
@@ -104,7 +104,7 @@ def main(args, seed=None):
 
 def copy_world(world):
     # ToDo: Not good yet
-    ret = World(world.bridge,world.open_forest, world.open_door_of_time, world.place_dungeon_items, world.check_beatable_only, world.hints, world.colors, world.navi_colors, world.healthSFX, world.custom_logic, world.shuffle_text)
+    ret = World(world.bridge,world.open_forest, world.open_door_of_time, world.place_dungeon_items, world.check_beatable_only, world.hints, world.colors, world.navi_colors, world.healthSFX, world.custom_logic, world.text_shuffle)
     ret.seed = world.seed
     ret.can_take_damage = world.can_take_damage
     create_regions(ret)

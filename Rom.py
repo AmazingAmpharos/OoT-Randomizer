@@ -1048,6 +1048,12 @@ def patch_rom(world, rom):
                     rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
                     rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
 
+    # text shuffle
+    if world.text_shuffle == 'except_hints':
+        shuffle_messages(rom, True)
+    elif world.text_shuffle == 'complete':
+        shuffle_messages(rom, False)
+
     # patch tunic colors
     # Custom color tunic stuff
     Tunics = []
@@ -1134,10 +1140,6 @@ def patch_rom(world, rom):
         healthSFX = [0x00, 0x00, 0x00, 0x00]
         address = 0xADBA14
     rom.write_bytes(address, healthSFX)
-
-    # shuffle text
-    if world.shuffle_text:
-        shuffle_messages(rom)
         
     return rom
 
