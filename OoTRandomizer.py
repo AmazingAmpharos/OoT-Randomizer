@@ -95,6 +95,10 @@ def start():
                              Removes a number of bad locations from logic,
                              and adds a number allowed tricks
                              ''', action='store_true')
+    parser.add_argument('--shuffle_text', help='''\
+                             Messages will be shuffled.
+                             It's hilarious, but make sure you really know what people are actually asking for...
+                             ''', action='store_true')
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
     parser.add_argument('--compress_rom', help='Create a compressed version of the output rom file.', action='store_true')
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')

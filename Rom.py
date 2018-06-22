@@ -11,6 +11,7 @@ from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
 from Utils import local_path, output_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
+from Messages import shuffle_messages
 
 TunicColors = {
     "Kokiri Green": [0x1E, 0x69, 0x1B],
@@ -1090,6 +1091,10 @@ def patch_rom(world, rom):
         healthSFX = [0x00, 0x00, 0x00, 0x00]
         address = 0xADBA14
     rom.write_bytes(address, healthSFX)
+
+    # shuffle text
+    if world.shuffle_text:
+        shuffle_messages(rom)
         
     return rom
 

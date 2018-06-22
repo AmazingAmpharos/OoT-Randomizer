@@ -76,6 +76,7 @@ def guiMain(args=None):
         "nodungeonitems":    { "text": "Remove Maps and Compasses",        "group": "logic",  "default": "checked"   },
         "beatableonly":      { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "checked"   },
         "custom_logic":      { "text": "Use this fork's custom logic",     "group": "logic",  "default": "checked"   },
+        "shuffle_text":      { "text": "Shuffle text",                     "group": "other",  "default": "unchecked" },
     }
     # radio list has a name, a list of options, and a default option
     bridge_requirements_data = {
@@ -117,7 +118,10 @@ def guiMain(args=None):
 
     checkAndRadioFrame = Frame(randomizerWindow)
     if True: # just indenting for hierarchy clarity
-        outputOptionsFrame = LabelFrame(checkAndRadioFrame, text='Output', labelanchor=NW)
+        leftSideChecks = Frame(checkAndRadioFrame)
+        if True: # just indenting for hierarchy clarity
+            outputOptionsFrame = LabelFrame(leftSideChecks, text='Output', labelanchor=NW)
+            otherOptionsFrame = LabelFrame(leftSideChecks, text='Other', labelanchor=NW)
         logicOptionsFrame = LabelFrame(checkAndRadioFrame, text='Logic', labelanchor=NW)
         (rainbowBridgeFrame, resultVars['bridge']) = MakeRadioList(checkAndRadioFrame, bridge_requirements_data)
         (hintsFrame,         resultVars['hints'])  = MakeRadioList(checkAndRadioFrame, hint_options_data)
@@ -137,7 +141,7 @@ def guiMain(args=None):
         # create a variable to access the box's state
         resultVars[var_name] = IntVar(value=default_value)
         # create the checkbox
-        parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame }[info["group"]] # sorry, this is gross; I was reaching my limit
+        parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame, 'other': otherOptionsFrame }[info["group"]] # sorry, this is gross; I was reaching my limit
         checkboxes[var_name] = Checkbutton(parent, text=info["text"], variable=resultVars[var_name])
         checkboxes[var_name].pack(expand=True, anchor=W)
 
@@ -157,7 +161,9 @@ def guiMain(args=None):
         dropdownFrames[var_name].pack(expand=True, side=LEFT, anchor=N)
 
     # pack the hierarchy
-    outputOptionsFrame.pack(expand=True, anchor=N, side=LEFT, padx=5)
+    outputOptionsFrame.pack(expand=True, anchor=E, side=TOP)
+    otherOptionsFrame.pack(expand=True, anchor=W, side=BOTTOM)
+    leftSideChecks.pack(expand=True, anchor=N, side=LEFT, padx=5)
     logicOptionsFrame.pack(expand=True, anchor=N, side=LEFT, padx=5)
     rainbowBridgeFrame.pack(expand=True, anchor=N, side=LEFT, padx=5)
     hintsFrame.pack(expand=True, anchor=N, side=LEFT, padx=5)
@@ -215,6 +221,7 @@ def guiMain(args=None):
         guiargs.nodungeonitems = bool(resultVars["nodungeonitems"].get())
         guiargs.beatableonly = bool(resultVars["beatableonly"].get())
         guiargs.custom_logic = bool(resultVars["custom_logic"].get())
+        guiargs.shuffle_text = bool(resultVars["shuffle_text"].get())
         guiargs.hints = resultVars["hints"].get()
         guiargs.rom = romVar.get()
         try:
@@ -252,6 +259,7 @@ def guiMain(args=None):
         resultVars["nodungeonitems"].set(int(args.nodungeonitems))
         resultVars["beatableonly"].set(int(args.beatableonly))
         resultVars["custom_logic"].set(int(args.custom_logic))
+        resultVars["shuffle_text"].set(int(args.shuffle_text))
         resultVars["hints"].set(args.hints)
         if args.count:
             countVar.set(str(args.count))
