@@ -393,7 +393,7 @@ Open the graphical user interface. Preloads selections with set command line par
 
 # Notable Changes on this fork
 
-## Optional Logic changes ("Use")
+## Optional Logic changes
 
 These logic changes are applied by checking "Use this fork's logic" in the "Logic" box
 
