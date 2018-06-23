@@ -7,6 +7,128 @@ import random
 
 from HintList import getHint, getHintGroup, Hint
 from Utils import local_path
+from Items import ItemFactory
+from ItemList import eventlocations
+
+gooditems = [
+    'Bow',
+    'Progressive Hookshot',
+    'Hammer',
+    'Slingshot',
+    'Boomerang',
+    'Bomb Bag',
+    'Lens of Truth',
+    'Dins Fire',
+    'Farores Wind',
+    'Nayrus Love',
+    'Fire Arrows',
+    'Ice Arrows',
+    'Light Arrows',
+    'Bottle',
+    'Bottle with Letter',
+    'Bottle with Milk',
+    'Bottle with Red Potion',
+    'Bottle with Green Potion',
+    'Bottle with Blue Potion',
+    'Bottle with Fairy',
+    'Bottle with Fish',
+    'Bottle with Blue Fire',
+    'Bottle with Bugs',
+    'Bottle with Poe',
+    'Pocket Egg',
+    'Pocket Cucco',
+    'Cojiro',
+    'Odd Mushroom',
+    'Odd Potion',
+    'Poachers Saw',
+    'Broken Sword',
+    'Prescription',
+    'Eyeball Frog',
+    'Eyedrops',
+    'Claim Check',
+    'Kokiri Sword',
+    'Biggoron Sword',
+    'Deku Shield',
+    'Hylian Shield',
+    'Mirror Shield',
+    'Goron Tunic',
+    'Zora Tunic',
+    'Iron Boots',
+    'Hover Boots',
+    'Progressive Strength Upgrade',
+    'Progressive Scale',
+    'Progressive Wallet',
+    'Deku Stick Capacity',
+    'Deku Nut Capacity',
+    'Magic Meter',
+    'Double Defense',
+    'Stone of Agony',
+    'Zeldas Lullaby',
+    'Eponas Song',
+    'Suns Song',
+    'Sarias Song',
+    'Song of Time',
+    'Song of Storms',
+    'Minuet of Forest',
+    'Prelude of Light',
+    'Bolero of Fire',
+    'Serenade of Water',
+    'Nocturne of Shadow',
+    'Requiem of Spirit',
+]
+
+
+# build a formatted string with linebreaks appropriate textboxes
+def buildHintString(hintString):
+    if len(hintString) < 77:
+        hintString = "They say that " + hintString
+    elif len(hintString) < 82:
+        hintString = "They say " + hintString
+    elif len(hintString) > 91:
+        print('Too many characters in hint')
+        hintString = hintString[:91]
+    hintString = hintString.capitalize()
+
+    formatString = ""
+    splitHintString = hintString.split()
+    lineLength = 0
+
+    for word in splitHintString:
+        # let's assume words are not 35 or more char long
+        if lineLength + len(word) + 1 <= 35:
+            # add a space if line is not empty
+            if lineLength != 0:
+                lineLength = lineLength + 1
+                formatString = formatString + ' '
+
+            # append word
+            formatString = formatString + word
+            lineLength = lineLength + len(word)
+        else:
+            # word won'd fit, add to a new line
+            formatString = formatString + '&' + word
+            lineLength = len(word)
+
+    return formatString
+
+
+def getItemGenericName(item):
+    if item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey':
+        return item.type
+    else:
+        return item.name
+
+
+def isDungeonItem(item):
+    return item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey'
+
+
+def writeHintToRom(hint, stoneAddress, rom):
+    hintBytes = getBytes(hint)
+    endText(hintBytes)
+    rom.write_bytes(stoneAddress, hintBytes)
+
+
 
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(world, rom):
@@ -15,23 +137,6 @@ def buildGossipHints(world, rom):
                       0x93957C, 0x9395D8, 0x939634, 0x939690, 0x9396EC, 0x939748, 0x9397A4, 0x939800, 0x93985C, 0x9398B8,
                       0x939914, 0x939970] #address for gossip stone text boxes, byte limit is 92
 
-
-    alwaysLocations = getHintGroup('alwaysLocation')#These location will always have a hint somewhere in the world.
-    
-    sometimesSpace = (int((len(stoneAddresses) - len(alwaysLocations)*2)/2))
-    sometimesLocations = getHintGroup('location')#A random selection of these locations will be in the hint pool.
-    random.shuffle(sometimesLocations)
-    sometimesLocations = sometimesLocations[0:sometimesSpace]
-    hintList = alwaysLocations
-    hintList.extend(alwaysLocations)
-    hintList.extend(sometimesLocations)
-
-    locationData = []
-    for hint in  hintList:
-        for locationWorld in world.get_locations():
-            if hint.name == locationWorld.name:
-                locationData.extend([locationWorld])         
-
     #hopefully fixes weird VC error where the last character from a previous text box would sometimes spill over into the next box.
     for address in range(stoneAddresses[0], 0x9399D8):
         rom.write_byte(address, 0x08)
@@ -39,25 +144,97 @@ def buildGossipHints(world, rom):
     #shuffles the stone addresses for randomization, always locations will be placed first and twice
     random.shuffle(stoneAddresses)
 
-    #loops through shuffled locations and addresses and builds hint.
-    while locationData:
-        currentLoc = locationData.pop(0)
-        Block_code = getBytes((getHint(currentLoc.name).text))
-        if currentLoc.item.type == 'Map' or currentLoc.item.type == 'Compass' or currentLoc.item.type == 'BossKey' or currentLoc.item.type == 'SmallKey':
-            Block_code.extend(getBytes((getHint(currentLoc.item.type).text)))
+    # get list of required items that are not events or needed for Ganon's Castle
+    requiredItems = [(location, item) for _,sphere in world.spoiler.playthrough.items() for location,item in sphere.items() 
+        if ItemFactory(item).type != 'Event' and not location in eventlocations]
+
+    # add required non-ganon items for hints (good hints)
+    for location,item in random.sample(requiredItems, random.randint(3,4)):
+        if world.get_location(location).parent_region.dungeon:
+            writeHintToRom(buildHintString(getHint(world.get_location(location).parent_region.dungeon.name).text + \
+                " is on the way of the hero."), stoneAddresses.pop(0), rom)
         else:
-            Block_code.extend(getBytes((getHint(currentLoc.item.name).text)))
-        endText(Block_code)
+            writeHintToRom(buildHintString(world.get_location(location).parent_region.name + "  is on the way of the hero."),\
+                stoneAddresses.pop(0), rom)
 
-        if len(Block_code) > 92:
-            print('Too many characters in hint')
-            Block_code = getBytes("I am Error.")
-            Block_code.extend(getBytes(currentLoc.name))
-            Block_code.extend(getBytes('&'))
-            Block_code.extend(getBytes(currentLoc.item.name))
-     
-        rom.write_bytes(stoneAddresses.pop(0), Block_code)
+    # Don't repeat hints
+    checkedLocations = []
 
+    # Add required location hints
+    alwaysLocations = getHintGroup('alwaysLocation', world.custom_logic)
+    for hint in alwaysLocations:
+        for locationWorld in world.get_locations():
+            if hint.name == locationWorld.name:
+                checkedLocations.append(hint.name)   
+                writeHintToRom(getHint(locationWorld.name).text + " " + \
+                    getHint(getItemGenericName(locationWorld.item)).text + ".",\
+                    stoneAddresses.pop(0), rom)
+
+
+    # Add good location hints
+    sometimesLocations = getHintGroup('location', world.custom_logic)
+    for _ in range(0, random.randint(9,10) - len(alwaysLocations)):
+        hint = random.choice(sometimesLocations)
+        # Repick if location isn't new
+        while hint.name in checkedLocations or hint.name in alwaysLocations:
+            hint = random.choice(sometimesLocations)
+
+        for locationWorld in world.get_locations():
+            if hint.name == locationWorld.name:
+                checkedLocations.append(locationWorld.name)    
+                writeHintToRom(getHint(locationWorld.name).text + " " + \
+                    getHint(getItemGenericName(locationWorld.item)).text + ".",\
+                    stoneAddresses.pop(0), rom)
+
+    # add bad dungeon locations hints
+    for dungeon in random.sample(world.dungeons, random.randint(3,4)):
+        # Choose a randome dungeon location that is a non-dungeon item
+        locationWorld = random.choice([location for region in dungeon.regions for location in world.get_region(region).locations
+            if location.item.type != 'Event' and \
+            not location.name in eventlocations and \
+            not isDungeonItem(location.item) and \
+            location.item.name != 'Gold Skulltulla Token' and\
+            location.item.type != 'Song'])
+
+        checkedLocations.append(locationWorld.name)
+        writeHintToRom(buildHintString(getHint(dungeon.name).text + \
+            " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."),\
+            stoneAddresses.pop(0), rom)
+
+    # add bad overworld locations hints
+    # only choose location if it is new and a proper item from the overworld
+    overworldlocations = [locationWorld for locationWorld in world.get_locations()
+            if not locationWorld.name in checkedLocations and \
+            not locationWorld.name in alwaysLocations and \
+            not locationWorld.name in sometimesLocations and \
+            locationWorld.item.type != 'Event' and \
+            not locationWorld.name in eventlocations and \
+            locationWorld.item.name != 'Gold Skulltulla Token' and \
+            not locationWorld.parent_region.dungeon and \
+            not locationWorld.name in checkedLocations]
+    for locationWorld in random.sample(overworldlocations, random.randint(3,4)):
+        checkedLocations.append(locationWorld.name)
+        writeHintToRom(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
+            " can be found at " + locationWorld.parent_region.name + "."),\
+            stoneAddresses.pop(0), rom) 
+
+    # add good item hints
+    # only choose location if it is new and a good item
+    gooditemlocations = [locationWorld for locationWorld in world.get_locations() 
+            if not locationWorld.name in checkedLocations and \
+            locationWorld.item.name in gooditems]
+    for locationWorld in random.sample(gooditemlocations, random.randint(3,5)):
+        checkedLocations.append(locationWorld.name)
+        if locationWorld.parent_region.dungeon:
+            writeHintToRom(buildHintString(getHint(locationWorld.parent_region.dungeon.name).text + \
+                " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."),\
+                stoneAddresses.pop(0), rom)
+        else:
+            writeHintToRom(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
+                " can be found at " + locationWorld.parent_region.name + "."),\
+                stoneAddresses.pop(0), rom)
+
+    # fill the remaining hints with junk    
     junkHints = getHintGroup('junkHint')
     random.shuffle(junkHints)
     while stoneAddresses:

@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 class World(object):
 
-    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints, fast_ganon, colors, healthSFX):
+    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints, fast_ganon, colors, navi_colors, healthSFX, custom_logic, text_shuffle, ocarina_songs):
         self.shuffle = 'vanilla'
         self.bridge = bridge
         self.dungeons = []
@@ -25,7 +25,11 @@ class World(object):
         self.open_forest = open_forest
         self.open_door_of_time = open_door_of_time
         self.hints = hints
+        self.custom_logic = custom_logic
+        self.text_shuffle = text_shuffle
+        self.ocarina_songs = ocarina_songs
         self.colors = colors
+        self.navi_colors = navi_colors
         self.healthSFX = healthSFX
         self.keysanity = False
         self.fast_ganon = fast_ganon
@@ -343,7 +347,13 @@ class CollectionState(object):
         return ((self.has('Dins Fire') or (self.has('Bow') and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
 
     def guarantee_hint(self):
-        return(self.has('Stone of Agony') or not self.world.hints)
+        if(self.world.hints == 'mask'):
+            # has the mask of truth
+            return self.has('Zeldas Letter') and self.has('Sarias Song') and self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire')
+        elif(self.world.hints == 'agony'):
+            # has the stone of agony
+            return self.has('Stone of Agony')
+        return True
 
     def collect(self, item, event=False, location=None):
         if location:
@@ -599,7 +609,8 @@ class Spoiler(object):
                          'door': self.world.open_door_of_time,
                          'ganon': self.world.fast_ganon,
                          'completeable': not self.world.check_beatable_only,
-                         'dungeonitems': self.world.place_dungeon_items}
+                         'dungeonitems': self.world.place_dungeon_items,
+                         'hints': self.world.hints}
 
     def to_file(self, filename):
         self.parse_data()
@@ -611,6 +622,7 @@ class Spoiler(object):
             outfile.write('Fast Ganon\'s Castle:             %s\n' % ('Yes' if self.metadata['ganon'] else 'No'))
             outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
             outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))
+            outfile.write('Hints:                           %s\n' % self.metadata['hints'])
             outfile.write('\n\nLocations:\n\n')
             outfile.write('\n'.join(['%s: %s' % (location, item) for (location, item) in self.locations['other locations'].items()]))
             outfile.write('\n\nPlaythrough:\n\n')

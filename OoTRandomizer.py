@@ -9,6 +9,7 @@ import sys
 from Gui import guiMain
 from Main import main
 from Utils import is_bundled, close_console
+from Rom import get_tunic_color_options
 
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
@@ -60,26 +61,29 @@ def start():
                              ensure all locations are reachable. This only has an effect
                              on the restrictive algorithm currently.
                              ''', action='store_true')
-    parser.add_argument('--hints', help='''\
-                             Gossip Stones provide helpful hints about which items are
-                             in inconvenient locations if the Stone of Agony is in
-                             the player's inventory.
-                             ''', action='store_true')
-    parser.add_argument('--kokiricolor', default='Kokiri Green', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
+    parser.add_argument('--hints', default='none', const='always', nargs='?', choices=['none', 'mask', 'agony', 'always'],
+                        help='''\
+                             Choose how Gossip Stones behave
+                             none:   Default behavior
+                             mask:   Have useful hints that are read with the Mask of Truth (untested)
+                             agony:  Have useful hints that are read with Stone of Agony
+                             always: Have useful hints which can always be read
+                             ''')
+    parser.add_argument('--kokiricolor', default='Kokiri Green', const='Kokiri Green', nargs='?', choices=get_tunic_color_options(),
                         help='''\
                              Choose the color for Link's Kokiri Tunic. (default: %(default)s)
                              Color:        Make the Kokiri Tunic this color.
                              Random:       Choose a random color from this list of colors.
                              True Random:  Choose a random color from any color the N64 can draw.
                              ''')
-    parser.add_argument('--goroncolor', default='Goron Red', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
+    parser.add_argument('--goroncolor', default='Goron Red', const='Goron Red', nargs='?', choices=get_tunic_color_options(),
                         help='''\
                              Choose the color for Link's Goron Tunic. (default: %(default)s)
                              Color:        Make the Goron Tunic this color.
                              Random:       Choose a random color from this list of colors.
                              True Random:  Choose a random color from any color the N64 can draw.
                              ''')
-    parser.add_argument('--zoracolor', default='Zora Blue', const='medallions', nargs='?', choices=['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'],
+    parser.add_argument('--zoracolor', default='Zora Blue', const='Zora Blue', nargs='?', choices=get_tunic_color_options(),
                         help='''\
                              Choose the color for Link's Zora Tunic. (default: %(default)s)
                              Color:        Make the Zora Tunic this color.
@@ -93,6 +97,48 @@ def start():
                              Random:       Replace the sound effect with a random sound from this list.
                              None:         Eliminate heart beeps.
                              ''')
+    parser.add_argument('--navicolordefault', default='White', const='White', nargs='?', choices=get_navi_color_options(),
+                        help='''\
+                             Choose the color for Navi when she is idle. (default: %(default)s)
+                             Color:        Make the Navi this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
+    parser.add_argument('--navicolorenemy', default='Yellow', const='Yellow', nargs='?', choices=get_navi_color_options(),
+                        help='''\
+                             Choose the color for Navi when she is targeting an enemy. (default: %(default)s)
+                             Color:        Make the Navi this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
+    parser.add_argument('--navicolornpc', default='Light Blue', const='Light Blue', nargs='?', choices=get_navi_color_options(),
+                        help='''\
+                             Choose the color for Navi when she is targeting an NPC. (default: %(default)s)
+                             Color:        Make the Navi this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
+    parser.add_argument('--navicolorprop', default='Green', const='Green', nargs='?', choices=get_navi_color_options(),
+                        help='''\
+                             Choose the color for Navi when she is targeting a prop. (default: %(default)s)
+                             Color:        Make the Navi this color.
+                             Random:       Choose a random color from this list of colors.
+                             True Random:  Choose a random color from any color the N64 can draw.
+                             ''')
+    parser.add_argument('--custom_logic', help='''\
+                             Removes a number of bad locations from logic,
+                             and adds a number allowed tricks
+                             ''', action='store_true')
+    parser.add_argument('--text_shuffle', default='none', const='none', nargs='?', choices=['none', 'except_hints', 'complete'],
+                        help='''\
+                             Choose how to shuffle the game's messages.
+                             none:          Default behavior
+                             except_hints:  All text except Gossip Stone hints and Dungeon reward hints is shuffled.
+                             complete:      All text is shuffled
+                             ''')
+    parser.add_argument('--ocarina_songs', help='''\
+                             Randomizes the notes need to play for each ocarina song.
+                             ''', action='store_true')
     parser.add_argument('--suppress_rom', help='Do not create an output rom file.', action='store_true')
     parser.add_argument('--compress_rom', help='Create a compressed version of the output rom file.', action='store_true')
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')
