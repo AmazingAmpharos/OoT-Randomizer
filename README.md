@@ -393,6 +393,8 @@ Open the graphical user interface. Preloads selections with set command line par
 
 # Notable Changes on this fork
 
+The GUI has been changed, and a number of default options have changed. Aside from these, the following were added or majorly changed:
+
 ## Optional Logic changes
 
 These logic changes are applied by checking "Use this fork's logic" in the "Logic" box
@@ -418,3 +420,7 @@ You can shuffle most of the text in the game. This is hilarious, but can get rea
 ## Ocarina song randomization
 
 You can randomize the note pattern that is required to activate each song. The new songs will be properly taught to you when you learn them, and can always be checked on the quest status screen like normal.
+
+## Navi color options
+
+Similar to the tunic color options, you can change Navi's color for each of her different kinds of targets.
