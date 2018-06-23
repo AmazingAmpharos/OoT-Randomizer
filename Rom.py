@@ -12,6 +12,7 @@ from Utils import local_path, output_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
 from Messages import shuffle_messages
+from OcarinaSongs import replace_songs
 
 TunicColors = {
     "Kokiri Green": [0x1E, 0x69, 0x1B],
@@ -1053,6 +1054,9 @@ def patch_rom(world, rom):
         shuffle_messages(rom, True)
     elif world.text_shuffle == 'complete':
         shuffle_messages(rom, False)
+
+    if world.ocarina_songs:
+        replace_songs(rom)
 
     # patch tunic colors
     # Custom color tunic stuff

@@ -76,6 +76,7 @@ def guiMain(args=None):
         "nodungeonitems":    { "text": "Remove Maps and Compasses",        "group": "logic",  "default": "checked"   },
         "beatableonly":      { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "checked"   },
         "custom_logic":      { "text": "Use this fork's custom logic",     "group": "logic",  "default": "checked"   },
+        "ocarina_songs":     { "text": "Randomize ocarina song notes",     "group": "other",  "default": "unchecked" },
     }
     # radio list has a name, a list of options, and a default option
     bridge_requirements_data = {
@@ -135,8 +136,11 @@ def guiMain(args=None):
         leftSideChecks = Frame(checkAndRadioFrame)
         if True: # just indenting for hierarchy clarity
             outputOptionsFrame = LabelFrame(leftSideChecks, text='Output', labelanchor=NW)
-            (textShuffleBridgeFrame, resultVars['text_shuffle']) = MakeRadioList(leftSideChecks, text_shuffle_data)
-        logicOptionsFrame = LabelFrame(checkAndRadioFrame, text='Logic', labelanchor=NW)
+            (textShuffleFrame, resultVars['text_shuffle']) = MakeRadioList(leftSideChecks, text_shuffle_data)
+        leftMiddleChecks = Frame(checkAndRadioFrame)
+        if True: # just indenting for hierarchy clarity
+            logicOptionsFrame = LabelFrame(leftMiddleChecks, text='Logic', labelanchor=NW)
+            otherOptionsFrame = LabelFrame(leftMiddleChecks, text='Other', labelanchor=NW)
         (rainbowBridgeFrame, resultVars['bridge']) = MakeRadioList(checkAndRadioFrame, bridge_requirements_data)
         (hintsFrame,         resultVars['hints'])  = MakeRadioList(checkAndRadioFrame, hint_options_data)
 
@@ -158,7 +162,7 @@ def guiMain(args=None):
         # create a variable to access the box's state
         resultVars[var_name] = IntVar(value=default_value)
         # create the checkbox
-        parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame }[info["group"]] # sorry, this is gross; I was reaching my limit
+        parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame, 'other': otherOptionsFrame}[info["group"]] # sorry, this is gross; I was reaching my limit
         checkboxes[var_name] = Checkbutton(parent, text=info["text"], variable=resultVars[var_name])
         checkboxes[var_name].pack(expand=True, anchor=W)
 
@@ -181,9 +185,13 @@ def guiMain(args=None):
 
     # pack the hierarchy
     outputOptionsFrame.pack(expand=True, anchor=E, side=TOP)
-    textShuffleBridgeFrame.pack(expand=True, anchor=W, side=BOTTOM, pady=6)
+    textShuffleFrame.pack(expand=True, anchor=W, side=BOTTOM, pady=6)
     leftSideChecks.pack(expand=True, anchor=N, side=LEFT, padx=5)
-    logicOptionsFrame.pack(expand=True, anchor=N, side=LEFT, padx=5)
+
+    logicOptionsFrame.pack(expand=True, anchor=E, side=TOP)
+    otherOptionsFrame.pack(expand=True, anchor=E, side=BOTTOM, pady=5)
+    leftMiddleChecks.pack(expand=True, anchor=N, side=LEFT, padx=5)
+
     rainbowBridgeFrame.pack(expand=True, anchor=N, side=LEFT, padx=5)
     hintsFrame.pack(expand=True, anchor=N, side=LEFT, padx=5)
 
@@ -248,6 +256,7 @@ def guiMain(args=None):
         guiargs.beatableonly = bool(resultVars["beatableonly"].get())
         guiargs.custom_logic = bool(resultVars["custom_logic"].get())
         guiargs.text_shuffle = resultVars["text_shuffle"].get()
+        guiargs.ocarina_songs = resultVars["ocarina_songs"].get()
         guiargs.hints = resultVars["hints"].get()
         guiargs.rom = romVar.get()
         try:
@@ -286,6 +295,7 @@ def guiMain(args=None):
         resultVars["beatableonly"].set(int(args.beatableonly))
         resultVars["custom_logic"].set(int(args.custom_logic))
         resultVars["text_shuffle"].set(int(args.text_shuffle))
+        resultVars["ocarina_songs"].set(int(args.ocarina_songs))
         resultVars["hints"].set(args.hints)
         if args.count:
             countVar.set(str(args.count))
