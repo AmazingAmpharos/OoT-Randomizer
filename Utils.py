@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import logging
 
 def is_bundled():
     return getattr(sys, 'frozen', False)
@@ -20,12 +21,28 @@ def local_path(path):
 
 local_path.cached_path = None
 
-def output_path(path):
-    if output_path.cached_path is not None:
+def output_path(path, arg_path = None):
+    logger = logging.getLogger('')
+
+    if (output_path.cached_path is not None and arg_path is None) or output_path.invalid_output_arg or (output_path.cached_path is not None and output_path.cached_path == arg_path):
         return os.path.join(output_path.cached_path, path)
 
     if not is_bundled():
-        output_path.cached_path = '.'
+        if arg_path is not None:
+            output_path.cached_path = arg_path
+
+        else:
+            output_path.cached_path = '.'
+
+        if output_path.cached_path != '.' and not os.path.exists(output_path.cached_path):
+            try:
+                os.mkdir(output_path.cached_path)
+            except:
+                logger.info('Unable to create --output path. Defaulting to local path.')
+                logger.info(output_path.cached_path)
+                output_path.invalid_output_arg = True
+                output_path.cached_path = '.'
+
         return os.path.join(output_path.cached_path, path)
     else:
         # has been packaged, so cannot use CWD for output.
@@ -56,6 +73,7 @@ def output_path(path):
         return os.path.join(output_path.cached_path, path)
 
 output_path.cached_path = None
+output_path.invalid_output_arg = False
 
 def open_file(filename):
     if sys.platform == 'win32':
