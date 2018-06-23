@@ -390,7 +390,12 @@ Create a compressed version of the output ROM file. (default: False)
 
 Open the graphical user interface. Preloads selections with set command line parameters.
 
+
 # Notable Changes on this fork
+
+## Optional Logic changes ("Use")
+
+These logic changes are applied by checking "Use this fork's logic" in the "Logic" box
 
 - Removed Fishing minigame from logic
 - Removed Skulltulla rewards from logic
@@ -400,4 +405,16 @@ Open the graphical user interface. Preloads selections with set command line par
 - Added the DC jump to skip the slighshot room to logic
 - Child Dead Hand fight no longer requires a sword
 - Underwater room in Training Grounds and underwater Zora Fountain now require Zora Tunic
-- Removed most Lens of Truth requirements
+- Removed most Lens of Truth requirements (exceptions are Wasteland and Chest Minigame)
+
+## Changed hint system
+
+The hint system has been changed to include different kinds of hints (such as saying a location has something good, but not saying what item it is, or saying a specific item is somewhere in a dungeon, instead of giving the specific location, and so on.) An option has been added to allow talking to gossip stones from the start. Yes, this makes the Stone of Agony completely useless.
+
+## Text shuffle
+
+You can shuffle most of the text in the game. This is hilarious, but can get really confusing when buying from shops and such, so make sure you really know what people are actually asking for.
+
+## Ocarina song randomization
+
+You can randomize the note pattern that is required to activate each song. The new songs will be properly taught to you when you learn them, and can always be checked on the quest status screen like normal.
