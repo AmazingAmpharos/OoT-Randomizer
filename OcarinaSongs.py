@@ -85,6 +85,28 @@ def repeat(piece):
 # a Song contains it's simple note data, as well as the data to be stored into the rom
 class Song():
 
+    def increase_duration_to(self, duration):
+        if self.total_duration >= duration:
+            return
+
+        duration_needed = duration - self.total_duration
+        last_note_duration = self.playback[-1]['duration']
+        last_note_adds = 0x7F - last_note_duration
+
+        if last_note_adds >= duration_needed:
+            self.playback[-1]['duration'] += duration_needed
+            self.format_playback_data()
+            return
+        else:
+            self.playback[-1]['duration'] = 0x7F
+            duration_needed -= last_note_adds
+        while duration_needed >= 0x7F:
+            self.playback.append( {'note': 0xFF, 'duration': 0x7F, 'volume': 0} )
+            duration_needed -= 0x7F
+        self.playback.append( {'note': 0xFF, 'duration': duration_needed, 'volume': 0} )
+        self.format_playback_data()
+
+
     def two_piece_playback(self, piece, extra_position='none', activation_transform=identity, playback_transform=identity):
         piece_length = len(piece)
         piece2 = activation_transform( piece )
@@ -133,11 +155,13 @@ class Song():
     def format_playback_data(self):
         self.playback_data = []
 
+        self.total_duration = 0
         for note in self.playback:
             pitch = ACTIVATION_TO_PLAYBACK_NOTE[ note['note'] ]
             self.playback_data += [pitch, 0, 0, note['duration'], note['volume'], 0, 0, 0]
+            self.total_duration += note['duration']
         # add a rest at the end
-        self.playback_data += [0xFF, 0, 0, 0, 0x40, 0, 0, 0]
+        self.playback_data += [0xFF, 0, 0, 0, 0x5A, 0, 0, 0]
         # pad the rest of the song
         padding = [0] * (PLAYBACK_LENGTH - len(self.playback_data))
         self.playback_data += padding
@@ -268,12 +292,16 @@ def replace_songs(rom):
         4, # nocturne of shadow
     ]
 
-    # write the songs to the activation table
     for index, song in enumerate(songs):
+
+        # fix the song of time
+        if song_order[index] == 10:
+            song.increase_duration_to(260)
+
+        # write the song to the activation table
         cur_offset = ACTIVATION_START + song_order[index] * ACTIVATION_LENGTH
         rom.write_bytes(cur_offset, song.activation_data)
 
-    # write the songs to the playback table
-    for song_index, song in enumerate(songs):
-        song_offset = PLAYBACK_START + song_order[song_index] * PLAYBACK_LENGTH
+        # write the songs to the playback table
+        song_offset = PLAYBACK_START + song_order[index] * PLAYBACK_LENGTH
         rom.write_bytes(song_offset, song.playback_data)
