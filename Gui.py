@@ -119,7 +119,7 @@ def guiMain(args=None):
         "kokiricolor":   { "name": "Kokiri Tunic Color", "default": "Kokiri Green", "options": color_options, "row": "top" },
         "goroncolor":    { "name": "Goron Tunic Color",  "default": "Goron Red",    "options": color_options, "row": "top" },
         "zoracolor":     { "name": "Zora Tunic Color",   "default": "Zora Blue",    "options": color_options, "row": "top" },
-        "healthSFX":     { "name": "Low Health SFX",     "default": "Default",      "options": ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'], "row": "top" },
+        "healthSFX":     { "name": "Low Health SFX",     "default": "Default",      "options": ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'], "row": "right" },
         "navicolordefault":   { "name": "Navi Idle",            "default": "White",      "options": navi_options, "row": "bottom" },
         "navicolorenemy":     { "name": "Navi Targeting Enemy", "default": "Yellow",     "options": navi_options, "row": "bottom" },
         "navicolornpc":       { "name": "Navi Targeting NPC",   "default": "Light Blue", "options": navi_options, "row": "bottom" },
@@ -147,8 +147,12 @@ def guiMain(args=None):
 
     aestheticFrame = LabelFrame(randomizerWindow, text='Aesthetic', labelanchor=NW)
     if True: # just indenting for hierarchy clarity
-        aestheticTopFrame = Frame(aestheticFrame)
-        aestheticBottomFrame = Frame(aestheticFrame)
+        aestheticLeftFrame = Frame(aestheticFrame)
+        if True: # just indenting for hierarchy clarity
+            aestheticTopFrame = Frame(aestheticLeftFrame)
+            aestheticBottomFrame = Frame(aestheticLeftFrame)
+        aestheticRightFrame = Frame(aestheticFrame)
+
 
     generateSeedFrame = Frame(randomizerWindow)
 
@@ -173,7 +177,7 @@ def guiMain(args=None):
         # create the variable to store the user's decision
         resultVars[var_name] = StringVar(value=info['default'])
         # create the option menu
-        parent = { 'top': aestheticTopFrame, 'bottom': aestheticBottomFrame }[info["row"]]
+        parent = { 'top': aestheticTopFrame, 'bottom': aestheticBottomFrame, 'right': aestheticRightFrame}[info["row"]]
         dropdownFrames[var_name] = Frame(parent)
         # dropdown = OptionMenu(dropdownFrames[var_name], resultVars[var_name], *(info['options']))
         dropdown = ttk.Combobox(dropdownFrames[var_name], textvariable=resultVars[var_name], values=info['options'], state='readonly')
@@ -186,7 +190,7 @@ def guiMain(args=None):
 
     # pack the hierarchy
     outputOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
-    textShuffleFrame.pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=5)
+    textShuffleFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
     leftSideChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
     rainbowBridgeFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
@@ -198,8 +202,10 @@ def guiMain(args=None):
 
     checkAndRadioFrame.pack(side=TOP, anchor=N)
 
-    aestheticTopFrame.pack(fill=BOTH, expand=True, anchor=W, side=TOP)
+    aestheticTopFrame.pack(expand=True, anchor=W, side=TOP)
     aestheticBottomFrame.pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=5)
+    aestheticRightFrame.pack(fill=BOTH, expand=True, anchor=N, side=RIGHT)
+    aestheticLeftFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT)
     aestheticFrame.pack(fill=BOTH, anchor=W, padx=5)
 
 
