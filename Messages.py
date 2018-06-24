@@ -126,6 +126,8 @@ class Message():
                 self.has_keep_open = True
             if next_char == 0x0B: # event
                 self.has_event = True
+            if next_char == 0x0E: # fade out
+                self.has_fade = True
             if next_char == 0x10: # ocarina
                 self.has_ocarina = True
             if next_char == 0x1B: # two choice
@@ -135,7 +137,7 @@ class Message():
         self.text = display_code_list(self.text_codes)
 
     def is_basic(self):
-        return not (self.has_goto or self.has_keep_open or self.has_event or self.has_ocarina or self.has_two_choice or self.has_three_choice)
+        return not (self.has_goto or self.has_keep_open or self.has_event or self.has_fade or self.has_ocarina or self.has_two_choice or self.has_three_choice)
 
     # read a single message
     def __init__(self, rom, offset, count):
@@ -154,6 +156,7 @@ class Message():
         self.has_goto = False
         self.has_keep_open = False
         self.has_event = False
+        self.has_fade = False
         self.has_ocarina = False
         self.has_two_choice = False
         self.has_three_choice = False
@@ -192,11 +195,14 @@ def shuffle_messages(rom, except_hints=True):
     messages = read_messages(rom)
 
     def is_not_exempt(m):
-        return not ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES) )
+        exempt_as_too_short = (m.length < 4)
+        exempt_as_hint = ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES) )
+        return not ( exempt_as_too_short or exempt_as_hint )
     
     have_goto =         list( filter( lambda m: is_not_exempt(m) and m.has_goto, messages) ) # not shuffled yet
     have_keep_open =    list( filter( lambda m: is_not_exempt(m) and m.has_keep_open, messages) )
     have_event =        list( filter( lambda m: is_not_exempt(m) and m.has_event, messages) )
+    have_fade =         list( filter( lambda m: is_not_exempt(m) and m.has_fade, messages) )
     have_ocarina =      list( filter( lambda m: is_not_exempt(m) and m.has_ocarina, messages) )
     have_two_choice =   list( filter( lambda m: is_not_exempt(m) and m.has_two_choice, messages) )
     have_three_choice = list( filter( lambda m: is_not_exempt(m) and m.has_three_choice, messages) )
@@ -218,6 +224,7 @@ def shuffle_messages(rom, except_hints=True):
     list( map( shuffle_group, [
         have_keep_open,
         have_event,
+        have_fade,
         have_ocarina,
         have_two_choice,
         have_three_choice,
