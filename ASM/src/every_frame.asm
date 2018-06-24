@@ -14,6 +14,11 @@ every_frame:
     lb      t0, 0x00 (t0)
     beqz    t0, @@no_pending_item
     nop
+    ; Disable warping when there is a pending item. Currently this code is only used in places
+    ; where warping is allowed, so warping can always be re-enabled after the item is received.
+    li      t1, GLOBAL_CONTEXT + 0x104E4
+    li      t2, 1
+    sh      t2, 0x00 (t1)
     ; PLAYER_ACTOR+0x0424 holds the item to be received. +0x0428 holds a pointer to the actor
     ; giving the item. The game is not picky about this actor, it just needs to read a non-zero
     ; value at actor+0x0130, and it overwrites actor+0x0118. Construct a dummy actor in an usused

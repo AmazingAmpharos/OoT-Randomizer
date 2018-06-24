@@ -45,7 +45,8 @@ def main(args, seed=None):
         world.seed = int(seed)
     random.seed(world.seed)
     if args.create_spoiler: # Make game different if spoiler log is generated.
-        new_base_seed = random.randint(0, 999999999)
+        for i in range (0, 10): # Generate many random numbers to increase volatility.
+            new_base_seed = random.randint(0, 999999999)
         random.seed(new_base_seed)
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, world.seed)
