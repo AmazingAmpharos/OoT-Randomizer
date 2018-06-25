@@ -1061,11 +1061,11 @@ def patch_rom(world, rom):
         shuffle_messages(rom, True)
     elif world.text_shuffle == 'complete':
         shuffle_messages(rom, False)
-        # output a text dump, for testing...
-        # with open('text_dump_' + str(world.seed) + '.txt', 'w', encoding='utf-16') as f:
-        #     messages = read_messages(rom)
-        #     for m in messages:
-        #         f.write(str(m) + '\n\n')
+    # output a text dump, for testing...
+    # with open('text_dump_' + str(world.seed) + '.txt', 'w', encoding='utf-16') as f:
+    #     messages = read_messages(rom)
+    #     for m in messages:
+    #         f.write(str(m) + '\n\n')
 
     if world.ocarina_songs:
         replace_songs(rom)
