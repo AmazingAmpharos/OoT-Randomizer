@@ -140,6 +140,16 @@ def guiMain(settings=None):
         "default": "medallions",
         "wraplength": 180,
     }
+    gerudo_fortress_data = {
+        "name": "Gerudo Fortress",
+        "options": [
+            { "value": "normal", "description": "Default Behavior" },
+            { "value": "fast",   "description": "Only rescue one carpenter" },
+            { "value": "open",   "description": "Start with Gerudo Card" },
+        ],
+        "default": "fast",
+        "wraplength": 180,
+    }
     hint_options_data = {
         "name": "Gossip Stones",
         "options": [
@@ -190,9 +200,12 @@ def guiMain(settings=None):
         leftMiddleChecks = Frame(checkAndRadioFrame)
         if True: # just indenting for hierarchy clarity
             (rainbowBridgeFrame, guivars['bridge']) = MakeRadioList(leftMiddleChecks, bridge_requirements_data)
-            otherOptionsFrame = LabelFrame(leftMiddleChecks, text='Other', labelanchor=NW)
+            (gerudoFrame, guivars['gerudo_fortress'])  = MakeRadioList(leftMiddleChecks, gerudo_fortress_data)
         logicOptionsFrame = LabelFrame(checkAndRadioFrame, text='Logic', labelanchor=NW)
-        (hintsFrame, guivars['hints'])  = MakeRadioList(checkAndRadioFrame, hint_options_data)
+        rightSideChecks = Frame(checkAndRadioFrame)
+        if True: # just indenting for hierarchy clarity
+            (hintsFrame, guivars['hints'])  = MakeRadioList(rightSideChecks, hint_options_data)
+            otherOptionsFrame = LabelFrame(rightSideChecks, text='Other', labelanchor=NW)
 
     aestheticFrame = LabelFrame(randomizerWindow, text='Aesthetic', labelanchor=NW)
     if True: # just indenting for hierarchy clarity
@@ -202,6 +215,7 @@ def guiMain(settings=None):
             aestheticBottomFrame = Frame(aestheticLeftFrame)
         aestheticRightFrame = Frame(aestheticFrame)
 
+    settingsFrame = Frame(randomizerWindow)
 
     generateSeedFrame = Frame(randomizerWindow)
 
@@ -243,11 +257,14 @@ def guiMain(settings=None):
     leftSideChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
     rainbowBridgeFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
-    otherOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
+    gerudoFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
     leftMiddleChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
     logicOptionsFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5, pady=5)
-    hintsFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5, pady=5)
+
+    hintsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
+    otherOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
+    rightSideChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
     checkAndRadioFrame.pack(side=TOP, anchor=N)
 
@@ -261,11 +278,38 @@ def guiMain(settings=None):
 
     # didn't refactor the rest, sorry
 
+    settings_string_var = StringVar()
+    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var)
+
+    def show_settings():
+        settings = guivars_to_settings(guivars)
+        settings_string_var.set( settings.get_settings_string() )
+
+    def import_settings():
+        try:
+            settings = guivars_to_settings(guivars)
+            text = settings_string_var.get().upper()
+            settings.seed = guivars['seed'].get()
+            settings.update_with_settings_string(text)
+            settings_to_guivars(settings, guivars)
+        except Exception as e:
+            messagebox.showerror(title="Error", message="Invalid settings string")
+
+    showSettingsButton = Button(settingsFrame, text='Show Settings String', command=show_settings)
+    importSettingsButton = Button(settingsFrame, text='Import Settings String', command=import_settings)
+
+    showSettingsButton.pack(side=LEFT, padx=(6,10))
+    settingsEntry.pack(side=LEFT)
+    importSettingsButton.pack(side=LEFT, padx=10)
+
+    settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,0))
+
+
     fileDialogFrame = Frame(generateSeedFrame)
 
     romDialogFrame = Frame(fileDialogFrame)
     baseRomLabel = Label(romDialogFrame, text='Base Rom')
-    guivars['rom'] = StringVar()
+    guivars['rom'] = StringVar(value='ZOOTDEC.z64')
     romEntry = Entry(romDialogFrame, textvariable=guivars['rom'])
 
     def RomSelect():
@@ -316,7 +360,7 @@ def guiMain(settings=None):
 
     openOutputButton.pack(side=RIGHT)
 
-    generateSeedFrame.pack(side=BOTTOM, anchor=S, padx=5, pady=10)
+    generateSeedFrame.pack(side=BOTTOM, anchor=W, padx=5, pady=10)
 
     if settings is not None:
         # load values from commandline args

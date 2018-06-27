@@ -84,7 +84,6 @@ class Settings():
                 for b in range(setting.bitwidth):
                     index |= cur_bits[b] << b
                 value = setting.args_params['choices'][index]
-            print(setting.name + ': ' + str(value))
             self.__dict__[setting.name] = value
 
         self.settings_string = self.get_settings_string()
@@ -97,7 +96,7 @@ class Settings():
 
     def sanatize_seed(self):
         # leave only alphanumeric and some punctuation
-        self.seed = re.sub(r'[^a-zA-Z0-9_]', '', self.seed, re.UNICODE)
+        self.seed = re.sub(r'[^a-zA-Z0-9_-]', '', self.seed, re.UNICODE)
 
     def update_seed(self, seed):
         self.seed = seed
@@ -163,6 +162,17 @@ setting_infos = [
                     The Door of Time is open from the beginning of the game.
                     ''',
             'action': 'store_true'}),
+    Setting_Info('gerudo_fortress', str, 2, True, {
+            'default': 'normal',
+            'const': 'normal',
+            'nargs': '?',
+            'choices': ['normal', 'fast', 'open'],
+            'help': '''\
+                    Select how much of Gerudo Fortress is required. (default: %(default)s)
+                    Normal: Free all four carpenters to get the Gerudo Card.
+                    Fast:   Free only the carpenter closest to Link's prison to get the Gerudo Card.
+                    Open:   Start with the Gerudo Card and all it's benefits.
+                    '''}),
     Setting_Info('fast_ganon', bool, 1, True, {
             'help': '''\
                     The barrier within Ganon's Castle leading to Ganon's Tower is dispelled from the

@@ -1061,16 +1061,13 @@ def patch_rom(world, rom):
                     rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
 
     # open gerudo fortress
-    # TODO: make actual options
-    # TODO: update bridge crossing and card obtain rules with the option
-    # TODO: fast ganon effects Ganons Castle Tower rule
-    if False:
+    if world.gerudo_fortress == 'open':
         rom.write_byte(0x3480717, 0x40) # gerudo card itself
         rom.write_byte(0x3480723, 0x0F) # carpenters are freed
         rom.write_byte(0x348072B, 0x0F) # gerudo guard fight flags
         rom.write_bytes(0x3480732, [0x01, 0xFE]) # heard yells/unlocked doors
         rom.write_byte(0x348073B, 0xD4) # picked up keys/finished fights
-    if False:
+    elif world.gerudo_fortress == 'fast':
         rom.write_byte(0x3480723, 0x0E) # most carpenters are freed
         rom.write_byte(0x348072B, 0x0D) # gerudo guard fight flags
         rom.write_bytes(0x3480732, [0x01, 0xDC]) # heard yells/unlocked doors
