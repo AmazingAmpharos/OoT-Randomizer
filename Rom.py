@@ -1102,14 +1102,14 @@ def patch_rom(world, rom):
 
     for i in range(len(Tunics)):
         # get the color option
-        thisColor = world.colors[i]
+        thisColor = world.tunic_colors[i]
         # handle true random
         randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
         if thisColor == 'True Random':
             color = randColor
         else:
             # handle random
-            if world.colors[i] == 'Random':
+            if world.tunic_colors[i] == 'Random':
                 thisColor = randomColors[i]
             # grab the color from the list
             color = TunicColors[thisColor]

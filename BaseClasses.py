@@ -6,13 +6,11 @@ from collections import OrderedDict
 
 class World(object):
 
-    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints, fast_ganon, colors, navi_colors, healthSFX, custom_logic, text_shuffle, ocarina_songs):
+    def __init__(self, settings):
         self.shuffle = 'vanilla'
-        self.bridge = bridge
         self.dungeons = []
         self.regions = []
         self.itempool = []
-        self.seed = None
         self.state = CollectionState(self)
         self._cached_locations = None
         self._entrance_cache = {}
@@ -20,19 +18,19 @@ class World(object):
         self._entrance_cache = {}
         self._location_cache = {}
         self.required_locations = []
-        self.check_beatable_only = check_beatable_only
-        self.place_dungeon_items = place_dungeon_items
-        self.open_forest = open_forest
-        self.open_door_of_time = open_door_of_time
-        self.hints = hints
-        self.custom_logic = custom_logic
-        self.text_shuffle = text_shuffle
-        self.ocarina_songs = ocarina_songs
-        self.colors = colors
-        self.navi_colors = navi_colors
-        self.healthSFX = healthSFX
+
+        # dump settings directly into world's namespace
+        # this gives the world an attribute for every setting listed in Settings.py
+        self.settings = settings
+        self.__dict__.update(settings.__dict__)
+        # rename a few attributes...
+        self.place_dungeon_items = not self.nodungeonitems
+        self.check_beatable_only = self.beatableonly
+        # group a few others
+        self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
+        self.navi_colors = [self.navicolordefault, self.navicolorenemy, self.navicolornpc, self.navicolorprop]
+
         self.keysanity = False
-        self.fast_ganon = fast_ganon
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
 

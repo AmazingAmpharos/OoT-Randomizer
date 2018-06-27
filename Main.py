@@ -19,35 +19,16 @@ from Utils import output_path
 
 __version__ = '2.0.0 f.LUM'
 
-def main(args, seed=None):
+def main(settings):
     start = time.clock()
 
     # initialize the world
 
-    world = World(args.bridge,
-                  args.open_forest,
-                  args.open_door_of_time,
-                  not args.nodungeonitems,
-                  args.beatableonly,
-                  args.hints,
-                  args.fast_ganon,
-                  [args.kokiricolor, args.goroncolor, args.zoracolor],
-                  [args.navicolordefault, args.navicolorenemy, args.navicolornpc, args.navicolorprop],
-                  args.healthSFX,
-                  args.custom_logic,
-                  args.text_shuffle,
-                  args.ocarina_songs)
+    world = World(settings)
+
     logger = logging.getLogger('')
-    if seed is None:
-        random.seed(None)
-        world.seed = random.randint(0, 999999999)
-    else:
-        world.seed = int(seed)
-    random.seed(world.seed)
-    if args.create_spoiler: # Make game different if spoiler log is generated.
-        for i in range (0, 10): # Generate many random numbers to increase volatility.
-            new_base_seed = random.randint(0, 999999999)
-        random.seed(new_base_seed)
+
+    random.seed(world.numeric_seed)
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, world.seed)
 
@@ -84,13 +65,13 @@ def main(args, seed=None):
 
     logger.info('Patching ROM.')
 
-    outfilebase = 'OoT_%s%s%s%s%s_%s' % (world.bridge, "-openforest" if world.open_forest else "", "-opendoor" if world.open_door_of_time else "", "-fastganon" if world.fast_ganon else "", "-beatableonly" if world.check_beatable_only else "",  world.seed)
+    outfilebase = 'OoT_%s_%s' % (world.settings_string,  world.seed)
 
-    if not args.suppress_rom:
-        rom = LocalRom(args.rom)
+    if not settings.suppress_rom:
+        rom = LocalRom(settings.rom)
         patch_rom(world, rom)
         rom.write_to_file(output_path('%s.z64' % outfilebase))
-        if args.compress_rom:
+        if settings.compress_rom:
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
                 subprocess.call(["Compress\Compress.exe", (output_path('%s.z64' % outfilebase)), (output_path('%s-comp.z64' % outfilebase))])
@@ -101,7 +82,7 @@ def main(args, seed=None):
             else:
                 logger.info('OS not supported for compression')
 
-    if args.create_spoiler:
+    if settings.create_spoiler:
         world.spoiler.to_file(output_path('%s_Spoiler.txt' % outfilebase))
 
     logger.info('Done. Enjoy.')
@@ -111,7 +92,7 @@ def main(args, seed=None):
 
 def copy_world(world):
     # ToDo: Not good yet
-    ret = World(world.bridge, world.open_forest, world.open_door_of_time, world.place_dungeon_items, world.check_beatable_only, world.hints, world.fast_ganon, world.colors, world.navi_colors, world.healthSFX, world.custom_logic, world.text_shuffle, world.ocarina_songs)
+    ret = World(world.settings)
     ret.seed = world.seed
     ret.can_take_damage = world.can_take_damage
     create_regions(ret)
