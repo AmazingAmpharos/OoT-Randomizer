@@ -396,7 +396,12 @@ Open the graphical user interface. Preloads selections with set command line par
 
 # Notable Changes on this fork
 
-The GUI has been changed, and a number of default options have changed. Aside from these, the following were added or majorly changed:
+The following were added or majorly changed on this fork:
+
+## GUI changes
+
+- Seeds can be text instead of just numbers
+- Can get, share, and import a settings string to quickly set seed-changing options
 
 ## Optional Logic changes
 
@@ -411,6 +416,13 @@ These logic changes are applied by checking "Use this fork's logic" in the "Logi
 - Child Dead Hand fight no longer requires a sword
 - Underwater room in Training Grounds and underwater Zora Fountain now require Zora Tunic
 - Removed most Lens of Truth requirements (exceptions are Wasteland and Chest Minigame)
+
+## Gerudo Fortress options
+
+Options for speeding up carpenter rescue portion of Gerudo Fortress
+
+- fast: Only the carpenter nearest to the prison Link is tossed into needs to be freed to obtain the Gerudo Card and get all of its benefits; the other three carpenters are freed from the start
+- open: All carpenters are freed from the start, and you start with the Gerudo Card and all of its benefits (and thus the bridge across the valley is always built)
 
 ## Changed hint system
 
