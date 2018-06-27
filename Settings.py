@@ -13,21 +13,21 @@ class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
         return textwrap.dedent(action.help)
 
 
-# 64 characters
-letters = "abcdefghijklmnopqrstuvwxyz_ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789"
-index_to_letter = { i: letters[i] for i in range(64) }
+# 32 characters
+letters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+index_to_letter = { i: letters[i] for i in range(32) }
 letter_to_index = { v: k for k, v in index_to_letter.items() }
 
 def bit_string_to_text(bits):
-    # pad the bits array to be multiple of 6
-    if len(bits) % 6 > 0:
-        bits += [0] * (6 - len(bits) % 6)
+    # pad the bits array to be multiple of 5
+    if len(bits) % 5 > 0:
+        bits += [0] * (5 - len(bits) % 5)
     # convert to characters
     result = ""
-    for i in range(0, len(bits), 6):
-        chunk = bits[i:i + 6]
+    for i in range(0, len(bits), 5):
+        chunk = bits[i:i + 5]
         value = 0
-        for b in range(6):
+        for b in range(5):
             value |= chunk[b] << b
         result += index_to_letter[value]
     return result
@@ -36,7 +36,7 @@ def text_to_bit_string(text):
     bits = []
     for c in text:
         index = letter_to_index[c]
-        for b in range(6):
+        for b in range(5):
             bits += [ (index >> b) & 1 ]
     return bits
 

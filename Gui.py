@@ -13,8 +13,57 @@ from GuiUtils import ToolTips, set_icon, BackgroundTaskProgress
 from Main import main, __version__ as ESVersion
 from Utils import is_bundled, local_path, output_path, open_file
 from Rom import get_tunic_color_options, get_navi_color_options
+from Settings import Settings, setting_infos
 
-def guiMain(args=None):
+
+def settings_to_guivars(settings, guivars):
+    for info in setting_infos:
+        name = info.name
+        if name not in guivars:
+            continue
+        guivar = guivars[name]
+        value = settings.__dict__[name]
+        # checkbox
+        if info.type == bool:
+            guivar.set( int(value) )
+        # dropdown/radiobox
+        if info.type == str:
+            if value is None:
+                guivar.set( "" )
+            else:
+                guivar.set( value )
+        # text field for a number...
+        if info.type == int:
+            if value is None:
+                guivar.set( str(1) )
+            else:
+                guivar.set( str(value) )
+
+def guivars_to_settings(guivars):
+    result = {}
+    for info in setting_infos:
+        name = info.name
+        if name not in guivars:
+            result[name] = none
+            continue
+        guivar = guivars[name]
+        # checkbox
+        if info.type == bool:
+            result[name] = bool(guivar.get())
+        # dropdown/radiobox
+        if info.type == str:
+            result[name] = guivar.get()
+        # text field for a number...
+        if info.type == int:
+            result[name] = int( guivar.get() )
+    if result['seed'] == "":
+        result['seed'] = None
+    if result['count'] == 1:
+        result['count'] = None
+
+    return Settings(result)
+
+def guiMain(settings=None):
     mainWindow = Tk()
     mainWindow.wm_title("OoT Randomizer %s" % ESVersion)
 
@@ -127,7 +176,7 @@ def guiMain(args=None):
     }
 
     # hold the results of the user's decisions here
-    resultVars = {}
+    guivars = {}
 
     # hierarchy
     ############
@@ -137,13 +186,13 @@ def guiMain(args=None):
         leftSideChecks = Frame(checkAndRadioFrame)
         if True: # just indenting for hierarchy clarity
             outputOptionsFrame = LabelFrame(leftSideChecks, text='Output', labelanchor=NW)
-            (textShuffleFrame, resultVars['text_shuffle']) = MakeRadioList(leftSideChecks, text_shuffle_data)
+            (textShuffleFrame, guivars['text_shuffle']) = MakeRadioList(leftSideChecks, text_shuffle_data)
         leftMiddleChecks = Frame(checkAndRadioFrame)
         if True: # just indenting for hierarchy clarity
-            (rainbowBridgeFrame, resultVars['bridge']) = MakeRadioList(leftMiddleChecks, bridge_requirements_data)
+            (rainbowBridgeFrame, guivars['bridge']) = MakeRadioList(leftMiddleChecks, bridge_requirements_data)
             otherOptionsFrame = LabelFrame(leftMiddleChecks, text='Other', labelanchor=NW)
         logicOptionsFrame = LabelFrame(checkAndRadioFrame, text='Logic', labelanchor=NW)
-        (hintsFrame,         resultVars['hints'])  = MakeRadioList(checkAndRadioFrame, hint_options_data)
+        (hintsFrame, guivars['hints'])  = MakeRadioList(checkAndRadioFrame, hint_options_data)
 
     aestheticFrame = LabelFrame(randomizerWindow, text='Aesthetic', labelanchor=NW)
     if True: # just indenting for hierarchy clarity
@@ -165,22 +214,22 @@ def guiMain(args=None):
         # determine the initial value of the checkbox
         default_value = 1 if info["default"] == "checked" else 0
         # create a variable to access the box's state
-        resultVars[var_name] = IntVar(value=default_value)
+        guivars[var_name] = IntVar(value=default_value)
         # create the checkbox
         parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame, 'other': otherOptionsFrame}[info["group"]] # sorry, this is gross; I was reaching my limit
-        checkboxes[var_name] = Checkbutton(parent, text=info["text"], variable=resultVars[var_name])
+        checkboxes[var_name] = Checkbutton(parent, text=info["text"], variable=guivars[var_name])
         checkboxes[var_name].pack(expand=True, anchor=W)
 
     # create the dropdowns
     dropdownFrames = {}
     for var_name, info in dropdownInfo.items():
         # create the variable to store the user's decision
-        resultVars[var_name] = StringVar(value=info['default'])
+        guivars[var_name] = StringVar(value=info['default'])
         # create the option menu
         parent = { 'top': aestheticTopFrame, 'bottom': aestheticBottomFrame, 'right': aestheticRightFrame}[info["row"]]
         dropdownFrames[var_name] = Frame(parent)
-        # dropdown = OptionMenu(dropdownFrames[var_name], resultVars[var_name], *(info['options']))
-        dropdown = ttk.Combobox(dropdownFrames[var_name], textvariable=resultVars[var_name], values=info['options'], state='readonly')
+        # dropdown = OptionMenu(dropdownFrames[var_name], guivars[var_name], *(info['options']))
+        dropdown = ttk.Combobox(dropdownFrames[var_name], textvariable=guivars[var_name], values=info['options'], state='readonly')
         dropdown.pack(side=BOTTOM, anchor=W)
         # label the option
         label = Label(dropdownFrames[var_name], text=info['name'])
@@ -216,12 +265,12 @@ def guiMain(args=None):
 
     romDialogFrame = Frame(fileDialogFrame)
     baseRomLabel = Label(romDialogFrame, text='Base Rom')
-    romVar = StringVar()
-    romEntry = Entry(romDialogFrame, textvariable=romVar)
+    guivars['rom'] = StringVar()
+    romEntry = Entry(romDialogFrame, textvariable=guivars['rom'])
 
     def RomSelect():
         rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")])
-        romVar.set(rom)
+        guivars['rom'].set(rom)
     romSelectButton = Button(romDialogFrame, text='Select Rom', command=RomSelect)
 
     baseRomLabel.pack(side=LEFT)
@@ -234,47 +283,24 @@ def guiMain(args=None):
 
 
     seedLabel = Label(generateSeedFrame, text='Seed #')
-    seedVar = StringVar()
-    seedEntry = Entry(generateSeedFrame, textvariable=seedVar)
+    guivars['seed'] = StringVar()
+    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'])
     countLabel = Label(generateSeedFrame, text='Count')
-    countVar = StringVar()
-    countSpinbox = Spinbox(generateSeedFrame, from_=1, to=100, textvariable=countVar)
+    guivars['count'] = StringVar()
+    countSpinbox = Spinbox(generateSeedFrame, from_=1, to=100, textvariable=guivars['count'])
+
 
     def generateRom():
-        guiargs = Namespace
-        guiargs.seed = int(seedVar.get()) if seedVar.get() else None
-        guiargs.count = int(countVar.get()) if countVar.get() != '1' else None
-        guiargs.bridge = resultVars["bridge"].get()
-        guiargs.kokiricolor = resultVars["kokiricolor"].get()
-        guiargs.goroncolor = resultVars["goroncolor"].get()
-        guiargs.zoracolor = resultVars["zoracolor"].get()
-        guiargs.healthSFX = resultVars["healthSFX"].get()
-        guiargs.navicolordefault = resultVars["navicolordefault"].get()
-        guiargs.navicolorenemy = resultVars["navicolorenemy"].get()
-        guiargs.navicolornpc = resultVars["navicolornpc"].get()
-        guiargs.navicolorprop = resultVars["navicolorprop"].get()
+        settings = guivars_to_settings(guivars)
 
-        guiargs.create_spoiler = bool(resultVars["create_spoiler"].get())
-        guiargs.suppress_rom = bool(resultVars["suppress_rom"].get())
-        guiargs.compress_rom = bool(resultVars["compress_rom"].get())
-        guiargs.open_forest = bool(resultVars["open_forest"].get())
-        guiargs.open_door_of_time = bool(resultVars["open_door_of_time"].get())
-        guiargs.fast_ganon = bool(resultVars["fast_ganon"].get())
-        guiargs.nodungeonitems = bool(resultVars["nodungeonitems"].get())
-        guiargs.beatableonly = bool(resultVars["beatableonly"].get())
-        guiargs.custom_logic = bool(resultVars["custom_logic"].get())
-        guiargs.text_shuffle = resultVars["text_shuffle"].get()
-        guiargs.ocarina_songs = resultVars["ocarina_songs"].get()
-        guiargs.hints = resultVars["hints"].get()
-        guiargs.rom = romVar.get()
         try:
-            if guiargs.count is not None:
-                seed = guiargs.seed
-                for _ in range(guiargs.count):
-                    main(seed=seed, args=guiargs)
-                    seed = random.randint(0, 999999999)
+            if settings.count is not None:
+                orig_seed = settings.seed
+                for i in range(settings.count):
+                    settings.update_seed(orig_seed + '-' + str(i))
+                    main(settings)
             else:
-                main(seed=guiargs.seed, args=guiargs)
+                main(settings)
         except Exception as e:
             messagebox.showerror(title="Error while creating seed", message=str(e))
         else:
@@ -292,34 +318,9 @@ def guiMain(args=None):
 
     generateSeedFrame.pack(side=BOTTOM, anchor=S, padx=5, pady=10)
 
-    if args is not None:
+    if settings is not None:
         # load values from commandline args
-        resultVars["create_spoiler"].set(int(args.create_spoiler))
-        resultVars["suppress_rom"].set(int(args.suppress_rom))
-        resultVars["compress_rom"].set(int(args.compress_rom))
-        resultVars["open_forest"].set(int(args.open_forest))
-        resultVars["open_door_of_time"].set(int(args.open_door_of_time))
-        resultVars["fast_ganon"].set(int(args.fast_ganon))
-        resultVars["nodungeonitems"].set(int(args.nodungeonitems))
-        resultVars["beatableonly"].set(int(args.beatableonly))
-        resultVars["custom_logic"].set(int(args.custom_logic))
-        resultVars["text_shuffle"].set(int(args.text_shuffle))
-        resultVars["ocarina_songs"].set(int(args.ocarina_songs))
-        resultVars["hints"].set(args.hints)
-        if args.count:
-            countVar.set(str(args.count))
-        if args.seed:
-            seedVar.set(str(args.seed))
-        resultVars["bridge"].set(args.bridge)
-        resultVars["kokiricolor"].set(args.kokiricolor)
-        resultVars["goroncolor"].set(args.goroncolor)
-        resultVars["zoracolor"].set(args.zoracolor)
-        resultVars["healthSFX"].set(args.healthSFX)
-        resultVars["navicolordefault"].set(args.navicolordefault)
-        resultVars["navicolorenemy"].set(args.navicolorenemy)
-        resultVars["navicolornpc"].set(args.navicolornpc)
-        resultVars["navicolorprop"].set(args.navicolorprop)
-        romVar.set(args.rom)
+        settings_to_guivars(settings, guivars)
 
     mainWindow.mainloop()
 
