@@ -367,13 +367,13 @@ def guiMain(settings=None):
         settings_to_guivars(settings, guivars)
     else:
         # try to load saved settings
-        # try:
-        with open('settings.sav') as f:
-            settings = Settings( json.load(f) )
-            settings.update_seed("")
-            settings_to_guivars(settings, guivars)
-        # except:
-            # pass
+        try:
+            with open('settings.sav') as f:
+                settings = Settings( json.load(f) )
+                settings.update_seed("")
+                settings_to_guivars(settings, guivars)
+        except:
+            pass
 
     mainWindow.mainloop()
 
