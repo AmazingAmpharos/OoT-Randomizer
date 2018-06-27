@@ -106,6 +106,17 @@ class Settings():
     # add the settings as fields, and calculate information based on them
     def __init__(self, settings_dict):
         self.__dict__.update(settings_dict)
+        for info in setting_infos:
+            if info.name not in self.__dict__:
+                if info.type == bool:
+                    self.__dict__[info.name] = False
+                if info.type == str:
+                    if 'default' in info.args_params:
+                        self.__dict__[info.name] = info.args_params['default']
+                    else:
+                        self.__dict__[info.name] = ""
+                if info.type == int:
+                    self.__dict__[info.name] = 1
         self.settings_string = self.get_settings_string()
         if(self.seed is None):
             # https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python

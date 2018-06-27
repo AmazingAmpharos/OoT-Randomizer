@@ -119,13 +119,13 @@ def guiMain(settings=None):
     checkboxInfo = {
         "create_spoiler":    { "text": "Create Spoiler Log",               "group": "output", "default": "checked"   },
         "suppress_rom":      { "text": "Do not create patched Rom",        "group": "output", "default": "unchecked" },
-        "compress_rom":      { "text": "Compress patched Rom",             "group": "output", "default": "checked"   },
-        "open_forest":       { "text": "Open Forest",                      "group": "logic",  "default": "checked"   },
-        "open_door_of_time": { "text": "Open Door of Time",                "group": "logic",  "default": "checked"   },
-        "fast_ganon":        { "text": "Skip most of Ganon's Castle",      "group": "logic",  "default": "checked"   },
-        "nodungeonitems":    { "text": "Remove Maps and Compasses",        "group": "logic",  "default": "checked"   },
-        "beatableonly":      { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "checked"   },
-        "custom_logic":      { "text": "Use this fork's custom logic",     "group": "logic",  "default": "checked"   },
+        "compress_rom":      { "text": "Compress patched Rom",             "group": "output", "default": "unchecked" },
+        "open_forest":       { "text": "Open Forest",                      "group": "logic",  "default": "unchecked" },
+        "open_door_of_time": { "text": "Open Door of Time",                "group": "logic",  "default": "unchecked" },
+        "fast_ganon":        { "text": "Skip most of Ganon's Castle",      "group": "logic",  "default": "unchecked" },
+        "nodungeonitems":    { "text": "Remove Maps and Compasses",        "group": "logic",  "default": "unchecked" },
+        "beatableonly":      { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "unchecked" },
+        "custom_logic":      { "text": "Use this fork's custom logic",     "group": "logic",  "default": "unchecked" },
         "ocarina_songs":     { "text": "Randomize ocarina song notes",     "group": "other",  "default": "unchecked" },
     }
     # radio list has a name, a list of options, and a default option
@@ -147,7 +147,7 @@ def guiMain(settings=None):
             { "value": "fast",   "description": "Only rescue one carpenter" },
             { "value": "open",   "description": "Start with Gerudo Card" },
         ],
-        "default": "fast",
+        "default": "normal",
         "wraplength": 180,
     }
     hint_options_data = {
@@ -158,8 +158,8 @@ def guiMain(settings=None):
             { "value": "agony",  "description": "Have useful hints; read with Stone of Agony" },
             { "value": "always", "description": "Have useful hints; can always be read" },
         ],
-        "default": "always",
-        "wraplength": 140,
+        "default": "agony",
+        "wraplength": 170,
     }
     text_shuffle_data = {
         "name": "Text Shuffle",
@@ -365,8 +365,22 @@ def guiMain(settings=None):
     if settings is not None:
         # load values from commandline args
         settings_to_guivars(settings, guivars)
+    else:
+        # try to load saved settings
+        # try:
+        with open('settings.sav') as f:
+            settings = Settings( json.load(f) )
+            settings.update_seed("")
+            settings_to_guivars(settings, guivars)
+        # except:
+            # pass
 
     mainWindow.mainloop()
+
+    # save settings on close
+    with open('settings.sav', 'w') as outfile:
+        settings = guivars_to_settings(guivars)
+        json.dump(settings.__dict__, outfile)
 
 if __name__ == '__main__':
     guiMain()
