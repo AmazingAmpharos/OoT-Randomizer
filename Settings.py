@@ -316,6 +316,7 @@ def get_settings_from_command_line_args():
 
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')
     parser.add_argument('--loglevel', default='info', const='info', nargs='?', choices=['error', 'info', 'warning', 'debug'], help='Select level of logging for output.')
+    parser.add_argument('--settings_string', help='Provide sharable settings using a settings string. This will override all flags that it specifies.')
 
     args = parser.parse_args()
 
@@ -323,5 +324,8 @@ def get_settings_from_command_line_args():
     for info in setting_infos:
         result[info.name] = vars(args)[info.name]
     settings = Settings(result)
+
+    if args.settings_string is not None:
+        settings.update_with_settings_string(args.settings_string)
 
     return settings, args.gui, args.loglevel
