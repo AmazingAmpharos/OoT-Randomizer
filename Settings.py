@@ -192,6 +192,12 @@ setting_infos = [
                     is removed.
                     ''',
             'action': 'store_true'}),
+    Setting_Info('keysanity', bool, 1, True, {
+            'help': '''\
+                    Small Keys, Boss Keys, Maps, and Compasses will be shuffled into the pool at
+                    large, instead of just being restricted to their own dungeons.
+                    ''',
+            'action': 'store_true'}),
     Setting_Info('nodungeonitems', bool, 1, True, {
             'help': '''\
                     Remove Maps and Compasses from Itempool, replacing them by

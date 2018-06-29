@@ -30,7 +30,6 @@ class World(object):
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
         self.navi_colors = [self.navicolordefault, self.navicolorenemy, self.navicolornpc, self.navicolorprop]
 
-        self.keysanity = False
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
 
@@ -431,6 +430,8 @@ class Region(object):
         return False
 
     def can_fill(self, item):
+        if self.world.keysanity:
+            return True
         is_dungeon_item = item.key or item.map or item.compass
         if is_dungeon_item:
             return self.dungeon and self.dungeon.is_dungeon_item(item)
@@ -607,6 +608,7 @@ class Spoiler(object):
                          'door': self.world.open_door_of_time,
                          'gerudo_fortress': self.world.gerudo_fortress,
                          'ganon': self.world.fast_ganon,
+                         'keysanity': self.world.keysanity,
                          'completeable': not self.world.check_beatable_only,
                          'dungeonitems': self.world.place_dungeon_items,
                          'text_shuffle': self.world.text_shuffle,
@@ -622,6 +624,7 @@ class Spoiler(object):
             outfile.write('Open Door of Time:               %s\n' % ('Yes' if self.metadata['door'] else 'No'))
             outfile.write('Gerudo Fortress:                 %s\n' % self.metadata['gerudo_fortress'])
             outfile.write('Fast Ganon\'s Castle:             %s\n' % ('Yes' if self.metadata['ganon'] else 'No'))
+            outfile.write('Keysanity          :             %s\n' % ('Yes' if self.metadata['keysanity'] else 'No'))
             outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
             outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))
             outfile.write('Hints:                           %s\n' % self.metadata['hints'])

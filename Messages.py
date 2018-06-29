@@ -5,6 +5,8 @@ import random
 TABLE_START = 0xB849EC
 TEXT_START = 0x92D000
 
+SHOP_ITEM_START = 0xC022CC
+
 # reads len bytes from the rom starting at offset
 def read_bytes(rom, offset, len):
     return rom.buffer[offset : offset + len]
@@ -62,6 +64,53 @@ GOSSIP_STONE_MESSAGES += [0x2053, 0x2054] # shared initial stone messages
 TEMPLE_HINTS_MESSAGES = [0x7057, 0x707A] # dungeon reward hints from the temple of time pedestal
 LIGHT_ARROW_HINT = [0x70CC] # ganondorf's light arrow hint line
 
+# messages for keysanity item pickup
+# ids are in the space freed up by move_shop_item_messages()
+KEYSANITY_MESSAGES = {
+    0x06: 'Forest Temple Boss Key',
+    0x1c: 'Fire Temple Boss Key',
+    0x1d: 'Water Temple Boss Key',
+    0x1e: 'Spirit Temple Boss Key',
+    0x2a: 'Shadow Temple Boss Key',
+    0x61: 'Ganon\'s Castle Boss Key',
+    0x62: 'Deku Tree Compass',
+    0x63: 'Dodongo\'s Cavern Compass',
+    0x64: 'Jabu Jabu Compass',
+    0x65: 'Forest Temple Compass',
+    0x7c: 'Fire Temple Compass',
+    0x7d: 'Water Temple Compass',
+    0x7e: 'Spirit Temple Compass',
+    0x7f: 'Shadow Temple Compass',
+    0x85: 'Bottom of the Well Compass',
+    0x87: 'Ice Cavern Compass',
+    0x88: 'Deku Tree Map',
+    0x89: 'Dodongo\'s Cavern Map',
+    0x8a: 'Jabu Jabu Map',
+    0x8b: 'Forest Temple Map',
+    0x8c: 'Fire Temple Map',
+    0x8e: 'Water Temple Map',
+    0x8f: 'Spirit Temple Map',
+    0x90: 'Shadow Temple Map',
+    0x91: 'Bottom of the Well Map',
+    0x92: 'Ice Cavern Map',
+    0x93: 'Forest Temple Small Key',
+    0x94: 'Fire Temple Small Key',
+    0x95: 'Water Temple Small Key',
+    0x97: 'Spirit Temple Small Key',
+    0x99: 'Shadow Temple Small Key',
+    0x9b: 'Bottom of the Well Small Key',
+    0x9f: 'Gerudo Training Small Key',
+    0xa0: 'Gerudo Fortress Small Key',
+    0xa1: 'Ganon\'s Castle Small Key',
+}
+
+# convert byte array to an integer
+def bytes_to_int(bytes, signed=False):
+    return int.from_bytes(bytes, byteorder='big', signed=signed)
+
+# convert int to an array of bytes of the given width
+def int_to_bytes(num, width, signed=False):
+    return int.to_bytes(num, width, byteorder='big', signed=signed)
 
 def display_code_list(codes):
     message = ""
@@ -89,7 +138,7 @@ class Text_Code():
         extra_bytes = 0
         if self.code in CONTROL_CODES:
             extra_bytes = CONTROL_CODES[self.code][1]
-            bytes_to_write = int.to_bytes(self.data, extra_bytes, byteorder='big', signed=False)
+            bytes_to_write = int_to_bytes(self.data, extra_bytes)
             rom.write_bytes(TEXT_START + offset + 1, bytes_to_write)
 
         return offset + 1 + extra_bytes
@@ -108,7 +157,7 @@ class Text_Code():
 class Message():
 
     def display(self):
-        meta_data = ["#" + str(self.count),
+        meta_data = ["#" + str(self.index),
          "ID: 0x" + "{:04x}".format(self.id),
          "Offset: 0x" + "{:06x}".format(self.offset),
          "Length: 0x" + "{:04x}".format(self.unpadded_length) + "/0x" + "{:04x}".format(self.length),
@@ -137,7 +186,7 @@ class Message():
             if next_char in CONTROL_CODES:
                 extra_bytes = CONTROL_CODES[next_char][1]
                 if extra_bytes > 0:
-                    data = int.from_bytes(self.raw_text[index : index + extra_bytes], byteorder='big', signed=False)
+                    data = bytes_to_int(self.raw_text[index : index + extra_bytes])
                     index += extra_bytes
             text_code = Text_Code(next_char, data)
             self.text_codes.append(text_code)
@@ -173,8 +222,8 @@ class Message():
     def write(self, rom, index, offset, replace_ending=False, ending=None, always_allow_skip=True):
 
         # construct the table entry
-        id_bytes = int.to_bytes(self.id, 2, byteorder='big', signed=False)
-        offset_bytes = int.to_bytes(offset, 3, byteorder='big', signed=False)
+        id_bytes = int_to_bytes(self.id, 2)
+        offset_bytes = int_to_bytes(offset, 3)
         entry = id_bytes + bytes([self.opts, 0x00, 0x07]) + offset_bytes
         # write it back
         entry_offset = TABLE_START + 8 * index
@@ -200,20 +249,17 @@ class Message():
 
         return offset
 
-    # read a single message
-    def __init__(self, rom, index):
+    def __init__(self, raw_text, index, id, opts, offset, length):
 
-        entry_offset = TABLE_START + 8 * index
-        entry = read_bytes(rom, entry_offset, 8)
-        next = read_bytes(rom, entry_offset + 8, 8)
-        self.opts = entry[2]
+        self.raw_text = raw_text
 
-        self.count = index
-        self.id = int.from_bytes(entry[0:2], byteorder='big', signed=False)
+        self.index = index
+        self.id = id
+        self.opts = opts
         self.box_type = (self.opts & 0xF0) >> 4
         self.position = (self.opts & 0x0F)
-        self.offset = int.from_bytes(entry[5:8], byteorder='big', signed=False)
-        self.length = int.from_bytes(next[5:8], byteorder='big', signed=False) - self.offset
+        self.offset = offset
+        self.length = length
 
         self.has_goto = False
         self.has_keep_open = False
@@ -224,10 +270,157 @@ class Message():
         self.has_three_choice = False
         self.ending = None
 
-        self.raw_text = read_bytes(rom, TEXT_START + self.offset, self.length)
         self.parse_text()
 
+    # read a single message from rom
+    @classmethod
+    def from_rom(cls, rom, index):
+
+        entry_offset = TABLE_START + 8 * index
+        entry = read_bytes(rom, entry_offset, 8)
+        next = read_bytes(rom, entry_offset + 8, 8)
+
+        id = bytes_to_int(entry[0:2])
+        opts = entry[2]
+        offset = bytes_to_int(entry[5:8])
+        length = bytes_to_int(next[5:8]) - offset
+
+        raw_text = read_bytes(rom, TEXT_START + offset, length)
+
+        return cls(raw_text, index, id, opts, offset, length)
+
+    @classmethod
+    def from_string(cls, text, id=0, opts=0x00):
+        bytes = list(text.encode('utf-8')) + [0x02]
+
+        return cls(bytes, 0, id, opts, 0, len(bytes) + 1)
+
     __str__ = __repr__ = display
+
+# wrapper for added a string message to a list of messages
+def add_message(messages, text, id=0, opts=0x00):
+    messages.append( Message.from_string(text, id, opts) )
+
+# holds a row in the shop item table (which contains pointers to the description and purchase messages)
+class Shop_Item():
+
+    def display(self):
+        meta_data = ["#" + str(self.index),
+         "Item: 0x" + "{:04x}".format(self.get_item_id),
+         "Price: " + str(self.price),
+         "Amount: " + str(self.pieces),
+         "Object: 0x" + "{:04x}".format(self.object),
+         "Model: 0x" + "{:04x}".format(self.model),
+         "Description: 0x" + "{:04x}".format(self.description_message),
+         "Purchase: 0x" + "{:04x}".format(self.purchase_message),]
+        func_data = [
+         "func1: 0x" + "{:08x}".format(self.func1),
+         "func2: 0x" + "{:08x}".format(self.func2),
+         "func3: 0x" + "{:08x}".format(self.func3),
+         "func4: 0x" + "{:08x}".format(self.func4),]
+        return ', '.join(meta_data) + '\n' + ', '.join(func_data)
+
+    # write the shop item back
+    def write(self, rom, index):
+
+        entry_offset = SHOP_ITEM_START + 0x20 * index
+
+        bytes = []
+        bytes += int_to_bytes(self.object, 2)
+        bytes += int_to_bytes(self.model, 2)
+        bytes += int_to_bytes(self.func1, 4)
+        bytes += int_to_bytes(self.price, 2)
+        bytes += int_to_bytes(self.pieces, 2)
+        bytes += int_to_bytes(self.description_message, 2)
+        bytes += int_to_bytes(self.purchase_message, 2)
+        bytes += [0x00, 0x00]
+        bytes += int_to_bytes(self.get_item_id, 2)
+        bytes += int_to_bytes(self.func2, 4)
+        bytes += int_to_bytes(self.func3, 4)
+        bytes += int_to_bytes(self.func4, 4)
+
+        rom.write_bytes(entry_offset, bytes)
+
+    # read a single message
+    def __init__(self, rom, index):
+
+        entry_offset = SHOP_ITEM_START + 0x20 * index
+        entry = read_bytes(rom, entry_offset, 0x20)
+
+        self.index = index
+        self.object = bytes_to_int(entry[0x00:0x02])
+        self.model = bytes_to_int(entry[0x02:0x04])
+        self.func1 = bytes_to_int(entry[0x04:0x08])
+        self.price = bytes_to_int(entry[0x08:0x0A])
+        self.pieces = bytes_to_int(entry[0x0A:0x0C])
+        self.description_message = bytes_to_int(entry[0x0C:0x0E])
+        self.purchase_message = bytes_to_int(entry[0x0E:0x10])
+        # 0x10-0x11 is always 0000 padded apparently
+        self.get_item_id = bytes_to_int(entry[0x12:0x14])
+        self.func2 = bytes_to_int(entry[0x14:0x18])
+        self.func3 = bytes_to_int(entry[0x18:0x1C])
+        self.func4 = bytes_to_int(entry[0x1C:0x20])
+
+    __str__ = __repr__ = display
+
+# reads each of the shop items
+def read_shop_items(rom):
+    shop_items = []
+
+    for index in range(0x032):
+        shop_items.append( Shop_Item(rom, index) )
+
+    return shop_items
+
+# writes each of the shop item back into rom
+def write_shop_items(rom, shop_items):
+    for s in shop_items:
+        s.write(rom, s.index)
+
+# returns a set of all message ids used for shop items
+def get_shop_message_id_set(shop_items):
+    ids = set()
+    for shop in shop_items:
+        ids.add(shop.description_message)
+        ids.add(shop.purchase_message)
+    return ids
+
+# takes all messages used for shop items, and moves messages from the 00xx range into the unused 80xx range
+def move_shop_item_messages(messages, shop_items):
+    # checks if a message id is in the item message range
+    def is_in_item_range(id):
+        bytes = int_to_bytes(id, 2)
+        return bytes[0] == 0x00
+    # get the ids we want to move
+    ids = set( id for id in get_shop_message_id_set(shop_items) if is_in_item_range(id) )
+    # update them in the message list
+    for id in ids:
+        # should be a singleton list, but in case something funky is going on, handle it as a list regardless
+        relevant_messages = [message for message in messages if message.id == id]
+        for message in relevant_messages:
+            message.id |= 0x8000
+    # update them in the shop item list
+    for shop in shop_items:
+        if is_in_item_range(shop.description_message):
+            shop.description_message |= 0x8000
+        if is_in_item_range(shop.purchase_message):
+            shop.purchase_message |= 0x8000
+
+
+# add the keysanity messages
+# make sure to call this AFTER move_shop_item_messages()
+def add_keysanity_messages(messages):
+    for id, text in KEYSANITY_MESSAGES.items():
+        add_message(messages, text, id, 0x23)
+
+# run all keysanity related patching to add messages for dungeon specific items
+def message_patch_for_keysanity(rom):
+    messages = read_messages(rom)
+    shop_items = read_shop_items(rom)
+    move_shop_item_messages(messages, shop_items)
+    add_keysanity_messages(messages)
+    repack_messages(rom, messages)
+    write_shop_items(rom, shop_items)
 
 # reads each of the game's messages into a list of Message objects
 def read_messages(rom):
@@ -237,7 +430,7 @@ def read_messages(rom):
     messages = []
     while True:
         entry = read_bytes(rom, table_offset, 8)
-        id = int.from_bytes(entry[0:2], byteorder='big', signed=False)
+        id = bytes_to_int(entry[0:2])
 
         if id == 0xFFFD:
             table_offset += 8
@@ -245,7 +438,7 @@ def read_messages(rom):
         if id == 0xFFFF:
             break # this marks the end of the table
 
-        messages.append( Message(rom, index) )
+        messages.append( Message.from_rom(rom, index) )
 
         index += 1
         table_offset += 8
@@ -253,7 +446,10 @@ def read_messages(rom):
     return messages
 
 # wrtie the messages back
-def repack_messages(rom, messages, permutation, always_allow_skip=True):
+def repack_messages(rom, messages, permutation=None, always_allow_skip=True):
+
+    if permutation is None:
+        permutation = range(len(messages))
 
     # repack messages
     offset = 0
@@ -267,7 +463,7 @@ def repack_messages(rom, messages, permutation, always_allow_skip=True):
 
     # end the table
     table_index = len(messages)
-    entry = bytes([0xFF, 0xFD, 0x00, 0x00, 0x07]) + int.to_bytes(offset, 3, byteorder='big', signed=False)
+    entry = bytes([0xFF, 0xFD, 0x00, 0x00, 0x07]) + int_to_bytes(offset, 3)
     entry_offset = TABLE_START + 8 * table_index
     rom.write_bytes(entry_offset, entry)
     table_index += 1
@@ -301,7 +497,7 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
         random.shuffle(group_permutation)
 
         for index_from, index_to in enumerate(group_permutation):
-            permutation[group[index_to].count] = group[index_from].count
+            permutation[group[index_to].index] = group[index_from].index
 
     # need to use 'list' to force 'map' to actually run through
     list( map( shuffle_group, [

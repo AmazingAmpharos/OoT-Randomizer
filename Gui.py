@@ -44,7 +44,7 @@ def guivars_to_settings(guivars):
     for info in setting_infos:
         name = info.name
         if name not in guivars:
-            result[name] = none
+            result[name] = None
             continue
         guivar = guivars[name]
         # checkbox
@@ -123,6 +123,7 @@ def guiMain(settings=None):
         "open_forest":       { "text": "Open Forest",                      "group": "logic",  "default": "unchecked" },
         "open_door_of_time": { "text": "Open Door of Time",                "group": "logic",  "default": "unchecked" },
         "fast_ganon":        { "text": "Skip most of Ganon's Castle",      "group": "logic",  "default": "unchecked" },
+        "keysanity ":        { "text": "Keysanity",                        "group": "logic",  "default": "unchecked" },
         "nodungeonitems":    { "text": "Remove Maps and Compasses",        "group": "logic",  "default": "unchecked" },
         "beatableonly":      { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "unchecked" },
         "custom_logic":      { "text": "Use this fork's custom logic",     "group": "logic",  "default": "unchecked" },

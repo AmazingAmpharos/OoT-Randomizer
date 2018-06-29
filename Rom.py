@@ -11,7 +11,7 @@ from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
 from Utils import local_path, output_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
-from Messages import shuffle_messages, read_messages
+from Messages import shuffle_messages, read_messages, read_shop_items, message_patch_for_keysanity
 from OcarinaSongs import replace_songs
 
 TunicColors = {
@@ -1072,6 +1072,19 @@ def patch_rom(world, rom):
         rom.write_byte(0x348072B, 0x0D) # gerudo guard fight flags
         rom.write_bytes(0x3480732, [0x01, 0xDC]) # heard yells/unlocked doors
         rom.write_byte(0x348073B, 0xC4) # picked up keys/finished fights
+
+
+    # keysanity messages
+    if world.keysanity:
+        message_patch_for_keysanity(rom)
+        # with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
+        #     messages = read_messages(rom)
+        #     shop_items = read_shop_items(rom)
+        #     for m in messages:
+        #         f.write(str(m) + '\n\n')
+        #     f.write('\n\n\n\n\n')
+        #     for s in shop_items:
+        #         f.write(str(s) + '\n\n')
 
 
     # text shuffle
