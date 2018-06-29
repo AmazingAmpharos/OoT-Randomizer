@@ -301,8 +301,14 @@ class CollectionState(object):
     def is_adult(self):
         return self.has('Master Sword')
 
-    def can_blast(self):
-        return self.has('Bomb Bag') or (self.is_adult() and self.has('Hammer'))
+    def has_bombchus(self):
+        return self.has('Bombchus') or (self.is_adult() and self.has('Progressive Wallet') and self.has('Gerudo Membership Card') and (self.has('Progressive Hookshot', 2) or self.has('Hover Boots')))
+
+    def has_explosives(self):
+        return self.has('Bomb Bag') or has_bombchus(self)
+
+    def can_blast_or_smash(self):
+        return self.has('Bomb Bag') or (self.is_adult() and self.has('Hammer')) or has_bombchus(self)
 
     def can_dive(self):
         return self.has('Progressive Scale')
