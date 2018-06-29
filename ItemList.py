@@ -11,9 +11,11 @@ from Fill import FillError, fill_restrictive
 alwaysitems = (['Kokiri Sword', 'Biggoron Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Fire Arrows', 'Ice Arrows', 'Light Arrows', 'Dins Fire', 'Farores Wind', 'Nayrus Love', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + ['Ice Trap'] * 6 +
               ['Progressive Strength Upgrade'] * 3 + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 35 + ['Recovery Heart'] * 11 + ['Rupees (5)'] * 17 + ['Rupees (20)'] * 5 + ['Rupees (50)'] * 7 + ['Rupees (200)'] * 6 + ['Bow'] * 3 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle with Letter'] + ['Heart Container'] * 8 + ['Piece of Heart (Treasure Chest Game)'] +
               ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] * 2 + ['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'] + ['Arrows (5)'] + ['Arrows (10)'] * 6 + ['Arrows (30)'] * 6 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2 + ['Magic Meter'] * 2 + ['Double Defense'])
-normal_bottles = ['Bottle', 'Bottle with Milk', 'Bottle with Red Potion', 'Bottle with Green Potion', 'Bottle with Blue Potion', 'Bottle with Fairy', 'Bottle with Fish', 'Bottle with Blue Fire', 'Bottle with Bugs', 'Bottle with Poe']
+# normal_bottles = ['Bottle', 'Bottle with Milk', 'Bottle with Red Potion', 'Bottle with Green Potion', 'Bottle with Blue Potion', 'Bottle with Fairy', 'Bottle with Fish', 'Bottle with Blue Fire', 'Bottle with Bugs', 'Bottle with Poe']
+normal_bottles = ['Bottle', 'Bottle with Milk', 'Bottle with Red Potion', 'Bottle with Green Potion', 'Bottle with Blue Potion', 'Bottle with Fairy', 'Bottle with Fish', 'Bottle with Bugs', 'Bottle with Poe']
 normal_bottle_count = 3
-notmapcompass = ['Rupees (5)'] * 20
+# notmapcompass = ['Rupees (5)'] * 20
+notmapcompass = ['Bombs (5)'] * 4 + ['Arrows (5)'] * 3 + ['Deku Nuts (5)'] * 3 + ['Rupees (5)'] * 7 + ['Rupees (20)'] * 2 + ['Rupees (50)']
 rewardlist = ['Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire', 'Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Spirit Medallion', 'Shadow Medallion', 'Light Medallion']
 songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light', 'Bolero of Fire', 'Serenade of Water', 'Nocturne of Shadow', 'Requiem of Spirit']
 skulltulla_locations = (['GS1', 'GS2', 'GS3', 'GS4', 'GS5', 'GS6', 'GS7', 'GS8', 'GS9', 'GS10', 'GS11', 'GS12', 'GS13', 'GS14', 'GS15', 'GS16', 'GS17', 'GS18', 'GS19', 'GS20'] +
