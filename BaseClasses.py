@@ -305,10 +305,10 @@ class CollectionState(object):
         return any(pritem.startswith('Bombchus') for pritem in self.prog_items) or (self.is_adult() and self.has('Progressive Wallet') and self.has('Gerudo Membership Card') and (self.has('Progressive Hookshot', 2) or self.has('Hover Boots')))
 
     def has_explosives(self):
-        return self.has('Bomb Bag') or has_bombchus(self)
+        return self.has('Bomb Bag') or self.has_bombchus()
 
     def can_blast_or_smash(self):
-        return self.has('Bomb Bag') or (self.is_adult() and self.has('Hammer')) or has_bombchus(self)
+        return self.has('Bomb Bag') or (self.is_adult() and self.has('Hammer')) or self.has_bombchus()
 
     def can_dive(self):
         return self.has('Progressive Scale')

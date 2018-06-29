@@ -11,7 +11,7 @@ from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
 from Utils import local_path, output_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
-from Messages import shuffle_messages, read_messages, read_shop_items, message_patch_for_keysanity
+from Messages import *
 from OcarinaSongs import replace_songs
 
 TunicColors = {
@@ -185,9 +185,10 @@ def patch_rom(world, rom):
     # Remove locked door to Boss Key Chest in Fire Temple
     rom.write_byte(0x22D82B7, 0x3F)
 
-    # Change Bombchu Shop check to Bomb Bag
-    rom.write_bytes(0xC6CEDA, [0x00, 0xA2])
-    rom.write_byte(0xC6CEDF, 0x18)
+    # Change Bombchu Shop check to bombchus
+    rom.write_bytes(0xC6CED8, [0x80, 0x8A, 0x00, 0x7C, 0x24, 0x0B, 0x00, 0x09, 0x11, 0x4B, 0x00, 0x05])
+    # Change Bombchu Shop to never sell out
+    rom.write_bytes(0xC019C0, [0x10, 0x00, 0x00, 0x30])
 
     # Change Bowling Alley check to Bomb Bag (Part 1)
     rom.write_bytes(0x00E2D716, [0xA6, 0x72])
@@ -1074,9 +1075,24 @@ def patch_rom(world, rom):
         rom.write_byte(0x348073B, 0xC4) # picked up keys/finished fights
 
 
+    messages = read_messages(rom)
+    shop_items = read_shop_items(rom)
+
+    # add a cheaper bombchu pack to the bombchu shop
+    # describe
+    add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
+    # purchase
+    add_message(messages, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x80FF, 0x03)
+    rbl_bombchu = shop_items[0x0018]
+    rbl_bombchu.price = 60
+    rbl_bombchu.pieces = 5
+    rbl_bombchu.get_item_id = 0x006A
+    rbl_bombchu.description_message = 0x80FE
+    rbl_bombchu.purchase_message = 0x80FF
+
     # keysanity messages
     if world.keysanity:
-        message_patch_for_keysanity(rom)
+        message_patch_for_keysanity(rom, messages, shop_items)
         # with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
         #     messages = read_messages(rom)
         #     shop_items = read_shop_items(rom)
@@ -1085,6 +1101,10 @@ def patch_rom(world, rom):
         #     f.write('\n\n\n\n\n')
         #     for s in shop_items:
         #         f.write(str(s) + '\n\n')
+
+
+    repack_messages(rom, messages)
+    write_shop_items(rom, shop_items)
 
 
     # text shuffle
