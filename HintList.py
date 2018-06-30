@@ -20,12 +20,11 @@ def getHint(string):
             ret = Hint(hint, text, type)
     return ret
 
-def getHintGroup(string, shouldExclude=False):
+def getHintGroup(string, world):
     ret = []
     for hint in hintTable:
         text, type = hintTable[hint]
-        if type == string and \
-           not (shouldExclude and hint in hintExclusions):
+        if type == string and not (hint in hintExclusions(world)):
             ret.append(Hint(hint, text, type))
     return ret
 
@@ -262,16 +261,30 @@ hintTable = {'Hammer':                                                (" the dra
 }
 
 # exclusions from the list for custom logic
-hintExclusions = [
-    'Deku Theater Skull Mask',
-    'Deku Theater Mask of Truth',
-    'Biggoron',
-    'Child Fishing',
-    'Adult Fishing',
-    '10 Gold Skulltulla Reward',
-    '20 Gold Skulltulla Reward',
-    '30 Gold Skulltulla Reward',
-    '40 Gold Skulltulla Reward',
-    '50 Gold Skulltulla Reward',
-    '10 Big Poes',
-]
+
+def hintExclusions(world):
+    expected_skulltulas = {'none': 0, '10': 10, '20': 20, '30': 30, '40': 40, '50': 50}[world.logic_skulltulas]
+    exclusions = []
+    if world.logic_no_trade_skull_mask:
+        exclusions.append('Deku Theater Skull Mask')
+    if world.logic_no_trade_mask_of_truth:
+        exclusions.append('Deku Theater Mask of Truth')
+    if world.logic_no_trade_biggorn:
+        exclusions.append('Biggoron')
+    if world.logic_no_trade_child_fishing:
+        exclusions.append('Child Fishing')
+    if world.logic_no_trade_adult_fishing:
+        exclusions.append('Adult Fishing')
+    if world.logic_no_big_poes:
+        exclusions.append('10 Big Poes')
+    if expected_skulltulas < 50:
+        exclusions.append('50 Gold Skulltulla Reward')
+    if expected_skulltulas < 40:
+        exclusions.append('40 Gold Skulltulla Reward')
+    if expected_skulltulas < 30:
+        exclusions.append('30 Gold Skulltulla Reward')
+    if expected_skulltulas < 20:
+        exclusions.append('20 Gold Skulltulla Reward')
+    if expected_skulltulas < 10:
+        exclusions.append('10 Gold Skulltulla Reward')
+    return exclusions

@@ -316,6 +316,9 @@ class CollectionState(object):
     def can_lift_rocks(self):
         return (self.has('Silver Gauntlets') or self.has('Gold Gauntlets')) and self.is_adult()
 
+    def can_see_with_lens(self):
+        return (self.has('Magic Meter') and self.has('Lens of Truth') and self.world.logic_lens == 'all')
+
     def has_GoronTunic(self):
         return (self.has('Goron Tunic') or (self.has('Progressive Wallet') and (self.has('Bomb Bag') or self.has('Progressive Strength Upgrade') or self.has('Bow'))))
 

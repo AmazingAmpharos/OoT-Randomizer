@@ -223,12 +223,97 @@ setting_infos = [
                     agony:  Have useful hints that are read with Stone of Agony
                     always: Have useful hints which can always be read
                     '''}),
-    Setting_Info('custom_logic', bool, 1, True, {
+    Setting_Info('logic_skulltulas', str, 3, True, {
+            'default': '50',
+            'const': 'always',
+            'nargs': '?',
+            'choices': ['none', '10', '20', '30', '40', '50'],
             'help': '''\
-                    Removes a number of bad locations from logic,
-                    and adds a number allowed tricks
+                    Choose the maximum number of gold skulltula tokens you will be expected to collect.
+                    '''}),
+    Setting_Info('logic_no_big_poes', bool, 1, True, {
+            'help': '''\
+                    You will not be expected to collect 10 big poes.
                     ''',
             'action': 'store_true'}),
+    Setting_Info('logic_no_child_fishing', bool, 1, True, {
+            'help': '''\
+                    You will not be expected to obtain the child fishing reward.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_no_adult_fishing', bool, 1, True, {
+            'help': '''\
+                    You will not be expected to obtain the adult fishing reward.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_no_trade_skull_mask', bool, 1, True, {
+            'help': '''\
+                    You will not be expected to show the skull mask at the forest stage.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_no_trade_mask_of_truth', bool, 1, True, {
+            'help': '''\
+                    You will not be expected to show the mask of truth at the forest stage.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_no_trade_biggoron', bool, 1, True, {
+            'help': '''\
+                    You will not be expected to trade for biggoron's reward.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_no_1500_archery', bool, 1, True, {
+            'help': '''\
+                    You will not be expected to win the 1500 point horseback archery reward.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_no_memory_game', bool, 1, True, {
+            'help': '''\
+                    You will not be expected to play the memory game in lost woods with the skull kids.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_no_second_dampe_race', bool, 1, True, {
+            'help': '''\
+                    You will not be expected to race Dampe a second time.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_man_on_roof', bool, 1, True, {
+            'help': '''\
+                    The man on the roof will not require the hookshot in logic.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_child_deadhand', bool, 1, True, {
+            'help': '''\
+                    Deadhand in the Bottom of the Well will not require the Kokiri sword in logic.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_dc_jump', bool, 1, True, {
+            'help': '''\
+                    Jumping towards the bomb bag chest in Dodongo's Cavern as an adult
+                    will not require hover boots in logic.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_impa_house', bool, 1, True, {
+            'help': '''\
+                    Getting into the back of Impa's house (cow cage) as an adult will
+                    not require hookshot in logic.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_windmill_hp', bool, 1, True, {
+            'help': '''\
+                    Getting the heart piece in the windmill as an adult will require nothing in logic.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('logic_lens', str, 3, True, {
+            'default': 'all',
+            'const': 'always',
+            'nargs': '?',
+            'choices': ['chest', 'chest-wasteland', 'all'],
+            'help': '''\
+                    Choose what expects the Lens of Truth:
+                    all:              All lens spots expect the lens (except those that did not in the original game)
+                    chest-wasteland:  Only wasteland and chest minigame expect the lens
+                    chest:            Only the chest minigame expects the lens
+                    '''}),
     Setting_Info('text_shuffle', str, 2, True, {
             'default': 'none',
             'const': 'none',

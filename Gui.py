@@ -71,9 +71,11 @@ def guiMain(settings=None):
 
     notebook = ttk.Notebook(mainWindow)
     randomizerWindow = ttk.Frame(notebook)
+    logicWindow = ttk.Frame(notebook)
     adjustWindow = ttk.Frame(notebook)
     customWindow = ttk.Frame(notebook)
     notebook.add(randomizerWindow, text='Randomize')
+    notebook.add(logicWindow, text='Detailed Logic')
 
     # Shared Controls
 
@@ -100,11 +102,17 @@ def guiMain(settings=None):
         lable_frame = LabelFrame(parent, text=data["name"], labelanchor=NW)
         # create a variable to hold the result of the user's decision
         radio_var = StringVar(value=data["default"]);
+        # setup orientation
+        side = TOP
+        anchor = W
+        if "horizontal" in data and data["horizontal"]:
+            side = LEFT
+            anchor = N
         # add the radio buttons
         for option in data["options"]:
             radio_button = Radiobutton(lable_frame, text=option["description"], value=option["value"], variable=radio_var,
                                        justify=LEFT, wraplength=data["wraplength"])
-            radio_button.pack(side=TOP, anchor=W)
+            radio_button.pack(side=side, anchor=anchor)
         # return the frame so it can be packed, and the var so it can be used
         return (lable_frame, radio_var)
 
@@ -120,14 +128,31 @@ def guiMain(settings=None):
         "create_spoiler":    { "text": "Create Spoiler Log",               "group": "output", "default": "checked"   },
         "suppress_rom":      { "text": "Do not create patched Rom",        "group": "output", "default": "unchecked" },
         "compress_rom":      { "text": "Compress patched Rom",             "group": "output", "default": "unchecked" },
+
         "open_forest":       { "text": "Open Forest",                      "group": "logic",  "default": "unchecked" },
         "open_door_of_time": { "text": "Open Door of Time",                "group": "logic",  "default": "unchecked" },
         "fast_ganon":        { "text": "Skip most of Ganon's Castle",      "group": "logic",  "default": "unchecked" },
         "keysanity":         { "text": "Keysanity",                        "group": "logic",  "default": "unchecked" },
         "nodungeonitems":    { "text": "Remove Maps and Compasses",        "group": "logic",  "default": "unchecked" },
         "beatableonly":      { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "unchecked" },
-        "custom_logic":      { "text": "Use this fork's custom logic",     "group": "logic",  "default": "unchecked" },
+
         "ocarina_songs":     { "text": "Randomize ocarina song notes",     "group": "other",  "default": "unchecked" },
+
+        "logic_no_big_poes":            { "text": "No Big Poes",               "group": "rewards",  "default": "unchecked" },
+        "logic_no_trade_skull_mask":    { "text": "No Skull Mask reward",      "group": "rewards",  "default": "unchecked" },
+        "logic_no_trade_mask_of_truth": { "text": "No Mask of Truth reward",   "group": "rewards",  "default": "unchecked" },
+        "logic_no_trade_biggoron":      { "text": "No Biggoron reward",        "group": "rewards",  "default": "unchecked" },
+        "logic_no_child_fishing":       { "text": "No Child Fishing",          "group": "rewards",  "default": "unchecked" },
+        "logic_no_adult_fishing":       { "text": "No Adult Fishing",          "group": "rewards",  "default": "unchecked" },
+        "logic_no_memory_game":         { "text": "No Lost Woods Memory Game", "group": "rewards",  "default": "unchecked" },
+        "logic_no_second_dampe_race":   { "text": "No Racing Dampe a second time", "group": "rewards",  "default": "unchecked" },
+        "logic_no_1500_archery":        { "text": "No 1500 Horseback Archery", "group": "rewards",  "default": "unchecked" },
+
+        "logic_man_on_roof":    { "text": "Man on Roof without Hookshot",                              "group": "tricks",  "default": "unchecked" },
+        "logic_child_deadhand": { "text": "Child Deadhand without Kokiri Sword",                       "group": "tricks",  "default": "unchecked" },
+        "logic_dc_jump":        { "text": "Dodongo's Cavern spike trap room jump without Hover Boots", "group": "tricks",  "default": "unchecked" },
+        "logic_impa_house":     { "text": "Impa House (cow cage) as adult with nothing",               "group": "tricks",  "default": "unchecked" },
+        "logic_windmill_hp":    { "text": "Windmill HP as adult with nothing",                         "group": "tricks",  "default": "unchecked" },
     }
     # radio list has a name, a list of options, and a default option
     bridge_requirements_data = {
@@ -172,6 +197,30 @@ def guiMain(settings=None):
         "default": "none",
         "wraplength": 240,
     }
+    skulltula_data = {
+        "name": "Number of maximum expected skulltula tokens",
+        "options": [
+            { "value": "none", "description": "None" },
+            { "value": "10",   "description": "10" },
+            { "value": "20",   "description": "20" },
+            { "value": "30",   "description": "30" },
+            { "value": "40",   "description": "40" },
+            { "value": "50",   "description": "50" },
+        ],
+        "default": "50",
+        "wraplength": 240,
+        "horizontal": True
+    }
+    lens_data = {
+        "name": "Lens of Truth",
+        "options": [
+            { "value": "all",             "description": "Expected everywhere it is expected in the base game" },
+            { "value": "chest-wasteland", "description": "Expected only to cross the Wasteland and clear the Chest Minigame" },
+            { "value": "chest",           "description": "Expected for only the Chest Minigame" },
+        ],
+        "default": "all",
+        "wraplength": 200,
+    }
     # dropdown info
     color_options = get_tunic_color_options()
     navi_options = get_navi_color_options()
@@ -191,6 +240,8 @@ def guiMain(settings=None):
 
     # hierarchy
     ############
+
+    # Randomize tab
 
     checkAndRadioFrame = Frame(randomizerWindow)
     if True: # just indenting for hierarchy clarity
@@ -216,9 +267,22 @@ def guiMain(settings=None):
             aestheticBottomFrame = Frame(aestheticLeftFrame)
         aestheticRightFrame = Frame(aestheticFrame)
 
-    settingsFrame = Frame(randomizerWindow)
+    # Logic tab
+    logicLeftFrame = Frame(logicWindow)
+    if True: # just indenting for hierarchy clarity
+        (skulltulaFrame, guivars['logic_skulltulas']) = MakeRadioList(logicLeftFrame, skulltula_data)
+        rewardsFrame = LabelFrame(logicLeftFrame, text='Remove some specific locations', labelanchor=NW)
 
-    generateSeedFrame = Frame(randomizerWindow)
+    logicRightFrame = Frame(logicWindow)
+    if True: # just indenting for hierarchy clarity
+        tricksFrame =  LabelFrame(logicRightFrame, text='Specific expected tricks', labelanchor=NW)
+        (lensFrame, guivars['logic_lens']) = MakeRadioList(logicRightFrame, lens_data)
+
+    # shared
+    settingsFrame = Frame(mainWindow)
+
+    generateSeedFrame = Frame(mainWindow)
+
 
     # build gui
     ############
@@ -231,8 +295,9 @@ def guiMain(settings=None):
         # create a variable to access the box's state
         guivars[var_name] = IntVar(value=default_value)
         # create the checkbox
-        parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame, 'other': otherOptionsFrame}[info["group"]] # sorry, this is gross; I was reaching my limit
-        checkboxes[var_name] = Checkbutton(parent, text=info["text"], variable=guivars[var_name])
+        parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame, 'other': otherOptionsFrame,
+                   'rewards': rewardsFrame, 'tricks': tricksFrame}[info["group"]] # sorry, this is gross; I was reaching my limit
+        checkboxes[var_name] = Checkbutton(parent, text=info["text"], variable=guivars[var_name], justify=LEFT, wraplength=250)
         checkboxes[var_name].pack(expand=True, anchor=W)
 
     # create the dropdowns
@@ -253,6 +318,8 @@ def guiMain(settings=None):
         dropdownFrames[var_name].pack(expand=True, side=LEFT, anchor=N, padx=3, pady=3)
 
     # pack the hierarchy
+
+    # Ranomize tab
     outputOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
     textShuffleFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
     leftSideChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
@@ -273,7 +340,16 @@ def guiMain(settings=None):
     aestheticBottomFrame.pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=5)
     aestheticRightFrame.pack(fill=BOTH, expand=True, anchor=N, side=RIGHT)
     aestheticLeftFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT)
-    aestheticFrame.pack(fill=BOTH, anchor=W, padx=5)
+    aestheticFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(0,5))
+
+    # Logic tab
+    skulltulaFrame.pack(anchor=W, side=TOP, pady=(5,0))
+    rewardsFrame.pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,0))
+    logicLeftFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(0,5), padx=(5,0))
+
+    tricksFrame.pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,0))
+    lensFrame.pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,0))
+    logicRightFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(0,5), padx=(5, 230))
 
 
 

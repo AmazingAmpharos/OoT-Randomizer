@@ -161,7 +161,7 @@ def buildGossipHints(world, rom):
     checkedLocations = []
 
     # Add required location hints
-    alwaysLocations = getHintGroup('alwaysLocation', world.custom_logic)
+    alwaysLocations = getHintGroup('alwaysLocation', world)
     for hint in alwaysLocations:
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
@@ -172,7 +172,7 @@ def buildGossipHints(world, rom):
 
 
     # Add good location hints
-    sometimesLocations = getHintGroup('location', world.custom_logic)
+    sometimesLocations = getHintGroup('location', world)
     for _ in range(0, random.randint(9,10) - len(alwaysLocations)):
         hint = random.choice(sometimesLocations)
         # Repick if location isn't new
@@ -235,7 +235,7 @@ def buildGossipHints(world, rom):
                 stoneAddresses.pop(0), rom)
 
     # fill the remaining hints with junk    
-    junkHints = getHintGroup('junkHint')
+    junkHints = getHintGroup('junkHint', world)
     random.shuffle(junkHints)
     while stoneAddresses:
         junkHint = junkHints.pop()
@@ -313,7 +313,7 @@ def buildGanonText(world, rom):
 
     Block_code = []
     # lines before battle, 160 characters max
-    ganonLines = getHintGroup('ganonLine')
+    ganonLines = getHintGroup('ganonLine', world)
     random.shuffle(ganonLines)
     Block_code = getBytes(ganonLines.pop().text)
     endText(Block_code)
