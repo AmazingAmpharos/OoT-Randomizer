@@ -633,7 +633,7 @@ class Spoiler(object):
             outfile.write('Open Door of Time:               %s\n' % ('Yes' if self.metadata['door'] else 'No'))
             outfile.write('Gerudo Fortress:                 %s\n' % self.metadata['gerudo_fortress'])
             outfile.write('Fast Ganon\'s Castle:             %s\n' % ('Yes' if self.metadata['ganon'] else 'No'))
-            outfile.write('Keysanity          :             %s\n' % ('Yes' if self.metadata['keysanity'] else 'No'))
+            outfile.write('Keysanity:                       %s\n' % ('Yes' if self.metadata['keysanity'] else 'No'))
             outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
             outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))
             outfile.write('Hints:                           %s\n' % self.metadata['hints'])

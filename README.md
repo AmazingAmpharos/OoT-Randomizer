@@ -406,17 +406,12 @@ The following were added or majorly changed on this fork:
 
 ## Optional Logic changes
 
-These logic changes are applied by checking "Use this fork's logic" in the "Logic" box
+A bunch of optional logic changes can be applied from the "Detailed Logic" tab:
 
-- Removed Fishing minigame from logic
-- Removed Skulltulla rewards from logic
-- Removed 10 Big Poes reward from logic
-- Removed Forest Stage and Biggoron rewards from logic (trade quests)
-- Removed Man of Roof requirements
-- Added the DC jump to skip the slighshot room to logic
-- Child Dead Hand fight no longer requires a sword
-- Underwater room in Training Grounds and underwater Zora Fountain now require Zora Tunic
-- Removed most Lens of Truth requirements (exceptions are Wasteland and Chest Minigame)
+- Number of maximum expected gold skulltula tokens can be set
+- Some particularly annoying locations can be removed from logic. This only makes it so that getting the item at the location is never required, it does not mean the location's vanilla item is not shuffled into the pool. For example, checking "No Biggoron Reward" just means that you cannot be expected to complete the adult trade sequence, it does not mean that the Biggoron Sword cannot be found somewhere in the world.
+- A handful of easy tricks (that require some knowledge) can be marked to be usable
+- Lens of Truth requirements and expectations can be set
 
 ## Gerudo Fortress options
 

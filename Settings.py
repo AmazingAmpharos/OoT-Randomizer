@@ -305,7 +305,7 @@ setting_infos = [
                     Getting the heart piece in the windmill as an adult will require nothing in logic.
                     ''',
             'action': 'store_true'}),
-    Setting_Info('logic_lens', str, 3, True, {
+    Setting_Info('logic_lens', str, 2, True, {
             'default': 'all',
             'const': 'always',
             'nargs': '?',
