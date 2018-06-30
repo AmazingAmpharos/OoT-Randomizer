@@ -402,6 +402,7 @@ The following were added or majorly changed on this fork:
 
 - Seeds can be text instead of just numbers
 - Can get, share, and import a settings string to quickly set seed-changing options
+- Options are saved when closing the GUI and loaded when opening it
 
 ## Optional Logic changes
 
