@@ -81,7 +81,7 @@ KEYSANITY_MESSAGES = {
     0x7d: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09',
     0x7e: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09',
     0x7f: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09',
-    0x85: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09',
+    0xa2: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09',
     0x87: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x44Ice Cavern\x05\x40!\x09',
     0x88: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x42Deku Tree\x05\x40!\x09',
     0x89: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for \x05\x41Dodongo\'s Cavern\x05\x40!\x09',
@@ -90,14 +90,14 @@ KEYSANITY_MESSAGES = {
     0x8c: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x41Fire Temple\x05\x40!\x09',
     0x8e: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09',
     0x8f: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09',
-    0x90: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09',
-    0x91: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09',
+    0xa3: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09',
+    0xa5: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09',
     0x92: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x44Ice Cavern\x05\x40!\x09',
     0x93: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x42Forest Temple\x05\x40!\x09',
     0x94: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x41Fire Temple\x05\x40!\x09',
     0x95: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09',
-    0x97: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09',
-    0x99: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09',
+    0xa6: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09',
+    0xa9: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09',
     0x9b: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09',
     0x9f: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x46Gerudo Training\x01Grounds\x05\x40!\x09',
     0xa0: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x46Gerudo Fortress\x05\x40!\x09',
@@ -377,12 +377,16 @@ def write_shop_items(rom, shop_items):
     for s in shop_items:
         s.write(rom, s.index)
 
+# these are unused shop items, and contain text ids that are used elsewhere, and should not be moved
+SHOP_ITEM_EXCEPTIONS = [0x0A, 0x0B, 0x11, 0x12, 0x13, 0x14, 0x29]
+
 # returns a set of all message ids used for shop items
 def get_shop_message_id_set(shop_items):
     ids = set()
     for shop in shop_items:
-        ids.add(shop.description_message)
-        ids.add(shop.purchase_message)
+        if shop.index not in SHOP_ITEM_EXCEPTIONS:
+            ids.add(shop.description_message)
+            ids.add(shop.purchase_message)
     return ids
 
 # takes all messages used for shop items, and moves messages from the 00xx range into the unused 80xx range
@@ -475,7 +479,7 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
 
     def is_not_exempt(m):
         exaempt_as_id = m.is_id_message()
-        exempt_as_hint = ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT) )
+        exempt_as_hint = ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT + list(KEYSANITY_MESSAGES.keys()) ) )
         return not ( exaempt_as_id or exempt_as_hint )
     
     have_goto =         list( filter( lambda m: is_not_exempt(m) and m.has_goto, messages) )
