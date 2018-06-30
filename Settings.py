@@ -7,6 +7,8 @@ import hashlib
 
 from Rom import get_tunic_color_options, get_navi_color_options
 
+__version__ = '2.9.0 f.LUM'
+
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 
     def _get_help_string(self, action):
@@ -91,7 +93,7 @@ class Settings():
 
     def get_numeric_seed(self):
         # salt seed with the settings, and hash to get a numeric seed
-        full_string = self.settings_string + self.seed
+        full_string = self.settings_string + __version__ + self.seed
         return int(hashlib.sha256(full_string.encode('utf-8')).hexdigest(), 16)
 
     def sanatize_seed(self):

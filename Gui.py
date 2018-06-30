@@ -10,10 +10,10 @@ from urllib.parse import urlparse
 from urllib.request import urlopen
 
 from GuiUtils import ToolTips, set_icon, BackgroundTaskProgress
-from Main import main, __version__ as ESVersion
+from Main import main
 from Utils import is_bundled, local_path, output_path, open_file
 from Rom import get_tunic_color_options, get_navi_color_options
-from Settings import Settings, setting_infos
+from Settings import Settings, setting_infos, __version__ as ESVersion
 
 
 def settings_to_guivars(settings, guivars):
@@ -345,11 +345,11 @@ def guiMain(settings=None):
     # Logic tab
     skulltulaFrame.pack(anchor=W, side=TOP, pady=(5,0))
     rewardsFrame.pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,0))
-    logicLeftFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(0,5), padx=(5,0))
+    logicLeftFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(0,5), padx=(5,5))
 
     tricksFrame.pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,0))
     lensFrame.pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,0))
-    logicRightFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(0,5), padx=(5, 230))
+    logicRightFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(0,5), padx=(0, 230))
 
 
 

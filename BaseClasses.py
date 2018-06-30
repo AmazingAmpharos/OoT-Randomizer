@@ -317,7 +317,7 @@ class CollectionState(object):
         return (self.has('Silver Gauntlets') or self.has('Gold Gauntlets')) and self.is_adult()
 
     def can_see_with_lens(self):
-        return (self.has('Magic Meter') and self.has('Lens of Truth') and self.world.logic_lens == 'all')
+        return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
 
     def has_GoronTunic(self):
         return (self.has('Goron Tunic') or (self.has('Progressive Wallet') and (self.has('Bomb Bag') or self.has('Progressive Strength Upgrade') or self.has('Bow'))))
@@ -609,7 +609,7 @@ class Spoiler(object):
         sort_order = {"Song": 0, "Boss": -1}
         spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
         self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}
-        from Main import __version__ as OoTRVersion
+        from Settings import __version__ as OoTRVersion
         self.metadata = {'version': OoTRVersion,
                          'seed': self.world.seed,
                          'bridge': self.world.bridge,

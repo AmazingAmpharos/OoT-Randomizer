@@ -16,8 +16,7 @@ from Dungeons import create_dungeons, fill_dungeons_restrictive
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
 from Utils import output_path
-
-__version__ = '2.0.0 f.LUM'
+from Settings import __version__
 
 def main(settings):
     start = time.clock()

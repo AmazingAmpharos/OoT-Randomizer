@@ -269,11 +269,11 @@ def hintExclusions(world):
         exclusions.append('Deku Theater Skull Mask')
     if world.logic_no_trade_mask_of_truth:
         exclusions.append('Deku Theater Mask of Truth')
-    if world.logic_no_trade_biggorn:
+    if world.logic_no_trade_biggoron:
         exclusions.append('Biggoron')
-    if world.logic_no_trade_child_fishing:
+    if world.logic_no_child_fishing:
         exclusions.append('Child Fishing')
-    if world.logic_no_trade_adult_fishing:
+    if world.logic_no_adult_fishing:
         exclusions.append('Adult Fishing')
     if world.logic_no_big_poes:
         exclusions.append('10 Big Poes')
