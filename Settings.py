@@ -7,7 +7,7 @@ import hashlib
 
 from Rom import get_tunic_color_options, get_navi_color_options
 
-__version__ = '2.9.0 f.LUM'
+__version__ = '2.9.2 f.LUM'
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 

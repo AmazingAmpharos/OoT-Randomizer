@@ -152,7 +152,7 @@ def buildGossipHints(world, rom):
     requiredSample = requiredItems
     if len(requiredItems) >= 4:
         requiredSample = random.sample(requiredItems, random.randint(3,4))
-    for location,item in requiredItems:
+    for location,item in requiredSample:
         if world.get_location(location).parent_region.dungeon:
             writeHintToRom(buildHintString(getHint(world.get_location(location).parent_region.dungeon.name).text + \
                 " is on the way of the hero."), stoneAddresses.pop(0), rom)
