@@ -1076,6 +1076,7 @@ def patch_rom(world, rom):
 
     messages = read_messages(rom)
     shop_items = read_shop_items(rom)
+    remove_unused_messages(messages)
 
     # add a cheaper bombchu pack to the bombchu shop
     # describe

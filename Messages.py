@@ -389,6 +389,10 @@ def get_shop_message_id_set(shop_items):
             ids.add(shop.purchase_message)
     return ids
 
+# remove all messages that easy to tell are unused to create space in the message index table
+def remove_unused_messages(messages):
+    messages[:] = [m for m in messages if not m.is_id_message()]
+
 # takes all messages used for shop items, and moves messages from the 00xx range into the unused 80xx range
 def move_shop_item_messages(messages, shop_items):
     # checks if a message id is in the item message range
