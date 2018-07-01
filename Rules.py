@@ -325,7 +325,7 @@ def global_rules(world):
     set_rule(world.get_location('Ganons Castle Light Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Progressive Hookshot') and state.has('Light Arrows') and state.has('Small Key (Ganons Castle)', 2))
     set_rule(world.get_location('Ganons Castle Light Trail Invisible Enemies Chest'), lambda state: state.can_see_with_lens())
     set_rule(world.get_location('Ganons Castle Light Trial Lullaby Chest'), lambda state: state.has('Zeldas Lullaby') and state.has('Small Key (Ganons Castle)', 1))
-    set_rule(world.get_location('Ganon'), lambda state: state.has('Boss Key (Ganons Castle)') or (world.fast_ganon and state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows')) )
+    set_rule(world.get_location('Ganon'), lambda state: (state.has('Boss Key (Ganons Castle)') or world.fast_ganon) and (state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows')) )
     set_rule(world.get_entrance('Kokiri Forest Storms Grotto'), lambda state: state.has('Song of Storms'))
     set_rule(world.get_entrance('Lost Woods Generic Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Lost Woods Sales Grotto'), lambda state: state.has_explosives() or (state.has('Hammer') and state.is_adult() and (state.has('Minuet of Forest') or state.has('Sarias Song'))))

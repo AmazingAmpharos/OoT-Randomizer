@@ -149,7 +149,10 @@ def buildGossipHints(world, rom):
         if ItemFactory(item).type != 'Event' and not location in eventlocations]
 
     # add required non-ganon items for hints (good hints)
-    for location,item in random.sample(requiredItems, random.randint(3,4)):
+    requiredSample = requiredItems
+    if len(requiredItems) >= 4:
+        requiredSample = random.sample(requiredItems, random.randint(3,4))
+    for location,item in requiredItems:
         if world.get_location(location).parent_region.dungeon:
             writeHintToRom(buildHintString(getHint(world.get_location(location).parent_region.dungeon.name).text + \
                 " is on the way of the hero."), stoneAddresses.pop(0), rom)
@@ -173,18 +176,19 @@ def buildGossipHints(world, rom):
 
     # Add good location hints
     sometimesLocations = getHintGroup('location', world)
-    for _ in range(0, random.randint(9,10) - len(alwaysLocations)):
-        hint = random.choice(sometimesLocations)
-        # Repick if location isn't new
-        while hint.name in checkedLocations or hint.name in alwaysLocations:
+    if sometimesLocations:
+        for _ in range(0, random.randint(9,10) - len(alwaysLocations)):
             hint = random.choice(sometimesLocations)
+            # Repick if location isn't new
+            while hint.name in checkedLocations or hint.name in alwaysLocations:
+                hint = random.choice(sometimesLocations)
 
-        for locationWorld in world.get_locations():
-            if hint.name == locationWorld.name:
-                checkedLocations.append(locationWorld.name)    
-                writeHintToRom(getHint(locationWorld.name).text + " " + \
-                    getHint(getItemGenericName(locationWorld.item)).text + ".",\
-                    stoneAddresses.pop(0), rom)
+            for locationWorld in world.get_locations():
+                if hint.name == locationWorld.name:
+                    checkedLocations.append(locationWorld.name)    
+                    writeHintToRom(getHint(locationWorld.name).text + " " + \
+                        getHint(getItemGenericName(locationWorld.item)).text + ".",\
+                        stoneAddresses.pop(0), rom)
 
     # add bad dungeon locations hints
     for dungeon in random.sample(world.dungeons, random.randint(3,4)):
@@ -212,7 +216,10 @@ def buildGossipHints(world, rom):
             locationWorld.item.name != 'Gold Skulltulla Token' and \
             not locationWorld.parent_region.dungeon and \
             not locationWorld.name in checkedLocations]
-    for locationWorld in random.sample(overworldlocations, random.randint(3,4)):
+    overworldSample = overworldlocations
+    if len(overworldSample) >= 4:
+        overworldSample = random.sample(overworldlocations, random.randint(3,4))
+    for locationWorld in overworldSample:
         checkedLocations.append(locationWorld.name)
         writeHintToRom(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
             " can be found at " + locationWorld.parent_region.name + "."),\
@@ -223,7 +230,10 @@ def buildGossipHints(world, rom):
     gooditemlocations = [locationWorld for locationWorld in world.get_locations() 
             if not locationWorld.name in checkedLocations and \
             locationWorld.item.name in gooditems]
-    for locationWorld in random.sample(gooditemlocations, random.randint(3,5)):
+    gooditemSample = gooditemlocations
+    if len(gooditemSample) >= 5:
+        gooditemSample = random.sample(gooditemlocations, random.randint(3,5))
+    for locationWorld in gooditemSample:
         checkedLocations.append(locationWorld.name)
         if locationWorld.parent_region.dungeon:
             writeHintToRom(buildHintString(getHint(locationWorld.parent_region.dungeon.name).text + \
