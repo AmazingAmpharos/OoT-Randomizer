@@ -473,7 +473,7 @@ location_table = {'Kokiri Sword Chest': (0x20A6142, None, 0x04E0, 'Chest', 0x55,
                   'Ganons Castle Shadow Trial Clear': (None, None, None, 'Event', None, None),
                   'Ganons Castle Spirit Trial Clear': (None, None, None, 'Event', None, None),
                   'Ganons Castle Light Trial Clear': (None, None, None, 'Event', None, None),
-                  'Links Pocket': (0x34806FB, 0x34806FF, None, 'Boss', None, None),
+                  'Links Pocket': (0x34806FB, 0x34806FF, None, 'Boss', None, None), # I don't think the actually addresses matter here anymore, but they can't be None for some reason
                   'Queen Gohma': (0xCA315F, 0x2079571, 0x6C, 'Boss', None, None),
                   'King Dodongo': (0xCA30DF, 0x2223309, 0x6D, 'Boss', None, None),
                   'Barinade': (0xCA36EB, 0x2113C19, 0x6E, 'Boss', None, None),
