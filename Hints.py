@@ -9,6 +9,7 @@ from HintList import getHint, getHintGroup, Hint
 from Utils import local_path
 from Items import ItemFactory
 from ItemList import eventlocations
+from Messages import update_message_by_id
 
 gooditems = [
     'Bow',
@@ -123,26 +124,34 @@ def isDungeonItem(item):
     return item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey'
 
 
-def writeHintToRom(hint, stoneAddress, rom):
-    hintBytes = getBytes(hint)
-    endText(hintBytes)
-    rom.write_bytes(stoneAddress, hintBytes)
+# def writeHintToRom(hint, stoneAddress, rom):
+#     hintBytes = getBytes(hint)
+#     endText(hintBytes)
+#     rom.write_bytes(stoneAddress, hintBytes)
 
+def update_hint(messages, id, text):
+    update_message_by_id(messages, id, get_raw_text(text))
 
 
 #builds out general hints based on location and whether an item is required or not
-def buildGossipHints(world, rom):
-    stoneAddresses = [0x938e4c, 0x938EA8, 0x938F04, 0x938F60, 0x938FBC, 0x939018, 0x939074, 0x9390D0, 0x93912C, 0x939188,
-                      0x9391E4, 0x939240, 0x93929C, 0x9392F8, 0x939354, 0x9393B0, 0x93940C, 0x939468, 0x9394C4, 0x939520,
-                      0x93957C, 0x9395D8, 0x939634, 0x939690, 0x9396EC, 0x939748, 0x9397A4, 0x939800, 0x93985C, 0x9398B8,
-                      0x939914, 0x939970] #address for gossip stone text boxes, byte limit is 92
+def buildGossipHints(world, messages):
+    # stoneAddresses = [0x938e4c, 0x938EA8, 0x938F04, 0x938F60, 0x938FBC, 0x939018, 0x939074, 0x9390D0, 0x93912C, 0x939188,
+    #                   0x9391E4, 0x939240, 0x93929C, 0x9392F8, 0x939354, 0x9393B0, 0x93940C, 0x939468, 0x9394C4, 0x939520,
+    #                   0x93957C, 0x9395D8, 0x939634, 0x939690, 0x9396EC, 0x939748, 0x9397A4, 0x939800, 0x93985C, 0x9398B8,
+    #                   0x939914, 0x939970] #address for gossip stone text boxes, byte limit is 92
+
+
+    stoneIDs = [0x0401, 0x0402, 0x0403, 0x0404, 0x0405, 0x0406, 0x0407, 0x0408,
+                0x0409, 0x040A, 0x040B, 0x040C, 0x040D, 0x040E, 0x040F, 0x0410,
+                0x0411, 0x0412, 0x0413, 0x0414, 0x0415, 0x0416, 0x0417, 0x0418,
+                0x0419, 0x041A, 0x041B, 0x041C, 0x041D, 0x041E, 0x041F, 0x0420]
 
     #hopefully fixes weird VC error where the last character from a previous text box would sometimes spill over into the next box.
-    for address in range(stoneAddresses[0], 0x9399D8):
-        rom.write_byte(address, 0x08)
+    # for address in range(stoneAddresses[0], 0x9399D8):
+    #     rom.write_byte(address, 0x08)
 
     #shuffles the stone addresses for randomization, always locations will be placed first and twice
-    random.shuffle(stoneAddresses)
+    random.shuffle(stoneIDs)
 
     # get list of required items that are not events or needed for Ganon's Castle
     requiredItems = [(location, item) for _,sphere in world.spoiler.playthrough.items() for location,item in sphere.items() 
@@ -154,11 +163,10 @@ def buildGossipHints(world, rom):
         requiredSample = random.sample(requiredItems, random.randint(3,4))
     for location,item in requiredSample:
         if world.get_location(location).parent_region.dungeon:
-            writeHintToRom(buildHintString(getHint(world.get_location(location).parent_region.dungeon.name).text + \
-                " is on the way of the hero."), stoneAddresses.pop(0), rom)
+            update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(world.get_location(location).parent_region.dungeon.name).text + \
+                " is on the way of the hero."))
         else:
-            writeHintToRom(buildHintString(world.get_location(location).parent_region.name + "  is on the way of the hero."),\
-                stoneAddresses.pop(0), rom)
+            update_hint(messages, stoneIDs.pop(0), buildHintString(world.get_location(location).parent_region.name + "  is on the way of the hero."))
 
     # Don't repeat hints
     checkedLocations = []
@@ -169,9 +177,8 @@ def buildGossipHints(world, rom):
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
                 checkedLocations.append(hint.name)   
-                writeHintToRom(getHint(locationWorld.name).text + " " + \
-                    getHint(getItemGenericName(locationWorld.item)).text + ".",\
-                    stoneAddresses.pop(0), rom)
+                update_hint(messages, stoneIDs.pop(0), getHint(locationWorld.name).text + " " + \
+                    getHint(getItemGenericName(locationWorld.item)).text + ".")
 
 
     # Add good location hints
@@ -186,9 +193,8 @@ def buildGossipHints(world, rom):
             for locationWorld in world.get_locations():
                 if hint.name == locationWorld.name:
                     checkedLocations.append(locationWorld.name)    
-                    writeHintToRom(getHint(locationWorld.name).text + " " + \
-                        getHint(getItemGenericName(locationWorld.item)).text + ".",\
-                        stoneAddresses.pop(0), rom)
+                    update_hint(messages, stoneIDs.pop(0), getHint(locationWorld.name).text + " " + \
+                        getHint(getItemGenericName(locationWorld.item)).text + ".")
 
     # add bad dungeon locations hints
     for dungeon in random.sample(world.dungeons, random.randint(3,4)):
@@ -201,9 +207,8 @@ def buildGossipHints(world, rom):
             location.item.type != 'Song'])
 
         checkedLocations.append(locationWorld.name)
-        writeHintToRom(buildHintString(getHint(dungeon.name).text + \
-            " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."),\
-            stoneAddresses.pop(0), rom)
+        update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(dungeon.name).text + \
+            " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."))
 
     # add bad overworld locations hints
     # only choose location if it is new and a proper item from the overworld
@@ -221,9 +226,8 @@ def buildGossipHints(world, rom):
         overworldSample = random.sample(overworldlocations, random.randint(3,4))
     for locationWorld in overworldSample:
         checkedLocations.append(locationWorld.name)
-        writeHintToRom(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
-            " can be found at " + locationWorld.parent_region.name + "."),\
-            stoneAddresses.pop(0), rom) 
+        update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
+            " can be found at " + locationWorld.parent_region.name + ".")) 
 
     # add good item hints
     # only choose location if it is new and a good item
@@ -236,138 +240,147 @@ def buildGossipHints(world, rom):
     for locationWorld in gooditemSample:
         checkedLocations.append(locationWorld.name)
         if locationWorld.parent_region.dungeon:
-            writeHintToRom(buildHintString(getHint(locationWorld.parent_region.dungeon.name).text + \
-                " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."),\
-                stoneAddresses.pop(0), rom)
+            update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(locationWorld.parent_region.dungeon.name).text + \
+                " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."))
         else:
-            writeHintToRom(buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
-                " can be found at " + locationWorld.parent_region.name + "."),\
-                stoneAddresses.pop(0), rom)
+            update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
+                " can be found at " + locationWorld.parent_region.name + "."))
 
     # fill the remaining hints with junk    
     junkHints = getHintGroup('junkHint', world)
     random.shuffle(junkHints)
-    while stoneAddresses:
-        junkHint = junkHints.pop()
-        Block_code = getBytes(junkHint.text)
-        endText(Block_code)
-        rom.write_bytes(stoneAddresses.pop(0), Block_code)
-        
-    return rom
+    while stoneIDs:
+        # junkHint = junkHints.pop()
+        # Block_code = getBytes(junkHint.text)
+        # endText(Block_code)
+        # rom.write_bytes(stoneIDs.pop(0), Block_code)
+        update_hint( messages, stoneIDs.pop(0), junkHints.pop().text )
 
 # builds boss reward text that is displayed at the temple of time altar for child and adult, pull based off of item in a fixed order.
-def buildBossRewardHints(world, rom):
+def buildBossRewardHints(world, messages):
     bossRewardsSpiritualStones = ['Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire']
     bossRewardsMedallions = ['Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Shadow Medallion', 'Spirit Medallion', 'Light Medallion']
 
     # text that appears at altar as a child.
-    Block_code = []
-    Block_code = getBytes(getHint('Spiritual Stone Text Start').text)
+    text = ''
+    text += get_raw_text(getHint('Spiritual Stone Text Start').text)
     for reward in bossRewardsSpiritualStones:
-        buildBossString(Block_code, reward, world)
+        text += buildBossString(reward, world)
 
-    Block_code = setRewardColor(Block_code)
-    Block_code.extend(getBytes(getHint('Spiritual Stone Text End').text))
-    Block_code.extend([0x0B])
-    endText(Block_code)
-    rom.write_bytes(0x95ED95, Block_code)
+    text = setRewardColor(text)
+    text += get_raw_text(getHint('Spiritual Stone Text End').text)
+    text += '\x08'
+
+    update_message_by_id(messages, 0x707a, text, 0x20)
+
 
     # text that appears at altar as an adult.
-    Block_code = []    
+    start = 'When evil rules all, an awakening\x01voice from the Sacred Realm will\x01call those destined to be Sages,\x01who dwell in the \x05\x41five temples\x05\x40.\x04'
+    text = ''
     for reward in bossRewardsMedallions:
-        buildBossString(Block_code, reward, world)
+        text += buildBossString(reward, world)
 
-    Block_code = setRewardColor(Block_code)
-    Block_code.extend(getBytes(getHint('Medallion Text End').text))
-    Block_code.extend([0x0B])
-    endText(Block_code)
-    rom.write_bytes(0x95DB94, Block_code)
-    
-    return rom
+    text = setRewardColor(text)
+    text += get_raw_text(getHint('Medallion Text End').text)
+    text += '\x08'
+
+    update_message_by_id(messages, 0x7057, start + text, 0x20)
 
 # pulls text string from hintlist for reward after sending the location to hintlist.
-def buildBossString(Block_code, reward, world):
+def buildBossString(reward, world):
+    text = ''
     for location in world.get_locations():
         if location.item.name == reward:
-            Block_code.extend([0x08])
-            Block_code.extend(getBytes(getHint(location.name).text))
-
-    return Block_code
+            text += '\x08' + get_raw_text(getHint(location.name).text)
+    return text
 
 # alternates through color set commands in child and adult boss reward hint strings setting the colors at the start of the string to correspond with the reward found at the location.
 # skips over color commands at the end of stings to set color back to white.
-def setRewardColor(Block_code):
-    rewardColors = [0x42, 0x41, 0x43, 0x45, 0x46, 0x44]
+def setRewardColor(text):
+    rewardColors = ['\x42', '\x41', '\x43', '\x45', '\x46', '\x44']
 
     colorWhite = True
-    for i, byte in enumerate(Block_code):
-        if byte == 0x05 and colorWhite:
-            Block_code[i + 1] = rewardColors.pop(0)
+    for i, char in enumerate(text):
+        if char == '\x05' and colorWhite:
+            text = text[:i + 1] + rewardColors.pop(0) + text[i + 2:]
             colorWhite = False 
-        elif byte == 0x05 and not colorWhite:
+        elif char == '\x05' and not colorWhite:
             colorWhite = True
         
-    return Block_code
+    return text
 
 # fun new lines for Ganon during the final battle
-def buildGanonText(world, rom):
-    # reorganize text header files to make space for text
-    rom.write_bytes(0xB884B1, [0x03, 0x41, 0xED])
-    rom.write_bytes(0xB884B9, [0x03, 0x41, 0xEE])
-    rom.write_bytes(0xB884C1, [0x03, 0x41, 0xEF])
-    rom.write_bytes(0xB884C9, [0x03, 0x42, 0x99])
+def buildGanonText(world, messages):
+    # empty now unused messages to make space for ganon lines
+    update_message_by_id(messages, 0x70C8, " ")
+    update_message_by_id(messages, 0x70C9, " ")
+    update_message_by_id(messages, 0x70CA, " ")
+    # rom.write_bytes(0xB884B1, [0x03, 0x41, 0xED])
+    # rom.write_bytes(0xB884B9, [0x03, 0x41, 0xEE])
+    # rom.write_bytes(0xB884C1, [0x03, 0x41, 0xEF])
+    # rom.write_bytes(0xB884C9, [0x03, 0x42, 0x99])
 
     # clear space for new text
-    for address in range(0x9611EC, 0x961349):
-        rom.write_byte(address, 0x08)
+    # for address in range(0x9611EC, 0x961349):
+    #     rom.write_byte(address, 0x08)
 
-    Block_code = []
-    # lines before battle, 160 characters max
+    text = ''
+    # lines before battle
     ganonLines = getHintGroup('ganonLine', world)
     random.shuffle(ganonLines)
-    Block_code = getBytes(ganonLines.pop().text)
-    endText(Block_code)
-    rom.write_bytes(0x9611F1, Block_code)
+    text = get_raw_text(ganonLines.pop().text)
+    update_message_by_id(messages, 0x70CB, text)
 
+    text = ''
     if world.trials == '0':
         for location in world.get_locations():
             if location.item.name == 'Light Arrows':
-                Block_code = getBytes(getHint('Light Arrow Location').text)
-                Block_code.extend(getBytes(location.hint))
-                Block_code.extend(getBytes('!'))
+                text = get_raw_text(getHint('Light Arrow Location').text)
+                text += get_raw_text(location.hint)
+                text += '!'
                 break
-        endText(Block_code)
     else:
-        Block_code = getBytes(getHint('Validation Line').text)
+        text = get_raw_text(getHint('Validation Line').text)
         for location in world.get_locations():
             if location.name == 'Ganons Tower Boss Key Chest':
-                Block_code.extend(getBytes((getHint(location.item.name).text)))
-        endText(Block_code)
+                text += get_raw_text(getHint(location.item.name).text)
     
-    rom.write_bytes(0x96129D, Block_code)
+    update_message_by_id(messages, 0x70CC, text)
 
-    return rom
+# #sets the end of text byte in the text box.
+# def endText(byteArray):
+#     return byteArray.extend([0x02])
 
-#sets the end of text byte in the text box.
-def endText(byteArray):
-    return byteArray.extend([0x02])
-
-# reads array of characters and converts them to an array of bytes.
-def getBytes(string):
-    byteCode = []
+# # reads array of characters and converts them to an array of bytes.
+# def getBytes(string):
+#     byteCode = []
+#     for char in string:
+#         if char == '^':
+#             byteCode.extend([0x04])#box break
+#         elif char == '&':
+#             byteCode.extend([0x01])#new line
+#         elif char == '@':
+#             byteCode.extend([0x0F])#print player name
+#         elif char == '#':
+#             byteCode.extend([0x05, 0x40]) #sets color to white
+#         else:
+#             char = char.encode('utf-8')
+#             char = char.hex()
+#             byte = int('0x' + char, 16)
+#             byteCode.extend([byte])
+#     return byteCode
+        
+def get_raw_text(string):
+    text = ''
     for char in string:
         if char == '^':
-            byteCode.extend([0x04])#box break
+            text += '\x04' # box break
         elif char == '&':
-            byteCode.extend([0x01])#new line
+            text += '\x01' #new line
         elif char == '@':
-            byteCode.extend([0x0F])#print player name
+            text += '\x0F' #print player name
         elif char == '#':
-            byteCode.extend([0x05, 0x40]) #sets color to white
+            text += '\x05\x40' #sets color to white
         else:
-            char = char.encode('utf-8')
-            char = char.hex()
-            byte = int('0x' + char, 16)
-            byteCode.extend([byte])
-    return byteCode
-        
+            text += char
+    return text

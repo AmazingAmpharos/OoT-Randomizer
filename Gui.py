@@ -438,9 +438,9 @@ def guiMain(settings=None):
 
 
     def generateRom():
-        settings = guivars_to_settings(guivars)
+            settings = guivars_to_settings(guivars)
 
-        try:
+        #try:
             if settings.count is not None:
                 orig_seed = settings.seed
                 for i in range(settings.count):
@@ -448,9 +448,9 @@ def guiMain(settings=None):
                     main(settings)
             else:
                 main(settings)
-        except Exception as e:
-            messagebox.showerror(title="Error while creating seed", message=str(e))
-        else:
+        #except Exception as e:
+        #    messagebox.showerror(title="Error while creating seed", message=str(e))
+        #else:
             messagebox.showinfo(title="Success", message="Rom patched successfully")
 
     generateButton = Button(generateSeedFrame, text='Generate Patched Rom', command=generateRom)

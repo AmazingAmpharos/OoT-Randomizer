@@ -299,16 +299,18 @@ class Message():
 
 # wrapper for updating the text of a message, given its message id
 # if the id does not exist in the list, this will silently do nothing
-def update_message_by_id(messages, id, text):
+def update_message_by_id(messages, id, text, opts=None):
     # get the message index
     index = next( (m.index for m in messages if m.id == id), -1)
     # update if it was found
     if index >= 0:
-        update_message_by_index(messages, index, text)
+        update_message_by_index(messages, index, text, opts)
 
 # wrapper for updating the text of a message, given its index in the list
-def update_message_by_index(messages, index, text):
-    messages[index] = Message.from_string(text, messages[index].id, messages[index].opts)
+def update_message_by_index(messages, index, text, opts=None):
+    if opts is None:
+        opts = messages[index].opts
+    messages[index] = Message.from_string(text, messages[index].id, opts)
 
 # wrapper for adding a string message to a list of messages
 def add_message(messages, text, id=0, opts=0x00):

@@ -1039,30 +1039,41 @@ def patch_rom(world, rom):
         # change the exit at child/day crawlspace to the end of zelda's goddess cutscene
         rom.write_bytes(0x21F60DE, [0x05, 0xF0])
 
+
+    messages = read_messages(rom)
+    shop_items = read_shop_items(rom)
+    remove_unused_messages(messages)
+
+    # only one big poe needs to be caught to get the buyer's reward
+    if world.only_one_big_poe:
+        # change the value checked (in code) from 1000 to 100
+        rom.write_bytes(0xEE69CE, [0x00, 0x64])
+        # update dialogue
+        update_message_by_id(messages, 0x70f7, "\x1AOh, you brought a Poe today!\x04\x1AHmmmm!\x04\x1AVery interesting!\x01This is a \x05\x41Big Poe\x05\x40!\x04\x1AI'll buy it for \x05\x4150 Rupees\x05\x40.\x04On top of that, I'll put \x05\x41100\x01points \x05\x40on your card.\x04\x1AIf you earn \x05\x41100 points\x05\x40, you'll\x01be a happy man! Heh heh.")
+        update_message_by_id(messages, 0x70f8, "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41100 points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned 100 points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this.")
+
     # Sets hooks for gossip stone changes
     if world.hints != 'none':
         if world.hints != 'mask':
             rom.write_bytes(0xEE7B84, [0x0C, 0x10, 0x02, 0x10])
             rom.write_bytes(0xEE7B8C, [0x24, 0x02, 0x00, 0x20])
-        address = 0xB85B11
-        offset = 0xBE4C
-        for i in range(0,33):
-                offset_high = offset >> 8
-                offset_low = offset & 0x00FF
-                rom.write_bytes(address, [0x00, offset_high, offset_low])
-                offset = offset + 0x5C
-                address = address + 0x08
-        buildGossipHints(world, rom)
+        # address = 0xB85B11
+        # offset = 0xBE4C
+        # for i in range(0,33):
+        #         offset_high = offset >> 8
+        #         offset_low = offset & 0x00FF
+        #         rom.write_bytes(address, [0x00, offset_high, offset_low])
+        #         offset = offset + 0x5C
+        #         address = address + 0x08
+        buildGossipHints(world, messages)
 
     # Set hints for boss reward shuffle
     rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
     rom.write_bytes(0xE2ADB6, [0x70, 0x57])
-    rom.write_byte(0xB8811E, 0x20)
-    rom.write_byte(0xB88236, 0x20)
-    buildBossRewardHints(world, rom)
+    buildBossRewardHints(world, messages)
 
     # build silly ganon lines
-    buildGanonText(world, rom)
+    buildGanonText(world, messages)
 
     # Write item overrides
     rom.write_bytes(0x3481000, get_override_table(world))
@@ -1157,18 +1168,6 @@ def patch_rom(world, rom):
     # actually write the save table to rom
     rom.write_bytes(0x3481800, initial_save_table)
 
-    messages = read_messages(rom)
-    shop_items = read_shop_items(rom)
-    remove_unused_messages(messages)
-
-    # only one big poe needs to be caught to get the buyer's reward
-    if world.only_one_big_poe:
-        # change the value checked (in code) from 1000 to 100
-        rom.write_bytes(0xEE69CE, [0x00, 0x64])
-        # update dialogue
-        update_message_by_id(messages, 0x70f7, "\x1AOh, you brought a Poe today!\x04\x1AHmmmm!\x04\x1AVery interesting!\x01This is a \x05\x41Big Poe\x05\x40!\x04\x1AI'll buy it for \x05\x4150 Rupees\x05\x40.\x04On top of that, I'll put \x05\x41100\x01points \x05\x40on your card.\x04\x1AIf you earn \x05\x41100 points\x05\x40, you'll\x01be a happy man! Heh heh.")
-        update_message_by_id(messages, 0x70f8, "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41100 points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned 100 points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this.")
-
     # add a cheaper bombchu pack to the bombchu shop
     # describe
     add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
@@ -1189,15 +1188,15 @@ def patch_rom(world, rom):
 
     repack_messages(rom, messages)
     write_shop_items(rom, shop_items)
-    
-    # with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
-    #     messages = read_messages(rom)
-    #     shop_items = read_shop_items(rom)
-    #     for m in messages:
-    #         f.write(str(m) + '\n\n')
-    #     f.write('\n\n\n\n\n')
-    #     for s in shop_items:
-    #         f.write(str(s) + '\n\n')
+
+    with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
+        messages = read_messages(rom)
+        shop_items = read_shop_items(rom)
+        for m in messages:
+            f.write(str(m) + '\n\n')
+        f.write('\n\n\n\n\n')
+        for s in shop_items:
+            f.write(str(s) + '\n\n')
 
     # text shuffle
     if world.text_shuffle == 'except_hints':
