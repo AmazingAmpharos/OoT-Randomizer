@@ -132,10 +132,12 @@ def guiMain(settings=None):
         "open_forest":        { "text": "Open Forest",                      "group": "logic",  "default": "unchecked" },
         "open_door_of_time":  { "text": "Open Door of Time",                "group": "logic",  "default": "unchecked" },
         "unlocked_ganondorf": { "text": "Remove Ganon's Boss Door Lock",    "group": "logic",  "default": "unchecked" },
-        "no_escape_sequence": { "text": "Skip Tower Collapse Escape Sequence", "group": "logic",  "default": "unchecked" },
         "keysanity":          { "text": "Keysanity",                        "group": "logic",  "default": "unchecked" },
         "nodungeonitems":     { "text": "Remove Maps and Compasses",        "group": "logic",  "default": "unchecked" },
         "beatableonly":       { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "unchecked" },
+        "no_escape_sequence": { "text": "Skip Tower Collapse Escape Sequence", "group": "logic",  "default": "unchecked" },
+        "no_guard_stealth":   { "text": "Skip Interior Castle Guard Stealth Sequence", "group": "logic",  "default": "unchecked" },
+        "only_one_big_poe":   { "text": "Big Poe Reward only requires one Big Poe", "group": "logic",  "default": "unchecked" },
 
         "ocarina_songs":      { "text": "Randomize ocarina song notes",     "group": "other",  "default": "unchecked" },
 

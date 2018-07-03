@@ -1034,6 +1034,18 @@ def patch_rom(world, rom):
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
 
+    # skip castle guard stealth sequence
+    if world.no_guard_stealth:
+        # change the exit at child/day crawlspace to the end of zelda's goddess cutscene
+        rom.write_bytes(0x21F60DE, [0x05, 0xF0])
+
+    # sonly one big poe needs to be caught to get the buyer's reward
+    if world.only_one_big_poe:
+        # change the value checked (in code) from 1000 to 100
+        rom.write_bytes(0xEE69CE, [0x00, 0x64])
+        # TODO: update dialogue
+
+
     # Sets hooks for gossip stone changes
     if world.hints != 'none':
         if world.hints != 'mask':
