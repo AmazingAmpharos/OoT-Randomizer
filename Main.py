@@ -92,6 +92,7 @@ def main(settings):
 def copy_world(world):
     # ToDo: Not good yet
     ret = World(world.settings)
+    ret.trials = world.trials
     ret.seed = world.seed
     ret.can_take_damage = world.can_take_damage
     create_regions(ret)

@@ -186,12 +186,23 @@ setting_infos = [
                     Fast:   Free only the carpenter closest to Link's prison to get the Gerudo Card.
                     Open:   Start with the Gerudo Card and all it's benefits.
                     '''}),
-    Setting_Info('fast_ganon', bool, 1, True, {
+    Setting_Info('trials', str, 3, True, {
+            'default': '6',
+            'const': '6',
+            'nargs': '?',
+            'choices': ['0', '1', '2', '3', '4', '5', '6'],
             'help': '''\
-                    The barrier within Ganon's Castle leading to Ganon's Tower is dispelled from the
-                    beginning of the game, the Boss Key is not required in Ganon's Tower, Ganondorf
-                    gives a hint for the location of Light Arrows, and the tower collapse sequence
-                    is removed.
+                    Select how many trials must be cleared to enter Ganon's Tower.
+                    The trials you must complete will be selected randomly.
+                    '''}),
+    Setting_Info('no_escape_sequence', bool, 1, True, {
+            'help': '''\
+                    The tower collapse escape sequence between Ganondorf and Ganon will be skipped.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('unlocked_ganondorf', bool, 1, True, {
+            'help': '''\
+                    The Boss Key door in Ganon's Tower will start unlocked.
                     ''',
             'action': 'store_true'}),
     Setting_Info('keysanity', bool, 1, True, {

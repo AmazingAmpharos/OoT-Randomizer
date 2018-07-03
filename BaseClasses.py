@@ -29,6 +29,15 @@ class World(object):
         # group a few others
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
         self.navi_colors = [self.navicolordefault, self.navicolorenemy, self.navicolornpc, self.navicolorprop]
+        # trials that can be skipped will be decided later
+        self.skipped_trials = {
+            'Forest': False,
+            'Fire': False,
+            'Water': False,
+            'Spirit': False,
+            'Shadow': False,
+            'Light': False
+        }
 
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
@@ -616,7 +625,7 @@ class Spoiler(object):
                          'forest': self.world.open_forest,
                          'door': self.world.open_door_of_time,
                          'gerudo_fortress': self.world.gerudo_fortress,
-                         'ganon': self.world.fast_ganon,
+                         'trials': self.world.trials,
                          'keysanity': self.world.keysanity,
                          'completeable': not self.world.check_beatable_only,
                          'dungeonitems': self.world.place_dungeon_items,
@@ -631,8 +640,8 @@ class Spoiler(object):
             outfile.write('Rainbow Bridge Requirement:      %s\n' % self.metadata['bridge'])
             outfile.write('Open Forest:                     %s\n' % ('Yes' if self.metadata['forest'] else 'No'))
             outfile.write('Open Door of Time:               %s\n' % ('Yes' if self.metadata['door'] else 'No'))
-            outfile.write('Gerudo Fortress:                 %s\n' % self.metadata['gerudo_fortress'])
-            outfile.write('Fast Ganon\'s Castle:             %s\n' % ('Yes' if self.metadata['ganon'] else 'No'))
+            outfile.write('Gerudo Fortress:                 %s\n' % self.metadata['gerudo_fortress'] )
+            outfile.write('Trials:                          %s\n' % self.metadata['trials'] )
             outfile.write('Keysanity:                       %s\n' % ('Yes' if self.metadata['keysanity'] else 'No'))
             outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
             outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))

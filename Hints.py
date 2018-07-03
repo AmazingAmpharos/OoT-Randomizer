@@ -329,7 +329,7 @@ def buildGanonText(world, rom):
     endText(Block_code)
     rom.write_bytes(0x9611F1, Block_code)
 
-    if world.fast_ganon:
+    if world.trials == '0':
         for location in world.get_locations():
             if location.item.name == 'Light Arrows':
                 Block_code = getBytes(getHint('Light Arrow Location').text)

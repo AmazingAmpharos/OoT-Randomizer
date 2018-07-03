@@ -999,16 +999,25 @@ def patch_rom(world, rom):
     if world.open_door_of_time:
         write_bits_to_save(0xEDC, 0x08) # "Opened the Door of Time"
 
-    if world.fast_ganon:
+    # "fast-ganon" stuff
+    if world.no_escape_sequence:
         rom.write_bytes(0xD82A12, [0x05, 0x17]) # Sets exit from Ganondorf fight to entrance to Ganon fight
-        write_bits_to_save(0x0EE8, 0x20) # "Completed Spirit Trial"
-        write_bits_to_save(0x0EEA, 0x80) # "Completed Light Trial"
-        write_bits_to_save(0x0EEA, 0x40) # "Completed Fire Trial"
-        write_bits_to_save(0x0EEA, 0x20) # "Completed Shadow Trial"
-        write_bits_to_save(0x0EEA, 0x10) # "Completed Water Trial"
-        write_bits_to_save(0x0EEA, 0x08) # "Completed Forest Trial"
-        write_bits_to_save(0x0EED, 0x08) # "Dispelled Ganon's Tower Barrier"
+    if world.unlocked_ganondorf:
         write_bits_to_save(0x00D4 + 0x0A * 0x1C + 0x04 + 0x1, 0x10) # Ganon's Tower switch flag (unlock boss key door)
+    if world.skipped_trials['Forest']:
+        write_bits_to_save(0x0EEA, 0x08) # "Completed Forest Trial"
+    if world.skipped_trials['Fire']:
+        write_bits_to_save(0x0EEA, 0x40) # "Completed Fire Trial"
+    if world.skipped_trials['Water']:
+        write_bits_to_save(0x0EEA, 0x10) # "Completed Water Trial"
+    if world.skipped_trials['Spirit']:
+        write_bits_to_save(0x0EE8, 0x20) # "Completed Spirit Trial"
+    if world.skipped_trials['Shadow']:
+        write_bits_to_save(0x0EEA, 0x20) # "Completed Shadow Trial"
+    if world.skipped_trials['Light']:
+        write_bits_to_save(0x0EEA, 0x80) # "Completed Light Trial"
+    if world.trials == '0':
+        write_bits_to_save(0x0EED, 0x08) # "Dispelled Ganon's Tower Barrier"
 
     # open gerudo fortress
     if world.gerudo_fortress == 'open':
