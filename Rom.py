@@ -1108,6 +1108,12 @@ def patch_rom(world, rom):
     # Write item overrides
     rom.write_bytes(0x3481000, get_override_table(world))
 
+    # Update chest type sizes
+    if world.correct_chest_sizes:
+        for address, chestType in get_new_chest_type_table(world):
+            chestVal = rom.read_int16(address) & 0x0FFF
+            rom.write_int16(address, chestVal | chestType)
+
     # Patch songs and boss rewards
     for location in world.get_locations():
         item = location.item
@@ -1354,3 +1360,54 @@ def get_override_entry(location):
         return [scene, 0x02, default, item_id]
     else:
         return []
+
+
+chestTypeMap = {
+        #    small   big     boss
+    0x0000: [0x5000, 0x0000, 0x2000], #Large
+    0x1000: [0x7000, 0x1000, 0x1000], #Large, Appears, Clear Flag
+    0x2000: [0x5000, 0x0000, 0x2000], #Boss Key’s Chest
+    0x3000: [0x8000, 0x3000, 0x3000], #Large, Falling, Switch Flag
+    0x4000: [0x6000, 0x4000, 0x4000], #Large, Invisible
+    0x5000: [0x5000, 0x0000, 0x2000], #Small
+    0x6000: [0x6000, 0x4000, 0x4000], #Small, Invisible
+    0x7000: [0x7000, 0x1000, 0x1000], #Small, Appears, Clear Flag
+    0x8000: [0x8000, 0x3000, 0x3000], #Small, Falling, Switch Flag
+    0x9000: [0x9000, 0x9000, 0x9000], #Large, Appears, Zelda's Lullaby
+    0xA000: [0xA000, 0xA000, 0xA000], #Large, Appears, Sun's Song Triggered
+    0xB000: [0xB000, 0xB000, 0xB000], #Large, Appears, Switch Flag
+    0xC000: [0x5000, 0x0000, 0x2000], #Large
+    0xD000: [0x5000, 0x0000, 0x2000], #Large
+    0xE000: [0x5000, 0x0000, 0x2000], #Large
+    0xF000: [0x5000, 0x0000, 0x2000], #Large
+}
+
+def get_new_chest_type_table(world):
+    chest_type_entries = []
+    for location in world.get_locations():
+        (address, chestType) = get_new_chest_type_entry(location)
+        if address != None:
+            chest_type_entries.append((address, chestType))
+    return chest_type_entries
+
+def get_new_chest_type_entry(location):
+    address = location.address
+    scene = location.scene
+    default = location.default
+    item_id = location.item.index
+
+    if None in [address, scene, default, item_id]:
+        return (None, None)
+
+    itemType = 0
+    if location.item.key:
+        itemType = 2
+    elif location.item.advancement:
+        itemType = 1
+
+    if location.type == 'Chest':
+        chestType = default & 0xF000
+        newChestType = chestTypeMap[chestType][itemType]
+        return (address, newChestType)
+    else:
+        return (None, None)

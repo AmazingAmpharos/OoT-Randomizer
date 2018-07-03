@@ -370,6 +370,17 @@ setting_infos = [
                     Randomizes the notes need to play for each ocarina song.
                     ''',
             'action': 'store_true'}),
+    Setting_Info('correct_chest_sizes', bool, 1, True, {
+            'help': '''\
+                    Updates the chest sizes to match their contents.
+                    Small Chest = Useless Item
+                    Big Chest = Progression Item
+                    Boss Chest = Dungeon Item
+                    ''',
+            'action': 'store_true'}),
+
+
+
     Setting_Info('kokiricolor', str, 0, False, {
             'default': 'Kokiri Green',
             'const': 'Kokiri Green',

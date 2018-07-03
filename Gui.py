@@ -142,6 +142,7 @@ def guiMain(settings=None):
 
         "nodungeonitems":     { "text": "Remove Maps and Compasses",        "group": "other",  "default": "unchecked" },
         "ocarina_songs":      { "text": "Randomize ocarina song notes",     "group": "other",  "default": "unchecked" },
+        "correct_chest_sizes":{ "text": "Chests size matches contents",     "group": "other",  "default": "unchecked" },
 
         "logic_no_big_poes":            { "text": "No Big Poes",               "group": "rewards",  "default": "unchecked" },
         "logic_no_trade_skull_mask":    { "text": "No Skull Mask reward",      "group": "rewards",  "default": "unchecked" },
@@ -439,7 +440,7 @@ def guiMain(settings=None):
 
 
     def generateRom():
-        settings = guivars_to_settings(guivars)
+            settings = guivars_to_settings(guivars)
 
         try:
             if settings.count is not None:
