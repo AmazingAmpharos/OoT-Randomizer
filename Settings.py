@@ -55,6 +55,18 @@ class Setting_Info():
 # holds the particular choices for a run's settings
 class Settings():
 
+    def get_settings_display(self):
+        padding = 0
+        for setting in filter(lambda s: s.shared, setting_infos):
+            padding = max( len(setting.name), padding )
+        padding += 2
+        output = ''
+        for setting in filter(lambda s: s.shared, setting_infos):
+            name = setting.name + ': ' + ' ' * (padding - len(setting.name))
+            val = str(self.__dict__[setting.name])
+            output += name + val + '\n'
+        return output
+
     def get_settings_string(self):
         bits = []
         for setting in filter(lambda s: s.shared and s.bitwidth > 0, setting_infos):
