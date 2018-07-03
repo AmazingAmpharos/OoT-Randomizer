@@ -7,10 +7,6 @@ TEXT_START = 0x92D000
 
 SHOP_ITEM_START = 0xC022CC
 
-# reads len bytes from the rom starting at offset
-def read_bytes(rom, offset, len):
-    return rom.buffer[offset : offset + len]
-
 # name of type, followed by number of additional bytes to read, follwed by a function that prints the code
 CONTROL_CODES = {
     0x01: ('line-break', 0, lambda _: '\n' ),
@@ -277,15 +273,15 @@ class Message():
     def from_rom(cls, rom, index):
 
         entry_offset = TABLE_START + 8 * index
-        entry = read_bytes(rom, entry_offset, 8)
-        next = read_bytes(rom, entry_offset + 8, 8)
+        entry = rom.read_bytes(entry_offset, 8)
+        next = rom.read_bytes(entry_offset + 8, 8)
 
         id = bytes_to_int(entry[0:2])
         opts = entry[2]
         offset = bytes_to_int(entry[5:8])
         length = bytes_to_int(next[5:8]) - offset
 
-        raw_text = read_bytes(rom, TEXT_START + offset, length)
+        raw_text = rom.read_bytes(TEXT_START + offset, length)
 
         return cls(raw_text, index, id, opts, offset, length)
 
@@ -361,7 +357,7 @@ class Shop_Item():
     def __init__(self, rom, index):
 
         entry_offset = SHOP_ITEM_START + 0x20 * index
-        entry = read_bytes(rom, entry_offset, 0x20)
+        entry = rom.read_bytes(entry_offset, 0x20)
 
         self.index = index
         self.object = bytes_to_int(entry[0x00:0x02])
@@ -451,7 +447,7 @@ def read_messages(rom):
     index = 0
     messages = []
     while True:
-        entry = read_bytes(rom, table_offset, 8)
+        entry = rom.read_bytes(table_offset, 8)
         id = bytes_to_int(entry[0:2])
 
         if id == 0xFFFD:

@@ -98,6 +98,20 @@ class LocalRom(object):
         # extend to 64MB
         self.buffer.extend(bytearray([0x00] * (67108864 - len(self.buffer))))
             
+    def read_byte(self, address):
+        return self.buffer[address]
+
+    def read_bytes(self, address, len):
+        return self.buffer[address : address + len]
+
+    def read_int16(self, address):
+        return bytes_as_int16(self.read_bytes(address, 2))
+
+    def read_int24(self, address):
+        return bytes_as_int24(self.read_bytes(address, 3))
+
+    def read_int32(self, address):
+        return bytes_as_int32(self.read_bytes(address, 4))
 
     def write_byte(self, address, value):
         self.buffer[address] = value
@@ -106,10 +120,13 @@ class LocalRom(object):
         for i, value in enumerate(values):
             self.write_byte(startaddress + i, value)
 
-    def write_int16_to_rom(self, address, value):
+    def write_int16(self, address, value):
         self.write_bytes(address, int16_as_bytes(value))
 
-    def write_int32_to_rom(self, address, value):
+    def write_int24(self, address, value):
+        self.write_bytes(address, int24_as_bytes(value))
+
+    def write_int32(self, address, value):
         self.write_bytes(address, int32_as_bytes(value))
 
     def write_to_file(self, file):
@@ -124,11 +141,27 @@ def read_rom(stream):
 
 def int16_as_bytes(value):
     value = value & 0xFFFF
-    return [value & 0xFF, (value >> 8) & 0xFF]
+    return [(value >> 8) & 0xFF, value & 0xFF]
+
+def int24_as_bytes(value):
+    value = value & 0xFFFFFFFF
+    return [(value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF]
 
 def int32_as_bytes(value):
     value = value & 0xFFFFFFFF
-    return [value & 0xFF, (value >> 8) & 0xFF, (value >> 16) & 0xFF, (value >> 24) & 0xFF]
+    return [(value >> 24) & 0xFF, (value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF]
+
+def bytes_as_int16(values):
+    return (values[0] << 8) | values[1]
+
+def bytes_as_int24(values):
+    return (values[0] << 16) | (values[1] << 8) | values[2]
+
+def bytes_as_int32(values):
+    return (values[0] << 24) | (values[1] << 16) | (values[2] << 8) | values[3]
+
+
+
 
 def patch_rom(world, rom):
     with open(local_path('data/base2current.json'), 'r') as stream:
