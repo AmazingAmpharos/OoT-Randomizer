@@ -13,6 +13,7 @@ def read_bytes(rom, offset, len):
 
 # name of type, followed by number of additional bytes to read, follwed by a function that prints the code
 CONTROL_CODES = {
+    0x00: ('pad', 0, lambda _: '<pad>' ),
     0x01: ('line-break', 0, lambda _: '\n' ),
     0x02: ('end', 0, lambda _: '' ),
     0x04: ('box-break', 0, lambda _: '\n▼\n' ),
@@ -246,6 +247,10 @@ class Message():
             if ending:
                 offset = ending.write(rom, offset) # write special ending
             offset = Text_Code(0x02, 0).write(rom, offset) # write end code
+
+
+        while offset % 4 > 0:
+            offset = Text_Code(0x00, 0).write(rom, offset) # pad to 4 byte align
 
         return offset
 

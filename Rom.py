@@ -1093,18 +1093,19 @@ def patch_rom(world, rom):
     # keysanity messages
     if world.keysanity:
         message_patch_for_keysanity(rom, messages, shop_items)
-        # with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
-        #     messages = read_messages(rom)
-        #     shop_items = read_shop_items(rom)
-        #     for m in messages:
-        #         f.write(str(m) + '\n\n')
-        #     f.write('\n\n\n\n\n')
-        #     for s in shop_items:
-        #         f.write(str(s) + '\n\n')
 
 
     repack_messages(rom, messages)
     write_shop_items(rom, shop_items)
+    # output a text dump, for testing...
+    # with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
+    #     messages = read_messages(rom)
+    #     shop_items = read_shop_items(rom)
+    #     for m in messages:
+    #         f.write(str(m) + '\n\n')
+    #     f.write('\n\n\n\n\n')
+    #     for s in shop_items:
+    #         f.write(str(s) + '\n\n')
 
 
     # text shuffle
