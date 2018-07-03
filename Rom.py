@@ -1039,13 +1039,6 @@ def patch_rom(world, rom):
         # change the exit at child/day crawlspace to the end of zelda's goddess cutscene
         rom.write_bytes(0x21F60DE, [0x05, 0xF0])
 
-    # sonly one big poe needs to be caught to get the buyer's reward
-    if world.only_one_big_poe:
-        # change the value checked (in code) from 1000 to 100
-        rom.write_bytes(0xEE69CE, [0x00, 0x64])
-        # TODO: update dialogue
-
-
     # Sets hooks for gossip stone changes
     if world.hints != 'none':
         if world.hints != 'mask':
@@ -1168,6 +1161,14 @@ def patch_rom(world, rom):
     shop_items = read_shop_items(rom)
     remove_unused_messages(messages)
 
+    # only one big poe needs to be caught to get the buyer's reward
+    if world.only_one_big_poe:
+        # change the value checked (in code) from 1000 to 100
+        rom.write_bytes(0xEE69CE, [0x00, 0x64])
+        # update dialogue
+        update_message_by_id(messages, 0x70f7, "\x1AOh, you brought a Poe today!\x04\x1AHmmmm!\x04\x1AVery interesting!\x01This is a \x05\x41Big Poe\x05\x40!\x04\x1AI'll buy it for \x05\x4150 Rupees\x05\x40.\x04On top of that, I'll put \x05\x41100\x01points \x05\x40on your card.\x04\x1AIf you earn \x05\x41100 points\x05\x40, you'll\x01be a happy man! Heh heh.")
+        update_message_by_id(messages, 0x70f8, "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41100 points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned 100 points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this.")
+
     # add a cheaper bombchu pack to the bombchu shop
     # describe
     add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
@@ -1183,19 +1184,20 @@ def patch_rom(world, rom):
     # keysanity messages
     if world.keysanity:
         message_patch_for_keysanity(rom, messages, shop_items)
-        # with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
-        #     messages = read_messages(rom)
-        #     shop_items = read_shop_items(rom)
-        #     for m in messages:
-        #         f.write(str(m) + '\n\n')
-        #     f.write('\n\n\n\n\n')
-        #     for s in shop_items:
-        #         f.write(str(s) + '\n\n')
+
 
 
     repack_messages(rom, messages)
     write_shop_items(rom, shop_items)
-
+    
+    # with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
+    #     messages = read_messages(rom)
+    #     shop_items = read_shop_items(rom)
+    #     for m in messages:
+    #         f.write(str(m) + '\n\n')
+    #     f.write('\n\n\n\n\n')
+    #     for s in shop_items:
+    #         f.write(str(s) + '\n\n')
 
     # text shuffle
     if world.text_shuffle == 'except_hints':

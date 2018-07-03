@@ -297,9 +297,23 @@ class Message():
 
     __str__ = __repr__ = display
 
-# wrapper for added a string message to a list of messages
+# wrapper for updating the text of a message, given its message id
+# if the id does not exist in the list, this will silently do nothing
+def update_message_by_id(messages, id, text):
+    # get the message index
+    index = next( (m.index for m in messages if m.id == id), -1)
+    # update if it was found
+    if index >= 0:
+        update_message_by_index(messages, index, text)
+
+# wrapper for updating the text of a message, given its index in the list
+def update_message_by_index(messages, index, text):
+    messages[index] = Message.from_string(text, messages[index].id, messages[index].opts)
+
+# wrapper for adding a string message to a list of messages
 def add_message(messages, text, id=0, opts=0x00):
     messages.append( Message.from_string(text, id, opts) )
+    messages[-1].index = len(messages) - 1
 
 # holds a row in the shop item table (which contains pointers to the description and purchase messages)
 class Shop_Item():
@@ -392,6 +406,8 @@ def get_shop_message_id_set(shop_items):
 # remove all messages that easy to tell are unused to create space in the message index table
 def remove_unused_messages(messages):
     messages[:] = [m for m in messages if not m.is_id_message()]
+    for index, m in enumerate(messages):
+        m.index = index
 
 # takes all messages used for shop items, and moves messages from the 00xx range into the unused 80xx range
 def move_shop_item_messages(messages, shop_items):
