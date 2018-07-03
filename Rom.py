@@ -1034,6 +1034,11 @@ def patch_rom(world, rom):
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
 
+    # Skip Epona race
+    if world.no_epona_race:
+        write_bits_to_save(0x0ED6, 0x01) # "Obtained Epona"
+
+
     # skip castle guard stealth sequence
     if world.no_guard_stealth:
         # change the exit at child/day crawlspace to the end of zelda's goddess cutscene

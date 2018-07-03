@@ -41,6 +41,7 @@ Options for speeding up carpenter rescue portion of Gerudo Fortress
 Options to skip some sequences that only pad the time of completing the game without ever really changing between seeds have been added:
 
 - `no_guard_stealth`: the stealth sequence between the crawlspace into Hyrule Castle and Zelda's courtyard will be skipped.
+- `no_epona_race`: you can summon Epona with her song without racing Ingo.
 - `only_one_big_poe`: the poe buyer will give the reward after selling 1 Big Poe instead of 10.
 
 ## Bombchus

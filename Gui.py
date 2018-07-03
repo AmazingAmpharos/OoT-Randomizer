@@ -137,6 +137,7 @@ def guiMain(settings=None):
 
         "no_escape_sequence": { "text": "Skip Tower Collapse Escape Sequence",         "group": "convenience",  "default": "unchecked" },
         "no_guard_stealth":   { "text": "Skip Interior Castle Guard Stealth Sequence", "group": "convenience",  "default": "unchecked" },
+        "no_epona_race":      { "text": "Skip Epona Race",                             "group": "convenience",  "default": "unchecked" },
         "only_one_big_poe":   { "text": "Big Poe Reward only requires one Big Poe",    "group": "convenience",  "default": "unchecked" },
 
         "nodungeonitems":     { "text": "Remove Maps and Compasses",        "group": "other",  "default": "unchecked" },

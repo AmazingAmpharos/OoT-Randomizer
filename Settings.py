@@ -217,6 +217,11 @@ setting_infos = [
                     The crawlspace into Hyrule Castle will take you straight to Zelda.
                     ''',
             'action': 'store_true'}),
+    Setting_Info('no_epona_race', bool, 1, True, {
+            'help': '''\
+                    Having Epona's song will allow you to summon epona without racing Ingo.
+                    ''',
+            'action': 'store_true'}),
     Setting_Info('only_one_big_poe', bool, 1, True, {
             'help': '''\
                     The Poe buyer will give a reward for turning in a single Big Poe.
