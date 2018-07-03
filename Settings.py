@@ -200,6 +200,16 @@ setting_infos = [
                     The tower collapse escape sequence between Ganondorf and Ganon will be skipped.
                     ''',
             'action': 'store_true'}),
+    # Setting_Info('no_courtyard_sequence', bool, 1, True, {
+    #         'help': '''\
+    #                 The crawlspace into Hyrule Castle will take you straight to Zelda.
+    #                 ''',
+    #         'action': 'store_true'}),
+    # Setting_Info('only_one_big_poe', bool, 1, True, {
+    #         'help': '''\
+    #                 The Poe buyer will give a reward for turning in a single Big Poe.
+    #                 ''',
+    #         'action': 'store_true'}),
     Setting_Info('unlocked_ganondorf', bool, 1, True, {
             'help': '''\
                     The Boss Key door in Ganon's Tower will start unlocked.

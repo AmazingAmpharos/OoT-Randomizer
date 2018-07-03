@@ -92,7 +92,7 @@ def main(settings):
 def copy_world(world):
     # ToDo: Not good yet
     ret = World(world.settings)
-    ret.trials = world.trials
+    ret.skipped_trials = world.skipped_trials
     ret.seed = world.seed
     ret.can_take_damage = world.can_take_damage
     create_regions(ret)
@@ -125,6 +125,8 @@ def copy_world(world):
     return ret
 
 def create_playthrough(world):
+    if world.check_beatable_only and not world.can_beat_game():
+        raise RuntimeError('Uncopied is broken too.')
     # create a copy as we will modify it
     old_world = world
     world = copy_world(world)
