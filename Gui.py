@@ -133,12 +133,13 @@ def guiMain(settings=None):
         "open_door_of_time":  { "text": "Open Door of Time",                "group": "logic",  "default": "unchecked" },
         "unlocked_ganondorf": { "text": "Remove Ganon's Boss Door Lock",    "group": "logic",  "default": "unchecked" },
         "keysanity":          { "text": "Keysanity",                        "group": "logic",  "default": "unchecked" },
-        "nodungeonitems":     { "text": "Remove Maps and Compasses",        "group": "logic",  "default": "unchecked" },
         "beatableonly":       { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "unchecked" },
-        "no_escape_sequence": { "text": "Skip Tower Collapse Escape Sequence", "group": "logic",  "default": "unchecked" },
-        "no_guard_stealth":   { "text": "Skip Interior Castle Guard Stealth Sequence", "group": "logic",  "default": "unchecked" },
-        "only_one_big_poe":   { "text": "Big Poe Reward only requires one Big Poe", "group": "logic",  "default": "unchecked" },
 
+        "no_escape_sequence": { "text": "Skip Tower Collapse Escape Sequence",         "group": "convenience",  "default": "unchecked" },
+        "no_guard_stealth":   { "text": "Skip Interior Castle Guard Stealth Sequence", "group": "convenience",  "default": "unchecked" },
+        "only_one_big_poe":   { "text": "Big Poe Reward only requires one Big Poe",    "group": "convenience",  "default": "unchecked" },
+
+        "nodungeonitems":     { "text": "Remove Maps and Compasses",        "group": "other",  "default": "unchecked" },
         "ocarina_songs":      { "text": "Randomize ocarina song notes",     "group": "other",  "default": "unchecked" },
 
         "logic_no_big_poes":            { "text": "No Big Poes",               "group": "rewards",  "default": "unchecked" },
@@ -272,7 +273,10 @@ def guiMain(settings=None):
             (rainbowBridgeFrame, guivars['bridge']) = MakeRadioList(leftMiddleChecks, bridge_requirements_data)
             (trialsFrame, guivars['trials']) = MakeRadioList(leftMiddleChecks, trials_data)
             (gerudoFrame, guivars['gerudo_fortress'])  = MakeRadioList(leftMiddleChecks, gerudo_fortress_data)
-        logicOptionsFrame = LabelFrame(checkAndRadioFrame, text='Logic', labelanchor=NW)
+        rightMiddleChecks = Frame(checkAndRadioFrame)
+        if True: # just indenting for hierarchy clarity
+            logicOptionsFrame = LabelFrame(rightMiddleChecks, text='Mode', labelanchor=NW)
+            convenienceOptionsFrame = LabelFrame(rightMiddleChecks, text='Conveniences', labelanchor=NW)
         rightSideChecks = Frame(checkAndRadioFrame)
         if True: # just indenting for hierarchy clarity
             (hintsFrame, guivars['hints'])  = MakeRadioList(rightSideChecks, hint_options_data)
@@ -314,7 +318,7 @@ def guiMain(settings=None):
         # create a variable to access the box's state
         guivars[var_name] = IntVar(value=default_value)
         # create the checkbox
-        parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame, 'other': otherOptionsFrame,
+        parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame, 'other': otherOptionsFrame, 'convenience': convenienceOptionsFrame,
                    'rewards': rewardsFrame, 'tricks': tricksFrame}[info["group"]] # sorry, this is gross; I was reaching my limit
         checkboxes[var_name] = Checkbutton(parent, text=info["text"], variable=guivars[var_name], justify=LEFT, wraplength=170)
         checkboxes[var_name].pack(expand=True, anchor=W)
@@ -339,19 +343,21 @@ def guiMain(settings=None):
     # pack the hierarchy
 
     # Ranomize tab
-    outputOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
-    textShuffleFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
+    outputOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=(5,1) )
+    textShuffleFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=(1,5) )
     leftSideChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
-    rainbowBridgeFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
-    trialsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
-    gerudoFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
+    rainbowBridgeFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=(5,1))
+    trialsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=1)
+    gerudoFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=(1,5))
     leftMiddleChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
-    logicOptionsFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5, pady=5)
+    logicOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=(5,1))
+    convenienceOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=(1,5))
+    rightMiddleChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
-    hintsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
-    otherOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
+    hintsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=(5,1))
+    otherOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=(1,5))
     rightSideChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
     checkAndRadioFrame.pack(side=TOP, anchor=N)

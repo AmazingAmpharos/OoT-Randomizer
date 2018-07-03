@@ -23,7 +23,7 @@ A bunch of optional logic changes can be applied from the "Detailed Logic" tab:
 
 ## Fast Ganon broken into components
 
-What was once called `fast-ganon` is now broken into 3 separate options:
+What was once called `fast_ganon` is now broken into 3 separate options:
 
 - `trials`: specify the number of trials you need to do to dispel the barrier on Ganon's Tower (0-6). The trials you need to complete will be selected randomly.
 - `unlocked_ganondorf`: the boss key door in Ganon's Tower will be unlocked from the start.
