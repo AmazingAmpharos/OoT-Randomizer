@@ -124,31 +124,17 @@ def isDungeonItem(item):
     return item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey'
 
 
-# def writeHintToRom(hint, stoneAddress, rom):
-#     hintBytes = getBytes(hint)
-#     endText(hintBytes)
-#     rom.write_bytes(stoneAddress, hintBytes)
-
 def update_hint(messages, id, text):
     update_message_by_id(messages, id, get_raw_text(text))
 
 
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(world, messages):
-    # stoneAddresses = [0x938e4c, 0x938EA8, 0x938F04, 0x938F60, 0x938FBC, 0x939018, 0x939074, 0x9390D0, 0x93912C, 0x939188,
-    #                   0x9391E4, 0x939240, 0x93929C, 0x9392F8, 0x939354, 0x9393B0, 0x93940C, 0x939468, 0x9394C4, 0x939520,
-    #                   0x93957C, 0x9395D8, 0x939634, 0x939690, 0x9396EC, 0x939748, 0x9397A4, 0x939800, 0x93985C, 0x9398B8,
-    #                   0x939914, 0x939970] #address for gossip stone text boxes, byte limit is 92
-
 
     stoneIDs = [0x0401, 0x0402, 0x0403, 0x0404, 0x0405, 0x0406, 0x0407, 0x0408,
                 0x0409, 0x040A, 0x040B, 0x040C, 0x040D, 0x040E, 0x040F, 0x0410,
                 0x0411, 0x0412, 0x0413, 0x0414, 0x0415, 0x0416, 0x0417, 0x0418,
                 0x0419, 0x041A, 0x041B, 0x041C, 0x041D, 0x041E, 0x041F, 0x0420]
-
-    #hopefully fixes weird VC error where the last character from a previous text box would sometimes spill over into the next box.
-    # for address in range(stoneAddresses[0], 0x9399D8):
-    #     rom.write_byte(address, 0x08)
 
     #shuffles the stone addresses for randomization, always locations will be placed first and twice
     random.shuffle(stoneIDs)
@@ -250,10 +236,6 @@ def buildGossipHints(world, messages):
     junkHints = getHintGroup('junkHint', world)
     random.shuffle(junkHints)
     while stoneIDs:
-        # junkHint = junkHints.pop()
-        # Block_code = getBytes(junkHint.text)
-        # endText(Block_code)
-        # rom.write_bytes(stoneIDs.pop(0), Block_code)
         update_hint( messages, stoneIDs.pop(0), junkHints.pop().text )
 
 # builds boss reward text that is displayed at the temple of time altar for child and adult, pull based off of item in a fixed order.
@@ -269,7 +251,7 @@ def buildBossRewardHints(world, messages):
 
     text = setRewardColor(text)
     text += get_raw_text(getHint('Spiritual Stone Text End').text)
-    text += '\x08'
+    text += '\x0B'
 
     update_message_by_id(messages, 0x707a, text, 0x20)
 
@@ -282,7 +264,7 @@ def buildBossRewardHints(world, messages):
 
     text = setRewardColor(text)
     text += get_raw_text(getHint('Medallion Text End').text)
-    text += '\x08'
+    text += '\x0B'
 
     update_message_by_id(messages, 0x7057, start + text, 0x20)
 
@@ -315,23 +297,16 @@ def buildGanonText(world, messages):
     update_message_by_id(messages, 0x70C8, " ")
     update_message_by_id(messages, 0x70C9, " ")
     update_message_by_id(messages, 0x70CA, " ")
-    # rom.write_bytes(0xB884B1, [0x03, 0x41, 0xED])
-    # rom.write_bytes(0xB884B9, [0x03, 0x41, 0xEE])
-    # rom.write_bytes(0xB884C1, [0x03, 0x41, 0xEF])
-    # rom.write_bytes(0xB884C9, [0x03, 0x42, 0x99])
 
-    # clear space for new text
-    # for address in range(0x9611EC, 0x961349):
-    #     rom.write_byte(address, 0x08)
-
-    text = ''
     # lines before battle
+    text = '\x08'
     ganonLines = getHintGroup('ganonLine', world)
     random.shuffle(ganonLines)
     text = get_raw_text(ganonLines.pop().text)
     update_message_by_id(messages, 0x70CB, text)
 
-    text = ''
+    # light arrow hint or validation chest item
+    text = '\x08'
     if world.trials == '0':
         for location in world.get_locations():
             if location.item.name == 'Light Arrows':
@@ -346,29 +321,6 @@ def buildGanonText(world, messages):
                 text += get_raw_text(getHint(location.item.name).text)
     
     update_message_by_id(messages, 0x70CC, text)
-
-# #sets the end of text byte in the text box.
-# def endText(byteArray):
-#     return byteArray.extend([0x02])
-
-# # reads array of characters and converts them to an array of bytes.
-# def getBytes(string):
-#     byteCode = []
-#     for char in string:
-#         if char == '^':
-#             byteCode.extend([0x04])#box break
-#         elif char == '&':
-#             byteCode.extend([0x01])#new line
-#         elif char == '@':
-#             byteCode.extend([0x0F])#print player name
-#         elif char == '#':
-#             byteCode.extend([0x05, 0x40]) #sets color to white
-#         else:
-#             char = char.encode('utf-8')
-#             char = char.hex()
-#             byte = int('0x' + char, 16)
-#             byteCode.extend([byte])
-#     return byteCode
         
 def get_raw_text(string):
     text = ''

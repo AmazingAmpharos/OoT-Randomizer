@@ -1057,14 +1057,6 @@ def patch_rom(world, rom):
         if world.hints != 'mask':
             rom.write_bytes(0xEE7B84, [0x0C, 0x10, 0x02, 0x10])
             rom.write_bytes(0xEE7B8C, [0x24, 0x02, 0x00, 0x20])
-        # address = 0xB85B11
-        # offset = 0xBE4C
-        # for i in range(0,33):
-        #         offset_high = offset >> 8
-        #         offset_low = offset & 0x00FF
-        #         rom.write_bytes(address, [0x00, offset_high, offset_low])
-        #         offset = offset + 0x5C
-        #         address = address + 0x08
         buildGossipHints(world, messages)
 
     # Set hints for boss reward shuffle
@@ -1189,14 +1181,14 @@ def patch_rom(world, rom):
     repack_messages(rom, messages)
     write_shop_items(rom, shop_items)
 
-    with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
-        messages = read_messages(rom)
-        shop_items = read_shop_items(rom)
-        for m in messages:
-            f.write(str(m) + '\n\n')
-        f.write('\n\n\n\n\n')
-        for s in shop_items:
-            f.write(str(s) + '\n\n')
+    # with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
+    #     messages = read_messages(rom)
+    #     shop_items = read_shop_items(rom)
+    #     for m in messages:
+    #         f.write(str(m) + '\n\n')
+    #     f.write('\n\n\n\n\n')
+    #     for s in shop_items:
+    #         f.write(str(s) + '\n\n')
 
     # text shuffle
     if world.text_shuffle == 'except_hints':
