@@ -262,7 +262,7 @@ def buildBossRewardHints(world, messages):
     bossRewardsMedallions = ['Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Shadow Medallion', 'Spirit Medallion', 'Light Medallion']
 
     # text that appears at altar as a child.
-    text = ''
+    text = '\x08'
     text += get_raw_text(getHint('Spiritual Stone Text Start').text)
     for reward in bossRewardsSpiritualStones:
         text += buildBossString(reward, world)
@@ -275,7 +275,7 @@ def buildBossRewardHints(world, messages):
 
 
     # text that appears at altar as an adult.
-    start = 'When evil rules all, an awakening\x01voice from the Sacred Realm will\x01call those destined to be Sages,\x01who dwell in the \x05\x41five temples\x05\x40.\x04'
+    start = '\x08When evil rules all, an awakening\x01voice from the Sacred Realm will\x01call those destined to be Sages,\x01who dwell in the \x05\x41five temples\x05\x40.\x04'
     text = ''
     for reward in bossRewardsMedallions:
         text += buildBossString(reward, world)
