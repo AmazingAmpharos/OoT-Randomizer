@@ -102,6 +102,7 @@ hintTable = {'Hammer':                                                (" the dra
              'Kokiri Sword':                                          (" a butter knife", 'item'),
              'Biggoron Sword':                                        (" a shield disabler", 'item'),
              'Pocket Egg':                                            (" a cucco container", 'item'),
+             'Weird Egg':                                             (" an unsigned egg", 'item'),
              'Pocket Cucco':                                          (" a little clucker", 'item'),
              'Cojiro':                                                (" a cerulean capon", 'item'),
              'Odd Mushroom':                                          (" a powder ingredient", 'item'),

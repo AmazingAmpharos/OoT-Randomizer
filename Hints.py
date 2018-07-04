@@ -217,6 +217,8 @@ def buildGossipHints(world, messages):
 
     # add good item hints
     # only choose location if it is new and a good item
+    if world.shuffle_weird_egg:
+        gooditems.append('Weird Egg')
     gooditemlocations = [locationWorld for locationWorld in world.get_locations() 
             if not locationWorld.name in checkedLocations and \
             locationWorld.item.name in gooditems]
