@@ -441,7 +441,7 @@ def guiMain(settings=None):
 
 
     def generateRom():
-            settings = guivars_to_settings(guivars)
+        settings = guivars_to_settings(guivars)
 
         try:
             if settings.count is not None:
