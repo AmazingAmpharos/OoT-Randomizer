@@ -187,6 +187,14 @@ setting_infos = [
                     The Door of Time is open from the beginning of the game.
                     ''',
             'action': 'store_true'}),
+    Setting_Info('bombchus_in_logic', bool, 1, True, {
+            'help': '''\
+                    Bombchus will be considered in logic. This has a few effects:
+                    -Back alley shop will open once you've found Bombchus
+                    -It will sell an affordable pack (5 for 60), and never sell out
+                    -Bombchu Bowling will open once you've found Bombchus
+                    ''',
+            'action': 'store_true'}),
     Setting_Info('gerudo_fortress', str, 2, True, {
             'default': 'normal',
             'const': 'normal',

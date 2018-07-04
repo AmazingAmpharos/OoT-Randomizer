@@ -311,7 +311,10 @@ class CollectionState(object):
         return self.has('Master Sword')
 
     def has_bombchus(self):
-        return any(pritem.startswith('Bombchus') for pritem in self.prog_items) or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland'))
+        return (self.world.bombchus_in_logic and \
+                    (any(pritem.startswith('Bombchus') for pritem in self.prog_items) \
+                    or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
+            or (not self.world.bombchus_in_logic and self.has('Bomb Bag'))
 
     def has_explosives(self):
         return self.has('Bomb Bag') or self.has_bombchus()

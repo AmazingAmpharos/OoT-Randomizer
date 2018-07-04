@@ -218,17 +218,30 @@ def patch_rom(world, rom):
     # Remove locked door to Boss Key Chest in Fire Temple
     rom.write_byte(0x22D82B7, 0x3F)
 
-    # Change Bombchu Shop check to bombchus
-    rom.write_bytes(0xC6CED8, [0x80, 0x8A, 0x00, 0x7C, 0x24, 0x0B, 0x00, 0x09, 0x11, 0x4B, 0x00, 0x05])
-    # Change Bombchu Shop to never sell out
-    rom.write_bytes(0xC019C0, [0x10, 0x00, 0x00, 0x30])
+    if world.bombchus_in_logic:
+        # Change Bombchu Shop check to bombchus
+        rom.write_bytes(0xC6CED8, [0x80, 0x8A, 0x00, 0x7C, 0x24, 0x0B, 0x00, 0x09, 0x11, 0x4B, 0x00, 0x05])
+        # Change Bombchu Shop to never sell out
+        rom.write_bytes(0xC019C0, [0x10, 0x00, 0x00, 0x30])
 
-    # Change Bowling Alley check to bombchus (Part 1)
-    rom.write_bytes(0x00E2D714, [0x81, 0xEF, 0xA6, 0x4C])
-    rom.write_bytes(0x00E2D720, [0x24, 0x18, 0x00, 0x09, 0x11, 0xF8, 0x00, 0x06])
+        # Change Bowling Alley check to bombchus (Part 1)
+        rom.write_bytes(0x00E2D714, [0x81, 0xEF, 0xA6, 0x4C])
+        rom.write_bytes(0x00E2D720, [0x24, 0x18, 0x00, 0x09, 0x11, 0xF8, 0x00, 0x06])
 
-    # Change Bowling Alley check to bombchus (Part 2)
-    rom.write_bytes(0x00E2D890,  [0x81, 0x6B, 0xA6, 0x4C, 0x24, 0x0C, 0x00, 0x09, 0x51, 0x6C, 0x00, 0x0A])
+        # Change Bowling Alley check to bombchus (Part 2)
+        rom.write_bytes(0x00E2D890,  [0x81, 0x6B, 0xA6, 0x4C, 0x24, 0x0C, 0x00, 0x09, 0x51, 0x6C, 0x00, 0x0A])
+    else:
+        # Change Bombchu Shop check to Bomb Bag
+        rom.write_bytes(0xC6CEDA, [0x00, 0xA2])
+        rom.write_byte(0xC6CEDF, 0x18)
+
+        # Change Bowling Alley check to Bomb Bag (Part 1)
+        rom.write_bytes(0x00E2D716, [0xA6, 0x72])
+        rom.write_byte(0x00E2D723, 0x18)
+
+        # Change Bowling Alley check to Bomb Bag (Part 2)
+        rom.write_bytes(0x00E2D892, [0xA6, 0x72])
+        rom.write_byte(0x00E2D897, 0x18)
 
     # Change Bazaar check to Bomb Bag (Child?)
     rom.write_bytes(0x00C0082A, [0x00, 0x18])
@@ -1204,17 +1217,18 @@ def patch_rom(world, rom):
     # actually write the save table to rom
     rom.write_bytes(0x3481800, initial_save_table)
 
-    # add a cheaper bombchu pack to the bombchu shop
-    # describe
-    add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
-    # purchase
-    add_message(messages, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x80FF, 0x03)
-    rbl_bombchu = shop_items[0x0018]
-    rbl_bombchu.price = 60
-    rbl_bombchu.pieces = 5
-    rbl_bombchu.get_item_id = 0x006A
-    rbl_bombchu.description_message = 0x80FE
-    rbl_bombchu.purchase_message = 0x80FF
+    if world.bombchus_in_logic:
+        # add a cheaper bombchu pack to the bombchu shop
+        # describe
+        add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
+        # purchase
+        add_message(messages, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x80FF, 0x03)
+        rbl_bombchu = shop_items[0x0018]
+        rbl_bombchu.price = 60
+        rbl_bombchu.pieces = 5
+        rbl_bombchu.get_item_id = 0x006A
+        rbl_bombchu.description_message = 0x80FE
+        rbl_bombchu.purchase_message = 0x80FF
 
     # keysanity messages
     if world.keysanity:
