@@ -119,6 +119,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Mountain Crater Entrance'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Hyrule Castle Fairy'), lambda state: state.has_explosives())
     set_rule(world.get_location('Hyrule Castle Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))
+    set_rule(world.get_entrance('Hyrule Castle Garden'), lambda state: state.has('Weird Egg') or (not world.shuffle_weird_egg))    
     set_rule(world.get_entrance('Ganons Castle Grounds'), lambda state: state.is_adult())
     set_rule(world.get_entrance('Ganons Castle Fairy'), lambda state: state.has('Progressive Strength Upgrade', 3))
     set_rule(world.get_location('Ganons Castle Fairy Reward'), lambda state: state.has('Zeldas Lullaby'))

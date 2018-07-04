@@ -50,12 +50,15 @@ def generate_itempool(world):
         world.push_item(location, ItemFactory('Gold Skulltulla Token'), False)
         world.get_location(location).event = True
 
+    if not world.shuffle_weird_egg:
+        eventlocations['Malon Egg'] = 'Weird Egg'
+
     for location, item in eventlocations.items():
         world.push_item(location, ItemFactory(item), False)
         world.get_location(location).event = True
 
     # set up item pool
-    (pool, placed_items) = get_pool_core(world.place_dungeon_items)
+    (pool, placed_items) = get_pool_core(world.place_dungeon_items, world.shuffle_weird_egg)
     world.itempool = ItemFactory(pool)
     for (location, item) in placed_items:
         world.push_item(location, ItemFactory(item), False)
@@ -65,12 +68,15 @@ def generate_itempool(world):
     fill_bosses(world)
     fill_songs(world)
 
-def get_pool_core(dungeon_items):
+def get_pool_core(dungeon_items, shuffle_weird_egg):
     pool = []
     placed_items = []
 
     if not dungeon_items:
         pool.extend(notmapcompass)
+    if shuffle_weird_egg:
+        pool.append('Weird Egg')
+
     pool.extend(alwaysitems)
     for _ in range(normal_bottle_count):
         bottle = random.choice(normal_bottles)

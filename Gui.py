@@ -134,6 +134,7 @@ def guiMain(settings=None):
         "unlocked_ganondorf": { "text": "Remove Ganon's Boss Door Lock",    "group": "logic",  "default": "unchecked" },
         "keysanity":          { "text": "Keysanity",                        "group": "logic",  "default": "unchecked" },
         "beatableonly":       { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "unchecked" },
+        "shuffle_weird_egg":  { "text": "Shuffle Weird Egg",                "group": "logic",  "default": "unchecked" },
 
         "no_escape_sequence": { "text": "Skip Tower Collapse Escape Sequence",         "group": "convenience",  "default": "unchecked" },
         "no_guard_stealth":   { "text": "Skip Interior Castle Guard Stealth Sequence", "group": "convenience",  "default": "unchecked" },

@@ -251,6 +251,12 @@ setting_infos = [
                     on the restrictive algorithm currently.
                     ''',
             'action': 'store_true'}),
+    Setting_Info('shuffle_weird_egg', bool, 1, True, {
+            'help': '''\
+                    Shuffles the Weird Egg item from Malon into the pool.
+                    This means that you need to find the egg before going Zelda.
+                    ''',
+            'action': 'store_true'}),
     Setting_Info('hints', str, 2, True, {
             'default': 'none',
             'const': 'always',
