@@ -427,7 +427,7 @@ def add_keysanity_messages(messages):
         add_message(messages, text, id, 0x23)
 
 # run all keysanity related patching to add messages for dungeon specific items
-def message_patch_for_keysanity(rom, messages, shop_items):
+def message_patch_for_dungeon_items(rom, messages, shop_items):
     move_shop_item_messages(messages, shop_items)
     add_keysanity_messages(messages)
 

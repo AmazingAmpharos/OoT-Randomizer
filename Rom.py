@@ -1090,10 +1090,8 @@ def patch_rom(world, rom):
     rbl_bombchu.description_message = 0x80FE
     rbl_bombchu.purchase_message = 0x80FF
 
-    # keysanity messages
-    if world.keysanity:
-        message_patch_for_keysanity(rom, messages, shop_items)
-
+    # give dungeon items the correct messages
+    message_patch_for_dungeon_items(rom, messages, shop_items)
 
     repack_messages(rom, messages)
     write_shop_items(rom, shop_items)
