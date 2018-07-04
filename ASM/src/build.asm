@@ -32,6 +32,7 @@
 .include "menu.asm"
 .include "time_travel.asm"
 .include "song_fix.asm"
+.include "initial_save.asm"
 .endarea
 
 .close

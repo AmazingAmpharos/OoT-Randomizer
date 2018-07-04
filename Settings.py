@@ -7,7 +7,7 @@ import hashlib
 
 from Rom import get_tunic_color_options, get_navi_color_options
 
-__version__ = '2.9.2 f.LUM'
+__version__ = '2.9.4 f.LUM'
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 
@@ -54,6 +54,18 @@ class Setting_Info():
 
 # holds the particular choices for a run's settings
 class Settings():
+
+    def get_settings_display(self):
+        padding = 0
+        for setting in filter(lambda s: s.shared, setting_infos):
+            padding = max( len(setting.name), padding )
+        padding += 2
+        output = ''
+        for setting in filter(lambda s: s.shared, setting_infos):
+            name = setting.name + ': ' + ' ' * (padding - len(setting.name))
+            val = str(self.__dict__[setting.name])
+            output += name + val + '\n'
+        return output
 
     def get_settings_string(self):
         bits = []
@@ -175,6 +187,14 @@ setting_infos = [
                     The Door of Time is open from the beginning of the game.
                     ''',
             'action': 'store_true'}),
+    Setting_Info('bombchus_in_logic', bool, 1, True, {
+            'help': '''\
+                    Bombchus will be considered in logic. This has a few effects:
+                    -Back alley shop will open once you've found Bombchus
+                    -It will sell an affordable pack (5 for 60), and never sell out
+                    -Bombchu Bowling will open once you've found Bombchus
+                    ''',
+            'action': 'store_true'}),
     Setting_Info('gerudo_fortress', str, 2, True, {
             'default': 'normal',
             'const': 'normal',
@@ -186,12 +206,38 @@ setting_infos = [
                     Fast:   Free only the carpenter closest to Link's prison to get the Gerudo Card.
                     Open:   Start with the Gerudo Card and all it's benefits.
                     '''}),
-    Setting_Info('fast_ganon', bool, 1, True, {
+    Setting_Info('trials', str, 3, True, {
+            'default': '6',
+            'const': '6',
+            'nargs': '?',
+            'choices': ['0', '1', '2', '3', '4', '5', '6'],
             'help': '''\
-                    The barrier within Ganon's Castle leading to Ganon's Tower is dispelled from the
-                    beginning of the game, the Boss Key is not required in Ganon's Tower, Ganondorf
-                    gives a hint for the location of Light Arrows, and the tower collapse sequence
-                    is removed.
+                    Select how many trials must be cleared to enter Ganon's Tower.
+                    The trials you must complete will be selected randomly.
+                    '''}),
+    Setting_Info('no_escape_sequence', bool, 1, True, {
+            'help': '''\
+                    The tower collapse escape sequence between Ganondorf and Ganon will be skipped.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('no_guard_stealth', bool, 1, True, {
+            'help': '''\
+                    The crawlspace into Hyrule Castle will take you straight to Zelda.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('no_epona_race', bool, 1, True, {
+            'help': '''\
+                    Having Epona's song will allow you to summon epona without racing Ingo.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('only_one_big_poe', bool, 1, True, {
+            'help': '''\
+                    The Poe buyer will give a reward for turning in a single Big Poe.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('unlocked_ganondorf', bool, 1, True, {
+            'help': '''\
+                    The Boss Key door in Ganon's Tower will start unlocked.
                     ''',
             'action': 'store_true'}),
     Setting_Info('keysanity', bool, 1, True, {
@@ -211,6 +257,12 @@ setting_infos = [
                     Only check if the game is beatable with placement. Do not
                     ensure all locations are reachable. This only has an effect
                     on the restrictive algorithm currently.
+                    ''',
+            'action': 'store_true'}),
+    Setting_Info('shuffle_weird_egg', bool, 1, True, {
+            'help': '''\
+                    Shuffles the Weird Egg item from Malon into the pool.
+                    This means that you need to find the egg before going Zelda.
                     ''',
             'action': 'store_true'}),
     Setting_Info('hints', str, 2, True, {
@@ -332,6 +384,17 @@ setting_infos = [
                     Randomizes the notes need to play for each ocarina song.
                     ''',
             'action': 'store_true'}),
+    Setting_Info('correct_chest_sizes', bool, 1, True, {
+            'help': '''\
+                    Updates the chest sizes to match their contents.
+                    Small Chest = Useless Item
+                    Big Chest = Progression Item
+                    Boss Chest = Dungeon Item
+                    ''',
+            'action': 'store_true'}),
+
+
+
     Setting_Info('kokiricolor', str, 0, False, {
             'default': 'Kokiri Green',
             'const': 'Kokiri Green',

@@ -50,26 +50,33 @@ def generate_itempool(world):
         world.push_item(location, ItemFactory('Gold Skulltulla Token'), False)
         world.get_location(location).event = True
 
+    if not world.shuffle_weird_egg:
+        eventlocations['Malon Egg'] = 'Weird Egg'
+
     for location, item in eventlocations.items():
         world.push_item(location, ItemFactory(item), False)
         world.get_location(location).event = True
 
     # set up item pool
-    (pool, placed_items) = get_pool_core(world.place_dungeon_items)
+    (pool, placed_items) = get_pool_core(world.place_dungeon_items, world.shuffle_weird_egg)
     world.itempool = ItemFactory(pool)
     for (location, item) in placed_items:
         world.push_item(location, ItemFactory(item), False)
         world.get_location(location).event = True
 
+    choose_trials(world)
     fill_bosses(world)
     fill_songs(world)
 
-def get_pool_core(dungeon_items):
+def get_pool_core(dungeon_items, shuffle_weird_egg):
     pool = []
     placed_items = []
 
     if not dungeon_items:
         pool.extend(notmapcompass)
+    if shuffle_weird_egg:
+        pool.append('Weird Egg')
+
     pool.extend(alwaysitems)
     for _ in range(normal_bottle_count):
         bottle = random.choice(normal_bottles)
@@ -78,6 +85,13 @@ def get_pool_core(dungeon_items):
     pool.append(tradeitem)
 
     return (pool, placed_items)
+
+def choose_trials(world):
+    num_trials = int(world.trials)
+    choosen_trials = random.sample(['Forest', 'Fire', 'Water', 'Spirit', 'Shadow', 'Light'], num_trials)
+    for trial in world.skipped_trials:
+        if trial not in choosen_trials:
+            world.skipped_trials[trial] = True
 
 def fill_bosses(world, bossCount=9):
     boss_rewards = ItemFactory(rewardlist)

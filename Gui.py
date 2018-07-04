@@ -112,7 +112,7 @@ def guiMain(settings=None):
         for option in data["options"]:
             radio_button = Radiobutton(lable_frame, text=option["description"], value=option["value"], variable=radio_var,
                                        justify=LEFT, wraplength=data["wraplength"])
-            radio_button.pack(side=side, anchor=anchor)
+            radio_button.pack(expand=True, side=side, anchor=anchor)
         # return the frame so it can be packed, and the var so it can be used
         return (lable_frame, radio_var)
 
@@ -125,18 +125,26 @@ def guiMain(settings=None):
 
     # checkboxes information
     checkboxInfo = {
-        "create_spoiler":    { "text": "Create Spoiler Log",               "group": "output", "default": "checked"   },
-        "suppress_rom":      { "text": "Do not create patched Rom",        "group": "output", "default": "unchecked" },
-        "compress_rom":      { "text": "Compress patched Rom",             "group": "output", "default": "unchecked" },
+        "create_spoiler":     { "text": "Create Spoiler Log",               "group": "output", "default": "checked"   },
+        "suppress_rom":       { "text": "Do not create patched Rom",        "group": "output", "default": "unchecked" },
+        "compress_rom":       { "text": "Compress patched Rom",             "group": "output", "default": "unchecked" },
 
-        "open_forest":       { "text": "Open Forest",                      "group": "logic",  "default": "unchecked" },
-        "open_door_of_time": { "text": "Open Door of Time",                "group": "logic",  "default": "unchecked" },
-        "fast_ganon":        { "text": "Skip most of Ganon's Castle",      "group": "logic",  "default": "unchecked" },
-        "keysanity":         { "text": "Keysanity",                        "group": "logic",  "default": "unchecked" },
-        "nodungeonitems":    { "text": "Remove Maps and Compasses",        "group": "logic",  "default": "unchecked" },
-        "beatableonly":      { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "unchecked" },
+        "open_forest":        { "text": "Open Forest",                      "group": "logic",  "default": "unchecked" },
+        "open_door_of_time":  { "text": "Open Door of Time",                "group": "logic",  "default": "unchecked" },
+        "unlocked_ganondorf": { "text": "Remove Ganon's Boss Door Lock",    "group": "logic",  "default": "unchecked" },
+        "keysanity":          { "text": "Keysanity",                        "group": "logic",  "default": "unchecked" },
+        "bombchus_in_logic":  { "text": "Bombchus are considered in logic", "group": "logic",  "default": "checked" },
+        "shuffle_weird_egg":  { "text": "Shuffle Weird Egg",                "group": "logic",  "default": "unchecked" },
+        "beatableonly":       { "text": "Only ensure seed is beatable",     "group": "logic",  "default": "unchecked" },
 
-        "ocarina_songs":     { "text": "Randomize ocarina song notes",     "group": "other",  "default": "unchecked" },
+        "no_escape_sequence": { "text": "Skip Tower Collapse Escape Sequence",         "group": "convenience",  "default": "unchecked" },
+        "no_guard_stealth":   { "text": "Skip Interior Castle Guard Stealth Sequence", "group": "convenience",  "default": "unchecked" },
+        "no_epona_race":      { "text": "Skip Epona Race",                             "group": "convenience",  "default": "unchecked" },
+        "only_one_big_poe":   { "text": "Big Poe Reward only requires one Big Poe",    "group": "convenience",  "default": "unchecked" },
+
+        "nodungeonitems":     { "text": "Remove Maps and Compasses",        "group": "other",  "default": "unchecked" },
+        "ocarina_songs":      { "text": "Randomize ocarina song notes",     "group": "other",  "default": "unchecked" },
+        "correct_chest_sizes":{ "text": "Chests size matches contents",     "group": "other",  "default": "unchecked" },
 
         "logic_no_big_poes":            { "text": "No Big Poes",               "group": "rewards",  "default": "unchecked" },
         "logic_no_trade_skull_mask":    { "text": "No Skull Mask reward",      "group": "rewards",  "default": "unchecked" },
@@ -211,6 +219,21 @@ def guiMain(settings=None):
         "wraplength": 240,
         "horizontal": True
     }
+    trials_data = {
+        "name": "Number of Ganon's Trials",
+        "options": [
+            { "value": "0", "description": "0" },
+            { "value": "1",   "description": "1" },
+            { "value": "2",   "description": "2" },
+            { "value": "3",   "description": "3" },
+            { "value": "4",   "description": "4" },
+            { "value": "5",   "description": "5" },
+            { "value": "6",   "description": "6" },
+        ],
+        "default": "6",
+        "wraplength": 240,
+        "horizontal": True
+    }
     lens_data = {
         "name": "Lens of Truth",
         "options": [
@@ -252,8 +275,12 @@ def guiMain(settings=None):
         leftMiddleChecks = Frame(checkAndRadioFrame)
         if True: # just indenting for hierarchy clarity
             (rainbowBridgeFrame, guivars['bridge']) = MakeRadioList(leftMiddleChecks, bridge_requirements_data)
+            (trialsFrame, guivars['trials']) = MakeRadioList(leftMiddleChecks, trials_data)
             (gerudoFrame, guivars['gerudo_fortress'])  = MakeRadioList(leftMiddleChecks, gerudo_fortress_data)
-        logicOptionsFrame = LabelFrame(checkAndRadioFrame, text='Logic', labelanchor=NW)
+        rightMiddleChecks = Frame(checkAndRadioFrame)
+        if True: # just indenting for hierarchy clarity
+            logicOptionsFrame = LabelFrame(rightMiddleChecks, text='Mode', labelanchor=NW)
+            convenienceOptionsFrame = LabelFrame(rightMiddleChecks, text='Conveniences', labelanchor=NW)
         rightSideChecks = Frame(checkAndRadioFrame)
         if True: # just indenting for hierarchy clarity
             (hintsFrame, guivars['hints'])  = MakeRadioList(rightSideChecks, hint_options_data)
@@ -295,9 +322,9 @@ def guiMain(settings=None):
         # create a variable to access the box's state
         guivars[var_name] = IntVar(value=default_value)
         # create the checkbox
-        parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame, 'other': otherOptionsFrame,
+        parent = { 'output': outputOptionsFrame, 'logic': logicOptionsFrame, 'other': otherOptionsFrame, 'convenience': convenienceOptionsFrame,
                    'rewards': rewardsFrame, 'tricks': tricksFrame}[info["group"]] # sorry, this is gross; I was reaching my limit
-        checkboxes[var_name] = Checkbutton(parent, text=info["text"], variable=guivars[var_name], justify=LEFT, wraplength=250)
+        checkboxes[var_name] = Checkbutton(parent, text=info["text"], variable=guivars[var_name], justify=LEFT, wraplength=170)
         checkboxes[var_name].pack(expand=True, anchor=W)
 
     # create the dropdowns
@@ -320,18 +347,21 @@ def guiMain(settings=None):
     # pack the hierarchy
 
     # Ranomize tab
-    outputOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
-    textShuffleFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
+    outputOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=(5,1) )
+    textShuffleFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=(1,5) )
     leftSideChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
-    rainbowBridgeFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
-    gerudoFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
+    rainbowBridgeFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=(5,1))
+    trialsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=1)
+    gerudoFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=(1,5))
     leftMiddleChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
-    logicOptionsFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5, pady=5)
+    logicOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=(5,1))
+    convenienceOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=(1,5))
+    rightMiddleChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
-    hintsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=5)
-    otherOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=5)
+    hintsFrame.pack(fill=BOTH, expand=True, anchor=E, side=TOP, pady=(5,1))
+    otherOptionsFrame.pack(fill=BOTH, expand=True, anchor=E, side=BOTTOM, pady=(1,5))
     rightSideChecks.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, padx=5)
 
     checkAndRadioFrame.pack(side=TOP, anchor=N)
@@ -343,13 +373,13 @@ def guiMain(settings=None):
     aestheticFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(0,5))
 
     # Logic tab
-    skulltulaFrame.pack(anchor=W, side=TOP, pady=(5,0))
+    skulltulaFrame.pack(fill=BOTH, anchor=W, side=TOP, pady=(5,0))
     rewardsFrame.pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,0))
     logicLeftFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(0,5), padx=(5,5))
 
     tricksFrame.pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,0))
     lensFrame.pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,0))
-    logicRightFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(0,5), padx=(0, 230))
+    logicRightFrame.pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(0,5), padx=(0, 320))
 
 
 

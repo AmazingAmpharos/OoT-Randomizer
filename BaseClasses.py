@@ -29,6 +29,15 @@ class World(object):
         # group a few others
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
         self.navi_colors = [self.navicolordefault, self.navicolorenemy, self.navicolornpc, self.navicolorprop]
+        # trials that can be skipped will be decided later
+        self.skipped_trials = {
+            'Forest': False,
+            'Fire': False,
+            'Water': False,
+            'Spirit': False,
+            'Shadow': False,
+            'Light': False
+        }
 
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
@@ -302,7 +311,10 @@ class CollectionState(object):
         return self.has('Master Sword')
 
     def has_bombchus(self):
-        return any(pritem.startswith('Bombchus') for pritem in self.prog_items) or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland'))
+        return (self.world.bombchus_in_logic and \
+                    (any(pritem.startswith('Bombchus') for pritem in self.prog_items) \
+                    or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
+            or (not self.world.bombchus_in_logic and self.has('Bomb Bag'))
 
     def has_explosives(self):
         return self.has('Bomb Bag') or self.has_bombchus()
@@ -610,35 +622,15 @@ class Spoiler(object):
         spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
         self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}
         from Settings import __version__ as OoTRVersion
-        self.metadata = {'version': OoTRVersion,
-                         'seed': self.world.seed,
-                         'bridge': self.world.bridge,
-                         'forest': self.world.open_forest,
-                         'door': self.world.open_door_of_time,
-                         'gerudo_fortress': self.world.gerudo_fortress,
-                         'ganon': self.world.fast_ganon,
-                         'keysanity': self.world.keysanity,
-                         'completeable': not self.world.check_beatable_only,
-                         'dungeonitems': self.world.place_dungeon_items,
-                         'text_shuffle': self.world.text_shuffle,
-                         'ocarina_songs': self.world.ocarina_songs,
-                         'hints': self.world.hints}
+        self.version = OoTRVersion
+        self.settings = self.world.settings
 
     def to_file(self, filename):
         self.parse_data()
         with open(filename, 'w') as outfile:
-            outfile.write('OoT Randomizer Version %s  -  Seed: %s\n\n' % (self.metadata['version'], self.metadata['seed']))
-            outfile.write('Rainbow Bridge Requirement:      %s\n' % self.metadata['bridge'])
-            outfile.write('Open Forest:                     %s\n' % ('Yes' if self.metadata['forest'] else 'No'))
-            outfile.write('Open Door of Time:               %s\n' % ('Yes' if self.metadata['door'] else 'No'))
-            outfile.write('Gerudo Fortress:                 %s\n' % self.metadata['gerudo_fortress'])
-            outfile.write('Fast Ganon\'s Castle:             %s\n' % ('Yes' if self.metadata['ganon'] else 'No'))
-            outfile.write('Keysanity:                       %s\n' % ('Yes' if self.metadata['keysanity'] else 'No'))
-            outfile.write('All Locations Accessible:        %s\n' % ('Yes' if self.metadata['completeable'] else 'No, some locations may be unreachable'))
-            outfile.write('Maps and Compasses in Dungeons:  %s\n' % ('Yes' if self.metadata['dungeonitems'] else 'No'))
-            outfile.write('Hints:                           %s\n' % self.metadata['hints'])
-            outfile.write('Text Shuffle:                    %s\n' % self.metadata['text_shuffle'])
-            outfile.write('Random Ocarina Songs:            %s\n' % ('Yes' if self.metadata['ocarina_songs'] else 'No'))
+            outfile.write('OoT Randomizer Version %s  -  Seed: %s\n\n' % (self.version, self.settings.seed))
+            outfile.write('Settings (%s):\n%s' % (self.settings.get_settings_string(), self.settings.get_settings_display()))
+
             outfile.write('\n\nLocations:\n\n')
             outfile.write('\n'.join(['%s: %s' % (location, item) for (location, item) in self.locations['other locations'].items()]))
             outfile.write('\n\nPlaythrough:\n\n')

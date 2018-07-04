@@ -7,10 +7,6 @@ TEXT_START = 0x92D000
 
 SHOP_ITEM_START = 0xC022CC
 
-# reads len bytes from the rom starting at offset
-def read_bytes(rom, offset, len):
-    return rom.buffer[offset : offset + len]
-
 # name of type, followed by number of additional bytes to read, follwed by a function that prints the code
 CONTROL_CODES = {
     0x00: ('pad', 0, lambda _: '<pad>' ),
@@ -282,15 +278,15 @@ class Message():
     def from_rom(cls, rom, index):
 
         entry_offset = TABLE_START + 8 * index
-        entry = read_bytes(rom, entry_offset, 8)
-        next = read_bytes(rom, entry_offset + 8, 8)
+        entry = rom.read_bytes(entry_offset, 8)
+        next = rom.read_bytes(entry_offset + 8, 8)
 
         id = bytes_to_int(entry[0:2])
         opts = entry[2]
         offset = bytes_to_int(entry[5:8])
         length = bytes_to_int(next[5:8]) - offset
 
-        raw_text = read_bytes(rom, TEXT_START + offset, length)
+        raw_text = rom.read_bytes(TEXT_START + offset, length)
 
         return cls(raw_text, index, id, opts, offset, length)
 
@@ -302,9 +298,25 @@ class Message():
 
     __str__ = __repr__ = display
 
-# wrapper for added a string message to a list of messages
+# wrapper for updating the text of a message, given its message id
+# if the id does not exist in the list, this will silently do nothing
+def update_message_by_id(messages, id, text, opts=None):
+    # get the message index
+    index = next( (m.index for m in messages if m.id == id), -1)
+    # update if it was found
+    if index >= 0:
+        update_message_by_index(messages, index, text, opts)
+
+# wrapper for updating the text of a message, given its index in the list
+def update_message_by_index(messages, index, text, opts=None):
+    if opts is None:
+        opts = messages[index].opts
+    messages[index] = Message.from_string(text, messages[index].id, opts)
+
+# wrapper for adding a string message to a list of messages
 def add_message(messages, text, id=0, opts=0x00):
     messages.append( Message.from_string(text, id, opts) )
+    messages[-1].index = len(messages) - 1
 
 # holds a row in the shop item table (which contains pointers to the description and purchase messages)
 class Shop_Item():
@@ -350,7 +362,7 @@ class Shop_Item():
     def __init__(self, rom, index):
 
         entry_offset = SHOP_ITEM_START + 0x20 * index
-        entry = read_bytes(rom, entry_offset, 0x20)
+        entry = rom.read_bytes(entry_offset, 0x20)
 
         self.index = index
         self.object = bytes_to_int(entry[0x00:0x02])
@@ -397,6 +409,8 @@ def get_shop_message_id_set(shop_items):
 # remove all messages that easy to tell are unused to create space in the message index table
 def remove_unused_messages(messages):
     messages[:] = [m for m in messages if not m.is_id_message()]
+    for index, m in enumerate(messages):
+        m.index = index
 
 # takes all messages used for shop items, and moves messages from the 00xx range into the unused 80xx range
 def move_shop_item_messages(messages, shop_items):
@@ -438,7 +452,7 @@ def read_messages(rom):
     index = 0
     messages = []
     while True:
-        entry = read_bytes(rom, table_offset, 8)
+        entry = rom.read_bytes(table_offset, 8)
         id = bytes_to_int(entry[0:2])
 
         if id == 0xFFFD:

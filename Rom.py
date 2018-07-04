@@ -98,6 +98,20 @@ class LocalRom(object):
         # extend to 64MB
         self.buffer.extend(bytearray([0x00] * (67108864 - len(self.buffer))))
             
+    def read_byte(self, address):
+        return self.buffer[address]
+
+    def read_bytes(self, address, len):
+        return self.buffer[address : address + len]
+
+    def read_int16(self, address):
+        return bytes_as_int16(self.read_bytes(address, 2))
+
+    def read_int24(self, address):
+        return bytes_as_int24(self.read_bytes(address, 3))
+
+    def read_int32(self, address):
+        return bytes_as_int32(self.read_bytes(address, 4))
 
     def write_byte(self, address, value):
         self.buffer[address] = value
@@ -106,10 +120,13 @@ class LocalRom(object):
         for i, value in enumerate(values):
             self.write_byte(startaddress + i, value)
 
-    def write_int16_to_rom(self, address, value):
+    def write_int16(self, address, value):
         self.write_bytes(address, int16_as_bytes(value))
 
-    def write_int32_to_rom(self, address, value):
+    def write_int24(self, address, value):
+        self.write_bytes(address, int24_as_bytes(value))
+
+    def write_int32(self, address, value):
         self.write_bytes(address, int32_as_bytes(value))
 
     def write_to_file(self, file):
@@ -124,11 +141,27 @@ def read_rom(stream):
 
 def int16_as_bytes(value):
     value = value & 0xFFFF
-    return [value & 0xFF, (value >> 8) & 0xFF]
+    return [(value >> 8) & 0xFF, value & 0xFF]
+
+def int24_as_bytes(value):
+    value = value & 0xFFFFFFFF
+    return [(value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF]
 
 def int32_as_bytes(value):
     value = value & 0xFFFFFFFF
-    return [value & 0xFF, (value >> 8) & 0xFF, (value >> 16) & 0xFF, (value >> 24) & 0xFF]
+    return [(value >> 24) & 0xFF, (value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF]
+
+def bytes_as_int16(values):
+    return (values[0] << 8) | values[1]
+
+def bytes_as_int24(values):
+    return (values[0] << 16) | (values[1] << 8) | values[2]
+
+def bytes_as_int32(values):
+    return (values[0] << 24) | (values[1] << 16) | (values[2] << 8) | values[3]
+
+
+
 
 def patch_rom(world, rom):
     with open(local_path('data/base2current.json'), 'r') as stream:
@@ -185,17 +218,30 @@ def patch_rom(world, rom):
     # Remove locked door to Boss Key Chest in Fire Temple
     rom.write_byte(0x22D82B7, 0x3F)
 
-    # Change Bombchu Shop check to bombchus
-    rom.write_bytes(0xC6CED8, [0x80, 0x8A, 0x00, 0x7C, 0x24, 0x0B, 0x00, 0x09, 0x11, 0x4B, 0x00, 0x05])
-    # Change Bombchu Shop to never sell out
-    rom.write_bytes(0xC019C0, [0x10, 0x00, 0x00, 0x30])
+    if world.bombchus_in_logic:
+        # Change Bombchu Shop check to bombchus
+        rom.write_bytes(0xC6CED8, [0x80, 0x8A, 0x00, 0x7C, 0x24, 0x0B, 0x00, 0x09, 0x11, 0x4B, 0x00, 0x05])
+        # Change Bombchu Shop to never sell out
+        rom.write_bytes(0xC019C0, [0x10, 0x00, 0x00, 0x30])
 
-    # Change Bowling Alley check to bombchus (Part 1)
-    rom.write_bytes(0x00E2D714, [0x81, 0xEF, 0xA6, 0x4C])
-    rom.write_bytes(0x00E2D720, [0x24, 0x18, 0x00, 0x09, 0x11, 0xF8, 0x00, 0x06])
+        # Change Bowling Alley check to bombchus (Part 1)
+        rom.write_bytes(0x00E2D714, [0x81, 0xEF, 0xA6, 0x4C])
+        rom.write_bytes(0x00E2D720, [0x24, 0x18, 0x00, 0x09, 0x11, 0xF8, 0x00, 0x06])
 
-    # Change Bowling Alley check to bombchus (Part 2)
-    rom.write_bytes(0x00E2D890,  [0x81, 0x6B, 0xA6, 0x4C, 0x24, 0x0C, 0x00, 0x09, 0x51, 0x6C, 0x00, 0x0A])
+        # Change Bowling Alley check to bombchus (Part 2)
+        rom.write_bytes(0x00E2D890,  [0x81, 0x6B, 0xA6, 0x4C, 0x24, 0x0C, 0x00, 0x09, 0x51, 0x6C, 0x00, 0x0A])
+    else:
+        # Change Bombchu Shop check to Bomb Bag
+        rom.write_bytes(0xC6CEDA, [0x00, 0xA2])
+        rom.write_byte(0xC6CEDF, 0x18)
+
+        # Change Bowling Alley check to Bomb Bag (Part 1)
+        rom.write_bytes(0x00E2D716, [0xA6, 0x72])
+        rom.write_byte(0x00E2D723, 0x18)
+
+        # Change Bowling Alley check to Bomb Bag (Part 2)
+        rom.write_bytes(0x00E2D892, [0xA6, 0x72])
+        rom.write_byte(0x00E2D897, 0x18)
 
     # Change Bazaar check to Bomb Bag (Child?)
     rom.write_bytes(0x00C0082A, [0x00, 0x18])
@@ -871,37 +917,102 @@ def patch_rom(world, rom):
     rom.write_bytes(0x10, Block_code)
 
     # Set hooks for various code
-#    rom.write_bytes(0xBD6C94, ...) #Progressive Items Object Hook, unsure where this case is called
-    rom.write_bytes(0xB06C2C, [0x0C, 0x10, 0x01, 0x80]) #Save Writing Hook
     rom.write_bytes(0xDBF428, [0x0C, 0x10, 0x03, 0x00]) #Set Fishing Hook
 
-    # Write Initial Save File
-    #                0     1     2     3     4     5     6     7     8     9     A     B     C     D     E     F
-    Block_code = [0xA2, 0x28, 0x80, 0x20, 0x24, 0x05, 0x80, 0x02, 0x24, 0x0F, 0x00, 0x84, 0x24, 0x18, 0x00, 0x01, # 0x3480600
-                  0x24, 0x19, 0x00, 0x08, 0x24, 0x08, 0x00, 0x80, 0xA6, 0x25, 0x00, 0xD8, 0xA2, 0x2F, 0x00, 0xDA, # 0x3480610
-                  0xA2, 0x38, 0x01, 0x65, 0xA2, 0x39, 0x09, 0xB6, 0xA2, 0x28, 0x0A, 0x24, 0xA2, 0x38, 0x0A, 0xCE, # 0x3480620
-                  0xA2, 0x28, 0x0A, 0xCF, 0xA2, 0x28, 0x0A, 0xE8, 0x24, 0x05, 0x00, 0x20, 0xA2, 0x25, 0x0B, 0x3F, # 0x3480630
-                  0xA2, 0x28, 0x0E, 0xDC, 0xA2, 0x25, 0x0E, 0xDD, 0xA2, 0x25, 0x0E, 0xED, 0xA2, 0x38, 0x0E, 0xF9, # 0x3480640
-                  0xA2, 0x39, 0x0E, 0xDA, 0xA2, 0x28, 0x0E, 0xE0, 0xA2, 0x38, 0x02, 0x0E, 0xA2, 0x39, 0x01, 0x49, # 0x3480650
-                  0xA2, 0x39, 0x0E, 0xD6, 0x24, 0x05, 0x01, 0xFF, 0x24, 0x0F, 0x01, 0xFB, 0x24, 0x18, 0x07, 0xFF, # 0x3480660
-                  0x24, 0x19, 0x00, 0x04, 0x24, 0x08, 0x00, 0x30, 0xA6, 0x25, 0x0E, 0xE2, 0xA6, 0x2F, 0x0E, 0xE8, # 0x3480670
-                  0xA6, 0x38, 0x0E, 0xEA, 0xA2, 0x28, 0x0E, 0xE7, 0xA2, 0x39, 0x0F, 0x1A, 0x24, 0x08, 0x10, 0x20, # 0x3480680
-                  0x24, 0x19, 0x00, 0x2C, 0x24, 0x18, 0x00, 0x49, 0x24, 0x0F, 0x00, 0x02, 0x24, 0x05, 0x00, 0x40, # 0x3480690
-                  0xA6, 0x28, 0x0E, 0xD4, 0x00, 0x00, 0x00, 0x00, 0xA2, 0x38, 0x00, 0xF6, 0xA2, 0x2F, 0x00, 0x3F, # 0x34806A0
-                  0xA2, 0x25, 0x0A, 0x42, 0x92, 0x25, 0x0E, 0xDC, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, # 0x34806B0
-                  0xA2, 0x25, 0x0E, 0xDC, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, # 0x34806C0
-                  0x24, 0x08, 0x0F, 0x01, 0x24, 0x19, 0x00, 0x09, 0x24, 0x18, 0x00, 0x03, 0x24, 0x0F, 0x00, 0x04, # 0x34806D0
-                  0x24, 0x05, 0x00, 0x06, 0xA6, 0x28, 0x01, 0x10, 0xA2, 0x39, 0x01, 0x2C, 0xA2, 0x38, 0x01, 0x2E, # 0x34806E0
-                  0xA2, 0x2F, 0x0F, 0x0A, 0xA2, 0x25, 0x0F, 0x21, 0x24, 0x05, 0x00, 0x00, 0xA2, 0x25, 0x00, 0xA7, # 0x34806F0
-                  0x24, 0x0F, 0x00, 0x21, 0xA2, 0x2F, 0x0E, 0xED, 0x24, 0x0F, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, # 0x3480700
-                  # load current stones   # or with gerudo card   # write it back         # load nabooru states
-                  0x82, 0x25, 0x00, 0xA5, 0x34, 0xA5, 0x00, 0x00, 0xA2, 0x25, 0x00, 0xA5, 0x82, 0x25, 0x0E, 0xE7, # 0x3480710
-                  # or with carpenters    # write it back         # started gerudo fight  # write the value
-                  0x34, 0xA5, 0x00, 0x00, 0xA2, 0x25, 0x0E, 0xE7, 0x24, 0x05, 0x00, 0x00, 0xA2, 0x25, 0x02, 0x29, # 0x3480720
-                  # yell/door unlock      # write the value       # picked up keys        # write the value
-                  0x24, 0x05, 0x00, 0x00, 0xA6, 0x25, 0x02, 0x2A, 0x24, 0x05, 0x00, 0x00, 0xA2, 0x25, 0x02, 0x32, # 0x3480730
-                  0x03, 0xE0, 0x00, 0x08]                                                                         # 0x3480740
-    rom.write_bytes(0x3480600, Block_code)
+
+    # will be populated with data to be written to initial save
+    # see initial_save.asm and config.asm for more details on specifics
+    # or just use the following functions to add an entry to the table
+    initial_save_table = []
+
+    # will set the bits of value to the offset in the save (or'ing them with what is already there)
+    def write_bits_to_save(offset, value):
+        nonlocal initial_save_table
+        initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x00, value]
+
+    # will overwrite the byte at offset with the given value
+    def write_byte_to_save(offset, value):
+        nonlocal initial_save_table
+        initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x01, value]
+
+    # Initial Save Data
+    write_bits_to_save(0x003F, 0x02) # Some Biggoron's Sword flag?
+
+    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x0, 0x80) # Deku tree switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x1, 0x02) # Deku tree switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x2, 0x80) # Deku tree switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x2, 0x04) # Deku tree switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x40) # Dodongo's Cavern switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x08) # Dodongo's Cavern switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x01) # Dodongo's Cavern switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x08) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x04) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x02) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x1, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (poes?)
+    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x01) # Forest Temple switch flag (poes?)
+    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x02) # Forest Temple switch flag (poes?)
+    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x01) # Forest Temple switch flag (poes?)
+    write_bits_to_save(0x00D4 + 0x04 * 0x1C + 0x04 + 0x1, 0x08) # Fire Temple switch flag (First locked door?)
+    write_bits_to_save(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x0B * 0x1C + 0x04 + 0x2, 0x01) # Gerudo Training Ground switch flag (command text?)
+    write_bits_to_save(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (???)
+    write_bits_to_save(0x00D4 + 0x55 * 0x1C + 0x04 + 0x0, 0x80) # Kokiri Forest switch flag (???)
+    write_bits_to_save(0x00D4 + 0x56 * 0x1C + 0x04 + 0x2, 0x40) # Sacred Forest Meadow switch flag (???)
+    write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x2, 0x01) # Lost Woods switch flag (???)
+    write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x3, 0x80) # Lost Woods switch flag (???)
+    write_bits_to_save(0x00D4 + 0x5C * 0x1C + 0x04 + 0x0, 0x80) # Desert Colossus switch flag (???)
+    write_bits_to_save(0x00D4 + 0x5F * 0x1C + 0x04 + 0x3, 0x20) # Hyrule Castle switch flag (???)
+
+    write_bits_to_save(0x0ED4, 0x10) # "Met Deku Tree"
+    write_bits_to_save(0x0ED5, 0x20) # "Deku Tree Opened Mouth"
+    write_bits_to_save(0x0ED6, 0x08) # "Rented Horse From Ingo"
+    write_bits_to_save(0x0EDA, 0x08) # "Began Nabooru Battle"
+    write_bits_to_save(0x0EDC, 0x80) # "Entered the Master Sword Chamber"
+    write_bits_to_save(0x0EDD, 0x20) # "Pulled Master Sword from Pedestal"
+    write_bits_to_save(0x0EE0, 0x80) # "Spoke to Kaepora Gaebora by Lost Woods"
+    write_bits_to_save(0x0EE7, 0x20) # "Nabooru Captured by Twinrova"
+    write_bits_to_save(0x0EE7, 0x10) # "Spoke to Nabooru in Spirit Temple"
+    write_bits_to_save(0x0EED, 0x20) # "Sheik, Spawned at Master Sword Pedestal as Adult"
+    write_bits_to_save(0x0EED, 0x01) # "Nabooru Ordered to Fight by Twinrova"
+    write_bits_to_save(0x0EF9, 0x01) # "Greeted by Saria"
+    write_bits_to_save(0x0F0A, 0x04) # "Spoke to Ingo Once as Adult"
+    write_bits_to_save(0x0F1A, 0x04) # "Met Darunia in Fire Temple"
+
+    write_bits_to_save(0x0F21, 0x04) # "Ruto in JJ (M3) Talk First Time"
+    write_bits_to_save(0x0F21, 0x02) # "Ruto in JJ (M2) Meet Ruto"
+
+    write_bits_to_save(0x0EE2, 0x01) # "Began Ganondorf Battle"
+    write_bits_to_save(0x0EE3, 0x80) # "Began Bongo Bongo Battle"
+    write_bits_to_save(0x0EE3, 0x40) # "Began Barinade Battle"
+    write_bits_to_save(0x0EE3, 0x20) # "Began Twinrova Battle"
+    write_bits_to_save(0x0EE3, 0x10) # "Began Morpha Battle"
+    write_bits_to_save(0x0EE3, 0x08) # "Began Volvagia Battle"
+    write_bits_to_save(0x0EE3, 0x04) # "Began Phantom Ganon Battle"
+    write_bits_to_save(0x0EE3, 0x02) # "Began King Dodongo Battle"
+    write_bits_to_save(0x0EE3, 0x01) # "Began Gohma Battle"
+
+    write_bits_to_save(0x0EE8, 0x01) # "Entered Deku Tree"
+    write_bits_to_save(0x0EE9, 0x80) # "Entered Temple of Time"
+    write_bits_to_save(0x0EE9, 0x40) # "Entered Goron City"
+    write_bits_to_save(0x0EE9, 0x20) # "Entered Hyrule Castle"
+    write_bits_to_save(0x0EE9, 0x10) # "Entered Zora's Domain"
+    write_bits_to_save(0x0EE9, 0x08) # "Entered Kakariko Village"
+    write_bits_to_save(0x0EE9, 0x02) # "Entered Death Mountain Trail"
+    write_bits_to_save(0x0EE9, 0x01) # "Entered Hyrule Field"
+    write_bits_to_save(0x0EEA, 0x04) # "Entered Ganon's Castle (Exterior)"
+    write_bits_to_save(0x0EEA, 0x02) # "Entered Death Mountain Crater"
+    write_bits_to_save(0x0EEA, 0x01) # "Entered Desert Colossus"
+    write_bits_to_save(0x0EEB, 0x80) # "Entered Zora's Fountain"
+    write_bits_to_save(0x0EEB, 0x40) # "Entered Graveyard"
+    write_bits_to_save(0x0EEB, 0x20) # "Entered Jabu-Jabu's Belly"
+    write_bits_to_save(0x0EEB, 0x10) # "Entered Lon Lon Ranch"
+    write_bits_to_save(0x0EEB, 0x08) # "Entered Gerudo's Fortress"
+    write_bits_to_save(0x0EEB, 0x04) # "Entered Gerudo Valley"
+    write_bits_to_save(0x0EEB, 0x02) # "Entered Lake Hylia"
+    write_bits_to_save(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
+ 
 
     # Set up for Rainbow Bridge dungeons condition
     Block_code = [0x15, 0x41, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x80, 0xEA, 0x00, 0xA5,
@@ -922,53 +1033,99 @@ def patch_rom(world, rom):
                       0x31, 0x4A, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x00]
         rom.write_bytes(0xE2B454, Block_code)
     elif world.bridge == 'open':
-        rom.write_bytes(0x34806B8, [0x34, 0xA5, 0x00, 0x20])
+        write_bits_to_save(0xEDC, 0x20) # "Rainbow Bridge Built by Sages"
     elif world.bridge == 'dungeons':
         Block_code = [0x80, 0xEA, 0x00, 0xA7, 0x24, 0x01, 0x00, 0x3F,
                       0x08, 0x10, 0x02, 0x08, 0x31, 0x4A, 0x00, 0x3F]
         rom.write_bytes(0xE2B454, Block_code)
 
     if world.open_forest:
-        #rom.write_byte(0x2081148, 0x80)
-        rom.write_bytes(0x34806C4, [0x92, 0x25, 0x0E, 0xD5, 0x34, 0xA5, 0x00, 0x10, 0xA2, 0x25, 0x0E, 0xD5])
+        write_bits_to_save(0xED5, 0x10) # "Showed Mido Sword & Shield"
 
     if world.open_door_of_time:
-        rom.write_bytes(0x34806BC, [0x34, 0xA5, 0x00, 0x08])
+        write_bits_to_save(0xEDC, 0x08) # "Opened the Door of Time"
 
-    if world.fast_ganon:
+    # "fast-ganon" stuff
+    if world.no_escape_sequence:
         rom.write_bytes(0xD82A12, [0x05, 0x17]) # Sets exit from Ganondorf fight to entrance to Ganon fight
-        rom.write_byte(0x348066A, 0x21) # Flag Spirit Trial as clear
-        rom.write_byte(0x348066E, 0xFF) # Flag the other five trials as clear
-        rom.write_byte(0x3480703, 0x29) # The barrier is dispelled.
-        rom.write_bytes(0x348070C, [0xA2, 0x2F, 0x01, 0xF1]) # Remove Ganon's Castle Boss Key door
+    if world.unlocked_ganondorf:
+        write_bits_to_save(0x00D4 + 0x0A * 0x1C + 0x04 + 0x1, 0x10) # Ganon's Tower switch flag (unlock boss key door)
+    if world.skipped_trials['Forest']:
+        write_bits_to_save(0x0EEA, 0x08) # "Completed Forest Trial"
+    if world.skipped_trials['Fire']:
+        write_bits_to_save(0x0EEA, 0x40) # "Completed Fire Trial"
+    if world.skipped_trials['Water']:
+        write_bits_to_save(0x0EEA, 0x10) # "Completed Water Trial"
+    if world.skipped_trials['Spirit']:
+        write_bits_to_save(0x0EE8, 0x20) # "Completed Spirit Trial"
+    if world.skipped_trials['Shadow']:
+        write_bits_to_save(0x0EEA, 0x20) # "Completed Shadow Trial"
+    if world.skipped_trials['Light']:
+        write_bits_to_save(0x0EEA, 0x80) # "Completed Light Trial"
+    if world.trials == '0':
+        write_bits_to_save(0x0EED, 0x08) # "Dispelled Ganon's Tower Barrier"
+
+    # open gerudo fortress
+    if world.gerudo_fortress == 'open':
+        write_bits_to_save(0x00A5, 0x40) # Give Gerudo Card
+        write_bits_to_save(0x0EE7, 0x0F) # Free all 4 carpenters
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x1, 0x0F) # Thieves' Hideout switch flags (started all fights)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x2, 0x01) # Thieves' Hideout switch flags (heard yells/unlocked doors)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xFE) # Thieves' Hideout switch flags (heard yells/unlocked doors)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xD4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
+    elif world.gerudo_fortress == 'fast':
+        write_bits_to_save(0x0EE7, 0x0E) # Free 3 carpenters
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x1, 0x0D) # Thieves' Hideout switch flags (started all fights)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x2, 0x01) # Thieves' Hideout switch flags (heard yells/unlocked doors)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
+
+    # Skip Epona race
+    if world.no_epona_race:
+        write_bits_to_save(0x0ED6, 0x01) # "Obtained Epona"
+
+
+    # skip castle guard stealth sequence
+    if world.no_guard_stealth:
+        # change the exit at child/day crawlspace to the end of zelda's goddess cutscene
+        rom.write_bytes(0x21F60DE, [0x05, 0xF0])
+
+
+    messages = read_messages(rom)
+    shop_items = read_shop_items(rom)
+    remove_unused_messages(messages)
+
+    # only one big poe needs to be caught to get the buyer's reward
+    if world.only_one_big_poe:
+        # change the value checked (in code) from 1000 to 100
+        rom.write_bytes(0xEE69CE, [0x00, 0x64])
+        # update dialogue
+        update_message_by_id(messages, 0x70f7, "\x1AOh, you brought a Poe today!\x04\x1AHmmmm!\x04\x1AVery interesting!\x01This is a \x05\x41Big Poe\x05\x40!\x04\x1AI'll buy it for \x05\x4150 Rupees\x05\x40.\x04On top of that, I'll put \x05\x41100\x01points \x05\x40on your card.\x04\x1AIf you earn \x05\x41100 points\x05\x40, you'll\x01be a happy man! Heh heh.")
+        update_message_by_id(messages, 0x70f8, "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41100 points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned 100 points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this.")
 
     # Sets hooks for gossip stone changes
     if world.hints != 'none':
         if world.hints != 'mask':
             rom.write_bytes(0xEE7B84, [0x0C, 0x10, 0x02, 0x10])
             rom.write_bytes(0xEE7B8C, [0x24, 0x02, 0x00, 0x20])
-        address = 0xB85B11
-        offset = 0xBE4C
-        for i in range(0,33):
-                offset_high = offset >> 8
-                offset_low = offset & 0x00FF
-                rom.write_bytes(address, [0x00, offset_high, offset_low])
-                offset = offset + 0x5C
-                address = address + 0x08
-        buildGossipHints(world, rom)
+        buildGossipHints(world, messages)
 
     # Set hints for boss reward shuffle
     rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
     rom.write_bytes(0xE2ADB6, [0x70, 0x57])
-    rom.write_byte(0xB8811E, 0x20)
-    rom.write_byte(0xB88236, 0x20)
-    buildBossRewardHints(world, rom)
+    buildBossRewardHints(world, messages)
 
     # build silly ganon lines
-    buildGanonText(world, rom)
+    buildGanonText(world, messages)
 
     # Write item overrides
     rom.write_bytes(0x3481000, get_override_table(world))
+
+    # Update chest type sizes
+    if world.correct_chest_sizes:
+        for address, chestType in get_new_chest_type_table(world):
+            chestVal = rom.read_int16(address) & 0x0FFF
+            rom.write_int16(address, chestVal | chestType)
 
     # Patch songs and boss rewards
     for location in world.get_locations():
@@ -1046,10 +1203,7 @@ def patch_rom(world, rom):
                 rom.write_byte(0x218C589, item_data[item.name]) #Fix text box
         elif location.type == 'Boss':
             if location.name == 'Links Pocket':
-                rom.write_byte(locationaddress, item_data[item.name][0])
-                rom.write_byte(secondaryaddress, item_data[item.name][1])
-                # rom.write_byte(locationaddress, 0x1C)
-                # rom.write_byte(secondaryaddress, 0xA5)
+                write_bits_to_save(item_data[item.name][1], item_data[item.name][0])
             else:
                 rom.write_byte(locationaddress, itemid)
                 rom.write_byte(secondaryaddress, item_data[item.name][2])
@@ -1060,35 +1214,21 @@ def patch_rom(world, rom):
                     rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
                     rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
 
-    # open gerudo fortress
-    if world.gerudo_fortress == 'open':
-        rom.write_byte(0x3480717, 0x40) # gerudo card itself
-        rom.write_byte(0x3480723, 0x0F) # carpenters are freed
-        rom.write_byte(0x348072B, 0x0F) # gerudo guard fight flags
-        rom.write_bytes(0x3480732, [0x01, 0xFE]) # heard yells/unlocked doors
-        rom.write_byte(0x348073B, 0xD4) # picked up keys/finished fights
-    elif world.gerudo_fortress == 'fast':
-        rom.write_byte(0x3480723, 0x0E) # most carpenters are freed
-        rom.write_byte(0x348072B, 0x0D) # gerudo guard fight flags
-        rom.write_bytes(0x3480732, [0x01, 0xDC]) # heard yells/unlocked doors
-        rom.write_byte(0x348073B, 0xC4) # picked up keys/finished fights
+    # actually write the save table to rom
+    rom.write_bytes(0x3481800, initial_save_table)
 
-
-    messages = read_messages(rom)
-    shop_items = read_shop_items(rom)
-    remove_unused_messages(messages)
-
-    # add a cheaper bombchu pack to the bombchu shop
-    # describe
-    add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
-    # purchase
-    add_message(messages, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x80FF, 0x03)
-    rbl_bombchu = shop_items[0x0018]
-    rbl_bombchu.price = 60
-    rbl_bombchu.pieces = 5
-    rbl_bombchu.get_item_id = 0x006A
-    rbl_bombchu.description_message = 0x80FE
-    rbl_bombchu.purchase_message = 0x80FF
+    if world.bombchus_in_logic:
+        # add a cheaper bombchu pack to the bombchu shop
+        # describe
+        add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
+        # purchase
+        add_message(messages, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x80FF, 0x03)
+        rbl_bombchu = shop_items[0x0018]
+        rbl_bombchu.price = 60
+        rbl_bombchu.pieces = 5
+        rbl_bombchu.get_item_id = 0x006A
+        rbl_bombchu.description_message = 0x80FE
+        rbl_bombchu.purchase_message = 0x80FF
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(rom, messages, shop_items)
@@ -1105,6 +1245,14 @@ def patch_rom(world, rom):
     #     for s in shop_items:
     #         f.write(str(s) + '\n\n')
 
+    # with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
+    #     messages = read_messages(rom)
+    #     shop_items = read_shop_items(rom)
+    #     for m in messages:
+    #         f.write(str(m) + '\n\n')
+    #     f.write('\n\n\n\n\n')
+    #     for s in shop_items:
+    #         f.write(str(s) + '\n\n')
 
     # text shuffle
     if world.text_shuffle == 'except_hints':
@@ -1232,3 +1380,54 @@ def get_override_entry(location):
         return [scene, 0x02, default, item_id]
     else:
         return []
+
+
+chestTypeMap = {
+        #    small   big     boss
+    0x0000: [0x5000, 0x0000, 0x2000], #Large
+    0x1000: [0x7000, 0x1000, 0x1000], #Large, Appears, Clear Flag
+    0x2000: [0x5000, 0x0000, 0x2000], #Boss Key’s Chest
+    0x3000: [0x8000, 0x3000, 0x3000], #Large, Falling, Switch Flag
+    0x4000: [0x6000, 0x4000, 0x4000], #Large, Invisible
+    0x5000: [0x5000, 0x0000, 0x2000], #Small
+    0x6000: [0x6000, 0x4000, 0x4000], #Small, Invisible
+    0x7000: [0x7000, 0x1000, 0x1000], #Small, Appears, Clear Flag
+    0x8000: [0x8000, 0x3000, 0x3000], #Small, Falling, Switch Flag
+    0x9000: [0x9000, 0x9000, 0x9000], #Large, Appears, Zelda's Lullaby
+    0xA000: [0xA000, 0xA000, 0xA000], #Large, Appears, Sun's Song Triggered
+    0xB000: [0xB000, 0xB000, 0xB000], #Large, Appears, Switch Flag
+    0xC000: [0x5000, 0x0000, 0x2000], #Large
+    0xD000: [0x5000, 0x0000, 0x2000], #Large
+    0xE000: [0x5000, 0x0000, 0x2000], #Large
+    0xF000: [0x5000, 0x0000, 0x2000], #Large
+}
+
+def get_new_chest_type_table(world):
+    chest_type_entries = []
+    for location in world.get_locations():
+        (address, chestType) = get_new_chest_type_entry(location)
+        if address != None:
+            chest_type_entries.append((address, chestType))
+    return chest_type_entries
+
+def get_new_chest_type_entry(location):
+    address = location.address
+    scene = location.scene
+    default = location.default
+    item_id = location.item.index
+
+    if None in [address, scene, default, item_id]:
+        return (None, None)
+
+    itemType = 0
+    if location.item.key:
+        itemType = 2
+    elif location.item.advancement:
+        itemType = 1
+
+    if location.type == 'Chest':
+        chestType = default & 0xF000
+        newChestType = chestTypeMap[chestType][itemType]
+        return (address, newChestType)
+    else:
+        return (None, None)
