@@ -51,7 +51,7 @@ def item_name(state, location):
 
 def global_rules(world):
 
-    expected_skulltulas = {'none': 0, '10': 10, '20': 20, '30': 30, '40': 40, '50': 50}[world.logic_skulltulas]
+    expected_skulltulas = world.logic_skulltulas
 
     # ganon can only carry triforce
     world.get_location('Ganon').item_rule = lambda item: item.name == 'Triforce'

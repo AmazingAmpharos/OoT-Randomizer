@@ -25,7 +25,7 @@ class World(object):
         self.__dict__.update(settings.__dict__)
         # rename a few attributes...
         self.place_dungeon_items = not self.nodungeonitems
-        self.check_beatable_only = self.beatableonly
+        self.check_beatable_only = not self.all_reachable
         # group a few others
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
         self.navi_colors = [self.navicolordefault, self.navicolorenemy, self.navicolornpc, self.navicolorprop]
