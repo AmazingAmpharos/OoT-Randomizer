@@ -31,7 +31,12 @@ def settings_to_guivars(settings, guivars):
             if value is None:
                 guivar.set( "" )
             else:
-                guivar.set( value )
+                if info.gui_params and 'options' in info.gui_params:
+                    for gui_text,gui_value in info.gui_params['options'].items(): 
+                        if gui_value == value:
+                            guivar.set( gui_text )
+                else:
+                    guivar.set( value )
         # text field for a number...
         if info.type == int:
             if value is None:
@@ -52,7 +57,10 @@ def guivars_to_settings(guivars):
             result[name] = bool(guivar.get())
         # dropdown/radiobox
         if info.type == str:
-            result[name] = guivar.get()
+            if info.gui_params and 'options' in info.gui_params:
+                result[name] = info.gui_params['options'][guivar.get()]
+            else:
+                result[name] = guivar.get()
         # text field for a number...
         if info.type == int:
             result[name] = int( guivar.get() )
