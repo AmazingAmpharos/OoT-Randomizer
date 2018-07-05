@@ -93,23 +93,7 @@ def guiMain(settings=None):
     notebook.add(frames['other_tab'], text='Other')
     notebook.add(frames['aesthetic_tab'], text='Aesthetics')
 
-    # Shared Controls
-
-    farTopFrame = Frame(mainWindow)
-
-    def open_output():
-        open_file(output_path(''))
-
-    openOutputButton = Button(farTopFrame, text='Open Output Directory', command=open_output)
-
-    if os.path.exists(local_path('README.html')):
-        def open_readme():
-            open_file(local_path('README.html'))
-        openReadmeButton = Button(farTopFrame, text='Open Documentation', command=open_readme)
-        openReadmeButton.pack(side=LEFT)
-
-    farTopFrame.pack(side=TOP, fill=X, padx=5, pady=2)
-    notebook.pack(padx=5, pady=5)
+    # Shared Controls   
 
     # adds a LabelFrame containing a list of radio buttons based on the given data
     # returns the label_frame, and a variable associated with it
@@ -160,14 +144,16 @@ def guiMain(settings=None):
     frames['lowhp']      = LabelFrame(frames['aesthetic_tab'], text='Low HP SFX',  labelanchor=NW)
 
 
+    # shared
+    settingsFrame = Frame(mainWindow)
     settings_string_var = StringVar()
     settingsEntry = Entry(settingsFrame, textvariable=settings_string_var)
 
-    def show_settings():
+    def show_settings(event=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
 
-    def import_settings():
+    def import_settings(event=None):
         try:
             settings = guivars_to_settings(guivars)
             text = settings_string_var.get().upper()
@@ -177,17 +163,15 @@ def guiMain(settings=None):
         except Exception as e:
             messagebox.showerror(title="Error", message="Invalid settings string")
 
-    showSettingsButton = Button(settingsFrame, text='Show Settings String', command=show_settings)
+    label = Label(settingsFrame, text="Settings String")
     importSettingsButton = Button(settingsFrame, text='Import Settings String', command=import_settings)
-
-    showSettingsButton.pack(side=LEFT, padx=(6,10))
-    settingsEntry.pack(side=LEFT)
-    importSettingsButton.pack(side=LEFT, padx=10)
-
-    settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,0))
+    label.pack(side=LEFT, anchor=W, padx=5)
+    settingsEntry.pack(side=LEFT, anchor=W)
+    importSettingsButton.pack(side=LEFT, anchor=W, padx=5)
 
 
-    fileDialogFrame = Frame(generateSeedFrame)
+
+    fileDialogFrame = Frame(frames['rom_tab'])
 
     romDialogFrame = Frame(fileDialogFrame)
     baseRomLabel = Label(romDialogFrame, text='Base Rom')
@@ -200,20 +184,40 @@ def guiMain(settings=None):
     romSelectButton = Button(romDialogFrame, text='Select Rom', command=RomSelect)
 
     baseRomLabel.pack(side=LEFT)
-    romEntry.pack(side=LEFT)
+    romEntry.pack(side=LEFT, padx=3)
     romSelectButton.pack(side=LEFT)
 
     romDialogFrame.pack()
 
-    fileDialogFrame.pack(side=LEFT, padx=5)
+    fileDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
 
+    def open_output():
+        open_file(output_path(''))
 
-    seedLabel = Label(generateSeedFrame, text='Seed #')
-    guivars['seed'] = StringVar()
-    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'])
-    countLabel = Label(generateSeedFrame, text='Count')
+    outputDialogFrame = Frame(frames['rom_tab'])
+
+    openOutputButton = Button(outputDialogFrame, text='Open Output Directory', command=open_output)
+    openOutputButton.pack(side=LEFT, padx=5)
+
+    if os.path.exists(local_path('README.html')):
+        def open_readme():
+            open_file(local_path('README.html'))
+        openReadmeButton = Button(outputDialogFrame, text='Open Documentation', command=open_readme)
+        openReadmeButton.pack(side=LEFT, padx=5)
+
+    outputDialogFrame.pack(side=TOP, anchor=W, pady=3)
+
+    countDialogFrame = Frame(frames['rom_tab'])
+    countLabel = Label(countDialogFrame, text='Generation Count')
     guivars['count'] = StringVar()
-    countSpinbox = Spinbox(generateSeedFrame, from_=1, to=100, textvariable=guivars['count'])
+    countSpinbox = Spinbox(countDialogFrame, from_=1, to=100, textvariable=guivars['count'], width=3)
+
+    countLabel.pack(side=LEFT)
+    countSpinbox.pack(side=LEFT, padx=3)
+    countDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
+
+
+    generateSeedFrame = Frame(mainWindow)
 
 
     # build gui
@@ -289,6 +293,14 @@ def guiMain(settings=None):
     notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
 
 
+
+    # didn't refactor the rest, sorry
+
+
+    # create the option menu
+
+    settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,0))
+
     def generateRom():
         settings = guivars_to_settings(guivars)
 
@@ -307,10 +319,11 @@ def guiMain(settings=None):
 
     generateButton = Button(generateSeedFrame, text='Generate Patched Rom', command=generateRom)
 
+    seedLabel = Label(generateSeedFrame, text='Seed #')
+    guivars['seed'] = StringVar()
+    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'])
     seedLabel.pack(side=LEFT)
     seedEntry.pack(side=LEFT)
-    countLabel.pack(side=LEFT, padx=(5, 0))
-    countSpinbox.pack(side=LEFT)
     generateButton.pack(side=LEFT, padx=(5, 0))
 
     openOutputButton.pack(side=RIGHT)
@@ -330,12 +343,15 @@ def guiMain(settings=None):
         except:
             pass
 
+    show_settings()
+
     mainWindow.mainloop()
 
     # save settings on close
     with open('settings.sav', 'w') as outfile:
         settings = guivars_to_settings(guivars)
         json.dump(settings.__dict__, outfile)
+
 
 if __name__ == '__main__':
     guiMain()
