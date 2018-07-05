@@ -11,7 +11,7 @@ from urllib.request import urlopen
 
 from GuiUtils import ToolTips, set_icon, BackgroundTaskProgress
 from Main import main
-from Utils import is_bundled, local_path, output_path, open_file
+from Utils import is_bundled, local_path, default_output_path, open_file
 from Rom import get_tunic_color_options, get_navi_color_options
 from Settings import Settings, setting_infos, __version__ as ESVersion
 
@@ -176,14 +176,15 @@ def guiMain(settings=None):
     romDialogFrame = Frame(fileDialogFrame)
     baseRomLabel = Label(romDialogFrame, text='Base Rom')
     guivars['rom'] = StringVar(value='ZOOTDEC.z64')
-    romEntry = Entry(romDialogFrame, textvariable=guivars['rom'])
+    romEntry = Entry(romDialogFrame, textvariable=guivars['rom'], width=40)
 
     def RomSelect():
         rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")])
-        guivars['rom'].set(rom)
-    romSelectButton = Button(romDialogFrame, text='Select Rom', command=RomSelect)
+        if rom != '':
+            guivars['rom'].set(rom)
+    romSelectButton = Button(romDialogFrame, text='Select Rom', command=RomSelect, width=10)
 
-    baseRomLabel.pack(side=LEFT)
+    baseRomLabel.pack(side=LEFT, padx=(40,0))
     romEntry.pack(side=LEFT, padx=3)
     romSelectButton.pack(side=LEFT)
 
@@ -193,11 +194,22 @@ def guiMain(settings=None):
 
     def open_output():
         open_file(output_path(''))
+    
+    def output_dir_select():
+        rom = filedialog.askdirectory(initialdir = default_output_path(guivars['output_dir'].get()))
+        if rom != '':
+            guivars['output_dir'].set(rom)
 
     outputDialogFrame = Frame(frames['rom_tab'])
+    outputDirLabel = Label(outputDialogFrame, text='Output Directory')
+    guivars['output_dir'] = StringVar(value='')
+    outputDirEntry = Entry(outputDialogFrame, textvariable=guivars['output_dir'], width=40)
+    outputDirButton = Button(outputDialogFrame, text='Select Dir', command=output_dir_select, width=10)
+    outputDirLabel.pack(side=LEFT, padx=(3,0))
+    outputDirEntry.pack(side=LEFT, padx=3)
+    outputDirButton.pack(side=LEFT)
+    outputDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
 
-    openOutputButton = Button(outputDialogFrame, text='Open Output Directory', command=open_output)
-    openOutputButton.pack(side=LEFT, padx=5)
 
     if os.path.exists(local_path('README.html')):
         def open_readme():
@@ -213,8 +225,8 @@ def guiMain(settings=None):
     countSpinbox = Spinbox(countDialogFrame, from_=1, to=100, textvariable=guivars['count'], width=3)
 
     countLabel.pack(side=LEFT)
-    countSpinbox.pack(side=LEFT, padx=3)
-    countDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
+    countSpinbox.pack(side=LEFT, padx=2)
+    countDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
     generateSeedFrame = Frame(mainWindow)
@@ -325,8 +337,6 @@ def guiMain(settings=None):
     seedLabel.pack(side=LEFT)
     seedEntry.pack(side=LEFT)
     generateButton.pack(side=LEFT, padx=(5, 0))
-
-    openOutputButton.pack(side=RIGHT)
 
     generateSeedFrame.pack(side=BOTTOM, anchor=W, padx=5, pady=10)
 

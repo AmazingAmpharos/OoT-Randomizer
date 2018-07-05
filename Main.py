@@ -6,6 +6,7 @@ import platform
 import random
 import subprocess
 import time
+import os
 
 from BaseClasses import World, CollectionState, Item
 from Regions import create_regions
@@ -15,7 +16,7 @@ from Rules import set_rules
 from Dungeons import create_dungeons, fill_dungeons_restrictive
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
-from Utils import output_path
+from Utils import default_output_path
 from Settings import __version__
 
 def main(settings):
@@ -67,13 +68,17 @@ def main(settings):
     outfilebase = 'OoT_%s_%s' % (world.settings_string,  world.seed)
 
     if not settings.suppress_rom:
-        rom = LocalRom(settings.rom)
+        rom = LocalRom(settings)
         patch_rom(world, rom)
-        rom.write_to_file(output_path('%s.z64' % outfilebase))
+
+        output_dir = default_output_path(settings.output_dir)
+        rom_path = os.path.join(output_dir, '%s.z64' % outfilebase)
+
+        rom.write_to_file(rom_path)
         if settings.compress_rom:
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
-                subprocess.call(["Compress\Compress.exe", (output_path('%s.z64' % outfilebase)), (output_path('%s-comp.z64' % outfilebase))])
+                subprocess.call(["Compress\\Compress.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
             elif platform.system() == 'Linux':
                 subprocess.call(["Compress/Compress", ('%s.z64' % outfilebase)])
             elif platform.system() == 'Darwin':
@@ -82,7 +87,7 @@ def main(settings):
                 logger.info('OS not supported for compression')
 
     if settings.create_spoiler:
-        world.spoiler.to_file(output_path('%s_Spoiler.txt' % outfilebase))
+        world.spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
 
     logger.info('Done. Enjoy.')
     logger.debug('Total Time: %s', time.clock() - start)

@@ -158,6 +158,9 @@ setting_infos = [
     Setting_Info('rom', str, 0, False, {
             'default': 'ZOOTDEC.z64',
             'help': 'Path to an OoT 1.0 rom to use as a base.'}),
+    Setting_Info('output_dir', str, 0, False, {
+            'default': '',
+            'help': 'Path to output directory for rom generation.'}),
     Setting_Info('seed', str, 0, False, {
             'help': 'Define seed number to generate.'}),
     Setting_Info('count', int, 0, False, {

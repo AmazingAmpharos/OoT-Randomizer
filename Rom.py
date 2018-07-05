@@ -8,7 +8,7 @@ import subprocess
 import random
 
 from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
-from Utils import local_path, output_path
+from Utils import local_path, default_output_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
 from Messages import *
@@ -63,7 +63,9 @@ def get_navi_color_options():
 
 class LocalRom(object):
 
-    def __init__(self, file, patch=True):
+    def __init__(self, settings, patch=True):
+        file = settings.rom
+        decomp_file = os.path.join(default_output_path(settings.output_dir), 'ZOOTDEC.z64')
 
         validCRC = []
         validCRC.append(bytearray([0xEC, 0x70, 0x11, 0xB7, 0x76, 0x16, 0xD7, 0x2B])) # Compressed
@@ -82,8 +84,8 @@ class LocalRom(object):
             raise RuntimeError('ROM is not a valid OoT 1.0 ROM.')
         if len(self.buffer) == 33554432:
             if platform.system() == 'Windows':
-                subprocess.call(["Decompress\Decompress.exe", file, output_path('ZOOTDEC.z64')])
-                with open((output_path('ZOOTDEC.z64')), 'rb') as stream:
+                subprocess.call(["Decompress\\Decompress.exe", file, decomp_file])
+                with open(decomp_file, 'rb') as stream:
                     self.buffer = read_rom(stream)
             elif platform.system() == 'Linux':
                 subprocess.call(["Decompress/Decompress", file])
