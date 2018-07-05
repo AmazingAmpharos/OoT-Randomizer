@@ -747,6 +747,26 @@ setting_infos = [
                 'All text shuffled': 'complete',
             },
         }),
+    Setting_Info('default_targeting', str, 1, True, 
+        {
+            'default': 'hold',
+            'const': 'always',
+            'nargs': '?',
+            'choices': ['hold', 'switch'],
+            'help': '''\
+                    Choose what the default targeting is.
+                    '''
+        },
+        {
+            'text': 'Default Targeting Option',
+            'group': 'other',
+            'widget': 'Combobox',
+            'default': 'Hold',
+            'options': {
+                'Hold': 'hold',
+                'Switch': 'switch',
+            },
+        }),
 
 
 

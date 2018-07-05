@@ -1129,6 +1129,10 @@ def patch_rom(world, rom):
             chestVal = rom.read_int16(address) & 0x0FFF
             rom.write_int16(address, chestVal | chestType)
 
+    # Set Default targeting option to Hold
+    if world.default_targeting == 'hold':
+        rom.write_bytes(0xB07200, [0x20, 0x0C, 0x00, 0x01 ])
+
     # Patch songs and boss rewards
     for location in world.get_locations():
         item = location.item
