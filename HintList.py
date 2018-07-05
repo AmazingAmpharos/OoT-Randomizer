@@ -264,7 +264,7 @@ hintTable = {'Hammer':                                                (" the dra
 # exclusions from the list for custom logic
 
 def hintExclusions(world):
-    expected_skulltulas = {'none': 0, '10': 10, '20': 20, '30': 30, '40': 40, '50': 50}[world.logic_skulltulas]
+    expected_skulltulas = world.logic_skulltulas
     exclusions = []
     if world.logic_no_trade_skull_mask:
         exclusions.append('Deku Theater Skull Mask')
