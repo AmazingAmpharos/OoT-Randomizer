@@ -189,7 +189,7 @@ setting_infos = [
             'action': 'store_true'
         }, 
         {
-            'text': 'Do not create patched Rom',
+            'text': 'Do not create Rom',
             'group': 'rom_tab',
             'widget': 'Checkbutton',
             'default': 'unchecked'
@@ -200,7 +200,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Compress patched Rom',
+            'text': 'Compress Rom. Improves stability but will take longer to generate',
             'group': 'rom_tab',
             'widget': 'Checkbutton',
             'default': 'unchecked'
