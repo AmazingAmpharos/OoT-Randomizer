@@ -216,6 +216,57 @@ def guiMain(settings=None):
     countSpinbox = Spinbox(generateSeedFrame, from_=1, to=100, textvariable=guivars['count'])
 
 
+    # build gui
+    ############
+
+    widgets = {}
+
+    for info in setting_infos:
+        if info.gui_params:
+            if info.gui_params['widget'] == 'Checkbutton':
+                # determine the initial value of the checkbox
+                default_value = 1 if info.gui_params['default'] == "checked" else 0
+                # create a variable to access the box's state
+                guivars[info.name] = IntVar(value=default_value)
+                # create the checkbox
+                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=200, command=show_settings)
+                widgets[info.name].pack(expand=False, anchor=W)
+            elif info.gui_params['widget'] == 'Combobox':
+                # create the variable to store the user's decision
+                guivars[info.name] = StringVar(value=info.gui_params['default'])
+                # create the option menu
+                widgets[info.name] = Frame(frames[info.gui_params['group']])
+                # dropdown = OptionMenu(widgets[info.name], guivars[info.name], *(info['options']))
+                if isinstance(info.gui_params['options'], list):
+                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
+                dropdown = ttk.Combobox(widgets[info.name], textvariable=guivars[info.name], values=list(info.gui_params['options'].keys()), state='readonly', width=30)
+                dropdown.bind("<<ComboboxSelected>>", show_settings)
+                dropdown.pack(side=BOTTOM, anchor=W)
+                # label the option
+                label = Label(widgets[info.name], text=info.gui_params['text'])
+                label.pack(side=LEFT, anchor=W, padx=5)
+                # pack the frame
+                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+            elif info.gui_params['widget'] == 'Scale':
+                # create the variable to store the user's decision
+                guivars[info.name] = IntVar(value=info.gui_params['default'])
+                # create the option menu
+                widgets[info.name] = Frame(frames[info.gui_params['group']])
+                # dropdown = OptionMenu(widgets[info.name], guivars[info.name], *(info['options']))
+                minval = 'min' in info.gui_params and info.gui_params['min'] or 0
+                maxval = 'max' in info.gui_params and info.gui_params['max'] or 100
+                stepval = 'step' in info.gui_params and info.gui_params['step'] or 1
+
+
+                scale = Scale(widgets[info.name], variable=guivars[info.name], from_=minval, to=maxval, tickinterval=stepval, resolution=stepval, showvalue=0, orient=HORIZONTAL, sliderlength=15, length=200, command=show_settings)
+                scale.pack(side=BOTTOM, anchor=W)
+                # label the option
+                label = Label(widgets[info.name], text=info.gui_params['text'])
+                label.pack(side=LEFT, anchor=W, padx=5)
+                # pack the frame
+                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+
+
     # pack the hierarchy
 
     frames['open'].pack(  fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
