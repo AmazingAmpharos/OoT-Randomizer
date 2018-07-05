@@ -1268,6 +1268,9 @@ def patch_rom(world, rom):
     if world.ocarina_songs:
         replace_songs(rom)
 
+    # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
+    random.seed()
+
     # patch tunic colors
     # Custom color tunic stuff
     Tunics = []
