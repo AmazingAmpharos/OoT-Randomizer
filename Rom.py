@@ -53,13 +53,13 @@ def get_tunic_colors():
     return list(TunicColors.keys())
 
 def get_tunic_color_options():
-    return get_tunic_colors() + ["Random", "True Random"]
+    return ["Random Choice", "Completely Random"] + get_tunic_colors()
 
 def get_navi_colors():
     return list(NaviColors.keys())
 
 def get_navi_color_options():
-    return get_navi_colors() + ["Random", "True Random"]
+    return ["Random Choice", "Completely Random"] + get_navi_colors()
 
 class LocalRom(object):
 
@@ -1282,11 +1282,11 @@ def patch_rom(world, rom):
         thisColor = world.tunic_colors[i]
         # handle true random
         randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
-        if thisColor == 'True Random':
+        if thisColor == 'Completely Random':
             color = randColor
         else:
             # handle random
-            if world.tunic_colors[i] == 'Random':
+            if world.tunic_colors[i] == 'Random Choice':
                 thisColor = randomColors[i]
             # grab the color from the list
             color = TunicColors[thisColor]
@@ -1309,11 +1309,11 @@ def patch_rom(world, rom):
             # handle true random
             randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0xFF,
                          random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0x00]
-            if thisColor == 'True Random':
+            if thisColor == 'Completely Random':
                 color = randColor
             else:
                 # handle random
-                if world.navi_colors[i] == 'Random':
+                if world.navi_colors[i] == 'Random Choice':
                     thisColor = randomColors[i]
                 # grab the color from the list
                 color = NaviColors[thisColor]
@@ -1324,7 +1324,7 @@ def patch_rom(world, rom):
     randomSFX = random.choice(healthSFXList)
     address = 0xADBA1A
     
-    if world.healthSFX == 'Random':
+    if world.healthSFX == 'Random Choice':
         thisHealthSFX = randomSFX
     else:
         thisHealthSFX = world.healthSFX
