@@ -17,7 +17,7 @@ from Dungeons import create_dungeons, fill_dungeons_restrictive
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
 from Utils import default_output_path
-from Settings import __version__
+from version import __version__
 
 def main(settings):
     start = time.clock()

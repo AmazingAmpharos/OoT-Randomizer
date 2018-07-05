@@ -2,6 +2,7 @@ import copy
 from enum import Enum, unique
 import logging
 from collections import OrderedDict
+from version import __version__ as OoTRVersion
 
 
 class World(object):
@@ -621,7 +622,6 @@ class Spoiler(object):
         sort_order = {"Song": 0, "Boss": -1}
         spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
         self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}
-        from Settings import __version__ as OoTRVersion
         self.version = OoTRVersion
         self.settings = self.world.settings
 
