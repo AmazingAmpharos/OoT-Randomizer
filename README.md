@@ -59,6 +59,8 @@ As a note, if you have access to the Wasteland carpet salesman and have a wallet
 
 The Weird Egg is shuffled into the pool. This means that Malon will give a random item and that you must find the Weird Egg (and hatch it) before being able to visit Zelda.
 
+Known Issue: With this setting, waking Talon before getting Malon's random item at Hyrule Castle will cause you to miss that item forever.
+
 ## Keysanity
 
 Dungeon items (maps, compasses, small keys, boss keys) are shuffled into the item pool at large.
