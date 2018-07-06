@@ -746,7 +746,7 @@ setting_infos = [
                 'All text shuffled': 'complete',
             },
         }),
-    Setting_Info('default_targeting', str, 1, True, 
+    Setting_Info('default_targeting', str, 1, False, 
         {
             'default': 'hold',
             'const': 'always',
@@ -758,7 +758,7 @@ setting_infos = [
         },
         {
             'text': 'Default Targeting Option',
-            'group': 'other',
+            'group': 'rom_tab',
             'widget': 'Combobox',
             'default': 'Hold',
             'options': {
