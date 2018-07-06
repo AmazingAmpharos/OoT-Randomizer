@@ -1087,7 +1087,7 @@ def patch_rom(world, rom):
     # Skip Epona race
     if world.no_epona_race:
         write_bits_to_save(0x0ED6, 0x01) # "Obtained Epona"
-
+        rom.write_int32(0xAD065C, 0x24020000) # 0C00A22D Don't auto spawn Epona in Hyrule Field
 
     # skip castle guard stealth sequence
     if world.no_guard_stealth:
