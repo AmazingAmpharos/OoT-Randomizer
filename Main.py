@@ -66,12 +66,12 @@ def main(settings):
     logger.info('Patching ROM.')
 
     outfilebase = 'OoT_%s_%s' % (world.settings_string,  world.seed)
+    output_dir = default_output_path(settings.output_dir)
 
     if not settings.suppress_rom:
         rom = LocalRom(settings)
         patch_rom(world, rom)
 
-        output_dir = default_output_path(settings.output_dir)
         rom_path = os.path.join(output_dir, '%s.z64' % outfilebase)
 
         rom.write_to_file(rom_path)
