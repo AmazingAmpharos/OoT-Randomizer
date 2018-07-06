@@ -20,42 +20,14 @@ def local_path(path):
 
 local_path.cached_path = None
 
-def output_path(path):
-    if output_path.cached_path is not None:
-        return os.path.join(output_path.cached_path, path)
+def default_output_path(path):
+    if path == '':
+        path = os.path.join('.', 'Output')
 
-    if not is_bundled():
-        output_path.cached_path = '.'
-        return os.path.join(output_path.cached_path, path)
-    else:
-        # has been packaged, so cannot use CWD for output.
-        if sys.platform == 'win32':
-            #windows
-            import ctypes.wintypes
-            CSIDL_PERSONAL = 5       # My Documents
-            SHGFP_TYPE_CURRENT = 0   # Get current, not default value
+    if not os.path.exists(path): 
+        os.mkdir(path)
+    return path
 
-            buf = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
-            ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
-
-            documents = buf.value
-
-        elif sys.platform == 'darwin':
-            from AppKit import NSSearchPathForDirectoriesInDomains # pylint: disable=import-error
-            # http://developer.apple.com/DOCUMENTATION/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Functions/Reference/reference.html#//apple_ref/c/func/NSSearchPathForDirectoriesInDomains
-            NSDocumentDirectory = 9
-            NSUserDomainMask = 1
-            # True for expanding the tilde into a fully qualified path
-            documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, True)[0]
-        else:
-            raise NotImplementedError('Not supported yet')
-
-        output_path.cached_path = os.path.join(documents, 'OoTRandomizer')
-        if not os.path.exists(output_path.cached_path):
-            os.mkdir(output_path.cached_path)
-        return os.path.join(output_path.cached_path, path)
-
-output_path.cached_path = None
 
 def open_file(filename):
     if sys.platform == 'win32':

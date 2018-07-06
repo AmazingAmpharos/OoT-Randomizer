@@ -51,7 +51,7 @@ def item_name(state, location):
 
 def global_rules(world):
 
-    expected_skulltulas = {'none': 0, '10': 10, '20': 20, '30': 30, '40': 40, '50': 50}[world.logic_skulltulas]
+    expected_skulltulas = world.logic_skulltulas
 
     # ganon can only carry triforce
     world.get_location('Ganon').item_rule = lambda item: item.name == 'Triforce'
@@ -158,6 +158,7 @@ def global_rules(world):
     set_rule(world.get_location('Song from Ocarina of Time'), lambda state: state.has('Kokiri Emerald') and state.has('Goron Ruby') and state.has('Zora Sapphire') and state.guarantee_hint())
     set_rule(world.get_entrance('Door of Time'), lambda state: state.has('Song of Time') or world.open_door_of_time)
     set_rule(world.get_location('Talons Chickens'), lambda state: state.has('Zeldas Letter'))
+    set_rule(world.get_location('Song from Malon'), lambda state: state.has('Zeldas Letter'))
     set_rule(world.get_location('Epona'), lambda state: state.has('Eponas Song') and state.is_adult())
     set_rule(world.get_entrance('Adult Forest Warp Pad'), lambda state: state.has('Minuet of Forest') and state.is_adult())
     set_rule(world.get_entrance('Child Forest Warp Pad'), lambda state: state.has('Minuet of Forest'))

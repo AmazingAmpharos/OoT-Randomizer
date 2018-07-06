@@ -2,6 +2,7 @@ import copy
 from enum import Enum, unique
 import logging
 from collections import OrderedDict
+from version import __version__ as OoTRVersion
 
 
 class World(object):
@@ -25,7 +26,7 @@ class World(object):
         self.__dict__.update(settings.__dict__)
         # rename a few attributes...
         self.place_dungeon_items = not self.nodungeonitems
-        self.check_beatable_only = self.beatableonly
+        self.check_beatable_only = not self.all_reachable
         # group a few others
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
         self.navi_colors = [self.navicolordefault, self.navicolorenemy, self.navicolornpc, self.navicolorprop]
@@ -621,7 +622,6 @@ class Spoiler(object):
         sort_order = {"Song": 0, "Boss": -1}
         spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
         self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}
-        from Settings import __version__ as OoTRVersion
         self.version = OoTRVersion
         self.settings = self.world.settings
 

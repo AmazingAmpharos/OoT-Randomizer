@@ -8,7 +8,7 @@ import subprocess
 import random
 
 from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
-from Utils import local_path, output_path
+from Utils import local_path, default_output_path
 from Items import ItemFactory, item_data
 from TextArray import text_array
 from Messages import *
@@ -53,17 +53,19 @@ def get_tunic_colors():
     return list(TunicColors.keys())
 
 def get_tunic_color_options():
-    return get_tunic_colors() + ["Random", "True Random"]
+    return ["Random Choice", "Completely Random"] + get_tunic_colors()
 
 def get_navi_colors():
     return list(NaviColors.keys())
 
 def get_navi_color_options():
-    return get_navi_colors() + ["Random", "True Random"]
+    return ["Random Choice", "Completely Random"] + get_navi_colors()
 
 class LocalRom(object):
 
-    def __init__(self, file, patch=True):
+    def __init__(self, settings, patch=True):
+        file = settings.rom
+        decomp_file = os.path.join(default_output_path(settings.output_dir), 'ZOOTDEC.z64')
 
         validCRC = []
         validCRC.append(bytearray([0xEC, 0x70, 0x11, 0xB7, 0x76, 0x16, 0xD7, 0x2B])) # Compressed
@@ -82,8 +84,8 @@ class LocalRom(object):
             raise RuntimeError('ROM is not a valid OoT 1.0 ROM.')
         if len(self.buffer) == 33554432:
             if platform.system() == 'Windows':
-                subprocess.call(["Decompress\Decompress.exe", file, output_path('ZOOTDEC.z64')])
-                with open((output_path('ZOOTDEC.z64')), 'rb') as stream:
+                subprocess.call(["Decompress\\Decompress.exe", file, decomp_file])
+                with open(decomp_file, 'rb') as stream:
                     self.buffer = read_rom(stream)
             elif platform.system() == 'Linux':
                 subprocess.call(["Decompress/Decompress", file])
@@ -1127,6 +1129,10 @@ def patch_rom(world, rom):
             chestVal = rom.read_int16(address) & 0x0FFF
             rom.write_int16(address, chestVal | chestType)
 
+    # Set Default targeting option to Hold
+    if world.default_targeting == 'hold':
+        rom.write_bytes(0xB07200, [0x20, 0x0C, 0x00, 0x01 ])
+
     # Patch songs and boss rewards
     for location in world.get_locations():
         item = location.item
@@ -1268,6 +1274,9 @@ def patch_rom(world, rom):
     if world.ocarina_songs:
         replace_songs(rom)
 
+    # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
+    random.seed()
+
     # patch tunic colors
     # Custom color tunic stuff
     Tunics = []
@@ -1282,11 +1291,11 @@ def patch_rom(world, rom):
         thisColor = world.tunic_colors[i]
         # handle true random
         randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
-        if thisColor == 'True Random':
+        if thisColor == 'Completely Random':
             color = randColor
         else:
             # handle random
-            if world.tunic_colors[i] == 'Random':
+            if world.tunic_colors[i] == 'Random Choice':
                 thisColor = randomColors[i]
             # grab the color from the list
             color = TunicColors[thisColor]
@@ -1309,11 +1318,11 @@ def patch_rom(world, rom):
             # handle true random
             randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0xFF,
                          random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0x00]
-            if thisColor == 'True Random':
+            if thisColor == 'Completely Random':
                 color = randColor
             else:
                 # handle random
-                if world.navi_colors[i] == 'Random':
+                if world.navi_colors[i] == 'Random Choice':
                     thisColor = randomColors[i]
                 # grab the color from the list
                 color = NaviColors[thisColor]
@@ -1324,7 +1333,7 @@ def patch_rom(world, rom):
     randomSFX = random.choice(healthSFXList)
     address = 0xADBA1A
     
-    if world.healthSFX == 'Random':
+    if world.healthSFX == 'Random Choice':
         thisHealthSFX = randomSFX
     else:
         thisHealthSFX = world.healthSFX

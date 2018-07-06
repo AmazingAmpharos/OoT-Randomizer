@@ -11,6 +11,7 @@ The following were added or majorly changed on this fork:
 - Seeds can be text instead of just numbers
 - Can get, share, and import a settings string to quickly set seed-changing options
 - Options are saved when closing the GUI and loaded when opening it
+- Can set Output directory
 
 ## Optional Logic changes
 
@@ -43,6 +44,7 @@ Options to skip some sequences that only pad the time of completing the game wit
 - `no_guard_stealth`: the stealth sequence between the crawlspace into Hyrule Castle and Zelda's courtyard will be skipped.
 - `no_epona_race`: you can summon Epona with her song without racing Ingo.
 - `only_one_big_poe`: the poe buyer will give the reward after selling 1 Big Poe instead of 10.
+- `default_targeting`: set the default targeting mode to be either `switch` or `hold`.
 
 ## Bombchus
 
@@ -52,6 +54,12 @@ Bombchus are now considered in logic. That is, once you've found bombchus, you c
 - Bomchu Bowling is now playable only once you have bombchus in your inventory. This gives bombchus some unique power beyond the spirit trial, and also keeps them better self-contained (since you win bombchus from this mini-game).
 
 As a note, if you have access to the Wasteland carpet salesman and have a wallet upgrade, you can buy bombchus from him to get your first pack.
+
+## Malon Egg
+
+The Weird Egg is shuffled into the pool. This means that Malon will give a random item and that you must find the Weird Egg (and hatch it) before being able to visit Zelda.
+
+Known Issue: With this setting, waking Talon before getting Malon's random item at Hyrule Castle will cause you to miss that item forever.
 
 ## Keysanity
 
@@ -74,3 +82,11 @@ You can randomize the note pattern that is required to activate each song. The n
 ## Navi color options
 
 Similar to the tunic color options, you can change Navi's color for each of her different kinds of targets.
+
+## Chest size matches contents
+
+`correct_chest_sizes`: Major items will appear in a large chest and other items in small chests. There are a few places that cannot be correctly updated:
+- Chests in Generic Grottos
+- Chests summoned by Zelda's Lullaby
+- Chests summoned by Sun's Song Triggered
+- Chests summoned by a switch that do not fall
