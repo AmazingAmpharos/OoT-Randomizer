@@ -984,6 +984,12 @@ def patch_rom(world, rom):
     write_bits_to_save(0x0F0A, 0x04) # "Spoke to Ingo Once as Adult"
     write_bits_to_save(0x0F1A, 0x04) # "Met Darunia in Fire Temple"
 
+    write_bits_to_save(0x0ED7, 0x01) # "Spoke to Child Malon at Castle or Market"
+    write_bits_to_save(0x0ED7, 0x20) # "Spoke to Child Malon at Ranch"
+    write_bits_to_save(0x0ED7, 0x40) # "Invited to Sing With Child Malon"
+    write_bits_to_save(0x0F09, 0x10) # "Met Child Malon at Castle or Market"
+    write_bits_to_save(0x0F09, 0x20) # "Child Malon Said Epona Was Scared of You"
+
     write_bits_to_save(0x0F21, 0x04) # "Ruto in JJ (M3) Talk First Time"
     write_bits_to_save(0x0F21, 0x02) # "Ruto in JJ (M2) Meet Ruto"
 
@@ -1016,6 +1022,7 @@ def patch_rom(world, rom):
     write_bits_to_save(0x0EEB, 0x04) # "Entered Gerudo Valley"
     write_bits_to_save(0x0EEB, 0x02) # "Entered Lake Hylia"
     write_bits_to_save(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
+    write_bits_to_save(0x0F08, 0x08) # "Entered Hyrule Castle"
  
 
     # Set up for Rainbow Bridge dungeons condition
@@ -1164,7 +1171,7 @@ def patch_rom(world, rom):
                 malon_fix_high = malon_fix >> 8
                 malon_fix_low = malon_fix & 0x00FF
                 rom.write_bytes(0xD7E142, [malon_fix_high, malon_fix_low])
-                #rom.write_bytes(0xD7E8D6, [malon_fix_high, malon_fix_low]) # I don't know what this does, may be useful?
+                rom.write_bytes(0xD7E8C2, [malon_fix_high, malon_fix_low]) # I really don't like hardcoding these addresses, but for now.....
                 rom.write_bytes(0xD7E786, [malon_fix_high, malon_fix_low])
                 rom.write_byte(0x29BECB9, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Composer Grave':

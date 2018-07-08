@@ -64,7 +64,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Lost Woods Bridge'), lambda state: world.open_forest or (state.has('Slingshot') and state.has('Kokiri Sword')))
     set_rule(world.get_entrance('Deku Tree Basement Path'), lambda state: state.has('Slingshot'))
     set_rule(world.get_location('Skull Kid'), lambda state: state.has('Sarias Song'))
-    set_rule(world.get_location('Ocarina Memory Game'), lambda state: (world.logic_no_memory_game) and (state.has('Fairy Ocarina') or state.has('Ocarina of Time')))
+    set_rule(world.get_location('Ocarina Memory Game'), lambda state: (not world.logic_no_memory_game) and (state.has('Fairy Ocarina') or state.has('Ocarina of Time')))
     set_rule(world.get_location('Target in Woods'), lambda state: state.has('Slingshot'))
     set_rule(world.get_location('Deku Theater Skull Mask'), lambda state: (not world.logic_no_trade_skull_mask) and state.has('Zeldas Letter'))
     set_rule(world.get_location('Deku Theater Mask of Truth'), lambda state: (not world.logic_no_trade_mask_of_truth) and (state.has('Zeldas Letter') and state.has('Sarias Song') and state.has('Kokiri Emerald') and state.has('Goron Ruby') and state.has('Zora Sapphire') and state.guarantee_hint())) #Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man.
