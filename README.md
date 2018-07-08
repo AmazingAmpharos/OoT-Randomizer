@@ -59,7 +59,11 @@ As a note, if you have access to the Wasteland carpet salesman and have a wallet
 
 The Weird Egg is shuffled into the pool. This means that Malon will give a random item and that you must find the Weird Egg (and hatch it) before being able to visit Zelda.
 
-Known Issue: With this setting, waking Talon before getting Malon's random item at Hyrule Castle will cause you to miss that item forever.
+Regardless of whether of not you use this option, Malon has been sped up in the following ways:
+- Malon will never appear in the Castle Market, instead she will be waiting by the vines from the start of the game
+- You do not need to talk to Malon twice to get her item. She will give it by talking only once
+- The condition for Malon to move to Lon Lon Ranch is now obtaining her item and Talon fleeing the castle (instead of just Talon fleeing the castle)
+- At Lon Lon Ranch, you no longer need to speak to Malon multiple times before she will teach you her song. You can simply walk up to her and pull out your Ocarina.
 
 ## Keysanity
 
