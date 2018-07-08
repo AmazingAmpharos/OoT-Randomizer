@@ -216,7 +216,7 @@ class Message():
 
     # writes a Message back into the rom, using the given index and offset to update the table
     # returns the offset of the next message
-    def write(self, rom, index, offset, replace_ending=False, ending=None, always_allow_skip=True):
+    def write(self, rom, index, offset, replace_ending=False, ending=None, always_allow_skip=True, speed_up_text=True):
 
         # construct the table entry
         id_bytes = int_to_bytes(self.id, 2)
@@ -227,6 +227,12 @@ class Message():
         rom.write_bytes(entry_offset, entry)
 
         ending_codes = [0x02, 0x07, 0x0A, 0x0B, 0x0E, 0x10]
+        box_breaks = [0x04, 0x0C]
+        slows_text = [0x09, 0x14]
+
+        # speed the text
+        if speed_up_text:
+            offset = Text_Code(0x08, 0).write(rom, offset) # allow instant
 
         # write the message
         for code in self.text_codes:
@@ -236,6 +242,12 @@ class Message():
             # ignore the "make unskippable flag"
             elif always_allow_skip and code.code == 0x1A:
                 pass
+            # ignore anything that slows down text
+            elif speed_up_text and code.code in slows_text:
+                pass
+            elif speed_up_text and code.code in box_breaks:
+                offset = Text_Code(0x04, 0).write(rom, offset) # un-delayed break
+                offset = Text_Code(0x08, 0).write(rom, offset) # allow instant
             else:
                 offset = code.write(rom, offset)
 
