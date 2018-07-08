@@ -368,6 +368,19 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
+    Setting_Info('fast_chests', bool, 1, True, 
+        {
+            'help': '''\
+                    Makes all chests open without the large chest opening cutscene
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Fast Chest Cutscenes',
+            'group': 'convenience',
+            'widget': 'Checkbutton',
+            'default': 'checked'
+        }),
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
             'help': '''\
