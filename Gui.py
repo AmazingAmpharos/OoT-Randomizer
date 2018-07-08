@@ -332,7 +332,7 @@ def guiMain(settings=None):
 
     generateButton = Button(generateSeedFrame, text='Generate Patched Rom', command=generateRom)
 
-    seedLabel = Label(generateSeedFrame, text='Seed #')
+    seedLabel = Label(generateSeedFrame, text='Seed')
     guivars['seed'] = StringVar()
     seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'])
     seedLabel.pack(side=LEFT)

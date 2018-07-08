@@ -1,9 +1,3 @@
-; Make all chest opening animations fast
-; Replaces:
-;   lb      t2, 0x0002 (t1)
-.org 0xBDA2E8 ; In memory: 0x803952D8
-    addiu   t2, r0, -1
-
 ; Prevent Kokiri Sword from being added to inventory on game load
 ; Replaces:
 ;   sh      t9, 0x009C (v0)

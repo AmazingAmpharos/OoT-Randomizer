@@ -1017,6 +1017,10 @@ def patch_rom(world, rom):
     write_bits_to_save(0x0EEB, 0x02) # "Entered Lake Hylia"
     write_bits_to_save(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
  
+    # Make all chest opening animations fast
+    if world.fast_chests:
+        rom.write_int32(0xBDA2E8, 0x240AFFFF) # addiu   t2, r0, -1
+                               # replaces # lb      t2, 0x0002 (t1)
 
     # Set up for Rainbow Bridge dungeons condition
     Block_code = [0x15, 0x41, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x80, 0xEA, 0x00, 0xA5,
@@ -1125,12 +1129,6 @@ def patch_rom(world, rom):
     # Write item overrides
     rom.write_bytes(0x3481000, get_override_table(world))
 
-    # Update chest type sizes
-    if world.correct_chest_sizes:
-        for address, chestType in get_new_chest_type_table(world):
-            chestVal = rom.read_int16(address) & 0x0FFF
-            rom.write_int16(address, chestVal | chestType)
-
     # Set Default targeting option to Hold
     if world.default_targeting == 'hold':
         rom.write_bytes(0xB07200, [0x20, 0x0C, 0x00, 0x01 ])
@@ -1237,6 +1235,34 @@ def patch_rom(world, rom):
         rbl_bombchu.get_item_id = 0x006A
         rbl_bombchu.description_message = 0x80FE
         rbl_bombchu.purchase_message = 0x80FF
+
+        #Fix bombchu chest animations
+        chestAnimations = {
+            0x6A: 0x18, #0xD8 #Bombchu (5) 
+            0x03: 0x18, #0xD8 #Bombchu (10)    
+            0x6B: 0x18, #0xD8 #Bombchu (20)    
+        }
+        for item_id, gfx_id in chestAnimations.items():
+            rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
+
+    #Fix item chest animations
+    chestAnimations = {
+        0x3D: 0xED, #0x13 #Heart Container 
+        0x3E: 0xEC, #0x14 #Piece of Heart  
+        0x42: 0x02, #0xFE #Small Key   
+        0x48: 0xF7, #0x09 #Recovery Heart  
+        0x4F: 0xED, #0x13 #Heart Container 
+    }
+    for item_id, gfx_id in chestAnimations.items():
+        rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
+
+
+
+    # Update chest type sizes
+    if world.correct_chest_sizes:
+        for address, chestType in get_new_chest_type_table(rom, world):
+            chestVal = rom.read_int16(address) & 0x0FFF
+            rom.write_int16(address, chestVal | chestType)
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(rom, messages, shop_items)
@@ -1413,15 +1439,37 @@ chestTypeMap = {
     0xF000: [0x5000, 0x0000, 0x2000], #Large
 }
 
-def get_new_chest_type_table(world):
+chestAnimationExtendedFast = [
+	0xB6, # Recovery Heart
+	0xB7, # Arrows (5)
+	0xB8, # Arrows (10)
+	0xB9, # Arrows (30)
+	0xBA, # Bombs (5)
+	0xBB, # Bombs (10)
+	0xBC, # Bombs (20)
+	0xBD, # Deku Nuts (5)
+	0xBE, # Deku Nuts (10)
+]
+
+
+global smallCount
+global bigCount
+def get_new_chest_type_table(rom, world):
+    global smallCount
+    global bigCount
     chest_type_entries = []
+    smallCount = 0
+    bigCount = 0
     for location in world.get_locations():
-        (address, chestType) = get_new_chest_type_entry(location)
+        (address, chestType) = get_new_chest_type_entry(rom, location)
         if address != None:
             chest_type_entries.append((address, chestType))
+    print(smallCount, bigCount)
     return chest_type_entries
 
-def get_new_chest_type_entry(location):
+def get_new_chest_type_entry(rom, location):
+    global smallCount
+    global bigCount
     address = location.address
     scene = location.scene
     default = location.default
@@ -1430,11 +1478,22 @@ def get_new_chest_type_entry(location):
     if None in [address, scene, default, item_id]:
         return (None, None)
 
-    itemType = 0
-    if location.item.key:
-        itemType = 2
-    elif location.item.advancement:
-        itemType = 1
+    itemType = 0  # Item animation
+
+    if item_id >= 0x80: # if extended item, always big except from exception list
+        itemType = 0 if item_id in chestAnimationExtendedFast else 1
+    elif rom.read_byte(0xBEEE8E + (item_id * 6) + 2) & 0x80: # get animation from rom, ice trap is big
+        itemType = 0 # No animation, small chest
+    else:
+        itemType = 1 # Long animation, big chest
+    # Don't use boss chests
+
+    if itemType == 0:
+        smallCount = smallCount + 1
+        print(location.item.name, item_id)
+    else:
+        bigCount = bigCount + 1
+
 
     if location.type == 'Chest':
         chestType = default & 0xF000
