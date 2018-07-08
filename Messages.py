@@ -230,7 +230,7 @@ class Message():
         box_breaks = [0x04, 0x0C]
         slows_text = [0x09, 0x14]
 
-        # speed the text
+        # # speed the text
         if speed_up_text:
             offset = Text_Code(0x08, 0).write(rom, offset) # allow instant
 
@@ -481,7 +481,7 @@ def read_messages(rom):
     return messages
 
 # wrtie the messages back
-def repack_messages(rom, messages, permutation=None, always_allow_skip=True):
+def repack_messages(rom, messages, permutation=None, always_allow_skip=True, speed_up_text=True):
 
     if permutation is None:
         permutation = range(len(messages))
@@ -493,7 +493,7 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True):
         new_message = messages[new_index]
         remember_id = new_message.id 
         new_message.id = old_message.id
-        offset = new_message.write(rom, old_index, offset, True, old_message.ending, always_allow_skip)
+        offset = new_message.write(rom, old_index, offset, True, old_message.ending, always_allow_skip, speed_up_text)
         new_message.id = remember_id
 
     # end the table
@@ -513,9 +513,9 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
     permutation = [i for i, _ in enumerate(messages)]
 
     def is_not_exempt(m):
-        exaempt_as_id = m.is_id_message()
+        exempt_as_id = m.is_id_message()
         exempt_as_hint = ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT + list(KEYSANITY_MESSAGES.keys()) ) )
-        return not ( exaempt_as_id or exempt_as_hint )
+        return not ( exempt_as_id or exempt_as_hint )
     
     have_goto =         list( filter( lambda m: is_not_exempt(m) and m.has_goto, messages) )
     have_keep_open =    list( filter( lambda m: is_not_exempt(m) and m.has_keep_open, messages) )
@@ -543,4 +543,4 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
     ]))
 
     # write the messages back
-    repack_messages(rom, messages, permutation, always_allow_skip)
+    repack_messages(rom, messages, permutation, always_allow_skip, False)

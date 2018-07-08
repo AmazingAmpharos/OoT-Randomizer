@@ -10,7 +10,6 @@ import random
 from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
 from Utils import local_path, default_output_path
 from Items import ItemFactory, item_data
-from TextArray import text_array
 from Messages import *
 from OcarinaSongs import replace_songs
 
