@@ -228,7 +228,7 @@ class Message():
 
         ending_codes = [0x02, 0x07, 0x0A, 0x0B, 0x0E, 0x10]
         box_breaks = [0x04, 0x0C]
-        slows_text = [0x09, 0x14]
+        slows_text = [0x14]
 
         # # speed the text
         if speed_up_text:
