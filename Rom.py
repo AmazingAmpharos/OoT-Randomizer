@@ -1144,7 +1144,8 @@ def patch_rom(world, rom):
         rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
 
     # Update chest type sizes
-    update_chest_sizes(rom, override_table)
+    if world.correct_chest_sizes:
+        update_chest_sizes(rom, override_table)
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(rom, messages, shop_items)
