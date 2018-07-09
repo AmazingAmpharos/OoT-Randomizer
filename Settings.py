@@ -422,6 +422,20 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
+    Setting_Info('progressive_bombchus', bool, 1, True, 
+        {
+            'help': '''\
+                    Bombchus amounts are progressive. 20 pack first time.
+                    Other bombchus will give 10 when low on bombchus, otherwise 5.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Progressive Bombchus',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
     Setting_Info('all_reachable', bool, 1, True, 
         {
             'help': '''\

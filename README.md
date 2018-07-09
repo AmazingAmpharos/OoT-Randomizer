@@ -45,6 +45,7 @@ Options to skip some sequences that only pad the time of completing the game wit
 - `no_epona_race`: you can summon Epona with her song without racing Ingo.
 - `only_one_big_poe`: the poe buyer will give the reward after selling 1 Big Poe instead of 10.
 - `default_targeting`: set the default targeting mode to be either `switch` or `hold`.
+- `progressive_bombchus`: first bombchu pack is always 20. subsequent ones will give 10 if low, and 5 otherwise.
 
 ## Bombchus
 

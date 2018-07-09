@@ -124,6 +124,8 @@ Item_Row 0x4F, 0x41, 0x13, 0xE9, 0x00BD, no_upgrade,    give_defense, -1, -1 ; 0
 Item_Row 0x4F, 0x41, 0x1E, 0xE4, 0x00CD, magic_upgrade, give_magic,   -1, -1 ; 0xC0 = Progressive Magic Meter
 Item_Row 0x4F, 0x41, 0x1F, 0xE8, 0x00CD, no_upgrade,    double_magic, -1, -1 ; 0xC1 = Double Magic
 
+Item_Row -1, -1, -1, -1, -1, bombchu_upgrade,  no_effect, -1, -1 ; 0xC2 = Progressive Bombchus
+
 ;==================================================================================================
 ; Item upgrade functions
 ;==================================================================================================
@@ -432,3 +434,22 @@ double_magic:
     sb      t0, 0x33 (a0) ; Fill meter
     jr      ra
     nop
+
+;==================================================================================================
+
+bombchu_upgrade:
+    lbu     t0, 0x7C (a0) ; Load bomchu from inventory
+    beq     t0, 0xFF, @@return
+    li      v0, 0x6B ; Bombchu 20 pack
+
+    lbu     t0, 0x94 (a0) ; Load bombchu count from inventory
+    sltiu   t0, t0, 0x06
+    beqz    t0, @@return  ; if 
+    li      v0, 0x6A ; Bombchu 5 Pack
+
+    li      v0, 0x03 ; Bombchu 10 Pack
+
+@@return:
+    jr      ra
+    nop
+
