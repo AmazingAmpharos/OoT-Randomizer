@@ -1127,7 +1127,8 @@ def patch_rom(world, rom):
     buildGanonText(world, messages)
 
     # Write item overrides
-    rom.write_bytes(0x3481000, get_override_table(world))
+    override_table = get_override_table(world)
+    rom.write_bytes(0x3481000, sum(override_table, []))
 
     # Set Default targeting option to Hold
     if world.default_targeting == 'hold':
@@ -1256,13 +1257,8 @@ def patch_rom(world, rom):
     for item_id, gfx_id in chestAnimations.items():
         rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
 
-
-
     # Update chest type sizes
-    if world.correct_chest_sizes:
-        for address, chestType in get_new_chest_type_table(rom, world):
-            chestVal = rom.read_int16(address) & 0x0FFF
-            rom.write_int16(address, chestVal | chestType)
+    update_chest_sizes(rom, override_table)
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(rom, messages, shop_items)
@@ -1399,7 +1395,7 @@ def get_override_table(world):
     for location in world.get_locations():
         override_entries.append(get_override_entry(location))
     override_entries.sort()
-    return sum(override_entries, [])
+    return override_entries
 
 def get_override_entry(location):
     scene = location.scene
@@ -1440,64 +1436,102 @@ chestTypeMap = {
 }
 
 chestAnimationExtendedFast = [
-	0xB6, # Recovery Heart
-	0xB7, # Arrows (5)
-	0xB8, # Arrows (10)
-	0xB9, # Arrows (30)
-	0xBA, # Bombs (5)
-	0xBB, # Bombs (10)
-	0xBC, # Bombs (20)
-	0xBD, # Deku Nuts (5)
-	0xBE, # Deku Nuts (10)
+    0x87, # Progressive Nut Capacity
+    0x88, # Progressive Stick Capacity
+    0xB6, # Recovery Heart
+    0xB7, # Arrows (5)
+    0xB8, # Arrows (10)
+    0xB9, # Arrows (30)
+    0xBA, # Bombs (5)
+    0xBB, # Bombs (10)
+    0xBC, # Bombs (20)
+    0xBD, # Deku Nuts (5)
+    0xBE, # Deku Nuts (10)
 ]
 
 
-global smallCount
-global bigCount
-def get_new_chest_type_table(rom, world):
-    global smallCount
-    global bigCount
-    chest_type_entries = []
-    smallCount = 0
-    bigCount = 0
-    for location in world.get_locations():
-        (address, chestType) = get_new_chest_type_entry(rom, location)
-        if address != None:
-            chest_type_entries.append((address, chestType))
-    print(smallCount, bigCount)
-    return chest_type_entries
-
-def get_new_chest_type_entry(rom, location):
-    global smallCount
-    global bigCount
-    address = location.address
-    scene = location.scene
-    default = location.default
-    item_id = location.item.index
-
-    if None in [address, scene, default, item_id]:
-        return (None, None)
-
-    itemType = 0  # Item animation
-
-    if item_id >= 0x80: # if extended item, always big except from exception list
-        itemType = 0 if item_id in chestAnimationExtendedFast else 1
-    elif rom.read_byte(0xBEEE8E + (item_id * 6) + 2) & 0x80: # get animation from rom, ice trap is big
-        itemType = 0 # No animation, small chest
-    else:
-        itemType = 1 # Long animation, big chest
-    # Don't use boss chests
-
-    if itemType == 0:
-        smallCount = smallCount + 1
-        print(location.item.name, item_id)
-    else:
-        bigCount = bigCount + 1
+def room_get_chests(rom, room_data, scene, chests, alternate=None):
+    room_start = alternate or room_data
+    command = 0
+    while command != 0x14: # 0x14 = end header
+        command = rom.read_byte(room_data)
+        if command == 0x01: # actor list
+            actor_count = rom.read_byte(room_data + 1)
+            actor_list = room_start + (rom.read_int32(room_data + 4) & 0x00FFFFFF)
+            for _ in range(0, actor_count):
+                actor_id = rom.read_int16(actor_list);
+                actor_var = rom.read_int16(actor_list + 14)
+                if actor_id == 0x000A: #Chest Actor
+                    chests[actor_list + 14] = [scene, actor_var & 0x001F]
+                actor_list = actor_list + 16
+        if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
+            header_list = room_start + (rom.read_int32(room_data + 4) & 0x00FFFFFF)
+            for alt_id in range(0,2):
+                header_data = room_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
+                if header_data != 0 and not alternate:
+                    room_get_chests(rom, header_data, scene, chests, room_start)
+                header_list = header_list + 4
+        room_data = room_data + 8
 
 
-    if location.type == 'Chest':
+def scene_get_chests(rom, scene_data, scene, chests, alternate=None):
+    scene_start = alternate or scene_data
+    command = 0
+    while command != 0x14: # 0x14 = end header
+        command = rom.read_byte(scene_data)
+        if command == 0x04: #room list
+            room_count = rom.read_byte(scene_data + 1)
+            room_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
+            for _ in range(0, room_count):
+                room_data = rom.read_int32(room_list);
+                room_get_chests(rom, room_data, scene, chests)
+                room_list = room_list + 8
+        if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
+            header_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
+            for alt_id in range(0,2):
+                header_data = scene_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
+                if header_data != 0 and not alternate:
+                    scene_get_chests(rom, header_data, scene, chests, scene_start)
+                header_list = header_list + 4
+
+        scene_data = scene_data + 8
+
+
+def get_chest_list(rom):
+    chests = {}
+    scene_table = 0x00B71440
+    for scene in range(0x00, 0x65):
+        scene_data = rom.read_int32(scene_table + (scene * 0x14));
+        scene_get_chests(rom, scene_data, scene, chests)
+    return chests
+
+
+def get_override_itemid(override_table, scene, type, flags):
+    for entry in override_table:
+        if len(entry) == 4 and entry[0] == scene and entry[1] == type and entry[2] == flags:
+            return entry[3]
+    return None
+
+def update_chest_sizes(rom, override_table):
+    chest_list = get_chest_list(rom)
+    for address, [scene, flags] in chest_list.items():
+        item_id = get_override_itemid(override_table, scene, 1, flags)
+
+        if None in [address, scene, flags, item_id]:
+            continue
+
+        itemType = 0  # Item animation
+
+        if item_id >= 0x80: # if extended item, always big except from exception list
+            itemType = 0 if item_id in chestAnimationExtendedFast else 1
+        elif rom.read_byte(0xBEEE8E + (item_id * 6) + 2) & 0x80: # get animation from rom, ice trap is big
+            itemType = 0 # No animation, small chest
+        else:
+            itemType = 1 # Long animation, big chest
+        # Don't use boss chests
+
+        default = rom.read_int16(address)
         chestType = default & 0xF000
         newChestType = chestTypeMap[chestType][itemType]
-        return (address, newChestType)
-    else:
-        return (None, None)
+        default = (default & 0x0FFF) | newChestType
+        rom.write_int16(address, default)
