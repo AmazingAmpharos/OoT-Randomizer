@@ -228,7 +228,7 @@ class Message():
 
         ending_codes = [0x02, 0x07, 0x0A, 0x0B, 0x0E, 0x10]
         box_breaks = [0x04, 0x0C]
-        slows_text = [0x14]
+        slows_text = [0x09, 0x14]
 
         # # speed the text
         if speed_up_text:
@@ -243,7 +243,7 @@ class Message():
             elif always_allow_skip and code.code == 0x1A:
                 pass
             # ignore anything that slows down text
-            elif speed_up_text and code.code in slows_text:
+            elif speed_up_text and code.code in slows_text and not self.has_ocarina :
                 pass
             elif speed_up_text and code.code in box_breaks:
                 offset = Text_Code(0x04, 0).write(rom, offset) # un-delayed break
