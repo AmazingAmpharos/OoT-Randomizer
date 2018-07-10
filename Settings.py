@@ -136,14 +136,14 @@ class Settings():
         for info in setting_infos:
             if info.name not in self.__dict__:
                 if info.type == bool:
-                    self.__dict__[info.name] = False
+                    self.__dict__[info.name] = True if info.gui_params['default'] == 'checked' else False
                 if info.type == str:
                     if 'default' in info.args_params:
-                        self.__dict__[info.name] = info.args_params['default']
+                        self.__dict__[info.name] = info.gui_params['default'] or info.args_params['default']
                     else:
                         self.__dict__[info.name] = ""
                 if info.type == int:
-                    self.__dict__[info.name] = 1
+                    self.__dict__[info.name] = info.gui_params['default'] or 1
         self.settings_string = self.get_settings_string()
         if(self.seed is None):
             # https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
@@ -312,7 +312,7 @@ setting_infos = [
             'text': 'Number of Ganon\'s Trials',
             'group': 'open',
             'widget': 'Scale',
-            'default': '6',
+            'default': 6,
             'min': 0,
             'max': 6,
         }),
@@ -422,6 +422,20 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
+    Setting_Info('progressive_bombchus', bool, 1, True, 
+        {
+            'help': '''\
+                    Bombchus amounts are progressive. 20 pack first time.
+                    Other bombchus will give 10 when low on bombchus, otherwise 5.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Progressive Bombchus',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
     Setting_Info('all_reachable', bool, 1, True, 
         {
             'help': '''\
@@ -466,7 +480,7 @@ setting_infos = [
             'text': 'Maximum expected skulltula tokens',
             'group': 'rewards',
             'widget': 'Scale',
-            'default': '50',
+            'default': 50,
             'min': 0,
             'max': 50,
             'step': 10,

@@ -1125,9 +1125,9 @@ def patch_rom(world, rom):
 
         #Fix bombchu chest animations
         chestAnimations = {
-            0x6A: 0x18, #0xD8 #Bombchu (5) 
-            0x03: 0x18, #0xD8 #Bombchu (10)    
-            0x6B: 0x18, #0xD8 #Bombchu (20)    
+            0x6A: 0x28, #0xD8 #Bombchu (5) 
+            0x03: 0x28, #0xD8 #Bombchu (10)    
+            0x6B: 0x28, #0xD8 #Bombchu (20)    
         }
         for item_id, gfx_id in chestAnimations.items():
             rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
@@ -1144,7 +1144,8 @@ def patch_rom(world, rom):
         rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
 
     # Update chest type sizes
-    update_chest_sizes(rom, override_table)
+    if world.correct_chest_sizes:
+        update_chest_sizes(rom, override_table)
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(rom, messages, shop_items)

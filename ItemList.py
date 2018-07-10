@@ -10,7 +10,7 @@ from Fill import FillError, fill_restrictive
 
 alwaysitems = (['Kokiri Sword', 'Biggoron Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Fire Arrows', 'Ice Arrows', 'Light Arrows', 'Dins Fire', 'Farores Wind', 'Nayrus Love', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + ['Ice Trap'] * 6 +
               ['Progressive Strength Upgrade'] * 3 + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 35 + ['Recovery Heart'] * 11 + ['Rupees (5)'] * 17 + ['Rupees (20)'] * 5 + ['Rupees (50)'] * 7 + ['Rupees (200)'] * 6 + ['Bow'] * 3 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle with Letter'] + ['Heart Container'] * 8 + ['Piece of Heart (Treasure Chest Game)'] +
-              ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] * 2 + ['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'] + ['Arrows (5)'] + ['Arrows (10)'] * 6 + ['Arrows (30)'] * 6 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2 + ['Magic Meter'] * 2 + ['Double Defense'])
+              ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] * 2 + ['Arrows (5)'] + ['Arrows (10)'] * 6 + ['Arrows (30)'] * 6 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2 + ['Magic Meter'] * 2 + ['Double Defense'])
 # normal_bottles = ['Bottle', 'Bottle with Milk', 'Bottle with Red Potion', 'Bottle with Green Potion', 'Bottle with Blue Potion', 'Bottle with Fairy', 'Bottle with Fish', 'Bottle with Blue Fire', 'Bottle with Bugs', 'Bottle with Poe']
 normal_bottles = ['Bottle', 'Bottle with Milk', 'Bottle with Red Potion', 'Bottle with Green Potion', 'Bottle with Blue Potion', 'Bottle with Fairy', 'Bottle with Fish', 'Bottle with Bugs', 'Bottle with Poe']
 normal_bottle_count = 3
@@ -58,7 +58,7 @@ def generate_itempool(world):
         world.get_location(location).event = True
 
     # set up item pool
-    (pool, placed_items) = get_pool_core(world.place_dungeon_items, world.shuffle_weird_egg)
+    (pool, placed_items) = get_pool_core(world)
     world.itempool = ItemFactory(pool)
     for (location, item) in placed_items:
         world.push_item(location, ItemFactory(item), False)
@@ -68,14 +68,19 @@ def generate_itempool(world):
     fill_bosses(world)
     fill_songs(world)
 
-def get_pool_core(dungeon_items, shuffle_weird_egg):
+def get_pool_core(world):
     pool = []
     placed_items = []
 
-    if not dungeon_items:
+    if not world.place_dungeon_items:
         pool.extend(notmapcompass)
-    if shuffle_weird_egg:
+    if world.shuffle_weird_egg:
         pool.append('Weird Egg')
+
+    if world.progressive_bombchus:
+        pool.extend(['Progressive Bombchus'] * 5)
+    else:
+        pool.extend(['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'])
 
     pool.extend(alwaysitems)
     for _ in range(normal_bottle_count):
