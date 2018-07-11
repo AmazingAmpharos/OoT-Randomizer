@@ -311,8 +311,11 @@ class CollectionState(object):
     def is_adult(self):
         return self.has('Master Sword')
 
+    def has_ocarina(self):
+        return (self.has('Ocarina') or self.has("Fairy Ocarina") or self.has("Ocarina of Time"))
+
     def can_play(self, song):
-        return (self.has('Ocarina') or self.has("Fairy Ocarina") or self.has("Ocarina of Time")) and self.has(song)
+        return self.has_ocarina() and self.has(song)
 
     def has_bombchus(self):
         return (self.world.bombchus_in_logic and \
