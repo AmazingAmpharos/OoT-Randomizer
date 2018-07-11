@@ -1049,7 +1049,7 @@ def patch_rom(world, rom):
                 malon_fix_high = malon_fix >> 8
                 malon_fix_low = malon_fix & 0x00FF
                 rom.write_bytes(0xD7E142, [malon_fix_high, malon_fix_low])
-                rom.write_bytes(0xD7E8C2, [malon_fix_high, malon_fix_low]) # I really don't like hardcoding these addresses, but for now.....
+                rom.write_bytes(0xD7E8D6, [malon_fix_high, malon_fix_low]) # I really don't like hardcoding these addresses, but for now.....
                 rom.write_bytes(0xD7E786, [malon_fix_high, malon_fix_low])
                 rom.write_byte(0x29BECB9, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Composer Grave':
