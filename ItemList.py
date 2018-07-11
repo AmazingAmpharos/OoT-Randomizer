@@ -27,11 +27,10 @@ tradeitems = ['Pocket Egg', 'Pocket Cucco', 'Cojiro', 'Odd Mushroom', 'Poachers 
 
 eventlocations = {
     'Ganon': 'Triforce',
-    'Gift from Saria': 'Fairy Ocarina',
     'Zeldas Letter': 'Zeldas Letter',
     'Magic Bean Salesman': 'Magic Bean',
     'King Zora Moves': 'Bottle',
-    'Ocarina of Time': 'Ocarina of Time',
+    'Ocarina of Time': 'Ocarina',
     'Master Sword Pedestal': 'Master Sword',
     'Epona': 'Epona',
     'Gerudo Fortress Carpenter Rescue': 'Gerudo Membership Card',
@@ -52,6 +51,8 @@ def generate_itempool(world):
 
     if not world.shuffle_weird_egg:
         eventlocations['Malon Egg'] = 'Weird Egg'
+    if not world.shuffle_fairy_ocarina:
+        eventlocations['Gift from Saria'] = 'Ocarina'
 
     for location, item in eventlocations.items():
         world.push_item(location, ItemFactory(item), False)
@@ -76,9 +77,11 @@ def get_pool_core(world):
         pool.extend(notmapcompass)
     if world.shuffle_weird_egg:
         pool.append('Weird Egg')
+    if world.shuffle_fairy_ocarina:
+        pool.append('Ocarina')
 
     if world.progressive_bombchus:
-        pool.extend(['Progressive Bombchus'] * 5)
+        pool.extend(['Bombchus'] * 5)
     else:
         pool.extend(['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'])
 

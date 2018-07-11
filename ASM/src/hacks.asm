@@ -280,3 +280,11 @@
 .org 0xB06C2C ; In memory: ???
     jal     write_initial_save
     sb      t0, 32(s1)
+
+
+; Replaces
+;   addu    t8,t0,t7
+;   sb      t6,0x74(t8)  ; store to fairy ocarina slot
+.org 0xAE6E48
+    jal     override_fairy_ocarina_cutscene
+    addu    t8,t0,t7

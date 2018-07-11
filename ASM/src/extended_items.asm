@@ -125,6 +125,7 @@ Item_Row 0x4F, 0x41, 0x1E, 0xE4, 0x00CD, magic_upgrade, give_magic,   -1, -1 ; 0
 Item_Row 0x4F, 0x41, 0x1F, 0xE8, 0x00CD, no_upgrade,    double_magic, -1, -1 ; 0xC1 = Double Magic
 
 Item_Row -1, -1, -1, -1, -1, bombchu_upgrade,  no_effect, -1, -1 ; 0xC2 = Progressive Bombchus
+Item_Row 0x53, 0x41, 0x46, 0x4A, 0x010E, ocarina_upgrade,  give_fairy_ocarina, -1, -1 ; 0xC3 = Progressive Ocarina
 
 ;==================================================================================================
 ; Item upgrade functions
@@ -453,3 +454,23 @@ bombchu_upgrade:
     jr      ra
     nop
 
+;==================================================================================================
+
+ocarina_upgrade:
+    lbu     t0, 0x7B (a0) ; Load ocarina from inventory
+
+    beq     t0, 0xFF, @@return
+    ori     v0, a1, 0 ; Fairy Ocarina (unchanged)
+
+    li      v0, 0x0C ; Ocarina of Time
+
+@@return:
+    jr      ra
+    nop
+
+give_fairy_ocarina:
+    ; a0 = save context
+    li      t0, 0x07
+    sb      t0, 0x7B (a0)
+    jr      ra
+    nop

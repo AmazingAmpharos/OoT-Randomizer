@@ -64,3 +64,12 @@ override_light_arrow_cutscene:
     sb      t0, 0x00 (t1)
     jr      ra
     nop
+
+override_fairy_ocarina_cutscene:
+    li      t0, FAIRY_OCARINA_ITEM
+    lb      t0, 0x00 (t0)
+    li      t1, PENDING_SPECIAL_ITEM
+    sb      t0, 0x00 (t1)
+    jr      ra
+    nop
+

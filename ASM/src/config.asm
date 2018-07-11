@@ -37,6 +37,8 @@ INITIAL_SAVE_DATA:
 
 LIGHT_ARROW_ITEM:
 .byte 0x5A
+FAIRY_OCARINA_ITEM:
+.byte 0x3B
 FAIRY_ITEMS:
 .byte 0x5D ; Zora's Domain
 .byte 0x5C ; Hyrule Castle
