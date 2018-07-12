@@ -190,7 +190,7 @@ def global_rules(world):
     set_rule(world.get_location('Child Fishing'), lambda state: (not world.logic_no_child_fishing) and state.has('Kokiri Sword'))
     set_rule(world.get_location('Adult Fishing'), lambda state: (not world.logic_no_adult_fishing) and (state.is_adult() and ((state.has('Progressive Hookshot') and state.has_ocarina()) or state.has('Magic Bean'))))
     set_rule(world.get_location('Lake Hylia Freestanding PoH'), lambda state: state.is_adult() and ((state.has('Progressive Hookshot') and state.has_ocarina()) or state.has('Magic Bean')))
-    set_rule(world.get_location('Lake Hylia Sun'), lambda state: ((state.has('Progressive Hookshot', 2) and state.has_ocarina()) or state.can_reach('Morpha')) and state.has('Bow') and state.is_adult())
+    set_rule(world.get_location('Lake Hylia Sun'), lambda state: ((state.has('Progressive Hookshot', 2) and state.has_ocarina()) or state.can_reach(world.get_location('Morpha'))) and state.has('Bow') and state.is_adult())
     set_rule(world.get_entrance('Crater Hover Boots'), lambda state: state.is_adult() and state.has('Hover Boots'))
     set_rule(world.get_entrance('Crater Ascent'), lambda state: state.is_adult() and state.has_GoronTunic())
     set_rule(world.get_entrance('Crater Scarecrow'), lambda state: state.is_adult() and state.has_ocarina() and state.has('Progressive Hookshot', 2) and state.has_GoronTunic())
