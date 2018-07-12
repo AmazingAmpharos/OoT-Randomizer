@@ -214,7 +214,7 @@ hintTable = {'Hammer':                                                ("the drag
              '1040':                                                  ("There's a reason why I am special&inquisitor!", 'junkHint'),
              '1041':                                                  ("You were almost a @&sandwich.", 'junkHint'),
              '1042':                                                  ("I'm a helpful hint Gossip Stone!^See I'm helping.", 'junkHint'),
-             '1043':                                                  ("Dear @, please come to the castle.&I've baked a cake for you.&&Yours truly, pricess Zelda.", 'junkHint'),
+             '1043':                                                  ("Dear @, please come to the&castle. I've baked a cake for you.&&Yours truly, princess Zelda.", 'junkHint'),
              '1044':                                                  ("I like shorts! They're comfy and&easy to wear!", 'junkHint'),
              '1044':                                                  ("They say all toasters toast toast.", 'junkHint'),
                                                                        #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box
