@@ -425,3 +425,9 @@ def global_rules(world):
     for location in world.get_locations():
         if location.type != 'Chest':
             forbid_item(location, 'Ice Trap')
+
+    # Biggoron Sword at bombchu bowling seems to lead to a soft lock.
+    # Unsure what causes this, but I'm leaving this to original devs.
+    # For now just avoiding this combination, since BigSword is not that important.
+    forbid_item(world.get_location('Bombchu Bowling Bomb Bag'), 'Biggoron Sword')    
+    forbid_item(world.get_location('Bombchu Bowling Piece of Heart'), 'Biggoron Sword')
