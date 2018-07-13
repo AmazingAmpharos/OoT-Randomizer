@@ -688,20 +688,6 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
-    Setting_Info('logic_impa_house', bool, 1, True, 
-        {
-            'help': '''\
-                    Getting into the back of Impa's house (cow cage) as an adult will
-                    not require hookshot in logic.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Impa House (cow cage) as adult with nothing',
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),
     Setting_Info('logic_windmill_hp', bool, 1, True, 
         {
             'help': '''\
