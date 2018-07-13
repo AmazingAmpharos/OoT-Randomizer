@@ -299,14 +299,15 @@ setting_infos = [
         }),
     Setting_Info('trials', int, 3, True, 
         {
-            'default': '6',
-            'const': '6',
+            'default': 6,
+            'const': 6,
             'nargs': '?',
-            'choices': ['0', '1', '2', '3', '4', '5', '6'],
+            'choices': [0, 1, 2, 3, 4, 5, 6],
             'help': '''\
                     Select how many trials must be cleared to enter Ganon's Tower.
                     The trials you must complete will be selected randomly.
-                    '''
+                    ''',
+            'type': int                    
         },
         {
             'text': 'Number of Ganon\'s Trials',
@@ -483,13 +484,14 @@ setting_infos = [
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
-            'default': '50',
-            'const': 'always',
+            'default': 50,
+            'const': 50,
             'nargs': '?',
-            'choices': ['0', '10', '20', '30', '40', '50'],
+            'choices': [0, 10, 20, 30, 40, 50],
             'help': '''\
                     Choose the maximum number of gold skulltula tokens you will be expected to collect.
-                    '''
+                    ''',
+            'type': int
         },
         {
             'text': 'Maximum expected skulltula tokens',
