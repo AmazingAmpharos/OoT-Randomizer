@@ -154,6 +154,21 @@ def guiMain(settings=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
 
+        # Update any dependencies
+        for info in setting_infos:
+            if info.gui_params and 'dependency' in info.gui_params:
+                dep_met = True
+                for dep_var, dep_val in info.gui_params['dependency'].items():
+                    if guivars[dep_var].get() != dep_val:
+                        dep_met = False
+
+                if widgets[info.name].winfo_class() == 'Frame':
+                    for child in widgets[info.name].winfo_children():
+                        child.configure(state= 'normal' if dep_met else 'disabled')
+                else:
+                    widgets[info.name].config(state = 'normal' if dep_met else 'disabled')
+
+
     def import_settings(event=None):
         try:
             settings = guivars_to_settings(guivars)
@@ -260,8 +275,9 @@ def guiMain(settings=None):
                 dropdown.bind("<<ComboboxSelected>>", show_settings)
                 dropdown.pack(side=BOTTOM, anchor=W)
                 # label the option
-                label = Label(widgets[info.name], text=info.gui_params['text'])
-                label.pack(side=LEFT, anchor=W, padx=5)
+                if 'text' in info.gui_params:
+                    label = Label(widgets[info.name], text=info.gui_params['text'])
+                    label.pack(side=LEFT, anchor=W, padx=5)
                 # pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Scale':
@@ -278,8 +294,23 @@ def guiMain(settings=None):
                 scale = Scale(widgets[info.name], variable=guivars[info.name], from_=minval, to=maxval, tickinterval=stepval, resolution=stepval, showvalue=0, orient=HORIZONTAL, sliderlength=15, length=200, command=show_settings)
                 scale.pack(side=BOTTOM, anchor=W)
                 # label the option
-                label = Label(widgets[info.name], text=info.gui_params['text'])
-                label.pack(side=LEFT, anchor=W, padx=5)
+                if 'text' in info.gui_params:
+                    label = Label(widgets[info.name], text=info.gui_params['text'])
+                    label.pack(side=LEFT, anchor=W, padx=5)
+                # pack the frame
+                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+            elif info.gui_params['widget'] == 'Entry':
+                # create the variable to store the user's decision
+                guivars[info.name] = StringVar(value=info.gui_params['default'])
+                # create the option menu
+                widgets[info.name] = Frame(frames[info.gui_params['group']])
+
+                entry = Entry(widgets[info.name], textvariable=guivars[info.name], width=30)
+                entry.pack(side=BOTTOM, anchor=W)
+                # label the option
+                if 'text' in info.gui_params:
+                    label = Label(widgets[info.name], text=info.gui_params['text'])
+                    label.pack(side=LEFT, anchor=W, padx=5)
                 # pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
 
