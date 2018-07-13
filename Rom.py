@@ -11,7 +11,7 @@ from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
 from Utils import local_path, default_output_path
 from Items import ItemFactory, item_data
 from Messages import *
-from OcarinaSongs import replace_songs
+from OcarinaSongs import Song, replace_songs, subsong
 
 TunicColors = {
     "Kokiri Green": [0x1E, 0x69, 0x1B],
@@ -1194,8 +1194,61 @@ def patch_rom(world, rom):
     #     for s in shop_items:
     #         f.write(str(s) + '\n\n')
 
+    scarecrow_song = None
+    if world.free_scarecrow:
+        original_songs = [
+            'LURLUR',
+            'ULRULR',
+            'DRLDRL',
+            'RDURDU',
+            'RADRAD',
+            'ADUADU',
+            'AULRLR',
+            'DADALDLD',
+            'ADRRL',
+            'ADALDA',
+            'LRRALRD',
+            'URURLU'
+        ]
+
+        note_map = {
+            'A': 0,
+            'D': 1,
+            'R': 2,
+            'L': 3,
+            'U': 4
+        }
+
+        if len(world.scarecrow_song) != 8:
+            raise Exception('Scarecrow Song must be 8 notes long')
+
+        if len(set(world.scarecrow_song.upper())) == 1:
+            raise Exception('Scarecrow Song must contain at least two different notes')           
+
+        notes = []
+        for c in world.scarecrow_song.upper():
+            if c not in note_map:
+                raise Exception('Invalid note %s. Valid notes are A, D, R, L, U' % c)
+
+            notes.append(note_map[c])
+        scarecrow_song = Song(activation=notes)
+
+        if not world.ocarina_songs:
+            for original_song in original_songs:
+                song_notes = []
+                for c in original_song:
+                    song_notes.append(note_map[c])
+                song = Song(activation=song_notes)
+
+                if subsong(scarecrow_song, song):
+                    raise Exception('You may not have the Scarecrow Song contain an existing song')
+
+        write_bits_to_save(0x0EE6, 0x10)     # Played song as adult
+        write_byte_to_save(0x12C5, 0x01)    # Song is remembered
+        write_bytes_to_save(0x12C6, scarecrow_song.playback_data[:(16*8)], lambda v: v != 0)
+
     if world.ocarina_songs:
-        replace_songs(rom)
+        replace_songs(rom, scarecrow_song)
 
     # actually write the save table to rom
     write_save_table(rom)

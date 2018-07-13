@@ -24,6 +24,13 @@ def subsong(song1, song2):
     return (s1 in s2) or (s2 in s1)
 
 # give random durations and volumes to the notes
+def fast_playback(activation):
+    playback = []
+    for note_index, note in enumerate(activation):
+        playback.append( {'note': note, 'duration': 0x03, 'volume': 0x57} )
+    return playback
+
+# give random durations and volumes to the notes
 def random_playback(activation):
     playback = []
     for note_index, note in enumerate(activation):
@@ -135,13 +142,13 @@ class Song():
                 self.playback = playback_piece1 + playback_piece2 + extra_playback
 
     # add rests between repeated notes in the playback so that they work in-game
-    def break_repeated_notes(self):
+    def break_repeated_notes(self, duration=0x08):
         new_playback = []
         for note_index, note in enumerate(self.playback):
             new_playback.append(note)
             if ( note_index + 1 < len(self.playback) ) and \
                ( self.playback[note_index]['note'] == self.playback[note_index + 1]['note'] ):
-                new_playback.append( {'note': 0xFF, 'duration': 0x08, 'volume': 0} )
+                new_playback.append( {'note': 0xFF, 'duration': duration, 'volume': 0} )
         self.playback = new_playback
 
     # create the list of bytes that will be written into the rom for the activation
@@ -178,7 +185,16 @@ class Song():
         return activation_string + '\n' + playback_string
 
     # create a song, based on a given scheme
-    def __init__(self, rand_song=True, piece_size=3, extra_position='none', starting_range=range(0,5), activation_transform=identity, playback_transform=identity):
+    def __init__(self, rand_song=True, piece_size=3, extra_position='none', starting_range=range(0,5), activation_transform=identity, playback_transform=identity, activation=None):
+        if activation:
+            self.length = len(activation)
+            self.activation = activation
+            self.playback = fast_playback(self.activation)
+            self.break_repeated_notes(0x03)
+            self.format_playback_data()
+            self.increase_duration_to(45)
+            return
+
         if rand_song:
             self.length = random.randint(4, 8)
             self.activation = random.choices(range(0,5), k=self.length)
@@ -248,8 +264,7 @@ def get_random_song():
 
 
 # create a list of 12 songs, none of which are sub-strings of any other song
-def generate_song_list():
-
+def generate_song_list(scarecrow_song=None):
     songs = []
 
     for _ in range(12):
@@ -258,7 +273,8 @@ def generate_song_list():
             song = get_random_song()
             # test the song against all existing songs
             is_good = True
-            for other_song in songs:
+
+            for other_song in songs + [scarecrow_song] if scarecrow_song else songs:
                 if subsong(song, other_song):
                     is_good = False
             if is_good:
@@ -272,8 +288,8 @@ def generate_song_list():
 
 
 # replace the playback and activation requirements for the ocarina songs
-def replace_songs(rom):
-    songs = generate_song_list()
+def replace_songs(rom, scarecrow_song=None):
+    songs = generate_song_list(scarecrow_song)
 
     #print('\n\n'.join(map(str, songs)))
 

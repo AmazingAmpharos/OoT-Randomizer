@@ -382,6 +382,34 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked'
         }),
+    Setting_Info('free_scarecrow', bool, 1, True, 
+        {
+            'help': '''\
+                    Start with the scarecrow song. You do not need
+                    to play it as child or adult at the scarecrow
+                    patch to be able to summon Pierre.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Start with Scarecrow Song',
+            'group': 'convenience',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
+    Setting_Info('scarecrow_song', str, 0, False, 
+        {
+            'help': '''\
+                    The song started with if 'free_scarecrow' is True
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'group': 'convenience',
+            'widget': 'Entry',
+            'default': 'DAAAAAAA',
+            'dependency': { 'free_scarecrow':True }
+        }),
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
             'help': '''\
