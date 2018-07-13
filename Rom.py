@@ -809,14 +809,39 @@ def patch_rom(world, rom):
     initial_save_table = []
 
     # will set the bits of value to the offset in the save (or'ing them with what is already there)
-    def write_bits_to_save(offset, value):
+    def write_bits_to_save(offset, value, filter=None):
         nonlocal initial_save_table
+
+        if filter and not filter(value):
+            return
+
         initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x00, value]
+        
+
 
     # will overwrite the byte at offset with the given value
-    def write_byte_to_save(offset, value):
+    def write_byte_to_save(offset, value, filter=None):
         nonlocal initial_save_table
+
+        if filter and not filter(value):
+            return
+
         initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x01, value]
+
+    # will overwrite the byte at offset with the given value
+    def write_bytes_to_save(offset, bytes, filter=None):
+        for i, value in enumerate(bytes):
+            write_byte_to_save(offset + i, value, filter)
+
+    # will overwrite the byte at offset with the given value
+    def write_save_table(rom):
+        nonlocal initial_save_table
+
+        table_len = len(initial_save_table)
+        if table_len > 0x400:
+            raise Exception("The Initial Save Table has exceeded it's maximum capacity: 0x%03X/0x400" % table_len)
+        rom.write_bytes(0x3481800, initial_save_table)
+
 
     # Initial Save Data
     write_bits_to_save(0x003F, 0x02) # Some Biggoron's Sword flag?
@@ -1109,9 +1134,6 @@ def patch_rom(world, rom):
                     rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
                     rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
 
-    # actually write the save table to rom
-    rom.write_bytes(0x3481800, initial_save_table)
-
     if world.bombchus_in_logic:
         # add a cheaper bombchu pack to the bombchu shop
         # describe
@@ -1174,6 +1196,9 @@ def patch_rom(world, rom):
 
     if world.ocarina_songs:
         replace_songs(rom)
+
+    # actually write the save table to rom
+    write_save_table(rom)
 
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
