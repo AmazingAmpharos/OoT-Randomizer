@@ -13,6 +13,12 @@ The following were added or majorly changed on this fork:
 - Options are saved when closing the GUI and loaded when opening it
 - Can set Output directory
 
+## Logic changes
+
+- The Heart Piece at the cow in Impa's house can be using only a chicken
+- Zora Tunic is only required to get the key below the central pillar in the Water Temple
+- Goron Tunix is only required for the fire trial in Ganon's Castle and to get to the 2nd floor (and beyond) in the Fire Temple
+
 ## Optional Logic changes
 
 A bunch of optional logic changes can be applied from the "Detailed Logic" tab:
