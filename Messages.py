@@ -5,6 +5,9 @@ import random
 TABLE_START = 0xB849EC
 TEXT_START = 0x92D000
 
+TABLE_SIZE_LIMIT = 0x43A8
+TEXT_SIZE_LIMIT = 0x38130
+
 SHOP_ITEM_START = 0xC022CC
 
 # name of type, followed by number of additional bytes to read, follwed by a function that prints the code
@@ -498,6 +501,9 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True, spe
         offset = new_message.write(rom, old_index, offset, True, old_message.ending, always_allow_skip, speed_up_text)
         new_message.id = remember_id
 
+    if offset > TEXT_SIZE_LIMIT:
+        raise(TypeError("Message Text table is too large: 0x" + "{:x}".format(offset) + " written / 0x" + "{:x}".format(TEXT_SIZE_LIMIT) + " allowed."))
+
     # end the table
     table_index = len(messages)
     entry = bytes([0xFF, 0xFD, 0x00, 0x00, 0x07]) + int_to_bytes(offset, 3)
@@ -505,6 +511,8 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True, spe
     rom.write_bytes(entry_offset, entry)
     table_index += 1
     entry_offset = TABLE_START + 8 * table_index
+    if 8 * (table_index + 1) > TABLE_SIZE_LIMIT:
+        raise(TypeError("Message ID table is too large: 0x" + "{:x}".format(8 * (table_index + 1)) + " written / 0x" + "{:x}".format(TABLE_SIZE_LIMIT) + " allowed."))
     rom.write_bytes(entry_offset, [0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
 
 # shuffles the messages in the game, making sure to keep various message types in their own group

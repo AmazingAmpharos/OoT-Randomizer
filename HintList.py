@@ -217,6 +217,7 @@ hintTable = {'Hammer':                                                ("the drag
              '1043':                                                  ("Dear @, please come to the&castle. I've baked a cake for you.&&Yours truly, princess Zelda.", 'junkHint'),
              '1044':                                                  ("I like shorts! They're comfy and&easy to wear!", 'junkHint'),
              '1044':                                                  ("They say all toasters toast toast.", 'junkHint'),
+             '1045':                                                  ("They say that Okami is&the best Zelda game.", 'junkHint'),
                                                                        #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box
              'Deku Tree':                                             ("an ancient tree", 'dungeon'),
              'Dodongos Cavern':                                       ("an immense cavern", 'dungeon'),
