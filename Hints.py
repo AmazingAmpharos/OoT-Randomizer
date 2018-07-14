@@ -309,7 +309,7 @@ def buildGanonText(world, messages):
 
     # light arrow hint or validation chest item
     text = '\x08'
-    if world.trials == '0':
+    if world.trials == 0:
         for location in world.get_locations():
             if location.item.name == 'Light Arrows':
                 text = get_raw_text(getHint('Light Arrow Location').text)
