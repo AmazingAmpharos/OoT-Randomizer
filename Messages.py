@@ -324,6 +324,15 @@ def update_message_by_id(messages, id, text, opts=None):
     if index >= 0:
         update_message_by_index(messages, index, text, opts)
 
+# Gets the message by its ID. Returns None if the index does not exist
+def get_message_by_id(messages, id):
+    # get the message index
+    index = next( (m.index for m in messages if m.id == id), -1)
+    if index >= 0:
+        return messages[index]
+    else:
+        return None
+
 # wrapper for updating the text of a message, given its index in the list
 def update_message_by_index(messages, index, text, opts=None):
     if opts is None:

@@ -339,7 +339,10 @@ class CollectionState(object):
         return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
 
     def has_GoronTunic(self):
-        return (self.has('Goron Tunic') or (self.has('Progressive Wallet') and (self.has('Bomb Bag') or self.has('Progressive Strength Upgrade') or self.has('Bow'))))
+        return (self.has('Goron Tunic') or (self.has('Progressive Wallet') and (self.has_explosives() or self.has('Progressive Strength Upgrade') or self.has('Bow'))))
+
+    def has_ZoraTunic(self):
+        return (self.has('Zora Tunic') or (self.has('Progressive Wallet', 2) and self.has_bottle() and self.can_play('Zeldas Lullaby')))
 
     def can_finish_adult_trades(self):
         zora_thawed = self.has_bottle() and self.has('Zeldas Lullaby') and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))

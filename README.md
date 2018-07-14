@@ -13,6 +13,12 @@ The following were added or majorly changed on this fork:
 - Options are saved when closing the GUI and loaded when opening it
 - Can set Output directory
 
+## Logic changes
+
+- The Heart Piece at the cow in Impa's house can be using only a chicken
+- Zora Tunic is only required to get the key below the central pillar in the Water Temple
+- Goron Tunix is only required for the fire trial in Ganon's Castle and to get to the 2nd floor (and beyond) in the Fire Temple
+
 ## Optional Logic changes
 
 A bunch of optional logic changes can be applied from the "Detailed Logic" tab:
@@ -46,6 +52,8 @@ Options to skip some sequences that only pad the time of completing the game wit
 - `only_one_big_poe`: the poe buyer will give the reward after selling 1 Big Poe instead of 10.
 - `default_targeting`: set the default targeting mode to be either `switch` or `hold`.
 - `progressive_bombchus`: first bombchu pack is always 20. subsequent ones will give 10 if low, and 5 otherwise.
+- `free_scarecrow`: Start with the Scarecrow Song. You do not need go to the scarecrow patch as adult or child to use the song.
+- `scarecrow_song`: The song for the Scarecrow Song if `free_scarecrow` is True. Song notes can be any of AUDLR.
 
 ## Bombchus
 
