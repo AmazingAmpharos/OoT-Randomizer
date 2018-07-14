@@ -45,9 +45,11 @@ eventlocations = {
 #total_items_to_place = 5
 
 def generate_itempool(world):
-    for location in skulltulla_locations:
-        world.push_item(location, ItemFactory('Gold Skulltulla Token'), False)
-        world.get_location(location).event = True
+
+    if not world.tokensanity:
+        for location in skulltulla_locations:
+            world.push_item(location, ItemFactory('Gold Skulltulla Token'), False)
+            world.get_location(location).event = True
 
     if not world.shuffle_weird_egg:
         eventlocations['Malon Egg'] = 'Weird Egg'
@@ -79,6 +81,8 @@ def get_pool_core(world):
         pool.append('Weird Egg')
     if world.shuffle_fairy_ocarina:
         pool.append('Ocarina')
+    if world.tokensanity:
+        pool.extend(['Gold Skulltulla Token'] * 100)
 
     if world.progressive_bombchus:
         pool.extend(['Bombchus'] * 5)

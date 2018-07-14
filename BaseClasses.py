@@ -383,6 +383,11 @@ class CollectionState(object):
             return self.has('Stone of Agony')
         return True
 
+    def nighttime(self):
+        if self.world.logic_no_night_tokens_without_suns_song:
+            return self.has('Suns Song')
+        return True
+
     def collect(self, item, event=False, location=None):
         if location:
             self.locations_checked.add(location)

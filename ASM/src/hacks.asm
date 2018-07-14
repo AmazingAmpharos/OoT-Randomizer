@@ -113,6 +113,38 @@
 .org 0xBE9BDC ; In memory: 0x803A4BCC
     addiu   at, r0, 0x8383 ; Make branch impossible
 
+
+
+; Change Skulltula Token to give a different item
+; Replaces
+;    move    a0,s1
+;    jal     0x0006fdcc                              ; call ex_06fdcc(ctx, 0x0071); VROM: 0xAE5D2C
+;    li      a1,113
+;    lw      t5,44(sp)                               ; t5 = what was *(ctx + 0x1c44) at the start of the function
+;    li      t4,10                                   ; t4 = 0x0a
+;    move    a0,s1
+;    li      a1,180                                  ; at = 0x00b4 ("You destoryed a Gold Skulltula...")
+;    move    a2,zero
+;    jal     0x000dce14                              ; call ex_0dce14(ctx, 0x00b4, 0)
+;    sh      t4,272(t5)                              ; *(t5 + 0x110) = 0x000a
+.org 0xEC68BC
+.area 0x28, 0
+    lw      t5,44(sp)                    ; original code
+    li      t4,10                        ; original code
+    sh      t4,272(t5)                   ; original code
+    jal     override_skulltula_token     ; call override_skulltula_token(_, actor)
+    move    a1,s0
+.endarea
+
+.org 0xEC69AC
+.area 0x28, 0
+    lw      t5,44(sp)                    ; original code
+    li      t4,10                        ; original code
+    sh      t4,272(t5)                   ; original code
+    jal     override_skulltula_token     ; call override_skulltula_token(_, actor)
+    move    a1,s0
+.endarea
+
 ;==================================================================================================
 ; Special item sources
 ;==================================================================================================

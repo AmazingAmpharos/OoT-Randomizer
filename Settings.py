@@ -437,6 +437,20 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
+    Setting_Info('tokensanity', bool, 1, True, 
+        {
+            'help': '''\
+                    Gold Skulltula Tokens will be shuffled into the pool,
+                    and Gold Skulltula locations can have any item.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Tokensanity',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
     Setting_Info('nodungeonitems', bool, 1, True, 
         {
             'help': '''\
@@ -530,6 +544,20 @@ setting_infos = [
             'max': 50,
             'step': 10,
 
+        }),
+    Setting_Info('logic_no_night_tokens_without_suns_song', bool, 1, True, 
+        {
+            'help': '''\
+                    You will not be expected to collect nighttime-only skulltulas
+                    unless you have Sun's Song
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'No Nighttime Skulltulas without Sun\'s Song',
+            'group': 'rewards',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
         }),
     Setting_Info('logic_no_big_poes', bool, 1, True, 
         {
