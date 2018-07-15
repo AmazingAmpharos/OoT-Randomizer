@@ -342,6 +342,8 @@ get_override_search_key:
     li      t0, 0x03            ; t0 = skulltula type   
     lhu     t3, 0x1C (a1)       ; t3 = skulltula token variable
     andi    t1, t3, 0x00FF      ; t1 = skulltula flag (used for the lookup)
+    andi    v0, t3, 0x1F00      ; v0 = skulltula scene (shifted)
+    srl     v0, v0, 8           ; v0 = v0 >> 8 (skulltula scene)
     b       @@not_collectable   ; create the id
     nop
 
