@@ -15,9 +15,9 @@ The following were added or majorly changed on this fork:
 
 ## Logic changes
 
-- The Heart Piece at the cow in Impa's house can be using only a chicken
+- The Heart Piece at the cow in Impa's house can be reached using only a chicken
 - Zora Tunic is only required to get the key below the central pillar in the Water Temple
-- Goron Tunix is only required for the fire trial in Ganon's Castle and to get to the 2nd floor (and beyond) in the Fire Temple
+- Goron Tunic is only required for the fire trial in Ganon's Castle and to get to the 2nd floor (and beyond) in the Fire Temple
 
 ## Optional Logic changes
 
@@ -57,7 +57,7 @@ Options to skip some sequences that only pad the time of completing the game wit
 
 ## Bombchus
 
-Bombchus are now considered in logic. That is, once you've found bombchus, you can be expected to use them as explosives, hit switches, etc. to make progress in the seed. In order to have this make sense, the following changes were made:
+Bombchus can be added to logic with `bombchus_in_logic`. That is, once you've found bombchus, you can be expected to use them as explosives, hit switches, etc. to make progress in the seed. In order to have this make sense, the following changes were made:
 
 - The back alley bombchu shop will now stock bombchus once you have bombchus in your inventory (even if you have 0). All options in this shop no longer sell out, and the right shelf's bottom-left pack is a sale of 5 bombchus for 60 rupees. Thus, once you have found bombchus, you can always buy more.
 - Bomchu Bowling is now playable only once you have bombchus in your inventory. This gives bombchus some unique power beyond the spirit trial, and also keeps them better self-contained (since you win bombchus from this mini-game).
