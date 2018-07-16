@@ -13,7 +13,7 @@ from Regions import create_regions
 from EntranceShuffle import link_entrances
 from Rom import patch_rom, LocalRom
 from Rules import set_rules
-from Dungeons import create_dungeons, fill_dungeons_restrictive
+from Dungeons import create_dungeons
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
 from Utils import default_output_path
@@ -24,43 +24,35 @@ def main(settings):
 
     # initialize the world
 
-    world = World(settings)
+    worlds = []
+    for i in range(0, 1): # settings.player_count):
+        worlds.append(World(settings))
 
     logger = logging.getLogger('')
 
-    random.seed(world.numeric_seed)
+    random.seed(worlds[0].numeric_seed)
 
-    logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, world.seed)
+    logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, worlds[0].seed)
 
-    create_regions(world)
+    for id, world in enumerate(worlds):
+        world.id = id
+        logger.info('Generating World %d.' % id)
 
-    create_dungeons(world)
-
-    logger.info('Shuffling the World about.')
-
-    link_entrances(world)
-
-    logger.info('Calculating Access Rules.')
-
-    set_rules(world)
-
-    logger.info('Generating Item Pool.')
-
-    generate_itempool(world)
-
-    logger.info('Placing Dungeon Items.')
-
-    shuffled_locations = None
-    shuffled_locations = world.get_unfilled_locations()
-    random.shuffle(shuffled_locations)
-    fill_dungeons_restrictive(world, shuffled_locations)
+        logger.info('Creating Overworld')
+        create_regions(world)
+        logger.info('Creating Dungeons')
+        create_dungeons(world)
+        logger.info('Linking Entrances')
+        link_entrances(world)
+        logger.info('Calculating Access Rules.')
+        set_rules(world)
+        logger.info('Generating Item Pool.')
+        generate_itempool(world)
 
     logger.info('Fill the world.')
-
-    distribute_items_restrictive(world)
+    distribute_items_restrictive(worlds)
 
     logger.info('Calculating playthrough.')
-
     create_playthrough(world)
 
     logger.info('Patching ROM.')

@@ -174,7 +174,7 @@ def create_regions(world):
         create_grotto_region('Lake Hylia Grotto')
     ]
 
-    world.intialize_regions()
+    world.initialize_regions()
 
 def create_ow_region(name, locations=None, exits=None):
     return _create_region(name, RegionType.Overworld, locations, exits)

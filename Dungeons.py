@@ -1,7 +1,6 @@
 import random
 
 from BaseClasses import Dungeon
-from Fill import fill_restrictive
 from Items import ItemFactory
 
 
@@ -25,22 +24,5 @@ def create_dungeons(world):
     SpT = make_dungeon('Spirit Temple', ['Spirit Temple Lobby', 'Child Spirit Temple', 'Early Adult Spirit Temple', 'Spirit Temple Central Chamber', 'Spirit Temple Beyond Central Locked Door', 'Spirit Temple Beyond Final Locked Door'], ItemFactory('Boss Key (Spirit Temple)'), ItemFactory(['Small Key (Spirit Temple)'] * 5), ItemFactory(['Map (Spirit Temple)', 'Compass (Spirit Temple)']))
     GC = make_dungeon('Ganons Castle', ['Ganons Castle Lobby', 'Ganons Castle Forest Trial', 'Ganons Castle Fire Trial', 'Ganons Castle Water Trial', 'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 'Ganons Castle Tower'], ItemFactory('Boss Key (Ganons Castle)'), ItemFactory(['Small Key (Ganons Castle)'] * 2), [])
 
- 
     world.dungeons = [DT, DC, JB, FoT, BW, FiT, IC, WT, ShT, GTG, SpT, GC]
-
-
-def get_dungeon_item_pool(world):
-    return [item for dungeon in world.dungeons for item in dungeon.all_items if item.key or world.place_dungeon_items]
-
-def fill_dungeons_restrictive(world, shuffled_locations):
-    all_state_base = world.get_all_state()
-
-    dungeon_items = get_dungeon_item_pool(world)
-
-    # sort in the order Boss Key, Small Key, Other before placing dungeon items
-    sort_order = {"BossKey": 3, "SmallKey": 2}
-    dungeon_items.sort(key=lambda item: sort_order.get(item.type, 1))
-
-    fill_restrictive(world, all_state_base, shuffled_locations, dungeon_items)
-
-    world.state.clear_cached_unreachable()
+    

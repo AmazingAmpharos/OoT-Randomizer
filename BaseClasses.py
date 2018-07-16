@@ -43,9 +43,23 @@ class World(object):
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
 
-    def intialize_regions(self):
+    def initialize_regions(self):
         for region in self.regions:
             region.world = self
+            for location in region.locations:
+                location.world = self
+
+    def initialize_items(self):
+        for item in self.itempool:
+            item.world = self
+        for region in self.regions:
+            for location in region.locations:
+                if location.item != None:
+                    location.item.world = self
+        for dungeon in self.dungeons:
+            for item in dungeon.all_items:
+                item.world = self
+
 
     def get_region(self, regionname):
         if isinstance(regionname, Region):
@@ -97,6 +111,7 @@ class World(object):
         from Items import ItemFactory
         if keys:
             for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)', 'Boss Key (Spirit Temple)', 'Boss Key (Ganons Castle)'] + ['Small Key (Bottom of the Well)'] * 3 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 5 + ['Small Key (Gerudo Training Grounds)'] * 9 + ['Small Key (Spirit Temple)'] * 5 + ['Small Key (Ganons Castle)'] * 2):
+                item.world = self
                 soft_collect(item)
         ret.sweep_for_events()
         ret.clear_cached_unreachable()
@@ -104,6 +119,12 @@ class World(object):
 
     def get_items(self):
         return [loc.item for loc in self.get_filled_locations()] + self.itempool
+
+    def get_dungeon_items(self):
+        itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if item.key or self.place_dungeon_items]
+        for item in itempool:
+            item.world = self
+        return itempool
 
     def find_items(self, item):
         return [location for location in self.get_locations() if location.item is not None and location.item.name == item]
@@ -118,7 +139,7 @@ class World(object):
             if collect:
                 self.state.collect(item, location.event, location)
 
-            logging.getLogger('').debug('Placed %s at %s', item, location)
+            logging.getLogger('').debug('Placed %s [World %d] at %s [World %d]', item, item.world.id if hasattr(item, 'world') else -1, location, location.world.id if hasattr(location, 'world') else -1)
         else:
             raise RuntimeError('Cannot assign item %s to location %s.' % (item, location))
 
@@ -585,6 +606,9 @@ class Item(object):
         self.code = code
         self.index = index
         self.location = None
+
+    def copy(self):
+        return Item(self.name, self.advancement, self.priority, self.type, self.code, self.index)
 
     @property
     def key(self):

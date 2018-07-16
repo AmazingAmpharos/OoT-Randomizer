@@ -194,7 +194,7 @@ def buildGossipHints(world, messages):
 
         checkedLocations.append(locationWorld.name)
         update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(dungeon.name).text + \
-            " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."))
+            " hoards " + getHint(getItemGenericName(locationWorld.item)).text + "."))
 
     # add bad overworld locations hints
     # only choose location if it is new and a proper item from the overworld
@@ -229,7 +229,7 @@ def buildGossipHints(world, messages):
         checkedLocations.append(locationWorld.name)
         if locationWorld.parent_region.dungeon:
             update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(locationWorld.parent_region.dungeon.name).text + \
-                " hordes " + getHint(getItemGenericName(locationWorld.item)).text + "."))
+                " hoards " + getHint(getItemGenericName(locationWorld.item)).text + "."))
         else:
             update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
                 " can be found at " + locationWorld.parent_region.name + "."))
