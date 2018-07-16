@@ -338,6 +338,7 @@ get_override_search_key:
     lhu     t2, 0x00 (a1) ; t2 = actor ID
 
     bne     t2, 0x019C, @@not_skulltula     ; if not skulltula, try for other types
+    nop
 
     li      t0, 0x03            ; t0 = skulltula type   
     lhu     t3, 0x1C (a1)       ; t3 = skulltula token variable
