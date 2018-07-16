@@ -49,11 +49,6 @@ def generate_itempool(world):
         world.push_item(location, ItemFactory('Gold Skulltulla Token'), False)
         world.get_location(location).event = True
 
-    if not world.shuffle_weird_egg:
-        eventlocations['Malon Egg'] = 'Weird Egg'
-    if not world.shuffle_fairy_ocarina:
-        eventlocations['Gift from Saria'] = 'Ocarina'
-
     for location, item in eventlocations.items():
         world.push_item(location, ItemFactory(item), False)
         world.get_location(location).event = True
@@ -61,7 +56,7 @@ def generate_itempool(world):
     # set up item pool
     (pool, placed_items) = get_pool_core(world)
     world.itempool = ItemFactory(pool)
-    for (location, item) in placed_items:
+    for location, item in placed_items.items():
         world.push_item(location, ItemFactory(item), False)
         world.get_location(location).event = True
 
@@ -71,14 +66,20 @@ def generate_itempool(world):
 
 def get_pool_core(world):
     pool = []
-    placed_items = []
+    placed_items = {}
 
     if not world.place_dungeon_items:
         pool.extend(notmapcompass)
+
     if world.shuffle_weird_egg:
         pool.append('Weird Egg')
+    else:
+        placed_items['Malon Egg'] = 'Weird Egg'
+
     if world.shuffle_fairy_ocarina:
         pool.append('Ocarina')
+    else:
+        placed_items['Gift from Saria'] = 'Ocarina'
 
     if world.progressive_bombchus:
         pool.extend(['Bombchus'] * 5)
