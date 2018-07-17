@@ -189,7 +189,7 @@ def buildGossipHints(world, messages):
             if location.item.type != 'Event' and \
             not location.name in eventlocations and \
             not isDungeonItem(location.item) and \
-            location.item.name != 'Gold Skulltulla Token' and\
+            (world.tokensanity != 'off' or location.item.name != 'Gold Skulltulla Token') and\
             location.item.type != 'Song'])
 
         checkedLocations.append(locationWorld.name)
@@ -204,7 +204,7 @@ def buildGossipHints(world, messages):
             not locationWorld.name in sometimesLocations and \
             locationWorld.item.type != 'Event' and \
             not locationWorld.name in eventlocations and \
-            locationWorld.item.name != 'Gold Skulltulla Token' and \
+            (world.tokensanity == 'all' or locationWorld.item.name != 'Gold Skulltulla Token') and \
             not locationWorld.parent_region.dungeon and \
             not locationWorld.name in checkedLocations]
     overworldSample = overworldlocations
