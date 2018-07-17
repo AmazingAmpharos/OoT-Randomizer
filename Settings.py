@@ -423,62 +423,6 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
-    Setting_Info('keysanity', bool, 1, True, 
-        {
-            'help': '''\
-                    Small Keys, Boss Keys, Maps, and Compasses will be shuffled into the pool at
-                    large, instead of just being restricted to their own dungeons.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Keysanity',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),
-    Setting_Info('tokensanity', bool, 1, True, 
-        {
-            'help': '''\
-                    Gold Skulltula Tokens will be shuffled into the pool,
-                    and Gold Skulltula locations can have any item.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Tokensanity',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),
-    Setting_Info('nodungeonitems', bool, 1, True, 
-        {
-            'help': '''\
-                    Remove Maps and Compasses from Itempool, replacing them by
-                    empty slots.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Remove Maps and Compasses',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),
-    Setting_Info('progressive_bombchus', bool, 1, True, 
-        {
-            'help': '''\
-                    Bombchus amounts are progressive. 20 pack first time.
-                    Other bombchus will give 10 when low on bombchus, otherwise 5.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Progressive Bombchus',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),
     Setting_Info('all_reachable', bool, 1, True, 
         {
             'help': '''\
@@ -521,6 +465,73 @@ setting_infos = [
         {
             'text': 'Shuffle Fairy Ocarina',
             'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
+    Setting_Info('keysanity', bool, 1, True, 
+        {
+            'help': '''\
+                    Small Keys, Boss Keys, Maps, and Compasses will be shuffled into the pool at
+                    large, instead of just being restricted to their own dungeons.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Keysanity',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
+    Setting_Info('tokensanity', str, 2, True, 
+        {
+            'default': 'off',
+            'const': 'off',
+            'nargs': '?',
+            'choices': ['off', 'dungeons', 'all'],
+            'help': '''\
+                    Gold Skulltula Tokens will be shuffled into the pool,
+                    and Gold Skulltula locations can have any item.
+                    off:        Don't use this feature
+                    dungeons:   Only dungeon skulltulas will be shuffled
+                    all:        All skulltulas will be shuffled
+                    '''
+        },
+        {
+            'text': 'Tokensanity',
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Off',
+            'options': {
+                'Off': 'off',
+                'Dungeons Only': 'dungeons',
+                'All Tokens': 'all',
+            },
+        }),
+    Setting_Info('nodungeonitems', bool, 1, True, 
+        {
+            'help': '''\
+                    Remove Maps and Compasses from Itempool, replacing them by
+                    empty slots.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Remove Maps and Compasses',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
+    Setting_Info('progressive_bombchus', bool, 1, True, 
+        {
+            'help': '''\
+                    Bombchus amounts are progressive. 20 pack first time.
+                    Other bombchus will give 10 when low on bombchus, otherwise 5.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Progressive Bombchus',
+            'group': 'other',
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
