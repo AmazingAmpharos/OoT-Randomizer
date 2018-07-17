@@ -226,7 +226,6 @@ def guiMain(settings=None):
     outputDirButton.pack(side=LEFT)
     outputDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
 
-
     if os.path.exists(local_path('README.html')):
         def open_readme():
             open_file(local_path('README.html'))
@@ -244,8 +243,31 @@ def guiMain(settings=None):
     countSpinbox.pack(side=LEFT, padx=2)
     countDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
+    multiworldFrame = LabelFrame(frames['rom_tab'], text='Multi-World Generation')
+    countLabel = Label(multiworldFrame, wraplength=300, justify=LEFT, text='This is used for co-op generations. Increasing World Count will drastically increase the generation time. For more information see https://github.com/TestRunnerSRL/bizhawk-co-op')
+    countLabel.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
-    generateSeedFrame = Frame(mainWindow)
+
+    worldCountFrame = Frame(multiworldFrame)
+    countLabel = Label(worldCountFrame, text='World Count')
+    guivars['world_count'] = StringVar()
+    countSpinbox = Spinbox(worldCountFrame, from_=1, to=100, textvariable=guivars['world_count'], width=3)
+
+    countLabel.pack(side=LEFT)
+    countSpinbox.pack(side=LEFT, padx=2)
+    worldCountFrame.pack(side=LEFT, anchor=N, padx=5, pady=(1,1))
+
+    playerNumFrame = Frame(multiworldFrame)
+    countLabel = Label(playerNumFrame, text='Player Number')
+    guivars['player_num'] = StringVar()
+    countSpinbox = Spinbox(playerNumFrame, from_=1, to=100, textvariable=guivars['player_num'], width=3)
+
+    countLabel.pack(side=LEFT)
+    countSpinbox.pack(side=LEFT, padx=2)
+    playerNumFrame.pack(side=LEFT, anchor=N, padx=5, pady=(1,1))
+    multiworldFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
+
+
 
 
     # build gui
@@ -361,6 +383,7 @@ def guiMain(settings=None):
         else:
             messagebox.showinfo(title="Success", message="Rom patched successfully")
 
+    generateSeedFrame = Frame(mainWindow)
     generateButton = Button(generateSeedFrame, text='Generate Patched Rom', command=generateRom)
 
     seedLabel = Label(generateSeedFrame, text='Seed')

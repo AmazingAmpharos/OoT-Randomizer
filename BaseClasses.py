@@ -435,7 +435,6 @@ class CollectionState(object):
     @staticmethod
     def collect_locations(state_list):
         # Get all item locations in the worlds
-        spheres = []
         item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
         new_locations = True
 
@@ -448,10 +447,8 @@ class CollectionState(object):
                 state_list[location.world.id].collected_locations.append(location.name)
                 # Collect the item for the state world it is for
                 state_list[location.item.world.id].collect(location.item)
-            spheres.append(reachable_items_locations)
             # if there are new locations
             new_locations = len(reachable_items_locations) > 0
-        return spheres
 
     # This returns True is every state is beatable. It's important to ensure
     # all states beatable since items required in one world can be in another.
@@ -684,7 +681,10 @@ class Spoiler(object):
                 spoiler_locations.append(location)
         sort_order = {"Song": 0, "Boss": -1}
         spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
-        self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}
+        if self.world.settings.world_count > 1:
+            self.locations = {'other locations': OrderedDict([(str(location), "%s [Player %d]" % (str(location.item), location.item.world.id + 1) if location.item is not None else 'Nothing') for location in spoiler_locations])}
+        else:
+            self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}            
         self.version = OoTRVersion
         self.settings = self.world.settings
 
@@ -694,10 +694,18 @@ class Spoiler(object):
             outfile.write('OoT Randomizer Version %s  -  Seed: %s\n\n' % (self.version, self.settings.seed))
             outfile.write('Settings (%s):\n%s' % (self.settings.get_settings_string(), self.settings.get_settings_display()))
 
-            outfile.write('\n\nLocations:\n\n')
+            if self.settings.world_count > 1:
+                outfile.write('\n\nLocations [World %d]:\n\n' % (self.settings.player_num))
+            else:
+                outfile.write('\n\nLocations:\n\n')
             outfile.write('\n'.join(['%s: %s' % (location, item) for (location, item) in self.locations['other locations'].items()]))
+
             outfile.write('\n\nPlaythrough:\n\n')
-            outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  %s: %s' % (location, item) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
+            if self.settings.world_count > 1:
+                outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  %s [World %d]: %s [Player %d]' % (location.name, location.world.id + 1, item.name, item.world.id + 1) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
+            else:
+                outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  %s: %s' % (location.name, item.name) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
+
             outfile.write('\n\nPaths:\n\n')
 
             path_listings = []

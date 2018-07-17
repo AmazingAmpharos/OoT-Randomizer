@@ -7,7 +7,6 @@ import random
 
 from HintList import getHint, getHintGroup, Hint
 from Utils import local_path
-from Items import ItemFactory
 from ItemList import eventlocations
 from Messages import update_message_by_id
 
@@ -140,8 +139,8 @@ def buildGossipHints(world, messages):
     random.shuffle(stoneIDs)
 
     # get list of required items that are not events or needed for Ganon's Castle
-    requiredItems = [(location, item) for _,sphere in world.spoiler.playthrough.items() for location,item in sphere.items() 
-        if ItemFactory(item).type != 'Event' and not location in eventlocations]
+    requiredItems = [(location.name, item.name) for _,sphere in world.spoiler.playthrough.items() for location,item in sphere.items() 
+        if item.type != 'Event' and not location in eventlocations]
 
     # add required non-ganon items for hints (good hints)
     requiredSample = requiredItems

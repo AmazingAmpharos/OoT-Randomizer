@@ -122,11 +122,11 @@ def fill_songs(worlds, locations, songpool, itempool, attempts=15):
             random.shuffle(prizepool)
             random.shuffle(prize_locs)
             fill_restrictive(worlds, all_state_base_list, prize_locs, prizepool)
-        except FillError:
+        except FillError as e:
             logging.getLogger('').info("Failed to place songs. Will retry %s more times", attempts)
             for location in empty_song_locations:
                 location.item = None
-            logging.getLogger('').info(FillError)
+            logging.getLogger('').info(str(e))
             continue
         break
     else:

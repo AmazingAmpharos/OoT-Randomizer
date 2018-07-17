@@ -171,6 +171,18 @@ setting_infos = [
                     time).
                     ''',
             'type': int}),
+    Setting_Info('world_count', int, 0, False, {
+            'help': '''\
+                    Use to create a multi-world generation for co-op seeds.
+                    World count is the number of players. Warning: Increasing
+                    the world count will drastically increase generation time.
+                    ''',
+            'type': int}),
+    Setting_Info('player_num', int, 0, False, {
+            'help': '''\
+                    Use to select world to generate when there are multiple worlds.
+                    ''',
+            'type': int}),
     Setting_Info('create_spoiler', bool, 1, True, 
         {
             'help': 'Output a Spoiler File',
