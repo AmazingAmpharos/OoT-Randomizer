@@ -1,5 +1,6 @@
 import random
 import logging
+from BaseClasses import CollectionState
 
 class FillError(RuntimeError):
     pass
@@ -7,21 +8,23 @@ class FillError(RuntimeError):
 
 # Places all items into the world
 def distribute_items_restrictive(worlds, fill_locations=None):
-    # places the songs into the world
-    # Currently places songs only at song locations. if there's an option
-    # to allow at other locations then they should be in the main pool
-    songitempool = [item for world in worlds for item in world.itempool if item.type == 'Song']
     song_locations = [world.get_location(location) for world in worlds for location in
         ['Song from Composer Grave', 'Impa at Castle', 'Song from Malon', 'Song from Saria', 
         'Song from Ocarina of Time', 'Song at Windmill', 'Sheik Forest Song', 'Sheik at Temple', 
         'Sheik in Crater', 'Sheik in Ice Cavern', 'Sheik in Kakariko', 'Sheik at Colossus']]
-    fill_songs(worlds, song_locations, songitempool)
 
-        # If not passed in, then get a shuffled list of locations to fill in
+    # If not passed in, then get a shuffled list of locations to fill in
     if not fill_locations:
-        fill_locations = [location for world in worlds for location in world.get_unfilled_locations()]
+        fill_locations = [location for world in worlds for location in world.get_unfilled_locations() if location not in song_locations]
     world_states = [world.state for world in worlds]
-    itempool = [item for world in worlds for item in world.itempool if item.type != 'Song']
+
+    # Generate the itempools
+    songitempool = [item for world in worlds for item in world.itempool if item.type == 'Song']
+    itempool =     [item for world in worlds for item in world.itempool if item.type != 'Song']
+    random.shuffle(itempool) # randomize item placement order. this ordering can greatly affect the location accessibility bias
+    progitempool = [item for item in itempool if item.advancement]
+    prioitempool = [item for item in itempool if not item.advancement and item.priority]
+    restitempool = [item for item in itempool if not item.advancement and not item.priority]
 
     # If not keysanity, we must place the dungeon items first to make sure
     # that there is always a locations to place them. This could probably
@@ -33,20 +36,24 @@ def distribute_items_restrictive(worlds, fill_locations=None):
     else:
         # place dungeon items
         random.shuffle(fill_locations)
-        fill_dungeons_restrictive(worlds, fill_locations)
+        fill_dungeons_restrictive(worlds, fill_locations, itempool + songitempool)
 
-    # randomize item placement order. this ordering can greatly affect
-    # the location accessibility bias, so this must be randomized
+    # I have no idea why the locations are reversed but this is how it was, 
+    # so whatever. It can't hurt I guess
     random.shuffle(fill_locations)
-    # I have no idea why the locations are shuffled again and then reversed
-    # but this is how it was, so whatever. It can't hurt I guess
-    random.shuffle(itempool)
     fill_locations.reverse()
+
+    # places the songs into the world
+    # Currently places songs only at song locations. if there's an option
+    # to allow at other locations then they should be in the main pool.
+    # Placing songs on their own since they have a relatively high chance
+    # of failing compared to other item type. So this way we only have retry
+    # the song locations only.
+    fill_songs(worlds, song_locations, songitempool, progitempool)
 
     # Place all progression items. This will include keys in keysanity.
     # Items in this group will check for reachability and will be placed
     # such that the game is guaranteed beatable.
-    progitempool = [item for item in itempool if item.advancement]
     random.shuffle(fill_locations)
     fill_restrictive(worlds, [world.state for world in worlds], fill_locations, progitempool)
 
@@ -54,14 +61,12 @@ def distribute_items_restrictive(worlds, fill_locations=None):
     # These items are items that only check if the item is allowed to be
     # placed in the location, not checking reachability. This is important
     # for things like Ice Traps that can't be found at some locations
-    prioitempool = [item for item in itempool if not item.advancement and item.priority]
     random.shuffle(fill_locations)
     fill_restrictive_fast(worlds, fill_locations, prioitempool)
 
     # Place the rest of the items.
     # No restrictions at all. Places them completely randomly. Since they
     # cannot affect the beatability, we don't need to check them
-    restitempool = [item for item in itempool if not item.advancement and not item.priority]
     random.shuffle(fill_locations)
     fast_fill(fill_locations, restitempool)
 
@@ -74,17 +79,40 @@ def distribute_items_restrictive(worlds, fill_locations=None):
         raise FillError('Not all locations have an item.')
 
 
+# Places all dungeon items into the worlds. To ensure there is room for them.
+# they are placed first so it will assume all other items are reachable
+def fill_dungeons_restrictive(worlds, shuffled_locations, itempool):
+    # List of states with all non-key items
+    all_state_base_list = CollectionState.get_states_with_items([world.state for world in worlds], itempool)
+    # list of all dungeon items to be placed
+    dungeon_items = [item for world in worlds for item in world.get_dungeon_items()]
+
+    # shuffle this list to avoid placement bias
+    random.shuffle(dungeon_items)
+
+    # sort in the order Boss Key, Small Key, Other before placing dungeon items
+    # python sort is stable, so the ordering is still random within groups
+    sort_order = {"BossKey": 3, "SmallKey": 2}
+    dungeon_items.sort(key=lambda item: sort_order.get(item.type, 1))
+
+    # place dungeon items
+    fill_restrictive(worlds, all_state_base_list, shuffled_locations, dungeon_items)
+
+    for world in worlds:
+        world.state.clear_cached_unreachable()
+
+
 # Places the songs into the world at the Song locations
-def fill_songs(worlds, locations, itempool, attempts=15):
+def fill_songs(worlds, locations, songpool, itempool, attempts=15):
     # get the song locations for each world
 
     # look for preplaced items
     placed_prizes = [loc.item.name for loc in locations if loc.item is not None]
-    unplaced_prizes = [song for song in itempool if song.name not in placed_prizes]
+    unplaced_prizes = [song for song in songpool if song.name not in placed_prizes]
     empty_song_locations = [loc for loc in locations if loc.item is None]
 
     # List of states with all items
-    all_state_base_list = [world.get_all_state(keys=True) for world in worlds] 
+    all_state_base_list = CollectionState.get_states_with_items([world.state for world in worlds], itempool)
 
     while attempts:
         attempts -= 1
@@ -105,45 +133,6 @@ def fill_songs(worlds, locations, itempool, attempts=15):
         raise FillError('Unable to place songs')
 
 
-# Places all dungeon items into the worlds. To ensure there is room for them.
-# they are placed first so it will assume all other items are reachable
-def fill_dungeons_restrictive(worlds, shuffled_locations):
-    all_state_base_list = []  # List of states with all non-key items
-    dungeon_items = []        # list of all dungeon items to be placed
-    for world in worlds:
-        all_state_base_list.append(world.get_all_state())
-        dungeon_items.extend(world.get_dungeon_items())
-
-    # shuffle this list to avoid placement bias
-    random.shuffle(dungeon_items)
-
-    # sort in the order Boss Key, Small Key, Other before placing dungeon items
-    # python sort is stable, so the ordering is still random within groups
-    sort_order = {"BossKey": 3, "SmallKey": 2}
-    dungeon_items.sort(key=lambda item: sort_order.get(item.type, 1))
-
-    # place dungeon items
-    fill_restrictive(worlds, all_state_base_list, shuffled_locations, dungeon_items)
-
-    world.state.clear_cached_unreachable()
-    
-
-# This function returns a list of states that is each of the base_states
-# with every item still in the itempool. It only adds items that belong
-# to its respective world. See fill_restrictive
-def sweep_from_pool(base_state_list, itempool):
-    new_state_list = []
-    for base_state in base_state_list:
-        new_state = base_state.copy()
-        for item in itempool:
-            #check world
-            if item.world.id == base_state.world.id:
-                new_state.collect(item, True)
-        new_state.sweep_for_events()
-        new_state_list.append(new_state)
-    return new_state_list
-
-
 # Places items in the itempool into locations.
 # worlds is a list of worlds and is redundant of the worlds in the base_state_list
 # base_state_list is a list of world states prior to placing items in the item pool
@@ -161,15 +150,7 @@ def fill_restrictive(worlds, base_state_list, locations, itempool):
 
         # generate the max states that include every remaining item
         # this will allow us to place this item in a reachable location
-        maximum_exploration_state_list = sweep_from_pool(base_state_list, itempool)
-
-        def temptest(state):
-            return [location for location in state.world.get_locations() if state.can_reach(location)]
-
-        for maximum_exploration_state in maximum_exploration_state_list :
-            maximum_exploration_state.clear_cached_unreachable()
-            logging.getLogger('').debug("Reachable locations: %d", len(temptest(maximum_exploration_state)))
-
+        maximum_exploration_state_list = CollectionState.get_states_with_items(base_state_list, itempool)     
 
         # perform_access_check checks location reachability
         perform_access_check = True
@@ -179,11 +160,7 @@ def fill_restrictive(worlds, base_state_list, locations, itempool):
             # This way the reachability test is monotonic. If we were to later
             # stop checking, then we could place an item needed in one world
             # in an unreachable place in another world
-            perform_access_check = False
-            for id,world in enumerate(worlds):
-                if not world.has_beaten_game(maximum_exploration_state_list[id]):
-                    perform_access_check = True
-                    break
+            perform_access_check = not CollectionState.can_beat_game(maximum_exploration_state_list)
 
         # find a location that the item can be places. It must be a valid location
         # in the world we are placing it (possibly checking for reachability)
@@ -196,16 +173,15 @@ def fill_restrictive(worlds, base_state_list, locations, itempool):
         # if we failed to find a suitable location, then stop placing items
         if spot_to_fill is None:
             # Maybe the game can be beaten anyway?
-            for world in worlds:
-                if not world.can_beat_game():
-                    raise FillError('Game unbeatable: No more spots to place %s [World %d]' % (item_to_place, item_to_place.world.id))
+            if not CollectionState.can_beat_game(maximum_exploration_state_list):
+                raise FillError('Game unbeatable: No more spots to place %s [World %d]' % (item_to_place, item_to_place.world.id))
 
             if not worlds[0].check_beatable_only:
                 logging.getLogger('').warning('Not all items placed. Game beatable anyway.')
             break
             
         # Place the item in the world and continue
-        spot_to_fill.world.push_item(spot_to_fill, item_to_place, False)
+        spot_to_fill.world.push_item(spot_to_fill, item_to_place)
         locations.remove(spot_to_fill)
         spot_to_fill.event = True
 
@@ -233,7 +209,7 @@ def fill_restrictive_fast(worlds, locations, itempool):
             break
 
         # Place the item in the world and continue
-        spot_to_fill.world.push_item(spot_to_fill, item_to_place, False)
+        spot_to_fill.world.push_item(spot_to_fill, item_to_place)
         locations.remove(spot_to_fill)
         spot_to_fill.event = True
 
@@ -245,4 +221,4 @@ def fast_fill(locations, itempool):
     while itempool and locations:
         spot_to_fill = locations.pop()
         item_to_place = itempool.pop()
-        spot_to_fill.world.push_item(spot_to_fill, item_to_place, False)
+        spot_to_fill.world.push_item(spot_to_fill, item_to_place)

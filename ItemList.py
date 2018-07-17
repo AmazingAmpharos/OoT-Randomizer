@@ -45,8 +45,7 @@ eventlocations = {
 
 def generate_itempool(world):
     for location in skulltulla_locations:
-        world.push_item(location, ItemFactory('Gold Skulltulla Token'), False)
-        world.get_location(location).event = True
+        world.push_item(location, ItemFactory('Gold Skulltulla Token'))
 
     if not world.shuffle_weird_egg:
         eventlocations['Malon Egg'] = 'Weird Egg'
@@ -54,15 +53,13 @@ def generate_itempool(world):
         eventlocations['Gift from Saria'] = 'Ocarina'
 
     for location, item in eventlocations.items():
-        world.push_item(location, ItemFactory(item), False)
-        world.get_location(location).event = True
+        world.push_item(location, ItemFactory(item))
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world)
     world.itempool = ItemFactory(pool)
     for (location, item) in placed_items:
-        world.push_item(location, ItemFactory(item), False)
-        world.get_location(location).event = True
+        world.push_item(location, ItemFactory(item))
 
     choose_trials(world)
     fill_bosses(world)
@@ -119,5 +116,4 @@ def fill_bosses(world, bossCount=9):
         random.shuffle(prize_locs)
         item = prizepool.pop()
         loc = prize_locs.pop()
-        world.push_item(loc, item, False)
-        world.get_location(loc).event = True
+        world.push_item(loc, item)

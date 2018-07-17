@@ -43,6 +43,44 @@ class World(object):
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
 
+
+    def copy(self):
+        ret = World(self.settings)
+        ret.skipped_trials = copy.copy(self.skipped_trials)
+        ret.can_take_damage = self.can_take_damage
+        ret.id = self.id
+        from Regions import create_regions
+        from Dungeons import create_dungeons
+        from Rules import set_rules
+        create_regions(ret)
+        create_dungeons(ret)
+        set_rules(ret)
+
+        # connect copied world
+        for region in self.regions:
+            copied_region = ret.get_region(region.name)
+            for entrance in region.entrances:
+                ret.get_entrance(entrance.name).connect(copied_region)
+
+        # fill locations
+        for location in self.get_locations():
+            if location.item is not None:
+                item = Item(location.item.name, location.item.advancement, location.item.priority, location.item.type)
+                item.world = location.item.world
+                ret.get_location(location.name).item = item
+                item.location = ret.get_location(location.name)
+
+        # copy remaining itempool. No item in itempool should have an assigned location
+        for item in self.itempool:
+            new_item = Item(item.name, item.advancement, item.priority, item.type)
+            new_item.world = item.world
+            ret.itempool.append(new_item)
+
+        # copy progress items in state
+        ret.state.prog_items = copy.copy(self.state.prog_items)
+
+        return ret
+
     def initialize_regions(self):
         for region in self.regions:
             region.world = self
@@ -99,24 +137,6 @@ class World(object):
                         return r_location
         raise RuntimeError('No such location %s' % location)
 
-    def get_all_state(self, keys=False):
-        ret = CollectionState(self)
-
-        def soft_collect(item):
-            if item.advancement or item.key:
-                ret.prog_items.append(item.name)
-
-        for item in self.itempool:
-            soft_collect(item)
-        from Items import ItemFactory
-        if keys:
-            for item in ItemFactory(['Small Key (Forest Temple)'] * 5 + ['Boss Key (Forest Temple)', 'Boss Key (Fire Temple)', 'Boss Key (Water Temple)', 'Boss Key (Shadow Temple)', 'Boss Key (Spirit Temple)', 'Boss Key (Ganons Castle)'] + ['Small Key (Bottom of the Well)'] * 3 + ['Small Key (Fire Temple)'] * 8 + ['Small Key (Water Temple)'] * 6 + ['Small Key (Shadow Temple)'] * 5 + ['Small Key (Gerudo Training Grounds)'] * 9 + ['Small Key (Spirit Temple)'] * 5 + ['Small Key (Ganons Castle)'] * 2):
-                item.world = self
-                soft_collect(item)
-        ret.sweep_for_events()
-        ret.clear_cached_unreachable()
-        return ret
-
     def get_items(self):
         return [loc.item for loc in self.get_filled_locations()] + self.itempool
 
@@ -129,15 +149,14 @@ class World(object):
     def find_items(self, item):
         return [location for location in self.get_locations() if location.item is not None and location.item.name == item]
 
-    def push_item(self, location, item, collect=True):
+    def push_item(self, location, item):
         if not isinstance(location, Location):
             location = self.get_location(location)
 
+        # This check should never be false normally, but is here as a sanity check
         if location.can_fill(self.state, item, False):
             location.item = item
             item.location = location
-            if collect:
-                self.state.collect(item, location.event, location)
 
             logging.getLogger('').debug('Placed %s [World %d] at %s [World %d]', item, item.world.id if hasattr(item, 'world') else -1, location, location.world.id if hasattr(location, 'world') else -1)
         else:
@@ -169,7 +188,7 @@ class World(object):
     def unlocks_new_location(self, item):
         temp_state = self.state.copy()
         temp_state.clear_cached_unreachable()
-        temp_state.collect(item, True)
+        temp_state.collect(item)
 
         for location in self.get_unfilled_locations():
             if temp_state.can_reach(location) and not self.state.can_reach(location):
@@ -180,36 +199,6 @@ class World(object):
     def has_beaten_game(self, state):
         if state.has('Triforce'):
             return True
-        return False
-
-    def can_beat_game(self, starting_state=None):
-        if starting_state:
-            state = starting_state.copy()
-        else:
-            state = CollectionState(self)
-
-        if self.has_beaten_game(state):
-            return True
-
-        prog_locations = [location for location in self.get_locations() if location.item is not None and (location.item.advancement or location.event) and location not in state.locations_checked]
-
-        while prog_locations:
-            sphere = []
-            # build up spheres of collection radius. Everything in each sphere is independent from each other in dependencies and only depends on lower spheres
-            for location in prog_locations:
-                if state.can_reach(location):
-                    if location.item.name == 'Triforce':
-                        return True
-                    sphere.append(location)
-
-            if not sphere:
-                # ran out of places and did not find triforce yet, quit
-                return False
-
-            for location in sphere:
-                prog_locations.remove(location)
-                state.collect(location.item, True, location)
-
         return False
 
     @property
@@ -242,10 +231,8 @@ class CollectionState(object):
         self.location_cache = {}
         self.entrance_cache = {}
         self.recursion_count = 0
-        self.events = []
+        self.collected_locations = []
         self.path = {}
-        self.locations_checked = set()
-
 
     def clear_cached_unreachable(self):
         # we only need to invalidate results which were False, places we could reach before we can still reach after adding more items
@@ -259,9 +246,8 @@ class CollectionState(object):
         ret.region_cache = copy.copy(self.region_cache)
         ret.location_cache = copy.copy(self.location_cache)
         ret.entrance_cache = copy.copy(self.entrance_cache)
-        ret.events = copy.copy(self.events)
+        ret.collected_locations = copy.copy(self.collected_locations)
         ret.path = copy.copy(self.path)
-        ret.locations_checked = copy.copy(self.locations_checked)
         return ret
 
     def can_reach(self, spot, resolution_hint=None):
@@ -307,19 +293,6 @@ class CollectionState(object):
                 correct_cache[spot] = can_reach
             return can_reach
         return correct_cache[spot]
-
-    def sweep_for_events(self, key_only=False):
-        # this may need improvement
-        new_locations = True
-        checked_locations = 0
-        while new_locations:
-            reachable_events = [location for location in self.world.get_filled_locations() if location.event and (not key_only or location.item.key) and self.can_reach(location)]
-            for event in reachable_events:
-                if event.name not in self.events:
-                    self.events.append(event.name)
-                    self.collect(event.item, True, event)
-            new_locations = len(reachable_events) > checked_locations
-            checked_locations = len(reachable_events)
 
     def has(self, item, count=1):
         if count == 1:
@@ -404,24 +377,19 @@ class CollectionState(object):
             return self.has('Stone of Agony')
         return True
 
-    def collect(self, item, event=False, location=None):
-        if location:
-            self.locations_checked.add(location)
+    def collect(self, item):
         changed = False
         if item.name.startswith('Bottle'):
             if self.bottle_count() < 4:
                 self.prog_items.append(item.name)
                 changed = True
-        elif event or item.advancement:
+        elif item.advancement:
             self.prog_items.append(item.name)
             changed = True
 
         if changed:
             self.clear_cached_unreachable()
-            if not event:
-                self.sweep_for_events()
-                self.clear_cached_unreachable()
-
+            
     def remove(self, item):
         if item.advancement:
             to_remove = item.name
@@ -445,6 +413,69 @@ class CollectionState(object):
             return self.has(item[4])
 
         raise RuntimeError('Cannot parse %s.' % item)
+
+    # This function returns a list of states that is each of the base_states
+    # with every item still in the itempool. It only adds items that belong
+    # to its respective world. See fill_restrictive
+    @staticmethod
+    def get_states_with_items(base_state_list, itempool):
+        new_state_list = []
+        for base_state in base_state_list:
+            new_state = base_state.copy()
+            for item in itempool:
+                if item.world.id == base_state.world.id: # Check world
+                    new_state.collect(item)
+            new_state_list.append(new_state)
+        CollectionState.collect_locations(new_state_list)
+        return new_state_list
+
+    # This collected all item locations available in the state list given that
+    # the states have collected items. The purpose is that it will search for
+    # all new items that become accessible with a new item set
+    @staticmethod
+    def collect_locations(state_list):
+        # Get all item locations in the worlds
+        spheres = []
+        item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
+        new_locations = True
+
+        # will loop if there is more items opened up in the previous iteration. Always run once
+        while new_locations:
+            # get reachable new items locations
+            reachable_items_locations = [location for location in item_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
+            for location in reachable_items_locations:
+                # Mark the location collected in the state world it exists in
+                state_list[location.world.id].collected_locations.append(location.name)
+                # Collect the item for the state world it is for
+                state_list[location.item.world.id].collect(location.item)
+            spheres.append(reachable_items_locations)
+            # if there are new locations
+            new_locations = len(reachable_items_locations) > 0
+        return spheres
+
+    # This returns True is every state is beatable. It's important to ensure
+    # all states beatable since items required in one world can be in another.
+    @staticmethod
+    def can_beat_game(state_list):
+        # Check if already beaten
+        game_beaten = True
+        for state in state_list:
+            if not state.has('Triforce'):
+                game_beaten = False
+                break
+        if game_beaten:
+            return True
+
+        # collect all available items
+        new_state_list = [state.copy() for state in state_list]
+        CollectionState.collect_locations(new_state_list)
+
+        # if the every state got the Triforce, then return True
+        for state in new_state_list:
+            if not state.has('Triforce'):
+                return False
+        return True
+
 
 @unique
 class RegionType(Enum):
@@ -573,7 +604,6 @@ class Location(object):
         self.spot_type = 'Location'
         self.recursion_count = 0
         self.staleness_count = 0
-        self.event = False
         self.always_allow = lambda item, state: False
         self.access_rule = lambda state: True
         self.item_rule = lambda item: True
