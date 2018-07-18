@@ -33,6 +33,9 @@ ITEM_OVERRIDES:
 INITIAL_SAVE_DATA:
 .endarea
 
+PLAYER_ID:
+.byte 0x00
+
 ; 0x03481C00: Special items
 
 LIGHT_ARROW_ITEM:

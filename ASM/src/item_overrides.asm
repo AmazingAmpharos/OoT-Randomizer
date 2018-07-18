@@ -108,6 +108,18 @@ override_action:
     lw      v0, 0x24 (sp)
     lbu     a1, 0x0000 (v0)
 
+    li      t0, PLAYER_OVERRIDE_DATA
+    lh      t1, 0x02(t0)
+    beqz    t1, @@no_player_override ; if item is pending player override
+
+    li      t2, 0x01
+    sh      t2, 0x00(t0)    ; set override collected flag
+
+    b       @@return
+    li      a1, 0x41        ; set action to no action
+
+
+@@no_player_override:
     li      t0, EXTENDED_ITEM_DATA
     lw      t1, ITEM_ROW_IS_EXTENDED (t0)
     beqz    t1, @@return
@@ -328,11 +340,31 @@ scan_override_table:
     lw      t1, 0x00 (t0) ; t1 = override entry
     beqz    t1, @@return ; Reached end of override table
     nop
+
     srl     t2, t1, 8 ; t2 = override key
+    andi    t3, t2, 0xFC00
+    srl     t3, t3, 10  ; t3 = player id
+
+    lui     t4, 0xFFFF
+    ori     t4, t4, 0x03FF ;t4 = 0xFFFF03FF masks out the player id
+    and     t2, t2, t4
     bne     t2, a0, @@lookup_loop
     nop
 
     andi    v0, t1, 0xFF ; v0 = found item ID
+
+    li      t0, SAVE_CONTEXT
+    sb      t3, 0x1407(t0) ; set the point value to the player number
+
+    li      t1, PLAYER_OVERRIDE_DATA
+
+    li      t4, PLAYER_ID
+    lb      t4, 0x00(t4)
+    beq     t3, t4, @@return ; correct player for the item
+    sh      zero, 0x02(t1)   ; store no player override
+
+    sb      t3, 0x02(t1)    ; store player override id
+    sb      v0, 0x03(t1)    ; store item id
 
 @@return:
     jr      ra

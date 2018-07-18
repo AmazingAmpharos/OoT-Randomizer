@@ -1014,8 +1014,6 @@ def patch_rom(world, rom):
     shop_items = read_shop_items(rom)
     remove_unused_messages(messages)
 
-    update_message_by_id(messages, 0x004A, "\x13\x07\x08You received the \x05\x41Fairy Ocarina\x05\x40!\x01This is a memento from Saria.")
-
     # only one big poe needs to be caught to get the buyer's reward
     if world.only_one_big_poe:
         # change the value checked (in code) from 1000 to 100
@@ -1042,6 +1040,7 @@ def patch_rom(world, rom):
     # Write item overrides
     override_table = get_override_table(world)
     rom.write_bytes(0x3481000, sum(override_table, []))
+    rom.write_byte(0x03481C00, world.id + 1) # Write player ID
 
     # Set Default targeting option to Hold
     if world.default_targeting == 'hold':
@@ -1183,6 +1182,9 @@ def patch_rom(world, rom):
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(rom, messages, shop_items)
 
+    # reduce item message lengths
+    update_item_messages(messages, world)
+
     repack_messages(rom, messages)
     write_shop_items(rom, shop_items)
 
@@ -1193,15 +1195,13 @@ def patch_rom(world, rom):
         shuffle_messages(rom, False)
 
     # output a text dump, for testing...
-
-    # with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
+    #with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
     #     messages = read_messages(rom)
-    #     shop_items = read_shop_items(rom)
+    #     f.write('item_message_strings = {\n')
     #     for m in messages:
-    #         f.write(str(m) + '\n\n')
-    #     f.write('\n\n\n\n\n')
-    #     for s in shop_items:
-    #         f.write(str(s) + '\n\n')
+    #        f.write("\t0x%04X: \"%s\",\n" % (m.id, m.get_python_string()))
+    #     f.write('}\n')
+
 
     scarecrow_song = None
     if world.free_scarecrow:
@@ -1368,13 +1368,15 @@ def get_override_entry(location):
     if None in [scene, default, item_id]:
         return []
 
+    player_id = (location.item.world.id + 1) << 2
+
     if location.type in ['NPC', 'BossHeart']:
-        return [scene, 0x00, default, item_id]
+        return [scene, player_id | 0x00, default, item_id]
     elif location.type == 'Chest':
         flag = default & 0x1F
-        return [scene, 0x01, flag, item_id]
+        return [scene, player_id | 0x01, flag, item_id]
     elif location.type == 'Collectable':
-        return [scene, 0x02, default, item_id]
+        return [scene, player_id | 0x02, default, item_id]
     else:
         return []
 
