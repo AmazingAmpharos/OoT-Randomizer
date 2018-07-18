@@ -122,6 +122,10 @@ You can randomize the note pattern that is required to activate each song. The n
 
 Similar to the tunic color options, you can change Navi's color for each of her different kinds of targets.
 
+## Navi sound options
+
+Similar to the low health sound option, you can change the sound Navi makes while targeting or when she has a hint for you.
+
 ## Chest size matches contents
 
 `correct_chest_sizes`: Major items will appear in a large chest and other items in small chests. There are a few places that cannot be correctly updated:
