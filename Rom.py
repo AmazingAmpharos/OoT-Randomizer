@@ -1453,6 +1453,45 @@ def patch_rom(world, rom):
                 color = NaviColors[thisColor]
             rom.write_bytes(Navi[i][j], color)
 
+    #Navi hints
+    NaviHint = []
+    NaviHint.append([0xAE7EF2]) #Overworld Hint
+    NaviHint.append([0xAE7EC6]) #Enemy Target Hint
+    naviHintSFXList = ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
+    randomNaviHintSFX = random.choice(naviHintSFXList)
+    
+    if world.naviHintSFX == 'Random Choice':
+        thisNaviHintSFX = randomNaviHintSFX
+    else:
+        thisNaviHintSFX = world.naviHintSFX
+    if thisNaviHintSFX == 'Notification':
+        naviHintSFX = [0x48, 0x20]
+    elif thisNaviHintSFX == 'Rupee':
+        naviHintSFX = [0x48, 0x03]
+    elif thisNaviHintSFX == 'Timer':
+        naviHintSFX = [0x48, 0x1A]
+    elif thisNaviHintSFX == 'Tamborine':
+        naviHintSFX = [0x48, 0x42]
+    elif thisNaviHintSFX == 'Recovery Heart':
+        naviHintSFX = [0x48, 0x0B]
+    elif thisNaviHintSFX == 'Carrot Refill':
+        naviHintSFX = [0x48, 0x45]
+    elif thisNaviHintSFX == 'Navi - Hey!':
+        naviHintSFX = [0x68, 0x5F]
+    elif thisNaviHintSFX == 'Zelda - Gasp':
+        naviHintSFX = [0x68, 0x79]
+    elif thisNaviHintSFX == 'Cluck':
+        naviHintSFX = [0x28, 0x12]
+    elif thisNaviHintSFX == 'Mweep!':
+        naviHintSFX = [0x68, 0x7A]
+    elif thisNaviHintSFX == 'None':
+        naviHintSFX = [0x00, 0x00]
+
+    if thisNaviHintSFX != 'Default':
+        for i in range(len(NaviHint)):
+            for j in range(len(NaviHint[i])):
+                rom.write_bytes(NaviHint[i][j], naviHintSFX)
+
     #Low health beep
     healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
     randomSFX = random.choice(healthSFXList)

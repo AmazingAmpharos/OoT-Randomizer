@@ -1143,6 +1143,39 @@ setting_infos = [
             'default': 'Green',
             'options': get_navi_color_options(),
         }),
+    Setting_Info('naviHintSFX', str, 0, False, 
+        {
+            'default': 'Default',
+            'const': 'Default',
+            'nargs': '?',
+            'choices': ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'],
+            'help': '''\
+                    Select the sound effect that plays when Navi has a hint. (default: %(default)s)
+                    Sound:         Replace the sound effect with the chosen sound.
+                    Random Chocie: Replace the sound effect with a random sound from this list.
+                    None:          Eliminate Navi hint sounds.
+                    '''
+        },
+        {
+            'text': 'Navi Hint SFX',
+            'group': 'navihint',
+            'widget': 'Combobox',
+            'default': 'Default',
+            'options': [
+                'Random Choice', 
+                'Default', 
+                'Notification', 
+                'Rupee', 
+                'Timer', 
+                'Tamborine', 
+                'Recovery Heart', 
+                'Carrot Refill', 
+                'Zelda - Gasp', 
+                'Cluck', 
+                'Mweep!', 
+                'None',
+            ]
+        }),
     Setting_Info('healthSFX', str, 0, False, 
         {
             'default': 'Default',

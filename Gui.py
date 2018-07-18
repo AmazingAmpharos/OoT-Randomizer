@@ -145,6 +145,7 @@ def guiMain(settings=None):
     frames['tuniccolor'] = LabelFrame(frames['aesthetic_tab'], text='Tunic Color', labelanchor=NW)
     frames['navicolor']       = LabelFrame(frames['aesthetic_tab'], text='Navi Color',  labelanchor=NW)
     frames['lowhp']      = LabelFrame(frames['aesthetic_tab'], text='Low HP SFX',  labelanchor=NW)
+    frames['navihint']   = LabelFrame(frames['navicolor'], text='Navi Hint SFX', labelanchor=NW)
 
 
     # shared
@@ -325,6 +326,7 @@ def guiMain(settings=None):
 
     #Aesthetics tab
     frames['navicolor'].pack( fill=BOTH, expand=True, anchor=N, side=RIGHT, pady=(5,1) )
+    frames['navihint'].pack(  fill=BOTH, expand=True, anchor=N, side=BOTTOM, pady=(5,1) )
     frames['tuniccolor'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
     frames['lowhp'].pack(     fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1) )
 
