@@ -34,6 +34,72 @@ inventory_check:
 
 ;==================================================================================================
 
+; a1 = pointer to the skulltula token actor
+
+override_skulltula_token:
+    addiu   sp, sp, -0x20
+    sw      ra, 0x10 (sp)
+    sw      s0, 0x14 (sp)
+
+    jal     lookup_override     ; call lookup_override(_, actor)
+                                ;   so that v0 = index of overwritten item
+    nop
+    bgez    v0, @@in_table
+    nop
+    li      v0, 0x5B            ; default to giving a token
+
+@@in_table:
+    ; resolve the item if it is extended
+    move    a0, v0
+    jal     resolve_extended_item ; v0 = resolved item ID, v1 = ITEM_TABLE entry
+    nop
+    beqz    v1, @@not_extended
+    sw      v1, 0x1C (sp)
+
+    ; Run effect function
+    li      a0, SAVE_CONTEXT
+    lbu     a1, ITEM_ROW_EFFECT_ARG1 (v1)
+    lbu     a2, ITEM_ROW_EFFECT_ARG2 (v1)
+    lw      t1, ITEM_ROW_EFFECT_FN (v1)
+    jalr    t1
+    nop
+
+    ; message id is in the extended item table
+    lw      v1, 0x1C (sp)
+    lbu     a1, ITEM_ROW_TEXT_ID (v1)
+
+    b      @@display_message
+
+@@not_extended:
+    ; get the table entry in the get item table for this item
+    li      t1, GET_ITEMTABLE   ; t1 = base of get item table
+    li      t2, 0x6             ; t2 = size of an element
+    mult    v0, t2              ; 
+    mflo    t2                  ; t2 = offset into get item table
+    addu    s0, t1, t2          ; s0 = pointer to table entry
+
+    ; give the item
+    lb      a1, 0x0 (s0)        ; a1 = item id
+    jal     0x0006fdcc          ; call ex_06fdcc(ctx, item); this gives link the item
+    move    a0,s1               ; a0 = ctx
+
+    ; message id is in the get item table
+    lbu     a1, 0x3 (s0)        ; a1 = text id
+
+@@display_message:
+    move    a0,s1
+    jal     0x000dce14          ; call ex_0dce14(ctx, text_id, 0)
+    move    a2,zero
+
+@@return:
+    lw      ra, 0x10 (sp)
+    lw      s0, 0x14 (sp)
+    addiu   sp, sp, 0x20
+    jr      ra
+    nop
+
+;==================================================================================================
+
 override_object_npc:
     lw      a2, 0x0030 (sp)
     lh      a1, 0x0004 (a2)
@@ -277,12 +343,24 @@ get_override_search_key:
 
     ; Load the current scene number
     li      v0, GLOBAL_CONTEXT
-    lhu     v0, 0xA4 (v0)
+    lhu     v0, 0xA4 (v0)   ; v0 = scene number
 
     li      t0, 0x00 ; t0 = override type
     ori     t1, a0, 0 ; t1 = override ID
     lhu     t2, 0x00 (a1) ; t2 = actor ID
 
+    bne     t2, 0x019C, @@not_skulltula     ; if not skulltula, try for other types
+    nop
+
+    li      t0, 0x03            ; t0 = skulltula type   
+    lhu     t3, 0x1C (a1)       ; t3 = skulltula token variable
+    andi    t1, t3, 0x00FF      ; t1 = skulltula flag (used for the lookup)
+    andi    v0, t3, 0x1F00      ; v0 = skulltula scene (shifted)
+    srl     v0, v0, 8           ; v0 = v0 >> 8 (skulltula scene)
+    b       @@not_collectable   ; create the id
+    nop
+
+@@not_skulltula:
     bne     t2, 0x000A, @@not_chest
     nop
     lhu     t3, 0x1C (a1)

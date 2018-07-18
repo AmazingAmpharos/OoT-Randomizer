@@ -131,6 +131,7 @@ hintTable = {'Hammer':                                                ("the drag
              'Bombchus (20)':                                         ("mice bombs", 'item'),
              'Deku Nuts (5)':                                         ("some nuts", 'item'),
              'Deku Nuts (10)':                                        ("lots-o-nuts", 'item'),
+             'Gold Skulltulla Token':                                 ("proof of destruction", 'item'),
                                                                        #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box
              '10 Big Poes':                                           ("They say that Big Poes leads&to", 'alwaysLocation'),
              'Deku Theater Mask of Truth':                            ("They say that the Mask of Truth&yields", 'alwaysLocation'),
