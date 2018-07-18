@@ -1455,7 +1455,7 @@ def patch_rom(world, rom):
 
     #Navi hints
     NaviHint = []
-    NaviHint.append([0xAE7EF2]) #Overworld Hint
+    NaviHint.append([0xAE7EF2, 0xC26C7E]) #Overworld Hint
     NaviHint.append([0xAE7EC6]) #Enemy Target Hint
     naviHintSFXList = ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
     randomNaviHintSFX = random.choice(naviHintSFXList)
