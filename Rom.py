@@ -1147,15 +1147,6 @@ def patch_rom(world, rom):
         rbl_bombchu.description_message = 0x80FE
         rbl_bombchu.purchase_message = 0x80FF
 
-        # Reduce 10 Pack Bombchus from 100 to 99 Rupees
-        shop_items[0x0015].price = 99
-        shop_items[0x0019].price = 99
-        shop_items[0x001C].price = 99
-        update_message_by_id(messages, shop_items[0x001C].description_message, "\x08\x05\x41Bombchu  (10 pieces)  99 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it's actually a self-propelled time\x01bomb!\x09\x0A")
-        update_message_by_id(messages, shop_items[0x001C].purchase_message, "\x08Bombchu  10 pieces   100 Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don't buy\x05\x40")
-
-
-
         #Fix bombchu chest animations
         chestAnimations = {
             0x6A: 0x28, #0xD8 #Bombchu (5) 
@@ -1375,6 +1366,8 @@ def get_override_entry(location):
         return [scene, 0x01, flag, item_id]
     elif location.type == 'Collectable':
         return [scene, 0x02, default, item_id]
+    elif location.type == 'GS Token':
+        return [scene, 0x03, default, item_id]
     else:
         return []
 

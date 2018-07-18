@@ -85,6 +85,12 @@ Dungeon items (maps, compasses, small keys, boss keys) are shuffled into the ite
 
 This was actually mostly implemented, I just pulled the trigger...
 
+## Tokensanity
+
+Gold Skulltula Token are added to the item pool, and Gold Skulltula locations give random items. There are two levels for this option: complete shuffle of all 100 tokens, or shuffling only the tokens inside dungeons (there are 44.) The later option can add variance to small key layout in dungeons when keysanity is turned off.
+
+In addition there is an option for the logic to expect Sun's Song to obtain any night-only skulltula token.
+
 ## Changed hint system
 
 The hint system has been changed to include different kinds of hints (such as saying a location has something good, but not saying what item it is, or saying a specific item is somewhere in a dungeon, instead of giving the specific location, and so on.) An option has been added to allow talking to gossip stones from the start. Yes, this makes the Stone of Agony completely useless.
