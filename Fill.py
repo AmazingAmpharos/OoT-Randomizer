@@ -32,7 +32,8 @@ def distribute_items_restrictive(worlds, fill_locations=None):
     # for now
     if worlds[0].keysanity:
         # add dungeon items to main pool
-        itempool.extend([item for world in worlds for item in world.get_dungeon_items()])
+        progitempool.extend([item for world in worlds for item in world.get_dungeon_items()])
+        random.shuffle(progitempool)
     else:
         # place dungeon items
         random.shuffle(fill_locations)

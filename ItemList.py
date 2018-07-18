@@ -51,7 +51,7 @@ def generate_itempool(world):
     # set up item pool
     (pool, placed_items) = get_pool_core(world)
     world.itempool = ItemFactory(pool)
-    for (location, item) in placed_items:
+    for (location, item) in placed_items.items():
         world.push_item(location, ItemFactory(item))
 
     choose_trials(world)

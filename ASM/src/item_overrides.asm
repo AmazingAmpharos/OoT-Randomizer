@@ -56,6 +56,15 @@ override_skulltula_token:
     beqz    v1, @@not_extended
     sw      v1, 0x1C (sp)
 
+    ; check if item is for this player
+    li      t0, PLAYER_OVERRIDE_DATA
+    lh      t1, 0x02(t0)
+    beqz    t1, @@extended_effect ; if item is pending player override
+    li      t2, 0x01
+    b       @@no_extended_effect
+    sh      t2, 0x00(t0)          ; set override collected flag
+
+@@extended_effect:
     ; Run effect function
     li      a0, SAVE_CONTEXT
     lbu     a1, ITEM_ROW_EFFECT_ARG1 (v1)
@@ -64,6 +73,7 @@ override_skulltula_token:
     jalr    t1
     nop
 
+@@no_extended_effect:
     ; message id is in the extended item table
     lw      v1, 0x1C (sp)
     lbu     a1, ITEM_ROW_TEXT_ID (v1)
@@ -77,9 +87,18 @@ override_skulltula_token:
     mult    v0, t2              ; 
     mflo    t2                  ; t2 = offset into get item table
     addu    s0, t1, t2          ; s0 = pointer to table entry
-
-    ; give the item
     lb      a1, 0x0 (s0)        ; a1 = item id
+
+    ; check if item is for this player
+    li      t0, PLAYER_OVERRIDE_DATA
+    lh      t1, 0x02(t0)
+    beqz    t1, @@item_effect  ; if item is pending player override
+    li      t2, 0x01
+    sh      t2, 0x00(t0)        ; set override collected flag
+    li      a1, 0x41            ; a1 = 0x41 (No item)
+
+@@item_effect:
+    ; give the item
     jal     0x0006fdcc          ; call ex_06fdcc(ctx, item); this gives link the item
     move    a0,s1               ; a0 = ctx
 
