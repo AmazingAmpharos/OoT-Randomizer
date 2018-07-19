@@ -1050,7 +1050,7 @@ def patch_rom(world, rom):
     # Set OHKO mode
     if world.ohko:
         rom.write_int32(0xAE80A8, 0xA4A00030) # sh  zero,48(a1)
-        rom.write_int32(0xAE80B0, 0x0010082A) # slt at,s0,zero
+        rom.write_int32(0xAE80B4, 0x06000003) # bltz s0, +0003
 
     # Patch songs and boss rewards
     for location in world.get_locations():
