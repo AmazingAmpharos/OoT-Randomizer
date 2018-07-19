@@ -320,3 +320,14 @@
 .org 0xAE6E48
     jal     override_fairy_ocarina_cutscene
     addu    t8,t0,t7
+
+; Replaces
+;sll      t6,a3,0x2
+;lui      t5,0x8010
+;addiu    t0,t0,-23088
+.org 0xAE5DE0
+    jal     override_fairy_ocarina_cutscene
+    li      v0,0xFF 
+    b       item_action_return
+.org 0xAE7370
+item_action_return:

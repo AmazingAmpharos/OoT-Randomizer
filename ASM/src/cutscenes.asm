@@ -60,16 +60,43 @@ override_great_fairy_cutscene:
 override_light_arrow_cutscene:
     li      t0, LIGHT_ARROW_ITEM
     lb      t0, 0x00 (t0)
-    li      t1, PENDING_SPECIAL_ITEM
-    sb      t0, 0x00 (t1)
-    jr      ra
+    b       store_pending_spedial_item
     nop
 
 override_fairy_ocarina_cutscene:
     li      t0, FAIRY_OCARINA_ITEM
     lb      t0, 0x00 (t0)
+    b       store_pending_spedial_item
+    nop
+
+override_ocarina_songs:
+    li      t0, FAIRY_OCARINA_ITEM
+    lb      t0, 0x00 (t0)
+    b       store_pending_spedial_item
+    nop
+
+store_pending_spedial_item:
+; Don't add item if it's already pending
     li      t1, PENDING_SPECIAL_ITEM
-    sb      t0, 0x00 (t1)
+    li      t2, PENDING_SPECIAL_ITEM_END ; max number of entries
+@@find_duplicate_loop:
+    lb      t4, 0x00 (t1)
+    beq     t4, t0, @@return ; item is already in list
+    addi    t1, t1, 0x01
+    bne     t1, t2, @@find_duplicate_loop ; end of list
+    nop
+
+; Find free index to add item
+    li      t1, (PENDING_SPECIAL_ITEM - 1)
+@@find_empty_loop:
+    addi    t1, t1, 0x01
+    beq     t1, t2, @@return ; end of list
+    lb      t4, 0x00 (t1)
+    bnez    t4, @@find_empty_loop ; next index
+    nop
+
+    sb      t0, 0x00 (t1) ; store in first free spot
+@@return:
     jr      ra
     nop
 
