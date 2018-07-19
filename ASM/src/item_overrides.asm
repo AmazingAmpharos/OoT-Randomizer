@@ -439,11 +439,11 @@ scan_override_table:
     nop
 
     srl     t2, t1, 8 ; t2 = override key
-    andi    t3, t2, 0xFC00
-    srl     t3, t3, 10  ; t3 = player id
+    andi    t3, t2, 0xF800
+    srl     t3, t3, 11  ; t3 = player id
 
     lui     t4, 0xFFFF
-    ori     t4, t4, 0x03FF ;t4 = 0xFFFF03FF masks out the player id
+    ori     t4, t4, 0x03FF ;t4 = 0xFFFF07FF masks out the player id
     and     t2, t2, t4
     bne     t2, a0, @@lookup_loop
     nop
