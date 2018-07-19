@@ -1471,7 +1471,7 @@ def get_chest_list(rom):
 
 def get_override_itemid(override_table, scene, type, flags):
     for entry in override_table:
-        if len(entry) == 4 and entry[0] == scene and entry[1] == type and entry[2] == flags:
+        if len(entry) == 4 and entry[0] == scene and (entry[1] & 0x07) == type and entry[2] == flags:
             return entry[3]
     return None
 
