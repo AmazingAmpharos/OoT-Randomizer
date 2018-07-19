@@ -167,7 +167,7 @@ def fill_restrictive(worlds, base_state_list, locations, itempool):
         # in the world we are placing it (possibly checking for reachability)
         spot_to_fill = None
         for location in locations:
-            if location.world.id == item_to_place.world.id and location.can_fill(maximum_exploration_state_list[location.world.id], item_to_place, perform_access_check):
+            if location.can_fill(maximum_exploration_state_list[location.world.id], item_to_place, perform_access_check):
                 spot_to_fill = location
                 break
 
