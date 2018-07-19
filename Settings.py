@@ -507,6 +507,19 @@ setting_infos = [
                 'All Tokens': 'all',
             },
         }),
+    Setting_Info('ohko', bool, 1, True, 
+        {
+            'help': '''\
+                    Link will die in one hit.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'OHKO',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),    
     Setting_Info('nodungeonitems', bool, 1, True, 
         {
             'help': '''\

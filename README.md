@@ -78,7 +78,6 @@ Regardless of whether of not you use this option, Malon has been sped up in the 
 
 The Fairy Ocarina can be shuffled into the item pool with `shuffle_fairy_ocarina`. This means that Saria will give a random item and that you must find the Ocarina before being able to play any songs. The Ocarina of Time will still always be at its usual location.
 
-
 ## Keysanity
 
 Dungeon items (maps, compasses, small keys, boss keys) are shuffled into the item pool at large.
@@ -90,6 +89,10 @@ This was actually mostly implemented, I just pulled the trigger...
 Gold Skulltula Token are added to the item pool, and Gold Skulltula locations give random items. There are two levels for this option: complete shuffle of all 100 tokens, or shuffling only the tokens inside dungeons (there are 44.) The later option can add variance to small key layout in dungeons when keysanity is turned off.
 
 In addition there is an option for the logic to expect Sun's Song to obtain any night-only skulltula token.
+
+## OHKO
+
+Setting `ohko` will make Link die in one hit...
 
 ## Changed hint system
 
