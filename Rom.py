@@ -1175,7 +1175,7 @@ def patch_rom(world, rom):
         update_chest_sizes(rom, override_table)
 
     # give dungeon items the correct messages
-    message_patch_for_dungeon_items(rom, messages, shop_items)
+    message_patch_for_dungeon_items(messages, shop_items, world)
 
     # reduce item message lengths
     update_item_messages(messages, world)
