@@ -1042,6 +1042,10 @@ def patch_rom(world, rom):
     rom.write_bytes(0x3481000, sum(override_table, []))
     rom.write_byte(0x03481C00, world.id + 1) # Write player ID
 
+    # Revert Song Get Override Injection
+    if not world.shuffle_song_items:
+        rom.write_bytes(0xAE5DE0, [0x00, 0x07, 0x70, 0x80, 0x3C, 0x0D, 0x80, 0x10, 0x25, 0x08, 0xA5, 0xD0])
+
     # Set Default targeting option to Hold
     if world.default_targeting == 'hold':
         rom.write_bytes(0xB07200, [0x20, 0x0C, 0x00, 0x01 ])
@@ -1171,7 +1175,7 @@ def patch_rom(world, rom):
         update_chest_sizes(rom, override_table)
 
     # give dungeon items the correct messages
-    message_patch_for_dungeon_items(rom, messages, shop_items)
+    message_patch_for_dungeon_items(messages, shop_items, world)
 
     # reduce item message lengths
     update_item_messages(messages, world)

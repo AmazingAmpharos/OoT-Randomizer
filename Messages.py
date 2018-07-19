@@ -618,9 +618,16 @@ def move_shop_item_messages(messages, shop_items):
 
 # add the keysanity messages
 # make sure to call this AFTER move_shop_item_messages()
-def add_keysanity_messages(messages):
+def add_keysanity_messages(messages, world):
     for id, text in KEYSANITY_MESSAGES.items():
-        add_message(messages, text, id, 0x23)
+        if world.world_count > 1:
+            index = 0
+            while ord(text[index]) in CONTROL_CODES:
+                index = index + CONTROL_CODES[ord(text[index])][1] + 1
+            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
+            add_message(messages, new_text, id, 0x23)
+        else:
+            add_message(messages, text, id, 0x23)
 
 # reduce item message sizes
 def update_item_messages(messages, world):
@@ -635,9 +642,9 @@ def update_item_messages(messages, world):
             update_message_by_id(messages, id, text)
 
 # run all keysanity related patching to add messages for dungeon specific items
-def message_patch_for_dungeon_items(rom, messages, shop_items):
+def message_patch_for_dungeon_items(messages, shop_items, world):
     move_shop_item_messages(messages, shop_items)
-    add_keysanity_messages(messages)
+    add_keysanity_messages(messages, world)
 
 # reads each of the game's messages into a list of Message objects
 def read_messages(rom):

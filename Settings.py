@@ -480,6 +480,21 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
+    Setting_Info('shuffle_song_items', bool, 1, True, 
+        {
+            'help': '''\
+                    Shuffles the songs with with rest of the item pool so that
+                    song can appear at other locations, and items can appear at
+                    the song locations.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Shuffle Songs with Items',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
     Setting_Info('keysanity', bool, 1, True, 
         {
             'help': '''\

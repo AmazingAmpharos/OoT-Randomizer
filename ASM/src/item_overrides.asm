@@ -141,13 +141,17 @@ override_object:
     lhu     a1, ITEM_ROW_OBJECT_ID (t2)
 
 @@return:
-    ; Clear any pending special item, now that it's being received
-    li      t2, PENDING_SPECIAL_ITEM
-    sb      r0, 0x00 (t2)
     ; Re-enable warping (disabled by pending item)
     li      t2, GLOBAL_CONTEXT + 0x104E4
     sh      r0, 0x00 (t2)
 
+    li      t1, PENDING_SPECIAL_ITEM
+    lb      t2, (PENDING_SPECIAL_ITEM_END - PENDING_SPECIAL_ITEM) (t1)
+    bltz    t2, @@no_pending_clear
+    add     t1, t1, t2
+    sb      zero, 0x00 (t1)
+    
+@@no_pending_clear:
     jr ra
     nop
 
