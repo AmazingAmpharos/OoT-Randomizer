@@ -679,11 +679,6 @@ def patch_rom(world, rom):
     # Fix Spirit Temple to check for different rewards for scene
     rom.write_bytes(0xCA3EA2, [0x00, 0x00, 0x25, 0x4A, 0x00, 0x08])
 
-    # Fire Arrows now in a chest, always spawn
-    rom.write_bytes(0xE9E202, [0x00, 0x0A])
-    rom.write_bytes(0xE9E1F2, [0x5B, 0x08])
-    rom.write_bytes(0xE9E1D8, [0x00, 0x00, 0x00, 0x00])
-
     # Fix Biggoron to check a different flag.
     rom.write_byte(0xED329B, 0x72)
     rom.write_byte(0xED43E7, 0x72)
@@ -1183,6 +1178,9 @@ def patch_rom(world, rom):
     # Update chest type sizes
     if world.correct_chest_sizes:
         update_chest_sizes(rom, override_table)
+
+    # Move Ganon's Castle's Zelda's Lullaby Chest back so is reachable if large
+    rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(rom, messages, shop_items)

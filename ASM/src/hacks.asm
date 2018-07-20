@@ -320,3 +320,27 @@
 .org 0xAE6E48
     jal     override_fairy_ocarina_cutscene
     addu    t8,t0,t7
+
+;==================================================================================================
+; Fire Arrow Chest
+;==================================================================================================
+
+; Don't require water temple
+;   bne     t9,at,+0x0024
+.org 0xE9E1D8
+    nop
+
+; Load chest contents
+;   li      a2, 0x0007
+.org 0xE9E1F0
+    li      a2, 0x5B08
+
+; Load actor type
+;   li      a2, 0x010f
+.org 0xE9E200
+    li      a2, 0x000A
+
+; Load actor rotation
+;   sw      zero, 0x1C (sp)
+.org 0xE9E20C
+    jal     fire_arrow_chest_rotation
