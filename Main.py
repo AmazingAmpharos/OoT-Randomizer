@@ -128,7 +128,7 @@ def create_playthrough(worlds):
         reachable_items_locations = [location for location in item_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
         for location in reachable_items_locations:
             # Mark the location collected in the state world it exists in
-            state_list[location.world.id].collected_locations.append(location.name)
+            state_list[location.world.id].collected_locations.add(location.name)
             # Collect the item for the state world it is for
             state_list[location.item.world.id].collect(location.item)
         if reachable_items_locations:
@@ -137,7 +137,7 @@ def create_playthrough(worlds):
     # in the second phase, we cull each sphere such that the game is still beatable, reducing each 
     # range of influence to the bare minimum required inside it. Effectively creates a min play
     for num, sphere in reversed(list(enumerate(collection_spheres))):
-        to_delete = []
+        to_delete = set()
         for location in sphere:
             # we remove the item at location and check if game is still beatable
             logging.getLogger('').debug('Checking if %s is required to beat the game.', location.item.name)
@@ -148,7 +148,7 @@ def create_playthrough(worlds):
             state_list[old_item.world.id].remove(old_item)
             CollectionState.remove_locations(state_list)
             if CollectionState.can_beat_game(state_list, False):
-                to_delete.append(location)
+                to_delete.add(location)
             else:
                 # still required, got to keep it around
                 state_list = old_state_list
