@@ -1175,6 +1175,7 @@ def patch_rom(world, rom):
         0x42: 0x02, #0xFE #Small Key   
         0x48: 0xF7, #0x09 #Recovery Heart  
         0x4F: 0xED, #0x13 #Heart Container 
+        0x76: 0xEC, #0x14 #WINNER! Piece of Heart
     }
     for item_id, gfx_id in chestAnimations.items():
         rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
