@@ -493,7 +493,8 @@ setting_infos = [
             'text': 'Shuffle Songs with Items',
             'group': 'logic',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'dependency': { 'shuffle_song_items':True }
         }),
     Setting_Info('keysanity', bool, 1, True, 
         {
