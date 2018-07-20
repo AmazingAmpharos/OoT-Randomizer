@@ -69,6 +69,7 @@ class World(object):
                 item.world = location.item.world
                 ret.get_location(location.name).item = item
                 item.location = ret.get_location(location.name)
+                item.location.event = location.event
 
         # copy remaining itempool. No item in itempool should have an assigned location
         for item in self.itempool:
@@ -502,12 +503,12 @@ class CollectionState(object):
         CollectionState.collect_locations(state_list)
 
         item_locations = set()
-        if not worlds[0].spoiler.playthrough:
+        if worlds[0].spoiler.playthrough:
+            item_locations = {location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
+                if location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)}
+        else:
             item_locations = {location for world in worlds for location in world.get_filled_locations() 
                 if location.item.advancement and location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)}
-        else:
-            item_locations = {location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
-                    if location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)}
 
         required_locations = set()
         for location in item_locations:
@@ -518,7 +519,7 @@ class CollectionState(object):
             new_state_list[old_item.world.id].remove(old_item)
             CollectionState.remove_locations(new_state_list)
 
-            if not CollectionState.can_beat_game(new_state_list):
+            if not CollectionState.can_beat_game(new_state_list, False):
                 required_locations.add(location)
             location.item = old_item
 
@@ -752,6 +753,6 @@ class Spoiler(object):
 
             outfile.write('\n\nAlways Required Locations:\n\n')
             if self.settings.world_count > 1:
-                outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id) for location in self.required_locations]))
+                outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations]))
             else:
                 outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations]))
