@@ -434,6 +434,11 @@ scan_override_table:
 
     li      v0, -1
 
+    li      t0, PLAYER_ID
+    lb      t1, 0x00(t0)
+    li      t0, SAVE_CONTEXT
+    sh      t1, 0x1406(t0) ; set points to current player: default
+
     ; Look up override
     li      t0, (ITEM_OVERRIDES - 0x04)
 @@lookup_loop:
@@ -455,7 +460,7 @@ scan_override_table:
     andi    v0, t1, 0xFF ; v0 = found item ID
 
     li      t0, SAVE_CONTEXT
-    sb      t3, 0x1407(t0) ; set the point value to the player number
+    sh      t3, 0x1406(t0) ; set the point value to the player number
 
     li      t1, PLAYER_OVERRIDE_DATA
 
