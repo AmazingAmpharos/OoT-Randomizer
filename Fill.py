@@ -184,7 +184,6 @@ def fill_restrictive(worlds, base_state_list, locations, itempool):
         # Place the item in the world and continue
         spot_to_fill.world.push_item(spot_to_fill, item_to_place)
         locations.remove(spot_to_fill)
-        spot_to_fill.event = True
 
 
 # This places items in the itempool into the locations
@@ -212,7 +211,6 @@ def fill_restrictive_fast(worlds, locations, itempool):
         # Place the item in the world and continue
         spot_to_fill.world.push_item(spot_to_fill, item_to_place)
         locations.remove(spot_to_fill)
-        spot_to_fill.event = True
 
 
 # this places item in item_pool completely randomly into

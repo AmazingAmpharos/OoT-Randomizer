@@ -197,9 +197,7 @@ class World(object):
         return False
 
     def has_beaten_game(self, state):
-        if state.has('Triforce'):
-            return True
-        return False
+        return state.has('Triforce')
 
     @property
     def option_identifier(self):
@@ -232,7 +230,6 @@ class CollectionState(object):
         self.entrance_cache = {}
         self.recursion_count = 0
         self.collected_locations = []
-        self.path = {}
 
     def clear_cached_unreachable(self):
         # we only need to invalidate results which were False, places we could reach before we can still reach after adding more items
@@ -247,7 +244,6 @@ class CollectionState(object):
         ret.location_cache = copy.copy(self.location_cache)
         ret.entrance_cache = copy.copy(self.entrance_cache)
         ret.collected_locations = copy.copy(self.collected_locations)
-        ret.path = copy.copy(self.path)
         return ret
 
     def can_reach(self, spot, resolution_hint=None):
@@ -405,10 +401,10 @@ class CollectionState(object):
                 except ValueError:
                     return
 
-                # invalidate caches, nothing can be trusted anymore now
-                self.region_cache = {}
-                self.location_cache = {}
-                self.entrance_cache = {}
+                # invalidate collected cache. unreachable locations are still unreachable
+                self.region_cache =   {k: v for k, v in self.region_cache.items() if not v}
+                self.location_cache = {k: v for k, v in self.location_cache.items() if not v}
+                self.entrance_cache = {k: v for k, v in self.entrance_cache.items() if not v}
                 self.recursion_count = 0
 
     def __getattr__(self, item):
@@ -441,10 +437,10 @@ class CollectionState(object):
     def collect_locations(state_list):
         # Get all item locations in the worlds
         item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
-        new_locations = True
 
         # will loop if there is more items opened up in the previous iteration. Always run once
-        while new_locations:
+        reachable_items_locations = True
+        while reachable_items_locations:
             # get reachable new items locations
             reachable_items_locations = [location for location in item_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
             for location in reachable_items_locations:
@@ -452,31 +448,82 @@ class CollectionState(object):
                 state_list[location.world.id].collected_locations.append(location.name)
                 # Collect the item for the state world it is for
                 state_list[location.item.world.id].collect(location.item)
-            # if there are new locations
-            new_locations = len(reachable_items_locations) > 0
+
+
+    # This removes all item locations collected in the state list given that
+    # the states have collected items. The purpose is that it will search for
+    # all new items that become no longer accessible with a removed item
+    @staticmethod
+    def remove_locations(state_list):
+        # Get all item locations in the worlds
+        item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
+
+        # will loop if there is more items removed in the previous iteration. Always run once
+        unreachable_items_locations = True
+        while unreachable_items_locations:
+            # get unreachable new items locations
+            unreachable_items_locations = [location for location in item_locations if location.name in state_list[location.world.id].collected_locations and not state_list[location.world.id].can_reach(location)]
+            for location in unreachable_items_locations:
+                # Mark the location uncollected in the state world it exists in
+                state_list[location.world.id].collected_locations.remove(location.name)
+                # Remove the item for the state world it is for
+                state_list[location.item.world.id].remove(location.item)
+
 
     # This returns True is every state is beatable. It's important to ensure
     # all states beatable since items required in one world can be in another.
     @staticmethod
-    def can_beat_game(state_list):
-        # Check if already beaten
-        game_beaten = True
-        for state in state_list:
-            if not state.has('Triforce'):
-                game_beaten = False
-                break
-        if game_beaten:
-            return True
+    def can_beat_game(state_list, scan_for_items=True):
+        if scan_for_items:
+            # Check if already beaten
+            game_beaten = True
+            for state in state_list:
+                if not state.has('Triforce'):
+                    game_beaten = False
+                    break
+            if game_beaten:
+                return True
 
-        # collect all available items
-        new_state_list = [state.copy() for state in state_list]
-        CollectionState.collect_locations(new_state_list)
+            # collect all available items
+            new_state_list = [state.copy() for state in state_list]
+            CollectionState.collect_locations(new_state_list)
+        else:
+            new_state_list = state_list
 
         # if the every state got the Triforce, then return True
         for state in new_state_list:
             if not state.has('Triforce'):
                 return False
         return True
+
+    @staticmethod
+    def update_required_items(worlds):
+        state_list = [CollectionState(world) for world in worlds]
+        CollectionState.collect_locations(state_list)
+
+        item_locations = []
+        if not worlds[0].spoiler.playthrough:
+            item_locations = [location for world in worlds for location in world.get_filled_locations() 
+                if location.item.advancement and location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)]
+        else:
+            item_locations = [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
+                    if location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)]
+
+        required_locations = []
+        for location in item_locations:
+            old_item = location.item
+            new_state_list = [state.copy() for state in state_list]
+
+            location.item = None
+            new_state_list[old_item.world.id].remove(old_item)
+            CollectionState.remove_locations(new_state_list)
+
+            if not CollectionState.can_beat_game(new_state_list):
+                required_locations.append(location)
+            location.item = old_item
+
+        for world in worlds:
+            world.spoiler.required_locations = [location for location in required_locations if location.world.id == world.id]
 
 
 @unique
@@ -490,7 +537,6 @@ class RegionType(Enum):
     def is_indoors(self):
         """Shorthand for checking if Interior or Dungeon"""
         return self in (RegionType.Interior, RegionType.Dungeon, RegionType.Grotto)
-
 
 
 class Region(object):
@@ -509,8 +555,6 @@ class Region(object):
     def can_reach(self, state):
         for entrance in self.entrances:
             if state.can_reach(entrance):
-                if not self in state.path:
-                    state.path[self] = (self.name, state.path.get(entrance, None))
                 return True
         return False
 
@@ -544,8 +588,6 @@ class Entrance(object):
 
     def can_reach(self, state):
         if self.access_rule(state) and state.can_reach(self.parent_region):
-            if not self in state.path:
-                state.path[self] = (self.name, state.path.get(self.parent_region, (self.parent_region.name, None)))
             return True
 
         return False
@@ -609,6 +651,7 @@ class Location(object):
         self.always_allow = lambda item, state: False
         self.access_rule = lambda state: True
         self.item_rule = lambda item: True
+        self.event = False
 
     def can_fill(self, state, item, check_access=True):
         return self.always_allow(item, self) or (self.parent_region.can_fill(item) and self.item_rule(item) and (not check_access or self.can_reach(state)))
@@ -672,8 +715,8 @@ class Spoiler(object):
         self.entrances = []
         self.playthrough = {}
         self.locations = {}
-        self.paths = {}
         self.metadata = {}
+        self.required_locations = {}
 
     def set_entrance(self, entrance, exit, direction):
         self.entrances.append(OrderedDict([('entrance', entrance), ('exit', exit), ('direction', direction)]))
@@ -711,16 +754,8 @@ class Spoiler(object):
             else:
                 outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  %s: %s' % (location.name, item.name) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
 
-            outfile.write('\n\nPaths:\n\n')
-
-            path_listings = []
-            for location, path in sorted(self.paths.items()):
-                path_lines = []
-                for region, exit in path:
-                    if exit is not None:
-                        path_lines.append("{} -> {}".format(region, exit))
-                    else:
-                        path_lines.append(region)
-                path_listings.append("{}\n        {}".format(location, "\n   =>   ".join(path_lines)))
-
-            outfile.write('\n'.join(path_listings))
+            outfile.write('\n\nAlways Required Locations:\n\n')
+            if self.settings.world_count > 1:
+                outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id) for location in self.required_locations]))
+            else:
+                outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations]))

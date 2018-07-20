@@ -60,8 +60,10 @@ def main(settings):
     logger.info('Fill the world.')
     distribute_items_restrictive(worlds)
 
-    logger.info('Calculating playthrough.')
-    create_playthrough(worlds)
+    if settings.create_spoiler:
+        logger.info('Calculating playthrough.')
+        create_playthrough(worlds)
+    CollectionState.update_required_items(worlds)
 
     logger.info('Patching ROM.')
 
@@ -110,7 +112,6 @@ def create_playthrough(worlds):
         raise RuntimeError('Cannot beat game. Something went terribly wrong here!')
 
     state_list = [CollectionState(world) for world in worlds]
-    cached_state_list = [[state.copy() for state in state_list]]
 
     # Get all item locations in the worlds
     collection_spheres = []
@@ -132,7 +133,6 @@ def create_playthrough(worlds):
             state_list[location.item.world.id].collect(location.item)
         if reachable_items_locations:
             collection_spheres.append(reachable_items_locations)
-            cached_state_list.append([state.copy() for state in state_list])
 
     # in the second phase, we cull each sphere such that the game is still beatable, reducing each 
     # range of influence to the bare minimum required inside it. Effectively creates a min play
@@ -142,58 +142,24 @@ def create_playthrough(worlds):
             # we remove the item at location and check if game is still beatable
             logging.getLogger('').debug('Checking if %s is required to beat the game.', location.item.name)
             old_item = location.item
+            old_state_list = [state.copy() for state in state_list]
+
             location.item = None
-            if CollectionState.can_beat_game(cached_state_list[num]):
+            state_list[old_item.world.id].remove(old_item)
+            CollectionState.remove_locations(state_list)
+            if CollectionState.can_beat_game(state_list, False):
                 to_delete.append(location)
             else:
                 # still required, got to keep it around
+                state_list = old_state_list
                 location.item = old_item
 
         # cull entries in spheres for spoiler walkthrough at end
         for location in to_delete:
             sphere.remove(location)
-
-    # we are now down to just the required progress items in collection_spheres. Unfortunately
-    # the previous pruning stage could potentially have made certain items dependant on others
-    # in the same or later sphere (because the location had 2 ways to access but the item originally
-    # used to access it was deemed not required.) So we need to do one final sphere collection pass
-    # to build up the correct spheres
-    required_locations = [item for sphere in collection_spheres for item in sphere]
-    state_list = cached_state_list[0]
-    collection_spheres = []
-    reachable_items_locations = True
-    while reachable_items_locations:
-        # get reachable new items locations
-        reachable_items_locations = [location for location in required_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
-        for location in reachable_items_locations:
-            # Mark the location collected in the state world it exists in
-            state_list[location.world.id].collected_locations.append(location.name)
-            # Collect the item for the state world it is for
-            state_list[location.item.world.id].collect(location.item)
-        if reachable_items_locations:
-            collection_spheres.append(reachable_items_locations)
-
-    logging.getLogger('').debug('Calculated final sphere %i, containing %i of %i progress items.', len(collection_spheres), len(sphere), len(required_locations))
-    if not sphere:
-        raise RuntimeError('Not all required items reachable. Something went terribly wrong here.')
-
-    def flist_to_iter(node):
-        while node:
-            value, node = node
-            yield value
-
-    def get_path(state, region):
-        reversed_path_as_flist = state.path.get(region, (region, None))
-        string_path_flat = reversed(list(map(str, flist_to_iter(reversed_path_as_flist))))
-        # Now we combine the flat string list into (region, exit) pairs
-        pathsiter = iter(string_path_flat)
-        pathpairs = zip_longest(pathsiter, pathsiter)
-        return list(pathpairs)
-
+    collection_spheres = [sphere for sphere in collection_spheres if sphere]
 
     # we can finally output our playthrough
     for world in old_worlds:
-        world.required_locations = [location for sphere in collection_spheres for location in sphere]
         world.spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
-        world.spoiler.paths = {location.name : get_path(world.state, location.parent_region) for sphere in collection_spheres for location in sphere}
 

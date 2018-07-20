@@ -138,20 +138,16 @@ def buildGossipHints(world, messages):
     #shuffles the stone addresses for randomization, always locations will be placed first and twice
     random.shuffle(stoneIDs)
 
-    # get list of required items that are not events or needed for Ganon's Castle
-    requiredItems = [(location.name, item.name) for _,sphere in world.spoiler.playthrough.items() for location,item in sphere.items() 
-        if item.type != 'Event' and not location in eventlocations]
-
-    # add required non-ganon items for hints (good hints)
-    requiredSample = requiredItems
-    if len(requiredItems) >= 4:
-        requiredSample = random.sample(requiredItems, random.randint(3,4))
-    for location,item in requiredSample:
-        if world.get_location(location).parent_region.dungeon:
-            update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(world.get_location(location).parent_region.dungeon.name).text + \
+    # add required items locations for hints (good hints)
+    requiredSample = world.spoiler.required_locations
+    if len(requiredSample) >= 4:
+        requiredSample = random.sample(requiredSample, random.randint(3,4))
+    for location in requiredSample:
+        if location.parent_region.dungeon:
+            update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(location.parent_region.dungeon.name).text + \
                 " is on the way of the hero."))
         else:
-            update_hint(messages, stoneIDs.pop(0), buildHintString(world.get_location(location).parent_region.name + " is on the way of the hero."))
+            update_hint(messages, stoneIDs.pop(0), buildHintString(location.parent_region.name + " is on the way of the hero."))
 
     # Don't repeat hints
     checkedLocations = []

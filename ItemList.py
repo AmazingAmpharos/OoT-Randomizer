@@ -44,15 +44,16 @@ eventlocations = {
 #total_items_to_place = 5
 
 def generate_itempool(world):
-
     for location, item in eventlocations.items():
         world.push_item(location, ItemFactory(item))
+        world.get_location(location).event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world)
     world.itempool = ItemFactory(pool)
     for (location, item) in placed_items.items():
         world.push_item(location, ItemFactory(item))
+        world.get_location(location).event = True
 
     choose_trials(world)
     fill_bosses(world)

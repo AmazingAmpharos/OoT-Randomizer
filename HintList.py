@@ -94,7 +94,7 @@ hintTable = {'Hammer':                                                ("the drag
              'Piece of Heart (Treasure Chest Game)':                  ("WINNER!", 'item'),
              'Recovery Heart':                                        ("a free heal", 'item'),
              'Rupee (1)':                                             ("rare riches", 'item'),
-             'Rupees (5)':                                            (" a common coin", 'item'),
+             'Rupees (5)':                                            ("a common coin", 'item'),
              'Rupees (20)':                                           ("couch cash", 'item'),
              'Rupees (50)':                                           ("big bucks", 'item'),
              'Rupees (200)':                                          ("a juicy jackpot", 'item'),
