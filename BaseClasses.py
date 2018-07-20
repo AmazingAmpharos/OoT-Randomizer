@@ -9,8 +9,8 @@ class World(object):
 
     def __init__(self, settings):
         self.shuffle = 'vanilla'
-        self.dungeons = set()
-        self.regions = set()
+        self.dungeons = []
+        self.regions = []
         self.itempool = []
         self.state = CollectionState(self)
         self._cached_locations = None
@@ -18,7 +18,7 @@ class World(object):
         self._region_cache = {}
         self._entrance_cache = {}
         self._location_cache = {}
-        self.required_locations = set()
+        self.required_locations = []
 
         # dump settings directly into world's namespace
         # this gives the world an attribute for every setting listed in Settings.py
@@ -139,7 +139,7 @@ class World(object):
         raise RuntimeError('No such location %s' % location)
 
     def get_items(self):
-        return {loc.item for loc in self.get_filled_locations()} + self.itempool
+        return [loc.item for loc in self.get_filled_locations()] + self.itempool
 
     def get_dungeon_items(self):
         itempool = {item for dungeon in self.dungeons for item in dungeon.all_items if item.key or self.place_dungeon_items}
@@ -148,7 +148,7 @@ class World(object):
         return itempool
 
     def find_items(self, item):
-        return {location for location in self.get_locations() if location.item is not None and location.item.name == item}
+        return [location for location in self.get_locations() if location.item is not None and location.item.name == item]
 
     def push_item(self, location, item):
         if not isinstance(location, Location):
@@ -165,26 +165,26 @@ class World(object):
 
     def get_locations(self):
         if self._cached_locations is None:
-            self._cached_locations = set()
+            self._cached_locations = []
             for region in self.regions:
-                self._cached_locations = self._cached_locations.union(region.locations)
+                self._cached_locations.extend(region.locations)
         return self._cached_locations
 
     def get_unfilled_locations(self):
-        return {location for location in self.get_locations() if location.item is None}
+        return [location for location in self.get_locations() if location.item is None]
 
     def get_filled_locations(self):
-        return {location for location in self.get_locations() if location.item is not None}
+        return [location for location in self.get_locations() if location.item is not None]
 
     def get_reachable_locations(self, state=None):
         if state is None:
             state = self.state
-        return {location for location in self.get_locations() if state.can_reach(location)}
+        return [location for location in self.get_locations() if state.can_reach(location)]
 
     def get_placeable_locations(self, state=None):
         if state is None:
             state = self.state
-        return {location for location in self.get_locations() if location.item is None and state.can_reach(location)}
+        return [location for location in self.get_locations() if location.item is None and state.can_reach(location)]
 
     def unlocks_new_location(self, item):
         temp_state = self.state.copy()
@@ -230,7 +230,7 @@ class CollectionState(object):
         self.location_cache = {}
         self.entrance_cache = {}
         self.recursion_count = 0
-        self.collected_locations = set()
+        self.collected_locations = {}
 
     def clear_cached_unreachable(self):
         # we only need to invalidate results which were False, places we could reach before we can still reach after adding more items
@@ -437,16 +437,16 @@ class CollectionState(object):
     @staticmethod
     def collect_locations(state_list):
         # Get all item locations in the worlds
-        item_locations = {location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement}
+        item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
 
         # will loop if there is more items opened up in the previous iteration. Always run once
         reachable_items_locations = True
         while reachable_items_locations:
             # get reachable new items locations
-            reachable_items_locations = {location for location in item_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)}
+            reachable_items_locations = [location for location in item_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
             for location in reachable_items_locations:
                 # Mark the location collected in the state world it exists in
-                state_list[location.world.id].collected_locations.add(location.name)
+                state_list[location.world.id].collected_locations[location.name] = True
                 # Collect the item for the state world it is for
                 state_list[location.item.world.id].collect(location.item)
 
@@ -457,16 +457,16 @@ class CollectionState(object):
     @staticmethod
     def remove_locations(state_list):
         # Get all item locations in the worlds
-        item_locations = {location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement}
+        item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
 
         # will loop if there is more items removed in the previous iteration. Always run once
         unreachable_items_locations = True
         while unreachable_items_locations:
             # get unreachable new items locations
-            unreachable_items_locations = {location for location in item_locations if location.name in state_list[location.world.id].collected_locations and not state_list[location.world.id].can_reach(location)}
+            unreachable_items_locations = [location for location in item_locations if location.name in state_list[location.world.id].collected_locations and not state_list[location.world.id].can_reach(location)]
             for location in unreachable_items_locations:
                 # Mark the location uncollected in the state world it exists in
-                state_list[location.world.id].collected_locations.remove(location.name)
+                del state_list[location.world.id].collected_locations[location.name]
                 # Remove the item for the state world it is for
                 state_list[location.item.world.id].remove(location.item)
 
@@ -502,15 +502,15 @@ class CollectionState(object):
         state_list = [CollectionState(world) for world in worlds]
         CollectionState.collect_locations(state_list)
 
-        item_locations = set()
+        item_locations = []
         if worlds[0].spoiler.playthrough:
-            item_locations = {location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
-                if location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)}
+            item_locations = [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
+                if location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)]
         else:
-            item_locations = {location for world in worlds for location in world.get_filled_locations() 
-                if location.item.advancement and location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)}
+            item_locations = [location for world in worlds for location in world.get_filled_locations() 
+                if location.item.advancement and location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)]
 
-        required_locations = set()
+        required_locations = []
         for location in item_locations:
             old_item = location.item
             new_state_list = [state.copy() for state in state_list]
@@ -520,11 +520,11 @@ class CollectionState(object):
             CollectionState.remove_locations(new_state_list)
 
             if not CollectionState.can_beat_game(new_state_list, False):
-                required_locations.add(location)
+                required_locations.append(location)
             location.item = old_item
 
         for world in worlds:
-            world.spoiler.required_locations = {location for location in required_locations if location.world.id == world.id}
+            world.spoiler.required_locations = [location for location in required_locations if location.world.id == world.id]
 
 
 @unique
@@ -545,9 +545,9 @@ class Region(object):
     def __init__(self, name, type):
         self.name = name
         self.type = type
-        self.entrances = set()
-        self.exits = set()
-        self.locations = set()
+        self.entrances = []
+        self.exits = []
+        self.locations = []
         self.dungeon = None
         self.world = None
         self.spot_type = 'Region'
@@ -598,7 +598,7 @@ class Entrance(object):
         self.target = target
         self.addresses = addresses
         self.vanilla = vanilla
-        region.entrances.add(self)
+        region.entrances.append(self)
 
     def __str__(self):
         return str(self.__unicode__())
@@ -611,21 +611,21 @@ class Dungeon(object):
 
     def __init__(self, name, regions, boss_key, small_keys, dungeon_items):
         self.name = name
-        self.regions = set(regions)
+        self.regions = regions
         self.boss_key = boss_key
         self.small_keys = small_keys
         self.dungeon_items = dungeon_items
 
     @property
     def keys(self):
-        return self.small_keys.union({self.boss_key} if self.boss_key else set())
+        return self.small_keys + ([self.boss_key] if self.boss_key else [])
 
     @property
     def all_items(self):
-        return self.dungeon_items.union(self.keys)
+        return self.dungeon_items + self.keys
 
     def is_dungeon_item(self, item):
-        return item.name in {dungeon_item.name for dungeon_item in self.all_items}
+        return item.name in [dungeon_item.name for dungeon_item in self.all_items]
 
     def __str__(self):
         return str(self.__unicode__())
@@ -716,7 +716,7 @@ class Spoiler(object):
         self.playthrough = {}
         self.locations = {}
         self.metadata = {}
-        self.required_locations = set()
+        self.required_locations = []
 
     def parse_data(self):
         spoiler_locations = []

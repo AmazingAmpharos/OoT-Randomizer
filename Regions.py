@@ -191,15 +191,15 @@ def create_grotto_region(name, locations=None, exits=None):
 def _create_region(name, type, locations=None, exits=None):
     ret = Region(name, type)
     if locations is None:
-        locations = set()
+        locations = []
     if exits is None:
-        exits = set()
+        exits = []
 
     for exit in exits:
-        ret.exits.add(Entrance(exit, ret))
+        ret.exits.append(Entrance(exit, ret))
     for location in locations:
         address, address2, default, type, scene, hint = location_table[location]
-        ret.locations.add(Location(location, address, address2, default, type, scene, hint, ret))
+        ret.locations.append(Location(location, address, address2, default, type, scene, hint, ret))
     return ret
 
 location_table = {'Kokiri Sword Chest': (0x20A6142, None, 0x04E0, 'Chest', 0x55, 'Kokiri Forest'),

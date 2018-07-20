@@ -4,7 +4,7 @@ from BaseClasses import Item
 
 
 def ItemFactory(items):
-    ret = set()
+    ret = []
     singleton = False
     if isinstance(items, str):
         items = [items]
@@ -12,13 +12,13 @@ def ItemFactory(items):
     for item in items:
         if item in item_table:
             advancement, priority, type, code, index = item_table[item]
-            ret.add(Item(item, advancement, priority, type, code, index))
+            ret.append(Item(item, advancement, priority, type, code, index))
         else:
             logging.getLogger('').warning('Unknown Item: %s', item)
             return None
 
     if singleton:
-        return ret.pop()
+        return ret[0]
     return ret
 
 
