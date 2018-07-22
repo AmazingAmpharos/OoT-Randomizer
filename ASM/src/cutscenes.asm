@@ -72,9 +72,3 @@ override_fairy_ocarina_cutscene:
     sb      t0, 0x00 (t1)
     jr      ra
     nop
-
-fire_arrow_chest_rotation:
-    li      at, 0x4000
-    sw      at, 0x1C (sp)
-    jr      ra
-    nop

@@ -328,19 +328,19 @@
 ; Don't require water temple
 ;   bne     t9,at,+0x0024
 .org 0xE9E1D8
-    nop
+    li      t1, 0x4000
 
 ; Load chest contents
-;   li      a2, 0x0007
+;   li      t0, 0x0007
 .org 0xE9E1F0
-    li      a2, 0x5B08
+    li      t0, 0x2B08
 
 ; Load actor type
 ;   li      a2, 0x010f
 .org 0xE9E200
     li      a2, 0x000A
 
-; Load actor rotation
+; Set rotation
 ;   sw      zero, 0x1C (sp)
 .org 0xE9E20C
-    jal     fire_arrow_chest_rotation
+    sw      t1, 0x1C (sp)
