@@ -333,7 +333,7 @@
 ; Load chest contents
 ;   li      t0, 0x0007
 .org 0xE9E1F0
-    li      t0, 0x2B08
+    li      t0, 0x5B08
 
 ; Load actor type
 ;   li      a2, 0x010f
