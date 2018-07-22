@@ -94,7 +94,7 @@ def guiMain(settings=None):
     notebook.add(frames['rules_tab'], text='Main Rules')
     notebook.add(frames['logic_tab'], text='Detailed Logic')
     notebook.add(frames['other_tab'], text='Other')
-    notebook.add(frames['aesthetic_tab'], text='Aesthetics')
+    notebook.add(frames['aesthetic_tab'], text='Cosmetics')
 
     # Shared Controls   
 
