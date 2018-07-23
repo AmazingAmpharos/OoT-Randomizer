@@ -142,7 +142,7 @@ class World(object):
         return [loc.item for loc in self.get_filled_locations()] + self.itempool
 
     def get_dungeon_items(self):
-        itempool = {item for dungeon in self.dungeons for item in dungeon.all_items if item.key or self.place_dungeon_items}
+        itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if item.key or self.place_dungeon_items]
         for item in itempool:
             item.world = self
         return itempool
