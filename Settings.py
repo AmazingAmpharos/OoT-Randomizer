@@ -753,6 +753,19 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
+    Setting_Info('logic_zora_with_cucco', bool, 1, True, 
+        {
+            'help': '''\
+                    Zora's Domain can be entered with a Cucco in logic.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Zora's Domain with Cucco",
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
     Setting_Info('logic_lens', str, 2, True, 
         {
             'default': 'all',

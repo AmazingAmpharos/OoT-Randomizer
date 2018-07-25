@@ -131,7 +131,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Zora River Dive Warp'), lambda state: state.can_dive())
     set_rule(world.get_entrance('Lake Hylia Dive Warp'), lambda state: state.can_dive())
     set_rule(world.get_entrance('Zoras Domain Dive Warp'), lambda state: state.can_dive())
-    set_rule(world.get_entrance('Zora River Waterfall'), lambda state: state.can_play('Zeldas Lullaby'))
+    set_rule(world.get_entrance('Zora River Waterfall'), lambda state: state.can_play('Zeldas Lullaby') or world.logic_zora_with_cucco)
     set_rule(world.get_entrance('Zora River Rocks'), lambda state: state.has_explosives())
     set_rule(world.get_location('Zora River Lower Freestanding PoH'), lambda state: state.has_explosives() or state.has('Progressive Scale') or (state.has('Hover Boots') and state.is_adult()))
     set_rule(world.get_location('Zora River Upper Freestanding PoH'), lambda state: state.has_explosives() or state.has('Progressive Scale') or (state.has('Hover Boots') and state.is_adult()))
