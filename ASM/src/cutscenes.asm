@@ -70,8 +70,35 @@ override_fairy_ocarina_cutscene:
     nop
 
 override_ocarina_songs:
-    li      t0, FAIRY_OCARINA_ITEM
-    lb      t0, 0x00 (t0)
+    li      t0, 0x2B
+    b       store_pending_spedial_item
+    nop
+
+override_epona_song:
+    lui    at,0x8012       
+    addiu  at,at,0xA5D0 ; v1 = 0x8012a5d0 # save context (sav)
+    lb     t0,0x0EDE(at) ; check learned song from malon flag
+    ori    t0,t0,0x01  ; t9 = "Invited to Sing With Child Malon"
+    sb     t0,0x0EDE(at)
+
+    li      t0, 0x2B
+    b       store_pending_spedial_item
+    nop
+
+override_suns_song:
+    lui    at,0x8012       
+    addiu  at,at,0xA5D0 ; v1 = 0x8012a5d0 # save context (sav)
+    lb     t0,0x0EDE(at) ; learned song from sun's song
+    ori    t0,t0,0x04  ;
+    sb     t0,0x0EDE(at)
+
+    li      t0, 0x2B
+    b       store_pending_spedial_item
+    nop
+
+override_song_of_time:
+    li      a1, 3
+    li      t0, 0x2B
     b       store_pending_spedial_item
     nop
 
@@ -100,3 +127,11 @@ store_pending_spedial_item:
     jr      ra
     nop
 
+override_saria_song_check:
+    move t7, v1
+    lb t4, 0x0EDF(t7)
+    ori t8, t4, 0x80
+    andi t6, t4, 0x80  
+    li v1, 5
+    jr ra
+    nop

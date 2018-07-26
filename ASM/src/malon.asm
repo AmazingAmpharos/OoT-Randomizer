@@ -112,15 +112,16 @@ return_from_the_other_function:
     lui     t6,0x8010
     or      t2,t2,t3            ; t2 = combination of the flags
     bne     t2,t3,ev0_return    ; check that both flags are true to continue this path
+    lh      t9,472(a0)
 
 @@not_hyrule:
-
-.org 0xD7E8E0
+    li      t6,0x01
+    lb      t7,0x0EDE(v0)       ; check learned song from malon flag
+    and     t8,t6,t7            ; t8 = "Has Epona's Song"
     bnezl   t8,ev0_return       ; return if we have Malon's song
 
 .org 0xD7E920
 ev0_return:
-
 
 
 ; 
@@ -179,9 +180,15 @@ ev0_return:
     lui     t3,0x809f              
     lui     t0,0x8010
     lh      t8,0xA4(t8)         ; t8 = current scene number
+    
+    ;lb      t1,0x0EDE(v0)       
     lw      t1,164(v0)          ; t1 = quest status
+    
     addiu   t3,t3,4392          ; t3 = 0x809f1128 ( ev0 )
+    
+    ;li      t0,0x01             
     lw      t0,-29660(t0)       ; t0 = malon's song mask
+    
     move    a0,s0               ; a0 = actor pointer to set up function call
     lui     t4,0x809f
     addiu   t4,t4,4840          ; t4 = 0x809f12e8 ( ev1 )
@@ -194,3 +201,29 @@ ev0_return:
 
 .org 0xD7E7B8
 set_ev1:
+
+
+; Replaces
+; lw  t6,-29660(t6)   
+; lw  t7,164(v1)
+.org 0xD7E140
+    li  t6,0x01
+    lb  t7,0x0EDE(v1) ; check learned song from malon flag
+
+.org 0xD7EBBC
+    jal override_epona_song ;bne v0,at,loc_0x00000408 ; if v0? == 7 then: Return // if preview is not done
+
+.org 0xD7EC1C
+    nop     ; bne t8,at,loc_0x00000488 ; if t8 != 3 then: Return // if song not played successfully
+    li t1,5 ;li  t1,42        ; t1 = 0x2A
+
+
+;ctx = 0x801C84A0
+;1da2ba = 0157 = Entrance
+;1da2fe = 2a -> fade swipe = white circle
+;         03 -> fade swipe = white fade
+;1da2b5 = 1a -> start transition
+
+;12B9E2 = fff1 ????
+
+;#5f0

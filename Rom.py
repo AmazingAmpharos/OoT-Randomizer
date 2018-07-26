@@ -329,21 +329,40 @@ def patch_rom(world, rom):
 
     # Speed learning Zelda's Lullaby
     rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001]) # Terminator Execution
-    rom.write_int16s(None, [0x0073, 0x003B, 0x003C, 0x003C]) # ID, start, end, end  
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0x0073, 0x001, 0x0002, 0x0002]) # ID, start, end, end  
+    else:
+        rom.write_int16s(None, [0x0073, 0x003B, 0x003C, 0x003C]) # ID, start, end, end  
+
 
     rom.write_int32s(0x02E8E91C, [0x00000013, 0x0000000C]) # Textbox, Count
-    rom.write_int16s(None, [0x0017, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    else:
+        rom.write_int16s(None, [0x0017, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2        
     rom.write_int16s(None, [0x00D4, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     # Speed learning Sun's Song
-    rom.write_int32(0x0332A4A4, 0x0000003C) # Header: frame_count
+    if world.shuffle_song_items:
+        rom.write_int32(0x0332A4A4, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x0332A4A4, 0x0000003C) # Header: frame_count      
 
     rom.write_int32s(0x0332A868, [0x00000013, 0x00000008]) # Textbox, Count
     rom.write_int16s(None, [0x0018, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
     rom.write_int16s(None, [0x00D3, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
+    if not world.shuffle_song_items:
+        # revert sun song item override injection
+        rom.write_ints32s(0xE09F64, [0x8DCE8C2C, 0x8C6F00A4])
+        rom.write_ints32s(0xE09FB0, [0x240F0001])
+
+
     # Speed learning Saria's Song
-    rom.write_int32(0x020B1734, 0x0000003C) # Header: frame_count
+    if world.shuffle_song_items:
+        rom.write_int32(0x020B1734, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x020B1734, 0x0000003C) # Header: frame_count
 
     rom.write_int32s(0x20B1DA8, [0x00000013, 0x0000000C]) # Textbox, Count
     rom.write_int16s(None, [0x0015, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
@@ -358,31 +377,62 @@ def patch_rom(world, rom):
 
     # Speed learning Epona's Song
     rom.write_int32s(0x029BEF60, [0x000003E8, 0x00000001]) # Terminator Execution
-    rom.write_int16s(None, [0x005E, 0x000A, 0x000B, 0x000B]) # ID, start, end, end  
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0x005E, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
+    else:
+        rom.write_int16s(None, [0x005E, 0x000A, 0x000B, 0x000B]) # ID, start, end, end         
 
     rom.write_int32s(0x029BECB0, [0x00000013, 0x00000002]) # Textbox, Count
-    rom.write_int16s(None, [0x00D2, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0xFFFF, 0x0000, 0x0009, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    else:
+        rom.write_int16s(None, [0x00D2, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
     rom.write_int16s(None, [0xFFFF, 0x000A, 0x003C, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+
+    if not world.shuffle_song_items:
+        # Revert song learning skip ASM
+        rom.write_int32(0xD7E77C, 0x8C4900A4)
+        rom.write_int32(0xD7E784, 0x8D088C24)
+        rom.write_int32s(0xD7E8D4, [0x8DCE8C24, 0x8C4F00A4])
+        rom.write_int32s(0xD7E140, [0x8DCE8C24, 0x8C6F00A4])
+        rom.write_int32(0xD7EBBC, 0x14410008) # bne v0,at,loc_0x00000408
+        rom.write_int32(0xD7EC1C, 0x17010010) # bne t8,at,loc_0x00000488
+
 
     # Speed learning Song of Time
     rom.write_int32s(0x0252FB98, [0x000003E8, 0x00000001]) # Terminator Execution
-    rom.write_int16s(None, [0x0035, 0x003B, 0x003C, 0x003C]) # ID, start, end, end  
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0x0035, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
+    else:
+        rom.write_int16s(None, [0x0035, 0x003B, 0x003C, 0x003C]) # ID, start, end, end          
 
     rom.write_int32s(0x0252FC80, [0x00000013, 0x0000000C]) # Textbox, Count
-    rom.write_int16s(None, [0x0019, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    else:
+        rom.write_int16s(None, [0x0019, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2        
     rom.write_int16s(None, [0x00D5, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     rom.write_int32(0x01FC3B84, 0xFFFFFFFF) # Other Header?: frame_count
 
+    if not world.shuffle_song_items:
+        rom.write_int32(0xDB532C, 0x24050003)
+
     # Speed learning Song of Storms
-    rom.write_int32(0x03041084, 0x0000000A) # Header: frame_count
+    if world.shuffle_song_items:
+        rom.write_int32(0x03041084, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x03041084, 0x0000000A) # Header: frame_count
 
     rom.write_int32s(0x03041088, [0x00000013, 0x00000002]) # Textbox, Count
     rom.write_int16s(None, [0x00D6, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
     rom.write_int16s(None, [0xFFFF, 0x00BE, 0x00C8, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     # Speed learning Minuet of Forest
-    rom.write_int32(0x020AFF84, 0x0000003C) # Header: frame_count
+    if world.shuffle_song_items:
+        rom.write_int32(0x020AFF84, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x020AFF84, 0x0000003C) # Header: frame_count
 
     rom.write_int32s(0x020B0800, [0x00000013, 0x0000000A]) # Textbox, Count
     rom.write_int16s(None, [0x000F, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
@@ -399,7 +449,10 @@ def patch_rom(world, rom):
     rom.write_int16s(None, [0x0004, 0x0000, 0x0000, 0x0000]) #action, start, end, ????
 
     # Speed learning Bolero of Fire
-    rom.write_int32(0x0224B5D4, 0x0000003C) # Header: frame_count
+    if world.shuffle_song_items:
+        rom.write_int32(0x0224B5D4, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x0224B5D4, 0x0000003C) # Header: frame_count
 
     rom.write_int32s(0x0224D7E8, [0x00000013, 0x0000000A]) # Textbox, Count
     rom.write_int16s(None, [0x0010, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
@@ -416,7 +469,10 @@ def patch_rom(world, rom):
     rom.write_int16s(0x0224B888, [0x0000]) #action
 
     # Speed learning Serenade of Water
-    rom.write_int32(0x02BEB254, 0x0000003C) # Header: frame_count
+    if world.shuffle_song_items:
+        rom.write_int32(0x02BEB254, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x02BEB254, 0x0000003C) # Header: frame_count
 
     rom.write_int32s(0x02BEC880, [0x00000013, 0x00000010]) # Textbox, Count
     rom.write_int16s(None, [0x0011, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
@@ -442,21 +498,33 @@ def patch_rom(world, rom):
     rom.write_int32(0x01FFFDF4, 0x0000003C) # Header: frame_count
 
     rom.write_int32s(0x02000FD8, [0x00000013, 0x0000000E]) # Textbox, Count
-    rom.write_int16s(None, [0x0013, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    else:
+        rom.write_int16s(None, [0x0013, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
     rom.write_int16s(None, [0x0077, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     rom.write_int32s(0x02000128, [0x000003E8, 0x00000001]) # Terminator Execution
-    rom.write_int16s(None, [0x0032, 0x003A, 0x003B, 0x003B]) # ID, start, end, end  
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0x0032, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
+    else:
+        rom.write_int16s(None, [0x0032, 0x003A, 0x003B, 0x003B]) # ID, start, end, end  
 
     # Speed learning Requiem of Spirit
     rom.write_int32(0x0218AF14, 0x0000003C) # Header: frame_count
 
     rom.write_int32s(0x0218C574, [0x00000013, 0x00000008]) # Textbox, Count
-    rom.write_int16s(None, [0x0012, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2       
+    else:
+        rom.write_int16s(None, [0x0012, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2       
     rom.write_int16s(None, [0x0076, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     rom.write_int32s(0x0218B478, [0x000003E8, 0x00000001]) # Terminator Execution
-    rom.write_int16s(None, [0x0030, 0x003A, 0x003B, 0x003B]) # ID, start, end, end  
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0x0030, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
+    else:
+        rom.write_int16s(None, [0x0030, 0x003A, 0x003B, 0x003B]) # ID, start, end, end  
 
     rom.write_int32s(0x0218AF18, [0x0000000A, 0x0000000B]) # Link, Count
     rom.write_int16s(0x0218AF20, [0x0011, 0x0000, 0x0010, 0x0000]) #action, start, end, ????
@@ -467,7 +535,10 @@ def patch_rom(world, rom):
     rom.write_int16s(0x0218AF50, [0x003E, 0x0011, 0x0020, 0x0000]) #action, start, end, ????
 
     # Speed learning Prelude of Light
-    rom.write_int32(0x0252FD24, 0x0000003C) # Header: frame_count
+    if world.shuffle_song_items:
+        rom.write_int32(0x0252FD24, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x0252FD24, 0x0000003C) # Header: frame_count
 
     rom.write_int32s(0x02531320, [0x00000013, 0x0000000E]) # Textbox, Count
     rom.write_int16s(None, [0x0014, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
@@ -1110,7 +1181,8 @@ def patch_rom(world, rom):
 
     # Revert Song Get Override Injection
     if not world.shuffle_song_items:
-        rom.write_bytes(0xAE5DE0, [0x00, 0x07, 0x70, 0x80, 0x3C, 0x0D, 0x80, 0x10, 0x25, 0x08, 0xA5, 0xD0])
+        rom.write_int32s(0xAE5DE0, [0x00077080, 0x3C0D8010, 0x2508A5D0])
+        rom.write_int32s(0xAC9ABC, [0x3C010001, 0x00300821])
 
     # Set Default targeting option to Hold
     if world.default_targeting == 'hold':
@@ -1126,17 +1198,13 @@ def patch_rom(world, rom):
         if itemid is None or location.address is None:
             continue
 
-        if location.type == 'Song':
+        if location.type == 'Song' and not world.shuffle_song_items:
             rom.write_byte(locationaddress, itemid)
             itemid = itemid + 0x0D
             rom.write_byte(secondaryaddress, itemid)
             if location.name == 'Impa at Castle':
                 impa_fix = 0x65 - item.index
                 rom.write_byte(0xD12ECB, impa_fix)
-                impa_fix = 0x8C34 - (item.index * 4)
-                impa_fix_high = impa_fix >> 8
-                impa_fix_low = impa_fix & 0x00FF
-                rom.write_bytes(0xB063FE, [impa_fix_high, impa_fix_low])
                 rom.write_byte(0x2E8E931, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Malon':
                 if item.name == 'Suns Song':
@@ -1157,10 +1225,6 @@ def patch_rom(world, rom):
             elif location.name == 'Song from Saria':
                 saria_fix = 0x65 - item.index
                 rom.write_byte(0xE2A02B, saria_fix)
-                saria_fix = 0x8C34 - (item.index * 4)
-                saria_fix_high = saria_fix >> 8
-                saria_fix_low = saria_fix & 0x00FF
-                rom.write_bytes(0xE29382, [saria_fix_high, saria_fix_low])
                 rom.write_byte(0x20B1DBD, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Ocarina of Time':
                 rom.write_byte(0x252FC95, item_data[item.name]) #Fix text box

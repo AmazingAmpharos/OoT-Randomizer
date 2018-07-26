@@ -313,6 +313,9 @@
     jal     write_initial_save
     sb      t0, 32(s1)
 
+;==================================================================================================
+; Ocarina Song Cutscene Overrides
+;==================================================================================================
 
 ; Replaces
 ;   addu    t8,t0,t7
@@ -326,8 +329,48 @@
 ;lui      t5,0x8010
 ;addiu    t0,t0,-23088
 .org 0xAE5DE0
-    jal     override_fairy_ocarina_cutscene
+    jal     override_ocarina_songs
     li      v0,0xFF 
     b       item_action_return
 .org 0xAE7370
 item_action_return:
+
+; Replaces
+;lui  at,0x1
+;addu at,at,s0
+.org 0xAC9ABC
+    jal     override_ocarina_songs
+    nop
+
+
+;lw $t6, -0x73d4($t6)
+;lw $t7, 0xa4($v1)
+.org 0xE09F64
+    li  t6,0x04
+    lb  t7,0x0EDE(v1) ; check learned song from sun's song
+;addiu $t7, $zero, 1
+.org 0xE09FB0
+    jal override_suns_song
+
+;lw $t6, -0x73e0($t6)
+;lw $t7, 0xa4($s0)
+.org 0xB063FC
+    li  t6,0x02
+    lb  t7,0x0EDE(s0) ; check learned song from ZL
+
+;lw $t4, -0x73d8($t4)
+;lw $t5, 0xa4($v1)
+;addiu $v1, $zero, 5
+;and $t6, $t4, $t5
+.org 0xE29380
+    move t5, ra
+    jal override_saria_song_check
+    li v0, 5
+    move ra, t5
+;move $v0, $v1
+.org 0xE293A4
+    sb t8, 0x0EDF(t7)
+
+; li a1, 3
+.org 0xDB532C
+    jal override_song_of_time
