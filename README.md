@@ -78,6 +78,10 @@ Regardless of whether of not you use this option, Malon has been sped up in the 
 
 The Fairy Ocarina and Ocarina of Time can be shuffled into the item pool with `shuffle_ocarinas`. This means that Saria and the Ocarin of Time will give a random item and that you must find the Ocarina before being able to play any songs.
 
+## Shuffle Songs into the Pool
+
+Enabling `shuffle_song_items` will make learning songs into items and shuffle the songs into the item pool. Song can appear at any location, and any item can appear at the original song locations.
+
 ## Keysanity
 
 Dungeon items (maps, compasses, small keys, boss keys) are shuffled into the item pool at large.
