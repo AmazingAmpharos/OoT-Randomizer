@@ -465,17 +465,16 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
-    Setting_Info('shuffle_fairy_ocarina', bool, 1, True, 
+    Setting_Info('shuffle_ocarinas', bool, 1, True, 
         {
             'help': '''\
-                    Shuffles the Fairy Ocarina item from Saria into the pool.
+                    Shuffles the Fairy Ocarina and the Ocarina of Time into the pool.
                     This means that you need to find the ocarina before playing songs. 
-                    You can still always recieve it from Ocarina of Time location
                     ''',
             'action': 'store_true'
         },
         {
-            'text': 'Shuffle Fairy Ocarina',
+            'text': 'Shuffle Ocarinas',
             'group': 'logic',
             'widget': 'Checkbutton',
             'default': 'unchecked'
