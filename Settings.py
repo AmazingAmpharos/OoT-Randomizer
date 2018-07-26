@@ -753,15 +753,15 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
-    Setting_Info('logic_zora_with_cucco', bool, 1, True, 
+    Setting_Info('logic_zora_with_cucco_or_hovers', bool, 1, True, 
         {
             'help': '''\
-                    Zora's Domain can be entered with a Cucco in logic.
+                    Zora's Domain can be entered with a Cucco and Hover Boots in logic.
                     ''',
             'action': 'store_true'
         },
         {
-            'text': "Zora's Domain with Cucco",
+            'text': "Zora's Domain entry with Cucco or Hover Boots",
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked'
