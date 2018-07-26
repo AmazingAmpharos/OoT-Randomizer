@@ -127,6 +127,20 @@ Item_Row 0x4F, 0x41, 0x1F, 0xE8, 0x00CD, no_upgrade,    double_magic, -1, -1 ; 0
 Item_Row -1, -1, -1, -1, -1, bombchu_upgrade,  no_effect, -1, -1 ; 0xC2 = Progressive Bombchus
 Item_Row 0x53, 0x41, 0x46, 0x4A, 0x010E, ocarina_upgrade,  give_fairy_ocarina, -1, -1 ; 0xC3 = Progressive Ocarina
 
+Item_Row 0x53, 0x41, 0x03, 0xB0, 0x00B6, no_upgrade, give_song, 6, -1  ; 0xC4 = Minuet of Forest
+Item_Row 0x53, 0x41, 0x04, 0xB1, 0x00B6, no_upgrade, give_song, 7, -1  ; 0xC5 = Bolero of Fire
+Item_Row 0x53, 0x41, 0x05, 0xB2, 0x00B6, no_upgrade, give_song, 8, -1  ; 0xC6 = Serenade of Water
+Item_Row 0x53, 0x41, 0x06, 0xB3, 0x00B6, no_upgrade, give_song, 9, -1  ; 0xC7 = Requiem of Spirit
+Item_Row 0x53, 0x41, 0x07, 0xB6, 0x00B6, no_upgrade, give_song, 10, -1 ; 0xC8 = Nocturn of Shadow
+Item_Row 0x53, 0x41, 0x08, 0xB7, 0x00B6, no_upgrade, give_song, 11, -1 ; 0xC9 = Prelude of Light
+
+Item_Row 0x53, 0x41, 0x03, 0xB8, 0x00B6, no_upgrade, give_song, 12, -1 ; 0xCA = Zelda's Lullaby
+Item_Row 0x53, 0x41, 0x04, 0xB9, 0x00B6, no_upgrade, give_song, 13, -1 ; 0xCB = Epona's Song
+Item_Row 0x53, 0x41, 0x05, 0xBA, 0x00B6, no_upgrade, give_song, 14, -1 ; 0xCC = Saria's Song
+Item_Row 0x53, 0x41, 0x06, 0xBB, 0x00B6, no_upgrade, give_song, 15, -1 ; 0xCD = Sun's Song
+Item_Row 0x53, 0x41, 0x07, 0xBC, 0x00B6, no_upgrade, give_song, 16, -1 ; 0xCE = Song of Time
+Item_Row 0x53, 0x41, 0x08, 0xBD, 0x00B6, no_upgrade, give_song, 17, -1 ; 0xCF = Song of Storms
+
 ;==================================================================================================
 ; Item upgrade functions
 ;==================================================================================================
@@ -472,5 +486,18 @@ give_fairy_ocarina:
     ; a0 = save context
     li      t0, 0x07
     sb      t0, 0x7B (a0)
+    jr      ra
+    nop
+
+;==================================================================================================
+
+give_song:
+    ; a0 = save context
+    ; a1 = quest bit
+    li      t0, 1
+    sllv    t0, t0, a1
+    lw      t1, 0xA4(a0)
+    or      t1, t1, t0
+    sw      t1, 0xA4(a0)
     jr      ra
     nop

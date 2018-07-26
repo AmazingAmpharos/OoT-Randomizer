@@ -238,6 +238,24 @@ KEYSANITY_MESSAGES = {
     0xa1: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for \x05\x47Ganon\'s Castle\x05\x40!\x09',
 }
 
+
+# messages for song items
+SONG_MESSAGES = {
+    0x00B0: "\x08\x06\x28You have learned the\x01\x06\x2F\x05\x42Minuet of Forest\x05\x40!",
+    0x00B1: "\x08\x06\x28You have learned the\x01\x06\x37\x05\x41Bolero of Fire\x05\x40!",
+    0x00B2: "\x08\x06\x28You have learned the\x01\x06\x29\x05\x43Serenade of Water\x05\x40!",
+    0x00B3: "\x08\x06\x28You have learned the\x01\x06\x2D\x05\x46Requiem of Spirit\x05\x40!",
+    0x00B6: "\x08\x06\x28You have learned the\x01\x06\x28\x05\x45Nocturne of Shadow\x05\x40!",
+    0x00B7: "\x08\x06\x28You have learned the\x01\x06\x32\x05\x44Prelude of Light\x05\x40!",
+    0x00B8: "\x08\x06\x14You've learned \x05\x42Saria's Song\x05\x40!",
+    0x00B9: "\x08\x06\x11You've learned \x05\x41Epona's Song\x05\x40!",
+    0x00BA: "\x08\x06\x0BYou've learned the \x05\x46Sun's Song\x05\x40!",
+    0x00BB: "\x08\x06\x15You've learned \x05\x43Zelda's Lullaby\x05\x40!",
+    0x00BC: "\x08\x06\x05You've learned the \x05\x44Song of Time\x05\x40!",
+    0x00BD: "\x08You've learned the \x05\x45Song of Storms\x05\x40!",    
+}
+
+
 # convert byte array to an integer
 def bytes_to_int(bytes, signed=False):
     return int.from_bytes(bytes, byteorder='big', signed=signed)
@@ -620,6 +638,19 @@ def move_shop_item_messages(messages, shop_items):
 # make sure to call this AFTER move_shop_item_messages()
 def add_keysanity_messages(messages, world):
     for id, text in KEYSANITY_MESSAGES.items():
+        if world.world_count > 1:
+            index = 0
+            while ord(text[index]) in CONTROL_CODES:
+                index = index + CONTROL_CODES[ord(text[index])][1] + 1
+            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
+            add_message(messages, new_text, id, 0x23)
+        else:
+            add_message(messages, text, id, 0x23)
+
+# add the song messages
+# make sure to call this AFTER move_shop_item_messages()
+def add_song_messages(messages, world):
+    for id, text in SONG_MESSAGES.items():
         if world.world_count > 1:
             index = 0
             while ord(text[index]) in CONTROL_CODES:

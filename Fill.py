@@ -21,6 +21,10 @@ def distribute_items_restrictive(worlds, fill_locations=None):
     # Generate the itempools
     songitempool = [item for world in worlds for item in world.itempool if item.type == 'Song']
     itempool =     [item for world in worlds for item in world.itempool if item.type != 'Song']
+    if worlds[0].shuffle_song_items:
+        itempool.extend(songitempool)
+        fill_locations.extend(song_locations)
+
     random.shuffle(itempool) # randomize item placement order. this ordering can greatly affect the location accessibility bias
     progitempool = [item for item in itempool if item.advancement]
     prioitempool = [item for item in itempool if not item.advancement and item.priority]
@@ -50,7 +54,8 @@ def distribute_items_restrictive(worlds, fill_locations=None):
     # Placing songs on their own since they have a relatively high chance
     # of failing compared to other item type. So this way we only have retry
     # the song locations only.
-    fill_songs(worlds, song_locations, songitempool, progitempool)
+    if not worlds[0].shuffle_song_items:
+        fill_songs(worlds, song_locations, songitempool, progitempool)
 
     # Place all progression items. This will include keys in keysanity.
     # Items in this group will check for reachability and will be placed

@@ -1307,6 +1307,9 @@ def patch_rom(world, rom):
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)
 
+    # add song messages
+    add_song_messages(messages, world)
+
     # reduce item message lengths
     update_item_messages(messages, world)
 
@@ -1493,9 +1496,15 @@ def get_override_entry(location):
     if None in [scene, default, item_id]:
         return []
 
+    # Correct song offset
+    if location.item.type == 'Song':
+        item_id = location.item.code + 0xC2
+    if location.type == 'Song':
+        default = 0x2B
+
     player_id = (location.item.world.id + 1) << 3
 
-    if location.type in ['NPC', 'BossHeart']:
+    if location.type in ['NPC', 'BossHeart', 'Song']:
         return [scene, player_id | 0x00, default, item_id]
     elif location.type == 'Chest':
         flag = default & 0x1F

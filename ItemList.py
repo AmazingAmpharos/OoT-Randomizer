@@ -29,7 +29,6 @@ eventlocations = {
     'Zeldas Letter': 'Zeldas Letter',
     'Magic Bean Salesman': 'Magic Bean',
     'King Zora Moves': 'Bottle',
-    'Ocarina of Time': 'Ocarina',
     'Master Sword Pedestal': 'Master Sword',
     'Epona': 'Epona',
     'Gerudo Fortress Carpenter Rescue': 'Gerudo Membership Card',
@@ -73,10 +72,11 @@ def get_pool_core(world):
     else:
         placed_items['Malon Egg'] = 'Weird Egg'
 
-    if world.shuffle_fairy_ocarina:
-        pool.append('Ocarina')
+    if world.shuffle_ocarinas:
+        pool.extend(['Ocarina'] * 2)
     else:
         placed_items['Gift from Saria'] = 'Ocarina'
+        placed_items['Ocarina of Time'] = 'Ocarina'
 
     if world.tokensanity == 'off':
         for location in skulltulla_locations:
