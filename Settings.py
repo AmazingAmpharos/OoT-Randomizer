@@ -766,6 +766,23 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
+    Setting_Info('logic_fewer_tunic_requirements', bool, 1, True, 
+        {
+            'help': '''\
+                    Allows the following possible without Goron or Zora Tunic:
+                    Enter Water Temple
+                    Enter Fire Temple
+                    Zoras Fountain Bottom Freestanding PoH
+                    Gerudo Training Grounds Underwater Silver Rupee Chest
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Fewer Tunic Requirements",
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
     Setting_Info('logic_lens', str, 2, True, 
         {
             'default': 'all',
