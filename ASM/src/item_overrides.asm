@@ -145,10 +145,23 @@ override_object:
     li      t2, GLOBAL_CONTEXT + 0x104E4
     sh      r0, 0x00 (t2)
 
+    ; get pending item index
     li      t1, PENDING_SPECIAL_ITEM
     lb      t2, (PENDING_SPECIAL_ITEM_END - PENDING_SPECIAL_ITEM) (t1)
     bltz    t2, @@no_pending_clear
     add     t1, t1, t2
+
+    ; if item is 0x7F, then increment recieved item count
+    lb      t0, 0x00 (t1) ; item id
+    li      t2, 0x7F
+    bne     t0, t2, @@no_count_inc
+    nop
+    li      t2, SAVE_CONTEXT
+    lh      t0, 0x90(t2)
+    addi    t0, t0, 1
+    sh      t0, 0x90(t2) ; item count++
+
+@@no_count_inc:
     sb      zero, 0x00 (t1)
     
 @@no_pending_clear:
@@ -471,6 +484,7 @@ scan_override_table:
 
     sb      t3, 0x02(t1)    ; store player override id
     sb      v0, 0x03(t1)    ; store item id
+    sw      a0, 0x04(t1)    ; store search key
 
 @@return:
     jr      ra

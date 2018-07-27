@@ -4,7 +4,7 @@
 
 ; Stores the item and player to give to
 PLAYER_OVERRIDE_DATA:
-.word 0x00000000
+.word 0x00000000, 0x00000000
 
 ; Stores the ITEM_DATA row of the current extended item.
 EXTENDED_ITEM_DATA:
