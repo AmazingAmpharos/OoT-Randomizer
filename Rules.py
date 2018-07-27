@@ -197,7 +197,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Crater Bridge Reverse'), lambda state: state.is_adult() and (state.has('Hover Boots') or state.has('Progressive Hookshot')))
     set_rule(world.get_entrance('Crater Warp Pad'), lambda state: state.can_play('Bolero of Fire'))
     set_rule(world.get_entrance('Crater Fairy'), lambda state: state.is_adult() and state.has('Hammer'))
-    set_rule(world.get_location('DM Crater Volcano Freestanding PoH'), lambda state: state.is_adult() and state.has('Magic Bean') and state.can_play('Bolero of Fire'))
+    set_rule(world.get_location('DM Crater Volcano Freestanding PoH'), lambda state: state.is_adult() and ( (state.has('Magic Bean') and state.can_play('Bolero of Fire')) or (world.logic_crater_bean_hp_with_hovers and state.has('Hover Boots')) ) )
     set_rule(world.get_entrance('Fire Temple Entrance'), lambda state: state.is_adult())
     set_rule(world.get_entrance('Fire Temple Early Climb'), lambda state: state.has_GoronTunic() and state.has('Small Key (Fire Temple)', 3) and state.has('Progressive Strength Upgrade') and (state.has_explosives() or ((state.has('Bow') or state.has('Progressive Hookshot')) and state.is_adult())))
     set_rule(world.get_entrance('Fire Temple Fire Maze Escape'), lambda state: state.has('Small Key (Fire Temple)', 7) or (state.has('Small Key (Fire Temple)', 6) and state.has('Hover Boots') and state.has('Hammer') and state.is_adult()))

@@ -770,6 +770,20 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
+    Setting_Info('logic_crater_bean_hp_with_hovers', bool, 1, True, 
+        {
+            'help': '''\
+                    The Heart Piece in Death Mountain Crater than normally requires the bean to reach
+                    will optionally require the Hover Boots in logic.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Crater's bean HP with Hover Boots",
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
     Setting_Info('logic_zora_with_cucco_or_hovers', bool, 1, True, 
         {
             'help': '''\
