@@ -157,10 +157,7 @@ def guiMain(settings=None):
         # Update any dependencies
         for info in setting_infos:
             if info.gui_params and 'dependency' in info.gui_params:
-                dep_met = True
-                for dep_var, dep_val in info.gui_params['dependency'].items():
-                    if guivars[dep_var].get() != dep_val:
-                        dep_met = False
+                dep_met = info.gui_params['dependency'](guivars)
 
                 if widgets[info.name].winfo_class() == 'Frame':
                     for child in widgets[info.name].winfo_children():

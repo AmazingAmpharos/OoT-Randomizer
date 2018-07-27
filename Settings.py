@@ -408,7 +408,7 @@ setting_infos = [
             'group': 'convenience',
             'widget': 'Entry',
             'default': 'DAAAAAAA',
-            'dependency': { 'free_scarecrow':True }
+            'dependency': lambda guivar: guivar['free_scarecrow'].get()
         }),
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
