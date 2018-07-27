@@ -408,7 +408,7 @@ setting_infos = [
             'group': 'convenience',
             'widget': 'Entry',
             'default': 'DAAAAAAA',
-            'dependency': { 'free_scarecrow':True }
+            'dependency': lambda guivar: guivar['free_scarecrow'].get()
         }),
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
@@ -474,6 +474,7 @@ setting_infos = [
                     Shuffles the Gerudo Card into the item pool.
                     The Gerudo Card does not stop guards from throwing you in jail.
                     It only grants access to Training Grounds, AFTER all carpenters have been rescued.
+                    This option does nothing if "gerudo_fortress" is "open".
                     ''',
             'action': 'store_true'
         },
@@ -481,7 +482,8 @@ setting_infos = [
             'text': 'Shuffle Gerudo Card',
             'group': 'logic',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'dependency': lambda guivar: guivar['gerudo_fortress'].get() != 'Start with Gerudo Card'
         }),
     Setting_Info('keysanity', bool, 1, True, 
         {
