@@ -105,7 +105,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Goron City from Woods'), lambda state: state.can_blast_or_smash() and (world.open_forest or (state.has('Slingshot') and state.has('Kokiri Sword'))))
     set_rule(world.get_entrance('Dodongos Cavern Rocks'), lambda state: state.can_blast_or_smash() or state.has('Progressive Strength Upgrade') or state.is_adult())
     set_rule(world.get_entrance('Dodongos Cavern Lobby'), lambda state: state.can_blast_or_smash() or state.has('Progressive Strength Upgrade'))
-    set_rule(world.get_entrance('Dodongos Cavern Left Door'), lambda state: state.has_explosives() or state.has('Progressive Strength Upgrade') or (state.has('Dins Fire') and state.has('Magic Meter')) or state.has('Bow'))
+    set_rule(world.get_entrance('Dodongos Cavern Left Door'), lambda state: state.has_explosives() or state.has('Progressive Strength Upgrade') or (state.has('Dins Fire') and state.has('Magic Meter')) or (state.has('Bow') and state.is_adult()))
     set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: state.has('Slingshot') or ((state.has('Bow') or state.has('Hover Boots') or state.has('Progressive Hookshot', 2) or world.logic_dc_jump) and state.is_adult()))
     set_rule(world.get_location('Dodongos Cavern End of Bridge Chest'), lambda state: state.has_explosives() or ((state.has('Bow') or state.has('Hover Boots') or state.has('Progressive Hookshot', 2) or world.logic_dc_jump) and state.is_adult() and state.has('Hammer')))
     set_rule(world.get_entrance('Dodongos Cavern Bomb Drop'), lambda state: state.has_explosives())

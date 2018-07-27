@@ -13,11 +13,12 @@ The following were added or majorly changed on this fork:
 - Options are saved when closing the GUI and loaded when opening it
 - Can set Output directory
 
-## Logic changes
+## Notable Logic changes
 
 - The Heart Piece at the cow in Impa's house can be reached using only a chicken
-- Zora Tunic is only required to get the key below the central pillar in the Water Temple
-- Goron Tunic is only required for the fire trial in Ganon's Castle and to get to the 2nd floor (and beyond) in the Fire Temple
+- Giant stairs in Dodongo's Cavern can be lowered with the Bow as an adult (quickly shoot a bomb flower on both side of the stairs)
+- The start of child-side Spirit Temple can be done with bombchus (aim the bombchu directly away from the bridge so that it crawls up the wall, across the ceiling, down the raised bridge, and explodes in front of the switch)
+- The skulltula token in the central room of the Water Temple can be obtained without longshot by setting Farore's Wind in the room and using it to return to the room when the water level is back at its highest level
 
 ## Optional Logic changes
 
