@@ -468,6 +468,21 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
+    Setting_Info('shuffle_gerudo_card', bool, 1, True, 
+        {
+            'help': '''\
+                    Shuffles the Gerudo Card into the item pool.
+                    The Gerudo Card does not stop guards from throwing you in jail.
+                    It only grants access to Training Grounds, AFTER all carpenters have been rescued.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Shuffle Gerudo Card',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
     Setting_Info('keysanity', bool, 1, True, 
         {
             'help': '''\

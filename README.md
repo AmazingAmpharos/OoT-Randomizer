@@ -40,8 +40,15 @@ What was once called `fast_ganon` is now broken into 3 separate options:
 
 Options for speeding up carpenter rescue portion of Gerudo Fortress
 
-- fast: Only the carpenter nearest to the prison Link is tossed into needs to be freed to obtain the Gerudo Card and get all of its benefits; the other three carpenters are freed from the start
-- open: All carpenters are freed from the start, and you start with the Gerudo Card and all of its benefits (and thus the bridge across the valley is always built)
+- fast: Only the carpenter nearest to the prison Link is tossed into needs to be freed to obtain the Gerudo Card; the other three carpenters are freed from the start
+- open: All carpenters are freed from the start, and you start with the Gerudo Card (and thus the bridge across the valley is always built)
+
+There is also an option to shuffle the Gerudo Card into the item pool; this will only work if fortress is not open. A few notes on the behavior of Gerudo Fortress:
+
+- In order to not be caught by guards, you must have rescued all carpenters. The Gerudo Card itself will not protect you.
+- In order to enter Gerudo Training Grounds, you must rescue all carpenters AND have the Gerudo Card. This is the Gerudo Card's only purpose.
+- Horseback Archery only requires rescuing all carpenters.
+- In keysanity, the keys dropped by the guards at each carpenter's cell will be random items, and the fortress keys will be somewhere in the world. However, a key is not sufficient to open a cell: in order to unlock a cell, you must first defeat the guard in the room and collect the item they drop.
 
 ## Other Conveniences
 

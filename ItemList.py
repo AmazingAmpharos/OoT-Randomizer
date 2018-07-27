@@ -33,7 +33,7 @@ eventlocations = {
     'Ocarina of Time': 'Ocarina',
     'Master Sword Pedestal': 'Master Sword',
     'Epona': 'Epona',
-    'Gerudo Fortress Carpenter Rescue': 'Gerudo Membership Card',
+    'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
     'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
     'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',
     'Ganons Castle Water Trial Clear': 'Water Trial Clear',
@@ -99,6 +99,37 @@ def get_pool_core(world):
         pool.extend(['Recovery Heart'] * 6)
     else:
         pool.extend(['Ice Trap'] * 6)
+
+    if world.gerudo_fortress == 'open':
+        placed_items['Gerudo Fortress North F1 Carpenter'] = 'Recovery Heart'
+        placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
+        placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
+        placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+    elif world.keysanity:
+        if world.gerudo_fortress == 'fast':
+            pool.append('Small Key (Gerudo Fortress)')
+            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
+            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
+            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+        else:
+            pool.extend(['Small Key (Gerudo Fortress)'] * 4)
+    else:
+        if world.gerudo_fortress == 'fast':
+            placed_items['Gerudo Fortress North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
+            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
+            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+        else:
+            placed_items['Gerudo Fortress North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
+
+    if world.shuffle_gerudo_card and world.gerudo_fortress != 'open':
+        pool.append('Gerudo Membership Card')
+    else:
+        placed_items['Gerudo Fortress Membership Card'] = 'Gerudo Membership Card'
+
 
     pool.extend(alwaysitems)
     for _ in range(normal_bottle_count):
