@@ -247,10 +247,10 @@ SONG_MESSAGES = {
     0x00B3: "\x08\x06\x28You have learned the\x01\x06\x2D\x05\x46Requiem of Spirit\x05\x40!",
     0x00B6: "\x08\x06\x28You have learned the\x01\x06\x28\x05\x45Nocturne of Shadow\x05\x40!",
     0x00B7: "\x08\x06\x28You have learned the\x01\x06\x32\x05\x44Prelude of Light\x05\x40!",
-    0x00B8: "\x08\x06\x14You've learned \x05\x42Saria's Song\x05\x40!",
+    0x00B8: "\x08\x06\x15You've learned \x05\x43Zelda's Lullaby\x05\x40!",
     0x00B9: "\x08\x06\x11You've learned \x05\x41Epona's Song\x05\x40!",
-    0x00BA: "\x08\x06\x0BYou've learned the \x05\x46Sun's Song\x05\x40!",
-    0x00BB: "\x08\x06\x15You've learned \x05\x43Zelda's Lullaby\x05\x40!",
+    0x00BA: "\x08\x06\x14You've learned \x05\x42Saria's Song\x05\x40!",
+    0x00BB: "\x08\x06\x0BYou've learned the \x05\x46Sun's Song\x05\x40!",
     0x00BC: "\x08\x06\x05You've learned the \x05\x44Song of Time\x05\x40!",
     0x00BD: "\x08You've learned the \x05\x45Song of Storms\x05\x40!",    
 }
