@@ -6,6 +6,7 @@ import platform
 import struct
 import subprocess
 import random
+import copy
 
 from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
 from Utils import local_path, default_output_path
@@ -1191,7 +1192,7 @@ def patch_rom(world, rom):
     # Patch songs and boss rewards
     for location in world.get_locations():
         item = location.item
-        itemid = item.code
+        itemid = copy.copy(item.code)
         locationaddress = location.address
         secondaryaddress = location.address2
 
@@ -1199,17 +1200,17 @@ def patch_rom(world, rom):
             continue
 
         if location.type == 'Song' and not world.shuffle_song_items:
-            rom.write_byte(locationaddress, itemid)
-            itemid = itemid + 0x0D
-            rom.write_byte(secondaryaddress, itemid)
+            rom.write_byte(locationaddress, itemid[0])
+            itemid[0] = itemid[0] + 0x0D
+            rom.write_byte(secondaryaddress, itemid[0])
             if location.name == 'Impa at Castle':
-                impa_fix = 0x65 - item.index
+                impa_fix = 0x65 - itemid[1]
                 rom.write_byte(0xD12ECB, impa_fix)
                 rom.write_byte(0x2E8E931, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Malon':
                 if item.name == 'Suns Song':
-                    rom.write_byte(locationaddress, itemid)
-                malon_fix = 0x8C34 - (item.index * 4)
+                    rom.write_byte(locationaddress, itemid[0])
+                malon_fix = 0x8C34 - (itemid[1] * 4)
                 malon_fix_high = malon_fix >> 8
                 malon_fix_low = malon_fix & 0x00FF
                 rom.write_bytes(0xD7E142, [malon_fix_high, malon_fix_low])
@@ -1217,39 +1218,39 @@ def patch_rom(world, rom):
                 rom.write_bytes(0xD7E786, [malon_fix_high, malon_fix_low])
                 rom.write_byte(0x29BECB9, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Composer Grave':
-                sun_fix = 0x8C34 - (item.index * 4)
+                sun_fix = 0x8C34 - (itemid[1] * 4)
                 sun_fix_high = sun_fix >> 8
                 sun_fix_low = sun_fix & 0x00FF
                 rom.write_bytes(0xE09F66, [sun_fix_high, sun_fix_low])
                 rom.write_byte(0x332A87D, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Saria':
-                saria_fix = 0x65 - item.index
+                saria_fix = 0x65 - itemid[1]
                 rom.write_byte(0xE2A02B, saria_fix)
                 rom.write_byte(0x20B1DBD, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Ocarina of Time':
                 rom.write_byte(0x252FC95, item_data[item.name]) #Fix text box
             elif location.name == 'Song at Windmill':
-                windmill_fix = 0x65 - item.index
+                windmill_fix = 0x65 - itemid[1]
                 rom.write_byte(0xE42ABF, windmill_fix)
                 rom.write_byte(0x3041091, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik Forest Song':
-                minuet_fix = 0x65 - item.index
+                minuet_fix = 0x65 - itemid[1]
                 rom.write_byte(0xC7BAA3, minuet_fix)
                 rom.write_byte(0x20B0815, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik at Temple':
-                prelude_fix = 0x65 - item.index
+                prelude_fix = 0x65 - itemid[1]
                 rom.write_byte(0xC805EF, prelude_fix)
                 rom.write_byte(0x2531335, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik in Crater':
-                bolero_fix = 0x65 - item.index
+                bolero_fix = 0x65 - itemid[1]
                 rom.write_byte(0xC7BC57, bolero_fix)
                 rom.write_byte(0x224D7FD, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik in Ice Cavern':
-                serenade_fix = 0x65 - item.index
+                serenade_fix = 0x65 - itemid[1]
                 rom.write_byte(0xC7BD77, serenade_fix)
                 rom.write_byte(0x2BEC895, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik in Kakariko':
-                nocturne_fix = 0x65 - item.index
+                nocturne_fix = 0x65 - itemid[1]
                 rom.write_byte(0xAC9A5B, nocturne_fix)
                 rom.write_byte(0x2000FED, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik at Colossus':
@@ -1495,10 +1496,6 @@ def get_override_entry(location):
     item_id = location.item.index
     if None in [scene, default, item_id]:
         return []
-
-    # Correct song offset
-    if location.item.type == 'Song':
-        item_id = location.item.code + 0xC2
 
     player_id = (location.item.world.id + 1) << 3
 

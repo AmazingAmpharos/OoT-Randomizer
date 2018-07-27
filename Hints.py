@@ -10,74 +10,6 @@ from Utils import local_path
 from ItemList import eventlocations
 from Messages import update_message_by_id
 
-gooditems = [
-    'Bow',
-    'Progressive Hookshot',
-    'Hammer',
-    'Slingshot',
-    'Boomerang',
-    'Bomb Bag',
-    'Lens of Truth',
-    'Dins Fire',
-    'Farores Wind',
-    'Nayrus Love',
-    'Fire Arrows',
-    'Ice Arrows',
-    'Light Arrows',
-    'Bottle',
-    'Bottle with Letter',
-    'Bottle with Milk',
-    'Bottle with Red Potion',
-    'Bottle with Green Potion',
-    'Bottle with Blue Potion',
-    'Bottle with Fairy',
-    'Bottle with Fish',
-    'Bottle with Blue Fire',
-    'Bottle with Bugs',
-    'Bottle with Poe',
-    'Pocket Egg',
-    'Pocket Cucco',
-    'Cojiro',
-    'Odd Mushroom',
-    'Odd Potion',
-    'Poachers Saw',
-    'Broken Sword',
-    'Prescription',
-    'Eyeball Frog',
-    'Eyedrops',
-    'Claim Check',
-    'Kokiri Sword',
-    'Biggoron Sword',
-    'Deku Shield',
-    'Hylian Shield',
-    'Mirror Shield',
-    'Goron Tunic',
-    'Zora Tunic',
-    'Iron Boots',
-    'Hover Boots',
-    'Progressive Strength Upgrade',
-    'Progressive Scale',
-    'Progressive Wallet',
-    'Deku Stick Capacity',
-    'Deku Nut Capacity',
-    'Magic Meter',
-    'Double Defense',
-    'Stone of Agony',
-    'Zeldas Lullaby',
-    'Eponas Song',
-    'Suns Song',
-    'Sarias Song',
-    'Song of Time',
-    'Song of Storms',
-    'Minuet of Forest',
-    'Prelude of Light',
-    'Bolero of Fire',
-    'Serenade of Water',
-    'Nocturne of Shadow',
-    'Requiem of Spirit',
-]
-
-
 # build a formatted string with linebreaks appropriate textboxes
 def buildHintString(hintString):
     if len(hintString) < 77:
@@ -143,7 +75,7 @@ def buildGossipHints(world, messages):
         for trial,skipped in world.skipped_trials.items():
             if skipped:
                 update_hint(messages, stoneIDs.pop(0), buildHintString("the " + trial + " Trial was dispelled by Sheik."))
-    elif world.trials > 0:
+    elif world.trials <= 3 and world.trials > 0:
         for trial,skipped in world.skipped_trials.items():
             if not skipped:
                 update_hint(messages, stoneIDs.pop(0), buildHintString("the " + trial + " Trial protects Ganon's Tower."))
