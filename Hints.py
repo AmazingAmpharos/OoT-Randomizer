@@ -138,16 +138,26 @@ def buildGossipHints(world, messages):
     #shuffles the stone addresses for randomization, always locations will be placed first and twice
     random.shuffle(stoneIDs)
 
+    # Add trial hints
+    if world.trials < 6 and world.trials > 3:
+        for trial,skipped in world.skipped_trials.items():
+            if skipped:
+                update_hint(messages, stoneIDs.pop(0), buildHintString("the " + trial + " Trial was dispelled by Sheik."))
+    elif world.trials > 0:
+        for trial,skipped in world.skipped_trials.items():
+            if not skipped:
+                update_hint(messages, stoneIDs.pop(0), buildHintString("the " + trial + " Trial protects Ganon's Tower."))
+
     # add required items locations for hints (good hints)
     requiredSample = world.spoiler.required_locations
-    if len(requiredSample) >= 4:
-        requiredSample = random.sample(requiredSample, random.randint(3,4))
+    if len(requiredSample) >= 5:
+        requiredSample = random.sample(requiredSample, random.randint(4,5))
     for location in requiredSample:
         if location.parent_region.dungeon:
             update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(location.parent_region.dungeon.name).text + \
                 " is on the way of the hero."))
         else:
-            update_hint(messages, stoneIDs.pop(0), buildHintString(location.parent_region.name + " is on the way of the hero."))
+            update_hint(messages, stoneIDs.pop(0), buildHintString(location.hint + " is on the way of the hero."))
 
     # Don't repeat hints
     checkedLocations = []
@@ -182,7 +192,7 @@ def buildGossipHints(world, messages):
         # Choose a randome dungeon location that is a non-dungeon item
         locationWorld = random.choice([location for region in dungeon.regions for location in world.get_region(region).locations
             if location.item.type != 'Event' and \
-            not location.name in eventlocations and \
+            not location.event and \
             not isDungeonItem(location.item) and \
             (world.tokensanity != 'off' or location.item.name != 'Gold Skulltulla Token') and\
             location.item.type != 'Song'])
@@ -198,28 +208,29 @@ def buildGossipHints(world, messages):
             not locationWorld.name in alwaysLocations and \
             not locationWorld.name in sometimesLocations and \
             locationWorld.item.type != 'Event' and \
-            not locationWorld.name in eventlocations and \
+            not locationWorld.event and \
             (world.tokensanity == 'all' or locationWorld.item.name != 'Gold Skulltulla Token') and \
-            not locationWorld.parent_region.dungeon and \
-            not locationWorld.name in checkedLocations]
+            not locationWorld.parent_region.dungeon]
     overworldSample = overworldlocations
     if len(overworldSample) >= 4:
         overworldSample = random.sample(overworldlocations, random.randint(3,4))
     for locationWorld in overworldSample:
         checkedLocations.append(locationWorld.name)
         update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
-            " can be found at " + locationWorld.parent_region.name + ".")) 
+            " can be found at " + locationWorld.hint + ".")) 
 
     # add good item hints
     # only choose location if it is new and a good item
-    if world.shuffle_weird_egg:
-        gooditems.append('Weird Egg')
     gooditemlocations = [locationWorld for locationWorld in world.get_locations() 
             if not locationWorld.name in checkedLocations and \
-            locationWorld.item.name in gooditems]
+            locationWorld.item.advancement and \
+            locationWorld.item.type != 'Event' and \
+            not locationWorld.event and \
+            locationWorld.item.name != 'Gold Skulltulla Token' and \
+            not locationWorld.item.key]
     gooditemSample = gooditemlocations
-    if len(gooditemSample) >= 5:
-        gooditemSample = random.sample(gooditemlocations, random.randint(3,5))
+    if len(gooditemSample) >= 6:
+        gooditemSample = random.sample(gooditemlocations, random.randint(4,6))
     for locationWorld in gooditemSample:
         checkedLocations.append(locationWorld.name)
         if locationWorld.parent_region.dungeon:
@@ -227,7 +238,7 @@ def buildGossipHints(world, messages):
                 " hoards " + getHint(getItemGenericName(locationWorld.item)).text + "."))
         else:
             update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
-                " can be found at " + locationWorld.parent_region.name + "."))
+                " can be found at " + locationWorld.hint + "."))
 
     # fill the remaining hints with junk    
     junkHints = getHintGroup('junkHint', world)

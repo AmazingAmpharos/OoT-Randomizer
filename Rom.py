@@ -354,8 +354,8 @@ def patch_rom(world, rom):
 
     if not world.shuffle_song_items:
         # revert sun song item override injection
-        rom.write_ints32s(0xE09F64, [0x8DCE8C2C, 0x8C6F00A4])
-        rom.write_ints32s(0xE09FB0, [0x240F0001])
+        rom.write_int32s(0xE09F64, [0x8DCE8C2C, 0x8C6F00A4])
+        rom.write_int32s(0xE09FB0, [0x240F0001])
 
 
     # Speed learning Saria's Song
