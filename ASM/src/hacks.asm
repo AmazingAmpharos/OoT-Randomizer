@@ -1,9 +1,3 @@
-; Make all chest opening animations fast
-; Replaces:
-;   lb      t2, 0x0002 (t1)
-.org 0xBDA2E8 ; In memory: 0x803952D8
-    addiu   t2, r0, -1
-
 ; Prevent Kokiri Sword from being added to inventory on game load
 ; Replaces:
 ;   sh      t9, 0x009C (v0)
@@ -118,6 +112,38 @@
 ;   addiu   at, r0, 0x0035
 .org 0xBE9BDC ; In memory: 0x803A4BCC
     addiu   at, r0, 0x8383 ; Make branch impossible
+
+
+
+; Change Skulltula Token to give a different item
+; Replaces
+;    move    a0,s1
+;    jal     0x0006fdcc                              ; call ex_06fdcc(ctx, 0x0071); VROM: 0xAE5D2C
+;    li      a1,113
+;    lw      t5,44(sp)                               ; t5 = what was *(ctx + 0x1c44) at the start of the function
+;    li      t4,10                                   ; t4 = 0x0a
+;    move    a0,s1
+;    li      a1,180                                  ; at = 0x00b4 ("You destoryed a Gold Skulltula...")
+;    move    a2,zero
+;    jal     0x000dce14                              ; call ex_0dce14(ctx, 0x00b4, 0)
+;    sh      t4,272(t5)                              ; *(t5 + 0x110) = 0x000a
+.org 0xEC68BC
+.area 0x28, 0
+    lw      t5,44(sp)                    ; original code
+    li      t4,10                        ; original code
+    sh      t4,272(t5)                   ; original code
+    jal     override_skulltula_token     ; call override_skulltula_token(_, actor)
+    move    a1,s0
+.endarea
+
+.org 0xEC69AC
+.area 0x28, 0
+    lw      t5,44(sp)                    ; original code
+    li      t4,10                        ; original code
+    sh      t4,272(t5)                   ; original code
+    jal     override_skulltula_token     ; call override_skulltula_token(_, actor)
+    move    a1,s0
+.endarea
 
 ;==================================================================================================
 ; Special item sources
@@ -275,3 +301,76 @@
 ;	addu	at, at, s3
 .org 0xB54B38 ; In memory: 800DEBD8
 	jal		warp_song_fix
+
+;==================================================================================================
+; Initial save
+;==================================================================================================
+
+; Replaces:
+;   sb      t0, 32(s1)
+;   sb      a1, 33(s1)
+.org 0xB06C2C ; In memory: ???
+    jal     write_initial_save
+    sb      t0, 32(s1)
+
+;==================================================================================================
+; Ocarina Song Cutscene Overrides
+;==================================================================================================
+
+; Replaces
+;   addu    t8,t0,t7
+;   sb      t6,0x74(t8)  ; store to fairy ocarina slot
+.org 0xAE6E48
+    jal     override_fairy_ocarina_cutscene
+    addu    t8,t0,t7
+
+; Replaces
+;sll      t6,a3,0x2
+;lui      t5,0x8010
+;addiu    t0,t0,-23088
+; a3 = item ID
+.org 0xAE5DE0
+    jal     override_ocarina_songs
+    li      v0,0xFF 
+    b       item_action_return
+.org 0xAE7370
+item_action_return:
+
+; Replaces
+;lui  at,0x1
+;addu at,at,s0
+.org 0xAC9ABC
+    jal     override_requiem_song
+    nop
+
+;lw $t6, -0x73d4($t6)
+;lw $t7, 0xa4($v1)
+.org 0xE09F64
+    li  t6,0x04
+    lb  t7,0x0EDE(v1) ; check learned song from sun's song
+;addiu $t7, $zero, 1
+.org 0xE09FB0
+    jal override_suns_song
+
+;lw $t6, -0x73e0($t6)
+;lw $t7, 0xa4($s0)
+.org 0xB063FC
+    li  t6,0x02
+    lb  t7,0x0EDE(s0) ; check learned song from ZL
+
+;lw $t4, -0x73d8($t4)
+;lw $t5, 0xa4($v1)
+;addiu $v1, $zero, 5
+;and $t6, $t4, $t5
+.org 0xE29380
+    move t5, ra
+    jal override_saria_song_check
+    li v0, 5
+    move ra, t5
+;move $v0, $v1
+.org 0xE293A4
+    sb t8, 0x0EDF(t7)
+
+; li a1, 3
+.org 0xDB532C
+    jal override_song_of_time
