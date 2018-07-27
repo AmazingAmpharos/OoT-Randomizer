@@ -468,6 +468,23 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
+    Setting_Info('shuffle_gerudo_card', bool, 1, True, 
+        {
+            'help': '''\
+                    Shuffles the Gerudo Card into the item pool.
+                    The Gerudo Card does not stop guards from throwing you in jail.
+                    It only grants access to Training Grounds, AFTER all carpenters have been rescued.
+                    This option does nothing if "gerudo_fortress" is "open".
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Shuffle Gerudo Card',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'dependency': lambda guivar: guivar['gerudo_fortress'].get() != 'Start with Gerudo Card'
+        }),
     Setting_Info('keysanity', bool, 1, True, 
         {
             'help': '''\
@@ -749,6 +766,20 @@ setting_infos = [
         },
         {
             'text': 'Windmill HP as adult with nothing',
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
+    Setting_Info('logic_crater_bean_hp_with_hovers', bool, 1, True, 
+        {
+            'help': '''\
+                    The Heart Piece in Death Mountain Crater than normally requires the bean to reach
+                    will optionally require the Hover Boots in logic.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Crater's bean HP with Hover Boots",
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked'
