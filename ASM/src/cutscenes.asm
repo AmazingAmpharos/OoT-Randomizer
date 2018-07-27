@@ -69,8 +69,15 @@ override_fairy_ocarina_cutscene:
     b       store_pending_spedial_item
     nop
 
+;a3 = item ID
 override_ocarina_songs:
-    li      t0, 0x2B
+    addi    t0, a3, -0x5A
+    addi    t0, t0, 0x61
+    b       store_pending_spedial_item
+    nop
+
+override_requiem_song:
+    li      t0, 0x64
     b       store_pending_spedial_item
     nop
 
@@ -81,7 +88,7 @@ override_epona_song:
     ori    t0,t0,0x01  ; t9 = "Invited to Sing With Child Malon"
     sb     t0,0x0EDE(at)
 
-    li      t0, 0x2B
+    li      t0, 0x68
     b       store_pending_spedial_item
     nop
 
@@ -92,13 +99,13 @@ override_suns_song:
     ori    t0,t0,0x04  ;
     sb     t0,0x0EDE(at)
 
-    li      t0, 0x2B
+    li      t0, 0x6A
     b       store_pending_spedial_item
     nop
 
 override_song_of_time:
     li      a1, 3
-    li      t0, 0x2B
+    li      t0, 0x6B
     b       store_pending_spedial_item
     nop
 

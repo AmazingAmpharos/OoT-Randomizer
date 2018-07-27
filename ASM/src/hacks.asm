@@ -328,6 +328,7 @@
 ;sll      t6,a3,0x2
 ;lui      t5,0x8010
 ;addiu    t0,t0,-23088
+; a3 = item ID
 .org 0xAE5DE0
     jal     override_ocarina_songs
     li      v0,0xFF 
@@ -339,9 +340,8 @@ item_action_return:
 ;lui  at,0x1
 ;addu at,at,s0
 .org 0xAC9ABC
-    jal     override_ocarina_songs
+    jal     override_requiem_song
     nop
-
 
 ;lw $t6, -0x73d4($t6)
 ;lw $t7, 0xa4($v1)

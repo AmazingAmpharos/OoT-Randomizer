@@ -1499,8 +1499,6 @@ def get_override_entry(location):
     # Correct song offset
     if location.item.type == 'Song':
         item_id = location.item.code + 0xC2
-    if location.type == 'Song':
-        default = 0x2B
 
     player_id = (location.item.world.id + 1) << 3
 
