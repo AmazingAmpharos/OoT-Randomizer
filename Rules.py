@@ -141,7 +141,7 @@ def global_rules(world):
     set_rule(world.get_location('King Zora Moves'), lambda state: state.has('Bottle with Letter'))
     set_rule(world.get_entrance('Behind King Zora'), lambda state: state.has('Bottle with Letter'))
     set_rule(world.get_entrance('Zora River Adult'), lambda state: state.is_adult())
-    set_rule(world.get_entrance('Zoras Domain Adult Access'), lambda state: state.can_play('Zeldas Lullaby') or world.logic_zora_with_cucco_or_hovers)
+    set_rule(world.get_entrance('Zoras Domain Adult Access'), lambda state: state.can_play('Zeldas Lullaby') or (state.has('Hover Boots') and world.logic_zora_with_cucco_or_hovers))
     set_rule(world.get_entrance('Zoras Fountain Adult Access'), lambda state: state.can_reach('Zoras Fountain'))
     set_rule(world.get_entrance('Jabu Jabus Belly'), lambda state: state.has_bottle())
     set_rule(world.get_entrance('Zoras Fountain Fairy'), lambda state: state.has_explosives())
