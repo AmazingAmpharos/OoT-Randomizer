@@ -181,13 +181,13 @@ ev0_return:
     lui     t0,0x8010
     lh      t8,0xA4(t8)         ; t8 = current scene number
     
-    ;lb      t1,0x0EDE(v0)       
-    lw      t1,164(v0)          ; t1 = quest status
+    lb      t1,0x0EDE(v0)       
+    ;lw      t1,164(v0)          ; t1 = quest status
     
     addiu   t3,t3,4392          ; t3 = 0x809f1128 ( ev0 )
     
-    ;li      t0,0x01             
-    lw      t0,-29660(t0)       ; t0 = malon's song mask
+    li      t0,0x01             
+    ;lw      t0,-29660(t0)       ; t0 = malon's song mask
     
     move    a0,s0               ; a0 = actor pointer to set up function call
     lui     t4,0x809f
