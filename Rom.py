@@ -353,12 +353,6 @@ def patch_rom(world, rom):
     rom.write_int16s(None, [0x0018, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
     rom.write_int16s(None, [0x00D3, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
-    if not world.shuffle_song_items:
-        # revert sun song item override injection
-        rom.write_int32s(0xE09F64, [0x8DCE8C2C, 0x8C6F00A4])
-        rom.write_int32s(0xE09FB0, [0x240F0001])
-
-
     # Speed learning Saria's Song
     if world.shuffle_song_items:
         rom.write_int32(0x020B1734, 0xFFFFFFFF) # Header: frame_count
@@ -390,16 +384,6 @@ def patch_rom(world, rom):
         rom.write_int16s(None, [0x00D2, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
     rom.write_int16s(None, [0xFFFF, 0x000A, 0x003C, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
-    if not world.shuffle_song_items:
-        # Revert song learning skip ASM
-        rom.write_int32(0xD7E77C, 0x8C4900A4)
-        rom.write_int32(0xD7E784, 0x8D088C24)
-        rom.write_int32s(0xD7E8D4, [0x8DCE8C24, 0x8C4F00A4])
-        rom.write_int32s(0xD7E140, [0x8DCE8C24, 0x8C6F00A4])
-        rom.write_int32(0xD7EBBC, 0x14410008) # bne v0,at,loc_0x00000408
-        rom.write_int32(0xD7EC1C, 0x17010010) # bne t8,at,loc_0x00000488
-
-
     # Speed learning Song of Time
     rom.write_int32s(0x0252FB98, [0x000003E8, 0x00000001]) # Terminator Execution
     if world.shuffle_song_items:
@@ -415,9 +399,6 @@ def patch_rom(world, rom):
     rom.write_int16s(None, [0x00D5, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     rom.write_int32(0x01FC3B84, 0xFFFFFFFF) # Other Header?: frame_count
-
-    if not world.shuffle_song_items:
-        rom.write_int32(0xDB532C, 0x24050003)
 
     # Speed learning Song of Storms
     if world.shuffle_song_items:
@@ -1182,8 +1163,27 @@ def patch_rom(world, rom):
 
     # Revert Song Get Override Injection
     if not world.shuffle_song_items:
+        # general get song
         rom.write_int32s(0xAE5DE0, [0x00077080, 0x3C0D8010, 0x2508A5D0])
+        # requiem of spirit
         rom.write_int32s(0xAC9ABC, [0x3C010001, 0x00300821])
+        # sun song
+        rom.write_int32s(0xE09F64, [0x8DCE8C2C, 0x8C6F00A4])
+        rom.write_int32s(0xE09FB0, [0x240F0001])
+        # epona
+        rom.write_int32(0xD7E77C, 0x8C4900A4)
+        rom.write_int32(0xD7E784, 0x8D088C24)
+        rom.write_int32s(0xD7E8D4, [0x8DCE8C24, 0x8C4F00A4])
+        rom.write_int32s(0xD7E140, [0x8DCE8C24, 0x8C6F00A4])
+        rom.write_int32(0xD7EBBC, 0x14410008)
+        rom.write_int32(0xD7EC1C, 0x17010010)
+        # song of time
+        rom.write_int32(0xDB532C, 0x24050003)
+        # zelda's lullaby
+        rom.write_int32(0xB063FC, [0x8DCE8C20, 0x8E0F00A4])
+        # saria's song
+        rom.write_int32(0xE29380, [0x8D8C8C28, 0x8C6D00A4, 0x24030005, 0x018D7024])
+        rom.write_int32(0xE293A4, 0x00601025)
 
     # Set Default targeting option to Hold
     if world.default_targeting == 'hold':
