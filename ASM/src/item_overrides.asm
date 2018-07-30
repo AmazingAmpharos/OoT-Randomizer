@@ -73,6 +73,12 @@ override_skulltula_token:
     jalr    t1
     nop
 
+    ; run original action
+    lw      v1, 0x1C (sp)
+    lbu     a1, ITEM_ROW_ACTION_ID (v1)
+    jal     0x0006fdcc          ; call ex_06fdcc(ctx, item) ; this gives link the item
+    move    a0,s1               ; a0 = ctx
+
 @@no_extended_effect:
     ; message id is in the extended item table
     lw      v1, 0x1C (sp)

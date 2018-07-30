@@ -798,11 +798,6 @@ def patch_rom(world, rom):
     # Fix Spirit Temple to check for different rewards for scene
     rom.write_bytes(0xCA3EA2, [0x00, 0x00, 0x25, 0x4A, 0x00, 0x08])
 
-    # Fire Arrows now in a chest, always spawn
-    rom.write_bytes(0xE9E202, [0x00, 0x0A])
-    rom.write_bytes(0xE9E1F2, [0x5B, 0x08])
-    rom.write_bytes(0xE9E1D8, [0x00, 0x00, 0x00, 0x00])
-
     # Fix Biggoron to check a different flag.
     rom.write_byte(0xED329B, 0x72)
     rom.write_byte(0xED43E7, 0x72)
@@ -1192,6 +1187,11 @@ def patch_rom(world, rom):
     if world.default_targeting == 'hold':
         rom.write_bytes(0xB07200, [0x20, 0x0C, 0x00, 0x01 ])
 
+    # Set OHKO mode
+    if world.ohko:
+        rom.write_int32(0xAE80A8, 0xA4A00030) # sh  zero,48(a1)
+        rom.write_int32(0xAE80B4, 0x06000003) # bltz s0, +0003
+
     # Patch songs and boss rewards
     for location in world.get_locations():
         item = location.item
@@ -1284,6 +1284,13 @@ def patch_rom(world, rom):
         rbl_bombchu.description_message = 0x80FE
         rbl_bombchu.purchase_message = 0x80FF
 
+        # Reduce 10 Pack Bombchus from 100 to 99 Rupees
+        shop_items[0x0015].price = 99
+        shop_items[0x0019].price = 99
+        shop_items[0x001C].price = 99
+        update_message_by_id(messages, shop_items[0x001C].description_message, "\x08\x05\x41Bombchu  (10 pieces)  99 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it's actually a self-propelled time\x01bomb!\x09\x0A")
+        update_message_by_id(messages, shop_items[0x001C].purchase_message, "\x08Bombchu  10 pieces   100 Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don't buy\x05\x40")
+
         #Fix bombchu chest animations
         chestAnimations = {
             0x6A: 0x28, #0xD8 #Bombchu (5) 
@@ -1300,6 +1307,7 @@ def patch_rom(world, rom):
         0x42: 0x02, #0xFE #Small Key   
         0x48: 0xF7, #0x09 #Recovery Heart  
         0x4F: 0xED, #0x13 #Heart Container 
+        0x76: 0xEC, #0x14 #WINNER! Piece of Heart
     }
     for item_id, gfx_id in chestAnimations.items():
         rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
@@ -1307,6 +1315,9 @@ def patch_rom(world, rom):
     # Update chest type sizes
     if world.correct_chest_sizes:
         update_chest_sizes(rom, override_table)
+
+    # Move Ganon's Castle's Zelda's Lullaby Chest back so is reachable if large
+    rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)

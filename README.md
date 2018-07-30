@@ -13,11 +13,12 @@ The following were added or majorly changed on this fork:
 - Options are saved when closing the GUI and loaded when opening it
 - Can set Output directory
 
-## Logic changes
+## Notable Logic changes
 
 - The Heart Piece at the cow in Impa's house can be reached using only a chicken
-- Zora Tunic is only required to get the key below the central pillar in the Water Temple
-- Goron Tunic is only required for the fire trial in Ganon's Castle and to get to the 2nd floor (and beyond) in the Fire Temple
+- Giant stairs in Dodongo's Cavern can be lowered with the Bow as an adult (quickly shoot a bomb flower on both side of the stairs)
+- The start of child-side Spirit Temple can be done with bombchus (aim the bombchu directly away from the bridge so that it crawls up the wall, across the ceiling, down the raised bridge, and explodes in front of the switch)
+- The skulltula token in the central room of the Water Temple can be obtained without longshot by setting Farore's Wind in the room and using it to return to the room when the water level is back at its highest level
 
 ## Optional Logic changes
 
@@ -40,8 +41,15 @@ What was once called `fast_ganon` is now broken into 3 separate options:
 
 Options for speeding up carpenter rescue portion of Gerudo Fortress
 
-- fast: Only the carpenter nearest to the prison Link is tossed into needs to be freed to obtain the Gerudo Card and get all of its benefits; the other three carpenters are freed from the start
-- open: All carpenters are freed from the start, and you start with the Gerudo Card and all of its benefits (and thus the bridge across the valley is always built)
+- fast: Only the carpenter nearest to the prison Link is tossed into needs to be freed to obtain the Gerudo Card; the other three carpenters are freed from the start
+- open: All carpenters are freed from the start, and you start with the Gerudo Card (and thus the bridge across the valley is always built)
+
+There is also an option to shuffle the Gerudo Card into the item pool; this will only work if fortress is not open. A few notes on the behavior of Gerudo Fortress:
+
+- In order to not be caught by guards, you must have rescued all carpenters. The Gerudo Card itself will not protect you.
+- In order to enter Gerudo Training Grounds, you must rescue all carpenters AND have the Gerudo Card. This is the Gerudo Card's only purpose.
+- Horseback Archery only requires rescuing all carpenters.
+- In keysanity, the keys dropped by the guards at each carpenter's cell will be random items, and the fortress keys will be somewhere in the world. However, a key is not sufficient to open a cell: in order to unlock a cell, you must first defeat the guard in the room and collect the item they drop.
 
 ## Other Conveniences
 
@@ -93,6 +101,10 @@ This was actually mostly implemented, I just pulled the trigger...
 Gold Skulltula Token are added to the item pool, and Gold Skulltula locations give random items. There are two levels for this option: complete shuffle of all 100 tokens, or shuffling only the tokens inside dungeons (there are 44.) The later option can add variance to small key layout in dungeons when keysanity is turned off.
 
 In addition there is an option for the logic to expect Sun's Song to obtain any night-only skulltula token.
+
+## OHKO
+
+Setting `ohko` will make Link die in one hit...
 
 ## Changed hint system
 

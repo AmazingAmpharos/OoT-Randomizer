@@ -420,7 +420,7 @@ setting_infos = [
             'group': 'convenience',
             'widget': 'Entry',
             'default': 'DAAAAAAA',
-            'dependency': { 'free_scarecrow':True }
+            'dependency': lambda guivar: guivar['free_scarecrow'].get()
         }),
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
@@ -494,6 +494,23 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked',
         }),
+    Setting_Info('shuffle_gerudo_card', bool, 1, True, 
+        {
+            'help': '''\
+                    Shuffles the Gerudo Card into the item pool.
+                    The Gerudo Card does not stop guards from throwing you in jail.
+                    It only grants access to Training Grounds, AFTER all carpenters have been rescued.
+                    This option does nothing if "gerudo_fortress" is "open".
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Shuffle Gerudo Card',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'dependency': lambda guivar: guivar['gerudo_fortress'].get() != 'Start with Gerudo Card'
+        }),
     Setting_Info('keysanity', bool, 1, True, 
         {
             'help': '''\
@@ -533,6 +550,19 @@ setting_infos = [
                 'All Tokens': 'all',
             },
         }),
+    Setting_Info('ohko', bool, 1, True, 
+        {
+            'help': '''\
+                    Link will die in one hit.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'OHKO',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),    
     Setting_Info('nodungeonitems', bool, 1, True, 
         {
             'help': '''\
@@ -762,6 +792,50 @@ setting_infos = [
         },
         {
             'text': 'Windmill HP as adult with nothing',
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
+    Setting_Info('logic_crater_bean_hp_with_hovers', bool, 1, True, 
+        {
+            'help': '''\
+                    The Heart Piece in Death Mountain Crater than normally requires the bean to reach
+                    will optionally require the Hover Boots in logic.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Crater's bean HP with Hover Boots",
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
+    Setting_Info('logic_zora_with_cucco_or_hovers', bool, 1, True, 
+        {
+            'help': '''\
+                    Zora's Domain can be entered with a Cucco and Hover Boots in logic.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Zora's Domain entry with Cucco or Hover Boots",
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
+    Setting_Info('logic_fewer_tunic_requirements', bool, 1, True, 
+        {
+            'help': '''\
+                    Allows the following possible without Goron or Zora Tunic:
+                    Enter Water Temple
+                    Enter Fire Temple
+                    Zoras Fountain Bottom Freestanding PoH
+                    Gerudo Training Grounds Underwater Silver Rupee Chest
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Fewer Tunic Requirements",
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked'

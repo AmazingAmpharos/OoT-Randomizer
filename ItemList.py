@@ -7,7 +7,7 @@ from Items import ItemFactory
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
 
-alwaysitems = (['Kokiri Sword', 'Biggoron Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Fire Arrows', 'Ice Arrows', 'Light Arrows', 'Dins Fire', 'Farores Wind', 'Nayrus Love', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + ['Ice Trap'] * 6 +
+alwaysitems = (['Kokiri Sword', 'Biggoron Sword', 'Boomerang', 'Lens of Truth', 'Hammer', 'Iron Boots', 'Goron Tunic', 'Zora Tunic', 'Hover Boots', 'Mirror Shield', 'Stone of Agony', 'Fire Arrows', 'Ice Arrows', 'Light Arrows', 'Dins Fire', 'Farores Wind', 'Nayrus Love', 'Rupee (1)'] + ['Progressive Hookshot'] * 2 + ['Deku Shield'] * 4 +  ['Hylian Shield'] * 2 + 
               ['Progressive Strength Upgrade'] * 3 + ['Progressive Scale'] * 2 + ['Piece of Heart'] * 35 + ['Recovery Heart'] * 11 + ['Rupees (5)'] * 17 + ['Rupees (20)'] * 5 + ['Rupees (50)'] * 7 + ['Rupees (200)'] * 6 + ['Bow'] * 3 + ['Slingshot'] * 3 + ['Bomb Bag'] * 3 + ['Bottle with Letter'] + ['Heart Container'] * 8 + ['Piece of Heart (Treasure Chest Game)'] +
               ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] * 2 + ['Arrows (5)'] + ['Arrows (10)'] * 6 + ['Arrows (30)'] * 6 + ['Deku Nuts (5)'] + ['Deku Nuts (10)'] + ['Progressive Wallet'] * 2 + ['Deku Stick Capacity'] * 2 + ['Deku Nut Capacity'] * 2 + ['Magic Meter'] * 2 + ['Double Defense'])
 # normal_bottles = ['Bottle', 'Bottle with Milk', 'Bottle with Red Potion', 'Bottle with Green Potion', 'Bottle with Blue Potion', 'Bottle with Fairy', 'Bottle with Fish', 'Bottle with Blue Fire', 'Bottle with Bugs', 'Bottle with Poe']
@@ -31,7 +31,7 @@ eventlocations = {
     'King Zora Moves': 'Bottle',
     'Master Sword Pedestal': 'Master Sword',
     'Epona': 'Epona',
-    'Gerudo Fortress Carpenter Rescue': 'Gerudo Membership Card',
+    'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
     'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
     'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',
     'Ganons Castle Water Trial Clear': 'Water Trial Clear',
@@ -94,6 +94,42 @@ def get_pool_core(world):
         pool.extend(['Bombchus'] * 5)
     else:
         pool.extend(['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'])
+
+    if world.ohko:
+        pool.extend(['Recovery Heart'] * 6)
+    else:
+        pool.extend(['Ice Trap'] * 6)
+
+    if world.gerudo_fortress == 'open':
+        placed_items['Gerudo Fortress North F1 Carpenter'] = 'Recovery Heart'
+        placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
+        placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
+        placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+    elif world.keysanity:
+        if world.gerudo_fortress == 'fast':
+            pool.append('Small Key (Gerudo Fortress)')
+            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
+            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
+            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+        else:
+            pool.extend(['Small Key (Gerudo Fortress)'] * 4)
+    else:
+        if world.gerudo_fortress == 'fast':
+            placed_items['Gerudo Fortress North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
+            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
+            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+        else:
+            placed_items['Gerudo Fortress North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
+
+    if world.shuffle_gerudo_card and world.gerudo_fortress != 'open':
+        pool.append('Gerudo Membership Card')
+    else:
+        placed_items['Gerudo Fortress Membership Card'] = 'Gerudo Membership Card'
+
 
     pool.extend(alwaysitems)
     for _ in range(normal_bottle_count):
