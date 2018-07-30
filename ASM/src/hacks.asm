@@ -324,17 +324,14 @@
     jal     override_fairy_ocarina_cutscene
     addu    t8,t0,t7
 
-; Replaces
-;sll      t6,a3,0x2
-;lui      t5,0x8010
-;addiu    t0,t0,-23088
 ; a3 = item ID
-.org 0xAE5DE0
+; Replaces
+; lw $t9, 0xa4($t0)
+.org 0xAE5DF4
     jal     override_ocarina_songs
-    li      v0,0xFF 
-    b       item_action_return
-.org 0xAE7370
-item_action_return:
+; sw $t9, 0xa4($t0)
+.org 0xAE5E04
+    nop
 
 ; Replaces
 ;lui  at,0x1
@@ -343,30 +340,35 @@ item_action_return:
     jal     override_requiem_song
     nop
 
-;lw $t6, -0x73d4($t6)
 ;lw $t7, 0xa4($v1)
-.org 0xE09F64
-    li  t6,0x04
+;lui $v0, 0x200
+;addiu $v0, $v0, 0x24a0
+;and $t8, $t6, $t7
+.org 0xE09F68
     lb  t7,0x0EDE(v1) ; check learned song from sun's song
+.skip 4
+.skip 4
+    andi t8, t7, 0x04 
 ;addiu $t7, $zero, 1
 .org 0xE09FB0
     jal override_suns_song
 
-;lw $t6, -0x73e0($t6)
-;lw $t7, 0xa4($s0)
-.org 0xB063FC
-    li  t6,0x02
+; lw $t7, 0xa4($s0)
+; lui $t3, 0x8010
+; addiu $t3, $t3, -0x70cc
+; and $t8, $t6, $t7
+.org 0xB06400
     lb  t7,0x0EDE(s0) ; check learned song from ZL
+.skip 4
+.skip 4
+    andi t8, t7, 0x02
 
-;lw $t4, -0x73d8($t4)
-;lw $t5, 0xa4($v1)
 ;addiu $v1, $zero, 5
 ;and $t6, $t4, $t5
-.org 0xE29380
-    move t5, ra
-    jal override_saria_song_check
+.org 0xE29388
+    j  override_saria_song_check
     li v0, 5
-    move ra, t5
+return_saria_song_check:
 ;move $v0, $v1
 .org 0xE293A4
     sb t8, 0x0EDF(t7)

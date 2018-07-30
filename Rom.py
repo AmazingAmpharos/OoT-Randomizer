@@ -1164,12 +1164,14 @@ def patch_rom(world, rom):
     # Revert Song Get Override Injection
     if not world.shuffle_song_items:
         # general get song
-        rom.write_int32s(0xAE5DE0, [0x00077080, 0x3C0D8010, 0x2508A5D0])
+        rom.write_int32(0xAE5DF4, 0x8D1900A4)
+        rom.write_int32(0xAE5E04, 0xAD0F00A4)
         # requiem of spirit
         rom.write_int32s(0xAC9ABC, [0x3C010001, 0x00300821])
         # sun song
-        rom.write_int32s(0xE09F64, [0x8DCE8C2C, 0x8C6F00A4])
-        rom.write_int32s(0xE09FB0, [0x240F0001])
+        rom.write_int32(0xE09F68, 0x8C6F00A4)
+        rom.write_int32(0xE09F74, 0x01CFC024)
+        rom.write_int32(0xE09FB0, 0x240F0001)
         # epona
         rom.write_int32(0xD7E77C, 0x8C4900A4)
         rom.write_int32(0xD7E784, 0x8D088C24)
@@ -1180,9 +1182,10 @@ def patch_rom(world, rom):
         # song of time
         rom.write_int32(0xDB532C, 0x24050003)
         # zelda's lullaby
-        rom.write_int32(0xB063FC, [0x8DCE8C20, 0x8E0F00A4])
+        rom.write_int32(0xB06400, 0x8E0F00A4)
+        rom.write_int32(0xB0640C, 0x01CFC024)
         # saria's song
-        rom.write_int32(0xE29380, [0x8D8C8C28, 0x8C6D00A4, 0x24030005, 0x018D7024])
+        rom.write_int32s(0xE29388, [0x24030005, 0x018D7024])
         rom.write_int32(0xE293A4, 0x00601025)
 
     # Set Default targeting option to Hold
