@@ -719,11 +719,7 @@ class Spoiler(object):
         self.required_locations = []
 
     def parse_data(self):
-        spoiler_locations = []
-        for location in self.world.get_locations():
-            if location.item.name not in {'Gold Skulltulla Token', 'Epona', 'Triforce', 'Fairy Ocarina', 'Ocarina of Time', 'Zeldas Letter', 'Master Sword',
-                                          'Magic Bean', 'Gerudo Membership Card', 'Forest Trial Clear', 'Fire Trial Clear', 'Water Trial Clear', 'Shadow Trial Clear', 'Spirit Trial Clear', 'Light Trial Clear'}:
-                spoiler_locations.append(location)
+        spoiler_locations = [location for location in self.world.get_locations() if not location.event]
         sort_order = {"Song": 0, "Boss": -1}
         spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
         if self.world.settings.world_count > 1:
