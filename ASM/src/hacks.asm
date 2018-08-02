@@ -326,10 +326,10 @@
 
 ; a3 = item ID
 ; Replaces
-; lw $t9, 0xa4($t0)
-.org 0xAE5DF4
+; li v0,0xFF
+.org 0xAE5DF8
     jal     override_ocarina_songs
-; sw $t9, 0xa4($t0)
+; sw $t7, 0xa4($t0)
 .org 0xAE5E04
     nop
 
@@ -363,11 +363,13 @@
 .skip 4
     andi t8, t7, 0x02
 
+;lw $t5,164(v1)
 ;addiu $v1, $zero, 5
 ;and $t6, $t4, $t5
-.org 0xE29388
-    j  override_saria_song_check
-    li v0, 5
+.org 0xE29384
+    jal override_saria_song_check
+    move t5, ra
+    move ra, t5
 return_saria_song_check:
 ;move $v0, $v1
 .org 0xE293A4

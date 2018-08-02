@@ -1159,7 +1159,7 @@ def patch_rom(world, rom):
     # Revert Song Get Override Injection
     if not world.shuffle_song_items:
         # general get song
-        rom.write_int32(0xAE5DF4, 0x8D1900A4)
+        rom.write_int32(0xAE5DF8, 0x240200FF)
         rom.write_int32(0xAE5E04, 0xAD0F00A4)
         # requiem of spirit
         rom.write_int32s(0xAC9ABC, [0x3C010001, 0x00300821])
@@ -1180,7 +1180,7 @@ def patch_rom(world, rom):
         rom.write_int32(0xB06400, 0x8E0F00A4)
         rom.write_int32(0xB0640C, 0x01CFC024)
         # saria's song
-        rom.write_int32s(0xE29388, [0x24030005, 0x018D7024])
+        rom.write_int32s(0xE29384, [0x8C6D00A4, 0x24030005, 0x018D7024])
         rom.write_int32(0xE293A4, 0x00601025)
 
     # Set Default targeting option to Hold

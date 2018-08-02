@@ -71,6 +71,7 @@ override_fairy_ocarina_cutscene:
 
 ;a3 = item ID
 override_ocarina_songs:
+    li      v0, 0xFF
     addi    t0, a3, -0x5A
     addi    t0, t0, 0x61
     b       store_pending_spedial_item
@@ -136,9 +137,10 @@ store_pending_spedial_item:
 
 override_saria_song_check:
     move    t7, v1
-    lbu     t4, 0x0EDF(t7)
+    lb      t4, 0x0EDF(t7)
     ori     t8, t4, 0x80
     andi    t6, t4, 0x80  
+    li      v0, 5
     li      v1, 5
-    j       return_saria_song_check
+    jr      ra
     nop
