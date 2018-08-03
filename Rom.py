@@ -1180,8 +1180,7 @@ def patch_rom(world, rom):
         rom.write_int32(0xB06400, 0x8E0F00A4)
         rom.write_int32(0xB0640C, 0x01CFC024)
         # saria's song
-        rom.write_int32s(0xE29384, [0x8C6D00A4, 0x24030005, 0x018D7024])
-        rom.write_int32(0xE293A4, 0x00601025)
+        rom.write_int32(0xE29388, 0x24030005)
 
     # Set Default targeting option to Hold
     if world.default_targeting == 'hold':

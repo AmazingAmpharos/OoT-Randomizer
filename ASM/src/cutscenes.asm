@@ -138,9 +138,15 @@ store_pending_spedial_item:
 override_saria_song_check:
     move    t7, v1
     lb      t4, 0x0EDF(t7)
-    ori     t8, t4, 0x80
     andi    t6, t4, 0x80  
-    li      v0, 5
+    beqz    t6, @@get_item
     li      v1, 5
+
     jr      ra
-    nop
+    li      v0, 2
+
+@@get_item:
+    ori     t8, t4, 0x80
+    sb      t8, 0x0EDF(t7)
+    jr      ra
+    move    v0, v1

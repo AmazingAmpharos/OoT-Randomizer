@@ -363,17 +363,9 @@
 .skip 4
     andi t8, t7, 0x02
 
-;lw $t5,164(v1)
-;addiu $v1, $zero, 5
-;and $t6, $t4, $t5
-.org 0xE29384
-    jal override_saria_song_check
-    move t5, ra
-    move ra, t5
-return_saria_song_check:
-;move $v0, $v1
-.org 0xE293A4
-    sb t8, 0x0EDF(t7)
+;li v1, 5
+.org 0xE29388
+    j   override_saria_song_check
 
 ; li a1, 3
 .org 0xDB532C
