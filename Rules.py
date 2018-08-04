@@ -30,6 +30,12 @@ def add_rule(spot, rule, combine='and'):
     else:
         spot.access_rule = lambda state: rule(state) and old_rule(state)
 
+def add_item_rule(spot, rule, combine='and'):
+    old_rule = spot.item_rule
+    if combine == 'or':
+        spot.item_rule = lambda item: rule(item) or old_rule(item)
+    else:
+        spot.item_rule = lambda item: rule(item) and old_rule(item)
 
 def forbid_item(location, item):
     old_rule = location.item_rule
@@ -434,9 +440,22 @@ def global_rules(world):
     for location in world.get_locations():
         if location.type != 'Chest':
             forbid_item(location, 'Ice Trap')
+        add_item_rule(location, lambda i: not (i.type == 'Song' and not i.world.shuffle_song_items and i.world.id != location.world.id))
 
     # Biggoron Sword at bombchu bowling seems to lead to a soft lock.
     # Unsure what causes this, but I'm leaving this to original devs.
     # For now just avoiding this combination, since BigSword is not that important.
     forbid_item(world.get_location('Bombchu Bowling Bomb Bag'), 'Biggoron Sword')    
     forbid_item(world.get_location('Bombchu Bowling Piece of Heart'), 'Biggoron Sword')
+
+    # Song locations can only be a song
+    #song_locations = [world.get_location(location) for location in 
+    #    ['Song from Composer Grave', 'Impa at Castle', 'Song from Malon', 'Song from Saria', 
+    #     'Song from Ocarina of Time', 'Song at Windmill', 'Sheik Forest Song', 'Sheik at Temple', 
+    #     'Sheik in Crater', 'Sheik in Ice Cavern', 'Sheik in Kakariko', 'Sheik at Colossus']]
+    #for location in world.get_locations():
+    #    if location in song_locations:
+    #        add_item_rule(location, lambda item: item.type == 'Song')
+    #    else:
+    #        add_item_rule(location, lambda item: item.type != 'Song')
+

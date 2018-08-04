@@ -17,15 +17,20 @@
 
 .headersize (0x80400000 - 0x03480000)
 
+.include "constants.asm"
+
 .org 0x80401000
 .area 0x1000, 0
 .include "config.asm"
 .endarea
 
 .org 0x80402000
-.area 0x2000, 0
-.include "constants.asm"
+.area 0x50, 0
 .include "state.asm"
+.endarea
+
+.org 0x80402050
+.area 0x2000, 0
 .include "extended_items.asm"
 .include "item_overrides.asm"
 .include "cutscenes.asm"

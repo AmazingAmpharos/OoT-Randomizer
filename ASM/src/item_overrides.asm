@@ -56,6 +56,15 @@ override_skulltula_token:
     beqz    v1, @@not_extended
     sw      v1, 0x1C (sp)
 
+    ; check if item is for this player
+    li      t0, PLAYER_OVERRIDE_DATA
+    lh      t1, 0x02(t0)
+    beqz    t1, @@extended_effect ; if item is pending player override
+    li      t2, 0x01
+    b       @@no_extended_effect
+    sh      t2, 0x00(t0)          ; set override collected flag
+
+@@extended_effect:
     ; Run effect function
     li      a0, SAVE_CONTEXT
     lbu     a1, ITEM_ROW_EFFECT_ARG1 (v1)
@@ -70,6 +79,7 @@ override_skulltula_token:
     jal     0x0006fdcc          ; call ex_06fdcc(ctx, item) ; this gives link the item
     move    a0,s1               ; a0 = ctx
 
+@@no_extended_effect:
     ; message id is in the extended item table
     lw      v1, 0x1C (sp)
     lbu     a1, ITEM_ROW_TEXT_ID (v1)
@@ -83,9 +93,18 @@ override_skulltula_token:
     mult    v0, t2              ; 
     mflo    t2                  ; t2 = offset into get item table
     addu    s0, t1, t2          ; s0 = pointer to table entry
-
-    ; give the item
     lb      a1, 0x0 (s0)        ; a1 = item id
+
+    ; check if item is for this player
+    li      t0, PLAYER_OVERRIDE_DATA
+    lh      t1, 0x02(t0)
+    beqz    t1, @@item_effect  ; if item is pending player override
+    li      t2, 0x01
+    sh      t2, 0x00(t0)        ; set override collected flag
+    li      a1, 0x41            ; a1 = 0x41 (No item)
+
+@@item_effect:
+    ; give the item
     jal     0x0006fdcc          ; call ex_06fdcc(ctx, item); this gives link the item
     move    a0,s1               ; a0 = ctx
 
@@ -128,13 +147,30 @@ override_object:
     lhu     a1, ITEM_ROW_OBJECT_ID (t2)
 
 @@return:
-    ; Clear any pending special item, now that it's being received
-    li      t2, PENDING_SPECIAL_ITEM
-    sb      r0, 0x00 (t2)
     ; Re-enable warping (disabled by pending item)
     li      t2, GLOBAL_CONTEXT + 0x104E4
     sh      r0, 0x00 (t2)
 
+    ; get pending item index
+    li      t1, PENDING_SPECIAL_ITEM
+    lb      t2, (PENDING_SPECIAL_ITEM_END - PENDING_SPECIAL_ITEM) (t1)
+    bltz    t2, @@no_pending_clear
+    add     t1, t1, t2
+
+    ; if item is 0x7F, then increment recieved item count
+    lb      t0, 0x00 (t1) ; item id
+    li      t2, 0x7F
+    bne     t0, t2, @@no_count_inc
+    nop
+    li      t2, SAVE_CONTEXT
+    lh      t0, 0x90(t2)
+    addi    t0, t0, 1
+    sh      t0, 0x90(t2) ; item count++
+
+@@no_count_inc:
+    sb      zero, 0x00 (t1)
+    
+@@no_pending_clear:
     jr ra
     nop
 
@@ -180,6 +216,18 @@ override_action:
     lw      v0, 0x24 (sp)
     lbu     a1, 0x0000 (v0)
 
+    li      t0, PLAYER_OVERRIDE_DATA
+    lh      t1, 0x02(t0)
+    beqz    t1, @@no_player_override ; if item is pending player override
+
+    li      t2, 0x01
+    sh      t2, 0x00(t0)    ; set override collected flag
+
+    b       @@return
+    li      a1, 0x41        ; set action to no action
+
+
+@@no_player_override:
     li      t0, EXTENDED_ITEM_DATA
     lw      t1, ITEM_ROW_IS_EXTENDED (t0)
     beqz    t1, @@return
@@ -405,6 +453,11 @@ scan_override_table:
 
     li      v0, -1
 
+    li      t0, PLAYER_ID
+    lb      t1, 0x00(t0)
+    li      t0, SAVE_CONTEXT
+    sh      t1, 0x1406(t0) ; set points to current player: default
+
     ; Look up override
     li      t0, (ITEM_OVERRIDES - 0x04)
 @@lookup_loop:
@@ -412,11 +465,32 @@ scan_override_table:
     lw      t1, 0x00 (t0) ; t1 = override entry
     beqz    t1, @@return ; Reached end of override table
     nop
+
     srl     t2, t1, 8 ; t2 = override key
+    andi    t3, t2, 0xF800
+    srl     t3, t3, 11  ; t3 = player id
+
+    lui     t4, 0xFFFF
+    ori     t4, t4, 0x03FF ;t4 = 0xFFFF07FF masks out the player id
+    and     t2, t2, t4
     bne     t2, a0, @@lookup_loop
     nop
 
     andi    v0, t1, 0xFF ; v0 = found item ID
+
+    li      t0, SAVE_CONTEXT
+    sh      t3, 0x1406(t0) ; set the point value to the player number
+
+    li      t1, PLAYER_OVERRIDE_DATA
+
+    li      t4, PLAYER_ID
+    lb      t4, 0x00(t4)
+    beq     t3, t4, @@return ; correct player for the item
+    sh      zero, 0x02(t1)   ; store no player override
+
+    sb      t3, 0x02(t1)    ; store player override id
+    sb      v0, 0x03(t1)    ; store item id
+    sw      a0, 0x04(t1)    ; store search key
 
 @@return:
     jr      ra

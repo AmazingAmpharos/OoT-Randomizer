@@ -3,7 +3,6 @@ import logging
 import random
 
 from Items import ItemFactory
-from Fill import FillError, fill_restrictive
 
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
@@ -30,7 +29,6 @@ eventlocations = {
     'Zeldas Letter': 'Zeldas Letter',
     'Magic Bean Salesman': 'Magic Bean',
     'King Zora Moves': 'Bottle',
-    'Ocarina of Time': 'Ocarina',
     'Master Sword Pedestal': 'Master Sword',
     'Epona': 'Epona',
     'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
@@ -45,21 +43,22 @@ eventlocations = {
 #total_items_to_place = 5
 
 def generate_itempool(world):
-
     for location, item in eventlocations.items():
-        world.push_item(location, ItemFactory(item), False)
+        world.push_item(location, ItemFactory(item))
         world.get_location(location).event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world)
     world.itempool = ItemFactory(pool)
-    for location, item in placed_items.items():
-        world.push_item(location, ItemFactory(item), False)
+    for (location, item) in placed_items.items():
+        world.push_item(location, ItemFactory(item))
         world.get_location(location).event = True
 
     choose_trials(world)
     fill_bosses(world)
-    fill_songs(world)
+
+    world.initialize_items()
+
 
 def get_pool_core(world):
     pool = []
@@ -73,10 +72,11 @@ def get_pool_core(world):
     else:
         placed_items['Malon Egg'] = 'Weird Egg'
 
-    if world.shuffle_fairy_ocarina:
-        pool.append('Ocarina')
+    if world.shuffle_ocarinas:
+        pool.extend(['Ocarina'] * 2)
     else:
         placed_items['Gift from Saria'] = 'Ocarina'
+        placed_items['Ocarina of Time'] = 'Ocarina'
 
     if world.tokensanity == 'off':
         for location in skulltulla_locations:
@@ -137,6 +137,7 @@ def get_pool_core(world):
         pool.append(bottle)
     tradeitem = random.choice(tradeitems)
     pool.append(tradeitem)
+    pool.extend(songlist)
 
     return (pool, placed_items)
 
@@ -163,29 +164,4 @@ def fill_bosses(world, bossCount=9):
         random.shuffle(prize_locs)
         item = prizepool.pop()
         loc = prize_locs.pop()
-        world.push_item(loc, item, False)
-        world.get_location(loc).event = True
-
-def fill_songs(world, attempts=15):
-    songs = ItemFactory(songlist)
-    song_locations = [world.get_location('Song from Composer Grave'), world.get_location('Impa at Castle'), world.get_location('Song from Malon'), world.get_location('Song from Saria'), world.get_location('Song from Ocarina of Time'), world.get_location('Song at Windmill'), world.get_location('Sheik Forest Song'), world.get_location('Sheik at Temple'), world.get_location('Sheik in Crater'), world.get_location('Sheik in Ice Cavern'), world.get_location('Sheik in Kakariko'), world.get_location('Sheik at Colossus')]
-    placed_prizes = [loc.item.name for loc in song_locations if loc.item is not None]
-    unplaced_prizes = [song for song in songs if song.name not in placed_prizes]
-    empty_song_locations = [loc for loc in song_locations if loc.item is None]
-
-    while attempts:
-        attempts -= 1
-        try:
-            prizepool = list(unplaced_prizes)
-            prize_locs = list(empty_song_locations)
-            random.shuffle(prizepool)
-            random.shuffle(prize_locs)
-            fill_restrictive(world, world.get_all_state(keys=True), prize_locs, prizepool) #TODO: Set keys to true once keys are properly implemented
-        except FillError:
-            logging.getLogger('').info("Failed to place songs. Will retry %s more times", attempts)
-            for location in empty_song_locations:
-                location.item = None
-            continue
-        break
-    else:
-        raise FillError('Unable to place songs')
+        world.push_item(loc, item)

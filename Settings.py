@@ -171,6 +171,18 @@ setting_infos = [
                     time).
                     ''',
             'type': int}),
+    Setting_Info('world_count', int, 0, False, {
+            'help': '''\
+                    Use to create a multi-world generation for co-op seeds.
+                    World count is the number of players. Warning: Increasing
+                    the world count will drastically increase generation time.
+                    ''',
+            'type': int}),
+    Setting_Info('player_num', int, 0, False, {
+            'help': '''\
+                    Use to select world to generate when there are multiple worlds.
+                    ''',
+            'type': int}),
     Setting_Info('create_spoiler', bool, 1, True, 
         {
             'help': 'Output a Spoiler File',
@@ -453,20 +465,34 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
-    Setting_Info('shuffle_fairy_ocarina', bool, 1, True, 
+    Setting_Info('shuffle_ocarinas', bool, 1, True, 
         {
             'help': '''\
-                    Shuffles the Fairy Ocarina item from Saria into the pool.
+                    Shuffles the Fairy Ocarina and the Ocarina of Time into the pool.
                     This means that you need to find the ocarina before playing songs. 
-                    You can still always recieve it from Ocarina of Time location
                     ''',
             'action': 'store_true'
         },
         {
-            'text': 'Shuffle Fairy Ocarina',
+            'text': 'Shuffle Ocarinas',
             'group': 'logic',
             'widget': 'Checkbutton',
             'default': 'unchecked'
+        }),
+    Setting_Info('shuffle_song_items', bool, 1, True, 
+        {
+            'help': '''\
+                    Shuffles the songs with with rest of the item pool so that
+                    song can appear at other locations, and items can appear at
+                    the song locations.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Shuffle Songs with Items',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
         }),
     Setting_Info('shuffle_gerudo_card', bool, 1, True, 
         {

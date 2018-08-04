@@ -82,9 +82,13 @@ Regardless of whether of not you use this option, Malon has been sped up in the 
 - The condition for Malon to move to Lon Lon Ranch is now obtaining her item and Talon fleeing the castle (instead of just Talon fleeing the castle)
 - At Lon Lon Ranch, you no longer need to speak to Malon multiple times before she will teach you her song. You can simply walk up to her and pull out your Ocarina.
 
-## Fairy Ocarina
+## Fairy Ocarina and Ocarina of Time
 
-The Fairy Ocarina can be shuffled into the item pool with `shuffle_fairy_ocarina`. This means that Saria will give a random item and that you must find the Ocarina before being able to play any songs. The Ocarina of Time will still always be at its usual location.
+The Fairy Ocarina and Ocarina of Time can be shuffled into the item pool with `shuffle_ocarinas`. This means that Saria and the Ocarin of Time will give a random item and that you must find the Ocarina before being able to play any songs.
+
+## Shuffle Songs into the Pool
+
+Enabling `shuffle_song_items` will make learning songs into items and shuffle the songs into the item pool. Song can appear at any location, and any item can appear at the original song locations.
 
 ## Keysanity
 

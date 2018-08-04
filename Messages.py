@@ -64,6 +64,140 @@ GOSSIP_STONE_MESSAGES += [0x2053, 0x2054] # shared initial stone messages
 TEMPLE_HINTS_MESSAGES = [0x7057, 0x707A] # dungeon reward hints from the temple of time pedestal
 LIGHT_ARROW_HINT = [0x70CC] # ganondorf's light arrow hint line
 
+# messages for shorter item messages
+ITEM_MESSAGES = {
+    0x0001: "\x08\x13\x2DYou borrowed a \x05\x41Pocket Egg\x05\x40!\x01A Pocket Cucco will hatch from\x01it overnight. Be sure to give it\x01back when you are done with it.",
+    0x0002: "\x08\x13\x2FYou returned the Pocket Cucco\x01and got \x05\x41Cojiro\x05\x40 in return!\x01Unlike other Cuccos, Cojiro\x01rarely crows.",
+    0x0003: "\x08\x13\x30You got an \x05\x41Odd Mushroom\x05\x40!\x01A fresh mushroom like this is\x01sure to spoil quickly! Take it to\x01the Kakariko Potion Shop, quickly!",
+    0x0004: "\x08\x13\x31You received an \x05\x41Odd Potion\x05\x40!\x01It may be useful for something...\x01Hurry to the Lost Woods!",
+    0x0005: "\x08\x13\x32You returned the Odd Potion \x01and got the \x05\x41Poacher's Saw\x05\x40!\x01The young punk guy must have\x01left this behind.",
+    0x0007: "\x08\x13\x48You got a \x01\x05\x41Deku Seeds Bullet Bag\x05\x40.\x01This bag can hold up to \x05\x4640\x05\x40\x01slingshot bullets.",
+    0x0008: "\x08\x13\x33You traded the Poacher's Saw \x01for a \x05\x41Broken Goron's Sword\x05\x40!\x01Visit Biggoron to get it repaired!",
+    0x0009: "\x08\x13\x34You checked in the Broken \x01Goron's Sword and received a \x01\x05\x41Prescription\x05\x40!\x01Go see King Zora!",
+    0x000A: "\x08\x13\x37The Biggoron's Sword...\x01You got a \x05\x41Claim Check \x05\x40for it!\x01You can't wait for the sword\x01to be completed!",
+    0x000B: "\x08\x13\x2EYou got a \x05\x41Pocket Cucco, \x05\x40one\x01of Anju's prized hens! It fits \x01in your pocket.",
+    0x000C: "\x08\x13\x3DYou handed in the Claim Check\x01and got the \x05\x41Biggoron's Sword\x05\x40!\x01This blade was forged by a \x01master smith and won't break!",
+    0x000D: "\x08\x13\x35You used the Prescription and\x01received an \x05\x41Eyeball Frog\x05\x40!\x01Be quick and deliver it to Lake \x01Hylia while it's cold!",
+    0x000E: "\x08\x13\x36You traded the Eyeball Frog \x01for the \x05\x41World's Finest Eye Drops\x05\x40!\x01Hurry! Take them to Biggoron\x01before they go bad!",
+    0x0010: "\x08\x13\x25You borrowed a \x05\x41Skull Mask\x05\x40.\x01You feel like a monster while you\x01wear this mask!",
+    0x0011: "\x08\x13\x26You borrowed a \x05\x41Spooky Mask\x05\x40.\x01You can scare many people\x01with this mask!",
+    0x0012: "\x08\x13\x24You borrowed a \x05\x41Keaton Mask\x05\x40.\x01You'll be a popular guy with\x01this mask on!",
+    0x0013: "\x08\x13\x27You borrowed a \x05\x41Bunny Hood\x05\x40.\x01The hood's long ears are so\x01cute!",
+    0x0014: "\x08\x13\x28You borrowed a \x05\x41Goron Mask\x05\x40.\x01It will make your head look\x01big, though.",
+    0x0015: "\x08\x13\x29You borrowed a \x05\x41Zora Mask\x05\x40.\x01With this mask, you can\x01become one of the Zoras!",
+    0x0016: "\x08\x13\x2AYou borrowed a \x05\x41Gerudo Mask\x05\x40.\x01This mask will make you look\x01like...a girl?",
+    0x0017: "\x08\x13\x2BYou borrowed a \x05\x41Mask of Truth\x05\x40.\x01Show it to many people!",
+    0x0030: "\x08\x13\x06You found the \x05\x41Fairy Slingshot\x05\x40!",
+    0x0031: "\x08\x13\x03You found the \x05\x41Fairy Bow\x05\x40!",
+    0x0032: "\x08\x13\x02You got \x05\x41Bombs\x05\x40!\x01If you see something\x01suspicious, bomb it!",
+    0x0033: "\x08\x13\x09You got \x05\x41Bombchu\x05\x40!",
+    0x0034: "\x08\x13\x01You got a \x05\x41Deku Nut\x05\x40!",
+    0x0035: "\x08\x13\x0EYou found the \x05\x41Boomerang\x05\x40!",
+    0x0036: "\x08\x13\x0AYou found the \x05\x41Hookshot\x05\x40!\x01It's a spring-loaded chain that\x01you can cast out to hook things.",
+    0x0037: "\x08\x13\x00You got a \x05\x41Deku Stick\x05\x40!",
+    0x0038: "\x08\x13\x11You found the \x05\x41Megaton Hammer\x05\x40!\x01It's so heavy, you need to\x01use two hands to swing it!",
+    0x0039: "\x08\x13\x0FYou found the \x05\x41Lens of Truth\x05\x40!\x01Mysterious things are hidden\x01everywhere!",
+    0x003A: "\x08\x13\x08You found the \x05\x41Ocarina of Time\x05\x40!\x01It glows with a mystical light...",
+    0x003C: "\x08\x13\x67You received the \x05\x41Fire\x01Medallion\x05\x40!\x01Darunia awakens as a Sage and\x01adds his power to yours!",
+    0x003D: "\x08\x13\x68You received the \x05\x43Water\x01Medallion\x05\x40!\x01Ruto awakens as a Sage and\x01adds her power to yours!",
+    0x003E: "\x08\x13\x66You received the \x05\x42Forest\x01Medallion\x05\x40!\x01Saria awakens as a Sage and\x01adds her power to yours!",
+    0x003F: "\x08\x13\x69You received the \x05\x46Spirit\x01Medallion\x05\x40!\x01Nabooru awakens as a Sage and\x01adds her power to yours!",
+    0x0040: "\x08\x13\x6BYou received the \x05\x44Light\x01Medallion\x05\x40!\x01Rauru the Sage adds his power\x01to yours!",
+    0x0041: "\x08\x13\x6AYou received the \x05\x45Shadow\x01Medallion\x05\x40!\x01Impa awakens as a Sage and\x01adds her power to yours!",
+    0x0042: "\x08\x13\x14You got an \x05\x41Empty Bottle\x05\x40!\x01You can put something in this\x01bottle.",
+    0x0043: "\x08\x13\x15You got a \x05\x41Red Potion\x05\x40!\x01It will restore your health",
+    0x0044: "\x08\x13\x16You got a \x05\x42Green Potion\x05\x40!\x01It will restore your magic.",
+    0x0045: "\x08\x13\x17You got a \x05\x43Blue Potion\x05\x40!\x01It will recover your health\x01and magic.",
+    0x0046: "\x08\x13\x18You caught a \x05\x41Fairy\x05\x40 in a bottle!\x01It will revive you\x01the moment you run out of life \x01energy.",
+    0x0047: "\x08\x13\x19You got a \x05\x41Fish\x05\x40!\x01It looks so fresh and\x01delicious!",
+    0x0048: "\x08\x13\x10You got a \x05\x41Magic Bean\x05\x40!\x01Find a suitable spot for a garden\x01and plant it.",
+    0x004A: "\x08\x13\x07You received the \x05\x41Fairy Ocarina\x05\x40!\x01This is a memento from Saria.",
+    0x004B: "\x08\x13\x3DYou got the \x05\x42Giant's Knife\x05\x40!\x01Hold it with both hands to\x01attack! It's so long, you\x01can't use it with a \x05\x44shield\x05\x40.",
+    0x004C: "\x08\x13\x3EYou got a \x05\x44Deku Shield\x05\x40!",
+    0x004D: "\x08\x13\x3FYou got a \x05\x44Hylian Shield\x05\x40!",
+    0x004E: "\x08\x13\x40You found the \x05\x44Mirror Shield\x05\x40!\x01The shield's polished surface can\x01reflect light or energy.",
+    0x004F: "\x08\x13\x0BYou found the \x05\x41Longshot\x05\x40!\x01It's an upgraded Hookshot.\x01It extends \x05\x41twice\x05\x40 as far!",
+    0x0050: "\x08\x13\x42You got a \x05\x41Goron Tunic\x05\x40!\x01Going to a hot place? No worry!",
+    0x0051: "\x08\x13\x43You got a \x05\x43Zora Tunic\x05\x40!\x01Wear it, and you won't drown\x01underwater.",
+    0x0052: "\x08You got a \x05\x42Magic Jar\x05\x40!\x01Your Magic Meter is filled!",
+    0x0053: "\x08\x13\x45You got the \x05\x41Iron Boots\x05\x40!\x01So heavy, you can't run.\x01So heavy, you can't float.",
+    0x0054: "\x08\x13\x46You got the \x05\x41Hover Boots\x05\x40!\x01With these mysterious boots\x01you can hover above the ground.",
+    0x0055: "\x08You got a \x05\x45Recovery Heart\x05\x40!\x01Your life energy is recovered!",
+    0x0056: "\x08\x13\x4BYou upgraded your quiver to a\x01\x05\x41Big Quiver\x05\x40!\x01Now you can carry more arrows-\x01\x05\x4640 \x05\x40in total!",
+    0x0057: "\x08\x13\x4BYou upgraded your quiver to\x01the \x05\x41Biggest Quiver\x05\x40!\x01Now you can carry even more \x01arrows, to a maximum of \x05\x4650\x05\x40!",
+    0x0058: "\x08\x13\x4DYou found a \x05\x41Bomb Bag\x05\x40!\x01You found \x05\x4120 Bombs\x05\x40 inside!",
+    0x0059: "\x08\x13\x4EYou got a \x05\x41Big Bomb Bag\x05\x40!\x01Now you can carry more \x01Bombs, up to a maximum of \x05\x4630\x05\x40!",
+    0x005A: "\x08\x13\x4FYou got the \x01\x05\x41Biggest Bomb Bag\x05\x40!\x01Now, you can carry up to \x01\x05\x4640\x05\x40 Bombs!",
+    0x005B: "\x08\x13\x51You found the \x05\x43Silver Gauntlets\x05\x40!\x01You feel the power to lift\x01big things with it!",
+    0x005C: "\x08\x13\x52You found the \x05\x43Golden Gauntlets\x05\x40!\x01You can feel even more power\x01coursing through your arms!",
+    0x005D: "\x08\x13\x1CYou put a \x05\x44Blue Fire\x05\x40\x01into the bottle!\x01This is a cool flame you can\x01use on red ice.",
+    0x005E: "\x08\x13\x56You got an \x05\x43Adult's Wallet\x05\x40!\x01Now you can hold\x01up to \x05\x46200\x05\x40 \x05\x46Rupees\x05\x40.",
+    0x005F: "\x08\x13\x57You got a \x05\x43Giant's Wallet\x05\x40!\x01Now you can hold\x01up to \x05\x46500\x05\x40 \x05\x46Rupees\x05\x40.",
+    0x0060: "\x08\x13\x77You found a \x05\x41Small Key\x05\x40!\x01This key will open a locked \x01door. You can use it only\x01in this dungeon.",
+    0x0066: "\x08\x13\x76You found the \x05\x41Dungeon Map\x05\x40!\x01It's the map to this dungeon.",
+    0x0067: "\x08\x13\x75You found the \x05\x41Compass\x05\x40!\x01Now you can see the locations\x01of many hidden things in the\x01dungeon!",
+    0x0068: "\x08\x13\x6FYou obtained the \x05\x41Stone of Agony\x05\x40!\x01If you equip a \x05\x44Rumble Pak\x05\x40, it\x01will react to nearby...secrets.",
+    0x0069: "\x08\x13\x23You received \x05\x41Zelda's Letter\x05\x40!\x01Wow! This letter has Princess\x01Zelda's autograph!",
+    0x006C: "\x08\x13\x49Your \x05\x41Deku Seeds Bullet Bag \x01\x05\x40has become bigger!\x01This bag can hold \x05\x4650\x05\x41 \x05\x40bullets!",
+    0x006F: "\x08You got a \x05\x42Green Rupee\x05\x40!\x01That's \x05\x42one Rupee\x05\x40!",
+    0x0070: "\x08\x13\x04You got the \x05\x41Fire Arrow\x05\x40!\x01If you hit your target,\x01it will catch fire.",
+    0x0071: "\x08\x13\x0CYou got the \x05\x43Ice Arrow\x05\x40!\x01If you hit your target,\x01it will freeze.",
+    0x0072: "\x08\x13\x12You got the \x05\x44Light Arrow\x05\x40!\x01The light of justice\x01will smite evil!",
+    0x0073: "\x08\x06\x28You have learned the\x01\x06\x2F\x05\x42Minuet of Forest\x05\x40!",
+    0x0074: "\x08\x06\x28You have learned the\x01\x06\x37\x05\x41Bolero of Fire\x05\x40!",
+    0x0075: "\x08\x06\x28You have learned the\x01\x06\x29\x05\x43Serenade of Water\x05\x40!",
+    0x0076: "\x08\x06\x28You have learned the\x01\x06\x2D\x05\x46Requiem of Spirit\x05\x40!",
+    0x0077: "\x08\x06\x28You have learned the\x01\x06\x28\x05\x45Nocturne of Shadow\x05\x40!",
+    0x0078: "\x08\x06\x28You have learned the\x01\x06\x32\x05\x44Prelude of Light\x05\x40!",
+    0x0079: "\x08\x13\x50You got the \x05\x41Goron's Bracelet\x05\x40!\x01Now you can pull up Bomb\x01Flowers.",
+    0x007A: "\x08\x13\x1DYou put a \x05\x41Bug \x05\x40in the bottle!\x01This kind of bug prefers to\x01live in small holes in the ground.",
+    0x007B: "\x08\x13\x70You obtained the \x05\x41Gerudo's \x01Membership Card\x05\x40!\x01You can get into the Gerudo's\x01training ground in their hideout.",
+    0x0080: "\x08\x13\x6CYou got the \x05\x42Kokiri's Emerald\x05\x40!\x01This is the Spiritual Stone of \x01the Forest, now entrusted to \x01you by the Great Deku Tree.",
+    0x0081: "\x08\x13\x6DYou obtained the \x05\x41Goron's Ruby\x05\x40!\x01This is the Spiritual Stone of \x01Fire passed down by the Gorons!",
+    0x0082: "\x08\x13\x6EYou obtained \x05\x43Zora's Sapphire\x05\x40!\x01This is the Spiritual Stone of\x01Water passed down by the\x01Zoras!",
+    0x0090: "\x08\x13\x00Now you can pick up \x01many \x05\x41Deku Sticks\x05\x40!\x01You can carry up to \x05\x4620\x05\x40 of them!",
+    0x0091: "\x08\x13\x00You can now pick up \x01even more \x05\x41Deku Sticks\x05\x40!\x01You can carry up to \x05\x4630\x05\x40 of them!",
+    0x0097: "\x08\x13\x20You caught a \x05\x41Poe \x05\x40in a bottle!\x01Something good might happen!",
+    0x0098: "\x08\x13\x1AYou got \x05\x41Lon Lon Milk\x05\x40!\x01This milk is very nutritious!\x01There are two drinks in it.",
+    0x0099: "\x08\x13\x1BYou found \x05\x41Ruto's Letter\x05\x40 in a\x01bottle! Show it to King Zora.",
+    0x009A: "\x08\x13\x21You got a \x05\x41Weird Egg\x05\x40!\x01Feels like there's something\x01moving inside!",
+    0x00A4: "\x08\x13\x3BYou got the \x05\x42Kokiri Sword\x05\x40!\x01This is a hidden treasure of\x01the Kokiri.",
+    0x00A7: "\x08\x13\x01Now you can carry\x01many \x05\x41Deku Nuts\x05\x40!\x01You can hold up to \x05\x4630\x05\x40 nuts!",
+    0x00A8: "\x08\x13\x01You can now carry even\x01more \x05\x41Deku Nuts\x05\x40! You can carry\x01up to \x05\x4640\x05\x41 \x05\x40nuts!",
+    0x00AD: "\x08\x13\x05You got \x05\x41Din's Fire\x05\x40!\x01Its fireball engulfs everything!",
+    0x00AE: "\x08\x13\x0DYou got \x05\x42Farore's Wind\x05\x40!\x01This is warp magic you can use!",
+    0x00AF: "\x08\x13\x13You got \x05\x43Nayru's Love\x05\x40!\x01Cast this to create a powerful\x01protective barrier.",
+    0x00B4: "\x08You destroyed a \x05\x41Gold Skulltula\x05\x40.\x01You got a token proving you \x01destroyed it!",
+    0x00B5: "\x08You destroyed a \x05\x41Gold Skulltula\x05\x40.\x01You got a token proving you \x01destroyed it!",
+    0x00C2: "\x08\x13\x73You got a \x05\x41Piece of Heart\x05\x40!\x01Collect four pieces total to get\x01another Heart Container.",
+    0x00C3: "\x08\x13\x73You got a \x05\x41Piece of Heart\x05\x40!\x01So far, you've collected two \x01pieces.",
+    0x00C4: "\x08\x13\x73You got a \x05\x41Piece of Heart\x05\x40!\x01Now you've collected three \x01pieces!",
+    0x00C5: "\x08\x13\x73You got a \x05\x41Piece of Heart\x05\x40!\x01You've completed another Heart\x01Container!",
+    0x00C6: "\x08\x13\x72You got a \x05\x41Heart Container\x05\x40!\x01Your maximum life energy is \x01increased by one heart.",
+    0x00C7: "\x08\x13\x74You got the \x05\x41Boss Key\x05\x40!\x01Now you can get inside the \x01chamber where the Boss lurks.",
+    0x00CC: "\x08You got a \x05\x43Blue Rupee\x05\x40!\x01That's \x05\x43five Rupees\x05\x40!",
+    0x00CD: "\x08\x13\x53You got the \x05\x43Silver Scale\x05\x40!\x01You can dive deeper than you\x01could before.",
+    0x00CE: "\x08\x13\x54You got the \x05\x43Golden Scale\x05\x40!\x01Now you can dive much\x01deeper than you could before!",
+    0x00D1: "\x08\x06\x14You've learned \x05\x42Saria's Song\x05\x40!",
+    0x00D2: "\x08\x06\x11You've learned \x05\x41Epona's Song\x05\x40!",
+    0x00D3: "\x08\x06\x0BYou've learned the \x05\x46Sun's Song\x05\x40!",
+    0x00D4: "\x08\x06\x15You've learned \x05\x43Zelda's Lullaby\x05\x40!",
+    0x00D5: "\x08\x06\x05You've learned the \x05\x44Song of Time\x05\x40!",
+    0x00D6: "\x08You've learned the \x05\x45Song of Storms\x05\x40!",
+    0x00DC: "\x08\x13\x58You got \x05\x41Deku Seeds\x05\x40!\x01Use these as bullets\x01for your Slingshot.",
+    0x00DD: "\x08You mastered the secret sword\x01technique of the \x05\x41Spin Attack\x05\x40!",
+    0x00E4: "\x08You can now use \x05\x42Magic\x05\x40!",
+    0x00E5: "\x08Your \x05\x44defensive power\x05\x40 is enhanced!",
+    0x00E6: "\x08You got a \x05\x46bundle of arrows\x05\x40!",
+    0x00E8: "\x08Your magic power has been \x01enhanced! Now you have twice\x01as much \x05\x41Magic Power\x05\x40!",
+    0x00E9: "\x08Your defensive power has been \x01enhanced! Damage inflicted by \x01enemies will be \x05\x41reduced by half\x05\x40.",
+    0x00F0: "\x08You got a \x05\x41Red Rupee\x05\x40!\x01That's \x05\x41twenty Rupees\x05\x40!",
+    0x00F1: "\x08You got a \x05\x45Purple Rupee\x05\x40!\x01That's \x05\x45fifty Rupees\x05\x40!",
+    0x00F2: "\x08You got a \x05\x46Huge Rupee\x05\x40!\x01This Rupee is worth a whopping\x01\x05\x46two hundred Rupees\x05\x40!",
+    0x00F9: "\x08\x13\x1EYou put a \x05\x41Big Poe \x05\x40in a bottle!\x01Let's sell it at the \x05\x41Ghost Shop\x05\x40!\x01Something good might happen!",
+}
+
+
 # messages for keysanity item pickup
 # ids are in the space freed up by move_shop_item_messages()
 KEYSANITY_MESSAGES = {
@@ -104,6 +238,24 @@ KEYSANITY_MESSAGES = {
     0xa1: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for \x05\x47Ganon\'s Castle\x05\x40!\x09',
 }
 
+
+# messages for song items
+SONG_MESSAGES = {
+    0x00B0: "\x08\x06\x28You have learned the\x01\x06\x2F\x05\x42Minuet of Forest\x05\x40!",
+    0x00B1: "\x08\x06\x28You have learned the\x01\x06\x37\x05\x41Bolero of Fire\x05\x40!",
+    0x00B2: "\x08\x06\x28You have learned the\x01\x06\x29\x05\x43Serenade of Water\x05\x40!",
+    0x00B3: "\x08\x06\x28You have learned the\x01\x06\x2D\x05\x46Requiem of Spirit\x05\x40!",
+    0x00B6: "\x08\x06\x28You have learned the\x01\x06\x28\x05\x45Nocturne of Shadow\x05\x40!",
+    0x00B7: "\x08\x06\x28You have learned the\x01\x06\x32\x05\x44Prelude of Light\x05\x40!",
+    0x00B8: "\x08\x06\x15You've learned \x05\x43Zelda's Lullaby\x05\x40!",
+    0x00B9: "\x08\x06\x11You've learned \x05\x41Epona's Song\x05\x40!",
+    0x00BA: "\x08\x06\x14You've learned \x05\x42Saria's Song\x05\x40!",
+    0x00BB: "\x08\x06\x0BYou've learned the \x05\x46Sun's Song\x05\x40!",
+    0x00BC: "\x08\x06\x05You've learned the \x05\x44Song of Time\x05\x40!",
+    0x00BD: "\x08You've learned the \x05\x45Song of Storms\x05\x40!",    
+}
+
+
 # convert byte array to an integer
 def bytes_to_int(bytes, signed=False):
     return int.from_bytes(bytes, byteorder='big', signed=signed)
@@ -126,6 +278,22 @@ class Text_Code():
             return CONTROL_CODES[self.code][2](self.data)
         elif self.code in SPECIAL_CHARACTERS:
             return SPECIAL_CHARACTERS[self.code]
+        elif self.code >= 0x7F:
+            return '?'
+        else:
+            return chr(self.code)
+
+    def get_python_string(self):
+        if self.code in CONTROL_CODES:
+            ret = ''
+            subdata = self.data
+            for _ in range(0, CONTROL_CODES[self.code][1]):
+                ret = ('\\x%02X' % (subdata & 0xFF)) + ret
+                subdata = subdata >> 8
+            ret = '\\x%02X' % self.code + ret
+            return ret
+        elif self.code in SPECIAL_CHARACTERS:
+            return '\\x%02X' % self.code
         elif self.code >= 0x7F:
             return '?'
         else:
@@ -164,6 +332,12 @@ class Message():
          "Box Type: " + str(self.box_type),
          "Postion: " + str(self.position)]
         return ', '.join(meta_data) + '\n' + self.text
+
+    def get_python_string(self):
+        ret = ''
+        for code in self.text_codes:
+            ret = ret + code.get_python_string()
+        return ret
 
     # check if this is an unused message that just contains it's own id as text
     def is_id_message(self):
@@ -462,14 +636,46 @@ def move_shop_item_messages(messages, shop_items):
 
 # add the keysanity messages
 # make sure to call this AFTER move_shop_item_messages()
-def add_keysanity_messages(messages):
+def add_keysanity_messages(messages, world):
     for id, text in KEYSANITY_MESSAGES.items():
-        add_message(messages, text, id, 0x23)
+        if world.world_count > 1:
+            index = 0
+            while ord(text[index]) in CONTROL_CODES:
+                index = index + CONTROL_CODES[ord(text[index])][1] + 1
+            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
+            add_message(messages, new_text, id, 0x23)
+        else:
+            add_message(messages, text, id, 0x23)
+
+# add the song messages
+# make sure to call this AFTER move_shop_item_messages()
+def add_song_messages(messages, world):
+    for id, text in SONG_MESSAGES.items():
+        if world.world_count > 1:
+            index = 0
+            while ord(text[index]) in CONTROL_CODES:
+                index = index + CONTROL_CODES[ord(text[index])][1] + 1
+            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
+            add_message(messages, new_text, id, 0x23)
+        else:
+            add_message(messages, text, id, 0x23)
+
+# reduce item message sizes
+def update_item_messages(messages, world):
+    for id, text in ITEM_MESSAGES.items():
+        if world.world_count > 1:
+            index = 0
+            while ord(text[index]) in CONTROL_CODES:
+                index = index + CONTROL_CODES[ord(text[index])][1] + 1
+            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
+            update_message_by_id(messages, id, new_text)
+        else:
+            update_message_by_id(messages, id, text)
 
 # run all keysanity related patching to add messages for dungeon specific items
-def message_patch_for_dungeon_items(rom, messages, shop_items):
+def message_patch_for_dungeon_items(messages, shop_items, world):
     move_shop_item_messages(messages, shop_items)
-    add_keysanity_messages(messages)
+    add_keysanity_messages(messages, world)
 
 # reads each of the game's messages into a list of Message objects
 def read_messages(rom):

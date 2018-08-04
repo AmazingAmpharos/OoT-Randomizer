@@ -313,6 +313,9 @@
     jal     write_initial_save
     sb      t0, 32(s1)
 
+;==================================================================================================
+; Ocarina Song Cutscene Overrides
+;==================================================================================================
 
 ; Replaces
 ;   addu    t8,t0,t7
@@ -321,6 +324,53 @@
     jal     override_fairy_ocarina_cutscene
     addu    t8,t0,t7
 
+; a3 = item ID
+; Replaces
+; li v0,0xFF
+.org 0xAE5DF8
+    jal     override_ocarina_songs
+; sw $t7, 0xa4($t0)
+.org 0xAE5E04
+    nop
+
+; Replaces
+;lui  at,0x1
+;addu at,at,s0
+.org 0xAC9ABC
+    jal     override_requiem_song
+    nop
+
+;lw $t7, 0xa4($v1)
+;lui $v0, 0x200
+;addiu $v0, $v0, 0x24a0
+;and $t8, $t6, $t7
+.org 0xE09F68
+    lb  t7,0x0EDE(v1) ; check learned song from sun's song
+.skip 4
+.skip 4
+    andi t8, t7, 0x04 
+;addiu $t7, $zero, 1
+.org 0xE09FB0
+    jal override_suns_song
+
+; lw $t7, 0xa4($s0)
+; lui $t3, 0x8010
+; addiu $t3, $t3, -0x70cc
+; and $t8, $t6, $t7
+.org 0xB06400
+    lb  t7,0x0EDE(s0) ; check learned song from ZL
+.skip 4
+.skip 4
+    andi t8, t7, 0x02
+
+;li v1, 5
+.org 0xE29388
+    j   override_saria_song_check
+
+; li a1, 3
+.org 0xDB532C
+    jal override_song_of_time
+    
 ;==================================================================================================
 ; Fire Arrow Chest
 ;==================================================================================================
