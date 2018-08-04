@@ -124,7 +124,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Mountain Crater Entrance'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Hyrule Castle Fairy'), lambda state: state.has_explosives())
     set_rule(world.get_location('Hyrule Castle Fairy Reward'), lambda state: state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_entrance('Hyrule Castle Garden'), lambda state: state.has('Weird Egg') or (not world.shuffle_weird_egg))    
+    set_rule(world.get_entrance('Hyrule Castle Garden'), lambda state: state.has('Weird Egg') or (not world.shuffle_weird_egg))
     set_rule(world.get_entrance('Ganons Castle Grounds'), lambda state: state.is_adult())
     set_rule(world.get_entrance('Ganons Castle Fairy'), lambda state: state.has('Progressive Strength Upgrade', 3))
     set_rule(world.get_location('Ganons Castle Fairy Reward'), lambda state: state.can_play('Zeldas Lullaby'))
@@ -411,7 +411,7 @@ def global_rules(world):
     set_rule(world.get_location('GS Ice Cavern Spinning Scythe Room'), lambda state: state.has('Progressive Hookshot') and state.is_adult())
     set_rule(world.get_location('GS Ice Cavern Heart Piece Room'), lambda state: state.has('Progressive Hookshot') and state.is_adult() and state.has_bottle())
     set_rule(world.get_location('GS Ice Cavern Push Block Room'), lambda state: state.has('Progressive Hookshot') and state.is_adult() and state.has_bottle())
-    set_rule(world.get_location('GS Water Temple South Basement'), lambda state: state.has_explosives())
+    set_rule(world.get_location('GS Water Temple South Basement'), lambda state: state.has_explosives() and state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('GS Water Temple Serpent River'), lambda state: state.can_play('Song of Time') and state.has('Small Key (Water Temple)', 6))
     set_rule(world.get_location('GS Water Temple Falling Platform Room'), lambda state: state.has('Progressive Hookshot', 2))
     set_rule(world.get_location('GS Water Temple Central Room'), lambda state: state.has('Progressive Hookshot', 2) or (state.has('Farores Wind') and state.has('Magic')))
@@ -445,17 +445,16 @@ def global_rules(world):
     # Biggoron Sword at bombchu bowling seems to lead to a soft lock.
     # Unsure what causes this, but I'm leaving this to original devs.
     # For now just avoiding this combination, since BigSword is not that important.
-    forbid_item(world.get_location('Bombchu Bowling Bomb Bag'), 'Biggoron Sword')    
+    forbid_item(world.get_location('Bombchu Bowling Bomb Bag'), 'Biggoron Sword')
     forbid_item(world.get_location('Bombchu Bowling Piece of Heart'), 'Biggoron Sword')
 
     # Song locations can only be a song
-    #song_locations = [world.get_location(location) for location in 
-    #    ['Song from Composer Grave', 'Impa at Castle', 'Song from Malon', 'Song from Saria', 
-    #     'Song from Ocarina of Time', 'Song at Windmill', 'Sheik Forest Song', 'Sheik at Temple', 
+    #song_locations = [world.get_location(location) for location in
+    #    ['Song from Composer Grave', 'Impa at Castle', 'Song from Malon', 'Song from Saria',
+    #     'Song from Ocarina of Time', 'Song at Windmill', 'Sheik Forest Song', 'Sheik at Temple',
     #     'Sheik in Crater', 'Sheik in Ice Cavern', 'Sheik in Kakariko', 'Sheik at Colossus']]
     #for location in world.get_locations():
     #    if location in song_locations:
     #        add_item_rule(location, lambda item: item.type == 'Song')
     #    else:
     #        add_item_rule(location, lambda item: item.type != 'Song')
-
