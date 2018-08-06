@@ -124,7 +124,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Mountain Crater Entrance'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Hyrule Castle Fairy'), lambda state: state.has_explosives())
     set_rule(world.get_location('Hyrule Castle Fairy Reward'), lambda state: state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_entrance('Hyrule Castle Garden'), lambda state: state.has('Weird Egg') or (not world.shuffle_weird_egg))    
+    set_rule(world.get_entrance('Hyrule Castle Garden'), lambda state: state.has('Weird Egg') or (not world.shuffle_weird_egg))
     set_rule(world.get_entrance('Ganons Castle Grounds'), lambda state: state.is_adult())
     set_rule(world.get_entrance('Ganons Castle Fairy'), lambda state: state.has('Progressive Strength Upgrade', 3))
     set_rule(world.get_location('Ganons Castle Fairy Reward'), lambda state: state.can_play('Zeldas Lullaby'))
@@ -320,7 +320,7 @@ def global_rules(world):
     set_rule(world.get_location('Spirit Temple Topmost Chest'), lambda state: state.has('Mirror Shield'))
     set_rule(world.get_location('Twinrova'), lambda state: state.has('Mirror Shield') and state.has_explosives() and state.has('Progressive Hookshot') and state.has('Boss Key (Spirit Temple)'))
     set_rule(world.get_location('Twinrova Heart'), lambda state: state.has('Mirror Shield') and state.has_explosives() and state.has('Progressive Hookshot') and state.has('Boss Key (Spirit Temple)'))
-    set_rule(world.get_location('Zelda'), lambda state: state.has('Shadow Medallion') and state.has('Spirit Medallion'))
+    set_rule(world.get_location('Zelda'), lambda state: state.has('Shadow Medallion') and state.has('Spirit Medallion') and state.is_adult())
     set_rule(world.get_entrance('Ganons Castle Light Trial'), lambda state: state.has('Progressive Strength Upgrade', 3))
     set_rule(world.get_entrance('Ganons Castle Tower'), lambda state: (world.skipped_trials['Forest'] or state.has('Forest Trial Clear')) and (world.skipped_trials['Fire'] or state.has('Fire Trial Clear')) and (world.skipped_trials['Water'] or state.has('Water Trial Clear')) and (world.skipped_trials['Shadow'] or state.has('Shadow Trial Clear')) and (world.skipped_trials['Spirit'] or state.has('Spirit Trial Clear')) and (world.skipped_trials['Light'] or state.has('Light Trial Clear')))
     set_rule(world.get_location('Ganons Castle Forest Trial Clear'), lambda state: state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows') and (state.has('Fire Arrows') or state.has('Dins Fire')))
@@ -411,12 +411,12 @@ def global_rules(world):
     set_rule(world.get_location('GS Ice Cavern Spinning Scythe Room'), lambda state: state.has('Progressive Hookshot') and state.is_adult())
     set_rule(world.get_location('GS Ice Cavern Heart Piece Room'), lambda state: state.has('Progressive Hookshot') and state.is_adult() and state.has_bottle())
     set_rule(world.get_location('GS Ice Cavern Push Block Room'), lambda state: state.has('Progressive Hookshot') and state.is_adult() and state.has_bottle())
-    set_rule(world.get_location('GS Water Temple South Basement'), lambda state: state.has_explosives())
+    set_rule(world.get_location('GS Water Temple South Basement'), lambda state: state.has_explosives() and state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('GS Water Temple Serpent River'), lambda state: state.can_play('Song of Time') and state.has('Small Key (Water Temple)', 6))
     set_rule(world.get_location('GS Water Temple Falling Platform Room'), lambda state: state.has('Progressive Hookshot', 2))
     set_rule(world.get_location('GS Water Temple Central Room'), lambda state: state.has('Progressive Hookshot', 2) or (state.has('Farores Wind') and state.has('Magic')))
     set_rule(world.get_location('GS Water Temple Near Boss Key Chest'), lambda state: state.has('Progressive Hookshot', 2) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.has('Small Key (Water Temple)', 6)) #5 keys would be better but it wouldn't be compatible with the key for key scenarios, 6 will be identical pre-keysanity.
-    set_rule(world.get_location('GS Well West Inner Room'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.has('Boomerang') and (state.has('Progressive Strength Upgrade') or state.has_explosives() or state.can_see_with_lens()))
+    set_rule(world.get_location('GS Well West Inner Room'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.has('Boomerang') and state.can_see_with_lens())
     set_rule(world.get_location('GS Well East Inner Room'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.has('Boomerang') and state.can_see_with_lens())
     set_rule(world.get_location('GS Well Like Like Cage'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.has('Boomerang') and state.can_see_with_lens())
     set_rule(world.get_location('GS Shadow Temple Like Like Room'), lambda state: state.has('Progressive Hookshot'))
@@ -445,17 +445,16 @@ def global_rules(world):
     # Biggoron Sword at bombchu bowling seems to lead to a soft lock.
     # Unsure what causes this, but I'm leaving this to original devs.
     # For now just avoiding this combination, since BigSword is not that important.
-    forbid_item(world.get_location('Bombchu Bowling Bomb Bag'), 'Biggoron Sword')    
+    forbid_item(world.get_location('Bombchu Bowling Bomb Bag'), 'Biggoron Sword')
     forbid_item(world.get_location('Bombchu Bowling Piece of Heart'), 'Biggoron Sword')
 
     # Song locations can only be a song
-    #song_locations = [world.get_location(location) for location in 
-    #    ['Song from Composer Grave', 'Impa at Castle', 'Song from Malon', 'Song from Saria', 
-    #     'Song from Ocarina of Time', 'Song at Windmill', 'Sheik Forest Song', 'Sheik at Temple', 
+    #song_locations = [world.get_location(location) for location in
+    #    ['Song from Composer Grave', 'Impa at Castle', 'Song from Malon', 'Song from Saria',
+    #     'Song from Ocarina of Time', 'Song at Windmill', 'Sheik Forest Song', 'Sheik at Temple',
     #     'Sheik in Crater', 'Sheik in Ice Cavern', 'Sheik in Kakariko', 'Sheik at Colossus']]
     #for location in world.get_locations():
     #    if location in song_locations:
     #        add_item_rule(location, lambda item: item.type == 'Song')
     #    else:
     #        add_item_rule(location, lambda item: item.type != 'Song')
-
