@@ -450,6 +450,19 @@ setting_infos = [
             'group': 'logic',
             'widget': 'Checkbutton',
             'default': 'checked'
+        }), 
+    Setting_Info('shuffle_kokiri_sword', bool, 1, True, 
+        {
+            'help': '''\
+                    Shuffles the Kokiri Sword into the pool.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Shuffle Kokiri Sword',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'checked'
         }),
     Setting_Info('shuffle_weird_egg', bool, 1, True, 
         {
