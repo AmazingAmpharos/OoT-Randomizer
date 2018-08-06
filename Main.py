@@ -85,10 +85,13 @@ def main(settings):
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
                 subprocess.call(["Compress\\Compress.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+                os.remove(rom_path)
             elif platform.system() == 'Linux':
                 subprocess.call(["Compress/Compress", rom_path])
+                os.remove(rom_path)
             elif platform.system() == 'Darwin':
                 subprocess.call(["Compress/Compress.out", rom_path])
+                os.remove(rom_path)
             else:
                 logger.info('OS not supported for compression')
 

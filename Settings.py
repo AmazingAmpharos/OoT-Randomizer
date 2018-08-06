@@ -214,7 +214,7 @@ setting_infos = [
             'text': 'Compress Rom. Improves stability but will take longer to generate',
             'group': 'rom_tab',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'checked'
         }),
     Setting_Info('open_forest', bool, 1, True, 
         {
