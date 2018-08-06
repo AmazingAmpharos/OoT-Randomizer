@@ -943,6 +943,30 @@ setting_infos = [
                 'All text shuffled': 'complete',
             },
         }),
+    Setting_Info('difficulty', str, 2, True, 
+        {
+            'default': 'normal',
+            'const': 'normal',
+            'nargs': '?',
+            'choices': ['normal', 'hard', 'very_hard'],
+            'help': '''\
+                    Choose how hard the game will be.
+                    normal:         Default items
+                    hard:           Double defense, double magic, and all 8 heart containers are removed
+                    very_hard:      Double defense, double magic, Nayru's Love, and all health upgrades are removed
+                    '''
+        },
+        {
+            'text': 'Difficulty',
+            'group': 'other',
+            'widget': 'Combobox',
+            'default': 'Normal',
+            'options': {
+                'Normal': 'normal',
+                'Hard': 'hard',
+                'Very Hard': 'very_hard',
+            },
+        }),
     Setting_Info('default_targeting', str, 1, False, 
         {
             'default': 'hold',
