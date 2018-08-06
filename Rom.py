@@ -1176,11 +1176,6 @@ def patch_rom(world, rom):
         rom.write_int32(0xD7EC1C, 0x17010010)
         # song of time
         rom.write_int32(0xDB532C, 0x24050003)
-        # zelda's lullaby
-        rom.write_int32(0xB06400, 0x8E0F00A4)
-        rom.write_int32(0xB0640C, 0x01CFC024)
-        # saria's song
-        rom.write_int32(0xE29388, 0x24030005)
 
     # Set Default targeting option to Hold
     if world.default_targeting == 'hold':
