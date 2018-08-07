@@ -367,6 +367,10 @@
 .org 0xE29388
     j   override_saria_song_check
 
+;lh v0, 0xa4(t6)       ; v0 = scene
+.org 0xE2A044
+    jal  set_saria_song_flag
+
 ; li a1, 3
 .org 0xDB532C
     jal override_song_of_time

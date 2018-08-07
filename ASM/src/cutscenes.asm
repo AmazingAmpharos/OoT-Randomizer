@@ -146,7 +146,14 @@ override_saria_song_check:
     li      v0, 2
 
 @@get_item:
-    ori     t8, t4, 0x80
-    sb      t8, 0x0EDF(t7)
     jr      ra
     move    v0, v1
+
+set_saria_song_flag:
+    lh      v0, 0xa4(t6)       ; v0 = scene
+    li      t0, SAVE_CONTEXT
+    lb      t1, 0x0EDF(t0)
+    ori     t1, t1, 0x80
+    sb      t1, 0x0EDF(t0)
+    jr      ra
+    nop
