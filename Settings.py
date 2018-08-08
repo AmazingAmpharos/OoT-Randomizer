@@ -172,6 +172,7 @@ setting_infos = [
                     ''',
             'type': int}),
     Setting_Info('world_count', int, 0, False, {
+            'default': 1,
             'help': '''\
                     Use to create a multi-world generation for co-op seeds.
                     World count is the number of players. Warning: Increasing
@@ -179,6 +180,7 @@ setting_infos = [
                     ''',
             'type': int}),
     Setting_Info('player_num', int, 0, False, {
+            'default': 1,
             'help': '''\
                     Use to select world to generate when there are multiple worlds.
                     ''',
