@@ -15,6 +15,10 @@ normal_bottles = ['Bottle', 'Bottle with Milk', 'Bottle with Red Potion', 'Bottl
 normal_bottle_count = 3
 # notmapcompass = ['Rupees (5)'] * 20
 notmapcompass = ['Bombs (5)'] * 4 + ['Arrows (5)'] * 3 + ['Deku Nuts (5)'] * 3 + ['Rupees (5)'] * 7 + ['Rupees (20)'] * 2 + ['Rupees (50)']
+# 10 items get removed for hard+
+harditems = ['Bombs (5)'] * 2 + ['Arrows (5)'] * 2 + ['Deku Nuts (5)'] * 2 + ['Rupees (5)'] * 3 + ['Rupees (20)']
+# 37 items get removed for very hard
+veryharditems = ['Bombs (5)'] * 8 + ['Arrows (5)'] * 8 + ['Deku Nuts (5)'] * 8 + ['Rupees (5)'] * 10 + ['Rupees (20)'] * 2 + ['Rupees (50)']
 rewardlist = ['Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire', 'Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Spirit Medallion', 'Shadow Medallion', 'Light Medallion']
 songlist = ['Zeldas Lullaby', 'Eponas Song', 'Suns Song', 'Sarias Song', 'Song of Time', 'Song of Storms', 'Minuet of Forest', 'Prelude of Light', 'Bolero of Fire', 'Serenade of Water', 'Nocturne of Shadow', 'Requiem of Spirit']
 skulltulla_locations = (['GS Kokiri Know It All House', 'GS Kokiri Bean Patch', 'GS Kokiri House of Twins', 'GS Lost Woods Bean Patch Near Bridge', 'GS Lost Woods Bean Patch Near Stage', 'GS Lost Woods Above Stage', 'GS Sacred Forest Meadow', 'GS Deku Tree Compass Room', 'GS Deku Tree Basement Vines', 'GS Deku Tree Basement Gate', 'GS Deku Tree Basement Back Room', 'GS Hyrule Field near Kakariko', 'GS Hyrule Field Near Gerudo Valley', 'GS Castle Market Guard House', 'GS Hyrule Castle Tree', 'GS Hyrule Castle Grotto', 'GS Outside Ganon\'s Castle', 'GS Lon Lon Ranch Tree', 'GS Lon Lon Ranch Rain Shed', 'GS Lon Lon Ranch House Window'] +
@@ -107,11 +111,11 @@ def get_pool_core(world):
         pool.extend(['Ice Trap'] * 6)
         
     if world.difficulty == 'hard' or world.difficulty == 'very_hard':
-        pool.extend(['Rupees (5)'] * 10)
+        pool.extend(harditems)
     else:
         pool.extend(['Magic Meter', 'Double Defense'] + ['Heart Container'] * 8)
     if world.difficulty == 'very_hard':
-        pool.extend(['Rupees (5)'] * 37)
+        pool.extend(veryharditems)
     else:
         pool.extend(['Nayrus Love', 'Piece of Heart (Treasure Chest Game)'] + ['Piece of Heart'] * 35)
 
