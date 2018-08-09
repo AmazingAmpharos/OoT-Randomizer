@@ -129,3 +129,14 @@ Similar to the tunic color options, you can change Navi's color for each of her 
 - Chests summoned by Zelda's Lullaby
 - Chests summoned by Sun's Song Triggered
 - Chests summoned by a switch that do not fall
+
+## Difficulty options
+
+If you seek an additional challenge in regards to combat during the randomizer, you can increase the difficulty with the following settings:
+
+- `normal`: no changes to the item pool
+- `hard`: double defense, double magic, and all 8 heart containers are removed
+- `very_hard`: Double defense, double magic, Nayru's Love, and all health upgrades are removed
+
+The `hard` difficulty still leaves the heart pieces in the pool, so you can gain up to 12 hearts total, likely a few less though. It also doesn't remove NL, but still takes away double magic so it can't be spammed for multiple minutes of invulnerability.
+The `very_hard` difficulty just takes it all away, meaning the player will stay at 3 hearts without double defense or Nayru's Love.
