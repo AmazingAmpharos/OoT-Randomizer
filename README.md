@@ -19,6 +19,7 @@ The following were added or majorly changed on this fork:
 - Giant stairs in Dodongo's Cavern can be lowered with the Bow as an adult (quickly shoot a bomb flower on both side of the stairs)
 - The start of child-side Spirit Temple can be done with bombchus (aim the bombchu directly away from the bridge so that it crawls up the wall, across the ceiling, down the raised bridge, and explodes in front of the switch)
 - The skulltula token in the central room of the Water Temple can be obtained without longshot by setting Farore's Wind in the room and using it to return to the room when the water level is back at its highest level
+- In order to fix a potential softlock, Like-Likes do not steal tunics, but can still steal shields.
 
 ## Optional Logic changes
 
