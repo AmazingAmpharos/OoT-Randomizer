@@ -25,7 +25,8 @@ def main(settings):
     # initialize the world
 
     worlds = []
-
+    if settings.compress_rom == 'None':
+        settings.create_spoiler = True
     if not settings.world_count:
         settings.world_count = 1
     if settings.world_count < 1:
@@ -74,14 +75,14 @@ def main(settings):
 
     output_dir = default_output_path(settings.output_dir)
 
-    if not settings.suppress_rom:
+    if settings.compress_rom != 'None':
         rom = LocalRom(settings)
         patch_rom(worlds[settings.player_num - 1], rom)
 
         rom_path = os.path.join(output_dir, '%s.z64' % outfilebase)
 
         rom.write_to_file(rom_path)
-        if settings.compress_rom:
+        if settings.compress_rom == 'True':
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
                 subprocess.call(["Compress\\Compress.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])

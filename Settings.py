@@ -194,29 +194,43 @@ setting_infos = [
             'text': 'Create Spoiler Log',
             'group': 'rom_tab',
             'widget': 'Checkbutton',
-            'default': 'checked'
+            'default': 'checked',
+            'dependency': lambda guivar: guivar['compress_rom'].get() != 'No ROM Output',
+            'tooltip':'''\
+                      Enabling this will change the seed.
+                      '''
         }),
-    Setting_Info('suppress_rom', bool, 0, False, 
+    Setting_Info('compress_rom', str, 2, False, 
         {
-            'help': 'Do not create an output rom file.',
-            'action': 'store_true'
-        }, 
-        {
-            'text': 'Do not create Rom',
-            'group': 'rom_tab',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),
-    Setting_Info('compress_rom', bool, 0, False, 
-        {
-            'help': 'Create a compressed version of the output rom file.',
-            'action': 'store_true'
+            'default': 'True',
+            'const': 'True',
+            'nargs': '?',
+            'choices': ['True', 'False', 'None'],
+            'help': '''\
+                    Create a compressed version of the output rom file.
+                    True: Compresses. Improves stability. Will take longer to generate
+                    False: Uncompressed. Unstable. Faster generation
+                    None: No ROM Output. Creates spoiler log only
+                    ''',
+            'action': 'store_true'        
         },
         {
-            'text': 'Compress Rom. Improves stability but will take longer to generate',
+            'text': 'Compress Rom',
             'group': 'rom_tab',
-            'widget': 'Checkbutton',
-            'default': 'checked'
+            'widget': 'Radiobutton',
+            'default': 'Compressed [Stable]',
+            'horizontal': True,
+            'options': {
+                'Compressed [Stable]': 'True',
+                'Uncompressed [Crashes]': 'False',
+                'No ROM Output': 'None',
+            },
+            'tooltip':'''\
+                      The first time compressed generation will take a while 
+                      but subsequent generations will be quick. It is highly 
+                      recommended to compress or the game will crash 
+                      frequently.
+                      '''
         }),
     Setting_Info('open_forest', bool, 1, True, 
         {
@@ -230,11 +244,16 @@ setting_infos = [
             'text': 'Open Forest',
             'group': 'open',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'checked',
+            'tooltip':'''\
+                      The Deku Tree can be beaten without leaving the Forest
+                      areas. This means that the Kokiri Sword and Slingshot
+                      are always available somewhere in the forest.
+                      '''
         }),
     Setting_Info('open_door_of_time', bool, 1, True, 
         {
-            'help': '''\
+            'help': '''
                     The Door of Time is open from the beginning of the game.
                     ''',
             'action': 'store_true'
@@ -243,7 +262,13 @@ setting_infos = [
             'text': 'Open Door of Time',
             'group': 'open',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      The Door of Time starts opened instead of needing to
+                      play the Song of Time. Setting closed will mean there
+                      is a child section before becoming adult, so there is
+                      more structure.
+                      '''
         }),
     Setting_Info('gerudo_fortress', str, 2, True, 
         {
@@ -251,11 +276,10 @@ setting_infos = [
             'const': 'normal',
             'nargs': '?',
             'choices': ['normal', 'fast', 'open'],
-            'help': '''\
-                    Select how much of Gerudo Fortress is required. (default: %(default)s)
-                    Normal: Free all four carpenters to get the Gerudo Card.
-                    Fast:   Free only the carpenter closest to Link's prison to get the Gerudo Card.
-                    Open:   Start with the Gerudo Card and all it's benefits.
+            'help': '''Select how much of Gerudo Fortress is required. (default: %(default)s)
+                       Normal: Free all four carpenters to get the Gerudo Card.
+                       Fast:   Free only the carpenter closest to Link's prison to get the Gerudo Card.
+                       Open:   Start with the Gerudo Card and all it's benefits.
                     '''
         },
         {
@@ -268,6 +292,13 @@ setting_infos = [
                 'Rescue one carpenter': 'fast',
                 'Start with Gerudo Card': 'open',
             },
+            'tooltip':'''\
+                      'Rescure one carpenter': The carpenter rescue sequence 
+                      is much faster and doesn't affect logic much.
+
+                      'Start with Gerudo Card': skips the rescue entirely, 
+                      so Epona and Longshot are not required to enter GTG.
+                      '''
         }),
     Setting_Info('bridge', str, 2, True, 
         {
@@ -294,6 +325,16 @@ setting_infos = [
                 'Vanilla requirements': 'vanilla',
                 'Always open': 'open',
             },
+            'tooltip':'''\
+                      'All dungeons': All Medallions and Stones
+
+                      'All medallions': Medallions but no Stones
+
+                      'Vanilla requirements': Spirit and Shadow 
+                      Medallion and the Light Arrows
+
+                      'Always open': Nothing
+                      '''
         }),
     Setting_Info('bombchus_in_logic', bool, 1, True, 
         {
@@ -309,7 +350,19 @@ setting_infos = [
             'text': 'Bombchus are considered in logic',
             'group': 'logic',
             'widget': 'Checkbutton',
-            'default': 'checked'
+            'default': 'checked',
+            'tooltip':'''\
+                      Bombchus are properly considered in logic.
+
+                      The first bombchu pack will always be 20.
+                      Subsequent packs will be 5 or 10 based on
+                      how many you have. 
+
+                      Bombchus can be purchased for 60/99/180 
+                      rupees once they are been found.
+
+                      Bombchu Bowling opens with bombchus.
+                      '''
         }),
     Setting_Info('trials', int, 3, True, 
         {
@@ -330,6 +383,11 @@ setting_infos = [
             'default': 6,
             'min': 0,
             'max': 6,
+            'tooltip':'''\
+                      Trials are randomly selected. If hints are
+                      enabled, then there will be hints for which
+                      trials need to be completed.
+                      '''
         }),
     Setting_Info('no_escape_sequence', bool, 1, True, 
         {
@@ -342,7 +400,11 @@ setting_infos = [
             'text': 'Skip Tower Collapse Escape Sequence',
             'group': 'convenience',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      The tower collapse escape sequence between 
+                      Ganondorf and Ganon will be skipped.
+                      '''
         }),
     Setting_Info('no_guard_stealth', bool, 1, True, 
         {
@@ -355,7 +417,11 @@ setting_infos = [
             'text': 'Skip Interior Castle Guard Stealth Sequence',
             'group': 'convenience',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      The crawlspace into Hyrule Castle goes
+                      straight to zelda, skipping the guards.
+                      '''
         }),
     Setting_Info('no_epona_race', bool, 1, True, 
         {
@@ -368,7 +434,11 @@ setting_infos = [
             'text': 'Skip Epona Race',
             'group': 'convenience',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Epona can be summoned with Epona's Song
+                      without needed to race Ingo.
+                      '''
         }),
     Setting_Info('only_one_big_poe', bool, 1, True, 
         {
@@ -381,7 +451,10 @@ setting_infos = [
             'text': 'Big Poe Reward only requires one Big Poe',
             'group': 'convenience',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Makes Big Poes less tedious.
+                      '''
         }),
     Setting_Info('fast_chests', bool, 1, True, 
         {
@@ -394,7 +467,11 @@ setting_infos = [
             'text': 'Fast Chest Cutscenes',
             'group': 'convenience',
             'widget': 'Checkbutton',
-            'default': 'checked'
+            'default': 'checked',
+            'tooltip':'''\
+                      All chest animations are fast. If disabled,
+                      the animation time is slow for major items.
+                      '''
         }),
     Setting_Info('free_scarecrow', bool, 1, True, 
         {
@@ -409,7 +486,11 @@ setting_infos = [
             'text': 'Start with Scarecrow Song',
             'group': 'convenience',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Skips needing to go to Lake Hylia as both
+                      child and adult to learn Scarecrow Song.
+                      '''
         }),
     Setting_Info('scarecrow_song', str, 0, False, 
         {
@@ -422,7 +503,17 @@ setting_infos = [
             'group': 'convenience',
             'widget': 'Entry',
             'default': 'DAAAAAAA',
-            'dependency': lambda guivar: guivar['free_scarecrow'].get()
+            'dependency': lambda guivar: guivar['free_scarecrow'].get(),
+            'tooltip':'''\
+                      Song must be 8 notes long and have at least 
+                      two different notes.
+                      Valid notes are: 
+                      'A': A Button 
+                      'D': C-Down
+                      'U': C-Up
+                      'L': C-Left 
+                      'R': C-Right
+                      '''
         }),
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
@@ -435,7 +526,12 @@ setting_infos = [
             'text': 'Remove Ganon\'s Boss Door Lock',
             'group': 'open',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Best when used when reducing the number of 
+                      Trials to less than 6 to prevent needing
+                      to do them all anyways looking for the key.
+                      '''
         }),
     Setting_Info('all_reachable', bool, 1, True, 
         {
@@ -451,7 +547,12 @@ setting_infos = [
             'text': 'All Locations Reachable',
             'group': 'logic',
             'widget': 'Checkbutton',
-            'default': 'checked'
+            'default': 'checked',
+            'tooltip':'''\
+                      Chests that lock themselves can still exists.
+                      When disabled, some locations and item might 
+                      not be reachable.
+                      '''
         }), 
     Setting_Info('shuffle_kokiri_sword', bool, 1, True, 
         {
@@ -464,7 +565,11 @@ setting_infos = [
             'text': 'Shuffle Kokiri Sword',
             'group': 'logic',
             'widget': 'Checkbutton',
-            'default': 'checked'
+            'default': 'checked',
+            'tooltip':'''\
+                      Disabling this will make the Kokiri Sword
+                      always available at the start.
+                      '''
         }),
     Setting_Info('shuffle_weird_egg', bool, 1, True, 
         {
@@ -478,7 +583,12 @@ setting_infos = [
             'text': 'Shuffle Weird Egg',
             'group': 'logic',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'checked',
+            'tooltip':'''\
+                      You need to find the egg before going Zelda.
+                      This means the Weird Egg locks the items from
+                      Impa, Saria, Malon, and Talon.
+                      '''
         }),
     Setting_Info('shuffle_ocarinas', bool, 1, True, 
         {
@@ -492,7 +602,16 @@ setting_infos = [
             'text': 'Shuffle Ocarinas',
             'group': 'logic',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'checked',
+            'tooltip':'''\
+                      The Fairy Ocarina and Ocarina of Time are
+                      randomized. One will be required before 
+                      songs can be played. 
+
+                      This is good in combination with Closed 
+                      Door of Time for a more interesting child 
+                      section.
+                      '''
         }),
     Setting_Info('shuffle_song_items', bool, 1, True, 
         {
@@ -507,7 +626,13 @@ setting_infos = [
             'text': 'Shuffle Songs with Items',
             'group': 'logic',
             'widget': 'Checkbutton',
-            'default': 'unchecked',
+            'default': 'checked',
+            'tooltip':'''\
+                      Songs can appear anywhere not just Vanilla
+                      song locations. This significantly reduces
+                      song placement bias and makes the songs more
+                      evenly distributed.
+                      '''
         }),
     Setting_Info('shuffle_gerudo_card', bool, 1, True, 
         {
@@ -524,8 +649,35 @@ setting_infos = [
             'group': 'logic',
             'widget': 'Checkbutton',
             'default': 'unchecked',
-            'dependency': lambda guivar: guivar['gerudo_fortress'].get() != 'Start with Gerudo Card'
+            'dependency': lambda guivar: guivar['gerudo_fortress'].get() != 'Start with Gerudo Card',
+            'tooltip':'''\
+                      Gerudo Membership Card is required to
+                      enter Gerudo Training Grounds. It is
+                      effectively the Boss Key of Gerudo Fortress.
+
+                      Plays spiritually best with Keysanity.
+                      '''
         }),
+    Setting_Info('nodungeonitems', bool, 1, True, 
+        {
+            'help': '''\
+                    Remove Maps and Compasses from Itempool, replacing them by
+                    empty slots.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Remove Maps and Compasses',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                      Dungeons will have 2 more possible item
+                      locations. This helps make some dungeons
+                      more profitable, such as Ice Cavern and 
+                      Jabu Jabu's Belly.
+                      '''
+        }),    
     Setting_Info('keysanity', bool, 1, True, 
         {
             'help': '''\
@@ -538,7 +690,15 @@ setting_infos = [
             'text': 'Keysanity',
             'group': 'logic',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Dungeon items can appear outside of their
+                      respective dungeon. Gerudo Fortress keys
+                      are also shuffled. 
+
+                      A difficult mode since it it more likely
+                      to need to enter a dungeon multiple times.
+                      '''
         }),
     Setting_Info('tokensanity', str, 2, True, 
         {
@@ -564,47 +724,20 @@ setting_infos = [
                 'Dungeons Only': 'dungeons',
                 'All Tokens': 'all',
             },
-        }),
-    Setting_Info('ohko', bool, 1, True, 
-        {
-            'help': '''\
-                    Link will die in one hit.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'OHKO',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),    
-    Setting_Info('nodungeonitems', bool, 1, True, 
-        {
-            'help': '''\
-                    Remove Maps and Compasses from Itempool, replacing them by
-                    empty slots.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Remove Maps and Compasses',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),
-    Setting_Info('progressive_bombchus', bool, 1, True, 
-        {
-            'help': '''\
-                    Bombchus amounts are progressive. 20 pack first time.
-                    Other bombchus will give 10 when low on bombchus, otherwise 5.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Progressive Bombchus',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'tooltip':'''\
+                      Token reward from Gold Skulltulas are 
+                      shuffled into the pool.
+
+                      'Dungeon Only': This helps make some 
+                      dungeons more profitable, such as 
+                      Ice Cavern and Jabu Jabu's Belly.
+                      Some GS locations in dungeons have
+                      interesting requirements to reach.
+                      This is a recommended option.
+
+                      'All Tokens': Effectively adds 100
+                      new locations for items to appear.
+                      '''
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
@@ -625,7 +758,9 @@ setting_infos = [
             'min': 0,
             'max': 50,
             'step': 10,
-
+            'tooltip':'''\
+                      Skulltula Token rewards are time consuming.
+                      '''
         }),
     Setting_Info('logic_no_night_tokens_without_suns_song', bool, 1, True, 
         {
@@ -639,7 +774,14 @@ setting_infos = [
             'text': 'No Nighttime Skulltulas without Sun\'s Song',
             'group': 'rewards',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Skulltula Token that can only be obtained
+                      during the night expect you to have Sun's
+                      Song because needed to collect them. This
+                      option prevents needing to wait for time
+                      of day for some locations.
+                      '''
         }),
     Setting_Info('logic_no_big_poes', bool, 1, True, 
         {
@@ -652,7 +794,10 @@ setting_infos = [
             'text': 'No Big Poes',
             'group': 'rewards',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Big Poes reward is time consuming
+                      '''
         }),
     Setting_Info('logic_no_child_fishing', bool, 1, True, 
         {
@@ -665,7 +810,11 @@ setting_infos = [
             'text': 'No Child Fishing',
             'group': 'rewards',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Fishing does not work correctly on
+                      some emulators.
+                      '''
         }),
     Setting_Info('logic_no_adult_fishing', bool, 1, True, 
         {
@@ -678,7 +827,11 @@ setting_infos = [
             'text': 'No Adult Fishing',
             'group': 'rewards',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Fishing does not work correctly on
+                      some emulators.
+                      '''
         }),
     Setting_Info('logic_no_trade_skull_mask', bool, 1, True, 
         {
@@ -691,7 +844,10 @@ setting_infos = [
             'text': 'No Skull Mask reward',
             'group': 'rewards',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Mask trade quest is time consuming.
+                      '''
         }),
     Setting_Info('logic_no_trade_mask_of_truth', bool, 1, True, 
         {
@@ -704,7 +860,12 @@ setting_infos = [
             'text': 'No Mask of Truth reward',
             'group': 'rewards',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Completing mask trade quest is very
+                      time consuming and requires all 3
+                      Spiritual Stones.
+                      '''
         }),
     Setting_Info('logic_no_trade_biggoron', bool, 1, True, 
         {
@@ -717,7 +878,10 @@ setting_infos = [
             'text': 'No Biggoron reward',
             'group': 'rewards',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Adult trade sequence is time consuming.
+                      '''
         }),
     Setting_Info('logic_no_1500_archery', bool, 1, True, 
         {
@@ -730,7 +894,11 @@ setting_infos = [
             'text': 'No 1500 Horseback Archery',
             'group': 'rewards',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Some find this too difficult on emulator.
+                      Also it is doing the same thing twice.
+                      '''
         }),
     Setting_Info('logic_no_memory_game', bool, 1, True, 
         {
@@ -743,7 +911,10 @@ setting_infos = [
             'text': 'No Lost Woods Memory Game',
             'group': 'rewards',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Memory game is time consuming.
+                      '''
         }),
     Setting_Info('logic_no_second_dampe_race', bool, 1, True, 
         {
@@ -756,7 +927,10 @@ setting_infos = [
             'text': 'No Racing Dampe a second time',
             'group': 'rewards',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Racing twice is repetitive.
+                      '''
         }),
     Setting_Info('logic_man_on_roof', bool, 1, True, 
         {
@@ -769,7 +943,11 @@ setting_infos = [
             'text': 'Man on Roof without Hookshot',
             'group': 'tricks',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Can be reached by side-hopping off of
+                      the watchtower.
+                      '''
         }),
     Setting_Info('logic_child_deadhand', bool, 1, True, 
         {
@@ -782,7 +960,10 @@ setting_infos = [
             'text': 'Child Deadhand without Kokiri Sword',
             'group': 'tricks',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Requires 9 sticks or 5 jump slashes.
+                      '''
         }),
     Setting_Info('logic_dc_jump', bool, 1, True, 
         {
@@ -796,7 +977,10 @@ setting_infos = [
             'text': 'Dodongo\'s Cavern spike trap room jump without Hover Boots',
             'group': 'tricks',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Jump is adult only.
+                      '''
         }),
     Setting_Info('logic_windmill_hp', bool, 1, True, 
         {
@@ -809,7 +993,11 @@ setting_infos = [
             'text': 'Windmill HP as adult with nothing',
             'group': 'tricks',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Can jump up to the spinning platform from
+                      below as adult.
+                      '''
         }),
     Setting_Info('logic_crater_bean_hp_with_hovers', bool, 1, True, 
         {
@@ -823,20 +1011,43 @@ setting_infos = [
             'text': "Crater's bean HP with Hover Boots",
             'group': 'tricks',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Hover from the top of the crater.
+                      '''
         }),
-    Setting_Info('logic_zora_with_cucco_or_hovers', bool, 1, True, 
+    Setting_Info('logic_zora_with_cucco', bool, 1, True, 
         {
             'help': '''\
-                    Zora's Domain can be entered with a Cucco and Hover Boots in logic.
+                    Zora's Domain can be entered with a Cucco as child in logic.
                     ''',
             'action': 'store_true'
         },
         {
-            'text': "Zora's Domain entry with Cucco or Hover Boots",
+            'text': "Zora's Domain entry with Cucco",
             'group': 'tricks',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Can fly behind the waterfall with 
+                      a cucco as child.
+                      '''
+        }),
+    Setting_Info('logic_zora_with_hovers', bool, 1, True, 
+        {
+            'help': '''\
+                    Zora's Domain can be entered with Hover Boots as Adult in logic.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Zora's Domain entry with Hover Boots",
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Can hover behind the waterfall as adult.
+                      '''
         }),
     Setting_Info('logic_fewer_tunic_requirements', bool, 1, True, 
         {
@@ -853,7 +1064,19 @@ setting_infos = [
             'text': "Fewer Tunic Requirements",
             'group': 'tricks',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Allows the following possible without Tunics:
+                      - Enter Water Temple. The key below the center
+                      pillar still requires Zora Tunic.
+                      - Enter Fire Temple. Only the first floor is
+                      accessible, and not Volvagia.
+                      - Zoras Fountain Bottom Freestanding PoH.
+                      Might not have enough health to resurface.
+                      - Gerudo Training Grounds Underwater 
+                      Silver Rupee Chest. Will need to make multiple
+                      trips.
+                      '''
         }),
     Setting_Info('logic_lens', str, 2, True, 
         {
@@ -878,6 +1101,16 @@ setting_infos = [
                 'Wasteland and Chest Minigame': 'chest-wasteland',
                 'Only Chest Minigame': 'chest',
             },
+            'tooltip':'''\
+                      'Required everywhere': every invisible or 
+                      fake object will expect you to have the
+                      Lens of Truth and Magic. The exception is
+                      passing through the first wall in Bottom of
+                      the Well, since that is required in Vanilla.
+
+                      'Wasteland': The lens is needed to follow
+                      the ghost guide across the Desert Wasteland.
+                      '''
         }),
     Setting_Info('ocarina_songs', bool, 1, True, 
         {
@@ -890,7 +1123,13 @@ setting_infos = [
             'text': 'Randomize ocarina song notes',
             'group': 'other',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Will need to memorize a new set of songs.
+                      Can be silly, but difficult. Song are
+                      generally sensible, and warp songs are
+                      typically more difficult.
+                      '''
         }),
     Setting_Info('correct_chest_sizes', bool, 1, True, 
         {
@@ -906,7 +1145,14 @@ setting_infos = [
             'text': 'Chests size matches contents',
             'group': 'other',
             'widget': 'Checkbutton',
-            'default': 'unchecked'
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Chests will be large if they contain a major 
+                      item and small if not. Allows skipping 
+                      chests if they are small. However skipping
+                      small chests will mean having low health,
+                      ammo, and rupees, so doing so is a risk.
+                      '''
         }),
     Setting_Info('hints', str, 2, True, 
         {
@@ -926,13 +1172,29 @@ setting_infos = [
             'text': 'Gossip Stones',
             'group': 'other',
             'widget': 'Combobox',
-            'default': 'Hints; Need Stone of Agony',
+            'default': 'Hints; Need Nothing',
             'options': {
                 'No Hints': 'none',
                 'Hints; Need Mask of Truth': 'mask',
                 'Hints; Need Stone of Agony': 'agony',
                 'Hints; Need Nothing': 'always',
             },
+            'tooltip':'''\
+                      Hints allow for more dynamic routing.
+                      Spending time to gain knowledge of the
+                      world can give better routing plans
+                      and potentially save time.
+
+                      Hints for 'on the way of the hero' are
+                      locations that contain items that are
+                      required to beat the game.
+
+                      It is recommended to play with
+                      'Hints; Need Nothing'. Requiring the
+                      Stone of Agony generally requires
+                      backtracking to locations for the hints,
+                      which make them often not worthwhile.
+                      '''
         }),
     Setting_Info('text_shuffle', str, 2, True, 
         {
@@ -954,21 +1216,30 @@ setting_infos = [
             'default': 'No text shuffled',
             'options': {
                 'No text shuffled': 'none',
-                'Shuffled except Hints': 'except_hints',
+                'Shuffled except Hints and Keys': 'except_hints',
                 'All text shuffled': 'complete',
             },
+            'tooltip':'''\
+                      Will make things confusing for comedic value.
+
+                      'Shuffled except Hints and Keys': Key texts
+                      not shuffled because in keysanity it is
+                      impossible to tell what dungeon it is for
+                      without the correct text.
+                      '''
         }),
     Setting_Info('difficulty', str, 2, True, 
         {
             'default': 'normal',
             'const': 'normal',
             'nargs': '?',
-            'choices': ['normal', 'hard', 'very_hard'],
+            'choices': ['normal', 'hard', 'very_hard', 'ohko'],
             'help': '''\
                     Choose how hard the game will be.
                     normal:         Default items
                     hard:           Double defense, double magic, and all 8 heart containers are removed
                     very_hard:      Double defense, double magic, Nayru's Love, and all health upgrades are removed
+                    ohko:           Same as very hard, and Link will die in one hit.
                     '''
         },
         {
@@ -980,7 +1251,20 @@ setting_infos = [
                 'Normal': 'normal',
                 'Hard': 'hard',
                 'Very Hard': 'very_hard',
+                'OHKO': 'ohko'
             },
+            'tooltip':'''\
+                      Makes health less available
+
+                      'Hard': Heart Containers, Double Magic,
+                      and Double Defense are removed.
+
+                      'Very Hard': Heart Containers, Heart,
+                      Pieces, Double Magic, Double Defense, 
+                      and Nayru's Love are removed.
+
+                      'OHKO': Link dies in one hit.
+                      '''
         }),
     Setting_Info('default_targeting', str, 1, False, 
         {
@@ -1000,7 +1284,7 @@ setting_infos = [
             'options': {
                 'Hold': 'hold',
                 'Switch': 'switch',
-            },
+            }
         }),
 
 
@@ -1013,9 +1297,7 @@ setting_infos = [
             'choices': get_tunic_color_options(),
             'help': '''\
                     Choose the color for Link's Kokiri Tunic. (default: %(default)s)
-                    Color:              Make the Kokiri Tunic this color.
-                    Random Choice:      Choose a random color from this list of colors.
-                    Comepletely Random: Choose a random color from any color the N64 can draw.
+                    
                     '''
         },
         {
@@ -1024,6 +1306,12 @@ setting_infos = [
             'widget': 'Combobox',
             'default': 'Kokiri Green',
             'options': get_tunic_color_options(),
+            'tooltip':'''\
+                      'Random Choice': Choose a random 
+                      color from this list of colors.
+                      'Comepletely Random': Choose a random 
+                      color from any color the N64 can draw.
+                      '''
         }),
     Setting_Info('goroncolor', str, 0, False, 
         {
@@ -1044,6 +1332,12 @@ setting_infos = [
             'widget': 'Combobox',
             'default': 'Goron Red',
             'options': get_tunic_color_options(),
+            'tooltip':'''\
+                      'Random Choice': Choose a random 
+                      color from this list of colors.
+                      'Comepletely Random': Choose a random 
+                      color from any color the N64 can draw.
+                      '''
         }),
     Setting_Info('zoracolor', str, 0, False, 
         {
@@ -1064,6 +1358,12 @@ setting_infos = [
             'widget': 'Combobox',
             'default': 'Zora Blue',
             'options': get_tunic_color_options(),
+            'tooltip':'''\
+                      'Random Choice': Choose a random 
+                      color from this list of colors.
+                      'Comepletely Random': Choose a random 
+                      color from any color the N64 can draw.
+                      '''
         }),
     Setting_Info('navicolordefault', str, 0, False, 
         {
@@ -1084,6 +1384,12 @@ setting_infos = [
             'widget': 'Combobox',
             'default': 'White',
             'options': get_navi_color_options(),
+            'tooltip':'''\
+                      'Random Choice': Choose a random 
+                      color from this list of colors.
+                      'Comepletely Random': Choose a random 
+                      color from any color the N64 can draw.
+                      '''
         }),
     Setting_Info('navicolorenemy', str, 0, False, 
         {
@@ -1104,6 +1410,12 @@ setting_infos = [
             'widget': 'Combobox',
             'default': 'Yellow',
             'options': get_navi_color_options(),
+            'tooltip':'''\
+                      'Random Choice': Choose a random 
+                      color from this list of colors.
+                      'Comepletely Random': Choose a random 
+                      color from any color the N64 can draw.
+                      '''
         }),
     Setting_Info('navicolornpc', str, 0, False, 
         {
@@ -1124,6 +1436,12 @@ setting_infos = [
             'widget': 'Combobox',
             'default': 'Light Blue',
             'options': get_navi_color_options(),
+            'tooltip':'''\
+                      'Random Choice': Choose a random 
+                      color from this list of colors.
+                      'Comepletely Random': Choose a random 
+                      color from any color the N64 can draw.
+                      '''
         }),
     Setting_Info('navicolorprop', str, 0, False, 
         {
@@ -1144,6 +1462,12 @@ setting_infos = [
             'widget': 'Combobox',
             'default': 'Green',
             'options': get_navi_color_options(),
+            'tooltip':'''\
+                      'Random Choice': Choose a random 
+                      color from this list of colors.
+                      'Comepletely Random': Choose a random 
+                      color from any color the N64 can draw.
+                      '''
         }),
     Setting_Info('healthSFX', str, 0, False, 
         {
@@ -1177,7 +1501,12 @@ setting_infos = [
                 'Cluck', 
                 'Mweep!', 
                 'None',
-            ]
+            ],
+            'tooltip':'''\
+                      'Random Choice': Choose a random 
+                      sound from this list of colors.
+                      'Default': Beep. Beep. Beep.
+                      '''
         }),
 ]
 

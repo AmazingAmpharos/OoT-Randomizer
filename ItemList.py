@@ -300,21 +300,22 @@ def get_pool_core(world):
     else:
         pool.extend(['Gold Skulltulla Token'] * 100)
 
-    if world.progressive_bombchus:
+    if world.bombchus_in_logic:
         pool.extend(['Bombchus'] * 5)
     else:
         pool.extend(['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'])
 
-    if world.ohko:
+    if world.difficulty == 'ohko':
         pool.extend(['Recovery Heart'] * 6)
     else:
-        pool.extend(['Ice Trap'] * 6)
-        
-    if world.difficulty == 'hard' or world.difficulty == 'very_hard':
-        pool.extend(harditems)
-    else:
+        pool.extend(['Ice Trap'] * 6)        
+
+    if world.difficulty == 'normal':
         pool.extend(['Magic Meter', 'Double Defense'] + ['Heart Container'] * 8)
-    if world.difficulty == 'very_hard':
+    else:
+        pool.extend(harditems)
+
+    if world.difficulty == 'very_hard' or world.difficulty == 'ohko':
         pool.extend(veryharditems)
     else:
         pool.extend(['Nayrus Love', 'Piece of Heart (Treasure Chest Game)'] + ['Piece of Heart'] * 35)

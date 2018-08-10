@@ -1182,7 +1182,7 @@ def patch_rom(world, rom):
         rom.write_bytes(0xB07200, [0x20, 0x0C, 0x00, 0x01 ])
 
     # Set OHKO mode
-    if world.ohko:
+    if world.difficulty == 'ohko':
         rom.write_int32(0xAE80A8, 0xA4A00030) # sh  zero,48(a1)
         rom.write_int32(0xAE80B4, 0x06000003) # bltz s0, +0003
 
