@@ -30,6 +30,7 @@ class World(object):
         # group a few others
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
         self.navi_colors = [self.navicolordefault, self.navicolorenemy, self.navicolornpc, self.navicolorprop]
+        self.navi_hint_sounds = [self.navisfxoverworld, self.navisfxenemytarget]
         # trials that can be skipped will be decided later
         self.skipped_trials = {
             'Forest': False,
