@@ -1472,6 +1472,76 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
+    Setting_Info('navisfxoverworld', str, 0, False, 
+        {
+            'default': 'Default',
+            'const': 'Default',
+            'nargs': '?',
+            'choices': ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Navi - Random', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'],
+            'help': '''\
+                    Select the sound effect that plays when Navi has a hint. (default: %(default)s)
+                    Sound:         Replace the sound effect with the chosen sound.
+                    Random Chocie: Replace the sound effect with a random sound from this list.
+                    None:          Eliminate Navi hint sounds.
+                    '''
+        },
+        {
+            'text': 'Navi Hint',
+            'group': 'navihint',
+            'widget': 'Combobox',
+            'default': 'Default',
+            'options': [
+                'Random Choice', 
+                'Default', 
+                'Notification', 
+                'Rupee', 
+                'Timer', 
+                'Tamborine', 
+                'Recovery Heart', 
+                'Carrot Refill', 
+                'Navi - Hey!',
+                'Navi - Random',
+                'Zelda - Gasp', 
+                'Cluck', 
+                'Mweep!', 
+                'None',
+            ]
+        }),
+        Setting_Info('navisfxenemytarget', str, 0, False, 
+        {
+            'default': 'Default',
+            'const': 'Default',
+            'nargs': '?',
+            'choices': ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Navi - Random', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'],
+            'help': '''\
+                    Select the sound effect that plays when Navi has a hint. (default: %(default)s)
+                    Sound:         Replace the sound effect with the chosen sound.
+                    Random Chocie: Replace the sound effect with a random sound from this list.
+                    None:          Eliminate Navi hint sounds.
+                    '''
+        },
+        {
+            'text': 'Navi Enemy Target',
+            'group': 'navihint',
+            'widget': 'Combobox',
+            'default': 'Default',
+            'options': [
+                'Random Choice', 
+                'Default', 
+                'Notification', 
+                'Rupee', 
+                'Timer', 
+                'Tamborine', 
+                'Recovery Heart', 
+                'Carrot Refill', 
+                'Navi - Hey!',
+                'Navi - Random',
+                'Zelda - Gasp', 
+                'Cluck', 
+                'Mweep!', 
+                'None',
+            ]
+        }),
     Setting_Info('healthSFX', str, 0, False, 
         {
             'default': 'Default',

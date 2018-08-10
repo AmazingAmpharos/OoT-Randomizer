@@ -88,6 +88,8 @@ def guiMain(settings=None):
     frames['logic_tab'] = ttk.Frame(notebook)
     frames['other_tab'] = ttk.Frame(notebook)
     frames['aesthetic_tab'] = ttk.Frame(notebook)
+    frames['aesthetic_tab_left'] = Frame(frames['aesthetic_tab'])
+    frames['aesthetic_tab_right'] = Frame(frames['aesthetic_tab'])
     adjustWindow = ttk.Frame(notebook)
     customWindow = ttk.Frame(notebook)
     notebook.add(frames['rom_tab'], text='ROM Options')
@@ -119,9 +121,10 @@ def guiMain(settings=None):
     frames['other']       = LabelFrame(frames['other_tab'], text='Misc',      labelanchor=NW)
 
     #Aesthetics tab
-    frames['tuniccolor'] = LabelFrame(frames['aesthetic_tab'], text='Tunic Color', labelanchor=NW)
-    frames['navicolor']       = LabelFrame(frames['aesthetic_tab'], text='Navi Color',  labelanchor=NW)
-    frames['lowhp']      = LabelFrame(frames['aesthetic_tab'], text='Low HP SFX',  labelanchor=NW)
+    frames['tuniccolor'] = LabelFrame(frames['aesthetic_tab_left'], text='Tunic Color', labelanchor=NW)
+    frames['navicolor']       = LabelFrame(frames['aesthetic_tab_right'], text='Navi Color',  labelanchor=NW)
+    frames['lowhp']      = LabelFrame(frames['aesthetic_tab_left'], text='Low HP SFX',  labelanchor=NW)
+    frames['navihint']   = LabelFrame(frames['aesthetic_tab_right'], text='Navi SFX', labelanchor=NW)
 
 
     # shared
@@ -321,9 +324,16 @@ def guiMain(settings=None):
     frames['other'].pack(      fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
 
     #Aesthetics tab
-    frames['navicolor'].pack( fill=BOTH, expand=True, anchor=N, side=RIGHT, pady=(5,1) )
+    frames['aesthetic_tab_left'].pack( fill=BOTH, expand=True, anchor=W, side=LEFT)
+    frames['aesthetic_tab_right'].pack(fill=BOTH, expand=True, anchor=W, side=RIGHT)
+
+    #Aesthetics tab - Left Side
     frames['tuniccolor'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
-    frames['lowhp'].pack(     fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1) )
+    frames['lowhp'].pack(     fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
+
+    #Aesthetics tab - Right Side
+    frames['navicolor'].pack( fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
+    frames['navihint'].pack(  fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
 
     
     notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
