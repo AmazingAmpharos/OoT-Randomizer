@@ -157,7 +157,7 @@ class ToolTips(object):
             cls.popup.overrideredirect(1)
             cls.popup.withdraw()
             cls.label = tk.Label(
-                cls.popup, fg=cls.fg, bg=cls.bg, bd=0, padx=2, justify=tk.LEFT, wrap=300
+                cls.popup, fg=cls.fg, bg=cls.bg, bd=0, padx=2, justify=tk.LEFT, wrap=400
             )
             cls.label.pack()
             cls.active = 0
