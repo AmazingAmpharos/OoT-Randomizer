@@ -7,6 +7,8 @@ import random
 import subprocess
 import time
 import os
+import urllib.request
+import re
 
 from BaseClasses import World, CollectionState, Item
 from EntranceShuffle import link_entrances
@@ -28,6 +30,16 @@ class dummy_window():
         pass
 
 def main(settings, window=dummy_window()):
+
+    #Questionable version check, but works
+
+    if settings.check_version:
+        version = urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py').read()
+        version = re.search(".__version__ = '(.+)'", str(version)).group(1)
+    
+        if version != __version__:
+            raise Exception("You do not seem to be on the latest version!\n\nYou are on version " + __version__ + ", and the latest is version " + version + ".\n\n Note: You can disable this check in 'other'")
+
     start = time.clock()
 
     # initialize the world
