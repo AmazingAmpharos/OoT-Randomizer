@@ -9,9 +9,9 @@ from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, Radiob
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from GuiUtils import ToolTips, set_icon, BackgroundTaskProgress
+from GuiUtils import ToolTips, set_icon, BackgroundTaskProgress, Dialog
 from Main import main
-from Utils import is_bundled, local_path, default_output_path, open_file
+from Utils import is_bundled, local_path, default_output_path, open_file, check_version
 from Rom import get_tunic_color_options, get_navi_color_options
 from Settings import Settings, setting_infos
 from version import __version__ as ESVersion
@@ -399,6 +399,8 @@ def guiMain(settings=None):
 
     generateSeedFrame.pack(side=BOTTOM, anchor=W, padx=5, pady=10)
 
+    guivars['checked_version'] = StringVar()
+
     if settings is not None:
         # load values from commandline args
         settings_to_guivars(settings, guivars)
@@ -414,6 +416,14 @@ def guiMain(settings=None):
 
     show_settings()
 
+    def gui_check_version():
+        version_error = check_version(guivars['checked_version'].get())
+        if version_error:  
+            dialog = Dialog(mainWindow, title="Version Error", question=version_error, oktext='Don\'t show again', canceltext='OK')
+            if dialog.result:
+                guivars['checked_version'].set(ESVersion)
+
+    mainWindow.after(1000, gui_check_version)
     mainWindow.mainloop()
 
     # save settings on close

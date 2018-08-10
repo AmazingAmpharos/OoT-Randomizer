@@ -158,6 +158,9 @@ class Settings():
 
 # a list of the possible settings
 setting_infos = [
+    Setting_Info('checked_version', str, 0, False, {
+            'default': '',
+            'help': 'Supress version warnings if checked_version is less than __version__.'}),
     Setting_Info('rom', str, 0, False, {
             'default': 'ZOOTDEC.z64',
             'help': 'Path to an OoT 1.0 rom to use as a base.'}),
@@ -1133,6 +1136,13 @@ setting_infos = [
                       generally sensible, and warp songs are
                       typically more difficult.
                       '''
+        }),
+        Setting_Info('check_version', bool, 0, False, 
+        {
+            'help': '''\
+                    Checks if you are on the latest version
+                    ''',
+            'action': 'store_true'
         }),
     Setting_Info('correct_chest_sizes', bool, 1, True, 
         {
