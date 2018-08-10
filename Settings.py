@@ -1514,7 +1514,7 @@ setting_infos = [
             'nargs': '?',
             'choices': ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Navi - Random', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'],
             'help': '''\
-                    Select the sound effect that plays when Navi has a hint. (default: %(default)s)
+                    Select the sound effect that plays when targeting an enemy. (default: %(default)s)
                     Sound:         Replace the sound effect with the chosen sound.
                     Random Chocie: Replace the sound effect with a random sound from this list.
                     None:          Eliminate Navi hint sounds.
