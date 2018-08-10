@@ -147,7 +147,7 @@ def guiMain(settings=None):
     frames['tuniccolor'] = LabelFrame(frames['aesthetic_tab_left'], text='Tunic Color', labelanchor=NW)
     frames['navicolor']       = LabelFrame(frames['aesthetic_tab_right'], text='Navi Color',  labelanchor=NW)
     frames['lowhp']      = LabelFrame(frames['aesthetic_tab_left'], text='Low HP SFX',  labelanchor=NW)
-    frames['navihint']   = LabelFrame(frames['aesthetic_tab_right'], text='Navi Hint SFX', labelanchor=NW)
+    frames['navihint']   = LabelFrame(frames['aesthetic_tab_right'], text='Navi SFX', labelanchor=NW)
 
 
     # shared

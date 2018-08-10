@@ -1157,7 +1157,7 @@ setting_infos = [
                     '''
         },
         {
-            'text': 'Navi Hint SFX',
+            'text': 'Navi Hint',
             'group': 'navihint',
             'widget': 'Combobox',
             'default': 'Default',
@@ -1192,7 +1192,7 @@ setting_infos = [
                     '''
         },
         {
-            'text': 'Navi Enemy Target SFX',
+            'text': 'Navi Enemy Target',
             'group': 'navihint',
             'widget': 'Combobox',
             'default': 'Default',
