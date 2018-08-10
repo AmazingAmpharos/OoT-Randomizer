@@ -212,7 +212,6 @@ setting_infos = [
                     False: Uncompressed. Unstable. Faster generation
                     None: No ROM Output. Creates spoiler log only
                     ''',
-            'action': 'store_true'        
         },
         {
             'text': 'Compress Rom',

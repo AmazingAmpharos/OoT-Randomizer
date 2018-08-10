@@ -34,7 +34,7 @@ def start():
 
     # ToDo: Validate files further than mere existance
     if not os.path.isfile(settings.rom):
-        input('Could not find valid base rom for patching at expected path %s. Please run with -h to see help for further information. \nPress Enter to exit.' % args.rom)
+        input('Could not find valid base rom for patching at expected path %s. Please run with -h to see help for further information. \nPress Enter to exit.' % settings.rom)
         sys.exit(1)
 
     # set up logger
