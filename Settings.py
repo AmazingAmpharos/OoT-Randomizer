@@ -1134,6 +1134,24 @@ setting_infos = [
                       typically more difficult.
                       '''
         }),
+        Setting_Info('check_version', bool, 1, False, 
+        {
+            'help': '''\
+                    Checks if you are on the latest version
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Version Check',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                    Checks if you are on the latest version.
+                    Only turn it off for development purposes, or
+                    if you are unable to connect to the internet
+                      '''
+        }),
     Setting_Info('correct_chest_sizes', bool, 1, True, 
         {
             'help': '''\
