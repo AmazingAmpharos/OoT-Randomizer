@@ -1,6 +1,7 @@
 import queue
 import threading
 import tkinter as tk
+import traceback
 
 from Utils import local_path
 
@@ -10,17 +11,31 @@ def set_icon(window):
     er48 = tk.PhotoImage(file=local_path('data/ER32.gif'))
     window.tk.call('wm', 'iconphoto', window._w, er16, er32, er48) # pylint: disable=protected-access
 
+
 # Although tkinter is intended to be thread safe, there are many reports of issues
 # some which may be platform specific, or depend on if the TCL library was compiled without
 # multithreading support. Therefore I will assume it is not thread safe to avoid any possible problems
 class BackgroundTask(object):
-    def __init__(self, window, code_to_run):
+    def __init__(self, window, code_to_run, code_arg):
         self.window = window
         self.queue = queue.Queue()
         self.running = True
-        self.process_queue()
-        self.task = threading.Thread(target=code_to_run, args=(self,))
+        self.task = threading.Thread(target=self.try_run, args=(code_to_run, code_arg))
         self.task.start()
+        self.process_queue()
+
+    def try_run(self, code_to_run, code_arg):
+        self.update_status('Starting Thread')
+        try:
+            code_to_run(code_arg, self)
+            self.update_status('Success: Rom patched successfully')
+        except Exception as e:
+            self.update_status('Error: ' + str(e))
+            traceback.print_exc()
+        self.queue_event(self.stop)
+
+    def update_status(self, text):
+        pass
 
     def stop(self):
         self.running = False
@@ -44,8 +59,9 @@ class BackgroundTask(object):
         if self.running:
             self.window.after(100, self.process_queue)
 
+
 class BackgroundTaskProgress(BackgroundTask):
-    def __init__(self, parent, code_to_run, title):
+    def __init__(self, parent, title, code_to_run, code_arg):
         self.parent = parent
         self.window = tk.Toplevel(parent)
         self.window['padx'] = 5
@@ -56,26 +72,59 @@ class BackgroundTaskProgress(BackgroundTask):
         except tk.TclError:
             pass
 
-        self.window.wm_title(title)
-        self.label_var = tk.StringVar()
-        self.label_var.set("")
-        self.label = tk.Label(self.window, textvariable=self.label_var, width=50)
-        self.label.pack()
-        self.window.resizable(width=False, height=False)
+        self.window.title(title)
 
+        self.lastpercent = 0
+        self.progress_var = tk.DoubleVar()
+        self.progress = tk.ttk.Progressbar(self.window, variable=self.progress_var, length=300)
+        self.progress.pack()
+
+        self.label_var = tk.StringVar(value="")
+        self.label = tk.Label(self.window, textvariable=self.label_var, width=50, wrap=300)
+        self.label.pack()
+
+        self.button_var = tk.StringVar(value="Please wait...")
+        self.button = tk.Button(self.window, textvariable=self.button_var, width=10, height=2, state='disabled', command=self.close)
+        self.button.pack()
+
+        self.window.resizable(width=False, height=False)
         set_icon(self.window)
-        self.window.focus()
-        super().__init__(self.window, code_to_run)
+
+        self.window.transient(parent)
+        self.window.protocol("WM_DELETE_WINDOW", self.close_pass)
+        self.window.grab_set()
+        self.window.geometry("+%d+%d" % (parent.winfo_rootx()+50, parent.winfo_rooty()+150))
+        self.window.focus_set()
+
+        super().__init__(self.window, code_to_run, code_arg)
+
+        self.parent.wait_window(self.window)
+
+    def close_pass(self):
+        pass
 
     #safe to call from worker thread
     def update_status(self, text):
         self.queue_event(lambda: self.label_var.set(text))
 
-    # only call this in an event callback
-    def close_window(self):
-        self.stop()
+    def update_progress(self, val):
+        if int(val) != self.lastpercent:
+            self.lastpercent = int(val)
+            self.queue_event(lambda: self.progress_var.set(val))
+
+    def update_title(self, text):
+        self.queue_event(lambda: self.window.title(text))
+
+    def close(self):
+        self.running = False
         self.window.destroy()
 
+    def stop(self):
+        self.running = False
+        self.progress_var.set(100)
+        self.window.bell()
+        self.button.configure(state='normal')
+        self.button_var.set("OK")
 
 
 class ToolTips(object):

@@ -19,7 +19,15 @@ from ItemList import generate_itempool
 from Utils import default_output_path
 from version import __version__
 
-def main(settings):
+class dummy_window():
+    def __init__(self):
+        pass
+    def update_status(self, text):
+        pass
+    def update_progress(self, val):
+        pass
+
+def main(settings, window=dummy_window()):
     start = time.clock()
 
     # initialize the world
@@ -27,6 +35,8 @@ def main(settings):
     worlds = []
     if settings.compress_rom == 'None':
         settings.create_spoiler = True
+        settings.update()
+
     if not settings.world_count:
         settings.world_count = 1
     if settings.world_count < 1:
@@ -43,28 +53,44 @@ def main(settings):
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, worlds[0].seed)
 
+    window.update_status('Creating the Worlds')
     for id, world in enumerate(worlds):
         world.id = id
         logger.info('Generating World %d.' % id)
 
+        window.update_progress(0 + (((id + 1) / settings.world_count) * 1))
         logger.info('Creating Overworld')
         create_regions(world)
+
+        window.update_progress(0 + (((id + 1) / settings.world_count) * 2))
         logger.info('Creating Dungeons')
         create_dungeons(world)
+
+        window.update_progress(0 + (((id + 1) / settings.world_count) * 3))
         logger.info('Linking Entrances')
         link_entrances(world)
+
+        window.update_progress(0 + (((id + 1) / settings.world_count) * 4))
         logger.info('Calculating Access Rules.')
         set_rules(world)
+
+        window.update_progress(0 + (((id + 1) / settings.world_count) * 5))
         logger.info('Generating Item Pool.')
         generate_itempool(world)
 
+    window.update_status('Placing the Items')
     logger.info('Fill the world.')
-    distribute_items_restrictive(worlds)
+    distribute_items_restrictive(window, worlds)
+    window.update_progress(35)
 
     if settings.create_spoiler:
+        window.update_status('Calculating Spoiler Data')
         logger.info('Calculating playthrough.')
         create_playthrough(worlds)
+        window.update_progress(50)
+    window.update_status('Calculating Hint Data')
     CollectionState.update_required_items(worlds)
+    window.update_progress(55)
 
     logger.info('Patching ROM.')
 
@@ -76,33 +102,59 @@ def main(settings):
     output_dir = default_output_path(settings.output_dir)
 
     if settings.compress_rom != 'None':
+        window.update_status('Patching ROM')
         rom = LocalRom(settings)
         patch_rom(worlds[settings.player_num - 1], rom)
+        window.update_progress(65)
 
         rom_path = os.path.join(output_dir, '%s.z64' % outfilebase)
 
+        window.update_status('Saving Uncompressed ROM')
         rom.write_to_file(rom_path)
         if settings.compress_rom == 'True':
+            window.update_status('Compressing ROM')
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
-                subprocess.call(["Compress\\Compress.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+                run_process(window, logger, ["Compress\\Compress.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
                 os.remove(rom_path)
             elif platform.system() == 'Linux':
-                subprocess.call(["Compress/Compress", rom_path])
+                run_process(window, logger, ["Compress/Compress", rom_path])
+                subprocess.call()
                 os.remove(rom_path)
             elif platform.system() == 'Darwin':
-                subprocess.call(["Compress/Compress.out", rom_path])
+                run_process(window, logger, ["Compress/Compress.out", rom_path])
                 os.remove(rom_path)
             else:
                 logger.info('OS not supported for compression')
+            window.update_progress(95)
+
 
     if settings.create_spoiler:
+        window.update_status('Creating Spoiler Log')
         worlds[settings.player_num - 1].spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
 
+    window.update_progress(100)
+    window.update_status('Done. Enjoy.')
     logger.info('Done. Enjoy.')
     logger.debug('Total Time: %s', time.clock() - start)
 
     return worlds[settings.player_num - 1]
+
+def run_process(window, logger, args):
+    process = subprocess.Popen(args, bufsize=1, stdout=subprocess.PIPE)
+    filecount = None
+    while True:
+        line = process.stdout.readline()
+        if line != b'':
+            find_index = line.find(b'files remaining')
+            if find_index > -1:
+                files = int(line[:find_index].strip())
+                if filecount == None:
+                    filecount = files
+                window.update_progress(65 + ((1 - (files / filecount)) * 30))
+            logger.info(line.decode('utf-8').strip('\n'))
+        else:
+            break
 
 def create_playthrough(worlds):
     if worlds[0].check_beatable_only and not CollectionState.can_beat_game([world.state for world in worlds]):

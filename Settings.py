@@ -130,6 +130,10 @@ class Settings():
         self.sanatize_seed()
         self.numeric_seed = self.get_numeric_seed()
 
+    def update(self):
+        self.settings_string = self.get_settings_string()
+        self.numeric_seed = self.get_numeric_seed()
+
     # add the settings as fields, and calculate information based on them
     def __init__(self, settings_dict):
         self.__dict__.update(settings_dict)

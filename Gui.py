@@ -5,7 +5,7 @@ import json
 import random
 import os
 import shutil
-from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, Button, filedialog, messagebox, ttk, HORIZONTAL
+from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, Button, filedialog, messagebox, ttk, HORIZONTAL, Toplevel
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
@@ -363,21 +363,19 @@ def guiMain(settings=None):
 
     settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,0))
 
+    def multiple_run(settings, window):
+        orig_seed = settings.seed
+        for i in range(settings.count):
+            settings.update_seed(orig_seed + '-' + str(i))
+            window.update_title("Generating Seed...%d/%d" % (i+1, settings.count))
+            main(settings, window)
+
     def generateRom():
         settings = guivars_to_settings(guivars)
-
-        try:
-            if settings.count is not None:
-                orig_seed = settings.seed
-                for i in range(settings.count):
-                    settings.update_seed(orig_seed + '-' + str(i))
-                    main(settings)
-            else:
-                main(settings)
-        except Exception as e:
-            messagebox.showerror(title="Error while creating seed", message=str(e))
+        if settings.count is not None:
+            BackgroundTaskProgress(mainWindow, "Generating Seed...", multiple_run, settings)
         else:
-            messagebox.showinfo(title="Success", message="Rom patched successfully")
+            BackgroundTaskProgress(mainWindow, "Generating Seed...", main, settings)
 
     generateSeedFrame = Frame(mainWindow)
     generateButton = Button(generateSeedFrame, text='Generate Patched Rom', command=generateRom)
