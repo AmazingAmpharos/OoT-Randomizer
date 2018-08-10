@@ -119,7 +119,6 @@ def main(settings, window=dummy_window()):
                 os.remove(rom_path)
             elif platform.system() == 'Linux':
                 run_process(window, logger, ["Compress/Compress", rom_path])
-                subprocess.call()
                 os.remove(rom_path)
             elif platform.system() == 'Darwin':
                 run_process(window, logger, ["Compress/Compress.out", rom_path])
