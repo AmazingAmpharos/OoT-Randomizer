@@ -218,7 +218,7 @@ setting_infos = [
             'text': 'Compress Rom',
             'group': 'rom_tab',
             'widget': 'Radiobutton',
-            'default': 'Compressed [Emu/VC]',
+            'default': 'Compressed [Stable]',
             'horizontal': True,
             'options': {
                 'Compressed [Stable]': 'True',
