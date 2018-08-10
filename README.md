@@ -103,10 +103,6 @@ Gold Skulltula Token are added to the item pool, and Gold Skulltula locations gi
 
 In addition there is an option for the logic to expect Sun's Song to obtain any night-only skulltula token.
 
-## OHKO
-
-Setting `ohko` will make Link die in one hit...
-
 ## Changed hint system
 
 The hint system has been changed to include different kinds of hints (such as saying a location has something good, but not saying what item it is, or saying a specific item is somewhere in a dungeon, instead of giving the specific location, and so on.) An option has been added to allow talking to gossip stones from the start. Yes, this makes the Stone of Agony completely useless.
@@ -138,6 +134,7 @@ If you seek an additional challenge in regards to combat during the randomizer, 
 - `normal`: no changes to the item pool
 - `hard`: double defense, double magic, and all 8 heart containers are removed
 - `very_hard`: Double defense, double magic, Nayru's Love, and all health upgrades are removed
+- `ohko`: Link die in one hit...
 
 The `hard` difficulty still leaves the heart pieces in the pool, so you can gain up to 12 hearts total, likely a few less though. It also doesn't remove NL, but still takes away double magic so it can't be spammed for multiple minutes of invulnerability.
 The `very_hard` difficulty just takes it all away, meaning the player will stay at 3 hearts without double defense or Nayru's Love.

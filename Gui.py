@@ -96,29 +96,6 @@ def guiMain(settings=None):
     notebook.add(frames['other_tab'], text='Other')
     notebook.add(frames['aesthetic_tab'], text='Cosmetics')
 
-    # Shared Controls   
-
-    # adds a LabelFrame containing a list of radio buttons based on the given data
-    # returns the label_frame, and a variable associated with it
-    def MakeRadioList(parent, data):
-        # create a frame to hold the radio buttons
-        lable_frame = LabelFrame(parent, text=data["name"], labelanchor=NW)
-        # create a variable to hold the result of the user's decision
-        radio_var = StringVar(value=data["default"]);
-        # setup orientation
-        side = TOP
-        anchor = W
-        if "horizontal" in data and data["horizontal"]:
-            side = LEFT
-            anchor = N
-        # add the radio buttons
-        for option in data["options"]:
-            radio_button = Radiobutton(lable_frame, text=option["description"], value=option["value"], variable=radio_var,
-                                       justify=LEFT, wraplength=data["wraplength"])
-            radio_button.pack(expand=True, side=side, anchor=anchor)
-        # return the frame so it can be packed, and the var so it can be used
-        return (lable_frame, radio_var)
-
     #######################
     # randomizer controls #
     #######################
@@ -131,7 +108,7 @@ def guiMain(settings=None):
 
     #Rules Tab
     frames['open']   = LabelFrame(frames['rules_tab'], text='Open',   labelanchor=NW)
-    frames['logic']  = LabelFrame(frames['rules_tab'], text='Logic',  labelanchor=NW)
+    frames['logic']  = LabelFrame(frames['rules_tab'], text='Shuffle',  labelanchor=NW)
 
     # Logic tab
     frames['rewards'] = LabelFrame(frames['logic_tab'], text='Remove Specific Locations', labelanchor=NW)
@@ -275,6 +252,25 @@ def guiMain(settings=None):
                     label.pack(side=LEFT, anchor=W, padx=5)
                 # pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+            elif info.gui_params['widget'] == 'Radiobutton':
+                # create the variable to store the user's decision
+                guivars[info.name] = StringVar(value=info.gui_params['default'])
+                # create the option menu
+                widgets[info.name] = LabelFrame(frames[info.gui_params['group']], text=info.gui_params['text'] if 'text' in info.gui_params else info["name"], labelanchor=NW)
+                if isinstance(info.gui_params['options'], list):
+                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
+                # setup orientation
+                side = TOP
+                anchor = W
+                if "horizontal" in info.gui_params and info.gui_params["horizontal"]:
+                    side = LEFT
+                    anchor = N
+                # add the radio buttons
+                for option in info.gui_params["options"]:
+                    radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=200, indicatoron=False, command=show_settings)
+                    radio_button.pack(expand=True, side=side, anchor=anchor)
+                # pack the frame
+                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Scale':
                 # create the variable to store the user's decision
                 guivars[info.name] = IntVar(value=info.gui_params['default'])
@@ -284,8 +280,6 @@ def guiMain(settings=None):
                 minval = 'min' in info.gui_params and info.gui_params['min'] or 0
                 maxval = 'max' in info.gui_params and info.gui_params['max'] or 100
                 stepval = 'step' in info.gui_params and info.gui_params['step'] or 1
-
-
                 scale = Scale(widgets[info.name], variable=guivars[info.name], from_=minval, to=maxval, tickinterval=stepval, resolution=stepval, showvalue=0, orient=HORIZONTAL, sliderlength=15, length=200, command=show_settings)
                 scale.pack(side=BOTTOM, anchor=W)
                 # label the option
@@ -308,6 +302,9 @@ def guiMain(settings=None):
                     label.pack(side=LEFT, anchor=W, padx=5)
                 # pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+
+            if 'tooltip' in info.gui_params:
+                ToolTips.register(widgets[info.name], info.gui_params['tooltip'])
 
 
     # pack the hierarchy

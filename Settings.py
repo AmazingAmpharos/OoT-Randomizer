@@ -194,29 +194,34 @@ setting_infos = [
             'text': 'Create Spoiler Log',
             'group': 'rom_tab',
             'widget': 'Checkbutton',
-            'default': 'checked'
+            'default': 'checked',
+            'dependency': lambda guivar: guivar['compress_rom'].get() != 'No ROM Output'
         }),
-    Setting_Info('suppress_rom', bool, 0, False, 
+    Setting_Info('compress_rom', str, 2, False, 
         {
-            'help': 'Do not create an output rom file.',
-            'action': 'store_true'
-        }, 
-        {
-            'text': 'Do not create Rom',
-            'group': 'rom_tab',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),
-    Setting_Info('compress_rom', bool, 0, False, 
-        {
-            'help': 'Create a compressed version of the output rom file.',
-            'action': 'store_true'
+            'default': 'True',
+            'const': 'True',
+            'nargs': '?',
+            'choices': ['True', 'False', 'None'],
+            'help': '''\
+                    Create a compressed version of the output rom file.
+                    True: Compresses. Improves stability. Will take longer to generate
+                    False: Uncompressed. Unstable. Faster generation
+                    None: No ROM Output. Creates spoiler log only
+                    ''',
+            'action': 'store_true'        
         },
         {
-            'text': 'Compress Rom. Improves stability but will take longer to generate',
+            'text': 'Compress Rom',
             'group': 'rom_tab',
-            'widget': 'Checkbutton',
-            'default': 'checked'
+            'widget': 'Radiobutton',
+            'default': 'Compressed [Emu/VC]',
+            'horizontal': True,
+            'options': {
+                'Compressed [Stable]': 'True',
+                'Uncompressed [Crashes]': 'False',
+                'No ROM Output': 'None',
+            }
         }),
     Setting_Info('open_forest', bool, 1, True, 
         {
@@ -234,7 +239,7 @@ setting_infos = [
         }),
     Setting_Info('open_door_of_time', bool, 1, True, 
         {
-            'help': '''\
+            'help': '''
                     The Door of Time is open from the beginning of the game.
                     ''',
             'action': 'store_true'
@@ -251,11 +256,10 @@ setting_infos = [
             'const': 'normal',
             'nargs': '?',
             'choices': ['normal', 'fast', 'open'],
-            'help': '''\
-                    Select how much of Gerudo Fortress is required. (default: %(default)s)
-                    Normal: Free all four carpenters to get the Gerudo Card.
-                    Fast:   Free only the carpenter closest to Link's prison to get the Gerudo Card.
-                    Open:   Start with the Gerudo Card and all it's benefits.
+            'help': '''Select how much of Gerudo Fortress is required. (default: %(default)s)
+                       Normal: Free all four carpenters to get the Gerudo Card.
+                       Fast:   Free only the carpenter closest to Link's prison to get the Gerudo Card.
+                       Open:   Start with the Gerudo Card and all it's benefits.
                     '''
         },
         {
@@ -526,6 +530,20 @@ setting_infos = [
             'default': 'unchecked',
             'dependency': lambda guivar: guivar['gerudo_fortress'].get() != 'Start with Gerudo Card'
         }),
+    Setting_Info('nodungeonitems', bool, 1, True, 
+        {
+            'help': '''\
+                    Remove Maps and Compasses from Itempool, replacing them by
+                    empty slots.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Remove Maps and Compasses',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),    
     Setting_Info('keysanity', bool, 1, True, 
         {
             'help': '''\
@@ -564,47 +582,6 @@ setting_infos = [
                 'Dungeons Only': 'dungeons',
                 'All Tokens': 'all',
             },
-        }),
-    Setting_Info('ohko', bool, 1, True, 
-        {
-            'help': '''\
-                    Link will die in one hit.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'OHKO',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),    
-    Setting_Info('nodungeonitems', bool, 1, True, 
-        {
-            'help': '''\
-                    Remove Maps and Compasses from Itempool, replacing them by
-                    empty slots.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Remove Maps and Compasses',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
-        }),
-    Setting_Info('progressive_bombchus', bool, 1, True, 
-        {
-            'help': '''\
-                    Bombchus amounts are progressive. 20 pack first time.
-                    Other bombchus will give 10 when low on bombchus, otherwise 5.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Progressive Bombchus',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked'
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
@@ -825,15 +802,28 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked'
         }),
-    Setting_Info('logic_zora_with_cucco_or_hovers', bool, 1, True, 
+    Setting_Info('logic_zora_with_cucco', bool, 1, True, 
         {
             'help': '''\
-                    Zora's Domain can be entered with a Cucco and Hover Boots in logic.
+                    Zora's Domain can be entered with a Cucco as child in logic.
                     ''',
             'action': 'store_true'
         },
         {
-            'text': "Zora's Domain entry with Cucco or Hover Boots",
+            'text': "Zora's Domain entry with Cucco",
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'unchecked'
+        }),
+    Setting_Info('logic_zora_with_hovers', bool, 1, True, 
+        {
+            'help': '''\
+                    Zora's Domain can be entered with Hover Boots as Adult in logic.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Zora's Domain entry with Hover Boots",
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked'
@@ -954,7 +944,7 @@ setting_infos = [
             'default': 'No text shuffled',
             'options': {
                 'No text shuffled': 'none',
-                'Shuffled except Hints': 'except_hints',
+                'Shuffled except Hints and Keys': 'except_hints',
                 'All text shuffled': 'complete',
             },
         }),
@@ -963,12 +953,13 @@ setting_infos = [
             'default': 'normal',
             'const': 'normal',
             'nargs': '?',
-            'choices': ['normal', 'hard', 'very_hard'],
+            'choices': ['normal', 'hard', 'very_hard', 'ohko'],
             'help': '''\
                     Choose how hard the game will be.
                     normal:         Default items
                     hard:           Double defense, double magic, and all 8 heart containers are removed
                     very_hard:      Double defense, double magic, Nayru's Love, and all health upgrades are removed
+                    ohko:           Same as very hard, and Link will die in one hit.
                     '''
         },
         {
@@ -980,6 +971,7 @@ setting_infos = [
                 'Normal': 'normal',
                 'Hard': 'hard',
                 'Very Hard': 'very_hard',
+                'OHKO': 'ohko'
             },
         }),
     Setting_Info('default_targeting', str, 1, False, 

@@ -135,6 +135,7 @@ class ToolTips(object):
 
     @classmethod
     def register(cls, widget, text):
+        text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
         widget.ui_tooltip_text = text
         tags = list(widget.bindtags())
         tags.append(cls.getcontroller(widget))
@@ -156,7 +157,7 @@ class ToolTips(object):
             cls.popup.overrideredirect(1)
             cls.popup.withdraw()
             cls.label = tk.Label(
-                cls.popup, fg=cls.fg, bg=cls.bg, bd=0, padx=2, justify=tk.LEFT
+                cls.popup, fg=cls.fg, bg=cls.bg, bd=0, padx=2, justify=tk.LEFT, wrap=300
             )
             cls.label.pack()
             cls.active = 0
