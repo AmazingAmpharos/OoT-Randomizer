@@ -1148,7 +1148,7 @@ setting_infos = [
             'default': 'checked',
             'tooltip':'''\
                     Checks if you are on the latest version.
-                    Only turn it of for development purposes, or
+                    Only turn it off for development purposes, or
                     if you are unable to connect to the internet
                       '''
         }),
