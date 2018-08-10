@@ -7,8 +7,7 @@ import random
 import subprocess
 import time
 import os
-import urllib.request
-import re
+
 
 from BaseClasses import World, CollectionState, Item
 from EntranceShuffle import link_entrances
@@ -18,7 +17,7 @@ from Dungeons import create_dungeons
 from Rules import set_rules
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
-from Utils import default_output_path
+from Utils import default_output_path, check_version
 from version import __version__
 
 class dummy_window():
@@ -31,16 +30,14 @@ class dummy_window():
 
 def main(settings, window=dummy_window()):
 
-    #Questionable version check, but works
-
-    if settings.check_version:
-        version = urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py').read()
-        version = re.search(".__version__ = '(.+)'", str(version)).group(1)
-    
-        if version != __version__:
-            raise Exception("You do not seem to be on the latest version!\n\nYou are on version " + __version__ + ", and the latest is version " + version + ".\n\n Note: You can disable this check in 'other'")
-
     start = time.clock()
+
+    logger = logging.getLogger('')
+
+    if not settings.check_version:
+        version_error = check_version(settings.checked_version)
+        if version_error:
+            logger.warning(version_error)
 
     # initialize the world
 
@@ -58,8 +55,6 @@ def main(settings, window=dummy_window()):
 
     for i in range(0, settings.world_count):
         worlds.append(World(settings))
-
-    logger = logging.getLogger('')
 
     random.seed(worlds[0].numeric_seed)
 

@@ -158,6 +158,9 @@ class Settings():
 
 # a list of the possible settings
 setting_infos = [
+    Setting_Info('checked_version', str, 0, False, {
+            'default': '',
+            'help': 'Supress version warnings if checked_version is less than __version__.'}),
     Setting_Info('rom', str, 0, False, {
             'default': 'ZOOTDEC.z64',
             'help': 'Path to an OoT 1.0 rom to use as a base.'}),
@@ -1134,23 +1137,12 @@ setting_infos = [
                       typically more difficult.
                       '''
         }),
-        Setting_Info('check_version', bool, 1, False, 
+        Setting_Info('check_version', bool, 0, False, 
         {
             'help': '''\
                     Checks if you are on the latest version
                     ''',
             'action': 'store_true'
-        },
-        {
-            'text': 'Version Check',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                    Checks if you are on the latest version.
-                    Only turn it off for development purposes, or
-                    if you are unable to connect to the internet
-                      '''
         }),
     Setting_Info('correct_chest_sizes', bool, 1, True, 
         {

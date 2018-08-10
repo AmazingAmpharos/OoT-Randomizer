@@ -1,6 +1,10 @@
 import os
 import subprocess
 import sys
+import urllib.request
+from urllib.error import URLError, HTTPError
+import re
+from version import __version__
 
 def is_bundled():
     return getattr(sys, 'frozen', False)
@@ -44,3 +48,34 @@ def close_console():
             ctypes.windll.kernel32.FreeConsole()
         except Exception:
             pass
+
+def compare_version(a, b):
+    if not a and not b:
+        return 0
+    elif a and not b:
+        return 1
+    elif not a and b:
+        return -1
+
+    sa = a.replace(' ', '.').split('.')
+    sb = b.replace(' ', '.').split('.')
+
+    for i in range(0,3):
+        if int(sa[i]) > int(sb[i]):
+            return 1
+        if int(sa[i]) < int(sb[i]):
+            return -1
+    return 0
+
+def check_version(checked_version):
+    try:
+        with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
+            version = versionurl.read()
+            version = re.search(".__version__ = '(.+)'", str(version)).group(1)
+
+            if compare_version(version, __version__) > 0 and compare_version(checked_version, __version__) < 0:
+                return ("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
+    except URLError as e:
+        return ("Could not fetch latest version: " + e.reason)
+    except HTTPError as e:
+        return ("Could not fetch latest version. Error Code: " + e.code)

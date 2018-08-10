@@ -127,6 +127,54 @@ class BackgroundTaskProgress(BackgroundTask):
         self.button_var.set("OK")
 
 
+class Dialog(tk.Toplevel):
+    def __init__(self, parent, title=None, question=None, oktext=None, canceltext=None):
+        tk.Toplevel.__init__(self, parent)
+        self.transient(parent)
+        if title:
+            self.title(title)
+        self.parent = parent
+        self.result = False
+
+        if question:
+            body = tk.Frame(self)
+            label = tk.Label(body, text=question, width=50, wrap=200)
+            label.pack()
+            body.pack(padx=5, pady=5)
+
+        box = tk.Frame(self)
+
+        w = tk.Button(box, text=oktext if oktext else "OK", width=20, command=self.ok, default=tk.ACTIVE)
+        w.pack(side=tk.LEFT, padx=5, pady=5)
+        w = tk.Button(box, text=canceltext if canceltext else "Cancel", width=20, command=self.cancel)
+        w.pack(side=tk.LEFT, padx=5, pady=5)
+
+        self.bind("<Return>", self.ok)
+        self.bind("<Escape>", self.cancel)
+
+        box.pack()
+
+        self.grab_set()
+        self.protocol("WM_DELETE_WINDOW", self.cancel)
+        self.geometry("+%d+%d" % (parent.winfo_rootx()+50,
+                                  parent.winfo_rooty()+150))
+
+        self.wait_window(self)
+
+    #
+    # standard button semantics
+    def ok(self, event=None):
+        self.result = True
+        self.withdraw()
+        self.update_idletasks()
+        self.cancel()
+
+    def cancel(self, event=None):
+        # put focus back to the parent window
+        self.parent.focus_set()
+        self.destroy()
+
+
 class ToolTips(object):
     # This class derived from wckToolTips which is available under the following license:
 
