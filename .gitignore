@@ -2,3 +2,6 @@
 .sw*
 *.pyc
 /.vs
+settings.sav
+ARCHIVE.bin
+output/*
