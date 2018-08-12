@@ -339,7 +339,7 @@ def guiMain(settings=None):
     notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
 
     multiworldFrame = LabelFrame(frames['rom_tab'], text='Multi-World Generation')
-    countLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='This is used for co-op generations. Increasing World Count will drastically increase the generation time. For more information see:')
+    countLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='This is used for co-op generations. Increasing Player Count will drastically increase the generation time. For more information see:')
     hyperLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='https://github.com/TestRunnerSRL/bizhawk-co-op', fg='blue', cursor='hand2')
     hyperLabel.bind("<Button-1>", lambda event: webbrowser.open_new(r"https://github.com/TestRunnerSRL/bizhawk-co-op"))
     countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
@@ -347,7 +347,7 @@ def guiMain(settings=None):
 
 
     worldCountFrame = Frame(multiworldFrame)
-    countLabel = Label(worldCountFrame, text='World Count')
+    countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
     countSpinbox = Spinbox(worldCountFrame, from_=1, to=100, textvariable=guivars['world_count'], width=3)
 
@@ -356,7 +356,7 @@ def guiMain(settings=None):
     worldCountFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
 
     playerNumFrame = Frame(multiworldFrame)
-    countLabel = Label(playerNumFrame, text='Player Number')
+    countLabel = Label(playerNumFrame, text='Player ID')
     guivars['player_num'] = StringVar()
     countSpinbox = Spinbox(playerNumFrame, from_=1, to=100, textvariable=guivars['player_num'], width=3)
 
