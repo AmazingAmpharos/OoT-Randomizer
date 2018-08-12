@@ -158,6 +158,11 @@ def create_regions(world):
         create_dungeon_region(
             'Child Spirit Temple', 
             ['Spirit Temple Child Left Chest', 'Spirit Temple Child Right Chest', 'GS Spirit Temple Metal Fence'], 
+            ['Child Spirit Temple Climb']),
+        create_dungeon_region(
+            'Child Spirit Temple Climb', 
+            ['Spirit Temple Child Climb East Chest', 'Spirit Temple Child Climb North Chest',
+             'GS Spirit Temple Bomb for Light Room'],
             ['Child Spirit Temple Passthrough']),
         create_dungeon_region(
             'Early Adult Spirit Temple', 
@@ -167,10 +172,9 @@ def create_regions(world):
             ['Adult Spirit Temple Passthrough']),
         create_dungeon_region(
             'Spirit Temple Central Chamber', 
-            ['Spirit Temple Map Chest', 'Spirit Temple Child Climb East Chest', 'Spirit Temple Child Climb North Chest', 
-             'Spirit Temple Sun Block Room Chest', 'Spirit Temple Statue Hand Chest', 'Spirit Temple NE Main Room Chest', 
-             'GS Spirit Temple Bomb for Light Room', 'GS Spirit Temple Hall to West Iron Knuckle', 'GS Spirit Temple Lobby'], 
-            ['Spirit Temple to Hands', 'Spirit Temple Central Locked Door']),
+            ['Spirit Temple Map Chest', 'Spirit Temple Sun Block Room Chest', 'Spirit Temple Statue Hand Chest',
+             'Spirit Temple NE Main Room Chest', 'GS Spirit Temple Hall to West Iron Knuckle', 'GS Spirit Temple Lobby'], 
+            ['Spirit Temple to Hands', 'Spirit Temple Central Locked Door', 'Spirit Temple Middle Child Door']),
         create_dungeon_region(
             'Spirit Temple Outdoor Hands', 
             ['Silver Gauntlets Chest', 'Mirror Shield Chest']),
