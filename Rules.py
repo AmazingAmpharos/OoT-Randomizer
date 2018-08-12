@@ -98,7 +98,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Composer Grave'), lambda state: state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('Composer Grave Chest'), lambda state: state.has_fire_source())
     set_rule(world.get_entrance('Bottom of the Well'), lambda state: state.can_play('Song of Storms'))
-    set_rule(world.get_entrance('Death Mountain Entrance'), lambda state: state.has('Zeldas Letter') or state.is_adult())
+    set_rule(world.get_entrance('Death Mountain Entrance'), lambda state: state.has('Zeldas Letter') or state.is_adult() or world.open_kakariko)
     set_rule(world.get_location('Death Mountain Bombable Chest'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('Biggoron'), lambda state: (not world.logic_no_trade_biggoron) and (state.can_blast_or_smash() and state.is_adult() and state.can_finish_adult_trades() and state.guarantee_hint()))
     set_rule(world.get_location('Goron City Leftmost Maze Chest'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade', 2) or state.has('Hammer')))

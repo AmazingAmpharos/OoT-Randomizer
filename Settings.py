@@ -257,6 +257,28 @@ setting_infos = [
                       are always available somewhere in the forest.
                       '''
         }),
+    Setting_Info('open_kakariko', bool, 1, True, 
+        {
+            'help': '''\
+                    The gate in Kakariko Village to Death Mountain Trail
+                    is always open, instead of needing Zelda's Letter.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Open Kakariko Gate',
+            'group': 'open',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      The gate in Kakariko Village to Death Mountain Trail
+                      is always open, instead of needing Zelda's Letter.
+
+                      Recommend if Weird Egg is not shuffled.
+
+                      Either way, the gate is always open as adult.
+                      '''
+        }),
     Setting_Info('open_door_of_time', bool, 1, True, 
         {
             'help': '''

@@ -5,3 +5,5 @@
 settings.sav
 ARCHIVE.bin
 output/*
+*.n64
+*.n64.bak

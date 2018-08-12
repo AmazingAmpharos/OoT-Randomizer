@@ -1042,6 +1042,9 @@ def patch_rom(world, rom):
     write_bits_to_save(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
     write_bits_to_save(0x0F08, 0x08) # "Entered Hyrule Castle"
  
+    if world.open_kakariko:
+        write_bits_to_save(0x0F07, 0x40) # "Opened Kakariko Gate"
+
     # Make all chest opening animations fast
     if world.fast_chests:
         rom.write_int32(0xBDA2E8, 0x240AFFFF) # addiu   t2, r0, -1
