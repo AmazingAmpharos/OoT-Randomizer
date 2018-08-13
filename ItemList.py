@@ -350,6 +350,10 @@ def get_pool_core(world):
     else:
         placed_items['Gerudo Fortress Membership Card'] = 'Gerudo Membership Card'
 
+    pool.extend(['Buy Deku Nut (5)'] + ['Buy Arrows (30)'] + ['Buy Arrows (50)'] + ['Buy Bombs (5)'] + ['Buy Deku Nut (10)'] + ['Buy Deku Stick (1)'] + ['Buy Bombs (10)'] + 
+                ['Buy Fish'] + ['Buy Red Potion'] + ['Buy Green Potion'] + ['Buy Blue Potion'] + ['Buy Hylian Shield'] + ['Buy Deku Shield'] + ['Buy Goron Tunic'] + ['Buy Zora Tunic'] + 
+                ['Buy Heart'] + ['Buy Bombchu (10)'] + ['Buy Bombchu (20)'] + ['Buy Bombchu (5)'] + ['Buy Deku Seeds (30)'] + ['Sold Out'] * 30 + ['Buy Blue Fire'] + ['Buy Bottle Bug'] + 
+                ['Buy Fairy\'s Spirit'] + ['Buy Arrow (10)'] + ['Buy Bombs (20)'] + ['Buy Bombs (30)'])
 
     pool.extend(alwaysitems)
     for _ in range(normal_bottle_count):

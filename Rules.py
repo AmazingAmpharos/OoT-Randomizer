@@ -281,6 +281,10 @@ def global_rules(world):
         if location.type != 'Chest':
             forbid_item(location, 'Ice Trap')
         add_item_rule(location, lambda i: not (i.type == 'Song' and not i.world.shuffle_song_items and i.world.id != location.world.id))
+        if location.type == 'Shop':
+            add_item_rule(location, lambda i: (i.type == 'Shop'))
+        else:
+            add_item_rule(location, lambda i: (i.type != 'Shop'))
 
     # Biggoron Sword at bombchu bowling seems to lead to a soft lock.
     # Unsure what causes this, but I'm leaving this to original devs.
