@@ -320,7 +320,7 @@ def create_regions(world):
         create_ow_region('Darunias Chamber', ['Darunias Joy'], ['Darunias Chamber Exit']),
         create_ow_region(
             'Death Mountain Crater Upper', 
-            ['DM Crater Wall Freestanding PoH', 'GS Death Mounter Crater Crate'], 
+            ['DM Crater Wall Freestanding PoH', 'GS Death Mountain Crater Crate'], 
             ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto']),
         create_ow_region(
             'Death Mountain Crater Lower', 
@@ -328,7 +328,7 @@ def create_regions(world):
             ['Crater to City', 'Crater Fairy', 'Crater Bridge', 'Crater Ascent']),
         create_ow_region(
             'Death Mountain Crater Central', 
-            ['DM Crater Volcano Freestanding PoH', 'Sheik in Crater', 'GS Death Mounter Bean Patch'], 
+            ['DM Crater Volcano Freestanding PoH', 'Sheik in Crater', 'GS Mountain Crater Bean Patch'], 
             ['Crater Bridge Reverse', 'Fire Temple Entrance']),
         create_interior_region(
             'Crater Fairy', 
@@ -941,14 +941,14 @@ location_table = {
     'GS Hyrule Castle Tree': (None, None, 0x04, 'GS Token', 0x0E, 'Hyrule Castle'),
     'GS Castle Market Guard House': (None, None, 0x08, 'GS Token', 0x0E, 'the market'),
 
-    'GS Death Mounter Bean Patch': (None, None, 0x01, 'GS Token', 0x0F, 'Death Mountain Crater'),
+    'GS Mountain Crater Bean Patch': (None, None, 0x01, 'GS Token', 0x0F, 'Death Mountain Crater'),
     'GS Mountain Trail Bean Patch': (None, None, 0x02, 'GS Token', 0x0F, 'Death Mountain Trail'),
     'GS Mountain Trail Bomb Alcove': (None, None, 0x04, 'GS Token', 0x0F, 'Death Mountain Trail'),
     'GS Mountain Trail Above Dodongo\'s Cavern': (None, None, 0x08, 'GS Token', 0x0F, 'Death Mountain Trail'),
     'GS Mountain Trail Path to Crater': (None, None, 0x10, 'GS Token', 0x0F, 'Death Mountain Trail'),
     'GS Goron City Center Platform': (None, None, 0x20, 'GS Token', 0x0F, 'Goron City'),
     'GS Goron City Boulder Maze': (None, None, 0x40, 'GS Token', 0x0F, 'Goron City'),
-    'GS Death Mounter Crater Crate': (None, None, 0x80, 'GS Token', 0x0F, 'Death Mountain Crater'),
+    'GS Death Mountain Crater Crate': (None, None, 0x80, 'GS Token', 0x0F, 'Death Mountain Crater'),
 
     'GS Kakariko House Under Construction': (None, None, 0x08, 'GS Token', 0x10, 'Kakariko Village'),
     'GS Kakariko Skulltula House': (None, None, 0x10, 'GS Token', 0x10, 'Kakariko Village'),
