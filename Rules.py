@@ -108,7 +108,7 @@ def global_rules(world):
     set_rule(world.get_location('Goron City Pot Freestanding PoH'), lambda state: (state.has('Bomb Bag') or state.has('Progressive Strength Upgrade')) and (state.can_play('Zeldas Lullaby') or (state.has('Dins Fire') and state.has('Magic Meter'))))
     set_rule(world.get_entrance('Darunias Chamber'), lambda state: state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('Darunias Joy'), lambda state: state.can_play('Sarias Song'))
-    set_rule(world.get_entrance('Goron City from Woods'), lambda state: state.can_blast_or_smash() and (world.open_forest or (state.has('Slingshot') and state.has('Kokiri Sword'))))
+    set_rule(world.get_entrance('Goron City from Woods'), lambda state: (state.can_blast_or_smash() or (state.has('Dins Fire') and state.has('Magic Meter')) or ((state.has('Bow') or state.has('Progressive Strength Upgrade')) and state.is_adult())) and state.can_reach('Lost Woods Bridge'))
     set_rule(world.get_location('King Dodongo'), lambda state: state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))
     set_rule(world.get_location('King Dodongo Heart'), lambda state: state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))
     set_rule(world.get_location('Song from Saria'), lambda state: state.has('Zeldas Letter'))
