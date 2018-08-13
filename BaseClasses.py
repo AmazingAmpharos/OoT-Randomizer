@@ -336,6 +336,9 @@ class CollectionState(object):
     def has_ZoraTunic(self):
         return (self.has('Zora Tunic') or (self.has('Progressive Wallet', 2) and self.has_bottle() and self.can_play('Zeldas Lullaby')))
 
+    def can_leave_forest(self):
+        return (self.world.open_forest or (self.has('Slingshot') and self.has('Kokiri Sword')))
+
     def can_finish_adult_trades(self):
         zora_thawed = self.has_bottle() and self.has('Zeldas Lullaby') and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
         carpenter_access = self.has('Epona') or self.has('Progressive Hookshot', 2)
