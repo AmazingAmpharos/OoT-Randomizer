@@ -251,7 +251,7 @@ def global_rules(world):
     set_rule(world.get_location('GS Mountain Trail Above Dodongo\'s Cavern'), lambda state: state.has('Hammer') and state.is_adult() and state.nighttime())
     set_rule(world.get_location('GS Goron City Boulder Maze'), lambda state: state.has_explosives())
     set_rule(world.get_location('GS Goron City Center Platform'), lambda state: state.is_adult())
-    set_rule(world.get_location('GS Death Mounter Bean Patch'), lambda state: state.can_play('Bolero of Fire') and state.has_bottle())
+    set_rule(world.get_location('GS Mountain Crater Bean Patch'), lambda state: state.can_play('Bolero of Fire') and state.has_bottle())
     set_rule(world.get_location('GS Dodongo\'s Cavern Alcove Above Stairs'), lambda state: (state.has('Progressive Hookshot') and state.is_adult()) or (state.has('Boomerang') and (state.has_explosives() or state.has('Progressive Strength Upgrade'))))
     set_rule(world.get_location('GS Dodongo\'s Cavern Scarecrow'), lambda state: state.is_adult() and ( (state.has('Progressive Hookshot') and state.has_ocarina()) or state.has('Progressive Hookshot', 2) ))
     set_rule(world.get_location('GS Zora River Ladder'), lambda state: state.nighttime())
