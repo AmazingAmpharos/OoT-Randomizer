@@ -117,6 +117,7 @@ hintTable = {'Hammer':                                                ("the drag
              'Compass':                                               ("a treasure tracker", 'item'),
              'BossKey':                                               ("a master of unlocking", 'item'),
              'SmallKey':                                              ("a tool for unlocking", 'item'),
+             'FortressSmallKey':                                      ("a get out of jail free card", 'item'),
              'useless':                                               ("something worthless", 'item'),
              'Arrows (5)':                                            ("danger darts", 'item'),
              'Arrows (10)':                                           ("danger darts", 'item'),
