@@ -3,6 +3,7 @@ from enum import Enum, unique
 import logging
 from collections import OrderedDict
 from version import __version__ as OoTRVersion
+import random
 
 
 class World(object):
@@ -92,13 +93,17 @@ class World(object):
     def initialize_items(self):
         for item in self.itempool:
             item.world = self
+            item.price = int(random.betavariate(1.5, 2) * 300)
         for region in self.regions:
             for location in region.locations:
                 if location.item != None:
                     location.item.world = self
+                    location.item.price = int(random.betavariate(1.5, 2) * 300)
         for dungeon in self.dungeons:
             for item in dungeon.all_items:
                 item.world = self
+                item.price = int(random.betavariate(1.5, 2) * 300)
+
 
 
     def get_region(self, regionname):
@@ -675,7 +680,7 @@ class Location(object):
 
 class Item(object):
 
-    def __init__(self, name='', advancement=False, priority=False, type=None, code=None, index=None):
+    def __init__(self, name='', advancement=False, priority=False, type=None, code=None, index=None, object=None, model=None):
         self.name = name
         self.advancement = advancement
         self.priority = priority
@@ -683,6 +688,9 @@ class Item(object):
         self.code = code
         self.index = index
         self.location = None
+        self.object = object
+        self.model = model
+        self.price = None
 
     def copy(self):
         return Item(self.name, self.advancement, self.priority, self.type, self.code, self.index)

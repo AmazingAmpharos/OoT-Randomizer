@@ -1298,53 +1298,46 @@ def patch_rom(world, rom):
         for item_id, gfx_id in chestAnimations.items():
             rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
 
+    free_shop_ids = list(unused_shop_ids)
+
     # kokiri shop
-    shop_objs = place_shop_items(rom, world.get_region('Kokiri Shop').locations) | {0x00FC, 0x00B2, 0x0101, 0x0102, 0x00FD, 0x00C5}
+    shop_objs = place_shop_items(rom, shop_items, free_shop_ids, world.get_region('Kokiri Shop').locations) | {0x00FC, 0x00B2, 0x0101, 0x0102, 0x00FD, 0x00C5}
     rom.write_byte(0x2587029, len(shop_objs))
     rom.write_int32(0x258702C, 0x0300F600)
     rom.write_int16s(0x2596600, list(shop_objs))
 
-
-    #rom.write_int16(None, 0x00D1)
-    #shop_items[0x001D].object = 0x00D1
-    #shop_items[0x001D].model = 0x22
-    #shop_items[0x001D].price = 1
-    #shop_items[0x001D].pieces = 1
-    #shop_items[0x001D].get_item_id = 0x45
-    #shop_items[0x001D].func2 = 0x8086365C
-
     # bazaar
-    shop_objs = place_shop_items(rom, world.get_region('Castle Town Bazaar').locations) | {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B}
+    shop_objs = place_shop_items(rom, shop_items, free_shop_ids, world.get_region('Castle Town Bazaar').locations) | {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B}
     rom.write_byte(0x28E4029, len(shop_objs))
     rom.write_int32(0x28E402C, 0x0300FA18)
     rom.write_int16s(0x28EBA40, list(shop_objs))
 
     # goron shop
-    shop_objs = place_shop_items(rom, world.get_region('Goron Shop').locations) | {0x00C9, 0x00B2, 0x0103, 0x00AF}
+    shop_objs = place_shop_items(rom, shop_items, free_shop_ids, world.get_region('Goron Shop').locations) | {0x00C9, 0x00B2, 0x0103, 0x00AF}
     rom.write_byte(0x2D33029, len(shop_objs))
     rom.write_int32(0x2D3302C, 0x03004340)
     rom.write_int16s(0x2D37340, list(shop_objs))
 
     # zora shop
-    shop_objs = place_shop_items(rom, world.get_region('Zora Shop').locations) | {0x005B, 0x00B2, 0x0104, 0x00FE}
+    shop_objs = place_shop_items(rom, shop_items, free_shop_ids, world.get_region('Zora Shop').locations) | {0x005B, 0x00B2, 0x0104, 0x00FE}
     rom.write_byte(0x2D5B029, len(shop_objs))
     rom.write_int32(0x2D5B02C, 0x03004B40)
     rom.write_int16s(0x2D5FB40, list(shop_objs))
 
     # kakariko potion shop
-    shop_objs = place_shop_items(rom, world.get_region('Kakariko Potion Shop Front').locations) | {0x0159, 0x00B2, 0x0175, 0x0122}
+    shop_objs = place_shop_items(rom, shop_items, free_shop_ids, world.get_region('Kakariko Potion Shop Front').locations) | {0x0159, 0x00B2, 0x0175, 0x0122}
     rom.write_byte(0x2D83029, len(shop_objs))
     rom.write_int32(0x2D8302C, 0x0300A500)
     rom.write_int16s(0x2D8D500, list(shop_objs))
 
     # market potion shop
-    shop_objs = place_shop_items(rom, world.get_region('Castle Town Potion Shop').locations) | {0x0159, 0x00B2, 0x0175, 0x00C5, 0x010C, 0x016B}
+    shop_objs = place_shop_items(rom, shop_items, free_shop_ids, world.get_region('Castle Town Potion Shop').locations) | {0x0159, 0x00B2, 0x0175, 0x00C5, 0x010C, 0x016B}
     rom.write_byte(0x2DB0029, len(shop_objs))
     rom.write_int32(0x2DB002C, 0x03004E40)
     rom.write_int16s(0x2DB4E40, list(shop_objs))
 
     # bombchu shop
-    shop_objs = place_shop_items(rom, world.get_region('Castle Town Bombchu Shop').locations) | {0x0165, 0x00B2}
+    shop_objs = place_shop_items(rom, shop_items, free_shop_ids, world.get_region('Castle Town Bombchu Shop').locations) | {0x0165, 0x00B2}
     rom.write_byte(0x2DD8029, len(shop_objs))
     rom.write_int32(0x2DD802C, 0x03006A40)
     rom.write_int16s(0x2DDEA40, list(shop_objs))
@@ -1735,12 +1728,21 @@ def update_chest_sizes(rom, override_table):
         default = (default & 0x0FFF) | newChestType
         rom.write_int16(address, default)
 
-def place_shop_items(rom, locations):
+
+unused_shop_ids = [0x0B, 0x11, 0x12, 0x13, 0x14, 0x17, 0x19, 0x1A, 0x1B, 0x1C, 0x29, 0x2A, 0x2F, 0x30, 0x31]
+def place_shop_items(rom, shop_items, free_shop_ids, locations):
     shop_objs = set()
     for location in locations:
+        shop_objs.add(location.item.object)
         if location.item.type == 'Shop':
-            shop_objs.add(location.item.code)
             rom.write_int16(location.address, location.item.index)
         else:
-            print('error')
+            shop_id = free_shop_ids.pop()
+            rom.write_int16(location.address, shop_id)
+            shop_items[shop_id].object = location.item.object
+            shop_items[shop_id].model = location.item.model
+            shop_items[shop_id].price = location.item.price
+            shop_items[shop_id].pieces = 1
+            shop_items[shop_id].get_item_id = location.item.index
+            shop_items[shop_id].func2 = 0x8086365C
     return shop_objs
