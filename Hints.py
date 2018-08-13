@@ -45,7 +45,7 @@ def buildHintString(hintString):
 
 
 def getItemGenericName(item):
-    if item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey':
+    if item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey' or item.type == 'FortressSmallKey':
         return item.type
     else:
         return item.name
