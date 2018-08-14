@@ -99,6 +99,7 @@ def global_rules(world):
     set_rule(world.get_location('Composer Grave Chest'), lambda state: state.has_fire_source())
     set_rule(world.get_entrance('Bottom of the Well'), lambda state: state.can_play('Song of Storms'))
     set_rule(world.get_entrance('Death Mountain Entrance'), lambda state: state.has('Zeldas Letter') or state.is_adult() or world.open_kakariko)
+    set_rule(world.get_location('DM Trail Freestanding PoH'), lambda state: world.open_kakariko or (world.difficulty != 'ohko') or (state.has('Zeldas Letter') or state.can_blast_or_smash() or (state.is_adult() and (state.has('Bow') or state.has('Progressive Strength Upgrade') or state.has_bottle() or state.has('Hover Boots') or (state.has('Nayrus Love') and state.has('Magic Meter'))))))
     set_rule(world.get_location('Death Mountain Bombable Chest'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('Biggoron'), lambda state: (not world.logic_no_trade_biggoron) and (state.has('Progressive Strength Upgrade') or state.can_blast_or_smash() or state.has('Bow')) and state.is_adult() and state.can_finish_adult_trades() and state.guarantee_hint())
     set_rule(world.get_location('Goron City Leftmost Maze Chest'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade', 2) or state.has('Hammer')))
@@ -127,7 +128,7 @@ def global_rules(world):
     set_rule(world.get_location('Adult Shooting Gallery'), lambda state: state.has('Bow') and state.is_adult())
     set_rule(world.get_location('10 Big Poes'), lambda state: (not world.logic_no_big_poes) and (state.has('Bow') and state.has('Epona') and state.has_bottle() and state.is_adult() and state.guarantee_hint()))
     set_rule(world.get_location('Treasure Chest Game'), lambda state: state.has('Lens of Truth') and state.has('Magic Meter'))
-    set_rule(world.get_entrance('Lost Woods Dive Warp'), lambda state: state.can_dive() and (state.can_leave_forest()))
+    set_rule(world.get_entrance('Lost Woods Dive Warp'), lambda state: state.can_dive() and state.can_leave_forest())
     set_rule(world.get_entrance('Zora River Dive Warp'), lambda state: state.can_dive())
     set_rule(world.get_entrance('Lake Hylia Dive Warp'), lambda state: state.can_dive())
     set_rule(world.get_entrance('Zoras Domain Dive Warp'), lambda state: state.can_dive())
@@ -152,8 +153,8 @@ def global_rules(world):
     set_rule(world.get_location('Talons Chickens'), lambda state: state.has('Zeldas Letter'))
     set_rule(world.get_location('Song from Malon'), lambda state: state.has('Zeldas Letter') and state.has_ocarina())
     set_rule(world.get_location('Epona'), lambda state: state.can_play('Eponas Song') and state.is_adult())
-    set_rule(world.get_entrance('Adult Forest Warp Pad'), lambda state: state.can_play('Minuet of Forest') and state.is_adult() and state.can_leave_forest())
-    set_rule(world.get_entrance('Child Forest Warp Pad'), lambda state: state.can_play('Minuet of Forest') and state.can_leave_forest())
+    set_rule(world.get_entrance('Adult Forest Warp Pad'), lambda state: state.can_play('Minuet of Forest') and state.is_adult())
+    set_rule(world.get_entrance('Child Forest Warp Pad'), lambda state: state.can_play('Minuet of Forest'))
     set_rule(world.get_entrance('Adult Meadow Access'), lambda state: state.can_play('Sarias Song') and state.is_adult())
     set_rule(world.get_entrance('Forest Temple Entrance'), lambda state: state.has('Progressive Hookshot') and state.is_adult())
     set_rule(world.get_entrance('Dampes Grave'), lambda state: state.is_adult())
@@ -206,9 +207,9 @@ def global_rules(world):
     set_rule(world.get_location('Zelda'), lambda state: state.has('Shadow Medallion') and state.has('Spirit Medallion') and state.is_adult())
     set_rule(world.get_location('Ganon'), lambda state: (state.has('Boss Key (Ganons Castle)') or world.unlocked_ganondorf) and (state.has('Magic Meter') and state.has('Bow') and state.has('Light Arrows')) )
     set_rule(world.get_entrance('Kokiri Forest Storms Grotto'), lambda state: state.can_play('Song of Storms'))
-    set_rule(world.get_entrance('Lost Woods Generic Grotto'), lambda state: state.has('Bomb Bag') or (state.can_blast_or_smash() and (state.can_leave_forest())))
-    set_rule(world.get_entrance('Lost Woods Sales Grotto'), lambda state: (state.has('Bomb Bag') or (state.has_bombchus() and (state.can_leave_forest()))) or (state.has('Hammer') and state.is_adult() and (state.can_play('Minuet of Forest') or state.can_play('Sarias Song'))))
-    set_rule(world.get_entrance('Front of Meadow Grotto'), lambda state: (state.has('Bomb Bag') or (state.has_bombchus() and (state.can_leave_forest()))) or (state.has('Hammer') and state.is_adult() and (state.can_play('Minuet of Forest') or state.can_play('Sarias Song'))))
+    set_rule(world.get_entrance('Lost Woods Generic Grotto'), lambda state: state.has('Bomb Bag') or (state.can_blast_or_smash() and state.can_leave_forest()))
+    set_rule(world.get_entrance('Lost Woods Sales Grotto'), lambda state: (state.has('Bomb Bag') or (state.has_bombchus() and state.can_leave_forest())) or (state.has('Hammer') and state.is_adult() and (state.can_play('Minuet of Forest') or state.can_play('Sarias Song'))))
+    set_rule(world.get_entrance('Front of Meadow Grotto'), lambda state: (state.has('Bomb Bag') or (state.has_bombchus() and state.can_leave_forest())) or (state.has('Hammer') and state.is_adult() and (state.can_play('Minuet of Forest') or state.can_play('Sarias Song'))))
     set_rule(world.get_entrance('Remote Southern Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Near Lake Inside Fence Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Valley Grotto'), lambda state: state.can_blast_or_smash())
@@ -224,7 +225,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Zora River Plateau Open Grotto'), lambda state: state.has_explosives() or state.has('Progressive Scale') or state.is_adult())
     set_rule(world.get_entrance('Zora River Plateau Bombable Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('Tektite Grotto Freestanding PoH'), lambda state: state.has('Progressive Scale', 2) or (state.has('Iron Boots') and state.is_adult()))
-    set_rule(world.get_location('GS Kokiri Know It All House'), lambda state: state.nighttime() and state.can_reach('Hyrule Field'))
+    set_rule(world.get_location('GS Kokiri Know It All House'), lambda state: state.nighttime() and state.can_leave_forest())
     set_rule(world.get_location('GS Kokiri Bean Patch'), lambda state: state.has_bottle())
     set_rule(world.get_location('GS Kokiri House of Twins'), lambda state: state.has('Progressive Hookshot') and state.is_adult() and state.nighttime())
     set_rule(world.get_location('GS Lost Woods Bean Patch Near Bridge'), lambda state: state.has_bottle())
@@ -293,7 +294,7 @@ def dung_rules_dt0(world):
     set_rule(world.get_entrance('Deku Tree Basement Path'), lambda state: state.has('Slingshot'))
 
 	# GS
-    set_rule(world.get_location('GS Deku Tree Basement Back Room'), lambda state: state.has('Boomerang') and (state.has('Bomb Bag') or (state.has_bombchus() and (state.can_leave_forest()))))
+    set_rule(world.get_location('GS Deku Tree Basement Back Room'), lambda state: state.has('Boomerang') and (state.has('Bomb Bag') or (state.has_bombchus() and state.can_leave_forest())))
 
 def dung_rules_dc0(world):
 	# Dodongo's Cavern Vanilla
