@@ -686,46 +686,44 @@ setting_infos = [
                       Plays spiritually best with Keysanity.
                       '''
         }),
-    Setting_Info('nodungeonitems', bool, 1, True, 
+    Setting_Info('shuffle_dungeon_items', str, 2, True,
         {
-            'help': '''\
-                    Remove Maps and Compasses from Itempool, replacing them by
-                    empty slots.
-                    ''',
-            'action': 'store_true'
+        'default': 'leavekeys',
+        'const': 'leavekeys',
+        'nargs': '?',
+        'choices': ['off', 'leavekeys', 'keysanity'],
+        'help': '''\
+                    Dungeon items can appear outside of their
+                    respective dungeon.
+                    off:            Don't use this feature
+                    leavekeys:      All items besides keys will be shuffled
+                    keysanity:      All items will be shuffled
+                    '''
         },
         {
-            'text': 'Remove Maps and Compasses',
+            'text': 'Shuffle Dungeon Items',
             'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'checked',
+            'widget': 'Combobox',
+            'default': 'Maps and Compasses',
+            'options': {
+                'Off': 'off',
+                'Maps and Compasses': 'leavekeys',
+                'Full Keysanity': 'keysanity'
+            },
             'tooltip':'''\
-                      Dungeons will have 2 more possible item
-                      locations. This helps make some dungeons
-                      more profitable, such as Ice Cavern and 
-                      Jabu Jabu's Belly.
-                      '''
-        }),    
-    Setting_Info('keysanity', bool, 1, True, 
-        {
-            'help': '''\
-                    Small Keys, Boss Keys, Maps, and Compasses will be shuffled into the pool at
-                    large, instead of just being restricted to their own dungeons.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Keysanity',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Dungeon items can appear outside of their
-                      respective dungeon. Gerudo Fortress keys
-                      are also shuffled. 
+                      Dungeon items will be shuffled into the pool
+                      at large, instead of just being restricted to
+                      their own dungeon.
 
-                      A difficult mode since it it more likely
-                      to need to enter a dungeon multiple times.
+                      'Maps and Compasses': Dungeons will have
+                      2 more possible item locations. This helps
+                      make some dungeons more profitable, such as
+                      Ice Cavern and Jabu Jabu's Belly.
+
+                      'Full Keysanity': All items, including small and
+                      boss keys, will be shuffled. A difficult mode,
+                      since it is more likely to need to enter a dungeon
+                      multiple times.
                       '''
         }),
     Setting_Info('tokensanity', str, 2, True, 
