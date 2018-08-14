@@ -202,7 +202,7 @@ item_table = {
     'Buy Fish': (False, True, 'Shop', None, 0x07, 0x00F4, 0x3F), 
     'Buy Red Potion': (False, True, 'Shop', None, 0x08, 0x00EB, 0x15), 
     'Buy Green Potion': (False, True, 'Shop', None, 0x09, 0x00EB, 0x16), 
-    'Buy Blue Potion': (False, True, 'Shop', None, 0x0A, 0x00EB, 0x17), 
+    #'Buy Blue Potion': (False, True, 'Shop', None, 0x0A, 0x00EB, 0x17), 
     'Buy Hylian Shield': (True, False, 'Shop', None, 0x0C, 0x00DC, 0x2C), 
     'Buy Deku Shield': (True, False, 'Shop', None, 0x0D, 0x00CB, 0x1D), 
     'Buy Goron Tunic': (True, False, 'Shop', None, 0x0E, 0x00F2, 0x3C), 

@@ -512,6 +512,7 @@ def update_message_by_index(messages, index, text, opts=None):
     if opts is None:
         opts = messages[index].opts
     messages[index] = Message.from_string(text, messages[index].id, opts)
+    messages[index].index = index
 
 # wrapper for adding a string message to a list of messages
 def add_message(messages, text, id=0, opts=0x00):

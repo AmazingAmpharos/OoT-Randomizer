@@ -281,7 +281,7 @@ def global_rules(world):
         if location.type != 'Chest':
             forbid_item(location, 'Ice Trap')
         add_item_rule(location, lambda i: not (i.type == 'Song' and not i.world.shuffle_song_items and i.world.id != location.world.id))
-        if location.type == 'Shop' and not location.name.endswith('7') and not location.name.endswith('8'):
+        if location.type == 'Shop' and not location.name.endswith('5') and not location.name.endswith('7'):
             add_item_rule(location, lambda i: (i.type == 'Shop'))
         else:
             add_item_rule(location, lambda i: (i.type != 'Shop'))
