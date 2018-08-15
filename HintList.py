@@ -46,6 +46,7 @@ hintTable = {'Hammer':                                                ("the drag
              'Ice Arrows':                                            ("the refrigerator rocket", 'item'),
              'Lens of Truth':                                         ("the perjurless porthole", 'item'),
              'Dins Fire':                                             ("an inferno", 'item'),
+             'Ocarina':                                               ("a flute", 'item'),
              'Fairy Ocarina':                                         ("a brown flute", 'item'),
              'Goron Tunic':                                           ("ruby robes", 'item'),
              'Zora Tunic':                                            ("a sapphire suit", 'item'),
