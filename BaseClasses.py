@@ -395,22 +395,16 @@ class CollectionState(object):
             self.clear_cached_unreachable()
             
     def remove(self, item):
-        if item.advancement:
-            to_remove = item.name
+        if self.prog_items[item.name] > 0:
+            self.prog_items[item.name] -= 1
+            if self.prog_items[item.name] <= 0:
+            	del self.prog_items[item.name]
 
-            if to_remove is not None:
-                try:
-                    self.prog_items[item.name] -= 1
-                    if self.prog_items[item.name] <= 0:
-                    	del self.prog_items[item.name]
-                except ValueError:
-                    return
-
-                # invalidate collected cache. unreachable locations are still unreachable
-                self.region_cache =   {k: v for k, v in self.region_cache.items() if not v}
-                self.location_cache = {k: v for k, v in self.location_cache.items() if not v}
-                self.entrance_cache = {k: v for k, v in self.entrance_cache.items() if not v}
-                self.recursion_count = 0
+            # invalidate collected cache. unreachable locations are still unreachable
+            self.region_cache =   {k: v for k, v in self.region_cache.items() if not v}
+            self.location_cache = {k: v for k, v in self.location_cache.items() if not v}
+            self.entrance_cache = {k: v for k, v in self.entrance_cache.items() if not v}
+            self.recursion_count = 0
 
     def __getattr__(self, item):
         if item.startswith('can_reach_'):
