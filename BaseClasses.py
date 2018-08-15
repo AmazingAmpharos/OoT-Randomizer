@@ -1,7 +1,7 @@
 import copy
 from enum import Enum, unique
 import logging
-from collections import OrderedDict
+from collections import OrderedDict, Counter
 from version import __version__ as OoTRVersion
 
 
@@ -225,7 +225,7 @@ class World(object):
 class CollectionState(object):
 
     def __init__(self, parent):
-        self.prog_items = []
+        self.prog_items = Counter()
         self.world = parent
         self.region_cache = {}
         self.location_cache = {}
@@ -293,12 +293,10 @@ class CollectionState(object):
         return correct_cache[spot]
 
     def has(self, item, count=1):
-        if count == 1:
-            return item in self.prog_items
-        return self.item_count(item) >= count
+        return self.prog_items[item] >= count
 
     def item_count(self, item):
-        return len([pritem for pritem in self.prog_items if pritem == item])
+    	return self.prog_items[item]
 
     def is_adult(self):
         return self.has('Master Sword')
@@ -387,10 +385,10 @@ class CollectionState(object):
         changed = False
         if item.name.startswith('Bottle'):
             if self.bottle_count() < 4:
-                self.prog_items.append(item.name)
+                self.prog_items[item.name] += 1
                 changed = True
         elif item.advancement:
-            self.prog_items.append(item.name)
+            self.prog_items[item.name] += 1
             changed = True
 
         if changed:
@@ -402,7 +400,9 @@ class CollectionState(object):
 
             if to_remove is not None:
                 try:
-                    self.prog_items.remove(to_remove)
+                    self.prog_items[item.name] -= 1
+                    if self.prog_items[item.name] <= 0:
+                    	del self.prog_items[item.name]
                 except ValueError:
                     return
 
