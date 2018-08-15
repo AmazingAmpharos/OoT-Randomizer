@@ -2,10 +2,11 @@
   {
     "File": {
       "Name": "Scene 0",
-      "Start": "01F06000",
-      "End": "01F13A20",
+      "Start": "02499000",
+      "End": "024A6A10",
       "RemapStart": null
     },
+    "Id": 0,
     "TActors": [
       "01FF 00FF 002E FE39 0190 01C7 6000 003F",
       "06FF 05FF 002E FA01 FD08 042E 4000 01C9",
@@ -25,10 +26,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 0",
-          "Start": "01F14000",
-          "End": "01F29350",
+          "Start": "024A7000",
+          "End": "024BC2F0",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "0036",
           "001E",
@@ -84,10 +86,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 1",
-          "Start": "01F2A000",
-          "End": "01F2E200",
+          "Start": "024BD000",
+          "End": "024C1150",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "0036",
           "001E",
@@ -118,10 +121,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 2",
-          "Start": "01F2F000",
-          "End": "01F34F30",
+          "Start": "024C2000",
+          "End": "024C7E30",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "0036",
           "001E",
@@ -170,10 +174,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 3",
-          "Start": "01F35000",
-          "End": "01F491B0",
+          "Start": "024C8000",
+          "End": "024DC1A0",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "0036",
           "001E",
@@ -217,10 +222,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 4",
-          "Start": "01F4A000",
-          "End": "01F4EC30",
+          "Start": "024DD000",
+          "End": "024E1BD0",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "0036",
           "001E",
@@ -251,10 +257,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 5",
-          "Start": "01F4F000",
-          "End": "01F57390",
+          "Start": "024E2000",
+          "End": "024EA320",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "0036",
           "001E",
@@ -295,10 +302,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 6",
-          "Start": "01F58000",
-          "End": "01F5CF00",
+          "Start": "024EB000",
+          "End": "024EFEC0",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "0036",
           "001E",
@@ -330,10 +338,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 7",
-          "Start": "01F5D000",
-          "End": "01F65AA0",
+          "Start": "024F0000",
+          "End": "024F8910",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "0036",
           "001E",
@@ -392,10 +401,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 8",
-          "Start": "01F66000",
-          "End": "01F66D90",
+          "Start": "024F9000",
+          "End": "024F9D00",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "0036",
           "001E",
@@ -425,10 +435,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 9",
-          "Start": "01F67000",
-          "End": "01F708A0",
+          "Start": "024FA000",
+          "End": "025038A0",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "0036",
           "001E",
@@ -459,10 +470,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 10",
-          "Start": "01F71000",
-          "End": "01F75E00",
+          "Start": "02504000",
+          "End": "02508D80",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "0036",
           "001E",
@@ -502,10 +514,11 @@
       {
         "File": {
           "Name": "Scene 0, Room 11",
-          "Start": "01F76000",
-          "End": "01F7D170",
+          "Start": "02509000",
+          "End": "02510170",
           "RemapStart": null
         },
+        "Id": 11,
         "Objects": [
           "0036",
           "001E",
@@ -524,10 +537,11 @@
   {
     "File": {
       "Name": "Scene 1",
-      "Start": "01F7E000",
-      "End": "01F93140",
+      "Start": "01F12000",
+      "End": "01F27140",
       "RemapStart": null
     },
+    "Id": 1,
     "TActors": [
       "00FF 01FF 0023 0474 0000 FEC0 4000 003F",
       "00FF 09FF 0023 0474 0213 FEC0 4000 003F",
@@ -558,10 +572,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 0",
-          "Start": "01F94000",
-          "End": "01FAF8A0",
+          "Start": "01F28000",
+          "End": "01F438A0",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "002B",
           "018A",
@@ -615,10 +630,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 1",
-          "Start": "01FB0000",
-          "End": "01FB9B70",
+          "Start": "01F44000",
+          "End": "01F4DB00",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "002B",
           "018A",
@@ -669,10 +685,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 2",
-          "Start": "01FBA000",
-          "End": "01FC1EC0",
+          "Start": "01F4E000",
+          "End": "01F55DA0",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "002B",
           "018A",
@@ -735,10 +752,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 3",
-          "Start": "01FC2000",
-          "End": "01FCFE70",
+          "Start": "01F56000",
+          "End": "01F63DC0",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "002B",
           "001B",
@@ -776,10 +794,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 4",
-          "Start": "01FD0000",
-          "End": "01FD9960",
+          "Start": "01F64000",
+          "End": "01F6D850",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "002B",
           "0031",
@@ -826,10 +845,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 5",
-          "Start": "01FDA000",
-          "End": "01FDFEC0",
+          "Start": "01F6E000",
+          "End": "01F73EE0",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "002B",
           "0031",
@@ -854,10 +874,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 6",
-          "Start": "01FE0000",
-          "End": "01FE24B0",
+          "Start": "01F74000",
+          "End": "01F76400",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "002B",
           "0024",
@@ -885,10 +906,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 7",
-          "Start": "01FE3000",
-          "End": "01FEA700",
+          "Start": "01F77000",
+          "End": "01F7E6D0",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "002B",
           "001F",
@@ -918,10 +940,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 8",
-          "Start": "01FEB000",
-          "End": "01FF45A0",
+          "Start": "01F7F000",
+          "End": "01F88400",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "002B",
           "001F",
@@ -974,10 +997,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 9",
-          "Start": "01FF5000",
-          "End": "02000530",
+          "Start": "01F89000",
+          "End": "01F94550",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "002B",
           "018A",
@@ -1015,10 +1039,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 10",
-          "Start": "02001000",
-          "End": "02008F10",
+          "Start": "01F95000",
+          "End": "01F9CE50",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "002B",
           "018A",
@@ -1062,10 +1087,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 11",
-          "Start": "02009000",
-          "End": "0200B030",
+          "Start": "01F9D000",
+          "End": "01F9F080",
           "RemapStart": null
         },
+        "Id": 11,
         "Objects": [
           "002B",
           "0168"
@@ -1077,10 +1103,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 12",
-          "Start": "0200C000",
-          "End": "02014780",
+          "Start": "01FA0000",
+          "End": "01FA8730",
           "RemapStart": null
         },
+        "Id": 12,
         "Objects": [
           "002B",
           "018A",
@@ -1116,10 +1143,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 13",
-          "Start": "02015000",
-          "End": "020174D0",
+          "Start": "01FA9000",
+          "End": "01FAB480",
           "RemapStart": null
         },
+        "Id": 13,
         "Objects": [
           "002B",
           "00A4",
@@ -1141,10 +1169,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 14",
-          "Start": "02018000",
-          "End": "0201A4D0",
+          "Start": "01FAC000",
+          "End": "01FAE490",
           "RemapStart": null
         },
+        "Id": 14,
         "Objects": [
           "002B",
           "012B",
@@ -1164,10 +1193,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 15",
-          "Start": "0201B000",
-          "End": "0201D930",
+          "Start": "01FAF000",
+          "End": "01FB1850",
           "RemapStart": null
         },
+        "Id": 15,
         "Objects": [
           "002B",
           "0190",
@@ -1201,10 +1231,11 @@
       {
         "File": {
           "Name": "Scene 1, Room 16",
-          "Start": "0201E000",
-          "End": "02023560",
+          "Start": "01FB2000",
+          "End": "01FB7550",
           "RemapStart": null
         },
+        "Id": 16,
         "Objects": [
           "002B",
           "001F",
@@ -1223,10 +1254,11 @@
   {
     "File": {
       "Name": "Scene 2",
-      "Start": "02024000",
-      "End": "020397E0",
+      "Start": "0273E000",
+      "End": "027537C0",
       "RemapStart": null
     },
+    "Id": 2,
     "TActors": [
       "0FFF 05FF 002E 0550 FF10 F7B9 0000 0094",
       "01FF 00FF 002E 0000 FF10 FB99 0000 0095",
@@ -1256,10 +1288,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 0",
-          "Start": "0203A000",
-          "End": "0203E140",
+          "Start": "02754000",
+          "End": "02758070",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "0096",
           "018B",
@@ -1297,10 +1330,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 1",
-          "Start": "0203F000",
-          "End": "02044FC0",
+          "Start": "02759000",
+          "End": "0275EE90",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "0096",
           "018B",
@@ -1347,10 +1381,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 2",
-          "Start": "02045000",
-          "End": "0204E240",
+          "Start": "0275F000",
+          "End": "027681D0",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "0096",
           "00A3",
@@ -1387,10 +1422,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 3",
-          "Start": "0204F000",
-          "End": "02056260",
+          "Start": "02769000",
+          "End": "02770160",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "0096",
           "00A3",
@@ -1436,10 +1472,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 4",
-          "Start": "02057000",
-          "End": "0205B100",
+          "Start": "02771000",
+          "End": "02775050",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "0096",
           "012B",
@@ -1472,10 +1509,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 5",
-          "Start": "0205C000",
-          "End": "02062090",
+          "Start": "02776000",
+          "End": "0277C020",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "0096",
           "00D4",
@@ -1509,10 +1547,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 6",
-          "Start": "02063000",
-          "End": "02067240",
+          "Start": "0277D000",
+          "End": "02781240",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "0096",
           "00A3",
@@ -1541,10 +1580,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 7",
-          "Start": "02068000",
-          "End": "0206B4D0",
+          "Start": "02782000",
+          "End": "02785520",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "0096",
           "0022",
@@ -1574,10 +1614,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 8",
-          "Start": "0206C000",
-          "End": "0206F840",
+          "Start": "02786000",
+          "End": "02789880",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "0096",
           "00A3",
@@ -1592,10 +1633,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 9",
-          "Start": "02070000",
-          "End": "02073C30",
+          "Start": "0278A000",
+          "End": "0278DC70",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "0096",
           "00A3",
@@ -1610,10 +1652,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 10",
-          "Start": "02074000",
-          "End": "02077820",
+          "Start": "0278E000",
+          "End": "02791830",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "0096",
           "00A3",
@@ -1627,10 +1670,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 11",
-          "Start": "02078000",
-          "End": "0207B9F0",
+          "Start": "02792000",
+          "End": "02795800",
           "RemapStart": null
         },
+        "Id": 11,
         "Objects": [
           "0096",
           "00A3",
@@ -1683,10 +1727,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 12",
-          "Start": "0207C000",
-          "End": "0207FCE0",
+          "Start": "02796000",
+          "End": "02799CD0",
           "RemapStart": null
         },
+        "Id": 12,
         "Objects": [
           "0096",
           "00A3",
@@ -1718,10 +1763,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 13",
-          "Start": "02080000",
-          "End": "02082B80",
+          "Start": "0279A000",
+          "End": "0279CB50",
           "RemapStart": null
         },
+        "Id": 13,
         "Objects": [
           "0096",
           "00A3",
@@ -1749,10 +1795,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 14",
-          "Start": "02083000",
-          "End": "020891D0",
+          "Start": "0279D000",
+          "End": "027A31E0",
           "RemapStart": null
         },
+        "Id": 14,
         "Objects": [
           "0096",
           "000E",
@@ -1791,10 +1838,11 @@
       {
         "File": {
           "Name": "Scene 2, Room 15",
-          "Start": "0208A000",
-          "End": "0208C6E0",
+          "Start": "027A4000",
+          "End": "027A66E0",
           "RemapStart": null
         },
+        "Id": 15,
         "Objects": [
           "0096",
           "00A3",
@@ -1812,10 +1860,11 @@
   {
     "File": {
       "Name": "Scene 3",
-      "Start": "0208D000",
-      "End": "020A2F90",
+      "Start": "023CF000",
+      "End": "023E4F90",
       "RemapStart": null
     },
+    "Id": 3,
     "TActors": [
       "01FF 00FF 0009 0077 0167 003C 0000 003F",
       "04FF 02FF 0009 0077 01D3 F62C 0000 003F",
@@ -1852,10 +1901,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 0",
-          "Start": "020A3000",
-          "End": "020B0B90",
+          "Start": "023E5000",
+          "End": "023F2BC0",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "0073",
           "0072",
@@ -1879,10 +1929,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 1",
-          "Start": "020B1000",
-          "End": "020B6B70",
+          "Start": "023F3000",
+          "End": "023F8B60",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "0073",
           "0072",
@@ -1903,10 +1954,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 2",
-          "Start": "020B7000",
-          "End": "020C6980",
+          "Start": "023F9000",
+          "End": "02408A30",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "0073",
           "0072",
@@ -1949,10 +2001,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 3",
-          "Start": "020C7000",
-          "End": "020CA9E0",
+          "Start": "02409000",
+          "End": "0240CA10",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "0073",
           "0072",
@@ -1971,10 +2024,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 4",
-          "Start": "020CB000",
-          "End": "020CE2C0",
+          "Start": "0240D000",
+          "End": "024102B0",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "0073",
           "0072",
@@ -1993,10 +2047,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 5",
-          "Start": "020CF000",
-          "End": "020D25D0",
+          "Start": "02411000",
+          "End": "024145E0",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "0073",
           "0072",
@@ -2018,10 +2073,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 6",
-          "Start": "020D3000",
-          "End": "020DC430",
+          "Start": "02415000",
+          "End": "0241E4C0",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "0073",
           "0072",
@@ -2052,10 +2108,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 7",
-          "Start": "020DD000",
-          "End": "020EFFE0",
+          "Start": "0241F000",
+          "End": "02432000",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "0073",
           "0072",
@@ -2096,10 +2153,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 8",
-          "Start": "020F0000",
-          "End": "02107AB0",
+          "Start": "02432000",
+          "End": "02449B70",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "0073",
           "0072",
@@ -2133,10 +2191,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 9",
-          "Start": "02108000",
-          "End": "02112160",
+          "Start": "0244A000",
+          "End": "02454190",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "0073",
           "0072",
@@ -2161,10 +2220,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 10",
-          "Start": "02113000",
-          "End": "021183E0",
+          "Start": "02455000",
+          "End": "0245A3E0",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "0073",
           "0072",
@@ -2185,10 +2245,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 11",
-          "Start": "02119000",
-          "End": "02123BE0",
+          "Start": "0245B000",
+          "End": "02465BD0",
           "RemapStart": null
         },
+        "Id": 11,
         "Objects": [
           "0073",
           "0072",
@@ -2230,10 +2291,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 12",
-          "Start": "02124000",
-          "End": "0212C3E0",
+          "Start": "02466000",
+          "End": "0246E3E0",
           "RemapStart": null
         },
+        "Id": 12,
         "Objects": [
           "0073",
           "0072",
@@ -2257,10 +2319,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 13",
-          "Start": "0212D000",
-          "End": "02135AB0",
+          "Start": "0246F000",
+          "End": "02477AB0",
           "RemapStart": null
         },
+        "Id": 13,
         "Objects": [
           "0073",
           "0072",
@@ -2286,10 +2349,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 14",
-          "Start": "02136000",
-          "End": "0213BB70",
+          "Start": "02478000",
+          "End": "0247DBB0",
           "RemapStart": null
         },
+        "Id": 14,
         "Objects": [
           "0073",
           "0072",
@@ -2317,10 +2381,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 15",
-          "Start": "0213C000",
-          "End": "0213E6E0",
+          "Start": "0247E000",
+          "End": "02480690",
           "RemapStart": null
         },
+        "Id": 15,
         "Objects": [
           "0073",
           "0072",
@@ -2347,10 +2412,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 16",
-          "Start": "0213F000",
-          "End": "02143FA0",
+          "Start": "02481000",
+          "End": "02485FA0",
           "RemapStart": null
         },
+        "Id": 16,
         "Objects": [
           "0073",
           "0072",
@@ -2374,10 +2440,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 17",
-          "Start": "02144000",
-          "End": "0214D0F0",
+          "Start": "02486000",
+          "End": "0248F150",
           "RemapStart": null
         },
+        "Id": 17,
         "Objects": [
           "0073",
           "0072",
@@ -2409,10 +2476,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 18",
-          "Start": "0214E000",
-          "End": "0214F330",
+          "Start": "02490000",
+          "End": "02491340",
           "RemapStart": null
         },
+        "Id": 18,
         "Objects": [
           "0073",
           "0072",
@@ -2431,10 +2499,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 19",
-          "Start": "02150000",
-          "End": "02150500",
+          "Start": "02492000",
+          "End": "02492510",
           "RemapStart": null
         },
+        "Id": 19,
         "Objects": [
           "0073",
           "0072",
@@ -2457,10 +2526,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 20",
-          "Start": "02151000",
-          "End": "02152300",
+          "Start": "02493000",
+          "End": "02494300",
           "RemapStart": null
         },
+        "Id": 20,
         "Objects": [
           "0073",
           "0072",
@@ -2483,10 +2553,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 21",
-          "Start": "02153000",
-          "End": "02154770",
+          "Start": "02495000",
+          "End": "02496780",
           "RemapStart": null
         },
+        "Id": 21,
         "Objects": [
           "0073",
           "0072",
@@ -2506,10 +2577,11 @@
       {
         "File": {
           "Name": "Scene 3, Room 22",
-          "Start": "02155000",
-          "End": "02156DE0",
+          "Start": "02497000",
+          "End": "02498DE0",
           "RemapStart": null
         },
+        "Id": 22,
         "Objects": [
           "0073",
           "0072",
@@ -2527,10 +2599,11 @@
   {
     "File": {
       "Name": "Scene 4",
-      "Start": "02157000",
-      "End": "021717D0",
+      "Start": "022D8000",
+      "End": "022F2970",
       "RemapStart": null
     },
+    "Id": 4,
     "TActors": [
       "05FF 04FF 0023 0820 0992 FD80 4000 00BF",
       "0AFF 02FF 0023 FC04 07C6 0000 0000 00BF",
@@ -2632,10 +2705,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 0",
-          "Start": "02172000",
-          "End": "021792F0",
+          "Start": "022F3000",
+          "End": "022FA2C0",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "002C",
           "000E",
@@ -2659,10 +2733,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 1",
-          "Start": "0217A000",
-          "End": "02186930",
+          "Start": "022FB000",
+          "End": "023079E0",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "002C",
           "011C",
@@ -2697,10 +2772,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 2",
-          "Start": "02187000",
-          "End": "02197030",
+          "Start": "02308000",
+          "End": "02317FD0",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "002C",
           "000E",
@@ -2737,10 +2813,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 3",
-          "Start": "02198000",
-          "End": "0219A4D0",
+          "Start": "02318000",
+          "End": "0231A4E0",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "002C",
           "00A4",
@@ -2756,10 +2833,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 4",
-          "Start": "0219B000",
-          "End": "021A28F0",
+          "Start": "0231B000",
+          "End": "02322890",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "002C",
           "000E",
@@ -2794,10 +2872,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 5",
-          "Start": "021A3000",
-          "End": "021AD2E0",
+          "Start": "02323000",
+          "End": "0232D230",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "002C",
           "000E",
@@ -2849,10 +2928,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 6",
-          "Start": "021AE000",
-          "End": "021B4F90",
+          "Start": "0232E000",
+          "End": "02334FA0",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "002C",
           "011C",
@@ -2871,10 +2951,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 7",
-          "Start": "021B5000",
-          "End": "021B8A50",
+          "Start": "02335000",
+          "End": "023389E0",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "002C",
           "0025",
@@ -2895,10 +2976,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 8",
-          "Start": "021B9000",
-          "End": "021C2AE0",
+          "Start": "02339000",
+          "End": "02342AC0",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "002C",
           "011C",
@@ -2921,10 +3003,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 9",
-          "Start": "021C3000",
-          "End": "021CB770",
+          "Start": "02343000",
+          "End": "0234B770",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "002C",
           "018E"
@@ -2939,10 +3022,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 10",
-          "Start": "021CC000",
-          "End": "021E4420",
+          "Start": "0234C000",
+          "End": "023644A0",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "002C",
           "000E",
@@ -3016,10 +3100,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 11",
-          "Start": "021E5000",
-          "End": "021E87E0",
+          "Start": "02365000",
+          "End": "023687C0",
           "RemapStart": null
         },
+        "Id": 11,
         "Objects": [
           "002C",
           "00A4",
@@ -3046,10 +3131,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 12",
-          "Start": "021E9000",
-          "End": "021EBB70",
+          "Start": "02369000",
+          "End": "0236BB80",
           "RemapStart": null
         },
+        "Id": 12,
         "Objects": [
           "002C",
           "0025",
@@ -3066,10 +3152,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 13",
-          "Start": "021EC000",
-          "End": "021F8B90",
+          "Start": "0236C000",
+          "End": "02378BE0",
           "RemapStart": null
         },
+        "Id": 13,
         "Objects": [
           "002C",
           "00A4",
@@ -3097,10 +3184,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 14",
-          "Start": "021F9000",
-          "End": "021FB200",
+          "Start": "02379000",
+          "End": "0237B260",
           "RemapStart": null
         },
+        "Id": 14,
         "Objects": [
           "002C",
           "00A4",
@@ -3118,10 +3206,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 15",
-          "Start": "021FC000",
-          "End": "021FD190",
+          "Start": "0237C000",
+          "End": "0237D1D0",
           "RemapStart": null
         },
+        "Id": 15,
         "Objects": [
           "002C",
           "0032",
@@ -3137,10 +3226,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 16",
-          "Start": "021FE000",
-          "End": "022099E0",
+          "Start": "0237E000",
+          "End": "02389970",
           "RemapStart": null
         },
+        "Id": 16,
         "Objects": [
           "002C",
           "00A4",
@@ -3172,10 +3262,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 17",
-          "Start": "0220A000",
-          "End": "02213170",
+          "Start": "0238A000",
+          "End": "02393140",
           "RemapStart": null
         },
+        "Id": 17,
         "Objects": [
           "002C",
           "00C9",
@@ -3201,10 +3292,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 18",
-          "Start": "02214000",
-          "End": "02217C00",
+          "Start": "02394000",
+          "End": "02397B80",
           "RemapStart": null
         },
+        "Id": 18,
         "Objects": [
           "002C",
           "005F",
@@ -3233,10 +3325,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 19",
-          "Start": "02218000",
-          "End": "0221C230",
+          "Start": "02398000",
+          "End": "0239C1E0",
           "RemapStart": null
         },
+        "Id": 19,
         "Objects": [
           "002C",
           "00A4",
@@ -3266,10 +3359,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 20",
-          "Start": "0221D000",
-          "End": "02223D10",
+          "Start": "0239D000",
+          "End": "023A3D10",
           "RemapStart": null
         },
+        "Id": 20,
         "Objects": [
           "002C",
           "000E",
@@ -3290,10 +3384,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 21",
-          "Start": "02224000",
-          "End": "0222C480",
+          "Start": "023A4000",
+          "End": "023AC4C0",
           "RemapStart": null
         },
+        "Id": 21,
         "Objects": [
           "002C",
           "00A4",
@@ -3311,10 +3406,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 22",
-          "Start": "0222D000",
-          "End": "02233AF0",
+          "Start": "023AD000",
+          "End": "023B3B00",
           "RemapStart": null
         },
+        "Id": 22,
         "Objects": [
           "002C",
           "000E",
@@ -3333,10 +3429,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 23",
-          "Start": "02234000",
-          "End": "0223AD20",
+          "Start": "023B4000",
+          "End": "023BAD20",
           "RemapStart": null
         },
+        "Id": 23,
         "Objects": [
           "002C",
           "0025",
@@ -3360,10 +3457,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 24",
-          "Start": "0223B000",
-          "End": "02240540",
+          "Start": "023BB000",
+          "End": "023C0540",
           "RemapStart": null
         },
+        "Id": 24,
         "Objects": [
           "002C",
           "009E",
@@ -3379,10 +3477,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 25",
-          "Start": "02241000",
-          "End": "02247AE0",
+          "Start": "023C1000",
+          "End": "023C7AE0",
           "RemapStart": null
         },
+        "Id": 25,
         "Objects": [
           "002C",
           "0024",
@@ -3399,10 +3498,11 @@
       {
         "File": {
           "Name": "Scene 4, Room 26",
-          "Start": "02248000",
-          "End": "0224E8A0",
+          "Start": "023C8000",
+          "End": "023CE8A0",
           "RemapStart": null
         },
+        "Id": 26,
         "Objects": [
           "002C",
           "000E",
@@ -3423,10 +3523,11 @@
   {
     "File": {
       "Name": "Scene 5",
-      "Start": "0224F000",
-      "End": "02264C30",
+      "Start": "025B8000",
+      "End": "025CDCF0",
       "RemapStart": null
     },
+    "Id": 5,
     "TActors": [
       "00FF 11FF 0023 0294 0000 0000 0000 01BF",
       "04FF 00FF 0023 0294 01CC FE98 0000 01BF",
@@ -3505,10 +3606,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 0",
-          "Start": "02265000",
-          "End": "0227AC30",
+          "Start": "025CE000",
+          "End": "025E3C80",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "0059",
           "00A4",
@@ -3547,10 +3649,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 1",
-          "Start": "0227B000",
-          "End": "022851D0",
+          "Start": "025E4000",
+          "End": "025EE160",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "0059",
           "00A4",
@@ -3579,10 +3682,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 2",
-          "Start": "02286000",
-          "End": "0228BC90",
+          "Start": "025EF000",
+          "End": "025F4B90",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "0059",
           "00A4",
@@ -3627,10 +3731,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 3",
-          "Start": "0228C000",
-          "End": "022927C0",
+          "Start": "025F5000",
+          "End": "025FB710",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "0059",
           "00A4",
@@ -3674,10 +3779,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 4",
-          "Start": "02293000",
-          "End": "02299020",
+          "Start": "025FC000",
+          "End": "02601FE0",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "0059",
           "00A4",
@@ -3707,10 +3813,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 5",
-          "Start": "0229A000",
-          "End": "022A4640",
+          "Start": "02602000",
+          "End": "0260C5F0",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "0059",
           "013B",
@@ -3750,10 +3857,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 6",
-          "Start": "022A5000",
-          "End": "022B0300",
+          "Start": "0260D000",
+          "End": "026182C0",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "0059",
           "0125",
@@ -3784,10 +3892,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 7",
-          "Start": "022B1000",
-          "End": "022B6560",
+          "Start": "02619000",
+          "End": "0261E550",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "0059",
           "0125",
@@ -3814,10 +3923,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 8",
-          "Start": "022B7000",
-          "End": "022C4D80",
+          "Start": "0261F000",
+          "End": "0262CCD0",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "0059",
           "0170",
@@ -3852,10 +3962,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 9",
-          "Start": "022C5000",
-          "End": "022CD0B0",
+          "Start": "0262D000",
+          "End": "02634FE0",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "0059",
           "013A",
@@ -3888,10 +3999,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 10",
-          "Start": "022CE000",
-          "End": "022D4070",
+          "Start": "02635000",
+          "End": "0263AFB0",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "0059",
           "0170",
@@ -3927,10 +4039,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 11",
-          "Start": "022D5000",
-          "End": "022D9A20",
+          "Start": "0263B000",
+          "End": "0263F9B0",
           "RemapStart": null
         },
+        "Id": 11,
         "Objects": [
           "0059",
           "013B",
@@ -3961,10 +4074,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 12",
-          "Start": "022DA000",
-          "End": "022E0E30",
+          "Start": "02640000",
+          "End": "02646D90",
           "RemapStart": null
         },
+        "Id": 12,
         "Objects": [
           "0059",
           "013B",
@@ -4004,10 +4118,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 13",
-          "Start": "022E1000",
-          "End": "022E1A00",
+          "Start": "02647000",
+          "End": "02647A00",
           "RemapStart": null
         },
+        "Id": 13,
         "Objects": [
           "0059",
           "0125",
@@ -4022,10 +4137,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 14",
-          "Start": "022E2000",
-          "End": "022E8E80",
+          "Start": "02648000",
+          "End": "0264EE60",
           "RemapStart": null
         },
+        "Id": 14,
         "Objects": [
           "0059",
           "011C",
@@ -4055,10 +4171,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 15",
-          "Start": "022E9000",
-          "End": "022F0470",
+          "Start": "0264F000",
+          "End": "02656430",
           "RemapStart": null
         },
+        "Id": 15,
         "Objects": [
           "0059",
           "013B",
@@ -4089,10 +4206,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 16",
-          "Start": "022F1000",
-          "End": "022F4B30",
+          "Start": "02657000",
+          "End": "0265AAD0",
           "RemapStart": null
         },
+        "Id": 16,
         "Objects": [
           "0059",
           "000E",
@@ -4116,10 +4234,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 17",
-          "Start": "022F5000",
-          "End": "022FDAB0",
+          "Start": "0265B000",
+          "End": "02663A20",
           "RemapStart": null
         },
+        "Id": 17,
         "Objects": [
           "0059",
           "000E",
@@ -4156,10 +4275,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 18",
-          "Start": "022FE000",
-          "End": "02302100",
+          "Start": "02664000",
+          "End": "026680C0",
           "RemapStart": null
         },
+        "Id": 18,
         "Objects": [
           "0059",
           "000E",
@@ -4183,10 +4303,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 19",
-          "Start": "02303000",
-          "End": "02306930",
+          "Start": "02669000",
+          "End": "0266C930",
           "RemapStart": null
         },
+        "Id": 19,
         "Objects": [
           "0059",
           "000E",
@@ -4205,10 +4326,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 20",
-          "Start": "02307000",
-          "End": "0230D840",
+          "Start": "0266D000",
+          "End": "02673740",
           "RemapStart": null
         },
+        "Id": 20,
         "Objects": [
           "0059",
           "000E",
@@ -4247,10 +4369,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 21",
-          "Start": "0230E000",
-          "End": "023154A0",
+          "Start": "02674000",
+          "End": "0267B4A0",
           "RemapStart": null
         },
+        "Id": 21,
         "Objects": [
           "0059",
           "013B",
@@ -4284,10 +4407,11 @@
       {
         "File": {
           "Name": "Scene 5, Room 22",
-          "Start": "02316000",
-          "End": "0231F0F0",
+          "Start": "0267C000",
+          "End": "026850F0",
           "RemapStart": null
         },
+        "Id": 22,
         "Objects": [
           "0059",
           "013B",
@@ -4307,10 +4431,11 @@
   {
     "File": {
       "Name": "Scene 6",
-      "Start": "02320000",
-      "End": "02339B20",
+      "Start": "02ADE000",
+      "End": "02AF7B40",
       "RemapStart": null
     },
+    "Id": 6,
     "TActors": [
       "19FF 18FF 002E 0140 06C5 FCC2 4000 00B5",
       "1AFF 19FF 002E FF38 06C5 FCC2 4000 0093",
@@ -4492,10 +4617,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 0",
-          "Start": "0233A000",
-          "End": "0234AFF0",
+          "Start": "02AF8000",
+          "End": "02B08F40",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "00F1",
           "016D",
@@ -4541,10 +4667,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 1",
-          "Start": "0234B000",
-          "End": "02354350",
+          "Start": "02B09000",
+          "End": "02B12300",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "00F1",
           "016D",
@@ -4578,10 +4705,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 2",
-          "Start": "02355000",
-          "End": "0235ABB0",
+          "Start": "02B13000",
+          "End": "02B18C10",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "00F1",
           "016D",
@@ -4610,10 +4738,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 3",
-          "Start": "0235B000",
-          "End": "0235EBD0",
+          "Start": "02B19000",
+          "End": "02B1CB50",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "00F1",
           "016D",
@@ -4645,10 +4774,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 4",
-          "Start": "0235F000",
-          "End": "02366280",
+          "Start": "02B1D000",
+          "End": "02B24270",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "00F1",
           "016D",
@@ -4685,10 +4815,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 5",
-          "Start": "02367000",
-          "End": "0237F010",
+          "Start": "02B25000",
+          "End": "02B3CF40",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "00F1",
           "016D",
@@ -4752,10 +4883,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 6",
-          "Start": "02380000",
-          "End": "023847F0",
+          "Start": "02B3D000",
+          "End": "02B41800",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "00F1",
           "016D",
@@ -4782,10 +4914,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 7",
-          "Start": "02385000",
-          "End": "0238A510",
+          "Start": "02B42000",
+          "End": "02B47510",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "00F1",
           "016D",
@@ -4803,10 +4936,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 8",
-          "Start": "0238B000",
-          "End": "023930B0",
+          "Start": "02B48000",
+          "End": "02B50070",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "00F1",
           "016D",
@@ -4852,10 +4986,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 9",
-          "Start": "02394000",
-          "End": "02399DD0",
+          "Start": "02B51000",
+          "End": "02B56DF0",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "00F1",
           "016D",
@@ -4875,10 +5010,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 10",
-          "Start": "0239A000",
-          "End": "023A21A0",
+          "Start": "02B57000",
+          "End": "02B5F1A0",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "00F1",
           "016D",
@@ -4904,10 +5040,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 11",
-          "Start": "023A3000",
-          "End": "023A4010",
+          "Start": "02B60000",
+          "End": "02B61010",
           "RemapStart": null
         },
+        "Id": 11,
         "Objects": [
           "00F1",
           "016D",
@@ -4919,10 +5056,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 12",
-          "Start": "023A5000",
-          "End": "023A70E0",
+          "Start": "02B62000",
+          "End": "02B64060",
           "RemapStart": null
         },
+        "Id": 12,
         "Objects": [
           "00F1",
           "016D",
@@ -4948,10 +5086,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 13",
-          "Start": "023A8000",
-          "End": "023AD8B0",
+          "Start": "02B65000",
+          "End": "02B6A850",
           "RemapStart": null
         },
+        "Id": 13,
         "Objects": [
           "00F1",
           "016D",
@@ -4987,10 +5126,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 14",
-          "Start": "023AE000",
-          "End": "023B2CA0",
+          "Start": "02B6B000",
+          "End": "02B6FC90",
           "RemapStart": null
         },
+        "Id": 14,
         "Objects": [
           "00F1",
           "016D",
@@ -5010,10 +5150,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 15",
-          "Start": "023B3000",
-          "End": "023BB4A0",
+          "Start": "02B70000",
+          "End": "02B78470",
           "RemapStart": null
         },
+        "Id": 15,
         "Objects": [
           "00F1",
           "016D",
@@ -5049,10 +5190,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 16",
-          "Start": "023BC000",
-          "End": "023C21C0",
+          "Start": "02B79000",
+          "End": "02B7F190",
           "RemapStart": null
         },
+        "Id": 16,
         "Objects": [
           "00F1",
           "016D",
@@ -5075,10 +5217,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 17",
-          "Start": "023C3000",
-          "End": "023CC650",
+          "Start": "02B80000",
+          "End": "02B89610",
           "RemapStart": null
         },
+        "Id": 17,
         "Objects": [
           "00F1",
           "016D",
@@ -5104,10 +5247,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 18",
-          "Start": "023CD000",
-          "End": "023D2CE0",
+          "Start": "02B8A000",
+          "End": "02B8FCB0",
           "RemapStart": null
         },
+        "Id": 18,
         "Objects": [
           "00F1",
           "016D",
@@ -5136,10 +5280,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 19",
-          "Start": "023D3000",
-          "End": "023D8DD0",
+          "Start": "02B90000",
+          "End": "02B95DE0",
           "RemapStart": null
         },
+        "Id": 19,
         "Objects": [
           "00F1",
           "016D",
@@ -5159,10 +5304,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 20",
-          "Start": "023D9000",
-          "End": "023E11C0",
+          "Start": "02B96000",
+          "End": "02B9E1C0",
           "RemapStart": null
         },
+        "Id": 20,
         "Objects": [
           "00F1",
           "016D",
@@ -5188,10 +5334,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 21",
-          "Start": "023E2000",
-          "End": "023E6660",
+          "Start": "02B9F000",
+          "End": "02BA3650",
           "RemapStart": null
         },
+        "Id": 21,
         "Objects": [
           "00F1",
           "016D",
@@ -5208,10 +5355,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 22",
-          "Start": "023E7000",
-          "End": "023EA070",
+          "Start": "02BA4000",
+          "End": "02BA70D0",
           "RemapStart": null
         },
+        "Id": 22,
         "Objects": [
           "00F1",
           "016D",
@@ -5238,10 +5386,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 23",
-          "Start": "023EB000",
-          "End": "023F4210",
+          "Start": "02BA8000",
+          "End": "02BB1190",
           "RemapStart": null
         },
+        "Id": 23,
         "Objects": [
           "00F1",
           "016D",
@@ -5278,10 +5427,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 24",
-          "Start": "023F5000",
-          "End": "023FB4D0",
+          "Start": "02BB2000",
+          "End": "02BB84B0",
           "RemapStart": null
         },
+        "Id": 24,
         "Objects": [
           "00F1",
           "016D"
@@ -5298,10 +5448,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 25",
-          "Start": "023FC000",
-          "End": "02411BA0",
+          "Start": "02BB9000",
+          "End": "02BCEB70",
           "RemapStart": null
         },
+        "Id": 25,
         "Objects": [
           "00F1",
           "016D",
@@ -5336,10 +5487,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 26",
-          "Start": "02412000",
-          "End": "0241EB00",
+          "Start": "02BCF000",
+          "End": "02BDBB20",
           "RemapStart": null
         },
+        "Id": 26,
         "Objects": [
           "00F1",
           "016D",
@@ -5365,10 +5517,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 27",
-          "Start": "0241F000",
-          "End": "02424710",
+          "Start": "02BDC000",
+          "End": "02BE16C0",
           "RemapStart": null
         },
+        "Id": 27,
         "Objects": [
           "00F1",
           "016D",
@@ -5394,10 +5547,11 @@
       {
         "File": {
           "Name": "Scene 6, Room 28",
-          "Start": "02425000",
-          "End": "0242DA30",
+          "Start": "02BE2000",
+          "End": "02BEAA20",
           "RemapStart": null
         },
+        "Id": 28,
         "Objects": [
           "00F1",
           "016D",
@@ -5420,10 +5574,11 @@
   {
     "File": {
       "Name": "Scene 7",
-      "Start": "0242E000",
-      "End": "024463C0",
+      "Start": "027A7000",
+      "End": "027BF3C0",
       "RemapStart": null
     },
+    "Id": 7,
     "TActors": [
       "00FF 04FF 002E F7FA FFC1 FE6B C000 007F",
       "00FF 01FF 002E FCE6 FFC1 FD53 8000 007F",
@@ -5454,10 +5609,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 0",
-          "Start": "02447000",
-          "End": "02452150",
+          "Start": "027C0000",
+          "End": "027CB0C0",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "0069",
           "0187",
@@ -5497,10 +5653,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 1",
-          "Start": "02453000",
-          "End": "02454AF0",
+          "Start": "027CC000",
+          "End": "027CDAC0",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "0069",
           "0187",
@@ -5523,10 +5680,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 2",
-          "Start": "02455000",
-          "End": "0245F9E0",
+          "Start": "027CE000",
+          "End": "027D8910",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "0069",
           "0187",
@@ -5562,10 +5720,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 3",
-          "Start": "02460000",
-          "End": "02462980",
+          "Start": "027D9000",
+          "End": "027DB940",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "0069",
           "0187",
@@ -5584,10 +5743,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 4",
-          "Start": "02463000",
-          "End": "02464C60",
+          "Start": "027DC000",
+          "End": "027DDC40",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "0069",
           "0187",
@@ -5612,10 +5772,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 5",
-          "Start": "02465000",
-          "End": "0246AAC0",
+          "Start": "027DE000",
+          "End": "027E3A60",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "0069",
           "0187",
@@ -5633,10 +5794,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 6",
-          "Start": "0246B000",
-          "End": "024725F0",
+          "Start": "027E4000",
+          "End": "027EB570",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "0069",
           "0187",
@@ -5674,10 +5836,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 7",
-          "Start": "02473000",
-          "End": "02474AE0",
+          "Start": "027EC000",
+          "End": "027EDAB0",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "0069",
           "0187",
@@ -5698,10 +5861,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 8",
-          "Start": "02475000",
-          "End": "0247A0A0",
+          "Start": "027EE000",
+          "End": "027F3060",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "0069",
           "0187",
@@ -5726,10 +5890,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 9",
-          "Start": "0247B000",
-          "End": "02487C90",
+          "Start": "027F4000",
+          "End": "02800B60",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "0069",
           "0187",
@@ -5779,10 +5944,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 10",
-          "Start": "02488000",
-          "End": "0248F7F0",
+          "Start": "02801000",
+          "End": "028087A0",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "0069",
           "0187",
@@ -5814,10 +5980,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 11",
-          "Start": "02490000",
-          "End": "02493E60",
+          "Start": "02809000",
+          "End": "0280CD40",
           "RemapStart": null
         },
+        "Id": 11,
         "Objects": [
           "0069",
           "0187",
@@ -5856,10 +6023,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 12",
-          "Start": "02494000",
-          "End": "02499750",
+          "Start": "0280D000",
+          "End": "02812720",
           "RemapStart": null
         },
+        "Id": 12,
         "Objects": [
           "0069",
           "0187",
@@ -5892,10 +6060,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 13",
-          "Start": "0249A000",
-          "End": "0249B020",
+          "Start": "02813000",
+          "End": "02813FB0",
           "RemapStart": null
         },
+        "Id": 13,
         "Objects": [
           "0069",
           "0187",
@@ -5923,10 +6092,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 14",
-          "Start": "0249C000",
-          "End": "024A1900",
+          "Start": "02814000",
+          "End": "02819940",
           "RemapStart": null
         },
+        "Id": 14,
         "Objects": [
           "0069",
           "0187",
@@ -5947,10 +6117,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 15",
-          "Start": "024A2000",
-          "End": "024A92C0",
+          "Start": "0281A000",
+          "End": "02821270",
           "RemapStart": null
         },
+        "Id": 15,
         "Objects": [
           "0069",
           "0187",
@@ -5976,10 +6147,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 16",
-          "Start": "024AA000",
-          "End": "024AC930",
+          "Start": "02822000",
+          "End": "02824880",
           "RemapStart": null
         },
+        "Id": 16,
         "Objects": [
           "0069",
           "0187",
@@ -6023,10 +6195,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 17",
-          "Start": "024AD000",
-          "End": "024AFDE0",
+          "Start": "02825000",
+          "End": "02827CD0",
           "RemapStart": null
         },
+        "Id": 17,
         "Objects": [
           "0069",
           "0187",
@@ -6060,10 +6233,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 18",
-          "Start": "024B0000",
-          "End": "024BD310",
+          "Start": "02828000",
+          "End": "02835280",
           "RemapStart": null
         },
+        "Id": 18,
         "Objects": [
           "0069",
           "0187",
@@ -6089,10 +6263,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 19",
-          "Start": "024BE000",
-          "End": "024C0D80",
+          "Start": "02836000",
+          "End": "02838D20",
           "RemapStart": null
         },
+        "Id": 19,
         "Objects": [
           "0069",
           "0187",
@@ -6116,10 +6291,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 20",
-          "Start": "024C1000",
-          "End": "024C2E40",
+          "Start": "02839000",
+          "End": "0283AE20",
           "RemapStart": null
         },
+        "Id": 20,
         "Objects": [
           "0069",
           "0187",
@@ -6147,10 +6323,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 21",
-          "Start": "024C3000",
-          "End": "024CE5B0",
+          "Start": "0283B000",
+          "End": "028464B0",
           "RemapStart": null
         },
+        "Id": 21,
         "Objects": [
           "0069",
           "0187",
@@ -6205,10 +6382,11 @@
       {
         "File": {
           "Name": "Scene 7, Room 22",
-          "Start": "024CF000",
-          "End": "024D19B0",
+          "Start": "02847000",
+          "End": "028499A0",
           "RemapStart": null
         },
+        "Id": 22,
         "Objects": [
           "0069",
           "0187",
@@ -6223,10 +6401,11 @@
   {
     "File": {
       "Name": "Scene 8",
-      "Start": "024D2000",
-      "End": "024DE590",
+      "Start": "032C6000",
+      "End": "032D2560",
       "RemapStart": null
     },
+    "Id": 8,
     "TActors": [
       "01FF 00FF 002E FC86 0000 FF9C 0000 009F",
       "03FF 00FF 002E 0366 0000 FCA4 0000 02D5",
@@ -6318,10 +6497,11 @@
       {
         "File": {
           "Name": "Scene 8, Room 0",
-          "Start": "024DF000",
-          "End": "024F4720",
+          "Start": "032D3000",
+          "End": "032E85F0",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "008D",
           "0187",
@@ -6398,10 +6578,11 @@
       {
         "File": {
           "Name": "Scene 8, Room 1",
-          "Start": "024F5000",
-          "End": "02500130",
+          "Start": "032E9000",
+          "End": "032F42D0",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "008D",
           "0187",
@@ -6454,10 +6635,11 @@
       {
         "File": {
           "Name": "Scene 8, Room 2",
-          "Start": "02501000",
-          "End": "02504160",
+          "Start": "032F5000",
+          "End": "032F8190",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "008D",
           "0187",
@@ -6486,10 +6668,11 @@
       {
         "File": {
           "Name": "Scene 8, Room 3",
-          "Start": "02505000",
-          "End": "02506CC0",
+          "Start": "032F9000",
+          "End": "032FAC60",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "008D",
           "0187",
@@ -6524,10 +6707,11 @@
       {
         "File": {
           "Name": "Scene 8, Room 4",
-          "Start": "02507000",
-          "End": "025094A0",
+          "Start": "032FB000",
+          "End": "032FD450",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "008D",
           "0187",
@@ -6553,10 +6737,11 @@
       {
         "File": {
           "Name": "Scene 8, Room 5",
-          "Start": "0250A000",
-          "End": "0250C990",
+          "Start": "032FE000",
+          "End": "03300960",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "008D",
           "0187",
@@ -6588,10 +6773,11 @@
       {
         "File": {
           "Name": "Scene 8, Room 6",
-          "Start": "0250D000",
-          "End": "0250FEA0",
+          "Start": "03301000",
+          "End": "03303E80",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "008D",
           "0187",
@@ -6616,10 +6802,11 @@
   {
     "File": {
       "Name": "Scene 9",
-      "Start": "02510000",
-      "End": "025216C0",
+      "Start": "02BEB000",
+      "End": "02BFC610",
       "RemapStart": null
     },
+    "Id": 9,
     "TActors": [
       "01FF 0AFF 0023 FD66 009B 059A AFA5 013F",
       "03FF 08FF 0023 0386 00AC FCF7 1F4A 013F",
@@ -6810,10 +6997,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 0",
-          "Start": "02522000",
-          "End": "0252A680",
+          "Start": "02BFD000",
+          "End": "02C05660",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "006B",
           "0016",
@@ -6841,10 +7029,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 1",
-          "Start": "0252B000",
-          "End": "02537530",
+          "Start": "02C06000",
+          "End": "02C12540",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "006B",
           "0016",
@@ -6878,10 +7067,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 2",
-          "Start": "02538000",
-          "End": "0253DB00",
+          "Start": "02C13000",
+          "End": "02C18AF0",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "006B",
           "0016",
@@ -6909,10 +7099,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 3",
-          "Start": "0253E000",
-          "End": "02546090",
+          "Start": "02C19000",
+          "End": "02C21080",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "006B",
           "0016",
@@ -6953,10 +7144,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 4",
-          "Start": "02547000",
-          "End": "0254E650",
+          "Start": "02C22000",
+          "End": "02C29670",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "006B",
           "0016",
@@ -6983,10 +7175,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 5",
-          "Start": "0254F000",
-          "End": "02557880",
+          "Start": "02C2A000",
+          "End": "02C32890",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "006B",
           "0016",
@@ -7026,10 +7219,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 6",
-          "Start": "02558000",
-          "End": "0255C1B0",
+          "Start": "02C33000",
+          "End": "02C37260",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "006B",
           "0016",
@@ -7058,10 +7252,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 7",
-          "Start": "0255D000",
-          "End": "025628F0",
+          "Start": "02C38000",
+          "End": "02C3D8F0",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "006B",
           "008A",
@@ -7079,10 +7274,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 8",
-          "Start": "02563000",
-          "End": "02564920",
+          "Start": "02C3E000",
+          "End": "02C3F950",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "006B",
           "0016",
@@ -7110,10 +7306,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 9",
-          "Start": "02565000",
-          "End": "0256D690",
+          "Start": "02C40000",
+          "End": "02C48650",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "006B",
           "0016",
@@ -7154,10 +7351,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 10",
-          "Start": "0256E000",
-          "End": "025723E0",
+          "Start": "02C49000",
+          "End": "02C4D3E0",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "006B",
           "0016",
@@ -7178,10 +7376,11 @@
       {
         "File": {
           "Name": "Scene 9, Room 11",
-          "Start": "02573000",
-          "End": "02578850",
+          "Start": "02C4E000",
+          "End": "02C53900",
           "RemapStart": null
         },
+        "Id": 11,
         "Objects": [
           "006B",
           "0016",
@@ -7222,10 +7421,11 @@
   {
     "File": {
       "Name": "Scene 10",
-      "Start": "0300B000",
-      "End": "0301B7B0",
+      "Start": "02EE3000",
+      "End": "02EF37B0",
       "RemapStart": null
     },
+    "Id": 10,
     "TActors": [
       "0303 02FF 002E 0000 012C 01FA 8000 008A",
       "0505 04FF 002E FE06 0230 0000 4000 007F",
@@ -7242,10 +7442,11 @@
       {
         "File": {
           "Name": "Scene 10, Room 0",
-          "Start": "0301C000",
-          "End": "03023ED0",
+          "Start": "02EF4000",
+          "End": "02EFBED0",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "0139",
           "00A4",
@@ -7266,10 +7467,11 @@
       {
         "File": {
           "Name": "Scene 10, Room 1",
-          "Start": "03024000",
-          "End": "0302B770",
+          "Start": "02EFC000",
+          "End": "02F03770",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "0139",
           "00A4",
@@ -7288,10 +7490,11 @@
       {
         "File": {
           "Name": "Scene 10, Room 2",
-          "Start": "0302C000",
-          "End": "03033850",
+          "Start": "02F04000",
+          "End": "02F0B850",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "0139",
           "00A4",
@@ -7317,10 +7520,11 @@
       {
         "File": {
           "Name": "Scene 10, Room 3",
-          "Start": "03034000",
-          "End": "0303B730",
+          "Start": "02F0C000",
+          "End": "02F13730",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "0139",
           "00A4",
@@ -7342,10 +7546,11 @@
       {
         "File": {
           "Name": "Scene 10, Room 4",
-          "Start": "0303C000",
-          "End": "030450D0",
+          "Start": "02F14000",
+          "End": "02F1D0D0",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "0139",
           "00A4",
@@ -7367,10 +7572,11 @@
       {
         "File": {
           "Name": "Scene 10, Room 5",
-          "Start": "03046000",
-          "End": "0304EB10",
+          "Start": "02F1E000",
+          "End": "02F26B10",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "0139",
           "00B0"
@@ -7386,10 +7592,11 @@
       {
         "File": {
           "Name": "Scene 10, Room 6",
-          "Start": "0304F000",
-          "End": "03058BA0",
+          "Start": "02F27000",
+          "End": "02F30BA0",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "0139",
           "00B0"
@@ -7401,10 +7608,11 @@
       {
         "File": {
           "Name": "Scene 10, Room 7",
-          "Start": "03059000",
-          "End": "030637A0",
+          "Start": "02F31000",
+          "End": "02F3B7A0",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "0139",
           "00A4",
@@ -7431,10 +7639,11 @@
       {
         "File": {
           "Name": "Scene 10, Room 8",
-          "Start": "03064000",
-          "End": "0306ABE0",
+          "Start": "02F3C000",
+          "End": "02F42BE0",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "0139",
           "00B0"
@@ -7464,10 +7673,11 @@
       {
         "File": {
           "Name": "Scene 10, Room 9",
-          "Start": "0306B000",
-          "End": "03070920",
+          "Start": "02F43000",
+          "End": "02F48920",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "0139",
           "00B0"
@@ -7479,10 +7689,11 @@
   {
     "File": {
       "Name": "Scene 11",
-      "Start": "02579000",
-      "End": "0258A4C0",
+      "Start": "02875000",
+      "End": "02886530",
       "RemapStart": null
     },
+    "Id": 11,
     "TActors": [
       "06FF 08FF 0023 0320 FFB0 FA10 C000 003F",
       "02FF 01FF 002E F9D4 FFB0 FD94 0000 009F",
@@ -7512,10 +7723,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 0",
-          "Start": "0258B000",
-          "End": "0259AF90",
+          "Start": "02887000",
+          "End": "02896F90",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "004D",
           "00A4",
@@ -7540,10 +7752,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 1",
-          "Start": "0259B000",
-          "End": "025A4270",
+          "Start": "02897000",
+          "End": "028A0290",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "004D",
           "000E",
@@ -7561,10 +7774,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 2",
-          "Start": "025A5000",
-          "End": "025AA050",
+          "Start": "028A1000",
+          "End": "028A5F80",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "004D",
           "002C",
@@ -7614,10 +7828,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 3",
-          "Start": "025AB000",
-          "End": "025B2C50",
+          "Start": "028A6000",
+          "End": "028ADC20",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "004D",
           "000E",
@@ -7651,10 +7866,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 4",
-          "Start": "025B3000",
-          "End": "025BD1E0",
+          "Start": "028AE000",
+          "End": "028B8150",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "004D",
           "000E",
@@ -7689,10 +7905,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 5",
-          "Start": "025BE000",
-          "End": "025C3020",
+          "Start": "028B9000",
+          "End": "028BE0E0",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "004D",
           "000E",
@@ -7717,10 +7934,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 6",
-          "Start": "025C4000",
-          "End": "025CBF80",
+          "Start": "028BF000",
+          "End": "028C6F40",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "004D",
           "002B",
@@ -7762,10 +7980,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 7",
-          "Start": "025CC000",
-          "End": "025D42C0",
+          "Start": "028C7000",
+          "End": "028CF330",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "004D",
           "000E",
@@ -7790,10 +8009,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 8",
-          "Start": "025D5000",
-          "End": "025DD230",
+          "Start": "028D0000",
+          "End": "028D8210",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "004D",
           "002B",
@@ -7826,10 +8046,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 9",
-          "Start": "025DE000",
-          "End": "025E1870",
+          "Start": "028D9000",
+          "End": "028DC8F0",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "004D",
           "000E",
@@ -7866,10 +8087,11 @@
       {
         "File": {
           "Name": "Scene 11, Room 10",
-          "Start": "025E2000",
-          "End": "025E7C50",
+          "Start": "028DD000",
+          "End": "028E2C60",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "004D",
           "000E",
@@ -7891,10 +8113,11 @@
   {
     "File": {
       "Name": "Scene 13",
-      "Start": "025E8000",
-      "End": "026097D0",
+      "Start": "0318E000",
+      "End": "031AF7C0",
       "RemapStart": null
     },
+    "Id": 13,
     "TActors": [
       "10FF 01FF 0023 0000 FF10 012A 8000 003F",
       "0BFF 0AFF 0023 F1C9 FF2E FCB8 4000 003F",
@@ -8193,10 +8416,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 0",
-          "Start": "0260A000",
-          "End": "02613210",
+          "Start": "031B0000",
+          "End": "031B91C0",
           "RemapStart": null
         },
+        "Id": 0,
         "Objects": [
           "0179",
           "005D",
@@ -8223,10 +8447,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 1",
-          "Start": "02614000",
-          "End": "026309D0",
+          "Start": "031BA000",
+          "End": "031D69B0",
           "RemapStart": null
         },
+        "Id": 1,
         "Objects": [
           "0179",
           "000E",
@@ -8246,10 +8471,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 2",
-          "Start": "02631000",
-          "End": "026387E0",
+          "Start": "031D7000",
+          "End": "031DE7E0",
           "RemapStart": null
         },
+        "Id": 2,
         "Objects": [
           "0179",
           "006B",
@@ -8297,10 +8523,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 3",
-          "Start": "02639000",
-          "End": "02642A40",
+          "Start": "031DF000",
+          "End": "031E8990",
           "RemapStart": null
         },
+        "Id": 3,
         "Objects": [
           "0179",
           "006B",
@@ -8333,10 +8560,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 4",
-          "Start": "02643000",
-          "End": "0264AC90",
+          "Start": "031E9000",
+          "End": "031F0C90",
           "RemapStart": null
         },
+        "Id": 4,
         "Objects": [
           "0179",
           "006B",
@@ -8357,10 +8585,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 5",
-          "Start": "0264B000",
-          "End": "02652520",
+          "Start": "031F1000",
+          "End": "031F8540",
           "RemapStart": null
         },
+        "Id": 5,
         "Objects": [
           "0179",
           "00AA",
@@ -8379,10 +8608,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 6",
-          "Start": "02653000",
-          "End": "02662C60",
+          "Start": "031F9000",
+          "End": "03208BF0",
           "RemapStart": null
         },
+        "Id": 6,
         "Objects": [
           "0179",
           "0069",
@@ -8421,10 +8651,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 7",
-          "Start": "02663000",
-          "End": "0266AC90",
+          "Start": "03209000",
+          "End": "03210C90",
           "RemapStart": null
         },
+        "Id": 7,
         "Objects": [
           "0179",
           "0069",
@@ -8445,10 +8676,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 8",
-          "Start": "0266B000",
-          "End": "02674020",
+          "Start": "03211000",
+          "End": "0321A070",
           "RemapStart": null
         },
+        "Id": 8,
         "Objects": [
           "0179",
           "002C",
@@ -8470,10 +8702,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 9",
-          "Start": "02675000",
-          "End": "02680820",
+          "Start": "0321B000",
+          "End": "03226890",
           "RemapStart": null
         },
+        "Id": 9,
         "Objects": [
           "0179",
           "000E",
@@ -8499,10 +8732,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 10",
-          "Start": "02681000",
-          "End": "02687BC0",
+          "Start": "03227000",
+          "End": "0322DB70",
           "RemapStart": null
         },
+        "Id": 10,
         "Objects": [
           "0179",
           "001B",
@@ -8527,10 +8761,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 11",
-          "Start": "02688000",
-          "End": "0268E950",
+          "Start": "0322E000",
+          "End": "03234950",
           "RemapStart": null
         },
+        "Id": 11,
         "Objects": [
           "0179",
           "001B",
@@ -8552,10 +8787,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 12",
-          "Start": "0268F000",
-          "End": "0269A270",
+          "Start": "03235000",
+          "End": "03240370",
           "RemapStart": null
         },
+        "Id": 12,
         "Objects": [
           "0179",
           "000E",
@@ -8594,10 +8830,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 13",
-          "Start": "0269B000",
-          "End": "026A2D40",
+          "Start": "03241000",
+          "End": "03248D40",
           "RemapStart": null
         },
+        "Id": 13,
         "Objects": [
           "0179",
           "00F1",
@@ -8619,10 +8856,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 14",
-          "Start": "026A3000",
-          "End": "026AD1D0",
+          "Start": "03249000",
+          "End": "032531A0",
           "RemapStart": null
         },
+        "Id": 14,
         "Objects": [
           "0179",
           "002C",
@@ -8662,10 +8900,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 15",
-          "Start": "026AE000",
-          "End": "026B5D40",
+          "Start": "03254000",
+          "End": "0325BD40",
           "RemapStart": null
         },
+        "Id": 15,
         "Objects": [
           "0179",
           "002C",
@@ -8686,10 +8925,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 16",
-          "Start": "026B6000",
-          "End": "026B8E30",
+          "Start": "0325C000",
+          "End": "0325EE20",
           "RemapStart": null
         },
+        "Id": 16,
         "Objects": [
           "0179",
           "000E",
@@ -8709,10 +8949,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 17",
-          "Start": "026B9000",
-          "End": "026C1620",
+          "Start": "0325F000",
+          "End": "032676A0",
           "RemapStart": null
         },
+        "Id": 17,
         "Objects": [
           "0179",
           "016C",
@@ -8746,10 +8987,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 18",
-          "Start": "026C2000",
-          "End": "026CE6E0",
+          "Start": "03268000",
+          "End": "03274670",
           "RemapStart": null
         },
+        "Id": 18,
         "Objects": [
           "0179",
           "012A",
@@ -8801,10 +9043,11 @@
       {
         "File": {
           "Name": "Scene 13, Room 19",
-          "Start": "026CF000",
-          "End": "026D6D40",
+          "Start": "03275000",
+          "End": "0327CD40",
           "RemapStart": null
         },
+        "Id": 19,
         "Objects": [
           "0179",
           "0072",
