@@ -1402,6 +1402,10 @@ def patch_rom(world, rom):
 
     # actually write the save table to rom
     write_save_table(rom)
+    
+    # disable music 
+    if world.disable_music:
+        rom.write_bytes(0xB3CB18, [0x00, 0x00, 0x20, 0x25])
 
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()

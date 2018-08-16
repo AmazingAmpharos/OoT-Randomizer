@@ -7,7 +7,7 @@ import random
 import subprocess
 import time
 import os
-
+import struct
 
 from BaseClasses import World, CollectionState, Item
 from EntranceShuffle import link_entrances
@@ -122,13 +122,16 @@ def main(settings, window=dummy_window()):
             window.update_status('Compressing ROM')
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
-                run_process(window, logger, ["Compress\\Compress.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+                if 8 * struct.calcsize("P") == 64:
+                    run_process(window, logger, ["Compress\\Compress.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+                else:
+                    run_process(window, logger, ["Compress\\Compress32.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
                 os.remove(rom_path)
             elif platform.system() == 'Linux':
-                run_process(window, logger, ["Compress/Compress", rom_path])
+                run_process(window, logger, ["Compress/Compress", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
                 os.remove(rom_path)
             elif platform.system() == 'Darwin':
-                run_process(window, logger, ["Compress/Compress.out", rom_path])
+                run_process(window, logger, ["Compress/Compress.out", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
                 os.remove(rom_path)
             else:
                 logger.info('OS not supported for compression')

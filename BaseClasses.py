@@ -1,7 +1,7 @@
 import copy
 from enum import Enum, unique
 import logging
-from collections import OrderedDict
+from collections import OrderedDict, Counter
 from version import __version__ as OoTRVersion
 
 
@@ -25,7 +25,7 @@ class World(object):
         self.settings = settings
         self.__dict__.update(settings.__dict__)
         # rename a few attributes...
-        self.place_dungeon_items = not self.nodungeonitems
+        self.keysanity = self.shuffle_dungeon_items == 'keysanity'
         self.check_beatable_only = not self.all_reachable
         # group a few others
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
@@ -142,8 +142,26 @@ class World(object):
     def get_items(self):
         return [loc.item for loc in self.get_filled_locations()] + self.itempool
 
-    def get_dungeon_items(self):
-        itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if item.key or self.place_dungeon_items]
+    # get a list of items that should stay in their proper dungeon
+    def get_restricted_dungeon_items(self):
+        if self.shuffle_dungeon_items == 'keysanity':
+            itempool = []
+        elif self.shuffle_dungeon_items == 'mapcompass':
+            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if item.key]
+        else:
+            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items]
+        for item in itempool:
+            item.world = self
+        return itempool
+
+    # get a list of items that don't have to be in their proper dungeon
+    def get_unrestricted_dungeon_items(self):
+        if self.shuffle_dungeon_items == 'keysanity':
+            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items]
+        elif self.shuffle_dungeon_items == 'mapcompass':
+            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if not item.key]
+        else:
+            itempool = []
         for item in itempool:
             item.world = self
         return itempool
@@ -201,31 +219,11 @@ class World(object):
     def has_beaten_game(self, state):
         return state.has('Triforce')
 
-    @property
-    def option_identifier(self):
-        id_value = 0
-        id_value_max = 1
-
-        def markbool(value):
-            nonlocal id_value, id_value_max
-            id_value += id_value_max * bool(value)
-            id_value_max *= 2
-        def marksequence(options, value):
-            nonlocal id_value, id_value_max
-            id_value += id_value_max * options.index(value)
-            id_value_max *= len(options)
-        markbool(self.place_dungeon_items)
-        marksequence(['ganon', 'pedestal', 'dungeons'], self.bridge)
-        marksequence(['vanilla', 'simple'], self.shuffle)
-        markbool(self.check_beatable_only)
-        assert id_value_max <= 0xFFFFFFFF
-        return id_value
-
 
 class CollectionState(object):
 
     def __init__(self, parent):
-        self.prog_items = []
+        self.prog_items = Counter()
         self.world = parent
         self.region_cache = {}
         self.location_cache = {}
@@ -293,12 +291,10 @@ class CollectionState(object):
         return correct_cache[spot]
 
     def has(self, item, count=1):
-        if count == 1:
-            return item in self.prog_items
-        return self.item_count(item) >= count
+        return self.prog_items[item] >= count
 
     def item_count(self, item):
-        return len([pritem for pritem in self.prog_items if pritem == item])
+    	return self.prog_items[item]
 
     def is_adult(self):
         return self.has('Master Sword')
@@ -387,30 +383,26 @@ class CollectionState(object):
         changed = False
         if item.name.startswith('Bottle'):
             if self.bottle_count() < 4:
-                self.prog_items.append(item.name)
+                self.prog_items[item.name] += 1
                 changed = True
         elif item.advancement:
-            self.prog_items.append(item.name)
+            self.prog_items[item.name] += 1
             changed = True
 
         if changed:
             self.clear_cached_unreachable()
             
     def remove(self, item):
-        if item.advancement:
-            to_remove = item.name
+        if self.prog_items[item.name] > 0:
+            self.prog_items[item.name] -= 1
+            if self.prog_items[item.name] <= 0:
+            	del self.prog_items[item.name]
 
-            if to_remove is not None:
-                try:
-                    self.prog_items.remove(to_remove)
-                except ValueError:
-                    return
-
-                # invalidate collected cache. unreachable locations are still unreachable
-                self.region_cache =   {k: v for k, v in self.region_cache.items() if not v}
-                self.location_cache = {k: v for k, v in self.location_cache.items() if not v}
-                self.entrance_cache = {k: v for k, v in self.entrance_cache.items() if not v}
-                self.recursion_count = 0
+            # invalidate collected cache. unreachable locations are still unreachable
+            self.region_cache =   {k: v for k, v in self.region_cache.items() if not v}
+            self.location_cache = {k: v for k, v in self.location_cache.items() if not v}
+            self.entrance_cache = {k: v for k, v in self.entrance_cache.items() if not v}
+            self.recursion_count = 0
 
     def __getattr__(self, item):
         if item.startswith('can_reach_'):
@@ -509,10 +501,10 @@ class CollectionState(object):
         item_locations = []
         if worlds[0].spoiler.playthrough:
             item_locations = [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
-                if location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)]
+                if location.item.type != 'Event' and not location.event and (worlds[0].keysanity or not location.item.key)]
         else:
             item_locations = [location for world in worlds for location in world.get_filled_locations() 
-                if location.item.advancement and location.item.type != 'Event' and not location.event and (worlds[0].settings.keysanity or not location.item.key)]
+                if location.item.advancement and location.item.type != 'Event' and not location.event and (worlds[0].keysanity or not location.item.key)]
 
         required_locations = []
         for location in item_locations:
@@ -564,10 +556,13 @@ class Region(object):
         return False
 
     def can_fill(self, item):
-        if self.world.keysanity:
-            return True
-        is_dungeon_item = item.key or item.map or item.compass
-        if is_dungeon_item:
+        if self.world.shuffle_dungeon_items == 'keysanity':
+            is_dungeon_restricted = False
+        elif self.world.shuffle_dungeon_items == 'mapcompass':
+            is_dungeon_restricted = item.key
+        else:
+            is_dungeon_restricted = item.key or item.map or item.compass
+        if is_dungeon_restricted:
             return self.dungeon and self.dungeon.is_dungeon_item(item)
         return True
 
