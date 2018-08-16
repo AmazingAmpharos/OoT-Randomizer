@@ -1328,7 +1328,7 @@ setting_infos = [
         },
         {
             'text': 'Disable Background Music',
-            'group': 'aesthetic_tab',
+            'group': 'cosmetics',
             'widget': 'Checkbutton',
             'default': False,
             'tooltip': '''\
