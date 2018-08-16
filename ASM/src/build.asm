@@ -34,6 +34,7 @@
 .include "extended_items.asm"
 .include "item_overrides.asm"
 .include "cutscenes.asm"
+.include "shop.asm"
 .include "every_frame.asm"
 .include "menu.asm"
 .include "time_travel.asm"

@@ -409,3 +409,16 @@
 ;   sw      zero, 0x1C (sp)
 .org 0xE9E20C
     sw      t1, 0x1C (sp)
+
+;==================================================================================================
+; Shop Injections
+;==================================================================================================
+
+; Check sold out override
+.org 0xC004EC
+    j        Check_Sold_Out
+
+; Set sold out override
+; lh t6, 0x1c(a1)
+.org 0xC018A0
+    jal      Set_Sold_Out

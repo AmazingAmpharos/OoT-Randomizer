@@ -253,12 +253,10 @@ def patch_rom(world, rom):
     # Remove locked door to Boss Key Chest in Fire Temple
     rom.write_byte(0x22D82B7, 0x3F)
 
-    if world.bombchus_in_logic:
-        # Change Bombchu Shop check to bombchus
-        rom.write_bytes(0xC6CED8, [0x80, 0x8A, 0x00, 0x7C, 0x24, 0x0B, 0x00, 0x09, 0x11, 0x4B, 0x00, 0x05])
-        # Change Bombchu Shop to never sell out
-        rom.write_bytes(0xC019C0, [0x10, 0x00, 0x00, 0x30])
+    # Change Bombchi Shop to be always open
+    rom.write_int32(0xC6CEDC, 0x240B0001) # li t3, 1
 
+    if world.bombchus_in_logic:
         # Change Bowling Alley check to bombchus (Part 1)
         rom.write_bytes(0x00E2D714, [0x81, 0xEF, 0xA6, 0x4C])
         rom.write_bytes(0x00E2D720, [0x24, 0x18, 0x00, 0x09, 0x11, 0xF8, 0x00, 0x06])
@@ -266,10 +264,6 @@ def patch_rom(world, rom):
         # Change Bowling Alley check to bombchus (Part 2)
         rom.write_bytes(0x00E2D890,  [0x81, 0x6B, 0xA6, 0x4C, 0x24, 0x0C, 0x00, 0x09, 0x51, 0x6C, 0x00, 0x0A])
     else:
-        # Change Bombchu Shop check to Bomb Bag
-        rom.write_bytes(0xC6CEDA, [0x00, 0xA2])
-        rom.write_byte(0xC6CEDF, 0x18)
-
         # Change Bowling Alley check to Bomb Bag (Part 1)
         rom.write_bytes(0x00E2D716, [0xA6, 0x72])
         rom.write_byte(0x00E2D723, 0x18)
@@ -1745,7 +1739,7 @@ def update_chest_sizes(rom, override_table):
 
 unused_shop_ids = [0x11, 0x12, 0x13, 0x14, 0x17, 0x19, 0x1A, 0x1B, 0x1C, 0x29, 0x2A, 0x2F, 0x30, 0x31]
 def place_shop_items(rom, shop_items, messages, free_shop_ids, locations):
-    shop_objs = set()
+    shop_objs = { 0x0148 } # Sold Out
     messages
     for location in locations:
         shop_objs.add(location.item.object)
@@ -1760,7 +1754,8 @@ def place_shop_items(rom, shop_items, messages, free_shop_ids, locations):
             shop_item.price = location.item.price
             shop_item.pieces = 1
             shop_item.get_item_id = location.item.index
-            shop_item.func2 = 0x8086365C
+            shop_item.func2 = 0x808636B8
+            shop_item.func4 = 0x80863FB4
 
             message_id = unused_shop_ids.index(shop_id) * 2
             shop_item.description_message = 0x8000 | message_id
