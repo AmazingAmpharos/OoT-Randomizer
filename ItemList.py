@@ -30,8 +30,8 @@ alwaysitems = ([
     + ['Progressive Strength Upgrade'] * 3
     + ['Progressive Scale'] * 2
     + ['Recovery Heart'] * 11
-    + ['Rupees (5)'] * 17
-    + ['Rupees (20)'] * 5
+    + ['Rupees (5)'] * 16
+    + ['Rupees (20)'] * 6
     + ['Rupees (50)'] * 7
     + ['Rupees (200)'] * 6
     + ['Bow'] * 3
