@@ -99,7 +99,7 @@ def global_rules(world):
     set_rule(world.get_location('Composer Grave Chest'), lambda state: state.has_fire_source())
     set_rule(world.get_entrance('Bottom of the Well'), lambda state: state.can_play('Song of Storms'))
     set_rule(world.get_entrance('Death Mountain Entrance'), lambda state: state.has('Zeldas Letter') or state.is_adult() or world.open_kakariko)
-    set_rule(world.get_location('DM Trail Freestanding PoH'), lambda state: world.open_kakariko or (state.has('Zeldas Letter') or state.can_blast_or_smash() or (state.is_adult() and ((world.difficulty != 'ohko') or state.has('Bow') or state.has('Progressive Strength Upgrade') or state.has_bottle() or state.has('Hover Boots') or (state.has('Nayrus Love') and state.has('Magic Meter'))))))
+    set_rule(world.get_location('DM Trail Freestanding PoH'), lambda state: world.open_kakariko or (world.difficulty != 'ohko') or state.has('Zeldas Letter') or state.can_blast_or_smash() or ((state.has('Dins Fire') or state.has('Nayrus Love')) and state.has('Magic Meter')) or state.has('Bow') or state.has('Progressive Strength Upgrade') or state.has_bottle() or state.has('Hover Boots'))
     set_rule(world.get_location('Death Mountain Bombable Chest'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('Biggoron'), lambda state: (not world.logic_no_trade_biggoron) and (state.has('Progressive Strength Upgrade') or state.can_blast_or_smash() or state.has('Bow')) and state.is_adult() and state.can_finish_adult_trades() and state.guarantee_hint())
     set_rule(world.get_location('Goron City Leftmost Maze Chest'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade', 2) or state.has('Hammer')))
