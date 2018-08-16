@@ -688,16 +688,16 @@ setting_infos = [
         }),
     Setting_Info('shuffle_dungeon_items', str, 2, True,
         {
-        'default': 'leavekeys',
-        'const': 'leavekeys',
+        'default': 'mapcompass',
+        'const': 'mapcompass',
         'nargs': '?',
-        'choices': ['off', 'leavekeys', 'keysanity'],
+        'choices': ['off', 'mapcompass', 'keysanity'],
         'help': '''\
                     Dungeon items can appear outside of their
                     respective dungeon.
-                    off:            Don't use this feature
-                    leavekeys:      All items besides keys will be shuffled
-                    keysanity:      All items will be shuffled
+                    off:            Dungeon items will be in their Dungeon
+                    mapcompass:     Maps and Compasses can appear anywhere
+                    keysanity:      Dungeon items can appear anywhere
                     '''
         },
         {
@@ -707,22 +707,21 @@ setting_infos = [
             'default': 'Maps and Compasses',
             'options': {
                 'Off': 'off',
-                'Maps and Compasses': 'leavekeys',
+                'Maps and Compasses': 'mapcompass',
                 'Full Keysanity': 'keysanity'
             },
             'tooltip':'''\
-                      Dungeon items will be shuffled into the pool
-                      at large, instead of just being restricted to
-                      their own dungeon.
+                      Dungeon items can appear anywhere instead 
+                      of just being restricted to their own dungeon.
 
                       'Maps and Compasses': Dungeons will have
                       2 more possible item locations. This helps
                       make some dungeons more profitable, such as
                       Ice Cavern and Jabu Jabu's Belly.
 
-                      'Full Keysanity': All items, including small and
-                      boss keys, will be shuffled. A difficult mode,
-                      since it is more likely to need to enter a dungeon
+                      'Full Keysanity': Maps, Compasses, and Keys
+                      can appear anywhere. A difficult mode, since 
+                      it is more likely to need to enter a dungeon
                       multiple times.
                       '''
         }),

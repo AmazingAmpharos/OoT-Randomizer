@@ -146,7 +146,7 @@ class World(object):
     def get_restricted_dungeon_items(self):
         if self.shuffle_dungeon_items == 'keysanity':
             itempool = []
-        elif self.shuffle_dungeon_items == 'leavekeys':
+        elif self.shuffle_dungeon_items == 'mapcompass':
             itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if item.key]
         else:
             itempool = [item for dungeon in self.dungeons for item in dungeon.all_items]
@@ -158,7 +158,7 @@ class World(object):
     def get_unrestricted_dungeon_items(self):
         if self.shuffle_dungeon_items == 'keysanity':
             itempool = [item for dungeon in self.dungeons for item in dungeon.all_items]
-        elif self.shuffle_dungeon_items == 'leavekeys':
+        elif self.shuffle_dungeon_items == 'mapcompass':
             itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if not item.key]
         else:
             itempool = []
@@ -558,7 +558,7 @@ class Region(object):
     def can_fill(self, item):
         if self.world.shuffle_dungeon_items == 'keysanity':
             is_dungeon_restricted = False
-        elif self.world.shuffle_dungeon_items == 'leavekeys':
+        elif self.world.shuffle_dungeon_items == 'mapcompass':
             is_dungeon_restricted = item.key
         else:
             is_dungeon_restricted = item.key or item.map or item.compass
