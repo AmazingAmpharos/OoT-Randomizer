@@ -1319,6 +1319,8 @@ def patch_rom(world, rom):
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)
+    # update happy mask shop to use new SOLD OUT text id
+    rom.write_int16(0xC01C06, shop_items[0x26].description_message)
 
     # add song messages
     add_song_messages(messages, world)
