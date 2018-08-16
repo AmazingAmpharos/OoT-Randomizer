@@ -84,9 +84,9 @@ class LocalRom(object):
         romCRC = self.buffer[0x10:0x18]
         if romCRC not in validCRC:
             raise RuntimeError('ROM is not a valid OoT 1.0 US ROM.')
-        if len(self.buffer) < 33554432 or len(self.buffer) > 67108864 or file_name[1] not in ['.z64', '.n64']:
+        if len(self.buffer) < 0x2000000 or len(self.buffer) > (0x4000000) or file_name[1] not in ['.z64', '.n64']:
             raise RuntimeError('ROM is not a valid OoT 1.0 ROM.')
-        if len(self.buffer) == 33554432:
+        if len(self.buffer) == 0x2000000:
             if platform.system() == 'Windows':
                 subprocess.call(["Decompress\\Decompress.exe", file, decomp_file])
                 with open(decomp_file, 'rb') as stream:
@@ -102,7 +102,7 @@ class LocalRom(object):
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
         # extend to 64MB
-        self.buffer.extend(bytearray([0x00] * (67108864 - len(self.buffer))))
+        self.buffer.extend(bytearray([0x00] * (0x4000000 - len(self.buffer))))
             
     def read_byte(self, address):
         return self.buffer[address]
