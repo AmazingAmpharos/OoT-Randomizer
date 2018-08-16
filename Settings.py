@@ -1319,7 +1319,22 @@ setting_infos = [
             }
         }),
 
-
+    Setting_Info('disable_music', bool, 1, False,
+        {
+            'action': 'store_true',
+            'help': '''\
+                    Disable background music. SFX and ambient sounds remain.
+                    '''
+        },
+        {
+            'text': 'Disable Background Music',
+            'group': 'cosmetics',
+            'widget': 'Checkbutton',
+            'default': False,
+            'tooltip': '''\
+                       Disable background music. SFX and ambient sounds remain.
+                       '''
+        }),
 
     Setting_Info('kokiricolor', str, 0, False, 
         {
