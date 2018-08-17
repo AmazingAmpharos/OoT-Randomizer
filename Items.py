@@ -194,7 +194,7 @@ item_table = {
     'Triforce': (True, False, 'Event', None, None, None, None),
     'Buy Deku Nut (5)': (False, True, 'Shop', None, 0x00, 0x00BB, 0x12), 
     'Buy Arrows (30)': (False, True, 'Shop', None, 0x01, 0x00D8, 0x26), 
-    'Buy Arrows (50)': (False, True, 'Shop', None, 0x02, 0x00D8, 0x27), 
+    #'Buy Arrows (50)': (False, True, 'Shop', None, 0x02, 0x00D8, 0x27), 
     'Buy Bombs (5)': (False, True, 'Shop', None, 0x03, 0x00CE, 0x20), 
     'Buy Deku Nut (10)': (False, True, 'Shop', None, 0x04, 0x00BB, 0x12), 
     'Buy Deku Stick (1)': (False, True, 'Shop', None, 0x05, 0x00C7, 0x1B), 
@@ -218,7 +218,7 @@ item_table = {
     'Buy Fairy\'s Spirit': (False, True, 'Shop', None, 0x2B, 0x0177, 0x6B), 
     'Buy Arrow (10)': (False, True, 'Shop', None, 0x2C, 0x00D8, 0x25), 
     'Buy Bombs (20)': (False, True, 'Shop', None, 0x2D, 0x00CE, 0x20), 
-    'Buy Bombs (30)': (False, True, 'Shop', None, 0x2E, 0x00CE, 0x20), 
+    #'Buy Bombs (30)': (False, True, 'Shop', None, 0x2E, 0x00CE, 0x20), 
 }
 
 item_data = {

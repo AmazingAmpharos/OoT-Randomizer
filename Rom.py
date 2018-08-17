@@ -1263,36 +1263,26 @@ def patch_rom(world, rom):
                     rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
                     rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
 
-    if world.bombchus_in_logic:
-        # add a cheaper bombchu pack to the bombchu shop
-        # describe
-        add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
-        # purchase
-        add_message(messages, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x80FF, 0x03)
-        rbl_bombchu = shop_items[0x0018]
-        rbl_bombchu.price = 60
-        rbl_bombchu.pieces = 5
-        rbl_bombchu.get_item_id = 0x006A
-        rbl_bombchu.description_message = 0x80FE
-        rbl_bombchu.purchase_message = 0x80FF
-
-        # Reduce 10 Pack Bombchus from 100 to 99 Rupees
-        shop_items[0x0015].price = 99
-        shop_items[0x0019].price = 99
-        shop_items[0x001C].price = 99
-        update_message_by_id(messages, shop_items[0x001C].description_message, "\x08\x05\x41Bombchu  (10 pieces)  99 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it's actually a self-propelled time\x01bomb!\x09\x0A")
-        update_message_by_id(messages, shop_items[0x001C].purchase_message, "\x08Bombchu  10 pieces   100 Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don't buy\x05\x40")
-
-        #Fix bombchu chest animations
-        chestAnimations = {
-            0x6A: 0x28, #0xD8 #Bombchu (5) 
-            0x03: 0x28, #0xD8 #Bombchu (10)    
-            0x6B: 0x28, #0xD8 #Bombchu (20)    
-        }
-        for item_id, gfx_id in chestAnimations.items():
-            rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
-
     free_shop_ids = list(unused_shop_ids)
+
+    # add a cheaper bombchu pack to the bombchu shop
+    # describe
+    add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
+    # purchase
+    add_message(messages, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x80FF, 0x03)
+    rbl_bombchu = shop_items[0x0018]
+    rbl_bombchu.price = 60
+    rbl_bombchu.pieces = 5
+    rbl_bombchu.get_item_id = 0x006A
+    rbl_bombchu.description_message = 0x80FE
+    rbl_bombchu.purchase_message = 0x80FF
+
+    # Reduce 10 Pack Bombchus from 100 to 99 Rupees
+    shop_items[0x0015].price = 99
+    shop_items[0x0019].price = 99
+    shop_items[0x001C].price = 99
+    update_message_by_id(messages, shop_items[0x001C].description_message, "\x08\x05\x41Bombchu  (10 pieces)  99 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it's actually a self-propelled time\x01bomb!\x09\x0A")
+    update_message_by_id(messages, shop_items[0x001C].purchase_message, "\x08Bombchu  10 pieces   100 Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don't buy\x05\x40")
 
     # kokiri shop
     shop_objs = place_shop_items(rom, shop_items, messages, free_shop_ids, 
@@ -1359,6 +1349,11 @@ def patch_rom(world, rom):
         0x4F: 0xED, #0x13 #Heart Container 
         0x76: 0xEC, #0x14 #WINNER! Piece of Heart
     }
+    if world.bombchus_in_logic:
+        #Fix bombchu chest animations
+        chestAnimations[0x6A] = 0x28 #0xD8 #Bombchu (5) 
+        chestAnimations[0x03] = 0x28 #0xD8 #Bombchu (10) 
+        chestAnimations[0x6B] = 0x28 #0xD8 #Bombchu (20) 
     for item_id, gfx_id in chestAnimations.items():
         rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
 
@@ -1738,8 +1733,7 @@ def update_chest_sizes(rom, override_table):
         default = (default & 0x0FFF) | newChestType
         rom.write_int16(address, default)
 
-
-unused_shop_ids = [0x11, 0x12, 0x13, 0x14, 0x17, 0x19, 0x1A, 0x1B, 0x1C, 0x29, 0x2A, 0x2F, 0x30, 0x31]
+unused_shop_ids = [0x02, 0x11, 0x12, 0x17, 0x19, 0x1A, 0x1B, 0x1C, 0x29, 0x2A, 0x2E, 0x2F, 0x30, 0x31]
 def place_shop_items(rom, shop_items, messages, free_shop_ids, locations):
     shop_objs = { 0x0148 } # Sold Out
     messages
@@ -1759,9 +1753,9 @@ def place_shop_items(rom, shop_items, messages, free_shop_ids, locations):
             shop_item.func2 = 0x808636B8
             shop_item.func4 = 0x80863FB4
 
-            message_id = unused_shop_ids.index(shop_id) * 2
-            shop_item.description_message = 0x8000 | message_id
-            shop_item.purchase_message = 0x8000 | message_id + 1
+            message_id = unused_shop_ids.index(shop_id) * 2           
+            shop_item.description_message = 0x8100 + message_id
+            shop_item.purchase_message = 0x8100 + message_id + 1
             add_message(messages, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.item.price), shop_item.description_message, 0x03)
             add_message(messages, '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.item.price), shop_item.purchase_message, 0x03)
 
