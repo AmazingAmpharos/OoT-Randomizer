@@ -1611,6 +1611,8 @@ def get_override_entry(location):
         return [scene, player_id | 0x02, default, item_id]
     elif location.type == 'GS Token':
         return [scene, player_id | 0x03, default, item_id]
+    elif location.type == 'Shop' and location.item.type != 'Shop':
+        return [scene, player_id | 0x00, default, item_id]    
     else:
         return []
 
@@ -1753,7 +1755,7 @@ def place_shop_items(rom, shop_items, messages, free_shop_ids, locations):
             shop_item.model = location.item.model - 1
             shop_item.price = location.item.price
             shop_item.pieces = 1
-            shop_item.get_item_id = location.item.index
+            shop_item.get_item_id = location.default
             shop_item.func2 = 0x808636B8
             shop_item.func4 = 0x80863FB4
 
