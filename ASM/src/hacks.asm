@@ -374,6 +374,10 @@
 .skip 4
     andi t8, t7, 0x02
 
+; Impa does not despawn from Zelda Escape CS
+.org 0xD12F78
+    li  t7, 0
+
 ;li v1, 5
 .org 0xE29388
     j   override_saria_song_check
