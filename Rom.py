@@ -1117,10 +1117,9 @@ def patch_rom(world, rom):
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
 
-    # Skip Epona race
-    if world.no_epona_race:
-        write_bits_to_save(0x0ED6, 0x01) # "Obtained Epona"
-        rom.write_bytes(0xAD065C, [0x92, 0x42, 0x00, 0xA6, 0x30, 0x42, 0x00, 0x20]) # Epona spawning checks for Song
+    # Revert change that Skips the Epona Race
+    if not world.no_epona_race:
+        rom.write_int32(0xA9E838, 0x03E00008)
 
     # skip castle guard stealth sequence
     if world.no_guard_stealth:
@@ -1319,6 +1318,8 @@ def patch_rom(world, rom):
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)
+    # update happy mask shop to use new SOLD OUT text id
+    rom.write_int16(0xC01C06, shop_items[0x26].description_message)
 
     # add song messages
     add_song_messages(messages, world)
