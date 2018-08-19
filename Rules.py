@@ -458,7 +458,7 @@ def dung_rules_bw0(world):
     set_rule(world.get_location('Bottom of the Well Invisible Chest'), lambda state: state.can_play('Zeldas Lullaby') and state.can_see_with_lens())
     set_rule(world.get_location('Bottom of the Well Underwater Front Chest'), lambda state: state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('Bottom of the Well Underwater Left Chest'), lambda state: state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_location('Bottom of the Well Basement Chest'), lambda state: state.has_explosives() or (state.has('Small Key (Bottom of the Well)', 3) and state.has('Progressive Strength Upgrade') and state.can_see_with_lens()))
+    set_rule(world.get_location('Bottom of the Well Basement Chest'), lambda state: state.has_explosives() or (((state.has('Small Key (Bottom of the Well)', 3) and state.can_see_with_lens()) or (state.has('Dins Fire') and state.has('Magic Meter'))) and state.has('Progressive Strength Upgrade')))
     set_rule(world.get_location('Bottom of the Well Locked Pits'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.can_see_with_lens()) #These pits are really unfair.
     set_rule(world.get_location('Bottom of the Well Behind Right Grate'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.can_see_with_lens())
 
