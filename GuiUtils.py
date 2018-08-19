@@ -18,6 +18,7 @@ def set_icon(window):
 class BackgroundTask(object):
     def __init__(self, window, code_to_run, code_arg):
         self.window = window
+        self.status = None
         self.queue = queue.Queue()
         self.running = True
         self.task = threading.Thread(target=self.try_run, args=(code_to_run, code_arg))
@@ -27,15 +28,17 @@ class BackgroundTask(object):
     def try_run(self, code_to_run, code_arg):
         self.update_status('Starting Thread')
         try:
-            code_to_run(code_arg, self)
-            self.update_status('Success: Rom patched successfully')
+            if isinstance(code_arg, tuple):
+                code_to_run(*code_arg)
+            else: 
+                code_to_run(code_arg)
         except Exception as e:
             self.update_status('Error: ' + str(e))
             traceback.print_exc()
         self.queue_event(self.stop)
 
     def update_status(self, text):
-        pass
+        self.status = text
 
     def stop(self):
         self.running = False
@@ -95,6 +98,11 @@ class BackgroundTaskProgress(BackgroundTask):
         self.window.grab_set()
         self.window.geometry("+%d+%d" % (parent.winfo_rootx()+50, parent.winfo_rooty()+150))
         self.window.focus_set()
+
+        if isinstance(code_arg, tuple): 
+            code_arg = tuple(list(code_arg) + [self])
+        else:
+            code_arg = (code_arg, self)
 
         super().__init__(self.window, code_to_run, code_arg)
 
