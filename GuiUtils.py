@@ -16,26 +16,25 @@ def set_icon(window):
 # some which may be platform specific, or depend on if the TCL library was compiled without
 # multithreading support. Therefore I will assume it is not thread safe to avoid any possible problems
 class BackgroundTask(object):
-    def __init__(self, window, code_to_run, code_arg):
+    def __init__(self, window, code_to_run, *code_arg):
         self.window = window
+        self.status = None
         self.queue = queue.Queue()
         self.running = True
-        self.task = threading.Thread(target=self.try_run, args=(code_to_run, code_arg))
+        self.task = threading.Thread(target=self.try_run, args=(code_to_run, *code_arg))
         self.task.start()
         self.process_queue()
 
-    def try_run(self, code_to_run, code_arg):
-        self.update_status('Starting Thread')
+    def try_run(self, code_to_run, *code_arg):
         try:
-            code_to_run(code_arg, self)
-            self.update_status('Success: Rom patched successfully')
+            code_to_run(*code_arg)
         except Exception as e:
             self.update_status('Error: ' + str(e))
             traceback.print_exc()
         self.queue_event(self.stop)
 
     def update_status(self, text):
-        pass
+        self.status = text
 
     def stop(self):
         self.running = False
@@ -61,7 +60,7 @@ class BackgroundTask(object):
 
 
 class BackgroundTaskProgress(BackgroundTask):
-    def __init__(self, parent, title, code_to_run, code_arg):
+    def __init__(self, parent, title, code_to_run, *code_arg):
         self.parent = parent
         self.window = tk.Toplevel(parent)
         self.window['padx'] = 5
@@ -96,7 +95,7 @@ class BackgroundTaskProgress(BackgroundTask):
         self.window.geometry("+%d+%d" % (parent.winfo_rootx()+50, parent.winfo_rooty()+150))
         self.window.focus_set()
 
-        super().__init__(self.window, code_to_run, code_arg)
+        super().__init__(self.window, code_to_run, *tuple(list(code_arg) + [self]))
 
         self.parent.wait_window(self.window)
 

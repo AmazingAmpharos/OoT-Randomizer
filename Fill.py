@@ -27,23 +27,20 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
         itempool.extend(songitempool)
         fill_locations.extend(song_locations)
 
+    # add unrestricted dungeon items to main item pool
+    itempool.extend([item for world in worlds for item in world.get_unrestricted_dungeon_items()])
+
     random.shuffle(itempool) # randomize item placement order. this ordering can greatly affect the location accessibility bias
     progitempool = [item for item in itempool if item.advancement]
     prioitempool = [item for item in itempool if not item.advancement and item.priority]
     restitempool = [item for item in itempool if not item.advancement and not item.priority]
 
-    # If not keysanity, we must place the dungeon items first to make sure
-    # that there is always a locations to place them. This could probably
-    # be replaced for more intelligent item placement, but will leave as is
-    # for now
-    if worlds[0].keysanity:
-        # add dungeon items to main pool
-        progitempool.extend([item for world in worlds for item in world.get_dungeon_items()])
-        random.shuffle(progitempool)
-    else:
-        # place dungeon items
-        random.shuffle(fill_locations)
-        fill_dungeons_restrictive(window, worlds, fill_locations, itempool + songitempool)
+    # If there are dungeon items that are restricted to their original dungeon,
+    # we must place them first to make sure that there is always a location to
+    # place them. This could probably be replaced for more intelligent item
+    # placement, but will leave as is for now
+    random.shuffle(fill_locations)
+    fill_dungeons_restrictive(window, worlds, fill_locations, itempool + songitempool)
 
     # I have no idea why the locations are reversed but this is how it was, 
     # so whatever. It can't hurt I guess
@@ -87,13 +84,13 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
         raise FillError('Not all locations have an item.')
 
 
-# Places all dungeon items into the worlds. To ensure there is room for them.
+# Places restricted dungeon items into the worlds. To ensure there is room for them.
 # they are placed first so it will assume all other items are reachable
 def fill_dungeons_restrictive(window, worlds, shuffled_locations, itempool):
     # List of states with all non-key items
     all_state_base_list = CollectionState.get_states_with_items([world.state for world in worlds], itempool)
     # list of all dungeon items to be placed
-    dungeon_items = [item for world in worlds for item in world.get_dungeon_items()]
+    dungeon_items = [item for world in worlds for item in world.get_restricted_dungeon_items()]
 
     # shuffle this list to avoid placement bias
     random.shuffle(dungeon_items)

@@ -448,7 +448,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       The crawlspace into Hyrule Castle goes
-                      straight to zelda, skipping the guards.
+                      straight to Zelda, skipping the guards.
                       '''
         }),
     Setting_Info('no_epona_race', bool, 1, True, 
@@ -465,23 +465,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Epona can be summoned with Epona's Song
-                      without needed to race Ingo.
-                      '''
-        }),
-    Setting_Info('only_one_big_poe', bool, 1, True, 
-        {
-            'help': '''\
-                    The Poe buyer will give a reward for turning in a single Big Poe.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Big Poe Reward only requires one Big Poe',
-            'group': 'convenience',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Makes Big Poes less tedious.
+                      without needing to race Ingo.
                       '''
         }),
     Setting_Info('fast_chests', bool, 1, True, 
@@ -500,6 +484,39 @@ setting_infos = [
                       All chest animations are fast. If disabled,
                       the animation time is slow for major items.
                       '''
+        }),
+    Setting_Info('big_poe_count', str, 4, True, 
+        {
+            'default': 'random',
+            'const': 'random',
+            'nargs': '?',
+            'choices': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'random'],
+            'help': '''\
+                    Select the number of Big Poes to receive an item from the buyer.
+                    '''         
+        },
+        {
+            'text': 'Big Poe target count',
+            'group': 'convenience',
+            'widget': 'Combobox',
+            'default': 'Random',
+            'options': {
+                'Random': 'random',
+                '1': '1',
+                '2': '2',
+                '3': '3',
+                '4': '4',
+                '5': '5',
+                '6': '6',
+                '7': '7',
+                '8': '8',
+                '9': '9',
+                '10': '10'
+            },
+            'tooltip': '''\
+                    The Poe buyer will give a reward for turning 
+                    in the chosen number of Big Poes.
+                    ''',
         }),
     Setting_Info('free_scarecrow', bool, 1, True, 
         {
@@ -686,46 +703,43 @@ setting_infos = [
                       Plays spiritually best with Keysanity.
                       '''
         }),
-    Setting_Info('nodungeonitems', bool, 1, True, 
+    Setting_Info('shuffle_dungeon_items', str, 2, True,
         {
-            'help': '''\
-                    Remove Maps and Compasses from Itempool, replacing them by
-                    empty slots.
-                    ''',
-            'action': 'store_true'
+        'default': 'mapcompass',
+        'const': 'mapcompass',
+        'nargs': '?',
+        'choices': ['off', 'mapcompass', 'keysanity'],
+        'help': '''\
+                    Dungeon items can appear outside of their
+                    respective dungeon.
+                    off:            Dungeon items will be in their dungeons
+                    mapcompass:     Maps and Compasses can appear anywhere
+                    keysanity:      Dungeon items can appear anywhere
+                    '''
         },
         {
-            'text': 'Remove Maps and Compasses',
+            'text': 'Shuffle Dungeon Items',
             'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'checked',
+            'widget': 'Combobox',
+            'default': 'Maps and Compasses',
+            'options': {
+                'Off': 'off',
+                'Maps and Compasses': 'mapcompass',
+                'Full Keysanity': 'keysanity'
+            },
             'tooltip':'''\
-                      Dungeons will have 2 more possible item
-                      locations. This helps make some dungeons
-                      more profitable, such as Ice Cavern and 
-                      Jabu Jabu's Belly.
-                      '''
-        }),    
-    Setting_Info('keysanity', bool, 1, True, 
-        {
-            'help': '''\
-                    Small Keys, Boss Keys, Maps, and Compasses will be shuffled into the pool at
-                    large, instead of just being restricted to their own dungeons.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Keysanity',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Dungeon items can appear outside of their
-                      respective dungeon. Gerudo Fortress keys
-                      are also shuffled. 
+                      Dungeon items can appear anywhere instead 
+                      of just being restricted to their own dungeon.
 
-                      A difficult mode since it it more likely
-                      to need to enter a dungeon multiple times.
+                      'Maps and Compasses': Dungeons will have
+                      2 more possible item locations. This helps
+                      make some dungeons more profitable, such as
+                      Ice Cavern and Jabu Jabu's Belly.
+
+                      'Full Keysanity': Maps, Compasses, and Keys
+                      can appear anywhere. A difficult mode, since 
+                      it is more likely to need to enter a dungeon
+                      multiple times.
                       '''
         }),
     Setting_Info('tokensanity', str, 2, True, 
@@ -1322,7 +1336,22 @@ setting_infos = [
             }
         }),
 
-
+    Setting_Info('disable_music', bool, 1, False,
+        {
+            'action': 'store_true',
+            'help': '''\
+                    Disable background music. SFX and ambient sounds remain.
+                    '''
+        },
+        {
+            'text': 'Disable Background Music',
+            'group': 'cosmetics',
+            'widget': 'Checkbutton',
+            'default': False,
+            'tooltip': '''\
+                       Disable background music. SFX and ambient sounds remain.
+                       '''
+        }),
 
     Setting_Info('kokiricolor', str, 0, False, 
         {

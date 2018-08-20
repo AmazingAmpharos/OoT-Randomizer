@@ -8,7 +8,7 @@ import sys
 
 from Gui import guiMain
 from Main import main
-from Utils import is_bundled, close_console
+from Utils import is_bundled, close_console, check_version, VersionError
 from Rom import get_tunic_color_options, get_navi_color_options
 from Settings import get_settings_from_command_line_args
 
@@ -40,6 +40,15 @@ def start():
     # set up logger
     loglevel = {'error': logging.ERROR, 'info': logging.INFO, 'warning': logging.WARNING, 'debug': logging.DEBUG}[args_loglevel]
     logging.basicConfig(format='%(message)s', level=loglevel)
+
+    logger = logging.getLogger('')
+    if not settings.check_version:
+        try:
+            version_error = check_version(settings.checked_version)
+        except VersionError as e:
+            logger.warning(str(e))
+        except (URLError, HTTPError) as e:
+            logger.warning("Could not fetch latest version: " + str(e))
 
     if gui:
         guiMain(settings)

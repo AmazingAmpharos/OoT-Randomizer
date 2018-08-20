@@ -30,8 +30,8 @@ alwaysitems = ([
     + ['Progressive Strength Upgrade'] * 3
     + ['Progressive Scale'] * 2
     + ['Recovery Heart'] * 11
-    + ['Rupees (5)'] * 17
-    + ['Rupees (20)'] * 5
+    + ['Rupees (5)'] * 16
+    + ['Rupees (20)'] * 6
     + ['Rupees (50)'] * 7
     + ['Rupees (200)'] * 6
     + ['Bow'] * 3
@@ -63,14 +63,6 @@ normal_bottles = [
     'Bottle with Poe'] # 'Bottle with Blue Fire'
 
 normal_bottle_count = 3
-# notmapcompass = ['Rupees (5)'] * 20
-notmapcompass = (
-    ['Bombs (5)'] * 4
-    + ['Arrows (5)'] * 3 
-    + ['Deku Nuts (5)'] * 3 
-    + ['Rupees (5)'] * 7 
-    + ['Rupees (20)'] * 2 
-    + ['Rupees (50)'])
 
 # 10 items get removed for hard+
 harditems = (
@@ -150,8 +142,8 @@ skulltulla_locations = ([
     'GS Mountain Trail Above Dodongo\'s Cavern',
     'GS Goron City Boulder Maze',
     'GS Goron City Center Platform',
-    'GS Death Mounter Crater Crate',
-    'GS Death Mounter Bean Patch',
+    'GS Death Mountain Crater Crate',
+    'GS Mountain Crater Bean Patch',
     'GS Dodongo\'s Cavern East Side Room',
     'GS Dodongo\'s Cavern Vines Above Stairs',
     'GS Dodongo\'s Cavern Back Room',
@@ -268,9 +260,6 @@ def generate_itempool(world):
 def get_pool_core(world):
     pool = []
     placed_items = {}
-
-    if not world.place_dungeon_items:
-        pool.extend(notmapcompass)
         
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')

@@ -67,15 +67,13 @@ def compare_version(a, b):
             return -1
     return 0
 
-def check_version(checked_version):
-    try:
-        with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
-            version = versionurl.read()
-            version = re.search(".__version__ = '(.+)'", str(version)).group(1)
+class VersionError(Exception):
+    pass
 
-            if compare_version(version, __version__) > 0 and compare_version(checked_version, __version__) < 0:
-                return ("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
-    except URLError as e:
-        return ("Could not fetch latest version: " + e.reason)
-    except HTTPError as e:
-        return ("Could not fetch latest version. Error Code: " + e.code)
+def check_version(checked_version):
+    with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
+        version = versionurl.read()
+        version = re.search(".__version__ = '(.+)'", str(version)).group(1)
+
+        if compare_version(version, __version__) > 0 and compare_version(checked_version, __version__) < 0:
+            raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")

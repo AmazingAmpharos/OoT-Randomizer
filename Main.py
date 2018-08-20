@@ -7,7 +7,7 @@ import random
 import subprocess
 import time
 import os
-
+import struct
 
 from BaseClasses import World, CollectionState, Item
 from EntranceShuffle import link_entrances
@@ -17,7 +17,7 @@ from Dungeons import create_dungeons
 from Rules import set_rules
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
-from Utils import default_output_path, check_version
+from Utils import default_output_path
 from version import __version__
 
 class dummy_window():
@@ -33,11 +33,6 @@ def main(settings, window=dummy_window()):
     start = time.clock()
 
     logger = logging.getLogger('')
-
-    if not settings.check_version:
-        version_error = check_version(settings.checked_version)
-        if version_error:
-            logger.warning(version_error)
 
     # initialize the world
 
@@ -122,13 +117,16 @@ def main(settings, window=dummy_window()):
             window.update_status('Compressing ROM')
             logger.info('Compressing ROM.')
             if platform.system() == 'Windows':
-                run_process(window, logger, ["Compress\\Compress.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+                if 8 * struct.calcsize("P") == 64:
+                    run_process(window, logger, ["Compress\\Compress.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+                else:
+                    run_process(window, logger, ["Compress\\Compress32.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
                 os.remove(rom_path)
             elif platform.system() == 'Linux':
-                run_process(window, logger, ["Compress/Compress", rom_path])
+                run_process(window, logger, ["Compress/Compress", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
                 os.remove(rom_path)
             elif platform.system() == 'Darwin':
-                run_process(window, logger, ["Compress/Compress.out", rom_path])
+                run_process(window, logger, ["Compress/Compress.out", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
                 os.remove(rom_path)
             else:
                 logger.info('OS not supported for compression')
@@ -140,7 +138,7 @@ def main(settings, window=dummy_window()):
         worlds[settings.player_num - 1].spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
 
     window.update_progress(100)
-    window.update_status('Done. Enjoy.')
+    window.update_status('Success: Rom patched successfully')
     logger.info('Done. Enjoy.')
     logger.debug('Total Time: %s', time.clock() - start)
 

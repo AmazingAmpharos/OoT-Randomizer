@@ -84,9 +84,9 @@ class LocalRom(object):
         romCRC = self.buffer[0x10:0x18]
         if romCRC not in validCRC:
             raise RuntimeError('ROM is not a valid OoT 1.0 US ROM.')
-        if len(self.buffer) < 33554432 or len(self.buffer) > 67108864 or file_name[1] not in ['.z64', '.n64']:
+        if len(self.buffer) < 0x2000000 or len(self.buffer) > (0x4000000) or file_name[1] not in ['.z64', '.n64']:
             raise RuntimeError('ROM is not a valid OoT 1.0 ROM.')
-        if len(self.buffer) == 33554432:
+        if len(self.buffer) == 0x2000000:
             if platform.system() == 'Windows':
                 subprocess.call(["Decompress\\Decompress.exe", file, decomp_file])
                 with open(decomp_file, 'rb') as stream:
@@ -102,7 +102,7 @@ class LocalRom(object):
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
         # extend to 64MB
-        self.buffer.extend(bytearray([0x00] * (67108864 - len(self.buffer))))
+        self.buffer.extend(bytearray([0x00] * (0x4000000 - len(self.buffer))))
             
     def read_byte(self, address):
         return self.buffer[address]
@@ -1111,10 +1111,9 @@ def patch_rom(world, rom):
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
 
-    # Skip Epona race
-    if world.no_epona_race:
-        write_bits_to_save(0x0ED6, 0x01) # "Obtained Epona"
-        rom.write_bytes(0xAD065C, [0x92, 0x42, 0x00, 0xA6, 0x30, 0x42, 0x00, 0x20]) # Epona spawning checks for Song
+    # Revert change that Skips the Epona Race
+    if not world.no_epona_race:
+        rom.write_int32(0xA9E838, 0x03E00008)
 
     # skip castle guard stealth sequence
     if world.no_guard_stealth:
@@ -1126,13 +1125,17 @@ def patch_rom(world, rom):
     shop_items = read_shop_items(rom)
     remove_unused_messages(messages)
 
-    # only one big poe needs to be caught to get the buyer's reward
-    if world.only_one_big_poe:
-        # change the value checked (in code) from 1000 to 100
-        rom.write_bytes(0xEE69CE, [0x00, 0x64])
-        # update dialogue
-        update_message_by_id(messages, 0x70f7, "\x1AOh, you brought a Poe today!\x04\x1AHmmmm!\x04\x1AVery interesting!\x01This is a \x05\x41Big Poe\x05\x40!\x04\x1AI'll buy it for \x05\x4150 Rupees\x05\x40.\x04On top of that, I'll put \x05\x41100\x01points \x05\x40on your card.\x04\x1AIf you earn \x05\x41100 points\x05\x40, you'll\x01be a happy man! Heh heh.")
-        update_message_by_id(messages, 0x70f8, "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41100 points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned 100 points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this.")
+    # Set Big Poe count to get reward from buyer
+    if world.big_poe_count == 'random':
+        world.big_poe_count = str(random.randint(1, 10))
+    poe_points = int(world.big_poe_count) * 100
+    rom.write_int16(0xEE69CE, poe_points)
+    # update dialogue
+    if world.big_poe_count != 10:
+        new_message = "\x1AOh, you brought a Poe today!\x04\x1AHmmmm!\x04\x1AVery interesting!\x01This is a \x05\x41Big Poe\x05\x40!\x04\x1AI'll buy it for \x05\x4150 Rupees\x05\x40.\x04On top of that, I'll put \x05\x41100\x01points \x05\x40on your card.\x04\x1AIf you earn \x05\x41%d points\x05\x40, you'll\x01be a happy man! Heh heh." % poe_points
+        update_message_by_id(messages, 0x70f7, new_message)
+        new_message = "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41%d points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned %d points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this." % (poe_points, poe_points)
+        update_message_by_id(messages, 0x70f8, new_message)
 
     # Sets hooks for gossip stone changes
     if world.hints != 'none':
@@ -1366,6 +1369,8 @@ def patch_rom(world, rom):
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)
+    # update happy mask shop to use new SOLD OUT text id
+    rom.write_int16(0xC01C06, shop_items[0x26].description_message)
 
     # add song messages
     add_song_messages(messages, world)
@@ -1449,6 +1454,10 @@ def patch_rom(world, rom):
 
     # actually write the save table to rom
     write_save_table(rom)
+    
+    # disable music 
+    if world.disable_music:
+        rom.write_bytes(0xB3CB18, [0x00, 0x00, 0x20, 0x25])
 
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
