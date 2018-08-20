@@ -1747,7 +1747,7 @@ def place_shop_items(rom, shop_items, messages, free_shop_ids, locations):
             shop_item = shop_items[shop_id]
             shop_item.object = location.item.object
             shop_item.model = location.item.model - 1
-            shop_item.price = location.item.price
+            shop_item.price = location.price
             shop_item.pieces = 1
             shop_item.get_item_id = location.default
             shop_item.func2 = 0x808636B8
@@ -1756,7 +1756,7 @@ def place_shop_items(rom, shop_items, messages, free_shop_ids, locations):
             message_id = unused_shop_ids.index(shop_id) * 2           
             shop_item.description_message = 0x8100 + message_id
             shop_item.purchase_message = 0x8100 + message_id + 1
-            add_message(messages, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.item.price), shop_item.description_message, 0x03)
-            add_message(messages, '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.item.price), shop_item.purchase_message, 0x03)
+            add_message(messages, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price), shop_item.description_message, 0x03)
+            add_message(messages, '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.price), shop_item.purchase_message, 0x03)
 
     return shop_objs

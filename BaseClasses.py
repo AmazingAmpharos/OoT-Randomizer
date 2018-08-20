@@ -89,20 +89,19 @@ class World(object):
             region.world = self
             for location in region.locations:
                 location.world = self
+                if location.type == 'Shop':
+                    location.price = int(random.betavariate(1.5, 2) * 60) * 5
 
     def initialize_items(self):
         for item in self.itempool:
             item.world = self
-            item.price = int(random.betavariate(1.5, 2) * 300)
         for region in self.regions:
             for location in region.locations:
                 if location.item != None:
                     location.item.world = self
-                    location.item.price = int(random.betavariate(1.5, 2) * 300)
         for dungeon in self.dungeons:
             for item in dungeon.all_items:
                 item.world = self
-                item.price = int(random.betavariate(1.5, 2) * 300)
 
 
 
@@ -558,6 +557,7 @@ class Region(object):
         self.world = None
         self.spot_type = 'Region'
         self.recursion_count = 0
+        self.price = None
 
     def can_reach(self, state):
         for entrance in self.entrances:
