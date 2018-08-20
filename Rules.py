@@ -444,6 +444,7 @@ def dung_rules_sht0(world):
     # GS
     set_rule(world.get_location('GS Shadow Temple Like Like Room'), lambda state: state.has('Progressive Hookshot'))
     set_rule(world.get_location('GS Shadow Temple Crusher Room'), lambda state: state.has('Progressive Hookshot'))
+    set_rule(world.get_location('GS Shadow Temple Single Giant Pot'), lambda state: state.has('Small Key (Shadow Temple)', 2) and state.has('Progressive Hookshot'))
     set_rule(world.get_location('GS Shadow Temple Near Ship'), lambda state: state.has('Progressive Hookshot', 2) and state.has('Small Key (Shadow Temple)', 4))
 
 def dung_rules_bw0(world):
