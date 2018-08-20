@@ -514,7 +514,8 @@ setting_infos = [
                 '10': '10'
             },
             'tooltip': '''\
-                    The Poe buyer will give a reward for turning in the chosen number of Big Poes.
+                    The Poe buyer will give a reward for turning 
+                    in the chosen number of Big Poes.
                     ''',
         }),
     Setting_Info('free_scarecrow', bool, 1, True, 
