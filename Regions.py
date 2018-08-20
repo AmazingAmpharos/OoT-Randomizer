@@ -284,12 +284,13 @@ def create_regions(world):
             ['Shadow Temple Invisible Blades Visible Chest', 'Shadow Temple Invisible Blades Invisible Chest', 
              'Shadow Temple Falling Spikes Lower Chest', 'Shadow Temple Falling Spikes Upper Chest', 
              'Shadow Temple Falling Spikes Switch Chest', 'Shadow Temple Invisible Spikes Chest', 
-             'Shadow Temple Freestanding Key', 'GS Shadow Temple Like Like Room', 'GS Shadow Temple Crusher Room'], 
+             'Shadow Temple Freestanding Key', 'GS Shadow Temple Like Like Room', 'GS Shadow Temple Crusher Room', 
+             'GS Shadow Temple Single Giant Pot'], 
             ['Shadow Temple Hookshot Target']),
         create_dungeon_region(
             'Shadow Temple Wind Tunnel', 
             ['Shadow Temple Wind Hint Chest', 'Shadow Temple After Wind Enemy Chest', 
-             'Shadow Temple After Wind Hidden Chest', 'GS Shadow Temple Single Giant Pot', 'GS Shadow Temple Near Ship'], 
+             'Shadow Temple After Wind Hidden Chest', 'GS Shadow Temple Near Ship'], 
             ['Shadow Temple Boat']),
         create_dungeon_region(
             'Shadow Temple Beyond Boat', 
