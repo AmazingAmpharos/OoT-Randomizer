@@ -1133,17 +1133,16 @@ def patch_rom(world, rom):
 
     # Set Big Poe count to get reward from buyer
     if world.big_poe_count == 'random':
-        world.big_poe_count = random.randint(1, 10)
-    world.big_poe_count = int(world.big_poe_count)
-    poe_points = world.big_poe_count * 0x64
+        world.big_poe_count = str(random.randint(1, 10))
+    poe_points = int(world.big_poe_count) * 0x64
     poe_points_high = poe_points >> 8
     poe_points_low = poe_points & 0x00FF
     rom.write_bytes(0xEE69CE, [poe_points_high, poe_points_low])
     # update dialogue
     if world.big_poe_count != 10:
-        new_message = "\x1AOh, you brought a Poe today!\x04\x1AHmmmm!\x04\x1AVery interesting!\x01This is a \x05\x41Big Poe\x05\x40!\x04\x1AI'll buy it for \x05\x4150 Rupees\x05\x40.\x04On top of that, I'll put \x05\x41100\x01points \x05\x40on your card.\x04\x1AIf you earn \x05\x41"+str(world.big_poe_count)+"00 points\x05\x40, you'll\x01be a happy man! Heh heh."
+        new_message = "\x1AOh, you brought a Poe today!\x04\x1AHmmmm!\x04\x1AVery interesting!\x01This is a \x05\x41Big Poe\x05\x40!\x04\x1AI'll buy it for \x05\x4150 Rupees\x05\x40.\x04On top of that, I'll put \x05\x41100\x01points \x05\x40on your card.\x04\x1AIf you earn \x05\x41"+world.big_poe_count+"00 points\x05\x40, you'll\x01be a happy man! Heh heh."
         update_message_by_id(messages, 0x70f7, new_message)
-        new_message = "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41"+str(world.big_poe_count)+"00 points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned "+str(world.big_poe_count)+"00 points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this."
+        new_message = "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41"+world.big_poe_count+"00 points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned "+world.big_poe_count+"00 points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this."
         update_message_by_id(messages, 0x70f8, new_message)
 
     # Sets hooks for gossip stone changes
