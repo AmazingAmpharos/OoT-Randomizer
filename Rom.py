@@ -1133,8 +1133,8 @@ def patch_rom(world, rom):
 
     # Set Big Poe count to get reward from buyer
     if world.big_poe_count == 'random':
-        world.big_poe_count = random.randint(1, 10)
-    poe_points = world.big_poe_count * 100
+        world.big_poe_count = str(random.randint(1, 10))
+    poe_points = int(world.big_poe_count) * 100
     rom.write_int16(0xEE69CE, poe_points)
     # update dialogue
     if world.big_poe_count != 10:
