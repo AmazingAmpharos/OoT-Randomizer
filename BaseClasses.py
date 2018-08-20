@@ -307,23 +307,68 @@ class CollectionState(object):
     def is_adult(self):
         return self.has('Master Sword')
 
+    def can_child_attack(self):
+        return  self.has_slingshot() or \
+                self.has('Boomerang') or \
+                self.has_sticks() or \
+                self.has_explosives() or \
+                self.has('Kokiri Sword') or \
+                (self.has('Dins Fire') and self.has('Magic Meter'))
+
+    def can_stun_deku(self):
+        return  self.is_adult() or \
+                self.can_child_attack() or \
+                self.has_nuts() or \
+                self.has('Buy Deku Shield')
+
+    def has_nuts(self):
+        return self.has('Buy Deku Nut (5)') or self.has('Buy Deku Nut (10)')
+
+    def has_sticks(self):
+        return self.has('Buy Deku Stick (1)')
+
+    def has_bow(self):
+        return self.has('Bow') and 
+            (self.has('Buy Arrows (10)') or self.has('Buy Arrows (30)') or self.has('Buy Arrows (50)'))
+
+    def has_slingshot(self):
+        return self.has('Slingshot') and self.has('Buy Deku Seeds (30)')
+
+    def has_bombs(self):
+        return self.has('Bomb Bag') and 
+            (self.has('Buy Bombs (5)') or self.has('Buy Bombs (10)') or self.has('Buy Bombs (20)'))
+
+    def has_blue_fire(self):
+        return self.has_bottle() and 
+                (self.can_reach('Ice Cavern')
+                or self.can_reach('Ganons Castle Water Trial') 
+                or (self.has('Buy Blue Fire') and self.has('Progressive Wallet', 2)))
+
     def has_ocarina(self):
         return (self.has('Ocarina') or self.has("Fairy Ocarina") or self.has("Ocarina of Time"))
 
     def can_play(self, song):
         return self.has_ocarina() and self.has(song)
 
+    def can_buy_bombchus(self):
+        return (self.has('Buy Bombchu (5)') or \
+                state.has('Buy Bombchu (10)') or \
+               (self.has('Buy Bombchu (20)') and self.has('Progressive Wallet')))
+               or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland'))
+
     def has_bombchus(self):
         return (self.world.bombchus_in_logic and \
-                    (any(pritem.startswith('Bombchus') for pritem in self.prog_items) \
+                    ((any(pritem.startswith('Bombchus') for pritem in self.prog_items) and \
+                        self.can_buy_bombchus()) \
                     or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
-            or (not self.world.bombchus_in_logic and self.has('Bomb Bag'))
+            or (not self.world.bombchus_in_logic and self.has('Bomb Bag') and \
+                        self.can_buy_bombchus())
 
     def has_explosives(self):
-        return self.has('Bomb Bag') or self.has_bombchus()
+        return self.has_bombs() or self.has_bombchus()
 
     def can_blast_or_smash(self):
-        return self.has('Bomb Bag') or (self.is_adult() and self.has('Hammer')) or self.has_bombchus()
+        return self.has_explosives() or (self.is_adult() and self.has('Hammer'))
 
     def can_dive(self):
         return self.has('Progressive Scale')
@@ -334,11 +379,31 @@ class CollectionState(object):
     def can_see_with_lens(self):
         return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
 
+    def can_reach_tunic(self, tunic):
+        tunic_locations = self.world.find_items(tunic)
+        for location in tunic_locations:
+            if location.parent.name == 'Goron Shop':
+                if self.can_reach('Goron Shop') and \
+                    (self.has_explosives() or self.has('Progressive Strength Upgrade') or self.has_bow()):
+                    return True
+            elif location.parent.name == 'Zora Shop':
+                if self.can_reach('Zoras Domain Adult Access') and self.has_blue_fire():
+                    return True
+            else:
+                return True
+        return False
+
     def has_GoronTunic(self):
-        return (self.has('Goron Tunic') or (self.has('Progressive Wallet') and (self.has_explosives() or self.has('Progressive Strength Upgrade') or self.has('Bow'))))
+        return (self.has('Goron Tunic') or 
+                    (self.has('Progressive Wallet') and 
+                        self.has('Buy Goron Tunic') and 
+                        self.can_reach_tunic('Buy Goron Tunic')))
 
     def has_ZoraTunic(self):
-        return (self.has('Zora Tunic') or (self.has('Progressive Wallet', 2) and self.has_bottle() and self.can_play('Zeldas Lullaby')))
+        return (self.has('Zora Tunic') or 
+                    (self.has('Progressive Wallet', 2) and 
+                        self.has('Buy Zora Tunic') and 
+                        self.can_reach_tunic('Buy Zora Tunic')))
 
     def can_finish_adult_trades(self):
         zora_thawed = self.has_bottle() and self.has('Zeldas Lullaby') and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
@@ -368,7 +433,7 @@ class CollectionState(object):
         return self.has('Gold Gauntlets') and self.is_adult()
 
     def has_fire_source(self):
-        return ((self.has('Dins Fire') or (self.has('Bow') and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
+        return ((self.has('Dins Fire') or (self.has() and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
 
     def guarantee_hint(self):
         if(self.world.hints == 'mask'):
