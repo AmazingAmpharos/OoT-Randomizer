@@ -90,7 +90,7 @@ ITEM_MESSAGES = {
     0x0030: "\x08\x13\x06You found the \x05\x41Fairy Slingshot\x05\x40!",
     0x0031: "\x08\x13\x03You found the \x05\x41Fairy Bow\x05\x40!",
     0x0032: "\x08\x13\x02You got \x05\x41Bombs\x05\x40!\x01If you see something\x01suspicious, bomb it!",
-    0x0033: "\x08\x13\x09You got \x05\x41Bombchu\x05\x40!",
+    0x0033: "\x08\x13\x09You got \x05\x41Bombchus\x05\x40!",
     0x0034: "\x08\x13\x01You got a \x05\x41Deku Nut\x05\x40!",
     0x0035: "\x08\x13\x0EYou found the \x05\x41Boomerang\x05\x40!",
     0x0036: "\x08\x13\x0AYou found the \x05\x41Hookshot\x05\x40!\x01It's a spring-loaded chain that\x01you can cast out to hook things.",
