@@ -490,7 +490,7 @@ setting_infos = [
             'default': 'random',
             'const': 'random',
             'nargs': '?',
-            'choices': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'random'],
+            'choices': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'random'],
             'help': '''\
                     Select the number of Big Poes to receive an item from the buyer.
                     '''         
@@ -502,16 +502,16 @@ setting_infos = [
             'default': 'Random',
             'options': {
                 'Random': 'random',
-                '1': 1,
-                '2': 2,
-                '3': 3,
-                '4': 4,
-                '5': 5,
-                '6': 6,
-                '7': 7,
-                '8': 8,
-                '9': 9,
-                '10': 10
+                '1': '1',
+                '2': '2',
+                '3': '3',
+                '4': '4',
+                '5': '5',
+                '6': '6',
+                '7': '7',
+                '8': '8',
+                '9': '9',
+                '10': '10'
             },
             'tooltip': '''\
                     The Poe buyer will give a reward for turning in the chosen number of Big Poes.
