@@ -73,3 +73,35 @@ warp_song_fix:
 @@return: 
 	jr 		ra
 	nop
+
+;==================================================================================================
+; Change Epona check for owning or being able to play the song 
+;==================================================================================================
+Check_Has_Epona_Song:
+    ; If epona is owned, then return True
+    bnez   v0, @@return
+    nop
+
+    ; If not Epona owned flag, then return result
+    li      at, 0x18
+    bne     a0, at, @@return
+
+    li      t2, SAVE_CONTEXT
+
+    ; Check if has Epona's Song
+    lb      t0, 0xA6(t2)
+    andi    t0, t0, 0x20
+    beqz    t0, @@return     ; Return False if no song
+    li      v0, 0
+
+    ; Check if has Ocarina
+    lb      t0, 0x7B(t2)
+    li      at, 0x07
+    beq     t0, at, @@return ; Return True if song & ocarina
+    li      v0, 1
+    li      v0, 0            ; Else False
+
+@@return:
+	jr      ra
+	nop
+

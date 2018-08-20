@@ -1,9 +1,3 @@
-; Make all chest opening animations fast
-; Replaces:
-;   lb      t2, 0x0002 (t1)
-.org 0xBDA2E8 ; In memory: 0x803952D8
-    addiu   t2, r0, -1
-
 ; Prevent Kokiri Sword from being added to inventory on game load
 ; Replaces:
 ;   sh      t9, 0x009C (v0)
@@ -118,6 +112,38 @@
 ;   addiu   at, r0, 0x0035
 .org 0xBE9BDC ; In memory: 0x803A4BCC
     addiu   at, r0, 0x8383 ; Make branch impossible
+
+
+
+; Change Skulltula Token to give a different item
+; Replaces
+;    move    a0,s1
+;    jal     0x0006fdcc                              ; call ex_06fdcc(ctx, 0x0071); VROM: 0xAE5D2C
+;    li      a1,113
+;    lw      t5,44(sp)                               ; t5 = what was *(ctx + 0x1c44) at the start of the function
+;    li      t4,10                                   ; t4 = 0x0a
+;    move    a0,s1
+;    li      a1,180                                  ; at = 0x00b4 ("You destoryed a Gold Skulltula...")
+;    move    a2,zero
+;    jal     0x000dce14                              ; call ex_0dce14(ctx, 0x00b4, 0)
+;    sh      t4,272(t5)                              ; *(t5 + 0x110) = 0x000a
+.org 0xEC68BC
+.area 0x28, 0
+    lw      t5,44(sp)                    ; original code
+    li      t4,10                        ; original code
+    sh      t4,272(t5)                   ; original code
+    jal     override_skulltula_token     ; call override_skulltula_token(_, actor)
+    move    a1,s0
+.endarea
+
+.org 0xEC69AC
+.area 0x28, 0
+    lw      t5,44(sp)                    ; original code
+    li      t4,10                        ; original code
+    sh      t4,272(t5)                   ; original code
+    jal     override_skulltula_token     ; call override_skulltula_token(_, actor)
+    move    a1,s0
+.endarea
 
 ;==================================================================================================
 ; Special item sources
@@ -275,3 +301,121 @@
 ;	addu	at, at, s3
 .org 0xB54B38 ; In memory: 800DEBD8
 	jal		warp_song_fix
+
+;==================================================================================================
+; Initial save
+;==================================================================================================
+
+; Replaces:
+;   sb      t0, 32(s1)
+;   sb      a1, 33(s1)
+.org 0xB06C2C ; In memory: ???
+    jal     write_initial_save
+    sb      t0, 32(s1)
+
+;==================================================================================================
+; Enemy Hacks
+;==================================================================================================
+
+; Replaces:
+;   beq t1, at, 0x801E51E0
+.org 0xD74964     ; In memory: 0x801E51B4
+    b skip_steal_tunic  ; disable like-like stealing tunic 
+.org 0xD74990
+    skip_steal_tunic:
+
+;==================================================================================================
+; Ocarina Song Cutscene Overrides
+;==================================================================================================
+
+; Replaces
+;   addu    t8,t0,t7
+;   sb      t6,0x74(t8)  ; store to fairy ocarina slot
+.org 0xAE6E48
+    jal     override_fairy_ocarina_cutscene
+    addu    t8,t0,t7
+
+; a3 = item ID
+; Replaces
+; li v0,0xFF
+.org 0xAE5DF8
+    jal     override_ocarina_songs
+; sw $t7, 0xa4($t0)
+.org 0xAE5E04
+    nop
+
+; Replaces
+;lui  at,0x1
+;addu at,at,s0
+.org 0xAC9ABC
+    jal     override_requiem_song
+    nop
+
+;lw $t7, 0xa4($v1)
+;lui $v0, 0x200
+;addiu $v0, $v0, 0x24a0
+;and $t8, $t6, $t7
+.org 0xE09F68
+    lb  t7,0x0EDE(v1) ; check learned song from sun's song
+.skip 4
+.skip 4
+    andi t8, t7, 0x04 
+;addiu $t7, $zero, 1
+.org 0xE09FB0
+    jal override_suns_song
+
+; lw $t7, 0xa4($s0)
+; lui $t3, 0x8010
+; addiu $t3, $t3, -0x70cc
+; and $t8, $t6, $t7
+.org 0xB06400
+    lb  t7,0x0EDE(s0) ; check learned song from ZL
+.skip 4
+.skip 4
+    andi t8, t7, 0x02
+
+; Impa does not despawn from Zelda Escape CS
+.org 0xD12F78
+    li  t7, 0
+
+;li v1, 5
+.org 0xE29388
+    j   override_saria_song_check
+
+;lh v0, 0xa4(t6)       ; v0 = scene
+.org 0xE2A044
+    jal  set_saria_song_flag
+
+; li a1, 3
+.org 0xDB532C
+    jal override_song_of_time
+    
+;==================================================================================================
+; Fire Arrow Chest
+;==================================================================================================
+
+; Don't require water temple
+;   bne     t9,at,+0x0024
+.org 0xE9E1D8
+    li      t1, 0x4000
+
+; Load chest contents
+;   li      t0, 0x0007
+.org 0xE9E1F0
+    li      t0, 0x5B08
+
+; Load actor type
+;   li      a2, 0x010f
+.org 0xE9E200
+    li      a2, 0x000A
+
+; Set rotation
+;   sw      zero, 0x1C (sp)
+.org 0xE9E20C
+    sw      t1, 0x1C (sp)
+
+;==================================================================================================
+; Epona Check Override
+;==================================================================================================
+.org 0xA9E838
+    j       Check_Has_Epona_Song

@@ -7,13 +7,38 @@ every_frame:
     sw      v1, 0x10 (sp)
     sw      ra, 0x14 (sp)
 
+    ; Don't give pending item during cutscene. This can lead to a crash when giving an item
+    ; during another item cutscene.
+    li      t2, PLAYER_ACTOR
+    lb      t0, 0x066C (t2)    ;link's state
+    andi    t0, 0x20           ;cutscene
+    bnez    t0, @@no_pending_item
+    nop
+
+    ; clear pending item index
+    li      t1, PENDING_SPECIAL_ITEM_END
+    li      t2, 0xFF
+    sb      t2, 0x00 (t1)
+
     ; If there is a pending item, try to make the player instance receive it. If the player has
     ; control on this frame, they will receive the item. Otherwise nothing will happen, and
     ; we try again next frame.
-    li      t0, PENDING_SPECIAL_ITEM
-    lb      t0, 0x00 (t0)
-    beqz    t0, @@no_pending_item
+    li      t1, PENDING_SPECIAL_ITEM 
+    li      t2, -1
+    li      t4, (PENDING_SPECIAL_ITEM_END - PENDING_SPECIAL_ITEM) ; max number of entries
+@@loop:
+    addi    t2, t2, 0x01
+    beq     t2, t4, @@no_pending_item ; stop if end of list
+    add     t3, t1, t2
+
+    lb      t0, 0x00 (t3)
+    beqz    t0, @@loop ; loop if index is empty
     nop
+
+    ; Store index of pending item to be given
+    li      t1, PENDING_SPECIAL_ITEM_END
+    sb      t2, 0x00 (t1)
+
     ; Disable warping when there is a pending item. Currently this code is only used in places
     ; where warping is allowed, so warping can always be re-enabled after the item is received.
     li      t1, GLOBAL_CONTEXT + 0x104E4

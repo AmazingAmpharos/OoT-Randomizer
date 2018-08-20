@@ -6,15 +6,70 @@ import platform
 import struct
 import subprocess
 import random
+import copy
 
 from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
-from Utils import local_path, output_path
+from Utils import local_path, default_output_path
 from Items import ItemFactory, item_data
-from TextArray import text_array
+from Messages import *
+from OcarinaSongs import Song, replace_songs, subsong
+
+TunicColors = {
+    "Kokiri Green": [0x1E, 0x69, 0x1B],
+    "Goron Red": [0x64, 0x14, 0x00],
+    "Zora Blue": [0x00, 0x3C, 0x64],
+    "Black": [0x30, 0x30, 0x30],
+    "White": [0xF0, 0xF0, 0xFF],
+    "Purple": [0x95, 0x30, 0x80],
+    "Yellow": [0xE0, 0xD8, 0x60],
+    "Orange": [0xE0, 0x79, 0x40],
+    "Pink": [0xFF, 0x90, 0xB3],
+    "Gray": [0xA0, 0xA0, 0xB0],
+    "Brown": [0x95, 0x59, 0x0A],
+    "Gold": [0xD8, 0xB0, 0x60],
+    "Silver": [0xD0, 0xF0, 0xFF],
+    "Beige": [0xC0, 0xA0, 0xA0],
+    "Teal": [0x30, 0xD0, 0xB0],
+    "Royal Blue": [0x40, 0x00, 0x90],
+    "Sonic Blue": [0x50, 0x90, 0xE0],
+    "Blood Red": [0x30, 0x10, 0x10],
+    "Blood Orange": [0xF0, 0x30, 0x30],
+    "NES Green": [0x00, 0xD0, 0x00],
+    "Dark Green": [0x00, 0x25, 0x18],
+    "Only": [80, 140, 240],
+}
+
+NaviColors = {
+    "White": [0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0xFF, 0x00],
+    "Green": [0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0x00],
+    "Light Blue": [0x96, 0x96, 0xFF, 0xFF, 0x96, 0x96, 0xFF, 0x00],
+    "Yellow": [0xFF, 0xFF, 0x00, 0xFF, 0xC8, 0x9B, 0x00, 0x00],
+    "Red": [0xFF, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00],
+    "Magenta": [0xFF, 0x00, 0xFF, 0xFF, 0xC8, 0x00, 0x9B, 0x00],
+    "Black": [0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00],
+    "Tatl": [0xFF, 0xFF, 0xFF, 0xFF, 0xC8, 0x98, 0x00, 0x00],
+    "Tael": [0x49, 0x14, 0x6C, 0xFF, 0xFF, 0x00, 0x00, 0x00],
+}
+
+def get_tunic_colors():
+    return list(TunicColors.keys())
+
+def get_tunic_color_options():
+    return ["Random Choice", "Completely Random"] + get_tunic_colors()
+
+def get_navi_colors():
+    return list(NaviColors.keys())
+
+def get_navi_color_options():
+    return ["Random Choice", "Completely Random"] + get_navi_colors()
 
 class LocalRom(object):
 
-    def __init__(self, file, patch=True):
+    def __init__(self, settings, patch=True):
+        self.last_address = None
+
+        file = settings.rom
+        decomp_file = os.path.join(default_output_path(settings.output_dir), 'ZOOTDEC.z64')
 
         validCRC = []
         validCRC.append(bytearray([0xEC, 0x70, 0x11, 0xB7, 0x76, 0x16, 0xD7, 0x2B])) # Compressed
@@ -29,12 +84,12 @@ class LocalRom(object):
         romCRC = self.buffer[0x10:0x18]
         if romCRC not in validCRC:
             raise RuntimeError('ROM is not a valid OoT 1.0 US ROM.')
-        if len(self.buffer) < 33554432 or len(self.buffer) > 67108864 or file_name[1] not in ['.z64', '.n64']:
+        if len(self.buffer) < 0x2000000 or len(self.buffer) > (0x4000000) or file_name[1] not in ['.z64', '.n64']:
             raise RuntimeError('ROM is not a valid OoT 1.0 ROM.')
-        if len(self.buffer) == 33554432:
+        if len(self.buffer) == 0x2000000:
             if platform.system() == 'Windows':
-                subprocess.call(["Decompress\Decompress.exe", file, output_path('ZOOTDEC.z64')])
-                with open((output_path('ZOOTDEC.z64')), 'rb') as stream:
+                subprocess.call(["Decompress\\Decompress.exe", file, decomp_file])
+                with open(decomp_file, 'rb') as stream:
                     self.buffer = read_rom(stream)
             elif platform.system() == 'Linux':
                 subprocess.call(["Decompress/Decompress", file])
@@ -47,21 +102,67 @@ class LocalRom(object):
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
         # extend to 64MB
-        self.buffer.extend(bytearray([0x00] * (67108864 - len(self.buffer))))
+        self.buffer.extend(bytearray([0x00] * (0x4000000 - len(self.buffer))))
             
+    def read_byte(self, address):
+        return self.buffer[address]
+
+    def read_bytes(self, address, len):
+        return self.buffer[address : address + len]
+
+    def read_int16(self, address):
+        return bytes_as_int16(self.read_bytes(address, 2))
+
+    def read_int24(self, address):
+        return bytes_as_int24(self.read_bytes(address, 3))
+
+    def read_int32(self, address):
+        return bytes_as_int32(self.read_bytes(address, 4))
 
     def write_byte(self, address, value):
+        if address == None:
+            address = self.last_address
         self.buffer[address] = value
+        self.last_address = address + 1
+
+    def write_int16(self, address, value):
+        if address == None:
+            address = self.last_address
+        self.write_bytes(address, int16_as_bytes(value))
+
+    def write_int24(self, address, value):
+        if address == None:
+            address = self.last_address
+        self.write_bytes(address, int24_as_bytes(value))
+
+    def write_int32(self, address, value):
+        if address == None:
+            address = self.last_address
+        self.write_bytes(address, int32_as_bytes(value))
 
     def write_bytes(self, startaddress, values):
+        if startaddress == None:
+            startaddress = self.last_address
         for i, value in enumerate(values):
             self.write_byte(startaddress + i, value)
 
-    def write_int16_to_rom(self, address, value):
-        self.write_bytes(address, int16_as_bytes(value))
+    def write_int16s(self, startaddress, values):
+        if startaddress == None:
+            startaddress = self.last_address
+        for i, value in enumerate(values):
+            self.write_int16(startaddress + (i * 2), value)
 
-    def write_int32_to_rom(self, address, value):
-        self.write_bytes(address, int32_as_bytes(value))
+    def write_int24s(self, startaddress, values):
+        if startaddress == None:
+            startaddress = self.last_address
+        for i, value in enumerate(values):
+            self.write_int24(startaddress + (i * 3), value)
+
+    def write_int32s(self, startaddress, values):
+        if startaddress == None:
+            startaddress = self.last_address
+        for i, value in enumerate(values):
+            self.write_int32(startaddress + (i * 4), value)
 
     def write_to_file(self, file):
         with open(file, 'wb') as outfile:
@@ -75,11 +176,27 @@ def read_rom(stream):
 
 def int16_as_bytes(value):
     value = value & 0xFFFF
-    return [value & 0xFF, (value >> 8) & 0xFF]
+    return [(value >> 8) & 0xFF, value & 0xFF]
+
+def int24_as_bytes(value):
+    value = value & 0xFFFFFFFF
+    return [(value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF]
 
 def int32_as_bytes(value):
     value = value & 0xFFFFFFFF
-    return [value & 0xFF, (value >> 8) & 0xFF, (value >> 16) & 0xFF, (value >> 24) & 0xFF]
+    return [(value >> 24) & 0xFF, (value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF]
+
+def bytes_as_int16(values):
+    return (values[0] << 8) | values[1]
+
+def bytes_as_int24(values):
+    return (values[0] << 16) | (values[1] << 8) | values[2]
+
+def bytes_as_int32(values):
+    return (values[0] << 24) | (values[1] << 16) | (values[2] << 8) | values[3]
+
+
+
 
 def patch_rom(world, rom):
     with open(local_path('data/base2current.json'), 'r') as stream:
@@ -136,17 +253,30 @@ def patch_rom(world, rom):
     # Remove locked door to Boss Key Chest in Fire Temple
     rom.write_byte(0x22D82B7, 0x3F)
 
-    # Change Bombchu Shop check to Bomb Bag
-    rom.write_bytes(0xC6CEDA, [0x00, 0xA2])
-    rom.write_byte(0xC6CEDF, 0x18)
+    if world.bombchus_in_logic:
+        # Change Bombchu Shop check to bombchus
+        rom.write_bytes(0xC6CED8, [0x80, 0x8A, 0x00, 0x7C, 0x24, 0x0B, 0x00, 0x09, 0x11, 0x4B, 0x00, 0x05])
+        # Change Bombchu Shop to never sell out
+        rom.write_bytes(0xC019C0, [0x10, 0x00, 0x00, 0x30])
 
-    # Change Bowling Alley check to Bomb Bag (Part 1)
-    rom.write_bytes(0x00E2D716, [0xA6, 0x72])
-    rom.write_byte(0x00E2D723, 0x18)
+        # Change Bowling Alley check to bombchus (Part 1)
+        rom.write_bytes(0x00E2D714, [0x81, 0xEF, 0xA6, 0x4C])
+        rom.write_bytes(0x00E2D720, [0x24, 0x18, 0x00, 0x09, 0x11, 0xF8, 0x00, 0x06])
 
-    # Change Bowling Alley check to Bomb Bag (Part 2)
-    rom.write_bytes(0x00E2D892, [0xA6, 0x72])
-    rom.write_byte(0x00E2D897, 0x18)
+        # Change Bowling Alley check to bombchus (Part 2)
+        rom.write_bytes(0x00E2D890,  [0x81, 0x6B, 0xA6, 0x4C, 0x24, 0x0C, 0x00, 0x09, 0x51, 0x6C, 0x00, 0x0A])
+    else:
+        # Change Bombchu Shop check to Bomb Bag
+        rom.write_bytes(0xC6CEDA, [0x00, 0xA2])
+        rom.write_byte(0xC6CEDF, 0x18)
+
+        # Change Bowling Alley check to Bomb Bag (Part 1)
+        rom.write_bytes(0x00E2D716, [0xA6, 0x72])
+        rom.write_byte(0x00E2D723, 0x18)
+
+        # Change Bowling Alley check to Bomb Bag (Part 2)
+        rom.write_bytes(0x00E2D892, [0xA6, 0x72])
+        rom.write_byte(0x00E2D897, 0x18)
 
     # Change Bazaar check to Bomb Bag (Child?)
     rom.write_bytes(0x00C0082A, [0x00, 0x18])
@@ -199,121 +329,208 @@ def patch_rom(world, rom):
     rom.write_bytes(0x1FC0CF8, Block_code)
 
     # Speed learning Zelda's Lullaby
-    Block_code = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                  0x00, 0x00, 0x03, 0xE8, 0x00, 0x00, 0x00, 0x01, 0x00, 0x73, 0x00, 0x3B,
-                  0x00, 0x3C, 0x00, 0x3C, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x0C,
-                  0x00, 0x17, 0x00, 0x00, 0x00, 0x10, 0x00, 0x02, 0x08, 0x8B, 0xFF, 0xFF,
-                  0x00, 0xD4, 0x00, 0x11, 0x00, 0x20, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x2E8E900, Block_code)
+    rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001]) # Terminator Execution
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0x0073, 0x001, 0x0002, 0x0002]) # ID, start, end, end  
+    else:
+        rom.write_int16s(None, [0x0073, 0x003B, 0x003C, 0x003C]) # ID, start, end, end  
+
+
+    rom.write_int32s(0x02E8E91C, [0x00000013, 0x0000000C]) # Textbox, Count
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    else:
+        rom.write_int16s(None, [0x0017, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2        
+    rom.write_int16s(None, [0x00D4, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     # Speed learning Sun's Song
-    rom.write_bytes(0x332A4A6, [0x00, 0x3C])
-    Block_code = [0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x18, 0x00, 0x00,
-                  0x00, 0x10, 0x00, 0x02, 0x08, 0x8B, 0xFF, 0xFF, 0x00, 0xD3, 0x00, 0x11,
-                  0x00, 0x20, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x332A868, Block_code)
+    if world.shuffle_song_items:
+        rom.write_int32(0x0332A4A4, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x0332A4A4, 0x0000003C) # Header: frame_count      
+
+    rom.write_int32s(0x0332A868, [0x00000013, 0x00000008]) # Textbox, Count
+    rom.write_int16s(None, [0x0018, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x00D3, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     # Speed learning Saria's Song
-    rom.write_bytes(0x20B1736, [0x00, 0x3C])
-    Block_code = [0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x15, 0x00, 0x00,
-                  0x00, 0x10, 0x00, 0x02, 0x08, 0x8B, 0xFF, 0xFF, 0x00, 0xD1, 0x00, 0x11,
-                  0x00, 0x20, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x20B1DA8, Block_code)
-    rom.write_bytes(0x20B19C8, [0x00, 0x11, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00])
-    Block_code = [0x00, 0x3E, 0x00, 0x11, 0x00, 0x20, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xD4, 0xFF, 0xFF, 0xF7, 0x31,
-                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xD4]
-    rom.write_bytes(0x20B19F8, Block_code)
+    if world.shuffle_song_items:
+        rom.write_int32(0x020B1734, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x020B1734, 0x0000003C) # Header: frame_count
+
+    rom.write_int32s(0x20B1DA8, [0x00000013, 0x0000000C]) # Textbox, Count
+    rom.write_int16s(None, [0x0015, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x00D1, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+
+    rom.write_int32s(0x020B19C0, [0x0000000A, 0x00000006]) # Link, Count
+    rom.write_int16s(0x020B19C8, [0x0011, 0x0000, 0x0010, 0x0000]) #action, start, end, ????
+    rom.write_int16s(0x020B19F8, [0x003E, 0x0011, 0x0020, 0x0000]) #action, start, end, ????
+    rom.write_int32s(None,         [0x80000000,                          # ???
+                                     0x00000000, 0x000001D4, 0xFFFFF731,  # start_XYZ
+                                     0x00000000, 0x000001D4, 0xFFFFF712]) # end_XYZ
 
     # Speed learning Epona's Song
-    rom.write_bytes(0x29BEF68, [0x00, 0x5E, 0x00, 0x0A, 0x00, 0x0B, 0x00, 0x0B])
-    Block_code = [0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x02, 0x00, 0xD2, 0x00, 0x00,
-                  0x00, 0x09, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x0A,
-                  0x00, 0x3C, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x29BECB0, Block_code)
+    rom.write_int32s(0x029BEF60, [0x000003E8, 0x00000001]) # Terminator Execution
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0x005E, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
+    else:
+        rom.write_int16s(None, [0x005E, 0x000A, 0x000B, 0x000B]) # ID, start, end, end         
+
+    rom.write_int32s(0x029BECB0, [0x00000013, 0x00000002]) # Textbox, Count
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0xFFFF, 0x0000, 0x0009, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    else:
+        rom.write_int16s(None, [0x00D2, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0xFFFF, 0x000A, 0x003C, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     # Speed learning Song of Time
-    Block_code = [0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x19, 0x00, 0x00,
-                  0x00, 0x10, 0x00, 0x02, 0x08, 0x8B, 0xFF, 0xFF, 0x00, 0xD5, 0x00, 0x11,
-                  0x00, 0x20, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x252FC80, Block_code)
-    rom.write_bytes(0x252FBA0, [0x00, 0x35, 0x00, 0x3B, 0x00, 0x3C, 0x00, 0x3C])
-    rom.write_bytes(0x1FC3B84, [0xFF, 0xFF, 0xFF, 0xFF])
+    rom.write_int32s(0x0252FB98, [0x000003E8, 0x00000001]) # Terminator Execution
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0x0035, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
+    else:
+        rom.write_int16s(None, [0x0035, 0x003B, 0x003C, 0x003C]) # ID, start, end, end          
+
+    rom.write_int32s(0x0252FC80, [0x00000013, 0x0000000C]) # Textbox, Count
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    else:
+        rom.write_int16s(None, [0x0019, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2        
+    rom.write_int16s(None, [0x00D5, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+
+    rom.write_int32(0x01FC3B84, 0xFFFFFFFF) # Other Header?: frame_count
 
     # Speed learning Song of Storms
-    Block_code = [0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x02,
-                  0x00, 0xD6, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,
-                  0xFF, 0xFF, 0x00, 0xBE, 0x00, 0xC8, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x3041084, Block_code)
+    if world.shuffle_song_items:
+        rom.write_int32(0x03041084, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x03041084, 0x0000000A) # Header: frame_count
+
+    rom.write_int32s(0x03041088, [0x00000013, 0x00000002]) # Textbox, Count
+    rom.write_int16s(None, [0x00D6, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0xFFFF, 0x00BE, 0x00C8, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     # Speed learning Minuet of Forest
-    rom.write_bytes(0x20AFF86, [0x00, 0x3C])
-    Block_code = [0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x0F, 0x00, 0x00,
-                  0x00, 0x10, 0x00, 0x02, 0x08, 0x8B, 0xFF, 0xFF, 0x00, 0x73, 0x00, 0x11,
-                  0x00, 0x20, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x20B0800, Block_code)
-    rom.write_bytes(0x20AFF90, [0x00, 0x11, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00])
-    rom.write_bytes(0x20AFFC1, [0x00, 0x3E, 0x00, 0x11, 0x00, 0x20, 0x00, 0x00])
-    rom.write_bytes(0x20B0492, [0x00, 0x21, 0x00, 0x22])
-    rom.write_bytes(0x20B04CA, [0x00, 0x00, 0x00, 0x00])
+    if world.shuffle_song_items:
+        rom.write_int32(0x020AFF84, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x020AFF84, 0x0000003C) # Header: frame_count
+
+    rom.write_int32s(0x020B0800, [0x00000013, 0x0000000A]) # Textbox, Count
+    rom.write_int16s(None, [0x000F, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x0073, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+
+    rom.write_int32s(0x020AFF88, [0x0000000A, 0x00000005]) # Link, Count
+    rom.write_int16s(0x020AFF90, [0x0011, 0x0000, 0x0010, 0x0000]) #action, start, end, ????
+    rom.write_int16s(0x020AFFC1, [0x003E, 0x0011, 0x0020, 0x0000]) #action, start, end, ????
+
+    rom.write_int32s(0x020B0488, [0x00000056, 0x00000001]) # Music Change, Count
+    rom.write_int16s(None, [0x003F, 0x0021, 0x0022, 0x0000]) #action, start, end, ????
+
+    rom.write_int32s(0x020B04C0, [0x0000007C, 0x00000001]) # Music Fade Out, Count
+    rom.write_int16s(None, [0x0004, 0x0000, 0x0000, 0x0000]) #action, start, end, ????
 
     # Speed learning Bolero of Fire
-    rom.write_bytes(0x224B5D6, [0x00, 0x3C])
-    Block_code = [0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x10, 0x00, 0x00,
-                  0x00, 0x10, 0x00, 0x02, 0x08, 0x8B, 0xFF, 0xFF, 0x00, 0x74, 0x00, 0x11,
-                  0x00, 0x20, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x224D7E8, Block_code)
-    rom.write_bytes(0x224B5E0, [0x00, 0x11, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00])
-    rom.write_bytes(0x224B611, [0x00, 0x3E, 0x00, 0x11, 0x00, 0x20, 0x00, 0x00])
-    rom.write_bytes(0x224B7F8, [0x00, 0x00])
-    rom.write_bytes(0x224B828, [0x00, 0x00])
-    rom.write_bytes(0x224B858, [0x00, 0x00])
-    rom.write_bytes(0x224B888, [0x00, 0x00])
+    if world.shuffle_song_items:
+        rom.write_int32(0x0224B5D4, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x0224B5D4, 0x0000003C) # Header: frame_count
+
+    rom.write_int32s(0x0224D7E8, [0x00000013, 0x0000000A]) # Textbox, Count
+    rom.write_int16s(None, [0x0010, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x0074, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+
+    rom.write_int32s(0x0224B5D8, [0x0000000A, 0x0000000B]) # Link, Count
+    rom.write_int16s(0x0224B5E0, [0x0011, 0x0000, 0x0010, 0x0000]) #action, start, end, ????
+    rom.write_int16s(0x0224B610, [0x003E, 0x0011, 0x0020, 0x0000]) #action, start, end, ????
+
+    rom.write_int32s(0x0224B7F0, [0x0000002F, 0x0000000E]) # Sheik, Count
+    rom.write_int16s(0x0224B7F8, [0x0000]) #action
+    rom.write_int16s(0x0224B828, [0x0000]) #action
+    rom.write_int16s(0x0224B858, [0x0000]) #action
+    rom.write_int16s(0x0224B888, [0x0000]) #action
 
     # Speed learning Serenade of Water
-    rom.write_bytes(0x2BEB256, [0x00, 0x3C])
-    Block_code = [0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x10, 0x00, 0x11, 0x00, 0x00,
-                  0x00, 0x10, 0x00, 0x02, 0x08, 0x8B, 0xFF, 0xFF, 0x00, 0x75, 0x00, 0x11,
-                  0x00, 0x20, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x2BEC880, Block_code)
-    rom.write_bytes(0x2BEB260, [0x00, 0x11, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00])
-    rom.write_bytes(0x2BEB290, [0x00, 0x3E, 0x00, 0x11, 0x00, 0x20, 0x00, 0x00])
-    rom.write_bytes(0x2BEB538, [0x00, 0x00])
-    rom.write_bytes(0x2BEB548, [0x80, 0x00])
-    rom.write_bytes(0x2BEB554, [0x80, 0x00])
-    rom.write_bytes(0x2BEC852, [0x00, 0x21, 0x00, 0x22])
+    if world.shuffle_song_items:
+        rom.write_int32(0x02BEB254, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x02BEB254, 0x0000003C) # Header: frame_count
+
+    rom.write_int32s(0x02BEC880, [0x00000013, 0x00000010]) # Textbox, Count
+    rom.write_int16s(None, [0x0011, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x0075, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+
+    rom.write_int32s(0x02BEB258, [0x0000000A, 0x0000000F]) # Link, Count
+    rom.write_int16s(0x02BEB260, [0x0011, 0x0000, 0x0010, 0x0000]) #action, start, end, ????
+    rom.write_int16s(0x02BEB290, [0x003E, 0x0011, 0x0020, 0x0000]) #action, start, end, ????
+
+    rom.write_int32s(0x02BEB530, [0x0000002F, 0x00000006]) # Sheik, Count
+    rom.write_int16s(0x02BEB538, [0x0000, 0x0000, 0x018A, 0x0000]) #action, start, end, ????
+    rom.write_int32s(None,         [0x1BBB0000,                          # ???
+                                     0xFFFFFB10, 0x8000011A, 0x00000330,  # start_XYZ
+                                     0xFFFFFB10, 0x8000011A, 0x00000330]) # end_XYZ
+
+    rom.write_int32s(0x02BEC848, [0x00000056, 0x00000001]) # Music Change, Count
+    rom.write_int16s(None, [0x0059, 0x0021, 0x0022, 0x0000]) #action, start, end, ????
 
     # Speed learning Nocturne of Shadow
-    rom.write_bytes(0x1FFE460, [0x00, 0x2F, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
-    rom.write_bytes(0x1FFFDF6, [0x00, 0x3C])
-    Block_code = [0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x0E, 0x00, 0x13, 0x00, 0x00,
-                  0x00, 0x10, 0x00, 0x02, 0x08, 0x8B, 0xFF, 0xFF, 0x00, 0x77, 0x00, 0x11,
-                  0x00, 0x20, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x2000FD8, Block_code)
-    rom.write_bytes(0x2000130, [0x00, 0x32, 0x00, 0x3A, 0x00, 0x3B, 0x00, 0x3B])
+    rom.write_int32s(0x01FFE458, [0x000003E8, 0x00000001]) # Other Scene? Terminator Execution
+    rom.write_int16s(None, [0x002F, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
+
+    rom.write_int32(0x01FFFDF4, 0x0000003C) # Header: frame_count
+
+    rom.write_int32s(0x02000FD8, [0x00000013, 0x0000000E]) # Textbox, Count
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    else:
+        rom.write_int16s(None, [0x0013, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x0077, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+
+    rom.write_int32s(0x02000128, [0x000003E8, 0x00000001]) # Terminator Execution
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0x0032, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
+    else:
+        rom.write_int16s(None, [0x0032, 0x003A, 0x003B, 0x003B]) # ID, start, end, end  
 
     # Speed learning Requiem of Spirit
-    rom.write_bytes(0x218AF16, [0x00, 0x3C])
-    Block_code = [0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x12, 0x00, 0x00,
-                  0x00, 0x10, 0x00, 0x02, 0x08, 0x8B, 0xFF, 0xFF, 0x00, 0x76, 0x00, 0x11,
-                  0x00, 0x20, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x218C574, Block_code)
-    rom.write_bytes(0x218B480, [0x00, 0x30, 0x00, 0x3A, 0x00, 0x3B, 0x00, 0x3B])
-    Block_code = [0x00, 0x11, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00,
-                  0xFF, 0xFF, 0xFA, 0xF9, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01,
-                  0xFF, 0xFF, 0xFA, 0xF9, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01,
-                  0x0F, 0x67, 0x14, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01]
-    rom.write_bytes(0x218AF20, Block_code)
-    rom.write_bytes(0x218AF50, [0x00, 0x3E, 0x00, 0x11, 0x00, 0x20, 0x00, 0x00])
+    rom.write_int32(0x0218AF14, 0x0000003C) # Header: frame_count
+
+    rom.write_int32s(0x0218C574, [0x00000013, 0x00000008]) # Textbox, Count
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2       
+    else:
+        rom.write_int16s(None, [0x0012, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2       
+    rom.write_int16s(None, [0x0076, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+
+    rom.write_int32s(0x0218B478, [0x000003E8, 0x00000001]) # Terminator Execution
+    if world.shuffle_song_items:
+        rom.write_int16s(None, [0x0030, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
+    else:
+        rom.write_int16s(None, [0x0030, 0x003A, 0x003B, 0x003B]) # ID, start, end, end  
+
+    rom.write_int32s(0x0218AF18, [0x0000000A, 0x0000000B]) # Link, Count
+    rom.write_int16s(0x0218AF20, [0x0011, 0x0000, 0x0010, 0x0000]) #action, start, end, ????
+    rom.write_int32s(None,         [0x40000000,                          # ???
+                                     0xFFFFFAF9, 0x00000008, 0x00000001,  # start_XYZ
+                                     0xFFFFFAF9, 0x00000008, 0x00000001,  # end_XYZ
+                                     0x0F671408, 0x00000000, 0x00000001]) # normal_XYZ
+    rom.write_int16s(0x0218AF50, [0x003E, 0x0011, 0x0020, 0x0000]) #action, start, end, ????
 
     # Speed learning Prelude of Light
-    rom.write_bytes(0x252FD26, [0x00, 0x3C])
-    Block_code = [0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x0E, 0x00, 0x14, 0x00, 0x00,
-                  0x00, 0x10, 0x00, 0x02, 0x08, 0x8B, 0xFF, 0xFF, 0x00, 0x78, 0x00, 0x11,
-                  0x00, 0x20, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF]
-    rom.write_bytes(0x2531320, Block_code)
-    rom.write_byte(0x252FF1D, 0x00)
-    rom.write_bytes(0x25313DA, [0x00, 0x21, 0x00, 0x22])
+    if world.shuffle_song_items:
+        rom.write_int32(0x0252FD24, 0xFFFFFFFF) # Header: frame_count
+    else:
+        rom.write_int32(0x0252FD24, 0x0000003C) # Header: frame_count
+
+    rom.write_int32s(0x02531320, [0x00000013, 0x0000000E]) # Textbox, Count
+    rom.write_int16s(None, [0x0014, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
+    rom.write_int16s(None, [0x0078, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
+
+    rom.write_int32s(0x0252FF10, [0x0000002F, 0x00000009]) # Sheik, Count
+    rom.write_int16s(0x0252FF18, [0x0006, 0x0000, 0x0000, 0x0000]) #action, start, end, ????
+
+    rom.write_int32s(0x025313D0, [0x00000056, 0x00000001]) # Music Change, Count
+    rom.write_int16s(None, [0x003B, 0x0021, 0x0022, 0x0000]) #action, start, end, ????
 
     # Speed scene after Deku Tree
     rom.write_bytes(0x2077E20, [0x00, 0x07, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
@@ -409,8 +626,8 @@ def patch_rom(world, rom):
     rom.write_bytes(0x31AA830, [0x00, 0x6F, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02]) #Light
 
     # Speed obtaining Fairy Ocarina
-    rom.write_bytes(0x2151230, [0x00, 0x72, 0x00, 0x3C, 0x00, 0x3D, 0x00, 0x3D])
-    Block_code = [0x00, 0x4A, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,
+    rom.write_bytes(0x2150CD0, [0x00, 0x00, 0x00, 0x20,	0x00, 0x00, 0x00, 0x30])
+    Block_code = [0xFF, 0xFF, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,
                   0xFF, 0xFF, 0x00, 0x3C, 0x00, 0x81, 0xFF, 0xFF]
     rom.write_bytes(0x2151240, Block_code)
     rom.write_bytes(0x2150E20, [0xFF, 0xFF, 0xFA, 0x4C])
@@ -464,7 +681,7 @@ def patch_rom(world, rom):
     # Speed up Epona race start
     rom.write_bytes(0x29BE984, [0x00, 0x00, 0x00, 0x02])
     rom.write_bytes(0x29BE9CA, [0x00, 0x01, 0x00, 0x02])
-	
+    
     # Speed start of Horseback Archery
     #rom.write_bytes(0x21B2064, [0x00, 0x00, 0x00, 0x02])
     #rom.write_bytes(0x21B20AA, [0x00, 0x01, 0x00, 0x02])
@@ -581,11 +798,6 @@ def patch_rom(world, rom):
     # Fix Spirit Temple to check for different rewards for scene
     rom.write_bytes(0xCA3EA2, [0x00, 0x00, 0x25, 0x4A, 0x00, 0x08])
 
-    # Fire Arrows now in a chest, always spawn
-    rom.write_bytes(0xE9E202, [0x00, 0x0A])
-    rom.write_bytes(0xE9E1F2, [0x5B, 0x08])
-    rom.write_bytes(0xE9E1D8, [0x00, 0x00, 0x00, 0x00])
-
     # Fix Biggoron to check a different flag.
     rom.write_byte(0xED329B, 0x72)
     rom.write_byte(0xED43E7, 0x72)
@@ -667,126 +879,6 @@ def patch_rom(world, rom):
     for address in Wonder_text:
         rom.write_byte(address, 0xFE)
 
-    # Speed text
-    for address in text_array:
-        rom.write_byte(address, 0x08)
-
-    # Speed Happy Mask shop text
-    rom.write_bytes(0x9602E4, [0x08, 0x48, 0x69, 0x79, 0x65, 0x65, 0x21, 0x01])
-    rom.write_bytes(0x960344, [0x08, 0x08, 0x08, 0x08, 0x57])
-    Block_code = [0x6D, 0x6F, 0x6E, 0x65, 0x79, 0x20, 0x05, 0x40, 0x62, 0x61, 0x63, 0x6B,
-                  0x20, 0x68, 0x65, 0x72, 0x65, 0x2E, 0x04, 0x08, 0x08]
-    rom.write_bytes(0x9603AB, Block_code)
-    Block_code = [0x73, 0x69, 0x67, 0x6E, 0x20, 0x01, 0x05, 0x40, 0x72, 0x69, 0x67, 0x68,
-                  0x74, 0x20, 0x6F, 0x76, 0x65, 0x72, 0x20, 0x74, 0x68, 0x65, 0x72, 0x65,
-                  0x2E, 0x04, 0x08, 0x08]
-    rom.write_bytes(0x9603F8, Block_code)
-    rom.write_bytes(0x961160, [0x08, 0x08, 0x08, 0x08])
-    rom.write_bytes(0x9611AF, [0x08, 0x08, 0x08, 0x08, 0x44])
-    rom.write_bytes(0x9609F0, [0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x54])
-    rom.write_bytes(0x960459, [0x08, 0x08])
-    rom.write_bytes(0x9604C4, [0x08, 0x08, 0x41, 0x20, 0x6D, 0x61, 0x73, 0x6B, 0x20, 0x08, 0x08])
-    rom.write_bytes(0x960513, [0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x54])
-    Block_code = [0x08, 0x53, 0x6F, 0x6D, 0x65, 0x6F, 0x6E, 0x65, 0x20, 0x6D, 0x61, 0x79,
-                  0x20, 0x77, 0x61, 0x6E, 0x74, 0x20, 0x74, 0x68, 0x65, 0x20, 0x01, 0x6D,
-                  0x61, 0x73, 0x6B, 0x2E, 0x04, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08,
-                  0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08,
-                  0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08,
-                  0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08,
-                  0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08,
-                  0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08,
-                  0x08, 0x08, 0x08]
-    rom.write_bytes(0x960555, Block_code)
-    rom.write_bytes(0x9605F5, [0x08, 0x08])
-    Block_code = [0x08, 0x50, 0x61, 0x79, 0x6D, 0x65, 0x6E, 0x74, 0x20, 0x72, 0x65, 0x63,
-                  0x65, 0x69, 0x76, 0x65, 0x64, 0x21, 0x0B, 0x02]
-    rom.write_bytes(0x960718, Block_code)
-    Block_code = [0x08, 0x56, 0x65, 0x72, 0x79, 0x20, 0x77, 0x65, 0x6C, 0x6C, 0x20, 0x64,
-                  0x6F, 0x6E, 0x65, 0x21, 0x01, 0x41, 0x6C, 0x6C, 0x20, 0x74, 0x68, 0x65,
-                  0x20, 0x6D, 0x61, 0x73, 0x6B, 0x73, 0x20, 0x61, 0x72, 0x65, 0x20, 0x73,
-                  0x6F, 0x6C, 0x64, 0x20, 0x6F, 0x75, 0x74, 0x2E, 0x01, 0x08, 0x08, 0x08,
-                  0x08, 0x08, 0x08, 0x08, 0x08]
-    rom.write_bytes(0x96078C, Block_code)
-    rom.write_bytes(0x960913, [0x04, 0x08, 0x08])
-    Block_code = [0x08, 0x46, 0x72, 0x6F, 0x6D, 0x20, 0x6E, 0x6F, 0x77, 0x20, 0x6F, 0x6E,
-                  0x20, 0x79, 0x6F, 0x75, 0x20, 0x63, 0x61, 0x6E, 0x20, 0x62, 0x6F, 0x72,
-                  0x72, 0x6F, 0x77, 0x20, 0x61, 0x6E, 0x79, 0x01, 0x6D, 0x61, 0x73, 0x6B,
-                  0x20, 0x79, 0x6F, 0x75, 0x20, 0x77, 0x61, 0x6E, 0x74, 0x2E, 0x01, 0x4A,
-                  0x75, 0x73, 0x74, 0x20, 0x68, 0x61, 0x76, 0x65, 0x20, 0x66, 0x61, 0x69,
-                  0x74, 0x68, 0x2E, 0x2E, 0x2E, 0x0B, 0x02]
-    rom.write_bytes(0x960924, Block_code)
-    Block_code = [0x08, 0x08, 0x08, 0x57, 0x65, 0x6C, 0x63, 0x6F, 0x6D, 0x65, 0x21, 0x01,
-                  0x57, 0x68, 0x69, 0x63, 0x68, 0x20, 0x6D, 0x61, 0x73, 0x6B, 0x20, 0x63,
-                  0x61, 0x6E, 0x20, 0x49, 0x20, 0x6C, 0x65, 0x6E, 0x64, 0x20, 0x79, 0x6F,
-                  0x75, 0x3F, 0x0B, 0x02]
-    rom.write_bytes(0x960968, Block_code)
-    Block_code = [0x08, 0x57, 0x69, 0x74, 0x68, 0x20, 0x74, 0x68, 0x69, 0x73, 0x20, 0x6D,
-                  0x61, 0x73, 0x6B, 0x20, 0x79, 0x6F, 0x75, 0x20, 0x63, 0x61, 0x6E, 0x20,
-                  0x73, 0x65, 0x65, 0x20, 0x69, 0x6E, 0x74, 0x6F, 0x20, 0x01, 0x08, 0x08,
-                  0x08, 0x20, 0x70, 0x65, 0x6F, 0x70, 0x6C, 0x65, 0x27, 0x73, 0x20, 0x6D,
-                  0x69, 0x6E, 0x64, 0x73, 0x2E, 0x20, 0x49, 0x74, 0x27, 0x73, 0x20, 0x75,
-                  0x73, 0x65, 0x66, 0x75, 0x6C, 0x2C, 0x01, 0x62, 0x75, 0x74, 0x20, 0x73,
-                  0x63, 0x61, 0x72, 0x79, 0x21, 0x04, 0x08]
-    rom.write_bytes(0x960A44, Block_code)
-    rom.write_byte(0x960AA3, 0x01)
-    rom.write_byte(0x960AC6, 0x01)
-    Happy_mask_turn_ins = [0x96066C, 0x961064, 0x9610B8, 0x96110C] #addresses with the same fix for lines upon returning profits from a sold mask
-    for address in Happy_mask_turn_ins:
-        rom.write_bytes(address, [0x08, 0x08, 0x08, 0x08, 0x47])
-
-    # Speed up various shops
-    rom.write_bytes(0x9550D0, [0x08, 0x48, 0x65, 0x79, 0x21, 0x08, 0x08, 0x08, 0x08])
-    rom.write_bytes(0x93189C, [0x08, 0x4D, 0x79, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08])
-    rom.write_bytes(0x95EC04, [0x08, 0x49, 0x74, 0x27, 0x73, 0x08, 0x08])
-    Block_code = [0x08, 0x08, 0x08, 0x08, 0x57, 0x65, 0x20, 0x73, 0x65, 0x6C, 0x6C, 0x20,
-                  0x73, 0x68, 0x69, 0x65, 0x6C, 0x64, 0x73, 0x2C]
-    rom.write_bytes(0x941734, Block_code)
-    rom.write_bytes(0x949A94, [0x08, 0x59, 0x6F, 0x75, 0x27, 0x72, 0x65])
-    rom.write_bytes(0x949B04, [0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x4F])
-    rom.write_bytes(0x949B6A, [0x08, 0x08, 0x08, 0x08, 0x08, 0x4C])
-    rom.write_bytes(0x949BC0, [0x08, 0x08, 0x08, 0x57])
-    Block_code = [0x08, 0x08, 0x08, 0x08, 0x08, 0x57, 0x61, 0x6E, 0x74, 0x20, 0x74, 0x6F,
-                  0x20, 0x62, 0x79, 0x20, 0x66, 0x69, 0x73, 0x68, 0x3F, 0x20, 0x59, 0x6F,
-                  0x75, 0x27, 0x6C, 0x6C]
-    rom.write_bytes(0x94E57C, Block_code)
-    Block_code = [0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x54, 0x68, 0x61, 0x6E, 0x6B, 0x73,
-                  0x20, 0x74, 0x6F, 0x20, 0x79, 0x6F, 0x75, 0x2C, 0x20, 0x49, 0x27, 0x6D,
-                  0x20, 0x4F, 0x4B, 0x21]
-    rom.write_bytes(0x9498C8, Block_code)
-    rom.write_bytes(0x927E38, Block_code)
-    Block_code = [0x59, 0x6F, 0x75, 0x20, 0x68, 0x65, 0x61, 0x72, 0x64, 0x20, 0x61, 0x62,
-                  0x6F, 0x75, 0x74, 0x20, 0x75, 0x73, 0x20, 0x66, 0x72, 0x6F, 0x6D, 0x20,
-                  0x74, 0x68, 0x65, 0x01, 0x67, 0x75, 0x61, 0x72, 0x64, 0x20, 0x61, 0x74,
-                  0x20, 0x44, 0x65, 0x61, 0x74, 0x68, 0x20, 0x4D, 0x6F, 0x75, 0x6E, 0x74,
-                  0x61, 0x69, 0x6E, 0x20, 0x67, 0x61, 0x74, 0x65, 0x3F, 0x01, 0x08, 0x08,
-                  0x08, 0x08, 0x08]
-    rom.write_bytes(0x9650BC, Block_code)
-    Block_code = [0x08, 0x08, 0x08, 0x08, 0x57, 0x65, 0x20, 0x6D, 0x6F, 0x76, 0x65, 0x64,
-                  0x20, 0x68, 0x65, 0x72, 0x65, 0x20, 0x66, 0x72, 0x6F, 0x6D, 0x20, 0x43,
-                  0x61, 0x73, 0x74, 0x6C, 0x65, 0x20, 0x01, 0x54]
-    rom.write_bytes(0x9318F8, Block_code)
-    Block_code = [0x08, 0x41, 0x6E, 0x20, 0x6F, 0x6C, 0x64, 0x20, 0x77, 0x69, 0x74, 0x63,
-                  0x68, 0x20, 0x72, 0x75, 0x6E, 0x73, 0x20, 0x74, 0x68, 0x65, 0x20, 0x50,
-                  0x6F, 0x74, 0x69, 0x6F, 0x6E, 0x20, 0x53, 0x68, 0x6F, 0x70, 0x01, 0x62,
-                  0x65, 0x68, 0x69, 0x6E, 0x64, 0x20, 0x74, 0x68, 0x69, 0x73, 0x20, 0x6F,
-                  0x6E, 0x65, 0x2E, 0x20, 0x59, 0x6F, 0x75, 0x20, 0x63, 0x61, 0x6E, 0x20,
-                  0x67, 0x65, 0x74, 0x20, 0x74, 0x6F, 0x01]
-    rom.write_bytes(0x954DA0, Block_code)
-    Block_code = [0x08, 0x45, 0x76, 0x65, 0x72, 0x79, 0x62, 0x6F, 0x64, 0x79, 0x20, 0x68,
-                  0x61, 0x73, 0x20, 0x63, 0x6F, 0x6D, 0x65, 0x20, 0x62, 0x61, 0x63, 0x6B,
-                  0x21, 0x01, 0x49, 0x74, 0x27, 0x73, 0x20, 0x62, 0x75, 0x73, 0x69, 0x6E,
-                  0x65, 0x73, 0x73, 0x20, 0x61, 0x73, 0x20, 0x75, 0x73, 0x75, 0x61, 0x6C,
-                  0x21, 0x0B, 0x02]
-    rom.write_bytes(0x94B57C, Block_code)
-    rom.write_bytes(0x94B3AC, [0x08, 0x4F, 0x68, 0x20, 0x6E, 0x6F, 0x21, 0x20])
-    Block_code = [0x08, 0x08, 0x08, 0x08, 0x08, 0x44, 0x6F]
-    rom.write_bytes(0x94E5BC, Block_code)
-    rom.write_bytes(0x92CB2C, Block_code)
-    Block_code = [0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08]
-    rom.write_bytes(0x94E639, Block_code)
-    rom.write_bytes(0x92CBA9, Block_code)
-    rom.write_bytes(0x9650BC, [0x08, 0x08, 0x08, 0x08, 0x48])
-
     # Speed dig text for Dampe
     rom.write_bytes(0x9532F8, [0x08, 0x08, 0x08, 0x59])
     
@@ -822,35 +914,142 @@ def patch_rom(world, rom):
     rom.write_bytes(0x10, Block_code)
 
     # Set hooks for various code
-#    rom.write_bytes(0xBD6C94, ...) #Progressive Items Object Hook, unsure where this case is called
-    rom.write_bytes(0xB06C2C, [0x0C, 0x10, 0x01, 0x80]) #Save Writing Hook
     rom.write_bytes(0xDBF428, [0x0C, 0x10, 0x03, 0x00]) #Set Fishing Hook
 
-    # Write Initial Save File
-    Block_code = [0xA2, 0x28, 0x80, 0x20, 0x24, 0x05, 0x80, 0x02, 0x24, 0x0F, 0x00, 0x84,
-                  0x24, 0x18, 0x00, 0x01, 0x24, 0x19, 0x00, 0x08, 0x24, 0x08, 0x00, 0x80,
-                  0xA6, 0x25, 0x00, 0xD8, 0xA2, 0x2F, 0x00, 0xDA, 0xA2, 0x38, 0x01, 0x65,
-                  0xA2, 0x39, 0x09, 0xB6, 0xA2, 0x28, 0x0A, 0x24, 0xA2, 0x38, 0x0A, 0xCE,
-                  0xA2, 0x28, 0x0A, 0xCF, 0xA2, 0x28, 0x0A, 0xE8, 0x24, 0x05, 0x00, 0x20,
-                  0xA2, 0x25, 0x0B, 0x3F, 0xA2, 0x28, 0x0E, 0xDC, 0xA2, 0x25, 0x0E, 0xDD,
-                  0xA2, 0x25, 0x0E, 0xED, 0xA2, 0x38, 0x0E, 0xF9, 0xA2, 0x39, 0x0E, 0xDA,
-                  0xA2, 0x28, 0x0E, 0xE0, 0xA2, 0x38, 0x02, 0x0E, 0xA2, 0x39, 0x01, 0x49,
-                  0xA2, 0x39, 0x0E, 0xD6, 0x24, 0x05, 0x01, 0xFF, 0x24, 0x0F, 0x01, 0xFB,
-                  0x24, 0x18, 0x07, 0xFF, 0x24, 0x19, 0x00, 0x04, 0x24, 0x08, 0x00, 0x30,
-                  0xA6, 0x25, 0x0E, 0xE2, 0xA6, 0x2F, 0x0E, 0xE8, 0xA6, 0x38, 0x0E, 0xEA,
-                  0xA2, 0x28, 0x0E, 0xE7, 0xA2, 0x39, 0x0F, 0x1A, 0x24, 0x08, 0x10, 0x20,
-                  0x24, 0x19, 0x00, 0x2C, 0x24, 0x18, 0x00, 0x49, 0x24, 0x0F, 0x00, 0x02,
-                  0x24, 0x05, 0x00, 0x40, 0xA6, 0x28, 0x0E, 0xD4, 0x00, 0x00, 0x00, 0x00,
-                  0xA2, 0x38, 0x00, 0xF6, 0xA2, 0x2F, 0x00, 0x3F, 0xA2, 0x25, 0x0A, 0x42,
-                  0x92, 0x25, 0x0E, 0xDC, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                  0xA2, 0x25, 0x0E, 0xDC, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                  0x00, 0x00, 0x00, 0x00, 0x24, 0x08, 0x0F, 0x01, 0x24, 0x19, 0x00, 0x09,
-                  0x24, 0x18, 0x00, 0x03, 0x24, 0x0F, 0x00, 0x04, 0x24, 0x05, 0x00, 0x06,
-                  0xA6, 0x28, 0x01, 0x10, 0xA2, 0x39, 0x01, 0x2C, 0xA2, 0x38, 0x01, 0x2E,
-                  0xA2, 0x2F, 0x0F, 0x0A, 0xA2, 0x25, 0x0F, 0x21, 0x24, 0x05, 0x00, 0x00,
-                  0xA2, 0x25, 0x00, 0xA7, 0x24, 0x0F, 0x00, 0x21, 0xA2, 0x2F, 0x0E, 0xED,
-                  0x24, 0x0F, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x03, 0xE0, 0x00, 0x08]
-    rom.write_bytes(0x3480600, Block_code)
+
+    # will be populated with data to be written to initial save
+    # see initial_save.asm and config.asm for more details on specifics
+    # or just use the following functions to add an entry to the table
+    initial_save_table = []
+
+    # will set the bits of value to the offset in the save (or'ing them with what is already there)
+    def write_bits_to_save(offset, value, filter=None):
+        nonlocal initial_save_table
+
+        if filter and not filter(value):
+            return
+
+        initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x00, value]
+        
+
+
+    # will overwrite the byte at offset with the given value
+    def write_byte_to_save(offset, value, filter=None):
+        nonlocal initial_save_table
+
+        if filter and not filter(value):
+            return
+
+        initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x01, value]
+
+    # will overwrite the byte at offset with the given value
+    def write_bytes_to_save(offset, bytes, filter=None):
+        for i, value in enumerate(bytes):
+            write_byte_to_save(offset + i, value, filter)
+
+    # will overwrite the byte at offset with the given value
+    def write_save_table(rom):
+        nonlocal initial_save_table
+
+        table_len = len(initial_save_table)
+        if table_len > 0x400:
+            raise Exception("The Initial Save Table has exceeded it's maximum capacity: 0x%03X/0x400" % table_len)
+        rom.write_bytes(0x3481800, initial_save_table)
+
+
+    # Initial Save Data
+    write_bits_to_save(0x003F, 0x02) # Some Biggoron's Sword flag?
+
+    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x0, 0x80) # Deku tree switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x1, 0x02) # Deku tree switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x2, 0x80) # Deku tree switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x2, 0x04) # Deku tree switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x40) # Dodongo's Cavern switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x08) # Dodongo's Cavern switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x01) # Dodongo's Cavern switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x08) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x04) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x02) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x1, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (poes?)
+    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x01) # Forest Temple switch flag (poes?)
+    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x02) # Forest Temple switch flag (poes?)
+    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x01) # Forest Temple switch flag (poes?)
+    write_bits_to_save(0x00D4 + 0x04 * 0x1C + 0x04 + 0x1, 0x08) # Fire Temple switch flag (First locked door?)
+    write_bits_to_save(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (navi text?)
+    write_bits_to_save(0x00D4 + 0x0B * 0x1C + 0x04 + 0x2, 0x01) # Gerudo Training Ground switch flag (command text?)
+    write_bits_to_save(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (???)
+    write_bits_to_save(0x00D4 + 0x55 * 0x1C + 0x04 + 0x0, 0x80) # Kokiri Forest switch flag (???)
+    write_bits_to_save(0x00D4 + 0x56 * 0x1C + 0x04 + 0x2, 0x40) # Sacred Forest Meadow switch flag (???)
+    write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x2, 0x01) # Lost Woods switch flag (???)
+    write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x3, 0x80) # Lost Woods switch flag (???)
+    write_bits_to_save(0x00D4 + 0x5C * 0x1C + 0x04 + 0x0, 0x80) # Desert Colossus switch flag (???)
+    write_bits_to_save(0x00D4 + 0x5F * 0x1C + 0x04 + 0x3, 0x20) # Hyrule Castle switch flag (???)
+
+    write_bits_to_save(0x0ED4, 0x10) # "Met Deku Tree"
+    write_bits_to_save(0x0ED5, 0x20) # "Deku Tree Opened Mouth"
+    write_bits_to_save(0x0ED6, 0x08) # "Rented Horse From Ingo"
+    write_bits_to_save(0x0EDA, 0x08) # "Began Nabooru Battle"
+    write_bits_to_save(0x0EDC, 0x80) # "Entered the Master Sword Chamber"
+    write_bits_to_save(0x0EDD, 0x20) # "Pulled Master Sword from Pedestal"
+    write_bits_to_save(0x0EE0, 0x80) # "Spoke to Kaepora Gaebora by Lost Woods"
+    write_bits_to_save(0x0EE7, 0x20) # "Nabooru Captured by Twinrova"
+    write_bits_to_save(0x0EE7, 0x10) # "Spoke to Nabooru in Spirit Temple"
+    write_bits_to_save(0x0EED, 0x20) # "Sheik, Spawned at Master Sword Pedestal as Adult"
+    write_bits_to_save(0x0EED, 0x01) # "Nabooru Ordered to Fight by Twinrova"
+    write_bits_to_save(0x0EF9, 0x01) # "Greeted by Saria"
+    write_bits_to_save(0x0F0A, 0x04) # "Spoke to Ingo Once as Adult"
+    write_bits_to_save(0x0F1A, 0x04) # "Met Darunia in Fire Temple"
+
+    write_bits_to_save(0x0ED7, 0x01) # "Spoke to Child Malon at Castle or Market"
+    write_bits_to_save(0x0ED7, 0x20) # "Spoke to Child Malon at Ranch"
+    write_bits_to_save(0x0ED7, 0x40) # "Invited to Sing With Child Malon"
+    write_bits_to_save(0x0F09, 0x10) # "Met Child Malon at Castle or Market"
+    write_bits_to_save(0x0F09, 0x20) # "Child Malon Said Epona Was Scared of You"
+
+    write_bits_to_save(0x0F21, 0x04) # "Ruto in JJ (M3) Talk First Time"
+    write_bits_to_save(0x0F21, 0x02) # "Ruto in JJ (M2) Meet Ruto"
+
+    write_bits_to_save(0x0EE2, 0x01) # "Began Ganondorf Battle"
+    write_bits_to_save(0x0EE3, 0x80) # "Began Bongo Bongo Battle"
+    write_bits_to_save(0x0EE3, 0x40) # "Began Barinade Battle"
+    write_bits_to_save(0x0EE3, 0x20) # "Began Twinrova Battle"
+    write_bits_to_save(0x0EE3, 0x10) # "Began Morpha Battle"
+    write_bits_to_save(0x0EE3, 0x08) # "Began Volvagia Battle"
+    write_bits_to_save(0x0EE3, 0x04) # "Began Phantom Ganon Battle"
+    write_bits_to_save(0x0EE3, 0x02) # "Began King Dodongo Battle"
+    write_bits_to_save(0x0EE3, 0x01) # "Began Gohma Battle"
+
+    write_bits_to_save(0x0EE8, 0x01) # "Entered Deku Tree"
+    write_bits_to_save(0x0EE9, 0x80) # "Entered Temple of Time"
+    write_bits_to_save(0x0EE9, 0x40) # "Entered Goron City"
+    write_bits_to_save(0x0EE9, 0x20) # "Entered Hyrule Castle"
+    write_bits_to_save(0x0EE9, 0x10) # "Entered Zora's Domain"
+    write_bits_to_save(0x0EE9, 0x08) # "Entered Kakariko Village"
+    write_bits_to_save(0x0EE9, 0x02) # "Entered Death Mountain Trail"
+    write_bits_to_save(0x0EE9, 0x01) # "Entered Hyrule Field"
+    write_bits_to_save(0x0EEA, 0x04) # "Entered Ganon's Castle (Exterior)"
+    write_bits_to_save(0x0EEA, 0x02) # "Entered Death Mountain Crater"
+    write_bits_to_save(0x0EEA, 0x01) # "Entered Desert Colossus"
+    write_bits_to_save(0x0EEB, 0x80) # "Entered Zora's Fountain"
+    write_bits_to_save(0x0EEB, 0x40) # "Entered Graveyard"
+    write_bits_to_save(0x0EEB, 0x20) # "Entered Jabu-Jabu's Belly"
+    write_bits_to_save(0x0EEB, 0x10) # "Entered Lon Lon Ranch"
+    write_bits_to_save(0x0EEB, 0x08) # "Entered Gerudo's Fortress"
+    write_bits_to_save(0x0EEB, 0x04) # "Entered Gerudo Valley"
+    write_bits_to_save(0x0EEB, 0x02) # "Entered Lake Hylia"
+    write_bits_to_save(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
+    write_bits_to_save(0x0F08, 0x08) # "Entered Hyrule Castle"
+ 
+    # Make the Kakariko Gate not open with the MS
+    if not world.open_kakariko:
+        rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
+
+    # Make all chest opening animations fast
+    if world.fast_chests:
+        rom.write_int32(0xBDA2E8, 0x240AFFFF) # addiu   t2, r0, -1
+                               # replaces # lb      t2, 0x0002 (t1)
 
     # Set up for Rainbow Bridge dungeons condition
     Block_code = [0x15, 0x41, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x80, 0xEA, 0x00, 0xA5,
@@ -860,6 +1059,9 @@ def patch_rom(world, rom):
     # Gossip stones resond to stone of agony
     Block_code = [0x3C, 0x01, 0x80, 0x12, 0x80, 0x21, 0xA6, 0x75, 0x30, 0x21, 0x00, 0x20,
                   0x03, 0xE0, 0x00, 0x08]
+    # Gossip stones always respond
+    if(world.hints == 'always'):
+        Block_code = [0x24, 0x01, 0x00, 0x20, 0x03, 0xE0, 0x00, 0x08]
     rom.write_bytes(0x3480840, Block_code)
 
     # Set up Rainbow Bridge conditions
@@ -868,131 +1070,194 @@ def patch_rom(world, rom):
                       0x31, 0x4A, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x00]
         rom.write_bytes(0xE2B454, Block_code)
     elif world.bridge == 'open':
-        rom.write_bytes(0x34806B8, [0x34, 0xA5, 0x00, 0x20])
+        write_bits_to_save(0xEDC, 0x20) # "Rainbow Bridge Built by Sages"
     elif world.bridge == 'dungeons':
         Block_code = [0x80, 0xEA, 0x00, 0xA7, 0x24, 0x01, 0x00, 0x3F,
                       0x08, 0x10, 0x02, 0x08, 0x31, 0x4A, 0x00, 0x3F]
         rom.write_bytes(0xE2B454, Block_code)
 
     if world.open_forest:
-        #rom.write_byte(0x2081148, 0x80)
-        rom.write_bytes(0x34806C4, [0x92, 0x25, 0x0E, 0xD5, 0x34, 0xA5, 0x00, 0x10, 0xA2, 0x25, 0x0E, 0xD5])
+        write_bits_to_save(0xED5, 0x10) # "Showed Mido Sword & Shield"
 
     if world.open_door_of_time:
-        rom.write_bytes(0x34806BC, [0x34, 0xA5, 0x00, 0x08])
+        write_bits_to_save(0xEDC, 0x08) # "Opened the Door of Time"
 
-    if world.fast_ganon:
+    # "fast-ganon" stuff
+    if world.no_escape_sequence:
         rom.write_bytes(0xD82A12, [0x05, 0x17]) # Sets exit from Ganondorf fight to entrance to Ganon fight
-        rom.write_byte(0x348066A, 0x21) # Flag Spirit Trial as clear
-        rom.write_byte(0x348066E, 0xFF) # Flag the other five trials as clear
-        rom.write_byte(0x3480703, 0x29) # The barrier is dispelled.
-        rom.write_bytes(0x348070C, [0xA2, 0x2F, 0x01, 0xF1]) # Remove Ganon's Castle Boss Key door
+    if world.unlocked_ganondorf:
+        write_bits_to_save(0x00D4 + 0x0A * 0x1C + 0x04 + 0x1, 0x10) # Ganon's Tower switch flag (unlock boss key door)
+    if world.skipped_trials['Forest']:
+        write_bits_to_save(0x0EEA, 0x08) # "Completed Forest Trial"
+    if world.skipped_trials['Fire']:
+        write_bits_to_save(0x0EEA, 0x40) # "Completed Fire Trial"
+    if world.skipped_trials['Water']:
+        write_bits_to_save(0x0EEA, 0x10) # "Completed Water Trial"
+    if world.skipped_trials['Spirit']:
+        write_bits_to_save(0x0EE8, 0x20) # "Completed Spirit Trial"
+    if world.skipped_trials['Shadow']:
+        write_bits_to_save(0x0EEA, 0x20) # "Completed Shadow Trial"
+    if world.skipped_trials['Light']:
+        write_bits_to_save(0x0EEA, 0x80) # "Completed Light Trial"
+    if world.trials == 0:
+        write_bits_to_save(0x0EED, 0x08) # "Dispelled Ganon's Tower Barrier"
+
+    # open gerudo fortress
+    if world.gerudo_fortress == 'open':
+        write_bits_to_save(0x00A5, 0x40) # Give Gerudo Card
+        write_bits_to_save(0x0EE7, 0x0F) # Free all 4 carpenters
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x1, 0x0F) # Thieves' Hideout switch flags (started all fights)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x2, 0x01) # Thieves' Hideout switch flags (heard yells/unlocked doors)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xFE) # Thieves' Hideout switch flags (heard yells/unlocked doors)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xD4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
+    elif world.gerudo_fortress == 'fast':
+        write_bits_to_save(0x0EE7, 0x0E) # Free 3 carpenters
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x1, 0x0D) # Thieves' Hideout switch flags (started all fights)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x2, 0x01) # Thieves' Hideout switch flags (heard yells/unlocked doors)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
+        write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
+
+    # Revert change that Skips the Epona Race
+    if not world.no_epona_race:
+        rom.write_int32(0xA9E838, 0x03E00008)
+
+    # skip castle guard stealth sequence
+    if world.no_guard_stealth:
+        # change the exit at child/day crawlspace to the end of zelda's goddess cutscene
+        rom.write_bytes(0x21F60DE, [0x05, 0xF0])
+
+
+    messages = read_messages(rom)
+    shop_items = read_shop_items(rom)
+    remove_unused_messages(messages)
+
+    # only one big poe needs to be caught to get the buyer's reward
+    if world.only_one_big_poe:
+        # change the value checked (in code) from 1000 to 100
+        rom.write_bytes(0xEE69CE, [0x00, 0x64])
+        # update dialogue
+        update_message_by_id(messages, 0x70f7, "\x1AOh, you brought a Poe today!\x04\x1AHmmmm!\x04\x1AVery interesting!\x01This is a \x05\x41Big Poe\x05\x40!\x04\x1AI'll buy it for \x05\x4150 Rupees\x05\x40.\x04On top of that, I'll put \x05\x41100\x01points \x05\x40on your card.\x04\x1AIf you earn \x05\x41100 points\x05\x40, you'll\x01be a happy man! Heh heh.")
+        update_message_by_id(messages, 0x70f8, "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41100 points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned 100 points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this.")
 
     # Sets hooks for gossip stone changes
-    if world.hints:
-        rom.write_bytes(0xEE7B84, [0x0C, 0x10, 0x02, 0x10])
-        rom.write_bytes(0xEE7B8C, [0x24, 0x02, 0x00, 0x20])
-        address = 0xB85B11
-        offset = 0xBE4C
-        for i in range(0,33):
-                offset_high = offset >> 8
-                offset_low = offset & 0x00FF
-                rom.write_bytes(address, [0x00, offset_high, offset_low])
-                offset = offset + 0x5C
-                address = address + 0x08
-        buildGossipHints(world, rom)
+    if world.hints != 'none':
+        if world.hints != 'mask':
+            rom.write_bytes(0xEE7B84, [0x0C, 0x10, 0x02, 0x10])
+            rom.write_bytes(0xEE7B8C, [0x24, 0x02, 0x00, 0x20])
+        buildGossipHints(world, messages)
 
     # Set hints for boss reward shuffle
     rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
     rom.write_bytes(0xE2ADB6, [0x70, 0x57])
-    rom.write_byte(0xB8811E, 0x20)
-    rom.write_byte(0xB88236, 0x20)
-    buildBossRewardHints(world, rom)
+    buildBossRewardHints(world, messages)
 
     # build silly ganon lines
-    buildGanonText(world, rom)
+    buildGanonText(world, messages)
 
     # Write item overrides
-    rom.write_bytes(0x3481000, get_override_table(world))
+    override_table = get_override_table(world)
+    rom.write_bytes(0x3481000, sum(override_table, []))
+    rom.write_byte(0x03481C00, world.id + 1) # Write player ID
+
+    # Revert Song Get Override Injection
+    if not world.shuffle_song_items:
+        # general get song
+        rom.write_int32(0xAE5DF8, 0x240200FF)
+        rom.write_int32(0xAE5E04, 0xAD0F00A4)
+        # requiem of spirit
+        rom.write_int32s(0xAC9ABC, [0x3C010001, 0x00300821])
+        # sun song
+        rom.write_int32(0xE09F68, 0x8C6F00A4)
+        rom.write_int32(0xE09F74, 0x01CFC024)
+        rom.write_int32(0xE09FB0, 0x240F0001)
+        # epona
+        rom.write_int32(0xD7E77C, 0x8C4900A4)
+        rom.write_int32(0xD7E784, 0x8D088C24)
+        rom.write_int32s(0xD7E8D4, [0x8DCE8C24, 0x8C4F00A4])
+        rom.write_int32s(0xD7E140, [0x8DCE8C24, 0x8C6F00A4])
+        rom.write_int32(0xD7EBBC, 0x14410008)
+        rom.write_int32(0xD7EC1C, 0x17010010)
+        # song of time
+        rom.write_int32(0xDB532C, 0x24050003)
+
+    # Set Default targeting option to Hold
+    if world.default_targeting == 'hold':
+        rom.write_bytes(0xB07200, [0x20, 0x0C, 0x00, 0x01 ])
+
+    # Set OHKO mode
+    if world.difficulty == 'ohko':
+        rom.write_int32(0xAE80A8, 0xA4A00030) # sh  zero,48(a1)
+        rom.write_int32(0xAE80B4, 0x06000003) # bltz s0, +0003
 
     # Patch songs and boss rewards
     for location in world.get_locations():
         item = location.item
-        itemid = item.code
+        itemid = copy.copy(item.code)
         locationaddress = location.address
         secondaryaddress = location.address2
 
         if itemid is None or location.address is None:
             continue
 
-        if location.type == 'Song':
-            rom.write_byte(locationaddress, itemid)
-            itemid = itemid + 0x0D
-            rom.write_byte(secondaryaddress, itemid)
+        if location.type == 'Song' and not world.shuffle_song_items:
+            rom.write_byte(locationaddress, itemid[0])
+            itemid[0] = itemid[0] + 0x0D
+            rom.write_byte(secondaryaddress, itemid[0])
             if location.name == 'Impa at Castle':
-                impa_fix = 0x65 - item.index
+                impa_fix = 0x65 - itemid[1]
                 rom.write_byte(0xD12ECB, impa_fix)
-                impa_fix = 0x8C34 - (item.index * 4)
-                impa_fix_high = impa_fix >> 8
-                impa_fix_low = impa_fix & 0x00FF
-                rom.write_bytes(0xB063FE, [impa_fix_high, impa_fix_low])
                 rom.write_byte(0x2E8E931, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Malon':
                 if item.name == 'Suns Song':
-                    rom.write_byte(locationaddress, itemid)
-                malon_fix = 0x8C34 - (item.index * 4)
+                    rom.write_byte(locationaddress, itemid[0])
+                malon_fix = 0x8C34 - (itemid[1] * 4)
                 malon_fix_high = malon_fix >> 8
                 malon_fix_low = malon_fix & 0x00FF
                 rom.write_bytes(0xD7E142, [malon_fix_high, malon_fix_low])
-                #rom.write_bytes(0xD7E8D6, [malon_fix_high, malon_fix_low]) # I don't know what this does, may be useful?
+                rom.write_bytes(0xD7E8D6, [malon_fix_high, malon_fix_low]) # I really don't like hardcoding these addresses, but for now.....
                 rom.write_bytes(0xD7E786, [malon_fix_high, malon_fix_low])
                 rom.write_byte(0x29BECB9, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Composer Grave':
-                sun_fix = 0x8C34 - (item.index * 4)
+                sun_fix = 0x8C34 - (itemid[1] * 4)
                 sun_fix_high = sun_fix >> 8
                 sun_fix_low = sun_fix & 0x00FF
                 rom.write_bytes(0xE09F66, [sun_fix_high, sun_fix_low])
                 rom.write_byte(0x332A87D, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Saria':
-                saria_fix = 0x65 - item.index
+                saria_fix = 0x65 - itemid[1]
                 rom.write_byte(0xE2A02B, saria_fix)
-                saria_fix = 0x8C34 - (item.index * 4)
-                saria_fix_high = saria_fix >> 8
-                saria_fix_low = saria_fix & 0x00FF
-                rom.write_bytes(0xE29382, [saria_fix_high, saria_fix_low])
                 rom.write_byte(0x20B1DBD, item_data[item.name]) #Fix text box
             elif location.name == 'Song from Ocarina of Time':
                 rom.write_byte(0x252FC95, item_data[item.name]) #Fix text box
             elif location.name == 'Song at Windmill':
-                windmill_fix = 0x65 - item.index
+                windmill_fix = 0x65 - itemid[1]
                 rom.write_byte(0xE42ABF, windmill_fix)
                 rom.write_byte(0x3041091, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik Forest Song':
-                minuet_fix = 0x65 - item.index
+                minuet_fix = 0x65 - itemid[1]
                 rom.write_byte(0xC7BAA3, minuet_fix)
                 rom.write_byte(0x20B0815, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik at Temple':
-                prelude_fix = 0x65 - item.index
+                prelude_fix = 0x65 - itemid[1]
                 rom.write_byte(0xC805EF, prelude_fix)
                 rom.write_byte(0x2531335, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik in Crater':
-                bolero_fix = 0x65 - item.index
+                bolero_fix = 0x65 - itemid[1]
                 rom.write_byte(0xC7BC57, bolero_fix)
                 rom.write_byte(0x224D7FD, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik in Ice Cavern':
-                serenade_fix = 0x65 - item.index
+                serenade_fix = 0x65 - itemid[1]
                 rom.write_byte(0xC7BD77, serenade_fix)
                 rom.write_byte(0x2BEC895, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik in Kakariko':
-                nocturne_fix = 0x65 - item.index
+                nocturne_fix = 0x65 - itemid[1]
                 rom.write_byte(0xAC9A5B, nocturne_fix)
                 rom.write_byte(0x2000FED, item_data[item.name]) #Fix text box
             elif location.name == 'Sheik at Colossus':
                 rom.write_byte(0x218C589, item_data[item.name]) #Fix text box
         elif location.type == 'Boss':
             if location.name == 'Links Pocket':
-                rom.write_byte(locationaddress, item_data[item.name][0])
-                rom.write_byte(secondaryaddress, item_data[item.name][1])
+                write_bits_to_save(item_data[item.name][1], item_data[item.name][0])
             else:
                 rom.write_byte(locationaddress, itemid)
                 rom.write_byte(secondaryaddress, item_data[item.name][2])
@@ -1003,73 +1268,245 @@ def patch_rom(world, rom):
                     rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
                     rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
 
+    if world.bombchus_in_logic:
+        # add a cheaper bombchu pack to the bombchu shop
+        # describe
+        add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
+        # purchase
+        add_message(messages, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x80FF, 0x03)
+        rbl_bombchu = shop_items[0x0018]
+        rbl_bombchu.price = 60
+        rbl_bombchu.pieces = 5
+        rbl_bombchu.get_item_id = 0x006A
+        rbl_bombchu.description_message = 0x80FE
+        rbl_bombchu.purchase_message = 0x80FF
+
+        # Reduce 10 Pack Bombchus from 100 to 99 Rupees
+        shop_items[0x0015].price = 99
+        shop_items[0x0019].price = 99
+        shop_items[0x001C].price = 99
+        update_message_by_id(messages, shop_items[0x001C].description_message, "\x08\x05\x41Bombchu  (10 pieces)  99 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it's actually a self-propelled time\x01bomb!\x09\x0A")
+        update_message_by_id(messages, shop_items[0x001C].purchase_message, "\x08Bombchu  10 pieces   100 Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don't buy\x05\x40")
+
+        #Fix bombchu chest animations
+        chestAnimations = {
+            0x6A: 0x28, #0xD8 #Bombchu (5) 
+            0x03: 0x28, #0xD8 #Bombchu (10)    
+            0x6B: 0x28, #0xD8 #Bombchu (20)    
+        }
+        for item_id, gfx_id in chestAnimations.items():
+            rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
+
+    #Fix item chest animations
+    chestAnimations = {
+        0x3D: 0xED, #0x13 #Heart Container 
+        0x3E: 0xEC, #0x14 #Piece of Heart  
+        0x42: 0x02, #0xFE #Small Key   
+        0x48: 0xF7, #0x09 #Recovery Heart  
+        0x4F: 0xED, #0x13 #Heart Container 
+        0x76: 0xEC, #0x14 #WINNER! Piece of Heart
+    }
+    for item_id, gfx_id in chestAnimations.items():
+        rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
+
+    # Update chest type sizes
+    if world.correct_chest_sizes:
+        update_chest_sizes(rom, override_table)
+
+    # Move Ganon's Castle's Zelda's Lullaby Chest back so is reachable if large
+    rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
+
+    # give dungeon items the correct messages
+    message_patch_for_dungeon_items(messages, shop_items, world)
+    # update happy mask shop to use new SOLD OUT text id
+    rom.write_int16(0xC01C06, shop_items[0x26].description_message)
+
+    # add song messages
+    add_song_messages(messages, world)
+
+    # reduce item message lengths
+    update_item_messages(messages, world)
+
+    repack_messages(rom, messages)
+    write_shop_items(rom, shop_items)
+
+    # text shuffle
+    if world.text_shuffle == 'except_hints':
+        shuffle_messages(rom, True)
+    elif world.text_shuffle == 'complete':
+        shuffle_messages(rom, False)
+
+    # output a text dump, for testing...
+    #with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
+    #     messages = read_messages(rom)
+    #     f.write('item_message_strings = {\n')
+    #     for m in messages:
+    #        f.write("\t0x%04X: \"%s\",\n" % (m.id, m.get_python_string()))
+    #     f.write('}\n')
+
+
+    scarecrow_song = None
+    if world.free_scarecrow:
+        original_songs = [
+            'LURLUR',
+            'ULRULR',
+            'DRLDRL',
+            'RDURDU',
+            'RADRAD',
+            'ADUADU',
+            'AULRLR',
+            'DADALDLD',
+            'ADRRL',
+            'ADALDA',
+            'LRRALRD',
+            'URURLU'
+        ]
+
+        note_map = {
+            'A': 0,
+            'D': 1,
+            'R': 2,
+            'L': 3,
+            'U': 4
+        }
+
+        if len(world.scarecrow_song) != 8:
+            raise Exception('Scarecrow Song must be 8 notes long')
+
+        if len(set(world.scarecrow_song.upper())) == 1:
+            raise Exception('Scarecrow Song must contain at least two different notes')           
+
+        notes = []
+        for c in world.scarecrow_song.upper():
+            if c not in note_map:
+                raise Exception('Invalid note %s. Valid notes are A, D, R, L, U' % c)
+
+            notes.append(note_map[c])
+        scarecrow_song = Song(activation=notes)
+
+        if not world.ocarina_songs:
+            for original_song in original_songs:
+                song_notes = []
+                for c in original_song:
+                    song_notes.append(note_map[c])
+                song = Song(activation=song_notes)
+
+                if subsong(scarecrow_song, song):
+                    raise Exception('You may not have the Scarecrow Song contain an existing song')
+
+        write_bits_to_save(0x0EE6, 0x10)     # Played song as adult
+        write_byte_to_save(0x12C5, 0x01)    # Song is remembered
+        write_bytes_to_save(0x12C6, scarecrow_song.playback_data[:(16*8)], lambda v: v != 0)
+
+    if world.ocarina_songs:
+        replace_songs(rom, scarecrow_song)
+
+    # actually write the save table to rom
+    write_save_table(rom)
+    
+    # disable music 
+    if world.disable_music:
+        rom.write_bytes(0xB3CB18, [0x00, 0x00, 0x20, 0x25])
+
+    # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
+    random.seed()
+
     # patch tunic colors
     # Custom color tunic stuff
     Tunics = []
     Tunics.append(0x00B6DA38) # Kokiri Tunic
     Tunics.append(0x00B6DA3B) # Goron Tunic
     Tunics.append(0x00B6DA3E) # Zora Tunic
-    colorList = ['Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green']
+    colorList = get_tunic_colors()
     randomColors = random.choices(colorList, k=3)
 
     for i in range(len(Tunics)):
-        if world.colors[i] == 'Random':
-            thisColor = randomColors[i]
-        else:
-            thisColor = world.colors[i]
+        # get the color option
+        thisColor = world.tunic_colors[i]
+        # handle true random
         randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
-        if thisColor == 'Kokiri Green':
-            color = [0x1E, 0x69, 0x1B]
-        elif thisColor == 'Goron Red':
-            color = [0x64, 0x14, 0x00]
-        elif thisColor == 'Zora Blue':
-            color = [0x00, 0x3C, 0x64]
-        elif thisColor == 'Black':
-            color = [0x30, 0x30, 0x30]
-        elif thisColor == 'White':
-            color = [0xF0, 0xF0, 0xFF]
-        elif thisColor == 'Purple':
-            color = [0x95, 0x30, 0x80]
-        elif thisColor == 'Yellow':
-            color = [0xE0, 0xD8, 0x60]
-        elif thisColor == 'Orange':
-            color = [0xE0, 0x79, 0x40]
-        elif thisColor == 'Pink':
-            color = [0xFF, 0x90, 0xB3]
-        elif thisColor == 'Gray':
-            color = [0xA0, 0xA0, 0xB0]
-        elif thisColor == 'Brown':
-            color = [0x95, 0x59, 0x0A]
-        elif thisColor == 'Gold':
-            color = [0xD8, 0xB0, 0x60]
-        elif thisColor == 'Silver':
-            color = [0xD0, 0xF0, 0xFF]
-        elif thisColor == 'Beige':
-            color = [0xC0, 0xA0, 0xA0]
-        elif thisColor == 'Teal':
-            color = [0x30, 0xD0, 0xB0]
-        elif thisColor == 'Royal Blue':
-            color = [0x40, 0x00, 0x90]
-        elif thisColor == 'Sonic Blue':
-            color = [0x50, 0x90, 0xE0]
-        elif thisColor == 'Blood Red':
-            color = [0x30, 0x10, 0x10]
-        elif thisColor == 'Blood Orange':
-            color = [0xF0, 0x30, 0x30]
-        elif thisColor == 'NES Green':
-            color = [0x00, 0xD0, 0x00]
-        elif thisColor == 'Dark Green':
-            color = [0x00, 0x25, 0x18]
-        elif thisColor == 'True Random':
+        if thisColor == 'Completely Random':
             color = randColor
+        else:
+            # handle random
+            if world.tunic_colors[i] == 'Random Choice':
+                thisColor = randomColors[i]
+            # grab the color from the list
+            color = TunicColors[thisColor]
         rom.write_bytes(Tunics[i], color)
+
+    # patch navi colors
+    Navi = []
+    Navi.append([0x00B5E184]) # Default
+    Navi.append([0x00B5E19C, 0x00B5E1BC]) # Enemy, Boss
+    Navi.append([0x00B5E194]) # NPC
+    Navi.append([0x00B5E174, 0x00B5E17C, 0x00B5E18C, 0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4, 0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]) # Everything else
+    naviList = get_navi_colors()
+    randomColors = random.choices(naviList, k=4)
+
+    for i in range(len(Navi)):
+        # do everything in the inner loop so that "true random" changes even for subcategories
+        for j in range(len(Navi[i])):
+            # get the color option
+            thisColor = world.navi_colors[i]
+            # handle true random
+            randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0xFF,
+                         random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0x00]
+            if thisColor == 'Completely Random':
+                color = randColor
+            else:
+                # handle random
+                if world.navi_colors[i] == 'Random Choice':
+                    thisColor = randomColors[i]
+                # grab the color from the list
+                color = NaviColors[thisColor]
+            rom.write_bytes(Navi[i][j], color)
+
+    #Navi hints
+    NaviHint = []
+    NaviHint.append([0xAE7EF2, 0xC26C7E]) #Overworld Hint
+    NaviHint.append([0xAE7EC6]) #Enemy Target Hint
+    naviHintSFXList = ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Navi - Random', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
+    randomNaviHintSFX = random.choices(naviHintSFXList, k=2)
+    
+    for i in range(len(NaviHint)):
+        for j in range(len(NaviHint[i])):
+            thisNaviHintSFX = world.navi_hint_sounds[i]
+            if thisNaviHintSFX == 'Random Choice':
+                thisNaviHintSFX = randomNaviHintSFX[i]
+            if thisNaviHintSFX == 'Notification':
+                naviHintSFX = [0x48, 0x20]
+            elif thisNaviHintSFX == 'Rupee':
+                naviHintSFX = [0x48, 0x03]
+            elif thisNaviHintSFX == 'Timer':
+                naviHintSFX = [0x48, 0x1A]
+            elif thisNaviHintSFX == 'Tamborine':
+                naviHintSFX = [0x48, 0x42]
+            elif thisNaviHintSFX == 'Recovery Heart':
+                naviHintSFX = [0x48, 0x0B]
+            elif thisNaviHintSFX == 'Carrot Refill':
+                naviHintSFX = [0x48, 0x45]
+            elif thisNaviHintSFX == 'Navi - Hey!':
+                naviHintSFX = [0x68, 0x5F]
+            elif thisNaviHintSFX == 'Navi - Random':
+                naviHintSFX = [0x68, 0x43]
+            elif thisNaviHintSFX == 'Zelda - Gasp':
+                naviHintSFX = [0x68, 0x79]
+            elif thisNaviHintSFX == 'Cluck':
+                naviHintSFX = [0x28, 0x12]
+            elif thisNaviHintSFX == 'Mweep!':
+                naviHintSFX = [0x68, 0x7A]
+            elif thisNaviHintSFX == 'None':
+                naviHintSFX = [0x00, 0x00]
+            if thisNaviHintSFX != 'Default':
+                rom.write_bytes(NaviHint[i][j], naviHintSFX)
 
     #Low health beep
     healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
     randomSFX = random.choice(healthSFXList)
     address = 0xADBA1A
     
-    if world.healthSFX == 'Random':
+    if world.healthSFX == 'Random Choice':
         thisHealthSFX = randomSFX
     else:
         thisHealthSFX = world.healthSFX
@@ -1107,7 +1544,7 @@ def get_override_table(world):
     for location in world.get_locations():
         override_entries.append(get_override_entry(location))
     override_entries.sort()
-    return sum(override_entries, [])
+    return override_entries
 
 def get_override_entry(location):
     scene = location.scene
@@ -1116,12 +1553,138 @@ def get_override_entry(location):
     if None in [scene, default, item_id]:
         return []
 
-    if location.type in ['NPC', 'BossHeart']:
-        return [scene, 0x00, default, item_id]
+    player_id = (location.item.world.id + 1) << 3
+
+    if location.type in ['NPC', 'BossHeart', 'Song']:
+        return [scene, player_id | 0x00, default, item_id]
     elif location.type == 'Chest':
         flag = default & 0x1F
-        return [scene, 0x01, flag, item_id]
+        return [scene, player_id | 0x01, flag, item_id]
     elif location.type == 'Collectable':
-        return [scene, 0x02, default, item_id]
+        return [scene, player_id | 0x02, default, item_id]
+    elif location.type == 'GS Token':
+        return [scene, player_id | 0x03, default, item_id]
     else:
         return []
+
+
+chestTypeMap = {
+        #    small   big     boss
+    0x0000: [0x5000, 0x0000, 0x2000], #Large
+    0x1000: [0x7000, 0x1000, 0x1000], #Large, Appears, Clear Flag
+    0x2000: [0x5000, 0x0000, 0x2000], #Boss Key’s Chest
+    0x3000: [0x8000, 0x3000, 0x3000], #Large, Falling, Switch Flag
+    0x4000: [0x6000, 0x4000, 0x4000], #Large, Invisible
+    0x5000: [0x5000, 0x0000, 0x2000], #Small
+    0x6000: [0x6000, 0x4000, 0x4000], #Small, Invisible
+    0x7000: [0x7000, 0x1000, 0x1000], #Small, Appears, Clear Flag
+    0x8000: [0x8000, 0x3000, 0x3000], #Small, Falling, Switch Flag
+    0x9000: [0x9000, 0x9000, 0x9000], #Large, Appears, Zelda's Lullaby
+    0xA000: [0xA000, 0xA000, 0xA000], #Large, Appears, Sun's Song Triggered
+    0xB000: [0xB000, 0xB000, 0xB000], #Large, Appears, Switch Flag
+    0xC000: [0x5000, 0x0000, 0x2000], #Large
+    0xD000: [0x5000, 0x0000, 0x2000], #Large
+    0xE000: [0x5000, 0x0000, 0x2000], #Large
+    0xF000: [0x5000, 0x0000, 0x2000], #Large
+}
+
+chestAnimationExtendedFast = [
+    0x87, # Progressive Nut Capacity
+    0x88, # Progressive Stick Capacity
+    0xB6, # Recovery Heart
+    0xB7, # Arrows (5)
+    0xB8, # Arrows (10)
+    0xB9, # Arrows (30)
+    0xBA, # Bombs (5)
+    0xBB, # Bombs (10)
+    0xBC, # Bombs (20)
+    0xBD, # Deku Nuts (5)
+    0xBE, # Deku Nuts (10)
+]
+
+
+def room_get_chests(rom, room_data, scene, chests, alternate=None):
+    room_start = alternate or room_data
+    command = 0
+    while command != 0x14: # 0x14 = end header
+        command = rom.read_byte(room_data)
+        if command == 0x01: # actor list
+            actor_count = rom.read_byte(room_data + 1)
+            actor_list = room_start + (rom.read_int32(room_data + 4) & 0x00FFFFFF)
+            for _ in range(0, actor_count):
+                actor_id = rom.read_int16(actor_list);
+                actor_var = rom.read_int16(actor_list + 14)
+                if actor_id == 0x000A: #Chest Actor
+                    chests[actor_list + 14] = [scene, actor_var & 0x001F]
+                actor_list = actor_list + 16
+        if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
+            header_list = room_start + (rom.read_int32(room_data + 4) & 0x00FFFFFF)
+            for alt_id in range(0,2):
+                header_data = room_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
+                if header_data != 0 and not alternate:
+                    room_get_chests(rom, header_data, scene, chests, room_start)
+                header_list = header_list + 4
+        room_data = room_data + 8
+
+
+def scene_get_chests(rom, scene_data, scene, chests, alternate=None):
+    scene_start = alternate or scene_data
+    command = 0
+    while command != 0x14: # 0x14 = end header
+        command = rom.read_byte(scene_data)
+        if command == 0x04: #room list
+            room_count = rom.read_byte(scene_data + 1)
+            room_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
+            for _ in range(0, room_count):
+                room_data = rom.read_int32(room_list);
+                room_get_chests(rom, room_data, scene, chests)
+                room_list = room_list + 8
+        if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
+            header_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
+            for alt_id in range(0,2):
+                header_data = scene_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
+                if header_data != 0 and not alternate:
+                    scene_get_chests(rom, header_data, scene, chests, scene_start)
+                header_list = header_list + 4
+
+        scene_data = scene_data + 8
+
+
+def get_chest_list(rom):
+    chests = {}
+    scene_table = 0x00B71440
+    for scene in range(0x00, 0x65):
+        scene_data = rom.read_int32(scene_table + (scene * 0x14));
+        scene_get_chests(rom, scene_data, scene, chests)
+    return chests
+
+
+def get_override_itemid(override_table, scene, type, flags):
+    for entry in override_table:
+        if len(entry) == 4 and entry[0] == scene and (entry[1] & 0x07) == type and entry[2] == flags:
+            return entry[3]
+    return None
+
+def update_chest_sizes(rom, override_table):
+    chest_list = get_chest_list(rom)
+    for address, [scene, flags] in chest_list.items():
+        item_id = get_override_itemid(override_table, scene, 1, flags)
+
+        if None in [address, scene, flags, item_id]:
+            continue
+
+        itemType = 0  # Item animation
+
+        if item_id >= 0x80: # if extended item, always big except from exception list
+            itemType = 0 if item_id in chestAnimationExtendedFast else 1
+        elif rom.read_byte(0xBEEE8E + (item_id * 6) + 2) & 0x80: # get animation from rom, ice trap is big
+            itemType = 0 # No animation, small chest
+        else:
+            itemType = 1 # Long animation, big chest
+        # Don't use boss chests
+
+        default = rom.read_int16(address)
+        chestType = default & 0xF000
+        newChestType = chestTypeMap[chestType][itemType]
+        default = (default & 0x0FFF) | newChestType
+        rom.write_int16(address, default)
