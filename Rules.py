@@ -444,6 +444,7 @@ def dung_rules_sht0(world):
     # GS
     set_rule(world.get_location('GS Shadow Temple Like Like Room'), lambda state: state.has('Progressive Hookshot'))
     set_rule(world.get_location('GS Shadow Temple Crusher Room'), lambda state: state.has('Progressive Hookshot'))
+    set_rule(world.get_location('GS Shadow Temple Single Giant Pot'), lambda state: state.has('Small Key (Shadow Temple)', 2) and state.has('Progressive Hookshot'))
     set_rule(world.get_location('GS Shadow Temple Near Ship'), lambda state: state.has('Progressive Hookshot', 2) and state.has('Small Key (Shadow Temple)', 4))
 
 def dung_rules_bw0(world):
@@ -458,14 +459,16 @@ def dung_rules_bw0(world):
     set_rule(world.get_location('Bottom of the Well Invisible Chest'), lambda state: state.can_play('Zeldas Lullaby') and state.can_see_with_lens())
     set_rule(world.get_location('Bottom of the Well Underwater Front Chest'), lambda state: state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('Bottom of the Well Underwater Left Chest'), lambda state: state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_location('Bottom of the Well Basement Chest'), lambda state: state.has_explosives() or (state.has('Small Key (Bottom of the Well)', 3) and state.has('Progressive Strength Upgrade') and state.can_see_with_lens()))
+    set_rule(world.get_location('Bottom of the Well Basement Chest'), lambda state: state.has_explosives() or (((state.has('Small Key (Bottom of the Well)', 3) and state.can_see_with_lens()) or (state.has('Dins Fire') and state.has('Magic Meter'))) and state.has('Progressive Strength Upgrade')))
     set_rule(world.get_location('Bottom of the Well Locked Pits'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.can_see_with_lens()) #These pits are really unfair.
     set_rule(world.get_location('Bottom of the Well Behind Right Grate'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.can_see_with_lens())
 
     # GS
-    set_rule(world.get_location('GS Well West Inner Room'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.has('Boomerang') and state.can_see_with_lens())
-    set_rule(world.get_location('GS Well East Inner Room'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.has('Boomerang') and state.can_see_with_lens())
-    set_rule(world.get_location('GS Well Like Like Cage'), lambda state: state.has('Small Key (Bottom of the Well)', 3) and state.has('Boomerang') and state.can_see_with_lens())
+    set_always_allow(world.get_location('GS Well West Inner Room'), lambda item, state: item.name == 'Small Key (Bottom of the Well)')
+    set_rule(world.get_location('GS Well West Inner Room'), lambda state: state.has('Boomerang') and state.can_see_with_lens() and (state.has('Small Key (Bottom of the Well)', 3) or item_name(state, 'GS Well West Inner Room') == 'Small Key (Bottom of the Well)')) #If key for key, this lets the logic reduce the small key reqs for every other locked door.
+    set_always_allow(world.get_location('GS Well East Inner Room'), lambda item, state: item.name == 'Small Key (Bottom of the Well)')
+    set_rule(world.get_location('GS Well East Inner Room'), lambda state: state.has('Boomerang') and state.can_see_with_lens() and (state.has('Small Key (Bottom of the Well)', 3) or item_name(state, 'GS Well East Inner Room') == 'Small Key (Bottom of the Well)')) #If key for key, this lets the logic reduce the small key reqs for every other locked door.
+    set_rule(world.get_location('GS Well Like Like Cage'), lambda state: state.has('Boomerang') and state.can_see_with_lens() and state.has('Small Key (Bottom of the Well)', 3))
 
 def dung_rules_ic0(world):
 	# Ice Cavern Vanilla

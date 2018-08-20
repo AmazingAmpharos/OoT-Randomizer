@@ -17,7 +17,7 @@ from Dungeons import create_dungeons
 from Rules import set_rules
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
-from Utils import default_output_path, check_version
+from Utils import default_output_path
 from version import __version__
 
 class dummy_window():
@@ -33,11 +33,6 @@ def main(settings, window=dummy_window()):
     start = time.clock()
 
     logger = logging.getLogger('')
-
-    if not settings.check_version:
-        version_error = check_version(settings.checked_version)
-        if version_error:
-            logger.warning(version_error)
 
     # initialize the world
 
@@ -143,7 +138,7 @@ def main(settings, window=dummy_window()):
         worlds[settings.player_num - 1].spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
 
     window.update_progress(100)
-    window.update_status('Done. Enjoy.')
+    window.update_status('Success: Rom patched successfully')
     logger.info('Done. Enjoy.')
     logger.debug('Total Time: %s', time.clock() - start)
 

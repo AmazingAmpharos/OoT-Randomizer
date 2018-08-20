@@ -448,7 +448,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       The crawlspace into Hyrule Castle goes
-                      straight to zelda, skipping the guards.
+                      straight to Zelda, skipping the guards.
                       '''
         }),
     Setting_Info('no_epona_race', bool, 1, True, 
@@ -465,23 +465,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Epona can be summoned with Epona's Song
-                      without needed to race Ingo.
-                      '''
-        }),
-    Setting_Info('only_one_big_poe', bool, 1, True, 
-        {
-            'help': '''\
-                    The Poe buyer will give a reward for turning in a single Big Poe.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Big Poe Reward only requires one Big Poe',
-            'group': 'convenience',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Makes Big Poes less tedious.
+                      without needing to race Ingo.
                       '''
         }),
     Setting_Info('fast_chests', bool, 1, True, 
@@ -500,6 +484,39 @@ setting_infos = [
                       All chest animations are fast. If disabled,
                       the animation time is slow for major items.
                       '''
+        }),
+    Setting_Info('big_poe_count', str, 4, True, 
+        {
+            'default': 'random',
+            'const': 'random',
+            'nargs': '?',
+            'choices': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'random'],
+            'help': '''\
+                    Select the number of Big Poes to receive an item from the buyer.
+                    '''         
+        },
+        {
+            'text': 'Big Poe target count',
+            'group': 'convenience',
+            'widget': 'Combobox',
+            'default': 'Random',
+            'options': {
+                'Random': 'random',
+                '1': '1',
+                '2': '2',
+                '3': '3',
+                '4': '4',
+                '5': '5',
+                '6': '6',
+                '7': '7',
+                '8': '8',
+                '9': '9',
+                '10': '10'
+            },
+            'tooltip': '''\
+                    The Poe buyer will give a reward for turning 
+                    in the chosen number of Big Poes.
+                    ''',
         }),
     Setting_Info('free_scarecrow', bool, 1, True, 
         {
@@ -695,7 +712,7 @@ setting_infos = [
         'help': '''\
                     Dungeon items can appear outside of their
                     respective dungeon.
-                    off:            Dungeon items will be in their Dungeon
+                    off:            Dungeon items will be in their dungeons
                     mapcompass:     Maps and Compasses can appear anywhere
                     keysanity:      Dungeon items can appear anywhere
                     '''
