@@ -781,6 +781,54 @@ setting_infos = [
                       new locations for items to appear.
                       '''
         }),
+    Setting_Info('shopsanity', str, 2, True, 
+        {
+            'default': 'off',
+            'const': 'off',
+            'nargs': '?',
+            'choices': ['off', 'on', 'sparse'],
+            'help': '''\
+                    Shop contents are randomized. There are Two items
+                    in every shop that are one time buy and are not
+                    refill items.
+                    off:        Normal Shops*
+                    on:         Shop contents are shuffled
+                    sparse:     Shop contents are shuffled and shops
+                                sell fewer items. Harder mode.
+                    '''
+        },
+        {
+            'text': 'Shopsanity',
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Off',
+            'options': {
+                'Off': 'off',
+                'Shuffled Shops': 'on',
+                'Sparse Shuffle Shops': 'sparse',
+            },
+            'tooltip':'''\
+                      Shop contents are randomized.
+                      The lower left two items are 
+                      one stock items that are not
+                      refill items. This means every
+                      shop has 2 more possible item
+                      locations.
+
+                      Bombchus refills cannot be
+                      bought until Bomchus have been
+                      obtained.
+
+                      Logic guarantees you have access
+                      to a shop item refill to be able 
+                      to use the item.
+
+                      'Sparse': Shops have fewer
+                      refill items. This means it
+                      will be more difficult to fine
+                      ammo. 
+                      '''
+        }),    
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
             'default': 50,
