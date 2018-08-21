@@ -378,12 +378,12 @@ class CollectionState(object):
     def can_reach_tunic(self, tunic):
         tunic_locations = self.world.find_items(tunic)
         for location in tunic_locations:
-            if location.parent.name == 'Goron Shop':
+            if location.parent_region.name == 'Goron Shop':
                 if self.can_reach('Goron Shop') and \
                     (self.has_explosives() or self.has('Progressive Strength Upgrade') or self.has_bow()):
                     return True
-            elif location.parent.name == 'Zora Shop':
-                if self.can_reach('Zoras Domain Adult Access') and self.has_blue_fire():
+            elif location.parent_region.name == 'Zora Shop':
+                if self.can_reach('Zoras Domain Adult Access', 'Entrance') and self.has_blue_fire():
                     return True
             else:
                 return True
