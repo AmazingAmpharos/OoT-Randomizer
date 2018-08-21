@@ -390,7 +390,10 @@ setting_infos = [
                       rupees once they are been found.
 
                       Bombchu Bowling opens with bombchus.
-                      '''
+                      Bombchus are available at Kokiri Shop
+                      and the Bazaar.
+                      ''',
+            'dependency': lambda guivar: False
         }),
     Setting_Info('trials', int, 3, True, 
         {
