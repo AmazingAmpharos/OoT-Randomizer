@@ -96,10 +96,13 @@ Check_Has_Epona_Song:
     li      v0, 0
 
     ; Check if has Ocarina
-    lb      t0, 0x7B(t2)
-    li      at, 0x07
-    beq     t0, at, @@return ; Return True if song & ocarina
     li      v0, 1
+    lb      t0, 0x7B(t2)
+    li      t1, 0x07         ; Fairy ocarina
+    beq     t0, t1, @@return
+    li      t2, 0x08         ; Ocarina of Time
+    beq     t0, t2, @@return ; Return True if song & (fairy or oot) ocarina
+    nop
     li      v0, 0            ; Else False
 
 @@return:
