@@ -78,13 +78,14 @@ warp_song_fix:
 ; Change Epona check for owning or being able to play the song 
 ;==================================================================================================
 Check_Has_Epona_Song:
-    ; If epona is owned, then return True
-    bnez   v0, @@return
-    nop
-
     ; If not Epona owned flag, then return result
     li      at, 0x18
     bne     a0, at, @@return
+    nop
+
+    ; If epona is owned, then return True
+    bnez    v0, @@return
+    nop
 
     li      t2, SAVE_CONTEXT
 
@@ -104,4 +105,3 @@ Check_Has_Epona_Song:
 @@return:
 	jr      ra
 	nop
-
