@@ -324,18 +324,18 @@ class CollectionState(object):
         return self.has('Buy Deku Stick (1)')
 
     def has_bow(self):
-        return self.has('Bow') and 
+        return self.has('Bow') and \
             (self.has('Buy Arrows (10)') or self.has('Buy Arrows (30)') or self.has('Buy Arrows (50)'))
 
     def has_slingshot(self):
         return self.has('Slingshot') and self.has('Buy Deku Seeds (30)')
 
     def has_bombs(self):
-        return self.has('Bomb Bag') and 
+        return self.has('Bomb Bag') and \
             (self.has('Buy Bombs (5)') or self.has('Buy Bombs (10)') or self.has('Buy Bombs (20)'))
 
     def has_blue_fire(self):
-        return self.has_bottle() and 
+        return self.has_bottle() and \
                 (self.can_reach('Ice Cavern')
                 or self.can_reach('Ganons Castle Water Trial') 
                 or (self.has('Buy Blue Fire') and self.has('Progressive Wallet', 2)))
@@ -347,10 +347,10 @@ class CollectionState(object):
         return self.has_ocarina() and self.has(song)
 
     def can_buy_bombchus(self):
-        return (self.has('Buy Bombchu (5)') or \
-                state.has('Buy Bombchu (10)') or \
-               (self.has('Buy Bombchu (20)') and self.has('Progressive Wallet')))
-               or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland'))
+        return self.has('Buy Bombchu (5)') or \
+               self.has('Buy Bombchu (10)') or \
+               (self.has('Buy Bombchu (20)') and self.has('Progressive Wallet')) or \
+               (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland'))
 
     def has_bombchus(self):
         return (self.world.bombchus_in_logic and \
@@ -402,7 +402,7 @@ class CollectionState(object):
                         self.can_reach_tunic('Buy Zora Tunic')))
 
     def can_leave_forest(self):
-        return (self.world.open_forest or (self.has('Slingshot') and self.has('Kokiri Sword')))
+        return (self.world.open_forest or (self.has_slingshot() and self.has('Kokiri Sword') and self.has('Buy Deku Shield')))
 
     def can_finish_adult_trades(self):
         zora_thawed = self.has_bottle() and self.has('Zeldas Lullaby') and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
@@ -432,7 +432,7 @@ class CollectionState(object):
         return self.has('Gold Gauntlets') and self.is_adult()
 
     def has_fire_source(self):
-        return ((self.has('Dins Fire') or (self.has() and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
+        return ((self.has('Dins Fire') or (self.has_bow() and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
 
     def guarantee_hint(self):
         if(self.world.hints == 'mask'):
