@@ -1270,9 +1270,9 @@ def patch_rom(world, rom):
 
     # add a cheaper bombchu pack to the bombchu shop
     # describe
-    add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
+    update_message_by_id(messages, 0x80FE, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x03)
     # purchase
-    add_message(messages, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x80FF, 0x03)
+    update_message_by_id(messages, 0x80FF, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x03)
     rbl_bombchu = shop_items[0x0018]
     rbl_bombchu.price = 60
     rbl_bombchu.pieces = 5
@@ -1773,7 +1773,7 @@ def place_shop_items(rom, shop_items, messages, free_shop_ids, locations):
             message_id = unused_shop_ids.index(shop_id) * 2           
             shop_item.description_message = 0x8100 + message_id
             shop_item.purchase_message = 0x8100 + message_id + 1
-            add_message(messages, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price), shop_item.description_message, 0x03)
-            add_message(messages, '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.price), shop_item.purchase_message, 0x03)
+            update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price), 0x03)
+            update_message_by_id(messages, shop_item.purchase_message, '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.price), 0x03)
 
     return shop_objs

@@ -490,13 +490,15 @@ class Message():
     __str__ = __repr__ = display
 
 # wrapper for updating the text of a message, given its message id
-# if the id does not exist in the list, this will silently do nothing
+# if the id does not exist in the list, then it will add it
 def update_message_by_id(messages, id, text, opts=None):
     # get the message index
     index = next( (m.index for m in messages if m.id == id), -1)
     # update if it was found
     if index >= 0:
         update_message_by_index(messages, index, text, opts)
+    else:
+        add_message(messages, text, id, opts)
 
 # Gets the message by its ID. Returns None if the index does not exist
 def get_message_by_id(messages, id):
@@ -644,9 +646,9 @@ def add_keysanity_messages(messages, world):
             while ord(text[index]) in CONTROL_CODES:
                 index = index + CONTROL_CODES[ord(text[index])][1] + 1
             new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
-            add_message(messages, new_text, id, 0x23)
+            update_message_by_id(messages, id, new_text, 0x23)
         else:
-            add_message(messages, text, id, 0x23)
+            update_message_by_id(messages, id, text, 0x23)
 
 # add the song messages
 # make sure to call this AFTER move_shop_item_messages()
@@ -657,9 +659,9 @@ def add_song_messages(messages, world):
             while ord(text[index]) in CONTROL_CODES:
                 index = index + CONTROL_CODES[ord(text[index])][1] + 1
             new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
-            add_message(messages, new_text, id, 0x23)
+            update_message_by_id(messages, id, new_text, 0x23)
         else:
-            add_message(messages, text, id, 0x23)
+            update_message_by_id(messages, id, text, 0x23)
 
 # reduce item message sizes
 def update_item_messages(messages, world):
