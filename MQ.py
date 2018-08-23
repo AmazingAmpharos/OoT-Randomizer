@@ -198,14 +198,16 @@ class Room(object):
         update_dmadata(rom, self.file)
 
 
-def patch_files(rom:LocalRom):
-    patch_ice_cavern_scene_header(rom)
+def patch_files(world, rom:LocalRom):
+    #patch_ice_cavern_scene_header(rom)
 
     data = get_json()
     scenes = [Scene(x) for x in data]
 
-    for scene in scenes:
-        scene.write_data(rom)
+    if world.dungeon_mq['DT']:
+        scenes[0].write_data(rom)
+    if world.dungeon_mq['DC']:
+        scenes[1].write_data(rom)
 
     verify_dma(rom)
 

@@ -196,7 +196,7 @@ def bytes_as_int32(values):
     return (values[0] << 24) | (values[1] << 16) | (values[2] << 8) | values[3]
 
 
-
+from MQ import patch_files
 
 def patch_rom(world, rom):
     with open(local_path('data/base2current.json'), 'r') as stream:
@@ -960,13 +960,13 @@ def patch_rom(world, rom):
     # Initial Save Data
     write_bits_to_save(0x003F, 0x02) # Some Biggoron's Sword flag?
 
-    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x0, 0x80) # Deku tree switch flag (navi text?)
-    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x1, 0x02) # Deku tree switch flag (navi text?)
-    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x2, 0x80) # Deku tree switch flag (navi text?)
-    write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x2, 0x04) # Deku tree switch flag (navi text?)
-    write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x40) # Dodongo's Cavern switch flag (navi text?)
-    write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x08) # Dodongo's Cavern switch flag (navi text?)
-    write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x01) # Dodongo's Cavern switch flag (navi text?)
+    #write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x0, 0x80) # Deku tree switch flag (navi text?)
+    #write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x1, 0x02) # Deku tree switch flag (navi text?)
+    #write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x2, 0x80) # Deku tree switch flag (navi text?)
+    #write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x2, 0x04) # Deku tree switch flag (navi text?)
+    #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x40) # Dodongo's Cavern switch flag (navi text?)
+    #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x08) # Dodongo's Cavern switch flag (navi text?)
+    #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x01) # Dodongo's Cavern switch flag (navi text?)
     write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x08) # Inside Jabu-Jabu's Belly switch flag (ruto?)
     write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x04) # Inside Jabu-Jabu's Belly switch flag (ruto?)
     write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x02) # Inside Jabu-Jabu's Belly switch flag (ruto?)
@@ -1411,6 +1411,8 @@ def patch_rom(world, rom):
     # disable music 
     if world.disable_music:
         rom.write_bytes(0xB3CB18, [0x00, 0x00, 0x20, 0x25])
+
+    patch_files(world, rom)
 
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
