@@ -30,10 +30,6 @@ alwaysitems = ([
     + ['Progressive Strength Upgrade'] * 3
     + ['Progressive Scale'] * 2
     + ['Recovery Heart'] * 11
-    + ['Rupees (5)'] * 16
-    + ['Rupees (20)'] * 6
-    + ['Rupees (50)'] * 7
-    + ['Rupees (200)'] * 6
     + ['Bow'] * 3
     + ['Slingshot'] * 3
     + ['Bomb Bag'] * 3
@@ -87,6 +83,19 @@ shopfiller = (
     + ['Deku Nuts (5)'] * 3 
     + ['Rupees (5)'] * 4 
     + ['Rupees (20)'])
+
+normal_rupees =(
+    ['Rupees (5)'] * 16
+    + ['Rupees (20)'] * 6
+    + ['Rupees (50)'] * 7
+    + ['Rupees (200)'] * 6)
+
+shopsanity_rupees = (
+    ['Rupees (5)'] * 5
+    + ['Rupees (20)'] * 11
+    + ['Rupees (50)'] * 10
+    + ['Rupees (200)'] * 8
+    + ['Progressive Wallet'])
 
 rewardlist = [
     'Kokiri Emerald',
@@ -403,6 +412,7 @@ def get_pool_core(world):
         placed_items['Goron Shop Item 6'] = 'Sold Out'
         placed_items['Goron Shop Item 7'] = 'Buy Red Potion'
         placed_items['Goron Shop Item 8'] = 'Sold Out'
+        pool.extend(normal_rupees)
     elif world.shopsanity == 'on':
         pool.extend(['Buy Deku Shield'] 
                   + ['Buy Hylian Shield'] 
@@ -420,26 +430,28 @@ def get_pool_core(world):
                   + ['Buy Fairy\'s Spirit'] * 2 
                   + ['Buy Bottle Bug'] * 2 
                   + ['Buy Fish'] * 2
-                  + shopfiller)
+                  + shopfiller
+                  + shopsanity_rupees)
     else:
         pool.extend(['Buy Deku Shield'] 
                   + ['Buy Hylian Shield'] 
                   + ['Buy Goron Tunic'] 
                   + ['Buy Zora Tunic'] 
-                  + ['Buy Deku Nut (5)'] * 1 + ['Buy Deku Nut (10)'] * 1
+                  + ['Buy Deku Nut (5)'] + ['Buy Deku Nut (10)']
                   + ['Buy Deku Stick (1)'] * 2 
                   + ['Buy Deku Seeds (30)'] * 2 
-                  + ['Buy Arrows (10)'] * 1 + ['Buy Arrows (30)'] * 1 
-                  + ['Buy Bombchu (5)'] * 1 + ['Buy Bombchu (10)'] * 1 + ['Buy Bombchu (20)']
-                  + ['Buy Bombs (5)'] * 1 + ['Buy Bombs (10)'] * 1 + ['Buy Bombs (20)'] 
-                  + ['Buy Green Potion'] * 1 
-                  + ['Buy Red Potion'] * 1 
-                  + ['Buy Blue Fire']  * 1 
-                  + ['Buy Fairy\'s Spirit'] * 1 
-                  + ['Buy Bottle Bug'] * 1 
-                  + ['Buy Fish'] * 1
+                  + ['Buy Arrows (10)'] + ['Buy Arrows (30)']
+                  + ['Buy Bombchu (5)'] + ['Buy Bombchu (10)'] + ['Buy Bombchu (20)']
+                  + ['Buy Bombs (5)'] + ['Buy Bombs (10)'] + ['Buy Bombs (20)'] 
+                  + ['Buy Green Potion']
+                  + ['Buy Red Potion']
+                  + ['Buy Blue Fire']
+                  + ['Buy Fairy\'s Spirit']
+                  + ['Buy Bottle Bug']
+                  + ['Buy Fish']
                   + ['Sold Out'] * 18
-                  + shopfiller)
+                  + shopfiller
+                  + shopsanity_rupees)
 
     pool.extend(alwaysitems)
     for _ in range(normal_bottle_count):

@@ -1386,6 +1386,11 @@ def patch_rom(world, rom):
     # reduce item message lengths
     update_item_messages(messages, world)
 
+    # Add 3rd Wallet Upgrade
+    rom.write_int16(0xB6D57E, 0x0003)
+    rom.write_int16(0xB6EC52, 999)
+    update_message_by_id(messages, 0x00F8, "\x08\x13\x57You got a \x05\x43Tycoon's Wallet\x05\x40!\x01Now you can hold\x01up to \x05\x46999\x05\x40 \x05\x46Rupees\x05\x40.", 0x23)
+
     repack_messages(rom, messages)
     write_shop_items(rom, shop_items)
 
