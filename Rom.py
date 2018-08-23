@@ -263,6 +263,15 @@ def patch_rom(world, rom):
 
         # Change Bowling Alley check to bombchus (Part 2)
         rom.write_bytes(0x00E2D890,  [0x81, 0x6B, 0xA6, 0x4C, 0x24, 0x0C, 0x00, 0x09, 0x51, 0x6C, 0x00, 0x0A])
+
+        # Cannot buy bombchu refills without Bombchus
+        rom.write_int32s(0xC01078, 
+            [0x3C098012,    # lui     t1, 0x8012
+             0x812AA64C,    # lb      t2, -0x59B4(t1)    ; bombchu item (SAVE_CONTEXT + 0x7C)
+             0x340B0009,    # li      t3, 9
+             0x114B0002,    # beq     t2, t3, @@return  ; if has bombchu, return 1 (can buy)
+             0x34020000,    # li      v0, 0
+             0x34020002])   # li      v0, 2             ; else, return 2 (can't buy)
     else:
         # Change Bowling Alley check to Bomb Bag (Part 1)
         rom.write_bytes(0x00E2D716, [0xA6, 0x72])
@@ -1290,10 +1299,11 @@ def patch_rom(world, rom):
 
     if world.shopsanity == 'off':
         # Add more bombchus to make them more accessible
-        rom.write_int16(world.get_location('Kokiri Shop Item 8').address,
-                        ItemFactory('Buy Bombchu (5)').index)
-        rom.write_int16(world.get_location('Bazaar Item 8').address,
-                        ItemFactory('Buy Bombchu (5)').index)
+        if world.bombchus_in_logic:
+            rom.write_int16(world.get_location('Kokiri Shop Item 8').address,
+                            ItemFactory('Buy Bombchu (5)').index)
+            rom.write_int16(world.get_location('Bazaar Item 8').address,
+                            ItemFactory('Buy Bombchu (5)').index)
     else:
         # kokiri shop
         shop_objs = place_shop_items(rom, shop_items, messages, free_shop_ids, 

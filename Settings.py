@@ -393,7 +393,6 @@ setting_infos = [
                       Bombchus are available at Kokiri Shop
                       and the Bazaar.
                       ''',
-            'dependency': lambda guivar: False
         }),
     Setting_Info('trials', int, 3, True, 
         {

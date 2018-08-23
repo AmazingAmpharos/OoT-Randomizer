@@ -432,21 +432,3 @@
 ; lh t6, 0x1c(a1)
 .org 0xC018A0
     jal      Set_Sold_Out
-
-
-; Bombchu item checks for bombchus
-; Replaces
-; addiu at, zero, 0xff
-; bnel v0, at, 0x74   ; if no bombchu item
-; addiu v0, zero, 1   ; if bombchu item, return v0 = 1
-; b 0x74
-; move v0, zero       ; if not bombchu item, return v0 = 0
-; addiu v0, zero, 1 ; unreachable
-.org 0xC01078
-    lui     t1, 0x8012
-    lb      t2, -0x59B4(t1)    ; bombchu item (SAVE_CONTEXT + 0x7C)
-    li      t3, 9
-    beq     t2, t3, @@return  ; if has bombchu, return 1 (can buy)
-    li      v0, 0
-    li      v0, 2             ; else, return 2 (can't buy)
-@@return:
