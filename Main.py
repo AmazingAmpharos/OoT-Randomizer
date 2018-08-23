@@ -11,7 +11,8 @@ import struct
 
 from BaseClasses import World, CollectionState, Item
 from EntranceShuffle import link_entrances
-from Rom import patch_rom, LocalRom
+from Rom import LocalRom
+from Patches import patch_rom
 from Regions import create_regions
 from Dungeons import create_dungeons
 from Rules import set_rules
