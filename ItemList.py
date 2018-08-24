@@ -33,7 +33,7 @@ alwaysitems = ([
     + ['Rupees (5)'] * 13
     + ['Rupees (20)'] * 5
     + ['Rupees (50)'] * 7
-    + ['Rupees (200)'] * 4
+    + ['Rupees (200)'] * 3
     + ['Bow'] * 3
     + ['Slingshot'] * 3
     + ['Bomb Bag'] * 3
@@ -78,7 +78,7 @@ SpT_vanilla = (['Deku Shield'] * 2
                + ['Recovery Heart']
                + ['Bombs (20)'])
 
-SpT_MQ = (['Rupees (50)']
+SpT_MQ = (['Rupees (50)'] * 2
           + ['Arrows (30)'])
 
 ShT_vanilla = (['Arrows (30)'])
@@ -88,6 +88,7 @@ ShT_MQ = (['Arrows (5)'] * 2
 
 BW_vanilla = (['Recovery Heart']
                + ['Bombs (10)']
+               + ['Rupees (200)']
                + ['Deku Nuts (5)']
                + ['Deku Nuts (10)']
                + ['Deku Shield']
