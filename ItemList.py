@@ -8,13 +8,15 @@ from Fill import FillError, fill_restrictive
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
 
-alwaysitems = (['Gilded Sword', 'Fierce Deity Mask', 'Hookshot', 'Lens of Truth', 'Deku Mask', 'Goron Mask', 'Zora Mask', 'Mirror Shield', 'Fire Arrows', 'Ice Arrows', 'Light Arrows', 'Rupee (1)'] +
+alwaysitems = (['Gilded Sword', 'Fierce Deity Mask', 'Hookshot', 'Lens of Truth', 'Powder Keg', 'Deku Mask', 'Goron Mask', 'Zora Mask', 'Mirror Shield', 'Fire Arrows', 'Ice Arrows', 'Light Arrows'] +
               ['Postmans Hat', 'Blast Mask', 'Great Fairy Mask', 'All Night Mask', 'Stone Mask'] + ['Keaton Mask', 'Bremen Mask', 'Bunny Hood', 'Don Geros Mask', 'Mask of Scents'] +
               ['Romani Mask', 'Circus Leader Mask', 'Couple Mask', 'Mask of Truth'] + ['Kamaros Mask', 'Garo Mask', 'Captains Hat', 'Gibdo Mask', 'Giant Mask'] +
               ['Bow'] * 3 + ['Bomb Bag'] * 3 + ['Bottle'] * 2 + ['Bottle with Gold Dust'] + ['Bottle with Red Potion'] + ['Bottle with Milk'] + ['Bottle with Chateau Romani'] +
-              ['Hylian Shield'] * 2 + ['Rupees (5)'] + ['Rupees (20)'] + ['Rupees (50)'] + ['Rupees (100)'] + ['Progressive Wallet'] * 2) + ['Great Fairy Sword'] + ['Ice Trap'] * 6 +
-              ['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] + ['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'] + ['Arrows (5)'] + ['Arrows (10)'] * 6 + ['Arrows (30)'] * 6 +
-              ['Deku Nuts (5)'] + ['Deku Nuts (10)']
+              ['Deku Nuts (10)'] + ['Piece of Heart'] * 14 + ['Piece of Heart (Free)'] * 4 + ['Rupees (5)'] + ['Rupees (20)'] + ['Rupees (100)'] * 4 + ['Rupees (50)'] * 6 +
+              ['Pictograph Box'])
+              #['Hylian Shield'] * 2 + ['Progressive Wallet'] * 2) + ['Great Fairy Sword'] + ['Ice Trap'] * 6 +
+              #['Bombs (5)'] * 2 + ['Bombs (10)'] * 2 + ['Bombs (20)'] + ['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'] + ['Arrows (5)'] + ['Arrows (10)'] * 6 + ['Arrows (30)'] * 6 +
+              #['Deku Nuts (5)']
 notmapcompass = ['Rupees (5)'] * 20
 rewardlist = ['Odolwa Remains', 'Goht Remains', 'Gyorg Remains', 'Twinmold Remains']
 songlist = ['Song of Time', 'Song of Healing', 'Song of Soaring', 'Eponas Song','Song of Storms', 'Sonata of Awakening', 'Goron Lullaby', 'New Wave Bossa Nova', 'Elegy of Emptiness', 'Oath to Order']
@@ -30,14 +32,15 @@ tradeitems = (['Moon Tear', 'Town Title Deed', 'Swamp Title Deed', 'Mountain Tit
 
 def generate_itempool(world):
 
+    ''' May model this for doing stray fairies later
     for location in skulltulla_locations:
         world.push_item(location, ItemFactory('Gold Skulltulla Token'), False)
         world.get_location(location).event = True
-
-    world.push_item('Ganon', ItemFactory('Triforce'), False)
-    world.get_location('Ganon').event = True
-    world.push_item('Gift from Saria', ItemFactory('Fairy Ocarina'), False)
-    world.get_location('Gift from Saria').event = True
+    '''
+    world.push_item('Majoras Wrath', ItemFactory('Majora Mask'), False)
+    world.get_location('Majoras Wrath').event = True
+    world.push_item('Gift from Skull Kid', ItemFactory('Fairy Ocarina'), False)
+    world.get_location('Gift from Skull Kid').event = True
     world.push_item('Zeldas Letter', ItemFactory('Zeldas Letter'), False)
     world.get_location('Zeldas Letter').event = True
     world.push_item('Mountain Summit Fairy Reward', ItemFactory('Magic Meter'), False)
@@ -91,10 +94,9 @@ def get_pool_core(dungeon_items):
 
     return (pool, placed_items)
 
-def fill_bosses(world, bossCount=9):
+def fill_bosses(world, bossCount=4):
     boss_rewards = ItemFactory(rewardlist)
-    boss_locations = [world.get_location('Queen Gohma'), world.get_location('King Dodongo'), world.get_location('Barinade'), world.get_location('Phantom Ganon'),
-                      world.get_location('Volvagia'), world.get_location('Morpha'), world.get_location('Bongo Bongo'), world.get_location('Twinrova'), world.get_location('Links Pocket')]
+    boss_locations = [world.get_location('Odolwa'), world.get_location('Goht'), world.get_location('Gyorg'), world.get_location('Twinmold')]
     placed_prizes = [loc.item.name for loc in boss_locations if loc.item is not None]
     unplaced_prizes = [item for item in boss_rewards if item.name not in placed_prizes]
     empty_boss_locations = [loc for loc in boss_locations if loc.item is None]
@@ -112,7 +114,7 @@ def fill_bosses(world, bossCount=9):
 
 def fill_songs(world, attempts=15):
     songs = ItemFactory(songlist)
-    song_locations = [world.get_location('Song from Composer Grave'), world.get_location('Impa at Castle'), world.get_location('Song from Malon'), world.get_location('Song from Saria'), world.get_location('Song from Ocarina of Time'), world.get_location('Song at Windmill'), world.get_location('Sheik Forest Song'), world.get_location('Sheik at Temple'), world.get_location('Sheik in Crater'), world.get_location('Sheik in Ice Cavern'), world.get_location('Sheik in Kakariko'), world.get_location('Sheik at Colossus')]
+    song_locations = [world.get_location('Song from Skull Kid'), world.get_location('Song from HMS'), world.get_location('Song from Owl Tablet'), world.get_location('Song from Romani'), world.get_location('Song at Grave'), world.get_location('Song from Monkey'), world.get_location('Song from Baby Goron'), world.get_location('Song from Goron Elder'), world.get_location('Song from Zora Eggs'), world.get_location('Song from Igos'), world.get_location('Song from the Giants')]
     placed_prizes = [loc.item.name for loc in song_locations if loc.item is not None]
     unplaced_prizes = [song for song in songs if song.name not in placed_prizes]
     empty_song_locations = [loc for loc in song_locations if loc.item is None]

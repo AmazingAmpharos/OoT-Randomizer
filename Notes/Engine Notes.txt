@@ -23,3 +23,14 @@ Time might not need logical support if the fetch quest can be skipped
 But for the time being, just make a time sensitive rule flag somewhere
 Here's where I'll point to where it made sense to put a time flag.
 (Probably in World tho, after a significant refactor)
+Order:
+Regions.py create region
+  Per Location
+    Add Location Table Entry (Regions.py)
+    Add Prize to ItemList.py
+    Create Items.py entry if new
+  Per Exit
+    Add to mandatory_connections or default_connections as necessary (EntranceShuffle.py)
+Fairies are handled as interior in Regions.py, Rewards only stated as a Location for the three goddess magic items
+For MM Fairies only ST will add a location, 'SF' and 'SF Chest' will be used as the in dungeon Location type for Stray Fairies
+Might just poke into the dev branch to see how the fairy rewards are going to be handled

@@ -6,9 +6,9 @@ from collections import OrderedDict
 
 class World(object):
 
-    def __init__(self, bridge, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints):
+    def __init__(self, moon, open_forest, open_door_of_time, place_dungeon_items, check_beatable_only, hints):
         self.shuffle = 'vanilla'
-        self.bridge = bridge
+        self.moon = moon
         self.dungeons = []
         self.regions = []
         self.itempool = []
@@ -143,7 +143,7 @@ class World(object):
         return False
 
     def has_beaten_game(self, state):
-        if state.has('Triforce'):
+        if state.has('Majora Mask'):
             return True
         return False
 
@@ -163,12 +163,12 @@ class World(object):
             # build up spheres of collection radius. Everything in each sphere is independent from each other in dependencies and only depends on lower spheres
             for location in prog_locations:
                 if state.can_reach(location):
-                    if location.item.name == 'Triforce':
+                    if location.item.name == 'Majora Mask':
                         return True
                     sphere.append(location)
 
             if not sphere:
-                # ran out of places and did not find triforce yet, quit
+                # ran out of places and did not find Majora's Mask yet, quit
                 return False
 
             for location in sphere:
@@ -294,25 +294,11 @@ class CollectionState(object):
     def item_count(self, item):
         return len([pritem for pritem in self.prog_items if pritem == item])
 
-    def is_adult(self):
-        return self.has('Master Sword')
-
     def can_blast(self):
-        return self.has('Bomb Bag') or (self.is_adult() and self.has('Hammer'))
-
-    def can_dive(self):
-        return self.has('Progressive Scale')
-
-    def can_lift_rocks(self):
-        return (self.has('Silver Gauntlets') or self.has('Gold Gauntlets')) and self.is_adult()
-
-    def can_finish_adult_trades(self):
-        zora_thawed = self.has_bottle() and self.has('Zeldas Lullaby') and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
-        carpenter_access = self.has('Epona') or self.has('Progressive Hookshot', 2)
-        return (self.has('Claim Check') or ((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))
+        return self.has('Bomb Bag') or self.has('Blast Mask')
 
     def has_bottle(self):
-        return (self.has('Bottle') or self.has('Bottle with Milk'))
+        return (self.has('Bottle') or self.has('Bottle with Milk') or self.has('Bottle with Gold Dust') or self.has('Bottle with Red Potion') or self.has('Bottle with Chateau Romani'))
 
     def bottle_count(self):
         return len([pritem for pritem in self.prog_items if pritem.startswith('Bottle')])
@@ -329,21 +315,28 @@ class CollectionState(object):
             + 3 # starting hearts
         )
 
-    def can_lift_pillars(self):
-        return self.has('Gold Gauntlets') and self.is_adult()
+    def form(self, form):
+        if form == 'Deku':
+            return self.has('Deku Mask')
+        if form == 'Goron':
+            return self.has('Goron Mask')
+        if form == 'Zora':
+            return self.has('Zora Mask')
+        if form == 'Human':
+            return self.has('Fierce Deity Mask')
 
     def has_fire_source(self):
-        return ((self.has('Dins Fire') or (self.has('Bow') and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
+        return self.has('Bow') and self.has('Fire Arrows') and self.has('Magic Meter')
 
     def guarantee_hint(self):
-        return(self.has('Stone of Agony') or not self.world.hints)
+        return(self.has('Mask of Truth') or not self.world.hints)
 
     def collect(self, item, event=False, location=None):
         if location:
             self.locations_checked.add(location)
         changed = False
         if item.name.startswith('Bottle'):
-            if self.bottle_count() < 4:
+            if self.bottle_count() < 6:
                 self.prog_items.append(item.name)
                 changed = True
         elif event or item.advancement:
@@ -576,16 +569,16 @@ class Spoiler(object):
     def parse_data(self):
         spoiler_locations = []
         for location in self.world.get_locations():
-            if location.item.name not in ['Gold Skulltulla Token', 'Epona', 'Triforce', 'Fairy Ocarina', 'Ocarina of Time', 'Zeldas Letter', 'Master Sword',
+            if location.item.name not in ['Gold Skulltulla Token', 'Epona', 'Majora Mask', 'Fairy Ocarina', 'Ocarina of Time', 'Zeldas Letter', 'Master Sword',
                                           'Magic Bean', 'Gerudo Membership Card', 'Forest Trial Clear', 'Fire Trial Clear', 'Water Trial Clear', 'Shadow Trial Clear', 'Spirit Trial Clear', 'Light Trial Clear']:
                 spoiler_locations.append(location)
         sort_order = {"Song": 0, "Boss": -1}
         spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
         self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}
-        from Main import __version__ as OoTRVersion
-        self.metadata = {'version': OoTRVersion,
+        from Main import __version__ as MMRVersion
+        self.metadata = {'version': MMRVersion,
                          'seed': self.world.seed,
-                         'bridge': self.world.bridge,
+                         'moon': self.world.moon,
                          'forest': self.world.open_forest,
                          'door': self.world.open_door_of_time,
                          'completeable': not self.world.check_beatable_only,
