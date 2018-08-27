@@ -435,7 +435,7 @@ def dung_rules_sht0(world):
     set_rule(world.get_location('Shadow Temple Falling Spikes Upper Chest'), lambda state: state.has('Progressive Strength Upgrade'))
     set_rule(world.get_location('Shadow Temple Falling Spikes Switch Chest'), lambda state: state.has('Progressive Strength Upgrade'))
     set_rule(world.get_location('Shadow Temple Invisible Spikes Chest'), lambda state: state.has('Small Key (Shadow Temple)', 2))
-    set_rule(world.get_location('Shadow Temple Freestanding Key'), lambda state: state.has('Small Key (Shadow Temple)', 2) and state.has('Progressive Hookshot'))
+    set_rule(world.get_location('Shadow Temple Freestanding Key'), lambda state: state.has('Small Key (Shadow Temple)', 2) and state.has('Progressive Hookshot') and (state.has('Bomb Bag') or state.has('Progressive Strength Upgrade')))
 
     # boss rules
     set_rule(world.get_location('Bongo Bongo'), lambda state: state.has('Small Key (Shadow Temple)', 5) and (state.has('Bow') or state.has('Progressive Hookshot', 2)) and state.has('Boss Key (Shadow Temple)'))
