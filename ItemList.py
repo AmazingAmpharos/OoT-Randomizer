@@ -418,39 +418,38 @@ def get_pool_core(world):
                   + ['Buy Hylian Shield'] 
                   + ['Buy Goron Tunic'] 
                   + ['Buy Zora Tunic'] 
-                  + ['Buy Deku Nut (5)'] * 3 + ['Buy Deku Nut (10)'] * 1
-                  + ['Buy Deku Stick (1)'] * 4 
-                  + ['Buy Deku Seeds (30)'] * 3 
-                  + ['Buy Arrows (10)'] * 2 + ['Buy Arrows (30)'] * 2 
-                  + ['Buy Bombchu (5)'] * 2 + ['Buy Bombchu (10)'] * 2 + ['Buy Bombchu (20)']
-                  + ['Buy Bombs (5)'] * 2 + ['Buy Bombs (10)'] * 2 + ['Buy Bombs (20)'] 
-                  + ['Buy Green Potion'] * 3 
-                  + ['Buy Red Potion'] * 2 
-                  + ['Buy Blue Fire']  * 2 
-                  + ['Buy Fairy\'s Spirit'] * 2 
-                  + ['Buy Bottle Bug'] * 2 
-                  + ['Buy Fish'] * 2
-                  + shopfiller
-                  + shopsanity_rupees)
-    else:
-        pool.extend(['Buy Deku Shield'] 
-                  + ['Buy Hylian Shield'] 
-                  + ['Buy Goron Tunic'] 
-                  + ['Buy Zora Tunic'] 
-                  + ['Buy Deku Nut (5)'] + ['Buy Deku Nut (10)']
-                  + ['Buy Deku Stick (1)'] * 2 
+                  + ['Buy Deku Nut (5)'] * 2 + ['Buy Deku Nut (10)']
+                  + ['Buy Deku Stick (1)'] * 3 
                   + ['Buy Deku Seeds (30)'] * 2 
                   + ['Buy Arrows (10)'] + ['Buy Arrows (30)']
-                  + ['Buy Bombchu (5)'] + ['Buy Bombchu (10)'] + ['Buy Bombchu (20)']
-                  + ['Buy Bombs (5)'] + ['Buy Bombs (10)'] + ['Buy Bombs (20)'] 
+                  + ['Buy Bombchu (5)'] * 2 + ['Buy Bombchu (10)'] + ['Buy Bombchu (20)']
+                  + ['Buy Bombs (5)'] * 2 + ['Buy Bombs (10)'] + ['Buy Bombs (20)'] 
                   + ['Buy Green Potion']
                   + ['Buy Red Potion']
                   + ['Buy Blue Fire']
                   + ['Buy Fairy\'s Spirit']
                   + ['Buy Bottle Bug']
                   + ['Buy Fish']
-                  + ['Sold Out'] * 18
-                  + shopfiller
+                  + shopfiller * 2
+                  + shopsanity_rupees)
+    else:
+        pool.extend(['Buy Deku Shield'] 
+                  + ['Buy Hylian Shield'] 
+                  + ['Buy Goron Tunic'] 
+                  + ['Buy Zora Tunic'] 
+                  + ['Buy Deku Nut (5)'] * 2 + ['Buy Deku Nut (10)']
+                  + ['Buy Deku Stick (1)'] * 3 
+                  + ['Buy Deku Seeds (30)'] * 2 
+                  + ['Buy Arrows (10)'] + ['Buy Arrows (30)']
+                  + ['Buy Bombchu (5)'] * 2 + ['Buy Bombchu (10)'] + ['Buy Bombchu (20)']
+                  + ['Buy Bombs (5)'] * 2 + ['Buy Bombs (10)'] + ['Buy Bombs (20)'] 
+                  + ['Buy Green Potion']
+                  + ['Buy Red Potion']
+                  + ['Buy Blue Fire']
+                  + ['Buy Fairy\'s Spirit']
+                  + ['Buy Bottle Bug']
+                  + ['Buy Fish']
+                  + shopfiller * 2
                   + shopsanity_rupees)
 
     pool.extend(alwaysitems)

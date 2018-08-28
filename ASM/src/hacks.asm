@@ -428,7 +428,19 @@
 .org 0xC004EC
     j        Check_Sold_Out
 
+; Allow Shop Item ID up to 100 instead of 50
+; slti at, v1, 0x32
+.org 0xC0067C
+    slti     at, v1, 100
+
 ; Set sold out override
 ; lh t6, 0x1c(a1)
 .org 0xC018A0
     jal      Set_Sold_Out
+
+; Only run init function if ID is in normal range
+; jr t9
+.org 0xC6C7A8
+    jal      Shop_Keeper_Init_ID
+.org 0xC6C920
+    jal      Shop_Keeper_Init_ID

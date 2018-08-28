@@ -223,7 +223,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Field Kakariko Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field North Lon Lon Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Castle Storms Grotto'), lambda state: state.can_play('Song of Storms'))
-    set_rule(world.get_entrance('Kakariko Bombable Grotto'), lambda state: state.can_blast_or_smash() and (state.is_adult() or (state.has_sticks() or state.has('Kokiri Sword') or (state.has('Dins Fire') and state.has('Magi Meter')))))
+    set_rule(world.get_entrance('Kakariko Bombable Grotto'), lambda state: state.can_blast_or_smash() and (state.is_adult() or (state.has_sticks() or state.has('Kokiri Sword') or (state.has('Dins Fire') and state.has('Magic Meter')))))
     set_rule(world.get_entrance('Mountain Bombable Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Mountain Storms Grotto'), lambda state: state.can_play('Song of Storms'))
     set_rule(world.get_entrance('Top of Crater Grotto'), lambda state: state.can_blast_or_smash())
@@ -296,7 +296,7 @@ def global_rules(world):
                 forbid_item(location, 'Buy Goron Tunic')
                 forbid_item(location, 'Buy Zora Tunic')
 
-            if (location.name.endswith('5') or location.name.endswith('7')) and world.shopsanity != 'off':
+            if (location.name.endswith('5') or location.name.endswith('6') or location.name.endswith('7') or location.name.endswith('8')) and world.shopsanity != 'off':
                 add_item_rule(location, lambda i: (i.type != 'Shop'))
                 if location.price > 200:
                     set_rule(location, lambda state: state.has('Progressive Wallet', 2))

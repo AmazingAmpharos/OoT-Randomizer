@@ -1129,9 +1129,42 @@ def patch_rom(world, rom):
         # change the exit at child/day crawlspace to the end of zelda's goddess cutscene
         rom.write_bytes(0x21F60DE, [0x05, 0xF0])
 
+    ### Load Shop File
+    from MQ import File, verify_dma, update_dmadata, insert_space, add_relocations
+    # Move shop actor file to free space
+    shop_item_file = File({
+            'Name':'En_GirlA',
+            'Start':'00C004E0',
+            'End':'00C02E00',
+            'RemapStart':'03485000',
+        })
+    shop_item_file.relocate(rom)
+
+    # Increase the shop item table size
+    shop_item_vram_start = rom.read_int32(0x00B5E490 + (0x20 * 4) + 0x08)
+    insert_space(rom, shop_item_file, shop_item_vram_start, 1, 0x3C + (0x20 * 50), 0x20 * 50)
+
+    # Add relocation entries for shop item table
+    new_relocations = []
+    for i in range(50, 100):
+        new_relocations.append(shop_item_file.start + 0x1DEC + (i * 0x20) + 0x04)
+        new_relocations.append(shop_item_file.start + 0x1DEC + (i * 0x20) + 0x14)
+        new_relocations.append(shop_item_file.start + 0x1DEC + (i * 0x20) + 0x1C)
+    add_relocations(rom, shop_item_file, new_relocations)
+
+    # update actor table
+    rom.write_int32s(0x00B5E490 + (0x20 * 4), 
+        [shop_item_file.start, 
+        shop_item_file.end, 
+        shop_item_vram_start, 
+        shop_item_vram_start + (shop_item_file.end - shop_item_file.start)])
+
+    # Update DMA Table
+    update_dmadata(rom, shop_item_file)
+    verify_dma(rom)
 
     messages = read_messages(rom)
-    shop_items = read_shop_items(rom)
+    shop_items = read_shop_items(rom, shop_item_file.start + 0x1DEC)
     remove_unused_messages(messages)
 
     # Set Big Poe count to get reward from buyer
@@ -1275,8 +1308,6 @@ def patch_rom(world, rom):
                     rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
                     rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
 
-    free_shop_ids = list(unused_shop_ids)
-
     # add a cheaper bombchu pack to the bombchu shop
     # describe
     update_message_by_id(messages, 0x80FE, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x03)
@@ -1296,7 +1327,6 @@ def patch_rom(world, rom):
     update_message_by_id(messages, shop_items[0x001C].description_message, "\x08\x05\x41Bombchu  (10 pieces)  99 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it's actually a self-propelled time\x01bomb!\x09\x0A")
     update_message_by_id(messages, shop_items[0x001C].purchase_message, "\x08Bombchu  10 pieces   100 Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don't buy\x05\x40")
 
-
     if world.shopsanity == 'off':
         # Add more bombchus to make them more accessible
         if world.bombchus_in_logic:
@@ -1306,15 +1336,15 @@ def patch_rom(world, rom):
                             ItemFactory('Buy Bombchu (5)').index)
     else:
         # kokiri shop
-        shop_objs = place_shop_items(rom, shop_items, messages, free_shop_ids, 
-            world.get_region('Kokiri Shop').locations)
+        shop_objs = place_shop_items(rom, shop_items, messages, 
+            world.get_region('Kokiri Shop').locations, True)
         shop_objs |= {0x00FC, 0x00B2, 0x0101, 0x0102, 0x00FD, 0x00C5} # Shop objects
         rom.write_byte(0x2587029, len(shop_objs))
         rom.write_int32(0x258702C, 0x0300F600)
         rom.write_int16s(0x2596600, list(shop_objs))
 
         # bazaar
-        shop_objs = place_shop_items(rom, shop_items, messages, free_shop_ids, 
+        shop_objs = place_shop_items(rom, shop_items, messages,  
             world.get_region('Castle Town Bazaar').locations)
         shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
         rom.write_byte(0x28E4029, len(shop_objs))
@@ -1322,7 +1352,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x28EBA40, list(shop_objs))
      
         # goron shop
-        shop_objs = place_shop_items(rom, shop_items, messages, free_shop_ids, 
+        shop_objs = place_shop_items(rom, shop_items, messages,  
             world.get_region('Goron Shop').locations)
         shop_objs |= {0x00C9, 0x00B2, 0x0103, 0x00AF} # Shop objects
         rom.write_byte(0x2D33029, len(shop_objs))
@@ -1330,7 +1360,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x2D37340, list(shop_objs))
 
         # zora shop
-        shop_objs = place_shop_items(rom, shop_items, messages, free_shop_ids, 
+        shop_objs = place_shop_items(rom, shop_items, messages,  
             world.get_region('Zora Shop').locations)
         shop_objs |= {0x005B, 0x00B2, 0x0104, 0x00FE} # Shop objects
         rom.write_byte(0x2D5B029, len(shop_objs))
@@ -1338,7 +1368,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x2D5FB40, list(shop_objs))
 
         # kakariko potion shop
-        shop_objs = place_shop_items(rom, shop_items, messages, free_shop_ids, 
+        shop_objs = place_shop_items(rom, shop_items, messages,  
             world.get_region('Kakariko Potion Shop Front').locations)
         shop_objs |= {0x0159, 0x00B2, 0x0175, 0x0122} # Shop objects
         rom.write_byte(0x2D83029, len(shop_objs))
@@ -1346,7 +1376,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x2D8D500, list(shop_objs))
 
         # market potion shop
-        shop_objs = place_shop_items(rom, shop_items, messages, free_shop_ids, 
+        shop_objs = place_shop_items(rom, shop_items, messages,  
             world.get_region('Castle Town Potion Shop').locations)
         shop_objs |= {0x0159, 0x00B2, 0x0175, 0x00C5, 0x010C, 0x016B} # Shop objects
         rom.write_byte(0x2DB0029, len(shop_objs))
@@ -1354,7 +1384,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x2DB4E40, list(shop_objs))
 
         # bombchu shop
-        shop_objs = place_shop_items(rom, shop_items, messages, free_shop_ids, 
+        shop_objs = place_shop_items(rom, shop_items, messages,  
             world.get_region('Castle Town Bombchu Shop').locations)
         shop_objs |= {0x0165, 0x00B2} # Shop objects
         rom.write_byte(0x2DD8029, len(shop_objs))
@@ -1402,7 +1432,7 @@ def patch_rom(world, rom):
     update_message_by_id(messages, 0x00F8, "\x08\x13\x57You got a \x05\x43Tycoon's Wallet\x05\x40!\x01Now you can hold\x01up to \x05\x46999\x05\x40 \x05\x46Rupees\x05\x40.", 0x23)
 
     repack_messages(rom, messages)
-    write_shop_items(rom, shop_items)
+    write_shop_items(rom, shop_item_file.start + 0x1DEC, shop_items)
 
     # text shuffle
     if world.text_shuffle == 'except_hints':
@@ -1765,8 +1795,11 @@ def update_chest_sizes(rom, override_table):
         default = (default & 0x0FFF) | newChestType
         rom.write_int16(address, default)
 
-unused_shop_ids = [0x02, 0x11, 0x12, 0x17, 0x19, 0x1A, 0x1B, 0x1C, 0x29, 0x2A, 0x2E, 0x2F, 0x30, 0x31]
-def place_shop_items(rom, shop_items, messages, free_shop_ids, locations):
+
+def place_shop_items(rom, shop_items, messages, locations, init_shop_id=False):
+    if init_shop_id:
+        place_shop_items.shop_id = 0x32
+
     shop_objs = { 0x0148 } # Sold Out
     messages
     for location in locations:
@@ -1774,21 +1807,26 @@ def place_shop_items(rom, shop_items, messages, free_shop_ids, locations):
         if location.item.type == 'Shop':
             rom.write_int16(location.address, location.item.index)
         else:
-            shop_id = free_shop_ids.pop()
+            shop_id = place_shop_items.shop_id
             rom.write_int16(location.address, shop_id)
             shop_item = shop_items[shop_id]
+
             shop_item.object = location.item.object
             shop_item.model = location.item.model - 1
             shop_item.price = location.price
             shop_item.pieces = 1
             shop_item.get_item_id = location.default
+            shop_item.func1 = 0x808648CC
             shop_item.func2 = 0x808636B8
+            shop_item.func3 = 0x00000000
             shop_item.func4 = 0x80863FB4
 
-            message_id = unused_shop_ids.index(shop_id) * 2           
+            message_id = (shop_id - 0x32) * 2
             shop_item.description_message = 0x8100 + message_id
             shop_item.purchase_message = 0x8100 + message_id + 1
             update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price), 0x03)
             update_message_by_id(messages, shop_item.purchase_message, '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.price), 0x03)
+
+            place_shop_items.shop_id += 1
 
     return shop_objs

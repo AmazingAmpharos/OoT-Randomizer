@@ -8,8 +8,6 @@ TEXT_START = 0x92D000
 TABLE_SIZE_LIMIT = 0x43A8
 TEXT_SIZE_LIMIT = 0x38130
 
-SHOP_ITEM_START = 0xC022CC
-
 # name of type, followed by number of additional bytes to read, follwed by a function that prints the code
 CONTROL_CODES = {
     0x00: ('pad', 0, lambda _: '<pad>' ),
@@ -541,9 +539,9 @@ class Shop_Item():
         return ', '.join(meta_data) + '\n' + ', '.join(func_data)
 
     # write the shop item back
-    def write(self, rom, index):
+    def write(self, rom, shop_table_address, index):
 
-        entry_offset = SHOP_ITEM_START + 0x20 * index
+        entry_offset = shop_table_address + 0x20 * index
 
         bytes = []
         bytes += int_to_bytes(self.object, 2)
@@ -562,9 +560,9 @@ class Shop_Item():
         rom.write_bytes(entry_offset, bytes)
 
     # read a single message
-    def __init__(self, rom, index):
+    def __init__(self, rom, shop_table_address, index):
 
-        entry_offset = SHOP_ITEM_START + 0x20 * index
+        entry_offset = shop_table_address + 0x20 * index
         entry = rom.read_bytes(entry_offset, 0x20)
 
         self.index = index
@@ -584,18 +582,18 @@ class Shop_Item():
     __str__ = __repr__ = display
 
 # reads each of the shop items
-def read_shop_items(rom):
+def read_shop_items(rom, shop_table_address):
     shop_items = []
 
-    for index in range(0x032):
-        shop_items.append( Shop_Item(rom, index) )
+    for index in range(0, 100):
+        shop_items.append( Shop_Item(rom, shop_table_address, index) )
 
     return shop_items
 
 # writes each of the shop item back into rom
-def write_shop_items(rom, shop_items):
+def write_shop_items(rom, shop_table_address, shop_items):
     for s in shop_items:
-        s.write(rom, s.index)
+        s.write(rom, shop_table_address, s.index)
 
 # these are unused shop items, and contain text ids that are used elsewhere, and should not be moved
 SHOP_ITEM_EXCEPTIONS = [0x0A, 0x0B, 0x11, 0x12, 0x13, 0x14, 0x29]
