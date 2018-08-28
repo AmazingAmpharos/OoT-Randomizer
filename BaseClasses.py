@@ -395,7 +395,7 @@ class CollectionState(object):
 
     def nighttime(self):
         if self.world.logic_no_night_tokens_without_suns_song:
-            return self.has('Suns Song')
+            return self.can_play('Suns Song')
         return True
 
     def collect(self, item):
