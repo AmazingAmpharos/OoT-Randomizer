@@ -299,7 +299,7 @@ def create_regions(world):
              'GS Shadow Temple Tripple Giant Pot']),
         create_ow_region(
             'Death Mountain', 
-            ['Death Mountain Bombable Chest', 'Biggoron', 'DM Trail Freestanding PoH', 'GS Mountain Trail Bean Patch', 
+            ['Death Mountain Bombable Chest', 'DM Trail Freestanding PoH', 'GS Mountain Trail Bean Patch', 
              'GS Mountain Trail Bomb Alcove', 'GS Mountain Trail Path to Crater', 
              'GS Mountain Trail Above Dodongo\'s Cavern'], 
             ['Death Mountain Exit', 'Goron City Entrance', 'Mountain Crater Entrance', 'Mountain Summit Fairy', 
@@ -321,7 +321,7 @@ def create_regions(world):
         create_ow_region('Darunias Chamber', ['Darunias Joy'], ['Darunias Chamber Exit']),
         create_ow_region(
             'Death Mountain Crater Upper', 
-            ['DM Crater Wall Freestanding PoH', 'GS Death Mountain Crater Crate'], 
+            ['DM Crater Wall Freestanding PoH', 'Biggoron', 'GS Death Mountain Crater Crate'], 
             ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto']),
         create_ow_region(
             'Death Mountain Crater Lower', 
