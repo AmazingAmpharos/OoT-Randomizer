@@ -20,6 +20,7 @@ class World(object):
         self._entrance_cache = {}
         self._location_cache = {}
         self.required_locations = []
+        self.shop_prices = {}
 
         # dump settings directly into world's namespace
         # this gives the world an attribute for every setting listed in Settings.py
@@ -50,6 +51,7 @@ class World(object):
         ret = World(self.settings)
         ret.skipped_trials = copy.copy(self.skipped_trials)
         ret.can_take_damage = self.can_take_damage
+        ret.shop_prices = copy.copy(self.shop_prices)
         ret.id = self.id
         from Regions import create_regions
         from Dungeons import create_dungeons
@@ -89,8 +91,6 @@ class World(object):
             region.world = self
             for location in region.locations:
                 location.world = self
-                if location.type == 'Shop':
-                    location.price = int(random.betavariate(1.5, 2) * 60) * 5
 
     def initialize_items(self):
         for item in self.itempool:
@@ -103,7 +103,19 @@ class World(object):
             for item in dungeon.all_items:
                 item.world = self
 
+    def random_shop_prices(self):
+        shop_item_indexes = ['7', '5', '8', '6']
+        self.shop_prices = {}
+        for region in self.regions:
+            if self.shopsanity == 'random':
+                shop_item_count = random.randint(0,4)
+            else:
+                shop_item_count = int(self.shopsanity)
 
+            for location in region.locations:
+                if location.type == 'Shop':
+                    if location.name[-1:] in shop_item_indexes[:shop_item_count]:
+                        self.shop_prices[location.name] = int(random.betavariate(1.5, 2) * 60) * 5
 
     def get_region(self, regionname):
         if isinstance(regionname, Region):
@@ -332,7 +344,10 @@ class CollectionState(object):
 
     def has_bombs(self):
         return self.has('Bomb Bag') and \
-            (self.has('Buy Bombs (5)') or self.has('Buy Bombs (10)') or self.has('Buy Bombs (20)'))
+            (self.has('Buy Bombs (5) [25]') 
+            or self.has('Buy Bombs (5) [35]')
+            or self.has('Buy Bombs (10)')
+            or self.has('Buy Bombs (20)'))
 
     def has_blue_fire(self):
         return self.has_bottle() and \

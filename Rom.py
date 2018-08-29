@@ -1162,7 +1162,7 @@ def patch_rom(world, rom):
         rom.write_bytes(0x21F60DE, [0x05, 0xF0])
 
     ### Load Shop File
-    from MQ import File, verify_dma, update_dmadata, insert_space, add_relocations
+    from MQ import File, update_dmadata, insert_space, add_relocations
     # Move shop actor file to free space
     shop_item_file = File({
             'Name':'En_GirlA',
@@ -1193,7 +1193,6 @@ def patch_rom(world, rom):
 
     # Update DMA Table
     update_dmadata(rom, shop_item_file)
-    verify_dma(rom)
 
     messages = read_messages(rom)
     shop_items = read_shop_items(rom, shop_item_file.start + 0x1DEC)
