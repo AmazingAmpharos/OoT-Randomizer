@@ -165,8 +165,44 @@ class LocalRom(object):
             self.write_int32(startaddress + (i * 4), value)
 
     def write_to_file(self, file):
+        self.update_crc()
         with open(file, 'wb') as outfile:
             outfile.write(self.buffer)
+
+    def update_crc(self):
+        t1 = t2 = t3 = t4 = t5 = t6 = 0xDF26F436
+        u32 = 0xFFFFFFFF
+
+        cur = 0x1000
+        while cur < 0x00101000:
+            d = self.read_int32(cur)
+
+            if ((t6 + d) & u32) < t6:
+                t4 += 1 
+
+            t6 = (t6+d) & u32
+            t3 ^= d
+            shift = d & 0x1F
+            r = ((d << shift) | (d >> (32 - shift))) & u32
+            t5 = (t5 + r) & u32
+
+            if t2 > d:
+                t2 ^= r
+            else:
+                t2 ^= t6 ^ d
+
+            data2 = self.read_int32(0x750 + (cur & 0xFF))
+            t1 += data2 ^ d
+            t1 &= u32
+
+            cur += 4
+
+        crc0 = t6 ^ t4 ^ t3
+        crc1 = t5 ^ t2 ^ t1
+
+        # Finally write the crc back to the rom
+        self.write_int32s(0x10, [crc0, crc1])
+
 
 def read_rom(stream):
     "Reads rom into bytearray"
@@ -911,10 +947,6 @@ def patch_rom(world, rom):
                   0xAC, 0x2E, 0xE5, 0x00, 0x03, 0xE0, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00]
     rom.write_bytes(0x3480800, Block_code)
     rom.write_bytes(0xD270, [0x03, 0x48, 0x00, 0x00, 0x03, 0x48, 0x50, 0x00, 0x03, 0x48, 0x00, 0x00])
-
-    # Fix checksum (Thanks Nintendo)
-    Block_code = [0x93, 0x5E, 0x8E, 0x5B, 0xD0, 0x9C, 0x5A, 0x58]
-    rom.write_bytes(0x10, Block_code)
 
     # Set hooks for various code
     rom.write_bytes(0xDBF428, [0x0C, 0x10, 0x03, 0x00]) #Set Fishing Hook
