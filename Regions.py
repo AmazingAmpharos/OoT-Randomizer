@@ -166,7 +166,7 @@ def create_regions(world):
         create_ow_region('Shadow Temple Warp Region', None, ['Drop to Graveyard', 'Shadow Temple Entrance']),
         create_ow_region(
             'Death Mountain', 
-            ['Death Mountain Bombable Chest', 'Biggoron', 'DM Trail Freestanding PoH', 'GS Mountain Trail Bean Patch', 
+            ['Death Mountain Bombable Chest', 'DM Trail Freestanding PoH', 'GS Mountain Trail Bean Patch', 
              'GS Mountain Trail Bomb Alcove', 'GS Mountain Trail Path to Crater', 
              'GS Mountain Trail Above Dodongo\'s Cavern'], 
             ['Death Mountain Exit', 'Goron City Entrance', 'Mountain Crater Entrance', 'Mountain Summit Fairy', 
@@ -188,7 +188,7 @@ def create_regions(world):
         create_ow_region('Darunias Chamber', ['Darunias Joy'], ['Darunias Chamber Exit']),
         create_ow_region(
             'Death Mountain Crater Upper', 
-            ['DM Crater Wall Freestanding PoH', 'GS Death Mountain Crater Crate'], 
+            ['Biggoron', 'DM Crater Wall Freestanding PoH', 'GS Death Mountain Crater Crate'], 
             ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto']),
         create_ow_region(
             'Death Mountain Crater Lower', 
@@ -703,12 +703,13 @@ def create_regions(world):
                 ['Shadow Temple Invisible Blades Visible Chest', 'Shadow Temple Invisible Blades Invisible Chest', 
                  'Shadow Temple Falling Spikes Lower Chest', 'Shadow Temple Falling Spikes Upper Chest', 
                  'Shadow Temple Falling Spikes Switch Chest', 'Shadow Temple Invisible Spikes Chest', 
-                 'Shadow Temple Freestanding Key', 'GS Shadow Temple Like Like Room', 'GS Shadow Temple Crusher Room'], 
+                 'Shadow Temple Freestanding Key', 'GS Shadow Temple Like Like Room', 'GS Shadow Temple Crusher Room',
+                 'GS Shadow Temple Single Giant Pot'], 
                 ['Shadow Temple Hookshot Target']),
             create_dungeon_region(
                 'Shadow Temple Wind Tunnel', 
                 ['Shadow Temple Wind Hint Chest', 'Shadow Temple After Wind Enemy Chest', 
-                 'Shadow Temple After Wind Hidden Chest', 'GS Shadow Temple Single Giant Pot', 'GS Shadow Temple Near Ship'], 
+                 'Shadow Temple After Wind Hidden Chest', 'GS Shadow Temple Near Ship'], 
                 ['Shadow Temple Boat']),
             create_dungeon_region(
                 'Shadow Temple Beyond Boat', 
@@ -1155,7 +1156,7 @@ location_table = {
     'Fire Temple MQ Boss Key Chest': (0, None, 0x27E4, 'Chest', 0x04, 'Fire Temple'),
     'Fire Temple MQ Big Lava Room Bombable Chest': (0, None, 0x5841, 'Chest', 0x04, 'Fire Temple'),
     'Fire Temple MQ Maze Side Room': (0, None, 0x5848, 'Chest', 0x04, 'Fire Temple'),
-    'Fire Temple MQ Freestanding Key': (None, None, 0x01, 'Collectable', 0x04, 'Fire Temple'), # Need to verify this is the correct collectible flag.
+    'Fire Temple MQ Freestanding Key': (None, None, 0x02, 'Collectable', 0x04, 'Fire Temple'), # Need to verify this is the correct collectible flag.
 
     # Water Temple vanilla
     'Water Temple Map Chest': (0x26690A6, None, 0x1822, 'Chest', 0x05, 'Water Temple'),
@@ -1254,7 +1255,7 @@ location_table = {
     'Shadow Temple MQ After Wind Hidden Chest': (0, None, 0x6934, 'Chest', 0x07, 'Shadow Temple'),
     'Shadow Temple MQ After Wind Enemy Chest': (0, None, 0x7888, 'Chest', 0x07, 'Shadow Temple'),
     'Shadow Temple MQ Near Ship Invisible Chest': (0, None, 0x684E, 'Chest', 0x07, 'Shadow Temple'),
-    'Shadow Temple MQ Freestanding Key': (None, None, 0x01, 'Collectable', 0x07, 'Shadow Temple'), # This needs tested
+    'Shadow Temple MQ Freestanding Key': (None, None, 0x02, 'Collectable', 0x07, 'Shadow Temple'), # This needs tested
 
     # Bottom of the Well vanilla
     'Bottom of the Well Front Left Hidden Wall': (0x32D317E, None, 0x5848, 'Chest', 0x08, 'Bottom of the Well'),
@@ -1275,8 +1276,8 @@ location_table = {
     'Bottom of the Well MQ Map Chest': (0, None, 0x0823, 'Chest', 0x08, 'Bottom of the Well'),
     'Bottom of the Well MQ Lens Chest': (0, None, 0xB141, 'Chest', 0x08, 'Bottom of the Well'),
     'Bottom of the Well MQ Compass Chest': (0, None, 0x1802, 'Chest', 0x08, 'Bottom of the Well'),
-    'Bottom of the Well MQ Dead Hand Freestanding Key': (None, None, 0x01, 'Collectable', 0x08, 'Bottom of the Well'), # I have absolutely no idea what these flags are
-    'Bottom of the Well MQ East Inner Room Freestanding Key': (None, None, 0x02, 'Collectable', 0x08, 'Bottom of the Well'), # These are extremely likely to be wrong
+    'Bottom of the Well MQ Dead Hand Freestanding Key': (None, None, 0x02, 'Collectable', 0x08, 'Bottom of the Well'), # Flags seem probably correct?
+    'Bottom of the Well MQ East Inner Room Freestanding Key': (None, None, 0x01, 'Collectable', 0x08, 'Bottom of the Well'), # Should test
 
     # Ice Cavern vanilla
     'Ice Cavern Map Chest': (0x2C4016A, None, 0x0820, 'Chest', 0x09, 'Ice Cavern'),
