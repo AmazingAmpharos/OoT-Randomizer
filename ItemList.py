@@ -77,13 +77,6 @@ veryharditems = (
     + ['Rupees (20)'] * 2 
     + ['Rupees (50)'])
 
-shopfiller = (
-    ['Bombs (5)'] * 3 
-    + ['Arrows (5)'] * 3 
-    + ['Deku Nuts (5)'] * 3 
-    + ['Rupees (5)'] * 4 
-    + ['Rupees (20)'])
-
 normal_rupees =(
     ['Rupees (5)'] * 16
     + ['Rupees (20)'] * 6
@@ -96,6 +89,83 @@ shopsanity_rupees = (
     + ['Rupees (50)'] * 10
     + ['Rupees (200)'] * 8
     + ['Progressive Wallet'])
+
+vanilla_shop_items = {
+    'Kokiri Shop Item 1': 'Buy Deku Shield',
+    'Kokiri Shop Item 2': 'Buy Deku Nut (5)',
+    'Kokiri Shop Item 3': 'Buy Deku Nut (10)',
+    'Kokiri Shop Item 4': 'Buy Deku Stick (1)',
+    'Kokiri Shop Item 5': 'Buy Deku Seeds (30)',
+    'Kokiri Shop Item 6': 'Buy Arrows (10)',
+    'Kokiri Shop Item 7': 'Buy Arrows (30)',
+    'Kokiri Shop Item 8': 'Buy Heart',
+    'Kakariko Potion Shop Item 1': 'Buy Deku Nut (5)',
+    'Kakariko Potion Shop Item 2': 'Buy Fish',
+    'Kakariko Potion Shop Item 3': 'Buy Red Potion [30]',
+    'Kakariko Potion Shop Item 4': 'Buy Green Potion',
+    'Kakariko Potion Shop Item 5': 'Buy Blue Fire',
+    'Kakariko Potion Shop Item 6': 'Buy Bottle Bug',
+    'Kakariko Potion Shop Item 7': 'Buy Poe',
+    'Kakariko Potion Shop Item 8': 'Buy Fairy\'s Spirit',
+    'Bombchu Shop Item 1': 'Buy Bombchu (5)',
+    'Bombchu Shop Item 2': 'Buy Bombchu (10)',
+    'Bombchu Shop Item 3': 'Buy Bombchu (10)',
+    'Bombchu Shop Item 4': 'Buy Bombchu (10)',
+    'Bombchu Shop Item 5': 'Buy Bombchu (20)',
+    'Bombchu Shop Item 6': 'Buy Bombchu (20)',
+    'Bombchu Shop Item 7': 'Buy Bombchu (20)',
+    'Bombchu Shop Item 8': 'Buy Bombchu (20)',
+    'Castle Town Potion Shop Item 1': 'Buy Green Potion',
+    'Castle Town Potion Shop Item 2': 'Buy Blue Fire',
+    'Castle Town Potion Shop Item 3': 'Buy Red Potion [30]',
+    'Castle Town Potion Shop Item 4': 'Buy Fairy\'s Spirit',
+    'Castle Town Potion Shop Item 5': 'Buy Deku Nut (5)',
+    'Castle Town Potion Shop Item 6': 'Buy Bottle Bug',
+    'Castle Town Potion Shop Item 7': 'Buy Poe',
+    'Castle Town Potion Shop Item 8': 'Buy Fish',
+    'Bazaar Item 1': 'Buy Hylian Shield',
+    'Bazaar Item 2': 'Buy Bombs (5) [35]',
+    'Bazaar Item 3': 'Buy Deku Nut (5)',
+    'Bazaar Item 4': 'Buy Heart',
+    'Bazaar Item 5': 'Buy Arrows (10)',
+    'Bazaar Item 6': 'Buy Arrows (50)',
+    'Bazaar Item 7': 'Buy Deku Stick (1)',
+    'Bazaar Item 8': 'Buy Arrows (30)',
+    'Zora Shop Item 1': 'Buy Zora Tunic',
+    'Zora Shop Item 2': 'Buy Arrows (10)',
+    'Zora Shop Item 3': 'Buy Heart',
+    'Zora Shop Item 4': 'Buy Arrows (30)',
+    'Zora Shop Item 5': 'Buy Deku Nut (5)',
+    'Zora Shop Item 6': 'Buy Arrows (50)',
+    'Zora Shop Item 7': 'Buy Fish',
+    'Zora Shop Item 8': 'Buy Red Potion [50]',
+    'Goron Shop Item 1': 'Buy Bombs (5) [25]',
+    'Goron Shop Item 2': 'Buy Bombs (10)',
+    'Goron Shop Item 3': 'Buy Bombs (20)',
+    'Goron Shop Item 4': 'Buy Bombs (30)',
+    'Goron Shop Item 5': 'Buy Goron Tunic',
+    'Goron Shop Item 6': 'Buy Heart',
+    'Goron Shop Item 7': 'Buy Red Potion [40]',
+    'Goron Shop Item 8': 'Buy Heart',    
+}
+
+min_shop_items = (
+      ['Buy Deku Shield'] 
+    + ['Buy Hylian Shield'] 
+    + ['Buy Goron Tunic'] 
+    + ['Buy Zora Tunic'] 
+    + ['Buy Deku Nut (5)'] * 2 + ['Buy Deku Nut (10)']
+    + ['Buy Deku Stick (1)'] * 2 
+    + ['Buy Deku Seeds (30)']
+    + ['Buy Arrows (10)'] * 2 + ['Buy Arrows (30)'] + ['Buy Arrows (50)']
+    + ['Buy Bombchu (5)'] + ['Buy Bombchu (10)'] * 2 + ['Buy Bombchu (20)']
+    + ['Buy Bombs (5) [25]'] + ['Buy Bombs (5) [35]'] + ['Buy Bombs (10)'] + ['Buy Bombs (20)'] 
+    + ['Buy Green Potion']
+    + ['Buy Red Potion [30]']
+    + ['Buy Blue Fire']
+    + ['Buy Fairy\'s Spirit']
+    + ['Buy Bottle Bug']
+    + ['Buy Fish'])
 
 rewardlist = [
     'Kokiri Emerald',
@@ -356,101 +426,25 @@ def get_pool_core(world):
         placed_items['Gerudo Fortress Membership Card'] = 'Gerudo Membership Card'
 
     if world.shopsanity == 'off':
-        placed_items['Kokiri Shop Item 1'] = 'Buy Deku Shield'
-        placed_items['Kokiri Shop Item 2'] = 'Buy Deku Nut (5)'
-        placed_items['Kokiri Shop Item 3'] = 'Buy Deku Nut (10)'
-        placed_items['Kokiri Shop Item 4'] = 'Buy Deku Stick (1)'
-        placed_items['Kokiri Shop Item 5'] = 'Buy Deku Seeds (30)'
-        placed_items['Kokiri Shop Item 6'] = 'Buy Arrows (10)'
-        placed_items['Kokiri Shop Item 7'] = 'Buy Arrows (30)'
-        placed_items['Kokiri Shop Item 8'] = 'Buy Bombchu (5)'
-        placed_items['Kakariko Potion Shop Item 1'] = 'Buy Green Potion'
-        placed_items['Kakariko Potion Shop Item 2'] = 'Buy Blue Fire'
-        placed_items['Kakariko Potion Shop Item 3'] = 'Buy Red Potion'
-        placed_items['Kakariko Potion Shop Item 4'] = 'Buy Fairy\'s Spirit'
-        placed_items['Kakariko Potion Shop Item 5'] = 'Buy Deku Nut (5)'
-        placed_items['Kakariko Potion Shop Item 6'] = 'Buy Bottle Bug'
-        placed_items['Kakariko Potion Shop Item 7'] = 'Sold Out'
-        placed_items['Kakariko Potion Shop Item 8'] = 'Buy Fish'
-        placed_items['Bombchu Shop Item 1'] = 'Buy Bombchu (5)'
-        placed_items['Bombchu Shop Item 2'] = 'Buy Bombchu (10)'
-        placed_items['Bombchu Shop Item 3'] = 'Buy Bombchu (10)'
-        placed_items['Bombchu Shop Item 4'] = 'Buy Bombchu (10)'
-        placed_items['Bombchu Shop Item 5'] = 'Buy Bombchu (20)'
-        placed_items['Bombchu Shop Item 6'] = 'Buy Bombchu (20)'
-        placed_items['Bombchu Shop Item 7'] = 'Buy Bombchu (20)'
-        placed_items['Bombchu Shop Item 8'] = 'Buy Bombchu (20)'
-        placed_items['Castle Town Potion Shop Item 1'] = 'Buy Green Potion'
-        placed_items['Castle Town Potion Shop Item 2'] = 'Buy Blue Fire'
-        placed_items['Castle Town Potion Shop Item 3'] = 'Buy Red Potion'
-        placed_items['Castle Town Potion Shop Item 4'] = 'Buy Fairy\'s Spirit'
-        placed_items['Castle Town Potion Shop Item 5'] = 'Buy Deku Nut (5)'
-        placed_items['Castle Town Potion Shop Item 6'] = 'Buy Bottle Bug'
-        placed_items['Castle Town Potion Shop Item 7'] = 'Sold Out'
-        placed_items['Castle Town Potion Shop Item 8'] = 'Buy Fish'
-        placed_items['Bazaar Item 1'] = 'Buy Hylian Shield'
-        placed_items['Bazaar Item 2'] = 'Buy Bombs (5)'
-        placed_items['Bazaar Item 3'] = 'Buy Deku Nut (5)'
-        placed_items['Bazaar Item 4'] = 'Buy Bombchu (5)'
-        placed_items['Bazaar Item 5'] = 'Buy Arrows (10)'
-        placed_items['Bazaar Item 6'] = 'Sold Out'
-        placed_items['Bazaar Item 7'] = 'Buy Deku Stick (1)'
-        placed_items['Bazaar Item 8'] = 'Buy Arrows (30)'
-        placed_items['Zora Shop Item 1'] = 'Buy Zora Tunic'
-        placed_items['Zora Shop Item 2'] = 'Buy Arrows (10)'
-        placed_items['Zora Shop Item 3'] = 'Sold Out'
-        placed_items['Zora Shop Item 4'] = 'Buy Arrows (30)'
-        placed_items['Zora Shop Item 5'] = 'Buy Deku Nut (5)'
-        placed_items['Zora Shop Item 6'] = 'Sold Out'
-        placed_items['Zora Shop Item 7'] = 'Buy Fish'
-        placed_items['Zora Shop Item 8'] = 'Buy Red Potion'
-        placed_items['Goron Shop Item 1'] = 'Buy Bombs (5)'
-        placed_items['Goron Shop Item 2'] = 'Buy Bombs (10)'
-        placed_items['Goron Shop Item 3'] = 'Buy Bombs (20)'
-        placed_items['Goron Shop Item 4'] = 'Sold Out'
-        placed_items['Goron Shop Item 5'] = 'Buy Goron Tunic'
-        placed_items['Goron Shop Item 6'] = 'Sold Out'
-        placed_items['Goron Shop Item 7'] = 'Buy Red Potion'
-        placed_items['Goron Shop Item 8'] = 'Sold Out'
+        for location, item in vanilla_shop_items.items():
+            placed_items[location] = item
+        if world.bombchus_in_logic:
+            placed_items['Kokiri Shop Item 8'] = 'Buy Bombchu (5)',
+            placed_items['Bazaar Item 4'] = 'Buy Bombchu (5)',
         pool.extend(normal_rupees)
-    elif world.shopsanity == 'on':
-        pool.extend(['Buy Deku Shield'] 
-                  + ['Buy Hylian Shield'] 
-                  + ['Buy Goron Tunic'] 
-                  + ['Buy Zora Tunic'] 
-                  + ['Buy Deku Nut (5)'] * 2 + ['Buy Deku Nut (10)']
-                  + ['Buy Deku Stick (1)'] * 3 
-                  + ['Buy Deku Seeds (30)'] * 2 
-                  + ['Buy Arrows (10)'] + ['Buy Arrows (30)']
-                  + ['Buy Bombchu (5)'] * 2 + ['Buy Bombchu (10)'] + ['Buy Bombchu (20)']
-                  + ['Buy Bombs (5)'] * 2 + ['Buy Bombs (10)'] + ['Buy Bombs (20)'] 
-                  + ['Buy Green Potion']
-                  + ['Buy Red Potion']
-                  + ['Buy Blue Fire']
-                  + ['Buy Fairy\'s Spirit']
-                  + ['Buy Bottle Bug']
-                  + ['Buy Fish']
-                  + shopfiller * 2
-                  + shopsanity_rupees)
     else:
-        pool.extend(['Buy Deku Shield'] 
-                  + ['Buy Hylian Shield'] 
-                  + ['Buy Goron Tunic'] 
-                  + ['Buy Zora Tunic'] 
-                  + ['Buy Deku Nut (5)'] * 2 + ['Buy Deku Nut (10)']
-                  + ['Buy Deku Stick (1)'] * 3 
-                  + ['Buy Deku Seeds (30)'] * 2 
-                  + ['Buy Arrows (10)'] + ['Buy Arrows (30)']
-                  + ['Buy Bombchu (5)'] * 2 + ['Buy Bombchu (10)'] + ['Buy Bombchu (20)']
-                  + ['Buy Bombs (5)'] * 2 + ['Buy Bombs (10)'] + ['Buy Bombs (20)'] 
-                  + ['Buy Green Potion']
-                  + ['Buy Red Potion']
-                  + ['Buy Blue Fire']
-                  + ['Buy Fairy\'s Spirit']
-                  + ['Buy Bottle Bug']
-                  + ['Buy Fish']
-                  + shopfiller * 2
-                  + shopsanity_rupees)
+        remain_shop_items = [item for _,item in vanilla_shop_items.items()]
+        pool.extend(min_shop_items)
+        for item in min_shop_items:
+            remain_shop_items.remove(item)
+
+        shop_slots_count = len(remain_shop_items)
+        shop_nonitem_count = len(world.shop_prices)
+        shop_item_count = shop_slots_count - shop_nonitem_count
+
+        pool.extend(random.sample(remain_shop_items, shop_item_count))
+        pool.extend(random.sample(veryharditems, shop_nonitem_count))
+        pool.extend(shopsanity_rupees)
 
     pool.extend(alwaysitems)
     for _ in range(normal_bottle_count):

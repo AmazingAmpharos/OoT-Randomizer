@@ -72,6 +72,9 @@ def main(settings, window=dummy_window()):
         logger.info('Linking Entrances')
         link_entrances(world)
 
+        if settings.shopsanity != 'off':
+            world.random_shop_prices()
+
         window.update_progress(0 + (((id + 1) / settings.world_count) * 4))
         logger.info('Calculating Access Rules.')
         set_rules(world)

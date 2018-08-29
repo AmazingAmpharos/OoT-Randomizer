@@ -296,7 +296,8 @@ def global_rules(world):
                 forbid_item(location, 'Buy Goron Tunic')
                 forbid_item(location, 'Buy Zora Tunic')
 
-            if (location.name.endswith('5') or location.name.endswith('6') or location.name.endswith('7') or location.name.endswith('8')) and world.shopsanity != 'off':
+            if location.name in world.shop_prices:
+                location.price = world.shop_prices[location.name]
                 add_item_rule(location, lambda i: (i.type != 'Shop'))
                 if location.price > 200:
                     set_rule(location, lambda state: state.has('Progressive Wallet', 2))
