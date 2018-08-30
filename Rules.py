@@ -66,15 +66,8 @@ def global_rules(world):
     world.get_region('Links House').can_reach = lambda state: True
 
 	# dungeon requirements (including gold skulltulas)
-
-    if world.dungeon_mq['DT']:
-        dung_rules_dtmq(world)
-    else:
-        dung_rules_dt0(world)
-    if world.dungeon_mq['DC']:
-        dung_rules_dcmq(world)
-    else:
-        dung_rules_dc0(world)
+    dung_rules_dt0(world)
+    dung_rules_dc0(world)
     dung_rules_jb0(world)
     dung_rules_fot0(world)
     dung_rules_fit0(world)
@@ -106,10 +99,9 @@ def global_rules(world):
     set_rule(world.get_location('Composer Grave Chest'), lambda state: state.has_fire_source())
     set_rule(world.get_entrance('Bottom of the Well'), lambda state: state.can_play('Song of Storms'))
     set_rule(world.get_entrance('Death Mountain Entrance'), lambda state: state.has('Zeldas Letter') or state.is_adult() or world.open_kakariko)
-    set_rule(world.get_entrance('Dodongos Cavern Rocks'), lambda state: state.has_explosives() or state.has('Progressive Strength Upgrade') or state.is_adult())
     set_rule(world.get_location('DM Trail Freestanding PoH'), lambda state: world.open_kakariko or (world.difficulty != 'ohko') or state.has('Zeldas Letter') or state.can_blast_or_smash() or ((state.has('Dins Fire') or state.has('Nayrus Love')) and state.has('Magic Meter')) or state.has('Bow') or state.has('Progressive Strength Upgrade') or state.has_bottle() or state.has('Hover Boots'))
     set_rule(world.get_location('Death Mountain Bombable Chest'), lambda state: state.can_blast_or_smash())
-    set_rule(world.get_location('Biggoron'), lambda state: (not world.logic_no_trade_biggoron) and (state.has('Progressive Strength Upgrade') or state.can_blast_or_smash() or state.has('Bow')) and state.is_adult() and state.can_finish_adult_trades() and state.guarantee_hint())
+    set_rule(world.get_location('Biggoron'), lambda state: (not world.logic_no_trade_biggoron) and state.is_adult() and state.can_finish_adult_trades() and state.guarantee_hint())
     set_rule(world.get_location('Goron City Leftmost Maze Chest'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade', 2) or state.has('Hammer')))
     set_rule(world.get_location('Goron City Left Maze Chest'), lambda state: state.can_blast_or_smash() or (state.has('Progressive Strength Upgrade', 2) and state.is_adult()))
     set_rule(world.get_location('Goron City Right Maze Chest'), lambda state: state.can_blast_or_smash() or (state.has('Progressive Strength Upgrade', 2) and state.is_adult()))
@@ -118,8 +110,6 @@ def global_rules(world):
     set_rule(world.get_entrance('Darunias Chamber'), lambda state: state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('Darunias Joy'), lambda state: state.can_play('Sarias Song'))
     set_rule(world.get_entrance('Goron City from Woods'), lambda state: (state.can_blast_or_smash() or (state.has('Dins Fire') and state.has('Magic Meter')) or ((state.has('Bow') or state.has('Progressive Strength Upgrade')) and state.is_adult())) and state.can_leave_forest())
-    set_rule(world.get_location('King Dodongo'), lambda state: state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))
-    set_rule(world.get_location('King Dodongo Heart'), lambda state: state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))
     set_rule(world.get_location('Song from Saria'), lambda state: state.has('Zeldas Letter'))
     set_rule(world.get_entrance('Mountain Summit Fairy'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('Crater Fairy Reward'), lambda state: state.can_play('Zeldas Lullaby'))
@@ -259,6 +249,7 @@ def global_rules(world):
     set_rule(world.get_location('GS Mountain Trail Path to Crater'), lambda state: state.has('Hammer') and state.is_adult() and state.nighttime())
     set_rule(world.get_location('GS Mountain Trail Above Dodongo\'s Cavern'), lambda state: state.has('Hammer') and state.is_adult() and state.nighttime())
     set_rule(world.get_location('GS Goron City Boulder Maze'), lambda state: state.has_explosives())
+    set_rule(world.get_location('GS Death Mountain Crater Crate'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('GS Goron City Center Platform'), lambda state: state.is_adult())
     set_rule(world.get_location('GS Mountain Crater Bean Patch'), lambda state: state.can_play('Bolero of Fire') and state.has_bottle())
     set_rule(world.get_location('GS Zora River Ladder'), lambda state: state.nighttime())
@@ -295,48 +286,29 @@ def global_rules(world):
     forbid_item(world.get_location('Bombchu Bowling Bomb Bag'), 'Biggoron Sword')
     forbid_item(world.get_location('Bombchu Bowling Piece of Heart'), 'Biggoron Sword')
 
-# Deku Tree Vanilla
 def dung_rules_dt0(world):
+	# Deku Tree Vanilla
     set_rule(world.get_entrance('Deku Tree Basement Path'), lambda state: state.has('Slingshot'))
 
 	# GS
     set_rule(world.get_location('GS Deku Tree Basement Back Room'), lambda state: state.has('Boomerang') and (state.has('Bomb Bag') or (state.has_bombchus() and state.can_leave_forest())))
 
-# MQ Deku Tree
-def dung_rules_dtmq(world):
-    set_rule(world.get_entrance('Deku Tree Compass Passage'), lambda state: state.has('Slingshot'))
-    set_rule(world.get_entrance('Deku Tree Basement Path'), lambda state: state.has('Slingshot'))
-    set_rule(world.get_location('Deku Tree MQ After Spinning Log Chest'), lambda state: state.can_play('Song of Time'))
-
-    # GS
-    set_rule(world.get_location('GS Deku Tree MQ Compass Room'), lambda state: state.has('Boomerang') and ((state.has('Bomb Bag') and state.can_play('Song of Time')) or (state.has_bombchus() and state.can_leave_forest())))
-    set_rule(world.get_location('GS Deku Tree MQ Basement Ceiling'), lambda state: state.has('Boomerang') and state.can_play('Song of Time'))
-    set_rule(world.get_location('GS Deku Tree MQ Basement Back Room'), lambda state: state.has('Boomerang'))
-
-# Dodongo's Cavern Vanilla
 def dung_rules_dc0(world):
+	# Dodongo's Cavern Vanilla
+    set_rule(world.get_entrance('Dodongos Cavern Rocks'), lambda state: state.can_blast_or_smash() or state.has('Progressive Strength Upgrade') or state.is_adult())
     set_rule(world.get_entrance('Dodongos Cavern Lobby'), lambda state: state.can_blast_or_smash() or state.has('Progressive Strength Upgrade'))
     set_rule(world.get_entrance('Dodongos Cavern Left Door'), lambda state: state.has_explosives() or state.has('Progressive Strength Upgrade') or (state.has('Dins Fire') and state.has('Magic Meter')) or (state.has('Bow') and state.is_adult()))
-    set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: state.has('Slingshot') or ((state.has('Bow') or state.has('Hover Boots') or state.has('Progressive Hookshot', 2) or world.logic_dc_jump) and state.is_adult()))
-    set_rule(world.get_location('Dodongos Cavern End of Bridge Chest'), lambda state: state.has_explosives() or ((state.has('Bow') or state.has('Hover Boots') or state.has('Progressive Hookshot', 2) or world.logic_dc_jump) and state.is_adult() and state.has('Hammer')))
+    set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: (state.has('Slingshot') and (state.has_explosives() or state.has('Progressive Strength Upgrade'))) or ((state.has('Bow') or state.has('Hover Boots') or state.has('Progressive Hookshot', 2) or world.logic_dc_jump) and state.is_adult()))
+    set_rule(world.get_location('Dodongos Cavern End of Bridge Chest'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Dodongos Cavern Bomb Drop'), lambda state: state.has_explosives())
+
+    # Boss
+    set_rule(world.get_location('King Dodongo'), lambda state: state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))
+    set_rule(world.get_location('King Dodongo Heart'), lambda state: state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))
 
     # GS
     set_rule(world.get_location('GS Dodongo\'s Cavern Alcove Above Stairs'), lambda state: (state.has('Progressive Hookshot') and state.is_adult()) or (state.has('Boomerang') and (state.has_explosives() or state.has('Progressive Strength Upgrade'))))
     set_rule(world.get_location('GS Dodongo\'s Cavern Scarecrow'), lambda state: state.is_adult() and ( (state.has('Progressive Hookshot') and state.has_ocarina()) or state.has('Progressive Hookshot', 2) ))
-
-# Dodongo's Cavern MQ
-def dung_rules_dcmq(world):
-    set_rule(world.get_entrance('Dodongos Cavern Lobby'), lambda state: state.can_blast_or_smash() or state.has('Progressive Strength Upgrade'))
-    set_rule(world.get_entrance('Dodongos Cavern Bomb Drop'), lambda state: state.has_explosives())
-    set_rule(world.get_location('Dodongos Cavern MQ Larva Room Chest'), lambda state: state.has_explosives or state.has('Progressive Strength Upgrade') or state.has_fire_source())
-    set_rule(world.get_location('Dodongos Cavern MQ Bomb Bag Chest'), lambda state: state.has('Slingshot') or state.is_adult())
-
-    # GS
-    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Song of Time Block Room'), lambda state: state.can_play('Song of Time'))
-    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Larva Room'), lambda state: state.has_explosives or state.has('Progressive Strength Upgrade') or state.has_fire_source())
-    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Lizalfos Room'), lambda state: state.can_blast_or_smash())
-    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Scrub Room'), lambda state: ((state.has('Slingshot') or (state.is_adult() and state.has_explosives())) and state.has('Boomerang') and (state.has_explosives() or state.has('Progressive Strength Upgrade'))) or (state.is_adult() and state.has('Progressive Hookshot') and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has('Bow') or (state.has('Dins Fire') and state.has('Magic Meter'))))) # You may have to kill the lower Lizalfos as adult, then use Bombs to jump down from the upper Lizalfos as child, so you can use the Boomerang to get this GS without needing the Slingshot. (Or you could do the jumpslash recoil, but that's not in logic.)
 
 def dung_rules_jb0(world):
 	set_rule(world.get_entrance('Jabu Jabus Belly Ceiling Switch'), lambda state: state.has('Slingshot') or state.has_explosives() or state.has('Boomerang'))
@@ -437,10 +409,10 @@ def dung_rules_spt0(world):
     set_rule(world.get_location('Spirit Temple Early Adult Right Chest'), lambda state: state.has('Bow') or state.has('Progressive Hookshot') or state.has_bombchus()) #requires a very specific Bombchu use, Hover Boots can be skipped by jumping on top of the rolling rock.
     set_rule(world.get_location('Spirit Temple First Mirror Right Chest'), lambda state: state.has('Small Key (Spirit Temple)', 3))
     set_rule(world.get_location('Spirit Temple First Mirror Left Chest'), lambda state: state.has('Small Key (Spirit Temple)', 3))
-    set_rule(world.get_location('Spirit Temple Map Chest'), lambda state: (state.has('Small Key (Spirit Temple)', 5) and state.has_explosives() and state.can_play('Requiem of Spirit')) or (state.has('Magic Meter') and (state.has('Dins Fire') or (state.has('Fire Arrows') and state.has('Bow') and state.has('Progressive Strength Upgrade', 2) and state.has('Small Key (Spirit Temple)', 3) and state.is_adult()))))
-    set_rule(world.get_location('Spirit Temple Child Climb East Chest'), lambda state: state.has_explosives() or ((state.has('Boomerang') or state.has('Slingshot')) and (state.has('Progressive Hookshot') or state.has('Bow'))) or (state.has('Small Key (Spirit Temple)', 3) and state.has('Progressive Strength Upgrade', 2) and state.is_adult() and (state.has('Progressive Hookshot') or state.has('Bow'))) or (state.has('Small Key (Spirit Temple)', 5) and state.can_play('Requiem of Spirit') and (state.has('Boomerang') or state.has('Slingshot'))))
-    set_rule(world.get_location('Spirit Temple Child Climb North Chest'), lambda state: state.has_explosives() or ((state.has('Boomerang') or state.has('Slingshot')) and (state.has('Progressive Hookshot') or state.has('Bow'))) or (state.has('Small Key (Spirit Temple)', 3) and state.has('Progressive Strength Upgrade', 2) and state.is_adult() and (state.has('Progressive Hookshot') or state.has('Bow'))) or (state.has('Small Key (Spirit Temple)', 5) and state.can_play('Requiem of Spirit') and (state.has('Boomerang') or state.has('Slingshot'))))
-    set_rule(world.get_location('Spirit Temple Sun Block Room Chest'), lambda state: (state.has('Small Key (Spirit Temple)', 5) and state.has_explosives() and state.can_play('Requiem of Spirit')) or (state.has('Magic Meter') and (state.has('Dins Fire') or (state.has('Fire Arrows') and state.has('Bow') and state.has('Progressive Strength Upgrade', 2) and state.has('Small Key (Spirit Temple)', 3) and state.is_adult()))))
+    set_rule(world.get_location('Spirit Temple Map Chest'), lambda state: ((state.has_explosives() or state.has('Small Key (Spirit Temple)', 3) or (state.has('Small Key (Spirit Temple)', 2) and world.bombchus_in_logic)) and state.has('Magic Meter') and (state.has('Dins Fire') or (state.has('Fire Arrows') and state.has('Bow')))) or (state.has('Small Key (Spirit Temple)', 5) and state.has_explosives() and state.can_play('Requiem of Spirit')))
+    set_rule(world.get_location('Spirit Temple Child Climb East Chest'), lambda state: state.has_explosives() or ((state.has('Boomerang') or state.has('Slingshot')) and (state.has('Progressive Hookshot') or state.has('Bow'))) or ((state.has('Small Key (Spirit Temple)', 3) or (state.has('Small Key (Spirit Temple)', 2) and world.bombchus_in_logic)) and state.has('Progressive Strength Upgrade', 2) and state.is_adult() and (state.has('Progressive Hookshot') or state.has('Bow'))) or (state.has('Small Key (Spirit Temple)', 5) and state.can_play('Requiem of Spirit') and (state.has('Boomerang') or state.has('Slingshot'))))
+    set_rule(world.get_location('Spirit Temple Child Climb North Chest'), lambda state: state.has_explosives() or ((state.has('Boomerang') or state.has('Slingshot')) and (state.has('Progressive Hookshot') or state.has('Bow'))) or ((state.has('Small Key (Spirit Temple)', 3) or (state.has('Small Key (Spirit Temple)', 2) and world.bombchus_in_logic)) and state.has('Progressive Strength Upgrade', 2) and state.is_adult() and (state.has('Progressive Hookshot') or state.has('Bow'))) or (state.has('Small Key (Spirit Temple)', 5) and state.can_play('Requiem of Spirit') and (state.has('Boomerang') or state.has('Slingshot'))))
+    set_rule(world.get_location('Spirit Temple Sun Block Room Chest'), lambda state: ((state.has_explosives() or state.has('Small Key (Spirit Temple)', 3) or (state.has('Small Key (Spirit Temple)', 2) and world.bombchus_in_logic)) and state.has('Magic Meter') and (state.has('Dins Fire') or (state.has('Fire Arrows') and state.has('Bow')))) or (state.has('Small Key (Spirit Temple)', 5) and state.has_explosives() and state.can_play('Requiem of Spirit')))
     set_rule(world.get_location('Spirit Temple Statue Hand Chest'), lambda state: state.has('Small Key (Spirit Temple)', 3) and state.has('Progressive Strength Upgrade', 2) and state.is_adult() and state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('Spirit Temple NE Main Room Chest'), lambda state: state.has('Small Key (Spirit Temple)', 3) and state.has('Progressive Strength Upgrade', 2) and state.is_adult() and state.can_play('Zeldas Lullaby') and (state.has('Progressive Hookshot') or state.has("Hover Boots")))
     set_rule(world.get_location('Mirror Shield Chest'), lambda state: state.has('Small Key (Spirit Temple)', 4) and state.has('Progressive Strength Upgrade', 2) and state.is_adult() and state.has_explosives())
@@ -455,7 +427,7 @@ def dung_rules_spt0(world):
 
 	# GS
     set_rule(world.get_location('GS Spirit Temple Metal Fence'), lambda state: state.has('Boomerang') or state.has('Slingshot') or state.has_bombchus())
-    set_rule(world.get_location('GS Spirit Temple Hall to West Iron Knuckle'), lambda state: (state.has('Boomerang') and state.has('Progressive Hookshot')) or (state.has('Boomerang') and state.has('Small Key (Spirit Temple)', 5) and state.has_explosives() and state.can_play('Requiem of Spirit')) or (state.has('Progressive Hookshot') and state.has('Progressive Strength Upgrade', 2) and state.is_adult() and state.has('Small Key (Spirit Temple)', 3)))
+    set_rule(world.get_location('GS Spirit Temple Hall to West Iron Knuckle'), lambda state: (state.has_explosives() and state.has('Boomerang') and state.has('Progressive Hookshot')) or (state.has('Boomerang') and state.has('Small Key (Spirit Temple)', 5) and state.has_explosives() and state.can_play('Requiem of Spirit')) or (state.has('Progressive Hookshot') and state.has('Progressive Strength Upgrade', 2) and state.is_adult() and (state.has('Small Key (Spirit Temple)', 3) or (state.has('Small Key (Spirit Temple)', 2) and state.has('Boomerang') and world.bombchus_in_logic))))
     set_rule(world.get_location('GS Spirit Temple Boulder Room'), lambda state: state.can_play('Song of Time') and (state.has('Bow') or state.has('Progressive Hookshot') or state.has_bombchus()))
     set_rule(world.get_location('GS Spirit Temple Lobby'), lambda state: state.has('Progressive Strength Upgrade', 2) and state.has('Small Key (Spirit Temple)', 3) and state.is_adult() and (state.has('Progressive Hookshot', 2) or (state.has('Progressive Hookshot') and state.has_ocarina()) or state.has('Hover Boots')))
 
@@ -468,7 +440,7 @@ def dung_rules_sht0(world):
     set_rule(world.get_location('Shadow Temple Falling Spikes Upper Chest'), lambda state: state.has('Progressive Strength Upgrade'))
     set_rule(world.get_location('Shadow Temple Falling Spikes Switch Chest'), lambda state: state.has('Progressive Strength Upgrade'))
     set_rule(world.get_location('Shadow Temple Invisible Spikes Chest'), lambda state: state.has('Small Key (Shadow Temple)', 2))
-    set_rule(world.get_location('Shadow Temple Freestanding Key'), lambda state: state.has('Small Key (Shadow Temple)', 2) and state.has('Progressive Hookshot'))
+    set_rule(world.get_location('Shadow Temple Freestanding Key'), lambda state: state.has('Small Key (Shadow Temple)', 2) and state.has('Progressive Hookshot') and (state.has('Bomb Bag') or state.has('Progressive Strength Upgrade')))
 
     # boss rules
     set_rule(world.get_location('Bongo Bongo'), lambda state: state.has('Small Key (Shadow Temple)', 5) and (state.has('Bow') or state.has('Progressive Hookshot', 2)) and state.has('Boss Key (Shadow Temple)'))

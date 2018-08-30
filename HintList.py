@@ -16,7 +16,7 @@ def getHint(string):
             ret = Hint(hint, text, type)
             break
         else:
-            text, type = hintTable['useless']
+            text, type = hintTable['KeyError']
             ret = Hint(hint, text, type)
     return ret
 
@@ -119,7 +119,7 @@ hintTable = {'Hammer':                                                ("the drag
              'BossKey':                                               ("a master of unlocking", 'item'),
              'SmallKey':                                              ("a tool for unlocking", 'item'),
              'FortressSmallKey':                                      ("a get out of jail free card", 'item'),
-             'useless':                                               ("something worthless", 'item'),
+             'KeyError':                                              ("something mysterious", 'item'),
              'Arrows (5)':                                            ("danger darts", 'item'),
              'Arrows (10)':                                           ("danger darts", 'item'),
              'Arrows (30)':                                           ("danger darts", 'item'),
@@ -128,6 +128,7 @@ hintTable = {'Hammer':                                                ("the drag
              'Bombs (20)':                                            ("lots-o-explosives", 'item'),
              'Ice Trap':                                              ("a gift from Ganon", 'item'),
              'Magic Bean':                                            ("wizardly legumes", 'item'),
+             'Bombchus':                                              ("mice bombs", 'item'),
              'Bombchus (5)':                                          ("mice bombs", 'item'),
              'Bombchus (10)':                                         ("mice bombs", 'item'),
              'Bombchus (20)':                                         ("mice bombs", 'item'),
