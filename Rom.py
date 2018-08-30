@@ -1194,6 +1194,29 @@ def patch_rom(world, rom):
     # Update DMA Table
     update_dmadata(rom, shop_item_file)
 
+    # Create 2nd Bazaar Room
+    bazaar_room_file = File({
+            'Name':'shop1_room_1',
+            'Start':'028E4000',
+            'End':'0290D7B0',
+            'RemapStart':'03489000',
+        })
+    bazaar_room_file.dma_key = 0x03472000
+    bazaar_room_file.relocate(rom)
+    # Update DMA Table
+    update_dmadata(rom, bazaar_room_file)
+
+    # Add new Bazaar Room to Bazaar Scene
+    rom.write_int32s(0x28E3030, [0x00010000, 0x02000058]) #reduce position list size
+    rom.write_int32s(0x28E3008, [0x04020000, 0x02000070]) #expand room list size
+
+    rom.write_int32s(0x28E3070, [0x028E4000, 0x0290D7B0, 
+                     bazaar_room_file.start, bazaar_room_file.end]) #room list
+    rom.write_int16s(0x28E3080, [0x0000, 0x0001]) # entrance list
+    rom.write_int16(0x28E4076, 0x0005) # Change shop to Kakariko Bazaar
+    #rom.write_int16(0x3489076, 0x0005) # Change shop to Kakariko Bazaar
+
+    # Load Message and Shop Data
     messages = read_messages(rom)
     shop_items = read_shop_items(rom, shop_item_file.start + 0x1DEC)
     remove_unused_messages(messages)
@@ -1374,13 +1397,21 @@ def patch_rom(world, rom):
         rom.write_int32(0x258702C, 0x0300F600)
         rom.write_int16s(0x2596600, list(shop_objs))
 
-        # bazaar
+        # kakariko bazaar
         shop_objs = place_shop_items(rom, shop_items, messages,  
-            world.get_region('Castle Town Bazaar').locations)
+            world.get_region('Kakariko Bazaar').locations)
         shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
         rom.write_byte(0x28E4029, len(shop_objs))
         rom.write_int32(0x28E402C, 0x03007A40)
         rom.write_int16s(0x28EBA40, list(shop_objs))
+     
+        # castle town bazaar
+        shop_objs = place_shop_items(rom, shop_items, messages,  
+            world.get_region('Castle Town Bazaar').locations)
+        shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
+        rom.write_byte(0x3489029, len(shop_objs))
+        rom.write_int32(0x348902C, 0x03007A40)
+        rom.write_int16s(0x3490A40, list(shop_objs))
      
         # goron shop
         shop_objs = place_shop_items(rom, shop_items, messages,  
