@@ -426,7 +426,7 @@
 
 ; Check sold out override
 .org 0xC004EC
-    j        Check_Sold_Out
+    j        Shop_Check_Sold_Out
 
 ; Allow Shop Item ID up to 100 instead of 50
 ; slti at, v1, 0x32
@@ -436,7 +436,7 @@
 ; Set sold out override
 ; lh t6, 0x1c(a1)
 .org 0xC018A0
-    jal      Set_Sold_Out
+    jal      Shop_Set_Sold_Out
 
 ; Only run init function if ID is in normal range
 ; jr t9
@@ -444,3 +444,25 @@
     jal      Shop_Keeper_Init_ID
 .org 0xC6C920
     jal      Shop_Keeper_Init_ID
+
+; Override Deku Salescrub sold out check
+; addiu at, zero, 2
+; lui v1, 0x8012
+; bne v0, at, 0xd8
+; addiu v1, v1, -0x5a30
+; lhu t9, 0xef0(v1)
+.org 0xEBB85C
+    jal     Deku_Check_Sold_Out
+    .skip 4
+    bnez    v0, @Deku_Check_True
+    .skip 4
+    b       @Deku_Check_False
+.org 0xEBB8B0
+@Deku_Check_True:
+.org 0xEBB8C0
+@Deku_Check_False:
+
+; Ovveride Deku Scrub set sold out
+; sh t7, 0xef0(v0)
+.org 0xDF7CB0
+    jal     Deku_Set_Sold_Out

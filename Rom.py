@@ -1388,6 +1388,16 @@ def patch_rom(world, rom):
                             ItemFactory('Buy Bombchu (5)').index)
             rom.write_int16(world.get_location('Bazaar Item 8').address,
                             ItemFactory('Buy Bombchu (5)').index)
+
+        # Revert Deku Scrubs changes
+        rom.write_int32s(0xEBB85C, [
+            0x24010002, # addiu at, zero, 2
+            0x3C038012, # lui v1, 0x8012
+            0x14410004, # bne v0, at, 0xd8
+            0x2463A5D0, # addiu v1, v1, -0x5a30
+            0x94790EF0])# lhu t9, 0xef0(v1)
+        rom.write_int32(0xDF7CB0,
+            0xA44F0EF0)  # sh t7, 0xef0(v0)
     else:
         # kokiri shop
         shop_objs = place_shop_items(rom, shop_items, messages, 
@@ -1795,7 +1805,7 @@ def room_get_chests(rom, room_data, scene, chests, alternate=None):
         room_data = room_data + 8
 
 
-def scene_get_chests(rom, scene_data, scene, chests, alternate=None):
+def scene_get_chests(rom, scene_data, scene, chests, alternate=None, processed_rooms=[]):
     scene_start = alternate or scene_data
     command = 0
     while command != 0x14: # 0x14 = end header
@@ -1805,14 +1815,17 @@ def scene_get_chests(rom, scene_data, scene, chests, alternate=None):
             room_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
             for _ in range(0, room_count):
                 room_data = rom.read_int32(room_list);
-                room_get_chests(rom, room_data, scene, chests)
+
+                if not room_data in processed_rooms:
+                    room_get_chests(rom, room_data, scene, chests)
+                    processed_rooms.append(room_data)
                 room_list = room_list + 8
         if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
             header_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
             for alt_id in range(0,2):
                 header_data = scene_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
                 if header_data != 0 and not alternate:
-                    scene_get_chests(rom, header_data, scene, chests, scene_start)
+                    scene_get_chests(rom, header_data, scene, chests, scene_start, processed_rooms)
                 header_list = header_list + 4
 
         scene_data = scene_data + 8
