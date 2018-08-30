@@ -175,7 +175,7 @@ hintTable = {'Hammer':                                                ("the drag
              'Sheik in Ice Cavern':                                   ("They say that the&frozen cavern echoes&with", 'location'),
              'Sheik in Kakariko':                                     ("They say that a&ravaged village mourns&with", 'location'),
              'Sheik at Colossus':                                     ("They say that a hero ventures&beyond the Wasteland to&learn", 'location'),
-             'Zoras Fountain Bottom Freestanding PoH':                ("They say that under the icy waters&lies", 'location'),
+             'Zoras Fountain Bottom Freestanding PoH':                ("They say under the icy waters&lies", 'location'),
              'Colossus Freestanding PoH':                             ("They say that riding a&beanstalk in the desert&leads to", 'location'),
              'DM Crater Volcano Freestanding PoH':                    ("They say that riding a&beanstalk in the crater&leads to", 'location'),
              'Goron City Pot Freestanding PoH':                       ("They say that spinning&Goron pottery&contains", 'location'),
