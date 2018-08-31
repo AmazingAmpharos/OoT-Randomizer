@@ -1729,7 +1729,6 @@ def randomize_music(rom):
     instrbuf = list()
     for i in range(len(sources)):
         source = sources[i][1]
-        dest = bgm_sequence_ids[i][1]
         musicseqbuf.append(rom.read_bytes(0xB89AE0 + (source * 0x10), 0x10))
         instrbuf.append(rom.read_bytes(0xB89910 + 0xDD + (source * 2), 2))
     for i in range(len(bgm_sequence_ids)):
