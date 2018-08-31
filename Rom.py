@@ -1442,7 +1442,7 @@ def patch_rom(world, rom):
     
     # disable music 
     if world.disable_music:
-        rom.write_bytes(0xB3CB18, [0x00, 0x00, 0x20, 0x25])
+        disable_music(rom)
 
     # patch tunic colors
     # Custom color tunic stuff
@@ -1723,76 +1723,74 @@ def update_chest_sizes(rom, override_table):
         rom.write_int16(address, default)
         
 def randomize_music(rom):
-    # Format: (Title, Sequence ID)
-    music_to_randomize = [
-        ('Hyrule Field', 0x02),
-        ('Dodongos Cavern', 0x18),
-        ('Kakariko Adult', 0x19),
-        ('Battle', 0x1A),
-        ('Boss Battle', 0x1B),
-        ('Inside Deku Tree', 0x1C),
-        ('Market', 0x1D),
-        ('Title Theme', 0x1E),
-        ('House', 0x1F),
-        ('Jabu Jabu', 0x26),
-        ('Kakariko Child', 0x27),
-        ('Fairy Fountain', 0x28),
-        ('Zelda Theme', 0x29),
-        ('Fire Temple', 0x2A),
-        ('Forest Temple', 0x2C),
-        ('Castle Courtyard', 0x2D),
-        ('Ganondorf Theme', 0x2E),
-        ('Lon Lon Ranch', 0x2F),
-        ('Goron City', 0x30),
-        ('Miniboss Battle', 0x38),
-        ('Temple of Time', 0x3A),
-        ('Kokiri Forest', 0x3C),
-        ('Lost Woods', 0x3E),
-        ('Spirit Temple', 0x3F),
-        ('Horse Race', 0x40),
-        ('Ingo Theme', 0x42),
-        ('Fairy Flying', 0x4A),
-        ('Deku Tree', 0x4B), # different from inside?
-        ('Windmill Hut', 0x4C),
-        # ('Legend of Hyrule', 0x4D), # doesn't loop
-        ('Shooting Gallery', 0x4E),
-        ('Sheik Theme', 0x4F),
-        ('Zoras Domain', 0x50),
-        ('Shop', 0x55),
-        ('Chamber of the Sages', 0x56),
-        ('File Select', 0x57),
-        ('Ice Cavern', 0x58),
-        ('Kaepora Gaebora', 0x5A),
-        ('Shadow Temple', 0x5B),
-        ('Water Temple', 0x5C),
-        # ('Castle Bridge', 0x5D), # doesn't loop
-        # ('Ocarina of Time', 0x5E), # doesn't loop
-        ('Gerudo Valley', 0x5F),
-        ('Potion Shop', 0x60),
-        ('Kotake and Koume', 0x61),
-        ('Castle Escape', 0x62),
-        ('Castle Underground', 0x63),
-        ('Ganondorf Battle', 0x64),
-        ('Ganon Battle', 0x65),
-        # ('Seal of Six Sages', 0x66), # doesn't loop
-        # ('Credits I', 0x67), # doesn't loop
-        ('Fire Boss', 0x6B),
-        ('Mini-game', 0x6C)
-    ]
-    sources = list(music_to_randomize)
+    sources = list(bgm_sequence_ids)
     random.shuffle(sources)
-    musiclog = ''
     musicseqbuf = list()
     instrbuf = list()
     for i in range(len(sources)):
-        musiclog += sources[i][0] + ' -> ' + music_to_randomize[i][0] + '\n'
         source = sources[i][1]
-        dest = music_to_randomize[i][1]
+        dest = bgm_sequence_ids[i][1]
         musicseqbuf.append(rom.read_bytes(0xB89AE0 + (source * 0x10), 0x10))
         instrbuf.append(rom.read_bytes(0xB89910 + 0xDD + (source * 2), 2))
-    for i in range(len(music_to_randomize)):
-        dest = music_to_randomize[i][1]
+    for i in range(len(bgm_sequence_ids)):
+        dest = bgm_sequence_ids[i][1]
         rom.write_bytes(0xB89AE0 + (dest * 0x10), musicseqbuf[i])
         rom.write_bytes(0xB89910 + 0xDD + (dest * 2), instrbuf[i])
-    with open('MusicLog.txt', 'w') as outfile:
-        outfile.write(musiclog)
+        
+def disable_music(rom):
+    blank_track = rom.read_bytes(0xB89AE0, 0x10)
+    for i in range(len(bgm_sequence_ids)):
+        dest = bgm_sequence_ids[i][1]
+        rom.write_bytes(0xB89AE0 + (dest * 0x10), blank_track)
+    
+# Format: (Title, Sequence ID)
+bgm_sequence_ids = [
+    ('Hyrule Field', 0x02),
+    ('Dodongos Cavern', 0x18),
+    ('Kakariko Adult', 0x19),
+    ('Battle', 0x1A),
+    ('Boss Battle', 0x1B),
+    ('Inside Deku Tree', 0x1C),
+    ('Market', 0x1D),
+    ('Title Theme', 0x1E),
+    ('House', 0x1F),
+    ('Jabu Jabu', 0x26),
+    ('Kakariko Child', 0x27),
+    ('Fairy Fountain', 0x28),
+    ('Zelda Theme', 0x29),
+    ('Fire Temple', 0x2A),
+    ('Forest Temple', 0x2C),
+    ('Castle Courtyard', 0x2D),
+    ('Ganondorf Theme', 0x2E),
+    ('Lon Lon Ranch', 0x2F),
+    ('Goron City', 0x30),
+    ('Miniboss Battle', 0x38),
+    ('Temple of Time', 0x3A),
+    ('Kokiri Forest', 0x3C),
+    ('Lost Woods', 0x3E),
+    ('Spirit Temple', 0x3F),
+    ('Horse Race', 0x40),
+    ('Ingo Theme', 0x42),
+    ('Fairy Flying', 0x4A),
+    ('Deku Tree', 0x4B),
+    ('Windmill Hut', 0x4C),
+    ('Shooting Gallery', 0x4E),
+    ('Sheik Theme', 0x4F),
+    ('Zoras Domain', 0x50),
+    ('Shop', 0x55),
+    ('Chamber of the Sages', 0x56),
+    ('File Select', 0x57),
+    ('Ice Cavern', 0x58),
+    ('Kaepora Gaebora', 0x5A),
+    ('Shadow Temple', 0x5B),
+    ('Water Temple', 0x5C),
+    ('Gerudo Valley', 0x5F),
+    ('Potion Shop', 0x60),
+    ('Kotake and Koume', 0x61),
+    ('Castle Escape', 0x62),
+    ('Castle Underground', 0x63),
+    ('Ganondorf Battle', 0x64),
+    ('Ganon Battle', 0x65),
+    ('Fire Boss', 0x6B),
+    ('Mini-game', 0x6C)
+]
