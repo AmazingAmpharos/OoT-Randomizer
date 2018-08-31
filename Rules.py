@@ -280,11 +280,21 @@ def global_rules(world):
     set_rule(world.get_location('GS Desert Colossus Bean Patch'), lambda state: state.has_bottle() and state.can_play('Requiem of Spirit') and state.can_child_attack())
     set_rule(world.get_location('GS Desert Colossus Tree'), lambda state: state.has('Progressive Hookshot') and state.is_adult() and state.nighttime())
     set_rule(world.get_location('GS Desert Colossus Hill'), lambda state: ((state.has('Magic Bean') and state.can_play('Requiem of Spirit')) or state.has('Progressive Hookshot', 2)) and state.is_adult() and state.nighttime())
-    set_rule(world.get_location('Deku Salesman Woods'), lambda state: state.can_stun_deku()) 
-    set_rule(world.get_location('Deku Salesman Lost Woods Grotto'), lambda state: state.can_stun_deku()) 
-    set_rule(world.get_location('Deku Salesman Hyrule Field Grotto'), lambda state: state.can_stun_deku()) 
     set_rule(world.get_location('GS Death Mountain Crater Crate'), lambda state: state.can_child_attack())
     set_rule(world.get_location('GS Zora River Tree'), lambda state: state.can_child_attack())
+    set_rule(world.get_location('HF Grotto Deku Scrub Piece of Heart'), lambda state: state.can_stun_deku()) 
+    set_rule(world.get_entrance('Zora River Song of Storms Grotto'), lambda state: state.can_play('Song of Storms') and state.can_stun_deku())
+    set_rule(world.get_entrance('Meadow Song of Storms Grotto'), lambda state: state.can_play('Song of Storms') and ((state.can_child_attack() or state.has_nuts() or state.has('Buy Deku Shield')) or (state.is_adult() and (state.can_play('Minuet of Forest') or state.can_play('Sarias Song')))))
+    set_rule(world.get_entrance('Lake Hylia Grotto'), lambda state: state.is_adult())
+    set_rule(world.get_location('LW Deku Scrub Deku Nuts'), lambda state: state.can_stun_deku()) 
+    set_rule(world.get_location('LW Deku Scrub Deku Sticks'), lambda state: state.can_stun_deku()) 
+    set_rule(world.get_location('LW Deku Scrub Deku Stick Upgrade'), lambda state: state.can_stun_deku()) 
+    set_rule(world.get_entrance('Desert Colossus Grotto'), lambda state: state.has('Hammer') and state.is_adult())
+    set_rule(world.get_location('DMC Deku Scrub Bombs'), lambda state: state.can_child_attack() or state.has_nuts() or state.has('Buy Deku Shield')) 
+    set_rule(world.get_entrance('DMC Hammer Grotto'), lambda state: state.has('Hammer') and state.is_adult())
+    set_rule(world.get_entrance('Goron City Grotto'), lambda state: state.is_adult() and state.has('Progressive Hookshot', 2) and (state.can_play('Song of Time') or (world.difficulty != 'ohko' and state.has_GoronTunic())))
+    set_rule(world.get_entrance('Lon Lon Grotto'), lambda state: state.can_child_attack() or state.has_nuts() or state.has('Buy Deku Shield'))
+    set_rule(world.get_entrance('Gerudo Valley Grotto'), lambda state: state.can_play('Song of Storms'))
 
 
     for location in world.get_locations():
@@ -334,8 +344,12 @@ def dung_rules_dc0(world):
     set_rule(world.get_entrance('Dodongos Cavern Lobby'), lambda state: state.can_blast_or_smash() or state.has('Progressive Strength Upgrade'))
     set_rule(world.get_entrance('Dodongos Cavern Left Door'), lambda state: (state.is_adult() or ((state.has_sticks() or (state.has('Dins Fire') and state.has('Magic Meter'))) and (state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword'))) and (state.has_explosives() or state.has('Progressive Strength Upgrade') or (state.has('Dins Fire') and state.has('Magic Meter')) or (state.has_bow() and state.is_adult()))))
     set_rule(world.get_location('Dodongos Cavern Compass Chest'), lambda state: (state.is_adult() or ((state.has_sticks() or (state.has('Dins Fire') and state.has('Magic Meter'))) and (state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword')))))
+    set_rule(world.get_location('DC Deku Scrub Deku Sticks'), lambda state: (state.is_adult() or (state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword'))))
+    set_rule(world.get_location('DC Deku Scrub Deku Shield'), lambda state: state.can_blast_or_smash())
 
     set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: state.has_slingshot() or ((state.has_bow() or state.has('Hover Boots') or state.has('Progressive Hookshot', 2) or world.logic_dc_jump) and state.is_adult()))
+    set_rule(world.get_location('DC Deku Scrub Deku Nuts'), lambda state: state.can_blast_or_smash())
+    set_rule(world.get_location('DC Deku Scrub Deku Seeds'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('Dodongos Cavern End of Bridge Chest'), lambda state: state.has_explosives() or ((state.has_bow() or state.has('Hover Boots') or state.has('Progressive Hookshot', 2) or world.logic_dc_jump) and state.is_adult() and state.has('Hammer')))
     set_rule(world.get_entrance('Dodongos Cavern Bomb Drop'), lambda state: state.has_explosives())
 

@@ -19,6 +19,12 @@
 
 .include "constants.asm"
 
+.org 0x80400000
+.area 0x1000
+DebugOutput:
+.include "debug.asm"
+.endarea
+
 .org 0x80401000
 .area 0x1000, 0
 .include "config.asm"

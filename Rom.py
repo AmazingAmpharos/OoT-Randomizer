@@ -104,10 +104,15 @@ class LocalRom(object):
         # extend to 64MB
         self.buffer.extend(bytearray([0x00] * (0x4000000 - len(self.buffer))))
             
+    def seek_address(self, address):
+        self.last_address = address
+
     def read_byte(self, address):
+        self.last_address = address + 1
         return self.buffer[address]
 
     def read_bytes(self, address, len):
+        self.last_address = address + len
         return self.buffer[address : address + len]
 
     def read_int16(self, address):
@@ -1463,6 +1468,19 @@ def patch_rom(world, rom):
         rom.write_int32(0x2DD802C, 0x03006A40)
         rom.write_int16s(0x2DDEA40, list(shop_objs))
 
+        # Rebuild Deku Salescrub Item Table
+        scrub_items = [0x30, 0x31, 0x3E, 0x33, 0x34, 0x37, 0x38, 0x39, 0x3A, 0x77, 0x79]
+        rom.seek_address(0xDF8684)
+        for scrub_item in scrub_items:
+            rom.write_int16(None, 10)         # Price
+            rom.write_int16(None, 1)          # Count
+            rom.write_int32(None, scrub_item) # Item
+            rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func
+            rom.write_int32(None, 0x80A75354) # Buy_Func
+
+        # update actor IDs
+        set_deku_salesman_data(rom)
+
     #Fix item chest animations
     chestAnimations = {
         0x3D: 0xED, #0x13 #Heart Container 
@@ -1741,7 +1759,9 @@ def get_override_entry(location):
     elif location.type == 'GS Token':
         return [scene, player_id | 0x03, default, item_id]
     elif location.type == 'Shop' and location.item.type != 'Shop':
-        return [scene, player_id | 0x00, default, item_id]    
+        return [scene, player_id | 0x00, default, item_id]
+    elif location.type == 'GrottoNPC' and location.item.type != 'Shop':
+        return [scene, player_id | 0x04, default, item_id]    
     else:
         return []
 
@@ -1781,7 +1801,8 @@ chestAnimationExtendedFast = [
 ]
 
 
-def room_get_chests(rom, room_data, scene, chests, alternate=None):
+def room_get_actors(rom, actor_func, room_data, scene, alternate=None):
+    actors = {}
     room_start = alternate or room_data
     command = 0
     while command != 0x14: # 0x14 = end header
@@ -1790,22 +1811,23 @@ def room_get_chests(rom, room_data, scene, chests, alternate=None):
             actor_count = rom.read_byte(room_data + 1)
             actor_list = room_start + (rom.read_int32(room_data + 4) & 0x00FFFFFF)
             for _ in range(0, actor_count):
-                actor_id = rom.read_int16(actor_list);
-                actor_var = rom.read_int16(actor_list + 14)
-                if actor_id == 0x000A: #Chest Actor
-                    chests[actor_list + 14] = [scene, actor_var & 0x001F]
+                entry = actor_func(rom, actor_list, scene)
+                if entry:
+                    actors[actor_list] = entry
                 actor_list = actor_list + 16
         if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
             header_list = room_start + (rom.read_int32(room_data + 4) & 0x00FFFFFF)
             for alt_id in range(0,2):
                 header_data = room_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
                 if header_data != 0 and not alternate:
-                    room_get_chests(rom, header_data, scene, chests, room_start)
+                    actors.update(room_get_actors(rom, actor_func, header_data, scene, room_start))
                 header_list = header_list + 4
         room_data = room_data + 8
+    return actors
 
 
-def scene_get_chests(rom, scene_data, scene, chests, alternate=None, processed_rooms=[]):
+def scene_get_actors(rom, actor_func, scene_data, scene, alternate=None, processed_rooms=[]):
+    actors = {}
     scene_start = alternate or scene_data
     command = 0
     while command != 0x14: # 0x14 = end header
@@ -1817,7 +1839,7 @@ def scene_get_chests(rom, scene_data, scene, chests, alternate=None, processed_r
                 room_data = rom.read_int32(room_list);
 
                 if not room_data in processed_rooms:
-                    room_get_chests(rom, room_data, scene, chests)
+                    actors.update(room_get_actors(rom, actor_func, room_data, scene))
                     processed_rooms.append(room_data)
                 room_list = room_list + 8
         if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
@@ -1825,20 +1847,19 @@ def scene_get_chests(rom, scene_data, scene, chests, alternate=None, processed_r
             for alt_id in range(0,2):
                 header_data = scene_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
                 if header_data != 0 and not alternate:
-                    scene_get_chests(rom, header_data, scene, chests, scene_start, processed_rooms)
+                    actors.update(scene_get_actors(rom, actor_func, header_data, scene, scene_start, processed_rooms))
                 header_list = header_list + 4
 
         scene_data = scene_data + 8
+    return actors
 
-
-def get_chest_list(rom):
-    chests = {}
+def get_actor_list(rom, actor_func):
+    actors = {}
     scene_table = 0x00B71440
     for scene in range(0x00, 0x65):
         scene_data = rom.read_int32(scene_table + (scene * 0x14));
-        scene_get_chests(rom, scene_data, scene, chests)
-    return chests
-
+        actors.update(scene_get_actors(rom, actor_func, scene_data, scene))
+    return actors
 
 def get_override_itemid(override_table, scene, type, flags):
     for entry in override_table:
@@ -1847,11 +1868,17 @@ def get_override_itemid(override_table, scene, type, flags):
     return None
 
 def update_chest_sizes(rom, override_table):
-    chest_list = get_chest_list(rom)
-    for address, [scene, flags] in chest_list.items():
+    def get_chest(rom, actor, scene):
+        actor_id = rom.read_int16(actor);
+        if actor_id == 0x000A: #Chest Actor
+            actor_var = rom.read_int16(actor + 14)
+            return [scene, actor_var & 0x001F]
+
+    chest_list = get_actor_list(rom, get_chest)
+    for actor, [scene, flags] in chest_list.items():
         item_id = get_override_itemid(override_table, scene, 1, flags)
 
-        if None in [address, scene, flags, item_id]:
+        if None in [actor, scene, flags, item_id]:
             continue
 
         itemType = 0  # Item animation
@@ -1864,12 +1891,33 @@ def update_chest_sizes(rom, override_table):
             itemType = 1 # Long animation, big chest
         # Don't use boss chests
 
-        default = rom.read_int16(address)
+        default = rom.read_int16(actor + 0x14)
         chestType = default & 0xF000
         newChestType = chestTypeMap[chestType][itemType]
         default = (default & 0x0FFF) | newChestType
-        rom.write_int16(address, default)
+        rom.write_int16(actor + 0x14, default)
 
+def set_deku_salesman_data(rom):
+    def set_deku_salesman_and_grotto_id(rom, actor, scene):
+        actor_id = rom.read_int16(actor);
+        if actor_id == 0x009B: #Grotto
+            actor_zrot = rom.read_int16(actor + 12)
+            actor_var = rom.read_int16(actor + 14);
+            grotto_scene = actor_var >> 12
+            grotto_entrance = actor_zrot & 0x000F
+            grotto_id = actor_var & 0x00FF
+
+            if grotto_scene == 0 and grotto_entrance in [2, 4, 7, 10]:
+                grotto_scenes.add(scene)
+                rom.write_byte(actor + 15, len(grotto_scenes))
+        elif actor_id == 0x0195: #Salesman
+            actor_var = rom.read_int16(actor + 14)
+            if actor_var == 6:
+                rom.write_int16(actor + 14, 0x0003)
+
+    grotto_scenes = set()
+
+    get_actor_list(rom, set_deku_salesman_and_grotto_id)
 
 def place_shop_items(rom, shop_items, messages, locations, init_shop_id=False):
     if init_shop_id:

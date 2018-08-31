@@ -342,43 +342,43 @@ func_0x862c0c_C004EC:
 0x00000174: nop 
 
 
-
-func_0x862d84:
+func_0x862d84_c00664:
 0x00000000: addiu $sp, $sp, -0x20
 0x00000004: sw $ra, 0x14($sp)
-0x00000008: move $a2, $a0
+0x00000008: move $a2, $a0       ; a0 = a2 = actor
 0x0000000c: move $a3, $a1
-0x00000010: lh $v1, 0x1c($a2)
+0x00000010: lh $v1, 0x1c($a2)   ; v1 = variable
 0x00000014: lui $a1, 0x8086
-0x00000018: slti $at, $v1, 0x32
-0x0000001c: bnez $at, 0x3c
-0x00000020: sll $t6, $v1, 5
-0x00000024: bgezl $v1, 0x40
+0x00000018: slti $at, $v1, 0x32 
+0x0000001c: bnez $at, 0x3c      
+0x00000020: sll $t6, $v1, 5     ; t6 = variable << 5 (row offset)
+0x00000024: bgezl $v1, 0x40     ; if variable not between 0-0x32
 0x00000028: lui $at, 1
 
-; shop item id not valid range
-0x0000002c: jal 0x20eb4
-0x00000030: move $a0, $a2
-0x00000034: b 0x98
-0x00000038: lw $ra, 0x14($sp)
+	; shop item id not valid range
+	0x0000002c: jal 0x20eb4
+	0x00000030: move $a0, $a2
+	0x00000034: b 0x98
+	0x00000038: lw $ra, 0x14($sp)
 
 ; shop item id valid range
 0x0000003c: lui $at, 1
-0x00000040: ori $at, $at, 0x17a4
-0x00000044: addu $a1, $a1, $t6
-0x00000048: lh $a1, 0x49ec($a1)
-0x0000004c: addu $a0, $a3, $at
+0x00000040: ori $at, $at, 0x17a4  ; at = 0x117A4
+0x00000044: addu $a1, $a1, $t6    ; a1 = partial address + row offset
+0x00000048: lh $a1, 0x49ec($a1)   ; a1 = (shop item table + row offset)[0] = model
+0x0000004c: addu $a0, $a3, $at    ; a0 = ctx + 0x117A4
 0x00000050: sh $v1, 0x1e($sp)
 0x00000054: jal 0x81628
 0x00000058: sw $a2, 0x20($sp)
 0x0000005c: lw $a2, 0x20($sp)
 0x00000060: lh $v1, 0x1e($sp)
-0x00000064: lui $t8, 0x8086
+0x00000064: lui $t8, 0x8086       ; t8 = state1_8086443c_c01d1c
 0x00000068: sb $v0, 0x184($a2)
 0x0000006c: lb $t7, 0x184($a2)
 0x00000070: addiu $t8, $t8, 0x443c
 0x00000074: bgezl $t7, 0x90
 0x00000078: sh $v1, 0x1c($a2)
+
 0x0000007c: jal 0x20eb4
 0x00000080: move $a0, $a2
 0x00000084: b 0x98
@@ -386,14 +386,26 @@ func_0x862d84:
 
 0x0000008c: sh $v1, 0x1c($a2)
 0x00000090: sw $t8, 0x188($a2)
+
 0x00000094: lw $ra, 0x14($sp)
 0x00000098: addiu $sp, $sp, 0x20
 0x0000009c: jr $ra
 0x000000a0: nop 
 
 
-dest 80862E5C 
-
+dest 80862E5C_c0073c
+0x00000000: addiu $sp, $sp, -0x18
+0x00000004: sw $ra, 0x14($sp)
+0x00000008: move $a2, $a0
+0x0000000c: lw $t6, 0x18c($a2)
+0x00000010: beql $t6, $zero, 0x24
+0x00000014: lw $ra, 0x14($sp)
+0x00000018: jal 0x8d6d0
+0x0000001c: addiu $a0, $a2, 0x13c
+0x00000020: lw $ra, 0x14($sp)
+0x00000024: addiu $sp, $sp, 0x18
+0x00000028: jr $ra
+0x0000002c: nop 
 
 main 808648A8 - C02188
 0x00000000: addiu $sp, $sp, -0x18
