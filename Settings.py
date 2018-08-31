@@ -1353,6 +1353,22 @@ setting_infos = [
                        Disable background music. SFX and ambient sounds remain.
                        '''
         }),
+    Setting_Info('randomize_music', bool, 1, False,
+        {
+            'action': 'store_true',
+            'help': '''\
+                    Randomize background music.
+                    '''
+        },
+        {
+            'text': 'Randomize Background Music',
+            'group': 'cosmetics',
+            'widget': 'Checkbutton',
+            'default': False,
+            'tooltip': '''\
+                       Randomize background music.
+                       '''
+        }),
 
     Setting_Info('kokiricolor', str, 0, False, 
         {
