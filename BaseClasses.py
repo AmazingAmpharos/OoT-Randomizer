@@ -737,6 +737,7 @@ class Location(object):
         self.access_rule = lambda state: True
         self.item_rule = lambda item: True
         self.event = False
+        self.price = None
 
     def can_fill(self, state, item, check_access=True):
         return self.always_allow(item, self) or (self.parent_region.can_fill(item) and self.item_rule(item) and (not check_access or self.can_reach(state)))

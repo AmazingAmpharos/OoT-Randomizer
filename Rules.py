@@ -302,21 +302,16 @@ def global_rules(world):
             forbid_item(location, 'Ice Trap')
         add_item_rule(location, lambda i: not (i.type == 'Song' and not i.world.shuffle_song_items and i.world.id != location.world.id))
         if location.type == 'Shop':
-            if location.name.startswith('Bombchu Shop') or location.name.startswith('Castle Town Potion Shop'):
+            if location.name.startswith('Bombchu Shop') or location.name.startswith('Castle Town Potion Shop') or location.name.startswith('Castle Town Bazaar'):
                 forbid_item(location, 'Buy Goron Tunic')
                 forbid_item(location, 'Buy Zora Tunic')
 
             if location.name in world.shop_prices:
                 location.price = world.shop_prices[location.name]
-                add_item_rule(location, lambda i: (i.type != 'Shop'))
                 if location.price > 200:
                     set_rule(location, lambda state: state.has('Progressive Wallet', 2))
                 elif location.price > 99:
                     set_rule(location, lambda state: state.has('Progressive Wallet'))
-            else:
-                add_item_rule(location, lambda i: (i.type == 'Shop'))
-        else:
-            add_item_rule(location, lambda i: (i.type != 'Shop'))
 
     # Biggoron Sword at bombchu bowling seems to lead to a soft lock.
     # Unsure what causes this, but I'm leaving this to original devs.

@@ -12,35 +12,49 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
         'Song from Ocarina of Time', 'Song at Windmill', 'Sheik Forest Song', 'Sheik at Temple', 
         'Sheik in Crater', 'Sheik in Ice Cavern', 'Sheik in Kakariko', 'Sheik at Colossus']]
 
+    shop_locations = [location for world in worlds for location in world.get_unfilled_locations() if location.type == 'Shop' and location.price == None]
+
     # If not passed in, then get a shuffled list of locations to fill in
     if not fill_locations:
-        fill_locations = [location for world in worlds for location in world.get_unfilled_locations() if location not in song_locations]
+        fill_locations = [location for world in worlds for location in world.get_unfilled_locations() if location not in song_locations and location not in shop_locations]
     world_states = [world.state for world in worlds]
 
     window.locationcount = len(fill_locations) + len(song_locations)
     window.fillcount = 0
 
     # Generate the itempools
+    shopitempool = [item for world in worlds for item in world.itempool if item.type == 'Shop']
     songitempool = [item for world in worlds for item in world.itempool if item.type == 'Song']
-    itempool =     [item for world in worlds for item in world.itempool if item.type != 'Song']
+    itempool =     [item for world in worlds for item in world.itempool if item.type != 'Shop' and item.type != 'Song']
     if worlds[0].shuffle_song_items:
         itempool.extend(songitempool)
         fill_locations.extend(song_locations)
 
     # add unrestricted dungeon items to main item pool
     itempool.extend([item for world in worlds for item in world.get_unrestricted_dungeon_items()])
+    dungeon_items = [item for world in worlds for item in world.get_restricted_dungeon_items()]
 
     random.shuffle(itempool) # randomize item placement order. this ordering can greatly affect the location accessibility bias
     progitempool = [item for item in itempool if item.advancement]
     prioitempool = [item for item in itempool if not item.advancement and item.priority]
     restitempool = [item for item in itempool if not item.advancement and not item.priority]
 
+
+    # We place all the shop items first. Like songs, they have a more limited
+    # set of locations that they can be placed in, so placing them first will
+    # reduce the odds of creating unbeatable seeds. This also avoids needing
+    # to create item rules for every location for whether they are a shop item
+    # or not. This shouldn't have much affect on item bias.
+    if shop_locations:
+        random.shuffle(shop_locations)
+        fill_shops(window, worlds, shop_locations, shopitempool, itempool + songitempool + dungeon_items)
+
     # If there are dungeon items that are restricted to their original dungeon,
     # we must place them first to make sure that there is always a location to
     # place them. This could probably be replaced for more intelligent item
     # placement, but will leave as is for now
     random.shuffle(fill_locations)
-    fill_dungeons_restrictive(window, worlds, fill_locations, itempool + songitempool)
+    fill_dungeons_restrictive(window, worlds, fill_locations, dungeon_items, itempool + songitempool)
 
     # I have no idea why the locations are reversed but this is how it was, 
     # so whatever. It can't hurt I guess
@@ -78,6 +92,12 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # Log unplaced item/location warnings
     for item in progitempool + prioitempool + restitempool:
         logging.getLogger('').debug('Unplaced Items: %s [World %d]' % (item.name, item.world.id))
+    if progitempool + prioitempool + restitempool:
+        for item in progitempool + prioitempool + restitempool:
+            print('Unplaced Items: %s [World %d]' % (item.name, item.world.id))
+
+        raise FillError('Not all items are placed.')
+
     if fill_locations:
         for location in fill_locations:
             logging.getLogger('').debug('Unfilled Locations: %s [World %d]' % (location.name, location.world.id))
@@ -86,11 +106,9 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 
 # Places restricted dungeon items into the worlds. To ensure there is room for them.
 # they are placed first so it will assume all other items are reachable
-def fill_dungeons_restrictive(window, worlds, shuffled_locations, itempool):
+def fill_dungeons_restrictive(window, worlds, shuffled_locations, dungeon_items, itempool):
     # List of states with all non-key items
     all_state_base_list = CollectionState.get_states_with_items([world.state for world in worlds], itempool)
-    # list of all dungeon items to be placed
-    dungeon_items = [item for world in worlds for item in world.get_restricted_dungeon_items()]
 
     # shuffle this list to avoid placement bias
     random.shuffle(dungeon_items)
@@ -105,6 +123,31 @@ def fill_dungeons_restrictive(window, worlds, shuffled_locations, itempool):
 
     for world in worlds:
         world.state.clear_cached_unreachable()
+
+
+# Places the shop items into the world at the Shop locations
+def fill_shops(window, worlds, locations, shoppool, itempool, attempts=15):
+    # List of states with all items
+    all_state_base_list = CollectionState.get_states_with_items([world.state for world in worlds], itempool)
+
+    while attempts:
+        attempts -= 1
+        try:
+            prizepool = list(shoppool)
+            prize_locs = list(locations)
+            random.shuffle(prizepool)
+            random.shuffle(prize_locs)
+            fill_restrictive(window, worlds, all_state_base_list, prize_locs, prizepool)
+            logging.getLogger('').info("Shop items placed")
+        except FillError as e:
+            logging.getLogger('').info("Failed to place shop items. Will retry %s more times", attempts)
+            for location in locations:
+                location.item = None
+            logging.getLogger('').info('\t%s' % str(e))
+            continue
+        break
+    else:
+        raise FillError('Unable to place songs')
 
 
 # Places the songs into the world at the Song locations
@@ -127,11 +170,12 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
             random.shuffle(prizepool)
             random.shuffle(prize_locs)
             fill_restrictive(window, worlds, all_state_base_list, prize_locs, prizepool)
+            logging.getLogger('').info("Songs placed")
         except FillError as e:
             logging.getLogger('').info("Failed to place songs. Will retry %s more times", attempts)
             for location in empty_song_locations:
                 location.item = None
-            logging.getLogger('').info(str(e))
+            logging.getLogger('').info('\t%s' % str(e))
             continue
         break
     else:

@@ -707,6 +707,25 @@ setting_infos = [
                       Plays spiritually best with Keysanity.
                       '''
         }),
+    Setting_Info('shuffle_scrubs', bool, 1, True, 
+        {
+            'help': '''\
+                    All Deku Salesmen will give a random item.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Shuffle Deku Salescrubs',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Every Deku Salescrub will give
+                      a random item. This adds 31 new
+                      item locations. Scrubs prices
+                      are all reduced to 10 Rupees.
+                      '''
+        }),    
     Setting_Info('shuffle_dungeon_items', str, 2, True,
         {
         'default': 'mapcompass',

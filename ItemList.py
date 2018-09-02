@@ -181,7 +181,7 @@ vanilla_deku_scrubs = {
     'DC Deku Scrub Deku Seeds': 'Buy Deku Seeds (30)',
     'DC Deku Scrub Deku Shield': 'Buy Deku Shield',
     'Jabu Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'GC Deku Scrub Bombs': 'Buy Bombs (5)',
+    'GC Deku Scrub Bombs': 'Buy Bombs (5) [35]',
     'GC Deku Scrub Arrows': 'Buy Arrows (30)',
     'GC Deku Scrub Red Potion': 'Buy Red Potion [30]',
     'GC Deku Scrub Green Potion': 'Buy Green Potion',
@@ -190,7 +190,7 @@ vanilla_deku_scrubs = {
     'SFM Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
     'SFM Grotto Deku Scrub Green Potion': 'Buy Green Potion',
     'LH Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'LH Grotto Deku Scrub Bombs': 'Buy Bombs (5)',
+    'LH Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
     'LH Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
     'Valley Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
     'Valley Grotto Deku Scrub Green Potion': 'Buy Green Potion',
@@ -199,15 +199,15 @@ vanilla_deku_scrubs = {
     'LW Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
     'Desert Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
     'Desert Grotto Deku Scrub Green Potion': 'Buy Green Potion',
-    'DMC Deku Scrub Bombs': 'Buy Bombs (5)',
+    'DMC Deku Scrub Bombs': 'Buy Bombs (5) [35]',
     'DMC Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'DMC Grotto Deku Scrub Bombs': 'Buy Bombs (5)',
+    'DMC Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
     'DMC Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
     'Goron Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'Goron Grotto Deku Scrub Bombs': 'Buy Bombs (5)',
+    'Goron Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
     'Goron Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
     'LLR Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'LLR Grotto Deku Scrub Bombs': 'Buy Bombs (5)',
+    'LLR Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
     'LLR Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
 }
 
@@ -488,7 +488,6 @@ def get_pool_core(world):
             placed_items['Kakariko Bazaar Item 4'] = 'Buy Bombchu (5)',
         pool.extend(normal_rupees)
 
-        placed_items.update(vanilla_deku_scrubs)
     else:
         remain_shop_items = [item for _,item in vanilla_shop_items.items()]
         pool.extend(min_shop_items)
@@ -503,7 +502,10 @@ def get_pool_core(world):
         pool.extend(random.sample(veryharditems, shop_nonitem_count))
         pool.extend(shopsanity_rupees)
 
+    if world.shuffle_scrubs:
         pool.extend(deku_scrubs_items)
+    else:        
+        placed_items.update(vanilla_deku_scrubs)
 
     pool.extend(alwaysitems)
     for _ in range(normal_bottle_count):
