@@ -312,12 +312,13 @@ def create_regions(world):
             ['Shadow Temple Invisible Blades Visible Chest', 'Shadow Temple Invisible Blades Invisible Chest', 
              'Shadow Temple Falling Spikes Lower Chest', 'Shadow Temple Falling Spikes Upper Chest', 
              'Shadow Temple Falling Spikes Switch Chest', 'Shadow Temple Invisible Spikes Chest', 
-             'Shadow Temple Freestanding Key', 'GS Shadow Temple Like Like Room', 'GS Shadow Temple Crusher Room'], 
+             'Shadow Temple Freestanding Key', 'GS Shadow Temple Like Like Room', 'GS Shadow Temple Crusher Room', 
+             'GS Shadow Temple Single Giant Pot'], 
             ['Shadow Temple Hookshot Target']),
         create_dungeon_region(
             'Shadow Temple Wind Tunnel', 
             ['Shadow Temple Wind Hint Chest', 'Shadow Temple After Wind Enemy Chest', 
-             'Shadow Temple After Wind Hidden Chest', 'GS Shadow Temple Single Giant Pot', 'GS Shadow Temple Near Ship'], 
+             'Shadow Temple After Wind Hidden Chest', 'GS Shadow Temple Near Ship'], 
             ['Shadow Temple Boat']),
         create_dungeon_region(
             'Shadow Temple Beyond Boat', 
@@ -326,7 +327,7 @@ def create_regions(world):
              'GS Shadow Temple Tripple Giant Pot']),
         create_ow_region(
             'Death Mountain', 
-            ['Death Mountain Bombable Chest', 'Biggoron', 'DM Trail Freestanding PoH', 'GS Mountain Trail Bean Patch', 
+            ['Death Mountain Bombable Chest', 'DM Trail Freestanding PoH', 'GS Mountain Trail Bean Patch', 
              'GS Mountain Trail Bomb Alcove', 'GS Mountain Trail Path to Crater', 
              'GS Mountain Trail Above Dodongo\'s Cavern'], 
             ['Death Mountain Exit', 'Goron City Entrance', 'Mountain Crater Entrance', 'Mountain Summit Fairy', 
@@ -353,9 +354,8 @@ def create_regions(world):
         create_ow_region('Darunias Chamber', ['Darunias Joy'], ['Darunias Chamber Exit']),
         create_ow_region(
             'Death Mountain Crater Upper', 
-            ['DM Crater Wall Freestanding PoH', 'GS Death Mountain Crater Crate', 'DMC Deku Scrub Bombs'], 
-            ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 
-            'Top of Crater Grotto', 'DMC Hammer Grotto']),
+            ['DM Crater Wall Freestanding PoH', 'Biggoron', 'GS Death Mountain Crater Crate', 'DMC Deku Scrub Bombs'], 
+            ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto', 'DMC Hammer Grotto']),
         create_ow_region(
             'Death Mountain Crater Lower', 
             None, 

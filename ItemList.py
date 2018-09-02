@@ -483,9 +483,9 @@ def get_pool_core(world):
     if world.shopsanity == 'off':
         placed_items.update(vanilla_shop_items)
         if world.bombchus_in_logic:
-            placed_items['Kokiri Shop Item 8'] = 'Buy Bombchu (5)',
-            placed_items['Castle Town Bazaar Item 4'] = 'Buy Bombchu (5)',
-            placed_items['Kakariko Bazaar Item 4'] = 'Buy Bombchu (5)',
+            placed_items['Kokiri Shop Item 8'] = 'Buy Bombchu (5)'
+            placed_items['Castle Town Bazaar Item 4'] = 'Buy Bombchu (5)'
+            placed_items['Kakariko Bazaar Item 4'] = 'Buy Bombchu (5)'
         pool.extend(normal_rupees)
 
     else:

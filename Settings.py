@@ -543,10 +543,12 @@ setting_infos = [
         }),
     Setting_Info('scarecrow_song', str, 0, False, 
         {
+            'default': 'DAAAAAAA',
+            'const': 'DAAAAAAA',
+            'nargs': '?',
             'help': '''\
                     The song started with if 'free_scarecrow' is True
                     ''',
-            'action': 'store_true'
         },
         {
             'group': 'convenience',
@@ -893,11 +895,10 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Skulltula Token that can only be obtained
+                      Skulltula Tokens that can only be obtained
                       during the night expect you to have Sun's
-                      Song because needed to collect them. This
-                      option prevents needing to wait for time
-                      of day for some locations.
+                      Song to collect them. This prevents needing
+                      to wait until night for some locations.
                       '''
         }),
     Setting_Info('logic_no_big_poes', bool, 1, True, 
