@@ -61,7 +61,7 @@ def guivars_to_settings(guivars):
         # dropdown/radiobox
         if info.type == str:
             # set guivar to hexcode if custom color 
-            if re.match(r'Custom \(#[A-Fa-f0-9]{6}\)', guivar.get()):
+            if re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', guivar.get()):
                 result[name] = re.findall(r'[A-Fa-f0-9]{6}', guivar.get())[0]
             elif info.gui_params and 'options' in info.gui_params:
                 result[name] = info.gui_params['options'][guivar.get()]
