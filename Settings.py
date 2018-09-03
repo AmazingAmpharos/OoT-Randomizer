@@ -1336,21 +1336,36 @@ setting_infos = [
                 'Switch': 'switch',
             }
         }),
-
-    Setting_Info('disable_music', bool, 1, False,
+    Setting_Info('background_music', str, 2, False,
         {
-            'action': 'store_true',
+            'default': 'normal',
+            'const': 'normal',
+            'nargs': '?',
+            'choices': ['normal', 'off', 'random'],
             'help': '''\
-                    Disable background music. SFX and ambient sounds remain.
+                    Sets the background music behavior
+                    normal:      Areas play their normal background music
+                    off:         No background music
+                    random:      Areas play random background music
                     '''
         },
         {
-            'text': 'Disable Background Music',
+            'text': 'Background Music',
             'group': 'cosmetics',
-            'widget': 'Checkbutton',
-            'default': False,
+            'widget': 'Combobox',
+            'default': 'Normal',
+            'options': {
+                'Normal': 'normal',
+                'No Music': 'off',
+                'Random': 'random',
+            },
             'tooltip': '''\
-                       Disable background music. SFX and ambient sounds remain.
+                       'No Music': No background is played.
+                       Useful for playing your own music
+                       over the game.
+
+                       'Random': Area background music is
+                       randomized.
                        '''
         }),
 
