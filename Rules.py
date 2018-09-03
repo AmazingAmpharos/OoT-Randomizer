@@ -182,7 +182,7 @@ def global_rules(world):
     set_rule(world.get_location('Sheik in Crater'), lambda state: state.is_adult())
     set_rule(world.get_location('Link the Goron'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade') or state.has_explosives() or state.has_bow()))
     set_rule(world.get_entrance('Crater Access'), lambda state: state.is_adult() and (state.has('Progressive Strength Upgrade') or state.has_explosives() or state.has_bow()))
-    set_rule(world.get_entrance('Goron Shop'), lambda state: state.can_play('Zeldas Lullaby') or (state.is_adult() and (state.has('Progressive Strength Upgrade') or state.has_explosives() or state.has_bow())))
+    set_rule(world.get_entrance('Goron Shop'), lambda state: state.has_explosives() or state.has('Progressive Strength') or (state.has_bow()    and state.is_adult()) or ((state.has('Zeldas Letter') or world.open_kakariko) and ((state.has('Dins Fire') and state.has('Magic Meter')) or (state.can_play('Zeldas Lullaby') and state.has_sticks()))))
     set_rule(world.get_entrance('Lake Warp Pad'), lambda state: state.can_play('Serenade of Water') and state.can_leave_forest())
     set_rule(world.get_location('King Zora Thawed'), lambda state: state.has_blue_fire())
     set_rule(world.get_entrance('Zora Shop'), lambda state: state.has_blue_fire())

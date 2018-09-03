@@ -395,6 +395,7 @@ class CollectionState(object):
         for location in tunic_locations:
             if location.parent_region.name == 'Goron Shop':
                 if self.can_reach('Goron Shop') and \
+                    self.is_adult() and \
                     (self.has_explosives() or self.has('Progressive Strength Upgrade') or self.has_bow()):
                     return True
             elif location.parent_region.name == 'Zora Shop':
