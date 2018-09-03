@@ -1336,37 +1336,36 @@ setting_infos = [
                 'Switch': 'switch',
             }
         }),
+    Setting_Info('background_music', str, 2, False,
+        {
+            'default': 'normal',
+            'const': 'normal',
+            'nargs': '?',
+            'choices': ['normal', 'off', 'random'],
+            'help': '''\
+                    Sets the background music behavior
+                    normal:      Areas play their normal background music
+                    off:         No background music
+                    random:      Areas play random background music
+                    '''
+        },
+        {
+            'text': 'Background Music',
+            'group': 'cosmetics',
+            'widget': 'Combobox',
+            'default': 'Normal',
+            'options': {
+                'Normal': 'normal',
+                'No Music': 'off',
+                'Random': 'random',
+            },
+            'tooltip': '''\
+                       'No Music': No background is played.
+                       Useful for playing your own music
+                       over the game.
 
-    Setting_Info('disable_music', bool, 1, False,
-        {
-            'action': 'store_true',
-            'help': '''\
-                    Disable background music. SFX and ambient sounds remain.
-                    '''
-        },
-        {
-            'text': 'Disable Background Music',
-            'group': 'cosmetics',
-            'widget': 'Checkbutton',
-            'default': False,
-            'tooltip': '''\
-                       Disable background music. SFX and ambient sounds remain.
-                       '''
-        }),
-    Setting_Info('randomize_music', bool, 1, False,
-        {
-            'action': 'store_true',
-            'help': '''\
-                    Randomize background music.
-                    '''
-        },
-        {
-            'text': 'Randomize Background Music',
-            'group': 'cosmetics',
-            'widget': 'Checkbutton',
-            'default': False,
-            'tooltip': '''\
-                       Randomize background music.
+                       'Random': Area background music is
+                       randomized.
                        '''
         }),
 

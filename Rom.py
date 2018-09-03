@@ -1436,12 +1436,9 @@ def patch_rom(world, rom):
     random.seed()
     
     # patch music 
-    # randomize music
-    if world.randomize_music:
+    if world.background_music == 'random':
         randomize_music(rom)
-    
-    # disable music 
-    if world.disable_music:
+    elif world.background_music == 'off':    
         disable_music(rom)
 
     # patch tunic colors
@@ -1721,27 +1718,8 @@ def update_chest_sizes(rom, override_table):
         newChestType = chestTypeMap[chestType][itemType]
         default = (default & 0x0FFF) | newChestType
         rom.write_int16(address, default)
-        
-def randomize_music(rom):
-    sources = list(bgm_sequence_ids)
-    random.shuffle(sources)
-    musicseqbuf = list()
-    instrbuf = list()
-    for i in range(len(sources)):
-        source = sources[i][1]
-        musicseqbuf.append(rom.read_bytes(0xB89AE0 + (source * 0x10), 0x10))
-        instrbuf.append(rom.read_bytes(0xB89910 + 0xDD + (source * 2), 2))
-    for i in range(len(bgm_sequence_ids)):
-        dest = bgm_sequence_ids[i][1]
-        rom.write_bytes(0xB89AE0 + (dest * 0x10), musicseqbuf[i])
-        rom.write_bytes(0xB89910 + 0xDD + (dest * 2), instrbuf[i])
-        
-def disable_music(rom):
-    blank_track = rom.read_bytes(0xB89AE0, 0x10)
-    for i in range(len(bgm_sequence_ids)):
-        dest = bgm_sequence_ids[i][1]
-        rom.write_bytes(0xB89AE0 + (dest * 0x10), blank_track)
-    
+
+
 # Format: (Title, Sequence ID)
 bgm_sequence_ids = [
     ('Hyrule Field', 0x02),
@@ -1793,3 +1771,27 @@ bgm_sequence_ids = [
     ('Fire Boss', 0x6B),
     ('Mini-game', 0x6C)
 ]
+
+def randomize_music(rom):
+    # Read in all the Music data
+    bgm_data = []
+    for bgm in bgm_sequence_ids:
+        bgm_sequence = rom.read_bytes(0xB89AE0 + (bgm[1] * 0x10), 0x10)
+        bgm_instrument = rom.read_int16(0xB89910 + 0xDD + (bgm[1] * 2))
+        bgm_data.append((bgm_sequence, bgm_instrument))
+
+    # shuffle data
+    random.shuffle(bgm_data)
+
+    # Write Music data back in random ordering
+    for bgm in bgm_sequence_ids:
+        bgm_sequence, bgm_instrument = bgm_data.pop()
+        rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
+        rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
+        
+def disable_music(rom):
+    # First track is no music
+    blank_track = rom.read_bytes(0xB89AE0 + (0 * 0x10), 0x10)
+    for bgm in bgm_sequence_ids:
+        rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
+    
