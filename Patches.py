@@ -1270,14 +1270,14 @@ def patch_rom(world, rom):
     # actually write the save table to rom
     write_save_table(rom)
     
-    # disable music 
-    if world.disable_music:
-        rom.write_bytes(0xB3CB18, [0x00, 0x00, 0x20, 0x25])
-
-    patch_files(world, rom)
-
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
+    
+    # patch music 
+    if world.background_music == 'random':
+        randomize_music(rom)
+    elif world.background_music == 'off':    
+        disable_music(rom)
 
     # patch tunic colors
     # Custom color tunic stuff
@@ -1556,3 +1556,80 @@ def update_chest_sizes(rom, override_table):
         newChestType = chestTypeMap[chestType][itemType]
         default = (default & 0x0FFF) | newChestType
         rom.write_int16(address, default)
+
+
+# Format: (Title, Sequence ID)
+bgm_sequence_ids = [
+    ('Hyrule Field', 0x02),
+    ('Dodongos Cavern', 0x18),
+    ('Kakariko Adult', 0x19),
+    ('Battle', 0x1A),
+    ('Boss Battle', 0x1B),
+    ('Inside Deku Tree', 0x1C),
+    ('Market', 0x1D),
+    ('Title Theme', 0x1E),
+    ('House', 0x1F),
+    ('Jabu Jabu', 0x26),
+    ('Kakariko Child', 0x27),
+    ('Fairy Fountain', 0x28),
+    ('Zelda Theme', 0x29),
+    ('Fire Temple', 0x2A),
+    ('Forest Temple', 0x2C),
+    ('Castle Courtyard', 0x2D),
+    ('Ganondorf Theme', 0x2E),
+    ('Lon Lon Ranch', 0x2F),
+    ('Goron City', 0x30),
+    ('Miniboss Battle', 0x38),
+    ('Temple of Time', 0x3A),
+    ('Kokiri Forest', 0x3C),
+    ('Lost Woods', 0x3E),
+    ('Spirit Temple', 0x3F),
+    ('Horse Race', 0x40),
+    ('Ingo Theme', 0x42),
+    ('Fairy Flying', 0x4A),
+    ('Deku Tree', 0x4B),
+    ('Windmill Hut', 0x4C),
+    ('Shooting Gallery', 0x4E),
+    ('Sheik Theme', 0x4F),
+    ('Zoras Domain', 0x50),
+    ('Shop', 0x55),
+    ('Chamber of the Sages', 0x56),
+    ('File Select', 0x57),
+    ('Ice Cavern', 0x58),
+    ('Kaepora Gaebora', 0x5A),
+    ('Shadow Temple', 0x5B),
+    ('Water Temple', 0x5C),
+    ('Gerudo Valley', 0x5F),
+    ('Potion Shop', 0x60),
+    ('Kotake and Koume', 0x61),
+    ('Castle Escape', 0x62),
+    ('Castle Underground', 0x63),
+    ('Ganondorf Battle', 0x64),
+    ('Ganon Battle', 0x65),
+    ('Fire Boss', 0x6B),
+    ('Mini-game', 0x6C)
+]
+
+def randomize_music(rom):
+    # Read in all the Music data
+    bgm_data = []
+    for bgm in bgm_sequence_ids:
+        bgm_sequence = rom.read_bytes(0xB89AE0 + (bgm[1] * 0x10), 0x10)
+        bgm_instrument = rom.read_int16(0xB89910 + 0xDD + (bgm[1] * 2))
+        bgm_data.append((bgm_sequence, bgm_instrument))
+
+    # shuffle data
+    random.shuffle(bgm_data)
+
+    # Write Music data back in random ordering
+    for bgm in bgm_sequence_ids:
+        bgm_sequence, bgm_instrument = bgm_data.pop()
+        rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
+        rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
+        
+def disable_music(rom):
+    # First track is no music
+    blank_track = rom.read_bytes(0xB89AE0 + (0 * 0x10), 0x10)
+    for bgm in bgm_sequence_ids:
+        rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
+    

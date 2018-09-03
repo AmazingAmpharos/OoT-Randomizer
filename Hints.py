@@ -258,7 +258,7 @@ def buildGanonText(world, messages):
         text = get_raw_text(getHint('Validation Line').text)
         for location in world.get_locations():
             if location.name == 'Ganons Tower Boss Key Chest':
-                text += get_raw_text(getHint(location.item.name).text)
+                text += get_raw_text(getHint(getItemGenericName(location.item)).text)
     
     update_message_by_id(messages, 0x70CC, text)
         
