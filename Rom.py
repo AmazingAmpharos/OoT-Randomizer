@@ -1756,7 +1756,6 @@ bgm_sequence_ids = [
     ('Zoras Domain', 0x50),
     ('Shop', 0x55),
     ('Chamber of the Sages', 0x56),
-    ('File Select', 0x57),
     ('Ice Cavern', 0x58),
     ('Kaepora Gaebora', 0x5A),
     ('Shadow Temple', 0x5B),
