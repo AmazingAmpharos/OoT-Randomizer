@@ -55,13 +55,13 @@ def get_tunic_colors():
     return list(TunicColors.keys())
 
 def get_tunic_color_options():
-    return ["Random Choice", "Completely Random"] + get_tunic_colors()
+    return ["Custom Color", "Random Choice", "Completely Random"] + get_tunic_colors()
 
 def get_navi_colors():
     return list(NaviColors.keys())
 
 def get_navi_color_options():
-    return ["Random Choice", "Completely Random"] + get_navi_colors()
+    return ["Custom Color", "Random Choice", "Completely Random"] + get_navi_colors()
 
 class LocalRom(object):
     def __init__(self, settings, patch=True):
@@ -1460,7 +1460,11 @@ def patch_rom(world, rom):
             if world.tunic_colors[i] == 'Random Choice':
                 thisColor = randomColors[i]
             # grab the color from the list
-            color = TunicColors[thisColor]
+            elif thisColor in TunicColors:
+                color = TunicColors[thisColor]
+            # build color from hex code 
+            else:
+                color = list(int(thisColor[i:i+2], 16) for i in (0, 2 ,4))
         rom.write_bytes(Tunics[i], color)
 
     # patch navi colors
@@ -1487,7 +1491,12 @@ def patch_rom(world, rom):
                 if world.navi_colors[i] == 'Random Choice':
                     thisColor = randomColors[i]
                 # grab the color from the list
-                color = NaviColors[thisColor]
+                elif thisColor in NaviColors:
+                    color = NaviColors[thisColor]
+                # build color from hex code 
+                else:
+                    color = list(int(thisColor[i:i+2], 16) for i in (0, 2 ,4))
+                    color = color + [0xFF] + color + [0x00]
             rom.write_bytes(Navi[i][j], color)
 
     #Navi hints

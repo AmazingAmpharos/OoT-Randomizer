@@ -3,9 +3,11 @@ from argparse import Namespace
 from glob import glob
 import json
 import random
+import re
 import os
 import shutil
 from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, Button, filedialog, messagebox, ttk, HORIZONTAL, Toplevel
+from tkinter.colorchooser import *
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
@@ -58,7 +60,10 @@ def guivars_to_settings(guivars):
             result[name] = bool(guivar.get())
         # dropdown/radiobox
         if info.type == str:
-            if info.gui_params and 'options' in info.gui_params:
+            # set guivar to hexcode if custom color 
+            if re.match(r'Custom \(#[A-Fa-f0-9]{6}\)', guivar.get()):
+                result[name] = re.findall(r'[A-Fa-f0-9]{6}', guivar.get())[0]
+            elif info.gui_params and 'options' in info.gui_params:
                 result[name] = info.gui_params['options'][guivar.get()]
             else:
                 result[name] = guivar.get()
@@ -135,7 +140,7 @@ def guiMain(settings=None):
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
-
+        
         # Update any dependencies
         for info in setting_infos:
             if info.gui_params and 'dependency' in info.gui_params:
@@ -146,6 +151,12 @@ def guiMain(settings=None):
                         child.configure(state= 'normal' if dep_met else 'disabled')
                 else:
                     widgets[info.name].config(state = 'normal' if dep_met else 'disabled')
+                
+            if info.name in guivars and guivars[info.name].get() == 'Custom Color':
+                color = askcolor()
+                if color == (None, None):
+                    color = ((0,0,0),'#000000')
+                guivars[info.name].set('Custom (' + color[1] + ')')
 
 
     def import_settings(event=None):
