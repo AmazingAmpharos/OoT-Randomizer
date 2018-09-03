@@ -35,9 +35,12 @@ def settings_to_guivars(settings, guivars):
                 guivar.set( "" )
             else:
                 if info.gui_params and 'options' in info.gui_params:
-                    for gui_text,gui_value in info.gui_params['options'].items(): 
-                        if gui_value == value:
-                            guivar.set( gui_text )
+                    if 'Custom Color' in info.gui_params['options'] and re.match(r'^[A-Fa-f0-9]{6}$', value):
+                        guivar.set('Custom (#' + value + ')')
+                    else:
+                        for gui_text,gui_value in info.gui_params['options'].items(): 
+                            if gui_value == value:
+                                guivar.set( gui_text )
                 else:
                     guivar.set( value )
         # text field for a number...
