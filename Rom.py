@@ -35,7 +35,10 @@ class LocalRom(object):
             raise RuntimeError('ROM is not a valid OoT 1.0 ROM.')
         if len(self.buffer) == 0x2000000:
             if platform.system() == 'Windows':
-                subprocess.call(["Decompress\\Decompress.exe", file, decomp_file])
+                if 8 * struct.calcsize("P") == 64:
+                    subprocess.call(["Decompress\\Decompress.exe", file, decomp_file])
+                else:
+                    subprocess.call(["Decompress\\Decompress32.exe", file, decomp_file])
                 with open(decomp_file, 'rb') as stream:
                     self.buffer = read_rom(stream)
             elif platform.system() == 'Linux':
