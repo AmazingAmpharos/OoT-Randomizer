@@ -57,13 +57,13 @@ def get_tunic_colors():
     return list(TunicColors.keys())
 
 def get_tunic_color_options():
-    return ["Custom Color", "Random Choice", "Completely Random"] + get_tunic_colors()
+    return ["Random Choice", "Completely Random"] + get_tunic_colors()
 
 def get_navi_colors():
     return list(NaviColors.keys())
 
 def get_navi_color_options():
-    return ["Custom Color", "Random Choice", "Completely Random"] + get_navi_colors()
+    return ["Random Choice", "Completely Random"] + get_navi_colors()
 
 class LocalRom(object):
     def __init__(self, settings, patch=True):
