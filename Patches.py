@@ -1202,7 +1202,6 @@ def patch_rom(world, rom):
                         'IC':   ("the \x05\x44Ice Cavern", None, 0x87, 0x92)
         }
         for dungeon in world.dungeon_mq:
-            print(dungeon)
             if dungeon in ['GTG', 'GC']:
                 pass
             elif dungeon in ['BW', 'IC']:

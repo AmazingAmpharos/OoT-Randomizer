@@ -67,7 +67,7 @@ def buildGossipHints(world, messages):
                 0x0411, 0x0412, 0x0413, 0x0414, 0x0415, 0x0416, 0x0417, 0x0418,
                 0x0419, 0x041A, 0x041B, 0x041C, 0x041D, 0x041E, 0x041F, 0x0420]
 
-    #shuffles the stone addresses for randomization, always locations will be placed first and twice
+    #shuffles the stone addresses for randomization, always locations will be placed first
     random.shuffle(stoneIDs)
 
     # Add trial hints
@@ -83,7 +83,7 @@ def buildGossipHints(world, messages):
     # add required items locations for hints (good hints)
     requiredSample = world.spoiler.required_locations
     if len(requiredSample) >= 5:
-        requiredSample = random.sample(requiredSample, random.randint(4,5))
+        requiredSample = random.sample(requiredSample, random.randint(3,4))
     for location in requiredSample:
         if location.parent_region.dungeon:
             update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(location.parent_region.dungeon.name).text + \
@@ -107,7 +107,7 @@ def buildGossipHints(world, messages):
     # Add good location hints
     sometimesLocations = getHintGroup('location', world)
     if sometimesLocations:
-        for _ in range(0, random.randint(9,10) - len(alwaysLocations)):
+        for _ in range(0, random.randint(11,12) - len(alwaysLocations)):
             hint = random.choice(sometimesLocations)
             # Repick if location isn't new
             while hint.name in checkedLocations or hint.name in alwaysLocations:
@@ -144,8 +144,16 @@ def buildGossipHints(world, messages):
             (world.tokensanity == 'all' or locationWorld.item.name != 'Gold Skulltulla Token') and \
             not locationWorld.parent_region.dungeon]
     overworldSample = overworldlocations
-    if len(overworldSample) >= 4:
-        overworldSample = random.sample(overworldlocations, random.randint(3,4))
+    if len(overworldSample) >= 3:
+        # Use this hint type to balance hints given via trials
+        if world.trials == 3:
+            overworldSample = random.sample(overworldlocations, random.randint(1,2))
+        elif world.trials in [2, 4]:
+            overworldSample = random.sample(overworldlocations, random.randint(1,3))
+        elif world.trials in [1, 5]:
+            overworldSample = random.sample(overworldlocations, random.randint(2,3))
+        else:
+            overworldSample = random.sample(overworldlocations, random.randint(2,4))
     for locationWorld in overworldSample:
         checkedLocations.append(locationWorld.name)
         update_hint(messages, stoneIDs.pop(0), buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
