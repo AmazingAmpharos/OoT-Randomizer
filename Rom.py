@@ -1,3 +1,15 @@
+import io
+import json
+import logging
+import os
+import platform
+import struct
+import subprocess
+import random
+import copy
+
+from Utils import default_output_path
+
 class LocalRom(object):
     def __init__(self, settings, patch=True):
         self.last_address = None
