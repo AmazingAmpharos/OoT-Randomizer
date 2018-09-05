@@ -1767,7 +1767,6 @@ bgm_sequence_ids = [
     ('Zoras Domain', 0x50),
     ('Shop', 0x55),
     ('Chamber of the Sages', 0x56),
-    ('File Select', 0x57),
     ('Ice Cavern', 0x58),
     ('Kaepora Gaebora', 0x5A),
     ('Shadow Temple', 0x5B),
@@ -1799,6 +1798,9 @@ def randomize_music(rom):
         bgm_sequence, bgm_instrument = bgm_data.pop()
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
         rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
+        
+    # Write Fairy Fountain instrument to File Select (uses same track but different instrument set pointer for some reason)
+    rom.write_int16(0xB89910 + 0xDD + (0x57 * 2), rom.read_int16(0xB89910 + 0xDD + (0x28 * 2)))
         
 def disable_music(rom):
     # First track is no music
