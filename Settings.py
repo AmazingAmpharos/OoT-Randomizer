@@ -747,6 +747,58 @@ setting_infos = [
                       are all reduced to 10 Rupees.
                       '''
         }),    
+    Setting_Info('shopsanity', str, 2, True, 
+        {
+            'default': 'off',
+            'const': 'off',
+            'nargs': '?',
+            'choices': ['off', '0', '1', '2', '3', '4', 'random'],
+            'help': '''\
+                    Shop contents are randomized. There are Two items
+                    in every shop that are one time buy and are not
+                    refill items.
+                    off:        Normal Shops*
+                    0-4:        Shop contents are shuffled and N non-shop
+                                items are added to every shop. So more
+                                possible item locations.
+                    random:     Shop contents are shuffles and each shop
+                                will have a random number of non-shop items
+                    '''
+        },
+        {
+            'text': 'Shopsanity',
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Off',
+            'options': {
+                'Off': 'off',
+                'Shuffled Shops (0 Items)': '0',
+                'Shuffled Shops (1 Items)': '1',
+                'Shuffled Shops (2 Items)': '2',
+                'Shuffled Shops (3 Items)': '3',
+                'Shuffled Shops (4 Items)': '4',
+                'Shuffled Shops (Random)': 'random',
+            },
+            'tooltip':'''\
+                      Shop contents are randomized.
+
+                      (X Items): Shops have X random 
+                      non-shop items in every. They 
+                      will always be on the left side. 
+                      This means every shop will have 
+                      more possible item locations. 
+                      So +2 means 2 items per shop.
+
+                      (Random): Each shop will have
+                      a random number of non-shop
+                      items. Each shop can have a 
+                      maximum of 4 items.
+
+                      Logic guarantees you have access
+                      to a shop item refill to be able 
+                      to use the item.
+                      '''
+        }),       
     Setting_Info('shuffle_dungeon_items', str, 2, True,
         {
         'default': 'mapcompass',
@@ -824,59 +876,7 @@ setting_infos = [
                       'All Tokens': Effectively adds 100
                       new locations for items to appear.
                       '''
-        }),
-    Setting_Info('shopsanity', str, 2, True, 
-        {
-            'default': 'off',
-            'const': 'off',
-            'nargs': '?',
-            'choices': ['off', '0', '1', '2', '3', '4', 'random'],
-            'help': '''\
-                    Shop contents are randomized. There are Two items
-                    in every shop that are one time buy and are not
-                    refill items.
-                    off:        Normal Shops*
-                    0-4:        Shop contents are shuffled and N non-shop
-                                items are added to every shop. So more
-                                possible item locations.
-                    random:     Shop contents are shuffles and each shop
-                                will have a random number of non-shop items
-                    '''
-        },
-        {
-            'text': 'Shopsanity',
-            'group': 'logic',
-            'widget': 'Combobox',
-            'default': 'Off',
-            'options': {
-                'Off': 'off',
-                'Shuffled Shops (0 Items)': '0',
-                'Shuffled Shops (1 Items)': '1',
-                'Shuffled Shops (2 Items)': '2',
-                'Shuffled Shops (3 Items)': '3',
-                'Shuffled Shops (4 Items)': '4',
-                'Shuffled Shops (Random)': 'random',
-            },
-            'tooltip':'''\
-                      Shop contents are randomized.
-
-                      (X Items): Shops have X random 
-                      non-shop items in every. They 
-                      will always be on the left side. 
-                      This means every shop will have 
-                      more possible item locations. 
-                      So +2 means 2 items per shop.
-
-                      (Random): Each shop will have
-                      a random number of non-shop
-                      items. Each shop can have a 
-                      maximum of 4 items.
-
-                      Logic guarantees you have access
-                      to a shop item refill to be able 
-                      to use the item.
-                      '''
-        }),    
+        }), 
     Setting_Info('quest', str, 2, True, 
         {
             'default': 'vanilla',

@@ -328,7 +328,14 @@ default_connections = [('Links House Exit', 'Kokiri Forest'),
                        ('Castle Storms Grotto', 'Castle Storms Grotto'),
                        ('Zora River Plateau Open Grotto', 'Zora River Plateau Open Grotto'),
                        ('Zora River Plateau Bombable Grotto', 'Zora River Plateau Bombable Grotto'),
-                       ('Lake Hylia Grotto', 'Lake Hylia Grotto')
+                       ('Lake Hylia Grotto', 'Lake Hylia Grotto'),
+                       ('Meadow Storms Grotto', 'Meadow Storms Grotto'),
+                       ('Gerudo Valley Storms Grotto','Gerudo Valley Storms Grotto'),
+                       ('Desert Colossus Grotto','Desert Colossus Grotto'),
+                       ('Goron City Grotto', 'Goron City Grotto'), 
+                       ('DMC Hammer Grotto', 'DMC Hammer Grotto'), 
+                       ('Zora River Storms Grotto', 'Zora River Storms Grotto'), 
+                       ('Zora Shop Adult Access', 'Zora Shop'),
                       ]
 
 # non shuffled dungeons

@@ -124,6 +124,7 @@ def buildGossipHints(world, messages):
         # Choose a randome dungeon location that is a non-dungeon item
         locationWorld = random.choice([location for region in dungeon.regions for location in world.get_region(region).locations
             if location.item.type != 'Event' and \
+            location.item.type != 'Shop' and \
             not location.event and \
             not isDungeonItem(location.item) and \
             (world.tokensanity != 'off' or location.item.name != 'Gold Skulltulla Token') and\
@@ -140,6 +141,7 @@ def buildGossipHints(world, messages):
             not locationWorld.name in alwaysLocations and \
             not locationWorld.name in sometimesLocations and \
             locationWorld.item.type != 'Event' and \
+            locationWorld.item.type != 'Shop' and \
             not locationWorld.event and \
             (world.tokensanity == 'all' or locationWorld.item.name != 'Gold Skulltulla Token') and \
             not locationWorld.parent_region.dungeon]

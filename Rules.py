@@ -185,7 +185,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Goron Shop'), lambda state: state.has_explosives() or state.has('Progressive Strength') or (state.has_bow()    and state.is_adult()) or ((state.has('Zeldas Letter') or world.open_kakariko) and ((state.has('Dins Fire') and state.has('Magic Meter')) or (state.can_play('Zeldas Lullaby') and state.has_sticks()))))
     set_rule(world.get_entrance('Lake Warp Pad'), lambda state: state.can_play('Serenade of Water') and state.can_leave_forest())
     set_rule(world.get_location('King Zora Thawed'), lambda state: state.has_blue_fire())
-    set_rule(world.get_entrance('Zora Shop'), lambda state: state.has_blue_fire())
+    set_rule(world.get_entrance('Zora Shop Adult Access'), lambda state: state.has_blue_fire())
     set_rule(world.get_location('Zoras Fountain Bottom Freestanding PoH'), lambda state: state.has('Iron Boots') and (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
     set_rule(world.get_entrance('Water Temple Entrance'), lambda state: state.is_adult() and state.has('Iron Boots') and state.has('Progressive Hookshot') and (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
     set_rule(world.get_location('Sheik in Kakariko'), lambda state: state.is_adult() and state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion'))
@@ -282,8 +282,8 @@ def global_rules(world):
     set_rule(world.get_location('GS Death Mountain Crater Crate'), lambda state: state.can_child_attack())
     set_rule(world.get_location('GS Zora River Tree'), lambda state: state.can_child_attack())
     set_rule(world.get_location('HF Grotto Deku Scrub Piece of Heart'), lambda state: state.can_stun_deku()) 
-    set_rule(world.get_entrance('Zora River Song of Storms Grotto'), lambda state: state.can_play('Song of Storms') and state.can_stun_deku())
-    set_rule(world.get_entrance('Meadow Song of Storms Grotto'), lambda state: state.can_play('Song of Storms') and ((state.can_child_attack() or state.has_nuts() or state.has('Buy Deku Shield')) or (state.is_adult() and (state.can_play('Minuet of Forest') or state.can_play('Sarias Song')))))
+    set_rule(world.get_entrance('Zora River Storms Grotto'), lambda state: state.can_play('Song of Storms') and state.can_stun_deku())
+    set_rule(world.get_entrance('Meadow Storms Grotto'), lambda state: state.can_play('Song of Storms') and ((state.can_child_attack() or state.has_nuts() or state.has('Buy Deku Shield')) or (state.is_adult() and (state.can_play('Minuet of Forest') or state.can_play('Sarias Song')))))
     set_rule(world.get_entrance('Lake Hylia Grotto'), lambda state: state.is_adult())
     set_rule(world.get_location('LW Deku Scrub Deku Nuts'), lambda state: state.can_stun_deku()) 
     set_rule(world.get_location('LW Deku Scrub Deku Sticks'), lambda state: state.can_stun_deku()) 
@@ -293,7 +293,7 @@ def global_rules(world):
     set_rule(world.get_entrance('DMC Hammer Grotto'), lambda state: state.has('Hammer') and state.is_adult())
     set_rule(world.get_entrance('Goron City Grotto'), lambda state: state.is_adult() and state.has('Progressive Hookshot', 2) and (state.can_play('Song of Time') or (world.difficulty != 'ohko' and state.has_GoronTunic())))
     set_rule(world.get_entrance('Lon Lon Grotto'), lambda state: state.can_child_attack() or state.has_nuts() or state.has('Buy Deku Shield'))
-    set_rule(world.get_entrance('Gerudo Valley Grotto'), lambda state: state.can_play('Song of Storms'))
+    set_rule(world.get_entrance('Gerudo Valley Storms Grotto'), lambda state: state.can_play('Song of Storms'))
 
 
     for location in world.get_locations():

@@ -49,7 +49,7 @@ def create_regions(world):
         create_ow_region(
             'Sacred Forest Meadow', 
             ['Song from Saria'], 
-            ['Meadow Gate Exit', 'Meadow Fairy Grotto', 'Meadow Song of Storms Grotto']),
+            ['Meadow Gate Exit', 'Meadow Fairy Grotto', 'Meadow Storms Grotto']),
         create_ow_region('Lost Woods Bridge', ['Gift from Saria'], ['Kokiri Forest Entrance', 'Forest Exit']),
         create_ow_region('Hyrule Field', 
             ['Ocarina of Time', 'Song from Ocarina of Time'], 
@@ -85,7 +85,7 @@ def create_regions(world):
         create_ow_region(
             'Gerudo Valley Far Side', 
             ['Gerudo Valley Hammer Rocks Chest', 'GS Gerudo Valley Behind Tent', 'GS Gerudo Valley Pillar'], 
-            ['Fortress Entrance', 'Gerudo Valley Grotto']),
+            ['Fortress Entrance', 'Gerudo Valley Storms Grotto']),
         create_ow_region(
             'Gerudo Fortress', 
             ['Gerudo Fortress Rooftop Chest', 'Horseback Archery 1000 Points', 'Horseback Archery 1500 Points', 
@@ -370,7 +370,7 @@ def create_regions(world):
             'Zora River Shared', 
             ['Zora River Lower Freestanding PoH', 'Zora River Upper Freestanding PoH'], 
             ['Zora River Downstream', 'Zora River Plateau Open Grotto', 'Zora River Plateau Bombable Grotto', 
-             'Zora River Dive Warp', 'Zora River Song of Storms Grotto']),
+             'Zora River Dive Warp', 'Zora River Storms Grotto']),
         create_ow_region(
             'Zoras Domain', 
             ['Diving Minigame', 'Zoras Domain Torch Run', 'King Zora Moves'], 
@@ -382,7 +382,7 @@ def create_regions(world):
         create_ow_region(
             'Zoras Domain Frozen', 
             ['King Zora Thawed', 'GS Zora\'s Domain Frozen Waterfall'], 
-            ['Zoras Fountain Adult Access']),
+            ['Zoras Fountain Adult Access', 'Zora Shop Adult Access']),
         create_ow_region(
             'Outside Ice Cavern', 
             ['Zoras Fountain Iceberg Freestanding PoH', 'Zoras Fountain Bottom Freestanding PoH', 
@@ -525,7 +525,7 @@ def create_regions(world):
         create_grotto_region('Lost Woods Sales Grotto', 
             ['LW Grotto Deku Scrub Arrows', 'LW Grotto Deku Scrub Deku Nut Upgrade']),
         create_grotto_region('Meadow Fairy Grotto'),
-        create_grotto_region('Meadow Song of Storms Grotto',
+        create_grotto_region('Meadow Storms Grotto',
             ['SFM Grotto Deku Scrub Red Potion', 'SFM Grotto Deku Scrub Green Potion']),
         create_grotto_region('Front of Meadow Grotto', ['Wolfos Grotto Chest']),
         create_grotto_region('Lon Lon Grotto',
@@ -550,13 +550,13 @@ def create_regions(world):
             ['DMC Grotto Deku Scrub Deku Nuts', 'DMC Grotto Deku Scrub Bombs', 'DMC Grotto Deku Scrub Arrows']), 
         create_grotto_region('Zora River Plateau Open Grotto', ['Zora River Plateau Open Grotto Chest']),
         create_grotto_region('Zora River Plateau Bombable Grotto'),
-        create_grotto_region('Zora River Song of Storms Grotto',     
+        create_grotto_region('Zora River Storms Grotto',     
             ['ZR Grotto Deku Scrub Red Potion', 'ZR Grotto Deku Scrub Green Potion']),
         create_grotto_region('Lake Hylia Grotto',
             ['LH Grotto Deku Scrub Deku Nuts', 'LH Grotto Deku Scrub Bombs', 'LH Grotto Deku Scrub Arrows']),
         create_grotto_region('Desert Colossus Grotto',
             ['Desert Grotto Deku Scrub Red Potion', 'Desert Grotto Deku Scrub Green Potion']),
-        create_grotto_region('Gerudo Valley Grotto',
+        create_grotto_region('Gerudo Valley Storms Grotto',
             ['Valley Grotto Deku Scrub Red Potion', 'Valley Grotto Deku Scrub Green Potion']),
     ]
 

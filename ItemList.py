@@ -29,7 +29,7 @@ alwaysitems = ([
     + ['Hylian Shield'] * 2
     + ['Progressive Strength Upgrade'] * 3
     + ['Progressive Scale'] * 2
-    + ['Recovery Heart'] * 11
+    + ['Recovery Heart'] * 9
     + ['Bow'] * 3
     + ['Slingshot'] * 3
     + ['Bomb Bag'] * 3
@@ -89,13 +89,13 @@ veryharditems = (
 
 normal_rupees =(
     ['Rupees (5)'] * 16
-    + ['Rupees (20)'] * 6
+    + ['Rupees (20)'] * 5
     + ['Rupees (50)'] * 7
     + ['Rupees (200)'] * 6)
 
 shopsanity_rupees = (
     ['Rupees (5)'] * 5
-    + ['Rupees (20)'] * 11
+    + ['Rupees (20)'] * 10
     + ['Rupees (50)'] * 10
     + ['Rupees (200)'] * 8
     + ['Progressive Wallet'])
