@@ -1678,7 +1678,9 @@ def room_get_actors(rom, actor_func, room_data, scene, alternate=None):
     return actors
 
 
-def scene_get_actors(rom, actor_func, scene_data, scene, alternate=None, processed_rooms=[]):
+def scene_get_actors(rom, actor_func, scene_data, scene, alternate=None, processed_rooms=None):
+    if processed_rooms == None:
+        processed_rooms = []
     actors = {}
     scene_start = alternate or scene_data
     command = 0
@@ -1743,11 +1745,11 @@ def update_chest_sizes(rom, override_table):
             itemType = 1 # Long animation, big chest
         # Don't use boss chests
 
-        default = rom.read_int16(actor + 0x14)
+        default = rom.read_int16(actor + 14)
         chestType = default & 0xF000
         newChestType = chestTypeMap[chestType][itemType]
         default = (default & 0x0FFF) | newChestType
-        rom.write_int16(actor + 0x14, default)
+        rom.write_int16(actor + 14, default)
 
 def set_deku_salesman_data(rom):
     def set_deku_salesman_and_grotto_id(rom, actor, scene):
