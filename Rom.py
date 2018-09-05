@@ -37,6 +37,7 @@ TunicColors = {
     "NES Green": [0x00, 0xD0, 0x00],
     "Dark Green": [0x00, 0x25, 0x18],
     "Only": [80, 140, 240],
+    "Custom Color": [0, 0, 0],
 }
 
 NaviColors = {
@@ -49,6 +50,7 @@ NaviColors = {
     "Black": [0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00],
     "Tatl": [0xFF, 0xFF, 0xFF, 0xFF, 0xC8, 0x98, 0x00, 0x00],
     "Tael": [0x49, 0x14, 0x6C, 0xFF, 0xFF, 0x00, 0x00, 0x00],
+    "Custom Color": [0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00],
 }
 
 def get_tunic_colors():
@@ -1462,7 +1464,11 @@ def patch_rom(world, rom):
             if world.tunic_colors[i] == 'Random Choice':
                 thisColor = randomColors[i]
             # grab the color from the list
-            color = TunicColors[thisColor]
+            elif thisColor in TunicColors:
+                color = TunicColors[thisColor]
+            # build color from hex code 
+            else:
+                color = list(int(thisColor[i:i+2], 16) for i in (0, 2 ,4))
         rom.write_bytes(Tunics[i], color)
 
     # patch navi colors
@@ -1489,7 +1495,12 @@ def patch_rom(world, rom):
                 if world.navi_colors[i] == 'Random Choice':
                     thisColor = randomColors[i]
                 # grab the color from the list
-                color = NaviColors[thisColor]
+                elif thisColor in NaviColors:
+                    color = NaviColors[thisColor]
+                # build color from hex code 
+                else:
+                    color = list(int(thisColor[i:i+2], 16) for i in (0, 2 ,4))
+                    color = color + [0xFF] + color + [0x00]
             rom.write_bytes(Navi[i][j], color)
 
     #Navi hints
