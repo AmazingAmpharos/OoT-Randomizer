@@ -5,7 +5,7 @@ import re
 import random
 import hashlib
 
-from Rom import get_tunic_color_options, get_navi_color_options
+from Patches import get_tunic_color_options, get_navi_color_options
 from version import __version__
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
@@ -155,6 +155,25 @@ class Settings():
         self.sanatize_seed()
         self.numeric_seed = self.get_numeric_seed()
 
+def parse_custom_tunic_color(s):
+    if s == 'Custom Color':
+        raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
+    elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
+        return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
+    elif s in get_tunic_color_options():
+        return s
+    else:
+        raise argparse.ArgumentTypeError('Invalid color specified')
+
+def parse_custom_navi_color(s):
+    if s == 'Custom Color':
+        raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
+    elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
+        return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
+    elif s in get_navi_color_options():
+        return s
+    else:
+        raise argparse.ArgumentTypeError('Invalid color specified')
 
 # a list of the possible settings
 setting_infos = [
@@ -500,7 +519,7 @@ setting_infos = [
                     '''         
         },
         {
-            'text': 'Big Poe target count',
+            'text': 'Big Poe Target Count',
             'group': 'convenience',
             'widget': 'Combobox',
             'default': 'Random',
@@ -858,6 +877,40 @@ setting_infos = [
                       to use the item.
                       '''
         }),    
+    Setting_Info('quest', str, 2, True, 
+        {
+            'default': 'vanilla',
+            'const': 'vanilla',
+            'nargs': '?',
+            'choices': ['vanilla', 'master', 'mixed'],
+            'help': '''\
+                    Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
+                    Vanilla:       Dungeons will be the original Ocarina of Time dungeons.
+                    Master:        Dungeons will be in the form of the Master Quest.
+                    Mixed:         Each dungeon will randomly be either standard or Master Quest.
+                    '''
+        },
+        {
+            'text': 'Dungeon Quest',
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Vanilla',
+            'options': {
+                'Vanilla': 'vanilla',
+                'Master Quest': 'master',
+                'Mixed': 'mixed',
+            },
+            'tooltip':'''\
+                      'Vanilla': Dungeons will be in their
+                      default OoT form.
+
+                      'Master Quest': Dungeons will be in the
+                      form found in OoT: Master Quest.
+
+                      'Mixed': Each dungeon will have a
+                      random chance to be in either form.
+                      '''
+        }),
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
             'default': 50,
@@ -1411,21 +1464,36 @@ setting_infos = [
                 'Switch': 'switch',
             }
         }),
-
-    Setting_Info('disable_music', bool, 1, False,
+    Setting_Info('background_music', str, 2, False,
         {
-            'action': 'store_true',
+            'default': 'normal',
+            'const': 'normal',
+            'nargs': '?',
+            'choices': ['normal', 'off', 'random'],
             'help': '''\
-                    Disable background music. SFX and ambient sounds remain.
+                    Sets the background music behavior
+                    normal:      Areas play their normal background music
+                    off:         No background music
+                    random:      Areas play random background music
                     '''
         },
         {
-            'text': 'Disable Background Music',
+            'text': 'Background Music',
             'group': 'cosmetics',
-            'widget': 'Checkbutton',
-            'default': False,
+            'widget': 'Combobox',
+            'default': 'Normal',
+            'options': {
+                'Normal': 'normal',
+                'No Music': 'off',
+                'Random': 'random',
+            },
             'tooltip': '''\
-                       Disable background music. SFX and ambient sounds remain.
+                       'No Music': No background is played.
+                       Useful for playing your own music
+                       over the game.
+
+                       'Random': Area background music is
+                       randomized.
                        '''
         }),
 
@@ -1434,7 +1502,7 @@ setting_infos = [
             'default': 'Kokiri Green',
             'const': 'Kokiri Green',
             'nargs': '?',
-            'choices': get_tunic_color_options(),
+            'type': parse_custom_tunic_color,
             'help': '''\
                     Choose the color for Link's Kokiri Tunic. (default: %(default)s)
                     
@@ -1458,7 +1526,7 @@ setting_infos = [
             'default': 'Goron Red',
             'const': 'Goron Red',
             'nargs': '?',
-            'choices': get_tunic_color_options(),
+            'type': parse_custom_tunic_color,
             'help': '''\
                     Choose the color for Link's Goron Tunic. (default: %(default)s)
                     Color:              Make the Goron Tunic this color.
@@ -1484,7 +1552,7 @@ setting_infos = [
             'default': 'Zora Blue',
             'const': 'Zora Blue',
             'nargs': '?',
-            'choices': get_tunic_color_options(),
+            'type': parse_custom_tunic_color,
             'help': '''\
                     Choose the color for Link's Zora Tunic. (default: %(default)s)
                     Color:              Make the Zora Tunic this color.
@@ -1510,7 +1578,7 @@ setting_infos = [
             'default': 'White',
             'const': 'White',
             'nargs': '?',
-            'choices': get_navi_color_options(),
+            'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is idle. (default: %(default)s)
                     Color:             Make the Navi this color.
@@ -1536,7 +1604,7 @@ setting_infos = [
             'default': 'Yellow',
             'const': 'Yellow',
             'nargs': '?',
-            'choices': get_navi_color_options(),
+            'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is targeting an enemy. (default: %(default)s)
                     Color:             Make the Navi this color.
@@ -1562,7 +1630,7 @@ setting_infos = [
             'default': 'Light Blue',
             'const': 'Light Blue',
             'nargs': '?',
-            'choices': get_navi_color_options(),
+            'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is targeting an NPC. (default: %(default)s)
                     Color:             Make the Navi this color.
@@ -1588,7 +1656,7 @@ setting_infos = [
             'default': 'Green',
             'const': 'Green',
             'nargs': '?',
-            'choices': get_navi_color_options(),
+            'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is targeting a prop. (default: %(default)s)
                     Color:             Make the Navi this color.
