@@ -49,7 +49,7 @@ def create_regions(world):
         create_ow_region(
             'Sacred Forest Meadow', 
             ['Song from Saria'], 
-            ['Meadow Gate Exit', 'Meadow Fairy Grotto', 'Meadow Storms Grotto']),
+            ['Meadow Gate Exit', 'Meadow Fairy Grotto', 'Meadow Storms Grotto Child Access']),
         create_ow_region('Lost Woods Bridge', ['Gift from Saria'], ['Kokiri Forest Entrance', 'Forest Exit']),
         create_ow_region('Hyrule Field', 
             ['Ocarina of Time', 'Song from Ocarina of Time'], 
@@ -427,7 +427,7 @@ def create_regions(world):
         create_interior_region(
             'Forest Temple Entry Area', 
             ['Sheik Forest Song', 'GS Lost Woods Above Stage', 'GS Sacred Forest Meadow'], 
-            ['Adult Meadow Exit', 'Forest Temple Entrance', 'Meadow Storm Grotto Adult Access']),
+            ['Adult Meadow Exit', 'Forest Temple Entrance', 'Meadow Storms Grotto Adult Access']),
         create_dungeon_region(
             'Forest Temple Lobby', 
             ['Forest Temple First Chest', 'Forest Temple Chest Behind Lobby', 'GS Forest Temple First Room', 
