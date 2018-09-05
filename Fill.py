@@ -151,7 +151,7 @@ def fill_shops(window, worlds, locations, shoppool, itempool, attempts=15):
             continue
         break
     else:
-        raise FillError('Unable to place songs')
+        raise FillError('Unable to place shops')
 
 
 # Places the songs into the world at the Song locations

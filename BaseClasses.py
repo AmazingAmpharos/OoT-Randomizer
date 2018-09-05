@@ -354,18 +354,13 @@ class CollectionState(object):
         return self.has('Buy Deku Stick (1)')
 
     def has_bow(self):
-        return self.has('Bow') and \
-            (self.has('Buy Arrows (10)') or self.has('Buy Arrows (30)') or self.has('Buy Arrows (50)'))
+        return self.has('Bow')
 
     def has_slingshot(self):
-        return self.has('Slingshot') and self.has('Buy Deku Seeds (30)')
+        return self.has('Slingshot')
 
     def has_bombs(self):
-        return self.has('Bomb Bag') and \
-            (self.has('Buy Bombs (5) [25]') 
-            or self.has('Buy Bombs (5) [35]')
-            or self.has('Buy Bombs (10)')
-            or self.has('Buy Bombs (20)'))
+        return self.has('Bomb Bag')
 
     def has_blue_fire(self):
         return self.has_bottle() and \
@@ -383,7 +378,7 @@ class CollectionState(object):
         return self.has('Buy Bombchu (5)') or \
                self.has('Buy Bombchu (10)') or \
                self.has('Buy Bombchu (20)') or \
-               (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland'))
+               self.can_reach('Castle Town Bombchu Bowling')
 
     def has_bombchus(self):
         return (self.world.bombchus_in_logic and \

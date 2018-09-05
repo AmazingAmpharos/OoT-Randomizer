@@ -341,11 +341,11 @@ def create_regions(world):
         create_ow_region(
             'Death Mountain Crater Upper', 
             ['DM Crater Wall Freestanding PoH', 'Biggoron', 'GS Death Mountain Crater Crate', 'DMC Deku Scrub Bombs'], 
-            ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto', 'DMC Hammer Grotto']),
+            ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto']),
         create_ow_region(
             'Death Mountain Crater Lower', 
             None, 
-            ['Crater to City', 'Crater Fairy', 'Crater Bridge', 'Crater Ascent']),
+            ['Crater to City', 'Crater Fairy', 'Crater Bridge', 'Crater Ascent', 'DMC Hammer Grotto']),
         create_ow_region(
             'Death Mountain Crater Central', 
             ['DM Crater Volcano Freestanding PoH', 'Sheik in Crater', 'GS Mountain Crater Bean Patch'], 
@@ -374,7 +374,7 @@ def create_regions(world):
         create_ow_region(
             'Zoras Domain', 
             ['Diving Minigame', 'Zoras Domain Torch Run', 'King Zora Moves'], 
-            ['Zoras Domain Exit', 'Zoras Domain Dive Warp', 'Behind King Zora', 'Zora Shop']),
+            ['Zoras Domain Exit', 'Zoras Domain Dive Warp', 'Behind King Zora', 'Zora Shop Child Access']),
         create_ow_region(
             'Zoras Fountain', 
             ['GS Zora\'s Fountain Tree', 'GS Zora\'s Fountain Above the Log'], 
@@ -427,7 +427,7 @@ def create_regions(world):
         create_interior_region(
             'Forest Temple Entry Area', 
             ['Sheik Forest Song', 'GS Lost Woods Above Stage', 'GS Sacred Forest Meadow'], 
-            ['Adult Meadow Exit', 'Forest Temple Entrance']),
+            ['Adult Meadow Exit', 'Forest Temple Entrance', 'Meadow Storm Grotto Adult Access']),
         create_dungeon_region(
             'Forest Temple Lobby', 
             ['Forest Temple First Chest', 'Forest Temple Chest Behind Lobby', 'GS Forest Temple First Room', 
@@ -628,7 +628,7 @@ def create_regions(world):
             create_dungeon_region(
                 'Dodongos Cavern Climb', 
                 ['Dodongos Cavern Bomb Flower Platform', 'GS Dodongo\'s Cavern Vines Above Stairs',
-                'DC Deku Scrub Deku Seeds', 'DC Deku Scrub Deku Nuts'], 
+                 'DC Deku Scrub Deku Seeds', 'DC Deku Scrub Deku Nuts'], 
                 ['Dodongos Cavern Bridge Fall', 'Dodongos Cavern Slingshot Target']),
             create_dungeon_region(
                 'Dodongos Cavern Far Bridge', 
