@@ -1302,7 +1302,7 @@ def patch_rom(world, rom):
         else:
             # handle random
             if world.tunic_colors[i] == 'Random Choice':
-                thisColor = randomColors[i]
+                color = TunicColors[randomColors[i]]
             # grab the color from the list
             elif thisColor in TunicColors: 
                 color = TunicColors[thisColor] 
@@ -1333,7 +1333,7 @@ def patch_rom(world, rom):
             else:
                 # handle random
                 if world.navi_colors[i] == 'Random Choice':
-                    thisColor = randomColors[i]
+                    color = NaviColors[randomColors[i]]
                 # grab the color from the list
                 elif thisColor in NaviColors: 
                     color = NaviColors[thisColor] 
