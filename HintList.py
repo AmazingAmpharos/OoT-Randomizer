@@ -174,7 +174,7 @@ hintTable = {'Hammer':                                                   ("the d
              'Gerudo Training Grounds Underwater Silver Rupee Chest':    ("They say those who seek&sunken silver rupees will&find", 'location'),
              'Gerudo Training Grounds Maze Path Final Chest':            ("They say the final prize&of the thieves\' training&is", 'location'),
              'Gerudo Training Grounds MQ Underwater Silver Rupee Chest': ("They say those who seek&sunken silver rupees will&find", 'location'),
-             'Gerudo Training Grounds MQ Ice Arrows Chest':              ("They say the final prize&of the thieves\' training&is" 'location'),
+             'Gerudo Training Grounds MQ Ice Arrows Chest':              ("They say the final prize&of the thieves\' training&is", 'location'),
              'Bottom of the Well Defeat Boss':                           ("They say that Dead Hand&holds", 'location'),
              'Silver Gauntlets Chest':                                   ("They say that upon&the Colossus's southern edge&is", 'location'),
              'Mirror Shield Chest':                                      ("They say that upon&the Colossus's northern edge&is", 'location'),
