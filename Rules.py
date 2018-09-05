@@ -347,16 +347,10 @@ def set_shop_rules(world):
                     add_rule(location, lambda state: state.is_adult())
 
             # Add item prerequisit checks
-            if location.item.name in ['Buy Arrows (10)', 'Buy Arrows (30)', 'Buy Arrows (50)']:
-                add_rule(location, lambda state: state.has('Bow'))
             if location.item.name in ['Buy Blue Fire', 'Buy Blue Potion', 'Buy Bottle Bug', 'Buy Fish', 'Buy Green Potion', 'Buy Poe', 'Buy Red Potion [30]', 'Buy Red Potion [40]', 'Buy Red Potion [50]', 'Fairy\'s Spirit']:
                 add_rule(location, lambda state: state.has_bottle())
             if location.item.name in ['Buy Bombchu (10)', 'Buy Bombchu (20)', 'Buy Bombchu (5)']:
                 add_rule(location, lambda state: state.has_bombchus_item())
-            if location.item.name in ['Buy Bombs (10)', 'Buy Bombs (20)', 'Buy Bombs (30)', 'Buy Bombs (5) [25]', 'Buy Bombs (5) [35]']:
-                add_rule(location, lambda state: state.has('Bomb Bag'))
-            if location.item.name in ['Buy Deku Seeds (30)']:
-                add_rule(location, lambda state: state.has('Slingshot'))
 
 
 def dung_rules_dt0(world):

@@ -149,6 +149,15 @@ def patch_rom(world, rom):
         rom.write_bytes(0x00E2D892, [0xA6, 0x72])
         rom.write_byte(0x00E2D897, 0x18)
 
+        # Cannot buy bombchu refills without Bomb Bag
+        rom.write_int32s(0xC01078,
+            [0x3C098012,    # lui     t1, 0x8012
+             0x812AA673,    # lb      t2, -0x598D(t1)    ; bombbag size (SAVE_CONTEXT + 0xA3)
+             0x314A0018,    # andi    t2, t2, 0x18
+             0x15200002,    # bnez    t2, @@return       ; If has bombbag, return 1 (can buy)
+             0x24020000,    # li      v0, 0
+             0x24020002])   # li      v0, 2              ; else, return 2, (can't buy)
+
     # Change Bazaar check to Bomb Bag (Child?)
     rom.write_bytes(0x00C0082A, [0x00, 0x18])
     rom.write_bytes(0x00C0082C, [0x00, 0x0E, 0X74, 0X02])
