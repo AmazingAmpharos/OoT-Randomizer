@@ -1,6 +1,7 @@
 import random
 import logging
 from BaseClasses import CollectionState
+from Rules import set_shop_rules
 
 class FillError(RuntimeError):
     pass
@@ -48,6 +49,9 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     if shop_locations:
         random.shuffle(shop_locations)
         fill_shops(window, worlds, shop_locations, shopitempool, itempool + songitempool + dungeon_items)
+    # Update the shop item access rules    
+    for world in worlds:
+        set_shop_rules(world)
 
     # If there are dungeon items that are restricted to their original dungeon,
     # we must place them first to make sure that there is always a location to

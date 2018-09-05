@@ -56,7 +56,7 @@ class World(object):
             'SpT': False,
             'ShT': False,
             'GC': False
-}
+        }
 
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
@@ -71,7 +71,7 @@ class World(object):
         ret.id = self.id
         from Regions import create_regions
         from Dungeons import create_dungeons
-        from Rules import set_rules
+        from Rules import set_rules, set_shop_rules
         create_regions(ret)
         create_dungeons(ret)
         set_rules(ret)
@@ -99,6 +99,8 @@ class World(object):
 
         # copy progress items in state
         ret.state.prog_items = copy.copy(self.state.prog_items)
+
+        set_shop_rules(ret)
 
         return ret
 
@@ -369,7 +371,7 @@ class CollectionState(object):
         return self.has_bottle() and \
                 (self.can_reach('Ice Cavern')
                 or self.can_reach('Ganons Castle Water Trial') 
-                or (self.has('Buy Blue Fire') and self.has('Progressive Wallet', 2)))
+                or self.has('Buy Blue Fire'))
 
     def has_ocarina(self):
         return (self.has('Ocarina') or self.has("Fairy Ocarina") or self.has("Ocarina of Time"))
@@ -380,7 +382,7 @@ class CollectionState(object):
     def can_buy_bombchus(self):
         return self.has('Buy Bombchu (5)') or \
                self.has('Buy Bombchu (10)') or \
-               (self.has('Buy Bombchu (20)') and self.has('Progressive Wallet')) or \
+               self.has('Buy Bombchu (20)') or \
                (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland'))
 
     def has_bombchus(self):
@@ -390,6 +392,12 @@ class CollectionState(object):
                     or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
             or (not self.world.bombchus_in_logic and self.has('Bomb Bag') and \
                         self.can_buy_bombchus())
+
+    def has_bombchus_item(self):
+        return (self.world.bombchus_in_logic and \
+                (any(pritem.startswith('Bombchus') for pritem in self.prog_items) \
+                or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
+            or (not self.world.bombchus_in_logic and self.has('Bomb Bag'))
 
     def has_explosives(self):
         return self.has_bombs() or self.has_bombchus()
@@ -406,32 +414,11 @@ class CollectionState(object):
     def can_see_with_lens(self):
         return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
 
-    def can_reach_tunic(self, tunic):
-        tunic_locations = self.world.find_items(tunic)
-        for location in tunic_locations:
-            if location.parent_region.name == 'Goron Shop':
-                if self.can_reach('Goron Shop') and \
-                    self.is_adult() and \
-                    (self.has_explosives() or self.has('Progressive Strength Upgrade') or self.has_bow()):
-                    return True
-            elif location.parent_region.name == 'Zora Shop':
-                if self.can_reach('Zoras Domain Adult Access', 'Entrance') and self.has_blue_fire():
-                    return True
-            else:
-                return True
-        return False
-
     def has_GoronTunic(self):
-        return (self.has('Goron Tunic') or 
-                    (self.has('Progressive Wallet') and 
-                        self.has('Buy Goron Tunic') and 
-                        self.can_reach_tunic('Buy Goron Tunic')))
+        return (self.has('Goron Tunic') or self.has('Buy Goron Tunic'))
 
     def has_ZoraTunic(self):
-        return (self.has('Zora Tunic') or 
-                    (self.has('Progressive Wallet', 2) and 
-                        self.has('Buy Zora Tunic') and 
-                        self.can_reach_tunic('Buy Zora Tunic')))
+        return (self.has('Zora Tunic') or self.has('Buy Zora Tunic'))
 
     def can_leave_forest(self):
         return (self.world.open_forest or (self.has_slingshot() and self.has('Kokiri Sword') and self.has('Buy Deku Shield')))
@@ -602,10 +589,17 @@ class CollectionState(object):
         item_locations = []
         if worlds[0].spoiler.playthrough:
             item_locations = [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
-                if location.item.type != 'Event' and not location.event and (worlds[0].keysanity or not location.item.key)]
+                if location.item.type != 'Event' 
+                and location.item.type != 'Shop'
+                 and not location.event 
+                 and (worlds[0].keysanity or not location.item.key)]
         else:
             item_locations = [location for world in worlds for location in world.get_filled_locations() 
-                if location.item.advancement and location.item.type != 'Event' and not location.event and (worlds[0].keysanity or not location.item.key)]
+                if location.item.advancement 
+                and location.item.type != 'Event' 
+                and location.item.type != 'Shop' 
+                and not location.event 
+                and (worlds[0].keysanity or not location.item.key)]
 
         required_locations = []
         for location in item_locations:

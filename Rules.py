@@ -301,9 +301,7 @@ def global_rules(world):
             forbid_item(location, 'Ice Trap')
         add_item_rule(location, lambda i: not (i.type == 'Song' and not i.world.shuffle_song_items and i.world.id != location.world.id))
         if location.type == 'Shop':
-            if location.name.startswith('Bombchu Shop') or location.name.startswith('Castle Town Potion Shop') or location.name.startswith('Castle Town Bazaar'):
-                forbid_item(location, 'Buy Goron Tunic')
-                forbid_item(location, 'Buy Zora Tunic')
+            forbid_item(location, 'Biggoron Sword')
 
             if location.name in world.shop_prices:
                 location.price = world.shop_prices[location.name]
@@ -317,6 +315,46 @@ def global_rules(world):
     # For now just avoiding this combination, since BigSword is not that important.
     forbid_item(world.get_location('Bombchu Bowling Bomb Bag'), 'Biggoron Sword')
     forbid_item(world.get_location('Bombchu Bowling Piece of Heart'), 'Biggoron Sword')
+
+
+# This function should be ran once after the shop items are placed in the world.
+# It should be ran before other items are placed in the world so that logic has
+# the correct checks for them. This is save to do since every shop is still
+# accessible when all items are obtained and every shop item is not.
+# This function should also be called when a world is copied if the original world
+# had called this function because the world.copy does not copy the rules
+def set_shop_rules(world):
+    for location in world.get_filled_locations():
+        if location.item.type == 'Shop':
+            # Add wallet requirements
+            if location.item.name in ['Buy Arrows (50)', 'Buy Fish', 'Buy Goron Tunic', 'Buy Bombchu (20)', 'Buy Bombs (30)']:
+                add_rule(location, lambda state: state.has('Progressive Wallet'))
+            elif location.item.name in ['Buy Zora Tunic', 'Buy Blue Fire']:
+                add_rule(location, lambda state: state.has('Progressive Wallet', 2))
+
+            # Add adult only checks
+            if location.item.name in ['Buy Goron Tunic', 'Buy Zora Tunic']:
+                if location.parent_region.name == 'Goron Shop':
+                    add_rule(location, lambda state: state.is_adult() and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow()))
+                elif location.parent_region.name == 'Zora Shop':
+                    add_rule(location, lambda state: state.can_reach('Zora Shop Adult Access', 'Entrance'))
+                elif location.parent_region.name in ['Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
+                    set_rule(location, lambda state: False)
+                else:
+                    add_rule(location, lambda state: state.is_adult())
+
+            # Add item prerequisit checks
+            if location.item.name in ['Buy Arrows (10)', 'Buy Arrows (30)', 'Buy Arrows (50)']:
+                add_rule(location, lambda state: state.has('Bow'))
+            if location.item.name in ['Buy Blue Fire', 'Buy Blue Potion', 'Buy Bottle Bug', 'Buy Fish', 'Buy Green Potion', 'Buy Poe', 'Buy Red Potion [30]', 'Buy Red Potion [40]', 'Buy Red Potion [50]', 'Fairy\'s Spirit']:
+                add_rule(location, lambda state: state.has_bottle())
+            if location.item.name in ['Buy Bombchu (10)', 'Buy Bombchu (20)', 'Buy Bombchu (5)']:
+                add_rule(location, lambda state: state.has_bombchus_item())
+            if location.item.name in ['Buy Bombs (10)', 'Buy Bombs (20)', 'Buy Bombs (30)', 'Buy Bombs (5) [25]', 'Buy Bombs (5) [35]']:
+                add_rule(location, lambda state: state.has('Bomb Bag'))
+            if location.item.name in ['Buy Deku Seeds (30)']:
+                add_rule(location, lambda state: state.has('Slingshot'))
+
 
 def dung_rules_dt0(world):
 	# Deku Tree Vanilla
