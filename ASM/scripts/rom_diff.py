@@ -27,4 +27,4 @@ if run:
     diffs.append({ run[0][0]: [value for (_, value) in run] })
 
 with open(output_path, 'w') as output_file:
-    json.dump(diffs, output_file)
+    json.dump(diffs, output_file, indent=4, sort_keys=True)
