@@ -651,12 +651,12 @@ class Region(object):
 
     def can_fill(self, item):
         is_dungeon_restricted = False
-        if self.world.shuffle_mapcompass == 'dungeon':
-            is_dungeon_restricted = item.map or item.compass
-        elif self.world.shuffle_smallkeys == 'dungeon':
-            is_dungeon_restricted = item.smallkey
-        elif self.world.shuffle_bosskeys == 'dungeon':
-            is_dungeon_restricted = item.bosskey
+        if item.map or item.compass:
+            is_dungeon_restricted = self.world.shuffle_mapcompass == 'dungeon'
+        elif item.smallkey:
+            is_dungeon_restricted = self.world.shuffle_smallkeys == 'dungeon'
+        elif item.bosskey:
+            is_dungeon_restricted = self.world.shuffle_bosskeys == 'dungeon'
 
         if is_dungeon_restricted:
             return self.dungeon and self.dungeon.is_dungeon_item(item)
