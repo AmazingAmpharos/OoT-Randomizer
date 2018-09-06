@@ -340,7 +340,7 @@ def set_shop_rules(world):
                     add_rule(location, lambda state: state.is_adult() and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow()))
                 elif location.parent_region.name == 'Zora Shop':
                     add_rule(location, lambda state: state.can_reach('Zora Shop Adult Access', 'Entrance'))
-                elif location.parent_region.name in ['Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
+                elif location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
                     set_rule(location, lambda state: False)
                 else:
                     add_rule(location, lambda state: state.is_adult())
