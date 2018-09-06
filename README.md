@@ -91,11 +91,13 @@ The Fairy Ocarina and Ocarina of Time can be shuffled into the item pool with `s
 
 Enabling `shuffle_song_items` will make learning songs into items and shuffle the songs into the item pool. Song can appear at any location, and any item can appear at the original song locations.
 
-## Keysanity
+## Shuffle Dungeon Items
 
-Dungeon items (maps, compasses, small keys, boss keys) are shuffled into the item pool at large.
+The shuffling rules can be set separately for Maps/Compasses, Small Keys, and Boss Keys using `shuffle_mapcompass`, `shuffle_smallkeys`, and `shuffle_bosskeys` respectively. They can use one of the following rules:
 
-This was actually mostly implemented, I just pulled the trigger...
+- `remove`: The dungeon item type is removed from the game. If it is a key, then the associated doors will be unlocked.
+- `dungeon`: The dungeon item type will always appear in their own dungeon.
+- `keysanity`: The dungeon item type are shuffles into the pool and can appear anywhere.
 
 ## Tokensanity
 

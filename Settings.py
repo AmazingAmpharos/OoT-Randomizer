@@ -793,10 +793,6 @@ setting_infos = [
                       a random number of non-shop
                       items. Each shop can have a 
                       maximum of 4 items.
-
-                      Logic guarantees you have access
-                      to a shop item refill to be able 
-                      to use the item.
                       '''
         }),       
     Setting_Info('shuffle_mapcompass', str, 2, True,
