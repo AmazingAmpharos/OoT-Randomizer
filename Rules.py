@@ -340,7 +340,7 @@ def set_shop_rules(world):
                     add_rule(location, lambda state: state.is_adult() and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow()))
                 elif location.parent_region.name == 'Zora Shop':
                     add_rule(location, lambda state: state.can_reach('Zora Shop Adult Access', 'Entrance'))
-                elif location.parent_region.name in ['Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
+                elif location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
                     set_rule(location, lambda state: False)
                 else:
                     add_rule(location, lambda state: state.is_adult())
@@ -382,8 +382,8 @@ def dung_rules_dc0(world):
     set_rule(world.get_entrance('Dodongos Cavern Bomb Drop'), lambda state: state.has_explosives())
 
     # Boss
-    set_rule(world.get_location('King Dodongo'), lambda state: (state.has('Bomb Bag') or state.has('Progressive Strength Upgrade')) and (state.is_adult() or state.has_sticks() or state.has('Kokiri Sword')))
-    set_rule(world.get_location('King Dodongo Heart'), lambda state: (state.has('Bomb Bag') or state.has('Progressive Strength Upgrade')) and (state.is_adult() or state.has_sticks() or state.has('Kokiri Sword')))
+    set_rule(world.get_location('King Dodongo'), lambda state: (state.has_bombs() or state.has('Progressive Strength Upgrade')) and (state.is_adult() or state.has_sticks() or state.has('Kokiri Sword')))
+    set_rule(world.get_location('King Dodongo Heart'), lambda state: (state.has_bombs() or state.has('Progressive Strength Upgrade')) and (state.is_adult() or state.has_sticks() or state.has('Kokiri Sword')))
 
     # GS
     set_rule(world.get_location('GS Dodongo\'s Cavern East Side Room'), lambda state: state.has_explosives() or state.is_adult() or state.has_slingshot() or state.has('Boomerang') or state.has_sticks() or state.has('Kokiri Sword'))
@@ -523,7 +523,7 @@ def dung_rules_sht0(world):
     set_rule(world.get_location('Shadow Temple Falling Spikes Upper Chest'), lambda state: state.has('Progressive Strength Upgrade'))
     set_rule(world.get_location('Shadow Temple Falling Spikes Switch Chest'), lambda state: state.has('Progressive Strength Upgrade'))
     set_rule(world.get_location('Shadow Temple Invisible Spikes Chest'), lambda state: state.has('Small Key (Shadow Temple)', 2))
-    set_rule(world.get_location('Shadow Temple Freestanding Key'), lambda state: state.has('Small Key (Shadow Temple)', 2) and state.has('Progressive Hookshot') and (state.has('Bomb Bag') or state.has('Progressive Strength Upgrade')))
+    set_rule(world.get_location('Shadow Temple Freestanding Key'), lambda state: state.has('Small Key (Shadow Temple)', 2) and state.has('Progressive Hookshot') and (state.has_bombs() or state.has('Progressive Strength Upgrade')))
 
     # boss rules
     set_rule(world.get_location('Bongo Bongo'), lambda state: state.has('Small Key (Shadow Temple)', 5) and (state.has_bow() or state.has('Progressive Hookshot', 2)) and state.has('Boss Key (Shadow Temple)'))
