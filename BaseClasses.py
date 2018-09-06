@@ -27,7 +27,7 @@ class World(object):
         self.settings = settings
         self.__dict__.update(settings.__dict__)
         # rename a few attributes...
-        self.keysanity = self.shuffle_smallkeys == 'keysanity'
+        self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
         # group a few others
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
