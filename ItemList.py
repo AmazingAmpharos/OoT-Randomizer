@@ -550,6 +550,19 @@ def get_pool_core(world):
     pool.append(tradeitem)
     pool.extend(songlist)
 
+    if world.shuffle_mapcompass == 'remove':
+        for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:
+            world.state.collect(item)
+            pool.append(random.choice(harditems))
+    if world.shuffle_smallkeys == 'remove':
+        for item in [item for dungeon in world.dungeons for item in dungeon.small_keys]:
+            world.state.collect(item)
+            pool.append(random.choice(harditems))
+    if world.shuffle_bosskeys == 'remove':
+        for item in [item for dungeon in world.dungeons for item in dungeon.boss_key]:
+            world.state.collect(item)
+            pool.append(random.choice(harditems))
+
     return (pool, placed_items)
 
 def choose_trials(world):

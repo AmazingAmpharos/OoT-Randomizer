@@ -1320,6 +1320,11 @@ def patch_rom(world, rom):
         # update actor IDs
         set_deku_salesman_data(rom)
 
+    if world.shuffle_smallkeys == 'remove' or world.shuffle_bosskeys == 'remove':
+        locked_doors = get_locked_doors(rom, world)
+        for _,[door_byte, door_bits] in locked_doors.items():
+            write_bits_to_save(door_byte, door_bits)
+
     #Fix item chest animations
     chestAnimations = {
         0x3D: 0xED, #0x13 #Heart Container 
@@ -1663,7 +1668,8 @@ def room_get_actors(rom, actor_func, room_data, scene, alternate=None):
             actor_count = rom.read_byte(room_data + 1)
             actor_list = room_start + (rom.read_int32(room_data + 4) & 0x00FFFFFF)
             for _ in range(0, actor_count):
-                entry = actor_func(rom, actor_list, scene)
+                actor_id = rom.read_int16(actor_list)
+                entry = actor_func(rom, actor_id, actor_list, scene)
                 if entry:
                     actors[actor_list] = entry
                 actor_list = actor_list + 16
@@ -1696,6 +1702,15 @@ def scene_get_actors(rom, actor_func, scene_data, scene, alternate=None, process
                     actors.update(room_get_actors(rom, actor_func, room_data, scene))
                     processed_rooms.append(room_data)
                 room_list = room_list + 8
+        if command == 0x0E: #transition actor list
+            actor_count = rom.read_byte(scene_data + 1)
+            actor_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
+            for _ in range(0, actor_count):
+                actor_id = rom.read_int16(actor_list + 4)
+                entry = actor_func(rom, actor_id, actor_list, scene)
+                if entry:
+                    actors[actor_list] = entry
+                actor_list = actor_list + 16                
         if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
             header_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
             for alt_id in range(0,2):
@@ -1722,8 +1737,7 @@ def get_override_itemid(override_table, scene, type, flags):
     return None
 
 def update_chest_sizes(rom, override_table):
-    def get_chest(rom, actor, scene):
-        actor_id = rom.read_int16(actor);
+    def get_chest(rom, actor_id, actor, scene):
         if actor_id == 0x000A: #Chest Actor
             actor_var = rom.read_int16(actor + 14)
             return [scene, actor_var & 0x001F]
@@ -1752,8 +1766,7 @@ def update_chest_sizes(rom, override_table):
         rom.write_int16(actor + 14, default)
 
 def set_deku_salesman_data(rom):
-    def set_deku_salesman_and_grotto_id(rom, actor, scene):
-        actor_id = rom.read_int16(actor);
+    def set_deku_salesman_and_grotto_id(rom, actor_id, actor, scene):
         if actor_id == 0x009B: #Grotto
             actor_zrot = rom.read_int16(actor + 12)
             actor_var = rom.read_int16(actor + 14);
@@ -1772,6 +1785,30 @@ def set_deku_salesman_data(rom):
     grotto_scenes = set()
 
     get_actor_list(rom, set_deku_salesman_and_grotto_id)
+
+def get_locked_doors(rom, world):
+    def locked_door(rom, actor_id, actor, scene):
+        actor_var = rom.read_int16(actor + 14)
+        actor_type = actor_var >> 6
+        actor_flag = actor_var & 0x003F
+
+        flag_id = (1 << actor_flag)
+        flag_byte = 3 - (actor_flag >> 3)
+        flag_bits = 1 << (actor_flag & 0x07)
+
+        # If locked door, set the door's unlock flag
+        if world.shuffle_smallkeys == 'remove':
+            if actor_id == 0x0009 and actor_type == 0x02:
+                return [0x00D4 + scene * 0x1C + 0x04 + flag_byte, flag_bits]
+            if actor_id == 0x002E and actor_type == 0x0B:
+                return [0x00D4 + scene * 0x1C + 0x04 + flag_byte, flag_bits]
+
+        # If boss door, set the door's unlock flag
+        if world.shuffle_bosskeys == 'remove':
+            if actor_id == 0x002E and actor_type == 0x05:
+                return [0x00D4 + scene * 0x1C + 0x04 + flag_byte, flag_bits]
+
+    return get_actor_list(rom, locked_door)
 
 def place_shop_items(rom, shop_items, messages, locations, init_shop_id=False): 
     if init_shop_id: 

@@ -117,6 +117,7 @@ def guiMain(settings=None):
 
     #Rules Tab
     frames['open']   = LabelFrame(frames['rules_tab'], text='Open',   labelanchor=NW)
+    frames['world']  = LabelFrame(frames['rules_tab'], text='World',   labelanchor=NW)
     frames['logic']  = LabelFrame(frames['rules_tab'], text='Shuffle',  labelanchor=NW)
 
     # Logic tab
@@ -326,8 +327,9 @@ def guiMain(settings=None):
 
     # pack the hierarchy
 
-    frames['open'].pack(  fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
-    frames['logic'].pack( fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
+    frames['logic'].pack( fill=BOTH, expand=True, anchor=N, side=RIGHT, pady=(5,1) )
+    frames['open'].pack(  fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
+    frames['world'].pack( fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1) )
 
     # Logic tab
     frames['rewards'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )

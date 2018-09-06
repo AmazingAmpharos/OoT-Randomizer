@@ -27,7 +27,7 @@ class World(object):
         self.settings = settings
         self.__dict__.update(settings.__dict__)
         # rename a few attributes...
-        self.keysanity = self.shuffle_dungeon_items == 'keysanity'
+        self.keysanity = self.shuffle_smallkeys == 'keysanity'
         self.check_beatable_only = not self.all_reachable
         # group a few others
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
@@ -117,9 +117,8 @@ class World(object):
             for location in region.locations:
                 if location.item != None:
                     location.item.world = self
-        for dungeon in self.dungeons:
-            for item in dungeon.all_items:
-                item.world = self
+        for item in [item for dungeon in self.dungeons for item in dungeon.all_items]:
+            item.world = self
 
     def random_shop_prices(self):
         shop_item_indexes = ['7', '5', '8', '6']
@@ -178,24 +177,28 @@ class World(object):
 
     # get a list of items that should stay in their proper dungeon
     def get_restricted_dungeon_items(self):
-        if self.shuffle_dungeon_items == 'keysanity':
-            itempool = []
-        elif self.shuffle_dungeon_items == 'mapcompass':
-            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if item.key]
-        else:
-            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items]
+        itempool = []
+        if self.shuffle_mapcompass == 'dungeon':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.dungeon_items])
+        if self.shuffle_smallkeys == 'dungeon':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.small_keys])
+        if self.shuffle_bosskeys == 'dungeon':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.boss_key])
+
         for item in itempool:
             item.world = self
         return itempool
 
     # get a list of items that don't have to be in their proper dungeon
     def get_unrestricted_dungeon_items(self):
-        if self.shuffle_dungeon_items == 'keysanity':
-            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items]
-        elif self.shuffle_dungeon_items == 'mapcompass':
-            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if not item.key]
-        else:
-            itempool = []
+        itempool = []
+        if self.shuffle_mapcompass == 'keysanity':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.dungeon_items])
+        if self.shuffle_smallkeys == 'keysanity':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.small_keys])
+        if self.shuffle_bosskeys == 'keysanity':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.boss_key])
+
         for item in itempool:
             item.world = self
         return itempool
@@ -647,12 +650,14 @@ class Region(object):
         return False
 
     def can_fill(self, item):
-        if self.world.shuffle_dungeon_items == 'keysanity':
-            is_dungeon_restricted = False
-        elif self.world.shuffle_dungeon_items == 'mapcompass':
-            is_dungeon_restricted = item.key
-        else:
-            is_dungeon_restricted = item.key or item.map or item.compass
+        is_dungeon_restricted = False
+        if self.world.shuffle_mapcompass == 'dungeon':
+            is_dungeon_restricted = item.map or item.compass
+        elif self.world.shuffle_smallkeys == 'dungeon':
+            is_dungeon_restricted = item.smallkey
+        elif self.world.shuffle_bosskeys == 'dungeon':
+            is_dungeon_restricted = item.bosskey
+
         if is_dungeon_restricted:
             return self.dungeon and self.dungeon.is_dungeon_item(item)
         return True
@@ -700,15 +705,23 @@ class Entrance(object):
 class Dungeon(object):
 
     def __init__(self, name, regions, boss_key, small_keys, dungeon_items):
+        def to_array(obj):
+            if obj == None:
+                return []
+            if isinstance(obj, list):
+                return obj
+            else:
+                return [obj]
+
         self.name = name
         self.regions = regions
-        self.boss_key = boss_key
-        self.small_keys = small_keys
-        self.dungeon_items = dungeon_items
+        self.boss_key = to_array(boss_key)
+        self.small_keys = to_array(small_keys)
+        self.dungeon_items = to_array(dungeon_items)
 
     @property
     def keys(self):
-        return self.small_keys + ([self.boss_key] if self.boss_key else [])
+        return self.small_keys + self.boss_key
 
     @property
     def all_items(self):
@@ -783,6 +796,14 @@ class Item(object):
     @property
     def key(self):
         return self.type == 'SmallKey' or self.type == 'BossKey'
+
+    @property
+    def smallkey(self):
+        return self.type == 'SmallKey'
+
+    @property
+    def bosskey(self):
+        return self.type == 'BossKey'
 
     @property
     def crystal(self):

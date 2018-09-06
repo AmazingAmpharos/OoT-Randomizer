@@ -799,43 +799,124 @@ setting_infos = [
                       to use the item.
                       '''
         }),       
-    Setting_Info('shuffle_dungeon_items', str, 2, True,
+    Setting_Info('shuffle_mapcompass', str, 2, True,
         {
-        'default': 'mapcompass',
-        'const': 'mapcompass',
+        'default': 'dungeon',
+        'const': 'dungeon',
         'nargs': '?',
-        'choices': ['off', 'mapcompass', 'keysanity'],
+        'choices': ['remove', 'dungeon', 'keysanity'],
         'help': '''\
-                    Dungeon items can appear outside of their
-                    respective dungeon.
-                    off:            Dungeon items will be in their dungeons
-                    mapcompass:     Maps and Compasses can appear anywhere
-                    keysanity:      Dungeon items can appear anywhere
+                    Sets the Map and Compass placement rules
+                    remove:      Maps and Compasses are removed from the world
+                    dungeon:     Maps and Compasses are put in their Dungeon
+                    keysanity:   Maps and Compasses can appear anywhere
                     '''
         },
         {
             'text': 'Shuffle Dungeon Items',
             'group': 'logic',
             'widget': 'Combobox',
-            'default': 'Maps and Compasses',
+            'default': 'Maps/Compasses: Dungeon Only',
             'options': {
-                'Off': 'off',
-                'Maps and Compasses': 'mapcompass',
-                'Full Keysanity': 'keysanity'
+                'Maps/Compasses: Remove': 'remove',
+                'Maps/Compasses: Dungeon Only': 'dungeon',
+                'Maps/Compasses: Anywhere': 'keysanity'
             },
             'tooltip':'''\
-                      Dungeon items can appear anywhere instead 
-                      of just being restricted to their own dungeon.
+                      'Remove': Maps and Compasses are removed.
+                      This will add a small amount of money and
+                      refill items to the pool.
 
-                      'Maps and Compasses': Dungeons will have
-                      2 more possible item locations. This helps
-                      make some dungeons more profitable, such as
-                      Ice Cavern and Jabu Jabu's Belly.
+                      'Dungeon': Maps and Compasses can onlyappear 
+                      in their respective dungeon.
 
-                      'Full Keysanity': Maps, Compasses, and Keys
-                      can appear anywhere. A difficult mode, since 
+                      'Anywhere': Maps and Compaases can appear
+                      anywhere in the world. 
+
+                      Setting 'Remove' or 'Anywhere' will add 2
+                      more possible locations to each Dungeons.
+                      This helps make some dungeons more profitable, 
+                      such as Ice Cavern and Jabu Jabu's Belly.
+                      '''
+        }),
+    Setting_Info('shuffle_smallkeys', str, 2, True,
+        {
+        'default': 'dungeon',
+        'const': 'dungeon',
+        'nargs': '?',
+        'choices': ['remove', 'dungeon', 'keysanity'],
+        'help': '''\
+                    Sets the Small Keys placement rules
+                    remove:      Small Keys are removed from the world
+                    dungeon:     Small Keys are put in their Dungeon
+                    keysanity:   Small Keys can appear anywhere
+                    '''
+        },
+        {
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Small Keys: Dungeon Only',
+            'options': {
+                'Small Keys: Remove (Keysy)': 'remove',
+                'Small Keys: Dungeon Only': 'dungeon',
+                'Small Keys: Anywhere (Keysanity)': 'keysanity'
+            },
+            'tooltip':'''\
+                      'Remove': Small Keys are removed. All locked
+                      doors in dungeons will be unlocked. An easier
+                      mode. 
+
+                      'Dungeon': Small Keys can only appear in their 
+                      respective dungeon.
+
+                      'Anywhere': Small Keys can appear
+                      anywhere in the world. A difficult mode since
                       it is more likely to need to enter a dungeon
                       multiple times.
+
+                      Try different combination out, such as:
+                      'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
+                      for a milder Keysanity experience.
+                      '''
+        }),
+    Setting_Info('shuffle_bosskeys', str, 2, True,
+        {
+        'default': 'dungeon',
+        'const': 'dungeon',
+        'nargs': '?',
+        'choices': ['remove', 'dungeon', 'keysanity'],
+        'help': '''\
+                    Sets the Boss Keys placement rules
+                    remove:      Boss Keys are removed from the world
+                    dungeon:     Boss Keys are put in their Dungeon
+                    keysanity:   Boss Keys can appear anywhere
+                    '''
+        },
+        {
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Boss Keys: Dungeon Only',
+            'options': {
+                'Boss Keys: Remove (Keysy)': 'remove',
+                'Boss Keys: Dungeon Only': 'dungeon',
+                'Boss Keys: Anywhere (Keysanity)': 'keysanity'
+            },
+            'tooltip':'''\
+                      'Remove': Boss Keys are removed. All locked
+                      doors in dungeons will be unlocked. An easier
+                      mode. 
+
+                      'Dungeon': Boss Keys can only appear in their 
+                      respective dungeon.
+
+                      'Anywhere': Boss Keys can appear
+                      anywhere in the world. A difficult mode since
+                      it is more likely to need to enter a dungeon
+                      multiple times.
+
+                      Try different combination out, such as:
+                      'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
+                      for a milder Keysanity experience.
                       '''
         }),
     Setting_Info('tokensanity', str, 2, True, 
@@ -892,7 +973,7 @@ setting_infos = [
         },
         {
             'text': 'Dungeon Quest',
-            'group': 'logic',
+            'group': 'world',
             'widget': 'Combobox',
             'default': 'Vanilla',
             'options': {
