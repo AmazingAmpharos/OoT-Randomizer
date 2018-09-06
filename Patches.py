@@ -1319,6 +1319,8 @@ def patch_rom(world, rom):
     elif world.background_music == 'off':    
         disable_music(rom)
 
+    patch_files(world, rom)
+
     # patch tunic colors
     # Custom color tunic stuff
     Tunics = []
