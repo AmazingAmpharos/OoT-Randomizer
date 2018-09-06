@@ -152,7 +152,11 @@ def guiMain(settings=None):
                 if widgets[info.name].winfo_class() == 'Frame':
                     for child in widgets[info.name].winfo_children():
                         child.configure(state= 'normal' if dep_met else 'disabled')
+                        if child.winfo_class() == 'Scale':
+                            child.configure(fg='Black'if dep_met else 'Grey')
                 else:
+                    if widgets[info.name].winfo_class() == 'Scale':
+                        widgets[info.name].configure(fg='Black'if dep_met else 'Grey')
                     widgets[info.name].config(state = 'normal' if dep_met else 'disabled')
                 
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
