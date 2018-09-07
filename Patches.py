@@ -1434,6 +1434,7 @@ def get_override_entry(location):
     if None in [scene, default, item_id]:
         return []
 
+    item_id = 0x9E
     player_id = (location.item.world.id + 1) << 3
 
     if location.type in ['NPC', 'BossHeart', 'Song']:
@@ -1472,6 +1473,26 @@ chestTypeMap = {
 chestAnimationExtendedFast = [
     0x87, # Progressive Nut Capacity
     0x88, # Progressive Stick Capacity
+    0x98, # Deku Tree Compass
+    0x99, # Dodongo's Cavern Compass
+    0x9A, # Jabu Jabu Compass
+    0x9B, # Forest Temple Compass
+    0x9C, # Fire Temple Compass
+    0x9D, # Water Temple Compass
+    0x9E, # Spirit Temple Compass
+    0x9F, # Shadow Temple Compass
+    0xA0, # Bottom of the Well Compass
+    0xA1, # Ice Cavern Compass
+    0xA2, # Deku Tree Map
+    0xA3, # Dodongo's Cavern Map
+    0xA4, # Jabu Jabu Map
+    0xA5, # Forest Temple Map
+    0xA6, # Fire Temple Map
+    0xA7, # Water Temple Map
+    0xA8, # Spirit Temple Map
+    0xA9, # Shadow Temple Map
+    0xAA, # Bottom of the Well Map
+    0xAB, # Ice Cavern Map
     0xB6, # Recovery Heart
     0xB7, # Arrows (5)
     0xB8, # Arrows (10)
@@ -1481,6 +1502,7 @@ chestAnimationExtendedFast = [
     0xBC, # Bombs (20)
     0xBD, # Deku Nuts (5)
     0xBE, # Deku Nuts (10)
+    0xBF, # Double Defense
 ]
 
 
