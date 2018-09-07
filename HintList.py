@@ -236,8 +236,6 @@ hintTable = {'Hammer':                                                ("the drag
              'Gerudo Training Grounds':                               ("the test of thieves", 'dungeon'),
              'Ganons Castle':                                         ("a conquered citadel", 'dungeon'),
                                                                        #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box             
-             'Spiritual Stone Text Start':                            ("Ye who owns 3 Spiritual Stones...^", 'boss'),
-             'Spiritual Stone Text End':                              ("Stand with the Ocarina of Time&and play the Song of Time.", 'boss'),
              'Queen Gohma':                                           ("One inside an #ancient tree#...^", 'boss'),
              'King Dodongo':                                          ("One within an #immense cavern#...^", 'boss'),
              'Barinade':                                              ("One in the #belly of a deity#...^", 'boss'),
