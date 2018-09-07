@@ -1604,7 +1604,6 @@ def get_override_entry(location):
     if None in [scene, default, item_id]:
         return []
 
-    item_id = 0x9E
     player_id = (location.item.world.id + 1) << 3
 
     if location.type in ['NPC', 'BossHeart', 'Song']:
