@@ -539,10 +539,12 @@ setting_infos = [
         }),
     Setting_Info('scarecrow_song', str, 0, False, 
         {
+            'default': 'DAAAAAAA',
+            'const': 'DAAAAAAA',
+            'nargs': '?',
             'help': '''\
                     The song started with if 'free_scarecrow' is True
-                    ''',
-            'action': 'store_true'
+                    '''
         },
         {
             'group': 'convenience',
@@ -852,11 +854,10 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Skulltula Token that can only be obtained
+                      Skulltula Tokens that can only be obtained
                       during the night expect you to have Sun's
-                      Song because needed to collect them. This
-                      option prevents needing to wait for time
-                      of day for some locations.
+                      Song to collect them. This prevents needing
+                      to wait until night for some locations.
                       '''
         }),
     Setting_Info('logic_no_big_poes', bool, 1, True, 
@@ -1237,6 +1238,30 @@ setting_infos = [
                       ammo, and rupees, so doing so is a risk.
                       '''
         }),
+    Setting_Info('enhance_map_compass', bool, 1, True, 
+        {
+            'help': '''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This setting will only activate these functions if the
+                    other settings would make this useful information.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Maps and Compasses give information',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This setting will only activate these functions if the
+                    other settings would make this useful information.
+                      '''
+        }),
     Setting_Info('hints', str, 2, True, 
         {
             'default': 'none',
@@ -1370,20 +1395,35 @@ setting_infos = [
             }
         }),
 
-    Setting_Info('disable_music', bool, 1, False,
+    Setting_Info('background_music', str, 2, False,
         {
-            'action': 'store_true',
+            'default': 'normal',
+            'const': 'normal',
+            'nargs': '?',
+            'choices': ['normal', 'off', 'random'],
             'help': '''\
-                    Disable background music. SFX and ambient sounds remain.
+                    Sets the background music behavior
+                    normal:      Areas play their normal background music
+                    off:         No background music
+                    random:      Areas play random background music
                     '''
         },
         {
-            'text': 'Disable Background Music',
+            'text': 'Background Music',
             'group': 'cosmetics',
-            'widget': 'Checkbutton',
-            'default': False,
+            'widget': 'Combobox',
+            'default': 'Normal',
+            'options': {
+                'Normal': 'normal',
+                'No Music': 'off',
+                'Random': 'random',
+            },
             'tooltip': '''\
-                       Disable background music. SFX and ambient sounds remain.
+                       'No Music': No background is played.
+                       Useful for playing your own music
+                       over the game.
+                       'Random': Area background music is
+                       randomized.
                        '''
         }),
 
