@@ -8,10 +8,10 @@ class Hint(object):
         self.text = text
         self.type = type
 
-def getHint(string):
+def getHint(name):
     ret = Hint
     for hint in hintTable:
-        if string == hint:
+        if name == hint:
             text, type = hintTable[hint]
             ret = Hint(hint, text, type)
             break
@@ -20,11 +20,11 @@ def getHint(string):
             ret = Hint(hint, text, type)
     return ret
 
-def getHintGroup(string, world):
+def getHintGroup(group, world):
     ret = []
     for hint in hintTable:
         text, type = hintTable[hint]
-        if type == string and not (hint in hintExclusions(world)):
+        if type == group and not (hint in hintExclusions(world)):
             ret.append(Hint(hint, text, type))
     return ret
 
