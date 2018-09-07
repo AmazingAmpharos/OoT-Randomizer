@@ -107,7 +107,7 @@ Deku_Check_Sold_Out:
 	mflo    t5               ; Permanant flag entry offset
 
 	add     t6, t1, t5
-	lw      t7, 0x10(t6)     ; Saleman bitflag (originally unused) 
+	lw      t7, 0xE4(t6)     ; Saleman bitflag (originally unused) 
 
 	and     v0, t4, t7       ; return if flag is set
 
@@ -137,10 +137,10 @@ Deku_Set_Sold_Out:
 	mflo    t5               ; Permanant flag entry offset
 
 	add     t6, t1, t5
-	lw      t7, 0x10(t6)     ; Saleman bitflag (originally unused) 
+	lw      t7, 0xE4(t6)     ; Saleman bitflag [0xD0 (PFlag Table) + 0x10 (unused offself)]
 
 	or      t7, t4, t7       ; return if flag is set
-	sw      t7, 0x10(t6)
+	sw      t7, 0xE4(t6)
 
 	jr 		ra
 	nop
