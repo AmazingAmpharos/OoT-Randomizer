@@ -1319,6 +1319,9 @@ def patch_rom(world, rom):
 
         # update actor IDs
         set_deku_salesman_data(rom)
+        
+    # Update grotto id data
+    set_grotto_id_data(rom)
 
     if world.shuffle_smallkeys == 'remove' or world.shuffle_bosskeys == 'remove':
         locked_doors = get_locked_doors(rom, world)
@@ -1786,8 +1789,8 @@ def update_chest_sizes(rom, override_table):
         default = (default & 0x0FFF) | newChestType
         rom.write_int16(actor + 14, default)
 
-def set_deku_salesman_data(rom):
-    def set_deku_salesman_and_grotto_id(rom, actor_id, actor, scene):
+def set_grotto_id_data(rom):
+    def set_grotto_id(rom, actor_id, actor, scene):
         if actor_id == 0x009B: #Grotto
             actor_zrot = rom.read_int16(actor + 12)
             actor_var = rom.read_int16(actor + 14);
@@ -1798,14 +1801,19 @@ def set_deku_salesman_data(rom):
             if grotto_scene == 0 and grotto_entrance in [2, 4, 7, 10]:
                 grotto_scenes.add(scene)
                 rom.write_byte(actor + 15, len(grotto_scenes))
-        elif actor_id == 0x0195: #Salesman
+
+    grotto_scenes = set()
+
+    get_actor_list(rom, set_grotto_id)
+
+def set_deku_salesman_data(rom):
+    def set_deku_salesman(rom, actor_id, actor, scene):
+        if actor_id == 0x0195: #Salesman
             actor_var = rom.read_int16(actor + 14)
             if actor_var == 6:
                 rom.write_int16(actor + 14, 0x0003)
 
-    grotto_scenes = set()
-
-    get_actor_list(rom, set_deku_salesman_and_grotto_id)
+    get_actor_list(rom, set_deku_salesman)
 
 def get_locked_doors(rom, world):
     def locked_door(rom, actor_id, actor, scene):

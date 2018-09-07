@@ -255,7 +255,7 @@ def guiMain(settings=None):
                 # create a variable to access the box's state
                 guivars[info.name] = IntVar(value=default_value)
                 # create the checkbox
-                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=200, command=show_settings)
+                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
                 widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
                 # create the variable to store the user's decision
@@ -289,7 +289,7 @@ def guiMain(settings=None):
                     anchor = N
                 # add the radio buttons
                 for option in info.gui_params["options"]:
-                    radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=200, indicatoron=False, command=show_settings)
+                    radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=190, indicatoron=False, command=show_settings)
                     radio_button.pack(expand=True, side=side, anchor=anchor)
                 # pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
