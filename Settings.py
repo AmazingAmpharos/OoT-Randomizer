@@ -860,7 +860,9 @@ setting_infos = [
 
                       'Mixed': Each dungeon will have a
                       random chance to be in either form.
-                      '''
+                      ''',
+            'dependency': lambda guivar: False,
+
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
