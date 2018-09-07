@@ -1319,7 +1319,7 @@ def patch_rom(world, rom):
 
         # update actor IDs
         set_deku_salesman_data(rom)
-        
+
     # Update grotto id data
     set_grotto_id_data(rom)
 
@@ -1684,7 +1684,7 @@ chestAnimationExtendedFast = [
 
 def room_get_actors(rom, actor_func, room_data, scene, alternate=None):
     actors = {}
-    room_start = alternate or room_data
+    room_start = alternate if alternate else room_data
     command = 0
     while command != 0x14: # 0x14 = end header
         command = rom.read_byte(room_data)
@@ -1697,10 +1697,10 @@ def room_get_actors(rom, actor_func, room_data, scene, alternate=None):
                 if entry:
                     actors[actor_list] = entry
                 actor_list = actor_list + 16
-        if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
+        if command == 0x18: # Alternate header list
             header_list = room_start + (rom.read_int32(room_data + 4) & 0x00FFFFFF)
-            for alt_id in range(0,2):
-                header_data = room_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
+            for alt_id in range(0,3):
+                header_data = room_start + (rom.read_int32(header_list) & 0x00FFFFFF)
                 if header_data != 0 and not alternate:
                     actors.update(room_get_actors(rom, actor_func, header_data, scene, room_start))
                 header_list = header_list + 4
@@ -1712,7 +1712,7 @@ def scene_get_actors(rom, actor_func, scene_data, scene, alternate=None, process
     if processed_rooms == None:
         processed_rooms = []
     actors = {}
-    scene_start = alternate or scene_data
+    scene_start = alternate if alternate else scene_data
     command = 0
     while command != 0x14: # 0x14 = end header
         command = rom.read_byte(scene_data)
@@ -1735,10 +1735,10 @@ def scene_get_actors(rom, actor_func, scene_data, scene, alternate=None, process
                 if entry:
                     actors[actor_list] = entry
                 actor_list = actor_list + 16                
-        if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
+        if command == 0x18: # Alternate header list
             header_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
-            for alt_id in range(0,2):
-                header_data = scene_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
+            for alt_id in range(0,3):
+                header_data = scene_start + (rom.read_int32(header_list) & 0x00FFFFFF)
                 if header_data != 0 and not alternate:
                     actors.update(scene_get_actors(rom, actor_func, header_data, scene, scene_start, processed_rooms))
                 header_list = header_list + 4
@@ -1792,6 +1792,7 @@ def update_chest_sizes(rom, override_table):
 def set_grotto_id_data(rom):
     def set_grotto_id(rom, actor_id, actor, scene):
         if actor_id == 0x009B: #Grotto
+            print('%02X %08X' % (scene, actor))
             actor_zrot = rom.read_int16(actor + 12)
             actor_var = rom.read_int16(actor + 14);
             grotto_scene = actor_var >> 12
