@@ -232,6 +232,9 @@ hintTable = {'Hammer':                                                (["the dra
              '1044':                                                  ("I like shorts! They're comfy and&easy to wear!", 'junkHint'),
              '1044':                                                  ("They say all toasters toast toast.", 'junkHint'),
              '1045':                                                  ("They say that Okami is&the best Zelda game.", 'junkHint'),
+             '1046':                                                  ("They say that quest guidance&can be found at a&talking rock.", 'junkHint'),
+             '1047':                                                  ("They say that victory can&be found after the&Ganon fight.", 'junkHint'),
+             '1047':                                                  ("They say that the final item&you're looking for can be&found somewhere in Hyrule", 'junkHint'),
                                                                        #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box
              'Deku Tree':                                             ("an ancient tree", 'dungeon'),
              'Dodongos Cavern':                                       ("an immense cavern", 'dungeon'),
