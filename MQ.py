@@ -206,37 +206,14 @@ class Room(object):
         return offset
 
 
-def patch_files(world, rom:LocalRom):
-
+def patch_files(rom:LocalRom, mq_scenes):
+    
+    patch_ice_cavern_scene_header(rom)
     data = get_json()
     scenes = [Scene(x) for x in data]
-
-    if world.dungeon_mq['DT']:
-        scenes[0].write_data(rom)
-    if world.dungeon_mq['DC']:
-        scenes[1].write_data(rom)
-    if world.dungeon_mq['JB']:
-        scenes[2].write_data(rom)
-    if world.dungeon_mq['FoT']:
-        scenes[3].write_data(rom)
-    if world.dungeon_mq['FiT']:
-        scenes[4].write_data(rom)
-    if world.dungeon_mq['WT']:
-        scenes[5].write_data(rom)
-    if world.dungeon_mq['SpT']:
-        scenes[6].write_data(rom)
-    if world.dungeon_mq['ShT']:
-        scenes[7].write_data(rom)
-    if world.dungeon_mq['BW']:
-        scenes[8].write_data(rom)
-    if world.dungeon_mq['IC']:
-        patch_ice_cavern_scene_header(rom)
-        scenes[9].write_data(rom)
-    # Scene 10 is identical between vanilla and MQ so no need to write?
-    if world.dungeon_mq['GTG']:
-        scenes[11].write_data(rom)
-    if world.dungeon_mq['GC']:
-        scenes[12].write_data(rom) # Since there is no scene 12, the 12th entry should represent the 13th scene.
+    for scene in scenes:
+        if scene.id in mq_scenes:
+            scene.write_data(rom)
 
     verify_dma(rom)
 
