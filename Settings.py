@@ -415,6 +415,24 @@ setting_infos = [
                       obtained.
                       ''',
         }),
+    Setting_Info('trials_random', bool, 1, True, 
+        {
+            'help': '''\
+                    Sets the number of trials must be cleared to enter 
+                    Ganon's Tower to a random value.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Random Number of Ganon\'s Trials',
+            'group': 'open',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Sets a random number of trials to
+                      enter Ganon's Tower.
+                      '''
+        }),
     Setting_Info('trials', int, 3, True, 
         {
             'default': 6,
@@ -428,17 +446,18 @@ setting_infos = [
             'type': int                    
         },
         {
-            'text': 'Number of Ganon\'s Trials',
             'group': 'open',
             'widget': 'Scale',
             'default': 6,
             'min': 0,
             'max': 6,
+            'random': True,
             'tooltip':'''\
                       Trials are randomly selected. If hints are
                       enabled, then there will be hints for which
                       trials need to be completed.
-                      '''
+                      ''',
+            'dependency': lambda guivar: not guivar['trials_random'].get(),
         }),
     Setting_Info('no_escape_sequence', bool, 1, True, 
         {
@@ -508,38 +527,45 @@ setting_infos = [
                       the animation time is slow for major items.
                       '''
         }),
-    Setting_Info('big_poe_count', str, 4, True, 
+    Setting_Info('big_poe_count_random', bool, 1, True, 
         {
-            'default': 'random',
-            'const': 'random',
-            'nargs': '?',
-            'choices': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'random'],
             'help': '''\
-                    Select the number of Big Poes to receive an item from the buyer.
-                    '''         
+                    Sets a random number of Big Poes to receive an item from the buyer.
+                    ''',
+            'action': 'store_true'
         },
         {
-            'text': 'Big Poe Target Count',
+            'text': 'Random Big Poe Target Count',
             'group': 'convenience',
-            'widget': 'Combobox',
-            'default': 'Random',
-            'options': {
-                'Random': 'random',
-                '1': '1',
-                '2': '2',
-                '3': '3',
-                '4': '4',
-                '5': '5',
-                '6': '6',
-                '7': '7',
-                '8': '8',
-                '9': '9',
-                '10': '10'
-            },
-            'tooltip': '''\
-                    The Poe buyer will give a reward for turning 
-                    in the chosen number of Big Poes.
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      The Poe buyer will give a reward for turning 
+                      in a random number of Big Poes.
+                      '''
+        }),
+    Setting_Info('big_poe_count', int, 4, True, 
+        {
+            'default': 10,
+            'const': 10,
+            'nargs': '?',
+            'choices': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            'help': '''\
+                    Select the number of Big Poes to receive an item from the buyer.
                     ''',
+            'type': int,
+        },
+        {
+            'group': 'convenience',
+            'widget': 'Scale',
+            'default': 10,
+            'min': 1,
+            'max': 10,
+            'tooltip':'''\
+                      The Poe buyer will give a reward for turning 
+                      in the chosen number of Big Poes.
+                      ''',
+            'dependency': lambda guivar: not guivar['big_poe_count_random'].get(),
         }),
     Setting_Info('free_scarecrow', bool, 1, True, 
         {

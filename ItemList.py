@@ -566,6 +566,8 @@ def get_pool_core(world):
     return (pool, placed_items)
 
 def choose_trials(world):
+    if world.trials_random:
+        world.trials = random.randint(0, 6)
     num_trials = int(world.trials)
     choosen_trials = random.sample(['Forest', 'Fire', 'Water', 'Spirit', 'Shadow', 'Light'], num_trials)
     for trial in world.skipped_trials:
