@@ -270,32 +270,33 @@ def verify_remap(scenes):
 
 def verify_dma(rom:LocalRom):
     cur = DMA_TABLE
-
-    next_start = -1
-    errors = []
+    overlapping_records = []
+    dma_data = []
     
     while True:
         this_start, this_end, this_size = get_dma_record(rom, cur)
-        next_start, next_end, next_size = get_dma_record(rom, cur + 0x10)
 
-        if next_start == 0 and next_end == 0:
+        if this_start == 0 and this_end == 0:
             break
 
-        if this_end > next_start:
-            errors.append('dmadata info')
-            st, e, si = get_dma_record(rom, cur-0x10)
-            errors.append("{0:x} {1:x} {2:x}".format(st, e, si))
-            st, e, si = get_dma_record(rom, cur)
-            errors.append("{0:x} {1:x} {2:x} <-- overlapping record".format(st, e, si))
-            st, e, si = get_dma_record(rom, cur+0x10)
-            errors.append("{0:x} {1:x} {2:x}".format(st, e, si))
-        next_start = this_start
+        dma_data.append((this_start, this_end, this_size))
         cur += 0x10
 
-    if len(errors) > 0:
-        for e in errors:
-            print(e)
-        Exception("overlapping dmadata records!")
+    dma_data.sort(key=lambda v: v[0])
+
+    for i in range(0, len(dma_data) - 1):
+        this_start, this_end, this_size = dma_data[i]
+        next_start, next_end, next_size = dma_data[i + 1]
+
+        if this_end > next_start:
+            overlapping_records.append(
+                    '0x%08X - 0x%08X (Size: 0x%04X)\n0x%08X - 0x%08X (Size: 0x%04X)' % \
+                     (this_start, this_end, this_size, next_start, next_end, next_size)
+                )
+
+    if len(overlapping_records) > 0:
+        raise Exception("Overlapping DMA Data Records!\n%s" % \
+            '\n-------------------------------------\n'.join(overlapping_records))
 
 
 def update_dmadata(rom:LocalRom, file:File):
