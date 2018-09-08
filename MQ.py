@@ -1,5 +1,4 @@
 # mzxrules 2018
-#
 # In order to patch MQ to the existing data...
 # 
 # Ice Cavern (Scene 9) needs to have it's header altered to support MQ's path list. This 
@@ -14,6 +13,9 @@
 # The total size consumed by the path data is NUM_PATHS * 8, plus the sum of all path file sizes
 # padded to the nearest 0x10 bytes
 # 
+# Collision: 
+# 
+#
 # Rooms:
 # 
 # Object file initialization data will be appended to the end of the room file.
@@ -33,8 +35,6 @@ import json
 
 SCENE_DMADATA = 0xB320 # address where scene files begin to appear in dmadata
 SCENE_TABLE = 0xB71440
-
-
 
 class File(object):
     def __init__(self, file):
@@ -69,6 +69,28 @@ class File(object):
         self.end = new_end
 
 
+class CollisionMesh(object):
+    def __init__(self, rom:LocalRom, start, offset):
+        self.offset = offset
+        self.poly_addr = rom.read_int32(start + offset + 0x18)
+        self.polytypes_addr = rom.read_int32(start + offset + 0x1C)
+        self.camera_data_addr = rom.read_int32(start + offset + 0x20)
+        self.polytypes = (self.poly_addr - self.polytypes_addr) // 8
+
+    def write_to_scene(self, rom:LocalRom, start):
+        addr = start + self.offset + 0x18
+        rom.write_int32s(addr, [self.poly_addr, self.polytypes_addr, self.camera_data_addr])
+
+
+class ColDelta(object):
+    def __init__(self, delta):
+        self.is_larger = delta['IsLarger']
+        self.polys = delta['Polys']
+        self.polytypes = delta['PolyTypes']
+        self.cams = delta['Cams']
+
+
+
 class Scene(object):
     def __init__(self, scene):
         self.file = File(scene['File'])
@@ -76,6 +98,7 @@ class Scene(object):
         self.transition_actors = [convert_actor_data(x) for x in scene['TActors']]
         self.rooms = [Room(x) for x in scene['Rooms']]
         self.paths = []
+        self.coldelta = ColDelta(scene["ColDelta"])
         temp_paths = scene['Paths']
         for item in temp_paths:
             self.paths.append(item['Points'])
@@ -96,7 +119,12 @@ class Scene(object):
         while loop > 0 and code != 0x14: #terminator
             loop -= 1
 
-            if code == 0x04: #rooms
+            if code == 0x03: #collision
+                col_mesh_offset = rom.read_int24(headcur + 5)
+                col_mesh = CollisionMesh(rom, start, col_mesh_offset)
+                self.patch_mesh(rom, col_mesh);
+
+            elif code == 0x04: #rooms
                 room_list_offset = rom.read_int24(headcur + 5)
 
             elif code == 0x0D: #paths
@@ -126,13 +154,86 @@ class Scene(object):
             cur += 0x08
 
 
+    def patch_mesh(self, rom:LocalRom, mesh:CollisionMesh):
+        start = self.file.start
+        
+        final_cams = []
+
+        # build final camera data
+        for cam in self.coldelta.cams:
+            data = cam['Data']
+            pos = cam['PositionIndex']
+            if pos < 0:
+                final_cams.append((data, 0))
+            else:
+                addr = start + (mesh.camera_data_addr & 0xFFFFFF)
+                seg_off = rom.read_int32(addr + (pos * 8) + 4)
+                final_cams.append((data, seg_off))
+
+        types_move_addr = 0
+
+        # if data can't fit within the old mesh space, append camera data
+        if self.coldelta.is_larger:
+            types_move_addr = mesh.camera_data_addr
+
+            # append to end of file
+            self.write_cam_data(rom, self.file.end, final_cams)
+            mesh.camera_data_addr = get_segment_address(2, self.file.end - self.file.start)
+            self.file.end += len(final_cams) * 8
+            
+        else:
+            types_move_addr = mesh.camera_data_addr + (len(final_cams) * 8)
+
+            # append in place
+            addr = self.file.start + (mesh.camera_data_addr & 0xFFFFFF)
+            self.write_cam_data(rom, addr, final_cams)
+
+        # if polytypes needs to be moved, do so
+        if (types_move_addr != mesh.polytypes_addr):
+            a_start = self.file.start + (mesh.polytypes_addr & 0xFFFFFF)
+            b_start = self.file.start + (types_move_addr & 0xFFFFFF)
+            size = mesh.polytypes * 8
+
+            rom.buffer[b_start:b_start + size] = rom.buffer[a_start:a_start + size]
+            mesh.polytypes_addr = types_move_addr
+
+        # patch polytypes
+        for item in self.coldelta.polytypes:
+            id = item['Id']
+            high = item['High']
+            low = item['Low']
+            addr = self.file.start + (mesh.polytypes_addr & 0xFFFFFF) + (id * 8)
+            rom.write_int32s(addr, [high, low])
+
+        # patch poly data
+        for item in self.coldelta.polys:
+            id = item['Id']
+            t = item['Type']
+            flags = item['Flags']
+
+            addr = self.file.start + (mesh.poly_addr & 0xFFFFFF) + (id * 0x10)
+            vert_bit =  rom.read_byte(addr + 0x02) & 0x1F # VertexA id data
+            rom.write_int16(addr, t)
+            rom.write_byte(addr + 0x02, (flags << 4) + vert_bit)
+
+        # Write Mesh to Scene
+        mesh.write_to_scene(rom, self.file.start)
+
+
+    def write_cam_data(self, rom:LocalRom, addr, cam_data):
+
+        for item in cam_data:
+            data, pos = item
+            rom.write_int32s(addr, [data, pos])
+            addr += 8
+
+
     # appends path data to the end of the rom
     # returns segment address to path data
     def append_path_data(self, rom:LocalRom):
         start = self.file.start
         cur = self.file.end
         records = []
-        records_offset = 0
 
         for path in self.paths:
             nodes = len(path)
@@ -153,7 +254,6 @@ class Scene(object):
 
         self.file.end = cur
         return records_offset
-
 
 class Room(object):
     def __init__(self, room):
