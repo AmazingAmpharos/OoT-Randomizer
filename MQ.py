@@ -214,7 +214,7 @@ class Scene(object):
             addr = self.file.start + (mesh.poly_addr & 0xFFFFFF) + (id * 0x10)
             vert_bit =  rom.read_byte(addr + 0x02) & 0x1F # VertexA id data
             rom.write_int16(addr, t)
-            rom.write_byte(addr + 0x02, (flags << 4) + vert_bit)
+            rom.write_byte(addr + 0x02, (flags << 5) + vert_bit)
 
         # Write Mesh to Scene
         mesh.write_to_scene(rom, self.file.start)
