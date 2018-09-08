@@ -482,7 +482,7 @@ def get_pool_core(world):
         placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
         placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
         placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
-    elif world.keysanity:
+    elif world.shuffle_smallkeys == 'keysanity':
         if world.gerudo_fortress == 'fast':
             pool.append('Small Key (Gerudo Fortress)')
             placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
