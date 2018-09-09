@@ -63,6 +63,12 @@ def writeGossipStoneHintsHints(world, messages):
     for id,text in world.spoiler.hints.items():
         update_message_by_id(messages, id, get_raw_text(text))
 
+def filterTrailingSpace(text):
+    if text.endswith('& '):
+        return text[:-1]
+    else:
+        return text
+
 
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(world):
@@ -105,7 +111,7 @@ def buildGossipHints(world):
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
                 checkedLocations.append(hint.name)   
-                add_hint(world, stoneIDs.pop(0), getHint(locationWorld.name).text + " " + \
+                add_hint(world, stoneIDs.pop(0), filterTrailingSpace(getHint(locationWorld.name).text + " ") + \
                     getHint(getItemGenericName(locationWorld.item)).text + ".")
 
 
@@ -121,7 +127,7 @@ def buildGossipHints(world):
             for locationWorld in world.get_locations():
                 if hint.name == locationWorld.name:
                     checkedLocations.append(locationWorld.name)    
-                    add_hint(world, stoneIDs.pop(0), getHint(locationWorld.name).text + " " + \
+                    add_hint(world, stoneIDs.pop(0), filterTrailingSpace(getHint(locationWorld.name).text + " ") + \
                         getHint(getItemGenericName(locationWorld.item)).text + ".")
 
     # add bad dungeon locations hints
