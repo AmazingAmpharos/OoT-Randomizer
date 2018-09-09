@@ -104,7 +104,7 @@ hintTable = {'Hammer':                                                (["the dra
              'Piece of Heart':                                        (["love", "a partial Valentine"], 'item'),
              'Piece of Heart (Treasure Chest Game)':                  (["WINNER!", "a guaranteed 1/32 chance"], 'item'),
              'Recovery Heart':                                        (["a free heal", "disappointing love"], 'item'),
-             'Rupee (1)':                                             (["a penny", "a tiny coin", "a green gem"], 'item'),
+             'Rupee (1)':                                             (["a unique coin", "a penny", "a tiny coin", "a green gem"], 'item'),
              'Rupees (5)':                                            (["a common coin", "a blue gem"], 'item'),
              'Rupees (20)':                                           (["couch cash", "a red gem"], 'item'),
              'Rupees (50)':                                           (["big bucks", "a purple gem", "wealth"], 'item'),
