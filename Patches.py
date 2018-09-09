@@ -8,7 +8,7 @@ import subprocess
 import random
 import copy
 
-from Hints import buildGossipHints, buildBossRewardHints, buildGanonText
+from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText
 from Utils import local_path, default_output_path
 from Items import ItemFactory, item_data
 from Messages import *
@@ -1079,7 +1079,7 @@ def patch_rom(world, rom):
         if world.hints != 'mask':
             rom.write_bytes(0xEE7B84, [0x0C, 0x10, 0x02, 0x10])
             rom.write_bytes(0xEE7B8C, [0x24, 0x02, 0x00, 0x20])
-        buildGossipHints(world, messages)
+        writeGossipStoneHintsHints(world, messages)
 
     # Set hints for boss reward shuffle
     rom.write_bytes(0xE2ADB2, [0x70, 0x7A])

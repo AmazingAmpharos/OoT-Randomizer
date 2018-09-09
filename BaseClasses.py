@@ -832,6 +832,7 @@ class Spoiler(object):
         self.locations = {}
         self.metadata = {}
         self.required_locations = []
+        self.hints = {}
 
     def parse_data(self):
         spoiler_locations = [location for location in self.world.get_locations() if not location.event]
@@ -867,3 +868,6 @@ class Spoiler(object):
                 outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations]))
             else:
                 outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations]))
+
+            outfile.write('\n\nGossip Stone Hints:\n\n')
+            outfile.write('\n'.join(self.hints.values()))
