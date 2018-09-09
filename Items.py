@@ -214,7 +214,7 @@ item_table = {
     'Buy Deku Seeds (30)': (False, True, 'Shop', None, 0x1D, 0x0119, 0x48), 
     'Sold Out': (False, True, 'Shop', None, 0x26, 0x0148, 0x59), 
     'Buy Blue Fire': (True, False, 'Shop', None, 0x27, 0x0173, 0x67), 
-    'Buy Bottle Bug': (False, True, 'Shop', None, 0x28, 0x0174, 0x68), 
+    'Buy Bottle Bug': (True, False, 'Shop', None, 0x28, 0x0174, 0x68), 
     'Buy Poe': (False, True, 'Shop', None, 0x2A, 0x0176, 0x6A), 
     'Buy Fairy\'s Spirit': (True, False, 'Shop', None, 0x2B, 0x0177, 0x6B), 
     'Buy Arrows (10)': (False, True, 'Shop', None, 0x2C, 0x00D8, 0x25), 
