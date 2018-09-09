@@ -434,7 +434,18 @@ get_override_search_key:
     li      t0, 0x02
     lbu     t1, 0x0141 (a1) ; t1 = collectable flag
 @@not_collectable:
+    bne     t2, 0x011A, @@not_grotto_deku_scrub
+    nop
+    bne     v0, 0x3E, @@not_grotto_deku_scrub
+    nop
 
+    ; If grotto scene and deku salescrub, then use the
+    ; grotto id for the scene.
+    li      t0, 0x04
+    li      t3, SAVE_CONTEXT
+    lb      v0, 0x1397(t3)   ; v0 = Grotto ID
+
+@@not_grotto_deku_scrub:
     ; Construct ID used to search the override table
     ; v0 = (scene << 16) | (override_type << 8) | override_id
     sll     v0, v0, 8
@@ -471,7 +482,7 @@ scan_override_table:
     srl     t3, t3, 11  ; t3 = player id
 
     lui     t4, 0xFFFF
-    ori     t4, t4, 0x03FF ;t4 = 0xFFFF07FF masks out the player id
+    ori     t4, t4, 0x07FF ;t4 = 0xFFFF07FF masks out the player id
     and     t2, t2, t4
     bne     t2, a0, @@lookup_loop
     nop

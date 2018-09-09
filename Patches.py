@@ -38,7 +38,7 @@ TunicColors = {
     "Blood Orange": [0xF0, 0x30, 0x30],
     "NES Green": [0x00, 0xD0, 0x00],
     "Dark Green": [0x00, 0x25, 0x18],
-    "Only": [80, 140, 240],
+    "Lumen": [80, 140, 240],
 }
 
 NaviColors = {
@@ -121,23 +121,26 @@ def patch_rom(world, rom):
     # Remove locked door to Boss Key Chest in Fire Temple
     rom.write_byte(0x22D82B7, 0x3F)
 
-    if world.bombchus_in_logic:
-        # Change Bombchu Shop check to bombchus
-        rom.write_bytes(0xC6CED8, [0x80, 0x8A, 0x00, 0x7C, 0x24, 0x0B, 0x00, 0x09, 0x11, 0x4B, 0x00, 0x05])
-        # Change Bombchu Shop to never sell out
-        rom.write_bytes(0xC019C0, [0x10, 0x00, 0x00, 0x30])
+    # Change Bombchi Shop to be always open
+    rom.write_int32(0xC6CEDC, 0x240B0001) # li t3, 1
 
+    if world.bombchus_in_logic:
         # Change Bowling Alley check to bombchus (Part 1)
         rom.write_bytes(0x00E2D714, [0x81, 0xEF, 0xA6, 0x4C])
         rom.write_bytes(0x00E2D720, [0x24, 0x18, 0x00, 0x09, 0x11, 0xF8, 0x00, 0x06])
 
         # Change Bowling Alley check to bombchus (Part 2)
         rom.write_bytes(0x00E2D890,  [0x81, 0x6B, 0xA6, 0x4C, 0x24, 0x0C, 0x00, 0x09, 0x51, 0x6C, 0x00, 0x0A])
-    else:
-        # Change Bombchu Shop check to Bomb Bag
-        rom.write_bytes(0xC6CEDA, [0x00, 0xA2])
-        rom.write_byte(0xC6CEDF, 0x18)
 
+        # Cannot buy bombchu refills without Bombchus
+        rom.write_int32s(0xC01078, 
+            [0x3C098012,    # lui     t1, 0x8012
+             0x812AA64C,    # lb      t2, -0x59B4(t1)    ; bombchu item (SAVE_CONTEXT + 0x7C)
+             0x340B0009,    # li      t3, 9
+             0x114B0002,    # beq     t2, t3, @@return  ; if has bombchu, return 1 (can buy)
+             0x34020000,    # li      v0, 0
+             0x34020002])   # li      v0, 2             ; else, return 2 (can't buy)
+    else:
         # Change Bowling Alley check to Bomb Bag (Part 1)
         rom.write_bytes(0x00E2D716, [0xA6, 0x72])
         rom.write_byte(0x00E2D723, 0x18)
@@ -145,6 +148,15 @@ def patch_rom(world, rom):
         # Change Bowling Alley check to Bomb Bag (Part 2)
         rom.write_bytes(0x00E2D892, [0xA6, 0x72])
         rom.write_byte(0x00E2D897, 0x18)
+
+        # Cannot buy bombchu refills without Bomb Bag
+        rom.write_int32s(0xC01078,
+            [0x3C098012,    # lui     t1, 0x8012
+             0x812AA673,    # lb      t2, -0x598D(t1)    ; bombbag size (SAVE_CONTEXT + 0xA3)
+             0x314A0038,    # andi    t2, t2, 0x38
+             0x15400002,    # bnez    t2, @@return       ; If has bombbag, return 1 (can buy)
+             0x24020000,    # li      v0, 0
+             0x24020002])   # li      v0, 2              ; else, return 2, (can't buy)
 
     # Change Bazaar check to Bomb Bag (Child?)
     rom.write_bytes(0x00C0082A, [0x00, 0x18])
@@ -494,7 +506,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0x31AA830, [0x00, 0x6F, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02]) #Light
 
     # Speed obtaining Fairy Ocarina
-    rom.write_bytes(0x2150CD0, [0x00, 0x00, 0x00, 0x20,	0x00, 0x00, 0x00, 0x30])
+    rom.write_bytes(0x2150CD0, [0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x30])
     Block_code = [0xFF, 0xFF, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,
                   0xFF, 0xFF, 0x00, 0x3C, 0x00, 0x81, 0xFF, 0xFF]
     rom.write_bytes(0x2151240, Block_code)
@@ -990,9 +1002,64 @@ def patch_rom(world, rom):
         # change the exit at child/day crawlspace to the end of zelda's goddess cutscene
         rom.write_bytes(0x21F60DE, [0x05, 0xF0])
 
+    ### Load Shop File
+    from MQ import File, update_dmadata, insert_space, add_relocations
+    # Move shop actor file to free space
+    shop_item_file = File({
+            'Name':'En_GirlA',
+            'Start':'00C004E0',
+            'End':'00C02E00',
+            'RemapStart':'03485000',
+        })
+    shop_item_file.relocate(rom)
 
+    # Increase the shop item table size
+    shop_item_vram_start = rom.read_int32(0x00B5E490 + (0x20 * 4) + 0x08)
+    insert_space(rom, shop_item_file, shop_item_vram_start, 1, 0x3C + (0x20 * 50), 0x20 * 50)
+
+    # Add relocation entries for shop item table
+    new_relocations = []
+    for i in range(50, 100):
+        new_relocations.append(shop_item_file.start + 0x1DEC + (i * 0x20) + 0x04)
+        new_relocations.append(shop_item_file.start + 0x1DEC + (i * 0x20) + 0x14)
+        new_relocations.append(shop_item_file.start + 0x1DEC + (i * 0x20) + 0x1C)
+    add_relocations(rom, shop_item_file, new_relocations)
+
+    # update actor table
+    rom.write_int32s(0x00B5E490 + (0x20 * 4), 
+        [shop_item_file.start, 
+        shop_item_file.end, 
+        shop_item_vram_start, 
+        shop_item_vram_start + (shop_item_file.end - shop_item_file.start)])
+
+    # Update DMA Table
+    update_dmadata(rom, shop_item_file)
+
+    # Create 2nd Bazaar Room
+    bazaar_room_file = File({
+            'Name':'shop1_room_1',
+            'Start':'028E4000',
+            'End':'0290D7B0',
+            'RemapStart':'03489000',
+        })
+    bazaar_room_file.dma_key = 0x03472000
+    bazaar_room_file.relocate(rom)
+    # Update DMA Table
+    update_dmadata(rom, bazaar_room_file)
+
+    # Add new Bazaar Room to Bazaar Scene
+    rom.write_int32s(0x28E3030, [0x00010000, 0x02000058]) #reduce position list size
+    rom.write_int32s(0x28E3008, [0x04020000, 0x02000070]) #expand room list size
+
+    rom.write_int32s(0x28E3070, [0x028E4000, 0x0290D7B0, 
+                     bazaar_room_file.start, bazaar_room_file.end]) #room list
+    rom.write_int16s(0x28E3080, [0x0000, 0x0001]) # entrance list
+    rom.write_int16(0x28E4076, 0x0005) # Change shop to Kakariko Bazaar
+    #rom.write_int16(0x3489076, 0x0005) # Change shop to Kakariko Bazaar
+
+    # Load Message and Shop Data
     messages = read_messages(rom)
-    shop_items = read_shop_items(rom)
+    shop_items = read_shop_items(rom, shop_item_file.start + 0x1DEC)
     remove_unused_messages(messages)
 
     # Set Big Poe count to get reward from buyer
@@ -1136,34 +1203,130 @@ def patch_rom(world, rom):
                     rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
                     rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
 
-    if world.bombchus_in_logic:
-        # add a cheaper bombchu pack to the bombchu shop
-        # describe
-        add_message(messages, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x80FE, 0x03)
-        # purchase
-        add_message(messages, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x80FF, 0x03)
-        rbl_bombchu = shop_items[0x0018]
-        rbl_bombchu.price = 60
-        rbl_bombchu.pieces = 5
-        rbl_bombchu.get_item_id = 0x006A
-        rbl_bombchu.description_message = 0x80FE
-        rbl_bombchu.purchase_message = 0x80FF
+    # add a cheaper bombchu pack to the bombchu shop
+    # describe
+    update_message_by_id(messages, 0x80FE, '\x08\x05\x41Bombchu   (5 pieces)   60 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it\'s actually a self-propelled time\x01bomb!\x09\x0A', 0x03)
+    # purchase
+    update_message_by_id(messages, 0x80FF, '\x08Bombchu    5 Pieces    60 Rupees\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x09', 0x03)
+    rbl_bombchu = shop_items[0x0018]
+    rbl_bombchu.price = 60
+    rbl_bombchu.pieces = 5
+    rbl_bombchu.get_item_id = 0x006A
+    rbl_bombchu.description_message = 0x80FE
+    rbl_bombchu.purchase_message = 0x80FF
 
-        # Reduce 10 Pack Bombchus from 100 to 99 Rupees
-        shop_items[0x0015].price = 99
-        shop_items[0x0019].price = 99
-        shop_items[0x001C].price = 99
-        update_message_by_id(messages, shop_items[0x001C].description_message, "\x08\x05\x41Bombchu  (10 pieces)  99 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it's actually a self-propelled time\x01bomb!\x09\x0A")
-        update_message_by_id(messages, shop_items[0x001C].purchase_message, "\x08Bombchu  10 pieces   100 Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don't buy\x05\x40")
+    # Reduce 10 Pack Bombchus from 100 to 99 Rupees
+    shop_items[0x0015].price = 99
+    shop_items[0x0019].price = 99
+    shop_items[0x001C].price = 99
+    update_message_by_id(messages, shop_items[0x001C].description_message, "\x08\x05\x41Bombchu  (10 pieces)  99 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it's actually a self-propelled time\x01bomb!\x09\x0A")
+    update_message_by_id(messages, shop_items[0x001C].purchase_message, "\x08Bombchu  10 pieces   100 Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don't buy\x05\x40")
 
-        #Fix bombchu chest animations
-        chestAnimations = {
-            0x6A: 0x28, #0xD8 #Bombchu (5) 
-            0x03: 0x28, #0xD8 #Bombchu (10)    
-            0x6B: 0x28, #0xD8 #Bombchu (20)    
-        }
-        for item_id, gfx_id in chestAnimations.items():
-            rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
+    if world.shopsanity == 'off':
+        # Add more bombchus to make them more accessible
+        if world.bombchus_in_logic:
+            rom.write_int16(world.get_location('Kokiri Shop Item 8').address,
+                            ItemFactory('Buy Bombchu (5)').index)
+            rom.write_int16(world.get_location('Castle Town Bazaar Item 8').address,
+                            ItemFactory('Buy Bombchu (5)').index)
+            rom.write_int16(world.get_location('Kakariko Bazaar Item 8').address,
+                            ItemFactory('Buy Bombchu (5)').index)
+
+        # Revert Deku Scrubs changes
+        rom.write_int32s(0xEBB85C, [
+            0x24010002, # addiu at, zero, 2
+            0x3C038012, # lui v1, 0x8012
+            0x14410004, # bne v0, at, 0xd8
+            0x2463A5D0, # addiu v1, v1, -0x5a30
+            0x94790EF0])# lhu t9, 0xef0(v1)
+        rom.write_int32(0xDF7CB0,
+            0xA44F0EF0)  # sh t7, 0xef0(v0)
+    else:
+        # kokiri shop
+        shop_objs = place_shop_items(rom, shop_items, messages, 
+            world.get_region('Kokiri Shop').locations, True)
+        shop_objs |= {0x00FC, 0x00B2, 0x0101, 0x0102, 0x00FD, 0x00C5} # Shop objects
+        rom.write_byte(0x2587029, len(shop_objs))
+        rom.write_int32(0x258702C, 0x0300F600)
+        rom.write_int16s(0x2596600, list(shop_objs))
+
+        # kakariko bazaar
+        shop_objs = place_shop_items(rom, shop_items, messages,  
+            world.get_region('Kakariko Bazaar').locations)
+        shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
+        rom.write_byte(0x28E4029, len(shop_objs))
+        rom.write_int32(0x28E402C, 0x03007A40)
+        rom.write_int16s(0x28EBA40, list(shop_objs))
+     
+        # castle town bazaar
+        shop_objs = place_shop_items(rom, shop_items, messages,  
+            world.get_region('Castle Town Bazaar').locations)
+        shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
+        rom.write_byte(0x3489029, len(shop_objs))
+        rom.write_int32(0x348902C, 0x03007A40)
+        rom.write_int16s(0x3490A40, list(shop_objs))
+     
+        # goron shop
+        shop_objs = place_shop_items(rom, shop_items, messages,  
+            world.get_region('Goron Shop').locations)
+        shop_objs |= {0x00C9, 0x00B2, 0x0103, 0x00AF} # Shop objects
+        rom.write_byte(0x2D33029, len(shop_objs))
+        rom.write_int32(0x2D3302C, 0x03004340)
+        rom.write_int16s(0x2D37340, list(shop_objs))
+
+        # zora shop
+        shop_objs = place_shop_items(rom, shop_items, messages,  
+            world.get_region('Zora Shop').locations)
+        shop_objs |= {0x005B, 0x00B2, 0x0104, 0x00FE} # Shop objects
+        rom.write_byte(0x2D5B029, len(shop_objs))
+        rom.write_int32(0x2D5B02C, 0x03004B40)
+        rom.write_int16s(0x2D5FB40, list(shop_objs))
+
+        # kakariko potion shop
+        shop_objs = place_shop_items(rom, shop_items, messages,  
+            world.get_region('Kakariko Potion Shop Front').locations)
+        shop_objs |= {0x0159, 0x00B2, 0x0175, 0x0122} # Shop objects
+        rom.write_byte(0x2D83029, len(shop_objs))
+        rom.write_int32(0x2D8302C, 0x0300A500)
+        rom.write_int16s(0x2D8D500, list(shop_objs))
+
+        # market potion shop
+        shop_objs = place_shop_items(rom, shop_items, messages,  
+            world.get_region('Castle Town Potion Shop').locations)
+        shop_objs |= {0x0159, 0x00B2, 0x0175, 0x00C5, 0x010C, 0x016B} # Shop objects
+        rom.write_byte(0x2DB0029, len(shop_objs))
+        rom.write_int32(0x2DB002C, 0x03004E40)
+        rom.write_int16s(0x2DB4E40, list(shop_objs))
+
+        # bombchu shop
+        shop_objs = place_shop_items(rom, shop_items, messages,  
+            world.get_region('Castle Town Bombchu Shop').locations)
+        shop_objs |= {0x0165, 0x00B2} # Shop objects
+        rom.write_byte(0x2DD8029, len(shop_objs))
+        rom.write_int32(0x2DD802C, 0x03006A40)
+        rom.write_int16s(0x2DDEA40, list(shop_objs))
+
+    if world.shuffle_scrubs:
+        # Rebuild Deku Salescrub Item Table
+        scrub_items = [0x30, 0x31, 0x3E, 0x33, 0x34, 0x37, 0x38, 0x39, 0x3A, 0x77, 0x79]
+        rom.seek_address(0xDF8684)
+        for scrub_item in scrub_items:
+            rom.write_int16(None, 10)         # Price
+            rom.write_int16(None, 1)          # Count
+            rom.write_int32(None, scrub_item) # Item
+            rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func
+            rom.write_int32(None, 0x80A75354) # Buy_Func
+
+        # update actor IDs
+        set_deku_salesman_data(rom)
+
+    # Update grotto id data
+    set_grotto_id_data(rom)
+
+    if world.shuffle_smallkeys == 'remove' or world.shuffle_bosskeys == 'remove':
+        locked_doors = get_locked_doors(rom, world)
+        for _,[door_byte, door_bits] in locked_doors.items():
+            write_bits_to_save(door_byte, door_bits)
 
     #Fix item chest animations
     chestAnimations = {
@@ -1174,6 +1337,11 @@ def patch_rom(world, rom):
         0x4F: 0xED, #0x13 #Heart Container 
         0x76: 0xEC, #0x14 #WINNER! Piece of Heart
     }
+    if world.bombchus_in_logic:
+        #Fix bombchu chest animations
+        chestAnimations[0x6A] = 0x28 #0xD8 #Bombchu (5) 
+        chestAnimations[0x03] = 0x28 #0xD8 #Bombchu (10) 
+        chestAnimations[0x6B] = 0x28 #0xD8 #Bombchu (20) 
     for item_id, gfx_id in chestAnimations.items():
         rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
 
@@ -1195,8 +1363,13 @@ def patch_rom(world, rom):
     # reduce item message lengths
     update_item_messages(messages, world)
 
+    # Add 3rd Wallet Upgrade
+    rom.write_int16(0xB6D57E, 0x0003)
+    rom.write_int16(0xB6EC52, 999)
+    update_message_by_id(messages, 0x00F8, "\x08\x13\x57You got a \x05\x43Tycoon's Wallet\x05\x40!\x01Now you can hold\x01up to \x05\x46999\x05\x40 \x05\x46Rupees\x05\x40.", 0x23)
+
     repack_messages(rom, messages)
-    write_shop_items(rom, shop_items)
+    write_shop_items(rom, shop_item_file.start + 0x1DEC, shop_items)
 
     # text shuffle
     if world.text_shuffle == 'except_hints':
@@ -1445,6 +1618,10 @@ def get_override_entry(location):
         return [scene, player_id | 0x02, default, item_id]
     elif location.type == 'GS Token':
         return [scene, player_id | 0x03, default, item_id]
+    elif location.type == 'Shop' and location.item.type != 'Shop':
+        return [scene, player_id | 0x00, default, item_id]
+    elif location.type == 'GrottoNPC' and location.item.type != 'Shop':
+        return [scene, player_id | 0x04, default, item_id]    
     else:
         return []
 
@@ -1505,8 +1682,9 @@ chestAnimationExtendedFast = [
 ]
 
 
-def room_get_chests(rom, room_data, scene, chests, alternate=None):
-    room_start = alternate or room_data
+def room_get_actors(rom, actor_func, room_data, scene, alternate=None):
+    actors = {}
+    room_start = alternate if alternate else room_data
     command = 0
     while command != 0x14: # 0x14 = end header
         command = rom.read_byte(room_data)
@@ -1514,23 +1692,27 @@ def room_get_chests(rom, room_data, scene, chests, alternate=None):
             actor_count = rom.read_byte(room_data + 1)
             actor_list = room_start + (rom.read_int32(room_data + 4) & 0x00FFFFFF)
             for _ in range(0, actor_count):
-                actor_id = rom.read_int16(actor_list);
-                actor_var = rom.read_int16(actor_list + 14)
-                if actor_id == 0x000A: #Chest Actor
-                    chests[actor_list + 14] = [scene, actor_var & 0x001F]
+                actor_id = rom.read_int16(actor_list)
+                entry = actor_func(rom, actor_id, actor_list, scene)
+                if entry:
+                    actors[actor_list] = entry
                 actor_list = actor_list + 16
-        if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
+        if command == 0x18: # Alternate header list
             header_list = room_start + (rom.read_int32(room_data + 4) & 0x00FFFFFF)
-            for alt_id in range(0,2):
-                header_data = room_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
+            for alt_id in range(0,3):
+                header_data = room_start + (rom.read_int32(header_list) & 0x00FFFFFF)
                 if header_data != 0 and not alternate:
-                    room_get_chests(rom, header_data, scene, chests, room_start)
+                    actors.update(room_get_actors(rom, actor_func, header_data, scene, room_start))
                 header_list = header_list + 4
         room_data = room_data + 8
+    return actors
 
 
-def scene_get_chests(rom, scene_data, scene, chests, alternate=None):
-    scene_start = alternate or scene_data
+def scene_get_actors(rom, actor_func, scene_data, scene, alternate=None, processed_rooms=None):
+    if processed_rooms == None:
+        processed_rooms = []
+    actors = {}
+    scene_start = alternate if alternate else scene_data
     command = 0
     while command != 0x14: # 0x14 = end header
         command = rom.read_byte(scene_data)
@@ -1539,27 +1721,38 @@ def scene_get_chests(rom, scene_data, scene, chests, alternate=None):
             room_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
             for _ in range(0, room_count):
                 room_data = rom.read_int32(room_list);
-                room_get_chests(rom, room_data, scene, chests)
+
+                if not room_data in processed_rooms:
+                    actors.update(room_get_actors(rom, actor_func, room_data, scene))
+                    processed_rooms.append(room_data)
                 room_list = room_list + 8
-        if command == 0x18 and scene >= 81 and scene <= 99: # Alternate header list
+        if command == 0x0E: #transition actor list
+            actor_count = rom.read_byte(scene_data + 1)
+            actor_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
+            for _ in range(0, actor_count):
+                actor_id = rom.read_int16(actor_list + 4)
+                entry = actor_func(rom, actor_id, actor_list, scene)
+                if entry:
+                    actors[actor_list] = entry
+                actor_list = actor_list + 16                
+        if command == 0x18: # Alternate header list
             header_list = scene_start + (rom.read_int32(scene_data + 4) & 0x00FFFFFF)
-            for alt_id in range(0,2):
-                header_data = scene_start + (rom.read_int32(header_list + 4) & 0x00FFFFFF)
+            for alt_id in range(0,3):
+                header_data = scene_start + (rom.read_int32(header_list) & 0x00FFFFFF)
                 if header_data != 0 and not alternate:
-                    scene_get_chests(rom, header_data, scene, chests, scene_start)
+                    actors.update(scene_get_actors(rom, actor_func, header_data, scene, scene_start, processed_rooms))
                 header_list = header_list + 4
 
         scene_data = scene_data + 8
+    return actors
 
-
-def get_chest_list(rom):
-    chests = {}
+def get_actor_list(rom, actor_func):
+    actors = {}
     scene_table = 0x00B71440
     for scene in range(0x00, 0x65):
         scene_data = rom.read_int32(scene_table + (scene * 0x14));
-        scene_get_chests(rom, scene_data, scene, chests)
-    return chests
-
+        actors.update(scene_get_actors(rom, actor_func, scene_data, scene))
+    return actors
 
 def get_override_itemid(override_table, scene, type, flags):
     for entry in override_table:
@@ -1568,11 +1761,16 @@ def get_override_itemid(override_table, scene, type, flags):
     return None
 
 def update_chest_sizes(rom, override_table):
-    chest_list = get_chest_list(rom)
-    for address, [scene, flags] in chest_list.items():
+    def get_chest(rom, actor_id, actor, scene):
+        if actor_id == 0x000A: #Chest Actor
+            actor_var = rom.read_int16(actor + 14)
+            return [scene, actor_var & 0x001F]
+
+    chest_list = get_actor_list(rom, get_chest)
+    for actor, [scene, flags] in chest_list.items():
         item_id = get_override_itemid(override_table, scene, 1, flags)
 
-        if None in [address, scene, flags, item_id]:
+        if None in [actor, scene, flags, item_id]:
             continue
 
         itemType = 0  # Item animation
@@ -1585,12 +1783,96 @@ def update_chest_sizes(rom, override_table):
             itemType = 1 # Long animation, big chest
         # Don't use boss chests
 
-        default = rom.read_int16(address)
+        default = rom.read_int16(actor + 14)
         chestType = default & 0xF000
         newChestType = chestTypeMap[chestType][itemType]
         default = (default & 0x0FFF) | newChestType
-        rom.write_int16(address, default)
+        rom.write_int16(actor + 14, default)
 
+def set_grotto_id_data(rom):
+    def set_grotto_id(rom, actor_id, actor, scene):
+        if actor_id == 0x009B: #Grotto
+            actor_zrot = rom.read_int16(actor + 12)
+            actor_var = rom.read_int16(actor + 14);
+            grotto_scene = actor_var >> 12
+            grotto_entrance = actor_zrot & 0x000F
+            grotto_id = actor_var & 0x00FF
+
+            if grotto_scene == 0 and grotto_entrance in [2, 4, 7, 10]:
+                grotto_scenes.add(scene)
+                rom.write_byte(actor + 15, len(grotto_scenes))
+
+    grotto_scenes = set()
+
+    get_actor_list(rom, set_grotto_id)
+
+def set_deku_salesman_data(rom):
+    def set_deku_salesman(rom, actor_id, actor, scene):
+        if actor_id == 0x0195: #Salesman
+            actor_var = rom.read_int16(actor + 14)
+            if actor_var == 6:
+                rom.write_int16(actor + 14, 0x0003)
+
+    get_actor_list(rom, set_deku_salesman)
+
+def get_locked_doors(rom, world):
+    def locked_door(rom, actor_id, actor, scene):
+        actor_var = rom.read_int16(actor + 14)
+        actor_type = actor_var >> 6
+        actor_flag = actor_var & 0x003F
+
+        flag_id = (1 << actor_flag)
+        flag_byte = 3 - (actor_flag >> 3)
+        flag_bits = 1 << (actor_flag & 0x07)
+
+        # If locked door, set the door's unlock flag
+        if world.shuffle_smallkeys == 'remove':
+            if actor_id == 0x0009 and actor_type == 0x02:
+                return [0x00D4 + scene * 0x1C + 0x04 + flag_byte, flag_bits]
+            if actor_id == 0x002E and actor_type == 0x0B:
+                return [0x00D4 + scene * 0x1C + 0x04 + flag_byte, flag_bits]
+
+        # If boss door, set the door's unlock flag
+        if world.shuffle_bosskeys == 'remove':
+            if actor_id == 0x002E and actor_type == 0x05:
+                return [0x00D4 + scene * 0x1C + 0x04 + flag_byte, flag_bits]
+
+    return get_actor_list(rom, locked_door)
+
+def place_shop_items(rom, shop_items, messages, locations, init_shop_id=False): 
+    if init_shop_id: 
+        place_shop_items.shop_id = 0x32 
+
+    shop_objs = { 0x0148 } # Sold Out 
+    messages 
+    for location in locations: 
+        shop_objs.add(location.item.object) 
+        if location.item.type == 'Shop': 
+            rom.write_int16(location.address, location.item.index) 
+        else: 
+            shop_id = place_shop_items.shop_id 
+            rom.write_int16(location.address, shop_id) 
+            shop_item = shop_items[shop_id] 
+ 
+            shop_item.object = location.item.object 
+            shop_item.model = location.item.model - 1 
+            shop_item.price = location.price 
+            shop_item.pieces = 1 
+            shop_item.get_item_id = location.default 
+            shop_item.func1 = 0x808648CC 
+            shop_item.func2 = 0x808636B8 
+            shop_item.func3 = 0x00000000 
+            shop_item.func4 = 0x80863FB4 
+ 
+            message_id = (shop_id - 0x32) * 2 
+            shop_item.description_message = 0x8100 + message_id 
+            shop_item.purchase_message = 0x8100 + message_id + 1 
+            update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price), 0x03) 
+            update_message_by_id(messages, shop_item.purchase_message, '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.price), 0x03) 
+ 
+            place_shop_items.shop_id += 1 
+ 
+    return shop_objs 
 
 # Format: (Title, Sequence ID)
 bgm_sequence_ids = [

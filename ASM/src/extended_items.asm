@@ -54,7 +54,7 @@ Item_Row -1, -1, -1, -1, -1, strength_upgrade,  no_effect, -1, -1 ; 0x81 = Progr
 Item_Row -1, -1, -1, -1, -1, bomb_bag_upgrade,  no_effect, -1, -1 ; 0x82 = Progressive Bomb Bag
 Item_Row -1, -1, -1, -1, -1, bow_upgrade,       no_effect, -1, -1 ; 0x83 = Progressive Bow
 Item_Row -1, -1, -1, -1, -1, slingshot_upgrade, no_effect, -1, -1 ; 0x84 = Progressive Slingshot
-Item_Row -1, -1, -1, -1, -1, wallet_upgrade,    no_effect, -1, -1 ; 0x85 = Progressive Wallet
+Item_Row 0x53, 0x41, 0x23, 0xF8, 0x00D1, wallet_upgrade, tycoon_wallet, -1, -1 ; 0x85 = Progressive Wallet
 Item_Row -1, -1, -1, -1, -1, scale_upgrade,     no_effect, -1, -1 ; 0x86 = Progressive Scale
 Item_Row -1, -1, -1, -1, -1, nut_upgrade,       no_effect, -1, -1 ; 0x87 = Progressive Nut Capacity
 Item_Row -1, -1, -1, -1, -1, stick_upgrade,     no_effect, -1, -1 ; 0x88 = Progressive Stick Capacity
@@ -244,9 +244,21 @@ wallet_upgrade:
     beqz    t0, @@return
     li      v0, 0x45 ; Adult's Wallet
 
+    li      t1, 0x10
+    beq     t0, t1, @@return
     li      v0, 0x46 ; Giant's Wallet
 
+    ori     v0, a1, 0   ; Tycoon's Wallet (unchanged)
+
 @@return:
+    jr      ra
+    nop
+
+tycoon_wallet:
+    ; a0 = save context
+    lbu     t0, 0xA2 (a0) ; Load wallet from inventory
+    ori     t0, t0, 0x30  ; Give lvl 3 wallet
+    sb      t0, 0xA2 (a0) ; Store wallet to inventory
     jr      ra
     nop
 

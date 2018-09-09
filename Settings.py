@@ -389,7 +389,7 @@ setting_infos = [
                     Bombchus will be considered in logic. This has a few effects:
                     -Back alley shop will open once you've found Bombchus
                     -It will sell an affordable pack (5 for 60), and never sell out
-                    -Bombchu Bowling will open once you've found Bombchus
+                    -Bombchus refills cannot be bought until Bomchus have been obtained.
                     ''',
             'action': 'store_true'
         },
@@ -409,7 +409,11 @@ setting_infos = [
                       rupees once they are been found.
 
                       Bombchu Bowling opens with bombchus.
-                      '''
+                      Bombchus are available at Kokiri Shop
+                      and the Bazaar. Bombchus refills cannot 
+                      be bought until Bomchus have been
+                      obtained.
+                      ''',
         }),
     Setting_Info('trials_random', bool, 1, True, 
         {
@@ -750,43 +754,191 @@ setting_infos = [
                       Plays spiritually best with Keysanity.
                       '''
         }),
-    Setting_Info('shuffle_dungeon_items', str, 2, True,
+    Setting_Info('shuffle_scrubs', bool, 1, True, 
         {
-        'default': 'mapcompass',
-        'const': 'mapcompass',
+            'help': '''\
+                    All Deku Salesmen will give a random item.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Shuffle Deku Salescrubs',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Every Deku Salescrub will give
+                      a random item. This adds 31 new
+                      item locations. Scrubs prices
+                      are all reduced to 10 Rupees.
+                      '''
+        }),    
+    Setting_Info('shopsanity', str, 3, True, 
+        {
+            'default': 'off',
+            'const': 'off',
+            'nargs': '?',
+            'choices': ['off', '0', '1', '2', '3', '4', 'random'],
+            'help': '''\
+                    Shop contents are randomized. There are Two items
+                    in every shop that are one time buy and are not
+                    refill items.
+                    off:        Normal Shops*
+                    0-4:        Shop contents are shuffled and N non-shop
+                                items are added to every shop. So more
+                                possible item locations.
+                    random:     Shop contents are shuffles and each shop
+                                will have a random number of non-shop items
+                    '''
+        },
+        {
+            'text': 'Shopsanity',
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Off',
+            'options': {
+                'Off': 'off',
+                'Shuffled Shops (0 Items)': '0',
+                'Shuffled Shops (1 Items)': '1',
+                'Shuffled Shops (2 Items)': '2',
+                'Shuffled Shops (3 Items)': '3',
+                'Shuffled Shops (4 Items)': '4',
+                'Shuffled Shops (Random)': 'random',
+            },
+            'tooltip':'''\
+                      Shop contents are randomized.
+
+                      (X Items): Shops have X random 
+                      non-shop items in every. They 
+                      will always be on the left side. 
+                      This means every shop will have 
+                      more possible item locations. 
+                      So +2 means 2 items per shop.
+
+                      (Random): Each shop will have
+                      a random number of non-shop
+                      items. Each shop can have a 
+                      maximum of 4 items.
+                      '''
+        }),       
+    Setting_Info('shuffle_mapcompass', str, 2, True,
+        {
+        'default': 'dungeon',
+        'const': 'dungeon',
         'nargs': '?',
-        'choices': ['off', 'mapcompass', 'keysanity'],
+        'choices': ['remove', 'dungeon', 'keysanity'],
         'help': '''\
-                    Dungeon items can appear outside of their
-                    respective dungeon.
-                    off:            Dungeon items will be in their dungeons
-                    mapcompass:     Maps and Compasses can appear anywhere
-                    keysanity:      Dungeon items can appear anywhere
+                    Sets the Map and Compass placement rules
+                    remove:      Maps and Compasses are removed from the world
+                    dungeon:     Maps and Compasses are put in their Dungeon
+                    keysanity:   Maps and Compasses can appear anywhere
                     '''
         },
         {
             'text': 'Shuffle Dungeon Items',
             'group': 'logic',
             'widget': 'Combobox',
-            'default': 'Maps and Compasses',
+            'default': 'Maps/Compasses: Dungeon Only',
             'options': {
-                'Off': 'off',
-                'Maps and Compasses': 'mapcompass',
-                'Full Keysanity': 'keysanity'
+                'Maps/Compasses: Remove': 'remove',
+                'Maps/Compasses: Dungeon Only': 'dungeon',
+                'Maps/Compasses: Anywhere': 'keysanity'
             },
             'tooltip':'''\
-                      Dungeon items can appear anywhere instead 
-                      of just being restricted to their own dungeon.
+                      'Remove': Maps and Compasses are removed.
+                      This will add a small amount of money and
+                      refill items to the pool.
 
-                      'Maps and Compasses': Dungeons will have
-                      2 more possible item locations. This helps
-                      make some dungeons more profitable, such as
-                      Ice Cavern and Jabu Jabu's Belly.
+                      'Dungeon': Maps and Compasses can onlyappear 
+                      in their respective dungeon.
 
-                      'Full Keysanity': Maps, Compasses, and Keys
-                      can appear anywhere. A difficult mode, since 
+                      'Anywhere': Maps and Compaases can appear
+                      anywhere in the world. 
+
+                      Setting 'Remove' or 'Anywhere' will add 2
+                      more possible locations to each Dungeons.
+                      This helps make some dungeons more profitable, 
+                      such as Ice Cavern and Jabu Jabu's Belly.
+                      '''
+        }),
+    Setting_Info('shuffle_smallkeys', str, 2, True,
+        {
+        'default': 'dungeon',
+        'const': 'dungeon',
+        'nargs': '?',
+        'choices': ['remove', 'dungeon', 'keysanity'],
+        'help': '''\
+                    Sets the Small Keys placement rules
+                    remove:      Small Keys are removed from the world
+                    dungeon:     Small Keys are put in their Dungeon
+                    keysanity:   Small Keys can appear anywhere
+                    '''
+        },
+        {
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Small Keys: Dungeon Only',
+            'options': {
+                'Small Keys: Remove (Keysy)': 'remove',
+                'Small Keys: Dungeon Only': 'dungeon',
+                'Small Keys: Anywhere (Keysanity)': 'keysanity'
+            },
+            'tooltip':'''\
+                      'Remove': Small Keys are removed. All locked
+                      doors in dungeons will be unlocked. An easier
+                      mode. 
+
+                      'Dungeon': Small Keys can only appear in their 
+                      respective dungeon.
+
+                      'Anywhere': Small Keys can appear
+                      anywhere in the world. A difficult mode since
                       it is more likely to need to enter a dungeon
                       multiple times.
+
+                      Try different combination out, such as:
+                      'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
+                      for a milder Keysanity experience.
+                      '''
+        }),
+    Setting_Info('shuffle_bosskeys', str, 2, True,
+        {
+        'default': 'dungeon',
+        'const': 'dungeon',
+        'nargs': '?',
+        'choices': ['remove', 'dungeon', 'keysanity'],
+        'help': '''\
+                    Sets the Boss Keys placement rules
+                    remove:      Boss Keys are removed from the world
+                    dungeon:     Boss Keys are put in their Dungeon
+                    keysanity:   Boss Keys can appear anywhere
+                    '''
+        },
+        {
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Boss Keys: Dungeon Only',
+            'options': {
+                'Boss Keys: Remove (Keysy)': 'remove',
+                'Boss Keys: Dungeon Only': 'dungeon',
+                'Boss Keys: Anywhere (Keysanity)': 'keysanity'
+            },
+            'tooltip':'''\
+                      'Remove': Boss Keys are removed. All locked
+                      doors in dungeons will be unlocked. An easier
+                      mode. 
+
+                      'Dungeon': Boss Keys can only appear in their 
+                      respective dungeon.
+
+                      'Anywhere': Boss Keys can appear
+                      anywhere in the world. A difficult mode since
+                      it is more likely to need to enter a dungeon
+                      multiple times.
+
+                      Try different combination out, such as:
+                      'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
+                      for a milder Keysanity experience.
                       '''
         }),
     Setting_Info('tokensanity', str, 2, True, 
@@ -827,7 +979,7 @@ setting_infos = [
                       'All Tokens': Effectively adds 100
                       new locations for items to appear.
                       '''
-        }),
+        }), 
     Setting_Info('quest', str, 2, True, 
         {
             'default': 'vanilla',
@@ -843,7 +995,7 @@ setting_infos = [
         },
         {
             'text': 'Dungeon Quest',
-            'group': 'logic',
+            'group': 'world',
             'widget': 'Combobox',
             'default': 'Vanilla',
             'options': {
@@ -861,8 +1013,7 @@ setting_infos = [
                       'Mixed': Each dungeon will have a
                       random chance to be in either form.
                       ''',
-            'dependency': lambda guivar: False,
-
+            'dependency': lambda guivar: False, 
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
