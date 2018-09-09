@@ -863,11 +863,12 @@ class Spoiler(object):
             else:
                 outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  %s: %s' % (location.name, item.name) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
 
-            outfile.write('\n\nAlways Required Locations:\n\n')
-            if self.settings.world_count > 1:
-                outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations]))
-            else:
-                outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations]))
+            if len(self.hints) > 0:
+                outfile.write('\n\nAlways Required Locations:\n\n')
+                if self.settings.world_count > 1:
+                    outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations]))
+                else:
+                    outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations]))
 
-            outfile.write('\n\nGossip Stone Hints:\n\n')
-            outfile.write('\n'.join(self.hints.values()))
+                outfile.write('\n\nGossip Stone Hints:\n\n')
+                outfile.write('\n'.join(self.hints.values()))
