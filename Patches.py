@@ -38,7 +38,7 @@ TunicColors = {
     "Blood Orange": [0xF0, 0x30, 0x30],
     "NES Green": [0x00, 0xD0, 0x00],
     "Dark Green": [0x00, 0x25, 0x18],
-    "Only": [80, 140, 240],
+    "Lumen": [80, 140, 240],
 }
 
 NaviColors = {
