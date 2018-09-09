@@ -1243,7 +1243,7 @@ def patch_rom(world, rom):
             0xA44F0EF0)  # sh t7, 0xef0(v0)
     else:
         # kokiri shop
-        shop_objs = place_shop_items(rom, shop_items, messages, 
+        shop_objs = place_shop_items(rom, world, shop_items, messages, 
             world.get_region('Kokiri Shop').locations, True)
         shop_objs |= {0x00FC, 0x00B2, 0x0101, 0x0102, 0x00FD, 0x00C5} # Shop objects
         rom.write_byte(0x2587029, len(shop_objs))
@@ -1251,7 +1251,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x2596600, list(shop_objs))
 
         # kakariko bazaar
-        shop_objs = place_shop_items(rom, shop_items, messages,  
+        shop_objs = place_shop_items(rom, world, shop_items, messages,  
             world.get_region('Kakariko Bazaar').locations)
         shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
         rom.write_byte(0x28E4029, len(shop_objs))
@@ -1259,7 +1259,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x28EBA40, list(shop_objs))
      
         # castle town bazaar
-        shop_objs = place_shop_items(rom, shop_items, messages,  
+        shop_objs = place_shop_items(rom, world, shop_items, messages,  
             world.get_region('Castle Town Bazaar').locations)
         shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
         rom.write_byte(0x3489029, len(shop_objs))
@@ -1267,7 +1267,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x3490A40, list(shop_objs))
      
         # goron shop
-        shop_objs = place_shop_items(rom, shop_items, messages,  
+        shop_objs = place_shop_items(rom, world, shop_items, messages,  
             world.get_region('Goron Shop').locations)
         shop_objs |= {0x00C9, 0x00B2, 0x0103, 0x00AF} # Shop objects
         rom.write_byte(0x2D33029, len(shop_objs))
@@ -1275,7 +1275,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x2D37340, list(shop_objs))
 
         # zora shop
-        shop_objs = place_shop_items(rom, shop_items, messages,  
+        shop_objs = place_shop_items(rom, world, shop_items, messages,  
             world.get_region('Zora Shop').locations)
         shop_objs |= {0x005B, 0x00B2, 0x0104, 0x00FE} # Shop objects
         rom.write_byte(0x2D5B029, len(shop_objs))
@@ -1283,7 +1283,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x2D5FB40, list(shop_objs))
 
         # kakariko potion shop
-        shop_objs = place_shop_items(rom, shop_items, messages,  
+        shop_objs = place_shop_items(rom, world, shop_items, messages,  
             world.get_region('Kakariko Potion Shop Front').locations)
         shop_objs |= {0x0159, 0x00B2, 0x0175, 0x0122} # Shop objects
         rom.write_byte(0x2D83029, len(shop_objs))
@@ -1291,7 +1291,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x2D8D500, list(shop_objs))
 
         # market potion shop
-        shop_objs = place_shop_items(rom, shop_items, messages,  
+        shop_objs = place_shop_items(rom, world, shop_items, messages,  
             world.get_region('Castle Town Potion Shop').locations)
         shop_objs |= {0x0159, 0x00B2, 0x0175, 0x00C5, 0x010C, 0x016B} # Shop objects
         rom.write_byte(0x2DB0029, len(shop_objs))
@@ -1299,7 +1299,7 @@ def patch_rom(world, rom):
         rom.write_int16s(0x2DB4E40, list(shop_objs))
 
         # bombchu shop
-        shop_objs = place_shop_items(rom, shop_items, messages,  
+        shop_objs = place_shop_items(rom, world, shop_items, messages,  
             world.get_region('Castle Town Bombchu Shop').locations)
         shop_objs |= {0x0165, 0x00B2} # Shop objects
         rom.write_byte(0x2DD8029, len(shop_objs))
@@ -1839,7 +1839,7 @@ def get_locked_doors(rom, world):
 
     return get_actor_list(rom, locked_door)
 
-def place_shop_items(rom, shop_items, messages, locations, init_shop_id=False): 
+def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=False): 
     if init_shop_id: 
         place_shop_items.shop_id = 0x32 
 
@@ -1867,9 +1867,12 @@ def place_shop_items(rom, shop_items, messages, locations, init_shop_id=False):
             message_id = (shop_id - 0x32) * 2 
             shop_item.description_message = 0x8100 + message_id 
             shop_item.purchase_message = 0x8100 + message_id + 1 
-            update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price), 0x03) 
+            if world.world_count > 1:
+                update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x09\x0A\x02' % (location.item.name, location.price), 0x03) 
+            else:
+                update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price), 0x03) 
             update_message_by_id(messages, shop_item.purchase_message, '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.price), 0x03) 
- 
+
             place_shop_items.shop_id += 1 
  
     return shop_objs 
