@@ -428,7 +428,8 @@ def guiMain(settings=None):
     else:
         # try to load saved settings
         try:
-            with open('settings.sav') as f:
+            settingsFile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.sav')
+            with open(settingsFile) as f:
                 settings = Settings( json.load(f) )
                 settings.update_seed("")
                 settings_to_guivars(settings, guivars)
