@@ -271,9 +271,10 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      The Deku Tree can be beaten without leaving the Forest
-                      areas. This means that the Kokiri Sword and Slingshot
-                      are always available somewhere in the forest.
+                      Can leave the Kokiri Forest without beating the 
+                      Deku Tree. When this option is off, the Kokiri 
+                      Sword and Slingshot are always available somewhere 
+                      in the forest.
                       '''
         }),
     Setting_Info('open_kakariko', bool, 1, True, 
