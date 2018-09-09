@@ -8,6 +8,7 @@
 ; Base game editing region
 ;==================================================================================================
 
+.include "boot.asm"
 .include "hacks.asm"
 .include "malon.asm"
 
@@ -21,6 +22,7 @@
 
 .org 0x80400000
 .area 0x1000
+.include "init.asm"
 DebugOutput:
 .include "debug.asm"
 .endarea
@@ -46,6 +48,12 @@ DebugOutput:
 .include "time_travel.asm"
 .include "song_fix.asm"
 .include "initial_save.asm"
+.endarea
+
+.headersize (0x80405000 - 0x034B3000)
+
+.org 0x80405000
+.area 0xB000, 0
 .endarea
 
 .close
