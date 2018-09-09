@@ -153,8 +153,8 @@ def patch_rom(world, rom):
         rom.write_int32s(0xC01078,
             [0x3C098012,    # lui     t1, 0x8012
              0x812AA673,    # lb      t2, -0x598D(t1)    ; bombbag size (SAVE_CONTEXT + 0xA3)
-             0x314A0018,    # andi    t2, t2, 0x18
-             0x15200002,    # bnez    t2, @@return       ; If has bombbag, return 1 (can buy)
+             0x314A0038,    # andi    t2, t2, 0x38
+             0x15400002,    # bnez    t2, @@return       ; If has bombbag, return 1 (can buy)
              0x24020000,    # li      v0, 0
              0x24020002])   # li      v0, 2              ; else, return 2, (can't buy)
 
@@ -1792,7 +1792,6 @@ def update_chest_sizes(rom, override_table):
 def set_grotto_id_data(rom):
     def set_grotto_id(rom, actor_id, actor, scene):
         if actor_id == 0x009B: #Grotto
-            print('%02X %08X' % (scene, actor))
             actor_zrot = rom.read_int16(actor + 12)
             actor_var = rom.read_int16(actor + 14);
             grotto_scene = actor_var >> 12
@@ -1843,7 +1842,7 @@ def get_locked_doors(rom, world):
 def place_shop_items(rom, shop_items, messages, locations, init_shop_id=False): 
     if init_shop_id: 
         place_shop_items.shop_id = 0x32 
- 
+
     shop_objs = { 0x0148 } # Sold Out 
     messages 
     for location in locations: 
