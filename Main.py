@@ -18,6 +18,7 @@ from Dungeons import create_dungeons
 from Rules import set_rules
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
+from Hints import buildGossipHints
 from Utils import default_output_path
 from version import __version__
 
@@ -82,6 +83,9 @@ def main(settings, window=dummy_window()):
         logger.info('Linking Entrances')
         link_entrances(world)
 
+        if settings.shopsanity != 'off':
+            world.random_shop_prices()
+
         window.update_progress(0 + (((id + 1) / settings.world_count) * 4))
         logger.info('Calculating Access Rules.')
         set_rules(world)
@@ -102,6 +106,7 @@ def main(settings, window=dummy_window()):
         window.update_progress(50)
     window.update_status('Calculating Hint Data')
     CollectionState.update_required_items(worlds)
+    buildGossipHints(world)
     window.update_progress(55)
 
     logger.info('Patching ROM.')

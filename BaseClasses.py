@@ -3,6 +3,7 @@ from enum import Enum, unique
 import logging
 from collections import OrderedDict, Counter
 from version import __version__ as OoTRVersion
+import random
 
 
 class World(object):
@@ -19,13 +20,14 @@ class World(object):
         self._entrance_cache = {}
         self._location_cache = {}
         self.required_locations = []
+        self.shop_prices = {}
 
         # dump settings directly into world's namespace
         # this gives the world an attribute for every setting listed in Settings.py
         self.settings = settings
         self.__dict__.update(settings.__dict__)
         # rename a few attributes...
-        self.keysanity = self.shuffle_dungeon_items == 'keysanity'
+        self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
         # group a few others
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
@@ -54,7 +56,7 @@ class World(object):
             'SpT': False,
             'ShT': False,
             'GC': False
-}
+        }
 
         self.can_take_damage = True
         self.spoiler = Spoiler(self)
@@ -65,10 +67,11 @@ class World(object):
         ret.skipped_trials = copy.copy(self.skipped_trials)
         ret.dungeon_mq = copy.copy(self.dungeon_mq)
         ret.can_take_damage = self.can_take_damage
+        ret.shop_prices = copy.copy(self.shop_prices)
         ret.id = self.id
         from Regions import create_regions
         from Dungeons import create_dungeons
-        from Rules import set_rules
+        from Rules import set_rules, set_shop_rules
         create_regions(ret)
         create_dungeons(ret)
         set_rules(ret)
@@ -97,6 +100,8 @@ class World(object):
         # copy progress items in state
         ret.state.prog_items = copy.copy(self.state.prog_items)
 
+        set_shop_rules(ret)
+
         return ret
 
     def initialize_regions(self):
@@ -112,10 +117,22 @@ class World(object):
             for location in region.locations:
                 if location.item != None:
                     location.item.world = self
-        for dungeon in self.dungeons:
-            for item in dungeon.all_items:
-                item.world = self
+        for item in [item for dungeon in self.dungeons for item in dungeon.all_items]:
+            item.world = self
 
+    def random_shop_prices(self):
+        shop_item_indexes = ['7', '5', '8', '6']
+        self.shop_prices = {}
+        for region in self.regions:
+            if self.shopsanity == 'random':
+                shop_item_count = random.randint(0,4)
+            else:
+                shop_item_count = int(self.shopsanity)
+
+            for location in region.locations:
+                if location.type == 'Shop':
+                    if location.name[-1:] in shop_item_indexes[:shop_item_count]:
+                        self.shop_prices[location.name] = int(random.betavariate(1.5, 2) * 60) * 5
 
     def get_region(self, regionname):
         if isinstance(regionname, Region):
@@ -160,24 +177,28 @@ class World(object):
 
     # get a list of items that should stay in their proper dungeon
     def get_restricted_dungeon_items(self):
-        if self.shuffle_dungeon_items == 'keysanity':
-            itempool = []
-        elif self.shuffle_dungeon_items == 'mapcompass':
-            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if item.key]
-        else:
-            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items]
+        itempool = []
+        if self.shuffle_mapcompass == 'dungeon':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.dungeon_items])
+        if self.shuffle_smallkeys == 'dungeon':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.small_keys])
+        if self.shuffle_bosskeys == 'dungeon':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.boss_key])
+
         for item in itempool:
             item.world = self
         return itempool
 
     # get a list of items that don't have to be in their proper dungeon
     def get_unrestricted_dungeon_items(self):
-        if self.shuffle_dungeon_items == 'keysanity':
-            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items]
-        elif self.shuffle_dungeon_items == 'mapcompass':
-            itempool = [item for dungeon in self.dungeons for item in dungeon.all_items if not item.key]
-        else:
-            itempool = []
+        itempool = []
+        if self.shuffle_mapcompass == 'keysanity':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.dungeon_items])
+        if self.shuffle_smallkeys == 'keysanity':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.small_keys])
+        if self.shuffle_bosskeys == 'keysanity':
+            itempool.extend([item for dungeon in self.dungeons for item in dungeon.boss_key])
+
         for item in itempool:
             item.world = self
         return itempool
@@ -315,23 +336,72 @@ class CollectionState(object):
     def is_adult(self):
         return self.has('Master Sword')
 
+    def can_child_attack(self):
+        return  self.has_slingshot() or \
+                self.has('Boomerang') or \
+                self.has_sticks() or \
+                self.has_explosives() or \
+                self.has('Kokiri Sword') or \
+                (self.has('Dins Fire') and self.has('Magic Meter'))
+
+    def can_stun_deku(self):
+        return  self.is_adult() or \
+                self.can_child_attack() or \
+                self.has_nuts() or \
+                self.has('Buy Deku Shield')
+
+    def has_nuts(self):
+        return self.has('Buy Deku Nut (5)') or self.has('Buy Deku Nut (10)')
+
+    def has_sticks(self):
+        return self.has('Buy Deku Stick (1)')
+
+    def has_bow(self):
+        return self.has('Bow')
+
+    def has_slingshot(self):
+        return self.has('Slingshot')
+
+    def has_bombs(self):
+        return self.has('Bomb Bag')
+
+    def has_blue_fire(self):
+        return self.has_bottle() and \
+                (self.can_reach('Ice Cavern')
+                or self.can_reach('Ganons Castle Water Trial') 
+                or self.has('Buy Blue Fire'))
+
     def has_ocarina(self):
         return (self.has('Ocarina') or self.has("Fairy Ocarina") or self.has("Ocarina of Time"))
 
     def can_play(self, song):
         return self.has_ocarina() and self.has(song)
 
+    def can_buy_bombchus(self):
+        return self.has('Buy Bombchu (5)') or \
+               self.has('Buy Bombchu (10)') or \
+               self.has('Buy Bombchu (20)') or \
+               self.can_reach('Castle Town Bombchu Bowling')
+
     def has_bombchus(self):
         return (self.world.bombchus_in_logic and \
-                    (any(pritem.startswith('Bombchus') for pritem in self.prog_items) \
+                    ((any(pritem.startswith('Bombchus') for pritem in self.prog_items) and \
+                        self.can_buy_bombchus()) \
                     or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
+            or (not self.world.bombchus_in_logic and self.has('Bomb Bag') and \
+                        self.can_buy_bombchus())
+
+    def has_bombchus_item(self):
+        return (self.world.bombchus_in_logic and \
+                (any(pritem.startswith('Bombchus') for pritem in self.prog_items) \
+                or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
             or (not self.world.bombchus_in_logic and self.has('Bomb Bag'))
 
     def has_explosives(self):
-        return self.has('Bomb Bag') or self.has_bombchus()
+        return self.has_bombs() or self.has_bombchus()
 
     def can_blast_or_smash(self):
-        return self.has('Bomb Bag') or (self.is_adult() and self.has('Hammer')) or self.has_bombchus()
+        return self.has_explosives() or (self.is_adult() and self.has('Hammer'))
 
     def can_dive(self):
         return self.has('Progressive Scale')
@@ -343,13 +413,13 @@ class CollectionState(object):
         return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
 
     def has_GoronTunic(self):
-        return (self.has('Goron Tunic') or (self.has('Progressive Wallet') and (self.has_explosives() or self.has('Progressive Strength Upgrade') or self.has('Bow'))))
+        return (self.has('Goron Tunic') or self.has('Buy Goron Tunic'))
 
     def has_ZoraTunic(self):
-        return (self.has('Zora Tunic') or (self.has('Progressive Wallet', 2) and self.has_bottle() and self.can_play('Zeldas Lullaby')))
+        return (self.has('Zora Tunic') or self.has('Buy Zora Tunic'))
 
     def can_leave_forest(self):
-        return (self.world.open_forest or (self.has('Slingshot') and self.has('Kokiri Sword')))
+        return (self.world.open_forest or (self.has_slingshot() and self.has('Kokiri Sword') and self.has('Buy Deku Shield')))
 
     def can_finish_adult_trades(self):
         zora_thawed = self.has_bottle() and (self.can_play('Zeldas Lullaby') or (self.has('Hover Boots') and self.world.logic_zora_with_hovers)) and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
@@ -379,7 +449,7 @@ class CollectionState(object):
         return self.has('Gold Gauntlets') and self.is_adult()
 
     def has_fire_source(self):
-        return ((self.has('Dins Fire') or (self.has('Bow') and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
+        return ((self.has('Dins Fire') or (self.has_bow() and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
 
     def guarantee_hint(self):
         if(self.world.hints == 'mask'):
@@ -517,10 +587,17 @@ class CollectionState(object):
         item_locations = []
         if worlds[0].spoiler.playthrough:
             item_locations = [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
-                if location.item.type != 'Event' and not location.event and (worlds[0].keysanity or not location.item.key)]
+                if location.item.type != 'Event' 
+                and location.item.type != 'Shop'
+                 and not location.event 
+                 and (worlds[0].keysanity or not location.item.key)]
         else:
             item_locations = [location for world in worlds for location in world.get_filled_locations() 
-                if location.item.advancement and location.item.type != 'Event' and not location.event and (worlds[0].keysanity or not location.item.key)]
+                if location.item.advancement 
+                and location.item.type != 'Event' 
+                and location.item.type != 'Shop' 
+                and not location.event 
+                and (worlds[0].keysanity or not location.item.key)]
 
         required_locations = []
         for location in item_locations:
@@ -564,6 +641,7 @@ class Region(object):
         self.world = None
         self.spot_type = 'Region'
         self.recursion_count = 0
+        self.price = None
 
     def can_reach(self, state):
         for entrance in self.entrances:
@@ -572,12 +650,14 @@ class Region(object):
         return False
 
     def can_fill(self, item):
-        if self.world.shuffle_dungeon_items == 'keysanity':
-            is_dungeon_restricted = False
-        elif self.world.shuffle_dungeon_items == 'mapcompass':
-            is_dungeon_restricted = item.key
-        else:
-            is_dungeon_restricted = item.key or item.map or item.compass
+        is_dungeon_restricted = False
+        if item.map or item.compass:
+            is_dungeon_restricted = self.world.shuffle_mapcompass == 'dungeon'
+        elif item.smallkey:
+            is_dungeon_restricted = self.world.shuffle_smallkeys == 'dungeon'
+        elif item.bosskey:
+            is_dungeon_restricted = self.world.shuffle_bosskeys == 'dungeon'
+
         if is_dungeon_restricted:
             return self.dungeon and self.dungeon.is_dungeon_item(item)
         return True
@@ -625,15 +705,23 @@ class Entrance(object):
 class Dungeon(object):
 
     def __init__(self, name, regions, boss_key, small_keys, dungeon_items):
+        def to_array(obj):
+            if obj == None:
+                return []
+            if isinstance(obj, list):
+                return obj
+            else:
+                return [obj]
+
         self.name = name
         self.regions = regions
-        self.boss_key = boss_key
-        self.small_keys = small_keys
-        self.dungeon_items = dungeon_items
+        self.boss_key = to_array(boss_key)
+        self.small_keys = to_array(small_keys)
+        self.dungeon_items = to_array(dungeon_items)
 
     @property
     def keys(self):
-        return self.small_keys + ([self.boss_key] if self.boss_key else [])
+        return self.small_keys + self.boss_key
 
     @property
     def all_items(self):
@@ -668,6 +756,7 @@ class Location(object):
         self.access_rule = lambda state: True
         self.item_rule = lambda item: True
         self.event = False
+        self.price = None
 
     def can_fill(self, state, item, check_access=True):
         return self.always_allow(item, self) or (self.parent_region.can_fill(item) and self.item_rule(item) and (not check_access or self.can_reach(state)))
@@ -689,7 +778,7 @@ class Location(object):
 
 class Item(object):
 
-    def __init__(self, name='', advancement=False, priority=False, type=None, code=None, index=None):
+    def __init__(self, name='', advancement=False, priority=False, type=None, code=None, index=None, object=None, model=None):
         self.name = name
         self.advancement = advancement
         self.priority = priority
@@ -697,6 +786,9 @@ class Item(object):
         self.code = code
         self.index = index
         self.location = None
+        self.object = object
+        self.model = model
+        self.price = None
 
     def copy(self):
         return Item(self.name, self.advancement, self.priority, self.type, self.code, self.index)
@@ -704,6 +796,14 @@ class Item(object):
     @property
     def key(self):
         return self.type == 'SmallKey' or self.type == 'BossKey'
+
+    @property
+    def smallkey(self):
+        return self.type == 'SmallKey'
+
+    @property
+    def bosskey(self):
+        return self.type == 'BossKey'
 
     @property
     def crystal(self):
@@ -732,6 +832,7 @@ class Spoiler(object):
         self.locations = {}
         self.metadata = {}
         self.required_locations = []
+        self.hints = {}
 
     def parse_data(self):
         spoiler_locations = [location for location in self.world.get_locations() if not location.event]
@@ -767,3 +868,6 @@ class Spoiler(object):
                 outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations]))
             else:
                 outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations]))
+
+            outfile.write('\n\nGossip Stone Hints:\n\n')
+            outfile.write('\n'.join(self.hints.values()))

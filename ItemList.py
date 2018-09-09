@@ -30,10 +30,6 @@ alwaysitems = ([
     + ['Progressive Strength Upgrade'] * 3
     + ['Progressive Scale'] * 2
     + ['Recovery Heart'] * 9
-    + ['Rupees (5)'] * 16
-    + ['Rupees (20)'] * 5
-    + ['Rupees (50)'] * 7
-    + ['Rupees (200)'] * 6
     + ['Bow'] * 3
     + ['Slingshot'] * 3
     + ['Bomb Bag'] * 3
@@ -90,6 +86,151 @@ veryharditems = (
     + ['Rupees (5)'] * 10 
     + ['Rupees (20)'] * 2 
     + ['Rupees (50)'])
+
+normal_rupees =(
+    ['Rupees (5)'] * 16
+    + ['Rupees (20)'] * 5
+    + ['Rupees (50)'] * 7
+    + ['Rupees (200)'] * 6)
+
+shopsanity_rupees = (
+    ['Rupees (5)'] * 5
+    + ['Rupees (20)'] * 10
+    + ['Rupees (50)'] * 10
+    + ['Rupees (200)'] * 8
+    + ['Progressive Wallet'])
+
+vanilla_shop_items = {
+    'Kokiri Shop Item 1': 'Buy Deku Shield',
+    'Kokiri Shop Item 2': 'Buy Deku Nut (5)',
+    'Kokiri Shop Item 3': 'Buy Deku Nut (10)',
+    'Kokiri Shop Item 4': 'Buy Deku Stick (1)',
+    'Kokiri Shop Item 5': 'Buy Deku Seeds (30)',
+    'Kokiri Shop Item 6': 'Buy Arrows (10)',
+    'Kokiri Shop Item 7': 'Buy Arrows (30)',
+    'Kokiri Shop Item 8': 'Buy Heart',
+    'Kakariko Potion Shop Item 1': 'Buy Deku Nut (5)',
+    'Kakariko Potion Shop Item 2': 'Buy Fish',
+    'Kakariko Potion Shop Item 3': 'Buy Red Potion [30]',
+    'Kakariko Potion Shop Item 4': 'Buy Green Potion',
+    'Kakariko Potion Shop Item 5': 'Buy Blue Fire',
+    'Kakariko Potion Shop Item 6': 'Buy Bottle Bug',
+    'Kakariko Potion Shop Item 7': 'Buy Poe',
+    'Kakariko Potion Shop Item 8': 'Buy Fairy\'s Spirit',
+    'Bombchu Shop Item 1': 'Buy Bombchu (5)',
+    'Bombchu Shop Item 2': 'Buy Bombchu (10)',
+    'Bombchu Shop Item 3': 'Buy Bombchu (10)',
+    'Bombchu Shop Item 4': 'Buy Bombchu (10)',
+    'Bombchu Shop Item 5': 'Buy Bombchu (20)',
+    'Bombchu Shop Item 6': 'Buy Bombchu (20)',
+    'Bombchu Shop Item 7': 'Buy Bombchu (20)',
+    'Bombchu Shop Item 8': 'Buy Bombchu (20)',
+    'Castle Town Potion Shop Item 1': 'Buy Green Potion',
+    'Castle Town Potion Shop Item 2': 'Buy Blue Fire',
+    'Castle Town Potion Shop Item 3': 'Buy Red Potion [30]',
+    'Castle Town Potion Shop Item 4': 'Buy Fairy\'s Spirit',
+    'Castle Town Potion Shop Item 5': 'Buy Deku Nut (5)',
+    'Castle Town Potion Shop Item 6': 'Buy Bottle Bug',
+    'Castle Town Potion Shop Item 7': 'Buy Poe',
+    'Castle Town Potion Shop Item 8': 'Buy Fish',
+    'Castle Town Bazaar Item 1': 'Buy Hylian Shield',
+    'Castle Town Bazaar Item 2': 'Buy Bombs (5) [35]',
+    'Castle Town Bazaar Item 3': 'Buy Deku Nut (5)',
+    'Castle Town Bazaar Item 4': 'Buy Heart',
+    'Castle Town Bazaar Item 5': 'Buy Arrows (10)',
+    'Castle Town Bazaar Item 6': 'Buy Arrows (50)',
+    'Castle Town Bazaar Item 7': 'Buy Deku Stick (1)',
+    'Castle Town Bazaar Item 8': 'Buy Arrows (30)',
+    'Kakariko Bazaar Item 1': 'Buy Hylian Shield',
+    'Kakariko Bazaar Item 2': 'Buy Bombs (5) [35]',
+    'Kakariko Bazaar Item 3': 'Buy Deku Nut (5)',
+    'Kakariko Bazaar Item 4': 'Buy Heart',
+    'Kakariko Bazaar Item 5': 'Buy Arrows (10)',
+    'Kakariko Bazaar Item 6': 'Buy Arrows (50)',
+    'Kakariko Bazaar Item 7': 'Buy Deku Stick (1)',
+    'Kakariko Bazaar Item 8': 'Buy Arrows (30)',
+    'Zora Shop Item 1': 'Buy Zora Tunic',
+    'Zora Shop Item 2': 'Buy Arrows (10)',
+    'Zora Shop Item 3': 'Buy Heart',
+    'Zora Shop Item 4': 'Buy Arrows (30)',
+    'Zora Shop Item 5': 'Buy Deku Nut (5)',
+    'Zora Shop Item 6': 'Buy Arrows (50)',
+    'Zora Shop Item 7': 'Buy Fish',
+    'Zora Shop Item 8': 'Buy Red Potion [50]',
+    'Goron Shop Item 1': 'Buy Bombs (5) [25]',
+    'Goron Shop Item 2': 'Buy Bombs (10)',
+    'Goron Shop Item 3': 'Buy Bombs (20)',
+    'Goron Shop Item 4': 'Buy Bombs (30)',
+    'Goron Shop Item 5': 'Buy Goron Tunic',
+    'Goron Shop Item 6': 'Buy Heart',
+    'Goron Shop Item 7': 'Buy Red Potion [40]',
+    'Goron Shop Item 8': 'Buy Heart',    
+}
+
+min_shop_items = (
+      ['Buy Deku Shield'] 
+    + ['Buy Hylian Shield'] 
+    + ['Buy Goron Tunic'] 
+    + ['Buy Zora Tunic'] 
+    + ['Buy Deku Nut (5)'] * 2 + ['Buy Deku Nut (10)']
+    + ['Buy Deku Stick (1)'] * 2 
+    + ['Buy Deku Seeds (30)']
+    + ['Buy Arrows (10)'] * 2 + ['Buy Arrows (30)'] + ['Buy Arrows (50)']
+    + ['Buy Bombchu (5)'] + ['Buy Bombchu (10)'] * 2 + ['Buy Bombchu (20)']
+    + ['Buy Bombs (5) [25]'] + ['Buy Bombs (5) [35]'] + ['Buy Bombs (10)'] + ['Buy Bombs (20)'] 
+    + ['Buy Green Potion']
+    + ['Buy Red Potion [30]']
+    + ['Buy Blue Fire']
+    + ['Buy Fairy\'s Spirit']
+    + ['Buy Bottle Bug']
+    + ['Buy Fish'])
+
+vanilla_deku_scrubs = {
+    'DC Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
+    'DC Deku Scrub Deku Sticks': 'Buy Deku Stick (1)',
+    'DC Deku Scrub Deku Seeds': 'Buy Deku Seeds (30)',
+    'DC Deku Scrub Deku Shield': 'Buy Deku Shield',
+    'Jabu Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
+    'GC Deku Scrub Bombs': 'Buy Bombs (5) [35]',
+    'GC Deku Scrub Arrows': 'Buy Arrows (30)',
+    'GC Deku Scrub Red Potion': 'Buy Red Potion [30]',
+    'GC Deku Scrub Green Potion': 'Buy Green Potion',
+    'ZR Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
+    'ZR Grotto Deku Scrub Green Potion': 'Buy Green Potion',
+    'SFM Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
+    'SFM Grotto Deku Scrub Green Potion': 'Buy Green Potion',
+    'LH Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
+    'LH Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
+    'LH Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
+    'Valley Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
+    'Valley Grotto Deku Scrub Green Potion': 'Buy Green Potion',
+    'LW Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
+    'LW Deku Scrub Deku Sticks': 'Buy Deku Stick (1)',
+    'LW Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
+    'Desert Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
+    'Desert Grotto Deku Scrub Green Potion': 'Buy Green Potion',
+    'DMC Deku Scrub Bombs': 'Buy Bombs (5) [35]',
+    'DMC Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
+    'DMC Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
+    'DMC Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
+    'Goron Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
+    'Goron Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
+    'Goron Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
+    'LLR Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
+    'LLR Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
+    'LLR Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
+}
+
+deku_scrubs_items = (
+      ['Deku Nuts (5)'] * 7
+    + ['Rupees (20)'] * 2  # ['Deku Stick (1)'] * 2
+    + ['Arrows (5)'] # ['Deku Seeds (30)']
+    + ['Deku Shield']
+    + ['Bombs (5)'] * 6
+    + ['Arrows (30)'] * 6
+    + ['Recovery Heart'] * 5
+    + ['Rupees (5)'] * 5 # ['Green Potion']
+)
 
 rewardlist = [
     'Kokiri Emerald',
@@ -341,7 +482,7 @@ def get_pool_core(world):
         placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
         placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
         placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
-    elif world.keysanity:
+    elif world.shuffle_smallkeys == 'keysanity':
         if world.gerudo_fortress == 'fast':
             pool.append('Small Key (Gerudo Fortress)')
             placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
@@ -366,6 +507,32 @@ def get_pool_core(world):
     else:
         placed_items['Gerudo Fortress Membership Card'] = 'Gerudo Membership Card'
 
+    if world.shopsanity == 'off':
+        placed_items.update(vanilla_shop_items)
+        if world.bombchus_in_logic:
+            placed_items['Kokiri Shop Item 8'] = 'Buy Bombchu (5)'
+            placed_items['Castle Town Bazaar Item 4'] = 'Buy Bombchu (5)'
+            placed_items['Kakariko Bazaar Item 4'] = 'Buy Bombchu (5)'
+        pool.extend(normal_rupees)
+
+    else:
+        remain_shop_items = [item for _,item in vanilla_shop_items.items()]
+        pool.extend(min_shop_items)
+        for item in min_shop_items:
+            remain_shop_items.remove(item)
+
+        shop_slots_count = len(remain_shop_items)
+        shop_nonitem_count = len(world.shop_prices)
+        shop_item_count = shop_slots_count - shop_nonitem_count
+
+        pool.extend(random.sample(remain_shop_items, shop_item_count))
+        pool.extend(random.sample(veryharditems, shop_nonitem_count))
+        pool.extend(shopsanity_rupees)
+
+    if world.shuffle_scrubs:
+        pool.extend(deku_scrubs_items)
+    else:        
+        placed_items.update(vanilla_deku_scrubs)
 
     pool.extend(alwaysitems)
     if world.dungeon_mq['DT']:
@@ -382,6 +549,19 @@ def get_pool_core(world):
     tradeitem = random.choice(tradeitems)
     pool.append(tradeitem)
     pool.extend(songlist)
+
+    if world.shuffle_mapcompass == 'remove':
+        for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:
+            world.state.collect(item)
+            pool.append(random.choice(harditems))
+    if world.shuffle_smallkeys == 'remove':
+        for item in [item for dungeon in world.dungeons for item in dungeon.small_keys]:
+            world.state.collect(item)
+            pool.append(random.choice(harditems))
+    if world.shuffle_bosskeys == 'remove':
+        for item in [item for dungeon in world.dungeons for item in dungeon.boss_key]:
+            world.state.collect(item)
+            pool.append(random.choice(harditems))
 
     return (pool, placed_items)
 

@@ -19,6 +19,12 @@
 
 .include "constants.asm"
 
+.org 0x80400000
+.area 0x1000
+DebugOutput:
+.include "debug.asm"
+.endarea
+
 .org 0x80401000
 .area 0x1000, 0
 .include "config.asm"
@@ -34,6 +40,7 @@
 .include "extended_items.asm"
 .include "item_overrides.asm"
 .include "cutscenes.asm"
+.include "shop.asm"
 .include "every_frame.asm"
 .include "menu.asm"
 .include "time_travel.asm"

@@ -60,13 +60,13 @@ override_great_fairy_cutscene:
 override_light_arrow_cutscene:
     li      t0, LIGHT_ARROW_ITEM
     lb      t0, 0x00 (t0)
-    b       store_pending_spedial_item
+    b       store_pending_special_item
     nop
 
 override_fairy_ocarina_cutscene:
     li      t0, FAIRY_OCARINA_ITEM
     lb      t0, 0x00 (t0)
-    b       store_pending_spedial_item
+    b       store_pending_special_item
     nop
 
 ;a3 = item ID
@@ -74,12 +74,12 @@ override_ocarina_songs:
     li      v0, 0xFF
     addi    t0, a3, -0x5A
     addi    t0, t0, 0x61
-    b       store_pending_spedial_item
+    b       store_pending_special_item
     nop
 
 override_requiem_song:
     li      t0, 0x64
-    b       store_pending_spedial_item
+    b       store_pending_special_item
     nop
 
 override_epona_song:
@@ -90,7 +90,7 @@ override_epona_song:
     sb     t0,0x0EDE(at)
 
     li      t0, 0x68
-    b       store_pending_spedial_item
+    b       store_pending_special_item
     nop
 
 override_suns_song:
@@ -101,16 +101,16 @@ override_suns_song:
     sb     t0,0x0EDE(at)
 
     li      t0, 0x6A
-    b       store_pending_spedial_item
+    b       store_pending_special_item
     nop
 
 override_song_of_time:
     li      a1, 3
     li      t0, 0x6B
-    b       store_pending_spedial_item
+    b       store_pending_special_item
     nop
 
-store_pending_spedial_item:
+store_pending_special_item:
 ; Don't add item if it's already pending
     li      t1, PENDING_SPECIAL_ITEM
     li      t2, PENDING_SPECIAL_ITEM_END ; max number of entries

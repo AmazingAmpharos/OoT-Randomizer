@@ -75,10 +75,15 @@ class LocalRom(object):
             pass
 
 
+    def seek_address(self, address):
+        self.last_address = address
+
     def read_byte(self, address):
+        self.last_address = address + 1
         return self.buffer[address]
 
     def read_bytes(self, address, len):
+        self.last_address = address + len
         return self.buffer[address : address + len]
 
     def read_int16(self, address):
