@@ -773,7 +773,7 @@ setting_infos = [
                       are all reduced to 10 Rupees.
                       '''
         }),    
-    Setting_Info('shopsanity', str, 2, True, 
+    Setting_Info('shopsanity', str, 3, True, 
         {
             'default': 'off',
             'const': 'off',
