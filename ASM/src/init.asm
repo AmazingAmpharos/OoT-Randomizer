@@ -9,6 +9,9 @@ init:
     jal     0x80000DF0
     nop
 
+    jal     c_init
+    nop
+
     ; Displaced code
     lui     v0, 0x8012
     addiu   v0, v0, 0xD2A0
