@@ -147,6 +147,8 @@ class Scene(object):
         # write room file data
         for room in self.rooms:
             room.write_data(rom)
+            if self.id == 6 and room.id == 6:
+                patch_spirit_temple_mq_room_6(rom, room.file.start)
 
         cur = self.file.start + room_list_offset
         for room in self.rooms:
@@ -338,6 +340,66 @@ def get_segment_address(base, offset):
 def patch_ice_cavern_scene_header(rom):
     rom.buffer[0x2BEB000:0x2BEB038] = rom.buffer[0x2BEB008:0x2BEB040]
     rom.write_int32s(0x2BEB038, [0x0D000000, 0x02000000])
+
+def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
+    cur = room_addr
+
+    actor_list_addr = 0
+    cmd_actors_offset = 0
+
+    # scan for actor list and header end
+    code = rom.read_byte(cur)
+    while code != 0x14: #terminator  
+        if code == 0x01: # actors
+            actor_list_addr = rom.read_int32(cur + 4)
+            cmd_actors_offset = cur - room_addr
+
+        cur += 8
+        code = rom.read_byte(cur)
+
+    cur += 8
+
+    # original header size
+    header_size = cur - room_addr
+
+    # set alternate header data location
+    alt_data_off = header_size + 8
+
+    # set new alternate header offset
+    alt_header_off = align16(alt_data_off + (4 * 3)) # alt header record size * num records
+
+    # write alternate header data
+    # the first 3 words are mandatory. the last 3 are just to make the binary
+    # cleaner to read
+    rom.write_int32s(room_addr + alt_data_off,
+                    [0, get_segment_address(3, alt_header_off), 0, 0, 0, 0])
+
+    # clone header
+    a_start = room_addr
+    a_end = a_start + header_size
+    b_start = room_addr + alt_header_off
+    b_end = b_start + header_size
+
+    rom.buffer[b_start:b_end] = rom.buffer[a_start:a_end]
+    
+    # make the child header skip the first actor,
+    # which avoids the spawning of the block while in the hole
+
+
+    cmd_addr = room_addr + cmd_actors_offset
+    actor_list_addr += 0x10
+    actors = rom.read_byte(cmd_addr + 1)
+    rom.write_byte(cmd_addr+1, actors - 1)
+    rom.write_int32(cmd_addr + 4, actor_list_addr)
+
+    # move header
+    rom.buffer[a_start + 8:a_end + 8] = rom.buffer[a_start:a_end]
+
+    # write alternate header command
+    seg = get_segment_address(3, alt_data_off)
+    rom.write_int32s(room_addr, [0x18000000, seg])
+
+
 
 
 def get_dma_record(rom:LocalRom, cur):
