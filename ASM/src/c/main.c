@@ -32,7 +32,7 @@ void displaylist_init(displaylist_t *dl, uint32_t size) {
     dl->buf_size = size;
 }
 
-displaylist_t reset_dl = {};
+displaylist_t setup_dl = {};
 
 #define text_bucket_count 3
 #define text_bucket_size 32
@@ -45,11 +45,30 @@ typedef struct {
 dungeon_info_dls_t dungeon_info_dls[2] = {};
 int next_dl_index = 0;
 
-#define stones_texture_vaddr 0x01A2C300
-#define medals_texture_vaddr 0x01A04980
-#define quest_items_texture_vaddr 0x0084DE00
 extern char FONT_TEXTURE;
 #define font_texture_raw ((uint8_t *)&FONT_TEXTURE)
+
+typedef struct {
+    uint8_t *buf;
+    uint32_t vrom_start;
+    uint32_t size;
+} file_t;
+
+file_t title_static = {
+    NULL, 0x01A02000, 0x395C0
+};
+
+file_t icon_item_24_static = {
+    NULL, 0x00846000, 0xB400
+};
+
+void (*read_file)(void *mem_addr, uint32_t vrom_addr, uint32_t size) =
+    (void *)0x80000DF0;
+
+void file_init(file_t *file) {
+    file->buf = heap_alloc(file->size);
+    read_file(file->buf, file->vrom_start, file->size);
+}
 
 typedef struct {
     uint8_t *buf;
@@ -87,17 +106,6 @@ uint32_t sprite_bytes_per_tile(sprite_t *sprite) {
 
 uint32_t sprite_bytes(sprite_t *sprite) {
     return sprite->tile_count * sprite_bytes_per_tile(sprite);
-}
-
-typedef void (*load_file_fn_t)(uint32_t mem_addr, uint32_t rom_addr,
-        uint32_t bytes);
-load_file_fn_t load_file = (load_file_fn_t)0x80000DF0;
-
-void sprite_read(sprite_t *sprite, uint32_t rom_vaddr) {
-    uint32_t bytes = sprite_bytes(sprite);
-    sprite->buf = heap_alloc(bytes);
-
-    (*load_file)((uint32_t)(sprite->buf), rom_vaddr, bytes);
 }
 
 void sprite_load(displaylist_t *dl, sprite_t *sprite,
@@ -170,15 +178,43 @@ medal_color_t medal_colors[] = {
 };
 
 // FIXME: Make dynamic
-uint8_t rewards[] = { 4, 1, 7, 5, 0, 8, 6, 2, -1, -1, -1, -1, -1, -1 };
+int8_t rewards[] = { 4, 1, 7, 5, 0, 8, 6, 2, -1, -1, -1, -1, -1, -1 };
 uint8_t dungeon_is_mq[] = { 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 };
+
+void setup_draw(displaylist_t *dl) {
+    gDPPipeSync(dl->p++);
+
+    gSPLoadGeometryMode(dl->p++, 0);
+    gDPSetScissor(dl->p++, G_SC_NON_INTERLACE,
+                  0, 0, Z64_SCREEN_WIDTH, Z64_SCREEN_HEIGHT);
+    gDPSetAlphaDither(dl->p++, G_AD_DISABLE);
+    gDPSetColorDither(dl->p++, G_CD_DISABLE);
+    gDPSetAlphaCompare(dl->p++, G_AC_NONE);
+    gDPSetDepthSource(dl->p++, G_ZS_PRIM);
+    gDPSetCombineKey(dl->p++, G_CK_NONE);
+    gDPSetTextureConvert(dl->p++, G_TC_FILT);
+    gDPSetTextureDetail(dl->p++, G_TD_CLAMP);
+    gDPSetTexturePersp(dl->p++, G_TP_NONE);
+    gDPSetTextureLOD(dl->p++, G_TL_TILE);
+    gDPSetTextureLUT(dl->p++, G_TT_NONE);
+    gDPPipelineMode(dl->p++, G_PM_NPRIMITIVE);
+
+    gDPSetCycleType(dl->p++, G_CYC_1CYCLE);
+    gDPSetRenderMode(dl->p++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+    gDPSetTextureFilter(dl->p++, G_TF_BILERP);
+
+    gSPEndDisplayList(dl->p++);
+}
 
 void c_init() {
     heap_init();
 
-    sprite_read(&stones_sprite, stones_texture_vaddr);
-    sprite_read(&medals_sprite, medals_texture_vaddr);
-    sprite_read(&quest_items_sprite, quest_items_texture_vaddr);
+    file_init(&title_static);
+    file_init(&icon_item_24_static);
+
+    stones_sprite.buf = title_static.buf + 0x2A300;
+    medals_sprite.buf = title_static.buf + 0x2980;
+    quest_items_sprite.buf = icon_item_24_static.buf + 0x7E00;
 
     int font_bytes = sprite_bytes(&font_sprite);
     font_sprite.buf = heap_alloc(font_bytes);
@@ -195,25 +231,8 @@ void c_init() {
         }
     }
 
-    displaylist_t *r = &reset_dl;
-    displaylist_init(r, 32);
-
-    gDPPipeSync(r->p++);
-    gSPLoadGeometryMode(r->p++, 0);
-    gDPSetScissor(r->p++, G_SC_NON_INTERLACE,
-                  0, 0, Z64_SCREEN_WIDTH, Z64_SCREEN_HEIGHT);
-    gDPSetAlphaDither(r->p++, G_AD_DISABLE);
-    gDPSetColorDither(r->p++, G_CD_DISABLE);
-    gDPSetAlphaCompare(r->p++, G_AC_NONE);
-    gDPSetDepthSource(r->p++, G_ZS_PRIM);
-    gDPSetCombineKey(r->p++, G_CK_NONE);
-    gDPSetTextureConvert(r->p++, G_TC_FILT);
-    gDPSetTextureDetail(r->p++, G_TD_CLAMP);
-    gDPSetTexturePersp(r->p++, G_TP_NONE);
-    gDPSetTextureLOD(r->p++, G_TL_TILE);
-    gDPSetTextureLUT(r->p++, G_TT_NONE);
-    gDPPipelineMode(r->p++, G_PM_NPRIMITIVE);
-    gSPEndDisplayList(r->p++);
+    displaylist_init(&setup_dl, 32);
+    setup_draw(&setup_dl);
 }
 
 void text_print(displaylist_t text_dls[],
@@ -257,41 +276,56 @@ void dungeon_info_draw(z64_disp_buf_t *overlay) {
     overlay->p -= 2;
     gSPBranchList(overlay->p++, main->buf);
 
-    // Call reset display list
-    gSPDisplayList(main->p++, reset_dl.buf);
+    // Call setup display list
+    gSPDisplayList(main->p++, setup_dl.buf);
 
-    // Draw backdrop
+    // Set up dimensions
 
-    gDPSetCycleType(main->p++, G_CYC_FILL);
-    gDPSetRenderMode(main->p++, G_RM_NOOP, G_RM_NOOP2);
-    gDPSetFillColor(main->p++,
-            GPACK_RGBA5551(0,0,0,1)<<16 | GPACK_RGBA5551(0,0,0,1)); 
-    gDPFillRectangle(main->p++,
-            24, 65, 293, 195);
-    gDPPipeSync(main->p++);
-    gDPSetFillColor(main->p++,
-            GPACK_RGBA5551(255,255,255,1)<<16 | GPACK_RGBA5551(255,255,255,1)); 
-    gDPFillRectangle(main->p++,
-            24 + 18, 65, 24 + 18, 195);
-    gDPPipeSync(main->p++);
+    int rows = 7;
+    int cols = 14;
+    int icon_height = 16;
+    int icon_width = 16;
+    int padding = 3;
 
-    // Set up to draw textures
+    int bg_left = 24;
+    int bg_top = 65;
+    int bg_width = (cols * icon_width) + ((cols + 1) * padding);
+    int bg_height = (rows * icon_height) + ((rows + 1) * padding);
 
-    gDPSetCycleType(main->p++, G_CYC_1CYCLE);
-    gDPSetRenderMode(main->p++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-    gDPSetCombineMode(main->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-    int start_left = 25;
-    int start_top = 66;
+    int start_left = bg_left + padding;
+    int start_top = bg_top + padding;
     int left = start_left;
     int top = start_top;
-    int padding = 3;
+
     int dungeon_count = array_size(dungeons);
+
+    // Draw background
+
+    gDPSetCombineMode(main->p++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+
+    gDPSetPrimColor(main->p++, 0, 0, 0x00, 0x00, 0x00, 0xD0);
+    gSPTextureRectangle(main->p++,
+            bg_left<<2, bg_top<<2,
+            (bg_left + bg_width)<<2, (bg_top + bg_height)<<2,
+            0,
+            0, 0,
+            1<<10, 1<<10);
+    gDPPipeSync(main->p++);
+
+    int line_left = start_left + icon_width + 1;
+
+    gDPSetPrimColor(main->p++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    gSPTextureRectangle(main->p++,
+            line_left<<2, bg_top<<2,
+            (line_left + 1)<<2, (bg_top + bg_height)<<2,
+            0,
+            0, 0,
+            1<<10, 1<<10);
+    gDPPipeSync(main->p++);
 
     // Draw stones
 
-    gDPSetTextureFilter(main->p++, G_TF_BILERP);
-    gDPSetPrimColor(main->p++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    gDPSetCombineMode(main->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     sprite_load(main, &stones_sprite, 0, stones_sprite.tile_count);
 
     for (int i = 0; i < dungeon_count; i++) {
@@ -299,9 +333,9 @@ void dungeon_info_draw(z64_disp_buf_t *overlay) {
         int reward = rewards[d->index];
         if (reward < 0 || reward >= 3) continue;
 
-        left = start_left + ((16 + padding) * (i + 1));
+        left = start_left + ((icon_width + padding) * (i + 1));
         sprite_draw(main, &stones_sprite, reward,
-                left, top, 16, 16);
+                left, top, icon_width, icon_height);
 
     }
 
@@ -320,9 +354,9 @@ void dungeon_info_draw(z64_disp_buf_t *overlay) {
         medal_color_t *c = &(medal_colors[reward]);
         gDPSetPrimColor(main->p++, 0, 0, c->r, c->g, c->b, 0xFF);
 
-        left = start_left + ((16 + padding) * (i + 1));
+        left = start_left + ((icon_width + padding) * (i + 1));
         sprite_draw(main, &medals_sprite, reward,
-                left, top, 16, 16);
+                left, top, icon_width, icon_height);
     }
 
     gDPPipeSync(main->p++);
@@ -330,25 +364,25 @@ void dungeon_info_draw(z64_disp_buf_t *overlay) {
 
     // Draw master quest dungeons
 
-    top += 16 + padding;
-    left = start_left + 16 + padding;
+    top += icon_height + padding;
+    left = start_left + icon_width + padding;
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
         text_print(di_dls->text, d->label, left, top);
-        left += 16 + padding;
+        left += icon_width + padding;
     }
 
     int show_mq = 1;
     if (show_mq) {
-        top += 16 + padding;
+        top += icon_width + padding;
         left = start_left;
 
         text_print(di_dls->text, "MQ", left, top);
         for (int i = 0; i < dungeon_count; i++) {
             dungeon_entry_t *d = &(dungeons[i]);
             int is_mq = dungeon_is_mq[d->index];
-            left += 16 + padding;
+            left += icon_width + padding;
             char *str = is_mq ? "Y" : "N";
             text_print(di_dls->text, str, left + 4, top);
         }
@@ -356,15 +390,15 @@ void dungeon_info_draw(z64_disp_buf_t *overlay) {
 
     // Draw key counts
 
-    top += 16 + padding;
+    top += icon_height + padding;
     left = start_left;
 
     sprite_load(main, &quest_items_sprite, 3, 1);
     sprite_draw(main, &quest_items_sprite, 0,
-            left, top, 16, 16);
+            left, top, icon_width, icon_height);
 
     for (int i = 0; i < dungeon_count; i++) {
-        left += 16 + padding;
+        left += icon_width + padding;
         dungeon_entry_t *d = &(dungeons[i]);
         if (!d->has_keys) continue;
 
@@ -379,21 +413,21 @@ void dungeon_info_draw(z64_disp_buf_t *overlay) {
 
     // Draw boss keys
 
-    top += 16 + padding;
+    top += icon_height + padding;
     left = start_left;
 
     sprite_load(main, &quest_items_sprite, 0, 1);
     sprite_draw(main, &quest_items_sprite, 0,
-            left, top, 16, 16);
+            left, top, icon_width, icon_height);
 
     for (int i = 0; i < dungeon_count; i++) {
-        left += 16 + padding;
+        left += icon_width + padding;
         dungeon_entry_t *d = &(dungeons[i]);
         if (!d->has_boss_key) continue;
 
         if (z64_file.dungeon_items[d->index].boss_key) {
             sprite_draw(main, &quest_items_sprite, 0,
-                    left, top, 16, 16);
+                    left, top, icon_width, icon_height);
         }
     }
 
@@ -403,41 +437,41 @@ void dungeon_info_draw(z64_disp_buf_t *overlay) {
     if (draw_maps_and_compasses) {
         // Draw maps
 
-        top += 16 + padding;
+        top += icon_height + padding;
         left = start_left;
 
         sprite_load(main, &quest_items_sprite, 2, 1);
         sprite_draw(main, &quest_items_sprite, 0,
-                left, top, 16, 16);
+                left, top, icon_width, icon_height);
 
         for (int i = 0; i < dungeon_count; i++) {
-            left += 16 + padding;
+            left += icon_width + padding;
             dungeon_entry_t *d = &(dungeons[i]);
             if (!d->has_map) continue;
 
             if (z64_file.dungeon_items[d->index].map) {
                 sprite_draw(main, &quest_items_sprite, 0,
-                        left, top, 16, 16);
+                        left, top, icon_width, icon_height);
             }
         }
 
         // Draw compasses
 
-        top += 16 + padding;
+        top += icon_height + padding;
         left = start_left;
 
         sprite_load(main, &quest_items_sprite, 1, 1);
         sprite_draw(main, &quest_items_sprite, 0,
-                left, top, 16, 16);
+                left, top, icon_width, icon_height);
 
         for (int i = 0; i < dungeon_count; i++) {
-            left += 16 + padding;
+            left += icon_width + padding;
             dungeon_entry_t *d = &(dungeons[i]);
             if (!d->has_compass) continue;
 
             if (z64_file.dungeon_items[d->index].compass) {
                 sprite_draw(main, &quest_items_sprite, 0,
-                        left, top, 16, 16);
+                        left, top, icon_width, icon_height);
             }
         }
     }
@@ -446,7 +480,6 @@ void dungeon_info_draw(z64_disp_buf_t *overlay) {
     // Finish
 
     gDPPipeSync(main->p++);
-    gDPSetTextureFilter(main->p++, G_TF_POINT);
     text_flush(main, di_dls->text);
 
     gDPFullSync(main->p++);
