@@ -1156,7 +1156,7 @@ location_table = {
     'Fire Temple MQ Boss Key Chest': (0, None, 0x27E4, 'Chest', 0x04, 'Fire Temple'),
     'Fire Temple MQ Big Lava Room Bombable Chest': (0, None, 0x5841, 'Chest', 0x04, 'Fire Temple'),
     'Fire Temple MQ Maze Side Room': (0, None, 0x5848, 'Chest', 0x04, 'Fire Temple'),
-    'Fire Temple MQ Freestanding Key': (None, None, 0x02, 'Collectable', 0x04, 'Fire Temple'), # Need to verify this is the correct collectible flag.
+    'Fire Temple MQ Freestanding Key': (None, None, 0x1C, 'Collectable', 0x04, 'Fire Temple'), 
 
     # Water Temple vanilla
     'Water Temple Map Chest': (0x26690A6, None, 0x1822, 'Chest', 0x05, 'Water Temple'),
@@ -1175,7 +1175,7 @@ location_table = {
     'Water Temple MQ Longshot Chest': (0, None, 0xB120, 'Chest', 0x05, 'Water Temple'),
     'Water Temple MQ Compass Chest': (0, None, 0x1801, 'Chest', 0x05, 'Water Temple'),
     'Water Temple MQ Map Chest': (0, None, 0xB822, 'Chest', 0x05, 'Water Temple'),
-    'Water Temple MQ Freestanding Key': (None, None, 0x01, 'Collectable', 0x05, 'Water Temple'), # Need to verify this is the correct collectible flag.
+    'Water Temple MQ Freestanding Key': (None, None, 0x01, 'Collectable', 0x05, 'Water Temple'), 
 
     # Spirit Temple vanilla
     'Spirit Temple Child Left Chest': (0x2B190BA, None, 0x5528, 'Chest', 0x06, 'Spirit Temple'),
@@ -1255,7 +1255,7 @@ location_table = {
     'Shadow Temple MQ After Wind Hidden Chest': (0, None, 0x6934, 'Chest', 0x07, 'Shadow Temple'),
     'Shadow Temple MQ After Wind Enemy Chest': (0, None, 0x7888, 'Chest', 0x07, 'Shadow Temple'),
     'Shadow Temple MQ Near Ship Invisible Chest': (0, None, 0x684E, 'Chest', 0x07, 'Shadow Temple'),
-    'Shadow Temple MQ Freestanding Key': (None, None, 0x02, 'Collectable', 0x07, 'Shadow Temple'), # This needs tested
+    'Shadow Temple MQ Freestanding Key': (None, None, 0x06, 'Collectable', 0x07, 'Shadow Temple'), 
 
     # Bottom of the Well vanilla
     'Bottom of the Well Front Left Hidden Wall': (0x32D317E, None, 0x5848, 'Chest', 0x08, 'Bottom of the Well'),
@@ -1276,8 +1276,8 @@ location_table = {
     'Bottom of the Well MQ Map Chest': (0, None, 0x0823, 'Chest', 0x08, 'Bottom of the Well'),
     'Bottom of the Well MQ Lens Chest': (0, None, 0xB141, 'Chest', 0x08, 'Bottom of the Well'),
     'Bottom of the Well MQ Compass Chest': (0, None, 0x1802, 'Chest', 0x08, 'Bottom of the Well'),
-    'Bottom of the Well MQ Dead Hand Freestanding Key': (None, None, 0x02, 'Collectable', 0x08, 'Bottom of the Well'), # Flags seem probably correct?
-    'Bottom of the Well MQ East Inner Room Freestanding Key': (None, None, 0x01, 'Collectable', 0x08, 'Bottom of the Well'), # Should test
+    'Bottom of the Well MQ Dead Hand Freestanding Key': (None, None, 0x02, 'Collectable', 0x08, 'Bottom of the Well'), 
+    'Bottom of the Well MQ East Inner Room Freestanding Key': (None, None, 0x01, 'Collectable', 0x08, 'Bottom of the Well'),
 
     # Ice Cavern vanilla
     'Ice Cavern Map Chest': (0x2C4016A, None, 0x0820, 'Chest', 0x09, 'Ice Cavern'),
@@ -1363,7 +1363,7 @@ location_table = {
     'Ganons Castle MQ Spirit Trial Sun Front Left Chest': (0, None, 0x8909, 'Chest', 0x0D, 'my castle'),
     'Ganons Castle MQ Spirit Trial First Chest': (0, None, 0x506A, 'Chest', 0x0D, 'my castle'),
     'Ganons Castle MQ Spirit Trial Second Chest': (0, None, 0x6954, 'Chest', 0x0D, 'my castle'),
-    'Ganons Castle MQ Forest Trial Freestanding Key': (None, None, 0x01, 'Collectable', 0x0D, 'my castle'), # This also needs checked to see if the flag is correct
+    'Ganons Castle MQ Forest Trial Freestanding Key': (None, None, 0x01, 'Collectable', 0x0D, 'my castle'), 
 
     # I don't think the addresses matter for Link's Pocket anymore, but they can't be None for some reason
     'Links Pocket': (0x34806FB, 0x34806FF, None, 'Boss', None, 'Link\'s Pocket'), 
