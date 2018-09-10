@@ -73,6 +73,11 @@ def patch_rom(world, rom):
         if isinstance(patch, dict):
             for baseaddress, values in patch.items():
                 rom.write_bytes(int(baseaddress), values)
+    
+    # Write Randomizer title screen logo
+    with open(local_path('data/title.bin'), 'rb') as stream:
+        titleBytes = stream.read()
+        rom.write_bytes(0x01795300, titleBytes)
 
     # Can always return to youth
     rom.write_byte(0xCB6844, 0x35)
