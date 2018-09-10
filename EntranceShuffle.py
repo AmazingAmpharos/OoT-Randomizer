@@ -91,7 +91,11 @@ def connect_fairy(world, entrancename, exitname):
 
 # these are connections that cannot be shuffled and always exist.
 # They logically separate areas that do not cross loading zones
-mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area')
+mandatory_connections = [('South Mailbox', 'Mailbox'),
+                                                ('East Mailbox', 'Mailbox'),
+                                                ('North Mailbox', 'Mailbox'),
+                                                ('Tunnel Balloon From Observatory', 'Bomber Tunnel'),
+                                                ('Tunnel Balloon From ECT', 'Astral Observatory')
                         ]
 
 # these connections are the pairs of owl statues that may be shuffled
@@ -99,8 +103,38 @@ owl_statue_connections = [('', '')
                         ]
 
 # entrances that cross a loading zone and may be shuffled
-default_connections = [('Clock Tower Exit', 'Clock Town')
-                      ]
+default_connections = [('Clock Tower Exit', 'Clock Town'),
+                                        ('Clock Tower Twisted Hallway', 'Prologue Room'),
+                                        ('Clock Tower Entrance', 'Clock Tower'),
+                                        ('Clock Tower Carnival Door', 'Clock Tower Rooftop'),
+                                        ('SCT Top Exit to WCT', 'West Clock Town'),
+                                        ('SCT Bottom Exit to WCT', 'West Clock Town'),
+                                        ('SCT Exit to NCT', 'SCT Exit to NCT', 'North Clock Town'),
+                                        ('SCT Bottom Exit to ECT', 'East Clock Town'),
+                                        ('SCT Top Exit to ECT', 'East Clock Town'),
+                                        ('Clock Town South Gate', 'Termina Field'),
+                                        ('SCT Exit to Laundry Pool', 'Laundry Pool'),
+                                        ('Honey and Darling', 'Honey and Darling'),
+                                        ('Treasure Chest Shop', 'Treasure Chest Shop'),
+                                        ('Town Shooting Gallery', 'Town Shooting Gallery'),
+                                        ('Milk Bar', 'Milk Bar'),
+                                        ('Stock Pot Inn', 'Stock Pot Inn'),
+                                        ('Stock Pot Inn Secret Entrance', 'Stock Pot Inn'),
+                                        ('Mayors Office', 'Mayors Office'),
+                                        ('Bomber Bouncer', 'Bomber Tunnel'),
+                                        ('Honey and Darling Exit', 'Clock Town'),
+                                        ('Treasure Chest Shop Exit', 'Clock Town'),
+                                        ('Town Shooting Gallery Exit', 'Clock Town'),
+                                        ('Milk Bar Exit', 'Clock Town'),
+                                        ('Stock Pot Inn Roof', 'Clock Town'),
+                                        ('Stock Pot Inn Front Door', 'Clock Town'),
+                                        ('Mayors Office Exit', 'Clock Town'),
+                                        ('Bomber Tunnel Exit', 'Clock Town'),
+                                        ('ECT Top Exit to SCT', 'South Clock Town'),
+                                        ('ECT Bottom Exit to SCT', 'South Clock Town'),
+                                        ('ECT Exit to NCT', 'North Clock Town'),
+                                        ('Clock Town East Gate', 'Termina Field')
+                                        ]
 
 # dungeon entrance links
 default_dungeon_connections = [('Woodfall Temple Entrance', 'Woodfall Temple Lobby'),

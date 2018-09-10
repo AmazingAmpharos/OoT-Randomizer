@@ -32,45 +32,10 @@ tradeitems = (['Moon Tear', 'Town Title Deed', 'Swamp Title Deed', 'Mountain Tit
 
 def generate_itempool(world):
 
-    ''' May model this for doing stray fairies later
-    for location in skulltulla_locations:
-        world.push_item(location, ItemFactory('Gold Skulltulla Token'), False)
-        world.get_location(location).event = True
-    '''
     world.push_item('Majoras Wrath', ItemFactory('Majora Mask'), False)
     world.get_location('Majoras Wrath').event = True
     world.push_item('Gift from Skull Kid', ItemFactory('Fairy Ocarina'), False)
     world.get_location('Gift from Skull Kid').event = True
-    world.push_item('Zeldas Letter', ItemFactory('Zeldas Letter'), False)
-    world.get_location('Zeldas Letter').event = True
-    world.push_item('Mountain Summit Fairy Reward', ItemFactory('Magic Meter'), False)
-    world.get_location('Mountain Summit Fairy Reward').event = True
-    world.push_item('Crater Fairy Reward', ItemFactory('Magic Meter'), False)
-    world.get_location('Crater Fairy Reward').event = True
-    world.push_item('Magic Bean Salesman', ItemFactory('Magic Bean'), False)
-    world.get_location('Magic Bean Salesman').event = True
-    world.push_item('King Zora Moves', ItemFactory('Bottle'), False)
-    world.get_location('King Zora Moves').event = True
-    world.push_item('Ocarina of Time', ItemFactory('Ocarina of Time'), False)
-    world.get_location('Ocarina of Time').event = True
-    world.push_item('Master Sword Pedestal', ItemFactory('Master Sword'), False)
-    world.get_location('Master Sword Pedestal').event = True
-    world.push_item('Epona', ItemFactory('Epona'), False)
-    world.get_location('Epona').event = True
-    world.push_item('Gerudo Fortress Carpenter Rescue', ItemFactory('Gerudo Membership Card'), False)
-    world.get_location('Gerudo Fortress Carpenter Rescue').event = True
-    world.push_item('Ganons Castle Forest Trial Clear', ItemFactory('Forest Trial Clear'), False)
-    world.get_location('Ganons Castle Forest Trial Clear').event = True
-    world.push_item('Ganons Castle Fire Trial Clear', ItemFactory('Fire Trial Clear'), False)
-    world.get_location('Ganons Castle Fire Trial Clear').event = True
-    world.push_item('Ganons Castle Water Trial Clear', ItemFactory('Water Trial Clear'), False)
-    world.get_location('Ganons Castle Water Trial Clear').event = True
-    world.push_item('Ganons Castle Shadow Trial Clear', ItemFactory('Shadow Trial Clear'), False)
-    world.get_location('Ganons Castle Shadow Trial Clear').event = True
-    world.push_item('Ganons Castle Spirit Trial Clear', ItemFactory('Spirit Trial Clear'), False)
-    world.get_location('Ganons Castle Spirit Trial Clear').event = True
-    world.push_item('Ganons Castle Light Trial Clear', ItemFactory('Light Trial Clear'), False)
-    world.get_location('Ganons Castle Light Trial Clear').event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world.place_dungeon_items)
