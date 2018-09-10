@@ -162,3 +162,104 @@ characterTable = {
     ')':  42900, # LINE_WIDTH /  42
     '$':  51480  # LINE_WIDTH /  35
 }
+
+# To run tests, enter the following into a python3 REPL:
+# >>> from TextBox import test_lineWrapTests
+# >>> test_lineWrapTests()
+def test_lineWrapTests():
+    test_wrapSimpleLine()
+    test_honorForcedLineWraps()
+    test_honorBoxBreaks()
+    test_honorControlCharacters()
+    test_honorPlayerName()
+    test_maintainMultipleForcedBreaks()
+    test_trimWhitespace()
+    test_supportLongWords()
+
+
+def test_wrapSimpleLine():
+    words = 'Hello World! Hello World! Hello World!'
+    expected = 'Hello World! Hello World! Hello&World!'
+    result = lineWrap(words)
+
+    if result != expected:
+        print('"Wrap Simple Line" test failed: Got ' + result + ', wanted ' + expected)
+    else:
+        print('"Wrap Simple Line" test passed!')
+
+
+def test_honorForcedLineWraps():
+    words = 'Hello World! Hello World!&Hello World! Hello World! Hello World!'
+    expected = 'Hello World! Hello World!&Hello World! Hello World! Hello&World!'
+    result = lineWrap(words)
+
+    if result != expected:
+        print('"Honor Forced Line Wraps" test failed: Got ' + result + ', wanted ' + expected)
+    else:
+        print('"Honor Forced Line Wraps" test passed!')
+
+
+def test_honorBoxBreaks():
+    words = 'Hello World! Hello World!^Hello World! Hello World! Hello World!'
+    expected = 'Hello World! Hello World!^Hello World! Hello World! Hello&World!'
+    result = lineWrap(words)
+
+    if result != expected:
+        print('"Honor Box Breaks" test failed: Got ' + result + ', wanted ' + expected)
+    else:
+        print('"Honor Box Breaks" test passed!')
+
+
+def test_honorControlCharacters():
+    words = 'Hello World! #Hello# World! Hello World!'
+    expected = 'Hello World! #Hello# World! Hello&World!'
+    result = lineWrap(words)
+
+    if result != expected:
+        print('"Honor Control Characters" test failed: Got ' + result + ', wanted ' + expected)
+    else:
+        print('"Honor Control Characters" test passed!')
+
+
+def test_honorPlayerName():
+    words = 'Hello @! Hello World! Hello World!'
+    expected = 'Hello @! Hello World!&Hello World!'
+    result = lineWrap(words)
+
+    if result != expected:
+        print('"Honor Player Name" test failed: Got ' + result + ', wanted ' + expected)
+    else:
+        print('"Honor Player Name" test passed!')
+
+
+def test_maintainMultipleForcedBreaks():
+    words = 'Hello World!&&&Hello World!'
+    expected = 'Hello World!&&&Hello World!'
+    result = lineWrap(words)
+
+    if result != expected:
+        print('"Maintain Multiple Forced Breaks" test failed: Got ' + result + ', wanted ' + expected)
+    else:
+        print('"Maintain Multiple Forced Breaks" test passed!')
+
+
+def test_trimWhitespace():
+    words = 'Hello World! & Hello World!'
+    expected = 'Hello World!&Hello World!'
+    result = lineWrap(words)
+
+    if result != expected:
+        print('"Trim Whitespace" test failed: Got ' + result + ', wanted ' + expected)
+    else:
+        print('"Trim Whitespace" test passed!')
+
+
+def test_supportLongWords():
+    words = 'Hello World! WWWWWWWWWWWWWWWWWWWW Hello World!'
+    expected = 'Hello World!&WWWWWWWWWWWWWWWWWWWW&Hello World!'
+    result = lineWrap(words)
+
+    if result != expected:
+        print('"Support Long Words" test failed: Got ' + result + ', wanted ' + expected)
+    else:
+        print('"Support Long Words" test passed!')
