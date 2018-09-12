@@ -9,39 +9,16 @@ from HintList import getHint, getHintGroup, Hint
 from Utils import local_path
 from ItemList import eventlocations
 from Messages import update_message_by_id
+from TextBox import lineWrap
 
-# build a formatted string with linebreaks appropriate textboxes
 def buildHintString(hintString):
     if len(hintString) < 77:
         hintString = "They say that " + hintString
     elif len(hintString) < 82:
         hintString = "They say " + hintString
-    elif len(hintString) > 91:
-        print('Too many characters in hint')
-        hintString = hintString[:91]
     hintString = hintString.capitalize()
 
-    formatString = ""
-    splitHintString = hintString.split()
-    lineLength = 0
-
-    for word in splitHintString:
-        # let's assume words are not 35 or more char long
-        if lineLength + len(word) + 1 <= 35:
-            # add a space if line is not empty
-            if lineLength != 0:
-                lineLength = lineLength + 1
-                formatString = formatString + ' '
-
-            # append word
-            formatString = formatString + word
-            lineLength = lineLength + len(word)
-        else:
-            # word won'd fit, add to a new line
-            formatString = formatString + '&' + word
-            lineLength = len(word)
-
-    return formatString
+    return hintString
 
 
 def getItemGenericName(item):
@@ -56,7 +33,7 @@ def isDungeonItem(item):
 
 
 def add_hint(world, id, text):
-    world.spoiler.hints[id] = text
+    world.spoiler.hints[id] = lineWrap(text)
 
 
 def writeGossipStoneHintsHints(world, messages):
@@ -111,7 +88,7 @@ def buildGossipHints(world):
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
                 checkedLocations.append(hint.name)   
-                add_hint(world, stoneIDs.pop(0), filterTrailingSpace(getHint(locationWorld.name).text + " ") + \
+                add_hint(world, stoneIDs.pop(0), getHint(locationWorld.name).text + " " + \
                     getHint(getItemGenericName(locationWorld.item)).text + ".")
 
 
@@ -127,7 +104,7 @@ def buildGossipHints(world):
             for locationWorld in world.get_locations():
                 if hint.name == locationWorld.name:
                     checkedLocations.append(locationWorld.name)    
-                    add_hint(world, stoneIDs.pop(0), filterTrailingSpace(getHint(locationWorld.name).text + " ") + \
+                    add_hint(world, stoneIDs.pop(0), getHint(locationWorld.name).text + " " + \
                         getHint(getItemGenericName(locationWorld.item)).text + ".")
 
     # add bad dungeon locations hints
