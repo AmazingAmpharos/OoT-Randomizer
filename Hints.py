@@ -147,6 +147,7 @@ def buildGossipHints(world):
             if not locationWorld.name in checkedLocations and \
             locationWorld.item.advancement and \
             locationWorld.item.type != 'Event' and \
+            locationWorld.item.type != 'Shop' and \
             not locationWorld.event and \
             locationWorld.item.name != 'Gold Skulltulla Token' and \
             not locationWorld.item.key]
