@@ -850,10 +850,10 @@ setting_infos = [
                       This will add a small amount of money and
                       refill items to the pool.
 
-                      'Dungeon': Maps and Compasses can onlyappear 
+                      'Dungeon': Maps and Compasses can only appear 
                       in their respective dungeon.
 
-                      'Anywhere': Maps and Compaases can appear
+                      'Anywhere': Maps and Compasses can appear
                       anywhere in the world. 
 
                       Setting 'Remove' or 'Anywhere' will add 2
