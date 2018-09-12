@@ -1247,15 +1247,6 @@ def patch_rom(world, rom):
             rom.write_int16(world.get_location('Kakariko Bazaar Item 8').address,
                             ItemFactory('Buy Bombchu (5)').index)
 
-        # Revert Deku Scrubs changes
-        rom.write_int32s(0xEBB85C, [
-            0x24010002, # addiu at, zero, 2
-            0x3C038012, # lui v1, 0x8012
-            0x14410004, # bne v0, at, 0xd8
-            0x2463A5D0, # addiu v1, v1, -0x5a30
-            0x94790EF0])# lhu t9, 0xef0(v1)
-        rom.write_int32(0xDF7CB0,
-            0xA44F0EF0)  # sh t7, 0xef0(v0)
     else:
         # kokiri shop
         shop_objs = place_shop_items(rom, world, shop_items, messages, 
@@ -1334,6 +1325,16 @@ def patch_rom(world, rom):
 
         # update actor IDs
         set_deku_salesman_data(rom)
+    else:
+        # Revert Deku Scrubs changes
+        rom.write_int32s(0xEBB85C, [
+            0x24010002, # addiu at, zero, 2
+            0x3C038012, # lui v1, 0x8012
+            0x14410004, # bne v0, at, 0xd8
+            0x2463A5D0, # addiu v1, v1, -0x5a30
+            0x94790EF0])# lhu t9, 0xef0(v1)
+        rom.write_int32(0xDF7CB0,
+            0xA44F0EF0)  # sh t7, 0xef0(v0)
 
     # Update grotto id data
     set_grotto_id_data(rom)
