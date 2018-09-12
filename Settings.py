@@ -769,7 +769,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Every Deku Salescrub will give
-                      a random item. This adds 31 new
+                      a random item. This adds 33 new
                       item locations. Scrubs prices
                       are all reduced to 10 Rupees.
                       '''
