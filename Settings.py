@@ -810,11 +810,11 @@ setting_infos = [
                       Shop contents are randomized.
 
                       (X Items): Shops have X random 
-                      non-shop items in every. They 
-                      will always be on the left side. 
-                      This means every shop will have 
-                      more possible item locations. 
-                      So +2 means 2 items per shop.
+                      non-shop items. They will always
+                      be on the left side. This means 
+                      every shop will have more 
+                      possible item locations. So +2 
+                      means 2 items per shop.
 
                       (Random): Each shop will have
                       a random number of non-shop
