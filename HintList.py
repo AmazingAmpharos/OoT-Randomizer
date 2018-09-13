@@ -174,7 +174,7 @@ hintTable = {'Hammer':                                                (["the dra
              'Bottom of the Well Defeat Boss':                        (["They say that Dead Hand holds", "They say that draining the water reveals a monster guarding"], 'location'),
              'Silver Gauntlets Chest':                                ("They say that upon the Colossus's southern edge is", 'location'),
              'Mirror Shield Chest':                                   ("They say that upon the Colossus's northern edge is", 'location'),
-             'Shadow Temple Hidden Floormaster Chest':                (["They say that shadows in an invisible maze guards", "They say that after a free boat ride comes"], 'location'),
+             'Shadow Temple Hidden Floormaster Chest':                (["They say that shadows in an invisible maze guard", "They say that after a free boat ride comes"], 'location'),
              'Haunted Wasteland Structure Chest':                     (["They say that deep in the Wasteland is", "They say that beneath the sands lies"], 'location'),
              'Composer Grave Chest':                                  ("They say that the Composer Brothers hid", 'location'),
              'Song from Composer Grave':                              ("They say that the Composer Brothers wrote", 'location'),
