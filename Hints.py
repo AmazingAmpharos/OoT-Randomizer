@@ -242,7 +242,8 @@ def buildGanonText(world, messages):
         for location in world.get_locations():
             if location.item.name == 'Light Arrows':
                 text = get_raw_text(getHint('Light Arrow Location').text)
-                text += get_raw_text(location.hint)
+                location_hint = location.hint.replace('Ganon\'s Castle', 'my castle')
+                text += get_raw_text(location_hint)
                 text += '!'
                 break
     else:
