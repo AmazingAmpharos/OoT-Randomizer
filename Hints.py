@@ -110,7 +110,7 @@ def buildGossipHints(world):
     # add bad dungeon locations hints
     for dungeon in random.sample(world.dungeons, random.randint(3,4)):
         # Choose a randome dungeon location that is a non-dungeon item
-        locationWorld = random.choice([location for region in dungeon.regions for location in world.get_region(region).locations
+        locationWorld = random.choice([location for region in dungeon.regions for location in region.locations
             if location.item.type != 'Event' and \
             location.item.type != 'Shop' and \
             not location.event and \

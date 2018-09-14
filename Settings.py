@@ -384,6 +384,27 @@ setting_infos = [
                       'Always open': Nothing
                       '''
         }),
+    Setting_Info('all_reachable', bool, 1, True, 
+        {
+            'help': '''\
+                    When disabled, only check if the game is beatable with 
+                    placement. Do not ensure all locations are reachable. 
+                    This only has an effect on the restrictive algorithm 
+                    currently.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'All Locations Reachable',
+            'group': 'world',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                      Chests that lock themselves can still exists.
+                      When disabled, some locations and item might 
+                      not be reachable.
+                      '''
+        }),     
     Setting_Info('bombchus_in_logic', bool, 1, True, 
         {
             'help': '''\
@@ -396,7 +417,7 @@ setting_infos = [
         },
         {
             'text': 'Bombchus are considered in logic',
-            'group': 'logic',
+            'group': 'world',
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
@@ -414,6 +435,29 @@ setting_infos = [
                       and the Bazaar. Bombchus refills cannot 
                       be bought until Bomchus have been
                       obtained.
+                      ''',
+        }),
+    Setting_Info('one_item_per_dungeon', bool, 1, True, 
+        {
+            'help': '''\
+                    Each dungeon will have exactly one major item.
+                    Does not include dungeon items or skulltulas.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Dungeons have one major item',
+            'group': 'world',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Dungeons have exactly one major
+                      item. Makes dungeon value more
+                      even. Also allows skipping items
+                      once the major item is found.
+
+                      Dungeon items and skulltulas do
+                      not count as major items.
                       ''',
         }),
     Setting_Info('trials_random', bool, 1, True, 
@@ -630,27 +674,6 @@ setting_infos = [
                       to do them all anyways looking for the key.
                       '''
         }),
-    Setting_Info('all_reachable', bool, 1, True, 
-        {
-            'help': '''\
-                    When disabled, only check if the game is beatable with 
-                    placement. Do not ensure all locations are reachable. 
-                    This only has an effect on the restrictive algorithm 
-                    currently.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'All Locations Reachable',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      Chests that lock themselves can still exists.
-                      When disabled, some locations and item might 
-                      not be reachable.
-                      '''
-        }), 
     Setting_Info('shuffle_kokiri_sword', bool, 1, True, 
         {
             'help': '''\

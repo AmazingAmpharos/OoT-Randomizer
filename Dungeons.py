@@ -5,10 +5,12 @@ from Items import ItemFactory
 
 
 def create_dungeons(world):
-    def make_dungeon(name, dungeon_regions, boss_key, small_keys, dungeon_items):
+    def make_dungeon(name, dungeon_regions_names, boss_key, small_keys, dungeon_items):
+        dungeon_regions = [world.get_region(region) for region in dungeon_regions_names]
+
         dungeon = Dungeon(name, dungeon_regions, boss_key, small_keys, dungeon_items)
         for region in dungeon.regions:
-            world.get_region(region).dungeon = dungeon
+            region.dungeon = dungeon
         return dungeon
 
     if world.dungeon_mq['DT']:
