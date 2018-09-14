@@ -1874,7 +1874,7 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
             shop_item.description_message = 0x8100 + message_id 
             shop_item.purchase_message = 0x8100 + message_id + 1 
             if world.world_count > 1:
-                update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x42Player \x18\x05\x40\x01Special deal! ONE LEFT!\x09\x0A\x02' % (location.item.name, location.price), 0x03) 
+                update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x42Player %d\x05\x40\x01Special deal! ONE LEFT!\x09\x0A\x02' % (location.item.name, location.price, location.item.world.id + 1), 0x03) 
             else:
                 update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price), 0x03) 
             update_message_by_id(messages, shop_item.purchase_message, '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.price), 0x03) 
