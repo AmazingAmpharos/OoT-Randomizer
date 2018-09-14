@@ -656,24 +656,6 @@ setting_infos = [
                       'R': C-Right
                       '''
         }),
-    Setting_Info('unlocked_ganondorf', bool, 1, True, 
-        {
-            'help': '''\
-                    The Boss Key door in Ganon's Tower will start unlocked.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Remove Ganon\'s Boss Door Lock',
-            'group': 'open',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Best when used when reducing the number of 
-                      Trials to less than 6 to prevent needing
-                      to do them all anyways looking for the key.
-                      '''
-        }),
     Setting_Info('shuffle_kokiri_sword', bool, 1, True, 
         {
             'help': '''\
@@ -965,6 +947,25 @@ setting_infos = [
                       for a milder Keysanity experience.
                       '''
         }),
+    Setting_Info('unlocked_ganondorf', bool, 1, True, 
+        {
+            'help': '''\
+                    The Boss Key door in Ganon's Tower will start unlocked.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Remove Ganon\'s Boss Door Lock',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Best when used when reducing the number of 
+                      Trials to less than 6 to prevent needing
+                      to do them all anyways looking for the key.
+                      ''',
+            'dependency': lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Remove (Keysy)',
+        }),    
     Setting_Info('tokensanity', str, 2, True, 
         {
             'default': 'off',
