@@ -400,8 +400,8 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      Chests that lock themselves can still exists.
-                      When disabled, some locations and item might 
+                      Chests that lock themselves can still exist.
+                      When disabled, some locations and items might 
                       not be reachable.
                       '''
         }),     
