@@ -895,7 +895,9 @@ setting_infos = [
                       mode. 
 
                       'Dungeon': Small Keys can only appear in their 
-                      respective dungeon.
+                      respective dungeon. If Fire Temple is not a 
+                      Master Quest dungeon, the door to the boss key
+                      chest will be unlocked
 
                       'Anywhere': Small Keys can appear
                       anywhere in the world. A difficult mode since

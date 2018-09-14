@@ -134,7 +134,8 @@ def patch_rom(world, rom):
     rom.write_bytes(0xB06BBA, [0x00, 0x00])
 
     # Remove locked door to Boss Key Chest in Fire Temple
-    rom.write_byte(0x22D82B7, 0x3F)
+    if not world.keysanity and not world.dungeon_mq['FiT']:
+        rom.write_byte(0x22D82B7, 0x3F)
 
     # Change Bombchi Shop to be always open
     rom.write_int32(0xC6CEDC, 0x240B0001) # li t3, 1

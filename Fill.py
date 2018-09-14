@@ -288,7 +288,7 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool):
                 raise FillError('Game unbeatable: No more spots to place %s [World %d]' % (item_to_place, item_to_place.world.id))
 
             if not worlds[0].check_beatable_only:
-                logging.getLogger('').warning('Not all items placed. Game beatable anyway.')
+                logging.getLogger('').debug('Not all items placed. Game beatable anyway.')
             break
             
         # Place the item in the world and continue
@@ -317,7 +317,7 @@ def fill_restrictive_fast(window, worlds, locations, itempool):
         # at this point
         if spot_to_fill is None:
             if not worlds[0].check_beatable_only:
-                logging.getLogger('').warning('Not all items placed. Game beatable anyway.')
+                logging.getLogger('').debug('Not all items placed. Game beatable anyway.')
             break
 
         # Place the item in the world and continue
