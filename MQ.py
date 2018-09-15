@@ -1,10 +1,10 @@
 # mzxrules 2018
 # In order to patch MQ to the existing data...
 # 
+# Scenes:
+# 
 # Ice Cavern (Scene 9) needs to have it's header altered to support MQ's path list. This 
 # expansion will delete the otherwise unused alternate headers command
-# 
-# Scenes:
 # 
 # Transition actors will be patched over the old data, as the number of records is the same
 # Path data will be appended to the end of the scene file. 
@@ -14,7 +14,16 @@
 # padded to the nearest 0x10 bytes
 # 
 # Collision: 
-# 
+# OoT's collision data consists of these elements: vertices, surface types, water boxes, 
+# camera behavior data, and polys. MQ's vertice and polygon geometry data is identical.
+# However, the surface types and the collision exclusion flags bound to the polys have changed
+# for some polygons, as well as the number of surface type records and camera type records. 
+#
+# To patch collision, a flag denotes whether collision data cannot be written in place without
+# expanding the size of the scene file. If true, the camera data is relocated to the end
+# of the scene file, and the surface types are shifted down into where the camera types
+# were situated. If false, the camera data isn't moved, but rather the surface type list
+# will be shifted to the end of the camera data
 #
 # Rooms:
 # 
@@ -28,6 +37,11 @@
 # Finally:
 # 
 # Scene and room files will be padded to the nearest 0x10 bytes
+#
+# Maps: 
+# Jabu Jabu's B1 map contains no chests in the vanilla layout. Because of this, 
+# the floor map data is missing a vertex pointer that would point within kaleido_scope.
+# As such, if the file moves, the patch will break.
 
 from Utils import local_path
 from Rom import LocalRom
@@ -218,7 +232,7 @@ class Scene(object):
         # fixes jabu jabu floor B1 having no chest data
         if self.id == 2:
             cur = floormap_vrom + (0x08 * 0x1EC + 4)
-            kaleido_scope_chest_verts = 0x803A3DA0 # hack, should be vram 0x8082EA00
+            kaleido_scope_chest_verts = 0x803A3DA0 # hax, should be vram 0x8082EA00
             rom.write_int32s(cur, [0x17, kaleido_scope_chest_verts, 0x04]) 
 
         # write minimaps
@@ -389,13 +403,14 @@ class Room(object):
         return offset
 
 
-def patch_files(rom:LocalRom, mq_scenes):
+def patch_files(rom:LocalRom, mq_scenes:list):
     
-    patch_ice_cavern_scene_header(rom)
     data = get_json()
     scenes = [Scene(x) for x in data]
     for scene in scenes:
         if scene.id in mq_scenes:
+            if scene.id == 9:
+                patch_ice_cavern_scene_header(rom)
             scene.write_data(rom)
 
     verify_dma(rom)
