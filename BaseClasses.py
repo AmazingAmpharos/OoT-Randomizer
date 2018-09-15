@@ -605,10 +605,7 @@ class CollectionState(object):
 
         required_locations = []
         for location in item_locations:
-# NOTE: DO THIS CODE BETTER
-# The item from the spoiler playthrough is a COPY, not the original, and attempting to set it to None in this place has no effect.
-# This was very frustrating because code trying to do exactly that was sitting here looking pretty like it was actually accomplishing something.
-# There's gotta be a better way than what I've done here, but I don't know Python.
+            # The item from the spoiler playthrough is a COPY, not the original, and attempting to set it to None directly has no effect. Probably could be coded better.
             for item_location in [location for state in state_list for location in state.world.get_locations()]:
                 if item_location.name == location.name and item_location.item.world.id == location.item.world.id:
                     old_item = item_location.item
