@@ -586,21 +586,22 @@ class CollectionState(object):
     def update_required_items(worlds):
         state_list = [world.state for world in worlds]
 
-# BUG!!! Boss Keys are "keys" and so don't get excepted from always required locations with small keysy on.
         item_locations = []
         if worlds[0].spoiler.playthrough:
             item_locations = [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
                 if location.item.type != 'Event' 
                 and location.item.type != 'Shop'
                  and not location.event 
-                 and (worlds[0].keysanity or not location.item.key)]
+                 and (worlds[0].shuffle_smallkeys != 'dungeon' or location.item.type != 'SmallKey') 
+                 and (worlds[0].shuffle_bosskeys != 'dungeon' or location.item.type != 'BossKey')]
         else:
             item_locations = [location for world in worlds for location in world.get_filled_locations() 
                 if location.item.advancement 
                 and location.item.type != 'Event' 
                 and location.item.type != 'Shop' 
                 and not location.event 
-                and (worlds[0].keysanity or not location.item.key)]
+                and (worlds[0].shuffle_smallkeys != 'dungeon' or location.item.type == 'SmallKey') 
+                and (worlds[0].shuffle_bosskeys != 'dungeon' or location.item.type == 'BossKey')]
 
         required_locations = []
         for location in item_locations:
