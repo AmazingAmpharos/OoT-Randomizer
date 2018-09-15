@@ -584,9 +584,9 @@ class CollectionState(object):
 
     @staticmethod
     def update_required_items(worlds):
-        state_list = [CollectionState(world) for world in worlds]
-        CollectionState.collect_locations(state_list)
+        state_list = [world.state for world in worlds]
 
+# BUG!!! Boss Keys are "keys" and so don't get excepted from always required locations with small keysy on.
         item_locations = []
         if worlds[0].spoiler.playthrough:
             item_locations = [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
@@ -604,16 +604,18 @@ class CollectionState(object):
 
         required_locations = []
         for location in item_locations:
-            old_item = location.item
-            new_state_list = [state.copy() for state in state_list]
-
-            location.item = None
-            new_state_list[old_item.world.id].remove(old_item)
-            CollectionState.remove_locations(new_state_list)
-
-            if not CollectionState.can_beat_game(new_state_list, False):
-                required_locations.append(location)
-            location.item = old_item
+# NOTE: DO THIS CODE BETTER
+# The item from the spoiler playthrough is a COPY, not the original, and attempting to set it to None in this place has no effect.
+# This was very frustrating because code trying to do exactly that was sitting here looking pretty like it was actually accomplishing something.
+# There's gotta be a better way than what I've done here, but I don't know Python.
+            for item_location in [location for state in state_list for location in state.world.get_locations()]:
+                if item_location.name == location.name and item_location.item.world.id == location.item.world.id:
+                    old_item = item_location.item
+                    item_location.item = None
+                    if not CollectionState.can_beat_game(state_list):
+                        required_locations.append(location)
+                    item_location.item = old_item
+                    break
 
         for world in worlds:
             world.spoiler.required_locations = [location for location in required_locations if location.world.id == world.id]
