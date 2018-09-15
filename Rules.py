@@ -491,7 +491,7 @@ def dung_rules_fitmq(world):
     set_rule(world.get_entrance('Fire Temple Maze Escape'), lambda state: state.has('Small Key (Fire Temple)', 3) and state.has('Bow'))
     set_rule(world.get_location('Fire Temple MQ Chest Near Boss'), lambda state: (state.has('Hover Boots') and state.has_fire_source()) or (state.has('Progressive Hookshot') and state.has('Magic Meter') and ((state.has('Fire Arrows') and state.has('Bow')) or (state.has('Dins Fire') and ((world.difficulty != 'ohko') or state.has_GoronTunic() or state.has('Bow') or state.has('Progressive Hookshot', 2))))))
     set_rule(world.get_location('Fire Temple MQ Map Chest'), lambda state: state.has('Hammer'))
-    set_rule(world.get_location('Fire Temple MQ Boss Key Chest'), lambda state: state.has_fire_source() and state.has('Progressive Hookshot'))
+    set_rule(world.get_location('Fire Temple MQ Boss Key Chest'), lambda state: state.has_fire_source() and state.has('Bow') and state.has('Progressive Hookshot'))
     set_rule(world.get_location('Fire Temple MQ Big Lava Room Bombable Chest'), lambda state: state.has_fire_source() and state.has('Progressive Hookshot') and state.has_explosives())
     set_rule(world.get_location('Fire Temple MQ West Tower Top Chest'), lambda state: state.has('Small Key (Fire Temple)', 4))
 
