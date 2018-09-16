@@ -584,8 +584,7 @@ class CollectionState(object):
 
     @staticmethod
     def update_required_items(worlds):
-        state_list = [CollectionState(world) for world in worlds]
-        CollectionState.collect_locations(state_list)
+        state_list = [world.state for world in worlds]
 
         item_locations = []
         if worlds[0].spoiler.playthrough:
@@ -593,27 +592,28 @@ class CollectionState(object):
                 if location.item.type != 'Event' 
                 and location.item.type != 'Shop'
                  and not location.event 
-                 and (worlds[0].keysanity or not location.item.key)]
+                 and (worlds[0].shuffle_smallkeys != 'dungeon' or location.item.type != 'SmallKey') 
+                 and (worlds[0].shuffle_bosskeys != 'dungeon' or location.item.type != 'BossKey')]
         else:
             item_locations = [location for world in worlds for location in world.get_filled_locations() 
                 if location.item.advancement 
                 and location.item.type != 'Event' 
                 and location.item.type != 'Shop' 
                 and not location.event 
-                and (worlds[0].keysanity or not location.item.key)]
+                and (worlds[0].shuffle_smallkeys != 'dungeon' or location.item.type == 'SmallKey') 
+                and (worlds[0].shuffle_bosskeys != 'dungeon' or location.item.type == 'BossKey')]
 
         required_locations = []
         for location in item_locations:
-            old_item = location.item
-            new_state_list = [state.copy() for state in state_list]
-
-            location.item = None
-            new_state_list[old_item.world.id].remove(old_item)
-            CollectionState.remove_locations(new_state_list)
-
-            if not CollectionState.can_beat_game(new_state_list, False):
-                required_locations.append(location)
-            location.item = old_item
+            # The item from the spoiler playthrough is a COPY, not the original, and attempting to set it to None directly has no effect. Probably could be coded better.
+            for item_location in [location for state in state_list for location in state.world.get_locations()]:
+                if item_location.name == location.name and item_location.item.world.id == location.item.world.id:
+                    old_item = item_location.item
+                    item_location.item = None
+                    if not CollectionState.can_beat_game(state_list):
+                        required_locations.append(location)
+                    item_location.item = old_item
+                    break
 
         for world in worlds:
             world.spoiler.required_locations = [location for location in required_locations if location.world.id == world.id]
