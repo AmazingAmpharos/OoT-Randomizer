@@ -77,12 +77,10 @@ def get_navi_color_options():
     return ["Random Choice", "Completely Random"] + get_navi_colors()
 
 def patch_rom(world, rom):
-    with open(local_path('data/base2current.json'), 'r') as stream:
-        patches = json.load(stream)
-    for patch in patches:
-        if isinstance(patch, dict):
-            for baseaddress, values in patch.items():
-                rom.write_bytes(int(baseaddress), values)
+    with open(local_path('data/rom_patch.txt'), 'r') as stream:
+        for line in stream:
+            address, value = [int(x, 16) for x in line.split(',')]
+            rom.write_byte(address, value)
     
     # Write Randomizer title screen logo
     with open(local_path('data/title.bin'), 'rb') as stream:
@@ -795,19 +793,10 @@ def patch_rom(world, rom):
                   0x70, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x2e, 0x02]
     rom.write_bytes(0x92D41C, Block_code)
 
-    # DMA in extra code
-    Block_code = [0xAF, 0xBF, 0x00, 0x1C, 0xAF, 0xA4, 0x01, 0x40, 0x3C, 0x05, 0x03, 0x48,
-                  0x3C, 0x04, 0x80, 0x40, 0x0C, 0x00, 0x03, 0x7C, 0x24, 0x06, 0x50, 0x00,
-                  0x0C, 0x10, 0x02, 0x00]
-    rom.write_bytes(0xB17BB4, Block_code)
-    Block_code = [0x3C, 0x02, 0x80, 0x12, 0x24, 0x42, 0xD2, 0xA0, 0x24, 0x0E, 0x01, 0x40,
-                  0xAC, 0x2E, 0xE5, 0x00, 0x03, 0xE0, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00]
-    rom.write_bytes(0x3480800, Block_code)
-    rom.write_bytes(0xD270, [0x03, 0x48, 0x00, 0x00, 0x03, 0x48, 0x50, 0x00, 0x03, 0x48, 0x00, 0x00])
-
     # Set hooks for various code
     rom.write_bytes(0xDBF428, [0x0C, 0x10, 0x03, 0x00]) #Set Fishing Hook
 
+    configure_dungeon_info(rom, world)
 
     # will be populated with data to be written to initial save
     # see initial_save.asm and config.asm for more details on specifics
@@ -1959,4 +1948,29 @@ def disable_music(rom):
     blank_track = rom.read_bytes(0xB89AE0 + (0 * 0x10), 0x10)
     for bgm in bgm_sequence_ids:
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
-    
+
+def boss_reward_index(world, boss_name):
+    code = world.get_location(boss_name).item.code
+    if code >= 0x6C:
+        return code - 0x6C
+    else:
+        return 3 + code - 0x66
+
+def configure_dungeon_info(rom, world):
+    mq_enable = world.quest == 'mixed'
+    mapcompass_keysanity = world.settings.shuffle_mapcompass == 'keysanity'
+
+    bosses = ['Queen Gohma', 'King Dodongo', 'Barinade', 'Phantom Ganon',
+            'Volvagia', 'Morpha', 'Twinrova', 'Bongo Bongo']
+    dungeon_rewards = [boss_reward_index(world, boss) for boss in bosses]
+
+    codes = ['DT', 'DC', 'JB', 'FoT', 'FiT', 'WT', 'SpT', 'ShT',
+            'BW', 'IC', 'Tower (N/A)', 'GTG', 'Hideout (N/A)', 'GC']
+    dungeon_is_mq = [1 if world.dungeon_mq.get(c) else 0 for c in codes]
+
+    rom.write_int32(rom.sym('cfg_dungeon_info_enable'), 1)
+    rom.write_int32(rom.sym('cfg_dungeon_info_mq_enable'), int(mq_enable))
+    rom.write_int32(rom.sym('cfg_dungeon_info_mq_need_compass'), int(mapcompass_keysanity))
+    rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_map'), int(mapcompass_keysanity))
+    rom.write_bytes(rom.sym('cfg_dungeon_rewards'), dungeon_rewards)
+    rom.write_bytes(rom.sym('cfg_dungeon_is_mq'), dungeon_is_mq)

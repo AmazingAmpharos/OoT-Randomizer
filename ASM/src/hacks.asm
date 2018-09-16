@@ -466,3 +466,12 @@
 ; sh t7, 0xef0(v0)
 .org 0xDF7CB0
     jal     Deku_Set_Sold_Out
+
+;==================================================================================================
+; Dungeon info display
+;==================================================================================================
+
+; Replaces:
+;   jal     0x8009FEC0 ; swap buffers for overlay display list
+.org 0xB17128 ; In memory: 0x800A11C8
+    jal     overlay_swap
