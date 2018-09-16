@@ -187,7 +187,7 @@ def create_playthrough(worlds):
     if worlds[0].check_beatable_only and not CollectionState.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Cannot beat game. Something went terribly wrong here!')
 
-    state_list = [CollectionState(world) for world in worlds]
+    state_list = [world.state for world in worlds]
 
     # Get all item locations in the worlds
     collection_spheres = []
@@ -218,16 +218,20 @@ def create_playthrough(worlds):
             # we remove the item at location and check if game is still beatable
             logging.getLogger('').debug('Checking if %s is required to beat the game.', location.item.name)
             old_item = location.item
-            old_state_list = [state.copy() for state in state_list]
 
+            # Uncollect the item location. Removing it from the collected_locations
+            # will ensure that can_beat_game will try to collect it if it can.
+            # Because we search in reverse sphere order, all the later spheres will
+            # have there locations flagged to be researched.
             location.item = None
             state_list[old_item.world.id].remove(old_item)
-            CollectionState.remove_locations(state_list)
-            if CollectionState.can_beat_game(state_list, False):
+            del state_list[location.world.id].collected_locations[location.name]
+
+            # remove the item from the world and test if the game is still beatable
+            if CollectionState.can_beat_game(state_list):
                 to_delete.append(location)
             else:
                 # still required, got to keep it around
-                state_list = old_state_list
                 location.item = old_item
 
         # cull entries in spheres for spoiler walkthrough at end
