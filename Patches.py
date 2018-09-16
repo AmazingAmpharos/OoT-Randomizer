@@ -67,12 +67,10 @@ def get_navi_color_options():
     return ["Random Choice", "Completely Random"] + get_navi_colors()
 
 def patch_rom(world, rom):
-    with open(local_path('data/base2current.json'), 'r') as stream:
-        patches = json.load(stream)
-    for patch in patches:
-        if isinstance(patch, dict):
-            for baseaddress, values in patch.items():
-                rom.write_bytes(int(baseaddress), values)
+    with open(local_path('data/rom_patch.txt'), 'r') as stream:
+        for line in stream:
+            address, value = [int(x, 16) for x in line.split(',')]
+            rom.write_byte(address, value)
 
     # Can always return to youth
     rom.write_byte(0xCB6844, 0x35)
@@ -1940,4 +1938,4 @@ def disable_music(rom):
     blank_track = rom.read_bytes(0xB89AE0 + (0 * 0x10), 0x10)
     for bgm in bgm_sequence_ids:
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
-    
+
