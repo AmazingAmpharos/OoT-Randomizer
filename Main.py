@@ -219,7 +219,7 @@ def create_playthrough(worlds):
         # Uncollect the item location. Removing it from the collected_locations
         # will ensure that can_beat_game will try to collect it if it can.
         # Because we search in reverse sphere order, all the later spheres will
-        # have there locations flagged to be re-searched.
+        # have their locations flagged to be re-searched.
         location.item = None
         state_list[old_item.world.id].remove(old_item)
         del state_list[location.world.id].collected_locations[location.name]
