@@ -1463,6 +1463,24 @@ setting_infos = [
                       ammo, and rupees, so doing so is a risk.
                       '''
         }),
+    Setting_Info('clearer_hints', bool, 1, True, 
+        {
+            'help': '''\
+                    The hints provided by Gossip Stones are
+                    easier to understand.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Clearer hints',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      The hints provided by Gossip Stones will
+                      not be as cryptic if this option is enabled.
+                      '''
+        }),
     Setting_Info('hints', str, 2, True, 
         {
             'default': 'none',

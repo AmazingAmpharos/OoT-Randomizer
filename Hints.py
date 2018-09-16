@@ -46,6 +46,47 @@ def filterTrailingSpace(text):
     else:
         return text
 
+def colorText(text, color):
+    colorMap = {
+        'White':      '\x40',
+        'Red':        '\x41',
+        'Green':      '\x42',
+        'Blue':       '\x43',
+        'Light Blue': '\x44',
+        'Pink':       '\x45',
+        'Yellow':     '\x46',
+        'Black':      '\x47',
+    }
+
+    ignoredStarts = [
+        'a few ',
+        'some ',
+        'plenty of ',
+        'a ',
+        'an ',
+        'the ',
+        '',
+    ]
+
+    colorTags = False
+    while True:
+        splitText = text.split('#', 2)
+        if len(splitText) == 3:
+            splitText[1] = '\x05' + colorMap[color] + splitText[1] + '\x05\x40'
+            text = ''.join(splitText)
+            colorTags = True
+        else:
+            text = '#'.join(splitText)
+            break
+
+    if not colorTags:
+        for ignoredStart in ignoredStarts:
+            if text.startswith(ignoredStart):
+                text = text[:len(ignoredStart)] + '\x05' + colorMap[color] + text[len(ignoredStart):] + '\x05\x40'
+                break
+
+    return text
+
 
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(world):
@@ -62,11 +103,11 @@ def buildGossipHints(world):
     if world.trials < 6 and world.trials > 3:
         for trial,skipped in world.skipped_trials.items():
             if skipped:
-                add_hint(world, stoneIDs.pop(0), buildHintString("the " + trial + " Trial was dispelled by Sheik."))
+                add_hint(world, stoneIDs.pop(0), buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."))
     elif world.trials <= 3 and world.trials > 0:
         for trial,skipped in world.skipped_trials.items():
             if not skipped:
-                add_hint(world, stoneIDs.pop(0), buildHintString("the " + trial + " Trial protects Ganon's Tower."))
+                add_hint(world, stoneIDs.pop(0), buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."))
 
     # add required items locations for hints (good hints)
     requiredSample = world.spoiler.required_locations
@@ -74,10 +115,10 @@ def buildGossipHints(world):
         requiredSample = random.sample(requiredSample, random.randint(4,5))
     for location in requiredSample:
         if location.parent_region.dungeon:
-            add_hint(world, stoneIDs.pop(0), buildHintString(getHint(location.parent_region.dungeon.name).text + \
+            add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(location.parent_region.dungeon.name, world).text, 'Light Blue') + \
                 " is on the way of the hero."))
         else:
-            add_hint(world, stoneIDs.pop(0), buildHintString(location.hint + " is on the way of the hero."))
+            add_hint(world, stoneIDs.pop(0), buildHintString(colorText(location.hint, 'Light Blue') + " is on the way of the hero."))
 
     # Don't repeat hints
     checkedLocations = []
@@ -88,8 +129,8 @@ def buildGossipHints(world):
         for locationWorld in world.get_locations():
             if hint.name == locationWorld.name:
                 checkedLocations.append(hint.name)   
-                add_hint(world, stoneIDs.pop(0), getHint(locationWorld.name).text + " " + \
-                    getHint(getItemGenericName(locationWorld.item)).text + ".")
+                add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(locationWorld.name, world).text, 'Green') + " " + \
+                    colorText(getHint(getItemGenericName(locationWorld.item), world).text, 'Red') + "."))
 
 
     # Add good location hints
@@ -104,8 +145,8 @@ def buildGossipHints(world):
             for locationWorld in world.get_locations():
                 if hint.name == locationWorld.name:
                     checkedLocations.append(locationWorld.name)    
-                    add_hint(world, stoneIDs.pop(0), getHint(locationWorld.name).text + " " + \
-                        getHint(getItemGenericName(locationWorld.item)).text + ".")
+                    add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(locationWorld.name, world).text, 'Green') + " " + \
+                        colorText(getHint(getItemGenericName(locationWorld.item), world).text, 'Red') + "."))
 
     # add bad dungeon locations hints
     for dungeon in random.sample(world.dungeons, random.randint(3,4)):
@@ -119,8 +160,8 @@ def buildGossipHints(world):
             location.item.type != 'Song'])
 
         checkedLocations.append(locationWorld.name)
-        add_hint(world, stoneIDs.pop(0), buildHintString(getHint(dungeon.name).text + \
-            " hoards " + getHint(getItemGenericName(locationWorld.item)).text + "."))
+        add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(dungeon.name, world).text, 'Green') + \
+            " hoards " + colorText(getHint(getItemGenericName(locationWorld.item), world).text, 'Red') + "."))
 
     # add bad overworld locations hints
     # only choose location if it is new and a proper item from the overworld
@@ -138,8 +179,8 @@ def buildGossipHints(world):
         overworldSample = random.sample(overworldlocations, random.randint(3,4))
     for locationWorld in overworldSample:
         checkedLocations.append(locationWorld.name)
-        add_hint(world, stoneIDs.pop(0), buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
-            " can be found at " + locationWorld.hint + ".")) 
+        add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(getItemGenericName(locationWorld.item), world).text, 'Red') + \
+            " can be found at " + colorText(locationWorld.hint, 'Green') + ".")) 
 
     # add good item hints
     # only choose location if it is new and a good item
@@ -157,11 +198,11 @@ def buildGossipHints(world):
     for locationWorld in gooditemSample:
         checkedLocations.append(locationWorld.name)
         if locationWorld.parent_region.dungeon:
-            add_hint(world, stoneIDs.pop(0), buildHintString(getHint(locationWorld.parent_region.dungeon.name).text + \
-                " hoards " + getHint(getItemGenericName(locationWorld.item)).text + "."))
+            add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(locationWorld.parent_region.dungeon.name, world).text, 'Green') + \
+                " hoards " + colorText(getHint(getItemGenericName(locationWorld.item), world).text, 'Red') + "."))
         else:
-            add_hint(world, stoneIDs.pop(0), buildHintString(getHint(getItemGenericName(locationWorld.item)).text + \
-                " can be found at " + locationWorld.hint + "."))
+            add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(getItemGenericName(locationWorld.item), world).text, 'Red') + \
+                " can be found at " + colorText(locationWorld.hint, 'Green') + "."))
 
     # fill the remaining hints with junk    
     junkHints = getHintGroup('junkHint', world)
@@ -176,12 +217,12 @@ def buildBossRewardHints(world, messages):
 
     # text that appears at altar as a child.
     text = '\x08'
-    text += get_raw_text(getHint('Spiritual Stone Text Start').text)
+    text += get_raw_text(getHint('Spiritual Stone Text Start', world).text)
     for reward in bossRewardsSpiritualStones:
         text += buildBossString(reward, world)
 
     text = setRewardColor(text)
-    text += get_raw_text(getHint('Spiritual Stone Text End').text)
+    text += get_raw_text(getHint('Spiritual Stone Text End', world).text)
     text += '\x0B'
 
     update_message_by_id(messages, 0x707a, text, 0x20)
@@ -194,7 +235,7 @@ def buildBossRewardHints(world, messages):
         text += buildBossString(reward, world)
 
     text = setRewardColor(text)
-    text += get_raw_text(getHint('Medallion Text End').text)
+    text += get_raw_text(getHint('Medallion Text End', world).text)
     text += '\x0B'
 
     update_message_by_id(messages, 0x7057, start + text, 0x20)
@@ -204,7 +245,7 @@ def buildBossString(reward, world):
     text = ''
     for location in world.get_locations():
         if location.item.name == reward:
-            text += '\x08' + get_raw_text(getHint(location.name).text)
+            text += '\x08' + get_raw_text(getHint(location.name, world).text)
     return text
 
 # alternates through color set commands in child and adult boss reward hint strings setting the colors at the start of the string to correspond with the reward found at the location.
@@ -241,16 +282,16 @@ def buildGanonText(world, messages):
     if world.trials == 0:
         for location in world.get_locations():
             if location.item.name == 'Light Arrows':
-                text = get_raw_text(getHint('Light Arrow Location').text)
+                text = get_raw_text(getHint('Light Arrow Location', world).text)
                 location_hint = location.hint.replace('Ganon\'s Castle', 'my castle')
                 text += get_raw_text(location_hint)
                 text += '!'
                 break
     else:
-        text = get_raw_text(getHint('Validation Line').text)
+        text = get_raw_text(getHint('Validation Line', world).text)
         for location in world.get_locations():
             if location.name == 'Ganons Tower Boss Key Chest':
-                text += get_raw_text(getHint(getItemGenericName(location.item)).text)
+                text += get_raw_text(getHint(getItemGenericName(location.item), world).text)
     
     update_message_by_id(messages, 0x70CC, text)
         
