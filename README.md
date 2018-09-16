@@ -99,6 +99,8 @@ The shuffling rules can be set separately for Maps/Compasses, Small Keys, and Bo
 - `dungeon`: The dungeon item type will always appear in their own dungeon.
 - `keysanity`: The dungeon item type are shuffles into the pool and can appear anywhere.
 
+Keysanity also adds a menu to view your current dungeon items. While in the item select screen, hold A and it will show current key counts along with maps and compasses. If the compass has been obtained then it will show the medallion/stone reward for the dungeon. If the map has been obatained it will indicate if the dungeon is a Master Quest dungeon or a vanilla Ocarina of Time dungeon.
+
 ## Tokensanity
 
 Gold Skulltula Token are added to the item pool, and Gold Skulltula locations give random items. There are two levels for this option: complete shuffle of all 100 tokens, or shuffling only the tokens inside dungeons (there are 44.) The later option can add variance to small key layout in dungeons when keysanity is turned off.
@@ -122,6 +124,8 @@ When this option is off, only the three unique Deku Salescrubs (Heart Piece, Sti
 ## Changed hint system
 
 The hint system has been changed to include different kinds of hints (such as saying a location has something good, but not saying what item it is, or saying a specific item is somewhere in a dungeon, instead of giving the specific location, and so on.) An option has been added to allow talking to gossip stones from the start. Yes, this makes the Stone of Agony completely useless.
+
+- `clearer_hints`: hints will be more obvious what item and locations they are referring to.
 
 ## Text shuffle
 
