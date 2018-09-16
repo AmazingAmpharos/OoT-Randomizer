@@ -29,8 +29,8 @@ dungeon_entry_t dungeons[] = {
 
     {  8, 1, 0, 0, 1, "BotW"    },
     {  9, 0, 0, 0, 1, "Ice"     },
+    { 12, 1, 0, 1, 0, "Gerudo"  },
     { 11, 1, 0, 0, 0, "GTG"     },
-    { 12, 1, 0, 1, 0, "Hideout" },
     { 13, 1, 1, 0, 0, "Ganon"   },
 };
 
@@ -53,8 +53,8 @@ medal_color_t medal_colors[] = {
 
 uint32_t cfg_dungeon_info_enable = 1;
 uint32_t cfg_dungeon_info_mq_enable = 0;
-uint32_t cfg_dungeon_info_mq_need_compass = 0;
-uint32_t cfg_dungeon_info_reward_need_map = 0;
+uint32_t cfg_dungeon_info_mq_need_map = 0;
+uint32_t cfg_dungeon_info_reward_need_compass = 0;
 
 int8_t cfg_dungeon_rewards[] = { 0, 1, 2, 3, 4, 5, 6, 7, -1, -1, -1, -1, -1, -1 };
 uint8_t cfg_dungeon_is_mq[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -107,8 +107,8 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
-        if (cfg_dungeon_info_reward_need_map &&
-                !z64_file.dungeon_items[d->index].map) {
+        if (cfg_dungeon_info_reward_need_compass &&
+                !z64_file.dungeon_items[d->index].compass) {
             continue;
         }
         int reward = cfg_dungeon_rewards[d->index];
@@ -130,8 +130,8 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
-        if (cfg_dungeon_info_reward_need_map &&
-                !z64_file.dungeon_items[d->index].map) {
+        if (cfg_dungeon_info_reward_need_compass &&
+                !z64_file.dungeon_items[d->index].compass) {
             continue;
         }
         int reward = cfg_dungeon_rewards[d->index];
@@ -243,8 +243,8 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
     if (cfg_dungeon_info_mq_enable) {
         for (int i = 0; i < dungeon_count; i++) {
             dungeon_entry_t *d = &(dungeons[i]);
-            if (cfg_dungeon_info_mq_need_compass && d->has_map &&
-                    !z64_file.dungeon_items[d->index].compass) {
+            if (cfg_dungeon_info_mq_need_map && d->has_map &&
+                    !z64_file.dungeon_items[d->index].map) {
                 continue;
             }
             char *str = cfg_dungeon_is_mq[d->index] ? "MQ" : "Normal";
