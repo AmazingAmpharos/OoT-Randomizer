@@ -434,7 +434,7 @@ class CollectionState(object):
         return any(is_normal_bottle(pritem) for pritem in self.prog_items)
 
     def bottle_count(self):
-        return len([pritem for pritem in self.prog_items if pritem.startswith('Bottle')])
+        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and pritem != 'Bottle with Letter'])
 
     def has_hearts(self, count):
         # Warning: This only considers items that are marked as advancement items
@@ -471,16 +471,8 @@ class CollectionState(object):
     # Be careful using this function. It will not collect any
     # items that may be locked behind the item, only the item itself.         
     def collect(self, item):
-        changed = False
-        if item.name.startswith('Bottle'):
-            if self.bottle_count() < 4:
-                self.prog_items[item.name] += 1
-                changed = True
-        elif item.advancement:
+        if item.advancement:
             self.prog_items[item.name] += 1
-            changed = True
-
-        if changed:
             self.clear_cached_unreachable()
            
     # Be careful using this function. It will not uncollect any
