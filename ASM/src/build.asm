@@ -54,9 +54,9 @@ DebugOutput:
 
 .org 0x80405000
 .area 0xB000, 0
-.importobj "src/c/output/bundle.o"
+.importobj "../build/bundle.o"
 FONT_TEXTURE:
-.incbin("resources/font.bin")
+.incbin("../resources/font.bin")
 .endarea
 
 .close

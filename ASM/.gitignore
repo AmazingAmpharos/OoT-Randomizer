@@ -1,6 +1,5 @@
 /inject
 /roms/*
-/temp/*
-/src/c/*.o
+/c/*.o
 armips*
 !.gitkeep
