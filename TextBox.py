@@ -1,3 +1,5 @@
+import Messages
+
 # Least common multiple of all possible character widths. A line wrap must occur when the combined widths of all of the
 # characters on a line reach this value.
 LINE_WIDTH = 1801800
@@ -58,7 +60,16 @@ def _wrapLines(text):
 
 
 def _calculateWidth(words):
-    wordsWidth = sum([_getCharacterWidth(character) for word in words for character in word])
+    wordsWidth = 0
+    for word in words:
+        index = 0
+        while index < len(word):
+            character = word[index]
+            index += 1
+            if ord(character) in Messages.CONTROL_CODES:
+                index += Messages.CONTROL_CODES[ord(character)][1]
+            else:
+                wordsWidth += _getCharacterWidth(character)
     spacesWidth = _getCharacterWidth(' ') * (len(words) - 1)
 
     return wordsWidth + spacesWidth
