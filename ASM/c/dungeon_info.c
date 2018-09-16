@@ -51,9 +51,13 @@ medal_color_t medal_colors[] = {
     { 0xA4, 0xAB, 0x21 }, // Light
 };
 
-// FIXME: Make dynamic
-int8_t rewards[] = { 4, 1, 7, 5, 0, 8, 6, 2, -1, -1, -1, -1, -1, -1 };
-uint8_t dungeon_is_mq[] = { 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 };
+uint32_t cfg_dungeon_info_enable = 1;
+uint32_t cfg_dungeon_info_mq_enable = 0;
+uint32_t cfg_dungeon_info_mq_need_compass = 0;
+uint32_t cfg_dungeon_info_reward_need_map = 0;
+
+int8_t cfg_dungeon_rewards[] = { 0, 1, 2, 3, 4, 5, 6, 7, -1, -1, -1, -1, -1, -1 };
+uint8_t cfg_dungeon_is_mq[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 void draw_dungeon_info(z64_disp_buf_t *db) {
     // Call setup display list
@@ -93,7 +97,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
-        int reward = rewards[d->index];
+        int reward = cfg_dungeon_rewards[d->index];
         if (reward < 3) continue;
         reward -= 3;
 
@@ -112,7 +116,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
-        int reward = rewards[d->index];
+        int reward = cfg_dungeon_rewards[d->index];
         if (reward < 0 || reward >= 3) continue;
 
         int top = start_top + ((icon_size + padding) * i);
@@ -210,7 +214,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
         //text_print("MQ", left, top);
         for (int i = 0; i < dungeon_count; i++) {
             dungeon_entry_t *d = &(dungeons[i]);
-            char *str = dungeon_is_mq[d->index] ? "MQ" : "Normal";
+            char *str = cfg_dungeon_is_mq[d->index] ? "MQ" : "Normal";
             int top = start_top + ((icon_size + padding) * i) + 1;
             text_print(str, left, top);
         }
