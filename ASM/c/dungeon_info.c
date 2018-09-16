@@ -157,7 +157,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     // Draw key counts
 
-    sprite_load(db, &quest_items_sprite, 3, 1);
+    sprite_load(db, &quest_items_sprite, 17, 1);
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
@@ -177,11 +177,24 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     // Draw boss keys
 
-    sprite_load(db, &quest_items_sprite, 0, 1);
+    sprite_load(db, &quest_items_sprite, 14, 1);
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
         if (d->has_boss_key && z64_file.dungeon_items[d->index].boss_key) {
+            int top = start_top + ((icon_size + padding) * i);
+            sprite_draw(db, &quest_items_sprite, 0,
+                    left, top, icon_size, icon_size);
+        }
+    }
+
+    // Draw gerudo card
+
+    sprite_load(db, &quest_items_sprite, 10, 1);
+
+    for (int i = 0; i < dungeon_count; i++) {
+        dungeon_entry_t *d = &(dungeons[i]);
+        if (d->has_card && z64_file.gerudos_card) {
             int top = start_top + ((icon_size + padding) * i);
             sprite_draw(db, &quest_items_sprite, 0,
                     left, top, icon_size, icon_size);
@@ -196,7 +209,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
     if (draw_maps_and_compasses) {
         // Draw maps
 
-        sprite_load(db, &quest_items_sprite, 2, 1);
+        sprite_load(db, &quest_items_sprite, 16, 1);
 
         for (int i = 0; i < dungeon_count; i++) {
             dungeon_entry_t *d = &(dungeons[i]);
@@ -211,7 +224,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
         // Draw compasses
 
-        sprite_load(db, &quest_items_sprite, 1, 1);
+        sprite_load(db, &quest_items_sprite, 15, 1);
 
         for (int i = 0; i < dungeon_count; i++) {
             dungeon_entry_t *d = &(dungeons[i]);

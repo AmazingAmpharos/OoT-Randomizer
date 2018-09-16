@@ -21,7 +21,7 @@ sprite_t medals_sprite = {
 };
 
 sprite_t quest_items_sprite = {
-    NULL, 24, 24, 4,
+    NULL, 24, 24, 18,
     G_IM_FMT_RGBA, G_IM_SIZ_32b, 4
 };
 
@@ -106,7 +106,7 @@ void gfx_init() {
 
     stones_sprite.buf = title_static.buf + 0x2A300;
     medals_sprite.buf = title_static.buf + 0x2980;
-    quest_items_sprite.buf = icon_item_24_static.buf + 0x7E00;
+    quest_items_sprite.buf = icon_item_24_static.buf;
 
     int font_bytes = sprite_bytes(&font_sprite);
     font_sprite.buf = heap_alloc(font_bytes);
