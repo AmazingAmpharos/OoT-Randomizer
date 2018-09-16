@@ -95,6 +95,11 @@ class LocalRom(object):
         self.buffer[address] = value
         self.last_address = address + 1
 
+    def write_sbyte(self, address, value):
+        if address == None:
+            address = self.last_address
+        self.write_bytes(address, struct.pack('b', value))
+
     def write_int16(self, address, value):
         if address == None:
             address = self.last_address
@@ -109,6 +114,11 @@ class LocalRom(object):
         if address == None:
             address = self.last_address
         self.write_bytes(address, int32_as_bytes(value))
+
+    def write_f32(self, address, value:float):
+        if address == None:
+            address = self.last_address
+        self.write_bytes(address, struct.pack('>f', value))
 
     def write_bytes(self, startaddress, values):
         if startaddress == None:

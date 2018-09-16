@@ -1,10 +1,10 @@
 # mzxrules 2018
 # In order to patch MQ to the existing data...
 # 
+# Scenes:
+# 
 # Ice Cavern (Scene 9) needs to have it's header altered to support MQ's path list. This 
 # expansion will delete the otherwise unused alternate headers command
-# 
-# Scenes:
 # 
 # Transition actors will be patched over the old data, as the number of records is the same
 # Path data will be appended to the end of the scene file. 
@@ -14,7 +14,16 @@
 # padded to the nearest 0x10 bytes
 # 
 # Collision: 
-# 
+# OoT's collision data consists of these elements: vertices, surface types, water boxes, 
+# camera behavior data, and polys. MQ's vertice and polygon geometry data is identical.
+# However, the surface types and the collision exclusion flags bound to the polys have changed
+# for some polygons, as well as the number of surface type records and camera type records. 
+#
+# To patch collision, a flag denotes whether collision data cannot be written in place without
+# expanding the size of the scene file. If true, the camera data is relocated to the end
+# of the scene file, and the surface types are shifted down into where the camera types
+# were situated. If false, the camera data isn't moved, but rather the surface type list
+# will be shifted to the end of the camera data
 #
 # Rooms:
 # 
@@ -28,6 +37,11 @@
 # Finally:
 # 
 # Scene and room files will be padded to the nearest 0x10 bytes
+#
+# Maps: 
+# Jabu Jabu's B1 map contains no chests in the vanilla layout. Because of this, 
+# the floor map data is missing a vertex pointer that would point within kaleido_scope.
+# As such, if the file moves, the patch will break.
 
 from Utils import local_path
 from Rom import LocalRom
@@ -89,6 +103,44 @@ class ColDelta(object):
         self.polytypes = delta['PolyTypes']
         self.cams = delta['Cams']
 
+class Icon(object):
+    def __init__(self, data):
+        self.icon = data["Icon"];
+        self.count = data["Count"];
+        self.points = [IconPoint(x) for x in data["IconPoints"]]
+
+    def write_to_minimap(self, rom:LocalRom, addr):
+        rom.write_sbyte(addr, self.icon)
+        rom.write_byte(addr + 1,  self.count)
+        cur = 2
+        for p in self.points:
+            p.write_to_minimap(rom, addr + cur)
+            cur += 0x03
+
+    def write_to_floormap(self, rom:LocalRom, addr):
+        rom.write_int16(addr, self.icon)
+        rom.write_int32(addr + 0x10, self.count)
+
+        cur = 0x14
+        for p in self.points:
+            p.write_to_floormap(rom, addr + cur)
+            cur += 0x0C
+
+class IconPoint(object):
+    def __init__(self, point):
+        self.flag = point["Flag"]
+        self.x = point["x"]
+        self.y = point["y"]
+
+    def write_to_minimap(self, rom:LocalRom, addr):
+        rom.write_sbyte(addr, self.flag)
+        rom.write_byte(addr+1, self.x)
+        rom.write_byte(addr+2, self.y)
+
+    def write_to_floormap(self, rom:LocalRom, addr):
+        rom.write_int16(addr, self.flag)
+        rom.write_f32(addr + 4, float(self.x))
+        rom.write_f32(addr + 8, float(self.y))
 
 
 class Scene(object):
@@ -99,6 +151,8 @@ class Scene(object):
         self.rooms = [Room(x) for x in scene['Rooms']]
         self.paths = []
         self.coldelta = ColDelta(scene["ColDelta"])
+        self.minimaps = [[Icon(icon) for icon in minimap['Icons']] for minimap in scene['Minimaps']]
+        self.floormaps = [[Icon(icon) for icon in floormap['Icons']] for floormap in scene['Floormaps']]
         temp_paths = scene['Paths']
         for item in temp_paths:
             self.paths.append(item['Points'])
@@ -106,6 +160,9 @@ class Scene(object):
 
     def write_data(self, rom:LocalRom):
         
+        # write floormap and minimap data
+        self.write_map_data(rom)
+
         # move file to remap address
         self.file.relocate(rom)
 
@@ -154,6 +211,44 @@ class Scene(object):
         for room in self.rooms:
             rom.write_int32s(cur, [room.file.start, room.file.end])
             cur += 0x08
+
+    def write_map_data(self, rom:LocalRom):
+        if self.id >= 10:
+            return
+
+        # write floormap
+        floormap_indices = 0xB6C934
+        floormap_vrom = 0xBC7E00
+        floormap_index = rom.read_int16(floormap_indices + (self.id * 2))
+        floormap_index //= 2 # game uses texture index, where two textures are used per floor
+
+        cur = floormap_vrom + (floormap_index * 0x1EC)
+        for floormap in self.floormaps:
+            for icon in floormap:
+                Icon.write_to_floormap(icon, rom, cur)
+                cur += 0xA4
+
+                
+        # fixes jabu jabu floor B1 having no chest data
+        if self.id == 2:
+            cur = floormap_vrom + (0x08 * 0x1EC + 4)
+            kaleido_scope_chest_verts = 0x803A3DA0 # hax, should be vram 0x8082EA00
+            rom.write_int32s(cur, [0x17, kaleido_scope_chest_verts, 0x04]) 
+
+        # write minimaps
+        map_mark_vrom = 0xBF40D0
+        map_mark_vram = 0x808567F0
+        map_mark_array_vram = 0x8085D2DC # ptr array in map_mark_data to minimap "marks"
+
+        array_vrom = map_mark_array_vram - map_mark_vram + map_mark_vrom
+        map_mark_scene_vram = rom.read_int32(self.id * 4 + array_vrom)
+        mark_vrom = map_mark_scene_vram - map_mark_vram + map_mark_vrom
+        
+        cur = mark_vrom
+        for minimap in self.minimaps:
+            for icon in minimap:
+                Icon.write_to_minimap(icon, rom, cur)
+                cur += 0x26
 
 
     def patch_mesh(self, rom:LocalRom, mesh:CollisionMesh):
@@ -308,13 +403,14 @@ class Room(object):
         return offset
 
 
-def patch_files(rom:LocalRom, mq_scenes):
+def patch_files(rom:LocalRom, mq_scenes:list):
     
-    patch_ice_cavern_scene_header(rom)
     data = get_json()
     scenes = [Scene(x) for x in data]
     for scene in scenes:
         if scene.id in mq_scenes:
+            if scene.id == 9:
+                patch_ice_cavern_scene_header(rom)
             scene.write_data(rom)
 
     verify_dma(rom)

@@ -2165,7 +2165,444 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 40,
+                "y": -33
+              },
+              {
+                "Flag": 6,
+                "x": 49,
+                "y": -42
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 48,
+                "y": -63
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 84,
+                "y": -39
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 3,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 46,
+                "y": -59
+              },
+              {
+                "Flag": 4,
+                "x": 77,
+                "y": -26
+              },
+              {
+                "Flag": 5,
+                "x": 65,
+                "y": -61
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 55,
+                "y": 0
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ],
+    "Minimaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 71,
+                "y": 50
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 64,
+                "y": 62
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 4,
+                "x": 76,
+                "y": 37
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 46,
+                "y": 50
+              },
+              {
+                "Flag": 5,
+                "x": 76,
+                "y": 52
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 50,
+                "y": 23
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 46,
+                "y": 50
+              },
+              {
+                "Flag": 6,
+                "x": 58,
+                "y": 60
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ]
   },
   {
     "File": {
@@ -6486,7 +6923,489 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 3,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 55,
+                "y": -36
+              },
+              {
+                "Flag": 3,
+                "x": 54,
+                "y": -51
+              },
+              {
+                "Flag": 5,
+                "x": 13,
+                "y": -61
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 3,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 47,
+                "y": -40
+              },
+              {
+                "Flag": 1,
+                "x": 51,
+                "y": -3
+              },
+              {
+                "Flag": 4,
+                "x": 47,
+                "y": -47
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 23,
+                "y": -25
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ],
+    "Minimaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 69,
+                "y": 14
+              },
+              {
+                "Flag": 4,
+                "x": 69,
+                "y": 30
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 5,
+                "x": 54,
+                "y": 54
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 69,
+                "y": 54
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 37,
+                "y": 49
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 59,
+                "y": 53
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 68,
+                "y": 54
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ]
   },
   {
     "File": {
@@ -13430,7 +14349,484 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 5,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 48,
+                "y": -68
+              },
+              {
+                "Flag": 5,
+                "x": 50,
+                "y": -66
+              },
+              {
+                "Flag": 7,
+                "x": 55,
+                "y": -50
+              },
+              {
+                "Flag": 9,
+                "x": 58,
+                "y": 1
+              },
+              {
+                "Flag": 10,
+                "x": 62,
+                "y": -45
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 65,
+                "y": -37
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 6,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 37,
+                "y": -49
+              },
+              {
+                "Flag": 1,
+                "x": 65,
+                "y": -38
+              },
+              {
+                "Flag": 2,
+                "x": 52,
+                "y": -48
+              },
+              {
+                "Flag": 4,
+                "x": 46,
+                "y": -36
+              },
+              {
+                "Flag": 6,
+                "x": 59,
+                "y": -41
+              },
+              {
+                "Flag": 8,
+                "x": 52,
+                "y": -26
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ],
+    "Minimaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 66,
+                "y": 50
+              },
+              {
+                "Flag": 5,
+                "x": 72,
+                "y": 47
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 7,
+                "x": 72,
+                "y": 54
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 4,
+                "x": 64,
+                "y": 62
+              },
+              {
+                "Flag": 8,
+                "x": 79,
+                "y": 38
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 10,
+                "x": 64,
+                "y": 45
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 67,
+                "y": 32
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 9,
+                "x": 68,
+                "y": 45
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 79,
+                "y": 33
+              },
+              {
+                "Flag": 6,
+                "x": 61,
+                "y": 41
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 48,
+                "y": 57
+              },
+              {
+                "Flag": 2,
+                "x": 77,
+                "y": 55
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ]
   },
   {
     "File": {
@@ -14204,7 +15600,753 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 6,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 53,
+                "y": -64
+              },
+              {
+                "Flag": 5,
+                "x": 65,
+                "y": -9
+              },
+              {
+                "Flag": 12,
+                "x": 49,
+                "y": -1
+              },
+              {
+                "Flag": 13,
+                "x": 40,
+                "y": 0
+              },
+              {
+                "Flag": 14,
+                "x": 18,
+                "y": -2
+              },
+              {
+                "Flag": 15,
+                "x": 59,
+                "y": 0
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 4,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 49,
+                "y": -1
+              },
+              {
+                "Flag": 1,
+                "x": 71,
+                "y": -13
+              },
+              {
+                "Flag": 2,
+                "x": 11,
+                "y": -25
+              },
+              {
+                "Flag": 6,
+                "x": 84,
+                "y": -16
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 9,
+                "x": 65,
+                "y": -30
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 11,
+                "x": 41,
+                "y": -24
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 50,
+                "y": -11
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ],
+    "Minimaps": [
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 72,
+                "y": 57
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 69,
+                "y": 39
+              },
+              {
+                "Flag": 9,
+                "x": 62,
+                "y": 65
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 9,
+                "x": 71,
+                "y": 59
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 13,
+                "x": 80,
+                "y": 53
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 15,
+                "x": 49,
+                "y": 50
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 6,
+                "x": 65,
+                "y": 53
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 11,
+                "x": 39,
+                "y": 35
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 53,
+                "y": 5
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 65,
+                "y": 54
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 14,
+                "x": 64,
+                "y": 31
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 75,
+                "y": 53
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 12,
+                "x": 69,
+                "y": 52
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 5,
+                "x": 58,
+                "y": 27
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ]
   },
   {
     "File": {
@@ -18095,7 +20237,952 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 5,
+                "x": 24,
+                "y": -40
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 3,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 75,
+                "y": -47
+              },
+              {
+                "Flag": 6,
+                "x": 72,
+                "y": -51
+              },
+              {
+                "Flag": 8,
+                "x": 65,
+                "y": -12
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 11,
+                "x": 78,
+                "y": -35
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 5,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 67,
+                "y": -58
+              },
+              {
+                "Flag": 2,
+                "x": 48,
+                "y": -30
+              },
+              {
+                "Flag": 4,
+                "x": 63,
+                "y": -14
+              },
+              {
+                "Flag": 7,
+                "x": 36,
+                "y": -45
+              },
+              {
+                "Flag": 12,
+                "x": 47,
+                "y": -26
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 26,
+                "y": -34
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ],
+    "Minimaps": [
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 7,
+                "x": 53,
+                "y": 70
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 40,
+                "y": 47
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 11,
+                "x": 57,
+                "y": 48
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 67,
+                "y": 73
+              },
+              {
+                "Flag": 6,
+                "x": 58,
+                "y": 76
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 78,
+                "y": 62
+              },
+              {
+                "Flag": 12,
+                "x": 77,
+                "y": 58
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 4,
+                "x": 60,
+                "y": 54
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 72,
+                "y": 68
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 8,
+                "x": 66,
+                "y": 57
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 5,
+                "x": 51,
+                "y": 61
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ]
   },
   {
     "File": {
@@ -19034,7 +22121,994 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 88,
+                "y": -60
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 62,
+                "y": -23
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 88,
+                "y": -60
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 88,
+                "y": -60
+              },
+              {
+                "Flag": 5,
+                "x": 49,
+                "y": -43
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 6,
+                "x": 75,
+                "y": -65
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ],
+    "Minimaps": [
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 6,
+                "x": 81,
+                "y": 68
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 5,
+                "x": 75,
+                "y": 55
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 77,
+                "y": 40
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 74,
+                "y": 61
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 73,
+                "y": 65
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 73,
+                "y": 63
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ]
   },
   {
     "File": {
@@ -20494,7 +24568,944 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 18,
+                "x": 46,
+                "y": -30
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 5,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 23,
+                "y": -33
+              },
+              {
+                "Flag": 2,
+                "x": 56,
+                "y": -11
+              },
+              {
+                "Flag": 5,
+                "x": 83,
+                "y": -25
+              },
+              {
+                "Flag": 24,
+                "x": 84,
+                "y": -39
+              },
+              {
+                "Flag": 25,
+                "x": 74,
+                "y": -37
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 47,
+                "y": 0
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 5,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 46,
+                "y": -20
+              },
+              {
+                "Flag": 6,
+                "x": 28,
+                "y": -19
+              },
+              {
+                "Flag": 12,
+                "x": 25,
+                "y": -25
+              },
+              {
+                "Flag": 15,
+                "x": 50,
+                "y": -13
+              },
+              {
+                "Flag": 28,
+                "x": 48,
+                "y": -29
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 9,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 14,
+                "y": -24
+              },
+              {
+                "Flag": 4,
+                "x": 55,
+                "y": -14
+              },
+              {
+                "Flag": 7,
+                "x": 78,
+                "y": -2
+              },
+              {
+                "Flag": 8,
+                "x": 14,
+                "y": -16
+              },
+              {
+                "Flag": 26,
+                "x": 42,
+                "y": -43
+              },
+              {
+                "Flag": 27,
+                "x": 50,
+                "y": -43
+              },
+              {
+                "Flag": 29,
+                "x": 25,
+                "y": -35
+              },
+              {
+                "Flag": 30,
+                "x": 42,
+                "y": -36
+              },
+              {
+                "Flag": 31,
+                "x": 50,
+                "y": -36
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ],
+    "Minimaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 4,
+            "IconPoints": [
+              {
+                "Flag": 26,
+                "x": 27,
+                "y": 35
+              },
+              {
+                "Flag": 27,
+                "x": 36,
+                "y": 35
+              },
+              {
+                "Flag": 30,
+                "x": 27,
+                "y": 28
+              },
+              {
+                "Flag": 31,
+                "x": 36,
+                "y": 28
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 29,
+                "x": 67,
+                "y": 63
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 71,
+                "y": 62
+              },
+              {
+                "Flag": 8,
+                "x": 71,
+                "y": 48
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 56,
+                "y": 54
+              },
+              {
+                "Flag": 15,
+                "x": 69,
+                "y": 42
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 28,
+                "x": 60,
+                "y": 54
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 76,
+                "y": 40
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 7,
+                "x": 70,
+                "y": 53
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 4,
+                "x": 68,
+                "y": 42
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 25,
+                "x": 78,
+                "y": 58
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 24,
+                "x": 78,
+                "y": 58
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 5,
+                "x": 71,
+                "y": 55
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 18,
+                "x": 75,
+                "y": 54
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 6,
+                "x": 78,
+                "y": 55
+              },
+              {
+                "Flag": 12,
+                "x": 70,
+                "y": 70
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 76,
+                "y": 37
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 57,
+                "y": 23
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ]
   },
   {
     "File": {
@@ -21356,7 +26367,832 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 41,
+                "y": -17
+              },
+              {
+                "Flag": 7,
+                "x": 27,
+                "y": -24
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 81,
+                "y": -20
+              },
+              {
+                "Flag": 3,
+                "x": 74,
+                "y": -37
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 12,
+                "x": 96,
+                "y": -51
+              },
+              {
+                "Flag": 16,
+                "x": 46,
+                "y": -42
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 12,
+            "IconPoints": [
+              {
+                "Flag": 4,
+                "x": 43,
+                "y": -66
+              },
+              {
+                "Flag": 5,
+                "x": 37,
+                "y": -66
+              },
+              {
+                "Flag": 6,
+                "x": 33,
+                "y": -72
+              },
+              {
+                "Flag": 8,
+                "x": 85,
+                "y": -18
+              },
+              {
+                "Flag": 9,
+                "x": 61,
+                "y": -42
+              },
+              {
+                "Flag": 10,
+                "x": 15,
+                "y": -4
+              },
+              {
+                "Flag": 11,
+                "x": 25,
+                "y": -4
+              },
+              {
+                "Flag": 13,
+                "x": 19,
+                "y": -29
+              },
+              {
+                "Flag": 14,
+                "x": 78,
+                "y": -15
+              },
+              {
+                "Flag": 15,
+                "x": 60,
+                "y": -70
+              },
+              {
+                "Flag": 21,
+                "x": 92,
+                "y": -29
+              },
+              {
+                "Flag": 20,
+                "x": 87,
+                "y": -20
+              }
+            ]
+          },
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 31,
+                "y": -45
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ],
+    "Minimaps": [
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 77,
+                "y": 64
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 1,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": -1,
+                "x": 77,
+                "y": 76
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 7,
+                "x": 76,
+                "y": 65
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 83,
+                "y": 67
+              },
+              {
+                "Flag": 14,
+                "x": 84,
+                "y": 59
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 76,
+                "y": 67
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 3,
+            "IconPoints": [
+              {
+                "Flag": 4,
+                "x": 78,
+                "y": 62
+              },
+              {
+                "Flag": 5,
+                "x": 74,
+                "y": 62
+              },
+              {
+                "Flag": 6,
+                "x": 71,
+                "y": 68
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 9,
+                "x": 77,
+                "y": 64
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 10,
+                "x": 71,
+                "y": 65
+              },
+              {
+                "Flag": 11,
+                "x": 80,
+                "y": 65
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 16,
+                "x": 73,
+                "y": 64
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 12,
+                "x": 87,
+                "y": 64
+              },
+              {
+                "Flag": 22,
+                "x": 87,
+                "y": 68
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 13,
+                "x": 77,
+                "y": 66
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 21,
+                "x": 78,
+                "y": 66
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 8,
+                "x": 76,
+                "y": 66
+              },
+              {
+                "Flag": 20,
+                "x": 78,
+                "y": 68
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 14,
+                "x": 77,
+                "y": 62
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 15,
+                "x": 56,
+                "y": 67
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 16,
+                "x": 73,
+                "y": 64
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 14,
+                "x": 77,
+                "y": 62
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ]
   },
   {
     "File": {
@@ -28240,7 +34076,293 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 2,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 84,
+                "y": -38
+              },
+              {
+                "Flag": 3,
+                "x": 57,
+                "y": -18
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 72,
+                "y": -32
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ],
+    "Minimaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 3,
+                "x": 60,
+                "y": 18
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 73,
+                "y": 61
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 74,
+                "y": 66
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ]
   },
   {
     "File": {
@@ -30214,7 +36336,292 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 3,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 66,
+                "y": -2
+              },
+              {
+                "Flag": 1,
+                "x": 77,
+                "y": -46
+              },
+              {
+                "Flag": 2,
+                "x": 27,
+                "y": -45
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ],
+    "Minimaps": [
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 2,
+                "x": 71,
+                "y": 59
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 0,
+                "x": 48,
+                "y": 36
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      },
+      {
+        "Icons": [
+          {
+            "Icon": 0,
+            "Count": 1,
+            "IconPoints": [
+              {
+                "Flag": 1,
+                "x": 73,
+                "y": 67
+              }
+            ]
+          },
+          {
+            "Icon": -1,
+            "Count": 0,
+            "IconPoints": []
+          },
+          {
+            "Icon": 0,
+            "Count": 0,
+            "IconPoints": []
+          }
+        ]
+      }
+    ]
   },
   {
     "File": {
@@ -30521,7 +36928,9 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [],
+    "Minimaps": []
   },
   {
     "File": {
@@ -30976,7 +37385,9 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [],
+    "Minimaps": []
   },
   {
     "File": {
@@ -32062,6 +38473,8 @@
           "PositionIndex": -1
         }
       ]
-    }
+    },
+    "Floormaps": [],
+    "Minimaps": []
   }
 ]
