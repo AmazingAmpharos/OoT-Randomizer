@@ -468,6 +468,8 @@ class CollectionState(object):
             return self.can_play('Suns Song')
         return True
 
+    # Be careful using this function. It will not collect any
+    # items that may be locked behind the item, only the item itself.         
     def collect(self, item):
         changed = False
         if item.name.startswith('Bottle'):
@@ -480,7 +482,9 @@ class CollectionState(object):
 
         if changed:
             self.clear_cached_unreachable()
-            
+           
+    # Be careful using this function. It will not uncollect any
+    # items that may be locked behind the item, only the item itself. 
     def remove(self, item):
         if self.prog_items[item.name] > 0:
             self.prog_items[item.name] -= 1
@@ -535,27 +539,6 @@ class CollectionState(object):
                 # Collect the item for the state world it is for
                 state_list[location.item.world.id].collect(location.item)
 
-
-    # This removes all item locations collected in the state list given that
-    # the states have collected items. The purpose is that it will search for
-    # all new items that become no longer accessible with a removed item
-    @staticmethod
-    def remove_locations(state_list):
-        # Get all item locations in the worlds
-        item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
-
-        # will loop if there is more items removed in the previous iteration. Always run once
-        unreachable_items_locations = True
-        while unreachable_items_locations:
-            # get unreachable new items locations
-            unreachable_items_locations = [location for location in item_locations if location.name in state_list[location.world.id].collected_locations and not state_list[location.world.id].can_reach(location)]
-            for location in unreachable_items_locations:
-                # Mark the location uncollected in the state world it exists in
-                del state_list[location.world.id].collected_locations[location.name]
-                # Remove the item for the state world it is for
-                state_list[location.item.world.id].remove(location.item)
-
-
     # This returns True is every state is beatable. It's important to ensure
     # all states beatable since items required in one world can be in another.
     @staticmethod
@@ -586,37 +569,36 @@ class CollectionState(object):
     def update_required_items(worlds):
         state_list = [world.state for world in worlds]
 
-        item_locations = []
-        if worlds[0].spoiler.playthrough:
-            item_locations = [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere
-                if location.item.type != 'Event' 
-                and location.item.type != 'Shop'
-                 and not location.event 
-                 and (worlds[0].shuffle_smallkeys != 'dungeon' or location.item.type != 'SmallKey') 
-                 and (worlds[0].shuffle_bosskeys != 'dungeon' or location.item.type != 'BossKey')]
-        else:
-            item_locations = [location for world in worlds for location in world.get_filled_locations() 
-                if location.item.advancement 
-                and location.item.type != 'Event' 
-                and location.item.type != 'Shop' 
-                and not location.event 
-                and (worlds[0].shuffle_smallkeys != 'dungeon' or location.item.type == 'SmallKey') 
-                and (worlds[0].shuffle_bosskeys != 'dungeon' or location.item.type == 'BossKey')]
+        # get list of all of the progressive items that can appear in hints
+        item_locations = [location for world in worlds for location in world.get_filled_locations() 
+            if location.item.advancement 
+            and location.item.type != 'Event' 
+            and location.item.type != 'Shop' 
+            and not location.event 
+            and (worlds[0].shuffle_smallkeys != 'dungeon' or not location.item.smallkey) 
+            and (worlds[0].shuffle_bosskeys != 'dungeon' or not location.item.bosskey)]
 
+        # if the playthrough was generated, filter the list of locations to the
+        # locations in the playthrough. The required locations is a subset of these
+        # locations. Can't use the locations directly since they are location to the
+        # copied spoiler world, so must try to find the matching locations by name
+        if worlds[0].spoiler.playthrough:
+            spoiler_locations = {location.name:location.world.id for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere}
+            item_locations = list(filter(lambda location: location.name in spoiler_locations and location.world.id == spoiler_locations[location.name], item_locations))
+
+
+        # Try to remove the items one at a time and see if the game is still beatable
         required_locations = []
         for location in item_locations:
-            # The item from the spoiler playthrough is a COPY, not the original, and attempting to set it to None directly has no effect. Probably could be coded better.
-            for item_location in [location for state in state_list for location in state.world.get_locations()]:
-                if item_location.name == location.name and item_location.item.world.id == location.item.world.id:
-                    old_item = item_location.item
-                    item_location.item = None
-                    if not CollectionState.can_beat_game(state_list):
-                        required_locations.append(location)
-                    item_location.item = old_item
-                    break
+            old_item = location.item
+            location.item = None
+            if not CollectionState.can_beat_game(state_list):
+                required_locations.append(location)
+            location.item = old_item
 
+        # Filter the required location to only include location in the world
         for world in worlds:
-            world.spoiler.required_locations = [location for location in required_locations if location.world.id == world.id]
+            world.spoiler.required_locations = list(filter(lambda location: location.world.id == world.id, required_locations))
 
 
 @unique

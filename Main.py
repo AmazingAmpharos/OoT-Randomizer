@@ -219,9 +219,15 @@ def create_playthrough(worlds):
             logging.getLogger('').debug('Checking if %s is required to beat the game.', location.item.name)
             old_item = location.item
 
+            # Uncollect the item location. Removing it from the collected_locations
+            # will ensure that can_beat_game will try to collect it if it can.
+            # Because we search in reverse sphere order, all the later spheres will
+            # have there locations flagged to be researched.
             location.item = None
             state_list[old_item.world.id].remove(old_item)
             del state_list[location.world.id].collected_locations[location.name]
+
+            # remove the item from the world and test if the game is still beatable
             if CollectionState.can_beat_game(state_list):
                 to_delete.append(location)
             else:
