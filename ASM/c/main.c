@@ -15,7 +15,6 @@ void overlay_swap(z64_disp_buf_t *db, Gfx *buf, uint32_t size) {
                 z64_game.pause_screen == 0 &&
                 !z64_game.pause_screen_changing &&
                 z64_ctxt.input[0].raw.a) {
-        db->p = db->buf;
         draw_dungeon_info(db);
     }
 

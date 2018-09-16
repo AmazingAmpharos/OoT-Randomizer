@@ -60,6 +60,10 @@ int8_t cfg_dungeon_rewards[] = { 0, 1, 2, 3, 4, 5, 6, 7, -1, -1, -1, -1, -1, -1 
 uint8_t cfg_dungeon_is_mq[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 void draw_dungeon_info(z64_disp_buf_t *db) {
+    if (!cfg_dungeon_info_enable) return;
+
+    db->p = db->buf;
+
     // Call setup display list
     gSPDisplayList(db->p++, setup_db.buf);
 
@@ -68,8 +72,14 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
     int icon_size = 16;
     int padding = 2;
     int rows = 13;
-    int bg_width = (5 * icon_size) + ((8 + 6) * font_sprite.tile_w) +
-        (8 * padding);
+    int mq_width = cfg_dungeon_info_mq_enable ?
+        ((6 * font_sprite.tile_w) + padding) :
+        0;
+    int bg_width =
+        (5 * icon_size) +
+        (8 * font_sprite.tile_w) +
+        (7 * padding) +
+        mq_width;
     int bg_height = (rows * icon_size) + ((rows + 1) * padding);
     int bg_left = (Z64_SCREEN_WIDTH - bg_width) / 2;
     int bg_top = (Z64_SCREEN_HEIGHT - bg_height) / 2;
@@ -97,6 +107,10 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
+        if (cfg_dungeon_info_reward_need_map &&
+                !z64_file.dungeon_items[d->index].map) {
+            continue;
+        }
         int reward = cfg_dungeon_rewards[d->index];
         if (reward < 3) continue;
         reward -= 3;
@@ -116,6 +130,10 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
+        if (cfg_dungeon_info_reward_need_map &&
+                !z64_file.dungeon_items[d->index].map) {
+            continue;
+        }
         int reward = cfg_dungeon_rewards[d->index];
         if (reward < 0 || reward >= 3) continue;
 
@@ -209,11 +227,13 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     // Draw master quest dungeons
 
-    int show_mq = 1;
-    if (show_mq) {
-        //text_print("MQ", left, top);
+    if (cfg_dungeon_info_mq_enable) {
         for (int i = 0; i < dungeon_count; i++) {
             dungeon_entry_t *d = &(dungeons[i]);
+            if (cfg_dungeon_info_mq_need_compass && d->has_map &&
+                    !z64_file.dungeon_items[d->index].compass) {
+                continue;
+            }
             char *str = cfg_dungeon_is_mq[d->index] ? "MQ" : "Normal";
             int top = start_top + ((icon_size + padding) * i) + 1;
             text_print(str, left, top);
