@@ -780,6 +780,7 @@ def patch_rom(world, rom):
     # Set hooks for various code
     rom.write_bytes(0xDBF428, [0x0C, 0x10, 0x03, 0x00]) #Set Fishing Hook
 
+    configure_dungeon_info(rom, world)
 
     # will be populated with data to be written to initial save
     # see initial_save.asm and config.asm for more details on specifics
@@ -1939,3 +1940,28 @@ def disable_music(rom):
     for bgm in bgm_sequence_ids:
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
 
+def boss_reward_index(world, boss_name):
+    code = world.get_location(boss_name).item.code
+    if code >= 0x6C:
+        return code - 0x6C
+    else:
+        return 3 + code - 0x66
+
+def configure_dungeon_info(rom, world):
+    mq_enable = world.quest == 'mixed'
+    mapcompass_keysanity = world.settings.shuffle_mapcompass == 'keysanity'
+
+    bosses = ['Queen Gohma', 'King Dodongo', 'Barinade', 'Phantom Ganon',
+            'Volvagia', 'Morpha', 'Twinrova', 'Bongo Bongo']
+    dungeon_rewards = [boss_reward_index(world, boss) for boss in bosses]
+
+    codes = ['DT', 'DC', 'JB', 'FoT', 'FiT', 'WT', 'SpT', 'ShT',
+            'BW', 'IC', 'Tower (N/A)', 'GTG', 'Hideout (N/A)', 'GC']
+    dungeon_is_mq = [1 if world.dungeon_mq.get(c) else 0 for c in codes]
+
+    rom.write_int32(rom.sym('cfg_dungeon_info_enable'), 1)
+    rom.write_int32(rom.sym('cfg_dungeon_info_mq_enable'), int(mq_enable))
+    rom.write_int32(rom.sym('cfg_dungeon_info_mq_need_compass'), int(mapcompass_keysanity))
+    rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_map'), int(mapcompass_keysanity))
+    rom.write_bytes(rom.sym('cfg_dungeon_rewards'), dungeon_rewards)
+    rom.write_bytes(rom.sym('cfg_dungeon_is_mq'), dungeon_is_mq)
