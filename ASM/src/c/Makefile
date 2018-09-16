@@ -9,18 +9,20 @@ CFLAGS = -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt \
 OBJECTS = $(patsubst %.c,%.o,$(wildcard *.c))
 HEADERS = $(wildcard *.h)
 
-.PHONY: all clean bundle debug
+OUTDIR = ../build
 
-all: clean bundle debug
+.PHONY: all clean bundle symbols
+
+all: clean bundle symbols
 
 %.o: %.c $(HEADERS)
 	$(CC) -c $< $(CFLAGS)
 
 bundle: $(OBJECTS)
-	$(LD) -o output/bundle.o -i -L. $(patsubst %.o,-l:%.o,$(OBJECTS))
+	$(LD) -o $(OUTDIR)/bundle.o -i -L. $(patsubst %.o,-l:%.o,$(OBJECTS))
 
-debug: bundle
-	$(OBJDUMP) -t output/bundle.o > output/debug.txt
+symbols: bundle
+	$(OBJDUMP) -t $(OUTDIR)/bundle.o > $(OUTDIR)/c_symbols.txt
 
 clean:
-	rm -f *.o output/*
+	rm -f *.o
