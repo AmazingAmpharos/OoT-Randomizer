@@ -237,7 +237,17 @@ def create_playthrough(worlds):
         # cull entries in spheres for spoiler walkthrough at end
         for location in to_delete:
             sphere.remove(location)
-    collection_spheres = [sphere for sphere in collection_spheres if sphere]
+
+    # This ensures the playthrough shows items being collected in the proper order.
+    required_locations = [item for sphere in collection_spheres for item in sphere]
+    state_list = [world.state for world in worlds]
+    collection_spheres = []
+    while required_locations:
+        sphere = [location for location in required_locations if state_list[location.world.id].can_reach(location)]
+        for location in sphere:
+            required_locations.remove(location)
+            state_list[location.item.world.id].collect(location.item)
+        collection_spheres.append(sphere)
 
     # we can finally output our playthrough
     for world in old_worlds:
