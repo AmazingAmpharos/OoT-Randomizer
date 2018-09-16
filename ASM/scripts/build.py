@@ -87,7 +87,7 @@ if pj64_sym_path:
     with open(pj64_sym_path, 'w') as f:
         key = lambda pair: pair[1]['address']
         for sym_name, sym in sorted(symbols.items(), key=key):
-            f.write('{0},{1},{2}\n'.format(sym['address'], sym_name, sym['type']))
+            f.write('{0},{1},{2}\n'.format(sym['address'], sym['type'], sym_name))
 
 # Diff ROMs
 
