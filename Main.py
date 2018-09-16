@@ -104,10 +104,11 @@ def main(settings, window=dummy_window()):
         logger.info('Calculating playthrough.')
         create_playthrough(worlds)
         window.update_progress(50)
-    window.update_status('Calculating Hint Data')
-    CollectionState.update_required_items(worlds)
-    buildGossipHints(world)
-    window.update_progress(55)
+    if settings.hints != 'none':
+        window.update_status('Calculating Hint Data')
+        CollectionState.update_required_items(worlds)
+        buildGossipHints(worlds[settings.player_num - 1])
+        window.update_progress(55)
 
     logger.info('Patching ROM.')
 

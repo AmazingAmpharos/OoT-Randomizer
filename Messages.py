@@ -634,17 +634,47 @@ def move_shop_item_messages(messages, shop_items):
         if is_in_item_range(shop.purchase_message):
             shop.purchase_message |= 0x8000
 
+def make_player_message(text):
+    player_text_U = '\x05\x42Player \x18\x05\x40'
+    player_text_L = '\x05\x42player \x18\x05\x40'
+    pronoun_mapping = {
+        'You have ': player_text_U + ' ',
+        'You\'ve ':  player_text_U + ' ',
+        'Your ':     player_text_U + '\'s ',
+        'You ':      player_text_U + ' ',
+
+        'you have ': player_text_L + ' ',
+        'you\'ve ':  player_text_L + ' ',
+        'your ':     player_text_L + '\'s ',
+        'you ':      player_text_L + ' ',
+    }
+
+    verb_mapping = {
+        'obtained ': 'got ',
+        'received ': 'got ',
+        'learned ': 'got ',
+        'borrowed ': 'got ',
+        'found ': 'got ',
+    }
+
+    new_text = text
+    for find_text, replace_text in pronoun_mapping.items():
+        if find_text in text:
+            new_text = new_text.replace(find_text, replace_text, 1)
+            break
+    for find_text, replace_text in verb_mapping.items():
+        new_text = new_text.replace(find_text, replace_text)
+    return new_text
+
+
+
 
 # add the keysanity messages
 # make sure to call this AFTER move_shop_item_messages()
 def add_keysanity_messages(messages, world):
     for id, text in KEYSANITY_MESSAGES.items():
         if world.world_count > 1:
-            index = 0
-            while ord(text[index]) in CONTROL_CODES:
-                index = index + CONTROL_CODES[ord(text[index])][1] + 1
-            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
-            update_message_by_id(messages, id, new_text, 0x23)
+            update_message_by_id(messages, id, make_player_message(text), 0x23)
         else:
             update_message_by_id(messages, id, text, 0x23)
 
@@ -653,11 +683,7 @@ def add_keysanity_messages(messages, world):
 def add_song_messages(messages, world):
     for id, text in SONG_MESSAGES.items():
         if world.world_count > 1:
-            index = 0
-            while ord(text[index]) in CONTROL_CODES:
-                index = index + CONTROL_CODES[ord(text[index])][1] + 1
-            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
-            update_message_by_id(messages, id, new_text, 0x23)
+            update_message_by_id(messages, id, make_player_message(text), 0x23)
         else:
             update_message_by_id(messages, id, text, 0x23)
 
@@ -665,11 +691,8 @@ def add_song_messages(messages, world):
 def update_item_messages(messages, world):
     for id, text in ITEM_MESSAGES.items():
         if world.world_count > 1:
-            index = 0
-            while ord(text[index]) in CONTROL_CODES:
-                index = index + CONTROL_CODES[ord(text[index])][1] + 1
-            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
-            update_message_by_id(messages, id, new_text)
+            update_message_by_id(messages, id, make_player_message(text), 0x23)
+
         else:
             update_message_by_id(messages, id, text)
 

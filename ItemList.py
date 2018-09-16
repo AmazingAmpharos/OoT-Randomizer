@@ -390,7 +390,9 @@ def generate_itempool(world):
     (pool, placed_items) = get_pool_core(world)
     world.itempool = ItemFactory(pool)
     for (location, item) in placed_items.items():
-        world.push_item(location, ItemFactory(item))
+        new_item = ItemFactory(item)
+        new_item.world = world
+        world.push_item(location, new_item)
         world.get_location(location).event = True
 
     choose_trials(world)
@@ -562,6 +564,9 @@ def get_pool_core(world):
         for item in [item for dungeon in world.dungeons for item in dungeon.boss_key]:
             world.state.collect(item)
             pool.append(random.choice(harditems))
+    if not world.keysanity and not world.dungeon_mq['FiT']:
+        world.state.collect(ItemFactory('Small Key (Fire Temple)'))
+
 
     return (pool, placed_items)
 

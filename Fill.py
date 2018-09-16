@@ -74,6 +74,11 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     if not worlds[0].shuffle_song_items:
         fill_songs(window, worlds, song_locations, songitempool, progitempool)
 
+    # Put one item in every dungeon, needs to be done before other items are
+    # placed to ensure there is a spot available for them
+    if worlds[0].one_item_per_dungeon:
+        fill_dungeon_unique_item(window, worlds, fill_locations, progitempool)
+
     # Place all progression items. This will include keys in keysanity.
     # Items in this group will check for reachability and will be placed
     # such that the game is guaranteed beatable.
@@ -127,6 +132,59 @@ def fill_dungeons_restrictive(window, worlds, shuffled_locations, dungeon_items,
 
     for world in worlds:
         world.state.clear_cached_unreachable()
+
+
+# Places items into dungeon locations. This is used when there should be exactly
+# one progression item per dungeon. This should be ran before all the progression
+# items are places to ensure there is space to place them.
+def fill_dungeon_unique_item(window, worlds, fill_locations, itempool, attempts=15):
+    # We should make sure that we don't count event items, shop items,
+    # token items, or dungeon items as a major item. itempool at this
+    # point should only be able to have tokens of those restrictions
+    # since the rest are already placed.
+    major_items = [item for item in itempool if item.type != 'Token']
+    token_items = [item for item in itempool if item.type == 'Token']
+
+    while attempts:
+        attempts -= 1
+        try:
+            # choose a random set of items and locations
+            dungeon_locations = []
+            for dungeon in [dungeon for world in worlds for dungeon in world.dungeons]:
+                dungeon_locations.append(random.choice([location for region in dungeon.regions for location in region.locations if location in fill_locations]))
+            dungeon_items = random.sample(major_items, len(dungeon_locations))
+
+            new_dungeon_locations = list(dungeon_locations)
+            new_dungeon_items = list(dungeon_items)
+            non_dungeon_items = [item for item in major_items if item not in dungeon_items]
+            all_other_item_state = CollectionState.get_states_with_items([world.state for world in worlds], token_items + non_dungeon_items)
+
+            # attempt to place the items into the locations
+            random.shuffle(new_dungeon_locations)
+            random.shuffle(new_dungeon_items)
+            fill_restrictive(window, worlds, all_other_item_state, new_dungeon_locations, new_dungeon_items)
+            if len(new_dungeon_locations) > 0:
+                raise FillError('Not all items were placed successfully')
+
+            logging.getLogger('').info("Unique dungeon items placed")
+
+            # remove the placed items from the fill_location and itempool
+            for location in dungeon_locations:
+                fill_locations.remove(location)
+            for item in dungeon_items:
+                itempool.remove(item)
+
+        except FillError as e:
+            logging.getLogger('').info("Failed to place unique dungeon items. Will retry %s more times", attempts)
+            for location in dungeon_locations:
+                location.item = None
+            for dungeon in [dungeon for world in worlds for dungeon in world.dungeons]:
+                dungeon.major_items = 0
+            logging.getLogger('').info('\t%s' % str(e))
+            continue
+        break
+    else:
+        raise FillError('Unable to place unique dungeon items')
 
 
 # Places the shop items into the world at the Shop locations
@@ -230,7 +288,7 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool):
                 raise FillError('Game unbeatable: No more spots to place %s [World %d]' % (item_to_place, item_to_place.world.id))
 
             if not worlds[0].check_beatable_only:
-                logging.getLogger('').warning('Not all items placed. Game beatable anyway.')
+                logging.getLogger('').debug('Not all items placed. Game beatable anyway.')
             break
             
         # Place the item in the world and continue
@@ -259,7 +317,7 @@ def fill_restrictive_fast(window, worlds, locations, itempool):
         # at this point
         if spot_to_fill is None:
             if not worlds[0].check_beatable_only:
-                logging.getLogger('').warning('Not all items placed. Game beatable anyway.')
+                logging.getLogger('').debug('Not all items placed. Game beatable anyway.')
             break
 
         # Place the item in the world and continue

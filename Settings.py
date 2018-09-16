@@ -271,9 +271,10 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      The Deku Tree can be beaten without leaving the Forest
-                      areas. This means that the Kokiri Sword and Slingshot
-                      are always available somewhere in the forest.
+                      Can leave the Kokiri Forest without beating the 
+                      Deku Tree. When this option is off, the Kokiri 
+                      Sword and Slingshot are always available somewhere 
+                      in the forest.
                       '''
         }),
     Setting_Info('open_kakariko', bool, 1, True, 
@@ -383,6 +384,27 @@ setting_infos = [
                       'Always open': Nothing
                       '''
         }),
+    Setting_Info('all_reachable', bool, 1, True, 
+        {
+            'help': '''\
+                    When disabled, only check if the game is beatable with 
+                    placement. Do not ensure all locations are reachable. 
+                    This only has an effect on the restrictive algorithm 
+                    currently.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'All Locations Reachable',
+            'group': 'world',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                      Chests that lock themselves can still exist.
+                      When disabled, some locations and items might 
+                      not be reachable.
+                      '''
+        }),     
     Setting_Info('bombchus_in_logic', bool, 1, True, 
         {
             'help': '''\
@@ -395,7 +417,7 @@ setting_infos = [
         },
         {
             'text': 'Bombchus are considered in logic',
-            'group': 'logic',
+            'group': 'world',
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
@@ -413,6 +435,29 @@ setting_infos = [
                       and the Bazaar. Bombchus refills cannot 
                       be bought until Bomchus have been
                       obtained.
+                      ''',
+        }),
+    Setting_Info('one_item_per_dungeon', bool, 1, True, 
+        {
+            'help': '''\
+                    Each dungeon will have exactly one major item.
+                    Does not include dungeon items or skulltulas.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Dungeons have one major item',
+            'group': 'world',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Dungeons have exactly one major
+                      item. Makes dungeon value more
+                      even. Also allows skipping items
+                      once the major item is found.
+
+                      Dungeon items and skulltulas do
+                      not count as major items.
                       ''',
         }),
     Setting_Info('trials_random', bool, 1, True, 
@@ -611,45 +656,6 @@ setting_infos = [
                       'R': C-Right
                       '''
         }),
-    Setting_Info('unlocked_ganondorf', bool, 1, True, 
-        {
-            'help': '''\
-                    The Boss Key door in Ganon's Tower will start unlocked.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Remove Ganon\'s Boss Door Lock',
-            'group': 'open',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Best when used when reducing the number of 
-                      Trials to less than 6 to prevent needing
-                      to do them all anyways looking for the key.
-                      '''
-        }),
-    Setting_Info('all_reachable', bool, 1, True, 
-        {
-            'help': '''\
-                    When disabled, only check if the game is beatable with 
-                    placement. Do not ensure all locations are reachable. 
-                    This only has an effect on the restrictive algorithm 
-                    currently.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'All Locations Reachable',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      Chests that lock themselves can still exists.
-                      When disabled, some locations and item might 
-                      not be reachable.
-                      '''
-        }), 
     Setting_Info('shuffle_kokiri_sword', bool, 1, True, 
         {
             'help': '''\
@@ -768,7 +774,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Every Deku Salescrub will give
-                      a random item. This adds 31 new
+                      a random item. This adds 33 new
                       item locations. Scrubs prices
                       are all reduced to 10 Rupees.
                       '''
@@ -809,11 +815,11 @@ setting_infos = [
                       Shop contents are randomized.
 
                       (X Items): Shops have X random 
-                      non-shop items in every. They 
-                      will always be on the left side. 
-                      This means every shop will have 
-                      more possible item locations. 
-                      So +2 means 2 items per shop.
+                      non-shop items. They will always
+                      be on the left side. This means 
+                      every shop will have more 
+                      possible item locations. So +2 
+                      means 2 items per shop.
 
                       (Random): Each shop will have
                       a random number of non-shop
@@ -849,10 +855,10 @@ setting_infos = [
                       This will add a small amount of money and
                       refill items to the pool.
 
-                      'Dungeon': Maps and Compasses can onlyappear 
+                      'Dungeon': Maps and Compasses can only appear 
                       in their respective dungeon.
 
-                      'Anywhere': Maps and Compaases can appear
+                      'Anywhere': Maps and Compasses can appear
                       anywhere in the world. 
 
                       Setting 'Remove' or 'Anywhere' will add 2
@@ -889,7 +895,9 @@ setting_infos = [
                       mode. 
 
                       'Dungeon': Small Keys can only appear in their 
-                      respective dungeon.
+                      respective dungeon. If Fire Temple is not a 
+                      Master Quest dungeon, the door to the boss key
+                      chest will be unlocked
 
                       'Anywhere': Small Keys can appear
                       anywhere in the world. A difficult mode since
@@ -941,6 +949,25 @@ setting_infos = [
                       for a milder Keysanity experience.
                       '''
         }),
+    Setting_Info('unlocked_ganondorf', bool, 1, True, 
+        {
+            'help': '''\
+                    The Boss Key door in Ganon's Tower will start unlocked.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Remove Ganon\'s Boss Door Lock',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Best when used when reducing the number of 
+                      Trials to less than 6 to prevent needing
+                      to do them all anyways looking for the key.
+                      ''',
+            'dependency': lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Remove (Keysy)',
+        }),    
     Setting_Info('tokensanity', str, 2, True, 
         {
             'default': 'off',

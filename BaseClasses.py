@@ -215,6 +215,9 @@ class World(object):
             location.item = item
             item.location = location
 
+            if item.type != 'Token' and item.type != 'Event' and item.type != 'Shop' and not (item.key or item.map or item.compass) and item.advancement and location.parent_region.dungeon:
+                location.parent_region.dungeon.major_items += 1
+
             logging.getLogger('').debug('Placed %s [World %d] at %s [World %d]', item, item.world.id if hasattr(item, 'world') else -1, location, location.world.id if hasattr(location, 'world') else -1)
         else:
             raise RuntimeError('Cannot assign item %s to location %s.' % (item, location))
@@ -657,6 +660,8 @@ class Region(object):
             is_dungeon_restricted = self.world.shuffle_smallkeys == 'dungeon'
         elif item.bosskey:
             is_dungeon_restricted = self.world.shuffle_bosskeys == 'dungeon'
+        elif item.type != 'Token' and item.type != 'Event' and item.type != 'Shop' and item.advancement and self.world.one_item_per_dungeon and self.dungeon:
+            return self.dungeon.major_items == 0
 
         if is_dungeon_restricted:
             return self.dungeon and self.dungeon.is_dungeon_item(item)
@@ -718,6 +723,7 @@ class Dungeon(object):
         self.boss_key = to_array(boss_key)
         self.small_keys = to_array(small_keys)
         self.dungeon_items = to_array(dungeon_items)
+        self.major_items = 0
 
     @property
     def keys(self):
@@ -863,11 +869,12 @@ class Spoiler(object):
             else:
                 outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  %s: %s' % (location.name, item.name) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
 
-            outfile.write('\n\nAlways Required Locations:\n\n')
-            if self.settings.world_count > 1:
-                outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations]))
-            else:
-                outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations]))
+            if len(self.hints) > 0:
+                outfile.write('\n\nAlways Required Locations:\n\n')
+                if self.settings.world_count > 1:
+                    outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations]))
+                else:
+                    outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations]))
 
-            outfile.write('\n\nGossip Stone Hints:\n\n')
-            outfile.write('\n'.join(self.hints.values()))
+                outfile.write('\n\nGossip Stone Hints:\n\n')
+                outfile.write('\n'.join(self.hints.values()))

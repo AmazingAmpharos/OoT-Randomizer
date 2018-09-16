@@ -9,39 +9,16 @@ from HintList import getHint, getHintGroup, Hint
 from Utils import local_path
 from ItemList import eventlocations
 from Messages import update_message_by_id
+from TextBox import lineWrap
 
-# build a formatted string with linebreaks appropriate textboxes
 def buildHintString(hintString):
     if len(hintString) < 77:
         hintString = "They say that " + hintString
     elif len(hintString) < 82:
         hintString = "They say " + hintString
-    elif len(hintString) > 91:
-        print('Too many characters in hint')
-        hintString = hintString[:91]
     hintString = hintString.capitalize()
 
-    formatString = ""
-    splitHintString = hintString.split()
-    lineLength = 0
-
-    for word in splitHintString:
-        # let's assume words are not 35 or more char long
-        if lineLength + len(word) + 1 <= 35:
-            # add a space if line is not empty
-            if lineLength != 0:
-                lineLength = lineLength + 1
-                formatString = formatString + ' '
-
-            # append word
-            formatString = formatString + word
-            lineLength = lineLength + len(word)
-        else:
-            # word won'd fit, add to a new line
-            formatString = formatString + '&' + word
-            lineLength = len(word)
-
-    return formatString
+    return hintString
 
 
 def getItemGenericName(item):
@@ -56,12 +33,18 @@ def isDungeonItem(item):
 
 
 def add_hint(world, id, text):
-    world.spoiler.hints[id] = text
+    world.spoiler.hints[id] = lineWrap(text)
 
 
 def writeGossipStoneHintsHints(world, messages):
     for id,text in world.spoiler.hints.items():
         update_message_by_id(messages, id, get_raw_text(text))
+
+def filterTrailingSpace(text):
+    if text.endswith('& '):
+        return text[:-1]
+    else:
+        return text
 
 
 #builds out general hints based on location and whether an item is required or not
@@ -127,7 +110,7 @@ def buildGossipHints(world):
     # add bad dungeon locations hints
     for dungeon in random.sample(world.dungeons, random.randint(3,4)):
         # Choose a randome dungeon location that is a non-dungeon item
-        locationWorld = random.choice([location for region in dungeon.regions for location in world.get_region(region).locations
+        locationWorld = random.choice([location for region in dungeon.regions for location in region.locations
             if location.item.type != 'Event' and \
             location.item.type != 'Shop' and \
             not location.event and \
@@ -164,6 +147,7 @@ def buildGossipHints(world):
             if not locationWorld.name in checkedLocations and \
             locationWorld.item.advancement and \
             locationWorld.item.type != 'Event' and \
+            locationWorld.item.type != 'Shop' and \
             not locationWorld.event and \
             locationWorld.item.name != 'Gold Skulltulla Token' and \
             not locationWorld.item.key]
@@ -258,7 +242,8 @@ def buildGanonText(world, messages):
         for location in world.get_locations():
             if location.item.name == 'Light Arrows':
                 text = get_raw_text(getHint('Light Arrow Location').text)
-                text += get_raw_text(location.hint)
+                location_hint = location.hint.replace('Ganon\'s Castle', 'my castle')
+                text += get_raw_text(location_hint)
                 text += '!'
                 break
     else:

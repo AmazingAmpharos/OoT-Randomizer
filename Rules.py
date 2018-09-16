@@ -305,6 +305,7 @@ def global_rules(world):
         if location.type != 'Chest':
             forbid_item(location, 'Ice Trap')
         add_item_rule(location, lambda i: not (i.type == 'Song' and not i.world.shuffle_song_items and i.world.id != location.world.id))
+        add_item_rule(location, lambda i: not (i.type == 'Shop' and i.world.id != location.world.id))
         if location.type == 'Shop':
             forbid_item(location, 'Biggoron Sword')
 
@@ -427,17 +428,17 @@ def dung_rules_fot0(world):
 
 def dung_rules_fit0(world):
 	# Fire Temple Vanilla
-    set_rule(world.get_entrance('Fire Temple Early Climb'), lambda state: state.has_GoronTunic() and state.has('Small Key (Fire Temple)', 3) and state.has('Progressive Strength Upgrade') and (state.has_explosives() or ((state.has_bow() or state.has('Progressive Hookshot')) and state.is_adult())))
-    set_rule(world.get_entrance('Fire Temple Fire Maze Escape'), lambda state: state.has('Small Key (Fire Temple)', 7) or (state.has('Small Key (Fire Temple)', 6) and state.has('Hover Boots') and state.has('Hammer') and state.is_adult()))
-    set_rule(world.get_location('Fire Temple Fire Dancer Chest'), lambda state: state.is_adult() and state.has('Hammer'))
-    set_rule(world.get_location('Fire Temple Boss Key Chest'), lambda state: state.is_adult() and state.has('Hammer'))
-    set_rule(world.get_location('Fire Temple Big Lava Room Bombable Chest'), lambda state: state.has('Small Key (Fire Temple)', 1) and state.has_explosives())
-    set_rule(world.get_location('Fire Temple Big Lava Room Open Chest'), lambda state: state.has('Small Key (Fire Temple)', 1))
-    set_rule(world.get_location('Fire Temple Map Chest'), lambda state: state.has('Small Key (Fire Temple)', 5) or (state.has('Small Key (Fire Temple)', 4) and state.is_adult() and state.has_bow()))
-    set_rule(world.get_location('Fire Temple Boulder Maze Upper Chest'), lambda state: state.has('Small Key (Fire Temple)', 5))
-    set_rule(world.get_location('Fire Temple Boulder Maze Bombable Pit'), lambda state: state.has('Small Key (Fire Temple)', 5) and state.has_explosives())
-    set_rule(world.get_location('Fire Temple Scarecrow Chest'), lambda state: state.has_ocarina() and state.has('Small Key (Fire Temple)', 5) and state.has('Progressive Hookshot') and state.is_adult())
-    set_rule(world.get_location('Fire Temple Compass Chest'), lambda state: state.has('Small Key (Fire Temple)', 6))
+    set_rule(world.get_entrance('Fire Temple Early Climb'), lambda state: state.has_GoronTunic() and state.has('Small Key (Fire Temple)', 4) and state.has('Progressive Strength Upgrade') and (state.has_explosives() or ((state.has_bow() or state.has('Progressive Hookshot')) and state.is_adult())))
+    set_rule(world.get_entrance('Fire Temple Fire Maze Escape'), lambda state: state.has('Small Key (Fire Temple)', 8) or (state.has('Small Key (Fire Temple)', 7) and state.has('Hover Boots') and state.has('Hammer') and state.is_adult()))
+    set_rule(world.get_location('Fire Temple Fire Dancer Chest'), lambda state: (state.has('Small Key (Fire Temple)', 8) or (not world.keysanity and not world.dungeon_mq['FiT'])) and state.is_adult() and state.has('Hammer'))
+    set_rule(world.get_location('Fire Temple Boss Key Chest'), lambda state: (state.has('Small Key (Fire Temple)', 8) or (not world.keysanity and not world.dungeon_mq['FiT'])) and state.is_adult() and state.has('Hammer'))
+    set_rule(world.get_location('Fire Temple Big Lava Room Bombable Chest'), lambda state: state.has('Small Key (Fire Temple)', 2) and state.has_explosives())
+    set_rule(world.get_location('Fire Temple Big Lava Room Open Chest'), lambda state: state.has('Small Key (Fire Temple)', 2))
+    set_rule(world.get_location('Fire Temple Map Chest'), lambda state: state.has('Small Key (Fire Temple)', 6) or (state.has('Small Key (Fire Temple)', 5) and state.is_adult() and state.has_bow()))
+    set_rule(world.get_location('Fire Temple Boulder Maze Upper Chest'), lambda state: state.has('Small Key (Fire Temple)', 6))
+    set_rule(world.get_location('Fire Temple Boulder Maze Bombable Pit'), lambda state: state.has('Small Key (Fire Temple)', 6) and state.has_explosives())
+    set_rule(world.get_location('Fire Temple Scarecrow Chest'), lambda state: state.has_ocarina() and state.has('Small Key (Fire Temple)', 6) and state.has('Progressive Hookshot') and state.is_adult())
+    set_rule(world.get_location('Fire Temple Compass Chest'), lambda state: state.has('Small Key (Fire Temple)', 7))
     set_rule(world.get_location('Fire Temple Highest Goron Chest'), lambda state: state.can_play('Song of Time') and state.has('Hammer') and state.is_adult())
     set_rule(world.get_location('Fire Temple Megaton Hammer Chest'), lambda state: state.has_explosives())
 
@@ -446,11 +447,11 @@ def dung_rules_fit0(world):
     set_rule(world.get_location('Volvagia Heart'), lambda state: state.has_GoronTunic() and state.has('Hammer') and state.is_adult() and state.has('Boss Key (Fire Temple)') and (state.has('Hover Boots') or (state.can_reach('Fire Temple Upper') and (state.can_play('Song of Time') or state.has_explosives()))))
 
 	# GS
-    set_rule(world.get_location('GS Fire Temple Song of Time Room'), lambda state: state.has('Small Key (Fire Temple)', 1) and state.can_play('Song of Time'))
-    set_rule(world.get_location('GS Fire Temple Unmarked Bomb Wall'), lambda state: state.has('Small Key (Fire Temple)', 3) and state.has_explosives())
-    set_rule(world.get_location('GS Fire Temple East Tower Climb'), lambda state: state.has_ocarina() and state.has('Small Key (Fire Temple)', 5) and state.has('Progressive Hookshot') and state.is_adult())
-    set_rule(world.get_location('GS Fire Temple East Tower Top'), lambda state: state.has_ocarina() and state.has('Small Key (Fire Temple)', 5) and state.has('Progressive Hookshot') and state.is_adult())
-    set_rule(world.get_location('GS Fire Temple Basement'), lambda state: state.has('Hammer') and state.is_adult())
+    set_rule(world.get_location('GS Fire Temple Song of Time Room'), lambda state: state.has('Small Key (Fire Temple)', 2) and state.can_play('Song of Time'))
+    set_rule(world.get_location('GS Fire Temple Unmarked Bomb Wall'), lambda state: state.has('Small Key (Fire Temple)', 4) and state.has_explosives())
+    set_rule(world.get_location('GS Fire Temple East Tower Climb'), lambda state: state.has_ocarina() and state.has('Small Key (Fire Temple)', 6) and state.has('Progressive Hookshot') and state.is_adult())
+    set_rule(world.get_location('GS Fire Temple East Tower Top'), lambda state: state.has_ocarina() and state.has('Small Key (Fire Temple)', 6) and state.has('Progressive Hookshot') and state.is_adult())
+    set_rule(world.get_location('GS Fire Temple Basement'), lambda state: (state.has('Small Key (Fire Temple)', 8) or (not world.keysanity and not world.dungeon_mq['FiT'])) and state.has('Hammer') and state.is_adult())
 
 def dung_rules_wt0(world):
 	# Water Temple vanilla
