@@ -7,33 +7,34 @@
 
 typedef struct {
     uint8_t index;
-    char name[9];
+    struct {
+        uint8_t has_keys : 1;
+        uint8_t has_boss_key : 1;
+        uint8_t has_card : 1;
+        uint8_t has_map : 1;
+    };
+    char name[10];
 } dungeon_entry_t;
 
 dungeon_entry_t dungeons[] = {
-    {  0, "Deku"    },
-    {  1, "Dodongo" },
-    {  2, "Jabu"    },
+    {  0, 0, 0, 0, 1, "Deku"    },
+    {  1, 0, 0, 0, 1, "Dodongo" },
+    {  2, 0, 0, 0, 1, "Jabu"    },
 
-    {  3, "Forest"  },
-    {  4, "Fire"    },
-    {  5, "Water"   },
-    {  7, "Shadow"  },
-    {  6, "Spirit"  },
+    {  3, 1, 1, 0, 1, "Forest"  },
+    {  4, 1, 1, 0, 1, "Fire"    },
+    {  5, 1, 1, 0, 1, "Water"   },
+    {  7, 1, 1, 0, 1, "Shadow"  },
+    {  6, 1, 1, 0, 1, "Spirit"  },
 
-    {  8, "BotW"    },
-    {  9, "Ice"     },
-    { 11, "GTG"     },
-    { 12, "Hideout" },
-    { 13, "Ganon"   },
+    {  8, 1, 0, 0, 1, "BotW"    },
+    {  9, 0, 0, 0, 1, "Ice"     },
+    { 11, 1, 0, 0, 0, "GTG"     },
+    { 12, 1, 0, 1, 0, "Hideout" },
+    { 13, 1, 1, 0, 0, "Ganon"   },
 };
 
 int dungeon_count = array_size(dungeons);
-
-int8_t has_keys[]    = { 0, 0, 0,    1, 1, 1, 1, 1,    1, 0, -1, 1, 1, 1 };
-int8_t has_bosskey[] = { 0, 0, 0,    1, 1, 1, 1, 1,    0, 0, -1, 0, 0, 1 };
-int8_t has_card[]    = { 0, 0, 0,    0, 0, 0, 0, 0,    0, 0, -1, 0, 1, 0 };
-int8_t has_map[]     = { 1, 1, 1,    1, 1, 1, 1, 1,    1, 1, -1, 0, 0, 0 };
 
 typedef struct {
     uint8_t r;
@@ -138,7 +139,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
-        if (!has_keys[d->index]) continue;
+        if (!d->has_keys) continue;
 
         int8_t keys = z64_file.dungeon_keys[d->index];
         if (keys < 0) keys = 0;
@@ -158,7 +159,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
     for (int i = 0; i < dungeon_count; i++) {
         dungeon_entry_t *d = &(dungeons[i]);
-        if (has_bosskey[d->index] && z64_file.dungeon_items[d->index].boss_key) {
+        if (d->has_boss_key && z64_file.dungeon_items[d->index].boss_key) {
             int top = start_top + ((icon_size + padding) * i);
             sprite_draw(db, &quest_items_sprite, 0,
                     left, top, icon_size, icon_size);
@@ -177,7 +178,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
         for (int i = 0; i < dungeon_count; i++) {
             dungeon_entry_t *d = &(dungeons[i]);
-            if (has_map[d->index] && z64_file.dungeon_items[d->index].map) {
+            if (d->has_map && z64_file.dungeon_items[d->index].map) {
                 int top = start_top + ((icon_size + padding) * i);
                 sprite_draw(db, &quest_items_sprite, 0,
                         left, top, icon_size, icon_size);
@@ -192,7 +193,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
         for (int i = 0; i < dungeon_count; i++) {
             dungeon_entry_t *d = &(dungeons[i]);
-            if (has_map[d->index] && z64_file.dungeon_items[d->index].compass) {
+            if (d->has_map && z64_file.dungeon_items[d->index].compass) {
                 int top = start_top + ((icon_size + padding) * i);
                 sprite_draw(db, &quest_items_sprite, 0,
                         left, top, icon_size, icon_size);
