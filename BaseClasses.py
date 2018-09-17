@@ -640,7 +640,7 @@ class Region(object):
             return self.dungeon.major_items == 0
 
         if is_dungeon_restricted:
-            return self.dungeon and self.dungeon.is_dungeon_item(item)
+            return self.dungeon and self.dungeon.is_dungeon_item(item) and item.world.id == self.world.id
         return True
 
     def __str__(self):
