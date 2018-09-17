@@ -180,8 +180,6 @@ set_dungeon_knowledge:
     or      t5, t5, t6
     sh      t5, 0x0F2E(t4) ; set the flag
 
-    debug_print t5
-
     lw      ra, 0x04(sp)
     addiu   sp, sp, 0x10
 
