@@ -174,6 +174,8 @@ item_table = {
     'Requiem of Spirit': (True, False, 'Song', [0x05, 0x8], 0xC7, 0x00B6, 0x08),
     'Gold Skulltulla Token': (True, False, 'Token', None, 0x5B, 0x015C, 0x63),
     'Epona': (True, False, 'Event', None, None, None, None),
+    'Deku Stick Drop': (True, False, 'Event', None, None, None, None),
+    'Deku Nut Drop': (True, False, 'Event', None, None, None, None),
     'Carpenter Rescue': (True, False, 'Event', None, None, None, None),
     'Gerudo Membership Card': (True, False, None, 0x0740, 0x3A, 0x00D7, 0x24),
     'Kokiri Emerald': (True, False, 'Event', 0x6C, None, None, None),
