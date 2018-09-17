@@ -820,23 +820,25 @@ setting_infos = [
             },
             'tooltip':'''\
                       Shop contents are randomized.
-
-                      (X Items): Shops have X random 
-                      non-shop items. They will always
-                      be on the left side. This means 
-                      every shop will have more 
-                      possible item locations. So +2 
-                      means 2 items per shop.
-
-                      (Random): Each shop will have
-                      a random number of non-shop
-                      items. Each shop can have a 
-                      maximum of 4 items.
+                      (X Items): Shops have X random non-shop (Special
+                      Deal!) items. They will always be on the left
+                      side. This means that every shop will have more
+                      possible item locations. So +2 means 2 items
+                      per shop.
                       
-                      Child cannot buy tunics on
-                      the right side of shops,
-                      but can buy tunics on the 
-                      left side.
+                      (Random): Each shop will have a random number
+                      of non-shop items, up to a maximum of 4.
+                      
+                      The non-shop items have no requirements except
+                      money, while the normal shop items (such as
+                      200/300 rupee tunics) have normal vanilla
+                      requirements. This means that, for example,
+                      as a child you cannot buy 200/300 rupee
+                      tunics, but you can buy non-shop tunics.
+                      
+                      non-shop bombchus will unlock the chu slot
+                      in your inventory, which is needed to buy
+                      normal chu refills.
                       '''
         }),       
     Setting_Info('shuffle_mapcompass', str, 2, True,
