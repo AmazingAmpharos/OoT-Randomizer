@@ -400,9 +400,15 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      Chests that lock themselves can still exist.
-                      When disabled, some locations and items might 
-                      not be reachable.
+                      When this option is enabled, the randomizer will
+                      guarantee that every item is obtainable, and every
+                      location is reachable.
+                      
+                      When disabled, only required items and locations
+                      to beat the game will be guaranteed reachable.
+                      
+                      Even when enabled, some chests may still be able to
+                      hold the keys needed to reach them.
                       '''
         }),     
     Setting_Info('bombchus_in_logic', bool, 1, True, 
