@@ -1022,9 +1022,9 @@
 804064D0 .byt:0004
 804064D0 heap_next
 804064D4 .byt:0004
-804064D4 cfg_dungeon_info_reward_need_map
+804064D4 cfg_dungeon_info_reward_need_compass
 804064D8 .byt:0004
-804064D8 cfg_dungeon_info_mq_need_compass
+804064D8 cfg_dungeon_info_mq_need_map
 804064DC .byt:0004
 804064DC cfg_dungeon_info_mq_enable
 804064E8 .byt:0010
