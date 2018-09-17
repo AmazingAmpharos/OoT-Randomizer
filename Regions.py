@@ -9,7 +9,8 @@ def create_regions(world):
     world.regions = [
         create_ow_region(
             'Kokiri Forest', 
-            ['Kokiri Sword Chest', 'GS Kokiri Know It All House', 'GS Kokiri Bean Patch', 'GS Kokiri House of Twins'], 
+            ['Kokiri Sword Chest', 'GS Kokiri Know It All House', 'GS Kokiri Bean Patch', 'GS Kokiri House of Twins', 
+             'Deku Baba Sticks', 'Deku Baba Nuts'], 
             ['Links House', 'Mido House', 'Saria House', 'House of Twins', 'Know It All House', 'Kokiri Shop', 'Deku Tree', 
              'Lost Woods', 'Lost Woods Bridge', 'Kokiri Forest Storms Grotto']),
         create_interior_region(
@@ -150,7 +151,8 @@ def create_regions(world):
             ['Spirit Temple Exit', 'Spirit Temple Crawl Passage', 'Spirit Temple Silver Block']),
         create_dungeon_region(
             'Child Spirit Temple', 
-            ['Spirit Temple Child Left Chest', 'Spirit Temple Child Right Chest', 'GS Spirit Temple Metal Fence'], 
+            ['Spirit Temple Child Left Chest', 'Spirit Temple Child Right Chest', 'GS Spirit Temple Metal Fence', 
+             'Spirit Temple Nut Crate'], 
             ['Child Spirit Temple Climb']),
         create_dungeon_region(
             'Child Spirit Temple Climb', 
@@ -273,7 +275,7 @@ def create_regions(world):
              'Bottom of the Well Freestanding Key', 'Bottom of the Well Defeat Boss', 'Bottom of the Well Invisible Chest', 
              'Bottom of the Well Underwater Front Chest', 'Bottom of the Well Underwater Left Chest', 
              'Bottom of the Well Basement Chest', 'Bottom of the Well Locked Pits', 'Bottom of the Well Behind Right Grate', 
-             'GS Well West Inner Room', 'GS Well East Inner Room', 'GS Well Like Like Cage'], 
+             'GS Well West Inner Room', 'GS Well East Inner Room', 'GS Well Like Like Cage', 'Bottom of the Well Stick Pot'], 
             ['Bottom of the Well Exit']),
         create_ow_region(
             'Graveyard', 
@@ -326,7 +328,7 @@ def create_regions(world):
             'Goron City', 
             ['Goron City Leftmost Maze Chest', 'Goron City Left Maze Chest', 'Goron City Right Maze Chest', 
              'Goron City Pot Freestanding PoH', 'Rolling Goron as Child', 'Link the Goron', 'GS Goron City Boulder Maze', 
-             'GS Goron City Center Platform'], 
+             'GS Goron City Center Platform', 'Goron City Stick Pot'], 
             ['Goron City Exit', 'Goron City Bomb Wall', 'Darunias Chamber', 
             'Crater Access', 'Goron Shop', 'Goron City Grotto']),
         create_ow_region(
@@ -373,7 +375,8 @@ def create_regions(world):
              'Zora River Dive Warp', 'Zora River Storms Grotto']),
         create_ow_region(
             'Zoras Domain', 
-            ['Diving Minigame', 'Zoras Domain Torch Run', 'King Zora Moves'], 
+            ['Diving Minigame', 'Zoras Domain Torch Run', 'King Zora Moves', 'Zoras Domain Stick Pot', 
+             'Zoras Domain Nut Pot'], 
             ['Zoras Domain Exit', 'Zoras Domain Dive Warp', 'Behind King Zora', 'Zora Shop Child Access']),
         create_ow_region(
             'Zoras Fountain', 
@@ -926,6 +929,13 @@ location_table = {
     'Ocarina of Time': (None, None, 0x0C, 'NPC', 0x51, 'Hyrule Field'),
     'Master Sword Pedestal': (None, None, None, 'Event', None, 'the Temple of Time'),
     'Epona': (None, None, None, 'Event', None, 'Lon Lon Ranch'),
+    'Deku Baba Sticks': (None, None, None, 'Event', None, 'Kokiri Forest'),
+    'Deku Baba Nuts': (None, None, None, 'Event', None, 'Kokiri Forest'),
+    'Goron City Stick Pot': (None, None, None, 'Event', None, 'Goron City'),
+    'Bottom of the Well Stick Pot': (None, None, None, 'Event', None, 'Bottom of the Well'),
+    'Zoras Domain Stick Pot': (None, None, None, 'Event', None, 'Zora\'s Domain'),
+    'Zoras Domain Nut Pot': (None, None, None, 'Event', None, 'Zora\'s Domain'),
+    'Spirit Temple Nut Crate': (None, None, None, 'Event', None, 'Spirit Temple'),
     'Gerudo Fortress Carpenter Rescue': (None, None, None, 'Event', None, 'Gerudo Fortress'),
     'Ganons Castle Forest Trial Clear': (None, None, None, 'Event', None, 'Ganon\'s Castle'),
     'Ganons Castle Fire Trial Clear': (None, None, None, 'Event', None, 'Ganon\'s Castle'),

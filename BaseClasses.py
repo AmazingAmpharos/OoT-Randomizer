@@ -354,10 +354,10 @@ class CollectionState(object):
                 self.has('Buy Deku Shield')
 
     def has_nuts(self):
-        return self.has('Buy Deku Nut (5)') or self.has('Buy Deku Nut (10)')
+        return self.has('Buy Deku Nut (5)') or self.has('Buy Deku Nut (10)') or self.has('Deku Nut Drop')
 
     def has_sticks(self):
-        return self.has('Buy Deku Stick (1)')
+        return self.has('Buy Deku Stick (1)') or self.has('Deku Stick Drop')
 
     def has_bow(self):
         return self.has('Bow')
@@ -422,7 +422,7 @@ class CollectionState(object):
         return (self.has('Zora Tunic') or self.has('Buy Zora Tunic'))
 
     def can_leave_forest(self):
-        return (self.world.open_forest or (self.has_slingshot() and self.has('Kokiri Sword') and self.has('Buy Deku Shield')))
+        return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'))
 
     def can_finish_adult_trades(self):
         zora_thawed = self.has_bottle() and (self.can_play('Zeldas Lullaby') or (self.has('Hover Boots') and self.world.logic_zora_with_hovers)) and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
