@@ -562,7 +562,8 @@ class CollectionState(object):
         state_list = [world.state for world in worlds]
 
         # get list of all of the progressive items that can appear in hints
-        item_locations = [location for world in worlds for location in world.get_filled_locations() 
+        all_locations = [location for world in worlds for location in world.get_filled_locations()]
+        item_locations = [location for location in all_locations  
             if location.item.advancement 
             and location.item.type != 'Event' 
             and location.item.type != 'Shop' 
@@ -580,15 +581,21 @@ class CollectionState(object):
                 spoiler_locations[location.name].append(location.world.id)
             item_locations = list(filter(lambda location: location.world.id in spoiler_locations[location.name], item_locations))
 
-
-        # Try to remove the items one at a time and see if the game is still beatable
         required_locations = []
-        for location in item_locations:
-            old_item = location.item
-            location.item = None
-            if not CollectionState.can_beat_game(state_list):
-                required_locations.append(location)
-            location.item = old_item
+        reachable_items_locations = True
+        while (item_locations and reachable_items_locations):
+            reachable_items_locations = [location for location in all_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
+            for location in reachable_items_locations:
+                # Try to remove items one at a time and see if the game is still beatable
+                if location in item_locations:
+                    old_item = location.item
+                    location.item = None
+                    if not CollectionState.can_beat_game(state_list):
+                        required_locations.append(location)
+                    location.item = old_item
+                    item_locations.remove(location)
+                state_list[location.world.id].collected_locations[location.name] = True
+                state_list[location.item.world.id].collect(location.item)
 
         # Filter the required location to only include location in the world
         for world in worlds:
