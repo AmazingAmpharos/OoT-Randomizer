@@ -475,3 +475,12 @@
 ;   jal     0x8009FEC0 ; swap buffers for overlay display list
 .org 0xB17128 ; In memory: 0x800A11C8
     jal     overlay_swap
+
+; Talk to Temple of Time Altar injection
+; Replaces:
+;   jal     0xD6218
+.org 0xE2B0B4
+    jal     set_dungeon_knowledge
+
+
+
