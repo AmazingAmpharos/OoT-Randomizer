@@ -1,7 +1,7 @@
 import copy
 from enum import Enum, unique
 import logging
-from collections import OrderedDict, Counter
+from collections import OrderedDict, Counter, defaultdict
 from version import __version__ as OoTRVersion
 import random
 
@@ -575,8 +575,10 @@ class CollectionState(object):
         # locations. Can't use the locations directly since they are location to the
         # copied spoiler world, so must try to find the matching locations by name
         if worlds[0].spoiler.playthrough:
-            spoiler_locations = {location.name:location.world.id for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere}
-            item_locations = list(filter(lambda location: location.name in spoiler_locations and location.world.id == spoiler_locations[location.name], item_locations))
+            spoiler_locations = defaultdict(lambda: [])
+            for location in [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere]:
+                spoiler_locations[location.name].append(location.world.id)
+            item_locations = list(filter(lambda location: location.world.id in spoiler_locations[location.name], item_locations))
 
 
         # Try to remove the items one at a time and see if the game is still beatable
