@@ -408,7 +408,8 @@ setting_infos = [
                       to beat the game will be guaranteed reachable.
                       
                       Even when enabled, some chests may still be able to
-                      hold the keys needed to reach them.
+                      hold the keys needed to reach them (Or gold 
+                      skulltulas in tokensanity).
                       '''
         }),     
     Setting_Info('bombchus_in_logic', bool, 1, True, 
@@ -831,6 +832,11 @@ setting_infos = [
                       a random number of non-shop
                       items. Each shop can have a 
                       maximum of 4 items.
+                      
+                      Child cannot buy tunics on
+                      the right side of shops,
+                      but can buy tunics on the 
+                      left side.
                       '''
         }),       
     Setting_Info('shuffle_mapcompass', str, 2, True,
