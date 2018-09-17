@@ -190,7 +190,7 @@ def create_playthrough(worlds):
     state_list = [world.state for world in worlds]
 
     # Get all item locations in the worlds
-    collection_spheres = []
+    required_locations = []
     item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
 
     # in the first phase, we create the generous spheres. Collecting every item in a sphere will
@@ -207,37 +207,39 @@ def create_playthrough(worlds):
             state_list[location.world.id].collected_locations[location.name] = True
             # Collect the item for the state world it is for
             state_list[location.item.world.id].collect(location.item)
-        if reachable_items_locations:
-            collection_spheres.append(reachable_items_locations)
+            required_locations.append(location)
 
     # in the second phase, we cull each sphere such that the game is still beatable, reducing each 
     # range of influence to the bare minimum required inside it. Effectively creates a min play
-    for num, sphere in reversed(list(enumerate(collection_spheres))):
-        to_delete = []
+    for location in reversed(required_locations):
+        # we remove the item at location and check if game is still beatable
+        logging.getLogger('').debug('Checking if %s is required to beat the game.', location.item.name)
+        old_item = location.item
+
+        # Uncollect the item location. Removing it from the collected_locations
+        # will ensure that can_beat_game will try to collect it if it can.
+        # Because we search in reverse sphere order, all the later spheres will
+        # have their locations flagged to be re-searched.
+        location.item = None
+        state_list[old_item.world.id].remove(old_item)
+        del state_list[location.world.id].collected_locations[location.name]
+
+        # remove the item from the world and test if the game is still beatable
+        if CollectionState.can_beat_game(state_list):
+            # cull entries for spoiler walkthrough at end 
+            required_locations.remove(location)
+        else:
+            # still required, got to keep it around
+            location.item = old_item
+
+    # This ensures the playthrough shows items being collected in the proper order.
+    collection_spheres = []
+    while required_locations:
+        sphere = [location for location in required_locations if state_list[location.world.id].can_reach(location)]
         for location in sphere:
-            # we remove the item at location and check if game is still beatable
-            logging.getLogger('').debug('Checking if %s is required to beat the game.', location.item.name)
-            old_item = location.item
-
-            # Uncollect the item location. Removing it from the collected_locations
-            # will ensure that can_beat_game will try to collect it if it can.
-            # Because we search in reverse sphere order, all the later spheres will
-            # have there locations flagged to be researched.
-            location.item = None
-            state_list[old_item.world.id].remove(old_item)
-            del state_list[location.world.id].collected_locations[location.name]
-
-            # remove the item from the world and test if the game is still beatable
-            if CollectionState.can_beat_game(state_list):
-                to_delete.append(location)
-            else:
-                # still required, got to keep it around
-                location.item = old_item
-
-        # cull entries in spheres for spoiler walkthrough at end
-        for location in to_delete:
-            sphere.remove(location)
-    collection_spheres = [sphere for sphere in collection_spheres if sphere]
+            required_locations.remove(location)
+            state_list[location.item.world.id].collect(location.item)
+        collection_spheres.append(sphere)
 
     # we can finally output our playthrough
     for world in old_worlds:
