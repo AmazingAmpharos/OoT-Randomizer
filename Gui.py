@@ -3,9 +3,11 @@ from argparse import Namespace
 from glob import glob
 import json
 import random
+import re
 import os
 import shutil
 from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, Button, filedialog, messagebox, ttk, HORIZONTAL, Toplevel
+from tkinter.colorchooser import *
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
@@ -33,9 +35,12 @@ def settings_to_guivars(settings, guivars):
                 guivar.set( "" )
             else:
                 if info.gui_params and 'options' in info.gui_params:
-                    for gui_text,gui_value in info.gui_params['options'].items(): 
-                        if gui_value == value:
-                            guivar.set( gui_text )
+                    if 'Custom Color' in info.gui_params['options'] and re.match(r'^[A-Fa-f0-9]{6}$', value):
+                        guivar.set('Custom (#' + value + ')')
+                    else:
+                        for gui_text,gui_value in info.gui_params['options'].items(): 
+                            if gui_value == value:
+                                guivar.set( gui_text )
                 else:
                     guivar.set( value )
         # text field for a number...
@@ -58,7 +63,10 @@ def guivars_to_settings(guivars):
             result[name] = bool(guivar.get())
         # dropdown/radiobox
         if info.type == str:
-            if info.gui_params and 'options' in info.gui_params:
+            # set guivar to hexcode if custom color 
+            if re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', guivar.get()):
+                result[name] = re.findall(r'[A-Fa-f0-9]{6}', guivar.get())[0]
+            elif info.gui_params and 'options' in info.gui_params:
                 result[name] = info.gui_params['options'][guivar.get()]
             else:
                 result[name] = guivar.get()
@@ -109,6 +117,7 @@ def guiMain(settings=None):
 
     #Rules Tab
     frames['open']   = LabelFrame(frames['rules_tab'], text='Open',   labelanchor=NW)
+    frames['world']  = LabelFrame(frames['rules_tab'], text='World',   labelanchor=NW)
     frames['logic']  = LabelFrame(frames['rules_tab'], text='Shuffle',  labelanchor=NW)
 
     # Logic tab
@@ -135,7 +144,7 @@ def guiMain(settings=None):
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
-
+        
         # Update any dependencies
         for info in setting_infos:
             if info.gui_params and 'dependency' in info.gui_params:
@@ -144,8 +153,18 @@ def guiMain(settings=None):
                 if widgets[info.name].winfo_class() == 'Frame':
                     for child in widgets[info.name].winfo_children():
                         child.configure(state= 'normal' if dep_met else 'disabled')
+                        if child.winfo_class() == 'Scale':
+                            child.configure(fg='Black'if dep_met else 'Grey')
                 else:
+                    if widgets[info.name].winfo_class() == 'Scale':
+                        widgets[info.name].configure(fg='Black'if dep_met else 'Grey')
                     widgets[info.name].config(state = 'normal' if dep_met else 'disabled')
+                
+            if info.name in guivars and guivars[info.name].get() == 'Custom Color':
+                color = askcolor()
+                if color == (None, None):
+                    color = ((0,0,0),'#000000')
+                guivars[info.name].set('Custom (' + color[1] + ')')
 
 
     def import_settings(event=None):
@@ -236,7 +255,7 @@ def guiMain(settings=None):
                 # create a variable to access the box's state
                 guivars[info.name] = IntVar(value=default_value)
                 # create the checkbox
-                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=200, command=show_settings)
+                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
                 widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
                 # create the variable to store the user's decision
@@ -270,7 +289,7 @@ def guiMain(settings=None):
                     anchor = N
                 # add the radio buttons
                 for option in info.gui_params["options"]:
-                    radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=200, indicatoron=False, command=show_settings)
+                    radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=190, indicatoron=False, command=show_settings)
                     radio_button.pack(expand=True, side=side, anchor=anchor)
                 # pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
@@ -312,8 +331,9 @@ def guiMain(settings=None):
 
     # pack the hierarchy
 
-    frames['open'].pack(  fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
-    frames['logic'].pack( fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
+    frames['logic'].pack( fill=BOTH, expand=True, anchor=N, side=RIGHT, pady=(5,1) )
+    frames['open'].pack(  fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
+    frames['world'].pack( fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1) )
 
     # Logic tab
     frames['rewards'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
@@ -408,7 +428,8 @@ def guiMain(settings=None):
     else:
         # try to load saved settings
         try:
-            with open('settings.sav') as f:
+            settingsFile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.sav')
+            with open(settingsFile) as f:
                 settings = Settings( json.load(f) )
                 settings.update_seed("")
                 settings_to_guivars(settings, guivars)

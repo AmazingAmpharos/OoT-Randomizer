@@ -8,8 +8,6 @@ TEXT_START = 0x92D000
 TABLE_SIZE_LIMIT = 0x43A8
 TEXT_SIZE_LIMIT = 0x38130
 
-SHOP_ITEM_START = 0xC022CC
-
 # name of type, followed by number of additional bytes to read, follwed by a function that prints the code
 CONTROL_CODES = {
     0x00: ('pad', 0, lambda _: '<pad>' ),
@@ -490,13 +488,15 @@ class Message():
     __str__ = __repr__ = display
 
 # wrapper for updating the text of a message, given its message id
-# if the id does not exist in the list, this will silently do nothing
+# if the id does not exist in the list, then it will add it
 def update_message_by_id(messages, id, text, opts=None):
     # get the message index
     index = next( (m.index for m in messages if m.id == id), -1)
     # update if it was found
     if index >= 0:
         update_message_by_index(messages, index, text, opts)
+    else:
+        add_message(messages, text, id, opts)
 
 # Gets the message by its ID. Returns None if the index does not exist
 def get_message_by_id(messages, id):
@@ -512,6 +512,7 @@ def update_message_by_index(messages, index, text, opts=None):
     if opts is None:
         opts = messages[index].opts
     messages[index] = Message.from_string(text, messages[index].id, opts)
+    messages[index].index = index
 
 # wrapper for adding a string message to a list of messages
 def add_message(messages, text, id=0, opts=0x00):
@@ -538,9 +539,9 @@ class Shop_Item():
         return ', '.join(meta_data) + '\n' + ', '.join(func_data)
 
     # write the shop item back
-    def write(self, rom, index):
+    def write(self, rom, shop_table_address, index):
 
-        entry_offset = SHOP_ITEM_START + 0x20 * index
+        entry_offset = shop_table_address + 0x20 * index
 
         bytes = []
         bytes += int_to_bytes(self.object, 2)
@@ -559,9 +560,9 @@ class Shop_Item():
         rom.write_bytes(entry_offset, bytes)
 
     # read a single message
-    def __init__(self, rom, index):
+    def __init__(self, rom, shop_table_address, index):
 
-        entry_offset = SHOP_ITEM_START + 0x20 * index
+        entry_offset = shop_table_address + 0x20 * index
         entry = rom.read_bytes(entry_offset, 0x20)
 
         self.index = index
@@ -581,18 +582,18 @@ class Shop_Item():
     __str__ = __repr__ = display
 
 # reads each of the shop items
-def read_shop_items(rom):
+def read_shop_items(rom, shop_table_address):
     shop_items = []
 
-    for index in range(0x032):
-        shop_items.append( Shop_Item(rom, index) )
+    for index in range(0, 100):
+        shop_items.append( Shop_Item(rom, shop_table_address, index) )
 
     return shop_items
 
 # writes each of the shop item back into rom
-def write_shop_items(rom, shop_items):
+def write_shop_items(rom, shop_table_address, shop_items):
     for s in shop_items:
-        s.write(rom, s.index)
+        s.write(rom, shop_table_address, s.index)
 
 # these are unused shop items, and contain text ids that are used elsewhere, and should not be moved
 SHOP_ITEM_EXCEPTIONS = [0x0A, 0x0B, 0x11, 0x12, 0x13, 0x14, 0x29]
@@ -633,42 +634,65 @@ def move_shop_item_messages(messages, shop_items):
         if is_in_item_range(shop.purchase_message):
             shop.purchase_message |= 0x8000
 
+def make_player_message(text):
+    player_text_U = '\x05\x42Player \x18\x05\x40'
+    player_text_L = '\x05\x42player \x18\x05\x40'
+    pronoun_mapping = {
+        'You have ': player_text_U + ' ',
+        'You\'ve ':  player_text_U + ' ',
+        'Your ':     player_text_U + '\'s ',
+        'You ':      player_text_U + ' ',
+
+        'you have ': player_text_L + ' ',
+        'you\'ve ':  player_text_L + ' ',
+        'your ':     player_text_L + '\'s ',
+        'you ':      player_text_L + ' ',
+    }
+
+    verb_mapping = {
+        'obtained ': 'got ',
+        'received ': 'got ',
+        'learned ': 'got ',
+        'borrowed ': 'got ',
+        'found ': 'got ',
+    }
+
+    new_text = text
+    for find_text, replace_text in pronoun_mapping.items():
+        if find_text in text:
+            new_text = new_text.replace(find_text, replace_text, 1)
+            break
+    for find_text, replace_text in verb_mapping.items():
+        new_text = new_text.replace(find_text, replace_text)
+    return new_text
+
+
+
 
 # add the keysanity messages
 # make sure to call this AFTER move_shop_item_messages()
 def add_keysanity_messages(messages, world):
     for id, text in KEYSANITY_MESSAGES.items():
         if world.world_count > 1:
-            index = 0
-            while ord(text[index]) in CONTROL_CODES:
-                index = index + CONTROL_CODES[ord(text[index])][1] + 1
-            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
-            add_message(messages, new_text, id, 0x23)
+            update_message_by_id(messages, id, make_player_message(text), 0x23)
         else:
-            add_message(messages, text, id, 0x23)
+            update_message_by_id(messages, id, text, 0x23)
 
 # add the song messages
 # make sure to call this AFTER move_shop_item_messages()
 def add_song_messages(messages, world):
     for id, text in SONG_MESSAGES.items():
         if world.world_count > 1:
-            index = 0
-            while ord(text[index]) in CONTROL_CODES:
-                index = index + CONTROL_CODES[ord(text[index])][1] + 1
-            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
-            add_message(messages, new_text, id, 0x23)
+            update_message_by_id(messages, id, make_player_message(text), 0x23)
         else:
-            add_message(messages, text, id, 0x23)
+            update_message_by_id(messages, id, text, 0x23)
 
 # reduce item message sizes
 def update_item_messages(messages, world):
     for id, text in ITEM_MESSAGES.items():
         if world.world_count > 1:
-            index = 0
-            while ord(text[index]) in CONTROL_CODES:
-                index = index + CONTROL_CODES[ord(text[index])][1] + 1
-            new_text = text[:index] + "\x08\x05\x42Player \x18:\x05\x40\x01" + text[index:]
-            update_message_by_id(messages, id, new_text)
+            update_message_by_id(messages, id, make_player_message(text), 0x23)
+
         else:
             update_message_by_id(messages, id, text)
 

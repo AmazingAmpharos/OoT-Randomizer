@@ -26,9 +26,9 @@ local_path.cached_path = None
 
 def default_output_path(path):
     if path == '':
-        path = os.path.join('.', 'Output')
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Output')
 
-    if not os.path.exists(path): 
+    if not os.path.exists(path):
         os.mkdir(path)
     return path
 

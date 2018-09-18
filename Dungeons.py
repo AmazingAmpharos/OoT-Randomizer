@@ -5,10 +5,12 @@ from Items import ItemFactory
 
 
 def create_dungeons(world):
-    def make_dungeon(name, dungeon_regions, boss_key, small_keys, dungeon_items):
+    def make_dungeon(name, dungeon_regions_names, boss_key, small_keys, dungeon_items):
+        dungeon_regions = [world.get_region(region) for region in dungeon_regions_names]
+
         dungeon = Dungeon(name, dungeon_regions, boss_key, small_keys, dungeon_items)
         for region in dungeon.regions:
-            world.get_region(region).dungeon = dungeon
+            region.dungeon = dungeon
         return dungeon
 
     if world.dungeon_mq['DT']:
@@ -165,7 +167,7 @@ def create_dungeons(world):
         SpT = make_dungeon(
             'Spirit Temple', 
             ['Spirit Temple Lobby', 'Child Spirit Temple', 'Adult Spirit Temple', 'Spirit Temple Shared', 
-             'Lower Adult Spirit Temple', 'Spirit Temple Boss Area'], 
+             'Lower Adult Spirit Temple', 'Spirit Temple Boss Area', 'Mirror Shield Hand', 'Silver Gauntlets Hand'], 
             ItemFactory('Boss Key (Spirit Temple)'),
             ItemFactory(['Small Key (Spirit Temple)'] * 7), 
             ItemFactory(['Map (Spirit Temple)', 'Compass (Spirit Temple)']))
@@ -173,7 +175,8 @@ def create_dungeons(world):
         SpT = make_dungeon(
             'Spirit Temple', 
             ['Spirit Temple Lobby', 'Child Spirit Temple', 'Child Spirit Temple Climb', 'Early Adult Spirit Temple',
-             'Spirit Temple Central Chamber', 'Spirit Temple Beyond Central Locked Door', 'Spirit Temple Beyond Final Locked Door'], 
+             'Spirit Temple Central Chamber', 'Spirit Temple Beyond Central Locked Door', 'Spirit Temple Beyond Final Locked Door',
+             'Spirit Temple Outdoor Hands'], 
             ItemFactory('Boss Key (Spirit Temple)'),
             ItemFactory(['Small Key (Spirit Temple)'] * 5), 
             ItemFactory(['Map (Spirit Temple)', 'Compass (Spirit Temple)']))

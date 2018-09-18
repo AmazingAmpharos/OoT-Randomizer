@@ -8,7 +8,7 @@ import subprocess
 import random
 import copy
 
-from Utils import default_output_path
+from Utils import local_path, default_output_path
 
 class LocalRom(object):
     def __init__(self, settings, patch=True):
@@ -19,6 +19,10 @@ class LocalRom(object):
 
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         #os.chdir(output_path(os.path.dirname(os.path.realpath(__file__))))
+
+        with open(local_path('data/symbols.json'), 'r') as stream:
+            symbols = json.load(stream)
+            self.symbols = { name: int(addr, 16) for name, addr in symbols.items() }
 
         try:
             # Read decompressed file if it exists
@@ -73,11 +77,19 @@ class LocalRom(object):
         else:
             # ROM file is a valid and already uncompressed
             pass
-            
+
+    def sym(self, symbol_name):
+        return self.symbols.get(symbol_name)
+
+    def seek_address(self, address):
+        self.last_address = address
+
     def read_byte(self, address):
+        self.last_address = address + 1
         return self.buffer[address]
 
     def read_bytes(self, address, len):
+        self.last_address = address + len
         return self.buffer[address : address + len]
 
     def read_int16(self, address):
