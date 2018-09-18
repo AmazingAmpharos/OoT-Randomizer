@@ -13,7 +13,7 @@ from Utils import local_path, default_output_path
 from Items import ItemFactory, item_data
 from Messages import *
 from OcarinaSongs import Song, replace_songs, subsong
-from MQ import patch_files
+from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
 TunicColors = {
     "Custom Color": [0, 0, 0], 
@@ -1007,8 +1007,37 @@ def patch_rom(world, rom):
         # change the exit at child/day crawlspace to the end of zelda's goddess cutscene
         rom.write_bytes(0x21F60DE, [0x05, 0xF0])
 
+    # patch mq scenes
+    mq_scenes = []
+    if world.dungeon_mq['DT']:
+        mq_scenes.append(0)
+    if world.dungeon_mq['DC']:
+        mq_scenes.append(1)
+    if world.dungeon_mq['JB']:
+        mq_scenes.append(2)
+    if world.dungeon_mq['FoT']:
+        mq_scenes.append(3)
+    if world.dungeon_mq['FiT']:
+        mq_scenes.append(4)
+    if world.dungeon_mq['WT']:
+        mq_scenes.append(5)
+    if world.dungeon_mq['SpT']:
+        mq_scenes.append(6)
+    if world.dungeon_mq['ShT']:
+        mq_scenes.append(7)
+    if world.dungeon_mq['BW']:
+        mq_scenes.append(8)
+    if world.dungeon_mq['IC']:
+        mq_scenes.append(9)
+    # Scene 10 has no layout changes, so it doesn't need to be patched
+    if world.dungeon_mq['GTG']:
+        mq_scenes.append(11)
+    if world.dungeon_mq['GC']:
+        mq_scenes.append(13)
+
+    patch_files(rom, mq_scenes)
+
     ### Load Shop File
-    from MQ import File, update_dmadata, insert_space, add_relocations
     # Move shop actor file to free space
     shop_item_file = File({
             'Name':'En_GirlA',
@@ -1485,36 +1514,6 @@ def patch_rom(world, rom):
         randomize_music(rom)
     elif world.background_music == 'off':    
         disable_music(rom)
-
-    # patch mq scenes
-    mq_scenes = []
-    if world.dungeon_mq['DT']:
-        mq_scenes.append(0)
-    if world.dungeon_mq['DC']:
-        mq_scenes.append(1)
-    if world.dungeon_mq['JB']:
-        mq_scenes.append(2)
-    if world.dungeon_mq['FoT']:
-        mq_scenes.append(3)
-    if world.dungeon_mq['FiT']:
-        mq_scenes.append(4)
-    if world.dungeon_mq['WT']:
-        mq_scenes.append(5)
-    if world.dungeon_mq['SpT']:
-        mq_scenes.append(6)
-    if world.dungeon_mq['ShT']:
-        mq_scenes.append(7)
-    if world.dungeon_mq['BW']:
-        mq_scenes.append(8)
-    if world.dungeon_mq['IC']:
-        mq_scenes.append(9)
-    # Scene 10 has no layout changes, so it doesn't need to be patched
-    if world.dungeon_mq['GTG']:
-        mq_scenes.append(11)
-    if world.dungeon_mq['GC']:
-        mq_scenes.append(13)
-
-    patch_files(rom, mq_scenes)
 
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
