@@ -1,11 +1,10 @@
 # mzxrules 2018
-#
 # In order to patch MQ to the existing data...
+# 
+# Scenes:
 # 
 # Ice Cavern (Scene 9) needs to have it's header altered to support MQ's path list. This 
 # expansion will delete the otherwise unused alternate headers command
-# 
-# Scenes:
 # 
 # Transition actors will be patched over the old data, as the number of records is the same
 # Path data will be appended to the end of the scene file. 
@@ -14,6 +13,18 @@
 # The total size consumed by the path data is NUM_PATHS * 8, plus the sum of all path file sizes
 # padded to the nearest 0x10 bytes
 # 
+# Collision: 
+# OoT's collision data consists of these elements: vertices, surface types, water boxes, 
+# camera behavior data, and polys. MQ's vertice and polygon geometry data is identical.
+# However, the surface types and the collision exclusion flags bound to the polys have changed
+# for some polygons, as well as the number of surface type records and camera type records. 
+#
+# To patch collision, a flag denotes whether collision data cannot be written in place without
+# expanding the size of the scene file. If true, the camera data is relocated to the end
+# of the scene file, and the surface types are shifted down into where the camera types
+# were situated. If false, the camera data isn't moved, but rather the surface type list
+# will be shifted to the end of the camera data
+#
 # Rooms:
 # 
 # Object file initialization data will be appended to the end of the room file.
@@ -26,6 +37,11 @@
 # Finally:
 # 
 # Scene and room files will be padded to the nearest 0x10 bytes
+#
+# Maps: 
+# Jabu Jabu's B1 map contains no chests in the vanilla layout. Because of this, 
+# the floor map data is missing a vertex pointer that would point within kaleido_scope.
+# As such, if the file moves, the patch will break.
 
 from Utils import local_path
 from Rom import LocalRom
@@ -69,6 +85,66 @@ class File(object):
         self.end = new_end
 
 
+class CollisionMesh(object):
+    def __init__(self, rom:LocalRom, start, offset):
+        self.offset = offset
+        self.poly_addr = rom.read_int32(start + offset + 0x18)
+        self.polytypes_addr = rom.read_int32(start + offset + 0x1C)
+        self.camera_data_addr = rom.read_int32(start + offset + 0x20)
+        self.polytypes = (self.poly_addr - self.polytypes_addr) // 8
+
+    def write_to_scene(self, rom:LocalRom, start):
+        addr = start + self.offset + 0x18
+        rom.write_int32s(addr, [self.poly_addr, self.polytypes_addr, self.camera_data_addr])
+
+
+class ColDelta(object):
+    def __init__(self, delta):
+        self.is_larger = delta['IsLarger']
+        self.polys = delta['Polys']
+        self.polytypes = delta['PolyTypes']
+        self.cams = delta['Cams']
+
+class Icon(object):
+    def __init__(self, data):
+        self.icon = data["Icon"];
+        self.count = data["Count"];
+        self.points = [IconPoint(x) for x in data["IconPoints"]]
+
+    def write_to_minimap(self, rom:LocalRom, addr):
+        rom.write_sbyte(addr, self.icon)
+        rom.write_byte(addr + 1,  self.count)
+        cur = 2
+        for p in self.points:
+            p.write_to_minimap(rom, addr + cur)
+            cur += 0x03
+
+    def write_to_floormap(self, rom:LocalRom, addr):
+        rom.write_int16(addr, self.icon)
+        rom.write_int32(addr + 0x10, self.count)
+
+        cur = 0x14
+        for p in self.points:
+            p.write_to_floormap(rom, addr + cur)
+            cur += 0x0C
+
+class IconPoint(object):
+    def __init__(self, point):
+        self.flag = point["Flag"]
+        self.x = point["x"]
+        self.y = point["y"]
+
+    def write_to_minimap(self, rom:LocalRom, addr):
+        rom.write_sbyte(addr, self.flag)
+        rom.write_byte(addr+1, self.x)
+        rom.write_byte(addr+2, self.y)
+
+    def write_to_floormap(self, rom:LocalRom, addr):
+        rom.write_int16(addr, self.flag)
+        rom.write_f32(addr + 4, float(self.x))
+        rom.write_f32(addr + 8, float(self.y))
+
+
 class Scene(object):
     def __init__(self, scene):
         self.file = File(scene['File'])
@@ -76,6 +152,9 @@ class Scene(object):
         self.transition_actors = [convert_actor_data(x) for x in scene['TActors']]
         self.rooms = [Room(x) for x in scene['Rooms']]
         self.paths = []
+        self.coldelta = ColDelta(scene["ColDelta"])
+        self.minimaps = [[Icon(icon) for icon in minimap['Icons']] for minimap in scene['Minimaps']]
+        self.floormaps = [[Icon(icon) for icon in floormap['Icons']] for floormap in scene['Floormaps']]
         temp_paths = scene['Paths']
         for item in temp_paths:
             self.paths.append(item['Points'])
@@ -83,6 +162,9 @@ class Scene(object):
 
     def write_data(self, rom:LocalRom):
         
+        # write floormap and minimap data
+        self.write_map_data(rom)
+
         # move file to remap address
         self.file.relocate(rom)
 
@@ -96,7 +178,12 @@ class Scene(object):
         while loop > 0 and code != 0x14: #terminator
             loop -= 1
 
-            if code == 0x04: #rooms
+            if code == 0x03: #collision
+                col_mesh_offset = rom.read_int24(headcur + 5)
+                col_mesh = CollisionMesh(rom, start, col_mesh_offset)
+                self.patch_mesh(rom, col_mesh);
+
+            elif code == 0x04: #rooms
                 room_list_offset = rom.read_int24(headcur + 5)
 
             elif code == 0x0D: #paths
@@ -119,11 +206,57 @@ class Scene(object):
         # write room file data
         for room in self.rooms:
             room.write_data(rom)
+            if self.id == 6 and room.id == 6:
+                patch_spirit_temple_mq_room_6(rom, room.file.start)
 
         cur = self.file.start + room_list_offset
         for room in self.rooms:
             rom.write_int32s(cur, [room.file.start, room.file.end])
             cur += 0x08
+
+
+            # append in place
+            addr = self.file.start + (mesh.camera_data_addr & 0xFFFFFF)
+            self.write_cam_data(rom, addr, final_cams)
+
+        # if polytypes needs to be moved, do so
+        if (types_move_addr != mesh.polytypes_addr):
+            a_start = self.file.start + (mesh.polytypes_addr & 0xFFFFFF)
+            b_start = self.file.start + (types_move_addr & 0xFFFFFF)
+            size = mesh.polytypes * 8
+
+            rom.buffer[b_start:b_start + size] = rom.buffer[a_start:a_start + size]
+            mesh.polytypes_addr = types_move_addr
+
+        # patch polytypes
+        for item in self.coldelta.polytypes:
+            id = item['Id']
+            high = item['High']
+            low = item['Low']
+            addr = self.file.start + (mesh.polytypes_addr & 0xFFFFFF) + (id * 8)
+            rom.write_int32s(addr, [high, low])
+
+        # patch poly data
+        for item in self.coldelta.polys:
+            id = item['Id']
+            t = item['Type']
+            flags = item['Flags']
+
+            addr = self.file.start + (mesh.poly_addr & 0xFFFFFF) + (id * 0x10)
+            vert_bit =  rom.read_byte(addr + 0x02) & 0x1F # VertexA id data
+            rom.write_int16(addr, t)
+            rom.write_byte(addr + 0x02, (flags << 5) + vert_bit)
+
+        # Write Mesh to Scene
+        mesh.write_to_scene(rom, self.file.start)
+
+
+    def write_cam_data(self, rom:LocalRom, addr, cam_data):
+
+        for item in cam_data:
+            data, pos = item
+            rom.write_int32s(addr, [data, pos])
+            addr += 8
 
 
     # appends path data to the end of the rom
@@ -132,7 +265,6 @@ class Scene(object):
         start = self.file.start
         cur = self.file.end
         records = []
-        records_offset = 0
 
         for path in self.paths:
             nodes = len(path)
@@ -153,7 +285,6 @@ class Scene(object):
 
         self.file.end = cur
         return records_offset
-
 
 class Room(object):
     def __init__(self, room):
@@ -206,16 +337,15 @@ class Room(object):
         return offset
 
 
-def patch_files(world, rom:LocalRom):
-    #patch_ice_cavern_scene_header(rom)
-
+def patch_files(rom:LocalRom, mq_scenes:list):
+    
     data = get_json()
     scenes = [Scene(x) for x in data]
-
-    if world.dungeon_mq['DT']:
-        scenes[0].write_data(rom)
-    if world.dungeon_mq['DC']:
-        scenes[1].write_data(rom)
+    for scene in scenes:
+        if scene.id in mq_scenes:
+            if scene.id == 9:
+                patch_ice_cavern_scene_header(rom)
+            scene.write_data(rom)
 
     verify_dma(rom)
 
@@ -240,6 +370,66 @@ def get_segment_address(base, offset):
 def patch_ice_cavern_scene_header(rom):
     rom.buffer[0x2BEB000:0x2BEB038] = rom.buffer[0x2BEB008:0x2BEB040]
     rom.write_int32s(0x2BEB038, [0x0D000000, 0x02000000])
+
+def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
+    cur = room_addr
+
+    actor_list_addr = 0
+    cmd_actors_offset = 0
+
+    # scan for actor list and header end
+    code = rom.read_byte(cur)
+    while code != 0x14: #terminator  
+        if code == 0x01: # actors
+            actor_list_addr = rom.read_int32(cur + 4)
+            cmd_actors_offset = cur - room_addr
+
+        cur += 8
+        code = rom.read_byte(cur)
+
+    cur += 8
+
+    # original header size
+    header_size = cur - room_addr
+
+    # set alternate header data location
+    alt_data_off = header_size + 8
+
+    # set new alternate header offset
+    alt_header_off = align16(alt_data_off + (4 * 3)) # alt header record size * num records
+
+    # write alternate header data
+    # the first 3 words are mandatory. the last 3 are just to make the binary
+    # cleaner to read
+    rom.write_int32s(room_addr + alt_data_off,
+                    [0, get_segment_address(3, alt_header_off), 0, 0, 0, 0])
+
+    # clone header
+    a_start = room_addr
+    a_end = a_start + header_size
+    b_start = room_addr + alt_header_off
+    b_end = b_start + header_size
+
+    rom.buffer[b_start:b_end] = rom.buffer[a_start:a_end]
+    
+    # make the child header skip the first actor,
+    # which avoids the spawning of the block while in the hole
+
+
+    cmd_addr = room_addr + cmd_actors_offset
+    actor_list_addr += 0x10
+    actors = rom.read_byte(cmd_addr + 1)
+    rom.write_byte(cmd_addr+1, actors - 1)
+    rom.write_int32(cmd_addr + 4, actor_list_addr)
+
+    # move header
+    rom.buffer[a_start + 8:a_end + 8] = rom.buffer[a_start:a_end]
+
+    # write alternate header command
+    seg = get_segment_address(3, alt_data_off)
+    rom.write_int32s(room_addr, [0x18000000, seg])
+
+
 
 
 def get_dma_record(rom:LocalRom, cur):

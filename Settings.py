@@ -1495,6 +1495,30 @@ setting_infos = [
                       not be as cryptic if this option is enabled.
                       '''
         }),
+    Setting_Info('enhance_map_compass', bool, 1, True, 
+        {
+            'help': '''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This setting will only activate these functions if the
+                    other settings would make this useful information.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Maps and Compasses give information',
+            'group': 'other',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This setting will only activate these functions if the
+                    other settings would make this useful information.
+                      '''
+        }),
     Setting_Info('hints', str, 2, True, 
         {
             'default': 'none',

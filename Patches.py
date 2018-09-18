@@ -848,18 +848,18 @@ def patch_rom(world, rom):
     #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x40) # Dodongo's Cavern switch flag (navi text?)
     #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x08) # Dodongo's Cavern switch flag (navi text?)
     #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x01) # Dodongo's Cavern switch flag (navi text?)
-    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x08) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x04) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x02) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x1, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x08) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x04) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x02) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x1, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
     write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (poes?)
-    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x01) # Forest Temple switch flag (poes?)
-    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x02) # Forest Temple switch flag (poes?)
-    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x01) # Forest Temple switch flag (poes?)
-    write_bits_to_save(0x00D4 + 0x04 * 0x1C + 0x04 + 0x1, 0x08) # Fire Temple switch flag (First locked door?)
+    #write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x01) # Forest Temple switch flag (Poe Sisters cutscene)
+    #write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x02) # Forest Temple switch flag (poes?)
+    #write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x01) # Forest Temple switch flag (poes?)
+    #write_bits_to_save(0x00D4 + 0x04 * 0x1C + 0x04 + 0x1, 0x08) # Fire Temple switch flag (First locked door?)
     write_bits_to_save(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (navi text?)
-    write_bits_to_save(0x00D4 + 0x0B * 0x1C + 0x04 + 0x2, 0x01) # Gerudo Training Ground switch flag (command text?)
+    #write_bits_to_save(0x00D4 + 0x0B * 0x1C + 0x04 + 0x2, 0x01) # Gerudo Training Ground switch flag (command text?)
     write_bits_to_save(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (???)
     write_bits_to_save(0x00D4 + 0x55 * 0x1C + 0x04 + 0x0, 0x80) # Kokiri Forest switch flag (???)
     write_bits_to_save(0x00D4 + 0x56 * 0x1C + 0x04 + 0x2, 0x40) # Sacred Forest Meadow switch flag (???)
@@ -1085,11 +1085,6 @@ def patch_rom(world, rom):
             rom.write_bytes(0xEE7B84, [0x0C, 0x10, 0x02, 0x10])
             rom.write_bytes(0xEE7B8C, [0x24, 0x02, 0x00, 0x20])
         writeGossipStoneHintsHints(world, messages)
-
-    # Set hints for boss reward shuffle
-    rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
-    rom.write_bytes(0xE2ADB6, [0x70, 0x57])
-    buildBossRewardHints(world, messages)
 
     # build silly ganon lines
     buildGanonText(world, messages)
@@ -1349,6 +1344,51 @@ def patch_rom(world, rom):
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)
+    if world.enhance_map_compass and world.shuffle_dungeon_items != 'off':
+        reward_list = {'Kokiri Emerald':   "\x05\x42Kokiri Emerald\x05\x40",
+                       'Goron Ruby':       "\x05\x41Goron Ruby\x05\x40",
+                       'Zora Sapphire':    "\x05\x43Zora Sapphire\x05\x40",
+                       'Forest Medallion': "\x05\x42Forest Medallion\x05\x40",
+                       'Fire Medallion':   "\x05\x41Fire Medallion\x05\x40",
+                       'Water Medallion':  "\x05\x43Water Medallion\x05\x40",
+                       'Spirit Medallion': "\x05\x46Spirit Medallion\x05\x40",
+                       'Shadow Medallion': "\x05\x45Shadow Medallion\x05\x40",
+                       'Light Medallion':  "\x05\x44Light Medallion\x05\x40"
+        }
+        dungeon_list = {'DT':   ("the \x05\x42Deku Tree", 'Queen Gohma', 0x62, 0x88),
+                        'DC':   ("\x05\x41Dodongo\'s Cavern", 'King Dodongo', 0x63, 0x89),
+                        'JB':   ("\x05\x43Jabu Jabu\'s Belly", 'Barinade', 0x64, 0x8a),
+                        'FoT':  ("the \x05\x42Forest Temple", 'Phantom Ganon', 0x65, 0x8b),
+                        'FiT':  ("the \x05\x41Fire Temple", 'Volvagia', 0x7c, 0x8c),
+                        'WT':   ("the \x05\x43Water Temple", 'Morpha', 0x7d, 0x8e),
+                        'SpT':  ("the \x05\x46Spirit Temple", 'Twinrova', 0x7e, 0x8f),
+                        'IC':   ("the \x05\x44Ice Cavern", None, 0x87, 0x92)
+                        'BW':   ("the \x05\x45Bottom of the Well", None, 0xa2, 0xa5),
+                        'ShT':   ("the \x05\x45Shadow Temple", 'Bongo Bongo', 0x7f, 0xa3),
+        }
+        for dungeon in world.dungeon_mq:
+            if dungeon in ['GTG', 'GC']:
+                pass
+            elif dungeon in ['BW', 'IC']:
+                dungeon_name, boss_name, compass_id, map_id = dungeon_list[dungeon]
+                    map_message = "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x01It\'s %s!\x09" % (dungeon_name, "masterful" if world.dungeon_mq[dungeon] else "ordinary")
+                if world.quest == 'mixed':
+                    update_message_by_id(messages, map_id, map_message)
+            else:
+                dungeon_reward = reward_list[world.get_location(boss_name).item.name]
+                compass_message = "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for %s\x05\x40!\x01It holds the %s!\x09" % (dungeon_name, dungeon_reward)
+                update_message_by_id(messages, compass_id, compass_message)
+                if world.quest == 'mixed':
+                    map_message = "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x01It\'s %s!\x09" % (dungeon_name, "masterful" if world.dungeon_mq[dungeon] else "ordinary")
+                    update_message_by_id(messages, map_id, map_message)
+                dungeon_name, boss_name, compass_id, map_id = dungeon_list[dungeon]
+
+    else:
+        # Set hints for boss reward shuffle
+        rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
+        rom.write_bytes(0xE2ADB6, [0x70, 0x57])
+        buildBossRewardHints(world, messages)
+
     # update happy mask shop to use new SOLD OUT text id
     rom.write_int16(shop_item_file.start + 0x1726, shop_items[0x26].description_message)
 
@@ -1450,6 +1490,36 @@ def patch_rom(world, rom):
         randomize_music(rom)
     elif world.background_music == 'off':    
         disable_music(rom)
+
+    # patch mq scenes
+    mq_scenes = []
+    if world.dungeon_mq['DT']:
+        mq_scenes.append(0)
+    if world.dungeon_mq['DC']:
+        mq_scenes.append(1)
+    if world.dungeon_mq['JB']:
+        mq_scenes.append(2)
+    if world.dungeon_mq['FoT']:
+        mq_scenes.append(3)
+    if world.dungeon_mq['FiT']:
+        mq_scenes.append(4)
+    if world.dungeon_mq['WT']:
+        mq_scenes.append(5)
+    if world.dungeon_mq['SpT']:
+        mq_scenes.append(6)
+    if world.dungeon_mq['ShT']:
+        mq_scenes.append(7)
+    if world.dungeon_mq['BW']:
+        mq_scenes.append(8)
+    if world.dungeon_mq['IC']:
+        mq_scenes.append(9)
+    # Scene 10 has no layout changes, so it doesn't need to be patched
+    if world.dungeon_mq['GTG']:
+        mq_scenes.append(11)
+    if world.dungeon_mq['GC']:
+        mq_scenes.append(13)
+
+    patch_files(rom, mq_scenes)
 
     # patch tunic colors
     # Custom color tunic stuff

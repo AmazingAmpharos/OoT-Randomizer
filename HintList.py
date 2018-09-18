@@ -110,6 +110,8 @@ hintTable = {
     'Piece of Heart':                                        (["love", "a partial Valentine"], "a Heart Piece", 'item'),
     'Piece of Heart (Treasure Chest Game)':                  (["love", "a partial Valentine"], "a Heart Piece", 'item'),
     'Recovery Heart':                                        (["a free heal", "disappointing love"], "a Recovery Heart", 'item'),
+    'Rupee (Treasure Chest Game)':                           ("the dollar of defeat", 'a Green Rupee', 'item'),
+    'Deku Stick (1)':                                        ("a breakable branch", 'a Deku Stick', 'item'),
     'Rupee (1)':                                             (["a unique coin", "a penny", "a tiny coin", "a green gem"], "a Green Rupee", 'item'),
     'Rupees (5)':                                            (["a common coin", "a blue gem"], "a Blue Rupee", 'item'),
     'Rupees (20)':                                           (["couch cash", "a red gem"], "a Red Rupees", 'item'),
@@ -193,6 +195,18 @@ hintTable = {
     'Colossus Freestanding PoH':                             ("riding a #beanstalk in the desert# leads to", None, 'location'),
     'DM Crater Volcano Freestanding PoH':                    ("riding a #beanstalk in the crater# leads to", None, 'location'),
     'Goron City Pot Freestanding PoH':                       ("spinning #Goron pottery# contains", None, 'location'),
+    'Deku Tree MQ After Spinning Log Chest':                 ("Within a tree, a temporal stone&contains", None, 'location'),
+    'GS Jabu Jabu MQ Invisible Enemies Room':                ("In the belly of a deity, a spider&surrounded by shadows&holds", None, 'location'),
+    'Fire Temple MQ West Tower Top Chest':                   ("They say that the highest&chest in the crater&holds", None, 'location'),
+    'Water Temple MQ Boss Key Chest':                        ("Deep under the lake,&the gilded chest&contains", None, 'location'),
+    'Water Temple MQ Freestanding Key':                      ("Deep under the lake,&the apparent key&is really", None, 'location'),
+    'GS Water Temple MQ North Basement':                     ("Deep under the lake,&the locked spider&holds", None, 'location'),
+    'Gerudo Training Grounds MQ Underwater Silver Rupee Chest': ("They say those who seek&sunken silver rupees will&find", None, 'location'),
+    'Gerudo Training Grounds MQ Ice Arrows Chest':           ("They say the final prize&of the thieves\' training&is", None, 'location'),
+    'Spirit Temple MQ Child Center Chest':                   ("Within the Colossus&a temporal paradox&yields", None, 'location'),
+    'Spirit Temple MQ Lower Adult Right Chest':              ("Within the Colossus&a symphony&yields", None, 'location'),
+    'GS Spirit Temple MQ Lower Adult Right':                 ("Within the Colossus&a spider\'s symphony&yields", None, 'location'),
+    'Shadow Temple MQ Bomb Flower Chest':                    ("They say in a maze&guarded by shadows&hides", None, 'location'),
 
     '1001':                                                  ("Ganondorf 2020!", None, 'junkHint'),
     '1002':                                                  ("They say that monarchy is a terrible system of governance.", None, 'junkHint'),
@@ -279,7 +293,7 @@ hintTable = {
     '2011':                                                  ("Today, let's begin down&'The Hero is Defeated' timeline.", None, 'ganonLine'),
 }
 
-# exclusions from the list for custom logic
+# This specifies which hints will never appear due to either having known or known useless contents or due to the locations not existing.
 
 def hintExclusions(world):
     expected_skulltulas = world.logic_skulltulas
@@ -306,4 +320,46 @@ def hintExclusions(world):
         exclusions.append('20 Gold Skulltulla Reward')
     if expected_skulltulas < 10:
         exclusions.append('10 Gold Skulltulla Reward')
+    if not world.shuffle_ocarinas:
+        exclusions.append('Ocarina of Time')
+    if world.tokensanity != 'all':
+        exclusions.append('GS Hyrule Castle Grotto')
+        exclusions.append('GS Hyrule Field Near Gerudo Valley')
+        exclusions.append('GS Zora\'s Fountain Hidden Cave')
+    if not world.dungeon_mq['DT']:
+        exclusions.append('Deku Tree MQ After Spinning Log Chest')
+    if world.tokensanity == 'off' or not world.dungeon_mq['JB']:
+        exclusions.append('GS Jabu Jabu MQ Invisible Enemies Room')
+    if world.dungeon_mq['FoT']:
+        exclusions.append('Forest Temple Floormaster Chest')
+    if world.dungeon_mq['FiT']:
+        exclusions.append('Fire Temple Scarecrow Chest')
+        exclusions.append('Fire Temple Megaton Hammer Chest')
+    else:
+        exclusions.append('Fire Temple MQ West Tower Top Chest')
+    if world.dungeon_mq['WT']:
+        exclusions.append('Water Temple River Chest')
+        exclusions.append('Water Temple Boss Key Chest')
+    else:
+        exclusions.append('Water Temple MQ Boss Key Chest')
+        exclusions.append('Water Temple MQ Freestanding Key')
+    if world.tokensanity == 'off' or not world.dungeon_mq['WT']:
+        exclusions.append('GS Water Temple MQ North Basement')
+    if world.dungeon_mq['GTG']:
+        exclusions.append('Gerudo Training Grounds Underwater Silver Rupee Chest')
+        exclusions.append('Gerudo Training Grounds Maze Path Final Chest')
+    else:
+        exclusions.append('Gerudo Training Grounds MQ Underwater Silver Rupee Chest')
+        exclusions.append('Gerudo Training Grounds MQ Ice Arrows Chest')
+    if world.dungeon_mq['BW']:
+        exclusions.append('Bottom of the Well Defeat Boss')
+    if not world.dungeon_mq['SpT']:
+        exclusions.append('Spirit Temple MQ Child Center Chest')
+        exclusions.append('Spirit Temple MQ Lower Adult Right Chest')
+    if world.tokensanity == 'off' or not world.dungeon_mq['SpT']:
+        exclusions.append('GS Spirit Temple MQ Lower Adult Right')
+    if world.dungeon_mq['ShT']:
+        exclusions.append('Shadow Temple Hidden Floormaster Chest')
+    else:
+        exclusions.append('Shadow Temple MQ Bomb Flower Chest')
     return exclusions
