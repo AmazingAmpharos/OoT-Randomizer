@@ -823,7 +823,7 @@ setting_infos = [
                       (X Items): Shops have X random non-shop (Special
                       Deal!) items. They will always be on the left
                       side. This means that every shop will have more
-                      possible item locations. So, +2 means 2 items
+                      possible item locations. So +2 means 2 items
                       per shop.
                       
                       (Random): Each shop will have a random number
