@@ -450,7 +450,7 @@ def create_regions(world):
                 ['Jabu Jabus Belly Exit', 'Jabu Jabus Belly Ceiling Switch']),
             create_dungeon_region(
                 'Jabu Jabus Belly Main', 
-                ['Boomerang Chest', 'GS Jabu Jabu Water Switch Room'], 
+                ['Boomerang Chest', 'GS Jabu Jabu Water Switch Room', 'Jabu Deku Scrub Deku Nuts'], 
                 ['Jabu Jabus Belly Retreat', 'Jabu Jabus Belly Tentacles']),
             create_dungeon_region(
                 'Jabu Jabus Belly Depths', 
@@ -677,7 +677,8 @@ def create_regions(world):
                 ['Spirit Temple Exit', 'Spirit Temple Crawl Passage', 'Spirit Temple Silver Block']),
             create_dungeon_region(
                 'Child Spirit Temple', 
-                ['Spirit Temple Child Left Chest', 'Spirit Temple Child Right Chest', 'GS Spirit Temple Metal Fence'], 
+                ['Spirit Temple Child Left Chest', 'Spirit Temple Child Right Chest', 'GS Spirit Temple Metal Fence',
+                'Spirit Temple Nut Crate'], 
                 ['Child Spirit Temple Climb']),
             create_dungeon_region(
                 'Child Spirit Temple Climb', 
@@ -791,7 +792,7 @@ def create_regions(world):
                  'Bottom of the Well Freestanding Key', 'Bottom of the Well Defeat Boss', 'Bottom of the Well Invisible Chest', 
                  'Bottom of the Well Underwater Front Chest', 'Bottom of the Well Underwater Left Chest', 
                  'Bottom of the Well Basement Chest', 'Bottom of the Well Locked Pits', 'Bottom of the Well Behind Right Grate', 
-                 'GS Well West Inner Room', 'GS Well East Inner Room', 'GS Well Like Like Cage'], 
+                 'GS Well West Inner Room', 'GS Well East Inner Room', 'GS Well Like Like Cage', 'Bottom of the Well Stick Pot'], 
                 ['Bottom of the Well Exit'])
         ])
 

@@ -1362,7 +1362,7 @@ def patch_rom(world, rom):
                         'FiT':  ("the \x05\x41Fire Temple", 'Volvagia', 0x7c, 0x8c),
                         'WT':   ("the \x05\x43Water Temple", 'Morpha', 0x7d, 0x8e),
                         'SpT':  ("the \x05\x46Spirit Temple", 'Twinrova', 0x7e, 0x8f),
-                        'IC':   ("the \x05\x44Ice Cavern", None, 0x87, 0x92)
+                        'IC':   ("the \x05\x44Ice Cavern", None, 0x87, 0x92),
                         'BW':   ("the \x05\x45Bottom of the Well", None, 0xa2, 0xa5),
                         'ShT':   ("the \x05\x45Shadow Temple", 'Bongo Bongo', 0x7f, 0xa3),
         }
@@ -1371,7 +1371,7 @@ def patch_rom(world, rom):
                 pass
             elif dungeon in ['BW', 'IC']:
                 dungeon_name, boss_name, compass_id, map_id = dungeon_list[dungeon]
-                    map_message = "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x01It\'s %s!\x09" % (dungeon_name, "masterful" if world.dungeon_mq[dungeon] else "ordinary")
+                map_message = "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x01It\'s %s!\x09" % (dungeon_name, "masterful" if world.dungeon_mq[dungeon] else "ordinary")
                 if world.quest == 'mixed':
                     update_message_by_id(messages, map_id, map_message)
             else:
@@ -1480,11 +1480,6 @@ def patch_rom(world, rom):
     # actually write the save table to rom
     write_save_table(rom)
 
-    patch_files(world, rom)
-
-    # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
-    random.seed()
-    
     # patch music 
     if world.background_music == 'random':
         randomize_music(rom)
@@ -1521,6 +1516,9 @@ def patch_rom(world, rom):
 
     patch_files(rom, mq_scenes)
 
+    # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
+    random.seed()
+    
     # patch tunic colors
     # Custom color tunic stuff
     Tunics = []
