@@ -215,6 +215,75 @@ class Scene(object):
             cur += 0x08
 
 
+    def write_map_data(self, rom:LocalRom):
+        if self.id >= 10:
+            return
+
+        # write floormap
+        floormap_indices = 0xB6C934
+        floormap_vrom = 0xBC7E00
+        floormap_index = rom.read_int16(floormap_indices + (self.id * 2))
+        floormap_index //= 2 # game uses texture index, where two textures are used per floor
+
+        cur = floormap_vrom + (floormap_index * 0x1EC)
+        for floormap in self.floormaps:
+            for icon in floormap:
+                Icon.write_to_floormap(icon, rom, cur)
+                cur += 0xA4
+
+                
+        # fixes jabu jabu floor B1 having no chest data
+        if self.id == 2:
+            cur = floormap_vrom + (0x08 * 0x1EC + 4)
+            kaleido_scope_chest_verts = 0x803A3DA0 # hax, should be vram 0x8082EA00
+            rom.write_int32s(cur, [0x17, kaleido_scope_chest_verts, 0x04]) 
+
+        # write minimaps
+        map_mark_vrom = 0xBF40D0
+        map_mark_vram = 0x808567F0
+        map_mark_array_vram = 0x8085D2DC # ptr array in map_mark_data to minimap "marks"
+
+        array_vrom = map_mark_array_vram - map_mark_vram + map_mark_vrom
+        map_mark_scene_vram = rom.read_int32(self.id * 4 + array_vrom)
+        mark_vrom = map_mark_scene_vram - map_mark_vram + map_mark_vrom
+        
+        cur = mark_vrom
+        for minimap in self.minimaps:
+            for icon in minimap:
+                Icon.write_to_minimap(icon, rom, cur)
+                cur += 0x26
+
+
+    def patch_mesh(self, rom:LocalRom, mesh:CollisionMesh):
+        start = self.file.start
+        
+        final_cams = []
+
+        # build final camera data
+        for cam in self.coldelta.cams:
+            data = cam['Data']
+            pos = cam['PositionIndex']
+            if pos < 0:
+                final_cams.append((data, 0))
+            else:
+                addr = start + (mesh.camera_data_addr & 0xFFFFFF)
+                seg_off = rom.read_int32(addr + (pos * 8) + 4)
+                final_cams.append((data, seg_off))
+
+        types_move_addr = 0
+
+        # if data can't fit within the old mesh space, append camera data
+        if self.coldelta.is_larger:
+            types_move_addr = mesh.camera_data_addr
+
+            # append to end of file
+            self.write_cam_data(rom, self.file.end, final_cams)
+            mesh.camera_data_addr = get_segment_address(2, self.file.end - self.file.start)
+            self.file.end += len(final_cams) * 8
+            
+        else:
+            types_move_addr = mesh.camera_data_addr + (len(final_cams) * 8)
+
             # append in place
             addr = self.file.start + (mesh.camera_data_addr & 0xFFFFFF)
             self.write_cam_data(rom, addr, final_cams)
