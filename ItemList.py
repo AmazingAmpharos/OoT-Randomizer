@@ -235,15 +235,6 @@ min_shop_items = (
     + ['Buy Fish'])
 
 vanilla_deku_scrubs = {
-    'DC Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'DC Deku Scrub Deku Sticks': 'Buy Deku Stick (1)',
-    'DC Deku Scrub Deku Seeds': 'Buy Deku Seeds (30)',
-    'DC Deku Scrub Deku Shield': 'Buy Deku Shield',
-    'Jabu Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'GC Deku Scrub Bombs': 'Buy Bombs (5) [35]',
-    'GC Deku Scrub Arrows': 'Buy Arrows (30)',
-    'GC Deku Scrub Red Potion': 'Buy Red Potion [30]',
-    'GC Deku Scrub Green Potion': 'Buy Green Potion',
     'ZR Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
     'ZR Grotto Deku Scrub Green Potion': 'Buy Green Potion',
     'SFM Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
@@ -271,14 +262,12 @@ vanilla_deku_scrubs = {
 }
 
 deku_scrubs_items = (
-      ['Deku Nuts (5)'] * 7
-    + ['Rupees (20)'] * 2  # ['Deku Stick (1)'] * 2
-    + ['Arrows (5)'] # ['Deku Seeds (30)']
-    + ['Deku Shield']
-    + ['Bombs (5)'] * 6
-    + ['Arrows (30)'] * 6
-    + ['Recovery Heart'] * 5
-    + ['Rupees (5)'] * 5 # ['Green Potion']
+      ['Deku Nuts (5)'] * 5
+    + ['Deku Stick (1)']
+    + ['Bombs (5)'] * 5
+    + ['Arrows (30)'] * 5
+    + ['Recovery Heart'] * 4
+    + ['Rupees (5)'] * 4 # ['Green Potion']
 )
 
 rewardlist = [
@@ -683,8 +672,39 @@ def get_pool_core(world):
         pool.extend(shopsanity_rupees)
 
     if world.shuffle_scrubs:
+        if world.dungeon_mq['DT']:
+            pool.append('Deku Shield')
+        if world.dungeon_mq['DC']:
+            pool.extend(['Deku Stick (1)', 'Arrows (30)', 'Deku Shield', 'Recovery Heart'])
+        else:
+            pool.extend(['Deku Nuts (5)', 'Deku Stick (1)', 'Arrows (30)', 'Deku Shield'])
+        if not world.dungeon_mq['JB']:
+            pool.append('Deku Nuts (5)')
+        if world.dungeon_mq['GC']:
+            pool.append('Deku Nuts (5)')
+        pool.extend(['Bombs (5)', 'Arrows (30)', 'Recovery Heart', 'Rupees (5)'])
         pool.extend(deku_scrubs_items)
     else:        
+        if world.dungeon_mq['DT']:
+            placed_items['DT MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
+        if world.dungeon_mq['DC']:
+            placed_items['DC MQ Deku Scrub Deku Sticks'] = 'Buy Deku Stick (1)'
+            placed_items['DC MQ Deku Scrub Deku Seeds'] = 'Buy Deku Seeds (30)'
+            placed_items['DC MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
+            placed_items['DC MQ Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
+        else:
+            placed_items['DC Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
+            placed_items['DC Deku Scrub Deku Sticks'] = 'Buy Deku Stick (1)'
+            placed_items['DC Deku Scrub Deku Seeds'] = 'Buy Deku Seeds (30)'
+            placed_items['DC Deku Scrub Deku Shield'] = 'Buy Deku Shield'
+        if not world.dungeon_mq['JB']:
+            placed_items['Jabu Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
+        if world.dungeon_mq['GC']:
+            placed_items['GC MQ Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
+        placed_items['GC Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
+        placed_items['GC Deku Scrub Arrows'] = 'Buy Arrows (30)'
+        placed_items['GC Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
+        placed_items['GC Deku Scrub Green Potion'] = 'Buy Green Potion'
         placed_items.update(vanilla_deku_scrubs)
 
     pool.extend(alwaysitems)

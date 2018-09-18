@@ -167,7 +167,7 @@ def create_dungeons(world):
         SpT = make_dungeon(
             'Spirit Temple', 
             ['Spirit Temple Lobby', 'Child Spirit Temple', 'Adult Spirit Temple', 'Spirit Temple Shared', 
-             'Lower Adult Spirit Temple', 'Spirit Temple Boss Area', 'Spirit Temple Outdoor Hands'], 
+             'Lower Adult Spirit Temple', 'Spirit Temple Boss Area', 'Mirror Shield Hand', 'Silver Gauntlets Hand'], 
             ItemFactory('Boss Key (Spirit Temple)'),
             ItemFactory(['Small Key (Spirit Temple)'] * 7), 
             ItemFactory(['Map (Spirit Temple)', 'Compass (Spirit Temple)']))

@@ -14,8 +14,7 @@ def ItemFactory(items):
             advancement, priority, type, code, index, object, model = item_table[item]
             ret.append(Item(item, advancement, priority, type, code, index, object, model))
         else:
-            logging.getLogger('').warning('Unknown Item: %s', item)
-            return None
+            raise KeyError('Unknown Item: %s', item)
 
     if singleton:
         return ret[0]

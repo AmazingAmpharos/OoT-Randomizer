@@ -963,6 +963,31 @@ setting_infos = [
                       for a milder Keysanity experience.
                       '''
         }),
+    Setting_Info('enhance_map_compass', bool, 1, True, 
+        {
+            'help': '''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This setting will only activate these functions if the
+                    other settings would make this useful information.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Maps and Compasses give information',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This option is only available if shuffle 'Maps/Compasses'
+                    is set to 'Anywhere'
+                      ''',
+            'dependency': lambda guivar: guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Anywhere',
+        }),    
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
             'help': '''\
@@ -1054,7 +1079,6 @@ setting_infos = [
                       'Mixed': Each dungeon will have a
                       random chance to be in either form.
                       ''',
-            'dependency': lambda guivar: False, 
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
@@ -1493,30 +1517,6 @@ setting_infos = [
             'tooltip':'''\
                       The hints provided by Gossip Stones will
                       not be as cryptic if this option is enabled.
-                      '''
-        }),
-    Setting_Info('enhance_map_compass', bool, 1, True, 
-        {
-            'help': '''\
-                    Gives the Map and Compass extra functionality.
-                    Map will tell if a dungeon is vanilla or Master Quest.
-                    Compass will tell what medallion or stone is within.
-                    This setting will only activate these functions if the
-                    other settings would make this useful information.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Maps and Compasses give information',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                    Gives the Map and Compass extra functionality.
-                    Map will tell if a dungeon is vanilla or Master Quest.
-                    Compass will tell what medallion or stone is within.
-                    This setting will only activate these functions if the
-                    other settings would make this useful information.
                       '''
         }),
     Setting_Info('hints', str, 2, True, 
