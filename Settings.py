@@ -1234,6 +1234,56 @@ setting_infos = [
                       Racing twice is repetitive.
                       '''
         }),
+    Setting_Info('logic_earliest_adult_trade', str, 2, True, 
+        {
+            'default': 'pocket_egg',
+            'const': 'always',
+            'nargs': '?',
+            'choices': [
+                'pocket_egg',
+                'pocket_cucco', 
+                'cojiro', 
+                'odd_mushroom', 
+                'poachers_saw', 
+                'broken_sword', 
+                'prescription', 
+                'eyeball_frog', 
+                'eyedrops', 
+                'claim_check'],
+            'help': '''\
+                    Select the earliest item that will appear in the adult trade sequence:
+                    'pocket_egg'
+                    'pocket_cucco'
+                    'cojiro'
+                    'odd_mushroom'
+                    'poachers_saw'
+                    'broken_sword'
+                    'prescription'
+                    'eyeball_frog'
+                    'eyedrops'
+                    'claim_check'
+                    '''
+        },
+        {
+            'text': 'Adult Trade Sequence',
+            'group': 'rewards',
+            'widget': 'Combobox',
+            'default': 'Pocket Egg',
+            'options': {
+                'Pocket Egg': 'pocket_egg',
+                'Pocket Cucco': 'pocket_cucco', 
+                'Cojiro': 'cojiro', 
+                'Odd Mushroom': 'odd_mushroom', 
+                'Poachers Saw': 'poachers_saw', 
+                'Broken Sword': 'broken_sword', 
+                'Prescription': 'prescription', 
+                'Eyeball Frog': 'eyeball_frog', 
+                'Eyedrops': 'eyedrops', 
+                'Claim Check': 'claim_check'},
+            'tooltip':'''\
+                      Select the earliest item that will appear in the adult trade sequence.
+                      '''
+        }),
     Setting_Info('logic_man_on_roof', bool, 1, True, 
         {
             'help': '''\

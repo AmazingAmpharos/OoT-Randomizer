@@ -350,7 +350,7 @@ skulltulla_locations = ([
     'GS Spirit Temple Boulder Room',
     'GS Spirit Temple Lobby'])
     
-tradeitems = [
+tradeitems = (
     'Pocket Egg',
     'Pocket Cucco', 
     'Cojiro', 
@@ -360,7 +360,19 @@ tradeitems = [
     'Prescription', 
     'Eyeball Frog', 
     'Eyedrops', 
-    'Claim Check']
+    'Claim Check')
+
+tradeitemoptions = (
+    'pocket_egg',
+    'pocket_cucco', 
+    'cojiro', 
+    'odd_mushroom', 
+    'poachers_saw', 
+    'broken_sword', 
+    'prescription', 
+    'eyeball_frog', 
+    'eyedrops', 
+    'claim_check')
 
 
 eventlocations = {
@@ -548,7 +560,7 @@ def get_pool_core(world):
     for _ in range(normal_bottle_count):
         bottle = random.choice(normal_bottles)
         pool.append(bottle)
-    tradeitem = random.choice(tradeitems)
+    tradeitem = random.choice(tradeitems[tradeitemoptions.index(world.logic_earliest_adult_trade):])
     pool.append(tradeitem)
     pool.extend(songlist)
 
