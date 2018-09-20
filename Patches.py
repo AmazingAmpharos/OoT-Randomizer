@@ -1696,6 +1696,8 @@ chestAnimationExtendedFast = [
     0xBD, # Deku Nuts (5)
     0xBE, # Deku Nuts (10)
     0xBF, # Double Defense
+    0xD0, # Deku Stick (1)
+    0xD1, # Deky Seeds (30)
 ]
 
 
