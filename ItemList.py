@@ -374,7 +374,7 @@ junk_pool = (
     2 *  ['Bombs (10)'] +
     8 *  ['Arrows (5)'] +
     2 *  ['Arrows (10)'] +
-    5 *  ['Deku Sticks (1)'] + 
+    5 *  ['Deku Stick (1)'] + 
     5 *  ['Deku Nuts (5)'] + 
     5 *  ['Deku Seeds (30)'] +
     10 * ['Rupees (5)'] +
@@ -684,7 +684,7 @@ def get_pool_core(world):
             pool.extend(['Bombs (5)', 'Recovery Heart', 'Rupees (5)'])
         pool.extend(deku_scrubs_items)
         for _ in range(7):
-            pool.append('Arrows (30)' if random.int(4) > 0 else 'Deku Seeds (30)')
+            pool.append('Arrows (30)' if random.randint(0,3) > 0 else 'Deku Seeds (30)')
 
     else:        
         if world.dungeon_mq['DT']:
