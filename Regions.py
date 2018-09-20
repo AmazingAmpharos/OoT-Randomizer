@@ -643,12 +643,12 @@ def create_regions(world):
                 'Adult Spirit Temple', 
                 ['Spirit Temple MQ Child Center Chest', 'Spirit Temple MQ Child Climb South Chest', 'Spirit Temple MQ Lower NE Main Room Chest', 
                  'Spirit Temple MQ Upper NE Main Room Chest', 'Spirit Temple MQ Beamos Room Chest', 'Spirit Temple MQ Ice Trap Chest', 
-                 'Spirit Temple MQ Boss Key Chest', 'GS Spirit Temple MQ Iron Knuckle West', 'GS Spirit Temple MQ Iron Knuckle North'], 
+                 'Spirit Temple MQ Boss Key Chest', 'GS Spirit Temple MQ Sun Block Room', 'GS Spirit Temple MQ Iron Knuckle West', 
+                 'GS Spirit Temple MQ Iron Knuckle North'], 
                 ['Adult Spirit Temple Descent', 'Adult Spirit Temple to Shared', 'Spirit Temple Climbable Wall', 'Mirror Shield Exit']),
             create_dungeon_region(
                 'Spirit Temple Shared', 
-                ['Spirit Temple MQ Child Climb North Chest', 'Spirit Temple MQ Compass Chest', 'Spirit Temple MQ Sun Block Room Chest', 
-                 'GS Spirit Temple MQ Sun Block Room'], 
+                ['Spirit Temple MQ Child Climb North Chest', 'Spirit Temple MQ Compass Chest', 'Spirit Temple MQ Sun Block Room Chest'], 
                 ['Silver Gauntlets Exit']),
             create_dungeon_region(
                 'Lower Adult Spirit Temple', 
