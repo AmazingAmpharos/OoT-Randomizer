@@ -207,7 +207,7 @@ def int16_as_bytes(value):
     return [(value >> 8) & 0xFF, value & 0xFF]
 
 def int24_as_bytes(value):
-    value = value & 0xFFFFFFFF
+    value = value & 0xFFFFFF
     return [(value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF]
 
 def int32_as_bytes(value):
