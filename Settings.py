@@ -1169,22 +1169,6 @@ setting_infos = [
                       Spiritual Stones.
                       '''
         }),
-    Setting_Info('logic_no_trade_biggoron', bool, 1, True, 
-        {
-            'help': '''\
-                    You will not be expected to trade for biggoron's reward.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No Biggoron reward',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Adult trade sequence is time consuming.
-                      '''
-        }),
     Setting_Info('logic_no_1500_archery', bool, 1, True, 
         {
             'help': '''\
@@ -1234,6 +1218,22 @@ setting_infos = [
                       Racing twice is repetitive.
                       '''
         }),
+    Setting_Info('logic_no_trade_biggoron', bool, 1, True, 
+        {
+            'help': '''\
+                    You will not be expected to trade for biggoron's reward.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'No Biggoron reward',
+            'group': 'rewards',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Adult trade sequence is time consuming.
+                      '''
+        }),
     Setting_Info('logic_earliest_adult_trade', str, 2, True, 
         {
             'default': 'pocket_egg',
@@ -1268,20 +1268,71 @@ setting_infos = [
             'text': 'Adult Trade Sequence',
             'group': 'rewards',
             'widget': 'Combobox',
+            'dependency': lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
             'default': 'Pocket Egg',
             'options': {
-                'Pocket Egg': 'pocket_egg',
-                'Pocket Cucco': 'pocket_cucco', 
-                'Cojiro': 'cojiro', 
-                'Odd Mushroom': 'odd_mushroom', 
-                'Poachers Saw': 'poachers_saw', 
-                'Broken Sword': 'broken_sword', 
-                'Prescription': 'prescription', 
-                'Eyeball Frog': 'eyeball_frog', 
-                'Eyedrops': 'eyedrops', 
-                'Claim Check': 'claim_check'},
+                'Earliest: Pocket Egg': 'pocket_egg',
+                'Earliest: Pocket Cucco': 'pocket_cucco', 
+                'Earliest: Cojiro': 'cojiro', 
+                'Earliest: Odd Mushroom': 'odd_mushroom', 
+                'Earliest: Poachers Saw': 'poachers_saw', 
+                'Earliest: Broken Sword': 'broken_sword', 
+                'Earliest: Prescription': 'prescription', 
+                'Earliest: Eyeball Frog': 'eyeball_frog', 
+                'Earliest: Eyedrops': 'eyedrops', 
+                'Earliest: Claim Check': 'claim_check'},
             'tooltip':'''\
                       Select the earliest item that will appear in the adult trade sequence.
+                      '''
+        }),
+    Setting_Info('logic_latest_adult_trade', str, 2, True, 
+        {
+            'default': 'claim_check',
+            'const': 'always',
+            'nargs': '?',
+            'choices': [
+                'pocket_egg',
+                'pocket_cucco', 
+                'cojiro', 
+                'odd_mushroom', 
+                'poachers_saw', 
+                'broken_sword', 
+                'prescription', 
+                'eyeball_frog', 
+                'eyedrops', 
+                'claim_check'],
+            'help': '''\
+                    Select the latest item that will appear in the adult trade sequence:
+                    'pocket_egg'
+                    'pocket_cucco'
+                    'cojiro'
+                    'odd_mushroom'
+                    'poachers_saw'
+                    'broken_sword'
+                    'prescription'
+                    'eyeball_frog'
+                    'eyedrops'
+                    'claim_check'
+                    '''
+        },
+        {
+            'group': 'rewards',
+            'widget': 'Combobox',
+            'dependency': lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
+            'default': 'Claim Check',
+            'options': {
+                'Latest: Pocket Egg': 'pocket_egg',
+                'Latest: Pocket Cucco': 'pocket_cucco', 
+                'Latest: Cojiro': 'cojiro', 
+                'Latest: Odd Mushroom': 'odd_mushroom', 
+                'Latest: Poachers Saw': 'poachers_saw', 
+                'Latest: Broken Sword': 'broken_sword', 
+                'Latest: Prescription': 'prescription', 
+                'Latest: Eyeball Frog': 'eyeball_frog', 
+                'Latest: Eyedrops': 'eyedrops', 
+                'Latest: Claim Check': 'claim_check'},
+            'tooltip':'''\
+                      Select the latest item that will appear in the adult trade sequence.
                       '''
         }),
     Setting_Info('logic_man_on_roof', bool, 1, True, 

@@ -557,11 +557,18 @@ def get_pool_core(world):
         pool.extend(DC_MQ)
     else:
         pool.extend(DC_vanilla)
+
     for _ in range(normal_bottle_count):
         bottle = random.choice(normal_bottles)
         pool.append(bottle)
-    tradeitem = random.choice(tradeitems[tradeitemoptions.index(world.logic_earliest_adult_trade):])
+
+    earliest_trade = tradeitemoptions.index(world.logic_earliest_adult_trade)
+    latest_trade = tradeitemoptions.index(world.logic_latest_adult_trade)
+    if earliest_trade > latest_trade:
+        earliest_trade, latest_trade = latest_trade, earliest_trade
+    tradeitem = random.choice(tradeitems[earliest_trade:latest_trade+1])
     pool.append(tradeitem)
+    
     pool.extend(songlist)
 
     if world.shuffle_mapcompass == 'remove':
