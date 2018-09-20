@@ -414,23 +414,21 @@ def dung_rules_dt0(world):
 
 # MQ Deku Tree
 def dung_rules_dtmq(world):
-    set_rule(world.get_entrance('Deku Tree Compass Passage'), lambda state: state.has('Slingshot'))
-    set_rule(world.get_entrance('Deku Tree Basement Path'), lambda state: state.has('Slingshot'))
+    set_rule(world.get_entrance('Deku Tree Compass Passage'), lambda state: state.has_slingshot() and (state.has_sticks() or state.can_use('Dins Fire')))
+    set_rule(world.get_entrance('Deku Tree Basement Path'), lambda state: state.has_slingshot() and (state.has_sticks() or state.can_use('Dins Fire')))
+    set_rule(world.get_location('Deku Tree MQ Slingshot Chest'), lambda state: state.can_child_attack())
+    set_rule(world.get_location('Deku Tree MQ Slingshot Room Back Chest'), lambda state: state.has_sticks() or state.can_use('Dins Fire'))
+    set_rule(world.get_location('Deku Tree MQ Basement Chest'), lambda state: state.has_sticks() or state.can_use('Dins Fire'))
     set_rule(world.get_location('Deku Tree MQ After Spinning Log Chest'), lambda state: state.can_play('Song of Time'))
+    set_rule(world.get_location('DT MQ Deku Scrub Deku Shield'), lambda state: state.has_slingshot() or state.has_nuts() or state.has('Boomerang') or state.can_use('Dins Fire') or state.has_bombchus())
+
+    # Boss
+    set_rule(world.get_location('Queen Gohma Heart'), lambda state: state.has('Buy Deku Shield') and (state.has('Kokiri Sword') or state.has_sticks()))
+    set_rule(world.get_location('Queen Gohma'), lambda state: state.has('Buy Deku Shield') and (state.has('Kokiri Sword') or state.has_sticks()))
 
     # GS
-    set_rule(world.get_location('GS Deku Tree MQ Compass Room'), lambda state: state.has('Boomerang') and ((state.has('Bomb Bag') and state.can_play('Song of Time')) or (state.has_bombchus() and state.can_leave_forest())))
-    set_rule(world.get_location('GS Deku Tree MQ Basement Ceiling'), lambda state: state.has('Boomerang') and state.can_play('Song of Time'))
-    set_rule(world.get_location('GS Deku Tree MQ Basement Back Room'), lambda state: state.has('Boomerang'))
-
-# MQ Deku Tree
-def dung_rules_dtmq(world):
-    set_rule(world.get_entrance('Deku Tree Compass Passage'), lambda state: state.has('Slingshot'))
-    set_rule(world.get_entrance('Deku Tree Basement Path'), lambda state: state.has('Slingshot'))
-    set_rule(world.get_location('Deku Tree MQ After Spinning Log Chest'), lambda state: state.can_play('Song of Time'))
-
-    # GS
-    set_rule(world.get_location('GS Deku Tree MQ Compass Room'), lambda state: state.has('Boomerang') and ((state.has('Bomb Bag') and state.can_play('Song of Time')) or (state.has_bombchus() and state.can_leave_forest())))
+    set_rule(world.get_location('GS Deku Tree MQ Lobby'), lambda state: state.can_child_attack())
+    set_rule(world.get_location('GS Deku Tree MQ Compass Room'), lambda state: state.has('Boomerang') and ((state.has_bombs() and state.can_play('Song of Time')) or state.has_bombchus()))
     set_rule(world.get_location('GS Deku Tree MQ Basement Ceiling'), lambda state: state.has('Boomerang') and state.can_play('Song of Time'))
     set_rule(world.get_location('GS Deku Tree MQ Basement Back Room'), lambda state: state.has('Boomerang'))
 
@@ -483,13 +481,15 @@ def dung_rules_jb0(world):
 
 # Jabu Jabu's Belly MQ
 def dung_rules_jbmq(world):
-    set_rule(world.get_entrance('Jabu Jabus Belly Cow Switch'), lambda state: state.has('Slingshot'))
+    set_rule(world.get_entrance('Jabu Jabus Belly Cow Switch'), lambda state: state.has_slingshot())
     set_rule(world.get_entrance('Jabu Jabus Belly Tentacle Access'), lambda state: state.has_explosives() and state.has('Boomerang'))
+    set_rule(world.get_entrance('Jabu Jabus Belly Octopus'), lambda state: state.has_sticks() or (state.has('Kokiri Sword') and state.can_use('Dins Fire')))
     set_rule(world.get_location('Jabu Jabus Belly MQ Map Chest'), lambda state: state.has_explosives())
-    set_rule(world.get_location('Jabu Jabus Belly MQ Entry Side Chest'), lambda state: state.has('Slingshot'))
+    set_rule(world.get_location('Jabu Jabus Belly MQ Entry Side Chest'), lambda state: state.has_slingshot())
 
     # GS
     set_rule(world.get_location('GS Jabu Jabu MQ Boomerang Room'), lambda state: state.can_play('Song of Time'))
+    set_rule(world.get_location('GS Jabu Jabu MQ Tailpasaran Room'), lambda state: state.has_sticks() or state.can_use('Dins Fire'))
     set_rule(world.get_location('GS Jabu Jabu MQ Invisible Enemies Room'), lambda state: state.can_see_with_lens())
 
 # Forest Temple Vanilla
@@ -555,8 +555,8 @@ def dung_rules_fit0(world):
 	# Fire Temple Vanilla
     set_rule(world.get_entrance('Fire Temple Early Climb'), lambda state: state.has_GoronTunic() and state.has('Small Key (Fire Temple)', 4) and state.has('Progressive Strength Upgrade') and (state.has_explosives() or ((state.has_bow() or state.has('Progressive Hookshot')) and state.is_adult())))
     set_rule(world.get_entrance('Fire Temple Fire Maze Escape'), lambda state: state.has('Small Key (Fire Temple)', 8) or (state.has('Small Key (Fire Temple)', 7) and state.has('Hover Boots') and state.has('Hammer') and state.is_adult()))
-    set_rule(world.get_location('Fire Temple Fire Dancer Chest'), lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.is_adult() and state.has('Hammer'))
-    set_rule(world.get_location('Fire Temple Boss Key Chest'), lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.is_adult() and state.has('Hammer'))
+    set_rule(world.get_location('Fire Temple Fire Dancer Chest'), lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.is_adult() and state.has('Hammer')) 
+    set_rule(world.get_location('Fire Temple Boss Key Chest'), lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.is_adult() and state.has('Hammer')) 
     set_rule(world.get_location('Fire Temple Big Lava Room Bombable Chest'), lambda state: state.has('Small Key (Fire Temple)', 2) and state.has_explosives())
     set_rule(world.get_location('Fire Temple Big Lava Room Open Chest'), lambda state: state.has('Small Key (Fire Temple)', 2))
     set_rule(world.get_location('Fire Temple Map Chest'), lambda state: state.has('Small Key (Fire Temple)', 6) or (state.has('Small Key (Fire Temple)', 5) and state.is_adult() and state.has_bow()))
@@ -576,7 +576,7 @@ def dung_rules_fit0(world):
     set_rule(world.get_location('GS Fire Temple Unmarked Bomb Wall'), lambda state: state.has('Small Key (Fire Temple)', 4) and state.has_explosives())
     set_rule(world.get_location('GS Fire Temple East Tower Climb'), lambda state: state.has_ocarina() and state.has('Small Key (Fire Temple)', 6) and state.has('Progressive Hookshot') and state.is_adult())
     set_rule(world.get_location('GS Fire Temple East Tower Top'), lambda state: state.has_ocarina() and state.has('Small Key (Fire Temple)', 6) and state.has('Progressive Hookshot') and state.is_adult())
-    set_rule(world.get_location('GS Fire Temple Basement'), lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.has('Hammer') and state.is_adult())
+    set_rule(world.get_location('GS Fire Temple Basement'), lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.has('Hammer') and state.is_adult()) 
 
 # MQ Fire Temple
 # "Quirks to Know":
@@ -607,32 +607,32 @@ def dung_rules_fitmq(world):
 # Water Temple Vanilla
 def dung_rules_wt0(world):
 	# Water Temple vanilla
-    set_rule(world.get_entrance('Water Temple Central Pillar'), lambda state: (state.has('Bow') or state.can_use('Dins Fire') or state.has('Small Key (Water Temple)', 5)) and state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_entrance('Water Temple Upper Locked Door'), lambda state: state.has('Small Key (Water Temple)', 5) and (state.can_play('Zeldas Lullaby') or world.keysanity))
-    set_rule(world.get_location('Water Temple Torches Chest'), lambda state: (state.has('Bow') or state.can_use('Dins Fire')) and state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: (state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby')) or (state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.can_play('Song of Time') and state.has('Bow')))
-    set_rule(world.get_location('Water Temple Central Bow Target Chest'), lambda state: state.has('Bow') and state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby') and (state.has('Hover Boots') or state.can_use('Longshot')))
-    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.can_use('Longshot')) or (state.has('Small Key (Water Temple)', 5) and (item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)' or not world.keys_placed))) #If key for key, this lets the logic reduce the small key reqs for every other locked door.
-    set_rule(world.get_location('Water Temple Cracked Wall Chest'), lambda state: state.has_explosives())
-    set_rule(world.get_location('Water Temple Dark Link Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity))
-    set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.can_play('Song of Time') and state.has('Bow') and (state.can_play('Zeldas Lullaby') or world.keysanity))
-    set_rule(world.get_location('Water Temple Central Pillar Chest'), lambda state: state.has_ZoraTunic())
-
-    # Boss
-    set_rule(world.get_location('Morpha'), lambda state: state.has('Boss Key (Water Temple)') and state.can_use('Longshot'))
-    set_rule(world.get_location('Morpha Heart'), lambda state: state.has('Boss Key (Water Temple)') and state.can_use('Longshot'))
-
-    # GS
-    set_rule(world.get_location('GS Water Temple South Basement'), lambda state: state.has_explosives() and state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_location('GS Water Temple Serpent River'), lambda state: state.can_play('Song of Time') and state.has('Small Key (Water Temple)', 6))
-    set_rule(world.get_location('GS Water Temple Falling Platform Room'), lambda state: state.can_use('Longshot'))
-    set_rule(world.get_location('GS Water Temple Central Room'), lambda state: state.can_use('Longshot') or state.can_use('Farores Wind'))
-    set_rule(world.get_location('GS Water Temple Near Boss Key Chest'), lambda state: state.can_use('Longshot') and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.has('Small Key (Water Temple)', 5))
+    set_rule(world.get_entrance('Water Temple Central Pillar'), lambda state: (state.has('Bow') or state.can_use('Dins Fire') or state.has('Small Key (Water Temple)', 5)) and state.can_play('Zeldas Lullaby')) 
+    set_rule(world.get_entrance('Water Temple Upper Locked Door'), lambda state: state.has('Small Key (Water Temple)', 5) and (state.can_play('Zeldas Lullaby') or world.keysanity)) 
+    set_rule(world.get_location('Water Temple Torches Chest'), lambda state: (state.has('Bow') or state.can_use('Dins Fire')) and state.can_play('Zeldas Lullaby')) 
+    set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: (state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby')) or (state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.can_play('Song of Time') and state.has('Bow'))) 
+    set_rule(world.get_location('Water Temple Central Bow Target Chest'), lambda state: state.has('Bow') and state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby') and (state.has('Hover Boots') or state.can_use('Longshot'))) 
+    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.can_use('Longshot')) or (state.has('Small Key (Water Temple)', 5) and (item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)' or not world.keys_placed))) #If key for key, this lets the logic reduce the small key reqs for every other locked door. 
+    set_rule(world.get_location('Water Temple Cracked Wall Chest'), lambda state: state.has_explosives()) 
+    set_rule(world.get_location('Water Temple Dark Link Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity)) 
+    set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.can_play('Song of Time') and state.has('Bow') and (state.can_play('Zeldas Lullaby') or world.keysanity)) 
+    set_rule(world.get_location('Water Temple Central Pillar Chest'), lambda state: state.has_ZoraTunic()) 
+ 
+    # Boss 
+    set_rule(world.get_location('Morpha'), lambda state: state.has('Boss Key (Water Temple)') and state.can_use('Longshot')) 
+    set_rule(world.get_location('Morpha Heart'), lambda state: state.has('Boss Key (Water Temple)') and state.can_use('Longshot')) 
+ 
+    # GS 
+    set_rule(world.get_location('GS Water Temple South Basement'), lambda state: state.has_explosives() and state.can_play('Zeldas Lullaby')) 
+    set_rule(world.get_location('GS Water Temple Serpent River'), lambda state: state.can_play('Song of Time') and state.has('Small Key (Water Temple)', 6)) 
+    set_rule(world.get_location('GS Water Temple Falling Platform Room'), lambda state: state.can_use('Longshot')) 
+    set_rule(world.get_location('GS Water Temple Central Room'), lambda state: state.can_use('Longshot') or state.can_use('Farores Wind')) 
+    set_rule(world.get_location('GS Water Temple Near Boss Key Chest'), lambda state: state.can_use('Longshot') and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.has('Small Key (Water Temple)', 5)) 
 
 # MQ Water Temple
 # Water Temple Freestanding Key:
 # - There's an extra key in water temple because the door it was supposed to unlock shares a flag with something that it's required to do in order to reach the door in the first place.
-# - This was fixed in OoT3D; these rules presume the door is removed.
+# - This was fixed in OoT3D... and it's been fixed in rando I guess.
 def dung_rules_wtmq(world):
     set_rule(world.get_entrance('Water Temple Water Level Switch'), lambda state: state.can_play('Zeldas Lullaby'))
     set_rule(world.get_entrance('Water Temple Locked Door'), lambda state: state.has('Small Key (Water Temple)') and state.can_use('Longshot'))
@@ -650,6 +650,7 @@ def dung_rules_wtmq(world):
     set_rule(world.get_location('GS Water Temple MQ Lizalfos Hallway'), lambda state: state.can_use('Dins Fire'))
     set_rule(world.get_location('GS Water Temple MQ Before Upper Water Switch'), lambda state: state.can_use('Longshot'))
     set_rule(world.get_location('GS Water Temple MQ South Basement'), lambda state: state.can_use('Fire Arrows'))
+    set_rule(world.get_location('GS Water Temple MQ North Basement'), lambda state: state.has('Small Key (Water Temple)', 2) or ((item_name(state, 'GS Water Temple MQ North Basement') == 'Small Key (Water Temple)' or not world.keys_placed) and state.has('Small Key (Water Temple)')))
 
 # Spirit Temple Vanilla
 def dung_rules_spt0(world):
@@ -693,23 +694,23 @@ def dung_rules_spt0(world):
 # Spirit Temple MQ
 # "Quirks to Know":
 # Spirit Temple Sun Block Room:
-# - The switch to enter this room can be reached as adult with the Hover Boots, not just with Song of Time.
+# - The switch to enter this room can be reached as adult without either hover boots or song of time.
 # GS Spirit Temple Sun Block Room:
 # - You can get the GS with Boomerang. You do have to stand in about the right spot.
 # Spirit Temple Silver Block Hallway Chest:
-# - In the vanilla game, this eye switch gets permanently blocked off after the silver block is pushed. The logic assumes this will be changed to a temp flag.
-# - You can thaw the eye switch and get this door open with Fire Arrows as adult, by the way.
-# - It can also be done with bow but the only place you can get a line of sight is with the Song of Time. The shot is a little bit precise.
+# - In the vanilla game, this eye switch gets permanently blocked off after the silver block is pushed.
+# - This was changed so that the block does not appear pushed as child.
 def dung_rules_sptmq(world):
     set_rule(world.get_entrance('Spirit Temple Crawl Passage'), lambda state: state.can_play('Requiem of Spirit'))
     set_rule(world.get_entrance('Spirit Temple Ceiling Passage'), lambda state: state.has_bombchus() and state.can_use('Longshot') and state.can_use('Silver Gauntlets'))
     set_rule(world.get_entrance('Child Spirit Temple to Shared'), lambda state: state.has_bombchus() and state.has('Small Key (Spirit Temple)', 2))
     set_rule(world.get_entrance('Adult Spirit Temple Descent'), lambda state: state.can_use('Fire Arrows') and state.has('Mirror Shield'))
     set_rule(world.get_entrance('Spirit Temple Climbable Wall'), lambda state: state.has('Small Key (Spirit Temple)', 6) and state.can_play('Zeldas Lullaby') and state.has('Hammer'))
-    set_rule(world.get_location('Spirit Temple MQ Entrance Back Left Chest'), lambda state: state.can_blast_or_smash() and ((state.can_play('Requiem of Spirit') and state.has('Slingshot')) or state.can_use('Bow')))
-    set_rule(world.get_location('Spirit Temple MQ Entrance Back Right Chest'), lambda state: state.has_bombchus() or ((state.is_adult() and (state.has('Bow') or state.has('Progressive Hookshot'))) or (state.can_play('Requiem of Spirit') and (state.has('Slingshot') or state.has('Boomerang')))))
-    set_rule(world.get_location('Spirit Temple MQ Child Left Chest'), lambda state: state.has_bombchus() and state.has('Slingshot') and state.can_use('Dins Fire'))
-    set_rule(world.get_location('Spirit Temple MQ Silver Block Hallway Chest'), lambda state: state.has_bombchus() and state.has('Small Key (Spirit Temple)', 7) and state.has('Slingshot') and (state.can_use('Dins Fire') or (state.can_use('Longshot') and state.can_use('Silver Gauntlets') and state.has('Bow') and (state.can_use('Fire Arrows') or state.can_play('Song of Time')))))
+    set_rule(world.get_location('Spirit Temple MQ Entrance Back Left Chest'), lambda state: state.can_blast_or_smash() and ((state.can_play('Requiem of Spirit') and state.has_slingshot()) or state.can_use('Bow')))
+    set_rule(world.get_location('Spirit Temple MQ Entrance Back Right Chest'), lambda state: state.has_bombchus() or ((state.is_adult() and (state.has_bow() or state.has('Progressive Hookshot'))) or (state.can_play('Requiem of Spirit') and (state.has_slingshot() or state.has('Boomerang')))))
+    set_rule(world.get_location('Spirit Temple MQ Map Chest'), lambda state: state.has_sticks() or state.has('Kokiri Sword') or state.has_explosives())
+    set_rule(world.get_location('Spirit Temple MQ Child Left Chest'), lambda state: (state.has_sticks() or state.has('Kokiri Sword')) and state.has_bombchus() and state.has_slingshot() and state.can_use('Dins Fire'))
+    set_rule(world.get_location('Spirit Temple MQ Silver Block Hallway Chest'), lambda state: state.has_bombchus() and state.has('Small Key (Spirit Temple)', 7) and state.has_slingshot() and (state.can_use('Dins Fire') or (state.can_use('Longshot') and state.can_use('Silver Gauntlets') and state.can_use('Fire Arrows'))))
     set_rule(world.get_location('Spirit Temple MQ Child Center Chest'), lambda state: state.has('Small Key (Spirit Temple)', 7) and state.has('Hammer') and state.can_play('Requiem of Spirit'))
     set_rule(world.get_location('Spirit Temple MQ Child Climb South Chest'), lambda state: state.has('Small Key (Spirit Temple)', 7))
     set_rule(world.get_location('Spirit Temple MQ Lower NE Main Room Chest'), lambda state: state.can_play('Zelda Lullaby'))
@@ -721,9 +722,9 @@ def dung_rules_sptmq(world):
     set_rule(world.get_location('Spirit Temple MQ Entrance Front Right Chest'), lambda state: state.has('Hammer'))
     set_rule(world.get_location('Spirit Temple MQ Lower Adult Right Chest'), lambda state: state.has('Small Key (Spirit Temple)', 7) and state.has('Hammer') and state.has_ocarina() and state.has('Song of Time') and state.has('Eponas Song') and state.has('Suns Song') and state.has('Song of Storms') and state.has('Zeldas Lullaby'))
     set_rule(world.get_location('Spirit Temple MQ Child Climb North Chest'), lambda state: state.has('Small Key (Spirit Temple)', 6))
-    set_rule(world.get_location('Spirit Temple MQ Compass Chest'), lambda state: (state.can_play('Requiem of Spirit') and state.has('Small Key (Spirit Temple)', 7) and state.has('Slingshot')) or (state.can_use('Longshot') and state.can_use('Silver Gauntlets') and state.has('Bow')) or (state.has('Slingshot') and state.has('Bow')))
-    set_rule(world.get_location('Spirit Temple MQ Sun Block Room Chest'), lambda state: state.can_play('Song of Time') or (state.can_use('Longshot') and state.can_use('Silver Gauntlets') and state.has('Hover Boots')))
-    set_rule(world.get_entrance('Silver Gauntlets Exit'), lambda state: (state.has('Small Key (Spirit Temple)', 7) and ((state.can_play('Requiem of Spirit') and state.can_play('Song of Time')) or (state.can_use('Longshot') and state.can_use('Silver Gauntlets') and (state.has('Hover Boots') or state.can_play('Song of Time'))))) or (state.has('Small Key (Spirit Temple)', 4) and state.can_play('Song of Time') and state.can_see_with_lens()))
+    set_rule(world.get_location('Spirit Temple MQ Compass Chest'), lambda state: (state.can_play('Requiem of Spirit') and state.has('Small Key (Spirit Temple)', 7) and state.has_slingshot()) or (state.can_use('Longshot') and state.can_use('Silver Gauntlets') and state.has_bow()) or (state.has_slingshot() and state.has_bow()))
+    set_rule(world.get_location('Spirit Temple MQ Sun Block Room Chest'), lambda state: state.can_play('Song of Time') or (state.can_use('Longshot') and state.can_use('Silver Gauntlets')))
+    set_rule(world.get_entrance('Silver Gauntlets Exit'), lambda state: (state.has('Small Key (Spirit Temple)', 7) and (state.can_play('Song of Time') or (state.can_use('Longshot') and state.can_use('Silver Gauntlets')))) or (state.has('Small Key (Spirit Temple)', 4) and state.can_play('Song of Time') and state.can_see_with_lens()))
     set_rule(world.get_location('Spirit Temple MQ Mirror Puzzle Invisible Chest'), lambda state: state.can_see_with_lens())
 
     # Boss
@@ -732,7 +733,6 @@ def dung_rules_sptmq(world):
 
     # GS
     set_rule(world.get_location('GS Spirit Temple MQ Lower Adult Right'), lambda state: state.has('Small Key (Spirit Temple)', 7) and state.has('Hammer') and state.has_ocarina() and state.has('Song of Time') and state.has('Eponas Song') and state.has('Suns Song') and state.has('Song of Storms') and state.has('Zeldas Lullaby'))
-    set_rule(world.get_location('GS Spirit Temple MQ Sun Block Room'), lambda state: (state.can_use('Longshot') and state.can_use('Silver Gauntlets') and (state.has('Hover Boots') or state.can_play('Song of Time'))) or (state.can_play('Song of Time') and state.has('Boomerang')))
     set_rule(world.get_location('GS Spirit Temple MQ Iron Knuckle West'), lambda state: state.has('Small Key (Spirit Temple)', 7))
     set_rule(world.get_location('GS Spirit Temple MQ Iron Knuckle North'), lambda state: state.has('Small Key (Spirit Temple)', 7))
 
@@ -821,21 +821,24 @@ def dung_rules_bw0(world):
 # Bottom of the Well MQ
 # "Quirks to Know":
 # Water Lowering Switch:
-# - You can jumpslash this switch by jumping off with a Deku Stick, so no requirements need to be listed to lower the water.
+# - You can jumpslash this switch by jumping off with a Deku Stick or Kokiri Sword.
 # Switch for West Inner Room Door:
 # - Explosives are not required to reach this switch. You can sidehop or backflip over the corner of the pit.
+# Zelda's Lullaby opening the gates:
+# - Similarly, if you have explosives, you can sidehop/backflip the corner of the pit to get into the main area.
 def dung_rules_bwmq(world):
-    set_rule(world.get_location('Bottom of the Well MQ Compass Chest'), lambda state: state.has('Kokiri Sword') or world.logic_child_deadhand)
+    set_rule(world.get_location('Bottom of the Well MQ Compass Chest'), lambda state: state.has('Kokiri Sword') or (state.has_sticks() and world.logic_child_deadhand))
     set_rule(world.get_location('Bottom of the Well MQ Dead Hand Freestanding Key'), lambda state: state.has_explosives())
-    set_rule(world.get_location('Bottom of the Well MQ Map Chest'), lambda state: state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_location('Bottom of the Well MQ East Inner Room Freestanding Key'), lambda state: state.can_play('Zeldas Lullaby') and state.has_projectile('child'))
+    set_rule(world.get_location('Bottom of the Well MQ Map Chest'), lambda state: state.can_play('Zeldas Lullaby') or state.has_explosives())
+    set_rule(world.get_location('Bottom of the Well MQ East Inner Room Freestanding Key'), lambda state: state.can_play('Zeldas Lullaby') or state.has_explosives())
     set_always_allow(world.get_location('Bottom of the Well MQ Lens Chest'), lambda item, state: item.name == 'Small Key (Bottom of the Well)')
-    set_rule(world.get_location('Bottom of the Well MQ Lens Chest'), lambda state: state.can_play('Zeldas Lullaby') and state.has_explosives() and (state.has('Small Key (Bottom of the Well)', 2) or item_name(state, 'Bottom of the Well MQ Lens Chest') == 'Small Key (Bottom of the Well)'))
+    set_rule(world.get_location('Bottom of the Well MQ Lens Chest'), lambda state: state.has_explosives() and (state.has('Small Key (Bottom of the Well)', 2) or item_name(state, 'Bottom of the Well MQ Lens Chest') == 'Small Key (Bottom of the Well)'))
 
     # GS
-    set_rule(world.get_location('GS Well MQ West Inner Room'), lambda state: state.can_play('Zeldas Lullaby') and state.can_see_with_lens())
+    set_rule(world.get_location('GS Well MQ Basement'), lambda state: state.can_child_attack() or (state.can_play('Zeldas Lullaby') and state.can_see_with_lens() and (world.difficulty != 'ohko' or (state.can_use('Nayrus Love') and world.logic_lens != 'all'))))
+    set_rule(world.get_location('GS Well MQ West Inner Room'), lambda state: state.can_child_attack() and (state.can_play('Zeldas Lullaby') or state.has_explosives()) and state.can_see_with_lens())
     set_always_allow(world.get_location('GS Well MQ Coffin Room'), lambda item, state: item.name == 'Small Key (Bottom of the Well)')
-    set_rule(world.get_location('GS Well MQ Coffin Room'), lambda state: state.has('Small Key (Bottom of the Well)', 2) or item_name(state, 'GS Well MQ Coffin Room') == 'Small Key (Bottom of the Well)')
+    set_rule(world.get_location('GS Well MQ Coffin Room'), lambda state: state.can_child_attack() and (state.has('Small Key (Bottom of the Well)', 2) or item_name(state, 'GS Well MQ Coffin Room') == 'Small Key (Bottom of the Well)'))
 
 # Ice Cavern Vanilla
 def dung_rules_ic0(world):
@@ -892,6 +895,8 @@ def dung_rules_gtg0(world):
     set_rule(world.get_location('Gerudo Training Grounds Heavy Block Fourth Chest'), lambda state: state.has('Progressive Strength Upgrade', 2) and state.can_see_with_lens() and state.is_adult())
 
 # Gerudo Training Grounds MQ
+# I'm considering adding just hookshot as logic to fully clear this place, longshot not required.
+# - It's maybe the sort of thing that needs a logic option...
 def dung_rules_gtgmq(world):
     set_rule(world.get_entrance('Gerudo Training Grounds Left Door'), lambda state: state.has_fire_source())
     set_rule(world.get_entrance('Gerudo Training Grounds Right Door'), lambda state: state.has('Bow'))
@@ -900,7 +905,7 @@ def dung_rules_gtgmq(world):
     set_rule(world.get_entrance('Gerudo Training Grounds Rusted Switch'), lambda state: state.has('Hammer'))
     set_rule(world.get_location('Gerudo Training Grounds MQ Hidden Ceiling Chest'), lambda state: state.can_see_with_lens())
     set_rule(world.get_location('Gerudo Training Grounds MQ Maze Path Third Chest'), lambda state: state.has('Small Key (Gerudo Training Grounds)', 1))
-    set_rule(world.get_location('Gerudo Training Grounds MQ Underwater Silver Rupee Chest'), lambda state: state.has('Hover Boots') and state.has_fire_source() and state.has('Progressive Hookshot') and state.has('Iron Boots') and (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()) and ((world.difficulty != 'ohko') or state.has_bottle() or state.can_use('Nayrus Love')))
+    set_rule(world.get_location('Gerudo Training Grounds MQ Underwater Silver Rupee Chest'), lambda state: state.has('Hover Boots') and state.has_fire_source() and state.has('Progressive Hookshot') and state.has('Iron Boots') and (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
     set_rule(world.get_location('Gerudo Training Grounds MQ Heavy Block Chest'), lambda state: state.has('Progressive Strength Upgrade', 2))
     set_rule(world.get_location('Gerudo Training Grounds MQ Eye Statue Chest'), lambda state: state.has('Bow'))
     set_rule(world.get_location('Gerudo Training Grounds MQ Ice Arrows Chest'), lambda state: state.has('Small Key (Gerudo Training Grounds)', 3) or (item_name(state, 'Gerudo Training Grounds MQ Ice Arrows Chest') == 'Small Key (Gerudo Training Grounds)' and state.has('Small Key (Gerudo Training Grounds)')))
@@ -940,7 +945,7 @@ def dung_rules_gcmq(world):
     set_rule(world.get_location('Ganons Castle Fire Trial Clear'), lambda state: state.has_GoronTunic() and state.can_use('Golden Gauntlets') and state.can_use('Light Arrows') and (state.can_use('Longshot') or state.has('Hover Boots')))
     set_rule(world.get_location('Ganons Castle MQ Water Trial Chest'), lambda state: state.has_bottle())
     set_rule(world.get_location('Ganons Castle Water Trial Clear'), lambda state: state.has_bottle() and state.can_use('Light Arrows') and state.has('Small Key (Ganons Castle)', 3))
-    set_rule(world.get_location('Ganons Castle MQ Shadow Trial First Chest'), lambda state: (state.has('Bow') and (state.has('Progressive Hookshot') or state.has('Hover Boots'))) or (state.has('Hover Boots') and state.can_see_with_lens() and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.can_use('Dins Fire'))))
+    set_rule(world.get_location('Ganons Castle MQ Shadow Trial First Chest'), lambda state: (state.has('Bow') and (state.has('Progressive Hookshot') or state.has('Hover Boots'))) or (state.has('Hover Boots') and state.can_see_with_lens() and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.can_use('Dins Fire') or state.has_blue_fire())))
     set_rule(world.get_location('Ganons Castle MQ Shadow Trial Second Chest'), lambda state: state.has('Bow') and state.can_see_with_lens() and (state.has('Hover Boots') or (state.has('Progressive Hookshot') and state.has_fire_source())))
     set_rule(world.get_location('Ganons Castle Shadow Trial Clear'), lambda state: state.can_use('Light Arrows') and state.can_see_with_lens() and (state.has('Hover Boots') or (state.has('Progressive Hookshot') and state.has_fire_source())))
     set_rule(world.get_location('Ganons Castle MQ Spirit Trial First Chest'), lambda state: state.has('Bow') and state.has('Hammer'))
