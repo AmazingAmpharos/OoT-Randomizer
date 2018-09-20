@@ -375,11 +375,9 @@ eventlocations = {
     'Epona': 'Epona',
     'Deku Baba Sticks': 'Deku Stick Drop',
     'Goron City Stick Pot': 'Deku Stick Drop',
-    'Bottom of the Well Stick Pot': 'Deku Stick Drop',
     'Zoras Domain Stick Pot': 'Deku Stick Drop',
     'Deku Baba Nuts': 'Deku Nut Drop',
     'Zoras Domain Nut Pot': 'Deku Nut Drop',
-    'Spirit Temple Nut Crate': 'Deku Nut Drop',
     'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
     'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
     'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',
@@ -681,8 +679,9 @@ def get_pool_core(world):
         if not world.dungeon_mq['JB']:
             pool.append('Deku Nuts (5)')
         if world.dungeon_mq['GC']:
-            pool.append('Deku Nuts (5)')
-        pool.extend(['Bombs (5)', 'Arrows (30)', 'Recovery Heart', 'Rupees (5)'])
+            pool.extend(['Bombs (5)', 'Arrows (30)', 'Recovery Heart', 'Rupees (5)', 'Deku Nuts (5)'])
+        else:
+            pool.extend(['Bombs (5)', 'Arrows (30)', 'Recovery Heart', 'Rupees (5)'])
         pool.extend(deku_scrubs_items)
     else:        
         if world.dungeon_mq['DT']:
@@ -701,10 +700,15 @@ def get_pool_core(world):
             placed_items['Jabu Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
         if world.dungeon_mq['GC']:
             placed_items['GC MQ Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
-        placed_items['GC Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
-        placed_items['GC Deku Scrub Arrows'] = 'Buy Arrows (30)'
-        placed_items['GC Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
-        placed_items['GC Deku Scrub Green Potion'] = 'Buy Green Potion'
+            placed_items['GC MQ Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
+            placed_items['GC MQ Deku Scrub Arrows'] = 'Buy Arrows (30)'
+            placed_items['GC MQ Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
+            placed_items['GC MQ Deku Scrub Green Potion'] = 'Buy Green Potion'
+        else:
+            placed_items['GC Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
+            placed_items['GC Deku Scrub Arrows'] = 'Buy Arrows (30)'
+            placed_items['GC Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
+            placed_items['GC Deku Scrub Green Potion'] = 'Buy Green Potion'
         placed_items.update(vanilla_deku_scrubs)
 
     pool.extend(alwaysitems)
@@ -729,12 +733,14 @@ def get_pool_core(world):
     if world.dungeon_mq['SpT']:
         pool.extend(SpT_MQ)
     else:
+        placed_items['Spirit Temple Nut Crate'] = 'Deku Nut Drop'
         pool.extend(SpT_vanilla)
     if world.dungeon_mq['ShT']:
         pool.extend(ShT_MQ)
     else:
         pool.extend(ShT_vanilla)
     if not world.dungeon_mq['BW']:
+        placed_items['Bottom of the Well Stick Pot'] = 'Deku Stick Drop'
         pool.extend(BW_vanilla)
     if world.dungeon_mq['GTG']:
         pool.extend(GTG_MQ)

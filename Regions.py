@@ -674,8 +674,7 @@ def create_regions(world):
                 ['Spirit Temple Exit', 'Spirit Temple Crawl Passage', 'Spirit Temple Silver Block']),
             create_dungeon_region(
                 'Child Spirit Temple', 
-                ['Spirit Temple Child Left Chest', 'Spirit Temple Child Right Chest', 'GS Spirit Temple Metal Fence',
-                'Spirit Temple Nut Crate'], 
+                ['Spirit Temple Child Left Chest', 'Spirit Temple Child Right Chest', 'GS Spirit Temple Metal Fence'], 
                 ['Child Spirit Temple Climb']),
             create_dungeon_region(
                 'Child Spirit Temple Climb', 
@@ -776,7 +775,7 @@ def create_regions(world):
                 'Bottom of the Well', 
                 ['Bottom of the Well MQ Compass Chest', 'Bottom of the Well MQ Map Chest', 'Bottom of the Well MQ Lens Chest', 
                  'Bottom of the Well MQ Dead Hand Freestanding Key', 'Bottom of the Well MQ East Inner Room Freestanding Key', 
-                 'GS Well MQ Basement', 'GS Well MQ West Inner Room', 'GS Well MQ Coffin Room', 'Bottom of the Well Stick Pot'], 
+                 'GS Well MQ Basement', 'GS Well MQ West Inner Room', 'GS Well MQ Coffin Room'], 
                 ['Bottom of the Well Exit'])
         ])
     else:
@@ -888,7 +887,7 @@ def create_regions(world):
         world.regions.extend([
             create_dungeon_region(
                 'Ganons Castle Lobby', 
-                ['GC Deku Scrub Bombs', 'GC Deku Scrub Arrows', 'GC Deku Scrub Red Potion', 'GC Deku Scrub Green Potion',
+                ['GC MQ Deku Scrub Bombs', 'GC MQ Deku Scrub Arrows', 'GC MQ Deku Scrub Red Potion', 'GC MQ Deku Scrub Green Potion',
                  'GC MQ Deku Scrub Deku Nuts'],
                 ['Ganons Castle Exit', 'Ganons Castle Forest Trial', 'Ganons Castle Fire Trial', 'Ganons Castle Water Trial', 
                  'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 
@@ -1704,6 +1703,10 @@ location_table = {
     'DC MQ Deku Scrub Deku Shield': (None, None, 0x34, 'NPC', 0x01, 'Dodongo\'s Cavern'), 
     'DC MQ Deku Scrub Red Potion': (None, None, 0x39, 'NPC', 0x01, 'Dodongo\'s Cavern'), 
     'GC MQ Deku Scrub Deku Nuts': (None, None, 0x30, 'NPC', 0x0D, 'Ganon\'s Castle'), 
+    'GC MQ Deku Scrub Bombs': (None, None, 0x37, 'NPC', 0x0D, 'Ganon\'s Castle'), 
+    'GC MQ Deku Scrub Arrows': (None, None, 0x33, 'NPC', 0x0D, 'Ganon\'s Castle'), 
+    'GC MQ Deku Scrub Red Potion': (None, None, 0x39, 'NPC', 0x0D, 'Ganon\'s Castle'), 
+    'GC MQ Deku Scrub Green Potion': (None, None, 0x3A, 'NPC', 0x0D, 'Ganon\'s Castle'), 
 
     'HF Grotto Deku Scrub Piece of Heart': (None, None, 0x3E, 'GrottoNPC', 0x01, 'Hyrule Field'), 
     'ZR Grotto Deku Scrub Red Potion': (None, None, 0x39, 'GrottoNPC', 0x02, 'Zora\'s River'), 
