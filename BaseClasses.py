@@ -373,7 +373,8 @@ class CollectionState(object):
         return self.has_bottle() and \
                 (self.can_reach('Ice Cavern')
                 or self.can_reach('Ganons Castle Water Trial') 
-                or self.has('Buy Blue Fire'))
+                or self.has('Buy Blue Fire')
+                or (self.world.dungeon_mq['GTG'] and self.can_reach('Gerudo Training Grounds Stalfos Room')))
 
     def has_ocarina(self):
         return (self.has('Ocarina') or self.has("Fairy Ocarina") or self.has("Ocarina of Time"))
@@ -390,7 +391,7 @@ class CollectionState(object):
         elif item in adult_items:
             return self.has(item) and self.is_adult()
         elif item in magic_arrows:
-            return self.has(item) and self.is_adult() and self.has('Bow') and self.has('Magic Meter')
+            return self.has(item) and self.is_adult() and self.has_bow() and self.has('Magic Meter')
         elif item == 'Hookshot':
             return self.has('Progressive Hookshot') and self.is_adult()
         elif item == 'Longshot':
@@ -440,13 +441,13 @@ class CollectionState(object):
 
     def has_projectile(self, age='either'):
         if age == 'child':
-            return self.has_explosives or self.has('Slingshot') or self.has('Boomerang')
+            return self.has_explosives() or self.has_slingshot() or self.has('Boomerang')
         elif age == 'adult':
-            return self.has_explosives or self.has('Bow') or self.has('Progressive Hookshot')
+            return self.has_explosives() or self.has_bow() or self.has('Progressive Hookshot')
         elif age == 'both':
-            return self.has_explosives or ((self.has('Bow') or self.has('Progressive Hookshot')) and (self.has('Slingshot') or self.has('Boomerang')))
+            return self.has_explosives() or ((self.has_bow() or self.has('Progressive Hookshot')) and (self.has_slingshot() or self.has('Boomerang')))
         else:
-            return self.has_explosives or ((self.has('Bow') or self.has('Progressive Hookshot')) or (self.has('Slingshot') or self.has('Boomerang')))
+            return self.has_explosives() or ((self.has_bow() or self.has('Progressive Hookshot')) or (self.has_slingshot() or self.has('Boomerang')))
 
     def has_GoronTunic(self):
         return (self.has('Goron Tunic') or self.has('Buy Goron Tunic'))
@@ -458,12 +459,9 @@ class CollectionState(object):
         return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'))
 
     def can_finish_adult_trades(self):
-        if self.world.dungeon_mq['GTG']:
-            zora_thawed = self.has_bottle() and (self.can_play('Zeldas Lullaby') or (self.has('Hover Boots') and self.world.logic_zora_with_hovers)) and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2) or self.can_reach('Gerudo Training Grounds Stalfos Room'))
-        else:
-            zora_thawed = self.has_bottle() and (self.can_play('Zeldas Lullaby') or (self.has('Hover Boots') and self.world.logic_zora_with_hovers)) and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
+        zora_thawed = (self.can_play('Zeldas Lullaby') or (self.has('Hover Boots') and self.world.logic_zora_with_hovers)) and self.has_blue_fire()
         carpenter_access = self.has('Epona') or self.has('Progressive Hookshot', 2)
-        return (self.has('Claim Check') or ((self.has('Progressive Strength Upgrade') or self.can_blast_or_smash() or self.has('Bow')) and (((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))))
+        return (self.has('Claim Check') or ((self.has('Progressive Strength Upgrade') or self.can_blast_or_smash() or self.has('Bow')) and (((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and self.has_blue_fire()) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))))
 
     def has_bottle(self):
         is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter')
@@ -485,7 +483,7 @@ class CollectionState(object):
         )
 
     def has_fire_source(self):
-        return ((self.has('Dins Fire') or (self.has_bow() and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
+        return self.can_use('Dins Fire') or self.can_use('Fire Arrows')
 
     def guarantee_hint(self):
         if(self.world.hints == 'mask'):
