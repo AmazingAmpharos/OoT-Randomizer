@@ -21,6 +21,7 @@ from ItemList import generate_itempool
 from Hints import buildGossipHints
 from Utils import default_output_path
 from version import __version__
+from OcarinaSongs import verify_scarecrow_song_str
 
 class dummy_window():
     def __init__(self):
@@ -35,6 +36,10 @@ def main(settings, window=dummy_window()):
     start = time.clock()
 
     logger = logging.getLogger('')
+
+    # verify that the settings are valid
+    if settings.free_scarecrow:
+        verify_scarecrow_song_str(settings.scarecrow_song, settings.ocarina_songs)
 
     # initialize the world
 

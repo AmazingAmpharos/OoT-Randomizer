@@ -12,7 +12,7 @@ from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonTe
 from Utils import local_path, default_output_path
 from Items import ItemFactory, item_data
 from Messages import *
-from OcarinaSongs import Song, replace_songs, subsong
+from OcarinaSongs import Song, str_to_song, replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
 TunicColors = {
@@ -1452,52 +1452,7 @@ def patch_rom(world, rom):
 
     scarecrow_song = None
     if world.free_scarecrow:
-        original_songs = [
-            'LURLUR',
-            'ULRULR',
-            'DRLDRL',
-            'RDURDU',
-            'RADRAD',
-            'ADUADU',
-            'AULRLR',
-            'DADALDLD',
-            'ADRRL',
-            'ADALDA',
-            'LRRALRD',
-            'URURLU'
-        ]
-
-        note_map = {
-            'A': 0,
-            'D': 1,
-            'R': 2,
-            'L': 3,
-            'U': 4
-        }
-
-        if len(world.scarecrow_song) != 8:
-            raise Exception('Scarecrow Song must be 8 notes long')
-
-        if len(set(world.scarecrow_song.upper())) == 1:
-            raise Exception('Scarecrow Song must contain at least two different notes')           
-
-        notes = []
-        for c in world.scarecrow_song.upper():
-            if c not in note_map:
-                raise Exception('Invalid note %s. Valid notes are A, D, R, L, U' % c)
-
-            notes.append(note_map[c])
-        scarecrow_song = Song(activation=notes)
-
-        if not world.ocarina_songs:
-            for original_song in original_songs:
-                song_notes = []
-                for c in original_song:
-                    song_notes.append(note_map[c])
-                song = Song(activation=song_notes)
-
-                if subsong(scarecrow_song, song):
-                    raise Exception('You may not have the Scarecrow Song contain an existing song')
+        scarecrow_song = str_to_song(world.scarecrow_song) #verified valid string in Main.py
 
         write_bits_to_save(0x0EE6, 0x10)     # Played song as adult
         write_byte_to_save(0x12C5, 0x01)    # Song is remembered
