@@ -555,8 +555,8 @@ def dung_rules_fit0(world):
 	# Fire Temple Vanilla
     set_rule(world.get_entrance('Fire Temple Early Climb'), lambda state: state.has_GoronTunic() and state.has('Small Key (Fire Temple)', 4) and state.has('Progressive Strength Upgrade') and (state.has_explosives() or ((state.has_bow() or state.has('Progressive Hookshot')) and state.is_adult())))
     set_rule(world.get_entrance('Fire Temple Fire Maze Escape'), lambda state: state.has('Small Key (Fire Temple)', 8) or (state.has('Small Key (Fire Temple)', 7) and state.has('Hover Boots') and state.has('Hammer') and state.is_adult()))
-    set_rule(world.get_location('Fire Temple Fire Dancer Chest'), lambda state: (state.has('Small Key (Fire Temple)', 8) or (not world.keysanity and not world.dungeon_mq['FiT'])) and state.is_adult() and state.has('Hammer'))
-    set_rule(world.get_location('Fire Temple Boss Key Chest'), lambda state: (state.has('Small Key (Fire Temple)', 8) or (not world.keysanity and not world.dungeon_mq['FiT'])) and state.is_adult() and state.has('Hammer'))
+    set_rule(world.get_location('Fire Temple Fire Dancer Chest'), lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.is_adult() and state.has('Hammer')) 
+    set_rule(world.get_location('Fire Temple Boss Key Chest'), lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.is_adult() and state.has('Hammer')) 
     set_rule(world.get_location('Fire Temple Big Lava Room Bombable Chest'), lambda state: state.has('Small Key (Fire Temple)', 2) and state.has_explosives())
     set_rule(world.get_location('Fire Temple Big Lava Room Open Chest'), lambda state: state.has('Small Key (Fire Temple)', 2))
     set_rule(world.get_location('Fire Temple Map Chest'), lambda state: state.has('Small Key (Fire Temple)', 6) or (state.has('Small Key (Fire Temple)', 5) and state.is_adult() and state.has_bow()))
@@ -576,7 +576,7 @@ def dung_rules_fit0(world):
     set_rule(world.get_location('GS Fire Temple Unmarked Bomb Wall'), lambda state: state.has('Small Key (Fire Temple)', 4) and state.has_explosives())
     set_rule(world.get_location('GS Fire Temple East Tower Climb'), lambda state: state.has_ocarina() and state.has('Small Key (Fire Temple)', 6) and state.has('Progressive Hookshot') and state.is_adult())
     set_rule(world.get_location('GS Fire Temple East Tower Top'), lambda state: state.has_ocarina() and state.has('Small Key (Fire Temple)', 6) and state.has('Progressive Hookshot') and state.is_adult())
-    set_rule(world.get_location('GS Fire Temple Basement'), lambda state: (state.has('Small Key (Fire Temple)', 8) or (not world.keysanity and not world.dungeon_mq['FiT'])) and state.has('Hammer') and state.is_adult())
+    set_rule(world.get_location('GS Fire Temple Basement'), lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.has('Hammer') and state.is_adult()) 
 
 # MQ Fire Temple
 # "Quirks to Know":
@@ -607,29 +607,27 @@ def dung_rules_fitmq(world):
 # Water Temple Vanilla
 def dung_rules_wt0(world):
 	# Water Temple vanilla
-    set_rule(world.get_entrance('Water Temple Central Pillar'), lambda state: (state.has_bow() or (state.has('Dins Fire') and state.has('Magic Meter')) or state.has('Small Key (Water Temple)', 5)) and state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_entrance('Water Temple Upper Locked Door'), lambda state: state.has('Small Key (Water Temple)', 5) and (state.can_play('Zeldas Lullaby') or world.keysanity))
-    set_rule(world.get_location('Water Temple Torches Chest'), lambda state: (state.has_bow() or (state.has('Dins Fire') and state.has('Magic Meter'))) and state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: (state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby')) or (state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.can_play('Song of Time') and state.has_bow()))
-    set_rule(world.get_location('Water Temple Central Bow Target Chest'), lambda state: state.has_bow() and state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby') and (state.has('Hover Boots') or state.has('Progressive Hookshot', 2)))
-    set_always_allow(world.get_location('Water Temple Boss Key Chest'), lambda item, state: item.name == 'Small Key (Water Temple)')
-    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.has('Progressive Hookshot', 2)) or item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)') #If key for key, this lets the logic reduce the small key reqs for every other locked door.
-    set_rule(world.get_location('Water Temple Cracked Wall Chest'), lambda state: state.has_explosives())
-    set_rule(world.get_location('Water Temple Dark Link Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity))
-    set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.can_play('Song of Time') and state.has_bow() and (state.can_play('Zeldas Lullaby') or world.keysanity))
-    set_rule(world.get_location('Water Temple Central Pillar Chest'), lambda state: state.has_ZoraTunic())
-
-	# boss rules
-    set_rule(world.get_location('Morpha'), lambda state: state.has('Boss Key (Water Temple)') and state.has('Progressive Hookshot', 2))
-    set_rule(world.get_location('Morpha Heart'), lambda state: state.has('Boss Key (Water Temple)') and state.has('Progressive Hookshot', 2))
-
-    # GS
-    set_rule(world.get_location('GS Water Temple South Basement'), lambda state: state.has_explosives() and state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_location('GS Water Temple Serpent River'), lambda state: state.can_play('Song of Time') and state.has('Small Key (Water Temple)', 6))
-    set_rule(world.get_location('GS Water Temple Falling Platform Room'), lambda state: state.has('Progressive Hookshot', 2))
-    set_rule(world.get_location('GS Water Temple Central Room'), lambda state: state.has('Progressive Hookshot', 2) or (state.has('Farores Wind') and state.has('Magic Meter')))
-    #5 keys would be better but it wouldn't be compatible with the key for key scenarios, 6 will be identical pre-keysanity.
-    set_rule(world.get_location('GS Water Temple Near Boss Key Chest'), lambda state: state.has('Progressive Hookshot', 2) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.has('Small Key (Water Temple)', 6))
+    set_rule(world.get_entrance('Water Temple Central Pillar'), lambda state: (state.has('Bow') or state.can_use('Dins Fire') or state.has('Small Key (Water Temple)', 5)) and state.can_play('Zeldas Lullaby')) 
+    set_rule(world.get_entrance('Water Temple Upper Locked Door'), lambda state: state.has('Small Key (Water Temple)', 5) and (state.can_play('Zeldas Lullaby') or world.keysanity)) 
+    set_rule(world.get_location('Water Temple Torches Chest'), lambda state: (state.has('Bow') or state.can_use('Dins Fire')) and state.can_play('Zeldas Lullaby')) 
+    set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: (state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby')) or (state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.can_play('Song of Time') and state.has('Bow'))) 
+    set_rule(world.get_location('Water Temple Central Bow Target Chest'), lambda state: state.has('Bow') and state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby') and (state.has('Hover Boots') or state.can_use('Longshot'))) 
+    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.can_use('Longshot')) or (state.has('Small Key (Water Temple)', 5) and (item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)' or not world.keys_placed))) #If key for key, this lets the logic reduce the small key reqs for every other locked door. 
+    set_rule(world.get_location('Water Temple Cracked Wall Chest'), lambda state: state.has_explosives()) 
+    set_rule(world.get_location('Water Temple Dark Link Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity)) 
+    set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.can_play('Song of Time') and state.has('Bow') and (state.can_play('Zeldas Lullaby') or world.keysanity)) 
+    set_rule(world.get_location('Water Temple Central Pillar Chest'), lambda state: state.has_ZoraTunic()) 
+ 
+    # Boss 
+    set_rule(world.get_location('Morpha'), lambda state: state.has('Boss Key (Water Temple)') and state.can_use('Longshot')) 
+    set_rule(world.get_location('Morpha Heart'), lambda state: state.has('Boss Key (Water Temple)') and state.can_use('Longshot')) 
+ 
+    # GS 
+    set_rule(world.get_location('GS Water Temple South Basement'), lambda state: state.has_explosives() and state.can_play('Zeldas Lullaby')) 
+    set_rule(world.get_location('GS Water Temple Serpent River'), lambda state: state.can_play('Song of Time') and state.has('Small Key (Water Temple)', 6)) 
+    set_rule(world.get_location('GS Water Temple Falling Platform Room'), lambda state: state.can_use('Longshot')) 
+    set_rule(world.get_location('GS Water Temple Central Room'), lambda state: state.can_use('Longshot') or state.can_use('Farores Wind')) 
+    set_rule(world.get_location('GS Water Temple Near Boss Key Chest'), lambda state: state.can_use('Longshot') and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.has('Small Key (Water Temple)', 5)) 
 
 # MQ Water Temple
 # Water Temple Freestanding Key:
