@@ -119,23 +119,6 @@ normal_bottles = [
 
 normal_bottle_count = 3
 
-# 10 items get removed for hard+
-harditems = (
-    ['Bombs (5)'] * 2 
-    + ['Arrows (5)'] * 2 
-    + ['Deku Nuts (5)'] * 2 
-    + ['Rupees (5)'] * 3 
-    + ['Rupees (20)'])
-
-# 37 items get removed for very hard
-veryharditems = (
-    ['Bombs (5)'] * 8 
-    + ['Arrows (5)'] * 8 
-    + ['Deku Nuts (5)'] * 8 
-    + ['Rupees (5)'] * 10 
-    + ['Rupees (20)'] * 2 
-    + ['Rupees (50)'])
-
 normal_rupees = (
     ['Rupees (5)'] * 13
     + ['Rupees (20)'] * 5
@@ -265,7 +248,6 @@ deku_scrubs_items = (
       ['Deku Nuts (5)'] * 5
     + ['Deku Stick (1)']
     + ['Bombs (5)'] * 5
-    + ['Arrows (30)'] * 5
     + ['Recovery Heart'] * 4
     + ['Rupees (5)'] * 4 # ['Green Potion']
 )
@@ -387,7 +369,24 @@ eventlocations = {
     'Ganons Castle Light Trial Clear': 'Light Trial Clear'
 }
 
-#total_items_to_place = 5
+junk_pool = (
+    8 *  ['Bombs (5)'] +
+    2 *  ['Bombs (10)'] +
+    8 *  ['Arrows (5)'] +
+    2 *  ['Arrows (10)'] +
+    5 *  ['Deku Sticks (1)'] + 
+    5 *  ['Deku Nuts (5)'] + 
+    5 *  ['Deku Seeds (30)'] +
+    10 * ['Rupees (5)'] +
+    4 *  ['Rupees (20)'] + 
+    1 *  ['Rupees (50)'])
+def get_junk_item(count=1):
+    ret_junk = []
+    for _ in range(count):
+        ret_junk.append(random.choice(junk_pool))
+
+    return ret_junk
+
 
 def generate_itempool(world):
     for location, item in eventlocations.items():
@@ -610,10 +609,10 @@ def get_pool_core(world):
     if world.difficulty == 'normal':
         pool.extend(['Magic Meter', 'Double Defense'] + ['Heart Container'] * 8)
     else:
-        pool.extend(harditems)
+        pool.extend(get_junk_item(10))
 
     if world.difficulty == 'very_hard' or world.difficulty == 'ohko':
-        pool.extend(veryharditems)
+        pool.extend(get_junk_item(37))
     else:
         pool.extend(['Nayrus Love', 'Piece of Heart (Treasure Chest Game)'] + ['Piece of Heart'] * 35)
 
@@ -666,23 +665,27 @@ def get_pool_core(world):
         shop_item_count = shop_slots_count - shop_nonitem_count
 
         pool.extend(random.sample(remain_shop_items, shop_item_count))
-        pool.extend(random.sample(veryharditems, shop_nonitem_count))
+        pool.extend(get_junk_item(shop_nonitem_count))
         pool.extend(shopsanity_rupees)
 
     if world.shuffle_scrubs:
+        arrows_or_seeds = 0
         if world.dungeon_mq['DT']:
             pool.append('Deku Shield')
         if world.dungeon_mq['DC']:
-            pool.extend(['Deku Stick (1)', 'Arrows (30)', 'Deku Shield', 'Recovery Heart'])
+            pool.extend(['Deku Stick (1)', 'Deku Shield', 'Recovery Heart'])
         else:
-            pool.extend(['Deku Nuts (5)', 'Deku Stick (1)', 'Arrows (30)', 'Deku Shield'])
+            pool.extend(['Deku Nuts (5)', 'Deku Stick (1)', 'Deku Shield'])
         if not world.dungeon_mq['JB']:
             pool.append('Deku Nuts (5)')
         if world.dungeon_mq['GC']:
-            pool.extend(['Bombs (5)', 'Arrows (30)', 'Recovery Heart', 'Rupees (5)', 'Deku Nuts (5)'])
+            pool.extend(['Bombs (5)', 'Recovery Heart', 'Rupees (5)', 'Deku Nuts (5)'])
         else:
-            pool.extend(['Bombs (5)', 'Arrows (30)', 'Recovery Heart', 'Rupees (5)'])
+            pool.extend(['Bombs (5)', 'Recovery Heart', 'Rupees (5)'])
         pool.extend(deku_scrubs_items)
+        for _ in range(7):
+            pool.append('Arrows (30)' if random.int(4) > 0 else 'Deku Seeds (30)')
+
     else:        
         if world.dungeon_mq['DT']:
             placed_items['DT MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
@@ -760,15 +763,15 @@ def get_pool_core(world):
     if world.shuffle_mapcompass == 'remove':
         for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:
             world.state.collect(item)
-            pool.append(random.choice(harditems))
+            pool.extend(get_junk_item())
     if world.shuffle_smallkeys == 'remove':
         for item in [item for dungeon in world.dungeons for item in dungeon.small_keys]:
             world.state.collect(item)
-            pool.append(random.choice(harditems))
+            pool.extend(get_junk_item())
     if world.shuffle_bosskeys == 'remove':
         for item in [item for dungeon in world.dungeons for item in dungeon.boss_key]:
             world.state.collect(item)
-            pool.append(random.choice(harditems))
+            pool.extend(get_junk_item())
     if not world.keysanity and not world.dungeon_mq['FiT']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
 

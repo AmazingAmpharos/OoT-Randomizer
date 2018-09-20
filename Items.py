@@ -104,7 +104,8 @@ item_table = {
     'Bombchus': (True, False, None, None, 0xC2, 0x00D9, 0x28),
     'Deku Nuts (5)': (False, False, None, None, 0xBD, 0x00BB, 0x12),
     'Deku Nuts (10)': (False, False, None, None, 0xBE, 0x00BB, 0x12),
-    'Deku Stick (1)': (False, False, None, 0x00E0, 0x07, 0x00C7, 0x1B), # This probably will need an extended version made to be NPC friendly.
+    'Deku Stick (1)': (False, False, None, 0x00E0, 0xD0, 0x00C7, 0xE5),
+    'Deku Seeds (30)': (False, False, None, 0x00E0, 0xD1, 0x0119, 0xB8),
     'Rupee (Treasure Chest Game)': (False, False, None, 0x0E40, 0x72, 0x017F, 0x6D),
     'Rupee (1)': (False, False, None, 0x0980, 0x4C, 0x017F, 0x6D),
     'Rupees (5)': (False, False, None, 0x09A0, 0x4D, 0x017F, 0x6E),
