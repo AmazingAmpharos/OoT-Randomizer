@@ -837,8 +837,9 @@ setting_infos = [
                       tunics, but you can buy non-shop tunics.
                       
                       Non-shop bombchus will unlock the chu slot
-                      in your inventory, which is needed to buy
-                      normal chu refills.
+                      in your inventory, which, if bombchus are in
+                      logic, is needed to buy chu refills. If not in
+                      logic, the bomb bag is required.
                       '''
         }),       
     Setting_Info('shuffle_mapcompass', str, 2, True,
