@@ -341,7 +341,7 @@ setting_infos = [
                 'Start with Gerudo Card': 'open',
             },
             'tooltip':'''\
-                      'Rescure one carpenter': The carpenter rescue sequence 
+                      'Rescue one carpenter': The carpenter rescue sequence 
                       is much faster and doesn't affect logic much.
 
                       'Start with Gerudo Card': skips the rescue entirely, 
@@ -400,9 +400,16 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      Chests that lock themselves can still exist.
-                      When disabled, some locations and items might 
-                      not be reachable.
+                      When this option is enabled, the randomizer will
+                      guarantee that every item is obtainable, and every
+                      location is reachable.
+                      
+                      When disabled, only required items and locations
+                      to beat the game will be guaranteed reachable.
+                      
+                      Even when enabled, some chests may still be able to
+                      hold the keys needed to reach them (Or gold 
+                      skulltulas in tokensanity).
                       '''
         }),     
     Setting_Info('bombchus_in_logic', bool, 1, True, 
@@ -432,8 +439,8 @@ setting_infos = [
 
                       Bombchu Bowling opens with bombchus.
                       Bombchus are available at Kokiri Shop
-                      and the Bazaar. Bombchus refills cannot 
-                      be bought until Bomchus have been
+                      and the Bazaar. Bombchu refills cannot 
+                      be bought until Bombchus have been
                       obtained.
                       ''',
         }),
@@ -730,7 +737,7 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      Songs can appear anywhere not just Vanilla
+                      Songs can appear anywhere, not just Vanilla
                       song locations. This significantly reduces
                       song placement bias and makes the songs more
                       evenly distributed.
@@ -775,7 +782,7 @@ setting_infos = [
             'tooltip':'''\
                       Every Deku Salescrub will give
                       a random item. This adds 33 new
-                      item locations. Scrubs prices
+                      item locations. The Scrubs' prices
                       are all reduced to 10 Rupees.
                       '''
         }),    
@@ -813,18 +820,26 @@ setting_infos = [
             },
             'tooltip':'''\
                       Shop contents are randomized.
-
-                      (X Items): Shops have X random 
-                      non-shop items. They will always
-                      be on the left side. This means 
-                      every shop will have more 
-                      possible item locations. So +2 
-                      means 2 items per shop.
-
-                      (Random): Each shop will have
-                      a random number of non-shop
-                      items. Each shop can have a 
-                      maximum of 4 items.
+                      (X Items): Shops have X random non-shop (Special
+                      Deal!) items. They will always be on the left
+                      side. This means that every shop will have more
+                      possible item locations. So +2 means 2 items
+                      per shop.
+                      
+                      (Random): Each shop will have a random number
+                      of non-shop items, up to a maximum of 4.
+                      
+                      The non-shop items have no requirements except
+                      money, while the normal shop items (such as
+                      200/300 rupee tunics) have normal vanilla
+                      requirements. This means that, for example,
+                      as a child you cannot buy 200/300 rupee
+                      tunics, but you can buy non-shop tunics.
+                      
+                      Non-shop bombchus will unlock the chu slot
+                      in your inventory, which, if bombchus are in
+                      logic, is needed to buy chu refills. If not in
+                      logic, the bomb bag is required.
                       '''
         }),       
     Setting_Info('shuffle_mapcompass', str, 2, True,
@@ -1098,7 +1113,7 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Big Poes reward is time consuming
+                      Hunting Big Poes is time consuming
                       '''
         }),
     Setting_Info('logic_no_child_fishing', bool, 1, True, 
@@ -1428,7 +1443,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Will need to memorize a new set of songs.
-                      Can be silly, but difficult. Song are
+                      Can be silly, but difficult. Songs are
                       generally sensible, and warp songs are
                       typically more difficult.
                       '''
@@ -1457,8 +1472,8 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Chests will be large if they contain a major 
-                      item and small if not. Allows skipping 
-                      chests if they are small. However skipping
+                      item, and small if they don't. Allows skipping 
+                      chests if they are small. However, skipping
                       small chests will mean having low health,
                       ammo, and rupees, so doing so is a risk.
                       '''

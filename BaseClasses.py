@@ -1,7 +1,7 @@
 import copy
 from enum import Enum, unique
 import logging
-from collections import OrderedDict, Counter
+from collections import OrderedDict, Counter, defaultdict
 from version import __version__ as OoTRVersion
 import random
 
@@ -354,10 +354,10 @@ class CollectionState(object):
                 self.has('Buy Deku Shield')
 
     def has_nuts(self):
-        return self.has('Buy Deku Nut (5)') or self.has('Buy Deku Nut (10)')
+        return self.has('Buy Deku Nut (5)') or self.has('Buy Deku Nut (10)') or self.has('Deku Nut Drop')
 
     def has_sticks(self):
-        return self.has('Buy Deku Stick (1)')
+        return self.has('Buy Deku Stick (1)') or self.has('Deku Stick Drop')
 
     def has_bow(self):
         return self.has('Bow')
@@ -422,7 +422,7 @@ class CollectionState(object):
         return (self.has('Zora Tunic') or self.has('Buy Zora Tunic'))
 
     def can_leave_forest(self):
-        return (self.world.open_forest or (self.has_slingshot() and self.has('Kokiri Sword') and self.has('Buy Deku Shield')))
+        return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'))
 
     def can_finish_adult_trades(self):
         zora_thawed = self.has_bottle() and (self.can_play('Zeldas Lullaby') or (self.has('Hover Boots') and self.world.logic_zora_with_hovers)) and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
@@ -562,7 +562,8 @@ class CollectionState(object):
         state_list = [world.state for world in worlds]
 
         # get list of all of the progressive items that can appear in hints
-        item_locations = [location for world in worlds for location in world.get_filled_locations() 
+        all_locations = [location for world in worlds for location in world.get_filled_locations()]
+        item_locations = [location for location in all_locations  
             if location.item.advancement 
             and location.item.type != 'Event' 
             and location.item.type != 'Shop' 
@@ -575,18 +576,26 @@ class CollectionState(object):
         # locations. Can't use the locations directly since they are location to the
         # copied spoiler world, so must try to find the matching locations by name
         if worlds[0].spoiler.playthrough:
-            spoiler_locations = {location.name:location.world.id for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere}
-            item_locations = list(filter(lambda location: location.name in spoiler_locations and location.world.id == spoiler_locations[location.name], item_locations))
+            spoiler_locations = defaultdict(lambda: [])
+            for location in [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere]:
+                spoiler_locations[location.name].append(location.world.id)
+            item_locations = list(filter(lambda location: location.world.id in spoiler_locations[location.name], item_locations))
 
-
-        # Try to remove the items one at a time and see if the game is still beatable
         required_locations = []
-        for location in item_locations:
-            old_item = location.item
-            location.item = None
-            if not CollectionState.can_beat_game(state_list):
-                required_locations.append(location)
-            location.item = old_item
+        reachable_items_locations = True
+        while (item_locations and reachable_items_locations):
+            reachable_items_locations = [location for location in all_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
+            for location in reachable_items_locations:
+                # Try to remove items one at a time and see if the game is still beatable
+                if location in item_locations:
+                    old_item = location.item
+                    location.item = None
+                    if not CollectionState.can_beat_game(state_list):
+                        required_locations.append(location)
+                    location.item = old_item
+                    item_locations.remove(location)
+                state_list[location.world.id].collected_locations[location.name] = True
+                state_list[location.item.world.id].collect(location.item)
 
         # Filter the required location to only include location in the world
         for world in worlds:
@@ -638,7 +647,7 @@ class Region(object):
             return self.dungeon.major_items == 0
 
         if is_dungeon_restricted:
-            return self.dungeon and self.dungeon.is_dungeon_item(item)
+            return self.dungeon and self.dungeon.is_dungeon_item(item) and item.world.id == self.world.id
         return True
 
     def __str__(self):

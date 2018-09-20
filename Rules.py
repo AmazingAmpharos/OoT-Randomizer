@@ -80,6 +80,8 @@ def global_rules(world):
     dung_rules_gc0(world)
 
     # overworld requirements
+    set_rule(world.get_location('Deku Baba Sticks'), lambda state: (state.has('Kokiri Sword') and state.has('Buy Deku Shield')) or (world.open_forest and (state.is_adult() or state.has('Kokiri Sword') or state.has('Boomerang'))))
+    set_rule(world.get_location('Deku Baba Nuts'), lambda state: (state.has('Kokiri Sword') and state.has('Buy Deku Shield')) or (world.open_forest and (state.is_adult() or state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword') or (state.has('Dins Fire') and state.has('Magic Meter')))))
     set_rule(world.get_entrance('Deku Tree'), lambda state: (state.has('Kokiri Sword') and state.has('Buy Deku Shield')) or world.open_forest)
     set_rule(world.get_entrance('Lost Woods Bridge'), lambda state: state.can_leave_forest())
     set_rule(world.get_location('Skull Kid'), lambda state: state.can_play('Sarias Song'))
@@ -111,6 +113,7 @@ def global_rules(world):
     set_rule(world.get_location('Goron City Pot Freestanding PoH'), lambda state: (state.has_bombs() or state.has('Progressive Strength Upgrade')) and ((state.can_play('Zeldas Lullaby') and state.has_sticks()) or (state.has('Dins Fire') and state.has('Magic Meter'))))
     set_rule(world.get_entrance('Darunias Chamber'), lambda state: state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('Darunias Joy'), lambda state: state.can_play('Sarias Song'))
+    set_rule(world.get_location('Goron City Stick Pot'), lambda state: world.open_kakariko or state.has('Zeldas Letter') or state.has_explosives() or (state.has('Dins Fire') and state.has('Magic Meter')))
     set_rule(world.get_entrance('Goron City from Woods'), lambda state: (state.can_blast_or_smash() or (state.has('Dins Fire') and state.has('Magic Meter')) or ((state.has_bow() or state.has('Progressive Strength Upgrade')) and state.is_adult())) and state.can_leave_forest())
     set_rule(world.get_location('Song from Saria'), lambda state: state.has('Zeldas Letter'))
     set_rule(world.get_entrance('Mountain Summit Fairy'), lambda state: state.can_blast_or_smash())
@@ -475,7 +478,7 @@ def dung_rules_wt0(world):
     set_rule(world.get_location('GS Water Temple South Basement'), lambda state: state.has_explosives() and state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('GS Water Temple Serpent River'), lambda state: state.can_play('Song of Time') and state.has('Small Key (Water Temple)', 6))
     set_rule(world.get_location('GS Water Temple Falling Platform Room'), lambda state: state.has('Progressive Hookshot', 2))
-    set_rule(world.get_location('GS Water Temple Central Room'), lambda state: state.has('Progressive Hookshot', 2) or (state.has('Farores Wind') and state.has('Magic')))
+    set_rule(world.get_location('GS Water Temple Central Room'), lambda state: state.has('Progressive Hookshot', 2) or (state.has('Farores Wind') and state.has('Magic Meter')))
     #5 keys would be better but it wouldn't be compatible with the key for key scenarios, 6 will be identical pre-keysanity.
     set_rule(world.get_location('GS Water Temple Near Boss Key Chest'), lambda state: state.has('Progressive Hookshot', 2) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.has('Small Key (Water Temple)', 6))
 

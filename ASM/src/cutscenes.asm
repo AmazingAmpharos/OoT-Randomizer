@@ -157,3 +157,31 @@ set_saria_song_flag:
     sb      t1, 0x0EDF(t0)
     jr      ra
     nop
+
+; Injection for talking to the Altar in the Temple of Time
+; Should set flag in save that it has been spoken to.
+set_dungeon_knowledge:
+    addiu   sp, sp, -0x10
+    sw      ra, 0x04(sp)
+
+    ; displaced instruction
+    jal     0xD6218
+    nop
+
+    li      t4, SAVE_CONTEXT
+    lh      t5, 0x0F2E(t4) ; flags
+    lw      t8, 0x0004(t4) ; age
+
+    beqz    t8, @@set_flag
+    li      t6, 0x0001 ; adult bit
+    li      t6, 0x0002 ; child bit
+
+@@set_flag:
+    or      t5, t5, t6
+    sh      t5, 0x0F2E(t4) ; set the flag
+
+    lw      ra, 0x04(sp)
+    addiu   sp, sp, 0x10
+
+    jr      ra
+    nop

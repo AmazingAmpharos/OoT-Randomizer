@@ -5,6 +5,7 @@ import logging
 import random
 import textwrap
 import sys
+from urllib.error import HTTPError, URLError
 
 from Gui import guiMain
 from Main import main
