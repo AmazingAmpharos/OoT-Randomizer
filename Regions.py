@@ -637,8 +637,7 @@ def create_regions(world):
                 ['Spirit Temple Exit', 'Spirit Temple Crawl Passage', 'Spirit Temple Ceiling Passage']),
             create_dungeon_region(
                 'Child Spirit Temple', 
-                ['Spirit Temple MQ Child Left Chest', 'Spirit Temple MQ Map Chest', 'Spirit Temple MQ Silver Block Hallway Chest',
-                'Spirit Temple Nut Crate'], 
+                ['Spirit Temple MQ Child Left Chest', 'Spirit Temple MQ Map Chest', 'Spirit Temple MQ Silver Block Hallway Chest'], 
                 ['Child Spirit Temple to Shared']),
             create_dungeon_region(
                 'Adult Spirit Temple', 
@@ -674,7 +673,8 @@ def create_regions(world):
                 ['Spirit Temple Exit', 'Spirit Temple Crawl Passage', 'Spirit Temple Silver Block']),
             create_dungeon_region(
                 'Child Spirit Temple', 
-                ['Spirit Temple Child Left Chest', 'Spirit Temple Child Right Chest', 'GS Spirit Temple Metal Fence'], 
+                ['Spirit Temple Child Left Chest', 'Spirit Temple Child Right Chest', 'GS Spirit Temple Metal Fence',
+                'Spirit Temple Nut Crate'], 
                 ['Child Spirit Temple Climb']),
             create_dungeon_region(
                 'Child Spirit Temple Climb', 
