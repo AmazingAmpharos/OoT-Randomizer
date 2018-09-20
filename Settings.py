@@ -341,7 +341,7 @@ setting_infos = [
                 'Start with Gerudo Card': 'open',
             },
             'tooltip':'''\
-                      'Rescure one carpenter': The carpenter rescue sequence 
+                      'Rescue one carpenter': The carpenter rescue sequence 
                       is much faster and doesn't affect logic much.
 
                       'Start with Gerudo Card': skips the rescue entirely, 
@@ -439,8 +439,8 @@ setting_infos = [
 
                       Bombchu Bowling opens with bombchus.
                       Bombchus are available at Kokiri Shop
-                      and the Bazaar. Bombchus refills cannot 
-                      be bought until Bomchus have been
+                      and the Bazaar. Bombchu refills cannot 
+                      be bought until Bombchus have been
                       obtained.
                       ''',
         }),
@@ -737,7 +737,7 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      Songs can appear anywhere not just Vanilla
+                      Songs can appear anywhere, not just Vanilla
                       song locations. This significantly reduces
                       song placement bias and makes the songs more
                       evenly distributed.
@@ -782,7 +782,7 @@ setting_infos = [
             'tooltip':'''\
                       Every Deku Salescrub will give
                       a random item. This adds 33 new
-                      item locations. Scrubs prices
+                      item locations. The Scrubs' prices
                       are all reduced to 10 Rupees.
                       '''
         }),    
@@ -836,9 +836,10 @@ setting_infos = [
                       as a child you cannot buy 200/300 rupee
                       tunics, but you can buy non-shop tunics.
                       
-                      non-shop bombchus will unlock the chu slot
-                      in your inventory, which is needed to buy
-                      normal chu refills.
+                      Non-shop bombchus will unlock the chu slot
+                      in your inventory, which, if bombchus are in
+                      logic, is needed to buy chu refills. If not in
+                      logic, the bomb bag is required.
                       '''
         }),       
     Setting_Info('shuffle_mapcompass', str, 2, True,
@@ -1136,7 +1137,7 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Big Poes reward is time consuming
+                      Hunting Big Poes is time consuming
                       '''
         }),
     Setting_Info('logic_no_child_fishing', bool, 1, True, 
@@ -1466,7 +1467,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Will need to memorize a new set of songs.
-                      Can be silly, but difficult. Song are
+                      Can be silly, but difficult. Songs are
                       generally sensible, and warp songs are
                       typically more difficult.
                       '''
@@ -1495,8 +1496,8 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Chests will be large if they contain a major 
-                      item and small if not. Allows skipping 
-                      chests if they are small. However skipping
+                      item, and small if they don't. Allows skipping 
+                      chests if they are small. However, skipping
                       small chests will mean having low health,
                       ammo, and rupees, so doing so is a risk.
                       '''
