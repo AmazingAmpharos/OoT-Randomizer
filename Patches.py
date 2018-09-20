@@ -1144,9 +1144,9 @@ def patch_rom(world, rom):
         # song of time
         rom.write_int32(0xDB532C, 0x24050003)
 
-    # Set Default targeting option to Hold
+    # Set default targeting option to Hold
     if world.default_targeting == 'hold':
-        rom.write_bytes(0xB07200, [0x20, 0x0C, 0x00, 0x01 ])
+        rom.write_byte(0xB71E6D, 0x01)
 
     # Set OHKO mode
     if world.difficulty == 'ohko':
