@@ -139,8 +139,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Bottom of the Well'), lambda state: state.can_play('Song of Storms') and (world.dungeon_mq['BW'] or (state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword') or (state.has('Dins Fire') and state.has('Magic Meter')))))
     set_rule(world.get_entrance('Death Mountain Entrance'), lambda state: state.has('Zeldas Letter') or state.is_adult() or world.open_kakariko)
     set_rule(world.get_entrance('Dodongos Cavern Rocks'), lambda state: state.has_explosives() or state.has('Progressive Strength Upgrade') or state.is_adult())
-    # In the future, 'Buy Fairy\'s Spirit' should be changed to has_fairy() so that other potential sources of fairies could be added.
-    set_rule(world.get_location('DM Trail Freestanding PoH'), lambda state: world.open_kakariko or (world.difficulty != 'ohko') or state.has('Zeldas Letter') or state.can_blast_or_smash() or state.can_use('Dins Fire') or state.can_use('Nayrus Love') or state.has_bow() or state.has('Progressive Strength Upgrade') or state.has('Buy Fairy\'s Spirit') or state.has('Hover Boots'))
+    set_rule(world.get_location('DM Trail Freestanding PoH'), lambda state: world.open_kakariko or (world.difficulty != 'ohko') or state.has('Zeldas Letter') or state.can_blast_or_smash() or state.can_use('Dins Fire') or state.can_use('Nayrus Love') or state.has_bow() or state.has('Progressive Strength Upgrade') or state.has_bottle() or state.has('Hover Boots'))
     set_rule(world.get_location('Death Mountain Bombable Chest'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('Biggoron'), lambda state: (not world.logic_no_trade_biggoron) and state.is_adult() and state.can_finish_adult_trades() and state.guarantee_hint())
     set_rule(world.get_location('Goron City Leftmost Maze Chest'), lambda state: state.is_adult() and (state.can_use('Hammer') or state.can_use('Silver Gauntlets')))
@@ -439,7 +438,6 @@ def dung_rules_dc0(world):
     set_rule(world.get_entrance('Dodongos Cavern Left Door'), lambda state: (state.is_adult() or ((state.has_sticks() or (state.has('Dins Fire') and state.has('Magic Meter'))) and (state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword')))) and (state.has_explosives() or state.has('Progressive Strength Upgrade') or (state.has('Dins Fire') and state.has('Magic Meter')) or (state.has_bow() and state.is_adult())))
     set_rule(world.get_location('Dodongos Cavern Compass Chest'), lambda state: state.is_adult() or ((state.has_sticks() or (state.has('Dins Fire') and state.has('Magic Meter'))) and (state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword'))))
     set_rule(world.get_location('DC Deku Scrub Deku Sticks'), lambda state: (state.is_adult() or (state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword'))))
-
     set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: (state.has_slingshot() and (state.has_explosives() or state.has('Progressive Strength Upgrade'))) or ((state.has_bow() or state.has('Hover Boots') or state.has('Progressive Hookshot', 2) or world.logic_dc_jump) and state.is_adult()))
     set_rule(world.get_location('DC Deku Scrub Deku Nuts'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('DC Deku Scrub Deku Seeds'), lambda state: state.can_blast_or_smash())
@@ -459,19 +457,24 @@ def dung_rules_dc0(world):
 def dung_rules_dcmq(world):
     set_rule(world.get_entrance('Dodongos Cavern Lobby'), lambda state: state.can_blast_or_smash() or state.has('Progressive Strength Upgrade'))
     set_rule(world.get_entrance('Dodongos Cavern Bomb Drop'), lambda state: state.has_explosives())
-    set_rule(world.get_location('Dodongos Cavern MQ Larva Room Chest'), lambda state: state.has_explosives or state.has('Progressive Strength Upgrade') or state.has_fire_source())
-    set_rule(world.get_location('Dodongos Cavern MQ Bomb Bag Chest'), lambda state: state.has('Slingshot') or state.is_adult())
+    set_rule(world.get_location('Dodongos Cavern MQ Compass Chest'), lambda state: state.is_adult() or state.can_child_attack() or state.has_nuts())
+    set_rule(world.get_location('Dodongos Cavern MQ Torch Puzzle Room Chest'), lambda state: state.can_blast_or_smash() or state.has_sticks() or state.can_use('Dins Fire') or (state.is_adult() and (world.logic_dc_jump or state.has('Hover Boots') or state.has('Hookshot'))))
+    set_rule(world.get_location('Dodongos Cavern MQ Larva Room Chest'), lambda state: (state.has_sticks() and (state.has_explosives or state.has('Progressive Strength Upgrade'))) or state.has_fire_source())
+    set_rule(world.get_location('Dodongos Cavern MQ Bomb Bag Chest'), lambda state: state.is_adult() or (state.has_slingshot() and (state.has_sticks() or state.can_use('Dins Fire') or state.has_explosives())))
+    set_rule(world.get_location('DC MQ Deku Scrub Deku Sticks'), lambda state: state.can_stun_deku())
+    set_rule(world.get_location('DC MQ Deku Scrub Deku Seeds'), lambda state: state.can_stun_deku())
+    set_rule(world.get_location('DC MQ Deku Scrub Deku Shield'), lambda state: state.can_stun_deku())
+    set_rule(world.get_location('DC MQ Deku Scrub Red Potion'), lambda state: state.is_adult() or state.has_sticks() or state.can_use('Dins Fire') or state.has_explosives())
 
     # Boss
-    set_rule(world.get_location('King Dodongo'), lambda state: state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))
-    set_rule(world.get_location('King Dodongo Heart'), lambda state: state.has('Bomb Bag') or state.has('Progressive Strength Upgrade'))
+    set_rule(world.get_location('King Dodongo'), lambda state: (state.has_bombs() or state.has('Progressive Strength Upgrade')) and (state.is_adult() or state.has_sticks() or state.has('Kokiri Sword')))
+    set_rule(world.get_location('King Dodongo Heart'), lambda state: (state.has_bombs() or state.has('Progressive Strength Upgrade')) and (state.is_adult() or state.has_sticks() or state.has('Kokiri Sword')))
 
     # GS
-    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Song of Time Block Room'), lambda state: state.can_play('Song of Time'))
-    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Larva Room'), lambda state: state.has_explosives or state.has('Progressive Strength Upgrade') or state.has_fire_source())
+    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Song of Time Block Room'), lambda state: state.can_play('Song of Time') and (state.can_child_attack() or state.is_adult()))
+    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Larva Room'), lambda state: (state.has_sticks() and (state.has_explosives or state.has('Progressive Strength Upgrade'))) or state.has_fire_source())
     set_rule(world.get_location('GS Dodongo\'s Cavern MQ Lizalfos Room'), lambda state: state.can_blast_or_smash())
-    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Scrub Room'), lambda state: ((state.has('Slingshot') or (state.is_adult() and state.has_explosives())) and state.has('Boomerang') and (state.has_explosives() or state.has('Progressive Strength Upgrade'))) or (state.can_use('Hookshot') and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has('Bow') or state.can_use('Dins Fire'))))
-    # You may have to kill the lower Lizalfos as adult, then use Bombs to jump down from the upper Lizalfos as child, so you can use the Boomerang to get this GS without needing the Slingshot. (Or you could do the jumpslash recoil, but that's not in logic.)
+    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Scrub Room'), lambda state: (state.has('Boomerang') and (state.has_slingshot() or (state.is_adult() and state.has_explosives())) and (state.has_explosives() or (state.has('Progressive Strength Upgrade') and (state.has_sticks() or state.can_use('Dins Fire') or (state.is_adult() and (world.logic_dc_jump or state.has('Hover Boots') or state.has('Hammer'))))))) or (state.can_use('Hookshot') and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow() or state.can_use('Dins Fire'))))
 
 # Jabu Jabu's Belly Vanilla
 def dung_rules_jb0(world):
@@ -695,8 +698,6 @@ def dung_rules_spt0(world):
 # "Quirks to Know":
 # Spirit Temple Sun Block Room:
 # - The switch to enter this room can be reached as adult without either hover boots or song of time.
-# GS Spirit Temple Sun Block Room:
-# - You can get the GS with Boomerang. You do have to stand in about the right spot.
 # Spirit Temple Silver Block Hallway Chest:
 # - In the vanilla game, this eye switch gets permanently blocked off after the silver block is pushed.
 # - This was changed so that the block does not appear pushed as child.
@@ -856,11 +857,15 @@ def dung_rules_ic0(world):
 # Ice Cavern MQ
 # The rule exists on the entrance to avoid needing to change Blue Fire checks elsewhere.
 # "Quirks to Know":
+# Ice Cavern Entrance:
+# - You can throw a pot at this switch.
+# - To get the pot here you must destroy an icicle in order to beat a boulder cycle. It's easy to do.
+# - Later, there's a switch you hit to get a GS and that can also be hit with a pot.
 # GS Ice Cavern Scarecrow:
 # - You can use the hover boots to get onto one of the taller pillars, and from there you can Longshot to the GS.
 # - This skips the Ocarina requirement and is only relevant if Hover Boots into Zora's Domain is in logic.
 def dung_rules_icmq(world):
-    set_rule(world.get_entrance('Ice Cavern Entrance'), lambda state: state.has_bottle() and state.has_projectile('adult'))
+    set_rule(world.get_entrance('Ice Cavern Entrance'), lambda state: state.has_bottle())
     set_rule(world.get_location('Ice Cavern MQ Freestanding PoH'), lambda state: state.has_explosives())
 
     # GS
@@ -905,7 +910,7 @@ def dung_rules_gtgmq(world):
     set_rule(world.get_entrance('Gerudo Training Grounds Rusted Switch'), lambda state: state.has('Hammer'))
     set_rule(world.get_location('Gerudo Training Grounds MQ Hidden Ceiling Chest'), lambda state: state.can_see_with_lens())
     set_rule(world.get_location('Gerudo Training Grounds MQ Maze Path Third Chest'), lambda state: state.has('Small Key (Gerudo Training Grounds)', 1))
-    set_rule(world.get_location('Gerudo Training Grounds MQ Underwater Silver Rupee Chest'), lambda state: state.has('Hover Boots') and state.has_fire_source() and state.has('Progressive Hookshot') and state.has('Iron Boots') and (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
+    set_rule(world.get_location('Gerudo Training Grounds MQ Underwater Silver Rupee Chest'), lambda state: (state.has('Hover Boots') or state.can_reach('Gerudo Training Grounds Central Maze Right')) and state.has_fire_source() and state.has('Iron Boots') and (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()) and (world.difficulty != 'ohko' or (state.has_bottle() or state.can_use('Nayrus Love'))))
     set_rule(world.get_location('Gerudo Training Grounds MQ Heavy Block Chest'), lambda state: state.has('Progressive Strength Upgrade', 2))
     set_rule(world.get_location('Gerudo Training Grounds MQ Eye Statue Chest'), lambda state: state.has('Bow'))
     set_rule(world.get_location('Gerudo Training Grounds MQ Ice Arrows Chest'), lambda state: state.has('Small Key (Gerudo Training Grounds)', 3) or (item_name(state, 'Gerudo Training Grounds MQ Ice Arrows Chest') == 'Small Key (Gerudo Training Grounds)' and state.has('Small Key (Gerudo Training Grounds)')))
@@ -929,6 +934,7 @@ def dung_rules_gc0(world):
     set_rule(world.get_location('Ganons Castle Light Trial Clear'), lambda state: state.has('Magic Meter') and state.has_bow() and state.has('Progressive Hookshot') and state.has('Light Arrows') and state.has('Small Key (Ganons Castle)', 2))
     set_rule(world.get_location('Ganons Castle Light Trail Invisible Enemies Chest'), lambda state: state.can_see_with_lens())
     set_rule(world.get_location('Ganons Castle Light Trial Lullaby Chest'), lambda state: state.can_play('Zeldas Lullaby') and state.has('Small Key (Ganons Castle)', 1))
+
 # Ganon's Castle MQ
 # MQ Ganons Castle
 # "Quirks to Know":
@@ -945,7 +951,7 @@ def dung_rules_gcmq(world):
     set_rule(world.get_location('Ganons Castle Fire Trial Clear'), lambda state: state.has_GoronTunic() and state.can_use('Golden Gauntlets') and state.can_use('Light Arrows') and (state.can_use('Longshot') or state.has('Hover Boots')))
     set_rule(world.get_location('Ganons Castle MQ Water Trial Chest'), lambda state: state.has_bottle())
     set_rule(world.get_location('Ganons Castle Water Trial Clear'), lambda state: state.has_bottle() and state.can_use('Light Arrows') and state.has('Small Key (Ganons Castle)', 3))
-    set_rule(world.get_location('Ganons Castle MQ Shadow Trial First Chest'), lambda state: (state.has('Bow') and (state.has('Progressive Hookshot') or state.has('Hover Boots'))) or (state.has('Hover Boots') and state.can_see_with_lens() and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.can_use('Dins Fire') or state.has_blue_fire())))
+    set_rule(world.get_location('Ganons Castle MQ Shadow Trial First Chest'), lambda state: (state.has('Bow') and (state.has('Progressive Hookshot') or state.has('Hover Boots'))) or (state.has('Hover Boots') and state.can_see_with_lens() and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.can_use('Dins Fire'))))
     set_rule(world.get_location('Ganons Castle MQ Shadow Trial Second Chest'), lambda state: state.has('Bow') and state.can_see_with_lens() and (state.has('Hover Boots') or (state.has('Progressive Hookshot') and state.has_fire_source())))
     set_rule(world.get_location('Ganons Castle Shadow Trial Clear'), lambda state: state.can_use('Light Arrows') and state.can_see_with_lens() and (state.has('Hover Boots') or (state.has('Progressive Hookshot') and state.has_fire_source())))
     set_rule(world.get_location('Ganons Castle MQ Spirit Trial First Chest'), lambda state: state.has('Bow') and state.has('Hammer'))
