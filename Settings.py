@@ -1249,7 +1249,7 @@ setting_infos = [
                       Adult trade sequence is time consuming.
                       '''
         }),
-    Setting_Info('logic_earliest_adult_trade', str, 2, True, 
+    Setting_Info('logic_earliest_adult_trade', str, 4, True, 
         {
             'default': 'pocket_egg',
             'const': 'always',
@@ -1284,7 +1284,7 @@ setting_infos = [
             'group': 'rewards',
             'widget': 'Combobox',
             'dependency': lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
-            'default': 'Pocket Egg',
+            'default': 'Earliest: Pocket Egg',
             'options': {
                 'Earliest: Pocket Egg': 'pocket_egg',
                 'Earliest: Pocket Cucco': 'pocket_cucco', 
@@ -1300,7 +1300,7 @@ setting_infos = [
                       Select the earliest item that will appear in the adult trade sequence.
                       '''
         }),
-    Setting_Info('logic_latest_adult_trade', str, 2, True, 
+    Setting_Info('logic_latest_adult_trade', str, 4, True, 
         {
             'default': 'claim_check',
             'const': 'always',
@@ -1334,7 +1334,7 @@ setting_infos = [
             'group': 'rewards',
             'widget': 'Combobox',
             'dependency': lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
-            'default': 'Claim Check',
+            'default': 'Latest: Claim Check',
             'options': {
                 'Latest: Pocket Egg': 'pocket_egg',
                 'Latest: Pocket Cucco': 'pocket_cucco', 
