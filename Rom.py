@@ -28,14 +28,12 @@ class LocalRom(object):
 
         try:
             # Read decompressed file if it exists
-            with open(decomp_file, 'rb') as stream:
-                self.buffer = self.read_rom(stream)
+            self.read_rom(decomp_file)
             # This is mainly for validation testing, but just in case...
             self.decompress_rom_file(decomp_file, decomp_file)
         except Exception as ex:
             # No decompressed file, instead read Input ROM
-            with open(file, 'rb') as stream:
-                self.buffer = self.read_rom(stream)
+            self.read_rom(file)
             self.decompress_rom_file(file, decomp_file)
 
         # Add file to maximum size
@@ -59,23 +57,22 @@ class LocalRom(object):
             raise RuntimeError('ROM file %s is not a valid OoT 1.0 US ROM.' % file)
         elif len(self.buffer) == 0x2000000:
             # If Input ROM is compressed, then Decompress it
+            subcall = []
+
             if platform.system() == 'Windows':
                 if 8 * struct.calcsize("P") == 64:
-                    subprocess.call(["Decompress\\Decompress.exe", file, decomp_file])
+                    subcall = ["Decompress\\Decompress.exe", file, decomp_file]
                 else:
-                    subprocess.call(["Decompress\\Decompress32.exe", file, decomp_file])
-                with open(decomp_file, 'rb') as stream:
-                    self.buffer = self.read_rom(stream)
+                    subcall = ["Decompress\\Decompress32.exe", file, decomp_file]
             elif platform.system() == 'Linux':
-                subprocess.call(["Decompress/Decompress", file])
-                with open(("ZOOTDEC.z64"), 'rb') as stream:
-                    self.buffer = self.read_rom(stream)
+                subcall = ["Decompress/Decompress", file]
             elif platform.system() == 'Darwin':
-                subprocess.call(["Decompress/Decompress.out", file])
-                with open(("ZOOTDEC.z64"), 'rb') as stream:
-                    self.buffer = self.read_rom(stream)
+                subcall = ["Decompress/Decompress.out", file]
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
+
+            subprocess.call(subcall)
+            self.read_rom(decomp_file)
         else:
             # ROM file is a valid and already uncompressed
             pass
@@ -199,10 +196,10 @@ class LocalRom(object):
         self.write_int32s(0x10, [crc0, crc1])
 
 
-    def read_rom(self, stream):
-        "Reads rom into bytearray"
-        buffer = bytearray(stream.read())
-        return buffer
+    def read_rom(self, file):
+        # "Reads rom into bytearray"
+        with open(file, 'rb') as stream:
+            self.buffer = bytearray(stream.read())
 
     # dmadata/file management helper functions
 
