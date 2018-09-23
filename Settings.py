@@ -155,6 +155,25 @@ class Settings():
         self.sanatize_seed()
         self.numeric_seed = self.get_numeric_seed()
 
+def parse_custom_tunic_color(s):
+    if s == 'Custom Color':
+        raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
+    elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
+        return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
+    elif s in get_tunic_color_options():
+        return s
+    else:
+        raise argparse.ArgumentTypeError('Invalid color specified')
+
+def parse_custom_navi_color(s):
+    if s == 'Custom Color':
+        raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
+    elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
+        return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
+    elif s in get_navi_color_options():
+        return s
+    else:
+        raise argparse.ArgumentTypeError('Invalid color specified')
 
 # a list of the possible settings
 setting_infos = [
@@ -252,9 +271,10 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      The Deku Tree can be beaten without leaving the Forest
-                      areas. This means that the Kokiri Sword and Slingshot
-                      are always available somewhere in the forest.
+                      Can leave the Kokiri Forest without beating the 
+                      Deku Tree. When this option is off, the Kokiri 
+                      Sword and Slingshot are always available somewhere 
+                      in the forest.
                       '''
         }),
     Setting_Info('open_kakariko', bool, 1, True, 
@@ -321,7 +341,7 @@ setting_infos = [
                 'Start with Gerudo Card': 'open',
             },
             'tooltip':'''\
-                      'Rescure one carpenter': The carpenter rescue sequence 
+                      'Rescue one carpenter': The carpenter rescue sequence 
                       is much faster and doesn't affect logic much.
 
                       'Start with Gerudo Card': skips the rescue entirely, 
@@ -364,19 +384,47 @@ setting_infos = [
                       'Always open': Nothing
                       '''
         }),
+    Setting_Info('all_reachable', bool, 1, True, 
+        {
+            'help': '''\
+                    When disabled, only check if the game is beatable with 
+                    placement. Do not ensure all locations are reachable. 
+                    This only has an effect on the restrictive algorithm 
+                    currently.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'All Locations Reachable',
+            'group': 'world',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                      When this option is enabled, the randomizer will
+                      guarantee that every item is obtainable, and every
+                      location is reachable.
+                      
+                      When disabled, only required items and locations
+                      to beat the game will be guaranteed reachable.
+                      
+                      Even when enabled, some chests may still be able to
+                      hold the keys needed to reach them (Or gold 
+                      skulltulas in tokensanity).
+                      '''
+        }),     
     Setting_Info('bombchus_in_logic', bool, 1, True, 
         {
             'help': '''\
                     Bombchus will be considered in logic. This has a few effects:
                     -Back alley shop will open once you've found Bombchus
                     -It will sell an affordable pack (5 for 60), and never sell out
-                    -Bombchu Bowling will open once you've found Bombchus
+                    -Bombchus refills cannot be bought until Bomchus have been obtained.
                     ''',
             'action': 'store_true'
         },
         {
             'text': 'Bombchus are considered in logic',
-            'group': 'logic',
+            'group': 'world',
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
@@ -390,6 +438,51 @@ setting_infos = [
                       rupees once they are been found.
 
                       Bombchu Bowling opens with bombchus.
+                      Bombchus are available at Kokiri Shop
+                      and the Bazaar. Bombchu refills cannot 
+                      be bought until Bombchus have been
+                      obtained.
+                      ''',
+        }),
+    Setting_Info('one_item_per_dungeon', bool, 1, True, 
+        {
+            'help': '''\
+                    Each dungeon will have exactly one major item.
+                    Does not include dungeon items or skulltulas.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Dungeons have one major item',
+            'group': 'world',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Dungeons have exactly one major
+                      item. Makes dungeon value more
+                      even. Also allows skipping items
+                      once the major item is found.
+
+                      Dungeon items and skulltulas do
+                      not count as major items.
+                      ''',
+        }),
+    Setting_Info('trials_random', bool, 1, True, 
+        {
+            'help': '''\
+                    Sets the number of trials must be cleared to enter 
+                    Ganon's Tower to a random value.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Random Number of Ganon\'s Trials',
+            'group': 'open',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Sets a random number of trials to
+                      enter Ganon's Tower.
                       '''
         }),
     Setting_Info('trials', int, 3, True, 
@@ -405,17 +498,18 @@ setting_infos = [
             'type': int                    
         },
         {
-            'text': 'Number of Ganon\'s Trials',
             'group': 'open',
             'widget': 'Scale',
             'default': 6,
             'min': 0,
             'max': 6,
+            'random': True,
             'tooltip':'''\
                       Trials are randomly selected. If hints are
                       enabled, then there will be hints for which
                       trials need to be completed.
-                      '''
+                      ''',
+            'dependency': lambda guivar: not guivar['trials_random'].get(),
         }),
     Setting_Info('no_escape_sequence', bool, 1, True, 
         {
@@ -485,38 +579,45 @@ setting_infos = [
                       the animation time is slow for major items.
                       '''
         }),
-    Setting_Info('big_poe_count', str, 4, True, 
+    Setting_Info('big_poe_count_random', bool, 1, True, 
         {
-            'default': 'random',
-            'const': 'random',
-            'nargs': '?',
-            'choices': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'random'],
             'help': '''\
-                    Select the number of Big Poes to receive an item from the buyer.
-                    '''         
+                    Sets a random number of Big Poes to receive an item from the buyer.
+                    ''',
+            'action': 'store_true'
         },
         {
-            'text': 'Big Poe Target Count',
+            'text': 'Random Big Poe Target Count',
             'group': 'convenience',
-            'widget': 'Combobox',
-            'default': 'Random',
-            'options': {
-                'Random': 'random',
-                '1': '1',
-                '2': '2',
-                '3': '3',
-                '4': '4',
-                '5': '5',
-                '6': '6',
-                '7': '7',
-                '8': '8',
-                '9': '9',
-                '10': '10'
-            },
-            'tooltip': '''\
-                    The Poe buyer will give a reward for turning 
-                    in the chosen number of Big Poes.
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      The Poe buyer will give a reward for turning 
+                      in a random number of Big Poes.
+                      '''
+        }),
+    Setting_Info('big_poe_count', int, 4, True, 
+        {
+            'default': 10,
+            'const': 10,
+            'nargs': '?',
+            'choices': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            'help': '''\
+                    Select the number of Big Poes to receive an item from the buyer.
                     ''',
+            'type': int,
+        },
+        {
+            'group': 'convenience',
+            'widget': 'Scale',
+            'default': 10,
+            'min': 1,
+            'max': 10,
+            'tooltip':'''\
+                      The Poe buyer will give a reward for turning 
+                      in the chosen number of Big Poes.
+                      ''',
+            'dependency': lambda guivar: not guivar['big_poe_count_random'].get(),
         }),
     Setting_Info('free_scarecrow', bool, 1, True, 
         {
@@ -544,7 +645,7 @@ setting_infos = [
             'nargs': '?',
             'help': '''\
                     The song started with if 'free_scarecrow' is True
-                    '''
+                    ''',
         },
         {
             'group': 'convenience',
@@ -562,45 +663,6 @@ setting_infos = [
                       'R': C-Right
                       '''
         }),
-    Setting_Info('unlocked_ganondorf', bool, 1, True, 
-        {
-            'help': '''\
-                    The Boss Key door in Ganon's Tower will start unlocked.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Remove Ganon\'s Boss Door Lock',
-            'group': 'open',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Best when used when reducing the number of 
-                      Trials to less than 6 to prevent needing
-                      to do them all anyways looking for the key.
-                      '''
-        }),
-    Setting_Info('all_reachable', bool, 1, True, 
-        {
-            'help': '''\
-                    When disabled, only check if the game is beatable with 
-                    placement. Do not ensure all locations are reachable. 
-                    This only has an effect on the restrictive algorithm 
-                    currently.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'All Locations Reachable',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      Chests that lock themselves can still exists.
-                      When disabled, some locations and item might 
-                      not be reachable.
-                      '''
-        }), 
     Setting_Info('shuffle_kokiri_sword', bool, 1, True, 
         {
             'help': '''\
@@ -675,7 +737,7 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'checked',
             'tooltip':'''\
-                      Songs can appear anywhere not just Vanilla
+                      Songs can appear anywhere, not just Vanilla
                       song locations. This significantly reduces
                       song placement bias and makes the songs more
                       evenly distributed.
@@ -705,45 +767,247 @@ setting_infos = [
                       Plays spiritually best with Keysanity.
                       '''
         }),
-    Setting_Info('shuffle_dungeon_items', str, 2, True,
+    Setting_Info('shuffle_scrubs', bool, 1, True, 
         {
-        'default': 'mapcompass',
-        'const': 'mapcompass',
+            'help': '''\
+                    All Deku Salesmen will give a random item.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Shuffle Deku Salescrubs',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Every Deku Salescrub will give
+                      a random item. This adds 33 new
+                      item locations. The Scrubs' prices
+                      are all reduced to 10 Rupees.
+                      '''
+        }),    
+    Setting_Info('shopsanity', str, 3, True, 
+        {
+            'default': 'off',
+            'const': 'off',
+            'nargs': '?',
+            'choices': ['off', '0', '1', '2', '3', '4', 'random'],
+            'help': '''\
+                    Shop contents are randomized. There are Two items
+                    in every shop that are one time buy and are not
+                    refill items.
+                    off:        Normal Shops*
+                    0-4:        Shop contents are shuffled and N non-shop
+                                items are added to every shop. So more
+                                possible item locations.
+                    random:     Shop contents are shuffles and each shop
+                                will have a random number of non-shop items
+                    '''
+        },
+        {
+            'text': 'Shopsanity',
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Off',
+            'options': {
+                'Off': 'off',
+                'Shuffled Shops (0 Items)': '0',
+                'Shuffled Shops (1 Items)': '1',
+                'Shuffled Shops (2 Items)': '2',
+                'Shuffled Shops (3 Items)': '3',
+                'Shuffled Shops (4 Items)': '4',
+                'Shuffled Shops (Random)': 'random',
+            },
+            'tooltip':'''\
+                      Shop contents are randomized.
+                      (X Items): Shops have X random non-shop (Special
+                      Deal!) items. They will always be on the left
+                      side. This means that every shop will have more
+                      possible item locations. So +2 means 2 items
+                      per shop.
+                      
+                      (Random): Each shop will have a random number
+                      of non-shop items, up to a maximum of 4.
+                      
+                      The non-shop items have no requirements except
+                      money, while the normal shop items (such as
+                      200/300 rupee tunics) have normal vanilla
+                      requirements. This means that, for example,
+                      as a child you cannot buy 200/300 rupee
+                      tunics, but you can buy non-shop tunics.
+                      
+                      Non-shop bombchus will unlock the chu slot
+                      in your inventory, which, if bombchus are in
+                      logic, is needed to buy chu refills. If not in
+                      logic, the bomb bag is required.
+                      '''
+        }),       
+    Setting_Info('shuffle_mapcompass', str, 2, True,
+        {
+        'default': 'dungeon',
+        'const': 'dungeon',
         'nargs': '?',
-        'choices': ['off', 'mapcompass', 'keysanity'],
+        'choices': ['remove', 'dungeon', 'keysanity'],
         'help': '''\
-                    Dungeon items can appear outside of their
-                    respective dungeon.
-                    off:            Dungeon items will be in their dungeons
-                    mapcompass:     Maps and Compasses can appear anywhere
-                    keysanity:      Dungeon items can appear anywhere
+                    Sets the Map and Compass placement rules
+                    remove:      Maps and Compasses are removed from the world
+                    dungeon:     Maps and Compasses are put in their Dungeon
+                    keysanity:   Maps and Compasses can appear anywhere
                     '''
         },
         {
             'text': 'Shuffle Dungeon Items',
             'group': 'logic',
             'widget': 'Combobox',
-            'default': 'Maps and Compasses',
+            'default': 'Maps/Compasses: Dungeon Only',
             'options': {
-                'Off': 'off',
-                'Maps and Compasses': 'mapcompass',
-                'Full Keysanity': 'keysanity'
+                'Maps/Compasses: Remove': 'remove',
+                'Maps/Compasses: Dungeon Only': 'dungeon',
+                'Maps/Compasses: Anywhere': 'keysanity'
             },
             'tooltip':'''\
-                      Dungeon items can appear anywhere instead 
-                      of just being restricted to their own dungeon.
+                      'Remove': Maps and Compasses are removed.
+                      This will add a small amount of money and
+                      refill items to the pool.
 
-                      'Maps and Compasses': Dungeons will have
-                      2 more possible item locations. This helps
-                      make some dungeons more profitable, such as
-                      Ice Cavern and Jabu Jabu's Belly.
+                      'Dungeon': Maps and Compasses can only appear 
+                      in their respective dungeon.
 
-                      'Full Keysanity': Maps, Compasses, and Keys
-                      can appear anywhere. A difficult mode, since 
-                      it is more likely to need to enter a dungeon
-                      multiple times.
+                      'Anywhere': Maps and Compasses can appear
+                      anywhere in the world. 
+
+                      Setting 'Remove' or 'Anywhere' will add 2
+                      more possible locations to each Dungeons.
+                      This helps make some dungeons more profitable, 
+                      such as Ice Cavern and Jabu Jabu's Belly.
                       '''
         }),
+    Setting_Info('shuffle_smallkeys', str, 2, True,
+        {
+        'default': 'dungeon',
+        'const': 'dungeon',
+        'nargs': '?',
+        'choices': ['remove', 'dungeon', 'keysanity'],
+        'help': '''\
+                    Sets the Small Keys placement rules
+                    remove:      Small Keys are removed from the world
+                    dungeon:     Small Keys are put in their Dungeon
+                    keysanity:   Small Keys can appear anywhere
+                    '''
+        },
+        {
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Small Keys: Dungeon Only',
+            'options': {
+                'Small Keys: Remove (Keysy)': 'remove',
+                'Small Keys: Dungeon Only': 'dungeon',
+                'Small Keys: Anywhere (Keysanity)': 'keysanity'
+            },
+            'tooltip':'''\
+                      'Remove': Small Keys are removed. All locked
+                      doors in dungeons will be unlocked. An easier
+                      mode. 
+
+                      'Dungeon': Small Keys can only appear in their 
+                      respective dungeon. If Fire Temple is not a 
+                      Master Quest dungeon, the door to the boss key
+                      chest will be unlocked
+
+                      'Anywhere': Small Keys can appear
+                      anywhere in the world. A difficult mode since
+                      it is more likely to need to enter a dungeon
+                      multiple times.
+
+                      Try different combination out, such as:
+                      'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
+                      for a milder Keysanity experience.
+                      '''
+        }),
+    Setting_Info('shuffle_bosskeys', str, 2, True,
+        {
+        'default': 'dungeon',
+        'const': 'dungeon',
+        'nargs': '?',
+        'choices': ['remove', 'dungeon', 'keysanity'],
+        'help': '''\
+                    Sets the Boss Keys placement rules
+                    remove:      Boss Keys are removed from the world
+                    dungeon:     Boss Keys are put in their Dungeon
+                    keysanity:   Boss Keys can appear anywhere
+                    '''
+        },
+        {
+            'group': 'logic',
+            'widget': 'Combobox',
+            'default': 'Boss Keys: Dungeon Only',
+            'options': {
+                'Boss Keys: Remove (Keysy)': 'remove',
+                'Boss Keys: Dungeon Only': 'dungeon',
+                'Boss Keys: Anywhere (Keysanity)': 'keysanity'
+            },
+            'tooltip':'''\
+                      'Remove': Boss Keys are removed. All locked
+                      doors in dungeons will be unlocked. An easier
+                      mode. 
+
+                      'Dungeon': Boss Keys can only appear in their 
+                      respective dungeon.
+
+                      'Anywhere': Boss Keys can appear
+                      anywhere in the world. A difficult mode since
+                      it is more likely to need to enter a dungeon
+                      multiple times.
+
+                      Try different combination out, such as:
+                      'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
+                      for a milder Keysanity experience.
+                      '''
+        }),
+    Setting_Info('enhance_map_compass', bool, 1, True, 
+        {
+            'help': '''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This setting will only activate these functions if the
+                    other settings would make this useful information.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Maps and Compasses give information',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This option is only available if shuffle 'Maps/Compasses'
+                    is set to 'Anywhere'
+                      ''',
+            'dependency': lambda guivar: guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Anywhere',
+        }),    
+    Setting_Info('unlocked_ganondorf', bool, 1, True, 
+        {
+            'help': '''\
+                    The Boss Key door in Ganon's Tower will start unlocked.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Remove Ganon\'s Boss Door Lock',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Best when used when reducing the number of 
+                      Trials to less than 6 to prevent needing
+                      to do them all anyways looking for the key.
+                      ''',
+            'dependency': lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Remove (Keysy)',
+        }),    
     Setting_Info('tokensanity', str, 2, True, 
         {
             'default': 'off',
@@ -782,7 +1046,7 @@ setting_infos = [
                       'All Tokens': Effectively adds 100
                       new locations for items to appear.
                       '''
-        }),
+        }), 
     Setting_Info('quest', str, 2, True, 
         {
             'default': 'vanilla',
@@ -798,7 +1062,7 @@ setting_infos = [
         },
         {
             'text': 'Dungeon Quest',
-            'group': 'logic',
+            'group': 'world',
             'widget': 'Combobox',
             'default': 'Vanilla',
             'options': {
@@ -815,7 +1079,7 @@ setting_infos = [
 
                       'Mixed': Each dungeon will have a
                       random chance to be in either form.
-                      '''
+                      ''',
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
@@ -873,7 +1137,7 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Big Poes reward is time consuming
+                      Hunting Big Poes is time consuming
                       '''
         }),
     Setting_Info('logic_no_child_fishing', bool, 1, True, 
@@ -1009,6 +1273,23 @@ setting_infos = [
                       Racing twice is repetitive.
                       '''
         }),
+    Setting_Info('logic_tricks', bool, 1, True, 
+        {
+            'help': '''\
+                    Enable various tricks.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Require minor tricks',
+            'group': 'tricks',
+            'widget': 'SpecialCheckbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Enables a large number of tricks.
+                      Still does not require glitches.
+                      '''
+        }),
     Setting_Info('logic_man_on_roof', bool, 1, True, 
         {
             'help': '''\
@@ -1124,6 +1405,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Can hover behind the waterfall as adult.
+                      This is very difficult.
                       '''
         }),
     Setting_Info('logic_fewer_tunic_requirements', bool, 1, True, 
@@ -1203,7 +1485,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Will need to memorize a new set of songs.
-                      Can be silly, but difficult. Song are
+                      Can be silly, but difficult. Songs are
                       generally sensible, and warp songs are
                       typically more difficult.
                       '''
@@ -1232,34 +1514,28 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Chests will be large if they contain a major 
-                      item and small if not. Allows skipping 
-                      chests if they are small. However skipping
+                      item, and small if they don't. Allows skipping 
+                      chests if they are small. However, skipping
                       small chests will mean having low health,
                       ammo, and rupees, so doing so is a risk.
                       '''
         }),
-    Setting_Info('enhance_map_compass', bool, 1, True, 
+    Setting_Info('clearer_hints', bool, 1, True, 
         {
             'help': '''\
-                    Gives the Map and Compass extra functionality.
-                    Map will tell if a dungeon is vanilla or Master Quest.
-                    Compass will tell what medallion or stone is within.
-                    This setting will only activate these functions if the
-                    other settings would make this useful information.
+                    The hints provided by Gossip Stones are
+                    easier to understand.
                     ''',
             'action': 'store_true'
         },
         {
-            'text': 'Maps and Compasses give information',
+            'text': 'Clearer hints',
             'group': 'other',
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                    Gives the Map and Compass extra functionality.
-                    Map will tell if a dungeon is vanilla or Master Quest.
-                    Compass will tell what medallion or stone is within.
-                    This setting will only activate these functions if the
-                    other settings would make this useful information.
+                      The hints provided by Gossip Stones will
+                      not be as cryptic if this option is enabled.
                       '''
         }),
     Setting_Info('hints', str, 2, True, 
@@ -1394,7 +1670,6 @@ setting_infos = [
                 'Switch': 'switch',
             }
         }),
-
     Setting_Info('background_music', str, 2, False,
         {
             'default': 'normal',
@@ -1422,6 +1697,7 @@ setting_infos = [
                        'No Music': No background is played.
                        Useful for playing your own music
                        over the game.
+
                        'Random': Area background music is
                        randomized.
                        '''
@@ -1432,7 +1708,7 @@ setting_infos = [
             'default': 'Kokiri Green',
             'const': 'Kokiri Green',
             'nargs': '?',
-            'choices': get_tunic_color_options(),
+            'type': parse_custom_tunic_color,
             'help': '''\
                     Choose the color for Link's Kokiri Tunic. (default: %(default)s)
                     
@@ -1456,7 +1732,7 @@ setting_infos = [
             'default': 'Goron Red',
             'const': 'Goron Red',
             'nargs': '?',
-            'choices': get_tunic_color_options(),
+            'type': parse_custom_tunic_color,
             'help': '''\
                     Choose the color for Link's Goron Tunic. (default: %(default)s)
                     Color:              Make the Goron Tunic this color.
@@ -1482,7 +1758,7 @@ setting_infos = [
             'default': 'Zora Blue',
             'const': 'Zora Blue',
             'nargs': '?',
-            'choices': get_tunic_color_options(),
+            'type': parse_custom_tunic_color,
             'help': '''\
                     Choose the color for Link's Zora Tunic. (default: %(default)s)
                     Color:              Make the Zora Tunic this color.
@@ -1508,7 +1784,7 @@ setting_infos = [
             'default': 'White',
             'const': 'White',
             'nargs': '?',
-            'choices': get_navi_color_options(),
+            'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is idle. (default: %(default)s)
                     Color:             Make the Navi this color.
@@ -1534,7 +1810,7 @@ setting_infos = [
             'default': 'Yellow',
             'const': 'Yellow',
             'nargs': '?',
-            'choices': get_navi_color_options(),
+            'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is targeting an enemy. (default: %(default)s)
                     Color:             Make the Navi this color.
@@ -1560,7 +1836,7 @@ setting_infos = [
             'default': 'Light Blue',
             'const': 'Light Blue',
             'nargs': '?',
-            'choices': get_navi_color_options(),
+            'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is targeting an NPC. (default: %(default)s)
                     Color:             Make the Navi this color.
@@ -1586,7 +1862,7 @@ setting_infos = [
             'default': 'Green',
             'const': 'Green',
             'nargs': '?',
-            'choices': get_navi_color_options(),
+            'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is targeting a prop. (default: %(default)s)
                     Color:             Make the Navi this color.

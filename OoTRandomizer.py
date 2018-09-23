@@ -5,11 +5,12 @@ import logging
 import random
 import textwrap
 import sys
+from urllib.error import HTTPError, URLError
 
 from Gui import guiMain
 from Main import main
 from Utils import is_bundled, close_console, check_version, VersionError
-from Rom import get_tunic_color_options, get_navi_color_options
+from Patches import get_tunic_color_options, get_navi_color_options
 from Settings import get_settings_from_command_line_args
 
 

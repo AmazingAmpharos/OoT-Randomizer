@@ -91,11 +91,15 @@ The Fairy Ocarina and Ocarina of Time can be shuffled into the item pool with `s
 
 Enabling `shuffle_song_items` will make learning songs into items and shuffle the songs into the item pool. Song can appear at any location, and any item can appear at the original song locations.
 
-## Keysanity
+## Shuffle Dungeon Items
 
-Dungeon items (maps, compasses, small keys, boss keys) are shuffled into the item pool at large.
+The shuffling rules can be set separately for Maps/Compasses, Small Keys, and Boss Keys using `shuffle_mapcompass`, `shuffle_smallkeys`, and `shuffle_bosskeys` respectively. They can use one of the following rules:
 
-This was actually mostly implemented, I just pulled the trigger...
+- `remove`: The dungeon item type is removed from the game. If it is a key, then the associated doors will be unlocked.
+- `dungeon`: The dungeon item type will always appear in their own dungeon.
+- `keysanity`: The dungeon item type are shuffles into the pool and can appear anywhere.
+
+Keysanity also adds a menu to view your current dungeon items. While in the item select screen, hold A and it will show current key counts along with maps and compasses. If the compass has been obtained then it will show the medallion/stone reward for the dungeon. If the map has been obatained it will indicate if the dungeon is a Master Quest dungeon or a vanilla Ocarina of Time dungeon.
 
 ## Tokensanity
 
@@ -103,9 +107,25 @@ Gold Skulltula Token are added to the item pool, and Gold Skulltula locations gi
 
 In addition there is an option for the logic to expect Sun's Song to obtain any night-only skulltula token.
 
+## Shopsanity
+
+Shop items are shuffled within the world's shops. The logic ensures that ammo is always available from a shop in order to use the associated item. The Kakariko and Market Bazaar are seperate shops, meaning that there is a total of 8 shops in the game.
+
+There is also an option to replace some number of shop items in each shop with a non-shop item. These items can only be purchased once, and may require having 1 or 2 wallet upgrades but never more than 300 rupees. You can choose to have up to 4 non-shop items per shop, making a total of 32 new item locations. The random option will have each shop have a different number of these items (0 to 4). These items will always be on the left side of the shop.
+
+Since a lot more money is excepted to be needed to buy items, more money is added to the pool as well as a 3rd Wallet upgrade. The highest tier can hold 999 rupees. This will make it easier to obtain wallets earlier to help hold the added money.
+
+## Shuffle Deku Scrubs
+
+This option will shuffle all the Deku Salesscrubs to give random items. There is a total of 36 total scrubs that sell items. You can only buy from each scrubs once. Because of the large amount of money normally required to purchase from all the scrubs (well over 1000 rupees) the cost of all scrubs is reduced to 10 rupees. For a reference, here is a list of all the locations: <https://docs.google.com/document/d/1zDYi_FNLPVnRqfwWvJAcP7xhmo46z4agwCMJxtKUTfU/edit>. 
+
+When this option is off, only the three unique Deku Salescrubs (Heart Piece, Stick Upgrade, and Nut Upgrade) will be randomized to a new item. Their prices and all other scrubs are unaffected.
+
 ## Changed hint system
 
 The hint system has been changed to include different kinds of hints (such as saying a location has something good, but not saying what item it is, or saying a specific item is somewhere in a dungeon, instead of giving the specific location, and so on.) An option has been added to allow talking to gossip stones from the start. Yes, this makes the Stone of Agony completely useless.
+
+- `clearer_hints`: hints will be more obvious what item and locations they are referring to.
 
 ## Text shuffle
 

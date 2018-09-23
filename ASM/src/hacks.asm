@@ -419,3 +419,68 @@
 ;==================================================================================================
 .org 0xA9E838
     j       Check_Has_Epona_Song
+
+;==================================================================================================
+; Shop Injections
+;==================================================================================================
+
+; Check sold out override
+.org 0xC004EC
+    j        Shop_Check_Sold_Out
+
+; Allow Shop Item ID up to 100 instead of 50
+; slti at, v1, 0x32
+.org 0xC0067C
+    slti     at, v1, 100
+
+; Set sold out override
+; lh t6, 0x1c(a1)
+.org 0xC018A0
+    jal      Shop_Set_Sold_Out
+
+; Only run init function if ID is in normal range
+; jr t9
+.org 0xC6C7A8
+    jal      Shop_Keeper_Init_ID
+.org 0xC6C920
+    jal      Shop_Keeper_Init_ID
+
+; Override Deku Salescrub sold out check
+; addiu at, zero, 2
+; lui v1, 0x8012
+; bne v0, at, 0xd8
+; addiu v1, v1, -0x5a30
+; lhu t9, 0xef0(v1)
+.org 0xEBB85C
+    jal     Deku_Check_Sold_Out
+    .skip 4
+    bnez    v0, @Deku_Check_True
+    .skip 4
+    b       @Deku_Check_False
+.org 0xEBB8B0
+@Deku_Check_True:
+.org 0xEBB8C0
+@Deku_Check_False:
+
+; Ovveride Deku Scrub set sold out
+; sh t7, 0xef0(v0)
+.org 0xDF7CB0
+    jal     Deku_Set_Sold_Out
+
+;==================================================================================================
+; Dungeon info display
+;==================================================================================================
+
+; Replaces:
+;   jal     0x8009FEC0 ; swap buffers for overlay display list
+.org 0xB17128 ; In memory: 0x800A11C8
+    jal     overlay_swap
+
+; Talk to Temple of Time Altar injection
+; Replaces:
+;   jal     0xD6218
+.org 0xE2B0B4
+    jal     set_dungeon_knowledge
+
+
+
