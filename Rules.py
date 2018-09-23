@@ -317,7 +317,7 @@ def global_rules(world):
     set_rule(world.get_location('GS Gerudo Valley Behind Tent'), lambda state: state.can_use('Hookshot') and state.nighttime())
     set_rule(world.get_location('GS Gerudo Valley Pillar'), lambda state: state.can_use('Hookshot') and state.nighttime())
     set_rule(world.get_location('GS Gerudo Fortress Archery Range'), lambda state: state.can_use('Hookshot') and state.has('Carpenter Rescue') and state.nighttime())
-    set_rule(world.get_location('GS Gerudo Fortress Top Floor'), lambda state: state.nighttime() and (self.can_use('Bow') or self.can_use('Hookshot') or self.can_use('Hover Boots') or self.world.logic_tricks))
+    set_rule(world.get_location('GS Gerudo Fortress Top Floor'), lambda state: state.nighttime() and (state.can_use('Bow') or state.can_use('Hookshot') or state.can_use('Hover Boots') or world.logic_tricks))
     set_rule(world.get_location('GS Wasteland Ruins'), lambda state: state.can_use('Hookshot'))
     set_rule(world.get_location('GS Desert Colossus Bean Patch'), lambda state: state.has_bottle() and state.can_play('Requiem of Spirit') and state.can_child_attack())
     set_rule(world.get_location('GS Desert Colossus Tree'), lambda state: state.can_use('Hookshot') and state.nighttime())
