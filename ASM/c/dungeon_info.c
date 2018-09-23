@@ -196,7 +196,10 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
 
         for (int i = 0; i < dungeon_count; i++) {
             dungeon_entry_t *d = &(dungeons[i]);
-            if (d->has_boss_key && z64_file.dungeon_items[d->index].boss_key) {
+            // Replace index 13 (Ganon's Castle) with 10 (Ganon's Tower)
+            int index = d->index == 13 ? 10 : d->index;
+
+            if (d->has_boss_key && z64_file.dungeon_items[index].boss_key) {
                 int top = start_top + ((icon_size + padding) * i);
                 sprite_draw(db, &quest_items_sprite, 0,
                         left, top, icon_size, icon_size);
