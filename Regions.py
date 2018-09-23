@@ -469,11 +469,15 @@ def create_regions(world):
                 'Forest Temple Central Area', 
                 ['Forest Temple MQ Chest Behind Lobby', 'GS Forest Temple MQ Block Push Room'], 
                 ['Forest Temple West Eye Switch', 'Forest Temple East Eye Switch', 
-                 'Forest Temple Block Puzzle Solve']),
+                 'Forest Temple Block Puzzle Solve', 'Forest Temple Crystal Switch Jump']),
             create_dungeon_region(
                 'Forest Temple After Block Puzzle', 
-                ['Forest Temple MQ Boss Key Chest', 'Forest Temple MQ Redead Chest'], 
-                ['Forest Temple Drop to NW Outdoors', 'Forest Temple Twisted Hall']),
+                ['Forest Temple MQ Boss Key Chest'], 
+                ['Forest Temple Twisted Hall']),
+            create_dungeon_region(
+                'Forest Temple Outdoor Ledge', 
+                ['Forest Temple MQ Redead Chest'], 
+                ['Forest Temple Drop to NW Outdoors']),
             create_dungeon_region(
                 'Forest Temple NW Outdoors', 
                 ['GS Forest Temple MQ Outdoor West'], 

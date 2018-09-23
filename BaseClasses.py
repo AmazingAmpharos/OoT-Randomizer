@@ -67,6 +67,7 @@ class World(object):
         ret = World(self.settings)
         ret.skipped_trials = copy.copy(self.skipped_trials)
         ret.dungeon_mq = copy.copy(self.dungeon_mq)
+        ret.big_poe_count = copy.copy(self.big_poe_count)
         ret.can_take_damage = self.can_take_damage
         ret.shop_prices = copy.copy(self.shop_prices)
         ret.id = self.id
@@ -464,11 +465,11 @@ class CollectionState(object):
         return (self.has('Claim Check') or ((self.has('Progressive Strength Upgrade') or self.can_blast_or_smash() or self.has_bow()) and (((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))))
 
     def has_bottle(self):
-        is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter')
+        is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter' and (item != 'Bottle with Big Poe' or self.is_adult()))
         return any(is_normal_bottle(pritem) for pritem in self.prog_items)
 
     def bottle_count(self):
-        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and pritem != 'Bottle with Letter'])
+        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and pritem != 'Bottle with Letter' and (pritem != 'Bottle with Big Poe' or self.is_adult())])
 
     def has_hearts(self, count):
         # Warning: This only considers items that are marked as advancement items
@@ -501,7 +502,7 @@ class CollectionState(object):
 
     def can_finish_GerudoFortress(self):
         if self.world.gerudo_fortress == 'normal':
-            return self.has('Small Key (Gerudo Fortress)', 4) and (self.can_use('Bow') or self.can_use('Hookshot') or self.can_use('Hover Boots'))
+            return self.has('Small Key (Gerudo Fortress)', 4) and (self.can_use('Bow') or self.can_use('Hookshot') or self.can_use('Hover Boots') or self.world.logic_tricks)
         elif self.world.gerudo_fortress == 'fast':
             return self.has('Small Key (Gerudo Fortress)', 1) and self.is_adult()
         else:

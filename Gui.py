@@ -166,6 +166,27 @@ def guiMain(settings=None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
 
+    def show_settings_special(event=None):
+        if guivars['logic_tricks'].get():
+            widgets['logic_man_on_roof'].select()
+            widgets['logic_child_deadhand'].select()
+            widgets['logic_dc_jump'].select()
+            widgets['logic_windmill_hp'].select()
+            widgets['logic_crater_bean_hp_with_hovers'].select()
+            widgets['logic_zora_with_cucco'].select()
+            widgets['logic_fewer_tunic_requirements'].select()
+        else:
+            widgets['logic_man_on_roof'].deselect()
+            widgets['logic_child_deadhand'].deselect()
+            widgets['logic_dc_jump'].deselect()
+            widgets['logic_windmill_hp'].deselect()
+            widgets['logic_crater_bean_hp_with_hovers'].deselect()
+            widgets['logic_zora_with_cucco'].deselect()
+            widgets['logic_fewer_tunic_requirements'].deselect()
+        settings = guivars_to_settings(guivars)
+        settings_string_var.set( settings.get_settings_string() )
+
+
 
     def import_settings(event=None):
         try:
@@ -256,6 +277,14 @@ def guiMain(settings=None):
                 guivars[info.name] = IntVar(value=default_value)
                 # create the checkbox
                 widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
+                widgets[info.name].pack(expand=False, anchor=W)
+            if info.gui_params['widget'] == 'SpecialCheckbutton':
+                # determine the initial value of the checkbox
+                default_value = 1 if info.gui_params['default'] == "checked" else 0
+                # create a variable to access the box's state
+                guivars[info.name] = IntVar(value=default_value)
+                # create the checkbox
+                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings_special)
                 widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
                 # create the variable to store the user's decision

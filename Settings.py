@@ -1273,6 +1273,23 @@ setting_infos = [
                       Racing twice is repetitive.
                       '''
         }),
+    Setting_Info('logic_tricks', bool, 1, True, 
+        {
+            'help': '''\
+                    Enable various tricks.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Require minor tricks',
+            'group': 'tricks',
+            'widget': 'SpecialCheckbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Enables a large number of tricks.
+                      Still does not require glitches.
+                      '''
+        }),
     Setting_Info('logic_man_on_roof', bool, 1, True, 
         {
             'help': '''\
@@ -1388,6 +1405,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Can hover behind the waterfall as adult.
+                      This is very difficult.
                       '''
         }),
     Setting_Info('logic_fewer_tunic_requirements', bool, 1, True, 

@@ -115,7 +115,9 @@ normal_bottles = [
     'Bottle with Fairy',
     'Bottle with Fish',
     'Bottle with Bugs',
-    'Bottle with Poe'] # 'Bottle with Blue Fire'
+    'Bottle with Poe',
+    'Bottle with Big Poe',
+    'Bottle with Blue Fire']
 
 normal_bottle_count = 3
 
@@ -756,6 +758,8 @@ def get_pool_core(world):
     for _ in range(normal_bottle_count):
         bottle = random.choice(normal_bottles)
         pool.append(bottle)
+    if world.big_poe_count_random:
+        world.big_poe_count = random.randint(1, 10)
     tradeitem = random.choice(tradeitems)
     pool.append(tradeitem)
     pool.extend(songlist)
