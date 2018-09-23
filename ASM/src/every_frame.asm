@@ -1,11 +1,6 @@
-every_frame:
-    sw      a0, 0x68 (sp)
-    sw      a1, 0x6C (sp)
-    sw      a2, 0x70 (sp)
-    sw      a3, 0x74 (sp)
+before_game_state_update:
     addiu   sp, sp, -0x18
-    sw      v1, 0x10 (sp)
-    sw      ra, 0x14 (sp)
+    sw      ra, 0x10 (sp)
 
     ; Don't give pending item during cutscene. This can lead to a crash when giving an item
     ; during another item cutscene.
@@ -58,15 +53,25 @@ every_frame:
     nop
 @@no_pending_item:
 
-    lw      v1, 0x10 (sp)
-    lw      ra, 0x14 (sp)
-    addiu   sp, sp, 0x18
-    lw      a0, 0x68 (sp)
-    lw      a1, 0x6C (sp)
-    lw      a2, 0x70 (sp)
-    lw      a3, 0x74 (sp)
+    ; Displaced code
+    lw      t9, 0x04 (s0)
+    or      a0, s0, r0
 
-    lh      t6, 0x13C4 (v1) ; Displaced code
-
+    lw      ra, 0x10 (sp)
     jr      ra
+    addiu   sp, sp, 0x18
+
+after_game_state_update:
+    addiu   sp, sp, -0x18
+    sw      ra, 0x10 (sp)
+
+    jal     c_after_game_state_update
     nop
+
+    ; Displaced code
+    lui     t6, 0x8012
+    lbu     t6, 0x1212 (t6)
+
+    lw      ra, 0x10 (sp)
+    jr      ra
+    addiu   sp, sp, 0x18
