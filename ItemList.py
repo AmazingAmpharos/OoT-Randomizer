@@ -758,6 +758,8 @@ def get_pool_core(world):
     for _ in range(normal_bottle_count):
         bottle = random.choice(normal_bottles)
         pool.append(bottle)
+    if world.big_poe_count_random:
+        world.big_poe_count = random.randint(1, 10)
     tradeitem = random.choice(tradeitems)
     pool.append(tradeitem)
     pool.extend(songlist)

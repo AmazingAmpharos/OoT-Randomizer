@@ -165,7 +165,7 @@ def global_rules(world):
     set_rule(world.get_location('Bombchu Bowling Bomb Bag'), lambda state: state.has_bombchus())
     set_rule(world.get_location('Bombchu Bowling Piece of Heart'), lambda state: state.has_bombchus())
     set_rule(world.get_location('Adult Shooting Gallery'), lambda state: state.can_use('Bow'))
-    set_rule(world.get_location('10 Big Poes'), lambda state: (not world.logic_no_big_poes) and (state.can_use('Bow') and state.has('Epona') and state.has_bottle() and state.guarantee_hint()))
+    set_rule(world.get_location('10 Big Poes'), lambda state: (not world.logic_no_big_poes) and state.is_adult() and ((state.can_use('Bow') and state.has('Epona') and state.has_bottle() and state.guarantee_hint()) or state.has('Bottle with Big Poe', world.big_poe_count)))
     set_rule(world.get_location('Treasure Chest Game'), lambda state: state.can_use('Lens of Truth'))
     set_rule(world.get_entrance('Lost Woods Dive Warp'), lambda state: state.can_dive() and state.can_leave_forest())
     set_rule(world.get_entrance('Zora River Dive Warp'), lambda state: state.can_dive())
