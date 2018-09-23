@@ -87,6 +87,10 @@ def patch_rom(world, rom):
         titleBytes = stream.read()
         rom.write_bytes(0x01795300, titleBytes)
 
+    # Increase the instance size of Bombchus prevent the heap from becoming corrupt when
+    # a Dodongo eats a Bombchu. Does not fix stale pointer issues with the animation
+    rom.write_int32(0xD6002C, 0x1F0)
+
     # Can always return to youth
     rom.write_byte(0xCB6844, 0x35)
     rom.write_byte(0x253C0E2, 0x03) # Moves sheik from pedestal
