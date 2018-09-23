@@ -56,6 +56,7 @@ item_table = {
     'Bottle with Fish': (True, False, None, None, 0x8D, 0x00C6, 0x01),
     'Bottle with Blue Fire': (True, False, None, None, 0x8E, 0x00C6, 0x01),
     'Bottle with Bugs': (True, False, None, None, 0x8F, 0x00C6, 0x01),
+    'Bottle with Big Poe': (True, False, None, None, 0x90, 0x00C6, 0x01),
     'Bottle with Poe': (True, False, None, None, 0x91, 0x00C6, 0x01),
     'Weird Egg': (True, False, None, 0x08E0, 0x47, 0x00DA, 0x29),
     'Pocket Egg': (True, False, None, 0x03A0, 0x1D, 0x00DA, 0x29),
