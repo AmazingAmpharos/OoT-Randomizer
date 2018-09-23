@@ -48,7 +48,6 @@ from Rom import LocalRom
 import json
 from struct import pack, unpack
 
-DMA_TABLE = 0x7430
 SCENE_TABLE = 0xB71440
 
 
@@ -105,6 +104,7 @@ class ColDelta(object):
         self.polytypes = delta['PolyTypes']
         self.cams = delta['Cams']
 
+
 class Icon(object):
     def __init__(self, data):
         self.icon = data["Icon"];
@@ -127,6 +127,7 @@ class Icon(object):
         for p in self.points:
             p.write_to_floormap(rom, addr + cur)
             cur += 0x0C
+
 
 class IconPoint(object):
     def __init__(self, point):
@@ -355,6 +356,7 @@ class Scene(object):
         self.file.end = cur
         return records_offset
 
+
 class Room(object):
     def __init__(self, room):
         self.file = File(room['File'])
@@ -416,7 +418,6 @@ def patch_files(rom:LocalRom, mq_scenes:list):
                 patch_ice_cavern_scene_header(rom)
             scene.write_data(rom)
 
-    verify_dma(rom)
 
 
 def get_json():
@@ -439,6 +440,7 @@ def get_segment_address(base, offset):
 def patch_ice_cavern_scene_header(rom):
     rom.buffer[0x2BEB000:0x2BEB038] = rom.buffer[0x2BEB008:0x2BEB040]
     rom.write_int32s(0x2BEB038, [0x0D000000, 0x02000000])
+
 
 def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
     cur = room_addr
@@ -483,8 +485,6 @@ def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
     
     # make the child header skip the first actor,
     # which avoids the spawning of the block while in the hole
-
-
     cmd_addr = room_addr + cmd_actors_offset
     actor_list_addr += 0x10
     actors = rom.read_byte(cmd_addr + 1)
@@ -497,15 +497,6 @@ def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
     # write alternate header command
     seg = get_segment_address(3, alt_data_off)
     rom.write_int32s(room_addr, [0x18000000, seg])
-
-
-
-
-def get_dma_record(rom:LocalRom, cur):
-    start = rom.read_int32(cur)
-    end = rom.read_int32(cur+0x04)
-    size = end-start
-    return start, end, size
 
 
 def verify_remap(scenes):
@@ -527,56 +518,9 @@ def verify_remap(scenes):
             print("{0} - {1}".format(result, file))
 
 
-def verify_dma(rom:LocalRom):
-    cur = DMA_TABLE
-    overlapping_records = []
-    dma_data = []
-    
-    while True:
-        this_start, this_end, this_size = get_dma_record(rom, cur)
-
-        if this_start == 0 and this_end == 0:
-            break
-
-        dma_data.append((this_start, this_end, this_size))
-        cur += 0x10
-
-    dma_data.sort(key=lambda v: v[0])
-
-    for i in range(0, len(dma_data) - 1):
-        this_start, this_end, this_size = dma_data[i]
-        next_start, next_end, next_size = dma_data[i + 1]
-
-        if this_end > next_start:
-            overlapping_records.append(
-                    '0x%08X - 0x%08X (Size: 0x%04X)\n0x%08X - 0x%08X (Size: 0x%04X)' % \
-                     (this_start, this_end, this_size, next_start, next_end, next_size)
-                )
-
-    if len(overlapping_records) > 0:
-        raise Exception("Overlapping DMA Data Records!\n%s" % \
-            '\n-------------------------------------\n'.join(overlapping_records))
-
-
 def update_dmadata(rom:LocalRom, file:File):
-    cur = DMA_TABLE
-
     key, start, end = file.dma_key, file.start, file.end
-
-    dma_start, dma_end, dma_size = get_dma_record(rom, cur)
-    while dma_start != key:
-        if dma_start == 0 and dma_end == 0:
-            break
-
-        cur += 0x10
-        dma_start, dma_end, dma_size = get_dma_record(rom, cur)
-
-    if dma_start == 0:
-        raise Exception('dmadata update failed: key {0:x} not found in dmadata'.format(key))
-
-    else:
-        rom.write_int32s(cur, [start, end, start, 0])
-
+    rom.update_dmadata_record(key, start, end)
 
 def update_scene_table(rom:LocalRom, sceneId, start, end):
     cur = sceneId * 0x14 + SCENE_TABLE
