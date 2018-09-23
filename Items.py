@@ -220,7 +220,7 @@ item_table = {
     'Buy Blue Fire': (True, False, 'Shop', None, 0x27, 0x0173, 0x67), 
     'Buy Bottle Bug': (True, False, 'Shop', None, 0x28, 0x0174, 0x68), 
     'Buy Poe': (False, True, 'Shop', None, 0x2A, 0x0176, 0x6A), 
-    'Buy Fairy\'s Spirit': (True, False, 'Shop', None, 0x2B, 0x0177, 0x6B), 
+    'Buy Fairy\'s Spirit': (False, True, 'Shop', None, 0x2B, 0x0177, 0x6B), 
     'Buy Arrows (10)': (False, True, 'Shop', None, 0x2C, 0x00D8, 0x25), 
     'Buy Bombs (20)': (False, True, 'Shop', None, 0x2D, 0x00CE, 0x20), 
     'Buy Bombs (30)': (False, True, 'Shop', None, 0x2E, 0x00CE, 0x20), 
