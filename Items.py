@@ -28,7 +28,7 @@ class ShopData(object):
         self.price = price
 
 
-# Format: Name: (Advancement, Priority, Type, ItemCode, Index, Object, Model)
+# Format: Name: (Advancement, Priority, Type, ItemCode, Index)
 item_table = {
     'Bow': (True, False, None, None, 0x83, 0x00E9, 0x35),
     'Progressive Hookshot': (True, False, None, None, 0x80, 0x00DD, 0x2D),

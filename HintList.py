@@ -95,7 +95,7 @@ hintTable = {
     'Bottle with Milk':                                      (["cow juice", "a white liquid"], "a Milk Bottle", 'item'),
     'Bottle with Red Potion':                                (["a vitality vial", "a red liquid"], "a Red Bottle", 'item'),
     'Bottle with Green Potion':                              (["a magic mixture", "a green liquid"], "a Green Bottle", 'item'),
-    'Bottle with Blue Potion':                               (["an all-cure antidote", "a blue liquid"], "a Blue Bottle", 'item'),
+    'Bottle with Blue Potion':                               (["an ailment antidote", "a blue liquid"], "a Blue Bottle", 'item'),
     'Bottle with Fairy':                                     (["an imprisoned fairy", "an extra life"], "a Fairy Bottle", 'item'),
     'Bottle with Fish':                                      (["an aquarium", "a contained sea beast"], "a Fish Bottle", 'item'),
     'Bottle with Blue Fire':                                 (["a conflagration canteen", "an icemelt jar"], "a Fire Bottle", 'item'),
@@ -295,6 +295,9 @@ hintTable = {
     '2009':                                                  ("Many tricks are up my sleeve,&to save yourself&you'd better leave!", None, 'ganonLine'),
     '2010':                                                  ("After what you did to&Koholint Island, how can&you call me the bad guy?", None, 'ganonLine'),
     '2011':                                                  ("Today, let's begin down&'The Hero is Defeated' timeline.", None, 'ganonLine'),
+    'Claim Check':                                           (["a three day wait"], "the Claim Check", 'item'),
+
+    'Bottle with Blue Potion':                               (["an all-cure antidote", "a blue liquid"], "a Blue Bottle", 'item'),
 }
 
 # This specifies which hints will never appear due to either having known or known useless contents or due to the locations not existing.
