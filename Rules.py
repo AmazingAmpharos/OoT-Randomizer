@@ -529,7 +529,7 @@ def dung_rules_fotmq(world):
     set_rule(world.get_entrance('Forest Temple Twisted Hall'), lambda state: state.has('Small Key (Forest Temple)', 4))
     set_rule(world.get_entrance('Forest Temple Well Connection'), lambda state: state.can_use('Iron Boots') or state.can_use('Longshot') or state.has('Progressive Scale', 2))
     set_rule(world.get_entrance('Forest Temple Webs'), lambda state: state.can_use('Fire Arrows'))
-    set_rule(world.get_entrance('Forest Temple Climb to Top Ledges'), lambda state: state.can_use('Longshot') or state.can_use('Hover Boots') or state.can_play('Song of Time'))
+    set_rule(world.get_entrance('Forest Temple Climb to Top Ledges'), lambda state: state.can_use('Longshot') or state.can_use('Hover Boots') or state.can_play('Song of Time') or (world.logic_tricks and state.can_use('Hookshot')))
     set_rule(world.get_entrance('Forest Temple Longshot to NE Outdoors Ledge'), lambda state: state.can_use('Longshot'))
     set_rule(world.get_entrance('Forest Temple Song of Time Block Climb'), lambda state: state.can_play('Song of Time'))
     set_rule(world.get_entrance('Forest Temple Drop to Falling Room'), lambda state: state.has('Small Key (Forest Temple)', 5) and (state.can_use('Bow') or state.can_use('Dins Fire'))) # Only 5 keys because the door you could 'waste' your key on is the door you're trying to use keys to get to.
