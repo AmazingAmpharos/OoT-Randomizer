@@ -417,7 +417,6 @@ def dung_rules_dtmq(world):
     set_rule(world.get_location('Deku Tree MQ Slingshot Room Back Chest'), lambda state: state.has_sticks() or state.can_use('Dins Fire'))
     set_rule(world.get_location('Deku Tree MQ Basement Chest'), lambda state: state.has_sticks() or state.can_use('Dins Fire'))
     set_rule(world.get_location('Deku Tree MQ After Spinning Log Chest'), lambda state: state.can_play('Song of Time'))
-    set_rule(world.get_location('DT MQ Deku Scrub Deku Shield'), lambda state: state.has_slingshot() or state.has_nuts() or state.has('Boomerang') or state.can_use('Dins Fire') or state.has_bombchus())
 
     # Boss
     set_rule(world.get_location('Queen Gohma Heart'), lambda state: state.has('Buy Deku Shield') and (state.has('Kokiri Sword') or state.has_sticks()))
