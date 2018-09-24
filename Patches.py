@@ -2011,5 +2011,6 @@ def configure_dungeon_info(rom, world):
     rom.write_int32(rom.sym('cfg_dungeon_info_mq_enable'), int(mq_enable))
     rom.write_int32(rom.sym('cfg_dungeon_info_mq_need_map'), int(mapcompass_keysanity))
     rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_compass'), int(mapcompass_keysanity))
+    rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_altar'), int(not mapcompass_keysanity))
     rom.write_bytes(rom.sym('cfg_dungeon_rewards'), dungeon_rewards)
     rom.write_bytes(rom.sym('cfg_dungeon_is_mq'), dungeon_is_mq)

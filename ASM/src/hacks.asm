@@ -146,16 +146,28 @@
 .endarea
 
 ;==================================================================================================
-; Special item sources
+; Every frame hooks
 ;==================================================================================================
 
-; Runs every frame (part of player actor)
+; Runs before the game state updates
 ; Replaces:
-;   sw      a1, 0x006C (sp)
-;   lh      t6, 0x13C4 (v1)
-.org 0xBE5990 ; In memory: 0x803A0980
-    jal     every_frame
+;   lw      t9, 0x0004 (s0)
+;   or      a0, s0, r0
+.org 0xB16B50 ; In memory: 0x800A0BF0
+    jal     before_game_state_update
     nop
+
+; Runs after the game state updates
+; Replaces:
+;   lui     t6, 0x8012
+;   lbu     t6, 0x1212 (t6)
+.org 0xB16B60 ; In memory: 0x800A0C00
+    jal     after_game_state_update
+    nop
+
+;==================================================================================================
+; Special item sources
+;==================================================================================================
 
 ; Override Light Arrow cutscene
 ; Replaces:
@@ -471,16 +483,8 @@
 ; Dungeon info display
 ;==================================================================================================
 
-; Replaces:
-;   jal     0x8009FEC0 ; swap buffers for overlay display list
-.org 0xB17128 ; In memory: 0x800A11C8
-    jal     overlay_swap
-
 ; Talk to Temple of Time Altar injection
 ; Replaces:
 ;   jal     0xD6218
 .org 0xE2B0B4
     jal     set_dungeon_knowledge
-
-
-
