@@ -10,6 +10,8 @@ import copy
 
 from Utils import local_path, default_output_path
 
+DMADATA_START = 0x7430
+
 class LocalRom(object):
     def __init__(self, settings, patch=True):
         self.last_address = None
@@ -26,14 +28,12 @@ class LocalRom(object):
 
         try:
             # Read decompressed file if it exists
-            with open(decomp_file, 'rb') as stream:
-                self.buffer = read_rom(stream)
+            self.read_rom(decomp_file)
             # This is mainly for validation testing, but just in case...
             self.decompress_rom_file(decomp_file, decomp_file)
         except Exception as ex:
             # No decompressed file, instead read Input ROM
-            with open(file, 'rb') as stream:
-                self.buffer = read_rom(stream)
+            self.read_rom(file)
             self.decompress_rom_file(file, decomp_file)
 
         # Add file to maximum size
@@ -57,23 +57,22 @@ class LocalRom(object):
             raise RuntimeError('ROM file %s is not a valid OoT 1.0 US ROM.' % file)
         elif len(self.buffer) == 0x2000000:
             # If Input ROM is compressed, then Decompress it
+            subcall = []
+
             if platform.system() == 'Windows':
                 if 8 * struct.calcsize("P") == 64:
-                    subprocess.call(["Decompress\\Decompress.exe", file, decomp_file])
+                    subcall = ["Decompress\\Decompress.exe", file, decomp_file]
                 else:
-                    subprocess.call(["Decompress\\Decompress32.exe", file, decomp_file])
-                with open(decomp_file, 'rb') as stream:
-                    self.buffer = read_rom(stream)
+                    subcall = ["Decompress\\Decompress32.exe", file, decomp_file]
             elif platform.system() == 'Linux':
-                subprocess.call(["Decompress/Decompress", file])
-                with open(("ZOOTDEC.z64"), 'rb') as stream:
-                    self.buffer = read_rom(stream)
+                subcall = ["Decompress/Decompress", file]
             elif platform.system() == 'Darwin':
-                subprocess.call(["Decompress/Decompress.out", file])
-                with open(("ZOOTDEC.z64"), 'rb') as stream:
-                    self.buffer = read_rom(stream)
+                subcall = ["Decompress/Decompress.out", file]
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
+
+            subprocess.call(subcall)
+            self.read_rom(decomp_file)
         else:
             # ROM file is a valid and already uncompressed
             pass
@@ -107,6 +106,11 @@ class LocalRom(object):
         self.buffer[address] = value
         self.last_address = address + 1
 
+    def write_sbyte(self, address, value):
+        if address == None:
+            address = self.last_address
+        self.write_bytes(address, struct.pack('b', value))
+
     def write_int16(self, address, value):
         if address == None:
             address = self.last_address
@@ -121,6 +125,11 @@ class LocalRom(object):
         if address == None:
             address = self.last_address
         self.write_bytes(address, int32_as_bytes(value))
+
+    def write_f32(self, address, value:float):
+        if address == None:
+            address = self.last_address
+        self.write_bytes(address, struct.pack('>f', value))
 
     def write_bytes(self, startaddress, values):
         if startaddress == None:
@@ -147,6 +156,7 @@ class LocalRom(object):
             self.write_int32(startaddress + (i * 4), value)
 
     def write_to_file(self, file):
+        self.verify_dmadata()
         self.update_crc()
         with open(file, 'wb') as outfile:
             outfile.write(self.buffer)
@@ -186,10 +196,66 @@ class LocalRom(object):
         self.write_int32s(0x10, [crc0, crc1])
 
 
-def read_rom(stream):
-    "Reads rom into bytearray"
-    buffer = bytearray(stream.read())
-    return buffer
+    def read_rom(self, file):
+        # "Reads rom into bytearray"
+        with open(file, 'rb') as stream:
+            self.buffer = bytearray(stream.read())
+
+    # dmadata/file management helper functions
+
+    def _get_dmadata_record(rom, cur):
+        start = rom.read_int32(cur)
+        end = rom.read_int32(cur+0x04)
+        size = end-start
+        return start, end, size
+
+
+    def verify_dmadata(rom):
+        cur = DMADATA_START
+        overlapping_records = []
+        dma_data = []
+    
+        while True:
+            this_start, this_end, this_size = rom._get_dmadata_record(cur)
+
+            if this_start == 0 and this_end == 0:
+                break
+
+            dma_data.append((this_start, this_end, this_size))
+            cur += 0x10
+
+        dma_data.sort(key=lambda v: v[0])
+
+        for i in range(0, len(dma_data) - 1):
+            this_start, this_end, this_size = dma_data[i]
+            next_start, next_end, next_size = dma_data[i + 1]
+
+            if this_end > next_start:
+                overlapping_records.append(
+                        '0x%08X - 0x%08X (Size: 0x%04X)\n0x%08X - 0x%08X (Size: 0x%04X)' % \
+                         (this_start, this_end, this_size, next_start, next_end, next_size)
+                    )
+
+        if len(overlapping_records) > 0:
+            raise Exception("Overlapping DMA Data Records!\n%s" % \
+                '\n-------------------------------------\n'.join(overlapping_records))
+        
+
+    def update_dmadata_record(rom, key, start, end):
+        cur = DMADATA_START
+        dma_start, dma_end, dma_size = rom._get_dmadata_record(cur)
+        while dma_start != key:
+            if dma_start == 0 and dma_end == 0:
+                break
+
+            cur += 0x10
+            dma_start, dma_end, dma_size = rom._get_dmadata_record(cur)
+
+        if dma_start == 0:
+            raise Exception('dmadata update failed: key {0:x} not found in dmadata'.format(key))
+
+        else:
+            rom.write_int32s(cur, [start, end, start, 0])
 
 
 def int16_as_bytes(value):
@@ -197,7 +263,7 @@ def int16_as_bytes(value):
     return [(value >> 8) & 0xFF, value & 0xFF]
 
 def int24_as_bytes(value):
-    value = value & 0xFFFFFFFF
+    value = value & 0xFFFFFF
     return [(value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF]
 
 def int32_as_bytes(value):

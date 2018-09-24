@@ -95,12 +95,13 @@ hintTable = {
     'Bottle with Milk':                                      (["cow juice", "a white liquid"], "a Milk Bottle", 'item'),
     'Bottle with Red Potion':                                (["a vitality vial", "a red liquid"], "a Red Bottle", 'item'),
     'Bottle with Green Potion':                              (["a magic mixture", "a green liquid"], "a Green Bottle", 'item'),
-    'Bottle with Blue Potion':                               (["a cure-all antidote", "a blue liquid"], "a Blue Bottle", 'item'),
+    'Bottle with Blue Potion':                               (["an ailment antidote", "a blue liquid"], "a Blue Bottle", 'item'),
     'Bottle with Fairy':                                     (["an imprisoned fairy", "an extra life"], "a Fairy Bottle", 'item'),
     'Bottle with Fish':                                      (["an aquarium", "a contained sea beast"], "a Fish Bottle", 'item'),
     'Bottle with Blue Fire':                                 (["a conflagration canteen", "an icemelt jar"], "a Fire Bottle", 'item'),
     'Bottle with Bugs':                                      (["an insectarium", "skultula finders", "a Bug Bottle"], "bugs", 'item'),
     'Bottle with Poe':                                       (["a spooky ghost", "a face in the jar"], "a Poe Bottle", 'item'),
+    'Bottle with Big Poe':                                   (["the spookiest ghost", "a sidequest spirit"], "a Big Poe Bottle", 'item'),
     'Stone of Agony':                                        (["a vibrating rock", "a clue finder"], "the Stone of Agony", 'item'),
     'Gerudo Membership Card':                                (["a GT subscription", "a desert tribe's pass"], "the Gerudo Card", 'item'),
     'Progressive Wallet':                                    (["a mo' money holder", "a gem purse", "financial capacity"], "a Wallet", 'item'),
@@ -110,6 +111,8 @@ hintTable = {
     'Piece of Heart':                                        (["love", "a partial Valentine"], "a Heart Piece", 'item'),
     'Piece of Heart (Treasure Chest Game)':                  (["love", "a partial Valentine"], "a Heart Piece", 'item'),
     'Recovery Heart':                                        (["a free heal", "disappointing love"], "a Recovery Heart", 'item'),
+    'Rupee (Treasure Chest Game)':                           ("the dollar of defeat", 'a Green Rupee', 'item'),
+    'Deku Stick (1)':                                        ("a breakable branch", 'a Deku Stick', 'item'),
     'Rupee (1)':                                             (["a unique coin", "a penny", "a tiny coin", "a green gem"], "a Green Rupee", 'item'),
     'Rupees (5)':                                            (["a common coin", "a blue gem"], "a Blue Rupee", 'item'),
     'Rupees (20)':                                           (["couch cash", "a red gem"], "a Red Rupees", 'item'),
@@ -127,7 +130,7 @@ hintTable = {
     'Prescription':                                          (["a pill pamphlet", "a Doctor's slip"], "the Prescription", 'item'),
     'Eyeball Frog':                                          (["a perceiving polliwog"], "the Eyeball Frog", 'item'),
     'Eyedrops':                                              (["a vision vial"], "the Eyedrops", 'item'),
-    'Claim Check':                                           (["a three day wait"], "the Claim check", 'item'),
+    'Claim Check':                                           (["a three day wait"], "the Claim Check", 'item'),
     'Map':                                                   (["a dungeon atlas", "blueprints"], "a Map", 'item'),
     'Compass':                                               (["a treasure tracker", "a magnetic needle"], "a Compass", 'item'),
     'BossKey':                                               (["a master of unlocking", "a dungeon's final pass"], "a Boss Key", 'item'),
@@ -156,6 +159,7 @@ hintTable = {
     '30 Gold Skulltulla Reward':                             ("slaying #30 Gold Skulltulas# reveals", None, 'alwaysLocation'),
     '40 Gold Skulltulla Reward':                             ("slaying #40 Gold Skulltulas# reveals", None, 'alwaysLocation'),
     '50 Gold Skulltulla Reward':                             ("slaying #50 Gold Skulltulas# reveals", None, 'alwaysLocation'),
+    'Ocarina of Time':                                       ("They say the #treasure thrown by Princess Zelda# is", None, 'alwaysLocation'),
     'Song from Ocarina of Time':                             ("the #Ocarina of Time# teaches", None, 'alwaysLocation'),
     'Biggoron':                                              ("#Biggoron# crafts", None, 'alwaysLocation'),
     'Child Fishing':                                         ("#fishing in youth# bestows", None, 'location'),
@@ -167,23 +171,35 @@ hintTable = {
     'Lake Hylia Sun':                                        (["staring into #the sun# grants", "acts of #solar aggression# are punished with"], "shooting #the sun# grants", 'location'),
     'Heart Piece Grave Chest':                               ("in a grave playing #Sun's Song# spawns", None, 'location'),
     'Goron City Leftmost Maze Chest':                        ("in #Goron City# the hammer unlocks", None, 'location'),
-    'Chest Above King Dodongo':                              ("the chest above the #Infernal Dinosaur# contains",  "the chest above #King Dodongo# contains", 'location'),
-    'Forest Temple Floormaster Chest':                       ("#Deep in the forest#, shadows guard a chest containing", "a Floormaster in #Forest Temple# guards", 'location'),
+    'GS Hyrule Castle Grotto':                               ("a #storm near the castle# reveals", None, 'location'),
+    'GS Hyrule Field Near Gerudo Valley':                    ("buried near near #the valley# a spider holds", None, 'location'),
+    'GS Zora\'s Fountain Hidden Cave':                       ("a spider high above the #icy waters# holds", None, 'location'),
+    'Forest Temple Floormaster Chest':                       ("deep in #the forest#, shadows guard a chest containing", "a Floormaster in #Forest Temple# guards", 'location'),
     'Fire Temple Scarecrow Chest':                           ("high in the #Fire Temple#, Pierre hid", None, 'location'),
     'Fire Temple Megaton Hammer Chest':                      ("high in the #Fire Temple#, Fire Dancers hid", None, 'location'),
-    'Water Temple River Chest':                              ("#deep under the lake#, beyond the currents, hides", "the #Water Temple River Chest# holds", 'location'),
-    'Water Temple Boss Key Chest':                           ("#deep under the lake#, the gilded chest contains", "the #Water Temple Gold Chest# holds", 'location'),
+    'Fire Temple MQ West Tower Top Chest':                   ("high in the #Fire Temple#, Fire Dancers hid", None, 'location'),
+    'Water Temple River Chest':                              ("deep under #the lake#, beyond the currents, hides", "the #Water Temple River Chest# holds", 'location'),
+    'Water Temple Boss Key Chest':                           ("deep under #the lake#, the gilded chest contains", "the #Water Temple Gold Chest# holds", 'location'),
+    'Water Temple MQ Boss Key Chest':                        ("deep under #the lake#, the gilded chest contains", "the #Water Temple Gold Chest# holds", 'location'),
+    'Water Temple MQ Freestanding Key':                      ("deep under #the lake#, the apparent key is really", None, 'location'),
+    'GS Water Temple MQ North Basement':                     ("deep under #the lake#, the locked spider holds", None, 'location'),
     'Gerudo Training Grounds Underwater Silver Rupee Chest': ("those who seek #sunken silver rupees# will find", None, 'location'),
-    'Gerudo Training Grounds Maze Path Final Chest':         ("past #all the locked doors# is", None, 'location'),
+    'Gerudo Training Grounds MQ Underwater Silver Rupee Chest': ("those who seek #sunken silver rupees# will find", None, 'location'),
+    'Gerudo Training Grounds Maze Path Final Chest':         ("the final prize of #the thieves\' training# is", None, 'location'),
+    'Gerudo Training Grounds MQ Ice Arrows Chest':           ("the final prize of #the thieves\' training# is", None, 'location'),
     'Bottom of the Well Defeat Boss':                        (["#Dead Hand# holds", "draining the water reveals #a monster# guarding"], None, 'location'),
+    'Bottom of the Well MQ Compass Chest':                   (["#Dead Hand# holds", "draining the water reveals #a monster# guarding"], None, 'location'),
     'Silver Gauntlets Chest':                                ("upon the #Colossus's right hand# is", "upon the #Colossus's child hand# is", 'location'),
     'Mirror Shield Chest':                                   ("upon the #Colossus's left hand# is", "upon the #Colossus's adult hand# is", 'location'),
-    'Shadow Temple Hidden Floormaster Chest':                (["shadows in an #invisible maze# guard", "after a free #boat ride# comes"], "a Floormaster in #Shadow Temple# guards", 'location'),
+    'Spirit Temple MQ Child Center Chest':                   ("within #the Colossus# a temporal paradox yields", None, 'location'),
+    'Spirit Temple MQ Lower Adult Right Chest':              ("within #the Colossus# a symphony yields", None, 'location'),
+    'GS Spirit Temple MQ Lower Adult Right':                 ("within #the Colossus# a spider\'s symphony yields", None, 'location'),
+    'Shadow Temple Hidden Floormaster Chest':                (["shadows in an #invisible maze# guard", "after a free #boat ride# comes"], None, 'location'),
+    'Shadow Temple MQ Bomb Flower Chest':                    (["shadows in an #invisible maze# guard", "after a free #boat ride# comes"], None, 'location'),
     'Haunted Wasteland Structure Chest':                     (["deep in the #Wasteland# is", "beneath #the sands# lies"], None, 'location'),
     'Composer Grave Chest':                                  (["in the #Composers' Grave#, darkness hides", "the #Composer Brothers# hid"], None, 'location'),
     'Song from Composer Grave':                              (["in the #Composers' Grave#, Redead guard", "the #Composer Brothers# wrote"], None, 'location'),
-    'Song at Windmill':                                      (["#the windmill# echoes with", "#Guru-guru# is driven mad by"], None, 'location'),
-    'Sheik Forest Song':                                     ("#deep in the forest# Sheik teaches", None, 'location'),
+    'Sheik Forest Song':                                     ("deep in #the forest# Sheik teaches", None, 'location'),
     'Sheik at Temple':                                       ("Sheik waits at a #monument to time# to teach", None, 'location'),
     'Sheik in Crater':                                       ("the #crater's melody# is", None, 'location'),
     'Sheik in Ice Cavern':                                   ("the #frozen cavern# echoes with", None, 'location'),
@@ -193,6 +209,8 @@ hintTable = {
     'Colossus Freestanding PoH':                             ("riding a #beanstalk in the desert# leads to", None, 'location'),
     'DM Crater Volcano Freestanding PoH':                    ("riding a #beanstalk in the crater# leads to", None, 'location'),
     'Goron City Pot Freestanding PoH':                       ("spinning #Goron pottery# contains", None, 'location'),
+    'Deku Tree MQ After Spinning Log Chest':                 ("within #a tree#, a temporal stone contains", None, 'location'),
+    'GS Jabu Jabu MQ Invisible Enemies Room':                ("in the #belly of a deity#, a spider surrounded by shadows holds", None, 'location'),
 
     '1001':                                                  ("Ganondorf 2020!", None, 'junkHint'),
     '1002':                                                  ("They say that monarchy is a terrible system of governance.", None, 'junkHint'),
@@ -277,9 +295,12 @@ hintTable = {
     '2009':                                                  ("Many tricks are up my sleeve,&to save yourself&you'd better leave!", None, 'ganonLine'),
     '2010':                                                  ("After what you did to&Koholint Island, how can&you call me the bad guy?", None, 'ganonLine'),
     '2011':                                                  ("Today, let's begin down&'The Hero is Defeated' timeline.", None, 'ganonLine'),
+    'Claim Check':                                           (["a three day wait"], "the Claim Check", 'item'),
+
+    'Bottle with Blue Potion':                               (["an all-cure antidote", "a blue liquid"], "a Blue Bottle", 'item'),
 }
 
-# exclusions from the list for custom logic
+# This specifies which hints will never appear due to either having known or known useless contents or due to the locations not existing.
 
 def hintExclusions(world):
     expected_skulltulas = world.logic_skulltulas
@@ -306,4 +327,48 @@ def hintExclusions(world):
         exclusions.append('20 Gold Skulltulla Reward')
     if expected_skulltulas < 10:
         exclusions.append('10 Gold Skulltulla Reward')
+    if not world.shuffle_ocarinas:
+        exclusions.append('Ocarina of Time')
+    if world.tokensanity != 'all':
+        exclusions.append('GS Hyrule Castle Grotto')
+        exclusions.append('GS Hyrule Field Near Gerudo Valley')
+        exclusions.append('GS Zora\'s Fountain Hidden Cave')
+    if not world.dungeon_mq['DT']:
+        exclusions.append('Deku Tree MQ After Spinning Log Chest')
+    if world.tokensanity == 'off' or not world.dungeon_mq['JB']:
+        exclusions.append('GS Jabu Jabu MQ Invisible Enemies Room')
+    if world.dungeon_mq['FoT']:
+        exclusions.append('Forest Temple Floormaster Chest')
+    if world.dungeon_mq['FiT']:
+        exclusions.append('Fire Temple Scarecrow Chest')
+        exclusions.append('Fire Temple Megaton Hammer Chest')
+    else:
+        exclusions.append('Fire Temple MQ West Tower Top Chest')
+    if world.dungeon_mq['WT']:
+        exclusions.append('Water Temple River Chest')
+        exclusions.append('Water Temple Boss Key Chest')
+    else:
+        exclusions.append('Water Temple MQ Boss Key Chest')
+        exclusions.append('Water Temple MQ Freestanding Key')
+    if world.tokensanity == 'off' or not world.dungeon_mq['WT']:
+        exclusions.append('GS Water Temple MQ North Basement')
+    if world.dungeon_mq['GTG']:
+        exclusions.append('Gerudo Training Grounds Underwater Silver Rupee Chest')
+        exclusions.append('Gerudo Training Grounds Maze Path Final Chest')
+    else:
+        exclusions.append('Gerudo Training Grounds MQ Underwater Silver Rupee Chest')
+        exclusions.append('Gerudo Training Grounds MQ Ice Arrows Chest')
+    if world.dungeon_mq['BW']:
+        exclusions.append('Bottom of the Well Defeat Boss')
+    else:
+        exclusions.append('Bottom of the Well MQ Compass Chest')
+    if not world.dungeon_mq['SpT']:
+        exclusions.append('Spirit Temple MQ Child Center Chest')
+        exclusions.append('Spirit Temple MQ Lower Adult Right Chest')
+    if world.tokensanity == 'off' or not world.dungeon_mq['SpT']:
+        exclusions.append('GS Spirit Temple MQ Lower Adult Right')
+    if world.dungeon_mq['ShT']:
+        exclusions.append('Shadow Temple Hidden Floormaster Chest')
+    else:
+        exclusions.append('Shadow Temple MQ Bomb Flower Chest')
     return exclusions

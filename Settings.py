@@ -964,6 +964,31 @@ setting_infos = [
                       for a milder Keysanity experience.
                       '''
         }),
+    Setting_Info('enhance_map_compass', bool, 1, True, 
+        {
+            'help': '''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This setting will only activate these functions if the
+                    other settings would make this useful information.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Maps and Compasses give information',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This option is only available if shuffle 'Maps/Compasses'
+                    is set to 'Anywhere'
+                      ''',
+            'dependency': lambda guivar: guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Anywhere',
+        }),    
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
             'help': '''\
@@ -1055,7 +1080,6 @@ setting_infos = [
                       'Mixed': Each dungeon will have a
                       random chance to be in either form.
                       ''',
-            'dependency': lambda guivar: False, 
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
@@ -1249,6 +1273,23 @@ setting_infos = [
                       Racing twice is repetitive.
                       '''
         }),
+    Setting_Info('logic_tricks', bool, 1, True, 
+        {
+            'help': '''\
+                    Enable various tricks.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Require minor tricks',
+            'group': 'tricks',
+            'widget': 'SpecialCheckbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Enables a large number of tricks.
+                      Still does not require glitches.
+                      '''
+        }),
     Setting_Info('logic_man_on_roof', bool, 1, True, 
         {
             'help': '''\
@@ -1364,6 +1405,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Can hover behind the waterfall as adult.
+                      This is very difficult.
                       '''
         }),
     Setting_Info('logic_fewer_tunic_requirements', bool, 1, True, 
