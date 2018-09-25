@@ -1,10 +1,8 @@
-#!/usr/bin/env python3
-
 import json
 import sys
 
 if len(sys.argv) < 4:
-    raise RuntimeError("Usage: python3 rom_diff.py BASE_FILE COMPARISON_FILE OUTPUT_FILE")
+    raise RuntimeError("Usage: python rom_diff.py BASE_FILE COMPARISON_FILE OUTPUT_FILE")
 
 base_path = sys.argv[1]
 compare_path = sys.argv[2]

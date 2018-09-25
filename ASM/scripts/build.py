@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import argparse
 import json
 import os
@@ -98,5 +96,5 @@ if pj64_sym_path:
 
 # Diff ROMs
 
-call(['python3', 'scripts/rom_diff.py',
+call(['python', 'scripts/rom_diff.py',
     'roms/base.z64', 'roms/patched.z64', '../data/rom_patch.txt'])
