@@ -165,9 +165,11 @@ class LocalRom(object):
         t1 = t2 = t3 = t4 = t5 = t6 = 0xDF26F436
         u32 = 0xFFFFFFFF
 
-        cur = 0x1000
-        while cur < 0x00101000:
-            d = self.read_int32(cur)
+        words = [t[0] for t in struct.iter_unpack('>I', self.buffer[0x1000:0x101000])]
+        words2 = [t[0] for t in struct.iter_unpack('>I', self.buffer[0x750:0x850])]
+
+        for cur in range(len(words)):
+            d = words[cur]
 
             if ((t6 + d) & u32) < t6:
                 t4 += 1 
@@ -183,11 +185,9 @@ class LocalRom(object):
             else:
                 t2 ^= t6 ^ d
 
-            data2 = self.read_int32(0x750 + (cur & 0xFF))
+            data2 = words2[cur & 0x3F]
             t1 += data2 ^ d
             t1 &= u32
-
-            cur += 4
 
         crc0 = t6 ^ t4 ^ t3
         crc1 = t5 ^ t2 ^ t1
