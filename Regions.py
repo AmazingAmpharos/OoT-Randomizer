@@ -337,7 +337,7 @@ def create_regions(world):
             create_dungeon_region(
                 'Deku Tree Lobby', 
                 ['Deku Tree MQ Lobby Chest', 'Deku Tree MQ Slingshot Chest', 'Deku Tree MQ Slingshot Room Back Chest', 
-                 'Deku Tree MQ Basement Chest', 'GS Deku Tree MQ Lobby', 'DT MQ Deku Scrub Deku Shield'], 
+                 'Deku Tree MQ Basement Chest', 'GS Deku Tree MQ Lobby'], 
                 ['Deku Tree Exit', 'Deku Tree Compass Passage', 'Deku Tree Basement Path']),
             create_dungeon_region(
                 'Deku Tree Compass Room', 
@@ -347,7 +347,7 @@ def create_regions(world):
                 'Deku Tree Boss Room', 
                 ['Deku Tree MQ Before Spinning Log Chest', 'Deku Tree MQ After Spinning Log Chest', 
                  'GS Deku Tree MQ Basement Ceiling', 'GS Deku Tree MQ Basement Back Room', 
-                 'Queen Gohma Heart', 'Queen Gohma'], 
+                 'DT MQ Deku Scrub Deku Shield', 'Queen Gohma Heart', 'Queen Gohma'], 
                 ['Deku Tree Basement Vines'])
         ])
     else:

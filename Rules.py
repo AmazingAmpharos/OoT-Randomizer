@@ -256,7 +256,6 @@ def global_rules(world):
     set_rule(world.get_entrance('Lost Woods Generic Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Lost Woods Sales Grotto'), lambda state: state.has_explosives() or (state.can_use('Hammer') and (state.can_play('Minuet of Forest') or state.can_play('Sarias Song'))))
     set_rule(world.get_entrance('Front of Meadow Grotto'), lambda state: state.has_explosives() or (state.can_use('Hammer') and (state.can_play('Minuet of Forest') or state.can_play('Sarias Song'))))
-    set_rule(world.get_entrance('Meadow Gate'), lambda state: state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword') or state.can_use('Dins Fire'))
     set_rule(world.get_entrance('Remote Southern Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Near Lake Inside Fence Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Valley Grotto'), lambda state: state.can_blast_or_smash())
@@ -418,7 +417,6 @@ def dung_rules_dtmq(world):
     set_rule(world.get_location('Deku Tree MQ Slingshot Room Back Chest'), lambda state: state.has_sticks() or state.can_use('Dins Fire'))
     set_rule(world.get_location('Deku Tree MQ Basement Chest'), lambda state: state.has_sticks() or state.can_use('Dins Fire'))
     set_rule(world.get_location('Deku Tree MQ After Spinning Log Chest'), lambda state: state.can_play('Song of Time'))
-    set_rule(world.get_location('DT MQ Deku Scrub Deku Shield'), lambda state: state.has_slingshot() or state.has_nuts() or state.has('Boomerang') or state.can_use('Dins Fire') or state.has_bombchus())
 
     # Boss
     set_rule(world.get_location('Queen Gohma Heart'), lambda state: state.has('Buy Deku Shield') and (state.has('Kokiri Sword') or state.has_sticks()))
@@ -434,7 +432,7 @@ def dung_rules_dtmq(world):
 def dung_rules_dc0(world):
     set_rule(world.get_entrance('Dodongos Cavern Lobby'), lambda state: state.can_blast_or_smash() or state.has('Progressive Strength Upgrade'))
     set_rule(world.get_entrance('Dodongos Cavern Left Door'), lambda state: (state.is_adult() or ((state.has_sticks() or state.can_use('Dins Fire')) and (state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword')))) and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.can_use('Dins Fire') or (world.logic_tricks and state.can_use('Bow'))))
-    set_rule(world.get_location('Dodongos Cavern Compass Chest'), lambda state: state.is_adult() or ((state.has_sticks() or state.can_use('Dins Fire')) and (state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword'))))
+    set_rule(world.get_location('Dodongos Cavern Compass Chest'), lambda state: state.is_adult() or state.has_sticks() or (state.can_use('Dins Fire') and (state.has_slingshot() or state.has_explosives() or state.has('Kokiri Sword'))))
     set_rule(world.get_location('DC Deku Scrub Deku Sticks'), lambda state: state.is_adult() or state.has_slingshot() or state.has_sticks() or state.has_explosives() or state.has('Kokiri Sword'))
     set_rule(world.get_entrance('Dodongos Cavern Slingshot Target'), lambda state: (state.has_slingshot() and (state.has_explosives() or state.has('Progressive Strength Upgrade'))) or ((state.has_bow() or state.has('Hover Boots') or state.has('Progressive Hookshot', 2) or world.logic_dc_jump) and state.is_adult()))
     set_rule(world.get_location('DC Deku Scrub Deku Nuts'), lambda state: state.can_blast_or_smash())
@@ -530,7 +528,7 @@ def dung_rules_fotmq(world):
     set_rule(world.get_entrance('Forest Temple Twisted Hall'), lambda state: state.has('Small Key (Forest Temple)', 4))
     set_rule(world.get_entrance('Forest Temple Well Connection'), lambda state: state.can_use('Iron Boots') or state.can_use('Longshot') or state.has('Progressive Scale', 2))
     set_rule(world.get_entrance('Forest Temple Webs'), lambda state: state.can_use('Fire Arrows'))
-    set_rule(world.get_entrance('Forest Temple Climb to Top Ledges'), lambda state: state.can_use('Longshot') or state.can_use('Hover Boots') or state.can_play('Song of Time'))
+    set_rule(world.get_entrance('Forest Temple Climb to Top Ledges'), lambda state: state.can_use('Longshot') or state.can_use('Hover Boots') or state.can_play('Song of Time') or (world.logic_tricks and state.can_use('Hookshot')))
     set_rule(world.get_entrance('Forest Temple Longshot to NE Outdoors Ledge'), lambda state: state.can_use('Longshot'))
     set_rule(world.get_entrance('Forest Temple Song of Time Block Climb'), lambda state: state.can_play('Song of Time'))
     set_rule(world.get_entrance('Forest Temple Drop to Falling Room'), lambda state: state.has('Small Key (Forest Temple)', 5) and (state.can_use('Bow') or state.can_use('Dins Fire'))) # Only 5 keys because the door you could 'waste' your key on is the door you're trying to use keys to get to.
@@ -676,6 +674,8 @@ def dung_rules_spt0(world):
     set_rule(world.get_location('Spirit Temple Hallway Right Invisible Chest'), lambda state: state.can_see_with_lens() and state.has_explosives())
     set_rule(world.get_location('Spirit Temple Boss Key Chest'), lambda state: state.can_play('Zeldas Lullaby') and state.has_bow() and state.has('Progressive Hookshot') and state.can_blast_or_smash())
     set_rule(world.get_location('Spirit Temple Topmost Chest'), lambda state: state.has('Mirror Shield'))
+
+    # Boss
     set_rule(world.get_location('Twinrova'), lambda state: state.has('Mirror Shield') and state.has_explosives() and state.has('Progressive Hookshot') and state.has('Boss Key (Spirit Temple)'))
     set_rule(world.get_location('Twinrova Heart'), lambda state: state.has('Mirror Shield') and state.has_explosives() and state.has('Progressive Hookshot') and state.has('Boss Key (Spirit Temple)'))
 
@@ -735,14 +735,14 @@ def dung_rules_sht0(world):
     set_rule(world.get_location('Shadow Temple Freestanding Key'), lambda state: state.has('Small Key (Shadow Temple)', 2) and state.has('Progressive Hookshot') and (state.has_bombs() or state.has('Progressive Strength Upgrade')))
 
     # Boss
-    set_rule(world.get_location('Bongo Bongo'), lambda state: state.has('Small Key (Shadow Temple)', 5) and (state.has_bow() or state.has('Progressive Hookshot', 2)) and state.has('Boss Key (Shadow Temple)'))
-    set_rule(world.get_location('Bongo Bongo Heart'), lambda state: state.has('Small Key (Shadow Temple)', 5) and (state.has_bow() or state.has('Progressive Hookshot', 2)) and state.has('Boss Key (Shadow Temple)'))
+    set_rule(world.get_location('Bongo Bongo'), lambda state: state.has('Small Key (Shadow Temple)', 5) and (state.has('Bow') or state.can_use('Distant Scarecrow')) and state.has('Boss Key (Shadow Temple)'))
+    set_rule(world.get_location('Bongo Bongo Heart'), lambda state: state.has('Small Key (Shadow Temple)', 5) and (state.has('Bow') or state.can_use('Distant Scarecrow')) and state.has('Boss Key (Shadow Temple)'))
 
     # GS
     set_rule(world.get_location('GS Shadow Temple Like Like Room'), lambda state: state.has('Progressive Hookshot'))
     set_rule(world.get_location('GS Shadow Temple Crusher Room'), lambda state: state.has('Progressive Hookshot'))
     set_rule(world.get_location('GS Shadow Temple Single Giant Pot'), lambda state: state.has('Small Key (Shadow Temple)', 2) and state.has('Progressive Hookshot'))
-    set_rule(world.get_location('GS Shadow Temple Near Ship'), lambda state: state.has('Progressive Hookshot', 2) and state.has('Small Key (Shadow Temple)', 4))
+    set_rule(world.get_location('GS Shadow Temple Near Ship'), lambda state: state.can_use('Longshot') and state.has('Small Key (Shadow Temple)', 4))
 
 # Shadow Temple MQ
 def dung_rules_shtmq(world):
