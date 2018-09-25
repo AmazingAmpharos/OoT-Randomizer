@@ -14,8 +14,7 @@ def ItemFactory(items):
             advancement, priority, type, code, index, object, model = item_table[item]
             ret.append(Item(item, advancement, priority, type, code, index, object, model))
         else:
-            logging.getLogger('').warning('Unknown Item: %s', item)
-            return None
+            raise KeyError('Unknown Item: %s', item)
 
     if singleton:
         return ret[0]
@@ -57,6 +56,7 @@ item_table = {
     'Bottle with Fish': (True, False, None, None, 0x8D, 0x00C6, 0x01),
     'Bottle with Blue Fire': (True, False, None, None, 0x8E, 0x00C6, 0x01),
     'Bottle with Bugs': (True, False, None, None, 0x8F, 0x00C6, 0x01),
+    'Bottle with Big Poe': (True, False, None, None, 0x90, 0x00C6, 0x01),
     'Bottle with Poe': (True, False, None, None, 0x91, 0x00C6, 0x01),
     'Weird Egg': (True, False, None, 0x08E0, 0x47, 0x00DA, 0x29),
     'Pocket Egg': (True, False, None, 0x03A0, 0x1D, 0x00DA, 0x29),
@@ -105,6 +105,9 @@ item_table = {
     'Bombchus': (True, False, None, None, 0xC2, 0x00D9, 0x28),
     'Deku Nuts (5)': (False, False, None, None, 0xBD, 0x00BB, 0x12),
     'Deku Nuts (10)': (False, False, None, None, 0xBE, 0x00BB, 0x12),
+    'Deku Stick (1)': (False, False, None, 0x00E0, 0xD0, 0x00C7, 0x1B),
+    'Deku Seeds (30)': (False, False, None, 0x00E0, 0xD1, 0x0119, 0x48),
+    'Rupee (Treasure Chest Game)': (False, False, None, 0x0E40, 0x72, 0x017F, 0x6D),
     'Rupee (1)': (False, False, None, 0x0980, 0x4C, 0x017F, 0x6D),
     'Rupees (5)': (False, False, None, 0x09A0, 0x4D, 0x017F, 0x6E),
     'Rupees (20)': (False, False, None, 0x09C0, 0x4E, 0x017F, 0x6F),
@@ -218,7 +221,7 @@ item_table = {
     'Buy Blue Fire': (True, False, 'Shop', None, 0x27, 0x0173, 0x67), 
     'Buy Bottle Bug': (True, False, 'Shop', None, 0x28, 0x0174, 0x68), 
     'Buy Poe': (False, True, 'Shop', None, 0x2A, 0x0176, 0x6A), 
-    'Buy Fairy\'s Spirit': (True, False, 'Shop', None, 0x2B, 0x0177, 0x6B), 
+    'Buy Fairy\'s Spirit': (False, True, 'Shop', None, 0x2B, 0x0177, 0x6B), 
     'Buy Arrows (10)': (False, True, 'Shop', None, 0x2C, 0x00D8, 0x25), 
     'Buy Bombs (20)': (False, True, 'Shop', None, 0x2D, 0x00CE, 0x20), 
     'Buy Bombs (30)': (False, True, 'Shop', None, 0x2E, 0x00CE, 0x20), 

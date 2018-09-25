@@ -59,7 +59,9 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # placement, but will leave as is for now
     random.shuffle(fill_locations)
     fill_dungeons_restrictive(window, worlds, fill_locations, dungeon_items, itempool + songitempool)
-
+    for world in worlds:
+        world.keys_placed = True
+        
     # I have no idea why the locations are reversed but this is how it was, 
     # so whatever. It can't hurt I guess
     random.shuffle(fill_locations)

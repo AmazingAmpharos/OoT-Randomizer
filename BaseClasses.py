@@ -59,6 +59,7 @@ class World(object):
         }
 
         self.can_take_damage = True
+        self.keys_placed = False
         self.spoiler = Spoiler(self)
 
 
@@ -66,6 +67,7 @@ class World(object):
         ret = World(self.settings)
         ret.skipped_trials = copy.copy(self.skipped_trials)
         ret.dungeon_mq = copy.copy(self.dungeon_mq)
+        ret.big_poe_count = copy.copy(self.big_poe_count)
         ret.can_take_damage = self.can_take_damage
         ret.shop_prices = copy.copy(self.shop_prices)
         ret.id = self.id
@@ -372,13 +374,39 @@ class CollectionState(object):
         return self.has_bottle() and \
                 (self.can_reach('Ice Cavern')
                 or self.can_reach('Ganons Castle Water Trial') 
-                or self.has('Buy Blue Fire'))
+                or self.has('Buy Blue Fire')
+                or (self.world.dungeon_mq['GTG'] and self.can_reach('Gerudo Training Grounds Stalfos Room')))
 
     def has_ocarina(self):
         return (self.has('Ocarina') or self.has("Fairy Ocarina") or self.has("Ocarina of Time"))
 
     def can_play(self, song):
         return self.has_ocarina() and self.has(song)
+
+    def can_use(self, item):
+        magic_items = ['Dins Fire', 'Farores Wind', 'Nayrus Love', 'Lens of Truth']
+        adult_items = ['Bow', 'Hammer', 'Iron Boots', 'Hover Boots', 'Magic Bean']
+        magic_arrows = ['Fire Arrows', 'Light Arrows']
+        if item in magic_items:
+            return self.has(item) and self.has('Magic Meter')
+        elif item in adult_items:
+            return self.has(item) and self.is_adult()
+        elif item in magic_arrows:
+            return self.has(item) and self.is_adult() and self.has_bow() and self.has('Magic Meter')
+        elif item == 'Hookshot':
+            return self.has('Progressive Hookshot') and self.is_adult()
+        elif item == 'Longshot':
+            return self.has('Progressive Hookshot', 2) and self.is_adult()
+        elif item == 'Silver Gauntlets':
+            return self.has('Progressive Strength Upgrade', 2) and self.is_adult()
+        elif item == 'Golden Gauntlets':
+            return self.has('Progressive Strength Upgrade', 3) and self.is_adult()
+        elif item == 'Scarecrow':
+            return self.has('Progressive Hookshot') and self.is_adult() and self.has_ocarina()
+        elif item == 'Distant Scarecrow':
+            return self.has('Progressive Hookshot', 2) and self.is_adult() and self.has_ocarina()
+        else:
+            return self.has(item)
 
     def can_buy_bombchus(self):
         return self.has('Buy Bombchu (5)') or \
@@ -409,11 +437,18 @@ class CollectionState(object):
     def can_dive(self):
         return self.has('Progressive Scale')
 
-    def can_lift_rocks(self):
-        return (self.has('Silver Gauntlets') or self.has('Gold Gauntlets')) and self.is_adult()
-
     def can_see_with_lens(self):
         return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
+
+    def has_projectile(self, age='either'):
+        if age == 'child':
+            return self.has_explosives() or self.has_slingshot() or self.has('Boomerang')
+        elif age == 'adult':
+            return self.has_explosives() or self.has_bow() or self.has('Progressive Hookshot')
+        elif age == 'both':
+            return self.has_explosives() or ((self.has_bow() or self.has('Progressive Hookshot')) and (self.has_slingshot() or self.has('Boomerang')))
+        else:
+            return self.has_explosives() or ((self.has_bow() or self.has('Progressive Hookshot')) or (self.has_slingshot() or self.has('Boomerang')))
 
     def has_GoronTunic(self):
         return (self.has('Goron Tunic') or self.has('Buy Goron Tunic'))
@@ -425,16 +460,16 @@ class CollectionState(object):
         return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'))
 
     def can_finish_adult_trades(self):
-        zora_thawed = self.has_bottle() and (self.can_play('Zeldas Lullaby') or (self.has('Hover Boots') and self.world.logic_zora_with_hovers)) and (self.can_reach('Ice Cavern') or self.can_reach('Ganons Castle Water Trial') or self.has('Progressive Wallet', 2))
+        zora_thawed = (self.can_play('Zeldas Lullaby') or (self.has('Hover Boots') and self.world.logic_zora_with_hovers)) and self.has_blue_fire()
         carpenter_access = self.has('Epona') or self.has('Progressive Hookshot', 2)
-        return (self.has('Claim Check') or ((self.has('Progressive Strength Upgrade') or self.can_blast_or_smash() or self.has('Bow')) and (((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))))
+        return (self.has('Claim Check') or ((self.has('Progressive Strength Upgrade') or self.can_blast_or_smash() or self.has_bow()) and (((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))))
 
     def has_bottle(self):
-        is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter')
+        is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter' and (item != 'Bottle with Big Poe' or self.is_adult()))
         return any(is_normal_bottle(pritem) for pritem in self.prog_items)
 
     def bottle_count(self):
-        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and pritem != 'Bottle with Letter'])
+        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and pritem != 'Bottle with Letter' and (pritem != 'Bottle with Big Poe' or self.is_adult())])
 
     def has_hearts(self, count):
         # Warning: This only considers items that are marked as advancement items
@@ -448,18 +483,15 @@ class CollectionState(object):
             + 3 # starting hearts
         )
 
-    def can_lift_pillars(self):
-        return self.has('Gold Gauntlets') and self.is_adult()
-
     def has_fire_source(self):
-        return ((self.has('Dins Fire') or (self.has_bow() and self.has('Fire Arrows') and self.is_adult())) and self.has('Magic Meter'))
+        return self.can_use('Dins Fire') or self.can_use('Fire Arrows')
 
     def guarantee_hint(self):
         if(self.world.hints == 'mask'):
             # has the mask of truth
             return self.has('Zeldas Letter') and self.can_play('Sarias Song') and self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire')
         elif(self.world.hints == 'agony'):
-            # has the stone of agony
+            # has the Stone of Agony
             return self.has('Stone of Agony')
         return True
 
@@ -467,6 +499,14 @@ class CollectionState(object):
         if self.world.logic_no_night_tokens_without_suns_song:
             return self.can_play('Suns Song')
         return True
+
+    def can_finish_GerudoFortress(self):
+        if self.world.gerudo_fortress == 'normal':
+            return self.has('Small Key (Gerudo Fortress)', 4) and (self.can_use('Bow') or self.can_use('Hookshot') or self.can_use('Hover Boots') or self.world.logic_tricks)
+        elif self.world.gerudo_fortress == 'fast':
+            return self.has('Small Key (Gerudo Fortress)', 1) and self.is_adult()
+        else:
+            return self.is_adult()
 
     # Be careful using this function. It will not collect any
     # items that may be locked behind the item, only the item itself.         

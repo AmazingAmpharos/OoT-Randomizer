@@ -21,6 +21,7 @@ from ItemList import generate_itempool
 from Hints import buildGossipHints
 from Utils import default_output_path
 from version import __version__
+from OcarinaSongs import verify_scarecrow_song_str
 
 class dummy_window():
     def __init__(self):
@@ -35,6 +36,10 @@ def main(settings, window=dummy_window()):
     start = time.clock()
 
     logger = logging.getLogger('')
+
+    # verify that the settings are valid
+    if settings.free_scarecrow:
+        verify_scarecrow_song_str(settings.scarecrow_song, settings.ocarina_songs)
 
     # initialize the world
 
@@ -132,20 +137,22 @@ def main(settings, window=dummy_window()):
         if settings.compress_rom == 'True':
             window.update_status('Compressing ROM')
             logger.info('Compressing ROM.')
+
+            compressor_path = ""
             if platform.system() == 'Windows':
                 if 8 * struct.calcsize("P") == 64:
-                    run_process(window, logger, ["Compress\\Compress.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+                    compressor_path = "Compress\\Compress.exe"
                 else:
-                    run_process(window, logger, ["Compress\\Compress32.exe", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
-                os.remove(rom_path)
+                    compressor_path = "Compress\\Compress32.exe"
             elif platform.system() == 'Linux':
-                run_process(window, logger, ["Compress/Compress", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
-                os.remove(rom_path)
+                compressor_path = "Compress/Compress"
             elif platform.system() == 'Darwin':
-                run_process(window, logger, ["Compress/Compress.out", rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
-                os.remove(rom_path)
+                compressor_path = "Compress/Compress.out"
             else:
                 logger.info('OS not supported for compression')
+
+            run_process(window, logger, [compressor_path, rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+            os.remove(rom_path)
             window.update_progress(95)
 
 
