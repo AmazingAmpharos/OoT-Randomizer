@@ -151,6 +151,7 @@ hintTable = {
     'Bombchus (20)':                                         (["plenty of mice bombs", "plenty of remote mines", "plenty of proximity mice", "plenty of wall crawlers", "plenty of trail blazers"], "Bombchus", 'item'),
     'Deku Nuts (5)':                                         (["some nuts", "some flashbangs", "some Sheik's ammo"], "some Deku Nuts", 'item'),
     'Deku Nuts (10)':                                        (["lots-o-nuts", "plenty of flashbangs", "plenty of Sheik's ammo"], "plenty of Deku Nuts", 'item'),
+    'Deku Seeds (30)':                                       (["catapult ammo", "lots-o-seeds"], "plenty of deku seeds", 'item'),                                                                                                            
     'Gold Skulltulla Token':                                 (["proof of destruction", "an arachnid chip", "spider remains"], "a Golden Token", 'item'),
 
     '10 Big Poes':                                           (["#Big Poes# leads to", "#ghost hunters# will be rewarded with"], None, 'alwaysLocation'),
