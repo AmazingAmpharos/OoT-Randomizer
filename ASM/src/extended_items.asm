@@ -141,6 +141,10 @@ Item_Row 0x53, 0x41, 0x08, 0xBB, 0x00B6, no_upgrade, give_song, 15, -1 ; 0xCD = 
 Item_Row 0x53, 0x41, 0x05, 0xBC, 0x00B6, no_upgrade, give_song, 16, -1 ; 0xCE = Song of Time
 Item_Row 0x53, 0x41, 0x07, 0xBD, 0x00B6, no_upgrade, give_song, 17, -1 ; 0xCF = Song of Storms
 
+Item_Row 0x4D, 0x00, 0xE5, 0x37, 0x00C7, no_upgrade,     no_effect, -1, -1 ; 0xD0 = Deku Sticks (1)
+Item_Row 0x4D, 0x95, 0xB8, 0xDC, 0x0119, seeds_to_rupee, no_effect, -1, -1 ; 0xD1 = Deku Seeds (30)
+
+
 ;==================================================================================================
 ; Item upgrade functions
 ;==================================================================================================
@@ -341,6 +345,21 @@ arrows_to_rupee:
 bombs_to_rupee:
     lbu     t0, 0xA3 (a0) ; Load bomb bag from inventory
     andi    t0, t0, 0x18 ; Mask bits to isolate bomb bag
+
+    beqz    t0, @@return
+    li      v0, 0x4D ; Blue Rupee
+
+    ori     v0, a1, 0
+
+@@return:
+    jr      ra
+    nop
+
+;==================================================================================================
+
+seeds_to_rupee:
+    lbu     t0, 0xA2 (a0) ; Load seed bag from inventory
+    andi    t0, t0, 0xC0 ; Mask bits to isolate seed bag
 
     beqz    t0, @@return
     li      v0, 0x4D ; Blue Rupee

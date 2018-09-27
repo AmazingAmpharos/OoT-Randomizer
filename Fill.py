@@ -59,7 +59,9 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # placement, but will leave as is for now
     random.shuffle(fill_locations)
     fill_dungeons_restrictive(window, worlds, fill_locations, dungeon_items, itempool + songitempool)
-
+    for world in worlds:
+        world.keys_placed = True
+        
     # I have no idea why the locations are reversed but this is how it was, 
     # so whatever. It can't hurt I guess
     random.shuffle(fill_locations)
@@ -283,13 +285,7 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool):
 
         # if we failed to find a suitable location, then stop placing items
         if spot_to_fill is None:
-            # Maybe the game can be beaten anyway?
-            if not CollectionState.can_beat_game(maximum_exploration_state_list):
-                raise FillError('Game unbeatable: No more spots to place %s [World %d]' % (item_to_place, item_to_place.world.id))
-
-            if not worlds[0].check_beatable_only:
-                logging.getLogger('').debug('Not all items placed. Game beatable anyway.')
-            break
+            raise FillError('Game unbeatable: No more spots to place %s [World %d]' % (item_to_place, item_to_place.world.id))
             
         # Place the item in the world and continue
         spot_to_fill.world.push_item(spot_to_fill, item_to_place)

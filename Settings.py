@@ -964,6 +964,31 @@ setting_infos = [
                       for a milder Keysanity experience.
                       '''
         }),
+    Setting_Info('enhance_map_compass', bool, 1, True, 
+        {
+            'help': '''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This setting will only activate these functions if the
+                    other settings would make this useful information.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Maps and Compasses give information',
+            'group': 'logic',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                    Gives the Map and Compass extra functionality.
+                    Map will tell if a dungeon is vanilla or Master Quest.
+                    Compass will tell what medallion or stone is within.
+                    This option is only available if shuffle 'Maps/Compasses'
+                    is set to 'Anywhere'
+                      ''',
+            'dependency': lambda guivar: guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Anywhere',
+        }),    
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
             'help': '''\
@@ -1055,7 +1080,6 @@ setting_infos = [
                       'Mixed': Each dungeon will have a
                       random chance to be in either form.
                       ''',
-            'dependency': lambda guivar: False, 
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
         {
@@ -1184,6 +1208,22 @@ setting_infos = [
                       Spiritual Stones.
                       '''
         }),
+    Setting_Info('logic_no_trade_biggoron', bool, 1, True, 
+        {
+            'help': '''\
+                    You will not be expected to trade for biggoron's reward.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'No Biggoron reward',
+            'group': 'rewards',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      Adult trade sequence is time consuming.
+                      '''
+        }),
     Setting_Info('logic_no_1500_archery', bool, 1, True, 
         {
             'help': '''\
@@ -1233,121 +1273,21 @@ setting_infos = [
                       Racing twice is repetitive.
                       '''
         }),
-    Setting_Info('logic_no_trade_biggoron', bool, 1, True, 
+    Setting_Info('logic_tricks', bool, 1, True, 
         {
             'help': '''\
-                    You will not be expected to trade for biggoron's reward.
+                    Enable various tricks.
                     ''',
             'action': 'store_true'
         },
         {
-            'text': 'No Biggoron reward',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
+            'text': 'Require minor tricks',
+            'group': 'tricks',
+            'widget': 'SpecialCheckbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Adult trade sequence is time consuming.
-                      '''
-        }),
-    Setting_Info('logic_earliest_adult_trade', str, 4, True, 
-        {
-            'default': 'pocket_egg',
-            'const': 'always',
-            'nargs': '?',
-            'choices': [
-                'pocket_egg',
-                'pocket_cucco', 
-                'cojiro', 
-                'odd_mushroom', 
-                'poachers_saw', 
-                'broken_sword', 
-                'prescription', 
-                'eyeball_frog', 
-                'eyedrops', 
-                'claim_check'],
-            'help': '''\
-                    Select the earliest item that will appear in the adult trade sequence:
-                    'pocket_egg'
-                    'pocket_cucco'
-                    'cojiro'
-                    'odd_mushroom'
-                    'poachers_saw'
-                    'broken_sword'
-                    'prescription'
-                    'eyeball_frog'
-                    'eyedrops'
-                    'claim_check'
-                    '''
-        },
-        {
-            'text': 'Adult Trade Sequence',
-            'group': 'rewards',
-            'widget': 'Combobox',
-            'dependency': lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
-            'default': 'Earliest: Pocket Egg',
-            'options': {
-                'Earliest: Pocket Egg': 'pocket_egg',
-                'Earliest: Pocket Cucco': 'pocket_cucco', 
-                'Earliest: Cojiro': 'cojiro', 
-                'Earliest: Odd Mushroom': 'odd_mushroom', 
-                'Earliest: Poachers Saw': 'poachers_saw', 
-                'Earliest: Broken Sword': 'broken_sword', 
-                'Earliest: Prescription': 'prescription', 
-                'Earliest: Eyeball Frog': 'eyeball_frog', 
-                'Earliest: Eyedrops': 'eyedrops', 
-                'Earliest: Claim Check': 'claim_check'},
-            'tooltip':'''\
-                      Select the earliest item that will appear in the adult trade sequence.
-                      '''
-        }),
-    Setting_Info('logic_latest_adult_trade', str, 4, True, 
-        {
-            'default': 'claim_check',
-            'const': 'always',
-            'nargs': '?',
-            'choices': [
-                'pocket_egg',
-                'pocket_cucco', 
-                'cojiro', 
-                'odd_mushroom', 
-                'poachers_saw', 
-                'broken_sword', 
-                'prescription', 
-                'eyeball_frog', 
-                'eyedrops', 
-                'claim_check'],
-            'help': '''\
-                    Select the latest item that will appear in the adult trade sequence:
-                    'pocket_egg'
-                    'pocket_cucco'
-                    'cojiro'
-                    'odd_mushroom'
-                    'poachers_saw'
-                    'broken_sword'
-                    'prescription'
-                    'eyeball_frog'
-                    'eyedrops'
-                    'claim_check'
-                    '''
-        },
-        {
-            'group': 'rewards',
-            'widget': 'Combobox',
-            'dependency': lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
-            'default': 'Latest: Claim Check',
-            'options': {
-                'Latest: Pocket Egg': 'pocket_egg',
-                'Latest: Pocket Cucco': 'pocket_cucco', 
-                'Latest: Cojiro': 'cojiro', 
-                'Latest: Odd Mushroom': 'odd_mushroom', 
-                'Latest: Poachers Saw': 'poachers_saw', 
-                'Latest: Broken Sword': 'broken_sword', 
-                'Latest: Prescription': 'prescription', 
-                'Latest: Eyeball Frog': 'eyeball_frog', 
-                'Latest: Eyedrops': 'eyedrops', 
-                'Latest: Claim Check': 'claim_check'},
-            'tooltip':'''\
-                      Select the latest item that will appear in the adult trade sequence.
+                      Enables a large number of tricks.
+                      Still does not require glitches.
                       '''
         }),
     Setting_Info('logic_man_on_roof', bool, 1, True, 
@@ -1465,6 +1405,7 @@ setting_infos = [
             'default': 'unchecked',
             'tooltip':'''\
                       Can hover behind the waterfall as adult.
+                      This is very difficult.
                       '''
         }),
     Setting_Info('logic_fewer_tunic_requirements', bool, 1, True, 

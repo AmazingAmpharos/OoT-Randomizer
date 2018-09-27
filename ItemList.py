@@ -25,23 +25,20 @@ alwaysitems = ([
     'Farores Wind', 
     'Rupee (1)'] 
     + ['Progressive Hookshot'] * 2
-    + ['Deku Shield'] * 4
-    + ['Hylian Shield'] * 2
+    + ['Deku Shield']
+    + ['Hylian Shield']
     + ['Progressive Strength Upgrade'] * 3
     + ['Progressive Scale'] * 2
-    + ['Recovery Heart'] * 9
+    + ['Recovery Heart'] * 6
     + ['Bow'] * 3
     + ['Slingshot'] * 3
     + ['Bomb Bag'] * 3
     + ['Bottle with Letter']
     + ['Bombs (5)'] * 2
-    + ['Bombs (10)'] * 2
-    + ['Bombs (20)'] * 2
+    + ['Bombs (10)']
+    + ['Bombs (20)']
     + ['Arrows (5)']
-    + ['Arrows (10)'] * 6
-    + ['Arrows (30)'] * 6
-    + ['Deku Nuts (5)']
-    + ['Deku Nuts (10)']
+    + ['Arrows (10)'] * 5
     + ['Progressive Wallet'] * 2
     + ['Deku Stick Capacity'] * 2
     + ['Deku Nut Capacity'] * 2
@@ -57,6 +54,58 @@ DC_vanilla = (['Rupees (20)'])
 DC_MQ = (['Hylian Shield']
          + ['Rupees (5)'])
 
+JB_MQ = (['Deku Nuts (5)'] * 4
+         + ['Recovery Heart']
+         + ['Deku Shield']
+         + ['Deku Stick (1)'])
+
+FoT_vanilla = (['Recovery Heart']
+               + ['Arrows (10)']
+               + ['Arrows (30)'])
+
+FoT_MQ = (['Arrows (5)'])
+
+FiT_vanilla = (['Rupees (200)'])
+
+FiT_MQ = (['Bombs (20)']
+          + ['Hylian Shield'])
+
+SpT_vanilla = (['Deku Shield'] * 2
+               + ['Recovery Heart']
+               + ['Bombs (20)'])
+
+SpT_MQ = (['Rupees (50)'] * 2
+          + ['Arrows (30)'])
+
+ShT_vanilla = (['Arrows (30)'])
+
+ShT_MQ = (['Arrows (5)'] * 2
+          + ['Rupees (20)'])
+
+BW_vanilla = (['Recovery Heart']
+               + ['Bombs (10)']
+               + ['Rupees (200)']
+               + ['Deku Nuts (5)']
+               + ['Deku Nuts (10)']
+               + ['Deku Shield']
+               + ['Hylian Shield'])
+
+GTG_vanilla = (['Arrows (30)'] * 3
+               + ['Rupees (200)'])
+
+GTG_MQ = (['Rupee (Treasure Chest Game)'] * 2
+          + ['Arrows (10)']
+          + ['Rupee (1)']
+          + ['Rupees (50)'])
+
+GC_vanilla = (['Rupees (5)'] * 3
+               + ['Arrows (30)'])
+
+GC_MQ = (['Arrows (10)'] * 2
+         + ['Bombs (5)']
+         + ['Rupees (20)']
+         + ['Recovery Heart'])
+
 normal_bottles = [
     'Bottle',
     'Bottle with Milk',
@@ -66,38 +115,23 @@ normal_bottles = [
     'Bottle with Fairy',
     'Bottle with Fish',
     'Bottle with Bugs',
-    'Bottle with Poe'] # 'Bottle with Blue Fire'
+    'Bottle with Poe',
+    'Bottle with Big Poe',
+    'Bottle with Blue Fire']
 
 normal_bottle_count = 3
 
-# 10 items get removed for hard+
-harditems = (
-    ['Bombs (5)'] * 2 
-    + ['Arrows (5)'] * 2 
-    + ['Deku Nuts (5)'] * 2 
-    + ['Rupees (5)'] * 3 
-    + ['Rupees (20)'])
-
-# 37 items get removed for very hard
-veryharditems = (
-    ['Bombs (5)'] * 8 
-    + ['Arrows (5)'] * 8 
-    + ['Deku Nuts (5)'] * 8 
-    + ['Rupees (5)'] * 10 
-    + ['Rupees (20)'] * 2 
-    + ['Rupees (50)'])
-
-normal_rupees =(
-    ['Rupees (5)'] * 16
+normal_rupees = (
+    ['Rupees (5)'] * 13
     + ['Rupees (20)'] * 5
     + ['Rupees (50)'] * 7
-    + ['Rupees (200)'] * 6)
+    + ['Rupees (200)'] * 3)
 
 shopsanity_rupees = (
-    ['Rupees (5)'] * 5
+    ['Rupees (5)'] * 2
     + ['Rupees (20)'] * 10
     + ['Rupees (50)'] * 10
-    + ['Rupees (200)'] * 8
+    + ['Rupees (200)'] * 5
     + ['Progressive Wallet'])
 
 vanilla_shop_items = {
@@ -186,15 +220,6 @@ min_shop_items = (
     + ['Buy Fish'])
 
 vanilla_deku_scrubs = {
-    'DC Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'DC Deku Scrub Deku Sticks': 'Buy Deku Stick (1)',
-    'DC Deku Scrub Deku Seeds': 'Buy Deku Seeds (30)',
-    'DC Deku Scrub Deku Shield': 'Buy Deku Shield',
-    'Jabu Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'GC Deku Scrub Bombs': 'Buy Bombs (5) [35]',
-    'GC Deku Scrub Arrows': 'Buy Arrows (30)',
-    'GC Deku Scrub Red Potion': 'Buy Red Potion [30]',
-    'GC Deku Scrub Green Potion': 'Buy Green Potion',
     'ZR Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
     'ZR Grotto Deku Scrub Green Potion': 'Buy Green Potion',
     'SFM Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
@@ -222,14 +247,11 @@ vanilla_deku_scrubs = {
 }
 
 deku_scrubs_items = (
-      ['Deku Nuts (5)'] * 7
-    + ['Rupees (20)'] * 2  # ['Deku Stick (1)'] * 2
-    + ['Arrows (5)'] # ['Deku Seeds (30)']
-    + ['Deku Shield']
-    + ['Bombs (5)'] * 6
-    + ['Arrows (30)'] * 6
-    + ['Recovery Heart'] * 5
-    + ['Rupees (5)'] * 5 # ['Green Potion']
+      ['Deku Nuts (5)'] * 5
+    + ['Deku Stick (1)']
+    + ['Bombs (5)'] * 5
+    + ['Recovery Heart'] * 4
+    + ['Rupees (5)'] * 4 # ['Green Potion']
 )
 
 rewardlist = [
@@ -299,41 +321,11 @@ skulltulla_locations = ([
     'GS Zora\'s Fountain Tree',
     'GS Zora\'s Fountain Above the Log',
     'GS Zora\'s Fountain Hidden Cave',
-    'GS Jabu Jabu Water Switch Room',
-    'GS Jabu Jabu Lobby Basement Lower',
-    'GS Jabu Jabu Lobby Basement Upper',
-    'GS Jabu Jabu Near Boss',
     'GS Lake Hylia Bean Patch',
     'GS Lake Hylia Lab Wall',
     'GS Lake Hylia Small Island',
     'GS Lake Hylia Giant Tree',
     'GS Lab Underwater Crate',
-    'GS Forest Temple First Room',
-    'GS Forest Temple Lobby',
-    'GS Forest Temple Outdoor East',
-    'GS Forest Temple Outdoor West',
-    'GS Forest Temple Basement',
-    'GS Fire Temple Song of Time Room',
-    'GS Fire Temple Unmarked Bomb Wall',
-    'GS Fire Temple East Tower Climb',
-    'GS Fire Temple East Tower Top',
-    'GS Fire Temple Basement',
-    'GS Ice Cavern Spinning Scythe Room',
-    'GS Ice Cavern Heart Piece Room',
-    'GS Ice Cavern Push Block Room',
-    'GS Water Temple South Basement',
-    'GS Water Temple Serpent River',
-    'GS Water Temple Falling Platform Room',
-    'GS Water Temple Central Room',
-    'GS Water Temple Near Boss Key Chest',
-    'GS Well West Inner Room',
-    'GS Well East Inner Room',
-    'GS Well Like Like Cage',
-    'GS Shadow Temple Like Like Room',
-    'GS Shadow Temple Crusher Room',
-    'GS Shadow Temple Single Giant Pot',
-    'GS Shadow Temple Near Ship',
-    'GS Shadow Temple Tripple Giant Pot',
     'GS Gerudo Valley Small Bridge',
     'GS Gerudo Valley Bean Patch',
     'GS Gerudo Valley Behind Tent',
@@ -343,14 +335,9 @@ skulltulla_locations = ([
     'GS Wasteland Ruins',
     'GS Desert Colossus Bean Patch',
     'GS Desert Colossus Tree',
-    'GS Desert Colossus Hill',
-    'GS Spirit Temple Metal Fence',
-    'GS Spirit Temple Bomb for Light Room',
-    'GS Spirit Temple Hall to West Iron Knuckle',
-    'GS Spirit Temple Boulder Room',
-    'GS Spirit Temple Lobby'])
+    'GS Desert Colossus Hill'])
     
-tradeitems = (
+tradeitems = [
     'Pocket Egg',
     'Pocket Cucco', 
     'Cojiro', 
@@ -360,19 +347,7 @@ tradeitems = (
     'Prescription', 
     'Eyeball Frog', 
     'Eyedrops', 
-    'Claim Check')
-
-tradeitemoptions = (
-    'pocket_egg',
-    'pocket_cucco', 
-    'cojiro', 
-    'odd_mushroom', 
-    'poachers_saw', 
-    'broken_sword', 
-    'prescription', 
-    'eyeball_frog', 
-    'eyedrops', 
-    'claim_check')
+    'Claim Check']
 
 
 eventlocations = {
@@ -384,11 +359,9 @@ eventlocations = {
     'Epona': 'Epona',
     'Deku Baba Sticks': 'Deku Stick Drop',
     'Goron City Stick Pot': 'Deku Stick Drop',
-    'Bottom of the Well Stick Pot': 'Deku Stick Drop',
     'Zoras Domain Stick Pot': 'Deku Stick Drop',
     'Deku Baba Nuts': 'Deku Nut Drop',
     'Zoras Domain Nut Pot': 'Deku Nut Drop',
-    'Spirit Temple Nut Crate': 'Deku Nut Drop',
     'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
     'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
     'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',
@@ -398,7 +371,24 @@ eventlocations = {
     'Ganons Castle Light Trial Clear': 'Light Trial Clear'
 }
 
-#total_items_to_place = 5
+junk_pool = (
+    8 *  ['Bombs (5)'] +
+    2 *  ['Bombs (10)'] +
+    8 *  ['Arrows (5)'] +
+    2 *  ['Arrows (10)'] +
+    5 *  ['Deku Stick (1)'] + 
+    5 *  ['Deku Nuts (5)'] + 
+    5 *  ['Deku Seeds (30)'] +
+    10 * ['Rupees (5)'] +
+    4 *  ['Rupees (20)'] + 
+    1 *  ['Rupees (50)'])
+def get_junk_item(count=1):
+    ret_junk = []
+    for _ in range(count):
+        ret_junk.append(random.choice(junk_pool))
+
+    return ret_junk
+
 
 def generate_itempool(world):
     for location, item in eventlocations.items():
@@ -466,6 +456,108 @@ def get_pool_core(world):
             'GS Dodongo\'s Cavern Back Room',
             'GS Dodongo\'s Cavern Alcove Above Stairs',
             'GS Dodongo\'s Cavern Scarecrow'])
+    if world.dungeon_mq['JB']:
+        skulltulla_locations_final.extend([
+            'GS Jabu Jabu MQ Tailpasaran Room',
+            'GS Jabu Jabu MQ Invisible Enemies Room',
+            'GS Jabu Jabu MQ Boomerang Room',
+            'GS Jabu Jabu MQ Near Boss'])
+    else:
+        skulltulla_locations_final.extend([
+            'GS Jabu Jabu Water Switch Room',
+            'GS Jabu Jabu Lobby Basement Lower',
+            'GS Jabu Jabu Lobby Basement Upper',
+            'GS Jabu Jabu Near Boss'])
+    if world.dungeon_mq['FoT']:
+        skulltulla_locations_final.extend([
+            'GS Forest Temple MQ First Hallway',
+            'GS Forest Temple MQ Block Push Room',
+            'GS Forest Temple MQ Outdoor East',
+            'GS Forest Temple MQ Outdoor West',
+            'GS Forest Temple MQ Well'])
+    else:
+        skulltulla_locations_final.extend([
+            'GS Forest Temple First Room',
+            'GS Forest Temple Lobby',
+            'GS Forest Temple Outdoor East',
+            'GS Forest Temple Outdoor West',
+            'GS Forest Temple Basement'])
+    if world.dungeon_mq['FiT']:
+        skulltulla_locations_final.extend([
+            'GS Fire Temple MQ Above Fire Wall Maze',
+            'GS Fire Temple MQ Fire Wall Maze Center',
+            'GS Fire Temple MQ Big Lava Room',
+            'GS Fire Temple MQ Fire Wall Maze Side Room',
+            'GS Fire Temple MQ East Tower Top'])
+    else:
+        skulltulla_locations_final.extend([
+            'GS Fire Temple Song of Time Room',
+            'GS Fire Temple Unmarked Bomb Wall',
+            'GS Fire Temple East Tower Climb',
+            'GS Fire Temple East Tower Top',
+            'GS Fire Temple Basement'])
+    if world.dungeon_mq['WT']:
+        skulltulla_locations_final.extend([
+            'GS Water Temple MQ Before Upper Water Switch',
+            'GS Water Temple MQ North Basement',
+            'GS Water Temple MQ Lizalfos Hallway',
+            'GS Water Temple MQ Serpent River',
+            'GS Water Temple MQ South Basement'])
+    else:
+        skulltulla_locations_final.extend([
+            'GS Water Temple South Basement',
+            'GS Water Temple Serpent River',
+            'GS Water Temple Falling Platform Room',
+            'GS Water Temple Central Room',
+            'GS Water Temple Near Boss Key Chest'])
+    if world.dungeon_mq['SpT']:
+        skulltulla_locations_final.extend([
+            'GS Spirit Temple MQ Lower Adult Right',
+            'GS Spirit Temple MQ Lower Adult Left',
+            'GS Spirit Temple MQ Iron Knuckle West',
+            'GS Spirit Temple MQ Iron Knuckle North',
+            'GS Spirit Temple MQ Sun Block Room'])
+    else:
+        skulltulla_locations_final.extend([
+            'GS Spirit Temple Metal Fence',
+            'GS Spirit Temple Bomb for Light Room',
+            'GS Spirit Temple Hall to West Iron Knuckle',
+            'GS Spirit Temple Boulder Room',
+            'GS Spirit Temple Lobby'])
+    if world.dungeon_mq['ShT']:
+        skulltulla_locations_final.extend([
+            'GS Shadow Temple MQ Crusher Room',
+            'GS Shadow Temple MQ Wind Hint Room',
+            'GS Shadow Temple MQ After Wind',
+            'GS Shadow Temple MQ After Ship',
+            'GS Shadow Temple MQ Near Boss'])
+    else:
+        skulltulla_locations_final.extend([
+            'GS Shadow Temple Like Like Room',
+            'GS Shadow Temple Crusher Room',
+            'GS Shadow Temple Single Giant Pot',
+            'GS Shadow Temple Near Ship',
+            'GS Shadow Temple Tripple Giant Pot'])
+    if world.dungeon_mq['BW']:
+        skulltulla_locations_final.extend([
+            'GS Well MQ Basement',
+            'GS Well MQ Coffin Room',
+            'GS Well MQ West Inner Room'])
+    else:
+        skulltulla_locations_final.extend([
+            'GS Well West Inner Room',
+            'GS Well East Inner Room',
+            'GS Well Like Like Cage'])
+    if world.dungeon_mq['IC']:
+        skulltulla_locations_final.extend([
+            'GS Ice Cavern MQ Scarecrow',
+            'GS Ice Cavern MQ Ice Block',
+            'GS Ice Cavern MQ Red Ice'])
+    else:
+        skulltulla_locations_final.extend([
+            'GS Ice Cavern Spinning Scythe Room',
+            'GS Ice Cavern Heart Piece Room',
+            'GS Ice Cavern Push Block Room'])
     if world.tokensanity == 'off':
         for location in skulltulla_locations_final:
             placed_items[location] = 'Gold Skulltulla Token'
@@ -479,22 +571,50 @@ def get_pool_core(world):
         pool.extend(['Gold Skulltulla Token'] * 100)
 
     if world.bombchus_in_logic:
-        pool.extend(['Bombchus'] * 5)
+        pool.extend(['Bombchus'] * 4)
+        if world.dungeon_mq['JB']:
+            pool.extend(['Bombchus'])
+        if world.dungeon_mq['SpT']:
+            pool.extend(['Bombchus'] * 2)
+        if not world.dungeon_mq['BW']:
+            pool.extend(['Bombchus'])
+        if world.dungeon_mq['GTG']:
+            pool.extend(['Bombchus'])
     else:
-        pool.extend(['Bombchus (5)'] + ['Bombchus (10)'] * 3 + ['Bombchus (20)'])
+        pool.extend(['Bombchus (5)'] + ['Bombchus (10)'] * 2)
+        if world.dungeon_mq['JB']:
+            pool.extend(['Bombchus (10)'])
+        if world.dungeon_mq['SpT']:
+            pool.extend(['Bombchus (10)'] * 2)
+        if not world.dungeon_mq['BW']:
+            pool.extend(['Bombchus (10)'])
+        if world.dungeon_mq['GTG']:
+            pool.extend(['Bombchus (10)'])
+        if world.dungeon_mq['GC']:
+            pool.extend(['Bombchus (10)'])
+        else:
+            pool.extend(['Bombchus (20)'])
 
     if world.difficulty == 'ohko':
-        pool.extend(['Recovery Heart'] * 6)
+        pool.extend(['Recovery Heart'])
+        if not world.dungeon_mq['GTG']:
+            pool.extend(['Recovery Heart'])
+        if not world.dungeon_mq['GC']:
+            pool.extend(['Recovery Heart'] * 4)
     else:
-        pool.extend(['Ice Trap'] * 6)        
+        pool.extend(['Ice Trap'])
+        if not world.dungeon_mq['GTG']:
+            pool.extend(['Ice Trap'])
+        if not world.dungeon_mq['GC']:
+            pool.extend(['Ice Trap'] * 4)
 
     if world.difficulty == 'normal':
         pool.extend(['Magic Meter', 'Double Defense'] + ['Heart Container'] * 8)
     else:
-        pool.extend(harditems)
+        pool.extend(get_junk_item(10))
 
     if world.difficulty == 'very_hard' or world.difficulty == 'ohko':
-        pool.extend(veryharditems)
+        pool.extend(get_junk_item(37))
     else:
         pool.extend(['Nayrus Love', 'Piece of Heart (Treasure Chest Game)'] + ['Piece of Heart'] * 35)
 
@@ -547,12 +667,53 @@ def get_pool_core(world):
         shop_item_count = shop_slots_count - shop_nonitem_count
 
         pool.extend(random.sample(remain_shop_items, shop_item_count))
-        pool.extend(random.sample(veryharditems, shop_nonitem_count))
+        pool.extend(get_junk_item(shop_nonitem_count))
         pool.extend(shopsanity_rupees)
 
     if world.shuffle_scrubs:
+        arrows_or_seeds = 0
+        if world.dungeon_mq['DT']:
+            pool.append('Deku Shield')
+        if world.dungeon_mq['DC']:
+            pool.extend(['Deku Stick (1)', 'Deku Shield', 'Recovery Heart'])
+        else:
+            pool.extend(['Deku Nuts (5)', 'Deku Stick (1)', 'Deku Shield'])
+        if not world.dungeon_mq['JB']:
+            pool.append('Deku Nuts (5)')
+        if world.dungeon_mq['GC']:
+            pool.extend(['Bombs (5)', 'Recovery Heart', 'Rupees (5)', 'Deku Nuts (5)'])
+        else:
+            pool.extend(['Bombs (5)', 'Recovery Heart', 'Rupees (5)'])
         pool.extend(deku_scrubs_items)
+        for _ in range(7):
+            pool.append('Arrows (30)' if random.randint(0,3) > 0 else 'Deku Seeds (30)')
+
     else:        
+        if world.dungeon_mq['DT']:
+            placed_items['DT MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
+        if world.dungeon_mq['DC']:
+            placed_items['DC MQ Deku Scrub Deku Sticks'] = 'Buy Deku Stick (1)'
+            placed_items['DC MQ Deku Scrub Deku Seeds'] = 'Buy Deku Seeds (30)'
+            placed_items['DC MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
+            placed_items['DC MQ Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
+        else:
+            placed_items['DC Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
+            placed_items['DC Deku Scrub Deku Sticks'] = 'Buy Deku Stick (1)'
+            placed_items['DC Deku Scrub Deku Seeds'] = 'Buy Deku Seeds (30)'
+            placed_items['DC Deku Scrub Deku Shield'] = 'Buy Deku Shield'
+        if not world.dungeon_mq['JB']:
+            placed_items['Jabu Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
+        if world.dungeon_mq['GC']:
+            placed_items['GC MQ Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
+            placed_items['GC MQ Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
+            placed_items['GC MQ Deku Scrub Arrows'] = 'Buy Arrows (30)'
+            placed_items['GC MQ Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
+            placed_items['GC MQ Deku Scrub Green Potion'] = 'Buy Green Potion'
+        else:
+            placed_items['GC Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
+            placed_items['GC Deku Scrub Arrows'] = 'Buy Arrows (30)'
+            placed_items['GC Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
+            placed_items['GC Deku Scrub Green Potion'] = 'Buy Green Potion'
         placed_items.update(vanilla_deku_scrubs)
 
     pool.extend(alwaysitems)
@@ -564,32 +725,57 @@ def get_pool_core(world):
         pool.extend(DC_MQ)
     else:
         pool.extend(DC_vanilla)
-
+    if world.dungeon_mq['JB']:
+        pool.extend(JB_MQ)
+    if world.dungeon_mq['FoT']:
+        pool.extend(FoT_MQ)
+    else:
+        pool.extend(FoT_vanilla)
+    if world.dungeon_mq['FiT']:
+        pool.extend(FiT_MQ)
+    else:
+        pool.extend(FiT_vanilla)
+    if world.dungeon_mq['SpT']:
+        pool.extend(SpT_MQ)
+    else:
+        placed_items['Spirit Temple Nut Crate'] = 'Deku Nut Drop'
+        pool.extend(SpT_vanilla)
+    if world.dungeon_mq['ShT']:
+        pool.extend(ShT_MQ)
+    else:
+        pool.extend(ShT_vanilla)
+    if not world.dungeon_mq['BW']:
+        placed_items['Bottom of the Well Stick Pot'] = 'Deku Stick Drop'
+        pool.extend(BW_vanilla)
+    if world.dungeon_mq['GTG']:
+        pool.extend(GTG_MQ)
+    else:
+        pool.extend(GTG_vanilla)
+    if world.dungeon_mq['GC']:
+        pool.extend(GC_MQ)
+    else:
+        pool.extend(GC_vanilla)
     for _ in range(normal_bottle_count):
         bottle = random.choice(normal_bottles)
         pool.append(bottle)
-
-    earliest_trade = tradeitemoptions.index(world.logic_earliest_adult_trade)
-    latest_trade = tradeitemoptions.index(world.logic_latest_adult_trade)
-    if earliest_trade > latest_trade:
-        earliest_trade, latest_trade = latest_trade, earliest_trade
-    tradeitem = random.choice(tradeitems[earliest_trade:latest_trade+1])
+    if world.big_poe_count_random:
+        world.big_poe_count = random.randint(1, 10)
+    tradeitem = random.choice(tradeitems)
     pool.append(tradeitem)
-    
     pool.extend(songlist)
 
     if world.shuffle_mapcompass == 'remove':
         for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:
             world.state.collect(item)
-            pool.append(random.choice(harditems))
+            pool.extend(get_junk_item())
     if world.shuffle_smallkeys == 'remove':
         for item in [item for dungeon in world.dungeons for item in dungeon.small_keys]:
             world.state.collect(item)
-            pool.append(random.choice(harditems))
+            pool.extend(get_junk_item())
     if world.shuffle_bosskeys == 'remove':
         for item in [item for dungeon in world.dungeons for item in dungeon.boss_key]:
             world.state.collect(item)
-            pool.append(random.choice(harditems))
+            pool.extend(get_junk_item())
     if not world.keysanity and not world.dungeon_mq['FiT']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
 

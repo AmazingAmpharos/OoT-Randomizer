@@ -10,13 +10,12 @@ void c_init() {
     text_init();
 }
 
-void overlay_swap(z64_disp_buf_t *db, Gfx *buf, uint32_t size) {
+void c_after_game_state_update() {
     if (z64_game.pause_state == 6 &&
                 z64_game.pause_screen == 0 &&
                 !z64_game.pause_screen_changing &&
                 z64_ctxt.input[0].raw.a) {
+        z64_disp_buf_t *db = &(z64_ctxt.gfx->overlay);
         draw_dungeon_info(db);
     }
-
-    disp_buf_init(db, buf, size);
 }

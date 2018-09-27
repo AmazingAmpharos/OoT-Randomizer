@@ -12,8 +12,8 @@ from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonTe
 from Utils import local_path, default_output_path
 from Items import ItemFactory, item_data
 from Messages import *
-from OcarinaSongs import Song, replace_songs, subsong
-from MQ import patch_files
+from OcarinaSongs import Song, str_to_song, replace_songs
+from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
 TunicColors = {
     "Custom Color": [0, 0, 0], 
@@ -95,6 +95,10 @@ def patch_rom(world, rom):
     with open(local_path('data/title.bin'), 'rb') as stream:
         titleBytes = stream.read()
         rom.write_bytes(0x01795300, titleBytes)
+
+    # Increase the instance size of Bombchus prevent the heap from becoming corrupt when
+    # a Dodongo eats a Bombchu. Does not fix stale pointer issues with the animation
+    rom.write_int32(0xD6002C, 0x1F0)
 
     # Can always return to youth
     rom.write_byte(0xCB6844, 0x35)
@@ -857,18 +861,18 @@ def patch_rom(world, rom):
     #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x40) # Dodongo's Cavern switch flag (navi text?)
     #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x08) # Dodongo's Cavern switch flag (navi text?)
     #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x01) # Dodongo's Cavern switch flag (navi text?)
-    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x08) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x04) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x02) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x1, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x08) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x04) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x02) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
+    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x1, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
     write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (poes?)
-    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x01) # Forest Temple switch flag (poes?)
-    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x02) # Forest Temple switch flag (poes?)
-    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x01) # Forest Temple switch flag (poes?)
-    write_bits_to_save(0x00D4 + 0x04 * 0x1C + 0x04 + 0x1, 0x08) # Fire Temple switch flag (First locked door?)
+    #write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x01) # Forest Temple switch flag (Poe Sisters cutscene)
+    #write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x02) # Forest Temple switch flag (poes?)
+    #write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x01) # Forest Temple switch flag (poes?)
+    #write_bits_to_save(0x00D4 + 0x04 * 0x1C + 0x04 + 0x1, 0x08) # Fire Temple switch flag (First locked door?)
     write_bits_to_save(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (navi text?)
-    write_bits_to_save(0x00D4 + 0x0B * 0x1C + 0x04 + 0x2, 0x01) # Gerudo Training Ground switch flag (command text?)
+    #write_bits_to_save(0x00D4 + 0x0B * 0x1C + 0x04 + 0x2, 0x01) # Gerudo Training Ground switch flag (command text?)
     write_bits_to_save(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (???)
     write_bits_to_save(0x00D4 + 0x55 * 0x1C + 0x04 + 0x0, 0x80) # Kokiri Forest switch flag (???)
     write_bits_to_save(0x00D4 + 0x56 * 0x1C + 0x04 + 0x2, 0x40) # Sacred Forest Meadow switch flag (???)
@@ -1016,8 +1020,37 @@ def patch_rom(world, rom):
         # change the exit at child/day crawlspace to the end of zelda's goddess cutscene
         rom.write_bytes(0x21F60DE, [0x05, 0xF0])
 
+    # patch mq scenes
+    mq_scenes = []
+    if world.dungeon_mq['DT']:
+        mq_scenes.append(0)
+    if world.dungeon_mq['DC']:
+        mq_scenes.append(1)
+    if world.dungeon_mq['JB']:
+        mq_scenes.append(2)
+    if world.dungeon_mq['FoT']:
+        mq_scenes.append(3)
+    if world.dungeon_mq['FiT']:
+        mq_scenes.append(4)
+    if world.dungeon_mq['WT']:
+        mq_scenes.append(5)
+    if world.dungeon_mq['SpT']:
+        mq_scenes.append(6)
+    if world.dungeon_mq['ShT']:
+        mq_scenes.append(7)
+    if world.dungeon_mq['BW']:
+        mq_scenes.append(8)
+    if world.dungeon_mq['IC']:
+        mq_scenes.append(9)
+    # Scene 10 has no layout changes, so it doesn't need to be patched
+    if world.dungeon_mq['GTG']:
+        mq_scenes.append(11)
+    if world.dungeon_mq['GC']:
+        mq_scenes.append(13)
+
+    patch_files(rom, mq_scenes)
+
     ### Load Shop File
-    from MQ import File, update_dmadata, insert_space, add_relocations
     # Move shop actor file to free space
     shop_item_file = File({
             'Name':'En_GirlA',
@@ -1077,8 +1110,6 @@ def patch_rom(world, rom):
     remove_unused_messages(messages)
 
     # Set Big Poe count to get reward from buyer
-    if world.big_poe_count_random:
-        world.big_poe_count = random.randint(1, 10)
     poe_points = world.big_poe_count * 100
     rom.write_int16(0xEE69CE, poe_points)
     # update dialogue
@@ -1094,11 +1125,6 @@ def patch_rom(world, rom):
             rom.write_bytes(0xEE7B84, [0x0C, 0x10, 0x02, 0x10])
             rom.write_bytes(0xEE7B8C, [0x24, 0x02, 0x00, 0x20])
         writeGossipStoneHintsHints(world, messages)
-
-    # Set hints for boss reward shuffle
-    rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
-    rom.write_bytes(0xE2ADB6, [0x70, 0x57])
-    buildBossRewardHints(world, messages)
 
     # build silly ganon lines
     buildGanonText(world, messages)
@@ -1129,9 +1155,9 @@ def patch_rom(world, rom):
         # song of time
         rom.write_int32(0xDB532C, 0x24050003)
 
-    # Set Default targeting option to Hold
+    # Set default targeting option to Hold
     if world.default_targeting == 'hold':
-        rom.write_bytes(0xB07200, [0x20, 0x0C, 0x00, 0x01 ])
+        rom.write_byte(0xB71E6D, 0x01)
 
     # Set OHKO mode
     if world.difficulty == 'ohko':
@@ -1358,6 +1384,61 @@ def patch_rom(world, rom):
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)
+    if world.shuffle_mapcompass == 'keysanity' and world.enhance_map_compass:
+        reward_list = {'Kokiri Emerald':   "\x05\x42Kokiri Emerald\x05\x40",
+                       'Goron Ruby':       "\x05\x41Goron Ruby\x05\x40",
+                       'Zora Sapphire':    "\x05\x43Zora Sapphire\x05\x40",
+                       'Forest Medallion': "\x05\x42Forest Medallion\x05\x40",
+                       'Fire Medallion':   "\x05\x41Fire Medallion\x05\x40",
+                       'Water Medallion':  "\x05\x43Water Medallion\x05\x40",
+                       'Spirit Medallion': "\x05\x46Spirit Medallion\x05\x40",
+                       'Shadow Medallion': "\x05\x45Shadow Medallion\x05\x40",
+                       'Light Medallion':  "\x05\x44Light Medallion\x05\x40"
+        }
+        dungeon_list = {'DT':   ("the \x05\x42Deku Tree", 'Queen Gohma', 0x62, 0x88),
+                        'DC':   ("\x05\x41Dodongo\'s Cavern", 'King Dodongo', 0x63, 0x89),
+                        'JB':   ("\x05\x43Jabu Jabu\'s Belly", 'Barinade', 0x64, 0x8a),
+                        'FoT':  ("the \x05\x42Forest Temple", 'Phantom Ganon', 0x65, 0x8b),
+                        'FiT':  ("the \x05\x41Fire Temple", 'Volvagia', 0x7c, 0x8c),
+                        'WT':   ("the \x05\x43Water Temple", 'Morpha', 0x7d, 0x8e),
+                        'SpT':  ("the \x05\x46Spirit Temple", 'Twinrova', 0x7e, 0x8f),
+                        'IC':   ("the \x05\x44Ice Cavern", None, 0x87, 0x92),
+                        'BW':   ("the \x05\x45Bottom of the Well", None, 0xa2, 0xa5),
+                        'ShT':   ("the \x05\x45Shadow Temple", 'Bongo Bongo', 0x7f, 0xa3),
+        }
+        for dungeon in world.dungeon_mq:
+            if dungeon in ['GTG', 'GC']:
+                pass
+            elif dungeon in ['BW', 'IC']:
+                dungeon_name, boss_name, compass_id, map_id = dungeon_list[dungeon]
+                if world.world_count > 1:
+                    map_message = "\x13\x76\x08\x05\x42Player \x18\x05\x40 found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)
+                else:
+                    map_message = "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x01It\'s %s!\x09" % (dungeon_name, "masterful" if world.dungeon_mq[dungeon] else "ordinary")
+
+                if world.quest == 'mixed':
+                    update_message_by_id(messages, map_id, map_message)
+            else:
+                dungeon_name, boss_name, compass_id, map_id = dungeon_list[dungeon]
+                dungeon_reward = reward_list[world.get_location(boss_name).item.name]
+                if world.world_count > 1:
+                    compass_message = "\x13\x75\x08\x05\x42Player \x18\x05\x40 found the \x05\x41Compass\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)
+                else:
+                    compass_message = "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for %s\x05\x40!\x01It holds the %s!\x09" % (dungeon_name, dungeon_reward)
+                update_message_by_id(messages, compass_id, compass_message)
+                if world.quest == 'mixed':
+                    if world.world_count > 1:
+                        map_message = "\x13\x76\x08\x05\x42Player \x18\x05\x40 found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)
+                    else:
+                        map_message = "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x01It\'s %s!\x09" % (dungeon_name, "masterful" if world.dungeon_mq[dungeon] else "ordinary")
+                    update_message_by_id(messages, map_id, map_message)
+
+    else:
+        # Set hints for boss reward shuffle
+        rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
+        rom.write_bytes(0xE2ADB6, [0x70, 0x57])
+        buildBossRewardHints(world, messages)
+
     # update happy mask shop to use new SOLD OUT text id
     rom.write_int16(shop_item_file.start + 0x1726, shop_items[0x26].description_message)
 
@@ -1370,7 +1451,10 @@ def patch_rom(world, rom):
     # Add 3rd Wallet Upgrade
     rom.write_int16(0xB6D57E, 0x0003)
     rom.write_int16(0xB6EC52, 999)
-    update_message_by_id(messages, 0x00F8, "\x08\x13\x57You got a \x05\x43Tycoon's Wallet\x05\x40!\x01Now you can hold\x01up to \x05\x46999\x05\x40 \x05\x46Rupees\x05\x40.", 0x23)
+    tycoon_message = "\x08\x13\x57You got a \x05\x43Tycoon's Wallet\x05\x40!\x01Now you can hold\x01up to \x05\x46999\x05\x40 \x05\x46Rupees\x05\x40."
+    if world.world_count > 1:
+       tycoon_message = make_player_message(tycoon_message)
+    update_message_by_id(messages, 0x00F8, tycoon_message, 0x23)
 
     repack_messages(rom, messages)
     write_shop_items(rom, shop_item_file.start + 0x1DEC, shop_items)
@@ -1392,52 +1476,7 @@ def patch_rom(world, rom):
 
     scarecrow_song = None
     if world.free_scarecrow:
-        original_songs = [
-            'LURLUR',
-            'ULRULR',
-            'DRLDRL',
-            'RDURDU',
-            'RADRAD',
-            'ADUADU',
-            'AULRLR',
-            'DADALDLD',
-            'ADRRL',
-            'ADALDA',
-            'LRRALRD',
-            'URURLU'
-        ]
-
-        note_map = {
-            'A': 0,
-            'D': 1,
-            'R': 2,
-            'L': 3,
-            'U': 4
-        }
-
-        if len(world.scarecrow_song) != 8:
-            raise Exception('Scarecrow Song must be 8 notes long')
-
-        if len(set(world.scarecrow_song.upper())) == 1:
-            raise Exception('Scarecrow Song must contain at least two different notes')           
-
-        notes = []
-        for c in world.scarecrow_song.upper():
-            if c not in note_map:
-                raise Exception('Invalid note %s. Valid notes are A, D, R, L, U' % c)
-
-            notes.append(note_map[c])
-        scarecrow_song = Song(activation=notes)
-
-        if not world.ocarina_songs:
-            for original_song in original_songs:
-                song_notes = []
-                for c in original_song:
-                    song_notes.append(note_map[c])
-                song = Song(activation=song_notes)
-
-                if subsong(scarecrow_song, song):
-                    raise Exception('You may not have the Scarecrow Song contain an existing song')
+        scarecrow_song = str_to_song(world.scarecrow_song) #verified valid string in Main.py
 
         write_bits_to_save(0x0EE6, 0x10)     # Played song as adult
         write_byte_to_save(0x12C5, 0x01)    # Song is remembered
@@ -1449,17 +1488,15 @@ def patch_rom(world, rom):
     # actually write the save table to rom
     write_save_table(rom)
 
-    patch_files(world, rom)
-
-    # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
-    random.seed()
-    
     # patch music 
     if world.background_music == 'random':
         randomize_music(rom)
     elif world.background_music == 'off':    
         disable_music(rom)
 
+    # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
+    random.seed()
+    
     # patch tunic colors
     # Custom color tunic stuff
     Tunics = []
@@ -1683,6 +1720,8 @@ chestAnimationExtendedFast = [
     0xBD, # Deku Nuts (5)
     0xBE, # Deku Nuts (10)
     0xBF, # Double Defense
+    0xD0, # Deku Stick (1)
+    0xD1, # Deky Seeds (30)
 ]
 
 
@@ -1871,11 +1910,24 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
             message_id = (shop_id - 0x32) * 2 
             shop_item.description_message = 0x8100 + message_id 
             shop_item.purchase_message = 0x8100 + message_id + 1 
-            if world.world_count > 1:
-                update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x42Player %d\x05\x40\x01Special deal! ONE LEFT!\x09\x0A\x02' % (location.item.name, location.price, location.item.world.id + 1), 0x03) 
+
+            if location.item.dungeonitem:
+                split_item_name = location.item.name.split('(')
+                split_item_name[1] = '(' + split_item_name[1]
+                if world.world_count > 1:
+                    description_text = '\x08\x05\x41%s  %d Rupees\x01%s\x01\x05\x42Player %d\x05\x40\x01Special deal! ONE LEFT!\x09\x0A\x02' % (split_item_name[0], location.price, split_item_name[1], location.item.world.id + 1)
+                else:
+                    description_text = '\x08\x05\x41%s  %d Rupees\x01%s\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (split_item_name[0], location.price, split_item_name[1])
+                purchase_text = '\x08%s  %d Rupees\x09\x01%s\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (split_item_name[0], location.price, split_item_name[1])
             else:
-                update_message_by_id(messages, shop_item.description_message, '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price), 0x03) 
-            update_message_by_id(messages, shop_item.purchase_message, '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.price), 0x03) 
+                if world.world_count > 1:
+                    description_text = '\x08\x05\x41%s  %d Rupees\x01\x05\x42Player %d\x05\x40\x01Special deal! ONE LEFT!\x09\x0A\x02' % (location.item.name, location.price, location.item.world.id + 1)
+                else:
+                    description_text = '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price)
+                purchase_text = '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.price)
+
+            update_message_by_id(messages, shop_item.description_message, description_text, 0x03) 
+            update_message_by_id(messages, shop_item.purchase_message, purchase_text, 0x03)  
 
             place_shop_items.shop_id += 1 
  
@@ -1967,7 +2019,7 @@ def boss_reward_index(world, boss_name):
 
 def configure_dungeon_info(rom, world):
     mq_enable = world.quest == 'mixed'
-    mapcompass_keysanity = world.settings.shuffle_mapcompass == 'keysanity'
+    mapcompass_keysanity = world.settings.shuffle_mapcompass == 'keysanity' and world.settings.enhance_map_compass
 
     bosses = ['Queen Gohma', 'King Dodongo', 'Barinade', 'Phantom Ganon',
             'Volvagia', 'Morpha', 'Twinrova', 'Bongo Bongo']
@@ -1981,5 +2033,6 @@ def configure_dungeon_info(rom, world):
     rom.write_int32(rom.sym('cfg_dungeon_info_mq_enable'), int(mq_enable))
     rom.write_int32(rom.sym('cfg_dungeon_info_mq_need_map'), int(mapcompass_keysanity))
     rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_compass'), int(mapcompass_keysanity))
+    rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_altar'), int(not mapcompass_keysanity))
     rom.write_bytes(rom.sym('cfg_dungeon_rewards'), dungeon_rewards)
     rom.write_bytes(rom.sym('cfg_dungeon_is_mq'), dungeon_is_mq)
