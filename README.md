@@ -121,6 +121,20 @@ This option will shuffle all the Deku Salesscrubs to give random items. There is
 
 When this option is off, only the three unique Deku Salescrubs (Heart Piece, Stick Upgrade, and Nut Upgrade) will be randomized to a new item. Their prices and all other scrubs are unaffected.
 
+## Master Quest
+
+It is now possible to change the dungeons into Master Quest variants.
+- `vanilla`: Dungeons are vanilla Ocarina of Time Dungeons
+- `master`: Dungeons are the variants from Master Quest
+- `mixed`: Dungeons can be from either versions
+
+## Enhanced Map and Compass
+
+The map and compass can be made to give additional info. The option only applies if map and compasses can be shuffled to any location.
+- The Compass will tell the dungeon's Medallion/Stone reward. The Temple of Time Altar will no longer give any info.
+- The Map will tell whether the dungeon is vanilla or Master Quest.
+The keysanity display will show the info once the map/compass has been found or the altar has been read, depending on the mode.
+
 ## Changed hint system
 
 The hint system has been changed to include different kinds of hints (such as saying a location has something good, but not saying what item it is, or saying a specific item is somewhere in a dungeon, instead of giving the specific location, and so on.) An option has been added to allow talking to gossip stones from the start. Yes, this makes the Stone of Agony completely useless.
