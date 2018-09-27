@@ -65,9 +65,9 @@ class LocalRom(object):
                 else:
                     subcall = ["Decompress\\Decompress32.exe", file, decomp_file]
             elif platform.system() == 'Linux':
-                subcall = ["Decompress/Decompress", file]
+                subcall = ["Decompress/Decompress", file, decomp_file]
             elif platform.system() == 'Darwin':
-                subcall = ["Decompress/Decompress.out", file]
+                subcall = ["Decompress/Decompress.out", file, decomp_file]
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
 
