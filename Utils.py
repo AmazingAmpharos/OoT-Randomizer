@@ -96,6 +96,6 @@ def random_choices(population, weights=None, k=1):
 
     result = []
     for i in range(k):
-        result.append(choice(weighted_pop))
+        result.append(random_choice(weighted_pop))
 
     return result
