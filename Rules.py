@@ -348,8 +348,9 @@ def global_rules(world):
             forbid_item(location, 'Biggoron Sword')
 
             if location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
-                forbid_item(location, 'Buy Goron Tunic')
-                forbid_item(location, 'Buy Zora Tunic')
+                if not world.check_beatable_only:
+                    forbid_item(location, 'Buy Goron Tunic')
+                    forbid_item(location, 'Buy Zora Tunic')
 
             if location.name in world.shop_prices:
                 location.price = world.shop_prices[location.name]
@@ -386,6 +387,8 @@ def set_shop_rules(world):
                     add_rule(location, lambda state: state.is_adult() and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow()))
                 elif location.parent_region.name == 'Zora Shop':
                     add_rule(location, lambda state: state.can_reach('Zora Shop Adult Access', 'Entrance'))
+                elif location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']: 
+                    set_rule(location, lambda state: False) 
                 else:
                     add_rule(location, lambda state: state.is_adult())
 
