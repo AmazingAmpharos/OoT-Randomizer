@@ -748,41 +748,10 @@ def patch_rom(world, rom):
     for address in Suns_scenes:
         rom.write_byte(address,0x01)
 
-    # Remove forcible text triggers
-    Wonder_text = [0x27C00C6, 0x27C00D6, 0x27C00E6, 0x27C00F6, 0x27C0106, 0x27C0116, 0x27C0126, 0x27C0136]
-    for address in Wonder_text:
-        rom.write_byte(address, 0x02)
-    rom.write_byte(0x27CE08A, 0x09)
-    rom.write_byte(0x27CE09A, 0x0F)
-    Wonder_text = [0x288707A, 0x288708A, 0x288709A, 0x289707A, 0x28C713E, 0x28D91C6]
-    for address in Wonder_text:
-        rom.write_byte(address, 0x0C)
-    Wonder_text = [0x28A60FE, 0x28AE08E, 0x28B917E, 0x28BF172, 0x28BF182, 0x28BF192]
-    for address in Wonder_text:
-        rom.write_byte(address, 0x0D)
-    rom.write_byte(0x28A114E, 0x0E)
-    rom.write_byte(0x28A610E, 0x0E)
-    Wonder_text = [0x9367F6, 0x93673D, 0x93679D]
-    for address in Wonder_text:
-        rom.write_byte(address, 0x08)
-    Wonder_text = [0x289707B, 0x28AE08F, 0x28C713F]
-    for address in Wonder_text:
-        rom.write_byte(address, 0xAF)
-    rom.write_byte(0x28A114F, 0x6F)
-    rom.write_byte(0x28B917F, 0x6F)
-    rom.write_byte(0x28A60FF, 0xEF)
-    rom.write_byte(0x28D91C7, 0xEF)
-    Wonder_text = [0x28A610F, 0x28BF173, 0x28BF183, 0x28BF193]
-    for address in Wonder_text:
-        rom.write_byte(address, 0x2F)
-    Wonder_text = [0x27CE08B, 0x27C00C7, 0x27C00D7, 0x27C0117, 0x27C0127]
-    for address in Wonder_text:
-        rom.write_byte(address, 0x3D)
-    rom.write_byte(0x27C00E7, 0x7D)
-    rom.write_byte(0x27C00F7, 0x7D)
-    rom.write_byte(0x27C0107, 0xBD)
-    rom.write_byte(0x27C0137, 0xBD)
-    Wonder_text = [0x27C00BC, 0x27C00CC, 0x27C00DC, 0x27C00EC, 0x27C00FC, 0x27C010C, 0x27C011C, 0x27C012C, 0x27CE080, 0x27CE090, 0x2887070, 0x2887080, 0x2887090, 0x2897070, 0x28C7134, 0x28D91BC, 0x28A60F4, 0x28AE084, 0x28B9174, 0x28BF168, 0x28BF178, 0x28BF188, 0x28A1144, 0x28A6104]
+    # Remove disruptive text from Gerudo Training Grounds and early Shadow Temple (vanilla)
+    Wonder_text = [0x27C00BC, 0x27C00CC, 0x27C00DC, 0x27C00EC, 0x27C00FC, 0x27C010C, 0x27C011C, 0x27C012C, 0x27CE080,
+                   0x27CE090, 0x2887070, 0x2887080, 0x2887090, 0x2897070, 0x28C7134, 0x28D91BC, 0x28A60F4, 0x28AE084,
+                   0x28B9174, 0x28BF168, 0x28BF178, 0x28BF188, 0x28A1144, 0x28A6104, 0x28D0094]
     for address in Wonder_text:
         rom.write_byte(address, 0xFE)
 
@@ -854,32 +823,15 @@ def patch_rom(world, rom):
     # Initial Save Data
     write_bits_to_save(0x003F, 0x02) # Some Biggoron's Sword flag?
 
-    #write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x0, 0x80) # Deku tree switch flag (navi text?)
-    #write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x1, 0x02) # Deku tree switch flag (navi text?)
-    #write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x2, 0x80) # Deku tree switch flag (navi text?)
-    #write_bits_to_save(0x00D4 + 0x00 * 0x1C + 0x04 + 0x2, 0x04) # Deku tree switch flag (navi text?)
-    #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x40) # Dodongo's Cavern switch flag (navi text?)
-    #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x08) # Dodongo's Cavern switch flag (navi text?)
-    #write_bits_to_save(0x00D4 + 0x01 * 0x1C + 0x04 + 0x2, 0x01) # Dodongo's Cavern switch flag (navi text?)
-    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x08) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x04) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x02) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x0, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    #write_bits_to_save(0x00D4 + 0x02 * 0x1C + 0x04 + 0x1, 0x01) # Inside Jabu-Jabu's Belly switch flag (ruto?)
-    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (poes?)
-    #write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x01) # Forest Temple switch flag (Poe Sisters cutscene)
-    #write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x02) # Forest Temple switch flag (poes?)
-    #write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x2, 0x01) # Forest Temple switch flag (poes?)
-    #write_bits_to_save(0x00D4 + 0x04 * 0x1C + 0x04 + 0x1, 0x08) # Fire Temple switch flag (First locked door?)
-    write_bits_to_save(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (navi text?)
-    #write_bits_to_save(0x00D4 + 0x0B * 0x1C + 0x04 + 0x2, 0x01) # Gerudo Training Ground switch flag (command text?)
-    write_bits_to_save(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (???)
-    write_bits_to_save(0x00D4 + 0x55 * 0x1C + 0x04 + 0x0, 0x80) # Kokiri Forest switch flag (???)
-    write_bits_to_save(0x00D4 + 0x56 * 0x1C + 0x04 + 0x2, 0x40) # Sacred Forest Meadow switch flag (???)
-    write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x2, 0x01) # Lost Woods switch flag (???)
-    write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x3, 0x80) # Lost Woods switch flag (???)
-    write_bits_to_save(0x00D4 + 0x5C * 0x1C + 0x04 + 0x0, 0x80) # Desert Colossus switch flag (???)
-    write_bits_to_save(0x00D4 + 0x5F * 0x1C + 0x04 + 0x3, 0x20) # Hyrule Castle switch flag (???)
+    write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (Poe Sisters cutscene)
+    write_bits_to_save(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (Ruto)
+    write_bits_to_save(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (Owl)
+    write_bits_to_save(0x00D4 + 0x55 * 0x1C + 0x04 + 0x0, 0x80) # Kokiri Forest switch flag (Owl)
+    write_bits_to_save(0x00D4 + 0x56 * 0x1C + 0x04 + 0x2, 0x40) # Sacred Forest Meadow switch flag (Owl)
+    write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x2, 0x01) # Lost Woods switch flag (Owl)
+    write_bits_to_save(0x00D4 + 0x5B * 0x1C + 0x04 + 0x3, 0x80) # Lost Woods switch flag (Owl)
+    write_bits_to_save(0x00D4 + 0x5C * 0x1C + 0x04 + 0x0, 0x80) # Desert Colossus switch flag (Owl)
+    write_bits_to_save(0x00D4 + 0x5F * 0x1C + 0x04 + 0x3, 0x20) # Hyrule Castle switch flag (Owl)
 
     write_bits_to_save(0x0ED4, 0x10) # "Met Deku Tree"
     write_bits_to_save(0x0ED5, 0x20) # "Deku Tree Opened Mouth"
@@ -1378,9 +1330,8 @@ def patch_rom(world, rom):
     # Update chest type sizes
     if world.correct_chest_sizes:
         update_chest_sizes(rom, override_table)
-
-    # Move Ganon's Castle's Zelda's Lullaby Chest back so is reachable if large
-    rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
+        # Move Ganon's Castle's Zelda's Lullaby Chest back so is reachable if large
+        rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)
