@@ -1766,6 +1766,9 @@ def update_chest_sizes(rom, override_table):
 
         if None in [actor, scene, flags, item_id]:
             continue
+        # Do not change the size of the chest under the grave in Dodongo's Cavern MQ.
+        if scene == 1 and flags == 1:
+            continue
 
         itemType = 0  # Item animation
 
