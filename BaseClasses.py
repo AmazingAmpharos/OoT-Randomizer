@@ -846,6 +846,11 @@ class Item(object):
     def compass(self):
         return self.type == 'Compass'
 
+    @property
+    def dungeonitem(self):
+        return self.type == 'SmallKey' or self.type == 'BossKey' or self.type == 'Map' or self.type == 'Compass'
+    
+
     def __str__(self):
         return str(self.__unicode__())
 

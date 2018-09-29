@@ -16,7 +16,8 @@ def buildHintString(hintString):
         hintString = "They say that " + hintString
     elif len(hintString) < 82:
         hintString = "They say " + hintString
-    hintString = hintString.capitalize()
+    # captitalize the sentance
+    hintString = hintString[:1].upper() + hintString[1:]
 
     return hintString
 

@@ -488,3 +488,13 @@
 ;   jal     0xD6218
 .org 0xE2B0B4
     jal     set_dungeon_knowledge
+
+
+;==================================================================================================
+; V1.0 Scarecrow Song Bug
+;==================================================================================================
+
+; Replaces:
+;	jal		0x80057030 ; copies Scarecrow Song from active space to save context
+.org 0xB55A64 ; In memory 800DFB04
+    jal		save_scarecrow_song

@@ -47,6 +47,7 @@ DebugOutput:
 .include "menu.asm"
 .include "time_travel.asm"
 .include "song_fix.asm"
+.include "scarecrow.asm"
 .include "initial_save.asm"
 .endarea
 
