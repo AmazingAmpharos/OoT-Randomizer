@@ -9,7 +9,7 @@ import random
 import copy
 
 from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText
-from Utils import local_path, default_output_path
+from Utils import local_path, default_output_path, random_choices
 from Items import ItemFactory, item_data
 from Messages import *
 from OcarinaSongs import Song, str_to_song, replace_songs
@@ -1455,7 +1455,7 @@ def patch_rom(world, rom):
     Tunics.append(0x00B6DA3B) # Goron Tunic
     Tunics.append(0x00B6DA3E) # Zora Tunic
     colorList = get_tunic_colors()
-    randomColors = random.choices(colorList, k=3)
+    randomColors = random_choices(colorList, k=3)
 
     for i in range(len(Tunics)):
         # get the color option
@@ -1483,7 +1483,7 @@ def patch_rom(world, rom):
     Navi.append([0x00B5E194]) # NPC
     Navi.append([0x00B5E174, 0x00B5E17C, 0x00B5E18C, 0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4, 0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]) # Everything else
     naviList = get_navi_colors()
-    randomColors = random.choices(naviList, k=4)
+    randomColors = random_choices(naviList, k=4)
 
     for i in range(len(Navi)):
         # do everything in the inner loop so that "true random" changes even for subcategories
@@ -1513,7 +1513,7 @@ def patch_rom(world, rom):
     NaviHint.append([0xAE7EF2, 0xC26C7E]) #Overworld Hint
     NaviHint.append([0xAE7EC6]) #Enemy Target Hint
     naviHintSFXList = ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Navi - Random', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
-    randomNaviHintSFX = random.choices(naviHintSFXList, k=2)
+    randomNaviHintSFX = random_choices(naviHintSFXList, k=2)
     
     for i in range(len(NaviHint)):
         for j in range(len(NaviHint[i])):
