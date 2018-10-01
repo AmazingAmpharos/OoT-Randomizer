@@ -474,8 +474,8 @@ This setting allows a huge number of minor tricks to be allowed by the logic. He
 -The upper levels of the old boulder maze in Fire Temple MQ can be reached without explosives by using the Hammer through a wall.  
 -In the standard Spirit Temple, the bridge on child side can be lowered with a carefully timed Bombchu.  
 -The frozen switch in Spirit Temple MQ can be hit without a fire source by using the Bow and Song of Time very cleverly.  
--The chest in the basement of the standard Bottom of the Well can be reached with no additional items by using a jump slash with a lit
-Deku Stick.  
+-The chest in the basement of the standard Bottom of the Well can be reached with only a Strength Upgrade by using a jump slash with a lit
+Deku Stick to access the bomb flowers in the basement.  
 -The first room of the Spirit Trail in Ganon's Castle MQ can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
 through the thrones.  
 -The Gold Skulltulla in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.  
