@@ -10,6 +10,13 @@ before_game_state_update:
     bnez    t0, @@no_pending_item
     nop
 
+    ; Don't give an item if link's camera is not being used
+    ; If an item is given in this state then it will cause the
+    ; Walking-While-Talking glitch.
+    li      t2, GLOBAL_CONTEXT
+    lw      t0, 0x0794 (t2)        ; Camera 2
+    bnez    t0, @@no_pending_item  
+
     ; clear pending item index
     li      t1, PENDING_SPECIAL_ITEM_END
     li      t2, 0xFF
