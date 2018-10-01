@@ -86,7 +86,7 @@ item_table = {
     'Deku Stick Capacity': (False, False, None, None, 0x88, 0x00C7, 0x1B),
     'Deku Nut Capacity': (False, False, None, None, 0x87, 0x00BB, 0x12),
     'Magic Meter': (True, False, None, None, 0xC0, 0x00CD, 0x1E),
-    'Double Defense': (False, False, None, None, 0xBF, 0x00BD, 0x13),
+    'Double Defense': (True, False, None, None, 0xBF, 0x00BD, 0x13),
     'Stone of Agony': (True, False, None, 0x0720, 0x39, 0x00C8, 0x21),
     'Piece of Heart': (False, False, None, 0x07C0, 0x3E, 0x00BD, 0x14),
     'Heart Container': (False, False, None, 0x07A0, 0x3D, 0x00BD, 0x13),
