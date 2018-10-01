@@ -78,7 +78,7 @@ void draw_dungeon_info(z64_disp_buf_t *db) {
     // Set up dimensions
 
     int icon_size = 16;
-    int padding = 2;
+    int padding = 1;
     int rows = 13;
     int mq_width = show_mq ?
         ((6 * font_sprite.tile_w) + padding) :
