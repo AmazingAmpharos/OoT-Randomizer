@@ -1,158 +1,275 @@
 # OoTRandomizer
 
-This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo 64.
+This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
+64.
 
 # Installation
 
-It is strongly suggested users get the latest release from here: https://github.com/AmazingAmpharos/OoT-Randomizer/releases .
-Simply download the .msi installer and run it if you have a Windows machine.
+It is strongly suggested users get the latest release from here:
+https://github.com/AmazingAmpharos/OoT-Randomizer/releases.
+For Windows machines, simply download the .msi installer and run it.
 
-If you do not have Windows or you simply wish to run the script raw, clone this repository and either run '''Gui.py''' for a
-graphical interface or '''OoTRandomizer.py''' for the command line version. Both require Python 3.5+.
+If you are not running Windows or simply wish to run the script raw, clone this
+repository and either run _Gui.py_ for a graphical interface or
+_OoTRandomizer.py_ for the command line version. Both require Python 3.5+.
 
-This randomizer requires The Legend of Zelda: Ocarina of Time version 1.0 NTSC-US version. This randomizer includes an in-built decompressor, but if
-the user wishes a pre-decompressed ROM may be supplied as input. Please be sure your input ROM filename is either a .n64 or .z64 file. For users
-playing via any means other than on real N64 hardware, the use of the "Compress patched ROM" flag is strongly encouraged as uncompressed ROMs are
-impossible to inject for the Virtual Console and have random crashing problems on all emulators.
+This randomizer requires The Legend of Zelda: Ocarina of Time version 1.0
+NTSC-US. It includes an in-built decompressor, but if you wish a previously
+decompressed ROM may be used as well. Please be sure your input ROM is either a
+.n64 or .z64 file. For users playing via means other than on real N64 hardware,
+ use of the "Compress patched ROM" option is strongly encouraged, as
+uncompressed ROMs are impossible to inject for the Virtual Console and tend to
+crash randomly on all emulators.
 
-For general use, the recommended emulator is RetroArch; it has been shown to work with minimal issues. Bizhawk and Mupen64plus are generally good choices
-too. If you want to play on Project 64 for whatever reason, you can but you will need to set the rando to use 8 MB of RAM and will want to play with the
-cheat code 8109C58A 0000 to partially fix Project 64's tragically poor handling of OoT's pause menu. Project 64 also has one particular crash that only
-happens for some unknown settings configurations; we cannot support this. I cannot emphasize enough that it is a discouraged emulator to use.
+For general use, the recommended emulator is RetroArch; it has been shown to
+work with minimal issues. Bizhawk and Mupen64plus are generally good choices
+too. If you would like to play on Project 64 for whatever reason, you can, but
+you will need to set the rando to use 8 MB of RAM and will want to play with the
+cheat code `8109C58A 0000` to partially fix Project 64's tragically poor
+handling of OoT's pause menu. Project 64 also has one particular crash that only
+happens for some unknown settings configurations; we cannot support this. I
+cannot emphasize enough that its use is discouraged for the purposes of this
+project.
 
 # General Description
 
-This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the locations of the items for a more dynamic play experience.
-Proper logic is used to ensure every seed is possible to complete without the use of glitches and will be safe from the possibility of softlocks
-with any possible usage of keys in dungeons.
+This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the
+locations of the items for a more dynamic play experience. Proper logic is used
+to ensure every seed is possible to complete without the use of glitches and
+will be safe from the possibility of softlocks with any possible usage of keys
+in dungeons.
 
-The items that randomize currently are all items within chests including those in grottos, items given as rewards by NPCs including from minigames and
-Deku Scrub Salesmen, the items given by freestanding Pieces of Heart, Heart Containers, and Keys, and the items obtained when getting the Bottle and the
-Fire Arrows at Lake Hylia or the Ocarina of Time from the Castle Town moat. All dungeons will always have the same number of Maps, Compasses, Small Keys,
-and Boss Keys they had in the original game, but which chests within those dungeons have those things is random. The item pool will contain a Biggoron Sword
-that will not interfere with Medigoron's sale of the Giant's Knife (which is always vanilla), and a randomly selected adult trading quest item other than the
-Odd Potion will be somewhere in the item pool.
+The items randomized currently include all items held within chests (including
+those in grottos); special one-time items given as rewards by NPCs; upgrades
+purchased from Deku Scrub Salesmen; freestanding Pieces of Heart, Heart
+Containers, and Keys; the Ocarina of Time, Fire Arrows, and the bottle beneath
+Lake Hylia. All dungeons will contain the same number of Maps, Compasses, Small
+Keys, and Boss Keys as they had in the original game, but the chests which
+contain them will be randomized.
 
-Certain types of items are now "progressive", meaning that no matter what order the player encounters these items they will function as a series of upgrades.
-The following item types will be progressive chains:
+The item pool will include a Biggoron's Sword that will not interfere with
+Medigoron's sale of the Giant's Knife (which is always vanilla), and a randomly
+selected adult trading quest item other than the Odd Potion will be somewhere in
+the item pool.
 
--Hookshot to Longshot
--Bomb Bag to Big Bomb Bag to Biggest Bomb Bag
--Goron Bracelet to Silver Gauntlets to Gold Gauntlets
--Slingshot to Big Bullet Bag to Biggest Bullet Bag
--Bow to Big Quiver to Biggest Quiver
--Silver Scale to Gold Scale
--Adult Wallet to Giant's Wallet
--Deku Stick Capacity Upgrades
--Deku Nut Capacity Upgrades
--Magic Meter to Double Magic
+Certain types of items are now "progressive", meaning that regardless of the
+order the player encounters these items, they will function as a series of
+upgrades akin to the natural progression of these items in vanilla playthroughs.
 
-To be more clear about which NPC items are shuffled, it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart
-or inventory items. The only exception is that even though in vanilla the reward for 40 Gold Skulltulla Tokens was just 10 Bombchus that is still a randomized reward
-in randomizer (but the 200 rupees for all 100 Gold Skulltulla Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy
-to the player, the Ocarina Memory Game in the Lost Woods will start on the final round as that minigame was very long originally, the three day wait on the Claim Check
-is removed, Bombchu Bowling will have a fixed sequence of prizes that is of maximum convenience to the player, Dampe's Gravedigging Tour will always be won on the first
-dig, and the fishing minigame is made much simpler (8 lb fish for child now, 10 lb for adult). Additionally, any NPC who gives a trading quest item either for the child
-or for the adult other than Anju's initial gift as an adult does not have a randomized reward.
+The following item types will be progressive upgrades:
+* Hookshot, Longshot
+* Bomb Bag, Big Bomb Bag, Biggest Bomb Bag
+* Goron Bracelet, Silver Gauntlets, Gold Gauntlets
+* Slingshot, Big Bullet Bag, Biggest Bullet Bag
+* Bow, Big Quiver, Biggest Quiver
+* Silver Scale, Gold Scale
+* Adult Wallet, Giant's Wallet
+* Deku Stick Capacity
+* Deku Nut Capacity
+* Magic Meter, Double Magic
 
-A special note is needed for the six Great Fairy Fountains scattered across Hyrule. All six of these fountains now give random item rewards, and the magic and life
-upgrades can now be found as normal items scattered around the world. Happy hunting!
+To elaborate upon which NPC items are shuffled: it's generally the one-time
+permanent item rewards, like Pieces of Heart or inventory items that were
+originally given by NPCs. The only exception to this rule is the reward for 40
+Gold Skulltulla Tokens, only 10 Bombchus in vanilla. This is still a randomized
+reward (but the 200 rupees for all 100 Gold Skulltulla Tokens is not randomized
+so the most tokens that could be required to complete a seed is 50).
 
-The Ocarina songs are shuffled in a pool amongst themselves, and each learn spot will still have the original conditions it has always had. These conditions may not
-have all been obvious, but here are some high points. Saria will teach her song after completing the events in the Castle Courtyard. The warp songs can mostly only
-be learned by an adult, but the location for Requiem of Spirit is available for even a child if the Desert Colossus can be reached. The location for the Prelude of
-Light requires the Forest Medallion, and the location for the Nocturne of Shadow requires the Forest Medallion, Fire Medallion, and Water Medallions. This can be
-changed with a setting.
+As a mercy to the player the following changes are in place:
+* The Ocarina memory game in the Lost Woods will start on the final round.
+* The three day wait on the Claim Check is removed.
+* Bombchu Bowling will have a fixed sequence of prizes that is of maximum
+convenience to the player.
+* Dampe's Gravedigging Tour will always reveal a Piece of Heart upon the first
+try.
+* The fishing minigame is made much simpler (8 lb fish for child now, 10 lb for
+adult).
+* Additionally, any NPC who gives a trading quest item either for the child
+or for the adult other than Anju's initial gift as an adult does not have a
+randomized reward.
 
-Speaking of Medallions, each boss in the eight main dungeons will drop a random Spiritual Stone or Medallion, and instead of the Light Medallion being granted by the
-now removed "becoming an adult" cutscene, the player will start every seed with a random Spiritual Stone or Medallion. The pedestal in which the Spiritual Stones
-rest in the Temple of Time has hint text pointing to the locations of the Spiritual Stones and Medallions. A child will be able to read hints for the Spiritual
-Stones while an adult will be able to read hints for the Medallions. This information and some other relevant dungeon based info can be seen in the pause menu by
-holding the "A" button on the c-item menu.
+A special note is needed for the six Great Fairy Fountains scattered across
+Hyrule. All six of these fountains now give random item rewards, and the magic
+and life upgrades can now be found as normal items scattered around the world.
+Happy hunting!
 
-To be very clear on this point, while the rewards for up to 50 Gold Skulltulla Tokens are randomized, the tokens themselves are not.
+The Ocarina songs are shuffled in a pool amongst themselves, and each song
+location will still have the original conditions it has always had. The
+conditions for these events to occur may not have all been obvious, but here are
+some high points. Saria will teach her song after the player meets Zelda in the
+Castle Courtyard. Most of the warp songs can only be learned as an adult, but
+the location for Requiem of Spirit is available for even a child if the Desert
+Colossus can be reached. The location for the Prelude of Light requires the
+Forest Medallion, and the location for the Nocturne of Shadow requires the
+Forest Medallion, Fire Medallion, and Water Medallions. This can be changed with
+a setting.
 
-As a service to the player in this very long game, many cutscenes have been greatly shortened or removed and text is as often as possible either omitted or sped up.
-We have been as thorough as our exploration of the game and various technical limitations will allow to make the parts of the game where you're watching and reading
-as short as possible to make as much of your time with this randomizer as possible actual gameplay. I'm sure someone somewhere will miss the owl's interjections; to
-that person, I'm sorry I guess?
+Speaking of Medallions, each boss in the eight main dungeons will drop a random
+Spiritual Stone or Medallion, and instead of the Light Medallion being granted
+by the now removed "becoming an adult" cutscene, the player will start every
+seed with a random Spiritual Stone or Medallion. The pedestal in which the
+Spiritual Stones rest in the Temple of Time has hint text pointing to the
+locations of the Spiritual Stones and Medallions. A child will be able to read
+hints for the Spiritual Stones, while an adult will be able to read hints for
+the Medallions. This information and some other relevant dungeon based info can
+be seen in the pause menu by holding the "A" button on the C-item menu.
 
-A few bugs or other undesirable behaviors in the original game have been fixed. Of note, obtaining the Poacher's Saw will no longer prevent the player from obtaining
-the reward in the Deku Theater for showing the Mask of Truth, and becoming an adult will not automatically equip the child with the Kokiri Sword. Sheik will no longer
-prevent the player from returning to childhood before obtaining the Forest Medallion. Princess Ruto will never disappear from Jabu Jabu's Belly, and the condition for
-the Castle Courtyard being sealed off is now completing the events within as opposed to seeing the Ocarina of Time be thrown into the moat.
+To be very clear on this point, while the rewards for up to 50 Gold Skulltulla
+Tokens are randomized, the tokens themselves are not.
 
-One small detail that is important to know is that the locked door in the Fire Temple leading to the section with the Boss Key Chest is removed. This was necessary
-due to the original design of the Fire Temple assuming that the player could not possibly have the Hammer before unlocking the doors leading into the depths of the
-dungeon. This is obviously not true in randomizer, and of all possible solutions to this problem, this seemed the least disruptive. A full clear of the Fire Temple will
-simply result in the player having one extra Small Key. Certain settings configurations will disable this behavior.
+As a service to the player in this very long game, many cutscenes have been
+greatly shortened or removed entirely, and text is as often as possible either
+omitted or sped up. We have been as thorough as our exploration of the game and
+various technical limitations will allow to reduce the time you spend sitting
+through cutscenes and dialog, so as to maximize the time you spend with this
+randomizer actually playing the game. I'm sure someone somewhere will miss the
+owl's interjections; to that person, I'm sorry I guess?
 
-To be clear about the logic rules of what can be where, the randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent
-the use of glitches for those players who enjoy that sort of thing though we offer no guarantees that all glitches will have identical behavior to the original game.
-Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or Scarecrow's Song that
-may not have been important options in the original game. The Lens of Truth is guaranteed available and useable before completion of the Treasure Chest Game is required
-or before walking through any invisible objects or opening any invisible chests is required with the exception of the one invisible wall that is required to enter
-the Bottom of the Well as the original game required passing that invisible wall to reach the Lens of Truth.
+A few bugs or other undesirable behaviors in the original game have been fixed.
+Of note, obtaining the Poacher's Saw will no longer prevent the player from
+obtaining the reward in the Deku Theater for showing the Mask of Truth, and
+becoming an adult will not automatically equip the child with the Kokiri Sword.
+Sheik will no longer prevent the player from returning to childhood before
+obtaining the Forest Medallion. Princess Ruto will never disappear from Jabu
+Jabu's Belly, and the condition for the Castle Courtyard being sealed off is now
+completing the events within as opposed to Zelda fleeing the castle.
 
-One last detail is that the menu is now more like the Majora's Mask menu in that the player can move the cursor through empty spaces. This fixes a major problem from
-the original game in that certain combinations of items would create menu shapes that would be impossible to fully menu through. Unfortunately, as of this 3.0 release,
-this functionality does not apply to the "equipment" screen which can rarely create some tricky situations. Usually these can be solved by purchasing a Deku Shield and
-a Hylian Shield.
+One small detail that is important to know is that the locked door in the Fire
+Temple leading to the section with the Boss Key Chest is removed. This was
+necessary due to the original design of the Fire Temple assuming that the player
+could not possibly have the Hammer before unlocking the doors leading into the
+depths of the dungeon. This is obviously not true in randomizer, and of all
+possible solutions to this problem, this seemed the least disruptive. A full
+clear of the Fire Temple will simply result in the player having one extra Small
+Key. Certain settings will disable this behavior.
 
-# Quirks to Know
+To further explain the logic that determines what items can be placed where: the
+randomizer will always ensure that a glitchless path exists, but it will not
+prevent the use of glitches for players who enjoy that sort of thing. However,
+we offer no guarantees that glitches will have the same behavior they had in the
+original game. Glitchless can still mean that clever or unintuitive strategies
+are required that involve the use of things like Hover Boots, the Hookshot, or
+Scarecrow's Song that may not have been necessary in the original game. The Lens
+of Truth is guaranteed to be available before you are expected to complete the
+Treasure Chest Game or open any invisible chests or walk through any false
+walls, with the exception of the false wall required to enter the Bottom of the
+Well, since it was the original game's expectation that the player would cross
+it before reaching the Lens of Truth.
 
-While all the details of gameplay can't be detailed here, I want to inform you of a few non-obvious game sequences that are likely to get you stuck and one little
-glitch we can do nothing about.
+One last detail to note is that the pause menu now controls like the one in
+Majora's Mask, meaning that the cursor will cross through empty spaces. This
+fixes a major problem from the original game wherein having certain combinations
+of items results in menu shapes that would be impossible to fully navigate.
+Unfortunately, as of this 3.0 release, this functionality does not apply to the
+Equipment Subscreen which can rarely create some tricky situations. Usually
+these can be resolved simply by purchasing a Deku Shield and a Hylian Shield.
 
--The condition to open the Door of Time is merely playing the Song of Time; the Spiritual Stones are not required. If you enter the Temple of Time via the Prelude
-of Light, playing the Song of Time will create a glitchy cutscene and will not open the door (but you're safe to exit and re-enter and open it properly).  
--The condition to spawn the Ocarina of Time and learn that song is the three Spiritual Stones. The condition to learn a song from Sheik in the Temple of Time is
-possessing the Forest Medallion. The condition to learn a song from Sheik in Kakariko is possessing Forest, Fire, and Water Medallions.  
--The running man in Hyrule Field only spawns if you have all three Spiritual Stones.  
--Skull Kid will only buy the Skull Mask if you have played Saria's Song for him.  
--The center of Death Mountain Crater as an adult can be reached from the summit as an adult by going around to the left with Hover Boots or by jumping down to the right
-and using a combination of the Longshot and Scarecrow's Song. This allows access to Sheik and the Fire Temple without a Bomb Bag.  
--A sword must be equipped to play the fishing minigame. A Slingshot is not required for child target shooting, but the adult does need the Bow.  
--Other than those minigames, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.  
--In the randomizer, possessing the Bomb Bag is the requirement to get bomb drops, buy bombs or Bombchus, or play Bombchu Bowling.  
--Only the Hookshot, not the Longshot, is needed to do everything on the rooftops of Kakariko.  
--Grottos can be opened with either Bombs or the Hammer.  
--The boulder maze in Goron City can be solved with the Hammer or partially with Bombs as is obvious, but less obvious is that it can be fully solved with Silver Gauntlets.  
--The large colored blocks only encountered by the adult require Goron Bracelet to push.  
--In a few places, out of sight Song of Time blocks can be summoned. The lava room in Gerudo Training Grounds, the beginning of Ganon's Castle Shadow Trial, and the last
+# Quirks to Be Aware of
+
+While all the details of gameplay can't be explained here, I want to inform you
+of a few non-obvious game sequences that are likely to get you stuck and one
+little glitch we can do nothing about.
+
+* The condition to open the Door of Time is merely playing the Song of Time; the
+Spiritual Stones are not actually required. If you enter the Temple of Time via
+the Prelude of Light, playing the Song of Time will create a glitchy cutscene
+and will not open the door (but you're safe to exit, re-enter, and open it
+properly from there).
+* To get the Ocarina of Time at the drawbridge you must collect the three
+Spiritual Stones.
+* For Sheik to teach you the song in the Temple of Time you must possess the
+Forest Medallion.
+* For Sheik to teach you the song in Kakariko Village you must possess the
+Forest, Fire, and Water Medallions.
+* The running man in Hyrule Field only appears once you have all three Spiritual
+Stones (He starts from the stream northwest).
+* Skull Kid will only buy the Skull Mask if you have played Saria's Song for
+him.
+* The center of Death Mountain Crater can be reached from the summit as an adult
+by going around to the left with Hover Boots or by jumping down to the right and
+using a combination of the Longshot and Scarecrow's Song. This allows access to
+Sheik and the Fire Temple without a Bomb Bag.
+* A sword must be equipped to play the fishing minigame.
+* The Slingshot is not required to play at the Shooting Gallery as a child, but
+you will need the Bow in order to play as an adult.
+* The child can do anything that would seem to require the sword with Deku
+Sticks. You can buy as many as you want in the Kokiri Forest shop.
+* In the randomizer, possessing the Bomb Bag is the requirement for finding bomb
+drops, purchasing Bombs or Bombchus, and playing at the Bombchu Bowling Alley.
+* Only the Hookshot, not the Longshot, is needed to do everything on the
+rooftops of Kakariko.
+* Grottos can be opened with either Bombs or the Hammer.
+* The boulder maze in Goron City can be solved partially with Bombs and fully
+with just the Hammer, but less obvious is that it can be fully solved
+using only the Silver Gauntlets.
+* Even though Link doesn't appear to be wearing it as an adult, the Goron
+Bracelet is needed to push large colored blocks such as the ones in the Forest
+Temple.
+* In a few places, out of sight Song of Time blocks can be summoned. The lava
+room in Gerudo Training Grounds, the Anubis room the adult portion of the Spirit
+Temple, the beginning of the Shadow Trial in Ganon's Castle, and the last
 hallway with a caged Goron in Fire Temple are the main cases.
--Adult Link can fully clear Dodongo's Cavern. He can even skip the first section by virtue of being tall.  
--In the Forest Temple, you can reach the room with the Floormaster (vanilla) or Redead (MQ) early by using Hover Boots in the block push room.  
--In the Fire Temple, you can reach the Boss Key door from the beginning with Hover Boots.  
--In the Water Temple, you can from the start with the water down jump to the middle platform level, very carefully aim the Hookshot to the target above, and pull yourself
-to the highest level of the central platform. Then a very well spaced rolling jump can reach the water changing station to raise the water to the highest level. If you
-make poor key choices in Water Temple, this may be what you need to do to untangle the situation.  
--In the Water Temple, Hover Boots can be used to reach the vanilla Boss Key chest without going through the room that requires Bombs and block pushing. Hover Boots can
-also be used in this temple to avoid the Longshot requirement for the middle level chest that requires the Bow.  
--In the Shadow Temple, you can avoid the need for the Longshot in the room with the invisible spikes by backflipping onto the chest for extra height.  
--In the Shadow Temple, you can Hookshot the ladder to avoid pushing the block to get on the boat.  
--In the Shadow Temple, a combination of the scarecrow and the Longshot can be used to reach Bongo Bongo without needing the Bow.  
--In the Spirit Temple, the child can obtain the vanilla Map chest with Deku Sticks. No fire magic is needed.  
--In the Spirit Temple, you can collect the silver rupees without Hover Boots by jumping directly onto the rolling boulder or with a jump slash.  
--In the Spirit Temple, you can use the Longshot to cross from the hand with the Mirror Shield in vanilla to the other hand.  
--In Ganon's Castle Spirit Trial, the web can be burned with a precise shot through the torch by a normal arrow. Fire Arrows are not required.  
--While we guarantee tunics for Fire Temple and Water Temple, you can possibly force yourself to do without if you seriously let a Like Like eat the tunic and
-then do not recover the tunic. It is almost always possible to do without, but it can make things really difficult on you.  
--Several Gold Skulltulla Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).  
+* Adult Link can fully clear Dodongo's Cavern. He can even skip the first
+section by virtue of being tall.
+* In the Forest Temple, you can reach the room with the Floormaster (vanilla) or
+Redead (MQ) early by using Hover Boots in the block push room.
+* In the Fire Temple, you can reach the Boss Key door from the beginning with
+Hover Boots.
+* Starting in the Water Temple with the water lowered, you can jump down to the
+middle platform level. From there you can very carefully aim your Hookshot to
+the target above, pulling yourself to the highest level of the central platform.
+Finally, with a very well-spaced rolling jump, you can reach the platform to
+raise the water to the highest level. If you manage your keys poorly in the
+temple this may be what you need to do to untangle the situation.
+* In the Water Temple, you can use the Hover boots to bypass the room that
+requires Bombs and pushing large blocks, in order to reach the vanilla Boss Key
+chest. You can also use them to avoid the Longshot requirement on the middle
+level chest that requires the Bow.
+* In the Shadow Temple, you can avoid the need for the Longshot in the room with
+the invisible spikes by backflipping onto the chest for extra height.
+* In the Shadow Temple, you can hookshot directly onto the ladder by the boat to
+avoid having to push the large block.
+* In the Shadow Temple, a combination of the Scarecrow's Song and the Longshot
+can be used to reach Bongo Bongo without the Bow.
+* In the Spirit Temple, you can activate the vanilla Map chest with only a lit
+Deku Stick. Fire magic is not needed.
+* In the Spirit Temple, you can collect the silver rupees without Hover Boots by
+jumping directly onto the rolling boulder or using a jump slash.
+* From the opposite hand of the Desert Colossus, you can use the Longshot to
+reach what is the Silver Guantlets chest in vanilla.
+* In the Spirit Trial of Ganon's Castle, the web can be burned with a precise
+shot of an arrow through the torch. Fire Arrows are not required.
+* While we guarantee the tunics to be available before Fire Temple and Water
+Temple, you can possibly trap yourself into going without if you seriously let a
+Like Like eat your tunic without then recovering it. It is almost always
+possible to go without, but it can make things really difficult for you.
+* Several Gold Skulltulla Tokens can be reached by clever/precise uses of jump
+slashes and spin attacks (possibly Great Spins).
 
 # Known issues
 
-Sadly for this 3.0 release a few known issues exist. These will hopefully be addressed in future versions.
+Sadly, for this 3.0 release a few known issues exist. These will hopefully be
+addressed in future versions.
 
--The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and quit (NOT savestate) and return to fix the issue.  
--Draining the Bottom of the Well with Song of Storms sometimes crashes on specific configurations of Project 64. We aren't sure of the exact story, but this bug is
-easily avoided by playing on a different emulator and probably also avoidable by changing your settings and maybe graphics plug-in.  
--Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences. In particular this can be devastating with Biggoron;
-it is strongly suggested the player save before turning in the Claim Check.  
--Saving and quitting on the very first frame after becomming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
-do that.  
--The equipment screen still cannot be easily navigated with all item configurations which can be especially problematic if the Biggoron Sword is found very early
-or if shields cannot be easily purchased thanks to shopsanity. Getting the Master Sword and buying as many shields as you can is a good way to mitigate these issues.
+* The fishing minigame sometimes refuses to let you to catch fish, specifically
+when playing on Bizhawk. Save and quit (DON'T savestate) and return to fix the
+issue.
+* Draining the well with the Song of Storms sometimes crashes with specific
+configurations of Project 64. We aren't sure of the exact story, but this bug
+is easily avoided by playing on a different emulator. If you must use Project
+64, the crash is also probably avoidable by changing your settings and perhaps
+your graphics plugin.
+* Executing the collection delay glitch on various NPCs may have unpredictable
+and undesirable consequences. In particular, this can be devastating with
+Biggoron; it is strongly suggested you save before turning in the Claim Check.
+* Saving and quitting on the very first frame after becoming an adult at a
+point in the game when you would trigger the Light Arrow cutscene can have
+undesired consequences. Just don't do that.
+* The Equipment Subscreen still cannot be easily navigated with all item
+configurations. This can be especially problematic if Biggoron's Sword is found
+very early or if shields cannot be easily purchased thanks to shopsanity.
+Getting the Master Sword and buying as many shields as you can is a good way to
+mitigate these issues.
 
 # Settings
 
@@ -226,7 +343,7 @@ matter what.
 
 ## Open Door of Time
 
-The Door of Time is open from the beginning of the game. The Song of Time is still potentially useful to move Song of Time blocks, play songs for the frogs on Zora
+The Door of Time is open from the beginning of the game. The Song of Time is still potentially useful to move Song of Time blocks, play songs for the frogs on Zora's
 River, or for other such uses. If this flag is not used, the Door of Time must be opened to become an adult as in the original game, but all that is needed to open
 the Door of Time is the Song of Time and any ocarina. The Ocarina of Time in particular and the Spiritual Stones have nothing to do with this.
 
@@ -356,7 +473,7 @@ Deku Scrub Salesman's item will be reduced to 10 rupees, and once the purchase i
 
 This setting randomizes the items sold in shops. When it is used, all shop items are randomly re-arranged among all 8 of the original game's shops.
 This setting causes the Bombchu Shop to be open from the very beginning of the game, and this setting considers the two shops in adult Kakariko
-Village to be distinct shops from the two similar shops in child Castle Town; however, the shops in Kokiri Forest, Goron City, and Zora Domain are
+Village to be distinct shops from the two similar shops in child Castle Town; however, the shops in Kokiri Forest, Goron City, and Zora's Domain are
 the same shops as both ages. This setting overrides the "Bombchus considered in logic" editing of the shop item pool.
 
 ### Off
@@ -465,24 +582,24 @@ Only one item will be in the item pool regardless of this setting; this can mere
 
 This setting allows a huge number of minor tricks to be allowed by the logic. Here is a complete list:
 
--A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltulla on some vines in standad Deku Tree.  
--The Bow can be used to knock down the stairs in Dodongo's Cavern with two well timed shots.  
--The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with the standard Hookshot.  
--A Bombchu from the ground level can be used to hit the switch to bypass the block pushing puzzle in Forest Temple MQ.  
--A rusted switch under a Song of Time block in the standard Fire Temple can be hit by using Hammer into the block.  
--The location with the Boss Key chest in Fire Temple MQ can be reached without the Bow with very particular use of Din's Fire.  
--The upper levels of the old boulder maze in Fire Temple MQ can be reached without explosives by using the Hammer through a wall.  
--In the standard Spirit Temple, the bridge on child side can be lowered with a carefully timed Bombchu.  
--The frozen switch in Spirit Temple MQ can be hit without a fire source by using the Bow and Song of Time very cleverly.  
--The chest in the basement of the standard Bottom of the Well can be reached with only a Strength Upgrade by using a jump slash with a lit
-Deku Stick to access the bomb flowers in the basement.  
--The first room of the Spirit Trail in Ganon's Castle MQ can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
-through the thrones.  
--The Gold Skulltulla in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.  
--The child can reach the chest on Death Mountain trail with just the Goron Bracelet by backwalking with the Bomb Flower intended to open
-Dodongo's Cavern and throwing the Bomb Flower at the wall very quickly.  
--Gerudo Fortress can be cleared without any items other than those needed for access. The logic normally guarantees one of the Bow, Hookshot, or
-Hover Boots to help navigate the "kitchen".  
+* A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltulla on some vines in standad Deku Tree.
+* The Bow can be used to knock down the stairs in Dodongo's Cavern with two well timed shots.
+* The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with the standard Hookshot.
+* A Bombchu from the ground level can be used to hit the switch to bypass the block pushing puzzle in Forest Temple MQ.
+* A rusted switch under a Song of Time block in the standard Fire Temple can be hit by using Hammer into the block.
+* The location with the Boss Key chest in Fire Temple MQ can be reached without the Bow with very particular use of Din's Fire.
+* The upper levels of the old boulder maze in Fire Temple MQ can be reached without explosives by using the Hammer through a wall.
+* In the standard Spirit Temple, the bridge on child side can be lowered with a carefully timed Bombchu.
+* The frozen switch in Spirit Temple MQ can be hit without a fire source by using the Bow and Song of Time very cleverly.
+* The chest in the basement of the standard Bottom of the Well can be reached with no additional items by using a jump slash with a lit
+Deku Stick.
+* The first room of the Spirit Trail in Ganon's Castle MQ can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
+through the thrones.
+* The Gold Skulltulla in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.
+* The child can reach the chest on Death Mountain trail with just the Goron Bracelet by backwalking with the Bomb Flower intended to open
+Dodongo's Cavern and throwing the Bomb Flower at the wall very quickly.
+* Gerudo Fortress can be cleared without any items other than those needed for access. The logic normally guarantees one of the Bow, Hookshot, or
+Hover Boots to help navigate the "kitchen".
 
 Using this setting will also pre-set all of the lower logic flags to a reasonable configuration to match the trick level. These can then be
 edited as the player desires if the given configuration isn't desired.
@@ -514,7 +631,7 @@ very steep slope that is not visibly walkable so it is not in normal logic.
 
 ## Zora's Domain entry with Cucco
 
-This allows the logic to consider using a Cucco on Zora River to enter Zora's Domain as a child without playing Zelda's Lullaby. It requires slipping behind
+This allows the logic to consider using a Cucco on Zora's River to enter Zora's Domain as a child without playing Zelda's Lullaby. It requires slipping behind
 the waterfall trickily from the left side.
 
 ## Zora's Domain entry with Hover Boots
@@ -594,20 +711,20 @@ but the hints will be less "fun" and less like the sorts of things that would be
 
 This flag changes the behavior of Gossip Stones to give hints to players. The hints will be distributed as such:
 
--If the required number of trials is 1-3, a hint will be added for each trial that must be done. If the required number of trials is 4 or 5, a hint will be added
-for each trial that can be skipped.  
--Hints will be added for every one of the "always" locations that is allowed to have a random possibly valuable item under the current settings. These hints
+* If the required number of trials is 1-3, a hint will be added for each trial that must be done. If the required number of trials is 4 or 5, a hint will be added
+for each trial that can be skipped.
+* Hints will be added for every one of the "always" locations that is allowed to have a random possibly valuable item under the current settings. These hints
 will tell the player what item is at each of these locations. These locations are the rewards for 30, 40, and 50 Gold Skulltulla Tokens, the item obtained from
 Biggoron by showing the Claim Check, the item obtained from the Big Poe vendor, both the song and the item slots at the Ocarina of Time, and the item obtained
-from showing the Mask of Truth at the Deku Theater.  
--Some hints will be given for items at a randomly selected number of other locations that are generally somewhat inconvenient to check. The total number of these
-hints will be either 11 or 12 minus the number of always hints placed.  
--3 or 4 hints will be given naming a specific non-dungeon specific item that can be found in a randomly chosen dungeon.  
--1 to 4 hints will be given naming a specific item found in a specific overworld region. Which part of this range is used is determined in part by how many
-trial hints are given.  
--4 to 6 hints will be given naming what region specific progression items other than Gold Skulltulla Tokens can be found.  
--3 or 4 hints will be given naming specific regions that are "on the way of the hero" and thus contain at least one required progression item.  
--All remaining hints (33 total unique Gossip Stones exist) will be filled with non-information junk hints.  
+from showing the Mask of Truth at the Deku Theater.
+* Some hints will be given for items at a randomly selected number of other locations that are generally somewhat inconvenient to check. The total number of these
+hints will be either 11 or 12 minus the number of always hints placed.
+* 3 or 4 hints will be given naming a specific non-dungeon specific item that can be found in a randomly chosen dungeon.
+* 1 to 4 hints will be given naming a specific item found in a specific overworld region. Which part of this range is used is determined in part by how many
+trial hints are given.
+* 4 to 6 hints will be given naming what region specific progression items other than Gold Skulltulla Tokens can be found.
+* 3 or 4 hints will be given naming specific regions that are "on the way of the hero" and thus contain at least one required progression item.
+* All remaining hints (33 total unique Gossip Stones exist) will be filled with non-information junk hints.
 
 This setting allows the player to specify which item is required to interact with the Gossip Stones. The Stone of Agony is the default option as it gives a
 fairly purposeless vanilla item a use and allows both kid and adult to interact with the Gossip Stones. The default Mask of Truth can be used, but this has
