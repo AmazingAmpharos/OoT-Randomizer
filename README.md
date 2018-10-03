@@ -468,14 +468,23 @@ This setting allows a huge number of minor tricks to be allowed by the logic. He
 -A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltulla on some vines in standad Deku Tree.  
 -The Bow can be used to knock down the stairs in Dodongo's Cavern with two well timed shots.  
 -The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with the standard Hookshot.  
+-With precise positioning, you can Hookshot the bottom of the vines in the well in Forest Temple, in order to swim through the well without
+Iron Boots, Gold Scale, or Longshot.  
 -A Bombchu from the ground level can be used to hit the switch to bypass the block pushing puzzle in Forest Temple MQ.  
 -A rusted switch under a Song of Time block in the standard Fire Temple can be hit by using Hammer into the block.  
+-To reach the chest near the boss door in Fire Temple MQ, the crate surrounding one of the torches can be destroyed with a well-timed Bombchu.  
 -The location with the Boss Key chest in Fire Temple MQ can be reached without the Bow with very particular use of Din's Fire.  
 -The upper levels of the old boulder maze in Fire Temple MQ can be reached without explosives by using the Hammer through a wall.  
 -In the standard Spirit Temple, the bridge on child side can be lowered with a carefully timed Bombchu.  
 -The frozen switch in Spirit Temple MQ can be hit without a fire source by using the Bow and Song of Time very cleverly.  
 -The chest in the basement of the standard Bottom of the Well can be reached with only a Strength Upgrade by using a jump slash with a lit
 Deku Stick to access the bomb flowers in the basement.  
+-The Skulltula blocking the standard Bottom of the Well's entrance can be passed by stunning it with either a Deku Nut or the Boomerang,
+and then rolling through its legs.  
+-The highest silver rupee in the left side of Gerudo Training Grounds MQ can be obtained with just the Hookshot if you shoot from directly to
+the left of the target and then immediately jumpslash while holding forward.  
+-Also in Gerudo Training Grounds MQ, after accessing the right side of the central maze, the lit torch in the lava room can be reached with just
+Hookshot by jumping down and standing next to a flame circle.  
 -The first room of the Spirit Trail in Ganon's Castle MQ can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
 through the thrones.  
 -The Gold Skulltulla in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.  
