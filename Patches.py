@@ -1414,11 +1414,9 @@ def patch_rom(world, rom):
 
     # text shuffle
     if world.text_shuffle == 'except_hints':
-        shuffle_messages(rom, except_hints=True, except_gs_token=False)
+        shuffle_messages(rom, except_hints=True)
     elif world.text_shuffle == 'complete':
-        # Don't change GS token text if they can appear in shop; can cause a soft-lock
-        except_gs_token_message = world.shopsanity in ['1', '2', '3', '4', 'random'] and world.tokensanity != 'off'
-        shuffle_messages(rom, except_hints=False, except_gs_token=except_gs_token_message)
+        shuffle_messages(rom, except_hints=False)
 
     # output a text dump, for testing...
     #with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:

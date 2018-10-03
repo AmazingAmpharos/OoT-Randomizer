@@ -756,7 +756,7 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True, spe
     rom.write_bytes(entry_offset, [0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
 
 # shuffles the messages in the game, making sure to keep various message types in their own group
-def shuffle_messages(rom, except_hints=True, always_allow_skip=True, except_gs_token=True):
+def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
 
     messages = read_messages(rom)
 
@@ -765,8 +765,7 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True, except_gs_t
     def is_not_exempt(m):
         exempt_as_id = m.is_id_message()
         exempt_as_hint = ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT + list(KEYSANITY_MESSAGES.keys()) + shuffle_messages.shop_item_messages ) )
-        exempt_gs_token = ( except_gs_token and m.id in GS_TOKEN_MESSAGES )
-        return not ( exempt_as_id or exempt_as_hint or exempt_gs_token )
+        return not ( exempt_as_id or exempt_as_hint )
     
     have_goto =         list( filter( lambda m: is_not_exempt(m) and m.has_goto, messages) )
     have_keep_open =    list( filter( lambda m: is_not_exempt(m) and m.has_keep_open, messages) )
