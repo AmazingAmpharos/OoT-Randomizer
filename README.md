@@ -6,7 +6,8 @@ This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
 # Installation
 
 It is strongly suggested users get the latest release from here:
-https://github.com/AmazingAmpharos/OoT-Randomizer/releases.
+https://github.com/AmazingAmpharos/OoT-Randomizer/releases.  
+  
 For Windows machines, simply download the .msi installer and run it.
 
 If you are not running Windows or simply wish to run the script raw, clone this
