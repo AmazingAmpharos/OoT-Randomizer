@@ -429,7 +429,7 @@ def get_pool_core(world):
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')
     else:
-        placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
+         placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
 
     if world.shuffle_weird_egg:
         pool.append('Weird Egg')
@@ -680,7 +680,10 @@ def get_pool_core(world):
 
         pool.extend(random.sample(remain_shop_items, shop_item_count))
         pool.extend(get_junk_item(shop_nonitem_count))
-        pool.extend(shopsanity_rupees)
+        if world.shopsanity == '0':
+            pool.extend(normal_rupees)
+        else:
+            pool.extend(shopsanity_rupees)
 
     if world.shuffle_scrubs:
         arrows_or_seeds = 0

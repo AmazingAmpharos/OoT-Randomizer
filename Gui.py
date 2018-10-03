@@ -139,7 +139,7 @@ def guiMain(settings=None):
     # shared
     settingsFrame = Frame(mainWindow)
     settings_string_var = StringVar()
-    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var)
+    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var, width=25)
 
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
@@ -218,17 +218,17 @@ def guiMain(settings=None):
     fileDialogFrame = Frame(frames['rom_tab'])
 
     romDialogFrame = Frame(fileDialogFrame)
-    baseRomLabel = Label(romDialogFrame, text='Base Rom')
+    baseRomLabel = Label(romDialogFrame, text='Base ROM')
     guivars['rom'] = StringVar(value='ZOOTDEC.z64')
     romEntry = Entry(romDialogFrame, textvariable=guivars['rom'], width=40)
 
     def RomSelect():
-        rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")])
+        rom = filedialog.askopenfilename(filetypes=[("ROM Files", (".z64", ".n64")), ("All Files", "*")])
         if rom != '':
             guivars['rom'].set(rom)
-    romSelectButton = Button(romDialogFrame, text='Select Rom', command=RomSelect, width=10)
+    romSelectButton = Button(romDialogFrame, text='Select ROM', command=RomSelect, width=10)
 
-    baseRomLabel.pack(side=LEFT, padx=(40,0))
+    baseRomLabel.pack(side=LEFT, padx=(38,0))
     romEntry.pack(side=LEFT, padx=3)
     romSelectButton.pack(side=LEFT)
 
@@ -451,8 +451,8 @@ def guiMain(settings=None):
 
     seedLabel = Label(generateSeedFrame, text='Seed')
     guivars['seed'] = StringVar()
-    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'])
-    seedLabel.pack(side=LEFT)
+    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'], width=25)
+    seedLabel.pack(side=LEFT, padx=(55, 5))
     seedEntry.pack(side=LEFT)
     generateButton.pack(side=LEFT, padx=(5, 0))
 
