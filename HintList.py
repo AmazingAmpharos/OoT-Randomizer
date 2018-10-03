@@ -173,7 +173,7 @@ hintTable = {
     'Heart Piece Grave Chest':                               ("in a grave playing #Sun's Song# spawns", None, 'location'),
     'Goron City Leftmost Maze Chest':                        ("in #Goron City# the hammer unlocks", None, 'location'),
     'GS Hyrule Castle Grotto':                               ("a #storm near the castle# reveals", None, 'location'),
-    'GS Hyrule Field Near Gerudo Valley':                    ("buried near near #the valley# a spider holds", None, 'location'),
+    'GS Hyrule Field Near Gerudo Valley':                    ("buried near #the valley# a spider holds", None, 'location'),
     'GS Zora\'s Fountain Hidden Cave':                       ("a spider high above the #icy waters# holds", None, 'location'),
     'Forest Temple Floormaster Chest':                       ("deep in #the forest#, shadows guard a chest containing", "a Floormaster in #Forest Temple# guards", 'location'),
     'Fire Temple Scarecrow Chest':                           ("high in the #Fire Temple#, Pierre hid", None, 'location'),
