@@ -1702,7 +1702,9 @@ setting_infos = [
                       'Shuffled except Hints and Keys': Key texts
                       not shuffled because in keysanity it is
                       impossible to tell what dungeon it is for
-                      without the correct text.
+                      without the correct text. Similarly, non-shop
+                      items sold in shops will also not be shuffled
+                      so that the price of the item can be known.
                       '''
         }),
     Setting_Info('difficulty', str, 2, True, 

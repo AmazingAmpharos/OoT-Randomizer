@@ -1214,6 +1214,8 @@ def patch_rom(world, rom):
     update_message_by_id(messages, shop_items[0x001C].description_message, "\x08\x05\x41Bombchu  (10 pieces)  99 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it's actually a self-propelled time\x01bomb!\x09\x0A")
     update_message_by_id(messages, shop_items[0x001C].purchase_message, "\x08Bombchu  10 pieces   100 Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don't buy\x05\x40")
 
+    shuffle_messages.shop_item_messages = []
+
     # kokiri shop
     shop_objs = place_shop_items(rom, world, shop_items, messages, 
         world.get_region('Kokiri Shop').locations, True)
@@ -1412,9 +1414,11 @@ def patch_rom(world, rom):
 
     # text shuffle
     if world.text_shuffle == 'except_hints':
-        shuffle_messages(rom, True)
+        shuffle_messages(rom, except_hints=True, except_gs_token=False)
     elif world.text_shuffle == 'complete':
-        shuffle_messages(rom, False)
+        # Don't change GS token text if they can appear in shop; can cause a soft-lock
+        except_gs_token_message = world.shopsanity in ['1', '2', '3', '4', 'random'] and world.tokensanity != 'off'
+        shuffle_messages(rom, except_hints=False, except_gs_token=except_gs_token_message)
 
     # output a text dump, for testing...
     #with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
@@ -1863,6 +1867,9 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
             message_id = (shop_id - 0x32) * 2 
             shop_item.description_message = 0x8100 + message_id 
             shop_item.purchase_message = 0x8100 + message_id + 1 
+
+            shuffle_messages.shop_item_messages.extend(
+                [shop_item.description_message, shop_item.purchase_message])
 
             if location.item.dungeonitem:
                 split_item_name = location.item.name.split('(')
