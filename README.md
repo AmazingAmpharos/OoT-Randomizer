@@ -737,52 +737,28 @@ This option sets the SFX that will play when Navi targets an enemy. The options 
 Show the help message and exit.
 
 ```
---create_spoiler      
+--check_version
 ```
 
-Output a Spoiler File (default: False)
+Check for the latest version number online (default: False)
 
 ```
---bridge [{medallions,vanilla,dungeons,open}]
+--checked_version CHECKED_VERSION
 ```
 
-Select the condition to spawn the Rainbow Bridge to Ganon's Castle. (default: medallions)
-
-```
---kokiricolor [{'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'}]
-```
-
-Select the color of Link's Kokiri Tunic. (default: Kokiri Green)
-
-```
---goroncolor [{'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'}]
-```
-
-Select the color of Link's Goron Tunic. (default: Goron Red)
-
-```
---zoracolor [{'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Random', 'True Random'}]
-```
-
-Select the color of Link's Zora Tunic. (default: Zora Blue)
-
-```
---healthSFX [{'Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'}]
-```
-
-Select the sound effect that loops at low health. (default: Default)
+Check for the specified version number instead of a number from online.
 
 ```
 --rom ROM
 ```
 
-Path to a The Legend of Zelda: Ocarina of Time NTSC-US v1.0 ROM. (default: ZELOOTROMDEC.z64)
+Path to a The Legend of Zelda: Ocarina of Time NTSC-US v1.0 ROM. (default: ZOOTDEC.z64)
 
 ```
---loglevel [{error,info,warning,debug}]
+--output_dir OUTPUT_DIR
 ```
 
-Select level of logging for output. (default: info)
+Path to output directory for rom generation.
 
 ```
 --seed SEED           
@@ -797,10 +773,44 @@ Define seed number to generate. (default: None)
 Set the count option (default: None)
 
 ```
+--world_count WORLD_COUNT       
+```
+
+Use to create a multi-world generation for co-op seeds. World count is the number of players.
+Warning: Increasing the world count will drastically increase generation time. (default: 1)
+
+```
+--player_num PLAYER_NUM       
+```
+
+Use to select world to generate when there are multiple worlds. (default: 1)
+
+```
+--create_spoiler      
+```
+
+Output a Spoiler File (default: False)
+
+```
+--compress_rom [{True,False,None}]
+```
+
+Create a compressed version of the output rom file.
+True: Compresses. Improves stability. Will take longer to generate
+False: Uncompressed. Unstable on emulator. Faster generation
+None: No ROM Output. Creates spoiler log only (default: True)
+
+```
 --open_forest
 ```
 
 Set whether Kokiri children obstruct your path at the beginning of the game. (default: False)
+
+```
+--open_kakariko
+```
+
+The gate in Kakariko Village to Death Mountain Trail is always open, instead of needing Zelda's Letter. (default: False)
 
 ```
 --open_door_of_time
@@ -809,44 +819,445 @@ Set whether Kokiri children obstruct your path at the beginning of the game. (de
 Set whether the Door of Time is open from the beginning of the game. (default: False)
 
 ```
---fast_ganon
+--gerudo_fortress [{normal,fast,open}]
 ```
 
-Set whether most of Ganon's Castle can be skipped. (default: False)
+Select how much of Gerudo Fortress is required. (default: normal)
 
 ```
---nodungeonitems
+--bridge [{medallions,vanilla,dungeons,open}]
 ```
 
-If set, Compasses and Maps are removed from the dungeon item pools and replaced by five rupee chests that may end up anywhere in the world.
-This may lead to different amount of itempool items being placed in a dungeon than you are used to. (default: False)
+Select the condition to spawn the Rainbow Bridge to Ganon's Castle. (default: medallions)
 
 ```
---beatableonly
+--all_reachable
 ```
 
 Enables the "Only Ensure Seed Beatable" option (default: False)
 
 ```
---hints
+--all_reachable
 ```
 
-Gossip Stones provide helpful hints about which items are in inconvenient locations if the Stone of Agony is in the player's inventory. (default: False)
+Enables the "Only Ensure Seed Beatable" option (default: False)
 
 ```
---suppress_rom
+--bombchus_in_logic
 ```
 
-Enables the "Do not Create Patched Rom" option. (default: False)
+Changes how the logic considers Bombchus and other Bombchu related mechanics (default: False)
 
 ```
---compress_rom
+--one_item_per_dungeon
 ```
 
-Create a compressed version of the output ROM file. (default: False)
+Each dungeon will have exactly one major item. (default: False)
+
+```
+--trials_random
+```
+
+Sets the number of trials that must be cleared in Ganon's Castle to a random value (default: False)
+
+```
+--trials [{0,1,2,3,4,5,6}]
+```
+
+Sets the number of trials that must be cleared in Ganon's Castle (default: 6)
+
+```
+--no_escape_sequence
+```
+
+Removes the tower collapse sequence after defeating Ganondorf (default: False)
+
+```
+--no_guard_stealth
+```
+
+Removes the guard evasion sequence in Hyrule Castle (default: False)
+
+```
+--no_epona_race
+```
+
+Removes the need to race Ingo to acquire Epona (default: False)
+
+```
+--fast_chests
+```
+
+Causes all chests to open with a fast animation (default: False)
+
+```
+--big_poe_count_random
+```
+
+Sets the number of Big Poes that must be sold to the vendor for an item to a random value (default: False)
+
+```
+--big_poe_count [{1,2,3,4,5,6,7,8,9,10}]
+```
+
+Sets the number of Big Poes that must be sold to the vendor for an item (default: 10)
+
+```
+--free_scarecrow
+```
+
+Start the game with the Scarecrow's Song activated and Pierre possible for the adult to summon (default: False)
+
+```
+--scarecrow_song [SCARECROW_SONG]
+```
+
+Set Scarecrow's Song if --free_scarecrow is used. Valid notes: A, U, L, R, D (default: DAAAAAAA)
+
+```
+--shuffle_kokiri_sword
+```
+
+Include the Kokiri Sword as a randomized item (default: False)
+
+```
+--shuffle_weird_egg
+```
+
+Include the Weird Egg as a randomized item (default: False)
+
+```
+--shuffle_ocarinas
+```
+
+Include the two ocarinas as randomized items (default: False)
+
+```
+--shuffle_song_items
+```
+
+Treat the ocarina songs as normal items and shuffle them into the general item pool (default: False)
+
+```
+--shuffle_gerudo_card
+```
+
+Include the Gerudo Card to access Gerudo Training Grounds as a randomized item (default: False)
+
+```
+--shuffle_scrubs
+```
+
+Include all Deku Scrub Salesmen as randomized item locations (default: False)
+
+```
+--shopsanity [{off,0,1,2,3,4,random}]
+```
+
+Randomize shop items and add the chosen number of items from the general item pool to shop inventories (default: off)
+
+```
+--shuffle_mapcompass [{remove,dungeon,keysanity}]
+```
+
+Choose the locations Maps and Compasses can be found (default: dungeon)
+
+```
+--shuffle_smallkeys [{remove,dungeon,keysanity}]
+```
+
+Choose the locations Small Keys can be found (default: dungeon)
+
+```
+--shuffle_bosskeys [{remove,dungeon,keysanity}]
+```
+
+Choose the locations Boss Keys can be found (default: dungeon)
+
+```
+--enhance_map_compass
+```
+
+Change the functionality of the Map and Compass to give information about their dungeons. Requires --shuffle_mappcompass keysanity (default: False)
+
+```
+--unlocked_ganondorf
+```
+
+Remove the Boss Key door leading to Ganondorf (default: False)
+
+```
+--tokensanity [{off,dungeons,all}]
+```
+
+Include the chosen Gold Skulltulla Token locations in the item shuffle (default: off)
+
+```
+--quest [{vanilla,master,mixed}]
+```
+
+Choose the internal layout of the dungeons (default: vanilla)
+
+```
+--logic_skulltulas [{0,10,20,30,40,50}]
+```
+
+Choose the maximum number of Gold Skulltulla Tokens that could be required (default: 50)
+
+```
+--logic_no_night_tokens_without_suns_song
+```
+
+Change logic to expect Sun's Song to defeat nighttime Gold Skulltullas (default: False)
+
+```
+--logic_no_big_poes
+```
+
+Prevent the Big Poe vendor from having a required item (default: False)
+
+```
+--logic_no_child_fishing
+```
+
+Prevent the prize from fishing as a child from being a required item (default: False)
+
+```
+--logic_no_adult_fishing
+```
+
+Prevent the prize from fishing as an adult from being a required item (default: False)
+
+```
+--logic_no_trade_skull_mask
+```
+
+Prevent the item obtained by showing the Skull Mask at the Deku Theater from being a required item (default: False)
+
+```
+--logic_no_trade_mask_of_truth
+```
+
+Prevent the item obtained by showing the Mask of Truth at the Deku Theater from being a required item (default: False)
+
+```
+--logic_no_1500_archery
+```
+
+Prevent the item obtained by scoring 1500 points at horseback archery from being a required item (default: False)
+
+```
+--logic_no_memory_game
+```
+
+Prevent the item obtained by completing the ocarina memory game in the Lost Woods from being a required item (default: False)
+
+```
+--logic_no_second_dampe_race
+```
+
+Prevent the prize won by finishing the second Dampe race in under 1 minute from being a required item (default: False)
+
+```
+--logic_no_trade_biggoron
+```
+
+Prevent the item obtained by showing the Claim Check to Biggoron from being a required item (default: False)
+
+```
+--logic_earliest_adult_trade [{pocket_egg,pocket_cucco,cojiro,odd_mushroom,poachers_saw,broken_sword,prescription,eyeball_frog,eyedrops,claim_check}]
+```
+
+Set the earliest item in the adult trade sequence that can be found in the item pool (default: pocket_egg)
+
+```
+--logic_latest_adult_trade [{pocket_egg,pocket_cucco,cojiro,odd_mushroom,poachers_saw,broken_sword,prescription,eyeball_frog,eyedrops,claim_check}]
+```
+
+Set the latest item in the adult trade sequence that can be found in the item pool (default: claim_check)
+
+```
+--logic_tricks
+```
+
+Enable the logic to consider a large number of minor tricks (default: False)
+
+```
+--logic_man_on_roof
+```
+
+Enable the logic to consider the trick to reach the man on the roof in Kakariko Village with a sidehop from the tower (default: False)
+
+```
+--logic_child_deadhand
+```
+
+Enable the logic to consider the child defeating Deadhand with only Deku Sticks (default: False)
+
+```
+--logic_dc_jump
+```
+
+Enable the logic to consider the trick to bypass the second Lizalfos fight room in Dodongo's Cavern as an adult with a simple jump (default: False)
+
+```
+--logic_windmill_poh
+```
+
+Enable the logic to consider the trick to reach the Piece of Heart in the windmill as an adult with nothing (default: False)
+
+```
+--logic_crater_bean_poh_with_hovers
+```
+
+Enable the logic to consider the trick to reach the Piece of Heart on the volcano in Death Mountain Crater with Hover Boots (default: False)
+
+```
+--logic_zora_with_cucco
+```
+
+Enable the logic to consider the trick to enter Zora's Domain as a child using a Cucco instead of playing Zelda's Lullaby (default: False)
+
+```
+--logic_zora_with_hovers
+```
+
+Enable the logic to consider the trick to enter Zora's Domain as an adult using Hover Boots instead of playing Zelda's Lullaby (default: False)
+
+```
+--logic_fewer_tunic_requirements
+```
+
+Reduce the number of locations for which the logic expects a tunic upgrade (default: False)
+
+```
+--logic_lens [{chest,chest-wasteland,all}]
+```
+
+Set which hidden objects the logic expects the Lens of Truth to be used on (default: all)
+
+```
+--ocarina_songs
+```
+
+Randomize the particular notes that must be played for each of the 12 standard ocarina songs (default: False)
+
+```
+--correct_chest_sizes
+```
+
+Set chest sizes based on contents (default: False)
+
+```
+--clearer_hints
+```
+
+Reword hints to be incredibly direct (default: False)
+
+```
+--hints [{none,mask,agony,always}]
+```
+
+Enable hints from Gossip Stones and select the condition to read them (default: agony)
+
+```
+--text_shuffle [{none,except_hints,complete}]
+```
+
+Shuffle the chosen text randomly (default: none)
+
+```
+--difficulty [{normal,hard,very_hard,ohko}]
+```
+
+Alter the item pool to increase difficulty. The ohko option also causes Link to die in one hit. (default: normal)
+
+```
+--default_targeting [{hold,switch}]
+```
+
+Set the default Z-targeting setting. It can still be changed in the game's options menu. (default: hold)
+
+```
+--background_music [{normal,off,random}]
+```
+
+Choose whether the game's background music will be left alone, disabled, or shuffled randomly. (default: normal)
+
+```
+--kokiricolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Lumen'}]
+```
+
+Select the color of Link's Kokiri Tunic. (default: Kokiri Green)
+
+```
+--goroncolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Lumen'}]
+```
+
+Select the color of Link's Goron Tunic. (default: Goron Red)
+
+```
+--zoracolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Lumen'}]
+```
+
+Select the color of Link's Zora Tunic. (default: Zora Blue)
+
+```
+--navicolordefault [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
+```
+
+Select the color of Navi in idle. (default: White)
+
+```
+--navicolorenemy [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
+```
+
+Select the color of Navi when she is targeting an enemy. (default: Yellow)
+
+```
+--navicolornpc [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
+```
+
+Select the color of Navi when she is targeting an NPC. (default: Light Blue)
+
+```
+--navicolorprop [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
+```
+
+Select the color of Navi when she is targeting a prop. (default: Green)
+
+```
+--navisfxoverworld [{Default,Notification,Rupee,Timer,Tamborine,Recovery Heart,Carrot Refill,Navi - Hey!,Navi - Random,Zelda - Gasp,Cluck,Mweep!,Random,None}]
+```
+
+Select the sound effect that plays when Navi wishes to speak with the player. (default: Default)
+
+```
+--navisfxenemytarget [{Default,Notification,Rupee,Timer,Tamborine,Recovery Heart,Carrot Refill,Navi - Hey!,Navi - Random,Zelda - Gasp,Cluck,Mweep!,Random,None}]
+```
+
+Select the sound effect that plays when Navi targets an enemy. (default: Default)
+
+```
+--healthSFX [{'Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'}]
+```
+
+Select the sound effect that loops at low health. (default: Default)
 
 ```
 --gui
 ```
 
 Open the graphical user interface. Preloads selections with set command line parameters.
+
+```
+--loglevel [{error,info,warning,debug}]
+```
+
+Select level of logging for output. (default: info)
+
+```
+--settings_string SETTINGS_STRING
+```
+
+Enter a settings string that will encode and override most individual settings.
