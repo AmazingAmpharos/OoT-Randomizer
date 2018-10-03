@@ -477,10 +477,10 @@ Iron Boots, Gold Scale, or Longshot.
 -The upper levels of the old boulder maze in Fire Temple MQ can be reached without explosives by using the Hammer through a wall.  
 -In the standard Spirit Temple, the bridge on child side can be lowered with a carefully timed Bombchu.  
 -The frozen switch in Spirit Temple MQ can be hit without a fire source by using the Bow and Song of Time very cleverly.  
--The chest in the basement of the standard Bottom of the Well can be reached with only a Strength Upgrade by using a jump slash with a lit
-Deku Stick to access the bomb flowers in the basement.  
 -The Skulltula blocking the standard Bottom of the Well's entrance can be passed by stunning it with either a Deku Nut or the Boomerang,
 and then rolling through its legs.  
+-The chest in the basement of the standard Bottom of the Well can be reached with only a Strength Upgrade by using a jump slash with a lit
+Deku Stick to access the bomb flowers in the basement.  
 -The highest silver rupee in the left side of Gerudo Training Grounds MQ can be obtained with just the Hookshot if you shoot from directly to
 the left of the target and then immediately jumpslash while holding forward.  
 -Also in Gerudo Training Grounds MQ, after accessing the right side of the central maze, the lit torch in the lava room can be reached with just
