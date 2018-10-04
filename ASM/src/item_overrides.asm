@@ -465,10 +465,24 @@ scan_override_table:
     li      v0, -1
 
     li      t0, PLAYER_ID
-    lb      t1, 0x00(t0)
+    lbu     t1, 0x00(t0)
     li      t0, SAVE_CONTEXT
     sh      t1, 0x1406(t0) ; set points to current player: default
 
+    ; Check if the item source ID is 0x7F which is used for Co-op items
+    andi    t1, a0, 0x00FF ; t1 = item source ID
+    li      at, 0x7F
+    bne     t1, at, @@not_coop_item
+    nop
+
+    ; Give co-op item override instead of from the look up table
+    li      t0, PLAYER_ID
+    lbu     t3, 0x00 (t0)  ; t3 = player id
+    lbu     v0, 0x01 (t0)  ; v0 = override item ID
+    b       @@lookup_item_found
+    nop
+
+@@not_coop_item:
     ; Look up override
     li      t0, (ITEM_OVERRIDES - 0x04)
 @@lookup_loop:
@@ -489,13 +503,14 @@ scan_override_table:
 
     andi    v0, t1, 0xFF ; v0 = found item ID
 
+@@lookup_item_found:
     li      t0, SAVE_CONTEXT
     sh      t3, 0x1406(t0) ; set the point value to the player number
 
     li      t1, PLAYER_OVERRIDE_DATA
 
     li      t4, PLAYER_ID
-    lb      t4, 0x00(t4)
+    lbu     t4, 0x00(t4)
     beq     t3, t4, @@return ; correct player for the item
     sh      zero, 0x02(t1)   ; store no player override
 
