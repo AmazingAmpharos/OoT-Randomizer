@@ -139,7 +139,7 @@ def guiMain(settings=None):
     # shared
     settingsFrame = Frame(mainWindow)
     settings_string_var = StringVar()
-    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var)
+    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var, width=25)
 
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
@@ -152,19 +152,49 @@ def guiMain(settings=None):
 
                 if widgets[info.name].winfo_class() == 'Frame':
                     for child in widgets[info.name].winfo_children():
-                        child.configure(state= 'normal' if dep_met else 'disabled')
+                        if child.winfo_class() == 'TCombobox':
+                            child.configure(state= 'readonly' if dep_met else 'disabled')
+                        else:
+                            child.configure(state= 'normal' if dep_met else 'disabled')
+
                         if child.winfo_class() == 'Scale':
                             child.configure(fg='Black'if dep_met else 'Grey')
                 else:
+                    if widgets[info.name].winfo_class() == 'TCombobox':
+                        widgets[info.name].configure(state= 'readonly' if dep_met else 'disabled')
+                    else:
+                        widgets[info.name].configure(state= 'normal' if dep_met else 'disabled')
+
                     if widgets[info.name].winfo_class() == 'Scale':
                         widgets[info.name].configure(fg='Black'if dep_met else 'Grey')
-                    widgets[info.name].config(state = 'normal' if dep_met else 'disabled')
+
                 
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
                 color = askcolor()
                 if color == (None, None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
+
+    def show_settings_special(event=None):
+        if guivars['logic_tricks'].get():
+            widgets['logic_man_on_roof'].select()
+            widgets['logic_child_deadhand'].select()
+            widgets['logic_dc_jump'].select()
+            widgets['logic_windmill_poh'].select()
+            widgets['logic_crater_bean_poh_with_hovers'].select()
+            widgets['logic_zora_with_cucco'].select()
+            widgets['logic_fewer_tunic_requirements'].select()
+        else:
+            widgets['logic_man_on_roof'].deselect()
+            widgets['logic_child_deadhand'].deselect()
+            widgets['logic_dc_jump'].deselect()
+            widgets['logic_windmill_poh'].deselect()
+            widgets['logic_crater_bean_poh_with_hovers'].deselect()
+            widgets['logic_zora_with_cucco'].deselect()
+            widgets['logic_fewer_tunic_requirements'].deselect()
+        settings = guivars_to_settings(guivars)
+        settings_string_var.set( settings.get_settings_string() )
+
 
 
     def import_settings(event=None):
@@ -188,17 +218,17 @@ def guiMain(settings=None):
     fileDialogFrame = Frame(frames['rom_tab'])
 
     romDialogFrame = Frame(fileDialogFrame)
-    baseRomLabel = Label(romDialogFrame, text='Base Rom')
+    baseRomLabel = Label(romDialogFrame, text='Base ROM')
     guivars['rom'] = StringVar(value='ZOOTDEC.z64')
     romEntry = Entry(romDialogFrame, textvariable=guivars['rom'], width=40)
 
     def RomSelect():
-        rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")])
+        rom = filedialog.askopenfilename(filetypes=[("ROM Files", (".z64", ".n64")), ("All Files", "*")])
         if rom != '':
             guivars['rom'].set(rom)
-    romSelectButton = Button(romDialogFrame, text='Select Rom', command=RomSelect, width=10)
+    romSelectButton = Button(romDialogFrame, text='Select ROM', command=RomSelect, width=10)
 
-    baseRomLabel.pack(side=LEFT, padx=(40,0))
+    baseRomLabel.pack(side=LEFT, padx=(38,0))
     romEntry.pack(side=LEFT, padx=3)
     romSelectButton.pack(side=LEFT)
 
@@ -256,6 +286,14 @@ def guiMain(settings=None):
                 guivars[info.name] = IntVar(value=default_value)
                 # create the checkbox
                 widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
+                widgets[info.name].pack(expand=False, anchor=W)
+            if info.gui_params['widget'] == 'SpecialCheckbutton':
+                # determine the initial value of the checkbox
+                default_value = 1 if info.gui_params['default'] == "checked" else 0
+                # create a variable to access the box's state
+                guivars[info.name] = IntVar(value=default_value)
+                # create the checkbox
+                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings_special)
                 widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
                 # create the variable to store the user's decision
@@ -413,8 +451,8 @@ def guiMain(settings=None):
 
     seedLabel = Label(generateSeedFrame, text='Seed')
     guivars['seed'] = StringVar()
-    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'])
-    seedLabel.pack(side=LEFT)
+    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'], width=25)
+    seedLabel.pack(side=LEFT, padx=(55, 5))
     seedEntry.pack(side=LEFT)
     generateButton.pack(side=LEFT, padx=(5, 0))
 

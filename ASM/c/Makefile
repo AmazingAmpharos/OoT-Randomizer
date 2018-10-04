@@ -2,7 +2,7 @@ CC = mips64-gcc
 LD = mips64-ld
 OBJDUMP = mips64-objdump
 
-CFLAGS = -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt \
+CFLAGS = -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt -mdivide-breaks \
 	 -O1 -fno-reorder-blocks \
 	 -DZ64_VERSION=Z64_OOT10
 

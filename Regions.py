@@ -337,7 +337,7 @@ def create_regions(world):
             create_dungeon_region(
                 'Deku Tree Lobby', 
                 ['Deku Tree MQ Lobby Chest', 'Deku Tree MQ Slingshot Chest', 'Deku Tree MQ Slingshot Room Back Chest', 
-                 'Deku Tree MQ Basement Chest', 'GS Deku Tree MQ Lobby', 'DT MQ Deku Scrub Deku Shield'], 
+                 'Deku Tree MQ Basement Chest', 'GS Deku Tree MQ Lobby'], 
                 ['Deku Tree Exit', 'Deku Tree Compass Passage', 'Deku Tree Basement Path']),
             create_dungeon_region(
                 'Deku Tree Compass Room', 
@@ -347,7 +347,7 @@ def create_regions(world):
                 'Deku Tree Boss Room', 
                 ['Deku Tree MQ Before Spinning Log Chest', 'Deku Tree MQ After Spinning Log Chest', 
                  'GS Deku Tree MQ Basement Ceiling', 'GS Deku Tree MQ Basement Back Room', 
-                 'Queen Gohma Heart', 'Queen Gohma'], 
+                 'DT MQ Deku Scrub Deku Shield', 'Queen Gohma Heart', 'Queen Gohma'], 
                 ['Deku Tree Basement Vines'])
         ])
     else:
@@ -469,11 +469,15 @@ def create_regions(world):
                 'Forest Temple Central Area', 
                 ['Forest Temple MQ Chest Behind Lobby', 'GS Forest Temple MQ Block Push Room'], 
                 ['Forest Temple West Eye Switch', 'Forest Temple East Eye Switch', 
-                 'Forest Temple Block Puzzle Solve']),
+                 'Forest Temple Block Puzzle Solve', 'Forest Temple Crystal Switch Jump']),
             create_dungeon_region(
                 'Forest Temple After Block Puzzle', 
-                ['Forest Temple MQ Boss Key Chest', 'Forest Temple MQ Redead Chest'], 
-                ['Forest Temple Drop to NW Outdoors', 'Forest Temple Twisted Hall']),
+                ['Forest Temple MQ Boss Key Chest'], 
+                ['Forest Temple Twisted Hall']),
+            create_dungeon_region(
+                'Forest Temple Outdoor Ledge', 
+                ['Forest Temple MQ Redead Chest'], 
+                ['Forest Temple Drop to NW Outdoors']),
             create_dungeon_region(
                 'Forest Temple NW Outdoors', 
                 ['GS Forest Temple MQ Outdoor West'], 
@@ -637,19 +641,18 @@ def create_regions(world):
                 ['Spirit Temple Exit', 'Spirit Temple Crawl Passage', 'Spirit Temple Ceiling Passage']),
             create_dungeon_region(
                 'Child Spirit Temple', 
-                ['Spirit Temple MQ Child Left Chest', 'Spirit Temple MQ Map Chest', 'Spirit Temple MQ Silver Block Hallway Chest',
-                'Spirit Temple Nut Crate'], 
+                ['Spirit Temple MQ Child Left Chest', 'Spirit Temple MQ Map Chest', 'Spirit Temple MQ Silver Block Hallway Chest'], 
                 ['Child Spirit Temple to Shared']),
             create_dungeon_region(
                 'Adult Spirit Temple', 
                 ['Spirit Temple MQ Child Center Chest', 'Spirit Temple MQ Child Climb South Chest', 'Spirit Temple MQ Lower NE Main Room Chest', 
                  'Spirit Temple MQ Upper NE Main Room Chest', 'Spirit Temple MQ Beamos Room Chest', 'Spirit Temple MQ Ice Trap Chest', 
-                 'Spirit Temple MQ Boss Key Chest', 'GS Spirit Temple MQ Iron Knuckle West', 'GS Spirit Temple MQ Iron Knuckle North'], 
+                 'Spirit Temple MQ Boss Key Chest', 'GS Spirit Temple MQ Sun Block Room', 'GS Spirit Temple MQ Iron Knuckle West', 
+                 'GS Spirit Temple MQ Iron Knuckle North'], 
                 ['Adult Spirit Temple Descent', 'Adult Spirit Temple to Shared', 'Spirit Temple Climbable Wall', 'Mirror Shield Exit']),
             create_dungeon_region(
                 'Spirit Temple Shared', 
-                ['Spirit Temple MQ Child Climb North Chest', 'Spirit Temple MQ Compass Chest', 'Spirit Temple MQ Sun Block Room Chest', 
-                 'GS Spirit Temple MQ Sun Block Room'], 
+                ['Spirit Temple MQ Child Climb North Chest', 'Spirit Temple MQ Compass Chest', 'Spirit Temple MQ Sun Block Room Chest'], 
                 ['Silver Gauntlets Exit']),
             create_dungeon_region(
                 'Lower Adult Spirit Temple', 
@@ -776,7 +779,7 @@ def create_regions(world):
                 'Bottom of the Well', 
                 ['Bottom of the Well MQ Compass Chest', 'Bottom of the Well MQ Map Chest', 'Bottom of the Well MQ Lens Chest', 
                  'Bottom of the Well MQ Dead Hand Freestanding Key', 'Bottom of the Well MQ East Inner Room Freestanding Key', 
-                 'GS Well MQ Basement', 'GS Well MQ West Inner Room', 'GS Well MQ Coffin Room', 'Bottom of the Well Stick Pot'], 
+                 'GS Well MQ Basement', 'GS Well MQ West Inner Room', 'GS Well MQ Coffin Room'], 
                 ['Bottom of the Well Exit'])
         ])
     else:
@@ -888,7 +891,7 @@ def create_regions(world):
         world.regions.extend([
             create_dungeon_region(
                 'Ganons Castle Lobby', 
-                ['GC Deku Scrub Bombs', 'GC Deku Scrub Arrows', 'GC Deku Scrub Red Potion', 'GC Deku Scrub Green Potion',
+                ['GC MQ Deku Scrub Bombs', 'GC MQ Deku Scrub Arrows', 'GC MQ Deku Scrub Red Potion', 'GC MQ Deku Scrub Green Potion',
                  'GC MQ Deku Scrub Deku Nuts'],
                 ['Ganons Castle Exit', 'Ganons Castle Forest Trial', 'Ganons Castle Fire Trial', 'Ganons Castle Water Trial', 
                  'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 
@@ -1704,6 +1707,10 @@ location_table = {
     'DC MQ Deku Scrub Deku Shield': (None, None, 0x34, 'NPC', 0x01, 'Dodongo\'s Cavern'), 
     'DC MQ Deku Scrub Red Potion': (None, None, 0x39, 'NPC', 0x01, 'Dodongo\'s Cavern'), 
     'GC MQ Deku Scrub Deku Nuts': (None, None, 0x30, 'NPC', 0x0D, 'Ganon\'s Castle'), 
+    'GC MQ Deku Scrub Bombs': (None, None, 0x37, 'NPC', 0x0D, 'Ganon\'s Castle'), 
+    'GC MQ Deku Scrub Arrows': (None, None, 0x33, 'NPC', 0x0D, 'Ganon\'s Castle'), 
+    'GC MQ Deku Scrub Red Potion': (None, None, 0x39, 'NPC', 0x0D, 'Ganon\'s Castle'), 
+    'GC MQ Deku Scrub Green Potion': (None, None, 0x3A, 'NPC', 0x0D, 'Ganon\'s Castle'), 
 
     'HF Grotto Deku Scrub Piece of Heart': (None, None, 0x3E, 'GrottoNPC', 0x01, 'Hyrule Field'), 
     'ZR Grotto Deku Scrub Red Potion': (None, None, 0x39, 'GrottoNPC', 0x02, 'Zora\'s River'), 

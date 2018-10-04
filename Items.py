@@ -3,7 +3,7 @@ import logging
 from BaseClasses import Item
 
 
-def ItemFactory(items):
+def ItemFactory(items, world=None):
     ret = []
     singleton = False
     if isinstance(items, str):
@@ -12,7 +12,10 @@ def ItemFactory(items):
     for item in items:
         if item in item_table:
             advancement, priority, type, code, index, object, model = item_table[item]
-            ret.append(Item(item, advancement, priority, type, code, index, object, model))
+            new_item = Item(item, advancement, priority, type, code, index, object, model)
+            if world:
+                new_item.world = world
+            ret.append(new_item)
         else:
             raise KeyError('Unknown Item: %s', item)
 
@@ -56,6 +59,7 @@ item_table = {
     'Bottle with Fish': (True, False, None, None, 0x8D, 0x00C6, 0x01),
     'Bottle with Blue Fire': (True, False, None, None, 0x8E, 0x00C6, 0x01),
     'Bottle with Bugs': (True, False, None, None, 0x8F, 0x00C6, 0x01),
+    'Bottle with Big Poe': (True, False, None, None, 0x90, 0x00C6, 0x01),
     'Bottle with Poe': (True, False, None, None, 0x91, 0x00C6, 0x01),
     'Weird Egg': (True, False, None, 0x08E0, 0x47, 0x00DA, 0x29),
     'Pocket Egg': (True, False, None, 0x03A0, 0x1D, 0x00DA, 0x29),
@@ -85,7 +89,7 @@ item_table = {
     'Deku Stick Capacity': (False, False, None, None, 0x88, 0x00C7, 0x1B),
     'Deku Nut Capacity': (False, False, None, None, 0x87, 0x00BB, 0x12),
     'Magic Meter': (True, False, None, None, 0xC0, 0x00CD, 0x1E),
-    'Double Defense': (False, False, None, None, 0xBF, 0x00BD, 0x13),
+    'Double Defense': (True, False, None, None, 0xBF, 0x00BD, 0x13),
     'Stone of Agony': (True, False, None, 0x0720, 0x39, 0x00C8, 0x21),
     'Piece of Heart': (False, False, None, 0x07C0, 0x3E, 0x00BD, 0x14),
     'Heart Container': (False, False, None, 0x07A0, 0x3D, 0x00BD, 0x13),
@@ -104,7 +108,8 @@ item_table = {
     'Bombchus': (True, False, None, None, 0xC2, 0x00D9, 0x28),
     'Deku Nuts (5)': (False, False, None, None, 0xBD, 0x00BB, 0x12),
     'Deku Nuts (10)': (False, False, None, None, 0xBE, 0x00BB, 0x12),
-    'Deku Stick (1)': (False, False, None, 0x00E0, 0x07, 0x00C7, 0x1B), # This probably will need an extended version made to be NPC friendly.
+    'Deku Stick (1)': (False, False, None, 0x00E0, 0xD0, 0x00C7, 0x1B),
+    'Deku Seeds (30)': (False, False, None, 0x00E0, 0xD1, 0x0119, 0x48),
     'Rupee (Treasure Chest Game)': (False, False, None, 0x0E40, 0x72, 0x017F, 0x6D),
     'Rupee (1)': (False, False, None, 0x0980, 0x4C, 0x017F, 0x6D),
     'Rupees (5)': (False, False, None, 0x09A0, 0x4D, 0x017F, 0x6E),
@@ -219,7 +224,7 @@ item_table = {
     'Buy Blue Fire': (True, False, 'Shop', None, 0x27, 0x0173, 0x67), 
     'Buy Bottle Bug': (True, False, 'Shop', None, 0x28, 0x0174, 0x68), 
     'Buy Poe': (False, True, 'Shop', None, 0x2A, 0x0176, 0x6A), 
-    'Buy Fairy\'s Spirit': (True, False, 'Shop', None, 0x2B, 0x0177, 0x6B), 
+    'Buy Fairy\'s Spirit': (False, True, 'Shop', None, 0x2B, 0x0177, 0x6B), 
     'Buy Arrows (10)': (False, True, 'Shop', None, 0x2C, 0x00D8, 0x25), 
     'Buy Bombs (20)': (False, True, 'Shop', None, 0x2D, 0x00CE, 0x20), 
     'Buy Bombs (30)': (False, True, 'Shop', None, 0x2E, 0x00CE, 0x20), 

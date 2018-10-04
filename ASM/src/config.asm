@@ -35,6 +35,8 @@ INITIAL_SAVE_DATA:
 
 PLAYER_ID:
 .byte 0x00
+COOP_GET_ITEM:
+.byte 0x00
 
 ; 0x03481C00: Special items
 

@@ -115,26 +115,11 @@ normal_bottles = [
     'Bottle with Fairy',
     'Bottle with Fish',
     'Bottle with Bugs',
-    'Bottle with Poe'] # 'Bottle with Blue Fire'
+    'Bottle with Poe',
+    'Bottle with Big Poe',
+    'Bottle with Blue Fire']
 
 normal_bottle_count = 3
-
-# 10 items get removed for hard+
-harditems = (
-    ['Bombs (5)'] * 2 
-    + ['Arrows (5)'] * 2 
-    + ['Deku Nuts (5)'] * 2 
-    + ['Rupees (5)'] * 3 
-    + ['Rupees (20)'])
-
-# 37 items get removed for very hard
-veryharditems = (
-    ['Bombs (5)'] * 8 
-    + ['Arrows (5)'] * 8 
-    + ['Deku Nuts (5)'] * 8 
-    + ['Rupees (5)'] * 10 
-    + ['Rupees (20)'] * 2 
-    + ['Rupees (50)'])
 
 normal_rupees = (
     ['Rupees (5)'] * 13
@@ -265,7 +250,6 @@ deku_scrubs_items = (
       ['Deku Nuts (5)'] * 5
     + ['Deku Stick (1)']
     + ['Bombs (5)'] * 5
-    + ['Arrows (30)'] * 5
     + ['Recovery Heart'] * 4
     + ['Rupees (5)'] * 4 # ['Green Potion']
 )
@@ -353,7 +337,7 @@ skulltulla_locations = ([
     'GS Desert Colossus Tree',
     'GS Desert Colossus Hill'])
     
-tradeitems = [
+tradeitems = (
     'Pocket Egg',
     'Pocket Cucco', 
     'Cojiro', 
@@ -363,7 +347,19 @@ tradeitems = [
     'Prescription', 
     'Eyeball Frog', 
     'Eyedrops', 
-    'Claim Check']
+    'Claim Check')
+
+tradeitemoptions = (
+    'pocket_egg',
+    'pocket_cucco', 
+    'cojiro', 
+    'odd_mushroom', 
+    'poachers_saw', 
+    'broken_sword', 
+    'prescription', 
+    'eyeball_frog', 
+    'eyedrops', 
+    'claim_check')
 
 
 eventlocations = {
@@ -375,11 +371,9 @@ eventlocations = {
     'Epona': 'Epona',
     'Deku Baba Sticks': 'Deku Stick Drop',
     'Goron City Stick Pot': 'Deku Stick Drop',
-    'Bottom of the Well Stick Pot': 'Deku Stick Drop',
     'Zoras Domain Stick Pot': 'Deku Stick Drop',
     'Deku Baba Nuts': 'Deku Nut Drop',
     'Zoras Domain Nut Pot': 'Deku Nut Drop',
-    'Spirit Temple Nut Crate': 'Deku Nut Drop',
     'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
     'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
     'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',
@@ -389,20 +383,35 @@ eventlocations = {
     'Ganons Castle Light Trial Clear': 'Light Trial Clear'
 }
 
-#total_items_to_place = 5
+junk_pool = (
+    8 *  ['Bombs (5)'] +
+    2 *  ['Bombs (10)'] +
+    8 *  ['Arrows (5)'] +
+    2 *  ['Arrows (10)'] +
+    5 *  ['Deku Stick (1)'] + 
+    5 *  ['Deku Nuts (5)'] + 
+    5 *  ['Deku Seeds (30)'] +
+    10 * ['Rupees (5)'] +
+    4 *  ['Rupees (20)'] + 
+    1 *  ['Rupees (50)'])
+def get_junk_item(count=1):
+    ret_junk = []
+    for _ in range(count):
+        ret_junk.append(random.choice(junk_pool))
+
+    return ret_junk
+
 
 def generate_itempool(world):
     for location, item in eventlocations.items():
-        world.push_item(location, ItemFactory(item))
+        world.push_item(location, ItemFactory(item, world))
         world.get_location(location).event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world)
-    world.itempool = ItemFactory(pool)
+    world.itempool = ItemFactory(pool, world)
     for (location, item) in placed_items.items():
-        new_item = ItemFactory(item)
-        new_item.world = world
-        world.push_item(location, new_item)
+        world.push_item(location, ItemFactory(item, world))
         world.get_location(location).event = True
 
     choose_trials(world)
@@ -418,7 +427,7 @@ def get_pool_core(world):
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')
     else:
-        placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
+         placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
 
     if world.shuffle_weird_egg:
         pool.append('Weird Egg')
@@ -612,10 +621,10 @@ def get_pool_core(world):
     if world.difficulty == 'normal':
         pool.extend(['Magic Meter', 'Double Defense'] + ['Heart Container'] * 8)
     else:
-        pool.extend(harditems)
+        pool.extend(get_junk_item(10))
 
     if world.difficulty == 'very_hard' or world.difficulty == 'ohko':
-        pool.extend(veryharditems)
+        pool.extend(get_junk_item(37))
     else:
         pool.extend(['Nayrus Love', 'Piece of Heart (Treasure Chest Game)'] + ['Piece of Heart'] * 35)
 
@@ -668,22 +677,30 @@ def get_pool_core(world):
         shop_item_count = shop_slots_count - shop_nonitem_count
 
         pool.extend(random.sample(remain_shop_items, shop_item_count))
-        pool.extend(random.sample(veryharditems, shop_nonitem_count))
-        pool.extend(shopsanity_rupees)
+        pool.extend(get_junk_item(shop_nonitem_count))
+        if world.shopsanity == '0':
+            pool.extend(normal_rupees)
+        else:
+            pool.extend(shopsanity_rupees)
 
     if world.shuffle_scrubs:
+        arrows_or_seeds = 0
         if world.dungeon_mq['DT']:
             pool.append('Deku Shield')
         if world.dungeon_mq['DC']:
-            pool.extend(['Deku Stick (1)', 'Arrows (30)', 'Deku Shield', 'Recovery Heart'])
+            pool.extend(['Deku Stick (1)', 'Deku Shield', 'Recovery Heart'])
         else:
-            pool.extend(['Deku Nuts (5)', 'Deku Stick (1)', 'Arrows (30)', 'Deku Shield'])
+            pool.extend(['Deku Nuts (5)', 'Deku Stick (1)', 'Deku Shield'])
         if not world.dungeon_mq['JB']:
             pool.append('Deku Nuts (5)')
         if world.dungeon_mq['GC']:
-            pool.append('Deku Nuts (5)')
-        pool.extend(['Bombs (5)', 'Arrows (30)', 'Recovery Heart', 'Rupees (5)'])
+            pool.extend(['Bombs (5)', 'Recovery Heart', 'Rupees (5)', 'Deku Nuts (5)'])
+        else:
+            pool.extend(['Bombs (5)', 'Recovery Heart', 'Rupees (5)'])
         pool.extend(deku_scrubs_items)
+        for _ in range(7):
+            pool.append('Arrows (30)' if random.randint(0,3) > 0 else 'Deku Seeds (30)')
+
     else:        
         if world.dungeon_mq['DT']:
             placed_items['DT MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
@@ -701,10 +718,15 @@ def get_pool_core(world):
             placed_items['Jabu Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
         if world.dungeon_mq['GC']:
             placed_items['GC MQ Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
-        placed_items['GC Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
-        placed_items['GC Deku Scrub Arrows'] = 'Buy Arrows (30)'
-        placed_items['GC Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
-        placed_items['GC Deku Scrub Green Potion'] = 'Buy Green Potion'
+            placed_items['GC MQ Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
+            placed_items['GC MQ Deku Scrub Arrows'] = 'Buy Arrows (30)'
+            placed_items['GC MQ Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
+            placed_items['GC MQ Deku Scrub Green Potion'] = 'Buy Green Potion'
+        else:
+            placed_items['GC Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
+            placed_items['GC Deku Scrub Arrows'] = 'Buy Arrows (30)'
+            placed_items['GC Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
+            placed_items['GC Deku Scrub Green Potion'] = 'Buy Green Potion'
         placed_items.update(vanilla_deku_scrubs)
 
     pool.extend(alwaysitems)
@@ -729,12 +751,14 @@ def get_pool_core(world):
     if world.dungeon_mq['SpT']:
         pool.extend(SpT_MQ)
     else:
+        placed_items['Spirit Temple Nut Crate'] = 'Deku Nut Drop'
         pool.extend(SpT_vanilla)
     if world.dungeon_mq['ShT']:
         pool.extend(ShT_MQ)
     else:
         pool.extend(ShT_vanilla)
     if not world.dungeon_mq['BW']:
+        placed_items['Bottom of the Well Stick Pot'] = 'Deku Stick Drop'
         pool.extend(BW_vanilla)
     if world.dungeon_mq['GTG']:
         pool.extend(GTG_MQ)
@@ -744,25 +768,36 @@ def get_pool_core(world):
         pool.extend(GC_MQ)
     else:
         pool.extend(GC_vanilla)
+
     for _ in range(normal_bottle_count):
         bottle = random.choice(normal_bottles)
         pool.append(bottle)
+
+    if world.big_poe_count_random:
+        world.big_poe_count = random.randint(1, 10)
+
     tradeitem = random.choice(tradeitems)
+    earliest_trade = tradeitemoptions.index(world.logic_earliest_adult_trade)
+    latest_trade = tradeitemoptions.index(world.logic_latest_adult_trade)
+    if earliest_trade > latest_trade:
+        earliest_trade, latest_trade = latest_trade, earliest_trade
+    tradeitem = random.choice(tradeitems[earliest_trade:latest_trade+1])
     pool.append(tradeitem)
+    
     pool.extend(songlist)
 
     if world.shuffle_mapcompass == 'remove':
         for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:
             world.state.collect(item)
-            pool.append(random.choice(harditems))
+            pool.extend(get_junk_item())
     if world.shuffle_smallkeys == 'remove':
         for item in [item for dungeon in world.dungeons for item in dungeon.small_keys]:
             world.state.collect(item)
-            pool.append(random.choice(harditems))
+            pool.extend(get_junk_item())
     if world.shuffle_bosskeys == 'remove':
         for item in [item for dungeon in world.dungeons for item in dungeon.boss_key]:
             world.state.collect(item)
-            pool.append(random.choice(harditems))
+            pool.extend(get_junk_item())
     if not world.keysanity and not world.dungeon_mq['FiT']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
 
@@ -779,7 +814,7 @@ def choose_trials(world):
             world.skipped_trials[trial] = True
 
 def fill_bosses(world, bossCount=9):
-    boss_rewards = ItemFactory(rewardlist)
+    boss_rewards = ItemFactory(rewardlist, world)
     boss_locations = [
         world.get_location('Queen Gohma'), 
         world.get_location('King Dodongo'), 

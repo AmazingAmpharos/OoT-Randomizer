@@ -279,6 +279,7 @@ FoT_MQ_connections = [('Forest Temple Lobby Locked Door', 'Forest Temple Central
                       ('Forest Temple West Eye Switch', 'Forest Temple NW Outdoors'),
                       ('Forest Temple East Eye Switch', 'Forest Temple NE Outdoors'),
                       ('Forest Temple Block Puzzle Solve', 'Forest Temple After Block Puzzle'),
+                      ('Forest Temple Crystal Switch Jump', 'Forest Temple Outdoor Ledge'),
                       ('Forest Temple Drop to NW Outdoors', 'Forest Temple NW Outdoors'),
                       ('Forest Temple Well Connection', 'Forest Temple NE Outdoors'),
                       ('Forest Temple Webs', 'Forest Temple Outdoors Top Ledges'),
