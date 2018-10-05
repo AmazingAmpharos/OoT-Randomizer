@@ -522,8 +522,10 @@
     ori     s0, v0, 0
 
 ; Replaces
-;   addiu s5,s5,-1
-;   sll   s5,s5,0x10
-.org 0xB517C0
+;   lw      s6,48(sp)
+;   lw      s7,52(sp)
+;   lw      s8,56(sp)
+.org 0xB52784
     jal     reset_player_name_id
     nop
+    lw      ra, 0x3C (sp)

@@ -7,6 +7,7 @@ get_name_char:
    nop
 
    li    t0, SAVE_CONTEXT
+   add   t0, t0, a0
    lbu   v0, 0x24 (t0)
    b     @@return
    nop
@@ -25,8 +26,9 @@ get_name_char:
 
 reset_player_name_id:
    ; displaced code
-   addiu s5, s5, -1
-   sll   s5, s5, 0x10
+   lw    s6,48(sp)
+   lw    s7,52(sp)
+   lw    s8,56(sp)
 
    li    t0, PLAYER_NAME_ID
    sb    zero, 0x00 (t0)   

@@ -1016,10 +1016,10 @@
 80403814 @@overwrite_type
 8040381C @@return
 80403824 get_name_char
-8040384C @@coop_player_name
-80403864 @@return
-8040386C reset_player_name_id
-80403888 .byt:07C8
+80403850 @@coop_player_name
+80403868 @@return
+80403870 reset_player_name_id
+80403890 .byt:07C0
 80405000 text_init,0000002C
 8040502C text_print,000000A8
 804050D4 text_flush,00000148
