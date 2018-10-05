@@ -5,7 +5,6 @@ import logging
 import random
 import textwrap
 import sys
-from urllib.error import HTTPError, URLError
 
 from Gui import guiMain
 from Main import main
@@ -48,8 +47,6 @@ def start():
             version_error = check_version(settings.checked_version)
         except VersionError as e:
             logger.warning(str(e))
-        except (URLError, HTTPError) as e:
-            logger.warning("Could not fetch latest version: " + str(e))
 
     if gui:
         guiMain(settings)

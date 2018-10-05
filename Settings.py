@@ -7,6 +7,7 @@ import hashlib
 
 from Patches import get_tunic_color_options, get_navi_color_options
 from version import __version__
+from Utils import random_choices
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 
@@ -151,7 +152,7 @@ class Settings():
         self.settings_string = self.get_settings_string()
         if(self.seed is None):
             # https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
-            self.seed = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+            self.seed = ''.join(random_choices(string.ascii_uppercase + string.digits, k=10))
         self.sanatize_seed()
         self.numeric_seed = self.get_numeric_seed()
 
@@ -1702,7 +1703,9 @@ setting_infos = [
                       'Shuffled except Hints and Keys': Key texts
                       not shuffled because in keysanity it is
                       impossible to tell what dungeon it is for
-                      without the correct text.
+                      without the correct text. Similarly, non-shop
+                      items sold in shops will also not be shuffled
+                      so that the price of the item can be known.
                       '''
         }),
     Setting_Info('difficulty', str, 2, True, 

@@ -346,6 +346,7 @@ def global_rules(world):
         add_item_rule(location, lambda i: not (i.type == 'Shop' and i.world.id != location.world.id))
         if location.type == 'Shop':
             forbid_item(location, 'Biggoron Sword')
+            forbid_item(location, 'Gold Skulltulla Token')
 
             if location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
                 if not world.check_beatable_only:

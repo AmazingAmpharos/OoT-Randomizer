@@ -61,6 +61,7 @@ GOSSIP_STONE_MESSAGES = list( range(0x0401, 0x0421) ) # ids of the actual hints
 GOSSIP_STONE_MESSAGES += [0x2053, 0x2054] # shared initial stone messages
 TEMPLE_HINTS_MESSAGES = [0x7057, 0x707A] # dungeon reward hints from the temple of time pedestal
 LIGHT_ARROW_HINT = [0x70CC] # ganondorf's light arrow hint line
+GS_TOKEN_MESSAGES = [0x00B4, 0x00B5] # Get Gold Skulltula Token messages
 
 # messages for shorter item messages
 ITEM_MESSAGES = {
@@ -635,8 +636,8 @@ def move_shop_item_messages(messages, shop_items):
             shop.purchase_message |= 0x8000
 
 def make_player_message(text):
-    player_text_U = '\x05\x42Player \x18\x05\x40'
-    player_text_L = '\x05\x42player \x18\x05\x40'
+    player_text_U = '\x05\x42\x0F\x05\x40'
+    player_text_L = '\x05\x42\x0F\x05\x40'
     pronoun_mapping = {
         'You have ': player_text_U + ' ',
         'You\'ve ':  player_text_U + ' ',
@@ -763,7 +764,7 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
 
     def is_not_exempt(m):
         exempt_as_id = m.is_id_message()
-        exempt_as_hint = ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT + list(KEYSANITY_MESSAGES.keys()) ) )
+        exempt_as_hint = ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT + list(KEYSANITY_MESSAGES.keys()) + shuffle_messages.shop_item_messages ) )
         return not ( exempt_as_id or exempt_as_hint )
     
     have_goto =         list( filter( lambda m: is_not_exempt(m) and m.has_goto, messages) )
