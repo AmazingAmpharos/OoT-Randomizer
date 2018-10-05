@@ -462,11 +462,11 @@ def dung_rules_dcmq(world):
     set_rule(world.get_location('Dodongos Cavern MQ Compass Chest'), lambda state: state.is_adult() or state.can_child_attack() or state.has_nuts())
     set_rule(world.get_location('Dodongos Cavern MQ Torch Puzzle Room Chest'), lambda state: state.can_blast_or_smash() or state.has_sticks() or state.can_use('Dins Fire') or (state.is_adult() and (world.logic_dc_jump or state.has('Hover Boots') or state.has('Progressive Hookshot'))))
     set_rule(world.get_location('Dodongos Cavern MQ Larva Room Chest'), lambda state: (state.has_sticks() and (state.has_explosives() or state.has('Progressive Strength Upgrade'))) or state.has_fire_source())
-    set_rule(world.get_location('Dodongos Cavern MQ Bomb Bag Chest'), lambda state: state.is_adult() or (state.has_slingshot() and (state.has_sticks() or state.can_use('Dins Fire') or state.has_explosives())))
+    set_rule(world.get_location('Dodongos Cavern MQ Bomb Bag Chest'), lambda state: state.is_adult() or (state.has_slingshot() and (state.has_explosives() or ((state.has_sticks() or state.can_use('Dins Fire')) and (world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))))
     set_rule(world.get_location('DC MQ Deku Scrub Deku Sticks'), lambda state: state.can_stun_deku())
     set_rule(world.get_location('DC MQ Deku Scrub Deku Seeds'), lambda state: state.can_stun_deku())
     set_rule(world.get_location('DC MQ Deku Scrub Deku Shield'), lambda state: state.can_stun_deku())
-    set_rule(world.get_location('DC MQ Deku Scrub Red Potion'), lambda state: state.is_adult() or state.has_sticks() or state.can_use('Dins Fire') or state.has_explosives())
+    set_rule(world.get_location('DC MQ Deku Scrub Red Potion'), lambda state: state.is_adult() or state.has_explosives() or ((state.has_sticks() or state.can_use('Dins Fire')) and (world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))
 
     # Boss
     set_rule(world.get_location('King Dodongo'), lambda state: (state.has_bombs() or state.has('Progressive Strength Upgrade')) and (state.is_adult() or state.has_sticks() or state.has('Kokiri Sword')))
@@ -476,7 +476,7 @@ def dung_rules_dcmq(world):
     set_rule(world.get_location('GS Dodongo\'s Cavern MQ Song of Time Block Room'), lambda state: state.can_play('Song of Time') and (state.can_child_attack() or state.is_adult()))
     set_rule(world.get_location('GS Dodongo\'s Cavern MQ Larva Room'), lambda state: (state.has_sticks() and (state.has_explosives or state.has('Progressive Strength Upgrade'))) or state.has_fire_source())
     set_rule(world.get_location('GS Dodongo\'s Cavern MQ Lizalfos Room'), lambda state: state.can_blast_or_smash())
-    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Scrub Room'), lambda state: (state.has('Boomerang') and (state.has_slingshot() or (state.is_adult() and state.has_explosives())) and (state.has_explosives() or (state.has('Progressive Strength Upgrade') and (state.has_sticks() or state.can_use('Dins Fire') or (state.is_adult() and (world.logic_dc_jump or state.has('Hover Boots') or state.has('Hammer'))))))) or (state.can_use('Hookshot') and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow() or state.can_use('Dins Fire'))))
+    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Scrub Room'), lambda state: (state.has('Boomerang') and (state.has_slingshot() or (state.is_adult() and state.has_explosives())) and (state.has_explosives() or (state.has('Progressive Strength Upgrade') and (state.can_use('Hammer') or ((state.has_sticks() or state.can_use('Dins Fire') or (state.is_adult() and (world.logic_dc_jump or state.has('Hover Boots')))) and (world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))))) or (state.can_use('Hookshot') and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow() or state.can_use('Dins Fire'))))
 
 # Jabu Jabu's Belly Vanilla
 def dung_rules_jb0(world):
