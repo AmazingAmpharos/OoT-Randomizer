@@ -2,6 +2,7 @@ import random
 import logging
 from BaseClasses import CollectionState
 from Rules import set_shop_rules
+from Utils import random_choices
 
 class FillError(RuntimeError):
     pass
@@ -152,8 +153,18 @@ def fill_dungeon_unique_item(window, worlds, fill_locations, itempool, attempts=
         try:
             # choose a random set of items and locations
             dungeon_locations = []
-            for dungeon in [dungeon for world in worlds for dungeon in world.dungeons]:
-                dungeon_locations.append(random.choice([location for region in dungeon.regions for location in region.locations if location in fill_locations]))
+            for world in worlds:
+                for dungeon in world.dungeons:
+                    dungeon_all_location = [location for region in dungeon.regions for location in region.locations if location in fill_locations]
+                    if dungeon.name == 'Spirit Temple':
+                        if world.dungeon_mq['SpT']:
+                            dungeon_all_location.extend([location for region in ['Mirror Shield Hand', 'Silver Gauntlets Hand'] for location in world.get_region(region).locations])
+                        else:
+                            dungeon_all_location.extend([location for region in ['Spirit Temple Outdoor Hands'] for location in world.get_region(region).locations])
+
+                        dungeon_locations.extend(random_choices(dungeon_all_location, k=2))
+                    else:
+                        dungeon_locations.append(random.choice(dungeon_all_location))
             dungeon_items = random.sample(major_items, len(dungeon_locations))
 
             new_dungeon_locations = list(dungeon_locations)
