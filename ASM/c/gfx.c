@@ -40,10 +40,14 @@ int sprite_bytes(sprite_t *sprite) {
 
 void sprite_load(z64_disp_buf_t *db, sprite_t *sprite,
         int start_tile, int tile_count) {
-    gDPLoadTextureBlock(db->p++,
+    int width = sprite->tile_w;
+    int height = sprite->tile_h * tile_count;
+    gDPLoadTextureTile(db->p++,
             sprite->buf + (start_tile * sprite_bytes_per_tile(sprite)),
             sprite->im_fmt, sprite->im_siz,
-            sprite->tile_w, tile_count * sprite->tile_h,
+            width, height,
+            0, 0,
+            width - 1, height - 1,
             0,
             G_TX_WRAP, G_TX_WRAP,
             G_TX_NOMASK, G_TX_NOMASK,
