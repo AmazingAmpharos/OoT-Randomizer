@@ -3,7 +3,7 @@ import logging
 from BaseClasses import Item
 
 
-def ItemFactory(items):
+def ItemFactory(items, world=None):
     ret = []
     singleton = False
     if isinstance(items, str):
@@ -12,7 +12,10 @@ def ItemFactory(items):
     for item in items:
         if item in item_table:
             advancement, priority, type, code, index, object, model = item_table[item]
-            ret.append(Item(item, advancement, priority, type, code, index, object, model))
+            new_item = Item(item, advancement, priority, type, code, index, object, model)
+            if world:
+                new_item.world = world
+            ret.append(new_item)
         else:
             raise KeyError('Unknown Item: %s', item)
 

@@ -178,6 +178,13 @@ def parse_custom_navi_color(s):
 
 # a list of the possible settings
 setting_infos = [
+    Setting_Info('check_version', bool, 0, False, 
+    {
+        'help': '''\
+                Checks if you are on the latest version
+                ''',
+        'action': 'store_true'
+    }),
     Setting_Info('checked_version', str, 0, False, {
             'default': '',
             'help': 'Supress version warnings if checked_version is less than __version__.'}),
@@ -642,6 +649,7 @@ setting_infos = [
             'nargs': '?',
             'help': '''\
                     The song started with if 'free_scarecrow' is True
+                    Valid notes: A, U, L, R, D
                     ''',
         },
         {
@@ -1585,13 +1593,6 @@ setting_infos = [
                       typically more difficult.
                       '''
         }),
-        Setting_Info('check_version', bool, 0, False, 
-        {
-            'help': '''\
-                    Checks if you are on the latest version
-                    ''',
-            'action': 'store_true'
-        }),
     Setting_Info('correct_chest_sizes', bool, 1, True, 
         {
             'help': '''\
@@ -1635,7 +1636,7 @@ setting_infos = [
     Setting_Info('hints', str, 2, True, 
         {
             'default': 'none',
-            'const': 'always',
+            'const': 'agony',
             'nargs': '?',
             'choices': ['none', 'mask', 'agony', 'always'],
             'help': '''\
@@ -1702,7 +1703,9 @@ setting_infos = [
                       'Shuffled except Hints and Keys': Key texts
                       not shuffled because in keysanity it is
                       impossible to tell what dungeon it is for
-                      without the correct text.
+                      without the correct text. Similarly, non-shop
+                      items sold in shops will also not be shuffled
+                      so that the price of the item can be known.
                       '''
         }),
     Setting_Info('difficulty', str, 2, True, 

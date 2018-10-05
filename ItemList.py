@@ -404,16 +404,14 @@ def get_junk_item(count=1):
 
 def generate_itempool(world):
     for location, item in eventlocations.items():
-        world.push_item(location, ItemFactory(item))
+        world.push_item(location, ItemFactory(item, world))
         world.get_location(location).event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world)
-    world.itempool = ItemFactory(pool)
+    world.itempool = ItemFactory(pool, world)
     for (location, item) in placed_items.items():
-        new_item = ItemFactory(item)
-        new_item.world = world
-        world.push_item(location, new_item)
+        world.push_item(location, ItemFactory(item, world))
         world.get_location(location).event = True
 
     choose_trials(world)
@@ -816,7 +814,7 @@ def choose_trials(world):
             world.skipped_trials[trial] = True
 
 def fill_bosses(world, bossCount=9):
-    boss_rewards = ItemFactory(rewardlist)
+    boss_rewards = ItemFactory(rewardlist, world)
     boss_locations = [
         world.get_location('Queen Gohma'), 
         world.get_location('King Dodongo'), 

@@ -346,6 +346,7 @@ def global_rules(world):
         add_item_rule(location, lambda i: not (i.type == 'Shop' and i.world.id != location.world.id))
         if location.type == 'Shop':
             forbid_item(location, 'Biggoron Sword')
+            forbid_item(location, 'Gold Skulltulla Token')
 
             if location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
                 if not world.check_beatable_only:
@@ -461,11 +462,11 @@ def dung_rules_dcmq(world):
     set_rule(world.get_location('Dodongos Cavern MQ Compass Chest'), lambda state: state.is_adult() or state.can_child_attack() or state.has_nuts())
     set_rule(world.get_location('Dodongos Cavern MQ Torch Puzzle Room Chest'), lambda state: state.can_blast_or_smash() or state.has_sticks() or state.can_use('Dins Fire') or (state.is_adult() and (world.logic_dc_jump or state.has('Hover Boots') or state.has('Progressive Hookshot'))))
     set_rule(world.get_location('Dodongos Cavern MQ Larva Room Chest'), lambda state: (state.has_sticks() and (state.has_explosives() or state.has('Progressive Strength Upgrade'))) or state.has_fire_source())
-    set_rule(world.get_location('Dodongos Cavern MQ Bomb Bag Chest'), lambda state: state.is_adult() or (state.has_slingshot() and (state.has_sticks() or state.can_use('Dins Fire') or state.has_explosives())))
+    set_rule(world.get_location('Dodongos Cavern MQ Bomb Bag Chest'), lambda state: state.is_adult() or (state.has_slingshot() and (state.has_explosives() or ((state.has_sticks() or state.can_use('Dins Fire')) and (world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))))
     set_rule(world.get_location('DC MQ Deku Scrub Deku Sticks'), lambda state: state.can_stun_deku())
     set_rule(world.get_location('DC MQ Deku Scrub Deku Seeds'), lambda state: state.can_stun_deku())
     set_rule(world.get_location('DC MQ Deku Scrub Deku Shield'), lambda state: state.can_stun_deku())
-    set_rule(world.get_location('DC MQ Deku Scrub Red Potion'), lambda state: state.is_adult() or state.has_sticks() or state.can_use('Dins Fire') or state.has_explosives())
+    set_rule(world.get_location('DC MQ Deku Scrub Red Potion'), lambda state: state.is_adult() or state.has_explosives() or ((state.has_sticks() or state.can_use('Dins Fire')) and (world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))
 
     # Boss
     set_rule(world.get_location('King Dodongo'), lambda state: (state.has_bombs() or state.has('Progressive Strength Upgrade')) and (state.is_adult() or state.has_sticks() or state.has('Kokiri Sword')))
@@ -475,7 +476,7 @@ def dung_rules_dcmq(world):
     set_rule(world.get_location('GS Dodongo\'s Cavern MQ Song of Time Block Room'), lambda state: state.can_play('Song of Time') and (state.can_child_attack() or state.is_adult()))
     set_rule(world.get_location('GS Dodongo\'s Cavern MQ Larva Room'), lambda state: (state.has_sticks() and (state.has_explosives or state.has('Progressive Strength Upgrade'))) or state.has_fire_source())
     set_rule(world.get_location('GS Dodongo\'s Cavern MQ Lizalfos Room'), lambda state: state.can_blast_or_smash())
-    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Scrub Room'), lambda state: (state.has('Boomerang') and (state.has_slingshot() or (state.is_adult() and state.has_explosives())) and (state.has_explosives() or (state.has('Progressive Strength Upgrade') and (state.has_sticks() or state.can_use('Dins Fire') or (state.is_adult() and (world.logic_dc_jump or state.has('Hover Boots') or state.has('Hammer'))))))) or (state.can_use('Hookshot') and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow() or state.can_use('Dins Fire'))))
+    set_rule(world.get_location('GS Dodongo\'s Cavern MQ Scrub Room'), lambda state: (state.has('Boomerang') and (state.has_slingshot() or (state.is_adult() and state.has_explosives())) and (state.has_explosives() or (state.has('Progressive Strength Upgrade') and (state.can_use('Hammer') or ((state.has_sticks() or state.can_use('Dins Fire') or (state.is_adult() and (world.logic_dc_jump or state.has('Hover Boots')))) and (world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))))) or (state.can_use('Hookshot') and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow() or state.can_use('Dins Fire'))))
 
 # Jabu Jabu's Belly Vanilla
 def dung_rules_jb0(world):
@@ -602,7 +603,7 @@ def dung_rules_fitmq(world):
     set_rule(world.get_location('GS Fire Temple MQ East Tower Top'), lambda state: state.can_play('Song of Time') or state.can_use('Longshot'))
     set_rule(world.get_location('GS Fire Temple MQ Fire Wall Maze Side Room'), lambda state: state.can_play('Song of Time') or state.has('Hover Boots'))
     set_rule(world.get_location('GS Fire Temple MQ Fire Wall Maze Center'), lambda state: state.has_explosives())
-    set_rule(world.get_location('GS Fire Temple MQ Above Fire Wall Maze'), lambda state: state.has('Small Key (Fire Temple)', 5) or ((item_name(state, 'GS Fire Temple MQ Above Fire Wall Maze') == 'Small Key (Fire Temple)' or not world.keys_placed) and state.has('Small Key (Fire Temple)', 4)))
+    set_rule(world.get_location('GS Fire Temple MQ Above Fire Wall Maze'), lambda state: state.has('Small Key (Fire Temple)', 5) or ((item_name(state, 'GS Fire Temple MQ Above Fire Wall Maze') == 'Small Key (Fire Temple)' or not (world.keys_placed or item_name(state, 'GS Fire Temple MQ Above Fire Wall Maze') == 'Boss Key (Fire Temple)')) and state.has('Small Key (Fire Temple)', 4)))
 
 # Water Temple Vanilla
 def dung_rules_wt0(world):
@@ -613,7 +614,7 @@ def dung_rules_wt0(world):
     set_rule(world.get_location('Water Temple Torches Chest'), lambda state: (state.has_bow() or state.can_use('Dins Fire')) and state.can_play('Zeldas Lullaby') and state.has('Iron Boots'))
     set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: state.has('Iron Boots') and ((state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby')) or (state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.can_play('Song of Time') and state.has_bow())))
     set_rule(world.get_location('Water Temple Central Bow Target Chest'), lambda state: state.has_bow() and state.has('Iron Boots') and state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby') and (state.has('Hover Boots') or state.can_use('Longshot')))
-    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and state.has('Iron Boots') and (state.can_play('Zeldas Lullaby') or world.keysanity) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.can_use('Longshot')) or (state.has('Small Key (Water Temple)', 5) and (item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)' or not world.keys_placed))) #If key for key, this lets the logic reduce the small key reqs for every other locked door.
+    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and state.has('Iron Boots') and (state.can_play('Zeldas Lullaby') or world.keysanity) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.can_use('Longshot')) or (state.has('Small Key (Water Temple)', 5) and (item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)' or not (world.keys_placed or item_name(state, 'Water Temple Boss Key Chest') == 'Boss Key (Water Temple)')))) #If key for key, this lets the logic reduce the small key reqs for every other locked door.
     set_rule(world.get_location('Water Temple Cracked Wall Chest'), lambda state: state.has_explosives())
     set_rule(world.get_location('Water Temple Dark Link Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity))
     set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.can_play('Song of Time') and state.has_bow() and (state.can_play('Zeldas Lullaby') or world.keysanity))
@@ -648,7 +649,7 @@ def dung_rules_wtmq(world):
     set_rule(world.get_location('GS Water Temple MQ Lizalfos Hallway'), lambda state: state.can_use('Dins Fire'))
     set_rule(world.get_location('GS Water Temple MQ Before Upper Water Switch'), lambda state: state.can_use('Longshot'))
     set_rule(world.get_location('GS Water Temple MQ South Basement'), lambda state: state.can_use('Fire Arrows'))
-    set_rule(world.get_location('GS Water Temple MQ North Basement'), lambda state: state.has('Small Key (Water Temple)', 2) or ((item_name(state, 'GS Water Temple MQ North Basement') == 'Small Key (Water Temple)' or not world.keys_placed) and state.has('Small Key (Water Temple)')))
+    set_rule(world.get_location('GS Water Temple MQ North Basement'), lambda state: state.has('Small Key (Water Temple)', 2) or ((item_name(state, 'GS Water Temple MQ North Basement') == 'Small Key (Water Temple)' or not (world.keys_placed or item_name(state, 'GS Water Temple MQ North Basement') == 'Boss Key (Water Temple)')) and state.has('Small Key (Water Temple)')))
 
 # Spirit Temple Vanilla
 def dung_rules_spt0(world):

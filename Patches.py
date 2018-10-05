@@ -8,7 +8,7 @@ import subprocess
 import random
 import copy
 
-from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText
+from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText, getSimpleHintNoPrefix
 from Utils import local_path, default_output_path, random_choices
 from Items import ItemFactory, item_data
 from Messages import *
@@ -1214,6 +1214,8 @@ def patch_rom(world, rom):
     update_message_by_id(messages, shop_items[0x001C].description_message, "\x08\x05\x41Bombchu  (10 pieces)  99 Rupees\x01\x05\x40This looks like a toy mouse, but\x01it's actually a self-propelled time\x01bomb!\x09\x0A")
     update_message_by_id(messages, shop_items[0x001C].purchase_message, "\x08Bombchu  10 pieces   100 Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don't buy\x05\x40")
 
+    shuffle_messages.shop_item_messages = []
+
     # kokiri shop
     shop_objs = place_shop_items(rom, world, shop_items, messages, 
         world.get_region('Kokiri Shop').locations, True)
@@ -1363,7 +1365,7 @@ def patch_rom(world, rom):
             elif dungeon in ['BW', 'IC']:
                 dungeon_name, boss_name, compass_id, map_id = dungeon_list[dungeon]
                 if world.world_count > 1:
-                    map_message = "\x13\x76\x08\x05\x42Player \x18\x05\x40 found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)
+                    map_message = "\x13\x76\x08\x05\x42\x0F\x05\x40 found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)
                 else:
                     map_message = "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x01It\'s %s!\x09" % (dungeon_name, "masterful" if world.dungeon_mq[dungeon] else "ordinary")
 
@@ -1373,13 +1375,13 @@ def patch_rom(world, rom):
                 dungeon_name, boss_name, compass_id, map_id = dungeon_list[dungeon]
                 dungeon_reward = reward_list[world.get_location(boss_name).item.name]
                 if world.world_count > 1:
-                    compass_message = "\x13\x75\x08\x05\x42Player \x18\x05\x40 found the \x05\x41Compass\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)
+                    compass_message = "\x13\x75\x08\x05\x42\x0F\x05\x40 found the \x05\x41Compass\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)
                 else:
                     compass_message = "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for %s\x05\x40!\x01It holds the %s!\x09" % (dungeon_name, dungeon_reward)
                 update_message_by_id(messages, compass_id, compass_message)
                 if world.quest == 'mixed':
                     if world.world_count > 1:
-                        map_message = "\x13\x76\x08\x05\x42Player \x18\x05\x40 found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)
+                        map_message = "\x13\x76\x08\x05\x42\x0F\x05\x40 found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)
                     else:
                         map_message = "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x01It\'s %s!\x09" % (dungeon_name, "masterful" if world.dungeon_mq[dungeon] else "ordinary")
                     update_message_by_id(messages, map_id, map_message)
@@ -1412,9 +1414,9 @@ def patch_rom(world, rom):
 
     # text shuffle
     if world.text_shuffle == 'except_hints':
-        shuffle_messages(rom, True)
+        shuffle_messages(rom, except_hints=True)
     elif world.text_shuffle == 'complete':
-        shuffle_messages(rom, False)
+        shuffle_messages(rom, except_hints=False)
 
     # output a text dump, for testing...
     #with open('keysanity_' + str(world.seed) + '_dump.txt', 'w', encoding='utf-16') as f:
@@ -1864,6 +1866,9 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
             shop_item.description_message = 0x8100 + message_id 
             shop_item.purchase_message = 0x8100 + message_id + 1 
 
+            shuffle_messages.shop_item_messages.extend(
+                [shop_item.description_message, shop_item.purchase_message])
+
             if location.item.dungeonitem:
                 split_item_name = location.item.name.split('(')
                 split_item_name[1] = '(' + split_item_name[1]
@@ -1873,11 +1878,13 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
                     description_text = '\x08\x05\x41%s  %d Rupees\x01%s\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (split_item_name[0], location.price, split_item_name[1])
                 purchase_text = '\x08%s  %d Rupees\x09\x01%s\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (split_item_name[0], location.price, split_item_name[1])
             else:
+                shop_item_name = getSimpleHintNoPrefix(location.item)
+
                 if world.world_count > 1:
-                    description_text = '\x08\x05\x41%s  %d Rupees\x01\x05\x42Player %d\x05\x40\x01Special deal! ONE LEFT!\x09\x0A\x02' % (location.item.name, location.price, location.item.world.id + 1)
+                    description_text = '\x08\x05\x41%s  %d Rupees\x01\x05\x42Player %d\x05\x40\x01Special deal! ONE LEFT!\x09\x0A\x02' % (shop_item_name, location.price, location.item.world.id + 1)
                 else:
-                    description_text = '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (location.item.name, location.price)
-                purchase_text = '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (location.item.name, location.price)
+                    description_text = '\x08\x05\x41%s  %d Rupees\x01\x05\x40Special deal! ONE LEFT!\x01Get it while it lasts!\x09\x0A\x02' % (shop_item_name, location.price)
+                purchase_text = '\x08%s  %d Rupees\x09\x01\x01\x1B\x05\x42Buy\x01Don\'t buy\x05\x40\x02' % (shop_item_name, location.price)
 
             update_message_by_id(messages, shop_item.description_message, description_text, 0x03) 
             update_message_by_id(messages, shop_item.purchase_message, purchase_text, 0x03)  
