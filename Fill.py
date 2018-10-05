@@ -145,8 +145,8 @@ def fill_dungeon_unique_item(window, worlds, fill_locations, itempool, attempts=
     # token items, or dungeon items as a major item. itempool at this
     # point should only be able to have tokens of those restrictions
     # since the rest are already placed.
-    major_items = [item for item in itempool if item.type != 'Token']
-    token_items = [item for item in itempool if item.type == 'Token']
+    major_items = [item for item in itempool if item.majoritem]
+    minor_items = [item for item in itempool if not item.majoritem]
 
     while attempts:
         attempts -= 1
@@ -170,7 +170,7 @@ def fill_dungeon_unique_item(window, worlds, fill_locations, itempool, attempts=
             new_dungeon_locations = list(dungeon_locations)
             new_dungeon_items = list(dungeon_items)
             non_dungeon_items = [item for item in major_items if item not in dungeon_items]
-            all_other_item_state = CollectionState.get_states_with_items([world.state for world in worlds], token_items + non_dungeon_items)
+            all_other_item_state = CollectionState.get_states_with_items([world.state for world in worlds], minor_items + non_dungeon_items)
 
             # attempt to place the items into the locations
             random.shuffle(new_dungeon_locations)
