@@ -56,12 +56,20 @@ override_skulltula_token:
     beqz    v1, @@not_extended
     sw      v1, 0x1C (sp)
 
+    ; display message
+    ; message id is in the extended item table
+    lbu     a1, ITEM_ROW_TEXT_ID (v1)  
+    move    a0,s1
+    jal     0x000dce14          ; call ex_0dce14(ctx, text_id, 0)
+    move    a2,zero
+    lw      v1, 0x1C (sp)
+
     ; check if item is for this player
     li      t0, PLAYER_OVERRIDE_DATA
     lh      t1, 0x02(t0)
     beqz    t1, @@extended_effect ; if item is pending player override
     li      t2, 0x01
-    b       @@no_extended_effect
+    b       @@return
     sh      t2, 0x00(t0)          ; set override collected flag
 
 @@extended_effect:
@@ -79,12 +87,8 @@ override_skulltula_token:
     jal     0x0006fdcc          ; call ex_06fdcc(ctx, item) ; this gives link the item
     move    a0,s1               ; a0 = ctx
 
-@@no_extended_effect:
-    ; message id is in the extended item table
-    lw      v1, 0x1C (sp)
-    lbu     a1, ITEM_ROW_TEXT_ID (v1)
-
-    b      @@display_message
+    b       @@return
+    nop
 
 @@not_extended:
     ; get the table entry in the get item table for this item
@@ -93,8 +97,15 @@ override_skulltula_token:
     mult    v0, t2              ; 
     mflo    t2                  ; t2 = offset into get item table
     addu    s0, t1, t2          ; s0 = pointer to table entry
-    lb      a1, 0x0 (s0)        ; a1 = item id
 
+    ; display message
+    ; message id is in the get item table
+    move    a0,s1
+    lbu     a1, 0x3 (s0)        ; a1 = text id
+    jal     0x000dce14          ; call ex_0dce14(ctx, text_id, 0)
+    move    a2,zero
+
+    lb      a1, 0x0 (s0)        ; a1 = item id
     ; check if item is for this player
     li      t0, PLAYER_OVERRIDE_DATA
     lh      t1, 0x02(t0)
@@ -110,11 +121,6 @@ override_skulltula_token:
 
     ; message id is in the get item table
     lbu     a1, 0x3 (s0)        ; a1 = text id
-
-@@display_message:
-    move    a0,s1
-    jal     0x000dce14          ; call ex_0dce14(ctx, text_id, 0)
-    move    a2,zero
 
 @@return:
     lw      ra, 0x10 (sp)
