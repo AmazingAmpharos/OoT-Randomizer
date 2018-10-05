@@ -466,8 +466,9 @@ scan_override_table:
 
     li      t0, PLAYER_ID
     lbu     t1, 0x00(t0)
-    li      t0, SAVE_CONTEXT
-    sh      t1, 0x1406(t0) ; set points to current player: default
+
+    li      t0, PLAYER_NAME_ID
+    sb      t1, 0x00 (t0)
 
     ; Check if the item source ID is 0x7F which is used for Co-op items
     andi    t1, a0, 0x00FF ; t1 = item source ID
@@ -504,8 +505,8 @@ scan_override_table:
     andi    v0, t1, 0xFF ; v0 = found item ID
 
 @@lookup_item_found:
-    li      t0, SAVE_CONTEXT
-    sh      t3, 0x1406(t0) ; set the point value to the player number
+    li      t0, PLAYER_NAME_ID
+    sb      t3, 0x00 (t0)
 
     li      t1, PLAYER_OVERRIDE_DATA
 

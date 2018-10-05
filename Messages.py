@@ -636,8 +636,8 @@ def move_shop_item_messages(messages, shop_items):
             shop.purchase_message |= 0x8000
 
 def make_player_message(text):
-    player_text_U = '\x05\x42Player \x18\x05\x40'
-    player_text_L = '\x05\x42player \x18\x05\x40'
+    player_text_U = '\x05\x42\x0F\x05\x40'
+    player_text_L = '\x05\x42\x0F\x05\x40'
     pronoun_mapping = {
         'You have ': player_text_U + ' ',
         'You\'ve ':  player_text_U + ' ',

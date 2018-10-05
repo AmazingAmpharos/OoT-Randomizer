@@ -498,3 +498,32 @@
 ;	jal		0x80057030 ; copies Scarecrow Song from active space to save context
 .org 0xB55A64 ; In memory 800DFB04
     jal		save_scarecrow_song
+
+;==================================================================================================
+; Override Player Name Text
+;==================================================================================================
+
+; Replaces
+;   lui   t2,0x8012
+;   addu  t2,t2,s3
+;   lbu   t2,-23053(t2)
+.org 0xB51690
+    jal     get_name_char
+    addi    a0, s3, -1
+    ori     t2, v0, 0
+
+; Replaces
+;   lui   s0,0x8012
+;   addu  s0,s0,s2
+;   lbu   s0,-23052(s0)
+.org 0xB516C0
+    jal     get_name_char
+    ori     a0, s2, 0
+    ori     s0, v0, 0
+
+; Replaces
+;   addiu s5,s5,-1
+;   sll   s5,s5,0x10
+.org 0xB517C0
+    jal     reset_player_name_id
+    nop

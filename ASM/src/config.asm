@@ -37,6 +37,12 @@ PLAYER_ID:
 .byte 0x00
 COOP_GET_ITEM:
 .byte 0x00
+PLAYER_NAME_ID:
+.byte 0x00
+
+.area 8*32, 0xDF
+PLAYER_NAMES:
+.endarea
 
 ; 0x03481C00: Special items
 
