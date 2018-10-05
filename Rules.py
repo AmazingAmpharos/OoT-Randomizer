@@ -603,7 +603,7 @@ def dung_rules_fitmq(world):
     set_rule(world.get_location('GS Fire Temple MQ East Tower Top'), lambda state: state.can_play('Song of Time') or state.can_use('Longshot'))
     set_rule(world.get_location('GS Fire Temple MQ Fire Wall Maze Side Room'), lambda state: state.can_play('Song of Time') or state.has('Hover Boots'))
     set_rule(world.get_location('GS Fire Temple MQ Fire Wall Maze Center'), lambda state: state.has_explosives())
-    set_rule(world.get_location('GS Fire Temple MQ Above Fire Wall Maze'), lambda state: state.has('Small Key (Fire Temple)', 5) or ((item_name(state, 'GS Fire Temple MQ Above Fire Wall Maze') == 'Small Key (Fire Temple)' or not world.keys_placed) and state.has('Small Key (Fire Temple)', 4)))
+    set_rule(world.get_location('GS Fire Temple MQ Above Fire Wall Maze'), lambda state: state.has('Small Key (Fire Temple)', 5) or ((item_name(state, 'GS Fire Temple MQ Above Fire Wall Maze') == 'Small Key (Fire Temple)' or not (world.keys_placed or item_name(state, 'GS Fire Temple MQ Above Fire Wall Maze') == 'Boss Key (Fire Temple)')) and state.has('Small Key (Fire Temple)', 4)))
 
 # Water Temple Vanilla
 def dung_rules_wt0(world):
@@ -614,7 +614,7 @@ def dung_rules_wt0(world):
     set_rule(world.get_location('Water Temple Torches Chest'), lambda state: (state.has_bow() or state.can_use('Dins Fire')) and state.can_play('Zeldas Lullaby') and state.has('Iron Boots'))
     set_rule(world.get_location('Water Temple Dragon Chest'), lambda state: state.has('Iron Boots') and ((state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby')) or (state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity) and state.can_play('Song of Time') and state.has_bow())))
     set_rule(world.get_location('Water Temple Central Bow Target Chest'), lambda state: state.has_bow() and state.has('Iron Boots') and state.has('Progressive Strength Upgrade') and state.can_play('Zeldas Lullaby') and (state.has('Hover Boots') or state.can_use('Longshot')))
-    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and state.has('Iron Boots') and (state.can_play('Zeldas Lullaby') or world.keysanity) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.can_use('Longshot')) or (state.has('Small Key (Water Temple)', 5) and (item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)' or not world.keys_placed))) #If key for key, this lets the logic reduce the small key reqs for every other locked door.
+    set_rule(world.get_location('Water Temple Boss Key Chest'), lambda state: (state.has('Small Key (Water Temple)', 6) and state.has('Iron Boots') and (state.can_play('Zeldas Lullaby') or world.keysanity) and ((state.has_explosives() and state.has('Progressive Strength Upgrade')) or state.has('Hover Boots')) and state.can_use('Longshot')) or (state.has('Small Key (Water Temple)', 5) and (item_name(state, 'Water Temple Boss Key Chest') == 'Small Key (Water Temple)' or not (world.keys_placed or item_name(state, 'Water Temple Boss Key Chest') == 'Boss Key (Water Temple)')))) #If key for key, this lets the logic reduce the small key reqs for every other locked door.
     set_rule(world.get_location('Water Temple Cracked Wall Chest'), lambda state: state.has_explosives())
     set_rule(world.get_location('Water Temple Dark Link Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and (state.can_play('Zeldas Lullaby') or world.keysanity))
     set_rule(world.get_location('Water Temple River Chest'), lambda state: state.has('Small Key (Water Temple)', 6) and state.can_play('Song of Time') and state.has_bow() and (state.can_play('Zeldas Lullaby') or world.keysanity))
@@ -649,7 +649,7 @@ def dung_rules_wtmq(world):
     set_rule(world.get_location('GS Water Temple MQ Lizalfos Hallway'), lambda state: state.can_use('Dins Fire'))
     set_rule(world.get_location('GS Water Temple MQ Before Upper Water Switch'), lambda state: state.can_use('Longshot'))
     set_rule(world.get_location('GS Water Temple MQ South Basement'), lambda state: state.can_use('Fire Arrows'))
-    set_rule(world.get_location('GS Water Temple MQ North Basement'), lambda state: state.has('Small Key (Water Temple)', 2) or ((item_name(state, 'GS Water Temple MQ North Basement') == 'Small Key (Water Temple)' or not world.keys_placed) and state.has('Small Key (Water Temple)')))
+    set_rule(world.get_location('GS Water Temple MQ North Basement'), lambda state: state.has('Small Key (Water Temple)', 2) or ((item_name(state, 'GS Water Temple MQ North Basement') == 'Small Key (Water Temple)' or not (world.keys_placed or item_name(state, 'GS Water Temple MQ North Basement') == 'Boss Key (Water Temple)')) and state.has('Small Key (Water Temple)')))
 
 # Spirit Temple Vanilla
 def dung_rules_spt0(world):
