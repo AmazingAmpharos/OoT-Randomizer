@@ -345,9 +345,6 @@ def global_rules(world):
         add_item_rule(location, lambda i: not (i.type == 'Song' and not i.world.shuffle_song_items and i.world.id != location.world.id))
         add_item_rule(location, lambda i: not (i.type == 'Shop' and i.world.id != location.world.id))
         if location.type == 'Shop':
-            forbid_item(location, 'Biggoron Sword')
-            forbid_item(location, 'Gold Skulltulla Token')
-
             if location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
                 if not world.check_beatable_only:
                     forbid_item(location, 'Buy Goron Tunic')
@@ -359,12 +356,6 @@ def global_rules(world):
                     set_rule(location, lambda state: state.has('Progressive Wallet', 2))
                 elif location.price > 99:
                     set_rule(location, lambda state: state.has('Progressive Wallet'))
-
-    # Biggoron Sword at bombchu bowling seems to lead to a soft lock.
-    # Unsure what causes this, but I'm leaving this to original devs.
-    # For now just avoiding this combination, since BigSword is not that important.
-    forbid_item(world.get_location('Bombchu Bowling Bomb Bag'), 'Biggoron Sword')
-    forbid_item(world.get_location('Bombchu Bowling Piece of Heart'), 'Biggoron Sword')
 
 
 # This function should be ran once after the shop items are placed in the world.
