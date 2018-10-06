@@ -891,11 +891,14 @@ def create_regions(world):
         world.regions.extend([
             create_dungeon_region(
                 'Ganons Castle Lobby', 
-                ['GC MQ Deku Scrub Bombs', 'GC MQ Deku Scrub Arrows', 'GC MQ Deku Scrub Red Potion', 'GC MQ Deku Scrub Green Potion',
-                 'GC MQ Deku Scrub Deku Nuts'],
+                None,
                 ['Ganons Castle Exit', 'Ganons Castle Forest Trial', 'Ganons Castle Fire Trial', 'Ganons Castle Water Trial', 
                  'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 
-                 'Ganons Castle Tower']),            
+                 'Ganons Castle Tower', 'Ganons Castle Deku Scrubs']),            
+            create_dungeon_region(
+                'Ganons Castle Deku Scrubs', 
+                ['GC MQ Deku Scrub Bombs', 'GC MQ Deku Scrub Arrows', 'GC MQ Deku Scrub Red Potion', 'GC MQ Deku Scrub Green Potion',
+                 'GC MQ Deku Scrub Deku Nuts']),
             create_dungeon_region(
                 'Ganons Castle Forest Trial', 
                 ['Ganons Castle MQ Forest Trial First Chest', 'Ganons Castle MQ Forest Trial Second Chest', 
@@ -924,10 +927,13 @@ def create_regions(world):
         world.regions.extend([
             create_dungeon_region(
                 'Ganons Castle Lobby', 
-                ['GC Deku Scrub Bombs', 'GC Deku Scrub Arrows', 'GC Deku Scrub Red Potion', 'GC Deku Scrub Green Potion'],
+                None,
                 ['Ganons Castle Exit', 'Ganons Castle Forest Trial', 'Ganons Castle Fire Trial', 'Ganons Castle Water Trial', 
                  'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 
-                 'Ganons Castle Tower']),            
+                 'Ganons Castle Tower', 'Ganons Castle Deku Scrubs']),            
+            create_dungeon_region(
+                'Ganons Castle Deku Scrubs', 
+                ['GC Deku Scrub Bombs', 'GC Deku Scrub Arrows', 'GC Deku Scrub Red Potion', 'GC Deku Scrub Green Potion']),
             create_dungeon_region(
                 'Ganons Castle Forest Trial', 
                 ['Ganons Castle Forest Trial Chest', 'Ganons Castle Forest Trial Clear']),

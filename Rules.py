@@ -888,6 +888,7 @@ def dung_rules_gc0(world):
     set_rule(world.get_location('Ganons Castle Light Trial Clear'), lambda state: state.can_use('Light Arrows') and state.has('Progressive Hookshot') and state.has('Small Key (Ganons Castle)', 2))
     set_rule(world.get_location('Ganons Castle Light Trail Invisible Enemies Chest'), lambda state: state.can_see_with_lens())
     set_rule(world.get_location('Ganons Castle Light Trial Lullaby Chest'), lambda state: state.can_play('Zeldas Lullaby') and state.has('Small Key (Ganons Castle)', 1))
+    set_rule(world.get_entrance('Ganons Castle Deku Scrubs'), lambda state: state.can_see_with_lens())
 
 # Ganon's Castle MQ
 def dung_rules_gcmq(world):
@@ -912,3 +913,4 @@ def dung_rules_gcmq(world):
     set_rule(world.get_location('Ganons Castle Spirit Trial Clear'), lambda state: state.can_use('Light Arrows') and state.has('Hammer') and state.has_bombchus() and state.has('Fire Arrows') and state.has('Mirror Shield'))
     set_rule(world.get_location('Ganons Castle MQ Light Trial Lullaby Chest'), lambda state: state.can_play('Zeldas Lullaby'))
     set_rule(world.get_location('Ganons Castle Light Trial Clear'), lambda state: state.can_use('Light Arrows') and state.has('Progressive Hookshot') and state.has('Small Key (Ganons Castle)', 3))
+    set_rule(world.get_entrance('Ganons Castle Deku Scrubs'), lambda state: state.can_see_with_lens())
