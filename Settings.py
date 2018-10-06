@@ -467,6 +467,11 @@ setting_infos = [
                       dungeon similar in value instaed
                       of valued based on chest count.
 
+                      Spirit Temple Colossus hands count
+                      as part of the dungeon. Spirit
+                      Temple has TWO items to match
+                      vanilla distribution.
+
                       Dungeon items and GS Tokens do
                       not count as major items.
                       ''',

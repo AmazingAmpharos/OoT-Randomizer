@@ -1869,7 +1869,7 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
             shuffle_messages.shop_item_messages.extend(
                 [shop_item.description_message, shop_item.purchase_message])
 
-            if location.item.dungeonitem:
+            if location.item.dungeonitem or location.item.type == 'FortressSmallKey':
                 split_item_name = location.item.name.split('(')
                 split_item_name[1] = '(' + split_item_name[1]
                 if world.world_count > 1:

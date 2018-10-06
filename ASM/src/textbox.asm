@@ -1,3 +1,27 @@
+get_name_char_1:
+   addiu sp, sp, -0x10
+   sw    ra, 0x08 (sp)
+
+   jal   get_name_char
+   addi  a0, s3, -1
+
+   ori   t2, v0, 0
+   lw    ra, 0x08 (sp)
+   addiu sp, sp, 0x10
+
+
+get_name_char_2:
+   addiu sp, sp, -0x10
+   sw    ra, 0x08 (sp)
+
+   jal   get_name_char
+   ori   a0, s2, 0
+
+   ori   s0, v0, 0
+   lw    ra, 0x08 (sp)
+   addiu sp, sp, 0x10
+
+
 ; a0 = char index into name
 get_name_char:
    li    t0, PLAYER_NAME_ID
