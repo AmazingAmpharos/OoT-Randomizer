@@ -5,7 +5,9 @@ import urllib.request
 from urllib.error import URLError, HTTPError
 import re
 from version import __version__
-from random import choice as random_choice
+import random
+import itertools
+import bisect
 
 def is_bundled():
     return getattr(sys, 'frozen', False)
@@ -82,9 +84,7 @@ def check_version(checked_version):
     except (URLError, HTTPError) as e:
         logger.warning("Could not fetch latest version: " + str(e))
 
-# Shim for the sole purpose of maintaining compatibility with older versions of
-# Python 3. Note: cum weights, as well as fractional weights are unimplemented,
-# as neither were used elsewhere at the time of writing.
+# Shim for the sole purpose of maintaining compatibility with older versions of Python 3.
 def random_choices(population, weights=None, k=1):
     pop_size = len(population)
     if (weights is None):
@@ -92,13 +92,11 @@ def random_choices(population, weights=None, k=1):
     else:
         assert (pop_size == len(weights)), "population and weights mismatch"
 
-    weighted_pop = []
-    for i in range(pop_size):
-        for each in range(weights[i]):
-            weighted_pop.append(population[i])
+    CDF = list(itertools.accumulate(weights))
 
     result = []
     for i in range(k):
-        result.append(random_choice(weighted_pop))
+        x = random.random() * CDF[-1]
+        result.append(population[bisect.bisect(CDF, x)])
 
     return result
