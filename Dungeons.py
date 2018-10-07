@@ -184,7 +184,8 @@ def create_dungeons(world):
         GC = make_dungeon(
             'Ganons Castle', 
             ['Ganons Castle Lobby', 'Ganons Castle Forest Trial', 'Ganons Castle Fire Trial', 'Ganons Castle Water Trial', 
-             'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 'Ganons Castle Tower'], 
+             'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 'Ganons Castle Tower',
+             'Ganons Castle Deku Scrubs'], 
             ItemFactory('Boss Key (Ganons Castle)'), 
             ItemFactory(['Small Key (Ganons Castle)'] * 3), 
             [])
@@ -192,7 +193,8 @@ def create_dungeons(world):
         GC = make_dungeon(
             'Ganons Castle', 
             ['Ganons Castle Lobby', 'Ganons Castle Forest Trial', 'Ganons Castle Fire Trial', 'Ganons Castle Water Trial', 
-             'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 'Ganons Castle Tower'], 
+             'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 'Ganons Castle Tower',
+             'Ganons Castle Deku Scrubs'], 
             ItemFactory('Boss Key (Ganons Castle)'), 
             ItemFactory(['Small Key (Ganons Castle)'] * 2), 
             [])
