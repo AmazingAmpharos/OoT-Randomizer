@@ -1510,80 +1510,48 @@ def patch_rom(world, rom):
                     color = color + [0xFF] + color + [0x00] 
             rom.write_bytes(Navi[i][j], color)
 
-    #Navi hints
-    NaviHint = []
-    NaviHint.append([0xAE7EF2, 0xC26C7E]) #Overworld Hint
-    NaviHint.append([0xAE7EC6]) #Enemy Target Hint
-    naviHintSFXList = ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Navi - Random', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
-    randomNaviHintSFX = random_choices(naviHintSFXList, k=2)
+    SFXTable = { 
+        'None'          : 0x0000,
+        'Cluck'         : 0x2812,
+        'Rupee'         : 0x4803, 
+        'Softer Beep'   : 0x4804,
+        'Recovery Heart': 0x480B, 
+        'Timer'         : 0x481A,  
+        'Low Health'    : 0x481B,
+        'Notification'  : 0x4820, 
+        'Tamborine'     : 0x4842, 
+        'Carrot Refill' : 0x4845, 
+        'Navi - Random' : 0x6843, 
+        'Navi - Hey!'   : 0x685F, 
+        'Zelda - Gasp'  : 0x6879, 
+        'Mweep!'        : 0x687A }
+
+    SFXList = list(SFXTable.keys())
+
+    #Configurable Sound Effects
+    NaviHint = [
+        [0xAE7EF2, 0xC26C7E],   #Navi Overworld Hint (0x685F)
+        [0xAE7EC6]]             #Navi Enemy Target Hint (0x6843)
     
     for i in range(len(NaviHint)):
+        randomSFX = random.choice(SFXList)
         for j in range(len(NaviHint[i])):
-            thisNaviHintSFX = world.navi_hint_sounds[i]
-            if thisNaviHintSFX == 'Random Choice':
-                thisNaviHintSFX = randomNaviHintSFX[i]
-            if thisNaviHintSFX == 'Notification':
-                naviHintSFX = [0x48, 0x20]
-            elif thisNaviHintSFX == 'Rupee':
-                naviHintSFX = [0x48, 0x03]
-            elif thisNaviHintSFX == 'Timer':
-                naviHintSFX = [0x48, 0x1A]
-            elif thisNaviHintSFX == 'Tamborine':
-                naviHintSFX = [0x48, 0x42]
-            elif thisNaviHintSFX == 'Recovery Heart':
-                naviHintSFX = [0x48, 0x0B]
-            elif thisNaviHintSFX == 'Carrot Refill':
-                naviHintSFX = [0x48, 0x45]
-            elif thisNaviHintSFX == 'Navi - Hey!':
-                naviHintSFX = [0x68, 0x5F]
-            elif thisNaviHintSFX == 'Navi - Random':
-                naviHintSFX = [0x68, 0x43]
-            elif thisNaviHintSFX == 'Zelda - Gasp':
-                naviHintSFX = [0x68, 0x79]
-            elif thisNaviHintSFX == 'Cluck':
-                naviHintSFX = [0x28, 0x12]
-            elif thisNaviHintSFX == 'Mweep!':
-                naviHintSFX = [0x68, 0x7A]
-            elif thisNaviHintSFX == 'None':
-                naviHintSFX = [0x00, 0x00]
-            if thisNaviHintSFX != 'Default':
-                rom.write_bytes(NaviHint[i][j], naviHintSFX)
+            thisSFX = world.navi_hint_sounds[i]
+            if thisSFX == 'Random Choice':
+                thisSFX = randomSFX
 
-    #Low health beep
-    healthSFXList = ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'None']
-    randomSFX = random.choice(healthSFXList)
-    address = 0xADBA1A
+            if thisSFX != 'Default':
+                rom.write_int16(NaviHint[i][j], SFXTable[thisSFX])
+
+    # Low Health Beep (0x481B)
+    randomSFX = random.choice(SFXList)
     
-    if world.healthSFX == 'Random Choice':
-        thisHealthSFX = randomSFX
-    else:
-        thisHealthSFX = world.healthSFX
-    if thisHealthSFX == 'Default':
-        healthSFX = [0x48, 0x1B]
-    elif thisHealthSFX == 'Softer Beep':
-        healthSFX = [0x48, 0x04]
-    elif thisHealthSFX == 'Rupee':
-        healthSFX = [0x48, 0x03]
-    elif thisHealthSFX == 'Timer':
-        healthSFX = [0x48, 0x1A]
-    elif thisHealthSFX == 'Tamborine':
-        healthSFX = [0x48, 0x42]
-    elif thisHealthSFX == 'Recovery Heart':
-        healthSFX = [0x48, 0x0B]
-    elif thisHealthSFX == 'Carrot Refill':
-        healthSFX = [0x48, 0x45]
-    elif thisHealthSFX == 'Navi - Hey!':
-        healthSFX = [0x68, 0x5F]
-    elif thisHealthSFX == 'Zelda - Gasp':
-        healthSFX = [0x68, 0x79]
-    elif thisHealthSFX == 'Cluck':
-        healthSFX = [0x28, 0x12]
-    elif thisHealthSFX == 'Mweep!':
-        healthSFX = [0x68, 0x7A]
-    elif thisHealthSFX == 'None':
-        healthSFX = [0x00, 0x00, 0x00, 0x00]
-        address = 0xADBA14
-    rom.write_bytes(address, healthSFX)
+    thisSFX = world.healthSFX
+    if thisSFX == 'Random Choice':
+        thisSFX = randomSFX
+
+    if thisSFX != 'Default':
+        rom.write_int16(0xADBA1A, SFXTable[thisSFX])
         
     return rom
 
