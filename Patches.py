@@ -1528,30 +1528,18 @@ def patch_rom(world, rom):
 
     SFXList = list(SFXTable.keys())
 
-    #Configurable Sound Effects
-    NaviHint = [
-        [0xAE7EF2, 0xC26C7E],   #Navi Overworld Hint (0x685F)
-        [0xAE7EC6]]             #Navi Enemy Target Hint (0x6843)
-    
-    for i in range(len(NaviHint)):
-        randomSFX = random.choice(SFXList)
-        for j in range(len(NaviHint[i])):
-            thisSFX = world.navi_hint_sounds[i]
-            if thisSFX == 'Random Choice':
-                thisSFX = randomSFX
+    # Configurable Sound Effects
+    sound_addresses = [
+        (world.navisfxoverworld, [0xAE7EF2, 0xC26C7E]), # Navi Overworld Hint (0x685F)
+        (world.navisfxenemytarget, [0xAE7EC6]),         # Navi Enemy Target Hint (0x6843)
+        (world.healthSFX, [0xADBA1A])]                  # Low Health Beep (0x481B)
 
-            if thisSFX != 'Default':
-                rom.write_int16(NaviHint[i][j], SFXTable[thisSFX])
-
-    # Low Health Beep (0x481B)
-    randomSFX = random.choice(SFXList)
-    
-    thisSFX = world.healthSFX
-    if thisSFX == 'Random Choice':
-        thisSFX = randomSFX
-
-    if thisSFX != 'Default':
-        rom.write_int16(0xADBA1A, SFXTable[thisSFX])
+    for thisSFX, addresses in sound_addresses:
+        if thisSFX == 'Random Choice':
+            thisSFX = random.choice(SFXList)
+        if thisSFX != 'Default':
+            for address in addresses:
+                rom.write_int16(address, SFXTable[thisSFX])
         
     return rom
 
