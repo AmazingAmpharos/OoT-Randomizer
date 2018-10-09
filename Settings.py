@@ -793,6 +793,26 @@ setting_infos = [
                       are all reduced to 10 Rupees.
                       '''
         }),    
+    Setting_Info('hard_scrubs', bool, 1, True,
+        {
+            'help': '''\
+                    If this is checked, the deku scrub prices
+                    will be their default amount as shown in
+                    the text box.
+                    ''',
+            'action': 'store_true'
+        }
+        {
+            'text': 'Harder Scrub Shuffle'
+            'group' 'logic',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      With this option checked, the prices of
+                      deku scrub items will not be lowered,
+                      requiring more rupees to be obtained.
+                      '''
+        }),
     Setting_Info('shopsanity', str, 3, True, 
         {
             'default': 'off',
