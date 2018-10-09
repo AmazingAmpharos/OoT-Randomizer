@@ -803,7 +803,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Harder Scrub Shuffle'
+            'text': 'Harder Scrub Shuffle',
             'group': 'logic',
             'widget': 'Checkbutton',
             'default': 'unchecked',
