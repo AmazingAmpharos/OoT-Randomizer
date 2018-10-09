@@ -1285,8 +1285,10 @@ def patch_rom(world, rom):
         scrub_items = [0x30, 0x31, 0x3E, 0x33, 0x34, 0x37, 0x38, 0x39, 0x3A, 0x77, 0x79]
         rom.seek_address(0xDF8684)
         for scrub_item in scrub_items:
-            if not world.hard_scrubs:
-                rom.write_int16(None, 10)         # Price
+            if world.hard_scrubs:
+                rom.read_int16(None)          # skip Price
+            else:
+                rom.write_int16(None, 10)     # Price
             rom.write_int16(None, 1)          # Count
             rom.write_int32(None, scrub_item) # Item
             rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func
