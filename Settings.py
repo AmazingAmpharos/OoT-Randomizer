@@ -807,6 +807,7 @@ setting_infos = [
             'group': 'logic',
             'widget': 'Checkbutton',
             'default': 'unchecked',
+            'dependency': lambda guivar: guivar['shuffle_scrubs'].get() == 'checked',
             'tooltip':'''\
                       With this option checked, the prices of
                       deku scrub items will not be lowered,
