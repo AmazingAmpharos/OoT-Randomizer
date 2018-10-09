@@ -1286,7 +1286,7 @@ def patch_rom(world, rom):
         rom.seek_address(0xDF8684)
         for scrub_item in scrub_items:
             if world.hard_scrubs:
-                rom.read_int16(None)          # skip Price
+                rom.read_int16(rom.last_address)          # skip Price
             else:
                 rom.write_int16(None, 10)     # Price
             rom.write_int16(None, 1)          # Count
