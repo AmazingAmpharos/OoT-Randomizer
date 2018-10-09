@@ -1287,11 +1287,10 @@ def patch_rom(world, rom):
         for scrub_item in scrub_items:
             if not world.hard_scrubs:
                 rom.write_int16(None, 10)         # Price
-            else:
-                rom.write_int16(None, 1)          # Count
-                rom.write_int32(None, scrub_item) # Item
-                rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func
-                rom.write_int32(None, 0x80A75354) # Buy_Func
+            rom.write_int16(None, 1)          # Count
+            rom.write_int32(None, scrub_item) # Item
+            rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func
+            rom.write_int32(None, 0x80A75354) # Buy_Func
 
         # update actor IDs
         set_deku_salesman_data(rom)
