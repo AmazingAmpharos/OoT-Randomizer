@@ -804,7 +804,7 @@ setting_infos = [
         },
         {
             'text': 'Harder Scrub Shuffle'
-            'group' 'logic',
+            'group': 'logic',
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
