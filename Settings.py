@@ -801,7 +801,7 @@ setting_infos = [
                     the text box.
                     ''',
             'action': 'store_true'
-        }
+        },
         {
             'text': 'Harder Scrub Shuffle'
             'group' 'logic',
