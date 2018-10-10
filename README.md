@@ -468,6 +468,8 @@ This setting allows a huge number of minor tricks to be allowed by the logic. He
 -A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltulla on some vines in standad Deku Tree.  
 -The Bow can be used to knock down the stairs in Dodongo's Cavern with two well timed shots.  
 -The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with the standard Hookshot.  
+-The well in Forest Temple can be crossed with just Hookshot by shooting as low as possible on the vines from the far side and swimming under
+the ceiling. This is possible in both versions but can only be required in Forest Temple MQ.  
 -A Bombchu from the ground level can be used to hit the switch to bypass the block pushing puzzle in Forest Temple MQ.  
 -A rusted switch under a Song of Time block in the standard Fire Temple can be hit by using Hammer into the block.  
 -The location with the Boss Key chest in Fire Temple MQ can be reached without the Bow with very particular use of Din's Fire.  
@@ -476,6 +478,7 @@ This setting allows a huge number of minor tricks to be allowed by the logic. He
 -The frozen switch in Spirit Temple MQ can be hit without a fire source by using the Bow and Song of Time very cleverly.  
 -The chest in the basement of the standard Bottom of the Well can be reached with only a Strength Upgrade by using a jump slash with a lit
 Deku Stick to access the bomb flowers in the basement.  
+-The silver rupees on the left side of Gerudo Training Grounds MQ can be collected with just Hookshot with a somewhat particular jump slash.  
 -The first room of the Spirit Trail in Ganon's Castle MQ can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
 through the thrones.  
 -The Gold Skulltulla in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.  
