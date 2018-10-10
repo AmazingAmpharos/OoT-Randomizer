@@ -774,46 +774,56 @@ setting_infos = [
                       effectively the Boss Key of Gerudo Fortress.
                       '''
         }),
-    Setting_Info('shuffle_scrubs', bool, 1, True, 
+    Setting_Info('shuffle_scrubs', str, 3, True, 
         {
+            'default': 'off',
+            'const': 'off',
+            'nargs': '?',
             'help': '''\
-                    All Deku Scrub Salesmen will give a random item.
-                    ''',
-            'action': 'store_true'
+                    Deku Scrub Salesmen are randomized:
+                    off:        Only the 3 Scrubs that give actual items in
+                                the vanilla game will have random items.
+                    low:        All Scrubs will have random items and their 
+                                prices will be reduced to 10 rupees each.
+                    regular:    All Scrubs will have random items and each 
+                                of them will demand their vanilla prices.
+                    random:     All Scrubs will have random items and their 
+                                price will also be random between 10-99 rupees.
+                    '''
         },
         {
-            'text': 'Shuffle Deku Salescrubs',
+            'text': 'Scrub Shuffle',
             'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
+            'widget': 'Combobox',
+            'default': 'Off',
+            'options': {
+                'Off': 'off',
+                'Low Prices': 'low',
+                'Regular Prices': 'regular',
+                'Random Prices': 'random',
+            },
             'tooltip':'''\
-                      Each Deku Scrub Salesman will give
-                      a random item. Vanilla OoT has 36
-                      Deku Scrub Salesmen. The prices
-                      are all reduced to 10 Rupees.
+                      Select how you want Deku Scrub Salesmen
+                      to be shuffled:
+                      
+                      'Off': Only the 3 Scrubs that give actual
+                      items in the vanilla game (PoH, nut
+                      capacity, and stick capacity) will have
+                      random items.
+
+                      'Low Prices': All Scrubs will have random
+                      items, but their prices will be reduced
+                      to 10 rupees each.
+
+                      'Regular Prices': All Scrubs will have
+                      random items and each of them will demand
+                      their vanilla prices.
+
+                      'Random Prices': All Scrubs will have
+                      random items, and their price will also
+                      be random between 10-99 rupees.
                       '''
-        }),    
-    Setting_Info('hard_scrubs', bool, 1, True,
-        {
-            'help': '''\
-                    If this is checked, the deku scrub prices
-                    will be their default amount as shown in
-                    the text box.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Harder Scrub Shuffle',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'dependency': lambda guivar: guivar['shuffle_scrubs'].get(),
-            'tooltip':'''\
-                      With this option checked, the prices of
-                      deku scrub items will not be lowered,
-                      requiring more rupees to be obtained.
-                      '''
-        }),
+        }),  
     Setting_Info('shopsanity', str, 3, True, 
         {
             'default': 'off',
