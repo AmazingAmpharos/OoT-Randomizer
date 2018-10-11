@@ -1,4 +1,5 @@
 #include "dungeon_info.h"
+#include "file_select.h"
 #include "gfx.h"
 #include "text.h"
 #include "util.h"

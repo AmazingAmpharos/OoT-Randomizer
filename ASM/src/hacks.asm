@@ -165,6 +165,19 @@
     jal     after_game_state_update
     nop
 
+; Runs after the file select menu is rendered
+; Replaces: code that draws the fade-out rectangle on file load
+.org 0xBAF738 ; In memory: 0x803B3580
+.area 0x60, 0
+    jal     draw_file_select_hash
+    andi    a0, t8, 0xFF ; a0 = alpha channel of fade-out rectangle
+
+    lw      s0, 0x18 (sp)
+    lw      ra, 0x1C (sp)
+    jr      ra
+    addiu   sp, sp, 0x88
+.endarea
+
 ;==================================================================================================
 ; Special item sources
 ;==================================================================================================
