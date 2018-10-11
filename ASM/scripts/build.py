@@ -61,7 +61,7 @@ with open('build/asm_symbols.txt', 'r') as f:
         address, sym_name = parts
         if address[0] != '8':
             continue
-        if sym_name[0] == '.':
+        if sym_name[0] in ['.', '@']:
             continue
         sym_type = c_sym_types.get(sym_name) or ('data' if sym_name.isupper() else 'code')
         symbols[sym_name] = {
