@@ -20,8 +20,13 @@ sprite_t medals_sprite = {
     G_IM_FMT_IA, G_IM_SIZ_8b, 1
 };
 
+sprite_t items_sprite = {
+    NULL, 32, 32, 90,
+    G_IM_FMT_RGBA, G_IM_SIZ_32b, 4
+};
+
 sprite_t quest_items_sprite = {
-    NULL, 24, 24, 18,
+    NULL, 24, 24, 20,
     G_IM_FMT_RGBA, G_IM_SIZ_32b, 4
 };
 
@@ -99,17 +104,23 @@ extern char FONT_TEXTURE;
 
 void gfx_init() {
     file_t title_static = {
-        NULL, 0x01A02000, 0x395C0
+        NULL, z64_file_select_static_vaddr, z64_file_select_static_vsize
     };
     file_init(&title_static);
 
     file_t icon_item_24_static = {
-        NULL, 0x00846000, 0xB400
+        NULL, z64_icon_item_24_static_vaddr, z64_icon_item_24_static_vsize
     };
     file_init(&icon_item_24_static);
 
+    file_t icon_item_static = {
+        NULL, z64_icon_item_static_vaddr, z64_icon_item_static_vsize
+    };
+    file_init(&icon_item_static);
+
     stones_sprite.buf = title_static.buf + 0x2A300;
     medals_sprite.buf = title_static.buf + 0x2980;
+    items_sprite.buf = icon_item_static.buf;
     quest_items_sprite.buf = icon_item_24_static.buf;
 
     int font_bytes = sprite_bytes(&font_sprite);

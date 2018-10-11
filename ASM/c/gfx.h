@@ -17,6 +17,7 @@ typedef struct {
 
 sprite_t stones_sprite;
 sprite_t medals_sprite;
+sprite_t items_sprite;
 sprite_t quest_items_sprite;
 sprite_t font_sprite;
 
