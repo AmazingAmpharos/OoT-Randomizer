@@ -788,8 +788,7 @@ class Location(object):
         self.price = None
 
     def can_fill(self, state, item, check_access=True):
-        return self.always_allow(item, self) or (self.parent_region.can_fill(item) and self.item_rule(item) and (not check_access or self.can_reach(state)))
-
+        return self.parent_region.can_fill(item) and (self.always_allow(item, state) or (self.item_rule(item) and (not check_access or state.can_reach(self))))
     def can_fill_fast(self, item):
         return self.item_rule(item)
 
