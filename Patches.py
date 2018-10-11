@@ -1299,9 +1299,11 @@ def patch_rom(world, rom):
             if world.shuffle_scrubs == 'low': 
                 rom.write_int16(None, 10)
             elif world.shuffle_scrubs == 'random':
-                rom.write_int16(None, random.randrange(10, 100))
-            else:
-                rom.read_int16(rom.last_address) # just read instead of overwriting for regular
+                # this is a random value between 0-99
+                # average value is ~33 rupees
+                rom.write_int16(None, int(random.betavariate(1, 2) * 99))
+            else: # leave default price
+                rom.read_int16(None)
             rom.write_int16(None, 1)          # Count
             rom.write_int32(None, scrub_item) # Item
             rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func

@@ -798,30 +798,28 @@ setting_infos = [
             'default': 'Off',
             'options': {
                 'Off': 'off',
-                'Low Prices': 'low',
-                'Regular Prices': 'regular',
-                'Random Prices': 'random',
+                'On (Affordable)': 'low',
+                'On (Expensive)': 'regular',
+                'On (Random Prices)': 'random',
             },
             'tooltip':'''\
-                      Select how you want Deku Scrub Salesmen
-                      to be shuffled:
-                      
-                      'Off': Only the 3 Scrubs that give actual
+                      'Off': Only the 3 Scrubs that give unique
                       items in the vanilla game (PoH, nut
                       capacity, and stick capacity) will have
                       random items.
 
-                      'Low Prices': All Scrubs will have random
-                      items, but their prices will be reduced
-                      to 10 rupees each.
+                      'Affordable': All Scrub prices will be
+                      reduced to 10 rupees each.
 
-                      'Regular Prices': All Scrubs will have
-                      random items and each of them will demand
-                      their vanilla prices.
+                      'Expensive': All Scrub prices will be 
+                      their vanilla prices. This will require
+                      spending over 1000 rupees on Scrubs.
 
-                      'Random Prices': All Scrubs will have
-                      random items, and their price will also
-                      be random between 10-99 rupees.
+                      'Random Prices': All Scrub prices will be
+                      between 0-99 rupees. This will require
+                      spending over 1000 rupees on Scrubs.
+
+                      The texts of the Scrubs are not updated.
                       '''
         }),  
     Setting_Info('shopsanity', str, 3, True, 
