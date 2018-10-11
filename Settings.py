@@ -774,25 +774,54 @@ setting_infos = [
                       effectively the Boss Key of Gerudo Fortress.
                       '''
         }),
-    Setting_Info('shuffle_scrubs', bool, 1, True, 
+    Setting_Info('shuffle_scrubs', str, 3, True, 
         {
+            'default': 'off',
+            'const': 'off',
+            'nargs': '?',
             'help': '''\
-                    All Deku Scrub Salesmen will give a random item.
-                    ''',
-            'action': 'store_true'
+                    Deku Scrub Salesmen are randomized:
+                    off:        Only the 3 Scrubs that give actual items in
+                                the vanilla game will have random items.
+                    low:        All Scrubs will have random items and their 
+                                prices will be reduced to 10 rupees each.
+                    regular:    All Scrubs will have random items and each 
+                                of them will demand their vanilla prices.
+                    random:     All Scrubs will have random items and their 
+                                price will also be random between 10-99 rupees.
+                    '''
         },
         {
-            'text': 'Shuffle Deku Salescrubs',
+            'text': 'Scrub Shuffle',
             'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
+            'widget': 'Combobox',
+            'default': 'Off',
+            'options': {
+                'Off': 'off',
+                'On (Affordable)': 'low',
+                'On (Expensive)': 'regular',
+                'On (Random Prices)': 'random',
+            },
             'tooltip':'''\
-                      Each Deku Scrub Salesman will give
-                      a random item. Vanilla OoT has 36
-                      Deku Scrub Salesmen. The prices
-                      are all reduced to 10 Rupees.
+                      'Off': Only the 3 Scrubs that give unique
+                      items in the vanilla game (PoH, nut
+                      capacity, and stick capacity) will have
+                      random items.
+
+                      'Affordable': All Scrub prices will be
+                      reduced to 10 rupees each.
+
+                      'Expensive': All Scrub prices will be 
+                      their vanilla prices. This will require
+                      spending over 1000 rupees on Scrubs.
+
+                      'Random Prices': All Scrub prices will be
+                      between 0-99 rupees. This will require
+                      spending over 1000 rupees on Scrubs.
+
+                      The texts of the Scrubs are not updated.
                       '''
-        }),    
+        }),  
     Setting_Info('shopsanity', str, 3, True, 
         {
             'default': 'off',

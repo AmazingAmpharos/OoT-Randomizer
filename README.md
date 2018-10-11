@@ -945,10 +945,10 @@ Treat the ocarina songs as normal items and shuffle them into the general item p
 Include the Gerudo Card to access Gerudo Training Grounds as a randomized item (default: False)
 
 ```
---shuffle_scrubs
+--shuffle_scrubs [{off,low,regular,random}]
 ```
 
-Include all Deku Scrub Salesmen as randomized item locations (default: False)
+Include all Deku Scrub Salesmen as randomized item and determine their prices (default: off)
 
 ```
 --shopsanity [{off,0,1,2,3,4,random}]
