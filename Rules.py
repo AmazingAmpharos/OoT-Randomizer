@@ -572,7 +572,7 @@ def global_rules(world):
     set_rule(
         world.get_location('GS Lost Woods Bean Patch Near Stage'),
         lambda state: state.has_bottle() and
-                      (state.can_child_attack() or (not world.shuffle_scrubs and state.has('Buy Deku Shield'))) and
+                      (state.can_child_attack() or (world.shuffle_scrubs == 'off' and state.has('Buy Deku Shield'))) and
                       (state.can_leave_forest() or
                         state.has('Kokiri Sword') or
                         state.has_sticks() or

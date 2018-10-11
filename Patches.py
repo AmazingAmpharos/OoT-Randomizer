@@ -1280,20 +1280,7 @@ def patch_rom(world, rom):
     rom.write_int32(0x2DD802C, 0x03006A40)
     rom.write_int16s(0x2DDEA40, list(shop_objs))
 
-    if world.shuffle_scrubs:
-        # Rebuild Deku Salescrub Item Table
-        scrub_items = [0x30, 0x31, 0x3E, 0x33, 0x34, 0x37, 0x38, 0x39, 0x3A, 0x77, 0x79]
-        rom.seek_address(0xDF8684)
-        for scrub_item in scrub_items:
-            rom.write_int16(None, 10)         # Price
-            rom.write_int16(None, 1)          # Count
-            rom.write_int32(None, scrub_item) # Item
-            rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func
-            rom.write_int32(None, 0x80A75354) # Buy_Func
-
-        # update actor IDs
-        set_deku_salesman_data(rom)
-    else:
+    if world.shuffle_scrubs == 'off':
         # Revert Deku Scrubs changes
         rom.write_int32s(0xEBB85C, [
             0x24010002, # addiu at, zero, 2
@@ -1303,6 +1290,25 @@ def patch_rom(world, rom):
             0x94790EF0])# lhu t9, 0xef0(v1)
         rom.write_int32(0xDF7CB0,
             0xA44F0EF0)  # sh t7, 0xef0(v0)
+    else:
+        # Rebuild Deku Salescrub Item Table
+        scrub_items = [0x30, 0x31, 0x3E, 0x33, 0x34, 0x37, 0x38, 0x39, 0x3A, 0x77, 0x79]
+        rom.seek_address(0xDF8684)
+        for scrub_item in scrub_items:
+            # Price
+            if world.shuffle_scrubs == 'low': 
+                rom.write_int16(None, 10)
+            elif world.shuffle_scrubs == 'random':
+                rom.write_int16(None, random.randrange(10, 100))
+            else:
+                rom.read_int16(rom.last_address) # just read instead of overwriting for regular
+            rom.write_int16(None, 1)          # Count
+            rom.write_int32(None, scrub_item) # Item
+            rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func
+            rom.write_int32(None, 0x80A75354) # Buy_Func
+
+        # update actor IDs
+        set_deku_salesman_data(rom)
 
     # Update grotto id data
     set_grotto_id_data(rom)
