@@ -84,10 +84,14 @@ class LocalRom(object):
         self.last_address = address
 
     def read_byte(self, address):
+        if address == None:
+            address = self.last_address
         self.last_address = address + 1
         return self.buffer[address]
 
     def read_bytes(self, address, len):
+        if address == None:
+            address = self.last_address
         self.last_address = address + len
         return self.buffer[address : address + len]
 

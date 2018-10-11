@@ -891,11 +891,14 @@ def create_regions(world):
         world.regions.extend([
             create_dungeon_region(
                 'Ganons Castle Lobby', 
-                ['GC MQ Deku Scrub Bombs', 'GC MQ Deku Scrub Arrows', 'GC MQ Deku Scrub Red Potion', 'GC MQ Deku Scrub Green Potion',
-                 'GC MQ Deku Scrub Deku Nuts'],
+                None,
                 ['Ganons Castle Exit', 'Ganons Castle Forest Trial', 'Ganons Castle Fire Trial', 'Ganons Castle Water Trial', 
                  'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 
-                 'Ganons Castle Tower']),            
+                 'Ganons Castle Tower', 'Ganons Castle Deku Scrubs']),            
+            create_dungeon_region(
+                'Ganons Castle Deku Scrubs', 
+                ['GC MQ Deku Scrub Bombs', 'GC MQ Deku Scrub Arrows', 'GC MQ Deku Scrub Red Potion', 'GC MQ Deku Scrub Green Potion',
+                 'GC MQ Deku Scrub Deku Nuts']),
             create_dungeon_region(
                 'Ganons Castle Forest Trial', 
                 ['Ganons Castle MQ Forest Trial First Chest', 'Ganons Castle MQ Forest Trial Second Chest', 
@@ -924,10 +927,13 @@ def create_regions(world):
         world.regions.extend([
             create_dungeon_region(
                 'Ganons Castle Lobby', 
-                ['GC Deku Scrub Bombs', 'GC Deku Scrub Arrows', 'GC Deku Scrub Red Potion', 'GC Deku Scrub Green Potion'],
+                None,
                 ['Ganons Castle Exit', 'Ganons Castle Forest Trial', 'Ganons Castle Fire Trial', 'Ganons Castle Water Trial', 
                  'Ganons Castle Shadow Trial', 'Ganons Castle Spirit Trial', 'Ganons Castle Light Trial', 
-                 'Ganons Castle Tower']),            
+                 'Ganons Castle Tower', 'Ganons Castle Deku Scrubs']),            
+            create_dungeon_region(
+                'Ganons Castle Deku Scrubs', 
+                ['GC Deku Scrub Bombs', 'GC Deku Scrub Arrows', 'GC Deku Scrub Red Potion', 'GC Deku Scrub Green Potion']),
             create_dungeon_region(
                 'Ganons Castle Forest Trial', 
                 ['Ganons Castle Forest Trial Chest', 'Ganons Castle Forest Trial Clear']),
@@ -994,8 +1000,8 @@ location_table = {
     'Composer Grave Chest': (0x332D0EA, None, 0x8020, 'Chest', 0x41, 'the Graveyard'),
     'Death Mountain Bombable Chest': (0x223C3CA, 0x223C7B2, 0x5AA1, 'Chest', 0x60, 'Death Mountain Trail'),
     'Goron City Leftmost Maze Chest': (0x227C23A, 0x227C70A, 0x5AC0, 'Chest', 0x62, 'Goron City'),
-    'Goron City Left Maze Chest': (0x227C24A, 0x227C71A, 0x5AA1, 'Chest', 0x62, 'Goron City'),
-    'Goron City Right Maze Chest': (0x227C25A, 0x227C72A, 0x5AA2, 'Chest', 0x62, 'Goron City'),
+    'Goron City Right Maze Chest': (0x227C24A, 0x227C71A, 0x5AA1, 'Chest', 0x62, 'Goron City'),
+    'Goron City Left Maze Chest': (0x227C25A, 0x227C72A, 0x5AA2, 'Chest', 0x62, 'Goron City'),
     'Zoras Domain Torch Run': (0x2103166, None, 0xB7C0, 'Chest', 0x58, 'Zora\'s Domain'),
     'Hookshot Chest': (0x3063092, None, 0x1100, 'Chest', 0x48, 'the Graveyard'),
     'Gerudo Valley Hammer Rocks Chest': (0x213D676, None, 0x5AA0, 'Chest', 0x5A, 'Gerudo Valley'),

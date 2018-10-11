@@ -529,3 +529,15 @@
     jal     reset_player_name_id
     nop
     lw      ra, 0x3C (sp)
+
+;==================================================================================================
+; Text Fixes
+;==================================================================================================
+
+; Skip text overrides for GS Token and Biggoron Sword
+; Replaces
+;   li      at, 0x0C
+.org 0xB5293C
+    b       skip_GS_BGS_text   
+.org 0xB529A0
+skip_GS_BGS_text:

@@ -6,6 +6,7 @@
 0000D260 .dbl:0010
 0000D270 .dbl:0010
 008A9C00 .byt:0400
+00B529A0 skip_GS_BGS_text
 00D74990 skip_steal_tunic
 00D7E178 @@not_in_ranch
 00D7E18C @@return

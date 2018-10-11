@@ -163,13 +163,16 @@ def buildGossipHints(world):
     # add bad dungeon locations hints
     for dungeon in random.sample(world.dungeons, random.randint(3,4)):
         # Choose a randome dungeon location that is a non-dungeon item
-        locationWorld = random.choice([location for region in dungeon.regions for location in region.locations
+        dungeon_locations = [location for region in dungeon.regions for location in region.locations
             if location.item.type != 'Event' and \
             location.item.type != 'Shop' and \
             not location.event and \
             not isDungeonItem(location.item) and \
             (world.tokensanity != 'off' or location.item.name != 'Gold Skulltulla Token') and\
-            location.item.type != 'Song'])
+            location.item.type != 'Song']
+        if (len(dungeon_locations) == 0):
+            continue
+        locationWorld = random.choice(dungeon_locations)
 
         checkedLocations.append(locationWorld.name)
         add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(dungeon.name, world.clearer_hints).text, 'Green') + \

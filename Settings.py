@@ -53,6 +53,14 @@ class Setting_Info():
         self.args_params = args_params # parameters that should be pased to the command line argument parser's add_argument() function
         self.gui_params = gui_params # parameters that the gui uses to build the widget components
 
+        # create the choices parameters from the gui options if applicable
+        if gui_params and 'options' in gui_params and 'choices' not in args_params:
+            if isinstance(gui_params['options'], list):
+                self.args_params['choices'] = list(gui_params['options'])
+            elif isinstance(gui_params['options'], dict):
+                self.args_params['choices'] = list(gui_params['options'].values())
+
+
 # holds the particular choices for a run's settings
 class Settings():
 
@@ -239,7 +247,6 @@ setting_infos = [
             'default': 'True',
             'const': 'True',
             'nargs': '?',
-            'choices': ['True', 'False', 'None'],
             'help': '''\
                     Create a compressed version of the output rom file.
                     True: Compresses. Improves stability. Will take longer to generate
@@ -329,7 +336,6 @@ setting_infos = [
             'default': 'normal',
             'const': 'normal',
             'nargs': '?',
-            'choices': ['normal', 'fast', 'open'],
             'help': '''Select how much of Gerudo Fortress is required. (default: %(default)s)
                        Normal: Free all four carpenters to get the Gerudo Card.
                        Fast:   Free only the carpenter closest to Link's prison to get the Gerudo Card.
@@ -360,7 +366,6 @@ setting_infos = [
             'default': 'medallions',
             'const': 'medallions',
             'nargs': '?',
-            'choices': ['medallions', 'vanilla', 'dungeons', 'open'],
             'help': '''\
                     Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
                     Medallions:    Collect all six medallions to create the bridge.
@@ -769,31 +774,59 @@ setting_infos = [
                       effectively the Boss Key of Gerudo Fortress.
                       '''
         }),
-    Setting_Info('shuffle_scrubs', bool, 1, True, 
+    Setting_Info('shuffle_scrubs', str, 3, True, 
         {
+            'default': 'off',
+            'const': 'off',
+            'nargs': '?',
             'help': '''\
-                    All Deku Scrub Salesmen will give a random item.
-                    ''',
-            'action': 'store_true'
+                    Deku Scrub Salesmen are randomized:
+                    off:        Only the 3 Scrubs that give actual items in
+                                the vanilla game will have random items.
+                    low:        All Scrubs will have random items and their 
+                                prices will be reduced to 10 rupees each.
+                    regular:    All Scrubs will have random items and each 
+                                of them will demand their vanilla prices.
+                    random:     All Scrubs will have random items and their 
+                                price will also be random between 10-99 rupees.
+                    '''
         },
         {
-            'text': 'Shuffle Deku Salescrubs',
+            'text': 'Scrub Shuffle',
             'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
+            'widget': 'Combobox',
+            'default': 'Off',
+            'options': {
+                'Off': 'off',
+                'On (Affordable)': 'low',
+                'On (Expensive)': 'regular',
+                'On (Random Prices)': 'random',
+            },
             'tooltip':'''\
-                      Each Deku Scrub Salesman will give
-                      a random item. Vanilla OoT has 36
-                      Deku Scrub Salesmen. The prices
-                      are all reduced to 10 Rupees.
+                      'Off': Only the 3 Scrubs that give unique
+                      items in the vanilla game (PoH, nut
+                      capacity, and stick capacity) will have
+                      random items.
+
+                      'Affordable': All Scrub prices will be
+                      reduced to 10 rupees each.
+
+                      'Expensive': All Scrub prices will be 
+                      their vanilla prices. This will require
+                      spending over 1000 rupees on Scrubs.
+
+                      'Random Prices': All Scrub prices will be
+                      between 0-99 rupees. This will require
+                      spending over 1000 rupees on Scrubs.
+
+                      The texts of the Scrubs are not updated.
                       '''
-        }),    
+        }),  
     Setting_Info('shopsanity', str, 3, True, 
         {
             'default': 'off',
             'const': 'off',
             'nargs': '?',
-            'choices': ['off', '0', '1', '2', '3', '4', 'random'],
             'help': '''\
                     Shop contents are randomized. Non-shop items
                     are one time purchases. This setting also
@@ -850,7 +883,6 @@ setting_infos = [
         'default': 'dungeon',
         'const': 'dungeon',
         'nargs': '?',
-        'choices': ['remove', 'dungeon', 'keysanity'],
         'help': '''\
                     Sets the Map and Compass placement rules
                     remove:      Maps and Compasses are removed from the world
@@ -890,7 +922,6 @@ setting_infos = [
         'default': 'dungeon',
         'const': 'dungeon',
         'nargs': '?',
-        'choices': ['remove', 'dungeon', 'keysanity'],
         'help': '''\
                     Sets the Small Keys placement rules
                     remove:      Small Keys are removed from the world
@@ -932,7 +963,6 @@ setting_infos = [
         'default': 'dungeon',
         'const': 'dungeon',
         'nargs': '?',
-        'choices': ['remove', 'dungeon', 'keysanity'],
         'help': '''\
                     Sets the Boss Keys placement rules
                     remove:      Boss Keys are removed from the world
@@ -1016,7 +1046,6 @@ setting_infos = [
             'default': 'off',
             'const': 'off',
             'nargs': '?',
-            'choices': ['off', 'dungeons', 'all'],
             'help': '''\
                     Gold Skulltula Tokens will be shuffled into the pool,
                     and Gold Skulltula locations can have any item.
@@ -1054,7 +1083,6 @@ setting_infos = [
             'default': 'vanilla',
             'const': 'vanilla',
             'nargs': '?',
-            'choices': ['vanilla', 'master', 'mixed'],
             'help': '''\
                     Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
                     Vanilla:       Dungeons will be the original Ocarina of Time dungeons.
@@ -1285,17 +1313,6 @@ setting_infos = [
             'default': 'pocket_egg',
             'const': 'always',
             'nargs': '?',
-            'choices': [
-                'pocket_egg',
-                'pocket_cucco', 
-                'cojiro', 
-                'odd_mushroom', 
-                'poachers_saw', 
-                'broken_sword', 
-                'prescription', 
-                'eyeball_frog', 
-                'eyedrops', 
-                'claim_check'],
             'help': '''\
                     Select the earliest item that can appear in the adult trade sequence:
                     'pocket_egg'
@@ -1336,17 +1353,6 @@ setting_infos = [
             'default': 'claim_check',
             'const': 'always',
             'nargs': '?',
-            'choices': [
-                'pocket_egg',
-                'pocket_cucco', 
-                'cojiro', 
-                'odd_mushroom', 
-                'poachers_saw', 
-                'broken_sword', 
-                'prescription', 
-                'eyeball_frog', 
-                'eyedrops', 
-                'claim_check'],
             'help': '''\
                     Select the latest item that can appear in the adult trade sequence:
                     'pocket_egg'
@@ -1550,7 +1556,6 @@ setting_infos = [
             'default': 'all',
             'const': 'always',
             'nargs': '?',
-            'choices': ['chest', 'chest-wasteland', 'all'],
             'help': '''\
                     Choose what expects the Lens of Truth:
                     all:              All lens spots expect the lens (except those that did not in the original game)
@@ -1643,7 +1648,6 @@ setting_infos = [
             'default': 'none',
             'const': 'agony',
             'nargs': '?',
-            'choices': ['none', 'mask', 'agony', 'always'],
             'help': '''\
                     Choose how Gossip Stones behave
                     none:   Default behavior
@@ -1684,7 +1688,6 @@ setting_infos = [
             'default': 'none',
             'const': 'none',
             'nargs': '?',
-            'choices': ['none', 'except_hints', 'complete'],
             'help': '''\
                     Choose how to shuffle the game's messages.
                     none:          Default behavior
@@ -1718,7 +1721,6 @@ setting_infos = [
             'default': 'normal',
             'const': 'normal',
             'nargs': '?',
-            'choices': ['normal', 'hard', 'very_hard', 'ohko'],
             'help': '''\
                     Change the item pool for an added challenge.
                     normal:         Default items
@@ -1756,7 +1758,6 @@ setting_infos = [
             'default': 'hold',
             'const': 'always',
             'nargs': '?',
-            'choices': ['hold', 'switch'],
             'help': '''\
                     Choose what the default Z-targeting is.
                     '''
@@ -1776,7 +1777,6 @@ setting_infos = [
             'default': 'normal',
             'const': 'normal',
             'nargs': '?',
-            'choices': ['normal', 'off', 'random'],
             'help': '''\
                     Sets the background music behavior
                     normal:      Areas play their normal background music
@@ -1990,7 +1990,6 @@ setting_infos = [
             'default': 'Default',
             'const': 'Default',
             'nargs': '?',
-            'choices': ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Navi - Random', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'],
             'help': '''\
                     Select the sound effect that plays when Navi has a hint. (default: %(default)s)
                     Sound:         Replace the sound effect with the chosen sound.
@@ -2025,7 +2024,6 @@ setting_infos = [
             'default': 'Default',
             'const': 'Default',
             'nargs': '?',
-            'choices': ['Default', 'Notification', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Navi - Random', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'],
             'help': '''\
                     Select the sound effect that plays when targeting an enemy. (default: %(default)s)
                     Sound:         Replace the sound effect with the chosen sound.
@@ -2060,7 +2058,6 @@ setting_infos = [
             'default': 'Default',
             'const': 'Default',
             'nargs': '?',
-            'choices': ['Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'],
             'help': '''\
                     Select the sound effect that loops at low health. (default: %(default)s)
                     Sound:         Replace the sound effect with the chosen sound.
