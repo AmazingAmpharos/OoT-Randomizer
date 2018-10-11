@@ -204,11 +204,8 @@ def global_rules(world):
         world.get_entrance('Bottom of the Well'),
         lambda state: state.can_play('Song of Storms') and
                       (world.dungeon_mq['BW'] or
-                        (state.has_slingshot() or
-                            state.has_sticks() or
-                            state.has_explosives() or
-                            state.has('Kokiri Sword') or
-                            state.can_use('Dins Fire'))))
+                       state.can_child_attack() or
+                       state.has_nuts()))
     set_rule(
         world.get_entrance('Death Mountain Entrance'),
         lambda state: state.has('Zeldas Letter') or state.is_adult() or world.open_kakariko)
@@ -1089,7 +1086,10 @@ def dung_rules_fotmq(world):
     set_rule(world.get_entrance('Forest Temple Twisted Hall'), lambda state: state.has('Small Key (Forest Temple)', 4))
     set_rule(
         world.get_entrance('Forest Temple Well Connection'),
-        lambda state: state.can_use('Iron Boots') or state.can_use('Longshot') or state.has('Progressive Scale', 2))
+        lambda state: state.can_use('Iron Boots') or 
+                      state.can_use('Longshot') or 
+                      state.has('Progressive Scale', 2) or 
+                      (world.logic_tricks and state.can_use('Hookshot')))
     set_rule(world.get_entrance('Forest Temple Webs'), lambda state: state.can_use('Fire Arrows'))
     set_rule(
         world.get_entrance('Forest Temple Climb to Top Ledges'),
@@ -2001,7 +2001,10 @@ def dung_rules_gtg0(world):
 def dung_rules_gtgmq(world):
     set_rule(world.get_entrance('Gerudo Training Grounds Left Door'), lambda state: state.has_fire_source())
     set_rule(world.get_entrance('Gerudo Training Grounds Right Door'), lambda state: state.has_bow())
-    set_rule(world.get_entrance('Gerudo Training Grounds Longshot Target'), lambda state: state.can_use('Longshot'))
+    set_rule(
+        world.get_entrance('Gerudo Training Grounds Longshot Target'), 
+        lambda state: state.can_use('Longshot') or 
+                      (world.logic_tricks and state.can_use('Hookshot')))
     set_rule(
         world.get_entrance('Gerudo Training Grounds Song of Time Block'),
         lambda state: state.can_play('Song of Time') and state.can_see_with_lens() and state.has_bottle())
@@ -2012,7 +2015,7 @@ def dung_rules_gtgmq(world):
         lambda state: state.has('Small Key (Gerudo Training Grounds)', 1))
     set_rule(
         world.get_location('Gerudo Training Grounds MQ Underwater Silver Rupee Chest'),
-        lambda state: (state.has('Hover Boots') or state.can_reach('Gerudo Training Grounds Central Maze Right')) and
+        lambda state: (state.has('Hover Boots') or (state.can_reach('Gerudo Training Grounds Central Maze Right') and (state.can_use('Longshot') or state.has_bow()))) and
                       state.has_fire_source() and
                       state.has('Iron Boots') and
                       (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()) and
