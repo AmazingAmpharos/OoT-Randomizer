@@ -1341,7 +1341,8 @@ def patch_rom(world, rom):
     if world.correct_chest_sizes:
         update_chest_sizes(rom, override_table)
         # Move Ganon's Castle's Zelda's Lullaby Chest back so is reachable if large
-        rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
+        if not world.dungeon_mq['GC']:
+            rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)
