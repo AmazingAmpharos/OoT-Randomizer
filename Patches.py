@@ -1596,28 +1596,19 @@ def patch_rom(world, rom):
             rom.write_bytes(Navi[i][j], color)
 
     # Configurable Sound Effects
-    navi_addresses = [
-        (world.navisfxoverworld, [0xAE7EF2, 0xC26C7E]), # Navi Overworld Hint (0x685F)
-        (world.navisfxenemytarget, [0xAE7EC6]),         # Navi Enemy Target Hint (0x6843)
+    sfx_addresses = [
+        (world.navisfxoverworld, [0xAE7EF2, 0xC26C7E], NaviSFX), # Navi Overworld Hint (0x685F)
+        (world.navisfxenemytarget, [0xAE7EC6], NaviSFX),         # Navi Enemy Target Hint (0x6843)
+        (world.healthSFX, [0xADBA1A], HealthSFX)                 # Low Health Beep (0x481B)
     ]
-    health_addresses = [
-        (world.healthSFX, [0xADBA1A])                   # Low Health Beep (0x481B)
-    ]                  
 
-    for thisSFX, addresses in navi_addresses:
+    for thisSFX, addresses, SFX_table in sfx_addresses:
         if thisSFX == 'Random Choice':
-            thisSFX = random.choice(NaviSFX)
+            thisSFX = random.choice(SFX_table)
         if thisSFX != 'Default':
             for address in addresses:
-                rom.write_int16(address, NaviSFX[thisSFX])
+                rom.write_int16(address, SFX_table[thisSFX])
 
-    for thatSFX, addresses in health_addresses:
-        if thatSFX == 'Random Choice':
-            thatSFX = random.choice(HealthSFX)
-        if thatSFX != 'Default':
-            for address in addresses:
-                rom.write_int16(address, HealthSFX[thatSFX])
-        
     return rom
 
 def get_override_table(world):
