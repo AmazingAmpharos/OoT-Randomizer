@@ -811,6 +811,8 @@ def patch_rom(world, rom):
 
     configure_dungeon_info(rom, world)
 
+    rom.write_int32(rom.sym('cfg_file_select_hash'), world.settings.numeric_seed)
+
     # will be populated with data to be written to initial save
     # see initial_save.asm and config.asm for more details on specifics
     # or just use the following functions to add an entry to the table
