@@ -49,6 +49,7 @@ DebugOutput:
 .include "song_fix.asm"
 .include "scarecrow.asm"
 .include "initial_save.asm"
+.include "textbox.asm"
 .endarea
 
 .headersize (0x80405000 - 0x034B3000)

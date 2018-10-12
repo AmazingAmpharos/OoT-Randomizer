@@ -139,7 +139,7 @@ def guiMain(settings=None):
     # shared
     settingsFrame = Frame(mainWindow)
     settings_string_var = StringVar()
-    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var)
+    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var, width=25)
 
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
@@ -180,16 +180,16 @@ def guiMain(settings=None):
             widgets['logic_man_on_roof'].select()
             widgets['logic_child_deadhand'].select()
             widgets['logic_dc_jump'].select()
-            widgets['logic_windmill_hp'].select()
-            widgets['logic_crater_bean_hp_with_hovers'].select()
+            widgets['logic_windmill_poh'].select()
+            widgets['logic_crater_bean_poh_with_hovers'].select()
             widgets['logic_zora_with_cucco'].select()
             widgets['logic_fewer_tunic_requirements'].select()
         else:
             widgets['logic_man_on_roof'].deselect()
             widgets['logic_child_deadhand'].deselect()
             widgets['logic_dc_jump'].deselect()
-            widgets['logic_windmill_hp'].deselect()
-            widgets['logic_crater_bean_hp_with_hovers'].deselect()
+            widgets['logic_windmill_poh'].deselect()
+            widgets['logic_crater_bean_poh_with_hovers'].deselect()
             widgets['logic_zora_with_cucco'].deselect()
             widgets['logic_fewer_tunic_requirements'].deselect()
         settings = guivars_to_settings(guivars)
@@ -218,17 +218,17 @@ def guiMain(settings=None):
     fileDialogFrame = Frame(frames['rom_tab'])
 
     romDialogFrame = Frame(fileDialogFrame)
-    baseRomLabel = Label(romDialogFrame, text='Base Rom')
+    baseRomLabel = Label(romDialogFrame, text='Base ROM')
     guivars['rom'] = StringVar(value='ZOOTDEC.z64')
     romEntry = Entry(romDialogFrame, textvariable=guivars['rom'], width=40)
 
     def RomSelect():
-        rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")])
+        rom = filedialog.askopenfilename(filetypes=[("ROM Files", (".z64", ".n64")), ("All Files", "*")])
         if rom != '':
             guivars['rom'].set(rom)
-    romSelectButton = Button(romDialogFrame, text='Select Rom', command=RomSelect, width=10)
+    romSelectButton = Button(romDialogFrame, text='Select ROM', command=RomSelect, width=10)
 
-    baseRomLabel.pack(side=LEFT, padx=(40,0))
+    baseRomLabel.pack(side=LEFT, padx=(38,0))
     romEntry.pack(side=LEFT, padx=3)
     romSelectButton.pack(side=LEFT)
 
@@ -447,12 +447,12 @@ def guiMain(settings=None):
             BackgroundTaskProgress(mainWindow, "Generating Seed...", main, settings)
 
     generateSeedFrame = Frame(mainWindow)
-    generateButton = Button(generateSeedFrame, text='Generate Patched Rom', command=generateRom)
+    generateButton = Button(generateSeedFrame, text='Generate Patched ROM', command=generateRom)
 
     seedLabel = Label(generateSeedFrame, text='Seed')
     guivars['seed'] = StringVar()
-    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'])
-    seedLabel.pack(side=LEFT)
+    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'], width=25)
+    seedLabel.pack(side=LEFT, padx=(55, 5))
     seedEntry.pack(side=LEFT)
     generateButton.pack(side=LEFT, padx=(5, 0))
 
@@ -466,7 +466,7 @@ def guiMain(settings=None):
     else:
         # try to load saved settings
         try:
-            settingsFile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.sav')
+            settingsFile = local_path('settings.sav')
             with open(settingsFile) as f:
                 settings = Settings( json.load(f) )
                 settings.update_seed("")

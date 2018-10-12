@@ -18,13 +18,13 @@ class Hint(object):
                 self.text = text[choice]
 
 
-def getHint(name, world):
+def getHint(name, clearer_hint=False):
     hint = name
     if name not in hintTable:
         hint = 'KeyError'
 
     textOptions, clearText, type = hintTable[hint]
-    if world.clearer_hints == True:
+    if clearer_hint:
         if clearText == None:
             return Hint(name, textOptions, type, 0)
         return Hint(name, clearText, type)
@@ -35,7 +35,7 @@ def getHint(name, world):
 def getHintGroup(group, world):
     ret = []
     for name in hintTable:
-        hint = getHint(name, world)
+        hint = getHint(name, world.clearer_hints)
         if hint.type == group and not (name in hintExclusions(world)):
             ret.append(hint)
     return ret
@@ -79,7 +79,7 @@ hintTable = {
     'Zora Tunic':                                            (["a sapphire suit", "a fishy outfit", "lake clothing"], "a Zora Tunic", 'item'),
     'Epona':                                                 (["a horse", "a four legged friend"], "Epona", 'item'),
     'Zeldas Lullaby':                                        (["a song of royal slumber", "a triforce tune"], "Zelda's Lullaby", 'item'),
-    'Eponas Song':                                           (["an equestrian etude", "a ranch song"], "Epona's song", 'item'),
+    'Eponas Song':                                           (["an equestrian etude", "a ranch song"], "Epona's Song", 'item'),
     'Sarias Song':                                           (["a song of dancing Gorons", "a green girl's tune", "child's forest melody"], "Sarias Song", 'item'),
     'Suns Song':                                             (["Sunny Day", "a time advancer", "a day/night melody", "the gibdo's bane"], "the Sun's Song", 'item'),
     'Song of Time':                                          (["a song 7 years long", "a tune to move blocks"], "the Song of Time", 'item'),
@@ -108,8 +108,8 @@ hintTable = {
     'Deku Stick Capacity':                                   (["a lumber rack", "more flammable twigs"], "a Stick Capacity Upgrade", 'item'),
     'Deku Nut Capacity':                                     (["more nuts", "flashbang storage"], "a Nut Capacity Upgrade", 'item'),
     'Heart Container':                                       (["a lot of love", "a Valentine's gift", "a boss's organ"], "a Heart Container", 'item'),
-    'Piece of Heart':                                        (["love", "a partial Valentine"], "a Heart Piece", 'item'),
-    'Piece of Heart (Treasure Chest Game)':                  (["love", "a partial Valentine"], "a Heart Piece", 'item'),
+    'Piece of Heart':                                        (["love", "a partial Valentine"], "a Piece of Heart", 'item'),
+    'Piece of Heart (Treasure Chest Game)':                  (["love", "a partial Valentine"], "a Piece of Heart", 'item'),
     'Recovery Heart':                                        (["a free heal", "disappointing love"], "a Recovery Heart", 'item'),
     'Rupee (Treasure Chest Game)':                           ("the dollar of defeat", 'a Green Rupee', 'item'),
     'Deku Stick (1)':                                        ("a breakable branch", 'a Deku Stick', 'item'),
@@ -151,7 +151,7 @@ hintTable = {
     'Bombchus (20)':                                         (["plenty of mice bombs", "plenty of remote mines", "plenty of proximity mice", "plenty of wall crawlers", "plenty of trail blazers"], "Bombchus", 'item'),
     'Deku Nuts (5)':                                         (["some nuts", "some flashbangs", "some Sheik's ammo"], "some Deku Nuts", 'item'),
     'Deku Nuts (10)':                                        (["lots-o-nuts", "plenty of flashbangs", "plenty of Sheik's ammo"], "plenty of Deku Nuts", 'item'),
-    'Deku Seeds (30)':                                       (["catapult ammo", "lots-o-seeds"], "plenty of deku seeds", 'item'),                                                                                                            
+    'Deku Seeds (30)':                                       (["catapult ammo", "lots-o-seeds"], "plenty of Deku Seeds", 'item'),                                                                                                            
     'Gold Skulltulla Token':                                 (["proof of destruction", "an arachnid chip", "spider remains"], "a Golden Token", 'item'),
 
     '10 Big Poes':                                           (["#Big Poes# leads to", "#ghost hunters# will be rewarded with"], None, 'alwaysLocation'),
@@ -173,7 +173,7 @@ hintTable = {
     'Heart Piece Grave Chest':                               ("in a grave playing #Sun's Song# spawns", None, 'location'),
     'Goron City Leftmost Maze Chest':                        ("in #Goron City# the hammer unlocks", None, 'location'),
     'GS Hyrule Castle Grotto':                               ("a #storm near the castle# reveals", None, 'location'),
-    'GS Hyrule Field Near Gerudo Valley':                    ("buried near near #the valley# a spider holds", None, 'location'),
+    'GS Hyrule Field Near Gerudo Valley':                    ("buried near #the valley# a spider holds", None, 'location'),
     'GS Zora\'s Fountain Hidden Cave':                       ("a spider high above the #icy waters# holds", None, 'location'),
     'Forest Temple Floormaster Chest':                       ("deep in #the forest#, shadows guard a chest containing", "a Floormaster in #Forest Temple# guards", 'location'),
     'Fire Temple Scarecrow Chest':                           ("high in the #Fire Temple#, Pierre hid", None, 'location'),

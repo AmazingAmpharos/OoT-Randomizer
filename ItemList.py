@@ -404,16 +404,14 @@ def get_junk_item(count=1):
 
 def generate_itempool(world):
     for location, item in eventlocations.items():
-        world.push_item(location, ItemFactory(item))
+        world.push_item(location, ItemFactory(item, world))
         world.get_location(location).event = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world)
-    world.itempool = ItemFactory(pool)
+    world.itempool = ItemFactory(pool, world)
     for (location, item) in placed_items.items():
-        new_item = ItemFactory(item)
-        new_item.world = world
-        world.push_item(location, new_item)
+        world.push_item(location, ItemFactory(item, world))
         world.get_location(location).event = True
 
     choose_trials(world)
@@ -429,7 +427,7 @@ def get_pool_core(world):
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')
     else:
-        placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
+         placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
 
     if world.shuffle_weird_egg:
         pool.append('Weird Egg')
@@ -680,10 +678,12 @@ def get_pool_core(world):
 
         pool.extend(random.sample(remain_shop_items, shop_item_count))
         pool.extend(get_junk_item(shop_nonitem_count))
-        pool.extend(shopsanity_rupees)
+        if world.shopsanity == '0':
+            pool.extend(normal_rupees)
+        else:
+            pool.extend(shopsanity_rupees)
 
-    if world.shuffle_scrubs:
-        arrows_or_seeds = 0
+    if not world.shuffle_scrubs == 'off':
         if world.dungeon_mq['DT']:
             pool.append('Deku Shield')
         if world.dungeon_mq['DC']:
@@ -813,7 +813,7 @@ def choose_trials(world):
             world.skipped_trials[trial] = True
 
 def fill_bosses(world, bossCount=9):
-    boss_rewards = ItemFactory(rewardlist)
+    boss_rewards = ItemFactory(rewardlist, world)
     boss_locations = [
         world.get_location('Queen Gohma'), 
         world.get_location('King Dodongo'), 

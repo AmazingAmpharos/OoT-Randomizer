@@ -5,20 +5,23 @@ import urllib.request
 from urllib.error import URLError, HTTPError
 import re
 from version import __version__
+import random
+import itertools
+import bisect
 
 def is_bundled():
     return getattr(sys, 'frozen', False)
 
-def local_path(path):
+def local_path(path=''):
     if local_path.cached_path is not None:
         return os.path.join(local_path.cached_path, path)
 
     if is_bundled():
         # we are running in a bundle
-        local_path.cached_path = sys._MEIPASS # pylint: disable=protected-access,no-member
+        local_path.cached_path = os.path.dirname(os.path.realpath(sys.executable))
     else:
         # we are running in a normal Python environment
-        local_path.cached_path = os.path.dirname(os.path.abspath(__file__))
+        local_path.cached_path = os.path.dirname(os.path.realpath(__file__))
 
     return os.path.join(local_path.cached_path, path)
 
@@ -26,7 +29,7 @@ local_path.cached_path = None
 
 def default_output_path(path):
     if path == '':
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Output')
+        path = local_path('Output')
 
     if not os.path.exists(path):
         os.mkdir(path)
@@ -71,9 +74,29 @@ class VersionError(Exception):
     pass
 
 def check_version(checked_version):
-    with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
-        version = versionurl.read()
-        version = re.search(".__version__ = '(.+)'", str(version)).group(1)
+    try:
+        with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
+            version = versionurl.read()
+            version = re.search(".__version__ = '(.+)'", str(version)).group(1)
 
-        if compare_version(version, __version__) > 0 and compare_version(checked_version, __version__) < 0:
-            raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
+            if compare_version(version, __version__) > 0 and compare_version(checked_version, __version__) < 0:
+                raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
+    except (URLError, HTTPError) as e:
+        logger.warning("Could not fetch latest version: " + str(e))
+
+# Shim for the sole purpose of maintaining compatibility with older versions of Python 3.
+def random_choices(population, weights=None, k=1):
+    pop_size = len(population)
+    if (weights is None):
+        weights = [1] * pop_size
+    else:
+        assert (pop_size == len(weights)), "population and weights mismatch"
+
+    CDF = list(itertools.accumulate(weights))
+
+    result = []
+    for i in range(k):
+        x = random.random() * CDF[-1]
+        result.append(population[bisect.bisect(CDF, x)])
+
+    return result

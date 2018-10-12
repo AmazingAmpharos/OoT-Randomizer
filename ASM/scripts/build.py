@@ -3,6 +3,7 @@ import json
 import os
 import re
 from subprocess import check_call as call
+from rom_diff import create_diff
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--pj64sym', help="Output path for PJ64 debugging symbols")
@@ -95,6 +96,4 @@ if pj64_sym_path:
             f.write('{0},{1},{2}\n'.format(sym['address'], sym['type'], sym_name))
 
 # Diff ROMs
-
-call(['python', 'scripts/rom_diff.py',
-    'roms/base.z64', 'roms/patched.z64', '../data/rom_patch.txt'])
+create_diff('roms/base.z64', 'roms/patched.z64', '../data/rom_patch.txt')

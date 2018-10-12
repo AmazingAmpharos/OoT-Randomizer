@@ -19,8 +19,7 @@ class LocalRom(object):
         file = settings.rom
         decomp_file = 'ZOOTDEC.z64'
 
-        os.chdir(os.path.dirname(os.path.realpath(__file__)))
-        #os.chdir(output_path(os.path.dirname(os.path.realpath(__file__))))
+        os.chdir(local_path())
 
         with open(local_path('data/symbols.json'), 'r') as stream:
             symbols = json.load(stream)
@@ -84,10 +83,14 @@ class LocalRom(object):
         self.last_address = address
 
     def read_byte(self, address):
+        if address == None:
+            address = self.last_address
         self.last_address = address + 1
         return self.buffer[address]
 
     def read_bytes(self, address, len):
+        if address == None:
+            address = self.last_address
         self.last_address = address + len
         return self.buffer[address : address + len]
 

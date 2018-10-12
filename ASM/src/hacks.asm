@@ -315,13 +315,13 @@
 ; Replaces:
 ;	lw		t5, 0x8AA0(t5)
 .org 0xAE5DF0 ; In memory: 8006FE90
-	jal 	suns_song_fix 
+	jal 	suns_song_fix
 
 ; Replaces:
 ;	addu	at, at, s3
 .org 0xB54E5C ; In memory: 800DEEFC
 	jal 	suns_song_fix_event
-	
+
 ; Replaces:
 ;	addu	at, at, s3
 .org 0xB54B38 ; In memory: 800DEBD8
@@ -345,7 +345,7 @@
 ; Replaces:
 ;   beq t1, at, 0x801E51E0
 .org 0xD74964     ; In memory: 0x801E51B4
-    b skip_steal_tunic  ; disable like-like stealing tunic 
+    b skip_steal_tunic  ; disable like-like stealing tunic
 .org 0xD74990
     skip_steal_tunic:
 
@@ -384,7 +384,7 @@
     lb  t7,0x0EDE(v1) ; check learned song from sun's song
 .skip 4
 .skip 4
-    andi t8, t7, 0x04 
+    andi t8, t7, 0x04
 ;addiu $t7, $zero, 1
 .org 0xE09FB0
     jal override_suns_song
@@ -414,7 +414,7 @@
 ; li a1, 3
 .org 0xDB532C
     jal override_song_of_time
-    
+
 ;==================================================================================================
 ; Fire Arrow Chest
 ;==================================================================================================
@@ -511,3 +511,46 @@
 ;	jal		0x80057030 ; copies Scarecrow Song from active space to save context
 .org 0xB55A64 ; In memory 800DFB04
     jal		save_scarecrow_song
+
+;==================================================================================================
+; Override Player Name Text
+;==================================================================================================
+
+; Replaces
+;   lui   t2,0x8012
+;   addu  t2,t2,s3
+;   lbu   t2,-23053(t2)
+.org 0xB51694
+    jal     get_name_char_1
+    ;addi    a0, s3, -1
+    ;ori     t2, v0, 0
+
+; Replaces
+;   lui   s0,0x8012
+;   addu  s0,s0,s2
+;   lbu   s0,-23052(s0)
+.org 0xB516C4
+    jal     get_name_char_2
+    ;ori     a0, s2, 0
+    ;ori     s0, v0, 0
+
+; Replaces
+;   lw      s6,48(sp)
+;   lw      s7,52(sp)
+;   lw      s8,56(sp)
+.org 0xB52784
+    jal     reset_player_name_id
+    nop
+    lw      ra, 0x3C (sp)
+
+;==================================================================================================
+; Text Fixes
+;==================================================================================================
+
+; Skip text overrides for GS Token and Biggoron Sword
+; Replaces
+;   li      at, 0x0C
+.org 0xB5293C
+    b       skip_GS_BGS_text
+.org 0xB529A0
+skip_GS_BGS_text:
