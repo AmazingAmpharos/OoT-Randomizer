@@ -136,10 +136,16 @@ HealthSFX = {
 }
 
 def get_NaviSFX():
-    return list("Random Choice", "Default", NaviSFX.keys())
+    return list(NaviSFX.keys())
+
+def get_NaviSFX_options():
+    return ["Default", "Random Choice"] + get_NaviSFX()
 
 def get_HealthSFX():
-    return list("Random Choice", "Default", HealthSFX.keys())
+    return list(HealthSFX.keys())
+
+def get_HealthSFX_options():
+    return ["Default", "Random Choice"] + get_HealthSFX()
 
 def get_tunic_colors():
     return list(TunicColors.keys())

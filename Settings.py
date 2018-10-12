@@ -5,7 +5,7 @@ import re
 import random
 import hashlib
 
-from Patches import get_tunic_color_options, get_navi_color_options, get_NaviSFX, get_HealthSFX
+from Patches import get_tunic_color_options, get_navi_color_options, get_NaviSFX_options, get_HealthSFX_options
 from version import __version__
 from Utils import random_choices
 
@@ -2011,7 +2011,7 @@ setting_infos = [
             'group': 'navihint',
             'widget': 'Combobox',
             'default': 'Default',
-            'options': get_NaviSFX(), 
+            'options': get_NaviSFX_options(), 
         }),
         Setting_Info('navisfxenemytarget', str, 0, False, 
         {
@@ -2030,7 +2030,7 @@ setting_infos = [
             'group': 'navihint',
             'widget': 'Combobox',
             'default': 'Default',
-            'options': get_NaviSFX(),
+            'options': get_NaviSFX_options(),
         }),
     Setting_Info('healthSFX', str, 0, False, 
         {
@@ -2049,7 +2049,7 @@ setting_infos = [
             'group': 'lowhp',
             'widget': 'Combobox',
             'default': 'Default',
-            'options': get_HealthSFX(),
+            'options': get_HealthSFX_options(),
             'tooltip':'''\
                       'Random Choice': Choose a random 
                       sound from this list.
