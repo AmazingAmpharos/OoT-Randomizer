@@ -1536,64 +1536,56 @@ def patch_rom(world, rom):
     random.seed()
     
     # patch tunic colors
-    # Custom color tunic stuff
-    Tunics = []
-    Tunics.append(0x00B6DA38) # Kokiri Tunic
-    Tunics.append(0x00B6DA3B) # Goron Tunic
-    Tunics.append(0x00B6DA3E) # Zora Tunic
+    Tunics = [
+        (world.kokiricolor, 0x00B6DA38), # Kokiri Tunic
+        (world.goroncolor,  0x00B6DA3B), # Goron Tunic
+        (world.zoracolor,   0x00B6DA3E), # Zora Tunic
+    ]
     colorList = get_tunic_colors()
-    randomColors = random_choices(colorList, k=3)
 
-    for i in range(len(Tunics)):
-        # get the color option
-        thisColor = world.tunic_colors[i]
-        # handle true random
-        randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
-        if thisColor == 'Completely Random':
-            color = randColor
-        else:
-            # handle random
-            if world.tunic_colors[i] == 'Random Choice':
-                color = TunicColors[randomColors[i]]
-            # grab the color from the list
-            elif thisColor in TunicColors: 
-                color = TunicColors[thisColor] 
-            # build color from hex code  
-            else: 
-                color = list(int(thisColor[i:i+2], 16) for i in (0, 2 ,4)) 
-        rom.write_bytes(Tunics[i], color)
+    for tunic_option, address in Tunics:
+        # handle random
+        if tunic_option == 'Random Choice':
+            tunic_option = random.choice(colorList)
+        # handle completely random
+        if tunic_option == 'Completely Random':
+            color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+        # grab the color from the list
+        elif tunic_option in TunicColors: 
+            color = TunicColors[tunic_option] 
+        # build color from hex code  
+        else: 
+            color = list(int(tunic_option[i:i+2], 16) for i in (0, 2 ,4)) 
+        rom.write_bytes(address, color)
 
     # patch navi colors
-    Navi = []
-    Navi.append([0x00B5E184]) # Default
-    Navi.append([0x00B5E19C, 0x00B5E1BC]) # Enemy, Boss
-    Navi.append([0x00B5E194]) # NPC
-    Navi.append([0x00B5E174, 0x00B5E17C, 0x00B5E18C, 0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4, 0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]) # Everything else
+    Navi = [
+        (world.navicolordefault, [0x00B5E184]), # Default
+        (world.navicolorenemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+        (world.navicolornpc,     [0x00B5E194]), # NPC
+        (world.navicolorprop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C, 
+                                  0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4, 
+                                  0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
+    ]
     naviList = get_navi_colors()
-    randomColors = random_choices(naviList, k=4)
 
-    for i in range(len(Navi)):
-        # do everything in the inner loop so that "true random" changes even for subcategories
-        for j in range(len(Navi[i])):
-            # get the color option
-            thisColor = world.navi_colors[i]
-            # handle true random
-            randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0xFF,
+    for navi_option, navi_addresses in Navi:
+        # choose a random choice for the whole group
+        if navi_option == 'Random Choice':
+            navi_option = random.choice(naviList)
+        for address in navi_addresses:
+            # completely random is random for every subgroup
+            if navi_option == 'Completely Random':
+                color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0xFF,
                          random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0x00]
-            if thisColor == 'Completely Random':
-                color = randColor
-            else:
-                # handle random
-                if world.navi_colors[i] == 'Random Choice':
-                    color = NaviColors[randomColors[i]]
-                # grab the color from the list
-                elif thisColor in NaviColors: 
-                    color = NaviColors[thisColor] 
-                # build color from hex code  
-                else: 
-                    color = list(int(thisColor[i:i+2], 16) for i in (0, 2 ,4)) 
-                    color = color + [0xFF] + color + [0x00] 
-            rom.write_bytes(Navi[i][j], color)
+            # grab the color from the list
+            elif navi_option in NaviColors: 
+                color = NaviColors[navi_option] 
+            # build color from hex code  
+            else: 
+                color = list(int(navi_option[i:i+2], 16) for i in (0, 2 ,4)) 
+                color = color + [0xFF] + color + [0x00]
+            rom.write_bytes(address, color)
 
     # Configurable Sound Effects
     sfx_addresses = [
@@ -1604,7 +1596,7 @@ def patch_rom(world, rom):
 
     for thisSFX, addresses, SFX_table in sfx_addresses:
         if thisSFX == 'Random Choice':
-            thisSFX = random.choice(SFX_table)
+            thisSFX = random.choice(list(SFX_table.keys()))
         if thisSFX != 'Default':
             for address in addresses:
                 rom.write_int16(address, SFX_table[thisSFX])

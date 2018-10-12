@@ -29,9 +29,6 @@ class World(object):
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
-        # group a few others
-        self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
-        self.navi_colors = [self.navicolordefault, self.navicolorenemy, self.navicolornpc, self.navicolorprop]
         # trials that can be skipped will be decided later
         self.skipped_trials = {
             'Forest': False,
