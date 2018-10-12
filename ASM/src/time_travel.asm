@@ -1,12 +1,12 @@
-give_master_sword:			; Puts MS in Equipment Only
+give_master_sword:          ; Puts MS in Equipment Only
     li      t0, SAVE_CONTEXT
-	lh		t1, 0x9C(t0)	; Equipment
-	ori		t2, t1, 2		; Master Sword flag
-	jr		ra
-	sh		t2, 0x9C(t0)
+    lh      t1, 0x9C(t0)    ; Equipment
+    ori     t2, t1, 2       ; Master Sword flag
+    jr      ra
+    sh      t2, 0x9C(t0)
 
 before_time_travel:
-    li		a1, SAVE_CONTEXT ; required by overwritten code
+    li      a1, SAVE_CONTEXT ; required by overwritten code
     li      t0, TIME_TRAVEL_SAVED_EQUIPS
 
     ; B and C buttons
@@ -22,8 +22,8 @@ before_time_travel:
     lhu     t1, 0x9C (a1)
     sh      t1, 0x0A (t0)
 
-    j		0x06F80C ; Swap Link Ages
-	nop
+    j       0x06F80C ; Swap Link Ages
+    nop
 
 ;==================================================================================================
 
