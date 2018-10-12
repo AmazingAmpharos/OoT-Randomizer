@@ -19,8 +19,7 @@ class LocalRom(object):
         file = settings.rom
         decomp_file = 'ZOOTDEC.z64'
 
-        os.chdir(os.path.dirname(os.path.realpath(__file__)))
-        #os.chdir(output_path(os.path.dirname(os.path.realpath(__file__))))
+        os.chdir(local_path())
 
         with open(local_path('data/symbols.json'), 'r') as stream:
             symbols = json.load(stream)

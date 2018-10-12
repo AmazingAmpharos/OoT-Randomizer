@@ -466,7 +466,7 @@ def guiMain(settings=None):
     else:
         # try to load saved settings
         try:
-            settingsFile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.sav')
+            settingsFile = local_path('settings.sav')
             with open(settingsFile) as f:
                 settings = Settings( json.load(f) )
                 settings.update_seed("")
