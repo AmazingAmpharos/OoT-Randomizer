@@ -307,6 +307,7 @@ def buildGanonText(world, messages):
             if location.item.name == 'Light Arrows':
                 text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
                 location_hint = location.hint.replace('Ganon\'s Castle', 'my castle')
+                location_hint = location.hint.replace('Ganon\'s Tower', 'my tower')
                 text += get_raw_text(location_hint)
                 text += '!'
                 break
@@ -315,6 +316,8 @@ def buildGanonText(world, messages):
         for location in world.get_locations():
             if location.name == 'Ganons Tower Boss Key Chest':
                 text += get_raw_text(getHint(getItemGenericName(location.item), world.clearer_hints).text)
+                text += '!'
+                break
     
     update_message_by_id(messages, 0x70CC, text)
         
