@@ -18,10 +18,10 @@ typedef struct {
 hash_symbol_t hash_symbols[32] = {
     { 0,  0 }, // Deku Stick
     { 0,  1 }, // Deku Nut
-    { 0,  2 }, // Bomb
     { 0,  3 }, // Bow
     { 0,  6 }, // Slingshot
     { 0,  7 }, // Fairy Ocarina
+    { 0,  9 }, // Bombchu
     { 0, 11 }, // Longshot
     { 0, 14 }, // Boomerang
     { 0, 15 }, // Lens of Truth
