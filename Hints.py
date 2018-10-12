@@ -168,7 +168,7 @@ def buildGossipHints(world):
             location.item.type != 'Shop' and \
             not location.event and \
             not isDungeonItem(location.item) and \
-            (world.tokensanity != 'off' or location.item.name != 'Gold Skulltulla Token') and\
+            (world.tokensanity != 'off' or location.item.type != 'Token') and\
             location.item.type != 'Song']
         if (len(dungeon_locations) == 0):
             continue
@@ -187,7 +187,7 @@ def buildGossipHints(world):
             locationWorld.item.type != 'Event' and \
             locationWorld.item.type != 'Shop' and \
             not locationWorld.event and \
-            (world.tokensanity == 'all' or locationWorld.item.name != 'Gold Skulltulla Token') and \
+            (world.tokensanity == 'all' or locationWorld.item.type != 'Token') and \
             not locationWorld.parent_region.dungeon]
     overworldSample = overworldlocations
     if len(overworldSample) >= 3:
@@ -213,7 +213,7 @@ def buildGossipHints(world):
             locationWorld.item.type != 'Event' and \
             locationWorld.item.type != 'Shop' and \
             not locationWorld.event and \
-            locationWorld.item.name != 'Gold Skulltulla Token' and \
+            locationWorld.item.type != 'Token' and \
             not locationWorld.item.key]
     gooditemSample = gooditemlocations
     if len(gooditemSample) >= 6:

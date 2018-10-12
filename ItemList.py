@@ -570,15 +570,15 @@ def get_pool_core(world):
             'GS Ice Cavern Push Block Room'])
     if world.tokensanity == 'off':
         for location in skulltulla_locations_final:
-            placed_items[location] = 'Gold Skulltulla Token'
+            placed_items[location] = 'Gold Skulltula Token'
     elif world.tokensanity == 'dungeons':
         for location in skulltulla_locations_final:
             if world.get_location(location).scene >= 0x0A:
-                placed_items[location] = 'Gold Skulltulla Token'
+                placed_items[location] = 'Gold Skulltula Token'
             else:
-                pool.append('Gold Skulltulla Token')
+                pool.append('Gold Skulltula Token')
     else:
-        pool.extend(['Gold Skulltulla Token'] * 100)
+        pool.extend(['Gold Skulltula Token'] * 100)
 
     if world.bombchus_in_logic:
         pool.extend(['Bombchus'] * 4)

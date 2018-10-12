@@ -152,7 +152,7 @@ hintTable = {
     'Deku Nuts (5)':                                         (["some nuts", "some flashbangs", "some Deku vomit"], "Deku Nuts (5 pieces)", 'item'),
     'Deku Nuts (10)':                                        (["lots-o-nuts", "plenty of flashbangs", "plenty of Deku vomit"], "Deku Nuts (10 pieces)", 'item'),
     'Deku Seeds (30)':                                       (["catapult ammo", "lots-o-seeds"], "Deku Seeds (30 pieces)", 'item'),                                                                                                            
-    'Gold Skulltulla Token':                                 (["proof of destruction", "an arachnid chip", "spider remains", "one percent of a curse"], "a Gold Skulltula Token", 'item'),
+    'Gold Skulltula Token':                                  (["proof of destruction", "an arachnid chip", "spider remains", "one percent of a curse"], "a Gold Skulltula Token", 'item'),
 
     '10 Big Poes':                                           (["#Big Poes# leads to", "#ghost hunters# will be rewarded with"], None, 'alwaysLocation'),
     'Deku Theater Mask of Truth':                            ("the #Mask of Truth# yields", None, 'alwaysLocation'),
