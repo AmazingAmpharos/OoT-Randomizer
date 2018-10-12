@@ -65,18 +65,6 @@ void draw_file_select_hash(uint32_t fade_out_alpha) {
     int left = (Z64_SCREEN_WIDTH - width) / 2;
     int top = 12;
 
-    // Draw background
-    /*
-    gDPSetCombineMode(db->p++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
-    gDPSetPrimColor(db->p++, 0, 0, 0x00, 0x00, 0x00, 0xD0);
-    gSPTextureRectangle(db->p++,
-            bg_left<<2, bg_top<<2,
-            (bg_left + bg_width)<<2, (bg_top + bg_height)<<2,
-            0,
-            0, 0,
-            1<<10, 1<<10);
-    */
-
     gDPPipeSync(db->p++);
     gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
