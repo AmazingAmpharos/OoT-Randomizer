@@ -69,6 +69,7 @@ class World(object):
         ret.big_poe_count = copy.copy(self.big_poe_count)
         ret.can_take_damage = self.can_take_damage
         ret.shop_prices = copy.copy(self.shop_prices)
+        ret.keys_placed = self.keys_placed
         ret.id = self.id
         from Regions import create_regions
         from Dungeons import create_dungeons
