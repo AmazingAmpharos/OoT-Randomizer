@@ -313,19 +313,19 @@
 ;==================================================================================================
 
 ; Replaces:
-;	lw		t5, 0x8AA0(t5)
+;   lw      t5, 0x8AA0(t5)
 .org 0xAE5DF0 ; In memory: 8006FE90
-	jal 	suns_song_fix
+    jal     suns_song_fix
 
 ; Replaces:
-;	addu	at, at, s3
+;   addu    at, at, s3
 .org 0xB54E5C ; In memory: 800DEEFC
-	jal 	suns_song_fix_event
+    jal     suns_song_fix_event
 
 ; Replaces:
-;	addu	at, at, s3
+;   addu    at, at, s3
 .org 0xB54B38 ; In memory: 800DEBD8
-	jal		warp_song_fix
+    jal     warp_song_fix
 
 ;==================================================================================================
 ; Initial save
@@ -508,9 +508,9 @@
 ;==================================================================================================
 
 ; Replaces:
-;	jal		0x80057030 ; copies Scarecrow Song from active space to save context
+;   jal     0x80057030 ; copies Scarecrow Song from active space to save context
 .org 0xB55A64 ; In memory 800DFB04
-    jal		save_scarecrow_song
+    jal     save_scarecrow_song
 
 ;==================================================================================================
 ; Override Player Name Text
