@@ -95,13 +95,19 @@ class LocalRom(object):
         return self.buffer[address : address + len]
 
     def read_int16(self, address):
+        if address == None:
+            address = self.last_address
         self.last_address += 2
         return int16.unpack_from(self.buffer, address)[0]
 
     def read_int24(self, address):
+        if address == None:
+            address = self.last_address
         return bytes_as_int24(self.read_bytes(address, 3))
 
     def read_int32(self, address):
+        if address == None:
+            address = self.last_address
         self.last_address += 4
         return int32.unpack_from(self.buffer, address)[0]
 
