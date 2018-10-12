@@ -165,6 +165,19 @@
     jal     after_game_state_update
     nop
 
+; Runs after the file select menu is rendered
+; Replaces: code that draws the fade-out rectangle on file load
+.org 0xBAF738 ; In memory: 0x803B3580
+.area 0x60, 0
+    jal     draw_file_select_hash
+    andi    a0, t8, 0xFF ; a0 = alpha channel of fade-out rectangle
+
+    lw      s0, 0x18 (sp)
+    lw      ra, 0x1C (sp)
+    jr      ra
+    addiu   sp, sp, 0x88
+.endarea
+
 ;==================================================================================================
 ; Special item sources
 ;==================================================================================================
@@ -300,19 +313,19 @@
 ;==================================================================================================
 
 ; Replaces:
-;	lw		t5, 0x8AA0(t5)
+;   lw      t5, 0x8AA0(t5)
 .org 0xAE5DF0 ; In memory: 8006FE90
-	jal 	suns_song_fix 
+    jal     suns_song_fix
 
 ; Replaces:
-;	addu	at, at, s3
+;   addu    at, at, s3
 .org 0xB54E5C ; In memory: 800DEEFC
-	jal 	suns_song_fix_event
-	
+    jal     suns_song_fix_event
+
 ; Replaces:
-;	addu	at, at, s3
+;   addu    at, at, s3
 .org 0xB54B38 ; In memory: 800DEBD8
-	jal		warp_song_fix
+    jal     warp_song_fix
 
 ;==================================================================================================
 ; Initial save
@@ -332,7 +345,7 @@
 ; Replaces:
 ;   beq t1, at, 0x801E51E0
 .org 0xD74964     ; In memory: 0x801E51B4
-    b skip_steal_tunic  ; disable like-like stealing tunic 
+    b skip_steal_tunic  ; disable like-like stealing tunic
 .org 0xD74990
     skip_steal_tunic:
 
@@ -371,7 +384,7 @@
     lb  t7,0x0EDE(v1) ; check learned song from sun's song
 .skip 4
 .skip 4
-    andi t8, t7, 0x04 
+    andi t8, t7, 0x04
 ;addiu $t7, $zero, 1
 .org 0xE09FB0
     jal override_suns_song
@@ -401,7 +414,7 @@
 ; li a1, 3
 .org 0xDB532C
     jal override_song_of_time
-    
+
 ;==================================================================================================
 ; Fire Arrow Chest
 ;==================================================================================================
@@ -495,9 +508,9 @@
 ;==================================================================================================
 
 ; Replaces:
-;	jal		0x80057030 ; copies Scarecrow Song from active space to save context
+;   jal     0x80057030 ; copies Scarecrow Song from active space to save context
 .org 0xB55A64 ; In memory 800DFB04
-    jal		save_scarecrow_song
+    jal     save_scarecrow_song
 
 ;==================================================================================================
 ; Override Player Name Text
@@ -538,6 +551,6 @@
 ; Replaces
 ;   li      at, 0x0C
 .org 0xB5293C
-    b       skip_GS_BGS_text   
+    b       skip_GS_BGS_text
 .org 0xB529A0
 skip_GS_BGS_text:
