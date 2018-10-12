@@ -73,8 +73,7 @@ NaviColors = {
     "Phantom Zelda": [0x97, 0x7A, 0x6C, 0xFF, 0x6F, 0x46, 0x67, 0x00],
 }
 
-NaviSFX = {
-    'Default'       : 0x685F, 
+NaviSFX = { 
     'None'          : 0x0000,
     'Cluck'         : 0x2812,
     'Rupee'         : 0x4803, 
@@ -108,7 +107,6 @@ NaviSFX = {
 }
 
 HealthSFX = {
-    'Default'       : 0x481B, 
     'None'          : 0x0000,
     'Cluck'         : 0x2812,
     'Softer Beep'   : 0x4804,
@@ -138,10 +136,10 @@ HealthSFX = {
 }
 
 def get_NaviSFX():
-    return list(NaviSFX.keys())
+    return list("Random Choice", "Default", NaviSFX.keys())
 
 def get_HealthSFX():
-    return list(HealthSFX.keys())
+    return list("Random Choice", "Default", HealthSFX.keys())
 
 def get_tunic_colors():
     return list(TunicColors.keys())
