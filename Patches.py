@@ -73,6 +73,76 @@ NaviColors = {
     "Phantom Zelda": [0x97, 0x7A, 0x6C, 0xFF, 0x6F, 0x46, 0x67, 0x00],
 }
 
+NaviSFX = {
+    'Default'       : 0x685F, 
+    'None'          : 0x0000,
+    'Cluck'         : 0x2812,
+    'Rupee'         : 0x4803, 
+    'Softer Beep'   : 0x4804,
+    'Recovery Heart': 0x480B, 
+    'Timer'         : 0x481A,  
+    'Low Health'    : 0x481B,
+    'Notification'  : 0x4820, 
+    'Tamborine'     : 0x4842, 
+    'Carrot Refill' : 0x4845,  
+    'Zelda - Gasp'  : 0x6879, 
+    'Mweep!'        : 0x687A,
+    'Ice Break'     : 0x0875,
+    'Explosion'     : 0x180E,
+    'Crate'         : 0x2839,
+    'Great Fairy'   : 0x6858,
+    'Moo'           : 0x28DF,
+    'Bark'          : 0x28D8,
+    'Kero Kero'     : 0x28B1,
+    'Broken Pot'    : 0x2887,
+    'Cockadoodledoo': 0x2813,
+    'Epona'         : 0x2805,
+    'Gold Skulltula': 0x39DA,
+    'Redead'        : 0x38E5,
+    'Poe'           : 0x38EC,
+    'Ruto'          : 0x4863,
+    'Howl'          : 0x28AE,
+    'Business Scrub': 0x3882,
+    'Guay'          : 0x38B6,
+    'H`lo!'         : 0x4844
+}
+
+HealthSFX = {
+    'Default'       : 0x481B, 
+    'None'          : 0x0000,
+    'Cluck'         : 0x2812,
+    'Softer Beep'   : 0x4804,
+    'Recovery Heart': 0x480B, 
+    'Timer'         : 0x481A,  
+    'Notification'  : 0x4820, 
+    'Tamborine'     : 0x4842, 
+    'Carrot Refill' : 0x4845, 
+    'Navi - Random' : 0x6843, 
+    'Navi - Hey!'   : 0x685F, 
+    'Zelda - Gasp'  : 0x6879, 
+    'Mweep!'        : 0x687A,
+    'Iron Boots'    : 0x080D,
+    'Hammer'        : 0x180A,
+    'Sword Bounce'  : 0x181A,
+    'Bow'           : 0x1830,
+    'Gallop'        : 0x2804,
+    'Drawbridge'    : 0x280E,
+    'Switch'        : 0x2815,
+    'Bomb Bounce'   : 0x282F,
+    'Bark'          : 0x28D8,
+    'Kero Kero'     : 0x28B1,
+    'Broken Pot'    : 0x2887,
+    'Business Scrub': 0x3882,
+    'Guay'          : 0x38B6,
+    'Bongo Bongo'   : 0x3950
+}
+
+def get_NaviSFX():
+    return list(NaviSFX.keys())
+
+def get_HealthSFX():
+    return list(HealthSFX.keys())
+
 def get_tunic_colors():
     return list(TunicColors.keys())
 
@@ -1521,36 +1591,28 @@ def patch_rom(world, rom):
                     color = color + [0xFF] + color + [0x00] 
             rom.write_bytes(Navi[i][j], color)
 
-    SFXTable = { 
-        'None'          : 0x0000,
-        'Cluck'         : 0x2812,
-        'Rupee'         : 0x4803, 
-        'Softer Beep'   : 0x4804,
-        'Recovery Heart': 0x480B, 
-        'Timer'         : 0x481A,  
-        'Low Health'    : 0x481B,
-        'Notification'  : 0x4820, 
-        'Tamborine'     : 0x4842, 
-        'Carrot Refill' : 0x4845, 
-        'Navi - Random' : 0x6843, 
-        'Navi - Hey!'   : 0x685F, 
-        'Zelda - Gasp'  : 0x6879, 
-        'Mweep!'        : 0x687A }
-
-    SFXList = list(SFXTable.keys())
-
     # Configurable Sound Effects
-    sound_addresses = [
+    navi_addresses = [
         (world.navisfxoverworld, [0xAE7EF2, 0xC26C7E]), # Navi Overworld Hint (0x685F)
         (world.navisfxenemytarget, [0xAE7EC6]),         # Navi Enemy Target Hint (0x6843)
-        (world.healthSFX, [0xADBA1A])]                  # Low Health Beep (0x481B)
+    ]
+    health_addresses = [
+        (world.healthSFX, [0xADBA1A])                   # Low Health Beep (0x481B)
+    ]                  
 
-    for thisSFX, addresses in sound_addresses:
+    for thisSFX, addresses in navi_addresses:
         if thisSFX == 'Random Choice':
-            thisSFX = random.choice(SFXList)
+            thisSFX = random.choice(NaviSFX)
         if thisSFX != 'Default':
             for address in addresses:
-                rom.write_int16(address, SFXTable[thisSFX])
+                rom.write_int16(address, NaviSFX[thisSFX])
+
+    for thatSFX, addresses in health_addresses:
+        if thatSFX == 'Random Choice':
+            thatSFX = random.choice(HealthSFX)
+        if thatSFX != 'Default':
+            for address in addresses:
+                rom.write_int16(address, HealthSFX[thatSFX])
         
     return rom
 

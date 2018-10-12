@@ -5,7 +5,7 @@ import re
 import random
 import hashlib
 
-from Patches import get_tunic_color_options, get_navi_color_options
+from Patches import get_tunic_color_options, get_navi_color_options, get_NaviSFX, get_HealthSFX
 from version import __version__
 from Utils import random_choices
 
@@ -2011,22 +2011,7 @@ setting_infos = [
             'group': 'navihint',
             'widget': 'Combobox',
             'default': 'Default',
-            'options': [
-                'Random Choice', 
-                'Default', 
-                'Notification', 
-                'Rupee', 
-                'Timer', 
-                'Tamborine', 
-                'Recovery Heart', 
-                'Carrot Refill', 
-                'Navi - Hey!',
-                'Navi - Random',
-                'Zelda - Gasp', 
-                'Cluck', 
-                'Mweep!', 
-                'None',
-            ]
+            'options': get_NaviSFX(), 
         }),
         Setting_Info('navisfxenemytarget', str, 0, False, 
         {
@@ -2045,22 +2030,7 @@ setting_infos = [
             'group': 'navihint',
             'widget': 'Combobox',
             'default': 'Default',
-            'options': [
-                'Random Choice', 
-                'Default', 
-                'Notification', 
-                'Rupee', 
-                'Timer', 
-                'Tamborine', 
-                'Recovery Heart', 
-                'Carrot Refill', 
-                'Navi - Hey!',
-                'Navi - Random',
-                'Zelda - Gasp', 
-                'Cluck', 
-                'Mweep!', 
-                'None',
-            ]
+            'options': get_NaviSFX(),
         }),
     Setting_Info('healthSFX', str, 0, False, 
         {
@@ -2079,21 +2049,7 @@ setting_infos = [
             'group': 'lowhp',
             'widget': 'Combobox',
             'default': 'Default',
-            'options': [
-                'Random Choice', 
-                'Default', 
-                'Softer Beep', 
-                'Rupee', 
-                'Timer', 
-                'Tamborine', 
-                'Recovery Heart', 
-                'Carrot Refill', 
-                'Navi - Hey!', 
-                'Zelda - Gasp', 
-                'Cluck', 
-                'Mweep!', 
-                'None',
-            ],
+            'options': get_HealthSFX(),
             'tooltip':'''\
                       'Random Choice': Choose a random 
                       sound from this list.
