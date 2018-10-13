@@ -447,7 +447,7 @@ def guiMain(settings=None):
             BackgroundTaskProgress(mainWindow, "Generating Seed...", main, settings)
 
     generateSeedFrame = Frame(mainWindow)
-    generateButton = Button(generateSeedFrame, text='Generate Patched Rom', command=generateRom)
+    generateButton = Button(generateSeedFrame, text='Generate Patched ROM', command=generateRom)
 
     seedLabel = Label(generateSeedFrame, text='Seed')
     guivars['seed'] = StringVar()

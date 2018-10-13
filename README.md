@@ -584,22 +584,21 @@ This setting allows a huge number of minor tricks to be allowed by the logic. He
 
 * A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltulla on some vines in standad Deku Tree.
 * The Bow can be used to knock down the stairs in Dodongo's Cavern with two well timed shots.
-* The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with the standard Hookshot.
+* The vines in Forest Temple leading to the red well drain switch in vanilla can be reached with the standard Hookshot.
 * A Bombchu from the ground level can be used to hit the switch to bypass the block pushing puzzle in Forest Temple MQ.
-* A rusted switch under a Song of Time block in the standard Fire Temple can be hit by using Hammer into the block.
-* The location with the Boss Key chest in Fire Temple MQ can be reached without the Bow with very particular use of Din's Fire.
-* The upper levels of the old boulder maze in Fire Temple MQ can be reached without explosives by using the Hammer through a wall.
-* In the standard Spirit Temple, the bridge on child side can be lowered with a carefully timed Bombchu.
+* A rusted switch under a Song of Time block in the standard Fire Temple can be reached simply by hammering into the block.
+* The location with the Boss Key chest in Fire Temple MQ can be reached without the Bow through very particular use of Din's Fire.
+* The upper levels of the Lizalfos maze in Fire Temple MQ can be reached without explosives by using the Hammer through a wall.
+* In vanilla Spirit Temple the bridge on child side can be lowered with a carefully timed Bombchu.
 * The frozen switch in Spirit Temple MQ can be hit without a fire source by using the Bow and Song of Time very cleverly.
-* The chest in the basement of the standard Bottom of the Well can be reached with no additional items by using a jump slash with a lit
-Deku Stick.
-* The first room of the Spirit Trail in Ganon's Castle MQ can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
+* The chest in the basement floor of vanilla Bottom of the Well can be reached with no additional items by jump slashing with a lit Deku Stick.
+* The first room of the Spirit Trial in MQ Ganon's Castle can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
 through the thrones.
-* The Gold Skulltulla in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.
-* The child can reach the chest on Death Mountain trail with just the Goron Bracelet by backwalking with the Bomb Flower intended to open
-Dodongo's Cavern and throwing the Bomb Flower at the wall very quickly.
-* Gerudo Fortress can be cleared without any items other than those needed for access. The logic normally guarantees one of the Bow, Hookshot, or
-Hover Boots to help navigate the "kitchen".
+* The Gold Skulltulla above the House of Twins in Kokiri Forest can be reached without the Hookshot by hovering from one of its roots.
+* Child can reach the chest on Death Mountain trail with just the Goron Bracelet by quickly backwalking with the Bomb Flower and throwing it at
+the wall.
+* Gerudo Fortress can be cleared without any items other than those needed to get there. The logic normally guarantees one of the Bow, Hookshot,
+or Hover Boots to help in navigating the kitchen room.
 
 Using this setting will also pre-set all of the lower logic flags to a reasonable configuration to match the trick level. These can then be
 edited as the player desires if the given configuration isn't desired.
@@ -1062,10 +1061,10 @@ Treat the ocarina songs as normal items and shuffle them into the general item p
 Include the Gerudo Card to access Gerudo Training Grounds as a randomized item (default: False)
 
 ```
---shuffle_scrubs
+--shuffle_scrubs [{off,low,regular,random}]
 ```
 
-Include all Deku Scrub Salesmen as randomized item locations (default: False)
+Include all Deku Scrub Salesmen as randomized item and determine their prices (default: off)
 
 ```
 --shopsanity [{off,0,1,2,3,4,random}]

@@ -507,19 +507,19 @@
 ;   lui   t2,0x8012
 ;   addu  t2,t2,s3
 ;   lbu   t2,-23053(t2)
-.org 0xB51690
-    jal     get_name_char
-    addi    a0, s3, -1
-    ori     t2, v0, 0
+.org 0xB51694
+    jal     get_name_char_1
+    ;addi    a0, s3, -1
+    ;ori     t2, v0, 0
 
 ; Replaces
 ;   lui   s0,0x8012
 ;   addu  s0,s0,s2
 ;   lbu   s0,-23052(s0)
-.org 0xB516C0
-    jal     get_name_char
-    ori     a0, s2, 0
-    ori     s0, v0, 0
+.org 0xB516C4
+    jal     get_name_char_2
+    ;ori     a0, s2, 0
+    ;ori     s0, v0, 0
 
 ; Replaces
 ;   lw      s6,48(sp)
@@ -529,3 +529,15 @@
     jal     reset_player_name_id
     nop
     lw      ra, 0x3C (sp)
+
+;==================================================================================================
+; Text Fixes
+;==================================================================================================
+
+; Skip text overrides for GS Token and Biggoron Sword
+; Replaces
+;   li      at, 0x0C
+.org 0xB5293C
+    b       skip_GS_BGS_text   
+.org 0xB529A0
+skip_GS_BGS_text:

@@ -32,7 +32,6 @@ class World(object):
         # group a few others
         self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
         self.navi_colors = [self.navicolordefault, self.navicolorenemy, self.navicolornpc, self.navicolorprop]
-        self.navi_hint_sounds = [self.navisfxoverworld, self.navisfxenemytarget]
         # trials that can be skipped will be decided later
         self.skipped_trials = {
             'Forest': False,
@@ -217,7 +216,7 @@ class World(object):
             location.item = item
             item.location = location
 
-            if item.type != 'Token' and item.type != 'Event' and item.type != 'Shop' and not (item.key or item.map or item.compass) and item.advancement and location.parent_region.dungeon:
+            if item.majoritem and location.parent_region.dungeon:
                 location.parent_region.dungeon.major_items += 1
 
             logging.getLogger('').debug('Placed %s [World %d] at %s [World %d]', item, item.world.id if hasattr(item, 'world') else -1, location, location.world.id if hasattr(location, 'world') else -1)
@@ -676,6 +675,9 @@ class Region(object):
         return False
 
     def can_fill(self, item):
+        if item.majoritem and self.world.one_item_per_dungeon and self.dungeon:
+            return self.dungeon.major_items == 0
+
         is_dungeon_restricted = False
         if item.map or item.compass:
             is_dungeon_restricted = self.world.shuffle_mapcompass == 'dungeon'
@@ -683,8 +685,6 @@ class Region(object):
             is_dungeon_restricted = self.world.shuffle_smallkeys == 'dungeon'
         elif item.bosskey:
             is_dungeon_restricted = self.world.shuffle_bosskeys == 'dungeon'
-        elif item.type != 'Token' and item.type != 'Event' and item.type != 'Shop' and item.advancement and self.world.one_item_per_dungeon and self.dungeon:
-            return self.dungeon.major_items == 0
 
         if is_dungeon_restricted:
             return self.dungeon and self.dungeon.is_dungeon_item(item) and item.world.id == self.world.id
@@ -788,8 +788,7 @@ class Location(object):
         self.price = None
 
     def can_fill(self, state, item, check_access=True):
-        return self.always_allow(item, self) or (self.parent_region.can_fill(item) and self.item_rule(item) and (not check_access or self.can_reach(state)))
-
+        return self.parent_region.can_fill(item) and (self.always_allow(item, state) or (self.item_rule(item) and (not check_access or state.can_reach(self))))
     def can_fill_fast(self, item):
         return self.item_rule(item)
 
@@ -849,7 +848,23 @@ class Item(object):
     @property
     def dungeonitem(self):
         return self.type == 'SmallKey' or self.type == 'BossKey' or self.type == 'Map' or self.type == 'Compass'
-    
+
+    @property
+    def majoritem(self):
+        if self.type == 'Token' or self.type == 'Event' or self.type == 'Shop' or not self.advancement:
+            return False
+
+        if self.name.startswith('Bombchus') and not self.world.bombchus_in_logic:
+            return False
+
+        if self.map or self.compass:
+            return False
+        if self.smallkey and self.world.shuffle_smallkeys == 'dungeon':
+            return False
+        if self.bosskey and self.world.shuffle_bosskeys == 'dungeon':
+            return False
+
+        return True
 
     def __str__(self):
         return str(self.__unicode__())

@@ -683,8 +683,7 @@ def get_pool_core(world):
         else:
             pool.extend(shopsanity_rupees)
 
-    if world.shuffle_scrubs:
-        arrows_or_seeds = 0
+    if not world.shuffle_scrubs == 'off':
         if world.dungeon_mq['DT']:
             pool.append('Deku Shield')
         if world.dungeon_mq['DC']:
