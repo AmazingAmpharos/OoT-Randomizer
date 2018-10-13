@@ -60,7 +60,7 @@ upgrades akin to the natural progression of these items in vanilla playthroughs.
 The following item types will be progressive upgrades:
 * Hookshot, Longshot
 * Bomb Bag, Big Bomb Bag, Biggest Bomb Bag
-* Goron Bracelet, Silver Gauntlets, Gold Gauntlets
+* Goron's Bracelet, Silver Gauntlets, Gold Gauntlets
 * Slingshot, Big Bullet Bag, Biggest Bullet Bag
 * Bow, Big Quiver, Biggest Quiver
 * Silver Scale, Gold Scale
@@ -201,8 +201,8 @@ rooftops of Kakariko.
 * The boulder maze in Goron City can be solved partially with Bombs and fully
 with just the Hammer, but less obvious is the fact that it can be fully solved
 using only the Silver Gauntlets.
-* Even though Link doesn't appear to be wearing it as an adult, the Goron
-Bracelet is needed to push large colored blocks such as the ones in the Forest
+* Though Link doesn't appear to be wearing it as an adult, he still needs the
+Goron's Bracelet to push large colored blocks such as the ones in the Forest
 Temple.
 * In a few places, out of sight Song of Time blocks can be summoned. The lava
 room in Gerudo Training Grounds, the Anubis room in the adult portion of the
@@ -595,7 +595,7 @@ This setting allows a huge number of minor tricks to be allowed by the logic. He
 * The first room of the Spirit Trial in MQ Ganon's Castle can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
 through the thrones.
 * The Gold Skulltulla above the House of Twins in Kokiri Forest can be reached without the Hookshot by hovering from one of its roots.
-* Child can reach the chest on Death Mountain trail with just the Goron Bracelet by quickly backwalking with the Bomb Flower and throwing it at
+* Child can reach the chest on Death Mountain trail with just the Goron's Bracelet by quickly backwalking with the Bomb Flower and throwing it at
 the wall.
 * Gerudo Fortress can be cleared without any items other than those needed to get there. The logic normally guarantees one of the Bow, Hookshot,
 or Hover Boots to help in navigating the kitchen room.
