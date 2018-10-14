@@ -213,9 +213,6 @@ class World(object):
             location.item = item
             item.location = location
 
-            if item.majoritem and location.parent_region.dungeon:
-                location.parent_region.dungeon.major_items += 1
-
             logging.getLogger('').debug('Placed %s [World %d] at %s [World %d]', item, item.world.id if hasattr(item, 'world') else -1, location, location.world.id if hasattr(location, 'world') else -1)
         else:
             raise RuntimeError('Cannot assign item %s to location %s.' % (item, location))
@@ -675,9 +672,6 @@ class Region(object):
         return False
 
     def can_fill(self, item):
-        if item.majoritem and self.world.one_item_per_dungeon and self.dungeon:
-            return self.dungeon.major_items == 0
-
         is_dungeon_restricted = False
         if item.map or item.compass:
             is_dungeon_restricted = self.world.shuffle_mapcompass == 'dungeon'
@@ -732,7 +726,7 @@ class Entrance(object):
 
 class Dungeon(object):
 
-    def __init__(self, name, regions, boss_key, small_keys, dungeon_items):
+    def __init__(self, world, name, regions, boss_key, small_keys, dungeon_items):
         def to_array(obj):
             if obj == None:
                 return []
@@ -741,12 +735,12 @@ class Dungeon(object):
             else:
                 return [obj]
 
+        self.world = world
         self.name = name
         self.regions = regions
         self.boss_key = to_array(boss_key)
         self.small_keys = to_array(small_keys)
         self.dungeon_items = to_array(dungeon_items)
-        self.major_items = 0
 
     @property
     def keys(self):
@@ -786,8 +780,11 @@ class Location(object):
         self.item_rule = lambda item: True
         self.locked = False
         self.price = None
+        self.minor_only = False
 
     def can_fill(self, state, item, check_access=True):
+        if self.minor_only and item.majoritem:
+            return False
         return self.parent_region.can_fill(item) and (self.always_allow(item, state) or (self.item_rule(item) and (not check_access or state.can_reach(self))))
     def can_fill_fast(self, item):
         return self.item_rule(item)
