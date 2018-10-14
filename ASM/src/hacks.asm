@@ -171,6 +171,10 @@
     jal     after_game_state_update
     nop
 
+;==================================================================================================
+; File select hash
+;==================================================================================================
+
 ; Runs after the file select menu is rendered
 ; Replaces: code that draws the fade-out rectangle on file load
 .org 0xBAF738 ; In memory: 0x803B3538
