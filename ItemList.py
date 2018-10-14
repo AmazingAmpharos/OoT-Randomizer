@@ -405,14 +405,14 @@ def get_junk_item(count=1):
 def generate_itempool(world):
     for location, item in eventlocations.items():
         world.push_item(location, ItemFactory(item, world))
-        world.get_location(location).event = True
+        world.get_location(location).locked = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world)
     world.itempool = ItemFactory(pool, world)
     for (location, item) in placed_items.items():
         world.push_item(location, ItemFactory(item, world))
-        world.get_location(location).event = True
+        world.get_location(location).locked = True
 
     choose_trials(world)
     fill_bosses(world)

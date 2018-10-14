@@ -87,7 +87,7 @@ class World(object):
                 item.world = location.item.world
                 ret.get_location(location.name).item = item
                 item.location = ret.get_location(location.name)
-                item.location.event = location.event
+                item.location.locked = location.locked
 
         # copy remaining itempool. No item in itempool should have an assigned location
         for item in self.itempool:
@@ -603,7 +603,7 @@ class CollectionState(object):
             if location.item.advancement 
             and location.item.type != 'Event' 
             and location.item.type != 'Shop' 
-            and not location.event 
+            and not location.locked 
             and (worlds[0].shuffle_smallkeys != 'dungeon' or not location.item.smallkey) 
             and (worlds[0].shuffle_bosskeys != 'dungeon' or not location.item.bosskey)]
 
@@ -784,7 +784,7 @@ class Location(object):
         self.always_allow = lambda item, state: False
         self.access_rule = lambda state: True
         self.item_rule = lambda item: True
-        self.event = False
+        self.locked = False
         self.price = None
 
     def can_fill(self, state, item, check_access=True):
@@ -888,7 +888,7 @@ class Spoiler(object):
         self.version = OoTRVersion
         self.settings = self.worlds[0].settings
         for world in self.worlds:
-            spoiler_locations = [location for location in world.get_locations() if not location.event]
+            spoiler_locations = [location for location in world.get_locations() if not location.locked]
             sort_order = {"Song": 0, "Boss": -1}
             spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
             if self.settings.world_count > 1:

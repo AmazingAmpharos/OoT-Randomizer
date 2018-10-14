@@ -166,7 +166,7 @@ def buildGossipHints(world):
         dungeon_locations = [location for region in dungeon.regions for location in region.locations
             if location.item.type != 'Event' and \
             location.item.type != 'Shop' and \
-            not location.event and \
+            not location.locked and \
             not isDungeonItem(location.item) and \
             (world.tokensanity != 'off' or location.item.type != 'Token') and\
             location.item.type != 'Song']
@@ -186,7 +186,7 @@ def buildGossipHints(world):
             not locationWorld.name in sometimesLocations and \
             locationWorld.item.type != 'Event' and \
             locationWorld.item.type != 'Shop' and \
-            not locationWorld.event and \
+            not locationWorld.locked and \
             (world.tokensanity == 'all' or locationWorld.item.type != 'Token') and \
             not locationWorld.parent_region.dungeon]
     overworldSample = overworldlocations
@@ -212,7 +212,7 @@ def buildGossipHints(world):
             locationWorld.item.advancement and \
             locationWorld.item.type != 'Event' and \
             locationWorld.item.type != 'Shop' and \
-            not locationWorld.event and \
+            not locationWorld.locked and \
             locationWorld.item.type != 'Token' and \
             not locationWorld.item.key]
     gooditemSample = gooditemlocations
