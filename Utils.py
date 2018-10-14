@@ -8,6 +8,7 @@ from version import __version__
 import random
 import itertools
 import bisect
+import logging
 
 def is_bundled():
     return getattr(sys, 'frozen', False)
@@ -82,6 +83,7 @@ def check_version(checked_version):
             if compare_version(version, __version__) > 0 and compare_version(checked_version, __version__) < 0:
                 raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
     except (URLError, HTTPError) as e:
+        logger = logging.getLogger('')
         logger.warning("Could not fetch latest version: " + str(e))
 
 # Shim for the sole purpose of maintaining compatibility with older versions of Python 3.
