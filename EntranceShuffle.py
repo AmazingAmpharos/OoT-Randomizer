@@ -90,7 +90,6 @@ def connect_entrance(world, entrancename, exitname):
     addresses = door_addresses[entrance.name][0]
 
     entrance.connect(region, addresses, target)
-    world.spoiler.set_entrance(entrance.name, exit.name if exit is not None else region.name, 'entrance')
 
 
 def connect_exit(world, exitname, entrancename):
@@ -102,7 +101,6 @@ def connect_exit(world, exitname, entrancename):
         exit.connected_region.entrances.remove(exit)
 
     exit.connect(entrance.parent_region, door_addresses[entrance.name][1], exit_ids[exit.name][1])
-    world.spoiler.set_entrance(entrance.name, exit.name, 'exit')
 
 
 def connect_random(world, exitlist, targetlist, two_way=False):

@@ -122,7 +122,7 @@ def buildGossipHints(world):
                 add_hint(world, stoneIDs.pop(0), buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."))
 
     # add required items locations for hints (good hints)
-    requiredSample = world.spoiler.required_locations
+    requiredSample = world.spoiler.required_locations[world.id]
     if len(requiredSample) >= 5:
         requiredSample = random.sample(requiredSample, random.randint(3,4))
     for location in requiredSample:
