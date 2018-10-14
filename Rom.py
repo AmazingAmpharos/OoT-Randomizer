@@ -7,6 +7,7 @@ import struct
 import subprocess
 import random
 import copy
+from Utils import is_bundled
 
 from Utils import local_path, default_output_path
 
@@ -19,8 +20,7 @@ class LocalRom(object):
         file = settings.rom
         decomp_file = 'ZOOTDEC.z64'
 
-        os.chdir(os.path.dirname(os.path.realpath(__file__)))
-        #os.chdir(output_path(os.path.dirname(os.path.realpath(__file__))))
+        os.chdir(local_path())
 
         with open(local_path('data/symbols.json'), 'r') as stream:
             symbols = json.load(stream)
@@ -59,15 +59,20 @@ class LocalRom(object):
             # If Input ROM is compressed, then Decompress it
             subcall = []
 
+            if is_bundled():
+                sub_dir = "."
+            else:
+                sub_dir = "Decompress"
+
             if platform.system() == 'Windows':
                 if 8 * struct.calcsize("P") == 64:
-                    subcall = ["Decompress\\Decompress.exe", file, decomp_file]
+                    subcall = [sub_dir + "\\Decompress.exe", file, decomp_file]
                 else:
-                    subcall = ["Decompress\\Decompress32.exe", file, decomp_file]
+                    subcall = [sub_dir + "\\Decompress32.exe", file, decomp_file]
             elif platform.system() == 'Linux':
-                subcall = ["Decompress/Decompress", file, decomp_file]
+                subcall = [sub_dir + "/Decompress", file, decomp_file]
             elif platform.system() == 'Darwin':
-                subcall = ["Decompress/Decompress.out", file, decomp_file]
+                subcall = [sub_dir + "/Decompress.out", file, decomp_file]
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
 
@@ -96,13 +101,21 @@ class LocalRom(object):
         return self.buffer[address : address + len]
 
     def read_int16(self, address):
-        return bytes_as_int16(self.read_bytes(address, 2))
+        if address == None:
+            address = self.last_address
+        self.last_address += 2
+        return int16.unpack_from(self.buffer, address)[0]
 
     def read_int24(self, address):
+        if address == None:
+            address = self.last_address
         return bytes_as_int24(self.read_bytes(address, 3))
 
     def read_int32(self, address):
-        return bytes_as_int32(self.read_bytes(address, 4))
+        if address == None:
+            address = self.last_address
+        self.last_address += 4
+        return int32.unpack_from(self.buffer, address)[0]
 
     def write_byte(self, address, value):
         if address == None:
@@ -169,9 +182,11 @@ class LocalRom(object):
         t1 = t2 = t3 = t4 = t5 = t6 = 0xDF26F436
         u32 = 0xFFFFFFFF
 
-        cur = 0x1000
-        while cur < 0x00101000:
-            d = self.read_int32(cur)
+        words = [t[0] for t in int32.iter_unpack(self.buffer[0x1000:0x101000])]
+        words2 = [t[0] for t in int32.iter_unpack(self.buffer[0x750:0x850])]
+
+        for cur in range(len(words)):
+            d = words[cur]
 
             if ((t6 + d) & u32) < t6:
                 t4 += 1 
@@ -187,11 +202,9 @@ class LocalRom(object):
             else:
                 t2 ^= t6 ^ d
 
-            data2 = self.read_int32(0x750 + (cur & 0xFF))
+            data2 = words2[cur & 0x3F]
             t1 += data2 ^ d
             t1 &= u32
-
-            cur += 4
 
         crc0 = t6 ^ t4 ^ t3
         crc1 = t5 ^ t2 ^ t1
@@ -261,6 +274,8 @@ class LocalRom(object):
         else:
             rom.write_int32s(cur, [start, end, start, 0])
 
+int16 = struct.Struct('>H')
+int32 = struct.Struct('>I')
 
 def int16_as_bytes(value):
     value = value & 0xFFFF
@@ -274,11 +289,5 @@ def int32_as_bytes(value):
     value = value & 0xFFFFFFFF
     return [(value >> 24) & 0xFF, (value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF]
 
-def bytes_as_int16(values):
-    return (values[0] << 8) | values[1]
-
 def bytes_as_int24(values):
     return (values[0] << 16) | (values[1] << 8) | values[2]
-
-def bytes_as_int32(values):
-    return (values[0] << 24) | (values[1] << 16) | (values[2] << 8) | values[3]

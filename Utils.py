@@ -8,20 +8,21 @@ from version import __version__
 import random
 import itertools
 import bisect
+import logging
 
 def is_bundled():
     return getattr(sys, 'frozen', False)
 
-def local_path(path):
+def local_path(path=''):
     if local_path.cached_path is not None:
         return os.path.join(local_path.cached_path, path)
 
     if is_bundled():
         # we are running in a bundle
-        local_path.cached_path = sys._MEIPASS # pylint: disable=protected-access,no-member
+        local_path.cached_path = os.path.dirname(os.path.realpath(sys.executable))
     else:
         # we are running in a normal Python environment
-        local_path.cached_path = os.path.dirname(os.path.abspath(__file__))
+        local_path.cached_path = os.path.dirname(os.path.realpath(__file__))
 
     return os.path.join(local_path.cached_path, path)
 
@@ -29,7 +30,7 @@ local_path.cached_path = None
 
 def default_output_path(path):
     if path == '':
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Output')
+        path = local_path('Output')
 
     if not os.path.exists(path):
         os.mkdir(path)
@@ -82,6 +83,7 @@ def check_version(checked_version):
             if compare_version(version, __version__) > 0 and compare_version(checked_version, __version__) < 0:
                 raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
     except (URLError, HTTPError) as e:
+        logger = logging.getLogger('')
         logger.warning("Could not fetch latest version: " + str(e))
 
 # Shim for the sole purpose of maintaining compatibility with older versions of Python 3.

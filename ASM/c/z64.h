@@ -1092,6 +1092,8 @@ typedef struct
 #define z64_icon_item_24_static_vsize           0x0000B400
 #define z64_nes_font_static_vaddr               0x00928000
 #define z64_nes_font_static_vsize               0x00004580
+#define z64_file_select_static_vaddr            0x01A02000
+#define z64_file_select_static_vsize            0x000395C0
 #define z64_parameter_static_vaddr              0x01A3C000
 #define z64_parameter_static_vsize              0x00003B00
 

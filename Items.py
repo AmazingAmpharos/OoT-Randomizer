@@ -178,7 +178,7 @@ item_table = {
     'Serenade of Water': (True, False, 'Song', [0x04, 0x9], 0xC6, 0x00B6, 0x05),
     'Nocturne of Shadow': (True, False, 'Song', [0x06, 0x7], 0xC8, 0x00B6, 0x07),
     'Requiem of Spirit': (True, False, 'Song', [0x05, 0x8], 0xC7, 0x00B6, 0x08),
-    'Gold Skulltulla Token': (True, False, 'Token', None, 0x5B, 0x015C, 0x63),
+    'Gold Skulltula Token': (True, False, 'Token', None, 0x5B, 0x015C, 0x63),
     'Epona': (True, False, 'Event', None, None, None, None),
     'Deku Stick Drop': (True, False, 'Event', None, None, None, None),
     'Deku Nut Drop': (True, False, 'Event', None, None, None, None),

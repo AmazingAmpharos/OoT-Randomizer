@@ -279,7 +279,7 @@ songlist = [
     'Nocturne of Shadow', 
     'Requiem of Spirit']
 
-skulltulla_locations = ([
+skulltula_locations = ([
     'GS Kokiri Know It All House',
     'GS Kokiri Bean Patch',
     'GS Kokiri House of Twins',
@@ -405,14 +405,14 @@ def get_junk_item(count=1):
 def generate_itempool(world):
     for location, item in eventlocations.items():
         world.push_item(location, ItemFactory(item, world))
-        world.get_location(location).event = True
+        world.get_location(location).locked = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world)
     world.itempool = ItemFactory(pool, world)
     for (location, item) in placed_items.items():
         world.push_item(location, ItemFactory(item, world))
-        world.get_location(location).event = True
+        world.get_location(location).locked = True
 
     choose_trials(world)
     fill_bosses(world)
@@ -441,144 +441,144 @@ def get_pool_core(world):
         placed_items['Ocarina of Time'] = 'Ocarina'
 
     if world.dungeon_mq['DT']:
-        skulltulla_locations_final = skulltulla_locations + [
+        skulltula_locations_final = skulltula_locations + [
             'GS Deku Tree MQ Lobby',
             'GS Deku Tree MQ Compass Room',
             'GS Deku Tree MQ Basement Ceiling',
             'GS Deku Tree MQ Basement Back Room']
     else:
-        skulltulla_locations_final = skulltulla_locations + [
+        skulltula_locations_final = skulltula_locations + [
             'GS Deku Tree Compass Room',
             'GS Deku Tree Basement Vines',
             'GS Deku Tree Basement Gate',
             'GS Deku Tree Basement Back Room']
     if world.dungeon_mq['DC']:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Dodongo\'s Cavern MQ Scrub Room',
             'GS Dodongo\'s Cavern MQ Song of Time Block Room',
             'GS Dodongo\'s Cavern MQ Lizalfos Room',
             'GS Dodongo\'s Cavern MQ Larva Room',
             'GS Dodongo\'s Cavern MQ Back Area'])
     else:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Dodongo\'s Cavern East Side Room',
             'GS Dodongo\'s Cavern Vines Above Stairs',
             'GS Dodongo\'s Cavern Back Room',
             'GS Dodongo\'s Cavern Alcove Above Stairs',
             'GS Dodongo\'s Cavern Scarecrow'])
     if world.dungeon_mq['JB']:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Jabu Jabu MQ Tailpasaran Room',
             'GS Jabu Jabu MQ Invisible Enemies Room',
             'GS Jabu Jabu MQ Boomerang Room',
             'GS Jabu Jabu MQ Near Boss'])
     else:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Jabu Jabu Water Switch Room',
             'GS Jabu Jabu Lobby Basement Lower',
             'GS Jabu Jabu Lobby Basement Upper',
             'GS Jabu Jabu Near Boss'])
     if world.dungeon_mq['FoT']:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Forest Temple MQ First Hallway',
             'GS Forest Temple MQ Block Push Room',
             'GS Forest Temple MQ Outdoor East',
             'GS Forest Temple MQ Outdoor West',
             'GS Forest Temple MQ Well'])
     else:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Forest Temple First Room',
             'GS Forest Temple Lobby',
             'GS Forest Temple Outdoor East',
             'GS Forest Temple Outdoor West',
             'GS Forest Temple Basement'])
     if world.dungeon_mq['FiT']:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Fire Temple MQ Above Fire Wall Maze',
             'GS Fire Temple MQ Fire Wall Maze Center',
             'GS Fire Temple MQ Big Lava Room',
             'GS Fire Temple MQ Fire Wall Maze Side Room',
             'GS Fire Temple MQ East Tower Top'])
     else:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Fire Temple Song of Time Room',
             'GS Fire Temple Unmarked Bomb Wall',
             'GS Fire Temple East Tower Climb',
             'GS Fire Temple East Tower Top',
             'GS Fire Temple Basement'])
     if world.dungeon_mq['WT']:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Water Temple MQ Before Upper Water Switch',
             'GS Water Temple MQ North Basement',
             'GS Water Temple MQ Lizalfos Hallway',
             'GS Water Temple MQ Serpent River',
             'GS Water Temple MQ South Basement'])
     else:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Water Temple South Basement',
             'GS Water Temple Serpent River',
             'GS Water Temple Falling Platform Room',
             'GS Water Temple Central Room',
             'GS Water Temple Near Boss Key Chest'])
     if world.dungeon_mq['SpT']:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Spirit Temple MQ Lower Adult Right',
             'GS Spirit Temple MQ Lower Adult Left',
             'GS Spirit Temple MQ Iron Knuckle West',
             'GS Spirit Temple MQ Iron Knuckle North',
             'GS Spirit Temple MQ Sun Block Room'])
     else:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Spirit Temple Metal Fence',
             'GS Spirit Temple Bomb for Light Room',
             'GS Spirit Temple Hall to West Iron Knuckle',
             'GS Spirit Temple Boulder Room',
             'GS Spirit Temple Lobby'])
     if world.dungeon_mq['ShT']:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Shadow Temple MQ Crusher Room',
             'GS Shadow Temple MQ Wind Hint Room',
             'GS Shadow Temple MQ After Wind',
             'GS Shadow Temple MQ After Ship',
             'GS Shadow Temple MQ Near Boss'])
     else:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Shadow Temple Like Like Room',
             'GS Shadow Temple Crusher Room',
             'GS Shadow Temple Single Giant Pot',
             'GS Shadow Temple Near Ship',
             'GS Shadow Temple Tripple Giant Pot'])
     if world.dungeon_mq['BW']:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Well MQ Basement',
             'GS Well MQ Coffin Room',
             'GS Well MQ West Inner Room'])
     else:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Well West Inner Room',
             'GS Well East Inner Room',
             'GS Well Like Like Cage'])
     if world.dungeon_mq['IC']:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Ice Cavern MQ Scarecrow',
             'GS Ice Cavern MQ Ice Block',
             'GS Ice Cavern MQ Red Ice'])
     else:
-        skulltulla_locations_final.extend([
+        skulltula_locations_final.extend([
             'GS Ice Cavern Spinning Scythe Room',
             'GS Ice Cavern Heart Piece Room',
             'GS Ice Cavern Push Block Room'])
     if world.tokensanity == 'off':
-        for location in skulltulla_locations_final:
-            placed_items[location] = 'Gold Skulltulla Token'
+        for location in skulltula_locations_final:
+            placed_items[location] = 'Gold Skulltula Token'
     elif world.tokensanity == 'dungeons':
-        for location in skulltulla_locations_final:
+        for location in skulltula_locations_final:
             if world.get_location(location).scene >= 0x0A:
-                placed_items[location] = 'Gold Skulltulla Token'
+                placed_items[location] = 'Gold Skulltula Token'
             else:
-                pool.append('Gold Skulltulla Token')
+                pool.append('Gold Skulltula Token')
     else:
-        pool.extend(['Gold Skulltulla Token'] * 100)
+        pool.extend(['Gold Skulltula Token'] * 100)
 
     if world.bombchus_in_logic:
         pool.extend(['Bombchus'] * 4)
@@ -683,7 +683,7 @@ def get_pool_core(world):
         else:
             pool.extend(shopsanity_rupees)
 
-    if not world.shuffle_scrubs == 'off':
+    if world.shuffle_scrubs != 'off':
         if world.dungeon_mq['DT']:
             pool.append('Deku Shield')
         if world.dungeon_mq['DC']:
