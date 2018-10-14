@@ -48,8 +48,8 @@ The following item types will be progressive chains:
 -Magic Meter to Double Magic
 
 To be more clear about which NPC items are shuffled, it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart
-or inventory items. The only exception is that even though in vanilla the reward for 40 Gold Skulltulla Tokens was just 10 Bombchus that is still a randomized reward
-in randomizer (but the 200 rupees for all 100 Gold Skulltulla Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy
+or inventory items. The only exception is that even though in vanilla the reward for 40 Gold Skulltula Tokens was just 10 Bombchus that is still a randomized reward
+in randomizer (but the 200 rupees for all 100 Gold Skulltula Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy
 to the player, the Ocarina Memory Game in the Lost Woods will start on the final round as that minigame was very long originally, the three day wait on the Claim Check
 is removed, Bombchu Bowling will have a fixed sequence of prizes that is of maximum convenience to the player, Dampe's Gravedigging Tour will always be won on the first
 dig, and the fishing minigame is made much simpler (8 lb fish for child now, 10 lb for adult). Additionally, any NPC who gives a trading quest item either for the child
@@ -70,7 +70,7 @@ rest in the Temple of Time has hint text pointing to the locations of the Spirit
 Stones while an adult will be able to read hints for the Medallions. This information and some other relevant dungeon based info can be seen in the pause menu by
 holding the "A" button on the c-item menu.
 
-To be very clear on this point, while the rewards for up to 50 Gold Skulltulla Tokens are randomized, the tokens themselves are not.
+To be very clear on this point, while the rewards for up to 50 Gold Skulltula Tokens are randomized, the tokens themselves are not.
 
 As a service to the player in this very long game, many cutscenes have been greatly shortened or removed and text is as often as possible either omitted or sped up.
 We have been as thorough as our exploration of the game and various technical limitations will allow to make the parts of the game where you're watching and reading
@@ -138,7 +138,7 @@ also be used in this temple to avoid the Longshot requirement for the middle lev
 -In Ganon's Castle Spirit Trial, the web can be burned with a precise shot through the torch by a normal arrow. Fire Arrows are not required.  
 -While we guarantee tunics for Fire Temple and Water Temple, you can possibly force yourself to do without if you seriously let a Like Like eat the tunic and
 then do not recover the tunic. It is almost always possible to do without, but it can make things really difficult on you.  
--Several Gold Skulltulla Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).  
+-Several Gold Skulltula Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).  
 
 # Known issues
 
@@ -295,7 +295,7 @@ This option places one "major item" and one only in each of the dungeons. For th
 contain either Medallions or Spiritual Stones as well as Bottom of the Well, Ice Cavern, Gerudo Training Grounds, and Ganon's Castle. The major items are any
 item usable with a c-button that is not simply a form of ammo (Bombchus are major only if "Bombchus are considered in logic" is on), songs, Mirror Shield, swords,
 tunics, boots, Double Defense, Magic Meter/Double Magic, Bullet Bags, Quivers, Bomb Bags, Strength Upgrades, Scales, Wallets, and the Stone of Agony. To be
-clear, this means that rupees, ammo, Deku Stick and Deku Nut ammo expansions, Pieces of Heart, Heart Containers, Gold Skulltulla Tokens, Maps, Compasses,
+clear, this means that rupees, ammo, Deku Stick and Deku Nut ammo expansions, Pieces of Heart, Heart Containers, Gold Skulltula Tokens, Maps, Compasses,
 Small Keys, Boss Keys, Deku Shields, Hylian Shields, and Ice Traps are not considered major items.
 
 ## Dungeon Quest
@@ -403,18 +403,18 @@ This setting removes the Boss Key lock from Ganon's Tower. This removes the need
 
 ## Tokensanity
 
-This setting shuffles the Gold Skulltulla item drops into the general pool of locations. The player can choose only to include Gold Skulltullas
+This setting shuffles the Gold Skulltula item drops into the general pool of locations. The player can choose only to include Gold skulltulas
 found in dungeons for a more mild version of this setting.
 
 # Detailed Logic
 
-## Maximum expected Skulltulla tokens
+## Maximum expected Skulltula tokens
 
-This setting can be used to reduce the number of Gold Skulltulla Tokens that may be required to finish the game.
+This setting can be used to reduce the number of Gold Skulltula Tokens that may be required to finish the game.
 
-## No Nighttime Skulltullas without Sun's Song
+## No Nighttime Skulltulas without Sun's Song
 
-This setting causes the logic to expect the player to have an ocarina and the Sun's Song to get Gold Skulltulla locations that are only found at
+This setting causes the logic to expect the player to have an ocarina and the Sun's Song to get Gold Skulltula locations that are only found at
 nighttime.
 
 ## No Big Poes
@@ -465,7 +465,7 @@ Only one item will be in the item pool regardless of this setting; this can mere
 
 This setting allows a huge number of minor tricks to be allowed by the logic. Here is a complete list:
 
--A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltulla on some vines in standad Deku Tree.  
+-A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltula on some vines in standad Deku Tree.  
 -The Bow can be used to knock down the stairs in Dodongo's Cavern with two well timed shots.  
 -The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with the standard Hookshot.  
 -The well in Forest Temple can be crossed with just Hookshot by shooting as low as possible on the vines from the far side and swimming under
@@ -481,7 +481,7 @@ Deku Stick to access the bomb flowers in the basement.
 -The silver rupees on the left side of Gerudo Training Grounds MQ can be collected with just Hookshot with a somewhat particular jump slash.  
 -The first room of the Spirit Trail in Ganon's Castle MQ can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
 through the thrones.  
--The Gold Skulltulla in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.  
+-The Gold Skulltula in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.  
 -The child can reach the chest on Death Mountain trail with just the Goron Bracelet by backwalking with the Bomb Flower intended to open
 Dodongo's Cavern and throwing the Bomb Flower at the wall very quickly.  
 -Gerudo Fortress can be cleared without any items other than those needed for access. The logic normally guarantees one of the Bow, Hookshot, or
@@ -600,7 +600,7 @@ This flag changes the behavior of Gossip Stones to give hints to players. The hi
 -If the required number of trials is 1-3, a hint will be added for each trial that must be done. If the required number of trials is 4 or 5, a hint will be added
 for each trial that can be skipped.  
 -Hints will be added for every one of the "always" locations that is allowed to have a random possibly valuable item under the current settings. These hints
-will tell the player what item is at each of these locations. These locations are the rewards for 30, 40, and 50 Gold Skulltulla Tokens, the item obtained from
+will tell the player what item is at each of these locations. These locations are the rewards for 30, 40, and 50 Gold Skulltula Tokens, the item obtained from
 Biggoron by showing the Claim Check, the item obtained from the Big Poe vendor, both the song and the item slots at the Ocarina of Time, and the item obtained
 from showing the Mask of Truth at the Deku Theater.  
 -Some hints will be given for items at a randomly selected number of other locations that are generally somewhat inconvenient to check. The total number of these
@@ -608,7 +608,7 @@ hints will be either 11 or 12 minus the number of always hints placed.
 -3 or 4 hints will be given naming a specific non-dungeon specific item that can be found in a randomly chosen dungeon.  
 -1 to 4 hints will be given naming a specific item found in a specific overworld region. Which part of this range is used is determined in part by how many
 trial hints are given.  
--4 to 6 hints will be given naming what region specific progression items other than Gold Skulltulla Tokens can be found.  
+-4 to 6 hints will be given naming what region specific progression items other than Gold Skulltula Tokens can be found.  
 -3 or 4 hints will be given naming specific regions that are "on the way of the hero" and thus contain at least one required progression item.  
 -All remaining hints (33 total unique Gossip Stones exist) will be filled with non-information junk hints.  
 
@@ -993,7 +993,7 @@ Remove the Boss Key door leading to Ganondorf (default: False)
 --tokensanity [{off,dungeons,all}]
 ```
 
-Include the chosen Gold Skulltulla Token locations in the item shuffle (default: off)
+Include the chosen Gold Skulltula Token locations in the item shuffle (default: off)
 
 ```
 --quest [{vanilla,master,mixed}]
@@ -1005,13 +1005,13 @@ Choose the internal layout of the dungeons (default: vanilla)
 --logic_skulltulas [{0,10,20,30,40,50}]
 ```
 
-Choose the maximum number of Gold Skulltulla Tokens that could be required (default: 50)
+Choose the maximum number of Gold Skulltula Tokens that could be required (default: 50)
 
 ```
 --logic_no_night_tokens_without_suns_song
 ```
 
-Change logic to expect Sun's Song to defeat nighttime Gold Skulltullas (default: False)
+Change logic to expect Sun's Song to defeat nighttime Gold Skulltulas (default: False)
 
 ```
 --logic_no_big_poes

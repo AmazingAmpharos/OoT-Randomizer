@@ -156,10 +156,10 @@ hintTable = {
 
     '10 Big Poes':                                           (["#Big Poes# leads to", "#ghost hunters# will be rewarded with"], None, 'alwaysLocation'),
     'Deku Theater Mask of Truth':                            ("the #Mask of Truth# yields", None, 'alwaysLocation'),
-    '20 Gold Skulltulla Reward':                             ("slaying #20 Gold Skulltulas# reveals", None, 'location'),
-    '30 Gold Skulltulla Reward':                             ("slaying #30 Gold Skulltulas# reveals", None, 'alwaysLocation'),
-    '40 Gold Skulltulla Reward':                             ("slaying #40 Gold Skulltulas# reveals", None, 'alwaysLocation'),
-    '50 Gold Skulltulla Reward':                             ("slaying #50 Gold Skulltulas# reveals", None, 'alwaysLocation'),
+    '20 Gold Skulltula Reward':                              ("slaying #20 Gold Skulltulas# reveals", None, 'location'),
+    '30 Gold Skulltula Reward':                              ("slaying #30 Gold Skulltulas# reveals", None, 'alwaysLocation'),
+    '40 Gold Skulltula Reward':                              ("slaying #40 Gold Skulltulas# reveals", None, 'alwaysLocation'),
+    '50 Gold Skulltula Reward':                              ("slaying #50 Gold Skulltulas# reveals", None, 'alwaysLocation'),
     'Ocarina of Time':                                       ("They say the #treasure thrown by Princess Zelda# is", None, 'alwaysLocation'),
     'Song from Ocarina of Time':                             ("the #Ocarina of Time# teaches", None, 'alwaysLocation'),
     'Biggoron':                                              ("#Biggoron# crafts", None, 'alwaysLocation'),
@@ -327,15 +327,15 @@ def hintExclusions(world):
     if world.logic_no_big_poes:
         exclusions.append('10 Big Poes')
     if expected_skulltulas < 50:
-        exclusions.append('50 Gold Skulltulla Reward')
+        exclusions.append('50 Gold Skulltula Reward')
     if expected_skulltulas < 40:
-        exclusions.append('40 Gold Skulltulla Reward')
+        exclusions.append('40 Gold Skulltula Reward')
     if expected_skulltulas < 30:
-        exclusions.append('30 Gold Skulltulla Reward')
+        exclusions.append('30 Gold Skulltula Reward')
     if expected_skulltulas < 20:
-        exclusions.append('20 Gold Skulltulla Reward')
+        exclusions.append('20 Gold Skulltula Reward')
     if expected_skulltulas < 10:
-        exclusions.append('10 Gold Skulltulla Reward')
+        exclusions.append('10 Gold Skulltula Reward')
     if not world.shuffle_ocarinas:
         exclusions.append('Ocarina of Time')
     if world.tokensanity != 'all':
