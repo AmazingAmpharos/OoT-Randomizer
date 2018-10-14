@@ -122,7 +122,7 @@ def buildGossipHints(world):
                 add_hint(world, stoneIDs.pop(0), buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."))
 
     # add required items locations for hints (good hints)
-    requiredSample = world.spoiler.required_locations
+    requiredSample = world.spoiler.required_locations[world.id]
     if len(requiredSample) >= 5:
         requiredSample = random.sample(requiredSample, random.randint(3,4))
     for location in requiredSample:
@@ -166,9 +166,9 @@ def buildGossipHints(world):
         dungeon_locations = [location for region in dungeon.regions for location in region.locations
             if location.item.type != 'Event' and \
             location.item.type != 'Shop' and \
-            not location.event and \
+            not location.locked and \
             not isDungeonItem(location.item) and \
-            (world.tokensanity != 'off' or location.item.name != 'Gold Skulltulla Token') and\
+            (world.tokensanity != 'off' or location.item.type != 'Token') and\
             location.item.type != 'Song']
         if (len(dungeon_locations) == 0):
             continue
@@ -186,8 +186,8 @@ def buildGossipHints(world):
             not locationWorld.name in sometimesLocations and \
             locationWorld.item.type != 'Event' and \
             locationWorld.item.type != 'Shop' and \
-            not locationWorld.event and \
-            (world.tokensanity == 'all' or locationWorld.item.name != 'Gold Skulltulla Token') and \
+            not locationWorld.locked and \
+            (world.tokensanity == 'all' or locationWorld.item.type != 'Token') and \
             not locationWorld.parent_region.dungeon]
     overworldSample = overworldlocations
     if len(overworldSample) >= 3:
@@ -212,8 +212,8 @@ def buildGossipHints(world):
             locationWorld.item.advancement and \
             locationWorld.item.type != 'Event' and \
             locationWorld.item.type != 'Shop' and \
-            not locationWorld.event and \
-            locationWorld.item.name != 'Gold Skulltulla Token' and \
+            not locationWorld.locked and \
+            locationWorld.item.type != 'Token' and \
             not locationWorld.item.key]
     gooditemSample = gooditemlocations
     if len(gooditemSample) >= 6:
@@ -307,6 +307,7 @@ def buildGanonText(world, messages):
             if location.item.name == 'Light Arrows':
                 text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
                 location_hint = location.hint.replace('Ganon\'s Castle', 'my castle')
+                location_hint = location.hint.replace('Ganon\'s Tower', 'my tower')
                 text += get_raw_text(location_hint)
                 text += '!'
                 break
@@ -315,6 +316,8 @@ def buildGanonText(world, messages):
         for location in world.get_locations():
             if location.name == 'Ganons Tower Boss Key Chest':
                 text += get_raw_text(getHint(getItemGenericName(location.item), world.clearer_hints).text)
+                text += '!'
+                break
     
     update_message_by_id(messages, 0x70CC, text)
         

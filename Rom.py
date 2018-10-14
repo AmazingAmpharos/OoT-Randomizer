@@ -7,6 +7,7 @@ import struct
 import subprocess
 import random
 import copy
+from Utils import is_bundled
 
 from Utils import local_path, default_output_path
 
@@ -58,15 +59,20 @@ class LocalRom(object):
             # If Input ROM is compressed, then Decompress it
             subcall = []
 
+            if is_bundled():
+                sub_dir = "."
+            else:
+                sub_dir = "Decompress"
+
             if platform.system() == 'Windows':
                 if 8 * struct.calcsize("P") == 64:
-                    subcall = ["Decompress\\Decompress.exe", file, decomp_file]
+                    subcall = [sub_dir + "\\Decompress.exe", file, decomp_file]
                 else:
-                    subcall = ["Decompress\\Decompress32.exe", file, decomp_file]
+                    subcall = [sub_dir + "\\Decompress32.exe", file, decomp_file]
             elif platform.system() == 'Linux':
-                subcall = ["Decompress/Decompress", file, decomp_file]
+                subcall = [sub_dir + "/Decompress", file, decomp_file]
             elif platform.system() == 'Darwin':
-                subcall = ["Decompress/Decompress.out", file, decomp_file]
+                subcall = [sub_dir + "/Decompress.out", file, decomp_file]
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
 

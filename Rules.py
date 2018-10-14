@@ -175,20 +175,20 @@ def global_rules(world):
     set_rule(world.get_location('Anju as Adult'), lambda state: state.is_adult())
     set_rule(world.get_location('Man on Roof'), lambda state: world.logic_man_on_roof or state.can_use('Hookshot'))
     set_rule(
-        world.get_location('10 Gold Skulltulla Reward'),
-        lambda state: (expected_skulltulas >= 10) and state.has('Gold Skulltulla Token', 10))
+        world.get_location('10 Gold Skulltula Reward'),
+        lambda state: (expected_skulltulas >= 10) and state.has('Gold Skulltula Token', 10))
     set_rule(
-        world.get_location('20 Gold Skulltulla Reward'),
-        lambda state: (expected_skulltulas >= 20) and state.has('Gold Skulltulla Token', 20))
+        world.get_location('20 Gold Skulltula Reward'),
+        lambda state: (expected_skulltulas >= 20) and state.has('Gold Skulltula Token', 20))
     set_rule(
-        world.get_location('30 Gold Skulltulla Reward'),
-        lambda state: (expected_skulltulas >= 30) and state.has('Gold Skulltulla Token', 30) and state.guarantee_hint())
+        world.get_location('30 Gold Skulltula Reward'),
+        lambda state: (expected_skulltulas >= 30) and state.has('Gold Skulltula Token', 30) and state.guarantee_hint())
     set_rule(
-        world.get_location('40 Gold Skulltulla Reward'),
-        lambda state: (expected_skulltulas >= 40) and state.has('Gold Skulltulla Token', 40) and state.guarantee_hint())
+        world.get_location('40 Gold Skulltula Reward'),
+        lambda state: (expected_skulltulas >= 40) and state.has('Gold Skulltula Token', 40) and state.guarantee_hint())
     set_rule(
-        world.get_location('50 Gold Skulltulla Reward'),
-        lambda state: (expected_skulltulas >= 50) and state.has('Gold Skulltulla Token', 50) and state.guarantee_hint())
+        world.get_location('50 Gold Skulltula Reward'),
+        lambda state: (expected_skulltulas >= 50) and state.has('Gold Skulltula Token', 50) and state.guarantee_hint())
     set_rule(world.get_location('Heart Piece Grave Chest'), lambda state: state.can_play('Suns Song'))
     set_rule(world.get_entrance('Composer Grave'), lambda state: state.can_play('Zeldas Lullaby'))
     set_rule(

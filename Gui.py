@@ -252,20 +252,18 @@ def guiMain(settings=None):
     outputDirLabel.pack(side=LEFT, padx=(3,0))
     outputDirEntry.pack(side=LEFT, padx=3)
     outputDirButton.pack(side=LEFT)
-    outputDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
-
-    if os.path.exists(local_path('README.html')):
-        def open_readme():
-            open_file(local_path('README.html'))
-        openReadmeButton = Button(outputDialogFrame, text='Open Documentation', command=open_readme)
-        openReadmeButton.pack(side=LEFT, padx=5)
-
     outputDialogFrame.pack(side=TOP, anchor=W, pady=3)
 
     countDialogFrame = Frame(frames['rom_tab'])
     countLabel = Label(countDialogFrame, text='Generation Count')
     guivars['count'] = StringVar()
     countSpinbox = Spinbox(countDialogFrame, from_=1, to=100, textvariable=guivars['count'], width=3)
+
+    if os.path.exists(local_path('README.html')):
+        def open_readme():
+            open_file(local_path('README.html'))
+        openReadmeButton = Button(countDialogFrame, text='Open Documentation', command=open_readme)
+        openReadmeButton.pack(side=RIGHT, padx=5)
 
     countLabel.pack(side=LEFT)
     countSpinbox.pack(side=LEFT, padx=2)
