@@ -6,11 +6,15 @@ import random
 import textwrap
 import sys
 
-from Gui import guiMain
 from Main import main
 from Utils import is_bundled, close_console, check_version, VersionError
 from Patches import get_tunic_color_options, get_navi_color_options
 from Settings import get_settings_from_command_line_args
+
+try:
+    from Gui import guiMain
+except ImportError as e:
+    print("Gui is unavailable. Running in cli mode.")
 
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
@@ -32,7 +36,7 @@ def start():
         guiMain()
         sys.exit(0)
 
-    # ToDo: Validate files further than mere existance
+    # ToDo: Validate files further than mere existence
     if not os.path.isfile(settings.rom):
         input('Could not find valid base rom for patching at expected path %s. Please run with -h to see help for further information. \nPress Enter to exit.' % settings.rom)
         sys.exit(1)
@@ -49,7 +53,13 @@ def start():
             logger.warning(str(e))
 
     if gui:
-        guiMain(settings)
+        try:
+            guiMain(settings)
+        except NameError as e:
+            logger.error("\n" \
+                    "OoTRandomizer.py: error: Gui could not be loaded. " \
+                    "Check to see that tk is properly configured.")
+            logger.error(str(e))
     elif settings.count is not None:
         orig_seed = settings.seed
         for i in range(settings.count):
