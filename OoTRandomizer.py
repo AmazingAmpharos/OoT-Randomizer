@@ -1,26 +1,16 @@
 #!/usr/bin/env python3
-import argparse
 import os
 import logging
-import random
-import textwrap
 import sys
 
 from Main import main
 from Utils import is_bundled, close_console, check_version, VersionError
-from Patches import get_tunic_color_options, get_navi_color_options
 from Settings import get_settings_from_command_line_args
 
 try:
     from Gui import guiMain
 except ImportError as e:
     print("Gui is unavailable. Running in cli mode.")
-
-
-class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
-
-    def _get_help_string(self, action):
-        return textwrap.dedent(action.help)
 
 
 def start():
@@ -30,7 +20,7 @@ def start():
     if is_bundled() and len(sys.argv) == 1:
         # for the bundled builds, if we have no arguments, the user
         # probably wants the gui. Users of the bundled build who want the command line
-        # interface shouuld specify at least one option, possibly setting a value to a
+        # interface should specify at least one option, possibly setting a value to a
         # default if they like all the defaults
         close_console()
         guiMain()
