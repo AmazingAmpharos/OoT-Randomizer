@@ -9,7 +9,7 @@ import random
 import copy
 
 from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText, getSimpleHintNoPrefix
-from Utils import local_path, default_output_path, random_choices
+from Utils import data_path, default_output_path, random_choices
 from Items import ItemFactory, item_data
 from Messages import *
 from OcarinaSongs import Song, str_to_song, replace_songs
@@ -160,13 +160,13 @@ def get_navi_color_options():
     return ["Random Choice", "Completely Random"] + get_navi_colors()
 
 def patch_rom(world, rom):
-    with open(local_path('data/rom_patch.txt'), 'r') as stream:
+    with open(data_path('rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
             rom.write_byte(address, value)
     
     # Write Randomizer title screen logo
-    with open(local_path('data/title.bin'), 'rb') as stream:
+    with open(data_path('title.bin'), 'rb') as stream:
         titleBytes = stream.read()
         rom.write_bytes(0x01795300, titleBytes)
 

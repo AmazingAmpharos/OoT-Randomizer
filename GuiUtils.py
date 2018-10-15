@@ -3,12 +3,12 @@ import threading
 import tkinter as tk
 import traceback
 
-from Utils import local_path
+from Utils import data_path
 
 def set_icon(window):
-    er16 = tk.PhotoImage(file=local_path('data/ER16.gif'))
-    er32 = tk.PhotoImage(file=local_path('data/ER32.gif'))
-    er48 = tk.PhotoImage(file=local_path('data/ER32.gif'))
+    er16 = tk.PhotoImage(file=data_path('ER16.gif'))
+    er32 = tk.PhotoImage(file=data_path('ER32.gif'))
+    er48 = tk.PhotoImage(file=data_path('ER32.gif'))
     window.tk.call('wm', 'iconphoto', window._w, er16, er32, er48) # pylint: disable=protected-access
 
 

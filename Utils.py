@@ -28,6 +28,21 @@ def local_path(path=''):
 
 local_path.cached_path = None
 
+
+def data_path(path=''):
+    if data_path.cached_path is not None:
+        return os.path.join(data_path.cached_path, path)
+
+    # Even if it's bundled we use __file__
+    # if it's not bundled, then we want to use the source.py dir + Data
+    # if it's bundled, then we want to use the extraction dir + Data
+    data_path.cached_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Data")
+
+    return os.path.join(data_path.cached_path, path)
+
+data_path.cached_path = None
+
+
 def default_output_path(path):
     if path == '':
         path = local_path('Output')
