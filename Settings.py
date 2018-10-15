@@ -381,7 +381,7 @@ setting_infos = [
             'text': 'Rainbow Bridge Requirement',
             'group': 'open',
             'widget': 'Combobox',
-            'default': 'All medallions',
+            'default': 'All Medallions',
             'options': {
                 'All Dungeons': 'dungeons',
                 'All Medallions': 'medallions',
@@ -1576,7 +1576,7 @@ setting_infos = [
             'text': 'Lens of Truth',
             'group': 'tricks',
             'widget': 'Combobox',
-            'default': 'Required everywhere',
+            'default': 'Required Everywhere',
             'options': {
                 'Required Everywhere': 'all',
                 'Wasteland and Chest Minigame': 'chest-wasteland',
@@ -1708,7 +1708,7 @@ setting_infos = [
             'text': 'Text Shuffle',
             'group': 'other',
             'widget': 'Combobox',
-            'default': 'No text shuffled',
+            'default': 'No Text Shuffled',
             'options': {
                 'No Text Shuffled': 'none',
                 'Shuffled except Hints and Keys': 'except_hints',
