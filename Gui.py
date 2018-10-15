@@ -434,15 +434,15 @@ def guiMain(settings=None):
         orig_seed = settings.seed
         for i in range(settings.count):
             settings.update_seed(orig_seed + '-' + str(i))
-            window.update_title("Generating Seed...%d/%d" % (i+1, settings.count))
+            window.update_title("Generating Seed %s...%d/%d" % (settings.seed, i+1, settings.count))
             main(settings, window)
 
     def generateRom():
         settings = guivars_to_settings(guivars)
         if settings.count is not None:
-            BackgroundTaskProgress(mainWindow, "Generating Seed...", multiple_run, settings)
+            BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, multiple_run, settings)
         else:
-            BackgroundTaskProgress(mainWindow, "Generating Seed...", main, settings)
+            BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, main, settings)
 
     generateSeedFrame = Frame(mainWindow)
     generateButton = Button(generateSeedFrame, text='Generate Patched ROM', command=generateRom)
