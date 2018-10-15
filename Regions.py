@@ -770,7 +770,7 @@ def create_regions(world):
                 'Shadow Temple Beyond Boat', 
                 ['Shadow Temple Spike Walls Left Chest', 'Shadow Temple Boss Key Chest', 
                  'Shadow Temple Hidden Floormaster Chest', 'Bongo Bongo Heart', 'Bongo Bongo', 
-                 'GS Shadow Temple Tripple Giant Pot'])
+                 'GS Shadow Temple Triple Giant Pot'])
         ])
 
     if world.dungeon_mq['BW']:
@@ -1539,7 +1539,7 @@ location_table = {
 
     'GS Shadow Temple Single Giant Pot': (None, None, 0x01, 'GS Token', 0x07, 'Shadow Temple'),
     'GS Shadow Temple Crusher Room': (None, None, 0x02, 'GS Token', 0x07, 'Shadow Temple'),
-    'GS Shadow Temple Tripple Giant Pot': (None, None, 0x04, 'GS Token', 0x07, 'Shadow Temple'),
+    'GS Shadow Temple Triple Giant Pot': (None, None, 0x04, 'GS Token', 0x07, 'Shadow Temple'),
     'GS Shadow Temple Like Like Room': (None, None, 0x08, 'GS Token', 0x07, 'Shadow Temple'),
     'GS Shadow Temple Near Ship': (None, None, 0x10, 'GS Token', 0x07, 'Shadow Temple'),
 
