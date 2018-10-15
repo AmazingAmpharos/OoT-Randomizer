@@ -406,7 +406,7 @@ def guiMain(settings=None):
     worldCountFrame = Frame(multiworldFrame)
     countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
-    countSpinbox = Spinbox(worldCountFrame, from_=1, to=100, textvariable=guivars['world_count'], width=3)
+    countSpinbox = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
 
     countLabel.pack(side=LEFT)
     countSpinbox.pack(side=LEFT, padx=2)
@@ -415,7 +415,7 @@ def guiMain(settings=None):
     playerNumFrame = Frame(multiworldFrame)
     countLabel = Label(playerNumFrame, text='Player ID')
     guivars['player_num'] = StringVar()
-    countSpinbox = Spinbox(playerNumFrame, from_=1, to=100, textvariable=guivars['player_num'], width=3)
+    countSpinbox = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['player_num'], width=3)
 
     countLabel.pack(side=LEFT)
     countSpinbox.pack(side=LEFT, padx=2)
