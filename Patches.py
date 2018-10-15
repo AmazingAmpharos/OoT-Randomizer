@@ -827,7 +827,7 @@ def patch_rom(world, rom):
                    0x27CE090, 0x2887070, 0x2887080, 0x2887090, 0x2897070, 0x28C7134, 0x28D91BC, 0x28A60F4, 0x28AE084,
                    0x28B9174, 0x28BF168, 0x28BF178, 0x28BF188, 0x28A1144, 0x28A6104, 0x28D0094]
     for address in Wonder_text:
-        rom.write_byte(address, 0xFE)
+        rom.write_byte(address, 0xFB)
 
     # Speed dig text for Dampe
     rom.write_bytes(0x9532F8, [0x08, 0x08, 0x08, 0x59])
