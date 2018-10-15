@@ -148,10 +148,18 @@ def fill_dungeon_unique_item(window, worlds, fill_locations, itempool):
     minor_items = [item for item in itempool if not item.majoritem]
 
     dungeons = [dungeon for world in worlds for dungeon in world.dungeons]
+    double_dungeons = []
+    for dungeon in dungeons:
+        # we will count spirit temple twice so that it gets 2 items to match vanilla
+        if dungeon.name == 'Spirit Temple':
+            double_dungeons.append(dungeon)
+    dungeons.extend(double_dungeons)
+
     random.shuffle(dungeons)
     random.shuffle(itempool)
 
     all_other_item_state = CollectionState.get_states_with_items([world.state for world in worlds], minor_items)
+    all_dungeon_locations = []
 
     # iterate of all the dungeons in a random order, placing the item there
     for dungeon in dungeons:
@@ -160,25 +168,24 @@ def fill_dungeon_unique_item(window, worlds, fill_locations, itempool):
             # spirit temple is weird and includes a couple locations outside of the dungeon
             dungeon_locations.extend([dungeon.world.get_location(location) for location in ['Mirror Shield Chest', 'Silver Gauntlets Chest']])
 
-            # spirit temple has 2 items in vanilla, and we maintain that still
-            random.shuffle(dungeon_locations)
-            fill_restrictive(window, worlds, all_other_item_state, dungeon_locations, major_items, 2)
-        else:
-            # all other dungeons place 1 item in the dungeon
-            random.shuffle(dungeon_locations)
-            fill_restrictive(window, worlds, all_other_item_state, dungeon_locations, major_items, 1)
+        # cache this list to flag afterwards
+        all_dungeon_locations.extend(dungeon_locations)
 
-        # flag locations to not place further major items. it's important we do it on the 
-        # locations instead of the dungeon because some locations are not in the dungeon
-        for location in dungeon_locations:
-            location.minor_only = True
+        # place 1 item into the dungeon
+        random.shuffle(dungeon_locations)
+        fill_restrictive(window, worlds, all_other_item_state, dungeon_locations, major_items, 1)
 
-    # update the location and item pool, removing any placed items and filled locations
-    # the fact that you can remove items from a list you're iterating over is python magic
-    for item in itempool:
-        if item.location != None:
-            fill_locations.remove(item.location)
-            itempool.remove(item)
+        # update the location and item pool, removing any placed items and filled locations
+        # the fact that you can remove items from a list you're iterating over is python magic
+        for item in itempool:
+            if item.location != None:
+                fill_locations.remove(item.location)
+                itempool.remove(item)
+
+    # flag locations to not place further major items. it's important we do it on the 
+    # locations instead of the dungeon because some locations are not in the dungeon
+    for location in all_dungeon_locations:
+        location.minor_only = True
 
     logging.getLogger('').info("Unique dungeon items placed")
 
