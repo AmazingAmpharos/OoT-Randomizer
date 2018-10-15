@@ -1733,8 +1733,10 @@ setting_infos = [
             'help': '''\
                     Change the item pool for an added challenge.
                     normal:         Default items
-                    hard:           Double defense, double magic, and all 8 heart containers are removed
-                    very_hard:      Double defense, double magic, Nayru's Love, and all health upgrades are removed
+                    hard:           Double defense, double magic, and all 8 heart containers are removed. Ammo
+                                    for each type can only be expanded once and you can only find three Bombchu packs.
+                    very_hard:      Double defense, double magic, Nayru's Love, and all health upgrades are removed.
+                                    No ammo expansions are available and you can only find one Bombchu pack.
                     ohko:           Same as very hard, and Link will die in one hit.
                     '''
         },
@@ -1750,14 +1752,24 @@ setting_infos = [
                 'OHKO': 'ohko'
             },
             'tooltip':'''\
-                      Makes health less available
+                      Makes health less available, reduces
+                      ammo expansions, and reduces Bombchus
+                      in the item pool by three.
 
                       'Hard': Heart Containers, Double Magic,
-                      and Double Defense are removed.
+                      and Double Defense are removed. Only
+                      one extra Quiver, Bullet Bag, Bomb Bag,
+                      Deku Stick and Deku Nut Capacity Upgrades
+                      will be available. Only three Bombchu
+                      packs are available.
 
                       'Very Hard': Heart Containers, Pieces of
                       Heart, Double Magic, Double Defense, 
-                      and Nayru's Love are removed.
+                      and Nayru's Love are removed. No extra
+                      Quivers, Bullet Bags, Bomb Bags, or
+                      Deku Stick and Deku Nut Capacity Upgrades
+                      will be available. Only one Bombchu
+                      pack is available.
 
                       'OHKO': Link dies in one hit.
                       '''
