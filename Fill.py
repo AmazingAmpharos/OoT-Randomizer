@@ -166,7 +166,7 @@ def fill_dungeon_unique_item(window, worlds, fill_locations, itempool):
         dungeon_locations = [location for region in dungeon.regions for location in region.locations if location in fill_locations]
         if dungeon.name == 'Spirit Temple':
             # spirit temple is weird and includes a couple locations outside of the dungeon
-            dungeon_locations.extend([dungeon.world.get_location(location) for location in ['Mirror Shield Chest', 'Silver Gauntlets Chest']])
+            dungeon_locations.extend([dungeon.world.get_location(location) for location in ['Mirror Shield Chest', 'Silver Gauntlets Chest'] if location in fill_locations])
 
         # cache this list to flag afterwards
         all_dungeon_locations.extend(dungeon_locations)
