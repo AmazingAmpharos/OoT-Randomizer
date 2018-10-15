@@ -99,11 +99,11 @@ NaviSFX = {
     'Gold Skulltula': 0x39DA,
     'Redead'        : 0x38E5,
     'Poe'           : 0x38EC,
-    'Ruto'          : 0x4863,
+    'Ruto'          : 0x6863,
     'Howl'          : 0x28AE,
     'Business Scrub': 0x3882,
     'Guay'          : 0x38B6,
-    'H`lo!'         : 0x4844
+    'H`lo!'         : 0x6844
 }
 
 HealthSFX = {
