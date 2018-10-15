@@ -43,7 +43,7 @@
 # the floor map data is missing a vertex pointer that would point within kaleido_scope.
 # As such, if the file moves, the patch will break.
 
-from Utils import local_path
+from Utils import data_path
 from Rom import LocalRom
 import json
 from struct import pack, unpack
@@ -421,7 +421,7 @@ def patch_files(rom:LocalRom, mq_scenes:list):
 
 
 def get_json():
-    with open(local_path('data/mqu.json'), 'r') as stream:
+    with open(data_path('mqu.json'), 'r') as stream:
         data = json.load(stream)
     return data
 
