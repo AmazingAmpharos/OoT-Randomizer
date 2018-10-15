@@ -1130,7 +1130,7 @@ setting_infos = [
             'type': int
         },
         {
-            'text': 'Maximum expected Skulltula tokens',
+            'text': 'Maximum Expected Skulltula Tokens',
             'group': 'rewards',
             'widget': 'Scale',
             'default': 50,
