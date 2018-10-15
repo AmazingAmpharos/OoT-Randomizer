@@ -1402,9 +1402,9 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Require Minor Tricks',
+            'text': 'Various Minor Tricks',
             'group': 'tricks',
-            'widget': 'SpecialCheckbutton',
+            'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
                       Enables a large number of tricks.

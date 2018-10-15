@@ -175,22 +175,26 @@ def guiMain(settings=None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
 
-    def show_settings_special(event=None):
-        if guivars['logic_tricks'].get():
+    def update_logic_tricks(event=None):
+        if guivars['all_logic_tricks'].get():
+            widgets['logic_tricks'].select()
             widgets['logic_man_on_roof'].select()
             widgets['logic_child_deadhand'].select()
             widgets['logic_dc_jump'].select()
             widgets['logic_windmill_poh'].select()
             widgets['logic_crater_bean_poh_with_hovers'].select()
             widgets['logic_zora_with_cucco'].select()
+            widgets['logic_zora_with_hovers'].select()
             widgets['logic_fewer_tunic_requirements'].select()
         else:
+            widgets['logic_tricks'].deselect()
             widgets['logic_man_on_roof'].deselect()
             widgets['logic_child_deadhand'].deselect()
             widgets['logic_dc_jump'].deselect()
             widgets['logic_windmill_poh'].deselect()
             widgets['logic_crater_bean_poh_with_hovers'].deselect()
             widgets['logic_zora_with_cucco'].deselect()
+            widgets['logic_zora_with_hovers'].deselect()
             widgets['logic_fewer_tunic_requirements'].deselect()
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
@@ -275,6 +279,11 @@ def guiMain(settings=None):
 
     widgets = {}
 
+    # Add special checkbox to toggle all logic tricks
+    guivars['all_logic_tricks'] = IntVar(value=0)
+    widgets['all_logic_tricks'] = Checkbutton(frames['tricks'], text="Enable All Tricks", variable=guivars['all_logic_tricks'], justify=LEFT, wraplength=190, command=update_logic_tricks)
+    widgets['all_logic_tricks'].pack(expand=False, anchor=W)
+
     for info in setting_infos:
         if info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
@@ -284,14 +293,6 @@ def guiMain(settings=None):
                 guivars[info.name] = IntVar(value=default_value)
                 # create the checkbox
                 widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
-                widgets[info.name].pack(expand=False, anchor=W)
-            if info.gui_params['widget'] == 'SpecialCheckbutton':
-                # determine the initial value of the checkbox
-                default_value = 1 if info.gui_params['default'] == "checked" else 0
-                # create a variable to access the box's state
-                guivars[info.name] = IntVar(value=default_value)
-                # create the checkbox
-                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings_special)
                 widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
                 # create the variable to store the user's decision
