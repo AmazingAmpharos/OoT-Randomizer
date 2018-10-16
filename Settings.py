@@ -54,7 +54,8 @@ class Setting_Info():
         self.gui_params = gui_params # parameters that the gui uses to build the widget components
 
         # create the choices parameters from the gui options if applicable
-        if gui_params and 'options' in gui_params and 'choices' not in args_params:
+        if gui_params and 'options' in gui_params and 'choices' not in args_params \
+                and not ('type' in args_params and callable(args_params['type'])):
             if isinstance(gui_params['options'], list):
                 self.args_params['choices'] = list(gui_params['options'])
             elif isinstance(gui_params['options'], dict):
