@@ -90,16 +90,17 @@ class VersionError(Exception):
     pass
 
 def check_version(checked_version):
-    try:
-        with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
-            version = versionurl.read()
-            version = re.search(".__version__ = '(.+)'", str(version)).group(1)
+    if compare_version(checked_version, __version__) < 0:
+        try:
+            with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
+                version = versionurl.read()
+                version = re.search(".__version__ = '(.+)'", str(version)).group(1)
 
-            if compare_version(version, __version__) > 0 and compare_version(checked_version, __version__) < 0:
-                raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
-    except (URLError, HTTPError) as e:
-        logger = logging.getLogger('')
-        logger.warning("Could not fetch latest version: " + str(e))
+                if compare_version(version, __version__) > 0:
+                    raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
+        except (URLError, HTTPError) as e:
+            logger = logging.getLogger('')
+            logger.warning("Could not fetch latest version: " + str(e))
 
 # Shim for the sole purpose of maintaining compatibility with older versions of Python 3.
 def random_choices(population, weights=None, k=1):
