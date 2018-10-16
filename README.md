@@ -115,7 +115,7 @@ possessing the Forest Medallion. The condition to learn a song from Sheik in Kak
 and using a combination of the Longshot and Scarecrow's Song. This allows access to Sheik and the Fire Temple without a Bomb Bag.  
 -A sword must be equipped to play the fishing minigame. A Slingshot is not required for child target shooting, but the adult does need the Bow to receive the true prize.  
 -Other than the fishing minigame, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.  
--In the randomizer, possessing the Bomb Bag is the requirement to get bomb drops, buy bombs or Bombchus, or play Bombchu Bowling. If the setting "Bombchus Are Consider in
+-In the randomizer, possessing the Bomb Bag is the requirement to get bomb drops, buy bombs or Bombchus, or play Bombchu Bowling. If the setting "Bombchus Are Considered in
 Logic" is used, finding any pack of Bombchus allows purchasing Bombchus and playing Bombchu Bowling while possessing a Bomb Bag allows the purchase of bombs.  
 -Only the Hookshot, not the Longshot, is needed to do everything on the rooftops of Kakariko.  
 -Grottos can be opened with either Bombs or the Hammer.  
