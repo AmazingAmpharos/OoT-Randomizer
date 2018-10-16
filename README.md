@@ -8,7 +8,8 @@ It is strongly suggested users get the latest release from here: https://github.
 Simply download the .msi installer and run it. We support  Windows, Mac, and Linux machines.
 
 If you have an incompatible OS or you simply wish to run the script raw, clone this repository and either run '''Gui.py''' for a
-graphical interface or '''OoTRandomizer.py''' for the command line version. Both require Python 3.5+.
+graphical interface or '''OoTRandomizer.py''' for the command line version. Both require Python 3.5+. This will be fully featured,
+but the seeds you generate will have different random factors than the bundled release.
 
 This randomizer requires The Legend of Zelda: Ocarina of Time version 1.0 NTSC-US version. This randomizer includes an in-built decompressor, but if
 the user wishes a pre-decompressed ROM may be supplied as input. Please be sure your input ROM filename is either a .n64 or .z64 file. For users
