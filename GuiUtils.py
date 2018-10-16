@@ -8,7 +8,7 @@ from Utils import data_path
 def set_icon(window):
     er16 = tk.PhotoImage(file=data_path('ER16.gif'))
     er32 = tk.PhotoImage(file=data_path('ER32.gif'))
-    er48 = tk.PhotoImage(file=data_path('ER32.gif'))
+    er48 = tk.PhotoImage(file=data_path('ER48.gif'))
     window.tk.call('wm', 'iconphoto', window._w, er16, er32, er48) # pylint: disable=protected-access
 
 
