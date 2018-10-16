@@ -1397,18 +1397,18 @@ setting_infos = [
     Setting_Info('logic_tricks', bool, 1, True, 
         {
             'help': '''\
-                    Enable various tricks.
+                    Enable various advanced tricks that do not require glitches.
                     ''',
             'action': 'store_true'
         },
         {
-            'text': 'Various Minor Tricks',
+            'text': 'Various Advanced Tricks',
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Enables a large number of tricks.
-                      Still does not require glitches.
+                      Enables a large number of minor 
+                      tricks that do not require glitches.
                       '''
         }),
     Setting_Info('logic_man_on_roof', bool, 1, True, 
