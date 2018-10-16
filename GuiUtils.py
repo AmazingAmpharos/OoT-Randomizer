@@ -3,7 +3,7 @@ import threading
 import tkinter as tk
 import traceback
 
-from Utils import data_path
+from Utils import data_path, is_bundled
 
 def set_icon(window):
     er16 = tk.PhotoImage(file=data_path('ER16.gif'))
@@ -30,7 +30,8 @@ class BackgroundTask(object):
             code_to_run(*code_arg)
         except Exception as e:
             self.update_status('Error: ' + str(e))
-            traceback.print_exc()
+            if not is_bundled():
+                traceback.print_exc()
         self.queue_event(self.stop)
 
     def update_status(self, text):
