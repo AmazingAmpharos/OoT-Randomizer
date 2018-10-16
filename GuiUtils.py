@@ -3,12 +3,12 @@ import threading
 import tkinter as tk
 import traceback
 
-from Utils import data_path
+from Utils import data_path, is_bundled
 
 def set_icon(window):
     er16 = tk.PhotoImage(file=data_path('ER16.gif'))
     er32 = tk.PhotoImage(file=data_path('ER32.gif'))
-    er48 = tk.PhotoImage(file=data_path('ER32.gif'))
+    er48 = tk.PhotoImage(file=data_path('ER48.gif'))
     window.tk.call('wm', 'iconphoto', window._w, er16, er32, er48) # pylint: disable=protected-access
 
 
@@ -30,7 +30,8 @@ class BackgroundTask(object):
             code_to_run(*code_arg)
         except Exception as e:
             self.update_status('Error: ' + str(e))
-            traceback.print_exc()
+            if not is_bundled():
+                traceback.print_exc()
         self.queue_event(self.stop)
 
     def update_status(self, text):
