@@ -476,7 +476,7 @@ Only one item will be in the item pool regardless of this setting; this can mere
 
 This is a button to turn on all of the trick related flags.
 
-## Various Minor Tricks
+## Various Advanced Tricks
 
 This setting allows a huge number of minor tricks to be allowed by the logic. Here is a complete list:
 
