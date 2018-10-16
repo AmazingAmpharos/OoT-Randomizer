@@ -9,6 +9,8 @@ import time
 import os, os.path
 import sys
 import struct
+import zlib
+import pickle
 
 from BaseClasses import World, CollectionState, Item, Spoiler
 from EntranceShuffle import link_entrances
@@ -131,6 +133,9 @@ def main(settings, window=dummy_window()):
         outfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
 
     output_dir = default_output_path(settings.output_dir)
+
+    if settings.create_world_file:
+        create_world_file(logger, worlds, output_dir)
 
     if settings.compress_rom != 'None':
         window.update_status('Patching ROM')
@@ -267,3 +272,10 @@ def create_playthrough(worlds):
     for world in old_worlds:
         world.spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
 
+def create_world_file(logger, worlds, output_dir):
+    logger.info('Creating World File.')
+    compressed_data = zlib.compress(pickle.dumps(worlds))
+    filename = 'OoT_%s_%s_W%d.orwf' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count)
+    world_file = open(os.path.join(output_dir, filename), 'wb')
+    world_file.write(compressed_data)
+    world_file.close()

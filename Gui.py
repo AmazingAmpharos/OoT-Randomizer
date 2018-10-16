@@ -413,6 +413,42 @@ def guiMain(settings=None):
     multiworldFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
+
+    worldFileFrame = LabelFrame(frames['rom_tab'], text='World File')
+    countLabel = Label(worldFileFrame, wraplength=350, justify=LEFT, text='World Files can be created in addition to the other files. They can then be used to create ROMs. This is especially advantageous for Multi World, because they will contain most data for all worlds.')
+    countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
+
+    createFileFrame = Frame(worldFileFrame)
+    guivars['create_world_file'] = IntVar()
+    createButton = Checkbutton(createFileFrame, text='Create World File', variable=guivars['create_world_file'], justify=LEFT, wraplength=190)
+    createButton.pack(side=LEFT)
+    createFileFrame.pack(side=TOP, anchor=W, padx=5, pady=0)
+
+    playerNumFrame = Frame(worldFileFrame)
+    countLabel = Label(playerNumFrame, text='Player ID')
+    guivars['world_file_num'] = StringVar()
+    countSpinbox = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['world_file_num'], width=3)
+    countLabel.pack(side=LEFT)
+    countSpinbox.pack(side=LEFT, padx=2)
+    playerNumFrame.pack(side=TOP, anchor=W, padx=5, pady=(0,5))
+
+    def generate_from_world_file():
+        worldfile = filedialog.askopenfilename(filetypes=[("World Files", ".orwf"), ("All Files", "*")])
+        if worldfile != '':
+            pass #TODO
+
+    fromFileFrame = Frame(worldFileFrame)
+    createButton = Button(fromFileFrame, text='Generate from World File', command=generate_from_world_file)
+    createButton.pack(side=LEFT)
+    fromFileFrame.pack(side=TOP, anchor=N, padx=5, pady=0)
+
+
+
+    worldFileFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
+
+
+
+
     # didn't refactor the rest, sorry
 
 
