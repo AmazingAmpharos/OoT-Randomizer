@@ -1565,7 +1565,7 @@ def dung_rules_spt0(world):
                       state.can_use('Dins Fire') or
                       ((world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love')) and
                         ((state.has_sticks() or state.has('Kokiri Sword')) and state.is_adult())) or
-                      (state.can_play('Requiem of Spirit') and
+                      (state.can_play('Requiem of Spirit') and state.has('Small Key (Spirit Temple)', 5) and
                         (state.has_projectile('child') or
                         ((world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love')) and
                           (state.has_sticks() or state.has('Kokiri Sword'))))) or
