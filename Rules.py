@@ -1407,7 +1407,10 @@ def dung_rules_spt0(world):
     set_rule(
         world.get_entrance('Spirit Temple Final Locked Door'),
         lambda state: state.has('Small Key (Spirit Temple)', 5) and
-                      (state.has_projectile('adult') or state.can_use('Hammer')))
+                        (state.can_use('Longshot') or
+                        state.has_bombchus() or
+                        ((state.has_bombs() or state.has_nuts() or state.can_use('Dins Fire')) and
+                          (state.has_bow() or state.can_use('Hookshot') or state.has('Hammer')))))
     set_rule(
         world.get_location('Spirit Temple Child Left Chest'),
         lambda state: (state.has('Boomerang') or state.has_slingshot() or (state.has_bombchus() and world.logic_tricks)) and
