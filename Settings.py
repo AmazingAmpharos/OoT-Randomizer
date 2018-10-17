@@ -54,7 +54,8 @@ class Setting_Info():
         self.gui_params = gui_params # parameters that the gui uses to build the widget components
 
         # create the choices parameters from the gui options if applicable
-        if gui_params and 'options' in gui_params and 'choices' not in args_params:
+        if gui_params and 'options' in gui_params and 'choices' not in args_params \
+                and not ('type' in args_params and callable(args_params['type'])):
             if isinstance(gui_params['options'], list):
                 self.args_params['choices'] = list(gui_params['options'])
             elif isinstance(gui_params['options'], dict):
@@ -1397,18 +1398,18 @@ setting_infos = [
     Setting_Info('logic_tricks', bool, 1, True, 
         {
             'help': '''\
-                    Enable various tricks.
+                    Enable various advanced tricks that do not require glitches.
                     ''',
             'action': 'store_true'
         },
         {
-            'text': 'Various Minor Tricks',
+            'text': 'Various Advanced Tricks',
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Enables a large number of tricks.
-                      Still does not require glitches.
+                      Enables a large number of minor 
+                      tricks that do not require glitches.
                       '''
         }),
     Setting_Info('logic_man_on_roof', bool, 1, True, 
