@@ -1564,11 +1564,9 @@ def dung_rules_spt0(world):
         lambda state: state.has_projectile('both') or
                       state.can_use('Dins Fire') or
                       ((world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love')) and
-                        ((state.has_sticks() or state.has('Kokiri Sword')) and state.is_adult())) or
+                        (state.has_sticks() or state.has('Kokiri Sword') or state.has_projectile('child'))) or
                       (state.can_play('Requiem of Spirit') and state.has('Small Key (Spirit Temple)', 5) and
-                        (state.has_projectile('child') or
-                        ((world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love')) and
-                          (state.has_sticks() or state.has('Kokiri Sword'))))) or
+                        state.has_projectile('child')) or
                       ((state.has('Small Key (Spirit Temple)', 3) or (state.has('Small Key (Spirit Temple)', 2) and world.bombchus_in_logic)) and
                         state.can_use('Silver Gauntlets') and
                         (state.has_projectile('adult') or
