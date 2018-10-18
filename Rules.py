@@ -432,7 +432,7 @@ def global_rules(world):
         lambda state: state.has('Iron Boots') and(world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
     set_rule(
         world.get_entrance('Water Temple Entrance'),
-        lambda state: (state.has('Iron Boots') or state.has('Progressive Scale', 2)) and
+        lambda state: (state.has('Iron Boots') or (world.logic_morpha_with_scale and state.has('Progressive Scale', 2))) and
                       state.can_use('Hookshot') and (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
     set_rule(
         world.get_location('Sheik in Kakariko'),

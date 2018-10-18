@@ -1157,6 +1157,12 @@ Enable the logic to consider the trick to enter Zora's Domain as an adult using 
 Reduce the number of locations for which the logic expects a tunic upgrade (default: False)
 
 ```
+--logic_morpha_with_scale
+```
+
+Allows entering Water Temple and beating Morpha with Gold Scale instead of Iron Boots. The Longshot is still required to reach the boss, as well as the Boss Key. So this is applicable for keysanity and keysy since there is no location to obtain the Boss Key inside the dungeon.
+
+```
 --logic_lens [{chest,chest-wasteland,all}]
 ```
 

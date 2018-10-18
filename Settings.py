@@ -1561,6 +1561,31 @@ setting_infos = [
                       trips.
                       '''
         }),
+    Setting_Info('logic_morpha_with_scale', bool, 1, True, 
+        {
+            'help': '''\
+                    Allows entering Water Temple and beating
+                    Morpha with Gold Scale instead of Iron Boots.
+                    Only applicable for keysanity and keysy since
+                    there is no location to obtain the Boss Key
+                    inside the dungeon.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Morpha With Gold Scale",
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                      Allows entering Water Temple and beating
+                      Morpha with Gold Scale instead of Iron Boots.
+                      Only applicable for keysanity and keysy since
+                      there is no location to obtain the Boss Key
+                      inside the dungeon.
+                      ''',
+            'dependency': lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Dungeon Only'
+        }),
     Setting_Info('logic_lens', str, 2, True, 
         {
             'default': 'all',
