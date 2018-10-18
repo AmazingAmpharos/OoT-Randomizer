@@ -429,7 +429,7 @@ def global_rules(world):
     set_rule(world.get_entrance('Zora Shop Adult Access'), lambda state: state.has_blue_fire())
     set_rule(
         world.get_location('Zoras Fountain Bottom Freestanding PoH'),
-        lambda state: state.has('Iron Boots') and(world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
+        lambda state: state.has('Iron Boots') and (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
     set_rule(
         world.get_entrance('Water Temple Entrance'),
         lambda state: (state.has('Iron Boots') or (world.logic_morpha_with_scale and state.has('Progressive Scale', 2))) and
@@ -487,13 +487,13 @@ def global_rules(world):
         lambda state: state.can_use('Hover Boots') or state.can_use('Scarecrow') or state.can_use('Longshot'))
     set_rule(
         world.get_location('Horseback Archery 1000 Points'),
-        lambda state: state.has('Carpenter Rescue') and state.has('Epona') and state.can_use('Bow'))
+        lambda state: state.has('Carpenter Rescue') and state.has('Epona') and state.has('Bow') and state.is_adult())
     set_rule(
         world.get_location('Horseback Archery 1500 Points'),
         lambda state: (not world.logic_no_1500_archery) and
                       state.has('Carpenter Rescue') and
                       state.has('Epona') and
-                      state.can_use('Bow'))
+                      state.has('Bow') and state.is_adult())
     set_rule(world.get_location('Haunted Wasteland Structure Chest'), lambda state: state.has_fire_source())
     set_rule(
         world.get_location('Zelda'),
@@ -2073,7 +2073,7 @@ def dung_rules_gc0(world):
         world.get_location('Ganons Castle Shadow Trial Clear'),
         lambda state: state.can_use('Light Arrows') and
                       state.has('Hammer') and
-                      ((state.has('Fire Arrows') and (state.has('Hover Boots') or state.can_see_with_lens())) or
+                      ((state.has('Fire Arrows') and state.can_see_with_lens()) or
                         (state.can_use('Longshot') and (state.has('Hover Boots') or (state.has('Dins Fire') and state.can_see_with_lens())))))
     set_rule(
         world.get_location('Ganons Castle Shadow Trial First Chest'),
