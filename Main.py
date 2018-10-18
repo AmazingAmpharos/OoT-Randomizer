@@ -62,6 +62,11 @@ def main(settings, window=dummy_window()):
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, worlds[0].seed)
 
+    # we load the rom before creating the seed so that error get caught early
+    if settings.compress_rom != 'None':
+        window.update_status('Loading ROM')
+        rom = LocalRom(settings)
+
     window.update_status('Creating the Worlds')
     for id, world in enumerate(worlds):
         world.id = id
@@ -128,7 +133,6 @@ def main(settings, window=dummy_window()):
 
     if settings.compress_rom != 'None':
         window.update_status('Patching ROM')
-        rom = LocalRom(settings)
         patch_rom(worlds[settings.player_num - 1], rom)
         window.update_progress(65)
 
