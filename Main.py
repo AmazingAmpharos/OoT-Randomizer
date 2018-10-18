@@ -71,15 +71,18 @@ def main(settings, window=dummy_window()):
 
         window.update_progress(0 + (((id + 1) / settings.world_count) * 1))
         logger.info('Creating Overworld')
-        if world.quest == 'master':
-            for dungeon in world.dungeon_mq:
-                world.dungeon_mq[dungeon] = True
-        elif world.quest == 'mixed':
-            for dungeon in world.dungeon_mq:
-                world.dungeon_mq[dungeon] = random.choice([True, False])
+
+        # Determine MQ Dungeons
+        dungeons = world.dungeon_mq
+        dc = len(world.dungeon_mq)
+        if world.mq_dungeons_random:
+            mqdc = random.randrange(dc + 1)
         else:
-            for dungeon in world.dungeon_mq:
-                world.dungeon_mq[dungeon] = False
+            mqdc = world.mq_dungeons
+        table = (mqdc)*[True] + (dc - mqdc)*[False]
+        for dung in world.dungeon_mq:
+            world.dungeon_mq[dung] = table.pop(random.randrange(len(table)))
+
         create_regions(world)
 
         window.update_progress(0 + (((id + 1) / settings.world_count) * 2))
