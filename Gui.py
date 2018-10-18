@@ -176,26 +176,15 @@ def guiMain(settings=None):
                 guivars[info.name].set('Custom (' + color[1] + ')')
 
     def update_logic_tricks(event=None):
-        if guivars['all_logic_tricks'].get():
-            widgets['logic_tricks'].select()
-            widgets['logic_man_on_roof'].select()
-            widgets['logic_child_deadhand'].select()
-            widgets['logic_dc_jump'].select()
-            widgets['logic_windmill_poh'].select()
-            widgets['logic_crater_bean_poh_with_hovers'].select()
-            widgets['logic_zora_with_cucco'].select()
-            widgets['logic_zora_with_hovers'].select()
-            widgets['logic_fewer_tunic_requirements'].select()
-        else:
-            widgets['logic_tricks'].deselect()
-            widgets['logic_man_on_roof'].deselect()
-            widgets['logic_child_deadhand'].deselect()
-            widgets['logic_dc_jump'].deselect()
-            widgets['logic_windmill_poh'].deselect()
-            widgets['logic_crater_bean_poh_with_hovers'].deselect()
-            widgets['logic_zora_with_cucco'].deselect()
-            widgets['logic_zora_with_hovers'].deselect()
-            widgets['logic_fewer_tunic_requirements'].deselect()
+        for info in setting_infos:
+            if info.gui_params \
+            and info.gui_params['widget'] == 'Checkbutton' \
+            and info.gui_params['group'] == 'tricks':
+                if guivars['all_logic_tricks'].get():
+                    widgets[info.name].select()
+                else:
+                    widgets[info.name].deselect()
+
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
 
