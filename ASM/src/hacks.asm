@@ -244,21 +244,12 @@
     li      t2, 1
 
 ;==================================================================================================
-; Menu hacks
+; Item menu hacks
 ;==================================================================================================
 
-; Make the "SOLD OUT" menu text blank
-.org 0x8A9C00
+; Create a blank texture, overwriting a Japanese item description
+.org 0x89E800
 .fill 0x400, 0
-
-; Item Menu hooks:
-;
-; There are 4 removed checks for whether the cursor is allowed to move to an adjacent space,
-; one for each cardinal direction.
-;
-; There are 4 hooks that override the item ID used to display the item description.
-; One runs periodically (because the description flips between the item name and "< v > to Equip").
-; The other three run immediately when the cursor moves.
 
 ; Left movement check
 ; Replaces:
@@ -268,22 +259,12 @@
     nop
     nop
 
-; Right movement check AND an immediate description update
+; Right movement check
 ; Replaces:
-;   lbu     t4, 0x0074 (t9)
 ;   beq     s4, t4, 0x8038F2B4
 ;   nop
-.org 0xBB7890 ; In memory: 0x8038F210
-    jal     item_menu_description_id_immediate_1
+.org 0xBB7894 ; In memory: 0x8038F214
     nop
-    nop
-
-; Immediate description update
-; Replaces:
-;   lbu     t6, 0x0074 (t5)
-;   sh      t6, 0x009A (sp)
-.org 0xBB7950 ; In memory: 0x8038F2D0
-    jal     item_menu_description_id_immediate_2
     nop
 
 ; Upward movement check
@@ -302,20 +283,28 @@
     nop
     nop
 
-; Immediate description update
+; Remove "to Equip" text if the cursor is on an empty slot
 ; Replaces:
-;   lbu     t7, 0x0074 (t6)
-;   sh      t7, 0x009A (sp)
-.org 0xBB7C3C ; In memory: 0x8038F5BC
-    jal     item_menu_description_id_immediate_3
+;   addu    s1, t6, t7
+;   lbu     v0, 0x0000 (s1)
+.org 0xBB7C88 ; In memory: 0x8038F608
+    jal     item_menu_prevent_empty_equip_display
     nop
 
-; Periodic description update
+; Prevent empty slots from being equipped
 ; Replaces:
-;   lbu     t9, 0x0074 (t8)
-;   sh      t9, 0x009A (sp)
-.org 0xBB7C58 ; In memory: 0x8038F5D8
-    jal     item_menu_description_id_periodic
+;   lbu     v0, 0x0000 (s1)
+;   addiu   at, r0, 0x0009
+.org 0xBB7D10 ; In memory: 0x8038F690
+    jal     item_menu_prevent_empty_equip
+    nop
+
+; Use a blank item description texture if the cursor is on an empty slot
+; Replaces:
+;   sll     t4, v1, 10
+;   addu    a1, t4, t5
+.org 0xBC088C ; In memory: 0x8039820C
+    jal     item_menu_use_blank_description
     nop
 
 ;==================================================================================================
