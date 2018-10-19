@@ -5,10 +5,11 @@ This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
 # Installation
 
 It is strongly suggested users get the latest release from here: https://github.com/AmazingAmpharos/OoT-Randomizer/releases .
-Simply download the .msi installer and run it if you have a Windows machine.
+Simply download the .msi installer and run it. We support  Windows, Mac, and Linux machines.
 
-If you do not have Windows or you simply wish to run the script raw, clone this repository and either run '''Gui.py''' for a
-graphical interface or '''OoTRandomizer.py''' for the command line version. Both require Python 3.5+.
+If you have an incompatible OS or you simply wish to run the script raw, clone this repository and either run '''Gui.py''' for a
+graphical interface or '''OoTRandomizer.py''' for the command line version. Both require Python 3.5+. This will be fully featured,
+but the seeds you generate will have different random factors than the bundled release.
 
 This randomizer requires The Legend of Zelda: Ocarina of Time version 1.0 NTSC-US version. This randomizer includes an in-built decompressor, but if
 the user wishes a pre-decompressed ROM may be supplied as input. Please be sure your input ROM filename is either a .n64 or .z64 file. For users
@@ -45,11 +46,12 @@ The following item types will be progressive chains:
 -Adult Wallet to Giant's Wallet
 -Deku Stick Capacity Upgrades
 -Deku Nut Capacity Upgrades
--Magic Meter to Double Magic
+-Magic Meter to Double Magic  
+-Fairy Ocarina to Ocarina of Time
 
 To be more clear about which NPC items are shuffled, it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart
-or inventory items. The only exception is that even though in vanilla the reward for 40 Gold Skulltulla Tokens was just 10 Bombchus that is still a randomized reward
-in randomizer (but the 200 rupees for all 100 Gold Skulltulla Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy
+or inventory items. The only exception is that even though in vanilla the reward for 40 Gold Skulltula Tokens was just 10 Bombchus that is still a randomized reward
+in randomizer (but the 200 rupees for all 100 Gold Skulltula Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy
 to the player, the Ocarina Memory Game in the Lost Woods will start on the final round as that minigame was very long originally, the three day wait on the Claim Check
 is removed, Bombchu Bowling will have a fixed sequence of prizes that is of maximum convenience to the player, Dampe's Gravedigging Tour will always be won on the first
 dig, and the fishing minigame is made much simpler (8 lb fish for child now, 10 lb for adult). Additionally, any NPC who gives a trading quest item either for the child
@@ -61,8 +63,8 @@ upgrades can now be found as normal items scattered around the world. Happy hunt
 The Ocarina songs are shuffled in a pool amongst themselves, and each learn spot will still have the original conditions it has always had. These conditions may not
 have all been obvious, but here are some high points. Saria will teach her song after completing the events in the Castle Courtyard. The warp songs can mostly only
 be learned by an adult, but the location for Requiem of Spirit is available for even a child if the Desert Colossus can be reached. The location for the Prelude of
-Light requires the Forest Medallion, and the location for the Nocturne of Shadow requires the Forest Medallion, Fire Medallion, and Water Medallions. This can be
-changed with a setting.
+Light requires the Forest Medallion, and the location for the Nocturne of Shadow requires the Forest Medallion, Fire Medallion, and Water Medallions. A setting
+exists to shuffle all songs into the general item pool instead of limiting them to song specific slots.
 
 Speaking of Medallions, each boss in the eight main dungeons will drop a random Spiritual Stone or Medallion, and instead of the Light Medallion being granted by the
 now removed "becoming an adult" cutscene, the player will start every seed with a random Spiritual Stone or Medallion. The pedestal in which the Spiritual Stones
@@ -70,7 +72,7 @@ rest in the Temple of Time has hint text pointing to the locations of the Spirit
 Stones while an adult will be able to read hints for the Medallions. This information and some other relevant dungeon based info can be seen in the pause menu by
 holding the "A" button on the c-item menu.
 
-To be very clear on this point, while the rewards for up to 50 Gold Skulltulla Tokens are randomized, the tokens themselves are not.
+To be very clear on this point, while the rewards for up to 50 Gold Skulltula Tokens are randomized, the tokens themselves are not.
 
 As a service to the player in this very long game, many cutscenes have been greatly shortened or removed and text is as often as possible either omitted or sped up.
 We have been as thorough as our exploration of the game and various technical limitations will allow to make the parts of the game where you're watching and reading
@@ -112,9 +114,10 @@ possessing the Forest Medallion. The condition to learn a song from Sheik in Kak
 -Skull Kid will only buy the Skull Mask if you have played Saria's Song for him.  
 -The center of Death Mountain Crater as an adult can be reached from the summit as an adult by going around to the left with Hover Boots or by jumping down to the right
 and using a combination of the Longshot and Scarecrow's Song. This allows access to Sheik and the Fire Temple without a Bomb Bag.  
--A sword must be equipped to play the fishing minigame. A Slingshot is not required for child target shooting, but the adult does need the Bow.  
--Other than those minigames, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.  
--In the randomizer, possessing the Bomb Bag is the requirement to get bomb drops, buy bombs or Bombchus, or play Bombchu Bowling.  
+-A sword must be equipped to play the fishing minigame. A Slingshot is not required for child target shooting, but the adult does need the Bow to receive the true prize.  
+-Other than the fishing minigame, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.  
+-In the randomizer, possessing the Bomb Bag is the requirement to get bomb drops, buy bombs or Bombchus, or play Bombchu Bowling. If the setting "Bombchus Are Considered in
+Logic" is used, finding any pack of Bombchus allows purchasing Bombchus and playing Bombchu Bowling while possessing a Bomb Bag allows the purchase of bombs.  
 -Only the Hookshot, not the Longshot, is needed to do everything on the rooftops of Kakariko.  
 -Grottos can be opened with either Bombs or the Hammer.  
 -The boulder maze in Goron City can be solved with the Hammer or partially with Bombs as is obvious, but less obvious is that it can be fully solved with Silver Gauntlets.  
@@ -129,6 +132,8 @@ to the highest level of the central platform. Then a very well spaced rolling ju
 make poor key choices in Water Temple, this may be what you need to do to untangle the situation.  
 -In the Water Temple, Hover Boots can be used to reach the vanilla Boss Key chest without going through the room that requires Bombs and block pushing. Hover Boots can
 also be used in this temple to avoid the Longshot requirement for the middle level chest that requires the Bow.  
+-In the Water Temple, Farore's Wind can be placed in the central pillar and then the water can be raised to the highest level in order to reach the Gold Skulltula without
+the Longshot.  
 -In the Shadow Temple, you can avoid the need for the Longshot in the room with the invisible spikes by backflipping onto the chest for extra height.  
 -In the Shadow Temple, you can Hookshot the ladder to avoid pushing the block to get on the boat.  
 -In the Shadow Temple, a combination of the scarecrow and the Longshot can be used to reach Bongo Bongo without needing the Bow.  
@@ -136,9 +141,10 @@ also be used in this temple to avoid the Longshot requirement for the middle lev
 -In the Spirit Temple, you can collect the silver rupees without Hover Boots by jumping directly onto the rolling boulder or with a jump slash.  
 -In the Spirit Temple, you can use the Longshot to cross from the hand with the Mirror Shield in vanilla to the other hand.  
 -In Ganon's Castle Spirit Trial, the web can be burned with a precise shot through the torch by a normal arrow. Fire Arrows are not required.  
--While we guarantee tunics for Fire Temple and Water Temple, you can possibly force yourself to do without if you seriously let a Like Like eat the tunic and
-then do not recover the tunic. It is almost always possible to do without, but it can make things really difficult on you.  
--Several Gold Skulltulla Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).  
+-Like Likes now only eat shields and not tunics.  
+-Several Gold Skulltula Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).  
+-This is not a randomizer exclusive mechanic, but getting the ability to summon Pierre the Scarecrow requires playing an eight note song for
+Bonooru the Scarecrow as a child first and then the exact same song for him again as an adult.  
 
 # Known issues
 
@@ -152,7 +158,9 @@ it is strongly suggested the player save before turning in the Claim Check.
 -Saving and quitting on the very first frame after becomming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
 do that.  
 -The equipment screen still cannot be easily navigated with all item configurations which can be especially problematic if the Biggoron Sword is found very early
-or if shields cannot be easily purchased thanks to shopsanity. Getting the Master Sword and buying as many shields as you can is a good way to mitigate these issues.
+or if shields cannot be easily purchased thanks to shopsanity. Getting the Master Sword and buying as many shields as you can is a good way to mitigate these issues.  
+-This randomizer is based on the 1.0 version of Ocarina of Time so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantagous to the
+player.
 
 # Settings
 
@@ -280,23 +288,25 @@ This option will set the logic to try to ensure Link can reach every item locati
 item spot behind a locked door containing the key to open the door). If this option is not used, the logic will allow some items to be in impossible locations
 so long as the set of reachable items is sufficient to complete the game.
 
-## Bombchus are considered in logic
+## Bombchus Are Considered in Logic
 
 This option fundamentally changes how the Bombchu items found around the world function. With this option on, Bombchus are a progression item and operate as
 a form of progressive item. The first Bombchu pack found will be worth 20 Bombchus and subsequent packs will be worth 10 or 5 Bombchus. Finding Bombchus will
-be considered as logical progression, and having found any Bombchus will be the condition to play Bombchu Bowling or buy Bombchu items from shops. This flag
+be considered as logical progression, and having found any Bombchus will be the condition to play Bombchu Bowling or buy Bombchu refills from shops. This flag
 will also add Bombchu (5) buyable items to the shops in Kokiri Forest, Castle Town Bazaar, and Kakariko Bazaar. With this option off, randomly found Bombchu
 items are not considered as logical progression, randomly found Bombchus will have specific denominations based on the values from the original game, and
 finding a Bomb Bag is what enables playing Bombchu Bowling and buying Bombchus from shops which will not have their inventories edited.
 
-## Dungeons have one major item
+## Dungeons Have One Major Item
 
 This option places one "major item" and one only in each of the dungeons. For the purpose of the randomizer, the dungeons are defined as the eight dungeons that
 contain either Medallions or Spiritual Stones as well as Bottom of the Well, Ice Cavern, Gerudo Training Grounds, and Ganon's Castle. The major items are any
 item usable with a c-button that is not simply a form of ammo (Bombchus are major only if "Bombchus are considered in logic" is on), songs, Mirror Shield, swords,
 tunics, boots, Double Defense, Magic Meter/Double Magic, Bullet Bags, Quivers, Bomb Bags, Strength Upgrades, Scales, Wallets, and the Stone of Agony. To be
-clear, this means that rupees, ammo, Deku Stick and Deku Nut ammo expansions, Pieces of Heart, Heart Containers, Gold Skulltulla Tokens, Maps, Compasses,
-Small Keys, Boss Keys, Deku Shields, Hylian Shields, and Ice Traps are not considered major items.
+clear, this means that rupees, ammo, Deku Stick and Deku Nut ammo expansions, Pieces of Heart, Heart Containers, Gold Skulltula Tokens, Maps, Compasses,
+Small Keys, Boss Keys, Deku Shields, Hylian Shields, and Ice Traps are not considered major items. However, Small Keys and Boss Keys are considered major
+items if the appropriate "keysanity" settings are used. Note that unlike with the distribution of dungeon specific items like keys, this flag does consider
+the hands of the Desert Colossus as Spirit Temple locations, and to mirror the original game, Spirit Temple will get two items instead of just one.
 
 ## Dungeon Quest
 
@@ -322,7 +332,7 @@ This flag adds the Kokiri Sword to the shuffle. With it off, the Kokiri Sword wi
 
 This flag adds the Weird Egg given by child Malon to the shuffle. With this flag on, child Malon will give a random item and the Weird Egg must be located
 to do the events at Hyrule Castle with Zelda and Impa. These events block interacting with Talon and Malon at Lon Lon Ranch as a child as well as Saria in
-Sacred Forest Meadow.
+Sacred Forest Meadow and the Happy Mask sidequest.
 
 ## Shuffle Ocarinas
 
@@ -349,8 +359,10 @@ the player starts the game with the Gerudo Card and this setting is voided.
 This flag makes every Deku Scrub Salesman in the world sell a random item instead of only the three that sold permanent upgrades in the original game.
 Using this flag adds the various low tier items the other scrubs sold to the item pool for the most part; the potion refills are replaced with Recovery
 Hearts for Red Potions and blue rupees for Green Potions. For each Deku Scrub that sold arrows/seeds depending on age, there will be a 75% chance of
-adding a 30 arrow item and a 25% chance of adding a 30 seed item to the pool. While the text will not update, if this flag is used the price of every
-Deku Scrub Salesman's item will be reduced to 10 rupees, and once the purchase is made that particular Deku Scrub Salesman will disappear forever.
+adding a 30 arrow item and a 25% chance of adding a 30 seed item to the pool. If this is set, once a Deku Scrub Salesman is used, it will disappear
+from the world forever. The individual settings in the dropdown can be used to set the price of each Deku Scrub Salesman to 10 rupees, leave the prices
+as what they were in the original game, or set each price to a random value from 0 to 99 rupees. In all cases, the text for the Deku Scrub Salesmen
+will not update.
 
 ## Shopsanity
 
@@ -390,31 +402,31 @@ If Small Keys or Boss Keys are prevented from existing, this will also remove al
 are left in their original dungeons and the Fire Temple is not in the form of Master Quest, the locked door in the first room that leads to the normal
 location of the Boss Key will be removed.
 
-## Maps and Compasses give information
+## Maps and Compasses Give Information
 
 This setting, only available if Maps and Compasses are spread across the world, disables the pedestal in the Temple of Time from giving information about
 the location of the Medallions and Spiritual Stones. Instead, the Compass from each of the eight eligible dungeons will tell the player which dungeon has
 which reward. If the dungeon quest is set to mixed, each of the ten Maps will tell the player whether any given dungeon is in the vanilla or Master Quest
 form. The Compasses from Bottom of the Well and Ice Cavern do not give any information.
 
-## Remove Ganon's Door Boss locked
+## Remove Ganon's Door Boss Lock
 
 This setting removes the Boss Key lock from Ganon's Tower. This removes the need to locate the Ganon's Tower Boss Key to finish the game.
 
 ## Tokensanity
 
-This setting shuffles the Gold Skulltulla item drops into the general pool of locations. The player can choose only to include Gold Skulltullas
+This setting shuffles the Gold Skulltula item drops into the general pool of locations. The player can choose only to include Gold skulltulas
 found in dungeons for a more mild version of this setting.
 
 # Detailed Logic
 
-## Maximum expected Skulltulla tokens
+## Maximum Expected Skulltula Tokens
 
-This setting can be used to reduce the number of Gold Skulltulla Tokens that may be required to finish the game.
+This setting can be used to reduce the number of Gold Skulltula Tokens that may be required to finish the game.
 
-## No Nighttime Skulltullas without Sun's Song
+## No Nighttime Skulltulas without Sun's Song
 
-This setting causes the logic to expect the player to have an ocarina and the Sun's Song to get Gold Skulltulla locations that are only found at
+This setting causes the logic to expect the player to have an ocarina and the Sun's Song to get Gold Skulltula locations that are only found at
 nighttime.
 
 ## No Big Poes
@@ -431,11 +443,11 @@ on Bizhawk.
 This setting will guarantee that the reward from adult fishing is not an important item. This is mostly recommended if the player simply must play
 on Bizhawk.
 
-## No Skull Mask reward
+## No Skull Mask Reward
 
 This setting will guarantee that the item obtained from showing the Skull Mask in the Deku Theater is not an important item.
 
-## No Mask of Truth reward
+## No Mask of Truth Reward
 
 This setting will guarantee that the item obtained from showing the Mask of Truth in the Deku Theater is not an important item.
 
@@ -448,24 +460,28 @@ important item.
 
 This setting will guarantee that the item obtained from winning the ocarina memory game in the Lost Woods is not an important item.
 
-## No Racing Dampe a second time
+## No Racing Dampe a Second Time
 
 This setting will guarantee that the item obtained from finishing with a sub-minute time in the second Dampe race is not an important item.
 
-## No Biggoron reward
+## No Biggoron Reward
 
 This setting will guarantee that the item obtained from showing the Claim Check to Biggoron is not an important item.
 
-## Adult Trade sequence
+## Adult Trade Sequence
 
 This pair of settings can be used to specify the earliest and latest items that can be allowed to randomly show up in the general item pool.
 Only one item will be in the item pool regardless of this setting; this can merely be used to limit the range of possibilities.
 
-## Require minor tricks
+## Enable All Tricks
+
+This is a button to turn on all of the trick related flags.
+
+## Various Advanced Tricks
 
 This setting allows a huge number of minor tricks to be allowed by the logic. Here is a complete list:
 
--A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltulla on some vines in standad Deku Tree.  
+-A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltula on some vines in standad Deku Tree.  
 -The Bow can be used to knock down the stairs in Dodongo's Cavern with two well timed shots.  
 -The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with the standard Hookshot.  
 -The well in Forest Temple can be crossed with just Hookshot by shooting as low as possible on the vines from the far side and swimming under
@@ -481,7 +497,7 @@ Deku Stick to access the bomb flowers in the basement.
 -The silver rupees on the left side of Gerudo Training Grounds MQ can be collected with just Hookshot with a somewhat particular jump slash.  
 -The first room of the Spirit Trail in Ganon's Castle MQ can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
 through the thrones.  
--The Gold Skulltulla in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.  
+-The Gold Skulltula in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.  
 -The child can reach the chest on Death Mountain trail with just the Goron Bracelet by backwalking with the Bomb Flower intended to open
 Dodongo's Cavern and throwing the Bomb Flower at the wall very quickly.  
 -Gerudo Fortress can be cleared without any items other than those needed for access. The logic normally guarantees one of the Bow, Hookshot, or
@@ -500,27 +516,27 @@ rooftop with no items.
 This allows the logic to consider defeating the Deadhand in Bottom of the Well with Deku Sticks. This is not hard with use of the power crouch
 stab glitch, but consistently landing actual jump slashes on his unusual hitbox is pretty difficult and using normal slashes consumes 9 Deku Sticks.
 
-## Dodongo's Cavern spike trap room jump without Hover Boots
+## Dodongo's Cavern Spike Trap Room Jump without Hover Boots
 
 This allows the logic to consider that the adult can make a particularly useful jump in Dodongo's Cavern to reach the area with the Bomb Bag chest early.
 Due to the precision of the jump, normally the logic expects Hover Boots to complete this path.
 
-## Windmill PoH as adult with nothing
+## Windmill PoH as Adult with Nothing
 
 This allows the logic to consider a jump the adult can make in the windmill to reach the Piece of Heart within with no items. The jump requires leaping
 from an object on which it is not obvious Link is allowed to stand and has counterintuitive timing so it is not in standard logic.
 
-## Crater's bean PoH with Hover Boots
+## Crater's Bean PoH with Hover Boots
 
 This allows the logic to consider using Hover Boots to reach the Piece of Heart atop the volcano in Death Mountain Crater. The path involves walking up a
 very steep slope that is not visibly walkable so it is not in normal logic.
 
-## Zora's Domain entry with Cucco
+## Zora's Domain Entry with Cucco
 
 This allows the logic to consider using a Cucco on Zora River to enter Zora's Domain as a child without playing Zelda's Lullaby. It requires slipping behind
 the waterfall trickily from the left side.
 
-## Zora's Domain entry with Hover Boots
+## Zora's Domain Entry with Hover Boots
 
 This allows the logic to consider this similar trick to the above except as an adult with Hover Boots. This is actually a lot more difficult even though it can
 be done from either side of the waterfall.
@@ -536,7 +552,7 @@ requirements are removed completely except to reach the chest at the bottom of t
 
 This setting alters the expectations about interacting with invisible objects without the Lens of Truth.
 
-### Required everywhere
+### Required Everywhere
 
 This setting requires the Lens of Truth to interact with any invisible object except for whatever was required in the original game to obtain the Lens of Truth.
 
@@ -578,17 +594,17 @@ can expect using them if the required number is sufficiently low.
 This flag causes Pierre the Scarecrow to be available to summon for the adult from the beginning of the game. The box below can be used to
 specify the particular desired Scarecrow's Song. This song must be exactly eight notes long and must contain at least two different notes.
 
-## Randomize ocarina song notes
+## Randomize Ocarina Song Notes
 
 This flag randomizes the particular notes in the 12 standard ocarina songs. This can predictably be pretty obnoxious. In general, the patterns chosen
 for the top row songs will be simpler than the patterns chosen for warp songs.
 
-## Chest size matches contents
+## Chest Size Matches Contents
 
 This flag causes keys, Ice Traps, and items flagged as progression items to appear in large treasure chests while other items will be in small treasure chests.
 This means that players can choose to skip small treasure chests since they will only contain handy, not essential, items.
 
-## Clearer hints
+## Clearer Hints
 
 This flag changes the text of Gossip Stone hints to be overwhelmingly explicit. This is helpful for players who do not have English as their first language,
 but the hints will be less "fun" and less like the sorts of things that would be said in the original game.
@@ -600,7 +616,7 @@ This flag changes the behavior of Gossip Stones to give hints to players. The hi
 -If the required number of trials is 1-3, a hint will be added for each trial that must be done. If the required number of trials is 4 or 5, a hint will be added
 for each trial that can be skipped.  
 -Hints will be added for every one of the "always" locations that is allowed to have a random possibly valuable item under the current settings. These hints
-will tell the player what item is at each of these locations. These locations are the rewards for 30, 40, and 50 Gold Skulltulla Tokens, the item obtained from
+will tell the player what item is at each of these locations. These locations are the rewards for 30, 40, and 50 Gold Skulltula Tokens, the item obtained from
 Biggoron by showing the Claim Check, the item obtained from the Big Poe vendor, both the song and the item slots at the Ocarina of Time, and the item obtained
 from showing the Mask of Truth at the Deku Theater.  
 -Some hints will be given for items at a randomly selected number of other locations that are generally somewhat inconvenient to check. The total number of these
@@ -608,7 +624,7 @@ hints will be either 11 or 12 minus the number of always hints placed.
 -3 or 4 hints will be given naming a specific non-dungeon specific item that can be found in a randomly chosen dungeon.  
 -1 to 4 hints will be given naming a specific item found in a specific overworld region. Which part of this range is used is determined in part by how many
 trial hints are given.  
--4 to 6 hints will be given naming what region specific progression items other than Gold Skulltulla Tokens can be found.  
+-4 to 6 hints will be given naming what region specific progression items other than Gold Skulltula Tokens can be found.  
 -3 or 4 hints will be given naming specific regions that are "on the way of the hero" and thus contain at least one required progression item.  
 -All remaining hints (33 total unique Gossip Stones exist) will be filled with non-information junk hints.  
 
@@ -621,7 +637,7 @@ requires being a child which is another big downside. There is also an option fo
 
 This setting allows all the text in the game to be shuffled. This is mostly for comedy and is not intended to be a serious gameplay option.
 
-### No text shuffled
+### No Text Shuffled
 
 Leave the text alone.
 
@@ -629,7 +645,7 @@ Leave the text alone.
 
 Shuffle all text other than the useful text giving the player information.
 
-### All text shuffled
+### All Text Shuffled
 
 Shuffle all text even to the player's mechanical disadvantage.
 
@@ -643,11 +659,16 @@ Leave the item pool alone.
 
 ### Hard
 
-Heart Containers, Double Defense, and the second Magic Upgrade are replaced with junk items.
+Heart Containers, Double Defense, and the second Magic Upgrade are replaced with junk items. One each
+of the ammo expansions (Quiver, Bullet Bag, Bomb Bag Deku Stick Capacity, Deku Nut Capacity) will also
+be replaced with junk items, and all Bombchu pick-ups other than three will similarly be replaced with
+junk.
 
 ### Very Hard
 
 In addition to the items from Hard, Pieces of Heart and Nayru's Love are also replaced with junk items.
+One more of each ammo expansion is removed resulting in zero extra ammo capacity for those item types,
+and only one Bombchu pick-up can be found.
 
 ### OHKO
 
@@ -675,8 +696,9 @@ This determines the color of Link's default Kokiri Tunic. This only affects the 
 
 ### Most Colors
 
-Simply get the particular color selected. Available colors are Kokiri Green, Goron Red, Zora Blue, Black, White, Purple, Yellow, Orange, Pink, Gray,
-Brown, Gold, Silver, Beige, Teal, Royal Blue, Sonic Blue, Blood Red, Blood Orange, NES Green, Dark Green, and Lumen.
+Simply get the particular color selected. Available colors are Kokiri Green, Goron Red, Zora Blue, Black, White, Azure Blue, Vivid Cyan, Light Red,
+Fuchsia, Purple, MM Purple, Twitch Purple, Purple Heart, Persian Rose, Dirty Yellow, Blush Pink, Hot Pink, Rose Pink, Orange, Gray, Gold, Silver,
+Beige, Teal, Blood Red, Blood Orange, Royal Blue, Sonic Blue, NES Green, Dark Green, and Lumen.
 
 ### Random Choice
 
@@ -707,8 +729,9 @@ more pleasant to listen to while a few are designed to be more amusing.
 
 ### Particular Sounds
 
-Set this particular sound for the heart beep. Available choices are Default, Softer Beep, Rupee, Timer, Tamborine, Recovery Heart, Carrot Refill,
-Navi - Hey!, Zelda - Gasp, Cluck, and Mweep!. The last of these is indeed the sound a king might make when moving... very slowly.
+Set this particular sound for the heart beep. Available choices are Default, Softer Beep, Rupee, Timer, Tambourine, Recovery Heart, Carrot Refill,
+Navi - Hey!, Zelda - Gasp, Cluck, Mweep!, Iron Boots, Hammer, Sword Bounce, Bow, Gallop, Drawbridge, Switch, Bomb Bounce, Bark, Ribbit, Broken Pot,
+Business Scrub, Guay, and Bongo Bongo. Indeed, one of these is the sound a king might make when moving... very slowly.
 
 ### Random Choice
 
@@ -993,7 +1016,7 @@ Remove the Boss Key door leading to Ganondorf (default: False)
 --tokensanity [{off,dungeons,all}]
 ```
 
-Include the chosen Gold Skulltulla Token locations in the item shuffle (default: off)
+Include the chosen Gold Skulltula Token locations in the item shuffle (default: off)
 
 ```
 --quest [{vanilla,master,mixed}]
@@ -1005,13 +1028,13 @@ Choose the internal layout of the dungeons (default: vanilla)
 --logic_skulltulas [{0,10,20,30,40,50}]
 ```
 
-Choose the maximum number of Gold Skulltulla Tokens that could be required (default: 50)
+Choose the maximum number of Gold Skulltula Tokens that could be required (default: 50)
 
 ```
 --logic_no_night_tokens_without_suns_song
 ```
 
-Change logic to expect Sun's Song to defeat nighttime Gold Skulltullas (default: False)
+Change logic to expect Sun's Song to defeat nighttime Gold Skulltulas (default: False)
 
 ```
 --logic_no_big_poes
@@ -1188,61 +1211,61 @@ Set the default Z-targeting setting. It can still be changed in the game's optio
 Choose whether the game's background music will be left alone, disabled, or shuffled randomly. (default: normal)
 
 ```
---kokiricolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Lumen'}]
+--kokiricolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Azure Blue', 'Vivid Cyan', 'Light Red', 'Fuchsia', 'Purple', 'MM Purple', 'Twitch Purple', 'Purple Heart', 'Persian Rose', 'Dirty Yellow', 'Blush Pink', 'Hot Pink', 'Rose Pink', 'Orange', 'Gray', 'Gold', 'Silver', 'Beige', 'Teal', 'Blood Red', 'Blood Orange', 'Royal Blue', 'Sonic Blue', 'NES Green', 'Dark Green', 'Lumen'}]
 ```
 
-Select the color of Link's Kokiri Tunic. (default: Kokiri Green)
+Select the color of Link's Kokiri Tunic. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Kokiri Green)
 
 ```
---goroncolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Lumen'}]
+--goroncolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Azure Blue', 'Vivid Cyan', 'Light Red', 'Fuchsia', 'Purple', 'MM Purple', 'Twitch Purple', 'Purple Heart', 'Persian Rose', 'Dirty Yellow', 'Blush Pink', 'Hot Pink', 'Rose Pink', 'Orange', 'Gray', 'Gold', 'Silver', 'Beige', 'Teal', 'Blood Red', 'Blood Orange', 'Royal Blue', 'Sonic Blue', 'NES Green', 'Dark Green', 'Lumen'}]
 ```
 
-Select the color of Link's Goron Tunic. (default: Goron Red)
+Select the color of Link's Goron Tunic. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Goron Red)
 
 ```
---zoracolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Purple', 'Yellow', 'Orange', 'Pink', 'Gray', 'Brown', 'Gold', 'Silver', 'Beige', 'Teal', 'Royal Blue', 'Sonic Blue', 'Blood Red', 'Blood Orange', 'NES Green', 'Dark Green', 'Lumen'}]
+--zoracolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Azure Blue', 'Vivid Cyan', 'Light Red', 'Fuchsia', 'Purple', 'MM Purple', 'Twitch Purple', 'Purple Heart', 'Persian Rose', 'Dirty Yellow', 'Blush Pink', 'Hot Pink', 'Rose Pink', 'Orange', 'Gray', 'Gold', 'Silver', 'Beige', 'Teal', 'Blood Red', 'Blood Orange', 'Royal Blue', 'Sonic Blue', 'NES Green', 'Dark Green', 'Lumen'}]
 ```
 
-Select the color of Link's Zora Tunic. (default: Zora Blue)
+Select the color of Link's Zora Tunic. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Zora Blue)
 
 ```
 --navicolordefault [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
 ```
 
-Select the color of Navi in idle. (default: White)
+Select the color of Navi in idle. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: White)
 
 ```
 --navicolorenemy [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
 ```
 
-Select the color of Navi when she is targeting an enemy. (default: Yellow)
+Select the color of Navi when she is targeting an enemy. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Yellow)
 
 ```
 --navicolornpc [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
 ```
 
-Select the color of Navi when she is targeting an NPC. (default: Light Blue)
+Select the color of Navi when she is targeting an NPC. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Light Blue)
 
 ```
 --navicolorprop [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
 ```
 
-Select the color of Navi when she is targeting a prop. (default: Green)
+Select the color of Navi when she is targeting a prop. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Green)
 
 ```
---navisfxoverworld [{Default,Notification,Rupee,Timer,Tamborine,Recovery Heart,Carrot Refill,Navi - Hey!,Navi - Random,Zelda - Gasp,Cluck,Mweep!,Random,None}]
+--navisfxoverworld [{'Default', 'Random Choice', 'None', 'Cluck', 'Rupee', 'Softer Beep', 'Recovery Heart', 'Timer', 'Low Health', 'Notification', 'Tambourine', 'Carrot Refill', 'Zelda - Gasp', 'Mweep!', 'Ice Break', 'Explosion', 'Crate', 'Great Fairy', 'Moo', 'Bark', 'Ribbit', 'Broken Pot', 'Cockadoodledoo', 'Epona', 'Gold Skulltula', 'Redead', 'Poe', 'Ruto', 'Howl', 'Business Scrub', 'Guay', "H'lo!"}]
 ```
 
 Select the sound effect that plays when Navi wishes to speak with the player. (default: Default)
 
 ```
---navisfxenemytarget [{Default,Notification,Rupee,Timer,Tamborine,Recovery Heart,Carrot Refill,Navi - Hey!,Navi - Random,Zelda - Gasp,Cluck,Mweep!,Random,None}]
+--navisfxenemytarget [{'Default', 'Random Choice', 'None', 'Cluck', 'Rupee', 'Softer Beep', 'Recovery Heart', 'Timer', 'Low Health', 'Notification', 'Tambourine', 'Carrot Refill', 'Zelda - Gasp', 'Mweep!', 'Ice Break', 'Explosion', 'Crate', 'Great Fairy', 'Moo', 'Bark', 'Ribbit', 'Broken Pot', 'Cockadoodledoo', 'Epona', 'Gold Skulltula', 'Redead', 'Poe', 'Ruto', 'Howl', 'Business Scrub', 'Guay', "H'lo!"}]
 ```
 
 Select the sound effect that plays when Navi targets an enemy. (default: Default)
 
 ```
---healthSFX [{'Default', 'Softer Beep', 'Rupee', 'Timer', 'Tamborine', 'Recovery Heart', 'Carrot Refill', 'Navi - Hey!', 'Zelda - Gasp', 'Cluck', 'Mweep!', 'Random', 'None'}]
+--healthSFX [{'Default', 'Random Choice', 'None', 'Cluck', 'Softer Beep', 'Recovery Heart', 'Timer', 'Notification', 'Tambourine', 'Carrot Refill', 'Navi - Random', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Iron Boots', 'Hammer', 'Sword Bounce', 'Bow', 'Gallop', 'Drawbridge', 'Switch', 'Bomb Bounce', 'Bark', 'Ribbit', 'Broken Pot', 'Business Scrub', 'Guay', 'Bongo Bongo'}]
 ```
 
 Select the sound effect that loops at low health. (default: Default)

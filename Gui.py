@@ -122,7 +122,7 @@ def guiMain(settings=None):
 
     # Logic tab
     frames['rewards'] = LabelFrame(frames['logic_tab'], text='Remove Specific Locations', labelanchor=NW)
-    frames['tricks']  = LabelFrame(frames['logic_tab'], text='Specific expected tricks', labelanchor=NW)
+    frames['tricks']  = LabelFrame(frames['logic_tab'], text='Specific Expected Tricks', labelanchor=NW)
 
     #Other Tab
     frames['convenience'] = LabelFrame(frames['other_tab'], text='Speed Ups', labelanchor=NW)
@@ -175,22 +175,26 @@ def guiMain(settings=None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
 
-    def show_settings_special(event=None):
-        if guivars['logic_tricks'].get():
+    def update_logic_tricks(event=None):
+        if guivars['all_logic_tricks'].get():
+            widgets['logic_tricks'].select()
             widgets['logic_man_on_roof'].select()
             widgets['logic_child_deadhand'].select()
             widgets['logic_dc_jump'].select()
             widgets['logic_windmill_poh'].select()
             widgets['logic_crater_bean_poh_with_hovers'].select()
             widgets['logic_zora_with_cucco'].select()
+            widgets['logic_zora_with_hovers'].select()
             widgets['logic_fewer_tunic_requirements'].select()
         else:
+            widgets['logic_tricks'].deselect()
             widgets['logic_man_on_roof'].deselect()
             widgets['logic_child_deadhand'].deselect()
             widgets['logic_dc_jump'].deselect()
             widgets['logic_windmill_poh'].deselect()
             widgets['logic_crater_bean_poh_with_hovers'].deselect()
             widgets['logic_zora_with_cucco'].deselect()
+            widgets['logic_zora_with_hovers'].deselect()
             widgets['logic_fewer_tunic_requirements'].deselect()
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
@@ -252,20 +256,18 @@ def guiMain(settings=None):
     outputDirLabel.pack(side=LEFT, padx=(3,0))
     outputDirEntry.pack(side=LEFT, padx=3)
     outputDirButton.pack(side=LEFT)
-    outputDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
-
-    if os.path.exists(local_path('README.html')):
-        def open_readme():
-            open_file(local_path('README.html'))
-        openReadmeButton = Button(outputDialogFrame, text='Open Documentation', command=open_readme)
-        openReadmeButton.pack(side=LEFT, padx=5)
-
     outputDialogFrame.pack(side=TOP, anchor=W, pady=3)
 
     countDialogFrame = Frame(frames['rom_tab'])
     countLabel = Label(countDialogFrame, text='Generation Count')
     guivars['count'] = StringVar()
     countSpinbox = Spinbox(countDialogFrame, from_=1, to=100, textvariable=guivars['count'], width=3)
+
+    if os.path.exists(local_path('README.html')):
+        def open_readme():
+            open_file(local_path('README.html'))
+        openReadmeButton = Button(countDialogFrame, text='Open Documentation', command=open_readme)
+        openReadmeButton.pack(side=RIGHT, padx=5)
 
     countLabel.pack(side=LEFT)
     countSpinbox.pack(side=LEFT, padx=2)
@@ -277,6 +279,11 @@ def guiMain(settings=None):
 
     widgets = {}
 
+    # Add special checkbox to toggle all logic tricks
+    guivars['all_logic_tricks'] = IntVar(value=0)
+    widgets['all_logic_tricks'] = Checkbutton(frames['tricks'], text="Enable All Tricks", variable=guivars['all_logic_tricks'], justify=LEFT, wraplength=190, command=update_logic_tricks)
+    widgets['all_logic_tricks'].pack(expand=False, anchor=W)
+
     for info in setting_infos:
         if info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
@@ -286,14 +293,6 @@ def guiMain(settings=None):
                 guivars[info.name] = IntVar(value=default_value)
                 # create the checkbox
                 widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
-                widgets[info.name].pack(expand=False, anchor=W)
-            if info.gui_params['widget'] == 'SpecialCheckbutton':
-                # determine the initial value of the checkbox
-                default_value = 1 if info.gui_params['default'] == "checked" else 0
-                # create a variable to access the box's state
-                guivars[info.name] = IntVar(value=default_value)
-                # create the checkbox
-                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings_special)
                 widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
                 # create the variable to store the user's decision
@@ -408,7 +407,7 @@ def guiMain(settings=None):
     worldCountFrame = Frame(multiworldFrame)
     countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
-    countSpinbox = Spinbox(worldCountFrame, from_=1, to=100, textvariable=guivars['world_count'], width=3)
+    countSpinbox = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
 
     countLabel.pack(side=LEFT)
     countSpinbox.pack(side=LEFT, padx=2)
@@ -417,7 +416,7 @@ def guiMain(settings=None):
     playerNumFrame = Frame(multiworldFrame)
     countLabel = Label(playerNumFrame, text='Player ID')
     guivars['player_num'] = StringVar()
-    countSpinbox = Spinbox(playerNumFrame, from_=1, to=100, textvariable=guivars['player_num'], width=3)
+    countSpinbox = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['player_num'], width=3)
 
     countLabel.pack(side=LEFT)
     countSpinbox.pack(side=LEFT, padx=2)
@@ -436,15 +435,15 @@ def guiMain(settings=None):
         orig_seed = settings.seed
         for i in range(settings.count):
             settings.update_seed(orig_seed + '-' + str(i))
-            window.update_title("Generating Seed...%d/%d" % (i+1, settings.count))
+            window.update_title("Generating Seed %s...%d/%d" % (settings.seed, i+1, settings.count))
             main(settings, window)
 
     def generateRom():
         settings = guivars_to_settings(guivars)
         if settings.count is not None:
-            BackgroundTaskProgress(mainWindow, "Generating Seed...", multiple_run, settings)
+            BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, multiple_run, settings)
         else:
-            BackgroundTaskProgress(mainWindow, "Generating Seed...", main, settings)
+            BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, main, settings)
 
     generateSeedFrame = Frame(mainWindow)
     generateButton = Button(generateSeedFrame, text='Generate Patched ROM', command=generateRom)
@@ -466,7 +465,7 @@ def guiMain(settings=None):
     else:
         # try to load saved settings
         try:
-            settingsFile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.sav')
+            settingsFile = local_path('settings.sav')
             with open(settingsFile) as f:
                 settings = Settings( json.load(f) )
                 settings.update_seed("")

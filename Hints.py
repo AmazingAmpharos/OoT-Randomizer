@@ -6,7 +6,6 @@ import struct
 import random
 
 from HintList import getHint, getHintGroup, Hint
-from Utils import local_path
 from ItemList import eventlocations
 from Messages import update_message_by_id
 from TextBox import lineWrap
@@ -122,7 +121,7 @@ def buildGossipHints(world):
                 add_hint(world, stoneIDs.pop(0), buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."))
 
     # add required items locations for hints (good hints)
-    requiredSample = world.spoiler.required_locations
+    requiredSample = world.spoiler.required_locations[world.id]
     if len(requiredSample) >= 5:
         requiredSample = random.sample(requiredSample, random.randint(3,4))
     for location in requiredSample:
@@ -166,9 +165,9 @@ def buildGossipHints(world):
         dungeon_locations = [location for region in dungeon.regions for location in region.locations
             if location.item.type != 'Event' and \
             location.item.type != 'Shop' and \
-            not location.event and \
+            not location.locked and \
             not isDungeonItem(location.item) and \
-            (world.tokensanity != 'off' or location.item.name != 'Gold Skulltulla Token') and\
+            (world.tokensanity != 'off' or location.item.type != 'Token') and\
             location.item.type != 'Song']
         if (len(dungeon_locations) == 0):
             continue
@@ -186,8 +185,8 @@ def buildGossipHints(world):
             not locationWorld.name in sometimesLocations and \
             locationWorld.item.type != 'Event' and \
             locationWorld.item.type != 'Shop' and \
-            not locationWorld.event and \
-            (world.tokensanity == 'all' or locationWorld.item.name != 'Gold Skulltulla Token') and \
+            not locationWorld.locked and \
+            (world.tokensanity == 'all' or locationWorld.item.type != 'Token') and \
             not locationWorld.parent_region.dungeon]
     overworldSample = overworldlocations
     if len(overworldSample) >= 3:
@@ -212,8 +211,8 @@ def buildGossipHints(world):
             locationWorld.item.advancement and \
             locationWorld.item.type != 'Event' and \
             locationWorld.item.type != 'Shop' and \
-            not locationWorld.event and \
-            locationWorld.item.name != 'Gold Skulltulla Token' and \
+            not locationWorld.locked and \
+            locationWorld.item.type != 'Token' and \
             not locationWorld.item.key]
     gooditemSample = gooditemlocations
     if len(gooditemSample) >= 6:

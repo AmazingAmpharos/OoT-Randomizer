@@ -153,15 +153,15 @@ def create_regions(world):
             ['Man on Roof', 'Anju as Adult', 'Anjus Chickens', 'Sheik in Kakariko', 'GS Kakariko House Under Construction', 
              'GS Kakariko Skulltula House', 'GS Kakariko Guard\'s House', 'GS Kakariko Tree', 'GS Kakariko Watchtower', 
              'GS Kakariko Above Impa\'s House'], 
-            ['Kakariko Exit', 'Carpenter Boss House', 'House of Skulltulla', 'Impas House', 'Impas House Back', 'Windmill',
+            ['Kakariko Exit', 'Carpenter Boss House', 'House of Skulltula', 'Impas House', 'Impas House Back', 'Windmill',
              'Kakariko Bazaar', 'Kakariko Shooting Gallery', 'Bottom of the Well', 'Kakariko Potion Shop Front', 
              'Kakariko Potion Shop Back', 'Odd Medicine Building', 'Kakariko Bombable Grotto', 'Kakariko Back Grotto', 
              'Graveyard Entrance', 'Death Mountain Entrance']),
         create_interior_region('Carpenter Boss House'),
         create_interior_region(
-            'House of Skulltulla', 
-            ['10 Gold Skulltulla Reward', '20 Gold Skulltulla Reward', '30 Gold Skulltulla Reward', 
-             '40 Gold Skulltulla Reward', '50 Gold Skulltulla Reward']),
+            'House of Skulltula', 
+            ['10 Gold Skulltula Reward', '20 Gold Skulltula Reward', '30 Gold Skulltula Reward', 
+             '40 Gold Skulltula Reward', '50 Gold Skulltula Reward']),
         create_interior_region('Impas House'),
         create_interior_region('Impas House Back', ['Impa House Freestanding PoH']),
         create_interior_region('Windmill', ['Windmill Freestanding PoH', 'Song at Windmill']),
@@ -770,7 +770,7 @@ def create_regions(world):
                 'Shadow Temple Beyond Boat', 
                 ['Shadow Temple Spike Walls Left Chest', 'Shadow Temple Boss Key Chest', 
                  'Shadow Temple Hidden Floormaster Chest', 'Bongo Bongo Heart', 'Bongo Bongo', 
-                 'GS Shadow Temple Tripple Giant Pot'])
+                 'GS Shadow Temple Triple Giant Pot'])
         ])
 
     if world.dungeon_mq['BW']:
@@ -1055,11 +1055,11 @@ location_table = {
     'Dog Lady': (0xE65163, 0xE661BB, 0x3E, 'NPC', 0x35, 'the Market'),
     'Skull Kid': (0xDF0F33, 0xDF0E9B, 0x3E, 'NPC', 0x5B, 'the Lost Woods'),
     'Ocarina Memory Game': (0xDF264F, None, 0x76, 'NPC', 0x5B, 'the Lost Woods'),
-    '10 Gold Skulltulla Reward': (0xEA7173, None, 0x45, 'NPC', 0x50, 'Kakariko Village'),
-    '20 Gold Skulltulla Reward': (0xEA7175, None, 0x39, 'NPC', 0x50, 'Kakariko Village'),
-    '30 Gold Skulltulla Reward': (0xEA7177, None, 0x46, 'NPC', 0x50, 'Kakariko Village'),
-    '40 Gold Skulltulla Reward': (0xEA7179, None, 0x03, 'NPC', 0x50, 'Kakariko Village'),
-    '50 Gold Skulltulla Reward': (0xEA717B, None, 0x3E, 'NPC', 0x50, 'Kakariko Village'),
+    '10 Gold Skulltula Reward': (0xEA7173, None, 0x45, 'NPC', 0x50, 'Kakariko Village'),
+    '20 Gold Skulltula Reward': (0xEA7175, None, 0x39, 'NPC', 0x50, 'Kakariko Village'),
+    '30 Gold Skulltula Reward': (0xEA7177, None, 0x46, 'NPC', 0x50, 'Kakariko Village'),
+    '40 Gold Skulltula Reward': (0xEA7179, None, 0x03, 'NPC', 0x50, 'Kakariko Village'),
+    '50 Gold Skulltula Reward': (0xEA717B, None, 0x3E, 'NPC', 0x50, 'Kakariko Village'),
     'Man on Roof': (0xE587E3, None, 0x3E, 'NPC', 0x52, 'Kakariko Village'),
     'Frog Ocarina Game': (0xDB13D3, None, 0x76, 'NPC', 0x54, 'Zora\'s River'),
     'Frogs in the Rain': (0xDB1387, None, 0x3E, 'NPC', 0x54, 'Zora\'s River'),
@@ -1539,7 +1539,7 @@ location_table = {
 
     'GS Shadow Temple Single Giant Pot': (None, None, 0x01, 'GS Token', 0x07, 'Shadow Temple'),
     'GS Shadow Temple Crusher Room': (None, None, 0x02, 'GS Token', 0x07, 'Shadow Temple'),
-    'GS Shadow Temple Tripple Giant Pot': (None, None, 0x04, 'GS Token', 0x07, 'Shadow Temple'),
+    'GS Shadow Temple Triple Giant Pot': (None, None, 0x04, 'GS Token', 0x07, 'Shadow Temple'),
     'GS Shadow Temple Like Like Room': (None, None, 0x08, 'GS Token', 0x07, 'Shadow Temple'),
     'GS Shadow Temple Near Ship': (None, None, 0x10, 'GS Token', 0x07, 'Shadow Temple'),
 

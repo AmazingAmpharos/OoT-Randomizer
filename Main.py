@@ -9,7 +9,7 @@ import time
 import os
 import struct
 
-from BaseClasses import World, CollectionState, Item
+from BaseClasses import World, CollectionState, Item, Spoiler
 from EntranceShuffle import link_entrances
 from Rom import LocalRom
 from Patches import patch_rom
@@ -19,7 +19,7 @@ from Rules import set_rules
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
 from Hints import buildGossipHints
-from Utils import default_output_path
+from Utils import default_output_path, is_bundled
 from version import __version__
 from OcarinaSongs import verify_scarecrow_song_str
 
@@ -50,8 +50,8 @@ def main(settings, window=dummy_window()):
 
     if not settings.world_count:
         settings.world_count = 1
-    if settings.world_count < 1:
-        raise Exception('World Count must be at least 1')
+    if settings.world_count < 1 or settings.world_count > 31:
+        raise Exception('World Count must be between 1 and 31')
     if settings.player_num > settings.world_count or settings.player_num < 1:
         raise Exception('Player Num must be between 1 and %d' % settings.world_count)
 
@@ -66,6 +66,8 @@ def main(settings, window=dummy_window()):
     for id, world in enumerate(worlds):
         world.id = id
         logger.info('Generating World %d.' % id)
+
+        world.spoiler = Spoiler(worlds)
 
         window.update_progress(0 + (((id + 1) / settings.world_count) * 1))
         logger.info('Creating Overworld')
@@ -138,20 +140,26 @@ def main(settings, window=dummy_window()):
             window.update_status('Compressing ROM')
             logger.info('Compressing ROM.')
 
-            compressor_path = ""
+            if is_bundled():
+                compressor_path = "."
+            else:
+                compressor_path = "Compress"
+
             if platform.system() == 'Windows':
                 if 8 * struct.calcsize("P") == 64:
-                    compressor_path = "Compress\\Compress.exe"
+                    compressor_path += "\\Compress.exe"
                 else:
-                    compressor_path = "Compress\\Compress32.exe"
+                    compressor_path += "\\Compress32.exe"
             elif platform.system() == 'Linux':
-                compressor_path = "Compress/Compress"
+                compressor_path += "/Compress"
             elif platform.system() == 'Darwin':
-                compressor_path = "Compress/Compress.out"
+                compressor_path += "/Compress.out"
             else:
+                compressor_path = ""
                 logger.info('OS not supported for compression')
 
-            run_process(window, logger, [compressor_path, rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+            if compressor_path != "":
+                run_process(window, logger, [compressor_path, rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
             os.remove(rom_path)
             window.update_progress(95)
 
