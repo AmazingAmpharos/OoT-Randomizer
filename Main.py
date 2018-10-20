@@ -71,15 +71,13 @@ def main(settings, window=dummy_window()):
         logger.info('Creating Overworld')
 
         # Determine MQ Dungeons
-        dungeons = world.dungeon_mq
-        dc = len(world.dungeon_mq)
+        td_count = len(world.dungeon_mq)
         if world.mq_dungeons_random:
-            mqdc = random.randrange(dc + 1)
-        else:
-            mqdc = world.mq_dungeons
-        table = (mqdc)*[True] + (dc - mqdc)*[False]
-        for dung in world.dungeon_mq:
-            world.dungeon_mq[dung] = table.pop(random.randrange(len(table)))
+            world.mq_dungeons = random.randint(0, td_count)
+        mqd_count = world.mq_dungeons
+        mqd_picks = random.sample(list(world.dungeon_mq), mqd_count)
+        for dung in mqd_picks:
+            world.dungeon_mq[dung] = True
 
         create_regions(world)
 
