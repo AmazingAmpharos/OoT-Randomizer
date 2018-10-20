@@ -892,6 +892,7 @@ setting_infos = [
         'help': '''\
                     Sets the Map and Compass placement rules
                     remove:      Maps and Compasses are removed from the world.
+                    auto:        Start with all Maps and Compasses.
                     dungeon:     Maps and Compasses are put in their dungeon.
                     keysanity:   Maps and Compasses can appear anywhere.
                     '''
@@ -903,6 +904,7 @@ setting_infos = [
             'default': 'Maps/Compasses: Dungeon Only',
             'options': {
                 'Maps/Compasses: Remove': 'remove',
+                'Maps/Compasses: Auto': 'auto',
                 'Maps/Compasses: Dungeon Only': 'dungeon',
                 'Maps/Compasses: Anywhere': 'keysanity'
             },
@@ -910,6 +912,10 @@ setting_infos = [
                       'Remove': Maps and Compasses are removed.
                       This will add a small amount of money and
                       refill items to the pool.
+                      
+                      'Auto': Maps and Compasses are given to you
+                      from the start. This will add a small amount
+                      of money and refill items to the pool.
 
                       'Dungeon': Maps and Compasses can only appear 
                       in their respective dungeon.
@@ -917,7 +923,7 @@ setting_infos = [
                       'Anywhere': Maps and Compasses can appear
                       anywhere in the world. 
 
-                      Setting 'Remove' or 'Anywhere' will add 2
+                      Setting 'Remove', 'Auto, or 'Anywhere' will add 2
                       more possible locations to each Dungeons.
                       This makes dungeons more profitable, especially
                       Ice Cavern, Water Temple, and Jabu Jabu's Belly.
@@ -1024,9 +1030,10 @@ setting_infos = [
                     Map will tell if a dungeon is vanilla or Master Quest.
                     Compass will tell what medallion or stone is within.
                     This option is only available if shuffle 'Maps/Compasses'
-                    is set to 'Anywhere'
+                    is set to 'Anywhere' or 'Auto'
                       ''',
-            'dependency': lambda guivar: guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Anywhere',
+            'dependency': lambda guivar: guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Anywhere'
+                     or guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Auto',
         }),    
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
