@@ -1,6 +1,4 @@
 from collections import OrderedDict
-from itertools import zip_longest
-import json
 import logging
 import platform
 import random
@@ -9,7 +7,7 @@ import time
 import os
 import struct
 
-from BaseClasses import World, CollectionState, Item, Spoiler
+from BaseClasses import World, CollectionState, Spoiler
 from EntranceShuffle import link_entrances
 from Rom import LocalRom
 from Patches import patch_rom
@@ -69,7 +67,7 @@ def main(settings, window=dummy_window()):
 
         world.spoiler = Spoiler(worlds)
 
-        window.update_progress(0 + (((id + 1) / settings.world_count) * 1))
+        window.update_progress(0 + 1*(id + 1)/settings.world_count)
         logger.info('Creating Overworld')
 
         # Determine MQ Dungeons
@@ -85,22 +83,22 @@ def main(settings, window=dummy_window()):
 
         create_regions(world)
 
-        window.update_progress(0 + (((id + 1) / settings.world_count) * 2))
+        window.update_progress(0 + 2*(id + 1)/settings.world_count)
         logger.info('Creating Dungeons')
         create_dungeons(world)
 
-        window.update_progress(0 + (((id + 1) / settings.world_count) * 3))
+        window.update_progress(0 + 3*(id + 1)/settings.world_count)
         logger.info('Linking Entrances')
         link_entrances(world)
 
         if settings.shopsanity != 'off':
             world.random_shop_prices()
 
-        window.update_progress(0 + (((id + 1) / settings.world_count) * 4))
+        window.update_progress(0 + 4*(id + 1)/settings.world_count)
         logger.info('Calculating Access Rules.')
         set_rules(world)
 
-        window.update_progress(0 + (((id + 1) / settings.world_count) * 5))
+        window.update_progress(0 + 5*(id + 1)/settings.world_count)
         logger.info('Generating Item Pool.')
         generate_itempool(world)
 
@@ -189,7 +187,7 @@ def run_process(window, logger, args):
                 files = int(line[:find_index].strip())
                 if filecount == None:
                     filecount = files
-                window.update_progress(65 + ((1 - (files / filecount)) * 30))
+                window.update_progress(65 + 30*(1 - files/filecount))
             logger.info(line.decode('utf-8').strip('\n'))
         else:
             break

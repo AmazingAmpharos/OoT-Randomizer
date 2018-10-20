@@ -2,7 +2,6 @@ import argparse
 import textwrap
 import string
 import re
-import random
 import hashlib
 
 from Patches import get_tunic_color_options, get_navi_color_options, get_NaviSFX_options, get_HealthSFX_options
@@ -131,13 +130,13 @@ class Settings():
         full_string = self.settings_string + __version__ + self.seed
         return int(hashlib.sha256(full_string.encode('utf-8')).hexdigest(), 16)
 
-    def sanatize_seed(self):
+    def sanitize_seed(self):
         # leave only alphanumeric and some punctuation
         self.seed = re.sub(r'[^a-zA-Z0-9_-]', '', self.seed, re.UNICODE)
 
     def update_seed(self, seed):
         self.seed = seed
-        self.sanatize_seed()
+        self.sanitize_seed()
         self.numeric_seed = self.get_numeric_seed()
 
     def update(self):
@@ -162,7 +161,7 @@ class Settings():
         if(self.seed is None):
             # https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
             self.seed = ''.join(random_choices(string.ascii_uppercase + string.digits, k=10))
-        self.sanatize_seed()
+        self.sanitize_seed()
         self.numeric_seed = self.get_numeric_seed()
 
 def parse_custom_tunic_color(s):
