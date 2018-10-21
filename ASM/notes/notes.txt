@@ -38,3 +38,13 @@ Equipment (relative to save context):
 silver gauntlets warp: checks at 0x803A4BE0 (in player instance)
   T6: Destination (e.g. 0x00A0)
   T8: Cutscene index? (e.g. 0xFFF0)
+
+8039F114 item/equipment usability table
+
+801D8C00 subscreen context
+    +0x138 (801D8D38) pointer to item description texture
+    +0x1E8 (801D8DE8) pause screen
+    +0x21E (801D8E1E) equips cursor index
+    +0x228 (801D8E28) equips horizontal cursor
+    +0x232 (801D8E32) equips vertical cursor
+    +0x23C (801D8E3C) item under cursor

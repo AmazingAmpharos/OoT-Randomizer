@@ -244,12 +244,76 @@
     li      t2, 1
 
 ;==================================================================================================
-; Item menu hacks
+; Pause menu
 ;==================================================================================================
 
 ; Create a blank texture, overwriting a Japanese item description
 .org 0x89E800
 .fill 0x400, 0
+
+; Use a blank item description texture if the cursor is on an empty slot
+; Replaces:
+;   sll     t4, v1, 10
+;   addu    a1, t4, t5
+.org 0xBC088C ; In memory: 0x8039820C
+    jal     menu_use_blank_description
+    nop
+
+;==================================================================================================
+; Equipment menu
+;==================================================================================================
+
+; Left movement check
+; Replaces:
+;   beqz    t3, 0x8038D9FC
+;   nop
+.org 0xBB5EAC ; In memory: 0x8038D834
+    nop
+    nop
+
+; Right movement check
+; Replaces:
+;   beqz    t3, 0x8038D9FC
+;   nop
+.org 0xBB5FD4 ; In memory: 0x8038D95C
+nop
+nop
+
+; Upward movement check
+; Replaces:
+;   beqz    t6, 0x8038DB90
+;   nop
+.org 0xBB6134 ; In memory: 0x8038DABC
+nop
+nop
+
+; Downward movement check
+; Replaces:
+;   beqz    t9, 0x8038DB90
+;   nop
+.org 0xBB61E0 ; In memory: 0x8038DB68
+nop
+nop
+
+; Remove "to Equip" text if the cursor is on an empty slot
+; Replaces:
+;   lbu     v1, 0x0000 (t4)
+;   addiu   at, r0, 0x0009
+.org 0xBB6688 ; In memory: 0x8038E008
+    jal     equipment_menu_prevent_empty_equip
+    nop
+
+; Prevent empty slots from being equipped
+; Replaces:
+;   addu    t8, t4, v0
+;   lbu     v1, 0x0000 (t8)
+.org 0xBB67C4 ; In memory: 0x8038E144
+    jal     equipment_menu_prevent_empty_equip
+    addu    t4, t4, v0
+
+;==================================================================================================
+; Item menu
+;==================================================================================================
 
 ; Left movement check
 ; Replaces:
@@ -288,8 +352,8 @@
 ;   addu    s1, t6, t7
 ;   lbu     v0, 0x0000 (s1)
 .org 0xBB7C88 ; In memory: 0x8038F608
-    jal     item_menu_prevent_empty_equip_display
-    nop
+    jal     item_menu_prevent_empty_equip
+    addu    s1, t6, t7
 
 ; Prevent empty slots from being equipped
 ; Replaces:
@@ -297,14 +361,6 @@
 ;   addiu   at, r0, 0x0009
 .org 0xBB7D10 ; In memory: 0x8038F690
     jal     item_menu_prevent_empty_equip
-    nop
-
-; Use a blank item description texture if the cursor is on an empty slot
-; Replaces:
-;   sll     t4, v1, 10
-;   addu    a1, t4, t5
-.org 0xBC088C ; In memory: 0x8039820C
-    jal     item_menu_use_blank_description
     nop
 
 ;==================================================================================================
