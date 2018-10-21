@@ -1004,7 +1004,7 @@ Choose the locations Boss Keys can be found (default: dungeon)
 --enhance_map_compass
 ```
 
-Change the functionality of the Map and Compass to give information about their dungeons. Requires --shuffle_mappcompass keysanity (default: False)
+Change the functionality of the Map and Compass to give information about their dungeons. The Temple of Time Altar will no longer provide any dungeon information. (default: False)
 
 ```
 --unlocked_ganondorf
