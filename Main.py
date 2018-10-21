@@ -6,7 +6,8 @@ import platform
 import random
 import subprocess
 import time
-import os
+import os, os.path
+import sys
 import struct
 
 from BaseClasses import World, CollectionState, Item, Spoiler
@@ -179,8 +180,47 @@ def main(settings, window=dummy_window()):
 
     return worlds[settings.player_num - 1]
 
+
+# From the pyinstaller Wiki: https://github.com/pyinstaller/pyinstaller/wiki/Recipe-subprocess
+# Create a set of arguments which make a ``subprocess.Popen`` (and
+# variants) call work with or without Pyinstaller, ``--noconsole`` or
+# not, on Windows and Linux. Typical use::
+#   subprocess.call(['program_to_run', 'arg_1'], **subprocess_args())
+def subprocess_args(include_stdout=True):
+    # The following is true only on Windows.
+    if hasattr(subprocess, 'STARTUPINFO'):
+        # On Windows, subprocess calls will pop up a command window by default
+        # when run from Pyinstaller with the ``--noconsole`` option. Avoid this
+        # distraction.
+        si = subprocess.STARTUPINFO()
+        si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        # Windows doesn't search the path by default. Pass it an environment so
+        # it will.
+        env = os.environ
+    else:
+        si = None
+        env = None
+
+    # ``subprocess.check_output`` doesn't allow specifying ``stdout``::
+    # So, add it only if it's needed.
+    if include_stdout:
+        ret = {'stdout': subprocess.PIPE}
+    else:
+        ret = {}
+
+    # On Windows, running this from the binary produced by Pyinstaller
+    # with the ``--noconsole`` option requires redirecting everything
+    # (stdin, stdout, stderr) to avoid an OSError exception
+    # "[Error 6] the handle is invalid."
+    ret.update({'stdin': subprocess.PIPE,
+                'stderr': subprocess.PIPE,
+                'startupinfo': si,
+                'env': env })
+    return ret
+
+
 def run_process(window, logger, args):
-    process = subprocess.Popen(args, bufsize=1, stdout=subprocess.PIPE)
+    process = subprocess.Popen(args, **subprocess_args())
     filecount = None
     while True:
         line = process.stdout.readline()
@@ -194,6 +234,7 @@ def run_process(window, logger, args):
             logger.info(line.decode('utf-8').strip('\n'))
         else:
             break
+
 
 def create_playthrough(worlds):
     if worlds[0].check_beatable_only and not CollectionState.can_beat_game([world.state for world in worlds]):
