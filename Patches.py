@@ -1039,8 +1039,8 @@ def patch_rom(world, rom):
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
 
-    # auto maps/compasses
-    if world.shuffle_mapcompass == 'auto':
+    # start with maps/compasses
+    if world.shuffle_mapcompass == 'startwith':
         write_bits_to_save(0x00A8, 0x06) # "Deku Map/Compass"
         write_bits_to_save(0x00A9, 0x06) # "Dodongo Map/Compass"
         write_bits_to_save(0x00AA, 0x06) # "Jabu Map/Compass"
@@ -1435,7 +1435,7 @@ def patch_rom(world, rom):
 
     # give dungeon items the correct messages
     message_patch_for_dungeon_items(messages, shop_items, world)
-    if (world.shuffle_mapcompass == 'keysanity' or world.shuffle_mapcompass == 'auto') and world.enhance_map_compass:
+    if world.shuffle_mapcompass == 'keysanity' and world.enhance_map_compass:
         reward_list = {'Kokiri Emerald':   "\x05\x42Kokiri Emerald\x05\x40",
                        'Goron Ruby':       "\x05\x41Goron Ruby\x05\x40",
                        'Zora Sapphire':    "\x05\x43Zora Sapphire\x05\x40",
@@ -2008,7 +2008,7 @@ def boss_reward_index(world, boss_name):
 
 def configure_dungeon_info(rom, world):
     mq_enable = world.quest == 'mixed'
-    mapcompass_keysanity = (world.settings.shuffle_mapcompass == 'keysanity' or world.shuffle_mapcompass == 'auto') and world.settings.enhance_map_compass
+    mapcompass_keysanity = (world.settings.shuffle_mapcompass == 'keysanity' or world.shuffle_mapcompass == 'startwith') and world.settings.enhance_map_compass
 
     bosses = ['Queen Gohma', 'King Dodongo', 'Barinade', 'Phantom Ganon',
             'Volvagia', 'Morpha', 'Twinrova', 'Bongo Bongo']

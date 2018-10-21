@@ -115,7 +115,7 @@
 <h2 id="shuffle-dungeon-items">Shuffle Dungeon Items</h2>
 <p>This setting allows the player to decide the natural distribution of dungeon items. Dungeon items can be found confined to their original dungeons, spread freely throughout the world, or prevented from existing completely. Items that are prevented from existing completely will be replaced in the item pool with an assortment of various low tier junk items. This feature can be specified for Maps/Compasses, Small Keys, and Boss Keys independently. If Small Keys or Boss Keys are prevented from existing, this will also remove all locks those keys would be used for from existing as well. If Small Keys are left in their original dungeons and the Fire Temple is not in the form of Master Quest, the locked door in the first room that leads to the normal location of the Boss Key will be removed.</p>
 <h2 id="maps-and-compasses-give-information">Maps and Compasses Give Information</h2>
-<p>This setting, only available if Maps and Compasses are automatic or spread across the world, disables the pedestal in the Temple of Time from giving information about the location of the Medallions and Spiritual Stones. Instead, the Compass from each of the eight eligible dungeons will tell the player which dungeon has which reward. If the dungeon quest is set to mixed, each of the ten Maps will tell the player whether any given dungeon is in the vanilla or Master Quest form. The Compasses from Bottom of the Well and Ice Cavern do not give any information.</p>
+<p>This setting, only available if you start with Maps and Compasses or they are spread across the world, disables the pedestal in the Temple of Time from giving information about the location of the Medallions and Spiritual Stones. Instead, the Compass from each of the eight eligible dungeons will tell the player which dungeon has which reward. If the dungeon quest is set to mixed, each of the ten Maps will tell the player whether any given dungeon is in the vanilla or Master Quest form. The Compasses from Bottom of the Well and Ice Cavern do not give any information.</p>
 <h2 id="remove-ganons-door-boss-lock">Remove Ganon's Door Boss Lock</h2>
 <p>This setting removes the Boss Key lock from Ganon's Tower. This removes the need to locate the Ganon's Tower Boss Key to finish the game.</p>
 <h2 id="tokensanity">Tokensanity</h2>
@@ -327,7 +327,7 @@
 <p>Include all Deku Scrub Salesmen as randomized item and determine their prices (default: off)</p>
 <pre><code>--shopsanity [{off,0,1,2,3,4,random}]</code></pre>
 <p>Randomize shop items and add the chosen number of items from the general item pool to shop inventories (default: off)</p>
-<pre><code>--shuffle_mapcompass [{remove,auto,dungeon,keysanity}]</code></pre>
+<pre><code>--shuffle_mapcompass [{remove,startwith,dungeon,keysanity}]</code></pre>
 <p>Choose the locations Maps and Compasses can be found (default: dungeon)</p>
 <pre><code>--shuffle_smallkeys [{remove,dungeon,keysanity}]</code></pre>
 <p>Choose the locations Small Keys can be found (default: dungeon)</p>
