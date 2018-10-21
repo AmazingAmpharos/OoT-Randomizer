@@ -1030,7 +1030,7 @@ setting_infos = [
                     Map will tell if a dungeon is vanilla or Master Quest.
                     Compass will tell what medallion or stone is within.
                     This option is only available if shuffle 'Maps/Compasses'
-                    is set to 'Anywhere' or 'Auto'
+                    is set to 'Anywhere' or 'Start With'
                       ''',
             'dependency': lambda guivar: guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Anywhere'
                      or guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Start With',
