@@ -28,6 +28,21 @@ def local_path(path=''):
 
 local_path.cached_path = None
 
+
+def data_path(path=''):
+    if data_path.cached_path is not None:
+        return os.path.join(data_path.cached_path, path)
+
+    # Even if it's bundled we use __file__
+    # if it's not bundled, then we want to use the source.py dir + Data
+    # if it's bundled, then we want to use the extraction dir + Data
+    data_path.cached_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
+
+    return os.path.join(data_path.cached_path, path)
+
+data_path.cached_path = None
+
+
 def default_output_path(path):
     if path == '':
         path = local_path('Output')
@@ -75,16 +90,17 @@ class VersionError(Exception):
     pass
 
 def check_version(checked_version):
-    try:
-        with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
-            version = versionurl.read()
-            version = re.search(".__version__ = '(.+)'", str(version)).group(1)
+    if compare_version(checked_version, __version__) < 0:
+        try:
+            with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
+                version = versionurl.read()
+                version = re.search(".__version__ = '(.+)'", str(version)).group(1)
 
-            if compare_version(version, __version__) > 0 and compare_version(checked_version, __version__) < 0:
-                raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
-    except (URLError, HTTPError) as e:
-        logger = logging.getLogger('')
-        logger.warning("Could not fetch latest version: " + str(e))
+                if compare_version(version, __version__) > 0:
+                    raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
+        except (URLError, HTTPError) as e:
+            logger = logging.getLogger('')
+            logger.warning("Could not fetch latest version: " + str(e))
 
 # Shim for the sole purpose of maintaining compatibility with older versions of Python 3.
 def random_choices(population, weights=None, k=1):

@@ -50,8 +50,8 @@ def main(settings, window=dummy_window()):
 
     if not settings.world_count:
         settings.world_count = 1
-    if settings.world_count < 1:
-        raise Exception('World Count must be at least 1')
+    if settings.world_count < 1 or settings.world_count > 31:
+        raise Exception('World Count must be between 1 and 31')
     if settings.player_num > settings.world_count or settings.player_num < 1:
         raise Exception('Player Num must be between 1 and %d' % settings.world_count)
 
@@ -61,6 +61,11 @@ def main(settings, window=dummy_window()):
     random.seed(worlds[0].numeric_seed)
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, worlds[0].seed)
+
+    # we load the rom before creating the seed so that error get caught early
+    if settings.compress_rom != 'None':
+        window.update_status('Loading ROM')
+        rom = LocalRom(settings)
 
     window.update_status('Creating the Worlds')
     for id, world in enumerate(worlds):
@@ -128,7 +133,6 @@ def main(settings, window=dummy_window()):
 
     if settings.compress_rom != 'None':
         window.update_status('Patching ROM')
-        rom = LocalRom(settings)
         patch_rom(worlds[settings.player_num - 1], rom)
         window.update_progress(65)
 

@@ -30,9 +30,9 @@ alwaysitems = ([
     + ['Progressive Strength Upgrade'] * 3
     + ['Progressive Scale'] * 2
     + ['Recovery Heart'] * 6
-    + ['Bow'] * 3
-    + ['Slingshot'] * 3
-    + ['Bomb Bag'] * 3
+    + ['Bow']
+    + ['Slingshot']
+    + ['Bomb Bag']
     + ['Bottle with Letter']
     + ['Bombs (5)'] * 2
     + ['Bombs (10)']
@@ -40,9 +40,8 @@ alwaysitems = ([
     + ['Arrows (5)']
     + ['Arrows (10)'] * 5
     + ['Progressive Wallet'] * 2
-    + ['Deku Stick Capacity'] * 2
-    + ['Deku Nut Capacity'] * 2
-    + ['Magic Meter'])
+    + ['Magic Meter']
+    + ['Piece of Heart (Treasure Chest Game)'])
 
 DT_vanilla = (['Recovery Heart'] * 2)
 
@@ -547,7 +546,7 @@ def get_pool_core(world):
             'GS Shadow Temple Crusher Room',
             'GS Shadow Temple Single Giant Pot',
             'GS Shadow Temple Near Ship',
-            'GS Shadow Temple Tripple Giant Pot'])
+            'GS Shadow Temple Triple Giant Pot'])
     if world.dungeon_mq['BW']:
         skulltula_locations_final.extend([
             'GS Well MQ Basement',
@@ -581,29 +580,67 @@ def get_pool_core(world):
         pool.extend(['Gold Skulltula Token'] * 100)
 
     if world.bombchus_in_logic:
-        pool.extend(['Bombchus'] * 4)
-        if world.dungeon_mq['JB']:
-            pool.extend(['Bombchus'])
-        if world.dungeon_mq['SpT']:
+        pool.extend(['Bombchus'])
+        if world.difficulty == 'normal':
+            pool.extend(['Bombchus'] * 3)
+        elif world.difficulty == 'hard':
             pool.extend(['Bombchus'] * 2)
-        if not world.dungeon_mq['BW']:
-            pool.extend(['Bombchus'])
-        if world.dungeon_mq['GTG']:
-            pool.extend(['Bombchus'])
-    else:
-        pool.extend(['Bombchus (5)'] + ['Bombchus (10)'] * 2)
-        if world.dungeon_mq['JB']:
-            pool.extend(['Bombchus (10)'])
-        if world.dungeon_mq['SpT']:
-            pool.extend(['Bombchus (10)'] * 2)
-        if not world.dungeon_mq['BW']:
-            pool.extend(['Bombchus (10)'])
-        if world.dungeon_mq['GTG']:
-            pool.extend(['Bombchus (10)'])
-        if world.dungeon_mq['GC']:
-            pool.extend(['Bombchus (10)'])
+            pool.extend(get_junk_item(1))
         else:
-            pool.extend(['Bombchus (20)'])
+            pool.extend(get_junk_item(3))
+        if world.dungeon_mq['JB']:
+            if world.difficulty == 'normal':
+                pool.extend(['Bombchus'])
+            else:
+                pool.extend(get_junk_item(1))
+        if world.dungeon_mq['SpT']:
+            if world.difficulty == 'normal':
+                pool.extend(['Bombchus'] * 2)
+            else:
+                pool.extend(get_junk_item(2))
+        if not world.dungeon_mq['BW']:
+            if world.difficulty == 'normal':
+                pool.extend(['Bombchus'])
+            else:
+                pool.extend(get_junk_item(1))
+        if world.dungeon_mq['GTG']:
+            if world.difficulty == 'normal':
+                pool.extend(['Bombchus'])
+            else:
+                pool.extend(get_junk_item(1))
+    else:
+        pool.extend(['Bombchus (5)'])
+        if world.difficulty == 'very_hard' or world.difficulty == 'ohko':
+            pool.extend(get_junk_item(2))
+        else:
+            pool.extend(['Bombchus (10)'] * 2)
+        if world.dungeon_mq['JB']:
+            if world.difficulty == 'normal':
+                pool.extend(['Bombchus (10)'])
+            else:
+                pool.extend(get_junk_item(1))
+        if world.dungeon_mq['SpT']:
+            if world.difficulty == 'normal':
+                pool.extend(['Bombchus (10)'] * 2)
+            else:
+                pool.extend(get_junk_item(2))
+        if not world.dungeon_mq['BW']:
+            if world.difficulty == 'normal':
+                pool.extend(['Bombchus (10)'])
+            else:
+                pool.extend(get_junk_item(1))
+        if world.dungeon_mq['GTG']:
+            if world.difficulty == 'normal':
+                pool.extend(['Bombchus (10)'])
+            else:
+                pool.extend(get_junk_item(1))
+        if world.difficulty == 'normal':
+            if world.dungeon_mq['GC']:
+                pool.extend(['Bombchus (10)'])
+            else:
+                pool.extend(['Bombchus (20)'])
+        else:
+            pool.extend(get_junk_item(1))
 
     if world.difficulty == 'ohko':
         pool.extend(['Recovery Heart'])
@@ -619,14 +656,14 @@ def get_pool_core(world):
             pool.extend(['Ice Trap'] * 4)
 
     if world.difficulty == 'normal':
-        pool.extend(['Magic Meter', 'Double Defense'] + ['Heart Container'] * 8)
+        pool.extend(['Magic Meter', 'Double Defense', 'Deku Stick Capacity', 'Deku Nut Capacity', 'Bow', 'Slingshot', 'Bomb Bag'] + ['Heart Container'] * 8)
     else:
-        pool.extend(get_junk_item(10))
+        pool.extend(get_junk_item(15))
 
     if world.difficulty == 'very_hard' or world.difficulty == 'ohko':
-        pool.extend(get_junk_item(37))
+        pool.extend(get_junk_item(41))
     else:
-        pool.extend(['Nayrus Love', 'Piece of Heart (Treasure Chest Game)'] + ['Piece of Heart'] * 35)
+        pool.extend(['Nayrus Love', 'Deku Stick Capacity', 'Deku Nut Capacity', 'Bow', 'Slingshot', 'Bomb Bag'] + ['Piece of Heart'] * 35)
 
     if world.gerudo_fortress == 'open':
         placed_items['Gerudo Fortress North F1 Carpenter'] = 'Recovery Heart'

@@ -9,7 +9,7 @@ import random
 import copy
 
 from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText, getSimpleHintNoPrefix
-from Utils import local_path, default_output_path, random_choices
+from Utils import data_path, default_output_path, random_choices
 from Items import ItemFactory, item_data
 from Messages import *
 from OcarinaSongs import Song, str_to_song, replace_songs
@@ -82,7 +82,7 @@ NaviSFX = {
     'Timer'         : 0x481A,  
     'Low Health'    : 0x481B,
     'Notification'  : 0x4820, 
-    'Tamborine'     : 0x4842, 
+    'Tambourine'    : 0x4842, 
     'Carrot Refill' : 0x4845,  
     'Zelda - Gasp'  : 0x6879, 
     'Mweep!'        : 0x687A,
@@ -92,18 +92,18 @@ NaviSFX = {
     'Great Fairy'   : 0x6858,
     'Moo'           : 0x28DF,
     'Bark'          : 0x28D8,
-    'Kero Kero'     : 0x28B1,
+    'Ribbit'        : 0x28B1,
     'Broken Pot'    : 0x2887,
     'Cockadoodledoo': 0x2813,
     'Epona'         : 0x2805,
     'Gold Skulltula': 0x39DA,
     'Redead'        : 0x38E5,
     'Poe'           : 0x38EC,
-    'Ruto'          : 0x4863,
+    'Ruto'          : 0x6863,
     'Howl'          : 0x28AE,
     'Business Scrub': 0x3882,
     'Guay'          : 0x38B6,
-    'H`lo!'         : 0x4844
+    'H`lo!'         : 0x6844
 }
 
 HealthSFX = {
@@ -113,7 +113,7 @@ HealthSFX = {
     'Recovery Heart': 0x480B, 
     'Timer'         : 0x481A,  
     'Notification'  : 0x4820, 
-    'Tamborine'     : 0x4842, 
+    'Tambourine'    : 0x4842, 
     'Carrot Refill' : 0x4845, 
     'Navi - Random' : 0x6843, 
     'Navi - Hey!'   : 0x685F, 
@@ -128,7 +128,7 @@ HealthSFX = {
     'Switch'        : 0x2815,
     'Bomb Bounce'   : 0x282F,
     'Bark'          : 0x28D8,
-    'Kero Kero'     : 0x28B1,
+    'Ribbit'        : 0x28B1,
     'Broken Pot'    : 0x2887,
     'Business Scrub': 0x3882,
     'Guay'          : 0x38B6,
@@ -160,13 +160,13 @@ def get_navi_color_options():
     return ["Random Choice", "Completely Random"] + get_navi_colors()
 
 def patch_rom(world, rom):
-    with open(local_path('data/rom_patch.txt'), 'r') as stream:
+    with open(data_path('rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
             rom.write_byte(address, value)
     
     # Write Randomizer title screen logo
-    with open(local_path('data/title.bin'), 'rb') as stream:
+    with open(data_path('title.bin'), 'rb') as stream:
         titleBytes = stream.read()
         rom.write_bytes(0x01795300, titleBytes)
 
@@ -827,7 +827,7 @@ def patch_rom(world, rom):
                    0x27CE090, 0x2887070, 0x2887080, 0x2887090, 0x2897070, 0x28C7134, 0x28D91BC, 0x28A60F4, 0x28AE084,
                    0x28B9174, 0x28BF168, 0x28BF178, 0x28BF188, 0x28A1144, 0x28A6104, 0x28D0094]
     for address in Wonder_text:
-        rom.write_byte(address, 0xFE)
+        rom.write_byte(address, 0xFB)
 
     # Speed dig text for Dampe
     rom.write_bytes(0x9532F8, [0x08, 0x08, 0x08, 0x59])

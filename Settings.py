@@ -54,7 +54,8 @@ class Setting_Info():
         self.gui_params = gui_params # parameters that the gui uses to build the widget components
 
         # create the choices parameters from the gui options if applicable
-        if gui_params and 'options' in gui_params and 'choices' not in args_params:
+        if gui_params and 'options' in gui_params and 'choices' not in args_params \
+                and not ('type' in args_params and callable(args_params['type'])):
             if isinstance(gui_params['options'], list):
                 self.args_params['choices'] = list(gui_params['options'])
             elif isinstance(gui_params['options'], dict):
@@ -352,11 +353,11 @@ setting_infos = [
             'default': 'Default Behavior',
             'options': {
                 'Default Behavior': 'normal',
-                'Rescue one carpenter': 'fast',
+                'Rescue One Carpenter': 'fast',
                 'Start with Gerudo Card': 'open',
             },
             'tooltip':'''\
-                      'Rescue one carpenter': Only the bottom left
+                      'Rescue One Carpenter': Only the bottom left
                       carpenter must be rescued.
 
                       'Start with Gerudo Card': The carpenters are rescued from
@@ -381,22 +382,22 @@ setting_infos = [
             'text': 'Rainbow Bridge Requirement',
             'group': 'open',
             'widget': 'Combobox',
-            'default': 'All medallions',
+            'default': 'All Medallions',
             'options': {
-                'All dungeons': 'dungeons',
-                'All medallions': 'medallions',
-                'Vanilla requirements': 'vanilla',
-                'Always open': 'open',
+                'All Dungeons': 'dungeons',
+                'All Medallions': 'medallions',
+                'Vanilla Requirements': 'vanilla',
+                'Always Open': 'open',
             },
             'tooltip':'''\
-                      'All dungeons': All Medallions and Stones
+                      'All Dungeons': All Medallions and Stones
 
-                      'All medallions': All 6 Medallions only
+                      'All Medallions': All 6 Medallions only
 
-                      'Vanilla requirements': Spirit and Shadow 
+                      'Vanilla Requirements': Spirit and Shadow 
                       Medallions and the Light Arrows
 
-                      'Always open': Rainbow Bridge is always present
+                      'Always Open': Rainbow Bridge is always present
                       '''
         }),
     Setting_Info('all_reachable', bool, 1, True, 
@@ -435,7 +436,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Bombchus are considered in logic',
+            'text': 'Bombchus Are Considered in Logic',
             'group': 'world',
             'widget': 'Checkbutton',
             'default': 'checked',
@@ -465,7 +466,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Dungeons have one major item',
+            'text': 'Dungeons Have One Major Item',
             'group': 'world',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -646,7 +647,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Start with Scarecrow Song',
+            'text': 'Start with Scarecrow\'s Song',
             'group': 'convenience',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1014,7 +1015,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Maps and Compasses give information',
+            'text': 'Maps and Compasses Give Information',
             'group': 'logic',
             'widget': 'Checkbutton',
             'default': 'checked',
@@ -1130,7 +1131,7 @@ setting_infos = [
             'type': int
         },
         {
-            'text': 'Maximum expected Skulltula tokens',
+            'text': 'Maximum Expected Skulltula Tokens',
             'group': 'rewards',
             'widget': 'Scale',
             'default': 50,
@@ -1221,7 +1222,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'No Skull Mask reward',
+            'text': 'No Skull Mask Reward',
             'group': 'rewards',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1238,7 +1239,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'No Mask of Truth reward',
+            'text': 'No Mask of Truth Reward',
             'group': 'rewards',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1289,7 +1290,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'No Racing Dampe a second time',
+            'text': 'No Racing Dampe a Second Time',
             'group': 'rewards',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1306,7 +1307,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'No Biggoron reward',
+            'text': 'No Biggoron Reward',
             'group': 'rewards',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1345,7 +1346,7 @@ setting_infos = [
                 'Earliest: Pocket Cucco': 'pocket_cucco', 
                 'Earliest: Cojiro': 'cojiro', 
                 'Earliest: Odd Mushroom': 'odd_mushroom', 
-                'Earliest: Poachers Saw': 'poachers_saw', 
+                'Earliest: Poacher\'s Saw': 'poachers_saw', 
                 'Earliest: Broken Sword': 'broken_sword', 
                 'Earliest: Prescription': 'prescription', 
                 'Earliest: Eyeball Frog': 'eyeball_frog', 
@@ -1384,7 +1385,7 @@ setting_infos = [
                 'Latest: Pocket Cucco': 'pocket_cucco', 
                 'Latest: Cojiro': 'cojiro', 
                 'Latest: Odd Mushroom': 'odd_mushroom', 
-                'Latest: Poachers Saw': 'poachers_saw', 
+                'Latest: Poacher\'s Saw': 'poachers_saw', 
                 'Latest: Broken Sword': 'broken_sword', 
                 'Latest: Prescription': 'prescription', 
                 'Latest: Eyeball Frog': 'eyeball_frog', 
@@ -1397,18 +1398,18 @@ setting_infos = [
     Setting_Info('logic_tricks', bool, 1, True, 
         {
             'help': '''\
-                    Enable various tricks.
+                    Enable various advanced tricks that do not require glitches.
                     ''',
             'action': 'store_true'
         },
         {
-            'text': 'Require minor tricks',
+            'text': 'Various Advanced Tricks',
             'group': 'tricks',
-            'widget': 'SpecialCheckbutton',
+            'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      Enables a large number of tricks.
-                      Still does not require glitches.
+                      Enables a large number of minor 
+                      tricks that do not require glitches.
                       '''
         }),
     Setting_Info('logic_man_on_roof', bool, 1, True, 
@@ -1453,7 +1454,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Dodongo\'s Cavern spike trap room jump without Hover Boots',
+            'text': 'Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots',
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1469,7 +1470,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Windmill PoH as adult with nothing',
+            'text': 'Windmill PoH as Adult with Nothing',
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1487,7 +1488,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': "Crater's bean PoH with Hover Boots",
+            'text': "Crater's Bean PoH with Hover Boots",
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1505,7 +1506,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': "Zora's Domain entry with Cucco",
+            'text': "Zora's Domain Entry with Cucco",
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1522,7 +1523,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': "Zora's Domain entry with Hover Boots",
+            'text': "Zora's Domain Entry with Hover Boots",
             'group': 'tricks',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1560,6 +1561,31 @@ setting_infos = [
                       trips.
                       '''
         }),
+    Setting_Info('logic_morpha_with_scale', bool, 1, True, 
+        {
+            'help': '''\
+                    Allows entering Water Temple and beating
+                    Morpha with Gold Scale instead of Iron Boots.
+                    Only applicable for keysanity and keysy since
+                    there is no location to obtain the Boss Key
+                    inside the dungeon.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Morpha With Gold Scale",
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                      Allows entering Water Temple and beating
+                      Morpha with Gold Scale instead of Iron Boots.
+                      Only applicable for keysanity and keysy since
+                      there is no location to obtain the Boss Key
+                      inside the dungeon.
+                      ''',
+            'dependency': lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Dungeon Only'
+        }),
     Setting_Info('logic_lens', str, 2, True, 
         {
             'default': 'all',
@@ -1576,9 +1602,9 @@ setting_infos = [
             'text': 'Lens of Truth',
             'group': 'tricks',
             'widget': 'Combobox',
-            'default': 'Required everywhere',
+            'default': 'Required Everywhere',
             'options': {
-                'Required everywhere': 'all',
+                'Required Everywhere': 'all',
                 'Wasteland and Chest Minigame': 'chest-wasteland',
                 'Only Chest Minigame': 'chest',
             },
@@ -1601,7 +1627,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Randomize ocarina song notes',
+            'text': 'Randomize Ocarina Song Notes',
             'group': 'other',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1622,7 +1648,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Chest size matches contents',
+            'text': 'Chest Size Matches Contents',
             'group': 'other',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1643,7 +1669,7 @@ setting_infos = [
             'action': 'store_true'
         },
         {
-            'text': 'Clearer hints',
+            'text': 'Clearer Hints',
             'group': 'other',
             'widget': 'Checkbutton',
             'default': 'unchecked',
@@ -1708,11 +1734,11 @@ setting_infos = [
             'text': 'Text Shuffle',
             'group': 'other',
             'widget': 'Combobox',
-            'default': 'No text shuffled',
+            'default': 'No Text Shuffled',
             'options': {
-                'No text shuffled': 'none',
+                'No Text Shuffled': 'none',
                 'Shuffled except Hints and Keys': 'except_hints',
-                'All text shuffled': 'complete',
+                'All Text Shuffled': 'complete',
             },
             'tooltip':'''\
                       Will make things confusing for comedic value.
@@ -1733,8 +1759,10 @@ setting_infos = [
             'help': '''\
                     Change the item pool for an added challenge.
                     normal:         Default items
-                    hard:           Double defense, double magic, and all 8 heart containers are removed
-                    very_hard:      Double defense, double magic, Nayru's Love, and all health upgrades are removed
+                    hard:           Double defense, double magic, and all 8 heart containers are removed. Ammo
+                                    for each type can only be expanded once and you can only find three Bombchu packs.
+                    very_hard:      Double defense, double magic, Nayru's Love, and all health upgrades are removed.
+                                    No ammo expansions are available and you can only find one Bombchu pack.
                     ohko:           Same as very hard, and Link will die in one hit.
                     '''
         },
@@ -1750,14 +1778,24 @@ setting_infos = [
                 'OHKO': 'ohko'
             },
             'tooltip':'''\
-                      Makes health less available
+                      Makes health less available, reduces
+                      ammo expansions, and reduces Bombchus
+                      in the item pool by three.
 
                       'Hard': Heart Containers, Double Magic,
-                      and Double Defense are removed.
+                      and Double Defense are removed. Only
+                      one extra Quiver, Bullet Bag, Bomb Bag,
+                      Deku Stick and Deku Nut Capacity Upgrades
+                      will be available. Only three Bombchu
+                      packs are available.
 
                       'Very Hard': Heart Containers, Pieces of
                       Heart, Double Magic, Double Defense, 
-                      and Nayru's Love are removed.
+                      and Nayru's Love are removed. No extra
+                      Quivers, Bullet Bags, Bomb Bags, or
+                      Deku Stick and Deku Nut Capacity Upgrades
+                      will be available. Only one Bombchu
+                      pack is available.
 
                       'OHKO': Link dies in one hit.
                       '''

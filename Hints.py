@@ -6,7 +6,6 @@ import struct
 import random
 
 from HintList import getHint, getHintGroup, Hint
-from Utils import local_path
 from ItemList import eventlocations
 from Messages import update_message_by_id
 from TextBox import lineWrap

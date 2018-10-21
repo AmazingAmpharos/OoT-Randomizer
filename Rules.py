@@ -429,10 +429,10 @@ def global_rules(world):
     set_rule(world.get_entrance('Zora Shop Adult Access'), lambda state: state.has_blue_fire())
     set_rule(
         world.get_location('Zoras Fountain Bottom Freestanding PoH'),
-        lambda state: state.has('Iron Boots') and(world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
+        lambda state: state.has('Iron Boots') and (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
     set_rule(
         world.get_entrance('Water Temple Entrance'),
-        lambda state: (state.has('Iron Boots') or state.has('Progressive Scale', 2)) and
+        lambda state: (state.has('Iron Boots') or (world.logic_morpha_with_scale and state.has('Progressive Scale', 2))) and
                       state.can_use('Hookshot') and (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()))
     set_rule(
         world.get_location('Sheik in Kakariko'),
@@ -487,13 +487,13 @@ def global_rules(world):
         lambda state: state.can_use('Hover Boots') or state.can_use('Scarecrow') or state.can_use('Longshot'))
     set_rule(
         world.get_location('Horseback Archery 1000 Points'),
-        lambda state: state.has('Carpenter Rescue') and state.has('Epona') and state.can_use('Bow'))
+        lambda state: state.has('Carpenter Rescue') and state.has('Epona') and state.has('Bow') and state.is_adult())
     set_rule(
         world.get_location('Horseback Archery 1500 Points'),
         lambda state: (not world.logic_no_1500_archery) and
                       state.has('Carpenter Rescue') and
                       state.has('Epona') and
-                      state.can_use('Bow'))
+                      state.has('Bow') and state.is_adult())
     set_rule(world.get_location('Haunted Wasteland Structure Chest'), lambda state: state.has_fire_source())
     set_rule(
         world.get_location('Zelda'),
@@ -1164,7 +1164,9 @@ def dung_rules_fit0(world):
     set_rule(world.get_location('Fire Temple Compass Chest'), lambda state: state.has('Small Key (Fire Temple)', 7))
     set_rule(
         world.get_location('Fire Temple Highest Goron Chest'),
-        lambda state: (state.can_play('Song of Time') or world.logic_tricks) and state.can_use('Hammer'))
+        lambda state: state.can_use('Hammer') and
+                      (state.can_play('Song of Time') or
+                          (world.logic_tricks and (state.can_use('Hover Boots') or state.has_explosives()))))
     set_rule(world.get_location('Fire Temple Megaton Hammer Chest'), lambda state: state.has_explosives())
 
     # Boss
@@ -1404,7 +1406,11 @@ def dung_rules_spt0(world):
         lambda state: state.has('Small Key (Spirit Temple)', 4) and state.can_use('Silver Gauntlets'))
     set_rule(
         world.get_entrance('Spirit Temple Final Locked Door'),
-        lambda state: state.has('Small Key (Spirit Temple)', 5) and state.has_projectile('adult'))
+        lambda state: state.has('Small Key (Spirit Temple)', 5) and
+                        (state.can_use('Longshot') or
+                        state.has_bombchus() or
+                        ((state.has_bombs() or state.has_nuts() or state.can_use('Dins Fire')) and
+                          (state.has_bow() or state.can_use('Hookshot') or state.has('Hammer')))))
     set_rule(
         world.get_location('Spirit Temple Child Left Chest'),
         lambda state: (state.has('Boomerang') or state.has_slingshot() or (state.has_bombchus() and world.logic_tricks)) and
@@ -1558,9 +1564,16 @@ def dung_rules_spt0(world):
                       (state.can_use('Longshot') or state.can_use('Scarecrow') or state.has('Hover Boots')))
     set_rule(
         world.get_location('GS Spirit Temple Bomb for Light Room'),
-        lambda state: state.can_child_attack() or
+        lambda state: state.has_projectile('both') or
+                      state.can_use('Dins Fire') or
+                      ((world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love')) and
+                        (state.has_sticks() or state.has('Kokiri Sword') or state.has_projectile('child'))) or
+                      (state.can_play('Requiem of Spirit') and state.has('Small Key (Spirit Temple)', 5) and
+                        state.has_projectile('child')) or
                       ((state.has('Small Key (Spirit Temple)', 3) or (state.has('Small Key (Spirit Temple)', 2) and world.bombchus_in_logic)) and
-                        state.can_use('Silver Gauntlets')))
+                        state.can_use('Silver Gauntlets') and
+                        (state.has_projectile('adult') or
+                          world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))
 
 # Spirit Temple MQ
 def dung_rules_sptmq(world):
@@ -2060,7 +2073,7 @@ def dung_rules_gc0(world):
         world.get_location('Ganons Castle Shadow Trial Clear'),
         lambda state: state.can_use('Light Arrows') and
                       state.has('Hammer') and
-                      ((state.has('Fire Arrows') and (state.has('Hover Boots') or state.can_see_with_lens())) or
+                      ((state.has('Fire Arrows') and state.can_see_with_lens()) or
                         (state.can_use('Longshot') and (state.has('Hover Boots') or (state.has('Dins Fire') and state.can_see_with_lens())))))
     set_rule(
         world.get_location('Ganons Castle Shadow Trial First Chest'),

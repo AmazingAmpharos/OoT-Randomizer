@@ -9,7 +9,7 @@ import random
 import copy
 from Utils import is_bundled
 
-from Utils import local_path, default_output_path
+from Utils import local_path, data_path, default_output_path
 
 DMADATA_START = 0x7430
 
@@ -22,7 +22,7 @@ class LocalRom(object):
 
         os.chdir(local_path())
 
-        with open(local_path('data/symbols.json'), 'r') as stream:
+        with open(data_path('symbols.json'), 'r') as stream:
             symbols = json.load(stream)
             self.symbols = { name: int(addr, 16) for name, addr in symbols.items() }
 
