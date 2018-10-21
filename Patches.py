@@ -2008,7 +2008,7 @@ def boss_reward_index(world, boss_name):
 
 def configure_dungeon_info(rom, world):
     mq_enable = world.quest == 'mixed'
-    mapcompass_keysanity = (world.settings.shuffle_mapcompass == 'keysanity' or world.shuffle_mapcompass == 'startwith') and world.settings.enhance_map_compass
+    mapcompass_keysanity = world.settings.enhance_map_compass
 
     bosses = ['Queen Gohma', 'King Dodongo', 'Barinade', 'Phantom Ganon',
             'Volvagia', 'Morpha', 'Twinrova', 'Bongo Bongo']

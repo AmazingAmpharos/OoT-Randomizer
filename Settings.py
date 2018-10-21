@@ -1015,8 +1015,9 @@ setting_infos = [
                     Gives the Map and Compass extra functionality.
                     Map will tell if a dungeon is vanilla or Master Quest.
                     Compass will tell what medallion or stone is within.
-                    This setting will only activate these functions if the
-                    other settings would make this useful information.
+                    The Temple of Time Altar will no longer provide any
+                    information. If the maps and compasses are removed then
+                    the information will be unavailable.
                     ''',
             'action': 'store_true'
         },
@@ -1029,11 +1030,15 @@ setting_infos = [
                     Gives the Map and Compass extra functionality.
                     Map will tell if a dungeon is vanilla or Master Quest.
                     Compass will tell what medallion or stone is within.
-                    This option is only available if shuffle 'Maps/Compasses'
-                    is set to 'Anywhere' or 'Start With'
-                      ''',
-            'dependency': lambda guivar: guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Anywhere'
-                     or guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Start With',
+                    The Temple of Time Altar will no longer provide any
+                    information. 
+
+                    'Maps/Compasses: Remove': The dungeon information is 
+                    not available anywhere in the game.
+                    
+                    'Maps/Compasses: Start With': The dungeon information
+                    is available immediately from the dungeon menu.
+                    ''',
         }),    
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
