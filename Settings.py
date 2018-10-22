@@ -234,6 +234,15 @@ setting_infos = [
                     Create a file with the info for all worlds.
                     ''',
             'type': bool}),
+    Setting_Info('world_file_num', int, 0, False, {
+            'default': 1,
+            'help': '''\
+                    Use to select world to generate when there are multiple worlds.
+                    ''',
+            'type': int}),
+    Setting_Info('world_file', str, 0, False, {
+            'default': '',
+            'help': 'Path to a world file.'}),
     Setting_Info('create_spoiler', bool, 1, True, 
         {
             'help': 'Output a Spoiler File',
