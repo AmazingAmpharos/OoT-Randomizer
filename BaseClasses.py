@@ -522,6 +522,12 @@ class CollectionState(object):
             self.entrance_cache = {k: v for k, v in self.entrance_cache.items() if not v}
             self.recursion_count = 0
 
+    def __getstate__(self):
+        return self.__dict__.copy()
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+
     def __getattr__(self, item):
         if item.startswith('can_reach_'):
             return self.can_reach(item[10])

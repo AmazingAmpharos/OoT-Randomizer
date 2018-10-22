@@ -10,7 +10,7 @@ import os, os.path
 import sys
 import struct
 import zlib
-import pickle
+import dill as pickle
 
 from BaseClasses import World, CollectionState, Item, Spoiler
 from EntranceShuffle import link_entrances
@@ -47,83 +47,93 @@ def main(settings, window=dummy_window()):
     # initialize the world
 
     worlds = []
-    if settings.compress_rom == 'None':
-        settings.create_spoiler = True
-        settings.update()
-
-    if not settings.world_count:
-        settings.world_count = 1
-    if settings.world_count < 1 or settings.world_count > 31:
-        raise Exception('World Count must be between 1 and 31')
-    if settings.player_num > settings.world_count or settings.player_num < 1:
-        raise Exception('Player Num must be between 1 and %d' % settings.world_count)
-
-    for i in range(0, settings.world_count):
-        worlds.append(World(settings))
-
-    random.seed(worlds[0].numeric_seed)
-
-    logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, worlds[0].seed)
 
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom != 'None':
         window.update_status('Loading ROM')
         rom = LocalRom(settings)
 
-    window.update_status('Creating the Worlds')
-    for id, world in enumerate(worlds):
-        world.id = id
-        logger.info('Generating World %d.' % id)
+    if settings.world_file is not '':
+        logger.info('Unpacking World File.')
+        world_file = open(settings.world_file, 'rb')
+        compressed_data = world_file.read()
+        worlds = pickle.loads(zlib.decompress(compressed_data))
+        world_file.close()
+        settings.player_num = settings.world_file_num
 
-        world.spoiler = Spoiler(worlds)
+    else:
+        if settings.compress_rom == 'None':
+            settings.create_spoiler = True
+            settings.update()
 
-        window.update_progress(0 + (((id + 1) / settings.world_count) * 1))
-        logger.info('Creating Overworld')
-        if world.quest == 'master':
-            for dungeon in world.dungeon_mq:
-                world.dungeon_mq[dungeon] = True
-        elif world.quest == 'mixed':
-            for dungeon in world.dungeon_mq:
-                world.dungeon_mq[dungeon] = random.choice([True, False])
-        else:
-            for dungeon in world.dungeon_mq:
-                world.dungeon_mq[dungeon] = False
-        create_regions(world)
+        if not settings.world_count:
+            settings.world_count = 1
+        if settings.world_count < 1 or settings.world_count > 31:
+            raise Exception('World Count must be between 1 and 31')
+        if settings.player_num > settings.world_count or settings.player_num < 1:
+            raise Exception('Player Num must be between 1 and %d' % settings.world_count)
 
-        window.update_progress(0 + (((id + 1) / settings.world_count) * 2))
-        logger.info('Creating Dungeons')
-        create_dungeons(world)
+        for i in range(0, settings.world_count):
+            worlds.append(World(settings))
 
-        window.update_progress(0 + (((id + 1) / settings.world_count) * 3))
-        logger.info('Linking Entrances')
-        link_entrances(world)
+        random.seed(worlds[0].numeric_seed)
 
-        if settings.shopsanity != 'off':
-            world.random_shop_prices()
+        logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, worlds[0].seed)
 
-        window.update_progress(0 + (((id + 1) / settings.world_count) * 4))
-        logger.info('Calculating Access Rules.')
-        set_rules(world)
+        window.update_status('Creating the Worlds')
+        for id, world in enumerate(worlds):
+            world.id = id
+            logger.info('Generating World %d.' % id)
 
-        window.update_progress(0 + (((id + 1) / settings.world_count) * 5))
-        logger.info('Generating Item Pool.')
-        generate_itempool(world)
+            world.spoiler = Spoiler(worlds)
 
-    window.update_status('Placing the Items')
-    logger.info('Fill the world.')
-    distribute_items_restrictive(window, worlds)
-    window.update_progress(35)
+            window.update_progress(0 + (((id + 1) / settings.world_count) * 1))
+            logger.info('Creating Overworld')
+            if world.quest == 'master':
+                for dungeon in world.dungeon_mq:
+                    world.dungeon_mq[dungeon] = True
+            elif world.quest == 'mixed':
+                for dungeon in world.dungeon_mq:
+                    world.dungeon_mq[dungeon] = random.choice([True, False])
+            else:
+                for dungeon in world.dungeon_mq:
+                    world.dungeon_mq[dungeon] = False
+            create_regions(world)
 
-    if settings.create_spoiler:
-        window.update_status('Calculating Spoiler Data')
-        logger.info('Calculating playthrough.')
-        create_playthrough(worlds)
-        window.update_progress(50)
-    if settings.hints != 'none':
-        window.update_status('Calculating Hint Data')
-        CollectionState.update_required_items(worlds)
-        buildGossipHints(worlds[settings.player_num - 1])
-        window.update_progress(55)
+            window.update_progress(0 + (((id + 1) / settings.world_count) * 2))
+            logger.info('Creating Dungeons')
+            create_dungeons(world)
+
+            window.update_progress(0 + (((id + 1) / settings.world_count) * 3))
+            logger.info('Linking Entrances')
+            link_entrances(world)
+
+            if settings.shopsanity != 'off':
+                world.random_shop_prices()
+
+            window.update_progress(0 + (((id + 1) / settings.world_count) * 4))
+            logger.info('Calculating Access Rules.')
+            set_rules(world)
+
+            window.update_progress(0 + (((id + 1) / settings.world_count) * 5))
+            logger.info('Generating Item Pool.')
+            generate_itempool(world)
+
+        window.update_status('Placing the Items')
+        logger.info('Fill the world.')
+        distribute_items_restrictive(window, worlds)
+        window.update_progress(35)
+
+        if settings.create_spoiler:
+            window.update_status('Calculating Spoiler Data')
+            logger.info('Calculating playthrough.')
+            create_playthrough(worlds)
+            window.update_progress(50)
+        if settings.hints != 'none':
+            window.update_status('Calculating Hint Data')
+            CollectionState.update_required_items(worlds)
+            buildGossipHints(worlds[settings.player_num - 1])
+            window.update_progress(55)
 
     logger.info('Patching ROM.')
 

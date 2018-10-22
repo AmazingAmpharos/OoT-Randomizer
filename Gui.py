@@ -432,10 +432,13 @@ def guiMain(settings=None):
     countSpinbox.pack(side=LEFT, padx=2)
     playerNumFrame.pack(side=TOP, anchor=W, padx=5, pady=(0,5))
 
+    guivars['world_file'] = StringVar()
     def generate_from_world_file():
         worldfile = filedialog.askopenfilename(filetypes=[("World Files", ".orwf"), ("All Files", "*")])
         if worldfile != '':
-            pass #TODO
+            guivars['world_file'].set(worldfile)
+            guivars['count'].set(1)
+            generateRom()
 
     fromFileFrame = Frame(worldFileFrame)
     createButton = Button(fromFileFrame, text='Generate from World File', command=generate_from_world_file)
