@@ -1592,8 +1592,8 @@ setting_infos = [
                       Morpha with Gold Scale instead of Iron Boots.
                       Only applicable for keysanity and keysy due
                       to the logic always seeing every chest in
-                      Water Temple that could contain Boss Key as
-                      requiring Iron Boots.
+                      Water Temple that could contain the Boss Key
+                      as requiring Iron Boots.
                       ''',
             'dependency': lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Dungeon Only'
         }),
