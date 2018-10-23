@@ -171,9 +171,13 @@
     jal     after_game_state_update
     nop
 
+;==================================================================================================
+; File select hash
+;==================================================================================================
+
 ; Runs after the file select menu is rendered
 ; Replaces: code that draws the fade-out rectangle on file load
-.org 0xBAF738 ; In memory: 0x803B3580
+.org 0xBAF738 ; In memory: 0x803B3538
 .area 0x60, 0
     jal     draw_file_select_hash
     andi    a0, t8, 0xFF ; a0 = alpha channel of fade-out rectangle
@@ -240,21 +244,76 @@
     li      t2, 1
 
 ;==================================================================================================
-; Menu hacks
+; Pause menu
 ;==================================================================================================
 
-; Make the "SOLD OUT" menu text blank
-.org 0x8A9C00
+; Create a blank texture, overwriting a Japanese item description
+.org 0x89E800
 .fill 0x400, 0
 
-; Item Menu hooks:
-;
-; There are 4 removed checks for whether the cursor is allowed to move to an adjacent space,
-; one for each cardinal direction.
-;
-; There are 4 hooks that override the item ID used to display the item description.
-; One runs periodically (because the description flips between the item name and "< v > to Equip").
-; The other three run immediately when the cursor moves.
+; Use a blank item description texture if the cursor is on an empty slot
+; Replaces:
+;   sll     t4, v1, 10
+;   addu    a1, t4, t5
+.org 0xBC088C ; In memory: 0x8039820C
+    jal     menu_use_blank_description
+    nop
+
+;==================================================================================================
+; Equipment menu
+;==================================================================================================
+
+; Left movement check
+; Replaces:
+;   beqz    t3, 0x8038D9FC
+;   nop
+.org 0xBB5EAC ; In memory: 0x8038D834
+    nop
+    nop
+
+; Right movement check
+; Replaces:
+;   beqz    t3, 0x8038D9FC
+;   nop
+.org 0xBB5FD4 ; In memory: 0x8038D95C
+nop
+nop
+
+; Upward movement check
+; Replaces:
+;   beqz    t6, 0x8038DB90
+;   nop
+.org 0xBB6134 ; In memory: 0x8038DABC
+nop
+nop
+
+; Downward movement check
+; Replaces:
+;   beqz    t9, 0x8038DB90
+;   nop
+.org 0xBB61E0 ; In memory: 0x8038DB68
+nop
+nop
+
+; Remove "to Equip" text if the cursor is on an empty slot
+; Replaces:
+;   lbu     v1, 0x0000 (t4)
+;   addiu   at, r0, 0x0009
+.org 0xBB6688 ; In memory: 0x8038E008
+    jal     equipment_menu_prevent_empty_equip
+    nop
+
+; Prevent empty slots from being equipped
+; Replaces:
+;   addu    t8, t4, v0
+;   lbu     v1, 0x0000 (t8)
+.org 0xBB67C4 ; In memory: 0x8038E144
+    jal     equipment_menu_prevent_empty_equip
+    addu    t4, t4, v0
+
+;==================================================================================================
+; Item menu
+;==================================================================================================
 
 ; Left movement check
 ; Replaces:
@@ -264,22 +323,12 @@
     nop
     nop
 
-; Right movement check AND an immediate description update
+; Right movement check
 ; Replaces:
-;   lbu     t4, 0x0074 (t9)
 ;   beq     s4, t4, 0x8038F2B4
 ;   nop
-.org 0xBB7890 ; In memory: 0x8038F210
-    jal     item_menu_description_id_immediate_1
+.org 0xBB7894 ; In memory: 0x8038F214
     nop
-    nop
-
-; Immediate description update
-; Replaces:
-;   lbu     t6, 0x0074 (t5)
-;   sh      t6, 0x009A (sp)
-.org 0xBB7950 ; In memory: 0x8038F2D0
-    jal     item_menu_description_id_immediate_2
     nop
 
 ; Upward movement check
@@ -298,20 +347,20 @@
     nop
     nop
 
-; Immediate description update
+; Remove "to Equip" text if the cursor is on an empty slot
 ; Replaces:
-;   lbu     t7, 0x0074 (t6)
-;   sh      t7, 0x009A (sp)
-.org 0xBB7C3C ; In memory: 0x8038F5BC
-    jal     item_menu_description_id_immediate_3
-    nop
+;   addu    s1, t6, t7
+;   lbu     v0, 0x0000 (s1)
+.org 0xBB7C88 ; In memory: 0x8038F608
+    jal     item_menu_prevent_empty_equip
+    addu    s1, t6, t7
 
-; Periodic description update
+; Prevent empty slots from being equipped
 ; Replaces:
-;   lbu     t9, 0x0074 (t8)
-;   sh      t9, 0x009A (sp)
-.org 0xBB7C58 ; In memory: 0x8038F5D8
-    jal     item_menu_description_id_periodic
+;   lbu     v0, 0x0000 (s1)
+;   addiu   at, r0, 0x0009
+.org 0xBB7D10 ; In memory: 0x8038F690
+    jal     item_menu_prevent_empty_equip
     nop
 
 ;==================================================================================================

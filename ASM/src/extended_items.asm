@@ -144,6 +144,8 @@ Item_Row 0x53, 0x41, 0x07, 0xBD, 0x00B6, no_upgrade, give_song, 17, -1 ; 0xCF = 
 Item_Row 0x4D, 0x00, 0xE5, 0x37, 0x00C7, no_upgrade,     no_effect, -1, -1 ; 0xD0 = Deku Sticks (1)
 Item_Row 0x4D, 0x95, 0xB8, 0xDC, 0x0119, seeds_to_rupee, no_effect, -1, -1 ; 0xD1 = Deku Seeds (30)
 
+Item_Row 0x77, 0x3E, 0xE3, 0x4C, 0x00CB, no_upgrade, no_effect, -1, -1 ; 0xD2 = Deku Shield
+Item_Row 0x77, 0x3F, 0xD4, 0x4D, 0x00DC, no_upgrade, no_effect, -1, -1 ; 0xD3 = Hylian Shield
 
 ;==================================================================================================
 ; Item upgrade functions
@@ -490,7 +492,7 @@ bombchu_upgrade:
 
     lbu     t0, 0x94 (a0) ; Load bombchu count from inventory
     sltiu   t0, t0, 0x06
-    beqz    t0, @@return  ; if 
+    beqz    t0, @@return  ; if
     li      v0, 0x6A ; Bombchu 5 Pack
 
     li      v0, 0x03 ; Bombchu 10 Pack
