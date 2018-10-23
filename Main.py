@@ -60,6 +60,8 @@ def main(settings, window=dummy_window()):
         worlds = pickle.loads(zlib.decompress(compressed_data))
         world_file.close()
         settings.player_num = settings.world_file_num
+        settings.world_count = len(worlds)
+        settings.update()
 
     else:
         if settings.compress_rom == 'None':
@@ -132,19 +134,20 @@ def main(settings, window=dummy_window()):
         if settings.hints != 'none':
             window.update_status('Calculating Hint Data')
             CollectionState.update_required_items(worlds)
-            buildGossipHints(worlds[settings.player_num - 1])
+            for world in worlds:
+                buildGossipHints(world)
             window.update_progress(55)
 
     logger.info('Patching ROM.')
 
     if settings.world_count > 1:
-        outfilebase = 'OoT_%s_%s_W%dP%d' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count, worlds[0].player_num)
+        outfilebase = 'OoT_%s_%s_W%dP%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count, settings.player_num)
     else:
         outfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
 
     output_dir = default_output_path(settings.output_dir)
 
-    if settings.create_world_file:
+    if settings.create_world_file and settings.world_file is '':
         create_world_file(logger, worlds, output_dir)
 
     if settings.compress_rom != 'None':
@@ -285,7 +288,7 @@ def create_playthrough(worlds):
 def create_world_file(logger, worlds, output_dir):
     logger.info('Creating World File.')
     compressed_data = zlib.compress(pickle.dumps(worlds))
-    filename = 'OoT_%s_%s_W%d.orwf' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count)
+    filename = 'OoT_%s_%s_W%d.wf' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count)
     world_file = open(os.path.join(output_dir, filename), 'wb')
     world_file.write(compressed_data)
     world_file.close()
