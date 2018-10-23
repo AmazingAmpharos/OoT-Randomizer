@@ -385,6 +385,8 @@ def guiMain(settings=None):
     
     notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
 
+
+    #Multi-World
     multiworldFrame = LabelFrame(frames['rom_tab'], text='Multi-World Generation')
     countLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='This is used for co-op generations. Increasing Player Count will drastically increase the generation time. For more information see:')
     hyperLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='https://github.com/TestRunnerSRL/bizhawk-co-op', fg='blue', cursor='hand2')
@@ -392,12 +394,10 @@ def guiMain(settings=None):
     countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
     hyperLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
 
-
     worldCountFrame = Frame(multiworldFrame)
     countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
     countSpinbox = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
-
     countLabel.pack(side=LEFT)
     countSpinbox.pack(side=LEFT, padx=2)
     worldCountFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
@@ -406,14 +406,13 @@ def guiMain(settings=None):
     countLabel = Label(playerNumFrame, text='Player ID')
     guivars['player_num'] = StringVar()
     countSpinbox = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['player_num'], width=3)
-
     countLabel.pack(side=LEFT)
     countSpinbox.pack(side=LEFT, padx=2)
     playerNumFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
     multiworldFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
-
+    #World File
     worldFileFrame = LabelFrame(frames['rom_tab'], text='World File')
     countLabel = Label(worldFileFrame, wraplength=350, justify=LEFT, text='World Files can be created in addition to the other files. They can then be used to create ROMs. This is especially advantageous for Multi World, because they will contain most data for all worlds.')
     countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
@@ -424,28 +423,34 @@ def guiMain(settings=None):
     createButton.pack(side=LEFT)
     createFileFrame.pack(side=TOP, anchor=W, padx=5, pady=0)
 
+    worldFileEntryFrame = Frame(worldFileFrame)
+    worldFileLabel = Label(worldFileEntryFrame, text='World File')
+    guivars['world_file'] = StringVar(value='')
+    def world_file_select():
+        worldfile = filedialog.askopenfilename(filetypes=[("World Files", ".wf"), ("All Files", "*")])
+        if worldfile != '':
+            guivars['world_file'].set(worldfile)
+    worldFileEntry = Entry(worldFileEntryFrame, textvariable=guivars['world_file'], width=30)
+    worldFileButton = Button(worldFileEntryFrame, text='Select WF', command=world_file_select, width=10)
+    worldFileLabel.pack(side=LEFT, padx=(3,0))
+    worldFileEntry.pack(side=LEFT, padx=3)
+    worldFileButton.pack(side=LEFT)
+    worldFileEntryFrame.pack(side=TOP, anchor=W, pady=3)
+
     playerNumFrame = Frame(worldFileFrame)
     countLabel = Label(playerNumFrame, text='Player ID')
     guivars['world_file_num'] = StringVar()
     countSpinbox = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['world_file_num'], width=3)
+    guivars['create_from_world_file'] = IntVar()
+    def generate_from_world_file():
+        guivars['create_from_world_file'].set(1)
+        settings = guivars_to_settings(guivars)
+        BackgroundTaskProgress(mainWindow, "Generating Seed from World File", main, settings)
+    createButton = Button(playerNumFrame, text='Generate from WF', command=generate_from_world_file)
     countLabel.pack(side=LEFT)
     countSpinbox.pack(side=LEFT, padx=2)
-    playerNumFrame.pack(side=TOP, anchor=W, padx=5, pady=(0,5))
-
-    guivars['world_file'] = StringVar()
-    def generate_from_world_file():
-        worldfile = filedialog.askopenfilename(filetypes=[("World Files", ".wf"), ("All Files", "*")])
-        if worldfile != '':
-            guivars['world_file'].set(worldfile)
-            settings = guivars_to_settings(guivars)
-            BackgroundTaskProgress(mainWindow, "Generating Seed from World File", main, settings)
-
-    fromFileFrame = Frame(worldFileFrame)
-    createButton = Button(fromFileFrame, text='Generate from World File', command=generate_from_world_file)
     createButton.pack(side=LEFT)
-    fromFileFrame.pack(side=TOP, anchor=N, padx=5, pady=0)
-
-
+    playerNumFrame.pack(side=TOP, anchor=W, padx=5, pady=(0,5))
 
     worldFileFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
@@ -467,6 +472,7 @@ def guiMain(settings=None):
             main(settings, window)
 
     def generateRom():
+        guivars['create_from_world_file'].set(0)
         settings = guivars_to_settings(guivars)
         if settings.count is not None:
             BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, multiple_run, settings)

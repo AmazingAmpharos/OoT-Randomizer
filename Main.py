@@ -53,7 +53,7 @@ def main(settings, window=dummy_window()):
         window.update_status('Loading ROM')
         rom = LocalRom(settings)
 
-    if settings.world_file is not '':
+    if settings.create_from_world_file:
         logger.info('Unpacking World File.')
         world_file = open(settings.world_file, 'rb')
         compressed_data = world_file.read()
@@ -62,6 +62,9 @@ def main(settings, window=dummy_window()):
         settings.player_num = settings.world_file_num
         settings.world_count = len(worlds)
         settings.update()
+        
+        if settings.player_num > settings.world_count or settings.player_num < 1:
+            raise Exception('Player Num must be between 1 and %d' % settings.world_count)
 
     else:
         if settings.compress_rom == 'None':
@@ -147,7 +150,7 @@ def main(settings, window=dummy_window()):
 
     output_dir = default_output_path(settings.output_dir)
 
-    if settings.create_world_file and settings.world_file is '':
+    if settings.create_world_file and not settings.create_from_world_file:
         create_world_file(logger, worlds, output_dir)
 
     if settings.compress_rom != 'None':
