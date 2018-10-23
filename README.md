@@ -404,7 +404,7 @@ location of the Boss Key will be removed.
 
 ## Maps and Compasses Give Information
 
-This setting, only available if Maps and Compasses are spread across the world, disables the pedestal in the Temple of Time from giving information about
+This setting, only available if you start with Maps and Compasses or they are spread across the world, disables the pedestal in the Temple of Time from giving information about
 the location of the Medallions and Spiritual Stones. Instead, the Compass from each of the eight eligible dungeons will tell the player which dungeon has
 which reward. If the dungeon quest is set to mixed, each of the ten Maps will tell the player whether any given dungeon is in the vanilla or Master Quest
 form. The Compasses from Bottom of the Well and Ice Cavern do not give any information.
@@ -983,7 +983,7 @@ Include all Deku Scrub Salesmen as randomized item and determine their prices (d
 Randomize shop items and add the chosen number of items from the general item pool to shop inventories (default: off)
 
 ```
---shuffle_mapcompass [{remove,dungeon,keysanity}]
+--shuffle_mapcompass [{remove,startwith,dungeon,keysanity}]
 ```
 
 Choose the locations Maps and Compasses can be found (default: dungeon)
@@ -1004,7 +1004,7 @@ Choose the locations Boss Keys can be found (default: dungeon)
 --enhance_map_compass
 ```
 
-Change the functionality of the Map and Compass to give information about their dungeons. Requires --shuffle_mappcompass keysanity (default: False)
+Change the functionality of the Map and Compass to give information about their dungeons. The Temple of Time Altar will no longer provide any dungeon information. (default: False)
 
 ```
 --unlocked_ganondorf

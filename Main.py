@@ -6,7 +6,8 @@ import platform
 import random
 import subprocess
 import time
-import os
+import os, os.path
+import sys
 import struct
 
 from BaseClasses import World, CollectionState, Item, Spoiler
@@ -19,7 +20,7 @@ from Rules import set_rules
 from Fill import distribute_items_restrictive
 from ItemList import generate_itempool
 from Hints import buildGossipHints
-from Utils import default_output_path, is_bundled
+from Utils import default_output_path, is_bundled, subprocess_args
 from version import __version__
 from OcarinaSongs import verify_scarecrow_song_str
 
@@ -179,8 +180,9 @@ def main(settings, window=dummy_window()):
 
     return worlds[settings.player_num - 1]
 
+
 def run_process(window, logger, args):
-    process = subprocess.Popen(args, bufsize=1, stdout=subprocess.PIPE)
+    process = subprocess.Popen(args, **subprocess_args(True))
     filecount = None
     while True:
         line = process.stdout.readline()
@@ -194,6 +196,7 @@ def run_process(window, logger, args):
             logger.info(line.decode('utf-8').strip('\n'))
         else:
             break
+
 
 def create_playthrough(worlds):
     if worlds[0].check_beatable_only and not CollectionState.can_beat_game([world.state for world in worlds]):

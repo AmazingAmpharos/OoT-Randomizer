@@ -7,7 +7,7 @@ import struct
 import subprocess
 import random
 import copy
-from Utils import is_bundled
+from Utils import is_bundled, subprocess_args
 
 from Utils import local_path, data_path, default_output_path
 
@@ -76,7 +76,7 @@ class LocalRom(object):
             else:
                 raise RuntimeError('Unsupported operating system for decompression. Please supply an already decompressed ROM.')
 
-            subprocess.call(subcall)
+            subprocess.call(subcall, **subprocess_args())
             self.read_rom(decomp_file)
         else:
             # ROM file is a valid and already uncompressed

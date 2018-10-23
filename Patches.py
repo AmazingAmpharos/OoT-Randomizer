@@ -963,7 +963,7 @@ def patch_rom(world, rom):
     write_bits_to_save(0x0EEB, 0x02) # "Entered Lake Hylia"
     write_bits_to_save(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
     write_bits_to_save(0x0F08, 0x08) # "Entered Hyrule Castle"
- 
+
     # Make the Kakariko Gate not open with the MS
     if not world.open_kakariko:
         rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
@@ -1038,6 +1038,19 @@ def patch_rom(world, rom):
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x2, 0x01) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
+
+    # start with maps/compasses
+    if world.shuffle_mapcompass == 'startwith':
+        write_bits_to_save(0x00A8, 0x06) # "Deku Map/Compass"
+        write_bits_to_save(0x00A9, 0x06) # "Dodongo Map/Compass"
+        write_bits_to_save(0x00AA, 0x06) # "Jabu Map/Compass"
+        write_bits_to_save(0x00AB, 0x06) # "Forest Map/Compass"
+        write_bits_to_save(0x00AC, 0x06) # "Fire Map/Compass"
+        write_bits_to_save(0x00AD, 0x06) # "Water Map/Compass"
+        write_bits_to_save(0x00AF, 0x06) # "Shadow Map/Compass"
+        write_bits_to_save(0x00AE, 0x06) # "Spirit Map/Compass"
+        write_bits_to_save(0x00B0, 0x06) # "BotW Map/Compass"
+        write_bits_to_save(0x00B1, 0x06) # "Ice Map/Compass"
 
     # Revert change that Skips the Epona Race
     if not world.no_epona_race:
@@ -1995,7 +2008,7 @@ def boss_reward_index(world, boss_name):
 
 def configure_dungeon_info(rom, world):
     mq_enable = world.quest == 'mixed'
-    mapcompass_keysanity = world.settings.shuffle_mapcompass == 'keysanity' and world.settings.enhance_map_compass
+    mapcompass_keysanity = world.settings.enhance_map_compass
 
     bosses = ['Queen Gohma', 'King Dodongo', 'Barinade', 'Phantom Ganon',
             'Volvagia', 'Morpha', 'Twinrova', 'Bongo Bongo']
