@@ -434,11 +434,11 @@ def guiMain(settings=None):
 
     guivars['world_file'] = StringVar()
     def generate_from_world_file():
-        worldfile = filedialog.askopenfilename(filetypes=[("World Files", ".orwf"), ("All Files", "*")])
+        worldfile = filedialog.askopenfilename(filetypes=[("World Files", ".wf"), ("All Files", "*")])
         if worldfile != '':
             guivars['world_file'].set(worldfile)
-            guivars['count'].set(1)
-            generateRom()
+            settings = guivars_to_settings(guivars)
+            BackgroundTaskProgress(mainWindow, "Generating Seed from World File", main, settings)
 
     fromFileFrame = Frame(worldFileFrame)
     createButton = Button(fromFileFrame, text='Generate from World File', command=generate_from_world_file)
