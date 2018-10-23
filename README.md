@@ -89,6 +89,11 @@ due to the original design of the Fire Temple assuming that the player could not
 dungeon. This is obviously not true in randomizer, and of all possible solutions to this problem, this seemed the least disruptive. A full clear of the Fire Temple will
 simply result in the player having one extra Small Key. Certain settings configurations will disable this behavior.
 
+Two similar small details apply to the Master Quest versions of dungeons. In Water Temple MQ, a locked door leading to a Gold Skulltula in the northern basement was
+glitched such that it would not appear in the Gamecube release of Master Quest but was fixed in OoT3D's version of Master Quest. In the randomizer, the locked door
+works like an ordinary locked door similar to OoT3D. In Spirit Temple MQ, there is a particular chest that requires hitting a switch in a hole that the adult will
+later push a silver block into. The randomizer does some wizardry under the hood to ensure that the block will never be in the way for the child.
+
 To be clear about the logic rules of what can be where, the randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent
 the use of glitches for those players who enjoy that sort of thing though we offer no guarantees that all glitches will have identical behavior to the original game.
 Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or Scarecrow's Song that
@@ -97,9 +102,8 @@ or before walking through any invisible objects or opening any invisible chests 
 the Bottom of the Well as the original game required passing that invisible wall to reach the Lens of Truth.
 
 One last detail is that the menu is now more like the Majora's Mask menu in that the player can move the cursor through empty spaces. This fixes a major problem from
-the original game in that certain combinations of items would create menu shapes that would be impossible to fully menu through. Unfortunately, as of this 3.0 release,
-this functionality does not apply to the "equipment" screen which can rarely create some tricky situations. Usually these can be solved by purchasing a Deku Shield and
-a Hylian Shield.
+the original game in that certain combinations of items would create menu shapes that would be impossible to fully menu through. As of version 3.0, this fix extends
+to the "equipment" subscreen as well.
 
 # Quirks to Know
 
@@ -157,8 +161,6 @@ easily avoided by playing on a different emulator and probably also avoidable by
 it is strongly suggested the player save before turning in the Claim Check.  
 -Saving and quitting on the very first frame after becomming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
 do that.  
--The equipment screen still cannot be easily navigated with all item configurations which can be especially problematic if the Biggoron Sword is found very early
-or if shields cannot be easily purchased thanks to shopsanity. Getting the Master Sword and buying as many shields as you can is a good way to mitigate these issues.  
 -This randomizer is based on the 1.0 version of Ocarina of Time so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantagous to the
 player.
 
@@ -547,6 +549,12 @@ This relaxes the tunic requirements by the logic somewhat. Normally the logic ex
 and a Zora Tunic to enter Water Temple, collect the underwater silver rupees in Gerudo Training Grounds, or obtain the Piece of Heart at the bottom of the frozen Zora's
 Fountain. With this flag set, the Goron Tunic will not be required to actually enter Fire Temple, only to fight Volvagia or to reach the upper floors. The Zora Tunic
 requirements are removed completely except to reach the chest at the bottom of the central pillar in Water Temple.
+
+## Morpha with Gold Scale
+
+This setting allows entry to the Water Temple with the Gold Scale to be considered. Since you cannot backtrack into Water Temple without Iron Boots, only the Spiritual
+Stone or Medallion obtained from defeating Morpha can be considered by logic either way; since you need the Water Temple Boss Key and Longshot to access Morpha normally,
+this means that this setting is only relevant in either keysanity or keysy relative to the locations of Boss Keys.
 
 ## Lens of Truth
 
@@ -1160,7 +1168,8 @@ Reduce the number of locations for which the logic expects a tunic upgrade (defa
 --logic_morpha_with_scale
 ```
 
-Allows entering Water Temple and beating Morpha with Gold Scale instead of Iron Boots. The Longshot is still required to reach the boss, as well as the Boss Key. So this is applicable for keysanity and keysy since there is no location to obtain the Boss Key inside the dungeon.
+Allows entering Water Temple and beating Morpha with Gold Scale instead of Iron Boots. The Longshot and Boss Key are still required to reach the boss.
+This means that this option is only relevant in keysanity or keysy. (default: False)
 
 ```
 --logic_lens [{chest,chest-wasteland,all}]
