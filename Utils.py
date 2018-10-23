@@ -62,9 +62,9 @@ def open_file(filename):
 def close_console():
     if sys.platform == 'win32':
         #windows
-        import ctypes.wintypes
+        import win32gui, win32con
         try:
-            ctypes.windll.kernel32.FreeConsole()
+            win32gui.ShowWindow(win32gui.GetForegroundWindow(), win32con.SW_HIDE)
         except Exception:
             pass
 
