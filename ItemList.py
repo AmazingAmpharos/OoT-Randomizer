@@ -822,7 +822,7 @@ def get_pool_core(world):
     
     pool.extend(songlist)
 
-    if world.shuffle_mapcompass == 'remove':
+    if world.shuffle_mapcompass == 'remove' or world.shuffle_mapcompass == 'startwith':
         for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:
             world.state.collect(item)
             pool.extend(get_junk_item())

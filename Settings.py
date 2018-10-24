@@ -891,6 +891,7 @@ setting_infos = [
         'help': '''\
                     Sets the Map and Compass placement rules
                     remove:      Maps and Compasses are removed from the world.
+                    startwith:   Start with all Maps and Compasses.
                     dungeon:     Maps and Compasses are put in their dungeon.
                     keysanity:   Maps and Compasses can appear anywhere.
                     '''
@@ -902,6 +903,7 @@ setting_infos = [
             'default': 'Maps/Compasses: Dungeon Only',
             'options': {
                 'Maps/Compasses: Remove': 'remove',
+                'Maps/Compasses: Start With': 'startwith',
                 'Maps/Compasses: Dungeon Only': 'dungeon',
                 'Maps/Compasses: Anywhere': 'keysanity'
             },
@@ -909,6 +911,10 @@ setting_infos = [
                       'Remove': Maps and Compasses are removed.
                       This will add a small amount of money and
                       refill items to the pool.
+                      
+                      'Start With': Maps and Compasses are given to
+                      you from the start. This will add a small
+                      amount of money and refill items to the pool.
 
                       'Dungeon': Maps and Compasses can only appear 
                       in their respective dungeon.
@@ -916,8 +922,8 @@ setting_infos = [
                       'Anywhere': Maps and Compasses can appear
                       anywhere in the world. 
 
-                      Setting 'Remove' or 'Anywhere' will add 2
-                      more possible locations to each Dungeons.
+                      Setting 'Remove', 'Start With, or 'Anywhere' will
+                      add 2 more possible locations to each Dungeons.
                       This makes dungeons more profitable, especially
                       Ice Cavern, Water Temple, and Jabu Jabu's Belly.
                       '''
@@ -1008,8 +1014,9 @@ setting_infos = [
                     Gives the Map and Compass extra functionality.
                     Map will tell if a dungeon is vanilla or Master Quest.
                     Compass will tell what medallion or stone is within.
-                    This setting will only activate these functions if the
-                    other settings would make this useful information.
+                    The Temple of Time Altar will no longer provide any
+                    information. If the maps and compasses are removed then
+                    the information will be unavailable.
                     ''',
             'action': 'store_true'
         },
@@ -1022,10 +1029,15 @@ setting_infos = [
                     Gives the Map and Compass extra functionality.
                     Map will tell if a dungeon is vanilla or Master Quest.
                     Compass will tell what medallion or stone is within.
-                    This option is only available if shuffle 'Maps/Compasses'
-                    is set to 'Anywhere'
-                      ''',
-            'dependency': lambda guivar: guivar['shuffle_mapcompass'].get() == 'Maps/Compasses: Anywhere',
+                    The Temple of Time Altar will no longer provide any
+                    information. 
+
+                    'Maps/Compasses: Remove': The dungeon information is 
+                    not available anywhere in the game.
+                    
+                    'Maps/Compasses: Start With': The dungeon information
+                    is available immediately from the dungeon menu.
+                    ''',
         }),    
     Setting_Info('unlocked_ganondorf', bool, 1, True, 
         {
@@ -1585,6 +1597,30 @@ setting_infos = [
                       Silver Rupee Chest. May need to make multiple
                       trips.
                       '''
+        }),
+    Setting_Info('logic_morpha_with_scale', bool, 1, True, 
+        {
+            'help': '''\
+                    Allows entering Water Temple and beating
+                    Morpha with Gold Scale instead of Iron Boots.
+                    Only applicable for keysanity and keysy.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': "Morpha with Gold Scale",
+            'group': 'tricks',
+            'widget': 'Checkbutton',
+            'default': 'checked',
+            'tooltip':'''\
+                      Allows entering Water Temple and beating
+                      Morpha with Gold Scale instead of Iron Boots.
+                      Only applicable for keysanity and keysy due
+                      to the logic always seeing every chest in
+                      Water Temple that could contain the Boss Key
+                      as requiring Iron Boots.
+                      ''',
+            'dependency': lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Dungeon Only'
         }),
     Setting_Info('logic_lens', str, 2, True, 
         {
