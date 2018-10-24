@@ -54,75 +54,98 @@ Item_Row -1, -1, -1, -1, -1, strength_upgrade,  no_effect, -1, -1 ; 0x81 = Progr
 Item_Row -1, -1, -1, -1, -1, bomb_bag_upgrade,  no_effect, -1, -1 ; 0x82 = Progressive Bomb Bag
 Item_Row -1, -1, -1, -1, -1, bow_upgrade,       no_effect, -1, -1 ; 0x83 = Progressive Bow
 Item_Row -1, -1, -1, -1, -1, slingshot_upgrade, no_effect, -1, -1 ; 0x84 = Progressive Slingshot
-Item_Row -1, -1, -1, -1, -1, wallet_upgrade,    no_effect, -1, -1 ; 0x85 = Progressive Wallet
+Item_Row 0x53, 0x41, 0x23, 0xF8, 0x00D1, wallet_upgrade, tycoon_wallet, -1, -1 ; 0x85 = Progressive Wallet
 Item_Row -1, -1, -1, -1, -1, scale_upgrade,     no_effect, -1, -1 ; 0x86 = Progressive Scale
 Item_Row -1, -1, -1, -1, -1, nut_upgrade,       no_effect, -1, -1 ; 0x87 = Progressive Nut Capacity
 Item_Row -1, -1, -1, -1, -1, stick_upgrade,     no_effect, -1, -1 ; 0x88 = Progressive Stick Capacity
 
-Item_Row 0x53, 0x41, 0x01, 0x43, 0x00C6, no_upgrade, give_bottle, 0x15, -1 ; 0x89 = Bottle with Red Potion
-Item_Row 0x53, 0x41, 0x01, 0x44, 0x00C6, no_upgrade, give_bottle, 0x16, -1 ; 0x8A = Bottle with Green Potion
-Item_Row 0x53, 0x41, 0x01, 0x45, 0x00C6, no_upgrade, give_bottle, 0x17, -1 ; 0x8B = Bottle with Blue Potion
-Item_Row 0x53, 0x41, 0x01, 0x46, 0x00C6, no_upgrade, give_bottle, 0x18, -1 ; 0x8C = Bottle with Fairy
-Item_Row 0x53, 0x41, 0x01, 0x47, 0x00C6, no_upgrade, give_bottle, 0x19, -1 ; 0x8D = Bottle with Fish
-Item_Row 0x53, 0x41, 0x01, 0x5D, 0x00C6, no_upgrade, give_bottle, 0x1C, -1 ; 0x8E = Bottle with Blue Fire
-Item_Row 0x53, 0x41, 0x01, 0x7A, 0x00C6, no_upgrade, give_bottle, 0x1D, -1 ; 0x8F = Bottle with Bugs
-Item_Row 0x53, 0x41, 0x01, 0xF9, 0x00C6, no_upgrade, give_bottle, 0x1E, -1 ; 0x90 = Bottle with Big Poe
-Item_Row 0x53, 0x41, 0x01, 0x97, 0x00C6, no_upgrade, give_bottle, 0x20, -1 ; 0x91 = Bottle with Poe
+Item_Row 0x53, 0x41, 0x38, 0x43, 0x00EB, no_upgrade, give_bottle, 0x15, -1 ; 0x89 = Bottle with Red Potion
+Item_Row 0x53, 0x41, 0x37, 0x44, 0x00EB, no_upgrade, give_bottle, 0x16, -1 ; 0x8A = Bottle with Green Potion
+Item_Row 0x53, 0x41, 0x39, 0x45, 0x00EB, no_upgrade, give_bottle, 0x17, -1 ; 0x8B = Bottle with Blue Potion
+Item_Row 0x53, 0x41, 0x6B, 0x46, 0x0177, no_upgrade, give_bottle, 0x18, -1 ; 0x8C = Bottle with Fairy
+Item_Row 0x53, 0x41, 0x3F, 0x47, 0x00F4, no_upgrade, give_bottle, 0x19, -1 ; 0x8D = Bottle with Fish
+Item_Row 0x53, 0x41, 0x67, 0x5D, 0x0173, no_upgrade, give_bottle, 0x1C, -1 ; 0x8E = Bottle with Blue Fire
+Item_Row 0x53, 0x41, 0x68, 0x7A, 0x0174, no_upgrade, give_bottle, 0x1D, -1 ; 0x8F = Bottle with Bugs
+Item_Row 0x53, 0x41, 0x70, 0xF9, 0x0176, no_upgrade, give_bottle, 0x1E, -1 ; 0x90 = Bottle with Big Poe
+Item_Row 0x53, 0x41, 0x6A, 0x97, 0x0176, no_upgrade, give_bottle, 0x20, -1 ; 0x91 = Bottle with Poe
 
-Item_Row 0x53, 0x41, 0x0A, 0xC7, 0x00B9, no_upgrade, give_dungeon_item, 0x01, FOREST_ID  ; 0x92 = Forest Temple Boss Key
-Item_Row 0x53, 0x41, 0x0A, 0xC7, 0x00B9, no_upgrade, give_dungeon_item, 0x01, FIRE_ID    ; 0x93 = Fire Temple Boss Key
-Item_Row 0x53, 0x41, 0x0A, 0xC7, 0x00B9, no_upgrade, give_dungeon_item, 0x01, WATER_ID   ; 0x94 = Water Temple Boss Key
-Item_Row 0x53, 0x41, 0x0A, 0xC7, 0x00B9, no_upgrade, give_dungeon_item, 0x01, SPIRIT_ID  ; 0x95 = Spirit Temple Boss Key
-Item_Row 0x53, 0x41, 0x0A, 0xC7, 0x00B9, no_upgrade, give_dungeon_item, 0x01, SHADOW_ID  ; 0x96 = Shadow Temple Boss Key
-Item_Row 0x53, 0x41, 0x0A, 0xC7, 0x00B9, no_upgrade, give_dungeon_item, 0x01, TOWER_ID   ; 0x97 = Ganon's Castle Boss Key
+Item_Row 0x53, 0x41, 0x0A, 0x06, 0x00B9, no_upgrade, give_dungeon_item, 0x01, FOREST_ID  ; 0x92 = Forest Temple Boss Key
+Item_Row 0x53, 0x41, 0x0A, 0x1C, 0x00B9, no_upgrade, give_dungeon_item, 0x01, FIRE_ID    ; 0x93 = Fire Temple Boss Key
+Item_Row 0x53, 0x41, 0x0A, 0x1D, 0x00B9, no_upgrade, give_dungeon_item, 0x01, WATER_ID   ; 0x94 = Water Temple Boss Key
+Item_Row 0x53, 0x41, 0x0A, 0x1E, 0x00B9, no_upgrade, give_dungeon_item, 0x01, SPIRIT_ID  ; 0x95 = Spirit Temple Boss Key
+Item_Row 0x53, 0x41, 0x0A, 0x2A, 0x00B9, no_upgrade, give_dungeon_item, 0x01, SHADOW_ID  ; 0x96 = Shadow Temple Boss Key
+Item_Row 0x53, 0x41, 0x0A, 0x61, 0x00B9, no_upgrade, give_dungeon_item, 0x01, TOWER_ID   ; 0x97 = Ganon's Castle Boss Key
 
-Item_Row 0x53, 0x41, 0x0B, 0x67, 0x00B8, no_upgrade, give_dungeon_item, 0x02, DEKU_ID    ; 0x98 = Deku Tree Compass
-Item_Row 0x53, 0x41, 0x0B, 0x67, 0x00B8, no_upgrade, give_dungeon_item, 0x02, DODONGO_ID ; 0x99 = Dodongo's Cavern Compass
-Item_Row 0x53, 0x41, 0x0B, 0x67, 0x00B8, no_upgrade, give_dungeon_item, 0x02, JABU_ID    ; 0x9A = Jabu Jabu Compass
-Item_Row 0x53, 0x41, 0x0B, 0x67, 0x00B8, no_upgrade, give_dungeon_item, 0x02, FOREST_ID  ; 0x9B = Forest Temple Compass
-Item_Row 0x53, 0x41, 0x0B, 0x67, 0x00B8, no_upgrade, give_dungeon_item, 0x02, FIRE_ID    ; 0x9C = Fire Temple Compass
-Item_Row 0x53, 0x41, 0x0B, 0x67, 0x00B8, no_upgrade, give_dungeon_item, 0x02, WATER_ID   ; 0x9D = Water Temple Compass
-Item_Row 0x53, 0x41, 0x0B, 0x67, 0x00B8, no_upgrade, give_dungeon_item, 0x02, SPIRIT_ID  ; 0x9E = Spirit Temple Compass
-Item_Row 0x53, 0x41, 0x0B, 0x67, 0x00B8, no_upgrade, give_dungeon_item, 0x02, SHADOW_ID  ; 0x9F = Shadow Temple Compass
-Item_Row 0x53, 0x41, 0x0B, 0x67, 0x00B8, no_upgrade, give_dungeon_item, 0x02, BOTW_ID    ; 0xA0 = Bottom of the Well Compass
-Item_Row 0x53, 0x41, 0x0B, 0x67, 0x00B8, no_upgrade, give_dungeon_item, 0x02, ICE_ID     ; 0xA1 = Ice Cavern Compass
+Item_Row 0x4D, 0x41, 0xF5, 0x62, 0x00B8, no_upgrade, give_dungeon_item, 0x02, DEKU_ID    ; 0x98 = Deku Tree Compass
+Item_Row 0x4D, 0x41, 0xF5, 0x63, 0x00B8, no_upgrade, give_dungeon_item, 0x02, DODONGO_ID ; 0x99 = Dodongo's Cavern Compass
+Item_Row 0x4D, 0x41, 0xF5, 0x64, 0x00B8, no_upgrade, give_dungeon_item, 0x02, JABU_ID    ; 0x9A = Jabu Jabu Compass
+Item_Row 0x4D, 0x41, 0xF5, 0x65, 0x00B8, no_upgrade, give_dungeon_item, 0x02, FOREST_ID  ; 0x9B = Forest Temple Compass
+Item_Row 0x4D, 0x41, 0xF5, 0x7C, 0x00B8, no_upgrade, give_dungeon_item, 0x02, FIRE_ID    ; 0x9C = Fire Temple Compass
+Item_Row 0x4D, 0x41, 0xF5, 0x7D, 0x00B8, no_upgrade, give_dungeon_item, 0x02, WATER_ID   ; 0x9D = Water Temple Compass
+Item_Row 0x4D, 0x41, 0xF5, 0x7E, 0x00B8, no_upgrade, give_dungeon_item, 0x02, SPIRIT_ID  ; 0x9E = Spirit Temple Compass
+Item_Row 0x4D, 0x41, 0xF5, 0x7F, 0x00B8, no_upgrade, give_dungeon_item, 0x02, SHADOW_ID  ; 0x9F = Shadow Temple Compass
+Item_Row 0x4D, 0x41, 0xF5, 0xA2, 0x00B8, no_upgrade, give_dungeon_item, 0x02, BOTW_ID    ; 0xA0 = Bottom of the Well Compass
+Item_Row 0x4D, 0x41, 0xF5, 0x87, 0x00B8, no_upgrade, give_dungeon_item, 0x02, ICE_ID     ; 0xA1 = Ice Cavern Compass
 
-Item_Row 0x53, 0x41, 0x1C, 0x66, 0x00C8, no_upgrade, give_dungeon_item, 0x04, DEKU_ID    ; 0xA2 = Deku Tree Map
-Item_Row 0x53, 0x41, 0x1C, 0x66, 0x00C8, no_upgrade, give_dungeon_item, 0x04, DODONGO_ID ; 0xA3 = Dodongo's Cavern Map
-Item_Row 0x53, 0x41, 0x1C, 0x66, 0x00C8, no_upgrade, give_dungeon_item, 0x04, JABU_ID    ; 0xA4 = Jabu Jabu Map
-Item_Row 0x53, 0x41, 0x1C, 0x66, 0x00C8, no_upgrade, give_dungeon_item, 0x04, FOREST_ID  ; 0xA5 = Forest Temple Map
-Item_Row 0x53, 0x41, 0x1C, 0x66, 0x00C8, no_upgrade, give_dungeon_item, 0x04, FIRE_ID    ; 0xA6 = Fire Temple Map
-Item_Row 0x53, 0x41, 0x1C, 0x66, 0x00C8, no_upgrade, give_dungeon_item, 0x04, WATER_ID   ; 0xA7 = Water Temple Map
-Item_Row 0x53, 0x41, 0x1C, 0x66, 0x00C8, no_upgrade, give_dungeon_item, 0x04, SPIRIT_ID  ; 0xA8 = Spirit Temple Map
-Item_Row 0x53, 0x41, 0x1C, 0x66, 0x00C8, no_upgrade, give_dungeon_item, 0x04, SHADOW_ID  ; 0xA9 = Shadow Temple Map
-Item_Row 0x53, 0x41, 0x1C, 0x66, 0x00C8, no_upgrade, give_dungeon_item, 0x04, BOTW_ID    ; 0xAA = Bottom of the Well Map
-Item_Row 0x53, 0x41, 0x1C, 0x66, 0x00C8, no_upgrade, give_dungeon_item, 0x04, ICE_ID     ; 0xAB = Ice Cavern Map
+Item_Row 0x4D, 0x41, 0xE4, 0x88, 0x00C8, no_upgrade, give_dungeon_item, 0x04, DEKU_ID    ; 0xA2 = Deku Tree Map
+Item_Row 0x4D, 0x41, 0xE4, 0x89, 0x00C8, no_upgrade, give_dungeon_item, 0x04, DODONGO_ID ; 0xA3 = Dodongo's Cavern Map
+Item_Row 0x4D, 0x41, 0xE4, 0x8A, 0x00C8, no_upgrade, give_dungeon_item, 0x04, JABU_ID    ; 0xA4 = Jabu Jabu Map
+Item_Row 0x4D, 0x41, 0xE4, 0x8B, 0x00C8, no_upgrade, give_dungeon_item, 0x04, FOREST_ID  ; 0xA5 = Forest Temple Map
+Item_Row 0x4D, 0x41, 0xE4, 0x8C, 0x00C8, no_upgrade, give_dungeon_item, 0x04, FIRE_ID    ; 0xA6 = Fire Temple Map
+Item_Row 0x4D, 0x41, 0xE4, 0x8E, 0x00C8, no_upgrade, give_dungeon_item, 0x04, WATER_ID   ; 0xA7 = Water Temple Map
+Item_Row 0x4D, 0x41, 0xE4, 0x8F, 0x00C8, no_upgrade, give_dungeon_item, 0x04, SPIRIT_ID  ; 0xA8 = Spirit Temple Map
+Item_Row 0x4D, 0x41, 0xE4, 0xA3, 0x00C8, no_upgrade, give_dungeon_item, 0x04, SHADOW_ID  ; 0xA9 = Shadow Temple Map
+Item_Row 0x4D, 0x41, 0xE4, 0xA5, 0x00C8, no_upgrade, give_dungeon_item, 0x04, BOTW_ID    ; 0xAA = Bottom of the Well Map
+Item_Row 0x4D, 0x41, 0xE4, 0x92, 0x00C8, no_upgrade, give_dungeon_item, 0x04, ICE_ID     ; 0xAB = Ice Cavern Map
 
-Item_Row 0x53, 0x41, 0xFE, 0x60, 0x00AA, no_upgrade, give_small_key, FOREST_ID, -1 ; 0xAC = Forest Temple Small Key
-Item_Row 0x53, 0x41, 0xFE, 0x60, 0x00AA, no_upgrade, give_small_key, FIRE_ID,   -1 ; 0xAD = Fire Temple Small Key
-Item_Row 0x53, 0x41, 0xFE, 0x60, 0x00AA, no_upgrade, give_small_key, WATER_ID,  -1 ; 0xAE = Water Temple Small Key
-Item_Row 0x53, 0x41, 0xFE, 0x60, 0x00AA, no_upgrade, give_small_key, SPIRIT_ID, -1 ; 0xAF = Spirit Temple Small Key
-Item_Row 0x53, 0x41, 0xFE, 0x60, 0x00AA, no_upgrade, give_small_key, SHADOW_ID, -1 ; 0xB0 = Shadow Temple Small Key
-Item_Row 0x53, 0x41, 0xFE, 0x60, 0x00AA, no_upgrade, give_small_key, BOTW_ID,   -1 ; 0xB1 = Bottom of the Well Small Key
-Item_Row 0x53, 0x41, 0xFE, 0x60, 0x00AA, no_upgrade, give_small_key, GTG_ID,    -1 ; 0xB2 = Gerudo Training Small Key
-Item_Row 0x53, 0x41, 0xFE, 0x60, 0x00AA, no_upgrade, give_small_key, FORT_ID,   -1 ; 0xB3 = Gerudo Fortress Small Key
-Item_Row 0x53, 0x41, 0xFE, 0x60, 0x00AA, no_upgrade, give_small_key, CASTLE_ID, -1 ; 0xB4 = Ganon's Castle Small Key
+Item_Row 0x53, 0x41, 0x02, 0x93, 0x00AA, no_upgrade, give_small_key, FOREST_ID, -1 ; 0xAC = Forest Temple Small Key
+Item_Row 0x53, 0x41, 0x02, 0x94, 0x00AA, no_upgrade, give_small_key, FIRE_ID,   -1 ; 0xAD = Fire Temple Small Key
+Item_Row 0x53, 0x41, 0x02, 0x95, 0x00AA, no_upgrade, give_small_key, WATER_ID,  -1 ; 0xAE = Water Temple Small Key
+Item_Row 0x53, 0x41, 0x02, 0xA6, 0x00AA, no_upgrade, give_small_key, SPIRIT_ID, -1 ; 0xAF = Spirit Temple Small Key
+Item_Row 0x53, 0x41, 0x02, 0xA9, 0x00AA, no_upgrade, give_small_key, SHADOW_ID, -1 ; 0xB0 = Shadow Temple Small Key
+Item_Row 0x53, 0x41, 0x02, 0x9B, 0x00AA, no_upgrade, give_small_key, BOTW_ID,   -1 ; 0xB1 = Bottom of the Well Small Key
+Item_Row 0x53, 0x41, 0x02, 0x9F, 0x00AA, no_upgrade, give_small_key, GTG_ID,    -1 ; 0xB2 = Gerudo Training Small Key
+Item_Row 0x53, 0x41, 0x02, 0xA0, 0x00AA, no_upgrade, give_small_key, FORT_ID,   -1 ; 0xB3 = Gerudo Fortress Small Key
+Item_Row 0x53, 0x41, 0x02, 0xA1, 0x00AA, no_upgrade, give_small_key, CASTLE_ID, -1 ; 0xB4 = Ganon's Castle Small Key
 
 Item_Row 0x53, 0x3D, 0x43, 0x0C, 0x00F8, no_upgrade, give_biggoron_sword, -1, -1 ; 0xB5 = Biggoron Sword
 
-Item_Row 0x4D, 0x83, 0x09, 0x55, 0x00B7, no_upgrade,      no_effect, -1, -1 ; 0xB6 = Recovery Heart
-Item_Row 0x53, 0x92, 0xDB, 0xE6, 0x00D8, arrows_to_rupee, no_effect, -1, -1 ; 0xB7 = Arrows (5)
-Item_Row 0x53, 0x93, 0xDA, 0xE6, 0x00D8, arrows_to_rupee, no_effect, -1, -1 ; 0xB8 = Arrows (10)
-Item_Row 0x53, 0x94, 0xD9, 0xE6, 0x00D8, arrows_to_rupee, no_effect, -1, -1 ; 0xB9 = Arrows (30)
-Item_Row 0x53, 0x8E, 0xE0, 0x32, 0x00CE, bombs_to_rupee,  no_effect, -1, -1 ; 0xBA = Bombs (5)
-Item_Row 0x53, 0x8F, 0xE0, 0x32, 0x00CE, bombs_to_rupee,  no_effect, -1, -1 ; 0xBB = Bombs (10)
-Item_Row 0x53, 0x90, 0xE0, 0x32, 0x00CE, bombs_to_rupee,  no_effect, -1, -1 ; 0xBC = Bombs (20)
-Item_Row 0x53, 0x8C, 0xEE, 0x34, 0x00BB, no_upgrade,      no_effect, -1, -1 ; 0xBD = Deku Nuts (5)
-Item_Row 0x53, 0x8D, 0xEE, 0x34, 0x00BB, no_upgrade,      no_effect, -1, -1 ; 0xBE = Deku Nuts (10)
+Item_Row 0x4D, 0x83, 0xF7, 0x55, 0x00B7, no_upgrade,      no_effect, -1, -1 ; 0xB6 = Recovery Heart
+Item_Row 0x4D, 0x92, 0xDB, 0xE6, 0x00D8, arrows_to_rupee, no_effect, -1, -1 ; 0xB7 = Arrows (5)
+Item_Row 0x4D, 0x93, 0xDA, 0xE6, 0x00D8, arrows_to_rupee, no_effect, -1, -1 ; 0xB8 = Arrows (10)
+Item_Row 0x4D, 0x94, 0xD9, 0xE6, 0x00D8, arrows_to_rupee, no_effect, -1, -1 ; 0xB9 = Arrows (30)
+Item_Row 0x4D, 0x8E, 0xE0, 0x32, 0x00CE, bombs_to_rupee,  no_effect, -1, -1 ; 0xBA = Bombs (5)
+Item_Row 0x4D, 0x8F, 0xE0, 0x32, 0x00CE, bombs_to_rupee,  no_effect, -1, -1 ; 0xBB = Bombs (10)
+Item_Row 0x4D, 0x90, 0xE0, 0x32, 0x00CE, bombs_to_rupee,  no_effect, -1, -1 ; 0xBC = Bombs (20)
+Item_Row 0x4D, 0x8C, 0xEE, 0x34, 0x00BB, no_upgrade,      no_effect, -1, -1 ; 0xBD = Deku Nuts (5)
+Item_Row 0x4D, 0x8D, 0xEE, 0x34, 0x00BB, no_upgrade,      no_effect, -1, -1 ; 0xBE = Deku Nuts (10)
 
-Item_Row 0x4F, 0x41, 0x13, 0xE9, 0x00BD, no_upgrade,    give_defense, -1, -1 ; 0xBF = Double Defense
-Item_Row 0x4F, 0x41, 0xE2, 0xE4, 0x00CD, magic_upgrade, give_magic,   -1, -1 ; 0xC0 = Progressive Magic Meter
-Item_Row 0x4F, 0x41, 0xE1, 0xE8, 0x00CD, no_upgrade,    double_magic, -1, -1 ; 0xC1 = Double Magic
+Item_Row 0x53, 0x41, 0x13, 0xE9, 0x00BD, no_upgrade,    give_defense, -1, -1 ; 0xBF = Double Defense
+Item_Row 0x53, 0x41, 0x1E, 0xE4, 0x00CD, magic_upgrade, give_magic,   -1, -1 ; 0xC0 = Progressive Magic Meter
+Item_Row 0x53, 0x41, 0x1F, 0xE8, 0x00CD, no_upgrade,    double_magic, -1, -1 ; 0xC1 = Double Magic
+
+Item_Row -1, -1, -1, -1, -1, bombchu_upgrade,  no_effect, -1, -1 ; 0xC2 = Progressive Bombchus
+Item_Row 0x53, 0x41, 0x46, 0x4A, 0x010E, ocarina_upgrade,  give_fairy_ocarina, -1, -1 ; 0xC3 = Progressive Ocarina
+
+Item_Row 0x53, 0x41, 0x03, 0xB0, 0x00B6, no_upgrade, give_song, 6, -1  ; 0xC4 = Minuet of Forest
+Item_Row 0x53, 0x41, 0x04, 0xB1, 0x00B6, no_upgrade, give_song, 7, -1  ; 0xC5 = Bolero of Fire
+Item_Row 0x53, 0x41, 0x05, 0xB2, 0x00B6, no_upgrade, give_song, 8, -1  ; 0xC6 = Serenade of Water
+Item_Row 0x53, 0x41, 0x06, 0xB3, 0x00B6, no_upgrade, give_song, 9, -1  ; 0xC7 = Requiem of Spirit
+Item_Row 0x53, 0x41, 0x07, 0xB6, 0x00B6, no_upgrade, give_song, 10, -1 ; 0xC8 = Nocturn of Shadow
+Item_Row 0x53, 0x41, 0x08, 0xB7, 0x00B6, no_upgrade, give_song, 11, -1 ; 0xC9 = Prelude of Light
+
+Item_Row 0x53, 0x41, 0x04, 0xB8, 0x00B6, no_upgrade, give_song, 12, -1 ; 0xCA = Zelda's Lullaby
+Item_Row 0x53, 0x41, 0x06, 0xB9, 0x00B6, no_upgrade, give_song, 13, -1 ; 0xCB = Epona's Song
+Item_Row 0x53, 0x41, 0x03, 0xBA, 0x00B6, no_upgrade, give_song, 14, -1 ; 0xCC = Saria's Song
+Item_Row 0x53, 0x41, 0x08, 0xBB, 0x00B6, no_upgrade, give_song, 15, -1 ; 0xCD = Sun's Song
+Item_Row 0x53, 0x41, 0x05, 0xBC, 0x00B6, no_upgrade, give_song, 16, -1 ; 0xCE = Song of Time
+Item_Row 0x53, 0x41, 0x07, 0xBD, 0x00B6, no_upgrade, give_song, 17, -1 ; 0xCF = Song of Storms
+
+Item_Row 0x4D, 0x00, 0xE5, 0x37, 0x00C7, no_upgrade,     no_effect, -1, -1 ; 0xD0 = Deku Sticks (1)
+Item_Row 0x4D, 0x95, 0xB8, 0xDC, 0x0119, seeds_to_rupee, no_effect, -1, -1 ; 0xD1 = Deku Seeds (30)
+
+Item_Row 0x77, 0x3E, 0xE3, 0x4C, 0x00CB, no_upgrade, no_effect, -1, -1 ; 0xD2 = Deku Shield
+Item_Row 0x77, 0x3F, 0xD4, 0x4D, 0x00DC, no_upgrade, no_effect, -1, -1 ; 0xD3 = Hylian Shield
 
 ;==================================================================================================
 ; Item upgrade functions
@@ -227,9 +250,21 @@ wallet_upgrade:
     beqz    t0, @@return
     li      v0, 0x45 ; Adult's Wallet
 
+    li      t1, 0x10
+    beq     t0, t1, @@return
     li      v0, 0x46 ; Giant's Wallet
 
+    ori     v0, a1, 0   ; Tycoon's Wallet (unchanged)
+
 @@return:
+    jr      ra
+    nop
+
+tycoon_wallet:
+    ; a0 = save context
+    lbu     t0, 0xA2 (a0) ; Load wallet from inventory
+    ori     t0, t0, 0x30  ; Give lvl 3 wallet
+    sb      t0, 0xA2 (a0) ; Store wallet to inventory
     jr      ra
     nop
 
@@ -312,6 +347,21 @@ arrows_to_rupee:
 bombs_to_rupee:
     lbu     t0, 0xA3 (a0) ; Load bomb bag from inventory
     andi    t0, t0, 0x18 ; Mask bits to isolate bomb bag
+
+    beqz    t0, @@return
+    li      v0, 0x4D ; Blue Rupee
+
+    ori     v0, a1, 0
+
+@@return:
+    jr      ra
+    nop
+
+;==================================================================================================
+
+seeds_to_rupee:
+    lbu     t0, 0xA2 (a0) ; Load seed bag from inventory
+    andi    t0, t0, 0xC0 ; Mask bits to isolate seed bag
 
     beqz    t0, @@return
     li      v0, 0x4D ; Blue Rupee
@@ -430,5 +480,57 @@ double_magic:
     li      t0, 0x60
     sh      t0, 0x13F4 (a0) ; Set meter size
     sb      t0, 0x33 (a0) ; Fill meter
+    jr      ra
+    nop
+
+;==================================================================================================
+
+bombchu_upgrade:
+    lbu     t0, 0x7C (a0) ; Load bomchu from inventory
+    beq     t0, 0xFF, @@return
+    li      v0, 0x6B ; Bombchu 20 pack
+
+    lbu     t0, 0x94 (a0) ; Load bombchu count from inventory
+    sltiu   t0, t0, 0x06
+    beqz    t0, @@return  ; if
+    li      v0, 0x6A ; Bombchu 5 Pack
+
+    li      v0, 0x03 ; Bombchu 10 Pack
+
+@@return:
+    jr      ra
+    nop
+
+;==================================================================================================
+
+ocarina_upgrade:
+    lbu     t0, 0x7B (a0) ; Load ocarina from inventory
+
+    beq     t0, 0xFF, @@return
+    ori     v0, a1, 0 ; Fairy Ocarina (unchanged)
+
+    li      v0, 0x0C ; Ocarina of Time
+
+@@return:
+    jr      ra
+    nop
+
+give_fairy_ocarina:
+    ; a0 = save context
+    li      t0, 0x07
+    sb      t0, 0x7B (a0)
+    jr      ra
+    nop
+
+;==================================================================================================
+
+give_song:
+    ; a0 = save context
+    ; a1 = quest bit
+    li      t0, 1
+    sllv    t0, t0, a1
+    lw      t1, 0xA4(a0)
+    or      t1, t1, t0
+    sw      t1, 0xA4(a0)
     jr      ra
     nop

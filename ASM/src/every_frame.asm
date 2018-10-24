@@ -1,19 +1,46 @@
-every_frame:
-    sw      a0, 0x68 (sp)
-    sw      a1, 0x6C (sp)
-    sw      a2, 0x70 (sp)
-    sw      a3, 0x74 (sp)
+before_game_state_update:
     addiu   sp, sp, -0x18
-    sw      v1, 0x10 (sp)
-    sw      ra, 0x14 (sp)
+    sw      ra, 0x10 (sp)
+
+    ; Don't give pending item during cutscene. This can lead to a crash when giving an item
+    ; during another item cutscene.
+    li      t2, PLAYER_ACTOR
+    lb      t0, 0x066C (t2)    ;link's state
+    andi    t0, 0x20           ;cutscene
+    bnez    t0, @@no_pending_item
+    nop
+
+    ; Don't give an item if link's camera is not being used
+    ; If an item is given in this state then it will cause the
+    ; Walking-While-Talking glitch.
+    li      t2, GLOBAL_CONTEXT
+    lw      t0, 0x0794 (t2)        ; Camera 2
+    bnez    t0, @@no_pending_item  
+
+    ; clear pending item index
+    li      t1, PENDING_SPECIAL_ITEM_END
+    li      t2, 0xFF
+    sb      t2, 0x00 (t1)
 
     ; If there is a pending item, try to make the player instance receive it. If the player has
     ; control on this frame, they will receive the item. Otherwise nothing will happen, and
     ; we try again next frame.
-    li      t0, PENDING_SPECIAL_ITEM
-    lb      t0, 0x00 (t0)
-    beqz    t0, @@no_pending_item
+    li      t1, PENDING_SPECIAL_ITEM 
+    li      t2, -1
+    li      t4, (PENDING_SPECIAL_ITEM_END - PENDING_SPECIAL_ITEM) ; max number of entries
+@@loop:
+    addi    t2, t2, 0x01
+    beq     t2, t4, @@no_pending_item ; stop if end of list
+    add     t3, t1, t2
+
+    lb      t0, 0x00 (t3)
+    beqz    t0, @@loop ; loop if index is empty
     nop
+
+    ; Store index of pending item to be given
+    li      t1, PENDING_SPECIAL_ITEM_END
+    sb      t2, 0x00 (t1)
+
     ; Disable warping when there is a pending item. Currently this code is only used in places
     ; where warping is allowed, so warping can always be re-enabled after the item is received.
     li      t1, GLOBAL_CONTEXT + 0x104E4
@@ -33,15 +60,25 @@ every_frame:
     nop
 @@no_pending_item:
 
-    lw      v1, 0x10 (sp)
-    lw      ra, 0x14 (sp)
-    addiu   sp, sp, 0x18
-    lw      a0, 0x68 (sp)
-    lw      a1, 0x6C (sp)
-    lw      a2, 0x70 (sp)
-    lw      a3, 0x74 (sp)
+    ; Displaced code
+    lw      t9, 0x04 (s0)
+    or      a0, s0, r0
 
-    lh      t6, 0x13C4 (v1) ; Displaced code
-
+    lw      ra, 0x10 (sp)
     jr      ra
+    addiu   sp, sp, 0x18
+
+after_game_state_update:
+    addiu   sp, sp, -0x18
+    sw      ra, 0x10 (sp)
+
+    jal     c_after_game_state_update
     nop
+
+    ; Displaced code
+    lui     t6, 0x8012
+    lbu     t6, 0x1212 (t6)
+
+    lw      ra, 0x10 (sp)
+    jr      ra
+    addiu   sp, sp, 0x18

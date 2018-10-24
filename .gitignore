@@ -1,3 +1,13 @@
 .*.sw*
 .sw*
 *.pyc
+/.vs
+settings.sav
+ARCHIVE.bin
+output/*
+*.z64
+*.z64.bak
+*.pyo
+*.spec
+dist/
+build/

@@ -60,7 +60,128 @@ override_great_fairy_cutscene:
 override_light_arrow_cutscene:
     li      t0, LIGHT_ARROW_ITEM
     lb      t0, 0x00 (t0)
+    b       store_pending_special_item
+    nop
+
+override_fairy_ocarina_cutscene:
+    li      t0, FAIRY_OCARINA_ITEM
+    lb      t0, 0x00 (t0)
+    b       store_pending_special_item
+    nop
+
+;a3 = item ID
+override_ocarina_songs:
+    li      v0, 0xFF
+    addi    t0, a3, -0x5A
+    addi    t0, t0, 0x61
+    b       store_pending_special_item
+    nop
+
+override_requiem_song:
+    li      t0, 0x64
+    b       store_pending_special_item
+    nop
+
+override_epona_song:
+    lui    at,0x8012       
+    addiu  at,at,0xA5D0 ; v1 = 0x8012a5d0 # save context (sav)
+    lb     t0,0x0EDE(at) ; check learned song from malon flag
+    ori    t0,t0,0x01  ; t9 = "Invited to Sing With Child Malon"
+    sb     t0,0x0EDE(at)
+
+    li      t0, 0x68
+    b       store_pending_special_item
+    nop
+
+override_suns_song:
+    lui    at,0x8012       
+    addiu  at,at,0xA5D0 ; v1 = 0x8012a5d0 # save context (sav)
+    lb     t0,0x0EDE(at) ; learned song from sun's song
+    ori    t0,t0,0x04  ;
+    sb     t0,0x0EDE(at)
+
+    li      t0, 0x6A
+    b       store_pending_special_item
+    nop
+
+override_song_of_time:
+    li      a1, 3
+    li      t0, 0x6B
+    b       store_pending_special_item
+    nop
+
+store_pending_special_item:
+; Don't add item if it's already pending
     li      t1, PENDING_SPECIAL_ITEM
-    sb      t0, 0x00 (t1)
+    li      t2, PENDING_SPECIAL_ITEM_END ; max number of entries
+@@find_duplicate_loop:
+    lb      t4, 0x00 (t1)
+    beq     t4, t0, @@return ; item is already in list
+    addi    t1, t1, 0x01
+    bne     t1, t2, @@find_duplicate_loop ; end of list
+    nop
+
+; Find free index to add item
+    li      t1, (PENDING_SPECIAL_ITEM - 1)
+@@find_empty_loop:
+    addi    t1, t1, 0x01
+    beq     t1, t2, @@return ; end of list
+    lb      t4, 0x00 (t1)
+    bnez    t4, @@find_empty_loop ; next index
+    nop
+
+    sb      t0, 0x00 (t1) ; store in first free spot
+@@return:
+    jr      ra
+    nop
+
+override_saria_song_check:
+    move    t7, v1
+    lb      t4, 0x0EDF(t7)
+    andi    t6, t4, 0x80  
+    beqz    t6, @@get_item
+    li      v1, 5
+
+    jr      ra
+    li      v0, 2
+
+@@get_item:
+    jr      ra
+    move    v0, v1
+
+set_saria_song_flag:
+    lh      v0, 0xa4(t6)       ; v0 = scene
+    li      t0, SAVE_CONTEXT
+    lb      t1, 0x0EDF(t0)
+    ori     t1, t1, 0x80
+    sb      t1, 0x0EDF(t0)
+    jr      ra
+    nop
+
+; Injection for talking to the Altar in the Temple of Time
+; Should set flag in save that it has been spoken to.
+set_dungeon_knowledge:
+    addiu   sp, sp, -0x10
+    sw      ra, 0x04(sp)
+
+    ; displaced instruction
+    jal     0xD6218
+    nop
+
+    li      t4, SAVE_CONTEXT
+    lh      t5, 0x0F2E(t4) ; flags
+    lw      t8, 0x0004(t4) ; age
+
+    beqz    t8, @@set_flag
+    li      t6, 0x0001 ; adult bit
+    li      t6, 0x0002 ; child bit
+
+@@set_flag:
+    or      t5, t5, t6
+    sh      t5, 0x0F2E(t4) ; set the flag
+
+    lw      ra, 0x04(sp)
+    addiu   sp, sp, 0x10
+
     jr      ra
     nop

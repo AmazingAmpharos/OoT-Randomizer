@@ -5,7 +5,60 @@ def link_entrances(world):
     # setup mandatory connections
     for exitname, regionname in mandatory_connections:
         connect_simple(world, exitname, regionname)
-
+    if world.dungeon_mq['DT']:
+        for exitname, regionname in DT_MQ_connections:
+            connect_simple(world, exitname, regionname)
+    else:
+        for exitname, regionname in DT_vanilla_connections:
+            connect_simple(world, exitname, regionname)
+    if world.dungeon_mq['DC']:
+        for exitname, regionname in DC_MQ_connections:
+            connect_simple(world, exitname, regionname)
+    else:
+        for exitname, regionname in DC_vanilla_connections:
+            connect_simple(world, exitname, regionname)
+    if world.dungeon_mq['JB']:
+        for exitname, regionname in JB_MQ_connections:
+            connect_simple(world, exitname, regionname)
+    else:
+        for exitname, regionname in JB_vanilla_connections:
+            connect_simple(world, exitname, regionname)
+    if world.dungeon_mq['FoT']:
+        for exitname, regionname in FoT_MQ_connections:
+            connect_simple(world, exitname, regionname)
+    else:
+        for exitname, regionname in FoT_vanilla_connections:
+            connect_simple(world, exitname, regionname)
+    if world.dungeon_mq['FiT']:
+        for exitname, regionname in FiT_MQ_connections:
+            connect_simple(world, exitname, regionname)
+    else:
+        for exitname, regionname in FiT_vanilla_connections:
+            connect_simple(world, exitname, regionname)
+    if world.dungeon_mq['WT']:
+        for exitname, regionname in WT_MQ_connections:
+            connect_simple(world, exitname, regionname)
+    else:
+        for exitname, regionname in WT_vanilla_connections:
+            connect_simple(world, exitname, regionname)
+    if world.dungeon_mq['GTG']:
+        for exitname, regionname in GTG_MQ_connections:
+            connect_simple(world, exitname, regionname)
+    else:
+        for exitname, regionname in GTG_vanilla_connections:
+            connect_simple(world, exitname, regionname)
+    if world.dungeon_mq['SpT']:
+        for exitname, regionname in SpT_MQ_connections:
+            connect_simple(world, exitname, regionname)
+    else:
+        for exitname, regionname in SpT_vanilla_connections:
+            connect_simple(world, exitname, regionname)
+    if world.dungeon_mq['ShT']:
+        for exitname, regionname in ShT_MQ_connections:
+            connect_simple(world, exitname, regionname)
+    else:
+        for exitname, regionname in ShT_vanilla_connections:
+            connect_simple(world, exitname, regionname)
     # if we do not shuffle, set default connections
     if world.shuffle == 'vanilla':
         for exitname, regionname in default_connections:
@@ -37,7 +90,6 @@ def connect_entrance(world, entrancename, exitname):
     addresses = door_addresses[entrance.name][0]
 
     entrance.connect(region, addresses, target)
-    world.spoiler.set_entrance(entrance.name, exit.name if exit is not None else region.name, 'entrance')
 
 
 def connect_exit(world, exitname, entrancename):
@@ -49,7 +101,6 @@ def connect_exit(world, exitname, entrancename):
         exit.connected_region.entrances.remove(exit)
 
     exit.connect(entrance.parent_region, door_addresses[entrance.name][1], exit_ids[exit.name][1])
-    world.spoiler.set_entrance(entrance.name, exit.name, 'exit')
 
 
 def connect_random(world, exitlist, targetlist, two_way=False):
@@ -86,7 +137,7 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Goron City to Woods', 'Lost Woods'),
                          ('Goron City from Woods', 'Goron City'),
                          ('Goron City Bomb Wall', 'Goron City Woods Warp'),
-                         ('Lost Woods Dive Warp', 'Zora River Top'),
+                         ('Lost Woods Dive Warp', 'Zora River Child'),
                          ('Zora River Dive Warp', 'Lost Woods'),
                          ('Meadow Entrance', 'Sacred Forest Meadow Entryway'),
                          ('Meadow Exit', 'Lost Woods'),
@@ -139,12 +190,14 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Crater Access', 'Death Mountain Crater Lower'),
                          ('Dodongos Cavern Rocks', 'Dodongos Cavern Entryway'),
                          ('Mountain Access from Behind Rock', 'Death Mountain'),
-                         ('Field to Zora River', 'Zora River Bottom'),
+                         ('Field to Zora River', 'Zora River Front'),
                          ('Zora River Exit', 'Hyrule Field'),
-                         ('Zora River Rocks', 'Zora River Top'),
-                         ('Zora River Downstream', 'Zora River Bottom'),
+                         ('Zora River Rocks', 'Zora River Child'),
+                         ('Zora River Downstream', 'Zora River Front'),
+                         ('Zora River Child to Shared', 'Zora River Shared'),
+                         ('Zora River Adult to Shared', 'Zora River Shared'),
                          ('Zora River Waterfall', 'Zoras Domain'),
-                         ('Zoras Domain Exit', 'Zora River Top'),
+                         ('Zoras Domain Exit', 'Zora River Child'),
                          ('Behind King Zora', 'Zoras Fountain'),
                          ('Zoras Fountain Exit', 'Zoras Domain'),
                          ('Zora River Adult', 'Zora River Adult'),
@@ -152,66 +205,7 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Zoras Fountain Adult Access', 'Outside Ice Cavern'),
                          ('Lon Lon Rance Entrance', 'Lon Lon Ranch'),
                          ('Lon Lon Exit', 'Hyrule Field'),
-                         ('Deku Tree Slingshot Passage', 'Deku Tree Slingshot Room'),
-                         ('Deku Tree Slingshot Exit', 'Deku Tree Lobby'),
-                         ('Deku Tree Basement Path', 'Deku Tree Boss Room'),
-                         ('Deku Tree Basement Vines', 'Deku Tree Lobby'),
-                         ('Dodongos Cavern Lobby', 'Dodongos Cavern Lobby'),
-                         ('Dodongos Cavern Retreat', 'Dodongos Cavern Beginning'),
-                         ('Dodongos Cavern Left Door', 'Dodongos Cavern Climb'),
-                         ('Dodongos Cavern Bridge Fall', 'Dodongos Cavern Lobby'),
-                         ('Dodongos Cavern Slingshot Target', 'Dodongos Cavern Far Bridge'),
-                         ('Dodongos Cavern Bridge Fall 2', 'Dodongos Cavern Lobby'),
-                         ('Dodongos Cavern Bomb Drop', 'Dodongos Cavern Boss Area'),
-                         ('Dodongos Cavern Exit Skull', 'Dodongos Cavern Lobby'),
-                         ('Jabu Jabus Belly Ceiling Switch', 'Jabu Jabus Belly Main'),
-                         ('Jabu Jabus Belly Retreat', 'Jabu Jabus Belly Beginning'),
-                         ('Jabu Jabus Belly Tentacles', 'Jabu Jabus Belly Depths'),
-                         ('Jabu Jabus Belly Elevator', 'Jabu Jabus Belly Main'),
-                         ('Jabu Jabus Belly Octopus', 'Jabu Jabus Belly Boss Area'),
-                         ('Jabu Jabus Belly Final Backtrack', 'Jabu Jabus Belly Main'),
-                         ('Forest Temple Song of Time Block', 'Forest Temple NW Outdoors'),
-                         ('Forest Temple Lobby Eyeball Switch', 'Forest Temple NE Outdoors'),
-                         ('Forest Temple Lobby Locked Door', 'Forest Temple Block Push Room'),
-                         ('Forest Temple Through Map Room', 'Forest Temple NE Outdoors'),
-                         ('Forest Temple Well Connection', 'Forest Temple NW Outdoors'),
-                         ('Forest Temple Outside to Lobby', 'Forest Temple Lobby'),
-                         ('Forest Temple Scarecrows Song', 'Forest Temple Falling Room'),
-                         ('Forest Temple Falling Room Exit', 'Forest Temple NE Outdoors'),
-                         ('Forest Temple Elevator', 'Forest Temple Boss Region'),
-                         ('Forest Temple Outside Backdoor', 'Forest Temple Outside Upper Ledge'),
-                         ('Forest Temple Twisted Hall', 'Forest Temple Bow Region'),
-                         ('Forest Temple Straightened Hall', 'Forest Temple Straightened Hall'),
-                         ('Forest Temple Boss Key Chest Drop', 'Forest Temple Outside Upper Ledge'),
-                         ('Forest Temple Outside Ledge Drop', 'Forest Temple NW Outdoors'),
-                         ('Forest Temple Drop to Falling Room', 'Forest Temple Falling Room'),
-                         ('Fire Temple Early Climb', 'Fire Temple Middle'),
-                         ('Fire Temple Fire Maze Escape', 'Fire Temple Upper'),
-                         ('Water Temple Central Pillar', 'Water Temple Middle Water Level'),
-                         ('Water Temple Upper Locked Door', 'Water Temple Dark Link Region'),
-                         ('Shadow Temple First Pit', 'Shadow Temple First Beamos'),
-                         ('Shadow Temple Bomb Wall', 'Shadow Temple Huge Pit'),
-                         ('Shadow Temple Hookshot Target', 'Shadow Temple Wind Tunnel'),
-                         ('Shadow Temple Boat', 'Shadow Temple Beyond Boat'),
-                         ('Gerudo Training Ground Left Silver Rupees', 'Gerudo Training Grounds Heavy Block Room'),
-                         ('Gerudo Training Ground Beamos', 'Gerudo Training Grounds Lava Room'),
-                         ('Gerudo Training Ground Central Door', 'Gerudo Training Grounds Central Maze'),
-                         ('Gerudo Training Grounds Right Locked Doors', 'Gerudo Training Grounds Central Maze Right'),
-                         ('Gerudo Training Grounds Maze Exit', 'Gerudo Training Grounds Lava Room'),
-                         ('Gerudo Training Grounds Maze Ledge', 'Gerudo Training Grounds Central Maze Right'),
-                         ('Gerudo Training Grounds Right Hookshot Target', 'Gerudo Training Grounds Hammer Room'),
-                         ('Gerudo Training Grounds Hammer Target', 'Gerudo Training Grounds Eye Statue Lower'),
-                         ('Gerudo Training Grounds Hammer Room Clear', 'Gerudo Training Grounds Lava Room'),
-                         ('Gerudo Training Grounds Eye Statue Exit', 'Gerudo Training Grounds Hammer Room'),
-                         ('Gerudo Training Grounds Eye Statue Drop', 'Gerudo Training Grounds Eye Statue Lower'),
-                         ('Gerudo Training Grounds Hidden Hookshot Target', 'Gerudo Training Grounds Eye Statue Upper'),
-                         ('Spirit Temple Crawl Passage', 'Child Spirit Temple'),
-                         ('Spirit Temple Silver Block', 'Early Adult Spirit Temple'),
-                         ('Child Spirit Temple Passthrough', 'Spirit Temple Central Chamber'),
-                         ('Adult Spirit Temple Passthrough', 'Spirit Temple Central Chamber'),
-                         ('Spirit Temple to Hands', 'Spirit Temple Outdoor Hands'),
-                         ('Spirit Temple Central Locked Door', 'Spirit Temple Beyond Central Locked Door'),
-                         ('Spirit Temple Final Locked Door', 'Spirit Temple Beyond Final Locked Door'),
+                         ('Ganons Castle Deku Scrubs', 'Ganons Castle Deku Scrubs'),
                          ('Ganons Castle Forest Trial', 'Ganons Castle Forest Trial'),
                          ('Ganons Castle Fire Trial', 'Ganons Castle Fire Trial'),
                          ('Ganons Castle Water Trial', 'Ganons Castle Water Trial'),
@@ -220,6 +214,162 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Ganons Castle Light Trial', 'Ganons Castle Light Trial'),
                          ('Ganons Castle Tower', 'Ganons Castle Tower')
                         ]
+
+DT_vanilla_connections = [('Deku Tree Slingshot Passage', 'Deku Tree Slingshot Room'),
+                          ('Deku Tree Slingshot Exit', 'Deku Tree Lobby'),
+                          ('Deku Tree Basement Path', 'Deku Tree Boss Room'),
+                          ('Deku Tree Basement Vines', 'Deku Tree Lobby')
+                         ]
+
+DT_MQ_connections = [('Deku Tree Compass Passage', 'Deku Tree Compass Room'),
+                     ('Deku Tree Compass Exit', 'Deku Tree Lobby'),
+                     ('Deku Tree Basement Path', 'Deku Tree Boss Room'),
+                     ('Deku Tree Basement Vines', 'Deku Tree Lobby')
+                    ]
+
+DC_vanilla_connections = [('Dodongos Cavern Lobby', 'Dodongos Cavern Lobby'),
+                          ('Dodongos Cavern Retreat', 'Dodongos Cavern Beginning'),
+                          ('Dodongos Cavern Left Door', 'Dodongos Cavern Climb'),
+                          ('Dodongos Cavern Bridge Fall', 'Dodongos Cavern Lobby'),
+                          ('Dodongos Cavern Slingshot Target', 'Dodongos Cavern Far Bridge'),
+                          ('Dodongos Cavern Bridge Fall 2', 'Dodongos Cavern Lobby'),
+                          ('Dodongos Cavern Bomb Drop', 'Dodongos Cavern Boss Area'),
+                          ('Dodongos Cavern Exit Skull', 'Dodongos Cavern Lobby')
+                         ]
+
+DC_MQ_connections = [('Dodongos Cavern Lobby', 'Dodongos Cavern Lobby'),
+                     ('Dodongos Cavern Bomb Drop', 'Dodongos Cavern Boss Area')
+                    ]
+
+JB_vanilla_connections = [('Jabu Jabus Belly Ceiling Switch', 'Jabu Jabus Belly Main'),
+                          ('Jabu Jabus Belly Retreat', 'Jabu Jabus Belly Beginning'),
+                          ('Jabu Jabus Belly Tentacles', 'Jabu Jabus Belly Depths'),
+                          ('Jabu Jabus Belly Elevator', 'Jabu Jabus Belly Main'),
+                          ('Jabu Jabus Belly Octopus', 'Jabu Jabus Belly Boss Area'),
+                          ('Jabu Jabus Belly Final Backtrack', 'Jabu Jabus Belly Main')
+                         ]
+
+JB_MQ_connections = [('Jabu Jabus Belly Cow Switch', 'Jabu Jabus Belly Main'),
+                     ('Jabu Jabus Belly Retreat', 'Jabu Jabus Belly Beginning'),
+                     ('Jabu Jabus Belly Tentacle Access', 'Jabu Jabus Belly Depths'),
+                     ('Jabu Jabus Belly Elevator', 'Jabu Jabus Belly Main'),
+                     ('Jabu Jabus Belly Octopus', 'Jabu Jabus Belly Boss Area'),
+                     ('Jabu Jabus Belly Final Backtrack', 'Jabu Jabus Belly Main')
+                    ]
+
+FoT_vanilla_connections = [('Forest Temple Song of Time Block', 'Forest Temple NW Outdoors'),
+                           ('Forest Temple Lobby Eyeball Switch', 'Forest Temple NE Outdoors'),
+                           ('Forest Temple Lobby Locked Door', 'Forest Temple Block Push Room'),
+                           ('Forest Temple Through Map Room', 'Forest Temple NE Outdoors'),
+                           ('Forest Temple Well Connection', 'Forest Temple NW Outdoors'),
+                           ('Forest Temple Outside to Lobby', 'Forest Temple Lobby'),
+                           ('Forest Temple Scarecrows Song', 'Forest Temple Falling Room'),
+                           ('Forest Temple Falling Room Exit', 'Forest Temple NE Outdoors'),
+                           ('Forest Temple Elevator', 'Forest Temple Boss Region'),
+                           ('Forest Temple Outside Backdoor', 'Forest Temple Outside Upper Ledge'),
+                           ('Forest Temple Twisted Hall', 'Forest Temple Bow Region'),
+                           ('Forest Temple Straightened Hall', 'Forest Temple Straightened Hall'),
+                           ('Forest Temple Boss Key Chest Drop', 'Forest Temple Outside Upper Ledge'),
+                           ('Forest Temple Outside Ledge Drop', 'Forest Temple NW Outdoors'),
+                           ('Forest Temple Drop to Falling Room', 'Forest Temple Falling Room')
+                         ]
+
+FoT_MQ_connections = [('Forest Temple Lobby Locked Door', 'Forest Temple Central Area'),
+                      ('Forest Temple West Eye Switch', 'Forest Temple NW Outdoors'),
+                      ('Forest Temple East Eye Switch', 'Forest Temple NE Outdoors'),
+                      ('Forest Temple Block Puzzle Solve', 'Forest Temple After Block Puzzle'),
+                      ('Forest Temple Crystal Switch Jump', 'Forest Temple Outdoor Ledge'),
+                      ('Forest Temple Drop to NW Outdoors', 'Forest Temple NW Outdoors'),
+                      ('Forest Temple Well Connection', 'Forest Temple NE Outdoors'),
+                      ('Forest Temple Webs', 'Forest Temple Outdoors Top Ledges'),
+                      ('Forest Temple Climb to Top Ledges', 'Forest Temple Outdoors Top Ledges'),
+                      ('Forest Temple Longshot to NE Outdoors Ledge', 'Forest Temple NE Outdoors Ledge'),
+                      ('Forest Temple Top Drop to NE Outdoors', 'Forest Temple NE Outdoors'),
+                      ('Forest Temple Drop to NE Outdoors', 'Forest Temple NE Outdoors'),
+                      ('Forest Temple Song of Time Block Climb', 'Forest Temple Falling Room'),
+                      ('Forest Temple Twisted Hall', 'Forest Temple Bow Region'),
+                      ('Forest Temple Drop to Falling Room', 'Forest Temple Falling Room'),
+                      ('Forest Temple Falling Room Exit', 'Forest Temple NE Outdoors Ledge'),
+                      ('Forest Temple Elevator', 'Forest Temple Boss Region')
+                    ]
+
+FiT_vanilla_connections = [('Fire Temple Early Climb', 'Fire Temple Middle'),
+                           ('Fire Temple Fire Maze Escape', 'Fire Temple Upper')
+                         ]
+
+FiT_MQ_connections = [('Fire Temple Boss Door', 'Fire Boss Room'),
+                      ('Fire Temple Lower Locked Door', 'Fire Lower Locked Door'),
+                      ('Fire Temple Hammer Statue', 'Fire Big Lava Room'),
+                      ('Fire Temple Early Climb', 'Fire Lower Maze'),
+                      ('Fire Temple Maze Climb', 'Fire Upper Maze'),
+                      ('Fire Temple Maze Escape', 'Fire Temple Upper')
+                    ]
+
+WT_vanilla_connections = [('Water Temple Central Pillar', 'Water Temple Middle Water Level'),
+                          ('Water Temple Upper Locked Door', 'Water Temple Dark Link Region')
+                         ]
+
+WT_MQ_connections = [('Water Temple Water Level Switch', 'Water Temple Lowered Water Levels'),
+                     ('Water Temple Locked Door', 'Water Temple Dark Link Region'),
+                     ('Water Temple Basement Gates Switch', 'Water Temple Basement Gated Areas')
+                    ]
+
+GTG_vanilla_connections = [('Gerudo Training Ground Left Silver Rupees', 'Gerudo Training Grounds Heavy Block Room'),
+                           ('Gerudo Training Ground Beamos', 'Gerudo Training Grounds Lava Room'),
+                           ('Gerudo Training Ground Central Door', 'Gerudo Training Grounds Central Maze'),
+                           ('Gerudo Training Grounds Right Locked Doors', 'Gerudo Training Grounds Central Maze Right'),
+                           ('Gerudo Training Grounds Maze Exit', 'Gerudo Training Grounds Lava Room'),
+                           ('Gerudo Training Grounds Maze Ledge', 'Gerudo Training Grounds Central Maze Right'),
+                           ('Gerudo Training Grounds Right Hookshot Target', 'Gerudo Training Grounds Hammer Room'),
+                           ('Gerudo Training Grounds Hammer Target', 'Gerudo Training Grounds Eye Statue Lower'),
+                           ('Gerudo Training Grounds Hammer Room Clear', 'Gerudo Training Grounds Lava Room'),
+                           ('Gerudo Training Grounds Eye Statue Exit', 'Gerudo Training Grounds Hammer Room'),
+                           ('Gerudo Training Grounds Eye Statue Drop', 'Gerudo Training Grounds Eye Statue Lower'),
+                           ('Gerudo Training Grounds Hidden Hookshot Target', 'Gerudo Training Grounds Eye Statue Upper')
+                         ]
+
+GTG_MQ_connections = [('Gerudo Training Grounds Left Door', 'Gerudo Training Grounds Left Side'),
+                      ('Gerudo Training Grounds Right Door', 'Gerudo Training Grounds Right Side'),
+                      ('Gerudo Training Grounds Longshot Target', 'Gerudo Training Grounds Stalfos Room'),
+                      ('Gerudo Training Grounds Song of Time Block', 'Gerudo Training Grounds Back Areas'),
+                      ('Gerudo Training Grounds Rusted Switch', 'Gerudo Training Grounds Central Maze Right'),
+                      ('Gerudo Training Grounds Loop Around', 'Gerudo Training Grounds Right Side')
+                    ]
+
+SpT_vanilla_connections = [('Spirit Temple Crawl Passage', 'Child Spirit Temple'),
+                           ('Spirit Temple Silver Block', 'Early Adult Spirit Temple'),
+                           ('Child Spirit Temple Climb', 'Child Spirit Temple Climb'),
+                           ('Child Spirit Temple Passthrough', 'Spirit Temple Central Chamber'),
+                           ('Adult Spirit Temple Passthrough', 'Spirit Temple Central Chamber'),
+                           ('Spirit Temple Middle Child Door', 'Child Spirit Temple Climb'),
+                           ('Spirit Temple to Hands', 'Spirit Temple Outdoor Hands'),
+                           ('Spirit Temple Central Locked Door', 'Spirit Temple Beyond Central Locked Door'),
+                           ('Spirit Temple Final Locked Door', 'Spirit Temple Beyond Final Locked Door'),
+                         ]
+
+SpT_MQ_connections = [('Spirit Temple Crawl Passage', 'Child Spirit Temple'),
+                      ('Spirit Temple Ceiling Passage', 'Adult Spirit Temple'),
+                      ('Child Spirit Temple to Shared', 'Spirit Temple Shared'),
+                      ('Adult Spirit Temple to Shared', 'Spirit Temple Shared'),
+                      ('Adult Spirit Temple Descent', 'Lower Adult Spirit Temple'),
+                      ('Spirit Temple Climbable Wall', 'Spirit Temple Boss Area'),
+                      ('Mirror Shield Exit', 'Mirror Shield Hand'),
+                      ('Silver Gauntlets Exit', 'Silver Gauntlets Hand')
+                    ]
+
+ShT_vanilla_connections = [('Shadow Temple First Pit', 'Shadow Temple First Beamos'),
+                           ('Shadow Temple Bomb Wall', 'Shadow Temple Huge Pit'),
+                           ('Shadow Temple Hookshot Target', 'Shadow Temple Wind Tunnel'),
+                           ('Shadow Temple Boat', 'Shadow Temple Beyond Boat')
+                         ]
+
+ShT_MQ_connections = [('Shadow Temple First Pit', 'Shadow Temple First Beamos'),
+                      ('Shadow Temple Beginning Locked Door', 'Shadow Temple Dead Hand Area'),
+                      ('Shadow Temple Bomb Wall', 'Shadow Temple Huge Pit'),
+                      ('Shadow Temple Hookshot Target', 'Shadow Temple Wind Tunnel'),
+                      ('Shadow Temple Boat', 'Shadow Temple Beyond Boat'),
+                      ('Shadow Temple Longshot Target', 'Shadow Temple Invisible Maze')
+                    ]
 
 # non-shuffled entrance links
 default_connections = [('Links House Exit', 'Kokiri Forest'),
@@ -254,7 +404,7 @@ default_connections = [('Links House Exit', 'Kokiri Forest'),
                        ('Castle Town Dog Lady', 'Castle Town Dog Lady'),
                        ('Castle Town Man in Green House', 'Castle Town Man in Green House'),
                        ('Carpenter Boss House', 'Carpenter Boss House'),
-                       ('House of Skulltulla', 'House of Skulltulla'),
+                       ('House of Skulltula', 'House of Skulltula'),
                        ('Impas House', 'Impas House'),
                        ('Impas House Back', 'Impas House Back'),
                        ('Windmill', 'Windmill'),
@@ -273,7 +423,8 @@ default_connections = [('Links House Exit', 'Kokiri Forest'),
                        ('Talon House', 'Talon House'),
                        ('Ingo Barn', 'Ingo Barn'),
                        ('Lon Lon Corner Tower', 'Lon Lon Corner Tower'),
-                       ('Zora Shop', 'Zora Shop'),
+                       ('Zora Shop Child Access', 'Zora Shop'),
+                       ('Goron Shop', 'Goron Shop'),
                        ('Zoras Fountain Fairy', 'Zoras Fountain Fairy'),
                        ('Kokiri Forest Storms Grotto', 'Kokiri Forest Storms Grotto'),
                        ('Lost Woods Generic Grotto', 'Lost Woods Generic Grotto'),
@@ -298,7 +449,15 @@ default_connections = [('Links House Exit', 'Kokiri Forest'),
                        ('Castle Storms Grotto', 'Castle Storms Grotto'),
                        ('Zora River Plateau Open Grotto', 'Zora River Plateau Open Grotto'),
                        ('Zora River Plateau Bombable Grotto', 'Zora River Plateau Bombable Grotto'),
-                       ('Lake Hylia Grotto', 'Lake Hylia Grotto')
+                       ('Lake Hylia Grotto', 'Lake Hylia Grotto'),
+                       ('Meadow Storms Grotto Child Access', 'Meadow Storms Grotto'),
+                       ('Meadow Storms Grotto Adult Access', 'Meadow Storms Grotto'),
+                       ('Gerudo Valley Storms Grotto','Gerudo Valley Storms Grotto'),
+                       ('Desert Colossus Grotto','Desert Colossus Grotto'),
+                       ('Goron City Grotto', 'Goron City Grotto'), 
+                       ('DMC Hammer Grotto', 'DMC Hammer Grotto'), 
+                       ('Zora River Storms Grotto', 'Zora River Storms Grotto'), 
+                       ('Zora Shop Adult Access', 'Zora Shop'),
                       ]
 
 # non shuffled dungeons
