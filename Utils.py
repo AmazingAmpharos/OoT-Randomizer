@@ -1,4 +1,4 @@
-import os
+import os, os.path
 import subprocess
 import sys
 import urllib.request
@@ -8,28 +8,44 @@ from version import __version__
 import random
 import itertools
 import bisect
+import logging
 
 def is_bundled():
     return getattr(sys, 'frozen', False)
 
-def local_path(path):
+def local_path(path=''):
     if local_path.cached_path is not None:
         return os.path.join(local_path.cached_path, path)
 
     if is_bundled():
         # we are running in a bundle
-        local_path.cached_path = sys._MEIPASS # pylint: disable=protected-access,no-member
+        local_path.cached_path = os.path.dirname(os.path.realpath(sys.executable))
     else:
         # we are running in a normal Python environment
-        local_path.cached_path = os.path.dirname(os.path.abspath(__file__))
+        local_path.cached_path = os.path.dirname(os.path.realpath(__file__))
 
     return os.path.join(local_path.cached_path, path)
 
 local_path.cached_path = None
 
+
+def data_path(path=''):
+    if data_path.cached_path is not None:
+        return os.path.join(data_path.cached_path, path)
+
+    # Even if it's bundled we use __file__
+    # if it's not bundled, then we want to use the source.py dir + Data
+    # if it's bundled, then we want to use the extraction dir + Data
+    data_path.cached_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
+
+    return os.path.join(data_path.cached_path, path)
+
+data_path.cached_path = None
+
+
 def default_output_path(path):
     if path == '':
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Output')
+        path = local_path('Output')
 
     if not os.path.exists(path):
         os.mkdir(path)
@@ -46,9 +62,9 @@ def open_file(filename):
 def close_console():
     if sys.platform == 'win32':
         #windows
-        import ctypes.wintypes
+        import win32gui, win32con
         try:
-            ctypes.windll.kernel32.FreeConsole()
+            win32gui.ShowWindow(win32gui.GetForegroundWindow(), win32con.SW_HIDE)
         except Exception:
             pass
 
@@ -74,15 +90,17 @@ class VersionError(Exception):
     pass
 
 def check_version(checked_version):
-    try:
-        with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
-            version = versionurl.read()
-            version = re.search(".__version__ = '(.+)'", str(version)).group(1)
+    if compare_version(checked_version, __version__) < 0:
+        try:
+            with urllib.request.urlopen('http://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/version.py') as versionurl:
+                version = versionurl.read()
+                version = re.search(".__version__ = '(.+)'", str(version)).group(1)
 
-            if compare_version(version, __version__) > 0 and compare_version(checked_version, __version__) < 0:
-                raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
-    except (URLError, HTTPError) as e:
-        logger.warning("Could not fetch latest version: " + str(e))
+                if compare_version(version, __version__) > 0:
+                    raise VersionError("You do not seem to be on the latest version!\nYou are on version " + __version__ + ", and the latest is version " + version + ".")
+        except (URLError, HTTPError) as e:
+            logger = logging.getLogger('')
+            logger.warning("Could not fetch latest version: " + str(e))
 
 # Shim for the sole purpose of maintaining compatibility with older versions of Python 3.
 def random_choices(population, weights=None, k=1):
@@ -100,3 +118,41 @@ def random_choices(population, weights=None, k=1):
         result.append(population[bisect.bisect(CDF, x)])
 
     return result
+
+
+# From the pyinstaller Wiki: https://github.com/pyinstaller/pyinstaller/wiki/Recipe-subprocess
+# Create a set of arguments which make a ``subprocess.Popen`` (and
+# variants) call work with or without Pyinstaller, ``--noconsole`` or
+# not, on Windows and Linux. Typical use::
+#   subprocess.call(['program_to_run', 'arg_1'], **subprocess_args())
+def subprocess_args(include_stdout=True):
+    # The following is true only on Windows.
+    if hasattr(subprocess, 'STARTUPINFO'):
+        # On Windows, subprocess calls will pop up a command window by default
+        # when run from Pyinstaller with the ``--noconsole`` option. Avoid this
+        # distraction.
+        si = subprocess.STARTUPINFO()
+        si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        # Windows doesn't search the path by default. Pass it an environment so
+        # it will.
+        env = os.environ
+    else:
+        si = None
+        env = None
+
+    # ``subprocess.check_output`` doesn't allow specifying ``stdout``::
+    # So, add it only if it's needed.
+    if include_stdout:
+        ret = {'stdout': subprocess.PIPE}
+    else:
+        ret = {}
+
+    # On Windows, running this from the binary produced by Pyinstaller
+    # with the ``--noconsole`` option requires redirecting everything
+    # (stdin, stdout, stderr) to avoid an OSError exception
+    # "[Error 6] the handle is invalid."
+    ret.update({'stdin': subprocess.PIPE,
+                'stderr': subprocess.PIPE,
+                'startupinfo': si,
+                'env': env })
+    return ret

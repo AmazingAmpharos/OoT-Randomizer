@@ -90,7 +90,6 @@ def connect_entrance(world, entrancename, exitname):
     addresses = door_addresses[entrance.name][0]
 
     entrance.connect(region, addresses, target)
-    world.spoiler.set_entrance(entrance.name, exit.name if exit is not None else region.name, 'entrance')
 
 
 def connect_exit(world, exitname, entrancename):
@@ -102,7 +101,6 @@ def connect_exit(world, exitname, entrancename):
         exit.connected_region.entrances.remove(exit)
 
     exit.connect(entrance.parent_region, door_addresses[entrance.name][1], exit_ids[exit.name][1])
-    world.spoiler.set_entrance(entrance.name, exit.name, 'exit')
 
 
 def connect_random(world, exitlist, targetlist, two_way=False):
@@ -406,7 +404,7 @@ default_connections = [('Links House Exit', 'Kokiri Forest'),
                        ('Castle Town Dog Lady', 'Castle Town Dog Lady'),
                        ('Castle Town Man in Green House', 'Castle Town Man in Green House'),
                        ('Carpenter Boss House', 'Carpenter Boss House'),
-                       ('House of Skulltulla', 'House of Skulltulla'),
+                       ('House of Skulltula', 'House of Skulltula'),
                        ('Impas House', 'Impas House'),
                        ('Impas House Back', 'Impas House Back'),
                        ('Windmill', 'Windmill'),

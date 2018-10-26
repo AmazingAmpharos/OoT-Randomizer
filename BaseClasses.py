@@ -29,9 +29,6 @@ class World(object):
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
-        # group a few others
-        self.tunic_colors = [self.kokiricolor, self.goroncolor, self.zoracolor]
-        self.navi_colors = [self.navicolordefault, self.navicolorenemy, self.navicolornpc, self.navicolorprop]
         # trials that can be skipped will be decided later
         self.skipped_trials = {
             'Forest': False,
@@ -59,7 +56,6 @@ class World(object):
 
         self.can_take_damage = True
         self.keys_placed = False
-        self.spoiler = Spoiler(self)
 
 
     def copy(self):
@@ -69,6 +65,7 @@ class World(object):
         ret.big_poe_count = copy.copy(self.big_poe_count)
         ret.can_take_damage = self.can_take_damage
         ret.shop_prices = copy.copy(self.shop_prices)
+        ret.keys_placed = self.keys_placed
         ret.id = self.id
         from Regions import create_regions
         from Dungeons import create_dungeons
@@ -90,7 +87,7 @@ class World(object):
                 item.world = location.item.world
                 ret.get_location(location.name).item = item
                 item.location = ret.get_location(location.name)
-                item.location.event = location.event
+                item.location.locked = location.locked
 
         # copy remaining itempool. No item in itempool should have an assigned location
         for item in self.itempool:
@@ -215,9 +212,6 @@ class World(object):
         if location.can_fill(self.state, item, False):
             location.item = item
             item.location = location
-
-            if item.majoritem and location.parent_region.dungeon:
-                location.parent_region.dungeon.major_items += 1
 
             logging.getLogger('').debug('Placed %s [World %d] at %s [World %d]', item, item.world.id if hasattr(item, 'world') else -1, location, location.world.id if hasattr(location, 'world') else -1)
         else:
@@ -606,7 +600,7 @@ class CollectionState(object):
             if location.item.advancement 
             and location.item.type != 'Event' 
             and location.item.type != 'Shop' 
-            and not location.event 
+            and not location.locked 
             and (worlds[0].shuffle_smallkeys != 'dungeon' or not location.item.smallkey) 
             and (worlds[0].shuffle_bosskeys != 'dungeon' or not location.item.bosskey)]
 
@@ -637,8 +631,11 @@ class CollectionState(object):
                 state_list[location.item.world.id].collect(location.item)
 
         # Filter the required location to only include location in the world
+        required_locations_dict = {}
         for world in worlds:
-            world.spoiler.required_locations = list(filter(lambda location: location.world.id == world.id, required_locations))
+            required_locations_dict[world.id] = list(filter(lambda location: location.world.id == world.id, required_locations))
+        for world in worlds:
+            world.spoiler.required_locations = required_locations_dict
 
 
 @unique
@@ -675,9 +672,6 @@ class Region(object):
         return False
 
     def can_fill(self, item):
-        if item.majoritem and self.world.one_item_per_dungeon and self.dungeon:
-            return self.dungeon.major_items == 0
-
         is_dungeon_restricted = False
         if item.map or item.compass:
             is_dungeon_restricted = self.world.shuffle_mapcompass == 'dungeon'
@@ -732,7 +726,7 @@ class Entrance(object):
 
 class Dungeon(object):
 
-    def __init__(self, name, regions, boss_key, small_keys, dungeon_items):
+    def __init__(self, world, name, regions, boss_key, small_keys, dungeon_items):
         def to_array(obj):
             if obj == None:
                 return []
@@ -741,12 +735,12 @@ class Dungeon(object):
             else:
                 return [obj]
 
+        self.world = world
         self.name = name
         self.regions = regions
         self.boss_key = to_array(boss_key)
         self.small_keys = to_array(small_keys)
         self.dungeon_items = to_array(dungeon_items)
-        self.major_items = 0
 
     @property
     def keys(self):
@@ -784,10 +778,13 @@ class Location(object):
         self.always_allow = lambda item, state: False
         self.access_rule = lambda state: True
         self.item_rule = lambda item: True
-        self.event = False
+        self.locked = False
         self.price = None
+        self.minor_only = False
 
     def can_fill(self, state, item, check_access=True):
+        if self.minor_only and item.majoritem:
+            return False
         return self.parent_region.can_fill(item) and (self.always_allow(item, state) or (self.item_rule(item) and (not check_access or state.can_reach(self))))
     def can_fill_fast(self, item):
         return self.item_rule(item)
@@ -875,8 +872,8 @@ class Item(object):
 
 class Spoiler(object):
 
-    def __init__(self, world):
-        self.world = world
+    def __init__(self, worlds):
+        self.worlds = worlds
         self.playthrough = {}
         self.locations = {}
         self.metadata = {}
@@ -884,15 +881,17 @@ class Spoiler(object):
         self.hints = {}
 
     def parse_data(self):
-        spoiler_locations = [location for location in self.world.get_locations() if not location.event]
-        sort_order = {"Song": 0, "Boss": -1}
-        spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
-        if self.world.settings.world_count > 1:
-            self.locations = {'other locations': OrderedDict([(str(location), "%s [Player %d]" % (str(location.item), location.item.world.id + 1) if location.item is not None else 'Nothing') for location in spoiler_locations])}
-        else:
-            self.locations = {'other locations': OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])}            
+        self.locations = {}
         self.version = OoTRVersion
-        self.settings = self.world.settings
+        self.settings = self.worlds[0].settings
+        for world in self.worlds:
+            spoiler_locations = [location for location in world.get_locations() if not location.locked]
+            sort_order = {"Song": 0, "Boss": -1}
+            spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
+            if self.settings.world_count > 1:
+                self.locations[world.id] = OrderedDict([(str(location), "%s [Player %d]" % (str(location.item), location.item.world.id + 1) if location.item is not None else 'Nothing') for location in spoiler_locations])
+            else:
+                self.locations[world.id] = OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])
 
     def to_file(self, filename):
         self.parse_data()
@@ -900,11 +899,12 @@ class Spoiler(object):
             outfile.write('OoT Randomizer Version %s  -  Seed: %s\n\n' % (self.version, self.settings.seed))
             outfile.write('Settings (%s):\n%s' % (self.settings.get_settings_string(), self.settings.get_settings_display()))
 
-            if self.settings.world_count > 1:
-                outfile.write('\n\nLocations [World %d]:\n\n' % (self.settings.player_num))
-            else:
-                outfile.write('\n\nLocations:\n\n')
-            outfile.write('\n'.join(['%s: %s' % (location, item) for (location, item) in self.locations['other locations'].items()]))
+            for world in self.worlds:
+                if self.settings.world_count > 1:
+                    outfile.write('\n\nLocations [World %d]:\n\n' % (world.id + 1))
+                else:
+                    outfile.write('\n\nLocations:\n\n')
+                outfile.write('\n'.join(['%s: %s' % (location, item) for (location, item) in self.locations[world.id].items()]))
 
             outfile.write('\n\nPlaythrough:\n\n')
             if self.settings.world_count > 1:
@@ -913,11 +913,16 @@ class Spoiler(object):
                 outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  %s: %s' % (location.name, item.name) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
 
             if len(self.hints) > 0:
-                outfile.write('\n\nAlways Required Locations:\n\n')
-                if self.settings.world_count > 1:
-                    outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations]))
-                else:
-                    outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations]))
+                for world in self.worlds:
+                    if self.settings.world_count > 1:
+                        outfile.write('\n\nWay of the Hero [Player %d]:\n\n' % (world.id + 1))
+                        outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations[world.id]]))
+                    else:
+                        outfile.write('\n\nWay of the Hero:\n\n')
+                        outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations[world.id]]))
 
-                outfile.write('\n\nGossip Stone Hints:\n\n')
+                if self.settings.world_count > 1:
+                    outfile.write('\n\nGossip Stone Hints [Player %d]:\n\n' % self.settings.player_num)
+                else:
+                    outfile.write('\n\nGossip Stone Hints:\n\n')
                 outfile.write('\n'.join(self.hints.values()))

@@ -9,7 +9,7 @@ import random
 import copy
 
 from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText, getSimpleHintNoPrefix
-from Utils import local_path, default_output_path, random_choices
+from Utils import data_path, default_output_path, random_choices
 from Items import ItemFactory, item_data
 from Messages import *
 from OcarinaSongs import Song, str_to_song, replace_songs
@@ -73,6 +73,80 @@ NaviColors = {
     "Phantom Zelda": [0x97, 0x7A, 0x6C, 0xFF, 0x6F, 0x46, 0x67, 0x00],
 }
 
+NaviSFX = { 
+    'None'          : 0x0000,
+    'Cluck'         : 0x2812,
+    'Rupee'         : 0x4803, 
+    'Softer Beep'   : 0x4804,
+    'Recovery Heart': 0x480B, 
+    'Timer'         : 0x481A,  
+    'Low Health'    : 0x481B,
+    'Notification'  : 0x4820, 
+    'Tambourine'    : 0x4842, 
+    'Carrot Refill' : 0x4845,  
+    'Zelda - Gasp'  : 0x6879, 
+    'Mweep!'        : 0x687A,
+    'Ice Break'     : 0x0875,
+    'Explosion'     : 0x180E,
+    'Crate'         : 0x2839,
+    'Great Fairy'   : 0x6858,
+    'Moo'           : 0x28DF,
+    'Bark'          : 0x28D8,
+    'Ribbit'        : 0x28B1,
+    'Broken Pot'    : 0x2887,
+    'Cockadoodledoo': 0x2813,
+    'Epona'         : 0x2805,
+    'Gold Skulltula': 0x39DA,
+    'Redead'        : 0x38E5,
+    'Poe'           : 0x38EC,
+    'Ruto'          : 0x6863,
+    'Howl'          : 0x28AE,
+    'Business Scrub': 0x3882,
+    'Guay'          : 0x38B6,
+    'H`lo!'         : 0x6844
+}
+
+HealthSFX = {
+    'None'          : 0x0000,
+    'Cluck'         : 0x2812,
+    'Softer Beep'   : 0x4804,
+    'Recovery Heart': 0x480B, 
+    'Timer'         : 0x481A,  
+    'Notification'  : 0x4820, 
+    'Tambourine'    : 0x4842, 
+    'Carrot Refill' : 0x4845, 
+    'Navi - Random' : 0x6843, 
+    'Navi - Hey!'   : 0x685F, 
+    'Zelda - Gasp'  : 0x6879, 
+    'Mweep!'        : 0x687A,
+    'Iron Boots'    : 0x080D,
+    'Hammer'        : 0x180A,
+    'Sword Bounce'  : 0x181A,
+    'Bow'           : 0x1830,
+    'Gallop'        : 0x2804,
+    'Drawbridge'    : 0x280E,
+    'Switch'        : 0x2815,
+    'Bomb Bounce'   : 0x282F,
+    'Bark'          : 0x28D8,
+    'Ribbit'        : 0x28B1,
+    'Broken Pot'    : 0x2887,
+    'Business Scrub': 0x3882,
+    'Guay'          : 0x38B6,
+    'Bongo Bongo'   : 0x3950
+}
+
+def get_NaviSFX():
+    return list(NaviSFX.keys())
+
+def get_NaviSFX_options():
+    return ["Default", "Random Choice"] + get_NaviSFX()
+
+def get_HealthSFX():
+    return list(HealthSFX.keys())
+
+def get_HealthSFX_options():
+    return ["Default", "Random Choice"] + get_HealthSFX()
+
 def get_tunic_colors():
     return list(TunicColors.keys())
 
@@ -86,13 +160,13 @@ def get_navi_color_options():
     return ["Random Choice", "Completely Random"] + get_navi_colors()
 
 def patch_rom(world, rom):
-    with open(local_path('data/rom_patch.txt'), 'r') as stream:
+    with open(data_path('rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
             rom.write_byte(address, value)
     
     # Write Randomizer title screen logo
-    with open(local_path('data/title.bin'), 'rb') as stream:
+    with open(data_path('title.bin'), 'rb') as stream:
         titleBytes = stream.read()
         rom.write_bytes(0x01795300, titleBytes)
 
@@ -753,7 +827,7 @@ def patch_rom(world, rom):
                    0x27CE090, 0x2887070, 0x2887080, 0x2887090, 0x2897070, 0x28C7134, 0x28D91BC, 0x28A60F4, 0x28AE084,
                    0x28B9174, 0x28BF168, 0x28BF178, 0x28BF188, 0x28A1144, 0x28A6104, 0x28D0094]
     for address in Wonder_text:
-        rom.write_byte(address, 0xFE)
+        rom.write_byte(address, 0xFB)
 
     # Speed dig text for Dampe
     rom.write_bytes(0x9532F8, [0x08, 0x08, 0x08, 0x59])
@@ -779,6 +853,8 @@ def patch_rom(world, rom):
     rom.write_bytes(0xDBF428, [0x0C, 0x10, 0x03, 0x00]) #Set Fishing Hook
 
     configure_dungeon_info(rom, world)
+
+    rom.write_int32(rom.sym('cfg_file_select_hash'), world.settings.numeric_seed)
 
     # will be populated with data to be written to initial save
     # see initial_save.asm and config.asm for more details on specifics
@@ -887,7 +963,7 @@ def patch_rom(world, rom):
     write_bits_to_save(0x0EEB, 0x02) # "Entered Lake Hylia"
     write_bits_to_save(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
     write_bits_to_save(0x0F08, 0x08) # "Entered Hyrule Castle"
- 
+
     # Make the Kakariko Gate not open with the MS
     if not world.open_kakariko:
         rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
@@ -962,6 +1038,19 @@ def patch_rom(world, rom):
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x2, 0x01) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
+
+    # start with maps/compasses
+    if world.shuffle_mapcompass == 'startwith':
+        write_bits_to_save(0x00A8, 0x06) # "Deku Map/Compass"
+        write_bits_to_save(0x00A9, 0x06) # "Dodongo Map/Compass"
+        write_bits_to_save(0x00AA, 0x06) # "Jabu Map/Compass"
+        write_bits_to_save(0x00AB, 0x06) # "Forest Map/Compass"
+        write_bits_to_save(0x00AC, 0x06) # "Fire Map/Compass"
+        write_bits_to_save(0x00AD, 0x06) # "Water Map/Compass"
+        write_bits_to_save(0x00AF, 0x06) # "Shadow Map/Compass"
+        write_bits_to_save(0x00AE, 0x06) # "Spirit Map/Compass"
+        write_bits_to_save(0x00B0, 0x06) # "BotW Map/Compass"
+        write_bits_to_save(0x00B1, 0x06) # "Ice Map/Compass"
 
     # Revert change that Skips the Epona Race
     if not world.no_epona_race:
@@ -1460,96 +1549,71 @@ def patch_rom(world, rom):
     random.seed()
     
     # patch tunic colors
-    # Custom color tunic stuff
-    Tunics = []
-    Tunics.append(0x00B6DA38) # Kokiri Tunic
-    Tunics.append(0x00B6DA3B) # Goron Tunic
-    Tunics.append(0x00B6DA3E) # Zora Tunic
+    Tunics = [
+        (world.kokiricolor, 0x00B6DA38), # Kokiri Tunic
+        (world.goroncolor,  0x00B6DA3B), # Goron Tunic
+        (world.zoracolor,   0x00B6DA3E), # Zora Tunic
+    ]
     colorList = get_tunic_colors()
-    randomColors = random_choices(colorList, k=3)
 
-    for i in range(len(Tunics)):
-        # get the color option
-        thisColor = world.tunic_colors[i]
-        # handle true random
-        randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
-        if thisColor == 'Completely Random':
-            color = randColor
-        else:
-            # handle random
-            if world.tunic_colors[i] == 'Random Choice':
-                color = TunicColors[randomColors[i]]
-            # grab the color from the list
-            elif thisColor in TunicColors: 
-                color = TunicColors[thisColor] 
-            # build color from hex code  
-            else: 
-                color = list(int(thisColor[i:i+2], 16) for i in (0, 2 ,4)) 
-        rom.write_bytes(Tunics[i], color)
+    for tunic_option, address in Tunics:
+        # handle random
+        if tunic_option == 'Random Choice':
+            tunic_option = random.choice(colorList)
+        # handle completely random
+        if tunic_option == 'Completely Random':
+            color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+        # grab the color from the list
+        elif tunic_option in TunicColors: 
+            color = TunicColors[tunic_option] 
+        # build color from hex code  
+        else: 
+            color = list(int(tunic_option[i:i+2], 16) for i in (0, 2 ,4)) 
+        rom.write_bytes(address, color)
 
     # patch navi colors
-    Navi = []
-    Navi.append([0x00B5E184]) # Default
-    Navi.append([0x00B5E19C, 0x00B5E1BC]) # Enemy, Boss
-    Navi.append([0x00B5E194]) # NPC
-    Navi.append([0x00B5E174, 0x00B5E17C, 0x00B5E18C, 0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4, 0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]) # Everything else
+    Navi = [
+        (world.navicolordefault, [0x00B5E184]), # Default
+        (world.navicolorenemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+        (world.navicolornpc,     [0x00B5E194]), # NPC
+        (world.navicolorprop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C, 
+                                  0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4, 
+                                  0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
+    ]
     naviList = get_navi_colors()
-    randomColors = random_choices(naviList, k=4)
 
-    for i in range(len(Navi)):
-        # do everything in the inner loop so that "true random" changes even for subcategories
-        for j in range(len(Navi[i])):
-            # get the color option
-            thisColor = world.navi_colors[i]
-            # handle true random
-            randColor = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0xFF,
+    for navi_option, navi_addresses in Navi:
+        # choose a random choice for the whole group
+        if navi_option == 'Random Choice':
+            navi_option = random.choice(naviList)
+        for address in navi_addresses:
+            # completely random is random for every subgroup
+            if navi_option == 'Completely Random':
+                color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0xFF,
                          random.getrandbits(8), random.getrandbits(8), random.getrandbits(8), 0x00]
-            if thisColor == 'Completely Random':
-                color = randColor
-            else:
-                # handle random
-                if world.navi_colors[i] == 'Random Choice':
-                    color = NaviColors[randomColors[i]]
-                # grab the color from the list
-                elif thisColor in NaviColors: 
-                    color = NaviColors[thisColor] 
-                # build color from hex code  
-                else: 
-                    color = list(int(thisColor[i:i+2], 16) for i in (0, 2 ,4)) 
-                    color = color + [0xFF] + color + [0x00] 
-            rom.write_bytes(Navi[i][j], color)
-
-    SFXTable = { 
-        'None'          : 0x0000,
-        'Cluck'         : 0x2812,
-        'Rupee'         : 0x4803, 
-        'Softer Beep'   : 0x4804,
-        'Recovery Heart': 0x480B, 
-        'Timer'         : 0x481A,  
-        'Low Health'    : 0x481B,
-        'Notification'  : 0x4820, 
-        'Tamborine'     : 0x4842, 
-        'Carrot Refill' : 0x4845, 
-        'Navi - Random' : 0x6843, 
-        'Navi - Hey!'   : 0x685F, 
-        'Zelda - Gasp'  : 0x6879, 
-        'Mweep!'        : 0x687A }
-
-    SFXList = list(SFXTable.keys())
+            # grab the color from the list
+            elif navi_option in NaviColors: 
+                color = NaviColors[navi_option] 
+            # build color from hex code  
+            else: 
+                color = list(int(navi_option[i:i+2], 16) for i in (0, 2 ,4)) 
+                color = color + [0xFF] + color + [0x00]
+            rom.write_bytes(address, color)
 
     # Configurable Sound Effects
-    sound_addresses = [
-        (world.navisfxoverworld, [0xAE7EF2, 0xC26C7E]), # Navi Overworld Hint (0x685F)
-        (world.navisfxenemytarget, [0xAE7EC6]),         # Navi Enemy Target Hint (0x6843)
-        (world.healthSFX, [0xADBA1A])]                  # Low Health Beep (0x481B)
+    sfx_addresses = [
+        (world.navisfxoverworld, [0xAE7EF2, 0xC26C7E], NaviSFX), # Navi Overworld Hint (0x685F)
+        (world.navisfxenemytarget, [0xAE7EC6], NaviSFX),         # Navi Enemy Target Hint (0x6843)
+        (world.healthSFX, [0xADBA1A], HealthSFX)                 # Low Health Beep (0x481B)
+    ]
 
-    for thisSFX, addresses in sound_addresses:
+    for thisSFX, addresses, SFX_table in sfx_addresses:
         if thisSFX == 'Random Choice':
-            thisSFX = random.choice(SFXList)
+            thisSFX = random.choice(list(SFX_table.keys()))
         if thisSFX != 'Default':
             for address in addresses:
-                rom.write_int16(address, SFXTable[thisSFX])
-        
+                rom.write_int16(address, SFX_table[thisSFX])
+
     return rom
 
 def get_override_table(world):
@@ -1944,7 +2008,7 @@ def boss_reward_index(world, boss_name):
 
 def configure_dungeon_info(rom, world):
     mq_enable = world.quest == 'mixed'
-    mapcompass_keysanity = world.settings.shuffle_mapcompass == 'keysanity' and world.settings.enhance_map_compass
+    mapcompass_keysanity = world.settings.enhance_map_compass
 
     bosses = ['Queen Gohma', 'King Dodongo', 'Barinade', 'Phantom Ganon',
             'Volvagia', 'Morpha', 'Twinrova', 'Bongo Bongo']
