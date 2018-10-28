@@ -1,5 +1,6 @@
 #include "dungeon_info.h"
 #include "file_select.h"
+#include "models.h"
 #include "gfx.h"
 #include "text.h"
 #include "util.h"
@@ -9,6 +10,7 @@ void c_init() {
     heap_init();
     gfx_init();
     text_init();
+    models_init();
 }
 
 void c_after_game_state_update() {
