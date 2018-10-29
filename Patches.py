@@ -170,6 +170,9 @@ def patch_rom(world, rom):
         titleBytes = stream.read()
         rom.write_bytes(0x01795300, titleBytes)
 
+    # Force language to be English in the event a Japanese rom was submitted
+    rom.write_byte(0x3E, 0x45) 
+
     # Increase the instance size of Bombchus prevent the heap from becoming corrupt when
     # a Dodongo eats a Bombchu. Does not fix stale pointer issues with the animation
     rom.write_int32(0xD6002C, 0x1F0)
