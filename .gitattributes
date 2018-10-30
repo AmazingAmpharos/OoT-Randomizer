@@ -1,2 +1,1 @@
-/data/rom_patch.txt binary
-/data/symbols.json binary
+/data/* binary linguist-generated=true
