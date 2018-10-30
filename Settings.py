@@ -335,6 +335,24 @@ setting_infos = [
                       the Door of Time.
                       '''
         }),
+    Setting_Info('fast_start', bool, 1, True, 
+        {
+            'help': '''
+                    Start with Deku sticks/nuts/shield, Rupees, and some warp songs.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Fast Start',
+            'group': 'open',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      The player will begin the game with the following:
+                      Deku Shield (equipped), Deku Sticks (10), Deku Nuts (20), Rupees (99),
+                      Prelude of Light, Serenade of Water, Farore's Wind.
+                      '''
+        }),
     Setting_Info('gerudo_fortress', str, 2, True, 
         {
             'default': 'normal',

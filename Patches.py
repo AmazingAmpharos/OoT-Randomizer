@@ -309,23 +309,26 @@ def patch_rom(world, rom):
     Block_code = [0x00, 0x00, 0x00, 0x01, 0x00, 0x21, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02]
     rom.write_bytes(0x1FC0CF8, Block_code)
 
+    # songs as items flag
+    songs_as_items = world.shuffle_song_items or world.fast_start
+    
     # Speed learning Zelda's Lullaby
     rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001]) # Terminator Execution
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int16s(None, [0x0073, 0x001, 0x0002, 0x0002]) # ID, start, end, end  
     else:
         rom.write_int16s(None, [0x0073, 0x003B, 0x003C, 0x003C]) # ID, start, end, end  
 
 
     rom.write_int32s(0x02E8E91C, [0x00000013, 0x0000000C]) # Textbox, Count
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
     else:
         rom.write_int16s(None, [0x0017, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2        
     rom.write_int16s(None, [0x00D4, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     # Speed learning Sun's Song
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int32(0x0332A4A4, 0xFFFFFFFF) # Header: frame_count
     else:
         rom.write_int32(0x0332A4A4, 0x0000003C) # Header: frame_count      
@@ -335,7 +338,7 @@ def patch_rom(world, rom):
     rom.write_int16s(None, [0x00D3, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     # Speed learning Saria's Song
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int32(0x020B1734, 0xFFFFFFFF) # Header: frame_count
     else:
         rom.write_int32(0x020B1734, 0x0000003C) # Header: frame_count
@@ -353,13 +356,13 @@ def patch_rom(world, rom):
 
     # Speed learning Epona's Song
     rom.write_int32s(0x029BEF60, [0x000003E8, 0x00000001]) # Terminator Execution
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int16s(None, [0x005E, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
     else:
         rom.write_int16s(None, [0x005E, 0x000A, 0x000B, 0x000B]) # ID, start, end, end         
 
     rom.write_int32s(0x029BECB0, [0x00000013, 0x00000002]) # Textbox, Count
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int16s(None, [0xFFFF, 0x0000, 0x0009, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
     else:
         rom.write_int16s(None, [0x00D2, 0x0000, 0x0009, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
@@ -367,13 +370,13 @@ def patch_rom(world, rom):
 
     # Speed learning Song of Time
     rom.write_int32s(0x0252FB98, [0x000003E8, 0x00000001]) # Terminator Execution
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int16s(None, [0x0035, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
     else:
         rom.write_int16s(None, [0x0035, 0x003B, 0x003C, 0x003C]) # ID, start, end, end          
 
     rom.write_int32s(0x0252FC80, [0x00000013, 0x0000000C]) # Textbox, Count
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
     else:
         rom.write_int16s(None, [0x0019, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2        
@@ -382,7 +385,7 @@ def patch_rom(world, rom):
     rom.write_int32(0x01FC3B84, 0xFFFFFFFF) # Other Header?: frame_count
 
     # Speed learning Song of Storms
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int32(0x03041084, 0xFFFFFFFF) # Header: frame_count
     else:
         rom.write_int32(0x03041084, 0x0000000A) # Header: frame_count
@@ -392,7 +395,7 @@ def patch_rom(world, rom):
     rom.write_int16s(None, [0xFFFF, 0x00BE, 0x00C8, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     # Speed learning Minuet of Forest
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int32(0x020AFF84, 0xFFFFFFFF) # Header: frame_count
     else:
         rom.write_int32(0x020AFF84, 0x0000003C) # Header: frame_count
@@ -412,7 +415,7 @@ def patch_rom(world, rom):
     rom.write_int16s(None, [0x0004, 0x0000, 0x0000, 0x0000]) #action, start, end, ????
 
     # Speed learning Bolero of Fire
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int32(0x0224B5D4, 0xFFFFFFFF) # Header: frame_count
     else:
         rom.write_int32(0x0224B5D4, 0x0000003C) # Header: frame_count
@@ -432,7 +435,7 @@ def patch_rom(world, rom):
     rom.write_int16s(0x0224B888, [0x0000]) #action
 
     # Speed learning Serenade of Water
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int32(0x02BEB254, 0xFFFFFFFF) # Header: frame_count
     else:
         rom.write_int32(0x02BEB254, 0x0000003C) # Header: frame_count
@@ -461,14 +464,14 @@ def patch_rom(world, rom):
     rom.write_int32(0x01FFFDF4, 0x0000003C) # Header: frame_count
 
     rom.write_int32s(0x02000FD8, [0x00000013, 0x0000000E]) # Textbox, Count
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
     else:
         rom.write_int16s(None, [0x0013, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2
     rom.write_int16s(None, [0x0077, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     rom.write_int32s(0x02000128, [0x000003E8, 0x00000001]) # Terminator Execution
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int16s(None, [0x0032, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
     else:
         rom.write_int16s(None, [0x0032, 0x003A, 0x003B, 0x003B]) # ID, start, end, end  
@@ -477,14 +480,14 @@ def patch_rom(world, rom):
     rom.write_int32(0x0218AF14, 0x0000003C) # Header: frame_count
 
     rom.write_int32s(0x0218C574, [0x00000013, 0x00000008]) # Textbox, Count
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int16s(None, [0xFFFF, 0x0000, 0x0010, 0xFFFF, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2       
     else:
         rom.write_int16s(None, [0x0012, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2       
     rom.write_int16s(None, [0x0076, 0x0011, 0x0020, 0x0000, 0xFFFF, 0xFFFF]) # ID, start, end, type, alt1, alt2
 
     rom.write_int32s(0x0218B478, [0x000003E8, 0x00000001]) # Terminator Execution
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int16s(None, [0x0030, 0x0001, 0x0002, 0x0002]) # ID, start, end, end  
     else:
         rom.write_int16s(None, [0x0030, 0x003A, 0x003B, 0x003B]) # ID, start, end, end  
@@ -498,7 +501,7 @@ def patch_rom(world, rom):
     rom.write_int16s(0x0218AF50, [0x003E, 0x0011, 0x0020, 0x0000]) #action, start, end, ????
 
     # Speed learning Prelude of Light
-    if world.shuffle_song_items:
+    if songs_as_items:
         rom.write_int32(0x0252FD24, 0xFFFFFFFF) # Header: frame_count
     else:
         rom.write_int32(0x0252FD24, 0x0000003C) # Header: frame_count
@@ -892,7 +895,7 @@ def patch_rom(world, rom):
 
         table_len = len(initial_save_table)
         if table_len > 0x400:
-            raise Exception("The Initial Save Table has exceeded it's maximum capacity: 0x%03X/0x400" % table_len)
+            raise Exception("The Initial Save Table has exceeded its maximum capacity: 0x%03X/0x400" % table_len)
         rom.write_bytes(0x3481800, initial_save_table)
 
 
@@ -1051,6 +1054,20 @@ def patch_rom(world, rom):
         write_bits_to_save(0x00AE, 0x06) # "Spirit Map/Compass"
         write_bits_to_save(0x00B0, 0x06) # "BotW Map/Compass"
         write_bits_to_save(0x00B1, 0x06) # "Ice Map/Compass"
+        
+    # fast start items
+    if world.fast_start:
+        if world.shopsanity == "off":
+            write_bits_to_save(0x009D, 0x10) # start with Deku Shield
+            write_bits_to_save(0x0071, 0x10) # equip Deku Shield
+        write_bits_to_save(0x00A6, 0x09) # start with Prelude of Light & Serenade of Water
+        write_byte_to_save(0x0074, 0x00) # Deku stick in 1st inventory slot
+        write_byte_to_save(0x008C, 0x0A) # start with 10 Deku sticks
+        write_byte_to_save(0x0075, 0x01) # Deku nut in first inventory slot
+        write_byte_to_save(0x008D, 0x14) # start with 20 Deku nuts
+        write_bits_to_save(0x00A1, 0x12) # enable Deku stick/nut base capacity
+        write_byte_to_save(0x007F, 0x0D) # Farore's Wind in 12th inventory slot
+        write_byte_to_save(0x0035, 0x63) # start with 99 rupees
 
     # Revert change that Skips the Epona Race
     if not world.no_epona_race:
@@ -1176,7 +1193,7 @@ def patch_rom(world, rom):
     rom.write_byte(0x03481C00, world.id + 1) # Write player ID
 
     # Revert Song Get Override Injection
-    if not world.shuffle_song_items:
+    if not songs_as_items:
         # general get song
         rom.write_int32(0xAE5DF8, 0x240200FF)
         rom.write_int32(0xAE5E04, 0xAD0F00A4)
@@ -1215,7 +1232,7 @@ def patch_rom(world, rom):
         if itemid is None or location.address is None:
             continue
 
-        if location.type == 'Song' and not world.shuffle_song_items:
+        if location.type == 'Song' and not songs_as_items:
             rom.write_byte(locationaddress, itemid[0])
             itemid[0] = itemid[0] + 0x0D
             rom.write_byte(secondaryaddress, itemid[0])

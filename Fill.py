@@ -2,6 +2,7 @@ import random
 import logging
 from BaseClasses import CollectionState
 from Rules import set_shop_rules
+from ItemList import songlist
 
 class FillError(RuntimeError):
     pass
@@ -39,6 +40,16 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     progitempool = [item for item in itempool if item.advancement]
     prioitempool = [item for item in itempool if not item.advancement and item.priority]
     restitempool = [item for item in itempool if not item.advancement and not item.priority]
+    
+    if not worlds[0].shuffle_song_items and worlds[0].fast_start:
+        # add items to song pool to get count equal to number of songs
+        deficit = len(songlist) - len(songitempool)
+        if deficit > 0:
+            if len(restitempool) > deficit:
+                songitempool.extend(restitempool[-deficit:])
+                restitempool = restitempool[:-deficit]
+            else:
+                raise FillError('Not enough items for fast start.')
 
 
     # We place all the shop items first. Like songs, they have a more limited

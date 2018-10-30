@@ -1,4 +1,5 @@
 from collections import namedtuple
+from itertools import chain
 import logging
 import random
 
@@ -22,7 +23,6 @@ alwaysitems = ([
     'Ice Arrows', 
     'Light Arrows', 
     'Dins Fire', 
-    'Farores Wind', 
     'Rupee (1)'] 
     + ['Progressive Hookshot'] * 2
     + ['Deku Shield']
@@ -42,6 +42,9 @@ alwaysitems = ([
     + ['Progressive Wallet'] * 2
     + ['Magic Meter']
     + ['Piece of Heart (Treasure Chest Game)'])
+    
+fast_start_songs = ['Prelude of Light', 'Serenade of Water']
+fast_start_items = ['Farores Wind']
 
 DT_vanilla = (['Recovery Heart'] * 2)
 
@@ -820,7 +823,14 @@ def get_pool_core(world):
     tradeitem = random.choice(tradeitems[earliest_trade:latest_trade+1])
     pool.append(tradeitem)
     
-    pool.extend(songlist)
+    if not world.fast_start:
+        pool.extend(fast_start_items)
+        pool.extend(songlist)
+    else:
+        pool.extend(song for song in songlist if song not in fast_start_songs)
+        for itemname in chain(fast_start_items, fast_start_songs):
+            world.state.collect(ItemFactory(itemname))
+            pool.extend(get_junk_item())            
 
     if world.shuffle_mapcompass == 'remove' or world.shuffle_mapcompass == 'startwith':
         for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:
