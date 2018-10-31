@@ -310,21 +310,9 @@ Small Keys, Boss Keys, Deku Shields, Hylian Shields, and Ice Traps are not consi
 items if the appropriate "keysanity" settings are used. Note that unlike with the distribution of dungeon specific items like keys, this flag does consider
 the hands of the Desert Colossus as Spirit Temple locations, and to mirror the original game, Spirit Temple will get two items instead of just one.
 
-## Dungeon Quest
+## Master Quest Dungeons
 
-This option specifies the form dungeons will take. The item pool will be updated to reflect the items originally found in the dungeons used.
-
-### Vanilla
-
-Dungeons will have the same internal layout as they did in the original The Legend of Zelda: Ocarina of Time.
-
-### Master Quest
-
-Dungeons will have the internal layouts found in The Legend of Zelda: Ocarina of Time Master Quest.
-
-### Mixed
-
-Dungeons will each have a random internal layout chosen between the vanilla and Master Quest forms.
+With this option you can select a number of Master Quest dungeons to be included in your game. A value of 0 leaves all dungeons in their vanilla form. A value of 12 swaps each for its Master Quest form. 6 is an even mix of both. You may also opt for a random number of dungeons.
 
 ## Shuffle Kokiri Sword
 
@@ -408,7 +396,7 @@ location of the Boss Key will be removed.
 
 This setting, only available if you start with Maps and Compasses or they are spread across the world, disables the pedestal in the Temple of Time from giving information about
 the location of the Medallions and Spiritual Stones. Instead, the Compass from each of the eight eligible dungeons will tell the player which dungeon has
-which reward. If the dungeon quest is set to mixed, each of the ten Maps will tell the player whether any given dungeon is in the vanilla or Master Quest
+which reward. If Master Quest dungeons are to be mixed in, each of the ten Maps will tell the player whether any given dungeon is in the vanilla or Master Quest
 form. The Compasses from Bottom of the Well and Ice Cavern do not give any information.
 
 ## Remove Ganon's Door Boss Lock
@@ -1027,10 +1015,17 @@ Remove the Boss Key door leading to Ganondorf (default: False)
 Include the chosen Gold Skulltula Token locations in the item shuffle (default: off)
 
 ```
---quest [{vanilla,master,mixed}]
+--mq_dungeons_random
 ```
 
-Choose the internal layout of the dungeons (default: vanilla)
+Sets the number of Master Quest dungeons to a random value (default: False)
+
+```
+--mq_dungeons [{0,1,2,3,4,5,6,7,8,9,10,11,12}]
+```
+
+Sets the number of Master Quest dungeons (default: 0)
+
 
 ```
 --logic_skulltulas [{0,10,20,30,40,50}]
