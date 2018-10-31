@@ -8,7 +8,7 @@ import os, os.path
 import sys
 import struct
 import zlib
-import dill as pickle
+import pickle
 
 from BaseClasses import World, CollectionState, Spoiler
 from EntranceShuffle import link_entrances
@@ -112,8 +112,8 @@ def main(settings, window=dummy_window()):
         logger.info('Linking Entrances')
         link_entrances(world)
 
-            if settings.shopsanity != 'off':
-                world.random_shop_prices()
+        if settings.shopsanity != 'off':
+            world.random_shop_prices()
 
         window.update_progress(0 + 4*(id + 1)/settings.world_count)
         logger.info('Calculating Access Rules.')
@@ -289,6 +289,44 @@ def create_playthrough(worlds):
 
 def create_world_file(logger, worlds, output_dir):
     logger.info('Creating World File.')
+
+    # Remove references to Lambdas so that pickle works
+    for world in worlds:
+        # delete the cache and state
+        world._cached_locations = {}
+        world._entrance_cache = {}
+        world._region_cache = {}
+        world._location_cache = {}
+        world.state = None
+
+        # delete the spoiler world rules
+        if world.spoiler and world.spoiler.playthrough:
+            for location in [location for _,sphere in world.spoiler.playthrough.items() for location in sphere]:
+                location.access_rule = None
+                location.item_rule = None
+                location.always_allow = None
+                location.parent_region = None
+                location.world = None
+        if world.spoiler:
+            for location in [location for _,world_locations in world.spoiler.required_locations.items() for location in world_locations]:
+                location.access_rule = None
+                location.item_rule = None
+                location.always_allow = None
+                location.parent_region = None
+                location.world = None
+
+        # delete the main world rules
+        for region in world.regions:
+            region.can_reach = None
+            for entrance in region.entrances:
+                entrance.access_rule = None
+            for entrance in region.exits:
+                entrance.access_rule = None
+            for location in region.locations:
+                location.access_rule = None
+                location.item_rule = None
+                location.always_allow = None
+
     compressed_data = zlib.compress(pickle.dumps(worlds))
     filename = 'OoT_%s_%s_W%d.wf' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count)
     world_file = open(os.path.join(output_dir, filename), 'wb')

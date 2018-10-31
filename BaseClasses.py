@@ -17,7 +17,6 @@ class World(object):
         self._cached_locations = None
         self._entrance_cache = {}
         self._region_cache = {}
-        self._entrance_cache = {}
         self._location_cache = {}
         self.required_locations = []
         self.shop_prices = {}
