@@ -1100,10 +1100,7 @@ setting_infos = [
     Setting_Info('mq_dungeons_random', bool, 1, True, 
         {
             'help': '''\
-                    If set, a random number of dungeons will be swapped to match
-                    their Master Quest designs.
-
-                    Any value (0-12) is equally likely.
+                    If set, a uniformly random number of dungeons will have Master Quest designs.
                     ''',
             'action': 'store_true'
         },
@@ -1113,13 +1110,8 @@ setting_infos = [
             'widget': 'Checkbutton',
             'default': 'unchecked',
             'tooltip':'''\
-                      If set, a random number of
-                      dungeons will be swapped to
-                      match their Master Quest
-                      designs.
-
-                      Any number of Master Quest
-                      dungeons is equally likely.
+                      If set, a random number of dungeons 
+                      will have Master Quest designs.
                       '''
         }),
     Setting_Info('mq_dungeons', int, 4, True, 
@@ -1129,12 +1121,12 @@ setting_infos = [
             'nargs': '?',
             'choices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             'help': '''\
-                    Select the precise number (0-12) of Master Quest dungeons to appear in the game.
-                    0:  (default) All dungeon interiors will be laid out as they were in the original game.
+                    Select a number (0-12) of Master Quest dungeons to appear in the game.
+                    0:  (default) All dungeon will have their original designs.
                     ...
                     6:  50/50 split; Half of all dungeons will be from Master Quest.
                     ...
-                    12: All vanilla dungeons will be swapped out for their Master Quest redesigns.
+                    12: All dungeons will have Master Quest redesigns.
                     '''
         },
         {
@@ -1145,15 +1137,17 @@ setting_infos = [
             'max': 12,
             'dependency': lambda guivar: not guivar['mq_dungeons_random'].get(),
             'tooltip':'''\
-                      Select the precise number of Master Quest
-                      dungeons to appear in the game. (0-12)
+                      Select a number of Master Quest 
+                      dungeons to appear in the game.
 
-                      0: All dungeon interiors will be laid out as
-                      they were in the original game. (default)
-                      6: 50/50 split; Half of all dungeons will be
-                      from Master Quest.
-                      12: All vanilla dungeons will be swapped
-                      out for their Master Quest redesigns.
+                      0: All dungeon will have their 
+                      original designs. (default)
+
+                      6: Half of all dungeons will 
+                      be from Master Quest.
+
+                      12: All dungeons will have 
+                      Master Quest redesigns.
                       ''',
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
