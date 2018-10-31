@@ -23,6 +23,7 @@ from Hints import buildGossipHints
 from Utils import default_output_path, is_bundled, subprocess_args
 from version import __version__
 from OcarinaSongs import verify_scarecrow_song_str
+from Settings import setting_infos
 
 class dummy_window():
     def __init__(self):
@@ -38,35 +39,41 @@ def main(settings, window=dummy_window()):
 
     logger = logging.getLogger('')
 
+    worlds = []
+
+    # load worlds from patch file
+    if settings.patch_file_action == 'load':
+        logger.info('Unpacking World File.')
+        patch_file = open(settings.patch_file, 'rb')
+        compressed_data = patch_file.read()
+        worlds = pickle.loads(zlib.decompress(compressed_data))
+        patch_file.close()
+
+        # Get settings from patch file
+        for setting in filter(lambda s: s.shared and s.bitwidth > 0, setting_infos):
+            settings.__dict__[setting.name] = worlds[0].__dict__[setting.name]
+        settings.count = 1
+        settings.settings_string = worlds[0].settings_string
+        settings.update_seed(worlds[0].seed)
+
+        for world in worlds:
+            world.settings = settings
+            world.__dict__.update(settings.__dict__)
+        
+        if settings.player_num > settings.world_count or settings.player_num < 1:
+            raise Exception('Player Num must be between 1 and %d' % settings.world_count)
+
     # verify that the settings are valid
     if settings.free_scarecrow:
         verify_scarecrow_song_str(settings.scarecrow_song, settings.ocarina_songs)
-
-    # initialize the world
-
-    worlds = []
 
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom != 'None':
         window.update_status('Loading ROM')
         rom = LocalRom(settings)
 
-    if settings.create_from_world_file:
-        logger.info('Unpacking World File.')
-        world_file = open(settings.world_file, 'rb')
-        compressed_data = world_file.read()
-        worlds = pickle.loads(zlib.decompress(compressed_data))
-        world_file.close()
-        settings.player_num = settings.world_file_num
-        settings.world_count = len(worlds)
-        settings.update()
-        
-        if settings.player_num > settings.world_count or settings.player_num < 1:
-            raise Exception('Player Num must be between 1 and %d' % settings.world_count)
-
-        # restore rand state for correct post fill state
-        random.setstate(worlds[0].rand_state)
-    else:
+    # initialize the world
+    if settings.patch_file_action != 'load':
         if settings.compress_rom == 'None':
             settings.create_spoiler = True
             settings.update()
@@ -92,38 +99,38 @@ def main(settings, window=dummy_window()):
 
             world.spoiler = Spoiler(worlds)
 
-        window.update_progress(0 + 1*(id + 1)/settings.world_count)
-        logger.info('Creating Overworld')
+            window.update_progress(0 + 1*(id + 1)/settings.world_count)
+            logger.info('Creating Overworld')
 
-        # Determine MQ Dungeons
-        td_count = len(world.dungeon_mq)
-        if world.mq_dungeons_random:
-            world.mq_dungeons = random.randint(0, td_count)
-        mqd_count = world.mq_dungeons
-        mqd_picks = random.sample(list(world.dungeon_mq), mqd_count)
-        for dung in mqd_picks:
-            world.dungeon_mq[dung] = True
+            # Determine MQ Dungeons
+            td_count = len(world.dungeon_mq)
+            if world.mq_dungeons_random:
+                world.mq_dungeons = random.randint(0, td_count)
+            mqd_count = world.mq_dungeons
+            mqd_picks = random.sample(list(world.dungeon_mq), mqd_count)
+            for dung in mqd_picks:
+                world.dungeon_mq[dung] = True
 
-        create_regions(world)
+            create_regions(world)
 
-        window.update_progress(0 + 2*(id + 1)/settings.world_count)
-        logger.info('Creating Dungeons')
-        create_dungeons(world)
+            window.update_progress(0 + 2*(id + 1)/settings.world_count)
+            logger.info('Creating Dungeons')
+            create_dungeons(world)
 
-        window.update_progress(0 + 3*(id + 1)/settings.world_count)
-        logger.info('Linking Entrances')
-        link_entrances(world)
+            window.update_progress(0 + 3*(id + 1)/settings.world_count)
+            logger.info('Linking Entrances')
+            link_entrances(world)
 
-        if settings.shopsanity != 'off':
-            world.random_shop_prices()
+            if settings.shopsanity != 'off':
+                world.random_shop_prices()
 
-        window.update_progress(0 + 4*(id + 1)/settings.world_count)
-        logger.info('Calculating Access Rules.')
-        set_rules(world)
+            window.update_progress(0 + 4*(id + 1)/settings.world_count)
+            logger.info('Calculating Access Rules.')
+            set_rules(world)
 
-        window.update_progress(0 + 5*(id + 1)/settings.world_count)
-        logger.info('Generating Item Pool.')
-        generate_itempool(world)
+            window.update_progress(0 + 5*(id + 1)/settings.world_count)
+            logger.info('Generating Item Pool.')
+            generate_itempool(world)
 
         window.update_status('Placing the Items')
         logger.info('Fill the world.')
@@ -151,8 +158,13 @@ def main(settings, window=dummy_window()):
 
     output_dir = default_output_path(settings.output_dir)
 
-    if settings.create_world_file and not settings.create_from_world_file:
-        create_world_file(logger, worlds, output_dir)
+
+    if settings.patch_file_action == 'load':
+        # restore rand state for correct post fill state
+        random.setstate(worlds[0].rand_state)
+    else:
+        # save the random state
+        worlds[0].rand_state = random.getstate()
 
     if settings.compress_rom != 'None':
         window.update_status('Patching ROM')
@@ -194,6 +206,9 @@ def main(settings, window=dummy_window()):
     if settings.create_spoiler:
         window.update_status('Creating Spoiler Log')
         worlds[settings.player_num - 1].spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
+
+    if settings.patch_file_action == 'save':
+        create_world_file(logger, worlds, output_dir)
 
     window.update_progress(100)
     window.update_status('Success: Rom patched successfully')
@@ -329,11 +344,17 @@ def create_world_file(logger, worlds, output_dir):
                 location.item_rule = None
                 location.always_allow = None
 
-    # save the random state
-    worlds[0].rand_state = random.getstate()
+    # Remove setting fields that will be overwritten
+    settings = worlds[0].settings
+    for setting in filter(lambda s: not (s.shared and s.bitwidth > 0), setting_infos):
+        if setting.name not in ['seed', 'count', 'player_num']:
+            settings.__dict__[setting.name] = None
+    for world in worlds:
+        world.settings = settings
+        world.__dict__.update(settings.__dict__)
 
     compressed_data = zlib.compress(pickle.dumps(worlds))
     filename = 'OoT_%s_%s_W%d.wf' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count)
-    world_file = open(os.path.join(output_dir, filename), 'wb')
-    world_file.write(compressed_data)
-    world_file.close()
+    patch_file = open(os.path.join(output_dir, filename), 'wb')
+    patch_file.write(compressed_data)
+    patch_file.close()
