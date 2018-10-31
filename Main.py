@@ -304,13 +304,19 @@ def create_playthrough(worlds):
     for world in old_worlds:
         world.spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
 
+
+class world_id:
+    def __init__(self, id):
+        self.id = id
+
+
 def create_world_file(logger, worlds, output_dir):
     logger.info('Creating World File.')
 
     # Remove references to Lambdas so that pickle works
     for world in worlds:
         # delete the cache and state
-        world._cached_locations = {}
+        world._cached_locations = None
         world._entrance_cache = {}
         world._region_cache = {}
         world._location_cache = {}
@@ -323,14 +329,14 @@ def create_world_file(logger, worlds, output_dir):
                 location.item_rule = None
                 location.always_allow = None
                 location.parent_region = None
-                location.world = None
+                location.world = world_id(location.world.id)
         if world.spoiler:
             for location in [location for _,world_locations in world.spoiler.required_locations.items() for location in world_locations]:
                 location.access_rule = None
                 location.item_rule = None
                 location.always_allow = None
                 location.parent_region = None
-                location.world = None
+                location.world = world_id(location.world.id)
 
         # delete the main world rules
         for region in world.regions:
