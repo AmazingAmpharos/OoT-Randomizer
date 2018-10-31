@@ -227,6 +227,27 @@ setting_infos = [
                     Use to select world to generate when there are multiple worlds.
                     ''',
             'type': int}),
+    Setting_Info('create_world_file', bool, 0, False, {
+            'default': False,
+            'help': '''\
+                    Create a World File with the info for all worlds.
+                    ''',
+            'type': bool}),
+    Setting_Info('world_file', str, 0, False, {
+            'default': '',
+            'help': 'Path to a world file.'}),
+    Setting_Info('world_file_num', int, 0, False, {
+            'default': 1,
+            'help': '''\
+                    Use to select world to generate when there are multiple worlds.
+                    ''',
+            'type': int}),
+    Setting_Info('create_from_world_file', bool, 0, False, {
+            'default': False,
+            'help': '''\
+                    Create from the selected World File.
+                    ''',
+            'type': bool}),
     Setting_Info('create_spoiler', bool, 1, True, 
         {
             'help': 'Output a Spoiler File',

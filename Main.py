@@ -7,6 +7,8 @@ import time
 import os, os.path
 import sys
 import struct
+import zlib
+import dill as pickle
 
 from BaseClasses import World, CollectionState, Spoiler
 from EntranceShuffle import link_entrances
@@ -43,35 +45,50 @@ def main(settings, window=dummy_window()):
     # initialize the world
 
     worlds = []
-    if settings.compress_rom == 'None':
-        settings.create_spoiler = True
-        settings.update()
-
-    if not settings.world_count:
-        settings.world_count = 1
-    if settings.world_count < 1 or settings.world_count > 31:
-        raise Exception('World Count must be between 1 and 31')
-    if settings.player_num > settings.world_count or settings.player_num < 1:
-        raise Exception('Player Num must be between 1 and %d' % settings.world_count)
-
-    for i in range(0, settings.world_count):
-        worlds.append(World(settings))
-
-    random.seed(worlds[0].numeric_seed)
-
-    logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, worlds[0].seed)
 
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom != 'None':
         window.update_status('Loading ROM')
         rom = LocalRom(settings)
 
-    window.update_status('Creating the Worlds')
-    for id, world in enumerate(worlds):
-        world.id = id
-        logger.info('Generating World %d.' % id)
+    if settings.create_from_world_file:
+        logger.info('Unpacking World File.')
+        world_file = open(settings.world_file, 'rb')
+        compressed_data = world_file.read()
+        worlds = pickle.loads(zlib.decompress(compressed_data))
+        world_file.close()
+        settings.player_num = settings.world_file_num
+        settings.world_count = len(worlds)
+        settings.update()
+        
+        if settings.player_num > settings.world_count or settings.player_num < 1:
+            raise Exception('Player Num must be between 1 and %d' % settings.world_count)
 
-        world.spoiler = Spoiler(worlds)
+    else:
+        if settings.compress_rom == 'None':
+            settings.create_spoiler = True
+            settings.update()
+
+        if not settings.world_count:
+            settings.world_count = 1
+        if settings.world_count < 1 or settings.world_count > 31:
+            raise Exception('World Count must be between 1 and 31')
+        if settings.player_num > settings.world_count or settings.player_num < 1:
+            raise Exception('Player Num must be between 1 and %d' % settings.world_count)
+
+        for i in range(0, settings.world_count):
+            worlds.append(World(settings))
+
+        random.seed(worlds[0].numeric_seed)
+
+        logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, worlds[0].seed)
+
+        window.update_status('Creating the Worlds')
+        for id, world in enumerate(worlds):
+            world.id = id
+            logger.info('Generating World %d.' % id)
+
+            world.spoiler = Spoiler(worlds)
 
         window.update_progress(0 + 1*(id + 1)/settings.world_count)
         logger.info('Creating Overworld')
@@ -95,8 +112,8 @@ def main(settings, window=dummy_window()):
         logger.info('Linking Entrances')
         link_entrances(world)
 
-        if settings.shopsanity != 'off':
-            world.random_shop_prices()
+            if settings.shopsanity != 'off':
+                world.random_shop_prices()
 
         window.update_progress(0 + 4*(id + 1)/settings.world_count)
         logger.info('Calculating Access Rules.')
@@ -106,30 +123,34 @@ def main(settings, window=dummy_window()):
         logger.info('Generating Item Pool.')
         generate_itempool(world)
 
-    window.update_status('Placing the Items')
-    logger.info('Fill the world.')
-    distribute_items_restrictive(window, worlds)
-    window.update_progress(35)
+        window.update_status('Placing the Items')
+        logger.info('Fill the world.')
+        distribute_items_restrictive(window, worlds)
+        window.update_progress(35)
 
-    if settings.create_spoiler:
-        window.update_status('Calculating Spoiler Data')
-        logger.info('Calculating playthrough.')
-        create_playthrough(worlds)
-        window.update_progress(50)
-    if settings.hints != 'none':
-        window.update_status('Calculating Hint Data')
-        CollectionState.update_required_items(worlds)
-        buildGossipHints(worlds[settings.player_num - 1])
-        window.update_progress(55)
+        if settings.create_spoiler:
+            window.update_status('Calculating Spoiler Data')
+            logger.info('Calculating playthrough.')
+            create_playthrough(worlds)
+            window.update_progress(50)
+        if settings.hints != 'none':
+            window.update_status('Calculating Hint Data')
+            CollectionState.update_required_items(worlds)
+            for world in worlds:
+                buildGossipHints(world)
+            window.update_progress(55)
 
     logger.info('Patching ROM.')
 
     if settings.world_count > 1:
-        outfilebase = 'OoT_%s_%s_W%dP%d' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count, worlds[0].player_num)
+        outfilebase = 'OoT_%s_%s_W%dP%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count, settings.player_num)
     else:
         outfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
 
     output_dir = default_output_path(settings.output_dir)
+
+    if settings.create_world_file and not settings.create_from_world_file:
+        create_world_file(logger, worlds, output_dir)
 
     if settings.compress_rom != 'None':
         window.update_status('Patching ROM')
@@ -266,3 +287,10 @@ def create_playthrough(worlds):
     for world in old_worlds:
         world.spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
 
+def create_world_file(logger, worlds, output_dir):
+    logger.info('Creating World File.')
+    compressed_data = zlib.compress(pickle.dumps(worlds))
+    filename = 'OoT_%s_%s_W%d.wf' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count)
+    world_file = open(os.path.join(output_dir, filename), 'wb')
+    world_file.write(compressed_data)
+    world_file.close()
