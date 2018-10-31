@@ -1542,15 +1542,15 @@ def patch_rom(world, rom):
     # actually write the save table to rom
     write_save_table(rom)
 
+    # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
+    random.seed()
+    
     # patch music 
     if world.background_music == 'random':
         randomize_music(rom)
     elif world.background_music == 'off':    
         disable_music(rom)
 
-    # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
-    random.seed()
-    
     # patch tunic colors
     Tunics = [
         (world.kokiricolor, 0x00B6DA38), # Kokiri Tunic

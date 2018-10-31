@@ -64,6 +64,8 @@ def main(settings, window=dummy_window()):
         if settings.player_num > settings.world_count or settings.player_num < 1:
             raise Exception('Player Num must be between 1 and %d' % settings.world_count)
 
+        # restore rand state for correct post fill state
+        random.setstate(worlds[0].rand_state)
     else:
         if settings.compress_rom == 'None':
             settings.create_spoiler = True
@@ -326,6 +328,9 @@ def create_world_file(logger, worlds, output_dir):
                 location.access_rule = None
                 location.item_rule = None
                 location.always_allow = None
+
+    # save the random state
+    worlds[0].rand_state = random.getstate()
 
     compressed_data = zlib.compress(pickle.dumps(worlds))
     filename = 'OoT_%s_%s_W%d.wf' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count)
