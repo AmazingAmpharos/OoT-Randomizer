@@ -17,7 +17,6 @@ class World(object):
         self._cached_locations = None
         self._entrance_cache = {}
         self._region_cache = {}
-        self._entrance_cache = {}
         self._location_cache = {}
         self.required_locations = []
         self.shop_prices = {}
@@ -521,6 +520,12 @@ class CollectionState(object):
             self.location_cache = {k: v for k, v in self.location_cache.items() if not v}
             self.entrance_cache = {k: v for k, v in self.entrance_cache.items() if not v}
             self.recursion_count = 0
+
+    def __getstate__(self):
+        return self.__dict__.copy()
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
 
     def __getattr__(self, item):
         if item.startswith('can_reach_'):

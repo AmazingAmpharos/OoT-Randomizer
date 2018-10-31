@@ -213,20 +213,23 @@ setting_infos = [
                     time).
                     ''',
             'type': int}),
-    Setting_Info('world_count', int, 0, False, {
+    Setting_Info('world_count', int, 5, True, {
             'default': 1,
             'help': '''\
                     Use to create a multi-world generation for co-op seeds.
                     World count is the number of players. Warning: Increasing
                     the world count will drastically increase generation time.
                     ''',
-            'type': int}),
+            'type': int}, {}),
     Setting_Info('player_num', int, 0, False, {
             'default': 1,
             'help': '''\
                     Use to select world to generate when there are multiple worlds.
                     ''',
             'type': int}),
+    Setting_Info('patch_file', str, 0, False, {
+            'default': '',
+            'help': 'Path to a patch file.'}),
     Setting_Info('create_spoiler', bool, 1, True, 
         {
             'help': 'Output a Spoiler File',
@@ -270,6 +273,39 @@ setting_infos = [
                       but subsequent generations will be quick. It is highly 
                       recommended to compress or the game will crash 
                       frequently except on real N64 hardware.
+                      '''
+        }),
+    Setting_Info('patch_file_action', str, 2, False, 
+        {
+            'default': 'none',
+            'const': 'none',
+            'nargs': '?',
+            'help': '''\
+                    Allows saving and loading a patch file
+                    none:   Do not create a patch file.
+                    save:   Create a patch file.
+                    load:   Load a patch file
+                    ''',
+        },
+        {
+            'text': 'Patch File Action',
+            'widget': 'Radiobutton',
+            'default': 'No Patch File',
+            'horizontal': True,
+            'options': {
+                'No Patch File': 'none',
+                'Save Patch File': 'save',
+                'Load Patch File': 'load',
+            },
+            'tooltip':'''\
+                        Save or Load a Patch File:
+
+                        'No Patch': Do not create a
+                        patch file.
+
+                        'Save': Create a patch file.
+
+                        'Load': Load a patch file.
                       '''
         }),
     Setting_Info('open_forest', bool, 1, True, 
@@ -1841,7 +1877,7 @@ setting_infos = [
         },
         {
             'text': 'Default Targeting Option',
-            'group': 'rom_tab',
+            'group': 'cosmetics',
             'widget': 'Combobox',
             'default': 'Hold',
             'options': {
