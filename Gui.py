@@ -200,6 +200,7 @@ def guiMain(settings=None):
             settings.seed = guivars['seed'].get()
             settings.update_with_settings_string(text)
             settings_to_guivars(settings, guivars)
+            show_settings()
         except Exception as e:
             messagebox.showerror(title="Error", message="Invalid settings string")
 
