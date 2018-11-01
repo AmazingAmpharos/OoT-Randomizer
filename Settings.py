@@ -1784,6 +1784,32 @@ setting_infos = [
                       required to beat the game.
                       '''
         }),
+    Setting_Info('hint_dist', str, 1, True, 
+        {
+            'default': 'normal',
+            'const': 'normal',
+            'nargs': '?',
+            'help': '''\
+                    Choose how Gossip Stones hints are distributed
+                    normal: Use the standard distribution of hint types
+                    tourney: Use the tourney distribution of hint types
+                    '''
+        },
+        {
+            'text': 'Hint Distribution',
+            'group': 'other',
+            'widget': 'Combobox',
+            'default': 'Normal',
+            'options': {
+                'Normal': 'normal',
+                'Tourney': 'tourney',
+            },
+            'tooltip':'''\
+                      Tourney distribution has some 
+                      duplicate hints and no junk
+                      hints.
+                      '''
+        }),    
     Setting_Info('text_shuffle', str, 2, True, 
         {
             'default': 'none',

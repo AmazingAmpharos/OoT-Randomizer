@@ -74,8 +74,13 @@ def isRestrictedDungeonItem(dungeon, item):
     return False
 
 
-def add_hint(world, id, text):
-    world.spoiler.hints[id] = lineWrap(text)
+def add_hint(world, IDs, text, count):
+    while random.random() < count:
+        count -= 1
+        if IDs:
+            world.spoiler.hints[IDs.pop(0)] = lineWrap(text)
+        else:
+            return
 
 
 def writeGossipStoneHintsHints(world, messages):
@@ -245,54 +250,76 @@ def get_junk_hint(world, checked):
 
 
 hint_func = {
-    'woth': get_woth_hint,
-    'loc': get_good_loc_hint,
-    'item': get_good_item_hint,
-    'ow': get_overworld_hint,
-    'dungeon': get_dungeon_hint,
-    'junk': get_junk_hint,
+    'trial':    lambda world, checked: None,
+    'always':   lambda world, checked: None,
+    'woth':     get_woth_hint,
+    'loc':      get_good_loc_hint,
+    'item':     get_good_item_hint,
+    'ow':       get_overworld_hint,
+    'dungeon':  get_dungeon_hint,
+    'junk':     get_junk_hint,
+}
+
+
+hint_dist_sets = {
+    'normal': {
+        'trial':    (0.0, 1),
+        'always':   (0.0, 1),
+        'woth':     (3.5, 1),
+        'loc':      (4.0, 1),
+        'item':     (5.0, 1),
+        'ow':       (2.0, 1),
+        'dungeon':  (3.5, 1),
+        'junk':     (3.0, 1),
+    },
+    'tourney': {
+        'trial':    (0.0, 1),
+        'always':   (0.0, 1.5),
+        'woth':     (4.0, 2),
+        'loc':      (2.0, 1),
+        'item':     (2.0, 1),
+        'ow':       (2.0, 1),
+        'dungeon':  (2.0, 1),
+        'junk':     (0.0, 1),
+    },
 }
 
 
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(world):
-
-    stoneIDs = list(gossipLocations.keys())
-
-    # Don't repeat hints
     checkedLocations = []
 
-    #shuffles the stone addresses for randomization, always locations will be placed first
+    stoneIDs = list(gossipLocations.keys())
     random.shuffle(stoneIDs)
+
+    hint_dist = hint_dist_sets[world.hint_dist]
+    hint_types = list(hint_dist.keys())
+    hint_prob = [prob for prob,count in hint_dist.values()]
 
     # Add trial hints
     if world.trials < 6 and world.trials > 3:
         for trial,skipped in world.skipped_trials.items():
             if skipped:
-                add_hint(world, stoneIDs.pop(0), buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."))
+                add_hint(world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."), hint_dist['trial'][1])
     elif world.trials <= 3 and world.trials > 0:
         for trial,skipped in world.skipped_trials.items():
             if not skipped:
-                add_hint(world, stoneIDs.pop(0), buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."))
+                add_hint(world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."), hint_dist['trial'][1])
 
     # Add required location hints
     alwaysLocations = getHintGroup('alwaysLocation', world)
     for hint in alwaysLocations:
         location = world.get_location(hint.name)
         checkedLocations.append(hint.name)   
-        add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
-            colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."))
-
-
-    hint_types = list(hint_func.keys())
-    hint_dist = [1,1,1,1,1,1]
+        add_hint(world, stoneIDs, buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
+            colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), hint_dist['always'][1])
 
     while stoneIDs:
-        [hint_type] = random_choices(hint_types, weights=hint_dist)
+        [hint_type] = random_choices(hint_types, weights=hint_prob)
 
         hint = hint_func[hint_type](world, checkedLocations)
         if hint != None:
-            add_hint(world, stoneIDs.pop(0), hint)
+            add_hint(world, stoneIDs, hint, hint_dist[hint_type][1])
 
 
 # builds boss reward text that is displayed at the temple of time altar for child and adult, pull based off of item in a fixed order.
