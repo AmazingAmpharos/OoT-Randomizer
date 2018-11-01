@@ -205,10 +205,10 @@ def guiMain(settings=None):
             messagebox.showerror(title="Error", message="Invalid settings string")
 
     label = Label(settingsFrame, text="Settings String")
-    importSettingsButton = Button(settingsFrame, text='Import Settings String', command=import_settings)
+    widgets['import_settings'] = Button(settingsFrame, text='Import Settings String', command=import_settings)
     label.pack(side=LEFT, anchor=W, padx=5)
     widgets['setting_string'].pack(side=LEFT, anchor=W)
-    importSettingsButton.pack(side=LEFT, anchor=W, padx=5)
+    widgets['import_settings'].pack(side=LEFT, anchor=W, padx=5)
 
 
     fileDialogFrame = Frame(frames['rom_tab'])
@@ -427,6 +427,7 @@ def guiMain(settings=None):
             widgets['create_spoiler'].configure(state='disabled')
             widgets['create_spoiler'].configure(state='disabled')
             widgets['count'].configure(state='disabled')
+            widgets['import_settings'].configure(state='disabled')
             widgets['setting_string'].configure(state='disabled')
             widgets['seed'].configure(state='disabled')
             widgets['patch_file'].configure(state='normal')
@@ -438,6 +439,7 @@ def guiMain(settings=None):
             widgets['world_count'].configure(state='normal')
             widgets['create_spoiler'].configure(state='normal')
             widgets['count'].configure(state='normal')
+            widgets['import_settings'].configure(state='normal')
             widgets['setting_string'].configure(state='normal')
             widgets['seed'].configure(state='normal')
             widgets['patch_file'].configure(state='disabled')
