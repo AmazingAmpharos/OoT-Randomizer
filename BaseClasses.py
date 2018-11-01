@@ -4,6 +4,7 @@ import logging
 from collections import OrderedDict, Counter, defaultdict
 from version import __version__ as OoTRVersion
 import random
+import re
 
 
 class World(object):
@@ -926,8 +927,44 @@ class Spoiler(object):
                         outfile.write('\n\nWay of the Hero:\n\n')
                         outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations[world.id]]))
 
+                gossipLocations = {
+                    0x0401: 'Zoras Fountain (Fairy)',
+                    0x0402: 'Zoras Fountain (Jabu)',
+                    0x0403: 'Lake Hylia (Lab)',
+                    0x0404: 'Death Mountain Trail (Biggoron)',
+                    0x0405: 'Death Mountain Crater (Bombable Wall)',
+                    0x0406: 'Temple of Time (Left)',
+                    0x0407: 'Temple of Time (Left-Center)',
+                    0x0408: 'Lake Hylia (Southwest Corner)',
+                    0x0409: 'Zoras Domain (Mweep)',
+                    0x040A: 'Graveyard (Shadow Temple)',
+                    0x040B: 'Hyrule Castle (Rock Wall)',
+                    0x040C: 'Zoras River (Waterfall)',
+                    0x040D: 'Zoras River (Plateau)',
+                    0x040E: 'Temple of Time (Right-Center)',
+                    0x040F: 'Lake Hylia (Southeast Corner)',
+                    0x0410: 'Temple of Time (Right)',
+                    0x0411: 'Gerudo Valley (Waterfall)',
+                    0x0412: 'Hyrule Castle (Malon)',
+                    0x0413: 'Hyrule Castle (Storms Grotto)',
+                    0x0414: 'Dodongos Cavern (Bombable Wall)',
+                    0x0415: 'Goron City (Maze)',
+                    0x0416: 'Sacred Forest Meadow (Maze Lower)',
+                    0x0417: 'Sacred Forest Meadow (Maze Upper)',
+                    0x0418: 'Generic Grotto',
+                    0x0419: 'Goron City (Medigoron)',
+                    0x041A: 'Desert Colossus (Spirit Temple)',
+                    0x041B: 'Hyrule Field (Hammer Grotto)',
+                    0x041C: 'Sacred Forest Meadow (Saria)',
+                    0x041D: 'Lost Woods (Bridge)',
+                    0x041E: 'Kokiri Forest (Storms)',
+                    0x041F: 'Kokiri Forest (Deku Tree Left)',
+                    0x0420: 'Kokiri Forest (Deku Tree Right)'
+                }
+
                 if self.settings.world_count > 1:
                     outfile.write('\n\nGossip Stone Hints [Player %d]:\n\n' % self.settings.player_num)
                 else:
-                    outfile.write('\n\nGossip Stone Hints:\n\n')
-                outfile.write('\n'.join(self.hints.values()))
+                    outfile.write('\n\nGossip Stone Hints:\n')
+                for id, hint in self.hints.items():
+                    outfile.write('\n%s: %s' % (gossipLocations[id] if id in gossipLocations else "Unknown", re.sub('\x05[\x40\x41\x42\x43\x44\x45\x46\x47]', '', hint.replace('&', ' ').replace('^', ' '))))
