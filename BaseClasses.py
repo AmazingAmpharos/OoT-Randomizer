@@ -932,5 +932,7 @@ class Spoiler(object):
                     outfile.write('\n\nGossip Stone Hints [Player %d]:\n\n' % self.settings.player_num)
                 else:
                     outfile.write('\n\nGossip Stone Hints:\n')
-                for id, hint in self.hints.items():
-                    outfile.write('\n%s: %s' % (gossipLocations[id] if id in gossipLocations else "Unknown", re.sub('\x05[\x40\x41\x42\x43\x44\x45\x46\x47]', '', hint.replace('&', ' ').replace('^', ' '))))
+
+                hint_ids = sorted(list(self.hints.keys()), key=lambda id: gossipLocations[id])
+                for id in hint_ids:
+                    outfile.write('\n%s: %s' % (gossipLocations[id] if id in gossipLocations else "Unknown", re.sub('\x05[\x40\x41\x42\x43\x44\x45\x46\x47]', '', self.hints[id].replace('&', ' ').replace('^', ' '))))
