@@ -212,7 +212,10 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Ganons Castle Shadow Trial', 'Ganons Castle Shadow Trial'),
                          ('Ganons Castle Spirit Trial', 'Ganons Castle Spirit Trial'),
                          ('Ganons Castle Light Trial', 'Ganons Castle Light Trial'),
-                         ('Ganons Castle Tower', 'Ganons Castle Tower')
+                         ('Ganons Castle Tower', 'Ganons Castle Tower'),
+                         ('Death Mountian Crater Gossip Stone', 'Death Mountian Crater Gossip Stone'),
+                         ('Goron City Maze Gossip Stone', 'Goron City Maze Gossip Stone'),
+                         ('Goron City Medigoron Gossip Stone', 'Goron City Medigoron Gossip Stone'),
                         ]
 
 DT_vanilla_connections = [('Deku Tree Slingshot Passage', 'Deku Tree Slingshot Room'),
@@ -458,6 +461,10 @@ default_connections = [('Links House Exit', 'Kokiri Forest'),
                        ('DMC Hammer Grotto', 'DMC Hammer Grotto'), 
                        ('Zora River Storms Grotto', 'Zora River Storms Grotto'), 
                        ('Zora Shop Adult Access', 'Zora Shop'),
+                       ('Zoras Domain Gossip Stone Child', 'Zoras Domain Gossip Stone'),
+                       ('Zoras Domain Gossip Stone Adult', 'Zoras Domain Gossip Stone'),
+                       ('Zoras Fountain Gossip Stone Child', 'Zoras Fountain Gossip Stone'),
+                       ('Zoras Fountain Gossip Stone Adult', 'Zoras Fountain Gossip Stone'),
                       ]
 
 # non shuffled dungeons

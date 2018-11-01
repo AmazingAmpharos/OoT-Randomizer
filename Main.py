@@ -146,7 +146,7 @@ def main(settings, window=dummy_window()):
             window.update_status('Calculating Hint Data')
             CollectionState.update_required_items(worlds)
             for world in worlds:
-                buildGossipHints(world)
+                buildGossipHints(worlds, world)
             window.update_progress(55)
 
     logger.info('Patching ROM.')

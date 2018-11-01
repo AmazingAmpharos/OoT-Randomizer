@@ -57,7 +57,7 @@ def create_regions(world):
             ['Field to Forest', 'Field to Lake', 'Field to Valley', 'Field to Castle Town', 'Field to Kakariko', 
              'Field to Zora River', 'Lon Lon Rance Entrance', 'Remote Southern Grotto', 'Field Near Lake Outside Fence Grotto', 
              'Field Near Lake Inside Fence Grotto', 'Field Valley Grotto', 'Field West Castle Town Grotto',
-             'Field Far West Castle Town Grotto', 'Field Kakariko Grotto', 'Field North Lon Lon Grotto']),
+             'Field Far West Castle Town Grotto', 'Field Kakariko Grotto', 'Field North Lon Lon Grotto']),        
         create_ow_region(
             'Lake Hylia',
             ['Underwater Bottle', 'Lake Hylia Sun', 'Lake Hylia Freestanding PoH', 'GS Lake Hylia Bean Patch', 
@@ -206,7 +206,8 @@ def create_regions(world):
              'Goron City Pot Freestanding PoH', 'Rolling Goron as Child', 'Link the Goron', 'GS Goron City Boulder Maze', 
              'GS Goron City Center Platform', 'Goron City Stick Pot'], 
             ['Goron City Exit', 'Goron City Bomb Wall', 'Darunias Chamber', 
-            'Crater Access', 'Goron Shop', 'Goron City Grotto']),
+            'Crater Access', 'Goron Shop', 'Goron City Grotto',
+            'Goron City Maze Gossip Stone', 'Goron City Medigoron Gossip Stone']),
         create_ow_region(
             'Goron City Woods Warp', 
             None, 
@@ -216,10 +217,12 @@ def create_regions(world):
             ['Goron Shop Item 1', 'Goron Shop Item 2', 'Goron Shop Item 3', 'Goron Shop Item 4', 
             'Goron Shop Item 5', 'Goron Shop Item 6', 'Goron Shop Item 7', 'Goron Shop Item 8']),        
         create_ow_region('Darunias Chamber', ['Darunias Joy'], ['Darunias Chamber Exit']),
+        create_interior_region('Goron City Maze Gossip Stone'),
+        create_interior_region('Goron City Medigoron Gossip Stone'),
         create_ow_region(
             'Death Mountain Crater Upper', 
             ['DM Crater Wall Freestanding PoH', 'Biggoron', 'GS Death Mountain Crater Crate', 'DMC Deku Scrub Bombs'], 
-            ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto']),
+            ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto', 'Death Mountian Crater Gossip Stone']),
         create_ow_region(
             'Death Mountain Crater Lower', 
             None, 
@@ -228,6 +231,7 @@ def create_regions(world):
             'Death Mountain Crater Central', 
             ['DM Crater Volcano Freestanding PoH', 'Sheik in Crater', 'GS Mountain Crater Bean Patch'], 
             ['Crater Bridge Reverse', 'Fire Temple Entrance']),
+        create_interior_region('Death Mountian Crater Gossip Stone'),
         create_interior_region(
             'Crater Fairy', 
             ['Crater Fairy Reward']),
@@ -253,25 +257,27 @@ def create_regions(world):
             'Zoras Domain', 
             ['Diving Minigame', 'Zoras Domain Torch Run', 'King Zora Moves', 'Zoras Domain Stick Pot', 
              'Zoras Domain Nut Pot'], 
-            ['Zoras Domain Exit', 'Zoras Domain Dive Warp', 'Behind King Zora', 'Zora Shop Child Access']),
+            ['Zoras Domain Exit', 'Zoras Domain Dive Warp', 'Behind King Zora', 'Zora Shop Child Access', 'Zoras Domain Gossip Stone Child']),
         create_ow_region(
             'Zoras Fountain', 
             ['GS Zora\'s Fountain Tree', 'GS Zora\'s Fountain Above the Log'], 
-            ['Zoras Fountain Exit', 'Jabu Jabus Belly', 'Zoras Fountain Fairy']),
+            ['Zoras Fountain Exit', 'Jabu Jabus Belly', 'Zoras Fountain Fairy', 'Zoras Fountain Gossip Stone Child']),
         create_ow_region(
             'Zoras Domain Frozen', 
             ['King Zora Thawed', 'GS Zora\'s Domain Frozen Waterfall'], 
-            ['Zoras Fountain Adult Access', 'Zora Shop Adult Access']),
+            ['Zoras Fountain Adult Access', 'Zora Shop Adult Access', 'Zoras Domain Gossip Stone Adult']),
         create_ow_region(
             'Outside Ice Cavern', 
             ['Zoras Fountain Iceberg Freestanding PoH', 'Zoras Fountain Bottom Freestanding PoH', 
              'GS Zora\'s Fountain Hidden Cave'], 
-            ['Ice Cavern Entrance']),
+            ['Ice Cavern Entrance', 'Zoras Fountain Gossip Stone Adult']),
         create_interior_region(
             'Zora Shop', 
             ['Zora Shop Item 1', 'Zora Shop Item 2', 'Zora Shop Item 3', 'Zora Shop Item 4', 
             'Zora Shop Item 5', 'Zora Shop Item 6', 'Zora Shop Item 7', 'Zora Shop Item 8']),
         create_interior_region('Zoras Fountain Fairy', ['Zoras Fountain Fairy Reward']),
+        create_interior_region('Zoras Domain Gossip Stone'),
+        create_interior_region('Zoras Fountain Gossip Stone'),
         create_ow_region(
             'Lon Lon Ranch', 
             ['Epona', 'Song from Malon', 'GS Lon Lon Ranch Tree', 'GS Lon Lon Ranch Rain Shed', 
