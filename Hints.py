@@ -10,6 +10,41 @@ from ItemList import eventlocations
 from Messages import update_message_by_id
 from TextBox import lineWrap
 
+gossipLocations = {
+    0x0401: 'Zoras Fountain (Fairy)',
+    0x0402: 'Zoras Fountain (Jabu)',
+    0x0403: 'Lake Hylia (Lab)',
+    0x0404: 'Death Mountain Trail (Biggoron)',
+    0x0405: 'Death Mountain Crater (Bombable Wall)',
+    0x0406: 'Temple of Time (Left)',
+    0x0407: 'Temple of Time (Left-Center)',
+    0x0408: 'Lake Hylia (Southwest Corner)',
+    0x0409: 'Zoras Domain (Mweep)',
+    0x040A: 'Graveyard (Shadow Temple)',
+    0x040B: 'Hyrule Castle (Rock Wall)',
+    0x040C: 'Zoras River (Waterfall)',
+    0x040D: 'Zoras River (Plateau)',
+    0x040E: 'Temple of Time (Right-Center)',
+    0x040F: 'Lake Hylia (Southeast Corner)',
+    0x0410: 'Temple of Time (Right)',
+    0x0411: 'Gerudo Valley (Waterfall)',
+    0x0412: 'Hyrule Castle (Malon)',
+    0x0413: 'Hyrule Castle (Storms Grotto)',
+    0x0414: 'Dodongos Cavern (Bombable Wall)',
+    0x0415: 'Goron City (Maze)',
+    0x0416: 'Sacred Forest Meadow (Maze Lower)',
+    0x0417: 'Sacred Forest Meadow (Maze Upper)',
+    0x0418: 'Generic Grotto',
+    0x0419: 'Goron City (Medigoron)',
+    0x041A: 'Desert Colossus (Spirit Temple)',
+    0x041B: 'Hyrule Field (Hammer Grotto)',
+    0x041C: 'Sacred Forest Meadow (Saria)',
+    0x041D: 'Lost Woods (Bridge)',
+    0x041E: 'Kokiri Forest (Storms)',
+    0x041F: 'Kokiri Forest (Deku Tree Left)',
+    0x0420: 'Kokiri Forest (Deku Tree Right)'
+}
+
 def buildHintString(hintString):
     if len(hintString) < 77:
         hintString = "They say that " + hintString
@@ -102,10 +137,7 @@ def colorText(text, color):
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(world):
 
-    stoneIDs = [0x0401, 0x0402, 0x0403, 0x0404, 0x0405, 0x0406, 0x0407, 0x0408,
-                0x0409, 0x040A, 0x040B, 0x040C, 0x040D, 0x040E, 0x040F, 0x0410,
-                0x0411, 0x0412, 0x0413, 0x0414, 0x0415, 0x0416, 0x0417, 0x0418,
-                0x0419, 0x041A, 0x041B, 0x041C, 0x041D, 0x041E, 0x041F, 0x0420]
+    stoneIDs = list(gossipLocations.keys())
 
     #shuffles the stone addresses for randomization, always locations will be placed first
     random.shuffle(stoneIDs)

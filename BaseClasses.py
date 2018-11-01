@@ -4,6 +4,7 @@ import logging
 from collections import OrderedDict, Counter, defaultdict
 from version import __version__ as OoTRVersion
 import random
+import re
 
 
 class World(object):
@@ -926,8 +927,10 @@ class Spoiler(object):
                         outfile.write('\n\nWay of the Hero:\n\n')
                         outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations[world.id]]))
 
+                from Hints import gossipLocations
                 if self.settings.world_count > 1:
                     outfile.write('\n\nGossip Stone Hints [Player %d]:\n\n' % self.settings.player_num)
                 else:
-                    outfile.write('\n\nGossip Stone Hints:\n\n')
-                outfile.write('\n'.join(self.hints.values()))
+                    outfile.write('\n\nGossip Stone Hints:\n')
+                for id, hint in self.hints.items():
+                    outfile.write('\n%s: %s' % (gossipLocations[id] if id in gossipLocations else "Unknown", re.sub('\x05[\x40\x41\x42\x43\x44\x45\x46\x47]', '', hint.replace('&', ' ').replace('^', ' '))))
