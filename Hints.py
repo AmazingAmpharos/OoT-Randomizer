@@ -297,7 +297,11 @@ def buildGossipHints(world):
     hint_prob = [prob for prob,count in hint_dist.values()]
 
     # Add trial hints
-    if world.trials < 6 and world.trials > 3:
+    if world.trials_random and world.trials == 6:
+        add_hint(world, stoneIDs, buildHintString(colorText("Ganon's Tower", 'Pink') + " is protected by a powerful barrier."), hint_dist['trial'][1])
+    elif world.trials_random and world.trials == 0:
+        add_hint(world, stoneIDs, buildHintString("Shiek dispelled the barrier around " + colorText("Ganon's Tower", 'Yellow')), hint_dist['trial'][1])
+    elif world.trials < 6 and world.trials > 3:
         for trial,skipped in world.skipped_trials.items():
             if skipped:
                 add_hint(world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."), hint_dist['trial'][1])
