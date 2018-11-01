@@ -9,6 +9,7 @@ from HintList import getHint, getHintGroup, Hint
 from ItemList import eventlocations
 from Messages import update_message_by_id
 from TextBox import lineWrap
+from Utils import random_choices
 
 gossipLocations = {
     0x0401: 'Zoras Fountain (Fairy)',
@@ -63,8 +64,14 @@ def getItemGenericName(item):
         return item.name
 
 
-def isDungeonItem(item):
-    return item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey'
+def isRestrictedDungeonItem(dungeon, item):
+    if (item.map or item.compass) and dungeon.world.shuffle_mapcompass == 'dungeon':
+        return item in dungeon.dungeon_items
+    if item.smallkey and dungeon.world.shuffle_smallkeys == 'dungeon':
+        return item in dungeon.small_keys
+    if item.bosskey and dungeon.world.shuffle_bosskeys == 'dungeon':
+        return item in dungeon.boss_key
+    return False
 
 
 def add_hint(world, id, text):
@@ -134,10 +141,126 @@ def colorText(text, color):
     return text
 
 
+def get_woth_hint(world, checked):
+    locations = world.spoiler.required_locations[world.id]
+    locations = list(filter(lambda location: location.name not in checked, locations))
+    if not locations:
+        return None
+
+    location = random.choice(locations)
+    checked.append(location.name)
+
+    if location.parent_region.dungeon:
+        return buildHintString(colorText(getHint(location.parent_region.dungeon.name, world.clearer_hints).text, 'Light Blue') + \
+            " is on the way of the hero.")
+    else:
+        return buildHintString(colorText(location.hint, 'Light Blue') + " is on the way of the hero.")
+
+
+def get_good_loc_hint(world, checked):
+    locations = getHintGroup('location', world)
+    locations = list(filter(lambda hint: hint.name not in checked, locations))
+    if not locations:
+        return None
+
+    hint = random.choice(locations)
+    location = world.get_location(hint.name)
+    checked.append(location)
+
+    return buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
+                colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + ".")
+
+
+def get_good_item_hint(world, checked):
+    locations = [location for location in world.get_locations() 
+            if not location.name in checked and \
+            location.item.majoritem and \
+            not location.locked]
+    if not locations:
+        return None
+
+    location = random.choice(locations)
+    checked.append(location.name)
+
+    if location.parent_region.dungeon:
+        return buildHintString(colorText(getHint(location.parent_region.dungeon.name, world.clearer_hints).text, 'Green') + \
+            " hoards " + colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + ".")
+    else:
+        return buildHintString(colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + \
+            " can be found at " + colorText(location.hint, 'Green') + ".")
+
+
+def get_overworld_hint(world, checked):
+    locations = [location for location in world.get_locations()
+            if not location.name in checked and \
+            location.item.type != 'Event' and \
+            location.item.type != 'Shop' and \
+            not location.locked and \
+            not location.parent_region.dungeon]
+    if not locations:
+        return None
+
+    location = random.choice(locations)
+    checked.append(location.name)
+
+    return buildHintString(colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + \
+        " can be found at " + colorText(location.hint, 'Green') + ".")
+
+
+def get_dungeon_hint(world, checked):
+    dungeons = list(filter(lambda dungeon: dungeon.name not in checked, world.dungeons))
+    if not dungeons:
+        return None
+
+    dungeon = random.choice(dungeons)
+    checked.append(dungeon.name)
+
+    # Choose a random dungeon location that is a non-dungeon item
+    locations = [location for region in dungeon.regions for location in region.locations
+        if location.name not in checked and \
+           location.item.type != 'Event' and \
+           location.item.type != 'Shop' and \
+           not isRestrictedDungeonItem(dungeon, location.item) and \
+           not location.locked]
+    if not locations:
+        return get_dungeon_hint(world, checked)
+
+    location = random.choice(locations)
+    checked.append(location.name)
+
+    return buildHintString(colorText(getHint(dungeon.name, world.clearer_hints).text, 'Green') + " hoards " + \
+        colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + ".")
+
+
+def get_junk_hint(world, checked):
+    hints = getHintGroup('junkHint', world)
+    hints = list(filter(lambda hint: hint.name not in checked, hints))
+    if not hints:
+        return None
+
+    hint = random.choice(hints)
+    checked.append(hint.name)
+    
+    return hint.text
+
+
+hint_func = {
+    'woth': get_woth_hint,
+    'loc': get_good_loc_hint,
+    'item': get_good_item_hint,
+    'ow': get_overworld_hint,
+    'dungeon': get_dungeon_hint,
+    'junk': get_junk_hint,
+}
+
+
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(world):
 
     stoneIDs = list(gossipLocations.keys())
+
+    # Don't repeat hints
+    checkedLocations = []
 
     #shuffles the stone addresses for randomization, always locations will be placed first
     random.shuffle(stoneIDs)
@@ -152,117 +275,25 @@ def buildGossipHints(world):
             if not skipped:
                 add_hint(world, stoneIDs.pop(0), buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."))
 
-    # add required items locations for hints (good hints)
-    requiredSample = world.spoiler.required_locations[world.id]
-    if len(requiredSample) >= 5:
-        requiredSample = random.sample(requiredSample, random.randint(3,4))
-    for location in requiredSample:
-        if location.parent_region.dungeon:
-            add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(location.parent_region.dungeon.name, world.clearer_hints).text, 'Light Blue') + \
-                " is on the way of the hero."))
-        else:
-            add_hint(world, stoneIDs.pop(0), buildHintString(colorText(location.hint, 'Light Blue') + " is on the way of the hero."))
-
-    # Don't repeat hints
-    checkedLocations = []
-
     # Add required location hints
     alwaysLocations = getHintGroup('alwaysLocation', world)
     for hint in alwaysLocations:
-        for locationWorld in world.get_locations():
-            if hint.name == locationWorld.name:
-                checkedLocations.append(hint.name)   
-                add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(locationWorld.name, world.clearer_hints).text, 'Green') + " " + \
-                    colorText(getHint(getItemGenericName(locationWorld.item), world.clearer_hints).text, 'Red') + "."))
+        location = world.get_location(hint.name)
+        checkedLocations.append(hint.name)   
+        add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
+            colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."))
 
 
-    # Add good location hints
-    sometimesLocations = getHintGroup('location', world)
-    if sometimesLocations:
-        for _ in range(0, random.randint(11,12) - len(alwaysLocations)):
-            hint = random.choice(sometimesLocations)
-            # Repick if location isn't new
-            while hint.name in checkedLocations or hint.name in alwaysLocations:
-                hint = random.choice(sometimesLocations)
+    hint_types = list(hint_func.keys())
+    hint_dist = [1,1,1,1,1,1]
 
-            for locationWorld in world.get_locations():
-                if hint.name == locationWorld.name:
-                    checkedLocations.append(locationWorld.name)    
-                    add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(locationWorld.name, world.clearer_hints).text, 'Green') + " " + \
-                        colorText(getHint(getItemGenericName(locationWorld.item), world.clearer_hints).text, 'Red') + "."))
-
-    # add bad dungeon locations hints
-    for dungeon in random.sample(world.dungeons, random.randint(3,4)):
-        # Choose a randome dungeon location that is a non-dungeon item
-        dungeon_locations = [location for region in dungeon.regions for location in region.locations
-            if location.item.type != 'Event' and \
-            location.item.type != 'Shop' and \
-            not location.locked and \
-            not isDungeonItem(location.item) and \
-            (world.tokensanity != 'off' or location.item.type != 'Token') and\
-            location.item.type != 'Song']
-        if (len(dungeon_locations) == 0):
-            continue
-        locationWorld = random.choice(dungeon_locations)
-
-        checkedLocations.append(locationWorld.name)
-        add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(dungeon.name, world.clearer_hints).text, 'Green') + \
-            " hoards " + colorText(getHint(getItemGenericName(locationWorld.item), world.clearer_hints).text, 'Red') + "."))
-
-    # add bad overworld locations hints
-    # only choose location if it is new and a proper item from the overworld
-    overworldlocations = [locationWorld for locationWorld in world.get_locations()
-            if not locationWorld.name in checkedLocations and \
-            not locationWorld.name in alwaysLocations and \
-            not locationWorld.name in sometimesLocations and \
-            locationWorld.item.type != 'Event' and \
-            locationWorld.item.type != 'Shop' and \
-            not locationWorld.locked and \
-            (world.tokensanity == 'all' or locationWorld.item.type != 'Token') and \
-            not locationWorld.parent_region.dungeon]
-    overworldSample = overworldlocations
-    if len(overworldSample) >= 3:
-        # Use this hint type to balance hints given via trials
-        if world.trials == 3:
-            overworldSample = random.sample(overworldlocations, random.randint(1,2))
-        elif world.trials in [2, 4]:
-            overworldSample = random.sample(overworldlocations, random.randint(1,3))
-        elif world.trials in [1, 5]:
-            overworldSample = random.sample(overworldlocations, random.randint(2,3))
-        else:
-            overworldSample = random.sample(overworldlocations, random.randint(2,4))
-    for locationWorld in overworldSample:
-        checkedLocations.append(locationWorld.name)
-        add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(getItemGenericName(locationWorld.item), world.clearer_hints).text, 'Red') + \
-            " can be found at " + colorText(locationWorld.hint, 'Green') + ".")) 
-
-    # add good item hints
-    # only choose location if it is new and a good item
-    gooditemlocations = [locationWorld for locationWorld in world.get_locations() 
-            if not locationWorld.name in checkedLocations and \
-            locationWorld.item.advancement and \
-            locationWorld.item.type != 'Event' and \
-            locationWorld.item.type != 'Shop' and \
-            not locationWorld.locked and \
-            locationWorld.item.type != 'Token' and \
-            not locationWorld.item.key]
-    gooditemSample = gooditemlocations
-    if len(gooditemSample) >= 6:
-        gooditemSample = random.sample(gooditemlocations, random.randint(4,6))
-    for locationWorld in gooditemSample:
-        checkedLocations.append(locationWorld.name)
-        if locationWorld.parent_region.dungeon:
-            add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(locationWorld.parent_region.dungeon.name, world.clearer_hints).text, 'Green') + \
-                " hoards " + colorText(getHint(getItemGenericName(locationWorld.item), world.clearer_hints).text, 'Red') + "."))
-        else:
-            add_hint(world, stoneIDs.pop(0), buildHintString(colorText(getHint(getItemGenericName(locationWorld.item), world.clearer_hints).text, 'Red') + \
-                " can be found at " + colorText(locationWorld.hint, 'Green') + "."))
-
-    # fill the remaining hints with junk    
-    junkHints = getHintGroup('junkHint', world)
-    random.shuffle(junkHints)
     while stoneIDs:
-        add_hint( world, stoneIDs.pop(0), junkHints.pop().text )
+        [hint_type] = random_choices(hint_types, weights=hint_dist)
+
+        hint = hint_func[hint_type](world, checkedLocations)
+        if hint != None:
+            add_hint(world, stoneIDs.pop(0), hint)
+
 
 # builds boss reward text that is displayed at the temple of time altar for child and adult, pull based off of item in a fixed order.
 def buildBossRewardHints(world, messages):
