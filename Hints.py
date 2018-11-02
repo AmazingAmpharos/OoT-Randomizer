@@ -82,12 +82,15 @@ def isRestrictedDungeonItem(dungeon, item):
 
 
 def add_hint(worlds, world, IDs, text, count, location=None):
+    random.shuffle(IDs)
     skipped_ids = []
+    first = False
     while random.random() < count:
         if IDs:
             id = IDs.pop(0)
-            if can_reach_stone(worlds, id, location):
+            if first or can_reach_stone(worlds, id, location):
                 count -= 1
+                first = True
                 world.spoiler.hints[id] = lineWrap(text)
             else:
                 skipped_ids.append(id)
