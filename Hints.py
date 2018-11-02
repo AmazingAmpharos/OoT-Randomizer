@@ -391,7 +391,7 @@ def buildBossString(reward, world):
     text = ''
     for location in world.get_locations():
         if location.item.name == reward:
-            text += '\x08' + get_raw_text(getHint(location.name, world.clearer_hints).text)
+            text += '\x08\x13' + chr(location.item.code) + get_raw_text(getHint(location.name, world.clearer_hints).text)
     return text
 
 # alternates through color set commands in child and adult boss reward hint strings setting the colors at the start of the string to correspond with the reward found at the location.

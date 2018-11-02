@@ -291,8 +291,8 @@ hintTable = {
     'Twinrova':                                              ("One inside a #goddess of the sand#...^", "One in the #Spirit Temple#...^", 'boss'),
     'Links Pocket':                                          ("One in #@'s pocket#...^", "One #@ already has#...^", 'boss'),
     'Spiritual Stone Text Start':                            ("Ye who owns 3 Spiritual Stones...^", None, 'boss'),
-    'Spiritual Stone Text End':                              ("Stand with the Ocarina of Time&and play the Song of Time.", None, 'boss'),
-    'Medallion Text End':                                    ("Together with the Hero of Time,&the awakened ones will bind the&evil and return the light of peace&to the world.", None, 'boss'),
+    'Spiritual Stone Text End':                              ("\x13\x08Stand with the Ocarina of Time&and play the Song of Time.", None, 'boss'),
+    'Medallion Text End':                                    ("\x13\x12Together with the Hero of Time,&the awakened ones will bind&the evil and return the light&of peace to the world.", None, 'boss'),
                                                             #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box
     'Validation Line':                                       ("Hmph... Since you made it this far,&I'll let you know what glorious&prize of Ganon's you likely&missed out on in my tower.^Behold...^", None, 'validation line'),
     'Light Arrow Location':                                  ("Ha ha ha... You'll never beat me by&reflecting my lightning bolts&and unleashing the arrows from&", None, 'Light Arrow Location'),
