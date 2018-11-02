@@ -202,6 +202,9 @@ def main(settings, window=dummy_window()):
             os.remove(rom_path)
             window.update_progress(95)
 
+    for world in worlds:
+        for setting in world.settings.__dict__:
+            world.settings.__dict__[setting] = world.__dict__[setting]
 
     if settings.create_spoiler:
         window.update_status('Creating Spoiler Log')
