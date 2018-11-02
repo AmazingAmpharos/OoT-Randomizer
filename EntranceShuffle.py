@@ -213,7 +213,7 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Ganons Castle Spirit Trial', 'Ganons Castle Spirit Trial'),
                          ('Ganons Castle Light Trial', 'Ganons Castle Light Trial'),
                          ('Ganons Castle Tower', 'Ganons Castle Tower'),
-                         ('Death Mountian Crater Gossip Stone', 'Death Mountian Crater Gossip Stone'),
+                         ('Death Mountain Crater Gossip Stone', 'Death Mountain Crater Gossip Stone'),
                          ('Goron City Maze Gossip Stone', 'Goron City Maze Gossip Stone'),
                          ('Goron City Medigoron Gossip Stone', 'Goron City Medigoron Gossip Stone'),
                         ]

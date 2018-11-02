@@ -222,7 +222,7 @@ def create_regions(world):
         create_ow_region(
             'Death Mountain Crater Upper', 
             ['DM Crater Wall Freestanding PoH', 'Biggoron', 'GS Death Mountain Crater Crate', 'DMC Deku Scrub Bombs'], 
-            ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto', 'Death Mountian Crater Gossip Stone']),
+            ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto', 'Death Mountain Crater Gossip Stone']),
         create_ow_region(
             'Death Mountain Crater Lower', 
             None, 
@@ -231,7 +231,7 @@ def create_regions(world):
             'Death Mountain Crater Central', 
             ['DM Crater Volcano Freestanding PoH', 'Sheik in Crater', 'GS Mountain Crater Bean Patch'], 
             ['Crater Bridge Reverse', 'Fire Temple Entrance']),
-        create_interior_region('Death Mountian Crater Gossip Stone'),
+        create_interior_region('Death Mountain Crater Gossip Stone'),
         create_interior_region(
             'Crater Fairy', 
             ['Crater Fairy Reward']),
