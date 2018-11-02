@@ -244,6 +244,12 @@ def global_rules(world):
         world.get_location('Goron City Right Maze Chest'),
         lambda state: state.can_blast_or_smash() or state.can_use('Silver Gauntlets'))
     set_rule(
+        world.get_entrance('Goron City Maze Gossip Stone'),
+        lambda state: state.can_blast_or_smash() or state.can_use('Silver Gauntlets'))
+    set_rule(
+        world.get_entrance('Goron City Medigoron Gossip Stone'),
+        lambda state: state.can_blast_or_smash() and state.is_adult())
+    set_rule(
         world.get_location('Rolling Goron as Child'),
         lambda state: state.has('Bomb Bag') and state.has_explosives())
     set_rule(
@@ -628,6 +634,9 @@ def global_rules(world):
     set_rule(
         world.get_location('GS Death Mountain Crater Crate'),
         lambda state: state.can_blast_or_smash() and state.can_child_attack())
+    set_rule(
+        world.get_entrance('Death Mountian Crater Gossip Stone'),
+        lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('GS Goron City Center Platform'), lambda state: state.is_adult())
     set_rule(
         world.get_location('GS Mountain Crater Bean Patch'),
