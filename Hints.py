@@ -196,7 +196,7 @@ def get_good_loc_hint(world, checked):
 
     hint = random.choice(locations)
     location = world.get_location(hint.name)
-    checked.append(location)
+    checked.append(location.name)
 
     return (buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
                 colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), location)
