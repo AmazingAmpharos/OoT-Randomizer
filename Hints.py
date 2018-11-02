@@ -18,7 +18,7 @@ class GossipStone():
         self.region = region
 
 gossipLocations = {
-    0x0405: GossipStone('Death Mountain Crater (Bombable Wall)', 'Death Mountian Crater Gossip Stone'),
+    0x0405: GossipStone('Death Mountain Crater (Bombable Wall)', 'Death Mountain Crater Gossip Stone'),
     0x0404: GossipStone('Death Mountain Trail (Biggoron)', 'Death Mountain Crater Upper'),
     0x041A: GossipStone('Desert Colossus (Spirit Temple)', 'Desert Colossus'),
     0x0414: GossipStone('Dodongos Cavern (Bombable Wall)', 'Dodongos Cavern Lobby'),

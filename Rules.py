@@ -635,7 +635,7 @@ def global_rules(world):
         world.get_location('GS Death Mountain Crater Crate'),
         lambda state: state.can_blast_or_smash() and state.can_child_attack())
     set_rule(
-        world.get_entrance('Death Mountian Crater Gossip Stone'),
+        world.get_entrance('Death Mountain Crater Gossip Stone'),
         lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('GS Goron City Center Platform'), lambda state: state.is_adult())
     set_rule(
