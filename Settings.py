@@ -2,7 +2,6 @@ import argparse
 import textwrap
 import string
 import re
-import random
 import hashlib
 
 from Patches import get_tunic_color_options, get_navi_color_options, get_NaviSFX_options, get_HealthSFX_options
@@ -131,13 +130,13 @@ class Settings():
         full_string = self.settings_string + __version__ + self.seed
         return int(hashlib.sha256(full_string.encode('utf-8')).hexdigest(), 16)
 
-    def sanatize_seed(self):
+    def sanitize_seed(self):
         # leave only alphanumeric and some punctuation
         self.seed = re.sub(r'[^a-zA-Z0-9_-]', '', self.seed, re.UNICODE)
 
     def update_seed(self, seed):
         self.seed = seed
-        self.sanatize_seed()
+        self.sanitize_seed()
         self.numeric_seed = self.get_numeric_seed()
 
     def update(self):
@@ -162,7 +161,7 @@ class Settings():
         if(self.seed is None):
             # https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
             self.seed = ''.join(random_choices(string.ascii_uppercase + string.digits, k=10))
-        self.sanatize_seed()
+        self.sanitize_seed()
         self.numeric_seed = self.get_numeric_seed()
 
 def parse_custom_tunic_color(s):
@@ -214,20 +213,23 @@ setting_infos = [
                     time).
                     ''',
             'type': int}),
-    Setting_Info('world_count', int, 0, False, {
+    Setting_Info('world_count', int, 5, True, {
             'default': 1,
             'help': '''\
                     Use to create a multi-world generation for co-op seeds.
                     World count is the number of players. Warning: Increasing
                     the world count will drastically increase generation time.
                     ''',
-            'type': int}),
+            'type': int}, {}),
     Setting_Info('player_num', int, 0, False, {
             'default': 1,
             'help': '''\
                     Use to select world to generate when there are multiple worlds.
                     ''',
             'type': int}),
+    Setting_Info('patch_file', str, 0, False, {
+            'default': '',
+            'help': 'Path to a patch file.'}),
     Setting_Info('create_spoiler', bool, 1, True, 
         {
             'help': 'Output a Spoiler File',
@@ -271,6 +273,39 @@ setting_infos = [
                       but subsequent generations will be quick. It is highly 
                       recommended to compress or the game will crash 
                       frequently except on real N64 hardware.
+                      '''
+        }),
+    Setting_Info('patch_file_action', str, 2, False, 
+        {
+            'default': 'none',
+            'const': 'none',
+            'nargs': '?',
+            'help': '''\
+                    Allows saving and loading a patch file
+                    none:   Do not create a patch file.
+                    save:   Create a patch file.
+                    load:   Load a patch file
+                    ''',
+        },
+        {
+            'text': 'Patch File Action',
+            'widget': 'Radiobutton',
+            'default': 'No Patch File',
+            'horizontal': True,
+            'options': {
+                'No Patch File': 'none',
+                'Save Patch File': 'save',
+                'Load Patch File': 'load',
+            },
+            'tooltip':'''\
+                        Save or Load a Patch File:
+
+                        'No Patch': Do not create a
+                        patch file.
+
+                        'Save': Create a patch file.
+
+                        'Load': Load a patch file.
                       '''
         }),
     Setting_Info('open_forest', bool, 1, True, 
@@ -1098,37 +1133,57 @@ setting_infos = [
                       new locations for items to appear.
                       '''
         }), 
-    Setting_Info('quest', str, 2, True, 
+    Setting_Info('mq_dungeons_random', bool, 1, True, 
         {
-            'default': 'vanilla',
-            'const': 'vanilla',
-            'nargs': '?',
             'help': '''\
-                    Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
-                    Vanilla:       Dungeons will be the original Ocarina of Time dungeons.
-                    Master:        Dungeons will be in the form of the Master Quest.
-                    Mixed:         Each dungeon will randomly be either standard or Master Quest.
+                    If set, a uniformly random number of dungeons will have Master Quest designs.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Random Number of MQ Dungeons',
+            'group': 'world',
+            'widget': 'Checkbutton',
+            'default': 'unchecked',
+            'tooltip':'''\
+                      If set, a random number of dungeons 
+                      will have Master Quest designs.
+                      '''
+        }),
+    Setting_Info('mq_dungeons', int, 4, True, 
+        {
+            'default': 0,
+            'const': 0,
+            'nargs': '?',
+            'choices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            'help': '''\
+                    Select a number (0-12) of Master Quest dungeons to appear in the game.
+                    0:  (default) All dungeon will have their original designs.
+                    ...
+                    6:  50/50 split; Half of all dungeons will be from Master Quest.
+                    ...
+                    12: All dungeons will have Master Quest redesigns.
                     '''
         },
         {
-            'text': 'Dungeon Quest',
             'group': 'world',
-            'widget': 'Combobox',
-            'default': 'Vanilla',
-            'options': {
-                'Vanilla': 'vanilla',
-                'Master Quest': 'master',
-                'Mixed': 'mixed',
-            },
+            'widget': 'Scale',
+            'default': 0,
+            'min': 0,
+            'max': 12,
+            'dependency': lambda guivar: not guivar['mq_dungeons_random'].get(),
             'tooltip':'''\
-                      'Vanilla': Dungeons will be in their
-                      default OoT form.
+                      Select a number of Master Quest 
+                      dungeons to appear in the game.
 
-                      'Master Quest': Dungeons will be in the
-                      form found in OoT: Master Quest.
+                      0: All dungeon will have their 
+                      original designs. (default)
 
-                      'Mixed': Each dungeon will have a
-                      random chance to be in either form.
+                      6: Half of all dungeons will 
+                      be from Master Quest.
+
+                      12: All dungeons will have 
+                      Master Quest redesigns.
                       ''',
         }),
     Setting_Info('logic_skulltulas', int, 3, True, 
@@ -1729,6 +1784,32 @@ setting_infos = [
                       required to beat the game.
                       '''
         }),
+    Setting_Info('hint_dist', str, 1, True, 
+        {
+            'default': 'normal',
+            'const': 'normal',
+            'nargs': '?',
+            'help': '''\
+                    Choose how Gossip Stones hints are distributed
+                    normal: Use the standard distribution of hint types
+                    tourney: Use the tourney distribution of hint types
+                    '''
+        },
+        {
+            'text': 'Hint Distribution',
+            'group': 'other',
+            'widget': 'Combobox',
+            'default': 'Normal',
+            'options': {
+                'Normal': 'normal',
+                'Tourney': 'tourney',
+            },
+            'tooltip':'''\
+                      Tourney distribution has some 
+                      duplicate hints and no junk
+                      hints.
+                      '''
+        }),    
     Setting_Info('text_shuffle', str, 2, True, 
         {
             'default': 'none',
@@ -1822,7 +1903,7 @@ setting_infos = [
         },
         {
             'text': 'Default Targeting Option',
-            'group': 'rom_tab',
+            'group': 'cosmetics',
             'widget': 'Combobox',
             'default': 'Hold',
             'options': {

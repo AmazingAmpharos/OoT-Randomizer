@@ -244,6 +244,14 @@ def global_rules(world):
         world.get_location('Goron City Right Maze Chest'),
         lambda state: state.can_blast_or_smash() or state.can_use('Silver Gauntlets'))
     set_rule(
+        world.get_entrance('Goron City Maze Gossip Stone'),
+        lambda state: (world.hints == 'mask' and state.has_explosives()) or \
+                      (world.hints != 'mask' and \
+                        (state.can_blast_or_smash() or state.can_use('Silver Gauntlets'))))
+    set_rule(
+        world.get_entrance('Goron City Medigoron Gossip Stone'),
+        lambda state: state.can_blast_or_smash() or state.has('Progressive Strenght Upgrade'))
+    set_rule(
         world.get_location('Rolling Goron as Child'),
         lambda state: state.has('Bomb Bag') and state.has_explosives())
     set_rule(
@@ -315,9 +323,14 @@ def global_rules(world):
     set_rule(world.get_location('King Zora Moves'), lambda state: state.has('Bottle with Letter'))
     set_rule(world.get_entrance('Behind King Zora'), lambda state: state.has('Bottle with Letter'))
     set_rule(world.get_entrance('Zora River Adult'), lambda state: state.is_adult())
+    set_rule(world.get_entrance('Zoras River Gossip Stone Adult Access'), 
+        lambda state: world.hints != 'mask')
     set_rule(
         world.get_entrance('Zoras Domain Adult Access'),
         lambda state: state.can_play('Zeldas Lullaby') or (state.has('Hover Boots') and world.logic_zora_with_hovers))
+    set_rule(
+        world.get_entrance('Zoras Domain Gossip Stone Adult'),
+        lambda state: world.hints != 'mask')
     set_rule(world.get_entrance('Zoras Fountain Adult Access'), lambda state: state.can_reach('Zoras Fountain'))
     set_rule(world.get_location('Zoras Domain Torch Run'), lambda state: state.has_sticks())
     set_rule(world.get_entrance('Jabu Jabus Belly'), lambda state: state.has_bottle())
@@ -355,6 +368,9 @@ def global_rules(world):
     set_rule(
         world.get_entrance('Adult Meadow Access'),
         lambda state: state.can_play('Sarias Song') and state.is_adult())
+    set_rule(
+        world.get_entrance('Sacred Forest Meadow Gossip Stones Adult Access'),
+        lambda state: world.hints != 'mask')
     set_rule(world.get_entrance('Forest Temple Entrance'), lambda state: state.can_use('Hookshot'))
     set_rule(world.get_entrance('Dampes Grave'), lambda state: state.is_adult())
     set_rule(world.get_location('Dampe Race Freestanding PoH'), lambda state: not world.logic_no_second_dampe_race)
@@ -482,6 +498,8 @@ def global_rules(world):
         world.get_location('Colossus Freestanding PoH'),
         lambda state: state.can_play('Requiem of Spirit') and state.can_use('Magic Bean'))
     set_rule(world.get_location('Desert Colossus Fairy Reward'), lambda state: state.can_play('Zeldas Lullaby'))
+    set_rule(world.get_entrance('Desert Colossus Gossip Stone'), 
+        lambda state: world.hints != 'mask' or state.can_play('Requiem of Spirit'))
     set_rule(
         world.get_location('Gerudo Fortress Rooftop Chest'),
         lambda state: state.can_use('Hover Boots') or state.can_use('Scarecrow') or state.can_use('Longshot'))
@@ -517,11 +535,15 @@ def global_rules(world):
     set_rule(world.get_entrance('Remote Southern Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Near Lake Inside Fence Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Valley Grotto'), lambda state: state.can_blast_or_smash())
+    set_rule(world.get_entrance('Field Valley Grotto Gossip Stone'), 
+        lambda state: (state.has_explosives() and state.can_use('Dins Fire')) or 
+                      (world.hints != 'mask' and state.can_use('Hammer') and state.has_fire_source()))
     set_rule(world.get_entrance('Field West Castle Town Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Far West Castle Town Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Kakariko Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field North Lon Lon Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Castle Storms Grotto'), lambda state: state.can_play('Song of Storms'))
+    set_rule(world.get_entrance('Castle Storms Grotto Gossip Stone'), lambda state: state.has_explosives())
     set_rule(
         world.get_entrance('Kakariko Bombable Grotto'),
         lambda state: state.can_blast_or_smash() and
@@ -628,6 +650,12 @@ def global_rules(world):
     set_rule(
         world.get_location('GS Death Mountain Crater Crate'),
         lambda state: state.can_blast_or_smash() and state.can_child_attack())
+    set_rule(
+        world.get_entrance('Death Mountain Trail Gossip Stone'),
+        lambda state: world.hints != 'mask' or state.can_blast_or_smash())
+    set_rule(
+        world.get_entrance('Death Mountain Crater Gossip Stone'),
+        lambda state: state.can_blast_or_smash())
     set_rule(world.get_location('GS Goron City Center Platform'), lambda state: state.is_adult())
     set_rule(
         world.get_location('GS Mountain Crater Bean Patch'),
@@ -864,6 +892,9 @@ def dung_rules_dc0(world):
     set_rule(
         world.get_entrance('Dodongos Cavern Lobby'),
         lambda state: state.can_blast_or_smash() or state.has('Progressive Strength Upgrade'))
+    set_rule(
+        world.get_entrance('Dodongos Gossip Stone'),
+        lambda state: world.hints != 'mask' or state.has_explosives() or state.has('Progressive Strength Upgrade'))
     set_rule(
         world.get_entrance('Dodongos Cavern Left Door'),
         lambda state: (state.is_adult() or
@@ -2103,7 +2134,7 @@ def dung_rules_gc0(world):
                       state.has('Progressive Hookshot') and
                       state.has('Small Key (Ganons Castle)', 2))
     set_rule(
-        world.get_location('Ganons Castle Light Trail Invisible Enemies Chest'),
+        world.get_location('Ganons Castle Light Trial Invisible Enemies Chest'),
         lambda state: state.can_see_with_lens())
     set_rule(
         world.get_location('Ganons Castle Light Trial Lullaby Chest'),

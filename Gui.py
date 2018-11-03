@@ -111,6 +111,7 @@ def guiMain(settings=None):
 
     # hold the results of the user's decisions here
     guivars = {}
+    widgets = {}
 
     # hierarchy
     ############
@@ -139,7 +140,7 @@ def guiMain(settings=None):
     # shared
     settingsFrame = Frame(mainWindow)
     settings_string_var = StringVar()
-    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var, width=25)
+    widgets['setting_string'] = Entry(settingsFrame, textvariable=settings_string_var, width=25)
 
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
@@ -174,6 +175,8 @@ def guiMain(settings=None):
                 if color == (None, None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
+        patch_file_action_change()
+
 
     def update_logic_tricks(event=None):
         for info in setting_infos:
@@ -197,15 +200,15 @@ def guiMain(settings=None):
             settings.seed = guivars['seed'].get()
             settings.update_with_settings_string(text)
             settings_to_guivars(settings, guivars)
+            show_settings()
         except Exception as e:
             messagebox.showerror(title="Error", message="Invalid settings string")
 
     label = Label(settingsFrame, text="Settings String")
-    importSettingsButton = Button(settingsFrame, text='Import Settings String', command=import_settings)
+    widgets['import_settings'] = Button(settingsFrame, text='Import Settings String', command=import_settings)
     label.pack(side=LEFT, anchor=W, padx=5)
-    settingsEntry.pack(side=LEFT, anchor=W)
-    importSettingsButton.pack(side=LEFT, anchor=W, padx=5)
-
+    widgets['setting_string'].pack(side=LEFT, anchor=W)
+    widgets['import_settings'].pack(side=LEFT, anchor=W, padx=5)
 
 
     fileDialogFrame = Frame(frames['rom_tab'])
@@ -250,7 +253,7 @@ def guiMain(settings=None):
     countDialogFrame = Frame(frames['rom_tab'])
     countLabel = Label(countDialogFrame, text='Generation Count')
     guivars['count'] = StringVar()
-    countSpinbox = Spinbox(countDialogFrame, from_=1, to=100, textvariable=guivars['count'], width=3)
+    widgets['count'] = Spinbox(countDialogFrame, from_=1, to=100, textvariable=guivars['count'], width=3)
 
     if os.path.exists(local_path('README.html')):
         def open_readme():
@@ -259,14 +262,12 @@ def guiMain(settings=None):
         openReadmeButton.pack(side=RIGHT, padx=5)
 
     countLabel.pack(side=LEFT)
-    countSpinbox.pack(side=LEFT, padx=2)
+    widgets['count'].pack(side=LEFT, padx=2)
     countDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
     # build gui
     ############
-
-    widgets = {}
 
     # Add special checkbox to toggle all logic tricks
     guivars['all_logic_tricks'] = IntVar(value=0)
@@ -274,7 +275,7 @@ def guiMain(settings=None):
     widgets['all_logic_tricks'].pack(expand=False, anchor=W)
 
     for info in setting_infos:
-        if info.gui_params:
+        if info.gui_params and 'group' in info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
                 # determine the initial value of the checkbox
                 default_value = 1 if info.gui_params['default'] == "checked" else 0
@@ -385,6 +386,8 @@ def guiMain(settings=None):
     
     notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
 
+
+    #Multi-World
     multiworldFrame = LabelFrame(frames['rom_tab'], text='Multi-World Generation')
     countLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='This is used for co-op generations. Increasing Player Count will drastically increase the generation time. For more information see:')
     hyperLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='https://github.com/TestRunnerSRL/bizhawk-co-op', fg='blue', cursor='hand2')
@@ -392,25 +395,83 @@ def guiMain(settings=None):
     countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
     hyperLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
 
-
     worldCountFrame = Frame(multiworldFrame)
     countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
-    countSpinbox = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
-
+    widgets['world_count'] = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
     countLabel.pack(side=LEFT)
-    countSpinbox.pack(side=LEFT, padx=2)
+    widgets['world_count'].pack(side=LEFT, padx=2)
     worldCountFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
 
     playerNumFrame = Frame(multiworldFrame)
     countLabel = Label(playerNumFrame, text='Player ID')
     guivars['player_num'] = StringVar()
-    countSpinbox = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['player_num'], width=3)
-
+    widgets['player_num'] = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['player_num'], width=3)
     countLabel.pack(side=LEFT)
-    countSpinbox.pack(side=LEFT, padx=2)
+    widgets['player_num'].pack(side=LEFT, padx=2)
     playerNumFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
     multiworldFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
+
+
+    #Patch File
+    patchFileFrame = LabelFrame(frames['rom_tab'], text='Patch File')
+    countLabel = Label(patchFileFrame, wraplength=350, justify=LEFT, text='Patch Files are used to share seeds without having to regenerate the data. This is especially useful for Multi-World seeds.')
+    countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
+
+    def patch_file_action_change():
+        if guivars['patch_file_action'].get() == 'Load Patch File':
+            notebook.tab(1, state="disabled")
+            notebook.tab(2, state="disabled")
+            notebook.tab(3, state="disabled")
+            widgets['world_count'].configure(state='disabled')
+            widgets['create_spoiler'].configure(state='disabled')
+            widgets['create_spoiler'].configure(state='disabled')
+            widgets['count'].configure(state='disabled')
+            widgets['import_settings'].configure(state='disabled')
+            widgets['setting_string'].configure(state='disabled')
+            widgets['seed'].configure(state='disabled')
+            widgets['patch_file'].configure(state='normal')
+            widgets['patch_file_button'].configure(state='normal')
+        else:
+            notebook.tab(1, state="normal")
+            notebook.tab(2, state="normal")
+            notebook.tab(3, state="normal")
+            widgets['world_count'].configure(state='normal')
+            widgets['create_spoiler'].configure(state='normal')
+            widgets['count'].configure(state='normal')
+            widgets['import_settings'].configure(state='normal')
+            widgets['setting_string'].configure(state='normal')
+            widgets['seed'].configure(state='normal')
+            widgets['patch_file'].configure(state='disabled')
+            widgets['patch_file_button'].configure(state='disabled')
+
+
+    for info in setting_infos:
+        if info.name == 'patch_file_action':
+            guivars[info.name] = StringVar(value=info.gui_params['default'])
+            widgets[info.name] = LabelFrame(patchFileFrame, text=info.gui_params['text'], labelanchor=NW)
+            for option in info.gui_params["options"]:
+                radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=190, indicatoron=False, command=show_settings)
+                radio_button.pack(expand=True, side=LEFT, anchor=N)
+            # pack the frame
+            widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+            break
+
+    patchFileEntryFrame = Frame(patchFileFrame)
+    patchFileLabel = Label(patchFileEntryFrame, text='Patch File Path')
+    guivars['patch_file'] = StringVar(value='')
+    def patch_file_select():
+        patchfile = filedialog.askopenfilename(filetypes=[("Patch Files", ".wf"), ("All Files", "*")])
+        if patchfile != '':
+            guivars['patch_file'].set(patchfile)
+    widgets['patch_file'] = Entry(patchFileEntryFrame, textvariable=guivars['patch_file'], width=30)
+    widgets['patch_file_button'] = Button(patchFileEntryFrame, text='Select Patch', command=patch_file_select, width=10)
+    patchFileLabel.pack(side=LEFT, padx=(3,0))
+    widgets['patch_file'].pack(side=LEFT, padx=3)
+    widgets['patch_file_button'].pack(side=LEFT)
+    patchFileEntryFrame.pack(side=TOP, anchor=W, pady=3)
+
+    patchFileFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
     # didn't refactor the rest, sorry
@@ -429,7 +490,7 @@ def guiMain(settings=None):
 
     def generateRom():
         settings = guivars_to_settings(guivars)
-        if settings.count is not None:
+        if settings.count and settings.patch_file_action != 'load' is not None:
             BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, multiple_run, settings)
         else:
             BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, main, settings)
@@ -439,9 +500,9 @@ def guiMain(settings=None):
 
     seedLabel = Label(generateSeedFrame, text='Seed')
     guivars['seed'] = StringVar()
-    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'], width=25)
+    widgets['seed'] = Entry(generateSeedFrame, textvariable=guivars['seed'], width=25)
     seedLabel.pack(side=LEFT, padx=(55, 5))
-    seedEntry.pack(side=LEFT)
+    widgets['seed'].pack(side=LEFT)
     generateButton.pack(side=LEFT, padx=(5, 0))
 
     generateSeedFrame.pack(side=BOTTOM, anchor=W, padx=5, pady=10)

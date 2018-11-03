@@ -4,6 +4,7 @@ import logging
 from collections import OrderedDict, Counter, defaultdict
 from version import __version__ as OoTRVersion
 import random
+import re
 
 
 class World(object):
@@ -17,7 +18,6 @@ class World(object):
         self._cached_locations = None
         self._entrance_cache = {}
         self._region_cache = {}
-        self._entrance_cache = {}
         self._location_cache = {}
         self.required_locations = []
         self.shop_prices = {}
@@ -522,6 +522,12 @@ class CollectionState(object):
             self.entrance_cache = {k: v for k, v in self.entrance_cache.items() if not v}
             self.recursion_count = 0
 
+    def __getstate__(self):
+        return self.__dict__.copy()
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+
     def __getattr__(self, item):
         if item.startswith('can_reach_'):
             return self.can_reach(item[10])
@@ -921,8 +927,12 @@ class Spoiler(object):
                         outfile.write('\n\nWay of the Hero:\n\n')
                         outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations[world.id]]))
 
+                from Hints import gossipLocations
                 if self.settings.world_count > 1:
                     outfile.write('\n\nGossip Stone Hints [Player %d]:\n\n' % self.settings.player_num)
                 else:
-                    outfile.write('\n\nGossip Stone Hints:\n\n')
-                outfile.write('\n'.join(self.hints.values()))
+                    outfile.write('\n\nGossip Stone Hints:\n')
+
+                hint_ids = sorted(list(self.hints.keys()), key=lambda id: gossipLocations[id].name)
+                for id in hint_ids:
+                    outfile.write('\n%s: %s' % (gossipLocations[id].name if id in gossipLocations else "Unknown", re.sub('\x05[\x40\x41\x42\x43\x44\x45\x46\x47]', '', self.hints[id].replace('&', ' ').replace('^', ' '))))

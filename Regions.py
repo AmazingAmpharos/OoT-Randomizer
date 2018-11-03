@@ -50,14 +50,16 @@ def create_regions(world):
         create_ow_region(
             'Sacred Forest Meadow', 
             ['Song from Saria'], 
-            ['Meadow Gate Exit', 'Meadow Fairy Grotto', 'Meadow Storms Grotto Child Access']),
+            ['Meadow Gate Exit', 'Meadow Fairy Grotto', 'Meadow Storms Grotto Child Access',
+            'Sacred Forest Meadow Gossip Stones Child Access']),
+        create_interior_region('Sacred Forest Meadow Gossip Stones'),
         create_ow_region('Lost Woods Bridge', ['Gift from Saria'], ['Kokiri Forest Entrance', 'Forest Exit']),
         create_ow_region('Hyrule Field', 
             ['Ocarina of Time', 'Song from Ocarina of Time'], 
             ['Field to Forest', 'Field to Lake', 'Field to Valley', 'Field to Castle Town', 'Field to Kakariko', 
-             'Field to Zora River', 'Lon Lon Rance Entrance', 'Remote Southern Grotto', 'Field Near Lake Outside Fence Grotto', 
+             'Field to Zora River', 'Lon Lon Ranch Entrance', 'Remote Southern Grotto', 'Field Near Lake Outside Fence Grotto', 
              'Field Near Lake Inside Fence Grotto', 'Field Valley Grotto', 'Field West Castle Town Grotto',
-             'Field Far West Castle Town Grotto', 'Field Kakariko Grotto', 'Field North Lon Lon Grotto']),
+             'Field Far West Castle Town Grotto', 'Field Kakariko Grotto', 'Field North Lon Lon Grotto']),        
         create_ow_region(
             'Lake Hylia',
             ['Underwater Bottle', 'Lake Hylia Sun', 'Lake Hylia Freestanding PoH', 'GS Lake Hylia Bean Patch', 
@@ -89,10 +91,11 @@ def create_regions(world):
             'Desert Colossus', 
             ['Colossus Freestanding PoH', 'Sheik at Colossus', 'GS Desert Colossus Bean Patch', 'GS Desert Colossus Tree', 
              'GS Desert Colossus Hill'], 
-            ['Colossus Fairy', 'Spirit Temple Entrance', 'Desert Colossus Grotto']),
+            ['Colossus Fairy', 'Spirit Temple Entrance', 'Desert Colossus Grotto', 'Desert Colossus Gossip Stone']),
         create_interior_region(
             'Colossus Fairy', 
             ['Desert Colossus Fairy Reward']),
+        create_interior_region('Desert Colossus Gossip Stone'),        
         create_ow_region(
             'Castle Town', 
             None, 
@@ -206,7 +209,8 @@ def create_regions(world):
              'Goron City Pot Freestanding PoH', 'Rolling Goron as Child', 'Link the Goron', 'GS Goron City Boulder Maze', 
              'GS Goron City Center Platform', 'Goron City Stick Pot'], 
             ['Goron City Exit', 'Goron City Bomb Wall', 'Darunias Chamber', 
-            'Crater Access', 'Goron Shop', 'Goron City Grotto']),
+            'Crater Access', 'Goron Shop', 'Goron City Grotto',
+            'Goron City Maze Gossip Stone', 'Goron City Medigoron Gossip Stone']),
         create_ow_region(
             'Goron City Woods Warp', 
             None, 
@@ -216,10 +220,13 @@ def create_regions(world):
             ['Goron Shop Item 1', 'Goron Shop Item 2', 'Goron Shop Item 3', 'Goron Shop Item 4', 
             'Goron Shop Item 5', 'Goron Shop Item 6', 'Goron Shop Item 7', 'Goron Shop Item 8']),        
         create_ow_region('Darunias Chamber', ['Darunias Joy'], ['Darunias Chamber Exit']),
+        create_interior_region('Goron City Maze Gossip Stone'),
+        create_interior_region('Goron City Medigoron Gossip Stone'),
         create_ow_region(
             'Death Mountain Crater Upper', 
             ['DM Crater Wall Freestanding PoH', 'Biggoron', 'GS Death Mountain Crater Crate', 'DMC Deku Scrub Bombs'], 
-            ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto']),
+            ['Crater Exit', 'Crater Hover Boots', 'Crater Scarecrow', 'Top of Crater Grotto', 
+            'Death Mountain Crater Gossip Stone', 'Death Mountain Trail Gossip Stone']),
         create_ow_region(
             'Death Mountain Crater Lower', 
             None, 
@@ -228,6 +235,8 @@ def create_regions(world):
             'Death Mountain Crater Central', 
             ['DM Crater Volcano Freestanding PoH', 'Sheik in Crater', 'GS Mountain Crater Bean Patch'], 
             ['Crater Bridge Reverse', 'Fire Temple Entrance']),
+        create_interior_region('Death Mountain Crater Gossip Stone'),
+        create_interior_region('Death Mountain Trail Gossip Stone'),
         create_interior_region(
             'Crater Fairy', 
             ['Crater Fairy Reward']),
@@ -239,11 +248,14 @@ def create_regions(world):
         create_ow_region(
             'Zora River Child', 
             ['Magic Bean Salesman', 'Frog Ocarina Game', 'Frogs in the Rain', 'GS Zora River Ladder'], 
-            ['Zora River Child to Shared', 'Zora River Waterfall']),
+            ['Zora River Child to Shared', 'Zora River Waterfall', 
+            'Zoras River Gossip Stone Child Access']),
         create_ow_region(
             'Zora River Adult', 
             ['GS Zora River Near Raised Grottos', 'GS Zora River Above Bridge'], 
-            ['Zoras Domain Adult Access', 'Zora River Adult to Shared']),
+            ['Zoras Domain Adult Access', 'Zora River Adult to Shared', 
+            'Zoras River Gossip Stone Adult Access']),
+        create_interior_region('Zoras River Gossip Stone'),
         create_ow_region(
             'Zora River Shared', 
             ['Zora River Lower Freestanding PoH', 'Zora River Upper Freestanding PoH'], 
@@ -253,7 +265,7 @@ def create_regions(world):
             'Zoras Domain', 
             ['Diving Minigame', 'Zoras Domain Torch Run', 'King Zora Moves', 'Zoras Domain Stick Pot', 
              'Zoras Domain Nut Pot'], 
-            ['Zoras Domain Exit', 'Zoras Domain Dive Warp', 'Behind King Zora', 'Zora Shop Child Access']),
+            ['Zoras Domain Exit', 'Zoras Domain Dive Warp', 'Behind King Zora', 'Zora Shop Child Access', 'Zoras Domain Gossip Stone Child']),
         create_ow_region(
             'Zoras Fountain', 
             ['GS Zora\'s Fountain Tree', 'GS Zora\'s Fountain Above the Log'], 
@@ -261,7 +273,7 @@ def create_regions(world):
         create_ow_region(
             'Zoras Domain Frozen', 
             ['King Zora Thawed', 'GS Zora\'s Domain Frozen Waterfall'], 
-            ['Zoras Fountain Adult Access', 'Zora Shop Adult Access']),
+            ['Zoras Fountain Adult Access', 'Zora Shop Adult Access', 'Zoras Domain Gossip Stone Adult']),
         create_ow_region(
             'Outside Ice Cavern', 
             ['Zoras Fountain Iceberg Freestanding PoH', 'Zoras Fountain Bottom Freestanding PoH', 
@@ -272,6 +284,7 @@ def create_regions(world):
             ['Zora Shop Item 1', 'Zora Shop Item 2', 'Zora Shop Item 3', 'Zora Shop Item 4', 
             'Zora Shop Item 5', 'Zora Shop Item 6', 'Zora Shop Item 7', 'Zora Shop Item 8']),
         create_interior_region('Zoras Fountain Fairy', ['Zoras Fountain Fairy Reward']),
+        create_interior_region('Zoras Domain Gossip Stone'),
         create_ow_region(
             'Lon Lon Ranch', 
             ['Epona', 'Song from Malon', 'GS Lon Lon Ranch Tree', 'GS Lon Lon Ranch Rain Shed', 
@@ -283,7 +296,8 @@ def create_regions(world):
         create_interior_region(
             'Forest Temple Entry Area', 
             ['Sheik Forest Song', 'GS Lost Woods Above Stage', 'GS Sacred Forest Meadow'], 
-            ['Adult Meadow Exit', 'Forest Temple Entrance', 'Meadow Storms Grotto Adult Access']),
+            ['Adult Meadow Exit', 'Forest Temple Entrance', 'Meadow Storms Grotto Adult Access',
+            'Sacred Forest Meadow Gossip Stones Adult Access']),
         create_dungeon_region(
             'Ganons Castle Tower', 
             ['Ganons Tower Boss Key Chest', 'Ganon']),
@@ -305,12 +319,14 @@ def create_regions(world):
         create_grotto_region('Remote Southern Grotto', ['Remote Southern Grotto Chest']),
         create_grotto_region('Field Near Lake Outside Fence Grotto', ['Field Near Lake Outside Fence Grotto Chest']),
         create_grotto_region('Field Near Lake Inside Fence Grotto', ['HF Grotto Deku Scrub Piece of Heart']),
-        create_grotto_region('Field Valley Grotto', ['GS Hyrule Field Near Gerudo Valley']),
+        create_grotto_region('Field Valley Grotto', ['GS Hyrule Field Near Gerudo Valley'], ['Field Valley Grotto Gossip Stone']),
+        create_interior_region('Field Valley Grotto Gossip Stone'),
         create_grotto_region('Field West Castle Town Grotto', ['Field West Castle Town Grotto Chest']),
         create_grotto_region('Field Far West Castle Town Grotto'),
         create_grotto_region('Field Kakariko Grotto', ['GS Hyrule Field near Kakariko']),
         create_grotto_region('Field North Lon Lon Grotto', ['Tektite Grotto Freestanding PoH']),
-        create_grotto_region('Castle Storms Grotto', ['GS Hyrule Castle Grotto']),
+        create_grotto_region('Castle Storms Grotto', ['GS Hyrule Castle Grotto'], ['Castle Storms Grotto Gossip Stone']),
+        create_interior_region('Castle Storms Grotto Gossip Stone'),
         create_grotto_region('Kakariko Bombable Grotto', ['Redead Grotto Chest']),
         create_grotto_region('Kakariko Back Grotto', ['Kakariko Back Grotto Chest']),
         create_grotto_region('Mountain Bombable Grotto'),
@@ -382,7 +398,8 @@ def create_regions(world):
                  'GS Dodongo\'s Cavern MQ Lizalfos Room', 'GS Dodongo\'s Cavern MQ Scrub Room',
                  'DC MQ Deku Scrub Deku Sticks', 'DC MQ Deku Scrub Deku Seeds',
                  'DC MQ Deku Scrub Deku Shield', 'DC MQ Deku Scrub Red Potion'], 
-                ['Dodongos Cavern Bomb Drop']),
+                ['Dodongos Cavern Bomb Drop', 'Dodongos Gossip Stone']),
+            create_interior_region('Dodongos Gossip Stone'),
             create_dungeon_region(
                 'Dodongos Cavern Boss Area', 
                 ['Dodongos Cavern MQ Under Grave Chest', 'Chest Above King Dodongo', 'King Dodongo Heart', 
@@ -398,7 +415,8 @@ def create_regions(world):
                 'Dodongos Cavern Lobby', 
                 ['Dodongos Cavern Map Chest', 'Dodongos Cavern Compass Chest', 'GS Dodongo\'s Cavern East Side Room', 
                  'GS Dodongo\'s Cavern Scarecrow', 'DC Deku Scrub Deku Sticks', 'DC Deku Scrub Deku Shield'], 
-                ['Dodongos Cavern Retreat', 'Dodongos Cavern Left Door']),
+                ['Dodongos Cavern Retreat', 'Dodongos Cavern Left Door', 'Dodongos Gossip Stone']),
+            create_interior_region('Dodongos Gossip Stone'),            
             create_dungeon_region(
                 'Dodongos Cavern Climb', 
                 ['Dodongos Cavern Bomb Flower Platform', 'GS Dodongo\'s Cavern Vines Above Stairs',
@@ -957,7 +975,7 @@ def create_regions(world):
                 ['Ganons Castle Light Trial First Left Chest', 'Ganons Castle Light Trial Second Left Chest', 
                  'Ganons Castle Light Trial Third Left Chest', 'Ganons Castle Light Trial First Right Chest', 
                  'Ganons Castle Light Trial Second Right Chest', 'Ganons Castle Light Trial Third Right Chest', 
-                 'Ganons Castle Light Trail Invisible Enemies Chest', 'Ganons Castle Light Trial Lullaby Chest', 
+                 'Ganons Castle Light Trial Invisible Enemies Chest', 'Ganons Castle Light Trial Lullaby Chest', 
                  'Ganons Castle Light Trial Clear'])
         ])
 
@@ -1426,7 +1444,7 @@ location_table = {
     'Ganons Castle Light Trial First Right Chest': (0x321B13E, None, 0x5F8E, 'Chest', 0x0D, 'Ganon\'s Castle'),
     'Ganons Castle Light Trial Second Right Chest': (0x321B0FE, None, 0x596A, 'Chest', 0x0D, 'Ganon\'s Castle'),
     'Ganons Castle Light Trial Third Right Chest': (0x321B14E, None, 0x5F8F, 'Chest', 0x0D, 'Ganon\'s Castle'),
-    'Ganons Castle Light Trail Invisible Enemies Chest': (0x321B15E, None, 0x7850, 'Chest', 0x0D, 'Ganon\'s Castle'),
+    'Ganons Castle Light Trial Invisible Enemies Chest': (0x321B15E, None, 0x7850, 'Chest', 0x0D, 'Ganon\'s Castle'),
     'Ganons Castle Light Trial Lullaby Chest': (0x321B17E, None, 0x8851, 'Chest', 0x0D, 'Ganon\'s Castle'),
     # Ganon's Castle MQ
     'Ganons Castle MQ Water Trial Chest': (0, None, 0x59C1, 'Chest', 0x0D, 'Ganon\'s Castle'),

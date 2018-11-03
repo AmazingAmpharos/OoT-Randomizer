@@ -203,7 +203,7 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Zora River Adult', 'Zora River Adult'),
                          ('Zoras Domain Adult Access', 'Zoras Domain Frozen'),
                          ('Zoras Fountain Adult Access', 'Outside Ice Cavern'),
-                         ('Lon Lon Rance Entrance', 'Lon Lon Ranch'),
+                         ('Lon Lon Ranch Entrance', 'Lon Lon Ranch'),
                          ('Lon Lon Exit', 'Hyrule Field'),
                          ('Ganons Castle Deku Scrubs', 'Ganons Castle Deku Scrubs'),
                          ('Ganons Castle Forest Trial', 'Ganons Castle Forest Trial'),
@@ -212,7 +212,20 @@ mandatory_connections = [('Adult Forest Warp Pad', 'Forest Temple Entry Area'),
                          ('Ganons Castle Shadow Trial', 'Ganons Castle Shadow Trial'),
                          ('Ganons Castle Spirit Trial', 'Ganons Castle Spirit Trial'),
                          ('Ganons Castle Light Trial', 'Ganons Castle Light Trial'),
-                         ('Ganons Castle Tower', 'Ganons Castle Tower')
+                         ('Ganons Castle Tower', 'Ganons Castle Tower'),
+                         ('Death Mountain Crater Gossip Stone', 'Death Mountain Crater Gossip Stone'),
+                         ('Death Mountain Trail Gossip Stone', 'Death Mountain Trail Gossip Stone'),
+                         ('Goron City Maze Gossip Stone', 'Goron City Maze Gossip Stone'),
+                         ('Goron City Medigoron Gossip Stone', 'Goron City Medigoron Gossip Stone'),
+                         ('Zoras Domain Gossip Stone Child', 'Zoras Domain Gossip Stone'),
+                         ('Zoras Domain Gossip Stone Adult', 'Zoras Domain Gossip Stone'),
+                         ('Desert Colossus Gossip Stone', 'Desert Colossus Gossip Stone'),
+                         ('Castle Storms Grotto Gossip Stone', 'Castle Storms Grotto Gossip Stone'),
+                         ('Field Valley Grotto Gossip Stone', 'Field Valley Grotto Gossip Stone'),
+                         ('Sacred Forest Meadow Gossip Stones Child Access', 'Sacred Forest Meadow Gossip Stones'),
+                         ('Sacred Forest Meadow Gossip Stones Adult Access', 'Sacred Forest Meadow Gossip Stones'),
+                         ('Zoras River Gossip Stone Child Access', 'Zoras River Gossip Stone'),
+                         ('Zoras River Gossip Stone Adult Access', 'Zoras River Gossip Stone'),
                         ]
 
 DT_vanilla_connections = [('Deku Tree Slingshot Passage', 'Deku Tree Slingshot Room'),
@@ -234,11 +247,13 @@ DC_vanilla_connections = [('Dodongos Cavern Lobby', 'Dodongos Cavern Lobby'),
                           ('Dodongos Cavern Slingshot Target', 'Dodongos Cavern Far Bridge'),
                           ('Dodongos Cavern Bridge Fall 2', 'Dodongos Cavern Lobby'),
                           ('Dodongos Cavern Bomb Drop', 'Dodongos Cavern Boss Area'),
-                          ('Dodongos Cavern Exit Skull', 'Dodongos Cavern Lobby')
+                          ('Dodongos Cavern Exit Skull', 'Dodongos Cavern Lobby'),
+                          ('Dodongos Gossip Stone', 'Dodongos Gossip Stone'),
                          ]
 
 DC_MQ_connections = [('Dodongos Cavern Lobby', 'Dodongos Cavern Lobby'),
-                     ('Dodongos Cavern Bomb Drop', 'Dodongos Cavern Boss Area')
+                     ('Dodongos Cavern Bomb Drop', 'Dodongos Cavern Boss Area'),
+                     ('Dodongos Gossip Stone', 'Dodongos Gossip Stone'),
                     ]
 
 JB_vanilla_connections = [('Jabu Jabus Belly Ceiling Switch', 'Jabu Jabus Belly Main'),
