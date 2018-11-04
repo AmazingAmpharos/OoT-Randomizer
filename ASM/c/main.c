@@ -5,12 +5,20 @@
 #include "util.h"
 #include "z64.h"
 
+static uint16_t pad_pressed_raw, 
+	pad, 
+	pad_pressed;
+
 void c_init() {
+	pad_pressed_raw = 0;
+	pad = 0;
+	pad_pressed = 0;
     heap_init();
     gfx_init();
     text_init();
 }
 
+static int button_time[16];
 void c_after_game_state_update() {
     if (z64_game.pause_state == 6 &&
                 z64_game.pause_screen == 0 &&
@@ -19,4 +27,29 @@ void c_after_game_state_update() {
         z64_disp_buf_t *db = &(z64_ctxt.gfx->overlay);
         draw_dungeon_info(db);
     }
+
+	uint16_t z_pad = z64_input_direct.raw.pad;
+	pad_pressed_raw = (pad ^ z_pad) & z_pad;
+	pad = z_pad;
+	pad_pressed = 0;
+	for (int i = 0; i < 16; ++i) {
+		uint16_t p = 1 << i;
+		if ((pad_pressed_raw & p))
+			pad_pressed |= p;
+	}
+
+	if (z64_file.link_age==0) {
+
+		if (pad_pressed & 0x0200 && z64_file.iron_boots) {
+			if (z64_file.equip_boots == 2) z64_file.equip_boots = 1;
+			else z64_file.equip_boots = 2;
+			z64_UpdateEquipment(&z64_game, &z64_link);
+		}
+
+		if ((pad_pressed & 0x0100) && z64_file.hover_boots) {
+			if (z64_file.equip_boots == 3) z64_file.equip_boots = 1;
+			else z64_file.equip_boots = 3;
+			z64_UpdateEquipment(&z64_game, &z64_link);
+		}
+	}
 }
