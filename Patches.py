@@ -1209,7 +1209,7 @@ def patch_rom(world, rom):
         rom.write_int32(0xAE80B4, 0x06000003) # bltz s0, +0003
 
     # Patch songs and boss rewards
-    for location in world.get_locations():
+    for location in world.get_filled_locations():
         item = location.item
         itemid = copy.copy(item.code)
         locationaddress = location.address
@@ -1621,7 +1621,7 @@ def patch_rom(world, rom):
 
 def get_override_table(world):
     override_entries = []
-    for location in world.get_locations():
+    for location in world.get_filled_locations():
         override_entries.append(get_override_entry(location))
     override_entries.sort()
     return override_entries
