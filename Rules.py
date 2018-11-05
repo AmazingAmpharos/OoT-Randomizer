@@ -323,7 +323,7 @@ def global_rules(world):
     set_rule(world.get_location('King Zora Moves'), lambda state: state.has('Bottle with Letter'))
     set_rule(world.get_entrance('Behind King Zora'), lambda state: state.has('Bottle with Letter'))
     set_rule(world.get_entrance('Zora River Adult'), lambda state: state.is_adult())
-    set_rule(world.get_entrance('Zoras River Gossip Stone Adult Access'), 
+    set_rule(world.get_entrance('Zoras River Gossip Stone Adult Access'),
         lambda state: world.hints != 'mask')
     set_rule(
         world.get_entrance('Zoras Domain Adult Access'),
@@ -498,7 +498,7 @@ def global_rules(world):
         world.get_location('Colossus Freestanding PoH'),
         lambda state: state.can_play('Requiem of Spirit') and state.can_use('Magic Bean'))
     set_rule(world.get_location('Desert Colossus Fairy Reward'), lambda state: state.can_play('Zeldas Lullaby'))
-    set_rule(world.get_entrance('Desert Colossus Gossip Stone'), 
+    set_rule(world.get_entrance('Desert Colossus Gossip Stone'),
         lambda state: world.hints != 'mask' or state.can_play('Requiem of Spirit'))
     set_rule(
         world.get_location('Gerudo Fortress Rooftop Chest'),
@@ -535,8 +535,8 @@ def global_rules(world):
     set_rule(world.get_entrance('Remote Southern Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Near Lake Inside Fence Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Valley Grotto'), lambda state: state.can_blast_or_smash())
-    set_rule(world.get_entrance('Field Valley Grotto Gossip Stone'), 
-        lambda state: (state.has_explosives() and state.can_use('Dins Fire')) or 
+    set_rule(world.get_entrance('Field Valley Grotto Gossip Stone'),
+        lambda state: (state.has_explosives() and state.can_use('Dins Fire')) or
                       (world.hints != 'mask' and state.can_use('Hammer') and state.has_fire_source()))
     set_rule(world.get_entrance('Field West Castle Town Grotto'), lambda state: state.can_blast_or_smash())
     set_rule(world.get_entrance('Field Far West Castle Town Grotto'), lambda state: state.can_blast_or_smash())
@@ -726,7 +726,7 @@ def global_rules(world):
                         state.can_use('Longshot')) and
                       state.nighttime())
     set_rule(world.get_location('GS Zora River Tree'), lambda state: state.can_child_attack())
-    set_rule(world.get_location('HF Grotto Deku Scrub Piece of Heart'), lambda state: state.can_stun_deku()) 
+    set_rule(world.get_location('HF Grotto Deku Scrub Piece of Heart'), lambda state: state.can_stun_deku())
     set_rule(
         world.get_entrance('Zora River Storms Grotto'),
         lambda state: state.can_play('Song of Storms') and state.can_stun_deku())
@@ -736,9 +736,9 @@ def global_rules(world):
                       (state.can_child_attack() or state.has_nuts() or state.has('Buy Deku Shield')))
     set_rule(world.get_entrance('Meadow Storms Grotto Adult Access'), lambda state: state.can_play('Song of Storms'))
     set_rule(world.get_entrance('Lake Hylia Grotto'), lambda state: state.can_stun_deku())
-    set_rule(world.get_location('LW Deku Scrub Deku Nuts'), lambda state: state.can_stun_deku()) 
-    set_rule(world.get_location('LW Deku Scrub Deku Sticks'), lambda state: state.can_stun_deku()) 
-    set_rule(world.get_location('LW Deku Scrub Deku Stick Upgrade'), lambda state: state.can_stun_deku()) 
+    set_rule(world.get_location('LW Deku Scrub Deku Nuts'), lambda state: state.can_stun_deku())
+    set_rule(world.get_location('LW Deku Scrub Deku Sticks'), lambda state: state.can_stun_deku())
+    set_rule(world.get_location('LW Deku Scrub Deku Stick Upgrade'), lambda state: state.can_stun_deku())
     set_rule(world.get_entrance('Desert Colossus Grotto'), lambda state: state.can_use('Silver Gauntlets'))
     set_rule(
         world.get_location('DMC Deku Scrub Bombs'),
@@ -803,8 +803,8 @@ def set_shop_rules(world):
                                         state.has_bow()))
                 elif location.parent_region.name == 'Zora Shop':
                     add_rule(location, lambda state: state.can_reach('Zora Shop Adult Access', 'Entrance'))
-                elif location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']: 
-                    set_rule(location, lambda state: False) 
+                elif location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
+                    set_rule(location, lambda state: False)
                 else:
                     add_rule(location, lambda state: state.is_adult())
 
@@ -1082,7 +1082,7 @@ def dung_rules_fot0(world):
     set_rule(world.get_location('Forest Temple Red Poe Chest'), lambda state: state.can_use('Bow'))
     set_rule(world.get_location('Forest Temple Blue Poe Chest'), lambda state: state.can_use('Bow'))
 
-    # Boss 
+    # Boss
     set_rule(world.get_location('Phantom Ganon'), lambda state: state.has('Boss Key (Forest Temple)'))
     set_rule(world.get_location('Phantom Ganon Heart'), lambda state: state.has('Boss Key (Forest Temple)'))
 
@@ -1117,9 +1117,9 @@ def dung_rules_fotmq(world):
     set_rule(world.get_entrance('Forest Temple Twisted Hall'), lambda state: state.has('Small Key (Forest Temple)', 4))
     set_rule(
         world.get_entrance('Forest Temple Well Connection'),
-        lambda state: state.can_use('Iron Boots') or 
-                      state.can_use('Longshot') or 
-                      state.has('Progressive Scale', 2) or 
+        lambda state: state.can_use('Iron Boots') or
+                      state.can_use('Longshot') or
+                      state.has('Progressive Scale', 2) or
                       (world.logic_tricks and state.can_use('Hookshot')))
     set_rule(world.get_entrance('Forest Temple Webs'), lambda state: state.can_use('Fire Arrows'))
     set_rule(
@@ -1147,7 +1147,7 @@ def dung_rules_fotmq(world):
     set_rule(world.get_location('Forest Temple MQ Map Chest'), lambda state: state.can_use('Bow'))
     set_rule(world.get_location('Forest Temple MQ Compass Chest'), lambda state: state.can_use('Bow'))
 
-    # Boss 
+    # Boss
     set_rule(world.get_location('Phantom Ganon'), lambda state: state.has('Boss Key (Forest Temple)'))
     set_rule(world.get_location('Phantom Ganon Heart'), lambda state: state.has('Boss Key (Forest Temple)'))
 
@@ -1169,10 +1169,10 @@ def dung_rules_fit0(world):
     set_rule(
         world.get_location('Fire Temple Fire Dancer Chest'),
         lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and
-                      state.can_use('Hammer')) 
+                      state.can_use('Hammer'))
     set_rule(
         world.get_location('Fire Temple Boss Key Chest'),
-        lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.can_use('Hammer')) 
+        lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.can_use('Hammer'))
     set_rule(
         world.get_location('Fire Temple Big Lava Room Bombable Chest'),
         lambda state: state.has('Small Key (Fire Temple)', 2) and state.has_explosives())
@@ -1229,7 +1229,7 @@ def dung_rules_fit0(world):
         lambda state: state.has('Small Key (Fire Temple)', 6) and state.can_use('Scarecrow'))
     set_rule(
         world.get_location('GS Fire Temple Basement'),
-        lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.can_use('Hammer')) 
+        lambda state: (state.has('Small Key (Fire Temple)', 8) or not world.keysanity) and state.can_use('Hammer'))
 
 # Fire Temple MQ
 def dung_rules_fitmq(world):
@@ -2046,8 +2046,8 @@ def dung_rules_gtgmq(world):
     set_rule(world.get_entrance('Gerudo Training Grounds Left Door'), lambda state: state.has_fire_source())
     set_rule(world.get_entrance('Gerudo Training Grounds Right Door'), lambda state: state.has_bow())
     set_rule(
-        world.get_entrance('Gerudo Training Grounds Longshot Target'), 
-        lambda state: state.can_use('Longshot') or 
+        world.get_entrance('Gerudo Training Grounds Longshot Target'),
+        lambda state: state.can_use('Longshot') or
                       (world.logic_tricks and state.can_use('Hookshot')))
     set_rule(
         world.get_entrance('Gerudo Training Grounds Song of Time Block'),

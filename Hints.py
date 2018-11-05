@@ -206,7 +206,7 @@ def get_good_loc_hint(world, checked):
 
 
 def get_good_item_hint(world, checked):
-    locations = [location for location in world.get_locations() 
+    locations = [location for location in world.get_locations()
             if not location.name in checked and \
             location.item.majoritem and \
             not location.locked]
@@ -274,7 +274,7 @@ def get_junk_hint(world, checked):
 
     hint = random.choice(hints)
     checked.append(hint.name)
-    
+
     return (hint.text, None)
 
 
@@ -343,7 +343,7 @@ def buildGossipHints(worlds, world):
     alwaysLocations = getHintGroup('alwaysLocation', world)
     for hint in alwaysLocations:
         location = world.get_location(hint.name)
-        checkedLocations.append(hint.name)   
+        checkedLocations.append(hint.name)
         add_hint(worlds, world, stoneIDs, buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
             colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), hint_dist['always'][1], location)
 
@@ -403,10 +403,10 @@ def setRewardColor(text):
     for i, char in enumerate(text):
         if char == '\x05' and colorWhite:
             text = text[:i + 1] + rewardColors.pop(0) + text[i + 2:]
-            colorWhite = False 
+            colorWhite = False
         elif char == '\x05' and not colorWhite:
             colorWhite = True
-        
+
     return text
 
 # fun new lines for Ganon during the final battle
@@ -441,9 +441,9 @@ def buildGanonText(world, messages):
                 text += get_raw_text(getHint(getItemGenericName(location.item), world.clearer_hints).text)
                 text += '!'
                 break
-    
+
     update_message_by_id(messages, 0x70CC, text)
-        
+
 def get_raw_text(string):
     text = ''
     for char in string:

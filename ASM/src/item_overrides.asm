@@ -58,7 +58,7 @@ override_skulltula_token:
 
     ; display message
     ; message id is in the extended item table
-    lbu     a1, ITEM_ROW_TEXT_ID (v1)  
+    lbu     a1, ITEM_ROW_TEXT_ID (v1)
     move    a0,s1
     jal     0x000dce14          ; call ex_0dce14(ctx, text_id, 0)
     move    a2,zero
@@ -94,7 +94,7 @@ override_skulltula_token:
     ; get the table entry in the get item table for this item
     li      t1, GET_ITEMTABLE   ; t1 = base of get item table
     li      t2, 0x6             ; t2 = size of an element
-    mult    v0, t2              ; 
+    mult    v0, t2              ;
     mflo    t2                  ; t2 = offset into get item table
     addu    s0, t1, t2          ; s0 = pointer to table entry
 
@@ -175,7 +175,7 @@ override_object:
 
 @@no_count_inc:
     sb      zero, 0x00 (t1)
-    
+
 @@no_pending_clear:
     jr ra
     nop
@@ -400,7 +400,7 @@ get_override_search_key:
     bne     t2, 0x019C, @@not_skulltula     ; if not skulltula, try for other types
     nop
 
-    li      t0, 0x03            ; t0 = skulltula type   
+    li      t0, 0x03            ; t0 = skulltula type
     lhu     t3, 0x1C (a1)       ; t3 = skulltula token variable
     andi    t1, t3, 0x00FF      ; t1 = skulltula flag (used for the lookup)
     andi    v0, t3, 0x1F00      ; v0 = skulltula scene (shifted)

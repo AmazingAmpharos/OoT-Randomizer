@@ -15,7 +15,7 @@ before_game_state_update:
     ; Walking-While-Talking glitch.
     li      t2, GLOBAL_CONTEXT
     lw      t0, 0x0794 (t2)        ; Camera 2
-    bnez    t0, @@no_pending_item  
+    bnez    t0, @@no_pending_item
 
     ; clear pending item index
     li      t1, PENDING_SPECIAL_ITEM_END
@@ -25,7 +25,7 @@ before_game_state_update:
     ; If there is a pending item, try to make the player instance receive it. If the player has
     ; control on this frame, they will receive the item. Otherwise nothing will happen, and
     ; we try again next frame.
-    li      t1, PENDING_SPECIAL_ITEM 
+    li      t1, PENDING_SPECIAL_ITEM
     li      t2, -1
     li      t4, (PENDING_SPECIAL_ITEM_END - PENDING_SPECIAL_ITEM) ; max number of entries
 @@loop:

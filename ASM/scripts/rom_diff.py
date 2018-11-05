@@ -9,7 +9,7 @@ def main():
     compare_path = sys.argv[2]
     output_path = sys.argv[3]
     create_diff(base_path, compare_path, output_path)
-    
+
 def unequal_chunks(file1, file2):
     chunk_size = 2048
     i = 0

@@ -253,7 +253,7 @@ SONG_MESSAGES = {
     0x00BA: "\x08\x06\x14You've learned \x05\x42Saria's Song\x05\x40!",
     0x00BB: "\x08\x06\x0BYou've learned the \x05\x46Sun's Song\x05\x40!",
     0x00BC: "\x08\x06\x05You've learned the \x05\x44Song of Time\x05\x40!",
-    0x00BD: "\x08You've learned the \x05\x45Song of Storms\x05\x40!",    
+    0x00BD: "\x08You've learned the \x05\x45Song of Storms\x05\x40!",
 }
 
 
@@ -791,7 +791,7 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True, spe
     for old_index, new_index in enumerate(permutation):
         old_message = messages[old_index]
         new_message = messages[new_index]
-        remember_id = new_message.id 
+        remember_id = new_message.id
         new_message.id = old_message.id
 
         # check if there is space to write the message
@@ -835,7 +835,7 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
         exempt_as_id = m.is_id_message()
         exempt_as_hint = ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT + list(KEYSANITY_MESSAGES.keys()) + shuffle_messages.shop_item_messages ) )
         return not ( exempt_as_id or exempt_as_hint )
-    
+
     have_goto =         list( filter( lambda m: is_not_exempt(m) and m.has_goto, messages) )
     have_keep_open =    list( filter( lambda m: is_not_exempt(m) and m.has_keep_open, messages) )
     have_event =        list( filter( lambda m: is_not_exempt(m) and m.has_event, messages) )
