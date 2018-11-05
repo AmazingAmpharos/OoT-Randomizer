@@ -250,7 +250,7 @@ def global_rules(world):
                         (state.can_blast_or_smash() or state.can_use('Silver Gauntlets'))))
     set_rule(
         world.get_entrance('Goron City Medigoron Gossip Stone'),
-        lambda state: state.can_blast_or_smash() or state.has('Progressive Strenght Upgrade'))
+        lambda state: state.can_blast_or_smash() or state.has('Progressive Strength Upgrade'))
     set_rule(
         world.get_location('Rolling Goron as Child'),
         lambda state: state.has('Bomb Bag') and state.has_explosives())
@@ -655,7 +655,7 @@ def global_rules(world):
         lambda state: world.hints != 'mask' or state.can_blast_or_smash())
     set_rule(
         world.get_entrance('Death Mountain Crater Gossip Stone'),
-        lambda state: state.can_blast_or_smash())
+        lambda state: state.has_explosives())
     set_rule(world.get_location('GS Goron City Center Platform'), lambda state: state.is_adult())
     set_rule(
         world.get_location('GS Mountain Crater Bean Patch'),
