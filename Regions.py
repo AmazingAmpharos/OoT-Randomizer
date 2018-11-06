@@ -365,7 +365,8 @@ def create_regions(world):
             create_dungeon_region(
                 'Deku Tree Lobby',
                 ['Deku Tree MQ Lobby Chest', 'Deku Tree MQ Slingshot Chest', 'Deku Tree MQ Slingshot Room Back Chest',
-                 'Deku Tree MQ Basement Chest', 'GS Deku Tree MQ Lobby'],
+                 'Deku Tree MQ Basement Chest', 'GS Deku Tree MQ Lobby',
+                 'Deku Tree Gossip Stone (Left)', 'Deku Tree Gossip Stone (Right)'],
                 ['Deku Tree Exit', 'Deku Tree Compass Passage', 'Deku Tree Basement Path']),
             create_dungeon_region(
                 'Deku Tree Compass Room',
@@ -409,8 +410,7 @@ def create_regions(world):
                  'GS Dodongo\'s Cavern MQ Song of Time Block Room', 'GS Dodongo\'s Cavern MQ Larva Room',
                  'GS Dodongo\'s Cavern MQ Lizalfos Room', 'GS Dodongo\'s Cavern MQ Scrub Room',
                  'DC MQ Deku Scrub Deku Sticks', 'DC MQ Deku Scrub Deku Seeds',
-                 'DC MQ Deku Scrub Deku Shield', 'DC MQ Deku Scrub Red Potion',
-                 'Deku Tree Gossip Stone (Left)', 'Deku Tree Gossip Stone (Right)'],
+                 'DC MQ Deku Scrub Deku Shield', 'DC MQ Deku Scrub Red Potion'],
                 ['Dodongos Cavern Bomb Drop', 'Dodongos Gossip Stone']),
             create_interior_region('Dodongos Gossip Stone', ['Dodongos Cavern Gossip Stone']),
             create_dungeon_region(
