@@ -518,9 +518,9 @@ def verify_remap(scenes):
             print("{0} - {1}".format(result, file))
 
 
-def update_dmadata(rom:LocalRom, file:File):
+def update_dmadata(rom:LocalRom, file:File, from_file=None):
     key, start, end = file.dma_key, file.start, file.end
-    rom.update_dmadata_record(key, start, end)
+    rom.update_dmadata_record(key, start, end, from_file)
 
 def update_scene_table(rom:LocalRom, sceneId, start, end):
     cur = sceneId * 0x14 + SCENE_TABLE

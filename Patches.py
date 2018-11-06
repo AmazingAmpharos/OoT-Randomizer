@@ -164,6 +164,18 @@ def patch_rom(world, rom):
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
             rom.write_byte(address, value)
+    update_dmadata(rom, File({
+            'Name':     'Rando_ASM',
+            'Start':    '%08X' % rom.read_int32(0xD260),
+            'End':      '%08X' % rom.read_int32(0xD264),
+            'RemapStart':None,
+        }))
+    update_dmadata(rom, File({
+            'Name':     'Rando_C',
+            'Start':    '%08X' % rom.read_int32(0xD270),
+            'End':      '%08X' % rom.read_int32(0xD274),
+            'RemapStart':None,
+        }))
 
     # Write Randomizer title screen logo
     with open(data_path('title.bin'), 'rb') as stream:
@@ -1100,7 +1112,7 @@ def patch_rom(world, rom):
             'Name':'En_GirlA',
             'Start':'00C004E0',
             'End':'00C02E00',
-            'RemapStart':'03485000',
+            'RemapStart':'%08X' % rom.free_space(),
         })
     shop_item_file.relocate(rom)
 
@@ -1131,12 +1143,12 @@ def patch_rom(world, rom):
             'Name':'shop1_room_1',
             'Start':'028E4000',
             'End':'0290D7B0',
-            'RemapStart':'03489000',
+            'RemapStart':'%08X' % rom.free_space(),
         })
     bazaar_room_file.dma_key = 0x03472000
     bazaar_room_file.relocate(rom)
     # Update DMA Table
-    update_dmadata(rom, bazaar_room_file)
+    update_dmadata(rom, bazaar_room_file, 0x028E4000)
 
     # Add new Bazaar Room to Bazaar Scene
     rom.write_int32s(0x28E3030, [0x00010000, 0x02000058]) #reduce position list size

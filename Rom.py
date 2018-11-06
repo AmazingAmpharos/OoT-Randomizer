@@ -38,6 +38,9 @@ class LocalRom(object):
 
         # Add file to maximum size
         self.buffer.extend(bytearray([0x00] * (0x4000000 - len(self.buffer))))
+        self.original = copy.copy(self.buffer)
+        self.changed_address = {}
+        self.changed_dma = {}
 
     def decompress_rom_file(self, file, decomp_file):
         validCRC = [
@@ -121,6 +124,7 @@ class LocalRom(object):
         if address == None:
             address = self.last_address
         self.buffer[address] = value
+        self.changed_address[address] = value
         self.last_address = address + 1
 
     def write_sbyte(self, address, value):
@@ -220,20 +224,20 @@ class LocalRom(object):
 
     # dmadata/file management helper functions
 
-    def _get_dmadata_record(rom, cur):
-        start = rom.read_int32(cur)
-        end = rom.read_int32(cur+0x04)
+    def _get_dmadata_record(self, cur):
+        start = self.read_int32(cur)
+        end = self.read_int32(cur+0x04)
         size = end-start
         return start, end, size
 
 
-    def verify_dmadata(rom):
+    def verify_dmadata(self):
         cur = DMADATA_START
         overlapping_records = []
         dma_data = []
 
         while True:
-            this_start, this_end, this_size = rom._get_dmadata_record(cur)
+            this_start, this_end, this_size = self._get_dmadata_record(cur)
 
             if this_start == 0 and this_end == 0:
                 break
@@ -258,21 +262,45 @@ class LocalRom(object):
                 '\n-------------------------------------\n'.join(overlapping_records))
 
 
-    def update_dmadata_record(rom, key, start, end):
+    # if key is not found, then add an entry
+    def update_dmadata_record(self, key, start, end, from_file=None):
         cur = DMADATA_START
-        dma_start, dma_end, dma_size = rom._get_dmadata_record(cur)
+        dma_index = 0
+        dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
         while dma_start != key:
             if dma_start == 0 and dma_end == 0:
                 break
 
             cur += 0x10
-            dma_start, dma_end, dma_size = rom._get_dmadata_record(cur)
+            dma_index += 1
+            dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
 
-        if dma_start == 0:
-            raise Exception('dmadata update failed: key {0:x} not found in dmadata'.format(key))
-
+        if cur >= 0xD380:
+            raise Exception('dmadata update failed: key {0:x} not found in dmadata and dma table is full.'.format(key))
         else:
-            rom.write_int32s(cur, [start, end, start, 0])
+            self.write_int32s(cur, [start, end, start, 0])
+            if from_file == None:
+                if key == None:
+                    from_file = -1
+                else:
+                    from_file = key
+            self.changed_dma[dma_index] = (from_file, start, end - start)
+
+    # gets the last used byte of rom defined in the DMA table
+    def free_space(self):
+        cur = DMADATA_START
+        max_end = 0
+
+        while True:
+            this_start, this_end, this_size = self._get_dmadata_record(cur)
+
+            if this_start == 0 and this_end == 0:
+                break
+
+            max_end = max(max_end, this_end)
+            cur += 0x10
+        return max_end
+
 
 int16 = struct.Struct('>H')
 int32 = struct.Struct('>I')
