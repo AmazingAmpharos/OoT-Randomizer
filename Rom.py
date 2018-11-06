@@ -265,17 +265,20 @@ class LocalRom(object):
     # if key is not found, then add an entry
     def update_dmadata_record(self, key, start, end, from_file=None):
         cur = DMADATA_START
+        dma_data_end = None
         dma_index = 0
         dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
         while dma_start != key:
             if dma_start == 0 and dma_end == 0:
                 break
+            if dma_start == DMADATA_START:
+                dma_data_end = dma_end
 
             cur += 0x10
             dma_index += 1
             dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
 
-        if cur >= 0xD380:
+        if cur >= (dma_data_end - 0x10):
             raise Exception('dmadata update failed: key {0:x} not found in dmadata and dma table is full.'.format(key))
         else:
             self.write_int32s(cur, [start, end, start, 0])
