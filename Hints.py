@@ -364,56 +364,47 @@ def buildGossipHints(worlds, world):
 
 # builds boss reward text that is displayed at the temple of time altar for child and adult, pull based off of item in a fixed order.
 def buildBossRewardHints(world, messages):
-    bossRewardsSpiritualStones = ['Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire']
-    bossRewardsMedallions = ['Forest Medallion', 'Fire Medallion', 'Water Medallion', 'Shadow Medallion', 'Spirit Medallion', 'Light Medallion']
-
     # text that appears at altar as a child.
-    text = '\x08'
-    text += get_raw_text(getHint('Spiritual Stone Text Start', world.clearer_hints).text)
-    for reward in bossRewardsSpiritualStones:
-        text += buildBossString(reward, world)
-
-    text = setRewardColor(text)
-    text += get_raw_text(getHint('Spiritual Stone Text End', world.clearer_hints).text)
-    text += '\x0B'
-
-    update_message_by_id(messages, 0x707a, text, 0x20)
-
+    bossRewardsSpiritualStones = [
+        ('Kokiri Emerald',   'Green'), 
+        ('Goron Ruby',       'Red'), 
+        ('Zora Sapphire',    'Blue'),
+    ]
+    child_text = '\x08'
+    child_text += getHint('Spiritual Stone Text Start', world.clearer_hints).text
+    for (reward, color) in bossRewardsSpiritualStones:
+        child_text += buildBossString(reward, color, world)
+    child_text += getHint('Spiritual Stone Text End', world.clearer_hints).text
+    child_text += '\x0B'
+    update_message_by_id(messages, 0x707A, get_raw_text(child_text), 0x20)
 
     # text that appears at altar as an adult.
-    start = '\x08When evil rules all, an awakening\x01voice from the Sacred Realm will\x01call those destined to be Sages,\x01who dwell in the \x05\x41five temples\x05\x40.\x04'
-    text = ''
-    for reward in bossRewardsMedallions:
-        text += buildBossString(reward, world)
+    bossRewardsMedallions = [
+        ('Light Medallion',  'Light Blue'),
+        ('Forest Medallion', 'Green'),
+        ('Fire Medallion',   'Red'),
+        ('Water Medallion',  'Blue'),
+        ('Shadow Medallion', 'Pink'),
+        ('Spirit Medallion', 'Yellow'),
+    ]
+    adult_text = '\x08'
+    adult_text += getHint('Medallion Text Start', world.clearer_hints).text
+    for (reward, color) in bossRewardsMedallions:
+        adult_text += buildBossString(reward, color, world)
+    adult_text += getHint('Medallion Text End', world.clearer_hints).text
+    adult_text += '\x0B'
+    update_message_by_id(messages, 0x7057, get_raw_text(adult_text), 0x20)
 
-    text = setRewardColor(text)
-    text += get_raw_text(getHint('Medallion Text End', world.clearer_hints).text)
-    text += '\x0B'
-
-    update_message_by_id(messages, 0x7057, start + text, 0x20)
 
 # pulls text string from hintlist for reward after sending the location to hintlist.
-def buildBossString(reward, world):
+def buildBossString(reward, color, world):
     text = ''
     for location in world.get_filled_locations():
         if location.item.name == reward:
-            text += '\x08\x13' + chr(location.item.code) + get_raw_text(getHint(location.name, world.clearer_hints).text)
+            text += '\x08\x13' + chr(location.item.code)
+            text += colorText(getHint(location.name, world.clearer_hints).text, color)
     return text
 
-# alternates through color set commands in child and adult boss reward hint strings setting the colors at the start of the string to correspond with the reward found at the location.
-# skips over color commands at the end of stings to set color back to white.
-def setRewardColor(text):
-    rewardColors = ['\x42', '\x41', '\x43', '\x45', '\x46', '\x44']
-
-    colorWhite = True
-    for i, char in enumerate(text):
-        if char == '\x05' and colorWhite:
-            text = text[:i + 1] + rewardColors.pop(0) + text[i + 2:]
-            colorWhite = False
-        elif char == '\x05' and not colorWhite:
-            colorWhite = True
-
-    return text
 
 # fun new lines for Ganon during the final battle
 def buildGanonText(world, messages):
