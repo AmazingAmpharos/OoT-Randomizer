@@ -1340,9 +1340,9 @@ def patch_rom(world, rom):
     shop_objs = place_shop_items(rom, world, shop_items, messages,
         world.get_region('Castle Town Bazaar').locations)
     shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
-    rom.write_byte(0x3489029, len(shop_objs))
-    rom.write_int32(0x348902C, 0x03007A40)
-    rom.write_int16s(0x3490A40, list(shop_objs))
+    rom.write_byte(bazaar_room_file.start + 0x29, len(shop_objs))
+    rom.write_int32(bazaar_room_file.start + 0x2C, 0x03007A40)
+    rom.write_int16s(bazaar_room_file.start + 0x7A40, list(shop_objs))
 
     # goron shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
