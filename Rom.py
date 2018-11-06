@@ -189,7 +189,7 @@ class LocalRom(object):
             d = words[cur]
 
             if ((t6 + d) & u32) < t6:
-                t4 += 1 
+                t4 += 1
 
             t6 = (t6+d) & u32
             t3 ^= d
@@ -231,7 +231,7 @@ class LocalRom(object):
         cur = DMADATA_START
         overlapping_records = []
         dma_data = []
-    
+
         while True:
             this_start, this_end, this_size = rom._get_dmadata_record(cur)
 
@@ -256,7 +256,7 @@ class LocalRom(object):
         if len(overlapping_records) > 0:
             raise Exception("Overlapping DMA Data Records!\n%s" % \
                 '\n-------------------------------------\n'.join(overlapping_records))
-        
+
 
     def update_dmadata_record(rom, key, start, end):
         cur = DMADATA_START

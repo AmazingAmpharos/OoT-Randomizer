@@ -329,7 +329,7 @@ class CollectionState(object):
         return self.prog_items[item] >= count
 
     def item_count(self, item):
-    	return self.prog_items[item]
+        return self.prog_items[item]
 
     def is_adult(self):
         return self.has('Master Sword')
@@ -366,7 +366,7 @@ class CollectionState(object):
     def has_blue_fire(self):
         return self.has_bottle() and \
                 (self.can_reach('Ice Cavern')
-                or self.can_reach('Ganons Castle Water Trial') 
+                or self.can_reach('Ganons Castle Water Trial')
                 or self.has('Buy Blue Fire')
                 or (self.world.dungeon_mq['GTG'] and self.can_reach('Gerudo Training Grounds Stalfos Room')))
 
@@ -502,19 +502,19 @@ class CollectionState(object):
             return self.is_adult()
 
     # Be careful using this function. It will not collect any
-    # items that may be locked behind the item, only the item itself.         
+    # items that may be locked behind the item, only the item itself.
     def collect(self, item):
         if item.advancement:
             self.prog_items[item.name] += 1
             self.clear_cached_unreachable()
-           
+
     # Be careful using this function. It will not uncollect any
-    # items that may be locked behind the item, only the item itself. 
+    # items that may be locked behind the item, only the item itself.
     def remove(self, item):
         if self.prog_items[item.name] > 0:
             self.prog_items[item.name] -= 1
             if self.prog_items[item.name] <= 0:
-            	del self.prog_items[item.name]
+                del self.prog_items[item.name]
 
             # invalidate collected cache. unreachable locations are still unreachable
             self.region_cache =   {k: v for k, v in self.region_cache.items() if not v}
@@ -602,12 +602,12 @@ class CollectionState(object):
 
         # get list of all of the progressive items that can appear in hints
         all_locations = [location for world in worlds for location in world.get_filled_locations()]
-        item_locations = [location for location in all_locations  
-            if location.item.advancement 
-            and location.item.type != 'Event' 
-            and location.item.type != 'Shop' 
-            and not location.locked 
-            and (worlds[0].shuffle_smallkeys != 'dungeon' or not location.item.smallkey) 
+        item_locations = [location for location in all_locations
+            if location.item.advancement
+            and location.item.type != 'Event'
+            and location.item.type != 'Shop'
+            and not location.locked
+            and (worlds[0].shuffle_smallkeys != 'dungeon' or not location.item.smallkey)
             and (worlds[0].shuffle_bosskeys != 'dungeon' or not location.item.bosskey)]
 
         # if the playthrough was generated, filter the list of locations to the

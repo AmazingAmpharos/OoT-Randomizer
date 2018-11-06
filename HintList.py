@@ -151,7 +151,7 @@ hintTable = {
     'Bombchus (20)':                                         (["plenty of mice bombs", "plenty of proximity mice", "plenty of wall crawlers", "plenty of trail blazers"], "Bombchus (20 pieces)", 'item'),
     'Deku Nuts (5)':                                         (["some nuts", "some flashbangs", "some scrub spit"], "Deku Nuts (5 pieces)", 'item'),
     'Deku Nuts (10)':                                        (["lots-o-nuts", "plenty of flashbangs", "plenty of scrub spit"], "Deku Nuts (10 pieces)", 'item'),
-    'Deku Seeds (30)':                                       (["catapult ammo", "lots-o-seeds"], "Deku Seeds (30 pieces)", 'item'),                                                                                                            
+    'Deku Seeds (30)':                                       (["catapult ammo", "lots-o-seeds"], "Deku Seeds (30 pieces)", 'item'),
     'Gold Skulltula Token':                                  (["proof of destruction", "an arachnid chip", "spider remains", "one percent of a curse"], "a Gold Skulltula Token", 'item'),
 
     '10 Big Poes':                                           (["#Big Poes# leads to", "#ghost hunters# will be rewarded with"], None, 'alwaysLocation'),
@@ -280,7 +280,7 @@ hintTable = {
     'Bottom of the Well':                                    ("a shadow\'s prison", "Bottom of the Well", 'dungeon'),
     'Gerudo Training Grounds':                               ("the test of thieves", "Gerudo Training Grounds", 'dungeon'),
     'Ganons Castle':                                         ("a conquered citadel", "Ganon's Castle", 'dungeon'),
-                                                             #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box             
+                                                             #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box
     'Queen Gohma':                                           ("One inside an #ancient tree#...^", "One in the #Deku Tree#...^", 'boss'),
     'King Dodongo':                                          ("One within an #immense cavern#...^", "One in #Dodongo's Cavern#...^", 'boss'),
     'Barinade':                                              ("One in the #belly of a deity#...^", "One in #Jabu Jabu's Belly#...^", 'boss'),
@@ -291,12 +291,13 @@ hintTable = {
     'Twinrova':                                              ("One inside a #goddess of the sand#...^", "One in the #Spirit Temple#...^", 'boss'),
     'Links Pocket':                                          ("One in #@'s pocket#...^", "One #@ already has#...^", 'boss'),
     'Spiritual Stone Text Start':                            ("Ye who owns 3 Spiritual Stones...^", None, 'boss'),
-    'Spiritual Stone Text End':                              ("Stand with the Ocarina of Time&and play the Song of Time.", None, 'boss'),
-    'Medallion Text End':                                    ("Together with the Hero of Time,&the awakened ones will bind the&evil and return the light of peace&to the world.", None, 'boss'),
+    'Spiritual Stone Text End':                              ("\x13\x08Stand with the Ocarina of Time&and play the Song of Time.", None, 'boss'),
+    'Medallion Text Start':                                  ("When evil rules all, an awakening&voice from the Sacred Realm will&call those destined to be Sages,&who dwell in the \x05\x41five temples\x05\x40.^", None, 'boss'),
+    'Medallion Text End':                                    ("\x13\x12Together with the Hero of Time,&the awakened ones will bind&the evil and return the light&of peace to the world.", None, 'boss'),
                                                             #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx handy marker for how long one line should be in a text box
     'Validation Line':                                       ("Hmph... Since you made it this far,&I'll let you know what glorious&prize of Ganon's you likely&missed out on in my tower.^Behold...^", None, 'validation line'),
     'Light Arrow Location':                                  ("Ha ha ha... You'll never beat me by&reflecting my lightning bolts&and unleashing the arrows from&", None, 'Light Arrow Location'),
-    '2001':                                                  ("Oh! It's @.&I was expecting someone called&Sheik. Do you know what&happened to them?", None, 'ganonLine'), 
+    '2001':                                                  ("Oh! It's @.&I was expecting someone called&Sheik. Do you know what&happened to them?", None, 'ganonLine'),
     '2002':                                                  ("I knew I shouldn't have put the key&on the other side of my door.", None, 'ganonLine'),
     '2003':                                                  ("Looks like it's time for a&round of tennis.", None, 'ganonLine'),
     '2004':                                                  ("You'll never deflect my bolts of&energy with your sword,&then shoot me with those Light&Arrows you happen to have.", None, 'ganonLine'),

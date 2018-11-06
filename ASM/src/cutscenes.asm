@@ -83,7 +83,7 @@ override_requiem_song:
     nop
 
 override_epona_song:
-    lui    at,0x8012       
+    lui    at,0x8012
     addiu  at,at,0xA5D0 ; v1 = 0x8012a5d0 # save context (sav)
     lb     t0,0x0EDE(at) ; check learned song from malon flag
     ori    t0,t0,0x01  ; t9 = "Invited to Sing With Child Malon"
@@ -94,7 +94,7 @@ override_epona_song:
     nop
 
 override_suns_song:
-    lui    at,0x8012       
+    lui    at,0x8012
     addiu  at,at,0xA5D0 ; v1 = 0x8012a5d0 # save context (sav)
     lb     t0,0x0EDE(at) ; learned song from sun's song
     ori    t0,t0,0x04  ;
@@ -138,7 +138,7 @@ store_pending_special_item:
 override_saria_song_check:
     move    t7, v1
     lb      t4, 0x0EDF(t7)
-    andi    t6, t4, 0x80  
+    andi    t6, t4, 0x80
     beqz    t6, @@get_item
     li      v1, 5
 

@@ -338,7 +338,7 @@ original_songs = [
     'LRRALRD',
     'URURLU'
 ]
-    
+
 note_map = {
     'A': 0,
     'D': 1,

@@ -38,7 +38,7 @@ def settings_to_guivars(settings, guivars):
                     if 'Custom Color' in info.gui_params['options'] and re.match(r'^[A-Fa-f0-9]{6}$', value):
                         guivar.set('Custom (#' + value + ')')
                     else:
-                        for gui_text,gui_value in info.gui_params['options'].items(): 
+                        for gui_text,gui_value in info.gui_params['options'].items():
                             if gui_value == value:
                                 guivar.set( gui_text )
                 else:
@@ -63,7 +63,7 @@ def guivars_to_settings(guivars):
             result[name] = bool(guivar.get())
         # dropdown/radiobox
         if info.type == str:
-            # set guivar to hexcode if custom color 
+            # set guivar to hexcode if custom color
             if re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', guivar.get()):
                 result[name] = re.findall(r'[A-Fa-f0-9]{6}', guivar.get())[0]
             elif info.gui_params and 'options' in info.gui_params:
@@ -145,7 +145,7 @@ def guiMain(settings=None):
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
-        
+
         # Update any dependencies
         for info in setting_infos:
             if info.gui_params and 'dependency' in info.gui_params:
@@ -169,7 +169,7 @@ def guiMain(settings=None):
                     if widgets[info.name].winfo_class() == 'Scale':
                         widgets[info.name].configure(fg='Black'if dep_met else 'Grey')
 
-                
+
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
                 color = askcolor()
                 if color == (None, None):
@@ -234,7 +234,7 @@ def guiMain(settings=None):
 
     def open_output():
         open_file(output_path(''))
-    
+
     def output_dir_select():
         rom = filedialog.askdirectory(initialdir = default_output_path(guivars['output_dir'].get()))
         if rom != '':
@@ -383,7 +383,7 @@ def guiMain(settings=None):
     frames['navicolor'].pack( fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
     frames['navihint'].pack(  fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
 
-    
+
     notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
 
 

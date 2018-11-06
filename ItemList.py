@@ -8,22 +8,22 @@ from Items import ItemFactory
 #Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
 
 alwaysitems = ([
-    'Biggoron Sword', 
-    'Boomerang', 
-    'Lens of Truth', 
-    'Hammer', 
-    'Iron Boots', 
-    'Goron Tunic', 
-    'Zora Tunic', 
-    'Hover Boots', 
-    'Mirror Shield', 
-    'Stone of Agony', 
-    'Fire Arrows', 
-    'Ice Arrows', 
-    'Light Arrows', 
-    'Dins Fire', 
-    'Farores Wind', 
-    'Rupee (1)'] 
+    'Biggoron Sword',
+    'Boomerang',
+    'Lens of Truth',
+    'Hammer',
+    'Iron Boots',
+    'Goron Tunic',
+    'Zora Tunic',
+    'Hover Boots',
+    'Mirror Shield',
+    'Stone of Agony',
+    'Fire Arrows',
+    'Ice Arrows',
+    'Light Arrows',
+    'Dins Fire',
+    'Farores Wind',
+    'Rupee (1)']
     + ['Progressive Hookshot'] * 2
     + ['Deku Shield']
     + ['Hylian Shield']
@@ -197,20 +197,20 @@ vanilla_shop_items = {
     'Goron Shop Item 5': 'Buy Goron Tunic',
     'Goron Shop Item 6': 'Buy Heart',
     'Goron Shop Item 7': 'Buy Red Potion [40]',
-    'Goron Shop Item 8': 'Buy Heart',    
+    'Goron Shop Item 8': 'Buy Heart',
 }
 
 min_shop_items = (
-      ['Buy Deku Shield'] 
-    + ['Buy Hylian Shield'] 
-    + ['Buy Goron Tunic'] 
-    + ['Buy Zora Tunic'] 
+      ['Buy Deku Shield']
+    + ['Buy Hylian Shield']
+    + ['Buy Goron Tunic']
+    + ['Buy Zora Tunic']
     + ['Buy Deku Nut (5)'] * 2 + ['Buy Deku Nut (10)']
-    + ['Buy Deku Stick (1)'] * 2 
+    + ['Buy Deku Stick (1)'] * 2
     + ['Buy Deku Seeds (30)']
     + ['Buy Arrows (10)'] * 2 + ['Buy Arrows (30)'] + ['Buy Arrows (50)']
     + ['Buy Bombchu (5)'] + ['Buy Bombchu (10)'] * 2 + ['Buy Bombchu (20)']
-    + ['Buy Bombs (5) [25]'] + ['Buy Bombs (5) [35]'] + ['Buy Bombs (10)'] + ['Buy Bombs (20)'] 
+    + ['Buy Bombs (5) [25]'] + ['Buy Bombs (5) [35]'] + ['Buy Bombs (10)'] + ['Buy Bombs (20)']
     + ['Buy Green Potion']
     + ['Buy Red Potion [30]']
     + ['Buy Blue Fire']
@@ -255,27 +255,27 @@ deku_scrubs_items = (
 
 rewardlist = [
     'Kokiri Emerald',
-    'Goron Ruby', 
-    'Zora Sapphire', 
-    'Forest Medallion', 
-    'Fire Medallion', 
-    'Water Medallion', 
-    'Spirit Medallion', 
-    'Shadow Medallion', 
+    'Goron Ruby',
+    'Zora Sapphire',
+    'Forest Medallion',
+    'Fire Medallion',
+    'Water Medallion',
+    'Spirit Medallion',
+    'Shadow Medallion',
     'Light Medallion']
 
 songlist = [
-    'Zeldas Lullaby', 
-    'Eponas Song', 
-    'Suns Song', 
-    'Sarias Song', 
-    'Song of Time', 
-    'Song of Storms', 
-    'Minuet of Forest', 
-    'Prelude of Light', 
-    'Bolero of Fire', 
-    'Serenade of Water', 
-    'Nocturne of Shadow', 
+    'Zeldas Lullaby',
+    'Eponas Song',
+    'Suns Song',
+    'Sarias Song',
+    'Song of Time',
+    'Song of Storms',
+    'Minuet of Forest',
+    'Prelude of Light',
+    'Bolero of Fire',
+    'Serenade of Water',
+    'Nocturne of Shadow',
     'Requiem of Spirit']
 
 skulltula_locations = ([
@@ -335,29 +335,29 @@ skulltula_locations = ([
     'GS Desert Colossus Bean Patch',
     'GS Desert Colossus Tree',
     'GS Desert Colossus Hill'])
-    
+
 tradeitems = (
     'Pocket Egg',
-    'Pocket Cucco', 
-    'Cojiro', 
-    'Odd Mushroom', 
-    'Poachers Saw', 
-    'Broken Sword', 
-    'Prescription', 
-    'Eyeball Frog', 
-    'Eyedrops', 
+    'Pocket Cucco',
+    'Cojiro',
+    'Odd Mushroom',
+    'Poachers Saw',
+    'Broken Sword',
+    'Prescription',
+    'Eyeball Frog',
+    'Eyedrops',
     'Claim Check')
 
 tradeitemoptions = (
     'pocket_egg',
-    'pocket_cucco', 
-    'cojiro', 
-    'odd_mushroom', 
-    'poachers_saw', 
-    'broken_sword', 
-    'prescription', 
-    'eyeball_frog', 
-    'eyedrops', 
+    'pocket_cucco',
+    'cojiro',
+    'odd_mushroom',
+    'poachers_saw',
+    'broken_sword',
+    'prescription',
+    'eyeball_frog',
+    'eyedrops',
     'claim_check')
 
 
@@ -387,11 +387,11 @@ junk_pool = (
     2 *  ['Bombs (10)'] +
     8 *  ['Arrows (5)'] +
     2 *  ['Arrows (10)'] +
-    5 *  ['Deku Stick (1)'] + 
-    5 *  ['Deku Nuts (5)'] + 
+    5 *  ['Deku Stick (1)'] +
+    5 *  ['Deku Nuts (5)'] +
     5 *  ['Deku Seeds (30)'] +
     10 * ['Rupees (5)'] +
-    4 *  ['Rupees (20)'] + 
+    4 *  ['Rupees (20)'] +
     1 *  ['Rupees (50)'])
 def get_junk_item(count=1):
     ret_junk = []
@@ -422,7 +422,7 @@ def generate_itempool(world):
 def get_pool_core(world):
     pool = []
     placed_items = {}
-        
+
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')
     else:
@@ -737,7 +737,7 @@ def get_pool_core(world):
         for _ in range(7):
             pool.append('Arrows (30)' if random.randint(0,3) > 0 else 'Deku Seeds (30)')
 
-    else:        
+    else:
         if world.dungeon_mq['DT']:
             placed_items['DT MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
         if world.dungeon_mq['DC']:
@@ -819,7 +819,7 @@ def get_pool_core(world):
         earliest_trade, latest_trade = latest_trade, earliest_trade
     tradeitem = random.choice(tradeitems[earliest_trade:latest_trade+1])
     pool.append(tradeitem)
-    
+
     pool.extend(songlist)
 
     if world.shuffle_mapcompass == 'remove' or world.shuffle_mapcompass == 'startwith':
@@ -852,14 +852,14 @@ def choose_trials(world):
 def fill_bosses(world, bossCount=9):
     boss_rewards = ItemFactory(rewardlist, world)
     boss_locations = [
-        world.get_location('Queen Gohma'), 
-        world.get_location('King Dodongo'), 
-        world.get_location('Barinade'), 
+        world.get_location('Queen Gohma'),
+        world.get_location('King Dodongo'),
+        world.get_location('Barinade'),
         world.get_location('Phantom Ganon'),
-        world.get_location('Volvagia'), 
-        world.get_location('Morpha'), 
-        world.get_location('Bongo Bongo'), 
-        world.get_location('Twinrova'), 
+        world.get_location('Volvagia'),
+        world.get_location('Morpha'),
+        world.get_location('Bongo Bongo'),
+        world.get_location('Twinrova'),
         world.get_location('Links Pocket')]
 
     placed_prizes = [loc.item.name for loc in boss_locations if loc.item is not None]

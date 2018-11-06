@@ -59,7 +59,7 @@ def main(settings, window=dummy_window()):
         for world in worlds:
             world.settings = settings
             world.__dict__.update(settings.__dict__)
-        
+
         if settings.player_num > settings.world_count or settings.player_num < 1:
             raise Exception('Player Num must be between 1 and %d' % settings.world_count)
 
@@ -202,6 +202,9 @@ def main(settings, window=dummy_window()):
             os.remove(rom_path)
             window.update_progress(95)
 
+    for world in worlds:
+        for setting in world.settings.__dict__:
+            world.settings.__dict__[setting] = world.__dict__[setting]
 
     if settings.create_spoiler:
         window.update_status('Creating Spoiler Log')
@@ -268,7 +271,7 @@ def create_playthrough(worlds):
             state_list[location.item.world.id].collect(location.item)
             required_locations.append(location)
 
-    # in the second phase, we cull each sphere such that the game is still beatable, reducing each 
+    # in the second phase, we cull each sphere such that the game is still beatable, reducing each
     # range of influence to the bare minimum required inside it. Effectively creates a min play
     for location in reversed(required_locations):
         # we remove the item at location and check if game is still beatable
@@ -285,7 +288,7 @@ def create_playthrough(worlds):
 
         # remove the item from the world and test if the game is still beatable
         if CollectionState.can_beat_game(state_list):
-            # cull entries for spoiler walkthrough at end 
+            # cull entries for spoiler walkthrough at end
             required_locations.remove(location)
         else:
             # still required, got to keep it around
