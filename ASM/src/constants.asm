@@ -10,5 +10,4 @@
 ; ASM working memory  0x80480000
 ; C working memory    0x80500000
 
-.definelabel DUMMY_ACTOR, 0x80480000
 .definelabel C_HEAP,      0x80500000

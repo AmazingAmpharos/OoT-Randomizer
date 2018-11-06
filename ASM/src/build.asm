@@ -39,7 +39,6 @@ DebugOutput:
 
 .org 0x80402050
 .area 0x2000, 0
-.include "extended_items.asm"
 .include "item_overrides.asm"
 .include "cutscenes.asm"
 .include "shop.asm"

@@ -151,6 +151,18 @@
     move    a1,s0
 .endarea
 
+; Prevent warping if there is a pending item
+; Replaces:
+;   lhu     v0, 0x63F0 (s2)
+;   slti    at, v0, 0x000F
+;   ... (4 instructions)
+;   lh      t7, 0x640C (s2)
+.org 0xB5511C ; In memory: 0x800DF1BC
+    jal     can_warp
+    nop
+.skip 0x10
+    nop
+
 ;==================================================================================================
 ; Every frame hooks
 ;==================================================================================================
@@ -409,9 +421,9 @@ nop
 ;==================================================================================================
 
 ; Replaces:
-;   beq t1, at, 0x801E51E0
-.org 0xD74964     ; In memory: 0x801E51B4
-    b skip_steal_tunic  ; disable like-like stealing tunic
+;   beq     t1, at, 0x801E51E0
+.org 0xD74964 ; In memory: 0x801E51B4
+    b       skip_steal_tunic  ; disable like-like stealing tunic
 .org 0xD74990
     skip_steal_tunic:
 
@@ -419,26 +431,27 @@ nop
 ; Ocarina Song Cutscene Overrides
 ;==================================================================================================
 
-; Replaces
-;   addu    t8,t0,t7
-;   sb      t6,0x74(t8)  ; store to fairy ocarina slot
-.org 0xAE6E48
+; Replaces:
+;   addu    t8, t0, t7
+;   sb      t6, 0x74 (t8) ; store to fairy ocarina slot
+.org 0xAE6E48 ; In memory: 0x80070EE8
     jal     override_fairy_ocarina_cutscene
-    addu    t8,t0,t7
+    addu    t8, t0, t7
 
 ; a3 = item ID
-; Replaces
-; li v0,0xFF
-.org 0xAE5DF8
+; Replaces:
+;   li      v0, 0xFF
+;   ... (2 instructions)
+;   sw      t7, 0xA4 (t0)
+.org 0xAE5DF8 ; In memory: 0x8006FE98
     jal     override_ocarina_songs
-; sw $t7, 0xa4($t0)
-.org 0xAE5E04
+.skip 0x8
     nop
 
 ; Replaces
-;lui  at,0x1
-;addu at,at,s0
-.org 0xAC9ABC
+;   lui     at, 0x1
+;   addu    at, at, s0
+.org 0xAC9ABC ; In memory: 0x80053B5C
     jal     override_requiem_song
     nop
 

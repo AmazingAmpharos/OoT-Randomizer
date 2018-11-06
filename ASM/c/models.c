@@ -50,7 +50,6 @@ void set_gi_object_segment(gi_object_t *gi_obj) {
     gSPSegment(opa->p++, 6, (uint32_t)(gi_obj->buf));
 }
 
-
 void scale_matrix(float *matrix, float scale_factor) {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {

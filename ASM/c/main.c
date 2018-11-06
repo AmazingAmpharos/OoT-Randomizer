@@ -1,3 +1,4 @@
+#include "item_overrides.h"
 #include "dungeon_info.h"
 #include "file_select.h"
 #include "models.h"
@@ -10,6 +11,7 @@ void c_init() {
     heap_init();
     gfx_init();
     text_init();
+    item_overrides_init();
     models_init();
 }
 

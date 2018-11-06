@@ -2,6 +2,7 @@
 .sw*
 *.pyc
 /.vs
+/.vscode
 settings.sav
 ARCHIVE.bin
 output/*
