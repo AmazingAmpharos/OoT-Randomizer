@@ -11,7 +11,7 @@ from tkinter.colorchooser import *
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog
+from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry
 from Main import main
 from Utils import is_bundled, local_path, default_output_path, open_file, check_version
 from Patches import get_tunic_color_options, get_navi_color_options
@@ -140,7 +140,7 @@ def guiMain(settings=None):
     # shared
     settingsFrame = Frame(mainWindow)
     settings_string_var = StringVar()
-    widgets['setting_string'] = Entry(settingsFrame, textvariable=settings_string_var, width=25)
+    widgets['setting_string'] = Entry(settingsFrame, textvariable=settings_string_var, width=30)
 
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
@@ -343,7 +343,10 @@ def guiMain(settings=None):
                 # create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
 
-                entry = Entry(widgets[info.name], textvariable=guivars[info.name], width=30)
+                if 'validate' in info.gui_params:
+                    entry = ValidatingEntry(widgets[info.name], command=show_settings, validate=info.gui_params['validate'], textvariable=guivars[info.name], width=30)
+                else:
+                    entry = Entry(widgets[info.name], textvariable=guivars[info.name], width=30)
                 entry.pack(side=BOTTOM, anchor=W)
                 # label the option
                 if 'text' in info.gui_params:
@@ -500,7 +503,7 @@ def guiMain(settings=None):
 
     seedLabel = Label(generateSeedFrame, text='Seed')
     guivars['seed'] = StringVar()
-    widgets['seed'] = Entry(generateSeedFrame, textvariable=guivars['seed'], width=25)
+    widgets['seed'] = Entry(generateSeedFrame, textvariable=guivars['seed'], width=30)
     seedLabel.pack(side=LEFT, padx=(55, 5))
     widgets['seed'].pack(side=LEFT)
     generateButton.pack(side=LEFT, padx=(5, 0))

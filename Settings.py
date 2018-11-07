@@ -7,6 +7,7 @@ import hashlib
 from Patches import get_tunic_color_options, get_navi_color_options, get_NaviSFX_options, get_HealthSFX_options
 from version import __version__
 from Utils import random_choices
+import math
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 
@@ -84,10 +85,22 @@ class Settings():
             if setting.type == bool:
                 i_bits = [ 1 if value else 0 ]
             if setting.type == str:
-                index = setting.args_params['choices'].index(value)
-                # https://stackoverflow.com/questions/10321978/integer-to-bitfield-as-a-list
-                i_bits = [1 if digit=='1' else 0 for digit in bin(index)[2:]]
-                i_bits.reverse()
+                if 'choices' in setting.args_params:
+                    index = setting.args_params['choices'].index(value)
+                    # https://stackoverflow.com/questions/10321978/integer-to-bitfield-as-a-list
+                    i_bits = [1 if digit=='1' else 0 for digit in bin(index)[2:]]
+                    i_bits.reverse()
+                elif 'char_options' in setting.gui_params:
+                    char_bitwidth = math.ceil(math.log(len(setting.gui_params['char_options']), 2))
+                    for c in value.upper():
+                        index = setting.gui_params['char_options'].index(c)
+                        # https://stackoverflow.com/questions/10321978/integer-to-bitfield-as-a-list
+                        c_bits = [1 if digit=='1' else 0 for digit in bin(index)[2:]]
+                        c_bits.reverse()
+                        c_bits += [0] * ( char_bitwidth - len(c_bits) )
+                        i_bits.extend(c_bits)
+                else:
+                    raise ValueError('Setting is string type, but missing parse parameters.')
             if setting.type == int:
                 value = value - ('min' in setting.gui_params and setting.gui_params['min'] or 0)
                 value = int(value / ('step' in setting.gui_params and setting.gui_params['step'] or 1))
@@ -110,10 +123,22 @@ class Settings():
             if setting.type == bool:
                 value = True if cur_bits[0] == 1 else False
             if setting.type == str:
-                index = 0
-                for b in range(setting.bitwidth):
-                    index |= cur_bits[b] << b
-                value = setting.args_params['choices'][index]
+                if 'choices' in setting.args_params:
+                    index = 0
+                    for b in range(setting.bitwidth):
+                        index |= cur_bits[b] << b
+                    value = setting.args_params['choices'][index]
+                elif 'char_options' in setting.gui_params:
+                    char_bitwidth = math.ceil(math.log(len(setting.gui_params['char_options']), 2))
+                    value = ''
+                    for i in range(0, setting.bitwidth, char_bitwidth):
+                        char_bits = cur_bits[i:i+char_bitwidth]
+                        index = 0
+                        for b in range(char_bitwidth):
+                            index |= char_bits[b] << b
+                        value += setting.gui_params['char_options'][index]  
+                else:
+                    raise ValueError('Setting is string type, but missing parse parameters.')
             if setting.type == int:
                 value = 0
                 for b in range(setting.bitwidth):
@@ -183,6 +208,16 @@ def parse_custom_navi_color(s):
         return s
     else:
         raise argparse.ArgumentTypeError('Invalid color specified')
+
+
+def validate_scarecrow_string(value):
+    if len(value) > 8:
+        return None
+    for c in value.upper():
+        if c not in ['A', 'D', 'R', 'L', 'U']:
+            return None
+    return value
+
 
 # a list of the possible settings
 setting_infos = [
@@ -691,7 +726,7 @@ setting_infos = [
                       child and adult to learn Scarecrow's Song.
                       '''
         }),
-    Setting_Info('scarecrow_song', str, 0, False,
+    Setting_Info('scarecrow_song', str, 3*8, True,
         {
             'default': 'DAAAAAAA',
             'const': 'DAAAAAAA',
@@ -705,6 +740,8 @@ setting_infos = [
             'group': 'convenience',
             'widget': 'Entry',
             'default': 'DAAAAAAA',
+            'char_options': ['A', 'D', 'U', 'L', 'R'],
+            'validate': validate_scarecrow_string,
             'dependency': lambda guivar: guivar['free_scarecrow'].get(),
             'tooltip':'''\
                       The song must be 8 notes long and have
