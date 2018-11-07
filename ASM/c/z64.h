@@ -561,8 +561,7 @@ typedef struct
   uint16_t        inf_table[30];            /* 0x0EF8 */
   char            unk_0D_[0x041E];          /* 0x0F34 */
   uint16_t        checksum;                 /* 0x1352 */
-  char            unk_0E_[0x0003];          /* 0x1354 */
-  int8_t          file_index;               /* 0x1357 */
+  int32_t          file_index;              /* 0x1354 */
   char            unk_0F_[0x0004];          /* 0x1358 */
   int32_t         interface_flag;           /* 0x135C */
   uint32_t        scene_setup_index;        /* 0x1360 */
