@@ -289,6 +289,36 @@ class LocalRom(object):
                     from_file = key
             self.changed_dma[dma_index] = (from_file, start, end - start)
 
+    # This will scan for any changes that have been made to the DMA table
+    # This assumes any changes here are new files, so this should only be called
+    # after patching in the new files, but before vanilla files are repointed
+    def scan_dmadata_update(self):
+        def _get_old_dmadata_record(cur):
+            old_dma_start = int32.unpack_from(self.original, cur)[0]
+            old_dma_end = int32.unpack_from(self.original, cur + 0x04)[0]
+            return old_dma_start, old_dma_end
+
+        cur = DMADATA_START
+        dma_data_end = None
+        dma_index = 0
+        dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
+        old_dma_start, old_dma_end = _get_old_dmadata_record(cur)
+
+        while True:
+            if (dma_start == 0 and dma_end == 0) and \
+            (old_dma_start == 0 and old_dma_end == 0):
+                break
+
+            # If the entries do not match, the flag the changed entry
+            if not (dma_start == old_dma_start and dma_end == old_dma_end):
+                self.changed_dma[dma_index] = (-1, dma_start, dma_end - dma_start)
+
+            cur += 0x10
+            dma_index += 1
+            dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
+            old_dma_start, old_dma_end = _get_old_dmadata_record(cur)
+
+
     # gets the last used byte of rom defined in the DMA table
     def free_space(self):
         cur = DMADATA_START

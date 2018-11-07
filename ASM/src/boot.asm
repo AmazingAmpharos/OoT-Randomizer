@@ -3,9 +3,13 @@
     .word 0x9345AE5B, 0x97DB4131
 
 ; Add dmatable entries for new code
-.org 0xD260
+; Remove the unused files at the bottom the DMA Table
+;   - this isn't strictly necissary, but adds flexibility for the future
+.org 0xD1B0
+.area 0x100, 0
     .word 0x03480000, 0x03485000, 0x03480000, 0
     .word 0x034B3000, 0x034BE000, 0x034B3000, 0
+.endarea
 
 ; Load new code from ROM
 ; Replaces:
