@@ -13,7 +13,7 @@ import pickle
 from BaseClasses import World, CollectionState, Spoiler
 from EntranceShuffle import link_entrances
 from Rom import LocalRom
-from Patches import patch_rom
+from Patches import patch_rom, patch_cosmetics
 from Regions import create_regions
 from Dungeons import create_dungeons
 from Rules import set_rules
@@ -169,6 +169,7 @@ def main(settings, window=dummy_window()):
     if settings.compress_rom != 'None':
         window.update_status('Patching ROM')
         patch_rom(worlds[settings.player_num - 1], rom)
+        patch_cosmetics(worlds[settings.player_num - 1], rom)
         window.update_progress(65)
 
         rom_path = os.path.join(output_dir, '%s.z64' % outfilebase)

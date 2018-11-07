@@ -1195,10 +1195,6 @@ def patch_rom(world, rom):
         # song of time
         rom.write_int32(0xDB532C, 0x24050003)
 
-    # Set default targeting option to Hold
-    if world.default_targeting == 'hold':
-        rom.write_byte(0xB71E6D, 0x01)
-
     # Set OHKO mode
     if world.difficulty == 'ohko':
         rom.write_int32(0xAE80A8, 0xA4A00030) # sh  zero,48(a1)
@@ -1538,8 +1534,16 @@ def patch_rom(world, rom):
     # actually write the save table to rom
     write_save_table(rom)
 
+    return rom
+
+
+def patch_cosmetics(world, rom):
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
+
+    # Set default targeting option to Hold
+    if world.default_targeting == 'hold':
+        rom.write_byte(0xB71E6D, 0x01)
 
     # patch music
     if world.background_music == 'random':
