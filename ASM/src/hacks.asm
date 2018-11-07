@@ -101,9 +101,9 @@
 ;   lbu     a1, 0x0000 (v0)
 .org 0xBE9AD8 ; In memory: 0x803A4AC8
     jal     override_action
-    lw      a0, 0x0028 (sp)
+    lw      v0, 0x0024 (sp)
 .skip 4
-    nop
+    lw      a0, 0x0028 (sp)
 
 ; Inventory check
 ; Replaces:

@@ -71,9 +71,6 @@ override_object_chest:
     lh      a1, 0x0004 (t9)
 
 override_object:
-    addiu   sp, sp, -0x18
-    sw      ra, 0x14 (sp)
-
     li      t2, item_is_extended
     lw      t2, 0x00 (t2)
     beqz    t2, @@return
@@ -85,14 +82,8 @@ override_object:
     lhu     a1, 0x00 (a1)
 
 @@return:
-    sw      a1, 0x10 (sp)
-    jal     item_received
-    nop
-
-    lw      a1, 0x10 (sp)
-    lw      ra, 0x14 (sp)
     jr      ra
-    addiu   sp, sp, 0x18
+    nop
 
 ;==================================================================================================
 
@@ -136,9 +127,11 @@ override_text:
 ;==================================================================================================
 
 override_action:
-    ; Displaced code
-    lw      v0, 0x24 (sp)
-    lbu     a1, 0x0000 (v0)
+    addiu   sp, sp, -0x18
+    sw      a1, 0x10 (sp)
+    sw      ra, 0x14 (sp)
+
+    lbu     a1, 0x0000 (v0) ; Displaced code
 
     li      t0, item_is_extended
     lw      t0, 0x00 (t0)
@@ -148,11 +141,7 @@ override_action:
     li      a1, ext_action_id
     lw      a1, 0x00 (a1)
     lbu     a1, 0x00 (a1)
-
-    addiu   sp, sp, -0x20
-    sw      a0, 0x10 (sp)
-    sw      a1, 0x14 (sp)
-    sw      ra, 0x18 (sp)
+    sw      a1, 0x10 (sp)
 
     ; Run effect function
     li      a0, SAVE_CONTEXT
@@ -168,14 +157,14 @@ override_action:
     jalr    t0
     nop
 
-    lw      a0, 0x10 (sp)
-    lw      a1, 0x14 (sp)
-    lw      ra, 0x18 (sp)
-    addiu   sp, sp, 0x20
-
 @@return:
-    jr      ra
+    jal     item_received
     nop
+
+    lw      a1, 0x10 (sp)
+    lw      ra, 0x14 (sp)
+    jr      ra
+    addiu   sp, sp, 0x18
 
 ;==================================================================================================
 
