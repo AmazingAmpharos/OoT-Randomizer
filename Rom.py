@@ -106,7 +106,7 @@ class LocalRom(object):
     def read_int16(self, address):
         if address == None:
             address = self.last_address
-        self.last_address += 2
+        self.last_address = address + 2
         return int16.unpack_from(self.buffer, address)[0]
 
     def read_int24(self, address):
@@ -117,7 +117,7 @@ class LocalRom(object):
     def read_int32(self, address):
         if address == None:
             address = self.last_address
-        self.last_address += 4
+        self.last_address = address + 4
         return int32.unpack_from(self.buffer, address)[0]
 
     def write_byte(self, address, value):
@@ -231,6 +231,37 @@ class LocalRom(object):
         return start, end, size
 
 
+    def _get_old_dmadata_record(self, cur):
+        old_dma_start = int32.unpack_from(self.original, cur)[0]
+        old_dma_end = int32.unpack_from(self.original, cur + 0x04)[0]
+        old_size = old_dma_end-old_dma_start
+        return old_dma_start, old_dma_end, old_size
+
+
+    def get_dmadata_record_by_key(self, key):
+        cur = DMADATA_START
+        dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
+        while True:
+            if dma_start == 0 and dma_end == 0:
+                return None
+            if dma_start == key:
+                return dma_start, dma_end, dma_size
+            cur += 0x10
+            dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
+
+
+    def get_old_dmadata_record_by_key(self, key):
+        cur = DMADATA_START
+        dma_start, dma_end, dma_size = self._get_old_dmadata_record(cur)
+        while True:
+            if dma_start == 0 and dma_end == 0:
+                return None
+            if dma_start == key:
+                return dma_start, dma_end, dma_size
+            cur += 0x10
+            dma_start, dma_end, dma_size = self._get_old_dmadata_record(cur)
+
+
     def verify_dmadata(self):
         cur = DMADATA_START
         overlapping_records = []
@@ -264,15 +295,12 @@ class LocalRom(object):
 
     # if key is not found, then add an entry
     def update_dmadata_record(self, key, start, end, from_file=None):
-        cur = DMADATA_START
-        dma_data_end = None
+        cur, dma_data_end = self.get_dma_table_range()
         dma_index = 0
         dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
         while dma_start != key:
             if dma_start == 0 and dma_end == 0:
                 break
-            if dma_start == DMADATA_START:
-                dma_data_end = dma_end
 
             cur += 0x10
             dma_index += 1
@@ -289,20 +317,29 @@ class LocalRom(object):
                     from_file = key
             self.changed_dma[dma_index] = (from_file, start, end - start)
 
+    def get_dma_table_range(self):
+        cur = DMADATA_START
+        dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
+        while True:
+            if dma_start == 0 and dma_end == 0:
+                raise Exception('Bad DMA Table: DMA Table entry missing.')
+
+            if dma_start == DMADATA_START:
+                return (DMADATA_START, dma_end)
+
+            cur += 0x10
+            dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
+
+
     # This will scan for any changes that have been made to the DMA table
     # This assumes any changes here are new files, so this should only be called
     # after patching in the new files, but before vanilla files are repointed
     def scan_dmadata_update(self):
-        def _get_old_dmadata_record(cur):
-            old_dma_start = int32.unpack_from(self.original, cur)[0]
-            old_dma_end = int32.unpack_from(self.original, cur + 0x04)[0]
-            return old_dma_start, old_dma_end
-
         cur = DMADATA_START
         dma_data_end = None
         dma_index = 0
         dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
-        old_dma_start, old_dma_end = _get_old_dmadata_record(cur)
+        old_dma_start, old_dma_end, old_dma_size = self._get_old_dmadata_record(cur)
 
         while True:
             if (dma_start == 0 and dma_end == 0) and \
@@ -316,7 +353,7 @@ class LocalRom(object):
             cur += 0x10
             dma_index += 1
             dma_start, dma_end, dma_size = self._get_dmadata_record(cur)
-            old_dma_start, old_dma_end = _get_old_dmadata_record(cur)
+            old_dma_start, old_dma_end, old_dma_size = self._get_old_dmadata_record(cur)
 
 
     # gets the last used byte of rom defined in the DMA table
@@ -350,5 +387,11 @@ def int32_as_bytes(value):
     value = value & 0xFFFFFFFF
     return [(value >> 24) & 0xFF, (value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF]
 
+def bytes_as_int16(values):
+    return (values[0] << 8) | values[1]
+
 def bytes_as_int24(values):
     return (values[0] << 16) | (values[1] << 8) | values[2]
+
+def bytes_as_int32(values):
+    return (values[0] << 24) | (values[1] << 16) | (values[2] << 8) | values[3]
