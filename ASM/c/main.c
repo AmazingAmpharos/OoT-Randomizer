@@ -25,7 +25,6 @@ void c_init() {
     text_init();
 }
 
-static int button_time[16];
 void c_after_game_state_update() {
     if (z64_game.pause_state == 6 &&
                 z64_game.pause_screen == 0 &&
@@ -35,15 +34,12 @@ void c_after_game_state_update() {
         draw_dungeon_info(db);
     }
 
-	uint16_t z_pad = z64_input_direct.raw.pad;
+	uint16_t z_pad = z64_ctxt.input[0].raw.pad;
 	pad_pressed_raw = (pad ^ z_pad) & z_pad;
 	pad = z_pad;
 	pad_pressed = 0;
-	for (int i = 0; i < 16; ++i) {
-		uint16_t p = 1 << i;
-		if ((pad_pressed_raw & p))
-			pad_pressed |= p;
-	}
+	pad_pressed |= pad_pressed_raw;
+	
 
 	if (z64_file.link_age==0) {
 		// Prevent quick boots when link is in a state that he wouldn't normally be able to pause to switch boots.
