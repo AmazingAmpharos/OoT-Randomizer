@@ -924,6 +924,7 @@ def patch_rom(world, rom):
     write_bits_to_save(0x0EE7, 0x10) # "Spoke to Nabooru in Spirit Temple"
     write_bits_to_save(0x0EED, 0x20) # "Sheik, Spawned at Master Sword Pedestal as Adult"
     write_bits_to_save(0x0EED, 0x01) # "Nabooru Ordered to Fight by Twinrova"
+    write_bits_to_save(0x0EED, 0x80) # "Watched Ganon's Tower Collapse / Caught by Gerudo"
     write_bits_to_save(0x0EF9, 0x01) # "Greeted by Saria"
     write_bits_to_save(0x0F0A, 0x04) # "Spoke to Ingo Once as Adult"
     write_bits_to_save(0x0F1A, 0x04) # "Met Darunia in Fire Temple"
