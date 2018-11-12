@@ -26,15 +26,8 @@ class LocalRom(object):
             symbols = json.load(stream)
             self.symbols = { name: int(addr, 16) for name, addr in symbols.items() }
 
-        try:
-            # Read decompressed file if it exists
-            self.read_rom(decomp_file)
-            # This is mainly for validation testing, but just in case...
-            self.decompress_rom_file(decomp_file, decomp_file)
-        except Exception as ex:
-            # No decompressed file, instead read Input ROM
-            self.read_rom(file)
-            self.decompress_rom_file(file, decomp_file)
+        self.read_rom(file)
+        self.decompress_rom_file(file, decomp_file)
 
         # Add file to maximum size
         self.buffer.extend(bytearray([0x00] * (0x4000000 - len(self.buffer))))
@@ -82,8 +75,8 @@ class LocalRom(object):
             subprocess.call(subcall, **subprocess_args())
             self.read_rom(decomp_file)
         else:
-            # ROM file is a valid and already uncompressed
-            pass
+            # ROM file is a valid and already uncompressed, but we require a compressed rom
+            raise RuntimeError('Base ROM is uncompressed. Please provide an original ROM.')
 
     def sym(self, symbol_name):
         return self.symbols.get(symbol_name)
@@ -219,8 +212,11 @@ class LocalRom(object):
 
     def read_rom(self, file):
         # "Reads rom into bytearray"
-        with open(file, 'rb') as stream:
-            self.buffer = bytearray(stream.read())
+        try:
+            with open(file, 'rb') as stream:
+                self.buffer = bytearray(stream.read())
+        except FileNotFoundError as ex:
+            raise FileNotFoundError('Invalid path to Base ROM: "' + file + '"')
 
     # dmadata/file management helper functions
 

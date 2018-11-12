@@ -232,7 +232,7 @@ setting_infos = [
             'default': '',
             'help': 'Supress version warnings if checked_version is less than __version__.'}),
     Setting_Info('rom', str, 0, False, {
-            'default': 'ZOOTDEC.z64',
+            'default': '',
             'help': 'Path to an OoT 1.0 rom to use as a base.'}),
     Setting_Info('output_dir', str, 0, False, {
             'default': '',
