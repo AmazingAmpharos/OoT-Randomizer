@@ -7,8 +7,6 @@ import time
 import os, os.path
 import sys
 import struct
-import zlib
-import pickle
 
 from BaseClasses import World, CollectionState, Spoiler
 from EntranceShuffle import link_entrances
@@ -23,8 +21,9 @@ from Hints import buildGossipHints
 from Utils import default_output_path, is_bundled, subprocess_args
 from version import __version__
 from OcarinaSongs import verify_scarecrow_song_str
-from Settings import setting_infos
 from N64Patch import create_patch_file, apply_patch_file
+import WorldFile
+from Settings import setting_infos
 
 class dummy_window():
     def __init__(self):
@@ -45,10 +44,7 @@ def main(settings, window=dummy_window()):
     # load worlds from patch file
     if settings.patch_file_action == 'load':
         logger.info('Unpacking World File.')
-        patch_file = open(settings.patch_file, 'rb')
-        compressed_data = patch_file.read()
-        worlds = pickle.loads(zlib.decompress(compressed_data))
-        patch_file.close()
+        worlds = WorldFile.load_world_file(settings.patch_file)
 
         # Get settings from patch file
         for setting in filter(lambda s: s.shared and s.bitwidth > 0, setting_infos):
@@ -212,8 +208,14 @@ def main(settings, window=dummy_window()):
         window.update_status('Creating Spoiler Log')
         worlds[settings.player_num - 1].spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
 
-    if settings.patch_file_action == 'save':
-        create_world_file(logger, worlds, output_dir)
+    if worlds[0].patch_file_action == 'save':
+        logger.info('Creating World File.')
+        if settings.world_count > 1:
+            filename = 'OoT_%s_%s_W%d.wf' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count)
+        else:
+            filename = 'OoT_%s_%s.wf' % (worlds[0].settings_string, worlds[0].seed)
+        patch_file = os.path.join(output_dir, filename)
+        WorldFile.save_world_file(patch_file, worlds)
 
     window.update_progress(100)
     window.update_status('Success: Rom patched successfully')
@@ -308,64 +310,3 @@ def create_playthrough(worlds):
     # we can finally output our playthrough
     for world in old_worlds:
         world.spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
-
-
-class world_id:
-    def __init__(self, id):
-        self.id = id
-
-
-def create_world_file(logger, worlds, output_dir):
-    logger.info('Creating World File.')
-
-    # Remove references to Lambdas so that pickle works
-    for world in worlds:
-        # delete the cache and state
-        world._cached_locations = None
-        world._entrance_cache = {}
-        world._region_cache = {}
-        world._location_cache = {}
-        world.state = None
-
-        # delete the spoiler world rules
-        if world.spoiler and world.spoiler.playthrough:
-            for location in [location for _,sphere in world.spoiler.playthrough.items() for location in sphere]:
-                location.access_rule = None
-                location.item_rule = None
-                location.always_allow = None
-                location.parent_region = None
-                location.world = world_id(location.world.id)
-        if world.spoiler:
-            for location in [location for _,world_locations in world.spoiler.required_locations.items() for location in world_locations]:
-                location.access_rule = None
-                location.item_rule = None
-                location.always_allow = None
-                location.parent_region = None
-                location.world = world_id(location.world.id)
-
-        # delete the main world rules
-        for region in world.regions:
-            region.can_reach = None
-            for entrance in region.entrances:
-                entrance.access_rule = None
-            for entrance in region.exits:
-                entrance.access_rule = None
-            for location in region.locations:
-                location.access_rule = None
-                location.item_rule = None
-                location.always_allow = None
-
-    # Remove setting fields that will be overwritten
-    settings = worlds[0].settings
-    for setting in filter(lambda s: not (s.shared and s.bitwidth > 0), setting_infos):
-        if setting.name not in ['seed', 'count', 'player_num']:
-            settings.__dict__[setting.name] = None
-    for world in worlds:
-        world.settings = settings
-        world.__dict__.update(settings.__dict__)
-
-    compressed_data = zlib.compress(pickle.dumps(worlds))
-    filename = 'OoT_%s_%s_W%d.wf' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count)
-    patch_file = open(os.path.join(output_dir, filename), 'wb')
-    patch_file.write(compressed_data)
-    patch_file.close()

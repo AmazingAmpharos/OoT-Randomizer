@@ -18,6 +18,7 @@ from Patches import get_tunic_color_options, get_navi_color_options
 from Settings import Settings, setting_infos
 from version import __version__ as ESVersion
 import webbrowser
+import WorldFile
 
 def settings_to_guivars(settings, guivars):
     for info in setting_infos:
@@ -142,6 +143,24 @@ def guiMain(settings=None):
     settings_string_var = StringVar()
     widgets['setting_string'] = Entry(settingsFrame, textvariable=settings_string_var, width=30)
 
+
+    def toggle_widget(widget, enabled):
+        widget_type = widget.winfo_class()
+        if widget_type == 'Frame' or widget_type == 'TFrame' or widget_type == 'Labelframe':
+            if widget_type == 'Labelframe':
+                widget.configure(fg='Black'if enabled else 'Grey')
+            for child in widget.winfo_children():
+                toggle_widget(child, enabled)
+        else:
+            if widget_type == 'TCombobox':
+                widget.configure(state= 'readonly' if enabled else 'disabled')
+            else:
+                widget.configure(state= 'normal' if enabled else 'disabled')
+
+            if widget_type == 'Scale':
+                widget.configure(fg='Black'if enabled else 'Grey')
+
+
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
@@ -150,25 +169,7 @@ def guiMain(settings=None):
         for info in setting_infos:
             if info.gui_params and 'dependency' in info.gui_params:
                 dep_met = info.gui_params['dependency'](guivars)
-
-                if widgets[info.name].winfo_class() == 'Frame':
-                    for child in widgets[info.name].winfo_children():
-                        if child.winfo_class() == 'TCombobox':
-                            child.configure(state= 'readonly' if dep_met else 'disabled')
-                        else:
-                            child.configure(state= 'normal' if dep_met else 'disabled')
-
-                        if child.winfo_class() == 'Scale':
-                            child.configure(fg='Black'if dep_met else 'Grey')
-                else:
-                    if widgets[info.name].winfo_class() == 'TCombobox':
-                        widgets[info.name].configure(state= 'readonly' if dep_met else 'disabled')
-                    else:
-                        widgets[info.name].configure(state= 'normal' if dep_met else 'disabled')
-
-                    if widgets[info.name].winfo_class() == 'Scale':
-                        widgets[info.name].configure(fg='Black'if dep_met else 'Grey')
-
+                toggle_widget(widgets[info.name], dep_met)
 
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
                 color = askcolor()
@@ -215,7 +216,7 @@ def guiMain(settings=None):
 
     romDialogFrame = Frame(fileDialogFrame)
     baseRomLabel = Label(romDialogFrame, text='Base ROM')
-    guivars['rom'] = StringVar(value='ZOOTDEC.z64')
+    guivars['rom'] = StringVar(value='')
     romEntry = Entry(romDialogFrame, textvariable=guivars['rom'], width=40)
 
     def RomSelect():
@@ -423,9 +424,9 @@ def guiMain(settings=None):
 
     def patch_file_action_change():
         if guivars['patch_file_action'].get() == 'Load Patch File':
-            notebook.tab(1, state="disabled")
-            notebook.tab(2, state="disabled")
-            notebook.tab(3, state="disabled")
+            toggle_widget(frames['rules_tab'], False)
+            toggle_widget(frames['logic_tab'], False)
+            toggle_widget(frames['other_tab'], False)
             widgets['world_count'].configure(state='disabled')
             widgets['create_spoiler'].configure(state='disabled')
             widgets['create_spoiler'].configure(state='disabled')
@@ -435,10 +436,17 @@ def guiMain(settings=None):
             widgets['seed'].configure(state='disabled')
             widgets['patch_file'].configure(state='normal')
             widgets['patch_file_button'].configure(state='normal')
+
+            worlds = WorldFile.load_world_file(guivars['patch_file'].get())
+            if worlds:            
+                settings_string = worlds[0].settings.settings_string
+                settings = guivars_to_settings(guivars)
+                settings.update_with_settings_string(settings_string)
+                settings_to_guivars(settings, guivars)
         else:
-            notebook.tab(1, state="normal")
-            notebook.tab(2, state="normal")
-            notebook.tab(3, state="normal")
+            toggle_widget(frames['rules_tab'], True)
+            toggle_widget(frames['logic_tab'], True)
+            toggle_widget(frames['other_tab'], True)
             widgets['world_count'].configure(state='normal')
             widgets['create_spoiler'].configure(state='normal')
             widgets['count'].configure(state='normal')
@@ -467,6 +475,14 @@ def guiMain(settings=None):
         patchfile = filedialog.askopenfilename(filetypes=[("Patch Files", ".wf"), ("All Files", "*")])
         if patchfile != '':
             guivars['patch_file'].set(patchfile)
+
+        worlds = WorldFile.load_world_file(guivars['patch_file'].get())
+        if worlds:            
+            settings_string = worlds[0].settings.settings_string
+            settings = guivars_to_settings(guivars)
+            settings.update_with_settings_string(settings_string)
+            settings_to_guivars(settings, guivars)
+
     widgets['patch_file'] = Entry(patchFileEntryFrame, textvariable=guivars['patch_file'], width=30)
     widgets['patch_file_button'] = Button(patchFileEntryFrame, text='Select Patch', command=patch_file_select, width=10)
     patchFileLabel.pack(side=LEFT, padx=(3,0))
