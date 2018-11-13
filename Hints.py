@@ -328,8 +328,8 @@ def buildGossipHints(worlds, world):
     random.shuffle(stoneIDs)
 
     hint_dist = hint_dist_sets[world.hint_dist]
-    hint_types = list(hint_dist.keys())
-    hint_prob = [prob for prob,count in hint_dist.values()]
+    hint_types, hint_prob = zip(*hint_dist.items())
+    hint_prob, hint_count = zip(*hint_prob)
 
     # Add required location hints
     alwaysLocations = getHintGroup('alwaysLocation', world)

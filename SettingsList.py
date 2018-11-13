@@ -1702,13 +1702,14 @@ setting_infos = [
                       text for the purpose of accurate price checks.
                       '''
         }),
-    Setting_Info('difficulty', str, 2, True,
+    Setting_Info('difficulty', str, 3, True,
         {
             'default': 'normal',
             'const': 'normal',
             'nargs': '?',
             'help': '''\
                     Change the item pool for an added challenge.
+                    easy:           Duplicates most of the major items, making it easier to find progression.
                     normal:         Default items
                     hard:           Double defense, double magic, and all 8 heart containers are removed. Ammo
                                     for each type can only be expanded once and you can only find three Bombchu packs.
@@ -1723,6 +1724,7 @@ setting_infos = [
             'widget': 'Combobox',
             'default': 'Normal',
             'options': {
+                'Easy': 'easy',
                 'Normal': 'normal',
                 'Hard': 'hard',
                 'Very Hard': 'very_hard',
