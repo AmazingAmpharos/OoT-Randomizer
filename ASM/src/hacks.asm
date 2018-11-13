@@ -119,8 +119,6 @@
 .org 0xBE9BDC ; In memory: 0x803A4BCC
     addiu   at, r0, 0x8383 ; Make branch impossible
 
-
-
 ; Change Skulltula Token to give a different item
 ; Replaces
 ;    move    a0,s1
@@ -150,18 +148,6 @@
     jal     override_skulltula_token     ; call override_skulltula_token(_, actor)
     move    a1,s0
 .endarea
-
-; Prevent warping if there is a pending item
-; Replaces:
-;   lhu     v0, 0x63F0 (s2)
-;   slti    at, v0, 0x000F
-;   ... (4 instructions)
-;   lh      t7, 0x640C (s2)
-.org 0xB5511C ; In memory: 0x800DF1BC
-    ;jal     can_warp
-    ;nop
-.skip 0x10
-    ;nop
 
 ;==================================================================================================
 ; Every frame hooks

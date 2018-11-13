@@ -34,28 +34,6 @@ inventory_check:
 
 ;==================================================================================================
 
-; Set t7 to nonzero if warping should be prevented
-can_warp:
-    ; Prevent warp if an actor is trying to give an item
-    li      t7, PLAYER_ACTOR
-    lw      v0, 0x428 (t7)
-    beqz    v0, @@check_flag
-    nop
-    lb      v0, 0x424 (t7)
-    bgez    v0, @@return
-    li      t7, 1
-
-@@check_flag:
-    lh      t7, 0x640C (s2) ; Load warp restriction flag from global context
-
-@@return:
-    ; Displaced code
-    lhu     v0, 0x63F0 (s2)
-    jr      ra
-    slti    at, v0, 0x000F
-
-;==================================================================================================
-
 ; a1 = pointer to the skulltula token actor
 
 override_skulltula_token:
