@@ -1,6 +1,6 @@
 import argparse
+import re
 from Patches import get_tunic_color_options, get_navi_color_options, get_NaviSFX_options, get_HealthSFX_options
-
 
 # holds the info for a single setting
 class Setting_Info():
