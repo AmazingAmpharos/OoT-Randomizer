@@ -290,3 +290,31 @@ class ToolTips(object):
         if cls.after_id:
             widget.after_cancel(cls.after_id)
             cls.after_id = None
+
+
+class ValidatingEntry(tk.Entry):
+    def __init__(self, master, command=lambda:True, validate=lambda self, value: value, **kw):
+        tk.Entry.__init__(self, master, **kw)
+        self.validate = validate
+        self.command = command
+
+        if 'textvariable' in kw:
+            self.__variable = kw['textvariable']
+        else:
+            self.__variable = StringVar()
+        self.__prev_value = self.__variable.get()
+
+        self.__variable.trace("w", self.__callback)
+        self.config(textvariable=self.__variable)
+
+    def __callback(self, *dummy):
+        new_value = self.__variable.get()
+        valid_value = self.validate(new_value)
+        if valid_value is None:
+            self.__variable.set(self.__prev_value)
+        elif valid_value != new_value:
+            self.__prev_value = valid_value
+            self.__variable.set(self.valid_value)
+        else:
+            self.__prev_value = new_value
+        self.command()

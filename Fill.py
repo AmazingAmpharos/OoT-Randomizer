@@ -297,6 +297,16 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
         spot_to_fill = None
         for location in locations:
             if location.can_fill(maximum_exploration_state_list[location.world.id], item_to_place, perform_access_check):
+                # for multiworld, make it so that the location is also reachable
+                # in the world the item is for. This is to prevent early restrictions
+                # in one world being placed late in another world. If this is not
+                # done then one player may be waiting a long time for other players.
+                if location.world.id != item_to_place.world.id:
+                    source_location = location.world.get_location(location.name)
+                    if not source_location.can_fill(maximum_exploration_state_list[source_location.world.id], item_to_place, perform_access_check):
+                        # location wasn't reachable in item's world, so skip it
+                        continue
+                # location is reachable (and reachable in item's world), so place item here
                 spot_to_fill = location
                 break
 

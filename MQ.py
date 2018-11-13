@@ -56,7 +56,11 @@ class File(object):
         self.name = file['Name']
         self.start = int(file['Start'], 16)
         self.end = int(file['End'], 16)
-        self.remap = file['RemapStart']
+        try:
+            self.remap = file['RemapStart']
+        except KeyError:
+            self.remap = None
+        self.from_file = self.start
 
         # used to update the file's associated dmadata record
         self.dma_key = self.start
@@ -72,7 +76,7 @@ class File(object):
 
     def relocate(self, rom:LocalRom):
         if self.remap is None:
-            return
+            self.remap = rom.free_space()
 
         new_start = self.remap
 
@@ -82,6 +86,12 @@ class File(object):
         rom.buffer[new_start:new_end] = rom.buffer[self.start:self.end]
         self.start = new_start
         self.end = new_end
+        update_dmadata(rom, self)
+
+    # The file will now refer to the new copy of the file
+    def copy(self, rom:LocalRom):
+        self.dma_key = None
+        self.relocate(rom)
 
 
 class CollisionMesh(object):
@@ -162,12 +172,12 @@ class Scene(object):
 
 
     def write_data(self, rom:LocalRom):
-
         # write floormap and minimap data
         self.write_map_data(rom)
 
         # move file to remap address
-        self.file.relocate(rom)
+        if self.file.remap is not None:
+            self.file.relocate(rom)
 
         start = self.file.start
         headcur = self.file.start
@@ -365,9 +375,9 @@ class Room(object):
         self.actors = [convert_actor_data(x) for x in room['Actors']]
 
     def write_data(self, rom:LocalRom):
-
         # move file to remap address
-        self.file.relocate(rom)
+        if self.file.remap is not None:
+            self.file.relocate(rom)
 
         headcur = self.file.start
 
@@ -519,8 +529,9 @@ def verify_remap(scenes):
 
 
 def update_dmadata(rom:LocalRom, file:File):
-    key, start, end = file.dma_key, file.start, file.end
-    rom.update_dmadata_record(key, start, end)
+    key, start, end, from_file = file.dma_key, file.start, file.end, file.from_file
+    rom.update_dmadata_record(key, start, end, from_file)
+    file.dma_key = file.start
 
 def update_scene_table(rom:LocalRom, sceneId, start, end):
     cur = sceneId * 0x14 + SCENE_TABLE
