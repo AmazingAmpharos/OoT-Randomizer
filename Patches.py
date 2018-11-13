@@ -1875,29 +1875,29 @@ def configure_dungeon_info(rom, world):
     rom.write_bytes(rom.sym('cfg_dungeon_is_mq'), dungeon_is_mq)
 
 
-def patch_cosmetics(world, rom):
+def patch_cosmetics(settings, rom):
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
 
     # Set default targeting option to Hold
-    if world.default_targeting == 'hold':
+    if settings.default_targeting == 'hold':
         rom.write_byte(0xB71E6D, 0x01)
     else:
         rom.write_byte(0xB71E6D, 0x00)       
 
     # patch music
-    if world.background_music == 'random':
+    if settings.background_music == 'random':
         randomize_music(rom)
-    elif world.background_music == 'off':
+    elif settings.background_music == 'off':
         disable_music(rom)
     else:
         restore_music(rom)
 
     # patch tunic colors
     Tunics = [
-        (world.kokiricolor, 0x00B6DA38), # Kokiri Tunic
-        (world.goroncolor,  0x00B6DA3B), # Goron Tunic
-        (world.zoracolor,   0x00B6DA3E), # Zora Tunic
+        (settings.kokiricolor, 0x00B6DA38), # Kokiri Tunic
+        (settings.goroncolor,  0x00B6DA3B), # Goron Tunic
+        (settings.zoracolor,   0x00B6DA3E), # Zora Tunic
     ]
     colorList = get_tunic_colors()
 
@@ -1918,10 +1918,10 @@ def patch_cosmetics(world, rom):
 
     # patch navi colors
     Navi = [
-        (world.navicolordefault, [0x00B5E184]), # Default
-        (world.navicolorenemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
-        (world.navicolornpc,     [0x00B5E194]), # NPC
-        (world.navicolorprop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
+        (settings.navicolordefault, [0x00B5E184]), # Default
+        (settings.navicolorenemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+        (settings.navicolornpc,     [0x00B5E194]), # NPC
+        (settings.navicolorprop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
                                   0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4,
                                   0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
     ]
@@ -1947,9 +1947,9 @@ def patch_cosmetics(world, rom):
 
     # Configurable Sound Effects
     sfx_addresses = [
-        (world.navisfxoverworld, [0xAE7EF2, 0xC26C7E], NaviSFX), # Navi Overworld Hint (0x685F)
-        (world.navisfxenemytarget, [0xAE7EC6], NaviSFX),         # Navi Enemy Target Hint (0x6843)
-        (world.healthSFX, [0xADBA1A], HealthSFX)                 # Low Health Beep (0x481B)
+        (settings.navisfxoverworld, [0xAE7EF2, 0xC26C7E], NaviSFX), # Navi Overworld Hint (0x685F)
+        (settings.navisfxenemytarget, [0xAE7EC6], NaviSFX),         # Navi Enemy Target Hint (0x6843)
+        (settings.healthSFX, [0xADBA1A], HealthSFX)                 # Low Health Beep (0x481B)
     ]
 
     for thisSFX, addresses, SFX_table in sfx_addresses:

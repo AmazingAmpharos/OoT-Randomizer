@@ -73,6 +73,9 @@ setting_infos = [
             'help': 'Path to output directory for rom generation.'}),
     Setting_Info('seed', str, 0, False, {
             'help': 'Define seed number to generate.'}),
+    Setting_Info('patch_file', str, 0, False, {
+            'default': '',
+            'help': 'Path to a patch file.'}),
     Setting_Info('count', int, 0, False, {
             'help': '''\
                     Use to batch generate multiple seeds with same settings.

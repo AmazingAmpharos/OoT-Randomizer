@@ -12,7 +12,7 @@ from urllib.parse import urlparse
 from urllib.request import urlopen
 
 from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry
-from Main import main
+from Main import main, from_patch_file
 from Utils import is_bundled, local_path, default_output_path, open_file, check_version
 from Patches import get_tunic_color_options, get_navi_color_options
 from Settings import Settings
@@ -99,8 +99,6 @@ def guiMain(settings=None):
     frames['aesthetic_tab'] = ttk.Frame(notebook)
     frames['aesthetic_tab_left'] = Frame(frames['aesthetic_tab'])
     frames['aesthetic_tab_right'] = Frame(frames['aesthetic_tab'])
-    adjustWindow = ttk.Frame(notebook)
-    customWindow = ttk.Frame(notebook)
     notebook.add(frames['rom_tab'], text='ROM Options')
     notebook.add(frames['rules_tab'], text='Main Rules')
     notebook.add(frames['logic_tab'], text='Detailed Logic')
@@ -140,11 +138,6 @@ def guiMain(settings=None):
 
 
     # shared
-    settingsFrame = Frame(mainWindow)
-    settings_string_var = StringVar()
-    widgets['setting_string'] = Entry(settingsFrame, textvariable=settings_string_var, width=30)
-
-
     def toggle_widget(widget, enabled):
         widget_type = widget.winfo_class()
         if widget_type == 'Frame' or widget_type == 'TFrame' or widget_type == 'Labelframe':
@@ -166,10 +159,12 @@ def guiMain(settings=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
 
+        settings_valid = update_generation_type()
+
         # Update any dependencies
         for info in setting_infos:
             if info.gui_params and 'dependency' in info.gui_params:
-                dep_met = info.gui_params['dependency'](guivars)
+                dep_met = settings_valid and info.gui_params['dependency'](guivars)
                 toggle_widget(widgets[info.name], dep_met)
 
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
@@ -177,6 +172,7 @@ def guiMain(settings=None):
                 if color == (None, None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
+        
 
 
     def update_logic_tricks(event=None):
@@ -191,25 +187,6 @@ def guiMain(settings=None):
 
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
-
-
-
-    def import_settings(event=None):
-        try:
-            settings = guivars_to_settings(guivars)
-            text = settings_string_var.get().upper()
-            settings.seed = guivars['seed'].get()
-            settings.update_with_settings_string(text)
-            settings_to_guivars(settings, guivars)
-            show_settings()
-        except Exception as e:
-            messagebox.showerror(title="Error", message="Invalid settings string")
-
-    label = Label(settingsFrame, text="Settings String")
-    widgets['import_settings'] = Button(settingsFrame, text='Import Settings String', command=import_settings)
-    label.pack(side=LEFT, anchor=W, padx=5)
-    widgets['setting_string'].pack(side=LEFT, anchor=W)
-    widgets['import_settings'].pack(side=LEFT, anchor=W, padx=5)
 
 
     fileDialogFrame = Frame(frames['rom_tab'])
@@ -392,14 +369,14 @@ def guiMain(settings=None):
 
 
     #Multi-World
-    multiworldFrame = LabelFrame(frames['rom_tab'], text='Multi-World Generation')
-    countLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='This is used for co-op generations. Increasing Player Count will drastically increase the generation time. For more information see:')
-    hyperLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='https://github.com/TestRunnerSRL/bizhawk-co-op', fg='blue', cursor='hand2')
+    widgets['multiworld'] = LabelFrame(frames['rom_tab'], text='Multi-World Generation')
+    countLabel = Label(widgets['multiworld'], wraplength=350, justify=LEFT, text='This is used for co-op generations. Increasing Player Count will drastically increase the generation time. For more information see:')
+    hyperLabel = Label(widgets['multiworld'], wraplength=350, justify=LEFT, text='https://github.com/TestRunnerSRL/bizhawk-co-op', fg='blue', cursor='hand2')
     hyperLabel.bind("<Button-1>", lambda event: webbrowser.open_new(r"https://github.com/TestRunnerSRL/bizhawk-co-op"))
     countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
     hyperLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
 
-    worldCountFrame = Frame(multiworldFrame)
+    worldCountFrame = Frame(widgets['multiworld'])
     countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
     widgets['world_count'] = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
@@ -407,7 +384,7 @@ def guiMain(settings=None):
     widgets['world_count'].pack(side=LEFT, padx=2)
     worldCountFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
 
-    playerNumFrame = Frame(multiworldFrame)
+    playerNumFrame = Frame(widgets['multiworld'])
     countLabel = Label(playerNumFrame, text='Player ID')
     guivars['player_num'] = StringVar()
     widgets['player_num'] = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['player_num'], width=3)
@@ -417,17 +394,65 @@ def guiMain(settings=None):
     playerNumFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
 
     guivars['player_num_all'] = IntVar()
-    widgets['player_num_all'] = Checkbutton(multiworldFrame, text='All Players', variable=guivars['player_num_all'], justify=LEFT, wraplength=190, command=show_settings)
+    widgets['player_num_all'] = Checkbutton(widgets['multiworld'], text='All Players', variable=guivars['player_num_all'], justify=LEFT, wraplength=190, command=show_settings)
     widgets['player_num_all'].pack(side=LEFT, anchor=N, padx=10, pady=(0,0))
     ToolTips.register(widgets['player_num_all'], '''\
                       Generate patches for all players.
                       Only available if Output Type is 
                       set to 'Patch File'.
                       ''')
-    multiworldFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
+    widgets['multiworld'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
-    # create the option menu
+    # create the generation menu
+    def update_generation_type(event=None):
+        if generation_notebook.tab(generation_notebook.select())['text'] == 'Generate From Seed':
+            notebook.tab(1, state="normal")
+            notebook.tab(2, state="normal")
+            notebook.tab(3, state="normal")
+            toggle_widget(widgets['multiworld'], True)
+            toggle_widget(widgets['create_spoiler'], True)
+            toggle_widget(widgets['count'], True)
+            return True
+        else:
+            notebook.tab(1, state="disabled")
+            notebook.tab(2, state="disabled")
+            notebook.tab(3, state="disabled")
+            toggle_widget(widgets['multiworld'], False)
+            toggle_widget(widgets['create_spoiler'], False)
+            toggle_widget(widgets['count'], False)
+            return False
+
+
+
+    generation_notebook = ttk.Notebook(mainWindow)
+    frames['gen_from_seed'] = ttk.Frame(generation_notebook)
+    frames['gen_from_file'] = ttk.Frame(generation_notebook)
+    generation_notebook.add(frames['gen_from_seed'], text='Generate From Seed')
+    generation_notebook.add(frames['gen_from_file'], text='Generate From File')
+    generation_notebook.bind("<<NotebookTabChanged>>", show_settings)
+
+    # From seed tab
+    def import_settings(event=None):
+        try:
+            settings = guivars_to_settings(guivars)
+            text = settings_string_var.get().upper()
+            settings.seed = guivars['seed'].get()
+            settings.update_with_settings_string(text)
+            settings_to_guivars(settings, guivars)
+            show_settings()
+        except Exception as e:
+            messagebox.showerror(title="Error", message="Invalid settings string")
+
+    settingsFrame = Frame(frames['gen_from_seed'])
+    settings_string_var = StringVar()
+    widgets['setting_string'] = Entry(settingsFrame, textvariable=settings_string_var, width=30)
+
+    label = Label(settingsFrame, text="Settings String")
+    widgets['import_settings'] = Button(settingsFrame, text='Import Settings String', command=import_settings)
+    label.pack(side=LEFT, anchor=W, padx=5)
+    widgets['setting_string'].pack(side=LEFT, anchor=W)
+    widgets['import_settings'].pack(side=LEFT, anchor=W, padx=5)
 
     settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,0))
 
@@ -440,12 +465,12 @@ def guiMain(settings=None):
 
     def generateRom():
         settings = guivars_to_settings(guivars)
-        if settings.count and settings.patch_file_action != 'load' is not None:
+        if settings.count:
             BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, multiple_run, settings)
         else:
             BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, main, settings)
 
-    generateSeedFrame = Frame(mainWindow)
+    generateSeedFrame = Frame(frames['gen_from_seed'])
     generateButton = Button(generateSeedFrame, text='Generate Patched ROM', command=generateRom)
 
     seedLabel = Label(generateSeedFrame, text='Seed')
@@ -456,6 +481,35 @@ def guiMain(settings=None):
     generateButton.pack(side=LEFT, padx=(5, 0))
 
     generateSeedFrame.pack(side=BOTTOM, anchor=W, padx=5, pady=10)
+
+    # From file tab
+    patchDialogFrame = Frame(frames['gen_from_file'])
+
+    patchFileLabel = Label(patchDialogFrame, text='Patch File')
+    guivars['patch_file'] = StringVar(value='')
+    patchEntry = Entry(patchDialogFrame, textvariable=guivars['patch_file'], width=45)
+
+    def PatchSelect():
+        patch_file = filedialog.askopenfilename(filetypes=[("Patch Files", ".zpf"), ("All Files", "*")])
+        if patch_file != '':
+            guivars['patch_file'].set(patch_file)
+    patchSelectButton = Button(patchDialogFrame, text='Select File', command=PatchSelect, width=10)
+
+    patchFileLabel.pack(side=LEFT, padx=(5,0))
+    patchEntry.pack(side=LEFT, padx=3)
+    patchSelectButton.pack(side=LEFT)
+
+    patchDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(10,5))
+
+    def generateFromFile():
+        settings = guivars_to_settings(guivars)
+        BackgroundTaskProgress(mainWindow, "Generating From File %s..." % os.path.basename(settings.patch_file), from_patch_file, settings)
+
+    generateFileButton = Button(frames['gen_from_file'], text='Generate Patched ROM', command=generateFromFile)
+    generateFileButton.pack(side=BOTTOM, anchor=E, pady=(0,10), padx=(0, 10))
+
+    generation_notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
+
 
     guivars['checked_version'] = StringVar()
 
