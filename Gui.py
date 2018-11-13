@@ -177,7 +177,6 @@ def guiMain(settings=None):
                 if color == (None, None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
-        patch_file_action_change()
 
 
     def update_logic_tricks(event=None):
@@ -414,87 +413,18 @@ def guiMain(settings=None):
     widgets['player_num'] = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['player_num'], width=3)
     countLabel.pack(side=LEFT)
     widgets['player_num'].pack(side=LEFT, padx=2)
+    ToolTips.register(widgets['player_num'], 'Generate for specific Player.')
     playerNumFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
+
+    guivars['player_num_all'] = IntVar()
+    widgets['player_num_all'] = Checkbutton(multiworldFrame, text='All Players', variable=guivars['player_num_all'], justify=LEFT, wraplength=190, command=show_settings)
+    widgets['player_num_all'].pack(side=LEFT, anchor=N, padx=10, pady=(0,0))
+    ToolTips.register(widgets['player_num_all'], '''\
+                      Generate patches for all players.
+                      Only available if Output Type is 
+                      set to 'Patch File'.
+                      ''')
     multiworldFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
-
-
-    #Patch File
-    patchFileFrame = LabelFrame(frames['rom_tab'], text='Patch File')
-    countLabel = Label(patchFileFrame, wraplength=350, justify=LEFT, text='Patch Files are used to share seeds without having to regenerate the data. This is especially useful for Multi-World seeds.')
-    countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
-
-    def patch_file_action_change():
-        if guivars['patch_file_action'].get() == 'Load Patch File':
-            toggle_widget(frames['rules_tab'], False)
-            toggle_widget(frames['logic_tab'], False)
-            toggle_widget(frames['other_tab'], False)
-            widgets['world_count'].configure(state='disabled')
-            widgets['create_spoiler'].configure(state='disabled')
-            widgets['create_spoiler'].configure(state='disabled')
-            widgets['count'].configure(state='disabled')
-            widgets['import_settings'].configure(state='disabled')
-            widgets['setting_string'].configure(state='disabled')
-            widgets['seed'].configure(state='disabled')
-            widgets['patch_file'].configure(state='normal')
-            widgets['patch_file_button'].configure(state='normal')
-
-            worlds = WorldFile.load_world_file(guivars['patch_file'].get())
-            if worlds:            
-                settings_string = worlds[0].settings.settings_string
-                settings = guivars_to_settings(guivars)
-                settings.update_with_settings_string(settings_string)
-                settings_to_guivars(settings, guivars)
-        else:
-            toggle_widget(frames['rules_tab'], True)
-            toggle_widget(frames['logic_tab'], True)
-            toggle_widget(frames['other_tab'], True)
-            widgets['world_count'].configure(state='normal')
-            widgets['create_spoiler'].configure(state='normal')
-            widgets['count'].configure(state='normal')
-            widgets['import_settings'].configure(state='normal')
-            widgets['setting_string'].configure(state='normal')
-            widgets['seed'].configure(state='normal')
-            widgets['patch_file'].configure(state='disabled')
-            widgets['patch_file_button'].configure(state='disabled')
-
-
-    for info in setting_infos:
-        if info.name == 'patch_file_action':
-            guivars[info.name] = StringVar(value=info.gui_params['default'])
-            widgets[info.name] = LabelFrame(patchFileFrame, text=info.gui_params['text'], labelanchor=NW)
-            for option in info.gui_params["options"]:
-                radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=190, indicatoron=False, command=show_settings)
-                radio_button.pack(expand=True, side=LEFT, anchor=N)
-            # pack the frame
-            widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
-            break
-
-    patchFileEntryFrame = Frame(patchFileFrame)
-    patchFileLabel = Label(patchFileEntryFrame, text='Patch File Path')
-    guivars['patch_file'] = StringVar(value='')
-    def patch_file_select():
-        patchfile = filedialog.askopenfilename(filetypes=[("Patch Files", ".wf"), ("All Files", "*")])
-        if patchfile != '':
-            guivars['patch_file'].set(patchfile)
-
-        worlds = WorldFile.load_world_file(guivars['patch_file'].get())
-        if worlds:            
-            settings_string = worlds[0].settings.settings_string
-            settings = guivars_to_settings(guivars)
-            settings.update_with_settings_string(settings_string)
-            settings_to_guivars(settings, guivars)
-
-    widgets['patch_file'] = Entry(patchFileEntryFrame, textvariable=guivars['patch_file'], width=30)
-    widgets['patch_file_button'] = Button(patchFileEntryFrame, text='Select Patch', command=patch_file_select, width=10)
-    patchFileLabel.pack(side=LEFT, padx=(3,0))
-    widgets['patch_file'].pack(side=LEFT, padx=3)
-    widgets['patch_file_button'].pack(side=LEFT)
-    patchFileEntryFrame.pack(side=TOP, anchor=W, pady=3)
-
-    patchFileFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
-
-
-    # didn't refactor the rest, sorry
 
 
     # create the option menu

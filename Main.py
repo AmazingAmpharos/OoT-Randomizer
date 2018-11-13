@@ -42,7 +42,7 @@ def main(settings, window=dummy_window()):
     worlds = []
 
     # load worlds from patch file
-    if settings.patch_file_action == 'load':
+    if False: #settings.patch_file_action == 'load':
         logger.info('Unpacking World File.')
         worlds = WorldFile.load_world_file(settings.patch_file)
 
@@ -70,7 +70,7 @@ def main(settings, window=dummy_window()):
         rom = LocalRom(settings)
 
     # initialize the world
-    if settings.patch_file_action != 'load':
+    if True: #settings.patch_file_action != 'load':
         if settings.compress_rom == 'None':
             settings.create_spoiler = True
             settings.update()
@@ -154,50 +154,70 @@ def main(settings, window=dummy_window()):
         outfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
 
     output_dir = default_output_path(settings.output_dir)
+    output_path = os.path.join(output_dir, outfilebase)
 
+    if settings.compress_rom == 'Patch':
+        if settings.player_num_all:
+            rng_state = random.getstate()
+            for world in worlds:
+                window.update_status('Patching ROM: Player %d' % (world.id + 1))
+                random.setstate(rng_state)
+                patch_rom(worlds[settings.player_num - 1], rom)
+                patch_cosmetics(worlds[settings.player_num - 1], rom)
+                window.update_progress(65)
 
-    if settings.patch_file_action == 'load':
-        # restore rand state for correct post fill state
-        random.setstate(worlds[0].rand_state)
-    else:
-        # save the random state
-        worlds[0].rand_state = random.getstate()
+                window.update_status('Creating Patch File: Player %d' % (world.id + 1))
+                outfilebase = 'OoT_%s_%s_W%dP%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count, world.id + 1)
+                output_path = os.path.join(output_dir, outfilebase)
+                create_patch_file(rom, output_path)
+                rom.restore()
+        else:
+            window.update_status('Patching ROM')
+            patch_rom(worlds[settings.player_num - 1], rom)
+            patch_cosmetics(worlds[settings.player_num - 1], rom)
+            window.update_progress(65)
 
-    if settings.compress_rom != 'None':
+            window.update_status('Creating Patch File')
+            create_patch_file(rom, output_path)
+    elif settings.compress_rom != 'None':
         window.update_status('Patching ROM')
         patch_rom(worlds[settings.player_num - 1], rom)
         patch_cosmetics(worlds[settings.player_num - 1], rom)
         window.update_progress(65)
 
-        rom_path = os.path.join(output_dir, '%s.z64' % outfilebase)
+        if settings.compress_rom == 'Patch':
+            window.update_status('Creating Patch File')
+            output_path += '.zpf'
+            create_patch_file(rom, output_path)
+        else:
+            window.update_status('Saving Uncompressed ROM')
+            output_path += '.z64'
+            rom.write_to_file(output_path)
+            if settings.compress_rom == 'True':
+                window.update_status('Compressing ROM')
+                logger.info('Compressing ROM.')
 
-        window.update_status('Saving Uncompressed ROM')
-        rom.write_to_file(rom_path)
-        if settings.compress_rom == 'True':
-            window.update_status('Compressing ROM')
-            logger.info('Compressing ROM.')
-
-            if is_bundled():
-                compressor_path = "."
-            else:
-                compressor_path = "Compress"
-
-            if platform.system() == 'Windows':
-                if 8 * struct.calcsize("P") == 64:
-                    compressor_path += "\\Compress.exe"
+                if is_bundled():
+                    compressor_path = "."
                 else:
-                    compressor_path += "\\Compress32.exe"
-            elif platform.system() == 'Linux':
-                compressor_path += "/Compress"
-            elif platform.system() == 'Darwin':
-                compressor_path += "/Compress.out"
-            else:
-                compressor_path = ""
-                logger.info('OS not supported for compression')
+                    compressor_path = "Compress"
 
-            if compressor_path != "":
-                run_process(window, logger, [compressor_path, rom_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
-            os.remove(rom_path)
+                if platform.system() == 'Windows':
+                    if 8 * struct.calcsize("P") == 64:
+                        compressor_path += "\\Compress.exe"
+                    else:
+                        compressor_path += "\\Compress32.exe"
+                elif platform.system() == 'Linux':
+                    compressor_path += "/Compress"
+                elif platform.system() == 'Darwin':
+                    compressor_path += "/Compress.out"
+                else:
+                    compressor_path = ""
+                    logger.info('OS not supported for compression')
+
+                if compressor_path != "":
+                    run_process(window, logger, [compressor_path, output_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+                os.remove(output_path)
             window.update_progress(95)
 
     for world in worlds:
@@ -207,15 +227,6 @@ def main(settings, window=dummy_window()):
     if settings.create_spoiler:
         window.update_status('Creating Spoiler Log')
         worlds[settings.player_num - 1].spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
-
-    if worlds[0].patch_file_action == 'save':
-        logger.info('Creating World File.')
-        if settings.world_count > 1:
-            filename = 'OoT_%s_%s_W%d.wf' % (worlds[0].settings_string, worlds[0].seed, worlds[0].world_count)
-        else:
-            filename = 'OoT_%s_%s.wf' % (worlds[0].settings_string, worlds[0].seed)
-        patch_file = os.path.join(output_dir, filename)
-        WorldFile.save_world_file(patch_file, worlds)
 
     window.update_progress(100)
     window.update_status('Success: Rom patched successfully')

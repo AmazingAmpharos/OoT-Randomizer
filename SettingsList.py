@@ -90,15 +90,28 @@ setting_infos = [
                     the world count will drastically increase generation time.
                     ''',
             'type': int}, {}),
-    Setting_Info('player_num', int, 0, False, {
+    Setting_Info('player_num', int, 0, False, 
+        {
             'default': 1,
             'help': '''\
                     Use to select world to generate when there are multiple worlds.
                     ''',
-            'type': int}),
-    Setting_Info('patch_file', str, 0, False, {
-            'default': '',
-            'help': 'Path to a patch file.'}),
+            'type': int
+        },
+        {
+            'dependency': lambda guivar: not (guivar['player_num_all'].get() and \
+                                         guivar['compress_rom'].get() == 'Patch File')
+        }),
+    Setting_Info('player_num_all', bool, 0, False, 
+        {
+            'action': 'store_true',
+            'help': '''\
+                    Generate patch files for all players.
+                    '''
+        },
+        {
+            'dependency': lambda guivar: guivar['compress_rom'].get() == 'Patch File'
+        }),
     Setting_Info('create_spoiler', bool, 1, True,
         {
             'help': 'Output a Spoiler File',
@@ -123,6 +136,7 @@ setting_infos = [
                     Create a compressed version of the output ROM file.
                     True: Compresses. Improves stability. Will take longer to generate
                     False: Uncompressed. Unstable. Faster generation
+                    Patch: Patch file. No ROM, but used to send the patch data
                     None: No ROM Output. Creates spoiler log only
                     ''',
         },
@@ -135,6 +149,7 @@ setting_infos = [
             'options': {
                 'Compressed [Stable]': 'True',
                 'Uncompressed [Crashes]': 'False',
+                'Patch File': 'Patch',
                 'No Output': 'None',
             },
             'tooltip':'''\
@@ -142,39 +157,9 @@ setting_infos = [
                       but subsequent generations will be quick. It is highly
                       recommended to compress or the game will crash
                       frequently except on real N64 hardware.
-                      '''
-        }),
-    Setting_Info('patch_file_action', str, 2, False,
-        {
-            'default': 'none',
-            'const': 'none',
-            'nargs': '?',
-            'help': '''\
-                    Allows saving and loading a patch file
-                    none:   Do not create a patch file.
-                    save:   Create a patch file.
-                    load:   Load a patch file
-                    ''',
-        },
-        {
-            'text': 'Patch File Action',
-            'widget': 'Radiobutton',
-            'default': 'No Patch File',
-            'horizontal': True,
-            'options': {
-                'No Patch File': 'none',
-                'Save Patch File': 'save',
-                'Load Patch File': 'load',
-            },
-            'tooltip':'''\
-                        Save or Load a Patch File:
 
-                        'No Patch': Do not create a
-                        patch file.
-
-                        'Save': Create a patch file.
-
-                        'Load': Load a patch file.
+                      Patch files are used to send the patched data to other
+                      people without sending the ROM file.
                       '''
         }),
     Setting_Info('open_forest', bool, 1, True,

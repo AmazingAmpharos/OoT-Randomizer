@@ -78,6 +78,12 @@ class LocalRom(object):
             # ROM file is a valid and already uncompressed, but we require a compressed rom
             raise RuntimeError('Base ROM is uncompressed. Please provide an original ROM.')
 
+    def restore(self):
+        self.buffer = copy.copy(self.original)
+        self.changed_address = {}
+        self.changed_dma = {}  
+        self.__last_address = None
+
     def sym(self, symbol_name):
         return self.symbols.get(symbol_name)
 
