@@ -1652,6 +1652,7 @@ setting_infos = [
                     Choose how Gossip Stones hints are distributed
                     normal: Use the standard distribution of hint types
                     tourney: Use the tourney distribution of hint types
+                    op: Use an overpowered distribution of hint types
                     '''
         },
         {
@@ -1662,11 +1663,14 @@ setting_infos = [
             'options': {
                 'Normal': 'normal',
                 'Tourney': 'tourney',
+                'Overpowered': 'op',
             },
             'tooltip':'''\
                       Tourney distribution has some
                       duplicate hints and no junk
                       hints.
+                      Overpowered distribution has
+                      only very useful hints.
                       '''
         }),
     Setting_Info('text_shuffle', str, 2, True,
