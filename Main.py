@@ -23,7 +23,7 @@ from version import __version__
 from OcarinaSongs import verify_scarecrow_song_str
 from N64Patch import create_patch_file, apply_patch_file
 import WorldFile
-from Settings import setting_infos
+from SettingsList import setting_infos
 
 class dummy_window():
     def __init__(self):

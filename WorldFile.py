@@ -1,7 +1,7 @@
 import pickle
 import zlib
 from Utils import local_path, default_output_path
-from Settings import setting_infos
+from SettingsList import setting_infos
 
 class world_id:
     def __init__(self, id):
