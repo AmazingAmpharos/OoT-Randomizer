@@ -15,7 +15,11 @@ void c_init() {
     models_init();
 }
 
-void c_after_game_state_update() {
+void before_game_state_update() {
+    give_pending_item();
+}
+
+void after_game_state_update() {
     if (z64_game.pause_state == 6 &&
                 z64_game.pause_screen == 0 &&
                 !z64_game.pause_screen_changing &&

@@ -4,36 +4,67 @@
 #include "util.h"
 #include "z64.h"
 
-override_t cfg_item_overrides[512] = { 0 };
-int item_overrides_count = 0;
+enum override_type {
+    BASE_ITEM = 0,
+    CHEST = 1,
+    COLLECTABLE = 2,
+    SKULL = 3,
+    GROTTO_SCRUB = 4,
+    DELAYED = 5,
+};
 
 typedef struct {
     union {
         uint32_t all;
         struct {
-            uint8_t item_id;
-            uint8_t scene;
-            uint8_t source_tag;
-            uint8_t padding_;
+            uint32_t scene     : 8;
+            uint32_t flag      : 8;
+            uint32_t type      : 3;
+            uint32_t player_id : 5;
+            uint32_t item_id   : 8;
+        };
+        struct {
+            uint32_t search_key : 19;
+            uint32_t payload    : 13;
         };
     };
-} pending_item_t;
+} override_t;
 
-pending_item_t pending_item_queue[3] = { 0 };
+override_t cfg_item_overrides[512] = { 0 };
+int item_overrides_count = 0;
+
+override_t pending_item_queue[3] = {
+    { .all = 0 },
+    { .all = 0 },
+    { .all = 0 },
+};
 z64_actor_t *dummy_actor = NULL;
 
-int item_is_extended = 0;
-item_row_t extended_item_data = { 0 };
+item_row_t *extended_item_row = NULL;
+// Split extended_item_row into variables for convenience in ASM
+uint32_t ext_base_item_id = 0;
+uint32_t ext_action_id = 0;
+uint32_t ext_graphic_id = 0;
+uint32_t ext_text_id = 0;
+uint32_t ext_object_id = 0;
 
-// Pointers into extended_item_data for convenience in ASM
-int8_t *ext_base_item_id = &(extended_item_data.base_item_id);
-int8_t *ext_action_id = &(extended_item_data.action_id);
-int8_t *ext_graphic_id = &(extended_item_data.graphic_id);
-int8_t *ext_text_id = &(extended_item_data.text_id);
-int16_t *ext_object_id = &(extended_item_data.object_id);
-int8_t *ext_effect_arg1 = &(extended_item_data.effect_arg1);
-int8_t *ext_effect_arg2 = &(extended_item_data.effect_arg2);
-effect_fn *ext_effect = &(extended_item_data.effect);
+void activate_extended_item(item_row_t *item_row) {
+    extended_item_row = item_row;
+    ext_base_item_id = item_row->base_item_id;
+    ext_action_id = item_row->action_id;
+    ext_graphic_id = item_row->graphic_id;
+    ext_text_id = item_row->text_id;
+    ext_object_id = item_row->object_id;
+}
+
+void clear_extended_item() {
+    extended_item_row = NULL;
+    ext_base_item_id = 0;
+    ext_action_id = 0;
+    ext_graphic_id = 0;
+    ext_text_id = 0;
+    ext_object_id = 0;
+}
 
 void item_overrides_init() {
     while (cfg_item_overrides[item_overrides_count].all != 0) {
@@ -45,49 +76,149 @@ void item_overrides_init() {
     dummy_actor->main_proc = (void *)1;
 }
 
-void give_pending_item() {
-    pending_item_t first = pending_item_queue[0];
-    if (first.all == 0) {
-        return;
-    }
+override_t get_override_search_key(uint8_t scene, uint8_t item_id, z64_actor_t *actor) {
+    if (actor->actor_id == 0x0A) {
+        // Don't override WINNER heart piece in the chest minigame scene
+        if (scene == 0x10 && item_id == 0x75) {
+            return (override_t){ .all = 0 };
+        }
 
-    // Don't give pending item if the player is already receiving an item.
-    if (z64_link.actor_giving_item != 0) {
-        return;
-    }
-    // Don't give pending item during cutscene. This can lead to a crash when giving an item
-    // during another item cutscene.
-    if (z64_link.state_flags_1 & 0x20) {
-        return;
-    }
-    // Don't give an item if link's camera is not being used
-    // If an item is given in this state then it will cause the
-    // Walking-While-Talking glitch.
-    if (z64_game.camera_2) {
-        return;
-    }
+        return (override_t){
+            .scene = scene,
+            .type = CHEST,
+            .flag = actor->variable & 0x1F,
+        };
+    } else if (actor->actor_id == 0x15) {
+        // Only override heart pieces and keys
+        if (item_id != 0x3E && item_id != 0x42) {
+            return (override_t){ .all = 0 };
+        }
 
-    z64_link.received_item_id = first.item_id;
-    z64_link.actor_giving_item = dummy_actor;
+        return (override_t){
+            .scene = scene,
+            .type = COLLECTABLE,
+            .flag = *((uint8_t *)(actor + 0x141)),
+        };
+    } else if (actor->actor_id == 0x19C) {
+        return (override_t){
+            .scene = (actor->variable >> 8) & 0x1F,
+            .type = SKULL,
+            .flag = actor->variable & 0xFF,
+        };
+    } else if (scene == 0x3E && actor->actor_id == 0x011A) {
+        return (override_t){
+            .scene = z64_file.grotto_id,
+            .type = GROTTO_SCRUB,
+            .flag = item_id,
+        };
+    } else {
+        return (override_t) {
+            .scene = scene,
+            .type = BASE_ITEM,
+            .flag = item_id,
+        };
+    }
 }
 
-// Source tags:
-// 1: incoming co-op item
-// 2: great fairy
-// 3: light arrow cutscene
-// 4: fairy ocarina cutscene
-// 5: ocarina songs
+override_t lookup_override_by_key(override_t key) {
+    int start = 0;
+    int end = item_overrides_count - 1;
+    while (start <= end) {
+        int mid_index = (start + end) / 2;
+        override_t mid_entry = cfg_item_overrides[mid_index];
+        if (key.search_key < mid_entry.search_key) {
+            end = mid_index - 1;
+        } else if (key.search_key > mid_entry.search_key) {
+            start = mid_index + 1;
+        } else {
+            return mid_entry;
+        }
+    }
+    return (override_t){ .all = 0 };
+}
 
-void push_pending_item(uint8_t item_id, uint8_t source_tag) {
+override_t lookup_override(uint8_t scene, uint8_t item_id, z64_actor_t *actor) {
+    override_t search_key = get_override_search_key(scene, item_id, actor);
+    if (search_key.all == 0) {
+        return (override_t){ .all = 0 };
+    }
+
+    return lookup_override_by_key(search_key);
+}
+
+int8_t activate_override(override_t override) {
+    uint8_t resolved_item_id = resolve_extended_item(override.item_id);
+    item_row_t *item_row = get_extended_item_row(resolved_item_id);
+    if (item_row) {
+        activate_extended_item(item_row);
+        return item_row->base_item_id;
+    } else {
+        clear_extended_item();
+        return resolved_item_id;
+    }
+}
+
+void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id) {
+    override_t override = { .all = 0 };
+    int incoming_negative = incoming_item_id < 0;
+
+    if (from_actor && incoming_item_id != 0) {
+        int8_t item_id = incoming_negative ? -incoming_item_id : incoming_item_id;
+        override = lookup_override(z64_game.scene_index, item_id, from_actor);
+    }
+
+    if (override.all == 0) {
+        clear_extended_item();
+        link->incoming_item_id = incoming_item_id;
+        return;
+    }
+
+    int8_t base_item_id = activate_override(override);
+
+    if (from_actor->actor_id == 0x0A) {
+        // Update chest contents
+        from_actor->variable = (from_actor->variable & 0xF01F) | (base_item_id << 5);
+    }
+
+    link->incoming_item_id = incoming_negative ? -base_item_id : base_item_id;
+}
+
+void give_pending_item() {
+    override_t override = pending_item_queue[0];
+
+    // Don't give pending item if:
+    // - Already receiving an item from an ordinary source
+    // - Link is in cutscene state (causes crash)
+    // - Link's camera is not being used (causes walking-while-talking glitch)
+    int no_pending = override.all == 0 ||
+        (z64_link.incoming_item_actor && z64_link.incoming_item_id > 0) ||
+        z64_link.state_flags_1 & 0x20000000 ||
+        z64_game.camera_2;
+    if (no_pending) {
+        return;
+    }
+
+    if (override.item_id == 0x7F) {
+        // Do co-op stuff
+    }
+
+    if (override.player_id != 1) {
+        // Do co-op stuff
+    }
+
+    int8_t base_item_id = activate_override(override);
+
+    z64_link.incoming_item_actor = dummy_actor;
+    z64_link.incoming_item_id = base_item_id;
+}
+
+void push_pending_item(override_t override) {
     for (int i = 0; i < array_size(pending_item_queue); i++) {
-        pending_item_t *entry = &(pending_item_queue[i]);
-        if (entry->all == 0) {
-            entry->item_id = item_id;
-            entry->scene = z64_game.scene_index;
-            entry->source_tag = source_tag;
+        if (pending_item_queue[i].all == 0) {
+            pending_item_queue[i] = override;
             break;
         }
-        if (entry->source_tag == source_tag) {
+        if (pending_item_queue[i].all == override.all) {
             // Prevent duplicate entries
             break;
         }
@@ -100,132 +231,20 @@ void pop_pending_item() {
     pending_item_queue[2].all = 0;
 }
 
+void give_delayed_item(uint8_t flag) {
+    override_t search_key = { .all = 0 };
+    search_key.scene = 0xFF;
+    search_key.type = DELAYED;
+    search_key.flag = flag;
+    override_t override = lookup_override_by_key(search_key);
+    if (override.all != 0) {
+        push_pending_item(override);
+    }
+}
+
 void item_received() {
-    if (z64_link.actor_giving_item == dummy_actor) {
+    clear_extended_item();
+    if (z64_link.incoming_item_actor == dummy_actor) {
         pop_pending_item();
     }
-}
-
-override_t get_override_search_key(uint8_t scene, uint8_t item_id, z64_actor_t *actor) {
-    override_t result = { 0 };
-    result.scene = scene;
-
-    if (actor->actor_id == 0x0A) {
-        // Don't override WINNER heart piece in the chest minigame scene
-        if (scene == 0x10 && item_id == 0x75) {
-            return (override_t){ .all = -1 };
-        }
-
-        result.type = CHEST;
-        result.flag = actor->variable & 0x1F;
-    } else if (actor->actor_id == 0x15) {
-        // Only override heart pieces and keys
-        if (item_id != 0x3E && item_id != 0x42) {
-            return (override_t){ .all = -1 };
-        }
-
-        result.type = COLLECTABLE;
-        result.flag = *((uint8_t *)(actor + 0x141));
-    } else if (actor->actor_id == 0x19C) {
-        result.type = SKULL;
-        result.flag = actor->variable & 0xFF;
-        result.scene = (actor->variable >> 8) & 0x1F;
-    } else if (scene == 0x3E && actor->actor_id == 0x011A) {
-        result.type = GROTTO_SCRUB;
-        result.flag = item_id;
-        result.scene = z64_file.grotto_id;
-    } else {
-        result.type = BASE_ITEM;
-        result.flag = item_id;
-    }
-
-    return result;
-}
-
-int search_item_overrides(override_t key) {
-    int start = 0;
-    int end = item_overrides_count - 1;
-    while (start <= end) {
-        int mid = (start + end) / 2;
-        override_t *mid_entry = &(cfg_item_overrides[mid]);
-        if (key.search_key < mid_entry->search_key) {
-            end = mid - 1;
-        } else if (key.search_key > mid_entry->search_key) {
-            start = mid + 1;
-        } else {
-            return mid;
-        }
-    }
-    return -1;
-}
-
-uint8_t resolve_extended_item(uint8_t item_id) {
-    for (;;) {
-        if (item_id < 0x80) {
-            return item_id;
-        }
-
-        item_row_t *item = get_extended_item_row(item_id);
-        uint8_t new_item_id = item->upgrade(&z64_file, item_id);
-        if (new_item_id == item_id) {
-            return item_id;
-        }
-        item_id = new_item_id;
-    }
-}
-
-void store_item_data() {
-    item_is_extended = 0;
-    extended_item_data = (item_row_t){ 0 };
-
-    int8_t item_id = z64_link.received_item_id;
-    if (item_id == 0) {
-        return;
-    }
-    if (item_id < 0) {
-        item_id = -item_id;
-    }
-
-    if (item_id == 0x7F) {
-        // Do co-op stuff
-    }
-
-    z64_actor_t *actor = z64_link.actor_giving_item;
-    uint8_t scene = actor == dummy_actor ?
-        pending_item_queue[0].scene :
-        z64_game.scene_index;
-
-    override_t search_key = get_override_search_key(scene, item_id, actor);
-    if (search_key.all == -1) {
-        return;
-    }
-
-    int override_index = search_item_overrides(search_key);
-    if (override_index == -1) {
-        return;
-    }
-    override_t *override = &(cfg_item_overrides[override_index]);
-
-    if (override->player_id != 0) {
-        // Do co-op stuff
-        //return;
-    }
-
-    uint8_t resolved_item_id = resolve_extended_item(override->item_id);
-    int8_t new_base_item_id = resolved_item_id;
-    if (resolved_item_id >= 0x80) {
-        item_is_extended = 1;
-        extended_item_data = *(get_extended_item_row(resolved_item_id));
-        new_base_item_id = extended_item_data.base_item_id;
-    }
-
-    if (actor->actor_id == 0x0A) {
-        // Update chest contents
-        actor->variable = (actor->variable & 0xF01F) | (new_base_item_id << 5);
-    }
-
-    if (z64_link.received_item_id < 0) {
-        new_base_item_id = -new_base_item_id;
-    }
-    z64_link.received_item_id = new_base_item_id;
 }

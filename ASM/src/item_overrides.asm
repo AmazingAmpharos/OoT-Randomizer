@@ -37,11 +37,15 @@ inventory_check:
 ; Set t7 to nonzero if warping should be prevented
 can_warp:
     ; Prevent warp if an actor is trying to give an item
-    li      v0, PLAYER_ACTOR
-    lw      v0, 0x428 (v0)
-    bnez    v0, @@return
+    li      t7, PLAYER_ACTOR
+    lw      v0, 0x428 (t7)
+    beqz    v0, @@check_flag
+    nop
+    lb      v0, 0x424 (t7)
+    bgez    v0, @@return
     li      t7, 1
 
+@@check_flag:
     lh      t7, 0x640C (s2) ; Load warp restriction flag from global context
 
 @@return:
@@ -71,7 +75,7 @@ override_object_chest:
     lh      a1, 0x0004 (t9)
 
 override_object:
-    li      t2, item_is_extended
+    li      t2, extended_item_row
     lw      t2, 0x00 (t2)
     beqz    t2, @@return
     nop
@@ -79,7 +83,6 @@ override_object:
     ; Override Object ID
     li      a1, ext_object_id
     lw      a1, 0x00 (a1)
-    lhu     a1, 0x00 (a1)
 
 @@return:
     jr      ra
@@ -88,7 +91,7 @@ override_object:
 ;==================================================================================================
 
 override_graphic:
-    li      t0, item_is_extended
+    li      t0, extended_item_row
     lw      t0, 0x00 (t0)
     beqz    t0, @@return
     nop
@@ -96,7 +99,6 @@ override_graphic:
     ; Override Graphic ID
     li      v1, ext_graphic_id
     lw      v1, 0x00 (v1)
-    lb      v1, 0x00 (v1)
 
 @@return:
     ; Displaced code
@@ -110,7 +112,7 @@ override_graphic:
 override_text:
     lbu     a1, 0x03 (v0) ; Displaced code
 
-    li      t0, item_is_extended
+    li      t0, extended_item_row
     lw      t0, 0x00 (t0)
     beqz    t0, @@return
     nop
@@ -118,7 +120,6 @@ override_text:
     ; Override Text ID
     li      a1, ext_text_id
     lw      a1, 0x00 (a1)
-    lbu     a1, 0x00 (a1)
 
 @@return:
     jr      ra
@@ -127,35 +128,24 @@ override_text:
 ;==================================================================================================
 
 override_action:
+    lbu     a1, 0x0000 (v0) ; Displaced code
+
     addiu   sp, sp, -0x18
     sw      a1, 0x10 (sp)
     sw      ra, 0x14 (sp)
 
-    lbu     a1, 0x0000 (v0) ; Displaced code
-
-    li      t0, item_is_extended
+    li      t0, extended_item_row
     lw      t0, 0x00 (t0)
     beqz    t0, @@return
+    nop
 
     ; Override Action ID
     li      a1, ext_action_id
     lw      a1, 0x00 (a1)
-    lbu     a1, 0x00 (a1)
     sw      a1, 0x10 (sp)
 
-    ; Run effect function
-    li      a0, SAVE_CONTEXT
-    li      a1, ext_effect_arg1
-    lw      a1, 0x00 (a1)
-    lbu     a1, 0x00 (a1)
-    li      a2, ext_effect_arg2
-    lw      a2, 0x00 (a2)
-    lbu     a2, 0x00 (a2)
-    li      t0, ext_effect
-    lw      t0, 0x00 (t0)
-    lw      t0, 0x00 (t0)
-    jalr    t0
-    nop
+    jal     call_effect_function
+    move    a0, t0
 
 @@return:
     jal     item_received
@@ -168,17 +158,17 @@ override_action:
 
 ;==================================================================================================
 
-store_item_data_hook:
-    sb      a2, 0x0424 (a3) ; Displaced code
-
+get_item_hook:
     addiu   sp, sp, -0x20
     sw      a3, 0x10 (sp)
     sw      v0, 0x14 (sp)
     sw      v1, 0x18 (sp)
     sw      ra, 0x1C (sp)
 
-    jal     store_item_data
-    nop
+    ; a0 = actor giving item
+    ; a2 = incoming item id
+    jal     get_item
+    move    a1, a3 ; a1 = player instance
 
     lw      a3, 0x10 (sp)
     lw      v0, 0x14 (sp)

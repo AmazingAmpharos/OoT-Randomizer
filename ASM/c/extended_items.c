@@ -313,6 +313,29 @@ ITEM_ROW(0x77, 0x3F, 0xD4, 0x4D, 0x00DC, no_upgrade, no_effect, -1, -1), // 0xD3
 
 };
 
-item_row_t *get_extended_item_row(uint8_t index) {
-    return &(item_table[index - 0x80]);
+uint8_t resolve_extended_item(uint8_t item_id) {
+    for (;;) {
+        if (item_id < 0x80) {
+            return item_id;
+        }
+
+        item_row_t *item = get_extended_item_row(item_id);
+        uint8_t new_item_id = item->upgrade(&z64_file, item_id);
+        if (new_item_id == item_id) {
+            return item_id;
+        }
+        item_id = new_item_id;
+    }
+}
+
+item_row_t *get_extended_item_row(uint8_t item_id) {
+    if (item_id >= 0x80) {
+        return &(item_table[item_id - 0x80]);
+    } else {
+        return NULL;
+    }
+}
+
+void call_effect_function(item_row_t *item_row) {
+    item_row->effect(&z64_file, item_row->effect_arg1, item_row->effect_arg2);
 }

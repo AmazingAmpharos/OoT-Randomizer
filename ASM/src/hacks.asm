@@ -36,12 +36,12 @@
 .org 0xE2F093 :: .byte 0x34 ; Bombchu Bowling Bomb Bag
 .org 0xEC9CE7 :: .byte 0x7A ; Deku Theater Mask of Truth
 
-; Runs when storing the pending item to the player instance
+; Runs when storing an incoming item to the player instance
 ; Replaces:
 ;   sb      a2, 0x0424 (a3)
 ;   sw      a0, 0x0428 (a3)
 .org 0xA98C30 ; In memory: 0x80022CD0
-    jal     store_item_data_hook
+    jal     get_item_hook
     sw      a0, 0x0428 (a3)
 
 ; Override object ID (NPCs)
@@ -158,29 +158,29 @@
 ;   ... (4 instructions)
 ;   lh      t7, 0x640C (s2)
 .org 0xB5511C ; In memory: 0x800DF1BC
-    jal     can_warp
-    nop
+    ;jal     can_warp
+    ;nop
 .skip 0x10
-    nop
+    ;nop
 
 ;==================================================================================================
 ; Every frame hooks
 ;==================================================================================================
 
-; Runs before the game state updates
+; Runs before the game state update function
 ; Replaces:
-;   lw      t9, 0x0004 (s0)
-;   or      a0, s0, r0
-.org 0xB16B50 ; In memory: 0x800A0BF0
-    jal     before_game_state_update
+;   lw      t6, 0x0018 (sp)
+;   lui     at, 0x8010
+.org 0xB12A34 ; In memory: 0x8009CAD4
+    jal     before_game_state_update_hook
     nop
 
-; Runs after the game state updates
+; Runs after the game state update function
 ; Replaces:
-;   lui     t6, 0x8012
-;   lbu     t6, 0x1212 (t6)
-.org 0xB16B60 ; In memory: 0x800A0C00
-    jal     after_game_state_update
+;   jr      ra
+;   nop
+.org 0xB12A60 ; In memory: 0x8009CB00
+    j       after_game_state_update
     nop
 
 ;==================================================================================================
@@ -223,8 +223,8 @@
 ;   b       0x80056F84
 ;   sw      t9, 0x0008 (s0)
 .org 0xACCE88 ; In memory: 0x80056F28
-    jal     override_light_arrow_cutscene
-    nop
+    jal     give_delayed_item
+    li      a0, DELAYED_LIGHT_ARROWS
     nop
     nop
     nop
@@ -435,8 +435,8 @@ nop
 ;   addu    t8, t0, t7
 ;   sb      t6, 0x74 (t8) ; store to fairy ocarina slot
 .org 0xAE6E48 ; In memory: 0x80070EE8
-    jal     override_fairy_ocarina_cutscene
-    addu    t8, t0, t7
+    jal     give_delayed_item
+    li      a0, DELAYED_FAIRY_OCARINA
 
 ; a3 = item ID
 ; Replaces:

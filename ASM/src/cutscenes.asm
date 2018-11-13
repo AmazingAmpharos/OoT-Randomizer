@@ -25,7 +25,7 @@ override_great_fairy_cutscene:
     nop
     li      t5, 1
     sb      t5, 0x1D28 (t4) ; Mark item as obtained
-    addiu   t2, t2, 3 ; t2 = index of the item in FAIRY_ITEMS
+    addiu   t2, t2, DELAYED_UPGRADE_FAIRIES ; t2 = cutscene override flag
     b       @@give_item
     nop
 
@@ -38,6 +38,7 @@ override_great_fairy_cutscene:
     nop
     or      t6, t5, t4
     sb      t6, 0x0EF2 (t3) ; Mark item as obtained
+    addiu   t2, t2, DELAYED_ITEM_FAIRIES ; t2 = cutscene override flag
 
 @@give_item:
     ; Unset ZL switch
@@ -45,12 +46,8 @@ override_great_fairy_cutscene:
     and     t0, t0, t1
     sw      t0, 0x1D2C (a0)
 
-    ; Load fairy item and add it to the pending item queue
-    li      t0, FAIRY_ITEMS
-    addu    t0, t0, t2
-    lb      a0, 0x00 (t0)
-    jal     push_pending_item
-    li      a1, 2
+    jal     give_delayed_item
+    move    a0, t2
 
     li      v0, 0 ; Prevent fairy animation
 
@@ -61,30 +58,13 @@ override_great_fairy_cutscene:
 
 ;==================================================================================================
 
-override_light_arrow_cutscene:
-    li      t0, LIGHT_ARROW_ITEM
-    lb      a0, 0x00 (t0)
-    j       push_pending_item
-    li      a1, 3
-
-;==================================================================================================
-
-override_fairy_ocarina_cutscene:
-    li      t0, FAIRY_OCARINA_ITEM
-    lb      a0, 0x00 (t0)
-    j       push_pending_item
-    li      a1, 4
-
-;==================================================================================================
-
 ; a3 = item ID
 override_ocarina_songs:
     addiu   sp, sp, -0x18
     sw      ra, 0x10 (sp)
 
-    addi    a0, a3, -0x5A + 0x61
-    jal     push_pending_item
-    li      a1, 5
+    jal     give_delayed_item
+    addi    a0, a3, -0x5A + DELAYED_OCARINA_SONGS
 
     li      v0, 0xFF
 
@@ -100,9 +80,8 @@ override_requiem_song:
     sw      v1, 0x14 (sp)
     sw      ra, 0x18 (sp)
 
-    li      a0, 0x64
-    jal     push_pending_item
-    li      a1, 5
+    jal     give_delayed_item
+    li      a0, DELAYED_REQUIEM
 
     lw      at, 0x10 (sp)
     lw      v1, 0x14 (sp)
@@ -124,9 +103,8 @@ override_epona_song:
     ori     t0, t0, 0x01 ; t9 = "Invited to Sing With Child Malon"
     sb      t0, 0x0EDE (at)
 
-    li      a0, 0x68
-    jal     push_pending_item
-    li      a1, 5
+    jal     give_delayed_item
+    li      a0, DELAYED_EPONAS_SONG
 
     lw      a2, 0x10 (sp)
     lw      a3, 0x14 (sp)
@@ -147,9 +125,8 @@ override_suns_song:
     ori     t0, t0, 0x04
     sb      t0, 0x0EDE (at)
 
-    li      a0, 0x6A
-    jal     push_pending_item
-    li      a1, 5
+    jal     give_delayed_item
+    li      a0, DELAYED_SUNS_SONG
 
     lw      v1, 0x10 (sp)
     lw      ra, 0x14 (sp)
@@ -165,9 +142,8 @@ override_song_of_time:
     sw      t7, 0x18 (sp)
     sw      ra, 0x20 (sp)
 
-    li      a0, 0x6B
-    jal     push_pending_item
-    li      a1, 5
+    jal     give_delayed_item
+    li      a0, DELAYED_SONG_OF_TIME
 
     li      a1, 3 ; Displaced code
 

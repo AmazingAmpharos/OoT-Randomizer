@@ -1632,7 +1632,7 @@ def get_override_entry(location):
 
     player_id = location.item.world.id + 1
 
-    if location.type in ['NPC', 'BossHeart', 'Song']:
+    if location.type in ['NPC', 'BossHeart']:
         type = 0
     elif location.type == 'Chest':
         type = 1
@@ -1645,6 +1645,8 @@ def get_override_entry(location):
         type = 0
     elif location.type == 'GrottoNPC' and location.item.type != 'Shop':
         type = 4
+    elif location.type in ['Song', 'Cutscene']:
+        type = 5
     else:
         return []
 

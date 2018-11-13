@@ -8,6 +8,7 @@
 ; Base game editing region
 ;==================================================================================================
 
+.include "constants.asm"
 .include "boot.asm"
 .include "hacks.asm"
 .include "malon.asm"
@@ -17,8 +18,6 @@
 ;==================================================================================================
 
 .headersize (0x80400000 - 0x03480000)
-
-.include "constants.asm"
 
 .org 0x80400000
 .area 0x1000
