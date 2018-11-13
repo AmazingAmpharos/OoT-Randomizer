@@ -15,7 +15,7 @@ DMADATA_START = 0x7430
 
 class LocalRom(object):
     def __init__(self, settings, patch=True):
-        self.last_address = None
+        self.__last_address = None
 
         file = settings.rom
         decomp_file = 'ZOOTDEC.z64'
@@ -82,90 +82,90 @@ class LocalRom(object):
         return self.symbols.get(symbol_name)
 
     def seek_address(self, address):
-        self.last_address = address
+        self.__last_address = address
 
     def read_byte(self, address):
         if address == None:
-            address = self.last_address
-        self.last_address = address + 1
+            address = self.__last_address
+        self.__last_address = address + 1
         return self.buffer[address]
 
     def read_bytes(self, address, len):
         if address == None:
-            address = self.last_address
-        self.last_address = address + len
+            address = self.__last_address
+        self.__last_address = address + len
         return self.buffer[address : address + len]
 
     def read_int16(self, address):
         if address == None:
-            address = self.last_address
-        self.last_address = address + 2
+            address = self.__last_address
+        self.__last_address = address + 2
         return int16.unpack_from(self.buffer, address)[0]
 
     def read_int24(self, address):
         if address == None:
-            address = self.last_address
+            address = self.__last_address
         return bytes_as_int24(self.read_bytes(address, 3))
 
     def read_int32(self, address):
         if address == None:
-            address = self.last_address
-        self.last_address = address + 4
+            address = self.__last_address
+        self.__last_address = address + 4
         return int32.unpack_from(self.buffer, address)[0]
 
     def write_byte(self, address, value):
         if address == None:
-            address = self.last_address
+            address = self.__last_address
         self.buffer[address] = value
         self.changed_address[address] = value
-        self.last_address = address + 1
+        self.__last_address = address + 1
 
     def write_sbyte(self, address, value):
         if address == None:
-            address = self.last_address
+            address = self.__last_address
         self.write_bytes(address, struct.pack('b', value))
 
     def write_int16(self, address, value):
         if address == None:
-            address = self.last_address
+            address = self.__last_address
         self.write_bytes(address, int16_as_bytes(value))
 
     def write_int24(self, address, value):
         if address == None:
-            address = self.last_address
+            address = self.__last_address
         self.write_bytes(address, int24_as_bytes(value))
 
     def write_int32(self, address, value):
         if address == None:
-            address = self.last_address
+            address = self.__last_address
         self.write_bytes(address, int32_as_bytes(value))
 
     def write_f32(self, address, value:float):
         if address == None:
-            address = self.last_address
+            address = self.__last_address
         self.write_bytes(address, struct.pack('>f', value))
 
     def write_bytes(self, startaddress, values):
         if startaddress == None:
-            startaddress = self.last_address
+            startaddress = self.__last_address
         for i, value in enumerate(values):
             self.write_byte(startaddress + i, value)
 
     def write_int16s(self, startaddress, values):
         if startaddress == None:
-            startaddress = self.last_address
+            startaddress = self.__last_address
         for i, value in enumerate(values):
             self.write_int16(startaddress + (i * 2), value)
 
     def write_int24s(self, startaddress, values):
         if startaddress == None:
-            startaddress = self.last_address
+            startaddress = self.__last_address
         for i, value in enumerate(values):
             self.write_int24(startaddress + (i * 3), value)
 
     def write_int32s(self, startaddress, values):
         if startaddress == None:
-            startaddress = self.last_address
+            startaddress = self.__last_address
         for i, value in enumerate(values):
             self.write_int32(startaddress + (i * 4), value)
 
