@@ -11,3 +11,4 @@ ARCHIVE.bin
 *.spec
 /dist/
 /build/
+/.idea/

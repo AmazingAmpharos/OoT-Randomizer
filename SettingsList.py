@@ -1715,7 +1715,6 @@ setting_infos = [
                                     for each type can only be expanded once and you can only find three Bombchu packs.
                     very_hard:      Double defense, double magic, Nayru's Love, and all health upgrades are removed.
                                     No ammo expansions are available and you can only find one Bombchu pack.
-                    ohko:           Same as very hard, and Link will die in one hit.
                     '''
         },
         {
@@ -1727,8 +1726,7 @@ setting_infos = [
                 'Easy': 'easy',
                 'Normal': 'normal',
                 'Hard': 'hard',
-                'Very Hard': 'very_hard',
-                'OHKO': 'ohko'
+                'Very Hard': 'very_hard'
             },
             'tooltip':'''\
                       Makes health less available, reduces
@@ -1749,8 +1747,37 @@ setting_infos = [
                       Deku Stick and Deku Nut Capacity Upgrades
                       will be available. Only one Bombchu
                       pack is available.
+                      '''
+        }),
+    Setting_Info('damage_multiplier', str, 3, True,
+        {
+            'default': 'normal',
+            'const': 'normal',
+            'nargs': '?',
+            'help': '''\
+                    Change the amount of damage taken.
+                    normal:         Normal damage values.
+                    ohko:           Link will die in one hit. Ice Traps are removed and at least one Nayru's Love is available.
+                    '''
+        },
+        {
+            'text': 'Damage Multiplier',
+            'group': 'other',
+            'widget': 'Combobox',
+            'default': 'Normal',
+            'options': {
+                'Normal': 'normal',
+                'OHKO': 'ohko'
+            },
+            'tooltip':'''\
+                      Changes the amount of damage taken.
 
-                      'OHKO': Link dies in one hit.
+                      'Normal': Normal damage taken.
+                      
+                      'OHKO': Link dies in one hit. Ice Traps are
+                      removed and at least one Nayru's Love is
+                      available to allow all locations to be
+                      accessible logically.
                       '''
         }),
     Setting_Info('default_targeting', str, 1, False,

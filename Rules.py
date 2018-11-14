@@ -215,7 +215,7 @@ def global_rules(world):
     set_rule(
         world.get_location('DM Trail Freestanding PoH'),
         lambda state: world.open_kakariko or
-                      (world.difficulty != 'ohko') or
+                      (world.damage_multiplier != 'ohko') or
                       state.has('Zeldas Letter') or
                       state.can_blast_or_smash() or
                       state.can_use('Dins Fire') or
@@ -749,8 +749,8 @@ def global_rules(world):
         world.get_entrance('Goron City Grotto'),
         lambda state: state.is_adult() and
                       ((state.can_play('Song of Time') and
-                        (world.difficulty != 'ohko' or state.has_GoronTunic() or state.can_use('Longshot') or state.can_use('Nayrus Love'))) or
-                        (world.difficulty != 'ohko' and state.has_GoronTunic() and state.can_use('Hookshot')) or
+                        (world.damage_multiplier != 'ohko' or state.has_GoronTunic() or state.can_use('Longshot') or state.can_use('Nayrus Love'))) or
+                        (world.damage_multiplier != 'ohko' and state.has_GoronTunic() and state.can_use('Hookshot')) or
                         (state.can_use('Nayrus Love') and state.can_use('Hookshot'))))
     set_rule(
         world.get_entrance('Lon Lon Grotto'),
@@ -978,7 +978,7 @@ def dung_rules_dcmq(world):
                       (state.has_slingshot() and
                         (state.has_explosives() or
                             ((state.has_sticks() or state.can_use('Dins Fire')) and
-                                (world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))))
+                                (world.damage_multiplier != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))))
     set_rule(world.get_location('DC MQ Deku Scrub Deku Sticks'), lambda state: state.can_stun_deku())
     set_rule(world.get_location('DC MQ Deku Scrub Deku Seeds'), lambda state: state.can_stun_deku())
     set_rule(world.get_location('DC MQ Deku Scrub Deku Shield'), lambda state: state.can_stun_deku())
@@ -987,7 +987,7 @@ def dung_rules_dcmq(world):
         lambda state: state.is_adult() or
                       state.has_explosives() or
                       ((state.has_sticks() or state.can_use('Dins Fire')) and
-                        (world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))
+                        (world.damage_multiplier != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))
 
     # Boss
     set_rule(
@@ -1016,7 +1016,7 @@ def dung_rules_dcmq(world):
                             (state.has('Progressive Strength Upgrade') and
                                 (state.can_use('Hammer') or
                                     ((state.has_sticks() or state.can_use('Dins Fire') or (state.is_adult() and (world.logic_dc_jump or state.has('Hover Boots')))) and
-                                        (world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))))) or
+                                        (world.damage_multiplier != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))))) or
                       (state.can_use('Hookshot') and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow() or state.can_use('Dins Fire'))))
 
 # Jabu Jabu's Belly Vanilla
@@ -1253,7 +1253,7 @@ def dung_rules_fitmq(world):
                       (state.has('Progressive Hookshot') and
                         (state.can_use('Fire Arrows') or
                             (state.can_use('Dins Fire') and
-                                (world.difficulty != 'ohko' or
+                                (world.damage_multiplier != 'ohko' or
                                     state.has_GoronTunic() or
                                     state.has_bow() or
                                     state.has('Progressive Hookshot', 2))))))
@@ -1597,14 +1597,14 @@ def dung_rules_spt0(world):
         world.get_location('GS Spirit Temple Bomb for Light Room'),
         lambda state: state.has_projectile('both') or
                       state.can_use('Dins Fire') or
-                      ((world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love')) and
+                      ((world.damage_multiplier != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love')) and
                         (state.has_sticks() or state.has('Kokiri Sword') or state.has_projectile('child'))) or
                       (state.can_play('Requiem of Spirit') and state.has('Small Key (Spirit Temple)', 5) and
                         state.has_projectile('child')) or
                       ((state.has('Small Key (Spirit Temple)', 3) or (state.has('Small Key (Spirit Temple)', 2) and world.bombchus_in_logic)) and
                         state.can_use('Silver Gauntlets') and
                         (state.has_projectile('adult') or
-                          world.difficulty != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))
+                          world.damage_multiplier != 'ohko' or state.has_bottle() or state.can_use('Nayrus Love'))))
 
 # Spirit Temple MQ
 def dung_rules_sptmq(world):
@@ -2063,7 +2063,7 @@ def dung_rules_gtgmq(world):
                       state.has_fire_source() and
                       state.has('Iron Boots') and
                       (world.logic_fewer_tunic_requirements or state.has_ZoraTunic()) and
-                      (world.difficulty != 'ohko' or (state.has_bottle() or state.can_use('Nayrus Love'))))
+                      (world.damage_multiplier != 'ohko' or (state.has_bottle() or state.can_use('Nayrus Love'))))
     set_rule(
         world.get_location('Gerudo Training Grounds MQ Heavy Block Chest'),
         lambda state: state.can_use('Silver Gauntlets'))
