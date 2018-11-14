@@ -7,6 +7,7 @@ import time
 import os, os.path
 import sys
 import struct
+import zipfile
 
 from BaseClasses import World, CollectionState, Spoiler
 from EntranceShuffle import link_entrances
@@ -136,29 +137,31 @@ def main(settings, window=dummy_window()):
     output_path = os.path.join(output_dir, outfilebase)
 
     if settings.compress_rom == 'Patch':
-        if settings.player_num_all:
-            rng_state = random.getstate()
-            for world in worlds:
-                window.update_status('Patching ROM: Player %d' % (world.id + 1))
-                random.setstate(rng_state)
-                patch_rom(world, rom)
-                patch_cosmetics(settings, rom)
-                window.update_progress(65)
-
-                window.update_status('Creating Patch File: Player %d' % (world.id + 1))
-                outfilebase = 'OoT_%s_%s_W%dP%d.zpf' % (worlds[0].settings_string, worlds[0].seed, settings.world_count, world.id + 1)
-                output_path = os.path.join(output_dir, outfilebase)
-                create_patch_file(rom, output_path)
-                rom.restore()
-        else:
-            window.update_status('Patching ROM')
-            patch_rom(worlds[settings.player_num - 1], rom)
+        rng_state = random.getstate()
+        file_list = []
+        for world in worlds:
+            window.update_status('Patching ROM: Player %d' % (world.id + 1))
+            random.setstate(rng_state)
+            patch_rom(world, rom)
             patch_cosmetics(settings, rom)
             window.update_progress(65)
 
-            window.update_status('Creating Patch File')
-            output_path += '.zpf'
+            window.update_status('Creating Patch File: Player %d' % (world.id + 1))
+            outfilebase = 'OoT_%s_%s_W%dP%d.zpf' % (worlds[0].settings_string, worlds[0].seed, settings.world_count, world.id + 1)
+            output_path = os.path.join(output_dir, outfilebase)
+            file_list.append(outfilebase)
             create_patch_file(rom, output_path)
+            rom.restore()
+
+        outfilebase = 'OoT_%s_%s_W%d.zpfz' % (worlds[0].settings_string, worlds[0].seed, settings.world_count)
+        output_path = os.path.join(output_dir, outfilebase)
+        with zipfile.ZipFile(output_path, mode="w") as patch_archive:
+            for file in file_list:
+                file_path = os.path.join(output_dir, file)
+                patch_archive.write(file_path, file, compress_type=zipfile.ZIP_DEFLATED)
+        for file in file_list:
+            os.remove(os.path.join(output_dir, file))
+
     elif settings.compress_rom != 'None':
         window.update_status('Patching ROM')
         patch_rom(worlds[settings.player_num - 1], rom)
@@ -230,7 +233,7 @@ def from_patch_file(settings, window=dummy_window()):
     output_path = os.path.join(output_dir, outfilebase)
 
     window.update_status('Patching ROM')
-    apply_patch_file(rom, settings.patch_file)
+    apply_patch_file(rom, settings.patch_file, '%sP%d.zpf' % (outfilebase, settings.player_num))
     patch_cosmetics(settings, rom)
     window.update_progress(65)
 

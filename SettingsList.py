@@ -100,20 +100,6 @@ setting_infos = [
                     Use to select world to generate when there are multiple worlds.
                     ''',
             'type': int
-        },
-        {
-            'dependency': lambda guivar: not (guivar['player_num_all'].get() and \
-                                         guivar['compress_rom'].get() == 'Patch File')
-        }),
-    Setting_Info('player_num_all', bool, 0, False, 
-        {
-            'action': 'store_true',
-            'help': '''\
-                    Generate patch files for all players.
-                    '''
-        },
-        {
-            'dependency': lambda guivar: guivar['compress_rom'].get() == 'Patch File'
         }),
     Setting_Info('create_spoiler', bool, 1, True,
         {
