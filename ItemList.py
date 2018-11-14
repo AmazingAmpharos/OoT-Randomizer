@@ -81,11 +81,11 @@ normal_items = (
     ['Piece of Heart'] * 35)
 
 item_difficulty_max = {
-    'easy': {
+    'plentiful': {
         'Ice Trap': 0,
     },
-    'normal': {},
-    'hard': {
+    'balanced': {},
+    'scarce': {
         'Bombchu': 3,
         'Bombchu (5)': 1,
         'Bombchu (10)': 2,
@@ -99,7 +99,7 @@ item_difficulty_max = {
         'Bomb Bag': 2,
         'Heart Container': 0,
     },
-    'very_hard': {
+    'minimal': {
         'Bombchu': 1,
         'Bombchu (5)': 1,
         'Bombchu (10)': 0,
@@ -866,18 +866,15 @@ def get_pool_core(world):
     if not world.keysanity and not world.dungeon_mq['FiT']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
 
-    if world.difficulty == 'easy':
+    if world.item_pool_value == 'plentiful':
         pool.extend(easy_items)
     else:
         pool.extend(normal_items)
 
-    max_items = dict(item_difficulty_max[world.difficulty])
     if world.damage_multiplier == 'ohko':
-        max_items['Ice Trap'] = 0
-        if 'Nayrus Love' in max_items and max_items['Nayrus Love'] == 0:
-            max_items['Nayrus Love'] = 1
+        replace_max_item(pool, 'Ice Trap', 0)
 
-    for item,max in max_items.items():
+    for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
 
     return (pool, placed_items)

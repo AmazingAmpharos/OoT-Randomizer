@@ -7,6 +7,7 @@
 0000D1C0 .dbl:0010
 0000D1D0 .byt:00E0
 0089E800 .byt:0400
+00AE80A0 @@continue
 00B529A0 skip_GS_BGS_text
 00BAF750 .byt:0048
 00D74990 skip_steal_tunic

@@ -622,6 +622,7 @@ nop
 .org 0xB529A0
 skip_GS_BGS_text:
 
+
 ;==================================================================================================
 ; Empty bomb fix
 ;==================================================================================================
@@ -631,3 +632,30 @@ skip_GS_BGS_text:
 .org 0xC0E404
     jal empty_bomb_fix
     lw  a1, 0x0018($sp)
+
+;==================================================================================================
+; Damage Multiplier
+;==================================================================================================
+;
+; Replaces: 
+;   lbu     t7, 0x3d(a1)
+;   beql    t7, zero, 0x20
+;   lh      t8, 0x30(a1)
+;   bgezl   s0, 0x20
+;   lh      t8, 0x30(a1)
+;   sra     s0, s0, 1    ; double defense
+;   sll     s0, s0, 0x10
+;   sra     s0, s0, 0x10 ; s0 = damage
+
+.org 0xAE807C
+    bgez    s0, @@continue ; check if damage is negative
+    lh      t8, 0x30(a1)   ; load hp for later
+    lbu     t7, 0x3d(a1)   ; check if has double defense
+    beq     t7, zero, @@continue
+    sll     s0, s0, 0      ; damage multiplier (delay slot)
+.skip 4
+.skip 4
+.skip 4
+.skip 4
+@@continue:
+

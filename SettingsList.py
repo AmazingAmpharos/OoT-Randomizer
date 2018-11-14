@@ -1702,51 +1702,44 @@ setting_infos = [
                       text for the purpose of accurate price checks.
                       '''
         }),
-    Setting_Info('difficulty', str, 3, True,
+    Setting_Info('item_pool_value', str, 3, True,
         {
-            'default': 'normal',
-            'const': 'normal',
+            'default': 'balanced',
+            'const': 'balanced',
             'nargs': '?',
             'help': '''\
                     Change the item pool for an added challenge.
-                    easy:           Duplicates most of the major items, making it easier to find progression.
-                    normal:         Default items
-                    hard:           Double defense, double magic, and all 8 heart containers are removed. Ammo
+                    plentiful:      Duplicates most of the major items, making it easier to find progression.
+                    balanced:       Default items
+                    scarce:         Double defense, double magic, and all 8 heart containers are removed. Ammo
                                     for each type can only be expanded once and you can only find three Bombchu packs.
-                    very_hard:      Double defense, double magic, Nayru's Love, and all health upgrades are removed.
+                    minimal:        Double defense, double magic, Nayru's Love, and all health upgrades are removed.
                                     No ammo expansions are available and you can only find one Bombchu pack.
                     '''
         },
         {
-            'text': 'Difficulty',
+            'text': 'Item Pool Value',
             'group': 'other',
             'widget': 'Combobox',
-            'default': 'Normal',
+            'default': 'Balanced',
             'options': {
-                'Easy': 'easy',
-                'Normal': 'normal',
-                'Hard': 'hard',
-                'Very Hard': 'very_hard'
+                'Plentiful': 'plentiful',
+                'Balanced': 'balanced',
+                'Scarce': 'scarce',
+                'Minimal': 'minimal'
             },
             'tooltip':'''\
-                      Makes health less available, reduces
-                      ammo expansions, and reduces Bombchus
-                      in the item pool by three.
+                      Changes the amount of bonus items that
+                      are available in the game.
 
-                      'Hard': Heart Containers, Double Magic,
-                      and Double Defense are removed. Only
-                      one extra Quiver, Bullet Bag, Bomb Bag,
-                      Deku Stick and Deku Nut Capacity Upgrades
-                      will be available. Only three Bombchu
-                      packs are available.
+                      'Plentiful': Extra major items are added.
 
-                      'Very Hard': Heart Containers, Pieces of
-                      Heart, Double Magic, Double Defense,
-                      and Nayru's Love are removed. No extra
-                      Quivers, Bullet Bags, Bomb Bags, or
-                      Deku Stick and Deku Nut Capacity Upgrades
-                      will be available. Only one Bombchu
-                      pack is available.
+                      'Balanced': Original item pool.
+
+                      'Scarce': Some excess items are removed,
+                      including health upgrades.
+
+                      'Minimal': Most excess items are removed.
                       '''
         }),
     Setting_Info('damage_multiplier', str, 3, True,
@@ -1756,8 +1749,11 @@ setting_infos = [
             'nargs': '?',
             'help': '''\
                     Change the amount of damage taken.
-                    normal:         Normal damage values.
-                    ohko:           Link will die in one hit. Ice Traps are removed and at least one Nayru's Love is available.
+                    half:           Half damage taken.
+                    normal:         Normal damage taken.
+                    double:         Double damage taken.
+                    quadruple:      Quadruple damage taken.
+                    ohko:           Link will die in one hit.
                     '''
         },
         {
@@ -1766,18 +1762,16 @@ setting_infos = [
             'widget': 'Combobox',
             'default': 'Normal',
             'options': {
+                'Half': 'half',
                 'Normal': 'normal',
-                'OHKO': 'ohko'
+                'Double': 'double',
+                'Quadruple': 'quadruple',
+                'OHKO': 'ohko',
             },
             'tooltip':'''\
                       Changes the amount of damage taken.
 
-                      'Normal': Normal damage taken.
-                      
-                      'OHKO': Link dies in one hit. Ice Traps are
-                      removed and at least one Nayru's Love is
-                      available to allow all locations to be
-                      accessible logically.
+                      'OHKO': Link dies in one hit.
                       '''
         }),
     Setting_Info('default_targeting', str, 1, False,
