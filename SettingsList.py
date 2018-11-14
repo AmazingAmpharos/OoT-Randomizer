@@ -1749,7 +1749,7 @@ setting_infos = [
                       pack is available.
                       '''
         }),
-    Setting_Info('combat_difficulty', str, 3, True,
+    Setting_Info('damage_multiplier', str, 3, True,
         {
             'default': 'normal',
             'const': 'normal',
@@ -1761,7 +1761,7 @@ setting_infos = [
                     '''
         },
         {
-            'text': 'Combat Difficulty',
+            'text': 'Damage Multiplier',
             'group': 'other',
             'widget': 'Combobox',
             'default': 'Normal',

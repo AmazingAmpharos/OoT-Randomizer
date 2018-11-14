@@ -872,7 +872,7 @@ def get_pool_core(world):
         pool.extend(normal_items)
 
     max_items = dict(item_difficulty_max[world.difficulty])
-    if world.combat_difficulty == 'ohko':
+    if world.damage_multiplier == 'ohko':
         max_items['Ice Trap'] = 0
         if 'Nayrus Love' in max_items and max_items['Nayrus Love'] == 0:
             max_items['Nayrus Love'] = 1

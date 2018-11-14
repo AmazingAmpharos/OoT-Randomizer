@@ -666,7 +666,7 @@ In addition to the items from Hard, Pieces of Heart and Nayru's Love are also re
 One more of each ammo expansion is removed resulting in zero extra ammo capacity for those item types,
 and only one Bombchu pick-up can be found.
 
-## Combat Difficulty
+## Damage Multiplier
 
 This setting changes the amount of damage taken.
 
@@ -1217,7 +1217,7 @@ Shuffle the chosen text randomly (default: none)
 Alter the item pool to increase difficulty. (default: normal)
 
 ```
---combat_difficulty [{normal,ohko}]
+--damage_multiplier [{normal,ohko}]
 ```
 
 Alters the amount of damage taken. The ohko option causes Link to die in one hit. (default: normal)
