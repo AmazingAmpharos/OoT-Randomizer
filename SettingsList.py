@@ -1702,7 +1702,7 @@ setting_infos = [
                       text for the purpose of accurate price checks.
                       '''
         }),
-    Setting_Info('item_pool_value', str, 3, True,
+    Setting_Info('item_pool_value', str, 2, True,
         {
             'default': 'balanced',
             'const': 'balanced',
