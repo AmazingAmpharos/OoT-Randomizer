@@ -115,22 +115,6 @@ item_difficulty_max = {
         'Heart Container': 0,
         'Piece of Heart': 0,
     },
-    'ohko': {
-        'Ice Trap': 0,
-        'Bombchu': 1,
-        'Bombchu (5)': 1,
-        'Bombchu (10)': 0,
-        'Bombchu (20)': 0,
-        'Magic Meter': 1, 
-        'Double Defense': 0, 
-        'Deku Stick Capacity': 0, 
-        'Deku Nut Capacity': 0, 
-        'Bow': 1, 
-        'Slingshot': 1, 
-        'Bomb Bag': 1,
-        'Heart Container': 0,
-        'Piece of Heart': 0,
-    },
 }
 
 
@@ -887,7 +871,13 @@ def get_pool_core(world):
     else:
         pool.extend(normal_items)
 
-    for item,max in item_difficulty_max[world.difficulty].items():
+    max_items = dict(item_difficulty_max[world.difficulty])
+    if world.combat_difficulty == 'ohko':
+        max_items['Ice Trap'] = 0
+        if 'Nayrus Love' in max_items and max_items['Nayrus Love'] == 0:
+            max_items['Nayrus Love'] = 1
+
+    for item,max in max_items.items():
         replace_max_item(pool, item, max)
 
     return (pool, placed_items)
