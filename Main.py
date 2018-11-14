@@ -139,6 +139,7 @@ def main(settings, window=dummy_window()):
     if settings.compress_rom == 'Patch':
         rng_state = random.getstate()
         file_list = []
+        patchfilebase = 'OoT_%s_%s_W%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count)
         for world in worlds:
             window.update_status('Patching ROM: Player %d' % (world.id + 1))
             random.setstate(rng_state)
@@ -147,14 +148,13 @@ def main(settings, window=dummy_window()):
             window.update_progress(65)
 
             window.update_status('Creating Patch File: Player %d' % (world.id + 1))
-            outfilebase = 'OoT_%s_%s_W%dP%d.zpf' % (worlds[0].settings_string, worlds[0].seed, settings.world_count, world.id + 1)
-            output_path = os.path.join(output_dir, outfilebase)
-            file_list.append(outfilebase)
+            patchfilename = '%sP%d.zpf' % (patchfilebase, world.id + 1)
+            output_path = os.path.join(output_dir, patchfilename)
+            file_list.append(patchfilename)
             create_patch_file(rom, output_path)
             rom.restore()
 
-        outfilebase = 'OoT_%s_%s_W%d.zpfz' % (worlds[0].settings_string, worlds[0].seed, settings.world_count)
-        output_path = os.path.join(output_dir, outfilebase)
+        output_path = os.path.join(output_dir, patchfilebase + '.zpfz')
         with zipfile.ZipFile(output_path, mode="w") as patch_archive:
             for file in file_list:
                 file_path = os.path.join(output_dir, file)
@@ -227,13 +227,20 @@ def from_patch_file(settings, window=dummy_window()):
 
     logger.info('Patching ROM.')
 
-    outfilebase = os.path.basename(settings.patch_file).split('.')[0]
+    filename_split = os.path.basename(settings.patch_file).split('.')
+    outfilebase = filename_split[0]
+    extension = filename_split[-1]
 
     output_dir = default_output_path(settings.output_dir)
     output_path = os.path.join(output_dir, outfilebase)
 
     window.update_status('Patching ROM')
-    apply_patch_file(rom, settings.patch_file, '%sP%d.zpf' % (outfilebase, settings.player_num))
+    if extension == 'zpf':
+        subfile = None
+    else:
+        subfile = '%sP%d.zpf' % (outfilebase, settings.player_num)
+        output_path += 'P%d' % (settings.player_num)
+    apply_patch_file(rom, settings.patch_file, subfile)
     patch_cosmetics(settings, rom)
     window.update_progress(65)
 
@@ -263,7 +270,7 @@ def from_patch_file(settings, window=dummy_window()):
             logger.info('OS not supported for compression')
 
         if compressor_path != "":
-            run_process(window, logger, [compressor_path, output_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+            run_process(window, logger, [compressor_path, output_path, output_path.replace('.z64', '-comp.z64')])
         os.remove(output_path)
     window.update_progress(95)
 
