@@ -141,7 +141,7 @@ def main(settings, window=dummy_window()):
             for world in worlds:
                 window.update_status('Patching ROM: Player %d' % (world.id + 1))
                 random.setstate(rng_state)
-                patch_rom(worlds[settings.player_num - 1], rom)
+                patch_rom(world, rom)
                 patch_cosmetics(settings, rom)
                 window.update_progress(65)
 
