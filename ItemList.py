@@ -81,11 +81,11 @@ normal_items = (
     ['Piece of Heart'] * 35)
 
 item_difficulty_max = {
-    'easy': {
+    'plentiful': {
         'Ice Trap': 0,
     },
-    'normal': {},
-    'hard': {
+    'balanced': {},
+    'scarce': {
         'Bombchu': 3,
         'Bombchu (5)': 1,
         'Bombchu (10)': 2,
@@ -99,28 +99,12 @@ item_difficulty_max = {
         'Bomb Bag': 2,
         'Heart Container': 0,
     },
-    'very_hard': {
+    'minimal': {
         'Bombchu': 1,
         'Bombchu (5)': 1,
         'Bombchu (10)': 0,
         'Bombchu (20)': 0,
         'Nayrus Love': 0,
-        'Magic Meter': 1, 
-        'Double Defense': 0, 
-        'Deku Stick Capacity': 0, 
-        'Deku Nut Capacity': 0, 
-        'Bow': 1, 
-        'Slingshot': 1, 
-        'Bomb Bag': 1,
-        'Heart Container': 0,
-        'Piece of Heart': 0,
-    },
-    'ohko': {
-        'Ice Trap': 0,
-        'Bombchu': 1,
-        'Bombchu (5)': 1,
-        'Bombchu (10)': 0,
-        'Bombchu (20)': 0,
         'Magic Meter': 1, 
         'Double Defense': 0, 
         'Deku Stick Capacity': 0, 
@@ -882,12 +866,15 @@ def get_pool_core(world):
     if not world.keysanity and not world.dungeon_mq['FiT']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
 
-    if world.difficulty == 'easy':
+    if world.item_pool_value == 'plentiful':
         pool.extend(easy_items)
     else:
         pool.extend(normal_items)
 
-    for item,max in item_difficulty_max[world.difficulty].items():
+    if world.damage_multiplier == 'ohko':
+        replace_max_item(pool, 'Ice Trap', 0)
+
+    for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
 
     return (pool, placed_items)

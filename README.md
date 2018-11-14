@@ -666,9 +666,17 @@ In addition to the items from Hard, Pieces of Heart and Nayru's Love are also re
 One more of each ammo expansion is removed resulting in zero extra ammo capacity for those item types,
 and only one Bombchu pick-up can be found.
 
+## Damage Multiplier
+
+This setting changes the amount of damage taken.
+
+### Normal
+
+Link takes normal damage.
+
 ### OHKO
 
-In addition to the item changes from Very Hard, Link dies in one hit. Ice Traps are replaced with Recovery Hearts.
+Link dies in one hit. Ice Traps are removed, and at least one Nayru's Love is in the item pool.
 
 # Cosmetics
 
@@ -1203,10 +1211,16 @@ Enable hints from Gossip Stones and select the condition to read them (default: 
 Shuffle the chosen text randomly (default: none)
 
 ```
---difficulty [{normal,hard,very_hard,ohko}]
+--difficulty [{normal,hard,very_hard}]
 ```
 
-Alter the item pool to increase difficulty. The ohko option also causes Link to die in one hit. (default: normal)
+Alter the item pool to increase difficulty. (default: normal)
+
+```
+--damage_multiplier [{normal,ohko}]
+```
+
+Alters the amount of damage taken. The ohko option causes Link to die in one hit. (default: normal)
 
 ```
 --default_targeting [{hold,switch}]
