@@ -1643,7 +1643,7 @@ setting_infos = [
                       required to beat the game.
                       '''
         }),
-    Setting_Info('hint_dist', str, 1, True,
+    Setting_Info('hint_dist', str, 2, True,
         {
             'default': 'normal',
             'const': 'normal',
