@@ -1645,31 +1645,31 @@ setting_infos = [
         }),
     Setting_Info('hint_dist', str, 2, True,
         {
-            'default': 'normal',
-            'const': 'normal',
+            'default': 'balanced',
+            'const': 'balanced',
             'nargs': '?',
             'help': '''\
                     Choose how Gossip Stones hints are distributed
-                    normal: Use the standard distribution of hint types
-                    tourney: Use the tourney distribution of hint types
-                    op: Use an overpowered distribution of hint types
+                    balanced: Use a balanced distribution of hint types
+                    strong: Use a strong distribution of hint types
+                    very_strong: Use a very strong distribution of hint types
                     '''
         },
         {
             'text': 'Hint Distribution',
             'group': 'other',
             'widget': 'Combobox',
-            'default': 'Normal',
+            'default': 'Balanced',
             'options': {
-                'Normal': 'normal',
-                'Tourney': 'tourney',
-                'Overpowered': 'op',
+                'Balanced': 'balanced',
+                'Strong': 'strong',
+                'Very Strong': 'very_strong',
             },
             'tooltip':'''\
-                      Tourney distribution has some
+                      Strong distribution has some
                       duplicate hints and no junk
                       hints.
-                      Overpowered distribution has
+                      Very Strong distribution has
                       only very useful hints.
                       '''
         }),
