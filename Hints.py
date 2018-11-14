@@ -297,7 +297,7 @@ hint_func = {
 
 
 hint_dist_sets = {
-    'normal': {
+    'balanced': {
         'trial':    (0.0, 1),
         'always':   (0.0, 1),
         'woth':     (3.5, 1),
@@ -307,14 +307,24 @@ hint_dist_sets = {
         'dungeon':  (3.5, 1),
         'junk':     (3.0, 1),
     },
-    'tourney': {
+    'strong': {
         'trial':    (0.0, 1),
-        'always':   (0.0, 1.75),
-        'woth':     (4.0, 2),
+        'always':   (0.0, 2),
+        'woth':     (4.0, 2.5),
         'loc':      (2.0, 1),
         'item':     (2.0, 1),
-        'ow':       (2.0, 1),
-        'dungeon':  (2.0, 1),
+        'ow':       (1.0, 1),
+        'dungeon':  (1.0, 1),
+        'junk':     (0.0, 1),
+    },
+    'very_strong': {
+        'trial':    (0.0, 1),
+        'always':   (0.0, 2),
+        'woth':     (3.0, 2),
+        'loc':      (1.0, 1),
+        'item':     (2.0, 1),
+        'ow':       (0.0, 1),
+        'dungeon':  (0.0, 1),
         'junk':     (0.0, 1),
     },
 }
