@@ -1230,9 +1230,6 @@ def patch_rom(world, rom):
         locationaddress = location.address
         secondaryaddress = location.address2
 
-        if special is None or location.address is None:
-            continue
-
         if location.type == 'Song' and not world.shuffle_song_items:
             bit_mask_pointer = 0x8C34 + ((special['item_id'] - 0x65) * 4)
             rom.write_byte(locationaddress, special['song_id'])

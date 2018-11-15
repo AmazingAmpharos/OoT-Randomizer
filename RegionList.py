@@ -30,7 +30,11 @@ def _create_region(name, type, locations=None, exits=None):
     for exit in exits:
         ret.exits.append(Entrance(exit, ret))
     for location in locations:
-        address, address2, default, type, scene, hint = location_table[location]
+        type, scene, default, hint, addresses = location_table[location]
+        if addresses is None:
+            addresses = (None, None)
+        address, address2 = addresses
+
         ret.locations.append(Location(location, address, address2, default, type, scene, hint, ret))
     return ret
 
