@@ -910,22 +910,22 @@ class Spoiler(object):
                     outfile.write('\n\nLocations [World %d]:\n\n' % (world.id + 1))
                 else:
                     outfile.write('\n\nLocations:\n\n')
-                outfile.write('\n'.join(['%s: %s' % (location, item) for (location, item) in self.locations[world.id].items()]))
+                outfile.write('\n'.join(['%-40s %s' % (location + ":", item) for (location, item) in self.locations[world.id].items()]))
 
             outfile.write('\n\nPlaythrough:\n\n')
             if self.settings.world_count > 1:
-                outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  %s [World %d]: %s [Player %d]' % (location.name, location.world.id + 1, item.name, item.world.id + 1) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
+                outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['%-40s %s [Player %d]' % ('  %s [World %d]:' % (location.name, location.world.id + 1), item.name, item.world.id + 1) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
             else:
-                outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  %s: %s' % (location.name, item.name) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
+                outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['%-40s %s' % ('  %s:' % location.name, item.name) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
 
             if len(self.hints) > 0:
                 for world in self.worlds:
                     if self.settings.world_count > 1:
                         outfile.write('\n\nWay of the Hero [Player %d]:\n\n' % (world.id + 1))
-                        outfile.write('\n'.join(['%s: %s [Player %d]' % (location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations[world.id]]))
+                        outfile.write('\n'.join(['%-40s %s [Player %d]' % ('%s:' % location.name, location.item.name, location.item.world.id + 1) for location in self.required_locations[world.id]]))
                     else:
                         outfile.write('\n\nWay of the Hero:\n\n')
-                        outfile.write('\n'.join(['%s: %s' % (location.name, location.item.name) for location in self.required_locations[world.id]]))
+                        outfile.write('\n'.join(['%-40s %s' % ('%s:' % location.name, location.item.name) for location in self.required_locations[world.id]]))
 
                 from Hints import gossipLocations
                 if self.settings.world_count > 1:
@@ -935,4 +935,4 @@ class Spoiler(object):
 
                 hint_ids = sorted(list(self.hints.keys()), key=lambda id: gossipLocations[id].name)
                 for id in hint_ids:
-                    outfile.write('\n%s: %s' % (gossipLocations[id].name if id in gossipLocations else "Unknown", re.sub('\x05[\x40\x41\x42\x43\x44\x45\x46\x47]', '', self.hints[id].replace('&', ' ').replace('^', ' '))))
+                    outfile.write('\n%-40s %s' % ('%s:' % gossipLocations[id].name if id in gossipLocations else "Unknown", re.sub('\x05[\x40\x41\x42\x43\x44\x45\x46\x47]', '', self.hints[id].replace('&', ' ').replace('^', ' '))))
