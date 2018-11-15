@@ -144,7 +144,7 @@ def main(settings, window=dummy_window()):
         for world in worlds:
             if settings.world_count > 1:
                 window.update_status('Patching ROM: Player %d' % (world.id + 1))
-                patchfilename = '%sW%dP%d.zpf' % (patchfilebase, settings.world_count, world.id + 1)
+                patchfilename = '%s_W%dP%d.zpf' % (patchfilebase, settings.world_count, world.id + 1)
             else:
                 window.update_status('Patching ROM')
                 patchfilename = '%s.zpf' % patchfilebase
@@ -163,7 +163,7 @@ def main(settings, window=dummy_window()):
 
         if settings.world_count > 1:
             window.update_status('Creating Patch Archive')
-            output_path = os.path.join(output_dir, '%sW%d.zpfz' % (patchfilebase, settings.world_count))
+            output_path = os.path.join(output_dir, '%s_W%d.zpfz' % (patchfilebase, settings.world_count))
             with zipfile.ZipFile(output_path, mode="w") as patch_archive:
                 for file in file_list:
                     file_path = os.path.join(output_dir, file)
