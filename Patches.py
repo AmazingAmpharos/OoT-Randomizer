@@ -10,7 +10,6 @@ import copy
 
 from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText, getSimpleHintNoPrefix
 from Utils import data_path, default_output_path, random_choices
-from ItemList import item_data
 from Item import ItemFactory
 from Messages import *
 from OcarinaSongs import Song, str_to_song, replace_songs
@@ -1227,81 +1226,70 @@ def patch_rom(world, rom):
     # Patch songs and boss rewards
     for location in world.get_filled_locations():
         item = location.item
-        itemid = copy.copy(item.code)
+        special = item.special
         locationaddress = location.address
         secondaryaddress = location.address2
 
-        if itemid is None or location.address is None:
+        if special is None or location.address is None:
             continue
 
         if location.type == 'Song' and not world.shuffle_song_items:
-            rom.write_byte(locationaddress, itemid[0])
-            itemid[0] = itemid[0] + 0x0D
-            rom.write_byte(secondaryaddress, itemid[0])
+            bit_mask_pointer = 0x8C34 + ((special['item_id'] - 0x65) * 4)
+            rom.write_byte(locationaddress, special['song_id'])
+            next_song_id = special['song_id'] + 0x0D
+            rom.write_byte(secondaryaddress, next_song_id)
             if location.name == 'Impa at Castle':
-                impa_fix = 0x65 - itemid[1]
-                rom.write_byte(0xD12ECB, impa_fix)
-                rom.write_byte(0x2E8E931, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0D12ECB, special['item_id'])
+                rom.write_byte(0x2E8E931, special['text_id']) #Fix text box
             elif location.name == 'Song from Malon':
                 if item.name == 'Suns Song':
-                    rom.write_byte(locationaddress, itemid[0])
-                malon_fix = 0x8C34 - (itemid[1] * 4)
-                malon_fix_high = malon_fix >> 8
-                malon_fix_low = malon_fix & 0x00FF
-                rom.write_bytes(0xD7E142, [malon_fix_high, malon_fix_low])
-                rom.write_bytes(0xD7E8D6, [malon_fix_high, malon_fix_low]) # I really don't like hardcoding these addresses, but for now.....
-                rom.write_bytes(0xD7E786, [malon_fix_high, malon_fix_low])
-                rom.write_byte(0x29BECB9, item_data[item.name]) #Fix text box
+                    rom.write_byte(locationaddress, next_song_id)
+                rom.write_int16(0xD7E142, bit_mask_pointer)
+                rom.write_int16(0xD7E8D6, bit_mask_pointer)
+                rom.write_int16(0xD7E786, bit_mask_pointer)
+                rom.write_byte(0x29BECB9, special['text_id']) #Fix text box
             elif location.name == 'Song from Composer Grave':
-                sun_fix = 0x8C34 - (itemid[1] * 4)
-                sun_fix_high = sun_fix >> 8
-                sun_fix_low = sun_fix & 0x00FF
-                rom.write_bytes(0xE09F66, [sun_fix_high, sun_fix_low])
-                rom.write_byte(0x332A87D, item_data[item.name]) #Fix text box
+                rom.write_int16(0xE09F66, bit_mask_pointer)
+                rom.write_byte(0x332A87D, special['text_id']) #Fix text box
             elif location.name == 'Song from Saria':
-                saria_fix = 0x65 - itemid[1]
-                rom.write_byte(0xE2A02B, saria_fix)
-                rom.write_byte(0x20B1DBD, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0E2A02B, special['item_id'])
+                rom.write_byte(0x20B1DBD, special['text_id']) #Fix text box
             elif location.name == 'Song from Ocarina of Time':
-                rom.write_byte(0x252FC95, item_data[item.name]) #Fix text box
+                rom.write_byte(0x252FC95, special['text_id']) #Fix text box
             elif location.name == 'Song at Windmill':
-                windmill_fix = 0x65 - itemid[1]
-                rom.write_byte(0xE42ABF, windmill_fix)
-                rom.write_byte(0x3041091, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0E42ABF, special['item_id'])
+                rom.write_byte(0x3041091, special['text_id']) #Fix text box
             elif location.name == 'Sheik Forest Song':
-                minuet_fix = 0x65 - itemid[1]
-                rom.write_byte(0xC7BAA3, minuet_fix)
-                rom.write_byte(0x20B0815, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0C7BAA3, special['item_id'])
+                rom.write_byte(0x20B0815, special['text_id']) #Fix text box
             elif location.name == 'Sheik at Temple':
-                prelude_fix = 0x65 - itemid[1]
-                rom.write_byte(0xC805EF, prelude_fix)
-                rom.write_byte(0x2531335, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0C805EF, special['item_id'])
+                rom.write_byte(0x2531335, special['text_id']) #Fix text box
             elif location.name == 'Sheik in Crater':
-                bolero_fix = 0x65 - itemid[1]
-                rom.write_byte(0xC7BC57, bolero_fix)
-                rom.write_byte(0x224D7FD, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0C7BC57, special['item_id'])
+                rom.write_byte(0x224D7FD, special['text_id']) #Fix text box
             elif location.name == 'Sheik in Ice Cavern':
-                serenade_fix = 0x65 - itemid[1]
-                rom.write_byte(0xC7BD77, serenade_fix)
-                rom.write_byte(0x2BEC895, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0C7BD77, special['item_id'])
+                rom.write_byte(0x2BEC895, special['text_id']) #Fix text box
             elif location.name == 'Sheik in Kakariko':
-                nocturne_fix = 0x65 - itemid[1]
-                rom.write_byte(0xAC9A5B, nocturne_fix)
-                rom.write_byte(0x2000FED, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0AC9A5B, special['item_id'])
+                rom.write_byte(0x2000FED, special['text_id']) #Fix text box
             elif location.name == 'Sheik at Colossus':
-                rom.write_byte(0x218C589, item_data[item.name]) #Fix text box
+                rom.write_byte(0x218C589, special['text_id']) #Fix text box
         elif location.type == 'Boss':
             if location.name == 'Links Pocket':
-                write_bits_to_save(item_data[item.name][1], item_data[item.name][0])
+                write_bits_to_save(special['save_byte'], special['save_bit'])
             else:
-                rom.write_byte(locationaddress, itemid)
-                rom.write_byte(secondaryaddress, item_data[item.name][2])
+                rom.write_byte(locationaddress, special['item_id'])
+                rom.write_byte(secondaryaddress, special['addr2_data'])
+                bit_mask_hi = special['bit_mask'] >> 16
+                bit_mask_lo = special['bit_mask'] & 0xFFFF
                 if location.name == 'Bongo Bongo':
-                    rom.write_bytes(0xCA3F32, [item_data[item.name][3][0], item_data[item.name][3][1]])
-                    rom.write_bytes(0xCA3F36, [item_data[item.name][3][2], item_data[item.name][3][3]])
+                    rom.write_int16(0xCA3F32, bit_mask_hi)
+                    rom.write_int16(0xCA3F36, bit_mask_lo)
                 elif location.name == 'Twinrova':
-                    rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
-                    rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
+                    rom.write_int16(0xCA3EA2, bit_mask_hi)
+                    rom.write_int16(0xCA3EA6, bit_mask_lo)
 
     # add a cheaper bombchu pack to the bombchu shop
     # describe
@@ -1880,7 +1868,7 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
 
 
 def boss_reward_index(world, boss_name):
-    code = world.get_location(boss_name).item.code
+    code = world.get_location(boss_name).item.special['item_id']
     if code >= 0x6C:
         return code - 0x6C
     else:

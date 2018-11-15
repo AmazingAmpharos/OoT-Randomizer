@@ -416,7 +416,7 @@ def buildBossString(reward, color, world):
     text = ''
     for location in world.get_filled_locations():
         if location.item.name == reward:
-            text += '\x08\x13' + chr(location.item.code)
+            text += '\x08\x13' + chr(location.item.special['item_id'])
             text += colorText(getHint(location.name, world.clearer_hints).text, color)
     return text
 

@@ -2,12 +2,12 @@ from ItemList import item_table
 
 class Item(object):
 
-    def __init__(self, name='', advancement=False, priority=False, type=None, code=None, index=None, object=None, model=None):
+    def __init__(self, name='', advancement=False, priority=False, type=None, index=None, object=None, model=None, special=None):
         self.name = name
         self.advancement = advancement
         self.priority = priority
         self.type = type
-        self.code = code
+        self.special = special
         self.index = index
         self.location = None
         self.object = object
@@ -16,7 +16,7 @@ class Item(object):
 
 
     def copy(self):
-        return Item(self.name, self.advancement, self.priority, self.type, self.code, self.index)
+        return Item(self.name, self.advancement, self.priority, self.type, self.index, self.object, self.model, self.special)
 
 
     @property
@@ -88,8 +88,11 @@ def ItemFactory(items, world=None):
         singleton = True
     for item in items:
         if item in item_table:
-            advancement, priority, type, code, index, object, model = item_table[item]
-            new_item = Item(item, advancement, priority, type, code, index, object, model)
+            (type, progessive, itemID, (object, model), special) = item_table[item]
+            advancement = (progessive == True)
+            priority    = (progessive == False)
+            new_item = Item(item, advancement, priority, type, itemID, object, model, special)
+
             if world:
                 new_item.world = world
             ret.append(new_item)
