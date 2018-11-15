@@ -6,16 +6,18 @@ import struct
 import random
 
 from HintList import getHint, getHintGroup, Hint
-from ItemList import eventlocations
+from ItemPool import eventlocations
 from Messages import update_message_by_id
 from TextBox import lineWrap
 from Utils import random_choices
-from BaseClasses import CollectionState
+from CollectionState import CollectionState
+
 
 class GossipStone():
     def __init__(self, name, location):
         self.name = name
         self.location = location
+
 
 gossipLocations = {
     0x0405: GossipStone('Death Mountain Crater (Bombable Wall)', 'Death Mountain Crater Gossip Stone'),
@@ -121,11 +123,13 @@ def writeGossipStoneHintsHints(world, messages):
     for id,text in world.spoiler.hints.items():
         update_message_by_id(messages, id, get_raw_text(text))
 
+
 def filterTrailingSpace(text):
     if text.endswith('& '):
         return text[:-1]
     else:
         return text
+
 
 hintPrefixes = [
     'a few ',
@@ -147,6 +151,7 @@ def getSimpleHintNoPrefix(item):
 
     # no prefex
     return hint
+
 
 def colorText(text, color):
     colorMap = {
@@ -451,6 +456,7 @@ def buildGanonText(world, messages):
 
     update_message_by_id(messages, 0x70CC, text)
 
+
 def get_raw_text(string):
     text = ''
     for char in string:
@@ -465,3 +471,4 @@ def get_raw_text(string):
         else:
             text += char
     return text
+

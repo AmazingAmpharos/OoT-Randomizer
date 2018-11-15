@@ -10,10 +10,12 @@ import copy
 
 from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText, getSimpleHintNoPrefix
 from Utils import data_path, default_output_path, random_choices
-from Items import ItemFactory, item_data
+from ItemList import item_data
+from Item import ItemFactory
 from Messages import *
 from OcarinaSongs import Song, str_to_song, replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
+
 
 TunicColors = {
     "Custom Color":      [0x00, 0x00, 0x00],
@@ -50,6 +52,7 @@ TunicColors = {
     "Lumen":             [0x50, 0x8C, 0xF0],
 }
 
+
 NaviColors = {
     "Custom Color":      [0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00],
     "Gold":              [0xFE, 0xCC, 0x3C, 0xFF, 0xFE, 0xC0, 0x07, 0x00],
@@ -72,6 +75,7 @@ NaviColors = {
     "Midna":             [0x19, 0x24, 0x26, 0xFF, 0xD2, 0x83, 0x30, 0x00],
     "Phantom Zelda":     [0x97, 0x7A, 0x6C, 0xFF, 0x6F, 0x46, 0x67, 0x00],
 }
+
 
 NaviSFX = {
     'None'          : 0x0000,
@@ -106,6 +110,7 @@ NaviSFX = {
     'H`lo!'         : 0x6844
 }
 
+
 HealthSFX = {
     'None'          : 0x0000,
     'Cluck'         : 0x2812,
@@ -135,29 +140,38 @@ HealthSFX = {
     'Bongo Bongo'   : 0x3950
 }
 
+
 def get_NaviSFX():
     return list(NaviSFX.keys())
+
 
 def get_NaviSFX_options():
     return ["Default", "Random Choice"] + get_NaviSFX()
 
+
 def get_HealthSFX():
     return list(HealthSFX.keys())
+
 
 def get_HealthSFX_options():
     return ["Default", "Random Choice"] + get_HealthSFX()
 
+
 def get_tunic_colors():
     return list(TunicColors.keys())
+
 
 def get_tunic_color_options():
     return ["Random Choice", "Completely Random"] + get_tunic_colors()
 
+
 def get_navi_colors():
     return list(NaviColors.keys())
 
+
 def get_navi_color_options():
     return ["Random Choice", "Completely Random"] + get_navi_colors()
+
 
 def patch_rom(world, rom):
     with open(data_path('rom_patch.txt'), 'r') as stream:
@@ -865,6 +879,7 @@ def patch_rom(world, rom):
     # or just use the following functions to add an entry to the table
     initial_save_table = []
 
+
     # will set the bits of value to the offset in the save (or'ing them with what is already there)
     def write_bits_to_save(offset, value, filter=None):
         nonlocal initial_save_table
@@ -873,7 +888,6 @@ def patch_rom(world, rom):
             return
 
         initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x00, value]
-
 
 
     # will overwrite the byte at offset with the given value
@@ -885,10 +899,12 @@ def patch_rom(world, rom):
 
         initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x01, value]
 
+
     # will overwrite the byte at offset with the given value
     def write_bytes_to_save(offset, bytes, filter=None):
         for i, value in enumerate(bytes):
             write_byte_to_save(offset + i, value, filter)
+
 
     # will overwrite the byte at offset with the given value
     def write_save_table(rom):
@@ -1552,6 +1568,7 @@ def get_override_table(world):
     override_entries.sort()
     return override_entries
 
+
 def get_override_entry(location):
     scene = location.scene
     default = location.default
@@ -1597,6 +1614,7 @@ chestTypeMap = {
     0xE000: [0x5000, 0x0000, 0x2000], #Large
     0xF000: [0x5000, 0x0000, 0x2000], #Large
 }
+
 
 chestAnimationExtendedFast = [
     0x87, # Progressive Nut Capacity
@@ -1701,6 +1719,7 @@ def scene_get_actors(rom, actor_func, scene_data, scene, alternate=None, process
         scene_data = scene_data + 8
     return actors
 
+
 def get_actor_list(rom, actor_func):
     actors = {}
     scene_table = 0x00B71440
@@ -1709,11 +1728,13 @@ def get_actor_list(rom, actor_func):
         actors.update(scene_get_actors(rom, actor_func, scene_data, scene))
     return actors
 
+
 def get_override_itemid(override_table, scene, type, flags):
     for entry in override_table:
         if len(entry) == 4 and entry[0] == scene and (entry[1] & 0x07) == type and entry[2] == flags:
             return entry[3]
     return None
+
 
 def update_chest_sizes(rom, override_table):
     def get_chest(rom, actor_id, actor, scene):
@@ -1747,6 +1768,7 @@ def update_chest_sizes(rom, override_table):
         default = (default & 0x0FFF) | newChestType
         rom.write_int16(actor + 14, default)
 
+
 def set_grotto_id_data(rom):
     def set_grotto_id(rom, actor_id, actor, scene):
         if actor_id == 0x009B: #Grotto
@@ -1764,6 +1786,7 @@ def set_grotto_id_data(rom):
 
     get_actor_list(rom, set_grotto_id)
 
+
 def set_deku_salesman_data(rom):
     def set_deku_salesman(rom, actor_id, actor, scene):
         if actor_id == 0x0195: #Salesman
@@ -1772,6 +1795,7 @@ def set_deku_salesman_data(rom):
                 rom.write_int16(actor + 14, 0x0003)
 
     get_actor_list(rom, set_deku_salesman)
+
 
 def get_locked_doors(rom, world):
     def locked_door(rom, actor_id, actor, scene):
@@ -1796,6 +1820,7 @@ def get_locked_doors(rom, world):
                 return [0x00D4 + scene * 0x1C + 0x04 + flag_byte, flag_bits]
 
     return get_actor_list(rom, locked_door)
+
 
 def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=False):
     if init_shop_id:
@@ -1860,6 +1885,7 @@ def boss_reward_index(world, boss_name):
         return code - 0x6C
     else:
         return 3 + code - 0x66
+
 
 def configure_dungeon_info(rom, world):
     mq_enable = (world.mq_dungeons_random or world.mq_dungeons != 0 and world.mq_dungeons != 12)
@@ -2020,6 +2046,7 @@ bgm_sequence_ids = [
     ('Mini-game', 0x6C)
 ]
 
+
 def randomize_music(rom):
     # Read in all the Music data
     bgm_data = []
@@ -2040,11 +2067,13 @@ def randomize_music(rom):
     # Write Fairy Fountain instrument to File Select (uses same track but different instrument set pointer for some reason)
     rom.write_int16(0xB89910 + 0xDD + (0x57 * 2), rom.read_int16(0xB89910 + 0xDD + (0x28 * 2)))
 
+
 def disable_music(rom):
     # First track is no music
     blank_track = rom.read_bytes(0xB89AE0 + (0 * 0x10), 0x10)
     for bgm in bgm_sequence_ids:
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
+
 
 def restore_music(rom):
     # Restore all music from original

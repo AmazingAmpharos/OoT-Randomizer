@@ -1,10 +1,12 @@
 import random
 import logging
-from BaseClasses import CollectionState
+from CollectionState import CollectionState
 from Rules import set_shop_rules
+
 
 class FillError(RuntimeError):
     pass
+
 
 # Places all items into the world
 def distribute_items_restrictive(window, worlds, fill_locations=None):

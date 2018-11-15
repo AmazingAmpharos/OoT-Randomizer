@@ -9,15 +9,17 @@ import sys
 import struct
 import zipfile
 
-from BaseClasses import World, CollectionState, Spoiler
-from EntranceShuffle import link_entrances
+from World import World
+from CollectionState import CollectionState
+from Spoiler import Spoiler
+from EntranceList import link_entrances
 from Rom import LocalRom
 from Patches import patch_rom, patch_cosmetics
-from Regions import create_regions
-from Dungeons import create_dungeons
+from RegionList import create_regions
+from DungeonList import create_dungeons
 from Rules import set_rules
 from Fill import distribute_items_restrictive
-from ItemList import generate_itempool
+from ItemPool import generate_itempool
 from Hints import buildGossipHints
 from Utils import default_output_path, is_bundled, subprocess_args
 from version import __version__
@@ -26,6 +28,7 @@ from N64Patch import create_patch_file, apply_patch_file
 import WorldFile
 from SettingsList import setting_infos
 
+
 class dummy_window():
     def __init__(self):
         pass
@@ -33,6 +36,7 @@ class dummy_window():
         pass
     def update_progress(self, val):
         pass
+
 
 def main(settings, window=dummy_window()):
 
@@ -224,7 +228,6 @@ def main(settings, window=dummy_window()):
     return worlds[settings.player_num - 1]
 
 
-
 def from_patch_file(settings, window=dummy_window()):
     start = time.clock()
     logger = logging.getLogger('')
@@ -377,3 +380,4 @@ def create_playthrough(worlds):
     # we can finally output our playthrough
     for world in old_worlds:
         world.spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
+

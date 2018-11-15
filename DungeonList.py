@@ -1,7 +1,7 @@
 import random
 
-from BaseClasses import Dungeon
-from Items import ItemFactory
+from Dungeon import Dungeon
+from Item import ItemFactory
 
 
 def create_dungeons(world):
@@ -200,3 +200,4 @@ def create_dungeons(world):
             [])
 
     world.dungeons = [DT, DC, JB, FoT, BW, FiT, IC, WT, ShT, GTG, SpT, GC]
+
