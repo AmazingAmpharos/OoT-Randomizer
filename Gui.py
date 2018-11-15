@@ -479,7 +479,7 @@ def guiMain(settings=None):
     patchEntry = Entry(patchDialogFrame, textvariable=guivars['patch_file'], width=45)
 
     def PatchSelect():
-        patch_file = filedialog.askopenfilename(filetypes=[("Patch File Archive", ".zpfz"), ("All Files", "*")])
+        patch_file = filedialog.askopenfilename(filetypes=[("Patch File Archive", "*.zpfz *.zpf"), ("All Files", "*")])
         if patch_file != '':
             guivars['patch_file'].set(patch_file)
     patchSelectButton = Button(patchDialogFrame, text='Select File', command=PatchSelect, width=10)
