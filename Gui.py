@@ -159,12 +159,10 @@ def guiMain(settings=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
 
-        settings_valid = update_generation_type()
-
         # Update any dependencies
         for info in setting_infos:
             if info.gui_params and 'dependency' in info.gui_params:
-                dep_met = settings_valid and info.gui_params['dependency'](guivars)
+                dep_met = info.gui_params['dependency'](guivars)
                 toggle_widget(widgets[info.name], dep_met)
 
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
@@ -172,6 +170,7 @@ def guiMain(settings=None):
                 if color == (None, None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
+        update_generation_type()
         
 
 
@@ -393,14 +392,6 @@ def guiMain(settings=None):
     ToolTips.register(widgets['player_num'], 'Generate for specific Player.')
     playerNumFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
 
-    guivars['player_num_all'] = IntVar()
-    widgets['player_num_all'] = Checkbutton(widgets['multiworld'], text='All Players', variable=guivars['player_num_all'], justify=LEFT, wraplength=190, command=show_settings)
-    widgets['player_num_all'].pack(side=LEFT, anchor=N, padx=10, pady=(0,0))
-    ToolTips.register(widgets['player_num_all'], '''\
-                      Generate patches for all players.
-                      Only available if Output Type is 
-                      set to 'Patch File'.
-                      ''')
     widgets['multiworld'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
@@ -408,20 +399,21 @@ def guiMain(settings=None):
     def update_generation_type(event=None):
         if generation_notebook.tab(generation_notebook.select())['text'] == 'Generate From Seed':
             notebook.tab(1, state="normal")
-            notebook.tab(2, state="normal")
+            if guivars['logic_rules'].get() == 'Glitchless':
+                notebook.tab(2, state="normal")
+            else:
+                notebook.tab(2, state="disabled")               
             notebook.tab(3, state="normal")
-            toggle_widget(widgets['multiworld'], True)
+            toggle_widget(widgets['world_count'], True)
             toggle_widget(widgets['create_spoiler'], True)
             toggle_widget(widgets['count'], True)
-            return True
         else:
             notebook.tab(1, state="disabled")
             notebook.tab(2, state="disabled")
             notebook.tab(3, state="disabled")
-            toggle_widget(widgets['multiworld'], False)
+            toggle_widget(widgets['world_count'], False)
             toggle_widget(widgets['create_spoiler'], False)
             toggle_widget(widgets['count'], False)
-            return False
 
 
 
@@ -490,7 +482,7 @@ def guiMain(settings=None):
     patchEntry = Entry(patchDialogFrame, textvariable=guivars['patch_file'], width=45)
 
     def PatchSelect():
-        patch_file = filedialog.askopenfilename(filetypes=[("Patch Files", ".zpf"), ("All Files", "*")])
+        patch_file = filedialog.askopenfilename(filetypes=[("Patch File Archive", "*.zpfz *.zpf"), ("All Files", "*")])
         if patch_file != '':
             guivars['patch_file'].set(patch_file)
     patchSelectButton = Button(patchDialogFrame, text='Select File', command=PatchSelect, width=10)

@@ -1196,10 +1196,17 @@ def patch_rom(world, rom):
         # song of time
         rom.write_int32(0xDB532C, 0x24050003)
 
-    # Set OHKO mode
-    if world.difficulty == 'ohko':
-        rom.write_int32(0xAE80A8, 0xA4A00030) # sh  zero,48(a1)
-        rom.write_int32(0xAE80B4, 0x06000003) # bltz s0, +0003
+    # Set damage multiplier
+    if world.damage_multiplier == 'half':
+        rom.write_int32(0xAE808C, 0x00108043)
+    if world.damage_multiplier == 'normal':
+        rom.write_int32(0xAE808C, 0x00108000)
+    if world.damage_multiplier == 'double':
+        rom.write_int32(0xAE808C, 0x00108040)
+    if world.damage_multiplier == 'quadruple':
+        rom.write_int32(0xAE808C, 0x00108080)
+    if world.damage_multiplier == 'ohko':
+        rom.write_int32(0xAE808C, 0x00108200)
 
     # Patch songs and boss rewards
     for location in world.get_filled_locations():

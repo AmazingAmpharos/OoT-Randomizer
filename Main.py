@@ -7,6 +7,7 @@ import time
 import os, os.path
 import sys
 import struct
+import zipfile
 
 from BaseClasses import World, CollectionState, Spoiler
 from EntranceShuffle import link_entrances
@@ -136,29 +137,41 @@ def main(settings, window=dummy_window()):
     output_path = os.path.join(output_dir, outfilebase)
 
     if settings.compress_rom == 'Patch':
-        if settings.player_num_all:
-            rng_state = random.getstate()
-            for world in worlds:
+        rng_state = random.getstate()
+        file_list = []
+        patchfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
+        window.update_progress(65)
+        for world in worlds:
+            if settings.world_count > 1:
                 window.update_status('Patching ROM: Player %d' % (world.id + 1))
-                random.setstate(rng_state)
-                patch_rom(worlds[settings.player_num - 1], rom)
-                patch_cosmetics(settings, rom)
-                window.update_progress(65)
+                patchfilename = '%sW%dP%d.zpf' % (patchfilebase, settings.world_count, world.id + 1)
+            else:
+                window.update_status('Patching ROM')
+                patchfilename = '%s.zpf' % patchfilebase
 
-                window.update_status('Creating Patch File: Player %d' % (world.id + 1))
-                outfilebase = 'OoT_%s_%s_W%dP%d.zpf' % (worlds[0].settings_string, worlds[0].seed, settings.world_count, world.id + 1)
-                output_path = os.path.join(output_dir, outfilebase)
-                create_patch_file(rom, output_path)
-                rom.restore()
-        else:
-            window.update_status('Patching ROM')
-            patch_rom(worlds[settings.player_num - 1], rom)
+            random.setstate(rng_state)
+            patch_rom(world, rom)
             patch_cosmetics(settings, rom)
-            window.update_progress(65)
+            window.update_progress(65 + 20*(world.id + 1)/settings.world_count)
 
             window.update_status('Creating Patch File')
-            output_path += '.zpf'
+            output_path = os.path.join(output_dir, patchfilename)
+            file_list.append(patchfilename)
             create_patch_file(rom, output_path)
+            rom.restore()
+            window.update_progress(65 + 30*(world.id + 1)/settings.world_count)
+
+        if settings.world_count > 1:
+            window.update_status('Creating Patch Archive')
+            output_path = os.path.join(output_dir, '%sW%d.zpfz' % (patchfilebase, settings.world_count))
+            with zipfile.ZipFile(output_path, mode="w") as patch_archive:
+                for file in file_list:
+                    file_path = os.path.join(output_dir, file)
+                    patch_archive.write(file_path, file, compress_type=zipfile.ZIP_DEFLATED)
+            for file in file_list:
+                os.remove(os.path.join(output_dir, file))          
+        window.update_progress(95)
+
     elif settings.compress_rom != 'None':
         window.update_status('Patching ROM')
         patch_rom(worlds[settings.player_num - 1], rom)
@@ -224,13 +237,20 @@ def from_patch_file(settings, window=dummy_window()):
 
     logger.info('Patching ROM.')
 
-    outfilebase = os.path.basename(settings.patch_file).split('.')[0]
+    filename_split = os.path.basename(settings.patch_file).split('.')
+    outfilebase = filename_split[0]
+    extension = filename_split[-1]
 
     output_dir = default_output_path(settings.output_dir)
     output_path = os.path.join(output_dir, outfilebase)
 
     window.update_status('Patching ROM')
-    apply_patch_file(rom, settings.patch_file)
+    if extension == 'zpf':
+        subfile = None
+    else:
+        subfile = '%sP%d.zpf' % (outfilebase, settings.player_num)
+        output_path += 'P%d' % (settings.player_num)
+    apply_patch_file(rom, settings.patch_file, subfile)
     patch_cosmetics(settings, rom)
     window.update_progress(65)
 
@@ -260,7 +280,7 @@ def from_patch_file(settings, window=dummy_window()):
             logger.info('OS not supported for compression')
 
         if compressor_path != "":
-            run_process(window, logger, [compressor_path, output_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+            run_process(window, logger, [compressor_path, output_path, output_path.replace('.z64', '-comp.z64')])
         os.remove(output_path)
     window.update_progress(95)
 

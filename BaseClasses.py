@@ -891,7 +891,7 @@ class Spoiler(object):
         self.version = OoTRVersion
         self.settings = self.worlds[0].settings
         for world in self.worlds:
-            spoiler_locations = [location for location in world.get_locations() if not location.locked]
+            spoiler_locations = [location for location in world.get_locations() if not location.locked and location.type != 'GossipStone']
             sort_order = {"Song": 0, "Boss": -1}
             spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
             if self.settings.world_count > 1:

@@ -67,7 +67,10 @@ class Settings():
                 i_bits = [ 1 if value else 0 ]
             if setting.type == str:
                 if 'choices' in setting.args_params:
-                    index = setting.args_params['choices'].index(value)
+                    try:
+                        index = setting.args_params['choices'].index(value)
+                    except ValueError:
+                        index = setting.args_params['choices'].index(setting.args_params['default'])
                     # https://stackoverflow.com/questions/10321978/integer-to-bitfield-as-a-list
                     i_bits = [1 if digit=='1' else 0 for digit in bin(index)[2:]]
                     i_bits.reverse()
@@ -158,7 +161,9 @@ class Settings():
                     self.__dict__[info.name] = True if info.gui_params['default'] == 'checked' else False
                 if info.type == str:
                     if 'default' in info.args_params:
-                        self.__dict__[info.name] = info.gui_params['default'] or info.args_params['default']
+                        self.__dict__[info.name] = info.args_params['default']
+                    elif 'default' in info.gui_params:
+                        self.__dict__[info.name] = info.gui_params['default']
                     else:
                         self.__dict__[info.name] = ""
                 if info.type == int:

@@ -11,5 +11,7 @@
 *.bin         binary
 *.o           binary
 /data/*       binary
+*.json text
+*.txt  text
 /Decompress/* binary
 /Compress/*   binary

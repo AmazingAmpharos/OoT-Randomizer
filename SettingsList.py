@@ -100,20 +100,6 @@ setting_infos = [
                     Use to select world to generate when there are multiple worlds.
                     ''',
             'type': int
-        },
-        {
-            'dependency': lambda guivar: not (guivar['player_num_all'].get() and \
-                                         guivar['compress_rom'].get() == 'Patch File')
-        }),
-    Setting_Info('player_num_all', bool, 0, False, 
-        {
-            'action': 'store_true',
-            'help': '''\
-                    Generate patch files for all players.
-                    '''
-        },
-        {
-            'dependency': lambda guivar: guivar['compress_rom'].get() == 'Patch File'
         }),
     Setting_Info('create_spoiler', bool, 1, True,
         {
@@ -292,6 +278,40 @@ setting_infos = [
                       'Always Open': Rainbow Bridge is always present
                       '''
         }),
+    Setting_Info('logic_rules', str, 1, True,
+        {
+            'default': 'glitchless',
+            'const': 'glitchless',
+            'nargs': '?',
+            'help': '''\
+                    Sets the rules the logic uses to determine accessibility:
+                    glitchless:  No glitches are required, but may require some minor tricks
+                    none:        All locations are considered available. May not be beatable.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Logic Rules',
+            'group': 'world',
+            'widget': 'Combobox',
+            'default': 'Glitchless',
+            'options': {
+                'Glitchless': 'glitchless',
+                'No Logic': 'none',
+            },
+            'tooltip':'''\
+                      Sets the rules the logic uses
+                      to determine accessibility.
+
+                      'Glitchless': No glitches are
+                      required, but may require some
+                      minor tricks
+
+                      'No Logic': All locations are
+                      considered available. May not
+                      be beatable.
+                      '''
+        }),    
     Setting_Info('all_reachable', bool, 1, True,
         {
             'help': '''\
@@ -315,7 +335,8 @@ setting_infos = [
 
                       Even when enabled, some locations may still be able
                       to hold the keys needed to reach them.
-                      '''
+                      ''',
+            'dependency': lambda guivar: guivar['logic_rules'].get() == 'Glitchless',
         }),
     Setting_Info('bombchus_in_logic', bool, 1, True,
         {
@@ -1643,30 +1664,34 @@ setting_infos = [
                       required to beat the game.
                       '''
         }),
-    Setting_Info('hint_dist', str, 1, True,
+    Setting_Info('hint_dist', str, 2, True,
         {
-            'default': 'normal',
-            'const': 'normal',
+            'default': 'balanced',
+            'const': 'balanced',
             'nargs': '?',
             'help': '''\
                     Choose how Gossip Stones hints are distributed
-                    normal: Use the standard distribution of hint types
-                    tourney: Use the tourney distribution of hint types
+                    balanced: Use a balanced distribution of hint types
+                    strong: Use a strong distribution of hint types
+                    very_strong: Use a very strong distribution of hint types
                     '''
         },
         {
             'text': 'Hint Distribution',
             'group': 'other',
             'widget': 'Combobox',
-            'default': 'Normal',
+            'default': 'Balanced',
             'options': {
-                'Normal': 'normal',
-                'Tourney': 'tourney',
+                'Balanced': 'balanced',
+                'Strong': 'strong',
+                'Very Strong': 'very_strong',
             },
             'tooltip':'''\
-                      Tourney distribution has some
+                      Strong distribution has some
                       duplicate hints and no junk
                       hints.
+                      Very Strong distribution has
+                      only very useful hints.
                       '''
         }),
     Setting_Info('text_shuffle', str, 2, True,
@@ -1702,51 +1727,74 @@ setting_infos = [
                       text for the purpose of accurate price checks.
                       '''
         }),
-    Setting_Info('difficulty', str, 2, True,
+    Setting_Info('item_pool_value', str, 2, True,
+        {
+            'default': 'balanced',
+            'const': 'balanced',
+            'nargs': '?',
+            'help': '''\
+                    Change the item pool for an added challenge.
+                    plentiful:      Duplicates most of the major items, making it easier to find progression.
+                    balanced:       Default items
+                    scarce:         Double defense, double magic, and all 8 heart containers are removed. Ammo
+                                    for each type can only be expanded once and you can only find three Bombchu packs.
+                    minimal:        Double defense, double magic, Nayru's Love, and all health upgrades are removed.
+                                    No ammo expansions are available and you can only find one Bombchu pack.
+                    '''
+        },
+        {
+            'text': 'Item Pool Value',
+            'group': 'other',
+            'widget': 'Combobox',
+            'default': 'Balanced',
+            'options': {
+                'Plentiful': 'plentiful',
+                'Balanced': 'balanced',
+                'Scarce': 'scarce',
+                'Minimal': 'minimal'
+            },
+            'tooltip':'''\
+                      Changes the amount of bonus items that
+                      are available in the game.
+
+                      'Plentiful': Extra major items are added.
+
+                      'Balanced': Original item pool.
+
+                      'Scarce': Some excess items are removed,
+                      including health upgrades.
+
+                      'Minimal': Most excess items are removed.
+                      '''
+        }),
+    Setting_Info('damage_multiplier', str, 3, True,
         {
             'default': 'normal',
             'const': 'normal',
             'nargs': '?',
             'help': '''\
-                    Change the item pool for an added challenge.
-                    normal:         Default items
-                    hard:           Double defense, double magic, and all 8 heart containers are removed. Ammo
-                                    for each type can only be expanded once and you can only find three Bombchu packs.
-                    very_hard:      Double defense, double magic, Nayru's Love, and all health upgrades are removed.
-                                    No ammo expansions are available and you can only find one Bombchu pack.
-                    ohko:           Same as very hard, and Link will die in one hit.
+                    Change the amount of damage taken.
+                    half:           Half damage taken.
+                    normal:         Normal damage taken.
+                    double:         Double damage taken.
+                    quadruple:      Quadruple damage taken.
+                    ohko:           Link will die in one hit.
                     '''
         },
         {
-            'text': 'Difficulty',
+            'text': 'Damage Multiplier',
             'group': 'other',
             'widget': 'Combobox',
             'default': 'Normal',
             'options': {
+                'Half': 'half',
                 'Normal': 'normal',
-                'Hard': 'hard',
-                'Very Hard': 'very_hard',
-                'OHKO': 'ohko'
+                'Double': 'double',
+                'Quadruple': 'quadruple',
+                'OHKO': 'ohko',
             },
             'tooltip':'''\
-                      Makes health less available, reduces
-                      ammo expansions, and reduces Bombchus
-                      in the item pool by three.
-
-                      'Hard': Heart Containers, Double Magic,
-                      and Double Defense are removed. Only
-                      one extra Quiver, Bullet Bag, Bomb Bag,
-                      Deku Stick and Deku Nut Capacity Upgrades
-                      will be available. Only three Bombchu
-                      packs are available.
-
-                      'Very Hard': Heart Containers, Pieces of
-                      Heart, Double Magic, Double Defense,
-                      and Nayru's Love are removed. No extra
-                      Quivers, Bullet Bags, Bomb Bags, or
-                      Deku Stick and Deku Nut Capacity Upgrades
-                      will be available. Only one Bombchu
-                      pack is available.
+                      Changes the amount of damage taken.
 
                       'OHKO': Link dies in one hit.
                       '''

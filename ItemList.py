@@ -1,6 +1,7 @@
 from collections import namedtuple
 import logging
 import random
+from Utils import random_choices
 
 from Items import ItemFactory
 
@@ -23,6 +24,7 @@ alwaysitems = ([
     'Light Arrows',
     'Dins Fire',
     'Farores Wind',
+    'Nayrus Love',
     'Rupee (1)']
     + ['Progressive Hookshot'] * 2
     + ['Deku Shield']
@@ -30,9 +32,9 @@ alwaysitems = ([
     + ['Progressive Strength Upgrade'] * 3
     + ['Progressive Scale'] * 2
     + ['Recovery Heart'] * 6
-    + ['Bow']
-    + ['Slingshot']
-    + ['Bomb Bag']
+    + ['Bow'] * 3
+    + ['Slingshot'] * 3
+    + ['Bomb Bag'] * 3
     + ['Bottle with Letter']
     + ['Bombs (5)'] * 2
     + ['Bombs (10)']
@@ -40,8 +42,81 @@ alwaysitems = ([
     + ['Arrows (5)']
     + ['Arrows (10)'] * 5
     + ['Progressive Wallet'] * 2
-    + ['Magic Meter']
+    + ['Magic Meter'] * 2
+    + ['Double Defense']
+    + ['Deku Stick Capacity'] * 2
+    + ['Deku Nut Capacity'] * 2
     + ['Piece of Heart (Treasure Chest Game)'])
+
+
+easy_items = ([
+    'Biggoron Sword',
+    'Kokiri Sword',
+    'Boomerang',
+    'Lens of Truth',
+    'Hammer',
+    'Iron Boots',
+    'Goron Tunic',
+    'Zora Tunic',
+    'Hover Boots',
+    'Mirror Shield',
+    'Fire Arrows',
+    'Light Arrows',
+    'Dins Fire',
+    'Progressive Hookshot',
+    'Progressive Strength Upgrade',
+    'Progressive Scale',
+    'Progressive Wallet',
+    'Magic Meter',
+    'Deku Stick Capacity', 
+    'Deku Nut Capacity', 
+    'Bow', 
+    'Slingshot', 
+    'Bomb Bag',
+    'Double Defense'] +
+    ['Heart Container'] * 16 +
+    ['Piece of Heart'] * 3)
+normal_items = (
+    ['Heart Container'] * 8 +
+    ['Piece of Heart'] * 35)
+
+item_difficulty_max = {
+    'plentiful': {
+        'Ice Trap': 0,
+    },
+    'balanced': {},
+    'scarce': {
+        'Bombchu': 3,
+        'Bombchu (5)': 1,
+        'Bombchu (10)': 2,
+        'Bombchu (20)': 0,
+        'Magic Meter': 1, 
+        'Double Defense': 0, 
+        'Deku Stick Capacity': 1, 
+        'Deku Nut Capacity': 1, 
+        'Bow': 2, 
+        'Slingshot': 2, 
+        'Bomb Bag': 2,
+        'Heart Container': 0,
+    },
+    'minimal': {
+        'Bombchu': 1,
+        'Bombchu (5)': 1,
+        'Bombchu (10)': 0,
+        'Bombchu (20)': 0,
+        'Nayrus Love': 0,
+        'Magic Meter': 1, 
+        'Double Defense': 0, 
+        'Deku Stick Capacity': 0, 
+        'Deku Nut Capacity': 0, 
+        'Bow': 1, 
+        'Slingshot': 1, 
+        'Bomb Bag': 1,
+        'Heart Container': 0,
+        'Piece of Heart': 0,
+    },
+}
+
 
 DT_vanilla = (['Recovery Heart'] * 2)
 
@@ -382,23 +457,30 @@ eventlocations = {
     'Ganons Castle Light Trial Clear': 'Light Trial Clear'
 }
 
-junk_pool = (
-    8 *  ['Bombs (5)'] +
-    2 *  ['Bombs (10)'] +
-    8 *  ['Arrows (5)'] +
-    2 *  ['Arrows (10)'] +
-    5 *  ['Deku Stick (1)'] +
-    5 *  ['Deku Nuts (5)'] +
-    5 *  ['Deku Seeds (30)'] +
-    10 * ['Rupees (5)'] +
-    4 *  ['Rupees (20)'] +
-    1 *  ['Rupees (50)'])
+junk_pool = [
+    ('Bombs (5)',       8),
+    ('Bombs (10)',      2),
+    ('Arrows (5)',      8),
+    ('Arrows (10)',     2),
+    ('Deku Stick (1)',  5),
+    ('Deku Nuts (5)',   5),
+    ('Deku Seeds (30)', 5),
+    ('Rupees (5)',      10),
+    ('Rupees (20)',     4),
+    ('Rupees (50)',     1),
+]
 def get_junk_item(count=1):
-    ret_junk = []
-    for _ in range(count):
-        ret_junk.append(random.choice(junk_pool))
+    junk_items, junk_weights = zip(*junk_pool)
+    return random_choices(junk_items, weights=junk_weights, k=count)
 
-    return ret_junk
+
+def replace_max_item(items, item, max):
+    count = 0
+    for i,val in enumerate(items):
+        if val == item:
+            if count >= max:
+                items[i] = get_junk_item()[0]
+            count += 1
 
 
 def generate_itempool(world):
@@ -426,7 +508,7 @@ def get_pool_core(world):
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')
     else:
-         placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
+        placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
 
     if world.shuffle_weird_egg:
         pool.append('Weird Egg')
@@ -579,91 +661,38 @@ def get_pool_core(world):
     else:
         pool.extend(['Gold Skulltula Token'] * 100)
 
+
     if world.bombchus_in_logic:
-        pool.extend(['Bombchus'])
-        if world.difficulty == 'normal':
-            pool.extend(['Bombchus'] * 3)
-        elif world.difficulty == 'hard':
+        pool.extend(['Bombchus'] * 4)
+        if world.dungeon_mq['JB']:
+            pool.extend(['Bombchus'])
+        if world.dungeon_mq['SpT']:
             pool.extend(['Bombchus'] * 2)
-            pool.extend(get_junk_item(1))
-        else:
-            pool.extend(get_junk_item(3))
-        if world.dungeon_mq['JB']:
-            if world.difficulty == 'normal':
-                pool.extend(['Bombchus'])
-            else:
-                pool.extend(get_junk_item(1))
-        if world.dungeon_mq['SpT']:
-            if world.difficulty == 'normal':
-                pool.extend(['Bombchus'] * 2)
-            else:
-                pool.extend(get_junk_item(2))
         if not world.dungeon_mq['BW']:
-            if world.difficulty == 'normal':
-                pool.extend(['Bombchus'])
-            else:
-                pool.extend(get_junk_item(1))
+            pool.extend(['Bombchus'])
         if world.dungeon_mq['GTG']:
-            if world.difficulty == 'normal':
-                pool.extend(['Bombchus'])
-            else:
-                pool.extend(get_junk_item(1))
+            pool.extend(['Bombchus'])
+
     else:
-        pool.extend(['Bombchus (5)'])
-        if world.difficulty == 'very_hard' or world.difficulty == 'ohko':
-            pool.extend(get_junk_item(2))
-        else:
-            pool.extend(['Bombchus (10)'] * 2)
+        pool.extend(['Bombchus (5)'] + ['Bombchus (10)'] * 2)
         if world.dungeon_mq['JB']:
-            if world.difficulty == 'normal':
                 pool.extend(['Bombchus (10)'])
-            else:
-                pool.extend(get_junk_item(1))
         if world.dungeon_mq['SpT']:
-            if world.difficulty == 'normal':
                 pool.extend(['Bombchus (10)'] * 2)
-            else:
-                pool.extend(get_junk_item(2))
         if not world.dungeon_mq['BW']:
-            if world.difficulty == 'normal':
                 pool.extend(['Bombchus (10)'])
-            else:
-                pool.extend(get_junk_item(1))
         if world.dungeon_mq['GTG']:
-            if world.difficulty == 'normal':
                 pool.extend(['Bombchus (10)'])
-            else:
-                pool.extend(get_junk_item(1))
-        if world.difficulty == 'normal':
-            if world.dungeon_mq['GC']:
-                pool.extend(['Bombchus (10)'])
-            else:
-                pool.extend(['Bombchus (20)'])
+        if world.dungeon_mq['GC']:
+            pool.extend(['Bombchus (10)'])
         else:
-            pool.extend(get_junk_item(1))
+            pool.extend(['Bombchus (20)'])
 
-    if world.difficulty == 'ohko':
-        pool.extend(['Recovery Heart'])
-        if not world.dungeon_mq['GTG']:
-            pool.extend(['Recovery Heart'])
-        if not world.dungeon_mq['GC']:
-            pool.extend(['Recovery Heart'] * 4)
-    else:
+    pool.extend(['Ice Trap'])
+    if not world.dungeon_mq['GTG']:
         pool.extend(['Ice Trap'])
-        if not world.dungeon_mq['GTG']:
-            pool.extend(['Ice Trap'])
-        if not world.dungeon_mq['GC']:
-            pool.extend(['Ice Trap'] * 4)
-
-    if world.difficulty == 'normal':
-        pool.extend(['Magic Meter', 'Double Defense', 'Deku Stick Capacity', 'Deku Nut Capacity', 'Bow', 'Slingshot', 'Bomb Bag'] + ['Heart Container'] * 8)
-    else:
-        pool.extend(get_junk_item(15))
-
-    if world.difficulty == 'very_hard' or world.difficulty == 'ohko':
-        pool.extend(get_junk_item(41))
-    else:
-        pool.extend(['Nayrus Love', 'Deku Stick Capacity', 'Deku Nut Capacity', 'Bow', 'Slingshot', 'Bomb Bag'] + ['Piece of Heart'] * 35)
+    if not world.dungeon_mq['GC']:
+        pool.extend(['Ice Trap'] * 4)
 
     if world.gerudo_fortress == 'open':
         placed_items['Gerudo Fortress North F1 Carpenter'] = 'Recovery Heart'
@@ -837,6 +866,16 @@ def get_pool_core(world):
     if not world.keysanity and not world.dungeon_mq['FiT']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
 
+    if world.item_pool_value == 'plentiful':
+        pool.extend(easy_items)
+    else:
+        pool.extend(normal_items)
+
+    if world.damage_multiplier == 'ohko':
+        replace_max_item(pool, 'Ice Trap', 0)
+
+    for item,max in item_difficulty_max[world.item_pool_value].items():
+        replace_max_item(pool, item, max)
 
     return (pool, placed_items)
 
