@@ -255,7 +255,7 @@ hintTable = {
     '1044':                                                  ("They say all toasters toast toast.", None, 'junkHint'),
     '1045':                                                  ("They say that Okami is the best Zelda game.", None, 'junkHint'),
     '1046':                                                  ("They say that quest guidance can be found at a talking rock.", None, 'junkHint'),
-    '1047':                                                  ("They say that the final item you're looking for can be found somewhere in Hyrule", None, 'junkHint'),
+    '1047':                                                  ("They say that the final item you're looking for can be found somewhere in Hyrule.", None, 'junkHint'),
     '1048':                                                  ("Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.", None, 'junkHint'),
     '1049':                                                  ("They say that Barinade fears Deku Nuts.", None, 'junkHint'),
     '1050':                                                  ("They say that Flare Dancers do not fear Goron-crafted blades.", None, 'junkHint'),

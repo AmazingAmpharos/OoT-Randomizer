@@ -297,6 +297,16 @@ hint_func = {
 
 
 hint_dist_sets = {
+    'useless': {
+        'trial':    (0.0, 0),
+        'always':   (0.0, 0),
+        'woth':     (0.0, 0),
+        'loc':      (0.0, 0),
+        'item':     (0.0, 0),
+        'ow':       (0.0, 0),
+        'dungeon':  (0.0, 0),
+        'junk':     (9.0, 1),
+    },
     'balanced': {
         'trial':    (0.0, 1),
         'always':   (0.0, 1),
