@@ -1,5 +1,5 @@
-#ifndef ITEM_OVERRIDES_H
-#define ITEM_OVERRIDES_H
+#ifndef GET_ITEMS_H
+#define GET_ITEMS_H
 
 #include "z64.h"
 

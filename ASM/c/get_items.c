@@ -1,6 +1,6 @@
-#include "item_overrides.h"
+#include "get_items.h"
 
-#include "extended_items.h"
+#include "item_table.h"
 #include "util.h"
 #include "z64.h"
 
@@ -13,57 +13,60 @@ enum override_type {
     DELAYED = 5,
 };
 
-typedef struct {
-    union {
-        uint32_t all;
-        struct {
-            uint32_t scene     : 8;
-            uint32_t flag      : 8;
-            uint32_t type      : 3;
-            uint32_t player_id : 5;
-            uint32_t item_id   : 8;
-        };
-        struct {
-            uint32_t search_key : 19;
-            uint32_t payload    : 13;
-        };
+typedef union {
+    uint32_t all;
+    struct {
+        char    pad_;
+        uint8_t scene;
+        uint8_t type;
+        uint8_t flag;
     };
+} override_key_t;
+
+typedef union {
+    uint32_t all;
+    struct {
+        char     pad_;
+        uint8_t  player;
+        uint16_t item_id;
+    };
+} override_value_t;
+
+typedef struct {
+    override_key_t   key;
+    override_value_t value;
 } override_t;
 
 override_t cfg_item_overrides[512] = { 0 };
 int item_overrides_count = 0;
 
-override_t pending_item_queue[3] = {
-    { .all = 0 },
-    { .all = 0 },
-    { .all = 0 },
-};
+override_t pending_item_queue[3] = { 0 };
 z64_actor_t *dummy_actor = NULL;
 
-item_row_t *extended_item_row = NULL;
+item_row_t *active_item_row = NULL;
 // Split extended_item_row into variables for convenience in ASM
-uint32_t ext_base_item_id = 0;
-uint32_t ext_action_id = 0;
-uint32_t ext_graphic_id = 0;
-uint32_t ext_text_id = 0;
-uint32_t ext_object_id = 0;
+uint32_t active_item_base_item_id = 0;
+uint32_t active_item_action_id = 0;
+uint32_t active_item_text_id = 0;
+uint32_t active_item_object_id = 0;
+uint32_t active_item_graphic_id = 0;
 
 void activate_extended_item(item_row_t *item_row) {
-    extended_item_row = item_row;
-    ext_base_item_id = item_row->base_item_id;
-    ext_action_id = item_row->action_id;
-    ext_graphic_id = item_row->graphic_id;
-    ext_text_id = item_row->text_id;
-    ext_object_id = item_row->object_id;
+    active_item_row = item_row;
+    active_item_base_item_id = item_row->base_item_id;
+    active_item_action_id = item_row->action_id;
+    active_item_text_id = item_row->text_id;
+    active_item_object_id = item_row->object_id;
+    active_item_graphic_id = item_row->graphic_id;
 }
 
 void clear_extended_item() {
-    extended_item_row = NULL;
-    ext_base_item_id = 0;
-    ext_action_id = 0;
-    ext_graphic_id = 0;
-    ext_text_id = 0;
-    ext_object_id = 0;
+    active_item_row = NULL;
+    active_item_base_item_id = 0;
+    active_item_action_id = 0;
+    active_item_text_id = 0;
+    active_item_object_id = 0;
+    active_item_graphic_id = 0;
 }
 
 void item_overrides_init() {
@@ -183,6 +186,14 @@ void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id
     link->incoming_item_id = incoming_negative ? -base_item_id : base_item_id;
 }
 
+void get_skulltula_token(z64_actor_t *token_actor) {
+    override_t override = lookup_override(0, 0, token_actor);
+    uint8_t item_id = override.item_id;
+    if (item_id == 0) {
+        item_id = 0x5B;
+    }
+}
+
 void give_pending_item() {
     override_t override = pending_item_queue[0];
 
@@ -196,14 +207,6 @@ void give_pending_item() {
         z64_game.camera_2;
     if (no_pending) {
         return;
-    }
-
-    if (override.item_id == 0x7F) {
-        // Do co-op stuff
-    }
-
-    if (override.player_id != 1) {
-        // Do co-op stuff
     }
 
     int8_t base_item_id = activate_override(override);

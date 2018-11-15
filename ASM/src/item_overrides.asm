@@ -34,14 +34,6 @@ inventory_check:
 
 ;==================================================================================================
 
-; a1 = pointer to the skulltula token actor
-
-override_skulltula_token:
-    jr      ra
-    nop
-
-;==================================================================================================
-
 override_object_npc:
     lw      a2, 0x0030 (sp)
     j       override_object
