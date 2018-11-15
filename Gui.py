@@ -399,7 +399,10 @@ def guiMain(settings=None):
     def update_generation_type(event=None):
         if generation_notebook.tab(generation_notebook.select())['text'] == 'Generate From Seed':
             notebook.tab(1, state="normal")
-            notebook.tab(2, state="normal")
+            if guivars['logic_rules'].get() == 'Glitchless':
+                notebook.tab(2, state="normal")
+            else:
+                notebook.tab(2, state="disabled")               
             notebook.tab(3, state="normal")
             toggle_widget(widgets['world_count'], True)
             toggle_widget(widgets['create_spoiler'], True)

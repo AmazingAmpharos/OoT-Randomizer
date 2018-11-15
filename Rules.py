@@ -3,6 +3,11 @@ import logging
 
 
 def set_rules(world):
+    set_item_rules(world)
+
+    if world.logic_rules == 'none':
+        return
+
     global_rules(world)
 
     if world.bridge == 'medallions':
@@ -79,12 +84,6 @@ def item_name(state, location):
 def global_rules(world):
 
     expected_skulltulas = world.logic_skulltulas
-
-    # ganon can only carry triforce
-    world.get_location('Ganon').item_rule = lambda item: item.name == 'Triforce'
-
-    # these are default save&quit points and always accessible
-    world.get_region('Links House').can_reach = lambda state: True
 
     # dungeon requirements (including gold skulltulas)
     if world.dungeon_mq['DT']:
@@ -759,6 +758,22 @@ def global_rules(world):
 
 
     for location in world.get_locations():
+        if location.type == 'Shop' and location.name in world.shop_prices:
+            location.price = world.shop_prices[location.name]
+            if location.price > 200:
+                set_rule(location, lambda state: state.has('Progressive Wallet', 2))
+            elif location.price > 99:
+                set_rule(location, lambda state: state.has('Progressive Wallet'))
+
+
+def set_item_rules(world):
+    # ganon can only carry triforce
+    world.get_location('Ganon').item_rule = lambda item: item.name == 'Triforce'
+
+    # these are default save&quit points and always accessible
+    world.get_region('Links House').can_reach = lambda state: True
+    
+    for location in world.get_locations():
         if location.type != 'Chest':
             forbid_item(location, 'Ice Trap')
         add_item_rule(location, lambda i: not (i.type == 'Song' and not i.world.shuffle_song_items and i.world.id != location.world.id))
@@ -768,13 +783,6 @@ def global_rules(world):
                 if not world.check_beatable_only:
                     forbid_item(location, 'Buy Goron Tunic')
                     forbid_item(location, 'Buy Zora Tunic')
-
-            if location.name in world.shop_prices:
-                location.price = world.shop_prices[location.name]
-                if location.price > 200:
-                    set_rule(location, lambda state: state.has('Progressive Wallet', 2))
-                elif location.price > 99:
-                    set_rule(location, lambda state: state.has('Progressive Wallet'))
 
 
 # This function should be ran once after the shop items are placed in the world.

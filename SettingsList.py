@@ -278,6 +278,40 @@ setting_infos = [
                       'Always Open': Rainbow Bridge is always present
                       '''
         }),
+    Setting_Info('logic_rules', str, 1, True,
+        {
+            'default': 'glitchless',
+            'const': 'glitchless',
+            'nargs': '?',
+            'help': '''\
+                    Sets the rules the logic uses to determine accessibility:
+                    glitchless:  No glitches are required, but may require some minor tricks
+                    none:        All locations are considered available. May not be beatable.
+                    ''',
+            'action': 'store_true'
+        },
+        {
+            'text': 'Logic Rules',
+            'group': 'world',
+            'widget': 'Combobox',
+            'default': 'Glitchless',
+            'options': {
+                'Glitchless': 'glitchless',
+                'No Logic': 'none',
+            },
+            'tooltip':'''\
+                      Sets the rules the logic uses
+                      to determine accessibility.
+
+                      'Glitchless': No glitches are
+                      required, but may require some
+                      minor tricks
+
+                      'No Logic': All locations are
+                      considered available. May not
+                      be beatable.
+                      '''
+        }),    
     Setting_Info('all_reachable', bool, 1, True,
         {
             'help': '''\
@@ -301,7 +335,8 @@ setting_infos = [
 
                       Even when enabled, some locations may still be able
                       to hold the keys needed to reach them.
-                      '''
+                      ''',
+            'dependency': lambda guivar: guivar['logic_rules'].get() == 'Glitchless',
         }),
     Setting_Info('bombchus_in_logic', bool, 1, True,
         {
