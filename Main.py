@@ -139,28 +139,41 @@ def main(settings, window=dummy_window()):
     if settings.compress_rom == 'Patch':
         rng_state = random.getstate()
         file_list = []
-        patchfilebase = 'OoT_%s_%s_W%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count)
-        for world in worlds:
-            window.update_status('Patching ROM: Player %d' % (world.id + 1))
-            random.setstate(rng_state)
+        if settings.world_count > 1:
+            patchfilebase = 'OoT_%s_%s_W%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count)
+            for world in worlds:
+                window.update_status('Patching ROM: Player %d' % (world.id + 1))
+                random.setstate(rng_state)
+                patch_rom(world, rom)
+                patch_cosmetics(settings, rom)
+                window.update_progress(65)
+
+                window.update_status('Creating Patch File: Player %d' % (world.id + 1))
+                patchfilename = '%sP%d.zpf' % (patchfilebase, world.id + 1)
+                output_path = os.path.join(output_dir, patchfilename)
+                file_list.append(patchfilename)
+                create_patch_file(rom, output_path)
+                rom.restore()
+
+            output_path = os.path.join(output_dir, patchfilebase + '.zpfz')
+            with zipfile.ZipFile(output_path, mode="w") as patch_archive:
+                for file in file_list:
+                    file_path = os.path.join(output_dir, file)
+                    patch_archive.write(file_path, file, compress_type=zipfile.ZIP_DEFLATED)
+            for file in file_list:
+                os.remove(os.path.join(output_dir, file))
+        else:
+            patchfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
+            window.update_status('Patching ROM')
             patch_rom(world, rom)
             patch_cosmetics(settings, rom)
             window.update_progress(65)
 
-            window.update_status('Creating Patch File: Player %d' % (world.id + 1))
-            patchfilename = '%sP%d.zpf' % (patchfilebase, world.id + 1)
+            window.update_status('Creating Patch File')
+            patchfilename = '%s.zpf' % patchfilebase
             output_path = os.path.join(output_dir, patchfilename)
             file_list.append(patchfilename)
-            create_patch_file(rom, output_path)
-            rom.restore()
-
-        output_path = os.path.join(output_dir, patchfilebase + '.zpfz')
-        with zipfile.ZipFile(output_path, mode="w") as patch_archive:
-            for file in file_list:
-                file_path = os.path.join(output_dir, file)
-                patch_archive.write(file_path, file, compress_type=zipfile.ZIP_DEFLATED)
-        for file in file_list:
-            os.remove(os.path.join(output_dir, file))
+            create_patch_file(rom, output_path)            
 
     elif settings.compress_rom != 'None':
         window.update_status('Patching ROM')
