@@ -1,13 +1,16 @@
 from State import State
 from Region import Region
 from Entrance import Entrance
-from Location import Location
+from Location import Location, LocationFactory
 from RegionList import create_regions
 from DungeonList import create_dungeons
 from Rules import set_rules, set_shop_rules
 from Item import Item
+from RuleParser import parse_rule_string
 import logging
 import copy
+import io
+import json
 
 
 class World(object):
@@ -81,6 +84,37 @@ class World(object):
         new_world.state = self.state.copy(new_world)
 
         return new_world
+
+
+    def load_regions_from_json(self, file_path):
+        with io.open(file_path, 'r') as file:
+            region_json = json.load(file)
+
+        for region in region_json:
+            new_region = Region(region['region_name'])
+            new_region.world = self
+            if 'dungeon' in region:
+                new_region.dungeon = region['dungeon']
+            if 'locations' in region:
+                for location, rule in region['locations'].items():
+                    new_location = LocationFactory(location)
+                    new_location.parent_region = new_region
+                    new_location.access_rule = parse_rule_string(rule, self)
+                    new_location.world = self
+                    new_region.locations.append(new_location)
+            if 'exits' in region:
+                for exit, rule in region['exits'].items():
+                    new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)
+                    new_exit.connected_region = exit
+                    new_exit.access_rule = parse_rule_string(rule, self)
+                    new_region.exits.append(new_exit)
+            self.regions.append(new_region)
+
+
+    def initialize_entrances(self):
+        for region in self.regions:
+            for exit in region.exits:
+                exit.connect(self.get_region(exit.connected_region))        
 
 
     def initialize_regions(self):

@@ -138,7 +138,7 @@ class State(object):
                 (self.can_reach('Ice Cavern')
                 or self.can_reach('Ganons Castle Water Trial')
                 or self.has('Buy Blue Fire')
-                or (self.world.dungeon_mq['GTG'] and self.can_reach('Gerudo Training Grounds Stalfos Room')))
+                or (self.world.dungeon_mq['Gerudo Training Grounds'] and self.can_reach('Gerudo Training Grounds Stalfos Room')))
 
 
     def has_ocarina(self):

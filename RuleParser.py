@@ -123,7 +123,7 @@ class Rule_AST_Transformer(NodeTransformer):
                         ctx=Load()),
                     attr=node.value.id,
                     ctx=Load()),
-                slice=Index(value=Str(node.slice.value.id)),
+                slice=Index(value=Str(node.slice.value.id.replace('_', ' '))),
                 ctx=node.ctx)
         else:
             return node
