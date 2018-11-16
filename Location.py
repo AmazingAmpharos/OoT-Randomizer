@@ -1,3 +1,6 @@
+from LocationList import location_table
+
+
 class Location(object):
 
     def __init__(self, name='', address=None, address2=None, default=None, type='Chest', scene=None, hint='Termina', parent=None):
@@ -60,4 +63,25 @@ class Location(object):
 
     def __unicode__(self):
         return '%s' % self.name
+
+
+def LocationFactory(locations, world=None):
+    ret = []
+    singleton = False
+    if isinstance(locations, str):
+        locations = [locations]
+        singleton = True
+    for location in locations:
+        if location in location_table:
+            type, scene, default, hint, addresses = location_table[location]
+            if addresses is None:
+                addresses = (None, None)
+            address, address2 = addresses
+            ret.append(Location(location, address, address2, default, type, scene, hint, ret))
+        else:
+            raise KeyError('Unknown Location: %s', item)
+
+    if singleton:
+        return ret[0]
+    return ret
 

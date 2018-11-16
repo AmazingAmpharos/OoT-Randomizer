@@ -8,6 +8,9 @@ import os, os.path
 import sys
 import struct
 import zipfile
+import json
+import io
+
 
 from World import World
 from CollectionState import CollectionState
@@ -27,6 +30,10 @@ from OcarinaSongs import verify_scarecrow_song_str
 from N64Patch import create_patch_file, apply_patch_file
 import WorldFile
 from SettingsList import setting_infos
+from Region import Region
+from Location import LocationFactory
+from RuleParser import parse_rule_string
+from Entrance import Entrance
 
 
 class dummy_window():
@@ -92,15 +99,34 @@ def main(settings, window=dummy_window()):
         for dung in mqd_picks:
             world.dungeon_mq[dung] = True
 
-        create_regions(world)
+        with io.open('region_dump.json', 'r') as file:
+            region_json = json.load(file)
 
-        window.update_progress(0 + 2*(id + 1)/settings.world_count)
-        logger.info('Creating Dungeons')
+        world.regions = []
+        for region in region_json:
+            new_region = Region(region['region_name'])
+            new_region.world = world
+            if 'dungeon' in region:
+                new_region.dungeon = region['dungeon']
+            if 'locations' in region:
+                for location, rule in region['locations'].items():
+                    new_location = LocationFactory(location)
+                    new_location.parent_region = new_region
+                    new_location.access_rule = parse_rule_string(rule, world)
+                    new_location.world = world
+                    new_region.locations.append(new_location)
+            if 'exits' in region:
+                for exit, rule in region['exits'].items():
+                    new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)
+                    new_exit.connected_region = exit
+                    new_exit.access_rule = parse_rule_string(rule, world)
+                    new_region.exits.append(new_exit)
+            world.regions.append(new_region)
+        for region in world.regions:
+            for exit in region.exits:
+                exit.connect(world.get_region(exit.connected_region))
+
         create_dungeons(world)
-
-        window.update_progress(0 + 3*(id + 1)/settings.world_count)
-        logger.info('Linking Entrances')
-        link_entrances(world)
 
         if settings.shopsanity != 'off':
             world.random_shop_prices()
@@ -112,6 +138,7 @@ def main(settings, window=dummy_window()):
         window.update_progress(0 + 5*(id + 1)/settings.world_count)
         logger.info('Generating Item Pool.')
         generate_itempool(world)
+
 
     window.update_status('Placing the Items')
     logger.info('Fill the world.')

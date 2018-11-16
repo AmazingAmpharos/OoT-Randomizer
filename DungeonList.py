@@ -5,6 +5,78 @@ from Item import ItemFactory
 
 
 def create_dungeons(world):
+    DT = Dungeon(world,
+        'Deku Tree',
+        None, None,
+        ItemFactory(['Map (Deku Tree)', 'Compass (Deku Tree)']))
+
+    DC = Dungeon(world,
+        'Dodongos Cavern',
+        None, None,
+        ItemFactory(['Map (Dodongos Cavern)', 'Compass (Dodongos Cavern)']))
+
+    JB = Dungeon(world,
+        'Jabu Jabus Belly',
+        None, None,
+        ItemFactory(['Map (Jabu Jabus Belly)', 'Compass (Jabu Jabus Belly)']))
+
+    FoT = Dungeon(world,
+        'Forest Temple',
+        ItemFactory('Boss Key (Forest Temple)'),
+        ItemFactory(['Small Key (Forest Temple)'] * (6 if world.dungeon_mq['FoT'] else 5)),
+        ItemFactory(['Map (Forest Temple)', 'Compass (Forest Temple)']))
+
+    BW = Dungeon(world,
+        'Bottom of the Well',
+        None,
+        ItemFactory(['Small Key (Bottom of the Well)'] * (2 if world.dungeon_mq['BW'] else 3)),
+        ItemFactory(['Map (Bottom of the Well)', 'Compass (Bottom of the Well)']))
+
+    FiT = Dungeon(world,
+        'Fire Temple',
+        ItemFactory('Boss Key (Fire Temple)'),
+        ItemFactory(['Small Key (Fire Temple)'] * (5 if world.dungeon_mq['FiT'] else 8)),
+        ItemFactory(['Map (Fire Temple)', 'Compass (Fire Temple)']))
+
+    IC = Dungeon(world,
+        'Ice Cavern',
+        None, None,
+        ItemFactory(['Map (Ice Cavern)', 'Compass (Ice Cavern)']))
+
+    WT = Dungeon(world,
+        'Water Temple',
+        ItemFactory('Boss Key (Water Temple)'),
+        ItemFactory(['Small Key (Water Temple)'] * (2 if world.dungeon_mq['WT'] else 6)),
+        ItemFactory(['Map (Water Temple)', 'Compass (Water Temple)']))
+
+    ShT = Dungeon(world,
+        'Shadow Temple',
+        ItemFactory('Boss Key (Shadow Temple)'),
+        ItemFactory(['Small Key (Shadow Temple)'] * (6 if world.dungeon_mq['ShT'] else 5)),
+        ItemFactory(['Map (Shadow Temple)', 'Compass (Shadow Temple)']))
+
+    GTG = Dungeon(world,
+        'Gerudo Training Grounds',
+        None,
+        ItemFactory(['Small Key (Gerudo Training Grounds)'] * (3 if world.dungeon_mq['GTG'] else 9)),
+        None)
+
+    SpT = Dungeon(world,
+        'Spirit Temple',
+        ItemFactory('Boss Key (Spirit Temple)'),
+        ItemFactory(['Small Key (Spirit Temple)'] * (7 if world.dungeon_mq['SpT'] else 5)),
+        ItemFactory(['Map (Spirit Temple)', 'Compass (Spirit Temple)']))
+
+    GC = Dungeon(world,
+        'Ganons Castle',
+        ItemFactory('Boss Key (Ganons Castle)'),
+        ItemFactory(['Small Key (Ganons Castle)'] * (3 if world.dungeon_mq['SpT'] else 2)),
+        None)
+
+    world.dungeons = [DT, DC, JB, FoT, BW, FiT, IC, WT, ShT, GTG, SpT, GC]
+
+
+def create_dungeons_old(world):
     def make_dungeon(name, dungeon_regions_names, boss_key, small_keys, dungeon_items):
         dungeon_regions = [world.get_region(region) for region in dungeon_regions_names]
 

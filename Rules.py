@@ -8,38 +8,26 @@ def set_rules(world):
     if world.logic_rules == 'none':
         return
 
-    global_rules(world)
+    #global_rules(world)
 
     if world.bridge == 'medallions':
         # require all medallions to form the bridge
         set_rule(
-            world.get_entrance('Rainbow Bridge'),
-            lambda state: state.has('Forest Medallion') and
-                          state.has('Fire Medallion') and
-                          state.has('Water Medallion') and
-                          state.has('Shadow Medallion') and
-                          state.has('Spirit Medallion') and
-                          state.has('Light Medallion'))
+            #world.get_entrance('Rainbow Bridge'),
+            world.get_entrance('Ganons Castle Grounds -> Ganons Castle Lobby'),
+            lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion') and state.has('Light Medallion'))
     elif world.bridge == 'vanilla':
         # require only what vanilla did to form the bridge
         set_rule(
-            world.get_entrance('Rainbow Bridge'),
-            lambda state: state.has('Light Arrows') and
-                          state.has('Shadow Medallion') and
-                          state.has('Spirit Medallion'))
+            #world.get_entrance('Rainbow Bridge'),
+            world.get_entrance('Ganons Castle Grounds -> Ganons Castle Lobby'),
+            lambda state: state.has('Light Arrows') and state.has('Shadow Medallion') and state.has('Spirit Medallion'))
     elif world.bridge == 'dungeons':
         # require all medallions and stones to form the bridge
         set_rule(
-            world.get_entrance('Rainbow Bridge'),
-            lambda state: state.has('Forest Medallion') and
-                          state.has('Fire Medallion') and
-                          state.has('Water Medallion') and
-                          state.has('Shadow Medallion') and
-                          state.has('Spirit Medallion') and
-                          state.has('Light Medallion') and
-                          state.has('Kokiri Emerald') and
-                          state.has('Goron Ruby') and
-                          state.has('Zora Sapphire'))
+            #world.get_entrance('Rainbow Bridge'),
+            world.get_entrance('Ganons Castle Grounds -> Ganons Castle Lobby'),
+            lambda state: state.has('Forest Medallion') and state.has('Fire Medallion') and state.has('Water Medallion') and state.has('Shadow Medallion') and state.has('Spirit Medallion') and state.has('Light Medallion') and state.has('Kokiri Emerald') and state.has('Goron Ruby') and state.has('Zora Sapphire'))
 
 
 def set_rule(spot, rule):
@@ -73,12 +61,6 @@ def item_in_locations(state, item, locations):
         if item_name(state, location) == item:
             return True
     return False
-
-def item_name(state, location):
-    location = state.world.get_location(location)
-    if location.item is None:
-        return None
-    return location.item.name
 
 
 def global_rules(world):
@@ -810,7 +792,7 @@ def set_shop_rules(world):
                                         state.has('Progressive Strength Upgrade') or
                                         state.has_bow()))
                 elif location.parent_region.name == 'Zora Shop':
-                    add_rule(location, lambda state: state.can_reach('Zora Shop Adult Access', 'Entrance'))
+                    add_rule(location, lambda state: state.can_reach('Zoras Domain Frozen -> Zora Shop', 'Entrance'))
                 elif location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
                     set_rule(location, lambda state: False)
                 else:

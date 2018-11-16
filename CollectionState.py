@@ -78,6 +78,13 @@ class CollectionState(object):
         return correct_cache[spot]
 
 
+    def item_name(self, location):
+        location = self.world.get_location(location)
+        if location.item is None:
+            return None
+        return location.item.name
+
+
     def has(self, item, count=1):
         return self.prog_items[item] >= count
 
