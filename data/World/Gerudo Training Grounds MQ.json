@@ -21,7 +21,10 @@
         "dungeon": "Gerudo Training Grounds",
         "locations": {
             "Gerudo Training Grounds MQ Dinolfos Chest": "True",
-            "Gerudo Training Grounds MQ Underwater Silver Rupee Chest": "(Hover_Boots or (can_reach(Gerudo_Training_Grounds_Central_Maze_Right) and (can_use(Longshot) or has_bow))) and has_fire_source and Iron_Boots and (logic_fewer_tunic_requirements or has_ZoraTunic) and (damage_multiplier != 'ohko' or (has_bottle or can_use(Nayrus_Love)))"
+            "Gerudo Training Grounds MQ Underwater Silver Rupee Chest": "
+                (Hover_Boots or (can_reach(Gerudo_Training_Grounds_Central_Maze_Right) and (can_use(Longshot) or has_bow))) and 
+                has_fire_source and Iron_Boots and (logic_fewer_tunic_requirements or has_ZoraTunic) and 
+                (damage_multiplier != 'ohko' or (has_bottle or can_use(Nayrus_Love)))"
         }
     },
     {
@@ -64,7 +67,10 @@
         "locations": {
             "Gerudo Training Grounds MQ Maze Right Central Chest": "True",
             "Gerudo Training Grounds MQ Maze Right Side Chest": "True",
-            "Gerudo Training Grounds MQ Ice Arrows Chest": "(Small_Key_Gerudo_Training_Grounds, 3) or (item_name(Gerudo_Training_Grounds_MQ_Ice_Arrows_Chest) == 'Small_Key_Gerudo_Training_Grounds' and Small_Key_Gerudo_Training_Grounds)"
+            "Gerudo Training Grounds MQ Ice Arrows Chest": "
+                (Small_Key_Gerudo_Training_Grounds, 3) or 
+                (item_name(Gerudo_Training_Grounds_MQ_Ice_Arrows_Chest) == 'Small_Key_Gerudo_Training_Grounds' and 
+                    Small_Key_Gerudo_Training_Grounds)"
         }
     }
 ]

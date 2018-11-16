@@ -39,11 +39,13 @@
             "Shadow Temple MQ Falling Spikes Upper Chest": "Progressive_Strength_Upgrade",
             "Shadow Temple MQ Falling Spikes Switch Chest": "Progressive_Strength_Upgrade",
             "Shadow Temple MQ Invisible Spikes Chest": "Hover_Boots and (Small_Key_Shadow_Temple, 3)",
-            "Shadow Temple MQ Stalfos Room Chest": "Hover_Boots and (Small_Key_Shadow_Temple, 3) and can_use(Longshot)",
+            "Shadow Temple MQ Stalfos Room Chest": "
+                Hover_Boots and (Small_Key_Shadow_Temple, 3) and can_use(Longshot)",
             "GS Shadow Temple MQ Crusher Room": "Progressive_Hookshot"
         },
         "exits": {
-            "Shadow Temple Wind Tunnel": "Hover_Boots and Progressive_Hookshot and (Small_Key_Shadow_Temple, 4)"
+            "Shadow Temple Wind Tunnel": "
+                Hover_Boots and Progressive_Hookshot and (Small_Key_Shadow_Temple, 4)"
         }
     },
     {
@@ -57,7 +59,8 @@
             "GS Shadow Temple MQ After Wind": "True"
         },
         "exits": {
-            "Shadow Temple Beyond Boat": "can_play(Zeldas_Lullaby) and (Small_Key_Shadow_Temple, 5)"
+            "Shadow Temple Beyond Boat": "
+                can_play(Zeldas_Lullaby) and (Small_Key_Shadow_Temple, 5)"
         }
     },
     {
@@ -70,7 +73,8 @@
             "GS Shadow Temple MQ Near Boss": "has_bow"
         },
         "exits": {
-            "Shadow Temple Invisible Maze": "has_bow and can_play(Song_of_Time) and can_use(Longshot)"
+            "Shadow Temple Invisible Maze": "
+                has_bow and can_play(Song_of_Time) and can_use(Longshot)"
         }
     },
     {

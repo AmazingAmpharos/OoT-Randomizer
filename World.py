@@ -87,8 +87,11 @@ class World(object):
 
 
     def load_regions_from_json(self, file_path):
+        json_string = ""
         with io.open(file_path, 'r') as file:
-            region_json = json.load(file)
+            for line in file.readlines():
+                json_string += line.split('#')[0].rstrip('\n')
+        region_json = json.loads(json_string)
 
         for region in region_json:
             new_region = Region(region['region_name'])

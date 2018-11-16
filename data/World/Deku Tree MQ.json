@@ -22,7 +22,8 @@
         "dungeon": "Deku Tree",
         "locations": {
             "Deku Tree MQ Compass Chest": "True",
-            "GS Deku Tree MQ Compass Room": "Boomerang and ((has_bombs and can_play(Song_of_Time)) or has_bombchus)"
+            "GS Deku Tree MQ Compass Room": "
+                Boomerang and ((has_bombs and can_play(Song_of_Time)) or has_bombchus)"
         },
         "exits": {
             "Deku Tree Lobby": "True"

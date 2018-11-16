@@ -10,7 +10,8 @@
             "Sheik in Ice Cavern": "True",
             "GS Ice Cavern MQ Red Ice": "can_play(Song_of_Time)",
             "GS Ice Cavern MQ Ice Block": "True",
-            "GS Ice Cavern MQ Scarecrow": "can_use(Scarecrow) or (Hover_Boots and can_use(Longshot))"
+            "GS Ice Cavern MQ Scarecrow": "
+                can_use(Scarecrow) or (Hover_Boots and can_use(Longshot))"
         },
         "exits": {
             "Outside Ice Cavern": "True"

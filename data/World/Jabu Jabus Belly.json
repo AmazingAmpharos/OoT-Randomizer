@@ -4,7 +4,8 @@
         "dungeon": "Jabu Jabus Belly",
         "exits": {
             "Zoras Fountain": "True",
-            "Jabu Jabus Belly Main": "has_slingshot or has_explosives or Boomerang"
+            "Jabu Jabus Belly Main": "
+                has_slingshot or has_explosives or Boomerang"
         }
     },
     {

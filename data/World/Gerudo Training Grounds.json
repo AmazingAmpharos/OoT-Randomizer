@@ -23,7 +23,10 @@
             "Gerudo Training Grounds Maze Path First Chest": "(Small_Key_Gerudo_Training_Grounds, 4)",
             "Gerudo Training Grounds Maze Path Second Chest": "(Small_Key_Gerudo_Training_Grounds, 6)",
             "Gerudo Training Grounds Maze Path Third Chest": "(Small_Key_Gerudo_Training_Grounds, 7)",
-            "Gerudo Training Grounds Maze Path Final Chest": "((Small_Key_Gerudo_Training_Grounds, 9)) or (item_name(Gerudo_Training_Grounds_Maze_Path_Final_Chest) == 'Small_Key_Gerudo_Training_Grounds' and (Small_Key_Gerudo_Training_Grounds, 8)) #Allow key for key"
+            "Gerudo Training Grounds Maze Path Final Chest": "
+                ((Small_Key_Gerudo_Training_Grounds, 9)) or 
+                (item_name(Gerudo_Training_Grounds_Maze_Path_Final_Chest) == 'Small_Key_Gerudo_Training_Grounds' and 
+                (Small_Key_Gerudo_Training_Grounds, 8))" #Allow key for key
         },
         "exits": {
             "Gerudo Training Grounds Central Maze Right": "(Small_Key_Gerudo_Training_Grounds, 9)"
@@ -45,7 +48,9 @@
         "region_name": "Gerudo Training Grounds Lava Room",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds Underwater Silver Rupee Chest": "can_use(Hookshot) and can_play(Song_of_Time) and Iron_Boots and (logic_fewer_tunic_requirements or has_ZoraTunic)"
+            "Gerudo Training Grounds Underwater Silver Rupee Chest": "
+                can_use(Hookshot) and can_play(Song_of_Time) and Iron_Boots and 
+                    (logic_fewer_tunic_requirements or has_ZoraTunic)"
         },
         "exits": {
             "Gerudo Training Grounds Central Maze Right": "can_play(Song_of_Time)",

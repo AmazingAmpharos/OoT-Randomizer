@@ -38,7 +38,8 @@
         },
         "exits": {
             "Jabu Jabus Belly Main": "True",
-            "Jabu Jabus Belly Boss Area": "has_sticks or (Kokiri_Sword and can_use(Dins_Fire))"
+            "Jabu Jabus Belly Boss Area": "
+                has_sticks or (Kokiri_Sword and can_use(Dins_Fire))"
         }
     },
     {

@@ -21,8 +21,11 @@
         "exits": {
             "Forest Temple NW Outdoors": "can_use(Bow)",
             "Forest Temple NE Outdoors": "can_use(Bow)",
-            "Forest Temple After Block Puzzle": "(has_bombchus and logic_tricks) or Progressive_Strength_Upgrade",
-            "Forest Temple Outdoor Ledge": "(has_bombchus and logic_tricks) or Progressive_Strength_Upgrade or can_use(Hover_Boots)"
+            "Forest Temple After Block Puzzle": "
+                (has_bombchus and logic_tricks) or Progressive_Strength_Upgrade",
+            "Forest Temple Outdoor Ledge": "
+                (has_bombchus and logic_tricks) or 
+                Progressive_Strength_Upgrade or can_use(Hover_Boots)"
         }
     },
     {
@@ -52,7 +55,9 @@
             "GS Forest Temple MQ Outdoor West": "True"
         },
         "exits": {
-            "Forest Temple NE Outdoors": "can_use(Iron_Boots) or can_use(Longshot) or (Progressive_Scale, 2) or (logic_tricks and can_use(Hookshot))",
+            "Forest Temple NE Outdoors": "
+                can_use(Iron_Boots) or can_use(Longshot) or 
+                (Progressive_Scale, 2) or (logic_tricks and can_use(Hookshot))",
             "Forest Temple Outdoors Top Ledges": "can_use(Fire_Arrows)"
         }
     },
@@ -65,7 +70,9 @@
             "GS Forest Temple MQ Well": "can_use(Iron_Boots) or can_use(Bow)"
         },
         "exits": {
-            "Forest Temple Outdoors Top Ledges": "can_use(Longshot) or can_use(Hover_Boots) or can_play(Song_of_Time) or (logic_tricks and can_use(Hookshot))",
+            "Forest Temple Outdoors Top Ledges": "
+                can_use(Longshot) or can_use(Hover_Boots) or can_play(Song_of_Time) or 
+                (logic_tricks and can_use(Hookshot))",
             "Forest Temple NE Outdoors Ledge": "can_use(Longshot)"
         }
     },
@@ -99,7 +106,9 @@
             "Forest Temple MQ Compass Chest": "can_use(Bow)"
         },
         "exits": {
-            "Forest Temple Falling Room": "(Small_Key_Forest_Temple, 5) and (can_use(Bow) or can_use(Dins_Fire)) # Only 5 keys because the door you could waste your key on is the door you're trying to use keys to get to."
+            "Forest Temple Falling Room": "
+                (Small_Key_Forest_Temple, 5) and 
+                (can_use(Bow) or can_use(Dins_Fire))" # Only 5 keys because the door you could waste your key on is the door you're trying to use keys to get to.
         }
     },
     {
@@ -110,7 +119,9 @@
         },
         "exits": {
             "Forest Temple NE Outdoors Ledge": "True",
-            "Forest Temple Boss Region": "can_use(Bow) and (Small_Key_Forest_Temple, 6) and can_reach(Forest_Temple_Bow_Region)"
+            "Forest Temple Boss Region": "
+                can_use(Bow) and (Small_Key_Forest_Temple, 6) and 
+                can_reach(Forest_Temple_Bow_Region)"
         }
     },
     {
