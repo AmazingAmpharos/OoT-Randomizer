@@ -13,7 +13,7 @@ import io
 
 
 from World import World
-from CollectionState import CollectionState
+from State import State
 from Spoiler import Spoiler
 from EntranceList import link_entrances
 from Rom import LocalRom
@@ -152,7 +152,7 @@ def main(settings, window=dummy_window()):
         window.update_progress(50)
     if settings.hints != 'none':
         window.update_status('Calculating Hint Data')
-        CollectionState.update_required_items(worlds)
+        State.update_required_items(worlds)
         for world in worlds:
             buildGossipHints(worlds, world)
         window.update_progress(55)
@@ -340,14 +340,14 @@ def run_process(window, logger, args):
 
 
 def create_playthrough(worlds):
-    if worlds[0].check_beatable_only and not CollectionState.can_beat_game([world.state for world in worlds]):
+    if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Uncopied is broken too.')
     # create a copy as we will modify it
     old_worlds = worlds
     worlds = [world.copy() for world in worlds]
 
     # if we only check for beatable, we can do this sanity check first before writing down spheres
-    if worlds[0].check_beatable_only and not CollectionState.can_beat_game([world.state for world in worlds]):
+    if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Cannot beat game. Something went terribly wrong here!')
 
     state_list = [world.state for world in worlds]
@@ -388,7 +388,7 @@ def create_playthrough(worlds):
         del state_list[location.world.id].collected_locations[location.name]
 
         # remove the item from the world and test if the game is still beatable
-        if CollectionState.can_beat_game(state_list):
+        if State.can_beat_game(state_list):
             # cull entries for spoiler walkthrough at end
             required_locations.remove(location)
         else:

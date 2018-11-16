@@ -2,7 +2,7 @@ from collections import Counter, defaultdict
 import copy
 
 
-class CollectionState(object):
+class State(object):
 
     def __init__(self, parent):
         self.prog_items = Counter()
@@ -24,7 +24,7 @@ class CollectionState(object):
     def copy(self, new_world=None):
         if not new_world:
             new_world = self.world
-        new_state = CollectionState(new_world)
+        new_state = State(new_world)
         new_state.prog_items = copy.copy(self.prog_items)
         new_state.region_cache = copy.copy(self.region_cache)
         new_state.location_cache = copy.copy(self.location_cache)
@@ -347,7 +347,7 @@ class CollectionState(object):
                 if item.world.id == base_state.world.id: # Check world
                     new_state.collect(item)
             new_state_list.append(new_state)
-        CollectionState.collect_locations(new_state_list)
+        State.collect_locations(new_state_list)
         return new_state_list
 
 
@@ -387,7 +387,7 @@ class CollectionState(object):
 
             # collect all available items
             new_state_list = [state.copy() for state in state_list]
-            CollectionState.collect_locations(new_state_list)
+            State.collect_locations(new_state_list)
         else:
             new_state_list = state_list
 
@@ -431,7 +431,7 @@ class CollectionState(object):
                 if location in item_locations:
                     old_item = location.item
                     location.item = None
-                    if not CollectionState.can_beat_game(state_list):
+                    if not State.can_beat_game(state_list):
                         required_locations.append(location)
                     location.item = old_item
                     item_locations.remove(location)

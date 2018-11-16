@@ -1,4 +1,4 @@
-from CollectionState import CollectionState
+from State import State
 from Region import Region
 from Entrance import Entrance
 from Location import Location
@@ -17,7 +17,7 @@ class World(object):
         self.dungeons = []
         self.regions = []
         self.itempool = []
-        self.state = CollectionState(self)
+        self.state = State(self)
         self._cached_locations = None
         self._entrance_cache = {}
         self._region_cache = {}

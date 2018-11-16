@@ -1,6 +1,6 @@
 from ast import *
 from ItemList import item_table
-from CollectionState import CollectionState
+from State import State
 import re
 
 
@@ -32,7 +32,7 @@ class Rule_AST_Transformer(NodeTransformer):
                     ctx=Load()),
                 attr=node.id,
                 ctx=Load())
-        elif node.id in CollectionState.__dict__:
+        elif node.id in State.__dict__:
             return Call(
                 func=Attribute(
                     value=Name(id='state', ctx=Load()),

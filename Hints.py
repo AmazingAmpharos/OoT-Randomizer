@@ -10,7 +10,7 @@ from ItemPool import eventlocations
 from Messages import update_message_by_id
 from TextBox import lineWrap
 from Utils import random_choices
-from CollectionState import CollectionState
+from State import State
 
 
 class GossipStone():
@@ -112,7 +112,7 @@ def can_reach_stone(worlds, stone_location, location):
 
     old_item = location.item
     location.item = None
-    stone_states = CollectionState.get_states_with_items([world.state for world in worlds], [])
+    stone_states = State.get_states_with_items([world.state for world in worlds], [])
     location.item = old_item
 
     return stone_states[location.world.id].can_reach(stone_location, resolution_hint='Location') and \
