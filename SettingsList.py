@@ -288,7 +288,6 @@ setting_infos = [
                     glitchless:  No glitches are required, but may require some minor tricks
                     none:        All locations are considered available. May not be beatable.
                     ''',
-            'action': 'store_true'
         },
         {
             'text': 'Logic Rules',
@@ -1671,6 +1670,7 @@ setting_infos = [
             'nargs': '?',
             'help': '''\
                     Choose how Gossip Stones hints are distributed
+                    useless: Nothing but junk hints.
                     balanced: Use a balanced distribution of hint types
                     strong: Use a strong distribution of hint types
                     very_strong: Use a very strong distribution of hint types
@@ -1682,11 +1682,14 @@ setting_infos = [
             'widget': 'Combobox',
             'default': 'Balanced',
             'options': {
+                'Useless': 'useless',
                 'Balanced': 'balanced',
                 'Strong': 'strong',
                 'Very Strong': 'very_strong',
             },
             'tooltip':'''\
+                      Useless has nothing but junk
+                      hints.
                       Strong distribution has some
                       duplicate hints and no junk
                       hints.

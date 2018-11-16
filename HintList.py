@@ -255,7 +255,7 @@ hintTable = {
     '1044':                                                  ("They say all toasters toast toast.", None, 'junkHint'),
     '1045':                                                  ("They say that Okami is the best Zelda game.", None, 'junkHint'),
     '1046':                                                  ("They say that quest guidance can be found at a talking rock.", None, 'junkHint'),
-    '1047':                                                  ("They say that the final item you're looking for can be found somewhere in Hyrule", None, 'junkHint'),
+    '1047':                                                  ("They say that the final item you're looking for can be found somewhere in Hyrule.", None, 'junkHint'),
     '1048':                                                  ("Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.^Mweep.", None, 'junkHint'),
     '1049':                                                  ("They say that Barinade fears Deku Nuts.", None, 'junkHint'),
     '1050':                                                  ("They say that Flare Dancers do not fear Goron-crafted blades.", None, 'junkHint'),
@@ -343,41 +343,41 @@ def hintExclusions(world):
         exclusions.append('GS Hyrule Castle Grotto')
         exclusions.append('GS Hyrule Field Near Gerudo Valley')
         exclusions.append('GS Zora\'s Fountain Hidden Cave')
-    if not world.dungeon_mq['DT']:
+    if not world.dungeon_mq['Deku Tree']:
         exclusions.append('Deku Tree MQ After Spinning Log Chest')
-    if world.tokensanity == 'off' or not world.dungeon_mq['JB']:
+    if world.tokensanity == 'off' or not world.dungeon_mq['Jabu Jabus Belly']:
         exclusions.append('GS Jabu Jabu MQ Invisible Enemies Room')
-    if world.dungeon_mq['FoT']:
+    if world.dungeon_mq['Forest Temple']:
         exclusions.append('Forest Temple Floormaster Chest')
-    if world.dungeon_mq['FiT']:
+    if world.dungeon_mq['Fire Temple']:
         exclusions.append('Fire Temple Scarecrow Chest')
         exclusions.append('Fire Temple Megaton Hammer Chest')
     else:
         exclusions.append('Fire Temple MQ West Tower Top Chest')
-    if world.dungeon_mq['WT']:
+    if world.dungeon_mq['Water Temple']:
         exclusions.append('Water Temple River Chest')
         exclusions.append('Water Temple Boss Key Chest')
     else:
         exclusions.append('Water Temple MQ Boss Key Chest')
         exclusions.append('Water Temple MQ Freestanding Key')
-    if world.tokensanity == 'off' or not world.dungeon_mq['WT']:
+    if world.tokensanity == 'off' or not world.dungeon_mq['Water Temple']:
         exclusions.append('GS Water Temple MQ North Basement')
-    if world.dungeon_mq['GTG']:
+    if world.dungeon_mq['Gerudo Training Grounds']:
         exclusions.append('Gerudo Training Grounds Underwater Silver Rupee Chest')
         exclusions.append('Gerudo Training Grounds Maze Path Final Chest')
     else:
         exclusions.append('Gerudo Training Grounds MQ Underwater Silver Rupee Chest')
         exclusions.append('Gerudo Training Grounds MQ Ice Arrows Chest')
-    if world.dungeon_mq['BW']:
+    if world.dungeon_mq['Bottom of the Well']:
         exclusions.append('Bottom of the Well Defeat Boss')
     else:
         exclusions.append('Bottom of the Well MQ Compass Chest')
-    if not world.dungeon_mq['SpT']:
+    if not world.dungeon_mq['Spirit Temple']:
         exclusions.append('Spirit Temple MQ Child Center Chest')
         exclusions.append('Spirit Temple MQ Lower Adult Right Chest')
-    if world.tokensanity == 'off' or not world.dungeon_mq['SpT']:
+    if world.tokensanity == 'off' or not world.dungeon_mq['Spirit Temple']:
         exclusions.append('GS Spirit Temple MQ Lower Adult Right')
-    if world.dungeon_mq['ShT']:
+    if world.dungeon_mq['Shadow Temple']:
         exclusions.append('Shadow Temple Hidden Floormaster Chest')
     else:
         exclusions.append('Shadow Temple MQ Bomb Flower Chest')

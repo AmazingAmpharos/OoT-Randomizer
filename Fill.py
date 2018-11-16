@@ -1,10 +1,12 @@
 import random
 import logging
-from BaseClasses import CollectionState
+from State import State
 from Rules import set_shop_rules
+
 
 class FillError(RuntimeError):
     pass
+
 
 # Places all items into the world
 def distribute_items_restrictive(window, worlds, fill_locations=None):
@@ -122,7 +124,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 # they are placed first so it will assume all other items are reachable
 def fill_dungeons_restrictive(window, worlds, shuffled_locations, dungeon_items, itempool):
     # List of states with all non-key items
-    all_state_base_list = CollectionState.get_states_with_items([world.state for world in worlds], itempool)
+    all_state_base_list = State.get_states_with_items([world.state for world in worlds], itempool)
 
     # shuffle this list to avoid placement bias
     random.shuffle(dungeon_items)
@@ -161,7 +163,7 @@ def fill_dungeon_unique_item(window, worlds, fill_locations, itempool):
     random.shuffle(dungeons)
     random.shuffle(itempool)
 
-    all_other_item_state = CollectionState.get_states_with_items([world.state for world in worlds], minor_items)
+    all_other_item_state = State.get_states_with_items([world.state for world in worlds], minor_items)
     all_dungeon_locations = []
 
     # iterate of all the dungeons in a random order, placing the item there
@@ -196,7 +198,7 @@ def fill_dungeon_unique_item(window, worlds, fill_locations, itempool):
 # Places the shop items into the world at the Shop locations
 def fill_shops(window, worlds, locations, shoppool, itempool, attempts=15):
     # List of states with all items
-    all_state_base_list = CollectionState.get_states_with_items([world.state for world in worlds], itempool)
+    all_state_base_list = State.get_states_with_items([world.state for world in worlds], itempool)
 
     while attempts:
         attempts -= 1
@@ -228,7 +230,7 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
     empty_song_locations = [loc for loc in locations if loc.item is None]
 
     # List of states with all items
-    all_state_base_list = CollectionState.get_states_with_items([world.state for world in worlds], itempool)
+    all_state_base_list = State.get_states_with_items([world.state for world in worlds], itempool)
 
     while attempts:
         attempts -= 1
@@ -280,7 +282,7 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
 
         # generate the max states that include every remaining item
         # this will allow us to place this item in a reachable location
-        maximum_exploration_state_list = CollectionState.get_states_with_items(base_state_list, itempool + unplaced_items)
+        maximum_exploration_state_list = State.get_states_with_items(base_state_list, itempool + unplaced_items)
 
         # perform_access_check checks location reachability
         perform_access_check = True
@@ -290,7 +292,7 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
             # This way the reachability test is monotonic. If we were to later
             # stop checking, then we could place an item needed in one world
             # in an unreachable place in another world
-            perform_access_check = not CollectionState.can_beat_game(maximum_exploration_state_list)
+            perform_access_check = not State.can_beat_game(maximum_exploration_state_list)
 
         # find a location that the item can be places. It must be a valid location
         # in the world we are placing it (possibly checking for reachability)

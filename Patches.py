@@ -10,10 +10,11 @@ import copy
 
 from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText, getSimpleHintNoPrefix
 from Utils import data_path, default_output_path, random_choices
-from Items import ItemFactory, item_data
+from Item import ItemFactory
 from Messages import *
 from OcarinaSongs import Song, str_to_song, replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
+
 
 TunicColors = {
     "Custom Color":      [0x00, 0x00, 0x00],
@@ -50,6 +51,7 @@ TunicColors = {
     "Lumen":             [0x50, 0x8C, 0xF0],
 }
 
+
 NaviColors = {
     "Custom Color":      [0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00],
     "Gold":              [0xFE, 0xCC, 0x3C, 0xFF, 0xFE, 0xC0, 0x07, 0x00],
@@ -72,6 +74,7 @@ NaviColors = {
     "Midna":             [0x19, 0x24, 0x26, 0xFF, 0xD2, 0x83, 0x30, 0x00],
     "Phantom Zelda":     [0x97, 0x7A, 0x6C, 0xFF, 0x6F, 0x46, 0x67, 0x00],
 }
+
 
 NaviSFX = {
     'None'          : 0x0000,
@@ -106,6 +109,7 @@ NaviSFX = {
     'H`lo!'         : 0x6844
 }
 
+
 HealthSFX = {
     'None'          : 0x0000,
     'Cluck'         : 0x2812,
@@ -135,29 +139,38 @@ HealthSFX = {
     'Bongo Bongo'   : 0x3950
 }
 
+
 def get_NaviSFX():
     return list(NaviSFX.keys())
+
 
 def get_NaviSFX_options():
     return ["Default", "Random Choice"] + get_NaviSFX()
 
+
 def get_HealthSFX():
     return list(HealthSFX.keys())
+
 
 def get_HealthSFX_options():
     return ["Default", "Random Choice"] + get_HealthSFX()
 
+
 def get_tunic_colors():
     return list(TunicColors.keys())
+
 
 def get_tunic_color_options():
     return ["Random Choice", "Completely Random"] + get_tunic_colors()
 
+
 def get_navi_colors():
     return list(NaviColors.keys())
 
+
 def get_navi_color_options():
     return ["Random Choice", "Completely Random"] + get_navi_colors()
+
 
 def patch_rom(world, rom):
     with open(data_path('rom_patch.txt'), 'r') as stream:
@@ -223,7 +236,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0xB06BBA, [0x00, 0x00])
 
     # Remove locked door to Boss Key Chest in Fire Temple
-    if not world.keysanity and not world.dungeon_mq['FiT']:
+    if not world.keysanity and not world.dungeon_mq['Fire Temple']:
         rom.write_byte(0x22D82B7, 0x3F)
 
     # Change Bombchu Shop to be always open
@@ -865,6 +878,7 @@ def patch_rom(world, rom):
     # or just use the following functions to add an entry to the table
     initial_save_table = []
 
+
     # will set the bits of value to the offset in the save (or'ing them with what is already there)
     def write_bits_to_save(offset, value, filter=None):
         nonlocal initial_save_table
@@ -873,7 +887,6 @@ def patch_rom(world, rom):
             return
 
         initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x00, value]
-
 
 
     # will overwrite the byte at offset with the given value
@@ -885,10 +898,12 @@ def patch_rom(world, rom):
 
         initial_save_table += [(offset & 0xFF00) >> 8, offset & 0xFF, 0x01, value]
 
+
     # will overwrite the byte at offset with the given value
     def write_bytes_to_save(offset, bytes, filter=None):
         for i, value in enumerate(bytes):
             write_byte_to_save(offset + i, value, filter)
+
 
     # will overwrite the byte at offset with the given value
     def write_save_table(rom):
@@ -1068,30 +1083,30 @@ def patch_rom(world, rom):
 
     # patch mq scenes
     mq_scenes = []
-    if world.dungeon_mq['DT']:
+    if world.dungeon_mq['Deku Tree']:
         mq_scenes.append(0)
-    if world.dungeon_mq['DC']:
+    if world.dungeon_mq['Dodongos Cavern']:
         mq_scenes.append(1)
-    if world.dungeon_mq['JB']:
+    if world.dungeon_mq['Jabu Jabus Belly']:
         mq_scenes.append(2)
-    if world.dungeon_mq['FoT']:
+    if world.dungeon_mq['Forest Temple']:
         mq_scenes.append(3)
-    if world.dungeon_mq['FiT']:
+    if world.dungeon_mq['Fire Temple']:
         mq_scenes.append(4)
-    if world.dungeon_mq['WT']:
+    if world.dungeon_mq['Water Temple']:
         mq_scenes.append(5)
-    if world.dungeon_mq['SpT']:
+    if world.dungeon_mq['Spirit Temple']:
         mq_scenes.append(6)
-    if world.dungeon_mq['ShT']:
+    if world.dungeon_mq['Shadow Temple']:
         mq_scenes.append(7)
-    if world.dungeon_mq['BW']:
+    if world.dungeon_mq['Bottom of the Well']:
         mq_scenes.append(8)
-    if world.dungeon_mq['IC']:
+    if world.dungeon_mq['Ice Cavern']:
         mq_scenes.append(9)
     # Scene 10 has no layout changes, so it doesn't need to be patched
-    if world.dungeon_mq['GTG']:
+    if world.dungeon_mq['Gerudo Training Grounds']:
         mq_scenes.append(11)
-    if world.dungeon_mq['GC']:
+    if world.dungeon_mq['Ganons Castle']:
         mq_scenes.append(13)
 
     patch_files(rom, mq_scenes)
@@ -1211,81 +1226,67 @@ def patch_rom(world, rom):
     # Patch songs and boss rewards
     for location in world.get_filled_locations():
         item = location.item
-        itemid = copy.copy(item.code)
+        special = item.special
         locationaddress = location.address
         secondaryaddress = location.address2
 
-        if itemid is None or location.address is None:
-            continue
-
         if location.type == 'Song' and not world.shuffle_song_items:
-            rom.write_byte(locationaddress, itemid[0])
-            itemid[0] = itemid[0] + 0x0D
-            rom.write_byte(secondaryaddress, itemid[0])
+            bit_mask_pointer = 0x8C34 + ((special['item_id'] - 0x65) * 4)
+            rom.write_byte(locationaddress, special['song_id'])
+            next_song_id = special['song_id'] + 0x0D
+            rom.write_byte(secondaryaddress, next_song_id)
             if location.name == 'Impa at Castle':
-                impa_fix = 0x65 - itemid[1]
-                rom.write_byte(0xD12ECB, impa_fix)
-                rom.write_byte(0x2E8E931, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0D12ECB, special['item_id'])
+                rom.write_byte(0x2E8E931, special['text_id']) #Fix text box
             elif location.name == 'Song from Malon':
                 if item.name == 'Suns Song':
-                    rom.write_byte(locationaddress, itemid[0])
-                malon_fix = 0x8C34 - (itemid[1] * 4)
-                malon_fix_high = malon_fix >> 8
-                malon_fix_low = malon_fix & 0x00FF
-                rom.write_bytes(0xD7E142, [malon_fix_high, malon_fix_low])
-                rom.write_bytes(0xD7E8D6, [malon_fix_high, malon_fix_low]) # I really don't like hardcoding these addresses, but for now.....
-                rom.write_bytes(0xD7E786, [malon_fix_high, malon_fix_low])
-                rom.write_byte(0x29BECB9, item_data[item.name]) #Fix text box
+                    rom.write_byte(locationaddress, next_song_id)
+                rom.write_int16(0xD7E142, bit_mask_pointer)
+                rom.write_int16(0xD7E8D6, bit_mask_pointer)
+                rom.write_int16(0xD7E786, bit_mask_pointer)
+                rom.write_byte(0x29BECB9, special['text_id']) #Fix text box
             elif location.name == 'Song from Composer Grave':
-                sun_fix = 0x8C34 - (itemid[1] * 4)
-                sun_fix_high = sun_fix >> 8
-                sun_fix_low = sun_fix & 0x00FF
-                rom.write_bytes(0xE09F66, [sun_fix_high, sun_fix_low])
-                rom.write_byte(0x332A87D, item_data[item.name]) #Fix text box
+                rom.write_int16(0xE09F66, bit_mask_pointer)
+                rom.write_byte(0x332A87D, special['text_id']) #Fix text box
             elif location.name == 'Song from Saria':
-                saria_fix = 0x65 - itemid[1]
-                rom.write_byte(0xE2A02B, saria_fix)
-                rom.write_byte(0x20B1DBD, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0E2A02B, special['item_id'])
+                rom.write_byte(0x20B1DBD, special['text_id']) #Fix text box
             elif location.name == 'Song from Ocarina of Time':
-                rom.write_byte(0x252FC95, item_data[item.name]) #Fix text box
+                rom.write_byte(0x252FC95, special['text_id']) #Fix text box
             elif location.name == 'Song at Windmill':
-                windmill_fix = 0x65 - itemid[1]
-                rom.write_byte(0xE42ABF, windmill_fix)
-                rom.write_byte(0x3041091, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0E42ABF, special['item_id'])
+                rom.write_byte(0x3041091, special['text_id']) #Fix text box
             elif location.name == 'Sheik Forest Song':
-                minuet_fix = 0x65 - itemid[1]
-                rom.write_byte(0xC7BAA3, minuet_fix)
-                rom.write_byte(0x20B0815, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0C7BAA3, special['item_id'])
+                rom.write_byte(0x20B0815, special['text_id']) #Fix text box
             elif location.name == 'Sheik at Temple':
-                prelude_fix = 0x65 - itemid[1]
-                rom.write_byte(0xC805EF, prelude_fix)
-                rom.write_byte(0x2531335, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0C805EF, special['item_id'])
+                rom.write_byte(0x2531335, special['text_id']) #Fix text box
             elif location.name == 'Sheik in Crater':
-                bolero_fix = 0x65 - itemid[1]
-                rom.write_byte(0xC7BC57, bolero_fix)
-                rom.write_byte(0x224D7FD, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0C7BC57, special['item_id'])
+                rom.write_byte(0x224D7FD, special['text_id']) #Fix text box
             elif location.name == 'Sheik in Ice Cavern':
-                serenade_fix = 0x65 - itemid[1]
-                rom.write_byte(0xC7BD77, serenade_fix)
-                rom.write_byte(0x2BEC895, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0C7BD77, special['item_id'])
+                rom.write_byte(0x2BEC895, special['text_id']) #Fix text box
             elif location.name == 'Sheik in Kakariko':
-                nocturne_fix = 0x65 - itemid[1]
-                rom.write_byte(0xAC9A5B, nocturne_fix)
-                rom.write_byte(0x2000FED, item_data[item.name]) #Fix text box
+                rom.write_byte(0x0AC9A5B, special['item_id'])
+                rom.write_byte(0x2000FED, special['text_id']) #Fix text box
             elif location.name == 'Sheik at Colossus':
-                rom.write_byte(0x218C589, item_data[item.name]) #Fix text box
+                rom.write_byte(0x218C589, special['text_id']) #Fix text box
         elif location.type == 'Boss':
             if location.name == 'Links Pocket':
-                write_bits_to_save(item_data[item.name][1], item_data[item.name][0])
+                write_bits_to_save(special['save_byte'], special['save_bit'])
             else:
-                rom.write_byte(locationaddress, itemid)
-                rom.write_byte(secondaryaddress, item_data[item.name][2])
+                rom.write_byte(locationaddress, special['item_id'])
+                rom.write_byte(secondaryaddress, special['addr2_data'])
+                bit_mask_hi = special['bit_mask'] >> 16
+                bit_mask_lo = special['bit_mask'] & 0xFFFF
                 if location.name == 'Bongo Bongo':
-                    rom.write_bytes(0xCA3F32, [item_data[item.name][3][0], item_data[item.name][3][1]])
-                    rom.write_bytes(0xCA3F36, [item_data[item.name][3][2], item_data[item.name][3][3]])
+                    rom.write_int16(0xCA3F32, bit_mask_hi)
+                    rom.write_int16(0xCA3F36, bit_mask_lo)
                 elif location.name == 'Twinrova':
-                    rom.write_bytes(0xCA3EA2, [item_data[item.name][3][0], item_data[item.name][3][1]])
-                    rom.write_bytes(0xCA3EA6, [item_data[item.name][3][2], item_data[item.name][3][3]])
+                    rom.write_int16(0xCA3EA2, bit_mask_hi)
+                    rom.write_int16(0xCA3EA6, bit_mask_lo)
 
     # add a cheaper bombchu pack to the bombchu shop
     # describe
@@ -1433,7 +1434,7 @@ def patch_rom(world, rom):
     if world.correct_chest_sizes:
         update_chest_sizes(rom, override_table)
         # Move Ganon's Castle's Zelda's Lullaby Chest back so is reachable if large
-        if not world.dungeon_mq['GC']:
+        if not world.dungeon_mq['Ganons Castle']:
             rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
 
     # give dungeon items the correct messages
@@ -1449,21 +1450,21 @@ def patch_rom(world, rom):
                        'Shadow Medallion': "\x05\x45Shadow Medallion\x05\x40",
                        'Light Medallion':  "\x05\x44Light Medallion\x05\x40"
         }
-        dungeon_list = {'DT':   ("the \x05\x42Deku Tree", 'Queen Gohma', 0x62, 0x88),
-                        'DC':   ("\x05\x41Dodongo\'s Cavern", 'King Dodongo', 0x63, 0x89),
-                        'JB':   ("\x05\x43Jabu Jabu\'s Belly", 'Barinade', 0x64, 0x8a),
-                        'FoT':  ("the \x05\x42Forest Temple", 'Phantom Ganon', 0x65, 0x8b),
-                        'FiT':  ("the \x05\x41Fire Temple", 'Volvagia', 0x7c, 0x8c),
-                        'WT':   ("the \x05\x43Water Temple", 'Morpha', 0x7d, 0x8e),
-                        'SpT':  ("the \x05\x46Spirit Temple", 'Twinrova', 0x7e, 0x8f),
-                        'IC':   ("the \x05\x44Ice Cavern", None, 0x87, 0x92),
-                        'BW':   ("the \x05\x45Bottom of the Well", None, 0xa2, 0xa5),
-                        'ShT':   ("the \x05\x45Shadow Temple", 'Bongo Bongo', 0x7f, 0xa3),
+        dungeon_list = {'Deku Tree':          ("the \x05\x42Deku Tree", 'Queen Gohma', 0x62, 0x88),
+                        'Dodongos Cavern':    ("\x05\x41Dodongo\'s Cavern", 'King Dodongo', 0x63, 0x89),
+                        'Jabu Jabus Belly':   ("\x05\x43Jabu Jabu\'s Belly", 'Barinade', 0x64, 0x8a),
+                        'Forest Temple':      ("the \x05\x42Forest Temple", 'Phantom Ganon', 0x65, 0x8b),
+                        'Fire Temple':        ("the \x05\x41Fire Temple", 'Volvagia', 0x7c, 0x8c),
+                        'Water Temple':       ("the \x05\x43Water Temple", 'Morpha', 0x7d, 0x8e),
+                        'Spirit Temple':      ("the \x05\x46Spirit Temple", 'Twinrova', 0x7e, 0x8f),
+                        'Ice Cavern':         ("the \x05\x44Ice Cavern", None, 0x87, 0x92),
+                        'Bottom of the Well': ("the \x05\x45Bottom of the Well", None, 0xa2, 0xa5),
+                        'Shadow Temple':      ("the \x05\x45Shadow Temple", 'Bongo Bongo', 0x7f, 0xa3),
         }
         for dungeon in world.dungeon_mq:
-            if dungeon in ['GTG', 'GC']:
+            if dungeon in ['Gerudo Training Grounds', 'Ganons Castle']:
                 pass
-            elif dungeon in ['BW', 'IC']:
+            elif dungeon in ['Bottom of the Well', 'Ice Cavern']:
                 dungeon_name, boss_name, compass_id, map_id = dungeon_list[dungeon]
                 if world.world_count > 1:
                     map_message = "\x13\x76\x08\x05\x42\x0F\x05\x40 found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)
@@ -1552,6 +1553,7 @@ def get_override_table(world):
     override_entries.sort()
     return override_entries
 
+
 def get_override_entry(location):
     scene = location.scene
     default = location.default
@@ -1597,6 +1599,7 @@ chestTypeMap = {
     0xE000: [0x5000, 0x0000, 0x2000], #Large
     0xF000: [0x5000, 0x0000, 0x2000], #Large
 }
+
 
 chestAnimationExtendedFast = [
     0x87, # Progressive Nut Capacity
@@ -1701,6 +1704,7 @@ def scene_get_actors(rom, actor_func, scene_data, scene, alternate=None, process
         scene_data = scene_data + 8
     return actors
 
+
 def get_actor_list(rom, actor_func):
     actors = {}
     scene_table = 0x00B71440
@@ -1709,11 +1713,13 @@ def get_actor_list(rom, actor_func):
         actors.update(scene_get_actors(rom, actor_func, scene_data, scene))
     return actors
 
+
 def get_override_itemid(override_table, scene, type, flags):
     for entry in override_table:
         if len(entry) == 4 and entry[0] == scene and (entry[1] & 0x07) == type and entry[2] == flags:
             return entry[3]
     return None
+
 
 def update_chest_sizes(rom, override_table):
     def get_chest(rom, actor_id, actor, scene):
@@ -1747,6 +1753,7 @@ def update_chest_sizes(rom, override_table):
         default = (default & 0x0FFF) | newChestType
         rom.write_int16(actor + 14, default)
 
+
 def set_grotto_id_data(rom):
     def set_grotto_id(rom, actor_id, actor, scene):
         if actor_id == 0x009B: #Grotto
@@ -1764,6 +1771,7 @@ def set_grotto_id_data(rom):
 
     get_actor_list(rom, set_grotto_id)
 
+
 def set_deku_salesman_data(rom):
     def set_deku_salesman(rom, actor_id, actor, scene):
         if actor_id == 0x0195: #Salesman
@@ -1772,6 +1780,7 @@ def set_deku_salesman_data(rom):
                 rom.write_int16(actor + 14, 0x0003)
 
     get_actor_list(rom, set_deku_salesman)
+
 
 def get_locked_doors(rom, world):
     def locked_door(rom, actor_id, actor, scene):
@@ -1796,6 +1805,7 @@ def get_locked_doors(rom, world):
                 return [0x00D4 + scene * 0x1C + 0x04 + flag_byte, flag_bits]
 
     return get_actor_list(rom, locked_door)
+
 
 def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=False):
     if init_shop_id:
@@ -1855,11 +1865,12 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
 
 
 def boss_reward_index(world, boss_name):
-    code = world.get_location(boss_name).item.code
+    code = world.get_location(boss_name).item.special['item_id']
     if code >= 0x6C:
         return code - 0x6C
     else:
         return 3 + code - 0x66
+
 
 def configure_dungeon_info(rom, world):
     mq_enable = (world.mq_dungeons_random or world.mq_dungeons != 0 and world.mq_dungeons != 12)
@@ -2020,6 +2031,7 @@ bgm_sequence_ids = [
     ('Mini-game', 0x6C)
 ]
 
+
 def randomize_music(rom):
     # Read in all the Music data
     bgm_data = []
@@ -2040,11 +2052,13 @@ def randomize_music(rom):
     # Write Fairy Fountain instrument to File Select (uses same track but different instrument set pointer for some reason)
     rom.write_int16(0xB89910 + 0xDD + (0x57 * 2), rom.read_int16(0xB89910 + 0xDD + (0x28 * 2)))
 
+
 def disable_music(rom):
     # First track is no music
     blank_track = rom.read_bytes(0xB89AE0 + (0 * 0x10), 0x10)
     for bgm in bgm_sequence_ids:
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
+
 
 def restore_music(rom):
     # Restore all music from original
