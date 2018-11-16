@@ -131,25 +131,23 @@ def main(settings, window=dummy_window()):
     logger.info('Patching ROM.')
 
     if settings.world_count > 1:
-        outfilebase = 'OoT_%s_%s_W%dP%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count, settings.player_num)
+        outfilebase = 'OoT_%s_%s_W%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count)
     else:
         outfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
 
     output_dir = default_output_path(settings.output_dir)
-    output_path = os.path.join(output_dir, outfilebase)
 
     if settings.compress_rom == 'Patch':
         rng_state = random.getstate()
         file_list = []
-        patchfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
         window.update_progress(65)
         for world in worlds:
             if settings.world_count > 1:
                 window.update_status('Patching ROM: Player %d' % (world.id + 1))
-                patchfilename = '%sW%dP%d.zpf' % (patchfilebase, settings.world_count, world.id + 1)
+                patchfilename = '%sP%d.zpf' % (outfilebase, world.id + 1)
             else:
                 window.update_status('Patching ROM')
-                patchfilename = '%s.zpf' % patchfilebase
+                patchfilename = '%s.zpf' % outfilebase
 
             random.setstate(rng_state)
             patch_rom(world, rom)
@@ -165,7 +163,7 @@ def main(settings, window=dummy_window()):
 
         if settings.world_count > 1:
             window.update_status('Creating Patch Archive')
-            output_path = os.path.join(output_dir, '%sW%d.zpfz' % (patchfilebase, settings.world_count))
+            output_path = os.path.join(output_dir, '%s.zpfz' % outfilebase)
             with zipfile.ZipFile(output_path, mode="w") as patch_archive:
                 for file in file_list:
                     file_path = os.path.join(output_dir, file)
@@ -181,7 +179,10 @@ def main(settings, window=dummy_window()):
         window.update_progress(65)
 
         window.update_status('Saving Uncompressed ROM')
-        output_path += '.z64'
+        if settings.world_count > 1:
+            output_path = os.path.join(output_dir, '%sP%d.z64' % (outfilebase, settings.player_num))
+        else:
+            output_path = os.path.join(output_dir, '%s.z64' % outfilebase)
         rom.write_to_file(output_path)
         if settings.compress_rom == 'True':
             window.update_status('Compressing ROM')

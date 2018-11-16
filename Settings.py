@@ -4,6 +4,7 @@ import string
 import re
 import hashlib
 import math
+import sys
 
 from version import __version__
 from Utils import random_choices
@@ -196,6 +197,7 @@ def get_settings_from_command_line_args():
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')
     parser.add_argument('--loglevel', default='info', const='info', nargs='?', choices=['error', 'info', 'warning', 'debug'], help='Select level of logging for output.')
     parser.add_argument('--settings_string', help='Provide sharable settings using a settings string. This will override all flags that it specifies.')
+    parser.add_argument('--convert_settings', help='Only convert the specified settings to a settings string. If a settings string is specified output the used settings instead.', action='store_true')
 
     args = parser.parse_args()
 
@@ -207,4 +209,11 @@ def get_settings_from_command_line_args():
     if args.settings_string is not None:
         settings.update_with_settings_string(args.settings_string)
 
+    if args.convert_settings:
+        if args.settings_string is not None:
+            print(settings.get_settings_display())
+        else:
+            print(settings.get_settings_string())
+        sys.exit(0)
+        
     return settings, args.gui, args.loglevel
