@@ -288,7 +288,6 @@ setting_infos = [
                     glitchless:  No glitches are required, but may require some minor tricks
                     none:        All locations are considered available. May not be beatable.
                     ''',
-            'action': 'store_true'
         },
         {
             'text': 'Logic Rules',
