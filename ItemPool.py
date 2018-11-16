@@ -552,7 +552,7 @@ def get_pool_core(world):
         placed_items['Gift from Saria'] = 'Ocarina'
         placed_items['Ocarina of Time'] = 'Ocarina'
 
-    if world.dungeon_mq['DT']:
+    if world.dungeon_mq['Deku Tree']:
         skulltula_locations_final = skulltula_locations + [
             'GS Deku Tree MQ Lobby',
             'GS Deku Tree MQ Compass Room',
@@ -564,7 +564,7 @@ def get_pool_core(world):
             'GS Deku Tree Basement Vines',
             'GS Deku Tree Basement Gate',
             'GS Deku Tree Basement Back Room']
-    if world.dungeon_mq['DC']:
+    if world.dungeon_mq['Dodongos Cavern']:
         skulltula_locations_final.extend([
             'GS Dodongo\'s Cavern MQ Scrub Room',
             'GS Dodongo\'s Cavern MQ Song of Time Block Room',
@@ -578,7 +578,7 @@ def get_pool_core(world):
             'GS Dodongo\'s Cavern Back Room',
             'GS Dodongo\'s Cavern Alcove Above Stairs',
             'GS Dodongo\'s Cavern Scarecrow'])
-    if world.dungeon_mq['JB']:
+    if world.dungeon_mq['Jabu Jabus Belly']:
         skulltula_locations_final.extend([
             'GS Jabu Jabu MQ Tailpasaran Room',
             'GS Jabu Jabu MQ Invisible Enemies Room',
@@ -590,7 +590,7 @@ def get_pool_core(world):
             'GS Jabu Jabu Lobby Basement Lower',
             'GS Jabu Jabu Lobby Basement Upper',
             'GS Jabu Jabu Near Boss'])
-    if world.dungeon_mq['FoT']:
+    if world.dungeon_mq['Forest Temple']:
         skulltula_locations_final.extend([
             'GS Forest Temple MQ First Hallway',
             'GS Forest Temple MQ Block Push Room',
@@ -604,7 +604,7 @@ def get_pool_core(world):
             'GS Forest Temple Outdoor East',
             'GS Forest Temple Outdoor West',
             'GS Forest Temple Basement'])
-    if world.dungeon_mq['FiT']:
+    if world.dungeon_mq['Fire Temple']:
         skulltula_locations_final.extend([
             'GS Fire Temple MQ Above Fire Wall Maze',
             'GS Fire Temple MQ Fire Wall Maze Center',
@@ -618,7 +618,7 @@ def get_pool_core(world):
             'GS Fire Temple East Tower Climb',
             'GS Fire Temple East Tower Top',
             'GS Fire Temple Basement'])
-    if world.dungeon_mq['WT']:
+    if world.dungeon_mq['Water Temple']:
         skulltula_locations_final.extend([
             'GS Water Temple MQ Before Upper Water Switch',
             'GS Water Temple MQ North Basement',
@@ -632,7 +632,7 @@ def get_pool_core(world):
             'GS Water Temple Falling Platform Room',
             'GS Water Temple Central Room',
             'GS Water Temple Near Boss Key Chest'])
-    if world.dungeon_mq['SpT']:
+    if world.dungeon_mq['Spirit Temple']:
         skulltula_locations_final.extend([
             'GS Spirit Temple MQ Lower Adult Right',
             'GS Spirit Temple MQ Lower Adult Left',
@@ -646,7 +646,7 @@ def get_pool_core(world):
             'GS Spirit Temple Hall to West Iron Knuckle',
             'GS Spirit Temple Boulder Room',
             'GS Spirit Temple Lobby'])
-    if world.dungeon_mq['ShT']:
+    if world.dungeon_mq['Shadow Temple']:
         skulltula_locations_final.extend([
             'GS Shadow Temple MQ Crusher Room',
             'GS Shadow Temple MQ Wind Hint Room',
@@ -660,7 +660,7 @@ def get_pool_core(world):
             'GS Shadow Temple Single Giant Pot',
             'GS Shadow Temple Near Ship',
             'GS Shadow Temple Triple Giant Pot'])
-    if world.dungeon_mq['BW']:
+    if world.dungeon_mq['Bottom of the Well']:
         skulltula_locations_final.extend([
             'GS Well MQ Basement',
             'GS Well MQ Coffin Room',
@@ -670,7 +670,7 @@ def get_pool_core(world):
             'GS Well West Inner Room',
             'GS Well East Inner Room',
             'GS Well Like Like Cage'])
-    if world.dungeon_mq['IC']:
+    if world.dungeon_mq['Ice Cavern']:
         skulltula_locations_final.extend([
             'GS Ice Cavern MQ Scarecrow',
             'GS Ice Cavern MQ Ice Block',
@@ -695,34 +695,34 @@ def get_pool_core(world):
 
     if world.bombchus_in_logic:
         pool.extend(['Bombchus'] * 4)
-        if world.dungeon_mq['JB']:
+        if world.dungeon_mq['Jabu Jabus Belly']:
             pool.extend(['Bombchus'])
-        if world.dungeon_mq['SpT']:
+        if world.dungeon_mq['Spirit Temple']:
             pool.extend(['Bombchus'] * 2)
-        if not world.dungeon_mq['BW']:
+        if not world.dungeon_mq['Bottom of the Well']:
             pool.extend(['Bombchus'])
-        if world.dungeon_mq['GTG']:
+        if world.dungeon_mq['Gerudo Training Grounds']:
             pool.extend(['Bombchus'])
 
     else:
         pool.extend(['Bombchus (5)'] + ['Bombchus (10)'] * 2)
-        if world.dungeon_mq['JB']:
+        if world.dungeon_mq['Jabu Jabus Belly']:
                 pool.extend(['Bombchus (10)'])
-        if world.dungeon_mq['SpT']:
+        if world.dungeon_mq['Spirit Temple']:
                 pool.extend(['Bombchus (10)'] * 2)
-        if not world.dungeon_mq['BW']:
+        if not world.dungeon_mq['Bottom of the Well']:
                 pool.extend(['Bombchus (10)'])
-        if world.dungeon_mq['GTG']:
+        if world.dungeon_mq['Gerudo Training Grounds']:
                 pool.extend(['Bombchus (10)'])
-        if world.dungeon_mq['GC']:
+        if world.dungeon_mq['Ganons Castle']:
             pool.extend(['Bombchus (10)'])
         else:
             pool.extend(['Bombchus (20)'])
 
     pool.extend(['Ice Trap'])
-    if not world.dungeon_mq['GTG']:
+    if not world.dungeon_mq['Gerudo Training Grounds']:
         pool.extend(['Ice Trap'])
-    if not world.dungeon_mq['GC']:
+    if not world.dungeon_mq['Ganons Castle']:
         pool.extend(['Ice Trap'] * 4)
 
     if world.gerudo_fortress == 'open':
@@ -781,15 +781,15 @@ def get_pool_core(world):
             pool.extend(shopsanity_rupees)
 
     if world.shuffle_scrubs != 'off':
-        if world.dungeon_mq['DT']:
+        if world.dungeon_mq['Deku Tree']:
             pool.append('Deku Shield')
-        if world.dungeon_mq['DC']:
+        if world.dungeon_mq['Dodongos Cavern']:
             pool.extend(['Deku Stick (1)', 'Deku Shield', 'Recovery Heart'])
         else:
             pool.extend(['Deku Nuts (5)', 'Deku Stick (1)', 'Deku Shield'])
-        if not world.dungeon_mq['JB']:
+        if not world.dungeon_mq['Jabu Jabus Belly']:
             pool.append('Deku Nuts (5)')
-        if world.dungeon_mq['GC']:
+        if world.dungeon_mq['Ganons Castle']:
             pool.extend(['Bombs (5)', 'Recovery Heart', 'Rupees (5)', 'Deku Nuts (5)'])
         else:
             pool.extend(['Bombs (5)', 'Recovery Heart', 'Rupees (5)'])
@@ -798,9 +798,9 @@ def get_pool_core(world):
             pool.append('Arrows (30)' if random.randint(0,3) > 0 else 'Deku Seeds (30)')
 
     else:
-        if world.dungeon_mq['DT']:
+        if world.dungeon_mq['Deku Tree']:
             placed_items['DT MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
-        if world.dungeon_mq['DC']:
+        if world.dungeon_mq['Dodongos Cavern']:
             placed_items['DC MQ Deku Scrub Deku Sticks'] = 'Buy Deku Stick (1)'
             placed_items['DC MQ Deku Scrub Deku Seeds'] = 'Buy Deku Seeds (30)'
             placed_items['DC MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
@@ -810,9 +810,9 @@ def get_pool_core(world):
             placed_items['DC Deku Scrub Deku Sticks'] = 'Buy Deku Stick (1)'
             placed_items['DC Deku Scrub Deku Seeds'] = 'Buy Deku Seeds (30)'
             placed_items['DC Deku Scrub Deku Shield'] = 'Buy Deku Shield'
-        if not world.dungeon_mq['JB']:
+        if not world.dungeon_mq['Jabu Jabus Belly']:
             placed_items['Jabu Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
-        if world.dungeon_mq['GC']:
+        if world.dungeon_mq['Ganons Castle']:
             placed_items['GC MQ Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
             placed_items['GC MQ Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
             placed_items['GC MQ Deku Scrub Arrows'] = 'Buy Arrows (30)'
@@ -826,41 +826,41 @@ def get_pool_core(world):
         placed_items.update(vanilla_deku_scrubs)
 
     pool.extend(alwaysitems)
-    if world.dungeon_mq['DT']:
+    if world.dungeon_mq['Deku Tree']:
         pool.extend(DT_MQ)
     else:
         pool.extend(DT_vanilla)
-    if world.dungeon_mq['DC']:
+    if world.dungeon_mq['Dodongos Cavern']:
         pool.extend(DC_MQ)
     else:
         pool.extend(DC_vanilla)
-    if world.dungeon_mq['JB']:
+    if world.dungeon_mq['Jabu Jabus Belly']:
         pool.extend(JB_MQ)
-    if world.dungeon_mq['FoT']:
+    if world.dungeon_mq['Forest Temple']:
         pool.extend(FoT_MQ)
     else:
         pool.extend(FoT_vanilla)
-    if world.dungeon_mq['FiT']:
+    if world.dungeon_mq['Fire Temple']:
         pool.extend(FiT_MQ)
     else:
         pool.extend(FiT_vanilla)
-    if world.dungeon_mq['SpT']:
+    if world.dungeon_mq['Spirit Temple']:
         pool.extend(SpT_MQ)
     else:
         placed_items['Spirit Temple Nut Crate'] = 'Deku Nut Drop'
         pool.extend(SpT_vanilla)
-    if world.dungeon_mq['ShT']:
+    if world.dungeon_mq['Shadow Temple']:
         pool.extend(ShT_MQ)
     else:
         pool.extend(ShT_vanilla)
-    if not world.dungeon_mq['BW']:
+    if not world.dungeon_mq['Bottom of the Well']:
         placed_items['Bottom of the Well Stick Pot'] = 'Deku Stick Drop'
         pool.extend(BW_vanilla)
-    if world.dungeon_mq['GTG']:
+    if world.dungeon_mq['Gerudo Training Grounds']:
         pool.extend(GTG_MQ)
     else:
         pool.extend(GTG_vanilla)
-    if world.dungeon_mq['GC']:
+    if world.dungeon_mq['Ganons Castle']:
         pool.extend(GC_MQ)
     else:
         pool.extend(GC_vanilla)
@@ -894,7 +894,7 @@ def get_pool_core(world):
         for item in [item for dungeon in world.dungeons for item in dungeon.boss_key]:
             world.state.collect(item)
             pool.extend(get_junk_item())
-    if not world.keysanity and not world.dungeon_mq['FiT']:
+    if not world.keysanity and not world.dungeon_mq['Fire Temple']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
 
     if world.item_pool_value == 'plentiful':

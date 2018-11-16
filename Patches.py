@@ -236,7 +236,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0xB06BBA, [0x00, 0x00])
 
     # Remove locked door to Boss Key Chest in Fire Temple
-    if not world.keysanity and not world.dungeon_mq['FiT']:
+    if not world.keysanity and not world.dungeon_mq['Fire Temple']:
         rom.write_byte(0x22D82B7, 0x3F)
 
     # Change Bombchu Shop to be always open
@@ -1083,30 +1083,30 @@ def patch_rom(world, rom):
 
     # patch mq scenes
     mq_scenes = []
-    if world.dungeon_mq['DT']:
+    if world.dungeon_mq['Deku Tree']:
         mq_scenes.append(0)
-    if world.dungeon_mq['DC']:
+    if world.dungeon_mq['Dodongos Cavern']:
         mq_scenes.append(1)
-    if world.dungeon_mq['JB']:
+    if world.dungeon_mq['Jabu Jabus Belly']:
         mq_scenes.append(2)
-    if world.dungeon_mq['FoT']:
+    if world.dungeon_mq['Forest Temple']:
         mq_scenes.append(3)
-    if world.dungeon_mq['FiT']:
+    if world.dungeon_mq['Fire Temple']:
         mq_scenes.append(4)
-    if world.dungeon_mq['WT']:
+    if world.dungeon_mq['Water Temple']:
         mq_scenes.append(5)
-    if world.dungeon_mq['SpT']:
+    if world.dungeon_mq['Spirit Temple']:
         mq_scenes.append(6)
-    if world.dungeon_mq['ShT']:
+    if world.dungeon_mq['Shadow Temple']:
         mq_scenes.append(7)
-    if world.dungeon_mq['BW']:
+    if world.dungeon_mq['Bottom of the Well']:
         mq_scenes.append(8)
-    if world.dungeon_mq['IC']:
+    if world.dungeon_mq['Ice Cavern']:
         mq_scenes.append(9)
     # Scene 10 has no layout changes, so it doesn't need to be patched
-    if world.dungeon_mq['GTG']:
+    if world.dungeon_mq['Gerudo Training Grounds']:
         mq_scenes.append(11)
-    if world.dungeon_mq['GC']:
+    if world.dungeon_mq['Ganons Castle']:
         mq_scenes.append(13)
 
     patch_files(rom, mq_scenes)
@@ -1434,7 +1434,7 @@ def patch_rom(world, rom):
     if world.correct_chest_sizes:
         update_chest_sizes(rom, override_table)
         # Move Ganon's Castle's Zelda's Lullaby Chest back so is reachable if large
-        if not world.dungeon_mq['GC']:
+        if not world.dungeon_mq['Ganons Castle']:
             rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
 
     # give dungeon items the correct messages
@@ -1450,21 +1450,21 @@ def patch_rom(world, rom):
                        'Shadow Medallion': "\x05\x45Shadow Medallion\x05\x40",
                        'Light Medallion':  "\x05\x44Light Medallion\x05\x40"
         }
-        dungeon_list = {'DT':   ("the \x05\x42Deku Tree", 'Queen Gohma', 0x62, 0x88),
-                        'DC':   ("\x05\x41Dodongo\'s Cavern", 'King Dodongo', 0x63, 0x89),
-                        'JB':   ("\x05\x43Jabu Jabu\'s Belly", 'Barinade', 0x64, 0x8a),
-                        'FoT':  ("the \x05\x42Forest Temple", 'Phantom Ganon', 0x65, 0x8b),
-                        'FiT':  ("the \x05\x41Fire Temple", 'Volvagia', 0x7c, 0x8c),
-                        'WT':   ("the \x05\x43Water Temple", 'Morpha', 0x7d, 0x8e),
-                        'SpT':  ("the \x05\x46Spirit Temple", 'Twinrova', 0x7e, 0x8f),
-                        'IC':   ("the \x05\x44Ice Cavern", None, 0x87, 0x92),
-                        'BW':   ("the \x05\x45Bottom of the Well", None, 0xa2, 0xa5),
-                        'ShT':   ("the \x05\x45Shadow Temple", 'Bongo Bongo', 0x7f, 0xa3),
+        dungeon_list = {'Deku Tree':          ("the \x05\x42Deku Tree", 'Queen Gohma', 0x62, 0x88),
+                        'Dodongos Cavern':    ("\x05\x41Dodongo\'s Cavern", 'King Dodongo', 0x63, 0x89),
+                        'Jabu Jabus Belly':   ("\x05\x43Jabu Jabu\'s Belly", 'Barinade', 0x64, 0x8a),
+                        'Forest Temple':      ("the \x05\x42Forest Temple", 'Phantom Ganon', 0x65, 0x8b),
+                        'Fire Temple':        ("the \x05\x41Fire Temple", 'Volvagia', 0x7c, 0x8c),
+                        'Water Temple':       ("the \x05\x43Water Temple", 'Morpha', 0x7d, 0x8e),
+                        'Spirit Temple':      ("the \x05\x46Spirit Temple", 'Twinrova', 0x7e, 0x8f),
+                        'Ice Cavern':         ("the \x05\x44Ice Cavern", None, 0x87, 0x92),
+                        'Bottom of the Well': ("the \x05\x45Bottom of the Well", None, 0xa2, 0xa5),
+                        'Shadow Temple':      ("the \x05\x45Shadow Temple", 'Bongo Bongo', 0x7f, 0xa3),
         }
         for dungeon in world.dungeon_mq:
-            if dungeon in ['GTG', 'GC']:
+            if dungeon in ['Gerudo Training Grounds', 'Ganons Castle']:
                 pass
-            elif dungeon in ['BW', 'IC']:
+            elif dungeon in ['Bottom of the Well', 'Ice Cavern']:
                 dungeon_name, boss_name, compass_id, map_id = dungeon_list[dungeon]
                 if world.world_count > 1:
                     map_message = "\x13\x76\x08\x05\x42\x0F\x05\x40 found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x09" % (dungeon_name)

@@ -43,18 +43,18 @@ class World(object):
         }
         # dungeon forms will be decided later
         self.dungeon_mq = {
-            'DT': False,
-            'DC': False,
-            'JB': False,
-            'BW': False,
-            'IC': False,
-            'GTG': False,
-            'FoT': False,
-            'FiT': False,
-            'WT': False,
-            'SpT': False,
-            'ShT': False,
-            'GC': False
+            'Deku Tree': False,
+            'Dodongos Cavern': False,
+            'Jabu Jabus Belly': False,
+            'Bottom of the Well': False,
+            'Ice Cavern': False,
+            'Gerudo Training Grounds': False,
+            'Forest Temple': False,
+            'Fire Temple': False,
+            'Water Temple': False,
+            'Spirit Temple': False,
+            'Shadow Temple': False,
+            'Ganons Castle': False
         }
 
         self.can_take_damage = True

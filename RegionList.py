@@ -395,7 +395,7 @@ def create_regions(world):
             ['Valley Grotto Deku Scrub Red Potion', 'Valley Grotto Deku Scrub Green Potion']),
     ]
 
-    if world.dungeon_mq['DT']:
+    if world.dungeon_mq['Deku Tree']:
         world.regions.extend([
             create_dungeon_region(
                 'Deku Tree Lobby',
@@ -432,7 +432,7 @@ def create_regions(world):
                 ['Deku Tree Basement Vines'])
         ])
 
-    if world.dungeon_mq['DC']:
+    if world.dungeon_mq['Dodongos Cavern']:
         world.regions.extend([
             create_dungeon_region(
                 'Dodongos Cavern Beginning',
@@ -481,7 +481,7 @@ def create_regions(world):
                 ['Dodongos Cavern Exit Skull'])
         ])
 
-    if world.dungeon_mq['JB']:
+    if world.dungeon_mq['Jabu Jabus Belly']:
         world.regions.extend([
             create_dungeon_region(
                 'Jabu Jabus Belly Beginning',
@@ -525,7 +525,7 @@ def create_regions(world):
                 ['Jabu Jabus Belly Final Backtrack'])
         ])
 
-    if world.dungeon_mq['FoT']:
+    if world.dungeon_mq['Forest Temple']:
         world.regions.extend([
             create_dungeon_region(
                 'Forest Temple Lobby',
@@ -613,7 +613,7 @@ def create_regions(world):
                 ['Forest Temple Near Boss Chest', 'Phantom Ganon Heart', 'Phantom Ganon', 'GS Forest Temple Basement'])
         ])
 
-    if world.dungeon_mq['FiT']:
+    if world.dungeon_mq['Fire Temple']:
         world.regions.extend([
             create_dungeon_region(
                 'Fire Temple Lower',
@@ -663,7 +663,7 @@ def create_regions(world):
                 ['Fire Temple Highest Goron Chest', 'Fire Temple Megaton Hammer Chest'])
         ])
 
-    if world.dungeon_mq['WT']:
+    if world.dungeon_mq['Water Temple']:
         world.regions.extend([
             create_dungeon_region(
                 'Water Temple Lobby',
@@ -698,7 +698,7 @@ def create_regions(world):
                  'GS Water Temple Falling Platform Room'])
         ])
 
-    if world.dungeon_mq['SpT']:
+    if world.dungeon_mq['Spirit Temple']:
         world.regions.extend([
             create_dungeon_region(
                 'Spirit Temple Lobby',
@@ -775,7 +775,7 @@ def create_regions(world):
                 ['Spirit Temple Boss Key Chest', 'Spirit Temple Topmost Chest', 'Twinrova Heart', 'Twinrova'])
         ])
 
-    if world.dungeon_mq['ShT']:
+    if world.dungeon_mq['Shadow Temple']:
         world.regions.extend([
             create_dungeon_region(
                 'Shadow Temple Beginning',
@@ -839,7 +839,7 @@ def create_regions(world):
                  'GS Shadow Temple Triple Giant Pot'])
         ])
 
-    if world.dungeon_mq['BW']:
+    if world.dungeon_mq['Bottom of the Well']:
         world.regions.extend([
             create_dungeon_region(
                 'Bottom of the Well',
@@ -862,7 +862,7 @@ def create_regions(world):
                 ['Bottom of the Well Exit'])
         ])
 
-    if world.dungeon_mq['IC']:
+    if world.dungeon_mq['Ice Cavern']:
         world.regions.extend([
             create_dungeon_region(
                 'Ice Cavern',
@@ -881,7 +881,7 @@ def create_regions(world):
                 ['Ice Cavern Exit'])
         ])
 
-    if world.dungeon_mq['GTG']:
+    if world.dungeon_mq['Gerudo Training Grounds']:
         world.regions.extend([
             create_dungeon_region(
                 'Gerudo Training Grounds Lobby',
@@ -953,7 +953,7 @@ def create_regions(world):
                 ['Gerudo Training Grounds Hidden Hookshot Target'])
         ])
 
-    if world.dungeon_mq['GC']:
+    if world.dungeon_mq['Ganons Castle']:
         world.regions.extend([
             create_dungeon_region(
                 'Ganons Castle Lobby',
