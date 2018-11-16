@@ -158,16 +158,27 @@ class Settings():
         for info in setting_infos:
             if info.name not in self.__dict__:
                 if info.type == bool:
-                    self.__dict__[info.name] = True if info.gui_params['default'] == 'checked' else False
+                    if info.gui_params is not None and 'default' in info.gui_params:
+                        self.__dict__[info.name] = True if info.gui_params['default'] == 'checked' else False
+                    else:
+                        self.__dict__[info.name] = False
                 if info.type == str:
                     if 'default' in info.args_params:
                         self.__dict__[info.name] = info.args_params['default']
-                    elif 'default' in info.gui_params:
-                        self.__dict__[info.name] = info.gui_params['default']
+                    elif info.gui_params is not None and 'default' in info.gui_params:
+                        if 'options' in info.gui_params and isinstance(info.gui_params['options'], dict):
+                            self.__dict__[info.name] = info.gui_params['options'][info.gui_params['default']]
+                        else:
+                            self.__dict__[info.name] = info.gui_params['default']
                     else:
                         self.__dict__[info.name] = ""
                 if info.type == int:
-                    self.__dict__[info.name] = info.gui_params['default'] or 1
+                    if 'default' in info.args_params:
+                        self.__dict__[info.name] = info.args_params['default']
+                    elif info.gui_params is not None and 'default' in info.gui_params:                      
+                        self.__dict__[info.name] = info.gui_params['default']
+                    else:
+                        self.__dict__[info.name] = 1
         self.settings_string = self.get_settings_string()
         if(self.seed is None):
             # https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
