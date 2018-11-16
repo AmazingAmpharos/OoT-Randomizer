@@ -99,14 +99,16 @@ class World(object):
                 for location, rule in region['locations'].items():
                     new_location = LocationFactory(location)
                     new_location.parent_region = new_region
-                    new_location.access_rule = parse_rule_string(rule, self)
+                    if self.logic_rules != 'none':
+                        new_location.access_rule = parse_rule_string(rule, self)
                     new_location.world = self
                     new_region.locations.append(new_location)
             if 'exits' in region:
                 for exit, rule in region['exits'].items():
                     new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)
                     new_exit.connected_region = exit
-                    new_exit.access_rule = parse_rule_string(rule, self)
+                    if self.logic_rules != 'none':
+                        new_exit.access_rule = parse_rule_string(rule, self)
                     new_region.exits.append(new_exit)
             self.regions.append(new_region)
 
