@@ -17,6 +17,16 @@ class Dungeon(object):
         self.dungeon_items = to_array(dungeon_items)
 
 
+    def copy(self, new_world):
+        new_boss_key = [item.copy(new_world) for item in self.boss_key]
+        new_small_keys = [item.copy(new_world) for item in self.small_keys]
+        new_dungeon_items = [item.copy(new_world) for item in self.dungeon_items]
+
+        new_dungeon = Dungeon(new_world, self.name, new_boss_key, new_small_keys, new_dungeon_items)
+
+        return new_dungeon
+
+
     @property
     def keys(self):
         return self.small_keys + self.boss_key

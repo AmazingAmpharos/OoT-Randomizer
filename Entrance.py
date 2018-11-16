@@ -12,6 +12,18 @@ class Entrance(object):
         self.access_rule = lambda state: True
 
 
+    def copy(self, new_region):
+        new_entrace = Entrance(self.name, new_region)
+
+        new_entrace.connected_region = self.connected_region.name
+        new_entrace.addresses = self.addresses
+        new_entrace.spot_type = self.spot_type
+        new_entrace.vanilla = self.vanilla
+        new_entrace.access_rule = self.access_rule
+
+        return new_entrace
+
+
     def can_reach(self, state):
         if self.access_rule(state) and state.can_reach(self.parent_region):
             return True

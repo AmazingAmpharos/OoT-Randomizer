@@ -13,10 +13,15 @@ class Item(object):
         self.object = object
         self.model = model
         self.price = None
+        self.world = None
 
 
-    def copy(self):
-        return Item(self.name, self.advancement, self.priority, self.type, self.index, self.object, self.model, self.special)
+    def copy(self, new_world=None):
+        new_item = Item(self.name, self.advancement, self.priority, self.type, self.index, self.object, self.model, self.special)
+        new_item.world = new_world
+        new_item.price = self.price
+
+        return new_item
 
 
     @property
@@ -102,3 +107,4 @@ def ItemFactory(items, world=None):
     if singleton:
         return ret[0]
     return ret
+

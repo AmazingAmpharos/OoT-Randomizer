@@ -1,9 +1,24 @@
 from enum import Enum, unique
 
 
+@unique
+class RegionType(Enum):
+
+    Overworld = 1
+    Interior = 2
+    Dungeon = 3
+    Grotto = 4
+
+
+    @property
+    def is_indoors(self):
+        """Shorthand for checking if Interior or Dungeon"""
+        return self in (RegionType.Interior, RegionType.Dungeon, RegionType.Grotto)
+
+
 class Region(object):
 
-    def __init__(self, name, type):
+    def __init__(self, name, type=RegionType.Overworld):
         self.name = name
         self.type = type
         self.entrances = []
@@ -14,6 +29,21 @@ class Region(object):
         self.spot_type = 'Region'
         self.recursion_count = 0
         self.price = None
+        self.world = None
+
+
+    def copy(self, new_world):
+        new_region = Region(self.name, self.type)
+        new_region.world = new_world
+        new_region.spot_type = self.spot_type
+        new_region.price = self.price
+
+        if self.dungeon:
+            new_region.dungeon = self.dungeon.name
+        new_region.locations = [location.copy(new_region) for location in self.locations]
+        new_region.exits = [exit.copy(new_region) for exit in self.exits]
+
+        return new_region
 
 
     def can_reach(self, state):
@@ -43,19 +73,4 @@ class Region(object):
 
     def __unicode__(self):
         return '%s' % self.name
-
-
-@unique
-class RegionType(Enum):
-
-    Overworld = 1
-    Interior = 2
-    Dungeon = 3
-    Grotto = 4
-
-
-    @property
-    def is_indoors(self):
-        """Shorthand for checking if Interior or Dungeon"""
-        return self in (RegionType.Interior, RegionType.Dungeon, RegionType.Grotto)
 

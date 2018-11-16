@@ -19,6 +19,23 @@ class Location(object):
         self.locked = False
         self.price = None
         self.minor_only = False
+        self.world = None
+
+
+    def copy(self, new_region):
+        new_location = Location(self.name, self.address, self.address2, self.default, self.type, self.scene, self.hint, new_region)
+        new_location.world = new_region.world
+        if self.item:
+            new_location.item = self.item.copy(new_region.world)
+            new_location.item.location = new_location
+        new_location.spot_type = self.spot_type
+        new_location.always_allow = self.always_allow
+        new_location.access_rule = self.access_rule
+        new_location.item_rule = self.item_rule
+        new_location.locked = self.locked
+        new_location.minor_only = self.minor_only
+
+        return new_location
 
 
     def can_fill(self, state, item, check_access=True):

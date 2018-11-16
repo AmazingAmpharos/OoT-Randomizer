@@ -62,45 +62,25 @@ class World(object):
 
 
     def copy(self):
-        ret = World(self.settings)
-        ret.skipped_trials = copy.copy(self.skipped_trials)
-        ret.dungeon_mq = copy.copy(self.dungeon_mq)
-        ret.big_poe_count = copy.copy(self.big_poe_count)
-        ret.can_take_damage = self.can_take_damage
-        ret.shop_prices = copy.copy(self.shop_prices)
-        ret.keys_placed = self.keys_placed
-        ret.id = self.id
-        create_regions(ret)
-        create_dungeons(ret)
-        set_rules(ret)
+        new_world = World(self.settings)
+        new_world.skipped_trials = copy.copy(self.skipped_trials)
+        new_world.dungeon_mq = copy.copy(self.dungeon_mq)
+        new_world.big_poe_count = copy.copy(self.big_poe_count)
+        new_world.can_take_damage = self.can_take_damage
+        new_world.shop_prices = copy.copy(self.shop_prices)
+        new_world.keys_placed = self.keys_placed
+        new_world.id = self.id
 
-        # connect copied world
-        for region in self.regions:
-            copied_region = ret.get_region(region.name)
-            for entrance in region.entrances:
-                ret.get_entrance(entrance.name).connect(copied_region)
+        new_world.regions = [region.copy(new_world) for region in self.regions]
+        for region in new_world.regions:
+            for exit in region.exits:
+                exit.connect(new_world.get_region(exit.connected_region))
 
-        # fill locations
-        for location in self.get_locations():
-            if location.item is not None:
-                item = Item(location.item.name, location.item.advancement, location.item.priority, location.item.type)
-                item.world = location.item.world
-                ret.get_location(location.name).item = item
-                item.location = ret.get_location(location.name)
-                item.location.locked = location.locked
+        new_world.dungeons = [dungeon.copy(new_world) for dungeon in self.dungeons]
+        new_world.itempool = [item.copy(new_world) for item in self.itempool]
+        new_world.state = self.state.copy(new_world)
 
-        # copy remaining itempool. No item in itempool should have an assigned location
-        for item in self.itempool:
-            new_item = Item(item.name, item.advancement, item.priority, item.type)
-            new_item.world = item.world
-            ret.itempool.append(new_item)
-
-        # copy progress items in state
-        ret.state.prog_items = copy.copy(self.state.prog_items)
-
-        set_shop_rules(ret)
-
-        return ret
+        return new_world
 
 
     def initialize_regions(self):

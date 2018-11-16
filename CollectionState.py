@@ -21,14 +21,16 @@ class CollectionState(object):
         self.entrance_cache = {k: v for k, v in self.entrance_cache.items() if v}
 
 
-    def copy(self):
-        ret = CollectionState(self.world)
-        ret.prog_items = copy.copy(self.prog_items)
-        ret.region_cache = copy.copy(self.region_cache)
-        ret.location_cache = copy.copy(self.location_cache)
-        ret.entrance_cache = copy.copy(self.entrance_cache)
-        ret.collected_locations = copy.copy(self.collected_locations)
-        return ret
+    def copy(self, new_world=None):
+        if not new_world:
+            new_world = self.world
+        new_state = CollectionState(new_world)
+        new_state.prog_items = copy.copy(self.prog_items)
+        new_state.region_cache = copy.copy(self.region_cache)
+        new_state.location_cache = copy.copy(self.location_cache)
+        new_state.entrance_cache = copy.copy(self.entrance_cache)
+        new_state.collected_locations = copy.copy(self.collected_locations)
+        return new_state
 
 
     def can_reach(self, spot, resolution_hint=None):
