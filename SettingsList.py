@@ -39,8 +39,6 @@ class Setting_Widget(Setting_Info):
                 'gui_params'.format(name)
 
         if 'type'  not in args_params: args_params['type']  = type
-
-        #### Is this okay?
         if 'const' not in args_params: args_params['const'] = choices[default]
         if 'nargs' not in args_params: args_params['nargs'] = '?'
 
@@ -48,7 +46,7 @@ class Setting_Widget(Setting_Info):
         args_params['default'] = choices[default]
         gui_params['options']  = choices
         gui_params['default']  = default
-        
+
         super().__init__(name, type, None, shared, args_params, gui_params)
 
         self.bitwidth = self.calc_bitwidth(choices)
@@ -104,6 +102,34 @@ class Combobox(Setting_Widget):
         type = str
         gui_params = {
                 'widget': 'Combobox',
+                }
+        if gui_text       is not None: gui_params['text']       = gui_text
+        if gui_group      is not None: gui_params['group']      = gui_group
+        if gui_tooltip    is not None: gui_params['tooltip']    = gui_tooltip
+        if gui_dependency is not None: gui_params['dependency'] = gui_dependency
+        args_params = {
+                'help':    args_help,
+                }
+
+        super().__init__(name, type, choices, default, args_params, gui_params,
+                shared)
+
+
+class Scale(Setting_Widget):
+
+    def __init__(self, name, min, max, default, args_help, step=1,
+            gui_text=None, gui_group=None, gui_tooltip=None,
+            gui_dependency=None, shared=False):
+
+        type = int
+        choices = {}
+        for i in range(min, max+1, step):
+            choices = {**choices, str(i): i}
+        gui_params = {
+                'min':     min,
+                'max':     max,
+                'step':    step,
+                'widget': 'Scale',
                 }
         if gui_text       is not None: gui_params['text']       = gui_text
         if gui_group      is not None: gui_params['group']      = gui_group
@@ -471,32 +497,23 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
-    Setting_Info('trials', int, 3, True,
-        {
-            'default': 6,
-            'const': 6,
-            'nargs': '?',
-            'choices': [0, 1, 2, 3, 4, 5, 6],
-            'help': '''\
-                    Select how many trials must be cleared to enter Ganon's Tower.
-                    The trials you must complete will be selected randomly.
-                    ''',
-            'type': int
-        },
-        {
-            'group': 'open',
-            'widget': 'Scale',
-            'default': 6,
-            'min': 0,
-            'max': 6,
-            'random': True,
-            'tooltip':'''\
-                      Trials are randomly selected. If hints are
-                      enabled, then there will be hints for which
-                      trials need to be completed.
-                      ''',
-            'dependency': lambda guivar: not guivar['trials_random'].get(),
-        }),
+    Scale(
+            name           = 'trials',
+            default        = '6',
+            min            = 0,
+            max            = 6,
+            args_help      = '''\
+                             Select how many trials must be cleared to enter Ganon's Tower.
+                             The trials you must complete will be selected randomly.
+                             ''',
+            gui_group      = 'open',
+            gui_tooltip    = '''\
+                             Trials are randomly selected. If hints are
+                             enabled, then there will be hints for which
+                             trials need to be completed.
+                             ''',
+            shared         = True,
+            ),
     Checkbutton(
             name           = 'no_escape_sequence',
             args_help      = '''\
@@ -563,29 +580,22 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
-    Setting_Info('big_poe_count', int, 4, True,
-        {
-            'default': 10,
-            'const': 10,
-            'nargs': '?',
-            'choices': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            'help': '''\
-                    Select the number of Big Poes to receive an item from the buyer.
-                    ''',
-            'type': int,
-        },
-        {
-            'group': 'convenience',
-            'widget': 'Scale',
-            'default': 10,
-            'min': 1,
-            'max': 10,
-            'tooltip':'''\
-                      The Poe buyer will give a reward for turning
-                      in the chosen number of Big Poes.
-                      ''',
-            'dependency': lambda guivar: not guivar['big_poe_count_random'].get(),
-        }),
+    Scale(
+            name           = 'big_poe_count',
+            default        = '10',
+            min            = 1,
+            max            = 10,
+            args_help      = '''\
+                             Select the number of Big Poes to receive an item from the buyer.
+                             ''',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             The Poe buyer will give a reward for turning
+                             in the chosen number of Big Poes.
+                             ''',
+            gui_dependency = lambda guivar: not guivar['big_poe_count_random'].get(),
+            shared         = True,
+            ),
     Checkbutton(
             name           = 'free_scarecrow',
             args_help      = '''\
@@ -1004,66 +1014,53 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
-    Setting_Info('mq_dungeons', int, 4, True,
-        {
-            'default': 0,
-            'const': 0,
-            'nargs': '?',
-            'choices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            'help': '''\
-                    Select a number (0-12) of Master Quest dungeons to appear in the game.
-                    0:  (default) All dungeon will have their original designs.
-                    ...
-                    6:  50/50 split; Half of all dungeons will be from Master Quest.
-                    ...
-                    12: All dungeons will have Master Quest redesigns.
-                    '''
-        },
-        {
-            'group': 'world',
-            'widget': 'Scale',
-            'default': 0,
-            'min': 0,
-            'max': 12,
-            'dependency': lambda guivar: not guivar['mq_dungeons_random'].get(),
-            'tooltip':'''\
-                      Select a number of Master Quest
-                      dungeons to appear in the game.
+    Scale(
+            name           = 'mq_dungeons',
+            default        = '0',
+            min            = 0,
+            max            = 12,
+            args_help      = '''\
+                             Select a number (0-12) of Master Quest dungeons to appear in the game.
+                             0:  (default) All dungeon will have their original designs.
+                             ...
+                             6:  50/50 split; Half of all dungeons will be from Master Quest.
+                             ...
+                             12: All dungeons will have Master Quest redesigns.
+                             ''',
+            gui_group      = 'world',
+            gui_tooltip    = '''\
+                             Select a number of Master Quest
+                             dungeons to appear in the game.
 
-                      0: All dungeon will have their
-                      original designs. (default)
+                             0: All dungeon will have their
+                             original designs. (default)
 
-                      6: Half of all dungeons will
-                      be from Master Quest.
+                             6: Half of all dungeons will
+                             be from Master Quest.
 
-                      12: All dungeons will have
-                      Master Quest redesigns.
-                      ''',
-        }),
-    Setting_Info('logic_skulltulas', int, 3, True,
-        {
-            'default': 50,
-            'const': 50,
-            'nargs': '?',
-            'choices': [0, 10, 20, 30, 40, 50],
-            'help': '''\
-                    Choose the maximum number of Gold Skulltula Tokens you will be expected to collect.
-                    ''',
-            'type': int
-        },
-        {
-            'text': 'Maximum Expected Skulltula Tokens',
-            'group': 'rewards',
-            'widget': 'Scale',
-            'default': 50,
-            'min': 0,
-            'max': 50,
-            'step': 10,
-            'tooltip':'''\
-                      Choose the maximum number of Gold Skulltula
-                      Tokens you will be expected to collect.
-                      '''
-        }),
+                             12: All dungeons will have
+                             Master Quest redesigns.
+                             ''',
+            gui_dependency = lambda guivar: not guivar['mq_dungeons_random'].get(),
+            shared         = True,
+            ),
+    Scale(
+            name           = 'logic_skulltulas',
+            default        = '50',
+            min            = 0,
+            max            = 50,
+            step           = 10,
+            args_help      = '''\
+                             Choose the maximum number of Gold Skulltula Tokens you will be expected to collect.
+                             ''',
+            gui_text       = 'Maximum Expected Skulltula Tokens',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Choose the maximum number of Gold Skulltula
+                             Tokens you will be expected to collect.
+                             ''',
+            shared         = True,
+            ),
     Checkbutton(
             name           = 'logic_no_night_tokens_without_suns_song',
             args_help      = '''\
