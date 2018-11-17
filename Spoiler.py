@@ -1,5 +1,6 @@
 from version import __version__
 from collections import OrderedDict
+from Item import Item
 import re
 
 
@@ -7,6 +8,7 @@ class Spoiler(object):
 
     def __init__(self, worlds):
         self.worlds = worlds
+        self.settings = worlds[0].settings
         self.playthrough = {}
         self.locations = {}
         self.metadata = {}
@@ -16,15 +18,11 @@ class Spoiler(object):
 
     def parse_data(self):
         self.locations = {}
-        self.settings = self.worlds[0].settings
         for world in self.worlds:
             spoiler_locations = [location for location in world.get_locations() if not location.locked and location.type != 'GossipStone']
             sort_order = {"Song": 0, "Boss": -1}
             spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
-            if self.settings.world_count > 1:
-                self.locations[world.id] = OrderedDict([(str(location), "%s [Player %d]" % (str(location.item), location.item.world.id + 1) if location.item is not None else 'Nothing') for location in spoiler_locations])
-            else:
-                self.locations[world.id] = OrderedDict([(str(location), str(location.item) if location.item is not None else 'Nothing') for location in spoiler_locations])
+            self.locations[world.id] = OrderedDict([(str(location), location.item if location.item is not None else Item(name='Nothing', world=location.world)) for location in spoiler_locations])
 
 
     def to_file(self, filename):
@@ -33,8 +31,8 @@ class Spoiler(object):
             outfile.write('OoT Randomizer Version %s  -  Seed: %s\n\n' % (__version__, self.settings.seed))
             outfile.write('Settings (%s):\n%s' % (self.settings.get_settings_string(), self.settings.get_settings_display()))
 
-            extra_padding = 0 if self.worlds[0].settings.world_count < 2 else 5 if self.worlds[0].settings.world_count < 10 else 6
-            if self.worlds[0].settings.world_count > 1:
+            extra_padding = 0 if self.settings.world_count < 2 else 5 if self.settings.world_count < 10 else 6
+            if self.settings.world_count > 1:
                 header_world_string = '\n\n{header} [World {world}]:\n\n'
                 header_player_string = '\n\n{header} [Player {player}]:\n\n'
                 location_string = '{location} [W{world}]:'
@@ -47,7 +45,7 @@ class Spoiler(object):
 
             for world in self.worlds:
                 outfile.write(header_world_string.format(header="Locations", world=world.id+1))
-                outfile.write('\n'.join(['{:{width}} {}'.format(location_string.format(location=location, world=world.id+1), item, width=50+extra_padding) for (location, item) in self.locations[world.id].items()]))
+                outfile.write('\n'.join(['{:{width}} {}'.format(location_string.format(location=location, world=world.id+1), item_string.format(item=item.name, player=item.world.id+1), width=50+extra_padding) for (location, item) in self.locations[world.id].items()]))
 
             outfile.write('\n\nPlaythrough:\n\n')
             outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['{:{width}} {}'.format(('  ' + location_string).format(location=location.name, world=location.world.id+1), item_string.format(item=item.name, player=item.world.id+1), width=50+extra_padding) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
