@@ -29,32 +29,32 @@ class Setting_Widget(Setting_Info):
             gui_params=None, shared=False):
 
         assert 'default' not in args_params and 'default' not in gui_params, \
-                'Setting {}: default shouldn\'t be defined in args_params or in gui_params'.format(name)
+                'Setting {}: default shouldn\'t be defined in '\
+                'args_params or in gui_params'.format(name)
         assert 'choices' not in args_params, \
-                'Setting {}: choices shouldn\'t be defined in args_params'.format(name)
+                'Setting {}: choices shouldn\'t be defined in '\
+                'args_params'.format(name)
         assert 'options' not in gui_params, \
-                'Setting {}: options shouldn\'t be defined in gui_params'.format(name)
+                'Setting {}: options shouldn\'t be defined in '\
+                'gui_params'.format(name)
 
-        if 'type' not in args_params:
-            args_params['type'] = type
+        if 'type'  not in args_params: args_params['type']  = type
 
-        self.choices = choices
-        args_params['choices'] = choices.values()
+        #### Is this okay?
+        if 'const' not in args_params: args_params['const'] = choices[default]
+        if 'nargs' not in args_params: args_params['nargs'] = '?'
+
+        args_params['choices'] = list(choices.values())
         args_params['default'] = choices[default]
         gui_params['options']  = choices
         gui_params['default']  = default
         
         super().__init__(name, type, None, shared, args_params, gui_params)
 
-        # argparse throws a fit if it gets unneeded keys
-        if 'action' in args_params:
-            args_params.pop('choices', None)
-            args_params.pop('type', None)
+        self.bitwidth = self.calc_bitwidth(choices)
 
-        self.bitwidth = self.calc_bitwidth()
-
-    def calc_bitwidth(self):
-        count = len(self.choices)
+    def calc_bitwidth(self, choices):
+        count = len(choices)
         if self.shared and count > 0:
             return math.ceil(math.log(count, 2))
         return 0
@@ -63,7 +63,8 @@ class Setting_Widget(Setting_Info):
 class Checkbutton(Setting_Widget):
 
     def __init__(self, name, args_help, gui_text, gui_group=None,
-            gui_tooltip=None, gui_dependency=None, default='unchecked', shared=False):
+            gui_tooltip=None, gui_dependency=None, default='unchecked',
+            shared=False):
 
         type = bool
         choices = {
@@ -71,18 +72,45 @@ class Checkbutton(Setting_Widget):
                 'unchecked': False,
                 }
         gui_params = {
-                'text':  gui_text,
+                'text':    gui_text,
                 'widget': 'Checkbutton',
                 }
-        if gui_group is not None:
-            gui_params['group'] = gui_group
-        if gui_tooltip is not None:
-            gui_params['tooltip'] = gui_tooltip
-        if gui_dependency is not None:
-            gui_params['dependency'] = gui_dependency
+        if gui_group      is not None: gui_params['group']      = gui_group
+        if gui_tooltip    is not None: gui_params['tooltip']    = gui_tooltip
+        if gui_dependency is not None: gui_params['dependency'] = gui_dependency
         args_params = {
-                'help': args_help,
+                'help':    args_help,
                 'action': 'store_true',
+                }
+
+        super().__init__(name, type, choices, default, args_params, gui_params,
+                shared)
+
+        # argparse throws a fit if it gets unneeded keys;
+        # observed in the case of checkbuttons, where an action is defined
+        if 'action' in self.args_params:
+            self.args_params.pop('choices', None)
+            self.args_params.pop('type', None)
+            self.args_params.pop('const', None)
+            self.args_params.pop('nargs', None)
+
+
+class Combobox(Setting_Widget):
+
+    def __init__(self, name, choices, default, args_help, gui_text,
+            gui_group=None, gui_tooltip=None, gui_dependency=None,
+            shared=False):
+
+        type = str
+        gui_params = {
+                'text':    gui_text,
+                'widget': 'Combobox',
+                }
+        if gui_group      is not None: gui_params['group']      = gui_group
+        if gui_tooltip    is not None: gui_params['tooltip']    = gui_tooltip
+        if gui_dependency is not None: gui_params['dependency'] = gui_dependency
+        args_params = {
+                'help':    args_help,
                 }
 
         super().__init__(name, type, choices, default, args_params, gui_params,
@@ -269,36 +297,32 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
-    Setting_Info('gerudo_fortress', str, 2, True,
-        {
-            'default': 'normal',
-            'const': 'normal',
-            'nargs': '?',
-            'help': '''Select how much of Gerudo Fortress is required. (default: %(default)s)
-                       Normal: Free all four carpenters to get the Gerudo Card.
-                       Fast:   Free only the carpenter closest to Link's prison to get the Gerudo Card.
-                       Open:   Start with the Gerudo Card and all its benefits.
-                    '''
-        },
-        {
-            'text': 'Gerudo Fortress',
-            'group': 'open',
-            'widget': 'Combobox',
-            'default': 'Default Behavior',
-            'options': {
+    Combobox(
+            name           = 'gerudo_fortress',
+            default        = 'Default Behavior',
+            choices        = {
                 'Default Behavior': 'normal',
                 'Rescue One Carpenter': 'fast',
                 'Start with Gerudo Card': 'open',
-            },
-            'tooltip':'''\
-                      'Rescue One Carpenter': Only the bottom left
-                      carpenter must be rescued.
-
-                      'Start with Gerudo Card': The carpenters are rescued from
-                      the start of the game, and the player starts with the Gerudo
-                      Card in the inventory allowing access to Gerudo Training Grounds.
-                      '''
-        }),
+                },
+            args_help      = '''\
+                             Select how much of Gerudo Fortress is required. (default: %(default)s)
+                             Normal: Free all four carpenters to get the Gerudo Card.
+                             Fast:   Free only the carpenter closest to Link's prison to get the Gerudo Card.
+                             Open:   Start with the Gerudo Card and all its benefits.
+                             ''',
+            gui_text       = 'Gerudo Fortress',
+            gui_group      = 'open',
+            gui_tooltip    = '''\
+                             'Rescue One Carpenter': Only the bottom left
+                             carpenter must be rescued.
+                             
+                             'Start with Gerudo Card': The carpenters are rescued from
+                             the start of the game, and the player starts with the Gerudo
+                             Card in the inventory allowing access to Gerudo Training Grounds.
+                             ''',
+            shared         = True,
+            ),
     Setting_Info('bridge', str, 2, True,
         {
             'default': 'medallions',
