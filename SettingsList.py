@@ -1,5 +1,6 @@
 import argparse
 import re
+import math
 from Patches import get_tunic_color_options, get_navi_color_options, get_NaviSFX_options, get_HealthSFX_options
 
 # holds the info for a single setting
@@ -20,6 +21,72 @@ class Setting_Info():
                 self.args_params['choices'] = list(gui_params['options'])
             elif isinstance(gui_params['options'], dict):
                 self.args_params['choices'] = list(gui_params['options'].values())
+
+
+class Setting_Widget(Setting_Info):
+
+    def __init__(self, name, type, choices, default, args_params={},
+            gui_params=None, shared=False):
+
+        assert 'default' not in args_params and 'default' not in gui_params, \
+                'Setting {}: default shouldn\'t be defined in args_params or in gui_params'.format(name)
+        assert 'choices' not in args_params, \
+                'Setting {}: choices shouldn\'t be defined in args_params'.format(name)
+        assert 'options' not in gui_params, \
+                'Setting {}: options shouldn\'t be defined in gui_params'.format(name)
+
+        if 'type' not in args_params:
+            args_params['type'] = type
+
+        self.choices = choices
+        args_params['choices'] = choices.values()
+        args_params['default'] = choices[default]
+        gui_params['options']  = choices
+        gui_params['default']  = default
+        
+        super().__init__(name, type, None, shared, args_params, gui_params)
+
+        # argparse throws a fit if it gets unneeded keys
+        if 'action' in args_params:
+            args_params.pop('choices', None)
+            args_params.pop('type', None)
+
+        self.bitwidth = self.calc_bitwidth()
+
+    def calc_bitwidth(self):
+        count = len(self.choices)
+        if self.shared and count > 0:
+            return math.ceil(math.log(count, 2))
+        return 0
+
+
+class Checkbutton(Setting_Widget):
+
+    def __init__(self, name, args_help, gui_text, gui_group=None,
+            gui_tooltip=None, gui_dependency=None, default='unchecked', shared=False):
+
+        type = bool
+        choices = {
+                'checked':   True,
+                'unchecked': False,
+                }
+        gui_params = {
+                'text':  gui_text,
+                'widget': 'Checkbutton',
+                }
+        if gui_group is not None:
+            gui_params['group'] = gui_group
+        if gui_tooltip is not None:
+            gui_params['tooltip'] = gui_tooltip
+        if gui_dependency is not None:
+            gui_params['dependency'] = gui_dependency
+        args_params = {
+                'help': args_help,
+                'action': 'store_true',
+                }
+
+        super().__init__(name, type, choices, default, args_params, gui_params,
+                shared)
 
 
 def parse_custom_tunic_color(s):
@@ -101,21 +168,21 @@ setting_infos = [
                     ''',
             'type': int
         }),
-    Setting_Info('create_spoiler', bool, 1, True,
-        {
-            'help': 'Output a Spoiler File',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Create Spoiler Log',
-            'group': 'rom_tab',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'dependency': lambda guivar: guivar['compress_rom'].get() != 'No ROM Output',
-            'tooltip':'''\
-                      Enabling this will change the seed.
-                      '''
-        }),
+    Checkbutton(
+            name           = 'create_spoiler',
+            args_help      = '''\
+                             Output a Spoiler File
+                             ''',
+            gui_text       = 'Create Spoiler Log',
+            gui_group      = 'rom_tab',
+            gui_tooltip    = '''\
+                             Enabling this will change the seed.
+                             ''',
+            gui_dependency = lambda guivar: guivar['compress_rom'].get() != 'No ROM Output',
+            default        = 'checked',
+            shared         = True,
+            ),
+
     Setting_Info('compress_rom', str, 2, False,
         {
             'default': 'True',
@@ -151,68 +218,57 @@ setting_infos = [
                       people without sending the ROM file.
                       '''
         }),
-    Setting_Info('open_forest', bool, 1, True,
-        {
-            'help': '''\
-                    Mido no longer blocks the path to the Deku Tree, and
-                    the Kokiri boy no longer blocks the path out of the forest.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Open Forest',
-            'group': 'open',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      Mido no longer blocks the path to the Deku Tree,
-                      and the Kokiri boy no longer blocks the path out
-                      of the forest.
+    Checkbutton(
+            name           = 'open_forest',
+            args_help      = '''\
+                             Mido no longer blocks the path to the Deku Tree, and
+                             the Kokiri boy no longer blocks the path out of the forest.
+                             ''',
+            gui_text       = 'Open Forest',
+            gui_group      = 'open',
+            gui_tooltip    = '''\
+                             Mido no longer blocks the path to the Deku Tree,
+                             and the Kokiri boy no longer blocks the path out
+                             of the forest.
 
-                      When this option is off, the Kokiri Sword and
-                      Slingshot are always available somewhere
-                      in the forest.
-                      '''
-        }),
-    Setting_Info('open_kakariko', bool, 1, True,
-        {
-            'help': '''\
-                    The gate in Kakariko Village to Death Mountain Trail
-                    is always open instead of needing Zelda's Letter.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Open Kakariko Gate',
-            'group': 'open',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      The gate in Kakariko Village to Death Mountain Trail
-                      is always open instead of needing Zelda's Letter.
+                             When this option is off, the Kokiri Sword and
+                             Slingshot are always available somewhere
+                             in the forest.
+                             ''',
+            default        = 'checked',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'open_kakariko',
+            args_help      = '''\
+                             The gate in Kakariko Village to Death Mountain Trail
+                             is always open instead of needing Zelda's Letter.
+                             ''',
+            gui_text       = 'Open Kakariko Gate',
+            gui_group      = 'open',
+            gui_tooltip    = '''\
+                             The gate in Kakariko Village to Death Mountain Trail
+                             is always open instead of needing Zelda's Letter.
 
-                      Either way, the gate is always open as an adult.
-                      '''
-        }),
-    Setting_Info('open_door_of_time', bool, 1, True,
-        {
-            'help': '''
-                    The Door of Time is open from the beginning of the game.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Open Door of Time',
-            'group': 'open',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      The Door of Time starts opened instead of needing to
-                      play the Song of Time. If this is not set, only
-                      an Ocarina and Song of Time must be found to open
-                      the Door of Time.
-                      '''
-        }),
+                             Either way, the gate is always open as an adult.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'open_door_of_time',
+            args_help      = '''\
+                             The Door of Time is open from the beginning of the game.
+                             ''',
+            gui_text       = 'Open Door of Time',
+            gui_group      = 'open',
+            gui_tooltip    = '''\
+                             The Door of Time starts opened instead of needing to
+                             play the Song of Time. If this is not set, only
+                             an Ocarina and Song of Time must be found to open
+                             the Door of Time.
+                             ''',
+            shared         = True,
+            ),
     Setting_Info('gerudo_fortress', str, 2, True,
         {
             'default': 'normal',
@@ -311,110 +367,96 @@ setting_infos = [
                       be beatable.
                       '''
         }),    
-    Setting_Info('all_reachable', bool, 1, True,
-        {
-            'help': '''\
-                    When disabled, only check if the game is beatable with
-                    placement. Do not ensure all locations are reachable.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'All Locations Reachable',
-            'group': 'world',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      When this option is enabled, the randomizer will
-                      guarantee that every item is obtainable and every
-                      location is reachable.
-
-                      When disabled, only required items and locations
-                      to beat the game will be guaranteed reachable.
-
-                      Even when enabled, some locations may still be able
-                      to hold the keys needed to reach them.
-                      ''',
-            'dependency': lambda guivar: guivar['logic_rules'].get() == 'Glitchless',
-        }),
-    Setting_Info('bombchus_in_logic', bool, 1, True,
-        {
-            'help': '''\
-                    Bombchus will be considered in logic. This has a few effects:
-                    -Back Alley shop will open once you've found Bombchus.
-                    -It will sell an affordable pack (5 for 60) and never sell out.
-                    -Bombchus refills cannot be bought until Bombchus have been obtained.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Bombchus Are Considered in Logic',
-            'group': 'world',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      Bombchus are properly considered in logic.
-
-                      The first Bombchu pack will always be 20.
-                      Subsequent packs will be 5 or 10 based on
-                      how many you have.
-
-                      Bombchus can be purchased for 60/99/180
-                      rupees once they are been found.
-
-                      Bombchu Bowling opens with Bombchus.
-                      Bombchus are available at Kokiri Shop
-                      and the Bazaar. Bombchu refills cannot
-                      be bought until Bombchus have been
-                      obtained.
-                      ''',
-        }),
-    Setting_Info('one_item_per_dungeon', bool, 1, True,
-        {
-            'help': '''\
-                    Each dungeon will have exactly one major item.
-                    Does not include dungeon items or GS Tokens.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Dungeons Have One Major Item',
-            'group': 'world',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Dungeons have exactly one major
-                      item. This naturally makes each
-                      dungeon similar in value instaed
-                      of valued based on chest count.
-
-                      Spirit Temple Colossus hands count
-                      as part of the dungeon. Spirit
-                      Temple has TWO items to match
-                      vanilla distribution.
-
-                      Dungeon items and GS Tokens do
-                      not count as major items.
-                      ''',
-        }),
-    Setting_Info('trials_random', bool, 1, True,
-        {
-            'help': '''\
-                    Sets the number of trials must be cleared to enter
-                    Ganon's Tower to a random value.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Random Number of Ganon\'s Trials',
-            'group': 'open',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Sets a random number of trials to
-                      enter Ganon's Tower.
-                      '''
-        }),
+    Checkbutton(
+            name           = 'all_reachable',
+            args_help      = '''\
+                             When disabled, only check if the game is beatable with
+                             placement. Do not ensure all locations are reachable.
+                             ''',
+            gui_text       = 'All Locations Reachable',
+            gui_group      = 'world',
+            gui_tooltip    = '''\
+                             When this option is enabled, the randomizer will
+                             guarantee that every item is obtainable and every
+                             location is reachable.
+        
+                             When disabled, only required items and locations
+                             to beat the game will be guaranteed reachable.
+        
+                             Even when enabled, some locations may still be able
+                             to hold the keys needed to reach them.
+                             ''',
+            gui_dependency = lambda guivar: guivar['logic_rules'].get() == 'Glitchless',
+            default        = 'checked',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'bombchus_in_logic',
+            args_help      = '''\
+                             Bombchus will be considered in logic. This has a few effects:
+                             -Back Alley shop will open once you've found Bombchus.
+                             -It will sell an affordable pack (5 for 60) and never sell out.
+                             -Bombchus refills cannot be bought until Bombchus have been obtained.
+                             ''',
+            gui_text       = 'Bombchus Are Considered in Logic',
+            gui_group      = 'world',
+            gui_tooltip    = '''\
+                             Bombchus are properly considered in logic.
+        
+                             The first Bombchu pack will always be 20.
+                             Subsequent packs will be 5 or 10 based on
+                             how many you have.
+        
+                             Bombchus can be purchased for 60/99/180
+                             rupees once they are been found.
+        
+                             Bombchu Bowling opens with Bombchus.
+                             Bombchus are available at Kokiri Shop
+                             and the Bazaar. Bombchu refills cannot
+                             be bought until Bombchus have been
+                             obtained.
+                             ''',
+            default        = 'checked',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'one_item_per_dungeon',
+            args_help      = '''\
+                             Each dungeon will have exactly one major item.
+                             Does not include dungeon items or GS Tokens.
+                             ''',
+            gui_text       = 'Dungeons Have One Major Item',
+            gui_group      = 'world',
+            gui_tooltip    = '''\
+                             Dungeons have exactly one major
+                             item. This naturally makes each
+                             dungeon similar in value instaed
+                             of valued based on chest count.
+        
+                             Spirit Temple Colossus hands count
+                             as part of the dungeon. Spirit
+                             Temple has TWO items to match
+                             vanilla distribution.
+        
+                             Dungeon items and GS Tokens do
+                             not count as major items.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'trials_random',
+            args_help      = '''\
+                             Sets the number of trials must be cleared to enter
+                             Ganon's Tower to a random value.
+                             ''',
+            gui_text       = 'Random Number of Ganon\'s Trials',
+            gui_group      = 'open',
+            gui_tooltip    = '''\
+                             Sets a random number of trials to
+                             enter Ganon's Tower.
+                             ''',
+            shared         = True,
+            ),
     Setting_Info('trials', int, 3, True,
         {
             'default': 6,
@@ -441,91 +483,72 @@ setting_infos = [
                       ''',
             'dependency': lambda guivar: not guivar['trials_random'].get(),
         }),
-    Setting_Info('no_escape_sequence', bool, 1, True,
-        {
-            'help': '''\
-                    The tower collapse escape sequence between Ganondorf and Ganon will be skipped.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Skip Tower Collapse Escape Sequence',
-            'group': 'convenience',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      The tower collapse escape sequence between
-                      Ganondorf and Ganon will be skipped.
-                      '''
-        }),
-    Setting_Info('no_guard_stealth', bool, 1, True,
-        {
-            'help': '''\
-                    The crawlspace into Hyrule Castle will take you straight to Zelda.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Skip Interior Castle Guard Stealth Sequence',
-            'group': 'convenience',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      The crawlspace into Hyrule Castle goes
-                      straight to Zelda, skipping the guards.
-                      '''
-        }),
-    Setting_Info('no_epona_race', bool, 1, True,
-        {
-            'help': '''\
-                    Having Epona's Song will allow you to summon Epona without racing Ingo.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Skip Epona Race',
-            'group': 'convenience',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Epona can be summoned with Epona's Song
-                      without needing to race Ingo.
-                      '''
-        }),
-    Setting_Info('fast_chests', bool, 1, True,
-        {
-            'help': '''\
-                    Makes all chests open without the large chest opening cutscene.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Fast Chest Cutscenes',
-            'group': 'convenience',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      All chest animations are fast. If disabled,
-                      the animation time is slow for major items.
-                      '''
-        }),
-    Setting_Info('big_poe_count_random', bool, 1, True,
-        {
-            'help': '''\
-                    Sets a random number of Big Poes to receive an item from the buyer.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Random Big Poe Target Count',
-            'group': 'convenience',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      The Poe buyer will give a reward for turning
-                      in a random number of Big Poes.
-                      '''
-        }),
+    Checkbutton(
+            name           = 'no_escape_sequence',
+            args_help      = '''\
+                             The tower collapse escape sequence between Ganondorf and Ganon will be skipped.
+                             ''',
+            gui_text       = 'Skip Tower Collapse Escape Sequence',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             The tower collapse escape sequence between
+                             Ganondorf and Ganon will be skipped.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'no_guard_stealth',
+            args_help      = '''\
+                             The crawlspace into Hyrule Castle will take you straight to Zelda.
+                             ''',
+            gui_text       = 'Skip Interior Castle Guard Stealth Sequence',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             The crawlspace into Hyrule Castle goes
+                             straight to Zelda, skipping the guards.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'no_epona_race',
+            args_help      = '''\
+                             Having Epona's Song will allow you to summon Epona without racing Ingo.
+                             ''',
+            gui_text       = 'Skip Epona Race',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Epona can be summoned with Epona's Song
+                             without needing to race Ingo.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'fast_chests',
+            args_help      = '''\
+                             Makes all chests open without the large chest opening cutscene.
+                             ''',
+            gui_text       = 'Fast Chest Cutscenes',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             All chest animations are fast. If disabled,
+                             the animation time is slow for major items.
+                             ''',
+            default        = 'checked',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'big_poe_count_random',
+            args_help      = '''\
+                             Sets a random number of Big Poes to receive an item from the buyer.
+                             ''',
+            gui_text       = 'Random Big Poe Target Count',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             The Poe buyer will give a reward for turning
+                             in a random number of Big Poes.
+                             ''',
+            shared         = True,
+            ),
     Setting_Info('big_poe_count', int, 4, True,
         {
             'default': 10,
@@ -549,25 +572,21 @@ setting_infos = [
                       ''',
             'dependency': lambda guivar: not guivar['big_poe_count_random'].get(),
         }),
-    Setting_Info('free_scarecrow', bool, 1, True,
-        {
-            'help': '''\
-                    Start with Scarecrow's Song. You do not need
-                    to play it as child or adult at the scarecrow
-                    patch to be able to summon Pierre.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Start with Scarecrow\'s Song',
-            'group': 'convenience',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Skips needing to go to Lake Hylia as both
-                      child and adult to learn Scarecrow's Song.
-                      '''
-        }),
+    Checkbutton(
+            name           = 'free_scarecrow',
+            args_help      = '''\
+                             Start with Scarecrow's Song. You do not need
+                             to play it as child or adult at the scarecrow
+                             patch to be able to summon Pierre.
+                             ''',
+            gui_text       = 'Start with Scarecrow\'s Song',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Skips needing to go to Lake Hylia as both
+                             child and adult to learn Scarecrow's Song.
+                             ''',
+            shared         = True,
+            ),
     Setting_Info('scarecrow_song', str, 3*8, True,
         {
             'default': 'DAAAAAAA',
@@ -596,105 +615,89 @@ setting_infos = [
                       'R': C-Right
                       '''
         }),
-    Setting_Info('shuffle_kokiri_sword', bool, 1, True,
-        {
-            'help': '''\
-                    Shuffles the Kokiri Sword into the pool.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Shuffle Kokiri Sword',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      Disabling this will make the Kokiri Sword
-                      always available at the start.
-                      '''
-        }),
-    Setting_Info('shuffle_weird_egg', bool, 1, True,
-        {
-            'help': '''\
-                    Shuffles the Weird Egg item from Malon into the pool.
-                    This means that you need to find the egg before going Zelda.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Shuffle Weird Egg',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      You need to find the egg before going Zelda.
-                      This means the Weird Egg locks the rewards from
-                      Impa, Saria, Malon, and Talon as well as the
-                      Happy Mask sidequest.
-                      '''
-        }),
-    Setting_Info('shuffle_ocarinas', bool, 1, True,
-        {
-            'help': '''\
-                    Shuffles the Fairy Ocarina and the Ocarina of Time into the pool.
-                    This means that you need to find an ocarina before playing songs.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Shuffle Ocarinas',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      The Fairy Ocarina and Ocarina of Time are
-                      randomized. One will be required before
-                      songs can be played.
-                      '''
-        }),
-    Setting_Info('shuffle_song_items', bool, 1, True,
-        {
-            'help': '''\
-                    Shuffles the songs with with rest of the item pool so that
-                    songs can appear at other locations and items can appear at
-                    the song locations.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Shuffle Songs with Items',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      Songs can appear anywhere as normal items.
-
-                      If this option is not set, songs will still
-                      be shuffled but will be limited to the
-                      locations that has songs in the original game.
-                      '''
-        }),
-    Setting_Info('shuffle_gerudo_card', bool, 1, True,
-        {
-            'help': '''\
-                    Shuffles the Gerudo Card into the item pool.
-                    The Gerudo Card does not stop guards from throwing you in jail.
-                    It only grants access to Gerudo Training Grounds after all carpenters
-                    have been rescued. This option does nothing if "gerudo_fortress" is "open".
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Shuffle Gerudo Card',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'dependency': lambda guivar: guivar['gerudo_fortress'].get() != 'Start with Gerudo Card',
-            'tooltip':'''\
-                      Gerudo Card is required to enter
-                      Gerudo Training Grounds.
-                      '''
-        }),
+    Checkbutton(
+            name           = 'shuffle_kokiri_sword',
+            args_help      = '''\
+                             Shuffles the Kokiri Sword into the pool.
+                             ''',
+            gui_text       = 'Shuffle Kokiri Sword',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             Disabling this will make the Kokiri Sword
+                             always available at the start.
+                             ''',
+            default        = 'checked',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'shuffle_weird_egg',
+            args_help      = '''\
+                             Shuffles the Weird Egg item from Malon into the pool.
+                             This means that you need to find the egg before going Zelda.
+                             ''',
+            gui_text       = 'Shuffle Weird Egg',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             You need to find the egg before going Zelda.
+                             This means the Weird Egg locks the rewards from
+                             Impa, Saria, Malon, and Talon as well as the
+                             Happy Mask sidequest.
+                             ''',
+            default        = 'checked',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'shuffle_ocarinas',
+            args_help      = '''\
+                             Shuffles the Fairy Ocarina and the Ocarina of Time into the pool.
+                             This means that you need to find an ocarina before playing songs.
+                             ''',
+            gui_text       = 'Shuffle Ocarinas',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             The Fairy Ocarina and Ocarina of Time are
+                             randomized. One will be required before
+                             songs can be played.
+                             ''',
+            default        = 'checked',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'shuffle_song_items',
+            args_help      = '''\
+                             Shuffles the songs with with rest of the item pool so that
+                             songs can appear at other locations and items can appear at
+                             the song locations.
+                             ''',
+            gui_text       = 'Shuffle Songs with Items',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             Songs can appear anywhere as normal items.
+        
+                             If this option is not set, songs will still
+                             be shuffled but will be limited to the
+                             locations that has songs in the original game.
+                             ''',
+            default        = 'checked',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'shuffle_gerudo_card',
+            args_help      = '''\
+                             Shuffles the Gerudo Card into the item pool.
+                             The Gerudo Card does not stop guards from throwing you in jail.
+                             It only grants access to Gerudo Training Grounds after all carpenters
+                             have been rescued. This option does nothing if "gerudo_fortress" is "open".
+                             ''',
+            gui_text       = 'Shuffle Gerudo Card',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             Gerudo Card is required to enter
+                             Gerudo Training Grounds.
+                             ''',
+            gui_dependency = lambda guivar: guivar['gerudo_fortress'].get() != 'Start with Gerudo Card',
+            shared         = True,
+            ),
     Setting_Info('shuffle_scrubs', str, 3, True,
         {
             'default': 'off',
@@ -923,58 +926,51 @@ setting_infos = [
                       for a milder Keysanity experience.
                       '''
         }),
-    Setting_Info('enhance_map_compass', bool, 1, True,
-        {
-            'help': '''\
-                    Gives the Map and Compass extra functionality.
-                    Map will tell if a dungeon is vanilla or Master Quest.
-                    Compass will tell what medallion or stone is within.
-                    The Temple of Time Altar will no longer provide any
-                    information. If the maps and compasses are removed then
-                    the information will be unavailable.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Maps and Compasses Give Information',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                    Gives the Map and Compass extra functionality.
-                    Map will tell if a dungeon is vanilla or Master Quest.
-                    Compass will tell what medallion or stone is within.
-                    The Temple of Time Altar will no longer provide any
-                    information.
-
-                    'Maps/Compasses: Remove': The dungeon information is
-                    not available anywhere in the game.
-
-                    'Maps/Compasses: Start With': The dungeon information
-                    is available immediately from the dungeon menu.
-                    ''',
-        }),
-    Setting_Info('unlocked_ganondorf', bool, 1, True,
-        {
-            'help': '''\
-                    The Boss Key door in Ganon's Tower will start unlocked.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Remove Ganon\'s Boss Door Lock',
-            'group': 'logic',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      The Boss Key door in Ganon's Tower
-                      will start unlocked. This is intended
-                      to be used with reduced trial
-                      requirements to make it more likely
-                      that skipped trials can be avoided.
-                      ''',
-            'dependency': lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Remove (Keysy)',
-        }),
+    Checkbutton(
+            name           = 'enhance_map_compass',
+            args_help      = '''\
+                             Gives the Map and Compass extra functionality.
+                             Map will tell if a dungeon is vanilla or Master Quest.
+                             Compass will tell what medallion or stone is within.
+                             The Temple of Time Altar will no longer provide any
+                             information. If the maps and compasses are removed then
+                             the information will be unavailable.
+                             ''',
+            gui_text       = 'Maps and Compasses Give Information',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                           Gives the Map and Compass extra functionality.
+                           Map will tell if a dungeon is vanilla or Master Quest.
+                           Compass will tell what medallion or stone is within.
+                           The Temple of Time Altar will no longer provide any
+                           information.
+        
+                           'Maps/Compasses: Remove': The dungeon information is
+                           not available anywhere in the game.
+        
+                           'Maps/Compasses: Start With': The dungeon information
+                           is available immediately from the dungeon menu.
+                             ''',
+            default        = 'checked',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'unlocked_ganondorf',
+            args_help      = '''\
+                             The Boss Key door in Ganon's Tower will start unlocked.
+                             ''',
+            gui_text       = 'Remove Ganon\'s Boss Door Lock',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             The Boss Key door in Ganon's Tower
+                             will start unlocked. This is intended
+                             to be used with reduced trial
+                             requirements to make it more likely
+                             that skipped trials can be avoided.
+                             ''',
+            gui_dependency = lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Remove (Keysy)',
+            shared         = True,
+            ),
     Setting_Info('tokensanity', str, 2, True,
         {
             'default': 'off',
@@ -1012,23 +1008,19 @@ setting_infos = [
                       new locations for items to appear.
                       '''
         }),
-    Setting_Info('mq_dungeons_random', bool, 1, True,
-        {
-            'help': '''\
-                    If set, a uniformly random number of dungeons will have Master Quest designs.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Random Number of MQ Dungeons',
-            'group': 'world',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      If set, a random number of dungeons
-                      will have Master Quest designs.
-                      '''
-        }),
+    Checkbutton(
+            name           = 'mq_dungeons_random',
+            args_help      = '''\
+                             If set, a uniformly random number of dungeons will have Master Quest designs.
+                             ''',
+            gui_text       = 'Random Number of MQ Dungeons',
+            gui_group      = 'world',
+            gui_tooltip    = '''\
+                             If set, a random number of dungeons
+                             will have Master Quest designs.
+                             ''',
+            shared         = True,
+            ),
     Setting_Info('mq_dungeons', int, 4, True,
         {
             'default': 0,
@@ -1089,94 +1081,88 @@ setting_infos = [
                       Tokens you will be expected to collect.
                       '''
         }),
-    Setting_Info('logic_no_night_tokens_without_suns_song', bool, 1, True,
-        {
-            'help': '''\
-                    You will not be expected to collect nighttime-only skulltulas
-                    unless you have Sun's Song
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No Nighttime Skulltulas without Sun\'s Song',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      GS Tokens that can only be obtained
-                      during the night expect you to have Sun's
-                      Song to collect them. This prevents needing
-                      to wait until night for some locations.
-                      '''
-        }),
-    Setting_Info('logic_no_big_poes', bool, 1, True,
-        {
-            'help': '''\
-                    You will not be expected to collect 10 big poes.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No Big Poes',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      The Big Poe vendor will not have a
-                      required item.
-                      '''
-        }),
-    Setting_Info('logic_no_child_fishing', bool, 1, True,
-        {
-            'help': '''\
-                    You will not be expected to obtain the child fishing reward.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No Child Fishing',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Fishing does not work correctly on
-                      Bizhawk.
-                      '''
-        }),
-    Setting_Info('logic_no_adult_fishing', bool, 1, True,
-        {
-            'help': '''\
-                    You will not be expected to obtain the adult fishing reward.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No Adult Fishing',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Fishing does not work correctly on
-                      Bizhawk.
-                      '''
-        }),
-    Setting_Info('logic_no_trade_skull_mask', bool, 1, True,
-        {
-            'help': '''\
-                    You will not be expected to show the Skull Mask at the forest stage.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No Skull Mask Reward',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Showing off the Skull Mask will
-                      not yield a required item.
-                      '''
-        }),
+    Checkbutton(
+            name           = 'logic_no_night_tokens_without_suns_song',
+            args_help      = '''\
+                             You will not be expected to collect nighttime-only skulltulas
+                             unless you have Sun's Song
+                             ''',
+            gui_text       = 'No Nighttime Skulltulas without Sun\'s Song',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             GS Tokens that can only be obtained
+                             during the night expect you to have Sun's
+                             Song to collect them. This prevents needing
+                             to wait until night for some locations.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_no_big_poes',
+            args_help      = '''\
+                             You will not be expected to collect 10 big poes.
+                             ''',
+            gui_text       = 'No Big Poes',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             The Big Poe vendor will not have a
+                             required item.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_no_child_fishing',
+            args_help      = '''\
+                             You will not be expected to obtain the child fishing reward.
+                             ''',
+            gui_text       = 'No Child Fishing',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Fishing does not work correctly on
+                             Bizhawk.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_no_adult_fishing',
+            args_help      = '''\
+                             You will not be expected to obtain the adult fishing reward.
+                             ''',
+            gui_text       = 'No Adult Fishing',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Fishing does not work correctly on
+                             Bizhawk.
+                             ''',
+            shared         = True,
+            ),
+#   Setting_Info('logic_no_trade_skull_mask', bool, 1, True,
+#       {
+#           'help': '''\
+#                   ''',
+#           'action': 'store_true'
+#       },
+#       {
+#           'text': 'No Skull Mask Reward',
+#           'group': 'rewards',
+#           'widget': 'Checkbutton',
+#           'default': 'unchecked',
+#           'tooltip':'''\
+#                     '''
+#       }),
+    Checkbutton(
+            name           = 'logic_no_trade_skull_mask',
+            args_help      = '''\
+                             You will not be expected to show the Skull Mask at the forest stage.
+                             ''',
+            gui_text       = 'No Skull Mask Reward',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Showing off the Skull Mask will
+                             not yield a required item.
+                             ''',
+            shared         = True,
+            ),
     Setting_Info('logic_no_trade_mask_of_truth', bool, 1, True,
         {
             'help': '''\
