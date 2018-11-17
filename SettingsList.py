@@ -97,15 +97,15 @@ class Checkbutton(Setting_Widget):
 
 class Combobox(Setting_Widget):
 
-    def __init__(self, name, choices, default, args_help, gui_text,
+    def __init__(self, name, choices, default, args_help, gui_text=None,
             gui_group=None, gui_tooltip=None, gui_dependency=None,
             shared=False):
 
         type = str
         gui_params = {
-                'text':    gui_text,
                 'widget': 'Combobox',
                 }
+        if gui_text       is not None: gui_params['text']       = gui_text
         if gui_group      is not None: gui_params['group']      = gui_group
         if gui_tooltip    is not None: gui_params['tooltip']    = gui_tooltip
         if gui_dependency is not None: gui_params['dependency'] = gui_dependency
@@ -323,74 +323,64 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
-    Setting_Info('bridge', str, 2, True,
-        {
-            'default': 'medallions',
-            'const': 'medallions',
-            'nargs': '?',
-            'help': '''\
-                    Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
-                    Medallions:    Collect all six medallions to create the bridge.
-                    Vanilla:       Collect only the Shadow and Spirit Medallions and possess the Light Arrows.
-                    All Dungeons:  Collect all spiritual stones and all medallions to create the bridge.
-                    Open:          The bridge will spawn without an item requirement.
-                    '''
-        },
-        {
-            'text': 'Rainbow Bridge Requirement',
-            'group': 'open',
-            'widget': 'Combobox',
-            'default': 'All Medallions',
-            'options': {
-                'All Dungeons': 'dungeons',
-                'All Medallions': 'medallions',
+    Combobox(
+            name           = 'bridge',
+            default        = 'All Medallions',
+            choices        = {
+                'All Dungeons':         'dungeons',
+                'All Medallions':       'medallions',
                 'Vanilla Requirements': 'vanilla',
-                'Always Open': 'open',
-            },
-            'tooltip':'''\
-                      'All Dungeons': All Medallions and Stones
-
-                      'All Medallions': All 6 Medallions only
-
-                      'Vanilla Requirements': Spirit and Shadow
-                      Medallions and the Light Arrows
-
-                      'Always Open': Rainbow Bridge is always present
-                      '''
-        }),
-    Setting_Info('logic_rules', str, 1, True,
-        {
-            'default': 'glitchless',
-            'const': 'glitchless',
-            'nargs': '?',
-            'help': '''\
-                    Sets the rules the logic uses to determine accessibility:
-                    glitchless:  No glitches are required, but may require some minor tricks
-                    none:        All locations are considered available. May not be beatable.
-                    ''',
-        },
-        {
-            'text': 'Logic Rules',
-            'group': 'world',
-            'widget': 'Combobox',
-            'default': 'Glitchless',
-            'options': {
+                'Always Open':          'open',
+                },
+            args_help      = '''\
+                             Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
+                             Medallions:    Collect all six medallions to create the bridge.
+                             Vanilla:       Collect only the Shadow and Spirit Medallions and possess the Light Arrows.
+                             All Dungeons:  Collect all spiritual stones and all medallions to create the bridge.
+                             Open:          The bridge will spawn without an item requirement.
+                             ''',
+            gui_text       = 'Rainbox Bridge Requirement',
+            gui_group      = 'open',
+            gui_tooltip    = '''\
+                             'All Dungeons': All Medallions and Stones
+        
+                             'All Medallions': All 6 Medallions only
+        
+                             'Vanilla Requirements': Spirit and Shadow
+                             Medallions and the Light Arrows
+        
+                             'Always Open': Rainbow Bridge is always present
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'logic_rules',
+            default        = 'Glitchless',
+            choices        = {
                 'Glitchless': 'glitchless',
-                'No Logic': 'none',
-            },
-            'tooltip':'''\
-                      Sets the rules the logic uses
-                      to determine accessibility.
-
-                      'Glitchless': No glitches are
-                      required, but may require some
-                      minor tricks
-
-                      'No Logic': All locations are
-                      considered available. May not
-                      be beatable.
-                      '''
-        }),    
+                'No Logic':   'none',
+                },
+            args_help      = '''\
+                             Sets the rules the logic uses to determine accessibility:
+                             glitchless:  No glitches are required, but may require some minor tricks
+                             none:        All locations are considered available. May not be beatable.
+                             ''',
+            gui_text       = 'Logic Rules',
+            gui_group      = 'world',
+            gui_tooltip    = '''\
+                             Sets the rules the logic uses
+                             to determine accessibility.
+        
+                             'Glitchless': No glitches are
+                             required, but may require some
+                             minor tricks
+        
+                             'No Logic': All locations are
+                             considered available. May not
+                             be beatable.
+                             ''',
+            shared         = True,
+            ),
     Checkbutton(
             name           = 'all_reachable',
             args_help      = '''\
@@ -722,78 +712,53 @@ setting_infos = [
             gui_dependency = lambda guivar: guivar['gerudo_fortress'].get() != 'Start with Gerudo Card',
             shared         = True,
             ),
-    Setting_Info('shuffle_scrubs', str, 3, True,
-        {
-            'default': 'off',
-            'const': 'off',
-            'nargs': '?',
-            'help': '''\
-                    Deku Scrub Salesmen are randomized:
-                    off:        Only the 3 Scrubs that give one-time items
-                                in the vanilla game will have random items.
-                    low:        All Scrubs will have random items and their
-                                prices will be reduced to 10 rupees each.
-                    regular:    All Scrubs will have random items and each
-                                of them will demand their vanilla prices.
-                    random:     All Scrubs will have random items and their
-                                price will also be random between 10-99 rupees.
-                    '''
-        },
-        {
-            'text': 'Scrub Shuffle',
-            'group': 'logic',
-            'widget': 'Combobox',
-            'default': 'Off',
-            'options': {
-                'Off': 'off',
-                'On (Affordable)': 'low',
-                'On (Expensive)': 'regular',
+    Combobox(
+            name           = 'shuffle_scrubs',
+            default        = 'Off',
+            choices        = {
+                'Off':                'off',
+                'On (Affordable)':    'low',
+                'On (Expensive)':     'regular',
                 'On (Random Prices)': 'random',
-            },
-            'tooltip':'''\
-                      'Off': Only the 3 Scrubs that give one-time
-                      items in the vanilla game (PoH, Deku Nut
-                      capacity, and Deku Stick capacity) will
-                      have random items.
-
-                      'Affordable': All Scrub prices will be
-                      reduced to 10 rupees each.
-
-                      'Expensive': All Scrub prices will be
-                      their vanilla prices. This will require
-                      spending over 1000 rupees on Scrubs.
-
-                      'Random Prices': All Scrub prices will be
-                      between 0-99 rupees. This will on average
-                      be very, very expensive overall.
-
-                      The texts of the Scrubs are not updated.
-                      '''
-        }),
-    Setting_Info('shopsanity', str, 3, True,
-        {
-            'default': 'off',
-            'const': 'off',
-            'nargs': '?',
-            'help': '''\
-                    Shop contents are randomized. Non-shop items
-                    are one time purchases. This setting also
-                    changes the item pool to introduce a new Wallet
-                    upgrade and more money.
-                    off:        Normal Shops*
-                    0-4:        Shop contents are shuffled and N non-shop
-                                items are added to every shop. So more
-                                possible item locations.
-                    random:     Shop contents are shuffles and each shop
-                                will have a random number of non-shop items
-                    '''
-        },
-        {
-            'text': 'Shopsanity',
-            'group': 'logic',
-            'widget': 'Combobox',
-            'default': 'Off',
-            'options': {
+                },
+            args_help      = '''\
+                             Deku Scrub Salesmen are randomized:
+                             off:        Only the 3 Scrubs that give one-time items
+                                         in the vanilla game will have random items.
+                             low:        All Scrubs will have random items and their
+                                         prices will be reduced to 10 rupees each.
+                             regular:    All Scrubs will have random items and each
+                                         of them will demand their vanilla prices.
+                             random:     All Scrubs will have random items and their
+                                         price will also be random between 10-99 rupees.
+                             ''',
+            gui_text       = 'Scrub Shuffle',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             'Off': Only the 3 Scrubs that give one-time
+                             items in the vanilla game (PoH, Deku Nut
+                             capacity, and Deku Stick capacity) will
+                             have random items.
+        
+                             'Affordable': All Scrub prices will be
+                             reduced to 10 rupees each.
+        
+                             'Expensive': All Scrub prices will be
+                             their vanilla prices. This will require
+                             spending over 1000 rupees on Scrubs.
+        
+                             'Random Prices': All Scrub prices will be
+                             between 0-99 rupees. This will on average
+                             be very, very expensive overall.
+        
+                             The texts of the Scrubs are not updated.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'shopsanity',
+            default        = 'Off',
+            choices        = {
                 'Off': 'off',
                 'Shuffled Shops (0 Items)': '0',
                 'Shuffled Shops (1 Items)': '1',
@@ -801,155 +766,154 @@ setting_infos = [
                 'Shuffled Shops (3 Items)': '3',
                 'Shuffled Shops (4 Items)': '4',
                 'Shuffled Shops (Random)': 'random',
-            },
-            'tooltip':'''\
-                      Shop contents are randomized.
-                      (X Items): Shops have X random non-shop (Special
-                      Deal!) items. They will always be on the left
-                      side, and some of the lower value shop items
-                      will be replaced to make room for these.
-
-                      (Random): Each shop will have a random number
-                      of non-shop items up to a maximum of 4.
-
-                      The non-shop items have no requirements except
-                      money, while the normal shop items (such as
-                      200/300 rupee tunics) have normal vanilla
-                      requirements. This means that, for example,
-                      as a child you cannot buy 200/300 rupee
-                      tunics, but you can buy non-shop tunics.
-
-                      Non-shop Bombchus will unlock the chu slot
-                      in your inventory, which, if Bombchus are in
-                      logic, is needed to buy Bombchu refills.
-                      Otherwise, the Bomb Bag is required.
-                      '''
-        }),
-    Setting_Info('shuffle_mapcompass', str, 2, True,
-        {
-        'default': 'dungeon',
-        'const': 'dungeon',
-        'nargs': '?',
-        'help': '''\
-                    Sets the Map and Compass placement rules
-                    remove:      Maps and Compasses are removed from the world.
-                    startwith:   Start with all Maps and Compasses.
-                    dungeon:     Maps and Compasses are put in their dungeon.
-                    keysanity:   Maps and Compasses can appear anywhere.
-                    '''
-        },
-        {
-            'text': 'Shuffle Dungeon Items',
-            'group': 'logic',
-            'widget': 'Combobox',
-            'default': 'Maps/Compasses: Dungeon Only',
-            'options': {
-                'Maps/Compasses: Remove': 'remove',
-                'Maps/Compasses: Start With': 'startwith',
+                },
+            args_help      = '''\
+                             Shop contents are randomized. Non-shop items
+                             are one time purchases. This setting also
+                             changes the item pool to introduce a new Wallet
+                             upgrade and more money.
+                             off:        Normal Shops*
+                             0-4:        Shop contents are shuffled and N non-shop
+                                         items are added to every shop. So more
+                                         possible item locations.
+                             random:     Shop contents are shuffles and each shop
+                                         will have a random number of non-shop items
+                             ''',
+            gui_text       = 'Shopsanity',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             Shop contents are randomized.
+                             (X Items): Shops have X random non-shop (Special
+                             Deal!) items. They will always be on the left
+                             side, and some of the lower value shop items
+                             will be replaced to make room for these.
+        
+                             (Random): Each shop will have a random number
+                             of non-shop items up to a maximum of 4.
+        
+                             The non-shop items have no requirements except
+                             money, while the normal shop items (such as
+                             200/300 rupee tunics) have normal vanilla
+                             requirements. This means that, for example,
+                             as a child you cannot buy 200/300 rupee
+                             tunics, but you can buy non-shop tunics.
+        
+                             Non-shop Bombchus will unlock the chu slot
+                             in your inventory, which, if Bombchus are in
+                             logic, is needed to buy Bombchu refills.
+                             Otherwise, the Bomb Bag is required.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'shuffle_mapcompass',
+            default        = 'Maps/Compasses: Dungeon Only',
+            choices        = {
+                'Maps/Compasses: Remove':       'remove',
+                'Maps/Compasses: Start With':   'startwith',
                 'Maps/Compasses: Dungeon Only': 'dungeon',
-                'Maps/Compasses: Anywhere': 'keysanity'
-            },
-            'tooltip':'''\
-                      'Remove': Maps and Compasses are removed.
-                      This will add a small amount of money and
-                      refill items to the pool.
-
-                      'Start With': Maps and Compasses are given to
-                      you from the start. This will add a small
-                      amount of money and refill items to the pool.
-
-                      'Dungeon': Maps and Compasses can only appear
-                      in their respective dungeon.
-
-                      'Anywhere': Maps and Compasses can appear
-                      anywhere in the world.
-
-                      Setting 'Remove', 'Start With, or 'Anywhere' will
-                      add 2 more possible locations to each Dungeons.
-                      This makes dungeons more profitable, especially
-                      Ice Cavern, Water Temple, and Jabu Jabu's Belly.
-                      '''
-        }),
-    Setting_Info('shuffle_smallkeys', str, 2, True,
-        {
-        'default': 'dungeon',
-        'const': 'dungeon',
-        'nargs': '?',
-        'help': '''\
-                    Sets the Small Keys placement rules
-                    remove:      Small Keys are removed from the world.
-                    dungeon:     Small Keys are put in their dungeon.
-                    keysanity:   Small Keys can appear anywhere.
-                    '''
-        },
-        {
-            'group': 'logic',
-            'widget': 'Combobox',
-            'default': 'Small Keys: Dungeon Only',
-            'options': {
-                'Small Keys: Remove (Keysy)': 'remove',
-                'Small Keys: Dungeon Only': 'dungeon',
+                'Maps/Compasses: Anywhere':     'keysanity'
+                },
+            args_help      = '''\
+                             Sets the Map and Compass placement rules
+                             remove:      Maps and Compasses are removed from the world.
+                             startwith:   Start with all Maps and Compasses.
+                             dungeon:     Maps and Compasses are put in their dungeon.
+                             keysanity:   Maps and Compasses can appear anywhere.
+                             ''',
+            gui_text       = 'Shuffle Dungeon Items',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             'Remove': Maps and Compasses are removed.
+                             This will add a small amount of money and
+                             refill items to the pool.
+        
+                             'Start With': Maps and Compasses are given to
+                             you from the start. This will add a small
+                             amount of money and refill items to the pool.
+        
+                             'Dungeon': Maps and Compasses can only appear
+                             in their respective dungeon.
+        
+                             'Anywhere': Maps and Compasses can appear
+                             anywhere in the world.
+        
+                             Setting 'Remove', 'Start With, or 'Anywhere' will
+                             add 2 more possible locations to each Dungeons.
+                             This makes dungeons more profitable, especially
+                             Ice Cavern, Water Temple, and Jabu Jabu's Belly.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'shuffle_smallkeys',
+            default        = 'Small Keys: Dungeon Only',
+            choices        = {
+                'Small Keys: Remove (Keysy)':       'remove',
+                'Small Keys: Dungeon Only':         'dungeon',
                 'Small Keys: Anywhere (Keysanity)': 'keysanity'
-            },
-            'tooltip':'''\
-                      'Remove': Small Keys are removed. All locked
-                      doors in dungeons will be unlocked. An easier
-                      mode.
-
-                      'Dungeon': Small Keys can only appear in their
-                      respective dungeon. If Fire Temple is not a
-                      Master Quest dungeon, the door to the Boss Key
-                      chest will be unlocked
-
-                      'Anywhere': Small Keys can appear
-                      anywhere in the world. A difficult mode since
-                      it is more likely to need to enter a dungeon
-                      multiple times.
-
-                      Try different combination out, such as:
-                      'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
-                      for a milder Keysanity experience.
-                      '''
-        }),
-    Setting_Info('shuffle_bosskeys', str, 2, True,
-        {
-        'default': 'dungeon',
-        'const': 'dungeon',
-        'nargs': '?',
-        'help': '''\
-                    Sets the Boss Keys placement rules
-                    remove:      Boss Keys are removed from the world.
-                    dungeon:     Boss Keys are put in their dungeon.
-                    keysanity:   Boss Keys can appear anywhere.
-                    '''
-        },
-        {
-            'group': 'logic',
-            'widget': 'Combobox',
-            'default': 'Boss Keys: Dungeon Only',
-            'options': {
-                'Boss Keys: Remove (Keysy)': 'remove',
-                'Boss Keys: Dungeon Only': 'dungeon',
-                'Boss Keys: Anywhere (Keysanity)': 'keysanity'
-            },
-            'tooltip':'''\
-                      'Remove': Boss Keys are removed. All locked
-                      doors in dungeons will be unlocked. An easier
-                      mode.
-
-                      'Dungeon': Boss Keys can only appear in their
-                      respective dungeon.
-
-                      'Anywhere': Boss Keys can appear
-                      anywhere in the world. A difficult mode since
-                      it is more likely to need to enter a dungeon
-                      multiple times.
-
-                      Try different combination out, such as:
-                      'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
-                      for a milder Keysanity experience.
-                      '''
-        }),
+                },
+            args_help      = '''\
+                             Sets the Small Keys placement rules
+                             remove:      Small Keys are removed from the world.
+                             dungeon:     Small Keys are put in their dungeon.
+                             keysanity:   Small Keys can appear anywhere.
+                             ''',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             'Remove': Small Keys are removed. All locked
+                             doors in dungeons will be unlocked. An easier
+                             mode.
+        
+                             'Dungeon': Small Keys can only appear in their
+                             respective dungeon. If Fire Temple is not a
+                             Master Quest dungeon, the door to the Boss Key
+                             chest will be unlocked
+        
+                             'Anywhere': Small Keys can appear
+                             anywhere in the world. A difficult mode since
+                             it is more likely to need to enter a dungeon
+                             multiple times.
+        
+                             Try different combination out, such as:
+                             'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
+                             for a milder Keysanity experience.
+                             ''',
+            ),
+    Combobox(
+            name           = 'shuffle_bosskeys',
+            default        = 'Boss Keys: Dungeon Only',
+            choices        = {
+                'Boss Keys: Remove (Keysy)':       'remove',
+                'Boss Keys: Dungeon Only':         'dungeon',
+                'Boss Keys: Anywhere (Keysanity)': 'keysanity',
+                },
+            args_help      = '''\
+                             Sets the Boss Keys placement rules
+                             remove:      Boss Keys are removed from the world.
+                             dungeon:     Boss Keys are put in their dungeon.
+                             keysanity:   Boss Keys can appear anywhere.
+                             ''',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             'Remove': Boss Keys are removed. All locked
+                             doors in dungeons will be unlocked. An easier
+                             mode.
+        
+                             'Dungeon': Boss Keys can only appear in their
+                             respective dungeon.
+        
+                             'Anywhere': Boss Keys can appear
+                             anywhere in the world. A difficult mode since
+                             it is more likely to need to enter a dungeon
+                             multiple times.
+        
+                             Try different combination out, such as:
+                             'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
+                             for a milder Keysanity experience.
+                             ''',
+            shared         = True,
+            ),
     Checkbutton(
             name           = 'enhance_map_compass',
             args_help      = '''\
@@ -995,43 +959,38 @@ setting_infos = [
             gui_dependency = lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Remove (Keysy)',
             shared         = True,
             ),
-    Setting_Info('tokensanity', str, 2, True,
-        {
-            'default': 'off',
-            'const': 'off',
-            'nargs': '?',
-            'help': '''\
-                    Gold Skulltula Tokens will be shuffled into the pool,
-                    and Gold Skulltula locations can have any item.
-                    off:        Don't use this feature
-                    dungeons:   Only dungeon Skulltulas will be shuffled
-                    all:        All Gold Skulltulas will be shuffled
-                    '''
-        },
-        {
-            'text': 'Tokensanity',
-            'group': 'logic',
-            'widget': 'Combobox',
-            'default': 'Off',
-            'options': {
-                'Off': 'off',
+    Combobox(
+            name           = 'tokensanity',
+            default        = 'Off',
+            choices        = {
+                'Off':           'off',
                 'Dungeons Only': 'dungeons',
-                'All Tokens': 'all',
-            },
-            'tooltip':'''\
-                      Token reward from Gold Skulltulas are
-                      shuffled into the pool.
-
-                      'Dungeons Only': This only shuffles
-                      the GS locations that are within
-                      dungeons, increasing the value of
-                      most dungeons and making internal
-                      dungeon exploration more diverse.
-
-                      'All Tokens': Effectively adds 100
-                      new locations for items to appear.
-                      '''
-        }),
+                'All Tokens':    'all',
+                },
+            args_help      = '''\
+                             Gold Skulltula Tokens will be shuffled into the pool,
+                             and Gold Skulltula locations can have any item.
+                             off:        Don't use this feature
+                             dungeons:   Only dungeon Skulltulas will be shuffled
+                             all:        All Gold Skulltulas will be shuffled
+                             ''',
+            gui_text       = 'Tokensanity',
+            gui_group      = 'logic',
+            gui_tooltip    = '''\
+                             Token reward from Gold Skulltulas are
+                             shuffled into the pool.
+        
+                             'Dungeons Only': This only shuffles
+                             the GS locations that are within
+                             dungeons, increasing the value of
+                             most dungeons and making internal
+                             dungeon exploration more diverse.
+        
+                             'All Tokens': Effectively adds 100
+                             new locations for items to appear.
+                             ''',
+            shared         = True,
+            ),
     Checkbutton(
             name           = 'mq_dungeons_random',
             args_help      = '''\
@@ -1160,20 +1119,6 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
-#   Setting_Info('logic_no_trade_skull_mask', bool, 1, True,
-#       {
-#           'help': '''\
-#                   ''',
-#           'action': 'store_true'
-#       },
-#       {
-#           'text': 'No Skull Mask Reward',
-#           'group': 'rewards',
-#           'widget': 'Checkbutton',
-#           'default': 'unchecked',
-#           'tooltip':'''\
-#                     '''
-#       }),
     Checkbutton(
             name           = 'logic_no_trade_skull_mask',
             args_help      = '''\
@@ -1187,680 +1132,559 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
-    Setting_Info('logic_no_trade_mask_of_truth', bool, 1, True,
-        {
-            'help': '''\
-                    You will not be expected to show the Mask of Truth at the forest stage.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No Mask of Truth Reward',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Showing off the Mask of Truth
-                      will not yield a required item.
-                      '''
-        }),
-    Setting_Info('logic_no_1500_archery', bool, 1, True,
-        {
-            'help': '''\
-                    You will not be expected to win the 1500 point horseback archery reward.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No 1500 Horseback Archery',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Scoring 1500 points at horseback
-                      archery will not yield a required item.
-                      '''
-        }),
-    Setting_Info('logic_no_memory_game', bool, 1, True,
-        {
-            'help': '''\
-                    You will not be expected to play the ocarina memory game in Lost Woods.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No Lost Woods Memory Game',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Playing the ocarina memory game
-                      will not yield a required item.
-                      '''
-        }),
-    Setting_Info('logic_no_second_dampe_race', bool, 1, True,
-        {
-            'help': '''\
-                    You will not be expected to race Dampe a second time.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No Racing Dampe a Second Time',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      The second Dampe race will
-                      not yield a required item.
-                      '''
-        }),
-    Setting_Info('logic_no_trade_biggoron', bool, 1, True,
-        {
-            'help': '''\
-                    You will not be expected to show the Claim Check to Biggoron.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'No Biggoron Reward',
-            'group': 'rewards',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Showing the Claim Check to Biggoron
-                      will not yield a required item.
-                      '''
-        }),
-    Setting_Info('logic_earliest_adult_trade', str, 4, True,
-        {
-            'default': 'pocket_egg',
-            'const': 'always',
-            'nargs': '?',
-            'help': '''\
-                    Select the earliest item that can appear in the adult trade sequence:
-                    'pocket_egg'
-                    'pocket_cucco'
-                    'cojiro'
-                    'odd_mushroom'
-                    'poachers_saw'
-                    'broken_sword'
-                    'prescription'
-                    'eyeball_frog'
-                    'eyedrops'
-                    'claim_check'
-                    '''
-        },
-        {
-            'text': 'Adult Trade Sequence',
-            'group': 'rewards',
-            'widget': 'Combobox',
-            'dependency': lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
-            'default': 'Earliest: Pocket Egg',
-            'options': {
-                'Earliest: Pocket Egg': 'pocket_egg',
-                'Earliest: Pocket Cucco': 'pocket_cucco',
-                'Earliest: Cojiro': 'cojiro',
-                'Earliest: Odd Mushroom': 'odd_mushroom',
+    Checkbutton(
+            name           = 'logic_no_trade_mask_of_truth',
+            args_help      = '''\
+                             You will not be expected to show the Mask of Truth at the forest stage.
+                             ''',
+            gui_text       = 'No Mask of Truth Reward',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Showing off the Mask of Truth
+                             will not yield a required item.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_no_1500_archery',
+            args_help      = '''\
+                             You will not be expected to win the 1500 point horseback archery reward.
+                             ''',
+            gui_text       = 'No 1500 Horseback Archery',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Scoring 1500 points at horseback
+                             archery will not yield a required item.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_no_memory_game',
+            args_help      = '''\
+                             You will not be expected to play the ocarina memory game in Lost Woods.
+                             ''',
+            gui_text       = 'No Lost Woods Memory Game',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Playing the ocarina memory game
+                             will not yield a required item.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_no_second_dampe_race',
+            args_help      = '''\
+                             You will not be expected to race Dampe a second time.
+                             ''',
+            gui_text       = 'No Racing Dampe a Second Time',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             The second Dampe race will
+                             not yield a required item.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_no_trade_biggoron',
+            args_help      = '''\
+                             You will not be expected to show the Claim Check to Biggoron.
+                             ''',
+            gui_text       = 'No Biggoron Reward',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Showing the Claim Check to Biggoron
+                             will not yield a required item.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'logic_earliest_adult_trade',
+            default        = 'Earliest: Pocket Egg',
+            choices        = {
+                'Earliest: Pocket Egg':     'pocket_egg',
+                'Earliest: Pocket Cucco':   'pocket_cucco',
+                'Earliest: Cojiro':         'cojiro',
+                'Earliest: Odd Mushroom':   'odd_mushroom',
                 'Earliest: Poacher\'s Saw': 'poachers_saw',
-                'Earliest: Broken Sword': 'broken_sword',
-                'Earliest: Prescription': 'prescription',
-                'Earliest: Eyeball Frog': 'eyeball_frog',
-                'Earliest: Eyedrops': 'eyedrops',
-                'Earliest: Claim Check': 'claim_check'},
-            'tooltip':'''\
-                      Select the earliest item that can appear in the adult trade sequence.
-                      '''
-        }),
-    Setting_Info('logic_latest_adult_trade', str, 4, True,
-        {
-            'default': 'claim_check',
-            'const': 'always',
-            'nargs': '?',
-            'help': '''\
-                    Select the latest item that can appear in the adult trade sequence:
-                    'pocket_egg'
-                    'pocket_cucco'
-                    'cojiro'
-                    'odd_mushroom'
-                    'poachers_saw'
-                    'broken_sword'
-                    'prescription'
-                    'eyeball_frog'
-                    'eyedrops'
-                    'claim_check'
-                    '''
-        },
-        {
-            'group': 'rewards',
-            'widget': 'Combobox',
-            'dependency': lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
-            'default': 'Latest: Claim Check',
-            'options': {
-                'Latest: Pocket Egg': 'pocket_egg',
-                'Latest: Pocket Cucco': 'pocket_cucco',
-                'Latest: Cojiro': 'cojiro',
-                'Latest: Odd Mushroom': 'odd_mushroom',
+                'Earliest: Broken Sword':   'broken_sword',
+                'Earliest: Prescription':   'prescription',
+                'Earliest: Eyeball Frog':   'eyeball_frog',
+                'Earliest: Eyedrops':       'eyedrops',
+                'Earliest: Claim Check':    'claim_check',
+                },
+            args_help      = '''\
+                             Select the earliest item that can appear in the adult trade sequence:
+                             'pocket_egg'
+                             'pocket_cucco'
+                             'cojiro'
+                             'odd_mushroom'
+                             'poachers_saw'
+                             'broken_sword'
+                             'prescription'
+                             'eyeball_frog'
+                             'eyedrops'
+                             'claim_check'
+                             ''',
+            gui_text       = 'Adult Trade Sequence',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Select the earliest item that can appear in the adult trade sequence.
+                             ''',
+            gui_dependency = lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'logic_latest_adult_trade',
+            default        = 'Latest: Claim Check',
+            choices        = {
+                'Latest: Pocket Egg':     'pocket_egg',
+                'Latest: Pocket Cucco':   'pocket_cucco',
+                'Latest: Cojiro':         'cojiro',
+                'Latest: Odd Mushroom':   'odd_mushroom',
                 'Latest: Poacher\'s Saw': 'poachers_saw',
-                'Latest: Broken Sword': 'broken_sword',
-                'Latest: Prescription': 'prescription',
-                'Latest: Eyeball Frog': 'eyeball_frog',
-                'Latest: Eyedrops': 'eyedrops',
-                'Latest: Claim Check': 'claim_check'},
-            'tooltip':'''\
-                      Select the latest item that can appear in the adult trade sequence.
-                      '''
-        }),
-    Setting_Info('logic_tricks', bool, 1, True,
-        {
-            'help': '''\
-                    Enable various advanced tricks that do not require glitches.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Various Advanced Tricks',
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Enables a large number of minor
-                      tricks that do not require glitches.
-                      '''
-        }),
-    Setting_Info('logic_man_on_roof', bool, 1, True,
-        {
-            'help': '''\
-                    The man on the roof will not require the Hookshot in logic.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Man on Roof without Hookshot',
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Can be reached by side-hopping off
-                      the watchtower.
-                      '''
-        }),
-    Setting_Info('logic_child_deadhand', bool, 1, True,
-        {
-            'help': '''\
-                    Deadhand in the Bottom of the Well will not require the Kokiri sword in logic.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Child Deadhand without Kokiri Sword',
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Requires 9 sticks or 5 jump slashes.
-                      '''
-        }),
-    Setting_Info('logic_dc_jump', bool, 1, True,
-        {
-            'help': '''\
-                    Jumping towards the Bomb Bag chest in Dodongo's Cavern as an adult
-                    will not require Hover Boots in logic.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots',
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Jump is adult only.
-                      '''
-        }),
-    Setting_Info('logic_windmill_poh', bool, 1, True,
-        {
-            'help': '''\
+                'Latest: Broken Sword':   'broken_sword',
+                'Latest: Prescription':   'prescription',
+                'Latest: Eyeball Frog':   'eyeball_frog',
+                'Latest: Eyedrops':       'eyedrops',
+                'Latest: Claim Check':    'claim_check',
+                },
+            args_help      = '''\
+                             Select the latest item that can appear in the adult trade sequence:
+                             'pocket_egg'
+                             'pocket_cucco'
+                             'cojiro'
+                             'odd_mushroom'
+                             'poachers_saw'
+                             'broken_sword'
+                             'prescription'
+                             'eyeball_frog'
+                             'eyedrops'
+                             'claim_check'
+                             ''',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Select the latest item that can appear in the adult trade sequence.
+                             ''',
+            gui_dependency = lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_tricks',
+            args_help      = '''\
+                             Enable various advanced tricks that do not require glitches.
+                             ''',
+            gui_text       = 'Various Advanced Tricks',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             Enables a large number of minor
+                             tricks that do not require glitches.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_man_on_roof',
+            args_help      = '''\
+                             The man on the roof will not require the Hookshot in logic.
+                             ''',
+            gui_text       = 'Man on Roof without Hookshot',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             Can be reached by side-hopping off
+                             the watchtower.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_child_deadhand',
+            args_help      = '''\
+                             Deadhand in the Bottom of the Well will not require the Kokiri sword in logic.
+                             ''',
+            gui_text       = 'Child Deadhand without Kokiri Sword',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             Requires 9 sticks or 5 jump slashes.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_dc_jump',
+            args_help      = '''\
+                             Jumping towards the Bomb Bag chest in Dodongo's Cavern as an adult
+                             will not require Hover Boots in logic.
+                             ''',
+            gui_text       = 'Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             Jump is adult only.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_windmill_poh',
+            args_help      = '''\
                     Getting the Piece of Heart in the windmill as an adult will require nothing in logic.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Windmill PoH as Adult with Nothing',
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Can jump up to the spinning platform from
-                      below as adult.
-                      '''
-        }),
-    Setting_Info('logic_crater_bean_poh_with_hovers', bool, 1, True,
-        {
-            'help': '''\
-                    The Piece of Heart in Death Mountain Crater that normally requires the bean to
-                    reach will optionally require the Hover Boots in logic.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': "Crater's Bean PoH with Hover Boots",
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Hover from the base of the bridge
-                      near Goron City and walk up the
-                      very steep slope.
-                      '''
-        }),
-    Setting_Info('logic_zora_with_cucco', bool, 1, True,
-        {
-            'help': '''\
-                    Zora's Domain can be entered with a Cucco as child in logic.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': "Zora's Domain Entry with Cucco",
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Can fly behind the waterfall with
-                      a cucco as child.
-                      '''
-        }),
-    Setting_Info('logic_zora_with_hovers', bool, 1, True,
-        {
-            'help': '''\
-                    Zora's Domain can be entered with Hover Boots as Adult in logic.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': "Zora's Domain Entry with Hover Boots",
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Can hover behind the waterfall as adult.
-                      This is very difficult.
-                      '''
-        }),
-    Setting_Info('logic_fewer_tunic_requirements', bool, 1, True,
-        {
-            'help': '''\
-                    Allows the following possible without Goron or Zora Tunic:
-                    Enter Water Temple
-                    Enter Fire Temple
-                    Zoras Fountain Bottom Freestanding PoH
-                    Gerudo Training Grounds Underwater Silver Rupee Chest
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': "Fewer Tunic Requirements",
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Allows the following possible without Tunics:
-                      - Enter Water Temple. The key below the center
-                      pillar still requires Zora Tunic.
-                      - Enter Fire Temple. Only the first floor is
-                      accessible, and not Volvagia.
-                      - Zora's Fountain Bottom Freestanding PoH.
-                      Might not have enough health to resurface.
-                      - Gerudo Training Grounds Underwater
-                      Silver Rupee Chest. May need to make multiple
-                      trips.
-                      '''
-        }),
-    Setting_Info('logic_morpha_with_scale', bool, 1, True,
-        {
-            'help': '''\
-                    Allows entering Water Temple and beating
-                    Morpha with Gold Scale instead of Iron Boots.
-                    Only applicable for keysanity and keysy.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': "Morpha with Gold Scale",
-            'group': 'tricks',
-            'widget': 'Checkbutton',
-            'default': 'checked',
-            'tooltip':'''\
-                      Allows entering Water Temple and beating
-                      Morpha with Gold Scale instead of Iron Boots.
-                      Only applicable for keysanity and keysy due
-                      to the logic always seeing every chest in
-                      Water Temple that could contain the Boss Key
-                      as requiring Iron Boots.
-                      ''',
-            'dependency': lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Dungeon Only'
-        }),
-    Setting_Info('logic_lens', str, 2, True,
-        {
-            'default': 'all',
-            'const': 'always',
-            'nargs': '?',
-            'help': '''\
-                    Choose what expects the Lens of Truth:
-                    all:              All lens spots expect the lens (except those that did not in the original game)
-                    chest-wasteland:  Only wasteland and chest minigame expect the lens
-                    chest:            Only the chest minigame expects the lens
-                    '''
-        },
-        {
-            'text': 'Lens of Truth',
-            'group': 'tricks',
-            'widget': 'Combobox',
-            'default': 'Required Everywhere',
-            'options': {
-                'Required Everywhere': 'all',
+                             ''',
+            gui_text       = 'Windmill PoH as Adult with Nothing',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             Can jump up to the spinning platform from
+                             below as adult.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_crater_bean_poh_with_hovers',
+            args_help      = '''\
+                             The Piece of Heart in Death Mountain Crater that normally requires the bean to
+                             reach will optionally require the Hover Boots in logic.
+                             ''',
+            gui_text       = 'Crater\'s Bean PoH with Hover Boots',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             Hover from the base of the bridge
+                             near Goron City and walk up the
+                             very steep slope.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_zora_with_cucco',
+            args_help      = '''\
+                             Zora's Domain can be entered with a Cucco as child in logic.
+                             ''',
+            gui_text       = 'Zora\'s Domain Entry with Cucco',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             Can fly behind the waterfall with
+                             a cucco as child.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_zora_with_hovers',
+            args_help      = '''\
+                             Zora's Domain can be entered with Hover Boots as Adult in logic.
+                             ''',
+            gui_text       = 'Zora\'s Domain Entry with Hover Boots',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             Can hover behind the waterfall as adult.
+                             This is very difficult.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_fewer_tunic_requirements',
+            args_help      = '''\
+                             Allows the following possible without Goron or Zora Tunic:
+                             Enter Water Temple
+                             Enter Fire Temple
+                             Zoras Fountain Bottom Freestanding PoH
+                             Gerudo Training Grounds Underwater Silver Rupee Chest
+                             ''',
+            gui_text       = 'Fewer Tunic Requirements',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             Allows the following possible without Tunics:
+                             - Enter Water Temple. The key below the center
+                             pillar still requires Zora Tunic.
+                             - Enter Fire Temple. Only the first floor is
+                             accessible, and not Volvagia.
+                             - Zora's Fountain Bottom Freestanding PoH.
+                             Might not have enough health to resurface.
+                             - Gerudo Training Grounds Underwater
+                             Silver Rupee Chest. May need to make multiple
+                             trips.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_morpha_with_scale',
+            args_help      = '''\
+                             Allows entering Water Temple and beating
+                             Morpha with Gold Scale instead of Iron Boots.
+                             Only applicable for keysanity and keysy.
+                             ''',
+            gui_text       = 'Morpha with Gold Scale',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             Allows entering Water Temple and beating
+                             Morpha with Gold Scale instead of Iron Boots.
+                             Only applicable for keysanity and keysy due
+                             to the logic always seeing every chest in
+                             Water Temple that could contain the Boss Key
+                             as requiring Iron Boots.
+                             ''',
+            gui_dependency = lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Dungeon Only',
+            default        = 'checked',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'logic_lens',
+            default        = 'Required Everywhere',
+            choices        = {
+                'Required Everywhere':          'all',
                 'Wasteland and Chest Minigame': 'chest-wasteland',
-                'Only Chest Minigame': 'chest',
-            },
-            'tooltip':'''\
-                      'Required everywhere': every invisible or
-                      fake object will expect you to have the
-                      Lens of Truth and Magic. The exception is
-                      passing through the first wall in Bottom of
-                      the Well, since that is required in vanilla.
-
-                      'Wasteland': The lens is needed to follow
-                      the ghost guide across the Haunted Wasteland.
-                      '''
-        }),
-    Setting_Info('ocarina_songs', bool, 1, True,
-        {
-            'help': '''\
-                    Randomizes the notes needed to play each ocarina song.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Randomize Ocarina Song Notes',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Will need to memorize a new set of songs.
-                      Can be silly, but difficult. Songs are
-                      generally sensible, and warp songs are
-                      typically more difficult.
-                      '''
-        }),
-    Setting_Info('correct_chest_sizes', bool, 1, True,
-        {
-            'help': '''\
-                    Updates the chest sizes to match their contents.
-                    Small Chest = Non-required Item
-                    Big Chest = Progression Item
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Chest Size Matches Contents',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      Chests will be large if they contain a major
-                      item and small if they don't. This allows skipping
-                      chests if they are small. However, skipping
-                      small chests will mean having low health,
-                      ammo, and rupees, so doing so is a risk.
-                      '''
-        }),
-    Setting_Info('clearer_hints', bool, 1, True,
-        {
-            'help': '''\
-                    The hints provided by Gossip Stones are
-                    very direct.
-                    ''',
-            'action': 'store_true'
-        },
-        {
-            'text': 'Clearer Hints',
-            'group': 'other',
-            'widget': 'Checkbutton',
-            'default': 'unchecked',
-            'tooltip':'''\
-                      The hints provided by Gossip Stones will
-                      be very direct if this option is enabled.
-                      '''
-        }),
-    Setting_Info('hints', str, 2, True,
-        {
-            'default': 'none',
-            'const': 'agony',
-            'nargs': '?',
-            'help': '''\
-                    Choose how Gossip Stones behave
-                    none:   Default behavior
-                    mask:   Have useful hints that are read with the Mask of Truth.
-                    agony:  Have useful hints that are read with Stone of Agony.
-                    always: Have useful hints which can always be read.
-                    '''
-        },
-        {
-            'text': 'Gossip Stones',
-            'group': 'other',
-            'widget': 'Combobox',
-            'default': 'Hints; Need Stone of Agony',
-            'options': {
-                'No Hints': 'none',
-                'Hints; Need Mask of Truth': 'mask',
+                'Only Chest Minigame':          'chest',
+                },
+            args_help      = '''\
+                             Choose what expects the Lens of Truth:
+                             all:              All lens spots expect the lens (except those that did not in the original game)
+                             chest-wasteland:  Only wasteland and chest minigame expect the lens
+                             chest:            Only the chest minigame expects the lens
+                             ''',
+            gui_text       = 'Lens of Truth',
+            gui_group      = 'tricks',
+            gui_tooltip    = '''\
+                             'Required everywhere': every invisible or
+                             fake object will expect you to have the
+                             Lens of Truth and Magic. The exception is
+                             passing through the first wall in Bottom of
+                             the Well, since that is required in vanilla.
+        
+                             'Wasteland': The lens is needed to follow
+                             the ghost guide across the Haunted Wasteland.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'ocarina_songs',
+            args_help      = '''\
+                             Randomizes the notes needed to play each ocarina song.
+                             ''',
+            gui_text       = 'Randomize Ocarina Song Notes',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Will need to memorize a new set of songs.
+                             Can be silly, but difficult. Songs are
+                             generally sensible, and warp songs are
+                             typically more difficult.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'correct_chest_sizes',
+            args_help      = '''\
+                             Updates the chest sizes to match their contents.
+                             Small Chest = Non-required Item
+                             Big Chest = Progression Item
+                             ''',
+            gui_text       = 'Chest Size Matches Contents',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Chests will be large if they contain a major
+                             item and small if they don't. This allows skipping
+                             chests if they are small. However, skipping
+                             small chests will mean having low health,
+                             ammo, and rupees, so doing so is a risk.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'clearer_hints',
+            args_help      = '''\
+                             The hints provided by Gossip Stones are
+                             very direct.
+                             ''',
+            gui_text       = 'Clearer Hints',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             The hints provided by Gossip Stones will
+                             be very direct if this option is enabled.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'hints',
+            default        = 'Hints; Need Stone of Agony',
+            choices        = {
+                'No Hints':                   'none',
+                'Hints; Need Mask of Truth':  'mask',
                 'Hints; Need Stone of Agony': 'agony',
-                'Hints; Need Nothing': 'always',
-            },
-            'tooltip':'''\
-                      Gossip Stones can be made to give hints
-                      about where items can be found.
-
-                      Different settings can be chosen to
-                      decide which item is needed to
-                      speak to Gossip Stones. Choosing to
-                      stick with the Mask of Truth will
-                      make the hints very difficult to
-                      obtain.
-
-                      Hints for 'on the way of the hero' are
-                      locations that contain items that are
-                      required to beat the game.
-                      '''
-        }),
-    Setting_Info('hint_dist', str, 2, True,
-        {
-            'default': 'balanced',
-            'const': 'balanced',
-            'nargs': '?',
-            'help': '''\
-                    Choose how Gossip Stones hints are distributed
-                    useless: Nothing but junk hints.
-                    balanced: Use a balanced distribution of hint types
-                    strong: Use a strong distribution of hint types
-                    very_strong: Use a very strong distribution of hint types
-                    '''
-        },
-        {
-            'text': 'Hint Distribution',
-            'group': 'other',
-            'widget': 'Combobox',
-            'default': 'Balanced',
-            'options': {
-                'Useless': 'useless',
-                'Balanced': 'balanced',
-                'Strong': 'strong',
+                'Hints; Need Nothing':        'always',
+                },
+            args_help      = '''\
+                             Choose how Gossip Stones behave
+                             none:   Default behavior
+                             mask:   Have useful hints that are read with the Mask of Truth.
+                             agony:  Have useful hints that are read with Stone of Agony.
+                             always: Have useful hints which can always be read.
+                             ''',
+            gui_text       = 'Gossip Stones',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Gossip Stones can be made to give hints
+                             about where items can be found.
+        
+                             Different settings can be chosen to
+                             decide which item is needed to
+                             speak to Gossip Stones. Choosing to
+                             stick with the Mask of Truth will
+                             make the hints very difficult to
+                             obtain.
+        
+                             Hints for 'on the way of the hero' are
+                             locations that contain items that are
+                             required to beat the game.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'hint_dist',
+            default        = 'Balanced',
+            choices        = {
+                'Useless':     'useless',
+                'Balanced':    'balanced',
+                'Strong':      'strong',
                 'Very Strong': 'very_strong',
-            },
-            'tooltip':'''\
-                      Useless has nothing but junk
-                      hints.
-                      Strong distribution has some
-                      duplicate hints and no junk
-                      hints.
-                      Very Strong distribution has
-                      only very useful hints.
-                      '''
-        }),
-    Setting_Info('text_shuffle', str, 2, True,
-        {
-            'default': 'none',
-            'const': 'none',
-            'nargs': '?',
-            'help': '''\
-                    Choose how to shuffle the game's messages.
-                    none:          Default behavior
-                    except_hints:  All non-useful text is shuffled.
-                    complete:      All text is shuffled.
-                    '''
-        },
-        {
-            'text': 'Text Shuffle',
-            'group': 'other',
-            'widget': 'Combobox',
-            'default': 'No Text Shuffled',
-            'options': {
-                'No Text Shuffled': 'none',
+                },
+            args_help      = '''\
+                             Choose how Gossip Stones hints are distributed
+                             useless: Nothing but junk hints.
+                             balanced: Use a balanced distribution of hint types
+                             strong: Use a strong distribution of hint types
+                             very_strong: Use a very strong distribution of hint types
+                             ''',
+            gui_text       = 'Hint Distribution',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Useless has nothing but junk
+                             hints.
+                             Strong distribution has some
+                             duplicate hints and no junk
+                             hints.
+                             Very Strong distribution has
+                             only very useful hints.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'text_shuffle',
+            default        = 'No Text Shuffled',
+            choices        = {
+                'No Text Shuffled':               'none',
                 'Shuffled except Hints and Keys': 'except_hints',
-                'All Text Shuffled': 'complete',
-            },
-            'tooltip':'''\
-                      Will make things confusing for comedic value.
-
-                      'Shuffled except Hints and Keys': Key texts
-                      are not shuffled because in keysanity it is
-                      inconvenient to figure out which keys are which
-                      without the correct text. Similarly, non-shop
-                      items sold in shops will also retain standard
-                      text for the purpose of accurate price checks.
-                      '''
-        }),
-    Setting_Info('item_pool_value', str, 2, True,
-        {
-            'default': 'balanced',
-            'const': 'balanced',
-            'nargs': '?',
-            'help': '''\
-                    Change the item pool for an added challenge.
-                    plentiful:      Duplicates most of the major items, making it easier to find progression.
-                    balanced:       Default items
-                    scarce:         Double defense, double magic, and all 8 heart containers are removed. Ammo
-                                    for each type can only be expanded once and you can only find three Bombchu packs.
-                    minimal:        Double defense, double magic, Nayru's Love, and all health upgrades are removed.
-                                    No ammo expansions are available and you can only find one Bombchu pack.
-                    '''
-        },
-        {
-            'text': 'Item Pool Value',
-            'group': 'other',
-            'widget': 'Combobox',
-            'default': 'Balanced',
-            'options': {
+                'All Text Shuffled':              'complete',
+                },
+            args_help      = '''\
+                             Choose how to shuffle the game's messages.
+                             none:          Default behavior
+                             except_hints:  All non-useful text is shuffled.
+                             complete:      All text is shuffled.
+                             ''',
+            gui_text       = 'Text Shuffle',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Will make things confusing for comedic value.
+        
+                             'Shuffled except Hints and Keys': Key texts
+                             are not shuffled because in keysanity it is
+                             inconvenient to figure out which keys are which
+                             without the correct text. Similarly, non-shop
+                             items sold in shops will also retain standard
+                             text for the purpose of accurate price checks.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'item_pool_value',
+            default        = 'Balanced',
+            choices        = {
                 'Plentiful': 'plentiful',
-                'Balanced': 'balanced',
-                'Scarce': 'scarce',
-                'Minimal': 'minimal'
-            },
-            'tooltip':'''\
-                      Changes the amount of bonus items that
-                      are available in the game.
-
-                      'Plentiful': Extra major items are added.
-
-                      'Balanced': Original item pool.
-
-                      'Scarce': Some excess items are removed,
-                      including health upgrades.
-
-                      'Minimal': Most excess items are removed.
-                      '''
-        }),
-    Setting_Info('damage_multiplier', str, 3, True,
-        {
-            'default': 'normal',
-            'const': 'normal',
-            'nargs': '?',
-            'help': '''\
-                    Change the amount of damage taken.
-                    half:           Half damage taken.
-                    normal:         Normal damage taken.
-                    double:         Double damage taken.
-                    quadruple:      Quadruple damage taken.
-                    ohko:           Link will die in one hit.
-                    '''
-        },
-        {
-            'text': 'Damage Multiplier',
-            'group': 'other',
-            'widget': 'Combobox',
-            'default': 'Normal',
-            'options': {
-                'Half': 'half',
-                'Normal': 'normal',
-                'Double': 'double',
+                'Balanced':  'balanced',
+                'Scarce':    'scarce',
+                'Minimal':   'minimal'
+                },
+            args_help      = '''\
+                             Change the item pool for an added challenge.
+                             plentiful:      Duplicates most of the major items, making it easier to find progression.
+                             balanced:       Default items
+                             scarce:         Double defense, double magic, and all 8 heart containers are removed. Ammo
+                                             for each type can only be expanded once and you can only find three Bombchu packs.
+                             minimal:        Double defense, double magic, Nayru's Love, and all health upgrades are removed.
+                                             No ammo expansions are available and you can only find one Bombchu pack.
+                             ''',
+            gui_text       = 'Item Pool Value',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Changes the amount of bonus items that
+                             are available in the game.
+        
+                             'Plentiful': Extra major items are added.
+        
+                             'Balanced': Original item pool.
+        
+                             'Scarce': Some excess items are removed,
+                             including health upgrades.
+        
+                             'Minimal': Most excess items are removed.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'damage_multiplier',
+            default        = 'Normal',
+            choices        = {
+                'Half':      'half',
+                'Normal':    'normal',
+                'Double':    'double',
                 'Quadruple': 'quadruple',
-                'OHKO': 'ohko',
-            },
-            'tooltip':'''\
-                      Changes the amount of damage taken.
-
-                      'OHKO': Link dies in one hit.
-                      '''
-        }),
-    Setting_Info('default_targeting', str, 1, False,
-        {
-            'default': 'hold',
-            'const': 'always',
-            'nargs': '?',
-            'help': '''\
-                    Choose what the default Z-targeting is.
-                    '''
-        },
-        {
-            'text': 'Default Targeting Option',
-            'group': 'cosmetics',
-            'widget': 'Combobox',
-            'default': 'Hold',
-            'options': {
-                'Hold': 'hold',
+                'OHKO':      'ohko',
+                },
+            args_help      = '''\
+                             Change the amount of damage taken.
+                             half:           Half damage taken.
+                             normal:         Normal damage taken.
+                             double:         Double damage taken.
+                             quadruple:      Quadruple damage taken.
+                             ohko:           Link will die in one hit.
+                             ''',
+            gui_text       = 'Damage Multiplier',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Changes the amount of damage taken.
+        
+                             'OHKO': Link dies in one hit.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'default_targeting',
+            default        = 'Hold',
+            choices        = {
+                'Hold':   'hold',
                 'Switch': 'switch',
-            }
-        }),
-    Setting_Info('background_music', str, 2, False,
-        {
-            'default': 'normal',
-            'const': 'normal',
-            'nargs': '?',
-            'help': '''\
-                    Sets the background music behavior
-                    normal:      Areas play their normal background music
-                    off:         No background music
-                    random:      Areas play random background music
-                    '''
-        },
-        {
-            'text': 'Background Music',
-            'group': 'cosmetics',
-            'widget': 'Combobox',
-            'default': 'Normal',
-            'options': {
-                'Normal': 'normal',
+                },
+            args_help      = '''\
+                             Choose what the default Z-targeting is.
+                             ''',
+            gui_text       = 'Default Targeting Option',
+            gui_group      = 'cosmetics',
+            ),
+    Combobox(
+            name           = 'background_music',
+            default        = 'Normal',
+            choices        = {
+                'Normal':   'normal',
                 'No Music': 'off',
-                'Random': 'random',
-            },
-            'tooltip': '''\
-                       'No Music': No background music.
-                       is played.
-
-                       'Random': Area background music is
-                       randomized.
-                       '''
-        }),
+                'Random':   'random',
+                },
+            args_help      = '''\
+                             Sets the background music behavior
+                             normal:      Areas play their normal background music
+                             off:         No background music
+                             random:      Areas play random background music
+                             ''',
+            gui_text       = 'Background Music',
+            gui_group      = 'cosmetics',
+            gui_tooltip    = '''\
+                              'No Music': No background music.
+                              is played.
+        
+                              'Random': Area background music is
+                              randomized.
+                             ''',
+            ),
 
     Setting_Info('kokiricolor', str, 0, False,
         {
