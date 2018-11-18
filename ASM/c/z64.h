@@ -3,13 +3,6 @@
 #include <stdint.h>
 #include <n64.h>
 
-// For randomizer, always use version 1.0
-#define Z64_VERSION Z64_OOT10
-
-#ifndef Z64_VERSION
-#error no z64 version specified
-#endif
-
 #define Z64_OOT10             0x00
 #define Z64_OOT11             0x01
 #define Z64_OOT12             0x02
@@ -1055,8 +1048,6 @@ typedef struct
                                           /* 0x11E5F */
 } z64_game_t;
 
-#if Z64_VERSION == Z64_OOT10
-
 /* dram addresses */
 #define z64_osSendMesg_addr                     0x80001E20
 #define z64_osRecvMesg_addr                     0x80002030
@@ -1070,6 +1061,7 @@ typedef struct
 #define z64_minimap_disable_2_addr              0x8006D4E4
 #define z64_SwitchAgeEquips_addr                0x8006F804
 #define z64_UpdateItemButton_addr               0x8006FB50
+#define z64_GiveItem_addr                       0x8006FDCC
 #define z64_UpdateEquipment_addr                0x80079764
 #define z64_LoadRoom_addr                       0x80080A3C
 #define z64_UnloadRoom_addr                     0x80080C98
@@ -1084,6 +1076,7 @@ typedef struct
 #define z64_frame_input_func_addr               0x800A0BA0
 #define z64_main_hook_addr                      0x800A0C3C
 #define z64_frame_input_call_addr               0x800A16AC
+#define z64_DisplayTextbox_addr                 0x800DCE14
 #define gspF3DEX2_NoN_fifoTextStart             0x800E3F70
 #define z64_day_speed_addr                      0x800F1650
 #define z64_light_handlers_addr                 0x800F1B40
@@ -1118,130 +1111,6 @@ typedef struct
 #define z64_ctxt_game_ctor                      0x8009A750
 #define z64_ctxt_game_size                      0x00012518
 
-#elif Z64_VERSION == Z64_OOT11
-
-/* dram ddresses */
-#define z64_osSendMesg_addr                     0x80001E20
-#define z64_osRecvMesg_addr                     0x80002030
-#define z64_osCreateMesgQueue_addr              0x80004220
-#define z64_file_mq_addr                        0x80007D40
-#define z64_vi_counter_addr                     0x80009E8C
-#define z64_DrawActors_addr                     0x80024AB4
-#define z64_DeleteActor_addr                    0x80024FE0
-#define z64_SpawnActor_addr                     0x80025110
-#define z64_minimap_disable_1_addr              0x8006CD50
-#define z64_minimap_disable_2_addr              0x8006D4E4
-#define z64_SwitchAgeEquips_addr                0x8006F804
-#define z64_UpdateItemButton_addr               0x8006FB50
-#define z64_UpdateEquipment_addr                0x80079764
-#define z64_LoadRoom_addr                       0x80080A3C
-#define z64_UnloadRoom_addr                     0x80080C98
-#define z64_Io_addr                             0x80091484
-#define z64_entrance_offset_hook_addr           0x8009AA54
-#define z64_frame_update_func_addr              0x8009AF2C
-#define z64_frame_update_call_addr              0x8009CAF8
-#define z64_disp_swap_1_addr                    0x800A11A8
-#define z64_disp_swap_2_addr                    0x800A11C0
-#define z64_disp_swap_3_addr                    0x800A11D8
-#define z64_disp_swap_4_addr                    0x800A11F4
-#define z64_frame_input_func_addr               0x800A0BB0
-#define z64_main_hook_addr                      0x800A0C4C
-#define z64_frame_input_call_addr               0x800A16BC
-#define gspF3DEX2_NoN_fifoTextStart             0x800E4130
-#define z64_day_speed_addr                      0x800F1810
-#define z64_light_handlers_addr                 0x800F1D00
-#define z64_object_table_addr                   0x800F91B8
-#define z64_entrance_table_addr                 0x800F9E50
-#define z64_scene_table_addr                    0x800FB6A0
-#define z64_scene_config_table_addr             0x800FBED8
-#define z64_seq_pos_addr                        0x80104570
-#define gspF3DEX2_NoN_fifoDataStart             0x80114780
-#define z64_file_addr                           0x8011A790
-#define z64_input_direct_addr                   0x8011D8F0
-#define z64_stab_addr                           0x80120DF8
-#define z64_seq_buf_addr                        0x801249C0
-#define z64_ctxt_addr                           0x801C8660
-#define z64_link_addr                           0x801DABF0
-
-/* rom addresses */
-#define z64_icon_item_static_vaddr              0x007BD000
-#define z64_icon_item_static_vsize              0x000888A0
-#define z64_icon_item_24_static_vaddr           0x00846000
-#define z64_icon_item_24_static_vsize           0x0000B400
-#define z64_nes_font_static_vaddr               0x008ED000
-#define z64_nes_font_static_vsize               0x00004580
-#define z64_parameter_static_vaddr              0x01A3C000
-#define z64_parameter_static_vsize              0x00003B00
-
-/* context info */
-#define z64_ctxt_filemenu_ctor                  0x80812394
-#define z64_ctxt_filemenu_size                  0x0001CAD0
-#define z64_ctxt_game_ctor                      0x8009A760
-#define z64_ctxt_game_size                      0x00012518
-
-#elif Z64_VERSION == Z64_OOT12
-
-/* dram ddresses */
-#define z64_osSendMesg_addr                     0x80001FD0
-#define z64_osRecvMesg_addr                     0x800021F0
-#define z64_osCreateMesgQueue_addr              0x800043E0
-#define z64_file_mq_addr                        0x80008A30
-#define z64_vi_counter_addr                     0x8000A4CC
-#define z64_DrawActors_addr                     0x800250F4
-#define z64_DeleteActor_addr                    0x80025620
-#define z64_SpawnActor_addr                     0x80025750
-#define z64_minimap_disable_1_addr              0x8006D3B0
-#define z64_minimap_disable_2_addr              0x8006DB44
-#define z64_SwitchAgeEquips_addr                0x8006FE64
-#define z64_UpdateItemButton_addr               0x800701B0
-#define z64_UpdateEquipment_addr                0x80079DF4
-#define z64_LoadRoom_addr                       0x80081064
-#define z64_UnloadRoom_addr                     0x800812C0
-#define z64_Io_addr                             0x80091AB4
-#define z64_entrance_offset_hook_addr           0x8009B134
-#define z64_frame_update_func_addr              0x8009B60C
-#define z64_frame_update_call_addr              0x8009D1D8
-#define z64_disp_swap_1_addr                    0x800A1848
-#define z64_disp_swap_2_addr                    0x800A1860
-#define z64_disp_swap_3_addr                    0x800A1878
-#define z64_disp_swap_4_addr                    0x800A1894
-#define z64_frame_input_func_addr               0x800A1290
-#define z64_main_hook_addr                      0x800A1328
-#define z64_frame_input_call_addr               0x800A1D8C
-#define gspF3DEX2_NoN_fifoTextStart             0x800E45B0
-#define z64_day_speed_addr                      0x800F1C90
-#define z64_light_handlers_addr                 0x800F2180
-#define z64_object_table_addr                   0x800F9648
-#define z64_entrance_table_addr                 0x800FA2E0
-#define z64_scene_table_addr                    0x800FBB30
-#define z64_scene_config_table_addr             0x800FC368
-#define z64_seq_pos_addr                        0x801049F0
-#define gspF3DEX2_NoN_fifoDataStart             0x80114C70
-#define z64_file_addr                           0x8011AC80
-#define z64_input_direct_addr                   0x8011DE00
-#define z64_stab_addr                           0x80121508
-#define z64_seq_buf_addr                        0x801250D0
-#define z64_ctxt_addr                           0x801C8D60
-#define z64_link_addr                           0x801DB2F0
-
-/* rom addresses */
-#define z64_icon_item_static_vaddr              0x007BD000
-#define z64_icon_item_static_vsize              0x000888A0
-#define z64_icon_item_24_static_vaddr           0x00846000
-#define z64_icon_item_24_static_vsize           0x0000B400
-#define z64_nes_font_static_vaddr               0x008ED000
-#define z64_nes_font_static_vsize               0x00004580
-#define z64_parameter_static_vaddr              0x01A3C000
-#define z64_parameter_static_vsize              0x00003B00
-
-/* context info */
-#define z64_ctxt_filemenu_ctor                  0x80812394
-#define z64_ctxt_filemenu_size                  0x0001CAD0
-#define z64_ctxt_game_ctor                      0x8009AE40
-#define z64_ctxt_game_size                      0x00012518
-
-#endif
-
 /* function prototypes */
 typedef void (*z64_DrawActors_proc)       (z64_game_t *game, void *actor_ctxt);
 typedef void (*z64_DeleteActor_proc)      (z64_game_t *game, void *actor_ctxt,
@@ -1261,6 +1130,9 @@ typedef void (*z64_UnloadRoom_proc)       (z64_game_t *game,
 typedef void (*z64_Io_proc)               (uint32_t dev_addr, void *dram_addr,
                                            uint32_t size, int32_t direction);
 typedef void (*z64_SceneConfig_proc)      (z64_game_t *game);
+typedef void (*z64_DisplayTextbox_proc)   (z64_game_t *game, uint16_t text_id,
+                                           int unknown_);
+typedef void (*z64_GiveItem_proc)         (z64_game_t *game, uint8_t item);
 
 /* data */
 #define z64_file_mq             (*(OSMesgQueue*)      z64_file_mq_addr)
@@ -1302,5 +1174,8 @@ typedef void (*z64_SceneConfig_proc)      (z64_game_t *game);
 #define z64_UnloadRoom          ((z64_UnloadRoom_proc)                        \
                                                       z64_UnloadRoom_addr)
 #define z64_Io                  ((z64_Io_proc)        z64_Io_addr)
+#define z64_DisplayTextbox      ((z64_DisplayTextbox_proc)                    \
+                                                      z64_DisplayTextbox_addr)
+#define z64_GiveItem            ((z64_GiveItem_proc)  z64_GiveItem_addr)
 
 #endif
