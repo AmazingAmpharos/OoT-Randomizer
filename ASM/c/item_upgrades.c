@@ -49,7 +49,7 @@ uint16_t wallet_upgrade(z64_file_t *save, uint16_t item_id) {
     switch (save->wallet) {
         case 0: return 0x45; // Adult's Wallet
         case 1: return 0x46; // Giant's Wallet
-        default: return item_id; // Tycoon's Wallet (unchanged)
+        default: return 0xC7; // Tycoon's Wallet
     }
 }
 
@@ -76,8 +76,8 @@ uint16_t stick_upgrade(z64_file_t *save, uint16_t item_id) {
 
 uint16_t magic_upgrade(z64_file_t *save, uint16_t item_id) {
     switch (save->magic_capacity_set) {
-        case 0: return 0xC0; // Single Magic
-        default: return 0xC1; // Double Magic
+        case 0: return 0xB9; // Single Magic
+        default: return 0xBA; // Double Magic
     }
 }
 
@@ -93,7 +93,7 @@ uint16_t bombchu_upgrade(z64_file_t *save, uint16_t item_id) {
 
 uint16_t ocarina_upgrade(z64_file_t *save, uint16_t item_id) {
     switch (save->items[Z64_SLOT_OCARINA]) {
-        case -1: return item_id; // Fairy Ocarina (unchanged)
+        case -1: return 0x3B; // Fairy Ocarina
         default: return 0x0C; // Ocarina of Time
     }
 }
