@@ -47,7 +47,7 @@ void give_magic(z64_file_t *save, int16_t arg1, int16_t arg2) {
     save->magic = 0x30; // Fill meter
 }
 
-void double_magic(z64_file_t *save, int16_t arg1, int16_t arg2) {
+void give_double_magic(z64_file_t *save, int16_t arg1, int16_t arg2) {
     save->magic_capacity_set = 2; // Set meter level
     save->magic_acquired = 1; // Required for meter to persist on save load
     save->magic_capacity = 1; // Required for meter to persist on save load

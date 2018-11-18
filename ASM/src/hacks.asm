@@ -136,7 +136,7 @@
     lw      t5, 0x2C (sp)                ; original code
     li      t4, 0x0A                     ; original code
     sh      t4, 0x110 (t5)               ; original code
-    jal     override_skulltula_token     ; call override_skulltula_token(actor)
+    jal     get_skulltula_token          ; call override_skulltula_token(actor)
     move    a0, s0
 .endarea
 
@@ -145,7 +145,7 @@
     lw      t5, 0x2C (sp)                ; original code
     li      t4, 0x0A                     ; original code
     sh      t4, 0x110 (t5)               ; original code
-    jal     override_skulltula_token     ; call override_skulltula_token(actor)
+    jal     get_skulltula_token          ; call override_skulltula_token(actor)
     move    a0, s0
 .endarea
 

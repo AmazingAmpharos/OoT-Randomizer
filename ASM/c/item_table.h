@@ -22,7 +22,8 @@ typedef struct {
     int16_t     effect_arg2;
 } item_row_t;
 
-uint16_t resolve_item_id(uint16_t item_id);
+uint16_t resolve_upgrades(uint16_t item_id);
 item_row_t *get_item_row(uint16_t item_id);
+void call_effect_function(item_row_t *item_row);
 
 #endif

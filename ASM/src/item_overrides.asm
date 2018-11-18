@@ -45,13 +45,13 @@ override_object_chest:
     lh      a1, 0x0004 (t9)
 
 override_object:
-    li      t2, extended_item_row
+    li      t2, active_item_row
     lw      t2, 0x00 (t2)
     beqz    t2, @@return
     nop
 
     ; Override Object ID
-    li      a1, ext_object_id
+    li      a1, active_item_object_id
     lw      a1, 0x00 (a1)
 
 @@return:
@@ -61,13 +61,13 @@ override_object:
 ;==================================================================================================
 
 override_graphic:
-    li      t0, extended_item_row
+    li      t0, active_item_row
     lw      t0, 0x00 (t0)
     beqz    t0, @@return
     nop
 
     ; Override Graphic ID
-    li      v1, ext_graphic_id
+    li      v1, active_item_graphic_id
     lw      v1, 0x00 (v1)
 
 @@return:
@@ -82,13 +82,13 @@ override_graphic:
 override_text:
     lbu     a1, 0x03 (v0) ; Displaced code
 
-    li      t0, extended_item_row
+    li      t0, active_item_row
     lw      t0, 0x00 (t0)
     beqz    t0, @@return
     nop
 
     ; Override Text ID
-    li      a1, ext_text_id
+    li      a1, active_item_text_id
     lw      a1, 0x00 (a1)
 
 @@return:
@@ -104,13 +104,13 @@ override_action:
     sw      a1, 0x10 (sp)
     sw      ra, 0x14 (sp)
 
-    li      t0, extended_item_row
+    li      t0, active_item_row
     lw      t0, 0x00 (t0)
     beqz    t0, @@return
     nop
 
     ; Override Action ID
-    li      a1, ext_action_id
+    li      a1, active_item_action_id
     lw      a1, 0x00 (a1)
     sw      a1, 0x10 (sp)
 

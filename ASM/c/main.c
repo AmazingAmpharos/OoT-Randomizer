@@ -1,6 +1,6 @@
-#include "item_overrides.h"
 #include "dungeon_info.h"
 #include "file_select.h"
+#include "get_items.h"
 #include "models.h"
 #include "gfx.h"
 #include "text.h"

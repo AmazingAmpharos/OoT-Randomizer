@@ -893,7 +893,7 @@ def patch_rom(world, rom):
         table_len = len(initial_save_table)
         if table_len > 0x400:
             raise Exception("The Initial Save Table has exceeded it's maximum capacity: 0x%03X/0x400" % table_len)
-        rom.write_bytes(0x3481800, initial_save_table)
+        rom.write_bytes(rom.sym('INITIAL_SAVE_DATA'), initial_save_table)
 
 
     # Initial Save Data
@@ -1172,8 +1172,8 @@ def patch_rom(world, rom):
 
     # Write item overrides
     override_table = get_override_table(world)
-    rom.write_bytes(rom.sym('cfg_item_overrides'), sum(override_table, []))
-    rom.write_byte(0x03481C00, world.id + 1) # Write player ID
+    rom.write_int32s(rom.sym('cfg_item_overrides'), sum(override_table, []))
+    rom.write_byte(rom.sym('PLAYER_ID'), world.id + 1) # Write player ID
 
     # Revert Song Get Override Injection
     if not world.shuffle_song_items:
@@ -1650,7 +1650,14 @@ def get_override_entry(location):
     else:
         return []
 
-    return [scene, default, (type << 5) | player_id, item_id]
+    result = (
+        ((scene & 0xFF) << 24) |
+        ((type & 0x07) << 21) |
+        ((default & 0xFF) << 13) |
+        ((player_id & 0x1F) << 8) |
+        (item_id & 0xFF)
+    )
+    return [result]
 
 
 chestTypeMap = {
