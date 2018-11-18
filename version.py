@@ -1,1 +1,1 @@
-__version__ = '3.4.28 f.LUM'
+__version__ = '3.4.29 f.LUM'

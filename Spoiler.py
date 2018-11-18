@@ -23,7 +23,7 @@ class Spoiler(object):
             spoiler_locations = [location for location in world.get_locations() if not location.locked and location.type != 'GossipStone']
             sort_order = {"Song": 0, "Boss": -1}
             spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
-            self.locations[world.id] = OrderedDict([(str(location), location.item if location.item is not None else Item(name='Nothing', world=location.world)) for location in spoiler_locations])
+            self.locations[world.id] = OrderedDict([(str(location), location.item) for location in spoiler_locations])
 
 
     def to_file(self, filename):
@@ -61,5 +61,5 @@ class Spoiler(object):
                 for world in self.worlds:
                     hint_ids = sorted(list(world.spoiler.hints.keys()), key=lambda id: gossipLocations[id].name)
                     outfile.write(header_player_string.format(header="Gossip Stone Hints", player=world.id+1))
-                    outfile.write('\n'.join(['{:{width}} {}'.format(location_string.format(location=gossipLocations[id].name if id in gossipLocations else "Unknown", world=world.id+1), re.sub('\x05[\x40\x41\x42\x43\x44\x45\x46\x47]', '', world.spoiler.hints[id].replace('&', ' ').replace('^', ' ')), width=gossip_padding) for id in hint_ids]))
+                    outfile.write('\n'.join(['{:{width}} {}'.format(location_string.format(location=gossipLocations[id].name, world=world.id+1), re.sub('\x05[\x40\x41\x42\x43\x44\x45\x46\x47]', '', world.spoiler.hints[id].replace('&', ' ').replace('^', ' ')), width=gossip_padding) for id in hint_ids]))
 

@@ -19,11 +19,7 @@ class Hint(object):
 
 
 def getHint(name, clearer_hint=False):
-    hint = name
-    if name not in hintTable:
-        hint = 'KeyError'
-
-    textOptions, clearText, type = hintTable[hint]
+    textOptions, clearText, type = hintTable[name]
     if clearer_hint:
         if clearText == None:
             return Hint(name, textOptions, type, 0)
