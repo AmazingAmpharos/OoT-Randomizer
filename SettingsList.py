@@ -164,15 +164,6 @@ def parse_custom_navi_color(s):
         raise argparse.ArgumentTypeError('Invalid color specified')
 
 
-def validate_scarecrow_string(value):
-    if len(value) > 8:
-        return None
-    for c in value.upper():
-        if c not in ['A', 'D', 'R', 'L', 'U']:
-            return None
-    return value
-
-
 # a list of the possible settings
 setting_infos = [
     Setting_Info('check_version', bool, 0, False,
@@ -596,44 +587,17 @@ setting_infos = [
     Checkbutton(
             name           = 'free_scarecrow',
             args_help      = '''\
-                             Start with Scarecrow's Song. You do not need
-                             to play it as child or adult at the scarecrow
-                             patch to be able to summon Pierre.
+                             Scarecrow song is not needed to summon Pierre.
                              ''',
-            gui_text       = 'Start with Scarecrow\'s Song',
+            gui_text       = 'Free Scarecrow\'s Song',
             gui_group      = 'convenience',
             gui_tooltip    = '''\
-                             Skips needing to go to Lake Hylia as both
-                             child and adult to learn Scarecrow's Song.
+                             Pulling out the Ocarina near
+                             Pierre will summon him without
+                             learning the song.
                              ''',
             shared         = True,
             ),
-    Setting_Info('scarecrow_song', str, 3*8, True,
-        {
-            'default': 'DAAAAAAA',
-            'help': '''\
-                    The song started with if 'free_scarecrow' is True
-                    Valid notes: A, U, L, R, D
-                    ''',
-        },
-        {
-            'group': 'convenience',
-            'widget': 'Entry',
-            'default': 'DAAAAAAA',
-            'char_options': ['A', 'D', 'U', 'L', 'R'],
-            'validate': validate_scarecrow_string,
-            'dependency': lambda guivar: guivar['free_scarecrow'].get(),
-            'tooltip':'''\
-                      The song must be 8 notes long and have
-                      at least two different notes.
-                      Valid notes are:
-                      'A': A Button
-                      'D': C-Down
-                      'U': C-Up
-                      'L': C-Left
-                      'R': C-Right
-                      '''
-        }),
     Checkbutton(
             name           = 'shuffle_kokiri_sword',
             args_help      = '''\

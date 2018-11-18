@@ -22,7 +22,6 @@ from ItemPool import generate_itempool
 from Hints import buildGossipHints
 from Utils import default_output_path, is_bundled, subprocess_args, data_path
 from version import __version__
-from OcarinaSongs import verify_scarecrow_song_str
 from N64Patch import create_patch_file, apply_patch_file
 from SettingsList import setting_infos
 from Rules import set_rules
@@ -44,10 +43,6 @@ def main(settings, window=dummy_window()):
     logger = logging.getLogger('')
 
     worlds = []
-
-    # verify that the settings are valid
-    if settings.free_scarecrow:
-        verify_scarecrow_song_str(settings.scarecrow_song, settings.ocarina_songs)
 
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom != 'None':
