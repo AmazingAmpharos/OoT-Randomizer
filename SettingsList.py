@@ -38,22 +38,20 @@ class Setting_Widget(Setting_Info):
                 'Setting {}: options shouldn\'t be defined in '\
                 'gui_params'.format(name)
 
-        if 'type'  not in args_params: args_params['type']  = type
-        if 'const' not in args_params: args_params['const'] = choices[default]
-        if 'nargs' not in args_params: args_params['nargs'] = '?'
+        if 'type' not in args_params: args_params['type'] = type
+        if 'type' not in gui_params:  gui_params['type']  = type
 
         args_params['choices'] = list(choices.values())
         args_params['default'] = choices[default]
         gui_params['options']  = choices
         gui_params['default']  = default
 
-        super().__init__(name, type, None, shared, args_params, gui_params)
+        super().__init__(name, type, self.calc_bitwidth(choices), shared, args_params, gui_params)
 
-        self.bitwidth = self.calc_bitwidth(choices)
 
     def calc_bitwidth(self, choices):
         count = len(choices)
-        if self.shared and count > 0:
+        if count > 0:
             return math.ceil(math.log(count, 2))
         return 0
 
@@ -78,19 +76,20 @@ class Checkbutton(Setting_Widget):
         if gui_dependency is not None: gui_params['dependency'] = gui_dependency
         args_params = {
                 'help':    args_help,
-                'action': 'store_true',
                 }
 
-        super().__init__(name, type, choices, default, args_params, gui_params,
+        super().__init__(name, bool, choices, default, args_params, gui_params,
                 shared)
+        self.args_params['type'] = Checkbutton.parse_bool
 
-        # argparse throws a fit if it gets unneeded keys;
-        # observed in the case of checkbuttons, where an action is defined
-        if 'action' in self.args_params:
-            self.args_params.pop('choices', None)
-            self.args_params.pop('type', None)
-            self.args_params.pop('const', None)
-            self.args_params.pop('nargs', None)
+
+    def parse_bool(s):
+      if s.lower() in ['yes', 'true', 't', 'y', '1']:
+          return True
+      elif s.lower() in ['no', 'false', 'f', 'n', '0']:
+          return False
+      else:
+          raise argparse.ArgumentTypeError('Boolean value expected.')
 
 
 class Combobox(Setting_Widget):
@@ -240,8 +239,6 @@ setting_infos = [
     Setting_Info('compress_rom', str, 2, False,
         {
             'default': 'True',
-            'const': 'True',
-            'nargs': '?',
             'help': '''\
                     Create a compressed version of the output ROM file.
                     True: Compresses. Improves stability. Will take longer to generate
@@ -614,8 +611,6 @@ setting_infos = [
     Setting_Info('scarecrow_song', str, 3*8, True,
         {
             'default': 'DAAAAAAA',
-            'const': 'DAAAAAAA',
-            'nargs': '?',
             'help': '''\
                     The song started with if 'free_scarecrow' is True
                     Valid notes: A, U, L, R, D
@@ -1686,8 +1681,6 @@ setting_infos = [
     Setting_Info('kokiricolor', str, 0, False,
         {
             'default': 'Kokiri Green',
-            'const': 'Kokiri Green',
-            'nargs': '?',
             'type': parse_custom_tunic_color,
             'help': '''\
                     Choose the color for Link's Kokiri Tunic. (default: %(default)s)
@@ -1712,8 +1705,6 @@ setting_infos = [
     Setting_Info('goroncolor', str, 0, False,
         {
             'default': 'Goron Red',
-            'const': 'Goron Red',
-            'nargs': '?',
             'type': parse_custom_tunic_color,
             'help': '''\
                     Choose the color for Link's Goron Tunic. (default: %(default)s)
@@ -1738,8 +1729,6 @@ setting_infos = [
     Setting_Info('zoracolor', str, 0, False,
         {
             'default': 'Zora Blue',
-            'const': 'Zora Blue',
-            'nargs': '?',
             'type': parse_custom_tunic_color,
             'help': '''\
                     Choose the color for Link's Zora Tunic. (default: %(default)s)
@@ -1764,8 +1753,6 @@ setting_infos = [
     Setting_Info('navicolordefault', str, 0, False,
         {
             'default': 'White',
-            'const': 'White',
-            'nargs': '?',
             'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is idle. (default: %(default)s)
@@ -1790,8 +1777,6 @@ setting_infos = [
     Setting_Info('navicolorenemy', str, 0, False,
         {
             'default': 'Yellow',
-            'const': 'Yellow',
-            'nargs': '?',
             'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is targeting an enemy. (default: %(default)s)
@@ -1816,8 +1801,6 @@ setting_infos = [
     Setting_Info('navicolornpc', str, 0, False,
         {
             'default': 'Light Blue',
-            'const': 'Light Blue',
-            'nargs': '?',
             'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is targeting an NPC. (default: %(default)s)
@@ -1842,8 +1825,6 @@ setting_infos = [
     Setting_Info('navicolorprop', str, 0, False,
         {
             'default': 'Green',
-            'const': 'Green',
-            'nargs': '?',
             'type': parse_custom_navi_color,
             'help': '''\
                     Choose the color for Navi when she is targeting a prop. (default: %(default)s)
@@ -1868,8 +1849,6 @@ setting_infos = [
     Setting_Info('navisfxoverworld', str, 0, False,
         {
             'default': 'Default',
-            'const': 'Default',
-            'nargs': '?',
             'help': '''\
                     Select the sound effect that plays when Navi has a hint. (default: %(default)s)
                     Sound:         Replace the sound effect with the chosen sound.
@@ -1887,8 +1866,6 @@ setting_infos = [
         Setting_Info('navisfxenemytarget', str, 0, False,
         {
             'default': 'Default',
-            'const': 'Default',
-            'nargs': '?',
             'help': '''\
                     Select the sound effect that plays when targeting an enemy. (default: %(default)s)
                     Sound:         Replace the sound effect with the chosen sound.
@@ -1906,8 +1883,6 @@ setting_infos = [
     Setting_Info('healthSFX', str, 0, False,
         {
             'default': 'Default',
-            'const': 'Default',
-            'nargs': '?',
             'help': '''\
                     Select the sound effect that loops at low health. (default: %(default)s)
                     Sound:         Replace the sound effect with the chosen sound.
