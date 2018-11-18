@@ -557,8 +557,7 @@ typedef struct
   uint16_t        inf_table[30];            /* 0x0EF8 */
   char            unk_0D_[0x041E];          /* 0x0F34 */
   uint16_t        checksum;                 /* 0x1352 */
-  char            unk_0E_[0x0003];          /* 0x1354 */
-  int8_t          file_index;               /* 0x1357 */
+  int32_t          file_index;              /* 0x1354 */
   char            unk_0F_[0x0004];          /* 0x1358 */
   int32_t         interface_flag;           /* 0x135C */
   uint32_t        scene_setup_index;        /* 0x1360 */
@@ -1048,6 +1047,21 @@ typedef struct
                                           /* 0x11E5F */
 } z64_game_t;
 
+typedef struct
+{
+	void             *ptr;                      /* 0x0000 */
+	uint32_t          vrom_start;               /* 0x0004 */
+	uint32_t          vrom_end;                 /* 0x0008 */
+	uint32_t          vram_start;               /* 0x000C */
+	uint32_t          vram_end;                 /* 0x0010 */
+	char              unk_00_[0x0004];          /* 0x0014 */
+	uint32_t          vram_ctor;                /* 0x0018 */
+	uint32_t          vram_dtor;                /* 0x001C */
+	char              unk_01_[0x000C];          /* 0x0020 */
+	char              ctxt_size;                /* 0x002C */
+									                      			/* 0x0030 */
+} z64_state_ovl_t;
+
 /* dram addresses */
 #define z64_osSendMesg_addr                     0x80001E20
 #define z64_osRecvMesg_addr                     0x80002030
@@ -1092,6 +1106,7 @@ typedef struct
 #define z64_seq_buf_addr                        0x80124800
 #define z64_ctxt_addr                           0x801C84A0
 #define z64_link_addr                           0x801DAA30
+#define z64_state_ovl_tab_addr                  0x800F1340
 
 /* rom addresses */
 #define z64_icon_item_static_vaddr              0x007BD000
@@ -1154,6 +1169,9 @@ typedef void (*z64_GiveItem_proc)         (z64_game_t *game, uint8_t item);
 #define z64_ctxt                (*(z64_ctxt_t*)       z64_ctxt_addr)
 #define z64_game                (*(z64_game_t*)      &z64_ctxt)
 #define z64_link                (*(z64_link_t*)       z64_link_addr)
+#define z64_state_ovl_tab       (*(z64_state_ovl_t(*)[6])                     \
+                                                      z64_state_ovl_tab_addr)
+
 
 /* functions */
 #define z64_osSendMesg          ((osSendMesg_t)       z64_osSendMesg_addr)

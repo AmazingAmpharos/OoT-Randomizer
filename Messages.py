@@ -6,7 +6,9 @@ TABLE_START = 0xB849EC
 TEXT_START = 0x92D000
 
 TABLE_SIZE_LIMIT = 0x43A8
-TEXT_SIZE_LIMIT = 0x38130
+ENG_TEXT_SIZE_LIMIT = 0x38130
+JPN_TEXT_SIZE_LIMIT = 0x3A150
+
 
 # name of type, followed by number of additional bytes to read, follwed by a function that prints the code
 CONTROL_CODES = {
@@ -251,7 +253,7 @@ SONG_MESSAGES = {
     0x00BA: "\x08\x06\x14You've learned \x05\x42Saria's Song\x05\x40!",
     0x00BB: "\x08\x06\x0BYou've learned the \x05\x46Sun's Song\x05\x40!",
     0x00BC: "\x08\x06\x05You've learned the \x05\x44Song of Time\x05\x40!",
-    0x00BD: "\x08You've learned the \x05\x45Song of Storms\x05\x40!",    
+    0x00BD: "\x08You've learned the \x05\x45Song of Storms\x05\x40!",
 }
 
 
@@ -297,6 +299,13 @@ class Text_Code():
             return '?'
         else:
             return chr(self.code)
+
+    # writes the code to the given offset, and returns the offset of the next byte
+    def size(self):
+        size = 1
+        if self.code in CONTROL_CODES:
+            size += CONTROL_CODES[self.code][1]
+        return size
 
     # writes the code to the given offset, and returns the offset of the next byte
     def write(self, rom, offset):
@@ -390,14 +399,57 @@ class Message():
     def is_basic(self):
         return not (self.has_goto or self.has_keep_open or self.has_event or self.has_fade or self.has_ocarina or self.has_two_choice or self.has_three_choice)
 
+
     # writes a Message back into the rom, using the given index and offset to update the table
     # returns the offset of the next message
-    def write(self, rom, index, offset, replace_ending=False, ending=None, always_allow_skip=True, speed_up_text=True):
+    def size(self, replace_ending=False, ending=None, always_allow_skip=True, speed_up_text=True):
+        size = 0
+
+        ending_codes = [0x02, 0x07, 0x0A, 0x0B, 0x0E, 0x10]
+        box_breaks = [0x04, 0x0C]
+        slows_text = [0x08, 0x09, 0x14]
+
+        # # speed the text
+        if speed_up_text:
+            size += 1
+
+        # write the message
+        for code in self.text_codes:
+            # ignore ending codes if it's going to be replaced
+            if replace_ending and code.code in ending_codes:
+                pass
+            # ignore the "make unskippable flag"
+            elif always_allow_skip and code.code == 0x1A:
+                pass
+            # ignore anything that slows down text
+            elif speed_up_text and code.code in slows_text:
+                pass
+            elif speed_up_text and code.code in box_breaks:
+                size += 2
+            else:
+                size += code.size()
+
+        if replace_ending:
+            if ending:
+                if speed_up_text and ending.code == 0x10: # ocarina
+                    size += 1
+                size += ending.size() # write special ending
+            size += 1
+
+        while size % 4 > 0:
+            size += 1
+
+        return size
+
+
+    # writes a Message back into the rom, using the given index and offset to update the table
+    # returns the offset of the next message
+    def write(self, rom, index, offset, replace_ending=False, ending=None, always_allow_skip=True, speed_up_text=True, bank=0x07):
 
         # construct the table entry
         id_bytes = int_to_bytes(self.id, 2)
         offset_bytes = int_to_bytes(offset, 3)
-        entry = id_bytes + bytes([self.opts, 0x00, 0x07]) + offset_bytes
+        entry = id_bytes + bytes([self.opts, 0x00, bank]) + offset_bytes
         # write it back
         entry_offset = TABLE_START + 8 * index
         rom.write_bytes(entry_offset, entry)
@@ -733,16 +785,33 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True, spe
 
     # repack messages
     offset = 0
+    text_size_limit = ENG_TEXT_SIZE_LIMIT
+    text_bank = 0x07
+
     for old_index, new_index in enumerate(permutation):
         old_message = messages[old_index]
         new_message = messages[new_index]
-        remember_id = new_message.id 
+        remember_id = new_message.id
         new_message.id = old_message.id
-        offset = new_message.write(rom, old_index, offset, True, old_message.ending, always_allow_skip, speed_up_text)
+
+        # check if there is space to write the message
+        message_size = new_message.size(True, old_message.ending, always_allow_skip, speed_up_text)
+        if message_size + offset > text_size_limit:
+            # if there is no room then switch banks
+            if text_bank == 0x07:
+                text_size_limit = JPN_TEXT_SIZE_LIMIT
+                text_bank = 0x08
+                offset = 0
+
+        # actually write the message
+        offset = new_message.write(rom, old_index, offset, True, old_message.ending, always_allow_skip, speed_up_text, text_bank)
+
         new_message.id = remember_id
 
-    if offset > TEXT_SIZE_LIMIT:
-        raise(TypeError("Message Text table is too large: 0x" + "{:x}".format(offset) + " written / 0x" + "{:x}".format(TEXT_SIZE_LIMIT) + " allowed."))
+    # raise an exception if too much is written
+    # we raise it at the end so that we know how much overflow there is
+    if offset > text_size_limit:
+        raise(TypeError("Message Text table is too large: 0x" + "{:x}".format(ENG_TEXT_SIZE_LIMIT + offset) + " written / 0x" + "{:x}".format(ENG_TEXT_SIZE_LIMIT + JPN_TEXT_SIZE_LIMIT) + " allowed."))
 
     # end the table
     table_index = len(messages)
@@ -766,7 +835,7 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
         exempt_as_id = m.is_id_message()
         exempt_as_hint = ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT + list(KEYSANITY_MESSAGES.keys()) + shuffle_messages.shop_item_messages ) )
         return not ( exempt_as_id or exempt_as_hint )
-    
+
     have_goto =         list( filter( lambda m: is_not_exempt(m) and m.has_goto, messages) )
     have_keep_open =    list( filter( lambda m: is_not_exempt(m) and m.has_keep_open, messages) )
     have_event =        list( filter( lambda m: is_not_exempt(m) and m.has_event, messages) )

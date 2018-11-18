@@ -11,13 +11,15 @@ from tkinter.colorchooser import *
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog
-from Main import main
+from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry
+from Main import main, from_patch_file
 from Utils import is_bundled, local_path, default_output_path, open_file, check_version
 from Patches import get_tunic_color_options, get_navi_color_options
-from Settings import Settings, setting_infos
+from Settings import Settings
+from SettingsList import setting_infos
 from version import __version__ as ESVersion
 import webbrowser
+import WorldFile
 
 def settings_to_guivars(settings, guivars):
     for info in setting_infos:
@@ -38,7 +40,7 @@ def settings_to_guivars(settings, guivars):
                     if 'Custom Color' in info.gui_params['options'] and re.match(r'^[A-Fa-f0-9]{6}$', value):
                         guivar.set('Custom (#' + value + ')')
                     else:
-                        for gui_text,gui_value in info.gui_params['options'].items(): 
+                        for gui_text,gui_value in info.gui_params['options'].items():
                             if gui_value == value:
                                 guivar.set( gui_text )
                 else:
@@ -63,7 +65,7 @@ def guivars_to_settings(guivars):
             result[name] = bool(guivar.get())
         # dropdown/radiobox
         if info.type == str:
-            # set guivar to hexcode if custom color 
+            # set guivar to hexcode if custom color
             if re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', guivar.get()):
                 result[name] = re.findall(r'[A-Fa-f0-9]{6}', guivar.get())[0]
             elif info.gui_params and 'options' in info.gui_params:
@@ -97,8 +99,6 @@ def guiMain(settings=None):
     frames['aesthetic_tab'] = ttk.Frame(notebook)
     frames['aesthetic_tab_left'] = Frame(frames['aesthetic_tab'])
     frames['aesthetic_tab_right'] = Frame(frames['aesthetic_tab'])
-    adjustWindow = ttk.Frame(notebook)
-    customWindow = ttk.Frame(notebook)
     notebook.add(frames['rom_tab'], text='ROM Options')
     notebook.add(frames['rules_tab'], text='Main Rules')
     notebook.add(frames['logic_tab'], text='Detailed Logic')
@@ -111,6 +111,7 @@ def guiMain(settings=None):
 
     # hold the results of the user's decisions here
     guivars = {}
+    widgets = {}
 
     # hierarchy
     ############
@@ -137,43 +138,41 @@ def guiMain(settings=None):
 
 
     # shared
-    settingsFrame = Frame(mainWindow)
-    settings_string_var = StringVar()
-    settingsEntry = Entry(settingsFrame, textvariable=settings_string_var, width=25)
+    def toggle_widget(widget, enabled):
+        widget_type = widget.winfo_class()
+        if widget_type == 'Frame' or widget_type == 'TFrame' or widget_type == 'Labelframe':
+            if widget_type == 'Labelframe':
+                widget.configure(fg='Black'if enabled else 'Grey')
+            for child in widget.winfo_children():
+                toggle_widget(child, enabled)
+        else:
+            if widget_type == 'TCombobox':
+                widget.configure(state= 'readonly' if enabled else 'disabled')
+            else:
+                widget.configure(state= 'normal' if enabled else 'disabled')
+
+            if widget_type == 'Scale':
+                widget.configure(fg='Black'if enabled else 'Grey')
+
 
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
-        
+
         # Update any dependencies
         for info in setting_infos:
             if info.gui_params and 'dependency' in info.gui_params:
                 dep_met = info.gui_params['dependency'](guivars)
+                toggle_widget(widgets[info.name], dep_met)
 
-                if widgets[info.name].winfo_class() == 'Frame':
-                    for child in widgets[info.name].winfo_children():
-                        if child.winfo_class() == 'TCombobox':
-                            child.configure(state= 'readonly' if dep_met else 'disabled')
-                        else:
-                            child.configure(state= 'normal' if dep_met else 'disabled')
-
-                        if child.winfo_class() == 'Scale':
-                            child.configure(fg='Black'if dep_met else 'Grey')
-                else:
-                    if widgets[info.name].winfo_class() == 'TCombobox':
-                        widgets[info.name].configure(state= 'readonly' if dep_met else 'disabled')
-                    else:
-                        widgets[info.name].configure(state= 'normal' if dep_met else 'disabled')
-
-                    if widgets[info.name].winfo_class() == 'Scale':
-                        widgets[info.name].configure(fg='Black'if dep_met else 'Grey')
-
-                
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
                 color = askcolor()
                 if color == (None, None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
+        update_generation_type()
+        
+
 
     def update_logic_tricks(event=None):
         for info in setting_infos:
@@ -189,30 +188,11 @@ def guiMain(settings=None):
         settings_string_var.set( settings.get_settings_string() )
 
 
-
-    def import_settings(event=None):
-        try:
-            settings = guivars_to_settings(guivars)
-            text = settings_string_var.get().upper()
-            settings.seed = guivars['seed'].get()
-            settings.update_with_settings_string(text)
-            settings_to_guivars(settings, guivars)
-        except Exception as e:
-            messagebox.showerror(title="Error", message="Invalid settings string")
-
-    label = Label(settingsFrame, text="Settings String")
-    importSettingsButton = Button(settingsFrame, text='Import Settings String', command=import_settings)
-    label.pack(side=LEFT, anchor=W, padx=5)
-    settingsEntry.pack(side=LEFT, anchor=W)
-    importSettingsButton.pack(side=LEFT, anchor=W, padx=5)
-
-
-
     fileDialogFrame = Frame(frames['rom_tab'])
 
     romDialogFrame = Frame(fileDialogFrame)
     baseRomLabel = Label(romDialogFrame, text='Base ROM')
-    guivars['rom'] = StringVar(value='ZOOTDEC.z64')
+    guivars['rom'] = StringVar(value='')
     romEntry = Entry(romDialogFrame, textvariable=guivars['rom'], width=40)
 
     def RomSelect():
@@ -231,7 +211,7 @@ def guiMain(settings=None):
 
     def open_output():
         open_file(output_path(''))
-    
+
     def output_dir_select():
         rom = filedialog.askdirectory(initialdir = default_output_path(guivars['output_dir'].get()))
         if rom != '':
@@ -250,7 +230,7 @@ def guiMain(settings=None):
     countDialogFrame = Frame(frames['rom_tab'])
     countLabel = Label(countDialogFrame, text='Generation Count')
     guivars['count'] = StringVar()
-    countSpinbox = Spinbox(countDialogFrame, from_=1, to=100, textvariable=guivars['count'], width=3)
+    widgets['count'] = Spinbox(countDialogFrame, from_=1, to=100, textvariable=guivars['count'], width=3)
 
     if os.path.exists(local_path('README.html')):
         def open_readme():
@@ -259,14 +239,12 @@ def guiMain(settings=None):
         openReadmeButton.pack(side=RIGHT, padx=5)
 
     countLabel.pack(side=LEFT)
-    countSpinbox.pack(side=LEFT, padx=2)
+    widgets['count'].pack(side=LEFT, padx=2)
     countDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
     # build gui
     ############
-
-    widgets = {}
 
     # Add special checkbox to toggle all logic tricks
     guivars['all_logic_tricks'] = IntVar(value=0)
@@ -274,7 +252,7 @@ def guiMain(settings=None):
     widgets['all_logic_tricks'].pack(expand=False, anchor=W)
 
     for info in setting_infos:
-        if info.gui_params:
+        if info.gui_params and 'group' in info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
                 # determine the initial value of the checkbox
                 default_value = 1 if info.gui_params['default'] == "checked" else 0
@@ -342,7 +320,10 @@ def guiMain(settings=None):
                 # create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
 
-                entry = Entry(widgets[info.name], textvariable=guivars[info.name], width=30)
+                if 'validate' in info.gui_params:
+                    entry = ValidatingEntry(widgets[info.name], command=show_settings, validate=info.gui_params['validate'], textvariable=guivars[info.name], width=30)
+                else:
+                    entry = Entry(widgets[info.name], textvariable=guivars[info.name], width=30)
                 entry.pack(side=BOTTOM, anchor=W)
                 # label the option
                 if 'text' in info.gui_params:
@@ -382,41 +363,88 @@ def guiMain(settings=None):
     frames['navicolor'].pack( fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
     frames['navihint'].pack(  fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
 
-    
+
     notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
 
-    multiworldFrame = LabelFrame(frames['rom_tab'], text='Multi-World Generation')
-    countLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='This is used for co-op generations. Increasing Player Count will drastically increase the generation time. For more information see:')
-    hyperLabel = Label(multiworldFrame, wraplength=350, justify=LEFT, text='https://github.com/TestRunnerSRL/bizhawk-co-op', fg='blue', cursor='hand2')
+
+    #Multi-World
+    widgets['multiworld'] = LabelFrame(frames['rom_tab'], text='Multi-World Generation')
+    countLabel = Label(widgets['multiworld'], wraplength=350, justify=LEFT, text='This is used for co-op generations. Increasing Player Count will drastically increase the generation time. For more information see:')
+    hyperLabel = Label(widgets['multiworld'], wraplength=350, justify=LEFT, text='https://github.com/TestRunnerSRL/bizhawk-co-op', fg='blue', cursor='hand2')
     hyperLabel.bind("<Button-1>", lambda event: webbrowser.open_new(r"https://github.com/TestRunnerSRL/bizhawk-co-op"))
     countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
     hyperLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
 
-
-    worldCountFrame = Frame(multiworldFrame)
+    worldCountFrame = Frame(widgets['multiworld'])
     countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
-    countSpinbox = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
-
+    widgets['world_count'] = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
     countLabel.pack(side=LEFT)
-    countSpinbox.pack(side=LEFT, padx=2)
+    widgets['world_count'].pack(side=LEFT, padx=2)
     worldCountFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
 
-    playerNumFrame = Frame(multiworldFrame)
+    playerNumFrame = Frame(widgets['multiworld'])
     countLabel = Label(playerNumFrame, text='Player ID')
     guivars['player_num'] = StringVar()
-    countSpinbox = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['player_num'], width=3)
-
+    widgets['player_num'] = Spinbox(playerNumFrame, from_=1, to=31, textvariable=guivars['player_num'], width=3)
     countLabel.pack(side=LEFT)
-    countSpinbox.pack(side=LEFT, padx=2)
+    widgets['player_num'].pack(side=LEFT, padx=2)
+    ToolTips.register(widgets['player_num'], 'Generate for specific Player.')
     playerNumFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
-    multiworldFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
+
+    widgets['multiworld'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
-    # didn't refactor the rest, sorry
+    # create the generation menu
+    def update_generation_type(event=None):
+        if generation_notebook.tab(generation_notebook.select())['text'] == 'Generate From Seed':
+            notebook.tab(1, state="normal")
+            if guivars['logic_rules'].get() == 'Glitchless':
+                notebook.tab(2, state="normal")
+            else:
+                notebook.tab(2, state="disabled")               
+            notebook.tab(3, state="normal")
+            toggle_widget(widgets['world_count'], True)
+            toggle_widget(widgets['create_spoiler'], True)
+            toggle_widget(widgets['count'], True)
+        else:
+            notebook.tab(1, state="disabled")
+            notebook.tab(2, state="disabled")
+            notebook.tab(3, state="disabled")
+            toggle_widget(widgets['world_count'], False)
+            toggle_widget(widgets['create_spoiler'], False)
+            toggle_widget(widgets['count'], False)
 
 
-    # create the option menu
+
+    generation_notebook = ttk.Notebook(mainWindow)
+    frames['gen_from_seed'] = ttk.Frame(generation_notebook)
+    frames['gen_from_file'] = ttk.Frame(generation_notebook)
+    generation_notebook.add(frames['gen_from_seed'], text='Generate From Seed')
+    generation_notebook.add(frames['gen_from_file'], text='Generate From File')
+    generation_notebook.bind("<<NotebookTabChanged>>", show_settings)
+
+    # From seed tab
+    def import_settings(event=None):
+        try:
+            settings = guivars_to_settings(guivars)
+            text = settings_string_var.get().upper()
+            settings.seed = guivars['seed'].get()
+            settings.update_with_settings_string(text)
+            settings_to_guivars(settings, guivars)
+            show_settings()
+        except Exception as e:
+            messagebox.showerror(title="Error", message="Invalid settings string")
+
+    settingsFrame = Frame(frames['gen_from_seed'])
+    settings_string_var = StringVar()
+    widgets['setting_string'] = Entry(settingsFrame, textvariable=settings_string_var, width=32)
+
+    label = Label(settingsFrame, text="Settings String")
+    widgets['import_settings'] = Button(settingsFrame, text='Import Settings String', command=import_settings)
+    label.pack(side=LEFT, anchor=W, padx=5)
+    widgets['setting_string'].pack(side=LEFT, anchor=W)
+    widgets['import_settings'].pack(side=LEFT, anchor=W, padx=5)
 
     settingsFrame.pack(fill=BOTH, anchor=W, padx=5, pady=(10,0))
 
@@ -429,22 +457,51 @@ def guiMain(settings=None):
 
     def generateRom():
         settings = guivars_to_settings(guivars)
-        if settings.count is not None:
+        if settings.count:
             BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, multiple_run, settings)
         else:
             BackgroundTaskProgress(mainWindow, "Generating Seed %s..." % settings.seed, main, settings)
 
-    generateSeedFrame = Frame(mainWindow)
+    generateSeedFrame = Frame(frames['gen_from_seed'])
     generateButton = Button(generateSeedFrame, text='Generate Patched ROM', command=generateRom)
 
     seedLabel = Label(generateSeedFrame, text='Seed')
     guivars['seed'] = StringVar()
-    seedEntry = Entry(generateSeedFrame, textvariable=guivars['seed'], width=25)
+    widgets['seed'] = Entry(generateSeedFrame, textvariable=guivars['seed'], width=32)
     seedLabel.pack(side=LEFT, padx=(55, 5))
-    seedEntry.pack(side=LEFT)
+    widgets['seed'].pack(side=LEFT)
     generateButton.pack(side=LEFT, padx=(5, 0))
 
     generateSeedFrame.pack(side=BOTTOM, anchor=W, padx=5, pady=10)
+
+    # From file tab
+    patchDialogFrame = Frame(frames['gen_from_file'])
+
+    patchFileLabel = Label(patchDialogFrame, text='Patch File')
+    guivars['patch_file'] = StringVar(value='')
+    patchEntry = Entry(patchDialogFrame, textvariable=guivars['patch_file'], width=45)
+
+    def PatchSelect():
+        patch_file = filedialog.askopenfilename(filetypes=[("Patch File Archive", "*.zpfz *.zpf"), ("All Files", "*")])
+        if patch_file != '':
+            guivars['patch_file'].set(patch_file)
+    patchSelectButton = Button(patchDialogFrame, text='Select File', command=PatchSelect, width=10)
+
+    patchFileLabel.pack(side=LEFT, padx=(5,0))
+    patchEntry.pack(side=LEFT, padx=3)
+    patchSelectButton.pack(side=LEFT)
+
+    patchDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(10,5))
+
+    def generateFromFile():
+        settings = guivars_to_settings(guivars)
+        BackgroundTaskProgress(mainWindow, "Generating From File %s..." % os.path.basename(settings.patch_file), from_patch_file, settings)
+
+    generateFileButton = Button(frames['gen_from_file'], text='Generate Patched ROM', command=generateFromFile)
+    generateFileButton.pack(side=BOTTOM, anchor=E, pady=(0,10), padx=(0, 10))
+
+    generation_notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
+
 
     guivars['checked_version'] = StringVar()
 

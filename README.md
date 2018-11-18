@@ -46,7 +46,7 @@ The following item types will be progressive chains:
 -Adult Wallet to Giant's Wallet
 -Deku Stick Capacity Upgrades
 -Deku Nut Capacity Upgrades
--Magic Meter to Double Magic  
+-Magic Meter to Double Magic
 -Fairy Ocarina to Ocarina of Time
 
 To be more clear about which NPC items are shuffled, it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart
@@ -111,56 +111,56 @@ While all the details of gameplay can't be detailed here, I want to inform you o
 glitch we can do nothing about.
 
 -The condition to open the Door of Time is merely playing the Song of Time; the Spiritual Stones are not required. If you enter the Temple of Time via the Prelude
-of Light, playing the Song of Time will create a glitchy cutscene and will not open the door (but you're safe to exit and re-enter and open it properly).  
+of Light, playing the Song of Time will create a glitchy cutscene and will not open the door (but you're safe to exit and re-enter and open it properly).
 -The condition to spawn the Ocarina of Time and learn that song is the three Spiritual Stones. The condition to learn a song from Sheik in the Temple of Time is
-possessing the Forest Medallion. The condition to learn a song from Sheik in Kakariko is possessing Forest, Fire, and Water Medallions.  
--The running man in Hyrule Field only spawns if you have all three Spiritual Stones.  
--Skull Kid will only buy the Skull Mask if you have played Saria's Song for him.  
+possessing the Forest Medallion. The condition to learn a song from Sheik in Kakariko is possessing Forest, Fire, and Water Medallions.
+-The running man in Hyrule Field only spawns if you have all three Spiritual Stones.
+-Skull Kid will only buy the Skull Mask if you have played Saria's Song for him.
 -The center of Death Mountain Crater as an adult can be reached from the summit as an adult by going around to the left with Hover Boots or by jumping down to the right
-and using a combination of the Longshot and Scarecrow's Song. This allows access to Sheik and the Fire Temple without a Bomb Bag.  
--A sword must be equipped to play the fishing minigame. A Slingshot is not required for child target shooting, but the adult does need the Bow to receive the true prize.  
--Other than the fishing minigame, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.  
+and using a combination of the Longshot and Scarecrow's Song. This allows access to Sheik and the Fire Temple without a Bomb Bag.
+-A sword must be equipped to play the fishing minigame. A Slingshot is not required for child target shooting, but the adult does need the Bow to receive the true prize.
+-Other than the fishing minigame, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.
 -In the randomizer, possessing the Bomb Bag is the requirement to get bomb drops, buy bombs or Bombchus, or play Bombchu Bowling. If the setting "Bombchus Are Considered in
-Logic" is used, finding any pack of Bombchus allows purchasing Bombchus and playing Bombchu Bowling while possessing a Bomb Bag allows the purchase of bombs.  
--Only the Hookshot, not the Longshot, is needed to do everything on the rooftops of Kakariko.  
--Grottos can be opened with either Bombs or the Hammer.  
--The boulder maze in Goron City can be solved with the Hammer or partially with Bombs as is obvious, but less obvious is that it can be fully solved with Silver Gauntlets.  
--The large colored blocks only encountered by the adult require Goron Bracelet to push.  
+Logic" is used, finding any pack of Bombchus allows purchasing Bombchus and playing Bombchu Bowling while possessing a Bomb Bag allows the purchase of bombs.
+-Only the Hookshot, not the Longshot, is needed to do everything on the rooftops of Kakariko.
+-Grottos can be opened with either Bombs or the Hammer.
+-The boulder maze in Goron City can be solved with the Hammer or partially with Bombs as is obvious, but less obvious is that it can be fully solved with Silver Gauntlets.
+-The large colored blocks only encountered by the adult require Goron Bracelet to push.
 -In a few places, out of sight Song of Time blocks can be summoned. The lava room in Gerudo Training Grounds, the beginning of Ganon's Castle Shadow Trial, and the last
 hallway with a caged Goron in Fire Temple are the main cases.
--Adult Link can fully clear Dodongo's Cavern. He can even skip the first section by virtue of being tall.  
--In the Forest Temple, you can reach the room with the Floormaster (vanilla) or Redead (MQ) early by using Hover Boots in the block push room.  
--In the Fire Temple, you can reach the Boss Key door from the beginning with Hover Boots.  
+-Adult Link can fully clear Dodongo's Cavern. He can even skip the first section by virtue of being tall.
+-In the Forest Temple, you can reach the room with the Floormaster (vanilla) or Redead (MQ) early by using Hover Boots in the block push room.
+-In the Fire Temple, you can reach the Boss Key door from the beginning with Hover Boots.
 -In the Water Temple, you can from the start with the water down jump to the middle platform level, very carefully aim the Hookshot to the target above, and pull yourself
 to the highest level of the central platform. Then a very well spaced rolling jump can reach the water changing station to raise the water to the highest level. If you
-make poor key choices in Water Temple, this may be what you need to do to untangle the situation.  
+make poor key choices in Water Temple, this may be what you need to do to untangle the situation.
 -In the Water Temple, Hover Boots can be used to reach the vanilla Boss Key chest without going through the room that requires Bombs and block pushing. Hover Boots can
-also be used in this temple to avoid the Longshot requirement for the middle level chest that requires the Bow.  
+also be used in this temple to avoid the Longshot requirement for the middle level chest that requires the Bow.
 -In the Water Temple, Farore's Wind can be placed in the central pillar and then the water can be raised to the highest level in order to reach the Gold Skulltula without
-the Longshot.  
--In the Shadow Temple, you can avoid the need for the Longshot in the room with the invisible spikes by backflipping onto the chest for extra height.  
--In the Shadow Temple, you can Hookshot the ladder to avoid pushing the block to get on the boat.  
--In the Shadow Temple, a combination of the scarecrow and the Longshot can be used to reach Bongo Bongo without needing the Bow.  
--In the Spirit Temple, the child can obtain the vanilla Map chest with Deku Sticks. No fire magic is needed.  
--In the Spirit Temple, you can collect the silver rupees without Hover Boots by jumping directly onto the rolling boulder or with a jump slash.  
--In the Spirit Temple, you can use the Longshot to cross from the hand with the Mirror Shield in vanilla to the other hand.  
--In Ganon's Castle Spirit Trial, the web can be burned with a precise shot through the torch by a normal arrow. Fire Arrows are not required.  
--Like Likes now only eat shields and not tunics.  
--Several Gold Skulltula Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).  
+the Longshot.
+-In the Shadow Temple, you can avoid the need for the Longshot in the room with the invisible spikes by backflipping onto the chest for extra height.
+-In the Shadow Temple, you can Hookshot the ladder to avoid pushing the block to get on the boat.
+-In the Shadow Temple, a combination of the scarecrow and the Longshot can be used to reach Bongo Bongo without needing the Bow.
+-In the Spirit Temple, the child can obtain the vanilla Map chest with Deku Sticks. No fire magic is needed.
+-In the Spirit Temple, you can collect the silver rupees without Hover Boots by jumping directly onto the rolling boulder or with a jump slash.
+-In the Spirit Temple, you can use the Longshot to cross from the hand with the Mirror Shield in vanilla to the other hand.
+-In Ganon's Castle Spirit Trial, the web can be burned with a precise shot through the torch by a normal arrow. Fire Arrows are not required.
+-Like Likes now only eat shields and not tunics.
+-Several Gold Skulltula Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).
 -This is not a randomizer exclusive mechanic, but getting the ability to summon Pierre the Scarecrow requires playing an eight note song for
-Bonooru the Scarecrow as a child first and then the exact same song for him again as an adult.  
+Bonooru the Scarecrow as a child first and then the exact same song for him again as an adult.
 
 # Known issues
 
 Sadly for this 3.0 release a few known issues exist. These will hopefully be addressed in future versions.
 
--The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and quit (NOT savestate) and return to fix the issue.  
+-The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and quit (NOT savestate) and return to fix the issue.
 -Draining the Bottom of the Well with Song of Storms sometimes crashes on specific configurations of Project 64. We aren't sure of the exact story, but this bug is
-easily avoided by playing on a different emulator and probably also avoidable by changing your settings and maybe graphics plug-in.  
+easily avoided by playing on a different emulator and probably also avoidable by changing your settings and maybe graphics plug-in.
 -Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences. In particular this can be devastating with Biggoron;
-it is strongly suggested the player save before turning in the Claim Check.  
+it is strongly suggested the player save before turning in the Claim Check.
 -Saving and quitting on the very first frame after becomming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
-do that.  
+do that.
 -This randomizer is based on the 1.0 version of Ocarina of Time so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantagous to the
 player.
 
@@ -310,21 +310,9 @@ Small Keys, Boss Keys, Deku Shields, Hylian Shields, and Ice Traps are not consi
 items if the appropriate "keysanity" settings are used. Note that unlike with the distribution of dungeon specific items like keys, this flag does consider
 the hands of the Desert Colossus as Spirit Temple locations, and to mirror the original game, Spirit Temple will get two items instead of just one.
 
-## Dungeon Quest
+## Master Quest Dungeons
 
-This option specifies the form dungeons will take. The item pool will be updated to reflect the items originally found in the dungeons used.
-
-### Vanilla
-
-Dungeons will have the same internal layout as they did in the original The Legend of Zelda: Ocarina of Time.
-
-### Master Quest
-
-Dungeons will have the internal layouts found in The Legend of Zelda: Ocarina of Time Master Quest.
-
-### Mixed
-
-Dungeons will each have a random internal layout chosen between the vanilla and Master Quest forms.
+With this option you can select a number of Master Quest dungeons to be included in your game. A value of 0 leaves all dungeons in their vanilla form. A value of 12 swaps each for its Master Quest form. 6 is an even mix of both. You may also opt for a random number of dungeons.
 
 ## Shuffle Kokiri Sword
 
@@ -408,7 +396,7 @@ location of the Boss Key will be removed.
 
 This setting, only available if you start with Maps and Compasses or they are spread across the world, disables the pedestal in the Temple of Time from giving information about
 the location of the Medallions and Spiritual Stones. Instead, the Compass from each of the eight eligible dungeons will tell the player which dungeon has
-which reward. If the dungeon quest is set to mixed, each of the ten Maps will tell the player whether any given dungeon is in the vanilla or Master Quest
+which reward. If Master Quest dungeons are to be mixed in, each of the ten Maps will tell the player whether any given dungeon is in the vanilla or Master Quest
 form. The Compasses from Bottom of the Well and Ice Cavern do not give any information.
 
 ## Remove Ganon's Door Boss Lock
@@ -483,27 +471,27 @@ This is a button to turn on all of the trick related flags.
 
 This setting allows a huge number of minor tricks to be allowed by the logic. Here is a complete list:
 
--A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltula on some vines in standad Deku Tree.  
--The Bow can be used to knock down the stairs in Dodongo's Cavern with two well timed shots.  
--The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with the standard Hookshot.  
+-A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltula on some vines in standad Deku Tree.
+-The Bow can be used to knock down the stairs in Dodongo's Cavern with two well timed shots.
+-The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with the standard Hookshot.
 -The well in Forest Temple can be crossed with just Hookshot by shooting as low as possible on the vines from the far side and swimming under
-the ceiling. This is possible in both versions but can only be required in Forest Temple MQ.  
--A Bombchu from the ground level can be used to hit the switch to bypass the block pushing puzzle in Forest Temple MQ.  
--A rusted switch under a Song of Time block in the standard Fire Temple can be hit by using Hammer into the block.  
--The location with the Boss Key chest in Fire Temple MQ can be reached without the Bow with very particular use of Din's Fire.  
--The upper levels of the old boulder maze in Fire Temple MQ can be reached without explosives by using the Hammer through a wall.  
--In the standard Spirit Temple, the bridge on child side can be lowered with a carefully timed Bombchu.  
--The frozen switch in Spirit Temple MQ can be hit without a fire source by using the Bow and Song of Time very cleverly.  
+the ceiling. This is possible in both versions but can only be required in Forest Temple MQ.
+-A Bombchu from the ground level can be used to hit the switch to bypass the block pushing puzzle in Forest Temple MQ.
+-A rusted switch under a Song of Time block in the standard Fire Temple can be hit by using Hammer into the block.
+-The location with the Boss Key chest in Fire Temple MQ can be reached without the Bow with very particular use of Din's Fire.
+-The upper levels of the old boulder maze in Fire Temple MQ can be reached without explosives by using the Hammer through a wall.
+-In the standard Spirit Temple, the bridge on child side can be lowered with a carefully timed Bombchu.
+-The frozen switch in Spirit Temple MQ can be hit without a fire source by using the Bow and Song of Time very cleverly.
 -The chest in the basement of the standard Bottom of the Well can be reached with only a Strength Upgrade by using a jump slash with a lit
-Deku Stick to access the bomb flowers in the basement.  
--The silver rupees on the left side of Gerudo Training Grounds MQ can be collected with just Hookshot with a somewhat particular jump slash.  
+Deku Stick to access the bomb flowers in the basement.
+-The silver rupees on the left side of Gerudo Training Grounds MQ can be collected with just Hookshot with a somewhat particular jump slash.
 -The first room of the Spirit Trail in Ganon's Castle MQ can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
-through the thrones.  
--The Gold Skulltula in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.  
+through the thrones.
+-The Gold Skulltula in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.
 -The child can reach the chest on Death Mountain trail with just the Goron Bracelet by backwalking with the Bomb Flower intended to open
-Dodongo's Cavern and throwing the Bomb Flower at the wall very quickly.  
+Dodongo's Cavern and throwing the Bomb Flower at the wall very quickly.
 -Gerudo Fortress can be cleared without any items other than those needed for access. The logic normally guarantees one of the Bow, Hookshot, or
-Hover Boots to help navigate the "kitchen".  
+Hover Boots to help navigate the "kitchen".
 
 Using this setting will also pre-set all of the lower logic flags to a reasonable configuration to match the trick level. These can then be
 edited as the player desires if the given configuration isn't desired.
@@ -622,19 +610,19 @@ but the hints will be less "fun" and less like the sorts of things that would be
 This flag changes the behavior of Gossip Stones to give hints to players. The hints will be distributed as such:
 
 -If the required number of trials is 1-3, a hint will be added for each trial that must be done. If the required number of trials is 4 or 5, a hint will be added
-for each trial that can be skipped.  
+for each trial that can be skipped.
 -Hints will be added for every one of the "always" locations that is allowed to have a random possibly valuable item under the current settings. These hints
 will tell the player what item is at each of these locations. These locations are the rewards for 30, 40, and 50 Gold Skulltula Tokens, the item obtained from
 Biggoron by showing the Claim Check, the item obtained from the Big Poe vendor, both the song and the item slots at the Ocarina of Time, and the item obtained
-from showing the Mask of Truth at the Deku Theater.  
+from showing the Mask of Truth at the Deku Theater.
 -Some hints will be given for items at a randomly selected number of other locations that are generally somewhat inconvenient to check. The total number of these
-hints will be either 11 or 12 minus the number of always hints placed.  
--3 or 4 hints will be given naming a specific non-dungeon specific item that can be found in a randomly chosen dungeon.  
+hints will be either 11 or 12 minus the number of always hints placed.
+-3 or 4 hints will be given naming a specific non-dungeon specific item that can be found in a randomly chosen dungeon.
 -1 to 4 hints will be given naming a specific item found in a specific overworld region. Which part of this range is used is determined in part by how many
-trial hints are given.  
--4 to 6 hints will be given naming what region specific progression items other than Gold Skulltula Tokens can be found.  
--3 or 4 hints will be given naming specific regions that are "on the way of the hero" and thus contain at least one required progression item.  
--All remaining hints (33 total unique Gossip Stones exist) will be filled with non-information junk hints.  
+trial hints are given.
+-4 to 6 hints will be given naming what region specific progression items other than Gold Skulltula Tokens can be found.
+-3 or 4 hints will be given naming specific regions that are "on the way of the hero" and thus contain at least one required progression item.
+-All remaining hints (33 total unique Gossip Stones exist) will be filled with non-information junk hints.
 
 This setting allows the player to specify which item is required to interact with the Gossip Stones. The Stone of Agony is the default option as it gives a
 fairly purposeless vanilla item a use and allows both kid and adult to interact with the Gossip Stones. The default Mask of Truth can be used, but this has
@@ -678,9 +666,17 @@ In addition to the items from Hard, Pieces of Heart and Nayru's Love are also re
 One more of each ammo expansion is removed resulting in zero extra ammo capacity for those item types,
 and only one Bombchu pick-up can be found.
 
+## Damage Multiplier
+
+This setting changes the amount of damage taken.
+
+### Normal
+
+Link takes normal damage.
+
 ### OHKO
 
-In addition to the item changes from Very Hard, Link dies in one hit. Ice Traps are replaced with Recovery Hearts.
+Link dies in one hit. Ice Traps are removed, and at least one Nayru's Love is in the item pool.
 
 # Cosmetics
 
@@ -765,7 +761,7 @@ This option sets the SFX that will play when Navi targets an enemy. The options 
 # Command Line Options
 
 ```
--h, --help            
+-h, --help
 ```
 
 Show the help message and exit.
@@ -795,32 +791,32 @@ Path to a The Legend of Zelda: Ocarina of Time NTSC-US v1.0 ROM. (default: ZOOTD
 Path to output directory for rom generation.
 
 ```
---seed SEED           
+--seed SEED
 ```
 
 Define seed number to generate. (default: None)
 
 ```
---count COUNT         
+--count COUNT
 ```
 
 Set the count option (default: None)
 
 ```
---world_count WORLD_COUNT       
+--world_count WORLD_COUNT
 ```
 
 Use to create a multi-world generation for co-op seeds. World count is the number of players.
 Warning: Increasing the world count will drastically increase generation time. (default: 1)
 
 ```
---player_num PLAYER_NUM       
+--player_num PLAYER_NUM
 ```
 
 Use to select world to generate when there are multiple worlds. (default: 1)
 
 ```
---create_spoiler      
+--create_spoiler
 ```
 
 Output a Spoiler File (default: False)
@@ -1027,10 +1023,17 @@ Remove the Boss Key door leading to Ganondorf (default: False)
 Include the chosen Gold Skulltula Token locations in the item shuffle (default: off)
 
 ```
---quest [{vanilla,master,mixed}]
+--mq_dungeons_random
 ```
 
-Choose the internal layout of the dungeons (default: vanilla)
+Sets the number of Master Quest dungeons to a random value (default: False)
+
+```
+--mq_dungeons [{0,1,2,3,4,5,6,7,8,9,10,11,12}]
+```
+
+Sets the number of Master Quest dungeons (default: 0)
+
 
 ```
 --logic_skulltulas [{0,10,20,30,40,50}]
@@ -1208,10 +1211,16 @@ Enable hints from Gossip Stones and select the condition to read them (default: 
 Shuffle the chosen text randomly (default: none)
 
 ```
---difficulty [{normal,hard,very_hard,ohko}]
+--difficulty [{normal,hard,very_hard}]
 ```
 
-Alter the item pool to increase difficulty. The ohko option also causes Link to die in one hit. (default: normal)
+Alter the item pool to increase difficulty. (default: normal)
+
+```
+--damage_multiplier [{normal,ohko}]
+```
+
+Alters the amount of damage taken. The ohko option causes Link to die in one hit. (default: normal)
 
 ```
 --default_targeting [{hold,switch}]

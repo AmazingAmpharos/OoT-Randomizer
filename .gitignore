@@ -5,10 +5,11 @@
 /.vscode
 settings.sav
 ARCHIVE.bin
-output/*
+/Output/*
 *.z64
 *.z64.bak
 *.pyo
 *.spec
-dist/
-build/
+/dist/
+/build/
+/.idea/
