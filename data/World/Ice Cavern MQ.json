@@ -2,7 +2,15 @@
     {
         "region_name": "Ice Cavern",
         "dungeon": "Ice Cavern",
-            "locations": {
+        "exits": {
+            "Outside Ice Cavern": "True",
+            "Ice Cavern Interior": "has_bottle"
+        }
+    },
+    {
+        "region_name": "Ice Cavern Interior",
+        "dungeon": "Ice Cavern",
+        "locations": {
             "Ice Cavern MQ Map Chest": "True",
             "Ice Cavern MQ Compass Chest": "True",
             "Ice Cavern MQ Iron Boots Chest": "True",
@@ -12,9 +20,6 @@
             "GS Ice Cavern MQ Ice Block": "True",
             "GS Ice Cavern MQ Scarecrow": "
                 can_use(Scarecrow) or (Hover_Boots and can_use(Longshot))"
-        },
-        "exits": {
-            "Outside Ice Cavern": "True"
         }
     }
 ]

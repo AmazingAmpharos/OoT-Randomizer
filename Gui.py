@@ -438,7 +438,7 @@ def guiMain(settings=None):
 
     settingsFrame = Frame(frames['gen_from_seed'])
     settings_string_var = StringVar()
-    widgets['setting_string'] = Entry(settingsFrame, textvariable=settings_string_var, width=30)
+    widgets['setting_string'] = Entry(settingsFrame, textvariable=settings_string_var, width=32)
 
     label = Label(settingsFrame, text="Settings String")
     widgets['import_settings'] = Button(settingsFrame, text='Import Settings String', command=import_settings)
@@ -467,7 +467,7 @@ def guiMain(settings=None):
 
     seedLabel = Label(generateSeedFrame, text='Seed')
     guivars['seed'] = StringVar()
-    widgets['seed'] = Entry(generateSeedFrame, textvariable=guivars['seed'], width=30)
+    widgets['seed'] = Entry(generateSeedFrame, textvariable=guivars['seed'], width=32)
     seedLabel.pack(side=LEFT, padx=(55, 5))
     widgets['seed'].pack(side=LEFT)
     generateButton.pack(side=LEFT, padx=(5, 0))
