@@ -1059,7 +1059,7 @@ typedef struct
 	uint32_t          vram_dtor;                /* 0x001C */
 	char              unk_01_[0x000C];          /* 0x0020 */
 	char              ctxt_size;                /* 0x002C */
-									                      			/* 0x0030 */
+                                              /* 0x0030 */
 } z64_state_ovl_t;
 
 /* dram addresses */
