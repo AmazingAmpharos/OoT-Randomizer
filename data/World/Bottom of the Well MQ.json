@@ -10,7 +10,7 @@
             "Bottom of the Well MQ Lens Chest": "
                 has_explosives and 
                 ((Small_Key_Bottom_of_the_Well, 2) or 
-                    item_name(Bottom_of_the_Well_MQ_Lens_Chest) == 'Small_Key_Bottom_of_the_Well')",
+                    item_name(Bottom_of_the_Well_MQ_Lens_Chest) == Small_Key_Bottom_of_the_Well)",
             "Bottom of the Well MQ Dead Hand Freestanding Key": "has_explosives",
             "Bottom of the Well MQ East Inner Room Freestanding Key": "
                 can_play(Zeldas_Lullaby) or has_explosives",
@@ -21,7 +21,7 @@
             "GS Well MQ Coffin Room": "
                 can_child_attack and 
                 ((Small_Key_Bottom_of_the_Well, 2) or 
-                    item_name(GS_Well_MQ_Coffin_Room) == 'Small_Key_Bottom_of_the_Well')"
+                    item_name(GS_Well_MQ_Coffin_Room) == Small_Key_Bottom_of_the_Well)"
         },
         "exits": {
             "Kakariko Village": "True"

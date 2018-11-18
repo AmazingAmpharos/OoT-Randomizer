@@ -41,7 +41,7 @@ class Rule_AST_Transformer(NodeTransformer):
                 args=[],
                 keywords=[])
         else:
-            return node
+            return Str(node.id.replace('_', ' '))
 
 
     def visit_Tuple(self, node):
@@ -127,6 +127,19 @@ class Rule_AST_Transformer(NodeTransformer):
                 ctx=node.ctx)
         else:
             return node
+
+
+    def visit_Compare(self, node):
+        if isinstance(node.left, Name):
+            if node.left.id in escaped_items:
+                node.left = Str(escaped_items[node.left.id])
+
+        if isinstance(node.comparators[0], Name):
+            if node.comparators[0].id in escaped_items:
+                node.comparators[0] = Str(escaped_items[node.comparators[0].id])
+
+        self.generic_visit(node)
+        return node
 
 
 def parse_rule_string(rule, world):

@@ -82,8 +82,8 @@
             "GS Fire Temple MQ Fire Wall Maze Center": "has_explosives",
             "GS Fire Temple MQ Above Fire Wall Maze": "
                 (Small_Key_Fire_Temple, 5) or 
-                ((item_name(GS_Fire_Temple_MQ_Above_Fire_Wall_Maze) == 'Small_Key_Fire_Temple' or 
-                    not (keys_placed or item_name(GS_Fire_Temple_MQ_Above_Fire_Wall_Maze) == 'Boss_Key_Fire_Temple')) and 
+                ((item_name(GS_Fire_Temple_MQ_Above_Fire_Wall_Maze) == Small_Key_Fire_Temple or 
+                    not (keys_placed or item_name(GS_Fire_Temple_MQ_Above_Fire_Wall_Maze) == Boss_Key_Fire_Temple)) and 
                 (Small_Key_Fire_Temple, 4))"
         }
     },
