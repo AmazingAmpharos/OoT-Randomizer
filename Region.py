@@ -37,6 +37,7 @@ class Region(object):
         new_region.world = new_world
         new_region.spot_type = self.spot_type
         new_region.price = self.price
+        new_region.can_reach = self.can_reach
 
         if self.dungeon:
             new_region.dungeon = self.dungeon.name
