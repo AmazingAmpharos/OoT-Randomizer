@@ -1384,23 +1384,51 @@ def patch_rom(world, rom):
         rom.write_int32(0xDF7CB0,
             0xA44F0EF0)  # sh t7, 0xef0(v0)
     else:
+        # Get Deku Scrub Locations
+        scrub_locations = [location for location in world.get_locations() if 'Deku Scrub' in location.name]
+        scrub_dictionary = {}
+        for location in scrub_locations:
+            if location.default not in scrub_dictionary:
+                scrub_dictionary[location.default] = []
+            scrub_dictionary[location.default].append(location)
+
+        # Default Deku Scrub Prices
+        scrub_items = [
+            (0x30, 20), # Deku Nuts
+            (0x31, 15), # Deku Sticks
+            (0x3E, 10), # Piece of Heart
+            (0x33, 40), # Deku Seeds
+            (0x34, 50), # Deku Shield
+            (0x37, 40), # Bombs
+            (0x38, 00), # Arrows (unused)
+            (0x39, 40), # Red Potion
+            (0x3A, 40), # Green Potion
+            (0x77, 40), # Deku Stick Upgrade
+            (0x79, 40), # Deku Nut Upgrade
+        ]
+
         # Rebuild Deku Salescrub Item Table
-        scrub_items = [0x30, 0x31, 0x3E, 0x33, 0x34, 0x37, 0x38, 0x39, 0x3A, 0x77, 0x79]
         rom.seek_address(0xDF8684)
-        for scrub_item in scrub_items:
+        for (scrub_item, price) in scrub_items:
             # Price
             if world.shuffle_scrubs == 'low':
-                rom.write_int16(None, 10)
+                price = 10
+                rom.write_int16(None, price)
             elif world.shuffle_scrubs == 'random':
                 # this is a random value between 0-99
                 # average value is ~33 rupees
-                rom.write_int16(None, int(random.betavariate(1, 2) * 99))
+                price = int(random.betavariate(1, 2) * 99)
+                rom.write_int16(None, price)
             else: # leave default price
                 rom.read_int16(None)
             rom.write_int16(None, 1)          # Count
             rom.write_int32(None, scrub_item) # Item
             rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func
             rom.write_int32(None, 0x80A75354) # Buy_Func
+            if scrub_item in scrub_dictionary:
+                for location in scrub_dictionary[scrub_item]:
+                    location.price = price
+                    location.item.price = price
 
         # update actor IDs
         set_deku_salesman_data(rom)
