@@ -1393,14 +1393,23 @@ def patch_rom(world, rom):
             scrub_dictionary[location.default].append(location)
 
         # Default Deku Scrub Prices
-        scrub_items = {
-            0x30: 20, 0x31: 15, 0x3E: 10, 0x33: 40, 0x34: 50, 0x37: 40,
-            0x38: 00, 0x39: 40, 0x3A: 40, 0x77: 40, 0x79: 40
-        }
+        scrub_items = [
+            (0x30, 20), # Deku Nuts
+            (0x31, 15), # Deku Sticks
+            (0x3E, 10), # Piece of Heart
+            (0x33, 40), # Deku Seeds
+            (0x34, 50), # Deku Shield
+            (0x37, 40), # Bombs
+            (0x38, 00), # Arrows (unused)
+            (0x39, 40), # Red Potion
+            (0x3A, 40), # Green Potion
+            (0x77, 40), # Deku Stick Upgrade
+            (0x79, 40), # Deku Nut Upgrade
+        ]
 
         # Rebuild Deku Salescrub Item Table
         rom.seek_address(0xDF8684)
-        for (scrub_item, price) in scrub_items.items():
+        for (scrub_item, price) in scrub_items:
             # Price
             if world.shuffle_scrubs == 'low':
                 price = 10

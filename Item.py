@@ -14,8 +14,6 @@ class Item(object):
         self.model = model
         self.price = special['price'] if special and 'price' in special else None
         self.world = world
-        if special and 'price' in special and len(special.keys()) == 1:
-            self.special = None
 
 
     def copy(self, new_world=None):
