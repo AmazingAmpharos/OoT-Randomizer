@@ -41,10 +41,10 @@ class Setting_Widget(Setting_Info):
         if 'type' not in args_params: args_params['type'] = type
         if 'type' not in gui_params:  gui_params['type']  = type
 
-        args_params['choices'] = list(choices.values())
-        args_params['default'] = choices[default]
-        gui_params['options']  = choices
-        gui_params['default']  = default
+        args_params['choices'] = list(choices.keys())
+        args_params['default'] = default
+        gui_params['options']  = {v: k for k, v in choices.items()}
+        gui_params['default']  = choices[default]
 
         super().__init__(name, type, self.calc_bitwidth(choices), shared, args_params, gui_params)
 
@@ -59,13 +59,12 @@ class Setting_Widget(Setting_Info):
 class Checkbutton(Setting_Widget):
 
     def __init__(self, name, args_help, gui_text, gui_group=None,
-            gui_tooltip=None, gui_dependency=None, default='unchecked',
+            gui_tooltip=None, gui_dependency=None, default=False,
             shared=False):
 
-        type = bool
         choices = {
-                'checked':   True,
-                'unchecked': False,
+                True:  'checked',
+                False: 'unchecked',
                 }
         gui_params = {
                 'text':    gui_text,
@@ -223,13 +222,20 @@ setting_infos = [
                              Enabling this will change the seed.
                              ''',
             gui_dependency = lambda guivar: guivar['compress_rom'].get() != 'No ROM Output',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
-
-    Setting_Info('compress_rom', str, 2, False,
-        {
-            'default': 'True',
+    Setting_Widget(
+        name='compress_rom',
+        type=str,
+        default='True',
+        choices={
+            'True': 'Compressed [Stable]',
+            'False': 'Uncompressed [Crashes]',
+            'Patch': 'Patch File',
+            'None': 'No Output',
+        },
+        args_params={
             'help': '''\
                     Create a compressed version of the output ROM file.
                     True: Compresses. Improves stability. Will take longer to generate
@@ -238,18 +244,11 @@ setting_infos = [
                     None: No ROM Output. Creates spoiler log only
                     ''',
         },
-        {
+        gui_params={
             'text': 'Output Type',
             'group': 'rom_tab',
             'widget': 'Radiobutton',
-            'default': 'Compressed [Stable]',
             'horizontal': True,
-            'options': {
-                'Compressed [Stable]': 'True',
-                'Uncompressed [Crashes]': 'False',
-                'Patch File': 'Patch',
-                'No Output': 'None',
-            },
             'tooltip':'''\
                       The first time compressed generation will take a while,
                       but subsequent generations will be quick. It is highly
@@ -259,7 +258,9 @@ setting_infos = [
                       Patch files are used to send the patched data to other
                       people without sending the ROM file.
                       '''
-        }),
+        },
+        shared=True,
+    ),
     Checkbutton(
             name           = 'open_forest',
             args_help      = '''\
@@ -277,7 +278,7 @@ setting_infos = [
                              Slingshot are always available somewhere
                              in the forest.
                              ''',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
     Checkbutton(
@@ -313,11 +314,11 @@ setting_infos = [
             ),
     Combobox(
             name           = 'gerudo_fortress',
-            default        = 'Default Behavior',
+            default        = 'normal',
             choices        = {
-                'Default Behavior': 'normal',
-                'Rescue One Carpenter': 'fast',
-                'Start with Gerudo Card': 'open',
+                'normal': 'Default Behavior',
+                'fast':   'Rescue One Carpenter',
+                'open':   'Start with Gerudo Card',
                 },
             args_help      = '''\
                              Select how much of Gerudo Fortress is required. (default: %(default)s)
@@ -339,12 +340,12 @@ setting_infos = [
             ),
     Combobox(
             name           = 'bridge',
-            default        = 'All Medallions',
+            default        = 'medallions',
             choices        = {
-                'All Dungeons':         'dungeons',
-                'All Medallions':       'medallions',
-                'Vanilla Requirements': 'vanilla',
-                'Always Open':          'open',
+                'dungeons':   'All Dungeons',
+                'medallions': 'All Medallions',
+                'vanilla':    'Vanilla Requirements',
+                'open':       'Always Open',
                 },
             args_help      = '''\
                              Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
@@ -369,10 +370,10 @@ setting_infos = [
             ),
     Combobox(
             name           = 'logic_rules',
-            default        = 'Glitchless',
+            default        = 'glitchless',
             choices        = {
-                'Glitchless': 'glitchless',
-                'No Logic':   'none',
+                'glitchless': 'Glitchless',
+                'none':       'No Logic',
                 },
             args_help      = '''\
                              Sets the rules the logic uses to determine accessibility:
@@ -415,7 +416,7 @@ setting_infos = [
                              to hold the keys needed to reach them.
                              ''',
             gui_dependency = lambda guivar: guivar['logic_rules'].get() == 'Glitchless',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
     Checkbutton(
@@ -444,7 +445,7 @@ setting_infos = [
                              be bought until Bombchus have been
                              obtained.
                              ''',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
     Checkbutton(
@@ -552,7 +553,7 @@ setting_infos = [
                              All chest animations are fast. If disabled,
                              the animation time is slow for major items.
                              ''',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
     Checkbutton(
@@ -609,7 +610,7 @@ setting_infos = [
                              Disabling this will make the Kokiri Sword
                              always available at the start.
                              ''',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
     Checkbutton(
@@ -626,7 +627,7 @@ setting_infos = [
                              Impa, Saria, Malon, and Talon as well as the
                              Happy Mask sidequest.
                              ''',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
     Checkbutton(
@@ -642,7 +643,7 @@ setting_infos = [
                              randomized. One will be required before
                              songs can be played.
                              ''',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
     Checkbutton(
@@ -661,7 +662,7 @@ setting_infos = [
                              be shuffled but will be limited to the
                              locations that has songs in the original game.
                              ''',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
     Checkbutton(
@@ -683,12 +684,12 @@ setting_infos = [
             ),
     Combobox(
             name           = 'shuffle_scrubs',
-            default        = 'Off',
+            default        = 'off',
             choices        = {
-                'Off':                'off',
-                'On (Affordable)':    'low',
-                'On (Expensive)':     'regular',
-                'On (Random Prices)': 'random',
+                'off':     'Off',
+                'low':     'On (Affordable)',
+                'regular': 'On (Expensive)',
+                'random':  'On (Random Prices)',
                 },
             args_help      = '''\
                              Deku Scrub Salesmen are randomized:
@@ -726,15 +727,15 @@ setting_infos = [
             ),
     Combobox(
             name           = 'shopsanity',
-            default        = 'Off',
+            default        = 'off',
             choices        = {
-                'Off': 'off',
-                'Shuffled Shops (0 Items)': '0',
-                'Shuffled Shops (1 Items)': '1',
-                'Shuffled Shops (2 Items)': '2',
-                'Shuffled Shops (3 Items)': '3',
-                'Shuffled Shops (4 Items)': '4',
-                'Shuffled Shops (Random)': 'random',
+                'off':    'Off',
+                '0':      'Shuffled Shops (0 Items)',
+                '1':      'Shuffled Shops (1 Items)',
+                '2':      'Shuffled Shops (2 Items)',
+                '3':      'Shuffled Shops (3 Items)',
+                '4':      'Shuffled Shops (4 Items)',
+                'random': 'Shuffled Shops (Random)',
                 },
             args_help      = '''\
                              Shop contents are randomized. Non-shop items
@@ -776,12 +777,12 @@ setting_infos = [
             ),
     Combobox(
             name           = 'shuffle_mapcompass',
-            default        = 'Maps/Compasses: Dungeon Only',
+            default        = 'dungeon',
             choices        = {
-                'Maps/Compasses: Remove':       'remove',
-                'Maps/Compasses: Start With':   'startwith',
-                'Maps/Compasses: Dungeon Only': 'dungeon',
-                'Maps/Compasses: Anywhere':     'keysanity'
+                'remove':    'Maps/Compasses: Remove',
+                'startwith': 'Maps/Compasses: Start With',
+                'dungeon':   'Maps/Compasses: Dungeon Only',
+                'keysanity': 'Maps/Compasses: Anywhere'
                 },
             args_help      = '''\
                              Sets the Map and Compass placement rules
@@ -816,11 +817,11 @@ setting_infos = [
             ),
     Combobox(
             name           = 'shuffle_smallkeys',
-            default        = 'Small Keys: Dungeon Only',
+            default        = 'dungeon',
             choices        = {
-                'Small Keys: Remove (Keysy)':       'remove',
-                'Small Keys: Dungeon Only':         'dungeon',
-                'Small Keys: Anywhere (Keysanity)': 'keysanity'
+                'remove':    'Small Keys: Remove (Keysy)',
+                'dungeon':   'Small Keys: Dungeon Only',
+                'keysanity': 'Small Keys: Anywhere (Keysanity)'
                 },
             args_help      = '''\
                              Sets the Small Keys placement rules
@@ -851,11 +852,11 @@ setting_infos = [
             ),
     Combobox(
             name           = 'shuffle_bosskeys',
-            default        = 'Boss Keys: Dungeon Only',
+            default        = 'dungeon',
             choices        = {
-                'Boss Keys: Remove (Keysy)':       'remove',
-                'Boss Keys: Dungeon Only':         'dungeon',
-                'Boss Keys: Anywhere (Keysanity)': 'keysanity',
+                'remove':    'Boss Keys: Remove (Keysy)',
+                'dungeon':   'Boss Keys: Dungeon Only',
+                'keysanity': 'Boss Keys: Anywhere (Keysanity)',
                 },
             args_help      = '''\
                              Sets the Boss Keys placement rules
@@ -908,7 +909,7 @@ setting_infos = [
                            'Maps/Compasses: Start With': The dungeon information
                            is available immediately from the dungeon menu.
                              ''',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
     Checkbutton(
@@ -930,11 +931,11 @@ setting_infos = [
             ),
     Combobox(
             name           = 'tokensanity',
-            default        = 'Off',
+            default        = 'off',
             choices        = {
-                'Off':           'off',
-                'Dungeons Only': 'dungeons',
-                'All Tokens':    'all',
+                'off':      'Off',
+                'dungeons': 'Dungeons Only',
+                'all':      'All Tokens',
                 },
             args_help      = '''\
                              Gold Skulltula Tokens will be shuffled into the pool,
@@ -1155,18 +1156,18 @@ setting_infos = [
             ),
     Combobox(
             name           = 'logic_earliest_adult_trade',
-            default        = 'Earliest: Pocket Egg',
+            default        = 'pocket_egg',
             choices        = {
-                'Earliest: Pocket Egg':     'pocket_egg',
-                'Earliest: Pocket Cucco':   'pocket_cucco',
-                'Earliest: Cojiro':         'cojiro',
-                'Earliest: Odd Mushroom':   'odd_mushroom',
-                'Earliest: Poacher\'s Saw': 'poachers_saw',
-                'Earliest: Broken Sword':   'broken_sword',
-                'Earliest: Prescription':   'prescription',
-                'Earliest: Eyeball Frog':   'eyeball_frog',
-                'Earliest: Eyedrops':       'eyedrops',
-                'Earliest: Claim Check':    'claim_check',
+                'pocket_egg':   'Earliest: Pocket Egg',
+                'pocket_cucco': 'Earliest: Pocket Cucco',
+                'cojiro':       'Earliest: Cojiro',
+                'odd_mushroom': 'Earliest: Odd Mushroom',
+                'poachers_saw': "Earliest: Poacher's Saw",
+                'broken_sword': 'Earliest: Broken Sword',
+                'prescription': 'Earliest: Prescription',
+                'eyeball_frog': 'Earliest: Eyeball Frog',
+                'eyedrops':     'Earliest: Eyedrops',
+                'claim_check':  'Earliest: Claim Check',
                 },
             args_help      = '''\
                              Select the earliest item that can appear in the adult trade sequence:
@@ -1191,18 +1192,18 @@ setting_infos = [
             ),
     Combobox(
             name           = 'logic_latest_adult_trade',
-            default        = 'Latest: Claim Check',
+            default        = 'claim_check',
             choices        = {
-                'Latest: Pocket Egg':     'pocket_egg',
-                'Latest: Pocket Cucco':   'pocket_cucco',
-                'Latest: Cojiro':         'cojiro',
-                'Latest: Odd Mushroom':   'odd_mushroom',
-                'Latest: Poacher\'s Saw': 'poachers_saw',
-                'Latest: Broken Sword':   'broken_sword',
-                'Latest: Prescription':   'prescription',
-                'Latest: Eyeball Frog':   'eyeball_frog',
-                'Latest: Eyedrops':       'eyedrops',
-                'Latest: Claim Check':    'claim_check',
+                'pocket_egg':   'Latest: Pocket Egg',
+                'pocket_cucco': 'Latest: Pocket Cucco',
+                'cojiro':       'Latest: Cojiro',
+                'odd_mushroom': 'Latest: Odd Mushroom',
+                'poachers_saw': "Latest: Poacher's Saw",
+                'broken_sword': 'Latest: Broken Sword',
+                'prescription': 'Latest: Prescription',
+                'eyeball_frog': 'Latest: Eyeball Frog',
+                'eyedrops':     'Latest: Eyedrops',
+                'claim_check':  'Latest: Claim Check',
                 },
             args_help      = '''\
                              Select the latest item that can appear in the adult trade sequence:
@@ -1372,16 +1373,16 @@ setting_infos = [
                              as requiring Iron Boots.
                              ''',
             gui_dependency = lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Dungeon Only',
-            default        = 'checked',
+            default        = True,
             shared         = True,
             ),
     Combobox(
             name           = 'logic_lens',
-            default        = 'Required Everywhere',
+            default        = 'all',
             choices        = {
-                'Required Everywhere':          'all',
-                'Wasteland and Chest Minigame': 'chest-wasteland',
-                'Only Chest Minigame':          'chest',
+                'all':             'Required Everywhere',
+                'chest-wasteland': 'Wasteland and Chest Minigame',
+                'chest':           'Only Chest Minigame',
                 },
             args_help      = '''\
                              Choose what expects the Lens of Truth:
@@ -1452,12 +1453,12 @@ setting_infos = [
             ),
     Combobox(
             name           = 'hints',
-            default        = 'Hints; Need Stone of Agony',
+            default        = 'agony',
             choices        = {
-                'No Hints':                   'none',
-                'Hints; Need Mask of Truth':  'mask',
-                'Hints; Need Stone of Agony': 'agony',
-                'Hints; Need Nothing':        'always',
+                'none':   'No Hints',
+                'mask':   'Hints; Need Mask of Truth',
+                'agony':  'Hints; Need Stone of Agony',
+                'always': 'Hints; Need Nothing',
                 },
             args_help      = '''\
                              Choose how Gossip Stones behave
@@ -1487,12 +1488,12 @@ setting_infos = [
             ),
     Combobox(
             name           = 'hint_dist',
-            default        = 'Balanced',
+            default        = 'balanced',
             choices        = {
-                'Useless':     'useless',
-                'Balanced':    'balanced',
-                'Strong':      'strong',
-                'Very Strong': 'very_strong',
+                'useless':     'Useless',
+                'balanced':    'Balanced',
+                'strong':      'Strong',
+                'very_strong': 'Very Strong',
                 },
             args_help      = '''\
                              Choose how Gossip Stones hints are distributed
@@ -1516,11 +1517,11 @@ setting_infos = [
             ),
     Combobox(
             name           = 'text_shuffle',
-            default        = 'No Text Shuffled',
+            default        = 'none',
             choices        = {
-                'No Text Shuffled':               'none',
-                'Shuffled except Hints and Keys': 'except_hints',
-                'All Text Shuffled':              'complete',
+                'none':         'No Text Shuffled',
+                'except_hints': 'Shuffled except Hints and Keys',
+                'complete':     'All Text Shuffled',
                 },
             args_help      = '''\
                              Choose how to shuffle the game's messages.
@@ -1544,12 +1545,12 @@ setting_infos = [
             ),
     Combobox(
             name           = 'item_pool_value',
-            default        = 'Balanced',
+            default        = 'balanced',
             choices        = {
-                'Plentiful': 'plentiful',
-                'Balanced':  'balanced',
-                'Scarce':    'scarce',
-                'Minimal':   'minimal'
+                'plentiful': 'Plentiful',
+                'balanced':  'Balanced',
+                'scarce':    'Scarce',
+                'minimal':   'Minimal'
                 },
             args_help      = '''\
                              Change the item pool for an added challenge.
@@ -1579,13 +1580,13 @@ setting_infos = [
             ),
     Combobox(
             name           = 'damage_multiplier',
-            default        = 'Normal',
+            default        = 'normal',
             choices        = {
-                'Half':      'half',
-                'Normal':    'normal',
-                'Double':    'double',
-                'Quadruple': 'quadruple',
-                'OHKO':      'ohko',
+                'half':      'Half',
+                'normal':    'Normal',
+                'double':    'Double',
+                'quadruple': 'Quadruple',
+                'ohko':      'OHKO',
                 },
             args_help      = '''\
                              Change the amount of damage taken.
@@ -1606,10 +1607,10 @@ setting_infos = [
             ),
     Combobox(
             name           = 'default_targeting',
-            default        = 'Hold',
+            default        = 'hold',
             choices        = {
-                'Hold':   'hold',
-                'Switch': 'switch',
+                'hold':   'Hold',
+                'switch': 'Switch',
                 },
             args_help      = '''\
                              Choose what the default Z-targeting is.
@@ -1619,11 +1620,11 @@ setting_infos = [
             ),
     Combobox(
             name           = 'background_music',
-            default        = 'Normal',
+            default        = 'normal',
             choices        = {
-                'Normal':   'normal',
-                'No Music': 'off',
-                'Random':   'random',
+                'normal': 'Normal',
+                'off':    'No Music',
+                'random': 'Random',
                 },
             args_help      = '''\
                              Sets the background music behavior
