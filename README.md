@@ -34,50 +34,8 @@ The particular dungeons where these can be found, as well as other relevant dung
 
 As a service to the player in this very long game, many cutscenes have been greatly shortened, and text is as often as possible either omitted or sped up. I'm sure someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
 
-# Quirks to Know
-
-While all the details of gameplay can't be detailed here, I want to inform you of a few non-obvious game sequences that are likely to get you stuck and one little
-glitch we can do nothing about.
-
--The condition to open the Door of Time is merely playing the Song of Time; the Spiritual Stones are not required. If you enter the Temple of Time via the Prelude
-of Light, playing the Song of Time will create a glitchy cutscene and will not open the door (but you're safe to exit and re-enter and open it properly).
--The condition to spawn the Ocarina of Time and learn that song is the three Spiritual Stones. The condition to learn a song from Sheik in the Temple of Time is
-possessing the Forest Medallion. The condition to learn a song from Sheik in Kakariko is possessing Forest, Fire, and Water Medallions.
--The running man in Hyrule Field only spawns if you have all three Spiritual Stones.
--Skull Kid will only buy the Skull Mask if you have played Saria's Song for him.
--The center of Death Mountain Crater as an adult can be reached from the summit as an adult by going around to the left with Hover Boots or by jumping down to the right
-and using a combination of the Longshot and Scarecrow's Song. This allows access to Sheik and the Fire Temple without a Bomb Bag.
--A sword must be equipped to play the fishing minigame. A Slingshot is not required for child target shooting, but the adult does need the Bow to receive the true prize.
--Other than the fishing minigame, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.
--In the randomizer, possessing the Bomb Bag is the requirement to get bomb drops, buy bombs or Bombchus, or play Bombchu Bowling. If the setting "Bombchus Are Considered in
-Logic" is used, finding any pack of Bombchus allows purchasing Bombchus and playing Bombchu Bowling while possessing a Bomb Bag allows the purchase of bombs.
--Only the Hookshot, not the Longshot, is needed to do everything on the rooftops of Kakariko.
--Grottos can be opened with either Bombs or the Hammer.
--The boulder maze in Goron City can be solved with the Hammer or partially with Bombs as is obvious, but less obvious is that it can be fully solved with Silver Gauntlets.
--The large colored blocks only encountered by the adult require Goron Bracelet to push.
--In a few places, out of sight Song of Time blocks can be summoned. The lava room in Gerudo Training Grounds, the beginning of Ganon's Castle Shadow Trial, and the last
-hallway with a caged Goron in Fire Temple are the main cases.
--Adult Link can fully clear Dodongo's Cavern. He can even skip the first section by virtue of being tall.
--In the Forest Temple, you can reach the room with the Floormaster (vanilla) or Redead (MQ) early by using Hover Boots in the block push room.
--In the Fire Temple, you can reach the Boss Key door from the beginning with Hover Boots.
--In the Water Temple, you can from the start with the water down jump to the middle platform level, very carefully aim the Hookshot to the target above, and pull yourself
-to the highest level of the central platform. Then a very well spaced rolling jump can reach the water changing station to raise the water to the highest level. If you
-make poor key choices in Water Temple, this may be what you need to do to untangle the situation.
--In the Water Temple, Hover Boots can be used to reach the vanilla Boss Key chest without going through the room that requires Bombs and block pushing. Hover Boots can
-also be used in this temple to avoid the Longshot requirement for the middle level chest that requires the Bow.
--In the Water Temple, Farore's Wind can be placed in the central pillar and then the water can be raised to the highest level in order to reach the Gold Skulltula without
-the Longshot.
--In the Shadow Temple, you can avoid the need for the Longshot in the room with the invisible spikes by backflipping onto the chest for extra height.
--In the Shadow Temple, you can Hookshot the ladder to avoid pushing the block to get on the boat.
--In the Shadow Temple, a combination of the scarecrow and the Longshot can be used to reach Bongo Bongo without needing the Bow.
--In the Spirit Temple, the child can obtain the vanilla Map chest with Deku Sticks. No fire magic is needed.
--In the Spirit Temple, you can collect the silver rupees without Hover Boots by jumping directly onto the rolling boulder or with a jump slash.
--In the Spirit Temple, you can use the Longshot to cross from the hand with the Mirror Shield in vanilla to the other hand.
--In Ganon's Castle Spirit Trial, the web can be burned with a precise shot through the torch by a normal arrow. Fire Arrows are not required.
--Like Likes now only eat shields and not tunics.
--Several Gold Skulltula Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).
--This is not a randomizer exclusive mechanic, but getting the ability to summon Pierre the Scarecrow requires playing an eight note song for
-Bonooru the Scarecrow as a child first and then the exact same song for him again as an adult.
+# Getting Stuck
+With a game as big as _Ocarina of Time_ it's quite easy for new rando players to get stuck in certain situations with no apparent path to progressing. Before reporting an issue, please make sure to check out our new FAQ section [found here](wiki/FAQ---Broken-Seed).
 
 # Known issues
 
