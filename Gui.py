@@ -17,7 +17,7 @@ from Main import main, from_patch_file
 from Utils import is_bundled, local_path, default_output_path, open_file, check_version
 from Patches import get_tunic_color_options, get_navi_color_options
 from Settings import Settings
-from SettingsList import setting_infos, Setting_Info
+from SettingsList import setting_infos
 from version import __version__ as ESVersion
 import webbrowser
 import WorldFile
@@ -425,13 +425,29 @@ def guiMain(settings=None):
 
     def add_settings_preset():
         default_choices = get_settings_preset_choices()
-        name = guivars['settings_preset_name'].get()
+        name = guivars['add_settings_preset'].get()
+        if not name:
+            messagebox.showerror("Invalid Name", "You must give the custom preset a name!")
+            return
         if name in default_choices:
-            messagebox.showerror("Duplicate Name", "You cannon name a custom pre-set with the same name as a built-in preset. Please choose another name.")
+            messagebox.showerror("Duplicate Name", "You cannon name a custom preset with the same name as a built-in preset. Please choose another name.")
             return
         settings_base64 = get_settings_base64_string()
         guivars['settings_presets'][name] = settings_base64
-        guivars['settings_preset_name'].set('')
+        guivars['add_settings_preset'].set('')
+        update_preset_dropdown()
+
+    def remove_setting_preset():
+        name = guivars['remove_settings_preset'].get()
+        if name not in guivars['settings_presets']:
+            return
+        confirm = messagebox.askquestion('Remove Setting Preset', 'Are you sure you want to remove the setting preset "%s"?' % name)
+        if confirm != 'yes':
+            return
+        guivars['settings_presets'].pop(name, None)
+        if guivars['settings_preset'].get() == name:
+            guivars['settings_preset'].set('---')
+        guivars['remove_settings_preset'].set('---')
         update_preset_dropdown()
 
     def update_preset_dropdown(settings=None):
@@ -439,6 +455,7 @@ def guiMain(settings=None):
             guivars['settings_presets'] = settings.__dict__['settings_presets']
         settings_presets = get_settings_preset_choices(guivars['settings_presets'])
         widgets['settings_preset']['values'] = list(settings_presets)
+        widgets['remove_settings_preset']['values'] = (['---'] + list(guivars['settings_presets']))
 
     # Settings Presets
     widgets['settings_presets'] = LabelFrame(frames['rom_tab'], text='Settings Presets')
@@ -458,12 +475,23 @@ def guiMain(settings=None):
     selectPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
 
     addPresetFrame = Frame(widgets['settings_presets'])
-    guivars['settings_preset_name'] = StringVar()
-    widgets['settings_preset_name'] = Entry(addPresetFrame, textvariable=guivars['settings_preset_name'], width=35)
+    guivars['add_settings_preset'] = StringVar()
+    widgets['add_settings_preset'] = Entry(addPresetFrame, textvariable=guivars['add_settings_preset'], width=35)
     addPresetButton = Button(addPresetFrame, text='Add/Update Preset', command=add_settings_preset)
-    widgets['settings_preset_name'].pack(side=LEFT, anchor=W, padx=5)
+    widgets['add_settings_preset'].pack(side=LEFT, anchor=W, padx=5)
+    ToolTips.register(widgets['add_settings_preset'], 'Preset name to add or update.')
     addPresetButton.pack(side=LEFT, anchor=W, padx=5)
     addPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
+
+    removePresetFrame = Frame(widgets['settings_presets'])
+    guivars['remove_settings_preset'] = StringVar(value=next(iter(settings_presets.keys())))
+    widgets['remove_settings_preset'] = ttk.Combobox(removePresetFrame, textvariable=guivars['remove_settings_preset'], values=(['---'] + list(guivars['settings_presets'])), state='readonly', width=35)
+    widgets['remove_settings_preset'].pack(side=BOTTOM, anchor=W)
+    ToolTips.register(widgets['remove_settings_preset'], 'Select a setting preset to remove.')
+    removePresetButton = Button(removePresetFrame, text='Remove Preset', command=remove_setting_preset)
+    widgets['remove_settings_preset'].pack(side=LEFT, padx=(5, 0))
+    removePresetButton.pack(side=LEFT, anchor=W, padx=5)
+    removePresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
 
     widgets['settings_presets'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 

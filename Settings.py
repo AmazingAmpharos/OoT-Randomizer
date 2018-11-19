@@ -5,8 +5,6 @@ import re
 import hashlib
 import math
 import sys
-import base64
-import json
 
 from version import __version__
 from Utils import random_choices
@@ -44,6 +42,7 @@ def text_to_bit_string(text):
         for b in range(5):
             bits += [ (index >> b) & 1 ]
     return bits
+
 
 # holds the particular choices for a run's settings
 class Settings():
