@@ -35,7 +35,7 @@ The particular dungeons where these can be found, as well as other relevant dung
 As a service to the player in this very long game, many cutscenes have been greatly shortened, and text is as often as possible either omitted or sped up. I'm sure someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
 
 # Getting Stuck
-With a game as big as _Ocarina of Time_ it's quite easy for new rando players to get stuck in certain situations with no apparent path to progressing. Before reporting an issue, please make sure to check out our new FAQ section [found here](wiki/FAQ---Broken-Seed).
+With a game as big as _Ocarina of Time_ it's quite easy for new rando players to get stuck in certain situations with no apparent path to progressing. Before reporting an issue, please make sure to check out our new FAQ section [found here](../../wiki/FAQ---Broken-Seed).
 
 # Known issues
 
