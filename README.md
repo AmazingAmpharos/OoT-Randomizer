@@ -27,83 +27,16 @@ This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the loc
 Proper logic is used to ensure every seed is possible to complete without the use of glitches and will be safe from the possibility of softlocks
 with any possible usage of keys in dungeons.
 
-The items that randomize currently are all items within chests including those in grottos, items given as rewards by NPCs including from minigames and
-Deku Scrub Salesmen, the items given by freestanding Pieces of Heart, Heart Containers, and Keys, and the items obtained when getting the Bottle and the
-Fire Arrows at Lake Hylia or the Ocarina of Time from the Castle Town moat. All dungeons will always have the same number of Maps, Compasses, Small Keys,
-and Boss Keys they had in the original game, but which chests within those dungeons have those things is random. The item pool will contain a Biggoron Sword
-that will not interfere with Medigoron's sale of the Giant's Knife (which is always vanilla), and a randomly selected adult trading quest item other than the
-Odd Potion will be somewhere in the item pool.
+Each boss in the eight main dungeons will drop a random Spiritual Stone or Medallion.
 
-Certain types of items are now "progressive", meaning that no matter what order the player encounters these items they will function as a series of upgrades.
-The following item types will be progressive chains:
+The pedestal in which the Spiritual Stones rest in the Temple of Time has hint text pointing to the locations of the Spiritual Stones and Medallions.
+This information and some other relevant dungeon based info can be seen in the pause menu by holding the "A" button on the c-item menu.
 
--Hookshot to Longshot
--Bomb Bag to Big Bomb Bag to Biggest Bomb Bag
--Goron Bracelet to Silver Gauntlets to Gold Gauntlets
--Slingshot to Big Bullet Bag to Biggest Bullet Bag
--Bow to Big Quiver to Biggest Quiver
--Silver Scale to Gold Scale
--Adult Wallet to Giant's Wallet
--Deku Stick Capacity Upgrades
--Deku Nut Capacity Upgrades
--Magic Meter to Double Magic
--Fairy Ocarina to Ocarina of Time
+As a service to the player in this very long game, many cutscenes have been greatly shortened or removed and text is as often as possible either omitted or sped up. I'm sure someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
 
-To be more clear about which NPC items are shuffled, it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart
-or inventory items. The only exception is that even though in vanilla the reward for 40 Gold Skulltula Tokens was just 10 Bombchus that is still a randomized reward
-in randomizer (but the 200 rupees for all 100 Gold Skulltula Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy
-to the player, the Ocarina Memory Game in the Lost Woods will start on the final round as that minigame was very long originally, the three day wait on the Claim Check
-is removed, Bombchu Bowling will have a fixed sequence of prizes that is of maximum convenience to the player, Dampe's Gravedigging Tour will always be won on the first
-dig, and the fishing minigame is made much simpler (8 lb fish for child now, 10 lb for adult). Additionally, any NPC who gives a trading quest item either for the child
-or for the adult other than Anju's initial gift as an adult does not have a randomized reward.
-
-A special note is needed for the six Great Fairy Fountains scattered across Hyrule. All six of these fountains now give random item rewards, and the magic and life
-upgrades can now be found as normal items scattered around the world. Happy hunting!
-
-The Ocarina songs are shuffled in a pool amongst themselves, and each learn spot will still have the original conditions it has always had. These conditions may not
-have all been obvious, but here are some high points. Saria will teach her song after completing the events in the Castle Courtyard. The warp songs can mostly only
-be learned by an adult, but the location for Requiem of Spirit is available for even a child if the Desert Colossus can be reached. The location for the Prelude of
-Light requires the Forest Medallion, and the location for the Nocturne of Shadow requires the Forest Medallion, Fire Medallion, and Water Medallions. A setting
-exists to shuffle all songs into the general item pool instead of limiting them to song specific slots.
-
-Speaking of Medallions, each boss in the eight main dungeons will drop a random Spiritual Stone or Medallion, and instead of the Light Medallion being granted by the
-now removed "becoming an adult" cutscene, the player will start every seed with a random Spiritual Stone or Medallion. The pedestal in which the Spiritual Stones
-rest in the Temple of Time has hint text pointing to the locations of the Spiritual Stones and Medallions. A child will be able to read hints for the Spiritual
-Stones while an adult will be able to read hints for the Medallions. This information and some other relevant dungeon based info can be seen in the pause menu by
-holding the "A" button on the c-item menu.
-
-To be very clear on this point, while the rewards for up to 50 Gold Skulltula Tokens are randomized, the tokens themselves are not.
-
-As a service to the player in this very long game, many cutscenes have been greatly shortened or removed and text is as often as possible either omitted or sped up.
-We have been as thorough as our exploration of the game and various technical limitations will allow to make the parts of the game where you're watching and reading
-as short as possible to make as much of your time with this randomizer as possible actual gameplay. I'm sure someone somewhere will miss the owl's interjections; to
-that person, I'm sorry I guess?
-
-A few bugs or other undesirable behaviors in the original game have been fixed. Of note, obtaining the Poacher's Saw will no longer prevent the player from obtaining
-the reward in the Deku Theater for showing the Mask of Truth, and becoming an adult will not automatically equip the child with the Kokiri Sword. Sheik will no longer
-prevent the player from returning to childhood before obtaining the Forest Medallion. Princess Ruto will never disappear from Jabu Jabu's Belly, and the condition for
-the Castle Courtyard being sealed off is now completing the events within as opposed to seeing the Ocarina of Time be thrown into the moat.
-
-One small detail that is important to know is that the locked door in the Fire Temple leading to the section with the Boss Key Chest is removed. This was necessary
-due to the original design of the Fire Temple assuming that the player could not possibly have the Hammer before unlocking the doors leading into the depths of the
-dungeon. This is obviously not true in randomizer, and of all possible solutions to this problem, this seemed the least disruptive. A full clear of the Fire Temple will
-simply result in the player having one extra Small Key. Certain settings configurations will disable this behavior.
-
-Two similar small details apply to the Master Quest versions of dungeons. In Water Temple MQ, a locked door leading to a Gold Skulltula in the northern basement was
-glitched such that it would not appear in the Gamecube release of Master Quest but was fixed in OoT3D's version of Master Quest. In the randomizer, the locked door
-works like an ordinary locked door similar to OoT3D. In Spirit Temple MQ, there is a particular chest that requires hitting a switch in a hole that the adult will
-later push a silver block into. The randomizer does some wizardry under the hood to ensure that the block will never be in the way for the child.
-
-To be clear about the logic rules of what can be where, the randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent
+The randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent
 the use of glitches for those players who enjoy that sort of thing though we offer no guarantees that all glitches will have identical behavior to the original game.
-Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or Scarecrow's Song that
-may not have been important options in the original game. The Lens of Truth is guaranteed available and useable before completion of the Treasure Chest Game is required
-or before walking through any invisible objects or opening any invisible chests is required with the exception of the one invisible wall that is required to enter
-the Bottom of the Well as the original game required passing that invisible wall to reach the Lens of Truth.
-
-One last detail is that the menu is now more like the Majora's Mask menu in that the player can move the cursor through empty spaces. This fixes a major problem from
-the original game in that certain combinations of items would create menu shapes that would be impossible to fully menu through. As of version 3.0, this fix extends
-to the "equipment" subscreen as well.
+Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or Scarecrow's Song that may not have been important options in the original game.
 
 # Quirks to Know
 
