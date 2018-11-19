@@ -259,7 +259,7 @@ setting_infos = [
                       people without sending the ROM file.
                       '''
         },
-        shared=True,
+        shared=False,
     ),
     Checkbutton(
             name           = 'open_forest',
@@ -354,7 +354,7 @@ setting_infos = [
                              All Dungeons:  Collect all spiritual stones and all medallions to create the bridge.
                              Open:          The bridge will spawn without an item requirement.
                              ''',
-            gui_text       = 'Rainbox Bridge Requirement',
+            gui_text       = 'Rainbow Bridge Requirement',
             gui_group      = 'open',
             gui_tooltip    = '''\
                              'All Dungeons': All Medallions and Stones
@@ -437,7 +437,7 @@ setting_infos = [
                              how many you have.
         
                              Bombchus can be purchased for 60/99/180
-                             rupees once they are been found.
+                             rupees once they have been found.
         
                              Bombchu Bowling opens with Bombchus.
                              Bombchus are available at Kokiri Shop
@@ -459,7 +459,7 @@ setting_infos = [
             gui_tooltip    = '''\
                              Dungeons have exactly one major
                              item. This naturally makes each
-                             dungeon similar in value instaed
+                             dungeon similar in value instead
                              of valued based on chest count.
         
                              Spirit Temple Colossus hands count
