@@ -2,7 +2,7 @@ from ItemList import item_table
 
 class Item(object):
 
-    def __init__(self, name='', advancement=False, priority=False, type=None, index=None, object=None, model=None, special=None):
+    def __init__(self, name='', advancement=False, priority=False, type=None, index=None, object=None, model=None, special=None, world=None):
         self.name = name
         self.advancement = advancement
         self.priority = priority
@@ -12,8 +12,8 @@ class Item(object):
         self.location = None
         self.object = object
         self.model = model
-        self.price = None
-        self.world = None
+        self.price = special['price'] if special and 'price' in special else None
+        self.world = world
 
 
     def copy(self, new_world=None):

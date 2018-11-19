@@ -12,7 +12,7 @@ from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonTe
 from Utils import data_path, default_output_path, random_choices
 from Item import ItemFactory
 from Messages import *
-from OcarinaSongs import Song, str_to_song, replace_songs
+from OcarinaSongs import Song, replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
 
@@ -1211,6 +1211,7 @@ def patch_rom(world, rom):
         # song of time
         rom.write_int32(0xDB532C, 0x24050003)
 
+
     # Set damage multiplier
     if world.damage_multiplier == 'half':
         rom.write_int32(0xAE808C, 0x00108043)
@@ -1384,23 +1385,51 @@ def patch_rom(world, rom):
         rom.write_int32(0xDF7CB0,
             0xA44F0EF0)  # sh t7, 0xef0(v0)
     else:
+        # Get Deku Scrub Locations
+        scrub_locations = [location for location in world.get_locations() if 'Deku Scrub' in location.name]
+        scrub_dictionary = {}
+        for location in scrub_locations:
+            if location.default not in scrub_dictionary:
+                scrub_dictionary[location.default] = []
+            scrub_dictionary[location.default].append(location)
+
+        # Default Deku Scrub Prices
+        scrub_items = [
+            (0x30, 20), # Deku Nuts
+            (0x31, 15), # Deku Sticks
+            (0x3E, 10), # Piece of Heart
+            (0x33, 40), # Deku Seeds
+            (0x34, 50), # Deku Shield
+            (0x37, 40), # Bombs
+            (0x38, 00), # Arrows (unused)
+            (0x39, 40), # Red Potion
+            (0x3A, 40), # Green Potion
+            (0x77, 40), # Deku Stick Upgrade
+            (0x79, 40), # Deku Nut Upgrade
+        ]
+
         # Rebuild Deku Salescrub Item Table
-        scrub_items = [0x30, 0x31, 0x3E, 0x33, 0x34, 0x37, 0x38, 0x39, 0x3A, 0x77, 0x79]
         rom.seek_address(0xDF8684)
-        for scrub_item in scrub_items:
+        for (scrub_item, price) in scrub_items:
             # Price
             if world.shuffle_scrubs == 'low':
-                rom.write_int16(None, 10)
+                price = 10
+                rom.write_int16(None, price)
             elif world.shuffle_scrubs == 'random':
                 # this is a random value between 0-99
                 # average value is ~33 rupees
-                rom.write_int16(None, int(random.betavariate(1, 2) * 99))
+                price = int(random.betavariate(1, 2) * 99)
+                rom.write_int16(None, price)
             else: # leave default price
                 rom.read_int16(None)
             rom.write_int16(None, 1)          # Count
             rom.write_int32(None, scrub_item) # Item
             rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func
             rom.write_int32(None, 0x80A75354) # Buy_Func
+            if scrub_item in scrub_dictionary:
+                for location in scrub_dictionary[scrub_item]:
+                    location.price = price
+                    location.item.price = price
 
         # update actor IDs
         set_deku_salesman_data(rom)
@@ -1528,17 +1557,15 @@ def patch_rom(world, rom):
     #        f.write("\t0x%04X: \"%s\",\n" % (m.id, m.get_python_string()))
     #     f.write('}\n')
 
-
-    scarecrow_song = None
     if world.free_scarecrow:
-        scarecrow_song = str_to_song(world.scarecrow_song) #verified valid string in Main.py
-
-        write_bits_to_save(0x0EE6, 0x10)     # Played song as adult
-        write_byte_to_save(0x12C5, 0x01)    # Song is remembered
-        write_bytes_to_save(0x12C6, scarecrow_song.playback_data[:(16*8)], lambda v: v != 0)
+        # Played song as adult
+        write_bits_to_save(0x0EE6, 0x10)
+    else:
+        # revert song skip
+        rom.write_int32s(0xEF4f98, [0x950804C6, 0x2401000B])
 
     if world.ocarina_songs:
-        replace_songs(rom, scarecrow_song)
+        replace_songs(rom)
 
     # actually write the save table to rom
     write_save_table(rom)

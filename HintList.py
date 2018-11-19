@@ -19,11 +19,7 @@ class Hint(object):
 
 
 def getHint(name, clearer_hint=False):
-    hint = name
-    if name not in hintTable:
-        hint = 'KeyError'
-
-    textOptions, clearText, type = hintTable[hint]
+    textOptions, clearText, type = hintTable[name]
     if clearer_hint:
         if clearText == None:
             return Hint(name, textOptions, type, 0)
@@ -73,8 +69,6 @@ hintTable = {
     'Light Arrows':                                          (["the shining shot", "the luminous launcher", "Ganondorf's bane", "the lighting bolts"], "the Light Arrows", 'item'),
     'Lens of Truth':                                         (["a lie detector", "a ghost tracker", "true sight", "a detective's tool"], "the Lens of Truth", 'item'),
     'Ocarina':                                               (["a flute", "a music maker"], "an Ocarina", 'item'),
-    'Fairy Ocarina':                                         (["a brown flute", "a forest instrument"], "the Fairy Ocarina", 'item'),
-    'Ocarina of Time':                                       (["a blue flute", "a royal instrument"], "the Ocarina of Time", 'item'),
     'Goron Tunic':                                           (["ruby robes", "fireproof fabric", "cooking clothes"], "a Goron Tunic", 'item'),
     'Zora Tunic':                                            (["a sapphire suit", "scuba gear", "a swimsuit"], "a Zora Tunic", 'item'),
     'Epona':                                                 (["a horse", "a four legged friend"], "Epona", 'item'),
@@ -160,10 +154,10 @@ hintTable = {
     '30 Gold Skulltula Reward':                              ("slaying #30 Gold Skulltulas# reveals", None, 'alwaysLocation'),
     '40 Gold Skulltula Reward':                              ("slaying #40 Gold Skulltulas# reveals", None, 'alwaysLocation'),
     '50 Gold Skulltula Reward':                              ("slaying #50 Gold Skulltulas# reveals", None, 'alwaysLocation'),
-    'Ocarina of Time':                                       ("They say the #treasure thrown by Princess Zelda# is", None, 'alwaysLocation'),
+    'Ocarina of Time':                                       ("the #treasure thrown by Princess Zelda# is", None, 'alwaysLocation'),
     'Song from Ocarina of Time':                             ("the #Ocarina of Time# teaches", None, 'alwaysLocation'),
     'Biggoron':                                              ("#Biggoron# crafts", None, 'alwaysLocation'),
-    'Frog Ocarina Game':                                     (["The #Frogs of Zora River# hold", "the #musical amphibians# have found"], None, 'alwaysLocation'),
+    'Frog Ocarina Game':                                     (["the #Frogs of Zora River# hold", "the #musical amphibians# have found"], None, 'alwaysLocation'),
     'Child Fishing':                                         ("#fishing in youth# bestows", None, 'location'),
     'Adult Fishing':                                         ("#fishing in maturity# bestows", None, 'location'),
     'Treasure Chest Game':                                   (["#gambling# grants", "there is a #1/32 chance# to win"], "the #treasure chest game# grants", 'location'),

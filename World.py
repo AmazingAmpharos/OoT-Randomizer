@@ -11,7 +11,7 @@ import logging
 import copy
 import io
 import json
-
+import random
 
 class World(object):
 
@@ -242,6 +242,8 @@ class World(object):
         if location.can_fill(self.state, item, False):
             location.item = item
             item.location = location
+            item.price = location.price if location.price is not None else item.price
+            location.price = item.price
 
             logging.getLogger('').debug('Placed %s [World %d] at %s [World %d]', item, item.world.id if hasattr(item, 'world') else -1, location, location.world.id if hasattr(location, 'world') else -1)
         else:

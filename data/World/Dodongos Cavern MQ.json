@@ -49,7 +49,8 @@
         },
         "exits": {
             "Dodongos Cavern Boss Area": "has_explosives",
-            "Dodongos Gossip Stone": "True"
+            "Dodongos Gossip Stone": "
+                hints != 'mask' or has_explosives or Progressive_Strength_Upgrade"
         }
     },
     {
