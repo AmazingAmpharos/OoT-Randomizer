@@ -16,7 +16,7 @@ from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress,
 from Main import main, from_patch_file
 from Utils import is_bundled, local_path, default_output_path, open_file, check_version
 from Patches import get_tunic_color_options, get_navi_color_options
-from Settings import Settings, get_settings_preset_choices, get_settings_base64_string
+from Settings import Settings
 from SettingsList import setting_infos, Setting_Info
 from version import __version__ as ESVersion
 import webbrowser
@@ -80,6 +80,7 @@ def guivars_to_settings(guivars):
         result['seed'] = None
     if result['count'] == 1:
         result['count'] = None
+    result['settings_presets'] = guivars['settings_presets']
 
     return Settings(result)
 
@@ -252,8 +253,8 @@ def guiMain(settings=None):
     widgets['all_logic_tricks'] = Checkbutton(frames['tricks'], text="Enable All Tricks", variable=guivars['all_logic_tricks'], justify=LEFT, wraplength=190, command=update_logic_tricks)
     widgets['all_logic_tricks'].pack(expand=False, anchor=W)
 
-    def build_guivar_from_setting_info(info, pack=True):
-        if info.gui_params:
+    for info in setting_infos:
+        if info.gui_params and 'group' in info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
                 # determine the initial value of the checkbox
                 default_value = 1 if info.gui_params['default'] == "checked" else 0
@@ -261,8 +262,7 @@ def guiMain(settings=None):
                 guivars[info.name] = IntVar(value=default_value)
                 # create the checkbox
                 widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
-                if pack:
-                    widgets[info.name].pack(expand=False, anchor=W)
+                widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
                 # create the variable to store the user's decision
                 guivars[info.name] = StringVar(value=info.gui_params['default'])
@@ -279,8 +279,7 @@ def guiMain(settings=None):
                     label = Label(widgets[info.name], text=info.gui_params['text'])
                     label.pack(side=LEFT, anchor=W, padx=5)
                 # pack the frame
-                if pack:
-                    widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Radiobutton':
                 # create the variable to store the user's decision
                 guivars[info.name] = StringVar(value=info.gui_params['default'])
@@ -299,8 +298,7 @@ def guiMain(settings=None):
                     radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=190, indicatoron=False, command=show_settings)
                     radio_button.pack(expand=True, side=side, anchor=anchor)
                 # pack the frame
-                if pack:
-                    widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Scale':
                 # create the variable to store the user's decision
                 guivars[info.name] = IntVar(value=info.gui_params['default'])
@@ -317,8 +315,7 @@ def guiMain(settings=None):
                     label = Label(widgets[info.name], text=info.gui_params['text'])
                     label.pack(side=LEFT, anchor=W, padx=5)
                 # pack the frame
-                if pack:
-                    widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Entry':
                 # create the variable to store the user's decision
                 guivars[info.name] = StringVar(value=info.gui_params['default'])
@@ -335,15 +332,11 @@ def guiMain(settings=None):
                     label = Label(widgets[info.name], text=info.gui_params['text'])
                     label.pack(side=LEFT, anchor=W, padx=5)
                 # pack the frame
-                if pack:
-                    widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
 
             if 'tooltip' in info.gui_params:
                 ToolTips.register(widgets[info.name], info.gui_params['tooltip'])
 
-    for info in setting_infos:
-        if info.gui_params and 'group' in info.gui_params:
-            build_guivar_from_setting_info(info)
 
     # pack the hierarchy
 
@@ -403,8 +396,17 @@ def guiMain(settings=None):
 
     widgets['multiworld'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
-    def import_setting_preset(event=None):
-        presets = get_settings_preset_choices()
+    # Settings Presets Functions
+    def get_settings_preset_choices(custom_presets=None):
+        presets = {
+            '---': '',
+            'Accessible Weekly 2018-10-27': 'eyJ3b3JsZF9jb3VudCI6ICIxIiwgImNyZWF0ZV9zcG9pbGVyIjogMSwgIm9wZW5fZm9yZXN0IjogMSwgIm9wZW5fa2FrYXJpa28iOiAxLCAib3Blbl9kb29yX29mX3RpbWUiOiAxLCAiZ2VydWRvX2ZvcnRyZXNzIjogIkRlZmF1bHQgQmVoYXZpb3IiLCAiYnJpZGdlIjogIkFsbCBNZWRhbGxpb25zIiwgImxvZ2ljX3J1bGVzIjogIkdsaXRjaGxlc3MiLCAiYWxsX3JlYWNoYWJsZSI6IDEsICJib21iY2h1c19pbl9sb2dpYyI6IDAsICJvbmVfaXRlbV9wZXJfZHVuZ2VvbiI6IDAsICJ0cmlhbHNfcmFuZG9tIjogMCwgInRyaWFscyI6IDAsICJub19lc2NhcGVfc2VxdWVuY2UiOiAxLCAibm9fZ3VhcmRfc3RlYWx0aCI6IDAsICJub19lcG9uYV9yYWNlIjogMSwgImZhc3RfY2hlc3RzIjogMSwgImJpZ19wb2VfY291bnRfcmFuZG9tIjogMCwgImJpZ19wb2VfY291bnQiOiAxLCAiZnJlZV9zY2FyZWNyb3ciOiAwLCAic2h1ZmZsZV9rb2tpcmlfc3dvcmQiOiAxLCAic2h1ZmZsZV93ZWlyZF9lZ2ciOiAwLCAic2h1ZmZsZV9vY2FyaW5hcyI6IDAsICJzaHVmZmxlX3NvbmdfaXRlbXMiOiAwLCAic2h1ZmZsZV9nZXJ1ZG9fY2FyZCI6IDAsICJzaHVmZmxlX3NjcnVicyI6ICJPZmYiLCAic2hvcHNhbml0eSI6ICJPZmYiLCAic2h1ZmZsZV9tYXBjb21wYXNzIjogIk1hcHMvQ29tcGFzc2VzOiBTdGFydCBXaXRoIiwgInNodWZmbGVfYm9zc2tleXMiOiAiQm9zcyBLZXlzOiBEdW5nZW9uIE9ubHkiLCAiZW5oYW5jZV9tYXBfY29tcGFzcyI6IDAsICJ1bmxvY2tlZF9nYW5vbmRvcmYiOiAxLCAidG9rZW5zYW5pdHkiOiAiT2ZmIiwgIm1xX2R1bmdlb25zX3JhbmRvbSI6IDAsICJtcV9kdW5nZW9ucyI6IDAsICJsb2dpY19za3VsbHR1bGFzIjogNTAsICJsb2dpY19ub19uaWdodF90b2tlbnNfd2l0aG91dF9zdW5zX3NvbmciOiAwLCAibG9naWNfbm9fYmlnX3BvZXMiOiAwLCAibG9naWNfbm9fY2hpbGRfZmlzaGluZyI6IDAsICJsb2dpY19ub19hZHVsdF9maXNoaW5nIjogMCwgImxvZ2ljX25vX3RyYWRlX3NrdWxsX21hc2siOiAwLCAibG9naWNfbm9fdHJhZGVfbWFza19vZl90cnV0aCI6IDEsICJsb2dpY19ub18xNTAwX2FyY2hlcnkiOiAwLCAibG9naWNfbm9fbWVtb3J5X2dhbWUiOiAwLCAibG9naWNfbm9fc2Vjb25kX2RhbXBlX3JhY2UiOiAwLCAibG9naWNfbm9fdHJhZGVfYmlnZ29yb24iOiAwLCAibG9naWNfZWFybGllc3RfYWR1bHRfdHJhZGUiOiAiRWFybGllc3Q6IFByZXNjcmlwdGlvbiIsICJsb2dpY19sYXRlc3RfYWR1bHRfdHJhZGUiOiAiTGF0ZXN0OiBDbGFpbSBDaGVjayIsICJsb2dpY190cmlja3MiOiAwLCAibG9naWNfbWFuX29uX3Jvb2YiOiAwLCAibG9naWNfY2hpbGRfZGVhZGhhbmQiOiAwLCAibG9naWNfZGNfanVtcCI6IDAsICJsb2dpY193aW5kbWlsbF9wb2giOiAwLCAibG9naWNfY3JhdGVyX2JlYW5fcG9oX3dpdGhfaG92ZXJzIjogMCwgImxvZ2ljX3pvcmFfd2l0aF9jdWNjbyI6IDAsICJsb2dpY196b3JhX3dpdGhfaG92ZXJzIjogMCwgImxvZ2ljX2Zld2VyX3R1bmljX3JlcXVpcmVtZW50cyI6IDEsICJsb2dpY19tb3JwaGFfd2l0aF9zY2FsZSI6IDAsICJsb2dpY19sZW5zIjogIlJlcXVpcmVkIEV2ZXJ5d2hlcmUiLCAib2NhcmluYV9zb25ncyI6IDAsICJjb3JyZWN0X2NoZXN0X3NpemVzIjogMCwgImNsZWFyZXJfaGludHMiOiAwLCAiaGludHMiOiAiSGludHM7IE5lZWQgU3RvbmUgb2YgQWdvbnkiLCAiaGludF9kaXN0IjogIkJhbGFuY2VkIiwgInRleHRfc2h1ZmZsZSI6ICJObyBUZXh0IFNodWZmbGVkIiwgIml0ZW1fcG9vbF92YWx1ZSI6ICJCYWxhbmNlZCIsICJkYW1hZ2VfbXVsdGlwbGllciI6ICJOb3JtYWwifQ=='
+        }
+        presets.update(custom_presets if custom_presets else {})
+        return presets
+
+    def import_setting_preset():
+        presets = get_settings_preset_choices(guivars['settings_presets'])
         preset_base64 = presets[guivars['settings_preset'].get()]
         if not preset_base64:
             return
@@ -416,20 +418,53 @@ def guiMain(settings=None):
         settings_to_guivars(settings, guivars)
         show_settings()
 
+    def get_settings_base64_string():
+        settings_to_save = {setting.name: guivars[setting.name].get() for setting in
+                            filter(lambda s: s.shared and s.bitwidth > 0, setting_infos)}
+        return base64.b64encode(json.dumps(settings_to_save).encode("utf-8")).decode("utf-8")
+
+    def add_settings_preset():
+        default_choices = get_settings_preset_choices()
+        name = guivars['settings_preset_name'].get()
+        if name in default_choices:
+            messagebox.showerror("Duplicate Name", "You cannon name a custom pre-set with the same name as a built-in preset. Please choose another name.")
+            return
+        settings_base64 = get_settings_base64_string()
+        guivars['settings_presets'][name] = settings_base64
+        guivars['settings_preset_name'].set('')
+        update_preset_dropdown()
+
+    def update_preset_dropdown(settings=None):
+        if settings is not None and 'settings_presets' in settings.__dict__:
+            guivars['settings_presets'] = settings.__dict__['settings_presets']
+        settings_presets = get_settings_preset_choices(guivars['settings_presets'])
+        widgets['settings_preset']['values'] = list(settings_presets)
+
     # Settings Presets
     widgets['settings_presets'] = LabelFrame(frames['rom_tab'], text='Settings Presets')
-    frames['settings_presets'] = Frame(widgets['settings_presets'])
     countLabel = Label(widgets['settings_presets'], wraplength=350, justify=LEFT, text='Here, you can choose from settings presets. Applying a preset will overwrite all settings that affect the seed.')
     countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
-    settings_presets = get_settings_preset_choices()
-    build_guivar_from_setting_info(Setting_Info('settings_preset', str, bitwidth=0, shared=False, args_params={}, gui_params={
-        'group': 'settings_presets', 'widget': 'Combobox', 'tooltip': 'Select a setting preset to apply.', 'type': str, 'options': settings_presets, 'default': next(iter(settings_presets.keys()))
-    }), pack=False)
-    widgets['import_setting_preset'] = Button(frames['settings_presets'], text='Import Preset', command=import_setting_preset)
-    widgets['settings_preset'].pack(side=LEFT, padx=(5, 0))
-    widgets['import_setting_preset'].pack(side=LEFT, anchor=W, padx=5)
 
-    frames['settings_presets'].pack(side=TOP, anchor=W)
+    selectPresetFrame = Frame(widgets['settings_presets'])
+    guivars['settings_presets'] = settings.settings_presets if settings else {}
+    settings_presets = get_settings_preset_choices(guivars['settings_presets'])
+    guivars['settings_preset'] = StringVar(value=next(iter(settings_presets.keys())))
+    widgets['settings_preset'] = ttk.Combobox(selectPresetFrame, textvariable=guivars['settings_preset'], values=list(settings_presets), state='readonly', width=35)
+    widgets['settings_preset'].pack(side=BOTTOM, anchor=W)
+    ToolTips.register(widgets['settings_preset'], 'Select a setting preset to apply.')
+    importPresetButton = Button(selectPresetFrame, text='Import Preset', command=import_setting_preset)
+    widgets['settings_preset'].pack(side=LEFT, padx=(5, 0))
+    importPresetButton.pack(side=LEFT, anchor=W, padx=5)
+    selectPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
+
+    addPresetFrame = Frame(widgets['settings_presets'])
+    guivars['settings_preset_name'] = StringVar()
+    widgets['settings_preset_name'] = Entry(addPresetFrame, textvariable=guivars['settings_preset_name'], width=35)
+    addPresetButton = Button(addPresetFrame, text='Add/Update Preset', command=add_settings_preset)
+    widgets['settings_preset_name'].pack(side=LEFT, anchor=W, padx=5)
+    addPresetButton.pack(side=LEFT, anchor=W, padx=5)
+    addPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
+
     widgets['settings_presets'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
@@ -554,6 +589,7 @@ def guiMain(settings=None):
                 settings = Settings( json.load(f) )
                 settings.update_seed("")
                 settings_to_guivars(settings, guivars)
+                update_preset_dropdown(settings)
         except:
             pass
 

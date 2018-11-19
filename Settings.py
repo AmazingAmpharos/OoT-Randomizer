@@ -45,19 +45,6 @@ def text_to_bit_string(text):
             bits += [ (index >> b) & 1 ]
     return bits
 
-def get_settings_preset_choices():
-    return {
-        '---': '',
-        'Accessible Weekly 2018 Oct': 'eyJ3b3JsZF9jb3VudCI6IDEsICJjcmVhdGVfc3BvaWxlciI6IHRydWUsICJjb21wcmVzc19yb20iOiAiUGF0Y2giLCAib3Blbl9mb3Jlc3QiOiB0cnVlLCAib3Blbl9rYWthcmlrbyI6IHRydWUsICJvcGVuX2Rvb3Jfb2ZfdGltZSI6IHRydWUsICJnZXJ1ZG9fZm9ydHJlc3MiOiAibm9ybWFsIiwgImJyaWRnZSI6ICJtZWRhbGxpb25zIiwgImxvZ2ljX3J1bGVzIjogImdsaXRjaGxlc3MiLCAiYWxsX3JlYWNoYWJsZSI6IHRydWUsICJib21iY2h1c19pbl9sb2dpYyI6IGZhbHNlLCAib25lX2l0ZW1fcGVyX2R1bmdlb24iOiBmYWxzZSwgInRyaWFsc19yYW5kb20iOiBmYWxzZSwgInRyaWFscyI6IDAsICJub19lc2NhcGVfc2VxdWVuY2UiOiB0cnVlLCAibm9fZ3VhcmRfc3RlYWx0aCI6IGZhbHNlLCAibm9fZXBvbmFfcmFjZSI6IHRydWUsICJmYXN0X2NoZXN0cyI6IHRydWUsICJiaWdfcG9lX2NvdW50X3JhbmRvbSI6IGZhbHNlLCAiYmlnX3BvZV9jb3VudCI6IDEsICJmcmVlX3NjYXJlY3JvdyI6IGZhbHNlLCAic2h1ZmZsZV9rb2tpcmlfc3dvcmQiOiB0cnVlLCAic2h1ZmZsZV93ZWlyZF9lZ2ciOiBmYWxzZSwgInNodWZmbGVfb2NhcmluYXMiOiBmYWxzZSwgInNodWZmbGVfc29uZ19pdGVtcyI6IGZhbHNlLCAic2h1ZmZsZV9nZXJ1ZG9fY2FyZCI6IGZhbHNlLCAic2h1ZmZsZV9zY3J1YnMiOiAib2ZmIiwgInNob3BzYW5pdHkiOiAib2ZmIiwgInNodWZmbGVfbWFwY29tcGFzcyI6ICJzdGFydHdpdGgiLCAic2h1ZmZsZV9ib3Nza2V5cyI6ICJkdW5nZW9uIiwgImVuaGFuY2VfbWFwX2NvbXBhc3MiOiBmYWxzZSwgInVubG9ja2VkX2dhbm9uZG9yZiI6IHRydWUsICJ0b2tlbnNhbml0eSI6ICJvZmYiLCAibXFfZHVuZ2VvbnNfcmFuZG9tIjogZmFsc2UsICJtcV9kdW5nZW9ucyI6IDAsICJsb2dpY19za3VsbHR1bGFzIjogNTAsICJsb2dpY19ub19uaWdodF90b2tlbnNfd2l0aG91dF9zdW5zX3NvbmciOiBmYWxzZSwgImxvZ2ljX25vX2JpZ19wb2VzIjogZmFsc2UsICJsb2dpY19ub19jaGlsZF9maXNoaW5nIjogZmFsc2UsICJsb2dpY19ub19hZHVsdF9maXNoaW5nIjogZmFsc2UsICJsb2dpY19ub190cmFkZV9za3VsbF9tYXNrIjogZmFsc2UsICJsb2dpY19ub190cmFkZV9tYXNrX29mX3RydXRoIjogdHJ1ZSwgImxvZ2ljX25vXzE1MDBfYXJjaGVyeSI6IGZhbHNlLCAibG9naWNfbm9fbWVtb3J5X2dhbWUiOiBmYWxzZSwgImxvZ2ljX25vX3NlY29uZF9kYW1wZV9yYWNlIjogZmFsc2UsICJsb2dpY19ub190cmFkZV9iaWdnb3JvbiI6IGZhbHNlLCAibG9naWNfZWFybGllc3RfYWR1bHRfdHJhZGUiOiAicHJlc2NyaXB0aW9uIiwgImxvZ2ljX2xhdGVzdF9hZHVsdF90cmFkZSI6ICJjbGFpbV9jaGVjayIsICJsb2dpY190cmlja3MiOiBmYWxzZSwgImxvZ2ljX21hbl9vbl9yb29mIjogZmFsc2UsICJsb2dpY19jaGlsZF9kZWFkaGFuZCI6IGZhbHNlLCAibG9naWNfZGNfanVtcCI6IGZhbHNlLCAibG9naWNfd2luZG1pbGxfcG9oIjogZmFsc2UsICJsb2dpY19jcmF0ZXJfYmVhbl9wb2hfd2l0aF9ob3ZlcnMiOiBmYWxzZSwgImxvZ2ljX3pvcmFfd2l0aF9jdWNjbyI6IGZhbHNlLCAibG9naWNfem9yYV93aXRoX2hvdmVycyI6IGZhbHNlLCAibG9naWNfZmV3ZXJfdHVuaWNfcmVxdWlyZW1lbnRzIjogdHJ1ZSwgImxvZ2ljX21vcnBoYV93aXRoX3NjYWxlIjogZmFsc2UsICJsb2dpY19sZW5zIjogImFsbCIsICJvY2FyaW5hX3NvbmdzIjogZmFsc2UsICJjb3JyZWN0X2NoZXN0X3NpemVzIjogZmFsc2UsICJjbGVhcmVyX2hpbnRzIjogZmFsc2UsICJoaW50cyI6ICJhZ29ueSIsICJoaW50X2Rpc3QiOiAiYmFsYW5jZWQiLCAidGV4dF9zaHVmZmxlIjogIm5vbmUiLCAiaXRlbV9wb29sX3ZhbHVlIjogImJhbGFuY2VkIiwgImRhbWFnZV9tdWx0aXBsaWVyIjogIm5vcm1hbCJ9'
-    }
-
-def get_settings_base64_string(settings):
-    settings_to_save = {setting.name: settings.__dict__[setting.name] for setting in
-                        filter(lambda s: s.shared and s.bitwidth > 0, setting_infos)}
-    settings_to_save_json = json.dumps(settings_to_save)
-    settings_to_save_base64 = base64.b64encode(str.encode(settings_to_save_json, "utf-8"))
-    return settings_to_save_base64
-
 # holds the particular choices for a run's settings
 class Settings():
 
@@ -200,6 +187,8 @@ class Settings():
             self.seed = ''.join(random_choices(string.ascii_uppercase + string.digits, k=10))
         self.sanitize_seed()
         self.numeric_seed = self.get_numeric_seed()
+        if 'settings_presets' not in self.__dict__:
+            self.settings_presets = {}
 
 
 # gets the randomizer settings, whether to open the gui, and the logger level from command line arguments
