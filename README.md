@@ -23,20 +23,16 @@ happens for some unknown settings configurations; we cannot support this. I cann
 
 # General Description
 
-This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the locations of the items for a more dynamic play experience.
-Proper logic is used to ensure every seed is possible to complete without the use of glitches and will be safe from the possibility of softlocks
-with any possible usage of keys in dungeons.
+This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the locations of the items for a new, more dynamic play experience.
+Proper logic is used to ensure every seed is possible to complete without the use of glitches and will be safe from the possibility of softlocks with any possible usage of keys in dungeons.
 
-Each boss in the eight main dungeons will drop a random Spiritual Stone or Medallion.
+The randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent the use of glitches for those players who enjoy that sort of thing though we offer no guarantees that all glitches will have identical behavior to the original game.
+Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or other items that may not have been as important in the original game.
 
-The pedestal in which the Spiritual Stones rest in the Temple of Time has hint text pointing to the locations of the Spiritual Stones and Medallions.
-This information and some other relevant dungeon based info can be seen in the pause menu by holding the "A" button on the c-item menu.
+Each major dungeon will earn you a random Spiritual Stone or Medallion once completed.
+The particular dungeons where these can be found, as well as other relevant dungeon inforomation can be viewed in the pause menu by holding the "A" button on the C-Item Menu.
 
-As a service to the player in this very long game, many cutscenes have been greatly shortened or removed and text is as often as possible either omitted or sped up. I'm sure someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
-
-The randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent
-the use of glitches for those players who enjoy that sort of thing though we offer no guarantees that all glitches will have identical behavior to the original game.
-Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or Scarecrow's Song that may not have been important options in the original game.
+As a service to the player in this very long game, many cutscenes have been greatly shortened, and text is as often as possible either omitted or sped up. I'm sure someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
 
 # Quirks to Know
 
