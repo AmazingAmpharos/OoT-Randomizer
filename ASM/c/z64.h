@@ -1049,16 +1049,16 @@ typedef struct
 
 typedef struct
 {
-	void             *ptr;                      /* 0x0000 */
-	uint32_t          vrom_start;               /* 0x0004 */
-	uint32_t          vrom_end;                 /* 0x0008 */
-	uint32_t          vram_start;               /* 0x000C */
-	uint32_t          vram_end;                 /* 0x0010 */
-	char              unk_00_[0x0004];          /* 0x0014 */
-	uint32_t          vram_ctor;                /* 0x0018 */
-	uint32_t          vram_dtor;                /* 0x001C */
-	char              unk_01_[0x000C];          /* 0x0020 */
-	char              ctxt_size;                /* 0x002C */
+  void             *ptr;                      /* 0x0000 */
+  uint32_t          vrom_start;               /* 0x0004 */
+  uint32_t          vrom_end;                 /* 0x0008 */
+  uint32_t          vram_start;               /* 0x000C */
+  uint32_t          vram_end;                 /* 0x0010 */
+  char              unk_00_[0x0004];          /* 0x0014 */
+  uint32_t          vram_ctor;                /* 0x0018 */
+  uint32_t          vram_dtor;                /* 0x001C */
+  char              unk_01_[0x000C];          /* 0x0020 */
+  char              ctxt_size;                /* 0x002C */
                                               /* 0x0030 */
 } z64_state_ovl_t;
 
