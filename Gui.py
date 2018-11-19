@@ -10,13 +10,14 @@ from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, Radiob
 from tkinter.colorchooser import *
 from urllib.parse import urlparse
 from urllib.request import urlopen
+import base64
 
 from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry
 from Main import main, from_patch_file
 from Utils import is_bundled, local_path, default_output_path, open_file, check_version
 from Patches import get_tunic_color_options, get_navi_color_options
-from Settings import Settings
-from SettingsList import setting_infos
+from Settings import Settings, get_settings_preset_choices, get_settings_base64_string
+from SettingsList import setting_infos, Setting_Info
 from version import __version__ as ESVersion
 import webbrowser
 import WorldFile
@@ -251,8 +252,8 @@ def guiMain(settings=None):
     widgets['all_logic_tricks'] = Checkbutton(frames['tricks'], text="Enable All Tricks", variable=guivars['all_logic_tricks'], justify=LEFT, wraplength=190, command=update_logic_tricks)
     widgets['all_logic_tricks'].pack(expand=False, anchor=W)
 
-    for info in setting_infos:
-        if info.gui_params and 'group' in info.gui_params:
+    def build_guivar_from_setting_info(info, pack=True):
+        if info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
                 # determine the initial value of the checkbox
                 default_value = 1 if info.gui_params['default'] == "checked" else 0
@@ -260,7 +261,8 @@ def guiMain(settings=None):
                 guivars[info.name] = IntVar(value=default_value)
                 # create the checkbox
                 widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
-                widgets[info.name].pack(expand=False, anchor=W)
+                if pack:
+                    widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
                 # create the variable to store the user's decision
                 guivars[info.name] = StringVar(value=info.gui_params['default'])
@@ -277,7 +279,8 @@ def guiMain(settings=None):
                     label = Label(widgets[info.name], text=info.gui_params['text'])
                     label.pack(side=LEFT, anchor=W, padx=5)
                 # pack the frame
-                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                if pack:
+                    widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Radiobutton':
                 # create the variable to store the user's decision
                 guivars[info.name] = StringVar(value=info.gui_params['default'])
@@ -296,7 +299,8 @@ def guiMain(settings=None):
                     radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=190, indicatoron=False, command=show_settings)
                     radio_button.pack(expand=True, side=side, anchor=anchor)
                 # pack the frame
-                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                if pack:
+                    widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Scale':
                 # create the variable to store the user's decision
                 guivars[info.name] = IntVar(value=info.gui_params['default'])
@@ -313,7 +317,8 @@ def guiMain(settings=None):
                     label = Label(widgets[info.name], text=info.gui_params['text'])
                     label.pack(side=LEFT, anchor=W, padx=5)
                 # pack the frame
-                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                if pack:
+                    widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Entry':
                 # create the variable to store the user's decision
                 guivars[info.name] = StringVar(value=info.gui_params['default'])
@@ -330,11 +335,15 @@ def guiMain(settings=None):
                     label = Label(widgets[info.name], text=info.gui_params['text'])
                     label.pack(side=LEFT, anchor=W, padx=5)
                 # pack the frame
-                widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                if pack:
+                    widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
 
             if 'tooltip' in info.gui_params:
                 ToolTips.register(widgets[info.name], info.gui_params['tooltip'])
 
+    for info in setting_infos:
+        if info.gui_params and 'group' in info.gui_params:
+            build_guivar_from_setting_info(info)
 
     # pack the hierarchy
 
@@ -393,6 +402,35 @@ def guiMain(settings=None):
     playerNumFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
 
     widgets['multiworld'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
+
+    def import_setting_preset(event=None):
+        presets = get_settings_preset_choices()
+        preset_base64 = presets[guivars['settings_preset'].get()]
+        if not preset_base64:
+            return
+        preset_json = (base64.b64decode(preset_base64)).decode("utf-8")
+        new_settings = json.loads(preset_json)
+        settings = guivars_to_settings(guivars)
+        settings.__dict__.update(new_settings)
+        settings.seed = guivars['seed'].get()
+        settings_to_guivars(settings, guivars)
+        show_settings()
+
+    # Settings Presets
+    widgets['settings_presets'] = LabelFrame(frames['rom_tab'], text='Settings Presets')
+    frames['settings_presets'] = Frame(widgets['settings_presets'])
+    countLabel = Label(widgets['settings_presets'], wraplength=350, justify=LEFT, text='Here, you can choose from settings presets. Applying a preset will overwrite all settings that affect the seed.')
+    countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
+    settings_presets = get_settings_preset_choices()
+    build_guivar_from_setting_info(Setting_Info('settings_preset', str, bitwidth=0, shared=False, args_params={}, gui_params={
+        'group': 'settings_presets', 'widget': 'Combobox', 'tooltip': 'Select a setting preset to apply.', 'type': str, 'options': settings_presets, 'default': next(iter(settings_presets.keys()))
+    }), pack=False)
+    widgets['import_setting_preset'] = Button(frames['settings_presets'], text='Import Preset', command=import_setting_preset)
+    widgets['settings_preset'].pack(side=LEFT, padx=(5, 0))
+    widgets['import_setting_preset'].pack(side=LEFT, anchor=W, padx=5)
+
+    frames['settings_presets'].pack(side=TOP, anchor=W)
+    widgets['settings_presets'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
     # create the generation menu
