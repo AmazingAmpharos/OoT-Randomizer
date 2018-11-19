@@ -4,7 +4,10 @@ This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
 
 # Installation
 
-It is strongly suggested users get the latest release from here: https://github.com/AmazingAmpharos/OoT-Randomizer/releases .
+It is strongly suggested users get the latest release from here:  
+  
+https://github.com/AmazingAmpharos/OoT-Randomizer/releases  
+  
 Simply download the .msi installer and run it. We support  Windows, Mac, and Linux machines.
 
 If you have an incompatible OS or you simply wish to run the script raw, clone this repository and either run '''Gui.py''' for a
@@ -35,22 +38,24 @@ The particular dungeons where these can be found, as well as other relevant dung
 As a service to the player in this very long game, many cutscenes have been greatly shortened, and text is as often as possible either omitted or sped up. I'm sure someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
 
 # Getting Stuck
-With a game as big as _Ocarina of Time_ it's quite easy for new rando players to get stuck in certain situations with no apparent path to progressing. Before reporting an issue, please make sure to check out our new FAQ section [found here](../../wiki/FAQ---Broken-Seed).
+
+With a game the size of _Ocarina of Time_, it's quite easy for new Randomizer players to get stuck in certain situations with no apparent path to progressing. Before reporting an issue, please make sure to check out our **_new FAQ section_** [found here](../../wiki/FAQ---Broken-Seed).
+
+# Settings
+
+The OoT Randomizer offers many different settings to customize your play experience.
+A comprehensive list can be found [here](../../wiki/Setting-Information).
 
 # Known issues
 
 Sadly for this 3.0 release a few known issues exist. These will hopefully be addressed in future versions.
 
--The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and quit (NOT savestate) and return to fix the issue.
--Draining the Bottom of the Well with Song of Storms sometimes crashes on specific configurations of Project 64. We aren't sure of the exact story, but this bug is
+* The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and quit (NOT savestate) and return to fix the issue.
+* Draining the Bottom of the Well with Song of Storms sometimes crashes on specific configurations of Project 64. We aren't sure of the exact story, but this bug is
 easily avoided by playing on a different emulator and probably also avoidable by changing your settings and maybe graphics plug-in.
--Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences. In particular this can be devastating with Biggoron;
+* Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences. In particular this can be devastating with Biggoron;
 it is strongly suggested the player save before turning in the Claim Check.
--Saving and quitting on the very first frame after becomming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
+* Saving and quitting on the very first frame after becomming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
 do that.
--This randomizer is based on the 1.0 version of Ocarina of Time so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantagous to the
+* This randomizer is based on the 1.0 version of Ocarina of Time so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantagous to the
 player.
-
-# Settings
-The OoT Randomizer offers many different settings to customize your play experience.
-A comprehensive list can be found [here](../../wiki/Setting-Information).
