@@ -1,22 +1,17 @@
-import io
-import json
-import logging
-import os
-import platform
-import struct
-import subprocess
 import random
-import copy
 
-from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText, getSimpleHintNoPrefix
-from Utils import data_path, default_output_path, random_choices
-from Item import ItemFactory
-from Messages import *
-from OcarinaSongs import Song, replace_songs
+from Hints import writeGossipStoneHintsHints, buildBossRewardHints, \
+        buildGanonText, getSimpleHintNoPrefix
+from Utils import data_path
+from Messages import read_messages, update_message_by_id, read_shop_items, \
+        write_shop_items, remove_unused_messages, make_player_message, \
+        add_song_messages, update_item_messages, \
+        message_patch_for_dungeon_items, repack_messages, shuffle_messages
+from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
 
-TunicColors = {
+tunic_colors = {
     "Custom Color":      [0x00, 0x00, 0x00],
     "Kokiri Green":      [0x1E, 0x69, 0x1B],
     "Goron Red":         [0x64, 0x14, 0x00],
@@ -157,7 +152,7 @@ def get_HealthSFX_options():
 
 
 def get_tunic_colors():
-    return list(TunicColors.keys())
+    return list(tunic_colors.keys())
 
 
 def get_tunic_color_options():
@@ -1939,14 +1934,14 @@ def patch_cosmetics(settings, rom):
         restore_music(rom)
 
     # patch tunic colors
-    Tunics = [
-        (settings.kokiricolor, 0x00B6DA38), # Kokiri Tunic
-        (settings.goroncolor,  0x00B6DA3B), # Goron Tunic
-        (settings.zoracolor,   0x00B6DA3E), # Zora Tunic
+    tunics = [
+        (settings.kokiri_color, 0x00B6DA38), # Kokiri Tunic
+        (settings.goron_color,  0x00B6DA3B), # Goron Tunic
+        (settings.zora_color,   0x00B6DA3E), # Zora Tunic
     ]
     colorList = get_tunic_colors()
 
-    for tunic_option, address in Tunics:
+    for tunic_option, address in tunics:
         # handle random
         if tunic_option == 'Random Choice':
             tunic_option = random.choice(colorList)
@@ -1954,8 +1949,8 @@ def patch_cosmetics(settings, rom):
         if tunic_option == 'Completely Random':
             color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
         # grab the color from the list
-        elif tunic_option in TunicColors:
-            color = TunicColors[tunic_option]
+        elif tunic_option in tunic_colors:
+            color = tunic_colors[tunic_option]
         # build color from hex code
         else:
             color = list(int(tunic_option[i:i+2], 16) for i in (0, 2 ,4))
@@ -1963,10 +1958,10 @@ def patch_cosmetics(settings, rom):
 
     # patch navi colors
     Navi = [
-        (settings.navicolordefault, [0x00B5E184]), # Default
-        (settings.navicolorenemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
-        (settings.navicolornpc,     [0x00B5E194]), # NPC
-        (settings.navicolorprop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
+        (settings.navi_color_default, [0x00B5E184]), # Default
+        (settings.navi_color_enemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+        (settings.navi_color_npc,     [0x00B5E194]), # NPC
+        (settings.navi_color_prop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
                                   0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4,
                                   0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
     ]
