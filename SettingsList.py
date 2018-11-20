@@ -142,22 +142,17 @@ class Scale(Setting_Widget):
 
 
 def parse_custom_tunic_color(s):
-    if s == 'Custom Color':
-        raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
-    elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
-        return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
-    elif s in get_tunic_color_options():
-        return s
-    else:
-        raise argparse.ArgumentTypeError('Invalid color specified')
-
+    return parse_color(get_tunic_color_options())
 
 def parse_custom_navi_color(s):
+    return parse_color(get_navi_color_options())
+
+def parse_color(s, color_choices):
     if s == 'Custom Color':
         raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
     elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
         return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
-    elif s in get_navi_color_options():
+    elif s in color_choices:
         return s
     else:
         raise argparse.ArgumentTypeError('Invalid color specified')
