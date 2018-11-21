@@ -119,6 +119,12 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
             logging.getLogger('').debug('Unfilled Locations: %s [World %d]' % (location.name, location.world.id))
         raise FillError('Not all locations have an item.')
 
+    # Get Light Arrow location for later usage.
+    for world in worlds:
+        for location in world.get_filled_locations():
+            if location.item and location.item.name == 'Light Arrows':
+                location.item.world.light_arrow_location = location
+
 
 # Places restricted dungeon items into the worlds. To ensure there is room for them.
 # they are placed first so it will assume all other items are reachable
