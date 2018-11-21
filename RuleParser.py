@@ -1,4 +1,4 @@
-from ast import *
+from ast import Attribute, NodeTransformer, parse, fix_missing_locations
 from ItemList import item_table
 from State import State
 import re
