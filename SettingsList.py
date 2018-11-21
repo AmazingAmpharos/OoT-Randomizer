@@ -205,6 +205,9 @@ setting_infos = [
                     Use to select world to generate when there are multiple worlds.
                     ''',
             'type': int
+        },
+        {
+            'dependency': lambda guivar: guivar['compress_rom'].get() not in ['No Output', 'Patch File'],
         }),
     Checkbutton(
             name           = 'create_spoiler',
@@ -216,7 +219,7 @@ setting_infos = [
             gui_tooltip    = '''\
                              Enabling this will change the seed.
                              ''',
-            gui_dependency = lambda guivar: guivar['compress_rom'].get() != 'No ROM Output',
+            gui_dependency = lambda guivar: guivar['compress_rom'].get() != 'No Output',
             default        = True,
             shared         = True,
             ),

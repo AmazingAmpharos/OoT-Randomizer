@@ -111,6 +111,7 @@ def guiMain(settings=None):
     # hold the results of the user's decisions here
     guivars = {}
     widgets = {}
+    dependencies = {}
 
     # hierarchy
     ############
@@ -154,14 +155,21 @@ def guiMain(settings=None):
                 widget.configure(fg='Black'if enabled else 'Grey')
 
 
+    def check_dependency(name):
+        if name in dependencies:
+            return dependencies[name](guivars)
+        else:
+            return True
+
+
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
 
         # Update any dependencies
         for info in setting_infos:
-            if info.gui_params and 'dependency' in info.gui_params:
-                dep_met = info.gui_params['dependency'](guivars)
+            if info.name in dependencies:
+                dep_met = check_dependency(info.name)
                 toggle_widget(widgets[info.name], dep_met)
 
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
@@ -212,9 +220,6 @@ def guiMain(settings=None):
 
     fileDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
 
-    def open_output():
-        open_file(output_path(''))
-
     def output_dir_select():
         rom = filedialog.askdirectory(initialdir = default_output_path(guivars['output_dir'].get()))
         if rom != '':
@@ -255,6 +260,9 @@ def guiMain(settings=None):
     widgets['all_logic_tricks'].pack(expand=False, anchor=W)
 
     for info in setting_infos:
+        if info.gui_params and 'dependency' in info.gui_params:
+            dependencies[info.name] = info.gui_params['dependency']
+
         if info.gui_params and 'group' in info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
                 # determine the initial value of the checkbox
@@ -408,9 +416,9 @@ def guiMain(settings=None):
             else:
                 notebook.tab(2, state="disabled")               
             notebook.tab(3, state="normal")
-            toggle_widget(widgets['world_count'], True)
-            toggle_widget(widgets['create_spoiler'], True)
-            toggle_widget(widgets['count'], True)
+            toggle_widget(widgets['world_count'], check_dependency('world_count'))
+            toggle_widget(widgets['create_spoiler'], check_dependency('create_spoiler'))
+            toggle_widget(widgets['count'], check_dependency('count'))
         else:
             notebook.tab(1, state="disabled")
             notebook.tab(2, state="disabled")
