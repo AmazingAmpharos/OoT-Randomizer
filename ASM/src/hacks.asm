@@ -676,7 +676,7 @@ skip_GS_BGS_text:
 ; Talon Cutscene Skip
 ;==================================================================================================
 ;
-; Replaces: 
+; Replaces: lui    a1, 0x801F @ovl+0x1080
 
 .org 0xCC0020
     jal    talon_break_free
