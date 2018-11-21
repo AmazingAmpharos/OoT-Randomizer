@@ -1907,8 +1907,10 @@ def configure_dungeon_info(rom, world):
             'Volvagia', 'Morpha', 'Twinrova', 'Bongo Bongo']
     dungeon_rewards = [boss_reward_index(world, boss) for boss in bosses]
 
-    codes = ['DT', 'DC', 'JB', 'FoT', 'FiT', 'WT', 'SpT', 'ShT',
-            'BW', 'IC', 'Tower (N/A)', 'GTG', 'Hideout (N/A)', 'GC']
+    codes = ['Deku Tree', 'Dodongos Cavern', 'Jabu Jabus Belly', 'Forest Temple',
+             'Fire Temple', 'Water Temple', 'Spirit Temple', 'Shadow Temple',
+             'Bottom of the Well', 'Ice Cavern', 'Tower (N/A)',
+             'Gerudo Training Grounds', 'Hideout (N/A)', 'Ganons Castle']
     dungeon_is_mq = [1 if world.dungeon_mq.get(c) else 0 for c in codes]
 
     rom.write_int32(rom.sym('cfg_dungeon_info_enable'), 1)
