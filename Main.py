@@ -18,6 +18,7 @@ from Rom import LocalRom
 from Patches import patch_rom, patch_cosmetics
 from DungeonList import create_dungeons
 from Fill import distribute_items_restrictive
+from Item import Item
 from ItemPool import generate_itempool
 from Hints import buildGossipHints
 from Utils import default_output_path, is_bundled, subprocess_args, data_path
@@ -306,12 +307,18 @@ def run_process(window, logger, args):
             break
 
 
+def copy_worlds(worlds):
+    worlds = [world.copy() for world in worlds]
+    Item.fix_worlds_after_copy(worlds)
+    return worlds
+
+
 def create_playthrough(worlds):
     if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Uncopied is broken too.')
     # create a copy as we will modify it
     old_worlds = worlds
-    worlds = [world.copy() for world in worlds]
+    worlds = copy_worlds(worlds)
 
     # if we only check for beatable, we can do this sanity check first before writing down spheres
     if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):

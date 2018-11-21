@@ -16,13 +16,29 @@ class Item(object):
         self.world = world
 
 
+    item_worlds_to_fix = {}
+
     def copy(self, new_world=None):
+        if new_world is not None and self.world is not None and new_world.id != self.world.id:
+            new_world = None
+
         new_item = Item(self.name, self.advancement, self.priority, self.type, self.index, self.object, self.model, self.special)
         new_item.world = new_world
         new_item.price = self.price
 
+        if new_world is None and self.world is not None:
+            Item.item_worlds_to_fix[new_item] = self.world.id
+
         return new_item
 
+    @classmethod
+    def fix_worlds_after_copy(cls, worlds):
+        items_fixed = []
+        for item, world_id in cls.item_worlds_to_fix.items():
+            item.world = worlds[world_id]
+            items_fixed.append(item)
+        for item in items_fixed:
+            del cls.item_worlds_to_fix[item]
 
     @property
     def key(self):
