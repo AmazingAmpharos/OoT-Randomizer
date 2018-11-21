@@ -170,7 +170,11 @@ def guiMain(settings=None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
         update_generation_type()
-        
+
+
+    def show_settings_on_trace(a,b,c):
+        if guivars['world_count'].get():
+            show_settings()
 
 
     def update_logic_tricks(event=None):
@@ -378,6 +382,7 @@ def guiMain(settings=None):
     countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
     widgets['world_count'] = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
+    guivars['world_count'].trace('w', show_settings_on_trace)
     countLabel.pack(side=LEFT)
     widgets['world_count'].pack(side=LEFT, padx=2)
     worldCountFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
