@@ -656,11 +656,11 @@ def patch_rom(world, rom):
 
     #Speed Pushing of All Pushable Objects
     rom.write_bytes(0xDD2B86, [0x40, 0x80])             #block speed
-    rom.write_bytes(0xDD2D26, [0x00, 0x03])             #block delay
+    rom.write_bytes(0xDD2D26, [0x00, 0x01])             #block delay
     rom.write_bytes(0xDD9682, [0x40, 0x80])             #milk crate speed
-    rom.write_bytes(0xDD981E, [0x00, 0x03])             #milk crate delay
+    rom.write_bytes(0xDD981E, [0x00, 0x01])             #milk crate delay
     rom.write_bytes(0xCE1BD0, [0x40, 0x80, 0x00, 0x00]) #amy puzzle speed
-    rom.write_bytes(0xCE0F0E, [0x00, 0x03])             #amy puzzle delay
+    rom.write_bytes(0xCE0F0E, [0x00, 0x01])             #amy puzzle delay
     rom.write_bytes(0xC77CA8, [0x40, 0x80, 0x00, 0x00]) #fire block speed
     rom.write_bytes(0xC770C2, [0x00, 0x01])             #fire block delay
     rom.write_bytes(0xCC5DBC, [0x29, 0xE1, 0x00, 0x01]) #forest basement puzzle delay
