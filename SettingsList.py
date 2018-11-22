@@ -142,10 +142,10 @@ class Scale(Setting_Widget):
 
 
 def parse_custom_tunic_color(s):
-    return parse_color(get_tunic_color_options())
+    return parse_color(s, get_tunic_color_options())
 
 def parse_custom_navi_color(s):
-    return parse_color(get_navi_color_options())
+    return parse_color(s, get_navi_color_options())
 
 def parse_color(s, color_choices):
     if s == 'Custom Color':
