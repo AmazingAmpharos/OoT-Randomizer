@@ -146,6 +146,10 @@ class State(object):
 
 
     def can_play(self, song):
+        if self.world.logic_no_ocarina_of_time:
+            oot_song_location = self.world.get_location('Song from Ocarina of Time')
+            if oot_song_location.item and oot_song_location.item.name == song:
+                return False
         return self.has_ocarina() and self.has(song)
 
 

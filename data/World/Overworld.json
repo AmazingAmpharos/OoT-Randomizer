@@ -181,11 +181,11 @@
         "region_name": "Hyrule Field",
         "locations": {
             "Ocarina of Time": "
-                Kokiri_Emerald and Goron_Ruby and 
-                Zora_Sapphire and guarantee_hint",
+                (not logic_no_ocarina_of_time) and Kokiri_Emerald
+                and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Song from Ocarina of Time": "
-                Kokiri_Emerald and Goron_Ruby and 
-                Zora_Sapphire and guarantee_hint",
+                (not (logic_no_ocarina_of_time and shuffle_song_items)) and Kokiri_Emerald
+                and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Generic Grotto Gossip Stone": "True"
         },
         "exits": {
@@ -917,8 +917,8 @@
         "locations": {
             "Magic Bean Salesman": "True",
             "Frog Ocarina Game": "
-                can_play(Zeldas_Lullaby) and can_play(Sarias_Song) and can_play(Suns_Song) and 
-                can_play(Eponas_Song) and can_play(Song_of_Time) and can_play(Song_of_Storms)",
+                (not logic_no_frog_ocarina_game) and can_play(Zeldas_Lullaby) and can_play(Sarias_Song) and
+                can_play(Suns_Song) and can_play(Eponas_Song) and can_play(Song_of_Time) and can_play(Song_of_Storms)",
             "Frogs in the Rain": "can_play(Song_of_Storms)",
             "GS Zora River Ladder": "nighttime and can_child_attack"
         },
