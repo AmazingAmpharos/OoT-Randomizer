@@ -917,8 +917,8 @@
         "locations": {
             "Magic Bean Salesman": "True",
             "Frog Ocarina Game": "
-                (not logic_no_frog_ocarina_game) and can_play(Zeldas_Lullaby) and can_play(Sarias_Song) and
-                can_play(Suns_Song) and can_play(Eponas_Song) and can_play(Song_of_Time) and can_play(Song_of_Storms)",
+                (not logic_no_frog_ocarina_game) and can_play(Zeldas_Lullaby) and can_play(Sarias_Song) and can_play(Suns_Song) and 
+                can_play(Eponas_Song) and can_play(Song_of_Time) and can_play(Song_of_Storms) and guarantee_hint",
             "Frogs in the Rain": "can_play(Song_of_Storms)",
             "GS Zora River Ladder": "nighttime and can_child_attack"
         },
