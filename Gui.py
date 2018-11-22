@@ -73,7 +73,10 @@ def guivars_to_settings(guivars):
                 result[name] = guivar.get()
         # text field for a number...
         if info.type == int:
-            result[name] = int( guivar.get() )
+            try:
+                result[name] = int( guivar.get() )
+            except ValueError:
+                result[name] = 0
     if result['seed'] == "":
         result['seed'] = None
     if result['count'] == 1:
@@ -162,14 +165,15 @@ def guiMain(settings=None):
             return True
 
 
-    def show_settings(event=None):
+    def show_settings(*event):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
 
         # Update any dependencies
         for info in setting_infos:
-            if info.name in dependencies:
-                dep_met = check_dependency(info.name)
+            dep_met = check_dependency(info.name)
+
+            if info.name in widgets:
                 toggle_widget(widgets[info.name], dep_met)
 
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
@@ -178,11 +182,6 @@ def guiMain(settings=None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
         update_generation_type()
-
-
-    def show_settings_on_trace(a,b,c):
-        if guivars['world_count'].get():
-            show_settings()
 
 
     def update_logic_tricks(event=None):
@@ -390,7 +389,7 @@ def guiMain(settings=None):
     countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
     widgets['world_count'] = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
-    guivars['world_count'].trace('w', show_settings_on_trace)
+    guivars['world_count'].trace('w', show_settings)
     countLabel.pack(side=LEFT)
     widgets['world_count'].pack(side=LEFT, padx=2)
     worldCountFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
