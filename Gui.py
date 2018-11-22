@@ -111,6 +111,7 @@ def guiMain(settings=None):
     # hold the results of the user's decisions here
     guivars = {}
     widgets = {}
+    dependencies = {}
 
     # hierarchy
     ############
@@ -154,14 +155,21 @@ def guiMain(settings=None):
                 widget.configure(fg='Black'if enabled else 'Grey')
 
 
+    def check_dependency(name):
+        if name in dependencies:
+            return dependencies[name](guivars)
+        else:
+            return True
+
+
     def show_settings(event=None):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
 
         # Update any dependencies
         for info in setting_infos:
-            if info.gui_params and 'dependency' in info.gui_params:
-                dep_met = info.gui_params['dependency'](guivars)
+            if info.name in dependencies:
+                dep_met = check_dependency(info.name)
                 toggle_widget(widgets[info.name], dep_met)
 
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
@@ -170,7 +178,11 @@ def guiMain(settings=None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
         update_generation_type()
-        
+
+
+    def show_settings_on_trace(a,b,c):
+        if guivars['world_count'].get():
+            show_settings()
 
 
     def update_logic_tricks(event=None):
@@ -207,9 +219,6 @@ def guiMain(settings=None):
     romDialogFrame.pack()
 
     fileDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
-
-    def open_output():
-        open_file(output_path(''))
 
     def output_dir_select():
         rom = filedialog.askdirectory(initialdir = default_output_path(guivars['output_dir'].get()))
@@ -251,6 +260,9 @@ def guiMain(settings=None):
     widgets['all_logic_tricks'].pack(expand=False, anchor=W)
 
     for info in setting_infos:
+        if info.gui_params and 'dependency' in info.gui_params:
+            dependencies[info.name] = info.gui_params['dependency']
+
         if info.gui_params and 'group' in info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
                 # determine the initial value of the checkbox
@@ -378,6 +390,7 @@ def guiMain(settings=None):
     countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
     widgets['world_count'] = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
+    guivars['world_count'].trace('w', show_settings_on_trace)
     countLabel.pack(side=LEFT)
     widgets['world_count'].pack(side=LEFT, padx=2)
     worldCountFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
@@ -403,9 +416,9 @@ def guiMain(settings=None):
             else:
                 notebook.tab(2, state="disabled")               
             notebook.tab(3, state="normal")
-            toggle_widget(widgets['world_count'], True)
-            toggle_widget(widgets['create_spoiler'], True)
-            toggle_widget(widgets['count'], True)
+            toggle_widget(widgets['world_count'], check_dependency('world_count'))
+            toggle_widget(widgets['create_spoiler'], check_dependency('create_spoiler'))
+            toggle_widget(widgets['count'], check_dependency('count'))
         else:
             notebook.tab(1, state="disabled")
             notebook.tab(2, state="disabled")
