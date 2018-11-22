@@ -6,8 +6,10 @@ import random
 import re
 import os
 import shutil
-from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, Button, filedialog, messagebox, ttk, HORIZONTAL, Toplevel
-from tkinter.colorchooser import *
+from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, \
+        Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, \
+        StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, \
+        Button, filedialog, messagebox, ttk, HORIZONTAL, Toplevel, colorchooser
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
@@ -177,7 +179,7 @@ def guiMain(settings=None):
                 toggle_widget(widgets[info.name], dep_met)
 
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
-                color = askcolor()
+                color = colorchooser.askcolor()
                 if color == (None, None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
