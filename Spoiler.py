@@ -37,25 +37,25 @@ class Spoiler(object):
                 header_world_string = '\n\n{header} [World {world}]:\n\n'
                 header_player_string = '\n\n{header} [Player {player}]:\n\n'
                 location_string = '{location} [W{world}]:'
-                item_string = '{item} [Player {player}]'
+                item_string = '{item} [Player {player}]{cost}'
             else:
                 header_world_string = '\n\n{header}:\n\n'
                 header_player_string = '\n\n{header}:\n\n'
                 location_string = '{location}:'
-                item_string = '{item}'
+                item_string = '{item}{cost}'
 
             location_padding = len(max(self.locations[0].keys(), key=len)) + extra_padding
             for world in self.worlds:
                 outfile.write(header_world_string.format(header="Locations", world=world.id+1))
-                outfile.write('\n'.join(['{:{width}} {}'.format(location_string.format(location=location, world=world.id+1), item_string.format(item=item.name + (' [Costs %d Rupees]' % item.price if item.price is not None else ''), player=item.world.id+1), width=location_padding) for (location, item) in self.locations[world.id].items()]))
+                outfile.write('\n'.join(['{:{width}} {}'.format(location_string.format(location=location, world=world.id+1), item_string.format(item=item.name, player=item.world.id+1, cost=' [Costs %d Rupees]' % item.price if item.price is not None else ''), width=location_padding) for (location, item) in self.locations[world.id].items()]))
 
             outfile.write('\n\nPlaythrough:\n\n')
-            outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  {:{width}} {}'.format(location_string.format(location=location.name, world=location.world.id+1), item_string.format(item=item.name, player=item.world.id+1), width=location_padding) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
+            outfile.write('\n'.join(['%s: {\n%s\n}' % (sphere_nr, '\n'.join(['  {:{width}} {}'.format(location_string.format(location=location.name, world=location.world.id+1), item_string.format(item=item.name, player=item.world.id+1, cost=' [Costs %d Rupees]' % item.price if item.price is not None else ''), width=location_padding) for (location, item) in sphere.items()])) for (sphere_nr, sphere) in self.playthrough.items()]))
 
             if len(self.hints) > 0:
                 for world in self.worlds:
                     outfile.write(header_player_string.format(header="Way of the Hero", player=world.id+1))
-                    outfile.write('\n'.join(['{:{width}} {}'.format(location_string.format(location=location.name, world=location.world.id+1), item_string.format(item=location.item.name, player=location.item.world.id+1), width=location_padding) for location in self.required_locations[world.id]]))
+                    outfile.write('\n'.join(['{:{width}} {}'.format(location_string.format(location=location.name, world=location.world.id+1), item_string.format(item=location.item.name, player=location.item.world.id+1, cost=' [Costs %d Rupees]' % location.item.price if location.item.price is not None else ''), width=location_padding) for location in self.required_locations[world.id]]))
 
                 gossip_padding = len(max([stone.name for stone in gossipLocations.values()], key=len)) + extra_padding
                 for world in self.worlds:
