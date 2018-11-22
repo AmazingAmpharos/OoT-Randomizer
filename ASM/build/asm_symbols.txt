@@ -24,7 +24,7 @@
 00D7E8D4 @@not_hyrule
 00D7E920 ev0_return
 00DB13D3 .byt:0001
-00DF264F .byt:0001
+00DF2647 .byt:0001
 00E2F093 .byt:0001
 00EBB8B0 @Deku_Check_True
 00EBB8C0 @Deku_Check_False

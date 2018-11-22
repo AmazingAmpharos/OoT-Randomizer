@@ -855,7 +855,6 @@ def patch_rom(world, rom):
 
     #Give hp after first ocarina minigame round
     rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02]) 
-    rom.write_byte(0xDF2647, 0x3E)
 
     # Allow owl to always carry the kid down Death Mountain
     rom.write_bytes(0xE304F0, [0x24, 0x0E, 0x00, 0x01])

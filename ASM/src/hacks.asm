@@ -44,7 +44,7 @@
 
 ; Patch NPCs to give override-compatible items
 .org 0xDB13D3 :: .byte 0x76 ; Frog Ocarina Game
-.org 0xDF264F :: .byte 0x76 ; Ocarina memory game
+.org 0xDF2647 :: .byte 0x76 ; Ocarina memory game
 .org 0xE2F093 :: .byte 0x34 ; Bombchu Bowling Bomb Bag
 .org 0xEC9CE7 :: .byte 0x7A ; Deku Theater Mask of Truth
 
