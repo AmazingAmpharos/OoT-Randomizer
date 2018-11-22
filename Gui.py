@@ -412,9 +412,15 @@ def guiMain(settings=None):
             return
         preset_json = (base64.b64decode(preset_base64)).decode("utf-8")
         new_settings = json.loads(preset_json)
+
+        default_settings = {setting.name: setting.args_params['default'] for setting in
+                            filter(lambda s: s.shared and s.bitwidth > 0 and s.args_params and 'default' in s.args_params, setting_infos)}
+
         settings = guivars_to_settings(guivars)
+        settings.__dict__.update(default_settings)
         settings.__dict__.update(new_settings)
         settings.seed = guivars['seed'].get()
+
         settings_to_guivars(settings, guivars)
         show_settings()
 
