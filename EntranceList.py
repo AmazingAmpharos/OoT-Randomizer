@@ -5,55 +5,55 @@ def link_entrances(world):
     # setup mandatory connections
     for exitname, regionname in mandatory_connections:
         connect_simple(world, exitname, regionname)
-    if world.dungeon_mq['DT']:
+    if world.dungeon_mq['Deku Tree']:
         for exitname, regionname in DT_MQ_connections:
             connect_simple(world, exitname, regionname)
     else:
         for exitname, regionname in DT_vanilla_connections:
             connect_simple(world, exitname, regionname)
-    if world.dungeon_mq['DC']:
+    if world.dungeon_mq['Dodongos Cavern']:
         for exitname, regionname in DC_MQ_connections:
             connect_simple(world, exitname, regionname)
     else:
         for exitname, regionname in DC_vanilla_connections:
             connect_simple(world, exitname, regionname)
-    if world.dungeon_mq['JB']:
+    if world.dungeon_mq['Jabu Jabus Belly']:
         for exitname, regionname in JB_MQ_connections:
             connect_simple(world, exitname, regionname)
     else:
         for exitname, regionname in JB_vanilla_connections:
             connect_simple(world, exitname, regionname)
-    if world.dungeon_mq['FoT']:
+    if world.dungeon_mq['Forest Temple']:
         for exitname, regionname in FoT_MQ_connections:
             connect_simple(world, exitname, regionname)
     else:
         for exitname, regionname in FoT_vanilla_connections:
             connect_simple(world, exitname, regionname)
-    if world.dungeon_mq['FiT']:
+    if world.dungeon_mq['Fire Temple']:
         for exitname, regionname in FiT_MQ_connections:
             connect_simple(world, exitname, regionname)
     else:
         for exitname, regionname in FiT_vanilla_connections:
             connect_simple(world, exitname, regionname)
-    if world.dungeon_mq['WT']:
+    if world.dungeon_mq['Water Temple']:
         for exitname, regionname in WT_MQ_connections:
             connect_simple(world, exitname, regionname)
     else:
         for exitname, regionname in WT_vanilla_connections:
             connect_simple(world, exitname, regionname)
-    if world.dungeon_mq['GTG']:
+    if world.dungeon_mq['Gerudo Training Grounds']:
         for exitname, regionname in GTG_MQ_connections:
             connect_simple(world, exitname, regionname)
     else:
         for exitname, regionname in GTG_vanilla_connections:
             connect_simple(world, exitname, regionname)
-    if world.dungeon_mq['SpT']:
+    if world.dungeon_mq['Spirit Temple']:
         for exitname, regionname in SpT_MQ_connections:
             connect_simple(world, exitname, regionname)
     else:
         for exitname, regionname in SpT_vanilla_connections:
             connect_simple(world, exitname, regionname)
-    if world.dungeon_mq['ShT']:
+    if world.dungeon_mq['Shadow Temple']:
         for exitname, regionname in ShT_MQ_connections:
             connect_simple(world, exitname, regionname)
     else:

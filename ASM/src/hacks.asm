@@ -44,7 +44,7 @@
 
 ; Patch NPCs to give override-compatible items
 .org 0xDB13D3 :: .byte 0x76 ; Frog Ocarina Game
-.org 0xDF264F :: .byte 0x76 ; Ocarina memory game
+.org 0xDF2647 :: .byte 0x76 ; Ocarina memory game
 .org 0xE2F093 :: .byte 0x34 ; Bombchu Bowling Bomb Bag
 .org 0xEC9CE7 :: .byte 0x7A ; Deku Theater Mask of Truth
 
@@ -622,6 +622,7 @@ nop
 .org 0xB529A0
 skip_GS_BGS_text:
 
+
 ;==================================================================================================
 ; Empty bomb fix
 ;==================================================================================================
@@ -631,3 +632,52 @@ skip_GS_BGS_text:
 .org 0xC0E404
     jal empty_bomb_fix
     lw  a1, 0x0018($sp)
+
+;==================================================================================================
+; Damage Multiplier
+;==================================================================================================
+;
+; Replaces: 
+;   lbu     t7, 0x3d(a1)
+;   beql    t7, zero, 0x20
+;   lh      t8, 0x30(a1)
+;   bgezl   s0, 0x20
+;   lh      t8, 0x30(a1)
+;   sra     s0, s0, 1    ; double defense
+;   sll     s0, s0, 0x10
+;   sra     s0, s0, 0x10 ; s0 = damage
+
+.org 0xAE807C
+    bgez    s0, @@continue ; check if damage is negative
+    lh      t8, 0x30(a1)   ; load hp for later
+    lbu     t7, 0x3d(a1)   ; check if has double defense
+    beq     t7, zero, @@continue
+    sll     s0, s0, 0      ; damage multiplier (delay slot)
+.skip 4
+.skip 4
+.skip 4
+.skip 4
+@@continue:
+
+
+;==================================================================================================
+; Skip Scarecrow Song
+;==================================================================================================
+;
+; Replaces: 
+;   lhu    t0,0x04C6(t0)
+;   li     at,0x0B
+.org 0xEF4f98
+    lhu t0, 0x0670(v0)
+    li  at, 0x0800
+
+
+;==================================================================================================
+; Talon Cutscene Skip
+;==================================================================================================
+;
+; Replaces: lui    a1, 0x801F @ovl+0x1080
+
+.org 0xCC0020
+    jal    talon_break_free
+    lui    a1, 0x801F

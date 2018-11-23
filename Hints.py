@@ -6,16 +6,18 @@ import struct
 import random
 
 from HintList import getHint, getHintGroup, Hint
-from ItemList import eventlocations
+from ItemPool import eventlocations
 from Messages import update_message_by_id
 from TextBox import lineWrap
 from Utils import random_choices
-from BaseClasses import CollectionState
+from State import State
+
 
 class GossipStone():
     def __init__(self, name, location):
         self.name = name
         self.location = location
+
 
 gossipLocations = {
     0x0405: GossipStone('Death Mountain Crater (Bombable Wall)', 'Death Mountain Crater Gossip Stone'),
@@ -110,7 +112,7 @@ def can_reach_stone(worlds, stone_location, location):
 
     old_item = location.item
     location.item = None
-    stone_states = CollectionState.get_states_with_items([world.state for world in worlds], [])
+    stone_states = State.get_states_with_items([world.state for world in worlds], [])
     location.item = old_item
 
     return stone_states[location.world.id].can_reach(stone_location, resolution_hint='Location') and \
@@ -121,11 +123,13 @@ def writeGossipStoneHintsHints(world, messages):
     for id,text in world.spoiler.hints.items():
         update_message_by_id(messages, id, get_raw_text(text))
 
+
 def filterTrailingSpace(text):
     if text.endswith('& '):
         return text[:-1]
     else:
         return text
+
 
 hintPrefixes = [
     'a few ',
@@ -147,6 +151,7 @@ def getSimpleHintNoPrefix(item):
 
     # no prefex
     return hint
+
 
 def colorText(text, color):
     colorMap = {
@@ -297,7 +302,17 @@ hint_func = {
 
 
 hint_dist_sets = {
-    'normal': {
+    'useless': {
+        'trial':    (0.0, 0),
+        'always':   (0.0, 0),
+        'woth':     (0.0, 0),
+        'loc':      (0.0, 0),
+        'item':     (0.0, 0),
+        'ow':       (0.0, 0),
+        'dungeon':  (0.0, 0),
+        'junk':     (9.0, 1),
+    },
+    'balanced': {
         'trial':    (0.0, 1),
         'always':   (0.0, 1),
         'woth':     (3.5, 1),
@@ -307,14 +322,24 @@ hint_dist_sets = {
         'dungeon':  (3.5, 1),
         'junk':     (3.0, 1),
     },
-    'tourney': {
+    'strong': {
         'trial':    (0.0, 1),
-        'always':   (0.0, 1.75),
-        'woth':     (4.0, 2),
+        'always':   (0.0, 2),
+        'woth':     (4.0, 2.5),
         'loc':      (2.0, 1),
         'item':     (2.0, 1),
-        'ow':       (2.0, 1),
-        'dungeon':  (2.0, 1),
+        'ow':       (1.0, 1),
+        'dungeon':  (1.0, 1),
+        'junk':     (0.0, 1),
+    },
+    'very_strong': {
+        'trial':    (0.0, 1),
+        'always':   (0.0, 2),
+        'woth':     (3.0, 2),
+        'loc':      (1.0, 1),
+        'item':     (2.0, 1),
+        'ow':       (0.0, 1),
+        'dungeon':  (0.0, 1),
         'junk':     (0.0, 1),
     },
 }
@@ -328,8 +353,8 @@ def buildGossipHints(worlds, world):
     random.shuffle(stoneIDs)
 
     hint_dist = hint_dist_sets[world.hint_dist]
-    hint_types = list(hint_dist.keys())
-    hint_prob = [prob for prob,count in hint_dist.values()]
+    hint_types, hint_prob = zip(*hint_dist.items())
+    hint_prob, hint_count = zip(*hint_prob)
 
     # Add required location hints
     alwaysLocations = getHintGroup('alwaysLocation', world)
@@ -401,7 +426,7 @@ def buildBossString(reward, color, world):
     text = ''
     for location in world.get_filled_locations():
         if location.item.name == reward:
-            text += '\x08\x13' + chr(location.item.code)
+            text += '\x08\x13' + chr(location.item.special['item_id'])
             text += colorText(getHint(location.name, world.clearer_hints).text, color)
     return text
 
@@ -414,23 +439,22 @@ def buildGanonText(world, messages):
     update_message_by_id(messages, 0x70CA, " ")
 
     # lines before battle
-    text = '\x08'
     ganonLines = getHintGroup('ganonLine', world)
     random.shuffle(ganonLines)
     text = get_raw_text(ganonLines.pop().text)
     update_message_by_id(messages, 0x70CB, text)
 
     # light arrow hint or validation chest item
-    text = '\x08'
     if world.trials == 0:
-        for location in world.get_filled_locations():
-            if location.item.name == 'Light Arrows':
-                text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
-                location_hint = location.hint.replace('Ganon\'s Castle', 'my castle')
-                location_hint = location.hint.replace('Ganon\'s Tower', 'my tower')
-                text += get_raw_text(location_hint)
-                text += '!'
-                break
+        location = world.light_arrow_location
+        text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
+        location_hint = location.hint.replace('Ganon\'s Castle', 'my castle') \
+                                     .replace('Ganon\'s Tower', 'my tower')
+        if world.id != location.world.id:
+            text += "\x05\x42Player %d's\x05\x40 %s" % (location.world.id +1, get_raw_text(location_hint))
+        else:
+            text += get_raw_text(location_hint)
+        text += '!'
     else:
         text = get_raw_text(getHint('Validation Line', world.clearer_hints).text)
         for location in world.get_filled_locations():
@@ -440,6 +464,7 @@ def buildGanonText(world, messages):
                 break
 
     update_message_by_id(messages, 0x70CC, text)
+
 
 def get_raw_text(string):
     text = ''
@@ -455,3 +480,4 @@ def get_raw_text(string):
         else:
             text += char
     return text
+

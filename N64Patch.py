@@ -5,6 +5,7 @@ import array
 from Rom import int16_as_bytes, int24_as_bytes, int32_as_bytes, bytes_as_int16, bytes_as_int24, bytes_as_int32
 import zlib
 import copy
+import zipfile
 
 
 # get the next XOR key. Uses some location in the source rom.
@@ -174,10 +175,18 @@ def create_patch_file(rom, file, xor_range=(0x00B8AD30, 0x00F029A0)):
 
 
 # This will apply a patch file to a source rom to generate a patched rom.
-def apply_patch_file(rom, file):
+def apply_patch_file(rom, file, sub_file=None):
     # load the patch file and decompress
-    with open(file, 'rb') as stream:
-        patch_data = stream.read()
+    if sub_file:
+        with zipfile.ZipFile(file, 'r') as patch_archive:
+            try:
+                with patch_archive.open(sub_file, 'r') as stream:
+                    patch_data = stream.read()
+            except KeyError as ex:
+                raise FileNotFoundError('Patch file missing from archive. Invalid Player ID.')
+    else:
+        with open(file, 'rb') as stream:
+            patch_data = stream.read()
     patch_data = zlib.decompress(patch_data)
 
     # make sure the header is correct

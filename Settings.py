@@ -4,6 +4,7 @@ import string
 import re
 import hashlib
 import math
+import sys
 
 from version import __version__
 from Utils import random_choices
@@ -67,7 +68,10 @@ class Settings():
                 i_bits = [ 1 if value else 0 ]
             if setting.type == str:
                 if 'choices' in setting.args_params:
-                    index = setting.args_params['choices'].index(value)
+                    try:
+                        index = setting.args_params['choices'].index(value)
+                    except ValueError:
+                        index = setting.args_params['choices'].index(setting.args_params['default'])
                     # https://stackoverflow.com/questions/10321978/integer-to-bitfield-as-a-list
                     i_bits = [1 if digit=='1' else 0 for digit in bin(index)[2:]]
                     i_bits.reverse()
@@ -155,14 +159,27 @@ class Settings():
         for info in setting_infos:
             if info.name not in self.__dict__:
                 if info.type == bool:
-                    self.__dict__[info.name] = True if info.gui_params['default'] == 'checked' else False
+                    if info.gui_params is not None and 'default' in info.gui_params:
+                        self.__dict__[info.name] = True if info.gui_params['default'] == 'checked' else False
+                    else:
+                        self.__dict__[info.name] = False
                 if info.type == str:
                     if 'default' in info.args_params:
-                        self.__dict__[info.name] = info.gui_params['default'] or info.args_params['default']
+                        self.__dict__[info.name] = info.args_params['default']
+                    elif info.gui_params is not None and 'default' in info.gui_params:
+                        if 'options' in info.gui_params and isinstance(info.gui_params['options'], dict):
+                            self.__dict__[info.name] = info.gui_params['options'][info.gui_params['default']]
+                        else:
+                            self.__dict__[info.name] = info.gui_params['default']
                     else:
                         self.__dict__[info.name] = ""
                 if info.type == int:
-                    self.__dict__[info.name] = info.gui_params['default'] or 1
+                    if 'default' in info.args_params:
+                        self.__dict__[info.name] = info.args_params['default']
+                    elif info.gui_params is not None and 'default' in info.gui_params:                      
+                        self.__dict__[info.name] = info.gui_params['default']
+                    else:
+                        self.__dict__[info.name] = 1
         self.settings_string = self.get_settings_string()
         if(self.seed is None):
             # https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
@@ -180,6 +197,7 @@ def get_settings_from_command_line_args():
     parser.add_argument('--gui', help='Launch the GUI', action='store_true')
     parser.add_argument('--loglevel', default='info', const='info', nargs='?', choices=['error', 'info', 'warning', 'debug'], help='Select level of logging for output.')
     parser.add_argument('--settings_string', help='Provide sharable settings using a settings string. This will override all flags that it specifies.')
+    parser.add_argument('--convert_settings', help='Only convert the specified settings to a settings string. If a settings string is specified output the used settings instead.', action='store_true')
 
     args = parser.parse_args()
 
@@ -191,4 +209,11 @@ def get_settings_from_command_line_args():
     if args.settings_string is not None:
         settings.update_with_settings_string(args.settings_string)
 
+    if args.convert_settings:
+        if args.settings_string is not None:
+            print(settings.get_settings_display())
+        else:
+            print(settings.get_settings_string())
+        sys.exit(0)
+        
     return settings, args.gui, args.loglevel

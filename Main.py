@@ -7,23 +7,26 @@ import time
 import os, os.path
 import sys
 import struct
+import zipfile
+import io
 
-from BaseClasses import World, CollectionState, Spoiler
-from EntranceShuffle import link_entrances
+from World import World
+from State import State
+from Spoiler import Spoiler
+from EntranceList import link_entrances
 from Rom import LocalRom
 from Patches import patch_rom, patch_cosmetics
-from Regions import create_regions
-from Dungeons import create_dungeons
-from Rules import set_rules
+from DungeonList import create_dungeons
 from Fill import distribute_items_restrictive
-from ItemList import generate_itempool
+from Item import Item
+from ItemPool import generate_itempool
 from Hints import buildGossipHints
-from Utils import default_output_path, is_bundled, subprocess_args
+from Utils import default_output_path, is_bundled, subprocess_args, data_path
 from version import __version__
-from OcarinaSongs import verify_scarecrow_song_str
 from N64Patch import create_patch_file, apply_patch_file
-import WorldFile
 from SettingsList import setting_infos
+from Rules import set_rules
+
 
 class dummy_window():
     def __init__(self):
@@ -33,6 +36,7 @@ class dummy_window():
     def update_progress(self, val):
         pass
 
+
 def main(settings, window=dummy_window()):
 
     start = time.clock()
@@ -40,10 +44,6 @@ def main(settings, window=dummy_window()):
     logger = logging.getLogger('')
 
     worlds = []
-
-    # verify that the settings are valid
-    if settings.free_scarecrow:
-        verify_scarecrow_song_str(settings.scarecrow_song, settings.ocarina_songs)
 
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom != 'None':
@@ -87,16 +87,14 @@ def main(settings, window=dummy_window()):
         for dung in mqd_picks:
             world.dungeon_mq[dung] = True
 
-        create_regions(world)
 
-        window.update_progress(0 + 2*(id + 1)/settings.world_count)
-        logger.info('Creating Dungeons')
+        overworld_data = os.path.join(data_path('World'), 'Overworld.json')
+        world.load_regions_from_json(overworld_data)
+
         create_dungeons(world)
 
-        window.update_progress(0 + 3*(id + 1)/settings.world_count)
-        logger.info('Linking Entrances')
-        link_entrances(world)
-
+        world.initialize_entrances()
+        
         if settings.shopsanity != 'off':
             world.random_shop_prices()
 
@@ -107,6 +105,7 @@ def main(settings, window=dummy_window()):
         window.update_progress(0 + 5*(id + 1)/settings.world_count)
         logger.info('Generating Item Pool.')
         generate_itempool(world)
+
 
     window.update_status('Placing the Items')
     logger.info('Fill the world.')
@@ -120,7 +119,7 @@ def main(settings, window=dummy_window()):
         window.update_progress(50)
     if settings.hints != 'none':
         window.update_status('Calculating Hint Data')
-        CollectionState.update_required_items(worlds)
+        State.update_required_items(worlds)
         for world in worlds:
             buildGossipHints(worlds, world)
         window.update_progress(55)
@@ -128,37 +127,47 @@ def main(settings, window=dummy_window()):
     logger.info('Patching ROM.')
 
     if settings.world_count > 1:
-        outfilebase = 'OoT_%s_%s_W%dP%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count, settings.player_num)
+        outfilebase = 'OoT_%s_%s_W%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count)
     else:
         outfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
 
     output_dir = default_output_path(settings.output_dir)
-    output_path = os.path.join(output_dir, outfilebase)
 
     if settings.compress_rom == 'Patch':
-        if settings.player_num_all:
-            rng_state = random.getstate()
-            for world in worlds:
+        rng_state = random.getstate()
+        file_list = []
+        window.update_progress(65)
+        for world in worlds:
+            if settings.world_count > 1:
                 window.update_status('Patching ROM: Player %d' % (world.id + 1))
-                random.setstate(rng_state)
-                patch_rom(worlds[settings.player_num - 1], rom)
-                patch_cosmetics(settings, rom)
-                window.update_progress(65)
+                patchfilename = '%sP%d.zpf' % (outfilebase, world.id + 1)
+            else:
+                window.update_status('Patching ROM')
+                patchfilename = '%s.zpf' % outfilebase
 
-                window.update_status('Creating Patch File: Player %d' % (world.id + 1))
-                outfilebase = 'OoT_%s_%s_W%dP%d.zpf' % (worlds[0].settings_string, worlds[0].seed, settings.world_count, world.id + 1)
-                output_path = os.path.join(output_dir, outfilebase)
-                create_patch_file(rom, output_path)
-                rom.restore()
-        else:
-            window.update_status('Patching ROM')
-            patch_rom(worlds[settings.player_num - 1], rom)
+            random.setstate(rng_state)
+            patch_rom(world, rom)
             patch_cosmetics(settings, rom)
-            window.update_progress(65)
+            window.update_progress(65 + 20*(world.id + 1)/settings.world_count)
 
             window.update_status('Creating Patch File')
-            output_path += '.zpf'
+            output_path = os.path.join(output_dir, patchfilename)
+            file_list.append(patchfilename)
             create_patch_file(rom, output_path)
+            rom.restore()
+            window.update_progress(65 + 30*(world.id + 1)/settings.world_count)
+
+        if settings.world_count > 1:
+            window.update_status('Creating Patch Archive')
+            output_path = os.path.join(output_dir, '%s.zpfz' % outfilebase)
+            with zipfile.ZipFile(output_path, mode="w") as patch_archive:
+                for file in file_list:
+                    file_path = os.path.join(output_dir, file)
+                    patch_archive.write(file_path, file, compress_type=zipfile.ZIP_DEFLATED)
+            for file in file_list:
+                os.remove(os.path.join(output_dir, file))          
+        window.update_progress(95)
+
     elif settings.compress_rom != 'None':
         window.update_status('Patching ROM')
         patch_rom(worlds[settings.player_num - 1], rom)
@@ -166,7 +175,10 @@ def main(settings, window=dummy_window()):
         window.update_progress(65)
 
         window.update_status('Saving Uncompressed ROM')
-        output_path += '.z64'
+        if settings.world_count > 1:
+            output_path = os.path.join(output_dir, '%sP%d.z64' % (outfilebase, settings.player_num))
+        else:
+            output_path = os.path.join(output_dir, '%s.z64' % outfilebase)
         rom.write_to_file(output_path)
         if settings.compress_rom == 'True':
             window.update_status('Compressing ROM')
@@ -211,7 +223,6 @@ def main(settings, window=dummy_window()):
     return worlds[settings.player_num - 1]
 
 
-
 def from_patch_file(settings, window=dummy_window()):
     start = time.clock()
     logger = logging.getLogger('')
@@ -224,13 +235,20 @@ def from_patch_file(settings, window=dummy_window()):
 
     logger.info('Patching ROM.')
 
-    outfilebase = os.path.basename(settings.patch_file).split('.')[0]
+    filename_split = os.path.basename(settings.patch_file).split('.')
+    outfilebase = filename_split[0]
+    extension = filename_split[-1]
 
     output_dir = default_output_path(settings.output_dir)
     output_path = os.path.join(output_dir, outfilebase)
 
     window.update_status('Patching ROM')
-    apply_patch_file(rom, settings.patch_file)
+    if extension == 'zpf':
+        subfile = None
+    else:
+        subfile = '%sP%d.zpf' % (outfilebase, settings.player_num)
+        output_path += 'P%d' % (settings.player_num)
+    apply_patch_file(rom, settings.patch_file, subfile)
     patch_cosmetics(settings, rom)
     window.update_progress(65)
 
@@ -260,7 +278,7 @@ def from_patch_file(settings, window=dummy_window()):
             logger.info('OS not supported for compression')
 
         if compressor_path != "":
-            run_process(window, logger, [compressor_path, output_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+            run_process(window, logger, [compressor_path, output_path, output_path.replace('.z64', '-comp.z64')])
         os.remove(output_path)
     window.update_progress(95)
 
@@ -289,15 +307,21 @@ def run_process(window, logger, args):
             break
 
 
+def copy_worlds(worlds):
+    worlds = [world.copy() for world in worlds]
+    Item.fix_worlds_after_copy(worlds)
+    return worlds
+
+
 def create_playthrough(worlds):
-    if worlds[0].check_beatable_only and not CollectionState.can_beat_game([world.state for world in worlds]):
+    if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Uncopied is broken too.')
     # create a copy as we will modify it
     old_worlds = worlds
-    worlds = [world.copy() for world in worlds]
+    worlds = copy_worlds(worlds)
 
     # if we only check for beatable, we can do this sanity check first before writing down spheres
-    if worlds[0].check_beatable_only and not CollectionState.can_beat_game([world.state for world in worlds]):
+    if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Cannot beat game. Something went terribly wrong here!')
 
     state_list = [world.state for world in worlds]
@@ -338,7 +362,7 @@ def create_playthrough(worlds):
         del state_list[location.world.id].collected_locations[location.name]
 
         # remove the item from the world and test if the game is still beatable
-        if CollectionState.can_beat_game(state_list):
+        if State.can_beat_game(state_list):
             # cull entries for spoiler walkthrough at end
             required_locations.remove(location)
         else:
@@ -357,3 +381,4 @@ def create_playthrough(worlds):
     # we can finally output our playthrough
     for world in old_worlds:
         world.spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
+
