@@ -398,6 +398,7 @@ class State(object):
         # if the every state got the Triforce, then return True
         for state in new_state_list:
             if not state.has('Triforce'):
+                #not_collected = [location for location in state.world.get_filled_locations() if location.item.advancement and (location.name not in state.collected_locations.keys() or state.collected_locations[location.name] == False)]
                 return False
         return True
 

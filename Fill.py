@@ -119,6 +119,9 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
             logging.getLogger('').debug('Unfilled Locations: %s [World %d]' % (location.name, location.world.id))
         raise FillError('Not all locations have an item.')
 
+    if not State.can_beat_game(world_states, True):
+        raise FillError('Cannot beat game!')
+
     # Get Light Arrow location for later usage.
     for world in worlds:
         for location in world.get_filled_locations():
