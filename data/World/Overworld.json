@@ -184,7 +184,7 @@
                 (not logic_no_ocarina_of_time) and Kokiri_Emerald
                 and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Song from Ocarina of Time": "
-                (not (logic_no_ocarina_of_time and shuffle_song_items)) and Kokiri_Emerald
+                (not logic_no_ocarina_of_time) and Kokiri_Emerald
                 and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Generic Grotto Gossip Stone": "True"
         },

@@ -238,6 +238,14 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
     unplaced_prizes = [song for song in songpool if song.name not in placed_prizes]
     empty_song_locations = [loc for loc in locations if loc.item is None]
 
+    non_required_locations = {}
+    for location in empty_song_locations:
+        if location.world.logic_no_ocarina_of_time and location.name == 'Song from Ocarina of Time':
+            non_required_locations[location.world.id] = location
+
+    # Set logic_no_ocarina_of_time to false to allow songs to be placed regardless of that setting.
+    logic_no_ocarina_of_time = {world.id: world.swap_value('logic_no_ocarina_of_time', False) for world in worlds}
+
     # List of states with all items
     all_state_base_list = State.get_states_with_items([world.state for world in worlds], itempool)
 
@@ -249,6 +257,16 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
             random.shuffle(prizepool)
             random.shuffle(prize_locs)
             fill_restrictive(window, worlds, all_state_base_list, prize_locs, prizepool)
+
+            # Make sure a required song is not pushed to non_required_locations.
+            if non_required_locations:
+                for world in worlds:
+                    world.logic_no_ocarina_of_time = logic_no_ocarina_of_time[world.id]
+                state_list = [state.copy() for state in all_state_base_list]
+                if not State.can_beat_game(state_list, True):
+                    for world in worlds:
+                        world.logic_no_ocarina_of_time = False
+                    raise FillError('Songs placed in an unbeatable configuration.')
             logging.getLogger('').info("Songs placed")
         except FillError as e:
             logging.getLogger('').info("Failed to place songs. Will retry %s more times", attempts)
