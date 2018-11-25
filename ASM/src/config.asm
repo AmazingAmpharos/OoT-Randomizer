@@ -58,3 +58,18 @@ FAIRY_ITEMS:
 .byte 0x52 ; Crater
 .byte 0x53 ; Ganon's Castle
 .align 4
+
+BOMBCHUS_IN_LOGIC:
+.word 0x00
+
+RAINBOW_BRIDGE_CONDITION:
+.word 0x00
+; 0 = Open
+; 1 = Medallions
+; 2 = Dungeons
+
+GOSSIP_HINT_CONDITION:
+.word 0x00
+; 0 = Mask of Truth
+; 1 = Stone of Agony
+; 2 = No Requirements
