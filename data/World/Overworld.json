@@ -311,6 +311,7 @@
         "region_name": "Haunted Wasteland",
         "locations": {
             "Haunted Wasteland Structure Chest": "has_fire_source",
+            "Haunted Wasteland Bombchu Salesman": "Progressive_Wallet",
             "GS Wasteland Ruins": "can_use(Hookshot)"
         },
         "exits": {

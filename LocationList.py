@@ -132,6 +132,7 @@ location_table = {
     "Zoras Domain Nut Pot":                            ("Event",       None,  None, "Zora's Domain",          None),
     "Spirit Temple Nut Crate":                         ("Event",       None,  None, "Spirit Temple",          None),
     "Gerudo Fortress Carpenter Rescue":                ("Event",       None,  None, "Gerudo Fortress",        None),
+    "Haunted Wasteland Bombchu Salesman":              ("Event",       None,  None, "Haunted Wasteland",      None),
     "Ganons Castle Forest Trial Clear":                ("Event",       None,  None, "Ganon's Castle",         None),
     "Ganons Castle Fire Trial Clear":                  ("Event",       None,  None, "Ganon's Castle",         None),
     "Ganons Castle Water Trial Clear":                 ("Event",       None,  None, "Ganon's Castle",         None),
