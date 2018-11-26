@@ -1,4 +1,5 @@
 import random
+import struct
 
 from Hints import writeGossipStoneHintsHints, buildBossRewardHints, \
         buildGanonText, getSimpleHintNoPrefix
@@ -849,7 +850,7 @@ def patch_rom(world, rom):
     rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00])
 
     #Give hp after first ocarina minigame round
-    rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02]) 
+    rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02])
 
     # Allow owl to always carry the kid down Death Mountain
     rom.write_bytes(0xE304F0, [0x24, 0x0E, 0x00, 0x01])
