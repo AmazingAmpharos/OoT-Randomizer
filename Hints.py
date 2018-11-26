@@ -439,23 +439,22 @@ def buildGanonText(world, messages):
     update_message_by_id(messages, 0x70CA, " ")
 
     # lines before battle
-    text = '\x08'
     ganonLines = getHintGroup('ganonLine', world)
     random.shuffle(ganonLines)
     text = get_raw_text(ganonLines.pop().text)
     update_message_by_id(messages, 0x70CB, text)
 
     # light arrow hint or validation chest item
-    text = '\x08'
     if world.trials == 0:
-        for location in world.get_filled_locations():
-            if location.item.name == 'Light Arrows':
-                text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
-                location_hint = location.hint.replace('Ganon\'s Castle', 'my castle') \
-                                             .replace('Ganon\'s Tower', 'my tower')
-                text += get_raw_text(location_hint)
-                text += '!'
-                break
+        location = world.light_arrow_location
+        text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
+        location_hint = location.hint.replace('Ganon\'s Castle', 'my castle') \
+                                     .replace('Ganon\'s Tower', 'my tower')
+        if world.id != location.world.id:
+            text += "\x05\x42Player %d's\x05\x40 %s" % (location.world.id +1, get_raw_text(location_hint))
+        else:
+            text += get_raw_text(location_hint)
+        text += '!'
     else:
         text = get_raw_text(getHint('Validation Line', world.clearer_hints).text)
         for location in world.get_filled_locations():

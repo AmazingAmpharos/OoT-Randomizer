@@ -42,7 +42,7 @@
 
 ; Patch NPCs to give override-compatible items
 .org 0xDB13D3 :: .byte 0x76 ; Frog Ocarina Game
-.org 0xDF264F :: .byte 0x76 ; Ocarina memory game
+.org 0xDF2647 :: .byte 0x76 ; Ocarina memory game
 .org 0xE2F093 :: .byte 0x34 ; Bombchu Bowling Bomb Bag
 .org 0xEC9CE7 :: .byte 0x7A ; Deku Theater Mask of Truth
 
@@ -672,8 +672,19 @@ skip_GS_BGS_text:
 ;==================================================================================================
 ;
 ; Replaces:
-;   lhu     t0,0x04C6(t0)
-;   li      at,0x0B
+;   lhu     t0, 0x04C6 (t0)
+;   li      at, 0x0B
 .org 0xEF4f98
-    lhu     t0, 0x0670(v0)
+    lhu     t0, 0x0670 (v0)
     li      at, 0x0800
+
+
+;==================================================================================================
+; Talon Cutscene Skip
+;==================================================================================================
+;
+; Replaces: lui    a1, 0x801F @ovl+0x1080
+
+.org 0xCC0020
+    jal     talon_break_free
+    lui     a1, 0x801F

@@ -142,22 +142,17 @@ class Scale(Setting_Widget):
 
 
 def parse_custom_tunic_color(s):
-    if s == 'Custom Color':
-        raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
-    elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
-        return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
-    elif s in get_tunic_color_options():
-        return s
-    else:
-        raise argparse.ArgumentTypeError('Invalid color specified')
-
+    return parse_color(s, get_tunic_color_options())
 
 def parse_custom_navi_color(s):
+    return parse_color(s, get_navi_color_options())
+
+def parse_color(s, color_choices):
     if s == 'Custom Color':
         raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
     elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
         return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
-    elif s in get_navi_color_options():
+    elif s in color_choices:
         return s
     else:
         raise argparse.ArgumentTypeError('Invalid color specified')
@@ -210,6 +205,9 @@ setting_infos = [
                     Use to select world to generate when there are multiple worlds.
                     ''',
             'type': int
+        },
+        {
+            'dependency': lambda guivar: guivar['compress_rom'].get() not in ['No Output', 'Patch File'],
         }),
     Checkbutton(
             name           = 'create_spoiler',
@@ -221,7 +219,7 @@ setting_infos = [
             gui_tooltip    = '''\
                              Enabling this will change the seed.
                              ''',
-            gui_dependency = lambda guivar: guivar['compress_rom'].get() != 'No ROM Output',
+            gui_dependency = lambda guivar: guivar['compress_rom'].get() != 'No Output',
             default        = True,
             shared         = True,
             ),
@@ -259,7 +257,7 @@ setting_infos = [
                       people without sending the ROM file.
                       '''
         },
-        shared=True,
+        shared=False,
     ),
     Checkbutton(
             name           = 'open_forest',
@@ -354,7 +352,7 @@ setting_infos = [
                              All Dungeons:  Collect all spiritual stones and all medallions to create the bridge.
                              Open:          The bridge will spawn without an item requirement.
                              ''',
-            gui_text       = 'Rainbox Bridge Requirement',
+            gui_text       = 'Rainbow Bridge Requirement',
             gui_group      = 'open',
             gui_tooltip    = '''\
                              'All Dungeons': All Medallions and Stones
@@ -437,7 +435,7 @@ setting_infos = [
                              how many you have.
         
                              Bombchus can be purchased for 60/99/180
-                             rupees once they are been found.
+                             rupees once they have been found.
         
                              Bombchu Bowling opens with Bombchus.
                              Bombchus are available at Kokiri Shop
@@ -459,7 +457,7 @@ setting_infos = [
             gui_tooltip    = '''\
                              Dungeons have exactly one major
                              item. This naturally makes each
-                             dungeon similar in value instaed
+                             dungeon similar in value instead
                              of valued based on chest count.
         
                              Spirit Temple Colossus hands count
@@ -1643,7 +1641,7 @@ setting_infos = [
                              ''',
             ),
 
-    Setting_Info('kokiricolor', str, 0, False,
+    Setting_Info('kokiri_color', str, 0, False,
         {
             'default': 'Kokiri Green',
             'type': parse_custom_tunic_color,
@@ -1656,7 +1654,7 @@ setting_infos = [
         },
         {
             'text': 'Kokiri Tunic Color',
-            'group': 'tuniccolor',
+            'group': 'tunic_color',
             'widget': 'Combobox',
             'default': 'Kokiri Green',
             'options': get_tunic_color_options(),
@@ -1667,7 +1665,7 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
-    Setting_Info('goroncolor', str, 0, False,
+    Setting_Info('goron_color', str, 0, False,
         {
             'default': 'Goron Red',
             'type': parse_custom_tunic_color,
@@ -1680,7 +1678,7 @@ setting_infos = [
         },
         {
             'text': 'Goron Tunic Color',
-            'group': 'tuniccolor',
+            'group': 'tunic_color',
             'widget': 'Combobox',
             'default': 'Goron Red',
             'options': get_tunic_color_options(),
@@ -1691,7 +1689,7 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
-    Setting_Info('zoracolor', str, 0, False,
+    Setting_Info('zora_color', str, 0, False,
         {
             'default': 'Zora Blue',
             'type': parse_custom_tunic_color,
@@ -1704,7 +1702,7 @@ setting_infos = [
         },
         {
             'text': 'Zora Tunic Color',
-            'group': 'tuniccolor',
+            'group': 'tunic_color',
             'widget': 'Combobox',
             'default': 'Zora Blue',
             'options': get_tunic_color_options(),
@@ -1715,7 +1713,7 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
-    Setting_Info('navicolordefault', str, 0, False,
+    Setting_Info('navi_color_default', str, 0, False,
         {
             'default': 'White',
             'type': parse_custom_navi_color,
@@ -1728,7 +1726,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Idle',
-            'group': 'navicolor',
+            'group': 'navi_color',
             'widget': 'Combobox',
             'default': 'White',
             'options': get_navi_color_options(),
@@ -1739,7 +1737,7 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
-    Setting_Info('navicolorenemy', str, 0, False,
+    Setting_Info('navi_color_enemy', str, 0, False,
         {
             'default': 'Yellow',
             'type': parse_custom_navi_color,
@@ -1752,7 +1750,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Targeting Enemy',
-            'group': 'navicolor',
+            'group': 'navi_color',
             'widget': 'Combobox',
             'default': 'Yellow',
             'options': get_navi_color_options(),
@@ -1763,7 +1761,7 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
-    Setting_Info('navicolornpc', str, 0, False,
+    Setting_Info('navi_color_npc', str, 0, False,
         {
             'default': 'Light Blue',
             'type': parse_custom_navi_color,
@@ -1776,7 +1774,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Targeting NPC',
-            'group': 'navicolor',
+            'group': 'navi_color',
             'widget': 'Combobox',
             'default': 'Light Blue',
             'options': get_navi_color_options(),
@@ -1787,7 +1785,7 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
-    Setting_Info('navicolorprop', str, 0, False,
+    Setting_Info('navi_color_prop', str, 0, False,
         {
             'default': 'Green',
             'type': parse_custom_navi_color,
@@ -1800,7 +1798,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Targeting Prop',
-            'group': 'navicolor',
+            'group': 'navi_color',
             'widget': 'Combobox',
             'default': 'Green',
             'options': get_navi_color_options(),
