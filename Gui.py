@@ -9,13 +9,14 @@ import shutil
 from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, \
         Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, \
         StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, \
-        Button, filedialog, messagebox, ttk, HORIZONTAL, Toplevel, colorchooser
+        Button, filedialog, messagebox, simpledialog, ttk, HORIZONTAL, Toplevel, \
+        colorchooser
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
 from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry
 from Main import main, from_patch_file
-from Utils import is_bundled, local_path, default_output_path, open_file, check_version
+from Utils import is_bundled, local_path, data_path, default_output_path, open_file, check_version
 from Settings import Settings
 from SettingsList import setting_infos
 from version import __version__ as ESVersion
@@ -117,6 +118,7 @@ def guiMain(settings=None):
     guivars = {}
     widgets = {}
     dependencies = {}
+    presets = {}
 
     # hierarchy
     ############
@@ -408,6 +410,94 @@ def guiMain(settings=None):
     widgets['multiworld'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
+    # Settings Presets Functions
+    def import_setting_preset():
+        if guivars['settings_preset'].get() == '[New Preset]':
+            messagebox.showerror("Invalid Preset", "You must select an existing preset!")
+            return
+
+        # get cosmetic settings
+        old_settings = guivars_to_settings(guivars)
+        new_settings = {setting.name: old_settings.__dict__[setting.name] for setting in
+                            filter(lambda s: not (s.shared and s.bitwidth > 0), setting_infos)}
+
+        preset = presets[guivars['settings_preset'].get()]
+        new_settings.update(preset)
+
+        settings = Settings(new_settings)
+        settings.seed = guivars['seed'].get()
+
+        settings_to_guivars(settings, guivars)
+        show_settings()
+
+
+    def add_settings_preset():
+        preset_name = guivars['settings_preset'].get()
+        if preset_name == '[New Preset]':
+            preset_name = simpledialog.askstring("New Preset", "Enter a new preset name:")
+            if not preset_name or preset_name in presets or preset_name == '[New Preset]':
+                messagebox.showerror("Invalid Preset", "You must enter a new preset name!")
+                return
+        elif presets[preset_name].get('locked', False):
+            messagebox.showerror("Invalid Preset", "You cannot modify a locked preset!")
+            return
+
+        settings = guivars_to_settings(guivars)
+        preset = {setting.name: settings.__dict__[setting.name] for setting in 
+            filter(lambda s: s.shared and s.bitwidth > 0, setting_infos)}
+
+        presets[preset_name] = preset
+        guivars['settings_preset'].set(preset_name)
+        update_preset_dropdown()
+
+
+    def remove_setting_preset():
+        preset_name = guivars['settings_preset'].get()
+        if preset_name == '[New Preset]':
+            messagebox.showerror("Invalid Preset", "You must select an existing preset!")
+            return
+        elif presets[preset_name].get('locked', False):
+            messagebox.showerror("Invalid Preset", "You cannot modify a locked preset!")
+            return
+
+        confirm = messagebox.askquestion('Remove Setting Preset', 'Are you sure you want to remove the setting preset "%s"?' % preset_name)
+        if confirm != 'yes':
+            return
+
+        del presets[preset_name]
+        guivars['settings_preset'].set('[New Preset]')
+        update_preset_dropdown()
+
+
+    def update_preset_dropdown():
+        widgets['settings_preset']['values'] = ['[New Preset]'] + list(presets.keys())
+
+
+    # Settings Presets
+    widgets['settings_presets'] = LabelFrame(frames['rom_tab'], text='Settings Presets')
+    countLabel = Label(widgets['settings_presets'], wraplength=350, justify=LEFT, text='Presets are settings that can be saved and loaded from. Loading a preset will overwrite all settings that affect the seed.')
+    countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
+
+    selectPresetFrame = Frame(widgets['settings_presets'])
+    guivars['settings_preset'] = StringVar(value='[New Preset]')
+    widgets['settings_preset'] = ttk.Combobox(selectPresetFrame, textvariable=guivars['settings_preset'], values=['[New Preset]'], state='readonly', width=35)
+    widgets['settings_preset'].pack(side=BOTTOM, anchor=W)
+    ToolTips.register(widgets['settings_preset'], 'Select a setting preset to apply.')
+    widgets['settings_preset'].pack(side=LEFT, padx=(5, 0))
+    selectPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
+
+    buttonPresetFrame = Frame(widgets['settings_presets'])
+    importPresetButton = Button(buttonPresetFrame, text='Load Preset', command=import_setting_preset)
+    addPresetButton = Button(buttonPresetFrame, text='Save Preset', command=add_settings_preset)
+    removePresetButton = Button(buttonPresetFrame, text='Remove Preset', command=remove_setting_preset)
+    importPresetButton.pack(side=LEFT, anchor=W, padx=5)
+    addPresetButton.pack(side=LEFT, anchor=W, padx=5)
+    removePresetButton.pack(side=LEFT, anchor=W, padx=5)
+    buttonPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
+
+    widgets['settings_presets'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
+
+
     # create the generation menu
     def update_generation_type(event=None):
         if generation_notebook.tab(generation_notebook.select())['text'] == 'Generate From Seed':
@@ -523,14 +613,27 @@ def guiMain(settings=None):
         settings_to_guivars(settings, guivars)
     else:
         # try to load saved settings
+        settingsFile = local_path('settings.sav')
         try:
-            settingsFile = local_path('settings.sav')
             with open(settingsFile) as f:
                 settings = Settings( json.load(f) )
-                settings.update_seed("")
-                settings_to_guivars(settings, guivars)
+        except:
+            settings = Settings({})
+        settings.update_seed("")
+        settings_to_guivars(settings, guivars)
+
+        presets = {}
+        try:
+            with open(data_path('presets_default.json')) as f:
+                presets.update(json.load(f))
         except:
             pass
+        try:
+            with open(local_path('presets.sav')) as f:
+                presets.update(json.load(f))
+        except:
+            pass           
+        update_preset_dropdown()
 
     show_settings()
 
@@ -548,10 +651,19 @@ def guiMain(settings=None):
     mainWindow.mainloop()
 
     # save settings on close
-    with open('settings.sav', 'w') as outfile:
+    settings_file = local_path('settings.sav')
+    with open(settings_file, 'w') as outfile:
         settings = guivars_to_settings(guivars)
-        json.dump(settings.__dict__, outfile)
+        del settings.__dict__["seed"]
+        del settings.__dict__["numeric_seed"]
+        if "locked" in settings.__dict__:
+            del settings.__dict__["locked"]
+        json.dump(settings.__dict__, outfile, indent=4)
 
+    presets_file = local_path('presets.sav')
+    with open(presets_file, 'w') as outfile:
+        preset_json = {name: preset for name,preset in presets.items() if not preset.get('locked')}
+        json.dump(preset_json, outfile, indent=4)
 
 if __name__ == '__main__':
     guiMain()
