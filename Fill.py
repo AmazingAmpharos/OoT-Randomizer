@@ -79,7 +79,9 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # of failing compared to other item type. So this way we only have retry
     # the song locations only.
     if not worlds[0].shuffle_song_items:
-        fill_songs(window, worlds, song_locations, songitempool, progitempool)
+        unplaced_songs, unfilled_song_locations = fill_songs(window, worlds, song_locations, songitempool, progitempool)
+        progitempool.extend(unplaced_songs)
+        fill_locations.extend(unfilled_song_locations)
 
     # Put one item in every dungeon, needs to be done before other items are
     # placed to ensure there is a spot available for them
@@ -95,8 +97,13 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # Place all priority items.
     # These items are items that only check if the item is allowed to be
     # placed in the location, not checking reachability. This is important
-    # for things like Ice Traps that can't be found at some locations
+    # for things like Ice Traps that can't be found at some locations.
+    # We'll try to place any restricted items here remaining, since the game
+    # is still beatable. These should only happen because some locations
+    # are considered never accessible by the setting.
     random.shuffle(fill_locations)
+    prioitempool.extend(progitempool)
+    progitempool = []
     fill_restrictive_fast(window, worlds, fill_locations, prioitempool)
 
     # Place the rest of the items.
@@ -107,16 +114,14 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 
     # Log unplaced item/location warnings
     for item in progitempool + prioitempool + restitempool:
-        logging.getLogger('').debug('Unplaced Items: %s [World %d]' % (item.name, item.world.id))
-    if progitempool + prioitempool + restitempool:
-        for item in progitempool + prioitempool + restitempool:
-            print('Unplaced Items: %s [World %d]' % (item.name, item.world.id))
+        logging.getLogger('').error('Unplaced Items: %s [World %d]' % (item.name, item.world.id))
+    for location in fill_locations:
+        logging.getLogger('').error('Unfilled Locations: %s [World %d]' % (location.name, location.world.id))
 
+    if progitempool + prioitempool + restitempool:
         raise FillError('Not all items are placed.')
 
     if fill_locations:
-        for location in fill_locations:
-            logging.getLogger('').debug('Unfilled Locations: %s [World %d]' % (location.name, location.world.id))
         raise FillError('Not all locations have an item.')
 
     if not State.can_beat_game(world_states, True):
@@ -144,7 +149,8 @@ def fill_dungeons_restrictive(window, worlds, shuffled_locations, dungeon_items,
     dungeon_items.sort(key=lambda item: sort_order.get(item.type, 1))
 
     # place dungeon items
-    fill_restrictive(window, worlds, all_state_base_list, shuffled_locations, dungeon_items)
+    if fill_restrictive(window, worlds, all_state_base_list, shuffled_locations, dungeon_items):
+        raise FillError("Not all dungeon items placed.")
 
     for world in worlds:
         world.state.clear_cached_unreachable()
@@ -216,7 +222,8 @@ def fill_shops(window, worlds, locations, shoppool, itempool, attempts=15):
             prize_locs = list(locations)
             random.shuffle(prizepool)
             random.shuffle(prize_locs)
-            fill_restrictive(window, worlds, all_state_base_list, prize_locs, prizepool)
+            if fill_restrictive(window, worlds, all_state_base_list, prize_locs, prizepool):
+                raise FillError("Not all shop items placed.")
             logging.getLogger('').info("Shop items placed")
         except FillError as e:
             logging.getLogger('').info("Failed to place shop items. Will retry %s more times", attempts)
@@ -238,22 +245,17 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
     unplaced_prizes = [song for song in songpool if song.name not in placed_prizes]
     empty_song_locations = [loc for loc in locations if loc.item is None]
 
-    non_required_locations = {}
-    for location in empty_song_locations:
-        if location.world.logic_no_ocarina_of_time and location.name == 'Song from Ocarina of Time':
-            non_required_locations[location.world.id] = location
-
-    # Set logic_no_ocarina_of_time to false to allow songs to be placed regardless of that setting.
-    logic_no_ocarina_of_time = {world.id: world.swap_value('logic_no_ocarina_of_time', False) for world in worlds}
-
     # List of states with all items
     all_state_base_list = State.get_states_with_items([world.state for world in worlds], itempool)
 
     prizepool_dict = {world.id: [song for song in unplaced_prizes if song.world.id == world.id] for world in worlds}
     prize_locs_dict = {world.id: [loc for loc in empty_song_locations if loc.world.id == world.id] for world in worlds}
+    unplaced_songs = []
+    unfilled_locations = []
 
     # Songs being sent in to this method are tied to their own world.
-    # Therefore, let's do this one world at a time.
+    # Therefore, let's do this one world at a time. We do this to help
+    # increase the chances of successfully placing songs
     for world in worlds:
         world_attempts = attempts
         while world_attempts:
@@ -265,26 +267,21 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
                 random.shuffle(prize_locs)
                 fill_restrictive(window, worlds, all_state_base_list, prize_locs, prizepool)
 
-                # Make sure a required song is not pushed to non_required_locations.
-                world.logic_no_ocarina_of_time = logic_no_ocarina_of_time[world.id]
-                remaining_songs = [song for song in unplaced_prizes if song not in prizepool_dict[world.id]]
-                if non_required_locations:
-                    # Make sure this set of songs allows us to beat the game(s).
-                    state_list = State.get_states_with_items(all_state_base_list, remaining_songs)
-                    if not State.can_beat_game(state_list, True):
-                        world.logic_no_ocarina_of_time = False
-                        raise FillError('Songs placed in an unbeatable configuration.')
-                unplaced_prizes = remaining_songs
-                logging.getLogger('').info("Songs placed for world %s", (world.id+1))
+                # extend the progitem pool with the unplaced songs to be placed later
+                unplaced_songs.extend(prizepool)
+                unfilled_locations.extend(prize_locs)
+                logging.getLogger('').info("Songs placed")
             except FillError as e:
-                logging.getLogger('').info("Failed to place songs for world %s. Will retry %s more times", (world.id+1), world_attempts)
-                for location in prize_locs_dict[world.id]:
+                logging.getLogger('').info("Failed to place songs. Will retry %s more times", attempts)
+                for location in empty_song_locations:
                     location.item = None
                 logging.getLogger('').info('\t%s' % str(e))
                 continue
             break
         else:
-            raise FillError('Unable to place songs in world %d' % (world.id+1))
+            raise FillError('Unable to place songs')
+
+    return (unplaced_songs, unfilled_locations)
 
 
 # Places items in the itempool into locations.
@@ -355,8 +352,12 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
                 unplaced_items.append(item_to_place)
                 continue
             else:
-                # we expect all items to be placed
-                raise FillError('Game unbeatable: No more spots to place %s [World %d]' % (item_to_place, item_to_place.world.id))
+                # unplaced items will be placed in later stages as appropriate
+                if not State.can_beat_game(maximum_exploration_state_list):
+                    raise FillError('Game unbeatable: No more spots to place %s [World %d]' % (item_to_place, item_to_place.world.id))
+                else:
+                    unplaced_items.append(item_to_place)
+                    continue
 
         # Place the item in the world and continue
         spot_to_fill.world.push_item(spot_to_fill, item_to_place)
@@ -372,6 +373,9 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
         raise FillError('Could not place the specified number of item. %d remaining to be placed.' % count)
     # re-add unplaced items that were skipped
     itempool.extend(unplaced_items)
+
+    # return whether some items were unplaced
+    return len(unplaced_items) > 0
 
 
 # This places items in the itempool into the locations

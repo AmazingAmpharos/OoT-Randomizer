@@ -146,10 +146,6 @@ class State(object):
 
 
     def can_play(self, song):
-        if self.world.logic_no_ocarina_of_time:
-            oot_song_location = self.world.get_location('Song from Ocarina of Time')
-            if oot_song_location.item and oot_song_location.item.name == song:
-                return False
         return self.has_ocarina() and self.has(song)
 
 
@@ -398,7 +394,6 @@ class State(object):
         # if the every state got the Triforce, then return True
         for state in new_state_list:
             if not state.has('Triforce'):
-                #not_collected = [location for location in state.world.get_filled_locations() if location.item.advancement and (location.name not in state.collected_locations.keys() or state.collected_locations[location.name] == False)]
                 return False
         return True
 

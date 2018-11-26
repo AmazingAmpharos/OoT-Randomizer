@@ -87,12 +87,6 @@ class World(object):
         return new_world
 
 
-    def swap_value(self, name, value):
-        old_value = self.__dict__[name]
-        self.__dict__[name] = value
-        return old_value
-
-
     def load_regions_from_json(self, file_path):
         json_string = ""
         with io.open(file_path, 'r') as file:
