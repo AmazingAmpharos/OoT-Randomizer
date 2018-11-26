@@ -2,22 +2,20 @@ from ItemList import item_table
 
 class Item(object):
 
-    def __init__(self, name='', advancement=False, priority=False, type=None, index=None, object=None, model=None, special=None, world=None):
+    def __init__(self, name='', advancement=False, priority=False, type=None, index=None, special=None, world=None):
         self.name = name
         self.advancement = advancement
         self.priority = priority
         self.type = type
-        self.special = special
+        self.special = special or {}
         self.index = index
         self.location = None
-        self.object = object
-        self.model = model
-        self.price = special['price'] if special and 'price' in special else None
+        self.price = self.special.get('price')
         self.world = world
 
 
     def copy(self, new_world=None):
-        new_item = Item(self.name, self.advancement, self.priority, self.type, self.index, self.object, self.model, self.special)
+        new_item = Item(self.name, self.advancement, self.priority, self.type, self.index, self.special)
         new_item.world = new_world
         new_item.price = self.price
 
@@ -93,10 +91,10 @@ def ItemFactory(items, world=None):
         singleton = True
     for item in items:
         if item in item_table:
-            (type, progessive, itemID, (object, model), special) = item_table[item]
+            (type, progessive, itemID, special) = item_table[item]
             advancement = (progessive == True)
             priority    = (progessive == False)
-            new_item = Item(item, advancement, priority, type, itemID, object, model, special)
+            new_item = Item(item, advancement, priority, type, itemID, special)
 
             if world:
                 new_item.world = world
@@ -107,4 +105,3 @@ def ItemFactory(items, world=None):
     if singleton:
         return ret[0]
     return ret
-

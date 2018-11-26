@@ -31,15 +31,16 @@ enum dungeon {
       .effect_arg1 = effect_arg1_, .effect_arg2 = effect_arg2_ }
 
 // The "base item" mostly controls the sound effect made when you receive the item. It should be
-// set to something that doesn't break NPCs.
+// set to something that doesn't break NPCs. Good options include:
+// 0x53 = Gerudo Mask (major item sound effect)
+// 0x4D = Blue Rupee (minor item sound effect)
 
 // Action ID 0x41 (give kokiri tunic) is used to indicate no action.
 
 item_row_t item_table[] = {
-    [0x01] = ITEM_ROW(0x01, 0x8E, 0x32, 0x00CE, 0xE0, bombs_to_rupee, no_effect, -1, -1), // Bombs (5)
-
-    [0x02] = ITEM_ROW(0x02, 0x8C, 0x34, 0x00BB, 0xEE, no_upgrade, no_effect, -1, -1), // Deku Nuts (5)
-    [0x03] = ITEM_ROW(0x03, 0x09, 0x33, 0x00D9, 0xD8, no_upgrade, no_effect, -1, -1), // Bombchu (10)
+    [0x01] = ITEM_ROW(0x53, 0x8E, 0x32, 0x00CE, 0xE0, bombs_to_rupee, no_effect, -1, -1), // Bombs (5)
+    [0x02] = ITEM_ROW(0x53, 0x8C, 0x34, 0x00BB, 0xEE, no_upgrade, no_effect, -1, -1), // Deku Nuts (5)
+    [0x03] = ITEM_ROW(0x53, 0x09, 0x33, 0x00D9, 0xD8, no_upgrade, no_effect, -1, -1), // Bombchu (10)
     [0x04] = ITEM_ROW(0x04, 0x03, 0x31, 0x00E9, 0x35, no_upgrade, no_effect, -1, -1), // Fairy Bow
     [0x05] = ITEM_ROW(0x05, 0x06, 0x30, 0x00E7, 0x33, no_upgrade, no_effect, -1, -1), // Fairy Slingshot
     [0x06] = ITEM_ROW(0x06, 0x0E, 0x35, 0x00E8, 0x34, no_upgrade, no_effect, -1, -1), // Boomerang
@@ -96,9 +97,7 @@ item_row_t item_table[] = {
     [0x39] = ITEM_ROW(0x39, 0x6F, 0x68, 0x00C8, 0x21, no_upgrade, no_effect, -1, -1), // Stone of Agony
     [0x3A] = ITEM_ROW(0x3A, 0x70, 0x7B, 0x00D7, 0x24, no_upgrade, no_effect, -1, -1), // Gerudo Membership Card
     [0x3B] = ITEM_ROW(0x3B, 0x07, 0x3A, 0x010E, 0x46, no_upgrade, no_effect, -1, -1), // Fairy Ocarina
-
-    [0x3C] = ITEM_ROW(0x3C, 0x58, 0xDC, 0x0119, 0xB8, seeds_to_rupee, no_effect, -1, -1), // Deku Seeds (5)
-
+    [0x3C] = ITEM_ROW(0x53, 0x58, 0xDC, 0x0119, 0xB8, seeds_to_rupee, no_effect, -1, -1), // Deku Seeds (5)
     [0x3D] = ITEM_ROW(0x3D, 0x72, 0xC6, 0x00BD, 0x13, no_upgrade, no_effect, -1, -1), // Heart Container
     [0x3E] = ITEM_ROW(0x3E, 0x7A, 0xC2, 0x00BD, 0x14, no_upgrade, no_effect, -1, -1), // Piece of Heart
     [0x3F] = ITEM_ROW(0x3F, 0x74, 0xC7, 0x00B9, 0x0A, no_upgrade, no_effect, -1, -1), // Boss Key
@@ -110,12 +109,10 @@ item_row_t item_table[] = {
     [0x45] = ITEM_ROW(0x45, 0x56, 0x5E, 0x00D1, 0x22, no_upgrade, no_effect, -1, -1), // Adult's Wallet
     [0x46] = ITEM_ROW(0x46, 0x57, 0x5F, 0x00D1, 0x23, no_upgrade, no_effect, -1, -1), // Giant's Wallet
     [0x47] = ITEM_ROW(0x47, 0x21, 0x9A, 0x00DA, 0x29, no_upgrade, no_effect, -1, -1), // Weird Egg
-    [0x48] = ITEM_ROW(0x48, 0x83, 0x55, 0x00B7, 0x09, no_upgrade, no_effect, -1, -1), // Recovery Heart
-
-    [0x49] = ITEM_ROW(0x49, 0x92, 0xE6, 0x00D8, 0xDB, arrows_to_rupee, no_effect, -1, -1), // Arrows (5)
-    [0x4A] = ITEM_ROW(0x4A, 0x93, 0xE6, 0x00D8, 0xDA, arrows_to_rupee, no_effect, -1, -1), // Arrows (10)
-    [0x4B] = ITEM_ROW(0x4B, 0x94, 0xE6, 0x00D8, 0xD9, arrows_to_rupee, no_effect, -1, -1), // Arrows (30)
-
+    [0x48] = ITEM_ROW(0x4D, 0x83, 0x55, 0x00B7, 0x09, no_upgrade, no_effect, -1, -1), // Recovery Heart
+    [0x49] = ITEM_ROW(0x53, 0x92, 0xE6, 0x00D8, 0xDB, arrows_to_rupee, no_effect, -1, -1), // Arrows (5)
+    [0x4A] = ITEM_ROW(0x53, 0x93, 0xE6, 0x00D8, 0xDA, arrows_to_rupee, no_effect, -1, -1), // Arrows (10)
+    [0x4B] = ITEM_ROW(0x53, 0x94, 0xE6, 0x00D8, 0xD9, arrows_to_rupee, no_effect, -1, -1), // Arrows (30)
     [0x4C] = ITEM_ROW(0x4C, 0x84, 0x6F, 0x017F, 0x93, no_upgrade, no_effect, -1, -1), // Green Rupee
     [0x4D] = ITEM_ROW(0x4D, 0x85, 0xCC, 0x017F, 0x92, no_upgrade, no_effect, -1, -1), // Blue Rupee
     [0x4E] = ITEM_ROW(0x4E, 0x86, 0xF0, 0x017F, 0x91, no_upgrade, no_effect, -1, -1), // Red Rupee
@@ -127,9 +124,7 @@ item_row_t item_table[] = {
     [0x54] = ITEM_ROW(0x54, 0x50, 0x79, 0x0147, 0x58, no_upgrade, no_effect, -1, -1), // Goron's Bracelet
     [0x55] = ITEM_ROW(0x55, 0x87, 0xF1, 0x017F, 0x8F, no_upgrade, no_effect, -1, -1), // Purple Rupee
     [0x56] = ITEM_ROW(0x56, 0x88, 0xF2, 0x017F, 0x8E, no_upgrade, no_effect, -1, -1), // Huge Rupee
-
     [0x57] = ITEM_ROW(0x57, 0x3D, 0x0C, 0x00F8, 0x43, no_upgrade, give_biggoron_sword, -1, -1), // Biggoron's Sword
-
     [0x58] = ITEM_ROW(0x58, 0x04, 0x70, 0x0158, 0x60, no_upgrade, no_effect, -1, -1), // Fire Arrow
     [0x59] = ITEM_ROW(0x59, 0x0C, 0x71, 0x0158, 0x61, no_upgrade, no_effect, -1, -1), // Ice Arrow
     [0x5A] = ITEM_ROW(0x5A, 0x12, 0x72, 0x0158, 0x62, no_upgrade, no_effect, -1, -1), // Light Arrow
@@ -139,19 +134,17 @@ item_row_t item_table[] = {
     [0x5E] = ITEM_ROW(0x5E, 0x13, 0xAF, 0x015D, 0x66, no_upgrade, no_effect, -1, -1), // Nayru's Love
     [0x5F] = ITEM_ROW(0x5F, 0x47, 0x07, 0x017B, 0x6C, no_upgrade, no_effect, -1, -1), // Bullet Bag (30)
     [0x60] = ITEM_ROW(0x60, 0x48, 0x07, 0x017B, 0x6C, no_upgrade, no_effect, -1, -1), // Bullet Bag (40)
-    [0x61] = ITEM_ROW(0x61, 0x8A, 0x37, 0x00C7, 0xE5, no_upgrade, no_effect, -1, -1), // Deku Sticks (5)
-    [0x62] = ITEM_ROW(0x62, 0x8B, 0x37, 0x00C7, 0xE5, no_upgrade, no_effect, -1, -1), // Deku Sticks (10)
-    [0x63] = ITEM_ROW(0x63, 0x8C, 0x34, 0x00BB, 0xEE, no_upgrade, no_effect, -1, -1), // Deku Nuts (5)
-    [0x64] = ITEM_ROW(0x64, 0x8D, 0x34, 0x00BB, 0xEE, no_upgrade, no_effect, -1, -1), // Deku Nuts (10)
-
-    [0x65] = ITEM_ROW(0x65, 0x02, 0x32, 0x00CE, 0xE0, bombs_to_rupee, no_effect, -1, -1), // Bomb
-    [0x66] = ITEM_ROW(0x66, 0x8F, 0x32, 0x00CE, 0xE0, bombs_to_rupee, no_effect, -1, -1), // Bombs (10)
-    [0x67] = ITEM_ROW(0x67, 0x90, 0x32, 0x00CE, 0xE0, bombs_to_rupee, no_effect, -1, -1), // Bombs (20)
-    [0x68] = ITEM_ROW(0x68, 0x91, 0x32, 0x00CE, 0xE0, bombs_to_rupee, no_effect, -1, -1), // Bombs (30)
-    [0x69] = ITEM_ROW(0x69, 0x95, 0xDC, 0x0119, 0xB8, seeds_to_rupee, no_effect, -1, -1), // Deku Seeds (30)
-
-    [0x6A] = ITEM_ROW(0x6A, 0x96, 0x33, 0x00D9, 0xD8, no_upgrade, no_effect, -1, -1), // Bombchu (5)
-    [0x6B] = ITEM_ROW(0x6B, 0x97, 0x33, 0x00D9, 0xD8, no_upgrade, no_effect, -1, -1), // Bombchu (20)
+    [0x61] = ITEM_ROW(0x53, 0x8A, 0x37, 0x00C7, 0xE5, no_upgrade, no_effect, -1, -1), // Deku Sticks (5)
+    [0x62] = ITEM_ROW(0x53, 0x8B, 0x37, 0x00C7, 0xE5, no_upgrade, no_effect, -1, -1), // Deku Sticks (10)
+    [0x63] = ITEM_ROW(0x53, 0x8C, 0x34, 0x00BB, 0xEE, no_upgrade, no_effect, -1, -1), // Deku Nuts (5)
+    [0x64] = ITEM_ROW(0x53, 0x8D, 0x34, 0x00BB, 0xEE, no_upgrade, no_effect, -1, -1), // Deku Nuts (10)
+    [0x65] = ITEM_ROW(0x53, 0x02, 0x32, 0x00CE, 0xE0, bombs_to_rupee, no_effect, -1, -1), // Bomb
+    [0x66] = ITEM_ROW(0x53, 0x8F, 0x32, 0x00CE, 0xE0, bombs_to_rupee, no_effect, -1, -1), // Bombs (10)
+    [0x67] = ITEM_ROW(0x53, 0x90, 0x32, 0x00CE, 0xE0, bombs_to_rupee, no_effect, -1, -1), // Bombs (20)
+    [0x68] = ITEM_ROW(0x53, 0x91, 0x32, 0x00CE, 0xE0, bombs_to_rupee, no_effect, -1, -1), // Bombs (30)
+    [0x69] = ITEM_ROW(0x53, 0x95, 0xDC, 0x0119, 0xB8, seeds_to_rupee, no_effect, -1, -1), // Deku Seeds (30)
+    [0x6A] = ITEM_ROW(0x53, 0x96, 0x33, 0x00D9, 0xD8, no_upgrade, no_effect, -1, -1), // Bombchu (5)
+    [0x6B] = ITEM_ROW(0x53, 0x97, 0x33, 0x00D9, 0xD8, no_upgrade, no_effect, -1, -1), // Bombchu (20)
     [0x6C] = ITEM_ROW(0x6C, 0x19, 0x47, 0x00F4, 0x3F, no_upgrade, no_effect, -1, -1), // Fish (Refill)
     [0x6D] = ITEM_ROW(0x6D, 0x1D, 0x7A, 0x0174, 0x68, no_upgrade, no_effect, -1, -1), // Bugs (Refill)
     [0x6E] = ITEM_ROW(0x6E, 0x1C, 0x5D, 0x0173, 0x67, no_upgrade, no_effect, -1, -1), // Blue Fire (Refill)
@@ -168,6 +161,7 @@ item_row_t item_table[] = {
     [0x79] = ITEM_ROW(0x79, 0x9A, 0xA7, 0x00BB, 0xEE, no_upgrade, no_effect, -1, -1), // Deku Nut Upgrade (30)
     [0x7A] = ITEM_ROW(0x7A, 0x9B, 0xA8, 0x00BB, 0xEE, no_upgrade, no_effect, -1, -1), // Deku Nut Upgrade (40)
     [0x7B] = ITEM_ROW(0x7B, 0x49, 0x6C, 0x017B, 0x73, no_upgrade, no_effect, -1, -1), // Bullet Bag (50)
+    [0x7C] = ITEM_ROW(0x7C, 0xFF, 0x00, 0x0000, 0x00, no_upgrade, no_effect, -1, -1), // Ice Trap
 
     [0x80] = ITEM_ROW(-1, -1, -1, -1, -1, hookshot_upgrade,  no_effect, -1, -1), // Progressive Hookshot
     [0x81] = ITEM_ROW(-1, -1, -1, -1, -1, strength_upgrade,  no_effect, -1, -1), // Progressive Strength
@@ -176,8 +170,8 @@ item_row_t item_table[] = {
     [0x84] = ITEM_ROW(-1, -1, -1, -1, -1, slingshot_upgrade, no_effect, -1, -1), // Progressive Slingshot
     [0x85] = ITEM_ROW(-1, -1, -1, -1, -1, wallet_upgrade,    no_effect, -1, -1), // Progressive Wallet
     [0x86] = ITEM_ROW(-1, -1, -1, -1, -1, scale_upgrade,     no_effect, -1, -1), // Progressive Scale
-    [0x87] = ITEM_ROW(-1, -1, -1, -1, -1, nut_upgrade,       no_effect, -1, -1), // Progressive Nut Capacity
-    [0x88] = ITEM_ROW(-1, -1, -1, -1, -1, stick_upgrade,     no_effect, -1, -1), // Progressive Stick Capacity
+    [0x87] = ITEM_ROW(-1, -1, -1, -1,  0, nut_upgrade,       no_effect, -1, -1), // Progressive Nut Capacity
+    [0x88] = ITEM_ROW(-1, -1, -1, -1,  0, stick_upgrade,     no_effect, -1, -1), // Progressive Stick Capacity
     [0x89] = ITEM_ROW(-1, -1, -1, -1, -1, bombchu_upgrade,   no_effect, -1, -1), // Progressive Bombchus
     [0x8A] = ITEM_ROW(-1, -1, -1, -1, -1, magic_upgrade,     no_effect, -1, -1), // Progressive Magic Meter
     [0x8B] = ITEM_ROW(-1, -1, -1, -1, -1, ocarina_upgrade,   no_effect, -1, -1), // Progressive Ocarina

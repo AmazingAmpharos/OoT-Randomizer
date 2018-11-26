@@ -1573,6 +1573,27 @@ def patch_rom(world, rom):
     return rom
 
 
+item_row_struct = struct.Struct('>BBHHxBIIhh') # Match item_row_t in item_table.h
+def read_rom_item(rom, item_id):
+    addr = rom.sym('item_table') + (item_id * item_row_struct.size)
+    row_bytes = rom.read_bytes(addr, item_row_struct.size)
+    row = item_row_struct.unpack(row_bytes)
+
+    graphic_id = row[4]
+    fast_chest = False
+    if graphic_id >= 0x80:
+        graphic_id = 0x100 - graphic_id
+        fast_chest = True
+
+    return {
+        'base_item_id': row[0],
+        'action_id': row[1],
+        'text_id': row[2],
+        'object_id': row[3],
+        'graphic_id': graphic_id,
+        'fast_chest': fast_chest,
+    }
+
 def get_override_table(world):
     override_entries = []
     for location in world.get_filled_locations():
@@ -1637,45 +1658,6 @@ chestTypeMap = {
     0xE000: [0x5000, 0x0000, 0x2000], #Large
     0xF000: [0x5000, 0x0000, 0x2000], #Large
 }
-
-
-chestAnimationExtendedFast = [
-    0x87, # Progressive Nut Capacity
-    0x88, # Progressive Stick Capacity
-    0x98, # Deku Tree Compass
-    0x99, # Dodongo's Cavern Compass
-    0x9A, # Jabu Jabu Compass
-    0x9B, # Forest Temple Compass
-    0x9C, # Fire Temple Compass
-    0x9D, # Water Temple Compass
-    0x9E, # Spirit Temple Compass
-    0x9F, # Shadow Temple Compass
-    0xA0, # Bottom of the Well Compass
-    0xA1, # Ice Cavern Compass
-    0xA2, # Deku Tree Map
-    0xA3, # Dodongo's Cavern Map
-    0xA4, # Jabu Jabu Map
-    0xA5, # Forest Temple Map
-    0xA6, # Fire Temple Map
-    0xA7, # Water Temple Map
-    0xA8, # Spirit Temple Map
-    0xA9, # Shadow Temple Map
-    0xAA, # Bottom of the Well Map
-    0xAB, # Ice Cavern Map
-    0xB6, # Recovery Heart
-    0xB7, # Arrows (5)
-    0xB8, # Arrows (10)
-    0xB9, # Arrows (30)
-    0xBA, # Bombs (5)
-    0xBB, # Bombs (10)
-    0xBC, # Bombs (20)
-    0xBD, # Deku Nuts (5)
-    0xBE, # Deku Nuts (10)
-    0xD0, # Deku Stick (1)
-    0xD1, # Deku Seeds (30)
-    0xD2, # Deku Shield
-    0xD3, # Hylian Shield
-]
 
 
 def room_get_actors(rom, actor_func, room_data, scene, alternate=None):
@@ -1777,12 +1759,8 @@ def update_chest_sizes(rom, override_table):
 
         itemType = 0  # Item animation
 
-        if item_id >= 0x80: # if extended item, always big except from exception list
-            itemType = 0 if item_id in chestAnimationExtendedFast else 1
-        elif rom.read_byte(0xBEEE8E + (item_id * 6) + 2) & 0x80: # get animation from rom, ice trap is big
-            itemType = 0 # No animation, small chest
-        else:
-            itemType = 1 # Long animation, big chest
+        rom_item = read_rom_item(rom, item_id)
+        itemType = 0 if rom_item['fast_chest'] else 1
         # Don't use boss chests
 
         default = rom.read_int16(actor + 14)
@@ -1852,16 +1830,18 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
     shop_objs = { 0x0148 } # Sold Out
     messages
     for location in locations:
-        shop_objs.add(location.item.object)
         if location.item.type == 'Shop':
+            shop_objs.add(location.item.special['object'])
             rom.write_int16(location.address, location.item.index)
         else:
+            rom_item = read_rom_item(rom, location.item.index)
+            shop_objs.add(rom_item['object_id'])
             shop_id = place_shop_items.shop_id
             rom.write_int16(location.address, shop_id)
             shop_item = shop_items[shop_id]
 
-            shop_item.object = location.item.object
-            shop_item.model = location.item.model - 1
+            shop_item.object = rom_item['object_id']
+            shop_item.model = rom_item['graphic_id'] - 1
             shop_item.price = location.price
             shop_item.pieces = 1
             shop_item.get_item_id = location.default
