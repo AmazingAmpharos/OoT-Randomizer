@@ -87,9 +87,10 @@ class Settings():
                 else:
                     raise ValueError('Setting is string type, but missing parse parameters.')
             if setting.type == int:
-                value = value - ('min' in setting.gui_params and setting.gui_params['min'] or 0)
-                value = int(value / ('step' in setting.gui_params and setting.gui_params['step'] or 1))
-                value = min(value, ('max' in setting.gui_params and setting.gui_params['max'] or value))
+                value = int(value)
+                value = value - (setting.gui_params.get('min', 0))
+                value = int(value / (setting.gui_params.get('step', 1)))
+                value = min(value, (setting.gui_params.get('max', value)))
                 # https://stackoverflow.com/questions/10321978/integer-to-bitfield-as-a-list
                 i_bits = [1 if digit=='1' else 0 for digit in bin(value)[2:]]
                 i_bits.reverse()
@@ -186,8 +187,6 @@ class Settings():
             self.seed = ''.join(random_choices(string.ascii_uppercase + string.digits, k=10))
         self.sanitize_seed()
         self.numeric_seed = self.get_numeric_seed()
-        if 'settings_presets' not in self.__dict__:
-            self.settings_presets = {}
 
 
 # gets the randomizer settings, whether to open the gui, and the logger level from command line arguments

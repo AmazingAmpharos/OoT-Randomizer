@@ -9,14 +9,14 @@ import shutil
 from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, \
         Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, \
         StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, \
-        Button, filedialog, messagebox, ttk, HORIZONTAL, Toplevel, colorchooser
+        Button, filedialog, messagebox, simpledialog, ttk, HORIZONTAL, Toplevel, \
+        colorchooser
 from urllib.parse import urlparse
 from urllib.request import urlopen
-import base64
 
 from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry
 from Main import main, from_patch_file
-from Utils import is_bundled, local_path, default_output_path, open_file, check_version
+from Utils import is_bundled, local_path, data_path, default_output_path, open_file, check_version
 from Settings import Settings
 from SettingsList import setting_infos
 from version import __version__ as ESVersion
@@ -84,7 +84,6 @@ def guivars_to_settings(guivars):
         result['seed'] = None
     if result['count'] == 1:
         result['count'] = None
-    result['settings_presets'] = guivars['settings_presets']
 
     return Settings(result)
 
@@ -119,6 +118,7 @@ def guiMain(settings=None):
     guivars = {}
     widgets = {}
     dependencies = {}
+    presets = {}
 
     # hierarchy
     ############
@@ -409,108 +409,91 @@ def guiMain(settings=None):
 
     widgets['multiworld'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
+
     # Settings Presets Functions
-    def get_settings_preset_choices(custom_presets=None):
-        presets = {
-            '---': '',
-            'Accessible Weekly 2018-10-27': 'eyJ3b3JsZF9jb3VudCI6ICIxIiwgImNyZWF0ZV9zcG9pbGVyIjogMSwgIm9wZW5fZm9yZXN0IjogMSwgIm9wZW5fa2FrYXJpa28iOiAxLCAib3Blbl9kb29yX29mX3RpbWUiOiAxLCAiZ2VydWRvX2ZvcnRyZXNzIjogIm5vcm1hbCIsICJicmlkZ2UiOiAibWVkYWxsaW9ucyIsICJsb2dpY19ydWxlcyI6ICJnbGl0Y2hsZXNzIiwgImFsbF9yZWFjaGFibGUiOiAxLCAiYm9tYmNodXNfaW5fbG9naWMiOiAwLCAib25lX2l0ZW1fcGVyX2R1bmdlb24iOiAwLCAidHJpYWxzX3JhbmRvbSI6IDAsICJ0cmlhbHMiOiAiMCIsICJub19lc2NhcGVfc2VxdWVuY2UiOiAxLCAibm9fZ3VhcmRfc3RlYWx0aCI6IDAsICJub19lcG9uYV9yYWNlIjogMSwgImZhc3RfY2hlc3RzIjogMSwgImJpZ19wb2VfY291bnRfcmFuZG9tIjogMCwgImJpZ19wb2VfY291bnQiOiAiMSIsICJmcmVlX3NjYXJlY3JvdyI6IDAsICJzaHVmZmxlX2tva2lyaV9zd29yZCI6IDEsICJzaHVmZmxlX3dlaXJkX2VnZyI6IDAsICJzaHVmZmxlX29jYXJpbmFzIjogMCwgInNodWZmbGVfc29uZ19pdGVtcyI6IDAsICJzaHVmZmxlX2dlcnVkb19jYXJkIjogMCwgInNodWZmbGVfc2NydWJzIjogIm9mZiIsICJzaG9wc2FuaXR5IjogIm9mZiIsICJzaHVmZmxlX21hcGNvbXBhc3MiOiAic3RhcnR3aXRoIiwgInNodWZmbGVfYm9zc2tleXMiOiAiZHVuZ2VvbiIsICJlbmhhbmNlX21hcF9jb21wYXNzIjogMCwgInVubG9ja2VkX2dhbm9uZG9yZiI6IDEsICJ0b2tlbnNhbml0eSI6ICJvZmYiLCAibXFfZHVuZ2VvbnNfcmFuZG9tIjogMCwgIm1xX2R1bmdlb25zIjogIjAiLCAibG9naWNfc2t1bGx0dWxhcyI6ICI1MCIsICJsb2dpY19ub19uaWdodF90b2tlbnNfd2l0aG91dF9zdW5zX3NvbmciOiAwLCAibG9naWNfbm9fYmlnX3BvZXMiOiAwLCAibG9naWNfbm9fY2hpbGRfZmlzaGluZyI6IDAsICJsb2dpY19ub19hZHVsdF9maXNoaW5nIjogMCwgImxvZ2ljX25vX3RyYWRlX3NrdWxsX21hc2siOiAwLCAibG9naWNfbm9fdHJhZGVfbWFza19vZl90cnV0aCI6IDEsICJsb2dpY19ub19vY2FyaW5hX29mX3RpbWUiOiAwLCAibG9naWNfbm9fMTUwMF9hcmNoZXJ5IjogMCwgImxvZ2ljX25vX21lbW9yeV9nYW1lIjogMCwgImxvZ2ljX25vX2Zyb2dfb2NhcmluYV9nYW1lIjogMCwgImxvZ2ljX25vX3NlY29uZF9kYW1wZV9yYWNlIjogMCwgImxvZ2ljX25vX3RyYWRlX2JpZ2dvcm9uIjogMCwgImxvZ2ljX2VhcmxpZXN0X2FkdWx0X3RyYWRlIjogInByZXNjcmlwdGlvbiIsICJsb2dpY19sYXRlc3RfYWR1bHRfdHJhZGUiOiAiY2xhaW1fY2hlY2siLCAibG9naWNfdHJpY2tzIjogMCwgImxvZ2ljX21hbl9vbl9yb29mIjogMCwgImxvZ2ljX2NoaWxkX2RlYWRoYW5kIjogMCwgImxvZ2ljX2RjX2p1bXAiOiAwLCAibG9naWNfd2luZG1pbGxfcG9oIjogMCwgImxvZ2ljX2NyYXRlcl9iZWFuX3BvaF93aXRoX2hvdmVycyI6IDAsICJsb2dpY196b3JhX3dpdGhfY3VjY28iOiAwLCAibG9naWNfem9yYV93aXRoX2hvdmVycyI6IDAsICJsb2dpY19mZXdlcl90dW5pY19yZXF1aXJlbWVudHMiOiAxLCAibG9naWNfbW9ycGhhX3dpdGhfc2NhbGUiOiAwLCAibG9naWNfbGVucyI6ICJhbGwiLCAib2NhcmluYV9zb25ncyI6IDAsICJjb3JyZWN0X2NoZXN0X3NpemVzIjogMCwgImNsZWFyZXJfaGludHMiOiAwLCAiaGludHMiOiAiYWdvbnkiLCAiaGludF9kaXN0IjogImJhbGFuY2VkIiwgInRleHRfc2h1ZmZsZSI6ICJub25lIiwgIml0ZW1fcG9vbF92YWx1ZSI6ICJiYWxhbmNlZCIsICJkYW1hZ2VfbXVsdGlwbGllciI6ICJub3JtYWwifQ==',
-        }
-        presets.update(custom_presets if custom_presets else {})
-        return presets
-
     def import_setting_preset():
-        presets = get_settings_preset_choices(guivars['settings_presets'])
-        preset_base64 = presets[guivars['settings_preset'].get()]
-        if not preset_base64:
+        if guivars['settings_preset'].get() == '[New Preset]':
+            messagebox.showerror("Invalid Preset", "You must select an existing preset!")
             return
-        preset_json = (base64.b64decode(preset_base64)).decode("utf-8")
-        new_settings = json.loads(preset_json)
 
-        default_settings = {setting.name: setting.args_params['default'] for setting in
-                            filter(lambda s: s.shared and s.bitwidth > 0 and s.args_params and 'default' in s.args_params, setting_infos)}
+        # get cosmetic settings
+        old_settings = guivars_to_settings(guivars)
+        new_settings = {setting.name: old_settings.__dict__[setting.name] for setting in
+                            filter(lambda s: not (s.shared and s.bitwidth > 0), setting_infos)}
 
-        settings = guivars_to_settings(guivars)
-        settings.__dict__.update(default_settings)
-        settings.__dict__.update(new_settings)
+        preset = presets[guivars['settings_preset'].get()]
+        new_settings.update(preset)
+
+        settings = Settings(new_settings)
         settings.seed = guivars['seed'].get()
 
         settings_to_guivars(settings, guivars)
         show_settings()
 
-    def get_settings_base64_string():
-        settings_to_save = {setting.name: setting.gui_params['options'][guivars[setting.name].get()] if 'options' in setting.gui_params and guivars[setting.name].get() in setting.gui_params['options'] else guivars[setting.name].get()
-                            for setting in filter(lambda s: s.shared and s.bitwidth > 0, setting_infos)}
-        return base64.b64encode(json.dumps(settings_to_save).encode("utf-8")).decode("utf-8")
 
     def add_settings_preset():
-        default_choices = get_settings_preset_choices()
-        name = guivars['add_settings_preset'].get()
-        if not name:
-            messagebox.showerror("Invalid Name", "You must give the custom preset a name!")
+        preset_name = guivars['settings_preset'].get()
+        if preset_name == '[New Preset]':
+            preset_name = simpledialog.askstring("New Preset", "Enter a new preset name:")
+            if not preset_name or preset_name in presets or preset_name == '[New Preset]':
+                messagebox.showerror("Invalid Preset", "You must enter a new preset name!")
+                return
+        elif presets[preset_name].get('locked', False):
+            messagebox.showerror("Invalid Preset", "You cannot modify a locked preset!")
             return
-        if name in default_choices:
-            messagebox.showerror("Duplicate Name", "You cannon name a custom preset with the same name as a built-in preset. Please choose another name.")
-            return
-        settings_base64 = get_settings_base64_string()
-        guivars['settings_presets'][name] = settings_base64
-        guivars['add_settings_preset'].set('')
+
+        settings = guivars_to_settings(guivars)
+        preset = {setting.name: settings.__dict__[setting.name] for setting in 
+            filter(lambda s: s.shared and s.bitwidth > 0, setting_infos)}
+
+        presets[preset_name] = preset
+        guivars['settings_preset'].set(preset_name)
         update_preset_dropdown()
+
 
     def remove_setting_preset():
-        name = guivars['remove_settings_preset'].get()
-        if name not in guivars['settings_presets']:
+        preset_name = guivars['settings_preset'].get()
+        if preset_name == '[New Preset]':
+            messagebox.showerror("Invalid Preset", "You must select an existing preset!")
             return
-        confirm = messagebox.askquestion('Remove Setting Preset', 'Are you sure you want to remove the setting preset "%s"?' % name)
+        elif presets[preset_name].get('locked', False):
+            messagebox.showerror("Invalid Preset", "You cannot modify a locked preset!")
+            return
+
+        confirm = messagebox.askquestion('Remove Setting Preset', 'Are you sure you want to remove the setting preset "%s"?' % preset_name)
         if confirm != 'yes':
             return
-        guivars['settings_presets'].pop(name, None)
-        if guivars['settings_preset'].get() == name:
-            guivars['settings_preset'].set('---')
-        guivars['remove_settings_preset'].set('---')
+
+        del presets[preset_name]
+        guivars['settings_preset'].set('[New Preset]')
         update_preset_dropdown()
 
-    def update_preset_dropdown(settings=None):
-        if settings is not None and 'settings_presets' in settings.__dict__:
-            guivars['settings_presets'] = settings.__dict__['settings_presets']
-        settings_presets = get_settings_preset_choices(guivars['settings_presets'])
-        widgets['settings_preset']['values'] = list(settings_presets)
-        widgets['remove_settings_preset']['values'] = (['---'] + list(guivars['settings_presets']))
+
+    def update_preset_dropdown():
+        widgets['settings_preset']['values'] = ['[New Preset]'] + list(presets.keys())
+
 
     # Settings Presets
     widgets['settings_presets'] = LabelFrame(frames['rom_tab'], text='Settings Presets')
-    countLabel = Label(widgets['settings_presets'], wraplength=350, justify=LEFT, text='Here, you can choose from settings presets. Applying a preset will overwrite all settings that affect the seed.')
+    countLabel = Label(widgets['settings_presets'], wraplength=350, justify=LEFT, text='Presets are settings that can be saved and loaded from. Loading a preset will overwrite all settings that affect the seed.')
     countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
 
     selectPresetFrame = Frame(widgets['settings_presets'])
-    guivars['settings_presets'] = settings.settings_presets if settings else {}
-    settings_presets = get_settings_preset_choices(guivars['settings_presets'])
-    guivars['settings_preset'] = StringVar(value=next(iter(settings_presets.keys())))
-    widgets['settings_preset'] = ttk.Combobox(selectPresetFrame, textvariable=guivars['settings_preset'], values=list(settings_presets), state='readonly', width=35)
+    guivars['settings_preset'] = StringVar(value='[New Preset]')
+    widgets['settings_preset'] = ttk.Combobox(selectPresetFrame, textvariable=guivars['settings_preset'], values=['[New Preset]'], state='readonly', width=35)
     widgets['settings_preset'].pack(side=BOTTOM, anchor=W)
     ToolTips.register(widgets['settings_preset'], 'Select a setting preset to apply.')
-    importPresetButton = Button(selectPresetFrame, text='Import Preset', command=import_setting_preset)
     widgets['settings_preset'].pack(side=LEFT, padx=(5, 0))
-    importPresetButton.pack(side=LEFT, anchor=W, padx=5)
     selectPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
 
-    addPresetFrame = Frame(widgets['settings_presets'])
-    guivars['add_settings_preset'] = StringVar()
-    widgets['add_settings_preset'] = Entry(addPresetFrame, textvariable=guivars['add_settings_preset'], width=35)
-    addPresetButton = Button(addPresetFrame, text='Add/Update Preset', command=add_settings_preset)
-    widgets['add_settings_preset'].pack(side=LEFT, anchor=W, padx=5)
-    ToolTips.register(widgets['add_settings_preset'], 'Preset name to add or update.')
+    buttonPresetFrame = Frame(widgets['settings_presets'])
+    importPresetButton = Button(buttonPresetFrame, text='Load Preset', command=import_setting_preset)
+    addPresetButton = Button(buttonPresetFrame, text='Save Preset', command=add_settings_preset)
+    removePresetButton = Button(buttonPresetFrame, text='Remove Preset', command=remove_setting_preset)
+    importPresetButton.pack(side=LEFT, anchor=W, padx=5)
     addPresetButton.pack(side=LEFT, anchor=W, padx=5)
-    addPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
-
-    removePresetFrame = Frame(widgets['settings_presets'])
-    guivars['remove_settings_preset'] = StringVar(value=next(iter(settings_presets.keys())))
-    widgets['remove_settings_preset'] = ttk.Combobox(removePresetFrame, textvariable=guivars['remove_settings_preset'], values=(['---'] + list(guivars['settings_presets'])), state='readonly', width=35)
-    widgets['remove_settings_preset'].pack(side=BOTTOM, anchor=W)
-    ToolTips.register(widgets['remove_settings_preset'], 'Select a setting preset to remove.')
-    removePresetButton = Button(removePresetFrame, text='Remove Preset', command=remove_setting_preset)
-    widgets['remove_settings_preset'].pack(side=LEFT, padx=(5, 0))
     removePresetButton.pack(side=LEFT, anchor=W, padx=5)
-    removePresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
+    buttonPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
 
     widgets['settings_presets'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
@@ -630,15 +613,27 @@ def guiMain(settings=None):
         settings_to_guivars(settings, guivars)
     else:
         # try to load saved settings
+        settingsFile = local_path('settings.sav')
         try:
-            settingsFile = local_path('settings.sav')
             with open(settingsFile) as f:
                 settings = Settings( json.load(f) )
-                settings.update_seed("")
-                settings_to_guivars(settings, guivars)
-                update_preset_dropdown(settings)
+        except:
+            settings = Settings({})
+        settings.update_seed("")
+        settings_to_guivars(settings, guivars)
+
+        presets = {}
+        try:
+            with open(data_path('presets_default.json')) as f:
+                presets.update(json.load(f))
         except:
             pass
+        try:
+            with open(local_path('presets.sav')) as f:
+                presets.update(json.load(f))
+        except:
+            pass           
+        update_preset_dropdown()
 
     show_settings()
 
@@ -656,10 +651,19 @@ def guiMain(settings=None):
     mainWindow.mainloop()
 
     # save settings on close
-    with open('settings.sav', 'w') as outfile:
+    settings_file = local_path('settings.sav')
+    with open(settings_file, 'w') as outfile:
         settings = guivars_to_settings(guivars)
-        json.dump(settings.__dict__, outfile)
+        del settings.__dict__["seed"]
+        del settings.__dict__["numeric_seed"]
+        if "locked" in settings.__dict__:
+            del settings.__dict__["locked"]
+        json.dump(settings.__dict__, outfile, indent=4)
 
+    presets_file = local_path('presets.sav')
+    with open(presets_file, 'w') as outfile:
+        preset_json = {name: preset for name,preset in presets.items() if not preset.get('locked')}
+        json.dump(preset_json, outfile, indent=4)
 
 if __name__ == '__main__':
     guiMain()
