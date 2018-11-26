@@ -227,7 +227,7 @@ def patch_rom(world:World, rom:LocalRom):
         rom.write_byte(0x22D82B7, 0x3F)
 
     if world.bombchus_in_logic:
-        rom.write_int32(rom.sym('RAINBOW_BRIDGE_CONDITION'), 1)
+        rom.write_int32(rom.sym('BOMBCHUS_IN_LOGIC'), 1)
 
 
     # Change graveyard graves to not allow grabbing on to the ledge
