@@ -186,6 +186,8 @@ class Settings():
             self.seed = ''.join(random_choices(string.ascii_uppercase + string.digits, k=10))
         self.sanitize_seed()
         self.numeric_seed = self.get_numeric_seed()
+        if 'settings_presets' not in self.__dict__:
+            self.settings_presets = {}
 
 
 # gets the randomizer settings, whether to open the gui, and the logger level from command line arguments
