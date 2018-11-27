@@ -20,7 +20,7 @@ logic_chus__bowling_lady_1:
     nop
 
 @@logic_chus_false:
-    lb      t7, lo(0x8011A672)(t7)
+    lw      t7, lo(0x8011A670)(t7)
     andi    t8, t7, 0x18
     jr      ra
     nop
@@ -46,7 +46,7 @@ logic_chus__bowling_lady_2:
     nop
     
 @@logic_chus_false:
-    lb      t3, lo(0x8011A672)(t7)
+    lw      t3, lo(0x8011A670)(t3)
     andi    t4, t3, 0x18
     jr      ra
     nop
