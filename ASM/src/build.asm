@@ -60,6 +60,8 @@ DebugOutput:
 .importobj "../build/bundle.o"
 FONT_TEXTURE:
 .incbin("../resources/font.bin")
+DPAD_TEXTURE:
+.incbin("../resources/dpad.bin")
 .endarea
 
 .close

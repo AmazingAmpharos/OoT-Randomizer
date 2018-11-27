@@ -60,6 +60,9 @@ before_game_state_update:
     nop
 @@no_pending_item:
 
+    jal c_before_game_state_update
+    nop
+
     ; Displaced code
     lw      t9, 0x04 (s0)
     or      a0, s0, r0
