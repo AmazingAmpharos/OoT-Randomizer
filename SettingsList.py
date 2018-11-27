@@ -1101,6 +1101,20 @@ setting_infos = [
             shared         = True,
             ),
     Checkbutton(
+            name           = 'logic_no_ocarina_of_time',
+            args_help      = '''\
+                             You will not be expected to collect all Spiritual Stones to grab the Ocarina of Time from the moat.
+                             ''',
+            gui_text       = 'No Ocarina of Time Reward',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Getting the Ocarina of Time
+                             from the Hyrule Castle moat
+                             will not yield a required item or song.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
             name           = 'logic_no_1500_archery',
             args_help      = '''\
                              You will not be expected to win the 1500 point horseback archery reward.
@@ -1122,6 +1136,20 @@ setting_infos = [
             gui_group      = 'rewards',
             gui_tooltip    = '''\
                              Playing the ocarina memory game
+                             will not yield a required item.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'logic_no_frog_ocarina_game',
+            args_help      = '''\
+                             You will not be expected to play the the fly catching song for the frogs in Zora's River.
+                             ''',
+            gui_text       = 'No Frog Ocarina Game',
+            gui_group      = 'rewards',
+            gui_tooltip    = '''\
+                             Playing the fly cataching song
+                             for the frogs in Zora's River
                              will not yield a required item.
                              ''',
             shared         = True,

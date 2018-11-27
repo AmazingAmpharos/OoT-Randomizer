@@ -2,8 +2,9 @@ import random
 
 from World import World
 from Rom import LocalRom
+from Spoiler import Spoiler
 
-from Hints import writeGossipStoneHintsHints, buildBossRewardHints, \
+from Hints import writeGossipStoneHints, buildBossRewardHints, \
         buildGanonText, getSimpleHintNoPrefix
 from Utils import data_path
 from Messages import read_messages, update_message_by_id, read_shop_items, \
@@ -170,7 +171,7 @@ def get_navi_color_options():
     return ["Random Choice", "Completely Random"] + get_navi_colors()
 
 
-def patch_rom(world:World, rom:LocalRom):
+def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     with open(data_path('rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
@@ -785,7 +786,10 @@ def patch_rom(world:World, rom:LocalRom):
 
     configure_dungeon_info(rom, world)
 
-    rom.write_int32(rom.sym('cfg_file_select_hash'), world.settings.numeric_seed)
+    hash_icons = 0
+    for i,icon in enumerate(spoiler.file_hash):
+        hash_icons |= (icon << (5 * i))
+    rom.write_int32(rom.sym('cfg_file_select_hash'), hash_icons)
 
     # will be populated with data to be written to initial save
     # see initial_save.asm and config.asm for more details on specifics
@@ -1081,7 +1085,7 @@ def patch_rom(world:World, rom:LocalRom):
     if world.hints == 'none':
         rom.write_int32(symbol, 0)
     else:
-        writeGossipStoneHintsHints(world, messages)
+        writeGossipStoneHints(spoiler, world, messages)
         
         if world.hints == 'mask':
             rom.write_int32(symbol, 0)
