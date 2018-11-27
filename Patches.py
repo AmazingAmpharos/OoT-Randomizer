@@ -1207,7 +1207,7 @@ def patch_rom(world, rom):
 
     # Write item overrides
     override_table = get_override_table(world)
-    rom.write_int32s(rom.sym('cfg_item_overrides'), sum(override_table, []))
+    rom.write_bytes(rom.sym('cfg_item_overrides'), override_table)
     rom.write_byte(rom.sym('PLAYER_ID'), world.id + 1) # Write player ID
 
     # Revert Song Get Override Injection
@@ -1594,6 +1594,8 @@ def patch_rom(world, rom):
 
 
 item_row_struct = struct.Struct('>BBHHxBIIhh') # Match item_row_t in item_table.h
+
+
 def read_rom_item(rom, item_id):
     addr = rom.sym('item_table') + (item_id * item_row_struct.size)
     row_bytes = rom.read_bytes(addr, item_row_struct.size)
@@ -1614,12 +1616,12 @@ def read_rom_item(rom, item_id):
         'fast_chest': fast_chest,
     }
 
+
 def get_override_table(world):
-    override_entries = []
-    for location in world.get_filled_locations():
-        override_entries.append(get_override_entry(location))
-    override_entries.sort()
-    return override_entries
+    return b''.join(sorted(map(get_override_entry, world.get_filled_locations())))
+
+
+override_struct = struct.Struct('>xBBBxBH') # match override_t in get_items.c
 
 
 def get_override_entry(location):
@@ -1627,7 +1629,7 @@ def get_override_entry(location):
     default = location.default
     item_id = location.item.index
     if None in [scene, default, item_id]:
-        return []
+        return b''
 
     player_id = location.item.world.id + 1
 
@@ -1647,16 +1649,9 @@ def get_override_entry(location):
     elif location.type in ['Song', 'Cutscene']:
         type = 5
     else:
-        return []
+        return b''
 
-    result = (
-        ((scene & 0xFF) << 24) |
-        ((type & 0x07) << 21) |
-        ((default & 0xFF) << 13) |
-        ((player_id & 0x1F) << 8) |
-        (item_id & 0xFF)
-    )
-    return [result]
+    return override_struct.pack(scene, type, default, player_id, item_id)
 
 
 chestTypeMap = {

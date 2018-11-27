@@ -16,19 +16,6 @@ enum override_type {
 typedef union {
     uint32_t all;
     struct {
-        uint32_t scene   : 8;
-        uint32_t type    : 3;
-        uint32_t flag    : 8;
-        uint32_t player  : 5;
-        uint32_t item_id : 8;
-    };
-} packed_override_t;
-
-packed_override_t cfg_item_overrides[512] = { 0 };
-
-typedef union {
-    uint32_t all;
-    struct {
         char    pad_;
         uint8_t scene;
         uint8_t type;
@@ -50,7 +37,7 @@ typedef struct {
     override_value_t value;
 } override_t;
 
-override_t *item_overrides = NULL;
+override_t cfg_item_overrides[512] = { 0 };
 int item_overrides_count = 0;
 
 override_t pending_item_queue[3] = { 0 };
@@ -80,17 +67,8 @@ void clear_item_row() {
 }
 
 void item_overrides_init() {
-    while (cfg_item_overrides[item_overrides_count].all != 0) {
+    while (cfg_item_overrides[item_overrides_count].key.all != 0) {
         item_overrides_count++;
-    }
-
-    item_overrides = heap_alloc(item_overrides_count * sizeof(override_t));
-    for (int i = 0; i < item_overrides_count; i++) {
-        item_overrides[i].key.scene = cfg_item_overrides[i].scene;
-        item_overrides[i].key.type = cfg_item_overrides[i].type;
-        item_overrides[i].key.flag = cfg_item_overrides[i].flag;
-        item_overrides[i].value.player = cfg_item_overrides[i].player;
-        item_overrides[i].value.item_id = cfg_item_overrides[i].item_id;
     }
 
     // Create an actor satisfying the minimum requirements to give the player an item
@@ -147,7 +125,7 @@ override_t lookup_override_by_key(override_key_t key) {
     int end = item_overrides_count - 1;
     while (start <= end) {
         int mid_index = (start + end) / 2;
-        override_t mid_entry = item_overrides[mid_index];
+        override_t mid_entry = cfg_item_overrides[mid_index];
         if (key.all < mid_entry.key.all) {
             end = mid_index - 1;
         } else if (key.all > mid_entry.key.all) {
