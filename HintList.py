@@ -306,9 +306,11 @@ hintTable = {
 
 # This specifies which hints will never appear due to either having known or known useless contents or due to the locations not existing.
 
+exclusions = []
 def hintExclusions(world):
+    if exclusions:
+        return exclusions
     expected_skulltulas = world.logic_skulltulas
-    exclusions = []
     if world.logic_no_trade_skull_mask:
         exclusions.append('Deku Theater Skull Mask')
     if world.logic_no_trade_mask_of_truth:
@@ -331,8 +333,12 @@ def hintExclusions(world):
         exclusions.append('20 Gold Skulltula Reward')
     if expected_skulltulas < 10:
         exclusions.append('10 Gold Skulltula Reward')
-    if not world.shuffle_ocarinas:
+    if not world.shuffle_ocarinas or world.logic_no_ocarina_of_time:
         exclusions.append('Ocarina of Time')
+    if world.logic_no_ocarina_of_time:
+        exclusions.append('Song from Ocarina of Time')
+    if world.logic_no_frog_ocarina_game:
+        exclusions.append('Frog Ocarina Game')
     if world.tokensanity != 'all':
         exclusions.append('GS Hyrule Castle Grotto')
         exclusions.append('GS Hyrule Field Near Gerudo Valley')

@@ -6,15 +6,17 @@ import random
 import re
 import os
 import shutil
-from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, Button, filedialog, messagebox, ttk, HORIZONTAL, Toplevel
-from tkinter.colorchooser import *
+from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, \
+        Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, \
+        StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, \
+        Button, filedialog, messagebox, simpledialog, ttk, HORIZONTAL, Toplevel, \
+        colorchooser
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
 from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry
 from Main import main, from_patch_file
-from Utils import is_bundled, local_path, default_output_path, open_file, check_version
-from Patches import get_tunic_color_options, get_navi_color_options
+from Utils import is_bundled, local_path, data_path, default_output_path, open_file, check_version
 from Settings import Settings
 from SettingsList import setting_infos
 from version import __version__ as ESVersion
@@ -74,7 +76,10 @@ def guivars_to_settings(guivars):
                 result[name] = guivar.get()
         # text field for a number...
         if info.type == int:
-            result[name] = int( guivar.get() )
+            try:
+                result[name] = int( guivar.get() )
+            except ValueError:
+                result[name] = 0
     if result['seed'] == "":
         result['seed'] = None
     if result['count'] == 1:
@@ -112,6 +117,8 @@ def guiMain(settings=None):
     # hold the results of the user's decisions here
     guivars = {}
     widgets = {}
+    dependencies = {}
+    presets = {}
 
     # hierarchy
     ############
@@ -131,8 +138,8 @@ def guiMain(settings=None):
 
     #Aesthetics tab
     frames['cosmetics'] = LabelFrame(frames['aesthetic_tab'], text='General', labelanchor=NW)
-    frames['tuniccolor'] = LabelFrame(frames['aesthetic_tab_left'], text='Tunic Color', labelanchor=NW)
-    frames['navicolor']  = LabelFrame(frames['aesthetic_tab_right'], text='Navi Color',  labelanchor=NW)
+    frames['tunic_color'] = LabelFrame(frames['aesthetic_tab_left'], text='Tunic Color', labelanchor=NW)
+    frames['navi_color']  = LabelFrame(frames['aesthetic_tab_right'], text='Navi Color',  labelanchor=NW)
     frames['lowhp']      = LabelFrame(frames['aesthetic_tab_left'], text='Low HP SFX',  labelanchor=NW)
     frames['navihint']   = LabelFrame(frames['aesthetic_tab_right'], text='Navi SFX', labelanchor=NW)
 
@@ -155,23 +162,30 @@ def guiMain(settings=None):
                 widget.configure(fg='Black'if enabled else 'Grey')
 
 
-    def show_settings(event=None):
+    def check_dependency(name):
+        if name in dependencies:
+            return dependencies[name](guivars)
+        else:
+            return True
+
+
+    def show_settings(*event):
         settings = guivars_to_settings(guivars)
         settings_string_var.set( settings.get_settings_string() )
 
         # Update any dependencies
         for info in setting_infos:
-            if info.gui_params and 'dependency' in info.gui_params:
-                dep_met = info.gui_params['dependency'](guivars)
+            dep_met = check_dependency(info.name)
+
+            if info.name in widgets:
                 toggle_widget(widgets[info.name], dep_met)
 
             if info.name in guivars and guivars[info.name].get() == 'Custom Color':
-                color = askcolor()
+                color = colorchooser.askcolor()
                 if color == (None, None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
         update_generation_type()
-        
 
 
     def update_logic_tricks(event=None):
@@ -208,9 +222,6 @@ def guiMain(settings=None):
     romDialogFrame.pack()
 
     fileDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(5,1))
-
-    def open_output():
-        open_file(output_path(''))
 
     def output_dir_select():
         rom = filedialog.askdirectory(initialdir = default_output_path(guivars['output_dir'].get()))
@@ -252,6 +263,9 @@ def guiMain(settings=None):
     widgets['all_logic_tricks'].pack(expand=False, anchor=W)
 
     for info in setting_infos:
+        if info.gui_params and 'dependency' in info.gui_params:
+            dependencies[info.name] = info.gui_params['dependency']
+
         if info.gui_params and 'group' in info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
                 # determine the initial value of the checkbox
@@ -356,11 +370,11 @@ def guiMain(settings=None):
     frames['aesthetic_tab_right'].pack(fill=BOTH, expand=True, anchor=W, side=RIGHT)
 
     #Aesthetics tab - Left Side
-    frames['tuniccolor'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
+    frames['tunic_color'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
     frames['lowhp'].pack(     fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
 
     #Aesthetics tab - Right Side
-    frames['navicolor'].pack( fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
+    frames['navi_color'].pack( fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
     frames['navihint'].pack(  fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
 
 
@@ -379,6 +393,7 @@ def guiMain(settings=None):
     countLabel = Label(worldCountFrame, text='Player Count')
     guivars['world_count'] = StringVar()
     widgets['world_count'] = Spinbox(worldCountFrame, from_=1, to=31, textvariable=guivars['world_count'], width=3)
+    guivars['world_count'].trace('w', show_settings)
     countLabel.pack(side=LEFT)
     widgets['world_count'].pack(side=LEFT, padx=2)
     worldCountFrame.pack(side=LEFT, anchor=N, padx=10, pady=(1,5))
@@ -395,6 +410,94 @@ def guiMain(settings=None):
     widgets['multiworld'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
+    # Settings Presets Functions
+    def import_setting_preset():
+        if guivars['settings_preset'].get() == '[New Preset]':
+            messagebox.showerror("Invalid Preset", "You must select an existing preset!")
+            return
+
+        # get cosmetic settings
+        old_settings = guivars_to_settings(guivars)
+        new_settings = {setting.name: old_settings.__dict__[setting.name] for setting in
+                            filter(lambda s: not (s.shared and s.bitwidth > 0), setting_infos)}
+
+        preset = presets[guivars['settings_preset'].get()]
+        new_settings.update(preset)
+
+        settings = Settings(new_settings)
+        settings.seed = guivars['seed'].get()
+
+        settings_to_guivars(settings, guivars)
+        show_settings()
+
+
+    def add_settings_preset():
+        preset_name = guivars['settings_preset'].get()
+        if preset_name == '[New Preset]':
+            preset_name = simpledialog.askstring("New Preset", "Enter a new preset name:")
+            if not preset_name or preset_name in presets or preset_name == '[New Preset]':
+                messagebox.showerror("Invalid Preset", "You must enter a new preset name!")
+                return
+        elif presets[preset_name].get('locked', False):
+            messagebox.showerror("Invalid Preset", "You cannot modify a locked preset!")
+            return
+
+        settings = guivars_to_settings(guivars)
+        preset = {setting.name: settings.__dict__[setting.name] for setting in 
+            filter(lambda s: s.shared and s.bitwidth > 0, setting_infos)}
+
+        presets[preset_name] = preset
+        guivars['settings_preset'].set(preset_name)
+        update_preset_dropdown()
+
+
+    def remove_setting_preset():
+        preset_name = guivars['settings_preset'].get()
+        if preset_name == '[New Preset]':
+            messagebox.showerror("Invalid Preset", "You must select an existing preset!")
+            return
+        elif presets[preset_name].get('locked', False):
+            messagebox.showerror("Invalid Preset", "You cannot modify a locked preset!")
+            return
+
+        confirm = messagebox.askquestion('Remove Setting Preset', 'Are you sure you want to remove the setting preset "%s"?' % preset_name)
+        if confirm != 'yes':
+            return
+
+        del presets[preset_name]
+        guivars['settings_preset'].set('[New Preset]')
+        update_preset_dropdown()
+
+
+    def update_preset_dropdown():
+        widgets['settings_preset']['values'] = ['[New Preset]'] + list(presets.keys())
+
+
+    # Settings Presets
+    widgets['settings_presets'] = LabelFrame(frames['rom_tab'], text='Settings Presets')
+    countLabel = Label(widgets['settings_presets'], wraplength=350, justify=LEFT, text='Presets are settings that can be saved and loaded from. Loading a preset will overwrite all settings that affect the seed.')
+    countLabel.pack(side=TOP, anchor=W, padx=5, pady=0)
+
+    selectPresetFrame = Frame(widgets['settings_presets'])
+    guivars['settings_preset'] = StringVar(value='[New Preset]')
+    widgets['settings_preset'] = ttk.Combobox(selectPresetFrame, textvariable=guivars['settings_preset'], values=['[New Preset]'], state='readonly', width=35)
+    widgets['settings_preset'].pack(side=BOTTOM, anchor=W)
+    ToolTips.register(widgets['settings_preset'], 'Select a setting preset to apply.')
+    widgets['settings_preset'].pack(side=LEFT, padx=(5, 0))
+    selectPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
+
+    buttonPresetFrame = Frame(widgets['settings_presets'])
+    importPresetButton = Button(buttonPresetFrame, text='Load Preset', command=import_setting_preset)
+    addPresetButton = Button(buttonPresetFrame, text='Save Preset', command=add_settings_preset)
+    removePresetButton = Button(buttonPresetFrame, text='Remove Preset', command=remove_setting_preset)
+    importPresetButton.pack(side=LEFT, anchor=W, padx=5)
+    addPresetButton.pack(side=LEFT, anchor=W, padx=5)
+    removePresetButton.pack(side=LEFT, anchor=W, padx=5)
+    buttonPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
+
+    widgets['settings_presets'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
+
+
     # create the generation menu
     def update_generation_type(event=None):
         if generation_notebook.tab(generation_notebook.select())['text'] == 'Generate From Seed':
@@ -404,9 +507,9 @@ def guiMain(settings=None):
             else:
                 notebook.tab(2, state="disabled")               
             notebook.tab(3, state="normal")
-            toggle_widget(widgets['world_count'], True)
-            toggle_widget(widgets['create_spoiler'], True)
-            toggle_widget(widgets['count'], True)
+            toggle_widget(widgets['world_count'], check_dependency('world_count'))
+            toggle_widget(widgets['create_spoiler'], check_dependency('create_spoiler'))
+            toggle_widget(widgets['count'], check_dependency('count'))
         else:
             notebook.tab(1, state="disabled")
             notebook.tab(2, state="disabled")
@@ -510,14 +613,27 @@ def guiMain(settings=None):
         settings_to_guivars(settings, guivars)
     else:
         # try to load saved settings
+        settingsFile = local_path('settings.sav')
         try:
-            settingsFile = local_path('settings.sav')
             with open(settingsFile) as f:
                 settings = Settings( json.load(f) )
-                settings.update_seed("")
-                settings_to_guivars(settings, guivars)
+        except:
+            settings = Settings({})
+        settings.update_seed("")
+        settings_to_guivars(settings, guivars)
+
+        presets = {}
+        try:
+            with open(data_path('presets_default.json')) as f:
+                presets.update(json.load(f))
         except:
             pass
+        try:
+            with open(local_path('presets.sav')) as f:
+                presets.update(json.load(f))
+        except:
+            pass           
+        update_preset_dropdown()
 
     show_settings()
 
@@ -535,10 +651,19 @@ def guiMain(settings=None):
     mainWindow.mainloop()
 
     # save settings on close
-    with open('settings.sav', 'w') as outfile:
+    settings_file = local_path('settings.sav')
+    with open(settings_file, 'w') as outfile:
         settings = guivars_to_settings(guivars)
-        json.dump(settings.__dict__, outfile)
+        del settings.__dict__["seed"]
+        del settings.__dict__["numeric_seed"]
+        if "locked" in settings.__dict__:
+            del settings.__dict__["locked"]
+        json.dump(settings.__dict__, outfile, indent=4)
 
+    presets_file = local_path('presets.sav')
+    with open(presets_file, 'w') as outfile:
+        preset_json = {name: preset for name,preset in presets.items() if not preset.get('locked')}
+        json.dump(preset_json, outfile, indent=4)
 
 if __name__ == '__main__':
     guiMain()

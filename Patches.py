@@ -1,22 +1,17 @@
-import io
-import json
-import logging
-import os
-import platform
-import struct
-import subprocess
 import random
-import copy
 
-from Hints import writeGossipStoneHintsHints, buildBossRewardHints, buildGanonText, getSimpleHintNoPrefix
-from Utils import data_path, default_output_path, random_choices
-from Item import ItemFactory
-from Messages import *
-from OcarinaSongs import Song, replace_songs
+from Hints import writeGossipStoneHintsHints, buildBossRewardHints, \
+        buildGanonText, getSimpleHintNoPrefix
+from Utils import data_path
+from Messages import read_messages, update_message_by_id, read_shop_items, \
+        write_shop_items, remove_unused_messages, make_player_message, \
+        add_song_messages, update_item_messages, \
+        message_patch_for_dungeon_items, repack_messages, shuffle_messages
+from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
 
-TunicColors = {
+tunic_colors = {
     "Custom Color":      [0x00, 0x00, 0x00],
     "Kokiri Green":      [0x1E, 0x69, 0x1B],
     "Goron Red":         [0x64, 0x14, 0x00],
@@ -157,7 +152,7 @@ def get_HealthSFX_options():
 
 
 def get_tunic_colors():
-    return list(TunicColors.keys())
+    return list(tunic_colors.keys())
 
 
 def get_tunic_color_options():
@@ -654,6 +649,28 @@ def patch_rom(world, rom):
     rom.write_bytes(0x292D810, [0x00, 0x02, 0x00, 0x3C])
     rom.write_bytes(0x292D924, [0xFF, 0xFF, 0x00, 0x14, 0x00, 0x96, 0xFF, 0xFF])
 
+    #Speed Pushing of All Pushable Objects
+    rom.write_bytes(0xDD2B86, [0x40, 0x80])             #block speed
+    rom.write_bytes(0xDD2D26, [0x00, 0x01])             #block delay
+    rom.write_bytes(0xDD9682, [0x40, 0x80])             #milk crate speed
+    rom.write_bytes(0xDD981E, [0x00, 0x01])             #milk crate delay
+    rom.write_bytes(0xCE1BD0, [0x40, 0x80, 0x00, 0x00]) #amy puzzle speed
+    rom.write_bytes(0xCE0F0E, [0x00, 0x01])             #amy puzzle delay
+    rom.write_bytes(0xC77CA8, [0x40, 0x80, 0x00, 0x00]) #fire block speed
+    rom.write_bytes(0xC770C2, [0x00, 0x01])             #fire block delay
+    rom.write_bytes(0xCC5DBC, [0x29, 0xE1, 0x00, 0x01]) #forest basement puzzle delay
+    rom.write_bytes(0xDBCF70, [0x2B, 0x01, 0x00, 0x00]) #spirit cobra mirror startup
+    rom.write_bytes(0xDBCF70, [0x2B, 0x01, 0x00, 0x01]) #spirit cobra mirror delay
+    rom.write_bytes(0xDBA230, [0x28, 0x41, 0x00, 0x19]) #truth spinner speed
+    rom.write_bytes(0xDBA3A4, [0x24, 0x18, 0x00, 0x00]) #truth spinner delay
+
+    #Speed Deku Seed Upgrade Scrub Cutscene
+    rom.write_bytes(0xECA900, [0x24, 0x03, 0xC0, 0x00]) #scrub angle
+    rom.write_bytes(0xECAE90, [0x27, 0x18, 0xFD, 0x04]) #skip straight to giving item
+    rom.write_bytes(0xECB618, [0x25, 0x6B, 0x00, 0xD4]) #skip straight to digging back in
+    rom.write_bytes(0xECAE70, [0x00, 0x00, 0x00, 0x00]) #never initialize cs camera
+    rom.write_bytes(0xE5972C, [0x24, 0x08, 0x00, 0x01]) #timer set to 1 frame for giving item
+
     # Remove remaining owls
     rom.write_bytes(0x1FE30CE, [0x01, 0x4B])
     rom.write_bytes(0x1FE30DE, [0x01, 0x4B])
@@ -831,6 +848,9 @@ def patch_rom(world, rom):
     rom.write_bytes(0xCC3FA8, [0xA2, 0x01, 0x01, 0xF8])
     rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00])
 
+    #Give hp after first ocarina minigame round
+    rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02]) 
+
     # Allow owl to always carry the kid down Death Mountain
     rom.write_bytes(0xE304F0, [0x24, 0x0E, 0x00, 0x01])
 
@@ -916,7 +936,6 @@ def patch_rom(world, rom):
 
 
     # Initial Save Data
-    write_bits_to_save(0x003F, 0x02) # Some Biggoron's Sword flag?
 
     write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (Poe Sisters cutscene)
     write_bits_to_save(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (Ruto)
@@ -1907,8 +1926,10 @@ def configure_dungeon_info(rom, world):
             'Volvagia', 'Morpha', 'Twinrova', 'Bongo Bongo']
     dungeon_rewards = [boss_reward_index(world, boss) for boss in bosses]
 
-    codes = ['DT', 'DC', 'JB', 'FoT', 'FiT', 'WT', 'SpT', 'ShT',
-            'BW', 'IC', 'Tower (N/A)', 'GTG', 'Hideout (N/A)', 'GC']
+    codes = ['Deku Tree', 'Dodongos Cavern', 'Jabu Jabus Belly', 'Forest Temple',
+             'Fire Temple', 'Water Temple', 'Spirit Temple', 'Shadow Temple',
+             'Bottom of the Well', 'Ice Cavern', 'Tower (N/A)',
+             'Gerudo Training Grounds', 'Hideout (N/A)', 'Ganons Castle']
     dungeon_is_mq = [1 if world.dungeon_mq.get(c) else 0 for c in codes]
 
     rom.write_int32(rom.sym('cfg_dungeon_info_enable'), 1)
@@ -1939,14 +1960,14 @@ def patch_cosmetics(settings, rom):
         restore_music(rom)
 
     # patch tunic colors
-    Tunics = [
-        (settings.kokiricolor, 0x00B6DA38), # Kokiri Tunic
-        (settings.goroncolor,  0x00B6DA3B), # Goron Tunic
-        (settings.zoracolor,   0x00B6DA3E), # Zora Tunic
+    tunics = [
+        (settings.kokiri_color, 0x00B6DA38), # Kokiri Tunic
+        (settings.goron_color,  0x00B6DA3B), # Goron Tunic
+        (settings.zora_color,   0x00B6DA3E), # Zora Tunic
     ]
     colorList = get_tunic_colors()
 
-    for tunic_option, address in Tunics:
+    for tunic_option, address in tunics:
         # handle random
         if tunic_option == 'Random Choice':
             tunic_option = random.choice(colorList)
@@ -1954,8 +1975,8 @@ def patch_cosmetics(settings, rom):
         if tunic_option == 'Completely Random':
             color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
         # grab the color from the list
-        elif tunic_option in TunicColors:
-            color = TunicColors[tunic_option]
+        elif tunic_option in tunic_colors:
+            color = tunic_colors[tunic_option]
         # build color from hex code
         else:
             color = list(int(tunic_option[i:i+2], 16) for i in (0, 2 ,4))
@@ -1963,10 +1984,10 @@ def patch_cosmetics(settings, rom):
 
     # patch navi colors
     Navi = [
-        (settings.navicolordefault, [0x00B5E184]), # Default
-        (settings.navicolorenemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
-        (settings.navicolornpc,     [0x00B5E194]), # NPC
-        (settings.navicolorprop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
+        (settings.navi_color_default, [0x00B5E184]), # Default
+        (settings.navi_color_enemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+        (settings.navi_color_npc,     [0x00B5E194]), # NPC
+        (settings.navi_color_prop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
                                   0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4,
                                   0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
     ]
