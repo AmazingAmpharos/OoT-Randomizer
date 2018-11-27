@@ -239,8 +239,6 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
     # Set logic_no_ocarina_of_time to false to allow songs to be placed regardless of that setting.
     prev_no_ocarina_of_time = worlds[0].logic_no_ocarina_of_time
 
-    # List of states with all items
-    all_state_base_list = State.get_states_with_items([world.state for world in worlds], itempool)
 
     prizepool_dict = {world.id: [song for song in unplaced_prizes if song.world.id == world.id] for world in worlds}
     prize_locs_dict = {world.id: [loc for loc in empty_song_locations if loc.world.id == world.id] for world in worlds}
@@ -249,6 +247,10 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
     # Therefore, let's do this one world at a time. We do this to help
     # increase the chances of successfully placing songs
     for world in worlds:
+        # List of states with all items
+        unplaced_prizes = [song for song in unplaced_prizes if song not in prizepool_dict[world.id]]
+        all_state_base_list = State.get_states_with_items([world.state for world in worlds], itempool + unplaced_prizes)
+
         world_attempts = attempts
         while world_attempts:
             world_attempts -= 1
