@@ -7,13 +7,13 @@ void handle_quickboots() {
 
         if ((z64_link.state_flags_1 & BLOCK_QUICK_BOOTS) == 0) {
 
-            if (pad_pressed & 0x0200 && z64_file.iron_boots) {
+            if (pad_pressed & DPAD_L && z64_file.iron_boots) {
                 if (z64_file.equip_boots == 2) z64_file.equip_boots = 1;
                 else z64_file.equip_boots = 2;
                 z64_UpdateEquipment(&z64_game, &z64_link);
             }
 
-            if ((pad_pressed & 0x0100) && z64_file.hover_boots) {
+            if ((pad_pressed & DPAD_R) && z64_file.hover_boots) {
                 if (z64_file.equip_boots == 3) z64_file.equip_boots = 1;
                 else z64_file.equip_boots = 3;
                 z64_UpdateEquipment(&z64_game, &z64_link);

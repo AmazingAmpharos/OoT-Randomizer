@@ -2,6 +2,9 @@ before_game_state_update:
     addiu   sp, sp, -0x18
     sw      ra, 0x10 (sp)
 
+	jal c_before_game_state_update
+    nop
+
     ; Don't give pending item during cutscene. This can lead to a crash when giving an item
     ; during another item cutscene.
     li      t2, PLAYER_ACTOR
@@ -59,9 +62,6 @@ before_game_state_update:
     jal     store_item_data
     nop
 @@no_pending_item:
-
-    jal c_before_game_state_update
-    nop
 
     ; Displaced code
     lw      t9, 0x04 (s0)
