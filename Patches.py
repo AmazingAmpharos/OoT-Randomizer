@@ -172,7 +172,7 @@ def patch_rom(world, rom):
     with open(data_path('rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
-            rom.write_byte(address, value)
+            rom.write_int32(address, value)
     rom.scan_dmadata_update()
 
     # Write Randomizer title screen logo
