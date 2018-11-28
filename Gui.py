@@ -202,7 +202,7 @@ def guiMain(settings=None):
     def update_logic_tricks(event=None):
         for info in setting_infos:
             if info.gui_params \
-            and info.gui_params['widget'] == 'Checkbutton' \
+            and info.gui_params.get('widget') == 'Checkbutton' \
             and info.gui_params['group'] == 'tricks':
                 if guivars['all_logic_tricks'].get():
                     widgets[info.name].select()
