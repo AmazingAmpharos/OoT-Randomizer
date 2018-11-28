@@ -179,14 +179,14 @@ class State(object):
         return self.has('Buy Bombchu (5)') or \
                self.has('Buy Bombchu (10)') or \
                self.has('Buy Bombchu (20)') or \
-               self.can_reach('Castle Town Bombchu Bowling')
+               self.can_reach('Castle Town Bombchu Bowling') or \
+               self.can_reach('Haunted Wasteland Bombchu Salesman', 'Location')
 
 
     def has_bombchus(self):
         return (self.world.bombchus_in_logic and \
-                    ((any(pritem.startswith('Bombchus') for pritem in self.prog_items) and \
-                        self.can_buy_bombchus()) \
-                    or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
+                    (any(pritem.startswith('Bombchus') for pritem in self.prog_items) and \
+                        self.can_buy_bombchus())) \
             or (not self.world.bombchus_in_logic and self.has('Bomb Bag') and \
                         self.can_buy_bombchus())
 
