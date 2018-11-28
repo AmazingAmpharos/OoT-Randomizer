@@ -104,7 +104,7 @@
         "region_name": "Lost Woods",
         "locations": {
             "Skull Kid": "can_play(Sarias_Song)",
-            "Ocarina Memory Game": "(not logic_no_memory_game) and has_ocarina",
+            "Ocarina Memory Game": "has_ocarina",
             "Target in Woods": "has_slingshot",
             "LW Deku Scrub Deku Stick Upgrade": "can_stun_deku",
             "GS Lost Woods Bean Patch Near Bridge": "
@@ -181,11 +181,9 @@
         "region_name": "Hyrule Field",
         "locations": {
             "Ocarina of Time": "
-                (not logic_no_ocarina_of_time) and Kokiri_Emerald
-                and Goron_Ruby and Zora_Sapphire and guarantee_hint",
+                Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Song from Ocarina of Time": "
-                (not logic_no_ocarina_of_time) and Kokiri_Emerald
-                and Goron_Ruby and Zora_Sapphire and guarantee_hint",
+                Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Generic Grotto Gossip Stone": "True"
         },
         "exits": {
@@ -243,9 +241,8 @@
     {
         "region_name": "Fishing Hole",
         "locations": {
-            "Child Fishing": "(not logic_no_child_fishing) and Kokiri_Sword",
+            "Child Fishing": "Kokiri_Sword",
             "Adult Fishing": "
-                (not logic_no_adult_fishing) and 
                 (can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location))"
         }
     },
@@ -285,8 +282,7 @@
             "Horseback Archery 1000 Points": "
                 Carpenter_Rescue and Epona and Bow and is_adult",
             "Horseback Archery 1500 Points": "
-                (not logic_no_1500_archery) and Carpenter_Rescue and 
-                Epona and Bow and is_adult",
+                Carpenter_Rescue and Epona and Bow and is_adult",
             "Gerudo Fortress North F1 Carpenter": "True",
             "Gerudo Fortress North F2 Carpenter": "
                 can_use(Bow) or can_use(Hookshot) or can_use(Hover_Boots) or logic_tricks",
@@ -450,7 +446,7 @@
         "region_name": "Castle Town Rupee Room",
         "locations": {
             "10 Big Poes": "
-                (not logic_no_big_poes) and is_adult and 
+                is_adult and 
                 ((can_use(Bow) and Epona and has_bottle and guarantee_hint) or 
                     (Bottle_with_Big_Poe, big_poe_count))",
             "GS Castle Market Guard House": "True"
@@ -572,15 +568,15 @@
         "region_name": "House of Skulltula",
         "locations": {
             "10 Gold Skulltula Reward": "
-                (logic_skulltulas >= 10) and (Gold_Skulltula_Token, 10)",
+                (Gold_Skulltula_Token, 10)",
             "20 Gold Skulltula Reward": "
-                (logic_skulltulas >= 20) and (Gold_Skulltula_Token, 20)",
+                (Gold_Skulltula_Token, 20)",
             "30 Gold Skulltula Reward": "
-                (logic_skulltulas >= 30) and (Gold_Skulltula_Token, 30) and guarantee_hint",
+                (Gold_Skulltula_Token, 30) and guarantee_hint",
             "40 Gold Skulltula Reward": "
-                (logic_skulltulas >= 40) and (Gold_Skulltula_Token, 40) and guarantee_hint",
+                (Gold_Skulltula_Token, 40) and guarantee_hint",
             "50 Gold Skulltula Reward": "
-                (logic_skulltulas >= 50) and (Gold_Skulltula_Token, 50) and guarantee_hint"
+                (Gold_Skulltula_Token, 50) and guarantee_hint"
         }
     },
     {
@@ -682,7 +678,7 @@
         "region_name": "Dampes Grave",
         "locations": {
             "Hookshot Chest": "True",
-            "Dampe Race Freestanding PoH": "not logic_no_second_dampe_race"
+            "Dampe Race Freestanding PoH": "True"
         }
     },
     {
@@ -832,8 +828,7 @@
         "locations": {
             "DM Crater Wall Freestanding PoH": "True",
             "Biggoron": "
-                (not logic_no_trade_biggoron) and is_adult and 
-                can_finish_adult_trades and guarantee_hint",
+                is_adult and can_finish_adult_trades and guarantee_hint",
             "GS Death Mountain Crater Crate": "
                 can_blast_or_smash and can_child_attack",
             "DMC Deku Scrub Bombs": "
@@ -918,7 +913,7 @@
         "locations": {
             "Magic Bean Salesman": "True",
             "Frog Ocarina Game": "
-                (not logic_no_frog_ocarina_game) and can_play(Zeldas_Lullaby) and can_play(Sarias_Song) and can_play(Suns_Song) and 
+                can_play(Zeldas_Lullaby) and can_play(Sarias_Song) and can_play(Suns_Song) and 
                 can_play(Eponas_Song) and can_play(Song_of_Time) and can_play(Song_of_Storms) and guarantee_hint",
             "Frogs in the Rain": "can_play(Song_of_Storms)",
             "GS Zora River Ladder": "nighttime and can_child_attack"
@@ -1120,9 +1115,8 @@
         "region_name": "Deku Theater",
         "locations": {
             "Deku Theater Skull Mask": "
-                (not logic_no_trade_skull_mask) and Zeldas_Letter",
+                Zeldas_Letter",
             "Deku Theater Mask of Truth": "
-                (not logic_no_trade_mask_of_truth) and 
                 (Zeldas_Letter and can_play(Sarias_Song) and 
                     Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint)" 
                     #Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man.

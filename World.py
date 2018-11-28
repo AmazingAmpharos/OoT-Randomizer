@@ -240,7 +240,7 @@ class World(object):
             location = self.get_location(location)
 
         # This check should never be false normally, but is here as a sanity check
-        if location.can_fill(self.state, item, False):
+        if location.can_fill_fast(item):
             location.item = item
             item.location = location
             item.price = location.price if location.price is not None else item.price

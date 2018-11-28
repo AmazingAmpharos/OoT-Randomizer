@@ -1,5 +1,6 @@
 import collections
 import logging
+from Location import DisableType
 
 
 def set_rules(world):
@@ -70,6 +71,40 @@ def set_rules(world):
                     forbid_item(location, 'Buy Zora Tunic')
         elif not 'Deku Scrub' in location.name:
             add_item_rule(location, lambda item: item.type != 'Shop')
+
+    if world.logic_skulltulas < 10:
+        world.get_location('10 Gold Skulltula Reward').disabled = DisableType.PENDING
+    if world.logic_skulltulas < 20:
+        world.get_location('20 Gold Skulltula Reward').disabled = DisableType.PENDING
+    if world.logic_skulltulas < 30:
+        world.get_location('30 Gold Skulltula Reward').disabled = DisableType.PENDING
+    if world.logic_skulltulas < 40:
+        world.get_location('40 Gold Skulltula Reward').disabled = DisableType.PENDING
+    if world.logic_skulltulas < 50:
+        world.get_location('50 Gold Skulltula Reward').disabled = DisableType.PENDING
+    if world.logic_no_big_poes:
+        world.get_location('10 Big Poes').disabled = DisableType.PENDING
+    if world.logic_no_child_fishing:
+        world.get_location('Child Fishing').disabled = DisableType.PENDING
+    if world.logic_no_adult_fishing:
+        world.get_location('Adult Fishing').disabled = DisableType.PENDING
+    if world.logic_no_trade_skull_mask:
+        world.get_location('Deku Theater Skull Mask').disabled = DisableType.PENDING
+    if world.logic_no_trade_mask_of_truth:
+        world.get_location('Deku Theater Mask of Truth').disabled = DisableType.PENDING
+    if world.logic_no_ocarina_of_time:
+        world.get_location('Ocarina of Time').disabled = DisableType.PENDING
+        world.get_location('Song from Ocarina of Time').disabled = DisableType.PENDING
+    if world.logic_no_1500_archery:
+        world.get_location('Horseback Archery 1500 Points').disabled = DisableType.PENDING
+    if world.logic_no_memory_game:
+        world.get_location('Ocarina Memory Game').disabled = DisableType.PENDING
+    if world.logic_no_frog_ocarina_game:
+        world.get_location('Frog Ocarina Game').disabled = DisableType.PENDING
+    if world.logic_no_second_dampe_race:
+        world.get_location('Dampe Race Freestanding PoH').disabled = DisableType.PENDING
+    if world.logic_no_trade_biggoron:
+        world.get_location('Biggoron').disabled = DisableType.PENDING
 
 
 def set_rule(spot, rule):
