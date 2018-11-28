@@ -1054,7 +1054,7 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
-    Setting_Info('disabled_locations', list, len(location_table), True,
+    Setting_Info('disabled_locations', list, math.ceil(math.log(len(location_table) + 1, 2)), True,
         {
             'default': [],
             'help': '''\

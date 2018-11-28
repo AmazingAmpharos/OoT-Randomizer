@@ -289,15 +289,16 @@ def guiMain(settings=None):
 
     def add_disabled_location():
         new_location = widgets['disabled_location_entry'].get()
-
         if new_location in widgets['disabled_location_entry'].options and new_location not in widgets['disabled_locations'].get(0, END):
             widgets['disabled_locations'].insert(END, new_location)
             guivars['disabled_locations'].append(new_location)
+        show_settings()
 
     def remove_disabled_location():
         location = widgets['disabled_locations'].get(ACTIVE)
         widgets['disabled_locations'].delete(ACTIVE)
         guivars['disabled_locations'].remove(location)
+        show_settings()
 
     location_button_frame = Frame(frames['rewards'])
     widgets['disabled_location_add'] = Button(location_button_frame, text='Add', command=add_disabled_location)

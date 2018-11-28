@@ -96,15 +96,17 @@ class Settings():
                 i_bits.reverse()
             if setting.type == list:
                 if 'choices' in setting.args_params:
-                    i_bits = [0] * setting.bitwidth
                     for item in value:                       
                         try:
                             index = setting.args_params['choices'].index(item)
-                            i_bits[index] = 1
                         except ValueError:
                             continue
-                    # https://stackoverflow.com/questions/10321978/integer-to-bitfield-as-a-list
-                    i_bits.reverse()
+
+                        item_bits = [1 if digit=='1' else 0 for digit in bin(index+1)[2:]]
+                        item_bits.reverse()
+                        item_bits += [0] * ( setting.bitwidth - len(item_bits) )
+                        i_bits.extend(item_bits)
+                    i_bits.extend([0] * setting.bitwidth)
                 else:
                     raise ValueError('Setting is list type, but missing parse parameters.')
 
@@ -148,10 +150,15 @@ class Settings():
             if setting.type == list:
                 if 'choices' in setting.args_params:
                     value = []
-                    cur_bits.reverse()
-                    for index,b in enumerate(cur_bits):
-                        if b:
-                            value.append(setting.args_params['choices'][index])
+                    while True:
+                        index = 0
+                        for b in range(setting.bitwidth):
+                            index |= cur_bits[b] << b
+                        if index == 0:
+                            break
+                        value.append(setting.args_params['choices'][index-1])
+                        cur_bits = bits[:setting.bitwidth]
+                        bits = bits[setting.bitwidth:]
                 else:
                     raise ValueError('Setting is list type, but missing parse parameters.')
 
