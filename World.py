@@ -91,7 +91,7 @@ class World(object):
         json_string = ""
         with io.open(file_path, 'r') as file:
             for line in file.readlines():
-                json_string += line.split('#')[0].rstrip('\n')
+                json_string += line.split('#')[0].replace('\n', ' ')
         region_json = json.loads(json_string)
 
         for region in region_json:
