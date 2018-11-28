@@ -9,6 +9,7 @@ import sys
 import struct
 import zipfile
 import io
+import hashlib
 
 from World import World
 from State import State
@@ -126,10 +127,11 @@ def main(settings, window=dummy_window()):
 
     logger.info('Patching ROM.')
 
+    settings_string_hash = hashlib.sha1(worlds[0].settings_string.encode('utf-8')).hexdigest().upper()[:5]
     if settings.world_count > 1:
-        outfilebase = 'OoT_%s_%s_W%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count)
+        outfilebase = 'OoT_%s_%s_W%d' % (settings_string_hash, worlds[0].seed, settings.world_count)
     else:
-        outfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
+        outfilebase = 'OoT_%s_%s' % (settings_string_hash, worlds[0].seed)
 
     output_dir = default_output_path(settings.output_dir)
 
@@ -214,6 +216,9 @@ def main(settings, window=dummy_window()):
     if settings.create_spoiler:
         window.update_status('Creating Spoiler Log')
         spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
+    else:
+        window.update_status('Creating Settings Log')
+        spoiler.to_file(os.path.join(output_dir, '%s_Settings.txt' % outfilebase))
 
     window.update_progress(100)
     window.update_status('Success: Rom patched successfully')
