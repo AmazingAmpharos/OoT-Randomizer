@@ -214,6 +214,9 @@ def main(settings, window=dummy_window()):
     if settings.create_spoiler:
         window.update_status('Creating Spoiler Log')
         spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
+    else:
+        window.update_status('Creating Settings Log')
+        spoiler.to_file(os.path.join(output_dir, '%s_Settings.txt' % outfilebase))
 
     window.update_progress(100)
     window.update_status('Success: Rom patched successfully')
