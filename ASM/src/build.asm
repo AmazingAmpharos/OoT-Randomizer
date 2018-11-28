@@ -49,6 +49,10 @@ DebugOutput:
 .include "empty_bomb_fix.asm"
 .include "initial_save.asm"
 .include "textbox.asm"
+.include "fishing.asm"
+.include "chus_in_logic.asm"
+.include "rainbow_bridge.asm"
+.include "gossip_hints.asm"
 .endarea
 
 .headersize (0x80405000 - 0x034B3000)

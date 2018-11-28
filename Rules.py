@@ -46,20 +46,30 @@ def set_rules(world):
     for location in world.get_locations():
         if location.type != 'Chest':
             forbid_item(location, 'Ice Trap')
-        add_item_rule(location, lambda i: not (i.type == 'Song' and not i.world.shuffle_song_items and i.world.id != location.world.id))
-        add_item_rule(location, lambda i: not (i.type == 'Shop' and i.world.id != location.world.id))
+
+        if not world.shuffle_song_items:
+            if location.type == 'Song':
+                add_item_rule(location, lambda item: item.type == 'Song' and item.world.id == location.world.id)
+            else:
+                add_item_rule(location, lambda item: item.type != 'Song')
+
         if location.type == 'Shop':
             if location.name in world.shop_prices:
+                add_item_rule(location, lambda item: item.type != 'Shop')
                 location.price = world.shop_prices[location.name]
                 if location.price > 200:
                     set_rule(location, lambda state: state.has('Progressive Wallet', 2))
                 elif location.price > 99:
                     set_rule(location, lambda state: state.has('Progressive Wallet'))
+            else:
+                add_item_rule(location, lambda item: item.type == 'Shop' and item.world.id == location.world.id)
 
             if location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
                 if not world.check_beatable_only:
                     forbid_item(location, 'Buy Goron Tunic')
                     forbid_item(location, 'Buy Zora Tunic')
+        elif not 'Deku Scrub' in location.name:
+            add_item_rule(location, lambda item: item.type != 'Shop')
 
 
 def set_rule(spot, rule):

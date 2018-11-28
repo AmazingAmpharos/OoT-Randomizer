@@ -27,3 +27,18 @@ PLAYER_NAME_ID:
 .area 8*32, 0xDF
 PLAYER_NAMES:
 .endarea
+
+BOMBCHUS_IN_LOGIC:
+.word 0x00
+
+RAINBOW_BRIDGE_CONDITION:
+.word 0x00
+; 0 = Open
+; 1 = Medallions
+; 2 = Dungeons
+
+GOSSIP_HINT_CONDITION:
+.word 0x00
+; 0 = Mask of Truth
+; 1 = Stone of Agony
+; 2 = No Requirements

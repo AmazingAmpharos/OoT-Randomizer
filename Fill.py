@@ -107,17 +107,18 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 
     # Log unplaced item/location warnings
     for item in progitempool + prioitempool + restitempool:
-        logging.getLogger('').debug('Unplaced Items: %s [World %d]' % (item.name, item.world.id))
-    if progitempool + prioitempool + restitempool:
-        for item in progitempool + prioitempool + restitempool:
-            print('Unplaced Items: %s [World %d]' % (item.name, item.world.id))
+        logging.getLogger('').error('Unplaced Items: %s [World %d]' % (item.name, item.world.id))
+    for location in fill_locations:
+        logging.getLogger('').error('Unfilled Locations: %s [World %d]' % (location.name, location.world.id))
 
+    if progitempool + prioitempool + restitempool:
         raise FillError('Not all items are placed.')
 
     if fill_locations:
-        for location in fill_locations:
-            logging.getLogger('').debug('Unfilled Locations: %s [World %d]' % (location.name, location.world.id))
         raise FillError('Not all locations have an item.')
+
+    if not State.can_beat_game(world_states, True):
+        raise FillError('Cannot beat game!')
 
     # Get Light Arrow location for later usage.
     for world in worlds:
@@ -235,27 +236,43 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
     unplaced_prizes = [song for song in songpool if song.name not in placed_prizes]
     empty_song_locations = [loc for loc in locations if loc.item is None]
 
-    # List of states with all items
-    all_state_base_list = State.get_states_with_items([world.state for world in worlds], itempool)
+    # Set logic_no_ocarina_of_time to false to allow songs to be placed regardless of that setting.
+    prev_no_ocarina_of_time = worlds[0].logic_no_ocarina_of_time
 
-    while attempts:
-        attempts -= 1
-        try:
-            prizepool = list(unplaced_prizes)
-            prize_locs = list(empty_song_locations)
-            random.shuffle(prizepool)
-            random.shuffle(prize_locs)
-            fill_restrictive(window, worlds, all_state_base_list, prize_locs, prizepool)
-            logging.getLogger('').info("Songs placed")
-        except FillError as e:
-            logging.getLogger('').info("Failed to place songs. Will retry %s more times", attempts)
-            for location in empty_song_locations:
-                location.item = None
-            logging.getLogger('').info('\t%s' % str(e))
-            continue
-        break
-    else:
-        raise FillError('Unable to place songs')
+
+    prizepool_dict = {world.id: [song for song in unplaced_prizes if song.world.id == world.id] for world in worlds}
+    prize_locs_dict = {world.id: [loc for loc in empty_song_locations if loc.world.id == world.id] for world in worlds}
+
+    # Songs being sent in to this method are tied to their own world.
+    # Therefore, let's do this one world at a time. We do this to help
+    # increase the chances of successfully placing songs
+    for world in worlds:
+        # List of states with all items
+        unplaced_prizes = [song for song in unplaced_prizes if song not in prizepool_dict[world.id]]
+        all_state_base_list = State.get_states_with_items([world.state for world in worlds], itempool + unplaced_prizes)
+
+        world_attempts = attempts
+        while world_attempts:
+            world_attempts -= 1
+            try:
+                prizepool = list(prizepool_dict[world.id])
+                prize_locs = list(prize_locs_dict[world.id])
+                random.shuffle(prizepool)
+                random.shuffle(prize_locs)
+
+                world.logic_no_ocarina_of_time = False
+                fill_restrictive(window, worlds, all_state_base_list, prize_locs, prizepool, logic_no_ocarina_of_time=prev_no_ocarina_of_time)
+
+                logging.getLogger('').info("Songs placed for world %s", (world.id+1))
+            except FillError as e:
+                logging.getLogger('').info("Failed to place songs for world %s. Will retry %s more times", (world.id+1), world_attempts)
+                for location in prize_locs_dict[world.id]:
+                    location.item = None
+                logging.getLogger('').info('\t%s' % str(e))
+                continue
+            break
+        else:
+            raise FillError('Unable to place songs in world %d' % (world.id+1))
 
 
 # Places items in the itempool into locations.
@@ -274,7 +291,7 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
 # This function will modify the location and itempool arguments. placed items and
 # filled locations will be removed. If this returns and error, then the state of
 # those two lists cannot be guaranteed.
-def fill_restrictive(window, worlds, base_state_list, locations, itempool, count=-1):
+def fill_restrictive(window, worlds, base_state_list, locations, itempool, count=-1, logic_no_ocarina_of_time=False):
     unplaced_items = []
 
     # loop until there are no items or locations
@@ -334,6 +351,11 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
         locations.remove(spot_to_fill)
         window.fillcount += 1
         window.update_progress(5 + ((window.fillcount / window.locationcount) * 30))
+
+        if logic_no_ocarina_of_time and spot_to_fill.name == 'Song from Ocarina of Time':
+            spot_to_fill.world.logic_no_ocarina_of_time = True
+            if not State.can_beat_game(maximum_exploration_state_list):
+                raise FillError('Game unbeatable: Tried to place %s [World %d] (required) in a removed location' % (item_to_place, item_to_place.world.id))
 
         # decrement count
         count -= 1
