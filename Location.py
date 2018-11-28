@@ -19,7 +19,7 @@ class Location(object):
         self.staleness_count = 0
         self.always_allow = lambda item, state: False
         self.access_rule = lambda state: True
-        self.item_rule = lambda item: True
+        self.item_rule = lambda location, item: True
         self.locked = False
         self.price = None
         self.minor_only = False
@@ -51,12 +51,12 @@ class Location(object):
             self.disabled != DisableType.DISABLED and 
             self.parent_region.can_fill(item) and 
             (self.always_allow(item, state) or 
-                (self.item_rule(item) and 
+                (self.item_rule(self, item) and 
                     (not check_access or state.can_reach(self)))))
 
 
     def can_fill_fast(self, item):
-        return (self.parent_region.can_fill(item) and self.item_rule(item))
+        return (self.parent_region.can_fill(item) and self.item_rule(self, item))
 
 
     def can_reach(self, state):

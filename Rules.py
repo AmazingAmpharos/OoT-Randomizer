@@ -39,7 +39,7 @@ def set_rules(world):
                 state.has('Zora Sapphire')))
 
     # ganon can only carry triforce
-    world.get_location('Ganon').item_rule = lambda item: item.name == 'Triforce'
+    world.get_location('Ganon').item_rule = lambda location, item: item.name == 'Triforce'
 
     # these are default save&quit points and always accessible
     world.get_region('Links House').can_reach = lambda state: True
@@ -50,61 +50,30 @@ def set_rules(world):
 
         if not world.shuffle_song_items:
             if location.type == 'Song':
-                add_item_rule(location, lambda item: item.type == 'Song' and item.world.id == location.world.id)
+                add_item_rule(location, lambda location, item: item.type == 'Song' and item.world.id == location.world.id)
             else:
-                add_item_rule(location, lambda item: item.type != 'Song')
+                add_item_rule(location, lambda location, item: item.type != 'Song')
 
         if location.type == 'Shop':
             if location.name in world.shop_prices:
-                add_item_rule(location, lambda item: item.type != 'Shop')
+                add_item_rule(location, lambda location, item: item.type != 'Shop')
                 location.price = world.shop_prices[location.name]
                 if location.price > 200:
                     set_rule(location, lambda state: state.has('Progressive Wallet', 2))
                 elif location.price > 99:
                     set_rule(location, lambda state: state.has('Progressive Wallet'))
             else:
-                add_item_rule(location, lambda item: item.type == 'Shop' and item.world.id == location.world.id)
+                add_item_rule(location, lambda location, item: item.type == 'Shop' and item.world.id == location.world.id)
 
             if location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
                 if not world.check_beatable_only:
                     forbid_item(location, 'Buy Goron Tunic')
                     forbid_item(location, 'Buy Zora Tunic')
         elif not 'Deku Scrub' in location.name:
-            add_item_rule(location, lambda item: item.type != 'Shop')
+            add_item_rule(location, lambda location, item: item.type != 'Shop')
 
-    if world.logic_skulltulas < 10:
-        world.get_location('10 Gold Skulltula Reward').disabled = DisableType.PENDING
-    if world.logic_skulltulas < 20:
-        world.get_location('20 Gold Skulltula Reward').disabled = DisableType.PENDING
-    if world.logic_skulltulas < 30:
-        world.get_location('30 Gold Skulltula Reward').disabled = DisableType.PENDING
-    if world.logic_skulltulas < 40:
-        world.get_location('40 Gold Skulltula Reward').disabled = DisableType.PENDING
-    if world.logic_skulltulas < 50:
-        world.get_location('50 Gold Skulltula Reward').disabled = DisableType.PENDING
-    if world.logic_no_big_poes:
-        world.get_location('10 Big Poes').disabled = DisableType.PENDING
-    if world.logic_no_child_fishing:
-        world.get_location('Child Fishing').disabled = DisableType.PENDING
-    if world.logic_no_adult_fishing:
-        world.get_location('Adult Fishing').disabled = DisableType.PENDING
-    if world.logic_no_trade_skull_mask:
-        world.get_location('Deku Theater Skull Mask').disabled = DisableType.PENDING
-    if world.logic_no_trade_mask_of_truth:
-        world.get_location('Deku Theater Mask of Truth').disabled = DisableType.PENDING
-    if world.logic_no_ocarina_of_time:
-        world.get_location('Ocarina of Time').disabled = DisableType.PENDING
-        world.get_location('Song from Ocarina of Time').disabled = DisableType.PENDING
-    if world.logic_no_1500_archery:
-        world.get_location('Horseback Archery 1500 Points').disabled = DisableType.PENDING
-    if world.logic_no_memory_game:
-        world.get_location('Ocarina Memory Game').disabled = DisableType.PENDING
-    if world.logic_no_frog_ocarina_game:
-        world.get_location('Frog Ocarina Game').disabled = DisableType.PENDING
-    if world.logic_no_second_dampe_race:
-        world.get_location('Dampe Race Freestanding PoH').disabled = DisableType.PENDING
-    if world.logic_no_trade_biggoron:
-        world.get_location('Biggoron').disabled = DisableType.PENDING
+    for location in world.disabled_locations:
+        world.get_location(location).disabled = DisableType.PENDING
 
 
 def set_rule(spot, rule):
@@ -126,14 +95,14 @@ def add_rule(spot, rule, combine='and'):
 def add_item_rule(spot, rule, combine='and'):
     old_rule = spot.item_rule
     if combine == 'or':
-        spot.item_rule = lambda item: rule(item) or old_rule(item)
+        spot.item_rule = lambda location, item: rule(location, item) or old_rule(location, item)
     else:
-        spot.item_rule = lambda item: rule(item) and old_rule(item)
+        spot.item_rule = lambda location, item: rule(location, item) and old_rule(location, item)
 
 
 def forbid_item(location, item):
     old_rule = location.item_rule
-    location.item_rule = lambda i: i.name != item and old_rule(i)
+    location.item_rule = lambda location, item: item.name != item and old_rule(location, item)
 
 
 def item_in_locations(state, item, locations):
