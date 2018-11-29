@@ -307,8 +307,19 @@ def guiMain(settings=None):
     widgets['disabled_location_remove'].pack(side=LEFT, anchor=N, padx=3, pady=3)
     location_button_frame.pack(expand=False, side=TOP, padx=3, pady=3)
 
-    ToolTips.register(widgets['disabled_location_entry'], 'Prevent locations from\nbeing required.')
-    ToolTips.register(location_frame, 'Prevent locations from\nbeing required.')
+    disabled_location_tooltip = '''
+        Prevent locations from being required. Major 
+        items can still appear there, however they 
+        will never be required to beat the game.
+
+        Most dungeon locations have a MQ alternative.
+        If the location does not exist because of MQ
+        then it will be ignored. So make sure to
+        disable both versions if that is the intent.
+    '''
+
+    ToolTips.register(widgets['disabled_location_entry'], disabled_location_tooltip)
+    ToolTips.register(location_frame, disabled_location_tooltip)
 
     for info in setting_infos:
         if info.gui_params and 'dependency' in info.gui_params:

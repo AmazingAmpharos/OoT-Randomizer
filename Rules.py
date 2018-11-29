@@ -4,6 +4,8 @@ from Location import DisableType
 
 
 def set_rules(world):
+    logger = logging.getLogger('')
+
     if world.bridge == 'medallions':
         # require all medallions to form the bridge
         set_rule(
@@ -73,7 +75,10 @@ def set_rules(world):
             add_item_rule(location, lambda location, item: item.type != 'Shop')
 
     for location in world.disabled_locations:
-        world.get_location(location).disabled = DisableType.PENDING
+        try:
+            world.get_location(location).disabled = DisableType.PENDING
+        except:
+            logger.debug('Tried to disable location that does not exist: %s' % location)
 
 
 def set_rule(spot, rule):
