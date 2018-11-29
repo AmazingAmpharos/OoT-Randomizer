@@ -308,8 +308,6 @@ hintTable = {
 
 def hintExclusions(world):
     exclusions = []
-    if exclusions:
-        return exclusions
         
     exclusions.extend(world.disabled_locations)
 
