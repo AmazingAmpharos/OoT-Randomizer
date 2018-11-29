@@ -100,9 +100,9 @@ def add_item_rule(spot, rule, combine='and'):
         spot.item_rule = lambda location, item: rule(location, item) and old_rule(location, item)
 
 
-def forbid_item(location, item):
+def forbid_item(location, item_name):
     old_rule = location.item_rule
-    location.item_rule = lambda location, item: item.name != item and old_rule(location, item)
+    location.item_rule = lambda loc, item: item.name != item_name and old_rule(loc, item)
 
 
 def item_in_locations(state, item, locations):
