@@ -330,7 +330,9 @@ class SearchBox(tk.ttk.Combobox):
         else:
             self.__variable = tk.StringVar()
 
-        self.bind("<Down>", self.__callback)
+        self.__variable.trace('w', self.__callback)
+        self.bind("<<ComboboxSelected>>", self.__select_callback)
+
         self.config(textvariable=self.__variable, values=self.options)
 
     def __callback(self, *dummy):
@@ -338,4 +340,7 @@ class SearchBox(tk.ttk.Combobox):
 
         filter_options = list(filter(lambda value: search_key in value.lower(), self.options))
         self.config(values=filter_options)
+
+    def __select_callback(self, *dummy):
+        self.config(values=self.options)
 
