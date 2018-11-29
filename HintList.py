@@ -306,10 +306,8 @@ hintTable = {
 
 # This specifies which hints will never appear due to either having known or known useless contents or due to the locations not existing.
 
-exclusions = []
 def hintExclusions(world):
-    if exclusions:
-        return exclusions
+    exclusions = []
         
     exclusions.extend(world.disabled_locations)
 
