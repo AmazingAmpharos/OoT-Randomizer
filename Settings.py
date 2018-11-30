@@ -96,6 +96,12 @@ class Settings():
                 i_bits.reverse()
             if setting.type == list:
                 if 'choices' in setting.args_params:
+                    if len(value) > len(setting.args_params['choices']) / 2:
+                        value = [item for item in setting.args_params['choices'] if item not in value]
+                        terminal = [1] * setting.bitwidth
+                    else:
+                        terminal = [0] * setting.bitwidth
+
                     for item in value:                       
                         try:
                             index = setting.args_params['choices'].index(item)
@@ -106,7 +112,7 @@ class Settings():
                         item_bits.reverse()
                         item_bits += [0] * ( setting.bitwidth - len(item_bits) )
                         i_bits.extend(item_bits)
-                    i_bits.extend([0] * setting.bitwidth)
+                    i_bits.extend(terminal)
                 else:
                     raise ValueError('Setting is list type, but missing parse parameters.')
 
@@ -150,12 +156,18 @@ class Settings():
             if setting.type == list:
                 if 'choices' in setting.args_params:
                     value = []
+                    max_index = (1 << setting.bitwidth) - 1
                     while True:
                         index = 0
                         for b in range(setting.bitwidth):
                             index |= cur_bits[b] << b
+
                         if index == 0:
                             break
+                        if index == max_index:
+                            value = [item for item in setting.args_params['choices'] if item not in value]
+                            break
+
                         value.append(setting.args_params['choices'][index-1])
                         cur_bits = bits[:setting.bitwidth]
                         bits = bits[setting.bitwidth:]
