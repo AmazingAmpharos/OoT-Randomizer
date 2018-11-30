@@ -50,7 +50,11 @@ def set_rules(world):
 
         if not world.shuffle_song_items:
             if location.type == 'Song':
-                add_item_rule(location, lambda location, item: item.type == 'Song' and item.world.id == location.world.id)
+                if not world.start_with_fast_travel:
+                    add_item_rule(location, lambda location, item: item.type == 'Song' and item.world.id == location.world.id)
+                else:
+                    # allow junk items, but songs must still have matching world
+                    add_item_rule(location, lambda location, item: item.type != 'Song' or (item.type == 'Song' and item.world.id == location.world.id))
             else:
                 add_item_rule(location, lambda location, item: item.type != 'Song')
 

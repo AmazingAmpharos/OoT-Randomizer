@@ -3,6 +3,8 @@ import logging
 from State import State
 from Rules import set_shop_rules
 from Location import DisableType
+from ItemPool import songlist, get_junk_item
+from Item import ItemFactory
 
 
 class FillError(RuntimeError):
@@ -33,6 +35,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     shopitempool = [item for world in worlds for item in world.itempool if item.type == 'Shop']
     songitempool = [item for world in worlds for item in world.itempool if item.type == 'Song']
     itempool =     [item for world in worlds for item in world.itempool if item.type != 'Shop' and item.type != 'Song']
+    
     if worlds[0].shuffle_song_items:
         itempool.extend(songitempool)
         fill_locations.extend(song_locations)
@@ -45,6 +48,15 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     progitempool = [item for item in itempool if item.advancement]
     prioitempool = [item for item in itempool if not item.advancement and item.priority]
     restitempool = [item for item in itempool if not item.advancement and not item.priority]
+
+    # handle start with fast travel (removes songs)
+    if not worlds[0].shuffle_song_items and worlds[0].start_with_fast_travel:
+        for song in songlist:
+            if not any(song == item.name for item in songitempool):
+                # move one non-advancement/priority item into song pool
+                songitempool.append(restitempool[-1])
+                del restitempool[-1]
+                
 
 
     # We place all the shop items first. Like songs, they have a more limited
