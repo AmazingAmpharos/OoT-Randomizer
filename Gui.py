@@ -717,6 +717,7 @@ def guiMain(settings=None):
         settings = guivars_to_settings(guivars)
         del settings.__dict__["seed"]
         del settings.__dict__["numeric_seed"]
+        del settings.__dict__["check_version"]
         if "locked" in settings.__dict__:
             del settings.__dict__["locked"]
         json.dump(settings.__dict__, outfile, indent=4)
