@@ -5,10 +5,16 @@
 .incbin "../roms/base.z64"
 
 ;==================================================================================================
-; Base game editing region
+; Constants
 ;==================================================================================================
 
 .include "constants.asm"
+.include "addresses.asm"
+
+;==================================================================================================
+; Base game editing region
+;==================================================================================================
+
 .include "boot.asm"
 .include "hacks.asm"
 .include "malon.asm"
@@ -20,24 +26,10 @@
 .headersize (0x80400000 - 0x03480000)
 
 .org 0x80400000
-.area 0x1000
-.include "init.asm"
-DebugOutput:
-.include "debug.asm"
-.endarea
-
-.org 0x80401000
-.area 0x1000, 0
+.area 0x8000
+.include "coop_state.asm" ; This should always come first
 .include "config.asm"
-.endarea
-
-.org 0x80402000
-.area 0x50, 0
-.include "state.asm"
-.endarea
-
-.org 0x80402050
-.area 0x2000, 0
+.include "init.asm"
 .include "item_overrides.asm"
 .include "cutscenes.asm"
 .include "shop.asm"
@@ -53,12 +45,7 @@ DebugOutput:
 .include "chus_in_logic.asm"
 .include "rainbow_bridge.asm"
 .include "gossip_hints.asm"
-.endarea
-
-.headersize (0x80405000 - 0x034B3000)
-
-.org 0x80405000
-.area 0xB000, 0
+.include "debug.asm"
 .importobj "../build/bundle.o"
 FONT_TEXTURE:
 .incbin("../resources/font.bin")
