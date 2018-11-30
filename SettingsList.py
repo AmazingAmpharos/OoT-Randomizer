@@ -498,6 +498,7 @@ setting_infos = [
                              enabled, then there will be hints for which
                              trials need to be completed.
                              ''',
+            gui_dependency = lambda guivar: not guivar['trials_random'].get(),
             shared         = True,
             ),
     Checkbutton(
