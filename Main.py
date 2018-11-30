@@ -196,7 +196,10 @@ def main(settings, window=dummy_window()):
                 else:
                     compressor_path += "\\Compress32.exe"
             elif platform.system() == 'Linux':
-                compressor_path += "/Compress"
+                if platform.uname()[4] == 'aarch64' or platform.uname()[4] == 'arm64':
+                    compressor_path += "/Compress_ARM64"
+                else:
+                    compressor_path += "/Compress"
             elif platform.system() == 'Darwin':
                 compressor_path += "/Compress.out"
             else:
