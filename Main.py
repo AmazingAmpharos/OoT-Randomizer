@@ -47,13 +47,12 @@ def main(settings, window=dummy_window()):
     worlds = []
 
     # we load the rom before creating the seed so that error get caught early
+    if settings.compress_rom == 'None' and not settings.create_spoiler:
+        raise Exception('`No Output` must have spoiler enabled to produce anything.')
+
     if settings.compress_rom != 'None':
         window.update_status('Loading ROM')
         rom = LocalRom(settings)
-
-    if settings.compress_rom == 'None':
-        settings.create_spoiler = True
-        settings.update()
 
     if not settings.world_count:
         settings.world_count = 1

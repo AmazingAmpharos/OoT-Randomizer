@@ -220,7 +220,6 @@ setting_infos = [
             gui_tooltip    = '''\
                              Enabling this will change the seed.
                              ''',
-            gui_dependency = lambda guivar: guivar['compress_rom'].get() != 'No Output',
             default        = True,
             shared         = True,
             ),
@@ -414,7 +413,6 @@ setting_infos = [
                              Even when enabled, some locations may still be able
                              to hold the keys needed to reach them.
                              ''',
-            gui_dependency = lambda guivar: guivar['logic_rules'].get() == 'Glitchless',
             default        = True,
             shared         = True,
             ),
@@ -678,7 +676,6 @@ setting_infos = [
                              Gerudo Card is required to enter
                              Gerudo Training Grounds.
                              ''',
-            gui_dependency = lambda guivar: guivar['gerudo_fortress'].get() != 'Start with Gerudo Card',
             shared         = True,
             ),
     Combobox(
@@ -925,7 +922,6 @@ setting_infos = [
                              requirements to make it more likely
                              that skipped trials can be avoided.
                              ''',
-            gui_dependency = lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Remove (Keysy)',
             shared         = True,
             ),
     Combobox(
@@ -1245,8 +1241,7 @@ setting_infos = [
                              Water Temple that could contain the Boss Key
                              as requiring Iron Boots.
                              ''',
-            gui_dependency = lambda guivar: guivar['shuffle_bosskeys'].get() != 'Boss Keys: Dungeon Only',
-            default        = True,
+            default        = False,
             shared         = True,
             ),
     Combobox(
