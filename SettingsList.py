@@ -2,6 +2,7 @@ import argparse
 import re
 import math
 from Patches import get_tunic_color_options, get_navi_color_options, get_NaviSFX_options, get_HealthSFX_options
+from LocationList import location_table
 
 # holds the info for a single setting
 class Setting_Info():
@@ -1002,23 +1003,6 @@ setting_infos = [
             gui_dependency = lambda guivar: not guivar['mq_dungeons_random'].get(),
             shared         = True,
             ),
-    Scale(
-            name           = 'logic_skulltulas',
-            default        = '50',
-            min            = 0,
-            max            = 50,
-            step           = 10,
-            args_help      = '''\
-                             Choose the maximum number of Gold Skulltula Tokens you will be expected to collect.
-                             ''',
-            gui_text       = 'Maximum Expected Skulltula Tokens',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             Choose the maximum number of Gold Skulltula
-                             Tokens you will be expected to collect.
-                             ''',
-            shared         = True,
-            ),
     Checkbutton(
             name           = 'logic_no_night_tokens_without_suns_song',
             args_help      = '''\
@@ -1026,157 +1010,12 @@ setting_infos = [
                              unless you have Sun's Song
                              ''',
             gui_text       = 'No Nighttime Skulltulas without Sun\'s Song',
-            gui_group      = 'rewards',
+            gui_group      = 'tricks',
             gui_tooltip    = '''\
                              GS Tokens that can only be obtained
                              during the night expect you to have Sun's
                              Song to collect them. This prevents needing
                              to wait until night for some locations.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_big_poes',
-            args_help      = '''\
-                             You will not be expected to collect 10 big poes.
-                             ''',
-            gui_text       = 'No Big Poes',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             The Big Poe vendor will not have a
-                             required item.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_child_fishing',
-            args_help      = '''\
-                             You will not be expected to obtain the child fishing reward.
-                             ''',
-            gui_text       = 'No Child Fishing',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             Fishing does not work correctly on
-                             Bizhawk.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_adult_fishing',
-            args_help      = '''\
-                             You will not be expected to obtain the adult fishing reward.
-                             ''',
-            gui_text       = 'No Adult Fishing',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             Fishing does not work correctly on
-                             Bizhawk.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_trade_skull_mask',
-            args_help      = '''\
-                             You will not be expected to show the Skull Mask at the forest stage.
-                             ''',
-            gui_text       = 'No Skull Mask Reward',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             Showing off the Skull Mask will
-                             not yield a required item.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_trade_mask_of_truth',
-            args_help      = '''\
-                             You will not be expected to show the Mask of Truth at the forest stage.
-                             ''',
-            gui_text       = 'No Mask of Truth Reward',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             Showing off the Mask of Truth
-                             will not yield a required item.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_ocarina_of_time',
-            args_help      = '''\
-                             You will not be expected to collect all Spiritual Stones to grab the Ocarina of Time from the moat.
-                             ''',
-            gui_text       = 'No Ocarina of Time Reward',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             Getting the Ocarina of Time
-                             from the Hyrule Castle moat
-                             will not yield a required item or song.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_1500_archery',
-            args_help      = '''\
-                             You will not be expected to win the 1500 point horseback archery reward.
-                             ''',
-            gui_text       = 'No 1500 Horseback Archery',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             Scoring 1500 points at horseback
-                             archery will not yield a required item.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_memory_game',
-            args_help      = '''\
-                             You will not be expected to play the ocarina memory game in Lost Woods.
-                             ''',
-            gui_text       = 'No Lost Woods Memory Game',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             Playing the ocarina memory game
-                             will not yield a required item.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_frog_ocarina_game',
-            args_help      = '''\
-                             You will not be expected to play the the fly catching song for the frogs in Zora's River.
-                             ''',
-            gui_text       = 'No Frog Ocarina Game',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             Playing the fly cataching song
-                             for the frogs in Zora's River
-                             will not yield a required item.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_second_dampe_race',
-            args_help      = '''\
-                             You will not be expected to race Dampe a second time.
-                             ''',
-            gui_text       = 'No Racing Dampe a Second Time',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             The second Dampe race will
-                             not yield a required item.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_no_trade_biggoron',
-            args_help      = '''\
-                             You will not be expected to show the Claim Check to Biggoron.
-                             ''',
-            gui_text       = 'No Biggoron Reward',
-            gui_group      = 'rewards',
-            gui_tooltip    = '''\
-                             Showing the Claim Check to Biggoron
-                             will not yield a required item.
                              ''',
             shared         = True,
             ),
@@ -1213,9 +1052,18 @@ setting_infos = [
             gui_tooltip    = '''\
                              Select the earliest item that can appear in the adult trade sequence.
                              ''',
-            gui_dependency = lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
             shared         = True,
             ),
+    Setting_Info('disabled_locations', list, math.ceil(math.log(len(location_table) + 1, 2)), True,
+        {
+            'default': [],
+            'help': '''\
+                    Choose a list of locations that will never be required to beat the game.
+                    '''
+        },
+        {
+            'options': list(location_table.keys()),
+        }),      
     Combobox(
             name           = 'logic_latest_adult_trade',
             default        = 'claim_check',
@@ -1248,7 +1096,6 @@ setting_infos = [
             gui_tooltip    = '''\
                              Select the latest item that can appear in the adult trade sequence.
                              ''',
-            gui_dependency = lambda guivar: not guivar['logic_no_trade_biggoron'].get(),
             shared         = True,
             ),
     Checkbutton(

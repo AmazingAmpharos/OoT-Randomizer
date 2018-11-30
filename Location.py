@@ -1,4 +1,5 @@
 from LocationList import location_table
+from enum import Enum
 
 
 class Location(object):
@@ -18,11 +19,12 @@ class Location(object):
         self.staleness_count = 0
         self.always_allow = lambda item, state: False
         self.access_rule = lambda state: True
-        self.item_rule = lambda item: True
+        self.item_rule = lambda location, item: True
         self.locked = False
         self.price = None
         self.minor_only = False
         self.world = None
+        self.disabled = DisableType.ENABLED
 
 
     def copy(self, new_region):
@@ -37,6 +39,7 @@ class Location(object):
         new_location.item_rule = self.item_rule
         new_location.locked = self.locked
         new_location.minor_only = self.minor_only
+        new_location.disabled = self.disabled
 
         return new_location
 
@@ -44,15 +47,22 @@ class Location(object):
     def can_fill(self, state, item, check_access=True):
         if self.minor_only and item.majoritem:
             return False
-        return self.parent_region.can_fill(item) and (self.always_allow(item, state) or (self.item_rule(item) and (not check_access or state.can_reach(self))))
+        return (
+            self.disabled != DisableType.DISABLED and 
+            self.parent_region.can_fill(item) and 
+            (self.always_allow(item, state) or 
+                (self.item_rule(self, item) and 
+                    (not check_access or state.can_reach(self)))))
 
 
     def can_fill_fast(self, item):
-        return self.item_rule(item)
+        return (self.parent_region.can_fill(item) and self.item_rule(self, item))
 
 
     def can_reach(self, state):
-        if self.access_rule(state) and state.can_reach(self.parent_region):
+        if self.disabled != DisableType.DISABLED and \
+           self.access_rule(state) and \
+           state.can_reach(self.parent_region):
             return True
         return False
 
@@ -84,4 +94,10 @@ def LocationFactory(locations, world=None):
     if singleton:
         return ret[0]
     return ret
+
+
+class DisableType(Enum):
+    ENABLED  = 0
+    PENDING = 1
+    DISABLED = 2
 

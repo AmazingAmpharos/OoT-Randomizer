@@ -2,6 +2,7 @@ import random
 import logging
 from State import State
 from Rules import set_shop_rules
+from Location import DisableType
 
 
 class FillError(RuntimeError):
@@ -220,6 +221,8 @@ def fill_shops(window, worlds, locations, shoppool, itempool, attempts=15):
             logging.getLogger('').info("Failed to place shop items. Will retry %s more times", attempts)
             for location in locations:
                 location.item = None
+                if location.disabled == DisableType.DISABLED:
+                    location.disabled = DisableType.PENDING
             logging.getLogger('').info('\t%s' % str(e))
             continue
         break
@@ -235,10 +238,6 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
     placed_prizes = [loc.item.name for loc in locations if loc.item is not None]
     unplaced_prizes = [song for song in songpool if song.name not in placed_prizes]
     empty_song_locations = [loc for loc in locations if loc.item is None]
-
-    # Set logic_no_ocarina_of_time to false to allow songs to be placed regardless of that setting.
-    prev_no_ocarina_of_time = worlds[0].logic_no_ocarina_of_time
-
 
     prizepool_dict = {world.id: [song for song in unplaced_prizes if song.world.id == world.id] for world in worlds}
     prize_locs_dict = {world.id: [loc for loc in empty_song_locations if loc.world.id == world.id] for world in worlds}
@@ -259,15 +258,15 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
                 prize_locs = list(prize_locs_dict[world.id])
                 random.shuffle(prizepool)
                 random.shuffle(prize_locs)
-
-                world.logic_no_ocarina_of_time = False
-                fill_restrictive(window, worlds, all_state_base_list, prize_locs, prizepool, logic_no_ocarina_of_time=prev_no_ocarina_of_time)
-
+                fill_restrictive(window, worlds, all_state_base_list, prize_locs, prizepool)
+                
                 logging.getLogger('').info("Songs placed for world %s", (world.id+1))
             except FillError as e:
                 logging.getLogger('').info("Failed to place songs for world %s. Will retry %s more times", (world.id+1), world_attempts)
                 for location in prize_locs_dict[world.id]:
                     location.item = None
+                    if location.disabled == DisableType.DISABLED:
+                        location.disabled = DisableType.PENDING
                 logging.getLogger('').info('\t%s' % str(e))
                 continue
             break
@@ -291,7 +290,7 @@ def fill_songs(window, worlds, locations, songpool, itempool, attempts=15):
 # This function will modify the location and itempool arguments. placed items and
 # filled locations will be removed. If this returns and error, then the state of
 # those two lists cannot be guaranteed.
-def fill_restrictive(window, worlds, base_state_list, locations, itempool, count=-1, logic_no_ocarina_of_time=False):
+def fill_restrictive(window, worlds, base_state_list, locations, itempool, count=-1):
     unplaced_items = []
 
     # loop until there are no items or locations
@@ -331,6 +330,12 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
                     if not source_location.can_fill(maximum_exploration_state_list[source_location.world.id], item_to_place, perform_access_check):
                         # location wasn't reachable in item's world, so skip it
                         continue
+
+                if location.disabled == DisableType.PENDING:
+                    if not State.can_beat_game(maximum_exploration_state_list):
+                        continue
+                    location.disabled = DisableType.DISABLED
+
                 # location is reachable (and reachable in item's world), so place item here
                 spot_to_fill = location
                 break
@@ -351,11 +356,6 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
         locations.remove(spot_to_fill)
         window.fillcount += 1
         window.update_progress(5 + ((window.fillcount / window.locationcount) * 30))
-
-        if logic_no_ocarina_of_time and spot_to_fill.name == 'Song from Ocarina of Time':
-            spot_to_fill.world.logic_no_ocarina_of_time = True
-            if not State.can_beat_game(maximum_exploration_state_list):
-                raise FillError('Game unbeatable: Tried to place %s [World %d] (required) in a removed location' % (item_to_place, item_to_place.world.id))
 
         # decrement count
         count -= 1
