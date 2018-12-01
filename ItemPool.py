@@ -829,6 +829,7 @@ def get_pool_core(world):
     pool.extend(alwaysitems)
     if world.start_with_fast_travel:
         pool.remove('Farores Wind')
+        world.state.collect(ItemFactory('Farores Wind'))
         pool.extend(get_junk_item())
     
     if world.dungeon_mq['Deku Tree']:
@@ -888,8 +889,10 @@ def get_pool_core(world):
     pool.extend(songlist)
     if world.start_with_fast_travel:
         pool.remove('Prelude of Light')
+        world.state.collect(ItemFactory('Prelude of Light'))
         pool.extend(get_junk_item())
         pool.remove('Serenade of Water')
+        world.state.collect(ItemFactory('Serenade of Water'))
         pool.extend(get_junk_item())
 
     if world.shuffle_mapcompass == 'remove' or world.shuffle_mapcompass == 'startwith':
