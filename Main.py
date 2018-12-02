@@ -9,6 +9,7 @@ import sys
 import struct
 import zipfile
 import io
+import hashlib
 
 from World import World
 from State import State
@@ -46,13 +47,12 @@ def main(settings, window=dummy_window()):
     worlds = []
 
     # we load the rom before creating the seed so that error get caught early
+    if settings.compress_rom == 'None' and not settings.create_spoiler:
+        raise Exception('`No Output` must have spoiler enabled to produce anything.')
+
     if settings.compress_rom != 'None':
         window.update_status('Loading ROM')
         rom = LocalRom(settings)
-
-    if settings.compress_rom == 'None':
-        settings.create_spoiler = True
-        settings.update()
 
     if not settings.world_count:
         settings.world_count = 1
@@ -72,8 +72,6 @@ def main(settings, window=dummy_window()):
     for id, world in enumerate(worlds):
         world.id = id
         logger.info('Generating World %d.' % id)
-
-        world.spoiler = Spoiler(worlds)
 
         window.update_progress(0 + 1*(id + 1)/settings.world_count)
         logger.info('Creating Overworld')
@@ -112,24 +110,27 @@ def main(settings, window=dummy_window()):
     distribute_items_restrictive(window, worlds)
     window.update_progress(35)
 
+    spoiler = Spoiler(worlds)
     if settings.create_spoiler:
         window.update_status('Calculating Spoiler Data')
         logger.info('Calculating playthrough.')
-        create_playthrough(worlds)
+        create_playthrough(spoiler)
         window.update_progress(50)
-    if settings.hints != 'none':
+    if settings.create_spoiler or settings.hints != 'none':
         window.update_status('Calculating Hint Data')
-        State.update_required_items(worlds)
+        State.update_required_items(spoiler)
         for world in worlds:
-            buildGossipHints(worlds, world)
+            buildGossipHints(spoiler, world)
         window.update_progress(55)
+    spoiler.build_file_hash()
 
     logger.info('Patching ROM.')
 
+    settings_string_hash = hashlib.sha1(worlds[0].settings_string.encode('utf-8')).hexdigest().upper()[:5]
     if settings.world_count > 1:
-        outfilebase = 'OoT_%s_%s_W%d' % (worlds[0].settings_string, worlds[0].seed, settings.world_count)
+        outfilebase = 'OoT_%s_%s_W%d' % (settings_string_hash, worlds[0].seed, settings.world_count)
     else:
-        outfilebase = 'OoT_%s_%s' % (worlds[0].settings_string, worlds[0].seed)
+        outfilebase = 'OoT_%s_%s' % (settings_string_hash, worlds[0].seed)
 
     output_dir = default_output_path(settings.output_dir)
 
@@ -146,7 +147,7 @@ def main(settings, window=dummy_window()):
                 patchfilename = '%s.zpf' % outfilebase
 
             random.setstate(rng_state)
-            patch_rom(world, rom)
+            patch_rom(spoiler, world, rom)
             patch_cosmetics(settings, rom)
             window.update_progress(65 + 20*(world.id + 1)/settings.world_count)
 
@@ -170,7 +171,7 @@ def main(settings, window=dummy_window()):
 
     elif settings.compress_rom != 'None':
         window.update_status('Patching ROM')
-        patch_rom(worlds[settings.player_num - 1], rom)
+        patch_rom(spoiler, worlds[settings.player_num - 1], rom)
         patch_cosmetics(settings, rom)
         window.update_progress(65)
 
@@ -195,7 +196,10 @@ def main(settings, window=dummy_window()):
                 else:
                     compressor_path += "\\Compress32.exe"
             elif platform.system() == 'Linux':
-                compressor_path += "/Compress"
+                if platform.uname()[4] == 'aarch64' or platform.uname()[4] == 'arm64':
+                    compressor_path += "/Compress_ARM64"
+                else:
+                    compressor_path += "/Compress"
             elif platform.system() == 'Darwin':
                 compressor_path += "/Compress.out"
             else:
@@ -213,7 +217,10 @@ def main(settings, window=dummy_window()):
 
     if settings.create_spoiler:
         window.update_status('Creating Spoiler Log')
-        worlds[settings.player_num - 1].spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
+        spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
+    else:
+        window.update_status('Creating Settings Log')
+        spoiler.to_file(os.path.join(output_dir, '%s_Settings.txt' % outfilebase))
 
     window.update_progress(100)
     window.update_status('Success: Rom patched successfully')
@@ -313,7 +320,8 @@ def copy_worlds(worlds):
     return worlds
 
 
-def create_playthrough(worlds):
+def create_playthrough(spoiler):
+    worlds = spoiler.worlds
     if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Uncopied is broken too.')
     # create a copy as we will modify it
@@ -379,6 +387,5 @@ def create_playthrough(worlds):
         collection_spheres.append(sphere)
 
     # we can finally output our playthrough
-    for world in old_worlds:
-        world.spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
+    spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
 

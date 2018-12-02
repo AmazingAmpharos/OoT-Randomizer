@@ -679,5 +679,171 @@ skip_GS_BGS_text:
 ; Replaces: lui    a1, 0x801F @ovl+0x1080
 
 .org 0xCC0020
-    jal    talon_break_free
-    lui    a1, 0x801F
+    jal     talon_break_free
+    lui     a1, 0x801F
+
+
+;==================================================================================================
+; Patches.py imports
+;==================================================================================================
+
+; Remove intro cutscene
+.org 0xB06BB8
+    li      t9, 0
+
+; Change Bombchu Shop to be always open
+.org 0xC6CEDC
+    li      t3, 1
+
+; Fix child shooting gallery reward to be static
+.org 0xD35EFC
+    nop
+
+; Change Bazaar check to Bomb Bag
+.org 0xC00828
+    nop
+    li      t6, 0x18
+    lw      t7, 0x00A0(v0)
+
+; Change ? check to Bomb Bag (Adult?)
+.org 0xDF7A8C
+    nop
+    li      t6, 0x18
+    lw      t7, 0x00A0(v0)
+
+; Change Goron Shop check to Bomb Bag
+.org 0xC6ED84
+    lhu     t7, 0x00A2(v1)
+    andi    t8, t7, 0x0018
+
+; Fix Link the Goron to always work
+.org 0xED2FAC
+    lb      t6, 0x0F18(v1)
+
+.org 0xED2FEC
+    li      t2, 0
+
+.org 0xAE74D8
+    li      t6, 0
+
+
+; Fix King Zora Thawed to always work
+.org 0xE55C4C
+    li t4, 0
+
+.org 0xE56290
+    nop
+    li t3, 0x401F
+    nop
+
+; Fix target in woods reward to be static
+.org 0xE59CD4
+    nop
+    nop
+
+; Fix adult shooting gallery reward to be static
+.org 0xD35F54
+    b       0xD35F78
+
+
+; Learning Serenade tied to opening chest in room
+.org 0xC7BCF0
+    lw      t9, 0x1D38(a1) ; Chest Flags
+    li      t0, 0x0004     ; flag mask
+    lw      v0, 0x1C44(a1) ; needed for following code
+    nop
+    nop
+    nop
+    nop
+
+; Dampe Chest spawn condition looks at chest flag instead of having obtained hookshot
+.org 0xDFEC3C
+    lw      t8, (SAVE_CONTEXT + 0xD4 + (0x48 * 0x1C)) ; Scene flags
+    addiu   a1, sp, 0x24
+    andi    t9, t8, 0x0001
+    nop
+
+; Darunia sets an event flag and checks for it
+; TODO: Figure out what is this for. Also rewrite to make things cleaner
+.org 0xCF1AB8
+    nop
+    lw      t1, lo(SAVE_CONTEXT + 0xED8)(t8)
+    andi    t0, t1, 0x0040
+    ori     t9, t1, 0x0040
+    sw      t9, lo(SAVE_CONTEXT + 0xED8)(t8)
+    li      t1, 6
+
+
+;==================================================================================================
+; Easier Fishing
+;==================================================================================================
+
+; Make fishing less obnoxious
+.org 0xDBF428
+    jal     easier_fishing
+    lui     at, 0x4282
+    mtc1    at, f8
+    mtc1    t8, f18
+    swc1    f18, 0x019C(s2)
+
+.org 0xDBF484
+    nop
+
+.org 0xDBF4A8
+    nop
+
+; set adult fish size requirement
+.org 0xDCBEA8
+    lui     at, 0x4248
+
+.org 0xDCBF24
+    lui     at, 0x4248
+
+; set child fish size requirements
+.org 0xDCBF30
+    lui     at, 0x4230
+
+.org 0xDCBF9C
+    lui     at, 0x4230
+
+;==================================================================================================
+; Bombchus In Logic Hooks
+;==================================================================================================
+
+.org 0xE2D714
+    jal     logic_chus__bowling_lady_1
+    lui     t9, 0x8012
+    li      t1, 0xBF
+    nop
+
+.org 0xE2D890
+    jal     logic_chus__bowling_lady_2
+    nop
+
+.org 0xC01078
+    jal     logic_chus__shopkeeper
+    nop
+    nop
+    nop
+    nop
+    nop
+
+
+;==================================================================================================
+; Rainbow Bridge
+;==================================================================================================
+
+.org 0xE2B454
+    jal     rainbow_bridge
+    nop
+    nop
+    nop
+
+;==================================================================================================
+; Gossip Stone Hints
+;==================================================================================================
+
+.org 0xEE7B84
+    jal     gossip_hints
+    lw      a0, 0x002C(sp) ; global context
+    nop

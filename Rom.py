@@ -66,7 +66,10 @@ class LocalRom(object):
                 else:
                     subcall = [sub_dir + "\\Decompress32.exe", file, decomp_file]
             elif platform.system() == 'Linux':
-                subcall = [sub_dir + "/Decompress", file, decomp_file]
+                if platform.uname()[4] == 'aarch64' or platform.uname()[4] == 'arm64':
+                    subcall = [sub_dir + "/Decompress_ARM64", file, decomp_file]
+                else:
+                    subcall = [sub_dir + "/Decompress", file, decomp_file]
             elif platform.system() == 'Darwin':
                 subcall = [sub_dir + "/Decompress.out", file, decomp_file]
             else:

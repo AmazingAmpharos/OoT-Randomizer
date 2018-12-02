@@ -301,7 +301,7 @@ class ValidatingEntry(tk.Entry):
         if 'textvariable' in kw:
             self.__variable = kw['textvariable']
         else:
-            self.__variable = StringVar()
+            self.__variable = tk.StringVar()
         self.__prev_value = self.__variable.get()
 
         self.__variable.trace("w", self.__callback)
@@ -318,3 +318,29 @@ class ValidatingEntry(tk.Entry):
         else:
             self.__prev_value = new_value
         self.command()
+
+
+class SearchBox(tk.ttk.Combobox):
+    def __init__(self, master, options, **kw):
+        tk.ttk.Combobox.__init__(self, master, **kw)
+        self.options = options
+
+        if 'textvariable' in kw:
+            self.__variable = kw['textvariable']
+        else:
+            self.__variable = tk.StringVar()
+
+        self.__variable.trace('w', self.__callback)
+        self.bind("<<ComboboxSelected>>", self.__select_callback)
+
+        self.config(textvariable=self.__variable, values=self.options)
+
+    def __callback(self, *dummy):
+        search_key = self.__variable.get().lower()
+
+        filter_options = list(filter(lambda value: search_key in value.lower(), self.options))
+        self.config(values=filter_options)
+
+    def __select_callback(self, *dummy):
+        self.config(values=self.options)
+

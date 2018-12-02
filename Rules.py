@@ -1,8 +1,11 @@
 import collections
 import logging
+from Location import DisableType
 
 
 def set_rules(world):
+    logger = logging.getLogger('')
+
     if world.bridge == 'medallions':
         # require all medallions to form the bridge
         set_rule(
@@ -38,7 +41,7 @@ def set_rules(world):
                 state.has('Zora Sapphire')))
 
     # ganon can only carry triforce
-    world.get_location('Ganon').item_rule = lambda item: item.name == 'Triforce'
+    world.get_location('Ganon').item_rule = lambda location, item: item.name == 'Triforce'
 
     # these are default save&quit points and always accessible
     world.get_region('Links House').can_reach = lambda state: True
@@ -49,27 +52,33 @@ def set_rules(world):
 
         if not world.shuffle_song_items:
             if location.type == 'Song':
-                add_item_rule(location, lambda item: item.type == 'Song' and item.world.id == location.world.id)
+                add_item_rule(location, lambda location, item: item.type == 'Song' and item.world.id == location.world.id)
             else:
-                add_item_rule(location, lambda item: item.type != 'Song')
+                add_item_rule(location, lambda location, item: item.type != 'Song')
 
         if location.type == 'Shop':
             if location.name in world.shop_prices:
-                add_item_rule(location, lambda item: item.type != 'Shop')
+                add_item_rule(location, lambda location, item: item.type != 'Shop')
                 location.price = world.shop_prices[location.name]
                 if location.price > 200:
                     set_rule(location, lambda state: state.has('Progressive Wallet', 2))
                 elif location.price > 99:
                     set_rule(location, lambda state: state.has('Progressive Wallet'))
             else:
-                add_item_rule(location, lambda item: item.type == 'Shop' and item.world.id == location.world.id)
+                add_item_rule(location, lambda location, item: item.type == 'Shop' and item.world.id == location.world.id)
 
             if location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
                 if not world.check_beatable_only:
                     forbid_item(location, 'Buy Goron Tunic')
                     forbid_item(location, 'Buy Zora Tunic')
         elif not 'Deku Scrub' in location.name:
-            add_item_rule(location, lambda item: item.type != 'Shop')
+            add_item_rule(location, lambda location, item: item.type != 'Shop')
+
+    for location in world.disabled_locations:
+        try:
+            world.get_location(location).disabled = DisableType.PENDING
+        except:
+            logger.debug('Tried to disable location that does not exist: %s' % location)
 
 
 def set_rule(spot, rule):
@@ -91,14 +100,14 @@ def add_rule(spot, rule, combine='and'):
 def add_item_rule(spot, rule, combine='and'):
     old_rule = spot.item_rule
     if combine == 'or':
-        spot.item_rule = lambda item: rule(item) or old_rule(item)
+        spot.item_rule = lambda location, item: rule(location, item) or old_rule(location, item)
     else:
-        spot.item_rule = lambda item: rule(item) and old_rule(item)
+        spot.item_rule = lambda location, item: rule(location, item) and old_rule(location, item)
 
 
-def forbid_item(location, item):
+def forbid_item(location, item_name):
     old_rule = location.item_rule
-    location.item_rule = lambda i: i.name != item and old_rule(i)
+    location.item_rule = lambda loc, item: item.name != item_name and old_rule(loc, item)
 
 
 def item_in_locations(state, item, locations):

@@ -179,14 +179,14 @@ class State(object):
         return self.has('Buy Bombchu (5)') or \
                self.has('Buy Bombchu (10)') or \
                self.has('Buy Bombchu (20)') or \
-               self.can_reach('Castle Town Bombchu Bowling')
+               self.can_reach('Castle Town Bombchu Bowling') or \
+               self.can_reach('Haunted Wasteland Bombchu Salesman', 'Location')
 
 
     def has_bombchus(self):
         return (self.world.bombchus_in_logic and \
-                    ((any(pritem.startswith('Bombchus') for pritem in self.prog_items) and \
-                        self.can_buy_bombchus()) \
-                    or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
+                    (any(pritem.startswith('Bombchus') for pritem in self.prog_items) and \
+                        self.can_buy_bombchus())) \
             or (not self.world.bombchus_in_logic and self.has('Bomb Bag') and \
                         self.can_buy_bombchus())
 
@@ -399,7 +399,8 @@ class State(object):
 
 
     @staticmethod
-    def update_required_items(worlds):
+    def update_required_items(spoiler):
+        worlds = spoiler.worlds
         state_list = [world.state for world in worlds]
 
         # get list of all of the progressive items that can appear in hints
@@ -416,9 +417,9 @@ class State(object):
         # locations in the playthrough. The required locations is a subset of these
         # locations. Can't use the locations directly since they are location to the
         # copied spoiler world, so must try to find the matching locations by name
-        if worlds[0].spoiler.playthrough:
+        if spoiler.playthrough:
             spoiler_locations = defaultdict(lambda: [])
-            for location in [location for _,sphere in worlds[0].spoiler.playthrough.items() for location in sphere]:
+            for location in [location for _,sphere in spoiler.playthrough.items() for location in sphere]:
                 spoiler_locations[location.name].append(location.world.id)
             item_locations = list(filter(lambda location: location.world.id in spoiler_locations[location.name], item_locations))
 
@@ -442,6 +443,5 @@ class State(object):
         required_locations_dict = {}
         for world in worlds:
             required_locations_dict[world.id] = list(filter(lambda location: location.world.id == world.id, required_locations))
-        for world in worlds:
-            world.spoiler.required_locations = required_locations_dict
+        spoiler.required_locations = required_locations_dict
 

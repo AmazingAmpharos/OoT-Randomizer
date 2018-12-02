@@ -94,6 +94,28 @@ class Settings():
                 # https://stackoverflow.com/questions/10321978/integer-to-bitfield-as-a-list
                 i_bits = [1 if digit=='1' else 0 for digit in bin(value)[2:]]
                 i_bits.reverse()
+            if setting.type == list:
+                if 'choices' in setting.args_params:
+                    if len(value) > len(setting.args_params['choices']) / 2:
+                        value = [item for item in setting.args_params['choices'] if item not in value]
+                        terminal = [1] * setting.bitwidth
+                    else:
+                        terminal = [0] * setting.bitwidth
+
+                    for item in value:                       
+                        try:
+                            index = setting.args_params['choices'].index(item)
+                        except ValueError:
+                            continue
+
+                        item_bits = [1 if digit=='1' else 0 for digit in bin(index+1)[2:]]
+                        item_bits.reverse()
+                        item_bits += [0] * ( setting.bitwidth - len(item_bits) )
+                        i_bits.extend(item_bits)
+                    i_bits.extend(terminal)
+                else:
+                    raise ValueError('Setting is list type, but missing parse parameters.')
+
             # pad it
             i_bits += [0] * ( setting.bitwidth - len(i_bits) )
             bits += i_bits
@@ -131,6 +153,27 @@ class Settings():
                     value |= cur_bits[b] << b
                 value = value * ('step' in setting.gui_params and setting.gui_params['step'] or 1)
                 value = value + ('min' in setting.gui_params and setting.gui_params['min'] or 0)
+            if setting.type == list:
+                if 'choices' in setting.args_params:
+                    value = []
+                    max_index = (1 << setting.bitwidth) - 1
+                    while True:
+                        index = 0
+                        for b in range(setting.bitwidth):
+                            index |= cur_bits[b] << b
+
+                        if index == 0:
+                            break
+                        if index == max_index:
+                            value = [item for item in setting.args_params['choices'] if item not in value]
+                            break
+
+                        value.append(setting.args_params['choices'][index-1])
+                        cur_bits = bits[:setting.bitwidth]
+                        bits = bits[setting.bitwidth:]
+                else:
+                    raise ValueError('Setting is list type, but missing parse parameters.')
+
             self.__dict__[setting.name] = value
 
         self.settings_string = self.get_settings_string()
@@ -181,6 +224,8 @@ class Settings():
                         self.__dict__[info.name] = info.gui_params['default']
                     else:
                         self.__dict__[info.name] = 1
+                if info.type == list:
+                    self.__dict__[info.name] = []
         self.settings_string = self.get_settings_string()
         if(self.seed is None):
             # https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python

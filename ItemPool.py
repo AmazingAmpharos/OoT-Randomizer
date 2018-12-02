@@ -479,6 +479,7 @@ eventlocations = {
     'Deku Baba Nuts': 'Deku Nut Drop',
     'Zoras Domain Nut Pot': 'Deku Nut Drop',
     'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
+    'Haunted Wasteland Bombchu Salesman': 'Bombchus',
     'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
     'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',
     'Ganons Castle Water Trial Clear': 'Water Trial Clear',

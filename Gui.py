@@ -10,11 +10,11 @@ from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, \
         Radiobutton, PhotoImage, Tk, BOTH, LEFT, RIGHT, BOTTOM, TOP, \
         StringVar, IntVar, Frame, Label, W, E, X, N, S, NW, Entry, Spinbox, \
         Button, filedialog, messagebox, simpledialog, ttk, HORIZONTAL, Toplevel, \
-        colorchooser
+        colorchooser, Listbox, ACTIVE, END, Scrollbar, VERTICAL, Y
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry
+from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry, SearchBox
 from Main import main, from_patch_file
 from Utils import is_bundled, local_path, data_path, default_output_path, open_file, check_version
 from Settings import Settings
@@ -22,6 +22,7 @@ from SettingsList import setting_infos
 from version import __version__ as ESVersion
 import webbrowser
 import WorldFile
+from LocationList import location_table
 
 def settings_to_guivars(settings, guivars):
     for info in setting_infos:
@@ -53,6 +54,9 @@ def settings_to_guivars(settings, guivars):
                 guivar.set( str(1) )
             else:
                 guivar.set( str(value) )
+        if info.type == list:
+            guivars[info.name] = list(value)
+
 
 def guivars_to_settings(guivars):
     result = {}
@@ -80,6 +84,9 @@ def guivars_to_settings(guivars):
                 result[name] = int( guivar.get() )
             except ValueError:
                 result[name] = 0
+        if info.type == list:
+            result[name] = list(guivars[name])
+
     if result['seed'] == "":
         result['seed'] = None
     if result['count'] == 1:
@@ -180,7 +187,11 @@ def guiMain(settings=None):
             if info.name in widgets:
                 toggle_widget(widgets[info.name], dep_met)
 
-            if info.name in guivars and guivars[info.name].get() == 'Custom Color':
+            if info.type == list:
+                widgets[info.name].delete(0, END)
+                widgets[info.name].insert(0, *guivars[info.name])
+
+            if info.type != list and info.name in guivars and guivars[info.name].get() == 'Custom Color':
                 color = colorchooser.askcolor()
                 if color == (None, None):
                     color = ((0,0,0),'#000000')
@@ -191,7 +202,7 @@ def guiMain(settings=None):
     def update_logic_tricks(event=None):
         for info in setting_infos:
             if info.gui_params \
-            and info.gui_params['widget'] == 'Checkbutton' \
+            and info.gui_params.get('widget') == 'Checkbutton' \
             and info.gui_params['group'] == 'tricks':
                 if guivars['all_logic_tricks'].get():
                     widgets[info.name].select()
@@ -253,7 +264,6 @@ def guiMain(settings=None):
     widgets['count'].pack(side=LEFT, padx=2)
     countDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
-
     # build gui
     ############
 
@@ -261,6 +271,55 @@ def guiMain(settings=None):
     guivars['all_logic_tricks'] = IntVar(value=0)
     widgets['all_logic_tricks'] = Checkbutton(frames['tricks'], text="Enable All Tricks", variable=guivars['all_logic_tricks'], justify=LEFT, wraplength=190, command=update_logic_tricks)
     widgets['all_logic_tricks'].pack(expand=False, anchor=W)
+
+
+    location_names = [name for name, (type, scene, default, hint, addresses) in location_table.items() if
+        scene is not None and default is not None]
+    widgets['disabled_location_entry'] = SearchBox(frames['rewards'], location_names, width=30)
+    widgets['disabled_location_entry'].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+
+    location_frame = Frame(frames['rewards'])
+    scrollbar = Scrollbar(location_frame, orient=VERTICAL)
+    widgets['disabled_locations'] = Listbox(location_frame, width=30, yscrollcommand=scrollbar.set)
+    guivars['disabled_locations'] = []
+    scrollbar.config(command=widgets['disabled_locations'].yview)
+    scrollbar.pack(side=RIGHT, fill=Y)
+    widgets['disabled_locations'].pack(side=LEFT)
+    location_frame.pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+
+    def add_disabled_location():
+        new_location = widgets['disabled_location_entry'].get()
+        if new_location in widgets['disabled_location_entry'].options and new_location not in widgets['disabled_locations'].get(0, END):
+            widgets['disabled_locations'].insert(END, new_location)
+            guivars['disabled_locations'].append(new_location)
+        show_settings()
+
+    def remove_disabled_location():
+        location = widgets['disabled_locations'].get(ACTIVE)
+        widgets['disabled_locations'].delete(ACTIVE)
+        guivars['disabled_locations'].remove(location)
+        show_settings()
+
+    location_button_frame = Frame(frames['rewards'])
+    widgets['disabled_location_add'] = Button(location_button_frame, text='Add', command=add_disabled_location)
+    widgets['disabled_location_add'].pack(side=LEFT, anchor=N, padx=3, pady=3)
+    widgets['disabled_location_remove'] = Button(location_button_frame, text='Remove', command=remove_disabled_location)
+    widgets['disabled_location_remove'].pack(side=LEFT, anchor=N, padx=3, pady=3)
+    location_button_frame.pack(expand=False, side=TOP, padx=3, pady=3)
+
+    disabled_location_tooltip = '''
+        Prevent locations from being required. Major 
+        items can still appear there, however they 
+        will never be required to beat the game.
+
+        Most dungeon locations have a MQ alternative.
+        If the location does not exist because of MQ
+        then it will be ignored. So make sure to
+        disable both versions if that is the intent.
+    '''
+
+    ToolTips.register(widgets['disabled_location_entry'], disabled_location_tooltip)
+    ToolTips.register(location_frame, disabled_location_tooltip)
 
     for info in setting_infos:
         if info.gui_params and 'dependency' in info.gui_params:
@@ -443,7 +502,7 @@ def guiMain(settings=None):
             return
 
         settings = guivars_to_settings(guivars)
-        preset = {setting.name: settings.__dict__[setting.name] for setting in 
+        preset = {setting.name: settings.__dict__[setting.name] for setting in
             filter(lambda s: s.shared and s.bitwidth > 0, setting_infos)}
 
         presets[preset_name] = preset
@@ -505,7 +564,7 @@ def guiMain(settings=None):
             if guivars['logic_rules'].get() == 'Glitchless':
                 notebook.tab(2, state="normal")
             else:
-                notebook.tab(2, state="disabled")               
+                notebook.tab(2, state="disabled")
             notebook.tab(3, state="normal")
             toggle_widget(widgets['world_count'], check_dependency('world_count'))
             toggle_widget(widgets['create_spoiler'], check_dependency('create_spoiler'))
@@ -623,16 +682,18 @@ def guiMain(settings=None):
         settings_to_guivars(settings, guivars)
 
         presets = {}
-        try:
-            with open(data_path('presets_default.json')) as f:
-                presets.update(json.load(f))
-        except:
-            pass
-        try:
-            with open(local_path('presets.sav')) as f:
-                presets.update(json.load(f))
-        except:
-            pass           
+        for file in [data_path('presets_default.json')] \
+                  + [local_path(f) for f in os.listdir(local_path()) if f.startswith('presets_') and f.endswith('.sav')] \
+                  + [local_path('presets.sav')]:
+            try:
+                with open(file) as f:
+                    presets_temp = json.load(f)
+                    if file != local_path('presets.sav'):
+                        for preset in presets_temp.values():
+                            preset['locked'] = True
+                    presets.update(presets_temp)
+            except:
+                pass
         update_preset_dropdown()
 
     show_settings()
@@ -656,6 +717,7 @@ def guiMain(settings=None):
         settings = guivars_to_settings(guivars)
         del settings.__dict__["seed"]
         del settings.__dict__["numeric_seed"]
+        del settings.__dict__["check_version"]
         if "locked" in settings.__dict__:
             del settings.__dict__["locked"]
         json.dump(settings.__dict__, outfile, indent=4)
