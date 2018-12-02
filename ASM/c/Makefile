@@ -3,7 +3,7 @@ LD = mips64-ld
 OBJDUMP = mips64-objdump
 
 CFLAGS = -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt -mdivide-breaks \
-	 -O1 -fno-reorder-blocks \
+	  -fno-reorder-blocks \
 	 -DZ64_VERSION=Z64_OOT10
 
 OBJECTS = $(patsubst %.c,%.o,$(wildcard *.c))
