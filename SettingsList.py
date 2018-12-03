@@ -846,7 +846,8 @@ setting_infos = [
                              'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
                              for a milder Keysanity experience.
                              ''',
-            ),
+            shared=True,
+    ),
     Combobox(
             name           = 'shuffle_bosskeys',
             default        = 'dungeon',
