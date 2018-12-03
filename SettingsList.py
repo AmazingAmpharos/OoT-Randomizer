@@ -598,6 +598,46 @@ setting_infos = [
             shared         = True,
             ),
     Checkbutton(
+            name           = 'start_with_rupees',
+            args_help      = '''\
+                             Start with 99 rupees.
+                             ''',
+            gui_text       = 'Start with max rupees',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Start the game with 99 rupees.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'start_with_deku_equipment',
+            args_help      = '''\
+                             Start with full Deku sticks, nuts, and a shield.
+                             ''',
+            gui_text       = 'Start with Deku equipment',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Start the game with 10 Deku sticks and 20 Deku nuts.
+                             Additionally, start the game with a Deku shield equipped,
+                             unless playing with the Shopsanity setting.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'start_with_fast_travel',
+            args_help      = '''\
+                             Start with two warp songs and Farore's Wind.
+                             ''',
+            gui_text       = 'Start with fast travel',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Start the game with knowledge of the Prelude of Light
+                             and Serenade of Water songs. Also start the game with
+                             Farore's Wind in inventory.
+                             ''',
+            shared         = True,
+            ),            
+    Checkbutton(
             name           = 'shuffle_kokiri_sword',
             args_help      = '''\
                              Shuffles the Kokiri Sword into the pool.
