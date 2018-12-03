@@ -502,7 +502,7 @@ def guiMain(settings=None):
             return
 
         settings = guivars_to_settings(guivars)
-        preset = {setting.name: settings.__dict__[setting.name] for setting in 
+        preset = {setting.name: settings.__dict__[setting.name] for setting in
             filter(lambda s: s.shared and s.bitwidth > 0, setting_infos)}
 
         presets[preset_name] = preset
@@ -564,7 +564,7 @@ def guiMain(settings=None):
             if guivars['logic_rules'].get() == 'Glitchless':
                 notebook.tab(2, state="normal")
             else:
-                notebook.tab(2, state="disabled")               
+                notebook.tab(2, state="disabled")
             notebook.tab(3, state="normal")
             toggle_widget(widgets['world_count'], check_dependency('world_count'))
             toggle_widget(widgets['create_spoiler'], check_dependency('create_spoiler'))
@@ -682,16 +682,18 @@ def guiMain(settings=None):
         settings_to_guivars(settings, guivars)
 
         presets = {}
-        try:
-            with open(data_path('presets_default.json')) as f:
-                presets.update(json.load(f))
-        except:
-            pass
-        try:
-            with open(local_path('presets.sav')) as f:
-                presets.update(json.load(f))
-        except:
-            pass           
+        for file in [data_path('presets_default.json')] \
+                  + [local_path(f) for f in os.listdir(local_path()) if f.startswith('presets_') and f.endswith('.sav')] \
+                  + [local_path('presets.sav')]:
+            try:
+                with open(file) as f:
+                    presets_temp = json.load(f)
+                    if file != local_path('presets.sav'):
+                        for preset in presets_temp.values():
+                            preset['locked'] = True
+                    presets.update(presets_temp)
+            except:
+                pass
         update_preset_dropdown()
 
     show_settings()
@@ -715,6 +717,7 @@ def guiMain(settings=None):
         settings = guivars_to_settings(guivars)
         del settings.__dict__["seed"]
         del settings.__dict__["numeric_seed"]
+        del settings.__dict__["check_version"]
         if "locked" in settings.__dict__:
             del settings.__dict__["locked"]
         json.dump(settings.__dict__, outfile, indent=4)

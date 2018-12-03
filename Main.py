@@ -47,13 +47,12 @@ def main(settings, window=dummy_window()):
     worlds = []
 
     # we load the rom before creating the seed so that error get caught early
+    if settings.compress_rom == 'None' and not settings.create_spoiler:
+        raise Exception('`No Output` must have spoiler enabled to produce anything.')
+
     if settings.compress_rom != 'None':
         window.update_status('Loading ROM')
         rom = LocalRom(settings)
-
-    if settings.compress_rom == 'None':
-        settings.create_spoiler = True
-        settings.update()
 
     if not settings.world_count:
         settings.world_count = 1
@@ -197,7 +196,10 @@ def main(settings, window=dummy_window()):
                 else:
                     compressor_path += "\\Compress32.exe"
             elif platform.system() == 'Linux':
-                compressor_path += "/Compress"
+                if platform.uname()[4] == 'aarch64' or platform.uname()[4] == 'arm64':
+                    compressor_path += "/Compress_ARM64"
+                else:
+                    compressor_path += "/Compress"
             elif platform.system() == 'Darwin':
                 compressor_path += "/Compress.out"
             else:
