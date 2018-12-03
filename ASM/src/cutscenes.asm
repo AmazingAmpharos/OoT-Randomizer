@@ -46,7 +46,7 @@ override_great_fairy_cutscene:
     and     t0, t0, t1
     sw      t0, 0x1D2C (a0)
 
-    jal     give_delayed_item
+    jal     push_delayed_item
     move    a0, t2
 
     li      v0, 0 ; Prevent fairy animation
@@ -63,7 +63,7 @@ override_ocarina_songs:
     addiu   sp, sp, -0x18
     sw      ra, 0x10 (sp)
 
-    jal     give_delayed_item
+    jal     push_delayed_item
     addi    a0, a3, -0x5A + DELAYED_OCARINA_SONGS
 
     li      v0, 0xFF
@@ -80,7 +80,7 @@ override_requiem_song:
     sw      v1, 0x14 (sp)
     sw      ra, 0x18 (sp)
 
-    jal     give_delayed_item
+    jal     push_delayed_item
     li      a0, DELAYED_REQUIEM
 
     lw      at, 0x10 (sp)
@@ -103,7 +103,7 @@ override_epona_song:
     ori     t0, t0, 0x01 ; t9 = "Invited to Sing With Child Malon"
     sb      t0, 0x0EDE (at)
 
-    jal     give_delayed_item
+    jal     push_delayed_item
     li      a0, DELAYED_EPONAS_SONG
 
     lw      a2, 0x10 (sp)
@@ -125,7 +125,7 @@ override_suns_song:
     ori     t0, t0, 0x04
     sb      t0, 0x0EDE (at)
 
-    jal     give_delayed_item
+    jal     push_delayed_item
     li      a0, DELAYED_SUNS_SONG
 
     lw      v1, 0x10 (sp)
@@ -142,7 +142,7 @@ override_song_of_time:
     sw      t7, 0x18 (sp)
     sw      ra, 0x20 (sp)
 
-    jal     give_delayed_item
+    jal     push_delayed_item
     li      a0, DELAYED_SONG_OF_TIME
 
     li      a1, 3 ; Displaced code

@@ -8,3 +8,4 @@ DELAYED_REQUIEM          equ 0x23
 DELAYED_EPONAS_SONG      equ 0x27
 DELAYED_SUNS_SONG        equ 0x29
 DELAYED_SONG_OF_TIME     equ 0x2A
+DELAYED_COOP             equ 0xFF

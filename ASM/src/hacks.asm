@@ -219,7 +219,7 @@
 ;   b       0x80056F84
 ;   sw      t9, 0x0008 (s0)
 .org 0xACCE88 ; In memory: 0x80056F28
-    jal     give_delayed_item
+    jal     push_delayed_item
     li      a0, DELAYED_LIGHT_ARROWS
     nop
     nop
@@ -431,7 +431,7 @@ nop
 ;   addu    t8, t0, t7
 ;   sb      t6, 0x74 (t8) ; store to fairy ocarina slot
 .org 0xAE6E48 ; In memory: 0x80070EE8
-    jal     give_delayed_item
+    jal     push_delayed_item
     li      a0, DELAYED_FAIRY_OCARINA
 
 ; a3 = item ID

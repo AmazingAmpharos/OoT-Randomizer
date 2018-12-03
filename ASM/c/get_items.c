@@ -43,6 +43,12 @@ int item_overrides_count = 0;
 override_t pending_item_queue[3] = { 0 };
 z64_actor_t *dummy_actor = NULL;
 
+// Co-op state
+extern uint8_t PLAYER_ID;
+extern uint8_t PLAYER_NAME_ID;
+extern uint16_t INCOMING_ITEM;
+extern override_t OUTGOING_OVERRIDE;
+
 item_row_t *active_item_row = NULL;
 // Split active_item_row into variables for convenience in ASM
 uint32_t active_item_action_id = 0;
@@ -156,51 +162,52 @@ void activate_override(override_t override) {
     }
 }
 
-void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id) {
-    override_t override = { 0 };
-    int incoming_negative = incoming_item_id < 0;
-
-    if (from_actor && incoming_item_id != 0) {
-        int8_t item_id = incoming_negative ? -incoming_item_id : incoming_item_id;
-        override = lookup_override(from_actor, z64_game.scene_index, item_id);
+void push_pending_item(override_t override) {
+    for (int i = 0; i < array_size(pending_item_queue); i++) {
+        if (pending_item_queue[i].key.all == 0) {
+            pending_item_queue[i] = override;
+            break;
+        }
+        if (pending_item_queue[i].key.all == override.key.all) {
+            // Prevent duplicate entries
+            break;
+        }
     }
-
-    if (override.key.all == 0) {
-        // No override, use base game's item code
-        clear_item_row();
-        link->incoming_item_id = incoming_item_id;
-        return;
-    }
-
-    activate_override(override);
-    int8_t base_item_id = active_item_row->base_item_id;
-
-    if (from_actor->actor_id == 0x0A) {
-        // Update chest contents
-        from_actor->variable = (from_actor->variable & 0xF01F) | (base_item_id << 5);
-    }
-
-    link->incoming_item_id = incoming_negative ? -base_item_id : base_item_id;
 }
 
-void get_skulltula_token(z64_actor_t *token_actor) {
-    override_t override = lookup_override(token_actor, 0, 0);
-    uint16_t item_id;
-    if (override.key.all == 0) {
-        item_id = 0x5B; // Give a skulltula token if there is no override
-    } else {
-        item_id = override.value.item_id;
+void push_coop_item() {
+    if (INCOMING_ITEM != 0) {
+        override_t override = { 0 };
+        override.key.scene = 0xFF;
+        override.key.type = DELAYED;
+        override.key.flag = 0xFF;
+        override.value.player = PLAYER_ID;
+        override.value.item_id = INCOMING_ITEM;
+        push_pending_item(override);
     }
+}
 
-    uint16_t resolved_item_id = resolve_upgrades(item_id);
-    item_row_t *item_row = get_item_row(resolved_item_id);
+void push_delayed_item(uint8_t flag) {
+    override_key_t search_key = { .all = 0 };
+    search_key.scene = 0xFF;
+    search_key.type = DELAYED;
+    search_key.flag = flag;
+    override_t override = lookup_override_by_key(search_key);
+    if (override.key.all != 0) {
+        push_pending_item(override);
+    }
+}
 
-    z64_DisplayTextbox(&z64_game, item_row->text_id, 0);
-    z64_GiveItem(&z64_game, item_row->action_id);
-    call_effect_function(item_row);
+void pop_pending_item() {
+    pending_item_queue[0] = pending_item_queue[1];
+    pending_item_queue[1] = pending_item_queue[2];
+    pending_item_queue[2].key.all = 0;
+    pending_item_queue[2].value.all = 0;
 }
 
 void give_pending_item() {
+    push_coop_item();
+
     override_t override = pending_item_queue[0];
 
     // Don't give pending item if:
@@ -221,40 +228,69 @@ void give_pending_item() {
     z64_link.incoming_item_id = active_item_row->base_item_id;
 }
 
-void push_pending_item(override_t override) {
-    for (int i = 0; i < array_size(pending_item_queue); i++) {
-        if (pending_item_queue[i].key.all == 0) {
-            pending_item_queue[i] = override;
-            break;
-        }
-        if (pending_item_queue[i].key.all == override.key.all) {
-            // Prevent duplicate entries
-            break;
-        }
-    }
-}
-
-void pop_pending_item() {
-    pending_item_queue[0] = pending_item_queue[1];
-    pending_item_queue[1] = pending_item_queue[2];
-    pending_item_queue[2].key.all = 0;
-    pending_item_queue[2].value.all = 0;
-}
-
-void give_delayed_item(uint8_t flag) {
-    override_key_t search_key = { .all = 0 };
-    search_key.scene = 0xFF;
-    search_key.type = DELAYED;
-    search_key.flag = flag;
-    override_t override = lookup_override_by_key(search_key);
-    if (override.key.all != 0) {
-        push_pending_item(override);
-    }
-}
-
-void item_received() {
+void after_item_received() {
     clear_item_row();
+    OUTGOING_OVERRIDE = (override_t){ 0 };
+
     if (z64_link.incoming_item_actor == dummy_actor) {
+        // Received a pending item
+        override_key_t key = pending_item_queue[0].key;
+        if (key.type == DELAYED && key.flag == 0xFF) {
+            // Received incoming co-op item
+            INCOMING_ITEM = 0;
+        }
         pop_pending_item();
     }
+}
+
+void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id) {
+    override_t override = { 0 };
+    int incoming_negative = incoming_item_id < 0;
+
+    if (from_actor && incoming_item_id != 0) {
+        int8_t item_id = incoming_negative ? -incoming_item_id : incoming_item_id;
+        override = lookup_override(from_actor, z64_game.scene_index, item_id);
+    }
+
+    if (override.key.all == 0) {
+        // No override, use base game's item code
+        clear_item_row();
+        link->incoming_item_id = incoming_item_id;
+        return;
+    }
+
+    if (override.value.player != PLAYER_ID) {
+        OUTGOING_OVERRIDE = override;
+    }
+
+    activate_override(override);
+    int8_t base_item_id = active_item_row->base_item_id;
+
+    if (from_actor->actor_id == 0x0A) {
+        // Update chest contents
+        from_actor->variable = (from_actor->variable & 0xF01F) | (base_item_id << 5);
+    }
+
+    link->incoming_item_id = incoming_negative ? -base_item_id : base_item_id;
+}
+
+void get_skulltula_token(z64_actor_t *token_actor) {
+    override_t override = lookup_override(token_actor, 0, 0);
+    uint16_t item_id;
+    if (override.key.all == 0) {
+        item_id = 0x5B; // Give a skulltula token if there is no override
+    } else {
+        if (override.value.player != PLAYER_ID) {
+            OUTGOING_OVERRIDE = override;
+        }
+        item_id = override.value.item_id;
+    }
+
+    uint16_t resolved_item_id = resolve_upgrades(item_id);
+    item_row_t *item_row = get_item_row(resolved_item_id);
+
+    z64_DisplayTextbox(&z64_game, item_row->text_id, 0);
+    z64_GiveItem(&z64_game, item_row->action_id);
+    call_effect_function(item_row);
+    after_item_received();
 }

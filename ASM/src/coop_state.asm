@@ -1,10 +1,13 @@
 PLAYER_ID:
 .byte 0x00 ; Written by frontend
-COOP_GET_ITEM:
-.byte 0x00
 PLAYER_NAME_ID:
 .byte 0x00
+INCOMING_ITEM:
+.halfword 0x0000
 .align 4
+
+OUTGOING_OVERRIDE:
+.word 0x00000000, 0x00000000
 
 .area 8*32, 0xDF
 PLAYER_NAMES:

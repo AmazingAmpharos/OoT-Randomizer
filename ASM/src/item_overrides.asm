@@ -98,30 +98,34 @@ override_text:
 ;==================================================================================================
 
 override_action:
-    lbu     a1, 0x0000 (v0) ; Displaced code
-
     addiu   sp, sp, -0x18
-    sw      a1, 0x10 (sp)
+    sw      s0, 0x10 (sp)
     sw      ra, 0x14 (sp)
+
+    li      t0, OUTGOING_OVERRIDE
+    lw      t0, 0x00 (t0)
+    bnez    t0, @@return
+    li      s0, 0x41 ; Outgoing co-op item, do nothing for this player
 
     li      t0, active_item_row
     lw      t0, 0x00 (t0)
     beqz    t0, @@return
-    nop
+    lbu     s0, 0x00 (v0) ; No active override, load non-override action ID
 
     ; Override Action ID
-    li      a1, active_item_action_id
-    lw      a1, 0x00 (a1)
-    sw      a1, 0x10 (sp)
+    li      t0, active_item_action_id
+    lw      s0, 0x00 (t0)
 
     jal     call_effect_function
-    move    a0, t0
+    move    a0, s0
 
 @@return:
-    jal     item_received
+    jal     after_item_received
     nop
 
-    lw      a1, 0x10 (sp)
+    move    a1, s0 ; Base game expects this value in a1
+
+    lw      s0, 0x10 (sp)
     lw      ra, 0x14 (sp)
     jr      ra
     addiu   sp, sp, 0x18
