@@ -602,7 +602,7 @@ setting_infos = [
             args_help      = '''\
                              Start with 99 rupees.
                              ''',
-            gui_text       = 'Start with max rupees',
+            gui_text       = 'Start with Max Rupees',
             gui_group      = 'convenience',
             gui_tooltip    = '''\
                              Start the game with 99 rupees.
@@ -614,7 +614,7 @@ setting_infos = [
             args_help      = '''\
                              Start with full Deku sticks, nuts, and a shield.
                              ''',
-            gui_text       = 'Start with Deku equipment',
+            gui_text       = 'Start with Deku Equipment',
             gui_group      = 'convenience',
             gui_tooltip    = '''\
                              Start the game with 10 Deku sticks and 20 Deku nuts.
@@ -628,7 +628,7 @@ setting_infos = [
             args_help      = '''\
                              Start with two warp songs and Farore's Wind.
                              ''',
-            gui_text       = 'Start with fast travel',
+            gui_text       = 'Start with Fast Travel',
             gui_group      = 'convenience',
             gui_tooltip    = '''\
                              Start the game with knowledge of the Prelude of Light
