@@ -326,7 +326,7 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
                 # in one world being placed late in another world. If this is not
                 # done then one player may be waiting a long time for other players.
                 if location.world.id != item_to_place.world.id:
-                    source_location = location.world.get_location(location.name)
+                    source_location = item_to_place.world.get_location(location.name)
                     if not source_location.can_fill(maximum_exploration_state_list[source_location.world.id], item_to_place, perform_access_check):
                         # location wasn't reachable in item's world, so skip it
                         continue
