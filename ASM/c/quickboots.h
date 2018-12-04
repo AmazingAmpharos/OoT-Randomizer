@@ -3,10 +3,6 @@
 
 #include "z64.h"
 
-static uint16_t pad_pressed_raw,
-pad,
-pad_pressed;
-
 #define BLOCK_QUICK_BOOTS (0x00000001 | \
 	0x00000002 | \
     0x00000080 | \
@@ -20,5 +16,6 @@ pad_pressed;
 
 void handle_quickboots();
 void draw_quickboots(z64_disp_buf_t*);
+void quickboots_init();
 
 #endif
