@@ -49,28 +49,14 @@ extern uint8_t PLAYER_NAME_ID;
 extern uint16_t INCOMING_ITEM;
 extern override_t OUTGOING_OVERRIDE;
 
+override_t active_override = { 0 };
+int active_override_is_outgoing = 0;
 item_row_t *active_item_row = NULL;
 // Split active_item_row into variables for convenience in ASM
 uint32_t active_item_action_id = 0;
 uint32_t active_item_text_id = 0;
 uint32_t active_item_object_id = 0;
 uint32_t active_item_graphic_id = 0;
-
-void activate_item_row(item_row_t *item_row) {
-    active_item_row = item_row;
-    active_item_action_id = item_row->action_id;
-    active_item_text_id = item_row->text_id;
-    active_item_object_id = item_row->object_id;
-    active_item_graphic_id = item_row->graphic_id;
-}
-
-void clear_item_row() {
-    active_item_row = NULL;
-    active_item_action_id = 0;
-    active_item_text_id = 0;
-    active_item_object_id = 0;
-    active_item_graphic_id = 0;
-}
 
 void item_overrides_init() {
     while (cfg_item_overrides[item_overrides_count].key.all != 0) {
@@ -155,11 +141,25 @@ override_t lookup_override(z64_actor_t *actor, uint8_t scene, uint8_t item_id) {
 void activate_override(override_t override) {
     uint16_t resolved_item_id = resolve_upgrades(override.value.item_id);
     item_row_t *item_row = get_item_row(resolved_item_id);
-    if (item_row) {
-        activate_item_row(item_row);
-    } else {
-        clear_item_row();
-    }
+
+    active_override = override;
+    active_override_is_outgoing = override.value.player != PLAYER_ID;
+    active_item_row = item_row;
+    active_item_action_id = item_row->action_id;
+    active_item_text_id = item_row->text_id;
+    active_item_object_id = item_row->object_id;
+    active_item_graphic_id = item_row->graphic_id;
+    PLAYER_NAME_ID = override.value.player;
+}
+
+void clear_override() {
+    active_override = (override_t){ 0 };
+    active_override_is_outgoing = 0;
+    active_item_row = NULL;
+    active_item_action_id = 0;
+    active_item_text_id = 0;
+    active_item_object_id = 0;
+    active_item_graphic_id = 0;
 }
 
 void push_pending_item(override_t override) {
@@ -229,8 +229,10 @@ void give_pending_item() {
 }
 
 void after_item_received() {
-    clear_item_row();
-    OUTGOING_OVERRIDE = (override_t){ 0 };
+    if (active_override_is_outgoing) {
+        OUTGOING_OVERRIDE = active_override;
+    }
+    clear_override();
 
     if (z64_link.incoming_item_actor == dummy_actor) {
         // Received a pending item
@@ -238,6 +240,8 @@ void after_item_received() {
         if (key.type == DELAYED && key.flag == 0xFF) {
             // Received incoming co-op item
             INCOMING_ITEM = 0;
+            uint16_t *received_item_counter = (uint16_t *)(z64_file_addr + 0x90);
+            (*received_item_counter)++;
         }
         pop_pending_item();
     }
@@ -254,13 +258,9 @@ void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id
 
     if (override.key.all == 0) {
         // No override, use base game's item code
-        clear_item_row();
+        clear_override();
         link->incoming_item_id = incoming_item_id;
         return;
-    }
-
-    if (override.value.player != PLAYER_ID) {
-        OUTGOING_OVERRIDE = override;
     }
 
     activate_override(override);
@@ -277,20 +277,26 @@ void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id
 void get_skulltula_token(z64_actor_t *token_actor) {
     override_t override = lookup_override(token_actor, 0, 0);
     uint16_t item_id;
+    uint8_t player;
     if (override.key.all == 0) {
-        item_id = 0x5B; // Give a skulltula token if there is no override
+        // Give a skulltula token if there is no override
+        item_id = 0x5B;
+        player = PLAYER_ID;
     } else {
-        if (override.value.player != PLAYER_ID) {
-            OUTGOING_OVERRIDE = override;
-        }
         item_id = override.value.item_id;
+        player = override.value.player;
     }
 
     uint16_t resolved_item_id = resolve_upgrades(item_id);
     item_row_t *item_row = get_item_row(resolved_item_id);
 
+    PLAYER_NAME_ID = player;
     z64_DisplayTextbox(&z64_game, item_row->text_id, 0);
-    z64_GiveItem(&z64_game, item_row->action_id);
-    call_effect_function(item_row);
-    after_item_received();
+
+    if (player != PLAYER_ID) {
+        OUTGOING_OVERRIDE = override;
+    } else {
+        z64_GiveItem(&z64_game, item_row->action_id);
+        call_effect_function(item_row);
+    }
 }

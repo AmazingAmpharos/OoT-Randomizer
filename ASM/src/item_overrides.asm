@@ -102,22 +102,23 @@ override_action:
     sw      s0, 0x10 (sp)
     sw      ra, 0x14 (sp)
 
-    li      t0, OUTGOING_OVERRIDE
+    li      t0, active_override_is_outgoing
     lw      t0, 0x00 (t0)
     bnez    t0, @@return
     li      s0, 0x41 ; Outgoing co-op item, do nothing for this player
 
-    li      t0, active_item_row
-    lw      t0, 0x00 (t0)
-    beqz    t0, @@return
+    li      a0, active_item_row
+    lw      a0, 0x00 (a0)
+    beqz    a0, @@return
     lbu     s0, 0x00 (v0) ; No active override, load non-override action ID
 
     ; Override Action ID
     li      t0, active_item_action_id
     lw      s0, 0x00 (t0)
 
+    ; a0 = item row
     jal     call_effect_function
-    move    a0, s0
+    nop
 
 @@return:
     jal     after_item_received
