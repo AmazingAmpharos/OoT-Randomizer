@@ -92,7 +92,7 @@ def main(settings, window=dummy_window()):
         create_dungeons(world)
 
         world.initialize_entrances()
-        
+
         if settings.shopsanity != 'off':
             world.random_shop_prices()
 
@@ -166,7 +166,7 @@ def main(settings, window=dummy_window()):
                     file_path = os.path.join(output_dir, file)
                     patch_archive.write(file_path, file, compress_type=zipfile.ZIP_DEFLATED)
             for file in file_list:
-                os.remove(os.path.join(output_dir, file))          
+                os.remove(os.path.join(output_dir, file))
         window.update_progress(95)
 
     elif settings.compress_rom != 'None':
@@ -177,9 +177,8 @@ def main(settings, window=dummy_window()):
 
         window.update_status('Saving Uncompressed ROM')
         if settings.world_count > 1:
-            output_path = os.path.join(output_dir, '%sP%d.z64' % (outfilebase, settings.player_num))
-        else:
-            output_path = os.path.join(output_dir, '%s.z64' % outfilebase)
+            outfilebase = "%sP%d" % (outfilebase, settings.player_num)
+        output_path = os.path.join(output_dir, '%s.z64' % outfilebase)
         rom.write_to_file(output_path)
         if settings.compress_rom == 'True':
             window.update_status('Compressing ROM')
@@ -388,4 +387,3 @@ def create_playthrough(spoiler):
 
     # we can finally output our playthrough
     spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
-
