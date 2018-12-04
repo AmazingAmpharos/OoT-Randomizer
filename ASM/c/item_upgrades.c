@@ -75,7 +75,7 @@ uint16_t stick_upgrade(z64_file_t *save, uint16_t item_id) {
 }
 
 uint16_t magic_upgrade(z64_file_t *save, uint16_t item_id) {
-    switch (save->magic_capacity_set) {
+    switch (save->magic_acquired) {
         case 0: return 0xB9; // Single Magic
         default: return 0xBA; // Double Magic
     }
