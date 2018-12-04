@@ -31,6 +31,7 @@
         "shuffle_scrubs": "off",
         "shopsanity": "off",
         "shuffle_mapcompass": "startwith",
+        "shuffle_smallkeys": "dungeon",
         "shuffle_bosskeys": "dungeon",
         "enhance_map_compass": false,
         "unlocked_ganondorf": true,

@@ -569,6 +569,7 @@ def guiMain(settings=None):
             toggle_widget(widgets['world_count'], check_dependency('world_count'))
             toggle_widget(widgets['create_spoiler'], check_dependency('create_spoiler'))
             toggle_widget(widgets['count'], check_dependency('count'))
+            toggle_widget(widgets['settings_presets'], True)
         else:
             notebook.tab(1, state="disabled")
             notebook.tab(2, state="disabled")
@@ -576,6 +577,7 @@ def guiMain(settings=None):
             toggle_widget(widgets['world_count'], False)
             toggle_widget(widgets['create_spoiler'], False)
             toggle_widget(widgets['count'], False)
+            toggle_widget(widgets['settings_presets'], False)
 
 
 
