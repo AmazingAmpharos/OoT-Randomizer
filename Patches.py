@@ -923,6 +923,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         rom.write_int32(symbol, 1)
     elif world.bridge == 'dungeons':
         rom.write_int32(symbol, 2)
+    elif world.bridge == 'stones':
+        rom.write_int32(symbol, 3)
+    elif world.bridge == 'vanilla':
+        rom.write_int32(symbol, 4)
 
     if world.open_forest:
         write_bits_to_save(0xED5, 0x10) # "Showed Mido Sword & Shield"

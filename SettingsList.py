@@ -341,6 +341,7 @@ setting_infos = [
             default        = 'medallions',
             choices        = {
                 'dungeons':   'All Dungeons',
+				'stones':	  'All Stones',
                 'medallions': 'All Medallions',
                 'vanilla':    'Vanilla Requirements',
                 'open':       'Always Open',
