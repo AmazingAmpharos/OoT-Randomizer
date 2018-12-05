@@ -316,7 +316,7 @@ stick_upgrade:
 ;==================================================================================================
 
 magic_upgrade:
-    lbu     t0, 0x32 (a0) ; Load magic level from inventory
+    lbu     t0, 0x3A (a0) ; Load magic level from inventory
 
     beqz    t0, @@return
     li      v0, 0xC0 ; Single Magic
