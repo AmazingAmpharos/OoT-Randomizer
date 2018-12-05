@@ -431,7 +431,19 @@
         "exits": {
             "Castle Town": "True",
             "Ganons Castle Fairy": "can_use(Golden_Gauntlets)",
-            "Ganons Castle Lobby": "True"
+            "Ganons Castle Lobby": "
+                (bridge == 'open')
+                or ((bridge == 'medallions') and
+                    Forest_Medallion and Fire_Medallion and Water_Medallion and
+                    Shadow_Medallion and Spirit_Medallion and Light_Medallion)
+                or ((bridge == 'vanilla') and
+                    Light_Arrows and Shadow_Medallion and Spirit_Medallion)
+                or ((bridge == 'dungeons') and
+                    Forest_Medallion and Fire_Medallion and Water_Medallion and 
+                    Shadow_Medallion and Spirit_Medallion and Light_Medallion and
+                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)
+                or ((bridge == 'stones') and
+                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)"
         }
     },
     {
