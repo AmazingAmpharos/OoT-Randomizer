@@ -29,11 +29,11 @@ rainbow_bridge:
     and       t2, v0, at
     bne       t2, at, @@return
     nop
-    lbu       t7, 0x74(a3) ; Light arrow slot
+    lbu       t7, 0x84(a3) ; Light arrow slot
     li        t2, 0x12 ; light arrow item id 
     beq       t2, t7, @@return
     nop
-    li        at, 0x01
+    li        at, 0xFFFF
 
 @@return:
 
