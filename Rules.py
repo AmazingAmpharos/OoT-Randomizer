@@ -6,40 +6,6 @@ from Location import DisableType
 def set_rules(world):
     logger = logging.getLogger('')
 
-    if world.bridge == 'medallions':
-        # require all medallions to form the bridge
-        set_rule(
-            world.get_entrance('Ganons Castle Grounds -> Ganons Castle Lobby'),
-            lambda state: (
-                state.has('Forest Medallion') and 
-                state.has('Fire Medallion') and 
-                state.has('Water Medallion') and 
-                state.has('Shadow Medallion') and 
-                state.has('Spirit Medallion') and 
-                state.has('Light Medallion')))
-    elif world.bridge == 'vanilla':
-        # require only what vanilla did to form the bridge
-        set_rule(
-            world.get_entrance('Ganons Castle Grounds -> Ganons Castle Lobby'),
-            lambda state: (
-                state.has('Light Arrows') and 
-                state.has('Shadow Medallion') and 
-                state.has('Spirit Medallion')))
-    elif world.bridge == 'dungeons':
-        # require all medallions and stones to form the bridge
-        set_rule(
-            world.get_entrance('Ganons Castle Grounds -> Ganons Castle Lobby'),
-            lambda state: (
-                state.has('Forest Medallion') and 
-                state.has('Fire Medallion') and 
-                state.has('Water Medallion') and 
-                state.has('Shadow Medallion') and
-                state.has('Spirit Medallion') and 
-                state.has('Light Medallion') and 
-                state.has('Kokiri Emerald') and 
-                state.has('Goron Ruby') and 
-                state.has('Zora Sapphire')))
-
     # ganon can only carry triforce
     world.get_location('Ganon').item_rule = lambda location, item: item.name == 'Triforce'
 

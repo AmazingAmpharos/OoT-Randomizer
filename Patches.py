@@ -920,13 +920,13 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         rom.write_int32(symbol, 0)
         write_bits_to_save(0xEDC, 0x20) # "Rainbow Bridge Built by Sages"
     elif world.bridge == 'medallions':
-        rom.write_int32(symbol, 0x3F)
+        rom.write_int32(symbol, 1)
     elif world.bridge == 'dungeons':
-        rom.write_int32(symbol, 0x1C003F)
+        rom.write_int32(symbol, 2)
     elif world.bridge == 'stones':
-        rom.write_int32(symbol, 0x1C0000)
+        rom.write_int32(symbol, 3)
     elif world.bridge == 'vanilla':
-        rom.write_int32(symbol, 0x18)
+        rom.write_int32(symbol, 4)
 
     if world.open_forest:
         write_bits_to_save(0xED5, 0x10) # "Showed Mido Sword & Shield"

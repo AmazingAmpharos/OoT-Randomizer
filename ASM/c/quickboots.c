@@ -7,8 +7,6 @@ pad_pressed;
 
 static _Bool display_active;
 
-#define CAN_USE_QUICKBOOTS ((z64_file.link_age==0) && ((z64_link.state_flags_1 & BLOCK_QUICK_BOOTS) == 0) && ((uint32_t)z64_ctxt.state_dtor==z64_state_ovl_tab[3].vram_dtor) && (z64_file.iron_boots || z64_file.hover_boots))
-
 void handle_quickboots() {
     uint16_t z_pad = z64_ctxt.input[0].raw.pad;
     pad_pressed_raw = (pad ^ z_pad) & z_pad;
