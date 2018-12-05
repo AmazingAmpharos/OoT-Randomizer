@@ -431,9 +431,7 @@
         "exits": {
             "Castle Town": "True",
             "Ganons Castle Fairy": "can_use(Golden_Gauntlets)",
-            "Ganons Castle Lobby": "
-                Forest_Medallion and Fire_Medallion and Water_Medallion and 
-                Shadow_Medallion and Spirit_Medallion and Light_Medallion"
+            "Ganons Castle Lobby": "True"
         }
     },
     {
