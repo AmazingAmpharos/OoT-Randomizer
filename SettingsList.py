@@ -158,6 +158,101 @@ def parse_color(s, color_choices):
     else:
         raise argparse.ArgumentTypeError('Invalid color specified')
 
+def logic_tricks_entry_tooltip(widget, pos):
+    val = widget.get()
+    if val in logic_tricks:
+        text = logic_tricks[val]['tooltip']
+        text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
+        return text
+    else:
+        return None
+
+def logic_tricks_list_tooltip(widget, pos):
+    index = widget.index("@%s,%s" % (pos))
+    val = widget.get(index)
+    if val in logic_tricks:
+        text = logic_tricks[val]['tooltip']
+        text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
+        return text
+    else:
+        return None
+
+
+
+logic_tricks = {
+    'Various Advanced Tricks': {
+        'name'    : 'logic_tricks',
+        'tooltip' : '''\
+                    Enables a large number of minor
+                    tricks that do not require glitches.
+                    '''},
+    'Man on Roof without Hookshot': {
+        'name'    : 'logic_man_on_roof',
+        'tooltip' : '''\
+                    Can be reached by side-hopping off
+                    the watchtower.
+                    '''},
+    'Child Deadhand without Kokiri Sword': {
+        'name'    : 'logic_child_deadhand',
+        'tooltip' : '''\
+                    Requires 9 sticks or 5 jump slashes.
+                    '''},
+    'Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots': {
+        'name'    : 'logic_dc_jump',
+        'tooltip' : '''\
+                    Jump is adult only.
+                    '''},
+    'Windmill PoH as Adult with Nothing': {
+        'name'    : 'logic_windmill_poh',
+        'tooltip' : '''\
+                    Can jump up to the spinning platform from
+                    below as adult.
+                    '''},
+    'Crater\'s Bean PoH with Hover Boots': {
+        'name'    : 'logic_crater_bean_poh_with_hovers',
+        'tooltip' : '''\
+                    Hover from the base of the bridge
+                    near Goron City and walk up the
+                    very steep slope.
+                    '''},
+    'Zora\'s Domain Entry with Cucco': {
+        'name'    : 'logic_zora_with_cucco',
+        'tooltip' : '''\
+                    Can fly behind the waterfall with
+                    a cucco as child.
+                    '''},
+    'Zora\'s Domain Entry with Hover Boots': {
+        'name'    : 'logic_zora_with_hovers',
+        'tooltip' : '''\
+                    Can hover behind the waterfall as adult.
+                    This is very difficult.
+                    '''},
+    'Fewer Tunic Requirements': {
+        'name'    : 'logic_fewer_tunic_requirements',
+        'tooltip' : '''\
+                    Allows the following possible without Tunics:
+                    - Enter Water Temple. The key below the center
+                    pillar still requires Zora Tunic.
+                    - Enter Fire Temple. Only the first floor is
+                    accessible, and not Volvagia.
+                    - Zora's Fountain Bottom Freestanding PoH.
+                    Might not have enough health to resurface.
+                    - Gerudo Training Grounds Underwater
+                    Silver Rupee Chest. May need to make multiple
+                    trips.
+                    '''},
+    'Morpha with Gold Scale': {
+        'name'    : 'logic_morpha_with_scale',
+        'tooltip' : '''\
+                    Allows entering Water Temple and beating
+                    Morpha with Gold Scale instead of Iron Boots.
+                    Only applicable for keysanity and keysy due
+                    to the logic always seeing every chest in
+                    Water Temple that could contain the Boss Key
+                    as requiring Iron Boots.
+                    '''},
+}
+
 
 # a list of the possible settings
 setting_infos = [
@@ -1066,8 +1161,36 @@ setting_infos = [
                     '''
         },
         {
+            'text': 'Exclude Locations',
+            'widget': 'SearchBox',
+            'group': 'checks',
             'options': list(location_table.keys()),
-        }),      
+            'tooltip':'''
+                    Prevent locations from being required. Major 
+                    items can still appear there, however they 
+                    will never be required to beat the game.
+
+                    Most dungeon locations have a MQ alternative.
+                    If the location does not exist because of MQ
+                    then it will be ignored. So make sure to
+                    disable both versions if that is the intent.
+                '''
+        }),
+    Setting_Info('allowed_tricks', list, math.ceil(math.log(len(logic_tricks) + 2, 2)), True,
+        {
+            'default': [],
+            'help': '''\
+                    Choose a list of allowed logic tricks logic may expect to beat the game.
+                    '''
+        },
+        {
+            'text': 'Enable Tricks',
+            'widget': 'SearchBox',
+            'group': 'tricks',
+            'options': {gui_text: val['name'] for gui_text, val in logic_tricks.items()},
+            'entry_tooltip': logic_tricks_entry_tooltip,
+            'list_tooltip': logic_tricks_list_tooltip,
+        }),
     Combobox(
             name           = 'logic_earliest_adult_trade',
             default        = 'pocket_egg',
@@ -1102,7 +1225,7 @@ setting_infos = [
                              Select the earliest item that can appear in the adult trade sequence.
                              ''',
             shared         = True,
-            ),
+            ),    
     Combobox(
             name           = 'logic_latest_adult_trade',
             default        = 'claim_check',
@@ -1138,155 +1261,20 @@ setting_infos = [
             shared         = True,
             ),
     Checkbutton(
-            name           = 'logic_man_on_roof',
+            name           = 'logic_no_night_tokens_without_suns_song',
             args_help      = '''\
-                             The man on the roof will not require the Hookshot in logic.
+                             You will not be expected to collect nighttime-only skulltulas
+                             unless you have Sun's Song
                              ''',
-            gui_text       = 'Man on Roof without Hookshot',
-            gui_group      = 'tricks',
+            gui_text       = 'No Nighttime Skulltulas without Sun\'s Song',
+            gui_group      = 'convenience',
             gui_tooltip    = '''\
-                             Can be reached by side-hopping off
-                             the watchtower.
+                             GS Tokens that can only be obtained
+                             during the night expect you to have Sun's
+                             Song to collect them. This prevents needing
+                             to wait until night for some locations.
                              ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_child_deadhand',
-            args_help      = '''\
-                             Deadhand in the Bottom of the Well will not require the Kokiri sword in logic.
-                             ''',
-            gui_text       = 'Child Deadhand without Kokiri Sword',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Requires 9 sticks or 5 jump slashes.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_dc_jump',
-            args_help      = '''\
-                             Jumping towards the Bomb Bag chest in Dodongo's Cavern as an adult
-                             will not require Hover Boots in logic.
-                             ''',
-            gui_text       = 'Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Jump is adult only.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_windmill_poh',
-            args_help      = '''\
-                    Getting the Piece of Heart in the windmill as an adult will require nothing in logic.
-                             ''',
-            gui_text       = 'Windmill PoH as Adult with Nothing',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Can jump up to the spinning platform from
-                             below as adult.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_crater_bean_poh_with_hovers',
-            args_help      = '''\
-                             The Piece of Heart in Death Mountain Crater that normally requires the bean to
-                             reach will optionally require the Hover Boots in logic.
-                             ''',
-            gui_text       = 'Crater\'s Bean PoH with Hover Boots',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Hover from the base of the bridge
-                             near Goron City and walk up the
-                             very steep slope.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_zora_with_cucco',
-            args_help      = '''\
-                             Zora's Domain can be entered with a Cucco as child in logic.
-                             ''',
-            gui_text       = 'Zora\'s Domain Entry with Cucco',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Can fly behind the waterfall with
-                             a cucco as child.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_zora_with_hovers',
-            args_help      = '''\
-                             Zora's Domain can be entered with Hover Boots as Adult in logic.
-                             ''',
-            gui_text       = 'Zora\'s Domain Entry with Hover Boots',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Can hover behind the waterfall as adult.
-                             This is very difficult.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_fewer_tunic_requirements',
-            args_help      = '''\
-                             Allows the following possible without Goron or Zora Tunic:
-                             Enter Water Temple
-                             Enter Fire Temple
-                             Zoras Fountain Bottom Freestanding PoH
-                             Gerudo Training Grounds Underwater Silver Rupee Chest
-                             ''',
-            gui_text       = 'Fewer Tunic Requirements',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Allows the following possible without Tunics:
-                             - Enter Water Temple. The key below the center
-                             pillar still requires Zora Tunic.
-                             - Enter Fire Temple. Only the first floor is
-                             accessible, and not Volvagia.
-                             - Zora's Fountain Bottom Freestanding PoH.
-                             Might not have enough health to resurface.
-                             - Gerudo Training Grounds Underwater
-                             Silver Rupee Chest. May need to make multiple
-                             trips.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_morpha_with_scale',
-            args_help      = '''\
-                             Allows entering Water Temple and beating
-                             Morpha with Gold Scale instead of Iron Boots.
-                             Only applicable for keysanity and keysy.
-                             ''',
-            gui_text       = 'Morpha with Gold Scale',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Allows entering Water Temple and beating
-                             Morpha with Gold Scale instead of Iron Boots.
-                             Only applicable for keysanity and keysy due
-                             to the logic always seeing every chest in
-                             Water Temple that could contain the Boss Key
-                             as requiring Iron Boots.
-                             ''',
-            default        = False,
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_tricks',
-            args_help      = '''\
-                             Enable various advanced tricks that do not require glitches.
-                             ''',
-            gui_text       = 'Various Advanced Tricks',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Enables a large number of minor
-                             tricks that do not require glitches.
-                             ''',
-            shared         = True,
-            ),
+            ),    
     Combobox(
             name           = 'logic_lens',
             default        = 'all',
