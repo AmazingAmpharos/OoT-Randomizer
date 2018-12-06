@@ -1778,4 +1778,27 @@ setting_infos = [
                       'Default': Beep. Beep. Beep.
                       '''
         }),
+    Combobox(
+            name           = 'sfx_ocarina',
+            default        = 'ocarina',
+            choices        = {
+                'ocarina':     'Default',
+                'random':      'Random Choice',
+                'flute':       'Flute',
+                'harp':        'Harp',
+                'whistle':     'Whistle',
+                'malon':       'Malon',
+                'grind_organ': 'Grind Organ',
+                },
+            args_help      = '''\
+                             Change the sound of the ocarina.
+
+                             default: ocarina
+                             ''',
+            gui_text       = 'Ocarina',
+            gui_group      = 'sfx',
+            gui_tooltip    = '''\
+                             Change the sound of the ocarina.
+                             ''',
+            ),
 ]
