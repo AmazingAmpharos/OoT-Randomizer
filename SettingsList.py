@@ -1260,21 +1260,6 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
-    Checkbutton(
-            name           = 'logic_no_night_tokens_without_suns_song',
-            args_help      = '''\
-                             You will not be expected to collect nighttime-only skulltulas
-                             unless you have Sun's Song
-                             ''',
-            gui_text       = 'No Nighttime Skulltulas without Sun\'s Song',
-            gui_group      = 'convenience',
-            gui_tooltip    = '''\
-                             GS Tokens that can only be obtained
-                             during the night expect you to have Sun's
-                             Song to collect them. This prevents needing
-                             to wait until night for some locations.
-                             ''',
-            ),    
     Combobox(
             name           = 'logic_lens',
             default        = 'all',
