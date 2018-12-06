@@ -1943,6 +1943,23 @@ def patch_cosmetics(settings, rom):
             for address in addresses:
                 rom.write_int16(address, SFX_table[thisSFX])
 
+    # Player Instrument
+    instruments = {
+           #'none':            0x00,
+            'ocarina':         0x01,
+            'malon':           0x02,
+            'whistle':         0x03,
+            'harp':            0x04,
+            'grind_organ':     0x05,
+            'flute':           0x06,
+           #'another_ocarina': 0x07,
+            }
+    if settings.sfx_ocarina is not 'random':
+        choice = settings.sfx_ocarina
+    else:
+        choice = random.choice(list(instruments.keys()))
+    rom.write_byte(0x00B53C7B, instruments[choice])
+
     return rom
 
 
