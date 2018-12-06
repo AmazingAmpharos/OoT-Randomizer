@@ -400,9 +400,9 @@ def guiMain(settings=None):
                 list_remove = Button(list_button_frame, text='Remove', command=get_lambda(remove_list_selected, info.name))
                 list_remove.pack(side=LEFT, anchor=N, padx=3, pady=3)
 
-                list_add = Button(list_button_frame, text='Add All', command=get_lambda(add_list_all, info.name))
+                list_add = Button(list_button_frame, text='All', command=get_lambda(add_list_all, info.name))
                 list_add.pack(side=LEFT, anchor=N, padx=3, pady=3)
-                list_remove = Button(list_button_frame, text='Remove All', command=get_lambda(remove_list_all, info.name))
+                list_remove = Button(list_button_frame, text='None', command=get_lambda(remove_list_all, info.name))
                 list_remove.pack(side=LEFT, anchor=N, padx=3, pady=3)
 
                 list_button_frame.pack(expand=False, side=TOP, padx=3, pady=3)
