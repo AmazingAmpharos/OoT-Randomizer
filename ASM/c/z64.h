@@ -1099,6 +1099,7 @@ typedef struct
 #define z64_ctxt_addr                           0x801C84A0
 #define z64_link_addr                           0x801DAA30
 #define z64_state_ovl_tab_addr                  0x800F1340
+#define z64_event_state_1_addr                  0x800EF1B0
 
 /* rom addresses */
 #define z64_icon_item_static_vaddr              0x007BD000
@@ -1284,6 +1285,7 @@ typedef void (*z64_SceneConfig_proc)      (z64_game_t *game);
 #define z64_link                (*(z64_link_t*)       z64_link_addr)
 #define z64_state_ovl_tab       (*(z64_state_ovl_t(*)[6])                     \
                                                       z64_state_ovl_tab_addr)
+#define z64_event_state_1       (*(uint32_t*)         z64_event_state_1_addr)
 
 
 /* functions */
@@ -1305,5 +1307,7 @@ typedef void (*z64_SceneConfig_proc)      (z64_game_t *game);
 #define z64_UnloadRoom          ((z64_UnloadRoom_proc)                        \
                                                       z64_UnloadRoom_addr)
 #define z64_Io                  ((z64_Io_proc)        z64_Io_addr)
+
+
 
 #endif
