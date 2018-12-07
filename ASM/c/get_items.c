@@ -89,7 +89,7 @@ override_key_t get_override_search_key(z64_actor_t *actor, uint8_t scene, uint8_
         return (override_key_t){
             .scene = scene,
             .type = COLLECTABLE,
-            .flag = *((uint8_t *)(actor + 0x141)),
+            .flag = *(((uint8_t *)actor) + 0x141),
         };
     } else if (actor->actor_id == 0x19C) {
         return (override_key_t){
