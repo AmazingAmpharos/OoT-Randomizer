@@ -31,10 +31,10 @@ def settings_to_guivars(settings, guivars):
             continue
         guivar = guivars[name]
         value = settings.__dict__[name]
-        # checkbox
+        # Checkbox
         if info.type == bool:
             guivar.set( int(value) )
-        # dropdown/radiobox
+        # Dropdown/radiobox
         if info.type == str:
             if value is None:
                 guivar.set( "" )
@@ -48,14 +48,22 @@ def settings_to_guivars(settings, guivars):
                                 guivar.set( gui_text )
                 else:
                     guivar.set( value )
-        # text field for a number...
+        # Text field for a number...
         if info.type == int:
             if value is None:
                 guivar.set( str(1) )
             else:
                 guivar.set( str(value) )
         if info.type == list:
-            guivars[info.name] = list(value)
+            guivars[name] = []
+            if value:
+                for item in value:
+                    if info.gui_params and 'options' in info.gui_params:
+                        for gui_text,gui_value in info.gui_params['options'].items():
+                            if gui_value == item:
+                                guivars[name].append(gui_text)
+                    else:
+                        guivars[name].append(item)
 
 
 def guivars_to_settings(guivars):
@@ -66,26 +74,31 @@ def guivars_to_settings(guivars):
             result[name] = None
             continue
         guivar = guivars[name]
-        # checkbox
+        # Checkbox
         if info.type == bool:
             result[name] = bool(guivar.get())
-        # dropdown/radiobox
+        # Dropdown/radiobox
         if info.type == str:
-            # set guivar to hexcode if custom color
+            # Set guivar to hexcode if custom color
             if re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', guivar.get()):
                 result[name] = re.findall(r'[A-Fa-f0-9]{6}', guivar.get())[0]
             elif info.gui_params and 'options' in info.gui_params:
                 result[name] = info.gui_params['options'][guivar.get()]
             else:
                 result[name] = guivar.get()
-        # text field for a number...
+        # Text field for a number...
         if info.type == int:
             try:
                 result[name] = int( guivar.get() )
             except ValueError:
                 result[name] = 0
         if info.type == list:
-            result[name] = list(guivars[name])
+            result[name] = []
+            for item in guivar:
+                if info.gui_params and 'options' in info.gui_params:
+                    result[name].append(info.gui_params['options'][item])
+                else:
+                    result[name].append(item)
 
     if result['seed'] == "":
         result['seed'] = None
@@ -108,50 +121,48 @@ def guiMain(settings=None):
     frames['rules_tab'] = ttk.Frame(notebook)
     frames['logic_tab'] = ttk.Frame(notebook)
     frames['other_tab'] = ttk.Frame(notebook)
-    frames['aesthetic_tab'] = ttk.Frame(notebook)
-    frames['aesthetic_tab_left'] = Frame(frames['aesthetic_tab'])
-    frames['aesthetic_tab_right'] = Frame(frames['aesthetic_tab'])
+    frames['cosmetic_tab'] = ttk.Frame(notebook)
+    frames['cosmetic_tab_left'] = Frame(frames['cosmetic_tab'])
+    frames['cosmetic_tab_right'] = Frame(frames['cosmetic_tab'])
     notebook.add(frames['rom_tab'], text='ROM Options')
     notebook.add(frames['rules_tab'], text='Main Rules')
     notebook.add(frames['logic_tab'], text='Detailed Logic')
     notebook.add(frames['other_tab'], text='Other')
-    notebook.add(frames['aesthetic_tab'], text='Cosmetics')
+    notebook.add(frames['cosmetic_tab'], text='Cosmetic')
 
     #######################
-    # randomizer controls #
+    # Randomizer controls #
     #######################
 
-    # hold the results of the user's decisions here
+    # Hold the results of the user's decisions here
     guivars = {}
     widgets = {}
     dependencies = {}
     presets = {}
 
-    # hierarchy
+    # Hierarchy
     ############
 
     #Rules Tab
-    frames['open']   = LabelFrame(frames['rules_tab'], text='Open',   labelanchor=NW)
-    frames['world']  = LabelFrame(frames['rules_tab'], text='World',   labelanchor=NW)
-    frames['logic']  = LabelFrame(frames['rules_tab'], text='Shuffle',  labelanchor=NW)
+    frames['open']        = LabelFrame(frames['rules_tab'],          text='Open',              labelanchor=NW)
+    frames['world']       = LabelFrame(frames['rules_tab'],          text='World',             labelanchor=NW)
+    frames['shuffle']     = LabelFrame(frames['rules_tab'],          text='Shuffle',           labelanchor=NW)
 
     # Logic tab
-    frames['rewards'] = LabelFrame(frames['logic_tab'], text='Remove Specific Locations', labelanchor=NW)
-    frames['tricks']  = LabelFrame(frames['logic_tab'], text='Specific Expected Tricks', labelanchor=NW)
+    frames['checks']      = LabelFrame(frames['logic_tab'],          text='Exclude Locations', labelanchor=NW)
+    frames['tricks']      = LabelFrame(frames['logic_tab'],          text='Expected Tricks',   labelanchor=NW)
 
     #Other Tab
-    frames['convenience'] = LabelFrame(frames['other_tab'], text='Speed Ups', labelanchor=NW)
-    frames['other']       = LabelFrame(frames['other_tab'], text='Misc',      labelanchor=NW)
+    frames['convenience'] = LabelFrame(frames['other_tab'],          text='Timesavers',        labelanchor=NW)
+    frames['other']       = LabelFrame(frames['other_tab'],          text='Misc',              labelanchor=NW)
 
-    #Aesthetics tab
-    frames['cosmetics'] = LabelFrame(frames['aesthetic_tab'], text='General', labelanchor=NW)
-    frames['tunic_color'] = LabelFrame(frames['aesthetic_tab_left'], text='Tunic Color', labelanchor=NW)
-    frames['navi_color']  = LabelFrame(frames['aesthetic_tab_right'], text='Navi Color',  labelanchor=NW)
-    frames['lowhp']      = LabelFrame(frames['aesthetic_tab_left'], text='Low HP SFX',  labelanchor=NW)
-    frames['navihint']   = LabelFrame(frames['aesthetic_tab_right'], text='Navi SFX', labelanchor=NW)
+    #Cosmetic tab
+    frames['cosmetic']    = LabelFrame(frames['cosmetic_tab'],       text='General',           labelanchor=NW)
+    frames['colors']      = LabelFrame(frames['cosmetic_tab_right'], text='Colors',            labelanchor=NW)
+    frames['sfx']         = LabelFrame(frames['cosmetic_tab_left'],  text='SFX',               labelanchor=NW)
 
 
-    # shared
+    # Shared
     def toggle_widget(widget, enabled):
         widget_type = widget.winfo_class()
         if widget_type == 'Frame' or widget_type == 'TFrame' or widget_type == 'Labelframe':
@@ -197,20 +208,6 @@ def guiMain(settings=None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
         update_generation_type()
-
-
-    def update_logic_tricks(event=None):
-        for info in setting_infos:
-            if info.gui_params \
-            and info.gui_params.get('widget') == 'Checkbutton' \
-            and info.gui_params['group'] == 'tricks':
-                if guivars['all_logic_tricks'].get():
-                    widgets[info.name].select()
-                else:
-                    widgets[info.name].deselect()
-
-        settings = guivars_to_settings(guivars)
-        settings_string_var.set( settings.get_settings_string() )
 
 
     fileDialogFrame = Frame(frames['rom_tab'])
@@ -264,62 +261,8 @@ def guiMain(settings=None):
     widgets['count'].pack(side=LEFT, padx=2)
     countDialogFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
-    # build gui
+    # Build gui
     ############
-
-    # Add special checkbox to toggle all logic tricks
-    guivars['all_logic_tricks'] = IntVar(value=0)
-    widgets['all_logic_tricks'] = Checkbutton(frames['tricks'], text="Enable All Tricks", variable=guivars['all_logic_tricks'], justify=LEFT, wraplength=190, command=update_logic_tricks)
-    widgets['all_logic_tricks'].pack(expand=False, anchor=W)
-
-
-    location_names = [name for name, (type, scene, default, hint, addresses) in location_table.items() if
-        scene is not None and default is not None]
-    widgets['disabled_location_entry'] = SearchBox(frames['rewards'], location_names, width=30)
-    widgets['disabled_location_entry'].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
-
-    location_frame = Frame(frames['rewards'])
-    scrollbar = Scrollbar(location_frame, orient=VERTICAL)
-    widgets['disabled_locations'] = Listbox(location_frame, width=30, yscrollcommand=scrollbar.set)
-    guivars['disabled_locations'] = []
-    scrollbar.config(command=widgets['disabled_locations'].yview)
-    scrollbar.pack(side=RIGHT, fill=Y)
-    widgets['disabled_locations'].pack(side=LEFT)
-    location_frame.pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
-
-    def add_disabled_location():
-        new_location = widgets['disabled_location_entry'].get()
-        if new_location in widgets['disabled_location_entry'].options and new_location not in widgets['disabled_locations'].get(0, END):
-            widgets['disabled_locations'].insert(END, new_location)
-            guivars['disabled_locations'].append(new_location)
-        show_settings()
-
-    def remove_disabled_location():
-        location = widgets['disabled_locations'].get(ACTIVE)
-        widgets['disabled_locations'].delete(ACTIVE)
-        guivars['disabled_locations'].remove(location)
-        show_settings()
-
-    location_button_frame = Frame(frames['rewards'])
-    widgets['disabled_location_add'] = Button(location_button_frame, text='Add', command=add_disabled_location)
-    widgets['disabled_location_add'].pack(side=LEFT, anchor=N, padx=3, pady=3)
-    widgets['disabled_location_remove'] = Button(location_button_frame, text='Remove', command=remove_disabled_location)
-    widgets['disabled_location_remove'].pack(side=LEFT, anchor=N, padx=3, pady=3)
-    location_button_frame.pack(expand=False, side=TOP, padx=3, pady=3)
-
-    disabled_location_tooltip = '''
-        Prevent locations from being required. Major 
-        items can still appear there, however they 
-        will never be required to beat the game.
-
-        Most dungeon locations have a MQ alternative.
-        If the location does not exist because of MQ
-        then it will be ignored. So make sure to
-        disable both versions if that is the intent.
-    '''
-
-    ToolTips.register(widgets['disabled_location_entry'], disabled_location_tooltip)
-    ToolTips.register(location_frame, disabled_location_tooltip)
 
     for info in setting_infos:
         if info.gui_params and 'dependency' in info.gui_params:
@@ -327,115 +270,174 @@ def guiMain(settings=None):
 
         if info.gui_params and 'group' in info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
-                # determine the initial value of the checkbox
+                # Determine the initial value of the checkbox
                 default_value = 1 if info.gui_params['default'] == "checked" else 0
-                # create a variable to access the box's state
+                # Create a variable to access the box's state
                 guivars[info.name] = IntVar(value=default_value)
-                # create the checkbox
-                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=190, command=show_settings)
+                # Create the checkbox
+                widgets[info.name] = Checkbutton(frames[info.gui_params['group']], text=info.gui_params['text'], variable=guivars[info.name], justify=LEFT, wraplength=220, command=show_settings)
                 widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
-                # create the variable to store the user's decision
+                # Create the variable to store the user's decision
                 guivars[info.name] = StringVar(value=info.gui_params['default'])
-                # create the option menu
+                # Create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
-                # dropdown = OptionMenu(widgets[info.name], guivars[info.name], *(info['options']))
                 if isinstance(info.gui_params['options'], list):
                     info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
-                dropdown = ttk.Combobox(widgets[info.name], textvariable=guivars[info.name], values=list(info.gui_params['options'].keys()), state='readonly', width=30)
+                dropdown = ttk.Combobox(widgets[info.name], textvariable=guivars[info.name], values=list(info.gui_params['options'].keys()), state='readonly', width=36)
                 dropdown.bind("<<ComboboxSelected>>", show_settings)
                 dropdown.pack(side=BOTTOM, anchor=W)
-                # label the option
+                # Label the option
                 if 'text' in info.gui_params:
                     label = Label(widgets[info.name], text=info.gui_params['text'])
                     label.pack(side=LEFT, anchor=W, padx=5)
-                # pack the frame
+                # Pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Radiobutton':
-                # create the variable to store the user's decision
+                # Create the variable to store the user's decision
                 guivars[info.name] = StringVar(value=info.gui_params['default'])
-                # create the option menu
+                # Create the option menu
                 widgets[info.name] = LabelFrame(frames[info.gui_params['group']], text=info.gui_params['text'] if 'text' in info.gui_params else info["name"], labelanchor=NW)
                 if isinstance(info.gui_params['options'], list):
                     info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
-                # setup orientation
+                # Setup orientation
                 side = TOP
                 anchor = W
                 if "horizontal" in info.gui_params and info.gui_params["horizontal"]:
                     side = LEFT
                     anchor = N
-                # add the radio buttons
+                # Add the radio buttons
                 for option in info.gui_params["options"]:
-                    radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=190, indicatoron=False, command=show_settings)
+                    radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=220, indicatoron=False, command=show_settings)
                     radio_button.pack(expand=True, side=side, anchor=anchor)
-                # pack the frame
+                # Pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Scale':
-                # create the variable to store the user's decision
+                # Create the variable to store the user's decision
                 guivars[info.name] = IntVar(value=info.gui_params['default'])
-                # create the option menu
+                # Create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
-                # dropdown = OptionMenu(widgets[info.name], guivars[info.name], *(info['options']))
                 minval = 'min' in info.gui_params and info.gui_params['min'] or 0
                 maxval = 'max' in info.gui_params and info.gui_params['max'] or 100
                 stepval = 'step' in info.gui_params and info.gui_params['step'] or 1
-                scale = Scale(widgets[info.name], variable=guivars[info.name], from_=minval, to=maxval, tickinterval=stepval, resolution=stepval, showvalue=0, orient=HORIZONTAL, sliderlength=15, length=200, command=show_settings)
+                scale = Scale(widgets[info.name], variable=guivars[info.name], from_=minval, to=maxval, tickinterval=stepval, resolution=stepval, showvalue=0, orient=HORIZONTAL, sliderlength=15, length=235, command=show_settings)
                 scale.pack(side=BOTTOM, anchor=W)
-                # label the option
+                # Label the option
                 if 'text' in info.gui_params:
                     label = Label(widgets[info.name], text=info.gui_params['text'])
                     label.pack(side=LEFT, anchor=W, padx=5)
-                # pack the frame
+                # Pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Entry':
-                # create the variable to store the user's decision
+                # Create the variable to store the user's decision
                 guivars[info.name] = StringVar(value=info.gui_params['default'])
-                # create the option menu
+                # Create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
 
                 if 'validate' in info.gui_params:
-                    entry = ValidatingEntry(widgets[info.name], command=show_settings, validate=info.gui_params['validate'], textvariable=guivars[info.name], width=30)
+                    entry = ValidatingEntry(widgets[info.name], command=show_settings, validate=info.gui_params['validate'], textvariable=guivars[info.name], width=35)
                 else:
-                    entry = Entry(widgets[info.name], textvariable=guivars[info.name], width=30)
+                    entry = Entry(widgets[info.name], textvariable=guivars[info.name], width=36)
                 entry.pack(side=BOTTOM, anchor=W)
-                # label the option
+                # Label the option
                 if 'text' in info.gui_params:
                     label = Label(widgets[info.name], text=info.gui_params['text'])
                     label.pack(side=LEFT, anchor=W, padx=5)
-                # pack the frame
+                # Pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+            elif info.gui_params['widget'] == 'SearchBox':
+                search_frame = LabelFrame(frames[info.gui_params['group']], text=info.gui_params['text'] if 'text' in info.gui_params else info["name"], labelanchor=NW)
+                if isinstance(info.gui_params['options'], list):
+                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
+
+                widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.gui_params['options'].keys()), width=34)
+                widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+
+                list_frame = Frame(search_frame)
+                scrollbar = Scrollbar(list_frame, orient=VERTICAL)
+                widgets[info.name] = Listbox(list_frame, width=34, yscrollcommand=scrollbar.set)
+                guivars[info.name] = []
+                scrollbar.config(command=widgets[info.name].yview)
+                scrollbar.pack(side=RIGHT, fill=Y)
+                widgets[info.name].pack(side=LEFT)
+                list_frame.pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+
+                if 'entry_tooltip' in info.gui_params:
+                    ToolTips.register(widgets[info.name + '_entry'], info.gui_params['entry_tooltip'])
+                if 'list_tooltip' in info.gui_params:
+                    ToolTips.register(widgets[info.name], info.gui_params['list_tooltip'])
+
+                def get_lambda(function, *args):
+                    return lambda: function(*args)
+
+                def add_list_selected(name):
+                    new_location = widgets[name +'_entry'].get()
+                    if new_location in widgets[name +'_entry'].options and new_location not in widgets[name].get(0, END):
+                        widgets[name].insert(END, new_location)
+                        guivars[name].append(new_location)
+                    show_settings()
+
+                def remove_list_selected(name):
+                    location = widgets[name].get(ACTIVE)
+                    widgets[name].delete(ACTIVE)
+                    guivars[name].remove(location)
+                    show_settings()
+
+                def add_list_all(name):
+                    widgets[name].delete(0, END)
+                    widgets[name].insert(0, *widgets[name +'_entry'].options)
+                    guivars[name] = list(widgets[name +'_entry'].options)
+                    show_settings()
+
+                def remove_list_all(name):
+                    widgets[name].delete(0, END)
+                    guivars[name] = []
+                    show_settings()
+
+                list_button_frame = Frame(search_frame)
+                list_add = Button(list_button_frame, text='Add', command=get_lambda(add_list_selected, info.name))
+                list_add.pack(side=LEFT, anchor=N, padx=3, pady=3)
+                list_remove = Button(list_button_frame, text='Remove', command=get_lambda(remove_list_selected, info.name))
+                list_remove.pack(side=LEFT, anchor=N, padx=3, pady=3)
+
+                list_add = Button(list_button_frame, text='All', command=get_lambda(add_list_all, info.name))
+                list_add.pack(side=LEFT, anchor=N, padx=3, pady=3)
+                list_remove = Button(list_button_frame, text='None', command=get_lambda(remove_list_all, info.name))
+                list_remove.pack(side=LEFT, anchor=N, padx=3, pady=3)
+
+                list_button_frame.pack(expand=False, side=TOP, padx=3, pady=3)
+
+                # pack the frame
+                search_frame.pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+
 
             if 'tooltip' in info.gui_params:
                 ToolTips.register(widgets[info.name], info.gui_params['tooltip'])
 
 
-    # pack the hierarchy
-
-    frames['logic'].pack( fill=BOTH, expand=True, anchor=N, side=RIGHT, pady=(5,1) )
-    frames['open'].pack(  fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
-    frames['world'].pack( fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1) )
+    # Pack the hierarchy
+    frames['shuffle'].pack(fill=BOTH,  expand=True, anchor=N, side=RIGHT,  pady=(5,1))
+    frames['open'].pack(   fill=BOTH,  expand=True, anchor=W, side=TOP,    pady=(5,1))
+    frames['world'].pack(  fill=BOTH,  expand=True, anchor=W, side=BOTTOM, pady=(5,1))
 
     # Logic tab
-    frames['rewards'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
-    frames['tricks'].pack( fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
+    frames['checks'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1))
+    frames['tricks'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1))
 
-    #Other Tab
-    frames['convenience'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
-    frames['other'].pack(      fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1) )
+    # Other Tab
+    frames['convenience'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1))
+    frames['other'].pack(      fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1))
 
-    #Aesthetics tab
-    frames['cosmetics'].pack(fill=BOTH, expand=True, anchor=W, side=TOP)
-    frames['aesthetic_tab_left'].pack( fill=BOTH, expand=True, anchor=W, side=LEFT)
-    frames['aesthetic_tab_right'].pack(fill=BOTH, expand=True, anchor=W, side=RIGHT)
+    # Cosmetics tab
+    frames['cosmetic'].pack(          fill=BOTH, expand=True, anchor=W, side=TOP)
+    frames['cosmetic_tab_left'].pack( fill=BOTH, expand=True, anchor=W, side=LEFT)
+    frames['cosmetic_tab_right'].pack(fill=BOTH, expand=True, anchor=W, side=RIGHT)
 
-    #Aesthetics tab - Left Side
-    frames['tunic_color'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
-    frames['lowhp'].pack(     fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
+    # Cosmetics tab - Left Side
+    frames['sfx'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))
 
-    #Aesthetics tab - Right Side
-    frames['navi_color'].pack( fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
-    frames['navihint'].pack(  fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1) )
-
+    # Cosmetics tab - Right Side
+    frames['colors'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))
 
     notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
 
@@ -475,7 +477,7 @@ def guiMain(settings=None):
             messagebox.showerror("Invalid Preset", "You must select an existing preset!")
             return
 
-        # get cosmetic settings
+        # Get cosmetic settings
         old_settings = guivars_to_settings(guivars)
         new_settings = {setting.name: old_settings.__dict__[setting.name] for setting in
                             filter(lambda s: not (s.shared and s.bitwidth > 0), setting_infos)}
@@ -557,7 +559,7 @@ def guiMain(settings=None):
     widgets['settings_presets'].pack(side=TOP, anchor=W, padx=5, pady=(1,1))
 
 
-    # create the generation menu
+    # Create the generation menu
     def update_generation_type(event=None):
         if generation_notebook.tab(generation_notebook.select())['text'] == 'Generate From Seed':
             notebook.tab(1, state="normal")
@@ -670,10 +672,10 @@ def guiMain(settings=None):
     guivars['checked_version'] = StringVar()
 
     if settings is not None:
-        # load values from commandline args
+        # Load values from commandline args
         settings_to_guivars(settings, guivars)
     else:
-        # try to load saved settings
+        # Try to load saved settings
         settingsFile = local_path('settings.sav')
         try:
             with open(settingsFile) as f:
@@ -713,7 +715,7 @@ def guiMain(settings=None):
     mainWindow.after(1000, gui_check_version)
     mainWindow.mainloop()
 
-    # save settings on close
+    # Save settings on close
     settings_file = local_path('settings.sav')
     with open(settings_file, 'w') as outfile:
         settings = guivars_to_settings(guivars)

@@ -557,7 +557,7 @@ typedef struct
   uint16_t        inf_table[30];            /* 0x0EF8 */
   char            unk_0D_[0x041E];          /* 0x0F34 */
   uint16_t        checksum;                 /* 0x1352 */
-  int32_t          file_index;              /* 0x1354 */
+  int32_t         file_index;               /* 0x1354 */
   char            unk_0F_[0x0004];          /* 0x1358 */
   int32_t         interface_flag;           /* 0x135C */
   uint32_t        scene_setup_index;        /* 0x1360 */
@@ -1107,6 +1107,7 @@ typedef struct
 #define z64_ctxt_addr                           0x801C84A0
 #define z64_link_addr                           0x801DAA30
 #define z64_state_ovl_tab_addr                  0x800F1340
+#define z64_event_state_1_addr                  0x800EF1B0
 
 /* rom addresses */
 #define z64_icon_item_static_vaddr              0x007BD000
@@ -1171,6 +1172,7 @@ typedef void (*z64_GiveItem_proc)         (z64_game_t *game, uint8_t item);
 #define z64_link                (*(z64_link_t*)       z64_link_addr)
 #define z64_state_ovl_tab       (*(z64_state_ovl_t(*)[6])                     \
                                                       z64_state_ovl_tab_addr)
+#define z64_event_state_1       (*(uint32_t*)         z64_event_state_1_addr)
 
 
 /* functions */
@@ -1195,5 +1197,7 @@ typedef void (*z64_GiveItem_proc)         (z64_game_t *game, uint8_t item);
 #define z64_DisplayTextbox      ((z64_DisplayTextbox_proc)                    \
                                                       z64_DisplayTextbox_addr)
 #define z64_GiveItem            ((z64_GiveItem_proc)  z64_GiveItem_addr)
+
+
 
 #endif

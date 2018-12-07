@@ -55,7 +55,10 @@ class Settings():
         output = ''
         for setting in filter(lambda s: s.shared, setting_infos):
             name = setting.name + ': ' + ' ' * (padding - len(setting.name))
-            val = str(self.__dict__[setting.name])
+            if setting.type == list:
+                val = ('\n' + (' ' * (padding + 2))).join(self.__dict__[setting.name])
+            else:
+                val = str(self.__dict__[setting.name])
             output += name + val + '\n'
         return output
 
@@ -225,7 +228,12 @@ class Settings():
                     else:
                         self.__dict__[info.name] = 1
                 if info.type == list:
-                    self.__dict__[info.name] = []
+                    if 'default' in info.args_params:
+                        self.__dict__[info.name] = list(info.args_params['default'])
+                    elif info.gui_params is not None and 'default' in info.gui_params:
+                        self.__dict__[info.name] = list(info.gui_params['default'])
+                    else:
+                        self.__dict__[info.name] = []
         self.settings_string = self.get_settings_string()
         if(self.seed is None):
             # https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python

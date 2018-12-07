@@ -232,8 +232,10 @@ class ToolTips(object):
 
     @classmethod
     def register(cls, widget, text):
-        text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
+        if isinstance(text, str):
+            text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
         widget.ui_tooltip_text = text
+        widget.ui_tooltip_text_prev = None
         tags = list(widget.bindtags())
         tags.append(cls.getcontroller(widget))
         widget.bindtags(tuple(tags))
@@ -257,7 +259,7 @@ class ToolTips(object):
                 cls.popup, fg=cls.fg, bg=cls.bg, bd=0, padx=2, justify=tk.LEFT, wrap=400
             )
             cls.label.pack()
-            cls.active = 0
+        cls.active = 1
         cls.xy = event.x_root + 16, event.y_root + 10
         cls.event_xy = event.x, event.y
         cls.after_id = widget.after(200, cls.display, widget)
@@ -266,24 +268,31 @@ class ToolTips(object):
     def motion(cls, event):
         cls.xy = event.x_root + 16, event.y_root + 10
         cls.event_xy = event.x, event.y
+        cls.display(event.widget)
 
     @classmethod
     def display(cls, widget):
-        if not cls.active:
-            # display balloon help window
+        # display balloon help window
+        if cls.active:
             text = widget.ui_tooltip_text
             if callable(text):
                 text = text(widget, cls.event_xy)
+                if not text:
+                    return
+            if widget.ui_tooltip_text_prev == text:
+                return
+                
+            widget.ui_tooltip_text_prev = text
             cls.label.config(text=text)
             cls.popup.deiconify()
             cls.popup.lift()
             cls.popup.geometry("+%d+%d" % cls.xy)
-            cls.active = 1
             cls.after_id = None
 
     @classmethod
     def leave(cls, event):
         widget = event.widget
+        widget.ui_tooltip_text_prev = None
         if cls.active:
             cls.popup.withdraw()
             cls.active = 0
@@ -333,7 +342,7 @@ class SearchBox(tk.ttk.Combobox):
         self.__variable.trace('w', self.__callback)
         self.bind("<<ComboboxSelected>>", self.__select_callback)
 
-        self.config(textvariable=self.__variable, values=self.options)
+        self.config(textvariable=self.__variable, values=list(self.options))
 
     def __callback(self, *dummy):
         search_key = self.__variable.get().lower()
@@ -342,5 +351,5 @@ class SearchBox(tk.ttk.Combobox):
         self.config(values=filter_options)
 
     def __select_callback(self, *dummy):
-        self.config(values=self.options)
+        self.config(values=list(self.options))
 

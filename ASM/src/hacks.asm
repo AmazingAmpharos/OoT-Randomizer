@@ -840,11 +840,20 @@ skip_GS_BGS_text:
 ; Rainbow Bridge
 ;==================================================================================================
 
-.org 0xE2B454
-    jal     rainbow_bridge
-    nop
-    nop
-    nop
+.org 0xE2B434
+	jal		rainbow_bridge
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+
 
 ;==================================================================================================
 ; Gossip Stone Hints

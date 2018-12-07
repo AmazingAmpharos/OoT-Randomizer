@@ -26,7 +26,7 @@
 .headersize (0x80400000 - 0x03480000)
 
 .org 0x80400000
-.area 0x8000
+.area 0x10000
 .include "coop_state.asm" ; This should always come first
 .include "config.asm"
 .include "init.asm"
@@ -49,6 +49,8 @@
 .importobj "../build/bundle.o"
 FONT_TEXTURE:
 .incbin("../resources/font.bin")
+DPAD_TEXTURE:
+.incbin("../resources/dpad.bin")
 .endarea
 
 .close

@@ -158,6 +158,101 @@ def parse_color(s, color_choices):
     else:
         raise argparse.ArgumentTypeError('Invalid color specified')
 
+def logic_tricks_entry_tooltip(widget, pos):
+    val = widget.get()
+    if val in logic_tricks:
+        text = logic_tricks[val]['tooltip']
+        text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
+        return text
+    else:
+        return None
+
+def logic_tricks_list_tooltip(widget, pos):
+    index = widget.index("@%s,%s" % (pos))
+    val = widget.get(index)
+    if val in logic_tricks:
+        text = logic_tricks[val]['tooltip']
+        text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
+        return text
+    else:
+        return None
+
+
+
+logic_tricks = {
+    'Various Advanced Tricks': {
+        'name'    : 'logic_tricks',
+        'tooltip' : '''\
+                    Enables a large number of minor
+                    tricks that do not require glitches.
+                    '''},
+    'Man on Roof without Hookshot': {
+        'name'    : 'logic_man_on_roof',
+        'tooltip' : '''\
+                    Can be reached by side-hopping off
+                    the watchtower.
+                    '''},
+    'Child Deadhand without Kokiri Sword': {
+        'name'    : 'logic_child_deadhand',
+        'tooltip' : '''\
+                    Requires 9 sticks or 5 jump slashes.
+                    '''},
+    'Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots': {
+        'name'    : 'logic_dc_jump',
+        'tooltip' : '''\
+                    Jump is adult only.
+                    '''},
+    'Windmill PoH as Adult with Nothing': {
+        'name'    : 'logic_windmill_poh',
+        'tooltip' : '''\
+                    Can jump up to the spinning platform from
+                    below as adult.
+                    '''},
+    'Crater\'s Bean PoH with Hover Boots': {
+        'name'    : 'logic_crater_bean_poh_with_hovers',
+        'tooltip' : '''\
+                    Hover from the base of the bridge
+                    near Goron City and walk up the
+                    very steep slope.
+                    '''},
+    'Zora\'s Domain Entry with Cucco': {
+        'name'    : 'logic_zora_with_cucco',
+        'tooltip' : '''\
+                    Can fly behind the waterfall with
+                    a cucco as child.
+                    '''},
+    'Zora\'s Domain Entry with Hover Boots': {
+        'name'    : 'logic_zora_with_hovers',
+        'tooltip' : '''\
+                    Can hover behind the waterfall as adult.
+                    This is very difficult.
+                    '''},
+    'Fewer Tunic Requirements': {
+        'name'    : 'logic_fewer_tunic_requirements',
+        'tooltip' : '''\
+                    Allows the following possible without Tunics:
+                    - Enter Water Temple. The key below the center
+                    pillar still requires Zora Tunic.
+                    - Enter Fire Temple. Only the first floor is
+                    accessible, and not Volvagia.
+                    - Zora's Fountain Bottom Freestanding PoH.
+                    Might not have enough health to resurface.
+                    - Gerudo Training Grounds Underwater
+                    Silver Rupee Chest. May need to make multiple
+                    trips.
+                    '''},
+    'Morpha with Gold Scale': {
+        'name'    : 'logic_morpha_with_scale',
+        'tooltip' : '''\
+                    Allows entering Water Temple and beating
+                    Morpha with Gold Scale instead of Iron Boots.
+                    Only applicable for keysanity and keysy due
+                    to the logic always seeing every chest in
+                    Water Temple that could contain the Boss Key
+                    as requiring Iron Boots.
+                    '''},
+}
+
 
 # a list of the possible settings
 setting_infos = [
@@ -341,6 +436,7 @@ setting_infos = [
             default        = 'medallions',
             choices        = {
                 'dungeons':   'All Dungeons',
+				'stones':	  'All Spiritual Stones',
                 'medallions': 'All Medallions',
                 'vanilla':    'Vanilla Requirements',
                 'open':       'Always Open',
@@ -504,12 +600,12 @@ setting_infos = [
     Checkbutton(
             name           = 'no_escape_sequence',
             args_help      = '''\
-                             The tower collapse escape sequence between Ganondorf and Ganon will be skipped.
+                             The tower escape sequence between Ganondorf and Ganon will be skipped.
                              ''',
-            gui_text       = 'Skip Tower Collapse Escape Sequence',
+            gui_text       = 'Skip Tower Escape Sequence',
             gui_group      = 'convenience',
             gui_tooltip    = '''\
-                             The tower collapse escape sequence between
+                             The tower escape sequence between
                              Ganondorf and Ganon will be skipped.
                              ''',
             shared         = True,
@@ -519,7 +615,7 @@ setting_infos = [
             args_help      = '''\
                              The crawlspace into Hyrule Castle will take you straight to Zelda.
                              ''',
-            gui_text       = 'Skip Interior Castle Guard Stealth Sequence',
+            gui_text       = 'Skip Child Stealth',
             gui_group      = 'convenience',
             gui_tooltip    = '''\
                              The crawlspace into Hyrule Castle goes
@@ -555,6 +651,76 @@ setting_infos = [
             shared         = True,
             ),
     Checkbutton(
+            name           = 'logic_no_night_tokens_without_suns_song',
+            args_help      = '''\
+                             You will not be expected to collect nighttime-only skulltulas
+                             unless you have Sun's Song
+                             ''',
+            gui_text       = 'Nighttime Skulltulas Expect Sun\'s Song',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             GS Tokens that can only be obtained
+                             during the night expect you to have Sun's
+                             Song to collect them. This prevents needing
+                             to wait until night for some locations.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'free_scarecrow',
+            args_help      = '''\
+                             Scarecrow song is not needed to summon Pierre.
+                             ''',
+            gui_text       = 'Start with Scarecrow\'s Song',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Pulling out the Ocarina near
+                             Pierre will summon him without
+                             learning the song.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'start_with_fast_travel',
+            args_help      = '''\
+                             Start with two warp songs and Farore's Wind.
+                             ''',
+            gui_text       = 'Start with Fast Travel',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Start the game with knowledge of the Prelude of Light
+                             and Serenade of Water songs. Also start the game with
+                             Farore's Wind in inventory.
+                             ''',
+            shared         = True,
+            ),            
+    Checkbutton(
+            name           = 'start_with_rupees',
+            args_help      = '''\
+                             Start with 99 rupees.
+                             ''',
+            gui_text       = 'Start with Max Rupees',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Start the game with 99 rupees.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'start_with_deku_equipment',
+            args_help      = '''\
+                             Start with full Deku sticks, nuts, and a shield.
+                             ''',
+            gui_text       = 'Start with Deku Equipment',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Start the game with 10 Deku sticks and 20 Deku nuts.
+                             Additionally, start the game with a Deku shield equipped,
+                             unless playing with the Shopsanity setting.
+                             ''',
+            shared         = True,
+            ),
+    Checkbutton(
             name           = 'big_poe_count_random',
             args_help      = '''\
                              Sets a random number of Big Poes to receive an item from the buyer.
@@ -584,86 +750,15 @@ setting_infos = [
             shared         = True,
             ),
     Checkbutton(
-            name           = 'free_scarecrow',
-            args_help      = '''\
-                             Scarecrow song is not needed to summon Pierre.
-                             ''',
-            gui_text       = 'Free Scarecrow\'s Song',
-            gui_group      = 'convenience',
-            gui_tooltip    = '''\
-                             Pulling out the Ocarina near
-                             Pierre will summon him without
-                             learning the song.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'start_with_rupees',
-            args_help      = '''\
-                             Start with 99 rupees.
-                             ''',
-            gui_text       = 'Start with Max Rupees',
-            gui_group      = 'convenience',
-            gui_tooltip    = '''\
-                             Start the game with 99 rupees.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'start_with_deku_equipment',
-            args_help      = '''\
-                             Start with full Deku sticks, nuts, and a shield.
-                             ''',
-            gui_text       = 'Start with Deku Equipment',
-            gui_group      = 'convenience',
-            gui_tooltip    = '''\
-                             Start the game with 10 Deku sticks and 20 Deku nuts.
-                             Additionally, start the game with a Deku shield equipped,
-                             unless playing with the Shopsanity setting.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'start_with_fast_travel',
-            args_help      = '''\
-                             Start with two warp songs and Farore's Wind.
-                             ''',
-            gui_text       = 'Start with Fast Travel',
-            gui_group      = 'convenience',
-            gui_tooltip    = '''\
-                             Start the game with knowledge of the Prelude of Light
-                             and Serenade of Water songs. Also start the game with
-                             Farore's Wind in inventory.
-                             ''',
-            shared         = True,
-            ),            
-    Checkbutton(
             name           = 'shuffle_kokiri_sword',
             args_help      = '''\
                              Shuffles the Kokiri Sword into the pool.
                              ''',
             gui_text       = 'Shuffle Kokiri Sword',
-            gui_group      = 'logic',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              Disabling this will make the Kokiri Sword
                              always available at the start.
-                             ''',
-            default        = True,
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'shuffle_weird_egg',
-            args_help      = '''\
-                             Shuffles the Weird Egg item from Malon into the pool.
-                             This means that you need to find the egg before going Zelda.
-                             ''',
-            gui_text       = 'Shuffle Weird Egg',
-            gui_group      = 'logic',
-            gui_tooltip    = '''\
-                             You need to find the egg before going Zelda.
-                             This means the Weird Egg locks the rewards from
-                             Impa, Saria, Malon, and Talon as well as the
-                             Happy Mask sidequest.
                              ''',
             default        = True,
             shared         = True,
@@ -675,7 +770,7 @@ setting_infos = [
                              This means that you need to find an ocarina before playing songs.
                              ''',
             gui_text       = 'Shuffle Ocarinas',
-            gui_group      = 'logic',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              The Fairy Ocarina and Ocarina of Time are
                              randomized. One will be required before
@@ -685,20 +780,18 @@ setting_infos = [
             shared         = True,
             ),
     Checkbutton(
-            name           = 'shuffle_song_items',
+            name           = 'shuffle_weird_egg',
             args_help      = '''\
-                             Shuffles the songs with with rest of the item pool so that
-                             songs can appear at other locations and items can appear at
-                             the song locations.
+                             Shuffles the Weird Egg item from Malon into the pool.
+                             This means that you need to find the egg before going Zelda.
                              ''',
-            gui_text       = 'Shuffle Songs with Items',
-            gui_group      = 'logic',
+            gui_text       = 'Shuffle Weird Egg',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             Songs can appear anywhere as normal items.
-        
-                             If this option is not set, songs will still
-                             be shuffled but will be limited to the
-                             locations that has songs in the original game.
+                             You need to find the egg before going Zelda.
+                             This means the Weird Egg locks the rewards from
+                             Impa, Saria, Malon, and Talon as well as the
+                             Happy Mask sidequest.
                              ''',
             default        = True,
             shared         = True,
@@ -712,11 +805,30 @@ setting_infos = [
                              have been rescued. This option does nothing if "gerudo_fortress" is "open".
                              ''',
             gui_text       = 'Shuffle Gerudo Card',
-            gui_group      = 'logic',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              Gerudo Card is required to enter
                              Gerudo Training Grounds.
                              ''',
+            shared         = True,
+            ),
+    Checkbutton(
+            name           = 'shuffle_song_items',
+            args_help      = '''\
+                             Shuffles the songs with with rest of the item pool so that
+                             songs can appear at other locations and items can appear at
+                             the song locations.
+                             ''',
+            gui_text       = 'Shuffle Songs with Items',
+            gui_group      = 'shuffle',
+            gui_tooltip    = '''\
+                             Songs can appear anywhere as normal items.
+        
+                             If this option is not set, songs will still
+                             be shuffled but will be limited to the
+                             locations that has songs in the original game.
+                             ''',
+            default        = True,
             shared         = True,
             ),
     Combobox(
@@ -740,7 +852,7 @@ setting_infos = [
                                          price will also be random between 10-99 rupees.
                              ''',
             gui_text       = 'Scrub Shuffle',
-            gui_group      = 'logic',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              'Off': Only the 3 Scrubs that give one-time
                              items in the vanilla game (PoH, Deku Nut
@@ -787,7 +899,7 @@ setting_infos = [
                                          will have a random number of non-shop items
                              ''',
             gui_text       = 'Shopsanity',
-            gui_group      = 'logic',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              Shop contents are randomized.
                              (X Items): Shops have X random non-shop (Special
@@ -813,6 +925,38 @@ setting_infos = [
             shared         = True,
             ),
     Combobox(
+            name           = 'tokensanity',
+            default        = 'off',
+            choices        = {
+                'off':      'Off',
+                'dungeons': 'Dungeons Only',
+                'all':      'All Tokens',
+                },
+            args_help      = '''\
+                             Gold Skulltula Tokens will be shuffled into the pool,
+                             and Gold Skulltula locations can have any item.
+                             off:        Don't use this feature
+                             dungeons:   Only dungeon Skulltulas will be shuffled
+                             all:        All Gold Skulltulas will be shuffled
+                             ''',
+            gui_text       = 'Tokensanity',
+            gui_group      = 'shuffle',
+            gui_tooltip    = '''\
+                             Token reward from Gold Skulltulas are
+                             shuffled into the pool.
+        
+                             'Dungeons Only': This only shuffles
+                             the GS locations that are within
+                             dungeons, increasing the value of
+                             most dungeons and making internal
+                             dungeon exploration more diverse.
+        
+                             'All Tokens': Effectively adds 100
+                             new locations for items to appear.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
             name           = 'shuffle_mapcompass',
             default        = 'dungeon',
             choices        = {
@@ -829,7 +973,7 @@ setting_infos = [
                              keysanity:   Maps and Compasses can appear anywhere.
                              ''',
             gui_text       = 'Shuffle Dungeon Items',
-            gui_group      = 'logic',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              'Remove': Maps and Compasses are removed.
                              This will add a small amount of money and
@@ -866,7 +1010,7 @@ setting_infos = [
                              dungeon:     Small Keys are put in their dungeon.
                              keysanity:   Small Keys can appear anywhere.
                              ''',
-            gui_group      = 'logic',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              'Remove': Small Keys are removed. All locked
                              doors in dungeons will be unlocked. An easier
@@ -902,7 +1046,7 @@ setting_infos = [
                              dungeon:     Boss Keys are put in their dungeon.
                              keysanity:   Boss Keys can appear anywhere.
                              ''',
-            gui_group      = 'logic',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              'Remove': Boss Keys are removed. All locked
                              doors in dungeons will be unlocked. An easier
@@ -933,7 +1077,7 @@ setting_infos = [
                              the information will be unavailable.
                              ''',
             gui_text       = 'Maps and Compasses Give Information',
-            gui_group      = 'logic',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
                            Gives the Map and Compass extra functionality.
                            Map will tell if a dungeon is vanilla or Master Quest.
@@ -956,45 +1100,13 @@ setting_infos = [
                              The Boss Key door in Ganon's Tower will start unlocked.
                              ''',
             gui_text       = 'Remove Ganon\'s Boss Door Lock',
-            gui_group      = 'logic',
+            gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              The Boss Key door in Ganon's Tower
                              will start unlocked. This is intended
                              to be used with reduced trial
                              requirements to make it more likely
                              that skipped trials can be avoided.
-                             ''',
-            shared         = True,
-            ),
-    Combobox(
-            name           = 'tokensanity',
-            default        = 'off',
-            choices        = {
-                'off':      'Off',
-                'dungeons': 'Dungeons Only',
-                'all':      'All Tokens',
-                },
-            args_help      = '''\
-                             Gold Skulltula Tokens will be shuffled into the pool,
-                             and Gold Skulltula locations can have any item.
-                             off:        Don't use this feature
-                             dungeons:   Only dungeon Skulltulas will be shuffled
-                             all:        All Gold Skulltulas will be shuffled
-                             ''',
-            gui_text       = 'Tokensanity',
-            gui_group      = 'logic',
-            gui_tooltip    = '''\
-                             Token reward from Gold Skulltulas are
-                             shuffled into the pool.
-        
-                             'Dungeons Only': This only shuffles
-                             the GS locations that are within
-                             dungeons, increasing the value of
-                             most dungeons and making internal
-                             dungeon exploration more diverse.
-        
-                             'All Tokens': Effectively adds 100
-                             new locations for items to appear.
                              ''',
             shared         = True,
             ),
@@ -1041,22 +1153,44 @@ setting_infos = [
             gui_dependency = lambda guivar: not guivar['mq_dungeons_random'].get(),
             shared         = True,
             ),
-    Checkbutton(
-            name           = 'logic_no_night_tokens_without_suns_song',
-            args_help      = '''\
-                             You will not be expected to collect nighttime-only skulltulas
-                             unless you have Sun's Song
-                             ''',
-            gui_text       = 'No Nighttime Skulltulas without Sun\'s Song',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             GS Tokens that can only be obtained
-                             during the night expect you to have Sun's
-                             Song to collect them. This prevents needing
-                             to wait until night for some locations.
-                             ''',
-            shared         = True,
-            ),
+    Setting_Info('disabled_locations', list, math.ceil(math.log(len(location_table) + 2, 2)), True,
+        {
+            'default': [],
+            'help': '''\
+                    Choose a list of locations that will never be required to beat the game.
+                    '''
+        },
+        {
+            'text': 'Exclude Locations',
+            'widget': 'SearchBox',
+            'group': 'checks',
+            'options': list(location_table.keys()),
+            'tooltip':'''
+                    Prevent locations from being required. Major 
+                    items can still appear there, however they 
+                    will never be required to beat the game.
+
+                    Most dungeon locations have a MQ alternative.
+                    If the location does not exist because of MQ
+                    then it will be ignored. So make sure to
+                    disable both versions if that is the intent.
+                '''
+        }),
+    Setting_Info('allowed_tricks', list, math.ceil(math.log(len(logic_tricks) + 2, 2)), True,
+        {
+            'default': [],
+            'help': '''\
+                    Choose a list of allowed logic tricks logic may expect to beat the game.
+                    '''
+        },
+        {
+            'text': 'Enable Tricks',
+            'widget': 'SearchBox',
+            'group': 'tricks',
+            'options': {gui_text: val['name'] for gui_text, val in logic_tricks.items()},
+            'entry_tooltip': logic_tricks_entry_tooltip,
+            'list_tooltip': logic_tricks_list_tooltip,
+        }),
     Combobox(
             name           = 'logic_earliest_adult_trade',
             default        = 'pocket_egg',
@@ -1086,22 +1220,12 @@ setting_infos = [
                              'claim_check'
                              ''',
             gui_text       = 'Adult Trade Sequence',
-            gui_group      = 'rewards',
+            gui_group      = 'checks',
             gui_tooltip    = '''\
                              Select the earliest item that can appear in the adult trade sequence.
                              ''',
             shared         = True,
-            ),
-    Setting_Info('disabled_locations', list, math.ceil(math.log(len(location_table) + 2, 2)), True,
-        {
-            'default': [],
-            'help': '''\
-                    Choose a list of locations that will never be required to beat the game.
-                    '''
-        },
-        {
-            'options': list(location_table.keys()),
-        }),      
+            ),    
     Combobox(
             name           = 'logic_latest_adult_trade',
             default        = 'claim_check',
@@ -1130,160 +1254,10 @@ setting_infos = [
                              'eyedrops'
                              'claim_check'
                              ''',
-            gui_group      = 'rewards',
+            gui_group      = 'checks',
             gui_tooltip    = '''\
                              Select the latest item that can appear in the adult trade sequence.
                              ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_tricks',
-            args_help      = '''\
-                             Enable various advanced tricks that do not require glitches.
-                             ''',
-            gui_text       = 'Various Advanced Tricks',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Enables a large number of minor
-                             tricks that do not require glitches.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_man_on_roof',
-            args_help      = '''\
-                             The man on the roof will not require the Hookshot in logic.
-                             ''',
-            gui_text       = 'Man on Roof without Hookshot',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Can be reached by side-hopping off
-                             the watchtower.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_child_deadhand',
-            args_help      = '''\
-                             Deadhand in the Bottom of the Well will not require the Kokiri sword in logic.
-                             ''',
-            gui_text       = 'Child Deadhand without Kokiri Sword',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Requires 9 sticks or 5 jump slashes.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_dc_jump',
-            args_help      = '''\
-                             Jumping towards the Bomb Bag chest in Dodongo's Cavern as an adult
-                             will not require Hover Boots in logic.
-                             ''',
-            gui_text       = 'Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Jump is adult only.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_windmill_poh',
-            args_help      = '''\
-                    Getting the Piece of Heart in the windmill as an adult will require nothing in logic.
-                             ''',
-            gui_text       = 'Windmill PoH as Adult with Nothing',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Can jump up to the spinning platform from
-                             below as adult.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_crater_bean_poh_with_hovers',
-            args_help      = '''\
-                             The Piece of Heart in Death Mountain Crater that normally requires the bean to
-                             reach will optionally require the Hover Boots in logic.
-                             ''',
-            gui_text       = 'Crater\'s Bean PoH with Hover Boots',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Hover from the base of the bridge
-                             near Goron City and walk up the
-                             very steep slope.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_zora_with_cucco',
-            args_help      = '''\
-                             Zora's Domain can be entered with a Cucco as child in logic.
-                             ''',
-            gui_text       = 'Zora\'s Domain Entry with Cucco',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Can fly behind the waterfall with
-                             a cucco as child.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_zora_with_hovers',
-            args_help      = '''\
-                             Zora's Domain can be entered with Hover Boots as Adult in logic.
-                             ''',
-            gui_text       = 'Zora\'s Domain Entry with Hover Boots',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Can hover behind the waterfall as adult.
-                             This is very difficult.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_fewer_tunic_requirements',
-            args_help      = '''\
-                             Allows the following possible without Goron or Zora Tunic:
-                             Enter Water Temple
-                             Enter Fire Temple
-                             Zoras Fountain Bottom Freestanding PoH
-                             Gerudo Training Grounds Underwater Silver Rupee Chest
-                             ''',
-            gui_text       = 'Fewer Tunic Requirements',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Allows the following possible without Tunics:
-                             - Enter Water Temple. The key below the center
-                             pillar still requires Zora Tunic.
-                             - Enter Fire Temple. Only the first floor is
-                             accessible, and not Volvagia.
-                             - Zora's Fountain Bottom Freestanding PoH.
-                             Might not have enough health to resurface.
-                             - Gerudo Training Grounds Underwater
-                             Silver Rupee Chest. May need to make multiple
-                             trips.
-                             ''',
-            shared         = True,
-            ),
-    Checkbutton(
-            name           = 'logic_morpha_with_scale',
-            args_help      = '''\
-                             Allows entering Water Temple and beating
-                             Morpha with Gold Scale instead of Iron Boots.
-                             Only applicable for keysanity and keysy.
-                             ''',
-            gui_text       = 'Morpha with Gold Scale',
-            gui_group      = 'tricks',
-            gui_tooltip    = '''\
-                             Allows entering Water Temple and beating
-                             Morpha with Gold Scale instead of Iron Boots.
-                             Only applicable for keysanity and keysy due
-                             to the logic always seeing every chest in
-                             Water Temple that could contain the Boss Key
-                             as requiring Iron Boots.
-                             ''',
-            default        = False,
             shared         = True,
             ),
     Combobox(
@@ -1471,7 +1445,7 @@ setting_infos = [
                              minimal:        Double defense, double magic, Nayru's Love, and all health upgrades are removed.
                                              No ammo expansions are available and you can only find one Bombchu pack.
                              ''',
-            gui_text       = 'Item Pool Value',
+            gui_text       = 'Item Pool',
             gui_group      = 'other',
             gui_tooltip    = '''\
                              Changes the amount of bonus items that
@@ -1526,7 +1500,7 @@ setting_infos = [
                              Choose what the default Z-targeting is.
                              ''',
             gui_text       = 'Default Targeting Option',
-            gui_group      = 'cosmetics',
+            gui_group      = 'cosmetic',
             ),
     Combobox(
             name           = 'background_music',
@@ -1543,7 +1517,7 @@ setting_infos = [
                              random:      Areas play random background music
                              ''',
             gui_text       = 'Background Music',
-            gui_group      = 'cosmetics',
+            gui_group      = 'cosmetic',
             gui_tooltip    = '''\
                               'No Music': No background music.
                               is played.
@@ -1565,8 +1539,8 @@ setting_infos = [
                     '''
         },
         {
-            'text': 'Kokiri Tunic Color',
-            'group': 'tunic_color',
+            'text': 'Kokiri Tunic',
+            'group': 'colors',
             'widget': 'Combobox',
             'default': 'Kokiri Green',
             'options': get_tunic_color_options(),
@@ -1589,8 +1563,8 @@ setting_infos = [
                     '''
         },
         {
-            'text': 'Goron Tunic Color',
-            'group': 'tunic_color',
+            'text': 'Goron Tunic',
+            'group': 'colors',
             'widget': 'Combobox',
             'default': 'Goron Red',
             'options': get_tunic_color_options(),
@@ -1613,8 +1587,8 @@ setting_infos = [
                     '''
         },
         {
-            'text': 'Zora Tunic Color',
-            'group': 'tunic_color',
+            'text': 'Zora Tunic',
+            'group': 'colors',
             'widget': 'Combobox',
             'default': 'Zora Blue',
             'options': get_tunic_color_options(),
@@ -1638,7 +1612,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Idle',
-            'group': 'navi_color',
+            'group': 'colors',
             'widget': 'Combobox',
             'default': 'White',
             'options': get_navi_color_options(),
@@ -1662,7 +1636,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Targeting Enemy',
-            'group': 'navi_color',
+            'group': 'colors',
             'widget': 'Combobox',
             'default': 'Yellow',
             'options': get_navi_color_options(),
@@ -1686,7 +1660,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Targeting NPC',
-            'group': 'navi_color',
+            'group': 'colors',
             'widget': 'Combobox',
             'default': 'Light Blue',
             'options': get_navi_color_options(),
@@ -1710,7 +1684,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Targeting Prop',
-            'group': 'navi_color',
+            'group': 'colors',
             'widget': 'Combobox',
             'default': 'Green',
             'options': get_navi_color_options(),
@@ -1733,7 +1707,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Hint',
-            'group': 'navihint',
+            'group': 'sfx',
             'widget': 'Combobox',
             'default': 'Default',
             'options': get_NaviSFX_options(),
@@ -1750,7 +1724,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Enemy Target',
-            'group': 'navihint',
+            'group': 'sfx',
             'widget': 'Combobox',
             'default': 'Default',
             'options': get_NaviSFX_options(),
@@ -1766,8 +1740,8 @@ setting_infos = [
                     '''
         },
         {
-            'text': 'Low Health SFX',
-            'group': 'lowhp',
+            'text': 'Low Health',
+            'group': 'sfx',
             'widget': 'Combobox',
             'default': 'Default',
             'options': get_HealthSFX_options(),
@@ -1777,4 +1751,27 @@ setting_infos = [
                       'Default': Beep. Beep. Beep.
                       '''
         }),
+    Combobox(
+            name           = 'sfx_ocarina',
+            default        = 'ocarina',
+            choices        = {
+                'ocarina':     'Default',
+                'random':      'Random Choice',
+                'flute':       'Flute',
+                'harp':        'Harp',
+                'whistle':     'Whistle',
+                'malon':       'Malon',
+                'grind_organ': 'Grind Organ',
+                },
+            args_help      = '''\
+                             Change the sound of the ocarina.
+
+                             default: ocarina
+                             ''',
+            gui_text       = 'Ocarina',
+            gui_group      = 'sfx',
+            gui_tooltip    = '''\
+                             Change the sound of the ocarina.
+                             ''',
+            ),
 ]

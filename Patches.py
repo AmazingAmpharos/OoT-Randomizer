@@ -924,6 +924,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         rom.write_int32(symbol, 1)
     elif world.bridge == 'dungeons':
         rom.write_int32(symbol, 2)
+    elif world.bridge == 'stones':
+        rom.write_int32(symbol, 3)
+    elif world.bridge == 'vanilla':
+        rom.write_int32(symbol, 4)
 
     if world.open_forest:
         write_bits_to_save(0xED5, 0x10) # "Showed Mido Sword & Shield"
@@ -1925,6 +1929,23 @@ def patch_cosmetics(settings, rom):
         if thisSFX != 'Default':
             for address in addresses:
                 rom.write_int16(address, SFX_table[thisSFX])
+
+    # Player Instrument
+    instruments = {
+           #'none':            0x00,
+            'ocarina':         0x01,
+            'malon':           0x02,
+            'whistle':         0x03,
+            'harp':            0x04,
+            'grind_organ':     0x05,
+            'flute':           0x06,
+           #'another_ocarina': 0x07,
+            }
+    if settings.sfx_ocarina is not 'random':
+        choice = settings.sfx_ocarina
+    else:
+        choice = random.choice(list(instruments.keys()))
+    rom.write_byte(0x00B53C7B, instruments[choice])
 
     return rom
 

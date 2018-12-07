@@ -1,13 +1,13 @@
 ; Update CRC
 .org 0x10
-    .word 0x107B6D3A, 0xB2D06FDC
+    .word 0x0107B6D3, 0x14301B2F
 
 ; Add dmatable entries for new code
 ; Remove the unused files at the bottom the DMA Table
 ;   - this isn't strictly necessary, but adds flexibility for the future
 .org 0xD1B0
 .area 0x100, 0
-    .word 0x03480000, 0x03488000, 0x03480000, 0
+    .word 0x03480000, 0x03490000, 0x03480000, 0
 .endarea
 
 ; Load new code from ROM
@@ -28,7 +28,7 @@
     lui     a0, 0x8040
     lui     a1, 0x0348
     jal     0x80000DF0
-    ori     a2, r0, 0x8000
+    lui     a2, 0x0001
 
     jal     init
     nop
