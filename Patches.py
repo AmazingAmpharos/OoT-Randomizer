@@ -3,7 +3,6 @@ import random
 from World import World
 from Rom import LocalRom
 from Spoiler import Spoiler
-
 from Hints import writeGossipStoneHints, buildBossRewardHints, \
         buildGanonText, getSimpleHintNoPrefix
 from Utils import data_path
@@ -13,6 +12,7 @@ from Messages import read_messages, update_message_by_id, read_shop_items, \
         message_patch_for_dungeon_items, repack_messages, shuffle_messages
 from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
+import Sounds as sfx
 
 
 tunic_colors = {
@@ -73,86 +73,6 @@ NaviColors = {
     "Midna":             [0x19, 0x24, 0x26, 0xFF, 0xD2, 0x83, 0x30, 0x00],
     "Phantom Zelda":     [0x97, 0x7A, 0x6C, 0xFF, 0x6F, 0x46, 0x67, 0x00],
 }
-
-
-NaviSFX = {
-    'None'          : 0x0000,
-    'Cluck'         : 0x2812,
-    'Rupee'         : 0x4803,
-    'Softer Beep'   : 0x4804,
-    'Recovery Heart': 0x480B,
-    'Timer'         : 0x481A,
-    'Low Health'    : 0x481B,
-    'Notification'  : 0x4820,
-    'Tambourine'    : 0x4842,
-    'Carrot Refill' : 0x4845,
-    'Zelda - Gasp'  : 0x6879,
-    'Mweep!'        : 0x687A,
-    'Ice Break'     : 0x0875,
-    'Explosion'     : 0x180E,
-    'Crate'         : 0x2839,
-    'Great Fairy'   : 0x6858,
-    'Moo'           : 0x28DF,
-    'Bark'          : 0x28D8,
-    'Ribbit'        : 0x28B1,
-    'Broken Pot'    : 0x2887,
-    'Cockadoodledoo': 0x2813,
-    'Epona'         : 0x2805,
-    'Gold Skulltula': 0x39DA,
-    'Redead'        : 0x38E5,
-    'Poe'           : 0x38EC,
-    'Ruto'          : 0x6863,
-    'Howl'          : 0x28AE,
-    'Business Scrub': 0x3882,
-    'Guay'          : 0x38B6,
-    'H`lo!'         : 0x6844
-}
-
-
-HealthSFX = {
-    'None'          : 0x0000,
-    'Cluck'         : 0x2812,
-    'Softer Beep'   : 0x4804,
-    'Recovery Heart': 0x480B,
-    'Timer'         : 0x481A,
-    'Notification'  : 0x4820,
-    'Tambourine'    : 0x4842,
-    'Carrot Refill' : 0x4845,
-    'Navi - Random' : 0x6843,
-    'Navi - Hey!'   : 0x685F,
-    'Zelda - Gasp'  : 0x6879,
-    'Mweep!'        : 0x687A,
-    'Iron Boots'    : 0x080D,
-    'Hammer'        : 0x180A,
-    'Sword Bounce'  : 0x181A,
-    'Bow'           : 0x1830,
-    'Gallop'        : 0x2804,
-    'Drawbridge'    : 0x280E,
-    'Switch'        : 0x2815,
-    'Bomb Bounce'   : 0x282F,
-    'Bark'          : 0x28D8,
-    'Ribbit'        : 0x28B1,
-    'Broken Pot'    : 0x2887,
-    'Business Scrub': 0x3882,
-    'Guay'          : 0x38B6,
-    'Bongo Bongo'   : 0x3950
-}
-
-
-def get_NaviSFX():
-    return list(NaviSFX.keys())
-
-
-def get_NaviSFX_options():
-    return ["Default", "Random Choice"] + get_NaviSFX()
-
-
-def get_HealthSFX():
-    return list(HealthSFX.keys())
-
-
-def get_HealthSFX_options():
-    return ["Default", "Random Choice"] + get_HealthSFX()
 
 
 def get_tunic_colors():
@@ -1930,18 +1850,20 @@ def patch_cosmetics(settings, rom):
             rom.write_bytes(address, color)
 
     # Configurable Sound Effects
-    sfx_addresses = [
-        (settings.navisfxoverworld, [0xAE7EF2, 0xC26C7E], NaviSFX), # Navi Overworld Hint (0x685F)
-        (settings.navisfxenemytarget, [0xAE7EC6], NaviSFX),         # Navi Enemy Target Hint (0x6843)
-        (settings.healthSFX, [0xADBA1A], HealthSFX)                 # Low Health Beep (0x481B)
-    ]
+    sfx_config = [
+          (settings.sfx_navi_overworld, sfx.SoundHooks.NAVI_OVERWORLD),
+          (settings.sfx_navi_enemy,     sfx.SoundHooks.NAVI_ENEMY),
+          (settings.sfx_low_hp,         sfx.SoundHooks.HP_LOW),
+          ]
+    sound_dict = sfx.get_patch_dict()
 
-    for thisSFX, addresses, SFX_table in sfx_addresses:
-        if thisSFX == 'Random Choice':
-            thisSFX = random.choice(list(SFX_table.keys()))
-        if thisSFX != 'Default':
-            for address in addresses:
-                rom.write_int16(address, SFX_table[thisSFX])
+    for selection, hook in sfx_config:
+        if selection != 'default':
+            if selection == 'random':
+                selection = random.choice(sfx.get_hook_pool(hook)).value.keyword
+            sound_id  = sound_dict[selection]
+            for loc in hook.value.locations:
+                rom.write_int16(loc, sound_id)
 
     # Player Instrument
     instruments = {

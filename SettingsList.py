@@ -1,8 +1,9 @@
 import argparse
 import re
 import math
-from Patches import get_tunic_color_options, get_navi_color_options, get_NaviSFX_options, get_HealthSFX_options
+from Patches      import get_tunic_color_options, get_navi_color_options
 from LocationList import location_table
+import Sounds as sfx
 
 # holds the info for a single setting
 class Setting_Info():
@@ -1695,62 +1696,50 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
-    Setting_Info('navisfxoverworld', str, 0, False,
-        {
-            'default': 'Default',
-            'help': '''\
-                    Select the sound effect that plays when Navi has a hint. (default: %(default)s)
-                    Sound:         Replace the sound effect with the chosen sound.
-                    Random Choice: Replace the sound effect with a random sound from this list.
-                    None:          Eliminate Navi hint sounds.
-                    '''
-        },
-        {
-            'text': 'Navi Hint',
-            'group': 'sfx',
-            'widget': 'Combobox',
-            'default': 'Default',
-            'options': get_NaviSFX_options(),
-        }),
-        Setting_Info('navisfxenemytarget', str, 0, False,
-        {
-            'default': 'Default',
-            'help': '''\
-                    Select the sound effect that plays when targeting an enemy. (default: %(default)s)
-                    Sound:         Replace the sound effect with the chosen sound.
-                    Random Choice: Replace the sound effect with a random sound from this list.
-                    None:          Eliminate Navi hint sounds.
-                    '''
-        },
-        {
-            'text': 'Navi Enemy Target',
-            'group': 'sfx',
-            'widget': 'Combobox',
-            'default': 'Default',
-            'options': get_NaviSFX_options(),
-        }),
-    Setting_Info('healthSFX', str, 0, False,
-        {
-            'default': 'Default',
-            'help': '''\
-                    Select the sound effect that loops at low health. (default: %(default)s)
-                    Sound:         Replace the sound effect with the chosen sound.
-                    Random Choice: Replace the sound effect with a random sound from this list.
-                    None:          Eliminate heart beeps.
-                    '''
-        },
-        {
-            'text': 'Low Health',
-            'group': 'sfx',
-            'widget': 'Combobox',
-            'default': 'Default',
-            'options': get_HealthSFX_options(),
-            'tooltip':'''\
-                      'Random Choice': Choose a random
-                      sound from this list.
-                      'Default': Beep. Beep. Beep.
-                      '''
-        }),
+    Combobox(
+            name           = 'sfx_navi_overworld',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI_OVERWORLD),
+            args_help      = '''\
+                             Select the sound effect that plays when Navi has a hint. (default: %(default)s)
+                             Sound:         Replace the sound effect with the chosen sound.
+                             Random Choice: Replace the sound effect with a random sound from this list.
+                             None:          Eliminate Navi hint sounds.
+                             ''',
+            gui_text       = 'Navi - Hint',
+            gui_group      = 'sfx',
+            ),
+    Combobox(
+            name           = 'sfx_navi_enemy',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI_ENEMY),
+            args_help      = '''\
+                             Select the sound effect that plays when targeting an enemy. (default: %(default)s)
+                             Sound:         Replace the sound effect with the chosen sound.
+                             Random Choice: Replace the sound effect with a random sound from this list.
+                             None:          Eliminate Navi hint sounds.
+                             ''',
+            gui_text       = 'Navi - Enemy',
+            gui_group      = 'sfx',
+            ),
+    Combobox(
+            name           = 'sfx_low_hp',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.HP_LOW),
+            args_help      = '''\
+                             Select the sound effect that loops at low health. (default: %(default)s)
+                             Sound:         Replace the sound effect with the chosen sound.
+                             Random Choice: Replace the sound effect with a random sound from this list.
+                             None:          Eliminate heart beeps.
+                             ''',
+            gui_text       = 'Low HP',
+            gui_group      = 'sfx',
+            gui_tooltip    = '''\
+                             'Random Choice': Choose a random
+                             sound from this list.
+                             'Default': Beep. Beep. Beep.
+                             ''',
+            ),
     Combobox(
             name           = 'sfx_ocarina',
             default        = 'ocarina',
