@@ -378,11 +378,20 @@ def buildGossipHints(spoiler, world):
             if not skipped:
                 add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."), hint_dist['trial'][1])
 
+    hint_types = list(hint_types)
+    hint_prob  = list(hint_prob)
     while stoneIDs:
-        [hint_type] = random_choices(hint_types, weights=hint_prob)
+        try:
+            [hint_type] = random_choices(hint_types, weights=hint_prob)
+        except IndexError:
+            raise Exception('Not enough valid hints to fill gossip stone locations.')
 
         hint = hint_func[hint_type](spoiler, world, checkedLocations)
-        if hint != None:
+        if hint == None:
+            index = hint_types.index(hint_type)
+            del hint_types[index]
+            del hint_prob[index]
+        else:
             text, location = hint
             add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], location)
 
