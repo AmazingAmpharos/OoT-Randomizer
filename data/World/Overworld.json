@@ -1108,7 +1108,7 @@
         "locations": {
             "Ganons Tower Boss Key Chest": "True",
             "Ganon": "
-                (Boss_Key_Ganons_Castle or unlocked_ganondorf) and can_use(Light_Arrows)"
+                (Boss_Key_Ganons_Castle or unlocked_ganondorf) and can_use(Light_Arrows) and guarantee_hint"
         }
     },
     {
