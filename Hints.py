@@ -83,7 +83,7 @@ def isRestrictedDungeonItem(dungeon, item):
     return False
 
 
-def add_hint(spoiler, world, IDs, text, count, stones_readable, location=None):
+def add_hint(spoiler, world, IDs, text, count, location=None):
     random.shuffle(IDs)
     skipped_ids = []
     first = True
@@ -91,7 +91,7 @@ def add_hint(spoiler, world, IDs, text, count, stones_readable, location=None):
         if IDs:
             id = IDs.pop(0)
 
-            if stones_readable:
+            if spoiler.stones_readable:
                 stone_location = gossipLocations[id].location
                 if not first or can_reach_stone(spoiler.worlds, stone_location, location):
                     if first and location:
@@ -355,9 +355,9 @@ hint_dist_sets = {
 def buildGossipHints(spoiler, world):
 
     max_states = State.get_states_with_items([w.state for w in spoiler.worlds], [])
-    stones_readable = True
+    spoiler.stones_readable = True
     for state in max_states:
-        stones_readable = stones_readable and state.guarantee_hint()
+        spoiler.stones_readable = spoiler.stones_readable and state.guarantee_hint()
 
     checkedLocations = []
 
@@ -374,21 +374,21 @@ def buildGossipHints(spoiler, world):
         location = world.get_location(hint.name)
         checkedLocations.append(hint.name)
         add_hint(spoiler, world, stoneIDs, buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
-            colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), hint_dist['always'][1], stones_readable, location)
+            colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), hint_dist['always'][1], location)
 
     # Add trial hints
     if world.trials_random and world.trials == 6:
-        add_hint(spoiler, world, stoneIDs, buildHintString(colorText("Ganon's Tower", 'Pink') + " is protected by a powerful barrier."), hint_dist['trial'][1], stones_readable)
+        add_hint(spoiler, world, stoneIDs, buildHintString(colorText("Ganon's Tower", 'Pink') + " is protected by a powerful barrier."), hint_dist['trial'][1])
     elif world.trials_random and world.trials == 0:
-        add_hint(spoiler, world, stoneIDs, buildHintString("Sheik dispelled the barrier around " + colorText("Ganon's Tower", 'Yellow')), hint_dist['trial'][1], stones_readable)
+        add_hint(spoiler, world, stoneIDs, buildHintString("Sheik dispelled the barrier around " + colorText("Ganon's Tower", 'Yellow')), hint_dist['trial'][1])
     elif world.trials < 6 and world.trials > 3:
         for trial,skipped in world.skipped_trials.items():
             if skipped:
-                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."), hint_dist['trial'][1], stones_readable)
+                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."), hint_dist['trial'][1])
     elif world.trials <= 3 and world.trials > 0:
         for trial,skipped in world.skipped_trials.items():
             if not skipped:
-                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."), hint_dist['trial'][1], stones_readable)
+                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."), hint_dist['trial'][1])
 
     hint_types = list(hint_types)
     hint_prob  = list(hint_prob)
@@ -405,7 +405,7 @@ def buildGossipHints(spoiler, world):
             del hint_prob[index]
         else:
             text, location = hint
-            add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], stones_readable, location)
+            add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], location)
 
 
 # builds boss reward text that is displayed at the temple of time altar for child and adult, pull based off of item in a fixed order.
