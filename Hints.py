@@ -83,24 +83,30 @@ def isRestrictedDungeonItem(dungeon, item):
     return False
 
 
-def add_hint(spoiler, world, IDs, text, count, location=None):
+def add_hint(spoiler, world, IDs, text, count, stones_readable, location=None):
     random.shuffle(IDs)
     skipped_ids = []
     first = True
     while random.random() < count:
         if IDs:
             id = IDs.pop(0)
-            stone_location = gossipLocations[id].location
-            if not first or can_reach_stone(spoiler.worlds, stone_location, location):
-                if first and location:
-                    old_rule = location.access_rule
-                    location.access_rule = lambda state: state.can_reach(stone_location, resolution_hint='Location') and old_rule(state)
 
-                count -= 1
-                first = False
-                spoiler.hints[world.id][id] = lineWrap(text)
+            if stones_readable:
+                stone_location = gossipLocations[id].location
+                if not first or can_reach_stone(spoiler.worlds, stone_location, location):
+                    if first and location:
+                        old_rule = location.access_rule
+                        location.access_rule = lambda state: state.can_reach(stone_location, resolution_hint='Location') and old_rule(state)
+
+                    count -= 1
+                    first = False
+                    spoiler.hints[world.id][id] = lineWrap(text)
+                else:
+                    skipped_ids.append(id)
             else:
-                skipped_ids.append(id)
+                # The stones are not readable at all in logic, so we ignore any kind of logic here
+                count -= 1
+                spoiler.hints[world.id][id] = lineWrap(text)
         else:
             break
     IDs.extend(skipped_ids)
@@ -347,6 +353,12 @@ hint_dist_sets = {
 
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(spoiler, world):
+
+    max_states = State.get_states_with_items([w.state for w in spoiler.worlds], [])
+    stones_readable = True
+    for state in max_states:
+        stones_readable = stones_readable and state.guarantee_hint()
+
     checkedLocations = []
 
     stoneIDs = list(gossipLocations.keys())
@@ -362,21 +374,21 @@ def buildGossipHints(spoiler, world):
         location = world.get_location(hint.name)
         checkedLocations.append(hint.name)
         add_hint(spoiler, world, stoneIDs, buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
-            colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), hint_dist['always'][1], location)
+            colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), hint_dist['always'][1], stones_readable, location)
 
     # Add trial hints
     if world.trials_random and world.trials == 6:
-        add_hint(spoiler, world, stoneIDs, buildHintString(colorText("Ganon's Tower", 'Pink') + " is protected by a powerful barrier."), hint_dist['trial'][1])
+        add_hint(spoiler, world, stoneIDs, buildHintString(colorText("Ganon's Tower", 'Pink') + " is protected by a powerful barrier."), hint_dist['trial'][1], stones_readable)
     elif world.trials_random and world.trials == 0:
-        add_hint(spoiler, world, stoneIDs, buildHintString("Sheik dispelled the barrier around " + colorText("Ganon's Tower", 'Yellow')), hint_dist['trial'][1])
+        add_hint(spoiler, world, stoneIDs, buildHintString("Sheik dispelled the barrier around " + colorText("Ganon's Tower", 'Yellow')), hint_dist['trial'][1], stones_readable)
     elif world.trials < 6 and world.trials > 3:
         for trial,skipped in world.skipped_trials.items():
             if skipped:
-                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."), hint_dist['trial'][1])
+                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."), hint_dist['trial'][1], stones_readable)
     elif world.trials <= 3 and world.trials > 0:
         for trial,skipped in world.skipped_trials.items():
             if not skipped:
-                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."), hint_dist['trial'][1])
+                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."), hint_dist['trial'][1], stones_readable)
 
     hint_types = list(hint_types)
     hint_prob  = list(hint_prob)
@@ -393,7 +405,7 @@ def buildGossipHints(spoiler, world):
             del hint_prob[index]
         else:
             text, location = hint
-            add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], location)
+            add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], stones_readable, location)
 
 
 # builds boss reward text that is displayed at the temple of time altar for child and adult, pull based off of item in a fixed order.
