@@ -31,7 +31,7 @@
                     ((has_sticks or can_use(Dins_Fire)) and 
                         (has_slingshot or has_sticks or has_explosives or Kokiri_Sword))) and 
                 (has_explosives or Progressive_Strength_Upgrade or 
-                    can_use(Dins_Fire) or (logic_tricks and can_use(Bow)))",
+                    can_use(Dins_Fire) or (logic_dc_staircase and can_use(Bow)))",
             "Dodongos Gossip Stone": "
                 hints != 'mask' or has_explosives or Progressive_Strength_Upgrade"
         }

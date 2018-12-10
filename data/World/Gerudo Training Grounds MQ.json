@@ -34,7 +34,7 @@
             "Gerudo Training Grounds MQ First Iron Knuckle Chest": "True"
         },
         "exits": {
-            "Gerudo Training Grounds Stalfos Room": "can_use(Longshot) or (logic_tricks and can_use(Hookshot))"
+            "Gerudo Training Grounds Stalfos Room": "can_use(Longshot) or (logic_gtg_mq_with_hookshot and can_use(Hookshot))"
         }
     },
     {

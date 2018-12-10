@@ -20,7 +20,7 @@
             "Bottom of the Well Basement Chest": "
                 has_explosives or 
                 ((((Small_Key_Bottom_of_the_Well, 3) and can_see_with_lens) or 
-                    can_use(Dins_Fire) or (logic_tricks and has_sticks)) and 
+                    can_use(Dins_Fire) or (logic_botw_basement and has_sticks)) and 
                 Progressive_Strength_Upgrade)",
             "Bottom of the Well Locked Pits": "
                 (Small_Key_Bottom_of_the_Well, 3) and can_see_with_lens", #These pits are really unfair.

@@ -22,9 +22,9 @@
             "Forest Temple NW Outdoors": "can_use(Bow)",
             "Forest Temple NE Outdoors": "can_use(Bow)",
             "Forest Temple After Block Puzzle": "
-                (has_bombchus and logic_tricks) or Progressive_Strength_Upgrade",
+                (has_bombchus and logic_forest_mq_block_puzzle) or Progressive_Strength_Upgrade",
             "Forest Temple Outdoor Ledge": "
-                (has_bombchus and logic_tricks) or 
+                (has_bombchus and logic_forest_mq_block_puzzle) or 
                 Progressive_Strength_Upgrade or can_use(Hover_Boots)"
         }
     },
@@ -57,7 +57,7 @@
         "exits": {
             "Forest Temple NE Outdoors": "
                 can_use(Iron_Boots) or can_use(Longshot) or 
-                (Progressive_Scale, 2) or (logic_tricks and can_use(Hookshot))",
+                (Progressive_Scale, 2) or (logic_forest_well_swim and can_use(Hookshot))",
             "Forest Temple Outdoors Top Ledges": "can_use(Fire_Arrows)"
         }
     },
@@ -72,7 +72,7 @@
         "exits": {
             "Forest Temple Outdoors Top Ledges": "
                 can_use(Longshot) or can_use(Hover_Boots) or can_play(Song_of_Time) or 
-                (logic_tricks and can_use(Hookshot))",
+                (logic_forest_vines and can_use(Hookshot))",
             "Forest Temple NE Outdoors Ledge": "can_use(Longshot)"
         }
     },

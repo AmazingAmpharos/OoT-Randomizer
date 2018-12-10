@@ -12,7 +12,7 @@
                     Boomerang or has_explosives or Buy_Bottle_Bug)",
             "GS Kokiri House of Twins": "
                 (can_use(Hookshot) or 
-                    (logic_tricks and can_use(Hover_Boots))) and nighttime",
+                    (logic_adult_kokiri_gs and can_use(Hover_Boots))) and nighttime",
             "Deku Baba Sticks": "
                 (Kokiri_Sword and Buy_Deku_Shield) or 
                 (open_forest and (is_adult or Kokiri_Sword or Boomerang))",
@@ -285,7 +285,7 @@
                 Carpenter_Rescue and Epona and Bow and is_adult",
             "Gerudo Fortress North F1 Carpenter": "True",
             "Gerudo Fortress North F2 Carpenter": "
-                can_use(Bow) or can_use(Hookshot) or can_use(Hover_Boots) or logic_tricks",
+                can_use(Bow) or can_use(Hookshot) or can_use(Hover_Boots) or logic_gerudo_kitchen",
             "Gerudo Fortress South F1 Carpenter": "True",
             "Gerudo Fortress South F2 Carpenter": "True",
             "Gerudo Fortress Carpenter Rescue": "can_finish_GerudoFortress",
@@ -294,7 +294,7 @@
                 can_use(Hookshot) and Carpenter_Rescue and nighttime",
             "GS Gerudo Fortress Top Floor": "
                 nighttime and (can_use(Bow) or can_use(Hookshot) or 
-                    can_use(Hover_Boots) or logic_tricks)"
+                    can_use(Hover_Boots) or logic_gerudo_kitchen)"
         },
         "exits": {
             "Haunted Wasteland": "
@@ -711,7 +711,7 @@
         "locations": {
             "Death Mountain Bombable Chest": "
                 can_blast_or_smash or 
-                (logic_tricks and Progressive_Strength_Upgrade)",
+                (logic_dmt_bombable and Progressive_Strength_Upgrade)",
             "DM Trail Freestanding PoH": "
                 open_kakariko or (damage_multiplier != 'ohko') or 
                 Zeldas_Letter or can_blast_or_smash or can_use(Dins_Fire) or 
@@ -1108,7 +1108,7 @@
         "locations": {
             "Ganons Tower Boss Key Chest": "True",
             "Ganon": "
-                (Boss_Key_Ganons_Castle or unlocked_ganondorf) and can_use(Light_Arrows) and guarantee_hint"
+                (Boss_Key_Ganons_Castle or unlocked_ganondorf) and can_use(Light_Arrows)"
         }
     },
     {
