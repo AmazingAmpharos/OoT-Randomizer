@@ -55,6 +55,7 @@ DebugOutput:
 .include "chus_in_logic.asm"
 .include "rainbow_bridge.asm"
 .include "gossip_hints.asm"
+.include "potion_shop.asm"
 .endarea
 
 .headersize (0x80405000 - 0x034B3000)

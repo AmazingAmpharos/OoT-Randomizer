@@ -1081,7 +1081,10 @@
 80403C0C @@stone_of_agony
 80403C20 @@default
 80403C2C @@return
-80403C38 .byt:0418
+80403C38 potion_shop_fix
+80403C60 @@no_potion
+80403C64 @@return
+80403C6C .byt:03E4
 80405000 draw_file_select_hash,00000234
 80405234 disp_buf_init,00000018
 8040524C sprite_bytes_per_tile,00000028

@@ -778,8 +778,8 @@
             "Goron City Grotto": "
                 is_adult and 
                 ((can_play(Song_of_Time) and 
-                    (damage_multiplier != 'ohko' or has_GoronTunic or 
-                        can_use(Longshot) or can_use(Nayrus_Love))) or 
+                    ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
+                        has_GoronTunic or can_use(Longshot) or can_use(Nayrus_Love))) or 
                 (damage_multiplier != 'ohko' and has_GoronTunic and can_use(Hookshot)) or 
                 (can_use(Nayrus_Love) and can_use(Hookshot)))",
             "Goron City Maze Gossip Stone": "
@@ -848,7 +848,9 @@
         "exits": {
             "Death Mountain": "True",
             "Death Mountain Crater Lower": "can_use(Hover_Boots)",
-            "Death Mountain Crater Central": "can_use(Distant_Scarecrow)",
+            "Death Mountain Crater Central": "has_GoronTunic and can_use(Distant_Scarecrow) and 
+                ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
+                    has_bottle or can_use(Nayrus_Love))",
             "Top of Crater Grotto": "can_blast_or_smash",
             "Death Mountain Crater Gossip Stone": "has_explosives",
             "Death Mountain Trail Gossip Stone": "
@@ -1106,7 +1108,7 @@
         "locations": {
             "Ganons Tower Boss Key Chest": "True",
             "Ganon": "
-                (Boss_Key_Ganons_Castle or unlocked_ganondorf) and can_use(Light_Arrows)"
+                (Boss_Key_Ganons_Castle or unlocked_ganondorf) and can_use(Light_Arrows) and guarantee_hint"
         }
     },
     {
