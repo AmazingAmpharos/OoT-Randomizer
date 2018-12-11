@@ -77,6 +77,7 @@ SYMBOL TABLE:
 00000bcc g     F .text	0000003c after_game_state_update
 00000c08 g     F .text	00000a10 draw_dungeon_info
 00000000         *UND*	00000000 FONT_TEXTURE
+00000000         *UND*	00000000 OCARINAS_SHUFFLED
 0000287c g     F .text	000000d8 get_item
 000016dc g     F .text	0000001c give_magic
 00000038 g     O .sbss	00000004 active_item_text_id
@@ -89,6 +90,7 @@ SYMBOL TABLE:
 00000444 g     F .text	000000f0 sprite_draw
 00000004 g     O .sbss	00000008 error_gi_obj
 00001630 g     F .text	0000000c give_biggoron_sword
+00002a2c g     F .text	00000070 give_sarias_gift
 000002a4 g     F .text	000001a0 sprite_load
 00000090 g     O .data	00000010 stones_sprite
 00001c60 g     F .text	0000001c bombs_to_rupee

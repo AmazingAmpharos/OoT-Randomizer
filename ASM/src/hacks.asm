@@ -429,11 +429,9 @@ nop
 ;==================================================================================================
 
 ; Replaces:
-;   addu    t8, t0, t7
-;   sb      t6, 0x74 (t8) ; store to fairy ocarina slot
-.org 0xAE6E48 ; In memory: 0x80070EE8
-    jal     push_delayed_item
-    li      a0, DELAYED_FAIRY_OCARINA
+;   jal     0x800288B4
+.org 0xACCDE0 ; In memory: 0x80056E80
+    jal     give_sarias_gift
 
 ; a3 = item ID
 ; Replaces:
