@@ -12,6 +12,6 @@
 *.bin  binary
 *.o    binary
 
-/data/*       binary linguist-generated=true
+/data/generated/*  binary linguist-generated=true
 /Decompress/* binary
 /Compress/*   binary
