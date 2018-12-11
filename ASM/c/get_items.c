@@ -4,6 +4,8 @@
 #include "util.h"
 #include "z64.h"
 
+extern uint8_t OCARINAS_SHUFFLED;
+
 enum override_type {
     BASE_ITEM = 0,
     CHEST = 1,
@@ -299,4 +301,15 @@ void get_skulltula_token(z64_actor_t *token_actor) {
         z64_GiveItem(&z64_game, item_row->action_id);
         call_effect_function(item_row);
     }
+}
+int give_sarias_gift() {
+    uint16_t received_sarias_gift = (z64_file.event_chk_inf[0x0C] & 0x0002);
+    if (received_sarias_gift == 0) {
+        if (OCARINAS_SHUFFLED)
+            push_delayed_item(0x02);
+        z64_file.event_chk_inf[0x0C] |= 0x0002;
+    }
+
+    // return 1 to skip the cutscene
+    return OCARINAS_SHUFFLED || received_sarias_gift;
 }
