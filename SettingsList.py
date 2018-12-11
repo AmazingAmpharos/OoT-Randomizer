@@ -161,7 +161,7 @@ def parse_color(s, color_choices):
 def logic_tricks_entry_tooltip(widget, pos):
     val = widget.get()
     if val in logic_tricks:
-        text = logic_tricks[val]['tooltip']
+        text = val + '\n\n' + logic_tricks[val]['tooltip']
         text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
         return text
     else:
@@ -171,7 +171,7 @@ def logic_tricks_list_tooltip(widget, pos):
     index = widget.index("@%s,%s" % (pos))
     val = widget.get(index)
     if val in logic_tricks:
-        text = logic_tricks[val]['tooltip']
+        text = val + '\n\n' + logic_tricks[val]['tooltip']
         text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
         return text
     else:
@@ -180,11 +180,110 @@ def logic_tricks_list_tooltip(widget, pos):
 
 
 logic_tricks = {
-    'Various Advanced Tricks': {
-        'name'    : 'logic_tricks',
+    'Bottom of the Well Basement Chest with Strength & Sticks': {
+        'name'    : 'logic_botw_basement',
         'tooltip' : '''\
-                    Enables a large number of minor
-                    tricks that do not require glitches.
+                    The chest in the basement can be reached with
+                    strength by doing a jump slash with a lit
+                    stick to access the bomb flowers.
+                    '''},
+    'Deku Tree Basement Vines GS with Jump Slash': {
+        'name'    : 'logic_deku_basement_gs',
+        'tooltip' : '''\
+                    Can be defeated by doing a precise jump slash.
+                    '''},
+    'Dodongo\'s Cavern Staircase with Bow': {
+        'name'    : 'logic_dc_staircase',
+        'tooltip' : '''\
+                    The Bow can be used to knock down the stairs
+                    with two well-timed shots.
+                    '''},
+    'Fire Temple MQ Boss Key Chest without Bow': {
+        'name'    : 'logic_fire_mq_bk_chest',
+        'tooltip' : '''\
+                    Din\'s alone can be used to unbar the door to
+                    the boss key chest's room thanks to an
+                    oversight in the way the game counts how many
+                    torches have been lit.
+                    '''},
+    'Fire Temple MQ Upper Maze without Explosives': {
+        'name'    : 'logic_fire_mq_upper_maze',
+        'tooltip' : '''\
+                    The switch to spawn the hookshot targets can
+                    be hammered through the bombable wall.
+                    '''},
+    'Fire Temple Highest Goron without Song of Time': {
+        'name'    : 'logic_fire_highest_goron',
+        'tooltip' : '''\
+                    The switch to free the highest Goron can
+                    be hammered through the Song of Time block.
+                    '''},
+    'Skip Forest Temple MQ Block Puzzle with Bombchu': {
+        'name'    : 'logic_forest_mq_block_puzzle',
+        'tooltip' : '''\
+                    Send the Bombchu straight up the center of the
+                    wall directly to the left upon entering the room.
+                    '''},
+    'Swim Through Forest Temple Well with Hookshot': {
+        'name'    : 'logic_forest_well_swim',
+        'tooltip' : '''\
+                    Shoot the vines in the well as low and as far to
+                    the right as possible, and then immediately swim
+                    under the ceiling to the right. This can only be
+                    required if Forest Temple is in its Master Quest
+                    form.
+                    '''},
+    'Forest Temple East Courtyard Vines with Hookshot': {
+        'name'    : 'logic_forest_vines',
+        'tooltip' : '''\
+                    The vines in Forest Temple leading to where the well
+                    drain switch is in the standard form can be barely
+                    reached with just the Hookshot.
+                    '''},
+    'Ganon\'s Castle MQ Spirit Trial First Room without Bow': {
+        'name'    : 'logic_ganon_mq_spirit_trial',
+        'tooltip' : '''\
+                    The switch to unbar the door can be hammered through
+                    the thrones.
+                    '''},
+    'Gerudo Training Grounds MQ Left Side Silver Rupees with Hookshot': {
+        'name'    : 'logic_gtg_mq_with_hookshot',
+        'tooltip' : '''\
+                    The highest silver rupee can be obtained by
+                    hookshotting the target and then immediately jump
+                    slashing toward the rupee.
+                    '''},
+    'Adult Kokiri Forest GS with Hover Boots': {
+        'name'    : 'logic_adult_kokiri_gs',
+        'tooltip' : '''\
+                    Can be obtained without Hookshot by using the Hover
+                    Boots off of one of the roots.
+                    '''},
+    'Gerudo Fortress "Kitchen" with Nothing': {
+        'name'    : 'logic_gerudo_kitchen',
+        'tooltip' : '''\
+                    The logic normally guarantees one of Bow, Hookshot,
+                    or Hover Boots.
+                    '''},
+    'Death Mountain Trail Bombable Chest with Strength': {
+        'name'    : 'logic_dmt_bombable',
+        'tooltip' : '''\
+                    Child Link can blow up the wall using a nearby bomb
+                    flower. You must backwalk with the flower and then
+                    quickly throw it toward the wall.
+                    '''},
+    'Spirit Temple MQ Frozen Eye Switch without Fire': {
+        'name'    : 'logic_spirit_mq_frozen_eye',
+        'tooltip' : '''\
+                    You can melt the ice by shooting an arrow through a
+                    torch. The only way to find a line of sight for this
+                    shot is to first spawn a Song of Time block, and then
+                    stand on the very edge of it.
+                    '''},
+    'Spirit Temple Child Side Bridge with Bombchu': {
+        'name'    : 'logic_spirit_child_bombchu',
+        'tooltip' : '''\
+                    A carefully-timed Bombchu can hit the switch.
                     '''},
     'Man on Roof without Hookshot': {
         'name'    : 'logic_man_on_roof',
