@@ -92,7 +92,7 @@ def get_navi_color_options():
 
 
 def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
-    with open(data_path('rom_patch.txt'), 'r') as stream:
+    with open(data_path('generated/rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
             rom.write_int32(address, value)
