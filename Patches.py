@@ -1,4 +1,5 @@
 import random
+import struct
 
 from World import World
 from Rom import LocalRom
@@ -94,7 +95,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     with open(data_path('rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
-            rom.write_byte(address, value)
+            rom.write_int32(address, value)
     rom.scan_dmadata_update()
 
     # Write Randomizer title screen logo
@@ -178,7 +179,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # songs as items flag
     songs_as_items = world.shuffle_song_items or world.start_with_fast_travel
-    
+
     # Speed learning Zelda's Lullaby
     rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001]) # Terminator Execution
     if songs_as_items:
@@ -677,7 +678,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00])
 
     #Give hp after first ocarina minigame round
-    rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02]) 
+    rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02])
 
     # Allow owl to always carry the kid down Death Mountain
     rom.write_bytes(0xE304F0, [0x24, 0x0E, 0x00, 0x01])
@@ -751,7 +752,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         table_len = len(initial_save_table)
         if table_len > 0x400:
             raise Exception("The Initial Save Table has exceeded its maximum capacity: 0x%03X/0x400" % table_len)
-        rom.write_bytes(0x3481800, initial_save_table)
+        rom.write_bytes(rom.sym('INITIAL_SAVE_DATA'), initial_save_table)
 
 
     # Initial Save Data
@@ -833,7 +834,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
 
     # Set up Rainbow Bridge conditions
-    symbol = rom.sym('RAINBOW_BRIDGE_CONDITION') 
+    symbol = rom.sym('RAINBOW_BRIDGE_CONDITION')
     if world.bridge == 'open':
         rom.write_int32(symbol, 0)
         write_bits_to_save(0xEDC, 0x20) # "Rainbow Bridge Built by Sages"
@@ -899,7 +900,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         write_bits_to_save(0x00AE, 0x06) # "Spirit Map/Compass"
         write_bits_to_save(0x00B0, 0x06) # "BotW Map/Compass"
         write_bits_to_save(0x00B1, 0x06) # "Ice Map/Compass"
-        
+
     if world.start_with_rupees:
         write_byte_to_save(0x0035, 0x63) # start with 99 rupees
 
@@ -1034,7 +1035,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         rom.write_int32(symbol, 0)
     else:
         writeGossipStoneHints(spoiler, world, messages)
-        
+
         if world.hints == 'mask':
             rom.write_int32(symbol, 0)
         elif world.hints == 'always':
@@ -1048,8 +1049,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # Write item overrides
     override_table = get_override_table(world)
-    rom.write_bytes(0x3481000, sum(override_table, []))
-    rom.write_byte(0x03481C00, world.id + 1) # Write player ID
+    rom.write_bytes(rom.sym('cfg_item_overrides'), override_table)
+    rom.write_byte(rom.sym('PLAYER_ID'), world.id + 1) # Write player ID
 
     # Revert Song Get Override Injection
     if not songs_as_items:
@@ -1428,12 +1429,35 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     return rom
 
 
+item_row_struct = struct.Struct('>BBHHxBIIhh') # Match item_row_t in item_table.h
+
+
+def read_rom_item(rom, item_id):
+    addr = rom.sym('item_table') + (item_id * item_row_struct.size)
+    row_bytes = rom.read_bytes(addr, item_row_struct.size)
+    row = item_row_struct.unpack(row_bytes)
+
+    graphic_id = row[4]
+    fast_chest = False
+    if graphic_id >= 0x80:
+        graphic_id = 0x100 - graphic_id
+        fast_chest = True
+
+    return {
+        'base_item_id': row[0],
+        'action_id': row[1],
+        'text_id': row[2],
+        'object_id': row[3],
+        'graphic_id': graphic_id,
+        'fast_chest': fast_chest,
+    }
+
+
 def get_override_table(world):
-    override_entries = []
-    for location in world.get_filled_locations():
-        override_entries.append(get_override_entry(location))
-    override_entries.sort()
-    return override_entries
+    return b''.join(sorted(map(get_override_entry, world.get_filled_locations())))
+
+
+override_struct = struct.Struct('>xBBBxBH') # match override_t in get_items.c
 
 
 def get_override_entry(location):
@@ -1441,25 +1465,29 @@ def get_override_entry(location):
     default = location.default
     item_id = location.item.index
     if None in [scene, default, item_id]:
-        return []
+        return b''
 
-    player_id = (location.item.world.id + 1) << 3
+    player_id = location.item.world.id + 1
 
-    if location.type in ['NPC', 'BossHeart', 'Song']:
-        return [scene, player_id | 0x00, default, item_id]
+    if location.type in ['NPC', 'BossHeart']:
+        type = 0
     elif location.type == 'Chest':
-        flag = default & 0x1F
-        return [scene, player_id | 0x01, flag, item_id]
+        type = 1
+        default &= 0x1F
     elif location.type == 'Collectable':
-        return [scene, player_id | 0x02, default, item_id]
+        type = 2
     elif location.type == 'GS Token':
-        return [scene, player_id | 0x03, default, item_id]
+        type = 3
     elif location.type == 'Shop' and location.item.type != 'Shop':
-        return [scene, player_id | 0x00, default, item_id]
+        type = 0
     elif location.type == 'GrottoNPC' and location.item.type != 'Shop':
-        return [scene, player_id | 0x04, default, item_id]
+        type = 4
+    elif location.type in ['Song', 'Cutscene']:
+        type = 5
     else:
-        return []
+        return b''
+
+    return override_struct.pack(scene, type, default, player_id, item_id)
 
 
 chestTypeMap = {
@@ -1481,45 +1509,6 @@ chestTypeMap = {
     0xE000: [0x5000, 0x0000, 0x2000], #Large
     0xF000: [0x5000, 0x0000, 0x2000], #Large
 }
-
-
-chestAnimationExtendedFast = [
-    0x87, # Progressive Nut Capacity
-    0x88, # Progressive Stick Capacity
-    0x98, # Deku Tree Compass
-    0x99, # Dodongo's Cavern Compass
-    0x9A, # Jabu Jabu Compass
-    0x9B, # Forest Temple Compass
-    0x9C, # Fire Temple Compass
-    0x9D, # Water Temple Compass
-    0x9E, # Spirit Temple Compass
-    0x9F, # Shadow Temple Compass
-    0xA0, # Bottom of the Well Compass
-    0xA1, # Ice Cavern Compass
-    0xA2, # Deku Tree Map
-    0xA3, # Dodongo's Cavern Map
-    0xA4, # Jabu Jabu Map
-    0xA5, # Forest Temple Map
-    0xA6, # Fire Temple Map
-    0xA7, # Water Temple Map
-    0xA8, # Spirit Temple Map
-    0xA9, # Shadow Temple Map
-    0xAA, # Bottom of the Well Map
-    0xAB, # Ice Cavern Map
-    0xB6, # Recovery Heart
-    0xB7, # Arrows (5)
-    0xB8, # Arrows (10)
-    0xB9, # Arrows (30)
-    0xBA, # Bombs (5)
-    0xBB, # Bombs (10)
-    0xBC, # Bombs (20)
-    0xBD, # Deku Nuts (5)
-    0xBE, # Deku Nuts (10)
-    0xD0, # Deku Stick (1)
-    0xD1, # Deku Seeds (30)
-    0xD2, # Deku Shield
-    0xD3, # Hylian Shield
-]
 
 
 def room_get_actors(rom, actor_func, room_data, scene, alternate=None):
@@ -1621,12 +1610,8 @@ def update_chest_sizes(rom, override_table):
 
         itemType = 0  # Item animation
 
-        if item_id >= 0x80: # if extended item, always big except from exception list
-            itemType = 0 if item_id in chestAnimationExtendedFast else 1
-        elif rom.read_byte(0xBEEE8E + (item_id * 6) + 2) & 0x80: # get animation from rom, ice trap is big
-            itemType = 0 # No animation, small chest
-        else:
-            itemType = 1 # Long animation, big chest
+        rom_item = read_rom_item(rom, item_id)
+        itemType = 0 if rom_item['fast_chest'] else 1
         # Don't use boss chests
 
         default = rom.read_int16(actor + 14)
@@ -1696,16 +1681,18 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
     shop_objs = { 0x0148 } # Sold Out
     messages
     for location in locations:
-        shop_objs.add(location.item.object)
         if location.item.type == 'Shop':
+            shop_objs.add(location.item.special['object'])
             rom.write_int16(location.address, location.item.index)
         else:
+            rom_item = read_rom_item(rom, location.item.index)
+            shop_objs.add(rom_item['object_id'])
             shop_id = place_shop_items.shop_id
             rom.write_int16(location.address, shop_id)
             shop_item = shop_items[shop_id]
 
-            shop_item.object = location.item.object
-            shop_item.model = location.item.model - 1
+            shop_item.object = rom_item['object_id']
+            shop_item.model = rom_item['graphic_id'] - 1
             shop_item.price = location.price
             shop_item.pieces = 1
             shop_item.get_item_id = location.default
@@ -1785,7 +1772,7 @@ def patch_cosmetics(settings, rom):
     if settings.default_targeting == 'hold':
         rom.write_byte(0xB71E6D, 0x01)
     else:
-        rom.write_byte(0xB71E6D, 0x00)       
+        rom.write_byte(0xB71E6D, 0x00)
 
     # patch music
     if settings.background_music == 'random':
@@ -1974,4 +1961,3 @@ def restore_music(rom):
     # restore file select instrument
     bgm_instrument = rom.original[0xB89910 + 0xDD + (0x57 * 2): 0xB89910 + 0xDD + (0x57 * 2) + 0x02]
     rom.write_bytes(0xB89910 + 0xDD + (0x57 * 2), bgm_instrument)
-

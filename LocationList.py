@@ -36,29 +36,30 @@ location_table = {
     "Treasure Chest Game":                             ("Chest",       0x10,  0x0A, "the Market",             None),
     "Lake Hylia Sun":                                  ("Chest",       0x57,  0x08, "Lake Hylia",             None),
 
-    "Impa at Castle":                                  ("Song",        0x51,  0x67, "Hyrule Castle",          (0x2E8E925, 0x2E8E925)),
-    "Song from Malon":                                 ("Song",        0x63,  0x68, "Lon Lon Ranch",          (0x0D7EB53, 0x0D7EBCF)),
-    "Song from Composer Grave":                        ("Song",        0x41,  0x6A, "the Graveyard",          (0x332A871, 0x332A871)),
-    "Song from Saria":                                 ("Song",        0x56,  0x69, "Sacred Forest Meadow",   (0x20B1DB1, 0x20B1DB1)),
-    "Song from Ocarina of Time":                       ("Song",        0x51,  0x6B, "Hyrule Field",           (0x252FC89, 0x252FC89)),
-    "Song at Windmill":                                ("Song",        0x48,  0x6C, "Kakariko Village",       (0x0E42C07, 0x0E42B8B)),
-    "Sheik Forest Song":                               ("Song",        0x56,  0x61, "Sacred Forest Meadow",   (0x20B0809, 0x20B0809)),
-    "Sheik at Temple":                                 ("Song",        0x43,  0x66, "Temple of Time",         (0x2531329, 0x2531329)),
-    "Sheik in Crater":                                 ("Song",        0x61,  0x62, "Death Mountain Crater",  (0x224D7F1, 0x224D7F1)),
-    "Sheik in Ice Cavern":                             ("Song",        0x09,  0x63, "Ice Cavern",             (0x2BEC889, 0x2BEC889)),
-    "Sheik in Kakariko":                               ("Song",        0x52,  0x65, "Kakariko Village",       (0x2000FE1, 0x2000FE1)),
-    "Sheik at Colossus":                               ("Song",        0x5C,  0x64, "Desert Colossus",        (0x218C57D, 0x218C57D)),
+    "Zelda":                                           ("Cutscene",    0xFF,  0x01, "Temple of Time",         None),
+    "Gift from Saria":                                 ("Cutscene",    0xFF,  0x02, "the Lost Woods",         None),
+    "Zoras Fountain Fairy Reward":                     ("Cutscene",    0xFF,  0x10, "Zora's Fountain",        None),
+    "Hyrule Castle Fairy Reward":                      ("Cutscene",    0xFF,  0x11, "Hyrule Castle",          None),
+    "Desert Colossus Fairy Reward":                    ("Cutscene",    0xFF,  0x12, "Desert Colossus",        None),
+    "Mountain Summit Fairy Reward":                    ("Cutscene",    0xFF,  0x13, "Death Mountain Trail",   None),
+    "Crater Fairy Reward":                             ("Cutscene",    0xFF,  0x14, "Death Mountain Crater",  None),
+    "Ganons Castle Fairy Reward":                      ("Cutscene",    0xFF,  0x15, "outside Ganon's Castle", None),
 
-    "Gift from Saria":                                 ("NPC",         0x5B,  0x3B, "the Lost Woods",         None),
+    "Sheik Forest Song":                               ("Song",        0xFF,  0x20, "Sacred Forest Meadow",   (0x20B0809, 0x20B0809)),
+    "Sheik in Crater":                                 ("Song",        0xFF,  0x21, "Death Mountain Crater",  (0x224D7F1, 0x224D7F1)),
+    "Sheik in Ice Cavern":                             ("Song",        0xFF,  0x22, "Ice Cavern",             (0x2BEC889, 0x2BEC889)),
+    "Sheik at Colossus":                               ("Song",        0xFF,  0x23, "Desert Colossus",        (0x218C57D, 0x218C57D)),
+    "Sheik in Kakariko":                               ("Song",        0xFF,  0x24, "Kakariko Village",       (0x2000FE1, 0x2000FE1)),
+    "Sheik at Temple":                                 ("Song",        0xFF,  0x25, "Temple of Time",         (0x2531329, 0x2531329)),
+    "Impa at Castle":                                  ("Song",        0xFF,  0x26, "Hyrule Castle",          (0x2E8E925, 0x2E8E925)),
+    "Song from Malon":                                 ("Song",        0xFF,  0x27, "Lon Lon Ranch",          (0x0D7EB53, 0x0D7EBCF)),
+    "Song from Saria":                                 ("Song",        0xFF,  0x28, "Sacred Forest Meadow",   (0x20B1DB1, 0x20B1DB1)),
+    "Song from Composer Grave":                        ("Song",        0xFF,  0x29, "the Graveyard",          (0x332A871, 0x332A871)),
+    "Song from Ocarina of Time":                       ("Song",        0xFF,  0x2A, "Hyrule Field",           (0x252FC89, 0x252FC89)),
+    "Song at Windmill":                                ("Song",        0xFF,  0x2B, "Kakariko Village",       (0x0E42C07, 0x0E42B8B)),
+
     "Malon Egg":                                       ("NPC",         0x5F,  0x47, "Hyrule Castle",          None),
     "Zeldas Letter":                                   ("NPC",         None,  None, "Hyrule Castle",          None),
-    "Zelda":                                           ("NPC",         0x43,  0x5A, "Temple of Time",         None),
-    "Zoras Fountain Fairy Reward":                     ("NPC",         0x3D,  0x5D, "Zora's Fountain",        None),
-    "Hyrule Castle Fairy Reward":                      ("NPC",         0x3D,  0x5C, "Hyrule Castle",          None),
-    "Desert Colossus Fairy Reward":                    ("NPC",         0x3D,  0x5E, "Desert Colossus",        None),
-    "Mountain Summit Fairy Reward":                    ("NPC",         0x3B,  0x51, "Death Mountain Trail",   None),
-    "Crater Fairy Reward":                             ("NPC",         0x3B,  0x52, "Death Mountain Crater",  None),
-    "Ganons Castle Fairy Reward":                      ("NPC",         0x3B,  0x53, "outside Ganon's Castle", None),
     "Darunias Joy":                                    ("NPC",         0x62,  0x54, "Goron City",             None),
     "Diving Minigame":                                 ("NPC",         0x58,  0x37, "Zora's Domain",          None),
     "Child Fishing":                                   ("NPC",         0x49,  0x3E, "Lake Hylia",             None),
@@ -119,7 +120,7 @@ location_table = {
     "Gerudo Fortress North F2 Carpenter":              ("Collectable", 0x0C,  0x0A, "Gerudo Fortress",        None),
     "Gerudo Fortress South F1 Carpenter":              ("Collectable", 0x0C,  0x0E, "Gerudo Fortress",        None),
     "Gerudo Fortress South F2 Carpenter":              ("Collectable", 0x0C,  0x0F, "Gerudo Fortress",        None),
-    
+
     "Magic Bean Salesman":                             ("Event",       None,  None, "Zora's River",           None),
     "King Zora Moves":                                 ("Event",       None,  None, "Zora's Domain",          None),
     "Master Sword Pedestal":                           ("Event",       None,  None, "Temple of Time",         None),
@@ -155,7 +156,7 @@ location_table = {
     "Deku Tree MQ Basement Chest":                     ("Chest",       0x00,  0x04, "Deku Tree",              None),
     "Deku Tree MQ Before Spinning Log Chest":          ("Chest",       0x00,  0x05, "Deku Tree",              None),
     "Deku Tree MQ After Spinning Log Chest":           ("Chest",       0x00,  0x00, "Deku Tree",              None),
-   
+
     # Dodongo's Cavern shared
     "Chest Above King Dodongo":                        ("Chest",       0x12,  0x00, "Dodongo's Cavern",       None),
     # Dodongo's Cavern vanilla
@@ -216,7 +217,7 @@ location_table = {
     "Forest Temple MQ Near Boss Chest":                ("Chest",       0x03,  0x0B, "Forest Temple",          None),
     "Forest Temple MQ Redead Chest":                   ("Chest",       0x03,  0x02, "Forest Temple",          None),
     "Forest Temple MQ Boss Key Chest":                 ("Chest",       0x03,  0x0E, "Forest Temple",          None),
- 
+
     # Fire Temple vanilla
     "Fire Temple Chest Near Boss":                     ("Chest",       0x04,  0x01, "Fire Temple",            None),
     "Fire Temple Fire Dancer Chest":                   ("Chest",       0x04,  0x00, "Fire Temple",            None),

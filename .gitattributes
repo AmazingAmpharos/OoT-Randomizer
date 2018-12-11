@@ -1,6 +1,7 @@
 * text=auto
 
 *.txt  text
+*.json text
 *.c    text
 *.h    text
 *.py   text
@@ -8,10 +9,9 @@
 *.html text
 *.asm  text
 
-*.bin         binary
-*.o           binary
-/data/*       binary
-*.json text
-*.txt  text
+*.bin  binary
+*.o    binary
+
+/data/*       binary linguist-generated=true
 /Decompress/* binary
 /Compress/*   binary

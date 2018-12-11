@@ -1,5 +1,6 @@
 .sw*
 /.vs
+/.vscode
 /.idea
 /Output
 /build
