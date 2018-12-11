@@ -187,8 +187,9 @@
 ;   jal     0x80013498 ; Piece of Heart draw function
 ;   nop
 .org 0xA88F78
-    jal     models_draw
-    nop
+    ; disabled until model code is done
+    ;jal     models_draw
+    ;nop
 
 ;==================================================================================================
 ; File select hash
