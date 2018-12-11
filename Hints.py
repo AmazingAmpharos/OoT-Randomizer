@@ -90,17 +90,23 @@ def add_hint(spoiler, world, IDs, text, count, location=None):
     while random.random() < count:
         if IDs:
             id = IDs.pop(0)
-            stone_location = gossipLocations[id].location
-            if not first or can_reach_stone(spoiler.worlds, stone_location, location):
-                if first and location:
-                    old_rule = location.access_rule
-                    location.access_rule = lambda state: state.can_reach(stone_location, resolution_hint='Location') and old_rule(state)
 
-                count -= 1
-                first = False
-                spoiler.hints[world.id][id] = lineWrap(text)
+            if spoiler.stones_readable:
+                stone_location = gossipLocations[id].location
+                if not first or can_reach_stone(spoiler.worlds, stone_location, location):
+                    if first and location:
+                        old_rule = location.access_rule
+                        location.access_rule = lambda state: state.can_reach(stone_location, resolution_hint='Location') and old_rule(state)
+
+                    count -= 1
+                    first = False
+                    spoiler.hints[world.id][id] = lineWrap(text)
+                else:
+                    skipped_ids.append(id)
             else:
-                skipped_ids.append(id)
+                # The stones are not readable at all in logic, so we ignore any kind of logic here
+                count -= 1
+                spoiler.hints[world.id][id] = lineWrap(text)
         else:
             break
     IDs.extend(skipped_ids)
@@ -347,6 +353,12 @@ hint_dist_sets = {
 
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(spoiler, world):
+
+    max_states = State.get_states_with_items([w.state for w in spoiler.worlds], [])
+    spoiler.stones_readable = True
+    for state in max_states:
+        spoiler.stones_readable = spoiler.stones_readable and state.guarantee_hint()
+
     checkedLocations = []
 
     stoneIDs = list(gossipLocations.keys())
@@ -378,11 +390,20 @@ def buildGossipHints(spoiler, world):
             if not skipped:
                 add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."), hint_dist['trial'][1])
 
+    hint_types = list(hint_types)
+    hint_prob  = list(hint_prob)
     while stoneIDs:
-        [hint_type] = random_choices(hint_types, weights=hint_prob)
+        try:
+            [hint_type] = random_choices(hint_types, weights=hint_prob)
+        except IndexError:
+            raise Exception('Not enough valid hints to fill gossip stone locations.')
 
         hint = hint_func[hint_type](spoiler, world, checkedLocations)
-        if hint != None:
+        if hint == None:
+            index = hint_types.index(hint_type)
+            del hint_types[index]
+            del hint_prob[index]
+        else:
             text, location = hint
             add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], location)
 

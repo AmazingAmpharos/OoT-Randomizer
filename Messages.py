@@ -66,6 +66,7 @@ LIGHT_ARROW_HINT = [0x70CC] # ganondorf's light arrow hint line
 GS_TOKEN_MESSAGES = [0x00B4, 0x00B5] # Get Gold Skulltula Token messages
 
 # messages for shorter item messages
+# ids are in the space freed up by move_shop_item_messages()
 ITEM_MESSAGES = {
     0x0001: "\x08\x13\x2DYou borrowed a \x05\x41Pocket Egg\x05\x40!\x01A Pocket Cucco will hatch from\x01it overnight. Be sure to give it\x01back when you are done with it.",
     0x0002: "\x08\x13\x2FYou returned the Pocket Cucco\x01and got \x05\x41Cojiro\x05\x40 in return!\x01Unlike other Cuccos, Cojiro\x01rarely crows.",
@@ -198,64 +199,43 @@ ITEM_MESSAGES = {
     0x00F9: "\x08\x13\x1EYou put a \x05\x41Big Poe \x05\x40in a bottle!\x01Let's sell it at the \x05\x41Ghost Shop\x05\x40!\x01Something good might happen!",
 }
 
-
-# messages for keysanity item pickup
-# ids are in the space freed up by move_shop_item_messages()
 KEYSANITY_MESSAGES = {
-    0x06: '\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for the \x05\x42Forest Temple\x05\x40!\x09',
-    0x1c: '\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for the \x05\x41Fire Temple\x05\x40!\x09',
-    0x1d: '\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09',
-    0x1e: '\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09',
-    0x2a: '\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09',
-    0x61: '\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for \x05\x41Ganon\'s Castle\x05\x40!\x09',
-    0x62: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x42Deku Tree\x05\x40!\x09',
-    0x63: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for \x05\x41Dodongo\'s Cavern\x05\x40!\x09',
-    0x64: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for \x05\x43Jabu Jabu\'s Belly\x05\x40!\x09',
-    0x65: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x42Forest Temple\x05\x40!\x09',
-    0x7c: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x41Fire Temple\x05\x40!\x09',
-    0x7d: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09',
-    0x7e: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09',
-    0x7f: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09',
-    0xa2: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09',
-    0x87: '\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x44Ice Cavern\x05\x40!\x09',
-    0x88: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x42Deku Tree\x05\x40!\x09',
-    0x89: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for \x05\x41Dodongo\'s Cavern\x05\x40!\x09',
-    0x8a: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for \x05\x43Jabu Jabu\'s Belly\x05\x40!\x09',
-    0x8b: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x42Forest Temple\x05\x40!\x09',
-    0x8c: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x41Fire Temple\x05\x40!\x09',
-    0x8e: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09',
-    0x8f: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09',
-    0xa3: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09',
-    0xa5: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09',
-    0x92: '\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x44Ice Cavern\x05\x40!\x09',
-    0x93: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x42Forest Temple\x05\x40!\x09',
-    0x94: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x41Fire Temple\x05\x40!\x09',
-    0x95: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09',
-    0xa6: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09',
-    0xa9: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09',
-    0x9b: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09',
-    0x9f: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x46Gerudo Training\x01Grounds\x05\x40!\x09',
-    0xa0: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x46Gerudo Fortress\x05\x40!\x09',
-    0xa1: '\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for \x05\x41Ganon\'s Castle\x05\x40!\x09',
+    0x001C: "\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for the \x05\x41Fire Temple\x05\x40!\x09",
+    0x0006: "\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for the \x05\x42Forest Temple\x05\x40!\x09",
+    0x001D: "\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09",
+    0x001E: "\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09",
+    0x002A: "\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09",
+    0x0061: "\x13\x74\x08You got the \x05\x41Boss Key\x05\x40\x01for \x05\x41Ganon's Castle\x05\x40!\x09",
+    0x0062: "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x42Deku Tree\x05\x40!\x09",
+    0x0063: "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for \x05\x41Dodongo's Cavern\x05\x40!\x09",
+    0x0064: "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for \x05\x43Jabu Jabu's Belly\x05\x40!\x09",
+    0x0065: "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x42Forest Temple\x05\x40!\x09",
+    0x007C: "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x41Fire Temple\x05\x40!\x09",
+    0x007D: "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09",
+    0x007E: "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09",
+    0x007F: "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09",
+    0x0087: "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x44Ice Cavern\x05\x40!\x09",
+    0x0088: "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x42Deku Tree\x05\x40!\x09",
+    0x0089: "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for \x05\x41Dodongo's Cavern\x05\x40!\x09",
+    0x008A: "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for \x05\x43Jabu Jabu's Belly\x05\x40!\x09",
+    0x008B: "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x42Forest Temple\x05\x40!\x09",
+    0x008C: "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x41Fire Temple\x05\x40!\x09",
+    0x008E: "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09",
+    0x008F: "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09",
+    0x0092: "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x44Ice Cavern\x05\x40!\x09",
+    0x0093: "\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x42Forest Temple\x05\x40!\x09",
+    0x0094: "\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x41Fire Temple\x05\x40!\x09",
+    0x0095: "\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x43Water Temple\x05\x40!\x09",
+    0x009B: "\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09",
+    0x009F: "\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x46Gerudo Training\x01Grounds\x05\x40!\x09",
+    0x00A0: "\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x46Gerudo Fortress\x05\x40!\x09",
+    0x00A1: "\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for \x05\x41Ganon's Castle\x05\x40!\x09",
+    0x00A2: "\x13\x75\x08You found the \x05\x41Compass\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09",
+    0x00A3: "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09",
+    0x00A5: "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for the \x05\x45Bottom of the Well\x05\x40!\x09",
+    0x00A6: "\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x46Spirit Temple\x05\x40!\x09",
+    0x00A9: "\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09",
 }
-
-
-# messages for song items
-SONG_MESSAGES = {
-    0x00B0: "\x08\x06\x28You have learned the\x01\x06\x2F\x05\x42Minuet of Forest\x05\x40!",
-    0x00B1: "\x08\x06\x28You have learned the\x01\x06\x37\x05\x41Bolero of Fire\x05\x40!",
-    0x00B2: "\x08\x06\x28You have learned the\x01\x06\x29\x05\x43Serenade of Water\x05\x40!",
-    0x00B3: "\x08\x06\x28You have learned the\x01\x06\x2D\x05\x46Requiem of Spirit\x05\x40!",
-    0x00B6: "\x08\x06\x28You have learned the\x01\x06\x28\x05\x45Nocturne of Shadow\x05\x40!",
-    0x00B7: "\x08\x06\x28You have learned the\x01\x06\x32\x05\x44Prelude of Light\x05\x40!",
-    0x00B8: "\x08\x06\x15You've learned \x05\x43Zelda's Lullaby\x05\x40!",
-    0x00B9: "\x08\x06\x11You've learned \x05\x41Epona's Song\x05\x40!",
-    0x00BA: "\x08\x06\x14You've learned \x05\x42Saria's Song\x05\x40!",
-    0x00BB: "\x08\x06\x0BYou've learned the \x05\x46Sun's Song\x05\x40!",
-    0x00BC: "\x08\x06\x05You've learned the \x05\x44Song of Time\x05\x40!",
-    0x00BD: "\x08You've learned the \x05\x45Song of Storms\x05\x40!",
-}
-
 
 # convert byte array to an integer
 def bytes_to_int(bytes, signed=False):
@@ -720,39 +700,23 @@ def make_player_message(text):
     return new_text
 
 
-
-
-# add the keysanity messages
+# reduce item message sizes and add new item messages
 # make sure to call this AFTER move_shop_item_messages()
-def add_keysanity_messages(messages, world):
-    for id, text in KEYSANITY_MESSAGES.items():
-        if world.world_count > 1:
-            update_message_by_id(messages, id, make_player_message(text), 0x23)
-        else:
-            update_message_by_id(messages, id, text, 0x23)
-
-# add the song messages
-# make sure to call this AFTER move_shop_item_messages()
-def add_song_messages(messages, world):
-    for id, text in SONG_MESSAGES.items():
-        if world.world_count > 1:
-            update_message_by_id(messages, id, make_player_message(text), 0x23)
-        else:
-            update_message_by_id(messages, id, text, 0x23)
-
-# reduce item message sizes
 def update_item_messages(messages, world):
-    for id, text in ITEM_MESSAGES.items():
+    new_item_messages = dict(ITEM_MESSAGES)
+    new_item_messages.update(KEYSANITY_MESSAGES)
+    for id, text in new_item_messages.items():
         if world.world_count > 1:
             update_message_by_id(messages, id, make_player_message(text), 0x23)
-
         else:
-            update_message_by_id(messages, id, text)
+            update_message_by_id(messages, id, text, 0x23)
+
 
 # run all keysanity related patching to add messages for dungeon specific items
-def message_patch_for_dungeon_items(messages, shop_items, world):
+def add_item_messages(messages, shop_items, world):
     move_shop_item_messages(messages, shop_items)
-    add_keysanity_messages(messages, world)
+    update_item_messages(messages, world)
+
 
 # reads each of the game's messages into a list of Message objects
 def read_messages(rom):

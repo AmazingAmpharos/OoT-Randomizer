@@ -2,7 +2,7 @@
     "Default": {
         "locked": true
     },
-    "Accessible Weekly 2018-10-27": {
+    "Accessible Weekly 2018-12-10": {
         "world_count": 1,
         "create_spoiler": true,
         "open_forest": true,
@@ -43,21 +43,14 @@
         "disabled_locations": [
             "Deku Theater Mask of Truth"
         ],
+        "allowed_tricks": [
+            "logic_fewer_tunic_requirements"
+        ],        
         "logic_latest_adult_trade": "claim_check",
-        "logic_tricks": false,
-        "logic_man_on_roof": false,
-        "logic_child_deadhand": false,
-        "logic_dc_jump": false,
-        "logic_windmill_poh": false,
-        "logic_crater_bean_poh_with_hovers": false,
-        "logic_zora_with_cucco": false,
-        "logic_zora_with_hovers": false,
-        "logic_fewer_tunic_requirements": true,
-        "logic_morpha_with_scale": false,
         "logic_lens": "all",
         "ocarina_songs": false,
         "correct_chest_sizes": false,
-        "clearer_hints": false,
+        "clearer_hints": true,
         "hints": "agony",
         "hint_dist": "balanced",
         "text_shuffle": "none",

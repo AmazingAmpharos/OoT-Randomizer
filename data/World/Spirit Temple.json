@@ -13,17 +13,17 @@
         "dungeon": "Spirit Temple",
         "locations": {
             "Spirit Temple Child Left Chest": "
-                (Boomerang or has_slingshot or (has_bombchus and logic_tricks)) and 
+                (Boomerang or has_slingshot or (has_bombchus and logic_spirit_child_bombchu)) and 
                 (has_sticks or has_explosives or 
                     ((has_nuts or Boomerang) and 
                         (Kokiri_Sword or has_slingshot)))",
             "Spirit Temple Child Right Chest": "
-                (Boomerang or has_slingshot or (has_bombchus and logic_tricks)) and 
+                (Boomerang or has_slingshot or (has_bombchus and logic_spirit_child_bombchu)) and 
                 (has_sticks or has_explosives or 
                     ((has_nuts or Boomerang) and (Kokiri_Sword or has_slingshot))) and 
                 (has_sticks or can_use(Dins_Fire))",
             "GS Spirit Temple Metal Fence": "
-                (Boomerang or has_slingshot or (has_bombchus and logic_tricks)) and 
+                (Boomerang or has_slingshot or (has_bombchus and logic_spirit_child_bombchu)) and 
                 (has_sticks or has_explosives or 
                     ((has_nuts or Boomerang) and (Kokiri_Sword or has_slingshot)))",
             "Spirit Temple Nut Crate": "True"

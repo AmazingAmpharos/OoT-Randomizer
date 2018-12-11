@@ -24,6 +24,7 @@ import webbrowser
 import WorldFile
 from LocationList import location_table
 
+
 def settings_to_guivars(settings, guivars):
     for info in setting_infos:
         name = info.name
@@ -106,6 +107,7 @@ def guivars_to_settings(guivars):
         result['count'] = None
 
     return Settings(result)
+
 
 def guiMain(settings=None):
     frames = {}
@@ -510,6 +512,7 @@ def guiMain(settings=None):
         presets[preset_name] = preset
         guivars['settings_preset'].set(preset_name)
         update_preset_dropdown()
+        save_presets()
 
 
     def remove_setting_preset():
@@ -528,10 +531,18 @@ def guiMain(settings=None):
         del presets[preset_name]
         guivars['settings_preset'].set('[New Preset]')
         update_preset_dropdown()
+        save_presets()
 
 
     def update_preset_dropdown():
         widgets['settings_preset']['values'] = ['[New Preset]'] + list(presets.keys())
+
+
+    def save_presets():
+        presets_file = local_path('presets.sav')
+        with open(presets_file, 'w') as outfile:
+            preset_json = {name: preset for name,preset in presets.items() if not preset.get('locked')}
+            json.dump(preset_json, outfile, indent=4)
 
 
     # Settings Presets
@@ -725,11 +736,10 @@ def guiMain(settings=None):
         if "locked" in settings.__dict__:
             del settings.__dict__["locked"]
         json.dump(settings.__dict__, outfile, indent=4)
+    
+    save_presets()
 
-    presets_file = local_path('presets.sav')
-    with open(presets_file, 'w') as outfile:
-        preset_json = {name: preset for name,preset in presets.items() if not preset.get('locked')}
-        json.dump(preset_json, outfile, indent=4)
 
 if __name__ == '__main__':
     guiMain()
+

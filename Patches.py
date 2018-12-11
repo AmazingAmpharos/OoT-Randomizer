@@ -10,8 +10,7 @@ from Hints import writeGossipStoneHints, buildBossRewardHints, \
 from Utils import data_path
 from Messages import read_messages, update_message_by_id, read_shop_items, \
         write_shop_items, remove_unused_messages, make_player_message, \
-        add_song_messages, update_item_messages, \
-        message_patch_for_dungeon_items, repack_messages, shuffle_messages
+        add_item_messages, repack_messages, shuffle_messages
 from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
@@ -1405,7 +1404,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
             rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
 
     # give dungeon items the correct messages
-    message_patch_for_dungeon_items(messages, shop_items, world)
+    add_item_messages(messages, shop_items, world)
     if world.enhance_map_compass:
         reward_list = {'Kokiri Emerald':   "\x05\x42Kokiri Emerald\x05\x40",
                        'Goron Ruby':       "\x05\x41Goron Ruby\x05\x40",
@@ -1463,12 +1462,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # update happy mask shop to use new SOLD OUT text id
     rom.write_int16(shop_item_file.start + 0x1726, shop_items[0x26].description_message)
-
-    # add song messages
-    add_song_messages(messages, world)
-
-    # reduce item message lengths
-    update_item_messages(messages, world)
 
     # Add 3rd Wallet Upgrade
     rom.write_int16(0xB6D57E, 0x0003)
