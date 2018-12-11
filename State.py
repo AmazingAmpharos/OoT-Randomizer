@@ -288,7 +288,7 @@ class State(object):
 
     def can_finish_GerudoFortress(self):
         if self.world.gerudo_fortress == 'normal':
-            return self.has('Small Key (Gerudo Fortress)', 4) and (self.can_use('Bow') or self.can_use('Hookshot') or self.can_use('Hover Boots') or self.world.logic_tricks)
+            return self.has('Small Key (Gerudo Fortress)', 4) and (self.can_use('Bow') or self.can_use('Hookshot') or self.can_use('Hover Boots') or self.world.logic_gerudo_kitchen)
         elif self.world.gerudo_fortress == 'fast':
             return self.has('Small Key (Gerudo Fortress)', 1) and self.is_adult()
         else:
