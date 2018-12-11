@@ -31,3 +31,7 @@ GOSSIP_HINT_CONDITION:
 ; 0 = Mask of Truth
 ; 1 = Stone of Agony
 ; 2 = No Requirements
+
+JABU_ELEVATOR_ENABLE:
+.byte 0x00
+.align 4

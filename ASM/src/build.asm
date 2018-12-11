@@ -45,6 +45,8 @@
 .include "chus_in_logic.asm"
 .include "rainbow_bridge.asm"
 .include "gossip_hints.asm"
+.include "potion_shop.asm"
+.include "jabu_elevator.asm"
 .include "debug.asm"
 .importobj "../build/bundle.o"
 FONT_TEXTURE:
