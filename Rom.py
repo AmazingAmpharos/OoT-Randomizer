@@ -22,7 +22,7 @@ class LocalRom(object):
 
         os.chdir(local_path())
 
-        with open(data_path('symbols.json'), 'r') as stream:
+        with open(data_path('generated/symbols.json'), 'r') as stream:
             symbols = json.load(stream)
             self.symbols = { name: int(addr, 16) for name, addr in symbols.items() }
 
@@ -84,7 +84,7 @@ class LocalRom(object):
     def restore(self):
         self.buffer = copy.copy(self.original)
         self.changed_address = {}
-        self.changed_dma = {}  
+        self.changed_dma = {}
         self.__last_address = None
 
     def sym(self, symbol_name):

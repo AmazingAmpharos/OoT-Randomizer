@@ -83,7 +83,7 @@ for (name, sym) in symbols.items():
         else:
             continue
         data_symbols[name] = '{0:08X}'.format(addr)
-with open('../data/symbols.json', 'w') as f:
+with open('../data/generated/symbols.json', 'w') as f:
     json.dump(data_symbols, f, indent=4, sort_keys=True)
 
 if pj64_sym_path:
@@ -94,4 +94,4 @@ if pj64_sym_path:
             f.write('{0},{1},{2}\n'.format(sym['address'], sym['type'], sym_name))
 
 # Diff ROMs
-create_diff('roms/base.z64', 'roms/patched.z64', '../data/rom_patch.txt')
+create_diff('roms/base.z64', 'roms/patched.z64', '../data/generated/rom_patch.txt')
