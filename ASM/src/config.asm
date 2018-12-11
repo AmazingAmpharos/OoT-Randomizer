@@ -67,6 +67,9 @@ RAINBOW_BRIDGE_CONDITION:
 ; 0 = Open
 ; 1 = Medallions
 ; 2 = Dungeons
+; 3 = Stones
+; 4 = Vanilla
+; 5 = Tokens
 
 GOSSIP_HINT_CONDITION:
 .word 0x00

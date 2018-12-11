@@ -443,7 +443,9 @@
                     Shadow_Medallion and Spirit_Medallion and Light_Medallion and
                     Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)
                 or ((bridge == 'stones') and
-                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)"
+                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)
+                or ((bridge == 'tokens') and
+                    (Gold_Skulltula_Token, 100))"
         }
     },
     {

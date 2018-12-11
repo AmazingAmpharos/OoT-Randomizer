@@ -535,30 +535,31 @@ setting_infos = [
             name           = 'bridge',
             default        = 'medallions',
             choices        = {
-                'dungeons':   'All Dungeons',
-				'stones':	  'All Spiritual Stones',
-                'medallions': 'All Medallions',
-                'vanilla':    'Vanilla Requirements',
                 'open':       'Always Open',
+                'vanilla':    'Vanilla Requirements',
+                'stones':	  'All Spiritual Stones',
+                'medallions': 'All Medallions',
+                'dungeons':   'All Dungeons',
+                'tokens':     '100 Gold Skulltula Tokens'
                 },
             args_help      = '''\
                              Select requirement to spawn the Rainbow Bridge to reach Ganon's Castle. (default: %(default)s)
-                             Medallions:    Collect all six medallions to create the bridge.
-                             Vanilla:       Collect only the Shadow and Spirit Medallions and possess the Light Arrows.
-                             All Dungeons:  Collect all spiritual stones and all medallions to create the bridge.
-                             Open:          The bridge will spawn without an item requirement.
+                             open:       The bridge will spawn without an item requirement.
+                             vanilla:    Collect only the Shadow and Spirit Medallions and possess the Light Arrows.
+                             stones:     Collect all three Spiritual Stones to create the bridge.
+                             medallions: Collect all six Medallions to create the bridge.
+                             dungeons:   Collect all Spiritual Stones and all Medallions to create the bridge.
+                             tokens:     Collect all 100 Gold Skulltula tokens.
                              ''',
             gui_text       = 'Rainbow Bridge Requirement',
             gui_group      = 'open',
             gui_tooltip    = '''\
-                             'All Dungeons': All Medallions and Stones
-        
-                             'All Medallions': All 6 Medallions only
-        
-                             'Vanilla Requirements': Spirit and Shadow
-                             Medallions and the Light Arrows
-        
-                             'Always Open': Rainbow Bridge is always present
+                             'Always Open': Rainbow Bridge is always present.
+                             'Vanilla Requirements': Spirit/Shadow Medallions and Light Arrows.
+                             'All Spiritual Stones': All 3 Spiritual Stones.
+                             'All Medallions': All 6 Medallions.
+                             'All Dungeons': All Medallions and Spiritual Stones.
+                             '100 Gold Skulltula Tokens': All 100 Gold Skulltula Tokens.
                              ''',
             shared         = True,
             ),
