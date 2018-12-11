@@ -161,7 +161,7 @@ def parse_color(s, color_choices):
 def logic_tricks_entry_tooltip(widget, pos):
     val = widget.get()
     if val in logic_tricks:
-        text = logic_tricks[val]['tooltip']
+        text = val + '\n\n' + logic_tricks[val]['tooltip']
         text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
         return text
     else:
@@ -171,7 +171,7 @@ def logic_tricks_list_tooltip(widget, pos):
     index = widget.index("@%s,%s" % (pos))
     val = widget.get(index)
     if val in logic_tricks:
-        text = logic_tricks[val]['tooltip']
+        text = val + '\n\n' + logic_tricks[val]['tooltip']
         text = '\n'.join([line.strip() for line in text.splitlines()]).strip()
         return text
     else:
