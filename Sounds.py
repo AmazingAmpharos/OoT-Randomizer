@@ -1,6 +1,5 @@
 # SOUNDS.PY
 #
-# I'd like to introduce you to my son, Sounds.py.
 # A data-oriented module created to avoid cluttering (and entangling) other,
 # more important modules with sound data.
 #
@@ -30,9 +29,12 @@ from collections import namedtuple
 
 
 class Tags(Enum):
-    LOOPED = 0
-    #IMMEDIATE
-    #BRIEF
+    LOOPED    = 0
+    QUIET     = 1
+    IMMEDIATE = 2
+    BRIEF     = 3
+    #Incompatible with NAVI_ENEMY
+    INC_NE    = 4
 
 
 Sound = namedtuple('Sound', 'id      keyword            label                 tags')
@@ -41,13 +43,13 @@ class Sounds(Enum):
     CUCCO_CLUCK      = Sound(0x2812, 'cluck',           'Cluck',              [])
     RUPEE            = Sound(0x4803, 'rupee',           'Rupee',              [])
     SOFT_BEEP        = Sound(0x4804, 'soft-beep',       'Soft Beep',          [])
-    HEART_RECOVERY   = Sound(0x480B, 'recovery-heart',  'Recovery Heart',     [])
-    TIMER            = Sound(0x481A, 'timer',           'Timer',              [])
-    HP_LOW           = Sound(0x481B, 'low-health',      'Low Health',         [])
+    HP_RECOVER       = Sound(0x480B, 'recover-health',  'Recover Health',     [])
+    TIMER            = Sound(0x481A, 'timer',           'Timer',              [Tags.INC_NE])
+    HP_LOW           = Sound(0x481B, 'low-health',      'Low Health',         [Tags.INC_NE])
     NOTIFICATION     = Sound(0x4820, 'notification',    'Notification',       [])
-    TAMBOURINE       = Sound(0x4842, 'tambourine',      'Tambourine',         [])
+    TAMBOURINE       = Sound(0x4842, 'tambourine',      'Tambourine',         [Tags.QUIET])
     CARROT_REFILL    = Sound(0x4845, 'carrot-refill',   'Carrot Refill',      [])
-    ZELDA_GASP       = Sound(0x6879, 'zelda-gasp',      'Zelda - Gasp',       [])
+    ZELDA_ADULT_GASP = Sound(0x6879, 'adult-zelda-gasp','Adult Zelda - Gasp', [])
     ZORA_KING        = Sound(0x687A, 'mweep',           'Mweep!',             [])
     ICE_SHATTER      = Sound(0x0875, 'shattering-ice',  'Shattering Ice',     [])
     EXPLOSION        = Sound(0x180E, 'explosion',       'Explosion',          [])
@@ -62,43 +64,43 @@ class Sounds(Enum):
     SKULLTULA        = Sound(0x39DA, 'skulltula',       'Skulltula',          [])
     REDEAD           = Sound(0x38E5, 'redead',          'Redead',             [])
     POE              = Sound(0x38EC, 'poe',             'Poe',                [])
-    RUTO             = Sound(0x6863, 'ruto',            'Princess Ruto',      [])
-    HOWL             = Sound(0x28AE, 'howl',            'Howl',               [])
+    RUTO_CHILD       = Sound(0x6863, 'child-ruto',      'Child Ruto',         [])
+    DUSK_HOWL        = Sound(0x28AE, 'dusk-howl',       'Dusk Howl',          [])
     SCRUB_BUSINESS   = Sound(0x3882, 'business-scrub',  'Business Scrub',     [])
     GUAY             = Sound(0x38B6, 'guay',            'Guay',               [])
     NAVI_HELLO       = Sound(0x6844, 'navi-hello',      'Navi - Hello!',      [])
     NAVI_RANDOM      = Sound(0x6843, 'navi-random',     'Navi - Random',      [])
     NAVI_HEY         = Sound(0x685F, 'navi-hey',        'Navi - Hey!',        [])
-    BOOTS_IRON       = Sound(0x080D, 'iron-boots',      'Iron Boots',         [])
-    HAMMER           = Sound(0x180A, 'hammer',          'Hammer',             [])
-    SWORD_BOUNCE     = Sound(0x181A, 'sword-bounce',    'Sword Bounce',       [])
-    BOW              = Sound(0x1830, 'bow',             'Bow',                [])
-    HORSE_GALLOP     = Sound(0x2804, 'gallop',          'Gallop',             [])
-    DRAWBRIDGE       = Sound(0x280E, 'drawbridge',      'Drawbridge',         [])
+    BOOTS_IRON       = Sound(0x080D, 'iron-boots',      'Iron Boots',         [Tags.QUIET])
+    HAMMER_BONK      = Sound(0x180A, 'hammer-bonk',     'Hammer Bonk',        [])
+    SWORD_BONK       = Sound(0x181A, 'sword-bonk',      'Sword Bonk',         [])
+    BOW_TWANG        = Sound(0x1830, 'bow-twang',       'Bow Twang',          [])
+    HORSE_TROT       = Sound(0x2804, 'horse-trot',      'Horse Trot',         [])
+    DRAWBRIDGE_SET   = Sound(0x280E, 'drawbridge-set',  'Drawbridge Set',     [])
     SWITCH           = Sound(0x2815, 'switch',          'Switch',             [])
-    BOMB_BOUNCE      = Sound(0x282F, 'bomb-bounce',     'Bomb Bounce',        [])
-    BONGO            = Sound(0x3950, 'bongo-bongo',     'Bongo Bongo',        [])
+    BOMB_BOUNCE      = Sound(0x282F, 'bomb-bounce',     'Bomb Bounce',        [Tags.QUIET])
+    BONGO            = Sound(0x3950, 'bongo-bongo',     'Bongo Bongo',        [Tags.QUIET])
     BOOTS_HOVER      = Sound(0x08C9, 'hover-boots',     'Hover Boots',        [Tags.LOOPED])
     TWINROVA_BICKER  = Sound(0x39E7, 'twinrova-bicker', 'Twinrova - Bicker',  [Tags.LOOPED])
 
 
 # Sound pools
-standard   = [enum for enum in Sounds if Tags.LOOPED not in enum.value.tags]
-looping    = [enum for enum in Sounds if Tags.LOOPED in enum.value.tags]
+standard   = [s for s in Sounds if Tags.LOOPED not in s.value.tags]
+looping    = [s for s in Sounds if Tags.LOOPED in s.value.tags]
+# Navi Enemy breaks in these two cases (Not sure why)
+navi_enemy = [s for s in standard if Tags.INC_NE not in s.value.tags]
 
 
 SoundHook = namedtuple('SoundHook', 'pool locations')
 class SoundHooks(Enum):
-    NAVI_OVERWORLD  = SoundHook(standard, [0xAE7EF2, 0xC26C7E])
-    NAVI_ENEMY      = SoundHook(standard, [0xAE7EC6])
-    HP_LOW          = SoundHook(standard, [0xADBA1A])
-    BOOTS_HOVER     = SoundHook(standard, [0xBDBD8A])
+    NAVI_OVERWORLD  = SoundHook(standard,   [0xAE7EF2, 0xC26C7E])
+    NAVI_ENEMY      = SoundHook(navi_enemy, [0xAE7EC6])
+    HP_LOW          = SoundHook(standard,   [0xADBA1A])
+    #BOOTS_HOVER     = SoundHook(standard, [0xBDBD8A])
 
 
 def get_patch_dict():
-    keys   = [enum.value.keyword for enum in Sounds]
-    values = [enum.value.id for enum in Sounds]
-    return dict(zip(keys, values))
+    return {s.value.keyword: s.value.id for s in Sounds}
 
 
 def get_hook_pool(sound_hook):
@@ -107,9 +109,7 @@ def get_hook_pool(sound_hook):
 
 def get_setting_choices(sound_hook):
     pool     = sound_hook.value.pool
-    keywords = [enum.value.keyword for enum in pool]
-    labels   = [enum.value.label for enum in pool]
-    choices  = dict(zip(keywords, labels))
+    choices  = {s.value.keyword: s.value.label for s in pool}
     result   = {
         'default': 'Default',
         'random':  'Random Choice',
