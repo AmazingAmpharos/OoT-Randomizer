@@ -24,3 +24,7 @@ TIME_TRAVEL_SAVED_EQUIPS:
 .halfword 0x0000 ; Equipment
 .halfword 0x0000 ; Owned equipment
 .align 4
+
+JABU_ELEVATOR_ENABLE:
+.byte 0x00 
+.align 4

@@ -229,7 +229,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     if world.bombchus_in_logic:
         rom.write_int32(rom.sym('BOMBCHUS_IN_LOGIC'), 1)
 
-
     # Change graveyard graves to not allow grabbing on to the ledge
     rom.write_byte(0x0202039D, 0x20)
     rom.write_byte(0x0202043C, 0x24)
@@ -1100,6 +1099,12 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         update_message_by_id(messages, 0x70f7, new_message)
         new_message = "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41%d points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned %d points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this." % (poe_points, poe_points)
         update_message_by_id(messages, 0x70f8, new_message)
+
+
+    # use faster jabu elevator
+    if not world.dungeon_mq['Jabu Jabus Belly'] and world.shuffle_scrubs == 'off':
+        symbol = rom.sym('JABU_ELEVATOR_ENABLE')
+        rom.write_byte(symbol, 0x01)
 
     # Sets hooks for gossip stone changes
 
