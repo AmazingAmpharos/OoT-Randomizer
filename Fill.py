@@ -331,10 +331,25 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
                 # in one world being placed late in another world. If this is not
                 # done then one player may be waiting a long time for other players.
                 if location.world.id != item_to_place.world.id:
-                    source_location = item_to_place.world.get_location(location.name)
-                    if not source_location.can_fill(maximum_exploration_state_list[source_location.world.id], item_to_place, perform_access_check):
-                        # location wasn't reachable in item's world, so skip it
-                        continue
+                    try:
+                        source_location = item_to_place.world.get_location(location.name)
+                        if not source_location.can_fill(maximum_exploration_state_list[item_to_place.world.id], item_to_place, perform_access_check):
+                            # location wasn't reachable in item's world, so skip it
+                            continue
+                    except RuntimeError:
+                        # This location doesn't exist in the other world, let's look elsewhere.
+                        # Check access to whatever parent region exists in the other world.
+                        can_reach = True
+                        parent_region = location.parent_region
+                        while parent_region:
+                            try:
+                                source_region = item_to_place.world.get_region(parent_region.name)
+                                can_reach = source_region.can_reach(maximum_exploration_state_list[item_to_place.world.id])
+                                break
+                            except RuntimeError:
+                                parent_region = parent_region.entrances[0].parent_region
+                        if not can_reach:
+                            continue
 
                 if location.disabled == DisableType.PENDING:
                     if not State.can_beat_game(maximum_exploration_state_list):
