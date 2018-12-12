@@ -59,6 +59,7 @@ uint32_t active_item_action_id = 0;
 uint32_t active_item_text_id = 0;
 uint32_t active_item_object_id = 0;
 uint32_t active_item_graphic_id = 0;
+uint32_t active_item_fast_chest = 0;
 
 void item_overrides_init() {
     while (cfg_item_overrides[item_overrides_count].key.all != 0) {
@@ -151,6 +152,7 @@ void activate_override(override_t override) {
     active_item_text_id = item_row->text_id;
     active_item_object_id = item_row->object_id;
     active_item_graphic_id = item_row->graphic_id;
+    active_item_fast_chest = item_row->fast_chest;
     PLAYER_NAME_ID = override.value.player;
 }
 
@@ -162,6 +164,7 @@ void clear_override() {
     active_item_text_id = 0;
     active_item_object_id = 0;
     active_item_graphic_id = 0;
+    active_item_fast_chest = 0;
 }
 
 void push_pending_item(override_t override) {

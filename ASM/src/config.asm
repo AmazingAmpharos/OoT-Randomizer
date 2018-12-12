@@ -39,4 +39,6 @@ JABU_ELEVATOR_ENABLE:
 .byte 0x00
 OCARINAS_SHUFFLED:
 .byte 0x00
+FAST_CHESTS:
+.byte 0x01
 .align 4
