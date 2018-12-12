@@ -504,6 +504,9 @@ def guiMain(settings=None):
         elif presets[preset_name].get('locked', False):
             messagebox.showerror("Invalid Preset", "You cannot modify a locked preset!")
             return
+        else:
+            if messagebox.askquestion("Overwrite Preset", 'Are you sure you want to overwrite the "%s" preset?' % preset_name) != 'yes':
+                return
 
         settings = guivars_to_settings(guivars)
         preset = {setting.name: settings.__dict__[setting.name] for setting in
