@@ -1,5 +1,6 @@
 import random
 import struct
+import itertools
 
 from World import World
 from Rom import LocalRom
@@ -1055,7 +1056,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # Write item overrides
     override_table = get_override_table(world)
-    rom.write_bytes(rom.sym('cfg_item_overrides'), override_table)
+    rom.write_bytes(rom.sym('cfg_item_overrides'), get_override_table_bytes(override_table))
     rom.write_byte(rom.sym('PLAYER_ID'), world.id + 1) # Write player ID
 
     # Revert Song Get Override Injection
@@ -1459,11 +1460,14 @@ def read_rom_item(rom, item_id):
     }
 
 
+
 def get_override_table(world):
-    return b''.join(sorted(map(get_override_entry, world.get_filled_locations())))
+    return list(filter(lambda val: val != None, map(get_override_entry, world.get_filled_locations())))
 
 
 override_struct = struct.Struct('>xBBBxBH') # match override_t in get_items.c
+def get_override_table_bytes(override_table):
+    return b''.join(sorted(itertools.starmap(override_struct.pack, override_table)))
 
 
 def get_override_entry(location):
@@ -1471,7 +1475,7 @@ def get_override_entry(location):
     default = location.default
     item_id = location.item.index
     if None in [scene, default, item_id]:
-        return b''
+        return None
 
     player_id = location.item.world.id + 1
 
@@ -1491,9 +1495,9 @@ def get_override_entry(location):
     elif location.type in ['Song', 'Cutscene']:
         type = 5
     else:
-        return b''
+        return None
 
-    return override_struct.pack(scene, type, default, player_id, item_id)
+    return (scene, type, default, player_id, item_id)
 
 
 chestTypeMap = {
@@ -1593,8 +1597,8 @@ def get_actor_list(rom, actor_func):
 
 def get_override_itemid(override_table, scene, type, flags):
     for entry in override_table:
-        if len(entry) == 4 and entry[0] == scene and (entry[1] & 0x07) == type and entry[2] == flags:
-            return entry[3]
+        if entry[0] == scene and (entry[1] & 0x07) == type and entry[2] == flags:
+            return entry[4]
     return None
 
 
