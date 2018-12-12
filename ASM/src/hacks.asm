@@ -95,6 +95,22 @@
     nop
     nop
 
+; Override chest speed
+; Replaces:
+;   lb      t2, 0x0002 (t1)
+;   bltz    t2, @@after_chest_speed_check
+;   nop
+;   jal     0x80071420
+;   nop
+.org 0xBDA2E8 ; In memory: 0x803952D8
+    jal     override_chest_speed
+    lb      t2, 0x0002 (t1)
+    bltz    t3, @@after_chest_speed_check
+    nop
+    nop
+.skip 4 * 22
+@@after_chest_speed_check:
+
 ; Override text ID
 ; Replaces:
 ;   lbu     a1, 0x03 (v0)

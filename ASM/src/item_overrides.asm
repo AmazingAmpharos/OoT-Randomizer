@@ -79,6 +79,43 @@ override_graphic:
 
 ;==================================================================================================
 
+override_chest_speed:
+    li      t0, FAST_CHESTS
+    lbu     t0, 0x00 (t0)
+    bnez    t0, @@return
+    li      t3, -1 ; Always use fast animation
+
+    li      t0, active_item_row
+    lw      t0, 0x00 (t0)
+    beqz    t0, @@return
+    move    t3, t2 ; If no active override, use original value
+
+    li      t0, active_item_fast_chest
+    lw      t0, 0x00 (t0)
+    bnez    t0, @@return
+    li      t3, -1 ; Active override uses fast animation
+
+    li      t3, 1 ; Default case, use long animation
+
+@@return:
+    bltz    t3, @@no_call
+    nop
+     ; Displaced function call
+    addiu   sp, sp, -0x18
+    sw      t3, 0x10 (sp)
+    sw      ra, 0x14 (sp)
+    jal     0x80071420
+    nop
+    lw      t3, 0x10 (sp)
+    lw      ra, 0x14 (sp)
+    addiu   sp, sp, 0x18
+@@no_call:
+
+    jr      ra
+    nop
+
+;==================================================================================================
+
 override_text:
     lbu     a1, 0x03 (v0) ; Displaced code
 
