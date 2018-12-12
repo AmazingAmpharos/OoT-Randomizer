@@ -1782,6 +1782,7 @@ def patch_cosmetics(settings, rom):
 
     # patch music
     if settings.background_music == 'random':
+        restore_music(rom)
         randomize_music(rom)
     elif settings.background_music == 'off':
         disable_music(rom)
