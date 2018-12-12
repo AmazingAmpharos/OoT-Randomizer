@@ -68,7 +68,8 @@ GS_TOKEN_MESSAGES = [0x00B4, 0x00B5] # Get Gold Skulltula Token messages
 # messages for shorter item messages
 # ids are in the space freed up by move_shop_item_messages()
 ITEM_MESSAGES = {
-    0x0001: "\x08\x13\x2DYou borrowed a \x05\x41Pocket Egg\x05\x40!\x01A Pocket Cucco will hatch from\x01it overnight. Be sure to give it\x01back when you are done with it.",
+    0x0001: "\x08\x06\x30\x05\x41TEXT ID ERROR!\x05\x40",
+    0x9001: "\x08\x13\x2DYou borrowed a \x05\x41Pocket Egg\x05\x40!\x01A Pocket Cucco will hatch from\x01it overnight. Be sure to give it\x01back when you are done with it.",
     0x0002: "\x08\x13\x2FYou returned the Pocket Cucco\x01and got \x05\x41Cojiro\x05\x40 in return!\x01Unlike other Cuccos, Cojiro\x01rarely crows.",
     0x0003: "\x08\x13\x30You got an \x05\x41Odd Mushroom\x05\x40!\x01A fresh mushroom like this is\x01sure to spoil quickly! Take it to\x01the Kakariko Potion Shop, quickly!",
     0x0004: "\x08\x13\x31You received an \x05\x41Odd Potion\x05\x40!\x01It may be useful for something...\x01Hurry to the Lost Woods!",

@@ -21,7 +21,6 @@ void load_gi_object_file(uint32_t object_file_id, uint8_t *buf) {
     read_file(buf, vrom_start, size);
 }
 
-
 void load_gi_object(gi_object_t *gi_obj, uint32_t gi_id) {
     gi_obj->gi_id = gi_id;
     load_gi_object_file(0x10B, gi_obj->buf);

@@ -833,9 +833,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
 
     # Make all chest opening animations fast
-    if world.fast_chests:
-        rom.write_int32(0xBDA2E8, 0x240AFFFF) # addiu   t2, r0, -1
-                               # replaces # lb      t2, 0x0002 (t1)
+    rom.write_byte(rom.sym('FAST_CHESTS'), int(world.fast_chests))
 
 
     # Set up Rainbow Bridge conditions
@@ -1311,22 +1309,13 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         for _,[door_byte, door_bits] in locked_doors.items():
             write_bits_to_save(door_byte, door_bits)
 
-    #Fix item chest animations
-    chestAnimations = {
-        0x3D: 0xED, #0x13 #Heart Container
-        0x3E: 0xEC, #0x14 #Piece of Heart
-        0x42: 0x02, #0xFE #Small Key
-        0x48: 0xF7, #0x09 #Recovery Heart
-        0x4F: 0xED, #0x13 #Heart Container
-        0x76: 0xEC, #0x14 #WINNER! Piece of Heart
-    }
+    # Fix chest animations
     if world.bombchus_in_logic:
-        #Fix bombchu chest animations
-        chestAnimations[0x6A] = 0x28 #0xD8 #Bombchu (5)
-        chestAnimations[0x03] = 0x28 #0xD8 #Bombchu (10)
-        chestAnimations[0x6B] = 0x28 #0xD8 #Bombchu (20)
-    for item_id, gfx_id in chestAnimations.items():
-        rom.write_byte(0xBEEE8E + (item_id * 6) + 2, gfx_id)
+        bombchu_ids = [0x6A, 0x03, 0x6B]
+        for i in bombchu_ids:
+            item = read_rom_item(rom, i)
+            item['fast_chest'] = 0
+            write_rom_item(rom, i, item)
 
     # Update chest type sizes
     if world.correct_chest_sizes:
@@ -1436,28 +1425,25 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     return rom
 
 
-item_row_struct = struct.Struct('>BBHHxBIIhh') # Match item_row_t in item_table.h
+item_row_struct = struct.Struct('>BBHHBBIIhh') # Match item_row_t in item_table.h
+item_row_fields = [
+    'base_item_id', 'action_id', 'text_id', 'object_id', 'graphic_id', 'fast_chest',
+    'upgrade_fn', 'effect_fn', 'effect_arg1', 'effect_arg2',
+]
 
 
 def read_rom_item(rom, item_id):
     addr = rom.sym('item_table') + (item_id * item_row_struct.size)
     row_bytes = rom.read_bytes(addr, item_row_struct.size)
     row = item_row_struct.unpack(row_bytes)
+    return { item_row_fields[i]: row[i] for i in range(len(item_row_fields)) }
 
-    graphic_id = row[4]
-    fast_chest = False
-    if graphic_id >= 0x80:
-        graphic_id = 0x100 - graphic_id
-        fast_chest = True
 
-    return {
-        'base_item_id': row[0],
-        'action_id': row[1],
-        'text_id': row[2],
-        'object_id': row[3],
-        'graphic_id': graphic_id,
-        'fast_chest': fast_chest,
-    }
+def write_rom_item(rom, item_id, item):
+    addr = rom.sym('item_table') + (item_id * item_row_struct.size)
+    row = [item[f] for f in item_row_fields]
+    row_bytes = item_row_struct.pack(*row)
+    rom.write_bytes(addr, row_bytes)
 
 
 
@@ -1618,11 +1604,8 @@ def update_chest_sizes(rom, override_table):
         if scene == 1 and flags == 1:
             continue
 
-        itemType = 0  # Item animation
-
         rom_item = read_rom_item(rom, item_id)
-        itemType = 0 if rom_item['fast_chest'] else 1
-        # Don't use boss chests
+        itemType = int(not rom_item['fast_chest'])
 
         default = rom.read_int16(actor + 14)
         chestType = default & 0xF000
