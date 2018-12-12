@@ -44,7 +44,7 @@ rainbow_bridge:
     li        at, 0
     lh        t7, 0xD0(a3) ; Gold Skulltulas
     jr        ra
-    sge       t2, t7, 0x64
+    slti      t2, t7, 0x64
 
 @@rainbow_bridge_open:
     li        t2, 0

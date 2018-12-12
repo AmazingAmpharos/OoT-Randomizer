@@ -49,15 +49,6 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     prioitempool = [item for item in itempool if not item.advancement and item.priority]
     restitempool = [item for item in itempool if not item.advancement and not item.priority]
 
-    # handle start with fast travel (removes songs)
-    if not worlds[0].shuffle_song_items and worlds[0].start_with_fast_travel:
-        for song in songlist:
-            if not any(song == item.name for item in songitempool):
-                # move one non-advancement/priority item into song pool
-                songitempool.append(restitempool[-1])
-                del restitempool[-1]
-                
-
 
     # We place all the shop items first. Like songs, they have a more limited
     # set of locations that they can be placed in, so placing them first will
@@ -93,6 +84,8 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # the song locations only.
     if not worlds[0].shuffle_song_items:
         fill_songs(window, worlds, song_locations, songitempool, progitempool)
+        if worlds[0].start_with_fast_travel:
+            fill_locations += [location for location in song_locations if location.item is None]
 
     # Put one item in every dungeon, needs to be done before other items are
     # placed to ensure there is a spot available for them

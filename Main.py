@@ -182,8 +182,10 @@ def main(settings, window=dummy_window()):
 
         window.update_status('Saving Uncompressed ROM')
         if settings.world_count > 1:
-            outfilebase = "%sP%d" % (outfilebase, settings.player_num)
-        output_path = os.path.join(output_dir, '%s.z64' % outfilebase)
+            filename = "%sP%d.z64" % (outfilebase, settings.player_num)
+        else:
+            filename = '%s.z64' % outfilebase
+        output_path = os.path.join(output_dir, filename)
         rom.write_to_file(output_path)
         if settings.compress_rom == 'True':
             window.update_status('Compressing ROM')
@@ -211,7 +213,7 @@ def main(settings, window=dummy_window()):
                 logger.info('OS not supported for compression')
 
             if compressor_path != "":
-                run_process(window, logger, [compressor_path, output_path, os.path.join(output_dir, '%s-comp.z64' % outfilebase)])
+                run_process(window, logger, [compressor_path, output_path, output_path[:output_path.rfind('.')] + '-comp.z64'])
             os.remove(output_path)
         window.update_progress(95)
 
