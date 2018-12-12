@@ -911,6 +911,8 @@ def get_pool_core(world):
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
 
     if world.item_pool_value == 'plentiful':
+        if not world.shuffle_kokiri_sword:
+            replace_max_item(easy_items, 'Kokiri Sword', 0)
         pool.extend(easy_items)
     else:
         pool.extend(normal_items)
