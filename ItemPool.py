@@ -915,9 +915,6 @@ def get_pool_core(world):
     else:
         pool.extend(normal_items)
 
-    if world.damage_multiplier == 'ohko':
-        replace_max_item(pool, 'Ice Trap', 0)
-
     for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
 
