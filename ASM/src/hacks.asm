@@ -691,8 +691,9 @@ skip_GS_BGS_text:
 ;   lhu     t0, 0x04C6 (t0)
 ;   li      at, 0x0B
 .org 0xEF4f98
-    lhu     t0, 0x0670 (v0)
-    li      at, 0x0800
+    lhu     t0, 0x670 (v0)
+    andi    at, t0, 0x0800
+    beqzl   at, 0xef5060
 
 ;==================================================================================================
 ; Talon Cutscene Skip
