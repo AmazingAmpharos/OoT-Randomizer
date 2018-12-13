@@ -16,7 +16,8 @@ from State import State
 from Spoiler import Spoiler
 from EntranceList import link_entrances
 from Rom import LocalRom
-from Patches import patch_rom, patch_cosmetics
+from Patches import patch_rom
+from Cosmetics import patch_cosmetics
 from DungeonList import create_dungeons
 from Fill import distribute_items_restrictive
 from Item import Item

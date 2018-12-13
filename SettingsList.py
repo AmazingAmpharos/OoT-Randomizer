@@ -1,7 +1,7 @@
 import argparse
 import re
 import math
-from Patches      import get_tunic_color_options, get_navi_color_options
+from Cosmetics import get_tunic_color_options, get_navi_color_options
 from LocationList import location_table
 import Sounds as sfx
 
