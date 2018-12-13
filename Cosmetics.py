@@ -1,3 +1,4 @@
+from version import __version__
 import random
 import Sounds as sfx
 
@@ -79,6 +80,8 @@ def get_navi_color_options():
 
 
 def patch_cosmetics(settings, rom):
+    log = CosmeticsLog(settings)
+
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
 
@@ -91,7 +94,7 @@ def patch_cosmetics(settings, rom):
     # patch music
     if settings.background_music == 'random':
         restore_music(rom)
-        randomize_music(rom)
+        log.bgm = randomize_music(rom)
     elif settings.background_music == 'off':
         disable_music(rom)
     else:
@@ -99,16 +102,16 @@ def patch_cosmetics(settings, rom):
 
     # patch tunic colors
     tunics = [
-        (settings.kokiri_color, 0x00B6DA38), # Kokiri Tunic
-        (settings.goron_color,  0x00B6DA3B), # Goron Tunic
-        (settings.zora_color,   0x00B6DA3E), # Zora Tunic
+        ('Kokiri Tunic', settings.kokiri_color, 0x00B6DA38),
+        ('Goron Tunic', settings.goron_color,  0x00B6DA3B),
+        ('Zora Tunic', settings.zora_color,   0x00B6DA3E),
     ]
-    colorList = get_tunic_colors()
+    tunic_color_list = get_tunic_colors()
 
-    for tunic_option, address in tunics:
+    for tunic, tunic_option, address in tunics:
         # handle random
         if tunic_option == 'Random Choice':
-            tunic_option = random.choice(colorList)
+            tunic_option = random.choice(tunic_color_list)
         # handle completely random
         if tunic_option == 'Completely Random':
             color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
@@ -118,23 +121,25 @@ def patch_cosmetics(settings, rom):
         # build color from hex code
         else:
             color = list(int(tunic_option[i:i+2], 16) for i in (0, 2 ,4))
+            tunic_option = 'Custom'
         rom.write_bytes(address, color)
+        log.tunic_colors[tunic] = dict(option=tunic_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
     # patch navi colors
-    Navi = [
-        (settings.navi_color_default, [0x00B5E184]), # Default
-        (settings.navi_color_enemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
-        (settings.navi_color_npc,     [0x00B5E194]), # NPC
-        (settings.navi_color_prop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
+    navi = [
+        ('Navi Idle', settings.navi_color_default, [0x00B5E184]), # Default
+        ('Navi Targeting Enemy', settings.navi_color_enemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+        ('Navi Targeting NPC', settings.navi_color_npc,     [0x00B5E194]), # NPC
+        ('Navi Targeting Prop', settings.navi_color_prop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
                                   0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4,
                                   0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
     ]
-    naviList = get_navi_colors()
+    navi_color_list = get_navi_colors()
 
-    for navi_option, navi_addresses in Navi:
+    for navi_action, navi_option, navi_addresses in navi:
         # choose a random choice for the whole group
         if navi_option == 'Random Choice':
-            navi_option = random.choice(naviList)
+            navi_option = random.choice(navi_color_list)
         for address in navi_addresses:
             # completely random is random for every subgroup
             if navi_option == 'Completely Random':
@@ -147,23 +152,26 @@ def patch_cosmetics(settings, rom):
             else:
                 color = list(int(navi_option[i:i+2], 16) for i in (0, 2 ,4))
                 color = color + [0xFF] + color + [0x00]
+                navi_option = 'Custom'
             rom.write_bytes(address, color)
+            log.navi_colors[navi_action] = dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in color[0:3]]), color2=''.join(['{:02X}'.format(c) for c in color[4:7]]))
 
     # Configurable Sound Effects
     sfx_config = [
-          (settings.sfx_navi_overworld, sfx.SoundHooks.NAVI_OVERWORLD),
-          (settings.sfx_navi_enemy,     sfx.SoundHooks.NAVI_ENEMY),
-          (settings.sfx_low_hp,         sfx.SoundHooks.HP_LOW),
-          ]
+          ('Navi - Hint', settings.sfx_navi_overworld, sfx.SoundHooks.NAVI_OVERWORLD),
+          ('Navi - Enemy', settings.sfx_navi_enemy,     sfx.SoundHooks.NAVI_ENEMY),
+          ('Low HP', settings.sfx_low_hp,         sfx.SoundHooks.HP_LOW),
+    ]
     sound_dict = sfx.get_patch_dict()
 
-    for selection, hook in sfx_config:
+    for action, selection, hook in sfx_config:
         if selection != 'default':
             if selection == 'random':
                 selection = random.choice(sfx.get_hook_pool(hook)).value.keyword
             sound_id  = sound_dict[selection]
             for loc in hook.value.locations:
                 rom.write_int16(loc, sound_id)
+        log.sfx[action] = selection
 
     # Player Instrument
     instruments = {
@@ -181,8 +189,9 @@ def patch_cosmetics(settings, rom):
     else:
         choice = random.choice(list(instruments.keys()))
     rom.write_byte(0x00B53C7B, instruments[choice])
+    log.sfx['Ocarina'] = choice
 
-    return rom
+    return log
 
 
 # Format: (Title, Sequence ID)
@@ -238,24 +247,28 @@ bgm_sequence_ids = [
 
 
 def randomize_music(rom):
+    log = {}
+
     # Read in all the Music data
     bgm_data = []
     for bgm in bgm_sequence_ids:
         bgm_sequence = rom.read_bytes(0xB89AE0 + (bgm[1] * 0x10), 0x10)
         bgm_instrument = rom.read_int16(0xB89910 + 0xDD + (bgm[1] * 2))
-        bgm_data.append((bgm_sequence, bgm_instrument))
+        bgm_data.append((bgm[0], bgm_sequence, bgm_instrument))
 
     # shuffle data
     random.shuffle(bgm_data)
 
     # Write Music data back in random ordering
     for bgm in bgm_sequence_ids:
-        bgm_sequence, bgm_instrument = bgm_data.pop()
+        bgm_name, bgm_sequence, bgm_instrument = bgm_data.pop()
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
         rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
+        log[bgm[0]] = bgm_name
 
     # Write Fairy Fountain instrument to File Select (uses same track but different instrument set pointer for some reason)
     rom.write_int16(0xB89910 + 0xDD + (0x57 * 2), rom.read_int16(0xB89910 + 0xDD + (0x28 * 2)))
+    return log
 
 
 def disable_music(rom):
@@ -276,3 +289,52 @@ def restore_music(rom):
     # restore file select instrument
     bgm_instrument = rom.original[0xB89910 + 0xDD + (0x57 * 2): 0xB89910 + 0xDD + (0x57 * 2) + 0x02]
     rom.write_bytes(0xB89910 + 0xDD + (0x57 * 2), bgm_instrument)
+
+
+class CosmeticsLog(object):
+
+    def __init__(self, settings):
+        self.settings = settings
+        self.tunic_colors = {}
+        self.navi_colors = {}
+        self.sfx = {}
+        self.bgm = {}
+
+
+    def to_file(self, filename):
+        with open(filename, 'w') as outfile:
+            outfile.write(self.cosmetics_output())
+
+
+    def cosmetics_output(self):
+        output = ''
+        output += 'OoT Randomizer Version %s - Cosmetics Log\n' % (__version__)
+
+        format_string = '\n{key:{width}} {value}'
+        #keys = list(self.tunic_colors.keys()) + list(self.navi_colors.keys()) + list(self.sfx.keys()) + ['Default Targeting Option', 'Background Music']
+        #padding = 1 + len(max(keys, key=len))
+        padding = 40
+
+        output += format_string.format(key='Default Targeting Option:', value=self.settings.default_targeting, width=padding)
+        output += format_string.format(key='Background Music:', value=self.settings.background_music, width=padding)
+
+        output += '\n\nColors:\n'
+        for tunic, options in self.tunic_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=tunic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+        for navi_action, options in self.navi_colors.items():
+            color_option_string = '{option} (#{color1}, #{color2})'
+            output += format_string.format(key=navi_action+':', value=color_option_string.format(option=options['option'], color1=options['color1'], color2=options['color2']), width=padding)
+
+        output += '\n\nSFX:\n'
+        for key, value in self.sfx.items():
+            output += format_string.format(key=key+':', value=value, width=padding)
+
+        if self.settings.background_music == 'random':
+            #music_padding = 1 + len(max(self.bgm.keys(), key=len))
+            music_padding = 40
+            output += '\n\nBackground Music:\n'
+            for key, value in self.bgm.items():
+                output += format_string.format(key=key+':', value=value, width=music_padding)
+
+        return output
