@@ -234,22 +234,25 @@ void give_pending_item() {
 }
 
 void after_item_received() {
+    override_key_t key = active_override.key;
+    if (key.all == 0) {
+        return;
+    }
+
     if (active_override_is_outgoing) {
         OUTGOING_OVERRIDE = active_override;
     }
-    clear_override();
 
-    if (z64_link.incoming_item_actor == dummy_actor) {
-        // Received a pending item
-        override_key_t key = pending_item_queue[0].key;
+    if (key.all == pending_item_queue[0].key.all) {
+        pop_pending_item();
         if (key.type == DELAYED && key.flag == 0xFF) {
-            // Received incoming co-op item
             INCOMING_ITEM = 0;
             uint16_t *received_item_counter = (uint16_t *)(z64_file_addr + 0x90);
             (*received_item_counter)++;
         }
-        pop_pending_item();
     }
+
+    clear_override();
 }
 
 void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id) {
