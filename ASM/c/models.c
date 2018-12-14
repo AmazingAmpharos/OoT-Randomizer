@@ -13,7 +13,7 @@ typedef struct {
     uint8_t *buf;
 } loaded_object_t;
 
-loaded_object_t slots[slot_count] = { 0 };
+loaded_object_t object_slots[slot_count] = { 0 };
 
 void load_object_file(uint32_t object_id, uint8_t *buf) {
     z64_object_table_t *entry = &(z64_object_table[object_id]);
@@ -29,7 +29,7 @@ void load_object(loaded_object_t *object, uint32_t object_id) {
 
 loaded_object_t *get_object(uint32_t object_id) {
     for (int i = 0; i < slot_count; i++) {
-        loaded_object_t *object = &(slots[i]);
+        loaded_object_t *object = &(object_slots[i]);
         if (object->object_id == object_id) {
             return object;
         }
@@ -60,14 +60,14 @@ void scale_matrix(float *matrix, float scale_factor) {
 
 void models_init() {
     for (int i = 0; i < slot_count; i++) {
-        slots[i].object_id = 0;
-        slots[i].buf = heap_alloc(object_size);
+        object_slots[i].object_id = 0;
+        object_slots[i].buf = heap_alloc(object_size);
     }
 }
 
 void models_reset() {
     for (int i = 0; i < slot_count; i++) {
-        slots[i].object_id = 0;
+        object_slots[i].object_id = 0;
     }
 }
 

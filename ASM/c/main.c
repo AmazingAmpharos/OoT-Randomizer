@@ -27,3 +27,7 @@ void after_game_state_update() {
     draw_dungeon_info(db);
     draw_quickboots(db);
 }
+
+void after_scene_init() {
+    models_reset();
+}
