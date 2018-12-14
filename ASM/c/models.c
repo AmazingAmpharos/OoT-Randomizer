@@ -21,9 +21,9 @@ void load_object_file(uint32_t object_file_id, uint8_t *buf) {
     read_file(buf, vrom_start, size);
 }
 
-void load_gi_object(loaded_object_t *object, uint32_t graphic_id) {
+void load_object(loaded_object_t *object, uint32_t graphic_id) {
     object->graphic_id = graphic_id;
-    load_gi_object_file(0x10B, object->buf);
+    load_object_file(0x10B, object->buf);
 }
 
 loaded_object_t *get_object(uint32_t graphic_id) {
@@ -33,7 +33,7 @@ loaded_object_t *get_object(uint32_t graphic_id) {
             return object;
         }
         if (object->graphic_id == 0) {
-            load_gi_object(object, graphic_id);
+            load_object(object, graphic_id);
             return object;
         }
     }
@@ -61,7 +61,7 @@ void models_init() {
     // Use SOLD OUT model to indicate that an error occured
     error_object.graphic_id = 0x59;
     error_object.buf = heap_alloc(0x4D0);
-    load_gi_object_file(0x148, error_object.buf);
+    load_object_file(0x148, error_object.buf);
 
     for (int i = 0; i < slot_count; i++) {
         slots[i].graphic_id = 0;
@@ -77,11 +77,11 @@ void models_reset() {
 
 typedef void (*pre_draw_fn)(z64_actor_t *actor, z64_ctxt_t *global_ctxt,
         uint32_t unknown);
-#define pre_draw_1 ((pre_draw_gi_obj_fn)0x80022438)
-#define pre_draw_2 ((pre_draw_gi_obj_fn)0x80022554)
+#define pre_draw_1 ((pre_draw_fn)0x80022438)
+#define pre_draw_2 ((pre_draw_fn)0x80022554)
 
-typedef void (*draw_gi_obj_fn)(z64_ctxt_t *global_ctxt, uint32_t gi_id_minus_1);
-#define draw_gi_obj ((draw_gi_obj_fn)0x800570C0)
+typedef void (*draw_fn)(z64_ctxt_t *global_ctxt, uint32_t gi_id_minus_1);
+#define draw_model ((draw_fn)0x800570C0)
 
 #define matrix_stack_pointer ((float **)0x80121204)
 
@@ -93,5 +93,5 @@ void models_draw(z64_actor_t *heart_piece_actor, z64_ctxt_t *global_ctxt) {
     pre_draw_2(heart_piece_actor, global_ctxt, 0);
     set_object_segment(object);
     scale_matrix(*matrix_stack_pointer, 16.0);
-    draw_gi_obj(global_ctxt, object->graphic_id - 1);
+    draw_model(global_ctxt, object->graphic_id - 1);
 }
