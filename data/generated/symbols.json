@@ -38,9 +38,8 @@
     "dummy_actor": "03485100",
     "dungeon_count": "034850A8",
     "dungeons": "03484060",
-    "error_gi_obj": "034850B0",
+    "error_object": "034850B0",
     "font_sprite": "03483FEC",
-    "gi_obj_slots": "03485118",
     "hash_sprites": "0348509C",
     "hash_symbols": "03483F9C",
     "heap_next": "034850C8",
@@ -52,5 +51,6 @@
     "pending_item_queue": "03485158",
     "quest_items_sprite": "03483FFC",
     "setup_db": "03485108",
+    "slots": "03485118",
     "stones_sprite": "0348402C"
 }

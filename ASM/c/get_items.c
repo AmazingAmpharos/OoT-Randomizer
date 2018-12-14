@@ -6,39 +6,6 @@
 
 extern uint8_t OCARINAS_SHUFFLED;
 
-enum override_type {
-    BASE_ITEM = 0,
-    CHEST = 1,
-    COLLECTABLE = 2,
-    SKULL = 3,
-    GROTTO_SCRUB = 4,
-    DELAYED = 5,
-};
-
-typedef union {
-    uint32_t all;
-    struct {
-        char    pad_;
-        uint8_t scene;
-        uint8_t type;
-        uint8_t flag;
-    };
-} override_key_t;
-
-typedef union {
-    uint32_t all;
-    struct {
-        char     pad_;
-        uint8_t  player;
-        uint16_t item_id;
-    };
-} override_value_t;
-
-typedef struct {
-    override_key_t   key;
-    override_value_t value;
-} override_t;
-
 override_t cfg_item_overrides[512] = { 0 };
 int item_overrides_count = 0;
 
@@ -80,7 +47,7 @@ override_key_t get_override_search_key(z64_actor_t *actor, uint8_t scene, uint8_
 
         return (override_key_t){
             .scene = scene,
-            .type = CHEST,
+            .type = OVR_CHEST,
             .flag = actor->variable & 0x1F,
         };
     } else if (actor->actor_id == 0x15) {
@@ -91,25 +58,25 @@ override_key_t get_override_search_key(z64_actor_t *actor, uint8_t scene, uint8_
 
         return (override_key_t){
             .scene = scene,
-            .type = COLLECTABLE,
+            .type = OVR_COLLECTABLE,
             .flag = *(((uint8_t *)actor) + 0x141),
         };
     } else if (actor->actor_id == 0x19C) {
         return (override_key_t){
             .scene = (actor->variable >> 8) & 0x1F,
-            .type = SKULL,
+            .type = OVR_SKULL,
             .flag = actor->variable & 0xFF,
         };
     } else if (scene == 0x3E && actor->actor_id == 0x011A) {
         return (override_key_t){
             .scene = z64_file.grotto_id,
-            .type = GROTTO_SCRUB,
+            .type = OVR_GROTTO_SCRUB,
             .flag = item_id,
         };
     } else {
         return (override_key_t) {
             .scene = scene,
-            .type = BASE_ITEM,
+            .type = OVR_BASE_ITEM,
             .flag = item_id,
         };
     }
@@ -184,7 +151,7 @@ void push_coop_item() {
     if (INCOMING_ITEM != 0) {
         override_t override = { 0 };
         override.key.scene = 0xFF;
-        override.key.type = DELAYED;
+        override.key.type = OVR_DELAYED;
         override.key.flag = 0xFF;
         override.value.player = PLAYER_ID;
         override.value.item_id = INCOMING_ITEM;
@@ -195,7 +162,7 @@ void push_coop_item() {
 void push_delayed_item(uint8_t flag) {
     override_key_t search_key = { .all = 0 };
     search_key.scene = 0xFF;
-    search_key.type = DELAYED;
+    search_key.type = OVR_DELAYED;
     search_key.flag = flag;
     override_t override = lookup_override_by_key(search_key);
     if (override.key.all != 0) {
@@ -245,7 +212,7 @@ void after_item_received() {
 
     if (key.all == pending_item_queue[0].key.all) {
         pop_pending_item();
-        if (key.type == DELAYED && key.flag == 0xFF) {
+        if (key.type == OVR_DELAYED && key.flag == 0xFF) {
             // Received incoming co-op item
             INCOMING_ITEM = 0;
             uint16_t *received_item_counter = (uint16_t *)(z64_file_addr + 0x90);

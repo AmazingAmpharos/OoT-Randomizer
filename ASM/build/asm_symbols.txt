@@ -238,10 +238,10 @@
 804018D0 sprite_draw,000000F0
 804019C0 draw_setup,000001DC
 80401B9C gfx_init,00000188
-80401D24 load_gi_object_file,00000044
-80401D68 load_gi_object,00000024
-80401D8C get_gi_object,00000094
-80401E20 set_gi_object_segment,0000004C
+80401D24 load_object_file,00000044
+80401D68 load_object,00000024
+80401D8C get_object,00000094
+80401E20 set_object_segment,0000004C
 80401E6C scale_matrix,00000044
 80401EB0 models_init,00000074
 80401F24 models_reset,00000024
@@ -336,7 +336,7 @@
 804050AC .byt:0004
 804050AC cfg_file_select_hash
 804050B0 .byt:0008
-804050B0 error_gi_obj
+804050B0 error_object
 804050B8 .byt:0004
 804050B8 cfg_dungeon_info_reward_need_altar
 804050BC .byt:0004
@@ -370,7 +370,7 @@
 80405108 .byt:0010
 80405108 setup_db
 80405118 .byt:0030
-80405118 gi_obj_slots
+80405118 slots
 80405148 .byt:000E
 80405148 cfg_dungeon_is_mq
 80405158 .byt:0018
