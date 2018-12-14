@@ -1,7 +1,7 @@
 import argparse
 import re
 import math
-from Patches      import get_tunic_color_options, get_navi_color_options
+from Cosmetics import get_tunic_color_options, get_navi_color_options
 from LocationList import location_table
 import Sounds as sfx
 
@@ -418,6 +418,17 @@ setting_infos = [
             default        = True,
             shared         = True,
             ),
+    Checkbutton(
+        name='create_cosmetics_log',
+        args_help='''\
+                         Output a Cosmetics Log
+                         ''',
+        gui_text='Create Cosmetics Log',
+        gui_group='rom_tab',
+        gui_dependency=lambda guivar: guivar['compress_rom'].get() not in ['No Output', 'Patch File'],
+        default=True,
+        shared=False,
+    ),
     Setting_Widget(
         name='compress_rom',
         type=str,
