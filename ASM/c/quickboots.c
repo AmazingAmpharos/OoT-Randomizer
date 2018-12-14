@@ -7,6 +7,15 @@ pad_pressed;
 
 static _Bool display_active;
 
+//unknown 00 is a pointer to some vector transformation when the sound is tied to an actor. actor + 0x3E, when not tied to an actor (map), always 80104394
+//unknown 01 is always 4 in my testing
+//unknown 02 is a pointer to some kind of audio configuration Always 801043A0 in my testing
+//unknown 03 is always a3 in my testing
+//unknown 04 is always a3 + 0x08 in my testing (801043A8)
+typedef void(*playsfx_t)(uint16_t sfx, z64_xyzf_t *unk_00_, int8_t unk_01_ , float *unk_02_, float *unk_03_, float *unk_04_);
+
+#define z64_playsfx ((playsfx_t)       0x800C806C)
+
 void handle_quickboots() {
     uint16_t z_pad = z64_ctxt.input[0].raw.pad;
     pad_pressed_raw = (pad ^ z_pad) & z_pad;
@@ -19,16 +28,21 @@ void handle_quickboots() {
             if (z64_file.equip_boots == 2) z64_file.equip_boots = 1;
             else z64_file.equip_boots = 2;
             z64_UpdateEquipment(&z64_game, &z64_link);
+            z64_playsfx(0x835, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
         }
 
         if ((pad_pressed & DPAD_R) && z64_file.hover_boots) {
             if (z64_file.equip_boots == 3) z64_file.equip_boots = 1;
             else z64_file.equip_boots = 3;
             z64_UpdateEquipment(&z64_game, &z64_link);
+            z64_playsfx(0x835, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
         }
     }
     if (pad_pressed & DPAD_D) {
         display_active = !display_active;
+        uint16_t sfx = 0x4814;
+        if (display_active) sfx = 0x4813;
+        z64_playsfx(sfx, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
     }
 }
 
@@ -73,8 +87,6 @@ void draw_quickboots() {
                 sprite_draw(db, &items_sprite, 0, 286, 62, 10, 10);
             }
         }
-
-        //gDPFullSync(db->p++);
     }
 }
 
