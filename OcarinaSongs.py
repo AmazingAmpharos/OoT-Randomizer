@@ -28,7 +28,7 @@ def subsong(song1, song2):
 def fast_playback(activation):
     playback = []
     for note_index, note in enumerate(activation):
-        playback.append( {'note': note, 'duration': 0x03, 'volume': 0x57} )
+        playback.append( {'note': note, 'duration': 0x04, 'volume': 0x57} )
     return playback
 
 # give random durations and volumes to the notes
