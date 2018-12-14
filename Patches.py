@@ -1412,9 +1412,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     if world.free_scarecrow:
         # Played song as adult
         write_bits_to_save(0x0EE6, 0x10)
-    else:
-        # revert song skip
-        rom.write_int32s(0xEF4f98, [0x950804C6, 0x2401000B])
+        # Direct scarecrow behavior
+        symbol = rom.sym('FREE_SCARECROW_ENABLED')
+        rom.write_byte(symbol, 0x01)
 
     if world.ocarina_songs:
         replace_songs(rom)
