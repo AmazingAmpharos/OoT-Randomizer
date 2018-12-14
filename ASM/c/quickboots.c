@@ -32,12 +32,15 @@ void handle_quickboots() {
     }
 }
 
-void draw_quickboots(z64_disp_buf_t *db) {
-    if (CAN_USE_QUICKBOOTS && display_active) {
+void draw_quickboots() {
+    z64_disp_buf_t *db = &(z64_ctxt.gfx->overlay);
+    if (DISPLAY_QUICKBOOTS && display_active) {
         gSPDisplayList(db->p++, setup_db.buf);
         gDPPipeSync(db->p++);
         gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+        uint16_t alpha = z64_game.hud_alpha_channels.minimap;
+        if (alpha == 0xAA) alpha = 0xFF;
+        gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
 
         sprite_load(db, &dpad_sprite, 0, 1);
         sprite_draw(db, &dpad_sprite, 0, 269, 60, 8, 8);
@@ -71,8 +74,7 @@ void draw_quickboots(z64_disp_buf_t *db) {
             }
         }
 
-        gDPFullSync(db->p++);
-        gSPEndDisplayList(db->p++);
+        //gDPFullSync(db->p++);
     }
 }
 
