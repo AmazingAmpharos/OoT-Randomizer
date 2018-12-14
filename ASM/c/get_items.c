@@ -246,6 +246,7 @@ void after_item_received() {
     if (key.all == pending_item_queue[0].key.all) {
         pop_pending_item();
         if (key.type == DELAYED && key.flag == 0xFF) {
+            // Received incoming co-op item
             INCOMING_ITEM = 0;
             uint16_t *received_item_counter = (uint16_t *)(z64_file_addr + 0x90);
             (*received_item_counter)++;
