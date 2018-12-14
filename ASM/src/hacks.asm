@@ -204,8 +204,8 @@
 ;   nop
 .org 0xA88F78
     ; disabled until model code is done
-    ;jal     models_draw
-    ;nop
+    jal     models_draw
+    nop
 
 ;==================================================================================================
 ; File select hash
