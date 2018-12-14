@@ -65,7 +65,10 @@ def main(settings, window=dummy_window()):
     if settings.world_count < 1 or settings.world_count > 31:
         raise Exception('World Count must be between 1 and 31')
     if settings.player_num > settings.world_count or settings.player_num < 1:
-        raise Exception('Player Num must be between 1 and %d' % settings.world_count)
+        if settings.compress_rom not in ['None', 'Patch']:
+            raise Exception('Player Num must be between 1 and %d' % settings.world_count)
+        else:
+            settings.player_num = 1
 
     for i in range(0, settings.world_count):
         worlds.append(World(settings))
