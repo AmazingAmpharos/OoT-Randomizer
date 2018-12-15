@@ -96,15 +96,10 @@ void models_draw(z64_actor_t *heart_piece_actor, z64_game_t *game) {
         graphic_id = item_row->graphic_id;
     }
 
-    if (object_id == 0x00BD && graphic_id == 0x14) {
-        default_heart_draw(heart_piece_actor, game);
-        return;
-    }
-
     loaded_object_t *object = get_object(object_id);
     pre_draw_1(heart_piece_actor, game, 0);
     pre_draw_2(heart_piece_actor, game, 0);
     set_object_segment(object);
-    scale_matrix(*matrix_stack_pointer, 16.0);
+    scale_matrix(*matrix_stack_pointer, 24.0);
     draw_model(game, graphic_id - 1);
 }
