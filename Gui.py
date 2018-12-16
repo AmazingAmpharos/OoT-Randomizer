@@ -212,6 +212,9 @@ def guiMain(settings=None):
         update_generation_type()
 
 
+    versionCheckFrame = Frame(frames['rom_tab'])
+    versionCheckFrame.pack(side=BOTTOM, anchor=NW, fill=X)
+
     fileDialogFrame = Frame(frames['rom_tab'])
 
     romDialogFrame = Frame(fileDialogFrame)
@@ -748,9 +751,13 @@ def guiMain(settings=None):
             mainWindow.update()
 
         if task.status:
-            dialog = Dialog(mainWindow, title="Version Error", question=task.status, oktext='Don\'t show again', canceltext='OK')
-            if dialog.result:
-                guivars['checked_version'].set(ESVersion)
+            versionCheckLabel = LabelFrame(versionCheckFrame, text="New Version Available!")
+            versionCheckText = Label(versionCheckLabel, justify=LEFT, text=task.status[(task.status.find(' ')+1):])
+            versionCheckLink = Label(versionCheckLabel, justify=LEFT, text='Click here and download the current version.', fg='blue', cursor='hand2')
+            versionCheckLink.bind("<Button-1>", lambda event: webbrowser.open_new(r"https://github.com/TestRunnerSRL/OoT-Randomizer/tree/Dev"))
+            versionCheckText.pack(anchor=NW, padx=5, pady=0)
+            versionCheckLink.pack(anchor=NW, padx=5, pady=0)
+            versionCheckLabel.pack(anchor=NW, fill=X, expand="yes", padx=5, pady=5)
 
     mainWindow.after(1000, gui_check_version)
     mainWindow.mainloop()
