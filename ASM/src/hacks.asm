@@ -216,9 +216,12 @@
 ;   jal     0x80013498 ; Piece of Heart draw function
 ;   nop
 .org 0xA88F78
-    ; disabled until model code is done
     jal     models_draw
     nop
+
+; Override constructor for En_Item00 (Piece of Heart / Small Key)
+.org 0xB5D6C0
+.word item00_constructor ; Replaces 80011B4C
 
 ;==================================================================================================
 ; File select hash
