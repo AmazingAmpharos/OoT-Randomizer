@@ -140,6 +140,7 @@ def patch_cosmetics(settings, rom):
         # choose a random choice for the whole group
         if navi_option == 'Random Choice':
             navi_option = random.choice(navi_color_list)
+        custom_color = False
         for address in navi_addresses:
             # completely random is random for every subgroup
             if navi_option == 'Completely Random':
@@ -152,9 +153,11 @@ def patch_cosmetics(settings, rom):
             else:
                 color = list(int(navi_option[i:i+2], 16) for i in (0, 2 ,4))
                 color = color + [0xFF] + color + [0x00]
-                navi_option = 'Custom'
+                custom_color = True
             rom.write_bytes(address, color)
-            log.navi_colors[navi_action] = dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in color[0:3]]), color2=''.join(['{:02X}'.format(c) for c in color[4:7]]))
+        if custom_color:
+            navi_option = 'Custom'
+        log.navi_colors[navi_action] = dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in color[0:3]]), color2=''.join(['{:02X}'.format(c) for c in color[4:7]]))
 
     # Configurable Sound Effects
     sfx_config = [
