@@ -974,7 +974,19 @@ typedef struct
   uint8_t         textbox_state_2;        /* 0x104BC */
   char            unk_11_[0x0002];        /* 0x104BD */
   uint8_t         textbox_state_3;        /* 0x104BF */
-  char            unk_12_[0x0292];        /* 0x104C0 */
+  char            unk_12_[0x0272];        /* 0x104C0 */
+  struct {
+    uint16_t      unk_00_;
+    uint16_t      fadeout;
+    uint16_t      a_button_carots;
+    uint16_t      b_button;
+    uint16_t      cl_button;
+    uint16_t      cd_button;
+    uint16_t      cr_button;
+    uint16_t      hearts_navi;
+    uint16_t      rupees_keys_magic;
+    uint16_t      minimap;
+  }               hud_alpha_channels;    /* 0x10732 */
   struct
   {
     uint8_t       unk_00_;
