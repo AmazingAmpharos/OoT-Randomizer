@@ -581,12 +581,12 @@ def guiMain(settings=None):
     selectPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
 
     buttonPresetFrame = Frame(widgets['settings_presets'])
-    importPresetButton = Button(buttonPresetFrame, text='Load', command=import_setting_preset)
-    addPresetButton = Button(buttonPresetFrame, text='Save', command=add_settings_preset)
-    removePresetButton = Button(buttonPresetFrame, text='Remove', command=remove_setting_preset)
-    importPresetButton.pack(side=LEFT, anchor=W, padx=5)
-    addPresetButton.pack(side=LEFT, anchor=W, padx=5)
-    removePresetButton.pack(side=LEFT, anchor=W, padx=5)
+    importPresetButton = Button(buttonPresetFrame, text='Load', width=9, command=import_setting_preset)
+    addPresetButton = Button(buttonPresetFrame, text='Save', width=9, command=add_settings_preset)
+    removePresetButton = Button(buttonPresetFrame, text='Remove', width=9, command=remove_setting_preset)
+    importPresetButton.pack(side=LEFT, anchor=W, padx=2)
+    addPresetButton.pack(side=LEFT, anchor=W, padx=2)
+    removePresetButton.pack(side=LEFT, anchor=W, padx=2)
     buttonPresetFrame.pack(side=TOP, anchor=W, padx=5, pady=(1,5))
 
     widgets['settings_presets'].pack(side=RIGHT, fill=BOTH, anchor=NW, padx=5, pady=5)
@@ -646,7 +646,7 @@ def guiMain(settings=None):
     widgets['setting_string'] = Entry(settingsFrame, textvariable=settings_string_var, width=44)
 
     label = Label(settingsFrame, text="Settings String", width=13, anchor=E)
-    widgets['copy_settings'] = Button(settingsFrame, text='Copy', width=3, command=copy_settings)
+    widgets['copy_settings'] = Button(settingsFrame, text='Copy', width=5, command=copy_settings)
     widgets['import_settings'] = Button(settingsFrame, text='Import', width=7, command=import_settings)
     label.pack(side=LEFT, anchor=W, padx=5)
     widgets['setting_string'].pack(side=LEFT, anchor=W)
