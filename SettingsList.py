@@ -781,9 +781,9 @@ setting_infos = [
     Checkbutton(
             name           = 'free_scarecrow',
             args_help      = '''\
-                             Scarecrow song is not needed to summon Pierre.
+                             Scarecrow's Song is no longer needed to summon Pierre.
                              ''',
-            gui_text       = 'Start with Scarecrow\'s Song',
+            gui_text       = 'Free Scarecrow\'s Song',
             gui_group      = 'convenience',
             gui_tooltip    = '''\
                              Pulling out the Ocarina near
