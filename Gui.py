@@ -21,7 +21,6 @@ from Settings import Settings
 from SettingsList import setting_infos
 from version import __version__ as ESVersion
 import webbrowser
-import WorldFile
 from LocationList import location_table
 
 

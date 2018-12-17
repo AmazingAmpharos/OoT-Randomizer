@@ -2,7 +2,6 @@ from State import State
 from Region import Region
 from Entrance import Entrance
 from Location import Location, LocationFactory
-from RegionList import create_regions
 from DungeonList import create_dungeons
 from Rules import set_rules, set_shop_rules
 from Item import Item

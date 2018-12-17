@@ -909,7 +909,7 @@ def get_pool_core(world):
             pool.extend(get_junk_item())
     if not world.keysanity and not world.dungeon_mq['Fire Temple']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
-    if not world.dungeon_mq['Water Temple']
+    if not world.dungeon_mq['Water Temple']:
         world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
     if world.item_pool_value == 'plentiful':
