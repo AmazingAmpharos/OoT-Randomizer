@@ -21,11 +21,6 @@ void give_bottle(z64_file_t *save, int16_t bottle_item_id, int16_t arg2) {
         }
     }
 }
-typedef void(*lol2_t)(z64_game_t *ctxt, z64_link_t *link, uint32_t unk);
-#define lol2 ((lol2_t) 0x8038e6a8)
-void give_ice_trap(z64_file_t *save, int16_t arg1, int16_t arg2) {
-    lol2(&z64_game, &z64_link, 0x03);
-}
 
 void give_dungeon_item(z64_file_t *save, int16_t mask, int16_t dungeon_id) {
     save->dungeon_items[dungeon_id].items |= mask;

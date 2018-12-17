@@ -84,15 +84,6 @@ override_key_t get_override_search_key(z64_actor_t *actor, uint8_t scene, uint8_
 }
 
 override_t lookup_override_by_key(override_key_t key) {
-    if (key.flag == 0xFE) {
-        override_t ret;
-        override_value_t v;
-        v.item_id = 0xC9;
-        v.player = 0;
-        ret.key = key;
-        ret.value = v;
-        return ret;        
-    }
     int start = 0;
     int end = item_overrides_count - 1;
     while (start <= end) {
@@ -180,17 +171,22 @@ void push_delayed_item(uint8_t flag) {
     }
 }
 
+void push_delayed_ice_trap() {
+    override_t override;
+    override.key.scene = 0xFF;
+    override.key.type = OVR_DELAYED;
+    override.key.flag = 0xFE;
+    override.value.item_id = 0xC9;
+    override.value.player = 0;
+    push_pending_item(override);
+}
+
 void pop_pending_item() {
     pending_item_queue[0] = pending_item_queue[1];
     pending_item_queue[1] = pending_item_queue[2];
     pending_item_queue[2].key.all = 0;
     pending_item_queue[2].value.all = 0;
 }
-
-typedef void(*lol2_t)(z64_game_t *ctxt, z64_link_t *link, uint32_t unk);
-#define lol2 ((lol2_t) 0x8038e6a8)
-typedef void(*lol3_t)(z64_actor_t *actor);
-#define lol3 ((lol3_t) 0x80020EB4)
 
 void after_item_received() {
     override_key_t key = active_override.key;
@@ -212,8 +208,9 @@ void after_item_received() {
         }
     }
 
-    if (active_override.value.item_id == 0xC8) {
-        push_delayed_item(0xFE);
+    // If the received item is an ice trap not from a chest, push a delayed ice trap.
+    if (active_override.value.item_id == 0x7C && z64_link.incoming_item_actor->actor_id!=0x0A) {
+        push_delayed_ice_trap();
         
     }
 
@@ -231,7 +228,7 @@ void give_pending_item() {
     // - Link's camera is not being used (causes walking-while-talking glitch)
     int no_pending = override.key.all == 0 ||
         (z64_link.incoming_item_actor && z64_link.incoming_item_id > 0) ||
-        !(CAN_USE_QUICKBOOTS) ||
+        z64_link.state_flags_1 & 0x20000000 ||
         z64_game.camera_2;
     if (no_pending) {
         return;
@@ -239,11 +236,10 @@ void give_pending_item() {
 
     activate_override(override);
 
-    if (active_override.value.item_id==0xC9) {
-        lol2(&z64_game, &z64_link, 0x03);
+    if (active_override.value.item_id == 0xC9) {
+        z64_LinkDamage(&z64_game, &z64_link, 0x03);
         after_item_received();
-    }
-    else {
+    }else{
         z64_link.incoming_item_actor = dummy_actor;
         z64_link.incoming_item_id = active_item_row->base_item_id;
     }
