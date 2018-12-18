@@ -712,6 +712,7 @@ def guiMain(settings=None):
 
 
     guivars['checked_version'] = StringVar()
+    guivars['cosmetics_only'] = IntVar()
 
     if settings is not None:
         # Load values from commandline args
