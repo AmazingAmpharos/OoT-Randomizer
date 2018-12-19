@@ -44,9 +44,6 @@ void handle_quickboots() {
         if (display_active) sfx = 0x4813;
         z64_playsfx(sfx, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
     }
-    if (pad_pressed & 0x800) {
-        push_delayed_item(0x02);
-    }
 }
 
 void draw_quickboots() {

@@ -1166,7 +1166,7 @@ typedef void (*z64_DisplayTextbox_proc)   (z64_game_t *game, uint16_t text_id,
                                            int unknown_);
 typedef void (*z64_GiveItem_proc)         (z64_game_t *game, uint8_t item);
 
-typedef void(*z64_LinkDamage_proc)        (z64_game_t *ctxt, z64_link_t *link, uint8_t damage_type);
+typedef void(*z64_LinkDamage_proc)        (z64_game_t *ctxt, z64_link_t *link, uint8_t damage_type, float unk_00, uint32_t unk_01, uint16_t damage_amount);
 
 
 /* data */

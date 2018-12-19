@@ -255,7 +255,7 @@ void give_pending_item() {
     activate_override(override);
 
     if (active_override.value.item_id == 0x7D) {
-        z64_LinkDamage(&z64_game, &z64_link, 0x03);
+        z64_LinkDamage(&z64_game, &z64_link, 0x03, 0, 0, 0x14);
         after_item_received();
     }else{
         z64_link.incoming_item_actor = dummy_actor;
