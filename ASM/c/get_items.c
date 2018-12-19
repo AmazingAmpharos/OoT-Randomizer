@@ -12,6 +12,7 @@ int item_overrides_count = 0;
 
 override_t pending_item_queue[3] = { 0 };
 z64_actor_t *dummy_actor = NULL;
+uint8_t pending_freezes = 0;
 
 // Co-op state
 extern uint8_t PLAYER_ID;
@@ -167,19 +168,10 @@ void push_delayed_item(uint8_t flag) {
     search_key.type = OVR_DELAYED;
     search_key.flag = flag;
     override_t override = lookup_override_by_key(search_key);
+    if (override.value.item_id == 0x7C) pending_freezes++;
     if (override.key.all != 0) {
         push_pending_item(override);
     }
-}
-
-void push_delayed_ice_trap() {
-    override_t override;
-    override.key.scene = 0xFF;
-    override.key.type = OVR_DELAYED;
-    override.key.flag = 0xFE;
-    override.value.item_id = 0x7D;
-    override.value.player = 0;
-    push_pending_item(override);
 }
 
 void pop_pending_item() {
@@ -209,17 +201,11 @@ void after_item_received() {
         }
     }
 
-    // If the received item is an ice trap not from a chest, push a delayed ice trap.
-    if (active_override.value.item_id == 0x7C && z64_link.incoming_item_actor->actor_id!=0x0A) {
-        push_delayed_ice_trap();
-        
-    }
-
     clear_override();
 }
 
 inline uint32_t give_pending_ice_trap() {
-    if ((z64_link.state_flags_1 & 0x18AC2405) == 0 && (z64_link.common.unk_flags_00 & 0x0001))   {
+    if ((z64_link.state_flags_1 & 0x38AC2405) == 0 && (z64_link.common.unk_flags_00 & 0x0001))   {
         satisified_ice_trap_frames++;
     }
     else {
@@ -235,6 +221,13 @@ inline uint32_t give_pending_ice_trap() {
 void give_pending_item() {
     push_coop_item();
 
+    // If we have pending freezes, and we're allowed to do so, do it.
+
+    if (pending_freezes && give_pending_ice_trap() == 0) {
+        pending_freezes--;
+        z64_LinkDamage(&z64_game, &z64_link, 0x03, 0, 0, 0x14);
+    }
+
     override_t override = pending_item_queue[0];
 
     // Don't give pending item if:
@@ -249,18 +242,10 @@ void give_pending_item() {
         return;
     }
 
-    // Ice trap needs a few more limitations before it can be given, but there's no reason to hold up other items.
-    if (override.value.item_id==0x7D && give_pending_ice_trap() != 0) return;
-
     activate_override(override);
-
-    if (active_override.value.item_id == 0x7D) {
-        z64_LinkDamage(&z64_game, &z64_link, 0x03, 0, 0, 0x14);
-        after_item_received();
-    }else{
-        z64_link.incoming_item_actor = dummy_actor;
-        z64_link.incoming_item_id = active_item_row->base_item_id;
-    }
+    
+    z64_link.incoming_item_actor = dummy_actor;
+    z64_link.incoming_item_id = active_item_row->base_item_id;
 }
 
 void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id) {
@@ -281,6 +266,11 @@ void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id
 
     activate_override(override);
     int8_t base_item_id = active_item_row->base_item_id;
+
+    if (override.value.item_id == 0x7C) {
+        if (from_actor->actor_id == 0x0A) base_item_id = 0x7C;
+        else pending_freezes++;
+    }
 
     if (from_actor->actor_id == 0x0A) {
         // Update chest contents
@@ -314,7 +304,7 @@ void get_skulltula_token(z64_actor_t *token_actor) {
         OUTGOING_OVERRIDE = override;
     }
     else if (override.value.item_id == 0x7C) {
-        push_delayed_ice_trap();
+        pending_freezes++;
     }else{
         z64_GiveItem(&z64_game, item_row->action_id);
         call_effect_function(item_row);
