@@ -152,6 +152,13 @@ void push_pending_item(override_t override) {
 
 void push_coop_item() {
     if (INCOMING_ITEM != 0) {
+        if (INCOMING_ITEM == 0x7C) {
+            pending_freezes++;
+            INCOMING_ITEM = 0x00;
+            uint16_t *received_item_counter = (uint16_t *)(z64_file_addr + 0x90);
+            (*received_item_counter)++;
+            return;
+        }
         override_t override = { 0 };
         override.key.scene = 0xFF;
         override.key.type = OVR_DELAYED;
