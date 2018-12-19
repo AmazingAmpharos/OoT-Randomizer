@@ -877,6 +877,7 @@ setting_infos = [
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              Enabling this shuffles the Kokiri Sword into the pool.
+                             
                              This will require extensive use of sticks until the
                              sword is found.
                              ''',
@@ -893,6 +894,7 @@ setting_infos = [
             gui_tooltip    = '''\
                              Enabling this shuffles the Fairy Ocarina and the Ocarina
                              of Time into the pool.
+                             
                              This will require finding an Ocarina before being able
                              to play songs.
                              ''',
@@ -908,9 +910,12 @@ setting_infos = [
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              Enabling this shuffles the Weird Egg from Malon into the pool.
+                             
                              This will require finding the Weird Egg to talk to Zelda in 
                              Hyrule Castle, which in turn locks rewards from Impa, Saria,
                              Malon, and Talon, as well as the Happy Mask sidequest.
+                             If Open Kakariko Gate is disabled, the Weird Egg will also
+                             be required for Zelda's Letter to open the gate as child.
                              ''',
             default        = True,
             shared         = True,
@@ -924,6 +929,7 @@ setting_infos = [
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
                              Enabling this shuffles the Gerudo Card into the item pool.
+                             
                              The Gerudo Card is required to enter the Gerudo Training Grounds,
                              however it does not prevent the guards throwing you in jail.
                              This has no effect if the option to Start with Gerudo Card is set.
@@ -942,6 +948,7 @@ setting_infos = [
             gui_tooltip    = '''\
                              Enabling this shuffles the songs into the rest of the
                              item pool.
+                             
                              This means that song locations can contain other items,
                              and any location can contain a song. Otherwise, songs
                              are only shuffled among themselves.
