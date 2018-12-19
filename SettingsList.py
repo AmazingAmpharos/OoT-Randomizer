@@ -1472,6 +1472,27 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
+     Combobox(
+            name           = 'junk_ice_traps',
+            default        = 'off',
+            choices        = {
+                'off':    'No Ice Traps as Junk',
+                'on':     'Junk Ice Traps',
+                'mayhem':  'Mayhem: All Junk Items are Ice Traps',
+                },
+            args_help      = '''\
+                             Choose how Gossip Stones behave
+                             off:    Default behavior; no ice traps in the junk item pool
+                             on:     Ice Traps will be placed in the junk item pool
+                             mayhem: All junk items will be ice traps
+                             ''',
+            gui_text       = 'Junk Ice Traps',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Ice Traps can be made to be placed into the junk item pool.
+                             ''',
+            shared         = True,
+            ),
     Combobox(
             name           = 'hints',
             default        = 'agony',
