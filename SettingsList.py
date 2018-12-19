@@ -824,6 +824,18 @@ setting_infos = [
                              Start the game with 99 rupees.
                              ''',
             shared         = True,
+            ),         
+    Checkbutton(
+            name           = 'start_with_wallet',
+            args_help      = '''\
+                             Start with Tycoon's Wallet.
+                             ''',
+            gui_text       = 'Start with Tycoon\'s Wallet',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Start the game with the largest wallet (999 max).
+                             ''',
+            shared         = True,
             ),
     Checkbutton(
             name           = 'start_with_deku_equipment',
