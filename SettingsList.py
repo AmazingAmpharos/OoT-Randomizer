@@ -1627,6 +1627,37 @@ setting_infos = [
             shared         = True,
             ),
     Combobox(
+            name           = 'starting_tod',
+            default        = 'default',
+            choices        = {
+                'default':       'Default',
+                'random':        'Random Choice',
+                'early-morning': 'Early Morning',
+                'morning':       'Morning',
+                'noon':          'Noon',
+                'afternoon':     'Afternoon',
+                'evening':       'Evening',
+                'dusk':          'Dusk',
+                'midnight':      'Midnight',
+                'witching-hour': 'Witching Hour',
+                },
+            args_help      = '''\
+                             Change up Link's sleep routine.
+
+                             Default is 10:00 in the morning.
+                             The alternatives are multiples of 3 hours.
+                             ''',
+            gui_text       = 'Starting Time of Day',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Change up Link's sleep routine.
+
+                             Default is 10:00 in the morning.
+                             The alternatives are multiples of 3 hours.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
             name           = 'default_targeting',
             default        = 'hold',
             choices        = {
