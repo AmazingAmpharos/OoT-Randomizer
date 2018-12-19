@@ -888,8 +888,10 @@ setting_infos = [
             gui_text       = 'Shuffle Kokiri Sword',
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             Disabling this will make the Kokiri Sword
-                             always available at the start.
+                             Enabling this shuffles the Kokiri Sword into the pool.
+                             
+                             This will require extensive use of sticks until the
+                             sword is found.
                              ''',
             default        = True,
             shared         = True,
@@ -898,14 +900,15 @@ setting_infos = [
             name           = 'shuffle_ocarinas',
             args_help      = '''\
                              Shuffles the Fairy Ocarina and the Ocarina of Time into the pool.
-                             This means that you need to find an ocarina before playing songs.
                              ''',
             gui_text       = 'Shuffle Ocarinas',
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             The Fairy Ocarina and Ocarina of Time are
-                             randomized. One will be required before
-                             songs can be played.
+                             Enabling this shuffles the Fairy Ocarina and the Ocarina
+                             of Time into the pool.
+                             
+                             This will require finding an Ocarina before being able
+                             to play songs.
                              ''',
             default        = True,
             shared         = True,
@@ -913,16 +916,18 @@ setting_infos = [
     Checkbutton(
             name           = 'shuffle_weird_egg',
             args_help      = '''\
-                             Shuffles the Weird Egg item from Malon into the pool.
-                             This means that you need to find the egg before going Zelda.
+                             Shuffles the Weird Egg from Malon into the pool.
                              ''',
             gui_text       = 'Shuffle Weird Egg',
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             You need to find the egg before going Zelda.
-                             This means the Weird Egg locks the rewards from
-                             Impa, Saria, Malon, and Talon as well as the
-                             Happy Mask sidequest.
+                             Enabling this shuffles the Weird Egg from Malon into the pool.
+                             
+                             This will require finding the Weird Egg to talk to Zelda in 
+                             Hyrule Castle, which in turn locks rewards from Impa, Saria,
+                             Malon, and Talon, as well as the Happy Mask sidequest.
+                             If Open Kakariko Gate is disabled, the Weird Egg will also
+                             be required for Zelda's Letter to open the gate as child.
                              ''',
             default        = True,
             shared         = True,
@@ -930,34 +935,35 @@ setting_infos = [
     Checkbutton(
             name           = 'shuffle_gerudo_card',
             args_help      = '''\
-                             Shuffles the Gerudo Card into the item pool.
-                             The Gerudo Card does not stop guards from throwing you in jail.
-                             It only grants access to Gerudo Training Grounds after all carpenters
-                             have been rescued. This option does nothing if "gerudo_fortress" is "open".
+                             Shuffles the Gerudo Card into the pool.
                              ''',
             gui_text       = 'Shuffle Gerudo Card',
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             Gerudo Card is required to enter
-                             Gerudo Training Grounds.
+                             Enabling this shuffles the Gerudo Card into the item pool.
+                             
+                             The Gerudo Card is required to enter the Gerudo Training Grounds,
+                             however it does not prevent the guards throwing you in jail.
+                             This has no effect if the option to Start with Gerudo Card is set.
                              ''',
             shared         = True,
             ),
     Checkbutton(
             name           = 'shuffle_song_items',
             args_help      = '''\
-                             Shuffles the songs with with rest of the item pool so that
-                             songs can appear at other locations and items can appear at
+                             Shuffles the songs into the rest of the item pool so that
+                             they can appear at other locations and items can appear at
                              the song locations.
                              ''',
             gui_text       = 'Shuffle Songs with Items',
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             Songs can appear anywhere as normal items.
-        
-                             If this option is not set, songs will still
-                             be shuffled but will be limited to the
-                             locations that has songs in the original game.
+                             Enabling this shuffles the songs into the rest of the
+                             item pool.
+                             
+                             This means that song locations can contain other items,
+                             and any location can contain a song. Otherwise, songs
+                             are only shuffled among themselves.
                              ''',
             default        = True,
             shared         = True,
