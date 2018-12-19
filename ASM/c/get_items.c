@@ -267,7 +267,7 @@ void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id
     activate_override(override);
     int8_t base_item_id = active_item_row->base_item_id;
 
-    if (override.value.item_id == 0x7C) {
+    if (override.value.item_id == 0x7C && override.value.player==PLAYER_ID) {
         if (from_actor->actor_id == 0x0A) base_item_id = 0x7C;
         else pending_freezes++;
     }
