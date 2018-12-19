@@ -176,9 +176,15 @@ def patch_cosmetics(settings, rom):
     sound_dict = sfx.get_patch_dict()
 
     for selection, hook in sfx_config:
-        if selection != 'default':
+        if selection == 'default':
+            for loc in hook.value.locations:
+                sound_id = int.from_bytes((rom.original[loc:loc+2]), byteorder='big', signed=False)
+                rom.write_int16(loc, sound_id)
+        else:
             if selection == 'random-choice':
                 selection = random.choice(sfx.get_hook_pool(hook)).value.keyword
+            elif selection == 'random-ear-safe':
+                selection = random.choice(sfx.no_painful).value.keyword
             elif selection == 'completely-random':
                 selection = random.choice(sfx.standard).value.keyword
             sound_id  = sound_dict[selection]
