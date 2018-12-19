@@ -28,6 +28,7 @@ uint32_t active_item_text_id = 0;
 uint32_t active_item_object_id = 0;
 uint32_t active_item_graphic_id = 0;
 uint32_t active_item_fast_chest = 0;
+uint8_t satisified_ice_trap_frames = 0;
 
 void item_overrides_init() {
     while (cfg_item_overrides[item_overrides_count].key.all != 0) {
@@ -176,7 +177,7 @@ void push_delayed_ice_trap() {
     override.key.scene = 0xFF;
     override.key.type = OVR_DELAYED;
     override.key.flag = 0xFE;
-    override.value.item_id = 0xC9;
+    override.value.item_id = 0x7D;
     override.value.player = 0;
     push_pending_item(override);
 }
@@ -217,6 +218,20 @@ void after_item_received() {
     clear_override();
 }
 
+inline uint32_t give_pending_ice_trap() {
+    if ((z64_link.state_flags_1 & 0x18AC2405) == 0 && (z64_link.common.unk_flags_00 & 0x0001))   {
+        satisified_ice_trap_frames++;
+    }
+    else {
+        satisified_ice_trap_frames = 0;
+    }
+    if (satisified_ice_trap_frames >= 2) {
+        satisified_ice_trap_frames = 0;
+        return 0;
+    }
+    return 1;
+}
+
 void give_pending_item() {
     push_coop_item();
 
@@ -234,9 +249,12 @@ void give_pending_item() {
         return;
     }
 
+    // Ice trap needs a few more limitations before it can be given, but there's no reason to hold up other items.
+    if (override.value.item_id==0x7D && give_pending_ice_trap() != 0) return;
+
     activate_override(override);
 
-    if (active_override.value.item_id == 0xC9) {
+    if (active_override.value.item_id == 0x7D) {
         z64_LinkDamage(&z64_game, &z64_link, 0x03);
         after_item_received();
     }else{
@@ -294,7 +312,10 @@ void get_skulltula_token(z64_actor_t *token_actor) {
 
     if (player != PLAYER_ID) {
         OUTGOING_OVERRIDE = override;
-    } else {
+    }
+    else if (override.value.item_id == 0x7C) {
+        push_delayed_ice_trap();
+    }else{
         z64_GiveItem(&z64_game, item_row->action_id);
         call_effect_function(item_row);
     }
