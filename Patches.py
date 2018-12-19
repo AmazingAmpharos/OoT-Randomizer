@@ -833,7 +833,14 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         write_bits_to_save(0x00B1, 0x06) # "Ice Map/Compass"
 
     if world.start_with_rupees:
-        write_byte_to_save(0x0035, 0x63) # start with 99 rupees
+        if world.start_with_wallet:
+            write_byte_to_save(0x0034, 0x03) # start with 999 rupees if tycoon, first byte
+            write_byte_to_save(0x0035, 0xE7) # second byte
+        else:
+            write_byte_to_save(0x0035, 0x63) # start with 99 rupees
+
+    if world.start_with_wallet:
+        write_bits_to_save(0x00A2, 0x30) # tycoon's wallet
 
     if world.start_with_deku_equipment:
         if world.shopsanity == "off":
