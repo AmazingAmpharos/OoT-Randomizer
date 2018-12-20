@@ -856,11 +856,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         write_bits_to_save(0x00A6, 0x09) # start with Prelude of Light & Serenade of Water
         write_byte_to_save(0x007F, 0x0D) # Farore's Wind in 12th inventory slot
 
-    stod = world.starting_tod
-    if stod == 'default':
-        tod_loc = 0xB171E60
-        write_bytes_to_save(0x000C, rom.original[tod_loc:tod_loc+2])
-    else:
+    # Set starting time of day
+    if world.starting_tod != 'default':
         tod = {
                 'midnight':      0x00,
                 'witching-hour': 0x20,
@@ -871,11 +868,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
                 'evening':       0xC0,
                 'dusk':          0xE0,
                 }
-        if stod == 'random':
-            tod_byte = random.choice(list(tod.values()))
-        else:
-            tod_byte = tod[stod]
-        write_bytes_to_save(0x000C, [tod_byte, 0x00])
+        write_bytes_to_save(0x000C, [tod[world.starting_tod], 0x00])
 
     # Revert change that Skips the Epona Race
     if not world.no_epona_race:
