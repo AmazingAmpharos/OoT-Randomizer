@@ -1477,20 +1477,27 @@ setting_infos = [
             name           = 'junk_ice_traps',
             default        = 'off',
             choices        = {
-                'off':     'No Ice Traps as Junk',
-                'on':      'Junk Ice Traps',
-                'mayhem':  'Mayhem: All Junk Items are Ice Traps',
+                'off':     'No Ice Traps',
+                'normal':  'Normal Ice Traps',
+                'on':      'Extra Ice Traps',
+                'mayhem':  'Mayhem Ice Traps',
                 },
             args_help      = '''\
                              Choose how Ice Traps will be placed in the junk item pool
-                             off:    Default behavior; no ice traps in the junk item pool
+                             off:    Ice traps are removed.
+                             normal: Default behavior; no ice traps in the junk item pool
                              on:     Ice Traps will be placed in the junk item pool
                              mayhem: All junk items will be ice traps
                              ''',
             gui_text       = 'Junk Ice Traps',
             gui_group      = 'other',
             gui_tooltip    = '''\
-                             Ice Traps can be made to be placed into the junk item pool.
+                             Extra Ice Traps: chance to add 
+                             extra Ice Traps when junk items
+                             are added to the itempool.
+
+                             Mayhem Ice Traps: all added 
+                             junk items will be Ice Traps.
                              ''',
             shared         = True,
             ),
