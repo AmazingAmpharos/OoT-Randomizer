@@ -190,7 +190,7 @@ void give_pending_item() {
     int no_pending = override.key.all == 0 ||
         (z64_link.incoming_item_actor && z64_link.incoming_item_id > 0) ||
         z64_link.state_flags_1 & 0x20000000 ||
-        z64_link.state_flags_2 & 0x00000c00 ||
+        z64_link.state_flags_2 & 0x00000C00 ||
         z64_game.camera_2;
     if (no_pending) {
         return;
