@@ -1451,7 +1451,8 @@ setting_infos = [
             gui_group      = 'other',
             gui_tooltip    = '''\
                              Chests will be large if they contain a major
-                             item and small if they don't. This allows skipping
+                             item and small if they don't. Boss keys will
+                             be in gold chests. This allows skipping
                              chests if they are small. However, skipping
                              small chests will mean having low health,
                              ammo, and rupees, so doing so is a risk.

@@ -940,3 +940,9 @@ skip_GS_BGS_text:
 .org 0xC0722C
     jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER
     sw      t8,8(t6)
+
+; Replaces lbu   t9,0x01E9(s0)
+.org 0xC075A8
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER_T9
+.org 0xC07648
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER_T9
