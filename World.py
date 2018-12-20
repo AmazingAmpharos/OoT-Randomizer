@@ -36,7 +36,7 @@ class World(object):
         # evaluate settings (important for logic, nice for spoiler)
         if self.starting_tod == 'random':
             setting_info = get_setting_info('starting_tod')
-            choices = [ch for ch in setting_info.choices.values() if ch not in ['default', 'random']]
+            choices = [ch for ch in setting_info.args_params['choices'] if ch not in ['default', 'random']]
             self.starting_tod = random.choice(choices)
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
