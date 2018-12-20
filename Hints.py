@@ -450,7 +450,6 @@ def buildGossipHints(spoiler, world):
             index = hint_types.index(hint_type)
             del hint_types[index]
             del hint_prob[index]
-            print(hint_type + ' is empty')
         else:
             text, location = hint
             add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], location)
