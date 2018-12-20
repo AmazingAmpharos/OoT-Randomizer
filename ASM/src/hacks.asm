@@ -216,9 +216,12 @@
 ;   jal     0x80013498 ; Piece of Heart draw function
 ;   nop
 .org 0xA88F78
-    ; disabled until model code is done
     jal     models_draw
     nop
+
+; Override constructor for En_Item00 (Piece of Heart / Small Key)
+.org 0xB5D6C0
+.word item00_constructor ; Replaces 80011B4C
 
 ;==================================================================================================
 ; File select hash
@@ -913,3 +916,20 @@ skip_GS_BGS_text:
 .org 0xAEB68C ; In Memory: 0x8007572C
 	jal		qb_draw
 	nop
+
+;==================================================================================================
+; Correct Chest Sizes
+;==================================================================================================
+; Replaces lbu   v0,0x01E9(s0)
+.org 0xC064BC
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER
+.org 0xC06E5C
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER
+.org 0xC07494 
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER
+
+; Replaces sw    t8,8(t6)
+;          lbu   v0,489(s0)
+.org 0xC0722C
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER
+    sw      t8,8(t6)
