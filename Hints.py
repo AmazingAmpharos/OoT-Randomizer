@@ -222,7 +222,7 @@ def get_barren_hint(spoiler, world, checked):
     area = random.choice(areas)
     checked.append(area)
 
-    return (buildHintString(colorText(area, 'Pink') + " is barren of tressure."), None)
+    return (buildHintString(colorText(area, 'Pink') + " is barren of treasure."), None)
 
 
 def get_good_loc_hint(spoiler, world, checked):
@@ -371,6 +371,17 @@ hint_dist_sets = {
         'dungeon':  (0.0, 1),
         'junk':     (0.0, 1),
     },
+    'tournament': {
+        'trial':    (0.0, 1),
+        'always':   (0.0, 2),
+        'woth':     (4.0, 2),
+        'barren':   (2.0, 1),
+        'loc':      (4.0, 1),
+        'item':     (2.0, 1),
+        'ow':       (1.0, 1),
+        'dungeon':  (1.0, 1),
+        'junk':     (0.0, 1),
+    },    
 }
 
 
@@ -416,11 +427,22 @@ def buildGossipHints(spoiler, world):
 
     hint_types = list(hint_types)
     hint_prob  = list(hint_prob)
+    if world.hint_dist == "tournament":
+        fixed_hint_types = []
+        for hint_type in hint_types:
+            fixed_hint_types.extend([hint_type] * int(hint_dist[hint_type][0]))
+
     while stoneIDs:
-        try:
-            [hint_type] = random_choices(hint_types, weights=hint_prob)
-        except IndexError:
-            raise Exception('Not enough valid hints to fill gossip stone locations.')
+        if world.hint_dist == "tournament":
+            if fixed_hint_types:
+                hint_type = fixed_hint_types.pop(0)
+            else:
+                hint_type = random.choice(['loc', 'item', 'ow'])
+        else:
+            try:
+                [hint_type] = random_choices(hint_types, weights=hint_prob)
+            except IndexError:
+                raise Exception('Not enough valid hints to fill gossip stone locations.')
 
         hint = hint_func[hint_type](spoiler, world, checkedLocations)
 

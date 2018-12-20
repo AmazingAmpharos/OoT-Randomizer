@@ -1537,6 +1537,7 @@ setting_infos = [
                 'balanced':    'Balanced',
                 'strong':      'Strong',
                 'very_strong': 'Very Strong',
+                'tournament':  'Tournament',
                 },
             args_help      = '''\
                              Choose how Gossip Stones hints are distributed
@@ -1544,6 +1545,7 @@ setting_infos = [
                              balanced: Use a balanced distribution of hint types
                              strong: Use a strong distribution of hint types
                              very_strong: Use a very strong distribution of hint types
+                             tournament: Similar to strong but has no variation in hint types
                              ''',
             gui_text       = 'Hint Distribution',
             gui_group      = 'other',
@@ -1555,6 +1557,9 @@ setting_infos = [
                              hints.
                              Very Strong distribution has
                              only very useful hints.
+                             Tournament distribution is
+                             similar to Strong but with no
+                             variation in hint types.
                              ''',
             shared         = True,
             ),
