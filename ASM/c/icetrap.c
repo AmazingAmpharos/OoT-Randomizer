@@ -14,7 +14,7 @@ uint32_t ice_trap_is_pending() {
 }
 
 inline uint32_t ice_trap_allowed() {
-    if ((z64_link.state_flags_1 & 0x38AC2405) == 0 && (z64_link.common.unk_flags_00 & 0x0001))   {
+    if ((z64_link.state_flags_1 & 0x38AC2405) == 0 && (z64_link.common.unk_flags_00 & 0x0001) && (z64_link.state_flags_2 & 0x000C0000) == 0)   {
         satisified_ice_trap_frames++;
     }
     else {
