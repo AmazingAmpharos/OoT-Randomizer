@@ -43,6 +43,8 @@ class Setting_Widget(Setting_Info):
         if 'type' not in args_params: args_params['type'] = type
         if 'type' not in gui_params:  gui_params['type']  = type
 
+        self.choices = choices
+        self.default = default
         args_params['choices'] = list(choices.keys())
         args_params['default'] = default
         gui_params['options']  = {v: k for k, v in choices.items()}
@@ -1644,6 +1646,9 @@ setting_infos = [
             args_help      = '''\
                              Change up Link's sleep routine.
 
+                             Daytime officially starts at 6:30,
+                             nighttime at 18:00 (6:00 PM).
+
                              Default is 10:00 in the morning.
                              The alternatives are multiples of 3 hours.
                              ''',
@@ -1651,6 +1656,9 @@ setting_infos = [
             gui_group      = 'other',
             gui_tooltip    = '''\
                              Change up Link's sleep routine.
+
+                             Daytime officially starts at 6:30,
+                             nighttime at 18:00 (6:00 PM).
 
                              Default is 10:00 in the morning.
                              The alternatives are multiples of 3 hours.
@@ -1959,3 +1967,7 @@ setting_infos = [
                              ''',
             ),
 ]
+
+si_dict = {si.name: si for si in setting_infos}
+def get_setting_info(name):
+    return si_dict[name]
