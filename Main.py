@@ -61,8 +61,8 @@ def main(settings, window=dummy_window()):
 
     if not settings.world_count:
         settings.world_count = 1
-    if settings.world_count < 1 or settings.world_count > 31:
-        raise Exception('World Count must be between 1 and 31')
+    if settings.world_count < 1 or settings.world_count > 255:
+        raise Exception('World Count must be between 1 and 255')
     if settings.player_num > settings.world_count or settings.player_num < 1:
         if settings.compress_rom not in ['None', 'Patch']:
             raise Exception('Player Num must be between 1 and %d' % settings.world_count)
