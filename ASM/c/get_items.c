@@ -3,6 +3,7 @@
 #include "item_table.h"
 #include "util.h"
 #include "z64.h"
+#include "quickboots.h"
 
 extern uint8_t OCARINAS_SHUFFLED;
 
@@ -11,6 +12,7 @@ int item_overrides_count = 0;
 
 override_t pending_item_queue[3] = { 0 };
 z64_actor_t *dummy_actor = NULL;
+uint8_t pending_freezes = 0;
 
 // Co-op state
 extern uint8_t PLAYER_ID;
@@ -27,6 +29,7 @@ uint32_t active_item_text_id = 0;
 uint32_t active_item_object_id = 0;
 uint32_t active_item_graphic_id = 0;
 uint32_t active_item_fast_chest = 0;
+uint8_t satisified_ice_trap_frames = 0;
 
 void item_overrides_init() {
     while (cfg_item_overrides[item_overrides_count].key.all != 0) {
@@ -149,6 +152,13 @@ void push_pending_item(override_t override) {
 
 void push_coop_item() {
     if (INCOMING_ITEM != 0) {
+        if (INCOMING_ITEM == 0x7C) {
+            pending_freezes++;
+            INCOMING_ITEM = 0x00;
+            uint16_t *received_item_counter = (uint16_t *)(z64_file_addr + 0x90);
+            (*received_item_counter)++;
+            return;
+        }
         override_t override = { 0 };
         override.key.scene = 0xFF;
         override.key.type = OVR_DELAYED;
@@ -165,6 +175,7 @@ void push_delayed_item(uint8_t flag) {
     search_key.type = OVR_DELAYED;
     search_key.flag = flag;
     override_t override = lookup_override_by_key(search_key);
+    if (override.value.item_id == 0x7C) pending_freezes++;
     if (override.key.all != 0) {
         push_pending_item(override);
     }
@@ -175,29 +186,6 @@ void pop_pending_item() {
     pending_item_queue[1] = pending_item_queue[2];
     pending_item_queue[2].key.all = 0;
     pending_item_queue[2].value.all = 0;
-}
-
-void give_pending_item() {
-    push_coop_item();
-
-    override_t override = pending_item_queue[0];
-
-    // Don't give pending item if:
-    // - Already receiving an item from an ordinary source
-    // - Link is in cutscene state (causes crash)
-    // - Link's camera is not being used (causes walking-while-talking glitch)
-    int no_pending = override.key.all == 0 ||
-        (z64_link.incoming_item_actor && z64_link.incoming_item_id > 0) ||
-        z64_link.state_flags_1 & 0x20000000 ||
-        z64_game.camera_2;
-    if (no_pending) {
-        return;
-    }
-
-    activate_override(override);
-
-    z64_link.incoming_item_actor = dummy_actor;
-    z64_link.incoming_item_id = active_item_row->base_item_id;
 }
 
 void after_item_received() {
@@ -223,6 +211,50 @@ void after_item_received() {
     clear_override();
 }
 
+inline uint32_t give_pending_ice_trap() {
+    if ((z64_link.state_flags_1 & 0x38AC2405) == 0 && (z64_link.common.unk_flags_00 & 0x0001))   {
+        satisified_ice_trap_frames++;
+    }
+    else {
+        satisified_ice_trap_frames = 0;
+    }
+    if (satisified_ice_trap_frames >= 2) {
+        satisified_ice_trap_frames = 0;
+        return 0;
+    }
+    return 1;
+}
+
+void give_pending_item() {
+    push_coop_item();
+
+    // If we have pending freezes, and we're allowed to do so, do it.
+
+    if (pending_freezes && give_pending_ice_trap() == 0) {
+        pending_freezes--;
+        z64_LinkDamage(&z64_game, &z64_link, 0x03, 0, 0, 0x14);
+    }
+
+    override_t override = pending_item_queue[0];
+
+    // Don't give pending item if:
+    // - Already receiving an item from an ordinary source
+    // - Link is in cutscene state (causes crash)
+    // - Link's camera is not being used (causes walking-while-talking glitch)
+    int no_pending = override.key.all == 0 ||
+        (z64_link.incoming_item_actor && z64_link.incoming_item_id > 0) ||
+        z64_link.state_flags_1 & 0x20000000 ||
+        z64_game.camera_2;
+    if (no_pending) {
+        return;
+    }
+
+    activate_override(override);
+    
+    z64_link.incoming_item_actor = dummy_actor;
+    z64_link.incoming_item_id = active_item_row->base_item_id;
+}
+
 void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id) {
     override_t override = { 0 };
     int incoming_negative = incoming_item_id < 0;
@@ -242,11 +274,17 @@ void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id
     activate_override(override);
     int8_t base_item_id = active_item_row->base_item_id;
 
+    if (override.value.item_id == 0x7C && override.value.player==PLAYER_ID) {
+        if (from_actor->actor_id == 0x0A) base_item_id = 0x7C;
+        else pending_freezes++;
+    }
+
     if (from_actor->actor_id == 0x0A) {
         // Update chest contents
         from_actor->variable = (from_actor->variable & 0xF01F) | (base_item_id << 5);
     }
-
+    
+    
     link->incoming_item_id = incoming_negative ? -base_item_id : base_item_id;
 }
 
@@ -271,7 +309,10 @@ void get_skulltula_token(z64_actor_t *token_actor) {
 
     if (player != PLAYER_ID) {
         OUTGOING_OVERRIDE = override;
-    } else {
+    }
+    else if (override.value.item_id == 0x7C) {
+        pending_freezes++;
+    }else{
         z64_GiveItem(&z64_game, item_row->action_id);
         call_effect_function(item_row);
     }
