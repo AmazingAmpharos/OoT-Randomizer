@@ -15,7 +15,7 @@ static _Bool display_active;
 typedef void(*playsfx_t)(uint16_t sfx, z64_xyzf_t *unk_00_, int8_t unk_01_ , float *unk_02_, float *unk_03_, float *unk_04_);
 
 #define z64_playsfx ((playsfx_t)       0x800C806C)
-extern uint8_t pending_freezes;
+
 void handle_quickboots() {
     uint16_t z_pad = z64_ctxt.input[0].raw.pad;
     pad_pressed_raw = (pad ^ z_pad) & z_pad;
