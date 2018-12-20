@@ -15,7 +15,7 @@ static _Bool display_active;
 typedef void(*playsfx_t)(uint16_t sfx, z64_xyzf_t *unk_00_, int8_t unk_01_ , float *unk_02_, float *unk_03_, float *unk_04_);
 
 #define z64_playsfx ((playsfx_t)       0x800C806C)
-
+extern uint8_t pending_freezes;
 void handle_quickboots() {
     uint16_t z_pad = z64_ctxt.input[0].raw.pad;
     pad_pressed_raw = (pad ^ z_pad) & z_pad;
@@ -38,7 +38,7 @@ void handle_quickboots() {
             z64_playsfx(0x835, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
         }
     }
-    if (pad_pressed & DPAD_D) {
+    if (pad_pressed & DPAD_D && DISPLAY_QUICKBOOTS) {
         display_active = !display_active;
         uint16_t sfx = 0x4814;
         if (display_active) sfx = 0x4813;
