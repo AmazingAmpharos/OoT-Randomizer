@@ -1,5 +1,6 @@
 #include "get_items.h"
 
+#include "icetrap.h"
 #include "item_table.h"
 #include "util.h"
 #include "z64.h"
@@ -12,7 +13,6 @@ int item_overrides_count = 0;
 
 override_t pending_item_queue[3] = { 0 };
 z64_actor_t *dummy_actor = NULL;
-uint8_t pending_freezes = 0;
 
 // Co-op state
 extern uint8_t PLAYER_ID;
@@ -29,7 +29,6 @@ uint32_t active_item_text_id = 0;
 uint32_t active_item_object_id = 0;
 uint32_t active_item_graphic_id = 0;
 uint32_t active_item_fast_chest = 0;
-uint8_t satisified_ice_trap_frames = 0;
 
 void item_overrides_init() {
     while (cfg_item_overrides[item_overrides_count].key.all != 0) {
@@ -43,7 +42,7 @@ void item_overrides_init() {
 
 override_key_t get_override_search_key(z64_actor_t *actor, uint8_t scene, uint8_t item_id) {
     if (actor->actor_id == 0x0A) {
-        // Don't override WINNER purple rupee in the chest minigame scene
+        // Don't override WINNER heart piece in the chest minigame scene
         if (scene == 0x10 && item_id == 0x75) {
             return (override_key_t){ .all = 0 };
         }
@@ -152,13 +151,6 @@ void push_pending_item(override_t override) {
 
 void push_coop_item() {
     if (INCOMING_ITEM != 0) {
-        if (INCOMING_ITEM == 0x7C) {
-            pending_freezes++;
-            INCOMING_ITEM = 0x00;
-            uint16_t *received_item_counter = (uint16_t *)(z64_file_addr + 0x90);
-            (*received_item_counter)++;
-            return;
-        }
         override_t override = { 0 };
         override.key.scene = 0xFF;
         override.key.type = OVR_DELAYED;
@@ -175,7 +167,6 @@ void push_delayed_item(uint8_t flag) {
     search_key.type = OVR_DELAYED;
     search_key.flag = flag;
     override_t override = lookup_override_by_key(search_key);
-    if (override.value.item_id == 0x7C) pending_freezes++;
     if (override.key.all != 0) {
         push_pending_item(override);
     }
@@ -186,6 +177,24 @@ void pop_pending_item() {
     pending_item_queue[1] = pending_item_queue[2];
     pending_item_queue[2].key.all = 0;
     pending_item_queue[2].value.all = 0;
+}
+
+void check_coop_item_received(override_key_t key) {
+    if (key.type == OVR_DELAYED && key.flag == 0xFF) {
+        INCOMING_ITEM = 0;
+        uint16_t *received_item_counter = (uint16_t *)(z64_file_addr + 0x90);
+        (*received_item_counter)++;
+    }
+}
+
+void pop_ice_trap() {
+    override_key_t key = pending_item_queue[0].key;
+    override_value_t value = pending_item_queue[0].value;
+    if (value.item_id == 0x7C && value.player == PLAYER_ID) {
+        push_pending_ice_trap();
+        pop_pending_item();
+        check_coop_item_received(key);
+    }
 }
 
 void after_item_received() {
@@ -200,41 +209,13 @@ void after_item_received() {
 
     if (key.all == pending_item_queue[0].key.all) {
         pop_pending_item();
-        if (key.type == OVR_DELAYED && key.flag == 0xFF) {
-            // Received incoming co-op item
-            INCOMING_ITEM = 0;
-            uint16_t *received_item_counter = (uint16_t *)(z64_file_addr + 0x90);
-            (*received_item_counter)++;
-        }
+        check_coop_item_received(key);
     }
 
     clear_override();
 }
 
-inline uint32_t give_pending_ice_trap() {
-    if ((z64_link.state_flags_1 & 0x38AC2405) == 0 && (z64_link.common.unk_flags_00 & 0x0001))   {
-        satisified_ice_trap_frames++;
-    }
-    else {
-        satisified_ice_trap_frames = 0;
-    }
-    if (satisified_ice_trap_frames >= 2) {
-        satisified_ice_trap_frames = 0;
-        return 0;
-    }
-    return 1;
-}
-
-void give_pending_item() {
-    push_coop_item();
-
-    // If we have pending freezes, and we're allowed to do so, do it.
-
-    if (pending_freezes && give_pending_ice_trap() == 0) {
-        pending_freezes--;
-        z64_LinkDamage(&z64_game, &z64_link, 0x03, 0, 0, 0x14);
-    }
-
+void try_pending_item() {
     override_t override = pending_item_queue[0];
 
     // Don't give pending item if:
@@ -250,7 +231,37 @@ void give_pending_item() {
     }
 
     activate_override(override);
-    
+
+    z64_link.incoming_item_actor = dummy_actor;
+    z64_link.incoming_item_id = active_item_row->base_item_id;
+}
+
+void handle_pending_items() {
+    push_coop_item();
+    pop_ice_trap();
+    if (ice_trap_is_pending()) {
+        try_ice_trap();
+    } else {
+        try_pending_item();
+    }
+}
+
+void give_pending_item() {
+    override_t override = pending_item_queue[0];
+    // Don't give pending item if:
+    // - Already receiving an item from an ordinary source
+    // - Link is in cutscene state (causes crash)
+    // - Link's camera is not being used (causes walking-while-talking glitch)
+    int no_pending = override.key.all == 0 ||
+        (z64_link.incoming_item_actor && z64_link.incoming_item_id > 0) ||
+        z64_link.state_flags_1 & 0x20000000 ||
+        z64_game.camera_2;
+    if (no_pending) {
+        return;
+    }
+
+    activate_override(override);
+
     z64_link.incoming_item_actor = dummy_actor;
     z64_link.incoming_item_id = active_item_row->base_item_id;
 }
@@ -274,17 +285,16 @@ void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id
     activate_override(override);
     int8_t base_item_id = active_item_row->base_item_id;
 
-    if (override.value.item_id == 0x7C && override.value.player==PLAYER_ID) {
-        if (from_actor->actor_id == 0x0A) base_item_id = 0x7C;
-        else pending_freezes++;
-    }
-
     if (from_actor->actor_id == 0x0A) {
         // Update chest contents
+        if (override.value.item_id == 0x7C && override.value.player == PLAYER_ID) {
+            // Use ice trap base item ID
+            base_item_id = 0x7C;
+        }
         from_actor->variable = (from_actor->variable & 0xF01F) | (base_item_id << 5);
     }
-    
-    
+
+
     link->incoming_item_id = incoming_negative ? -base_item_id : base_item_id;
 }
 
@@ -309,14 +319,12 @@ void get_skulltula_token(z64_actor_t *token_actor) {
 
     if (player != PLAYER_ID) {
         OUTGOING_OVERRIDE = override;
-    }
-    else if (override.value.item_id == 0x7C) {
-        pending_freezes++;
-    }else{
+    } else {
         z64_GiveItem(&z64_game, item_row->action_id);
         call_effect_function(item_row);
     }
 }
+
 int give_sarias_gift() {
     uint16_t received_sarias_gift = (z64_file.event_chk_inf[0x0C] & 0x0002);
     if (received_sarias_gift == 0) {

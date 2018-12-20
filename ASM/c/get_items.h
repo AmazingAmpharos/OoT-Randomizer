@@ -4,7 +4,7 @@
 #include "z64.h"
 
 void item_overrides_init();
-void give_pending_item();
+void handle_pending_items();
 
 enum override_type {
     OVR_BASE_ITEM = 0,
