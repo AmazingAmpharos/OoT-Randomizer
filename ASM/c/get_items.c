@@ -4,7 +4,6 @@
 #include "item_table.h"
 #include "util.h"
 #include "z64.h"
-#include "quickboots.h"
 
 extern uint8_t OCARINAS_SHUFFLED;
 
@@ -42,7 +41,7 @@ void item_overrides_init() {
 
 override_key_t get_override_search_key(z64_actor_t *actor, uint8_t scene, uint8_t item_id) {
     if (actor->actor_id == 0x0A) {
-        // Don't override WINNER heart piece in the chest minigame scene
+        // Don't override WINNER purple rupee in the chest minigame scene
         if (scene == 0x10 && item_id == 0x75) {
             return (override_key_t){ .all = 0 };
         }
