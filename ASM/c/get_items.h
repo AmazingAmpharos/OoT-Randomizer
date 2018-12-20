@@ -28,9 +28,9 @@ typedef union {
 typedef union {
     uint32_t all;
     struct {
-        char     pad_;
-        uint8_t  player;
         uint16_t item_id;
+        uint8_t  player;
+        uint8_t  looks_like_item_id;
     };
 } override_value_t;
 

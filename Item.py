@@ -12,6 +12,7 @@ class Item(object):
         self.location = None
         self.price = self.special.get('price')
         self.world = world
+        self.looks_like_item_id = None
 
 
     item_worlds_to_fix = {}

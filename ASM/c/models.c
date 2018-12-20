@@ -90,8 +90,11 @@ typedef void (*draw_fn)(z64_game_t *game, uint32_t gi_id_minus_1);
 model_t lookup_model(model_t *model, z64_game_t *game, z64_actor_t *actor, uint16_t base_item_id) {
     override_t override = lookup_override(actor, game->scene_index, base_item_id);
     if (override.key.all != 0) {
-        uint16_t item_id = resolve_upgrades(override.value.item_id);
-        item_row_t *item_row = get_item_row(item_id);
+        uint16_t item_id = override.value.looks_like_item_id ?
+            override.value.looks_like_item_id :
+            override.value.item_id;
+        uint16_t resolved_item_id = resolve_upgrades(item_id);
+        item_row_t *item_row = get_item_row(resolved_item_id);
         model->object_id = item_row->object_id;
         model->graphic_id = item_row->graphic_id;
     }

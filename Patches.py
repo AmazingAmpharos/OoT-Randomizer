@@ -1385,7 +1385,7 @@ def get_override_table(world):
     return list(filter(lambda val: val != None, map(get_override_entry, world.get_filled_locations())))
 
 
-override_struct = struct.Struct('>xBBBxBH') # match override_t in get_items.c
+override_struct = struct.Struct('>xBBBHBB') # match override_t in get_items.c
 def get_override_table_bytes(override_table):
     return b''.join(sorted(itertools.starmap(override_struct.pack, override_table)))
 
@@ -1398,6 +1398,7 @@ def get_override_entry(location):
         return None
 
     player_id = location.item.world.id + 1
+    looks_like_item_id = location.item.looks_like_item_id or 0
 
     if location.type in ['NPC', 'BossHeart']:
         type = 0
@@ -1417,7 +1418,7 @@ def get_override_entry(location):
     else:
         return None
 
-    return (scene, type, default, player_id, item_id)
+    return (scene, type, default, item_id, player_id, looks_like_item_id)
 
 
 chestTypeMap = {
