@@ -297,3 +297,27 @@ class World(object):
     def has_beaten_game(self, state):
         return state.has('Triforce')
 
+
+    def update_useless_areas(self):
+        areas = {}
+        excluded_areas = [None, "Link's Pocket", "Ganon's Tower"]
+        for location in self.get_locations():
+            if location.hint in excluded_areas or \
+               location.locked or \
+               location.item is None or \
+               location.item.type == "Event":
+                continue
+            if location.hint in areas:
+                areas[location.hint].append(location)
+            else:
+                areas[location.hint] = [location]
+
+        self.empty_areas = []
+        for area,locations in areas.items():
+            useless_area = True
+            for location in locations:
+                if location.item.majoritem:
+                    useless_area = False
+                    break
+            if useless_area:
+                self.empty_areas.append(area)
