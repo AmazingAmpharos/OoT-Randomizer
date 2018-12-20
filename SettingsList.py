@@ -1302,7 +1302,7 @@ setting_infos = [
         {
             'text': 'Exclude Locations',
             'widget': 'SearchBox',
-            'group': 'checks',
+            'group': 'logic_tab',
             'options': list(location_table.keys()),
             'tooltip':'''
                     Prevent locations from being required. Major 
@@ -1325,7 +1325,7 @@ setting_infos = [
         {
             'text': 'Enable Tricks',
             'widget': 'SearchBox',
-            'group': 'tricks',
+            'group': 'logic_tab',
             'options': {gui_text: val['name'] for gui_text, val in logic_tricks.items()},
             'entry_tooltip': logic_tricks_entry_tooltip,
             'list_tooltip': logic_tricks_list_tooltip,
@@ -1358,7 +1358,6 @@ setting_infos = [
                              'eyedrops'
                              'claim_check'
                              ''',
-            gui_text       = 'Adult Trade Sequence',
             gui_group      = 'checks',
             gui_tooltip    = '''\
                              Select the earliest item that can appear in the adult trade sequence.
@@ -1413,7 +1412,6 @@ setting_infos = [
                              chest-wasteland:  Only wasteland and chest minigame expect the lens
                              chest:            Only the chest minigame expects the lens
                              ''',
-            gui_text       = 'Lens of Truth',
             gui_group      = 'tricks',
             gui_tooltip    = '''\
                              'Required everywhere': every invisible or
