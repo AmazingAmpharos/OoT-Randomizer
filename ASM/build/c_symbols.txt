@@ -87,7 +87,7 @@ SYMBOL TABLE:
 00000db0 g     F .text	0000001c after_scene_init
 00000000         *UND*	00000000 FONT_TEXTURE
 00000000         *UND*	00000000 OCARINAS_SHUFFLED
-00002d3c g     F .text	0000010c get_item
+00002c8c g     F .text	0000010c get_item
 00000000         *UND*	00000000 CHEST_SIZE_MATCH_CONTENTS
 000018a0 g     F .text	0000001c give_magic
 00000038 g     O .sbss	00000004 active_item_text_id
@@ -103,7 +103,7 @@ SYMBOL TABLE:
 00000018 g     O .sbss	00000001 satisified_ice_trap_frames
 00000444 g     F .text	000000f0 sprite_draw
 000017f4 g     F .text	0000000c give_biggoron_sword
-00002f20 g     F .text	00000070 give_sarias_gift
+00002e70 g     F .text	00000070 give_sarias_gift
 00000b0c g     F .text	000000d0 heart_piece_draw
 000002a4 g     F .text	000001a0 sprite_load
 00000090 g     O .data	00000010 stones_sprite
@@ -124,8 +124,7 @@ SYMBOL TABLE:
 000019e8 g     F .text	00000050 resolve_upgrades
 00000710 g     F .text	00000188 gfx_init
 00002274 g     F .text	00000344 draw_quickboots
-00002e48 g     F .text	000000d8 get_skulltula_token
-00002c8c g     F .text	000000b0 give_pending_item
+00002d98 g     F .text	000000d8 get_skulltula_token
 00001a64 g     F .text	00000014 push_pending_ice_trap
 00000234 g     F .text	00000018 disp_buf_init
 00000050 g     O .bss	0000000e cfg_dungeon_is_mq

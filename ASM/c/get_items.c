@@ -246,26 +246,6 @@ void handle_pending_items() {
     }
 }
 
-void give_pending_item() {
-    override_t override = pending_item_queue[0];
-    // Don't give pending item if:
-    // - Already receiving an item from an ordinary source
-    // - Link is in cutscene state (causes crash)
-    // - Link's camera is not being used (causes walking-while-talking glitch)
-    int no_pending = override.key.all == 0 ||
-        (z64_link.incoming_item_actor && z64_link.incoming_item_id > 0) ||
-        z64_link.state_flags_1 & 0x20000000 ||
-        z64_game.camera_2;
-    if (no_pending) {
-        return;
-    }
-
-    activate_override(override);
-
-    z64_link.incoming_item_actor = dummy_actor;
-    z64_link.incoming_item_id = active_item_row->base_item_id;
-}
-
 void get_item(z64_actor_t *from_actor, z64_link_t *link, int8_t incoming_item_id) {
     override_t override = { 0 };
     int incoming_negative = incoming_item_id < 0;
