@@ -1230,7 +1230,7 @@ setting_infos = [
                            'Maps/Compasses: Start With': The dungeon information
                            is available immediately from the dungeon menu.
                              ''',
-            default        = True,
+            default        = False,
             shared         = True,
             ),
     Checkbutton(
@@ -1473,34 +1473,6 @@ setting_infos = [
                              ''',
             shared         = True,
             ),
-     Combobox(
-            name           = 'junk_ice_traps',
-            default        = 'off',
-            choices        = {
-                'off':     'No Ice Traps',
-                'normal':  'Normal Ice Traps',
-                'on':      'Extra Ice Traps',
-                'mayhem':  'Mayhem Ice Traps',
-                },
-            args_help      = '''\
-                             Choose how Ice Traps will be placed in the junk item pool
-                             off:    Ice traps are removed.
-                             normal: Default behavior; no ice traps in the junk item pool
-                             on:     Ice Traps will be placed in the junk item pool
-                             mayhem: All junk items will be ice traps
-                             ''',
-            gui_text       = 'Junk Ice Traps',
-            gui_group      = 'other',
-            gui_tooltip    = '''\
-                             Extra Ice Traps: chance to add 
-                             extra Ice Traps when junk items
-                             are added to the itempool.
-
-                             Mayhem Ice Traps: all added 
-                             junk items will be Ice Traps.
-                             ''',
-            shared         = True,
-            ),
     Combobox(
             name           = 'hints',
             default        = 'agony',
@@ -1595,6 +1567,33 @@ setting_infos = [
                              without the correct text. Similarly, non-shop
                              items sold in shops will also retain standard
                              text for the purpose of accurate price checks.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'junk_ice_traps',
+            default        = 'normal',
+            choices        = {
+                'off':     'No Ice Traps',
+                'normal':  'Normal Ice Traps',
+                'on':      'Extra Ice Traps',
+                'mayhem':  'Mayhem Ice Traps',
+                },
+            args_help      = '''\
+                             Choose how Ice Traps will be placed in the junk item pool
+                             off:    Ice traps are removed.
+                             normal: Default behavior; no ice traps in the junk item pool
+                             on:     Ice Traps will be placed in the junk item pool
+                             mayhem: All junk items will be ice traps
+                             ''',
+            gui_text       = 'Junk Ice Traps',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Extra Ice Traps: chance to add 
+                             extra Ice Traps when junk items
+                             are added to the itempool.
+                             Mayhem Ice Traps: all added 
+                             junk items will be Ice Traps.
                              ''',
             shared         = True,
             ),
