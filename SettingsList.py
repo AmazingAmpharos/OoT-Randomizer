@@ -1,7 +1,7 @@
 import argparse
 import re
 import math
-from Patches      import get_tunic_color_options, get_navi_color_options
+from Cosmetics import get_tunic_color_options, get_navi_color_options
 from LocationList import location_table
 import Sounds as sfx
 
@@ -43,6 +43,8 @@ class Setting_Widget(Setting_Info):
         if 'type' not in args_params: args_params['type'] = type
         if 'type' not in gui_params:  gui_params['type']  = type
 
+        self.choices = choices
+        self.default = default
         args_params['choices'] = list(choices.keys())
         args_params['default'] = default
         gui_params['options']  = {v: k for k, v in choices.items()}
@@ -377,6 +379,11 @@ setting_infos = [
     Setting_Info('patch_file', str, 0, False, {
             'default': '',
             'help': 'Path to a patch file.'}),
+    Setting_Info('cosmetics_only', bool, 0, False, 
+    {
+            'help': 'Patched file will only have cosmetics applied.',
+            'action': 'store_true',
+    }),
     Setting_Info('count', int, 0, False, {
             'help': '''\
                     Use to batch generate multiple seeds with same settings.
@@ -418,6 +425,17 @@ setting_infos = [
             default        = True,
             shared         = True,
             ),
+    Checkbutton(
+        name='create_cosmetics_log',
+        args_help='''\
+                         Output a Cosmetics Log
+                         ''',
+        gui_text='Create Cosmetics Log',
+        gui_group='rom_tab',
+        gui_dependency=lambda guivar: guivar['compress_rom'].get() not in ['No Output', 'Patch File'],
+        default=True,
+        shared=False,
+    ),
     Setting_Widget(
         name='compress_rom',
         type=str,
@@ -770,14 +788,14 @@ setting_infos = [
     Checkbutton(
             name           = 'free_scarecrow',
             args_help      = '''\
-                             Scarecrow song is not needed to summon Pierre.
+                             Scarecrow's Song is no longer needed to summon Pierre.
                              ''',
-            gui_text       = 'Start with Scarecrow\'s Song',
+            gui_text       = 'Free Scarecrow\'s Song',
             gui_group      = 'convenience',
             gui_tooltip    = '''\
-                             Pulling out the Ocarina near
-                             Pierre will summon him without
-                             learning the song.
+                             Pulling out the Ocarina near a
+                             spot at which Pierre can spawn will
+                             do so, without needing the song.
                              ''',
             shared         = True,
             ),
@@ -789,9 +807,11 @@ setting_infos = [
             gui_text       = 'Start with Fast Travel',
             gui_group      = 'convenience',
             gui_tooltip    = '''\
-                             Start the game with knowledge of the Prelude of Light
-                             and Serenade of Water songs. Also start the game with
-                             Farore's Wind in inventory.
+                             Start the game with Prelude of Light,
+                             Serenade of Water, and Farore's Wind.
+                             
+                             Two song locations will give items,
+                             instead of Prelude and Serenade.
                              ''',
             shared         = True,
             ),            
@@ -804,6 +824,18 @@ setting_infos = [
             gui_group      = 'convenience',
             gui_tooltip    = '''\
                              Start the game with 99 rupees.
+                             ''',
+            shared         = True,
+            ),         
+    Checkbutton(
+            name           = 'start_with_wallet',
+            args_help      = '''\
+                             Start with Tycoon's Wallet.
+                             ''',
+            gui_text       = 'Start with Tycoon\'s Wallet',
+            gui_group      = 'convenience',
+            gui_tooltip    = '''\
+                             Start the game with the largest wallet (999 max).
                              ''',
             shared         = True,
             ),
@@ -858,8 +890,10 @@ setting_infos = [
             gui_text       = 'Shuffle Kokiri Sword',
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             Disabling this will make the Kokiri Sword
-                             always available at the start.
+                             Enabling this shuffles the Kokiri Sword into the pool.
+                             
+                             This will require extensive use of sticks until the
+                             sword is found.
                              ''',
             default        = True,
             shared         = True,
@@ -868,14 +902,15 @@ setting_infos = [
             name           = 'shuffle_ocarinas',
             args_help      = '''\
                              Shuffles the Fairy Ocarina and the Ocarina of Time into the pool.
-                             This means that you need to find an ocarina before playing songs.
                              ''',
             gui_text       = 'Shuffle Ocarinas',
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             The Fairy Ocarina and Ocarina of Time are
-                             randomized. One will be required before
-                             songs can be played.
+                             Enabling this shuffles the Fairy Ocarina and the Ocarina
+                             of Time into the pool.
+                             
+                             This will require finding an Ocarina before being able
+                             to play songs.
                              ''',
             default        = True,
             shared         = True,
@@ -883,16 +918,18 @@ setting_infos = [
     Checkbutton(
             name           = 'shuffle_weird_egg',
             args_help      = '''\
-                             Shuffles the Weird Egg item from Malon into the pool.
-                             This means that you need to find the egg before going Zelda.
+                             Shuffles the Weird Egg from Malon into the pool.
                              ''',
             gui_text       = 'Shuffle Weird Egg',
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             You need to find the egg before going Zelda.
-                             This means the Weird Egg locks the rewards from
-                             Impa, Saria, Malon, and Talon as well as the
-                             Happy Mask sidequest.
+                             Enabling this shuffles the Weird Egg from Malon into the pool.
+                             
+                             This will require finding the Weird Egg to talk to Zelda in 
+                             Hyrule Castle, which in turn locks rewards from Impa, Saria,
+                             Malon, and Talon, as well as the Happy Mask sidequest.
+                             If Open Kakariko Gate is disabled, the Weird Egg will also
+                             be required for Zelda's Letter to open the gate as child.
                              ''',
             default        = True,
             shared         = True,
@@ -900,34 +937,35 @@ setting_infos = [
     Checkbutton(
             name           = 'shuffle_gerudo_card',
             args_help      = '''\
-                             Shuffles the Gerudo Card into the item pool.
-                             The Gerudo Card does not stop guards from throwing you in jail.
-                             It only grants access to Gerudo Training Grounds after all carpenters
-                             have been rescued. This option does nothing if "gerudo_fortress" is "open".
+                             Shuffles the Gerudo Card into the pool.
                              ''',
             gui_text       = 'Shuffle Gerudo Card',
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             Gerudo Card is required to enter
-                             Gerudo Training Grounds.
+                             Enabling this shuffles the Gerudo Card into the item pool.
+                             
+                             The Gerudo Card is required to enter the Gerudo Training Grounds,
+                             however it does not prevent the guards throwing you in jail.
+                             This has no effect if the option to Start with Gerudo Card is set.
                              ''',
             shared         = True,
             ),
     Checkbutton(
             name           = 'shuffle_song_items',
             args_help      = '''\
-                             Shuffles the songs with with rest of the item pool so that
-                             songs can appear at other locations and items can appear at
+                             Shuffles the songs into the rest of the item pool so that
+                             they can appear at other locations and items can appear at
                              the song locations.
                              ''',
             gui_text       = 'Shuffle Songs with Items',
             gui_group      = 'shuffle',
             gui_tooltip    = '''\
-                             Songs can appear anywhere as normal items.
-        
-                             If this option is not set, songs will still
-                             be shuffled but will be limited to the
-                             locations that has songs in the original game.
+                             Enabling this shuffles the songs into the rest of the
+                             item pool.
+                             
+                             This means that song locations can contain other items,
+                             and any location can contain a song. Otherwise, songs
+                             are only shuffled among themselves.
                              ''',
             default        = True,
             shared         = True,
@@ -1192,7 +1230,7 @@ setting_infos = [
                            'Maps/Compasses: Start With': The dungeon information
                            is available immediately from the dungeon menu.
                              ''',
-            default        = True,
+            default        = False,
             shared         = True,
             ),
     Checkbutton(
@@ -1264,7 +1302,7 @@ setting_infos = [
         {
             'text': 'Exclude Locations',
             'widget': 'SearchBox',
-            'group': 'checks',
+            'group': 'logic_tab',
             'options': list(location_table.keys()),
             'tooltip':'''
                     Prevent locations from being required. Major 
@@ -1287,7 +1325,7 @@ setting_infos = [
         {
             'text': 'Enable Tricks',
             'widget': 'SearchBox',
-            'group': 'tricks',
+            'group': 'logic_tab',
             'options': {gui_text: val['name'] for gui_text, val in logic_tricks.items()},
             'entry_tooltip': logic_tricks_entry_tooltip,
             'list_tooltip': logic_tricks_list_tooltip,
@@ -1320,7 +1358,6 @@ setting_infos = [
                              'eyedrops'
                              'claim_check'
                              ''',
-            gui_text       = 'Adult Trade Sequence',
             gui_group      = 'checks',
             gui_tooltip    = '''\
                              Select the earliest item that can appear in the adult trade sequence.
@@ -1375,7 +1412,6 @@ setting_infos = [
                              chest-wasteland:  Only wasteland and chest minigame expect the lens
                              chest:            Only the chest minigame expects the lens
                              ''',
-            gui_text       = 'Lens of Truth',
             gui_group      = 'tricks',
             gui_tooltip    = '''\
                              'Required everywhere': every invisible or
@@ -1415,7 +1451,8 @@ setting_infos = [
             gui_group      = 'other',
             gui_tooltip    = '''\
                              Chests will be large if they contain a major
-                             item and small if they don't. This allows skipping
+                             item and small if they don't. Boss keys will
+                             be in gold chests. This allows skipping
                              chests if they are small. However, skipping
                              small chests will mean having low health,
                              ammo, and rupees, so doing so is a risk.
@@ -1479,6 +1516,7 @@ setting_infos = [
                 'balanced':    'Balanced',
                 'strong':      'Strong',
                 'very_strong': 'Very Strong',
+                'tournament':  'Tournament',
                 },
             args_help      = '''\
                              Choose how Gossip Stones hints are distributed
@@ -1486,6 +1524,7 @@ setting_infos = [
                              balanced: Use a balanced distribution of hint types
                              strong: Use a strong distribution of hint types
                              very_strong: Use a very strong distribution of hint types
+                             tournament: Similar to strong but has no variation in hint types
                              ''',
             gui_text       = 'Hint Distribution',
             gui_group      = 'other',
@@ -1497,6 +1536,9 @@ setting_infos = [
                              hints.
                              Very Strong distribution has
                              only very useful hints.
+                             Tournament distribution is
+                             similar to Strong but with no
+                             variation in hint types.
                              ''',
             shared         = True,
             ),
@@ -1525,6 +1567,40 @@ setting_infos = [
                              without the correct text. Similarly, non-shop
                              items sold in shops will also retain standard
                              text for the purpose of accurate price checks.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'junk_ice_traps',
+            default        = 'normal',
+            choices        = {
+                'off':       'No Ice Traps',
+                'normal':    'Normal Ice Traps',
+                'on':        'Extra Ice Traps',
+                'mayhem':    'Ice Trap Mayhem',
+                'onslaught': 'Ice Trap Onslaught',
+                },
+            args_help      = '''\
+                             Choose how Ice Traps will be placed in the junk item pool
+                             off:       Ice traps are removed.
+                             normal:    Default behavior; no ice traps in the junk item pool.
+                             on:        Ice Traps will be placed in the junk item pool.
+                             mayhem:    All added junk items will be ice traps.
+                             onslaught: All junk items will be ice traps, even those in the base item pool.
+                             ''',
+            gui_text       = 'Ice Traps',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Off: All Ice Traps are removed.
+                             Normal: Only Ice Traps from the base item pool
+                             are placed.
+                             Extra Ice Traps: Chance to add extra Ice Traps
+                             when junk items are added to the itempool.
+                             Ice Trap Mayhem: All added junk items will
+                             be Ice Traps.
+                             Ice Trap Onslaught: All junk items will be
+                             replaced by Ice Traps, even those in the
+                             base pool.
                              ''',
             shared         = True,
             ),
@@ -1587,6 +1663,43 @@ setting_infos = [
                              Changes the amount of damage taken.
         
                              'OHKO': Link dies in one hit.
+                             ''',
+            shared         = True,
+            ),
+    Combobox(
+            name           = 'starting_tod',
+            default        = 'default',
+            choices        = {
+                'default':       'Default',
+                'random':        'Random Choice',
+                'early-morning': 'Early Morning',
+                'morning':       'Morning',
+                'noon':          'Noon',
+                'afternoon':     'Afternoon',
+                'evening':       'Evening',
+                'dusk':          'Dusk',
+                'midnight':      'Midnight',
+                'witching-hour': 'Witching Hour',
+                },
+            args_help      = '''\
+                             Change up Link's sleep routine.
+
+                             Daytime officially starts at 6:30,
+                             nighttime at 18:00 (6:00 PM).
+
+                             Default is 10:00 in the morning.
+                             The alternatives are multiples of 3 hours.
+                             ''',
+            gui_text       = 'Starting Time of Day',
+            gui_group      = 'other',
+            gui_tooltip    = '''\
+                             Change up Link's sleep routine.
+
+                             Daytime officially starts at 6:30,
+                             nighttime at 18:00 (6:00 PM).
+
+                             Default is 10:00 in the morning.
+                             The alternatives are multiples of 3 hours.
                              ''',
             shared         = True,
             ),
@@ -1797,29 +1910,57 @@ setting_infos = [
                       '''
         }),
     Combobox(
-            name           = 'sfx_navi_overworld',
+            name           = 'sfx_nightfall',
             default        = 'default',
-            choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI_OVERWORLD),
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.NIGHTFALL),
             args_help      = '''\
-                             Select the sound effect that plays when Navi has a hint. (default: %(default)s)
-                             Sound:         Replace the sound effect with the chosen sound.
-                             Random Choice: Replace the sound effect with a random sound from this list.
-                             None:          Eliminate Navi hint sounds.
                              ''',
-            gui_text       = 'Navi - Hint',
+            gui_text       = 'Nightfall',
             gui_group      = 'sfx',
             ),
     Combobox(
-            name           = 'sfx_navi_enemy',
+            name           = 'sfx_hover_boots',
             default        = 'default',
-            choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI_ENEMY),
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.BOOTS_HOVER),
             args_help      = '''\
-                             Select the sound effect that plays when targeting an enemy. (default: %(default)s)
-                             Sound:         Replace the sound effect with the chosen sound.
-                             Random Choice: Replace the sound effect with a random sound from this list.
-                             None:          Eliminate Navi hint sounds.
                              ''',
-            gui_text       = 'Navi - Enemy',
+            gui_text       = 'Hover Boots',
+            gui_group      = 'sfx',
+            ),
+    Combobox(
+            name           = 'sfx_menu_select',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.MENU_SELECT),
+            args_help      = '''\
+                             ''',
+            gui_text       = 'Menu Select',
+            gui_group      = 'sfx',
+            ),
+    Combobox(
+            name           = 'sfx_menu_cursor',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.MENU_CURSOR),
+            args_help      = '''\
+                             ''',
+            gui_text       = 'Menu Cursor',
+            gui_group      = 'sfx',
+            ),
+    Combobox(
+            name           = 'sfx_horse_neigh',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.HORSE_NEIGH),
+            args_help      = '''\
+                             ''',
+            gui_text       = 'Horse',
+            gui_group      = 'sfx',
+            ),
+    Combobox(
+            name           = 'sfx_navi',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI),
+            args_help      = '''\
+                             ''',
+            gui_text       = 'Navi',
             gui_group      = 'sfx',
             ),
     Combobox(
@@ -1864,3 +2005,7 @@ setting_infos = [
                              ''',
             ),
 ]
+
+si_dict = {si.name: si for si in setting_infos}
+def get_setting_info(name):
+    return si_dict[name]

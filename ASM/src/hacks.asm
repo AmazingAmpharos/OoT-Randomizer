@@ -95,6 +95,22 @@
     nop
     nop
 
+; Override chest speed
+; Replaces:
+;   lb      t2, 0x0002 (t1)
+;   bltz    t2, @@after_chest_speed_check
+;   nop
+;   jal     0x80071420
+;   nop
+.org 0xBDA2E8 ; In memory: 0x803952D8
+    jal     override_chest_speed
+    lb      t2, 0x0002 (t1)
+    bltz    t3, @@after_chest_speed_check
+    nop
+    nop
+.skip 4 * 22
+@@after_chest_speed_check:
+
 ; Override text ID
 ; Replaces:
 ;   lbu     a1, 0x03 (v0)
@@ -180,16 +196,57 @@
     nop
 
 ;==================================================================================================
+; Scene init hook
+;==================================================================================================
+
+; Runs after scene init
+; Replaces:
+;   jr      ra
+;   nop
+.org 0xB12E44 ; In memory: 0x8009CEE4
+    j       after_scene_init
+    nop
+
+
+;==================================================================================================
 ; Freestanding models
 ;==================================================================================================
+
+; Override constructor for En_Item00 (Piece of Heart / Small Key)
+.org 0xB5D6C0
+.word item00_constructor ; Replaces 80011B4C
 
 ; Replaces:
 ;   jal     0x80013498 ; Piece of Heart draw function
 ;   nop
 .org 0xA88F78
-    ; disabled until model code is done
-    ;jal     models_draw
-    ;nop
+    jal     heart_piece_draw
+    nop
+
+; Replaces:
+;   addiu   sp, sp, -0x48
+;   sw      ra, 0x1C (sp)
+.org 0xCA6DC0
+    j       heart_container_draw
+    nop
+
+; Replaces:
+;   lw      a0, 0x001C (sp)
+;   jal     0x800570C0
+;   lh      a1, 0x0140 (t6)
+.org 0xDE1034
+    lw      a0, 0x18 (sp)
+    jal     item_etcetera_draw
+    lw      a1, 0x1C (sp)
+
+; Replaces:
+;   lw      a0, 0x001C (sp)
+;   jal     0x800570C0
+;   lh      a1, 0x0140 (t6)
+.org 0xDE1084
+    lw      a0, 0x18 (sp)
+    jal     item_etcetera_draw
+    lw      a1, 0x1C (sp)
 
 ;==================================================================================================
 ; File select hash
@@ -490,28 +547,17 @@ nop
     jal override_song_of_time
 
 ;==================================================================================================
-; Fire Arrow Chest
+; Fire Arrow location spawn condition
 ;==================================================================================================
 
-; Don't require water temple
-;   bne     t9,at,+0x0024
-.org 0xE9E1D8
-    li      t1, 0x4000
-
-; Load chest contents
-;   li      t0, 0x0007
-.org 0xE9E1F0
-    li      t0, 0x5B08
-
-; Load actor type
-;   li      a2, 0x010f
-.org 0xE9E200
-    li      a2, 0x000A
-
-; Set rotation
-;   sw      zero, 0x1C (sp)
-.org 0xE9E20C
-    sw      t1, 0x1C (sp)
+; Replaces a check for whether fire arrows are in the inventory
+; The item spawns if t9 == at
+.org 0xE9E1B8
+.area 6 * 4, 0
+    lw      t9, (GLOBAL_CONTEXT + 0x1D38) ; Chest flags
+    andi    t9, t9, 0x1
+    ori     at, r0, 0
+.endarea
 
 ;==================================================================================================
 ; Epona Check Override
@@ -674,9 +720,9 @@ skip_GS_BGS_text:
 ; Replaces:
 ;   lhu     t0, 0x04C6 (t0)
 ;   li      at, 0x0B
-.org 0xEF4f98
-    lhu     t0, 0x0670 (v0)
-    li      at, 0x0800
+.org 0xEF4F98
+    jal adapt_scarecrow
+    nop
 
 ;==================================================================================================
 ; Talon Cutscene Skip
@@ -874,3 +920,36 @@ skip_GS_BGS_text:
 ;Replaces: addiu t5, r0, 0x0200
 .org 0xD4BE6C
 	jal		jabu_elevator
+
+;==================================================================================================
+; Quick Boots Display
+;==================================================================================================
+;
+; Replaces lw    s4, 0x0000(s6)
+;          lw    s1, 0x02B0(s4)
+.org 0xAEB68C ; In Memory: 0x8007572C
+	jal		qb_draw
+	nop
+
+;==================================================================================================
+; Correct Chest Sizes
+;==================================================================================================
+; Replaces lbu   v0,0x01E9(s0)
+.org 0xC064BC
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER
+.org 0xC06E5C
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER
+.org 0xC07494
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER
+
+; Replaces sw    t8,8(t6)
+;          lbu   v0,489(s0)
+.org 0xC0722C
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER
+    sw      t8,8(t6)
+
+; Replaces lbu   t9,0x01E9(s0)
+.org 0xC075A8
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER_T9
+.org 0xC07648
+    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER_T9

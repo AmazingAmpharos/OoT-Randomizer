@@ -5,7 +5,7 @@ import os
 import struct
 import random
 
-from HintList import getHint, getHintGroup, Hint
+from HintList import getHint, getHintGroup, Hint, hintExclusions
 from ItemPool import eventlocations
 from Messages import update_message_by_id
 from TextBox import lineWrap
@@ -17,6 +17,7 @@ class GossipStone():
     def __init__(self, name, location):
         self.name = name
         self.location = location
+        self.reachable = True
 
 
 gossipLocations = {
@@ -83,7 +84,7 @@ def isRestrictedDungeonItem(dungeon, item):
     return False
 
 
-def add_hint(spoiler, world, IDs, text, count, location=None):
+def add_hint(spoiler, world, IDs, text, count, location=None, force_reachable=False):
     random.shuffle(IDs)
     skipped_ids = []
     first = True
@@ -91,7 +92,7 @@ def add_hint(spoiler, world, IDs, text, count, location=None):
         if IDs:
             id = IDs.pop(0)
 
-            if spoiler.stones_readable:
+            if gossipLocations[id].reachable:
                 stone_location = gossipLocations[id].location
                 if not first or can_reach_stone(spoiler.worlds, stone_location, location):
                     if first and location:
@@ -104,9 +105,14 @@ def add_hint(spoiler, world, IDs, text, count, location=None):
                 else:
                     skipped_ids.append(id)
             else:
-                # The stones are not readable at all in logic, so we ignore any kind of logic here
-                count -= 1
-                spoiler.hints[world.id][id] = lineWrap(text)
+                if not force_reachable:
+                    # The stones are not readable at all in logic, so we ignore any kind of logic here
+                    count -= 1
+                    spoiler.hints[world.id][id] = lineWrap(text)
+                else:
+                    # If flagged to guarantee reachable, then skip
+                    # If no stones are reachable, then this will place nothing
+                    skipped_ids.append(id)                
         else:
             break
     IDs.extend(skipped_ids)
@@ -207,6 +213,18 @@ def get_woth_hint(spoiler, world, checked):
         return (buildHintString(colorText(location.hint, 'Light Blue') + " is on the way of the hero."), location)
 
 
+def get_barren_hint(spoiler, world, checked):
+    areas = world.empty_areas
+    areas = list(filter(lambda area: area not in checked, areas))
+    if not areas:
+        return None
+
+    area = random.choice(areas)
+    checked.append(area)
+
+    return (buildHintString(colorText(area, 'Pink') + " is barren of treasure."), None)
+
+
 def get_good_loc_hint(spoiler, world, checked):
     locations = getHintGroup('location', world)
     locations = list(filter(lambda hint: hint.name not in checked, locations))
@@ -299,6 +317,7 @@ hint_func = {
     'trial':    lambda spoiler, world, checked: None,
     'always':   lambda spoiler, world, checked: None,
     'woth':     get_woth_hint,
+    'barren':   get_barren_hint,
     'loc':      get_good_loc_hint,
     'item':     get_good_item_hint,
     'ow':       get_overworld_hint,
@@ -312,6 +331,7 @@ hint_dist_sets = {
         'trial':    (0.0, 0),
         'always':   (0.0, 0),
         'woth':     (0.0, 0),
+        'barren':   (0.0, 0),
         'loc':      (0.0, 0),
         'item':     (0.0, 0),
         'ow':       (0.0, 0),
@@ -322,6 +342,7 @@ hint_dist_sets = {
         'trial':    (0.0, 1),
         'always':   (0.0, 1),
         'woth':     (3.5, 1),
+        'barren':   (2.0, 1),
         'loc':      (4.0, 1),
         'item':     (5.0, 1),
         'ow':       (2.0, 1),
@@ -331,9 +352,10 @@ hint_dist_sets = {
     'strong': {
         'trial':    (0.0, 1),
         'always':   (0.0, 2),
-        'woth':     (4.0, 2.5),
+        'woth':     (3.0, 2),
+        'barren':   (3.0, 1),
         'loc':      (2.0, 1),
-        'item':     (2.0, 1),
+        'item':     (1.0, 1),
         'ow':       (1.0, 1),
         'dungeon':  (1.0, 1),
         'junk':     (0.0, 1),
@@ -342,22 +364,37 @@ hint_dist_sets = {
         'trial':    (0.0, 1),
         'always':   (0.0, 2),
         'woth':     (3.0, 2),
-        'loc':      (1.0, 1),
+        'barren':   (3.0, 1),
+        'loc':      (2.0, 1),
         'item':     (2.0, 1),
         'ow':       (0.0, 1),
         'dungeon':  (0.0, 1),
         'junk':     (0.0, 1),
     },
+    'tournament': {
+        'trial':    (0.0, 1),
+        'always':   (0.0, 2),
+        'woth':     (4.0, 2),
+        'barren':   (2.0, 1),
+        'loc':      (4.0, 1),
+        'item':     (2.0, 1),
+        'ow':       (1.0, 1),
+        'dungeon':  (1.0, 1),
+        'junk':     (0.0, 1),
+    },    
 }
 
 
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(spoiler, world):
+    # rebuild hint exclusion list
+    hintExclusions(world, clear_cache=True)
 
     max_states = State.get_states_with_items([w.state for w in spoiler.worlds], [])
-    spoiler.stones_readable = True
-    for state in max_states:
-        spoiler.stones_readable = spoiler.stones_readable and state.guarantee_hint()
+    for id,stone in gossipLocations.items():
+        stone.reachable = \
+            max_states[world.id].can_reach(stone.location, resolution_hint='Location') and \
+            max_states[world.id].guarantee_hint()
 
     checkedLocations = []
 
@@ -374,31 +411,43 @@ def buildGossipHints(spoiler, world):
         location = world.get_location(hint.name)
         checkedLocations.append(hint.name)
         add_hint(spoiler, world, stoneIDs, buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
-            colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), hint_dist['always'][1], location)
+            colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), hint_dist['always'][1], location, force_reachable=True)
 
     # Add trial hints
     if world.trials_random and world.trials == 6:
-        add_hint(spoiler, world, stoneIDs, buildHintString(colorText("Ganon's Tower", 'Pink') + " is protected by a powerful barrier."), hint_dist['trial'][1])
+        add_hint(spoiler, world, stoneIDs, buildHintString(colorText("Ganon's Tower", 'Pink') + " is protected by a powerful barrier."), hint_dist['trial'][1], force_reachable=True)
     elif world.trials_random and world.trials == 0:
-        add_hint(spoiler, world, stoneIDs, buildHintString("Sheik dispelled the barrier around " + colorText("Ganon's Tower", 'Yellow')), hint_dist['trial'][1])
+        add_hint(spoiler, world, stoneIDs, buildHintString("Sheik dispelled the barrier around " + colorText("Ganon's Tower", 'Yellow')), hint_dist['trial'][1], force_reachable=True)
     elif world.trials < 6 and world.trials > 3:
         for trial,skipped in world.skipped_trials.items():
             if skipped:
-                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."), hint_dist['trial'][1])
+                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."), hint_dist['trial'][1], force_reachable=True)
     elif world.trials <= 3 and world.trials > 0:
         for trial,skipped in world.skipped_trials.items():
             if not skipped:
-                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."), hint_dist['trial'][1])
+                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."), hint_dist['trial'][1], force_reachable=True)
 
     hint_types = list(hint_types)
     hint_prob  = list(hint_prob)
+    if world.hint_dist == "tournament":
+        fixed_hint_types = []
+        for hint_type in hint_types:
+            fixed_hint_types.extend([hint_type] * int(hint_dist[hint_type][0]))
+
     while stoneIDs:
-        try:
-            [hint_type] = random_choices(hint_types, weights=hint_prob)
-        except IndexError:
-            raise Exception('Not enough valid hints to fill gossip stone locations.')
+        if world.hint_dist == "tournament":
+            if fixed_hint_types:
+                hint_type = fixed_hint_types.pop(0)
+            else:
+                hint_type = random.choice(['loc', 'item', 'ow'])
+        else:
+            try:
+                [hint_type] = random_choices(hint_types, weights=hint_prob)
+            except IndexError:
+                raise Exception('Not enough valid hints to fill gossip stone locations.')
 
         hint = hint_func[hint_type](spoiler, world, checkedLocations)
+
         if hint == None:
             index = hint_types.index(hint_type)
             del hint_types[index]

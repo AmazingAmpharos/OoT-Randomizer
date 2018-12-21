@@ -2,11 +2,11 @@ from State import State
 from Region import Region
 from Entrance import Entrance
 from Location import Location, LocationFactory
-from RegionList import create_regions
 from DungeonList import create_dungeons
 from Rules import set_rules, set_shop_rules
 from Item import Item
 from RuleParser import parse_rule_string
+from SettingsList import get_setting_info
 import logging
 import copy
 import io
@@ -33,9 +33,19 @@ class World(object):
         # this gives the world an attribute for every setting listed in Settings.py
         self.settings = settings
         self.__dict__.update(settings.__dict__)
+
+        # evaluate settings (important for logic, nice for spoiler)
+        if self.big_poe_count_random:
+            self.big_poe_count = random.randint(1, 10)
+        if self.starting_tod == 'random':
+            setting_info = get_setting_info('starting_tod')
+            choices = [ch for ch in setting_info.args_params['choices'] if ch not in ['default', 'random']]
+            self.starting_tod = random.choice(choices)
+
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
+
         # trials that can be skipped will be decided later
         self.skipped_trials = {
             'Forest': False,
@@ -45,6 +55,7 @@ class World(object):
             'Shadow': False,
             'Light': False
         }
+
         # dungeon forms will be decided later
         self.dungeon_mq = {
             'Deku Tree': False,
@@ -62,7 +73,6 @@ class World(object):
         }
 
         self.can_take_damage = True
-        self.keys_placed = False
 
 
     def copy(self):
@@ -72,7 +82,6 @@ class World(object):
         new_world.big_poe_count = copy.copy(self.big_poe_count)
         new_world.can_take_damage = self.can_take_damage
         new_world.shop_prices = copy.copy(self.shop_prices)
-        new_world.keys_placed = self.keys_placed
         new_world.id = self.id
 
         new_world.regions = [region.copy(new_world) for region in self.regions]
@@ -294,3 +303,27 @@ class World(object):
     def has_beaten_game(self, state):
         return state.has('Triforce')
 
+
+    def update_useless_areas(self):
+        areas = {}
+        excluded_areas = [None, "Link's Pocket", "Ganon's Tower"]
+        for location in self.get_locations():
+            if location.hint in excluded_areas or \
+               location.locked or \
+               location.item is None or \
+               location.item.type == "Event":
+                continue
+            if location.hint in areas:
+                areas[location.hint].append(location)
+            else:
+                areas[location.hint] = [location]
+
+        self.empty_areas = []
+        for area,locations in areas.items():
+            useless_area = True
+            for location in locations:
+                if location.item.majoritem:
+                    useless_area = False
+                    break
+            if useless_area:
+                self.empty_areas.append(area)

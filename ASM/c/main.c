@@ -7,6 +7,7 @@
 #include "util.h"
 #include "quickboots.h"
 #include "z64.h"
+#include "chests.h"
 
 void c_init() {
     heap_init();
@@ -18,12 +19,14 @@ void c_init() {
 }
 
 void before_game_state_update() {
-    give_pending_item();
+    handle_pending_items();
     handle_quickboots();
 }
 
 void after_game_state_update() {
-    z64_disp_buf_t *db = &(z64_ctxt.gfx->overlay);
-    draw_dungeon_info(db);
-    draw_quickboots(db);
+    draw_dungeon_info(&(z64_ctxt.gfx->overlay));
+}
+
+void after_scene_init() {
+    models_reset();
 }

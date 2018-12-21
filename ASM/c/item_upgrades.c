@@ -62,14 +62,16 @@ uint16_t scale_upgrade(z64_file_t *save, uint16_t item_id) {
 
 uint16_t nut_upgrade(z64_file_t *save, uint16_t item_id) {
     switch (save->nut_upgrade) {
-        case 0: return 0x79; // 30 Nuts
+        case 0: return 0x79; // 30 Nuts. 0 and 1 are both starting capacity
+        case 1: return 0x79; // 30 Nuts
         default: return 0x7A; // 40 Nuts
     }
 }
 
 uint16_t stick_upgrade(z64_file_t *save, uint16_t item_id) {
     switch (save->stick_upgrade) {
-        case 0: return 0x77; // 20 Sticks
+        case 0: return 0x77; // 20 Sticks. 0 and 1 are both starting capacity
+        case 1: return 0x77; // 20 Sticks
         default: return 0x78; // 30 Sticks
     }
 }

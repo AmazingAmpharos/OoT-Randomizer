@@ -13,8 +13,6 @@ def set_rules(world):
     world.get_region('Links House').can_reach = lambda state: True
     
     for location in world.get_locations():
-        if location.type != 'Chest':
-            forbid_item(location, 'Ice Trap')
 
         if not world.shuffle_song_items:
             if location.type == 'Song':
@@ -44,6 +42,10 @@ def set_rules(world):
         elif not 'Deku Scrub' in location.name:
             add_item_rule(location, lambda location, item: item.type != 'Shop')
 
+        if location.name == 'Forest Temple MQ First Chest' and world.shuffle_bosskeys == 'dungeon' and world.shuffle_smallkeys == 'dungeon' and world.tokensanity == 'off':
+            # This location needs to be a small key. Make sure the boss key isn't placed here.
+            forbid_item(location, 'Boss Key (Forest Temple)')
+
     for location in world.disabled_locations:
         try:
             world.get_location(location).disabled = DisableType.PENDING
@@ -53,10 +55,6 @@ def set_rules(world):
 
 def set_rule(spot, rule):
     spot.access_rule = rule
-
-
-def set_always_allow(spot, rule):
-    spot.always_allow = rule
 
 
 def add_rule(spot, rule, combine='and'):

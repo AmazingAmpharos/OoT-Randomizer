@@ -12,8 +12,8 @@ typedef struct {
     uint16_t    text_id;
 
     uint16_t    object_id;
-    char        pad_;
     int8_t      graphic_id;
+    uint8_t     fast_chest;
 
     upgrade_fn  upgrade;
 
