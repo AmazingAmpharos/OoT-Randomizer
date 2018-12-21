@@ -880,9 +880,6 @@ def get_pool_core(world):
         bottle = random.choice(normal_bottles)
         pool.append(bottle)
 
-    if world.big_poe_count_random:
-        world.big_poe_count = random.randint(1, 10)
-
     tradeitem = random.choice(tradeitems)
     earliest_trade = tradeitemoptions.index(world.logic_earliest_adult_trade)
     latest_trade = tradeitemoptions.index(world.logic_latest_adult_trade)

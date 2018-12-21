@@ -33,14 +33,19 @@ class World(object):
         # this gives the world an attribute for every setting listed in Settings.py
         self.settings = settings
         self.__dict__.update(settings.__dict__)
+
         # evaluate settings (important for logic, nice for spoiler)
+        if self.big_poe_count_random:
+            self.big_poe_count = random.randint(1, 10)
         if self.starting_tod == 'random':
             setting_info = get_setting_info('starting_tod')
             choices = [ch for ch in setting_info.args_params['choices'] if ch not in ['default', 'random']]
             self.starting_tod = random.choice(choices)
+
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
+
         # trials that can be skipped will be decided later
         self.skipped_trials = {
             'Forest': False,
@@ -50,6 +55,7 @@ class World(object):
             'Shadow': False,
             'Light': False
         }
+
         # dungeon forms will be decided later
         self.dungeon_mq = {
             'Deku Tree': False,

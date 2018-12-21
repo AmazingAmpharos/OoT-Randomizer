@@ -32,6 +32,11 @@ def getHintGroup(group, world):
     ret = []
     for name in hintTable:
         hint = getHint(name, world.clearer_hints)
+
+        # 10 Big Poes does not require hint if 3 or less required.
+        if name == '10 Big Poes' and world.big_poe_count <= 3:
+            hint.type = 'location'
+
         if hint.type == group and not (name in hintExclusions(world)):
             ret.append(hint)
     return ret
