@@ -372,15 +372,15 @@ hint_dist_sets = {
         'junk':     (0.0, 1),
     },
     'tournament': {
-        'trial':    (0.0, 1),
+        'trial':    (0.0, 2),
         'always':   (0.0, 2),
         'woth':     (4.0, 2),
-        'barren':   (2.0, 1),
-        'loc':      (4.0, 1),
-        'item':     (2.0, 1),
-        'ow':       (1.0, 1),
-        'dungeon':  (1.0, 1),
-        'junk':     (0.0, 1),
+        'barren':   (2.0, 2),
+        'loc':      (4.0, 2),
+        'item':     (0.0, 2),
+        'ow':       (0.0, 2),
+        'dungeon':  (0.0, 2),
+        'junk':     (0.0, 2),
     },    
 }
 
@@ -439,7 +439,7 @@ def buildGossipHints(spoiler, world):
             if fixed_hint_types:
                 hint_type = fixed_hint_types.pop(0)
             else:
-                hint_type = random.choice(['loc', 'item', 'ow'])
+                hint_type = 'loc'
         else:
             try:
                 [hint_type] = random_choices(hint_types, weights=hint_prob)
