@@ -456,8 +456,11 @@ class Message():
             elif speed_up_text and code.code in slows_text:
                 pass
             elif speed_up_text and code.code in box_breaks:
-                offset = Text_Code(0x04, 0).write(rom, offset) # un-delayed break
-                offset = Text_Code(0x08, 0).write(rom, offset) # allow instant
+                if self.id == 0x605A: #special case for twinrova text
+                    offset = code.write(rom, offset)
+                else:
+                    offset = Text_Code(0x04, 0).write(rom, offset) # un-delayed break
+                    offset = Text_Code(0x08, 0).write(rom, offset) # allow instant
             else:
                 offset = code.write(rom, offset)
 
