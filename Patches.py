@@ -1,6 +1,7 @@
 import random
 import struct
 import itertools
+import re
 
 from World import World
 from Rom import LocalRom
@@ -1603,7 +1604,16 @@ def create_fake_name(name):
     for i in random.sample(vowel_indexes, min(2, len(vowel_indexes))):
         c = list_name[i]
         list_name[i] = random.choice([v for v in vowels if v != c])
-    return ''.join(list_name)
+    
+    # keeping the game E...
+    new_name = ''.join(list_name)
+    censor = ['dike', 'cunt', 'cum', 'puss', 'shit', 'penis']
+    new_name_az = re.sub(r'[^a-zA-Z]', '', name.lower(), re.UNICODE)
+    for cuss in censor:
+        if cuss in new_name_az:
+            return create_fake_name(name)
+    print(new_name)
+    return new_name
 
 
 def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=False):
