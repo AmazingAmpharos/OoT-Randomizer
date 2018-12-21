@@ -306,17 +306,23 @@ class World(object):
 
     def update_useless_areas(self):
         areas = {}
-        excluded_areas = [None, "Link's Pocket", "Ganon's Tower"]
+        excluded_areas = [None, "Link's Pocket"]
         for location in self.get_locations():
             if location.hint in excluded_areas or \
                location.locked or \
                location.item is None or \
                location.item.type == "Event":
                 continue
-            if location.hint in areas:
-                areas[location.hint].append(location)
+
+            if location.hint == "Ganon's Tower":
+                area = "Ganon's Castle"
             else:
-                areas[location.hint] = [location]
+                area = location.hint
+
+            if area in areas:
+                areas[area].append(location)
+            else:
+                areas[area] = [location]
 
         self.empty_areas = []
         for area,locations in areas.items():
