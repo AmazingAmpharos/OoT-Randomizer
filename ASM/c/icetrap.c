@@ -14,7 +14,7 @@ uint32_t ice_trap_is_pending() {
 }
 
 inline uint32_t ice_trap_allowed() {
-    if ((z64_link.state_flags_1 & 0xFCAC2405) == 0 &&
+    if ((z64_link.state_flags_1 & 0xFCAC2485) == 0 &&
         (z64_link.common.unk_flags_00 & 0x0001) &&
         (z64_link.state_flags_2 & 0x000C0000) == 0 &&
         (z64_event_state_1 & 0x20) == 0)   {
@@ -33,6 +33,7 @@ inline uint32_t ice_trap_allowed() {
 void try_ice_trap() {
     if (pending_freezes && ice_trap_allowed()) {
         pending_freezes--;
+        z64_LinkInvincibility(&z64_link, 0x14);
         z64_LinkDamage(&z64_game, &z64_link, 0x03, 0, 0, 0x14);
     }
 }
