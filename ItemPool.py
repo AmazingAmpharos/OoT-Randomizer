@@ -517,9 +517,9 @@ def replace_max_item(items, item, max):
 def generate_itempool(world):
     junk_pool[:] = list(junk_pool_base)
     if world.junk_ice_traps == 'on': 
-        junk_pool.append(('Ice Trap',10))
-    elif world.junk_ice_traps == 'mayhem':
-        junk_pool[:] = [('Ice Trap',1)]
+        junk_pool.append(('Ice Trap', 10))
+    elif world.junk_ice_traps in ['mayhem', 'onslaught']:
+        junk_pool[:] = [('Ice Trap', 1)]
 
     for location, item in eventlocations.items():
         world.push_item(location, ItemFactory(item, world))
@@ -926,6 +926,9 @@ def get_pool_core(world):
 
     if world.junk_ice_traps == 'off': 
         replace_max_item(pool, 'Ice Trap', 0)
+    elif world.junk_ice_traps == 'onslaught':
+        for item, weight in junk_pool_base:
+            replace_max_item(pool, item, 0)
 
     for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
