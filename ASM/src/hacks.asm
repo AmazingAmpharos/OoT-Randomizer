@@ -953,3 +953,19 @@ skip_GS_BGS_text:
     jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER_T9
 .org 0xC07648
     jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER_T9
+
+
+    
+;==================================================================================================
+; Cast Fishing Rod without B Item
+;==================================================================================================
+
+.orga 0xBCF914 ; 8038A904
+    jal     keep_fishing_rod_equipped
+    nop
+
+.orga 0xBCF73C ; 8038A72C
+    sw      ra, 0x0000(sp)
+    jal     cast_fishing_rod_if_equipped
+    nop
+    lw      ra, 0x0000(sp)
