@@ -1574,26 +1574,33 @@ setting_infos = [
             name           = 'junk_ice_traps',
             default        = 'normal',
             choices        = {
-                'off':     'No Ice Traps',
-                'normal':  'Normal Ice Traps',
-                'on':      'Extra Ice Traps',
-                'mayhem':  'Mayhem Ice Traps',
+                'off':       'No Ice Traps',
+                'normal':    'Normal Ice Traps',
+                'on':        'Extra Ice Traps',
+                'mayhem':    'Ice Trap Mayhem',
+                'onslaught': 'Ice Trap Onslaught',
                 },
             args_help      = '''\
                              Choose how Ice Traps will be placed in the junk item pool
-                             off:    Ice traps are removed.
-                             normal: Default behavior; no ice traps in the junk item pool
-                             on:     Ice Traps will be placed in the junk item pool
-                             mayhem: All junk items will be ice traps
+                             off:       Ice traps are removed.
+                             normal:    Default behavior; no ice traps in the junk item pool.
+                             on:        Ice Traps will be placed in the junk item pool.
+                             mayhem:    All added junk items will be ice traps.
+                             onslaught: All junk items will be ice traps, even those in the base item pool.
                              ''',
-            gui_text       = 'Junk Ice Traps',
+            gui_text       = 'Ice Traps',
             gui_group      = 'other',
             gui_tooltip    = '''\
-                             Extra Ice Traps: chance to add 
-                             extra Ice Traps when junk items
-                             are added to the itempool.
-                             Mayhem Ice Traps: all added 
-                             junk items will be Ice Traps.
+                             Off: All Ice Traps are removed.
+                             Normal: Only Ice Traps from the base item pool
+                             are placed.
+                             Extra Ice Traps: Chance to add extra Ice Traps
+                             when junk items are added to the itempool.
+                             Ice Trap Mayhem: All added junk items will
+                             be Ice Traps.
+                             Ice Trap Onslaught: All junk items will be
+                             replaced by Ice Traps, even those in the
+                             base pool.
                              ''',
             shared         = True,
             ),
