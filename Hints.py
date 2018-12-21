@@ -88,6 +88,7 @@ def add_hint(spoiler, world, IDs, text, count, location=None, force_reachable=Fa
     random.shuffle(IDs)
     skipped_ids = []
     first = True
+    success = True
     while random.random() < count:
         if IDs:
             id = IDs.pop(0)
@@ -114,8 +115,10 @@ def add_hint(spoiler, world, IDs, text, count, location=None, force_reachable=Fa
                     # If no stones are reachable, then this will place nothing
                     skipped_ids.append(id)                
         else:
+            success = False
             break
     IDs.extend(skipped_ids)
+    return success
 
 
 def can_reach_stone(worlds, stone_location, location):
@@ -454,7 +457,9 @@ def buildGossipHints(spoiler, world):
             del hint_prob[index]
         else:
             text, location = hint
-            add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], location)
+            place_ok = add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], location)
+            if not place_ok and world.hint_dist == "tournament":
+                fixed_hint_types.insert(0, hint_type)
 
 
 # builds boss reward text that is displayed at the temple of time altar for child and adult, pull based off of item in a fixed order.

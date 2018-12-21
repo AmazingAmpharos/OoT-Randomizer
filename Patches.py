@@ -1612,7 +1612,6 @@ def create_fake_name(name):
     for cuss in censor:
         if cuss in new_name_az:
             return create_fake_name(name)
-    print(new_name)
     return new_name
 
 
