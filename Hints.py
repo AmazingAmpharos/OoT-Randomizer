@@ -5,7 +5,7 @@ import os
 import struct
 import random
 
-from HintList import getHint, getHintGroup, Hint
+from HintList import getHint, getHintGroup, Hint, hintExclusions
 from ItemPool import eventlocations
 from Messages import update_message_by_id
 from TextBox import lineWrap
@@ -387,6 +387,8 @@ hint_dist_sets = {
 
 #builds out general hints based on location and whether an item is required or not
 def buildGossipHints(spoiler, world):
+    # rebuild hint exclusion list
+    hintExclusions(world, clear_cache=True)
 
     max_states = State.get_states_with_items([w.state for w in spoiler.worlds], [])
     for id,stone in gossipLocations.items():
@@ -450,7 +452,6 @@ def buildGossipHints(spoiler, world):
             index = hint_types.index(hint_type)
             del hint_types[index]
             del hint_prob[index]
-            print(hint_type + ' is empty')
         else:
             text, location = hint
             add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], location)
