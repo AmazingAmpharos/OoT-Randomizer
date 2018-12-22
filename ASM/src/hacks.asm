@@ -972,8 +972,8 @@ skip_GS_BGS_text:
 ; Big Goron Fix
 ;==================================================================================================
 ;
-;Replaces: lui t6, 0x801F
+;Replaces: lui t6, 0x801F (gets properly relocated later)
 
 .org 0xED6454
     jal    bgs_fix
-    lui    t6, 0x801F ;displaced
+    nop
