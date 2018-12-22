@@ -1,6 +1,7 @@
 import random
 import struct
 import itertools
+import re
 
 from World import World
 from Rom import LocalRom
@@ -594,6 +595,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     rom.write_bytes(0xED3378, [0x91, 0xB8, 0xA6, 0x42, 0xA1, 0xA8, 0xA6, 0x42])
     rom.write_bytes(0xED6574, [0x00, 0x00, 0x00, 0x00])
 
+    # Biggoron Fix (rest of the fix is in asm)
+    rom.write_bytes(0xED7DE0, [0x00, 0x00, 0x00, 0x00]) #0 out relocation table entry for modified instruction
+
     # Remove the check on the number of days that passed for claim check.
     rom.write_bytes(0xED4470, [0x00, 0x00, 0x00, 0x00])
     rom.write_bytes(0xED4498, [0x00, 0x00, 0x00, 0x00])
@@ -603,12 +607,16 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     rom.write_bytes(0xE2E6A0, [0x80, 0xAA, 0xE2, 0x4C])
     rom.write_bytes(0xE2D440, [0x24, 0x19, 0x00, 0x00])
 
+    # Offset kakariko carpenter starting position
+    rom.write_bytes(0x1FF93A4, [0x01, 0x8D, 0x00, 0x11, 0x01, 0x6C, 0xFF, 0x92, 0x00, 0x00, 0x01, 0x78, 0xFF, 0x2E, 0x00, 0x00, 0x00, 0x03, 0xFD, 0x2B, 0x00, 0xC8, 0xFF, 0xF9, 0xFD, 0x03, 0x00, 0xC8, 0xFF, 0xA9, 0xFD, 0x5D, 0x00, 0xC8, 0xFE, 0x5F]) # re order the carpenter's path
+    rom.write_byte(0x1FF93D0, 0x06) # set the path points to 6
+    rom.write_bytes(0x20160B6, [0x01, 0x8D, 0x00, 0x11, 0x01, 0x6C]) # set the carpenter's start position
 
     # Dampe always digs something up and first dig is always the Piece of Heart
     rom.write_bytes(0xCC3FA8, [0xA2, 0x01, 0x01, 0xF8])
     rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00])
 
-    #Give hp after first ocarina minigame round
+    # Give hp after first ocarina minigame round
     rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02])
 
     # Allow owl to always carry the kid down Death Mountain
@@ -1603,7 +1611,15 @@ def create_fake_name(name):
     for i in random.sample(vowel_indexes, min(2, len(vowel_indexes))):
         c = list_name[i]
         list_name[i] = random.choice([v for v in vowels if v != c])
-    return ''.join(list_name)
+    
+    # keeping the game E...
+    new_name = ''.join(list_name)
+    censor = ['dike', 'cunt', 'cum', 'puss', 'shit', 'penis']
+    new_name_az = re.sub(r'[^a-zA-Z]', '', name.lower(), re.UNICODE)
+    for cuss in censor:
+        if cuss in new_name_az:
+            return create_fake_name(name)
+    return new_name
 
 
 def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=False):

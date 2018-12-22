@@ -241,7 +241,7 @@
     {
         "region_name": "Fishing Hole",
         "locations": {
-            "Child Fishing": "Kokiri_Sword",
+            "Child Fishing": "True",
             "Adult Fishing": "
                 (can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location))"
         }
