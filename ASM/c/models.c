@@ -141,6 +141,15 @@ void skull_token_draw(z64_actor_t *token_actor, z64_game_t *game) {
     draw_model(model, game);
 }
 
+void ocarina_of_time_draw(z64_actor_t *ocarina_actor, z64_game_t *game) {
+    model_t model = {
+        .object_id = 0x00DE,
+        .graphic_id = 0x2F,
+    };
+    lookup_model(&model, game, ocarina_actor, 0x0C);
+    draw_model(model, game);
+}
+
 void item_etcetera_draw(z64_actor_t *item_actor, z64_game_t *game) {
     override_t override = { 0 };
     if (item_actor->variable == 0x01) {
