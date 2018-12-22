@@ -85,14 +85,6 @@ void models_reset() {
     }
 }
 
-typedef void (*default_draw_fn)(z64_actor_t *actor, z64_game_t *game);
-typedef void (*pre_draw_fn)(z64_actor_t *actor, z64_game_t *game, uint32_t unknown);
-
-#define default_heart_draw ((default_draw_fn)0x80013498)
-#define pre_draw_1 ((pre_draw_fn)0x80022438)
-#define pre_draw_2 ((pre_draw_fn)0x80022554)
-#define matrix_stack_pointer ((float **)0x80121204)
-
 void lookup_model_by_override(model_t *model, override_t override) {
     if (override.key.all != 0) {
         uint16_t item_id = override.value.looks_like_item_id ?
@@ -109,6 +101,14 @@ void lookup_model(model_t *model, z64_game_t *game, z64_actor_t *actor, uint16_t
     override_t override = lookup_override(actor, game->scene_index, base_item_id);
     lookup_model_by_override(model, override);
 }
+
+typedef void (*default_draw_fn)(z64_actor_t *actor, z64_game_t *game);
+typedef void (*pre_draw_fn)(z64_actor_t *actor, z64_game_t *game, uint32_t unknown);
+
+#define default_heart_draw ((default_draw_fn)0x80013498)
+#define pre_draw_1 ((pre_draw_fn)0x80022438)
+#define pre_draw_2 ((pre_draw_fn)0x80022554)
+#define matrix_stack_pointer ((float **)0x80121204)
 
 void heart_piece_draw(z64_actor_t *heart_piece_actor, z64_game_t *game) {
     pre_draw_1(heart_piece_actor, game, 0);
@@ -156,6 +156,24 @@ void item_etcetera_draw(z64_actor_t *item_actor, z64_game_t *game) {
         draw_model(model, game);
     } else {
         uint8_t default_graphic_id = *(((uint8_t *)item_actor) + 0x141);
+        base_draw_gi_model(game, default_graphic_id);
+    }
+}
+
+void bowling_prize_draw(z64_actor_t *prize_actor, z64_game_t *game) {
+    override_t override = { 0 };
+    if (prize_actor->variable == 0x05) {
+        override = lookup_override(prize_actor, game->scene_index, 0x34);
+    } else if (prize_actor->variable == 0x06) {
+        override = lookup_override(prize_actor, game->scene_index, 0x3E);
+    }
+
+    model_t model = { 0 };
+    lookup_model_by_override(&model, override);
+    if (model.object_id != 0) {
+        draw_model(model, game);
+    } else {
+        uint8_t default_graphic_id = *(((uint8_t *)prize_actor) + 0x147);
         base_draw_gi_model(game, default_graphic_id);
     }
 }

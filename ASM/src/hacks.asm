@@ -248,6 +248,30 @@
     jal     item_etcetera_draw
     lw      a1, 0x1C (sp)
 
+; Replaces:
+;   lw      a0, 0x001C (sp)
+;   jal     0x800570C0
+;   lh      a1, 0x0146 (a3)
+.org 0xE59EB0
+    lw      a0, 0x18 (sp)
+    jal     bowling_prize_draw
+    lw      a1, 0x1C (sp)
+
+; Replaces:
+;   lw      a1, 0x001C (sp)
+;   jal     0x80022554
+;   or      a2, r0, r0
+;   lw      a0, 0x001C (sp)
+;   jal     0x800570C0
+;   addiu   a1, r0, 0x0013
+.org 0xE59ED8
+    sw      a0, 0x18 (sp)
+    jal     0x80022554
+    or      a2, r0, r0
+    lw      a0, 0x18 (sp)
+    jal     bowling_prize_draw
+    lw      a1, 0x1C (sp)
+
 ;==================================================================================================
 ; File select hash
 ;==================================================================================================
