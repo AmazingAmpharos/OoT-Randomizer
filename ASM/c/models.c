@@ -132,6 +132,15 @@ void heart_container_draw(z64_actor_t *heart_container_actor, z64_game_t *game) 
     draw_model(model, game);
 }
 
+void skull_token_draw(z64_actor_t *token_actor, z64_game_t *game) {
+    model_t model = {
+        .object_id = 0x015C,
+        .graphic_id = 0x63,
+    };
+    lookup_model(&model, game, token_actor, 0x5B);
+    draw_model(model, game);
+}
+
 void item_etcetera_draw(z64_actor_t *item_actor, z64_game_t *game) {
     override_t override = { 0 };
     if (item_actor->variable == 0x01) {
