@@ -68,7 +68,7 @@ def buildHintString(hintString):
 
 
 def getItemGenericName(item):
-    if item.type == 'Map' or item.type == 'Compass' or item.type == 'BossKey' or item.type == 'SmallKey' or item.type == 'FortressSmallKey':
+    if item.dungeonitem:
         return item.type
     else:
         return item.name
