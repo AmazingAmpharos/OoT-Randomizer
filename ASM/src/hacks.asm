@@ -254,7 +254,7 @@
 ;   lh      a1, 0x0146 (a3)
 .org 0xE59EB0
     lw      a0, 0x18 (sp)
-    jal     bowling_prize_draw
+    jal     bowling_bomb_bag_draw
     lw      a1, 0x1C (sp)
 
 ; Replaces:
@@ -269,7 +269,7 @@
     jal     0x80022554
     or      a2, r0, r0
     lw      a0, 0x18 (sp)
-    jal     bowling_prize_draw
+    jal     bowling_heart_piece_draw
     lw      a1, 0x1C (sp)
 
 ; Replaces:

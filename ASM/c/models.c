@@ -178,12 +178,10 @@ void item_etcetera_draw(z64_actor_t *item_actor, z64_game_t *game) {
     }
 }
 
-void bowling_prize_draw(z64_actor_t *prize_actor, z64_game_t *game) {
+void bowling_bomb_bag_draw(z64_actor_t *prize_actor, z64_game_t *game) {
     override_t override = { 0 };
-    if (prize_actor->variable == 0x05) {
+    if (prize_actor->variable == 0x00 || prize_actor->variable == 0x05) {
         override = lookup_override(prize_actor, game->scene_index, 0x34);
-    } else if (prize_actor->variable == 0x06) {
-        override = lookup_override(prize_actor, game->scene_index, 0x3E);
     }
 
     model_t model = { 0 };
@@ -194,6 +192,15 @@ void bowling_prize_draw(z64_actor_t *prize_actor, z64_game_t *game) {
         uint8_t default_graphic_id = *(((uint8_t *)prize_actor) + 0x147);
         base_draw_gi_model(game, default_graphic_id);
     }
+}
+
+void bowling_heart_piece_draw(z64_actor_t *prize_actor, z64_game_t *game) {
+    model_t model = {
+        .object_id = 0x00BD,
+        .graphic_id = 0x14,
+    };
+    lookup_model(&model, game, prize_actor, 0x3E);
+    draw_model(model, game);
 }
 
 typedef void (*actor_constructor_fn)(z64_actor_t *actor, z64_game_t *game);
