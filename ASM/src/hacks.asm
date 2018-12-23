@@ -1014,8 +1014,8 @@ skip_GS_BGS_text:
 ; Big Goron Fix
 ;==================================================================================================
 ;
-;Replaces: lui t6, 0x801F
+;Replaces: beq     $zero, $zero, lbl_80B5AD64 
 
-.org 0xED6454
-    jal    bgs_fix
-    lui    t6, 0x801F ;displaced
+.org 0xED645C
+    jal     bgs_fix
+    nop
