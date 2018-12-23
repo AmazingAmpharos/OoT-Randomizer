@@ -1269,7 +1269,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         bombchu_ids = [0x6A, 0x03, 0x6B]
         for i in bombchu_ids:
             item = read_rom_item(rom, i)
-            item['fast_chest'] = 0
+            item['chest_type'] = 0
             write_rom_item(rom, i, item)
 
     # Update chest type sizes
@@ -1383,7 +1383,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
 item_row_struct = struct.Struct('>BBHHBBIIhh') # Match item_row_t in item_table.h
 item_row_fields = [
-    'base_item_id', 'action_id', 'text_id', 'object_id', 'graphic_id', 'fast_chest',
+    'base_item_id', 'action_id', 'text_id', 'object_id', 'graphic_id', 'chest_type',
     'upgrade_fn', 'effect_fn', 'effect_arg1', 'effect_arg2',
 ]
 

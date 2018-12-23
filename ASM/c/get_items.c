@@ -120,7 +120,7 @@ void activate_override(override_t override) {
     active_item_text_id = item_row->text_id;
     active_item_object_id = item_row->object_id;
     active_item_graphic_id = item_row->graphic_id;
-    active_item_fast_chest = item_row->fast_chest;
+    active_item_fast_chest = item_row->chest_type & 0x01;
     PLAYER_NAME_ID = override.value.player;
 }
 

@@ -992,9 +992,9 @@ skip_GS_BGS_text:
 
 ; Replaces lbu   t9,0x01E9(s0)
 .org 0xC075A8
-    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER_T9
+    jal     GET_CHEST_OVERRIDE_COLOR_WRAPPER
 .org 0xC07648
-    jal     GET_CHEST_OVERRIDE_SIZE_WRAPPER_T9
+    jal     GET_CHEST_OVERRIDE_COLOR_WRAPPER
 
 ;==================================================================================================
 ; Cast Fishing Rod without B Item
