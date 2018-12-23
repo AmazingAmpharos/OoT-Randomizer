@@ -176,9 +176,9 @@ item_row_t item_table[] = {
     [0x8A] = ITEM_ROW(  -1, 0,   -1,     -1, 0x00CD, 0x1E, magic_upgrade,     no_effect, -1, -1), // Progressive Magic Meter
     [0x8B] = ITEM_ROW(  -1, 0,   -1,     -1, 0x010E, 0x46, ocarina_upgrade,   no_effect, -1, -1), // Progressive Ocarina
 
-    [0x8C] = ITEM_ROW(0x53, 0, 0x41, 0x0043, 0x00EB, 0x38, no_upgrade, give_bottle, 0x15, -1), // Bottle with Red Potion
-    [0x8D] = ITEM_ROW(0x53, 0, 0x41, 0x0044, 0x00EB, 0x37, no_upgrade, give_bottle, 0x16, -1), // Bottle with Green Potion
-    [0x8E] = ITEM_ROW(0x53, 0, 0x41, 0x0045, 0x00EB, 0x39, no_upgrade, give_bottle, 0x17, -1), // Bottle with Blue Potion
+    [0x8C] = ITEM_ROW(0x53, 0, 0x41, 0x0043, 0x00C6, 0x01, no_upgrade, give_bottle, 0x15, -1), // Bottle with Red Potion
+    [0x8D] = ITEM_ROW(0x53, 0, 0x41, 0x0044, 0x00C6, 0x01, no_upgrade, give_bottle, 0x16, -1), // Bottle with Green Potion
+    [0x8E] = ITEM_ROW(0x53, 0, 0x41, 0x0045, 0x00C6, 0x01, no_upgrade, give_bottle, 0x17, -1), // Bottle with Blue Potion
     [0x8F] = ITEM_ROW(0x53, 0, 0x41, 0x0046, 0x0177, 0x6B, no_upgrade, give_bottle, 0x18, -1), // Bottle with Fairy
     [0x90] = ITEM_ROW(0x53, 0, 0x41, 0x0047, 0x00F4, 0x3F, no_upgrade, give_bottle, 0x19, -1), // Bottle with Fish
     [0x91] = ITEM_ROW(0x53, 0, 0x41, 0x005D, 0x0173, 0x67, no_upgrade, give_bottle, 0x1C, -1), // Bottle with Blue Fire
