@@ -217,12 +217,20 @@ def get_woth_hint(spoiler, world, checked):
 
 
 def get_barren_hint(spoiler, world, checked):
-    areas = world.empty_areas
-    areas = list(filter(lambda area: area not in checked, areas))
+    areas = list(filter(lambda area: 
+        area not in checked and \
+        not (world.barren_dungeon and world.empty_areas[area]['dungeon']), 
+        world.empty_areas.keys()))
+
     if not areas:
         return None
 
-    area = random.choice(areas)
+    area_weights = [world.empty_areas[area]['weight'] for area in areas]
+
+    area = random_choices(areas, weights=area_weights)[0]
+    if world.empty_areas[area]['dungeon']:
+        world.barren_dungeon = True
+
     checked.append(area)
 
     return (buildHintString(colorText(area, 'Pink') + " is barren of treasure."), None)
@@ -392,6 +400,8 @@ hint_dist_sets = {
 def buildGossipHints(spoiler, world):
     # rebuild hint exclusion list
     hintExclusions(world, clear_cache=True)
+
+    world.barren_dungeon = False
 
     max_states = State.get_states_with_items([w.state for w in spoiler.worlds], [])
     for id,stone in gossipLocations.items():
