@@ -1635,7 +1635,13 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
             else:
                 item_display = location.item
 
-            rom_item = read_rom_item(rom, item_display.index)
+            # bottles in shops should look like empty bottles
+            # so that that are different than normal shop refils
+            if 'Bottle' in item_display:
+                rom_item = read_rom_item(rom, 0x0F)
+            else:
+                rom_item = read_rom_item(rom, item_display.index)
+
             shop_objs.add(rom_item['object_id'])
             shop_id = place_shop_items.shop_id
             rom.write_int16(location.address, shop_id)
