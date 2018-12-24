@@ -418,7 +418,7 @@ class State(object):
 
         # get list of all of the progressive items that can appear in hints
         all_locations = [location for world in worlds for location in world.get_filled_locations()]
-        item_locations = [location for location in all_locations if location.item.majoritem]
+        item_locations = [location for location in all_locations if location.item.majoritem and not location.locked]
 
         # if the playthrough was generated, filter the list of locations to the
         # locations in the playthrough. The required locations is a subset of these
