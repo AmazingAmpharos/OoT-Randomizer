@@ -257,11 +257,6 @@ talon_break_free:
 
 warp_speedup:
 
-    addiu  sp, sp, -0x10
-    sw     t0, 0x00(sp)
-    sw     t1, 0x04(sp)
-    sw     t2, 0x08(sp)
-    sw     t3, 0x0C(sp)
     la     t2, 0x800FE49C ;pointer to links overlay in RAM 
     lw     t2, 0(t2)
     beqz   t2, @@return
@@ -282,9 +277,5 @@ warp_speedup:
     sb     t1, 0x1951(t0) ;scene load flag
     
 @@return: 
-    lw     t3, 0x0C(sp)
-    lw     t2, 0x08(sp)
-    lw     t1, 0x04(sp)
-    lw     t0, 0x00(sp)
     jr     ra
-    addiu  sp, sp, 0x10
+    nop
