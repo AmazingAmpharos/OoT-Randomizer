@@ -254,3 +254,37 @@ talon_break_free:
     lw       t0, 0x04(sp)
     jr     ra
     addiu    sp, sp, 0x20
+
+warp_speedup:
+
+    addiu  sp, sp, -0x10
+    sw     t0, 0x00(sp)
+    sw     t1, 0x04(sp)
+    sw     t2, 0x08(sp)
+    sw     t3, 0x0C(sp)
+    la     t2, 0x800FE49C ;pointer to links overlay in RAM 
+    lw     t2, 0(t2)
+    beqz   t2, @@return
+    nop
+    la     t0, GLOBAL_CONTEXT 
+    lui    t3, 0x0001
+    ori    t3, t3, 0x04C4 ;offset of warp song played
+    add    t0, t0, t3
+    lh     t1, 0x0(t0)
+    lui    t3, 0x0002
+    ori    t3, t3, 0x26CC
+    add    t2, t2, t3     ;entrance Table of Warp songs
+    sll    t1, t1, 1
+    addu   t2, t1, t2 
+    lh     t1, 0x0(t2) 
+    sh     t1, 0x1956(t0) ;next entrance 
+    li     t1, 0x14
+    sb     t1, 0x1951(t0) ;scene load flag
+    
+@@return: 
+    lw     t3, 0x0C(sp)
+    lw     t2, 0x08(sp)
+    lw     t1, 0x04(sp)
+    lw     t0, 0x00(sp)
+    jr     ra
+    addiu  sp, sp, 0x10
