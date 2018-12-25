@@ -374,44 +374,43 @@ class World(object):
         # is a progressive item. Normally this applies to things like bows, bombs
         # bombchus, bottles, slingshot, magic and ocarina. However if plentiful
         # item pool is enabled this could be applied to any item.
-        duplicate_item_woth = [{}] * len(spoiler.worlds)
+        duplicate_item_woth = {}
         woth_loc = [location for world_woth in spoiler.required_locations.values() for location in world_woth]
         for world in spoiler.worlds:
-            for location in woth_loc:
-                if location.item.world.id != world.id:
-                    continue
-                if location.world.id != self.id:
-                    location_name = 'Other'
-                else:
-                    location_name = location.name
-
-                if not location.item.name.startswith('Progressive'):
-                    # Progressive items may need multiple copies to make progression
-                    # so we can't make this culling for those kinds of items.
-                    duplicate_item_woth[world.id][location.item.name] = location_name
-                if 'Bottle' in location.item.name and \
-                    location.item.name not in ['Bottle with Letter', 'Bottle with Big Poe']:
-                        # Bottles can have many names but they are all generally the same in logic
-                        # The problem is that Ruto's Letter and Big Poe might not be usuable as a 
-                        # Bottle immediately, so they might need to use a regular bottle in
-                        # addition to that one. Conversely finding a bottle might mean you still
-                        # need ruto's letter or big poe. So to work with this, we ignore those
-                        # two special bottles as being bottles
-                        duplicate_item_woth[world.id]['Bottle'] = location_name
+            duplicate_item_woth[world.id] = {}
+        for location in woth_loc:
+            if not location.item.name.startswith('Progressive'):
+                # Progressive items may need multiple copies to make progression
+                # so we can't make this culling for those kinds of items.
+                duplicate_item_woth[location.item.world.id][location.item.name] = location
+            if 'Bottle' in location.item.name and \
+                location.item.name not in ['Bottle with Letter', 'Bottle with Big Poe']:
+                    # Bottles can have many names but they are all generally the same in logic
+                    # The problem is that Ruto's Letter and Big Poe might not be usuable as a 
+                    # Bottle immediately, so they might need to use a regular bottle in
+                    # addition to that one. Conversely finding a bottle might mean you still
+                    # need ruto's letter or big poe. So to work with this, we ignore those
+                    # two special bottles as being bottles
+                    duplicate_item_woth[location.item.world.id]['Bottle'] = location
 
         # generate the empty area list
         self.empty_areas = {}
         for area,area_info in areas.items():
             useless_area = True
             for location in area_info['locations']:
-                if location.item.majoritem and \
-                    not (location.item.name in exclude_item_list) and \
-                    not (duplicate_item_woth[location.item.world.id].get(location.item.name, location.name) != location.name) and \
-                    not ('Bottle' in location.item.name and \
-                        location.item.name not in ['Bottle with Letter', 'Bottle with Big Poe'] and \
-                        duplicate_item_woth[location.item.world.id].get('Bottle', location.name) != location.name):
+                if location.item.majoritem:
+                    if (location.item.name in exclude_item_list):
+                        continue
+
+                    if 'Bottle' in location.item.name and location.item.name not in ['Bottle with Letter', 'Bottle with Big Poe']:
+                        dupe_location = duplicate_item_woth[location.item.world.id].get('Bottle', location)
+                    else:
+                        dupe_location = duplicate_item_woth[location.item.world.id].get(location.item.name, location)
+
+                    if (dupe_location.world.id != location.world.id or dupe_location.name != location.name):
+                        continue
 
                     useless_area = False
-                    #break
+                    break
             if useless_area:
                 self.empty_areas[area] = area_info
