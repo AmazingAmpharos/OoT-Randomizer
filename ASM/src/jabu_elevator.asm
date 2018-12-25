@@ -24,7 +24,7 @@ jabu_elevator:
 	nop
 
 @@bottom:
-	li		t5, 0x100
+	li		t5, 0xC0
 
 @@return:
 	
