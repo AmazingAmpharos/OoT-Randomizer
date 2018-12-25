@@ -463,8 +463,7 @@ def buildGossipHints(spoiler, world):
 
         if hint == None:
             index = hint_types.index(hint_type)
-            del hint_types[index]
-            del hint_prob[index]
+            hint_prob[index] = 0
         else:
             text, location = hint
             place_ok = add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], location)
