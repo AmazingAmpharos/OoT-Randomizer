@@ -693,6 +693,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     # will overwrite the byte at offset with the given value
     def write_save_table(rom):
         nonlocal initial_save_table
+        initial_save_table += [0x00,0x00,0x00,0x00]
 
         table_len = len(initial_save_table)
         if table_len > 0x400:
