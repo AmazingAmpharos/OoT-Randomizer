@@ -777,6 +777,10 @@ def guiMain(settings=None):
 
 
 if __name__ == '__main__':
-    check_python_version()
+    try:
+        check_python_version()
+    except Exception as ex:
+        messagebox.showerror(title="Unsupported Python Version", message=str(ex))
+        exit()
     guiMain()
 
