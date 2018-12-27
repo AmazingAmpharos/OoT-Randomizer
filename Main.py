@@ -137,7 +137,7 @@ def main(settings, window=dummy_window()):
 
     settings_string_hash = hashlib.sha1(settings.settings_string.encode('utf-8')).hexdigest().upper()[:5]
     if settings.world_count > 1:
-        outfilebase = 'OoT_%s_%s_W%d' % (settings_string_hash, setting.seed, settings.world_count)
+        outfilebase = 'OoT_%s_%s_W%d' % (settings_string_hash, settings.seed, settings.world_count)
     else:
         outfilebase = 'OoT_%s_%s' % (settings_string_hash, settings.seed)
 
