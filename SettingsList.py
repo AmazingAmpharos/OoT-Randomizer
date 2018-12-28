@@ -346,6 +346,16 @@ setting_infos = [
 
     # GUI Settings
     Checkbutton(
+        name           = 'repatch_cosmetics',
+        gui_text       = 'Patch Cosmetics',
+        gui_tooltip    = '''\
+                         Enabling this will re-patch cosmetics based on current settings.
+                         Otherwise, it will utilize the cosmetics that are in the patch file.
+                         ''',
+        default        = True,
+        shared         = False,
+    ),
+    Checkbutton(
         name           = 'create_spoiler',
         gui_text       = 'Create Spoiler Log',
         gui_group      = 'rom_tab',
@@ -360,7 +370,7 @@ setting_infos = [
         gui_text       = 'Create Cosmetics Log',
         gui_group      = 'rom_tab',
         default        = True,
-        dependency     = lambda settings: False if settings.compress_rom in ['None', 'Patch'] else None,
+        dependency     = lambda settings: False if settings.compress_rom == 'None' else None,
     ),
     Setting_Info(
         name           = 'compress_rom',
