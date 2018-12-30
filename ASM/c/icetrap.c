@@ -3,6 +3,10 @@
 
 uint8_t pending_freezes = 0;
 
+_Bool ice_trap_is_pending() {
+    return pending_freezes > 0;
+}
+
 void push_pending_ice_trap() {
     pending_freezes++;
 }
