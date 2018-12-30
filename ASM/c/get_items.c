@@ -29,6 +29,8 @@ uint32_t active_item_object_id = 0;
 uint32_t active_item_graphic_id = 0;
 uint32_t active_item_fast_chest = 0;
 
+uint8_t satisified_pending_frames = 0;
+
 void item_overrides_init() {
     while (cfg_item_overrides[item_overrides_count].key.all != 0) {
         item_overrides_count++;
@@ -43,42 +45,46 @@ override_key_t get_override_search_key(z64_actor_t *actor, uint8_t scene, uint8_
     if (actor->actor_id == 0x0A) {
         // Don't override WINNER purple rupee in the chest minigame scene
         if (scene == 0x10 && item_id == 0x75) {
-            return (override_key_t){ .all = 0 };
+            return (override_key_t) { .all = 0 };
         }
 
-        return (override_key_t){
-            .scene = scene,
-            .type = OVR_CHEST,
-            .flag = actor->variable & 0x1F,
-        };
-    } else if (actor->actor_id == 0x15) {
-        // Only override heart pieces and keys
-        if (item_id != 0x3E && item_id != 0x42) {
-            return (override_key_t){ .all = 0 };
-        }
-
-        return (override_key_t){
-            .scene = scene,
-            .type = OVR_COLLECTABLE,
-            .flag = *(((uint8_t *)actor) + 0x141),
-        };
-    } else if (actor->actor_id == 0x19C) {
-        return (override_key_t){
-            .scene = (actor->variable >> 8) & 0x1F,
-            .type = OVR_SKULL,
-            .flag = actor->variable & 0xFF,
-        };
-    } else if (scene == 0x3E && actor->actor_id == 0x011A) {
-        return (override_key_t){
-            .scene = z64_file.grotto_id,
-            .type = OVR_GROTTO_SCRUB,
-            .flag = item_id,
-        };
-    } else {
         return (override_key_t) {
             .scene = scene,
-            .type = OVR_BASE_ITEM,
-            .flag = item_id,
+                .type = OVR_CHEST,
+                .flag = actor->variable & 0x1F,
+        };
+    }
+    else if (actor->actor_id == 0x15) {
+        // Only override heart pieces and keys
+        if (item_id != 0x3E && item_id != 0x42) {
+            return (override_key_t) { .all = 0 };
+        }
+
+        return (override_key_t) {
+            .scene = scene,
+                .type = OVR_COLLECTABLE,
+                .flag = *(((uint8_t *)actor) + 0x141),
+        };
+    }
+    else if (actor->actor_id == 0x19C) {
+        return (override_key_t) {
+            .scene = (actor->variable >> 8) & 0x1F,
+                .type = OVR_SKULL,
+                .flag = actor->variable & 0xFF,
+        };
+    }
+    else if (scene == 0x3E && actor->actor_id == 0x011A) {
+        return (override_key_t) {
+            .scene = z64_file.grotto_id,
+                .type = OVR_GROTTO_SCRUB,
+                .flag = item_id,
+        };
+    }
+    else {
+        return (override_key_t) {
+            .scene = scene,
+                .type = OVR_BASE_ITEM,
+                .flag = item_id,
         };
     }
 }
@@ -91,19 +97,21 @@ override_t lookup_override_by_key(override_key_t key) {
         override_t mid_entry = cfg_item_overrides[mid_index];
         if (key.all < mid_entry.key.all) {
             end = mid_index - 1;
-        } else if (key.all > mid_entry.key.all) {
+        }
+        else if (key.all > mid_entry.key.all) {
             start = mid_index + 1;
-        } else {
+        }
+        else {
             return mid_entry;
         }
     }
-    return (override_t){ 0 };
+    return (override_t) { 0 };
 }
 
 override_t lookup_override(z64_actor_t *actor, uint8_t scene, uint8_t item_id) {
     override_key_t search_key = get_override_search_key(actor, scene, item_id);
     if (search_key.all == 0) {
-        return (override_t){ 0 };
+        return (override_t) { 0 };
     }
 
     return lookup_override_by_key(search_key);
@@ -125,7 +133,7 @@ void activate_override(override_t override) {
 }
 
 void clear_override() {
-    active_override = (override_t){ 0 };
+    active_override = (override_t) { 0 };
     active_override_is_outgoing = 0;
     active_item_row = NULL;
     active_item_action_id = 0;
@@ -202,8 +210,8 @@ void pop_ice_trap() {
     override_value_t value = pending_item_queue[0].value;
     if (value.item_id == 0x7C && value.player == PLAYER_ID) {
         push_pending_ice_trap();
-        pop_pending_item();
         after_key_received(key);
+        pop_pending_item();
     }
 }
 
@@ -224,20 +232,28 @@ void after_item_received() {
     clear_override();
 }
 
+inline uint32_t link_is_ready() {
+    if ((z64_link.state_flags_1 & 0xFCAC2485) == 0 &&
+        (z64_link.common.unk_flags_00 & 0x0001) &&
+        (z64_link.state_flags_2 & 0x000C0000) == 0 &&
+        (z64_event_state_1 & 0x20) == 0 &&
+        (z64_game.camera_2 == 0)) {
+        satisified_pending_frames++;
+    }
+    else {
+        satisified_pending_frames = 0;
+    }
+    if (satisified_pending_frames >= 2) {
+        satisified_pending_frames = 0;
+        return 1;
+    }
+    return 0;
+}
+
 void try_pending_item() {
     override_t override = pending_item_queue[0];
 
-    // Don't give pending item if:
-    // - Already receiving an item from an ordinary source
-    // - Link is in cutscene state (causes crash)
-    // - Link's camera is not being used (causes walking-while-talking glitch)
-    // - Link is not diving - can cause softlock in multi
-    int no_pending = override.key.all == 0 ||
-        (z64_link.incoming_item_actor && z64_link.incoming_item_id > 0) ||
-        z64_link.state_flags_1 & 0x20000000 ||
-        z64_link.state_flags_2 & 0x00000800 ||
-        z64_game.camera_2;
-    if (no_pending) {
+    if (override.key.all == 0) {
         return;
     }
 
@@ -249,10 +265,9 @@ void try_pending_item() {
 
 void handle_pending_items() {
     push_coop_item();
-    pop_ice_trap();
-    if (ice_trap_is_pending()) {
-        try_ice_trap();
-    } else {
+    if (link_is_ready()) {
+        pop_ice_trap();
+        give_ice_trap();
         try_pending_item();
     }
 }
@@ -297,7 +312,8 @@ void get_skulltula_token(z64_actor_t *token_actor) {
         // Give a skulltula token if there is no override
         item_id = 0x5B;
         player = PLAYER_ID;
-    } else {
+    }
+    else {
         item_id = override.value.item_id;
         player = override.value.player;
     }
@@ -310,7 +326,8 @@ void get_skulltula_token(z64_actor_t *token_actor) {
 
     if (player != PLAYER_ID) {
         OUTGOING_OVERRIDE = override;
-    } else {
+    }
+    else {
         z64_GiveItem(&z64_game, item_row->action_id);
         call_effect_function(item_row);
     }
