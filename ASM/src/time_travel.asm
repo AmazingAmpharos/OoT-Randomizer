@@ -29,8 +29,28 @@ before_time_travel:
     lhu     t1, 0x9C (a1)
     sh      t1, 0x0A (t0)
 
+	li		t0, 0x12A4 ; Offset to secondary save
+	addu	t0, t0, a1	  ;t0 is start of secondary FW
+	li		t1, 0xE64 ; Offset to FW data
+	addu	t1, t1, a1 ; t1 is start of current FW data
+	li		t2, 0x20  ; Amount of to swap bytes
+	
+@@swap:
+	lb		t3, 0x00 (t0)  ; t3 is value in secondary FW
+	lb		t4, 0x00 (t1)  ; t4 is value in main FW
+	sb		t3, 0x00 (t1)  ; Store secondary FW to main FW
+	sb		t4, 0x00 (t0)  ; Store main FW to secondary FW
+	addiu	t0, 0x01	; Increment secondary FW pointer
+	addiu   t1, 0x01	; Increment main FW pointer
+	addiu	t2, -0x01	; Decrement counter
+	bgtz	t2, @@swap
+	nop
+	
     j       0x06F80C ; Swap Link Ages
     nop
+	
+	
+	
 
 ;==================================================================================================
 
@@ -63,13 +83,15 @@ after_time_travel:
 
     jal     update_c_button
     li      a0, 2
-
+	
     lw      s0, 0x10 (sp)
     lw      s1, 0x14 (sp)
     lw      ra, 0x18 (sp)
     addiu   sp, sp, 0x20
     jr      ra
     nop
+
+
 
 ;==================================================================================================
 

@@ -8,11 +8,17 @@
 ; Time Travel
 ;==================================================================================================
 
+; Prevents FW from being unset on time travel
+; Replaces:
+;   SW	R0, 0x0E80 (V1)
+.org 0xAC91B4 ; In memory: 0x80053254
+	nop
+
 ; Replaces:
 ;   jal     8006FDCC ; Give Item
 .org 0xCB6874 ; Bg_Toki_Swd addr 809190F4 in func_8091902C
     jal     give_master_sword
-
+	
 ; Replaces:
 ;   lui/addiu a1, 0x8011A5D0
 .org 0xAE5764
