@@ -106,12 +106,14 @@ class Settings():
                     else:
                         terminal = [0] * setting.bitwidth
 
+                    item_indexes = []
                     for item in value:                       
                         try:
-                            index = setting.args_params['choices'].index(item)
+                            item_indexes.append(setting.args_params['choices'].index(item))
                         except ValueError:
                             continue
-
+                    item_indexes.sort()
+                    for index in item_indexes:
                         item_bits = [1 if digit=='1' else 0 for digit in bin(index+1)[2:]]
                         item_bits.reverse()
                         item_bits += [0] * ( setting.bitwidth - len(item_bits) )
