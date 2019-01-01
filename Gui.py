@@ -413,6 +413,24 @@ def guiMain(settings=None):
             if 'tooltip' in info.gui_params:
                 ToolTips.register(widgets[info.name], info.gui_params['tooltip'])
 
+    plandoDialogFrame = LabelFrame(frames['logic_tab'],          text='Plandomizer', labelanchor=NW)
+
+    distFileDialogFrame = Frame(plandoDialogFrame)
+    distFileLabel = Label(distFileDialogFrame, text='Distribution File')
+    guivars['distribution_file'] = StringVar(value='')
+    distFileEntry = Entry(distFileDialogFrame, textvariable=guivars['distribution_file'], width=46)
+
+    def DistFileSelect():
+        distFile = filedialog.askopenfilename(filetypes=[("JSON Files", (".json")), ("All Files", "*")])
+        if distFile != '':
+            guivars['distribution_file'].set(distFile)
+    distFileSelectButton = Button(distFileDialogFrame, text='Browse', command=DistFileSelect, width=10)
+
+    distFileLabel.pack(side=LEFT, padx=(40,0))
+    distFileEntry.pack(side=LEFT, padx=3)
+    distFileSelectButton.pack(side=LEFT)
+
+    distFileDialogFrame.pack()
 
     # Pack the hierarchy
     frames['shuffle'].pack(fill=BOTH,  expand=True, anchor=N, side=RIGHT,  pady=(5,1))
@@ -420,6 +438,7 @@ def guiMain(settings=None):
     frames['world'].pack(  fill=BOTH,  expand=True, anchor=W, side=BOTTOM, pady=(5,1))
 
     # Logic tab
+    plandoDialogFrame.pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1))
     frames['checks'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1))
     frames['tricks'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1))
 

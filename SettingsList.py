@@ -387,6 +387,9 @@ setting_infos = [
     Setting_Info('patch_file', str, 0, False, {
             'default': '',
             'help': 'Path to a patch file.'}),
+    Setting_Info('distribution_file', str, 0, False, {
+            'default': '',
+            'help': 'Path to a JSON distribution file.'}),
     Setting_Info('cosmetics_only', bool, 0, False, 
     {
             'help': 'Patched file will only have cosmetics applied.',

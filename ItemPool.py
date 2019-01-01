@@ -3,6 +3,8 @@ import logging
 import random
 from Utils import random_choices
 from Item import ItemFactory
+from ItemList import item_table
+from LocationList import location_groups
 
 
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
@@ -352,6 +354,19 @@ deku_scrubs_items = (
     ['Rupees (5)'] * 4) # ['Green Potion']
 
 
+boss_location_names = [
+    'Queen Gohma',
+    'King Dodongo',
+    'Barinade',
+    'Phantom Ganon',
+    'Volvagia',
+    'Morpha',
+    'Bongo Bongo',
+    'Twinrova',
+    'Links Pocket'
+]
+
+
 rewardlist = [
     'Kokiri Emerald',
     'Goron Ruby',
@@ -499,6 +514,30 @@ junk_pool_base = [
     ('Rupees (50)',     1),
 ]
 junk_pool = []
+
+
+item_groups = {
+    'Junk': (*zip(*junk_pool_base),)[0] + ('Ice Trap',),
+    'AdultTrade': tradeitems,
+    'Bottle': normal_bottles,
+    'Spell': ('Dins Fire', 'Farores Wind', 'Nayrus Love'),
+    'Shield': ('Deku Shield', 'Hylian Shield'),
+    'Song': songlist,
+    'NonWarpSong': songlist[0:6],
+    'WarpSong': songlist[6:],
+    'HealthUpgrade': ('Heart Container', 'Piece of Heart'),
+    'ProgressItem': [name for (name, data) in item_table.items() if data[0] == 'Item' and data[1]],
+
+    'ForestFireWater': ('Forest Medallion', 'Fire Medallion', 'Water Medallion'),
+    'FireWater': ('Fire Medallion', 'Water Medallion'),
+}
+
+
+item_generators = {
+    'Junk': lambda: get_junk_item()[0],
+}
+
+
 def get_junk_item(count=1):
     junk_items, junk_weights = zip(*junk_pool)
     return random_choices(junk_items, weights=junk_weights, k=count)
@@ -937,37 +976,38 @@ def get_pool_core(world):
         for i in [1, 2, 3]: # collect wallets
             world.state.collect(ItemFactory('Progressive Wallet'))
 
+    world.get_distribution().alter_pool(pool)
+
+    world.get_distribution().collect_starters(world.state)
+
     return (pool, placed_items)
 
 
 def choose_trials(world):
+    trial_pool = list(world.skipped_trials)
+    dist_chosen = world.get_distribution().configure_trials(trial_pool)
+    dist_num_chosen = len(dist_chosen)
+
     if world.trials_random:
-        world.trials = random.randint(0, 6)
+        world.trials = dist_num_chosen + random.randint(0, len(trial_pool))
     num_trials = int(world.trials)
-    choosen_trials = random.sample(['Forest', 'Fire', 'Water', 'Spirit', 'Shadow', 'Light'], num_trials)
+    choosen_trials = random.sample(trial_pool, num_trials - dist_num_chosen)
     for trial in world.skipped_trials:
-        if trial not in choosen_trials:
+        if trial not in choosen_trials and trial not in dist_chosen:
             world.skipped_trials[trial] = True
 
 
 def fill_bosses(world, bossCount=9):
     boss_rewards = ItemFactory(rewardlist, world)
-    boss_locations = [
-        world.get_location('Queen Gohma'),
-        world.get_location('King Dodongo'),
-        world.get_location('Barinade'),
-        world.get_location('Phantom Ganon'),
-        world.get_location('Volvagia'),
-        world.get_location('Morpha'),
-        world.get_location('Bongo Bongo'),
-        world.get_location('Twinrova'),
-        world.get_location('Links Pocket')]
+    boss_locations = [world.get_location(loc) for loc in boss_location_names]
 
     placed_prizes = [loc.item.name for loc in boss_locations if loc.item is not None]
     unplaced_prizes = [item for item in boss_rewards if item.name not in placed_prizes]
     empty_boss_locations = [loc for loc in boss_locations if loc.item is None]
     prizepool = list(unplaced_prizes)
     prize_locs = list(empty_boss_locations)
+
+    bossCount -= world.get_distribution().fill_bosses(world, prize_locs, prizepool)
 
     while bossCount:
         bossCount -= 1

@@ -711,6 +711,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # Initial Save Data
 
+    world.get_distribution().patch_save(write_byte_to_save, write_bits_to_save)
+
     write_bits_to_save(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (Poe Sisters cutscene)
     write_bits_to_save(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (Ruto)
     write_bits_to_save(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (Owl)

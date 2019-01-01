@@ -51,8 +51,8 @@ class Location(object):
             (not check_access or state.can_reach(self)))
 
 
-    def can_fill_fast(self, item):
-        return (self.parent_region.can_fill(item) and self.item_rule(self, item))
+    def can_fill_fast(self, item, manual=False):
+        return (self.parent_region.can_fill(item, manual) and self.item_rule(self, item))
 
 
     def can_reach(self, state):

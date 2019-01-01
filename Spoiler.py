@@ -2,8 +2,10 @@ from version import __version__
 from collections import OrderedDict
 from Item import Item
 from Hints import gossipLocations
+from ItemPool import boss_location_names
 import re
 import random
+import json
 
 HASH_ICONS = [
     'Deku Stick',
@@ -54,8 +56,9 @@ class Spoiler(object):
 
 
     def build_file_hash(self):
-        for _ in range(0,5):
-            self.file_hash.append(random.randint(0,31))
+        dist_file_hash = self.settings.distribution.file_hash
+        for i in range(5):
+            self.file_hash.append(random.randint(0,31) if dist_file_hash[i] is None else HASH_ICONS.index(dist_file_hash[i]))
 
 
     def parse_data(self):
@@ -74,7 +77,7 @@ class Spoiler(object):
             if (self.settings.create_spoiler):
                 output += self.spoiler_output()
             outfile.write(output)
-            
+
     def settings_output(self):
         output = ''
         output += 'OoT Randomizer Version %s  -  Seed: %s\n\n' % (__version__, self.settings.seed)

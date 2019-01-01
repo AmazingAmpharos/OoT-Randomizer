@@ -412,6 +412,9 @@ def buildGossipHints(spoiler, world):
     checkedLocations = []
 
     stoneIDs = list(gossipLocations.keys())
+
+    world.get_distribution().configure_gossip(spoiler, stoneIDs)
+
     random.shuffle(stoneIDs)
 
     hint_dist = hint_dist_sets[world.hint_dist]

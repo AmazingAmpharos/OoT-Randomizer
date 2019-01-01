@@ -6,10 +6,12 @@ import hashlib
 import math
 import sys
 import json
+import logging
 
 from version import __version__
 from Utils import random_choices, local_path
 from SettingsList import setting_infos, get_setting_info
+from Plandomizer import Distribution
 
 class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 
@@ -187,7 +189,14 @@ class Settings:
 
     def get_numeric_seed(self):
         # salt seed with the settings, and hash to get a numeric seed
-        full_string = self.settings_string + __version__ + self.seed
+        distribution = '{}'
+        if self.distribution_file is not None and self.distribution_file != '':
+            try:
+                with open(self.distribution_file) as f:
+                    distribution = f.read()
+            except FileNotFoundError:
+                logging.getLogger('').warning("Distribution file not found at %s" % (self.distribution_file))
+        full_string = self.settings_string + distribution + __version__ + self.seed
         return int(hashlib.sha256(full_string.encode('utf-8')).hexdigest(), 16)
 
     def sanitize_seed(self):
@@ -206,6 +215,15 @@ class Settings:
     def update(self):
         self.settings_string = self.get_settings_string()
         self.numeric_seed = self.get_numeric_seed()
+    
+    def load_distribution(self):
+        if self.distribution_file is not None and self.distribution_file != '':
+            try:
+                self.distribution = Distribution.from_file(self.distribution_file)
+            except FileNotFoundError:
+                logging.getLogger('').warning("Distribution file not found at %s" % (self.distribution_file))
+        else:
+            self.distribution = Distribution()
 
     def check_dependency(self, setting_name):
         info = get_setting_info(setting_name)

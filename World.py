@@ -77,6 +77,10 @@ class World(object):
         self.can_take_damage = True
 
 
+    def get_distribution(self):
+        return self.distribution.for_world(self.id)
+
+
     def copy(self):
         new_world = World(self.settings)
         new_world.skipped_trials = copy.copy(self.skipped_trials)
@@ -274,12 +278,12 @@ class World(object):
         return [location for location in self.get_locations() if location.item is not None and location.item.name == item]
 
 
-    def push_item(self, location, item):
+    def push_item(self, location, item, manual=False):
         if not isinstance(location, Location):
             location = self.get_location(location)
 
         # This check should never be false normally, but is here as a sanity check
-        if location.can_fill_fast(item):
+        if location.can_fill_fast(item, manual):
             location.item = item
             item.location = location
             item.price = location.price if location.price is not None else item.price
