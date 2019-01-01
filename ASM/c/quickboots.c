@@ -49,6 +49,7 @@ void handle_quickboots() {
 void draw_quickboots() {
     z64_disp_buf_t *db = &(z64_ctxt.gfx->overlay);
     if (DISPLAY_QUICKBOOTS && display_active) {
+        gSPDisplayList(db->p++, setup_db.buf);
         gDPPipeSync(db->p++);
         gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         uint16_t alpha = z64_game.hud_alpha_channels.minimap;
