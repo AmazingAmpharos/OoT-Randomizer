@@ -126,7 +126,7 @@ class Scale(Setting_Widget):
         type = int
         choices = {}
         for i in range(min, max+1, step):
-            choices = {**choices, str(i): i}
+            choices = {**choices, i: str(i)}
         gui_params = {
                 'min':     min,
                 'max':     max,
@@ -713,7 +713,7 @@ setting_infos = [
             ),
     Scale(
             name           = 'trials',
-            default        = '6',
+            default        = 6,
             min            = 0,
             max            = 6,
             args_help      = '''\
@@ -881,7 +881,7 @@ setting_infos = [
             ),
     Scale(
             name           = 'big_poe_count',
-            default        = '10',
+            default        = 10,
             min            = 1,
             max            = 10,
             args_help      = '''\
@@ -1277,7 +1277,7 @@ setting_infos = [
             ),
     Scale(
             name           = 'mq_dungeons',
-            default        = '0',
+            default        = 0,
             min            = 0,
             max            = 12,
             args_help      = '''\
