@@ -183,151 +183,15 @@ def logic_tricks_list_tooltip(widget, pos):
 
 
 logic_tricks = {
-    'Bottom of the Well Basement Chest with Strength & Sticks': {
-        'name'    : 'logic_botw_basement',
+    'Morpha with Gold Scale': {
+        'name'    : 'logic_morpha_with_scale',
         'tooltip' : '''\
-                    The chest in the basement can be reached with
-                    strength by doing a jump slash with a lit
-                    stick to access the bomb flowers.
-                    '''},
-    'Deku Tree Basement Vines GS with Jump Slash': {
-        'name'    : 'logic_deku_basement_gs',
-        'tooltip' : '''\
-                    Can be defeated by doing a precise jump slash.
-                    '''},
-    'Dodongo\'s Cavern Staircase with Bow': {
-        'name'    : 'logic_dc_staircase',
-        'tooltip' : '''\
-                    The Bow can be used to knock down the stairs
-                    with two well-timed shots.
-                    '''},
-    'Fire Temple MQ Boss Key Chest without Bow': {
-        'name'    : 'logic_fire_mq_bk_chest',
-        'tooltip' : '''\
-                    Din\'s alone can be used to unbar the door to
-                    the boss key chest's room thanks to an
-                    oversight in the way the game counts how many
-                    torches have been lit.
-                    '''},
-    'Fire Temple MQ Upper Maze without Explosives': {
-        'name'    : 'logic_fire_mq_upper_maze',
-        'tooltip' : '''\
-                    The switch to spawn the hookshot targets can
-                    be hammered through the bombable wall.
-                    '''},
-    'Fire Temple Highest Goron without Song of Time': {
-        'name'    : 'logic_fire_highest_goron',
-        'tooltip' : '''\
-                    The switch to free the highest Goron can
-                    be hammered through the Song of Time block.
-                    '''},
-    'Skip Forest Temple MQ Block Puzzle with Bombchu': {
-        'name'    : 'logic_forest_mq_block_puzzle',
-        'tooltip' : '''\
-                    Send the Bombchu straight up the center of the
-                    wall directly to the left upon entering the room.
-                    '''},
-    'Swim Through Forest Temple Well with Hookshot': {
-        'name'    : 'logic_forest_well_swim',
-        'tooltip' : '''\
-                    Shoot the vines in the well as low and as far to
-                    the right as possible, and then immediately swim
-                    under the ceiling to the right. This can only be
-                    required if Forest Temple is in its Master Quest
-                    form.
-                    '''},
-    'Forest Temple East Courtyard Vines with Hookshot': {
-        'name'    : 'logic_forest_vines',
-        'tooltip' : '''\
-                    The vines in Forest Temple leading to where the well
-                    drain switch is in the standard form can be barely
-                    reached with just the Hookshot.
-                    '''},
-    'Ganon\'s Castle MQ Spirit Trial First Room without Bow': {
-        'name'    : 'logic_ganon_mq_spirit_trial',
-        'tooltip' : '''\
-                    The switch to unbar the door can be hammered through
-                    the thrones.
-                    '''},
-    'Gerudo Training Grounds MQ Left Side Silver Rupees with Hookshot': {
-        'name'    : 'logic_gtg_mq_with_hookshot',
-        'tooltip' : '''\
-                    The highest silver rupee can be obtained by
-                    hookshotting the target and then immediately jump
-                    slashing toward the rupee.
-                    '''},
-    'Adult Kokiri Forest GS with Hover Boots': {
-        'name'    : 'logic_adult_kokiri_gs',
-        'tooltip' : '''\
-                    Can be obtained without Hookshot by using the Hover
-                    Boots off of one of the roots.
-                    '''},
-    'Gerudo Fortress "Kitchen" with Nothing': {
-        'name'    : 'logic_gerudo_kitchen',
-        'tooltip' : '''\
-                    The logic normally guarantees one of Bow, Hookshot,
-                    or Hover Boots.
-                    '''},
-    'Death Mountain Trail Bombable Chest with Strength': {
-        'name'    : 'logic_dmt_bombable',
-        'tooltip' : '''\
-                    Child Link can blow up the wall using a nearby bomb
-                    flower. You must backwalk with the flower and then
-                    quickly throw it toward the wall.
-                    '''},
-    'Spirit Temple MQ Frozen Eye Switch without Fire': {
-        'name'    : 'logic_spirit_mq_frozen_eye',
-        'tooltip' : '''\
-                    You can melt the ice by shooting an arrow through a
-                    torch. The only way to find a line of sight for this
-                    shot is to first spawn a Song of Time block, and then
-                    stand on the very edge of it.
-                    '''},
-    'Spirit Temple Child Side Bridge with Bombchu': {
-        'name'    : 'logic_spirit_child_bombchu',
-        'tooltip' : '''\
-                    A carefully-timed Bombchu can hit the switch.
-                    '''},
-    'Man on Roof without Hookshot': {
-        'name'    : 'logic_man_on_roof',
-        'tooltip' : '''\
-                    Can be reached by side-hopping off
-                    the watchtower.
-                    '''},
-    'Child Deadhand without Kokiri Sword': {
-        'name'    : 'logic_child_deadhand',
-        'tooltip' : '''\
-                    Requires 9 sticks or 5 jump slashes.
-                    '''},
-    'Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots': {
-        'name'    : 'logic_dc_jump',
-        'tooltip' : '''\
-                    Jump is adult only.
-                    '''},
-    'Windmill PoH as Adult with Nothing': {
-        'name'    : 'logic_windmill_poh',
-        'tooltip' : '''\
-                    Can jump up to the spinning platform from
-                    below as adult.
-                    '''},
-    'Crater\'s Bean PoH with Hover Boots': {
-        'name'    : 'logic_crater_bean_poh_with_hovers',
-        'tooltip' : '''\
-                    Hover from the base of the bridge
-                    near Goron City and walk up the
-                    very steep slope.
-                    '''},
-    'Zora\'s Domain Entry with Cucco': {
-        'name'    : 'logic_zora_with_cucco',
-        'tooltip' : '''\
-                    Can fly behind the waterfall with
-                    a cucco as child.
-                    '''},
-    'Zora\'s Domain Entry with Hover Boots': {
-        'name'    : 'logic_zora_with_hovers',
-        'tooltip' : '''\
-                    Can hover behind the waterfall as adult.
-                    This is very difficult.
+                    Allows entering Water Temple and beating
+                    Morpha with Gold Scale instead of Iron Boots.
+                    Only applicable for keysanity and keysy due
+                    to the logic always seeing every chest in
+                    Water Temple that could contain the Boss Key
+                    as requiring Iron Boots.
                     '''},
     'Fewer Tunic Requirements': {
         'name'    : 'logic_fewer_tunic_requirements',
@@ -343,15 +207,152 @@ logic_tricks = {
                     Silver Rupee Chest. May need to make multiple
                     trips.
                     '''},
-    'Morpha with Gold Scale': {
-        'name'    : 'logic_morpha_with_scale',
+
+    'Child Deadhand without Kokiri Sword': {
+        'name'    : 'logic_child_deadhand',
         'tooltip' : '''\
-                    Allows entering Water Temple and beating
-                    Morpha with Gold Scale instead of Iron Boots.
-                    Only applicable for keysanity and keysy due
-                    to the logic always seeing every chest in
-                    Water Temple that could contain the Boss Key
-                    as requiring Iron Boots.
+                    Requires 9 sticks or 5 jump slashes.
+                    '''},
+    'Man on Roof without Hookshot': {
+        'name'    : 'logic_man_on_roof',
+        'tooltip' : '''\
+                    Can be reached by side-hopping off
+                    the watchtower.
+                    '''},
+    'Dodongo\'s Cavern Staircase with Bow': {
+        'name'    : 'logic_dc_staircase',
+        'tooltip' : '''\
+                    The Bow can be used to knock down the stairs
+                    with two well-timed shots.
+                    '''},
+    'Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots': {
+        'name'    : 'logic_dc_jump',
+        'tooltip' : '''\
+                    Jump is adult only.
+                    '''},
+    'Gerudo Fortress "Kitchen" with No Additional Items': {
+        'name'    : 'logic_gerudo_kitchen',
+        'tooltip' : '''\
+                    The logic normally guarantees one of Bow, Hookshot,
+                    or Hover Boots.
+                    '''},
+    'Deku Tree Basement Vines GS with Jump Slash': {
+        'name'    : 'logic_deku_basement_gs',
+        'tooltip' : '''\
+                    Can be defeated by doing a precise jump slash.
+                    '''},
+    'Hammer Rusted Switches Through Walls': {
+        'name'    : 'logic_rusted_switches',
+        'tooltip' : '''\
+                    Applies to:
+                    - Fire Temple Highest Goron Chest.
+                    - MQ Fire Temple Lizalfos Maze.
+                    - MQ Spirit Trial.
+                    '''},
+    'Bottom of the Well Basement Chest with Strength & Sticks': {
+        'name'    : 'logic_botw_basement',
+        'tooltip' : '''\
+                    The chest in the basement can be reached with
+                    strength by doing a jump slash with a lit
+                    stick to access the bomb flowers.
+                    '''},
+    'Skip Forest Temple MQ Block Puzzle with Bombchu': {
+        'name'    : 'logic_forest_mq_block_puzzle',
+        'tooltip' : '''\
+                    Send the Bombchu straight up the center of the
+                    wall directly to the left upon entering the room.
+                    '''},
+    'Spirit Temple Child Side Bridge with Bombchu': {
+        'name'    : 'logic_spirit_child_bombchu',
+        'tooltip' : '''\
+                    A carefully-timed Bombchu can hit the switch.
+                    '''},
+    'Windmill PoH as Adult with Nothing': {
+        'name'    : 'logic_windmill_poh',
+        'tooltip' : '''\
+                    Can jump up to the spinning platform from
+                    below as adult.
+                    '''},
+    'Crater\'s Bean PoH with Hover Boots': {
+        'name'    : 'logic_crater_bean_poh_with_hovers',
+        'tooltip' : '''\
+                    Hover from the base of the bridge
+                    near Goron City and walk up the
+                    very steep slope.
+                    '''},
+    'Gerudo Training Grounds MQ Left Side Silver Rupees with Hookshot': {
+        'name'    : 'logic_gtg_mq_with_hookshot',
+        'tooltip' : '''\
+                    The highest silver rupee can be obtained by
+                    hookshotting the target and then immediately jump
+                    slashing toward the rupee.
+                    '''},
+    'Forest Temple East Courtyard Vines with Hookshot': {
+        'name'    : 'logic_forest_vines',
+        'tooltip' : '''\
+                    The vines in Forest Temple leading to where the well
+                    drain switch is in the standard form can be barely
+                    reached with just the Hookshot.
+                    '''},
+    'Swim Through Forest Temple MQ Well with Hookshot': {
+        'name'    : 'logic_forest_well_swim',
+        'tooltip' : '''\
+                    Shoot the vines in the well as low and as far to
+                    the right as possible, and then immediately swim
+                    under the ceiling to the right. This can only be
+                    required if Forest Temple is in its Master Quest
+                    form.
+                    '''},
+    'Death Mountain Trail Bombable Chest with Strength': {
+        'name'    : 'logic_dmt_bombable',
+        'tooltip' : '''\
+                    Child Link can blow up the wall using a nearby bomb
+                    flower. You must backwalk with the flower and then
+                    quickly throw it toward the wall.
+                    '''},
+    'Water Temple Boss Key Chest with No Additional Items': {
+        'name'    : 'logic_water_bk_chest',
+        'tooltip' : '''\
+                    After reaching the Boss Key chest's area with Iron Boots
+                    and Longshot, the chest can be reached with no additional
+                    items aside from Small Keys. Stand on the blue switch
+                    with the Iron Boots, wait for the water to rise all the
+                    way up, and then quickly swim up to the exit. You will
+                    grab the ledge as you surface.
+                    '''},
+    'Adult Kokiri Forest GS with Hover Boots': {
+        'name'    : 'logic_adult_kokiri_gs',
+        'tooltip' : '''\
+                    Can be obtained without Hookshot by using the Hover
+                    Boots off of one of the roots.
+                    '''},
+    'Spirit Temple MQ Frozen Eye Switch without Fire': {
+        'name'    : 'logic_spirit_mq_frozen_eye',
+        'tooltip' : '''\
+                    You can melt the ice by shooting an arrow through a
+                    torch. The only way to find a line of sight for this
+                    shot is to first spawn a Song of Time block, and then
+                    stand on the very edge of it.
+                    '''},
+    'Fire Temple MQ Boss Key Chest without Bow': {
+        'name'    : 'logic_fire_mq_bk_chest',
+        'tooltip' : '''\
+                    Din\'s alone can be used to unbar the door to
+                    the boss key chest's room thanks to an
+                    oversight in the way the game counts how many
+                    torches have been lit.
+                    '''},
+    'Zora\'s Domain Entry with Cucco': {
+        'name'    : 'logic_zora_with_cucco',
+        'tooltip' : '''\
+                    Can fly behind the waterfall with
+                    a cucco as child.
+                    '''},
+    'Zora\'s Domain Entry with Hover Boots': {
+        'name'    : 'logic_zora_with_hovers',
+        'tooltip' : '''\
+                    Can hover behind the waterfall as adult.
+                    This is very difficult.
                     '''},
 }
 
