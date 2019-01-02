@@ -67,6 +67,18 @@ class Location(object):
                (self.disabled == DisableType.PENDING and self.locked)
 
 
+    # Can the player see what's placed at this location without collecting it?
+    # Used to reduce JSON spoiler noise
+    def has_preview(self):
+        if self.type in ('Collectable', 'BossHeart', 'GS Token', 'Shop'):
+            return True
+        if self.type == 'Chest':
+            return self.scene == 0x10 # Treasure Chest Game Prize
+        if self.type == 'NPC':
+            return self.scene in (0x4B, 0x51, 0x57) # Bombchu Bowling, Hyrule Field (OoT), Lake Hylia (RL/FA)
+        return False
+
+
     def __str__(self):
         return str(self.__unicode__())
 

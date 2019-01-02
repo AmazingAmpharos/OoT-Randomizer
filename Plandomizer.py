@@ -574,7 +574,7 @@ class Distribution(object):
             world_dist.item_pool = {}
             world_dist.starting_items = {name: StarterRecord({ 'count': record.count }) for (name, record) in src_dist.starting_items.items()}
             world_dist.logic_ignored_items = src_dist.logic_ignored_items
-            world_dist.locations = {loc: LocationRecord({ 'item': item.name, 'player': None if item.world is world else item.world.id, 'model': item.looks_like_item.name if item.looks_like_item is not None else None, 'price': item.price }) for (loc, item) in spoiler.locations[world.id].items()}
+            world_dist.locations = {loc: LocationRecord({ 'item': item.name, 'player': None if item.world is world else item.world.id, 'model': item.looks_like_item.name if item.looks_like_item is not None and item.location.has_preview() else None, 'price': item.price }) for (loc, item) in spoiler.locations[world.id].items()}
             world_dist.gossip = {gossipLocations[loc].name: GossipRecord({ 'gossip': spoiler.hints[world.id][loc] }) for loc in spoiler.hints[world.id]}
         for world in spoiler.worlds:
             for (_, item) in spoiler.locations[world.id].items():
