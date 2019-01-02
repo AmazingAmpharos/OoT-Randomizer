@@ -26,6 +26,157 @@ per_world_keys = (
 )
 
 
+# The inner tuple format is (Offset, Value, Or with existing bits?)
+
+def bottle_writes(bottle_id, maximum=4):
+    def get_writes(count, state):
+        if count > maximum:
+            return None
+        next_bottle_offset = state.get('next_bottle_offset', 0x86)
+        if next_bottle_offset + count > 0x8A:
+            return None
+        state['next_bottle_offset'] = next_bottle_offset + count
+        return ((next_bottle_offset + i, bottle_id, False) for i in range(count))
+    return get_writes
+
+def piece_of_heart_writes(count, state):
+    pieces_of_heart = state.get('pieces_of_heart', 12) + count
+    if pieces_of_heart > 80:
+        return None
+    state['pieces_of_heart'] = pieces_of_heart
+    heart_container_value = (pieces_of_heart // 4) * 0x10
+    return ((0x2E, (heart_container_value & 0xFF00) >> 8, False), (0x2F, heart_container_value & 0xFF, False), (0x30, (heart_container_value & 0xFF00) >> 8, False), (0x31, heart_container_value & 0xFF, False), (0xA4, (pieces_of_heart % 4) << 4, False))
+
+def heart_container_writes(count, state):
+    pieces_of_heart = state.get('pieces_of_heart', 12) + count * 4
+    if pieces_of_heart > 80:
+        return None
+    state['pieces_of_heart'] = pieces_of_heart
+    heart_container_value = (pieces_of_heart // 4) * 0x10
+    return ((0x2E, (heart_container_value & 0xFF00) >> 8, False), (0x2F, heart_container_value & 0xFF, False), (0x30, (heart_container_value & 0xFF00) >> 8, False), (0x31, heart_container_value & 0xFF, False))
+
+save_writes_table = {
+    "Deku Stick Capacity": (((0x74, 0x00, False), (0xA1, 0x04, True)),
+                            ((0x74, 0x00, False), (0xA1, 0x06, True))),
+    "Deku Sticks": lambda n, state: ((0x8C, n, False),) if state['distribution'].get_starting_item('Deku Stick Capacity').count > 0 else ((0x74, 0x00, False), (0x8C, n, False), (0xA1, 0x02, True)),
+    "Deku Nut Capacity": (((0x75, 0x01, False), (0xA1, 0x20, True)),
+                          ((0x75, 0x01, False), (0xA1, 0x30, True))),
+    "Deku Nuts": lambda n, state: ((0x8D, n, False),) if state['distribution'].get_starting_item('Deku Nut Capacity').count > 0 else ((0x75, 0x01, False), (0x8D, n, False), (0xA1, 0x10, True)),
+    "Bomb Bag": (((0x76, 0x02, False), (0xA2, 0x40, True)),
+                 ((0x76, 0x02, False), (0xA2, 0x80, True)),
+                 ((0x76, 0x02, False), (0xA2, 0xC0, True))),
+    "Bombs": lambda n, state: ((0x76, 0x02, False), (0x8E, n, False)),
+    "Bow": (((0x77, 0x03, False), (0xA3, 0x01, True)),
+            ((0x77, 0x03, False), (0xA3, 0x02, True)),
+            ((0x77, 0x03, False), (0xA3, 0x03, True))),
+    "Arrows": lambda n, state: ((0x8F, n, False),),
+    "Fire Arrows": (((0x78, 0x04, False),),),
+    "Dins Fire": (((0x79, 0x05, False),),),
+    "Slingshot": (((0x7A, 0x06, False), (0xA3, 0x08, True)),
+                  ((0x7A, 0x06, False), (0xA3, 0x10, True)),
+                  ((0x7A, 0x06, False), (0xA3, 0x18, True))),
+    "Deku Seeds": lambda n, state: ((0x7A, 0x06, False), (0x92, n, False)),
+    "Ocarina": (((0x7B, 0x07, False),),
+                ((0x7B, 0x08, False),)),
+    "Bombchus": lambda n, state: ((0x7C, 0x09, False), (0x94, n, False)),
+    "Progressive Hookshot": (((0x7D, 0x0A, False),),
+                             ((0x7D, 0x0B, False),)),
+    "Ice Arrows": (((0x7E, 0x0C, False),),),
+    "Farores Wind": (((0x7F, 0x0D, False),),),
+    "Boomerang": (((0x80, 0x0E, False),),),
+    "Lens of Truth": (((0x81, 0x0F, False),),),
+    "Magic Bean": lambda n, state: ((0x82, 0x10, False), (0x9A, n, False), (0x9B, n, False)) if n <= 10 else None,
+    "Hammer": (((0x83, 0x11, False),),),
+    "Light Arrows": (((0x84, 0x12, False),),),
+    "Nayrus Love": (((0x85, 0x13, False),),),
+
+    "Bottle": bottle_writes(0x14),
+    "Bottle with Red Potion": bottle_writes(0x15),
+    "Bottle with Green Potion": bottle_writes(0x16),
+    "Bottle with Blue Potion": bottle_writes(0x17),
+    "Bottle with Fairy": bottle_writes(0x18),
+    "Bottle with Fish": bottle_writes(0x19),
+    "Bottle with Milk": bottle_writes(0x1A),
+    "Bottle with Letter": bottle_writes(0x1B, maximum=1),
+    "Bottle with Blue Fire": bottle_writes(0x1C),
+    "Bottle with Bugs": bottle_writes(0x1D),
+    "Bottle with Big Poe": bottle_writes(0x1E),
+    "Bottle with Milk (Half)": bottle_writes(0x1F), # This one is not in the item list, so it needs a special case
+    "Bottle with Poe": bottle_writes(0x20),
+
+    "Pocket Egg": (((0x8A, 0x2D, False),),),
+    "Pocket Cucco": (((0x8A, 0x2E, False),),),
+    "Cojiro": (((0x8A, 0x2F, False),),),
+    "Odd Mushroom": (((0x8A, 0x30, False),),),
+    "Poachers Saw": (((0x8A, 0x32, False),),),
+    "Broken Sword": (((0x8A, 0x33, False),),),
+    "Prescription": (((0x8A, 0x34, False),),),
+    "Eyeball Frog": (((0x8A, 0x35, False),),),
+    "Eyedrops": (((0x8A, 0x36, False),),),
+    "Claim Check": (((0x8A, 0x37, False),),),
+
+    "Weird Egg": (((0x8B, 0x21, False),),),
+    "Chicken": (((0x8B, 0x22, False),),),
+
+    "Goron Tunic": (((0x9C, 0x02, True),),),
+    "Zora Tunic": (((0x9C, 0x04, True),),),
+    "Iron Boots": (((0x9C, 0x20, True),),),
+    "Hover Boots": (((0x9C, 0x40, True),),),
+    "Deku Shield": (((0x71, 0x10, True), (0x9D, 0x10, True)),),
+    "Hylian Shield": (((0x9D, 0x20, True),),),
+    "Mirror Shield": (((0x53, 0x40, True), (0x9D, 0x40, True)),),
+    "Kokiri Sword": (((0x68, 0x3B, False), (0x71, 0x01, True), (0x9D, 0x01, True)),),
+    "Biggoron Sword": (((0x3E, 0x01, False), (0x9D, 0x04, True)),),
+
+    "Gerudo Membership Card": (((0xA5, 0x40, True),),),
+    "Stone of Agony": (((0xA5, 0x20, True),),),
+
+    "Zeldas Lullaby": (((0xA6, 0x10, True),),),
+    "Eponas Song": (((0xA6, 0x20, True),),),
+    "Sarias Song": (((0xA6, 0x40, True),),),
+    "Suns Song": (((0xA6, 0x80, True),),),
+    "Song of Time": (((0xA5, 0x01, True),),),
+    "Song of Storms": (((0xA5, 0x02, True),),),
+    "Minuet of Forest": (((0xA7, 0x40, True),),),
+    "Bolero of Fire": (((0xA7, 0x80, True),),),
+    "Serenade of Water": (((0xA6, 0x01, True),),),
+    "Requiem of Spirit": (((0xA6, 0x02, True),),),
+    "Nocturne of Shadow": (((0xA6, 0x04, True),),),
+    "Prelude of Light": (((0xA6, 0x08, True),),),
+
+    "Kokiri Emerald": (((0xA5, 0x04, True),),),
+    "Goron Ruby": (((0xA5, 0x08, True),),),
+    "Zora Sapphire": (((0xA5, 0x10, True),),),
+    "Light Medallion": (((0xA7, 0x20, True),),),
+    "Forest Medallion": (((0xA7, 0x01, True),),),
+    "Fire Medallion": (((0xA7, 0x02, True),),),
+    "Water Medallion": (((0xA7, 0x04, True),),),
+    "Spirit Medallion": (((0xA7, 0x08, True),),),
+    "Shadow Medallion": (((0xA7, 0x10, True),),),
+
+    "Progressive Strength Upgrade": (((0xA3, 0x40, True),),
+                                     ((0xA3, 0x80, True),),
+                                     ((0xA3, 0xC0, True),)),
+    "Progressive Scale": (((0xA2, 0x02, True),),
+                          ((0xA2, 0x04, True),)),
+    "Progressive Wallet": (((0xA2, 0x10, True),),
+                           ((0xA2, 0x20, True),),
+                           ((0xA2, 0x30, True),)),
+
+    "Gold Skulltula Token": lambda n, state: ((0xA5, 0x80, True), (0xD0, n, False)),
+
+    "Double Defense": (((0x3D, 0x01, False), (0xCF, 0x14, False)),),
+    "Magic Meter": (((0x32, 0x01, False), (0x33, 0x30, False), (0x3A, 0x01, False)),
+                    ((0x32, 0x01, False), (0x33, 0x60, False), (0x3A, 0x01, False), (0x3C, 0x01, False))),
+
+    "Piece of Heart": piece_of_heart_writes,
+    "Piece of Heart (Treasure Chest Game)": piece_of_heart_writes,
+    "Heart Container": heart_container_writes,
+
+    "Rupees": lambda n, state: ((0x34, (n & 0xFF00) >> 8, False), (0x35, n & 0xFF, False))
+}
+
+
 def SimpleRecord(props):
     class Record(object):
         def __init__(self, src_dict=None):
@@ -149,7 +300,7 @@ class WorldDistribution(object):
         yield from (ItemReplacementRecord({ 'add': add_item, 'remove': remove_item }) for (add_item, remove_item) in zip(add_items, remove_items))
 
 
-    def alter_pool(self, pool):
+    def alter_pool(self, world, pool):
         pool_size = len(pool) + self.item_count_imbalance
         junk_matcher = pattern_matcher('#Junk', item_groups)
         junk_to_remove = 0
@@ -159,7 +310,7 @@ class WorldDistribution(object):
                 if name.startswith('#'):
                     generator = item_generators[name[1:]]
                     for _ in range(record.count):
-                        pool.append(generator())
+                        pool.append(generator(world))
                 else:
                     pool.extend([name] * record.count)
             if len(pool) > pool_size:
@@ -167,12 +318,12 @@ class WorldDistribution(object):
             else:
                 junk_generator = item_generators['Junk']
                 for _ in range(pool_size - len(pool)):
-                    pool.append(junk_generator())
+                    pool.append(junk_generator(world))
         else:
             if self.item_count_imbalance > 0:
                 junk_generator = item_generators['Junk']
                 for _ in range(self.item_count_imbalance):
-                    pool.append(junk_generator())
+                    pool.append(junk_generator(world))
             elif self.item_count_imbalance < 0:
                 candidates = [item for item in pool if junk_matcher(item)]
                 junk_to_remove = -self.item_count_imbalance - len(candidates)
@@ -217,7 +368,7 @@ class WorldDistribution(object):
                         raise RuntimeError('No items matching "%s" in world %d, or all of them have already been replaced' % (remove_item, self.id))
                     pool.remove(remove_item)
                 if add_item.startswith('#'):
-                    dist_extension.append(item_generators[add_item[1:]]())
+                    dist_extension.append(item_generators[add_item[1:]](world))
                 else:
                     dist_extension.append(add_item)
 
@@ -239,7 +390,11 @@ class WorldDistribution(object):
     def collect_starters(self, state):
         for (name, record) in self.starting_items.items():
             for _ in range(record.count):
-                state.collect(ItemFactory(name))
+                try:
+                    item = ItemFactory("Bottle" if name == "Bottle with Milk (Half)" else name)
+                except KeyError:
+                    continue
+                state.collect(item)
 
         for (name, record) in self.logic_ignored_items.items():
             for _ in range(record.count):
@@ -316,9 +471,44 @@ class WorldDistribution(object):
             spoiler.hints[self.id][stoneID] = lineWrap(record.gossip)
 
 
+    def get_starting_item(self, name):
+        if name in self.starting_items:
+            return self.starting_items[name]
+        return StarterRecord({ 'count': 0 })
+
+
     def patch_save(self, write_byte_to_save, write_bits_to_save):
-        if len(self.starting_items) > 0:
-            raise NotImplementedError('starting_items is not implemented at the moment!')
+        bytes_to_write = {}
+        bits_to_write = {}
+        state = {
+            'distribution': self
+        }
+        for (name, record) in self.starting_items.items():
+            if record.count == 0:
+                continue
+            if name not in save_writes_table:
+                raise RuntimeError('Unknown starting item: %s' % (name))
+            save_writes = save_writes_table[name]
+            if callable(save_writes):
+                writes = save_writes(record.count, state)
+            else:
+                writes = save_writes[min(record.count, len(save_writes)) - 1]
+            if writes is None:
+                raise RuntimeError('Unsupported value for starting item %s: %d' % (name, record.count))
+            for (offset, value, is_bits) in writes:
+                if is_bits:
+                    if offset in bytes_to_write:
+                        bytes_to_write[offset] |= value
+                    else:
+                        bits_to_write[offset] = bits_to_write.get(offset, 0) | value
+                else:
+                    if offset in bits_to_write:
+                        del bits_to_write[offset]
+                    bytes_to_write[offset] = value
+        for (offset, value) in bytes_to_write.items():
+            write_byte_to_save(offset, value)
+        for (offset, value) in bits_to_write.items():
+            write_bits_to_save(offset, value)
 
 
 class Distribution(object):

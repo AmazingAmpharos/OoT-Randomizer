@@ -19,6 +19,7 @@ from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
 
 def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
+    world_dist = world.get_distribution()
     with open(data_path('generated/rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
@@ -867,9 +868,15 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         write_bits_to_save(0x00B1, 0x06) # "Ice Map/Compass"
 
     if world.start_with_rupees:
-        if world.start_with_wallet:
+        dist_start_with_wallet = world_dist.get_starting_item('Progressive Wallet')
+        if world.start_with_wallet or dist_start_with_wallet.count >= 3:
             write_byte_to_save(0x0034, 0x03) # start with 999 rupees if tycoon, first byte
             write_byte_to_save(0x0035, 0xE7) # second byte
+        elif dist_start_with_wallet.count == 2:
+            write_byte_to_save(0x0034, 0x01) # start with 500 rupees if giant, first byte
+            write_byte_to_save(0x0035, 0xF4) # second byte
+        elif dist_start_with_wallet.count == 1:
+            write_byte_to_save(0x0035, 0xC8) # start with 200 rupees if adult
         else:
             write_byte_to_save(0x0035, 0x63) # start with 99 rupees
 
@@ -877,14 +884,23 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         write_bits_to_save(0x00A2, 0x30) # tycoon's wallet
 
     if world.start_with_deku_equipment:
-        if world.shopsanity == "off":
+        if world.shopsanity == "off" and world_dist.get_starting_item('Deku Shield').count == 0:
             write_bits_to_save(0x009D, 0x10) # start with Deku Shield
             write_bits_to_save(0x0071, 0x10) # equip Deku Shield
-        write_byte_to_save(0x0074, 0x00) # Deku stick in 1st inventory slot
-        write_byte_to_save(0x008C, 0x0A) # start with 10 Deku sticks
-        write_byte_to_save(0x0075, 0x01) # Deku nut in 2nd inventory slot
-        write_byte_to_save(0x008D, 0x14) # start with 20 Deku nuts
-        write_bits_to_save(0x00A1, 0x12) # enable Deku stick/nut base capacity
+        dist_start_with_dsc = world_dist.get_starting_item('Deku Stick Capacity')
+        dist_start_with_dnc = world_dist.get_starting_item('Deku Nut Capacity')
+        if dist_start_with_dsc.count == 0:
+            write_byte_to_save(0x0074, 0x00) # Deku stick in 1st inventory slot
+        write_byte_to_save(0x008C, 0x0A + dist_start_with_dsc.count * 0x0A) # start with 10/20/30 Deku sticks
+        if dist_start_with_dnc.count == 0:
+            write_byte_to_save(0x0075, 0x01) # Deku nut in 2nd inventory slot
+        write_byte_to_save(0x008D, 0x14 + dist_start_with_dnc.count * 0x0A) # start with 20/30/40 Deku nuts
+        if dist_start_with_dsc.count == 0 and dist_start_with_dnc.count == 0:
+            write_bits_to_save(0x00A1, 0x12) # enable Deku stick/nut base capacity
+        elif dist_start_with_dsc.count == 0:
+            write_bits_to_save(0x00A1, 0x02) # enable Deku stick base capacity
+        elif dist_start_with_dnc.count == 0:
+            write_bits_to_save(0x00A1, 0x10) # enable Deku nut base capacity
 
     if world.start_with_fast_travel:
         write_bits_to_save(0x00A6, 0x09) # start with Prelude of Light & Serenade of Water

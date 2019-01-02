@@ -534,7 +534,8 @@ item_groups = {
 
 
 item_generators = {
-    'Junk': lambda: get_junk_item()[0],
+    'Junk': lambda _: get_junk_item()[0],
+    'AdultTrade': lambda world: world.selected_adult_trade_item,
 }
 
 
@@ -925,6 +926,7 @@ def get_pool_core(world):
     if earliest_trade > latest_trade:
         earliest_trade, latest_trade = latest_trade, earliest_trade
     tradeitem = random.choice(tradeitems[earliest_trade:latest_trade+1])
+    world.selected_adult_trade_item = tradeitem
     pool.append(tradeitem)
 
     pool.extend(songlist)
@@ -976,7 +978,7 @@ def get_pool_core(world):
         for i in [1, 2, 3]: # collect wallets
             world.state.collect(ItemFactory('Progressive Wallet'))
 
-    world.get_distribution().alter_pool(pool)
+    world.get_distribution().alter_pool(world, pool)
 
     world.get_distribution().collect_starters(world.state)
 

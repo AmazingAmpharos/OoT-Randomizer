@@ -5,6 +5,7 @@ from Rules import set_shop_rules
 from Location import DisableType
 from LocationList import location_groups
 from ItemPool import songlist, get_junk_item, junk_pool, item_groups
+from ItemList import item_table
 from Item import ItemFactory
 from functools import reduce
 
@@ -56,9 +57,12 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # set ice traps to have the appearance of other random items in the item pool
     ice_traps = [item for item in itempool if item.name == 'Ice Trap']
     fake_items = []
+    major_items = [item for item in itempool if item.majoritem]
+    if len(major_items) == 0: # All major items were somehow removed from the pool (can happen in plando)
+        major_items = ItemFactory([item for (item, data) in item_table.items() if data[0] == 'Item' and data[1] and data[2] is not None])
     while len(ice_traps) > len(fake_items):
         # if there are more ice traps than major items, then double up on major items
-        fake_items.extend([item for item in itempool if item.majoritem])
+        fake_items.extend(major_items)
     for random_item in random.sample(fake_items, len(ice_traps)):
         ice_trap = ice_traps.pop(0)
         ice_trap.looks_like_item = random_item
