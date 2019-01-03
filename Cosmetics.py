@@ -269,7 +269,7 @@ def patch_cosmetics(settings, rom):
             'malon':           0x02,
             'whistle':         0x03,
             'harp':            0x04,
-            'grind_organ':     0x05,
+            'grind-organ':     0x05,
             'flute':           0x06,
            #'another_ocarina': 0x07,
             }
