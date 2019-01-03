@@ -975,9 +975,9 @@ skip_GS_BGS_text:
 ; Quick Boots Display
 ;==================================================================================================
 ;
-; Replaces lw    s4, 0x0000(s6)
-;          lw    s1, 0x02B0(s4)
-.org 0xAEB68C ; In Memory: 0x8007572C
+; Replaces lw    t6, 0x1C44(s6)
+;          lui   t8, 0xDB06
+.org 0xAEB67C ; In Memory: 0x8007571C
 	jal		qb_draw
 	nop
 
