@@ -78,6 +78,8 @@ void draw_quickboots() {
                 sprite_draw(db, &items_sprite, 0, 285, 66, 12, 12);
             }
         }
+
+        gDPPipeSync(db->p++);
     }
 }
 
