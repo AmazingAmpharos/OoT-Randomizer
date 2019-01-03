@@ -7,7 +7,6 @@ CFLAGS = -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt -mdivide-breaks \
 
 OBJECTS = $(patsubst %.c,%.o,$(sort $(wildcard *.c)))
 
-
 OUTDIR = ../build
 
 .PHONY: all clean bundle symbols
