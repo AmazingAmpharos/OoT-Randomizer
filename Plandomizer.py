@@ -687,7 +687,7 @@ class Distribution(object):
                 loc_rec.sphere = sphere_i
                 loc_rec.index = index
                 loc_rec_sphere.append(loc_rec)
-                loc_rec.dependencies = {item: { 'count': count, 'total_count': count, 'locations': {sphere: locs.copy() for (sphere, locs) in item_locations[item].items() if sphere < sphere_i} } for (item, count) in loc.dependencies.items()}
+                loc_rec.dependencies = {item: { 'count': count, 'total_count': count, 'locations': {sphere: locs.copy() for (sphere, locs) in item_locations.get(item, {}).items() if sphere < sphere_i} } for (item, count) in loc.dependencies.items()}
                 loc_rec.calculate_indirect_dependencies(loc_rec_spheres)
                 loc_rec.minimize_dependencies()
                 item_locs = item_locations.get(loc.item.name, None)

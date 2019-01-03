@@ -102,7 +102,8 @@ class State(object):
                 spot.dependencies = dependencies
                 correct_cache[spot] = can_reach
             return can_reach
-        self.add_dependencies(spot.dependencies)
+        if correct_cache[spot]:
+            self.add_dependencies(spot.dependencies)
         return correct_cache[spot]
 
 
@@ -275,7 +276,11 @@ class State(object):
 
     def has_bottle(self):
         is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter' and (item != 'Bottle with Big Poe' or self.is_adult()))
-        return any(is_normal_bottle(pritem) for pritem in self.prog_items)
+        for pritem in self.prog_items:
+            if is_normal_bottle(pritem):
+                self.add_dependencies({ pritem: 1 })
+                return True
+        return False
 
 
     def bottle_count(self):
