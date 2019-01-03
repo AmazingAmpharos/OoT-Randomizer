@@ -1,6 +1,7 @@
 import json
 import logging
 import random
+import uuid
 
 from functools import reduce
 
@@ -22,6 +23,7 @@ per_world_keys = (
     'starting_items',
     'logic_ignored_items',
     'locations',
+    ':barren_regions',
     'gossip',
 )
 
@@ -213,7 +215,75 @@ class ItemReplacementRecord(SimpleRecord({'add': None, 'remove': None, 'count': 
 
 
 class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 'model': None, 'extra': None})):
-    pass
+    def __init__(self, src_dict=None):
+        super().__init__(src_dict)
+        self.sphere = None
+        self.index = None
+        self.dependencies = None
+        self.indirect_dependencies = None
+        self.indirect_locations = None
+        self.woth = False
+
+
+    @staticmethod
+    def from_item(item):
+        return LocationRecord({
+            'item': item.name,
+            'player': None if item.location is not None and item.world is item.location.world else item.world.id,
+            'model': item.looks_like_item.name if item.looks_like_item is not None and item.location.has_preview() else None,
+            'price': item.price,
+        })
+
+
+    def to_dict(self):
+        self_dict = super().to_dict()
+        if self.sphere is not None:
+            self_dict[':sphere'] = self.sphere
+        if self.index is not None:
+            self_dict[':index'] = self.index
+        if self.dependencies is not None:
+            self_dict[':dependencies'] = self.dependencies
+        if self.woth:
+            self_dict[':woth'] = self.woth
+        return self_dict
+
+
+    def calculate_indirect_dependencies(self, spheres):
+        self.indirect_dependencies = {}
+        self.indirect_locations = {}
+        for (name, record) in self.dependencies.items():
+            for (sphere_i, indices) in record['locations'].items():
+                sphere = spheres[sphere_i]
+                for index in indices:
+                    loc_rec = sphere[index]
+                    for (name, record) in loc_rec.dependencies.items():
+                        self.indirect_dependencies[name] = max(self.indirect_dependencies.get(name, 0), record['total_count'])
+                        out_of = 0
+                        for (_, indices) in record['locations'].items():
+                            out_of = out_of + len(indices)
+                        if record['count'] == out_of:
+                            for (ind_sphere, indices) in record['locations'].items():
+                                self.indirect_locations[ind_sphere] = self.indirect_locations.get(ind_sphere, set()) | set(indices)
+                    for (name, count) in loc_rec.indirect_dependencies.items():
+                        self.indirect_dependencies[name] = max(self.indirect_dependencies.get(name, 0), count)
+                    for (ind_sphere, indices) in loc_rec.indirect_locations.items():
+                        self.indirect_locations[ind_sphere] = self.indirect_locations.get(ind_sphere, set()) | indices
+
+
+    def minimize_dependencies(self):
+        for (name, count) in self.indirect_dependencies.items():
+            record = self.dependencies.get(name, None)
+            if record is not None and record['total_count'] <= count:
+                del self.dependencies[name]
+        for (name, record) in self.dependencies.items():
+            for (sphere, indices) in self.indirect_locations.items():
+                if sphere in record['locations']:
+                    for index in indices:
+                        if index in record['locations'][sphere]:
+                            record['locations'][sphere].remove(index)
+                            record['count'] = record['count'] - 1
+                    if len(record['locations'][sphere]) == 0:
+                        del record['locations'][sphere]
 
 
 class LogicIgnoredItemRecord(SimpleRecord({'count': 1})):
@@ -244,7 +314,8 @@ class WorldDistribution(object):
         self.item_replacements = [ItemReplacementRecord(record) for record in src_dict.get('item_replacements', [])]
         self.starting_items = {name: StarterRecord(record) for (name, record) in src_dict.get('starting_items', {}).items()}
         self.logic_ignored_items = {name: LogicIgnoredItemRecord(record) for (name, record) in src_dict.get('logic_ignored_items', {}).items()}
-        self.locations = {name: [LocationRecord(rec) for rec in record] if is_pattern(name) else LocationRecord(record) for (name, record) in src_dict.get('locations', {}).items()}
+        self.locations = {name: [LocationRecord(rec) for rec in record] if is_pattern(name) else LocationRecord(record) for (name, record) in src_dict.get('locations', {}).items() if not is_output_only(name)}
+        self.barren_regions = None
         self.gossip = {name: [GossipRecord(rec) for rec in record] if is_pattern(name) else GossipRecord(record) for (name, record) in src_dict.get('gossip', {}).items()}
 
 
@@ -258,6 +329,7 @@ class WorldDistribution(object):
             'starting_items': {name: record.to_dict() for (name, record) in self.starting_items.items()},
             'logic_ignored_items': {name: record.to_dict() for (name, record) in self.logic_ignored_items.items()},
             'locations': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.locations.items()},
+            ':barren_regions': self.barren_regions,
             'gossip': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.gossip.items()},
         }
 
@@ -565,6 +637,7 @@ class Distribution(object):
     def from_spoiler(spoiler):
         dist = Distribution()
         dist.file_hash = [HASH_ICONS[icon] for icon in spoiler.file_hash]
+
         for world in spoiler.worlds:
             world_dist = dist.for_world(world.id)
             src_dist = world.get_distribution()
@@ -574,8 +647,18 @@ class Distribution(object):
             world_dist.item_pool = {}
             world_dist.starting_items = {name: StarterRecord({ 'count': record.count }) for (name, record) in src_dist.starting_items.items()}
             world_dist.logic_ignored_items = src_dist.logic_ignored_items
-            world_dist.locations = {loc: LocationRecord({ 'item': item.name, 'player': None if item.world is world else item.world.id, 'model': item.looks_like_item.name if item.looks_like_item is not None and item.location.has_preview() else None, 'price': item.price }) for (loc, item) in spoiler.locations[world.id].items()}
+            world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
+            world_dist.barren_regions = [*world.empty_areas]
             world_dist.gossip = {gossipLocations[loc].name: GossipRecord({ 'gossip': spoiler.hints[world.id][loc] }) for loc in spoiler.hints[world.id]}
+            for loc in spoiler.required_locations[world.id]:
+                loc_rec = world_dist.locations.get(loc.name, None)
+                if loc_rec is None:
+                    loc_rec = world_dist.locations.get(':' + loc.name, None)
+                    if loc_rec is None:
+                        loc_rec = LocationRecord.from_item(loc.item)
+                        world_dist.locations[':' + loc.name] = loc_rec
+                loc_rec.woth = True
+
         for world in spoiler.worlds:
             for (_, item) in spoiler.locations[world.id].items():
                 if item.dungeonitem or item.type == 'Event':
@@ -585,6 +668,39 @@ class Distribution(object):
                     player_dist.item_pool[item.name].count += 1
                 else:
                     player_dist.item_pool[item.name] = ItemPoolRecord()
+
+        item_locations = {}
+        loc_rec_spheres = []
+        for (sphere_nr, sphere) in spoiler.playthrough.items():
+            loc_rec_sphere = []
+            loc_rec_spheres.append(loc_rec_sphere)
+            sphere_i = int(sphere_nr) - 1
+            index = 0
+            for loc in sphere:
+                world_dist = dist.for_world(loc.world.id)
+                loc_rec = world_dist.locations.get(loc.name, None)
+                if loc_rec is None:
+                    loc_rec = world_dist.locations.get(':' + loc.name, None)
+                    if loc_rec is None:
+                        loc_rec = LocationRecord.from_item(loc.item)
+                        world_dist.locations[':' + loc.name] = loc_rec
+                loc_rec.sphere = sphere_i
+                loc_rec.index = index
+                loc_rec_sphere.append(loc_rec)
+                loc_rec.dependencies = {item: { 'count': count, 'total_count': count, 'locations': {sphere: locs.copy() for (sphere, locs) in item_locations[item].items() if sphere < sphere_i} } for (item, count) in loc.dependencies.items()}
+                loc_rec.calculate_indirect_dependencies(loc_rec_spheres)
+                loc_rec.minimize_dependencies()
+                item_locs = item_locations.get(loc.item.name, None)
+                if item_locs is None:
+                    item_locs = {}
+                    item_locations[loc.item.name] = item_locs
+                item_locs_sphere = item_locs.get(sphere_i, None)
+                if item_locs_sphere is None:
+                    item_locs_sphere = []
+                    item_locs[sphere_i] = item_locs_sphere
+                item_locs_sphere.append(index)
+                index += 1
+
         return dist
 
 
@@ -598,7 +714,11 @@ class Distribution(object):
     def to_file(self, filename):
         self_dict = self.to_dict()
         with open(filename, 'w') as outfile:
-            json.dump(self_dict, outfile, indent=4)
+            json.dump(self_dict, outfile, indent='\t')
+
+
+def is_output_only(pattern):
+    return pattern.startswith(':')
 
 
 def is_pattern(pattern):

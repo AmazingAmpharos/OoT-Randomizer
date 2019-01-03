@@ -24,6 +24,7 @@ class Location(object):
         self.minor_only = False
         self.world = None
         self.disabled = DisableType.ENABLED
+        self.dependencies = None
 
 
     def copy(self, new_region):

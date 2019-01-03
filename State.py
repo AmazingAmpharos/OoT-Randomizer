@@ -12,6 +12,8 @@ class State(object):
         self.entrance_cache = {}
         self.recursion_count = 0
         self.collected_locations = {}
+        self.track_dependencies = False
+        self.dependencies = None
 
 
     def clear_cached_unreachable(self):
@@ -19,6 +21,12 @@ class State(object):
         self.region_cache = {k: v for k, v in self.region_cache.items() if v}
         self.location_cache = {k: v for k, v in self.location_cache.items() if v}
         self.entrance_cache = {k: v for k, v in self.entrance_cache.items() if v}
+
+
+    def clear_cache(self):
+        self.region_cache = {}
+        self.location_cache = {}
+        self.entrance_cache = {}
 
 
     def copy(self, new_world=None):
@@ -31,6 +39,13 @@ class State(object):
         new_state.entrance_cache = copy.copy(self.entrance_cache)
         new_state.collected_locations = copy.copy(self.collected_locations)
         return new_state
+
+
+    def add_dependencies(self, dependencies):
+        if self.dependencies is None or dependencies is None:
+            return
+        for (item, count) in dependencies.items():
+            self.dependencies[item] = max(self.dependencies.get(item, 0), count)
 
 
     def can_reach(self, spot, resolution_hint=None):
@@ -64,7 +79,18 @@ class State(object):
             # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that ia what we are trying to figure out right now in the first place
             spot.recursion_count += 1
             self.recursion_count += 1
+
+            previous_dependencies = self.dependencies
+            if self.track_dependencies:
+                self.dependencies = {}
+
             can_reach = spot.can_reach(self)
+
+            dependencies = self.dependencies
+            self.dependencies = previous_dependencies
+            if can_reach and dependencies is not None:
+                self.add_dependencies(dependencies)
+
             spot.recursion_count -= 1
             self.recursion_count -= 1
 
@@ -73,8 +99,10 @@ class State(object):
                 if self.recursion_count == 0:
                     correct_cache[spot] = can_reach
             else:
+                spot.dependencies = dependencies
                 correct_cache[spot] = can_reach
             return can_reach
+        self.add_dependencies(spot.dependencies)
         return correct_cache[spot]
 
 
@@ -86,6 +114,8 @@ class State(object):
 
 
     def has(self, item, count=1):
+        if self.prog_items[item] >= count:
+            self.add_dependencies({ item: count })
         return self.prog_items[item] >= count
 
 
