@@ -83,7 +83,7 @@ def LocationFactory(locations, world=None):
         singleton = True
     for location in locations:
         if location in location_table:
-            type, scene, default, hint, addresses = location_table[location]
+            type, scene, default, hint, addresses, *unused = location_table[location]
             if addresses is None:
                 addresses = (None, None)
             address, address2 = addresses

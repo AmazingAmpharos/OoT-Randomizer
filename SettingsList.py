@@ -1171,8 +1171,10 @@ setting_infos = [
         default        = [],
         gui_params     = {
             'text': 'Exclude Locations',
-            'widget': 'SearchBox',
+            'widget': 'FilteredSearchBox',
             'group': 'logic_tab',
+            'options': list(k for k,v in location_table.items() if v[5]),
+            'filterdata': {k: v[5] for k,v in location_table.items() if v[5]},
             'tooltip':'''
                 Prevent locations from being required. Major
                 items can still appear there, however they
