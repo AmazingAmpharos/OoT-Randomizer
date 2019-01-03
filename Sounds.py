@@ -65,7 +65,7 @@ class Sounds(Enum):
     CRATE_EXPLODE      = Sound(0x2839, 'exploding-crate',       'Exploding Crate',           [])
     CUCCO_CLUCK        = Sound(0x2812, 'cluck',                 'Cluck',                     [Tags.BRIEF])
     CUCCO_CROW         = Sound(0x2813, 'cockadoodledoo',        'Cockadoodledoo',            [])
-    CURSED_SCREAM      = Sound(0x6867, 'cursed-scream',         'Cursed Scream',             [])
+    CURSED_SCREAM      = Sound(0x6867, 'cursed-scream',         'Cursed Scream',             [Tags.PAINFUL])
     CURSED_ATTACK      = Sound(0x6868, 'cursed-attack',         'Cursed Attack',             [Tags.IMMEDIATE])
     DRAWBRIDGE_SET     = Sound(0x280E, 'drawbridge-set',        'Drawbridge Set',            [])
     DUSK_HOWL          = Sound(0x28AE, 'dusk-howl',             'Dusk Howl',                 [])
@@ -174,6 +174,9 @@ navi_enemy = [
         Sounds.STALCHILD_ATTACK,
         Sounds.INGO_KAAH,
         Sounds.HORSE_NEIGH,
+        Sounds.CURSED_ATTACK,
+        Sounds.CUCCO_CLUCK,
+        Sounds.ZORA_KING,
         ]
 hp_low = [
         Sounds.RIBBIT,
@@ -232,16 +235,19 @@ class SoundHooks(Enum):
     HP_LOW          = SoundHook('Low Health',  hp_low,      [0xADBA1A])
     BOOTS_HOVER     = SoundHook('Hover Boots', hover_boots, [0xBDBD8A])
     NIGHTFALL       = SoundHook('Nightfall',   nightfall,   [0xAD3466, 0xAD7A2E])
-    MENU_SELECT     = SoundHook('Menu Select', no_painful, [
+    MENU_SELECT     = SoundHook('Menu Select', no_painful,  [
                         0xBA1BBE, 0xBA23CE, 0xBA2956, 0xBA321A, 0xBA72F6, 0xBA8106, 0xBA82EE,
                         0xBA9DAE, 0xBA9EAE, 0xBA9FD2, 0xBAE6D6])
-    MENU_CURSOR     = SoundHook('Menu Cursor', no_painful, [
+    MENU_CURSOR     = SoundHook('Menu Cursor', no_painful,  [
                         0xBA165E, 0xBA1C1A, 0xBA2406, 0xBA327E, 0xBA3936, 0xBA77C2, 0xBA7886,
                         0xBA7A06, 0xBA7A6E, 0xBA7AE6, 0xBA7D6A, 0xBA8186, 0xBA822E, 0xBA82A2,
                         0xBAA11E, 0xBAE7C6])
     HORSE_NEIGH     = SoundHook('Horse Neigh', horse_neigh, [
                         0xC18832, 0xC18C32, 0xC19A7E, 0xC19CBE, 0xC1A1F2, 0xC1A3B6, 0xC1B08A,
-                        0xC1B556, 0xC1C28A, 0xC1CC36, 0xC1EB4A, 0xC1F18E, 0xC6B136, 0xC6BBA2])
+                        0xC1B556, 0xC1C28A, 0xC1CC36, 0xC1EB4A, 0xC1F18E, 0xC6B136, 0xC6BBA2,
+                        0xC1E93A, 0XC6B366, 0XC6B562])
+
+
 #   # Merged these into one
     NAVI_HINT  = SoundHook('Navi Hint', navi_hint,   [0xAE7EF2, 0xC26C7E])
     NAVI_ENEMY      = SoundHook('Navi Target Enemy',     navi_enemy,       [0xAE7EC6])
