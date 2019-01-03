@@ -5,8 +5,8 @@ OBJDUMP = mips64-objdump
 CFLAGS = -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt -mdivide-breaks \
 	-O1 -fno-reorder-blocks
 
-OBJECTS = $(patsubst %.c,%.o,$(wildcard *.c))
-HEADERS = $(wildcard *.h)
+OBJECTS = $(patsubst %.c,%.o,$(sort $(wildcard *.c)))
+
 
 OUTDIR = ../build
 
@@ -14,7 +14,7 @@ OUTDIR = ../build
 
 all: clean bundle symbols
 
-%.o: %.c $(HEADERS)
+%.o: %.c
 	$(CC) -c $< $(CFLAGS)
 
 bundle: $(OBJECTS)
