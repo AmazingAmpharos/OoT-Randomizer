@@ -778,11 +778,12 @@ skip_GS_BGS_text:
 ; Talon Cutscene Skip
 ;==================================================================================================
 
-; Replaces: lui    a1, 0x801F @ovl+0x1080
+; Replaces: lw      a0, 0x0018(sp)
+            addiu   t1, r0, 0x0041
 
-.org 0xCC0020
-    jal     talon_break_free
-    lui     a1, 0x801F
+.org 0xCC0038
+    jal    talon_break_free
+    lw     a0, 0x0018(sp)
 
 ;==================================================================================================
 ; Patches.py imports
