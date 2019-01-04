@@ -143,6 +143,12 @@ def logic_tricks_list_tooltip(widget, pos):
 
 
 logic_tricks = {
+    'Rolling Goron (Hot Rodder Goron) as Child with Strength': {
+        'name'    : 'logic_child_rolling_with_strength',
+        'tooltip' : '''\
+                    Use the bombflower on the stairs or near Medigoron.
+                    Timing is tight, especially without backwalking
+                    '''},
     'Morpha with Gold Scale': {
         'name'    : 'logic_morpha_with_scale',
         'tooltip' : '''\
