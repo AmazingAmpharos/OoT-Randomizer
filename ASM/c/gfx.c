@@ -85,21 +85,15 @@ void draw_setup(z64_disp_buf_t *db) {
     gSPLoadGeometryMode(db->p++, 0);
     gDPSetScissor(db->p++, G_SC_NON_INTERLACE,
                   0, 0, Z64_SCREEN_WIDTH, Z64_SCREEN_HEIGHT);
-    gDPSetAlphaDither(db->p++, G_AD_DISABLE);
-    gDPSetColorDither(db->p++, G_CD_DISABLE);
-    gDPSetAlphaCompare(db->p++, G_AC_NONE);
-    gDPSetDepthSource(db->p++, G_ZS_PRIM);
-    gDPSetCombineKey(db->p++, G_CK_NONE);
-    gDPSetTextureConvert(db->p++, G_TC_FILT);
-    gDPSetTextureDetail(db->p++, G_TD_CLAMP);
-    gDPSetTexturePersp(db->p++, G_TP_NONE);
-    gDPSetTextureLOD(db->p++, G_TL_TILE);
-    gDPSetTextureLUT(db->p++, G_TT_NONE);
-    gDPPipelineMode(db->p++, G_PM_NPRIMITIVE);
 
-    gDPSetCycleType(db->p++, G_CYC_1CYCLE);
-    gDPSetRenderMode(db->p++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-    gDPSetTextureFilter(db->p++, G_TF_BILERP);
+    gDPSetOtherMode(db->p++, G_AD_DISABLE | G_CD_DISABLE |
+        G_CK_NONE       | G_TC_FILT    |
+        G_TD_CLAMP      | G_TP_NONE    |
+        G_TL_TILE       | G_TT_NONE    |
+        G_PM_NPRIMITIVE | G_CYC_1CYCLE |
+        G_TF_BILERP, // HI
+        G_AC_NONE       | G_ZS_PRIM    |
+        G_RM_XLU_SURF   | G_RM_XLU_SURF2); // LO
 
     gSPEndDisplayList(db->p++);
 }
