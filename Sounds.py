@@ -149,45 +149,63 @@ looping    = [s for s in Sounds if Tags.LOOPED in s.value.tags]
 no_painful = [s for s in standard if Tags.PAINFUL not in s.value.tags]
 
 # Selected by hand (very much a WIP)
-navi_hint = [
-        Sounds.SPIT_NUT,
-        Sounds.CURSED_SCREAM,
-        Sounds.TALON_CRY,
-        Sounds.BOW_TWANG,
-        Sounds.BOTTLE_CORK,
-        Sounds.GANON_TENNIS,
-        Sounds.STALCHILD_ATTACK,
-        Sounds.FANFARE_SMALL,
-        Sounds.STALCHILD_ATTACK,
-        Sounds.INGO_KAAH,
-        Sounds.HORSE_NEIGH,
-        ]
-navi_enemy = [
-        Sounds.SPIT_NUT,
-        Sounds.CURSED_SCREAM,
-        Sounds.TALON_CRY,
-        Sounds.BOW_TWANG,
-        Sounds.BOTTLE_CORK,
-        Sounds.GANON_TENNIS,
-        Sounds.STALCHILD_ATTACK,
-        Sounds.FANFARE_SMALL,
-        Sounds.STALCHILD_ATTACK,
-        Sounds.INGO_KAAH,
-        Sounds.HORSE_NEIGH,
-        Sounds.CURSED_ATTACK,
+navi = [
+        Sounds.NONE,
         Sounds.CUCCO_CLUCK,
+        Sounds.SOFT_BEEP,
+        Sounds.HP_RECOVER,
+        Sounds.TIMER,
+        Sounds.HP_LOW,
+        Sounds.NOTIFICATION,
+        Sounds.TAMBOURINE,
+        Sounds.CARROT_REFILL,
+        Sounds.ZELDA_ADULT_GASP,
         Sounds.ZORA_KING,
+        Sounds.ICE_SHATTER,
+        Sounds.EXPLOSION,
+        Sounds.CRATE_EXPLODE,
+        Sounds.GREAT_FAIRY,
+        Sounds.MOO,
+        Sounds.BARK,
+        Sounds.RIBBIT,
+        Sounds.POT_SHATTER,
+        Sounds.CUCCO_CROW,
+        Sounds.HORSE_NEIGH,
+        Sounds.SKULLTULA,
+        Sounds.REDEAD_SCREAM,
+        Sounds.POE,
+        Sounds.RUTO_CHILD_GIGGLE,
+        Sounds.DUSK_HOWL,
+        Sounds.SCRUB_BUSINESS,
+        Sounds.GUAY,
+        Sounds.NAVI_HELLO,
         ]
 hp_low = [
-        Sounds.RIBBIT,
-        Sounds.BONGO_LOW,
-        Sounds.CURSED_SCREAM,
+        Sounds.NONE,
+        Sounds.CUCCO_CLUCK,
+        Sounds.SOFT_BEEP,
+        Sounds.HP_RECOVER,
+        Sounds.TIMER,
+        Sounds.NOTIFICATION,
         Sounds.TAMBOURINE,
-        Sounds.RUTO_CHILD_CRASH,
-        Sounds.SHABOM_BOUNCE,
         Sounds.CARROT_REFILL,
-        Sounds.MOBLIN_CLUB_GROUND,
+        Sounds.NAVI_RANDOM,
+        Sounds.NAVI_HEY,
+        Sounds.ZELDA_ADULT_GASP,
         Sounds.ZORA_KING,
+        Sounds.BOOTS_IRON,
+        Sounds.SWORD_BONK,
+        Sounds.BOW_TWANG,
+        Sounds.HORSE_TROT,
+        Sounds.DRAWBRIDGE_SET,
+        Sounds.SWITCH,
+        Sounds.BOMB_BOUNCE,
+        Sounds.BARK,
+        Sounds.RIBBIT,
+        Sounds.POT_SHATTER,
+        Sounds.SCRUB_BUSINESS,
+        Sounds.GUAY,
+        Sounds.BONGO_LOW,
         ]
 hover_boots = [
         Sounds.BARK,
@@ -231,7 +249,7 @@ horse_neigh = [
 
 SoundHook = namedtuple('SoundHook', 'name pool locations')
 class SoundHooks(Enum):
-#   NAVI            = SoundHook('Navi',        navi,        [0xAE7EF2, 0xC26C7E, 0xAE7EC6])
+    NAVI            = SoundHook('Navi',        navi,        [0xAE7EF2, 0xC26C7E, 0xAE7EC6])
     HP_LOW          = SoundHook('Low Health',  hp_low,      [0xADBA1A])
     BOOTS_HOVER     = SoundHook('Hover Boots', hover_boots, [0xBDBD8A])
     NIGHTFALL       = SoundHook('Nightfall',   nightfall,   [0xAD3466, 0xAD7A2E])
@@ -249,9 +267,9 @@ class SoundHooks(Enum):
 
 
 #   # Merged these into one
-    NAVI_HINT  = SoundHook('Navi Hint', navi_hint,   [0xAE7EF2, 0xC26C7E])
-    NAVI_ENEMY      = SoundHook('Navi Target Enemy',     navi_enemy,       [0xAE7EC6])
-#   # Redeads have a different cutting sound, making this a bit weird
+#   NAVI_OVERWORLD  = SoundHook('Navi - Overworld', navi_overworld,   [0xAE7EF2, 0xC26C7E])
+#   NAVI_ENEMY      = SoundHook('Navi - Enemy',     navi_enemy,       [0xAE7EC6])
+#   # Some enemies have a different cutting sound, making this a bit weird
 #   SWORD_SLASH     = SoundHook('Sword Slash',      standard,         [0xAC2942])
 
 
@@ -269,7 +287,7 @@ def get_setting_choices(sound_hook):
     result   = {
         'default':           'Default',
         'completely-random': 'Completely Random',
-        'random-ear-safe':   'Completely Random (Ear-Safe)',
+        'random-ear-safe':   'Random Ear-Safe',
         'random-choice':     'Random Choice',
         'none':              'None',
         **choices,
