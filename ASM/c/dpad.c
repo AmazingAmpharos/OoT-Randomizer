@@ -25,28 +25,28 @@ void handle_dpad() {
     pad_pressed = 0;
     pad_pressed |= pad_pressed_raw;
 
-    if (CAN_USE_DPAD && z64_file.link_age == 0) {
-        if (pad_pressed & DPAD_L && z64_file.iron_boots) {
-            if (z64_file.equip_boots == 2) z64_file.equip_boots = 1;
-            else z64_file.equip_boots = 2;
-            z64_UpdateEquipment(&z64_game, &z64_link);
-            z64_playsfx(0x835, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
-        }
+    if (CAN_USE_DPAD){
+        if(z64_file.link_age == 0) {
+            if (pad_pressed & DPAD_L && z64_file.iron_boots) {
+                if (z64_file.equip_boots == 2) z64_file.equip_boots = 1;
+                else z64_file.equip_boots = 2;
+                z64_UpdateEquipment(&z64_game, &z64_link);
+                z64_playsfx(0x835, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
+            }
 
-        if ((pad_pressed & DPAD_R) && z64_file.hover_boots) {
-            if (z64_file.equip_boots == 3) z64_file.equip_boots = 1;
-            else z64_file.equip_boots = 3;
-            z64_UpdateEquipment(&z64_game, &z64_link);
-            z64_playsfx(0x835, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
+            if ((pad_pressed & DPAD_R) && z64_file.hover_boots) {
+                if (z64_file.equip_boots == 3) z64_file.equip_boots = 1;
+                else z64_file.equip_boots = 3;
+                z64_UpdateEquipment(&z64_game, &z64_link);
+                z64_playsfx(0x835, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
+            }
         }
-    
-        if (pad_pressed & DPAD_D) {
+        if (pad_pressed & DPAD_D && z64_game.pause_ctxt.state==0) {
             if(!z64_game.restriction_flags.ocarina)
                 z64_usebutton(&z64_game,&z64_link,0x07, 0x00);
         }
     }
 }
-
 void draw_dpad() {
     z64_disp_buf_t *db = &(z64_ctxt.gfx->overlay);
     if (DISPLAY_DPAD && display_active) {
@@ -79,7 +79,7 @@ void draw_dpad() {
                 sprite_draw(db, &items_sprite, 0, 285, 66, 12, 12);
             }
         }
-        if (z64_file.items[0x07] == 0x07 || z64_file.items[0x07] == 0x08){
+        if (z64_file.items[0x07] != 0xFF){
             sprite_load(db, &items_sprite, z64_file.items[0x07], 1);
             sprite_draw(db, &items_sprite, 0, 273, 77, 12,12);
         }
