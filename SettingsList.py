@@ -1754,6 +1754,19 @@ setting_infos = [
                              ''',
             ),
 
+    Checkbutton(
+            name           = 'display_dpad',
+            args_help      = '''\
+                             Shows an additional HUD element displaying current available options on the DPAD
+                             ''',
+            gui_text       = 'Display DPAD HUD',
+            gui_group      = 'cosmetic',
+            gui_tooltip    = '''\
+                             Shows an additional HUD element displaying
+                             current available options on the DPAD
+                             ''',
+            default        = True,
+            ),
     Setting_Info('kokiri_color', str, 0, False,
         {
             'default': 'Kokiri Green',

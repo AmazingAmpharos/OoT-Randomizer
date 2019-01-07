@@ -13,7 +13,6 @@ void c_init() {
     heap_init();
     gfx_init();
     text_init();
-    dpad_init();
     item_overrides_init();
     models_init();
 }

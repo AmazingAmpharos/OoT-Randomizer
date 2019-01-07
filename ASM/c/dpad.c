@@ -1,11 +1,7 @@
 #include "gfx.h"
 #include "dpad.h"
 
-static uint16_t pad_pressed_raw,
-pad,
-pad_pressed;
-
-static _Bool display_active;
+uint8_t display_dpad = 1;
 
 //unknown 00 is a pointer to some vector transformation when the sound is tied to an actor. actor + 0x3E, when not tied to an actor (map), always 80104394
 //unknown 01 is always 4 in my testing
@@ -19,11 +15,8 @@ typedef void(*usebutton_t)(z64_game_t *game, z64_link_t *link, uint8_t item, uin
 #define z64_usebutton ((usebutton_t)    0x8038C9A0)
 
 void handle_dpad() {
-    uint16_t z_pad = z64_ctxt.input[0].raw.pad;
-    pad_pressed_raw = (pad ^ z_pad) & z_pad;
-    pad = z_pad;
-    pad_pressed = 0;
-    pad_pressed |= pad_pressed_raw;
+
+    uint16_t pad_pressed = z64_game.common.input[0].pad_pressed;
 
     if (CAN_USE_DPAD){
         if(z64_file.link_age == 0) {
@@ -41,16 +34,15 @@ void handle_dpad() {
                 z64_playsfx(0x835, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
             }
         }
-        if (pad_pressed & DPAD_D && z64_game.pause_ctxt.state==0 && (z64_file.items[0x07] == 0x07 || z64_file.items[0x07] == 0x08)) {
-            if(!z64_game.restriction_flags.ocarina)
-                z64_usebutton(&z64_game,&z64_link,0x07, 0x00);
+        if (pad_pressed & DPAD_D && z64_game.pause_ctxt.state==0 && z64_file.items[0x07] != -1 && !z64_game.restriction_flags.ocarina){
+            z64_usebutton(&z64_game,&z64_link,z64_file.items[0x07], 2);
         }
     }
 }
 void draw_dpad() {
     z64_disp_buf_t *db = &(z64_ctxt.gfx->overlay);
-    if (DISPLAY_DPAD && display_active) {
-        gSPDisplayList(db->p++, setup_db.buf);
+    if (DISPLAY_DPAD && display_dpad) {
+        gSPDisplayList(db->p++, &setup_db);
         gDPPipeSync(db->p++);
         gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         uint16_t alpha = z64_game.hud_alpha_channels.minimap;
@@ -79,7 +71,7 @@ void draw_dpad() {
                 sprite_draw(db, &items_sprite, 0, 285, 66, 12, 12);
             }
         }
-        if (z64_file.items[0x07] == 0x07 || z64_file.items[0x07] == 0x08){
+        if (z64_file.items[0x07] != -1){
             sprite_load(db, &items_sprite, z64_file.items[0x07], 1);
             sprite_draw(db, &items_sprite, 0, 273, 77, 12,12);
         }
@@ -88,9 +80,3 @@ void draw_dpad() {
     }
 }
 
-void dpad_init() {
-    pad_pressed_raw = 0;
-    pad = 0;
-    pad_pressed = 0;
-    display_active = 1;
-}
