@@ -10,7 +10,7 @@
     0x10000000 | \
     0x20000000)
 
-#define DISPLAY_DPAD       (z64_file.iron_boots || z64_file.hover_boots || z64_file.items[0x07] == 0x07 || z64_file.items[0x08] == 0x08)
+#define DISPLAY_DPAD       (((z64_file.iron_boots || z64_file.hover_boots) && z64_file.link_age==0) || z64_file.items[0x07] == 0x07 || z64_file.items[0x07] == 0x08)
 
 #define CAN_USE_DPAD       (((z64_link.state_flags_1 & BLOCK_DPAD) == 0) && \
                            ((uint32_t)z64_ctxt.state_dtor==z64_state_ovl_tab[3].vram_dtor) && \
