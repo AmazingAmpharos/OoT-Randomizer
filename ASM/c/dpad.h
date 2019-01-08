@@ -23,6 +23,5 @@
 
 void handle_dpad();
 void draw_dpad();
-void dpad_init();
 
 #endif
