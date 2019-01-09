@@ -625,10 +625,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     rom.write_byte(0x1FF93D0, 0x06) # set the path points to 6
     rom.write_bytes(0x20160B6, [0x01, 0x8D, 0x00, 0x11, 0x01, 0x6C]) # set the carpenter's start position
 
-    # Dampe always digs something up and first dig is always the Piece of Heart
-    rom.write_bytes(0xCC3FA8, [0xA2, 0x01, 0x01, 0xF8])
-    rom.write_bytes(0xCC4024, [0x00, 0x00, 0x00, 0x00])
-
     # Give hp after first ocarina minigame round
     rom.write_bytes(0xDF2204, [0x24, 0x03, 0x00, 0x02])
 

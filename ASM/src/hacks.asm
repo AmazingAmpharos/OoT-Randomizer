@@ -1036,3 +1036,23 @@ skip_GS_BGS_text:
 .org 0xBEA044
    jal      warp_speedup
    nop
+
+;==================================================================================================
+; Dampe Digging Fix
+;==================================================================================================
+;
+; Dig Anyere
+.org 0xCC3FA8
+    sb      at, 0x1F8(s0) 
+
+; Always First Try
+.org 0xCC4024
+    nop
+
+; Leaving without collecting dampe's prize won't lock you out from that prize
+.org 0xCC4038
+    jal     dampe_fix
+    addiu   t4, r0, 0x0004
+
+.org 0xCC453C
+    .word 0x00000806

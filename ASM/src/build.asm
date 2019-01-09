@@ -48,6 +48,7 @@
 .include "gossip_hints.asm"
 .include "potion_shop.asm"
 .include "jabu_elevator.asm"
+.include "dampe.asm"
 .include "dpad.asm"
 .include "chests.asm"
 .include "debug.asm"
