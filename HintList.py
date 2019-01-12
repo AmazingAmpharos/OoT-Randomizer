@@ -380,4 +380,6 @@ def hintExclusions(world):
         exclusions.append('Shadow Temple Hidden Floormaster Chest')
     else:
         exclusions.append('Shadow Temple MQ Bomb Flower Chest')
+    if world.hints == 'agony':
+        exclusions.append('Stone of Agony')
     return exclusions
