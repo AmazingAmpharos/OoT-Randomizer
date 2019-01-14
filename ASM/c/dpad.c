@@ -34,7 +34,7 @@ void handle_dpad() {
                 z64_playsfx(0x835, (z64_xyzf_t*)0x80104394, 0x04, (float*)0x801043A0, (float*)0x801043A0, (float*)0x801043A8);
             }
         }
-        if (pad_pressed & DPAD_D && z64_game.pause_ctxt.state==0 && z64_file.items[0x07] != -1 && !z64_game.restriction_flags.ocarina){
+        if ((pad_pressed & DPAD_D) && CAN_USE_OCARINA){
             z64_usebutton(&z64_game,&z64_link,z64_file.items[0x07], 2);
         }
     }
