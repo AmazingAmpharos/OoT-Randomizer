@@ -650,6 +650,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # Fix text for Pocket Cucco.
     rom.write_byte(0xBEEF45, 0x0B)
+        
+    # Fix stupid alcove cameras in Ice Cavern -- thanks to krim and mzx for the help
+    rom.write_byte(0x2BECA25,0x01);
+    rom.write_byte(0x2BECA2D,0x01); 
 
     configure_dungeon_info(rom, world)
 
