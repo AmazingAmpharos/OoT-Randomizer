@@ -91,6 +91,13 @@ def patch_cosmetics(settings, rom):
     else:
         rom.write_byte(0xB71E6D, 0x00)
 
+    # Display D-Pad HUD
+    dpad_sym = rom.sym('display_dpad')
+    if settings.display_dpad:
+        rom.write_byte(dpad_sym, 0x01)
+    else:
+        rom.write_byte(dpad_sym, 0x00)
+
     # patch music
     if settings.background_music == 'random':
         restore_music(rom)
@@ -336,6 +343,7 @@ class CosmeticsLog(object):
 
         output += format_string.format(key='Default Targeting Option:', value=self.settings.default_targeting, width=padding)
         output += format_string.format(key='Background Music:', value=self.settings.background_music, width=padding)
+        output += format_string.format(key='Display D-Pad HUD:', value=self.settings.display_dpad, width=padding)
 
         output += '\n\nColors:\n'
         for tunic, options in self.tunic_colors.items():
