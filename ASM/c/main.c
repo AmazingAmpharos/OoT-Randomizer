@@ -6,6 +6,7 @@
 #include "text.h"
 #include "util.h"
 #include "quickboots.h"
+#include "rainbow_sword.h"
 #include "z64.h"
 #include "chests.h"
 
@@ -21,6 +22,7 @@ void c_init() {
 void before_game_state_update() {
     handle_pending_items();
     handle_quickboots();
+    update_color();
 }
 
 void after_game_state_update() {
