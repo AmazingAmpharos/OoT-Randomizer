@@ -31,13 +31,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)
 
-    # Display DPAD HUD
-    dpad_sym = rom.sym('display_dpad')
-    if world.display_dpad:
-        rom.write_byte(dpad_sym, 0x01)
-    else:
-        rom.write_byte(dpad_sym,0x00)
-
     # Increase the instance size of Bombchus prevent the heap from becoming corrupt when
     # a Dodongo eats a Bombchu. Does not fix stale pointer issues with the animation
     rom.write_int32(0xD6002C, 0x1F0)
