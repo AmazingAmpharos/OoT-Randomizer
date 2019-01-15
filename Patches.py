@@ -47,8 +47,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     rom.write_byte(0x253C0E2, 0x03) # Moves sheik from pedestal
 
     # Fix Ice Cavern Alcove Camera
-    rom.write_byte(0x2BECA25,0x01);
-    rom.write_byte(0x2BECA2D,0x01);
+   if not world.dungeon_mq['Ice Cavern']:
+        rom.write_byte(0x2BECA25,0x01);
+        rom.write_byte(0x2BECA2D,0x01);
 
     # Fix GS rewards to be static
     rom.write_int32(0xEA3934, 0)
