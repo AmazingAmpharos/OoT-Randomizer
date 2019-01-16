@@ -28,8 +28,8 @@ per_world_keys = (
 )
 
 
-items_always_extra = {
-    **{reward: False for reward in rewardlist},
+starting_always_extra = {
+    **{reward: True for reward in rewardlist},
     "Deku Sticks": True,
     "Deku Nuts": True,
     "Bombs": True,
@@ -39,6 +39,11 @@ items_always_extra = {
     "Magic Bean": True,
     "Bottle with Milk (Half)": True,
     "Rupees": True,
+}
+
+
+locations_always_extra = {
+    **{reward: False for reward in rewardlist},
 }
 
 
@@ -374,10 +379,10 @@ class WorldDistribution(object):
         add_items = []
         remove_items = []
         for (_, record) in pattern_dict_items(self.locations):
-            if coalesce(items_always_extra.get(record.item), record.extra, self.distribution.locations_default_extra):
+            if coalesce(locations_always_extra.get(record.item), record.extra, self.distribution.locations_default_extra):
                 add_items.append(record.item)
         for (name, record) in self.starting_items.items():
-            if not coalesce(items_always_extra.get(name), record.extra, self.distribution.starting_default_extra):
+            if not coalesce(starting_always_extra.get(name), record.extra, self.distribution.starting_default_extra):
                 remove_items.extend([name] * record.count)
         if len(remove_items) > len(add_items):
             add_items.extend(['#Junk'] * (len(remove_items) - len(add_items)))
