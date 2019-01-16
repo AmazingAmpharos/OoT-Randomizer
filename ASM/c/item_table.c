@@ -225,7 +225,7 @@ item_row_t item_table[] = {
     [0xB6] = ITEM_ROW(0x53, 3, 0x41, 0x00A0, 0x00AA, 0x02, no_upgrade, give_small_key, FORT_ID,   -1), // Gerudo Fortress Small Key
     [0xB7] = ITEM_ROW(0x53, 3, 0x41, 0x00A1, 0x00AA, 0x02, no_upgrade, give_small_key, CASTLE_ID, -1), // Ganon's Castle Small Key
 
-    [0xB8] = ITEM_ROW(0x53, 1, 0x41, 0x00E9, 0x00BD, 0x13, no_upgrade, give_defense,      -1, -1), // Double Defense
+    [0xB8] = ITEM_ROW(0x53, 0, 0x41, 0x00E9, 0x00BD, 0x13, no_upgrade, give_defense,      -1, -1), // Double Defense
     [0xB9] = ITEM_ROW(0x53, 0, 0x41, 0x00E4, 0x00CD, 0x1E, no_upgrade, give_magic,        -1, -1), // Magic Meter
     [0xBA] = ITEM_ROW(0x53, 0, 0x41, 0x00E8, 0x00CD, 0x1F, no_upgrade, give_double_magic, -1, -1), // Double Magic
 
