@@ -2146,7 +2146,7 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
-            Combobox(
+    Combobox(
             name           = 'sfx_low_hp',
             default        = 'default',
             choices        = sfx.get_setting_choices(sfx.SoundHooks.HP_LOW),
@@ -2165,27 +2165,49 @@ setting_infos = [
                              ''',
             ),
     Combobox(
-            name           = 'sfx_ocarina',
-            default        = 'ocarina',
-            choices        = {
-                'ocarina':     'Default',
-                'random':      'Random Choice',
-                'flute':       'Flute',
-                'harp':        'Harp',
-                'whistle':     'Whistle',
-                'malon':       'Malon',
-                'grind-organ': 'Grind Organ',
-                },
+            name           = 'sfx_navi_overworld',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI_OVERWORLD),
             args_help      = '''\
-                             Change the sound of the ocarina.
-
-                             default: ocarina
                              ''',
-            gui_text       = 'Ocarina',
+            gui_text       = 'Navi Overworld',
+            gui_group      = 'npc_sfx',
+            ),
+    Combobox(
+            name           = 'sfx_navi_enemy',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI_ENEMY),
+            args_help      = '''\
+                             ''',
+            gui_text       = 'Navi Enemy',
+            gui_group      = 'npc_sfx',
+            ),
+    Combobox(
+            name           = 'sfx_menu_cursor',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.MENU_CURSOR),
+            args_help      = '''\
+                             ''',
+            gui_text       = 'Menu Cursor',
+            gui_group      = 'menu_sfx',
+            ),
+    Combobox(
+            name           = 'sfx_menu_select',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.MENU_SELECT),
+            args_help      = '''\
+                             ''',
+            gui_text       = 'Menu Select',
+            gui_group      = 'menu_sfx',
+            ),
+    Combobox(
+            name           = 'sfx_horse_neigh',
+            default        = 'default',
+            choices        = sfx.get_setting_choices(sfx.SoundHooks.HORSE_NEIGH),
+            args_help      = '''\
+                             ''',
+            gui_text       = 'Horse',
             gui_group      = 'sfx',
-            gui_tooltip    = '''\
-                             Change the sound of the ocarina.
-                             ''',
             ),
     Combobox(
             name           = 'sfx_nightfall',
@@ -2206,49 +2228,27 @@ setting_infos = [
             gui_group      = 'sfx',
             ),
     Combobox(
-            name           = 'sfx_menu_select',
-            default        = 'default',
-            choices        = sfx.get_setting_choices(sfx.SoundHooks.MENU_SELECT),
+            name           = 'sfx_ocarina',
+            default        = 'ocarina',
+            choices        = {
+                'ocarina':     'Default',
+                'random':      'Random Choice',
+                'flute':       'Flute',
+                'harp':        'Harp',
+                'whistle':     'Whistle',
+                'malon':       'Malon',
+                'grind_organ': 'Grind Organ',
+                },
             args_help      = '''\
+                             Change the sound of the ocarina.
+
+                             default: ocarina
                              ''',
-            gui_text       = 'Menu Select',
-            gui_group      = 'menu_sfx',
-            ),
-    Combobox(
-            name           = 'sfx_menu_cursor',
-            default        = 'default',
-            choices        = sfx.get_setting_choices(sfx.SoundHooks.MENU_CURSOR),
-            args_help      = '''\
+            gui_text       = 'Ocarina',
+            gui_group      = 'sfx',
+            gui_tooltip    = '''\
+                             Change the sound of the ocarina.
                              ''',
-            gui_text       = 'Menu Cursor',
-            gui_group      = 'menu_sfx',
-            ),
-    Combobox(
-            name           = 'sfx_horse_neigh',
-            default        = 'default',
-            choices        = sfx.get_setting_choices(sfx.SoundHooks.HORSE_NEIGH),
-            args_help      = '''\
-                             ''',
-            gui_text       = 'Horse',
-            gui_group      = 'npc_sfx',
-            ),
-    Combobox(
-            name           = 'sfx_navi_hint',
-            default        = 'default',
-            choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI_HINT),
-            args_help      = '''\
-                             ''',
-            gui_text       = 'Navi Hint',
-            gui_group      = 'npc_sfx',
-            ),
-    Combobox(
-            name           = 'sfx_navi_enemy',
-            default        = 'default',
-            choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI_ENEMY),
-            args_help      = '''\
-                             ''',
-            gui_text       = 'Navi Enemy Target',
-            gui_group      = 'npc_sfx',
             ),
 ]
 
