@@ -784,11 +784,12 @@ skip_GS_BGS_text:
 ; Talon Cutscene Skip
 ;==================================================================================================
 
-; Replaces: lui    a1, 0x801F @ovl+0x1080
+; Replaces: lw      a0, 0x0018(sp)
+            addiu   t1, r0, 0x0041
 
-.org 0xCC0020
-    jal     talon_break_free
-    lui     a1, 0x801F
+.org 0xCC0038
+    jal    talon_break_free
+    lw     a0, 0x0018(sp)
 
 ;==================================================================================================
 ; Patches.py imports
@@ -978,13 +979,13 @@ skip_GS_BGS_text:
 	jal		jabu_elevator
 
 ;==================================================================================================
-; Quick Boots Display
+; DPAD Display
 ;==================================================================================================
 ;
-; Replaces lw    s4, 0x0000(s6)
-;          lw    s1, 0x02B0(s4)
-.org 0xAEB68C ; In Memory: 0x8007572C
-	jal		qb_draw
+; Replaces lw    t6, 0x1C44(s6)
+;          lui   t8, 0xDB06
+.org 0xAEB67C ; In Memory: 0x8007571C
+	jal		dpad_draw
 	nop
 
 ;==================================================================================================
@@ -1041,3 +1042,23 @@ skip_GS_BGS_text:
 .org 0xBEA044
    jal      warp_speedup
    nop
+
+;==================================================================================================
+; Dampe Digging Fix
+;==================================================================================================
+;
+; Dig Anyere
+.org 0xCC3FA8
+    sb      at, 0x1F8(s0) 
+
+; Always First Try
+.org 0xCC4024
+    nop
+
+; Leaving without collecting dampe's prize won't lock you out from that prize
+.org 0xCC4038
+    jal     dampe_fix
+    addiu   t4, r0, 0x0004
+
+.org 0xCC453C
+    .word 0x00000806
