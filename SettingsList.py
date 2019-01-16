@@ -2146,7 +2146,7 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
-            Combobox(
+    Combobox(
             name           = 'sfx_low_hp',
             default        = 'default',
             choices        = sfx.get_setting_choices(sfx.SoundHooks.HP_LOW),
@@ -2171,7 +2171,7 @@ setting_infos = [
             args_help      = '''\
                              ''',
             gui_text       = 'Navi Overworld',
-            gui_group      = 'sfx',
+            gui_group      = 'npc_sfx',
             ),
     Combobox(
             name           = 'sfx_navi_enemy',
@@ -2180,25 +2180,7 @@ setting_infos = [
             args_help      = '''\
                              ''',
             gui_text       = 'Navi Enemy',
-            gui_group      = 'sfx',
-            ),
-    Combobox(
-            name           = 'sfx_low_hp',
-            default        = 'default',
-            choices        = sfx.get_setting_choices(sfx.SoundHooks.HP_LOW),
-            args_help      = '''\
-                             Select the sound effect that loops at low health. (default: %(default)s)
-                             Sound:         Replace the sound effect with the chosen sound.
-                             Random Choice: Replace the sound effect with a random sound from this list.
-                             None:          Eliminate heart beeps.
-                             ''',
-            gui_text       = 'Low HP',
-            gui_group      = 'sfx',
-            gui_tooltip    = '''\
-                             'Random Choice': Choose a random
-                             sound from this list.
-                             'Default': Beep. Beep. Beep.
-                             ''',
+            gui_group      = 'npc_sfx',
             ),
     Combobox(
             name           = 'sfx_menu_cursor',
@@ -2207,7 +2189,7 @@ setting_infos = [
             args_help      = '''\
                              ''',
             gui_text       = 'Menu Cursor',
-            gui_group      = 'sfx',
+            gui_group      = 'menu_sfx',
             ),
     Combobox(
             name           = 'sfx_menu_select',
