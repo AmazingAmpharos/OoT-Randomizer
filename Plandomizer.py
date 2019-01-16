@@ -8,7 +8,7 @@ from functools import reduce
 from Fill import FillError
 from Hints import lineWrap, gossipLocations
 from Item import ItemFactory
-from ItemPool import item_groups, item_generators
+from ItemPool import item_groups, item_generators, rewardlist
 from LocationList import location_table, location_groups
 from Spoiler import HASH_ICONS
 from State import State
@@ -26,6 +26,20 @@ per_world_keys = (
     ':barren_regions',
     'gossip',
 )
+
+
+items_always_extra = {
+    **{reward: False for reward in rewardlist},
+    "Deku Sticks": True,
+    "Deku Nuts": True,
+    "Bombs": True,
+    "Arrows": True,
+    "Deku Seeds": True,
+    "Bombchus": True,
+    "Magic Bean": True,
+    "Bottle with Milk (Half)": True,
+    "Rupees": True,
+}
 
 
 # The inner tuple format is (Offset, Value, Or with existing bits?)
@@ -360,10 +374,10 @@ class WorldDistribution(object):
         add_items = []
         remove_items = []
         for (_, record) in pattern_dict_items(self.locations):
-            if record.extra if record.extra is not None else self.distribution.locations_default_extra:
+            if coalesce(items_always_extra.get(record.item), record.extra, self.distribution.locations_default_extra):
                 add_items.append(record.item)
         for (name, record) in self.starting_items.items():
-            if not (record.extra if record.extra is not None else self.distribution.starting_default_extra):
+            if not coalesce(items_always_extra.get(name), record.extra, self.distribution.starting_default_extra):
                 remove_items.extend([name] * record.count)
         if len(remove_items) > len(add_items):
             add_items.extend(['#Junk'] * (len(remove_items) - len(add_items)))
@@ -715,6 +729,13 @@ class Distribution(object):
         self_dict = self.to_dict()
         with open(filename, 'w') as outfile:
             json.dump(self_dict, outfile, indent='\t')
+
+
+def coalesce(*values):
+    for value in values:
+        if value is not None:
+            return value
+    return None
 
 
 def is_output_only(pattern):
