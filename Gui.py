@@ -149,6 +149,7 @@ def guiMain(settings=None):
     frames['open']        = LabelFrame(frames['rules_tab'],          text='Open',              labelanchor=NW)
     frames['world']       = LabelFrame(frames['rules_tab'],          text='World',             labelanchor=NW)
     frames['shuffle']     = LabelFrame(frames['rules_tab'],          text='Shuffle',           labelanchor=NW)
+    frames['plandomizer'] = LabelFrame(frames['rules_tab'],          text='Plandomizer',       labelanchor=NW)
 
     # Logic tab
     frames['checks']      = LabelFrame(frames['logic_tab'],          text='Adult Trade Sequence', labelanchor=NW)
@@ -413,9 +414,7 @@ def guiMain(settings=None):
             if 'tooltip' in info.gui_params:
                 ToolTips.register(widgets[info.name], info.gui_params['tooltip'])
 
-    plandoDialogFrame = LabelFrame(frames['logic_tab'],          text='Plandomizer', labelanchor=NW)
-
-    distFileDialogFrame = Frame(plandoDialogFrame)
+    distFileDialogFrame = Frame(frames['plandomizer'])
     distFileLabel = Label(distFileDialogFrame, text='Distribution File')
     guivars['distribution_file'] = StringVar(value='')
     distFileEntry = Entry(distFileDialogFrame, textvariable=guivars['distribution_file'], width=46)
@@ -433,12 +432,12 @@ def guiMain(settings=None):
     distFileDialogFrame.pack()
 
     # Pack the hierarchy
+    frames['plandomizer'].pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1))
     frames['shuffle'].pack(fill=BOTH,  expand=True, anchor=N, side=RIGHT,  pady=(5,1))
     frames['open'].pack(   fill=BOTH,  expand=True, anchor=W, side=TOP,    pady=(5,1))
     frames['world'].pack(  fill=BOTH,  expand=True, anchor=W, side=BOTTOM, pady=(5,1))
 
     # Logic tab
-    plandoDialogFrame.pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1))
     frames['checks'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1))
     frames['tricks'].pack(fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1))
 
