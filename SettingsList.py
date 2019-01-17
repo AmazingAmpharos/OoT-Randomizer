@@ -1857,7 +1857,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Idle',
-            'group': 'navi_core_colors',
+            'group': 'navi_colors',
             'widget': 'Combobox',
             'default': 'White',
             'options': get_navi_color_options(),
@@ -1881,7 +1881,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Targeting Enemy',
-            'group': 'navi_core_colors',
+            'group': 'navi_colors',
             'widget': 'Combobox',
             'default': 'Yellow',
             'options': get_navi_color_options(),
@@ -1905,7 +1905,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Targeting NPC',
-            'group': 'navi_core_colors',
+            'group': 'navi_colors',
             'widget': 'Combobox',
             'default': 'Light Blue',
             'options': get_navi_color_options(),
@@ -1929,103 +1929,7 @@ setting_infos = [
         },
         {
             'text': 'Navi Targeting Prop',
-            'group': 'navi_core_colors',
-            'widget': 'Combobox',
-            'default': 'Green',
-            'options': get_navi_color_options(),
-            'tooltip':'''\
-                      'Random Choice': Choose a random
-                      color from this list of colors.
-                      'Completely Random': Choose a random
-                      color from any color the N64 can draw.
-                      '''
-        }),
-    Setting_Info('navi_color_default_outside', str, 0, False,
-        {
-            'default': 'White',
-            'type': parse_custom_navi_color,
-            'help': '''\
-                    Choose the color for Navi when she is idle. (default: %(default)s)
-                    Color:             Make the Navi this color.
-                    Random Choice:     Choose a random color from this list of colors.
-                    Completely Random: Choose a random color from any color the N64 can draw.
-                    '''
-        },
-        {
-            'text': 'Navi Idle',
-            'group': 'navi_outside_colors',
-            'widget': 'Combobox',
-            'default': 'White',
-            'options': get_navi_color_options(),
-            'tooltip':'''\
-                      'Random Choice': Choose a random
-                      color from this list of colors.
-                      'Completely Random': Choose a random
-                      color from any color the N64 can draw.
-                      '''
-        }),
-    Setting_Info('navi_color_enemy_outside', str, 0, False,
-        {
-            'default': 'Yellow',
-            'type': parse_custom_navi_color,
-            'help': '''\
-                    Choose the color for Navi when she is targeting an enemy. (default: %(default)s)
-                    Color:             Make the Navi this color.
-                    Random Choice:     Choose a random color from this list of colors.
-                    Completely Random: Choose a random color from any color the N64 can draw.
-                    '''
-        },
-        {
-            'text': 'Navi Targeting Enemy',
-            'group': 'navi_outside_colors',
-            'widget': 'Combobox',
-            'default': 'Yellow',
-            'options': get_navi_color_options(),
-            'tooltip':'''\
-                      'Random Choice': Choose a random
-                      color from this list of colors.
-                      'Completely Random': Choose a random
-                      color from any color the N64 can draw.
-                      '''
-        }),
-    Setting_Info('navi_color_npc_outside', str, 0, False,
-        {
-            'default': 'Light Blue',
-            'type': parse_custom_navi_color,
-            'help': '''\
-                    Choose the color for Navi when she is targeting an NPC. (default: %(default)s)
-                    Color:             Make the Navi this color.
-                    Random Choice:     Choose a random color from this list of colors.
-                    Completely Random: Choose a random color from any color the N64 can draw.
-                    '''
-        },
-        {
-            'text': 'Navi Targeting NPC',
-            'group': 'navi_outside_colors',
-            'widget': 'Combobox',
-            'default': 'Light Blue',
-            'options': get_navi_color_options(),
-            'tooltip':'''\
-                      'Random Choice': Choose a random
-                      color from this list of colors.
-                      'Completely Random': Choose a random
-                      color from any color the N64 can draw.
-                      '''
-        }),
-    Setting_Info('navi_color_prop_outside', str, 0, False,
-        {
-            'default': 'Green',
-            'type': parse_custom_navi_color,
-            'help': '''\
-                    Choose the color for Navi when she is targeting a prop. (default: %(default)s)
-                    Color:             Make the Navi this color.
-                    Random Choice:     Choose a random color from this list of colors.
-                    Completely Random: Choose a random color from any color the N64 can draw.
-                    '''
-        },
-        {
-            'text': 'Navi Targeting Prop',
-            'group': 'navi_outside_colors',
+            'group': 'navi_colors',
             'widget': 'Combobox',
             'default': 'Green',
             'options': get_navi_color_options(),

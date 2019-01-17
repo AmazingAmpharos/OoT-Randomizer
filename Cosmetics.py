@@ -2,79 +2,81 @@ from version import __version__
 import random
 import Sounds as sfx
 
+from collections import namedtuple
+Color = namedtuple('Color', '  R     G     B')
 
 tunic_colors = {
-    "Custom Color":      [0x00, 0x00, 0x00],
-    "Kokiri Green":      [0x1E, 0x69, 0x1B],
-    "Goron Red":         [0x64, 0x14, 0x00],
-    "Zora Blue":         [0x00, 0x3C, 0x64],
-    "Black":             [0x30, 0x30, 0x30],
-    "White":             [0xF0, 0xF0, 0xFF],
-    "Azure Blue":        [0x13, 0x9E, 0xD8],
-    "Vivid Cyan":        [0x13, 0xE9, 0xD8],
-    "Light Red":         [0xF8, 0x7C, 0x6D],
-    "Fuchsia":           [0xFF, 0x00, 0xFF],
-    "Purple":            [0x95, 0x30, 0x80],
-    "Majora Purple":     [0x50, 0x52, 0x9A],
-    "Twitch Purple":     [0x64, 0x41, 0xA5],
-    "Purple Heart":      [0x8A, 0x2B, 0xE2],
-    "Persian Rose":      [0xFF, 0x14, 0x93],
-    "Dirty Yellow":      [0xE0, 0xD8, 0x60],
-    "Blush Pink":        [0xF8, 0x6C, 0xF8],
-    "Hot Pink":          [0xFF, 0x69, 0xB4],
-    "Rose Pink":         [0xFF, 0x90, 0xB3],
-    "Orange":            [0xE0, 0x79, 0x40],
-    "Gray":              [0xA0, 0xA0, 0xB0],
-    "Gold":              [0xD8, 0xB0, 0x60],
-    "Silver":            [0xD0, 0xF0, 0xFF],
-    "Beige":             [0xC0, 0xA0, 0xA0],
-    "Teal":              [0x30, 0xD0, 0xB0],
-    "Blood Red":         [0x83, 0x03, 0x03],
-    "Blood Orange":      [0xFE, 0x4B, 0x03],
-    "Royal Blue":        [0x40, 0x00, 0x90],
-    "Sonic Blue":        [0x50, 0x90, 0xE0],
-    "NES Green":         [0x00, 0xD0, 0x00],
-    "Dark Green":        [0x00, 0x25, 0x18],
-    "Lumen":             [0x50, 0x8C, 0xF0],
+    "Custom Color":      Color(0x00, 0x00, 0x00),
+    "Kokiri Green":      Color(0x1E, 0x69, 0x1B),
+    "Goron Red":         Color(0x64, 0x14, 0x00),
+    "Zora Blue":         Color(0x00, 0x3C, 0x64),
+    "Black":             Color(0x30, 0x30, 0x30),
+    "White":             Color(0xF0, 0xF0, 0xFF),
+    "Azure Blue":        Color(0x13, 0x9E, 0xD8),
+    "Vivid Cyan":        Color(0x13, 0xE9, 0xD8),
+    "Light Red":         Color(0xF8, 0x7C, 0x6D),
+    "Fuchsia":           Color(0xFF, 0x00, 0xFF),
+    "Purple":            Color(0x95, 0x30, 0x80),
+    "Majora Purple":     Color(0x50, 0x52, 0x9A),
+    "Twitch Purple":     Color(0x64, 0x41, 0xA5),
+    "Purple Heart":      Color(0x8A, 0x2B, 0xE2),
+    "Persian Rose":      Color(0xFF, 0x14, 0x93),
+    "Dirty Yellow":      Color(0xE0, 0xD8, 0x60),
+    "Blush Pink":        Color(0xF8, 0x6C, 0xF8),
+    "Hot Pink":          Color(0xFF, 0x69, 0xB4),
+    "Rose Pink":         Color(0xFF, 0x90, 0xB3),
+    "Orange":            Color(0xE0, 0x79, 0x40),
+    "Gray":              Color(0xA0, 0xA0, 0xB0),
+    "Gold":              Color(0xD8, 0xB0, 0x60),
+    "Silver":            Color(0xD0, 0xF0, 0xFF),
+    "Beige":             Color(0xC0, 0xA0, 0xA0),
+    "Teal":              Color(0x30, 0xD0, 0xB0),
+    "Blood Red":         Color(0x83, 0x03, 0x03),
+    "Blood Orange":      Color(0xFE, 0x4B, 0x03),
+    "Royal Blue":        Color(0x40, 0x00, 0x90),
+    "Sonic Blue":        Color(0x50, 0x90, 0xE0),
+    "NES Green":         Color(0x00, 0xD0, 0x00),
+    "Dark Green":        Color(0x00, 0x25, 0x18),
+    "Lumen":             Color(0x50, 0x8C, 0xF0),
 }
 
 
-NaviColors = {
-    "Custom Color":      [0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
-    "Gold":              [0xFE, 0xCC, 0x3C, 0xFE, 0xC0, 0x07],
-    "White":             [0xFF, 0xFF, 0xFF, 0x00, 0x00, 0xFF],
-    "Green":             [0x00, 0xFF, 0x00, 0x00, 0xFF, 0x00],
-    "Light Blue":        [0x96, 0x96, 0xFF, 0x96, 0x96, 0xFF],
-    "Yellow":            [0xFF, 0xFF, 0x00, 0xC8, 0x9B, 0x00],
-    "Red":               [0xFF, 0x00, 0x00, 0xFF, 0x00, 0x00],
-    "Magenta":           [0xFF, 0x00, 0xFF, 0xC8, 0x00, 0x9B],
-    "Black":             [0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
-    "Tatl":              [0xFF, 0xFF, 0xFF, 0xC8, 0x98, 0x00],
-    "Tael":              [0x49, 0x14, 0x6C, 0xFF, 0x00, 0x00],
-    "Fi":                [0x2C, 0x9E, 0xC4, 0x2C, 0x19, 0x83],
-    "Ciela":             [0xE6, 0xDE, 0x83, 0xC6, 0xBE, 0x5B],
-    "Epona":             [0xD1, 0x49, 0x02, 0x55, 0x1F, 0x08],
-    "Ezlo":              [0x62, 0x9C, 0x5F, 0x3F, 0x5D, 0x37],
-    "King of Red Lions": [0xA8, 0x33, 0x17, 0xDE, 0xD7, 0xC5],
-    "Linebeck":          [0x03, 0x26, 0x60, 0xEF, 0xFF, 0xFF],
-    "Loftwing":          [0xD6, 0x2E, 0x31, 0xFD, 0xE6, 0xCC],
-    "Midna":             [0x19, 0x24, 0x26, 0xD2, 0x83, 0x30],
-    "Phantom Zelda":     [0x97, 0x7A, 0x6C, 0x6F, 0x46, 0x67],
+NaviColors = {          # Inner Core Color         Outer Glow Color
+    "Custom Color":      (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
+    "Gold":              (Color(0xFE, 0xCC, 0x3C), Color(0xFE, 0xC0, 0x07)),
+    "White":             (Color(0xFF, 0xFF, 0xFF), Color(0x00, 0x00, 0xFF)),
+    "Green":             (Color(0x00, 0xFF, 0x00), Color(0x00, 0xFF, 0x00)),
+    "Light Blue":        (Color(0x96, 0x96, 0xFF), Color(0x96, 0x96, 0xFF)),
+    "Yellow":            (Color(0xFF, 0xFF, 0x00), Color(0xC8, 0x9B, 0x00)),
+    "Red":               (Color(0xFF, 0x00, 0x00), Color(0xFF, 0x00, 0x00)),
+    "Magenta":           (Color(0xFF, 0x00, 0xFF), Color(0xC8, 0x00, 0x9B)),
+    "Black":             (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
+    "Tatl":              (Color(0xFF, 0xFF, 0xFF), Color(0xC8, 0x98, 0x00)),
+    "Tael":              (Color(0x49, 0x14, 0x6C), Color(0xFF, 0x00, 0x00)),
+    "Fi":                (Color(0x2C, 0x9E, 0xC4), Color(0x2C, 0x19, 0x83)),
+    "Ciela":             (Color(0xE6, 0xDE, 0x83), Color(0xC6, 0xBE, 0x5B)),
+    "Epona":             (Color(0xD1, 0x49, 0x02), Color(0x55, 0x1F, 0x08)),
+    "Ezlo":              (Color(0x62, 0x9C, 0x5F), Color(0x3F, 0x5D, 0x37)),
+    "King of Red Lions": (Color(0xA8, 0x33, 0x17), Color(0xDE, 0xD7, 0xC5)),
+    "Linebeck":          (Color(0x03, 0x26, 0x60), Color(0xEF, 0xFF, 0xFF)),
+    "Loftwing":          (Color(0xD6, 0x2E, 0x31), Color(0xFD, 0xE6, 0xCC)),
+    "Midna":             (Color(0x19, 0x24, 0x26), Color(0xD2, 0x83, 0x30)),
+    "Phantom Zelda":     (Color(0x97, 0x7A, 0x6C), Color(0x6F, 0x46, 0x67)),
 }
 
-sword_colors = {
-    "Custom Color":      [0x00, 0x00, 0x00],
-    "Rainbow":           [0x00, 0x00, 0x00],
-    "White":             [0xFF, 0xFF, 0xFF],
-    "Red":               [0xFF, 0x00, 0x00],
-    "Green":             [0x00, 0xFF, 0x00],
-    "Blue":              [0x00, 0x00, 0xFF],
-    "Cyan":              [0x00, 0xFF, 0xFF],
-    "Magenta":           [0xFF, 0x00, 0xFF],
-    "Orange":            [0xFF, 0xA5, 0x00],
-    "Gold":              [0xFF, 0xD7, 0x00],
-    "Purple":            [0x80, 0x00, 0x80],
-    "Pink":              [0xFF, 0x69, 0xB4],
+sword_colors = {        # Initial Color            Fade Color
+    "Custom Color":      (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
+    "Rainbow":           (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
+    "White":             (Color(0xFF, 0xFF, 0xFF), Color(0xFF, 0xFF, 0xFF)),
+    "Red":               (Color(0xFF, 0x00, 0x00), Color(0xFF, 0x00, 0x00)),
+    "Green":             (Color(0x00, 0xFF, 0x00), Color(0x00, 0xFF, 0x00)),
+    "Blue":              (Color(0x00, 0x00, 0xFF), Color(0x00, 0x00, 0xFF)),
+    "Cyan":              (Color(0x00, 0xFF, 0xFF), Color(0x00, 0xFF, 0xFF)),
+    "Magenta":           (Color(0xFF, 0x00, 0xFF), Color(0xFF, 0x00, 0xFF)),
+    "Orange":            (Color(0xFF, 0xA5, 0x00), Color(0xFF, 0xA5, 0x00)),
+    "Gold":              (Color(0xFF, 0xD7, 0x00), Color(0xFF, 0xD7, 0x00)),
+    "Purple":            (Color(0x80, 0x00, 0x80), Color(0x80, 0x00, 0x80)),
+    "Pink":              (Color(0xFF, 0x69, 0xB4), Color(0xFF, 0x69, 0xB4)),
 }
 
 def get_tunic_colors():
@@ -146,7 +148,7 @@ def patch_cosmetics(settings, rom):
             color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
         # grab the color from the list
         elif tunic_option in tunic_colors:
-            color = tunic_colors[tunic_option]
+            color = list(tunic_colors[tunic_option])
         # build color from hex code
         else:
             color = list(int(tunic_option[i:i+2], 16) for i in (0, 2 ,4))
@@ -156,20 +158,13 @@ def patch_cosmetics(settings, rom):
 
     # patch navi colors
     navi = [
-        # "Core" Colors, the inner colors for Navi
-        ('Navi Idle Core', settings.navi_color_default, [0x00B5E184]), # Default
-        ('Navi Targeting Enemy Core', settings.navi_color_enemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
-        ('Navi Targeting NPC Core', settings.navi_color_npc,     [0x00B5E194]), # NPC
-        ('Navi Targeting Prop Core', settings.navi_color_prop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
+        # colors for Navi
+        ('Navi Idle', settings.navi_color_default, [0x00B5E184]), # Default
+        ('Navi Targeting Enemy', settings.navi_color_enemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+        ('Navi Targeting NPC', settings.navi_color_npc,     [0x00B5E194]), # NPC
+        ('Navi Targeting Prop', settings.navi_color_prop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
                                   0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4,
                                   0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
-        # "Glow" Colors, thne outer colors for Navi
-        ('Navi Idle Glow', settings.navi_color_default_outside, [0x00B5E188]), # Default
-        ('Navi Targeting Enemy Glow', settings.navi_color_enemy_outside,   [0x00B5E1A0, 0x00B5E1C0]), # Enemy, Boss
-        ('Navi Targeting NPC Glow', settings.navi_color_npc_outside,     [0x00B5E198]), # NPC
-        ('Navi Targeting Prop Glow', settings.navi_color_prop_outside,    [0x00B5E178, 0x00B5E180, 0x00B5E190,
-                                  0x00B5E1A8, 0x00B5E1B0, 0x00B5E1B8,
-                                  0x00B5E1C8, 0x00B5E1D0, 0x00B5E1D8]), # Everything else
     ]
     navi_color_list = get_navi_colors()
     for navi_action, navi_option, navi_addresses in navi:
@@ -181,21 +176,18 @@ def patch_cosmetics(settings, rom):
         for address in navi_addresses:
             # completely random is random for every subgroup
             if navi_option == 'Completely Random':
-                color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+                colors = ([random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)],
+                         [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)])
             # grab the color from the list
             elif navi_option in NaviColors:
-                if inner:
-                    color = NaviColors.get(navi_option)[0:3]
-                else:
-                    color = NaviColors.get(navi_option)[3:6]
+                colors = list(NaviColors[navi_option][0]), list(NaviColors[navi_option][1])
             # build color from hex code
             else:
-                color = list(int(navi_option[i:i+2], 16) for i in (0, 2 ,4))
+                base_color = list(int(navi_option[i:i+2], 16) for i in (0, 2 ,4))
+                colors = (base_color, base_color)
                 custom_color = True
-            if inner:
-                color = color + [0xFF]
-            else:
-                color = color + [0x00]
+
+            color = colors[0] + [0xFF] + colors[1] + [0xFF]
             rom.write_bytes(address, color)
         if custom_color:
             navi_option = 'Custom'
@@ -219,7 +211,7 @@ def patch_cosmetics(settings, rom):
             sword_trail_option = random.choice(sword_color_list)
 
         custom_color = False
-        for address, transparency, white_transparency in sword_trail_addresses:
+        for index, (address, transparency, white_transparency) in enumerate(sword_trail_addresses):
             # set rainbow option
             if sword_trail_option == 'Rainbow':
                 rom.write_byte(sword_trail_rainbow, 0x01)
@@ -231,7 +223,7 @@ def patch_cosmetics(settings, rom):
             if sword_trail_option == 'Completely Random':
                 color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
             elif sword_trail_option in sword_colors:
-                color = sword_colors[sword_trail_option]
+                color = list(sword_colors[sword_trail_option][index])
             # build color from hex code
             else:
                 color = list(int(sword_trail_option[i:i+2], 16) for i in (0, 2 ,4))
