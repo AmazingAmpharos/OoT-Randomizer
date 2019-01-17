@@ -5,10 +5,11 @@
 
 static uint32_t frames = 0;
 
-const static uint32_t CYCLE_FRAMES = 10;
-const static uint32_t CYCLE_FRAMES_2 = 12;
+#define CYCLE_FRAMES_OUTER 10
+#define CYCLE_FRAMES_INNER 12
 
-extern uint8_t RAINBOW_SWORD_ENABLED;
+uint8_t cfg_rainbow_sword_inner_enabled = 0;
+uint8_t cfg_rainbow_sword_outer_enabled = 0;
 
 typedef struct
 {
@@ -66,16 +67,20 @@ static colorRGB_t get_color(uint32_t f, uint32_t step_frames)
 
 void update_color()
 {
-    if (RAINBOW_SWORD_ENABLED)
-    {
-        frames++;
-        colorRGB_t colorOuter = get_color(frames, CYCLE_FRAMES);
-        colorRGB_t colorInner = get_color(frames, CYCLE_FRAMES_2);
+    frames++;
+    colorRGBA_t *sword_trail = (colorRGBA_t*)0x80115DCE;
 
-        colorRGBA_t *sword_trail = (colorRGBA_t*)0x80115DCE;
-        sword_trail[0].color = colorOuter;
+    if (cfg_rainbow_sword_inner_enabled)
+    {
+        colorRGB_t colorInner = get_color(frames, CYCLE_FRAMES_INNER);
         sword_trail[1].color = colorInner;
-        sword_trail[2].color = colorOuter;
         sword_trail[3].color = colorInner;
+    }
+
+    if (cfg_rainbow_sword_outer_enabled)
+    {
+        colorRGB_t colorOuter = get_color(frames, CYCLE_FRAMES_OUTER);
+        sword_trail[0].color = colorOuter;
+        sword_trail[2].color = colorOuter;
     }
 }

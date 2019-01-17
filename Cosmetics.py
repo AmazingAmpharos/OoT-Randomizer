@@ -64,6 +64,7 @@ NaviColors = {
 
 sword_colors = {
     "Custom Color":      [0x00, 0x00, 0x00],
+    "Rainbow":           [0x00, 0x00, 0x00],
     "White":             [0xFF, 0xFF, 0xFF],
     "Red":               [0xFF, 0x00, 0x00],
     "Green":             [0x00, 0xFF, 0x00],
@@ -93,7 +94,7 @@ def get_navi_color_options():
 
     
 def get_sword_colors():
-    return list(sword_colors.keys())
+    return ["Rainbow"] + list(sword_colors.keys())
 
 
 def get_sword_color_options():
@@ -203,19 +204,29 @@ def patch_cosmetics(settings, rom):
     
     # patch sword trail colors
     sword_trails = [
-        ('Inner Initial Sword Trail', settings.sword_trail_color_inner1, 0x00BEFF80, 0xB0),
-        ('Outer Initial Sword Trail', settings.sword_trail_color_outer1,  0x00BEFF7C, 0xB0),
-        ('Inner Fade Sword Trail', settings.sword_trail_color_inner2,   0x00BEFF88, 0x20),
-        ('Outer Fade Sword Trail', settings.sword_trail_color_outer2, 0x00BEFF84, 0x10)
+        ('Inner Initial Sword Trail', settings.sword_trail_color_inner, 
+            [(0x00BEFF80, 0xB0, 0xFF), (0x00BEFF88, 0x20, 0x40)], rom.sym('cfg_rainbow_sword_inner_enabled')),
+        ('Outer Initial Sword Trail', settings.sword_trail_color_outer, 
+            [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], rom.sym('cfg_rainbow_sword_outer_enabled')),
     ]
+
     sword_color_list = get_sword_colors()
-    
-    if not settings.rainbow_sword_trail:
-        for index, item in enumerate(sword_trails):
-            sword_trail, sword_trail_option, sword_trail_address, transparency = item
-            # handle random
-            if sword_trail_option == 'Random Choice':
-                sword_trail_option = random.choice(sword_color_list)
+
+    for index, item in enumerate(sword_trails):
+        sword_trail_name, sword_trail_option, sword_trail_addresses, sword_trail_rainbow = item
+        # handle random
+        if sword_trail_option == 'Random Choice':
+            sword_trail_option = random.choice(sword_color_list)
+
+        custom_color = False
+        for address, transparency, white_transparency in sword_trail_addresses:
+            # set rainbow option
+            if sword_trail_option == 'Rainbow':
+                rom.write_byte(sword_trail_rainbow, 0x01)
+                continue
+            else:
+                rom.write_byte(sword_trail_rainbow, 0x00)
+
             # handle completely random
             if sword_trail_option == 'Completely Random':
                 color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
@@ -224,20 +235,19 @@ def patch_cosmetics(settings, rom):
             # build color from hex code
             else:
                 color = list(int(sword_trail_option[i:i+2], 16) for i in (0, 2 ,4))
-                sword_trail_option = 'Custom'
+                custom_color = True
+
             if sword_trail_option == 'White':
-                if index < 2:
-                    transparency = 0xFF
-                if index == 2:
-                    transparency = 0x40
-                if index == 3:
-                    transparency = 0x00
-            color = color + [transparency]
-            rom.write_bytes(sword_trail_address, color)
-            log.sword_colors[sword_trail] = dict(option=sword_trail_option, color=''.join(['{:02X}'.format(c) for c in color[0:3]]))
-    else:
-        symbol = rom.sym('RAINBOW_SWORD_ENABLED')
-        rom.write_byte(symbol, 0x01)
+                color = color + [white_transparency]
+            else:
+                color = color + [transparency]
+
+            rom.write_bytes(address, color)
+
+        if custom_color:
+            sword_trail_option = 'Custom'
+        log.sword_colors[sword_trail_name] = dict(option=sword_trail_option, color=''.join(['{:02X}'.format(c) for c in color[0:3]]))
+
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
     # Configurable Sound Effects
     sfx_config = [
@@ -423,11 +433,9 @@ class CosmeticsLog(object):
         for navi_action, options in self.navi_colors.items():
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=navi_action+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
-        if not self.settings.rainbow_sword_trail:
-            for sword_trail, options in self.sword_colors.items():
-                color_option_string = '{option} (#{color})'
-                output += format_string.format(key=sword_trail+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
-        output += format_string.format(key="Rainbow Sword Trails:", value=self.settings.rainbow_sword_trail, width=padding)
+        for sword_trail, options in self.sword_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=sword_trail+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
         output += format_string.format(key='Sword Trail Duration:', value=self.settings.sword_trail_duration, width=padding)
 
         output += '\n\nSFX:\n'
