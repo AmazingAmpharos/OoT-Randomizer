@@ -2036,21 +2036,23 @@ setting_infos = [
                       color from any color the N64 can draw.
                       '''
         }),
-    Scale(
+    Combobox(
             name           = 'sword_trail_duration',
             default        = 4,
-            min            = 4,
-            max            = 20,
+            choices        = {
+                    4: 'Default',
+                    10: 'Long',
+                    15: 'Very Long',
+                    20: 'Lightsaber',
+                 },
             args_help      = '''\
                              Select the duration of the sword trail
                              ''',
             gui_text       = 'Sword Trail Duration',
-            gui_group      = 'cosmetic',
+            gui_group      = 'sword_trails',
             gui_tooltip    = '''\
                              Select the duration for sword trails.
-                             The higher the number, the longer it lasts.
-                             Default: 4
-                             '''
+                             ''',
             ),
     Setting_Info('sword_trail_color_inner', str, 0, False,
         {

@@ -94,7 +94,7 @@ def get_navi_color_options():
 
     
 def get_sword_colors():
-    return ["Rainbow"] + list(sword_colors.keys())
+    return list(sword_colors.keys())
 
 
 def get_sword_color_options():
