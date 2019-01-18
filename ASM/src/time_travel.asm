@@ -261,7 +261,6 @@ ADULT_INIT_ITEMS:
 .byte 0x01 ; Deku Nuts
 .byte 0x0D ; Lens of Truth
 .byte 0x0B ; Farore's Wind
-.byte 0x07 ; Ocarina
 .byte 0x00 ; null terminate
 .align 4
 
