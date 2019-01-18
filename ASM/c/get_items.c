@@ -44,8 +44,11 @@ void item_overrides_init() {
 override_key_t get_override_search_key(z64_actor_t *actor, uint8_t scene, uint8_t item_id) {
     if (actor->actor_id == 0x0A) {
         // Don't override WINNER purple rupee in the chest minigame scene
-        if (scene == 0x10 && item_id == 0x75) {
-            return (override_key_t){ .all = 0 };
+        if (scene == 0x10) {
+            int chest_item_id = (actor->variable >> 5) & 0x7F;
+            if (chest_item_id == 0x75) {
+                return (override_key_t){ .all = 0 };
+            }
         }
 
         return (override_key_t){
@@ -55,7 +58,8 @@ override_key_t get_override_search_key(z64_actor_t *actor, uint8_t scene, uint8_
         };
     } else if (actor->actor_id == 0x15) {
         // Only override heart pieces and keys
-        if (item_id != 0x3E && item_id != 0x42) {
+        int collectable_type = actor->variable & 0xFF;
+        if (collectable_type != 0x06 && collectable_type != 0x11) {
             return (override_key_t){ .all = 0 };
         }
 
