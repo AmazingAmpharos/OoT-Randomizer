@@ -18,9 +18,8 @@
 
 #define CAN_USE_DPAD        (((z64_link.state_flags_1 & BLOCK_DPAD) == 0) && \
                             ((uint32_t)z64_ctxt.state_dtor==z64_state_ovl_tab[3].vram_dtor) && \
-                           (z64_file.interface_flag!=1) && \
-                            ((z64_event_state_1 & 0x20)==0) && \
-                            DISPLAY_DPAD)
+                            (z64_file.interface_flag!=1) && \
+                            ((z64_event_state_1 & 0x20)==0))
 
 #define CAN_USE_OCARINA     (z64_game.pause_ctxt.state==0 && z64_file.items[0x07] != -1 && !z64_game.restriction_flags.ocarina && ((z64_link.state_flags_1 & BLOCK_OCARINA) == 0))
 
