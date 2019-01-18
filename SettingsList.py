@@ -2102,7 +2102,7 @@ setting_infos = [
                 'harp':        'Harp',
                 'whistle':     'Whistle',
                 'malon':       'Malon',
-                'grind_organ': 'Grind Organ',
+                'grind-organ': 'Grind Organ',
                 },
             args_help      = '''\
                              Change the sound of the ocarina.
