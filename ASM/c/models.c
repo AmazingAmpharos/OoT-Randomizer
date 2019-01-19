@@ -92,11 +92,9 @@ void scale_top_matrix(float scale_factor) {
 
 typedef void (*pre_draw_fn)(z64_actor_t *actor, z64_game_t *game, uint32_t unknown);
 typedef void (*gi_draw_fn)(z64_game_t *game, uint32_t graphic_id_minus_1);
-typedef void (*actor_draw_fn)(z64_actor_t *actor, z64_game_t *game);
 #define pre_draw_1 ((pre_draw_fn)0x80022438)
 #define pre_draw_2 ((pre_draw_fn)0x80022554)
 #define base_draw_gi_model ((gi_draw_fn)0x800570C0)
-#define base_collectable_draw ((actor_draw_fn)0x80013268)
 
 void draw_model_low_level(int8_t graphic_id_minus_1, z64_actor_t *actor, z64_game_t *game) {
     pre_draw_1(actor, game, 0);
@@ -153,11 +151,7 @@ void heart_piece_draw(z64_actor_t *actor, z64_game_t *game) {
 void small_key_draw(z64_actor_t *actor, z64_game_t *game) {
     model_t model = { 0 };
     lookup_model(&model, actor, game, 0);
-    if (model.graphic_id == 0 || model.graphic_id == 0x02) {
-        base_collectable_draw(actor, game);
-    } else {
-        draw_model(model, actor, game);
-    }
+    draw_model(model, actor, game);
 }
 
 void heart_container_draw(z64_actor_t *actor, z64_game_t *game) {
