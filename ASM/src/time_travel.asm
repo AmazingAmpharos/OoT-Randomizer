@@ -254,7 +254,6 @@ init_adult_button:
 
 ; Items that can populate empty adult C-buttons, by inventory index
 ADULT_INIT_ITEMS:
-.byte 0x07 ; Ocarina
 .byte 0x09 ; Hookshot
 .byte 0x0F ; Hammer
 .byte 0x02 ; Bombs
