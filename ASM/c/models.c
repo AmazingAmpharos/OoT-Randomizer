@@ -56,9 +56,14 @@ void set_object_segment(loaded_object_t *object) {
 }
 
 float scale_factor(int8_t graphic_id, z64_actor_t *actor) {
+    float actor_scale = actor->scale.x;
+    if (actor_scale == 0.0) {
+        return 0.0;
+    }
+
     // By default, normalize model sizes to the scale that ruto's letter / fire arrows
     // are usually drawn
-    float base = 0.5 / actor->scale.x;
+    float base = 0.5 / actor_scale;
 
     if (graphic_id == 0x63) {
         // Draw skull tokens at half size so they match vanilla
@@ -93,17 +98,17 @@ typedef void (*actor_draw_fn)(z64_actor_t *actor, z64_game_t *game);
 #define base_draw_gi_model ((gi_draw_fn)0x800570C0)
 #define base_collectable_draw ((actor_draw_fn)0x80013268)
 
-void draw_model_by_id(int8_t graphic_id, z64_actor_t *actor, z64_game_t *game) {
-    scale_top_matrix(scale_factor(graphic_id, actor));
+void draw_model_low_level(int8_t graphic_id_minus_1, z64_actor_t *actor, z64_game_t *game) {
     pre_draw_1(actor, game, 0);
     pre_draw_2(actor, game, 0);
-    base_draw_gi_model(game, graphic_id - 1);
+    base_draw_gi_model(game, graphic_id_minus_1);
 }
 
 void draw_model(model_t model, z64_actor_t *actor, z64_game_t *game) {
     loaded_object_t *object = get_object(model.object_id);
     set_object_segment(object);
-    draw_model_by_id(model.graphic_id, actor, game);
+    scale_top_matrix(scale_factor(model.graphic_id, actor));
+    draw_model_low_level(model.graphic_id - 1, actor, game);
 }
 
 void models_init() {
@@ -206,7 +211,7 @@ void item_etcetera_draw(z64_actor_t *actor, z64_game_t *game) {
         draw_model(model, actor, game);
     } else {
         uint8_t default_graphic_id = *(((uint8_t *)actor) + 0x141);
-        draw_model_by_id(default_graphic_id, actor, game);
+        draw_model_low_level(default_graphic_id, actor, game);
     }
 }
 
@@ -222,7 +227,7 @@ void bowling_bomb_bag_draw(z64_actor_t *actor, z64_game_t *game) {
         draw_model(model, actor, game);
     } else {
         uint8_t default_graphic_id = *(((uint8_t *)actor) + 0x147);
-        draw_model_by_id(default_graphic_id, actor, game);
+        draw_model_low_level(default_graphic_id, actor, game);
     }
 }
 
