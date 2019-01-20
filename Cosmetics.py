@@ -137,6 +137,8 @@ def get_sword_colors():
 def get_sword_color_options():
     return ["Random Choice", "Completely Random"] + get_sword_colors()
 
+def get_gauntlet_colors():
+    return list(gauntlet_colors.keys())
 
 def get_gauntlet_colors():
     return list(gauntlet_colors.keys())
@@ -333,6 +335,7 @@ def patch_sword_trails(rom, settings, log, symbols):
     log.sword_trail_duration = settings.sword_trail_duration
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
+    rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
 def patch_magic_colors(rom, settings, log, symbols):
     magic = 'Magic Meter Color'
