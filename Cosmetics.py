@@ -79,6 +79,19 @@ sword_colors = {        # Initial Color            Fade Color
     "Pink":              (Color(0xFF, 0x69, 0xB4), Color(0xFF, 0x69, 0xB4)),
 }
 
+gauntlet_colors = {
+    "Custom Color":      Color(0x00, 0x00, 0x00),
+    "Silver":            Color(0xFF, 0xFF, 0xFF),
+    "Gold":              Color(0xFE, 0xCF, 0x0F),
+    "Red":               Color(0xFF, 0x00, 0x00),
+    "Green":             Color(0x00, 0xFF, 0x00),
+    "Blue":              Color(0x00, 0x00, 0xFF),
+    "Cyan":              Color(0x00, 0xFF, 0xFF),
+    "Magenta":           Color(0xFF, 0x00, 0xFF),
+    "Orange":            Color(0xFF, 0xA5, 0x00),
+    "Purple":            Color(0x80, 0x00, 0x80),
+    "Pink":              Color(0xFF, 0x69, 0xB4),
+}
 
 def get_tunic_colors():
     return list(tunic_colors.keys())
@@ -102,6 +115,14 @@ def get_sword_colors():
 
 def get_sword_color_options():
     return ["Random Choice", "Completely Random"] + get_sword_colors()
+
+
+def get_gauntlet_colors():
+    return list(gauntlet_colors.keys())
+
+
+def get_gauntlet_color_options():
+    return ["Random Choice", "Completely Random"] + get_gauntlet_colors()
 
 
 def patch_targeting(rom, settings, log, symbols):
@@ -263,6 +284,32 @@ def patch_sword_trails(rom, settings, log, symbols):
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
 
+def patch_gauntlet_colors(rom, settings, log, symbols):
+    # patch gauntlet colors
+    gauntlets = [
+        ('Silver Gauntlets', settings.silver_gauntlets_color, 0x00B6DA44),
+        ('Gold Gauntlets', settings.golden_gauntlets_color,  0x00B6DA47),
+    ]
+    gauntlet_color_list = get_gauntlet_colors()
+
+    for gauntlet, gauntlet_option, address in gauntlets:
+        # handle random
+        if gauntlet_option == 'Random Choice':
+            gauntlet_option = random.choice(gauntlet_color_list)
+        # handle completely random
+        if gauntlet_option == 'Completely Random':
+            color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+        # grab the color from the list
+        elif gauntlet_option in gauntlet_colors:
+            color = list(gauntlet_colors[gauntlet_option])
+        # build color from hex code
+        else:
+            color = list(int(gauntlet_option[i:i+2], 16) for i in (0, 2 ,4))
+            gauntlet_option = 'Custom'
+        rom.write_bytes(address, color)
+        log.gauntlet_colors[gauntlet] = dict(option=gauntlet_option, color=''.join(['{:02X}'.format(c) for c in color]))
+
+
 def patch_sfx(rom, settings, log, symbols):
     # Configurable Sound Effects
     sfx_config = [
@@ -325,6 +372,7 @@ global_patch_sets = [
     patch_music,
     patch_tunic_colors,
     patch_navi_colors,
+    patch_gauntlet_colors,
     patch_sfx,
     patch_instrument,    
 ]
@@ -492,6 +540,7 @@ class CosmeticsLog(object):
         self.tunic_colors = {}
         self.navi_colors = {}
         self.sword_colors = {}
+        self.gauntlet_colors = {}
         self.sfx = {}
         self.bgm = {}
         self.error = None
@@ -522,6 +571,9 @@ class CosmeticsLog(object):
         for tunic, options in self.tunic_colors.items():
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=tunic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+        for gauntlet, options in self.gauntlet_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=gauntlet+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         for navi_action, list in self.navi_colors.items():
             for i, options in enumerate(list):
@@ -539,6 +591,10 @@ class CosmeticsLog(object):
 
         if 'sword_trail_duration' in self.__dict__:
             output += format_string.format(key='Sword Trail Duration:', value=self.sword_trail_duration, width=padding)
+
+        for gauntlet, options in self.gauntlet_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=gauntlet+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         output += '\n\nSFX:\n'
         for key, value in self.sfx.items():

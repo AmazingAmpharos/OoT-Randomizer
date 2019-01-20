@@ -1,7 +1,7 @@
 import argparse
 import re
 import math
-from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options
+from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options, get_gauntlet_color_options
 from Location import LocationIterator
 import Sounds as sfx
 
@@ -1876,6 +1876,44 @@ setting_infos = [
             'group':  'sword_trails',
             'widget': 'Combobox',
             'tooltip':'''\
+                'Random Choice': Choose a random
+                color from this list of colors.
+                'Completely Random': Choose a random
+                color from any color the N64 can draw.
+                'Rainbow': Rainbow sword trails.
+            '''
+        },
+    ),
+    Setting_Info(
+        name           = 'silver_gauntlets_color',
+        type           = str,
+        shared         = False,
+        choices        = get_gauntlet_color_options(),
+        default        = 'Silver',
+        gui_params     = {
+            'text':   'Silver Gauntlet Colors',
+            'group':  'gauntlet_colors',
+            'widget': 'Combobox',
+            'tooltip':'''\
+                'Random Choice': Choose a random
+                color from this list of colors.
+                'Completely Random': Choose a random
+                color from any color the N64 can draw.
+                'Rainbow': Rainbow sword trails.
+            '''
+        },
+    ),
+    Setting_Info(
+        name           = 'golden_gauntlets_color',
+        type           = str,
+        shared         = False,
+        choices        = get_gauntlet_color_options(),
+        default        = 'Silver',
+        gui_params     = {
+            'text':   'Silver Gauntlet Colors',
+            'group':  'gauntlet_colors',
+            'widget': 'Combobox',
+            'tooltip': '''\
                 'Random Choice': Choose a random
                 color from this list of colors.
                 'Completely Random': Choose a random
