@@ -203,7 +203,7 @@ class World(object):
                     if r_location.name == location:
                         self._location_cache[location] = r_location
                         return r_location
-        raise RuntimeError('No such location %s' % location)
+        raise KeyError('No such location %s' % location)
 
 
     def get_items(self):
