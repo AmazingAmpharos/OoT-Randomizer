@@ -41,14 +41,14 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 rainbow_sword.c
 000031bc l     F .text	000001f0 get_color
 00001128 l     O .data	00000015 colors
-0000004c l     O .sbss	00000004 frames
+00000048 l     O .sbss	00000004 frames
 00000000 l       .rodata.cst8	00000000 $LC0
 00000018 l       .rodata.cst4	00000000 $LC1
 0000001c l       .rodata.cst4	00000000 $LC2
 00000000 l    df *ABS*	00000000 scarecrow.c
 00000000 l    df *ABS*	00000000 text.c
-00000054 l     O .sbss	00000004 text_buf
-00000050 l     O .sbss	00000004 text_end
+00000050 l     O .sbss	00000004 text_buf
+0000004c l     O .sbss	00000004 text_end
 00000000 l    df *ABS*	00000000 util.c
 00002b94 g     F .text	0000007c scale_factor
 00002464 g     F .text	0000001c give_defense
@@ -67,9 +67,10 @@ SYMBOL TABLE:
 0000249c g     F .text	00000024 give_double_magic
 00002f68 g     F .text	00000064 ocarina_of_time_draw
 00000158 g     O .data	00000010 items_sprite
+00000000         *UND*	00000000 CFG_DISPLAY_DPAD
 0000001c g     O .sbss	00000004 active_item_graphic_id
 00000128 g     O .data	00000010 dpad_sprite
-0000000c g     O .sdata	00000008 hash_sprites
+00000008 g     O .sdata	00000008 hash_sprites
 0000177c g     F .text	000000bc activate_override
 000027fc g     F .text	0000002c before_game_state_update
 00003458 g     F .text	00000048 store_scarecrow_fix
@@ -81,6 +82,7 @@ SYMBOL TABLE:
 00000044 g     O .sbss	00000001 pending_freezes
 000023bc g     F .text	00000008 no_effect
 00003574 g     F .text	00000148 text_flush
+00000000         *UND*	00000000 CFG_RAINBOW_SWORD_INNER_ENABLED
 00000168 g     O .data	00000010 medals_sprite
 0000262c g     F .text	00000028 bow_upgrade
 00001aa8 g     F .text	0000006c after_item_received
@@ -88,7 +90,7 @@ SYMBOL TABLE:
 00002764 g     F .text	0000001c arrows_to_rupee
 00000034 g     O .sbss	00000008 active_override
 00000000         *UND*	00000000 INCOMING_ITEM
-00000008 g     O .sdata	00000004 dungeon_count
+00000004 g     O .sdata	00000004 dungeon_count
 00002430 g     F .text	00000014 give_dungeon_item
 000026cc g     F .text	0000001c nut_upgrade
 00001914 g     F .text	00000060 push_coop_item
@@ -105,6 +107,7 @@ SYMBOL TABLE:
 00000000         *UND*	00000000 OCARINAS_SHUFFLED
 00001c7c g     F .text	0000010c get_item
 00000000         *UND*	00000000 CHEST_SIZE_MATCH_CONTENTS
+00000000         *UND*	00000000 CFG_RAINBOW_SWORD_OUTER_ENABLED
 00002480 g     F .text	0000001c give_magic
 00000024 g     O .sbss	00000004 active_item_text_id
 00002318 g     F .text	00000010 ice_trap_is_pending
@@ -115,15 +118,12 @@ SYMBOL TABLE:
 00000020 g     O .sbss	00000004 active_item_object_id
 00002684 g     F .text	00000030 wallet_upgrade
 00000018 g     O .sbss	00000004 active_item_fast_chest
-00000049 g     O .sbss	00000001 cfg_rainbow_sword_inner_enabled
 000012cc g     F .text	00000234 draw_file_select_hash
-00000000 g     O .sdata	00000001 display_dpad
 00000100 g     F .text	000002e8 handle_dpad
 000020cc g     F .text	000000f0 sprite_draw
 000023d4 g     F .text	0000000c give_biggoron_sword
 00001e64 g     F .text	00000070 give_sarias_gift
 00002e18 g     F .text	00000088 small_key_draw
-00000048 g     O .sbss	00000001 cfg_rainbow_sword_outer_enabled
 00002db4 g     F .text	00000064 heart_piece_draw
 00001f2c g     F .text	000001a0 sprite_load
 00000178 g     O .data	00000010 stones_sprite
@@ -168,7 +168,7 @@ SYMBOL TABLE:
 00002fcc g     F .text	000000e8 item_etcetera_draw
 00000028 g     O .sbss	00000004 active_item_action_id
 00001b14 g     F .text	00000060 try_pending_item
-00000058 g     O .sbss	00000004 heap_next
+00000054 g     O .sbss	00000004 heap_next
 00000000 g     O .data	0000000e cfg_dungeon_rewards
 000024e4 g     F .text	0000001c ice_trap_effect
 0000286c g     F .text	00000100 c_equipment_menu_slot_filled
@@ -196,7 +196,7 @@ SYMBOL TABLE:
 00003704 g     F .text	00000044 file_init
 00000000         *UND*	00000000 PLAYER_NAME_ID
 00000000 g     O .sbss	00000004 cfg_dungeon_info_reward_need_altar
-00000004 g     O .sdata	00000004 cfg_dungeon_info_enable
+00000000 g     O .sdata	00000004 cfg_dungeon_info_enable
 00002ca0 g     F .text	0000004c models_init
 
 

@@ -106,6 +106,13 @@ def get_sword_color_options():
 def patch_cosmetics(settings, rom):
     log = CosmeticsLog(settings)
 
+    # Check if cosmetic patch is compatible
+    if rom.read_int32(rom.sym('COSMETIC_FORMAT_VERSION')) != 0x1F04FA62:
+        # Unknown patch format
+        log.error = 'Unable to patch cosmetics. Rom uses unknown cosmetic patch format'
+        print(log.error)
+        return log
+
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
 
@@ -116,7 +123,7 @@ def patch_cosmetics(settings, rom):
         rom.write_byte(0xB71E6D, 0x00)
 
     # Display D-Pad HUD
-    dpad_sym = rom.sym('display_dpad')
+    dpad_sym = rom.sym('CFG_DISPLAY_DPAD')
     if settings.display_dpad:
         rom.write_byte(dpad_sym, 0x01)
     else:
@@ -197,9 +204,9 @@ def patch_cosmetics(settings, rom):
     # patch sword trail colors
     sword_trails = [
         ('Inner Initial Sword Trail', settings.sword_trail_color_inner, 
-            [(0x00BEFF80, 0xB0, 0xFF), (0x00BEFF88, 0x20, 0x40)], rom.sym('cfg_rainbow_sword_inner_enabled')),
+            [(0x00BEFF80, 0xB0, 0xFF), (0x00BEFF88, 0x20, 0x40)], rom.sym('CFG_RAINBOW_SWORD_INNER_ENABLED')),
         ('Outer Initial Sword Trail', settings.sword_trail_color_outer, 
-            [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], rom.sym('cfg_rainbow_sword_outer_enabled')),
+            [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], rom.sym('CFG_RAINBOW_SWORD_OUTER_ENABLED')),
     ]
 
     sword_color_list = get_sword_colors()
@@ -398,6 +405,7 @@ class CosmeticsLog(object):
         self.sword_colors = {}
         self.sfx = {}
         self.bgm = {}
+        self.error = None
 
 
     def to_file(self, filename):
@@ -408,6 +416,10 @@ class CosmeticsLog(object):
     def cosmetics_output(self):
         output = ''
         output += 'OoT Randomizer Version %s - Cosmetics Log\n' % (__version__)
+
+        if self.error:
+            output += 'Error: %s\n' % self.error
+            return output
 
         format_string = '\n{key:{width}} {value}'
         #keys = list(self.tunic_colors.keys()) + list(self.navi_colors.keys()) + list(self.sfx.keys()) + ['Default Targeting Option', 'Background Music']
