@@ -1740,13 +1740,13 @@ setting_infos = [
             choices        = {
                 'normal': 'Normal',
                 'off':    'No Music',
-                'random-choice': 'Random',
+                'random': 'Random',
                 },
             args_help      = '''\
                              Sets the background music behavior
                              normal:      Areas play their normal background music
                              off:         No background music
-                             random-choice:      Areas play random background music
+                             random:      Areas play random background music
                              ''',
             gui_text       = 'Background Music',
             gui_group      = 'sfx',
@@ -2096,13 +2096,13 @@ setting_infos = [
             name           = 'sfx_ocarina',
             default        = 'ocarina',
             choices        = {
-                'ocarina':     'Default',
-                'random-choice':      'Random Choice',
-                'flute':       'Flute',
-                'harp':        'Harp',
-                'whistle':     'Whistle',
-                'malon':       'Malon',
-                'grind-organ': 'Grind Organ',
+                'ocarina':       'Default',
+                'random-choice': 'Random Choice',
+                'flute':         'Flute',
+                'harp':          'Harp',
+                'whistle':       'Whistle',
+                'malon':         'Malon',
+                'grind-organ':   'Grind Organ',
                 },
             args_help      = '''\
                              Change the sound of the ocarina.

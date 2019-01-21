@@ -130,7 +130,7 @@ def patch_cosmetics(settings, rom):
         rom.write_byte(dpad_sym, 0x00)
 
     # patch music
-    if settings.background_music == 'random-choice':
+    if settings.background_music == 'random':
         restore_music(rom)
         log.bgm = randomize_music(rom)
     elif settings.background_music == 'off':
