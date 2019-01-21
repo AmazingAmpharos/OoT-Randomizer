@@ -729,8 +729,8 @@ def guiMain(settings=None):
                 settings = Settings( json.load(f) )
         except:
             settings = Settings({})
-        settings.update_seed("")
         settings_to_guivars(settings, guivars)
+        guivars['seed'].set("")
 
         presets = {}
         for file in [data_path('presets_default.json')] \
