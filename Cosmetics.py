@@ -452,7 +452,7 @@ class CosmeticsLog(object):
         for key, value in self.sfx.items():
             output += format_string.format(key=key+':', value=value, width=padding)
 
-        if self.settings.background_music == 'random-choice':
+        if self.settings.background_music == 'random':
             #music_padding = 1 + len(max(self.bgm.keys(), key=len))
             music_padding = 40
             output += '\n\nBackground Music:\n'
