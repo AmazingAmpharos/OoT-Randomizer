@@ -79,6 +79,14 @@ sword_colors = {        # Initial Color            Fade Color
     "Pink":              (Color(0xFF, 0x69, 0xB4), Color(0xFF, 0x69, 0xB4)),
 }
 
+symbol_addresses_dict = {
+    0x1F04FA62: {
+        "CFG_DISPLAY_DPAD": 0x03480814,
+        "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03480815,
+        "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03480816,
+    }
+}
+
 def get_tunic_colors():
     return list(tunic_colors.keys())
 
@@ -107,11 +115,12 @@ def patch_cosmetics(settings, rom):
     log = CosmeticsLog(settings)
 
     # Check if cosmetic patch is compatible
-    if rom.read_int32(rom.sym('COSMETIC_FORMAT_VERSION')) != 0x1F04FA62:
+    cosmetic_version = rom.read_int32(rom.sym('COSMETIC_FORMAT_VERSION'))
+    symbol_addresses = symbol_addresses_dict.get(cosmetic_version)
+    if symbol_addresses is None:
         # Unknown patch format
-        log.error = 'Unable to patch cosmetics. Rom uses unknown cosmetic patch format'
-        print(log.error)
-        return log
+        log.errors.append("Unable to patch some cosmetics. ROM uses unknown cosmetic patch format.")
+        symbol_addresses = {}
 
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
@@ -123,11 +132,13 @@ def patch_cosmetics(settings, rom):
         rom.write_byte(0xB71E6D, 0x00)
 
     # Display D-Pad HUD
-    dpad_sym = rom.sym('CFG_DISPLAY_DPAD')
-    if settings.display_dpad:
+    dpad_sym = symbol_addresses.get('CFG_DISPLAY_DPAD')
+    if dpad_sym and settings.display_dpad:
         rom.write_byte(dpad_sym, 0x01)
-    else:
+    elif dpad_sym:
         rom.write_byte(dpad_sym, 0x00)
+    else:
+        log.errors.append("Cannot patch Display D-Pad HUD as its symbol was not found in ROM.")
 
     # patch music
     if settings.background_music == 'random':
@@ -207,15 +218,21 @@ def patch_cosmetics(settings, rom):
     # patch sword trail colors
     sword_trails = [
         ('Inner Initial Sword Trail', settings.sword_trail_color_inner, 
-            [(0x00BEFF80, 0xB0, 0xFF), (0x00BEFF88, 0x20, 0x40)], rom.sym('CFG_RAINBOW_SWORD_INNER_ENABLED')),
+            [(0x00BEFF80, 0xB0, 0xFF), (0x00BEFF88, 0x20, 0x40)], symbol_addresses.get('CFG_RAINBOW_SWORD_INNER_ENABLED')),
         ('Outer Initial Sword Trail', settings.sword_trail_color_outer, 
-            [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], rom.sym('CFG_RAINBOW_SWORD_OUTER_ENABLED')),
+            [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], symbol_addresses.get('CFG_RAINBOW_SWORD_OUTER_ENABLED')),
     ]
 
     sword_color_list = get_sword_colors()
 
     for index, item in enumerate(sword_trails):
-        sword_trail_name, sword_trail_option, sword_trail_addresses, sword_trail_rainbow = item
+        sword_trail_name, sword_trail_option, sword_trail_addresses, sword_trail_rainbow_symbol = item
+
+        # Fail if rainbow symbol is none.
+        if sword_trail_rainbow_symbol is None:
+            log.errors.append("Cannot patch %s as its symbol was not found in ROM." % sword_trail_name)
+            continue
+
         # handle random
         if sword_trail_option == 'Random Choice':
             sword_trail_option = random.choice(sword_color_list)
@@ -224,10 +241,10 @@ def patch_cosmetics(settings, rom):
         for index, (address, transparency, white_transparency) in enumerate(sword_trail_addresses):
             # set rainbow option
             if sword_trail_option == 'Rainbow':
-                rom.write_byte(sword_trail_rainbow, 0x01)
+                rom.write_byte(sword_trail_rainbow_symbol, 0x01)
                 continue
             else:
-                rom.write_byte(sword_trail_rainbow, 0x00)
+                rom.write_byte(sword_trail_rainbow_symbol, 0x00)
 
             # handle completely random
             if sword_trail_option == 'Completely Random':
@@ -408,7 +425,7 @@ class CosmeticsLog(object):
         self.sword_colors = {}
         self.sfx = {}
         self.bgm = {}
-        self.error = None
+        self.errors = []
 
 
     def to_file(self, filename):
@@ -420,13 +437,11 @@ class CosmeticsLog(object):
         output = ''
         output += 'OoT Randomizer Version %s - Cosmetics Log\n' % (__version__)
 
-        if self.error:
-            output += 'Error: %s\n' % self.error
-            return output
+        if self.errors:
+            for error in self.errors:
+                output += 'Error: %s\n' % error
 
         format_string = '\n{key:{width}} {value}'
-        #keys = list(self.tunic_colors.keys()) + list(self.navi_colors.keys()) + list(self.sfx.keys()) + ['Default Targeting Option', 'Background Music']
-        #padding = 1 + len(max(keys, key=len))
         padding = 40
 
         output += format_string.format(key='Default Targeting Option:', value=self.settings.default_targeting, width=padding)

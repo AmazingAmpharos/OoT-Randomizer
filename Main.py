@@ -243,8 +243,8 @@ def main(settings, window=dummy_window()):
         cosmetics_log.to_file(os.path.join(output_dir, filename))
 
     window.update_progress(100)
-    if cosmetics_log and cosmetics_log.error:
-        window.update_status('Success: Rom patched successfully. Cosmetics could not be applied.')
+    if cosmetics_log and cosmetics_log.errors:
+        window.update_status('Success: Rom patched successfully. Some cosmetics could not be applied.')
     else:
         window.update_status('Success: Rom patched successfully')
     logger.info('Done. Enjoy.')
@@ -317,8 +317,8 @@ def from_patch_file(settings, window=dummy_window()):
         cosmetics_log.to_file(os.path.join(output_dir, output_path + '_Cosmetics.txt'))
 
     window.update_progress(100)
-    if cosmetics_log and cosmetics_log.error:
-        window.update_status('Success: Rom patched successfully. Cosmetics could not be applied.')
+    if cosmetics_log and cosmetics_log.errors:
+        window.update_status('Success: Rom patched successfully. Some cosmetics could not be applied.')
     else:
         window.update_status('Success: Rom patched successfully')
 
@@ -352,7 +352,7 @@ def cosmetic_patch(settings, window=dummy_window()):
         window.update_status('Patching ROM')
         patchfilename = '%s.zpf' % outfilebase
 
-        patch_cosmetics(settings, rom)
+        cosmetics_log = patch_cosmetics(settings, rom)
         window.update_progress(65 + 20)
 
         window.update_status('Creating Patch File')
@@ -399,6 +399,8 @@ def cosmetic_patch(settings, window=dummy_window()):
                 run_process(window, logger, [compressor_path, output_path, output_path[:output_path.rfind('.')] + '-comp.z64'])
             os.remove(output_path)
         window.update_progress(95)
+    else:
+        raise Exception('Unknown output type.')
 
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
@@ -406,8 +408,8 @@ def cosmetic_patch(settings, window=dummy_window()):
         cosmetics_log.to_file(os.path.join(output_dir, filename))
 
     window.update_progress(100)
-    if cosmetics_log and cosmetics_log.error:
-        window.update_status('Success: Rom patched successfully. Cosmetics could not be applied.')
+    if cosmetics_log and cosmetics_log.errors:
+        window.update_status('Success: Rom patched successfully. Some cosmetics could not be applied.')
     else:
         window.update_status('Success: Rom patched successfully')
     logger.info('Done. Enjoy.')
