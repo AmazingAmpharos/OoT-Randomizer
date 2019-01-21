@@ -1740,13 +1740,13 @@ setting_infos = [
             choices        = {
                 'normal': 'Normal',
                 'off':    'No Music',
-                'random': 'Random',
+                'random-choice': 'Random',
                 },
             args_help      = '''\
                              Sets the background music behavior
                              normal:      Areas play their normal background music
                              off:         No background music
-                             random:      Areas play random background music
+                             random-choice:      Areas play random background music
                              ''',
             gui_text       = 'Background Music',
             gui_group      = 'sfx',
@@ -2097,7 +2097,7 @@ setting_infos = [
             default        = 'ocarina',
             choices        = {
                 'ocarina':     'Default',
-                'random':      'Random Choice',
+                'random-choice':      'Random Choice',
                 'flute':       'Flute',
                 'harp':        'Harp',
                 'whistle':     'Whistle',
