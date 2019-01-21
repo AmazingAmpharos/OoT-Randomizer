@@ -892,6 +892,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     # Revert change that Skips the Epona Race
     if not world.no_epona_race:
         rom.write_int32(0xA9E838, 0x03E00008)
+    else:
+        write_bits_to_save(0xF0E, 0x01) # Set talked to Malon flag
 
     # skip castle guard stealth sequence
     if world.no_guard_stealth:
