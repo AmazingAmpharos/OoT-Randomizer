@@ -185,7 +185,7 @@ def patch_navi_colors(rom, settings, log, symbols):
                          [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)])
                 if navi_action not in log.navi_colors:
                     log.navi_colors[navi_action] = list()
-                log.navi_colors[navi_action].append(dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in color[0:3]]), color2=''.join(['{:02X}'.format(c) for c in color[4:7]])))
+                log.navi_colors[navi_action].append(dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in list(colors[0])]), color2=''.join(['{:02X}'.format(c) for c in list(colors[1])])))
             # grab the color from the list
             elif navi_option in NaviColors:
                 colors = list(NaviColors[navi_option][0]), list(NaviColors[navi_option][1])
@@ -200,7 +200,7 @@ def patch_navi_colors(rom, settings, log, symbols):
         if custom_color:
             navi_option = 'Custom'
         if navi_action not in log.navi_colors:
-            log.navi_colors[navi_action] = [dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in color[0:3]]), color2=''.join(['{:02X}'.format(c) for c in color[4:7]]))]
+            log.navi_colors[navi_action] = [dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in list(colors[0])]), color2=''.join(['{:02X}'.format(c) for c in list(colors[1])]))]
 
 
 def patch_sword_trails(rom, settings, log, symbols):
