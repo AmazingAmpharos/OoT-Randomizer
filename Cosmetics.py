@@ -292,7 +292,7 @@ def patch_cosmetics(settings, rom):
             'flute':           0x06,
            #'another_ocarina': 0x07,
             }
-    if settings.sfx_ocarina != 'random':
+    if settings.sfx_ocarina != 'random-choice':
         choice = settings.sfx_ocarina
     else:
         choice = random.choice(list(instruments.keys()))
@@ -452,7 +452,7 @@ class CosmeticsLog(object):
         for key, value in self.sfx.items():
             output += format_string.format(key=key+':', value=value, width=padding)
 
-        if self.settings.background_music == 'random':
+        if self.settings.background_music == 'random-choice':
             #music_padding = 1 + len(max(self.bgm.keys(), key=len))
             music_padding = 40
             output += '\n\nBackground Music:\n'

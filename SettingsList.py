@@ -2096,13 +2096,13 @@ setting_infos = [
             name           = 'sfx_ocarina',
             default        = 'ocarina',
             choices        = {
-                'ocarina':     'Default',
-                'random':      'Random Choice',
-                'flute':       'Flute',
-                'harp':        'Harp',
-                'whistle':     'Whistle',
-                'malon':       'Malon',
-                'grind-organ': 'Grind Organ',
+                'ocarina':       'Default',
+                'random-choice': 'Random Choice',
+                'flute':         'Flute',
+                'harp':          'Harp',
+                'whistle':       'Whistle',
+                'malon':         'Malon',
+                'grind-organ':   'Grind Organ',
                 },
             args_help      = '''\
                              Change the sound of the ocarina.
