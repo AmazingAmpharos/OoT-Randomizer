@@ -326,14 +326,7 @@ class World(object):
                location.item.type == "Event":
                 continue
 
-            # We should consider GT and GC as the same area or it's confusing.
-            # You can get a hint GC is barren and a player might think that
-            # GT is also barren when it is not. They are separate scenes in
-            # the rom data, but one dungeon logically.
-            if location.hint == "Ganon's Tower":
-                area = "Ganon's Castle"
-            else:
-                area = location.hint
+            area = location.hint
 
             # Build the area list and their items
             if area not in areas:

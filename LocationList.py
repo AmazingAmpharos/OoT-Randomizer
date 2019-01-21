@@ -422,7 +422,7 @@ location_table = {
     "Gerudo Training Grounds MQ Heavy Block Chest":    ("Chest",       0x0B,  0x02, "Gerudo Training Grounds", None),
 
     # Ganon's Castle shared
-    "Ganons Tower Boss Key Chest":                     ("Chest",       0x0A,  0x0B, "Ganon's Tower",          None),
+    "Ganons Tower Boss Key Chest":                     ("Chest",       0x0A,  0x0B, "Ganon's Castle",         None),
     # Ganon's Castle vanilla
     "Ganons Castle Forest Trial Chest":                ("Chest",       0x0D,  0x09, "Ganon's Castle",         None),
     "Ganons Castle Water Trial Left Chest":            ("Chest",       0x0D,  0x07, "Ganon's Castle",         None),
