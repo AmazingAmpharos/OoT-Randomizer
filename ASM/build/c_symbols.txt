@@ -6,9 +6,6 @@ SYMBOL TABLE:
 00000000 l    d  .reginfo	00000000 .reginfo
 00000000 l    d  .text	00000000 .text
 00000000 l    d  .rodata	00000000 .rodata
-00000000 l    d  .rodata.str1.4	00000000 .rodata.str1.4
-00000000 l    d  .rodata.cst4	00000000 .rodata.cst4
-00000000 l    d  .rodata.cst8	00000000 .rodata.cst8
 00000000 l    d  .data	00000000 .data
 00000000 l    d  .sdata	00000000 .sdata
 00000000 l    d  .sbss	00000000 .sbss
@@ -20,8 +17,6 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 chests.c
 00000000 l    df *ABS*	00000000 dpad.c
 00000000 l    df *ABS*	00000000 dungeon_info.c
-00000000 l       .rodata.str1.4	00000000 $LC0
-00000004 l       .rodata.str1.4	00000000 $LC1
 00000000 l    df *ABS*	00000000 file_select.c
 00000000 l    df *ABS*	00000000 get_items.c
 00000000 l    df *ABS*	00000000 gfx.c
@@ -32,19 +27,10 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 main.c
 00000000 l    df *ABS*	00000000 menu.c
 00000000 l    df *ABS*	00000000 models.c
-00000004 l       .rodata.cst4	00000000 $LC6
-00000000 l       .rodata.cst4	00000000 $LC5
-00000008 l       .rodata.cst4	00000000 $LC7
-0000000c l       .rodata.cst4	00000000 $LC8
-00000010 l       .rodata.cst4	00000000 $LC9
-00000014 l       .rodata.cst4	00000000 $LC10
 00000000 l    df *ABS*	00000000 rainbow_sword.c
 000031bc l     F .text	000001f0 get_color
 00001128 l     O .data	00000015 colors
 00000048 l     O .sbss	00000004 frames
-00000000 l       .rodata.cst8	00000000 $LC0
-00000018 l       .rodata.cst4	00000000 $LC1
-0000001c l       .rodata.cst4	00000000 $LC2
 00000000 l    df *ABS*	00000000 scarecrow.c
 00000000 l    df *ABS*	00000000 text.c
 00000050 l     O .sbss	00000004 text_buf
