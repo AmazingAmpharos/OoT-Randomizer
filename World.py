@@ -177,7 +177,7 @@ class World(object):
             scrub_dictionary[location.default].append(location)
 
         # Loop through each type of scrub.
-        for (scrub_item, default_price, text_id, replacement_text_id, text_replacement) in business_scrubs:
+        for (scrub_item, default_price, text_id, text_replacement) in business_scrubs:
             price = default_price
             if self.shuffle_scrubs == 'low':
                 price = 10

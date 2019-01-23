@@ -1229,7 +1229,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
         # Rebuild Business Scrub Item Table
         rom.seek_address(0xDF8684)
-        for (scrub_item, default_price, text_id, replacement_text_id, text_replacement) in business_scrubs:
+        for (scrub_item, default_price, text_id, text_replacement) in business_scrubs:
             price = world.scrub_prices[scrub_item]
             rom.write_int16(None, price)       # Price
             rom.write_int16(None, 1)           # Count
@@ -1237,10 +1237,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
             rom.write_int32(None, 0x80A74FF8)  # Can_Buy_Func
             rom.write_int32(None, 0x80A75354)  # Buy_Func
             # Text
-            if replacement_text_id is not None:
-                message = get_message_by_id(messages, replacement_text_id).raw_text
-            else:
-                message = get_message_by_id(messages, text_id).raw_text
+            message = get_message_by_id(messages, text_id).raw_text
             for text in scrub_strip_text:
                 message = message.replace(text.encode(), b'')
             message = message.replace(text_replacement[0].encode(), text_replacement[1].encode())
