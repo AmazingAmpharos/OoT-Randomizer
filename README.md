@@ -163,11 +163,11 @@ player.
 * Frogs Ocarina Game added to always hints.
 * Hints are only in logic once you are able to reach the location of the gossip stone by logic
 * Hints ignore logic if inaccessible.
-* Barren of treasure hint added.
-  * Regions that are barren will not have any required items no matter what route is taken
+* Foolish choice hint added.
+  * Regions that are a foolish choice will not have any required items no matter what route is taken in logic
 * Big Poes location does not require a hint if count set to 3 or less.
 * Add medallion icons to the Temple of Time altar hint.
-* Addd a hint for 0/6 trials if trial count is random.
+* Add a hint for 0/6 trials if trial count is random.
 
 #### Updated Options
 
@@ -176,8 +176,8 @@ player.
   * Small keys appear in small gold chests
 * Free Scarecrow's Song changes
   * Pulling out ocarina near a spot where Pierre can spawn will do so.
-* Bridge changes
-  * Stones added as bridge requirement
+* Rainbow Bridge changes
+  * Spiritual Stones added as bridge requirement
   * 100 Gold Skulltula tokens added as bridge requirement
 * Any location can now be excluded from being required
 * Various advanced tricks has been split into individual tricks to be selected
