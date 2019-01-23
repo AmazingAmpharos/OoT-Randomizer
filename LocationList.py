@@ -458,7 +458,7 @@ location_table = {
     "Queen Gohma":                                     ("Boss",        None,  0x6C, "Deku Tree",              (0x0CA315F, 0x2079571)),
     "King Dodongo":                                    ("Boss",        None,  0x6D, "Dodongo's Cavern",       (0x0CA30DF, 0x2223309)),
     "Barinade":                                        ("Boss",        None,  0x6E, "Jabu Jabu's Belly",      (0x0CA36EB, 0x2113C19)),
-    "Phantom Ganon":                                   ("Boss",        None,  0x66, "Shadow Temple",          (0x0CA3D07, 0x0D4ED79)),
+    "Phantom Ganon":                                   ("Boss",        None,  0x66, "Forest Temple",          (0x0CA3D07, 0x0D4ED79)),
     "Volvagia":                                        ("Boss",        None,  0x67, "Fire Temple",            (0x0CA3D93, 0x0D10135)),
     "Morpha":                                          ("Boss",        None,  0x68, "Water Temple",           (0x0CA3E1F, 0x0D5A3A9)),
     "Twinrova":                                        ("Boss",        None,  0x69, "Spirit Temple",          (0x0CA3EB3, 0x0D39FF1)),
