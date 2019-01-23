@@ -11,7 +11,7 @@ from Hints import writeGossipStoneHints, buildBossRewardHints, \
 from Utils import data_path
 from Messages import read_messages, update_message_by_id, read_shop_items, \
         write_shop_items, remove_unused_messages, make_player_message, \
-        add_item_messages, repack_messages, shuffle_messages
+        add_item_messages, repack_messages, shuffle_messages, get_message_by_id
 from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
@@ -1230,25 +1230,43 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
                 scrub_dictionary[location.default] = []
             scrub_dictionary[location.default].append(location)
 
-        # Default Deku Scrub Prices
+        # Business Scrub Details
         scrub_items = [
-            (0x30, 20), # Deku Nuts
-            (0x31, 15), # Deku Sticks
-            (0x3E, 10), # Piece of Heart
-            (0x33, 40), # Deku Seeds
-            (0x34, 50), # Deku Shield
-            (0x37, 40), # Bombs
-            (0x38, 00), # Arrows (unused)
-            (0x39, 40), # Red Potion
-            (0x3A, 40), # Green Potion
-            (0x77, 40), # Deku Stick Upgrade
-            (0x79, 40), # Deku Nut Upgrade
+            (0x30, 20, 0x10A0, None), # Deku Nuts
+            (0x31, 15, 0x10A1, None), # Deku Sticks
+            (0x3E, 10, 0x10A2, None), # Piece of Heart
+            (0x33, 40, 0x10CA, None), # Deku Seeds
+            (0x34, 50, 0x10CB, None), # Deku Shield
+            (0x37, 40, 0x10CC, None), # Bombs
+            (0x38, 00, 0x10CD, None), # Arrows (unused)
+            (0x39, 40, 0x10CE, None), # Red Potion
+            (0x3A, 40, 0x10CF, None), # Green Potion
+            (0x77, 40, 0x10DC, 0x10A1), # Deku Stick Upgrade
+            (0x79, 40, 0x10DD, 0x10A0), # Deku Nut Upgrade
         ]
 
-        # Rebuild Deku Salescrub Item Table
+        # Scrub text stuff.
+        scrub_message_dict = {}
+        scrub_strip_text = ["some ", "1 piece   ", "5 pieces   ", "30 pieces   "]
+        scrub_text_replacement = {
+            0x10A0: ["Deku Nuts", "a \x05\x42mysterious item\x05\x40"],
+            0x10A1: ["Deku Sticks", "a \x05\x42mysterious item\x05\x40"],
+            0x10A2: ["Piece of Heart", "\x05\x42mysterious item\x05\x40"],
+            0x10CA: ["\x05\x41Deku Seeds", "a \x05\x42mysterious item"],
+            0x10CB: ["\x41Deku Shield", "\x42mysterious item"],
+            0x10CC: ["\x05\x41Bombs", "a \x05\x42mysterious item"],
+            0x10CD: ["\x05\x41Arrows", "a \x05\x42mysterious item"],
+            0x10CE: ["\x05\x41Red Potion", "\x05\x42mysterious item"],
+            0x10CF: ["Green Potion", "mysterious item"],
+            0x10DC: ["Deku Sticks", "a \x05\x42mysterious item\x05\x40"],
+            0x10DD: ["Deku Nuts", "a \x05\x42mysterious item\x05\x40"],
+        }
+
+        # Rebuild Business Scrub Item Table
         rom.seek_address(0xDF8684)
-        for (scrub_item, price) in scrub_items:
+        for (scrub_item, default_price, text_id, replacement_text_id) in scrub_items:
             # Price
+            price = default_price
             if world.shuffle_scrubs == 'low':
                 price = 10
                 rom.write_int16(None, price)
@@ -1267,6 +1285,21 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
                 for location in scrub_dictionary[scrub_item]:
                     location.price = price
                     location.item.price = price
+            # Text
+            if replacement_text_id is not None:
+                message = get_message_by_id(messages, replacement_text_id).raw_text
+            else:
+                message = get_message_by_id(messages, text_id).raw_text
+            for text in scrub_strip_text:
+                message = message.replace(text.encode(), b'')
+            message = message.replace(scrub_text_replacement[text_id][0].encode(), scrub_text_replacement[text_id][1].encode())
+            message = message.replace(('%d Rupees' % default_price).encode(), ('%d Rupees' % price).encode())
+            message = message.replace(b'they are', b'it is')
+            scrub_message_dict[text_id] = message
+
+        # Update messages.
+        for text_id, message in scrub_message_dict.items():
+            update_message_by_id(messages, text_id, message)
 
         # update actor IDs
         set_deku_salesman_data(rom)
