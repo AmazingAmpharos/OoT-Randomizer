@@ -1212,6 +1212,26 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     rom.write_int32(0x2DD802C, 0x03006A40)
     rom.write_int16s(0x2DDEA40, list(shop_objs))
 
+    # Scrub text stuff.
+    def update_scrub_text(message, text_replacement, default_price, price, item_name=None):
+        scrub_strip_text = ["some ", "1 piece   ", "5 pieces   ", "30 pieces   "]
+        for text in scrub_strip_text:
+            message = message.replace(text.encode(), b'')
+        message = message.replace(text_replacement[0].encode(), text_replacement[1].encode())
+        message = message.replace(b'they are', b'it is')
+        if default_price != price:
+            message = message.replace(('%d Rupees' % default_price).encode(), ('%d Rupees' % price).encode())
+        if item_name is not None:
+            message = message.replace(b'mysterious item', item_name.encode())
+        return message
+
+    single_item_scrubs = {
+        0x3E: world.get_location("HF Grotto Deku Scrub Piece of Heart"),
+        0x77: world.get_location("LW Deku Scrub Deku Stick Upgrade"),
+        0x79: world.get_location("LW Grotto Deku Scrub Deku Nut Upgrade"),
+    }
+
+    scrub_message_dict = {}
     if world.shuffle_scrubs == 'off':
         # Revert Deku Scrubs changes
         rom.write_int32s(0xEBB85C, [
@@ -1222,11 +1242,18 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
             0x94790EF0])# lhu t9, 0xef0(v1)
         rom.write_int32(0xDF7CB0,
             0xA44F0EF0)  # sh t7, 0xef0(v0)
-    else:
-        # Scrub text stuff.
-        scrub_message_dict = {}
-        scrub_strip_text = ["some ", "1 piece   ", "5 pieces   ", "30 pieces   "]
 
+        # Replace scrub text for 3 default shuffled scrubs.
+        for (scrub_item, default_price, text_id, text_replacement) in business_scrubs:
+            if scrub_item not in single_item_scrubs.keys():
+                continue
+            item = single_item_scrubs[scrub_item].item
+            if item.looks_like_item is not None:
+                item_name = create_fake_name(item.looks_like_item.name)
+            else:
+                item_name = item.name
+            scrub_message_dict[text_id] = update_scrub_text(get_message_by_id(messages, text_id).raw_text, text_replacement, default_price, default_price, item_name)
+    else:
         # Rebuild Business Scrub Item Table
         rom.seek_address(0xDF8684)
         for (scrub_item, default_price, text_id, text_replacement) in business_scrubs:
@@ -1236,21 +1263,24 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
             rom.write_int32(None, scrub_item)  # Item
             rom.write_int32(None, 0x80A74FF8)  # Can_Buy_Func
             rom.write_int32(None, 0x80A75354)  # Buy_Func
-            # Text
-            message = get_message_by_id(messages, text_id).raw_text
-            for text in scrub_strip_text:
-                message = message.replace(text.encode(), b'')
-            message = message.replace(text_replacement[0].encode(), text_replacement[1].encode())
-            message = message.replace(('%d Rupees' % default_price).encode(), ('%d Rupees' % price).encode())
-            message = message.replace(b'they are', b'it is')
-            scrub_message_dict[text_id] = message
 
-        # Update messages.
-        for text_id, message in scrub_message_dict.items():
-            update_message_by_id(messages, text_id, message)
+            # Get item name for 3 single item scrubs
+            if scrub_item in single_item_scrubs.keys():
+                item = single_item_scrubs[scrub_item].item
+                if item.looks_like_item is not None:
+                    item_name = create_fake_name(item.looks_like_item.name)
+                else:
+                    item_name = item.name
+            else:
+                item_name = None
+            scrub_message_dict[text_id] = update_scrub_text(get_message_by_id(messages, text_id).raw_text, text_replacement, default_price, price, item_name)
 
         # update actor IDs
         set_deku_salesman_data(rom)
+
+    # Update scrub messages.
+    for text_id, message in scrub_message_dict.items():
+        update_message_by_id(messages, text_id, message)
 
     # Update grotto id data
     set_grotto_id_data(rom)
