@@ -103,6 +103,7 @@ def main(settings, window=dummy_window()):
 
         if settings.shopsanity != 'off':
             world.random_shop_prices()
+        world.set_scrub_prices()
 
         window.update_progress(0 + 4*(id + 1)/settings.world_count)
         logger.info('Calculating Access Rules.')
