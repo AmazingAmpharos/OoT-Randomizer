@@ -162,12 +162,13 @@ player.
     * Tournament: Similar to strong but has no variation in hint types.
 * Frogs Ocarina Game added to always hints.
 * Hints are only in logic once you are able to reach the location of the gossip stone by logic
-* Hints ignore logic if inaccessible.
+    * Hints ignore logic if inaccessible.
 * Barren of treasure hint added.
   * Regions that are barren will not have any required items no matter what route is taken
 * Big Poes location does not require a hint if count set to 3 or less.
 * Add medallion icons to the Temple of Time altar hint.
 * Addd a hint for 0/6 trials if trial count is random.
+* Scrub Shuffle now updates the Business Scrubs' textboxes with the updated price for buying their item.
 
 #### Updated Options
 
