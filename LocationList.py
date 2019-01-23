@@ -770,3 +770,19 @@ location_table = {
     "Zoras River Plateau Gossip Stone":                ("GossipStone", None,  None, None,                     None),
     "Zoras River Waterfall Gossip Stone":              ("GossipStone", None,  None, None,                     None),
 }
+
+# Business Scrub Details
+business_scrubs = [
+    # id   price  text   text replacement
+    (0x30, 20,   0x10A0, ["Deku Nuts", "a \x05\x42mysterious item\x05\x40"]),
+    (0x31, 15,   0x10A1, ["Deku Sticks", "a \x05\x42mysterious item\x05\x40"]),
+    (0x3E, 10,   0x10A2, ["Piece of Heart", "\x05\x42mysterious item\x05\x40"]),
+    (0x33, 40,   0x10CA, ["\x05\x41Deku Seeds", "a \x05\x42mysterious item"]),
+    (0x34, 50,   0x10CB, ["\x41Deku Shield", "\x42mysterious item"]),
+    (0x37, 40,   0x10CC, ["\x05\x41Bombs", "a \x05\x42mysterious item"]),
+    (0x38, 00,   0x10CD, ["\x05\x41Arrows", "a \x05\x42mysterious item"]),  # unused
+    (0x39, 40,   0x10CE, ["\x05\x41Red Potion", "\x05\x42mysterious item"]),
+    (0x3A, 40,   0x10CF, ["Green Potion", "mysterious item"]),
+    (0x77, 40,   0x10DC, ["enable you to pick up more\x01\x05\x41Deku Sticks", "sell you a \x05\x42mysterious item"]),
+    (0x79, 40,   0x10DD, ["enable you to pick up more \x05\x41Deku\x01Nuts", "sell you a \x05\x42mysterious item"]),
+]
