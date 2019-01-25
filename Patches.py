@@ -6,12 +6,13 @@ import re
 from World import World
 from Rom import LocalRom
 from Spoiler import Spoiler
+from LocationList import business_scrubs
 from Hints import writeGossipStoneHints, buildBossRewardHints, \
         buildGanonText, getSimpleHintNoPrefix
 from Utils import data_path
 from Messages import read_messages, update_message_by_id, read_shop_items, \
         write_shop_items, remove_unused_messages, make_player_message, \
-        add_item_messages, repack_messages, shuffle_messages
+        add_item_messages, repack_messages, shuffle_messages, get_message_by_id
 from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
@@ -892,6 +893,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     # Revert change that Skips the Epona Race
     if not world.no_epona_race:
         rom.write_int32(0xA9E838, 0x03E00008)
+    else:
+        write_bits_to_save(0xF0E, 0x01) # Set talked to Malon flag
 
     # skip castle guard stealth sequence
     if world.no_guard_stealth:
@@ -1220,51 +1223,31 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         rom.write_int32(0xDF7CB0,
             0xA44F0EF0)  # sh t7, 0xef0(v0)
     else:
-        # Get Deku Scrub Locations
-        scrub_locations = [location for location in world.get_locations() if 'Deku Scrub' in location.name]
-        scrub_dictionary = {}
-        for location in scrub_locations:
-            if location.default not in scrub_dictionary:
-                scrub_dictionary[location.default] = []
-            scrub_dictionary[location.default].append(location)
+        # Scrub text stuff.
+        scrub_message_dict = {}
+        scrub_strip_text = ["some ", "1 piece   ", "5 pieces   ", "30 pieces   "]
 
-        # Default Deku Scrub Prices
-        scrub_items = [
-            (0x30, 20), # Deku Nuts
-            (0x31, 15), # Deku Sticks
-            (0x3E, 10), # Piece of Heart
-            (0x33, 40), # Deku Seeds
-            (0x34, 50), # Deku Shield
-            (0x37, 40), # Bombs
-            (0x38, 00), # Arrows (unused)
-            (0x39, 40), # Red Potion
-            (0x3A, 40), # Green Potion
-            (0x77, 40), # Deku Stick Upgrade
-            (0x79, 40), # Deku Nut Upgrade
-        ]
-
-        # Rebuild Deku Salescrub Item Table
+        # Rebuild Business Scrub Item Table
         rom.seek_address(0xDF8684)
-        for (scrub_item, price) in scrub_items:
-            # Price
-            if world.shuffle_scrubs == 'low':
-                price = 10
-                rom.write_int16(None, price)
-            elif world.shuffle_scrubs == 'random':
-                # this is a random value between 0-99
-                # average value is ~33 rupees
-                price = int(random.betavariate(1, 2) * 99)
-                rom.write_int16(None, price)
-            else: # leave default price
-                rom.read_int16(None)
-            rom.write_int16(None, 1)          # Count
-            rom.write_int32(None, scrub_item) # Item
-            rom.write_int32(None, 0x80A74FF8) # Can_Buy_Func
-            rom.write_int32(None, 0x80A75354) # Buy_Func
-            if scrub_item in scrub_dictionary:
-                for location in scrub_dictionary[scrub_item]:
-                    location.price = price
-                    location.item.price = price
+        for (scrub_item, default_price, text_id, text_replacement) in business_scrubs:
+            price = world.scrub_prices[scrub_item]
+            rom.write_int16(None, price)       # Price
+            rom.write_int16(None, 1)           # Count
+            rom.write_int32(None, scrub_item)  # Item
+            rom.write_int32(None, 0x80A74FF8)  # Can_Buy_Func
+            rom.write_int32(None, 0x80A75354)  # Buy_Func
+            # Text
+            message = get_message_by_id(messages, text_id).raw_text
+            for text in scrub_strip_text:
+                message = message.replace(text.encode(), b'')
+            message = message.replace(text_replacement[0].encode(), text_replacement[1].encode())
+            message = message.replace(('%d Rupees' % default_price).encode(), ('%d Rupees' % price).encode())
+            message = message.replace(b'they are', b'it is')
+            scrub_message_dict[text_id] = message
+
+        # Update messages.
+        for text_id, message in scrub_message_dict.items():
+            update_message_by_id(messages, text_id, message)
 
         # update actor IDs
         set_deku_salesman_data(rom)
@@ -1294,15 +1277,17 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
             rom.write_int16(0x321B176, 0xFC40) # original 0xFC48
 
         #Move spirit temple compass chest if it is a small chest so it is reachable with hookshot 
-        spirit_compass_item = [l for l in world.get_locations() if 'Spirit Temple' in l.name and 'Compass Chest' in l.name][0].item
-        if 'Small Key' in spirit_compass_item.name or not spirit_compass_item.advancement:
-            if not world.dungeon_mq['Spirit Temple']:
-                chest_address = 0x2B6B07C
-            else:
-                chest_address = 0x2B6FCDC
+        for chest_name, chest_address in [('Spirit Temple Compass Chest', 0x2B6B07C), ('Spirit Temple MQ Compass Chest', 0x2B6FCDC)]:
+            try:
+                location = world.get_location(chest_name)
+            except KeyError:
+                # MQ/Vanilla veriant does not exist
+                continue
 
-            rom.write_int16(chest_address + 2, 0x0190) #X pos
-            rom.write_int16(chest_address + 6, 0xFABC) #Z pos
+            item = read_rom_item(rom, location.item.index)
+            if item['chest_type'] == 1 or item['chest_type'] == 3:
+                rom.write_int16(chest_address + 2, 0x0190) #X pos
+                rom.write_int16(chest_address + 6, 0xFABC) #Z pos
 
     # give dungeon items the correct messages
     add_item_messages(messages, shop_items, world)
