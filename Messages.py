@@ -823,7 +823,8 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
     def is_not_exempt(m):
         exempt_as_id = m.is_id_message()
         exempt_as_hint = ( except_hints and m.id in (GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT + list(KEYSANITY_MESSAGES.keys()) + shuffle_messages.shop_item_messages ) )
-        return not ( exempt_as_id or exempt_as_hint )
+        exempt_as_error = ( m.id == 0x0001 )
+        return not ( exempt_as_id or exempt_as_hint or exempt_as_error )
 
     have_goto =         list( filter( lambda m: is_not_exempt(m) and m.has_goto, messages) )
     have_keep_open =    list( filter( lambda m: is_not_exempt(m) and m.has_keep_open, messages) )
