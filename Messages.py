@@ -566,6 +566,7 @@ def get_message_by_id(messages, id):
 def update_message_by_index(messages, index, text, opts=None):
     if opts is None:
         opts = messages[index].opts
+
     if isinstance(text, bytearray):
         messages[index] = Message.from_bytearray(text, messages[index].id, opts)
     else:
@@ -739,8 +740,7 @@ def make_player_message(text):
 # reduce item message sizes and add new item messages
 # make sure to call this AFTER move_shop_item_messages()
 def update_item_messages(messages, world):
-    new_item_messages = dict(ITEM_MESSAGES)
-    new_item_messages.update(KEYSANITY_MESSAGES)
+    new_item_messages = {**ITEM_MESSAGES, **KEYSANITY_MESSAGES}
     for id, text in new_item_messages.items():
         if world.world_count > 1:
             update_message_by_id(messages, id, make_player_message(text), 0x23)
@@ -756,7 +756,6 @@ def add_item_messages(messages, shop_items, world):
 
 # reads each of the game's messages into a list of Message objects
 def read_messages(rom):
-
     table_offset = TABLE_START
     index = 0
     messages = []
@@ -777,7 +776,7 @@ def read_messages(rom):
 
     return messages
 
-# wrtie the messages back
+# write the messages back
 def repack_messages(rom, messages, permutation=None, always_allow_skip=True, speed_up_text=True):
 
     if permutation is None:
