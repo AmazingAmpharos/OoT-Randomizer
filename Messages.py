@@ -240,6 +240,16 @@ KEYSANITY_MESSAGES = {
     0x00A9: "\x13\x77\x08You found a \x05\x41Small Key\x05\x40\x01for the \x05\x45Shadow Temple\x05\x40!\x09",
 }
 
+MISC_MESSAGES = {
+    0x507B: bytearray(
+            b"\x08I tell you, I saw him!\x04" \
+            b"\x08I saw the ghostly figure of Damp\x96\x01" \
+            b"the gravekeeper sinking into\x01" \
+            b"his grave. It looked like he was\x01" \
+            b"holding some kind of \x05\x41treasure\x05\x40!\x02"
+            ),
+}
+
 # convert byte array to an integer
 def bytes_to_int(bytes, signed=False):
     return int.from_bytes(bytes, byteorder='big', signed=signed)
