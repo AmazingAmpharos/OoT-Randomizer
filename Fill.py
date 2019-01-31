@@ -3,8 +3,6 @@ import logging
 from State import State
 from Rules import set_shop_rules
 from Location import DisableType
-from ItemPool import songlist, get_junk_item
-from Item import ItemFactory
 
 
 class FillError(RuntimeError):
