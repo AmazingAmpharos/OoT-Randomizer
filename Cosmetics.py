@@ -207,9 +207,9 @@ def patch_sword_trails(rom, settings, log, symbols):
     # patch sword trail colors
     sword_trails = [
         ('Inner Initial Sword Trail', settings.sword_trail_color_inner, 
-            [(0x00BEFF80, 0xB0, 0xFF), (0x00BEFF88, 0x20, 0x40)], symbols['CFG_RAINBOW_SWORD_INNER_ENABLED']),
+            [(0x00BEFF80, 0xB0, 0xFF), (0x00BEFF88, 0x20, 0x00)], symbols['CFG_RAINBOW_SWORD_INNER_ENABLED']),
         ('Outer Initial Sword Trail', settings.sword_trail_color_outer, 
-            [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
+            [(0x00BEFF7C, 0xB0, 0x40), (0x00BEFF84, 0x10, 0x00)], symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
     ]
 
     sword_color_list = get_sword_colors()
