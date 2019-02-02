@@ -79,6 +79,15 @@ sword_colors = {        # Initial Color            Fade Color
     "Pink":              (Color(0xFF, 0x69, 0xB4), Color(0xFF, 0x69, 0xB4)),
 }
 
+#DA3800
+#000006
+#025918
+#06025A
+#600602
+#5BA806
+#025DB0
+#FA6A90
+
 gauntlet_colors = {
     "Custom Color":      Color(0x00, 0x00, 0x00),
     "Silver":            Color(0xFF, 0xFF, 0xFF),
