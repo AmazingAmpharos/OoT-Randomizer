@@ -233,7 +233,7 @@ item_table = {
     'Buy Red Potion [30]':              ('Shop',     False, 0x08, {'object': 0x00EB, 'price': 30}),
     'Buy Green Potion':                 ('Shop',     False, 0x09, {'object': 0x00EB, 'price': 30}),
     'Buy Blue Potion':                  ('Shop',     False, 0x0A, {'object': 0x00EB, 'price': 100}),
-    'Buy Hylian Shield':                ('Shop',     False, 0x0C, {'object': 0x00DC, 'price': 80}),
+    'Buy Hylian Shield':                ('Shop',     True,  0x0C, {'object': 0x00DC, 'price': 80}),
     'Buy Deku Shield':                  ('Shop',     True,  0x0D, {'object': 0x00CB, 'price': 40}),
     'Buy Goron Tunic':                  ('Shop',     True,  0x0E, {'object': 0x00F2, 'price': 200}),
     'Buy Zora Tunic':                   ('Shop',     True,  0x0F, {'object': 0x00F2, 'price': 300}),
