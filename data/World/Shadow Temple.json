@@ -61,8 +61,8 @@
         "region_name": "Shadow Temple Beyond Boat",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Spike Walls Left Chest": "True",
-            "Shadow Temple Boss Key Chest": "True",
+            "Shadow Temple Spike Walls Left Chest": "can_use(Dins_Fire)",
+            "Shadow Temple Boss Key Chest": "can_use(Dins_Fire)",
             "Shadow Temple Hidden Floormaster Chest": "True",
             "Bongo Bongo Heart": "
                 (Small_Key_Shadow_Temple, 5) and 
