@@ -18,7 +18,7 @@ uint8_t get_chest_override_size(z64_actor_t *actor) {
 		return ((uint8_t*)actor)[0x01E9]; // Chest type
 	}
 
-    // Big chest for GS in 100 GS mode
+    // Small chest for GS in 100 GS mode
     if (override.value.item_id == 0x5B && RAINBOW_BRIDGE_CONDITION == 5) {
         return 5;
     }
