@@ -30,6 +30,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         titleBytes = stream.read()
         rom.write_bytes(0x01795300, titleBytes)
 
+    # Fixes the typo of keatan mask in the item select screen
+    with open(data_path('keaton.bin'), 'rb') as stream:
+        keatonBytes = stream.read()
+        rom.write_bytes(0x8A7C00, keatonBytes)
+
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)
 
