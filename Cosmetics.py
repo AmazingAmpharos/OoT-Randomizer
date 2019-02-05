@@ -102,6 +102,17 @@ heart_colors = {
     "Blue":         Color(0x32, 0x46, 0xFF),
     "Yellow":       Color(0xFF, 0xE0, 0x00),
 }
+magic_colors = {
+    "Custom Color":      Color(0x00, 0x00, 0x00),
+    "Green":             Color(0x00, 0xC8, 0x00),
+    "Red":               Color(0xC8, 0x00, 0x00),
+    "Blue":              Color(0x00, 0x30, 0xFF),
+    "Purple":            Color(0xB0, 0x00, 0xFF),
+    "Pink":              Color(0xFF, 0x00, 0xC8),
+    "Yellow":            Color(0xFF, 0xFF, 0x00),
+    "White":             Color(0xFF, 0xFF, 0xFF),
+}
+
 
 def get_tunic_colors():
     return list(tunic_colors.keys())
@@ -141,6 +152,14 @@ def get_heart_colors():
 
 def get_heart_color_options():
     return ["Random Choice", "Completely Random"] + get_heart_colors()
+
+
+def get_magic_colors():
+    return list(magic_colors.keys())
+
+
+def get_magic_color_options():
+    return ["Random Choice", "Completely Random"] + get_magic_colors()
 
 
 def patch_targeting(rom, settings, log, symbols):
@@ -301,6 +320,27 @@ def patch_sword_trails(rom, settings, log, symbols):
     log.sword_trail_duration = settings.sword_trail_duration
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
+def patch_magic_colors(rom, settings, log, symbols):
+    magic = 'Magic Meter Color'
+    magic_option = settings.magic_color
+
+    magic_color_list = get_magic_colors()
+
+    if magic_option == 'Random Choice':
+        magic_option = random.choice(magic_color_list)
+    
+    if magic_option == 'Completely Random':
+        color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+    elif magic_option in magic_colors:
+        color = list(magic_colors[magic_option])
+    else:
+        color = list(int(magic_option[i:i+2], 16) for i in (0, 2 ,4))
+        magic_option = 'Custom'
+    rom.write_byte(symbols["CFG_MAGIC_COLOR_RED"], color[0])
+    rom.write_byte(symbols["CFG_MAGIC_COLOR_GREEN"], color[1])
+    rom.write_byte(symbols["CFG_MAGIC_COLOR_BLUE"], color[2])
+    log.magic_colors[magic] = dict(option=magic_option, color=''.join(['{:02X}'.format(c) for c in color]))
+
 
 def patch_gauntlet_colors(rom, settings, log, symbols):
     # patch gauntlet colors
@@ -432,22 +472,30 @@ patch_sets = {
         "patches": [
             patch_dpad,
             patch_sword_trails,
+            patch_magic_colors,
         ],
         "symbols": {    
             "CFG_DISPLAY_DPAD": 0x03480814,
             "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03480815,
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03480816,
+            "CFG_MAGIC_COLOR_RED": 0x3480817,
+            "CFG_MAGIC_COLOR_GREEN": 0x3480818,
+            "CFG_MAGIC_COLOR_BLUE": 0x3480819,
         },
     },
     0x1F05D3F9: {
         "patches": [
             patch_dpad,
             patch_sword_trails,
+            patch_magic_colors,
         ],
         "symbols": {    
             "CFG_DISPLAY_DPAD": 0x03481004,
             "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03481005,
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481006,
+            "CFG_MAGIC_COLOR_RED": 0x3481007,
+            "CFG_MAGIC_COLOR_GREEN": 0x3481008,
+            "CFG_MAGIC_COLOR_BLUE": 0x3481009,
         },
     },
     0x1F0693FA: {
@@ -607,6 +655,7 @@ class CosmeticsLog(object):
         self.sword_colors = {}
         self.gauntlet_colors = {}
         self.heart_colors = {}
+        self.magic_colors = {}
         self.sfx = {}
         self.bgm = {}
         self.error = None
@@ -665,6 +714,10 @@ class CosmeticsLog(object):
         for heart, options in self.heart_colors.items():
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=heart+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+
+        for magic, options in self.magic_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=magic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         output += '\n\nSFX:\n'
         for key, value in self.sfx.items():

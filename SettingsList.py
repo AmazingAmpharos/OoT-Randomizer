@@ -120,6 +120,24 @@ class Scale(Setting_Info):
 
         super().__init__(name, int, shared, choices, default, dependency, gui_params)
 
+<<<<<<< Dev
+=======
+def parse_custom_sword_color(s):
+    return parse_color(s, get_sword_color_options())
+
+def parse_custom_magic_color(s):
+    return parse_color(s, get_magic_color_options())
+
+def parse_color(s, color_choices):
+    if s == 'Custom Color':
+        raise argparse.ArgumentTypeError('Specify custom color by using \'Custom (#xxxxxx)\'')
+    elif re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', s):
+        return re.findall(r'[A-Fa-f0-9]{6}', s)[0]
+    elif s in color_choices:
+        return s
+    else:
+        raise argparse.ArgumentTypeError('Invalid color specified')
+>>>>>>> Magic Meter Colors
 
 def logic_tricks_entry_tooltip(widget, pos):
     val = widget.get()
@@ -1876,6 +1894,7 @@ setting_infos = [
             'group':  'sword_trails',
             'widget': 'Combobox',
             'tooltip':'''\
+<<<<<<< Dev
                 'Random Choice': Choose a random
                 color from this list of colors.
                 'Completely Random': Choose a random
@@ -1940,6 +1959,30 @@ setting_infos = [
             '''
         },
     ),
+    Setting_Info('magic_color', str, 0, False,
+        {
+            'default': 'Green',
+            'type': parse_custom_magic_color,
+            'help': '''\
+                    Choose the color for your magic meter. (default: %(default)s)
+                    Color:             Make the magic meter this color.
+                    Random Choice:     Choose a random color from this list of colors.
+                    Completely Random: Choose a random color from any color the N64 can draw.
+                    '''
+        },
+        {
+            'text': 'Magic Meter Color',
+            'group': 'magic_colors',
+            'widget': 'Combobox',
+            'default': 'Green',
+            'options': get_magic_color_options(),
+            'tooltip':'''\
+                      'Random Choice': Choose a random
+                      color from this list of colors.
+                      'Completely Random': Choose a random
+                      color from any color the N64 can draw.
+                      '''
+        }),
     Combobox(
         name           = 'sfx_low_hp',
         choices        = sfx.get_setting_choices(sfx.SoundHooks.HP_LOW),
