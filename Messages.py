@@ -747,6 +747,9 @@ def update_item_messages(messages, world):
         else:
             update_message_by_id(messages, id, text, 0x23)
 
+    for id, text in MISC_MESSAGES.items():
+        update_message_by_id(messages, id, text)
+
 
 # run all keysanity related patching to add messages for dungeon specific items
 def add_item_messages(messages, shop_items, world):

@@ -13,7 +13,7 @@ from Utils import data_path
 from Messages import read_messages, update_message_by_id, read_shop_items, \
         write_shop_items, remove_unused_messages, make_player_message, \
         add_item_messages, repack_messages, shuffle_messages, \
-        get_message_by_id, MISC_MESSAGES
+        get_message_by_id
 from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
@@ -1357,10 +1357,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     if world.world_count > 1:
        tycoon_message = make_player_message(tycoon_message)
     update_message_by_id(messages, 0x00F8, tycoon_message, 0x23)
-
-    # Finally, update any messages in MISC_MESSAGES
-    for id, text in MISC_MESSAGES.items():
-        update_message_by_id(messages, id, text)
 
     repack_messages(rom, messages)
     write_shop_items(rom, shop_item_file.start + 0x1DEC, shop_items)
