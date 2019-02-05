@@ -392,6 +392,7 @@ def cosmetic_patch(settings, window=dummy_window()):
     rom.original = copy.copy(rom.buffer)
     rom.changed_address = {}
     rom.changed_dma = {}
+    rom.force_patch = []
 
     window.update_status('Patching ROM')
     patchfilename = '%s_Cosmetic.zpf' % output_path
