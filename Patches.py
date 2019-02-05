@@ -1273,6 +1273,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
             item = read_rom_item(rom, i)
             item['chest_type'] = 0
             write_rom_item(rom, i, item)
+    if world.bridge == 'tokens':
+        item = read_rom_item(rom, 0x5B)
+        item['chest_type'] = 0
+        write_rom_item(rom, 0x5B, item)       
 
     # Update chest type sizes
     if world.correct_chest_sizes:
