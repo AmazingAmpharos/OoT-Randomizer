@@ -12,7 +12,8 @@ from Hints import writeGossipStoneHints, buildBossRewardHints, \
 from Utils import data_path
 from Messages import read_messages, update_message_by_id, read_shop_items, \
         write_shop_items, remove_unused_messages, make_player_message, \
-        add_item_messages, repack_messages, shuffle_messages, get_message_by_id
+        add_item_messages, repack_messages, shuffle_messages, \
+        get_message_by_id
 from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 
@@ -1281,7 +1282,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
             try:
                 location = world.get_location(chest_name)
             except KeyError:
-                # MQ/Vanilla veriant does not exist
+                # MQ/Vanilla variant does not exist
                 continue
 
             item = read_rom_item(rom, location.item.index)
@@ -1620,7 +1621,7 @@ def create_fake_name(name):
     
     # keeping the game E...
     new_name = ''.join(list_name)
-    censor = ['dike', 'cunt', 'cum', 'puss', 'shit', 'penis']
+    censor = ['cum', 'cunt', 'dike', 'penis', 'puss', 'shit']
     new_name_az = re.sub(r'[^a-zA-Z]', '', new_name.lower(), re.UNICODE)
     for cuss in censor:
         if cuss in new_name_az:
@@ -1632,8 +1633,7 @@ def place_shop_items(rom, world, shop_items, messages, locations, init_shop_id=F
     if init_shop_id:
         place_shop_items.shop_id = 0x32
 
-    shop_objs = { 0x0148 } # Sold Out
-    messages
+    shop_objs = { 0x0148 } # "Sold Out" object
     for location in locations:
         if location.item.type == 'Shop':
             shop_objs.add(location.item.special['object'])
