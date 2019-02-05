@@ -1,5 +1,6 @@
 {
 <<<<<<< Dev
+<<<<<<< Dev
     "ADULT_INIT_ITEMS": "03481EE8",
     "ADULT_VALID_ITEMS": "03481EF0",
     "BOMBCHUS_IN_LOGIC": "03481410",
@@ -16,12 +17,22 @@
     "CFG_MAGIC_COLOR_GREEN": "03481008",
     "CFG_MAGIC_COLOR_RED": "03481007",
 >>>>>>> Magic Meter Colors
+=======
+    "ADULT_INIT_ITEMS": "03481EE4",
+    "ADULT_VALID_ITEMS": "03481EEC",
+    "BOMBCHUS_IN_LOGIC": "0348140C",
+    "CFG_DISPLAY_DPAD": "03481004",
+    "CFG_MAGIC_COLOR_BLUE": "03481009",
+    "CFG_MAGIC_COLOR_GREEN": "03481008",
+    "CFG_MAGIC_COLOR_RED": "03481007",
+>>>>>>> Magic Meter Colors
     "CFG_RAINBOW_SWORD_INNER_ENABLED": "03481005",
     "CFG_RAINBOW_SWORD_OUTER_ENABLED": "03481006",
 <<<<<<< Dev
     "CHEST_SIZE_MATCH_CONTENTS": "03482554",
     "COOP_VERSION": "03480000",
     "COSMETIC_FORMAT_VERSION": "03481000",
+<<<<<<< Dev
     "DEBUG_OFFSET": "03482614",
     "DPAD_TEXTURE": "03489670",
     "FAST_CHESTS": "03481422",
@@ -30,6 +41,22 @@
     "GET_CHEST_OVERRIDE_COLOR_WRAPPER": "03482584",
     "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482558",
     "GOSSIP_HINT_CONDITION": "03481418",
+=======
+<<<<<<< Dev
+    "DEBUG_OFFSET": "0348260C",
+    "DPAD_TEXTURE": "034895A8",
+=======
+<<<<<<< Dev
+    "DEBUG_OFFSET": "034825B8",
+    "DPAD_TEXTURE": "03489480",
+>>>>>>> Magic Meter Colors
+    "FAST_CHESTS": "0348141A",
+    "FONT_TEXTURE": "034880E0",
+    "FREE_SCARECROW_ENABLED": "03481414",
+    "GET_CHEST_OVERRIDE_COLOR_WRAPPER": "0348257C",
+    "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482550",
+    "GOSSIP_HINT_CONDITION": "03481410",
+>>>>>>> Magic Meter Colors
     "INCOMING_ITEM": "03480006",
 <<<<<<< Dev
     "INITIAL_SAVE_DATA": "03481010",
@@ -44,6 +71,9 @@
 =======
     "DEBUG_OFFSET": "034825E8",
 <<<<<<< Dev
+<<<<<<< Dev
+=======
+>>>>>>> Magic Meter Colors
     "DPAD_TEXTURE": "03489458",
     "FAST_CHESTS": "0348141E",
     "FONT_TEXTURE": "03487F90",
@@ -56,6 +86,7 @@
     "JABU_ELEVATOR_ENABLE": "0348141C",
     "OCARINAS_SHUFFLED": "0348141D",
 >>>>>>> Magic Meter Colors
+<<<<<<< Dev
 <<<<<<< Dev
 >>>>>>> Magic Meter Colors
 =======
@@ -87,12 +118,15 @@
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
 =======
 >>>>>>> Rebased to 4.0.4
+=======
+>>>>>>> Magic Meter Colors
     "OUTGOING_ITEM": "0348000C",
     "OUTGOING_KEY": "03480008",
     "OUTGOING_PLAYER": "0348000E",
     "PLAYER_ID": "03480004",
     "PLAYER_NAMES": "03480010",
     "PLAYER_NAME_ID": "03480005",
+<<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
@@ -142,9 +176,12 @@
 =======
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
 <<<<<<< Dev
+=======
+>>>>>>> Magic Meter Colors
     "RAINBOW_BRIDGE_CONDITION": "0348140C",
     "SHUFFLE_COWS": "0348141B",
     "TIME_TRAVEL_SAVED_EQUIPS": "03481C04",
+<<<<<<< Dev
     "active_item_action_id": "03487044",
     "active_item_fast_chest": "03487034",
     "active_item_graphic_id": "03487038",
@@ -182,6 +219,7 @@
     "satisified_pending_frames": "03487030",
     "setup_db": "03485FC8",
     "stones_sprite": "03486040"
+<<<<<<< Dev
 >>>>>>> Magic Meter Colors
 =======
     "RAINBOW_BRIDGE_CONDITION": "03481410",
@@ -225,4 +263,86 @@
     "setup_db": "03485FF8",
     "stones_sprite": "03486070"
 >>>>>>> Rebased to 4.1.17
+=======
+=======
+    "active_item_action_id": "03486F1C",
+    "active_item_fast_chest": "03486F0C",
+    "active_item_graphic_id": "03486F10",
+    "active_item_object_id": "03486F14",
+    "active_item_row": "03486F20",
+    "active_item_text_id": "03486F18",
+    "active_override": "03486F28",
+    "active_override_is_outgoing": "03486F24",
+    "cfg_dungeon_info_enable": "03486EE0",
+    "cfg_dungeon_info_mq_enable": "03486EFC",
+    "cfg_dungeon_info_mq_need_map": "03486EF8",
+    "cfg_dungeon_info_reward_need_altar": "03486EF0",
+    "cfg_dungeon_info_reward_need_compass": "03486EF4",
+    "cfg_dungeon_is_mq": "03486F4C",
+    "cfg_dungeon_rewards": "03485DA0",
+    "cfg_file_select_hash": "03486F00",
+    "cfg_item_overrides": "03486F74",
+    "dpad_sprite": "03485EC8",
+    "dummy_actor": "03486F30",
+    "dungeon_count": "03486EE4",
+    "dungeons": "03485DC4",
+    "font_sprite": "03485ED8",
+    "hash_sprites": "03486EE8",
+    "hash_symbols": "03485E60",
+    "heap_next": "03486F48",
+    "item_overrides_count": "03486F34",
+    "item_table": "03485F28",
+    "items_sprite": "03485EF8",
+    "medal_colors": "03485DB0",
+    "medals_sprite": "03485F08",
+    "object_slots": "03487F74",
+    "pending_freezes": "03486F38",
+    "pending_item_queue": "03486F5C",
+    "quest_items_sprite": "03485EE8",
+    "satisified_pending_frames": "03486F08",
+    "setup_db": "03485EA0",
+    "stones_sprite": "03485F18"
+=======
+    "RAINBOW_BRIDGE_CONDITION": "03481410",
+    "TIME_TRAVEL_SAVED_EQUIPS": "03481C08",
+    "active_item_action_id": "03486EF8",
+    "active_item_fast_chest": "03486EE8",
+    "active_item_graphic_id": "03486EEC",
+    "active_item_object_id": "03486EF0",
+    "active_item_row": "03486EFC",
+    "active_item_text_id": "03486EF4",
+    "active_override": "03486F04",
+    "active_override_is_outgoing": "03486F00",
+    "cfg_dungeon_info_enable": "03486EC0",
+    "cfg_dungeon_info_mq_enable": "03486EDC",
+    "cfg_dungeon_info_mq_need_map": "03486ED8",
+    "cfg_dungeon_info_reward_need_altar": "03486ED0",
+    "cfg_dungeon_info_reward_need_compass": "03486ED4",
+    "cfg_dungeon_is_mq": "03486F28",
+    "cfg_dungeon_rewards": "03485D80",
+    "cfg_file_select_hash": "03486EE0",
+    "cfg_item_overrides": "03486F50",
+    "dpad_sprite": "03485EA8",
+    "dummy_actor": "03486F0C",
+    "dungeon_count": "03486EC4",
+    "dungeons": "03485DA4",
+    "font_sprite": "03485EB8",
+    "hash_sprites": "03486EC8",
+    "hash_symbols": "03485E40",
+    "heap_next": "03486F24",
+    "item_overrides_count": "03486F10",
+    "item_table": "03485F08",
+    "items_sprite": "03485ED8",
+    "medal_colors": "03485D90",
+    "medals_sprite": "03485EE8",
+    "object_slots": "03487F50",
+    "pending_freezes": "03486F14",
+    "pending_item_queue": "03486F38",
+    "quest_items_sprite": "03485EC8",
+    "satisified_pending_frames": "03486EE4",
+    "setup_db": "03485E80",
+    "stones_sprite": "03485EF8"
+>>>>>>> Magic Meter Colors
+>>>>>>> Magic Meter Colors
+>>>>>>> Magic Meter Colors
 }

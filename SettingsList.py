@@ -1,7 +1,7 @@
 import argparse
 import re
 import math
-from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options, get_gauntlet_color_options
+from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options, get_gauntlet_color_options, get_magic_color_options
 from Location import LocationIterator
 import Sounds as sfx
 

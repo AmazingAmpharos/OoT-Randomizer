@@ -137,8 +137,6 @@ def get_sword_colors():
 def get_sword_color_options():
     return ["Random Choice", "Completely Random"] + get_sword_colors()
 
-def get_gauntlet_colors():
-    return list(gauntlet_colors.keys())
 
 def get_gauntlet_colors():
     return list(gauntlet_colors.keys())
@@ -322,7 +320,6 @@ def patch_sword_trails(rom, settings, log, symbols):
     log.sword_trail_duration = settings.sword_trail_duration
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
-    rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
 def patch_magic_colors(rom, settings, log, symbols):
     magic = 'Magic Meter Color'
@@ -476,22 +473,30 @@ patch_sets = {
         "patches": [
             patch_dpad,
             patch_sword_trails,
+            patch_magic_colors,
         ],
         "symbols": {    
             "CFG_DISPLAY_DPAD": 0x03480814,
             "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03480815,
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03480816,
+            "CFG_MAGIC_COLOR_RED": 0x3480817,
+            "CFG_MAGIC_COLOR_GREEN": 0x3480818,
+            "CFG_MAGIC_COLOR_BLUE": 0x3480819,
         },
     },
     0x1F05D3F9: {
         "patches": [
             patch_dpad,
             patch_sword_trails,
+            patch_magic_colors,
         ],
         "symbols": {    
             "CFG_DISPLAY_DPAD": 0x03481004,
             "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03481005,
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481006,
+            "CFG_MAGIC_COLOR_RED": 0x3481007,
+            "CFG_MAGIC_COLOR_GREEN": 0x3481008,
+            "CFG_MAGIC_COLOR_BLUE": 0x3481009,
         },
     },
     0x1F06AD90: {
@@ -721,6 +726,10 @@ class CosmeticsLog(object):
         for gauntlet, options in self.gauntlet_colors.items():
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=gauntlet+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+            
+        for magic, options in self.magic_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=magic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         for heart, options in self.heart_colors.items():
             color_option_string = '{option} (#{color})'
