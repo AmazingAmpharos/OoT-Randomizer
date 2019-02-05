@@ -222,55 +222,65 @@ def patch_navi_colors(rom, settings, log, symbols):
     # patch navi colors
     navi = [
         # colors for Navi
-        ('Navi Idle', settings.navi_color_default, [0x00B5E184]), # Default
-        ('Navi Targeting Enemy', settings.navi_color_enemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
-        ('Navi Targeting NPC', settings.navi_color_npc,     [0x00B5E194]), # NPC
-        ('Navi Targeting Prop', settings.navi_color_prop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
+        ('Navi Idle Core', settings.navi_color_default_inner, [0x00B5E184]), # Default
+        ('Navi Targeting Enemy Core', settings.navi_color_enemy_inner,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+        ('Navi Targeting NPC Core',   settings.navi_color_npc_inner,     [0x00B5E194]), # NPC
+        ('Navi Targeting Prop Core',  settings.navi_color_prop_inner,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
                                   0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4,
                                   0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
+        ('Navi Idle Glow', settings.navi_color_default_outer, [0x00B5E188]), # Default
+        ('Navi Targeting Enemy Glow', settings.navi_color_enemy_outer,   [0x00B5E1A0, 0x00B5E1C0]), # Enemy, Boss
+        ('Navi Targeting NPC Glow',   settings.navi_color_npc_outer,     [0x00B5E198]), # NPC
+        ('Navi Targeting Prop Glow',  settings.navi_color_prop_outer,    [0x00B5E178, 0x00B5E180, 0x00B5E190,
+                                  0x00B5E1A8, 0x00B5E1B0, 0x00B5E1B8,
+                                  0x00B5E1C8, 0x00B5E1D0, 0x00B5E1D8]), # Everything else
     ]
     navi_color_list = get_navi_colors()
     for navi_action, navi_option, navi_addresses in navi:
         # choose a random choice for the whole group
         if navi_option == 'Random Choice':
-            navi_option = random.choice(navi_color_list)
+            if navi_action in navi[0:4]:
+               navi_option = random.choice(navi_color_list)[0:3]
+            else:
+               navi_option = random.choice(navi_color_list)[3:6]
         custom_color = False
         for address in navi_addresses:
             # completely random is random for every subgroup
             if navi_option == 'Completely Random':
-                colors = ([random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)],
-                         [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)])
+                colors = ([random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)])
                 if navi_action not in log.navi_colors:
                     log.navi_colors[navi_action] = list()
-                log.navi_colors[navi_action].append(dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in list(colors[0])]), color2=''.join(['{:02X}'.format(c) for c in list(colors[1])])))
+                log.navi_colors[navi_action].append(dict(option=navi_option, color=''.join(['{:02X}'.format(c) for c in color])))
             # grab the color from the list
             elif navi_option in NaviColors:
-                colors = list(NaviColors[navi_option][0]), list(NaviColors[navi_option][1])
+                if navi_action in navi[0:4]:
+                    color = list(NaviColors[navi_option][0:3])
+                else:
+                    color = list(NaviColors[navi_option][3:6])
             # build color from hex code
             else:
-                inner_color = list(int(navi_option[i:i+2], 16) for i in (0, 2 ,4))
-                if len(navi_option) / 6 == 1:
-                    outer_color = inner_color
-                else:
-                    outer_color = list(int(navi_option[i:i+2], 16) for i in (6, 8 ,10))
-                colors = (inner_color, outer_color)
+                color = list(int(navi_option[i:i+2], 16) for i in (0, 2 ,4))
                 custom_color = True
 
-            color = colors[0] + [0xFF] + colors[1] + [0xFF]
+            color = color + [0xFF]
             rom.write_bytes(address, color)
         if custom_color:
             navi_option = 'Custom'
         if navi_action not in log.navi_colors:
-            log.navi_colors[navi_action] = [dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in list(colors[0])]), color2=''.join(['{:02X}'.format(c) for c in list(colors[1])]))]
+            log.navi_colors[navi_action] = dict(option=navi_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
 def patch_sword_trails(rom, settings, log, symbols):
     # patch sword trail colors
     sword_trails = [
-        ('Inner Initial Sword Trail', settings.sword_trail_color_inner, 
-            [(0x00BEFF80, 0xB0, 0x40), (0x00BEFF88, 0x20, 0x00)], symbols['CFG_RAINBOW_SWORD_INNER_ENABLED']),
-        ('Outer Initial Sword Trail', settings.sword_trail_color_outer, 
-            [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
+        ('Inner Initial Sword Trail', settings.sword_trail_color_inner_initial, 
+            [(0x00BEFF80, 0xB0, 0xFF), symbols['CFG_RAINBOW_SWORD_INNER_ENABLED']),
+        ('Outer Initial Sword Trail', settings.sword_trail_color_outer_initial,
+            [(0x00BEFF7C, 0xB0, 0x40), symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
+        ('Inner Fade Sword Trail', settings.sword_trail_color_inner_fade,
+            [(0x00BEFF88, 0x20, 0x00)], symbols['CFG_RAINBOW_SWORD_INNER_ENABLED']),
+        ('Outer Fade Sword Trail', settings.sword_trail_color_outer_fade,
+            [(0x00BEFF84, 0x10, 0x00)], symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
     ]
 
     sword_color_list = get_sword_colors()
@@ -280,7 +290,10 @@ def patch_sword_trails(rom, settings, log, symbols):
 
         # handle random
         if sword_trail_option == 'Random Choice':
-            sword_trail_option = random.choice(sword_color_list)
+            if index < 2:
+               sword_trail_option = random.choice(sword_color_list)[0:3]
+            else:
+               sword_trail_option = random.choice(sword_color_list)[3:6]
 
         custom_color = False
         for index, (address, transparency, white_transparency) in enumerate(sword_trail_addresses):

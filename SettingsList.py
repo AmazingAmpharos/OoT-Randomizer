@@ -1853,7 +1853,7 @@ setting_infos = [
         choices        = get_sword_color_options(),
         default        = 'White',
         gui_params     = {
-            'text':   'Inner Color',
+            'text':   'Inner Start Color',
             'group':  'sword_trails',
             'widget': 'Combobox',
             'tooltip':'''\
@@ -1866,16 +1866,16 @@ setting_infos = [
         },
     ),
     Setting_Info(
-        name           = 'sword_trail_color_outer',
+        name           = 'sword_trail_color_inner_fade',
         type           = str,
         shared         = False,
         choices        = get_sword_color_options(),
         default        = 'White',
         gui_params     = {
-            'text':   'Outer Color',
+            'text':   'Inner Fade Color',
             'group':  'sword_trails',
             'widget': 'Combobox',
-            'tooltip':'''\
+            'tooltip': '''\
                 'Random Choice': Choose a random
                 color from this list of colors.
                 'Completely Random': Choose a random
