@@ -1247,12 +1247,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         for (scrub_item, default_price, text_id, text_replacement) in business_scrubs:
             if scrub_item not in single_item_scrubs.keys():
                 continue
-            item = single_item_scrubs[scrub_item].item
-            if item.looks_like_item is not None:
-                item_name = create_fake_name(item.looks_like_item.name)
-            else:
-                item_name = item.name
-            scrub_message_dict[text_id] = update_scrub_text(get_message_by_id(messages, text_id).raw_text, text_replacement, default_price, default_price, item_name)
+            scrub_message_dict[text_id] = update_scrub_text(get_message_by_id(messages, text_id).raw_text, text_replacement, default_price, default_price)
     else:
         # Rebuild Business Scrub Item Table
         rom.seek_address(0xDF8684)
@@ -1264,16 +1259,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
             rom.write_int32(None, 0x80A74FF8)  # Can_Buy_Func
             rom.write_int32(None, 0x80A75354)  # Buy_Func
 
-            # Get item name for 3 single item scrubs
-            if scrub_item in single_item_scrubs.keys():
-                item = single_item_scrubs[scrub_item].item
-                if item.looks_like_item is not None:
-                    item_name = create_fake_name(item.looks_like_item.name)
-                else:
-                    item_name = item.name
-            else:
-                item_name = None
-            scrub_message_dict[text_id] = update_scrub_text(get_message_by_id(messages, text_id).raw_text, text_replacement, default_price, price, item_name)
+            scrub_message_dict[text_id] = update_scrub_text(get_message_by_id(messages, text_id).raw_text, text_replacement, default_price, price)
 
         # update actor IDs
         set_deku_salesman_data(rom)
