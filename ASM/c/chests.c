@@ -1,7 +1,6 @@
 #include "chests.h"
 
 extern uint32_t CHEST_SIZE_MATCH_CONTENTS;
-extern uint32_t RAINBOW_BRIDGE_CONDITION;
 
 uint8_t get_chest_override_size(z64_actor_t *actor) {
 	if (!CHEST_SIZE_MATCH_CONTENTS) {
@@ -17,11 +16,6 @@ uint8_t get_chest_override_size(z64_actor_t *actor) {
 		// If no override, return normal type
 		return ((uint8_t*)actor)[0x01E9]; // Chest type
 	}
-
-    // Small chest for GS in 100 GS mode
-    if (override.value.item_id == 0x5B && RAINBOW_BRIDGE_CONDITION == 5) {
-        return 5;
-    }
 
 	item_row_t *item_row = get_item_row(override.value.item_id);
 	if (item_row->chest_type & 0x01) {
@@ -49,11 +43,6 @@ uint8_t get_chest_override_color(z64_actor_t *actor) {
 		// If no override, return normal type
 		return ((uint8_t*)actor)[0x01E9]; // Chest type
 	}
-
-    // Gold chest for GS in 100 GS mode
-    if (override.value.item_id == 0x5B && RAINBOW_BRIDGE_CONDITION == 5) {
-        return 2;
-    }
 
 	item_row_t *item_row = get_item_row(override.value.item_id);
 	if (item_row->chest_type & 0x02) {
