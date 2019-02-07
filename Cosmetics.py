@@ -335,30 +335,6 @@ def patch_sword_trails(rom, settings, log, symbols):
     log.sword_trail_duration = settings.sword_trail_duration
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
-    rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
-
-def patch_magic_colors(rom, settings, log, symbols):
-    magic = 'Magic Meter Color'
-    magic_option = settings.magic_color
-
-    magic_color_list = get_magic_colors()
-
-    if magic_option == 'Random Choice':
-        magic_option = random.choice(magic_color_list)
-    
-    if magic_option == 'Completely Random':
-        color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
-    elif magic_option in magic_colors:
-        color = list(magic_colors[magic_option])
-    else:
-        color = list(int(magic_option[i:i+2], 16) for i in (0, 2 ,4))
-        magic_option = 'Custom'
-    rom.write_byte(symbols["CFG_MAGIC_COLOR_RED"], color[0])
-    rom.write_byte(symbols["CFG_MAGIC_COLOR_GREEN"], color[1])
-    rom.write_byte(symbols["CFG_MAGIC_COLOR_BLUE"], color[2])
-    log.magic_colors[magic] = dict(option=magic_option, color=''.join(['{:02X}'.format(c) for c in color]))
-
-
 def patch_gauntlet_colors(rom, settings, log, symbols):
     # patch gauntlet colors
     gauntlets = [
