@@ -54,13 +54,32 @@
     "JABU_ELEVATOR_ENABLE": "0348141C",
     "OCARINAS_SHUFFLED": "0348141D",
 >>>>>>> Magic Meter Colors
+<<<<<<< Dev
 >>>>>>> Magic Meter Colors
+=======
+=======
+    "DEBUG_OFFSET": "034825E8",
+    "DPAD_TEXTURE": "034894B0",
+    "FAST_CHESTS": "0348141E",
+    "FONT_TEXTURE": "03487FE8",
+    "FREE_SCARECROW_ENABLED": "03481418",
+    "GET_CHEST_OVERRIDE_COLOR_WRAPPER": "0348257C",
+    "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482550",
+    "GOSSIP_HINT_CONDITION": "03481414",
+    "INCOMING_ITEM": "03480006",
+    "INITIAL_SAVE_DATA": "0348100C",
+    "JABU_ELEVATOR_ENABLE": "0348141C",
+    "NO_ESCAPE_SEQUENCE": "03486F34",
+    "OCARINAS_SHUFFLED": "0348141D",
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
     "OUTGOING_ITEM": "0348000C",
     "OUTGOING_KEY": "03480008",
     "OUTGOING_PLAYER": "0348000E",
     "PLAYER_ID": "03480004",
     "PLAYER_NAMES": "03480010",
     "PLAYER_NAME_ID": "03480005",
+<<<<<<< Dev
 <<<<<<< Dev
     "RAINBOW_BRIDGE_CONDITION": "03481414",
     "SHUFFLE_COWS": "03481423",
@@ -105,6 +124,8 @@
     "setup_db": "03486080",
     "stones_sprite": "034860F8"
 =======
+=======
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
 <<<<<<< Dev
     "RAINBOW_BRIDGE_CONDITION": "0348140C",
     "SHUFFLE_COWS": "0348141B",
