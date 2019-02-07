@@ -137,8 +137,6 @@ def get_sword_colors():
 def get_sword_color_options():
     return ["Random Choice", "Completely Random"] + get_sword_colors()
 
-def get_gauntlet_colors():
-    return list(gauntlet_colors.keys())
 
 def get_gauntlet_colors():
     return list(gauntlet_colors.keys())
