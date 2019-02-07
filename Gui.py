@@ -506,6 +506,7 @@ def guiMain(settings=None):
     # Cosmetics tab - Right Side
     frames['tunic_colors'].pack(fill=BOTH, expand=True, anchor=N, side=TOP)
     frames['gauntlet_colors'].pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM)
+    frames['magic_colors'].pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM)
 
     # Cosmetics 2 tab - Left Side
     frames['navi_colors_inner'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))

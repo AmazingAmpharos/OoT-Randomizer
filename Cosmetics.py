@@ -333,6 +333,7 @@ def patch_sword_trails(rom, settings, log, symbols):
     log.sword_trail_duration = settings.sword_trail_duration
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
+
 def patch_gauntlet_colors(rom, settings, log, symbols):
     # patch gauntlet colors
     gauntlets = [
@@ -724,10 +725,6 @@ class CosmeticsLog(object):
         for heart, options in self.heart_colors.items():
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=heart+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
-
-        for magic, options in self.magic_colors.items():
-            color_option_string = '{option} (#{color})'
-            output += format_string.format(key=magic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         output += '\n\nSFX:\n'
         for key, value in self.sfx.items():
