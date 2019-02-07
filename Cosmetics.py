@@ -472,18 +472,25 @@ patch_sets = {
         "patches": [
             patch_dpad,
             patch_sword_trails,
-            patch_magic_colors,
         ],
         "symbols": {    
             "CFG_DISPLAY_DPAD": 0x03480814,
             "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03480815,
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03480816,
-            "CFG_MAGIC_COLOR_RED": 0x3480817,
-            "CFG_MAGIC_COLOR_GREEN": 0x3480818,
-            "CFG_MAGIC_COLOR_BLUE": 0x3480819,
         },
     },
     0x1F05D3F9: {
+        "patches": [
+            patch_dpad,
+            patch_sword_trails,
+        ],
+        "symbols": {    
+            "CFG_DISPLAY_DPAD": 0x03481004,
+            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03481005,
+            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481006,
+        },
+    },
+    0x1F06AD90: {
         "patches": [
             patch_dpad,
             patch_sword_trails,
