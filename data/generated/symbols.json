@@ -33,6 +33,7 @@
     "COOP_VERSION": "03480000",
     "COSMETIC_FORMAT_VERSION": "03481000",
 <<<<<<< Dev
+<<<<<<< Dev
     "DEBUG_OFFSET": "03482614",
     "DPAD_TEXTURE": "03489670",
     "FAST_CHESTS": "03481422",
@@ -42,10 +43,14 @@
     "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482558",
     "GOSSIP_HINT_CONDITION": "03481418",
 =======
+=======
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
 <<<<<<< Dev
     "DEBUG_OFFSET": "0348260C",
     "DPAD_TEXTURE": "034895A8",
 =======
+=======
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
 <<<<<<< Dev
     "DEBUG_OFFSET": "034825B8",
     "DPAD_TEXTURE": "03489480",
@@ -88,6 +93,7 @@
 >>>>>>> Magic Meter Colors
 <<<<<<< Dev
 <<<<<<< Dev
+<<<<<<< Dev
 >>>>>>> Magic Meter Colors
 =======
 =======
@@ -107,10 +113,21 @@
     "FREE_SCARECROW_ENABLED": "03481418",
     "GET_CHEST_OVERRIDE_COLOR_WRAPPER": "03482580",
     "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482554",
+=======
+=======
+    "DEBUG_OFFSET": "034825E8",
+    "DPAD_TEXTURE": "034894B0",
+    "FAST_CHESTS": "0348141E",
+    "FONT_TEXTURE": "03487FE8",
+    "FREE_SCARECROW_ENABLED": "03481418",
+    "GET_CHEST_OVERRIDE_COLOR_WRAPPER": "0348257C",
+    "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482550",
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
     "GOSSIP_HINT_CONDITION": "03481414",
     "INCOMING_ITEM": "03480006",
     "INITIAL_SAVE_DATA": "0348100C",
     "JABU_ELEVATOR_ENABLE": "0348141C",
+<<<<<<< Dev
     "NO_ESCAPE_SEQUENCE": "0348705C",
     "OCARINAS_SHUFFLED": "0348141D",
 <<<<<<< Dev
@@ -120,12 +137,18 @@
 >>>>>>> Rebased to 4.0.4
 =======
 >>>>>>> Magic Meter Colors
+=======
+    "NO_ESCAPE_SEQUENCE": "03486F34",
+    "OCARINAS_SHUFFLED": "0348141D",
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
     "OUTGOING_ITEM": "0348000C",
     "OUTGOING_KEY": "03480008",
     "OUTGOING_PLAYER": "0348000E",
     "PLAYER_ID": "03480004",
     "PLAYER_NAMES": "03480010",
     "PLAYER_NAME_ID": "03480005",
+<<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
@@ -178,6 +201,8 @@
 <<<<<<< Dev
 =======
 >>>>>>> Magic Meter Colors
+=======
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
     "RAINBOW_BRIDGE_CONDITION": "0348140C",
     "SHUFFLE_COWS": "0348141B",
     "TIME_TRAVEL_SAVED_EQUIPS": "03481C04",
@@ -343,6 +368,53 @@
     "setup_db": "03485E80",
     "stones_sprite": "03485EF8"
 >>>>>>> Magic Meter Colors
+<<<<<<< Dev
 >>>>>>> Magic Meter Colors
+<<<<<<< Dev
 >>>>>>> Magic Meter Colors
+=======
+=======
+=======
+    "RAINBOW_BRIDGE_CONDITION": "03481410",
+    "TIME_TRAVEL_SAVED_EQUIPS": "03481C08",
+    "active_item_action_id": "03486F4C",
+    "active_item_fast_chest": "03486F3C",
+    "active_item_graphic_id": "03486F40",
+    "active_item_object_id": "03486F44",
+    "active_item_row": "03486F50",
+    "active_item_text_id": "03486F48",
+    "active_override": "03486F58",
+    "active_override_is_outgoing": "03486F54",
+    "cfg_dungeon_info_enable": "03486F10",
+    "cfg_dungeon_info_mq_enable": "03486F2C",
+    "cfg_dungeon_info_mq_need_map": "03486F28",
+    "cfg_dungeon_info_reward_need_altar": "03486F20",
+    "cfg_dungeon_info_reward_need_compass": "03486F24",
+    "cfg_dungeon_is_mq": "03486F7C",
+    "cfg_dungeon_rewards": "03485DD0",
+    "cfg_file_select_hash": "03486F30",
+    "cfg_item_overrides": "03486FA4",
+    "dpad_sprite": "03485EF8",
+    "dummy_actor": "03486F60",
+    "dungeon_count": "03486F14",
+    "dungeons": "03485DF4",
+    "font_sprite": "03485F08",
+    "hash_sprites": "03486F18",
+    "hash_symbols": "03485E90",
+    "heap_next": "03486F78",
+    "item_overrides_count": "03486F64",
+    "item_table": "03485F58",
+    "items_sprite": "03485F28",
+    "medal_colors": "03485DE0",
+    "medals_sprite": "03485F38",
+    "object_slots": "03487FA4",
+    "pending_freezes": "03486F68",
+    "pending_item_queue": "03486F8C",
+    "quest_items_sprite": "03485F18",
+    "satisified_pending_frames": "03486F38",
+    "setup_db": "03485ED0",
+    "stones_sprite": "03485F48"
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
+>>>>>>> Updating ASM Symbols, updated to 4.0.0
 }
