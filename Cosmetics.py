@@ -64,19 +64,19 @@ NaviColors = {          # Inner Core Color         Outer Glow Color
     "Phantom Zelda":     (Color(0x97, 0x7A, 0x6C), Color(0x6F, 0x46, 0x67)),
 }
 
-sword_colors = {        # Initial Color            Fade Color
-    "Custom Color":      (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
-    "Rainbow":           (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
-    "White":             (Color(0xFF, 0xFF, 0xFF), Color(0xFF, 0xFF, 0xFF)),
-    "Red":               (Color(0xFF, 0x00, 0x00), Color(0xFF, 0x00, 0x00)),
-    "Green":             (Color(0x00, 0xFF, 0x00), Color(0x00, 0xFF, 0x00)),
-    "Blue":              (Color(0x00, 0x00, 0xFF), Color(0x00, 0x00, 0xFF)),
-    "Cyan":              (Color(0x00, 0xFF, 0xFF), Color(0x00, 0xFF, 0xFF)),
-    "Magenta":           (Color(0xFF, 0x00, 0xFF), Color(0xFF, 0x00, 0xFF)),
-    "Orange":            (Color(0xFF, 0xA5, 0x00), Color(0xFF, 0xA5, 0x00)),
-    "Gold":              (Color(0xFF, 0xD7, 0x00), Color(0xFF, 0xD7, 0x00)),
-    "Purple":            (Color(0x80, 0x00, 0x80), Color(0x80, 0x00, 0x80)),
-    "Pink":              (Color(0xFF, 0x69, 0xB4), Color(0xFF, 0x69, 0xB4)),
+sword_colors = {
+    "Custom Color":      Color(0x00, 0x00, 0x00),
+    "Rainbow":           Color(0x00, 0x00, 0x00),
+    "White":             Color(0xFF, 0xFF, 0xFF),
+    "Red":               Color(0xFF, 0x00, 0x00),
+    "Green":             Color(0x00, 0xFF, 0x00),
+    "Blue":              Color(0x00, 0x00, 0xFF),
+    "Cyan":              Color(0x00, 0xFF, 0xFF),
+    "Magenta":           Color(0xFF, 0x00, 0xFF),
+    "Orange":            Color(0xFF, 0xA5, 0x00),
+    "Gold":              Color(0xFF, 0xD7, 0x00),
+    "Purple":            Color(0x80, 0x00, 0x80),
+    "Pink":              Color(0xFF, 0x69, 0xB4),
 }
 
 gauntlet_colors = {
@@ -239,24 +239,24 @@ def patch_navi_colors(rom, settings, log, symbols):
     for navi_action, navi_option, navi_addresses in navi:
         # choose a random choice for the whole group
         if navi_option == 'Random Choice':
-            if navi_action in navi[0:4]:
-               navi_option = random.choice(navi_color_list)[0:3]
+            if navi_action in [i[0] for i in navi[0:4]]:
+               navi_option = random.choice(navi_color_list)[0]
             else:
-               navi_option = random.choice(navi_color_list)[3:6]
+               navi_option = random.choice(navi_color_list)[1]
         custom_color = False
         for address in navi_addresses:
             # completely random is random for every subgroup
             if navi_option == 'Completely Random':
-                colors = ([random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)])
+                color = ([random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)])
                 if navi_action not in log.navi_colors:
                     log.navi_colors[navi_action] = list()
                 log.navi_colors[navi_action].append(dict(option=navi_option, color=''.join(['{:02X}'.format(c) for c in color])))
             # grab the color from the list
             elif navi_option in NaviColors:
-                if navi_action in navi[0:4]:
-                    color = list(NaviColors[navi_option][0:3])
+                if navi_action in [i[0] for i in navi[0:4]]:
+                    color = list(NaviColors[navi_option][0])
                 else:
-                    color = list(NaviColors[navi_option][3:6])
+                    color = list(NaviColors[navi_option][1])
             # build color from hex code
             else:
                 color = list(int(navi_option[i:i+2], 16) for i in (0, 2 ,4))
@@ -267,9 +267,9 @@ def patch_navi_colors(rom, settings, log, symbols):
         if custom_color:
             navi_option = 'Custom'
         if navi_action not in log.navi_colors:
-            log.navi_colors[navi_action] = dict(option=navi_option, color=''.join(['{:02X}'.format(c) for c in color]))
+            log.navi_colors[navi_action] = [dict(option=navi_option, color=''.join(['{:02X}'.format(c) for c in color]))]
 
-
+# TODO: Separate rainbows between fade and initial
 def patch_sword_trails(rom, settings, log, symbols):
     # patch sword trail colors
     sword_trails = [
@@ -278,25 +278,20 @@ def patch_sword_trails(rom, settings, log, symbols):
         ('Outer Initial Sword Trail', settings.sword_trail_color_outer_initial,
             [(0x00BEFF7C, 0xB0, 0x40)], symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
         ('Inner Fade Sword Trail', settings.sword_trail_color_inner_fade,
-            [(0x00BEFF88, 0x20, 0x00)], symbols['CFG_RAINBOW_SWORD_INNER_ENABLED']),
+            [(0x00BEFF88, 0x20, 0x00)], symbols['CFG_RAINBOW_SWORD_INNER_FADE_ENABLED']),
         ('Outer Fade Sword Trail', settings.sword_trail_color_outer_fade,
-            [(0x00BEFF84, 0x10, 0x00)], symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
+            [(0x00BEFF84, 0x10, 0x00)], symbols['CFG_RAINBOW_SWORD_OUTER_FADE_ENABLED']),
     ]
 
     sword_color_list = get_sword_colors()
 
-    for index, item in enumerate(sword_trails):
-        sword_trail_name, sword_trail_option, sword_trail_addresses, sword_trail_rainbow_symbol = item
-
+    for sword_trail_name, sword_trail_option, sword_trail_addresses, sword_trail_rainbow_symbol in sword_trails:
         # handle random
         if sword_trail_option == 'Random Choice':
-            if index < 2:
-               sword_trail_option = random.choice(sword_color_list)[0:3]
-            else:
-               sword_trail_option = random.choice(sword_color_list)[3:6]
+            sword_trail_option = random.choice(sword_color_list)
 
         custom_color = False
-        for index, (address, transparency, white_transparency) in enumerate(sword_trail_addresses):
+        for address, transparency, white_transparency in sword_trail_addresses:
             # set rainbow option
             if sword_trail_option == 'Rainbow':
                 rom.write_byte(sword_trail_rainbow_symbol, 0x01)
@@ -310,10 +305,10 @@ def patch_sword_trails(rom, settings, log, symbols):
                 color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
                 if sword_trail_name not in log.sword_colors:
                     log.sword_colors[sword_trail_name] = list()
-                log.sword_colors[sword_trail_name].append(dict(option=sword_trail_option, color=''.join(['{:02X}'.format(c) for c in color[0:3]])))
+                log.sword_colors[sword_trail_name] = dict(option=sword_trail_option, color=''.join(['{:02X}'.format(c) for c in color[0:3]]))
 
             elif sword_trail_option in sword_colors:
-                color = list(sword_colors[sword_trail_option][index])
+                color = list(sword_colors[sword_trail_option])
             # build color from hex code
             else:
                 color = list(int(sword_trail_option[i:i+2], 16) for i in (0, 2 ,4))
@@ -329,7 +324,7 @@ def patch_sword_trails(rom, settings, log, symbols):
         if custom_color:
             sword_trail_option = 'Custom'
         if sword_trail_name not in log.sword_colors:
-            log.sword_colors[sword_trail_name] = [dict(option=sword_trail_option, color=''.join(['{:02X}'.format(c) for c in color[0:3]]))]
+            log.sword_colors[sword_trail_name] = dict(option=sword_trail_option, color=''.join(['{:02X}'.format(c) for c in color[0:3]]))
     log.sword_trail_duration = settings.sword_trail_duration
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
@@ -495,6 +490,8 @@ patch_sets = {
             "CFG_MAGIC_COLOR_RED": 0x3481007,
             "CFG_MAGIC_COLOR_GREEN": 0x3481008,
             "CFG_MAGIC_COLOR_BLUE": 0x3481009,
+            "CFG_RAINBOW_SWORD_INNER_FADE_ENABLED": 0x0348100A,
+            "CFG_RAINBOW_SWORD_OUTER_FADE_ENABLED": 0x0348100B,
         },
     },
     0x1F06AD90: {
@@ -700,23 +697,18 @@ class CosmeticsLog(object):
         for tunic, options in self.tunic_colors.items():
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=tunic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
-        for gauntlet, options in self.gauntlet_colors.items():
-            color_option_string = '{option} (#{color})'
-            output += format_string.format(key=gauntlet+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         for navi_action, list in self.navi_colors.items():
             for i, options in enumerate(list):
-                color_option_string = '{option} (#{color1}, #{color2})'
-                output += format_string.format(key=(navi_action+':') if i == 0 else '', value=color_option_string.format(option=options['option'], color1=options['color1'], color2=options['color2']), width=padding)
+                color_option_string = '{option} (#{color})'
+                output += format_string.format(key=(navi_action+':') if i == 0 else '', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
-        if 'sword_colors' in self.__dict__:
-            for sword_trail, list in self.sword_colors.items():
-                for i, options in enumerate(list):
-                    if options['option'] == 'Rainbow':
-                        color_option_string = '{option}'
-                    else:
-                        color_option_string = '{option} (#{color})'
-                    output += format_string.format(key=(sword_trail+':') if i == 0 else '', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+        for sword_trail, options in self.sword_colors.items():
+            if options['option'] == 'Rainbow':
+                color_option_string = '{option}'
+            else:
+                color_option_string = '{option} (#{color})'
+            output += format_string.format(key=sword_trail+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         if 'sword_trail_duration' in self.__dict__:
             output += format_string.format(key='Sword Trail Duration:', value=self.sword_trail_duration, width=padding)

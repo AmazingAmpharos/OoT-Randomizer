@@ -10,6 +10,8 @@ static uint32_t frames = 0;
 
 extern uint8_t CFG_RAINBOW_SWORD_INNER_ENABLED;
 extern uint8_t CFG_RAINBOW_SWORD_OUTER_ENABLED;
+extern uint8_t CFG_RAINBOW_SWORD_INNER_FADE_ENABLED;
+extern uint8_t CFG_RAINBOW_SWORD_OUTER_FADE_ENABLED;
 
 typedef struct
 {
@@ -74,13 +76,23 @@ void update_color()
     {
         colorRGB_t colorInner = get_color(frames, CYCLE_FRAMES_INNER);
         sword_trail[1].color = colorInner;
-        sword_trail[3].color = colorInner;
+    }
+
+    if (CFG_RAINBOW_SWORD_INNER_FADE_ENABLED)
+    {
+        colorRGB_t colorInnerFade = get_color(frames, CYCLE_FRAMES_INNER);
+        sword_trail[3].color = colorInnerFade;
     }
 
     if (CFG_RAINBOW_SWORD_OUTER_ENABLED)
     {
         colorRGB_t colorOuter = get_color(frames, CYCLE_FRAMES_OUTER);
         sword_trail[0].color = colorOuter;
-        sword_trail[2].color = colorOuter;
+    }
+
+    if (CFG_RAINBOW_SWORD_OUTER_FADE_ENABLED)
+    {
+        colorRGB_t colorOuterFade = get_color(frames, CYCLE_FRAMES_OUTER);
+        sword_trail[2].color = colorOuterFade;
     }
 }

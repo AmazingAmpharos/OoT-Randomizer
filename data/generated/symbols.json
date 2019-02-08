@@ -27,11 +27,18 @@
     "CFG_MAGIC_COLOR_RED": "03481007",
 >>>>>>> Magic Meter Colors
     "CFG_RAINBOW_SWORD_INNER_ENABLED": "03481005",
+    "CFG_RAINBOW_SWORD_INNER_FADE_ENABLED": "0348100A",
     "CFG_RAINBOW_SWORD_OUTER_ENABLED": "03481006",
 <<<<<<< Dev
+<<<<<<< Dev
     "CHEST_SIZE_MATCH_CONTENTS": "03482554",
+=======
+    "CFG_RAINBOW_SWORD_OUTER_FADE_ENABLED": "0348100B",
+    "CHEST_SIZE_MATCH_CONTENTS": "0348254C",
+>>>>>>> Functionality!
     "COOP_VERSION": "03480000",
     "COSMETIC_FORMAT_VERSION": "03481000",
+<<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
     "DEBUG_OFFSET": "03482614",
@@ -45,6 +52,8 @@
 =======
 =======
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
+=======
+>>>>>>> Functionality!
 <<<<<<< Dev
     "DEBUG_OFFSET": "0348260C",
     "DPAD_TEXTURE": "034895A8",
@@ -74,6 +83,7 @@
     "NO_ESCAPE_SEQUENCE": "0348702C",
     "OCARINAS_SHUFFLED": "03481419",
 =======
+<<<<<<< Dev
     "DEBUG_OFFSET": "034825E8",
 <<<<<<< Dev
 <<<<<<< Dev
@@ -115,10 +125,13 @@
     "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482554",
 =======
 =======
+>>>>>>> Functionality!
+=======
+>>>>>>> Functionality!
     "DEBUG_OFFSET": "034825E8",
-    "DPAD_TEXTURE": "034894B0",
+    "DPAD_TEXTURE": "03489500",
     "FAST_CHESTS": "0348141E",
-    "FONT_TEXTURE": "03487FE8",
+    "FONT_TEXTURE": "03488038",
     "FREE_SCARECROW_ENABLED": "03481418",
     "GET_CHEST_OVERRIDE_COLOR_WRAPPER": "0348257C",
     "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482550",
@@ -127,6 +140,7 @@
     "INCOMING_ITEM": "03480006",
     "INITIAL_SAVE_DATA": "0348100C",
     "JABU_ELEVATOR_ENABLE": "0348141C",
+<<<<<<< Dev
 <<<<<<< Dev
     "NO_ESCAPE_SEQUENCE": "0348705C",
     "OCARINAS_SHUFFLED": "0348141D",
@@ -142,12 +156,17 @@
     "OCARINAS_SHUFFLED": "0348141D",
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
+=======
+    "NO_ESCAPE_SEQUENCE": "03486F84",
+    "OCARINAS_SHUFFLED": "0348141D",
+>>>>>>> Functionality!
     "OUTGOING_ITEM": "0348000C",
     "OUTGOING_KEY": "03480008",
     "OUTGOING_PLAYER": "0348000E",
     "PLAYER_ID": "03480004",
     "PLAYER_NAMES": "03480010",
     "PLAYER_NAME_ID": "03480005",
+<<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
@@ -203,6 +222,8 @@
 >>>>>>> Magic Meter Colors
 =======
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
+=======
+>>>>>>> Functionality!
     "RAINBOW_BRIDGE_CONDITION": "0348140C",
     "SHUFFLE_COWS": "0348141B",
     "TIME_TRAVEL_SAVED_EQUIPS": "03481C04",
@@ -416,5 +437,49 @@
     "stones_sprite": "03485F48"
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
+<<<<<<< Dev
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
+=======
+=======
+    "RAINBOW_BRIDGE_CONDITION": "03481410",
+    "TIME_TRAVEL_SAVED_EQUIPS": "03481C08",
+    "active_item_action_id": "03486F9C",
+    "active_item_fast_chest": "03486F8C",
+    "active_item_graphic_id": "03486F90",
+    "active_item_object_id": "03486F94",
+    "active_item_row": "03486FA0",
+    "active_item_text_id": "03486F98",
+    "active_override": "03486FA8",
+    "active_override_is_outgoing": "03486FA4",
+    "cfg_dungeon_info_enable": "03486F60",
+    "cfg_dungeon_info_mq_enable": "03486F7C",
+    "cfg_dungeon_info_mq_need_map": "03486F78",
+    "cfg_dungeon_info_reward_need_altar": "03486F70",
+    "cfg_dungeon_info_reward_need_compass": "03486F74",
+    "cfg_dungeon_is_mq": "03486FCC",
+    "cfg_dungeon_rewards": "03485E20",
+    "cfg_file_select_hash": "03486F80",
+    "cfg_item_overrides": "03486FF4",
+    "dpad_sprite": "03485F48",
+    "dummy_actor": "03486FB0",
+    "dungeon_count": "03486F64",
+    "dungeons": "03485E44",
+    "font_sprite": "03485F58",
+    "hash_sprites": "03486F68",
+    "hash_symbols": "03485EE0",
+    "heap_next": "03486FC8",
+    "item_overrides_count": "03486FB4",
+    "item_table": "03485FA8",
+    "items_sprite": "03485F78",
+    "medal_colors": "03485E30",
+    "medals_sprite": "03485F88",
+    "object_slots": "03487FF4",
+    "pending_freezes": "03486FB8",
+    "pending_item_queue": "03486FDC",
+    "quest_items_sprite": "03485F68",
+    "satisified_pending_frames": "03486F88",
+    "setup_db": "03485F20",
+    "stones_sprite": "03485F98"
+>>>>>>> Functionality!
+>>>>>>> Functionality!
 }
