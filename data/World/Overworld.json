@@ -717,9 +717,7 @@
         },
         "exits": {
             "Graveyard": "True",
-            "Shadow Temple Beginning": "
-                can_use(Dins_Fire) and can_see_with_lens and 
-                (can_use(Hover_Boots) or can_use(Hookshot))"
+            "Shadow Temple Entryway": "can_use(Dins_Fire)"
         }
     },
     {
