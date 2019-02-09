@@ -571,9 +571,7 @@
             "Windmill": "True",
             "Kakariko Bazaar": "is_adult",
             "Kakariko Shooting Gallery": "True",
-            "Bottom of the Well": "
-                can_play(Song_of_Storms) and 
-                (dungeon_mq[Bottom_of_the_Well] or can_child_attack or has_nuts)",
+            "Bottom of the Well": "can_play(Song_of_Storms)",
             "Kakariko Potion Shop Front": "is_adult",
             "Kakariko Potion Shop Back": "is_adult",
             "Odd Medicine Building": "True",
