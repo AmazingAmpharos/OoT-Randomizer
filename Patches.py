@@ -35,6 +35,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         keatonBytes = stream.read()
         rom.write_bytes(0x8A7C00, keatonBytes)
 
+    #Add to extended object table
+    sym = rom.sym('EXTENDED_OBJECT_TABLE')
+    rom.write_int32(sym, 0x12345678)
+    rom.write_int32(sym + 4, 0x98765432)
+
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)
     rom.force_patch.append(0x3E)
