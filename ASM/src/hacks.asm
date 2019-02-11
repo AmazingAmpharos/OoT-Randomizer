@@ -1057,3 +1057,15 @@ skip_GS_BGS_text:
 ; Replaces: bnezl t7, 0xAD1988 ; 0x8005BA28
 .orga 0xAD193C ; 0x8005B9DC
     b . + 0x4C
+
+; extends object table lookup for on chest open
+.org 0xBD6958
+    jal extended_object_lookup_GI
+    nop
+
+; extends object table lookup for on scene loads
+.org 0xAF76B8
+    sw      ra, 0x0C (sp)
+    jal extended_object_lookup_load
+    subu    t7, r0, a2
+    lw      ra, 0x0C (sp)

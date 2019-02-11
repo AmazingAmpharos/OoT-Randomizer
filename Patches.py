@@ -35,10 +35,29 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         keatonBytes = stream.read()
         rom.write_bytes(0x8A7C00, keatonBytes)
 
+    rupee_file = File({
+            'Name':'shop1_room_1',
+            'Start':'0',
+            'End':'0',
+        })
+
+    rupee_file.copy(rom)
+
+    with open(data_path('triforce_2.bin'), 'rb') as stream:
+        obj_data = stream.read()
+        rom.write_bytes(rupee_file.start, obj_data)
+
+    rupee_file.end = rupee_file.start + len(obj_data)
+
+    update_dmadata(rom, rupee_file)
+
+    print(hex(rupee_file.start))
+    print(hex(rupee_file.end))
+
     #Add to extended object table
     sym = rom.sym('EXTENDED_OBJECT_TABLE')
-    rom.write_int32(sym, 0x12345678)
-    rom.write_int32(sym + 4, 0x98765432)
+    rom.write_int32(sym, rupee_file.start)
+    rom.write_int32(sym + 4, rupee_file.end)
 
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)

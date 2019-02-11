@@ -497,6 +497,7 @@ junk_pool_base = [
     ('Rupees (5)',      10),
     ('Rupees (20)',     4),
     ('Rupees (50)',     1),
+    ('TEST', 10000),
 ]
 junk_pool = []
 def get_junk_item(count=1):
