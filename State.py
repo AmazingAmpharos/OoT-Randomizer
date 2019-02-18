@@ -505,6 +505,18 @@ class State(object):
             return self.is_adult()
 
 
+    def can_shield(self):
+        return self.has('Buy Deku Shield') or 
+            (self.is_adult() and (self.has('Buy Hylian Shield') or self.has('Mirror Shield')) )
+
+    def can_mega(self):
+        return self.has_explosives() and self.can_shield()
+
+
+    def can_hover(self):
+        return self.can_shield() and self.has_explosives()
+
+
     # Be careful using this function. It will not collect any
     # items that may be locked behind the item, only the item itself.
     def collect(self, item):
