@@ -509,12 +509,20 @@ class State(object):
         return self.has('Buy Deku Shield') or \
             (self.is_adult() and (self.has('Buy Hylian Shield') or self.has('Mirror Shield')) )
 
-    def can_megahover(self):
-        return self.has_explosives() and self.can_shield() and self.has_sticks()
+    def can_mega(self):
+        return self.has_explosives() and self.can_shield()
+
+    
+    def can_isg(self):
+        return self.can_shield() and (self.is_adult() or self.has_sticks() or self.has('Kokiri Sword'))
+
+
+    def can_hover(self):
+        return self.can_mega() and self.can_isg()
 
     
     def can_weirdshot(self):
-        return self.can_megahover() and self.can_use('Hookshot')
+        return self.can_mega() and self.can_use('Hookshot')
 
 
     # Be careful using this function. It will not collect any

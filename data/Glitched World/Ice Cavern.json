@@ -3,7 +3,7 @@
         "region_name": "Ice Cavern",
         "dungeon": "Ice Cavern",
         "locations": {
-            "Ice Cavern Map Chest": "(is_adult and has_bottle) or has_explosives",
+            "Ice Cavern Map Chest": "(is_adult and has_bottle) or can_mega",
             "Ice Cavern Compass Chest": "has_bottle or has_explosives",
             "Ice Cavern Iron Boots Chest": "(has_bottle or Hover_Boots or has_explosives) and is_adult",
             "Ice Cavern Freestanding PoH": "has_bottle or has_explosives",
