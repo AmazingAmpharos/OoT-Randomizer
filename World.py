@@ -8,7 +8,6 @@ from DungeonList import create_dungeons
 from Rules import set_rules, set_shop_rules
 from Item import Item
 from RuleParser import parse_rule_string
-from SettingsList import get_setting_info
 import logging
 import copy
 import io
@@ -120,7 +119,7 @@ class World(object):
             raise Exception("JSON parse error around text:\n" + \
                             json_string[error.pos-35:error.pos+35] + "\n" + \
                             "                                   ^^\n")
-
+            
         for region in region_json:
             new_region = Region(region['region_name'])
             new_region.world = self

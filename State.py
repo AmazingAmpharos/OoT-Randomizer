@@ -506,7 +506,7 @@ class State(object):
 
 
     def can_shield(self):
-        return self.has('Buy Deku Shield') or 
+        return self.has('Buy Deku Shield') or \
             (self.is_adult() and (self.has('Buy Hylian Shield') or self.has('Mirror Shield')) )
 
     def can_mega(self):
