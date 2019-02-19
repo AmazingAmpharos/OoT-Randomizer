@@ -3,14 +3,14 @@
         "region_name": "Ice Cavern",
         "dungeon": "Ice Cavern",
         "locations": {
-            "Ice Cavern Map Chest": "has_bottle",
-            "Ice Cavern Compass Chest": "has_bottle",
-            "Ice Cavern Iron Boots Chest": "has_bottle",
-            "Ice Cavern Freestanding PoH": "has_bottle",
+            "Ice Cavern Map Chest": "(is_adult and has_bottle) or has_explosives",
+            "Ice Cavern Compass Chest": "has_bottle or has_explosives",
+            "Ice Cavern Iron Boots Chest": "(has_bottle or Hover_Boots or has_explosives) and is_adult",
+            "Ice Cavern Freestanding PoH": "has_bottle or has_explosives",
             "Sheik in Ice Cavern": "has_bottle and is_adult",
-            "GS Ice Cavern Spinning Scythe Room": "can_use(Hookshot)",
-            "GS Ice Cavern Heart Piece Room": "can_use(Hookshot) and has_bottle",
-            "GS Ice Cavern Push Block Room": "can_use(Hookshot) and has_bottle"
+            "GS Ice Cavern Spinning Scythe Room": "can_use(Hookshot) or Boomerang or can_hover",
+            "GS Ice Cavern Heart Piece Room": "(can_use(Hookshot) or Boomerang or can_hover) and (has_bottle or has_explosives)",
+            "GS Ice Cavern Push Block Room": "(can_use(Hookshot) or Boomerang or can_hover) and (has_bottle or has_explosives)"
         },
         "exits": {
             "Outside Ice Cavern": "True"
