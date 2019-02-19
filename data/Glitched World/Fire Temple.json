@@ -5,29 +5,28 @@
         "locations": {
             "Fire Temple Chest Near Boss": "True",
             "Fire Temple Fire Dancer Chest": "
-                ((Small_Key_Fire_Temple, 8) or not keysanity) and can_use(Hammer)",
+                 ((Small_Key_Fire_Temple, 8) or not keysanity) and 
+                    ( (can_use(Hookshot) or has_explosives or can_use(Hammer)))",
             "Fire Temple Boss Key Chest": "
-                ((Small_Key_Fire_Temple, 8) or not keysanity) and can_use(Hammer)",
+                (can_weirdshot) or (can_reach(Fire_Temple_Fire_Dancer_Chest) and can_use(Hammer)",
             "Fire Temple Big Lava Room Bombable Chest": "
                 (Small_Key_Fire_Temple, 2) and has_explosives",
             "Fire Temple Big Lava Room Open Chest": "(Small_Key_Fire_Temple, 2)",
             "Volvagia Heart": "
-                has_GoronTunic and can_use(Hammer) and Boss_Key_Fire_Temple and 
-                (Hover_Boots or (can_reach(Fire_Temple_Upper) and 
-                    (can_play(Song_of_Time) or has_explosives)))",
+                has_GoronTunic and can_use(Hammer) and 
+                (Boss_Key_Fire_Temple or (can_shield and (has_bombchus or (has_bombs and Hookshot))) or can_reach(Fire_Temple_Compass_Chest))",
             "Volvagia": "
-                has_GoronTunic and can_use(Hammer) and Boss_Key_Fire_Temple and 
-                (Hover_Boots or (can_reach(Fire_Temple_Upper) and 
-                    (can_play(Song_of_Time) or has_explosives)))",
+                has_GoronTunic and can_use(Hammer) and 
+                (Boss_Key_Fire_Temple or (can_shield and (has_bombchus or (has_bombs and Hookshot))) or can_reach(Fire_Temple_Compass_Chest))",
             "GS Fire Temple Song of Time Room": "
-                (Small_Key_Fire_Temple, 2) and can_play(Song_of_Time)",
+                (Small_Key_Fire_Temple, 2)",
             "GS Fire Temple Basement": "
-                ((Small_Key_Fire_Temple, 8) or not keysanity) and can_use(Hammer)"
+                ((Small_Key_Fire_Temple, 8) or not keysanity)"
         },
         "exits": {
             "Death Mountain Crater Central": "True",
             "Fire Temple Middle": "
-                has_GoronTunic and (Small_Key_Fire_Temple, 4) and Progressive_Strength_Upgrade and 
+                has_GoronTunic and (Small_Key_Fire_Temple, 4) and 
                 (has_explosives or ((has_bow or Progressive_Hookshot) and is_adult))"
         }
     },
@@ -41,18 +40,18 @@
             "Fire Temple Boulder Maze Bombable Pit": "
                 (Small_Key_Fire_Temple, 6) and has_explosives",
             "Fire Temple Scarecrow Chest": "
-                (Small_Key_Fire_Temple, 6) and can_use(Scarecrow)",
+                (Small_Key_Fire_Temple, 6) and (can_use(Scarecrow) or can_hover)",
             "Fire Temple Map Chest": "
                 (Small_Key_Fire_Temple, 6) or ((Small_Key_Fire_Temple, 5) and can_use(Bow))",
             "Fire Temple Compass Chest": "(Small_Key_Fire_Temple, 7)",
             "GS Fire Temple Unmarked Bomb Wall": "(Small_Key_Fire_Temple, 4) and has_explosives",
-            "GS Fire Temple East Tower Climb": "(Small_Key_Fire_Temple, 6) and can_use(Scarecrow)",
-            "GS Fire Temple East Tower Top": "(Small_Key_Fire_Temple, 6) and can_use(Scarecrow)"
+            "GS Fire Temple East Tower Climb": "(Small_Key_Fire_Temple, 6) and (can_use(Scarecrow) or can_hover)",
+            "GS Fire Temple East Tower Top": "(Small_Key_Fire_Temple, 6) and (can_use(Scarecrow) or can_hover)"
         },
         "exits": {
             "Fire Temple Upper": "
                 (Small_Key_Fire_Temple, 8) or 
-                ((Small_Key_Fire_Temple, 7) and can_use(Hover_Boots) and can_use(Hammer))"
+                ((Small_Key_Fire_Temple, 7) and (can_use(Hover_Boots) or has_bombs) and can_use(Hammer))"
         }
     },
     {
@@ -60,10 +59,8 @@
         "dungeon": "Fire Temple",
         "locations": {
             "Fire Temple Highest Goron Chest": "
-                can_use(Hammer) and 
-                (can_play(Song_of_Time) or (logic_rusted_switches and 
-                    (can_use(Hover_Boots) or has_explosives)))",
-            "Fire Temple Megaton Hammer Chest": "has_explosives"
+                can_use(Hammer) or can_weirdshot",
+            "Fire Temple Megaton Hammer Chest": "has_explosives or (can_use(Hammer) and can_use(Farores_Wind))"
         }
     }
 ]

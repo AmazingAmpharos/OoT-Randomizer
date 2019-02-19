@@ -516,6 +516,10 @@ class State(object):
     def can_hover(self):
         return self.can_shield() and self.has_explosives()
 
+    
+    def can_weirdshot(self):
+        return self.can_hover() and self.can_use('Hookshot')
+
 
     # Be careful using this function. It will not collect any
     # items that may be locked behind the item, only the item itself.
