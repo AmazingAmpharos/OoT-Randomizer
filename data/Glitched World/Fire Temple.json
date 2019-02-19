@@ -13,12 +13,13 @@
             "Fire Temple Big Lava Room Bombable Chest": "
                 (Small_Key_Fire_Temple, 2) and has_explosives",
             "Fire Temple Big Lava Room Open Chest": "(Small_Key_Fire_Temple, 2)",
+            # These hovers are out of bounds, therefore must be done with bombs to cater to n64
             "Volvagia Heart": "
                 has_GoronTunic and can_use(Hammer) and 
-                (Boss_Key_Fire_Temple or (can_shield and (has_bombchus or (has_bombs and Hookshot))) or (Small_Key_Fire_Temple, 7))",
+                (Boss_Key_Fire_Temple or (can_shield and (has_bombs and Hookshot)) or (Small_Key_Fire_Temple, 7))",
             "Volvagia": "
                 has_GoronTunic and can_use(Hammer) and 
-                (Boss_Key_Fire_Temple or (can_shield and (has_bombchus or (has_bombs and Hookshot))) or (Small_Key_Fire_Temple, 7))",
+                (Boss_Key_Fire_Temple or (can_shield and (has_bombs and Hookshot)) or (Small_Key_Fire_Temple, 7))",
             "GS Fire Temple Song of Time Room": "
                 (Small_Key_Fire_Temple, 2)",
             "GS Fire Temple Basement": "
@@ -41,13 +42,13 @@
             "Fire Temple Boulder Maze Bombable Pit": "
                 (Small_Key_Fire_Temple, 6) and has_explosives",
             "Fire Temple Scarecrow Chest": "
-                (Small_Key_Fire_Temple, 6) and (can_use(Scarecrow) or can_megahover)",
+                (Small_Key_Fire_Temple, 6) and (can_use(Scarecrow) or can_megahover or can_use(Longshot))",
             "Fire Temple Map Chest": "
                 (Small_Key_Fire_Temple, 6) or ((Small_Key_Fire_Temple, 5) and can_use(Bow))",
             "Fire Temple Compass Chest": "(Small_Key_Fire_Temple, 7)",
             "GS Fire Temple Unmarked Bomb Wall": "(Small_Key_Fire_Temple, 4) and has_explosives",
-            "GS Fire Temple East Tower Climb": "(Small_Key_Fire_Temple, 6) and (can_use(Scarecrow) or can_megahover)",
-            "GS Fire Temple East Tower Top": "(Small_Key_Fire_Temple, 6) and (can_use(Scarecrow) or can_megahover)"
+            "GS Fire Temple East Tower Climb": "(Small_Key_Fire_Temple, 6) and (can_use(Scarecrow) or can_megahover or can_use(Longshot))",
+            "GS Fire Temple East Tower Top": "(Small_Key_Fire_Temple, 6) and (can_use(Scarecrow) or can_megahover or can_use(Longshot))"
         },
         "exits": {
             "Fire Temple Upper": "

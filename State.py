@@ -510,7 +510,7 @@ class State(object):
             (self.is_adult() and (self.has('Buy Hylian Shield') or self.has('Mirror Shield')) )
 
     def can_megahover(self):
-        return self.has_explosives() and self.can_shield()
+        return self.has_explosives() and self.can_shield() and self.has_sticks()
 
     
     def can_weirdshot(self):
