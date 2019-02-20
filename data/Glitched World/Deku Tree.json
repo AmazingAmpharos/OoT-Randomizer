@@ -6,19 +6,20 @@
             "Deku Tree Lobby Chest": "True",
             "Deku Tree Compass Chest": "True",
             "Deku Tree Compass Room Side Chest": "True",
-            "Deku Tree Basement Chest": "can_child_attack or has_nuts",
-            "GS Deku Tree Compass Room": "can_child_attack",
-            "GS Deku Tree Basement Vines": "
-                has_slingshot or Boomerang or has_explosives or can_use(Dins_Fire) or 
-                (logic_deku_basement_gs and (has_sticks or Kokiri_Sword))",
-            "GS Deku Tree Basement Gate": "can_child_attack",
+            "Deku Tree Basement Chest": "can_child_attack or has_nuts or is_adult",
+            "GS Deku Tree Compass Room": "can_child_attack or is_adult",
+            "GS Deku Tree Basement Vines": "can_child_attack or has_nuts or is_adult",
+            "GS Deku Tree Basement Gate": "can_child_attack or is_adult",
             "Deku Tree Gossip Stone (Left)": "True",
             "Deku Tree Gossip Stone (Right)": "True"
         },
         "exits": {
             "Kokiri Forest": "True",
-            "Deku Tree Slingshot Room": "Buy_Deku_Shield",
-            "Deku Tree Boss Room": "has_slingshot and (has_sticks or can_use(Dins_Fire))"
+            # unsure abuot this one. not sure what can hit the scrub
+            "Deku Tree Slingshot Room": "Buy_Deku_Shield or (is_adult and (Buy_Hylian_Shield or Hookshot or Hammer))",
+            "Deku Tree Boss Room": "has_sticks or can_use(Dins_Fire) or is_adult",
+            "Deku Tree Basement Back Room": "(has_sticks or can_use(Dins_Fire) or
+                (is_adult and (Bow or (Bomb_Bag and Hookshot and Hoverboots)))) and has_explosives"
         }
     },
     {
@@ -36,9 +37,18 @@
         "region_name": "Deku Tree Boss Room",
         "dungeon": "Deku Tree",
         "locations": {
-            "GS Deku Tree Basement Back Room": "Boomerang and (has_explosives)",
             "Queen Gohma Heart": "Buy_Deku_Shield and (Kokiri_Sword or has_sticks)",
             "Queen Gohma": "Buy_Deku_Shield and (Kokiri_Sword or has_sticks)"
+        },
+        "exits": {
+            "Deku Tree Lobby": "True"
+        }
+    },
+    {
+        "region_name": "Deku Tree Basement Back Room",
+        "dungeon": "Deku Tree",
+        "locations": {
+            "GS Deku Tree Basement Back Room": "(Boomerang or can_hover or (is_adult and (Hookshot or can_hover)))"
         },
         "exits": {
             "Deku Tree Lobby": "True"
