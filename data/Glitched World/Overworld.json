@@ -11,13 +11,12 @@
                 (can_leave_forest or Kokiri_Sword or has_sticks or 
                     Boomerang or has_explosives or Buy_Bottle_Bug)",
             "GS Kokiri House of Twins": "
-                (can_use(Hookshot) or 
-                    (logic_adult_kokiri_gs and can_use(Hover_Boots))) and nighttime",
+                (is_adult and (Hoverboots or Hylian_Shield or Mirror_Shield)) and nighttime",
             "Deku Baba Sticks": "
-                (Kokiri_Sword and Buy_Deku_Shield) or 
+                ((Kokiri_Sword or Buy_Deku_Sticks) and Buy_Deku_Shield) or 
                 (open_forest and (is_adult or Kokiri_Sword or Boomerang))",
             "Deku Baba Nuts": "
-                (Kokiri_Sword and Buy_Deku_Shield) or 
+                ((Kokiri_Sword or Buy_Deku_Sticks) and Buy_Deku_Shield) or 
                 (open_forest and 
                     (is_adult or has_slingshot or has_sticks or 
                         has_explosives or Kokiri_Sword or can_use(Dins_Fire)))",
@@ -30,7 +29,8 @@
             "House of Twins": "True",
             "Know It All House": "True",
             "Kokiri Shop": "True",
-            "Deku Tree Lobby": "(Kokiri_Sword and Buy_Deku_Shield) or open_forest",
+            "Deku Tree Lobby": "(Kokiri_Sword and Buy_Deku_Shield) or open_forest or 
+                (can_leave_forest and is_adult and has_explosives and (Hoverboots or can_hover))",
             "Lost Woods": "True",
             "Lost Woods Bridge": "can_leave_forest",
             "Kokiri Forest Storms Grotto": "can_play(Song_of_Storms)"
@@ -124,13 +124,14 @@
             "Kokiri Forest": "True",
             "Sacred Forest Meadow Entryway": "True",
             "Goron City Woods Warp": "True",
-            "Zora River Child": "can_dive and can_leave_forest",
-            "Forest Temple Entry Area": "can_play(Sarias_Song) and is_adult",
+            "Zora River Child": "(can_dive or Kokiri_Sword or has_sticks) and can_leave_forest",
+            "Forest Temple Entry Area": "is_adult",
             "Lost Woods Generic Grotto": "can_blast_or_smash",
             "Deku Theater": "True",
             "Lost Woods Sales Grotto": "
-                has_explosives or (can_use(Hammer) and 
-                    (can_play(Minuet_of_Forest) or can_play(Sarias_Song)))"
+                can_blast_or_smash",
+            "Lost Woods Bridge": "
+                can_mega or can_use(Hoverboots)"
         }
     },
     {
@@ -141,8 +142,7 @@
                 has_slingshot or has_sticks or has_explosives or 
                 Kokiri_Sword or can_use(Dins_Fire)",
             "Front of Meadow Grotto": "
-                has_explosives or (can_use(Hammer) and 
-                    (can_play(Minuet_of_Forest) or can_play(Sarias_Song)))"
+                can_blast_or_smash"
         }
     },
     {

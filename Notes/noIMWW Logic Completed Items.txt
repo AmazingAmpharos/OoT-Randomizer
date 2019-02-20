@@ -3,4 +3,9 @@ Implementation of the new files
 Dodongo's cavern
 Ice cavern
 Fire Temple
-Deku Tree
+Deku Tree minus slingshot chest as adult.  need to test viable equipment
+BotW
+Ganon's Castle
+
+-- Overworld Regions --
+Kokiri Forest
