@@ -787,6 +787,7 @@ def guiMain(settings=None):
     settings_file = local_path('settings.sav')
     with open(settings_file, 'w') as outfile:
         settings = guivars_to_settings(guivars)
+        del settings.__dict__["distribution"]
         del settings.__dict__["seed"]
         del settings.__dict__["numeric_seed"]
         del settings.__dict__["check_version"]

@@ -189,13 +189,7 @@ class Settings:
 
     def get_numeric_seed(self):
         # salt seed with the settings, and hash to get a numeric seed
-        distribution = '{}'
-        if self.distribution_file is not None and self.distribution_file != '':
-            try:
-                with open(self.distribution_file) as f:
-                    distribution = f.read()
-            except FileNotFoundError:
-                logging.getLogger('').warning("Distribution file not found at %s" % (self.distribution_file))
+        distribution = json.dumps(self.distribution.to_dict(False))
         full_string = self.settings_string + distribution + __version__ + self.seed
         return int(hashlib.sha256(full_string.encode('utf-8')).hexdigest(), 16)
 
@@ -224,6 +218,7 @@ class Settings:
                 logging.getLogger('').warning("Distribution file not found at %s" % (self.distribution_file))
         else:
             self.distribution = Distribution()
+        self.numeric_seed = self.get_numeric_seed()
 
     def check_dependency(self, setting_name):
         info = get_setting_info(setting_name)
@@ -242,6 +237,7 @@ class Settings:
 
     # add the settings as fields, and calculate information based on them
     def __init__(self, settings_dict):
+        self.distribution = Distribution()
         self.__dict__.update(settings_dict)
         for info in setting_infos:
             if info.name not in self.__dict__:
@@ -276,6 +272,9 @@ class Settings:
                         self.__dict__[info.name] = []
         self.settings_string = self.get_settings_string()
         self.update_seed(self.seed)
+
+    def to_dict(self):
+        return {setting.name: self.__dict__[setting.name] for setting in setting_infos if setting.shared}
 
 
 # gets the randomizer settings, whether to open the gui, and the logger level from command line arguments

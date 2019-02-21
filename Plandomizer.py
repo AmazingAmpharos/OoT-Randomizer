@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 import random
 import uuid
 
@@ -12,6 +13,7 @@ from ItemPool import item_groups, item_generators, rewardlist
 from LocationList import location_table, location_groups
 from Spoiler import HASH_ICONS
 from State import State
+from version import __version__
 
 
 per_world_keys = (
@@ -214,6 +216,10 @@ def SimpleRecord(props):
 
         def to_dict(self):
             return {k: getattr(self, k) for (k, d) in props.items() if getattr(self, k) != d}
+
+
+        def __str__(self):
+            return to_json(self.to_dict())
     return Record
 
 
@@ -351,6 +357,10 @@ class WorldDistribution(object):
             ':barren_regions': self.barren_regions,
             'gossip': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.gossip.items()},
         }
+
+
+    def __str__(self):
+        return to_json(self.to_dict())
 
 
     def configure_dungeons(self, world, dungeon_pool):
@@ -604,6 +614,7 @@ class WorldDistribution(object):
 
 class Distribution(object):
     def __init__(self, src_dict={}):
+        self.settings = None
         self.worlds = []
         self.update(src_dict)
 
@@ -639,22 +650,38 @@ class Distribution(object):
         self.starting_default_extra = src_dict.get('starting_default_extra', True)
 
 
-    def to_dict(self):
+    def to_dict(self, include_output_only=True):
         worlds = [world.to_dict() for world in self.worlds]
         self_dict = {
+            ':version': __version__,
+            ':seed': self.settings.seed if self.settings is not None else None,
             'file_hash': self.file_hash,
+            ':settings_string': self.settings.settings_string if self.settings is not None else None,
+            ':settings': self.settings.to_dict() if self.settings is not None else None,
+            ':distribution': self.settings.distribution.to_dict(False) if self.settings is not None else None,
             **{k: [world[k] for world in worlds] for k in per_world_keys},
         }
         if self.locations_default_extra:
             self_dict['locations_default_extra'] = True
         if not self.starting_default_extra:
             self_dict['starting_default_extra'] = False
+        if not include_output_only:
+            strip_output_only(self_dict)
         return self_dict
+
+
+    def to_str(self, include_output_only=True):
+        return to_json(self.to_dict(include_output_only))
+
+
+    def __str__(self):
+        return to_json(self.to_dict())
 
 
     @staticmethod
     def from_spoiler(spoiler):
         dist = Distribution()
+        dist.settings = spoiler.settings
         dist.file_hash = [HASH_ICONS[icon] for icon in spoiler.file_hash]
 
         for world in spoiler.worlds:
@@ -731,9 +758,37 @@ class Distribution(object):
 
 
     def to_file(self, filename):
-        self_dict = self.to_dict()
+        json = str(self)
         with open(filename, 'w') as outfile:
-            json.dump(self_dict, outfile, indent='\t')
+            outfile.write(json)
+
+
+def strip_output_only(obj):
+    if isinstance(obj, list):
+        for elem in obj:
+            strip_output_only(elem)
+    elif isinstance(obj, dict):
+        output_only_keys = [key for key in obj if is_output_only(key)]
+        for key in output_only_keys:
+            del obj[key]
+        for elem in obj.values():
+            strip_output_only(elem)
+
+
+JSON_ARRAY_OR_DICT_OF_SCALARS_OR_STRING = re.compile(r'\{([^"\{\}\[\]]|"([^"\\]|\\.)*")*\}|\[([^"\{\}\[\]]|"([^"\\]|\\.)*")*\]|"([^"\\]|\\.)*"')
+def to_json(obj):
+    # Serialize objects/arrays that contain other objects/arrays on many lines with indent
+    # But serialize object/arrays that only contain scalars or are empty on a single line
+    def deindent(m):
+        indented = m.group(0)
+        if indented.startswith('"'):
+            return indented
+        raw = json.dumps(json.loads(m.group(0)))
+        if len(raw) == 2:
+            return '%s %s' % (raw[0], raw[-1])
+        else:
+            return '%s %s %s' % (raw[0], raw[1:-1], raw[-1])
+    return re.sub(JSON_ARRAY_OR_DICT_OF_SCALARS_OR_STRING, deindent, json.dumps(obj, indent='\t'))
 
 
 def coalesce(*values):
