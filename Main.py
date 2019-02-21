@@ -388,8 +388,8 @@ def cosmetic_patch(settings, window=dummy_window()):
     apply_patch_file(rom, settings.patch_file, subfile)
     window.update_progress(65)
 
-    rom.update_crc()
-    rom.original = copy.copy(rom.buffer)
+    # clear changes from the base patch file
+    patched_base_rom = copy.copy(rom.buffer)
     rom.changed_address = {}
     rom.changed_dma = {}
     rom.force_patch = []
@@ -400,6 +400,11 @@ def cosmetic_patch(settings, window=dummy_window()):
     window.update_progress(80)
 
     window.update_status('Creating Patch File')
+
+    # base the new patch file on the base patch file
+    rom.original = patched_base_rom
+
+    rom.update_crc()
     create_patch_file(rom, patchfilename)
     logger.info("Created patchfile at: %s" % patchfilename)
     window.update_progress(95)
