@@ -255,7 +255,7 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
         return LocationRecord({
             'item': item.name,
             'player': None if item.location is not None and item.world is item.location.world else item.world.id,
-            'model': item.looks_like_item.name if item.looks_like_item is not None and item.location.has_preview() else None,
+            'model': item.looks_like_item.name if item.looks_like_item is not None and item.location.has_preview() and can_cloak(item, item.looks_like_item) else None,
             'price': item.price,
         })
 
@@ -557,7 +557,8 @@ class WorldDistribution(object):
             model = pull_item_or_location(model_pools, world, record.model, remove=False, groups=item_groups)
             if model is None:
                 raise RuntimeError('Unknown model in world %d: %s' % (self.id, record.model))
-            location.item.looks_like_item = model
+            if can_cloak(location.item, model):
+                location.item.looks_like_item = model
 
 
     def configure_gossip(self, spoiler, stoneIDs):
@@ -796,6 +797,10 @@ def coalesce(*values):
         if value is not None:
             return value
     return None
+
+
+def can_cloak(actual_item, model):
+    return actual_item.index == 0x7C # Ice Trap
 
 
 def is_output_only(pattern):
