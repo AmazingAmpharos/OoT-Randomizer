@@ -414,7 +414,9 @@ setting_infos = [
         ''',
         default        = True,
         shared         = True,
-        dependency     = lambda settings: True if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'open_kakariko',
@@ -427,7 +429,9 @@ setting_infos = [
             Either way, the gate is always open as an adult.
         ''',
         shared         = True,
-        dependency     = lambda settings: False if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'open_door_of_time',
@@ -440,7 +444,9 @@ setting_infos = [
             the Door of Time.
         ''',
         shared         = True,
-        dependency     = lambda settings: False if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'open_fountain',
@@ -451,7 +457,9 @@ setting_infos = [
             Ruto's Letter from the item pool.
         ''',
         shared         = True,
-        dependency     = lambda settings: False if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Combobox(
         name           = 'gerudo_fortress',
@@ -472,7 +480,9 @@ setting_infos = [
             Card in the inventory allowing access to Gerudo Training Grounds.
         ''',
         shared         = True,
-        dependency     = lambda settings: 'normal' if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Combobox(
         name           = 'bridge',
@@ -496,7 +506,9 @@ setting_infos = [
             '100 Gold Skulltula Tokens': All 100 Gold Skulltula Tokens.
         ''',
         shared         = True,
-        dependency     = lambda settings: 'medallions' if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Combobox(
         name           = 'logic_rules',
@@ -538,7 +550,9 @@ setting_infos = [
         ''',
         default        = True,
         shared         = True,
-        dependency     = lambda settings: True if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'bombchus_in_logic',
@@ -562,7 +576,9 @@ setting_infos = [
         ''',
         default        = True,
         shared         = True,
-        dependency     = lambda settings: True if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'one_item_per_dungeon',
@@ -583,7 +599,9 @@ setting_infos = [
             not count as major items.
         ''',
         shared         = True,
-        dependency     = lambda settings: False if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'trials_random',
@@ -594,7 +612,9 @@ setting_infos = [
                          enter Ganon's Tower.
                          ''',
         shared         = True,
-        dependency     = lambda settings: False if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Scale(
         name           = 'trials',
@@ -608,7 +628,10 @@ setting_infos = [
             trials need to be completed.
         ''',
         shared         = True,
-        dependency     = lambda settings: 0 if (settings.randomize_settings or settings.trials_random) else None,
+        dependency     = lambda settings: 0 if settings.trials_random else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'no_escape_sequence',
@@ -751,7 +774,9 @@ setting_infos = [
         ''',
         default        = True,
         shared         = True,
-        dependency     = lambda settings: True if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'shuffle_ocarinas',
@@ -766,7 +791,9 @@ setting_infos = [
         ''',
         default        = True,
         shared         = True,
-        dependency     = lambda settings: True if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'shuffle_weird_egg',
@@ -783,7 +810,9 @@ setting_infos = [
         ''',
         default        = True,
         shared         = True,
-        dependency     = lambda settings: True if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'shuffle_gerudo_card',
@@ -797,7 +826,9 @@ setting_infos = [
             This has no effect if the option to Start with Gerudo Card is set.
         ''',
         shared         = True,
-        dependency     = lambda settings: True if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'shuffle_song_items',
@@ -813,7 +844,9 @@ setting_infos = [
         ''',
         default        = True,
         shared         = True,
-        dependency     = lambda settings: True if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Combobox(
         name           = 'shuffle_scrubs',
@@ -844,7 +877,9 @@ setting_infos = [
             be very, very expensive overall.
         ''',
         shared         = True,
-        dependency     = lambda settings: 'off' if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Combobox(
         name           = 'shopsanity',
@@ -883,7 +918,9 @@ setting_infos = [
             Otherwise, the Bomb Bag is required.
         ''',
         shared         = True,
-        dependency     = lambda settings: 'off' if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Combobox(
         name           = 'tokensanity',
@@ -909,7 +946,9 @@ setting_infos = [
             new locations for items to appear.
         ''',
         shared         = True,
-        dependency     = lambda settings: 'off' if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Combobox(
         name           = 'shuffle_mapcompass',
@@ -943,7 +982,9 @@ setting_infos = [
             Ice Cavern, Water Temple, and Jabu Jabu's Belly.
         ''',
         shared         = True,
-        dependency     = lambda settings: 'dungeon' if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Combobox(
         name           = 'shuffle_smallkeys',
@@ -974,7 +1015,9 @@ setting_infos = [
             for a milder Keysanity experience.
         ''',
         shared         = True,
-        dependency     = lambda settings: 'dungeon' if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Combobox(
         name           = 'shuffle_bosskeys',
@@ -1003,7 +1046,9 @@ setting_infos = [
             for a milder Keysanity experience.
         ''',
         shared         = True,
-        dependency     = lambda settings: 'dungeon' if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'enhance_map_compass',
@@ -1024,7 +1069,9 @@ setting_infos = [
         ''',
         default        = False,
         shared         = True,
-        dependency     = lambda settings: False if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'unlocked_ganondorf',
@@ -1038,7 +1085,9 @@ setting_infos = [
             that skipped trials can be avoided.
         ''',
         shared         = True,
-        dependency     = lambda settings: True if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Checkbutton(
         name           = 'mq_dungeons_random',
@@ -1049,7 +1098,9 @@ setting_infos = [
             will have Master Quest designs.
         ''',
         shared         = True,
-        dependency     = lambda settings: True if settings.randomize_settings else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
     ),
     Scale(
         name           = 'mq_dungeons',
@@ -1070,7 +1121,10 @@ setting_infos = [
             12: All dungeons will have
             Master Quest redesigns.
         ''',
-        dependency     = lambda settings: 0 if (settings.randomize_settings or settings.mq_dungeons_random) else None,
+        dependency     = lambda settings: 0 if settings.mq_dungeons_random else None,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
         shared         = True,
     ),
     Setting_Info(

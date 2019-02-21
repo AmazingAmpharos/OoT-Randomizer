@@ -203,6 +203,13 @@ class Settings:
         self.settings_string = self.get_settings_string()
 
 
+    def resolve_random_settings(self):
+        for info in setting_infos:
+            if 'randomize_key' in info.gui_params and self.__dict__[info.gui_params['randomize_key']]:
+                choices, weights = zip(*info.gui_params['distribution'])
+                self.__dict__[info.name] = random_choices(choices, weights=weights)[0]
+                
+
     # add the settings as fields, and calculate information based on them
     def __init__(self, settings_dict):
         self.__dict__.update(settings_dict)
