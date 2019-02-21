@@ -100,6 +100,7 @@
             "Kokiri Forest": "True"
         }
     },
+    #################################################### TODO
     {
         "region_name": "Lost Woods",
         "locations": {
@@ -177,6 +178,8 @@
             "Hyrule Field": "True"
         }
     },
+    ####################### END-TODO
+
     {
         "region_name": "Hyrule Field",
         "locations": {
@@ -209,32 +212,34 @@
         "locations": {
             "Underwater Bottle": "can_dive",
             "Lake Hylia Sun": "
-                (can_use(Distant_Scarecrow) or can_reach(Morpha, Location)) and 
+                (can_use(Distant_Scarecrow) or can_reach(Morpha, Location) or can_hover) and 
                 can_use(Bow)",
-            "Lake Hylia Freestanding PoH": "can_use(Scarecrow) or can_use(Magic_Bean)",
+            "Lake Hylia Freestanding PoH": "can_use(Scarecrow) or can_use(Magic_Bean) or can_hover",
             "GS Lake Hylia Bean Patch": "has_bottle and can_child_attack",
-            "GS Lake Hylia Lab Wall": "Boomerang and nighttime",
+            "GS Lake Hylia Lab Wall": "(Boomerang or has_sticks or Kokiri_Sword) and nighttime",
             "GS Lake Hylia Small Island": "nighttime and can_child_attack",
-            "GS Lake Hylia Giant Tree": "can_use(Longshot)",
+            "GS Lake Hylia Giant Tree": "can_use(Hookshot) and nighttime",
             "Lake Hylia Lab Gossip Stone": "True",
             "Lake Hylia Gossip Stone (Southeast)": "True",
             "Lake Hylia Gossip Stone (Southwest)": "True"
         },
         "exits": {
             "Hyrule Field": "True",
-            "Zoras Domain": "can_dive",
+            "Zoras Domain": "can_dive or has_sticks or Kokiri_Sword or 
+                (is_adult and ((can_mega and not can_reach(Morpha, Location)) or has_ZoraTunic))",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "True",
             "Water Temple Lobby": "
-                (Iron_Boots or (logic_morpha_with_scale and (Progressive_Scale, 2))) and 
-                can_use(Hookshot) and (logic_fewer_tunic_requirements or has_ZoraTunic)",
+                ((Iron_Boots or (Progressive_Scale, 2)) and 
+                can_use(Hookshot)) or has_ZoraTunic",
             "Lake Hylia Grotto": "can_stun_deku"
         }
     },
     {
         "region_name": "Lake Hylia Lab",
         "locations": {
-            "Diving in the Lab": "(Progressive_Scale, 2)",
+            "Diving in the Lab": "(Progressive_Scale, 2) or (Iron_Boots and can_use(Hookshot)) or
+                (has_bottle and can_use(Hoverboots))",
             "GS Lab Underwater Crate": "Iron_Boots and can_use(Hookshot)"
         }
     },
@@ -243,9 +248,11 @@
         "locations": {
             "Child Fishing": "True",
             "Adult Fishing": "
-                (can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location))"
+                (can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location) or can_hover)"
         }
     },
+
+    ################### TODO
     {
         "region_name": "Gerudo Valley",
         "locations": {
