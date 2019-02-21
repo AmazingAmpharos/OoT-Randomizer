@@ -15,8 +15,7 @@
         },
         "exits": {
             "Kokiri Forest": "True",
-            # unsure abuot this one. not sure what can hit the scrub
-            "Deku Tree Slingshot Room": "Buy_Deku_Shield or (is_adult and (Buy_Hylian_Shield or Hookshot or Hammer))",
+            "Deku Tree Slingshot Room": "Buy_Deku_Shield or (is_adult and (Buy_Hylian_Shield or Hammer))",
             "Deku Tree Boss Room": "has_sticks or can_use(Dins_Fire) or is_adult",
             "Deku Tree Basement Back Room": "(has_sticks or can_use(Dins_Fire) or
                 (is_adult and (Bow or (Bomb_Bag and Hookshot and Hoverboots)))) and has_explosives"
