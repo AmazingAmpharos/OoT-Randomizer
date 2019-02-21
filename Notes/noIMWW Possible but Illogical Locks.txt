@@ -1,3 +1,5 @@
 Opening the vanilla Iron boots chest as child will not spawn the serenade check
 and you cannot get it back
 
+Duping bottles into your inventory in any way.
+
