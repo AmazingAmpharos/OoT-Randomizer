@@ -508,6 +508,13 @@ setting_infos = [
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
+            'distribution':  [
+                ('open',       1),
+                ('vanilla',    1),
+                ('stones',     1),
+                ('medallions', 1),
+                ('dungeons',   1),
+            ],
         },
     ),
     Combobox(
@@ -614,6 +621,9 @@ setting_infos = [
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
+            'distribution':  [
+                (True, 1),
+            ]
         },
     ),
     Scale(
@@ -879,6 +889,10 @@ setting_infos = [
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
+            'distribution':  [
+                ('off', 1),
+                ('low', 1),
+            ],
         },
     ),
     Combobox(
@@ -920,6 +934,15 @@ setting_infos = [
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
+            'distribution':  [
+                ('off',    6),
+                ('0',      1),
+                ('1',      1),
+                ('2',      1),
+                ('3',      1),
+                ('4',      1),
+                ('random', 1),
+            ],
         },
     ),
     Combobox(
@@ -1100,6 +1123,9 @@ setting_infos = [
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
+            'distribution': [
+                (True, 1),
+            ],
         },
     ),
     Scale(
