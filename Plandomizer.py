@@ -468,7 +468,7 @@ class WorldDistribution(object):
                 continue
             if record.item is None:
                 continue
-            player_world = worlds[record.player - 1] if record.player - 1 is not None else world
+            player_world = worlds[record.player - 1] if record.player is not None else world
             location = pull_item_or_location(location_pools, world, name, groups=location_groups)
             if location is None:
                 raise RuntimeError('Location unknown or already filled in world %d: %s' % (self.id + 1, name))
@@ -584,11 +584,11 @@ class Distribution(object):
 
     def update(self, src_dict):
         world_count = reduce(lambda n, k: max(n, len(src_dict.get(k, []))), per_world_keys, 0)
-        if sum(src_dict.get('item_count_imbalances', [])) != 0:
+        if sum(src_dict.get('item_count_imbalances', {}).values()) != 0:
             raise RuntimeError('The item count imbalances must compensate each other (sum must be 0)!')
         self.file_hash = (src_dict.get('file_hash', []) + [None, None, None, None, None])[0:5]
         for world_id in range(world_count):
-            self.for_world(world_id).update({k: src_dict[k][world_id] for k in per_world_keys if k in src_dict and len(src_dict[k]) > world_id})
+            self.for_world(world_id).update({k: src_dict[k]['World %d' % (world_id + 1)] for k in per_world_keys if k in src_dict and len(src_dict[k]) > world_id})
         self.locations_default_extra = src_dict.get('locations_default_extra', False)
         self.starting_default_extra = src_dict.get('starting_default_extra', True)
         self.playthrough = None
@@ -603,7 +603,7 @@ class Distribution(object):
             ':settings_string': self.settings.settings_string if self.settings is not None else None,
             ':settings': self.settings.to_dict() if self.settings is not None else None,
             ':distribution': self.settings.distribution.to_dict(False) if self.settings is not None else None,
-            **{k: [world[k] for world in worlds] for k in per_world_keys},
+            **{k: {'World %d' % (id + 1): world[k] for id, world in enumerate(worlds)} for k in per_world_keys},
             ':playthrough': None if self.playthrough is None else 
                 {sphere_nr: {name: record.to_dict() for name, record in sphere.items()} 
                     for (sphere_nr, sphere) in self.playthrough.items()},
