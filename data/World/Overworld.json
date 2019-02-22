@@ -688,6 +688,7 @@
     {
         "region_name": "Dampes Grave",
         "locations": {
+            "Dampes Grave Nut Pot": "True",
             "Hookshot Chest": "True",
             "Dampe Race Freestanding PoH": "True"
         }
