@@ -204,14 +204,15 @@ def SimpleRecord(props):
     class Record(object):
         def __init__(self, src_dict=None):
             self.processed = False
-            self.update(src_dict)
+            self.update(src_dict, update_all=True)
 
 
-        def update(self, src_dict):
+        def update(self, src_dict, update_all=False):
             if src_dict is None:
                 src_dict = {}
-            for (k, d) in props.items():
-                setattr(self, k, src_dict.get(k, d))
+            for k, p in props.items():
+                if update_all or k in src_dict:
+                    setattr(self, k, src_dict.get(k, p))
 
 
         def to_dict(self):
@@ -266,21 +267,39 @@ class WorldDistribution(object):
     def __init__(self, distribution, id, src_dict={}):
         self.distribution = distribution
         self.id = id
-        self.update(src_dict)
+        self.update(src_dict, update_all=True)
 
 
-    def update(self, src_dict):
-        self.dungeons = {name: DungeonRecord(record) for (name, record) in src_dict.get('dungeons', {}).items()}
-        self.trials = {name: TrialRecord(record) for (name, record) in src_dict.get('trials', {}).items()}
-        item_pool = src_dict.get('item_pools', None)
-        self.item_pool = None if item_pool is None else {name: ItemPoolRecord(record) for (name, record) in item_pool.items()}
-        self.item_replacements = [ItemReplacementRecord(record) for record in src_dict.get('item_replacements', [])]
-        self.starting_items = {name: StarterRecord(record) for (name, record) in src_dict.get('starting_items', {}).items()}
-        self.logic_ignored_items = {name: LogicIgnoredItemRecord(record) for (name, record) in src_dict.get('logic_ignored_items', {}).items()}
-        self.locations = {name: [LocationRecord(rec) for rec in record] if is_pattern(name) else LocationRecord(record) for (name, record) in src_dict.get('locations', {}).items() if not is_output_only(name)}
-        self.woth_locations = None
-        self.barren_regions = None
-        self.gossip = {name: [GossipRecord(rec) for rec in record] if is_pattern(name) else GossipRecord(record) for (name, record) in src_dict.get('gossip', {}).items()}
+    def update(self, src_dict, update_all=False):
+        if 'item_pools' in src_dict:
+            src_dict['item_pool'] = src_dict['item_pools']
+        update_dict = {        
+            'dungeons': {name: DungeonRecord(record) for (name, record) in src_dict.get('dungeons', {}).items()},
+            'trials': {name: TrialRecord(record) for (name, record) in src_dict.get('trials', {}).items()},
+            'item_pool': None if src_dict.get('item_pool', None) is None else {name: ItemPoolRecord(record) for (name, record) in src_dict['item_pool'].items()},
+            'item_replacements': [ItemReplacementRecord(record) for record in src_dict.get('item_replacements', [])],
+            'starting_items': {name: StarterRecord(record) for (name, record) in src_dict.get('starting_items', {}).items()},
+            'logic_ignored_items': {name: LogicIgnoredItemRecord(record) for (name, record) in src_dict.get('logic_ignored_items', {}).items()},
+            'locations': {name: [LocationRecord(rec) for rec in record] if is_pattern(name) else LocationRecord(record) for (name, record) in src_dict.get('locations', {}).items() if not is_output_only(name)},
+            'woth_locations': None,
+            'barren_regions': None,
+            'gossip': {name: [GossipRecord(rec) for rec in record] if is_pattern(name) else GossipRecord(record) for (name, record) in src_dict.get('gossip', {}).items()},
+        }
+
+        if update_all:
+            self.__dict__.update(update_dict)
+        else:
+            for k in src_dict:
+                if k in update_dict:
+                    value = update_dict[k]
+                    if self.__dict__.get(k, None) is None:
+                        setattr(self, k, value)
+                    elif isinstance(value, dict):
+                        getattr(self, k).update(value)
+                    elif isinstance(value, list):
+                        getattr(self, k).extend(value)
+                    else:
+                        setattr(self, k, None)
 
 
     def to_dict(self):
@@ -344,6 +363,7 @@ class WorldDistribution(object):
         pool_size = len(pool)
         junk_matcher = pattern_matcher('#Junk', item_groups)
         junk_to_remove = 0
+
         if self.item_pool is not None:
             del pool[:]
             for (name, record) in self.item_pool.items():
@@ -537,15 +557,15 @@ class WorldDistribution(object):
 
 
 class Distribution(object):
-    def __init__(self, src_dict={}):
-        self.settings = None
-        self.worlds = []
-        self.update(src_dict)
+    def __init__(self, settings, src_dict={}):
+        self.settings = settings
+        self.worlds = [WorldDistribution(self, id) for id in range(settings.world_count)]
+        self.update(src_dict, update_all=True)
 
 
     def for_world(self, world_id):
-        while world_id >= len(self.worlds):
-            self.worlds.append(WorldDistribution(self, len(self.worlds)))
+        while world_id >= self.settings.world_count:
+            raise RuntimeError("World ID %d is outside of the range of worlds" % (world_id + 1))
         return self.worlds[world_id]
 
 
@@ -563,34 +583,58 @@ class Distribution(object):
             world_dist.cloak(worlds[world_dist.id], location_pools, model_pools)
 
 
-    def update(self, src_dict):
-        self.file_hash = (src_dict.get('file_hash', []) + [None, None, None, None, None])[0:5]
-        for world_id in range(world_count):
-            self.for_world(world_id).update({k: src_dict[k]['World %d' % (world_id + 1)] for k in per_world_keys if k in src_dict and len(src_dict[k]) > world_id})
-        self.locations_default_extra = src_dict.get('locations_default_extra', False)
-        self.starting_default_extra = src_dict.get('starting_default_extra', True)
-        self.playthrough = None
+    def update(self, src_dict, update_all=False):
+        update_dict = {        
+            'file_hash': (src_dict.get('file_hash', []) + [None, None, None, None, None])[0:5],
+            'locations_default_extra': src_dict.get('locations_default_extra', False),
+            'starting_default_extra': src_dict.get('starting_default_extra', True),
+            'playthrough': None,
+        }
+
+        if update_all:
+            self.__dict__.update(update_dict)
+            for world in self.worlds:
+                world.update({}, update_all=True)
+        else:
+            for k in src_dict:
+                setattr(self, k, update_dict[k])
+
+        for k in per_world_keys:
+            if k in src_dict:
+                for world_id, world in enumerate(self.worlds):
+                    world_key = 'World %d' % (world_id + 1)
+                    if world_key in src_dict[k]:
+                        world.update({k: src_dict[k][world_key]})
+                        del src_dict[k][world_key]
+                for world in self.worlds:
+                    if src_dict[k]:
+                        world.update({k: src_dict[k]})
 
 
-    def to_dict(self, include_output_only=True):
-        worlds = [world.to_dict() for world in self.worlds]
+    def to_dict(self, include_output=True):
         self_dict = {
             ':version': __version__,
             ':seed': self.settings.seed if self.settings is not None else None,
             'file_hash': self.file_hash,
             ':settings_string': self.settings.settings_string if self.settings is not None else None,
             ':settings': self.settings.to_dict() if self.settings is not None else None,
-            ':distribution': self.settings.distribution.to_dict(False) if self.settings is not None else None,
-            **{k: {'World %d' % (id + 1): world[k] for id, world in enumerate(worlds)} for k in per_world_keys},
+            ':distribution': self.settings.distribution.to_dict(False) if include_output and self.settings is not None else None,
             ':playthrough': None if self.playthrough is None else 
                 {sphere_nr: {name: record.to_dict() for name, record in sphere.items()} 
                     for (sphere_nr, sphere) in self.playthrough.items()},
         }
+
+        worlds = [world.to_dict() for world in self.worlds]
+        if self.settings.world_count > 1:
+            self_dict.update({k: {'World %d' % (id + 1): world[k] for id, world in enumerate(worlds)} for k in per_world_keys})
+        else:
+            self_dict.update({k: worlds[0][k] for k in per_world_keys})
+
         if self.locations_default_extra:
             self_dict['locations_default_extra'] = True
         if not self.starting_default_extra:
             self_dict['starting_default_extra'] = False
-        if not include_output_only:
+        if not include_output:
             strip_output_only(self_dict)
         return self_dict
 
@@ -605,8 +649,7 @@ class Distribution(object):
 
     @staticmethod
     def from_spoiler(spoiler):
-        dist = Distribution()
-        dist.settings = spoiler.settings
+        dist = Distribution(spoiler.settings)
         dist.file_hash = [HASH_ICONS[icon] for icon in spoiler.file_hash]
 
         for world in spoiler.worlds:
@@ -648,10 +691,10 @@ class Distribution(object):
 
 
     @staticmethod
-    def from_file(filename):
+    def from_file(settings, filename):
         with open(filename) as infile:
             src_dict = json.load(infile)
-        return Distribution(src_dict)
+        return Distribution(settings, src_dict)
 
 
     def to_file(self, filename):
