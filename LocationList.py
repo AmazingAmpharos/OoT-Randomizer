@@ -189,6 +189,7 @@ location_table = {
     "Jabu Jabus Belly MQ Falling Like Like Room Chest":("Chest",       0x02,  0x09, "Jabu Jabu's Belly",      None,                     ()),
     "Jabu Jabus Belly MQ Boomerang Room Small Chest":  ("Chest",       0x02,  0x01, "Jabu Jabu's Belly",      None,                     ()),
     "MQ Boomerang Chest":                              ("Chest",       0x02,  0x06, "Jabu Jabu's Belly",      None,                     ()),
+    "Jabu Jabus Belly MQ Cow":                         ("NPC",         0x02,  0x15, "Jabu Jabu's Belly",      None,                     ()),
 
     # Forest Temple vanilla
     "Forest Temple First Chest":                       ("Chest",       0x03,  0x03, "Forest Temple",          None,                     ()),
@@ -736,15 +737,16 @@ location_table = {
     "LLR Grotto Deku Scrub Bombs":                     ("GrottoNPC",   0x0A,  0x37, "Lon Lon Ranch",          None,                     ("Deku Scrub", "Grottos")),
     "LLR Grotto Deku Scrub Arrows":                    ("GrottoNPC",   0x0A,  0x33, "Lon Lon Ranch",          None,                     ("Deku Scrub", "Grottos")),
 
-    "LLR Stables Left Cow":                            ("NPC",         0x36,  0x15, "Lon Lon Ranch",          None),
-    "LLR Stables Right Cow":                           ("NPC",         0x36,  0x16, "Lon Lon Ranch",          None),
-    "LLR Tower Right Cow":                             ("NPC",         0x4C,  0x15, "Lon Lon Ranch",          None),
-    "LLR Tower Left Cow":                              ("NPC",         0x4C,  0x16, "Lon Lon Ranch",          None),
-    "Links House Cow":                                 ("NPC",         0x34,  0x15, "Links House",            None),
-    "Impas House Cow":                                 ("NPC",         0x37,  0x15, "Kakariko",               None),
-    "Gerudo Valley Cow":                               ("NPC",         0x5A,  0x15, "Gerudo Valley",          None),
-    "DMT Grotto Cow":                                  ("NPC",         0x3E,  0x15, "Death Mountain Trail",   None),
-    "HF Grotto Cow":                                   ("NPC",         0x3E,  0x16, "Hyrule Field",           None),
+    "LLR Stables Left Cow":                            ("NPC",         0x36,  0x15, "Lon Lon Ranch",          None,                     ("Cow",)),
+    "LLR Stables Right Cow":                           ("NPC",         0x36,  0x16, "Lon Lon Ranch",          None,                     ("Cow",)),
+    "LLR Tower Right Cow":                             ("NPC",         0x4C,  0x15, "Lon Lon Ranch",          None,                     ("Cow",)),
+    "LLR Tower Left Cow":                              ("NPC",         0x4C,  0x16, "Lon Lon Ranch",          None,                     ("Cow",)),
+    "Links House Cow":                                 ("NPC",         0x34,  0x15, "Links House",            None,                     ("Forest", "Cow")),
+    "Impas House Cow":                                 ("NPC",         0x37,  0x15, "Kakariko Village",       None,                     ("Kakariko", "Cow")),
+    "Gerudo Valley Cow":                               ("NPC",         0x5A,  0x15, "Gerudo Valley",          None,                     ("Gerudo", "Cow")),
+    "DMT Grotto Cow":                                  ("NPC",         0x3E,  0x15, "Death Mountain Trail",   None,                     ("Death Mountain", "Cow")),
+    "HF Grotto Cow":                                   ("NPC",         0x3E,  0x16, "Hyrule Field",           None,                     ("Cow",)),
+    "MQ JabuCow":                                      ("NPC",         0x36,  0x15, "Jabu Jabu's Belly",      None,                     ("Cow",)),
 
     # These are not actual locations, but are filler spots used for hint reachability
     "Death Mountain Crater Gossip Stone":              ("GossipStone", None,  None, None,                     None,                     None),
