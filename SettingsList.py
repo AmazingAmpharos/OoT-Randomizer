@@ -323,6 +323,7 @@ setting_infos = [
     # Non-GUI Settings
     Checkbutton('cosmetics_only'),
     Checkbutton('check_version'),
+    Setting_Info('distribution_file', str, False, {}),
     Setting_Info('checked_version', str, False, {}),
     Setting_Info('rom',             str, False, {}),
     Setting_Info('output_dir',      str, False, {}),
