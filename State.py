@@ -402,17 +402,8 @@ class State(object):
 
 
     def can_leave_forest(self):
-<<<<<<< HEAD
         return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'), age='either')
 
-=======
-        if self.world.settings.logic_rules == 'Glitchless':
-            return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'))
-        else:
-            return self.world.open_forest or self.can_shield() or self.can_dive() or \
-                self.has_sticks() or self.has('Kokiri Sword') or self.can_use('Dins Fire') or self.has_explosives() or \
-                self.can_play('Serenade of Water') or self.can_play('Nocturne of Shadow') or self.can_play('Prelude of Light')
->>>>>>> botw, trials, and kokiri forest
 
     def can_finish_adult_trades(self):
         zora_thawed = self.can_reach('Zoras Domain', age='adult') and self.has_blue_fire()

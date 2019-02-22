@@ -6,7 +6,7 @@ Fire Temple
 Deku Tree
 BotW
 Ganon's Castle
-Water Temple
+
 
 -- Overworld Regions --
-Kokiri Forest
+All except lost woods, lake hylia, zora's fountain, gerudo area, graveyard

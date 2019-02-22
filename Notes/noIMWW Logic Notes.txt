@@ -28,6 +28,10 @@ Guidelines for noIM/WW Glitched Logic
 
 -Itemless Forest Escape and other actor push skips
 	These are too new and often far too precise to be considered in this logic
+	Escape with the rock push and shield is considered, though.
+
+-Reaching zelda without moving Talon
+	Getting the letter before the egg can lead to a softlock on masks, so this will not be considered
 
 
 
