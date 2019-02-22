@@ -19,7 +19,6 @@ from version import __version__
 per_world_keys = (
     'dungeons',
     'trials',
-    'item_count_imbalances',
     'item_pools',
     'item_replacements',
     'starting_items',
@@ -273,7 +272,6 @@ class WorldDistribution(object):
     def update(self, src_dict):
         self.dungeons = {name: DungeonRecord(record) for (name, record) in src_dict.get('dungeons', {}).items()}
         self.trials = {name: TrialRecord(record) for (name, record) in src_dict.get('trials', {}).items()}
-        self.item_count_imbalance = src_dict.get('item_count_imbalances', 0)
         item_pool = src_dict.get('item_pools', None)
         self.item_pool = None if item_pool is None else {name: ItemPoolRecord(record) for (name, record) in item_pool.items()}
         self.item_replacements = [ItemReplacementRecord(record) for record in src_dict.get('item_replacements', [])]
@@ -289,7 +287,6 @@ class WorldDistribution(object):
         return {
             'dungeons': {name: record.to_dict() for (name, record) in self.dungeons.items()},
             'trials': {name: record.to_dict() for (name, record) in self.trials.items()},
-            'item_count_imbalances': self.item_count_imbalance,
             'item_pools': None if self.item_pool is None else {name: record.to_dict() for (name, record) in self.item_pool.items()},
             'item_replacements': [record.to_dict() for record in self.item_replacements],
             'starting_items': {name: record.to_dict() for (name, record) in self.starting_items.items()},
@@ -344,7 +341,7 @@ class WorldDistribution(object):
 
 
     def alter_pool(self, world, pool):
-        pool_size = len(pool) + self.item_count_imbalance
+        pool_size = len(pool)
         junk_matcher = pattern_matcher('#Junk', item_groups)
         junk_to_remove = 0
         if self.item_pool is not None:
@@ -362,22 +359,6 @@ class WorldDistribution(object):
                 junk_generator = item_generators['Junk']
                 for _ in range(pool_size - len(pool)):
                     pool.append(junk_generator(world))
-        else:
-            if self.item_count_imbalance > 0:
-                junk_generator = item_generators['Junk']
-                for _ in range(self.item_count_imbalance):
-                    pool.append(junk_generator(world))
-            elif self.item_count_imbalance < 0:
-                candidates = [item for item in pool if junk_matcher(item)]
-                junk_to_remove = -self.item_count_imbalance - len(candidates)
-                if junk_to_remove < 0:
-                    junk_to_remove = 0
-                    random.shuffle(candidates)
-                    for i in range(-self.item_count_imbalance):
-                        pool.remove(candidates[i])
-                else:
-                    for item in candidates:
-                        pool.remove(item)
 
         dist_extension = []
 
@@ -583,9 +564,6 @@ class Distribution(object):
 
 
     def update(self, src_dict):
-        world_count = reduce(lambda n, k: max(n, len(src_dict.get(k, []))), per_world_keys, 0)
-        if sum(src_dict.get('item_count_imbalances', {}).values()) != 0:
-            raise RuntimeError('The item count imbalances must compensate each other (sum must be 0)!')
         self.file_hash = (src_dict.get('file_hash', []) + [None, None, None, None, None])[0:5]
         for world_id in range(world_count):
             self.for_world(world_id).update({k: src_dict[k]['World %d' % (world_id + 1)] for k in per_world_keys if k in src_dict and len(src_dict[k]) > world_id})
@@ -636,7 +614,6 @@ class Distribution(object):
             src_dist = world.get_distribution()
             world_dist.dungeons = {dung: DungeonRecord({ 'mq': world.dungeon_mq[dung] }) for dung in world.dungeon_mq}
             world_dist.trials = {trial: TrialRecord({ 'skip': world.skipped_trials[trial] }) for trial in world.skipped_trials}
-            world_dist.item_count_imbalance = src_dist.item_count_imbalance
             world_dist.item_pool = {}
             world_dist.starting_items = {name: StarterRecord({ 'count': record.count }) for (name, record) in src_dist.starting_items.items()}
             world_dist.logic_ignored_items = src_dist.logic_ignored_items
