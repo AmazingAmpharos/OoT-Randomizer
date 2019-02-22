@@ -245,7 +245,7 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
     def from_item(item):
         return LocationRecord({
             'item': item.name,
-            'player': None if item.location is not None and item.world is item.location.world else item.world.id,
+            'player': None if item.location is not None and item.world is item.location.world else (item.world.id + 1),
             'model': item.looks_like_item.name if item.looks_like_item is not None and item.location.has_preview() and can_cloak(item, item.looks_like_item) else None,
             'price': item.price,
         })
@@ -402,13 +402,13 @@ class WorldDistribution(object):
                     if len(candidates) == 0:
                         if replace_all:
                             break
-                        raise RuntimeError('No items matching "%s" in world %d, or all of them have already been replaced' % (remove_item, self.id))
+                        raise RuntimeError('No items matching "%s" in world %d, or all of them have already been replaced' % (remove_item, self.id + 1))
                     pool.remove(candidates[random.randint(0, len(candidates) - 1)])
                 else:
                     if remove_item not in pool:
                         if replace_all:
                             break
-                        raise RuntimeError('No items matching "%s" in world %d, or all of them have already been replaced' % (remove_item, self.id))
+                        raise RuntimeError('No items matching "%s" in world %d, or all of them have already been replaced' % (remove_item, self.id + 1))
                     pool.remove(remove_item)
                 if add_item.startswith('#'):
                     dist_extension.append(item_generators[add_item[1:]](world))
@@ -420,7 +420,7 @@ class WorldDistribution(object):
         if junk_to_remove > 0:
             candidates = [item for item in pool if junk_matcher(item)]
             if junk_to_remove > len(candidates):
-                raise RuntimeError('Item pool too big for world %d and not enough junk to remove, expecting %d items, and cannot get below %d!' % (self.id, pool_size, len(pool) - len(candidates)))
+                raise RuntimeError('Item pool too big for world %d and not enough junk to remove, expecting %d items, and cannot get below %d!' % (self.id + 1, pool_size, len(pool) - len(candidates)))
             elif junk_to_remove < len(candidates):
                 random.shuffle(candidates)
                 for i in range(junk_to_remove):
@@ -450,11 +450,11 @@ class WorldDistribution(object):
             boss = pull_item_or_location([prize_locs], world, name, groups=location_groups)
             if boss is None:
                 continue
-            if record.player is not None and record.player != self.id:
+            if record.player is not None and (record.player - 1) != self.id:
                 raise RuntimeError('A boss can only give rewards in its own world')
             reward = pull_item_or_location([prizepool], world, record.item, groups=item_groups)
             if reward is None:
-                raise RuntimeError('Reward unknown or already placed in world %d: %s' % (world.id, record.item))
+                raise RuntimeError('Reward unknown or already placed in world %d: %s' % (world.id + 1, record.item))
             count += 1
             world.push_item(boss, reward, True)
             record.processed = True
@@ -468,13 +468,13 @@ class WorldDistribution(object):
                 continue
             if record.item is None:
                 continue
-            player_world = worlds[record.player] if record.player is not None else world
+            player_world = worlds[record.player - 1] if record.player - 1 is not None else world
             location = pull_item_or_location(location_pools, world, name, groups=location_groups)
             if location is None:
-                raise RuntimeError('Location unknown or already filled in world %d: %s' % (self.id, name))
+                raise RuntimeError('Location unknown or already filled in world %d: %s' % (self.id + 1, name))
             item = pull_item_or_location(item_pools, player_world, record.item, groups=item_groups)
             if item is None:
-                raise RuntimeError('Item unknown or already placed in world %d: %s' % (player_world.id, record.item))
+                raise RuntimeError('Item unknown or already placed in world %d: %s' % (player_world.id + 1, record.item))
             if record.price is not None:
                 item.special['price'] = record.price
                 item.price = record.price
@@ -482,7 +482,7 @@ class WorldDistribution(object):
             if item.advancement:
                 states_after = State.get_states_with_items([world.state for world in worlds], reduce(lambda a, b: a + b, item_pools))
                 if not State.can_beat_game(states_after, True):
-                    raise FillError('%s in world %d is not reachable without %s in world %d!' % (location.name, self.id, item.name, player_world.id))
+                    raise FillError('%s in world %d is not reachable without %s in world %d!' % (location.name, self.id + 1, item.name, player_world.id + 1))
             window.fillcount += 1
             window.update_progress(5 + ((window.fillcount / window.locationcount) * 30))
 
@@ -495,10 +495,10 @@ class WorldDistribution(object):
                 continue
             location = pull_item_or_location(location_pools, world, name, groups=location_groups)
             if location is None:
-                raise RuntimeError('Location unknown or already cloaked in world %d: %s' % (self.id, name))
+                raise RuntimeError('Location unknown or already cloaked in world %d: %s' % (self.id + 1, name))
             model = pull_item_or_location(model_pools, world, record.model, remove=False, groups=item_groups)
             if model is None:
-                raise RuntimeError('Unknown model in world %d: %s' % (self.id, record.model))
+                raise RuntimeError('Unknown model in world %d: %s' % (self.id + 1, record.model))
             if can_cloak(location.item, model):
                 location.item.looks_like_item = model
 
@@ -511,7 +511,7 @@ class WorldDistribution(object):
             else:
                 stoneID = pull_first_element([stoneIDs], lambda id: gossipLocations[id].name == name)
             if stoneID is None:
-                raise RuntimeError('Gossip stone unknown or already assigned in world %d: %s' % (self.id, name))
+                raise RuntimeError('Gossip stone unknown or already assigned in world %d: %s' % (self.id + 1, name))
             spoiler.hints[self.id][stoneID] = lineWrap(record.gossip)
 
 
