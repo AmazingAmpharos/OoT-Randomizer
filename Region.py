@@ -30,7 +30,6 @@ class Region(object):
         self.recursion_count = 0
         self.price = None
         self.world = None
-        self.dependencies = None
 
 
     def copy(self, new_world):

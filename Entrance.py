@@ -10,7 +10,6 @@ class Entrance(object):
         self.recursion_count = 0
         self.vanilla = None
         self.access_rule = lambda state: True
-        self.dependencies = None
 
 
     def copy(self, new_region):

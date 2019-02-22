@@ -513,11 +513,6 @@ def create_playthrough(spoiler):
             # still required, got to keep it around
             location.item = old_item
 
-    # Start tracking the dependencies between locations
-    for state in state_list:
-        state.track_dependencies = True
-        state.clear_cache()
-
     # This ensures the playthrough shows items being collected in the proper order.
     collection_spheres = []
     while required_locations:

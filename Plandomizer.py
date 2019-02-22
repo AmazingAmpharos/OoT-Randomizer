@@ -244,9 +244,6 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
         super().__init__(src_dict)
         self.sphere = None
         self.index = None
-        self.dependencies = None
-        self.indirect_dependencies = None
-        self.indirect_locations = None
         self.woth = False
 
 
@@ -266,49 +263,9 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
             self_dict[':sphere'] = self.sphere
         if self.index is not None:
             self_dict[':index'] = self.index
-        if self.dependencies is not None:
-            self_dict[':dependencies'] = self.dependencies
         if self.woth:
             self_dict[':woth'] = self.woth
         return self_dict
-
-
-    def calculate_indirect_dependencies(self, spheres):
-        self.indirect_dependencies = {}
-        self.indirect_locations = {}
-        for (name, record) in self.dependencies.items():
-            for (sphere_i, indices) in record['locations'].items():
-                sphere = spheres[sphere_i]
-                for index in indices:
-                    loc_rec = sphere[index]
-                    for (name, record) in loc_rec.dependencies.items():
-                        self.indirect_dependencies[name] = max(self.indirect_dependencies.get(name, 0), record['total_count'])
-                        out_of = 0
-                        for (_, indices) in record['locations'].items():
-                            out_of = out_of + len(indices)
-                        if record['count'] == out_of:
-                            for (ind_sphere, indices) in record['locations'].items():
-                                self.indirect_locations[ind_sphere] = self.indirect_locations.get(ind_sphere, set()) | set(indices)
-                    for (name, count) in loc_rec.indirect_dependencies.items():
-                        self.indirect_dependencies[name] = max(self.indirect_dependencies.get(name, 0), count)
-                    for (ind_sphere, indices) in loc_rec.indirect_locations.items():
-                        self.indirect_locations[ind_sphere] = self.indirect_locations.get(ind_sphere, set()) | indices
-
-
-    def minimize_dependencies(self):
-        for (name, count) in self.indirect_dependencies.items():
-            record = self.dependencies.get(name, None)
-            if record is not None and record['total_count'] <= count:
-                del self.dependencies[name]
-        for (name, record) in self.dependencies.items():
-            for (sphere, indices) in self.indirect_locations.items():
-                if sphere in record['locations']:
-                    for index in indices:
-                        if index in record['locations'][sphere]:
-                            record['locations'][sphere].remove(index)
-                            record['count'] = record['count'] - 1
-                    if len(record['locations'][sphere]) == 0:
-                        del record['locations'][sphere]
 
 
 class LogicIgnoredItemRecord(SimpleRecord({'count': 1})):
@@ -734,9 +691,6 @@ class Distribution(object):
                 loc_rec.sphere = sphere_i
                 loc_rec.index = index
                 loc_rec_sphere.append(loc_rec)
-                loc_rec.dependencies = {item: { 'count': count, 'total_count': count, 'locations': {sphere: locs.copy() for (sphere, locs) in item_locations.get(item, {}).items() if sphere < sphere_i} } for (item, count) in loc.dependencies.items()}
-                loc_rec.calculate_indirect_dependencies(loc_rec_spheres)
-                loc_rec.minimize_dependencies()
                 item_locs = item_locations.get(loc.item.name, None)
                 if item_locs is None:
                     item_locs = {}
