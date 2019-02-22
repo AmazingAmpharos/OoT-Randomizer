@@ -533,12 +533,6 @@ item_groups = {
 }
 
 
-item_generators = {
-    'Junk': lambda _: get_junk_item()[0],
-    'AdultTrade': lambda world: world.selected_adult_trade_item,
-}
-
-
 def get_junk_item(count=1):
     junk_items, junk_weights = zip(*junk_pool)
     return random_choices(junk_items, weights=junk_weights, k=count)
