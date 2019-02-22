@@ -33,37 +33,32 @@ def settings_to_guivars(settings, guivars):
         value = settings.__dict__[name]
         # Checkbox
         if info.type == bool:
-            guivar.set( int(value) )
+            guivar.set(int(value))
         # Dropdown/radiobox
         if info.type == str:
             if value is None:
-                guivar.set( "" )
+                guivar.set('')
             else:
-                if info.gui_params and 'options' in info.gui_params:
-                    if 'Custom Color' in info.gui_params['options'] and re.match(r'^[A-Fa-f0-9]{6}$', value):
-                        guivar.set('Custom (#' + value + ')')
-                    else:
-                        for gui_text,gui_value in info.gui_params['options'].items():
-                            if gui_value == value:
-                                guivar.set( gui_text )
+                if 'Custom Color' in info.choices and re.match(r'^[A-Fa-f0-9]{6}$', value):
+                    guivar.set('Custom (#' + value + ')')
                 else:
-                    guivar.set( value )
+                    try:
+                        value = info.choices[value]
+                    except KeyError:
+                        pass
+                    guivar.set(value)
         # Text field for a number...
         if info.type == int:
             if value is None:
-                guivar.set( str(1) )
+                guivar.set(str(1))
             else:
-                guivar.set( str(value) )
+                guivar.set(str(value))
+        # List
         if info.type == list:
             guivars[name] = []
             if value:
                 for item in value:
-                    if info.gui_params and 'options' in info.gui_params:
-                        for gui_text,gui_value in info.gui_params['options'].items():
-                            if gui_value == item:
-                                guivars[name].append(gui_text)
-                    else:
-                        guivars[name].append(item)
+                    guivars[name].append(info.choices[item])
 
 
 def guivars_to_settings(guivars):
@@ -80,25 +75,24 @@ def guivars_to_settings(guivars):
         # Dropdown/radiobox
         if info.type == str:
             # Set guivar to hexcode if custom color
-            if re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', guivar.get()):
+            if 'Custom Color' in info.choices and re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', guivar.get()):
                 result[name] = re.findall(r'[A-Fa-f0-9]{6}', guivar.get())[0]
-            elif info.gui_params and 'options' in info.gui_params:
-                result[name] = info.gui_params['options'][guivar.get()]
             else:
-                result[name] = guivar.get()
+                try:
+                    value = info.reverse_choices[guivar.get()]
+                except KeyError:
+                    value = guivar.get()
+                result[name] = value
         # Text field for a number...
         if info.type == int:
             try:
-                result[name] = int( guivar.get() )
+                result[name] = int(guivar.get())
             except ValueError:
                 result[name] = 0
         if info.type == list:
             result[name] = []
             for item in guivar:
-                if info.gui_params and 'options' in info.gui_params:
-                    result[name].append(info.gui_params['options'][item])
-                else:
-                    result[name].append(item)
+                result[name].append(info.reverse_choices[item])
 
     if result['seed'] == "":
         result['seed'] = None
@@ -268,10 +262,10 @@ def guiMain(settings=None):
     ############
 
     for info in setting_infos:
-        if info.gui_params and 'group' in info.gui_params:
+        if 'group' in info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
                 # Determine the initial value of the checkbox
-                default_value = 1 if info.gui_params['default'] == "checked" else 0
+                default_value = 1 if info.choices[info.default] == 'checked' else 0
                 # Create a variable to access the box's state
                 guivars[info.name] = IntVar(value=default_value)
                 # Create the checkbox
@@ -279,12 +273,10 @@ def guiMain(settings=None):
                 widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
                 # Create the variable to store the user's decision
-                guivars[info.name] = StringVar(value=info.gui_params['default'])
+                guivars[info.name] = StringVar(value=info.choices[info.default])
                 # Create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
-                if isinstance(info.gui_params['options'], list):
-                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
-                dropdown = ttk.Combobox(widgets[info.name], textvariable=guivars[info.name], values=list(info.gui_params['options'].keys()), state='readonly', width=36)
+                dropdown = ttk.Combobox(widgets[info.name], textvariable=guivars[info.name], values=list(map(lambda choice: info.choices[choice], info.choice_list)), state='readonly', width=36)
                 dropdown.bind("<<ComboboxSelected>>", show_settings)
                 dropdown.pack(side=BOTTOM, anchor=W)
                 # Label the option
@@ -295,11 +287,9 @@ def guiMain(settings=None):
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Radiobutton':
                 # Create the variable to store the user's decision
-                guivars[info.name] = StringVar(value=info.gui_params['default'])
+                guivars[info.name] = StringVar(value=info.choices[info.default])
                 # Create the option menu
-                widgets[info.name] = LabelFrame(frames[info.gui_params['group']], text=info.gui_params['text'] if 'text' in info.gui_params else info["name"], labelanchor=NW)
-                if isinstance(info.gui_params['options'], list):
-                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
+                widgets[info.name] = LabelFrame(frames[info.gui_params['group']], text=info.gui_params.get('text', info.name), labelanchor=NW)
                 # Setup orientation
                 side = TOP
                 anchor = W
@@ -307,19 +297,19 @@ def guiMain(settings=None):
                     side = LEFT
                     anchor = N
                 # Add the radio buttons
-                for option in info.gui_params["options"]:
+                for option in map(lambda choice: info.choices[choice], info.choice_list):
                     radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=220, indicatoron=False, command=show_settings)
                     radio_button.pack(expand=True, side=side, anchor=anchor)
                 # Pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Scale':
                 # Create the variable to store the user's decision
-                guivars[info.name] = IntVar(value=info.gui_params['default'])
+                guivars[info.name] = IntVar(value=info.choices[info.default])
                 # Create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
-                minval = 'min' in info.gui_params and info.gui_params['min'] or 0
-                maxval = 'max' in info.gui_params and info.gui_params['max'] or 100
-                stepval = 'step' in info.gui_params and info.gui_params['step'] or 1
+                minval = info.gui_params.get('min', 0)
+                maxval = info.gui_params.get('max', 100)
+                stepval = info.gui_params.get('step', 1)
                 scale = Scale(widgets[info.name], variable=guivars[info.name], from_=minval, to=maxval, tickinterval=stepval, resolution=stepval, showvalue=0, orient=HORIZONTAL, sliderlength=15, length=235, command=show_settings)
                 scale.pack(side=BOTTOM, anchor=W)
                 # Label the option
@@ -330,7 +320,7 @@ def guiMain(settings=None):
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Entry':
                 # Create the variable to store the user's decision
-                guivars[info.name] = StringVar(value=info.gui_params['default'])
+                guivars[info.name] = StringVar(value=info.default)
                 # Create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
 
@@ -346,17 +336,15 @@ def guiMain(settings=None):
                 # Pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'SearchBox':
-                search_frame = LabelFrame(frames[info.gui_params['group']], text=info.gui_params['text'] if 'text' in info.gui_params else info["name"], labelanchor=NW)
-                if isinstance(info.gui_params['options'], list):
-                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
+                search_frame = LabelFrame(frames[info.gui_params['group']], text=info.gui_params.get('text', info.name), labelanchor=NW)
 
-                widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.gui_params['options'].keys()), width=78)
+                widgets[info.name + '_entry'] = SearchBox(search_frame, list(map(lambda choice: info.choices[choice], info.choice_list)), width=78)
                 widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
 
                 list_frame = Frame(search_frame)
                 scrollbar = Scrollbar(list_frame, orient=VERTICAL)
                 widgets[info.name] = Listbox(list_frame, width=78, height=7, yscrollcommand=scrollbar.set)
-                guivars[info.name] = []
+                guivars[info.name] = list(info.default)
                 scrollbar.config(command=widgets[info.name].yview)
                 scrollbar.pack(side=RIGHT, fill=Y)
                 widgets[info.name].pack(side=LEFT)
