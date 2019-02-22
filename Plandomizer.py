@@ -22,7 +22,6 @@ per_world_keys = (
     'item_pools',
     'item_replacements',
     'starting_items',
-    'logic_ignored_items',
     'locations',
     ':woth_locations',
     ':barren_regions',
@@ -279,7 +278,6 @@ class WorldDistribution(object):
             'item_pool': None if src_dict.get('item_pool', None) is None else {name: ItemPoolRecord(record) for (name, record) in src_dict['item_pool'].items()},
             'item_replacements': [ItemReplacementRecord(record) for record in src_dict.get('item_replacements', [])],
             'starting_items': {name: StarterRecord(record) for (name, record) in src_dict.get('starting_items', {}).items()},
-            'logic_ignored_items': {name: LogicIgnoredItemRecord(record) for (name, record) in src_dict.get('logic_ignored_items', {}).items()},
             'locations': {name: [LocationRecord(rec) for rec in record] if is_pattern(name) else LocationRecord(record) for (name, record) in src_dict.get('locations', {}).items() if not is_output_only(name)},
             'woth_locations': None,
             'barren_regions': None,
@@ -309,7 +307,6 @@ class WorldDistribution(object):
             'item_pools': None if self.item_pool is None else {name: record.to_dict() for (name, record) in self.item_pool.items()},
             'item_replacements': [record.to_dict() for record in self.item_replacements],
             'starting_items': {name: record.to_dict() for (name, record) in self.starting_items.items()},
-            'logic_ignored_items': {name: record.to_dict() for (name, record) in self.logic_ignored_items.items()},
             'locations': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.locations.items()},
             ':woth_locations': None if self.woth_locations is None else {name: record.to_dict() for (name, record) in self.woth_locations.items()},
             ':barren_regions': self.barren_regions,
@@ -439,10 +436,6 @@ class WorldDistribution(object):
                 except KeyError:
                     continue
                 state.collect(item)
-
-        for (name, record) in self.logic_ignored_items.items():
-            for _ in range(record.count):
-                state.collect(ItemFactory(name))
 
 
     def fill_bosses(self, world, prize_locs, prizepool):
@@ -659,7 +652,6 @@ class Distribution(object):
             world_dist.trials = {trial: TrialRecord({ 'skip': world.skipped_trials[trial] }) for trial in world.skipped_trials}
             world_dist.item_pool = {}
             world_dist.starting_items = {name: StarterRecord({ 'count': record.count }) for (name, record) in src_dist.starting_items.items()}
-            world_dist.logic_ignored_items = src_dist.logic_ignored_items
             world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
             world_dist.woth_locations = {loc.name: LocationRecord.from_item(loc.item) for loc in spoiler.required_locations[world.id]}
             world_dist.barren_regions = [*world.empty_areas]
