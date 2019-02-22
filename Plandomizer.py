@@ -25,6 +25,7 @@ per_world_keys = (
     'starting_items',
     'logic_ignored_items',
     'locations',
+    ':woth_locations',
     ':barren_regions',
     'gossip',
 )
@@ -240,13 +241,6 @@ class ItemReplacementRecord(SimpleRecord({'add': None, 'remove': None, 'count': 
 
 
 class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 'model': None, 'extra': None})):
-    def __init__(self, src_dict=None):
-        super().__init__(src_dict)
-        self.sphere = None
-        self.index = None
-        self.woth = False
-
-
     @staticmethod
     def from_item(item):
         return LocationRecord({
@@ -255,17 +249,6 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
             'model': item.looks_like_item.name if item.looks_like_item is not None and item.location.has_preview() and can_cloak(item, item.looks_like_item) else None,
             'price': item.price,
         })
-
-
-    def to_dict(self):
-        self_dict = super().to_dict()
-        if self.sphere is not None:
-            self_dict[':sphere'] = self.sphere
-        if self.index is not None:
-            self_dict[':index'] = self.index
-        if self.woth:
-            self_dict[':woth'] = self.woth
-        return self_dict
 
 
 class LogicIgnoredItemRecord(SimpleRecord({'count': 1})):
@@ -297,6 +280,7 @@ class WorldDistribution(object):
         self.starting_items = {name: StarterRecord(record) for (name, record) in src_dict.get('starting_items', {}).items()}
         self.logic_ignored_items = {name: LogicIgnoredItemRecord(record) for (name, record) in src_dict.get('logic_ignored_items', {}).items()}
         self.locations = {name: [LocationRecord(rec) for rec in record] if is_pattern(name) else LocationRecord(record) for (name, record) in src_dict.get('locations', {}).items() if not is_output_only(name)}
+        self.woth_locations = None
         self.barren_regions = None
         self.gossip = {name: [GossipRecord(rec) for rec in record] if is_pattern(name) else GossipRecord(record) for (name, record) in src_dict.get('gossip', {}).items()}
 
@@ -311,6 +295,7 @@ class WorldDistribution(object):
             'starting_items': {name: record.to_dict() for (name, record) in self.starting_items.items()},
             'logic_ignored_items': {name: record.to_dict() for (name, record) in self.logic_ignored_items.items()},
             'locations': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.locations.items()},
+            ':woth_locations': None if self.woth_locations is None else {name: record.to_dict() for (name, record) in self.woth_locations.items()},
             ':barren_regions': self.barren_regions,
             'gossip': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.gossip.items()},
         }
@@ -606,6 +591,7 @@ class Distribution(object):
             self.for_world(world_id).update({k: src_dict[k][world_id] for k in per_world_keys if k in src_dict and len(src_dict[k]) > world_id})
         self.locations_default_extra = src_dict.get('locations_default_extra', False)
         self.starting_default_extra = src_dict.get('starting_default_extra', True)
+        self.playthrough = None
 
 
     def to_dict(self, include_output_only=True):
@@ -618,6 +604,9 @@ class Distribution(object):
             ':settings': self.settings.to_dict() if self.settings is not None else None,
             ':distribution': self.settings.distribution.to_dict(False) if self.settings is not None else None,
             **{k: [world[k] for world in worlds] for k in per_world_keys},
+            ':playthrough': None if self.playthrough is None else 
+                {sphere_nr: {name: record.to_dict() for name, record in sphere.items()} 
+                    for (sphere_nr, sphere) in self.playthrough.items()},
         }
         if self.locations_default_extra:
             self_dict['locations_default_extra'] = True
@@ -652,16 +641,9 @@ class Distribution(object):
             world_dist.starting_items = {name: StarterRecord({ 'count': record.count }) for (name, record) in src_dist.starting_items.items()}
             world_dist.logic_ignored_items = src_dist.logic_ignored_items
             world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
+            world_dist.woth_locations = {loc.name: LocationRecord.from_item(loc.item) for loc in spoiler.required_locations[world.id]}
             world_dist.barren_regions = [*world.empty_areas]
             world_dist.gossip = {gossipLocations[loc].name: GossipRecord({ 'gossip': spoiler.hints[world.id][loc] }) for loc in spoiler.hints[world.id]}
-            for loc in spoiler.required_locations[world.id]:
-                loc_rec = world_dist.locations.get(loc.name, None)
-                if loc_rec is None:
-                    loc_rec = world_dist.locations.get(':' + loc.name, None)
-                    if loc_rec is None:
-                        loc_rec = LocationRecord.from_item(loc.item)
-                        world_dist.locations[':' + loc.name] = loc_rec
-                loc_rec.woth = True
 
         for world in spoiler.worlds:
             for (_, item) in spoiler.locations[world.id].items():
@@ -673,34 +655,17 @@ class Distribution(object):
                 else:
                     player_dist.item_pool[item.name] = ItemPoolRecord()
 
-        item_locations = {}
-        loc_rec_spheres = []
+        dist.playthrough = {}
         for (sphere_nr, sphere) in spoiler.playthrough.items():
-            loc_rec_sphere = []
-            loc_rec_spheres.append(loc_rec_sphere)
-            sphere_i = int(sphere_nr) - 1
-            index = 0
-            for loc in sphere:
-                world_dist = dist.for_world(loc.world.id)
-                loc_rec = world_dist.locations.get(loc.name, None)
-                if loc_rec is None:
-                    loc_rec = world_dist.locations.get(':' + loc.name, None)
-                    if loc_rec is None:
-                        loc_rec = LocationRecord.from_item(loc.item)
-                        world_dist.locations[':' + loc.name] = loc_rec
-                loc_rec.sphere = sphere_i
-                loc_rec.index = index
-                loc_rec_sphere.append(loc_rec)
-                item_locs = item_locations.get(loc.item.name, None)
-                if item_locs is None:
-                    item_locs = {}
-                    item_locations[loc.item.name] = item_locs
-                item_locs_sphere = item_locs.get(sphere_i, None)
-                if item_locs_sphere is None:
-                    item_locs_sphere = []
-                    item_locs[sphere_i] = item_locs_sphere
-                item_locs_sphere.append(index)
-                index += 1
+            loc_rec_sphere = {}
+            dist.playthrough[sphere_nr] = loc_rec_sphere
+            for location in sphere:
+                if spoiler.settings.world_count > 1:
+                    location_key = '%s [W%d]' % (location.name, location.world.id + 1)
+                else:
+                    location_key = location.name
+
+                loc_rec_sphere[location_key] = LocationRecord.from_item(location.item)
 
         return dist
 
