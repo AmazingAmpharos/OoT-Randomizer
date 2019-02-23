@@ -1550,6 +1550,8 @@ setting_infos = [
         gui_tooltip    = '''\
             The gate in Kakariko Village to Death Mountain Trail
             is always open instead of needing Zelda's Letter.
+            The Happy Mask shop opens upon obtaining Zelda's
+            Letter without requiring showing it to the guard.
 
             Either way, the gate is always open as an adult.
         ''',

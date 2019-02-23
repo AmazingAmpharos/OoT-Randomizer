@@ -111,3 +111,11 @@ void fill_wallet_upgrade(z64_file_t *save, int16_t arg1, int16_t arg2) {
     if(MAX_RUPEES)
         save->rupees = rupee_cap[arg1];
 }
+
+uint8_t OPEN_KAKARIKO = 0;
+void open_mask_shop(z64_file_t *save, int16_t arg1, int16_t arg2) {
+    if (OPEN_KAKARIKO) {
+        save->inf_table[7] = save->inf_table[7] | 0x40; // "Spoke to Gate Guard About Mask Shop"
+        save->item_get_inf[2] = save->item_get_inf[2] & 0xFB87; // Unset "Obtained Mask" flags just in case of savewarp before Impa.
+    }
+}

@@ -475,7 +475,6 @@ tradeitemoptions = (
 
 fixedlocations = {
     'Ganon': 'Triforce',
-    'HC Zeldas Letter': 'Zeldas Letter',
     'Pierre': 'Scarecrow Song',
     'Deliver Ruto\'s Letter': 'Deliver Letter',
     'Master Sword Pedestal': 'Time Travel',
@@ -803,7 +802,9 @@ def collect_heart_container(world, pool):
 
 def get_pool_core(world):
     pool = []
-    placed_items = {}
+    placed_items = {
+        'HC Zeldas Letter': 'Zeldas Letter',
+    }
 
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')

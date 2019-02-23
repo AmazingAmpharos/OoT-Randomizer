@@ -139,7 +139,7 @@ item_table = {
     'Double Defense':                                  ('Item',     True,  0xB8, None),
     'Magic Bean Pack':                                 ('Item',     True,  0xC9, None),
     'Triforce Piece':                                  ('Item',     True,  0xCA, {'progressive': float('Inf')}),
-    'Zeldas Letter':                                   ('Item',     True,  None, None),
+    'Zeldas Letter':                                   ('Item',     True,  0x0B, None),
     'Time Travel':                                     ('Event',    True,  None, None),
     'Scarecrow Song':                                  ('Event',    True,  None, None),
     'Triforce':                                        ('Event',    True,  None, None),
