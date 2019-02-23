@@ -1014,6 +1014,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     else:
         rom.write_byte(rom.sym('OPEN_KAKARIKO'), 1)
 
+    if world.complete_mask_quest:
+        rom.write_byte(rom.sym('COMPLETE_MASK_QUEST'), 1)
+    else:
+        rom.write_byte(rom.sym('COMPLETE_MASK_QUEST'), 0)
+
     if world.zora_fountain == 'open':
         save_context.write_bits(0x0EDB, 0x08) # "Moved King Zora"
     elif world.zora_fountain == 'adult':
