@@ -42,6 +42,7 @@
     "OCARINAS_SHUFFLED": "03481419",
 =======
     "DEBUG_OFFSET": "034825E8",
+<<<<<<< Dev
     "DPAD_TEXTURE": "03489458",
     "FAST_CHESTS": "0348141E",
     "FONT_TEXTURE": "03487F90",
@@ -59,6 +60,8 @@
 =======
 =======
     "DEBUG_OFFSET": "034825E8",
+=======
+>>>>>>> Rebased to 4.0.4
     "DPAD_TEXTURE": "034894B0",
     "FAST_CHESTS": "0348141E",
     "FONT_TEXTURE": "03487FE8",
@@ -71,8 +74,11 @@
     "JABU_ELEVATOR_ENABLE": "0348141C",
     "NO_ESCAPE_SEQUENCE": "03486F34",
     "OCARINAS_SHUFFLED": "0348141D",
+<<<<<<< Dev
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
+=======
+>>>>>>> Rebased to 4.0.4
     "OUTGOING_ITEM": "0348000C",
     "OUTGOING_KEY": "03480008",
     "OUTGOING_PLAYER": "0348000E",
