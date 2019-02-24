@@ -1062,6 +1062,43 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
+    Checkbutton(
+        name           = 'shuffle_dungeon_entrances',
+        gui_text       = 'Shuffle Dungeon Entrances',
+        gui_group      = 'shuffle',
+        gui_tooltip    = '''\
+                         Shuffle the entrances to dungeons including mediallion
+                         dungeons, stone dungeons, bottom of the well, ice cavern,
+                         and gerudo training grounds. Ganons castle is not shuffled.
+
+                         The dungeon entrances for the Deku Tree, Fire Temple and
+                         Bottom of the Well are opened for both adult and child to
+                         improve randomization. The Fire Temple entrance from Bolero
+                         is always in logic for child regardless of Tunic settings.
+
+                         Dungeons will be guaranteed reachable at an age where link
+                         can fully complete the dungeon if 'All locations reachable'
+                         is selected. This may not always be the vanilla intended age.
+
+                         Blue warps will return link to the new dungeons entrance
+                         except for Forest Temple which will still take you to the
+                         Deku Sprout.
+
+                         Lake Hylia will be filled for adult after defeating Morpha.
+
+                         Master quest dungeons and random settings are not yet
+                         supported, coming soon!
+                         ''',
+        default        = False,
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+            'distribution':  [
+                (False, 1),
+            ]
+        },
+        dependency     = lambda settings: False if settings.mq_dungeons_random or settings.mq_dungeons != 0 else None,
+    ),
     Combobox(
         name           = 'shuffle_scrubs',
         default        = 'off',
