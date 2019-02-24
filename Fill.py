@@ -272,7 +272,7 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
         if count == 0:
             break
 
-        # get and item and remove it from the itempool
+        # get an item and remove it from the itempool
         item_to_place = itempool.pop()
         random.shuffle(locations)
 
@@ -290,7 +290,7 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
             # in an unreachable place in another world
             perform_access_check = not State.can_beat_game(maximum_exploration_state_list)
 
-        # find a location that the item can be places. It must be a valid location
+        # find a location that the item can be placed. It must be a valid location
         # in the world we are placing it (possibly checking for reachability)
         spot_to_fill = None
         for location in locations:
