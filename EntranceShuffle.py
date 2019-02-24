@@ -3,21 +3,19 @@ import logging
 from State import State
 from Rules import set_entrances_based_rules
 
-
 dungeon_entrances = {
-    'Outside Deku Tree -> Deku Tree Lobby':                     ('Dungeon', []),
-    'Zoras Fountain -> Jabu Jabus Belly Beginning':             ('Dungeon', []),
-    'Dodongos Cavern Entryway -> Dodongos Cavern Beginning':    ('Dungeon', []),
-    'Sacred Forest Meadow -> Forest Temple Lobby':              ('Dungeon', []),
-    'Death Mountain Crater Central -> Fire Temple Lower':       ('Dungeon', []),
-    'Lake Hylia -> Water Temple Lobby':                         ('Dungeon', []),
-    'Shadow Temple Warp Region -> Shadow Temple Entryway':      ('Dungeon', []),
-    'Desert Colossus -> Spirit Temple Lobby':                   ('Dungeon', []),
-    'Kakariko Village -> Bottom of the Well':                   ('Dungeon', []),
-    'Zoras Fountain -> Ice Cavern Beginning':                   ('Dungeon', []),
-    'Gerudo Fortress -> Gerudo Training Grounds Lobby':         ('Dungeon', []),
+    'Outside Deku Tree -> Deku Tree Lobby':                     ('Dungeon', { 'forward': 0x0000, 'return' : 0x0209, 'blue' : 0x0457 }),
+    'Dodongos Cavern Entryway -> Dodongos Cavern Beginning':    ('Dungeon', { 'forward': 0x0004, 'return' : 0x0242, 'blue' : 0x047A }),
+    'Zoras Fountain -> Jabu Jabus Belly Beginning':             ('Dungeon', { 'forward': 0x0028, 'return' : 0x0221, 'blue' : 0x010E }),
+    'Sacred Forest Meadow -> Forest Temple Lobby':              ('Dungeon', { 'forward': 0x0169, 'return' : 0x0215, 'blue' : 0x0608 }),
+    'Death Mountain Crater Central -> Fire Temple Lower':       ('Dungeon', { 'forward': 0x0165, 'return' : 0x024A, 'blue' : 0x0564 }),
+    'Lake Hylia -> Water Temple Lobby':                         ('Dungeon', { 'forward': 0x0010, 'return' : 0x021D, 'blue' : 0x060C }),
+    'Desert Colossus -> Spirit Temple Lobby':                   ('Dungeon', { 'forward': 0x0082, 'return' : 0x01E1, 'blue' : 0x0610 }),
+    'Shadow Temple Warp Region -> Shadow Temple Entryway':      ('Dungeon', { 'forward': 0x0037, 'return' : 0x0205, 'blue' : 0x0580 }),
+    'Kakariko Village -> Bottom of the Well':                   ('Dungeon', { 'forward': 0x0098, 'return' : 0x02A6, }),
+    'Zoras Fountain -> Ice Cavern Beginning':                   ('Dungeon', { 'forward': 0x0088, 'return' : 0x03D4, }),
+    'Gerudo Fortress -> Gerudo Training Grounds Lobby':         ('Dungeon', { 'forward': 0x0008, 'return' : 0x03A8, }),
 }
-
 
 class EntranceShuffleError(RuntimeError):
     pass
