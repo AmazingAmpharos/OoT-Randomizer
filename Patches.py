@@ -841,7 +841,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # open gerudo fortress
     if world.gerudo_fortress == 'open':
-        write_bits_to_save(0x00A5, 0x40) # Give Gerudo Card
+        if not world.shuffle_gerudo_card:
+            write_bits_to_save(0x00A5, 0x40) # Give Gerudo Card
         write_bits_to_save(0x0EE7, 0x0F) # Free all 4 carpenters
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x1, 0x0F) # Thieves' Hideout switch flags (started all fights)
         write_bits_to_save(0x00D4 + 0x0C * 0x1C + 0x04 + 0x2, 0x01) # Thieves' Hideout switch flags (heard yells/unlocked doors)
@@ -1301,6 +1302,12 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     # Update grotto id data
     set_grotto_id_data(rom)
 
+    if world.shuffle_cows:
+        rom.write_byte(rom.sym('SHUFFLE_COWS'), 0x01)
+        #Moves the cow in LLR Tower, as the two cows are too close in vanilla
+        rom.write_bytes(0x33650CA, [0xFE, 0xD3, 0x00, 0x00, 0x00, 0x6E, 0x00, 0x00, 0x4A, 0x34])
+        set_cow_id_data(rom, world)
+
     if world.shuffle_smallkeys == 'remove' or world.shuffle_bosskeys == 'remove':
         locked_doors = get_locked_doors(rom, world)
         for _,[door_byte, door_bits] in locked_doors.items():
@@ -1602,6 +1609,32 @@ def get_override_itemid(override_table, scene, type, flags):
         if entry[0] == scene and (entry[1] & 0x07) == type and entry[2] == flags:
             return entry[4]
     return None
+
+
+def set_cow_id_data(rom, world):
+    def set_cow_id(rom, actor_id, actor, scene):
+        nonlocal last_scene
+        nonlocal cow_count
+        nonlocal last_actor
+
+        if actor_id == 0x01C6: #Cow
+            if scene == last_scene and last_actor != actor:
+                cow_count += 1
+            else:
+                cow_count = 1
+
+            last_scene = scene
+            last_actor = actor
+            if world.dungeon_mq['Jabu Jabus Belly'] and scene == 2: #If its an MQ jabu cow
+                rom.write_int16(actor + 0x8, 1 if cow_count == 17 else 0) #Give all wall cows ID 0, and set cow 11's ID to 1
+            else:
+                rom.write_int16(actor + 0x8, cow_count)
+
+    last_actor = -1
+    last_scene = -1
+    cow_count = 1
+
+    get_actor_list(rom, set_cow_id)
 
 
 def set_grotto_id_data(rom):

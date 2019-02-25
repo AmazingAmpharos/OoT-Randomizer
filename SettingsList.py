@@ -2,7 +2,7 @@ import argparse
 import re
 import math
 from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options
-from LocationList import location_table
+from Location import LocationIterator
 import Sounds as sfx
 
 # holds the info for a single setting
@@ -143,6 +143,12 @@ def logic_tricks_list_tooltip(widget, pos):
 
 
 logic_tricks = {
+    'Rolling Goron (Hot Rodder Goron) as Child with Strength': {
+        'name'    : 'logic_child_rolling_with_strength',
+        'tooltip' : '''\
+                    Use the bombflower on the stairs or near Medigoron.
+                    Timing is tight, especially without backwalking
+                    '''},
     'Morpha with Gold Scale': {
         'name'    : 'logic_morpha_with_scale',
         'tooltip' : '''\
@@ -167,7 +173,6 @@ logic_tricks = {
                     Silver Rupee Chest. May need to make multiple
                     trips.
                     '''},
-
     'Child Deadhand without Kokiri Sword': {
         'name'    : 'logic_child_deadhand',
         'tooltip' : '''\
@@ -240,6 +245,12 @@ logic_tricks = {
                     near Goron City and walk up the
                     very steep slope.
                     '''},
+    'Zora\'s Domain Entry with Cucco': {
+        'name'    : 'logic_zora_with_cucco',
+        'tooltip' : '''\
+                    Can fly behind the waterfall with
+                    a cucco as child.
+                    '''},
     'Gerudo Training Grounds MQ Left Side Silver Rupees with Hookshot': {
         'name'    : 'logic_gtg_mq_with_hookshot',
         'tooltip' : '''\
@@ -295,6 +306,62 @@ logic_tricks = {
                     shot is to first spawn a Song of Time block, and then
                     stand on the very edge of it.
                     '''},
+    'Spirit Temple Shifting Wall with No Additional Items': {
+        'name'    : 'logic_spirit_wall',
+        'tooltip' : '''\
+                    The logic normally guarantees a way of dealing with both
+                    the Beamos and the Walltula before climbing the wall.
+                    '''},
+    'Spirit Temple Main Room GS with Boomerang': {
+        'name'    : 'logic_spirit_lobby_gs',
+        'tooltip' : '''\
+                    Standing on the highest part of the arm of the statue, a
+                    precise Boomerang throw can kill and obtain this Gold
+                    Skulltula. You must throw the Boomerang slightly off to
+                    the side so that it curves into the Skulltula, as aiming
+                    directly at it will clank off of the wall in front.
+                    '''},
+    'Spirit Temple MQ Sun Block Room GS with Boomerang': {
+        'name'    : 'logic_spirit_mq_sun_block_gs',
+        'tooltip' : '''\
+                    Throw the Boomerang in such a way that it
+                    curves through the side of the glass block
+                    to hit the Gold Skulltula.
+                    '''},
+    'Jabu MQ Song of Time Block GS with Boomerang': {
+        'name'    : 'logic_jabu_mq_sot_gs',
+        'tooltip' : '''\
+                    Allow the Boomerang to return to you through
+                    the Song of Time block to grab the token.
+                    '''},
+    'Bottom of the Well MQ Dead Hand Freestanding Key with Boomerang': {
+        'name'    : 'logic_botw_mq_dead_hand_key',
+        'tooltip' : '''\
+                    Boomerang can fish the item out of the rubble without
+                    needing explosives to blow it up.
+                    '''},
+    'Fire Temple Flame Wall Maze Skip': {
+        'name'    : 'logic_fire_flame_maze',
+        'tooltip' : '''\
+                    If you move quickly you can sneak past the edge of
+                    a flame wall before it can rise up to block you.
+                    To do it without taking damage is more precise.
+                    '''},
+    'Fire Temple MQ Chest Near Boss without Breaking Crate': {
+        'name'    : 'logic_fire_mq_near_boss',
+        'tooltip' : '''\
+                    The hitbox for the torch extends a bit outside of the crate.
+                    Shoot a flaming arrow at the side of the crate to light the
+                    torch without needing to get over there and break the crate.
+                    '''},
+    'Fire Temple MQ Boulder Maze Side Room without Box': {
+        'name'    : 'logic_fire_mq_maze_side_room',
+        'tooltip' : '''\
+                    You can walk from the blue switch to the door and
+                    quickly open the door before the bars reclose. This
+                    skips needing the Hookshot in order to reach a box
+                    to place on the switch.
+                    '''},
     'Fire Temple MQ Boss Key Chest without Bow': {
         'name'    : 'logic_fire_mq_bk_chest',
         'tooltip' : '''\
@@ -303,11 +370,24 @@ logic_tricks = {
                     oversight in the way the game counts how many
                     torches have been lit.
                     '''},
-    'Zora\'s Domain Entry with Cucco': {
-        'name'    : 'logic_zora_with_cucco',
+    'Zora\'s River Lover Freestanding PoH as Adult with Nothing': {
+        'name'    : 'logic_zora_river_lower',
         'tooltip' : '''\
-                    Can fly behind the waterfall with
-                    a cucco as child.
+                    Adult can reach this PoH with a precise jump,
+                    no Hover Boots required.
+                    '''},
+    'Water Temple Cracked Wall with Hover Boots': {
+        'name'    : 'logic_water_cracked_wall_hovers',
+        'tooltip' : '''\
+                    With a midair side-hop while wearing the Hover
+                    Boots, you can reach the cracked wall without
+                    needing to raise the water up to the middle level.
+                    '''},
+    'Shadow Temple Freestanding Key with Bombchu': {
+        'name'    : 'logic_shadow_freestanding_key',
+        'tooltip' : '''\
+                    Release the Bombchu with good timing so that
+                    it explodes near the bottom of the pot.
                     '''},
     'Zora\'s Domain Entry with Hover Boots': {
         'name'    : 'logic_zora_with_hovers',
@@ -347,6 +427,16 @@ setting_infos = [
 
     # GUI Settings
     Checkbutton(
+        name           = 'repatch_cosmetics',
+        gui_text       = 'Patch Cosmetics',
+        gui_tooltip    = '''\
+                         Enabling this will re-patch cosmetics based on current settings.
+                         Otherwise, it will utilize the cosmetics that are in the patch file.
+                         ''',
+        default        = True,
+        shared         = False,
+    ),
+    Checkbutton(
         name           = 'create_spoiler',
         gui_text       = 'Create Spoiler Log',
         gui_group      = 'rom_tab',
@@ -361,7 +451,7 @@ setting_infos = [
         gui_text       = 'Create Cosmetics Log',
         gui_group      = 'rom_tab',
         default        = True,
-        dependency     = lambda settings: False if settings.compress_rom in ['None', 'Patch'] else None,
+        dependency     = lambda settings: False if settings.compress_rom == 'None' else None,
     ),
     Setting_Info(
         name           = 'compress_rom',
@@ -468,7 +558,7 @@ setting_infos = [
         choices        = {
             'normal': 'Default Behavior',
             'fast':   'Rescue One Carpenter',
-            'open':   'Start with Gerudo Card',
+            'open':   'Open Gerudo Fortress',
         },
         gui_text       = 'Gerudo Fortress',
         gui_group      = 'open',
@@ -476,9 +566,10 @@ setting_infos = [
             'Rescue One Carpenter': Only the bottom left
             carpenter must be rescued.
 
-            'Start with Gerudo Card': The carpenters are rescued from
-            the start of the game, and the player starts with the Gerudo
-            Card in the inventory allowing access to Gerudo Training Grounds.
+            'Open Gerudo Fortress': The carpenters are rescued from
+            the start of the game, and if 'Shuffle Gerudo Card' is disabled,
+            the player starts with the Gerudo Card in the inventory 
+            allowing access to Gerudo Training Grounds.
         ''',
         shared         = True,
         gui_params     = {
@@ -859,6 +950,21 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
+    Checkbutton(
+        name           = 'shuffle_cows',
+        gui_text       = 'Shuffle Cows',
+        gui_group      = 'shuffle',
+        gui_tooltip    = '''\
+            Enabling this causes playing Epona's song infront
+            of cows to give an item. There are 9 cows, and an
+            extra in MQ Jabu
+        ''',
+        default        = False,
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
     Combobox(
         name           = 'shuffle_scrubs',
         default        = 'off',
@@ -1147,23 +1253,24 @@ setting_infos = [
 
             12: All dungeons will have
             Master Quest redesigns.
-        ''',
+            ''',
         dependency     = lambda settings: 0 if settings.mq_dungeons_random else None,
+        shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
-        },
-        shared         = True,
+        },    
     ),
     Setting_Info(
         name           = 'disabled_locations', 
         type           = list, 
         shared         = True,
-        choices        = list(location_table.keys()),
+        choices        = [location.name for location in LocationIterator(lambda loc: loc.filter_tags is not None)],
         default        = [],
         gui_params     = {
             'text': 'Exclude Locations',
-            'widget': 'SearchBox',
+            'widget': 'FilteredSearchBox',
             'group': 'logic_tab',
+            'filterdata': {location.name: location.filter_tags for location in LocationIterator(lambda loc: loc.filter_tags is not None)},
             'tooltip':'''
                 Prevent locations from being required. Major
                 items can still appear there, however they

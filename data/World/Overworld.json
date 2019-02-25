@@ -39,7 +39,8 @@
     {
         "region_name": "Links House",
         "locations": {
-            "Links Pocket": "True"
+            "Links Pocket": "True",
+            "Links House Cow": "Epona"
         },
         "exits": {
             "Kokiri Forest": "True",
@@ -253,13 +254,14 @@
             "Gerudo Valley Crate Freestanding PoH": "True",
             "GS Gerudo Valley Small Bridge": "Boomerang and nighttime",
             "GS Gerudo Valley Bean Patch": "has_bottle and can_child_attack",
-            "Gerudo Valley Gossip Stone": "True"
+            "Gerudo Valley Gossip Stone": "True",
+            "Gerudo Valley Cow": "can_play(Eponas_Song)"
         },
         "exits": {
             "Hyrule Field": "True",
             "Lake Hylia": "True",
             "Gerudo Valley Far Side": "
-                Epona or can_use(Longshot) or ((gerudo_fortress == 'open') and is_adult)"
+                is_adult and (Epona or can_use(Longshot) or (gerudo_fortress == 'open'))"
         }
     },
     {
@@ -293,7 +295,7 @@
             "GS Gerudo Fortress Archery Range": "
                 can_use(Hookshot) and Carpenter_Rescue and nighttime",
             "GS Gerudo Fortress Top Floor": "
-                nighttime and (can_use(Bow) or can_use(Hookshot) or 
+                nighttime and (Carpenter_Rescue or can_use(Bow) or can_use(Hookshot) or 
                     can_use(Hover_Boots) or logic_gerudo_kitchen)"
         },
         "exits": {
@@ -597,7 +599,8 @@
     {
         "region_name": "Impas House Back",
         "locations": {
-            "Impa House Freestanding PoH": "True"
+            "Impa House Freestanding PoH": "True",
+            "Impas House Cow": "can_play(Eponas_Song)"
         }
     },
     {
@@ -755,7 +758,7 @@
             "Goron City Pot Freestanding PoH": "
                 (has_bombs or Progressive_Strength_Upgrade) and 
                 ((can_play(Zeldas_Lullaby) and has_sticks) or can_use(Dins_Fire))",
-            "Rolling Goron as Child": "Bomb_Bag and has_explosives",
+            "Rolling Goron as Child": "has_explosives or (Progressive_Strength_Upgrade and logic_child_rolling_with_strength)",
             "Link the Goron": "
                 is_adult and 
                 (Progressive_Strength_Upgrade or has_explosives or has_bow)",
@@ -962,7 +965,8 @@
         "region_name": "Zora River Shared",
         "locations": {
             "Zora River Lower Freestanding PoH": "
-                has_explosives or can_dive or can_use(Hover_Boots)",
+                has_explosives or can_dive or
+                    (is_adult and (logic_zora_river_lower or Hover_Boots))",
             "Zora River Upper Freestanding PoH": "
                 has_explosives or can_dive or can_use(Hover_Boots)"
         },
@@ -1082,12 +1086,18 @@
         }
     },
     {
-        "region_name": "Ingo Barn"
+        "region_name": "Ingo Barn",
+		"locations": {
+            "LLR Stables Left Cow": "can_play(Eponas_Song)",
+            "LLR Stables Right Cow": "can_play(Eponas_Song)"
+        }
     },
     {
         "region_name": "Lon Lon Corner Tower",
         "locations": {
-            "Lon Lon Tower Freestanding PoH": "True"
+            "Lon Lon Tower Freestanding PoH": "True",
+            "LLR Tower Left Cow": "can_play(Eponas_Song)",
+            "LLR Tower Right Cow": "can_play(Eponas_Song)"
         }
     },
     {
@@ -1190,7 +1200,10 @@
         "locations": {
             "GS Hyrule Field Near Gerudo Valley": "
                 (Hammer and has_fire_source and can_use(Hookshot)) or 
-                (Boomerang and has_explosives and can_use(Dins_Fire))"
+                (Boomerang and has_explosives and can_use(Dins_Fire))",
+             "HF Grotto Cow":
+           "(can_use(Hammer) and has_fire_source) or
+              (has_explosives and can_use(Dins_Fire))"
         },
         "exits": {
             "Field Valley Grotto Gossip Stone": "
@@ -1255,7 +1268,10 @@
         }
     },
     {
-        "region_name": "Mountain Bombable Grotto"
+        "region_name": "Mountain Bombable Grotto",
+		 "locations": {
+            "DMT Grotto Cow": "can_play(Eponas_Song)"
+        }
     },
     {
         "region_name": "Mountain Storms Grotto",

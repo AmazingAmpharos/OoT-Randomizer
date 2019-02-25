@@ -513,6 +513,8 @@ junk_pool_base = [
     ('Rupees (20)',     4),
     ('Rupees (50)',     1),
 ]
+
+pending_junk_pool = []
 junk_pool = []
 
 
@@ -534,8 +536,19 @@ item_groups = {
 
 
 def get_junk_item(count=1):
+    if count < 1:
+        raise ValueError("get_junk_item argument 'count' must be greater than 0.")
+
+    return_pool = []
+    if pending_junk_pool:
+        pending_count = min(len(pending_junk_pool), count)
+        return_pool = [pending_junk_pool.pop() for _ in range(pending_count)]
+        count -= pending_count
+
     junk_items, junk_weights = zip(*junk_pool)
-    return random_choices(junk_items, weights=junk_weights, k=count)
+    return_pool.extend(random_choices(junk_items, weights=junk_weights, k=count))
+
+    return return_pool
 
 
 def replace_max_item(items, item, max):
@@ -596,6 +609,22 @@ def get_pool_core(world):
     else:
         placed_items['Gift from Saria'] = 'Ocarina'
         placed_items['Ocarina of Time'] = 'Ocarina'
+
+    if world.shuffle_cows:
+        pool.extend(get_junk_item(10 if world.dungeon_mq['Jabu Jabus Belly'] else 9))
+    else:
+        placed_items['LLR Stables Left Cow'] = 'Milk'
+        placed_items['LLR Stables Right Cow'] = 'Milk'
+        placed_items['LLR Tower Left Cow'] = 'Milk'
+        placed_items['LLR Tower Right Cow'] = 'Milk'
+        placed_items['Links House Cow'] = 'Milk'
+        placed_items['Impas House Cow'] = 'Milk'
+        placed_items['Gerudo Valley Cow'] = 'Milk'
+        placed_items['DMT Grotto Cow'] = 'Milk'
+        placed_items['HF Grotto Cow'] = 'Milk'
+        if world.dungeon_mq['Jabu Jabus Belly']:
+            placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
+        
 
     if world.dungeon_mq['Deku Tree']:
         skulltula_locations_final = skulltula_locations + [
@@ -797,6 +826,9 @@ def get_pool_core(world):
 
     if world.shuffle_gerudo_card and world.gerudo_fortress != 'open':
         pool.append('Gerudo Membership Card')
+    elif world.shuffle_gerudo_card:
+        pending_junk_pool.append('Gerudo Membership Card')
+        placed_items['Gerudo Fortress Membership Card'] = 'Ice Trap'
     else:
         placed_items['Gerudo Fortress Membership Card'] = 'Gerudo Membership Card'
 
@@ -971,6 +1003,20 @@ def get_pool_core(world):
         replace_max_item(pool, 'Progressive Wallet', 0)
         for i in [1, 2, 3]: # collect wallets
             world.state.collect(ItemFactory('Progressive Wallet'))
+
+    # Make sure our pending_junk_pool is empty. If not, remove some random junk here.
+    if pending_junk_pool:
+        remove_junk_pool, _ = zip(*junk_pool_base)
+        remove_junk_pool.extend(['Recovery Heart', 'Bombs (20)', 'Arrows (30)', 'Ice Trap'])
+
+        junk_candidates = [item for item in pool if item in remove_junk_pool]
+        for pending_item in pending_junk_pool:
+            if not junk_candidates:
+                raise RuntimeError("Not enough junk exists in item pool for %s to be added." % pending_item)
+            junk_item = random.choice(junk_candidates)
+            junk_candidates.remove(junk_item)
+            pool.remove(junk_item)
+            pool.append(pending_item)
 
     world.get_distribution().alter_pool(world, pool)
 

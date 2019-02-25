@@ -846,9 +846,9 @@ skip_GS_BGS_text:
 
 ; Dampe Chest spawn condition looks at chest flag instead of having obtained hookshot
 .org 0xDFEC3C
-    lw      t8, (SAVE_CONTEXT + 0xD4 + (0x48 * 0x1C)) ; Scene flags
+    lw      t8, (SAVE_CONTEXT + 0xDC + (0x48 * 0x1C)) ; Scene clear flags
     addiu   a1, sp, 0x24
-    andi    t9, t8, 0x0001
+    andi    t9, t8, 0x0010 ; clear flag 4
     nop
 
 ; Darunia sets an event flag and checks for it
@@ -1014,6 +1014,14 @@ skip_GS_BGS_text:
 .org 0xED645C
     jal     bgs_fix
     nop
+	
+;==================================================================================================
+; Hot Rodder Goron without Bomb Bag
+;==================================================================================================
+;
+;Replaces: LW	T8, 0x00A0 (V0)
+.org 0xED2858
+	addi	t8, r0, 0x0008
 
 ;==================================================================================================
 ; Warp song speedup
@@ -1022,12 +1030,13 @@ skip_GS_BGS_text:
 .org 0xBEA044
    jal      warp_speedup
    nop
+   
 
 ;==================================================================================================
 ; Dampe Digging Fix
 ;==================================================================================================
 ;
-; Dig Anyere
+; Dig Anywhere
 .org 0xCC3FA8
     sb      at, 0x1F8(s0)
 
@@ -1057,3 +1066,30 @@ skip_GS_BGS_text:
 ; Replaces: bnezl t7, 0xAD1988 ; 0x8005BA28
 .orga 0xAD193C ; 0x8005B9DC
     b . + 0x4C
+
+;==================================================================================================
+; Cow Shuffle
+;==================================================================================================
+
+.org 0xEF36E4
+    jal cow_item_hook
+    nop
+
+.org 0xEF32B8
+    jal cow_after_init
+    nop
+    lw  ra, 0x003C (sp)
+
+.org 0xEF373C
+    jal cow_bottle_check
+    nop
+    
+; ==================================================================================================
+; Make Bunny Hood like Majora's Mask
+; ==================================================================================================
+
+; Replaces: mfc1    a1, f12
+;           mtc1    t7, f4
+.orga 0xBD9A04
+    jal bunny_hood
+    nop
