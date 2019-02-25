@@ -187,7 +187,7 @@ def main(settings, window=dummy_window()):
             window.update_status('Creating Patch Archive')
             output_path = os.path.join(output_dir, '%s.zpfz' % outfilebase)
             with zipfile.ZipFile(output_path, mode="w") as patch_archive:
-                for index, file in enumerate(file_list):
+                for file in file_list:
                     file_path = os.path.join(output_dir, file)
                     patch_archive.write(file_path, file.replace(outfilebase, ''), compress_type=zipfile.ZIP_DEFLATED)
             for file in file_list:

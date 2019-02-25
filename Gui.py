@@ -687,13 +687,13 @@ def guiMain(settings=None):
 
     patchFileLabel = Label(patchDialogFrame, text='Patch File')
     guivars['patch_file'] = StringVar(value='')
-    patchEntry = Entry(patchDialogFrame, textvariable=guivars['patch_file'], width=45)
+    patchEntry = Entry(patchDialogFrame, textvariable=guivars['patch_file'], width=52)
 
     def PatchSelect():
         patch_file = filedialog.askopenfilename(filetypes=[("Patch File Archive", "*.zpfz *.zpf"), ("All Files", "*")])
         if patch_file != '':
             guivars['patch_file'].set(patch_file)
-    patchSelectButton = Button(patchDialogFrame, text='Select File', command=PatchSelect, width=10)
+    patchSelectButton = Button(patchDialogFrame, text='Select File', command=PatchSelect, width=14)
 
     patchFileLabel.pack(side=LEFT, padx=(5,0))
     patchEntry.pack(side=LEFT, padx=3)
@@ -707,10 +707,10 @@ def guiMain(settings=None):
 
     patchCosmeticsAndGenerateFrame = Frame(frames['gen_from_file'])
     guivars['repatch_cosmetics'] = IntVar()
-    widgets['repatch_cosmetics'] = Checkbutton(patchCosmeticsAndGenerateFrame, text='Patch Cosmetics', variable=guivars['repatch_cosmetics'], justify=LEFT, wraplength=220, command=show_settings)
-    widgets['repatch_cosmetics'].pack(side=LEFT, anchor=W)
+    widgets['repatch_cosmetics'] = Checkbutton(patchCosmeticsAndGenerateFrame, text='Update Cosmetics', variable=guivars['repatch_cosmetics'], justify=LEFT, wraplength=220, command=show_settings)
+    widgets['repatch_cosmetics'].pack(side=LEFT, padx=5, anchor=W)
 
-    generateFileButton = Button(patchCosmeticsAndGenerateFrame, text='Generate Patched ROM', command=generateFromFile)
+    generateFileButton = Button(patchCosmeticsAndGenerateFrame, text='Generate!', width=14, command=generateFromFile)
     generateFileButton.pack(side=RIGHT, anchor=E)
     patchCosmeticsAndGenerateFrame.pack(side=BOTTOM, fill=BOTH, expand=True, pady=(0,10), padx=(0, 10))
 
