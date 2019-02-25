@@ -337,20 +337,18 @@ def guiMain(settings=None):
             elif info.gui_params['widget'] == 'SearchBox' or info.gui_params['widget'] == 'FilteredSearchBox':
                 filtered = (info.gui_params['widget'] == 'FilteredSearchBox')
                 search_frame = LabelFrame(frames[info.gui_params['group']], text=info.gui_params['text'] if 'text' in info.gui_params else info["name"], labelanchor=NW)
-                if isinstance(info.gui_params['options'], list):
-                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
 
                 if filtered:
                     filter_frame = Frame(search_frame)
                     widgets[info.name + '_filterlabel'] = Label(filter_frame, text="Filter: ")
                     widgets[info.name + '_filterlabel'].pack(side=LEFT, anchor=W)
-                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.gui_params['options'].keys()), width=78)
+                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.choices.keys()), width=78)
                     widgets[info.name + '_filter'] = SearchBoxFilterControl(filter_frame, widgets[info.name + '_entry'], info.gui_params['filterdata'], width=50)
                     widgets[info.name + '_filter'].pack(expand=False, side=LEFT, anchor=W)
                     filter_frame.pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
                     widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W)
                 else:
-                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.gui_params['options'].keys()), width=78)
+                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.choices.keys()), width=78)
                     widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
 
                 list_frame = Frame(search_frame)
