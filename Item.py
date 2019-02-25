@@ -120,3 +120,10 @@ def ItemFactory(items, world=None):
     if singleton:
         return ret[0]
     return ret
+
+
+def ItemIterator(predicate=lambda loc: True):
+    for item_name in item_table:
+        item = ItemFactory(item_name)
+        if predicate(item):
+            yield item

@@ -14,7 +14,7 @@ from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, \
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry, SearchBox
+from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry, SearchBox, SearchBoxFilterControl
 from Main import main, from_patch_file
 from Utils import is_bundled, local_path, data_path, default_output_path, open_file, check_version, check_python_version
 from Settings import Settings
@@ -334,11 +334,24 @@ def guiMain(settings=None):
                     label.pack(side=LEFT, anchor=W, padx=5)
                 # Pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
-            elif info.gui_params['widget'] == 'SearchBox':
-                search_frame = LabelFrame(frames[info.gui_params['group']], text=info.gui_params.get('text', info.name), labelanchor=NW)
+            elif info.gui_params['widget'] == 'SearchBox' or info.gui_params['widget'] == 'FilteredSearchBox':
+                filtered = (info.gui_params['widget'] == 'FilteredSearchBox')
+                search_frame = LabelFrame(frames[info.gui_params['group']], text=info.gui_params['text'] if 'text' in info.gui_params else info["name"], labelanchor=NW)
+                if isinstance(info.gui_params['options'], list):
+                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
 
-                widgets[info.name + '_entry'] = SearchBox(search_frame, list(map(lambda choice: info.choices[choice], info.choice_list)), width=78)
-                widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                if filtered:
+                    filter_frame = Frame(search_frame)
+                    widgets[info.name + '_filterlabel'] = Label(filter_frame, text="Filter: ")
+                    widgets[info.name + '_filterlabel'].pack(side=LEFT, anchor=W)
+                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.gui_params['options'].keys()), width=78)
+                    widgets[info.name + '_filter'] = SearchBoxFilterControl(filter_frame, widgets[info.name + '_entry'], info.gui_params['filterdata'], width=50)
+                    widgets[info.name + '_filter'].pack(expand=False, side=LEFT, anchor=W)
+                    filter_frame.pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                    widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W)
+                else:
+                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.gui_params['options'].keys()), width=78)
+                    widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
 
                 list_frame = Frame(search_frame)
                 scrollbar = Scrollbar(list_frame, orient=VERTICAL)
@@ -351,6 +364,8 @@ def guiMain(settings=None):
 
                 if 'entry_tooltip' in info.gui_params:
                     ToolTips.register(widgets[info.name + '_entry'], info.gui_params['entry_tooltip'])
+                    if filtered:
+                        ToolTips.register(widgets[info.name + '_filter'], info.gui_params['entry_tooltip'])
                 if 'list_tooltip' in info.gui_params:
                     ToolTips.register(widgets[info.name], info.gui_params['list_tooltip'])
 
@@ -371,12 +386,22 @@ def guiMain(settings=None):
                     show_settings()
 
                 def add_list_all(name):
-                    widgets[name].delete(0, END)
-                    widgets[name].insert(0, *widgets[name +'_entry'].options)
-                    guivars[name] = list(widgets[name +'_entry'].options)
+                    for new_location in widgets[name + '_entry'].options:
+                        if new_location not in widgets[name].get(0, END):
+                            widgets[name].insert(END, new_location)
+                            guivars[name].append(new_location)
                     show_settings()
 
                 def remove_list_all(name):
+                    items = list(widgets[name].get(0, END))
+                    widgets[name].delete(0, END)
+                    guivars[name] = []
+                    for item in (x for x in items if x not in widgets[name + '_entry'].options):
+                        widgets[name].insert(END, item)
+                        guivars[name].append(item)
+                    show_settings()
+                    
+                def clear_list_all(name):
                     widgets[name].delete(0, END)
                     guivars[name] = []
                     show_settings()
@@ -391,6 +416,9 @@ def guiMain(settings=None):
                 list_add.pack(side=LEFT, anchor=N, padx=3, pady=3)
                 list_remove = Button(list_button_frame, width=10, text='None', command=get_lambda(remove_list_all, info.name))
                 list_remove.pack(side=LEFT, anchor=N, padx=3, pady=3)
+                if filtered:
+                    list_clear = Button(list_button_frame, width=10, text='Clear', command=get_lambda(clear_list_all, info.name))
+                    list_clear.pack(side=LEFT, anchor=N, padx=3, pady=3)
 
                 list_button_frame.pack(expand=False, side=TOP, padx=3, pady=3)
 
