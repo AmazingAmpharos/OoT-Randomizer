@@ -353,19 +353,19 @@ def guiMain(settings=None):
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'SearchBox' or info.gui_params['widget'] == 'FilteredSearchBox':
                 filtered = (info.gui_params['widget'] == 'FilteredSearchBox')
-                search_frame = LabelFrame(frames[info.gui_params['group']], text=info.gui_params['text'] if 'text' in info.gui_params else info["name"], labelanchor=NW)
+                search_frame = LabelFrame(frames[info.gui_params['group']], text=info.gui_params.get('text', info.name), labelanchor=NW)
 
                 if filtered:
                     filter_frame = Frame(search_frame)
                     widgets[info.name + '_filterlabel'] = Label(filter_frame, text="Filter: ")
                     widgets[info.name + '_filterlabel'].pack(side=LEFT, anchor=W)
-                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.choices.keys()), width=78)
+                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(map(lambda choice: info.choices[choice], info.choice_list)), width=78)
                     widgets[info.name + '_filter'] = SearchBoxFilterControl(filter_frame, widgets[info.name + '_entry'], info.gui_params['filterdata'], width=50)
                     widgets[info.name + '_filter'].pack(expand=False, side=LEFT, anchor=W)
                     filter_frame.pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
                     widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W)
                 else:
-                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.choices.keys()), width=78)
+                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(map(lambda choice: info.choices[choice], info.choice_list)), width=78)
                     widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
 
                 list_frame = Frame(search_frame)
