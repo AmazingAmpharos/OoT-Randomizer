@@ -4,7 +4,7 @@ from enum import Enum
 
 class Location(object):
 
-    def __init__(self, name='', address=None, address2=None, default=None, type='Chest', scene=None, hint='Termina', parent=None):
+    def __init__(self, name='', address=None, address2=None, default=None, type='Chest', scene=None, hint='Termina', parent=None, filter_tags=None):
         self.name = name
         self.parent_region = parent
         self.item = None
@@ -24,10 +24,14 @@ class Location(object):
         self.minor_only = False
         self.world = None
         self.disabled = DisableType.ENABLED
+        if filter_tags is None:
+            self.filter_tags = None
+        else:
+            self.filter_tags = list(filter_tags) + [hint]
 
 
     def copy(self, new_region):
-        new_location = Location(self.name, self.address, self.address2, self.default, self.type, self.scene, self.hint, new_region)
+        new_location = Location(self.name, self.address, self.address2, self.default, self.type, self.scene, self.hint, new_region, self.filter_tags)
         new_location.world = new_region.world
         if self.item:
             new_location.item = self.item.copy(new_region.world)
@@ -83,17 +87,24 @@ def LocationFactory(locations, world=None):
         singleton = True
     for location in locations:
         if location in location_table:
-            type, scene, default, hint, addresses, *unused = location_table[location]
+            type, scene, default, hint, addresses, filter_tags = location_table[location]
             if addresses is None:
                 addresses = (None, None)
             address, address2 = addresses
-            ret.append(Location(location, address, address2, default, type, scene, hint, ret))
+            ret.append(Location(location, address, address2, default, type, scene, hint, ret, filter_tags))
         else:
             raise KeyError('Unknown Location: %s', location)
 
     if singleton:
         return ret[0]
     return ret
+
+
+def LocationIterator(predicate=lambda loc: True):
+    for location_name in location_table:
+        location = LocationFactory(location_name)
+        if predicate(location):
+            yield location
 
 
 class DisableType(Enum):

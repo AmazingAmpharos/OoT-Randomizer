@@ -2,7 +2,7 @@ import argparse
 import re
 import math
 from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options
-from LocationList import location_table
+from Location import LocationIterator
 import Sounds as sfx
 
 # holds the info for a single setting
@@ -1154,12 +1154,18 @@ setting_infos = [
             6: Half of all dungeons will
             be from Master Quest.
 
-            12: All dungeons will have
-            Master Quest redesigns.
-        ''',
-        dependency     = lambda settings: 0 if settings.mq_dungeons_random else None,
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
+                             12: All dungeons will have
+                             Master Quest redesigns.
+                             ''',
+            gui_dependency = lambda settings: 0 if settings.mq_dungeons_random else None,
+            shared         = True,
+            ),
+    Setting_Info('disabled_locations', list, math.ceil(math.log(len(list(LocationIterator(lambda loc: loc.filter_tags is not None))) + 2, 2)), True,
+        {
+            'default': [],
+            'help': '''\
+                    Choose a list of locations that will never be required to beat the game.
+                    '''
         },
         shared         = True,
     ),
@@ -1173,8 +1179,8 @@ setting_infos = [
             'text': 'Exclude Locations',
             'widget': 'FilteredSearchBox',
             'group': 'logic_tab',
-            'options': list(k for k,v in location_table.items() if v[5]),
-            'filterdata': {k: v[5] for k,v in location_table.items() if v[5]},
+            'options': [location.name for location in LocationIterator(lambda loc: loc.filter_tags is not None)],
+            'filterdata': {location.name: location.filter_tags for location in LocationIterator(lambda loc: loc.filter_tags is not None)},
             'tooltip':'''
                 Prevent locations from being required. Major
                 items can still appear there, however they
