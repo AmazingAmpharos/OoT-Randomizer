@@ -189,7 +189,7 @@ location_table = {
     "Jabu Jabus Belly MQ Falling Like Like Room Chest":("Chest",       0x02,  0x09, "Jabu Jabu's Belly",      None,                     ()),
     "Jabu Jabus Belly MQ Boomerang Room Small Chest":  ("Chest",       0x02,  0x01, "Jabu Jabu's Belly",      None,                     ()),
     "MQ Boomerang Chest":                              ("Chest",       0x02,  0x06, "Jabu Jabu's Belly",      None,                     ()),
-    "Jabu Jabus Belly MQ Cow":                         ("NPC",         0x02,  0x15, "Jabu Jabu's Belly",      None,                     ()),
+    "Jabu Jabus Belly MQ Cow":                         ("NPC",         0x02,  0x15, "Jabu Jabu's Belly",      None,                     ("Cow",)),
 
     # Forest Temple vanilla
     "Forest Temple First Chest":                       ("Chest",       0x03,  0x03, "Forest Temple",          None,                     ()),
