@@ -506,15 +506,14 @@ def get_junk_item(count=1):
     if count < 1:
         raise ValueError("get_junk_item argument 'count' must be greater than 0.")
 
-    random_count = (count - len(pending_junk_pool))
     return_pool = []
-
     if pending_junk_pool:
-        return_pool += [pending_junk_pool.pop() for _ in range(0, (count) if random_count <= 0 else len(pending_junk_pool))]
+        pending_count = min(len(pending_junk_pool), count)
+        return_pool = [pending_junk_pool.pop() for _ in range(pending_count)]
+        count -= pending_count
 
-    if random_count > 0:
-        junk_pool_dict = {item: weight for item, weight in junk_pool}
-        return_pool += random_choices(list(junk_pool_dict.keys()), weights=list(junk_pool_dict.values()), k=random_count)
+    junk_items, junk_weights = zip(*junk_pool)
+    return_pool.extend(random_choices(junk_items, weights=junk_weights, k=count))
 
     return return_pool
 
@@ -973,21 +972,17 @@ def get_pool_core(world):
 
     # Make sure our pending_junk_pool is empty. If not, remove some random junk here.
     if pending_junk_pool:
-        remove_junk_pool = junk_pool_base + [('Recovery Heart', 1), ('Bombs (20)', 1), ('Arrows (30)', 1), ('Ice Trap', 1)]
-        junk_pool_dict = {item: weight for item, weight in remove_junk_pool}
-        remove_junk = random_choices(list(junk_pool_dict.keys()), weights=list(junk_pool_dict.values()), k=len(pending_junk_pool))
-        while remove_junk:
-            junk_item = remove_junk.pop()
-            try:
-                pool.remove(junk_item)
-            except ValueError:
-                junk_pool_dict.pop(junk_item)
-                if junk_pool_dict:
-                    remove_junk.extend(random_choices(list(junk_pool_dict.keys()), weights=list(junk_pool_dict.values()), k=1))
-                    continue
-                else:
-                    raise RuntimeError("Not enough junk exists in item pool for all pending_junk_items to be added.")
-            pool.append(pending_junk_pool.pop())
+        remove_junk_pool, _ = zip(*junk_pool_base)
+        remove_junk_pool.extend(['Recovery Heart', 'Bombs (20)', 'Arrows (30)', 'Ice Trap'])
+
+        junk_candidates = [item for item in pool if item in remove_junk_pool]
+        for pending_item in pending_junk_pool:
+            if not junk_candidates:
+                raise RuntimeError("Not enough junk exists in item pool for %s to be added." % pending_item)
+            junk_item = random.choice(junk_candidates)
+            junk_candidates.remove(junk_item)
+            pool.remove(junk_item)
+            pool.append(pending_item)
 
     return (pool, placed_items)
 
