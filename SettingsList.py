@@ -557,7 +557,7 @@ setting_infos = [
         choices        = {
             'normal': 'Default Behavior',
             'fast':   'Rescue One Carpenter',
-            'open':   'Start with Gerudo Card',
+            'open':   'Open Gerudo Fortress',
         },
         gui_text       = 'Gerudo Fortress',
         gui_group      = 'open',
@@ -565,9 +565,10 @@ setting_infos = [
             'Rescue One Carpenter': Only the bottom left
             carpenter must be rescued.
 
-            'Start with Gerudo Card': The carpenters are rescued from
-            the start of the game, and the player starts with the Gerudo
-            Card in the inventory allowing access to Gerudo Training Grounds.
+            'Open Gerudo Fortress': The carpenters are rescued from
+            the start of the game, and if 'Shuffle Gerudo Card' is disabled,
+            the player starts with the Gerudo Card in the inventory 
+            allowing access to Gerudo Training Grounds.
         ''',
         shared         = True,
         gui_params     = {
