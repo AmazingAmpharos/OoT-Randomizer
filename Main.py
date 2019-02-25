@@ -163,7 +163,7 @@ def main(settings, window=dummy_window()):
 
             random.setstate(rng_state)
             patch_rom(spoiler, world, rom)
-            patch_cosmetics(settings, rom)
+            cosmetics_log = patch_cosmetics(settings, rom)
             window.update_progress(65 + 20*(world.id + 1)/settings.world_count)
 
             window.update_status('Creating Patch File')
@@ -173,13 +173,23 @@ def main(settings, window=dummy_window()):
             rom.restore()
             window.update_progress(65 + 30*(world.id + 1)/settings.world_count)
 
+            if settings.create_cosmetics_log and cosmetics_log:
+                window.update_status('Creating Cosmetics Log')
+                if settings.world_count > 1:
+                    cosmetics_log_filename = "%sP%d_Cosmetics.txt" % (outfilebase, world.id + 1)
+                else:
+                    cosmetics_log_filename = '%s_Cosmetics.txt' % outfilebase
+                cosmetics_log.to_file(os.path.join(output_dir, cosmetics_log_filename))
+                file_list.append(cosmetics_log_filename)
+            cosmetics_log = None
+
         if settings.world_count > 1:
             window.update_status('Creating Patch Archive')
             output_path = os.path.join(output_dir, '%s.zpfz' % outfilebase)
             with zipfile.ZipFile(output_path, mode="w") as patch_archive:
-                for index, file in enumerate(file_list):
+                for file in file_list:
                     file_path = os.path.join(output_dir, file)
-                    patch_archive.write(file_path, 'P%d.zpf' % (index + 1), compress_type=zipfile.ZIP_DEFLATED)
+                    patch_archive.write(file_path, file.replace(outfilebase, ''), compress_type=zipfile.ZIP_DEFLATED)
             for file in file_list:
                 os.remove(os.path.join(output_dir, file))
         logger.info("Created patchfile at: %s" % output_path)
@@ -297,7 +307,9 @@ def from_patch_file(settings, window=dummy_window()):
         if not settings.output_file:
             output_path += 'P%d' % (settings.player_num)
     apply_patch_file(rom, settings.patch_file, subfile)
-    cosmetics_log = patch_cosmetics(settings, rom)
+    cosmetics_log = None
+    if settings.repatch_cosmetics:
+        cosmetics_log = patch_cosmetics(settings, rom)
     window.update_progress(65)
 
     window.update_status('Saving Uncompressed ROM')

@@ -585,6 +585,7 @@ def guiMain(settings=None):
 
     # Create the generation menu
     def update_generation_type(event=None):
+        settings = guivars_to_settings(guivars)
         if generation_notebook.tab(generation_notebook.select())['text'] == 'Generate From Seed':
             notebook.tab(1, state="normal")
             if guivars['logic_rules'].get() == 'Glitchless':
@@ -592,8 +593,8 @@ def guiMain(settings=None):
             else:
                 notebook.tab(2, state="disabled")
             notebook.tab(3, state="normal")
-
-            settings = guivars_to_settings(guivars)
+            notebook.tab(4, state="normal")
+            notebook.tab(5, state="normal")
             toggle_widget(widgets['world_count'], settings.check_dependency('world_count'))
             toggle_widget(widgets['create_spoiler'], settings.check_dependency('create_spoiler'))
             toggle_widget(widgets['count'], settings.check_dependency('count'))
@@ -602,6 +603,14 @@ def guiMain(settings=None):
             notebook.tab(1, state="disabled")
             notebook.tab(2, state="disabled")
             notebook.tab(3, state="disabled")
+            if guivars['repatch_cosmetics'].get():
+                notebook.tab(4, state="normal")
+                notebook.tab(5, state="normal")
+                toggle_widget(widgets['create_cosmetics_log'], settings.check_dependency('create_cosmetics_log'))
+            else:
+                notebook.tab(4, state="disabled")
+                notebook.tab(5, state="disabled")
+                toggle_widget(widgets['create_cosmetics_log'], False)
             toggle_widget(widgets['world_count'], False)
             toggle_widget(widgets['create_spoiler'], False)
             toggle_widget(widgets['count'], False)
@@ -678,13 +687,13 @@ def guiMain(settings=None):
 
     patchFileLabel = Label(patchDialogFrame, text='Patch File')
     guivars['patch_file'] = StringVar(value='')
-    patchEntry = Entry(patchDialogFrame, textvariable=guivars['patch_file'], width=45)
+    patchEntry = Entry(patchDialogFrame, textvariable=guivars['patch_file'], width=52)
 
     def PatchSelect():
         patch_file = filedialog.askopenfilename(filetypes=[("Patch File Archive", "*.zpfz *.zpf"), ("All Files", "*")])
         if patch_file != '':
             guivars['patch_file'].set(patch_file)
-    patchSelectButton = Button(patchDialogFrame, text='Select File', command=PatchSelect, width=10)
+    patchSelectButton = Button(patchDialogFrame, text='Select File', command=PatchSelect, width=14)
 
     patchFileLabel.pack(side=LEFT, padx=(5,0))
     patchEntry.pack(side=LEFT, padx=3)
@@ -696,8 +705,14 @@ def guiMain(settings=None):
         settings = guivars_to_settings(guivars)
         BackgroundTaskProgress(mainWindow, "Generating From File %s..." % os.path.basename(settings.patch_file), from_patch_file, settings)
 
-    generateFileButton = Button(frames['gen_from_file'], text='Generate Patched ROM', command=generateFromFile)
-    generateFileButton.pack(side=BOTTOM, anchor=E, pady=(0,10), padx=(0, 10))
+    patchCosmeticsAndGenerateFrame = Frame(frames['gen_from_file'])
+    guivars['repatch_cosmetics'] = IntVar()
+    widgets['repatch_cosmetics'] = Checkbutton(patchCosmeticsAndGenerateFrame, text='Update Cosmetics', variable=guivars['repatch_cosmetics'], justify=LEFT, wraplength=220, command=show_settings)
+    widgets['repatch_cosmetics'].pack(side=LEFT, padx=5, anchor=W)
+
+    generateFileButton = Button(patchCosmeticsAndGenerateFrame, text='Generate!', width=14, command=generateFromFile)
+    generateFileButton.pack(side=RIGHT, anchor=E)
+    patchCosmeticsAndGenerateFrame.pack(side=BOTTOM, fill=BOTH, expand=True, pady=(0,10), padx=(0, 10))
 
     generation_notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
 
