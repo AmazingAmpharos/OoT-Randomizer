@@ -23,6 +23,9 @@ def dump_scalar(obj):
 def dump_list(obj, current_indent=''):
     entries = [dump_obj(value, current_indent + INDENT) for value in obj]
 
+    if len(entries) == 0:
+        return '[]'
+
     values_format = '{indent}{value}'
     output_format = '[\n{values}\n{indent}]'
 
@@ -37,13 +40,29 @@ def dump_list(obj, current_indent=''):
     return output
 
 
-def dump_dict(obj, current_indent = ''):
-    entries = {dump_scalar(str(key)): dump_obj(value, current_indent + INDENT) for key, value in obj.items()}
-    only_scalars = reduce(lambda acc, is_scalar_entry: acc and is_scalar_entry, 
-        [is_scalar(value) for value in obj.values()], True)
-    key_width = reduce(lambda acc, entry: max(acc, len(entry)), entries, 0)
+def dump_dict(obj, current_indent='', sub_width=None):
+    entries = {}
 
-    if only_scalars: 
+    key_width = None
+    if sub_width is not None:
+        sub_width = (sub_width[0]-1, sub_width[1])
+        if sub_width[0] == 0:
+            key_width = sub_width[1]
+
+    for key, value in obj.items():
+        if key == ':playthrough':
+            sub_keys = [location for sphere_nr, sphere in value.items() for location in sphere]
+            sub_width = (2, reduce(lambda acc, entry: max(acc, len(entry)), sub_keys, 0))
+        
+        entries[dump_scalar(str(key))] = dump_obj(value, current_indent + INDENT, sub_width)
+
+    if key_width is None:
+        key_width = reduce(lambda acc, entry: max(acc, len(entry)), entries, 0)
+
+    if len(entries) == 0:
+        return '{}'
+
+    if 'item' in obj or 'gossip' in obj:
         values_format = '{key} {value}'
         output_format = '{{{values}}}'
         join_format   = ', '
@@ -65,10 +84,10 @@ def dump_dict(obj, current_indent = ''):
     return output
 
 
-def dump_obj(obj, current_indent = ''):
+def dump_obj(obj, current_indent='', sub_width=None):
     if is_list(obj):
         return dump_list(obj, current_indent)
     elif is_dict(obj):
-        return dump_dict(obj, current_indent)
+        return dump_dict(obj, current_indent, sub_width)
     else:
         return dump_scalar(obj)

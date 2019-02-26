@@ -26,7 +26,7 @@ per_world_keys = (
     'locations',
     ':woth_locations',
     ':barren_regions',
-    'gossip',
+    'gossip_stones',
 )
 
 
@@ -55,7 +55,20 @@ def SimpleRecord(props):
 
 
 class DungeonRecord(SimpleRecord({'mq': None})):
-    pass
+    def __init__(self, src_dict='random'):
+        if src_dict == 'random':
+            src_dict = {'mq': None}
+        if src_dict == 'mq':
+            src_dict = {'mq': True}
+        if src_dict == 'vanilla':
+            src_dict = {'mq': False}
+        super().__init__(src_dict)
+
+
+    def to_dict(self):
+        if self.mq is None:
+            return 'random'
+        return 'mq' if self.mq else 'vanilla'
 
 
 class GossipRecord(SimpleRecord({'gossip': None})):
@@ -63,6 +76,19 @@ class GossipRecord(SimpleRecord({'gossip': None})):
 
 
 class ItemPoolRecord(SimpleRecord({'type': 'set', 'count': 1})):
+    def __init__(self, src_dict=1):
+        if isinstance(src_dict, int):
+            src_dict = {'count':src_dict}
+        super().__init__(src_dict)
+
+
+    def to_dict(self):
+        if self.type == 'set':
+            return self.count
+        else:
+            return super().to_dict()
+
+
     def update(self, src_dict, update_all=False):
         super().update(src_dict, update_all)
         if self.count < 0:
@@ -71,7 +97,21 @@ class ItemPoolRecord(SimpleRecord({'type': 'set', 'count': 1})):
             raise ValueError("Type must be 'add', 'remove', or 'set' in a ItemPoolRecord.")
 
 
-class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 'model': None, 'extra': None})):
+class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 'model': None})):
+    def __init__(self, src_dict):
+        if isinstance(src_dict, str):
+            src_dict = {'item':src_dict}
+        super().__init__(src_dict)
+
+
+    def to_dict(self):
+        self_dict = super().to_dict()
+        if list(self_dict.keys()) == ['item']:
+            return str(self.item)
+        else:
+            return self_dict
+
+
     @staticmethod
     def from_item(item):
         return LocationRecord({
@@ -82,16 +122,33 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
         })
 
 
-class LogicIgnoredItemRecord(SimpleRecord({'count': 1})):
-    pass
+class StarterRecord(SimpleRecord({'count': 1})):
+    def __init__(self, src_dict=1):
+        if isinstance(src_dict, int):
+            src_dict = {'count': src_dict}
+        super().__init__(src_dict)
 
 
-class StarterRecord(SimpleRecord({'count': 1, 'extra': None})):
-    pass
+    def to_dict(self):
+        return self.count
 
 
-class TrialRecord(SimpleRecord({'skip': None})):
-    pass
+class TrialRecord(SimpleRecord({'active': None})):
+    def __init__(self, src_dict='random'):
+        if src_dict == 'random':
+            src_dict = {'active': None}
+        if src_dict == 'active':
+            src_dict = {'active': True}
+        if src_dict == 'inactive':
+            src_dict = {'active': False}
+        super().__init__(src_dict)
+
+
+    def to_dict(self):
+        if self.active is None:
+            return 'random'
+        return 'active' if self.active else 'inactive'
+
 
 
 class WorldDistribution(object):
@@ -111,7 +168,7 @@ class WorldDistribution(object):
             'locations': {name: [LocationRecord(rec) for rec in record] if is_pattern(name) else LocationRecord(record) for (name, record) in src_dict.get('locations', {}).items() if not is_output_only(name)},
             'woth_locations': None,
             'barren_regions': None,
-            'gossip': {name: [GossipRecord(rec) for rec in record] if is_pattern(name) else GossipRecord(record) for (name, record) in src_dict.get('gossip', {}).items()},
+            'gossip_stones': {name: [GossipRecord(rec) for rec in record] if is_pattern(name) else GossipRecord(record) for (name, record) in src_dict.get('gossip', {}).items()},
         }
 
         if update_all:
@@ -139,7 +196,7 @@ class WorldDistribution(object):
             'locations': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.locations.items()},
             ':woth_locations': None if self.woth_locations is None else {name: record.to_dict() for (name, record) in self.woth_locations.items()},
             ':barren_regions': self.barren_regions,
-            'gossip': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.gossip.items()},
+            'gossip_stones': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.gossip_stones.items()},
         }
 
 
@@ -161,9 +218,9 @@ class WorldDistribution(object):
     def configure_trials(self, trial_pool):
         dist_chosen = []
         for (name, record) in self.trials.items():
-            if record.skip is not None:
+            if record.active is not None:
                 trial_pool.remove(name)
-                if not record.skip:
+                if record.active:
                     dist_chosen.append(name)
         return dist_chosen
 
@@ -341,7 +398,7 @@ class WorldDistribution(object):
 
 
     def configure_gossip(self, spoiler, stoneIDs):
-        for (name, record) in pattern_dict_items(self.gossip):
+        for (name, record) in pattern_dict_items(self.gossip_stones):
             if is_pattern(name):
                 matcher = pattern_matcher(name)
                 stoneID = pull_random_element([stoneIDs], lambda id: matcher(gossipLocations[id].name))
@@ -449,11 +506,11 @@ class Distribution(object):
             world_dist = dist.world_dists[world.id]
             world.distribution = world_dist
             world_dist.dungeons = {dung: DungeonRecord({ 'mq': world.dungeon_mq[dung] }) for dung in world.dungeon_mq}
-            world_dist.trials = {trial: TrialRecord({ 'skip': world.skipped_trials[trial] }) for trial in world.skipped_trials}
+            world_dist.trials = {trial: TrialRecord({ 'active': not world.skipped_trials[trial] }) for trial in world.skipped_trials}
             world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
             world_dist.woth_locations = {loc.name: LocationRecord.from_item(loc.item) for loc in spoiler.required_locations[world.id]}
             world_dist.barren_regions = [*world.empty_areas]
-            world_dist.gossip = {gossipLocations[loc].name: GossipRecord({ 'gossip': spoiler.hints[world.id][loc] }) for loc in spoiler.hints[world.id]}
+            world_dist.gossip_stones = {gossipLocations[loc].name: GossipRecord({ 'gossip': spoiler.hints[world.id][loc] }) for loc in spoiler.hints[world.id]}
             world_dist.item_pool = {}
 
         for world in spoiler.worlds:
