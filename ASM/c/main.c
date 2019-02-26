@@ -7,6 +7,7 @@
 #include "util.h"
 #include "dpad.h"
 #include "rainbow_sword.h"
+#include "heart_colors.h"
 #include "z64.h"
 #include "chests.h"
 #include "ganon.h"
@@ -23,6 +24,7 @@ void before_game_state_update() {
     handle_pending_items();
     handle_dpad();
     update_color();
+    update_heart_colors();
 }
 
 void after_game_state_update() {
