@@ -361,41 +361,33 @@ class WorldDistribution(object):
 class Distribution(object):
     def __init__(self, settings, src_dict={}):
         self.settings = settings
-        self.worlds = [WorldDistribution(self, id) for id in range(settings.world_count)]
+        self.world_dists = [WorldDistribution(self, id) for id in range(settings.world_count)]
         self.update(src_dict, update_all=True)
 
 
-    def for_world(self, world_id):
-        while world_id >= self.settings.world_count:
-            raise RuntimeError("World ID %d is outside of the range of worlds" % (world_id + 1))
-        return self.worlds[world_id]
-
-
     def fill(self, window, worlds, location_pools, item_pools):
-        states_before = State.get_states_with_items([world.state for world in worlds], reduce(lambda a, b: a + b, item_pools))
-        if not State.can_beat_game(states_before, True):
+        max_states = State.get_states_with_items([world.state for world in worlds], reduce(lambda a, b: a + b, item_pools))
+        if not State.can_beat_game(max_states, True):
             raise FillError('Item pool does not contain items required to beat game!')
 
-        for world_dist in self.worlds:
+        for world_dist in self.world_dists:
             world_dist.fill(window, worlds, location_pools, item_pools)
 
 
     def cloak(self, worlds, location_pools, model_pools):
-        for world_dist in self.worlds:
+        for world_dist in self.world_dists:
             world_dist.cloak(worlds[world_dist.id], location_pools, model_pools)
 
 
     def update(self, src_dict, update_all=False):
         update_dict = {        
             'file_hash': (src_dict.get('file_hash', []) + [None, None, None, None, None])[0:5],
-            'locations_default_extra': src_dict.get('locations_default_extra', False),
-            'starting_default_extra': src_dict.get('starting_default_extra', True),
             'playthrough': None,
         }
 
         if update_all:
             self.__dict__.update(update_dict)
-            for world in self.worlds:
+            for world in self.world_dists:
                 world.update({}, update_all=True)
         else:
             for k in src_dict:
@@ -403,12 +395,12 @@ class Distribution(object):
 
         for k in per_world_keys:
             if k in src_dict:
-                for world_id, world in enumerate(self.worlds):
+                for world_id, world in enumerate(self.world_dists):
                     world_key = 'World %d' % (world_id + 1)
                     if world_key in src_dict[k]:
                         world.update({k: src_dict[k][world_key]})
                         del src_dict[k][world_key]
-                for world in self.worlds:
+                for world in self.world_dists:
                     if src_dict[k]:
                         world.update({k: src_dict[k]})
 
@@ -416,26 +408,23 @@ class Distribution(object):
     def to_dict(self, include_output=True):
         self_dict = {
             ':version': __version__,
-            ':seed': self.settings.seed if self.settings is not None else None,
+            ':seed': self.settings.seed,
             'file_hash': self.file_hash,
-            ':settings_string': self.settings.settings_string if self.settings is not None else None,
-            ':settings': self.settings.to_dict() if self.settings is not None else None,
-            ':distribution': self.settings.distribution.to_dict(False) if include_output and self.settings is not None else None,
+            ':settings_string': self.settings.settings_string,
+            ':settings': self.settings.to_dict(),
             ':playthrough': None if self.playthrough is None else 
                 {sphere_nr: {name: record.to_dict() for name, record in sphere.items()} 
                     for (sphere_nr, sphere) in self.playthrough.items()},
         }
 
-        worlds = [world.to_dict() for world in self.worlds]
+        world_dist_dicts = [world_dist.to_dict() for world_dist in self.world_dists]
         if self.settings.world_count > 1:
-            self_dict.update({k: {'World %d' % (id + 1): world[k] for id, world in enumerate(worlds)} for k in per_world_keys})
+            for k in per_world_keys:
+                for id, world_dist_dict in enumerate(world_dist_dicts):
+                    self_dict[k]['World %d' % (id + 1)] = world_dist_dict[k]
         else:
-            self_dict.update({k: worlds[0][k] for k in per_world_keys})
+            self_dict.update({k: world_dist_dicts[0][k] for k in per_world_keys})
 
-        if self.locations_default_extra:
-            self_dict['locations_default_extra'] = True
-        if not self.starting_default_extra:
-            self_dict['starting_default_extra'] = False
         if not include_output:
             strip_output_only(self_dict)
         return self_dict
@@ -452,25 +441,25 @@ class Distribution(object):
     @staticmethod
     def from_spoiler(spoiler):
         dist = Distribution(spoiler.settings)
+
         dist.file_hash = [HASH_ICONS[icon] for icon in spoiler.file_hash]
 
         for world in spoiler.worlds:
-            world_dist = dist.for_world(world.id)
-            src_dist = world.get_distribution()
+            world_dist = dist.world_dists[world.id]
+            world.distribution = world_dist
             world_dist.dungeons = {dung: DungeonRecord({ 'mq': world.dungeon_mq[dung] }) for dung in world.dungeon_mq}
             world_dist.trials = {trial: TrialRecord({ 'skip': world.skipped_trials[trial] }) for trial in world.skipped_trials}
-            world_dist.item_pool = {}
-            world_dist.starting_items = {name: StarterRecord({ 'count': record.count }) for (name, record) in src_dist.starting_items.items()}
             world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
             world_dist.woth_locations = {loc.name: LocationRecord.from_item(loc.item) for loc in spoiler.required_locations[world.id]}
             world_dist.barren_regions = [*world.empty_areas]
             world_dist.gossip = {gossipLocations[loc].name: GossipRecord({ 'gossip': spoiler.hints[world.id][loc] }) for loc in spoiler.hints[world.id]}
+            world_dist.item_pool = {}
 
         for world in spoiler.worlds:
             for (_, item) in spoiler.locations[world.id].items():
                 if item.dungeonitem or item.type == 'Event':
                     continue
-                player_dist = dist.for_world(item.world.id)
+                player_dist = item.world.distribution
                 if item.name in player_dist.item_pool:
                     player_dist.item_pool[item.name].count += 1
                 else:
@@ -585,7 +574,10 @@ def pattern_dict_items(pattern_dict):
 
 
 def pull_element(pools, predicate=lambda k:True, first=True, remove=True):
-    return pull_first_element(pools, predicate, remove) if first else pull_random_element(pools, predicate, remove)
+    if first:
+        return pull_first_element(pools, predicate, remove)
+    else:
+        return pull_random_element(pools, predicate, remove)
 
 
 def pull_first_element(pools, predicate=lambda k:True, remove=True):

@@ -20,7 +20,6 @@ from SaveContext import SaveContext
 
 
 def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
-    world_dist = world.get_distribution()
     with open(data_path('generated/rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
@@ -672,7 +671,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # Initial Save Data
 
-    world.get_distribution().patch_save(save_context)
+    world.distribution.patch_save(save_context)
 
     save_context.write_bits(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (Poe Sisters cutscene)
     save_context.write_bits(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (Ruto)

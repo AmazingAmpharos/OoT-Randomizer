@@ -1018,16 +1018,16 @@ def get_pool_core(world):
             pool.remove(junk_item)
             pool.append(pending_item)
 
-    world.get_distribution().alter_pool(world, pool)
+    world.distribution.alter_pool(world, pool)
 
-    world.get_distribution().collect_starters(world.state)
+    world.distribution.collect_starters(world.state)
 
     return (pool, placed_items)
 
 
 def choose_trials(world):
     trial_pool = list(world.skipped_trials)
-    dist_chosen = world.get_distribution().configure_trials(trial_pool)
+    dist_chosen = world.distribution.configure_trials(trial_pool)
     dist_num_chosen = len(dist_chosen)
 
     if world.trials_random:
@@ -1049,7 +1049,7 @@ def fill_bosses(world, bossCount=9):
     prizepool = list(unplaced_prizes)
     prize_locs = list(empty_boss_locations)
 
-    bossCount -= world.get_distribution().fill_bosses(world, prize_locs, prizepool)
+    bossCount -= world.distribution.fill_bosses(world, prize_locs, prizepool)
 
     while bossCount:
         bossCount -= 1

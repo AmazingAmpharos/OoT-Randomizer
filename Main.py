@@ -85,6 +85,7 @@ def main(settings, window=dummy_window()):
     window.update_status('Creating the Worlds')
     for id, world in enumerate(worlds):
         world.id = id
+        world.distribution = settings.distribution.world_dists[id]
         logger.info('Generating World %d.' % id)
 
         window.update_progress(0 + 1*(id + 1)/settings.world_count)
@@ -92,7 +93,7 @@ def main(settings, window=dummy_window()):
 
         # Determine MQ Dungeons
         dungeon_pool = list(world.dungeon_mq)
-        dist_num_mq = world.get_distribution().configure_dungeons(world, dungeon_pool)
+        dist_num_mq = world.distribution.configure_dungeons(world, dungeon_pool)
 
         if world.mq_dungeons_random:
             world.mq_dungeons = dist_num_mq + random.randint(0, len(dungeon_pool))

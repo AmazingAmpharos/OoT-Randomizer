@@ -87,9 +87,6 @@ class Spoiler(object):
         output += '\n\n'
 
         output += 'Settings (%s):\n%s' % (self.settings.settings_string, self.settings.get_settings_display())
-        output += '\n'
-
-        output += 'Distribution File:\n%s' % (self.settings.distribution.to_str(False))
         return output
 
     def spoiler_output(self):

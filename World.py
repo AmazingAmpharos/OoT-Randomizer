@@ -36,6 +36,7 @@ class World(object):
         # this gives the world an attribute for every setting listed in Settings.py
         self.settings = settings
         self.__dict__.update(settings.__dict__)
+        self.distribution = None
 
         # evaluate settings (important for logic, nice for spoiler)
         if self.big_poe_count_random:
@@ -78,10 +79,6 @@ class World(object):
         self.can_take_damage = True
 
 
-    def get_distribution(self):
-        return self.distribution.for_world(self.id)
-
-
     def copy(self):
         new_world = World(self.settings)
         new_world.skipped_trials = copy.copy(self.skipped_trials)
@@ -90,6 +87,7 @@ class World(object):
         new_world.can_take_damage = self.can_take_damage
         new_world.shop_prices = copy.copy(self.shop_prices)
         new_world.id = self.id
+        new_world.distribution = self.distribution
 
         new_world.regions = [region.copy(new_world) for region in self.regions]
         for region in new_world.regions:
