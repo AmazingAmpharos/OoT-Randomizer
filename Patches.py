@@ -1399,6 +1399,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         replace_songs(rom)
 
     # actually write the save table to rom
+    save_context.equip_items('child')
     save_context.write_save_table(rom)
 
     return rom

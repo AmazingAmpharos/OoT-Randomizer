@@ -30,9 +30,9 @@ class Address():
         return self.value
 
 
-    def get_writes(self, save_context):
+    def get_value_raw(self):
         if self.value is None:
-            return
+            return None
 
         value = self.value
         if self.choices is not None:
@@ -46,6 +46,38 @@ class Address():
             value = self.max
 
         value = (value << self.bit_offset) & self.mask
+        return value
+
+
+    def set_value_raw(self, value):
+        if value is None:
+            self.value = None
+            return
+
+        if not isinstance(value, int):
+            raise ValueError("Invalid value type '%s'" % str(value))
+
+        value = (value & self.mask) >> self.bit_offset
+        if value > self.max:
+            value = self.max
+        
+        if self.choices is not None:
+            for choice_name, choice_value in self.choices.items():
+                if choice_value == value:
+                    value = choice_name
+                    break
+
+        self.value = value
+
+
+    def get_writes(self, save_context):
+        if self.value is None:
+            return
+
+        value = self.get_value_raw()
+        if value is None:
+            return
+
         values = zip(Address.to_bytes(value, self.size), 
                      Address.to_bytes(self.mask, self.size))
 
@@ -81,7 +113,13 @@ class SaveContext():
         if mask is not None:
             value = value & mask
 
-        if address in self.save_bits:
+        if address in self.save_bytes:
+            old_val = self.save_bytes[address]
+            if mask is not None:
+                old_val &= ~mask
+            value = old_val | value
+            self.write_byte(address, value, predicate)
+        elif address in self.save_bits:
             if mask is not None:
                 self.save_bits[address] &= ~mask
             self.save_bits[address] |= value
@@ -94,6 +132,9 @@ class SaveContext():
         if predicate and not predicate(value):
             return
 
+        if address in self.save_bits:
+            del self.save_bits[address]
+
         self.save_bytes[address] = value
 
 
@@ -103,14 +144,21 @@ class SaveContext():
             self.write_byte(address + i, value, predicate)
 
 
+    def write_save_entry(self, address):
+        if isinstance(address, dict):
+            for name, sub_address in address.items():
+                self.write_save_entry(sub_address)
+        elif isinstance(address, list):
+            for sub_address in address:
+                self.write_save_entry(sub_address)
+        else:
+            address.get_writes(self)
+
+
     # will overwrite the byte at offset with the given value
     def write_save_table(self, rom):
-        for address in self.addresses.values():
-            if isinstance(address, dict):
-                for sub_address in address.values():
-                    sub_address.get_writes(self)
-            else:
-                address.get_writes(self)
+        for name, address in self.addresses.items():
+            self.write_save_entry(address)
 
         save_table = []
         for address, value in self.save_bits.items():
@@ -128,11 +176,11 @@ class SaveContext():
 
     def give_bottle(self, item, count):
         for bottle_id in range(4):
-            bottle_slot = 'item_slot_bottle_%d' % (bottle_id + 1)
-            if self.addresses[bottle_slot].get_value(0xFF) != 0xFF:
+            item_slot = 'bottle_%d' % (bottle_id + 1)
+            if self.addresses['item_slot'][item_slot].get_value(0xFF) != 0xFF:
                 continue
 
-            self.addresses[bottle_slot].value = SaveContext.bottle_types[item]
+            self.addresses['item_slot'][item_slot].value = SaveContext.bottle_types[item]
             count -= 1
 
             if count == 0:
@@ -141,11 +189,11 @@ class SaveContext():
 
     def give_health(self, health):
         health += self.addresses['health_capacity'].get_value(0x30) / 0x10
-        health += self.addresses['heart_pieces'].get_value() / 4
+        health += self.addresses['quest']['heart_pieces'].get_value() / 4
 
-        self.addresses['health_capacity'].value = int(health) * 0x10
-        self.addresses['health'].value          = int(health) * 0x10
-        self.addresses['heart_pieces'].value    = int((health % 1) * 4)
+        self.addresses['health_capacity'].value       = int(health) * 0x10
+        self.addresses['health'].value                = int(health) * 0x10
+        self.addresses['quest']['heart_pieces'].value = int((health % 1) * 4)
 
 
     def give_item(self, item, count):
@@ -164,12 +212,51 @@ class SaveContext():
                 elif isinstance(value, bool):
                     value = 1 if value else 0
 
-                if isinstance(value, int) and value < self.addresses[address].get_value():
+                address_value = self.addresses
+                prev_sub_address = 'Save Context'
+                for sub_address in address.split('.'):
+                    if sub_address not in address_value:
+                        raise ValueError('Unknown key %s in %s of SaveContext' % (sub_address, prev_sub_address))
+
+                    if isinstance(address_value, list):
+                        sub_address =  int(sub_address)
+
+                    address_value = address_value[sub_address]
+                    prev_sub_address = sub_address
+                if not isinstance(address_value, Address):
+                    raise ValueError('%s does not resolve to an Adress in SaveContext' % (sub_address))
+
+                if isinstance(value, int) and value < address_value.get_value():
                     continue
 
-                self.addresses[address].value = value
+                address_value.value = value
         else:
             raise ValueError("Cannot give unknown starting item %s" % item)
+
+
+    def equip_items(self, age):
+        if age not in ['child', 'adult']:
+            raise ValueError("Age must be 'adult' or 'child', not %s" % age)
+
+        age = 'equips_' + age
+        c_buttons = list(self.addresses[age]['button_slots'].keys())
+        for item_slot in SaveContext.equipable_items[age]['items']:
+            item = self.addresses['item_slot'][item_slot].get_value('none')
+            if item != 'none':
+                c_button = c_buttons.pop()
+                self.addresses['equips']['button_slots'][c_button].value = item_slot
+                self.addresses['equips']['button_items'][c_button].value = item
+                if not c_buttons:
+                    break
+
+        for equip_item, equip_addresses in self.addresses[age]['equips'].items():
+            for item in SaveContext.equipable_items[age][equip_item]:
+                if self.addresses['equip_items'][item].get_value():
+                    item_value = self.addresses['equip_items'][item].get_value_raw()
+                    self.addresses['equips']['equips'][equip_item].set_value_raw(item_value)
+                    if equip_item == 'sword':
+                        self.addresses['equips']['button_items']['b'].value = item
+                    break
 
 
     def get_save_context_addresses(self):
@@ -201,206 +288,275 @@ class SaveContext():
             'unk_05'                     : Address(size=1),
 
             # Equiped Items
-            'child_button_items_b'       : Address(size=1),
-            'child_button_items_left'    : Address(size=1),
-            'child_button_items_down'    : Address(size=1),
-            'child_button_items_right'   : Address(size=1),
-            'child_button_slots_left'    : Address(size=1),
-            'child_button_slots_down'    : Address(size=1),
-            'child_button_slots_right'   : Address(size=1),
-            'child_equips_sword'         : Address(0x0048, size=2, mask=0x000F),
-            'child_equips_shield'        : Address(0x0048, size=2, mask=0x00F0),
-            'child_equips_tunic'         : Address(0x0048, size=2, mask=0x0F00),
-            'child_equips_boots'         : Address(0x0048, size=2, mask=0xF000),
-            'adult_button_items_b'       : Address(size=1),
-            'adult_button_items_left'    : Address(size=1),
-            'adult_button_items_down'    : Address(size=1),
-            'adult_button_items_right'   : Address(size=1),
-            'adult_button_slots_left'    : Address(size=1),
-            'adult_button_slots_down'    : Address(size=1),
-            'adult_button_slots_right'   : Address(size=1),
-            'adult_equips_sword'         : Address(0x0052, size=2, mask=0x000F),
-            'adult_equips_shield'        : Address(0x0052, size=2, mask=0x00F0),
-            'adult_equips_tunic'         : Address(0x0052, size=2, mask=0x0F00),
-            'adult_equips_boots'         : Address(0x0052, size=2, mask=0xF000),
-            'unk_06'                     : Address(size=12),
+            'equips_child' : {
+                'button_items' : {
+                    'b'                  : Address(size=1, choices=SaveContext.item_id_map),
+                    'left'               : Address(size=1, choices=SaveContext.item_id_map),
+                    'down'               : Address(size=1, choices=SaveContext.item_id_map),
+                    'right'              : Address(size=1, choices=SaveContext.item_id_map),
+                },
+                'button_slots' : {
+                    'left'               : Address(size=1, choices=SaveContext.slot_id_map),
+                    'down'               : Address(size=1, choices=SaveContext.slot_id_map),
+                    'right'              : Address(size=1, choices=SaveContext.slot_id_map),
+                },
+                'equips' : {
+                    'sword'              : Address(0x0048, size=2, mask=0x000F),
+                    'shield'             : Address(0x0048, size=2, mask=0x00F0),
+                    'tunic'              : Address(0x0048, size=2, mask=0x0F00),
+                    'boots'              : Address(0x0048, size=2, mask=0xF000),                
+                },
+            },
+            'equips_adult' : {
+                'button_items' : {
+                    'b'                  : Address(size=1, choices=SaveContext.item_id_map),
+                    'left'               : Address(size=1, choices=SaveContext.item_id_map),
+                    'down'               : Address(size=1, choices=SaveContext.item_id_map),
+                    'right'              : Address(size=1, choices=SaveContext.item_id_map),
+                },
+                'button_slots' : {
+                    'left'               : Address(size=1, choices=SaveContext.slot_id_map),
+                    'down'               : Address(size=1, choices=SaveContext.slot_id_map),
+                    'right'              : Address(size=1, choices=SaveContext.slot_id_map),
+                },
+                'equips' : {
+                    'sword'              : Address(0x0052, size=2, mask=0x000F),
+                    'shield'             : Address(0x0052, size=2, mask=0x00F0),
+                    'tunic'              : Address(0x0052, size=2, mask=0x0F00),
+                    'boots'              : Address(0x0052, size=2, mask=0xF000),                
+                },
+            },
+            'unk_06'                     : Address(size=0x12),
             'scene_index'                : Address(size=2),
-            'button_items_b'             : Address(size=1),
-            'button_items_left'          : Address(size=1),
-            'button_items_down'          : Address(size=1),
-            'button_items_right'         : Address(size=1),
-            'button_slots_left'          : Address(size=1),
-            'button_slots_down'          : Address(size=1),
-            'button_slots_right'         : Address(size=1),
-            'equips_sword'               : Address(0x0070, size=2, mask=0x000F),
-            'equips_shield'              : Address(0x0070, size=2, mask=0x00F0),
-            'equips_tunic'               : Address(0x0070, size=2, mask=0x0F00),
-            'equips_boots'               : Address(0x0070, size=2, mask=0xF000),
+
+            'equips' : {
+                'button_items' : {
+                    'b'                  : Address(size=1, choices=SaveContext.item_id_map),
+                    'left'               : Address(size=1, choices=SaveContext.item_id_map),
+                    'down'               : Address(size=1, choices=SaveContext.item_id_map),
+                    'right'              : Address(size=1, choices=SaveContext.item_id_map),
+                },
+                'button_slots' : {
+                    'left'               : Address(size=1, choices=SaveContext.slot_id_map),
+                    'down'               : Address(size=1, choices=SaveContext.slot_id_map),
+                    'right'              : Address(size=1, choices=SaveContext.slot_id_map),
+                },
+                'equips' : {
+                    'sword'              : Address(0x0070, size=2, mask=0x000F),
+                    'shield'             : Address(0x0070, size=2, mask=0x00F0),
+                    'tunic'              : Address(0x0070, size=2, mask=0x0F00),
+                    'boots'              : Address(0x0070, size=2, mask=0xF000),                
+                },
+            },
             'unk_07'                     : Address(size=2),
 
             # Item Slots
-            'item_slot_stick'            : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_nut'              : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_bomb'             : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_bow'              : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_fire_arrow'       : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_dins_fire'        : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_slingshot'        : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_ocarina'          : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_bombchu'          : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_hookshot'         : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_ice_arrow'        : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_farores_wind'     : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_boomerang'        : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_lens'             : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_beans'            : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_hammer'           : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_light_arrow'      : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_nayrus_love'      : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_bottle_1'         : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_bottle_2'         : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_bottle_3'         : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_bottle_4'         : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_adult_trade'      : Address(size=1, choices=SaveContext.item_id_map),
-            'item_slot_child_trade'      : Address(size=1, choices=SaveContext.item_id_map),
+            'item_slot'                  : {
+                'stick'                  : Address(size=1, choices=SaveContext.item_id_map),
+                'nut'                    : Address(size=1, choices=SaveContext.item_id_map),
+                'bomb'                   : Address(size=1, choices=SaveContext.item_id_map),
+                'bow'                    : Address(size=1, choices=SaveContext.item_id_map),
+                'fire_arrow'             : Address(size=1, choices=SaveContext.item_id_map),
+                'dins_fire'              : Address(size=1, choices=SaveContext.item_id_map),
+                'slingshot'              : Address(size=1, choices=SaveContext.item_id_map),
+                'ocarina'                : Address(size=1, choices=SaveContext.item_id_map),
+                'bombchu'                : Address(size=1, choices=SaveContext.item_id_map),
+                'hookshot'               : Address(size=1, choices=SaveContext.item_id_map),
+                'ice_arrow'              : Address(size=1, choices=SaveContext.item_id_map),
+                'farores_wind'           : Address(size=1, choices=SaveContext.item_id_map),
+                'boomerang'              : Address(size=1, choices=SaveContext.item_id_map),
+                'lens'                   : Address(size=1, choices=SaveContext.item_id_map),
+                'beans'                  : Address(size=1, choices=SaveContext.item_id_map),
+                'hammer'                 : Address(size=1, choices=SaveContext.item_id_map),
+                'light_arrow'            : Address(size=1, choices=SaveContext.item_id_map),
+                'nayrus_love'            : Address(size=1, choices=SaveContext.item_id_map),
+                'bottle_1'               : Address(size=1, choices=SaveContext.item_id_map),
+                'bottle_2'               : Address(size=1, choices=SaveContext.item_id_map),
+                'bottle_3'               : Address(size=1, choices=SaveContext.item_id_map),
+                'bottle_4'               : Address(size=1, choices=SaveContext.item_id_map),
+                'adult_trade'            : Address(size=1, choices=SaveContext.item_id_map),
+                'child_trade'            : Address(size=1, choices=SaveContext.item_id_map),
+            },
 
             # Item Ammo
-            'ammo_stick'                 : Address(size=1),
-            'ammo_nut'                   : Address(size=1),
-            'ammo_bomb'                  : Address(size=1),
-            'ammo_bow'                   : Address(size=1),
-            'ammo_fire_arrow'            : Address(size=1),
-            'ammo_dins_fire'             : Address(size=1),
-            'ammo_slingshot'             : Address(size=1),
-            'ammo_ocarina'               : Address(size=1),
-            'ammo_bombchu'               : Address(size=1),
-            'ammo_hookshot'              : Address(size=1),
-            'ammo_ice_arrow'             : Address(size=1),
-            'ammo_farores_wind'          : Address(size=1),
-            'ammo_boomerang'             : Address(size=1),
-            'ammo_lens'                  : Address(size=1),
-            'ammo_beans'                 : Address(size=1),
+            'ammo' : {
+                'stick'                  : Address(size=1),
+                'nut'                    : Address(size=1),
+                'bomb'                   : Address(size=1),
+                'bow'                    : Address(size=1),
+                'fire_arrow'             : Address(size=1),
+                'dins_fire'              : Address(size=1),
+                'slingshot'              : Address(size=1),
+                'ocarina'                : Address(size=1),
+                'bombchu'                : Address(size=1),
+                'hookshot'               : Address(size=1),
+                'ice_arrow'              : Address(size=1),
+                'farores_wind'           : Address(size=1),
+                'boomerang'              : Address(size=1),
+                'lens'                   : Address(size=1),
+                'beans'                  : Address(size=1),
+            },
             'magic_beans_sold'           : Address(size=1),
 
             # Equipment
-            'kokiri_sword'               : Address(0x009C, size=2, mask=0x0001),
-            'master_sword'               : Address(0x009C, size=2, mask=0x0002),
-            'giants_knife'               : Address(0x009C, size=2, mask=0x0004),
-            'broken_knife'               : Address(0x009C, size=2, mask=0x0008),
-            'deku_shield'                : Address(0x009C, size=2, mask=0x0010),
-            'hylian_shield'              : Address(0x009C, size=2, mask=0x0020),
-            'mirror_shield'              : Address(0x009C, size=2, mask=0x0040),
-            'kokiri_tunic'               : Address(0x009C, size=2, mask=0x0100),
-            'goron_tunic'                : Address(0x009C, size=2, mask=0x0200),
-            'zora_tunic'                 : Address(0x009C, size=2, mask=0x0400),
-            'kokiri_boots'               : Address(0x009C, size=2, mask=0x1000),
-            'iron_boots'                 : Address(0x009C, size=2, mask=0x2000),
-            'hover_boots'                : Address(0x009C, size=2, mask=0x4000),
+            'equip_items' : {
+                'kokiri_sword'           : Address(0x009C, size=2, mask=0x0001),
+                'master_sword'           : Address(0x009C, size=2, mask=0x0002),
+                'biggoron_sword'         : Address(0x009C, size=2, mask=0x0004),
+                'broken_knife'           : Address(0x009C, size=2, mask=0x0008),
+                'deku_shield'            : Address(0x009C, size=2, mask=0x0010),
+                'hylian_shield'          : Address(0x009C, size=2, mask=0x0020),
+                'mirror_shield'          : Address(0x009C, size=2, mask=0x0040),
+                'kokiri_tunic'           : Address(0x009C, size=2, mask=0x0100),
+                'goron_tunic'            : Address(0x009C, size=2, mask=0x0200),
+                'zora_tunic'             : Address(0x009C, size=2, mask=0x0400),
+                'kokiri_boots'           : Address(0x009C, size=2, mask=0x1000),
+                'iron_boots'             : Address(0x009C, size=2, mask=0x2000),
+                'hover_boots'            : Address(0x009C, size=2, mask=0x4000),
+            },
 
             'unk_08'                     : Address(size=2),
 
             # Upgrades
-            'quiver'                     : Address(0x00A0, mask=0x00000007, max=3),
-            'bomb_bag'                   : Address(0x00A0, mask=0x00000038, max=3),
-            'strength_upgrade'           : Address(0x00A0, mask=0x000001C0, max=3),
-            'diving_upgrade'             : Address(0x00A0, mask=0x00000E00, max=2),
-            'wallet'                     : Address(0x00A0, mask=0x00003000, max=3),
-            'bullet_bag'                 : Address(0x00A0, mask=0x0001C000, max=3),
-            'stick_upgrade'              : Address(0x00A0, mask=0x000E0000, max=3),
-            'nut_upgrade'                : Address(0x00A0, mask=0x00700000, max=3),
+            'upgrades' : {
+                'quiver'                 : Address(0x00A0, mask=0x00000007, max=3),
+                'bomb_bag'               : Address(0x00A0, mask=0x00000038, max=3),
+                'strength_upgrade'       : Address(0x00A0, mask=0x000001C0, max=3),
+                'diving_upgrade'         : Address(0x00A0, mask=0x00000E00, max=2),
+                'wallet'                 : Address(0x00A0, mask=0x00003000, max=3),
+                'bullet_bag'             : Address(0x00A0, mask=0x0001C000, max=3),
+                'stick_upgrade'          : Address(0x00A0, mask=0x000E0000, max=3),
+                'nut_upgrade'            : Address(0x00A0, mask=0x00700000, max=3),
+            },
 
             # Medallions
-            'forest_medallion'           : Address(0x00A4, mask=0x00000001),
-            'fire_medallion'             : Address(0x00A4, mask=0x00000002),
-            'water_medallion'            : Address(0x00A4, mask=0x00000004),
-            'spirit_medallion'           : Address(0x00A4, mask=0x00000008),
-            'shadow_medallion'           : Address(0x00A4, mask=0x00000010),
-            'light_medallion'            : Address(0x00A4, mask=0x00000020),
+            'quest' : {
+                'medallions' : {
+                    'forest'             : Address(0x00A4, mask=0x00000001),
+                    'fire'               : Address(0x00A4, mask=0x00000002),
+                    'water'              : Address(0x00A4, mask=0x00000004),
+                    'spirit'             : Address(0x00A4, mask=0x00000008),
+                    'shadow'             : Address(0x00A4, mask=0x00000010),
+                    'light'              : Address(0x00A4, mask=0x00000020),
 
-            # Songs
-            'minuet_of_forest'           : Address(0x00A4, mask=0x00000040),
-            'bolero_of_fire'             : Address(0x00A4, mask=0x00000080),
-            'serenade_of_water'          : Address(0x00A4, mask=0x00000100),
-            'requiem_of_spirit'          : Address(0x00A4, mask=0x00000200),
-            'nocturne_of_shadow'         : Address(0x00A4, mask=0x00000400),
-            'prelude_of_light'           : Address(0x00A4, mask=0x00000800),
-            'zeldas_lullaby'             : Address(0x00A4, mask=0x00001000),
-            'eponas_song'                : Address(0x00A4, mask=0x00002000),
-            'sarias_song'                : Address(0x00A4, mask=0x00004000),
-            'suns_song'                  : Address(0x00A4, mask=0x00008000),
-            'song_of_time'               : Address(0x00A4, mask=0x00010000),
-            'song_of_storms'             : Address(0x00A4, mask=0x00020000),
-
-            # Spiritual Stones
-            'kokiris_emerald'            : Address(0x00A4, mask=0x00040000),
-            'gorons_ruby'                : Address(0x00A4, mask=0x00080000),
-            'zoras_sapphire'             : Address(0x00A4, mask=0x00100000),
-
-            # Misc Quest
-            'stone_of_agony'             : Address(0x00A4, mask=0x00200000),
-            'gerudos_card'               : Address(0x00A4, mask=0x00400000),
-            'gold_skulltula'             : Address(0x00A4, mask=0x00800000),
-            'heart_pieces'               : Address(0x00A4, mask=0xFF000000),
+                },
+                'songs' : {
+                    'minuet_of_forest'   : Address(0x00A4, mask=0x00000040),
+                    'bolero_of_fire'     : Address(0x00A4, mask=0x00000080),
+                    'serenade_of_water'  : Address(0x00A4, mask=0x00000100),
+                    'requiem_of_spirit'  : Address(0x00A4, mask=0x00000200),
+                    'nocturne_of_shadow' : Address(0x00A4, mask=0x00000400),
+                    'prelude_of_light'   : Address(0x00A4, mask=0x00000800),
+                    'zeldas_lullaby'     : Address(0x00A4, mask=0x00001000),
+                    'eponas_song'        : Address(0x00A4, mask=0x00002000),
+                    'sarias_song'        : Address(0x00A4, mask=0x00004000),
+                    'suns_song'          : Address(0x00A4, mask=0x00008000),
+                    'song_of_time'       : Address(0x00A4, mask=0x00010000),
+                    'song_of_storms'     : Address(0x00A4, mask=0x00020000),
+                },
+                'stones' : {
+                    'kokiris_emerald'    : Address(0x00A4, mask=0x00040000),
+                    'gorons_ruby'        : Address(0x00A4, mask=0x00080000),
+                    'zoras_sapphire'     : Address(0x00A4, mask=0x00100000),
+                },
+                'stone_of_agony'         : Address(0x00A4, mask=0x00200000),
+                'gerudos_card'           : Address(0x00A4, mask=0x00400000),
+                'gold_skulltula'         : Address(0x00A4, mask=0x00800000),
+                'heart_pieces'           : Address(0x00A4, mask=0xFF000000),
+            },
 
             # Dungeon Items
-            'deku_boss_key'              : Address(0x00A8, size=1, mask=0x01),
-            'deku_compass'               : Address(0x00A8, size=1, mask=0x02),
-            'deku_map'                   : Address(0x00A8, size=1, mask=0x04),
-            'dodongo_boss_key'           : Address(0x00A9, size=1, mask=0x01),
-            'dodongo_compass'            : Address(0x00A9, size=1, mask=0x02),
-            'dodongo_map'                : Address(0x00A9, size=1, mask=0x04),
-            'jabu_boss_key'              : Address(0x00AA, size=1, mask=0x01),
-            'jabu_compass'               : Address(0x00AA, size=1, mask=0x02),
-            'jabu_map'                   : Address(0x00AA, size=1, mask=0x04),
-            'forest_boss_key'            : Address(0x00AB, size=1, mask=0x01),
-            'forest_compass'             : Address(0x00AB, size=1, mask=0x02),
-            'forest_map'                 : Address(0x00AB, size=1, mask=0x04),
-            'fire_boss_key'              : Address(0x00AC, size=1, mask=0x01),
-            'fire_compass'               : Address(0x00AC, size=1, mask=0x02),
-            'fire_map'                   : Address(0x00AC, size=1, mask=0x04),
-            'water_boss_key'             : Address(0x00AD, size=1, mask=0x01),
-            'water_compass'              : Address(0x00AD, size=1, mask=0x02),
-            'water_map'                  : Address(0x00AD, size=1, mask=0x04),
-            'spirit_boss_key'            : Address(0x00AE, size=1, mask=0x01),
-            'spirit_compass'             : Address(0x00AE, size=1, mask=0x02),
-            'spirit_map'                 : Address(0x00AE, size=1, mask=0x04),
-            'shadow_boss_key'            : Address(0x00AF, size=1, mask=0x01),
-            'shadow_compass'             : Address(0x00AF, size=1, mask=0x02),
-            'shadow_map'                 : Address(0x00AF, size=1, mask=0x04),
-            'botw_boss_key'              : Address(0x00B0, size=1, mask=0x01),
-            'botw_compass'               : Address(0x00B0, size=1, mask=0x02),
-            'botw_map'                   : Address(0x00B0, size=1, mask=0x04),
-            'ice_boss_key'               : Address(0x00B1, size=1, mask=0x01),
-            'ice_compass'                : Address(0x00B1, size=1, mask=0x02),
-            'ice_map'                    : Address(0x00B1, size=1, mask=0x04),
-            'gt_boss_key'                : Address(0x00B2, size=1, mask=0x01),
-            'gt_compass'                 : Address(0x00B2, size=1, mask=0x02),
-            'gt_map'                     : Address(0x00B2, size=1, mask=0x04),
-            'gtg_boss_key'               : Address(0x00B3, size=1, mask=0x01),
-            'gtg_compass'                : Address(0x00B3, size=1, mask=0x02),
-            'gtg_map'                    : Address(0x00B3, size=1, mask=0x04),
-            'fortress_boss_key'          : Address(0x00B4, size=1, mask=0x01),
-            'fortress_compass'           : Address(0x00B4, size=1, mask=0x02),
-            'fortress_map'               : Address(0x00B4, size=1, mask=0x04),
-            'gc_boss_key'                : Address(0x00B5, size=1, mask=0x01),
-            'gc_compass'                 : Address(0x00B5, size=1, mask=0x02),
-            'gc_map'                     : Address(0x00B5, size=1, mask=0x04),
-            'deku_keys'                  : Address(0x00BC, size=1),
-            'dodongo_keys'               : Address(size=1),
-            'jabu_keys'                  : Address(size=1),
-            'forest_keys'                : Address(size=1),
-            'fire_keys'                  : Address(size=1),
-            'water_keys'                 : Address(size=1),
-            'spirit_keys'                : Address(size=1),
-            'shadow_keys'                : Address(size=1),
-            'botw_keys'                  : Address(size=1),
-            'ice_keys'                   : Address(size=1),
-            'gt_keys'                    : Address(size=1),
-            'gtg_keys'                   : Address(size=1),
-            'fortress_keys'              : Address(size=1),
-            'gc_keys'                    : Address(size=1),
-
-            'defense_hearts'             : Address(0x00CF, size=1, max=20),
+            'dungeon_items' : {
+                'deku' : {
+                     'boss_key'          : Address(0x00A8, size=1, mask=0x01),
+                     'compass'           : Address(0x00A8, size=1, mask=0x02),
+                     'map'               : Address(0x00A8, size=1, mask=0x04),
+                },
+                'dodongo' : {
+                     'boss_key'          : Address(0x00A9, size=1, mask=0x01),
+                     'compass'           : Address(0x00A9, size=1, mask=0x02),
+                     'map'               : Address(0x00A9, size=1, mask=0x04),
+                },
+                'jabu' : {
+                     'boss_key'          : Address(0x00AA, size=1, mask=0x01),
+                     'compass'           : Address(0x00AA, size=1, mask=0x02),
+                     'map'               : Address(0x00AA, size=1, mask=0x04),
+                },
+                'forest' : {
+                     'boss_key'          : Address(0x00AB, size=1, mask=0x01),
+                     'compass'           : Address(0x00AB, size=1, mask=0x02),
+                     'map'               : Address(0x00AB, size=1, mask=0x04),
+                },
+                'fire' : {
+                     'boss_key'          : Address(0x00AC, size=1, mask=0x01),
+                     'compass'           : Address(0x00AC, size=1, mask=0x02),
+                     'map'               : Address(0x00AC, size=1, mask=0x04),
+                },
+                'water' : {
+                     'boss_key'          : Address(0x00AD, size=1, mask=0x01),
+                     'compass'           : Address(0x00AD, size=1, mask=0x02),
+                     'map'               : Address(0x00AD, size=1, mask=0x04),
+                },
+                'spirit' : {
+                     'boss_key'          : Address(0x00AE, size=1, mask=0x01),
+                     'compass'           : Address(0x00AE, size=1, mask=0x02),
+                     'map'               : Address(0x00AE, size=1, mask=0x04),
+                },
+                'shadow' : {
+                     'boss_key'          : Address(0x00AF, size=1, mask=0x01),
+                     'compass'           : Address(0x00AF, size=1, mask=0x02),
+                     'map'               : Address(0x00AF, size=1, mask=0x04),
+                },
+                'botw' : {
+                     'boss_key'          : Address(0x00B0, size=1, mask=0x01),
+                     'compass'           : Address(0x00B0, size=1, mask=0x02),
+                     'map'               : Address(0x00B0, size=1, mask=0x04),
+                },
+                'ice' : {
+                     'boss_key'          : Address(0x00B1, size=1, mask=0x01),
+                     'compass'           : Address(0x00B1, size=1, mask=0x02),
+                     'map'               : Address(0x00B1, size=1, mask=0x04),
+                },
+                'gt' : {
+                     'boss_key'          : Address(0x00B2, size=1, mask=0x01),
+                     'compass'           : Address(0x00B2, size=1, mask=0x02),
+                     'map'               : Address(0x00B2, size=1, mask=0x04),
+                },
+                'gtg' : {
+                     'boss_key'          : Address(0x00B3, size=1, mask=0x01),
+                     'compass'           : Address(0x00B3, size=1, mask=0x02),
+                     'map'               : Address(0x00B3, size=1, mask=0x04),
+                },
+                'fortress' : {
+                     'boss_key'          : Address(0x00B4, size=1, mask=0x01),
+                     'compass'           : Address(0x00B4, size=1, mask=0x02),
+                     'map'               : Address(0x00B4, size=1, mask=0x04),
+                },
+                'gc' : {
+                     'boss_key'          : Address(0x00B5, size=1, mask=0x01),
+                     'compass'           : Address(0x00B5, size=1, mask=0x02),
+                     'map'               : Address(0x00B5, size=1, mask=0x04),
+                },
+                'unused'                 : Address(size=6),
+            },
+            'keys' : {
+                'deku'                   : Address(size=1),
+                'dodongo'                : Address(size=1),
+                'jabu'                   : Address(size=1),
+                'forest'                 : Address(size=1),
+                'fire'                   : Address(size=1),
+                'water'                  : Address(size=1),
+                'spirit'                 : Address(size=1),
+                'shadow'                 : Address(size=1),
+                'botw'                   : Address(size=1),
+                'ice'                    : Address(size=1),
+                'gt'                     : Address(size=1),
+                'gtg'                    : Address(size=1),
+                'fortress'               : Address(size=1),
+                'gc'                     : Address(size=1),
+                'unused'                 : Address(size=5),
+            },
+            'defense_hearts'             : Address(size=1, max=20),
             'gs_tokens'                  : Address(size=2, max=100),
         }
 
@@ -463,6 +619,98 @@ class SaveContext():
         'eyeball_frog'        : 0x35,
         'eye_drops'           : 0x36,
         'claim_check'         : 0x37,
+        'bow_fire_arrow'      : 0x38,
+        'bow_ice_arrow'       : 0x39,
+        'bow_light_arrow'     : 0x3A,
+        'kokiri_sword'        : 0x3B,
+        'master_sword'        : 0x3C,
+        'biggoron_sword'      : 0x3D,
+        'deku_shield'         : 0x3E,
+        'hylian_shield'       : 0x3F,
+        'mirror_shield'       : 0x40,
+        'kokiri_tunic'        : 0x41,
+        'goron_tunic'         : 0x42,
+        'zora_tunic'          : 0x43,
+        'kokiri_boots'        : 0x44,
+        'iron_boots'          : 0x45,
+        'hover_boots'         : 0x46,
+        'bullet_bag_30'       : 0x47,
+        'bullet_bag_40'       : 0x48,
+        'bullet_bag_50'       : 0x49,
+        'quiver_30'           : 0x4A,
+        'quiver_40'           : 0x4B,
+        'quiver_50'           : 0x4C,
+        'bomb_bag_20'         : 0x4D,
+        'bomb_bag_30'         : 0x4E,
+        'bomb_bag_40'         : 0x4F,
+        'gorons_bracelet'     : 0x40,
+        'silver_gauntlets'    : 0x41,
+        'golden_gauntlets'    : 0x42,
+        'silver_scale'        : 0x43,
+        'golden_scale'        : 0x44,
+        'broken_giants_knife' : 0x45,
+        'adults_wallet'       : 0x46,
+        'giants_wallet'       : 0x47,
+        'deku_seeds'          : 0x48,
+        'fishing_pole'        : 0x49,
+        'minuet'              : 0x4A,
+        'bolero'              : 0x4B,
+        'serenade'            : 0x4C,
+        'requiem'             : 0x4D,
+        'nocturne'            : 0x4E,
+        'prelude'             : 0x4F,
+        'zeldas_lullaby'      : 0x50,
+        'eponas_song'         : 0x51,
+        'sarias_song'         : 0x52,
+        'suns_song'           : 0x53,
+        'song_of_time'        : 0x54,
+        'song_of_storms'      : 0x55,
+        'forest_medallion'    : 0x56,
+        'fire_medallion'      : 0x57,
+        'water_medallion'     : 0x58,
+        'spirit_medallion'    : 0x59,
+        'shadow_medallion'    : 0x5A,
+        'light_medallion'     : 0x5B,
+        'kokiris_emerald'     : 0x5C,
+        'gorons_ruby'         : 0x5D,
+        'zoras_sapphire'      : 0x5E,
+        'stone_of_agony'      : 0x5F,
+        'gerudos_card'        : 0x60,
+        'gold_skulltula'      : 0x61,
+        'heart_container'     : 0x62,
+        'piece_of_heart'      : 0x63,
+        'boss_key'            : 0x64,
+        'compass'             : 0x65,
+        'dungeon_map'         : 0x66,
+        'small_key'           : 0x67,
+    }
+
+
+    slot_id_map = {
+        'stick'               : 0x00,
+        'nut'                 : 0x01,
+        'bomb'                : 0x02,
+        'bow'                 : 0x03,
+        'fire_arrow'          : 0x04,
+        'dins_fire'           : 0x05,
+        'slingshot'           : 0x06,
+        'ocarina'             : 0x07,
+        'bombchu'             : 0x08,
+        'hookshot'            : 0x09,
+        'ice_arrow'           : 0x0A,
+        'farores_wind'        : 0x0B,
+        'boomerang'           : 0x0C,
+        'lens'                : 0x0D,
+        'beans'               : 0x0E,
+        'hammer'              : 0x0F,
+        'light_arrow'         : 0x10,
+        'nayrus_love'         : 0x11,
+        'bottle_1'            : 0x12,
+        'bottle_2'            : 0x13,
+        'bottle_3'            : 0x14,
+        'bottle_4'            : 0x15,
+        'adult_trade'         : 0x16,
+        'child_trade'         : 0x17,
     }
 
 
@@ -485,127 +733,195 @@ class SaveContext():
 
     save_writes_table = {
         "Deku Stick Capacity": {
-            'item_slot_stick'                       : 'stick',
-            'stick_upgrade'                         : [2,3],
+            'item_slot.stick'            : 'stick',
+            'upgrades.stick_upgrade'     : [2,3],
         },
         "Deku Sticks": {
-            'item_slot_stick'                       : 'stick',
-            'stick_upgrade'                         : 1,
-            'ammo_stick'                            : None,
+            'item_slot.stick'            : 'stick',
+            'upgrades.stick_upgrade'     : 1,
+            'ammo.stick'                 : None,
         },
         "Deku Nut Capacity": {
-            'item_slot_nut'                         : 'nut',
-            'nut_upgrade'                           : [2,3],
+            'item_slot.nut'              : 'nut',
+            'upgrades.nut_upgrade'       : [2,3],
         },
         "Deku Nuts": {
-            'item_slot_nut'                         : 'nut',
-            'nut_upgrade'                           : 1,
-            'ammo_nut'                              : None,
+            'item_slot.nut'              : 'nut',
+            'upgrades.nut_upgrade'       : 1,
+            'ammo.nut'                   : None,
         },
         "Bomb Bag": {
-            'item_slot_bomb'                        : 'bomb',
-            'bomb_bag'                              : None,
+            'item_slot.bomb'             : 'bomb',
+            'upgrades.bomb_bag'         : None,
         },
         "Bombs" : {
-            'ammo_bomb'                             : None,
+            'ammo.bomb'                  : None,
         },
         "Bombchus" : {
-            'item_slot_bombchu'                     : 'bombchu',
-            'ammo_bombchu'                          : None,
+            'item_slot.bombchu'          : 'bombchu',
+            'ammo.bombchu'               : None,
         },
         "Bow" : {
-            'item_slot_bow'                         : 'bow',
-            'quiver'                                : None,
+            'item_slot.bow'              : 'bow',
+            'upgrades.quiver'            : None,
         },
         "Arrows" : {
-            'ammo_bow'                              : None,
+            'ammo.bow'                   : None,
         },
         "Slingshot"    : {
-            'item_slot_slingshot'                   : 'slingshot',
-            'bullet_bag'                            : None,
+            'item_slot.slingshot'        : 'slingshot',
+            'upgrades.bullet_bag'        : None,
         },
         "Deku Seeds" : {
-            'ammo_slingshot'                        : None,
+            'ammo.slingshot'             : None,
         },
         "Magic Bean" : {
-            'item_slot_beans'                       : 'beans',
-            'ammo_beans'                            : None,
-            'magic_beans_sold'                      : None,
+            'item_slot.beans'            : 'beans',
+            'ammo.beans'                 : None,
+            'magic_beans_sold'           : None,
         },
-        "Fire Arrows"    : {'item_slot_fire_arrow'  : 'fire_arrow'},
-        "Ice Arrows"     : {'item_slot_ice_arrow'   : 'ice_arrow'},
-        "Light Arrows"   : {'item_slot_light_arrow' : 'light_arrow'},
-        "Dins Fire"      : {'item_slot_dins_fire'   : 'dins_fire'},
-        "Farores Wind"   : {'item_slot_farores_wind': 'farores_wind'},
-        "Nayrus Love"    : {'item_slot_nayrus_love' : 'nayrus_love'},
-        "Ocarina"        : {'item_slot_ocarina'     : ['fairy_ocarina', 'ocarina_of_time']},
-        "Progressive Hookshot" : {'item_slot_hookshot' : ['hookshot', 'longshot']},
-        "Boomerang"      : {'item_slot_boomerang'   : 'boomerang'},
-        "Lens of Truth"  : {'item_slot_lens'        : 'lens'},
-        "Hammer"         : {'item_slot_hammer'      : 'hammer'},
-        "Pocket Egg"     : {'item_slot_adult_trade' : 'pocket_egg'},
-        "Pocket Cucco"   : {'item_slot_adult_trade' : 'pocket_cucco'},
-        "Cojiro"         : {'item_slot_adult_trade' : 'cojiro'},
-        "Odd Mushroom"   : {'item_slot_adult_trade' : 'odd_mushroom'},
-        "Poachers Saw"   : {'item_slot_adult_trade' : 'poachers_saw'},
-        "Broken Sword"   : {'item_slot_adult_trade' : 'broken_knife'},
-        "Prescription"   : {'item_slot_adult_trade' : 'prescription'},
-        "Eyeball Frog"   : {'item_slot_adult_trade' : 'eyeball_frog'},
-        "Eyedrops"       : {'item_slot_adult_trade' : 'eye_drops'},
-        "Claim Check"    : {'item_slot_adult_trade' : 'claim_check'},
-        "Weird Egg"      : {'item_slot_child_trade' : 'weird_egg'},
-        "Chicken"        : {'item_slot_child_trade' : 'chicken'},
-        "Goron Tunic"    : {'goron_tunic'           : True},
-        "Zora Tunic"     : {'zora_tunic'            : True},
-        "Iron Boots"     : {'iron_boots'            : True},
-        "Hover Boots"    : {'hover_boots'           : True},
-        "Deku Shield"    : {'deku_shield'           : True},
-        "Hylian Shield"  : {'hylian_shield'         : True},
-        "Mirror Shield"  : {'mirror_shield'         : True},
-        "Kokiri Sword"   : {'kokiri_sword'          : True},
+        "Fire Arrows"    : {'item_slot.fire_arrow'      : 'fire_arrow'},
+        "Ice Arrows"     : {'item_slot.ice_arrow'       : 'ice_arrow'},
+        "Light Arrows"   : {'item_slot.light_arrow'     : 'light_arrow'},
+        "Dins Fire"      : {'item_slot.dins_fire'       : 'dins_fire'},
+        "Farores Wind"   : {'item_slot.farores_wind'    : 'farores_wind'},
+        "Nayrus Love"    : {'item_slot.nayrus_love'     : 'nayrus_love'},
+        "Ocarina"        : {'item_slot.ocarina'         : ['fairy_ocarina', 'ocarina_of_time']},
+        "Progressive Hookshot" : {'item_slot.hookshot'  : ['hookshot', 'longshot']},
+        "Boomerang"      : {'item_slot.boomerang'       : 'boomerang'},
+        "Lens of Truth"  : {'item_slot.lens'            : 'lens'},
+        "Hammer"         : {'item_slot.hammer'          : 'hammer'},
+        "Pocket Egg"     : {'item_slot.adult_trade'     : 'pocket_egg'},
+        "Pocket Cucco"   : {'item_slot.adult_trade'     : 'pocket_cucco'},
+        "Cojiro"         : {'item_slot.adult_trade'     : 'cojiro'},
+        "Odd Mushroom"   : {'item_slot.adult_trade'     : 'odd_mushroom'},
+        "Poachers Saw"   : {'item_slot.adult_trade'     : 'poachers_saw'},
+        "Broken Sword"   : {'item_slot.adult_trade'     : 'broken_knife'},
+        "Prescription"   : {'item_slot.adult_trade'     : 'prescription'},
+        "Eyeball Frog"   : {'item_slot.adult_trade'     : 'eyeball_frog'},
+        "Eyedrops"       : {'item_slot.adult_trade'     : 'eye_drops'},
+        "Claim Check"    : {'item_slot.adult_trade'     : 'claim_check'},
+        "Weird Egg"      : {'item_slot.child_trade'     : 'weird_egg'},
+        "Chicken"        : {'item_slot.child_trade'     : 'chicken'},
+        "Goron Tunic"    : {'equip_items.goron_tunic'   : True},
+        "Zora Tunic"     : {'equip_items.zora_tunic'    : True},
+        "Iron Boots"     : {'equip_items.iron_boots'    : True},
+        "Hover Boots"    : {'equip_items.hover_boots'   : True},
+        "Deku Shield"    : {'equip_items.deku_shield'   : True},
+        "Hylian Shield"  : {'equip_items.hylian_shield' : True},
+        "Mirror Shield"  : {'equip_items.mirror_shield' : True},
+        "Kokiri Sword"   : {'equip_items.kokiri_sword'  : True},
         "Biggoron Sword" : {
-            'giants_knife'          : True,
-            'bgs_flag'              : True,
+            'equip_items.biggoron_sword' : True,
+            'bgs_flag'                   : True,
         },
-        "Gerudo Membership Card" : {'gerudos_card'  : True},
-        "Stone of Agony" : {'stone_of_agony'        : True},
-        "Zeldas Lullaby" : {'zeldas_lullaby'        : True},
-        "Eponas Song"    : {'eponas_song'           : True},
-        "Sarias Song"    : {'sarias_song'           : True},
-        "Suns Song"      : {'suns_song'             : True},
-        "Song of Time"   : {'song_of_time'          : True},
-        "Song of Storms" : {'song_of_storms'        : True},
-        "Minuet of Forest" : {'minuet_of_forest'    : True},
-        "Bolero of Fire" : {'bolero_of_fire'        : True},
-        "Serenade of Water" : {'serenade_of_water'  : True},
-        "Requiem of Spirit" : {'requiem_of_spirit'  : True},
-        "Nocturne of Shadow" : {'nocturne_of_shadow': True},
-        "Prelude of Light" : {'prelude_of_light'    : True},
-        "Kokiri Emerald"   : {'kokiris_emerald'     : True},
-        "Goron Ruby"       : {'gorons_ruby'         : True},
-        "Zora Sapphire"    : {'zoras_sapphire'      : True},
-        "Light Medallion"  : {'light_medallion'     : True},
-        "Forest Medallion" : {'forest_medallion'    : True},
-        "Fire Medallion"   : {'fire_medallion'      : True},
-        "Water Medallion"  : {'water_medallion'     : True},
-        "Spirit Medallion" : {'spirit_medallion'    : True},
-        "Shadow Medallion" : {'shadow_medallion'    : True},
-        "Progressive Strength Upgrade" : {'strength_upgrade' : None},
-        "Progressive Scale" : {'diving_upgrade'     : None},
-        "Progressive Wallet" : {'wallet'            : None},
+        "Gerudo Membership Card" : {'quest.gerudos_card'             : True},
+        "Stone of Agony"         : {'quest.stone_of_agony'           : True},
+        "Zeldas Lullaby"         : {'quest.songs.zeldas_lullaby'     : True},
+        "Eponas Song"            : {'quest.songs.eponas_song'        : True},
+        "Sarias Song"            : {'quest.songs.sarias_song'        : True},
+        "Suns Song"              : {'quest.songs.suns_song'          : True},
+        "Song of Time"           : {'quest.songs.song_of_time'       : True},
+        "Song of Storms"         : {'quest.songs.song_of_storms'     : True},
+        "Minuet of Forest"       : {'quest.songs.minuet_of_forest'   : True},
+        "Bolero of Fire"         : {'quest.songs.bolero_of_fire'     : True},
+        "Serenade of Water"      : {'quest.songs.serenade_of_water'  : True},
+        "Requiem of Spirit"      : {'quest.songs.requiem_of_spirit'  : True},
+        "Nocturne of Shadow"     : {'quest.songs.nocturne_of_shadow' : True},
+        "Prelude of Light"       : {'quest.songs.prelude_of_light'   : True},
+        "Kokiri Emerald"         : {'quest.stones.kokiris_emerald'   : True},
+        "Goron Ruby"             : {'quest.stones.gorons_ruby'       : True},
+        "Zora Sapphire"          : {'quest.stones.zoras_sapphire'    : True},
+        "Light Medallion"        : {'quest.medallions.light'         : True},
+        "Forest Medallion"       : {'quest.medallions.forest'        : True},
+        "Fire Medallion"         : {'quest.medallions.fire'          : True},
+        "Water Medallion"        : {'quest.medallions.water'         : True},
+        "Spirit Medallion"       : {'quest.medallions.spirit'        : True},
+        "Shadow Medallion"       : {'quest.medallions.shadow'        : True},
+        "Progressive Strength Upgrade" : {'upgrades.strength_upgrade' : None},
+        "Progressive Scale"            : {'upgrades.diving_upgrade'   : None},
+        "Progressive Wallet"           : {'upgrades.wallet'           : None},
         "Gold Skulltula Token" : {
-            'gold_skulltula'                        : True,
-            'gs_tokens'                             : None,
+            'quest.gold_skulltula'  : True,
+            'gs_tokens'             : None,
         },
         "Double Defense" : {
-            'double_defense'                        : True,
-            'defense_hearts'                        : 20,
+            'double_defense'        : True,
+            'defense_hearts'        : 20,
         },
         "Magic Meter" : {
-            'magic_acquired'                        : True,
-            'magic'                                 : [0x30, 0x60],
-            'magic_level'                           : None,
-            'double_magic'                          : [False, True],
+            'magic_acquired'        : True,
+            'magic'                 : [0x30, 0x60],
+            'magic_level'           : None,
+            'double_magic'          : [False, True],
         },
-        "Rupees"          : {'rupees'               : None},
+        "Rupees"                    : {'rupees' : None},
+    }
+
+
+    equipable_items = {
+        'equips_adult' : {
+            'items': [
+                'hookshot',
+                'hammer',
+                'bomb',
+                'bow',
+                'nut',
+                'lens',
+                'farores_wind',
+                'dins_fire',
+                'bombchu',
+                'nayrus_love',
+                'adult_trade',
+                'bottle_1',
+                'bottle_2',
+                'bottle_3',
+                'bottle_4',
+            ],
+            'sword' : [
+                'biggoron_sword',
+                'master_sword',
+            ],
+            'shield' : [
+                'mirror_shield',
+                'hylian_shield',
+            ],
+            'tunic' : [
+                'goron_tunic',
+                'zora_tunic',
+            ],
+            'boots' : [
+            ],
+        },
+        'equips_child' : {
+            'items': [
+                'bomb',
+                'boomerang',
+                'slingshot',
+                'stick',
+                'nut',
+                'lens',
+                'farores_wind',
+                'dins_fire',
+                'bombchu',
+                'nayrus_love',
+                'beans',
+                'child_trade',
+                'bottle_1',
+                'bottle_2',
+                'bottle_3',
+                'bottle_4',
+            ],
+            'sword' : [
+                'kokiri_sword',
+            ],
+            'shield' : [
+                'deku_shield',
+                'hylian_shield',
+            ],
+            'tunic' : [
+            ],
+            'boots' : [
+            ],
+        }
     }
