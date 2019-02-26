@@ -1,9 +1,9 @@
 #include <stdint.h>
 #include "heart_colors.h"
 
-extern uint16_t CFG_HEART_COLOR_R;
-extern uint16_t CFG_HEART_COLOR_G;
-extern uint16_t CFG_HEART_COLOR_B;
+extern uint8_t CFG_HEART_COLOR_R;
+extern uint8_t CFG_HEART_COLOR_G;
+extern uint8_t CFG_HEART_COLOR_B;
 
 colorRGB_t defaultHeart = { 0xFF, 0x46, 0x32 };
 colorRGB_t defaultDDHeart = { 0xC8, 0x00, 0x00 };

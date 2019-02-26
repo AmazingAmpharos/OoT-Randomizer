@@ -95,6 +95,13 @@ gauntlet_colors = {
     "Lime":              Color(0x5B, 0xA8, 0x06),
     "Purple":            Color(0x80, 0x00, 0x80),
 }
+heart_colors = {
+    "Custom Color": Color(0x00, 0x00, 0x00),
+    "Red":          Color(0xFF, 0x46, 0x32),
+    "Green":        Color(0x46, 0xC8, 0x32),
+    "Blue":         Color(0x32, 0x46, 0xFF),
+    "Yellow":       Color(0xFF, 0xE0, 0x00),
+}
 
 def get_tunic_colors():
     return list(tunic_colors.keys())
@@ -126,6 +133,14 @@ def get_gauntlet_colors():
 
 def get_gauntlet_color_options():
     return ["Random Choice", "Completely Random"] + get_gauntlet_colors()
+
+
+def get_heart_colors():
+    return list(heart_colors.keys())
+
+
+def get_heart_color_options():
+    return ["Random Choice", "Completely Random"] + get_heart_colors()
 
 
 def patch_targeting(rom, settings, log, symbols):
@@ -313,6 +328,38 @@ def patch_gauntlet_colors(rom, settings, log, symbols):
         log.gauntlet_colors[gauntlet] = dict(option=gauntlet_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
+def patch_heart_colors(rom, settings, log, symbols):
+    # patch tunic colors
+    hearts = [
+        ('Heart Colors', settings.heart_color),
+    ]
+    heart_color_list = get_heart_colors()
+    symbol_list = [
+        symbols['CFG_HEART_COLOR_R'],
+        symbols['CFG_HEART_COLOR_G'],
+        symbols['CFG_HEART_COLOR_B']
+    ]
+
+    for heart, heart_option in hearts:
+        # handle random
+        if heart_option == 'Random Choice':
+            heart_option = random.choice(heart_color_list)
+        # handle completely random
+        if heart_option == 'Completely Random':
+            color = [random.getrandbits(8), random.getrandbits(
+                8), random.getrandbits(8)]
+        # grab the color from the list
+        elif heart_option in heart_colors:
+            color = list(heart_colors[heart_option])
+        # build color from hex code
+        else:
+            color = list(int(heart_option[i:i+2], 16) for i in (0, 2, 4))
+            heart_option = 'Custom'
+        for index, symbol in enumerate(symbol_list):
+            rom.write_byte(symbol, color[index])
+        log.heart_colors[heart] = dict(option=heart_option, color=''.join(['{:02X}'.format(c) for c in color]))
+
+
 def patch_sfx(rom, settings, log, symbols):
     # Configurable Sound Effects
     sfx_config = [
@@ -402,6 +449,21 @@ patch_sets = {
             "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03481005,
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481006,
         },
+    },
+    0x1F0693FA: {
+        "patches": [
+            patch_dpad,
+            patch_sword_trails,
+            patch_heart_colors,
+        ],
+        "symbols": {
+            "CFG_DISPLAY_DPAD": 0x03481004,
+            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03481005,
+            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481006,
+            "CFG_HEART_COLOR_R": 0x03481008,
+            "CFG_HEART_COLOR_G": 0x0348100A,
+            "CFG_HEART_COLOR_B": 0x0348100C,
+        }
     }
 }
 
@@ -544,6 +606,7 @@ class CosmeticsLog(object):
         self.navi_colors = {}
         self.sword_colors = {}
         self.gauntlet_colors = {}
+        self.heart_colors = {}
         self.sfx = {}
         self.bgm = {}
         self.error = None
@@ -598,6 +661,10 @@ class CosmeticsLog(object):
         for gauntlet, options in self.gauntlet_colors.items():
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=gauntlet+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+
+        for heart, options in self.heart_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=heart+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         output += '\n\nSFX:\n'
         for key, value in self.sfx.items():

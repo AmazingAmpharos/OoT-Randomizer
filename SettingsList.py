@@ -1922,6 +1922,24 @@ setting_infos = [
             '''
         },
     ),
+    Setting_Info(
+        name           = 'heart_color',
+        type           = str,
+        shared         = False,
+        choices        = get_heart_color_options(),
+        default        = 'Red',
+        gui_params     = {
+            'text':   'Heart Colors',
+            'group':  'heart_colors',
+            'widget': 'Combobox',
+            'tooltip': '''\
+                'Random Choice': Choose a random
+                color from this list of colors.
+                'Completely Random': Choose a random
+                color from any color the N64 can draw.
+            '''
+        },
+    ),
     Combobox(
         name           = 'sfx_low_hp',
         choices        = sfx.get_setting_choices(sfx.SoundHooks.HP_LOW),
