@@ -61,11 +61,13 @@ class GossipRecord(SimpleRecord({'gossip': None})):
     pass
 
 
-class ItemPoolRecord(SimpleRecord({'add': None, 'remove': None, 'set': None})):
+class ItemPoolRecord(SimpleRecord({'type': 'set', 'count': 1})):
     def update(self, src_dict, update_all=False):
         super().update(src_dict, update_all)
-        if list(map(lambda key: getattr(self, key), ['add', 'remove', 'set'])).count(None) != 2:
-            raise ValueError("One of 'add', 'remove', or 'set' must be set in a ItemPoolRecord.")
+        if self.count < 0:
+            raise ValueError("Count cannot be negative in a ItemPoolRecord.")
+        if self.type not in ['add', 'remove', 'set']:
+            raise ValueError("Type must be 'add', 'remove', or 'set' in a ItemPoolRecord.")
 
 
 class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 'model': None, 'extra': None})):
@@ -233,13 +235,13 @@ class WorldDistribution(object):
         pool_size = len(pool)
 
         for item_name, record in self.item_pool.items():
-            if record.add is not None:
-                self.pool_add_item(pool, item_name, record.add)
-            if record.remove is not None:
-                self.pool_remove_item([pool], item_name, record.remove)
+            if record.type == 'add':
+                self.pool_add_item(pool, item_name, record.count)
+            if record.type == 'remove':
+                self.pool_remove_item([pool], item_name, record.count)
 
         for item_name, record in self.item_pool.items():
-            if record.set is not None:
+            if record.type == 'set':
                 if item_name == '#Junk':
                     raise ValueError('#Junk item group cannot have a set number of items')
                 elif is_pattern(item_name):
@@ -247,7 +249,7 @@ class WorldDistribution(object):
                 else:
                     predicate = lambda item: item_name == item
                 pool_match = [item for item in pool if predicate(item)]
-                add_count = record.set - len(pool_match)
+                add_count = record.count - len(pool_match)
                 if add_count > 0:
                     self.pool_add_item(pool, item_name, add_count, replace_bottle=True)
                 else:
@@ -470,9 +472,9 @@ class Distribution(object):
                     continue
                 player_dist = dist.for_world(item.world.id)
                 if item.name in player_dist.item_pool:
-                    player_dist.item_pool[item.name].set += 1
+                    player_dist.item_pool[item.name].count += 1
                 else:
-                    player_dist.item_pool[item.name] = ItemPoolRecord({'set':1})
+                    player_dist.item_pool[item.name] = ItemPoolRecord()
 
         dist.playthrough = {}
         for (sphere_nr, sphere) in spoiler.playthrough.items():
