@@ -746,7 +746,6 @@ location_table = {
     "Gerudo Valley Cow":                               ("NPC",         0x5A,  0x15, "Gerudo Valley",          None,                     ("Gerudo", "Cow")),
     "DMT Grotto Cow":                                  ("NPC",         0x3E,  0x15, "Death Mountain Trail",   None,                     ("Death Mountain", "Cow")),
     "HF Grotto Cow":                                   ("NPC",         0x3E,  0x16, "Hyrule Field",           None,                     ("Cow",)),
-    "MQ JabuCow":                                      ("NPC",         0x36,  0x15, "Jabu Jabu's Belly",      None,                     ("Cow",)),
 
     # These are not actual locations, but are filler spots used for hint reachability
     "Death Mountain Crater Gossip Stone":              ("GossipStone", None,  None, None,                     None,                     None),
