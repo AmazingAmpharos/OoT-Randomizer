@@ -155,8 +155,28 @@ class SaveContext():
             address.get_writes(self)
 
 
+    def set_ammo_max(self):
+        ammo_maxes = {
+            'stick'     : ('stick_upgrade', [10,  10,  20,  30]),
+            'nut'       : ('nut_upgrade',   [20,  20,  30,  40]),
+            'bomb'      : ('bomb_bag',      [00,  20,  30,  40]),
+            'bow'       : ('quiver',        [00,  30,  40,  50]),
+            'slingshot' : ('bullet_bag',    [00,  30,  40,  50]),
+            'rupees'    : ('wallet',        [99, 200, 500, 999]),
+        }
+
+        for ammo, (upgrade, maxes) in ammo_maxes.items():
+            upgrade_count = self.addresses['upgrades'][upgrade].get_value()
+            ammo_max = maxes[upgrade_count]
+            if ammo == 'rupees':
+                self.addresses[ammo].max = ammo_max
+            else:
+                self.addresses['ammo'][ammo].max = ammo_max
+
+
     # will overwrite the byte at offset with the given value
     def write_save_table(self, rom):
+        self.set_ammo_max()
         for name, address in self.addresses.items():
             self.write_save_entry(address)
 
@@ -196,7 +216,7 @@ class SaveContext():
         self.addresses['quest']['heart_pieces'].value = int((health % 1) * 4)
 
 
-    def give_item(self, item, count):
+    def give_item(self, item, count=1):
         if item in SaveContext.bottle_types:
             self.give_bottle(item, count)
         elif item in ["Piece of Heart", "Piece of Heart (Treasure Chest Game)"]:
@@ -384,19 +404,19 @@ class SaveContext():
                 'nut'                    : Address(size=1),
                 'bomb'                   : Address(size=1),
                 'bow'                    : Address(size=1),
-                'fire_arrow'             : Address(size=1),
-                'dins_fire'              : Address(size=1),
+                'fire_arrow'             : Address(size=1, max=0),
+                'dins_fire'              : Address(size=1, max=0),
                 'slingshot'              : Address(size=1),
-                'ocarina'                : Address(size=1),
-                'bombchu'                : Address(size=1),
-                'hookshot'               : Address(size=1),
-                'ice_arrow'              : Address(size=1),
-                'farores_wind'           : Address(size=1),
-                'boomerang'              : Address(size=1),
-                'lens'                   : Address(size=1),
-                'beans'                  : Address(size=1),
+                'ocarina'                : Address(size=1, max=0),
+                'bombchu'                : Address(size=1, max=50),
+                'hookshot'               : Address(size=1, max=0),
+                'ice_arrow'              : Address(size=1, max=0),
+                'farores_wind'           : Address(size=1, max=0),
+                'boomerang'              : Address(size=1, max=0),
+                'lens'                   : Address(size=1, max=0),
+                'beans'                  : Address(size=1, max=10),
             },
-            'magic_beans_sold'           : Address(size=1),
+            'magic_beans_sold'           : Address(size=1, max=10),
 
             # Equipment
             'equip_items' : {
