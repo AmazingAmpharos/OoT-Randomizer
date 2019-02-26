@@ -925,7 +925,6 @@ setting_infos = [
 
             The Gerudo Card is required to enter the Gerudo Training Grounds,
             however it does not prevent the guards throwing you in jail.
-            This has no effect if the option to Start with Gerudo Card is set.
         ''',
         shared         = True,
         gui_params     = {

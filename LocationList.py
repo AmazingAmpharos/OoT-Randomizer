@@ -3,11 +3,11 @@ def shop_address(shop_id, shelf_id):
 
 #   Location:                                           Type          Scene  Default   Hint                  Addresses                     Categories
 location_table = {
-    "Kokiri Sword Chest":                              ("Chest",       0x55,  0x00, "Kokiri Forest",          None,                     ()),
-    "Mido Chest Top Left":                             ("Chest",       0x28,  0x00, "Kokiri Forest",          None,                     ()),
-    "Mido Chest Top Right":                            ("Chest",       0x28,  0x01, "Kokiri Forest",          None,                     ()),
-    "Mido Chest Bottom Left":                          ("Chest",       0x28,  0x02, "Kokiri Forest",          None,                     ()),
-    "Mido Chest Bottom Right":                         ("Chest",       0x28,  0x03, "Kokiri Forest",          None,                     ()),
+    "Kokiri Sword Chest":                              ("Chest",       0x55,  0x00, "Kokiri Forest",          None,                     ("Forest",)),
+    "Mido Chest Top Left":                             ("Chest",       0x28,  0x00, "Kokiri Forest",          None,                     ("Forest",)),
+    "Mido Chest Top Right":                            ("Chest",       0x28,  0x01, "Kokiri Forest",          None,                     ("Forest",)),
+    "Mido Chest Bottom Left":                          ("Chest",       0x28,  0x02, "Kokiri Forest",          None,                     ("Forest",)),
+    "Mido Chest Bottom Right":                         ("Chest",       0x28,  0x03, "Kokiri Forest",          None,                     ("Forest",)),
     "Shield Grave Chest":                              ("Chest",       0x40,  0x00, "the Graveyard",          None,                     ("Kakariko",)),
     "Heart Piece Grave Chest":                         ("Chest",       0x3F,  0x00, "the Graveyard",          None,                     ("Kakariko",)),
     "Composer Grave Chest":                            ("Chest",       0x41,  0x00, "the Graveyard",          None,                     ("Kakariko",)),
@@ -18,7 +18,7 @@ location_table = {
     "Zoras Domain Torch Run":                          ("Chest",       0x58,  0x00, "Zora's Domain",          None,                     ()),
     "Hookshot Chest":                                  ("Chest",       0x48,  0x00, "the Graveyard",          None,                     ("Kakariko",)),
     "Gerudo Valley Hammer Rocks Chest":                ("Chest",       0x5A,  0x00, "Gerudo Valley",          None,                     ("Gerudo",)),
-    "Gerudo Fortress Rooftop Chest":                   ("Chest",       0x5D,  0x00, "Gerudo's Fortress",      None,                     ()),
+    "Gerudo Fortress Rooftop Chest":                   ("Chest",       0x5D,  0x00, "Gerudo's Fortress",      None,                     ("Gerudo",)),
     "Haunted Wasteland Structure Chest":               ("Chest",       0x5E,  0x00, "Haunted Wasteland",      None,                     ()),
     "Redead Grotto Chest":                             ("Chest",       0x3E,  0x0A, "Kakariko Village",       None,                     ("Kakariko", "Grottos")),
     "Wolfos Grotto Chest":                             ("Chest",       0x3E,  0x11, "Sacred Forest Meadow",   None,                     ("Forest", "Grottos")),
@@ -746,7 +746,6 @@ location_table = {
     "Gerudo Valley Cow":                               ("NPC",         0x5A,  0x15, "Gerudo Valley",          None,                     ("Gerudo", "Cow")),
     "DMT Grotto Cow":                                  ("NPC",         0x3E,  0x15, "Death Mountain Trail",   None,                     ("Death Mountain", "Cow")),
     "HF Grotto Cow":                                   ("NPC",         0x3E,  0x16, "Hyrule Field",           None,                     ("Cow",)),
-    "MQ JabuCow":                                      ("NPC",         0x36,  0x15, "Jabu Jabu's Belly",      None,                     ("Cow",)),
 
     # These are not actual locations, but are filler spots used for hint reachability
     "Death Mountain Crater Gossip Stone":              ("GossipStone", None,  None, None,                     None,                     None),
