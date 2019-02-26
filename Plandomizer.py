@@ -15,6 +15,7 @@ from Spoiler import HASH_ICONS
 from State import State
 from version import __version__
 from Utils import random_choices
+from JSONDump import dump_obj
 
 
 per_world_keys = (
@@ -49,7 +50,7 @@ def SimpleRecord(props):
 
 
         def __str__(self):
-            return to_json(self.to_dict())
+            return dump_obj(self.to_dict())
     return Record
 
 
@@ -143,7 +144,7 @@ class WorldDistribution(object):
 
 
     def __str__(self):
-        return to_json(self.to_dict())
+        return dump_obj(self.to_dict())
 
 
     def configure_dungeons(self, world, dungeon_pool):
@@ -431,11 +432,11 @@ class Distribution(object):
 
 
     def to_str(self, include_output_only=True):
-        return to_json(self.to_dict(include_output_only))
+        return dump_obj(self.to_dict(include_output_only))
 
 
     def __str__(self):
-        return to_json(self.to_dict())
+        return dump_obj(self.to_dict())
 
 
     @staticmethod
@@ -503,29 +504,6 @@ def strip_output_only(obj):
             del obj[key]
         for elem in obj.values():
             strip_output_only(elem)
-
-
-JSON_ARRAY_OR_DICT_OF_SCALARS_OR_STRING = re.compile(r'\{([^"\{\}\[\]]|"([^"\\]|\\.)*")*\}|\[([^"\{\}\[\]]|"([^"\\]|\\.)*")*\]|"([^"\\]|\\.)*"')
-def to_json(obj):
-    # Serialize objects/arrays that contain other objects/arrays on many lines with indent
-    # But serialize object/arrays that only contain scalars or are empty on a single line
-    def deindent(m):
-        indented = m.group(0)
-        if indented.startswith('"'):
-            return indented
-        raw = json.dumps(json.loads(m.group(0)))
-        if len(raw) == 2:
-            return '%s %s' % (raw[0], raw[-1])
-        else:
-            return '%s %s %s' % (raw[0], raw[1:-1], raw[-1])
-    return re.sub(JSON_ARRAY_OR_DICT_OF_SCALARS_OR_STRING, deindent, json.dumps(obj, indent='\t'))
-
-
-def coalesce(*values):
-    for value in values:
-        if value is not None:
-            return value
-    return None
 
 
 def can_cloak(actual_item, model):
