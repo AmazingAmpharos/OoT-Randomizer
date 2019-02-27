@@ -671,8 +671,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # Initial Save Data
 
-    world.distribution.patch_save(save_context)
-
     save_context.write_bits(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (Poe Sisters cutscene)
     save_context.write_bits(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (Ruto)
     save_context.write_bits(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (Owl)
@@ -821,18 +819,18 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
             save_context.addresses['dungeon_items'][dungeon]['map'].value = True
 
     if world.start_with_wallet:
-        save_context.give_item('Progressive Wallet', 3)
+        world.distribution.give_item('Progressive Wallet', 3)
     if world.start_with_rupees:
-        save_context.give_item('Rupees', 999)
+        world.distribution.give_item('Rupees', 999)
     if world.start_with_deku_equipment:
         if world.shopsanity == "off":
-            save_context.give_item('Deku Shield')
-        save_context.give_item('Deku Sticks', 99)
-        save_context.give_item('Deku Nuts', 99)
+            world.distribution.give_item('Deku Shield')
+        world.distribution.give_item('Deku Sticks', 99)
+        world.distribution.give_item('Deku Nuts', 99)
     if world.start_with_fast_travel:
-        save_context.give_item('Prelude of Light')
-        save_context.give_item('Serenade of Water')
-        save_context.give_item('Farores Wind')
+        world.distribution.give_item('Prelude of Light')
+        world.distribution.give_item('Serenade of Water')
+        world.distribution.give_item('Farores Wind')
 
     # Set starting time of day
     if world.starting_tod != 'default':
@@ -1366,6 +1364,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         replace_songs(rom)
 
     # actually write the save table to rom
+    world.distribution.give_items(save_context)
     save_context.equip_items('child')
     save_context.write_save_table(rom)
 

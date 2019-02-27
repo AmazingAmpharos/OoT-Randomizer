@@ -443,7 +443,14 @@ class WorldDistribution(object):
             spoiler.hints[self.id][stoneID] = GossipText(text=record.text, colors=record.colors)
 
 
-    def patch_save(self, save_context):
+    def give_item(self, item, count=1):
+        if item in self.starting_items:
+            self.starting_items[item].count += count
+        else:
+            self.starting_items[item] = StarterRecord(count)
+
+
+    def give_items(self, save_context):
         for (name, record) in self.starting_items.items():
             if record.count == 0:
                 continue
@@ -537,16 +544,16 @@ class Distribution(object):
         return dump_obj(self.to_json())
 
 
-    @staticmethod
-    def from_spoiler(spoiler):
-        spoiler.parse_data()
-        dist = Distribution(spoiler.settings)
+    def update_spoiler(self, spoiler):
+        self.file_hash = [HASH_ICONS[icon] for icon in spoiler.file_hash]
 
-        dist.file_hash = [HASH_ICONS[icon] for icon in spoiler.file_hash]
+        if not self.settings.create_spoiler:
+            return
+
+        spoiler.parse_data()
 
         for world in spoiler.worlds:
-            world_dist = dist.world_dists[world.id]
-            world.distribution = world_dist
+            world_dist = self.world_dists[world.id]
             world_dist.dungeons = {dung: DungeonRecord({ 'mq': world.dungeon_mq[dung] }) for dung in world.dungeon_mq}
             world_dist.trials = {trial: TrialRecord({ 'active': not world.skipped_trials[trial] }) for trial in world.skipped_trials}
             world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
@@ -565,10 +572,10 @@ class Distribution(object):
                 else:
                     player_dist.item_pool[item.name] = ItemPoolRecord()
 
-        dist.playthrough = {}
+        self.playthrough = {}
         for (sphere_nr, sphere) in spoiler.playthrough.items():
             loc_rec_sphere = {}
-            dist.playthrough[sphere_nr] = loc_rec_sphere
+            self.playthrough[sphere_nr] = loc_rec_sphere
             for location in sphere:
                 if spoiler.settings.world_count > 1:
                     location_key = '%s [W%d]' % (location.name, location.world.id + 1)
@@ -576,8 +583,6 @@ class Distribution(object):
                     location_key = location.name
 
                 loc_rec_sphere[location_key] = LocationRecord.from_item(location.item)
-
-        return dist
 
 
     @staticmethod

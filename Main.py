@@ -52,9 +52,7 @@ def main(settings, window=dummy_window()):
     for trick in logic_tricks.values():
         settings.__dict__[trick['name']] = trick['name'] in settings.allowed_tricks
 
-
     settings.load_distribution()
-
 
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom == 'None' and not settings.create_spoiler:
@@ -250,15 +248,17 @@ def main(settings, window=dummy_window()):
         window.update_progress(95)
 
     for world in worlds:
-        for setting in world.settings.__dict__:
-            world.settings.__dict__[setting] = world.__dict__[setting]
+        for info in setting_infos:
+            world.settings.__dict__[info.name] = world.__dict__[info.name]
 
+    settings.distribution.update_spoiler(spoiler)
     if settings.create_spoiler:
+        spoiler_path = os.path.join(output_dir, '%s_Spoiler.json' % outfilebase)
         window.update_status('Creating Spoiler Log')
-        Distribution.from_spoiler(spoiler).to_file(os.path.join(output_dir, '%s_Spoiler.json' % outfilebase))
     else:
         window.update_status('Creating Settings Log')
-        Distribution.from_spoiler(spoiler).to_file(os.path.join(output_dir, '%s_Settings.json' % outfilebase))
+        spoiler_path = os.path.join(output_dir, '%s_Settings.json' % outfilebase)
+    settings.distribution.to_file(spoiler_path)
     logger.info("Created spoiler log at: %s" % ('%s_Settings.txt' % outfilebase))
 
     if settings.create_cosmetics_log and cosmetics_log:
