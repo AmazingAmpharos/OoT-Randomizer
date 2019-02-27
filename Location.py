@@ -15,7 +15,7 @@ class Location(object):
         self.scene = scene
         self.hint = hint
         self.spot_type = 'Location'
-        self.recursion_count = 0
+        self.recursion_count = { 'child': 0, 'adult': 0 }
         self.staleness_count = 0
         self.access_rule = lambda state: True
         self.item_rule = lambda location, item: True
@@ -60,11 +60,11 @@ class Location(object):
 
 
     def can_reach(self, state):
-        if not self.is_disabled() and \
-           self.access_rule(state) and \
-           state.can_reach(self.parent_region):
-            return True
-        return False
+        if self.is_disabled():
+            return False
+
+        return state.with_spot(self.access_rule, spot=self) and state.can_reach(self.parent_region)
+
 
     def is_disabled(self):
         return (self.disabled == DisableType.DISABLED) or \

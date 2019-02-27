@@ -8,14 +8,17 @@ class State(object):
     def __init__(self, parent):
         self.prog_items = Counter()
         self.world = parent
-        self.region_cache = {}
-        self.recursion_count = 0
+        self.region_cache = { 'child': {}, 'adult': {} }
+        self.recursion_count = { 'child': 0, 'adult': 0 }
         self.collected_locations = {}
+        self.current_spot = None
+        self.adult = None
 
 
     def clear_cached_unreachable(self):
         # we only need to invalidate results which were False, places we could reach before we can still reach after adding more items
-        self.region_cache = {k: v for k, v in self.region_cache.items() if v}
+        for cache_type in self.region_cache:
+            self.region_cache[cache_type] = {k: v for k, v in self.region_cache[cache_type].items() if v}
 
 
     def clear_cache(self):
@@ -29,7 +32,7 @@ class State(object):
             new_world = self.world
         new_state = State(new_world)
         new_state.prog_items = copy.copy(self.prog_items)
-        new_state.region_cache = copy.copy(self.region_cache)
+        new_state.region_cache = {k: copy.copy(v) for k,v in self.region_cache.items()}
         new_state.collected_locations = copy.copy(self.collected_locations)
         return new_state
 
@@ -49,34 +52,111 @@ class State(object):
             return spot           
 
 
-    def can_reach(self, spot, resolution_hint='Region'):
-        spot = self.get_spot(spot, resolution_hint)
+    def can_reach(self, spot=None, resolution_hint='Region', age=None):
+        if spot == None:
+            # Default to the current spot's parent region, to allow can_reach to be used without arguments inside access rules
+            spot = self.current_spot.parent_region
+        else:
+            spot = self.get_spot(spot, resolution_hint)
+
+        if age == None:
+            # If the age parameter is missing, the current age should be used, but if it's not defined either, we default to age='either'
+            if self.adult == None:
+                return self.as_either(lambda state: state.can_reach(spot))
+        elif age == 'either':
+            return self.as_either(lambda state: state.can_reach(spot))
+        elif age == 'both':
+           return self.as_both(lambda state: state.can_reach(spot))
+        elif age == 'adult':
+            return self.as_adult(lambda state: state.can_reach(spot))
+        elif age == 'child':
+            return self.as_child(lambda state: state.can_reach(spot))
+        else:
+            raise AttributeError('Unknown age parameter type: ' + str(age))
 
         if not isinstance(spot, Region):
             return spot.can_reach(self)
 
-        if spot.recursion_count > 0:
+        # If we reached this point, it means the current age should be used
+        if self.adult:
+            age_type = 'adult'
+        else:
+            age_type = 'child'
+
+        if spot.recursion_count[age_type] > 0:
             return False
 
-        if spot not in self.region_cache:
-            # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that ia what we are trying to figure out right now in the first place
-            spot.recursion_count += 1
-            self.recursion_count += 1
+        if spot not in self.region_cache[age_type]:
+            # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that is what we are trying to figure out right now in the first place
+            spot.recursion_count[age_type] += 1
+            self.recursion_count[age_type] += 1
 
             can_reach = spot.can_reach(self)
 
-            spot.recursion_count -= 1
-            self.recursion_count -= 1
+            spot.recursion_count[age_type] -= 1
+            self.recursion_count[age_type] -= 1
 
-            # we only store qualified false results (i.e. ones not inside a hypothetical)
-            if not can_reach:
-                if self.recursion_count == 0:
-                    self.region_cache[spot] = can_reach
-            else:
-                self.region_cache[spot] = can_reach
+            # we store true results and qualified false results (i.e. ones not inside a hypothetical)
+            if can_reach or self.recursion_count[age_type] == 0:
+                self.region_cache[age_type][spot] = can_reach
+
             return can_reach
+        
+        return self.region_cache[age_type][spot]
 
-        return self.region_cache[spot]
+
+    def as_either(self, lambda_rule):
+        return self.as_adult(lambda_rule) or self.as_child(lambda_rule)
+
+
+    def as_both(self, lambda_rule):
+        return self.as_adult(lambda_rule) and self.as_child(lambda_rule)
+
+
+    def as_adult(self, lambda_rule):
+        return self.can_become_adult() and self.with_age(lambda_rule, 'adult')
+
+
+    def as_child(self, lambda_rule):
+        return self.with_age(lambda_rule, 'child')
+            
+
+    def with_age(self, lambda_rule, age):
+        # It's important to set the age property back to what it was originally after executing the rule here
+        original_adult = self.adult
+        self.adult = (age == 'adult')
+        lambda_rule_result = lambda_rule(self)
+        self.adult = original_adult
+        return lambda_rule_result
+
+
+    def with_spot(self, lambda_rule, spot):
+        # It's important to set the spot property back to what it was originally after executing the rule here
+        original_spot = self.current_spot
+        self.current_spot = spot
+        lambda_rule_result = lambda_rule(self)
+        self.current_spot = original_spot
+        return lambda_rule_result
+
+
+    def as_either_here(self, lambda_rule):
+        return self.as_either(self.add_reachability(lambda_rule))
+
+
+    def as_both_here(self, lambda_rule):
+        return self.as_both(self.add_reachability(lambda_rule))
+
+
+    def as_adult_here(self, lambda_rule):
+        return self.as_adult(self.add_reachability(lambda_rule))
+
+
+    def as_child_here(self, lambda_rule):
+        return self.as_child(self.add_reachability(lambda_rule))
+
+
+    def add_reachability(self, lambda_rule):
+        return lambda state: state.can_reach() and lambda_rule(state)
 
 
     def item_name(self, location):
@@ -101,8 +181,16 @@ class State(object):
         return self.prog_items[item]
 
 
-    def is_adult(self):
+    def can_become_adult(self):
         return self.has('Master Sword')
+
+
+    def is_adult(self):
+        return self.adult
+
+
+    def is_child(self):
+        return not self.adult
 
 
     def can_child_attack(self):
@@ -252,12 +340,12 @@ class State(object):
 
 
     def has_bottle(self):
-        is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter' and (item != 'Bottle with Big Poe' or self.is_adult()))
+        is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter' and (item != 'Bottle with Big Poe' or self.can_reach('Castle Town Rupee Room', 'Region', age='adult')))
         return self.has_any(is_normal_bottle)
 
 
     def bottle_count(self):
-        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and pritem != 'Bottle with Letter' and (pritem != 'Bottle with Big Poe' or self.is_adult())])
+        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and pritem != 'Bottle with Letter' and (pritem != 'Bottle with Big Poe' or self.can_reach('Castle Town Rupee Room', 'Region', age='adult'))])
 
 
     def has_hearts(self, count):
@@ -333,8 +421,10 @@ class State(object):
                 del self.prog_items[item.name]
 
             # invalidate collected cache. unreachable regions are still unreachable
-            self.region_cache =   {k: v for k, v in self.region_cache.items() if not v}
-            self.recursion_count = 0
+            for cache_type in self.region_cache:
+                self.region_cache[cache_type] = {k: v for k, v in self.region_cache[cache_type].items() if not v}
+
+            self.recursion_count = {k: 0 for k in self.recursion_count}
 
 
     def __getstate__(self):

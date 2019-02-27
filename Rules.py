@@ -9,9 +9,13 @@ def set_rules(world):
     # ganon can only carry triforce
     world.get_location('Ganon').item_rule = lambda location, item: item.name == 'Triforce'
 
-    # these are default save&quit points and always accessible
-    world.get_region('Links House').can_reach = lambda state: True
-    
+    # these are default save&quit points and always accessible in their corresponding age
+    old_can_reach = world.get_region('Links House').can_reach
+    world.get_region('Links House').can_reach = lambda state: state.is_child() or old_can_reach(state)
+
+    old_can_reach = world.get_region('Temple of Time').can_reach
+    world.get_region('Temple of Time').can_reach = lambda state: state.is_adult() or old_can_reach(state)
+
     for location in world.get_locations():
 
         if not world.shuffle_song_items:
