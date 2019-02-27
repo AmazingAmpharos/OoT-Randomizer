@@ -137,7 +137,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     if not State.can_beat_game(world_states, True):
         raise FillError('Cannot beat game!')
 
-    worlds[0].distribution.cloak(worlds, [cloakable_locations], [all_models])
+    worlds[0].settings.distribution.cloak(worlds, [cloakable_locations], [all_models])
 
     # Get Light Arrow location for later usage.
     for world in worlds:

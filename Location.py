@@ -119,6 +119,10 @@ def LocationIterator(predicate=lambda loc: True):
             yield location
 
 
+def IsLocation(name):
+    return name in location_table
+
+
 class DisableType(Enum):
     ENABLED  = 0
     PENDING = 1
