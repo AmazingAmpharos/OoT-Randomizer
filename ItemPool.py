@@ -818,7 +818,8 @@ def get_pool_core(world):
         shop_item_count = shop_slots_count - shop_nonitem_count
 
         pool.extend(random.sample(remain_shop_items, shop_item_count))
-        pool.extend(get_junk_item(shop_nonitem_count))
+        if shop_nonitem_count:
+            pool.extend(get_junk_item(shop_nonitem_count))
         if world.shopsanity == '0':
             pool.extend(normal_rupees)
         else:
