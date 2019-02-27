@@ -122,11 +122,10 @@ class Spoiler(object):
                 output += header_player_string.format(header="Barren of Treasure", player=world.id+1)
                 output += '\n'.join([area_string.format(area=area, world=world.id+1) for area in world.empty_areas])
 
-
             gossip_padding = len(max([stone.name for stone in gossipLocations.values()], key=len)) + extra_padding
             for world in self.worlds:
                 hint_ids = sorted(list(self.hints[world.id].keys()), key=lambda id: gossipLocations[id].name)
                 output += header_player_string.format(header="Gossip Stone Hints", player=world.id+1)
-                output += '\n'.join(['{:{width}} {}'.format(location_string.format(location=gossipLocations[id].name, world=world.id+1), re.sub('\x05[\x40\x41\x42\x43\x44\x45\x46\x47]', '', self.hints[world.id][id].replace('&', ' ').replace('^', ' ')), width=gossip_padding) for id in hint_ids])
+                output += '\n'.join(['{:{width}} {}'.format(location_string.format(location=gossipLocations[id].name, world=world.id+1), self.hints[world.id][id].text, width=gossip_padding) for id in hint_ids])
 
         return output

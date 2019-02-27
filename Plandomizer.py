@@ -7,7 +7,7 @@ import uuid
 from functools import reduce
 
 from Fill import FillError
-from Hints import lineWrap, gossipLocations
+from Hints import gossipLocations, GossipStone
 from Item import ItemFactory
 from ItemPool import random_choices, item_groups, rewardlist, get_junk_item
 from LocationList import location_table, location_groups
@@ -71,7 +71,7 @@ class DungeonRecord(SimpleRecord({'mq': None})):
         return 'mq' if self.mq else 'vanilla'
 
 
-class GossipRecord(SimpleRecord({'gossip': None})):
+class GossipRecord(SimpleRecord({'text': None, 'colors': None})):
     pass
 
 
@@ -168,7 +168,7 @@ class WorldDistribution(object):
             'locations': {name: [LocationRecord(rec) for rec in record] if is_pattern(name) else LocationRecord(record) for (name, record) in src_dict.get('locations', {}).items() if not is_output_only(name)},
             'woth_locations': None,
             'barren_regions': None,
-            'gossip_stones': {name: [GossipRecord(rec) for rec in record] if is_pattern(name) else GossipRecord(record) for (name, record) in src_dict.get('gossip', {}).items()},
+            'gossip_stones': {name: [GossipRecord(rec) for rec in record] if is_pattern(name) else GossipRecord(record) for (name, record) in src_dict.get('gossip_stones', {}).items()},
         }
 
         if update_all:
@@ -406,7 +406,7 @@ class WorldDistribution(object):
                 stoneID = pull_first_element([stoneIDs], lambda id: gossipLocations[id].name == name)
             if stoneID is None:
                 raise RuntimeError('Gossip stone unknown or already assigned in world %d: %s' % (self.id + 1, name))
-            spoiler.hints[self.id][stoneID] = lineWrap(record.gossip)
+            spoiler.hints[self.id][stoneID] = GossipStone(text=record.text, colors=record.colors)
 
 
     def patch_save(self, save_context):
@@ -510,7 +510,7 @@ class Distribution(object):
             world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
             world_dist.woth_locations = {loc.name: LocationRecord.from_item(loc.item) for loc in spoiler.required_locations[world.id]}
             world_dist.barren_regions = [*world.empty_areas]
-            world_dist.gossip_stones = {gossipLocations[loc].name: GossipRecord({ 'gossip': spoiler.hints[world.id][loc] }) for loc in spoiler.hints[world.id]}
+            world_dist.gossip_stones = {gossipLocations[loc].name: GossipRecord(spoiler.hints[world.id][loc].to_dict()) for loc in spoiler.hints[world.id]}
             world_dist.item_pool = {}
 
         for world in spoiler.worlds:
