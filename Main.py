@@ -255,11 +255,10 @@ def main(settings, window=dummy_window()):
 
     if settings.create_spoiler:
         window.update_status('Creating Spoiler Log')
-        spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
         Distribution.from_spoiler(spoiler).to_file(os.path.join(output_dir, '%s_Spoiler.json' % outfilebase))
     else:
         window.update_status('Creating Settings Log')
-        spoiler.to_file(os.path.join(output_dir, '%s_Settings.txt' % outfilebase))
+        Distribution.from_spoiler(spoiler).to_file(os.path.join(output_dir, '%s_Settings.json' % outfilebase))
     logger.info("Created spoiler log at: %s" % ('%s_Settings.txt' % outfilebase))
 
     if settings.create_cosmetics_log and cosmetics_log:

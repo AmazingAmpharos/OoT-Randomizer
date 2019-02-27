@@ -497,34 +497,40 @@ class Distribution(object):
                         world.update({k: src_dict[k]})
 
 
-    def to_json(self, include_output=True):
+    def to_json(self, include_output=True, spoiler=True):
         self_dict = {
             ':version': __version__,
             ':seed': self.settings.seed,
             'file_hash': CollapseList(self.file_hash),
             ':settings_string': self.settings.settings_string,
             ':settings': self.settings.to_json(),
-            ':playthrough': None if self.playthrough is None else
-                AllignedDict({sphere_nr: {name: record.to_json() for name, record in sphere.items()}
-                    for (sphere_nr, sphere) in self.playthrough.items()}, depth=2),
         }
 
-        world_dist_dicts = [world_dist.to_json() for world_dist in self.world_dists]
-        if self.settings.world_count > 1:
-            for k in per_world_keys:
-                self_dict[k] = {}
-                for id, world_dist_dict in enumerate(world_dist_dicts):
-                    self_dict[k]['World %d' % (id + 1)] = world_dist_dict[k]
-        else:
-            self_dict.update({k: world_dist_dicts[0][k] for k in per_world_keys})
+        if spoiler:
+            if self.playthrough is not None:
+                self_dict[':playthrough'] = AllignedDict({
+                    sphere_nr: {
+                        name: record.to_json() for name, record in sphere.items()
+                    }
+                    for (sphere_nr, sphere) in self.playthrough.items()
+                }, depth=2)
+
+            world_dist_dicts = [world_dist.to_json() for world_dist in self.world_dists]
+            if self.settings.world_count > 1:
+                for k in per_world_keys:
+                    self_dict[k] = {}
+                    for id, world_dist_dict in enumerate(world_dist_dicts):
+                        self_dict[k]['World %d' % (id + 1)] = world_dist_dict[k]
+            else:
+                self_dict.update({k: world_dist_dicts[0][k] for k in per_world_keys})
 
         if not include_output:
             strip_output_only(self_dict)
         return self_dict
 
 
-    def to_str(self, include_output_only=True):
-        return dump_obj(self.to_json(include_output_only))
+    def to_str(self, include_output_only=True, spoiler=True):
+        return dump_obj(self.to_json(include_output_only, spoiler))
 
 
     def __str__(self):
@@ -533,6 +539,7 @@ class Distribution(object):
 
     @staticmethod
     def from_spoiler(spoiler):
+        spoiler.parse_data()
         dist = Distribution(spoiler.settings)
 
         dist.file_hash = [HASH_ICONS[icon] for icon in spoiler.file_hash]
@@ -581,7 +588,7 @@ class Distribution(object):
 
 
     def to_file(self, filename):
-        json = str(self)
+        json = self.to_str(spoiler=self.settings.create_spoiler)
         with open(filename, 'w') as outfile:
             outfile.write(json)
 
