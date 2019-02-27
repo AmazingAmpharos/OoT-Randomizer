@@ -370,7 +370,7 @@ logic_tricks = {
                     oversight in the way the game counts how many
                     torches have been lit.
                     '''},
-    'Zora\'s River Lover Freestanding PoH as Adult with Nothing': {
+    'Zora\'s River Lower Freestanding PoH as Adult with Nothing': {
         'name'    : 'logic_zora_river_lower',
         'tooltip' : '''\
                     Adult can reach this PoH with a precise jump,
