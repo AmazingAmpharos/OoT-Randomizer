@@ -3,6 +3,12 @@ import logging
 from State import State
 from Rules import set_shop_rules
 from Location import DisableType
+from ItemPool import junk_pool, item_groups
+from LocationList import location_groups
+from ItemPool import songlist, get_junk_item, junk_pool, item_groups
+from ItemList import item_table
+from Item import ItemFactory
+from functools import reduce
 
 
 class FillError(RuntimeError):
@@ -37,6 +43,8 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     if worlds[0].shuffle_song_items:
         itempool.extend(songitempool)
         fill_locations.extend(song_locations)
+        songitempool = []
+        song_locations = []
 
     # add unrestricted dungeon items to main item pool
     itempool.extend([item for world in worlds for item in world.get_unrestricted_dungeon_items()])
@@ -50,12 +58,20 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # set ice traps to have the appearance of other random items in the item pool
     ice_traps = [item for item in itempool if item.name == 'Ice Trap']
     fake_items = []
+    major_items = [item for item in itempool if item.majoritem]
+    if len(major_items) == 0: # All major items were somehow removed from the pool (can happen in plando)
+        major_items = ItemFactory([item for (item, data) in item_table.items() if data[0] == 'Item' and data[1] and data[2] is not None])
     while len(ice_traps) > len(fake_items):
         # if there are more ice traps than major items, then double up on major items
-        fake_items.extend([item for item in itempool if item.majoritem])
+        fake_items.extend(major_items)
     for random_item in random.sample(fake_items, len(ice_traps)):
         ice_trap = ice_traps.pop(0)
         ice_trap.looks_like_item = random_item
+
+    cloakable_locations = shop_locations + song_locations + fill_locations
+    all_models = shopitempool + dungeon_items + songitempool + itempool
+    worlds[0].distribution.fill(window, worlds, [shop_locations, song_locations, fill_locations], [shopitempool, dungeon_items, songitempool, progitempool, prioitempool, restitempool])
+    itempool = progitempool + prioitempool + restitempool
 
     # We place all the shop items first. Like songs, they have a more limited
     # set of locations that they can be placed in, so placing them first will
@@ -120,6 +136,8 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 
     if not State.can_beat_game(world_states, True):
         raise FillError('Cannot beat game!')
+
+    worlds[0].settings.distribution.cloak(worlds, [cloakable_locations], [all_models])
 
     # Get Light Arrow location for later usage.
     for world in worlds:

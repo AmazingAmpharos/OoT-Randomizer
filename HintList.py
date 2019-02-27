@@ -251,7 +251,7 @@ hintTable = {
     '1040':                                                  ("There's a reason why I am special inquisitor!", None, 'junkHint'),
     '1041':                                                  ("You were almost a @ sandwich.", None, 'junkHint'),
     '1042':                                                  ("I'm a helpful hint Gossip Stone!^See, I'm helping.", None, 'junkHint'),
-    '1043':                                                  ("Dear @, please come to the castle. I've baked a cake for you.&&Yours truly, princess Zelda.", None, 'junkHint'),
+    '1043':                                                  ("Dear @, please come to the castle. I've baked a cake for you.&Yours truly, princess Zelda.", None, 'junkHint'),
     '1044':                                                  ("They say all toasters toast toast.", None, 'junkHint'),
     '1045':                                                  ("They say that Okami is the best Zelda game.", None, 'junkHint'),
     '1046':                                                  ("They say that quest guidance can be found at a talking rock.", None, 'junkHint'),

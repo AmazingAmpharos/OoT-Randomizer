@@ -17,6 +17,12 @@ class State(object):
         self.region_cache = {k: v for k, v in self.region_cache.items() if v}
 
 
+    def clear_cache(self):
+        self.region_cache = {}
+        self.location_cache = {}
+        self.entrance_cache = {}
+
+
     def copy(self, new_world=None):
         if not new_world:
             new_world = self.world
@@ -56,7 +62,9 @@ class State(object):
             # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that ia what we are trying to figure out right now in the first place
             spot.recursion_count += 1
             self.recursion_count += 1
+
             can_reach = spot.can_reach(self)
+
             spot.recursion_count -= 1
             self.recursion_count -= 1
 
@@ -67,6 +75,7 @@ class State(object):
             else:
                 correct_cache[spot] = can_reach
             return can_reach
+
         return correct_cache[spot]
 
 
@@ -79,6 +88,13 @@ class State(object):
 
     def has(self, item, count=1):
         return self.prog_items[item] >= count
+
+
+    def has_any(self, predicate):
+        for pritem in self.prog_items:
+            if predicate(pritem):
+                return True
+        return False
 
 
     def item_count(self, item):
@@ -177,7 +193,7 @@ class State(object):
 
     def has_bombchus(self):
         return (self.world.bombchus_in_logic and \
-                    (any(pritem.startswith('Bombchus') for pritem in self.prog_items) and \
+                    (self.has_any(lambda pritem: pritem.startswith('Bombchus')) and \
                         self.can_buy_bombchus())) \
             or (not self.world.bombchus_in_logic and self.has('Bomb Bag') and \
                         self.can_buy_bombchus())
@@ -185,7 +201,7 @@ class State(object):
 
     def has_bombchus_item(self):
         return (self.world.bombchus_in_logic and \
-                (any(pritem.startswith('Bombchus') for pritem in self.prog_items) \
+                (self.has_any(lambda pritem: pritem.startswith('Bombchus')) \
                 or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
             or (not self.world.bombchus_in_logic and self.has('Bomb Bag'))
 
@@ -237,7 +253,7 @@ class State(object):
 
     def has_bottle(self):
         is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter' and (item != 'Bottle with Big Poe' or self.is_adult()))
-        return any(is_normal_bottle(pritem) for pritem in self.prog_items)
+        return self.has_any(is_normal_bottle)
 
 
     def bottle_count(self):

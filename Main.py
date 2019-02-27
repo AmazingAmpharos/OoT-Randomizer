@@ -28,6 +28,7 @@ from version import __version__
 from N64Patch import create_patch_file, apply_patch_file
 from SettingsList import setting_infos, logic_tricks
 from Rules import set_rules
+from Plandomizer import Distribution
 
 
 class dummy_window():
@@ -51,6 +52,7 @@ def main(settings, window=dummy_window()):
     for trick in logic_tricks.values():
         settings.__dict__[trick['name']] = trick['name'] in settings.allowed_tricks
 
+    settings.load_distribution()
 
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom == 'None' and not settings.create_spoiler:
@@ -81,17 +83,20 @@ def main(settings, window=dummy_window()):
     window.update_status('Creating the Worlds')
     for id, world in enumerate(worlds):
         world.id = id
+        world.distribution = settings.distribution.world_dists[id]
         logger.info('Generating World %d.' % id)
 
         window.update_progress(0 + 1*(id + 1)/settings.world_count)
         logger.info('Creating Overworld')
 
         # Determine MQ Dungeons
-        td_count = len(world.dungeon_mq)
+        dungeon_pool = list(world.dungeon_mq)
+        dist_num_mq = world.distribution.configure_dungeons(world, dungeon_pool)
+
         if world.mq_dungeons_random:
-            world.mq_dungeons = random.randint(0, td_count)
+            world.mq_dungeons = dist_num_mq + random.randint(0, len(dungeon_pool))
         mqd_count = world.mq_dungeons
-        mqd_picks = random.sample(list(world.dungeon_mq), mqd_count)
+        mqd_picks = random.sample(dungeon_pool, mqd_count - dist_num_mq)
         for dung in mqd_picks:
             world.dungeon_mq[dung] = True
 
@@ -243,15 +248,17 @@ def main(settings, window=dummy_window()):
         window.update_progress(95)
 
     for world in worlds:
-        for setting in world.settings.__dict__:
-            world.settings.__dict__[setting] = world.__dict__[setting]
+        for info in setting_infos:
+            world.settings.__dict__[info.name] = world.__dict__[info.name]
 
+    settings.distribution.update_spoiler(spoiler)
     if settings.create_spoiler:
+        spoiler_path = os.path.join(output_dir, '%s_Spoiler.json' % outfilebase)
         window.update_status('Creating Spoiler Log')
-        spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
     else:
         window.update_status('Creating Settings Log')
-        spoiler.to_file(os.path.join(output_dir, '%s_Settings.txt' % outfilebase))
+        spoiler_path = os.path.join(output_dir, '%s_Settings.json' % outfilebase)
+    settings.distribution.to_file(spoiler_path)
     logger.info("Created spoiler log at: %s" % ('%s_Settings.txt' % outfilebase))
 
     if settings.create_cosmetics_log and cosmetics_log:

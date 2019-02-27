@@ -224,7 +224,7 @@ def guiMain(settings=None):
     romDialogFrame = Frame(fileDialogFrame)
     baseRomLabel = Label(romDialogFrame, text='Base ROM')
     guivars['rom'] = StringVar(value='')
-    romEntry = Entry(romDialogFrame, textvariable=guivars['rom'], width=46)
+    romEntry = Entry(romDialogFrame, textvariable=guivars['rom'], width=50)
 
     def RomSelect():
         rom = filedialog.askopenfilename(filetypes=[("ROM Files", (".z64", ".n64")), ("All Files", "*")])
@@ -232,7 +232,7 @@ def guiMain(settings=None):
             guivars['rom'].set(rom)
     romSelectButton = Button(romDialogFrame, text='Browse', command=RomSelect, width=10)
 
-    baseRomLabel.pack(side=LEFT, padx=(40,0))
+    baseRomLabel.pack(side=LEFT, padx=(34,0))
     romEntry.pack(side=LEFT, padx=3)
     romSelectButton.pack(side=LEFT)
 
@@ -248,12 +248,29 @@ def guiMain(settings=None):
     outputDialogFrame = Frame(frames['rom_tab'])
     outputDirLabel = Label(outputDialogFrame, text='Output Directory')
     guivars['output_dir'] = StringVar(value='')
-    outputDirEntry = Entry(outputDialogFrame, textvariable=guivars['output_dir'], width=46)
+    outputDirEntry = Entry(outputDialogFrame, textvariable=guivars['output_dir'], width=50)
     outputDirButton = Button(outputDialogFrame, text='Browse', command=output_dir_select, width=10)
     outputDirLabel.pack(side=LEFT, padx=(3,0))
     outputDirEntry.pack(side=LEFT, padx=3)
     outputDirButton.pack(side=LEFT)
     outputDialogFrame.pack(side=TOP, anchor=W, pady=3)
+
+    distFileDialogFrame = Frame(frames['rom_tab'])
+    distFileLabel = Label(distFileDialogFrame, text='Distribution File')
+    guivars['distribution_file'] = StringVar(value='')
+    distFileEntry = Entry(distFileDialogFrame, textvariable=guivars['distribution_file'], width=50)
+
+    def DistFileSelect():
+        distFile = filedialog.askopenfilename(filetypes=[("JSON Files", (".json")), ("All Files", "*")])
+        if distFile != '':
+            guivars['distribution_file'].set(distFile)
+    distFileSelectButton = Button(distFileDialogFrame, text='Browse', command=DistFileSelect, width=10)
+
+    distFileLabel.pack(side=LEFT, padx=(9,0))
+    distFileEntry.pack(side=LEFT, padx=3)
+    distFileSelectButton.pack(side=LEFT)
+
+    distFileDialogFrame.pack(side=TOP, anchor=W, pady=3)
 
     countDialogFrame = Frame(frames['rom_tab'])
     countLabel = Label(countDialogFrame, text='Generation Count')
@@ -815,6 +832,7 @@ def guiMain(settings=None):
     settings_file = local_path('settings.sav')
     with open(settings_file, 'w') as outfile:
         settings = guivars_to_settings(guivars)
+        del settings.__dict__["distribution"]
         del settings.__dict__["seed"]
         del settings.__dict__["numeric_seed"]
         del settings.__dict__["check_version"]

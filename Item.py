@@ -122,8 +122,12 @@ def ItemFactory(items, world=None):
     return ret
 
 
-def ItemIterator(predicate=lambda loc: True):
+def IsItem(name):
+    return name in item_table
+
+
+def ItemIterator(predicate=lambda loc: True, world=None):
     for item_name in item_table:
-        item = ItemFactory(item_name)
+        item = ItemFactory(item_name, world)
         if predicate(item):
             yield item

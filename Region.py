@@ -54,7 +54,7 @@ class Region(object):
         return False
 
 
-    def can_fill(self, item):
+    def can_fill(self, item, manual=False):
         is_dungeon_restricted = False
         if item.map or item.compass:
             is_dungeon_restricted = self.world.shuffle_mapcompass == 'dungeon'
@@ -63,7 +63,7 @@ class Region(object):
         elif item.bosskey:
             is_dungeon_restricted = self.world.shuffle_bosskeys == 'dungeon'
 
-        if is_dungeon_restricted:
+        if is_dungeon_restricted and not manual:
             return self.dungeon and self.dungeon.is_dungeon_item(item) and item.world.id == self.world.id
         return True
 

@@ -797,3 +797,13 @@ business_scrubs = [
     (0x77, 40,   0x10DC, ["enable you to pick up more\x01\x05\x41Deku Sticks", "sell you a \x05\x42mysterious item"]),
     (0x79, 40,   0x10DD, ["enable you to pick up more \x05\x41Deku\x01Nuts", "sell you a \x05\x42mysterious item"]),
 ]
+
+dungeons = ('Deku Tree', 'Dodongo\'s Cavern', 'Jabu Jabu\'s Belly', 'Forest Temple', 'Fire Temple', 'Water Temple', 'Spirit Temple', 'Shadow Temple', 'Ice Cavern', 'Bottom of the Well', 'Gerudo Training Grounds', 'Ganon\'s Castle')
+location_groups = {
+    'Song': [name for (name, data) in location_table.items() if data[0] == 'Song'],
+    'Chest': [name for (name, data) in location_table.items() if data[0] == 'Chest'],
+    'Collectable': [name for (name, data) in location_table.items() if data[0] == 'Collectable'],
+    'BossHeart': [name for (name, data) in location_table.items() if data[0] == 'BossHeart'],
+    'CollectableLike': [name for (name, data) in location_table.items() if data[0] in ('Collectable', 'BossHeart', 'GS Token')],
+    'Dungeon': [name for (name, data) in location_table.items() if data[3] in dungeons],
+}
