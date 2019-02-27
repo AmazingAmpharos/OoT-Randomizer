@@ -15,8 +15,7 @@ from Spoiler import HASH_ICONS
 from State import State
 from version import __version__
 from Utils import random_choices
-from JSONDump import dump_obj
-
+from JSONDump import dump_obj, CollapseList, CollapseDict, AllignedDict
 
 per_world_keys = (
     'dungeons',
@@ -72,7 +71,10 @@ class DungeonRecord(SimpleRecord({'mq': None})):
 
 
 class GossipRecord(SimpleRecord({'text': None, 'colors': None})):
-    pass
+    def to_dict(self):
+        if self.colors is not None:
+            self.colors = CollapseList(self.colors)
+        return CollapseDict(super().to_dict())
 
 
 class ItemPoolRecord(SimpleRecord({'type': 'set', 'count': 1})):
@@ -86,7 +88,7 @@ class ItemPoolRecord(SimpleRecord({'type': 'set', 'count': 1})):
         if self.type == 'set':
             return self.count
         else:
-            return super().to_dict()
+            return CollapseDict(super().to_dict())
 
 
     def update(self, src_dict, update_all=False):
@@ -109,7 +111,7 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
         if list(self_dict.keys()) == ['item']:
             return str(self.item)
         else:
-            return self_dict
+            return CollapseDict(self_dict)
 
 
     @staticmethod
@@ -471,8 +473,8 @@ class Distribution(object):
             ':settings_string': self.settings.settings_string,
             ':settings': self.settings.to_dict(),
             ':playthrough': None if self.playthrough is None else 
-                {sphere_nr: {name: record.to_dict() for name, record in sphere.items()} 
-                    for (sphere_nr, sphere) in self.playthrough.items()},
+                AllignedDict({sphere_nr: {name: record.to_dict() for name, record in sphere.items()} 
+                    for (sphere_nr, sphere) in self.playthrough.items()}, depth=2),
         }
 
         world_dist_dicts = [world_dist.to_dict() for world_dist in self.world_dists]
@@ -523,7 +525,7 @@ class Distribution(object):
                 else:
                     player_dist.item_pool[item.name] = ItemPoolRecord()
 
-        dist.playthrough = {}
+        dist.playthrough = AllignedDict({}, 2)
         for (sphere_nr, sphere) in spoiler.playthrough.items():
             loc_rec_sphere = {}
             dist.playthrough[sphere_nr] = loc_rec_sphere

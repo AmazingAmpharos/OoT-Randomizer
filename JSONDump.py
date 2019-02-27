@@ -4,6 +4,16 @@ from functools import reduce
 
 INDENT = '  '
 
+class CollapseList(list):
+    pass
+class CollapseDict(dict):
+    pass
+class AllignedDict(dict):
+    def __init__(self, src_dict, depth):
+        self.depth = depth - 1
+        super().__init__(src_dict)
+
+
 def is_scalar(value):
     return not is_list(value) and not is_dict(value)
 
@@ -26,18 +36,32 @@ def dump_list(obj, current_indent=''):
     if len(entries) == 0:
         return '[]'
 
-    values_format = '{indent}{value}'
-    output_format = '[\n{values}\n{indent}]'
+    if isinstance(obj, CollapseList):
+        values_format = '{value}'
+        output_format = '[{values}]'
+        join_format   = ', '
+    else:
+        values_format = '{indent}{value}'
+        output_format = '[\n{values}\n{indent}]'
+        join_format   = ',\n'
 
     output = output_format.format(
         indent=current_indent,
-        values=',\n'.join([values_format.format(
+        values=join_format.join([values_format.format(
             value=entry,
             indent=current_indent + INDENT
         ) for entry in entries])
     )
 
     return output
+
+
+def get_keys(obj, depth):
+    if depth == 0:
+        yield from obj.keys()
+    else:
+        for value in obj.values():
+            yield from get_keys(value, depth - 1)
 
 
 def dump_dict(obj, current_indent='', sub_width=None):
@@ -49,11 +73,11 @@ def dump_dict(obj, current_indent='', sub_width=None):
         if sub_width[0] == 0:
             key_width = sub_width[1]
 
-    for key, value in obj.items():
-        if key == ':playthrough':
-            sub_keys = [location for sphere_nr, sphere in value.items() for location in sphere]
-            sub_width = (2, reduce(lambda acc, entry: max(acc, len(entry)), sub_keys, 0))
-        
+    if isinstance(obj, AllignedDict):
+        sub_keys = get_keys(obj, obj.depth)
+        sub_width = (obj.depth, reduce(lambda acc, entry: max(acc, len(entry)), sub_keys, 0))
+
+    for key, value in obj.items():        
         entries[dump_scalar(str(key))] = dump_obj(value, current_indent + INDENT, sub_width)
 
     if key_width is None:
@@ -62,7 +86,7 @@ def dump_dict(obj, current_indent='', sub_width=None):
     if len(entries) == 0:
         return '{}'
 
-    if 'item' in obj or 'gossip' in obj:
+    if isinstance(obj, CollapseDict):
         values_format = '{key} {value}'
         output_format = '{{{values}}}'
         join_format   = ', '
