@@ -12,6 +12,8 @@ class AllignedDict(dict):
     def __init__(self, src_dict, depth):
         self.depth = depth - 1
         super().__init__(src_dict)
+class SortedDict(dict):
+    pass
 
 
 def is_scalar(value):
@@ -65,7 +67,7 @@ def get_keys(obj, depth):
 
 
 def dump_dict(obj, current_indent='', sub_width=None):
-    entries = {}
+    entries = []
 
     key_width = None
     if sub_width is not None:
@@ -78,13 +80,16 @@ def dump_dict(obj, current_indent='', sub_width=None):
         sub_width = (obj.depth, reduce(lambda acc, entry: max(acc, len(entry)), sub_keys, 0))
 
     for key, value in obj.items():        
-        entries[dump_scalar(str(key))] = dump_obj(value, current_indent + INDENT, sub_width)
+        entries.append((dump_scalar(str(key)), dump_obj(value, current_indent + INDENT, sub_width)))
 
     if key_width is None:
-        key_width = reduce(lambda acc, entry: max(acc, len(entry)), entries, 0)
+        key_width = reduce(lambda acc, entry: max(acc, len(entry[0])), entries, 0)
 
     if len(entries) == 0:
         return '{}'
+
+    if isinstance(obj, SortedDict):
+        entries.sort(key=lambda item: item[0])
 
     if isinstance(obj, CollapseDict):
         values_format = '{key} {value}'
@@ -102,7 +107,7 @@ def dump_dict(obj, current_indent='', sub_width=None):
             value=value,
             indent=current_indent + INDENT,
             padding=key_width + 2,
-        ) for key, value in entries.items()])
+        ) for (key, value) in entries])
     )
 
     return output

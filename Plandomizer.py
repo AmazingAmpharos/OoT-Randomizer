@@ -16,7 +16,7 @@ from Spoiler import HASH_ICONS
 from State import State
 from version import __version__
 from Utils import random_choices
-from JSONDump import dump_obj, CollapseList, CollapseDict, AllignedDict
+from JSONDump import dump_obj, CollapseList, CollapseDict, AllignedDict, SortedDict
 
 
 per_world_keys = (
@@ -198,14 +198,14 @@ class WorldDistribution(object):
 
     def to_json(self):
         return {
+            'starting_items': SortedDict({name: record.to_json() for (name, record) in self.starting_items.items()}),
             'dungeons': {name: record.to_json() for (name, record) in self.dungeons.items()},
             'trials': {name: record.to_json() for (name, record) in self.trials.items()},
-            'item_pool': {name: record.to_json() for (name, record) in self.item_pool.items()},
-            'starting_items': {name: record.to_json() for (name, record) in self.starting_items.items()},
+            'item_pool': SortedDict({name: record.to_json() for (name, record) in self.item_pool.items()}),
             'locations': {name: [rec.to_json() for rec in record] if is_pattern(name) else record.to_json() for (name, record) in self.locations.items()},
             ':woth_locations': None if self.woth_locations is None else {name: record.to_json() for (name, record) in self.woth_locations.items()},
             ':barren_regions': self.barren_regions,
-            'gossip_stones': {name: [rec.to_json() for rec in record] if is_pattern(name) else record.to_json() for (name, record) in self.gossip_stones.items()},
+            'gossip_stones': SortedDict({name: [rec.to_json() for rec in record] if is_pattern(name) else record.to_json() for (name, record) in self.gossip_stones.items()}),
         }
 
 
@@ -500,8 +500,8 @@ class Distribution(object):
     def to_json(self, include_output=True, spoiler=True):
         self_dict = {
             ':version': __version__,
-            ':seed': self.settings.seed,
             'file_hash': CollapseList(self.file_hash),
+            ':seed': self.settings.seed,
             ':settings_string': self.settings.settings_string,
             ':settings': self.settings.to_json(),
         }
