@@ -164,7 +164,7 @@ class Settings:
 
     def get_numeric_seed(self):
         # salt seed with the settings, and hash to get a numeric seed
-        distribution = json.dumps(self.distribution.to_dict(False))
+        distribution = json.dumps(self.distribution.to_json(False))
         full_string = self.settings_string + distribution + __version__ + self.seed
         return int(hashlib.sha256(full_string.encode('utf-8')).hexdigest(), 16)
 
@@ -234,7 +234,8 @@ class Settings:
         self.distribution = Distribution(self)
         self.update_seed(self.seed)
 
-    def to_dict(self):
+
+    def to_json(self):
         return {setting.name: self.__dict__[setting.name] for setting in setting_infos if setting.shared}
 
 

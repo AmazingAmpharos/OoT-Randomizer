@@ -28,7 +28,7 @@ class GossipText():
         self.colors = colors
 
 
-    def to_dict(self):
+    def to_json(self):
         return {'text': self.text, 'colors': self.colors}
 
 

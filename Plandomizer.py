@@ -44,12 +44,12 @@ def SimpleRecord(props):
                     setattr(self, k, src_dict.get(k, p))
 
 
-        def to_dict(self):
+        def to_json(self):
             return {k: getattr(self, k) for (k, d) in props.items() if getattr(self, k) != d}
 
 
         def __str__(self):
-            return dump_obj(self.to_dict())
+            return dump_obj(self.to_json())
     return Record
 
 
@@ -64,17 +64,17 @@ class DungeonRecord(SimpleRecord({'mq': None})):
         super().__init__(src_dict)
 
 
-    def to_dict(self):
+    def to_json(self):
         if self.mq is None:
             return 'random'
         return 'mq' if self.mq else 'vanilla'
 
 
 class GossipRecord(SimpleRecord({'text': None, 'colors': None})):
-    def to_dict(self):
+    def to_json(self):
         if self.colors is not None:
             self.colors = CollapseList(self.colors)
-        return CollapseDict(super().to_dict())
+        return CollapseDict(super().to_json())
 
 
 class ItemPoolRecord(SimpleRecord({'type': 'set', 'count': 1})):
@@ -84,11 +84,11 @@ class ItemPoolRecord(SimpleRecord({'type': 'set', 'count': 1})):
         super().__init__(src_dict)
 
 
-    def to_dict(self):
+    def to_json(self):
         if self.type == 'set':
             return self.count
         else:
-            return CollapseDict(super().to_dict())
+            return CollapseDict(super().to_json())
 
 
     def update(self, src_dict, update_all=False):
@@ -106,8 +106,8 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
         super().__init__(src_dict)
 
 
-    def to_dict(self):
-        self_dict = super().to_dict()
+    def to_json(self):
+        self_dict = super().to_json()
         if list(self_dict.keys()) == ['item']:
             return str(self.item)
         else:
@@ -131,7 +131,7 @@ class StarterRecord(SimpleRecord({'count': 1})):
         super().__init__(src_dict)
 
 
-    def to_dict(self):
+    def to_json(self):
         return self.count
 
 
@@ -146,7 +146,7 @@ class TrialRecord(SimpleRecord({'active': None})):
         super().__init__(src_dict)
 
 
-    def to_dict(self):
+    def to_json(self):
         if self.active is None:
             return 'random'
         return 'active' if self.active else 'inactive'
@@ -189,21 +189,21 @@ class WorldDistribution(object):
                         setattr(self, k, None)
 
 
-    def to_dict(self):
+    def to_json(self):
         return {
-            'dungeons': {name: record.to_dict() for (name, record) in self.dungeons.items()},
-            'trials': {name: record.to_dict() for (name, record) in self.trials.items()},
-            'item_pool': {name: record.to_dict() for (name, record) in self.item_pool.items()},
-            'starting_items': {name: record.to_dict() for (name, record) in self.starting_items.items()},
-            'locations': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.locations.items()},
-            ':woth_locations': None if self.woth_locations is None else {name: record.to_dict() for (name, record) in self.woth_locations.items()},
+            'dungeons': {name: record.to_json() for (name, record) in self.dungeons.items()},
+            'trials': {name: record.to_json() for (name, record) in self.trials.items()},
+            'item_pool': {name: record.to_json() for (name, record) in self.item_pool.items()},
+            'starting_items': {name: record.to_json() for (name, record) in self.starting_items.items()},
+            'locations': {name: [rec.to_json() for rec in record] if is_pattern(name) else record.to_json() for (name, record) in self.locations.items()},
+            ':woth_locations': None if self.woth_locations is None else {name: record.to_json() for (name, record) in self.woth_locations.items()},
             ':barren_regions': self.barren_regions,
-            'gossip_stones': {name: [rec.to_dict() for rec in record] if is_pattern(name) else record.to_dict() for (name, record) in self.gossip_stones.items()},
+            'gossip_stones': {name: [rec.to_json() for rec in record] if is_pattern(name) else record.to_json() for (name, record) in self.gossip_stones.items()},
         }
 
 
     def __str__(self):
-        return dump_obj(self.to_dict())
+        return dump_obj(self.to_json())
 
 
     def configure_dungeons(self, world, dungeon_pool):
@@ -465,21 +465,22 @@ class Distribution(object):
                         world.update({k: src_dict[k]})
 
 
-    def to_dict(self, include_output=True):
+    def to_json(self, include_output=True):
         self_dict = {
             ':version': __version__,
             ':seed': self.settings.seed,
-            'file_hash': self.file_hash,
+            'file_hash': CollapseList(self.file_hash),
             ':settings_string': self.settings.settings_string,
-            ':settings': self.settings.to_dict(),
+            ':settings': self.settings.to_json(),
             ':playthrough': None if self.playthrough is None else 
-                AllignedDict({sphere_nr: {name: record.to_dict() for name, record in sphere.items()} 
+                AllignedDict({sphere_nr: {name: record.to_json() for name, record in sphere.items()} 
                     for (sphere_nr, sphere) in self.playthrough.items()}, depth=2),
         }
 
-        world_dist_dicts = [world_dist.to_dict() for world_dist in self.world_dists]
+        world_dist_dicts = [world_dist.to_json() for world_dist in self.world_dists]
         if self.settings.world_count > 1:
             for k in per_world_keys:
+                self_dict[k] = {}
                 for id, world_dist_dict in enumerate(world_dist_dicts):
                     self_dict[k]['World %d' % (id + 1)] = world_dist_dict[k]
         else:
@@ -491,11 +492,11 @@ class Distribution(object):
 
 
     def to_str(self, include_output_only=True):
-        return dump_obj(self.to_dict(include_output_only))
+        return dump_obj(self.to_json(include_output_only))
 
 
     def __str__(self):
-        return dump_obj(self.to_dict())
+        return dump_obj(self.to_json())
 
 
     @staticmethod
@@ -512,7 +513,7 @@ class Distribution(object):
             world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
             world_dist.woth_locations = {loc.name: LocationRecord.from_item(loc.item) for loc in spoiler.required_locations[world.id]}
             world_dist.barren_regions = [*world.empty_areas]
-            world_dist.gossip_stones = {gossipLocations[loc].name: GossipRecord(spoiler.hints[world.id][loc].to_dict()) for loc in spoiler.hints[world.id]}
+            world_dist.gossip_stones = {gossipLocations[loc].name: GossipRecord(spoiler.hints[world.id][loc].to_json()) for loc in spoiler.hints[world.id]}
             world_dist.item_pool = {}
 
         for world in spoiler.worlds:
@@ -525,7 +526,7 @@ class Distribution(object):
                 else:
                     player_dist.item_pool[item.name] = ItemPoolRecord()
 
-        dist.playthrough = AllignedDict({}, 2)
+        dist.playthrough = {}
         for (sphere_nr, sphere) in spoiler.playthrough.items():
             loc_rec_sphere = {}
             dist.playthrough[sphere_nr] = loc_rec_sphere
