@@ -18,6 +18,7 @@
 >>>>>>> Magic Meter Colors
     "CFG_RAINBOW_SWORD_INNER_ENABLED": "03481005",
     "CFG_RAINBOW_SWORD_OUTER_ENABLED": "03481006",
+<<<<<<< Dev
     "CHEST_SIZE_MATCH_CONTENTS": "03482554",
     "COOP_VERSION": "03480000",
     "COSMETIC_FORMAT_VERSION": "03481000",
@@ -63,16 +64,23 @@
 =======
 >>>>>>> Rebased to 4.0.4
     "DPAD_TEXTURE": "034894B0",
+=======
+    "CHEST_SIZE_MATCH_CONTENTS": "03482550",
+    "COOP_VERSION": "03480000",
+    "COSMETIC_FORMAT_VERSION": "03481000",
+    "DEBUG_OFFSET": "0348263C",
+    "DPAD_TEXTURE": "034895D8",
+>>>>>>> Rebased to 4.1.17
     "FAST_CHESTS": "0348141E",
-    "FONT_TEXTURE": "03487FE8",
+    "FONT_TEXTURE": "03488110",
     "FREE_SCARECROW_ENABLED": "03481418",
-    "GET_CHEST_OVERRIDE_COLOR_WRAPPER": "0348257C",
-    "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482550",
+    "GET_CHEST_OVERRIDE_COLOR_WRAPPER": "03482580",
+    "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482554",
     "GOSSIP_HINT_CONDITION": "03481414",
     "INCOMING_ITEM": "03480006",
     "INITIAL_SAVE_DATA": "0348100C",
     "JABU_ELEVATOR_ENABLE": "0348141C",
-    "NO_ESCAPE_SEQUENCE": "03486F34",
+    "NO_ESCAPE_SEQUENCE": "0348705C",
     "OCARINAS_SHUFFLED": "0348141D",
 <<<<<<< Dev
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
@@ -85,6 +93,7 @@
     "PLAYER_ID": "03480004",
     "PLAYER_NAMES": "03480010",
     "PLAYER_NAME_ID": "03480005",
+<<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
     "RAINBOW_BRIDGE_CONDITION": "03481414",
@@ -174,4 +183,46 @@
     "setup_db": "03485FC8",
     "stones_sprite": "03486040"
 >>>>>>> Magic Meter Colors
+=======
+    "RAINBOW_BRIDGE_CONDITION": "03481410",
+    "SHUFFLE_COWS": "0348141F",
+    "TIME_TRAVEL_SAVED_EQUIPS": "03481C08",
+    "active_item_action_id": "03487074",
+    "active_item_fast_chest": "03487064",
+    "active_item_graphic_id": "03487068",
+    "active_item_object_id": "0348706C",
+    "active_item_row": "03487078",
+    "active_item_text_id": "03487070",
+    "active_override": "03487080",
+    "active_override_is_outgoing": "0348707C",
+    "cfg_dungeon_info_enable": "03487038",
+    "cfg_dungeon_info_mq_enable": "03487054",
+    "cfg_dungeon_info_mq_need_map": "03487050",
+    "cfg_dungeon_info_reward_need_altar": "03487048",
+    "cfg_dungeon_info_reward_need_compass": "0348704C",
+    "cfg_dungeon_is_mq": "034870A4",
+    "cfg_dungeon_rewards": "03485EF8",
+    "cfg_file_select_hash": "03487058",
+    "cfg_item_overrides": "034870CC",
+    "dpad_sprite": "03486020",
+    "dummy_actor": "03487088",
+    "dungeon_count": "0348703C",
+    "dungeons": "03485F1C",
+    "font_sprite": "03486030",
+    "hash_sprites": "03487040",
+    "hash_symbols": "03485FB8",
+    "heap_next": "034870A0",
+    "item_overrides_count": "0348708C",
+    "item_table": "03486080",
+    "items_sprite": "03486050",
+    "medal_colors": "03485F08",
+    "medals_sprite": "03486060",
+    "object_slots": "034880CC",
+    "pending_freezes": "03487090",
+    "pending_item_queue": "034870B4",
+    "quest_items_sprite": "03486040",
+    "satisified_pending_frames": "03487060",
+    "setup_db": "03485FF8",
+    "stones_sprite": "03486070"
+>>>>>>> Rebased to 4.1.17
 }

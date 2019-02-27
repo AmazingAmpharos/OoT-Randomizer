@@ -54,6 +54,7 @@
 .include "dpad.asm"
 .include "chests.asm"
 .include "bunny_hood.asm"
+.include "magic_color.asm"
 .include "debug.asm"
 .include "cow.asm"
 .importobj "../build/bundle.o"
