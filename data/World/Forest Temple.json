@@ -1,11 +1,11 @@
 [    
-	{
+    {
         "region_name": "Forest Temple Lobby",
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple First Chest": "True",
             "Forest Temple Chest Behind Lobby": "True",
-            "GS Forest Temple First Room": "can_use(Hookshot) or can_use(Bow) or can_use(Dins_Fire)",
+            "GS Forest Temple First Room": "can_use(Dins_Fire) or has_projectile(adult)",
             "GS Forest Temple Lobby": "can_use(Hookshot)"
         },
         "exits": {
@@ -33,8 +33,13 @@
         "region_name": "Forest Temple NE Outdoors",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple Outside Hookshot Chest": "True",
-            "GS Forest Temple Outdoor East": "can_use(Hookshot)"
+            "Forest Temple Outside Hookshot Chest": "
+                can_use(Hookshot) or
+                can_reach(Forest_Temple_Falling_Room)",
+            "GS Forest Temple Outdoor East": "
+                can_use(Hookshot) or 
+                (can_reach(Forest_Temple_Falling_Room) and 
+                 (can_use(Bow) or can_use(Dins_Fire) or has_explosives))"
         },
         "exits": {
             "Forest Temple NW Outdoors": "
