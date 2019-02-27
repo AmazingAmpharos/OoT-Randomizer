@@ -34,6 +34,7 @@
     "CHEST_SIZE_MATCH_CONTENTS": "03482554",
 =======
     "CFG_RAINBOW_SWORD_OUTER_FADE_ENABLED": "0348100B",
+<<<<<<< Dev
     "CHEST_SIZE_MATCH_CONTENTS": "0348254C",
 >>>>>>> Functionality!
     "COOP_VERSION": "03480000",
@@ -130,16 +131,29 @@
 >>>>>>> Functionality!
     "DEBUG_OFFSET": "034825E8",
     "DPAD_TEXTURE": "03489500",
+=======
+    "CHEST_SIZE_MATCH_CONTENTS": "03482550",
+    "COOP_VERSION": "03480000",
+    "COSMETIC_FORMAT_VERSION": "03481000",
+    "DEBUG_OFFSET": "0348263C",
+    "DPAD_TEXTURE": "03489628",
+>>>>>>> Rebase to 4.1.17
     "FAST_CHESTS": "0348141E",
-    "FONT_TEXTURE": "03488038",
+    "FONT_TEXTURE": "03488160",
     "FREE_SCARECROW_ENABLED": "03481418",
+<<<<<<< Dev
     "GET_CHEST_OVERRIDE_COLOR_WRAPPER": "0348257C",
     "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482550",
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
+=======
+    "GET_CHEST_OVERRIDE_COLOR_WRAPPER": "03482580",
+    "GET_CHEST_OVERRIDE_SIZE_WRAPPER": "03482554",
+>>>>>>> Rebase to 4.1.17
     "GOSSIP_HINT_CONDITION": "03481414",
     "INCOMING_ITEM": "03480006",
     "INITIAL_SAVE_DATA": "0348100C",
     "JABU_ELEVATOR_ENABLE": "0348141C",
+<<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
     "NO_ESCAPE_SEQUENCE": "0348705C",
@@ -158,6 +172,9 @@
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
 =======
     "NO_ESCAPE_SEQUENCE": "03486F84",
+=======
+    "NO_ESCAPE_SEQUENCE": "034870AC",
+>>>>>>> Rebase to 4.1.17
     "OCARINAS_SHUFFLED": "0348141D",
 >>>>>>> Functionality!
     "OUTGOING_ITEM": "0348000C",
@@ -166,6 +183,7 @@
     "PLAYER_ID": "03480004",
     "PLAYER_NAMES": "03480010",
     "PLAYER_NAME_ID": "03480005",
+<<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
 <<<<<<< Dev
@@ -441,8 +459,12 @@
 >>>>>>> Updating ASM Symbols, updated to 4.0.0
 =======
 =======
+=======
+>>>>>>> Rebase to 4.1.17
     "RAINBOW_BRIDGE_CONDITION": "03481410",
+    "SHUFFLE_COWS": "0348141F",
     "TIME_TRAVEL_SAVED_EQUIPS": "03481C08",
+<<<<<<< Dev
     "active_item_action_id": "03486F9C",
     "active_item_fast_chest": "03486F8C",
     "active_item_graphic_id": "03486F90",
@@ -482,4 +504,43 @@
     "stones_sprite": "03485F98"
 >>>>>>> Functionality!
 >>>>>>> Functionality!
+=======
+    "active_item_action_id": "034870C4",
+    "active_item_fast_chest": "034870B4",
+    "active_item_graphic_id": "034870B8",
+    "active_item_object_id": "034870BC",
+    "active_item_row": "034870C8",
+    "active_item_text_id": "034870C0",
+    "active_override": "034870D0",
+    "active_override_is_outgoing": "034870CC",
+    "cfg_dungeon_info_enable": "03487088",
+    "cfg_dungeon_info_mq_enable": "034870A4",
+    "cfg_dungeon_info_mq_need_map": "034870A0",
+    "cfg_dungeon_info_reward_need_altar": "03487098",
+    "cfg_dungeon_info_reward_need_compass": "0348709C",
+    "cfg_dungeon_is_mq": "034870F4",
+    "cfg_dungeon_rewards": "03485F48",
+    "cfg_file_select_hash": "034870A8",
+    "cfg_item_overrides": "0348711C",
+    "dpad_sprite": "03486070",
+    "dummy_actor": "034870D8",
+    "dungeon_count": "0348708C",
+    "dungeons": "03485F6C",
+    "font_sprite": "03486080",
+    "hash_sprites": "03487090",
+    "hash_symbols": "03486008",
+    "heap_next": "034870F0",
+    "item_overrides_count": "034870DC",
+    "item_table": "034860D0",
+    "items_sprite": "034860A0",
+    "medal_colors": "03485F58",
+    "medals_sprite": "034860B0",
+    "object_slots": "0348811C",
+    "pending_freezes": "034870E0",
+    "pending_item_queue": "03487104",
+    "quest_items_sprite": "03486090",
+    "satisified_pending_frames": "034870B0",
+    "setup_db": "03486048",
+    "stones_sprite": "034860C0"
+>>>>>>> Rebase to 4.1.17
 }
