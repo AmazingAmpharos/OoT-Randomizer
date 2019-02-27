@@ -30,10 +30,21 @@
             "House of Twins": "True",
             "Know It All House": "True",
             "Kokiri Shop": "True",
-            "Deku Tree Lobby": "(Kokiri_Sword and Buy_Deku_Shield) or open_forest",
+            "Outside Deku Tree": "(Kokiri_Sword and Buy_Deku_Shield) or open_forest",
             "Lost Woods": "True",
             "Lost Woods Bridge": "can_leave_forest",
             "Kokiri Forest Storms Grotto": "can_play(Song_of_Storms)"
+        }
+    },
+    {
+        "region_name": "Outside Deku Tree",
+        "locations": {
+            "Deku Tree Gossip Stone (Left)": "True",
+            "Deku Tree Gossip Stone (Right)": "True"
+        },
+        "exits": {
+            "Deku Tree Lobby": "True",
+            "Kokiri Forest" : "True"
         }
     },
     {
@@ -567,9 +578,7 @@
             "Windmill": "True",
             "Kakariko Bazaar": "is_adult",
             "Kakariko Shooting Gallery": "True",
-            "Bottom of the Well": "
-                can_play(Song_of_Storms) and 
-                (dungeon_mq[Bottom_of_the_Well] or can_child_attack or has_nuts)",
+            "Bottom of the Well": "can_play(Song_of_Storms)",
             "Kakariko Potion Shop Front": "is_adult",
             "Kakariko Potion Shop Back": "is_adult",
             "Odd Medicine Building": "True",
@@ -713,9 +722,7 @@
         },
         "exits": {
             "Graveyard": "True",
-            "Shadow Temple Beginning": "
-                can_use(Dins_Fire) and can_see_with_lens and 
-                (can_use(Hover_Boots) or can_use(Hookshot))"
+            "Shadow Temple Entryway": "can_use(Dins_Fire)"
         }
     },
     {
@@ -1208,9 +1215,9 @@
             "GS Hyrule Field Near Gerudo Valley": "
                 (Hammer and has_fire_source and can_use(Hookshot)) or 
                 (Boomerang and has_explosives and can_use(Dins_Fire))",
-             "HF Grotto Cow":
-           "(can_use(Hammer) and has_fire_source) or
-              (has_explosives and can_use(Dins_Fire))"
+             "HF Grotto Cow": "
+                can_play(Eponas_Song) and ((can_use(Hammer) and has_fire_source) or
+                (has_explosives and can_use(Dins_Fire)))"
         },
         "exits": {
             "Field Valley Grotto Gossip Stone": "
