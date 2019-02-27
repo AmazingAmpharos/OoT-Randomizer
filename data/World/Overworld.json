@@ -137,12 +137,12 @@
             "Sacred Forest Meadow Entryway": "True",
             "Goron City Woods Warp": "True",
             "Zora River Child": "can_dive and can_leave_forest",
-            "Forest Temple Entry Area": "can_play(Sarias_Song) and is_adult",
+            "Forest Temple Entry Area": "(logic_adult_meadow_access or can_play(Sarias_Song)) and is_adult",
             "Lost Woods Generic Grotto": "can_blast_or_smash",
             "Deku Theater": "True",
             "Lost Woods Sales Grotto": "
                 has_explosives or (can_use(Hammer) and 
-                    (can_play(Minuet_of_Forest) or can_play(Sarias_Song)))"
+                    (logic_adult_meadow_access or can_play(Minuet_of_Forest) or can_play(Sarias_Song)))"
         }
     },
     {
@@ -154,7 +154,7 @@
                 Kokiri_Sword or can_use(Dins_Fire)",
             "Front of Meadow Grotto": "
                 has_explosives or (can_use(Hammer) and 
-                    (can_play(Minuet_of_Forest) or can_play(Sarias_Song)))"
+                    (logic_adult_meadow_access or can_play(Minuet_of_Forest) or can_play(Sarias_Song)))"
         }
     },
     {
@@ -225,7 +225,9 @@
                 can_use(Bow)",
             "Lake Hylia Freestanding PoH": "can_use(Scarecrow) or can_use(Magic_Bean)",
             "GS Lake Hylia Bean Patch": "has_bottle and can_child_attack",
-            "GS Lake Hylia Lab Wall": "Boomerang and nighttime",
+            "GS Lake Hylia Lab Wall": "
+                (Boomerang or
+                    (logic_lab_wall_gs and (has_sticks or Kokiri_Sword))) and nighttime",
             "GS Lake Hylia Small Island": "nighttime and can_child_attack",
             "GS Lake Hylia Giant Tree": "can_use(Longshot)",
             "Lake Hylia Lab Gossip Stone": "True",
@@ -246,7 +248,9 @@
     {
         "region_name": "Lake Hylia Lab",
         "locations": {
-            "Diving in the Lab": "(Progressive_Scale, 2)",
+            "Diving in the Lab": "
+                (Progressive_Scale, 2) or
+                (logic_lab_diving and Iron_Boots and can_use(Hookshot))",
             "GS Lab Underwater Crate": "Iron_Boots and can_use(Hookshot)"
         }
     },
@@ -311,7 +315,7 @@
         },
         "exits": {
             "Haunted Wasteland": "
-                Carpenter_Rescue and (can_use(Hover_Boots) or can_use(Longshot))",
+                Carpenter_Rescue and (logic_wasteland_crossing or can_use(Hover_Boots) or can_use(Longshot))",
             "Gerudo Training Grounds Lobby": "
                 Carpenter_Rescue and Gerudo_Membership_Card and is_adult"
         }
@@ -337,8 +341,8 @@
                 has_bottle and can_play(Requiem_of_Spirit) and can_child_attack",
             "GS Desert Colossus Tree": "can_use(Hookshot) and nighttime",
             "GS Desert Colossus Hill": "
-                ((can_use(Magic_Bean) and can_play(Requiem_of_Spirit)) or 
-                    can_use(Longshot)) and nighttime"
+                ((can_use(Magic_Bean) and can_play(Requiem_of_Spirit)) or can_use(Longshot) or
+                    (logic_colossus_gs and can_use(Hookshot))) and nighttime"
         },
         "exits": {
             "Colossus Fairy": "has_explosives",
@@ -559,7 +563,10 @@
             "GS Kakariko Skulltula House": "nighttime",
             "GS Kakariko Guard's House": "nighttime",
             "GS Kakariko Tree": "nighttime",
-            "GS Kakariko Watchtower": "(has_slingshot or has_bombchus) and nighttime",
+            "GS Kakariko Watchtower": "
+                (has_slingshot or has_bombchus or
+                    (logic_kakariko_tower_gs and (has_sticks or Kokiri_Sword) and
+                    (damage_multiplier != 'ohko' or has_bottle or can_use(Nayrus_Love)))) and nighttime",
             "GS Kakariko Above Impa's House": "can_use(Hookshot) and nighttime"
         },
         "exits": {

@@ -389,6 +389,102 @@ logic_tricks = {
                     Release the Bombchu with good timing so that
                     it explodes near the bottom of the pot.
                     '''},
+    'Adult Meadow Access without Saria\'s or Minuet': {
+        'name'    : 'logic_adult_meadow_access',
+        'tooltip' : '''\
+                    With a specific position and angle, you can
+                    backflip over Mido.
+                    '''},
+    'Reach Volvagia without Hover Boots or Pillar': {
+        'name'    : 'logic_volvagia_jump',
+        'tooltip' : '''\
+                    The Fire Temple Boss Door can be reached with a precise
+                    jump. You must be touching the side wall of the room so
+                    so that Link will grab the ledge from farther away than
+                    is normally possible.
+                    '''},
+    'Diving in the Lab without Gold Scale': {
+        'name'    : 'logic_lab_diving',
+        'tooltip' : '''\
+                    Remove the Iron Boots in the midst of
+                    Hookshotting the underwater crate.
+                    '''},
+    'Deliver Eye Drops with Bolero of Fire': {
+        'name'    : 'logic_biggoron_bolero',
+        'tooltip' : '''\
+                    If you do not wear the Goron Tunic, the heat timer
+                    inside the crater will override the trade item's timer.
+                    When you exit to Death Mountain Trail you will have
+                    one second to deliver the Eye Drops before the timer
+                    expires. It works best if you play Bolero as quickly as
+                    possible upon receiving the Eye Drops. If you have few
+                    hearts, there is enough time to dip Goron City to
+                    refresh the heat timer as long as you've already
+                    pulled the block.
+                    '''},
+    'Wasteland Crossing without Hover Boots or Longshot': {
+        'name'    : 'logic_wasteland_crossing',
+        'tooltip' : '''\
+                    You can beat the quicksand by backwalking across it
+                    in a specific way.
+                    '''},
+    'Desert Colossus Hill GS with Hookshot': {
+        'name'    : 'logic_colossus_gs',
+        'tooltip' : '''\
+                    Somewhat precise. If you kill enough Leevers
+                    you can get enough of a break to take some time
+                    to aim more carefully.
+                    '''},
+    'Dodongo\'s Cavern Scarecrow GS with Armos Statue': {
+        'name'    : 'logic_dc_scarecrow_gs',
+        'tooltip' : '''\
+                    You can jump off an Armos Statue to reach the
+                    alcove with the Gold Skulltula. It takes quite
+                    a long time to pull the statue the entire way.
+                    The jump to the alcove can be a pit picky when
+                    done as child.
+                    '''},
+    'Kakariko Tower GS with Jump Slash': {
+        'name'    : 'logic_kakariko_tower_gs',
+        'tooltip' : '''\
+                    Climb the tower as high as you can without
+                    touching the Gold Skulltula, then let go and
+                    jump slash immediately. You will take fall
+                    damage.
+                    '''},
+    'Lake Hylia Lab Wall GS with Jump Slash': {
+        'name'    : 'logic_lab_wall_gs',
+        'tooltip' : '''\
+                    The jump slash to actually collect the
+                    token is somewhat precise.
+                    '''},
+    'Spirit Temple MQ Lower Adult without Fire Arrows': {
+        'name'    : 'logic_spirit_mq_lower_adult',
+        'tooltip' : '''\
+                    It can be done with Din\'s Fire and Bow.
+                    Whenever an arrow passes through a lit torch, it
+                    resets the timer. It's finicky but it's also
+                    possible to stand on the pillar next to the center
+                    torch, which makes it easier.
+                    '''},
+    'Spirit Temple Map Chest with Bow': {
+        'name'    : 'logic_spirit_map_chest',
+        'tooltip' : '''\
+                    To get a line of sight from the upper torch to
+                    the map chest torches, you must pull an Armos
+                    statue all the way up the stairs.
+                    '''},
+    'Spirit Temple Sun Block Room Chest with Bow': {
+        'name'    : 'logic_spirit_sun_chest',
+        'tooltip' : '''\
+                    Using the blocks in the room as platforms you can
+                    get lines of sight to all three torches. The timer
+                    on the torches is quite short so you must move
+                    quickly in order to light all three.
+                    '''},
+
+
+
     'Zora\'s Domain Entry with Hover Boots': {
         'name'    : 'logic_zora_with_hovers',
         'tooltip' : '''\

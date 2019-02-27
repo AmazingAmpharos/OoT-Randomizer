@@ -18,7 +18,8 @@
             "GS Dodongo's Cavern East Side Room": "
                 has_explosives or is_adult or has_slingshot or 
                 Boomerang or has_sticks or Kokiri_Sword",
-            "GS Dodongo's Cavern Scarecrow": "can_use(Scarecrow) or can_use(Longshot)",
+            "GS Dodongo's Cavern Scarecrow": "
+                can_use(Scarecrow) or can_use(Longshot) or logic_dc_scarecrow_gs",
             "DC Deku Scrub Deku Sticks": "
                 is_adult or has_slingshot or has_sticks or 
                 has_explosives or Kokiri_Sword",
