@@ -518,8 +518,30 @@ pending_junk_pool = []
 junk_pool = []
 
 
+remove_junk_items = [
+    'Bombs (5)',
+    'Deku Nuts (5)',
+    'Deku Stick (1)',
+    'Deku Shield',
+    'Hylian Shield',
+    'Recovery Heart',
+    'Arrows (5)',
+    'Arrows (10)',
+    'Arrows (30)',
+    'Rupees (5)',
+    'Rupees (20)',
+    'Rupees (50)',
+    'Rupees (200)',
+    'Deku Nuts (10)',
+    'Bombs (10)',
+    'Bombs (20)',
+    'Deku Seeds (30)',
+    'Ice Trap',
+]
+
+
 item_groups = {
-    'Junk': (*zip(*junk_pool_base),)[0] + ('Ice Trap',),
+    'Junk': remove_junk_items,
     'AdultTrade': tradeitems,
     'Bottle': normal_bottles,
     'Spell': ('Dins Fire', 'Farores Wind', 'Nayrus Love'),
