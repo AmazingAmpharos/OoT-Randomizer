@@ -1,3 +1,4 @@
+from Region import Region
 from collections import Counter, defaultdict
 import copy
 
@@ -33,32 +34,31 @@ class State(object):
         return new_state
 
 
-    def can_reach(self, spot, resolution_hint=None):
-        try:
-            spot_type = spot.spot_type
-            if spot_type == 'Location' or spot_type == 'Entrance':
-                return spot.can_reach(self)
-            elif spot_type == 'Region':
-                correct_cache = self.region_cache
-            else:
-                raise AttributeError
-        except AttributeError:
+    def get_spot(self, spot, resolution_hint='Region'):
+        if isinstance(spot, str):
             # try to resolve a name
             if resolution_hint == 'Location':
-                spot = self.world.get_location(spot)
-                return spot.can_reach(self)
+                return self.world.get_location(spot)
             elif resolution_hint == 'Entrance':
-                spot = self.world.get_entrance(spot)
-                return spot.can_reach(self)
+                return self.world.get_entrance(spot)
+            elif resolution_hint == 'Region':
+                return self.world.get_region(spot)
             else:
-                # default to Region
-                spot = self.world.get_region(spot)
-                correct_cache = self.region_cache
+                raise AttributeError('Unknown resolution hint type: ' + str(resolution_hint))
+        else:
+            return spot           
+
+
+    def can_reach(self, spot, resolution_hint='Region'):
+        spot = self.get_spot(spot, resolution_hint)
+
+        if not isinstance(spot, Region):
+            return spot.can_reach(self)
 
         if spot.recursion_count > 0:
             return False
 
-        if spot not in correct_cache:
+        if spot not in self.region_cache:
             # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that ia what we are trying to figure out right now in the first place
             spot.recursion_count += 1
             self.recursion_count += 1
@@ -71,12 +71,12 @@ class State(object):
             # we only store qualified false results (i.e. ones not inside a hypothetical)
             if not can_reach:
                 if self.recursion_count == 0:
-                    correct_cache[spot] = can_reach
+                    self.region_cache[spot] = can_reach
             else:
-                correct_cache[spot] = can_reach
+                self.region_cache[spot] = can_reach
             return can_reach
 
-        return correct_cache[spot]
+        return self.region_cache[spot]
 
 
     def item_name(self, location):

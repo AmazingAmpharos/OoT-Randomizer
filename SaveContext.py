@@ -831,6 +831,7 @@ class SaveContext():
         "Hylian Shield"  : {'equip_items.hylian_shield' : True},
         "Mirror Shield"  : {'equip_items.mirror_shield' : True},
         "Kokiri Sword"   : {'equip_items.kokiri_sword'  : True},
+        "Master Sword"   : {'equip_items.master_sword'  : True},
         "Biggoron Sword" : {
             'equip_items.biggoron_sword' : True,
             'bgs_flag'                   : True,
