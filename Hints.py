@@ -555,7 +555,7 @@ def buildGanonText(world, messages):
     # light arrow hint or validation chest item
     if world.trials == 0:
         text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
-        if world.distribution.get_starting_item('Light Arrows').count > 0:
+        if world.distribution.get_starting_item('Light Arrows') > 0:
             text += "\x05\x42your pocket\x05\x40"
         else:
             location = world.light_arrow_location
