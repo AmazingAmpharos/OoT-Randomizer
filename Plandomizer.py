@@ -457,6 +457,13 @@ class WorldDistribution(object):
             save_context.give_item(name, record.count)
 
 
+    def get_starting_item(self, item):
+        if item in self.starting_items:
+            return self.starting_items[item].count
+        else:
+            return 0
+
+
 class Distribution(object):
     def __init__(self, settings, src_dict={}):
         self.settings = settings
