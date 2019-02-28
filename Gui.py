@@ -119,18 +119,14 @@ def guiMain(settings=None):
     frames['logic_tab'] = ttk.Frame(notebook)
     frames['other_tab'] = ttk.Frame(notebook)
     frames['cosmetic_tab'] = ttk.Frame(notebook)
-    frames['cosmetic_2_tab'] = ttk.Frame(notebook)
     frames['SFX_tab'] = ttk.Frame(notebook)
     frames['cosmetic_tab_left'] = Frame(frames['cosmetic_tab'])
     frames['cosmetic_tab_right'] = Frame(frames['cosmetic_tab'])
-    frames['cosmetic_2_tab_left'] = Frame(frames['cosmetic_2_tab'])
-    frames['cosmetic_2_tab_right'] = Frame(frames['cosmetic_2_tab'])
     notebook.add(frames['rom_tab'], text='ROM Options')
     notebook.add(frames['rules_tab'], text='Main Rules')
     notebook.add(frames['logic_tab'], text='Detailed Logic')
     notebook.add(frames['other_tab'], text='Other')
     notebook.add(frames['cosmetic_tab'], text='Cosmetic')
-    notebook.add(frames['cosmetic_2_tab'], text='Cosmetic 2')
     notebook.add(frames['SFX_tab'], text='SFX')
 
     #######################
@@ -160,17 +156,11 @@ def guiMain(settings=None):
 
     #Cosmetic tab
     frames['cosmetic']    = LabelFrame(frames['cosmetic_tab_left'],  text='General',           labelanchor=NW)
-    frames['sword_trails_inner']= LabelFrame(frames['cosmetic_tab_left'],  text='Sword Trail Inner Colors',labelanchor=NW)
-    frames['sword_trails_outer']= LabelFrame(frames['cosmetic_tab_left'],  text='Sword Trail Outer Colors',labelanchor=NW)
+    frames['sword_trails']= LabelFrame(frames['cosmetic_tab_left'],  text='Sword Trail Colors',labelanchor=NW)
     frames['gauntlet_colors']= LabelFrame(frames['cosmetic_tab_left'], text='Gauntlet Colors', labelanchor=NW)
-    frames['heart_colors']= LabelFrame(frames['cosmetic_tab_left'],  text='Heart Colors',      labelanchor=NW)
-    frames['magic_colors']= LabelFrame(frames['cosmetic_tab_left'],  text='Magic Color',       labelanchor=NW)
-    frames['tunic_colors']= LabelFrame(frames['cosmetic_tab_right'], text='Tunics',            labelanchor=NW)
-    frames['gauntlet_colors']= LabelFrame(frames['cosmetic_tab_right'], text='Gauntlet Colors', labelanchor=NW)
-
-    #Cosmetic 2 tab
-    frames['navi_colors_inner'] = LabelFrame(frames['cosmetic_2_tab_left'],  text='Navi Colors Inner',labelanchor=NW)
-    frames['navi_colors_outer'] = LabelFrame(frames['cosmetic_2_tab_right'], text='Navi Colors Outer',labelanchor=NW)
+    frames['ui_colors']=    LabelFrame(frames['cosmetic_tab_right'], text='UI Colors',         labelanchor=NW)
+    frames['tunic_colors']= LabelFrame(frames['cosmetic_tab_right'], text='Tunic Colors',      labelanchor=NW)
+    frames['navi_colors']=  LabelFrame(frames['cosmetic_tab_right'], text='Navi Colors',       labelanchor=NW)
 
     #Cosmetic tab
     frames['sfx']         = LabelFrame(frames['SFX_tab'],            text='General',           labelanchor=NW)
@@ -492,25 +482,14 @@ def guiMain(settings=None):
     frames['cosmetic_tab_left'].pack( fill=BOTH, expand=True, anchor=W, side=LEFT)
     frames['cosmetic_tab_right'].pack(fill=BOTH, expand=True, anchor=W, side=RIGHT)
 
-    # Cosmetics 2 tab
-    frames['cosmetic_2_tab_left'].pack( fill=BOTH, expand=True, anchor=W, side=LEFT)
-    frames['cosmetic_2_tab_right'].pack(fill=BOTH, expand=True, anchor=W, side=RIGHT)
-
     # Cosmetics tab - Left Side
     frames['gauntlet_colors'].pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1))
-    frames['heart_colors'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))
-    frames['magic_colors'].pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1))
-    frames['sword_trails_inner'].pack(fill=BOTH, expand=True, anchor=W, side=TOP)
-    frames['sword_trails_outer'].pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM)
+    frames['ui_colors'].pack(      fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1))
+    frames['sword_trails'].pack(   fill=BOTH, expand=True, anchor=W, side=TOP)
 
     # Cosmetics tab - Right Side
     frames['tunic_colors'].pack(fill=BOTH, expand=True, anchor=N, side=TOP)
-    frames['gauntlet_colors'].pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM)
-    frames['magic_colors'].pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM)
-
-    # Cosmetics 2 tab - Left Side
-    frames['navi_colors_inner'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))
-    frames['navi_colors_outer'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))
+    frames['navi_colors'].pack( fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))
 
 
     #SFX tab
