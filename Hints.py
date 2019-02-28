@@ -337,7 +337,7 @@ def get_junk_hint(spoiler, world, checked):
     hint = random.choice(hints)
     checked.append(hint.name)
 
-    return (GossipText(hint.text), None)
+    return (GossipText(hint.text, prefix=''), None)
 
 
 hint_func = {
@@ -535,7 +535,7 @@ def buildBossString(reward, color, world):
         if location.item.name == reward:
             item_icon = chr(location.item.special['item_id'])
             location_text = getHint(location.name, world.clearer_hints).text
-            gossip_text = GossipText("\x08\x13%s%s" % (item_icon, location_text), [color])
+            gossip_text = GossipText("\x08\x13%s%s" % (item_icon, location_text), [color], prefix='')
     return str(gossip_text)
 
 
