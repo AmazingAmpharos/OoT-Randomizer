@@ -259,7 +259,7 @@ def main(settings, window=dummy_window()):
         window.update_status('Creating Settings Log')
         spoiler_path = os.path.join(output_dir, '%s_Settings.json' % outfilebase)
     settings.distribution.to_file(spoiler_path)
-    logger.info("Created spoiler log at: %s" % ('%s_Settings.txt' % outfilebase))
+    logger.info("Created spoiler log at: %s" % ('%s_Settings.json' % outfilebase))
 
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
