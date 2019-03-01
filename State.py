@@ -342,6 +342,10 @@ class State(object):
     def has_scarecrow_song(self):
         return self.world.free_scarecrow or self.can_reach('Lake Hylia', age='both')
 
+    def can_use_projectile(self):
+        return self.has_explosives() or \
+               (self.is_adult() and (self.has_bow() or self.has('Progressive Hookshot'))) or \
+               (self.is_child() and (self.has_slingshot() or self.has('Boomerang')))
 
     def has_projectile(self, age='either'):
         if age == 'child':
@@ -382,6 +386,10 @@ class State(object):
         # Warning: This only considers items that are marked as advancement items
         return self.heart_count() >= count
 
+    def has_shield(self):
+        #The mirror shield does not count as it cannot reflect deku scrub attack
+        return (self.is_adult() and self.has('Buy Hylian Shield')) or \
+        (self.is_child() and self.has('Buy Deku Shield'))
 
     def heart_count(self):
         # Warning: This only considers items that are marked as advancement items
@@ -395,6 +403,8 @@ class State(object):
     def has_fire_source(self):
         return self.can_use('Dins Fire') or self.can_use('Fire Arrows')
 
+    def has_fire_source_with_torch(self):
+        return self.has_fire_source() or (self.is_child() and self.has_sticks())
 
     def guarantee_hint(self):
         if(self.world.hints == 'mask'):
