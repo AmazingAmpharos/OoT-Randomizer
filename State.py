@@ -376,11 +376,11 @@ class State(object):
 
     def has_bottle(self):
         is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter' and (item != 'Bottle with Big Poe' or self.can_reach('Castle Town Rupee Room', 'Region', age='adult')))
-        return self.has_any(is_normal_bottle)
+        return self.has_any(is_normal_bottle) or self.has('Bottle with Letter', 2)
 
 
     def bottle_count(self):
-        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and pritem != 'Bottle with Letter' and (pritem != 'Bottle with Big Poe' or self.can_reach('Castle Town Rupee Room', 'Region', age='adult'))])
+        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and (pritem != 'Bottle with Big Poe' or self.can_reach('Castle Town Rupee Room', 'Region', age='adult'))]) - (1 if self.has('Bottle with Letter') else 0)
 
 
     def has_hearts(self, count):

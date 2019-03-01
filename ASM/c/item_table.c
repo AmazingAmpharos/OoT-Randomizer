@@ -244,6 +244,9 @@ item_row_t item_table[] = {
     [0xC6] = ITEM_ROW(0x53, 0, 0x41, 0x00D6, 0x00B6, 0x07, no_upgrade, give_song, 17, -1), // Song of Storms
 
     [0xC7] = ITEM_ROW(0x53, 0, 0x41, 0x00F8, 0x00D1, 0x23, no_upgrade, give_tycoon_wallet, -1, -1), // Tycoon's Wallet
+    [0xC8] = ITEM_ROW(  -1, 0,   -1,     -1, 0x010B, 0x45, letter_to_bottle,  no_effect, -1, -1), // "Progressive" Ruto's Letter
+    [0xC9] = ITEM_ROW(0x53, 0, 0x14, 0x9099, 0x010B, 0x45, no_upgrade, no_effect, -1, -1), // Redundant Letter Bottle
+
 };
 
 item_row_t *get_item_row(uint16_t item_id) {
