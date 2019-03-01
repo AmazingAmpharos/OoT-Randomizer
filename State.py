@@ -254,12 +254,15 @@ class State(object):
     def can_use(self, item):
         magic_items = ['Dins Fire', 'Farores Wind', 'Nayrus Love', 'Lens of Truth']
         adult_items = ['Bow', 'Hammer', 'Iron Boots', 'Hover Boots', 'Epona']
+        adult_buy_or_find = ['Goron Tunic', 'Zora Tunic']
         child_items = ['Slingshot', 'Boomerang', 'Kokiri Sword']
         magic_arrows = ['Fire Arrows', 'Light Arrows']
         if item in magic_items:
             return self.has(item) and self.has('Magic Meter')
         elif item in child_items:
             return self.has(item) and self.is_child()
+        elif item in adult_buy_or_find:
+            return (self.has(item) or self.has('Buy ' + item)) and self.is_adult()
         elif item in adult_items:
             return self.has(item) and self.is_adult()
         elif item in magic_arrows:
@@ -349,14 +352,6 @@ class State(object):
             return self.has_explosives() or ((self.has_bow() or self.has('Progressive Hookshot')) and (self.has_slingshot() or self.has('Boomerang')))
         else:
             return self.has_explosives() or ((self.has_bow() or self.has('Progressive Hookshot')) or (self.has_slingshot() or self.has('Boomerang')))
-
-
-    def has_GoronTunic(self):
-        return (self.has('Goron Tunic') or self.has('Buy Goron Tunic'))
-
-
-    def has_ZoraTunic(self):
-        return (self.has('Zora Tunic') or self.has('Buy Zora Tunic'))
 
 
     def can_leave_forest(self):

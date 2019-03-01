@@ -47,7 +47,7 @@
         "locations": {
             "Gerudo Training Grounds Underwater Silver Rupee Chest": "
                 can_use(Hookshot) and can_play(Song_of_Time) and Iron_Boots and 
-                    (logic_fewer_tunic_requirements or has_ZoraTunic)"
+                    (logic_fewer_tunic_requirements or can_use(Zora_Tunic))"
         },
         "exits": {
             "Gerudo Training Grounds Central Maze Right": "can_play(Song_of_Time)",

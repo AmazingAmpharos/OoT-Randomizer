@@ -23,7 +23,7 @@
                 (Small_Key_Water_Temple, 5) and 
                 ((Iron_Boots and can_play(Zeldas_Lullaby)) or keysanity) and can_use(Hookshot)",
             #A trick about longshotting torches might go here
-            "Water Temple Dive": "(has_ZoraTunic or logic_fewer_tunic_requirements) and Iron_Boots"
+            "Water Temple Dive": "(can_use(Zora_Tunic) or logic_fewer_tunic_requirements) and Iron_Boots"
         }
     },
     {
@@ -72,7 +72,7 @@
         "dungeon": "Water Temple",
         "locations": {
             "Water Temple Central Pillar Chest": "
-                Iron_Boots and has_ZoraTunic and can_use(Hookshot)",
+                Iron_Boots and can_use(Zora_Tunic) and can_use(Hookshot)",
             "GS Water Temple Central Room": "
                 can_use(Longshot) or (can_use(Farores_Wind) and can_use(Hookshot))"
         }
