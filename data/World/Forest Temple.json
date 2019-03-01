@@ -9,7 +9,7 @@
             "GS Forest Temple Lobby": "can_use(Hookshot)"
         },
         "exits": {
-            "Forest Temple Entry Area": "True",
+            "Sacred Forest Meadow": "True",
             "Forest Temple NW Outdoors": "can_play(Song_of_Time)",
             "Forest Temple NE Outdoors": "can_use(Bow)",
             "Forest Temple Block Push Room": "(Small_Key_Forest_Temple, 1)"

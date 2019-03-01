@@ -50,6 +50,9 @@ def set_rules(world):
             # This location needs to be a small key. Make sure the boss key isn't placed here.
             forbid_item(location, 'Boss Key (Forest Temple)')
 
+        if location.type == 'GossipStone' and world.hints == 'mask':
+            add_rule(location, lambda state: state.is_child())
+
     for location in world.disabled_locations:
         try:
             world.get_location(location).disabled = DisableType.PENDING
@@ -106,16 +109,7 @@ def set_shop_rules(world):
 
             # Add adult only checks
             if location.item.name in ['Buy Goron Tunic', 'Buy Zora Tunic']:
-                if location.parent_region.name == 'Goron Shop':
-                    add_rule(
-                        location,
-                        lambda state: state.is_adult() and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow()))
-                elif location.parent_region.name == 'Zora Shop':
-                    add_rule(location, lambda state: state.can_reach('Zoras Domain Frozen -> Zora Shop', 'Entrance'))
-                elif location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
-                    set_rule(location, lambda state: False)
-                else:
-                    add_rule(location, lambda state: state.is_adult())
+                add_rule(location, lambda state: state.is_adult())
 
             # Add item prerequisit checks
             if location.item.name in ['Buy Blue Fire',

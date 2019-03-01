@@ -7,7 +7,7 @@
             "GS Forest Temple MQ First Hallway": "True"
         },
         "exits": {
-            "Forest Temple Entry Area": "True",
+            "Sacred Forest Meadow": "True",
             "Forest Temple Central Area": "(Small_Key_Forest_Temple, 1)"
         }
     },

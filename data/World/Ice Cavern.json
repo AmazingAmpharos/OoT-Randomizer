@@ -13,7 +13,7 @@
             "GS Ice Cavern Push Block Room": "has_blue_fire and can_use(Hookshot)"
         },
         "exits": {
-            "Outside Ice Cavern": "True"
+            "Zoras Fountain": "True"
         }
     }
 ]
