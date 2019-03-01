@@ -237,7 +237,7 @@ class State(object):
 
     def has_blue_fire(self):
         return self.has_bottle() and \
-                (self.can_reach('Ice Cavern', age='either')
+                (self.can_reach('Ice Cavern', age='adult')
                 or self.can_reach('Ganons Castle Water Trial', age='either')
                 or self.has('Buy Blue Fire')
                 or (self.world.dungeon_mq['Gerudo Training Grounds'] and self.can_reach('Gerudo Training Grounds Stalfos Room', age='either')))
