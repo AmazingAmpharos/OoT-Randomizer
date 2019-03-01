@@ -86,23 +86,24 @@ class State(object):
         if spot.recursion_count[age_type] > 0:
             return False
 
-        if spot not in self.region_cache[age_type]:
-            # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that is what we are trying to figure out right now in the first place
-            spot.recursion_count[age_type] += 1
-            self.recursion_count[age_type] += 1
+        if spot in self.region_cache[age_type]:
+            return self.region_cache[age_type][spot]
 
-            can_reach = spot.can_reach(self)
+        # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that is what we are trying to figure out right now in the first place
+        spot.recursion_count[age_type] += 1
+        self.recursion_count[age_type] += 1
 
-            spot.recursion_count[age_type] -= 1
-            self.recursion_count[age_type] -= 1
+        can_reach = spot.can_reach(self)
 
-            # we store true results and qualified false results (i.e. ones not inside a hypothetical)
-            if can_reach or self.recursion_count[age_type] == 0:
-                self.region_cache[age_type][spot] = can_reach
+        spot.recursion_count[age_type] -= 1
+        self.recursion_count[age_type] -= 1
 
-            return can_reach
+        # we store true results and qualified false results (i.e. ones not inside a hypothetical)
+        if can_reach or self.recursion_count[age_type] == 0:
+            self.region_cache[age_type][spot] = can_reach
+
+        return can_reach
         
-        return self.region_cache[age_type][spot]
 
 
     def as_either(self, lambda_rule):
