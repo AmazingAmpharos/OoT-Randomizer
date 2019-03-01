@@ -9,9 +9,13 @@ def set_rules(world):
     # ganon can only carry triforce
     world.get_location('Ganon').item_rule = lambda location, item: item.name == 'Triforce'
 
-    # these are default save&quit points and always accessible
-    world.get_region('Links House').can_reach = lambda state: True
-    
+    # these are default save&quit points and always accessible in their corresponding age
+    old_can_reach = world.get_region('Links House').can_reach
+    world.get_region('Links House').can_reach = lambda state: state.is_child() or old_can_reach(state)
+
+    old_can_reach = world.get_region('Temple of Time').can_reach
+    world.get_region('Temple of Time').can_reach = lambda state: state.is_adult() or old_can_reach(state)
+
     for location in world.get_locations():
 
         if not world.shuffle_song_items:
@@ -45,6 +49,9 @@ def set_rules(world):
         if location.name == 'Forest Temple MQ First Chest' and world.shuffle_bosskeys == 'dungeon' and world.shuffle_smallkeys == 'dungeon' and world.tokensanity == 'off':
             # This location needs to be a small key. Make sure the boss key isn't placed here.
             forbid_item(location, 'Boss Key (Forest Temple)')
+
+        if location.type == 'GossipStone' and world.hints == 'mask':
+            add_rule(location, lambda state: state.is_child())
 
     for location in world.disabled_locations:
         try:
@@ -102,16 +109,7 @@ def set_shop_rules(world):
 
             # Add adult only checks
             if location.item.name in ['Buy Goron Tunic', 'Buy Zora Tunic']:
-                if location.parent_region.name == 'Goron Shop':
-                    add_rule(
-                        location,
-                        lambda state: state.is_adult() and (state.has_explosives() or state.has('Progressive Strength Upgrade') or state.has_bow()))
-                elif location.parent_region.name == 'Zora Shop':
-                    add_rule(location, lambda state: state.can_reach('Zoras Domain Frozen -> Zora Shop', 'Entrance'))
-                elif location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
-                    set_rule(location, lambda state: False)
-                else:
-                    add_rule(location, lambda state: state.is_adult())
+                add_rule(location, lambda state: state.is_adult())
 
             # Add item prerequisit checks
             if location.item.name in ['Buy Blue Fire',

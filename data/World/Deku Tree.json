@@ -14,7 +14,7 @@
             "GS Deku Tree Basement Gate": "can_child_attack"
         },
         "exits": {
-            "Kokiri Forest": "True",
+            "Outside Deku Tree": "True",
             "Deku Tree Slingshot Room": "Buy_Deku_Shield",
             "Deku Tree Boss Room": "has_slingshot and (has_sticks or can_use(Dins_Fire))"
         }

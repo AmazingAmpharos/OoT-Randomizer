@@ -8,14 +8,17 @@ class State(object):
     def __init__(self, parent):
         self.prog_items = Counter()
         self.world = parent
-        self.region_cache = {}
-        self.recursion_count = 0
+        self.region_cache = { 'child': {}, 'adult': {} }
+        self.recursion_count = { 'child': 0, 'adult': 0 }
         self.collected_locations = {}
+        self.current_spot = None
+        self.adult = None
 
 
     def clear_cached_unreachable(self):
         # we only need to invalidate results which were False, places we could reach before we can still reach after adding more items
-        self.region_cache = {k: v for k, v in self.region_cache.items() if v}
+        for cache_type in self.region_cache:
+            self.region_cache[cache_type] = {k: v for k, v in self.region_cache[cache_type].items() if v}
 
 
     def clear_cache(self):
@@ -29,7 +32,7 @@ class State(object):
             new_world = self.world
         new_state = State(new_world)
         new_state.prog_items = copy.copy(self.prog_items)
-        new_state.region_cache = copy.copy(self.region_cache)
+        new_state.region_cache = {k: copy.copy(v) for k,v in self.region_cache.items()}
         new_state.collected_locations = copy.copy(self.collected_locations)
         return new_state
 
@@ -49,34 +52,111 @@ class State(object):
             return spot           
 
 
-    def can_reach(self, spot, resolution_hint='Region'):
-        spot = self.get_spot(spot, resolution_hint)
+    def can_reach(self, spot=None, resolution_hint='Region', age=None):
+        if spot == None:
+            # Default to the current spot's parent region, to allow can_reach to be used without arguments inside access rules
+            spot = self.current_spot.parent_region
+        else:
+            spot = self.get_spot(spot, resolution_hint)
+
+        if age == None:
+            # If the age parameter is missing, the current age should be used, but if it's not defined either, we default to age='either'
+            if self.adult == None:
+                return self.as_either(lambda state: state.can_reach(spot))
+        elif age == 'either':
+            return self.as_either(lambda state: state.can_reach(spot))
+        elif age == 'both':
+           return self.as_both(lambda state: state.can_reach(spot))
+        elif age == 'adult':
+            return self.as_adult(lambda state: state.can_reach(spot))
+        elif age == 'child':
+            return self.as_child(lambda state: state.can_reach(spot))
+        else:
+            raise AttributeError('Unknown age parameter type: ' + str(age))
 
         if not isinstance(spot, Region):
             return spot.can_reach(self)
 
-        if spot.recursion_count > 0:
+        # If we reached this point, it means the current age should be used
+        if self.adult:
+            age_type = 'adult'
+        else:
+            age_type = 'child'
+
+        if spot.recursion_count[age_type] > 0:
             return False
 
-        if spot not in self.region_cache:
-            # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that ia what we are trying to figure out right now in the first place
-            spot.recursion_count += 1
-            self.recursion_count += 1
+        if spot not in self.region_cache[age_type]:
+            # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that is what we are trying to figure out right now in the first place
+            spot.recursion_count[age_type] += 1
+            self.recursion_count[age_type] += 1
 
             can_reach = spot.can_reach(self)
 
-            spot.recursion_count -= 1
-            self.recursion_count -= 1
+            spot.recursion_count[age_type] -= 1
+            self.recursion_count[age_type] -= 1
 
-            # we only store qualified false results (i.e. ones not inside a hypothetical)
-            if not can_reach:
-                if self.recursion_count == 0:
-                    self.region_cache[spot] = can_reach
-            else:
-                self.region_cache[spot] = can_reach
+            # we store true results and qualified false results (i.e. ones not inside a hypothetical)
+            if can_reach or self.recursion_count[age_type] == 0:
+                self.region_cache[age_type][spot] = can_reach
+
             return can_reach
+        
+        return self.region_cache[age_type][spot]
 
-        return self.region_cache[spot]
+
+    def as_either(self, lambda_rule):
+        return self.as_adult(lambda_rule) or self.as_child(lambda_rule)
+
+
+    def as_both(self, lambda_rule):
+        return self.as_adult(lambda_rule) and self.as_child(lambda_rule)
+
+
+    def as_adult(self, lambda_rule):
+        return self.can_become_adult() and self.with_age(lambda_rule, 'adult')
+
+
+    def as_child(self, lambda_rule):
+        return self.with_age(lambda_rule, 'child')
+            
+
+    def with_age(self, lambda_rule, age):
+        # It's important to set the age property back to what it was originally after executing the rule here
+        original_adult = self.adult
+        self.adult = (age == 'adult')
+        lambda_rule_result = lambda_rule(self)
+        self.adult = original_adult
+        return lambda_rule_result
+
+
+    def with_spot(self, lambda_rule, spot):
+        # It's important to set the spot property back to what it was originally after executing the rule here
+        original_spot = self.current_spot
+        self.current_spot = spot
+        lambda_rule_result = lambda_rule(self)
+        self.current_spot = original_spot
+        return lambda_rule_result
+
+
+    def as_either_here(self, lambda_rule):
+        return self.as_either(self.add_reachability(lambda_rule))
+
+
+    def as_both_here(self, lambda_rule):
+        return self.as_both(self.add_reachability(lambda_rule))
+
+
+    def as_adult_here(self, lambda_rule):
+        return self.as_adult(self.add_reachability(lambda_rule))
+
+
+    def as_child_here(self, lambda_rule):
+        return self.as_child(self.add_reachability(lambda_rule))
+
+
+    def add_reachability(self, lambda_rule):
+        return lambda state: state.can_reach() and lambda_rule(state)
 
 
     def item_name(self, location):
@@ -101,24 +181,33 @@ class State(object):
         return self.prog_items[item]
 
 
-    def is_adult(self):
+    def can_become_adult(self):
         return self.has('Master Sword')
 
 
+    def is_adult(self):
+        return self.adult
+
+
+    def is_child(self):
+        return not self.adult
+
+
     def can_child_attack(self):
-        return  self.has_slingshot() or \
-                self.has('Boomerang') or \
-                self.has_sticks() or \
-                self.has_explosives() or \
-                self.has('Kokiri Sword') or \
-                (self.has('Dins Fire') and self.has('Magic Meter'))
+        return  self.is_child() and \
+                   (self.has_slingshot() or \
+                    self.has('Boomerang') or \
+                    self.has_sticks() or \
+                    self.has_explosives() or \
+                    self.has('Kokiri Sword') or \
+                    self.can_use('Dins Fire'))
 
 
     def can_stun_deku(self):
         return  self.is_adult() or \
                 self.can_child_attack() or \
                 self.has_nuts() or \
-                self.has('Buy Deku Shield')
+                self.can_use('Deku Shield')
 
 
     def has_nuts(self):
@@ -143,10 +232,10 @@ class State(object):
 
     def has_blue_fire(self):
         return self.has_bottle() and \
-                (self.can_reach('Ice Cavern')
-                or self.can_reach('Ganons Castle Water Trial')
+                (self.can_reach('Ice Cavern', age='either')
+                or self.can_reach('Ganons Castle Water Trial', age='either')
                 or self.has('Buy Blue Fire')
-                or (self.world.dungeon_mq['Gerudo Training Grounds'] and self.can_reach('Gerudo Training Grounds Stalfos Room')))
+                or (self.world.dungeon_mq['Gerudo Training Grounds'] and self.can_reach('Gerudo Training Grounds Stalfos Room', age='either')))
 
 
     def has_ocarina(self):
@@ -159,14 +248,21 @@ class State(object):
 
     def can_use(self, item):
         magic_items = ['Dins Fire', 'Farores Wind', 'Nayrus Love', 'Lens of Truth']
-        adult_items = ['Bow', 'Hammer', 'Iron Boots', 'Hover Boots', 'Magic Bean']
+        adult_items = ['Bow', 'Hammer', 'Iron Boots', 'Hover Boots', 'Epona']
+        child_items = ['Slingshot', 'Boomerang', 'Kokiri Sword']
         magic_arrows = ['Fire Arrows', 'Light Arrows']
         if item in magic_items:
             return self.has(item) and self.has('Magic Meter')
+        elif item in child_items:
+            return self.has(item) and self.is_child()
         elif item in adult_items:
             return self.has(item) and self.is_adult()
         elif item in magic_arrows:
             return self.has(item) and self.is_adult() and self.has_bow() and self.has('Magic Meter')
+        elif item == 'Sticks':
+            return self.has_sticks() and self.is_child()
+        elif item == 'Deku Shield':
+            return self.has('Buy Deku Shield') and self.is_child()
         elif item == 'Hookshot':
             return self.has('Progressive Hookshot') and self.is_adult()
         elif item == 'Longshot':
@@ -179,6 +275,9 @@ class State(object):
             return self.has('Progressive Hookshot') and self.is_adult() and self.has_ocarina()
         elif item == 'Distant Scarecrow':
             return self.has('Progressive Hookshot', 2) and self.is_adult() and self.has_ocarina()
+        elif item == 'Magic Bean':
+            # Magic Bean usability automatically checks for reachability as child to the current spot's parent region (with as_child_here)
+            return self.as_child_here(lambda state: state.has('Magic Bean')) and self.is_adult()
         else:
             return self.has(item)
 
@@ -187,8 +286,8 @@ class State(object):
         return self.has('Buy Bombchu (5)') or \
                self.has('Buy Bombchu (10)') or \
                self.has('Buy Bombchu (20)') or \
-               self.can_reach('Castle Town Bombchu Bowling') or \
-               self.can_reach('Haunted Wasteland Bombchu Salesman', 'Location')
+               self.can_reach('Castle Town Bombchu Bowling', age='either') or \
+               self.can_reach('Haunted Wasteland Bombchu Salesman', 'Location', age='either')
 
 
     def has_bombchus(self):
@@ -202,7 +301,7 @@ class State(object):
     def has_bombchus_item(self):
         return (self.world.bombchus_in_logic and \
                 (self.has_any(lambda pritem: pritem.startswith('Bombchus')) \
-                or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland')))) \
+                or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland', age='either')))) \
             or (not self.world.bombchus_in_logic and self.has('Bomb Bag'))
 
 
@@ -220,6 +319,16 @@ class State(object):
 
     def can_see_with_lens(self):
         return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
+
+
+    def can_plant_bugs(self):
+        return self.is_child() and self.has_bugs()
+
+
+    def has_bugs(self):
+        return self.has_bottle() and \
+            (self.can_leave_forest() or self.has_sticks() or self.has('Kokiri Sword') or 
+             self.has('Boomerang') or self.has_explosives() or self.has('Buy Bottle Bug'))
 
 
     def has_projectile(self, age='either'):
@@ -242,7 +351,7 @@ class State(object):
 
 
     def can_leave_forest(self):
-        return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'))
+        return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'), age='either')
 
 
     def can_finish_adult_trades(self):
@@ -251,13 +360,18 @@ class State(object):
         return (self.has('Claim Check') or ((self.has('Progressive Strength Upgrade') or self.can_blast_or_smash() or self.has_bow() or self.world.logic_biggoron_bolero) and (((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))))
 
 
+    def has_mask_of_truth(self):
+        # Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man.
+        return self.has('Zeldas Letter') and self.can_play('Sarias Song') and self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire')
+
+
     def has_bottle(self):
-        is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter' and (item != 'Bottle with Big Poe' or self.is_adult()))
+        is_normal_bottle = lambda item: (item.startswith('Bottle') and item != 'Bottle with Letter' and (item != 'Bottle with Big Poe' or self.can_reach('Castle Town Rupee Room', 'Region', age='adult')))
         return self.has_any(is_normal_bottle)
 
 
     def bottle_count(self):
-        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and pritem != 'Bottle with Letter' and (pritem != 'Bottle with Big Poe' or self.is_adult())])
+        return sum([pritem for pritem in self.prog_items if pritem.startswith('Bottle') and pritem != 'Bottle with Letter' and (pritem != 'Bottle with Big Poe' or self.can_reach('Castle Town Rupee Room', 'Region', age='adult'))])
 
 
     def has_hearts(self, count):
@@ -281,7 +395,7 @@ class State(object):
     def guarantee_hint(self):
         if(self.world.hints == 'mask'):
             # has the mask of truth
-            return self.has('Zeldas Letter') and self.can_play('Sarias Song') and self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire')
+            return self.has_mask_of_truth()
         elif(self.world.hints == 'agony'):
             # has the Stone of Agony
             return self.has('Stone of Agony')
@@ -333,8 +447,10 @@ class State(object):
                 del self.prog_items[item.name]
 
             # invalidate collected cache. unreachable regions are still unreachable
-            self.region_cache =   {k: v for k, v in self.region_cache.items() if not v}
-            self.recursion_count = 0
+            for cache_type in self.region_cache:
+                self.region_cache[cache_type] = {k: v for k, v in self.region_cache[cache_type].items() if not v}
+
+            self.recursion_count = {k: 0 for k in self.recursion_count}
 
 
     def __getstate__(self):
