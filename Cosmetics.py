@@ -286,7 +286,7 @@ def patch_sfx(rom, settings, log, symbols):
             if selection == 'random-choice':
                 selection = random.choice(sfx.get_hook_pool(hook)).value.keyword
             elif selection == 'random-ear-safe':
-                selection = random.choice(sfx.no_painful).value.keyword
+                selection = random.choice(sfx.get_hook_pool(hook, "TRUE")).value.keyword
             elif selection == 'completely-random':
                 selection = random.choice(sfx.standard).value.keyword
             sound_id  = sound_dict[selection]
