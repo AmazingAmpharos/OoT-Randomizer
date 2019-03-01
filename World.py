@@ -45,6 +45,8 @@ class World(object):
             setting_info = get_setting_info('starting_tod')
             choices = [ch for ch in setting_info.choices if ch not in ['default', 'random']]
             self.starting_tod = random.choice(choices)
+        if self.starting_age == 'random':
+            self.starting_age = random.choice(['child', 'adult'])
 
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
@@ -84,6 +86,7 @@ class World(object):
         new_world.skipped_trials = copy.copy(self.skipped_trials)
         new_world.dungeon_mq = copy.copy(self.dungeon_mq)
         new_world.big_poe_count = copy.copy(self.big_poe_count)
+        new_world.starting_age = self.starting_age
         new_world.can_take_damage = self.can_take_damage
         new_world.shop_prices = copy.copy(self.shop_prices)
         new_world.id = self.id
