@@ -846,6 +846,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         }
         save_context.addresses['time_of_day'].value = tod[world.starting_tod]
 
+    if world.starting_age == 'adult':
+        save_context.addresses['link_age'].value = False                    # Set link's age to adult
+        save_context.addresses['scene_index'].value = 0x43                  # Set the scene index to Temple of Time
+        save_context.addresses['equip_items']['master_sword'].value = True  # Equip Master Sword
+
     # Revert change that Skips the Epona Race
     if not world.no_epona_race:
         rom.write_int32(0xA9E838, 0x03E00008)
@@ -1365,7 +1370,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # actually write the save table to rom
     world.distribution.give_items(save_context)
-    save_context.equip_items('child')
+    save_context.equip_items(world.starting_age)
     save_context.write_save_table(rom)
 
     return rom
