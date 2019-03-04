@@ -214,7 +214,7 @@ normal_bottles = [
     'Bottle with Big Poe',
     'Bottle with Blue Fire']
 
-normal_bottle_count = 3
+bottle_count = 4
 
 
 normal_rupees = (
@@ -615,11 +615,11 @@ def get_pool_core(world):
     else:
         placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
 
+    ruto_bottles = 1
     if world.open_fountain:
-        bottle = random.choice(normal_bottles)
-        pool.append(bottle)
-    else:
-        pool.append('Bottle with Letter')
+        ruto_bottles = 0
+    elif world.item_pool_value == 'plentiful':
+        ruto_bottles += 1
 
     if world.shuffle_weird_egg:
         pool.append('Weird Egg')
@@ -966,9 +966,12 @@ def get_pool_core(world):
     else:
         pool.extend(GC_vanilla)
 
-    for _ in range(normal_bottle_count):
-        bottle = random.choice(normal_bottles)
-        pool.append(bottle)
+    for i in range(bottle_count):
+        if i >= ruto_bottles:
+            bottle = random.choice(normal_bottles)
+            pool.append(bottle)
+        else:
+            pool.append('Bottle with Letter')
 
     earliest_trade = tradeitemoptions.index(world.logic_earliest_adult_trade)
     latest_trade = tradeitemoptions.index(world.logic_latest_adult_trade)
