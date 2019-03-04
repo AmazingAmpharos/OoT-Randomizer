@@ -123,9 +123,14 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
 
     @staticmethod
     def from_item(item):
+        if item.world.settings.world_count > 1:
+            player = item.world.id + 1
+        else:
+            player = None if item.location is not None and item.world is item.location.world else (item.world.id + 1)
+
         return LocationRecord({
             'item': item.name,
-            'player': None if item.location is not None and item.world is item.location.world else (item.world.id + 1),
+            'player': player,
             'model': item.looks_like_item.name if item.looks_like_item is not None and item.location.has_preview() and can_cloak(item, item.looks_like_item) else None,
             'price': item.price,
         })
