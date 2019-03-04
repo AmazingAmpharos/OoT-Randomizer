@@ -37,7 +37,7 @@
             "Deku Tree Gossip Stone (Right)": "True"
         },
         "exits": {
-            "Deku Tree Lobby": "is_child",
+            "Deku Tree Lobby": "is_child or shuffle_dungeon_entrances",
             "Kokiri Forest": "True"
         }
     },
@@ -563,7 +563,7 @@
             "Windmill": "True",
             "Kakariko Bazaar": "is_adult",
             "Kakariko Shooting Gallery": "True",
-            "Bottom of the Well": "is_child and can_play(Song_of_Storms)",
+            "Bottom of the Well": "can_play(Song_of_Storms) or (is_adult and shuffle_dungeon_entrances)",
             "Kakariko Potion Shop Front": "is_adult",
             "Kakariko Potion Shop Back": "is_adult",
             "Odd Medicine Building": "True",
@@ -871,7 +871,8 @@
             "Death Mountain Crater Lower": "
                 can_use(Hover_Boots) or can_use(Hookshot) or can_use(Magic_Bean)",
             "Fire Temple Lower": "
-                is_adult and (logic_fewer_tunic_requirements or can_use(Goron_Tunic))"
+                (is_child and shuffle_dungeon_entrances) or
+                (is_adult and (logic_fewer_tunic_requirements or can_use(Goron_Tunic)))"
         }
     },
     {
@@ -966,7 +967,7 @@
         "exits": {
             "Zoras Domain": "True",
             "Jabu Jabus Belly Beginning": "is_child and has_bottle",
-            "Ice Cavern": "is_adult",
+            "Ice Cavern Beginning": "is_adult",
             "Zoras Fountain Fairy": "has_explosives"
         }
     },

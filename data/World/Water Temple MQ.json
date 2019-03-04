@@ -15,7 +15,6 @@
             "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)"
         },
         "exits": {
-            "Lake Hylia": "True",
             "Water Temple Lowered Water Levels": "can_play(Zeldas_Lullaby) and Iron_Boots",
             "Water Temple Dark Link Region": "
                 Small_Key_Water_Temple and can_use(Longshot) and Iron_Boots"

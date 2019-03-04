@@ -3,7 +3,6 @@
         "region_name": "Dodongos Cavern Beginning",
         "dungeon": "Dodongos Cavern",
         "exits": {
-            "Dodongos Cavern Entryway": "True",
             "Dodongos Cavern Lobby": "can_blast_or_smash or Progressive_Strength_Upgrade"
         }
     },
