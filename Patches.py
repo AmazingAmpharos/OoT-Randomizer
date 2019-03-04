@@ -849,7 +849,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     if world.starting_age == 'adult':
         save_context.addresses['link_age'].value = False                    # Set link's age to adult
         save_context.addresses['scene_index'].value = 0x43                  # Set the scene index to Temple of Time
-        save_context.addresses['equip_items']['master_sword'].value = True  # Equip Master Sword
+        save_context.addresses['equip_items']['master_sword'].value = True  # Equip Master Sword by default
+        save_context.addresses['equip_items']['kokiri_tunic'].value = True  # Equip Kokiri Tunic & Kokiri Boots by default
+        save_context.addresses['equip_items']['kokiri_boots'].value = True  # (to avoid issues when going back child for the first time)
 
     # Revert change that Skips the Epona Race
     if not world.no_epona_race:
@@ -1370,7 +1372,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     # actually write the save table to rom
     world.distribution.give_items(save_context)
-    save_context.equip_items(world.starting_age)
+    if world.starting_age == 'adult':
+        # When starting as adult, the pedestal doesn't handle child default equips when going back child the first time, so we have to equip them ourselves
+        save_context.equip_default_items('child')
+    save_context.equip_current_items(world.starting_age)
     save_context.write_save_table(rom)
 
     return rom
