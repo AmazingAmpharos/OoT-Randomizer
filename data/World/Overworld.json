@@ -231,7 +231,7 @@
                 is_child or can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location)",
             "Water Temple Lobby": "
                 (Iron_Boots or (logic_morpha_with_scale and (Progressive_Scale, 2))) and 
-                can_use(Hookshot) and (logic_fewer_tunic_requirements or has_ZoraTunic)",
+                can_use(Hookshot) and (logic_fewer_tunic_requirements or can_use(Zora_Tunic))",
             "Lake Hylia Grotto": "can_stun_deku"
         }
     },
@@ -688,6 +688,7 @@
     {
         "region_name": "Dampes Grave",
         "locations": {
+            "Dampes Grave Nut Pot": "True",
             "Hookshot Chest": "True",
             "Dampe Race Freestanding PoH": "True"
         }
@@ -781,8 +782,8 @@
                 is_adult and 
                 ((can_play(Song_of_Time) and 
                     ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
-                        has_GoronTunic or can_use(Longshot) or can_use(Nayrus_Love))) or 
-                (damage_multiplier != 'ohko' and has_GoronTunic and can_use(Hookshot)) or 
+                        can_use(Goron_Tunic) or can_use(Longshot) or can_use(Nayrus_Love))) or 
+                (damage_multiplier != 'ohko' and can_use(Goron_Tunic) and can_use(Hookshot)) or 
                 (can_use(Nayrus_Love) and can_use(Hookshot)))"
         }
     },
@@ -835,7 +836,7 @@
         "exits": {
             "Death Mountain": "True",
             "Death Mountain Crater Lower": "can_use(Hover_Boots)",
-            "Death Mountain Crater Central": "has_GoronTunic and can_use(Distant_Scarecrow) and 
+            "Death Mountain Crater Central": "can_use(Goron_Tunic) and can_use(Distant_Scarecrow) and 
                 ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
                     has_bottle or can_use(Nayrus_Love))",
             "Top of Crater Grotto": "can_blast_or_smash"
@@ -865,7 +866,7 @@
             "Death Mountain Crater Lower": "
                 can_use(Hover_Boots) or can_use(Hookshot) or can_use(Magic_Bean)",
             "Fire Temple Lower": "
-                is_adult and (logic_fewer_tunic_requirements or has_GoronTunic)"
+                is_adult and (logic_fewer_tunic_requirements or can_use(Goron_Tunic))"
         }
     },
     {
@@ -948,7 +949,7 @@
         "locations": {
             "Zoras Fountain Iceberg Freestanding PoH": "is_adult",
             "Zoras Fountain Bottom Freestanding PoH": "
-                is_adult and Iron_Boots and (logic_fewer_tunic_requirements or has_ZoraTunic)",
+                is_adult and Iron_Boots and (logic_fewer_tunic_requirements or can_use(Zora_Tunic))",
             "GS Zora's Fountain Tree": "is_child",
             "GS Zora's Fountain Above the Log": "can_use(Boomerang) and nighttime",
             "GS Zora's Fountain Hidden Cave": "
