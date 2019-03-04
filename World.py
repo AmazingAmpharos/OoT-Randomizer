@@ -345,6 +345,7 @@ class World(object):
     def has_beaten_game(self, state):
         return state.has('Triforce')
 
+
     # Useless areas are areas that have contain no items that could ever
     # be used to complete the seed. Unfortunately this is very difficult
     # to calculate since that involves trying every possible path and item
@@ -418,38 +419,76 @@ class World(object):
         for world in spoiler.worlds:
             duplicate_item_woth[world.id] = {}
         for location in woth_loc:
-            if not location.item.special.get('progressive', False):
-                # Progressive items may need multiple copies to make progression
-                # so we can't make this culling for those kinds of items.
-                duplicate_item_woth[location.item.world.id][location.item.name] = location
-            if 'Bottle' in location.item.name and \
-                location.item.name not in ['Bottle with Letter', 'Bottle with Big Poe']:
-                    # Bottles can have many names but they are all generally the same in logic
-                    # The problem is that Ruto's Letter and Big Poe might not be usuable as a 
-                    # Bottle immediately, so they might need to use a regular bottle in
-                    # addition to that one. Conversely finding a bottle might mean you still
-                    # need ruto's letter or big poe. So to work with this, we ignore those
-                    # two special bottles as being bottles
-                    duplicate_item_woth[location.item.world.id]['Bottle'] = location
+            world_id = location.item.world.id
+            item = location.item
+
+            if item.name == 'Bottle with Letter' and item.name in duplicate_item_woth[world_id]:
+                # Only the first Letter counts as a letter, subsequent ones are Bottles.
+                # It doesn't matter which one is considered bottle/letter, since they will
+                # both we considered not useless.
+                item_name = 'Bottle'
+            elif item.special.get('bottle', False):
+                # Bottles can have many names but they are all generally the same in logic.
+                # The letter and big poe bottles will give a bottle item, so no additional
+                # checks are required for them.
+                item_name = 'Bottle'
+            else:
+                item_name = item.name
+
+            if item_name not in duplicate_item_woth[world_id]:
+                duplicate_item_woth[world_id][item_name] = []
+            duplicate_item_woth[world_id][item_name].append(location)
 
         # generate the empty area list
         self.empty_areas = {}
+
         for area,area_info in areas.items():
             useless_area = True
             for location in area_info['locations']:
-                if location.item.majoritem:
-                    if (location.item.name in exclude_item_list):
-                        continue
+                world_id = location.item.world.id
+                item = location.item
 
-                    if 'Bottle' in location.item.name and location.item.name not in ['Bottle with Letter', 'Bottle with Big Poe']:
-                        dupe_location = duplicate_item_woth[location.item.world.id].get('Bottle', location)
-                    else:
-                        dupe_location = duplicate_item_woth[location.item.world.id].get(location.item.name, location)
+                if (not location.item.majoritem) or (location.item.name in exclude_item_list):
+                    # Minor items are always useless in logic
+                    continue
 
-                    if (dupe_location.world.id != location.world.id or dupe_location.name != location.name):
-                        continue
+                is_bottle = False
+                if item.name == 'Bottle with Letter' and item.name in duplicate_item_woth[world_id]:
+                    # If this is the required Letter then it is not useless
+                    dupe_locations = duplicate_item_woth[world_id][item.name]
+                    for dupe_location in dupe_locations:
+                        if dupe_location.world.id == location.world.id and dupe_location.name == location.name:
+                            useless_area = False
+                            break
+                    # Otherwise it is treated as a bottle
+                    is_bottle = True
 
+                if is_bottle or item.special.get('bottle', False):
+                    # Bottle Items are all interchangable. Logic currently only needs
+                    # a max on 1 bottle, but this might need to be changed in the
+                    # future if using multiple bottles for fire temple diving is added
+                    # to logic
+                    dupe_locations = duplicate_item_woth[world_id].get('Bottle', [])
+                    max_progressive = 1
+                elif item.name == 'Bottle with Big Poe':
+                    # The max number of requred Big Poe Bottles is based on the setting
+                    dupe_locations = duplicate_item_woth[world_id].get(item.name, [])
+                    max_progressive = self.settings.big_poe_count
+                else:
+                    dupe_locations = duplicate_item_woth[world_id].get(item.name, [])
+                    max_progressive = item.special.get('Progressive', 1)
+
+                # If this is a required item location, then it is not useless
+                for dupe_location in dupe_locations:
+                    if dupe_location.world.id == location.world.id and dupe_location.name == location.name:
+                        useless_area = False
+                        break
+
+                # If there are sufficient required item known, then the remaining
+                # copies of the items are useless.
+                if max_progressive is True or len(dupe_locations) < max_progressive:
                     useless_area = False
                     break
+
             if useless_area:
                 self.empty_areas[area] = area_info

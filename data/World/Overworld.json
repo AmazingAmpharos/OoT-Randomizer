@@ -454,6 +454,10 @@
     {
         "region_name": "Castle Town Rupee Room",
         "locations": {
+            "Sell 1 Big Poe":"is_adult and (Bottle_with_Big_Poe, 1)",
+            "Sell 2 Big Poe":"is_adult and (Bottle_with_Big_Poe, 2)",
+            "Sell 3 Big Poe":"is_adult and (Bottle_with_Big_Poe, 3)",
+            "Sell 4 Big Poe":"is_adult and (Bottle_with_Big_Poe, 4)",
             "10 Big Poes": "
                 is_adult and 
                 ((can_use(Bow) and Epona and has_bottle and (big_poe_count <= 3 or guarantee_hint)) or 
@@ -927,7 +931,7 @@
         "locations": {
             "Diving Minigame": "is_child",
             "Zoras Domain Torch Run": "can_use(Sticks)",
-            "King Zora Moves": "is_child and Bottle_with_Letter",
+            "Deliver Ruto's Letter": "(is_child and Bottle_with_Letter) and not open_fountain",
             "King Zora Thawed": "is_adult and has_blue_fire",
             "Zoras Domain Stick Pot": "is_child",
             "Zoras Domain Nut Pot": "True",

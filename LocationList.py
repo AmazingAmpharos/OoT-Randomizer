@@ -122,7 +122,11 @@ location_table = {
     "Gerudo Fortress South F2 Carpenter":              ("Collectable", 0x0C,  0x0F, "Gerudo's Fortress",      None,                     ("Gerudo",)),
 
     "Magic Bean Salesman":                             ("Event",       None,  None, "Zora's River",           None,                     None),
-    "King Zora Moves":                                 ("Event",       None,  None, "Zora's Domain",          None,                     None),
+    "Deliver Ruto's Letter":                           ("Event",       None,  None, "Zora's Domain",          None,                     None),
+    "Sell 1 Big Poe":                                  ("Event",       None,  None, "Castle Market",          None,                     None),
+    "Sell 2 Big Poe":                                  ("Event",       None,  None, "Castle Market",          None,                     None),
+    "Sell 3 Big Poe":                                  ("Event",       None,  None, "Castle Market",          None,                     None),
+    "Sell 4 Big Poe":                                  ("Event",       None,  None, "Castle Market",          None,                     None),
     "Master Sword Pedestal":                           ("Event",       None,  None, "Temple of Time",         None,                     None),
     "Epona":                                           ("Event",       None,  None, "Lon Lon Ranch",          None,                     None),
     "Deku Baba Sticks":                                ("Event",       None,  None, "Kokiri Forest",          None,                     None),
