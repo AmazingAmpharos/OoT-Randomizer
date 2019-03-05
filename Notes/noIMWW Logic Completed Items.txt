@@ -2,10 +2,11 @@ GUI
 Implementation of the new files
 Dodongo's cavern
 Ice cavern
-Fire Temple
+Fire Temple -- allow child access to the first 5 checks
 Deku Tree
 BotW
 Ganon's Castle
+Jabu
 
 
 -- Overworld Regions --
