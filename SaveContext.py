@@ -254,9 +254,20 @@ class SaveContext():
             raise ValueError("Cannot give unknown starting item %s" % item)
 
 
-    def equip_items(self, age):
+    def equip_default_items(self, age):
+        self.equip_items(age, 'equips_' + age)
+
+
+    def equip_current_items(self, age):
+        self.equip_items(age, 'equips')
+
+
+    def equip_items(self, age, equip_type):
         if age not in ['child', 'adult']:
             raise ValueError("Age must be 'adult' or 'child', not %s" % age)
+
+        if equip_type not in ['equips', 'equips_child', 'equips_adult']:
+            raise ValueError("Equip type must be 'equips', 'equips_child' or 'equips_adult', not %s" % equip_type)
 
         age = 'equips_' + age
         c_buttons = list(self.addresses[age]['button_slots'].keys())
@@ -264,8 +275,8 @@ class SaveContext():
             item = self.addresses['item_slot'][item_slot].get_value('none')
             if item != 'none':
                 c_button = c_buttons.pop()
-                self.addresses['equips']['button_slots'][c_button].value = item_slot
-                self.addresses['equips']['button_items'][c_button].value = item
+                self.addresses[equip_type]['button_slots'][c_button].value = item_slot
+                self.addresses[equip_type]['button_items'][c_button].value = item
                 if not c_buttons:
                     break
 
@@ -273,9 +284,9 @@ class SaveContext():
             for item in SaveContext.equipable_items[age][equip_item]:
                 if self.addresses['equip_items'][item].get_value():
                     item_value = self.addresses['equip_items'][item].get_value_raw()
-                    self.addresses['equips']['equips'][equip_item].set_value_raw(item_value)
+                    self.addresses[equip_type]['equips'][equip_item].set_value_raw(item_value)
                     if equip_item == 'sword':
-                        self.addresses['equips']['button_items']['b'].value = item
+                        self.addresses[equip_type]['button_items']['b'].value = item
                     break
 
 
@@ -910,8 +921,10 @@ class SaveContext():
             'tunic' : [
                 'goron_tunic',
                 'zora_tunic',
+                'kokiri_tunic',
             ],
             'boots' : [
+                'kokiri_boots'
             ],
         },
         'equips_child' : {
@@ -941,8 +954,10 @@ class SaveContext():
                 'hylian_shield',
             ],
             'tunic' : [
+                'kokiri_tunic',
             ],
             'boots' : [
+                'kokiri_boots',
             ],
         }
     }

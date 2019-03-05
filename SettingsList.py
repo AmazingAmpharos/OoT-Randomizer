@@ -598,6 +598,8 @@ setting_infos = [
             When this option is off, the Kokiri Sword and
             Slingshot are always available somewhere
             in the forest.
+
+            This is incompatible with start as adult.
         ''',
         default        = True,
         shared         = True,
@@ -1665,6 +1667,28 @@ setting_infos = [
             The alternatives are multiples of 3 hours.
         ''',
         shared         = True,
+    ),
+    Combobox(
+        name           = 'starting_age',
+        default        = 'child',
+        choices        = {
+            'child':  'Child',
+            'adult':  'Adult',
+            'random': 'Random',
+        },
+        gui_text       = 'Starting Age',
+        gui_group      = 'other',
+        gui_tooltip    = '''\
+            Choose which age Link will start as.
+
+            Starting as adult means you start with
+            the master sword in your inventory.
+
+            Only the child option is compatible with
+            Closed Forest.
+        ''',
+        shared         = True,
+        dependency     = lambda settings: 'child' if not settings.open_forest else None,
     ),
     Combobox(
         name           = 'default_targeting',

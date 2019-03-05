@@ -20,10 +20,10 @@ from JSONDump import dump_obj, CollapseList, CollapseDict, AllignedDict, SortedD
 
 
 per_world_keys = (
+    'starting_items',
+    'item_pool',
     'dungeons',
     'trials',
-    'item_pool',
-    'starting_items',
     'locations',
     ':woth_locations',
     ':barren_regions',
@@ -123,9 +123,14 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
 
     @staticmethod
     def from_item(item):
+        if item.world.settings.world_count > 1:
+            player = item.world.id + 1
+        else:
+            player = None if item.location is not None and item.world is item.location.world else (item.world.id + 1)
+
         return LocationRecord({
             'item': item.name,
-            'player': None if item.location is not None and item.world is item.location.world else (item.world.id + 1),
+            'player': player,
             'model': item.looks_like_item.name if item.looks_like_item is not None and item.location.has_preview() and can_cloak(item, item.looks_like_item) else None,
             'price': item.price,
         })
@@ -521,14 +526,6 @@ class Distribution(object):
         }
 
         if spoiler:
-            if self.playthrough is not None:
-                self_dict[':playthrough'] = AllignedDict({
-                    sphere_nr: {
-                        name: record.to_json() for name, record in sphere.items()
-                    }
-                    for (sphere_nr, sphere) in self.playthrough.items()
-                }, depth=2)
-
             world_dist_dicts = [world_dist.to_json() for world_dist in self.world_dists]
             if self.settings.world_count > 1:
                 for k in per_world_keys:
@@ -537,6 +534,14 @@ class Distribution(object):
                         self_dict[k]['World %d' % (id + 1)] = world_dist_dict[k]
             else:
                 self_dict.update({k: world_dist_dicts[0][k] for k in per_world_keys})
+
+            if self.playthrough is not None:
+                self_dict[':playthrough'] = AllignedDict({
+                    sphere_nr: {
+                        name: record.to_json() for name, record in sphere.items()
+                    }
+                    for (sphere_nr, sphere) in self.playthrough.items()
+                }, depth=2)
 
         if not include_output:
             strip_output_only(self_dict)

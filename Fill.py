@@ -331,7 +331,7 @@ def fill_restrictive(window, worlds, base_state_list, locations, itempool, count
                         while parent_region:
                             try:
                                 source_region = item_to_place.world.get_region(parent_region.name)
-                                can_reach = source_region.can_reach(maximum_exploration_state_list[item_to_place.world.id])
+                                can_reach = maximum_exploration_state_list[item_to_place.world.id].can_reach(source_region)
                                 break
                             except KeyError:
                                 parent_region = parent_region.entrances[0].parent_region

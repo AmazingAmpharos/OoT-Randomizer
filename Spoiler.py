@@ -62,6 +62,12 @@ class Spoiler(object):
 
 
     def parse_data(self):
+        for (sphere_nr, sphere) in self.playthrough.items():
+            sorted_sphere = [location for location in sphere]
+            sort_order = {"Song": 0, "Boss": -1}
+            sorted_sphere.sort(key=lambda item: (item.world.id * 10) + sort_order.get(item.type, 1))
+            self.playthrough[sphere_nr] = sorted_sphere
+
         self.locations = {}
         for world in self.worlds:
             spoiler_locations = [location for location in world.get_locations() if not location.locked and location.type != 'GossipStone']

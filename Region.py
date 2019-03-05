@@ -27,7 +27,7 @@ class Region(object):
         self.dungeon = None
         self.world = None
         self.spot_type = 'Region'
-        self.recursion_count = 0
+        self.recursion_count = { 'child': 0, 'adult': 0 }
         self.price = None
         self.world = None
 
@@ -51,6 +51,7 @@ class Region(object):
         for entrance in self.entrances:
             if entrance.can_reach(state):
                 return True
+
         return False
 
 

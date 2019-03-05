@@ -126,6 +126,11 @@ def IsItem(name):
     return name in item_table
 
 
+def isBottle(name):
+    item = ItemFactory(name)
+    return item.special.get('bottle', False)
+
+
 def ItemIterator(predicate=lambda loc: True, world=None):
     for item_name in item_table:
         item = ItemFactory(item_name, world)

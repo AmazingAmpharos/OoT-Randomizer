@@ -3,7 +3,7 @@
         "region_name": "Ice Cavern",
         "dungeon": "Ice Cavern",
         "exits": {
-            "Outside Ice Cavern": "True",
+            "Zoras Fountain": "True",
             "Ice Cavern Interior": "has_bottle"
         }
     },
