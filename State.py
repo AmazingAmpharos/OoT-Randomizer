@@ -341,7 +341,8 @@ class State(object):
 
 
     def has_scarecrow_song(self):
-        return self.world.free_scarecrow or self.can_reach('Lake Hylia', age='both')
+        return self.world.free_scarecrow or (self.has_ocarina() and self.can_reach('Lake Hylia', age='both'))
+
 
     def can_use_projectile(self):
         return self.has_explosives() or \
