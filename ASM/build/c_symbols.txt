@@ -41,7 +41,7 @@ SYMBOL TABLE:
 00000014 l       .rodata.cst4	00000000 $LC10
 00000000 l    df *ABS*	00000000 rainbow_sword.c
 0000328c l     F .text	000001f0 get_color
-00001150 l     O .data	00000015 colors
+0000113c l     O .data	00000015 colors
 0000004c l     O .sbss	00000004 frames
 00000000 l       .rodata.cst8	00000000 $LC0
 00000018 l       .rodata.cst4	00000000 $LC1
@@ -134,7 +134,7 @@ SYMBOL TABLE:
 000027d8 g     F .text	0000001c bombs_to_rupee
 00000100 g     O .data	00000028 setup_db
 00002aa8 g     F .text	00000090 get_object
-00000188 g     O .data	00000fc8 item_table
+00000188 g     O .data	00000fb4 item_table
 00000138 g     O .data	00000010 font_sprite
 00000018 g     O .sbss	00000001 satisified_pending_frames
 00002b84 g     F .text	00000060 scale_top_matrix

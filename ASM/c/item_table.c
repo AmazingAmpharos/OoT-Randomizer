@@ -58,7 +58,7 @@ item_row_t item_table[] = {
     [0x12] = ITEM_ROW(0x53, 0, 0x17, 0x0045, 0x00EB, 0x39, no_upgrade, no_effect, -1, -1), // Blue Potion
     [0x13] = ITEM_ROW(0x53, 0, 0x18, 0x0046, 0x00C6, 0x01, no_upgrade, no_effect, -1, -1), // Bottled Fairy
     [0x14] = ITEM_ROW(0x53, 0, 0x1A, 0x0098, 0x00DF, 0x30, no_upgrade, no_effect, -1, -1), // Bottled Lon Lon Milk
-    [0x15] = ITEM_ROW(0x53, 0, 0x1B, 0x0099, 0x010B, 0x45, no_upgrade, no_effect, -1, -1), // Bottled Ruto's Letter
+    [0x15] = ITEM_ROW(0x53, 0, 0x1B, 0x0099, 0x010B, 0x45, letter_to_bottle, no_effect, -1, -1), // Bottled Ruto's Letter
     [0x16] = ITEM_ROW(0x53, 1, 0x10, 0x0048, 0x00F3, 0x3E, no_upgrade, no_effect, -1, -1), // Magic Bean
     [0x17] = ITEM_ROW(0x53, 0, 0x25, 0x0010, 0x0136, 0x4F, no_upgrade, no_effect, -1, -1), // Skull Mask
     [0x18] = ITEM_ROW(0x53, 0, 0x26, 0x0011, 0x0135, 0x32, no_upgrade, no_effect, -1, -1), // Spooky Mask
@@ -244,8 +244,7 @@ item_row_t item_table[] = {
     [0xC6] = ITEM_ROW(0x53, 0, 0x41, 0x00D6, 0x00B6, 0x07, no_upgrade, give_song, 17, -1), // Song of Storms
 
     [0xC7] = ITEM_ROW(0x53, 0, 0x41, 0x00F8, 0x00D1, 0x23, no_upgrade, give_tycoon_wallet, -1, -1), // Tycoon's Wallet
-    [0xC8] = ITEM_ROW(  -1, 0,   -1,     -1, 0x010B, 0x45, letter_to_bottle,  no_effect, -1, -1), // "Progressive" Ruto's Letter
-    [0xC9] = ITEM_ROW(0x53, 0, 0x14, 0x9099, 0x010B, 0x45, no_upgrade, no_effect, -1, -1), // Redundant Letter Bottle
+    [0xC8] = ITEM_ROW(0x53, 0, 0x14, 0x9099, 0x010B, 0x45, no_upgrade, no_effect, -1, -1), // Redundant Letter Bottle
 
 };
 
