@@ -29,6 +29,23 @@ before_time_travel:
     lhu     t1, 0x9C (a1)
     sh      t1, 0x0A (t0)
 
+	li		t0, 0x7E4 ; Offset to secondary save (First unused byte in scene 40 [xD4 + x40 * x1C + x10]
+	addu	t0, t0, a1 ; t0 is start of secondary FW
+	li		t1, 0xE64 ; Offset to main FW data
+	addu	t1, t1, a1 ; t1 is start of main FW data
+	li		t2, 0x8  ; Amount of words to store
+	
+@@swap:
+	lw		t3, 0x00 (t0)  ; t3 is value in secondary FW
+	lw		t4, 0x00 (t1)  ; t4 is value in main FW
+	sw		t3, 0x00 (t1)  ; Store secondary FW to main FW
+	sw		t4, 0x00 (t0)  ; Store main FW to secondary FW
+	addiu	t0, 0x1C	; Increment secondary FW pointer by 1 scene length
+	addiu   t1, 0x04	; Increment main FW pointer by one word
+	addiu	t2, -0x01	; Decrement counter
+	bgtz	t2, @@swap
+	nop
+	
     j       0x06F80C ; Swap Link Ages
     nop
 
@@ -132,6 +149,13 @@ after_going_back:
     sw      t0, 0x6C (s0)
     ; Restore child equipment
     lhu     t0, 0x48 (s0)
+    ; Unequip hylian shield if adult lost it
+    lbu     t1, 0x9D (s0)
+    andi    t1, 0x20
+    bnez    t1, @@has_shield
+    nop
+    andi   t0, t0, 0xFFDF
+@@has_shield:
     sh      t0, 0x70 (s0)
 
     ; Set swordless flag if needed
@@ -237,7 +261,6 @@ init_adult_button:
 
 ; Items that can populate empty adult C-buttons, by inventory index
 ADULT_INIT_ITEMS:
-.byte 0x07 ; Ocarina
 .byte 0x09 ; Hookshot
 .byte 0x0F ; Hammer
 .byte 0x02 ; Bombs

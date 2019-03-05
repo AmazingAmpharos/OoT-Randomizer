@@ -14,7 +14,7 @@ from tkinter import Scale, Checkbutton, OptionMenu, Toplevel, LabelFrame, \
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry, SearchBox
+from GuiUtils import ToolTips, set_icon, BackgroundTask, BackgroundTaskProgress, Dialog, ValidatingEntry, SearchBox, SearchBoxFilterControl
 from Main import main, from_patch_file
 from Utils import is_bundled, local_path, data_path, default_output_path, open_file, check_version, check_python_version
 from Settings import Settings
@@ -33,37 +33,34 @@ def settings_to_guivars(settings, guivars):
         value = settings.__dict__[name]
         # Checkbox
         if info.type == bool:
-            guivar.set( int(value) )
+            guivar.set(int(value))
         # Dropdown/radiobox
         if info.type == str:
             if value is None:
-                guivar.set( "" )
+                guivar.set('')
             else:
-                if info.gui_params and 'options' in info.gui_params:
-                    if 'Custom Color' in info.gui_params['options'] and re.match(r'^[A-Fa-f0-9]{6}$', value):
-                        guivar.set('Custom (#' + value + ')')
-                    else:
-                        for gui_text,gui_value in info.gui_params['options'].items():
-                            if gui_value == value:
-                                guivar.set( gui_text )
+                if 'Custom Color' in info.choices and re.match(r'^[A-Fa-f0-9]{6}$', value):
+                    guivar.set('Custom (#%s)' % value)
+                elif 'Custom Navi Color' in info.choices and re.match(r'^[A-Fa-f0-9]{12}$', value):
+                    guivar.set('Custom (#%s #%s)' % (value[0:6], value[6:12]))
                 else:
-                    guivar.set( value )
+                    try:
+                        value = info.choices[value]
+                    except KeyError:
+                        pass
+                    guivar.set(value)
         # Text field for a number...
         if info.type == int:
             if value is None:
-                guivar.set( str(1) )
+                guivar.set(str(1))
             else:
-                guivar.set( str(value) )
+                guivar.set(str(value))
+        # List
         if info.type == list:
             guivars[name] = []
             if value:
                 for item in value:
-                    if info.gui_params and 'options' in info.gui_params:
-                        for gui_text,gui_value in info.gui_params['options'].items():
-                            if gui_value == item:
-                                guivars[name].append(gui_text)
-                    else:
-                        guivars[name].append(item)
+                    guivars[name].append(info.choices[item])
 
 
 def guivars_to_settings(guivars):
@@ -80,25 +77,24 @@ def guivars_to_settings(guivars):
         # Dropdown/radiobox
         if info.type == str:
             # Set guivar to hexcode if custom color
-            if re.match(r'^Custom \(#[A-Fa-f0-9]{6}\)$', guivar.get()):
-                result[name] = re.findall(r'[A-Fa-f0-9]{6}', guivar.get())[0]
-            elif info.gui_params and 'options' in info.gui_params:
-                result[name] = info.gui_params['options'][guivar.get()]
+            if ('Custom Color' in info.choices or 'Custom Navi Color' in info.choices) and re.match(r'^Custom \((?: ?#[A-Fa-f0-9]{6})+\)$', guivar.get()):
+                result[name] = ''.join(re.findall(r'[A-Fa-f0-9]{6}', guivar.get()))
             else:
-                result[name] = guivar.get()
+                try:
+                    value = info.reverse_choices[guivar.get()]
+                except KeyError:
+                    value = guivar.get()
+                result[name] = value
         # Text field for a number...
         if info.type == int:
             try:
-                result[name] = int( guivar.get() )
+                result[name] = int(guivar.get())
             except ValueError:
                 result[name] = 0
         if info.type == list:
             result[name] = []
             for item in guivar:
-                if info.gui_params and 'options' in info.gui_params:
-                    result[name].append(info.gui_params['options'][item])
-                else:
-                    result[name].append(item)
+                result[name].append(info.reverse_choices[item])
 
     if result['seed'] == "":
         result['seed'] = None
@@ -123,6 +119,7 @@ def guiMain(settings=None):
     frames['logic_tab'] = ttk.Frame(notebook)
     frames['other_tab'] = ttk.Frame(notebook)
     frames['cosmetic_tab'] = ttk.Frame(notebook)
+    frames['SFX_tab'] = ttk.Frame(notebook)
     frames['cosmetic_tab_left'] = Frame(frames['cosmetic_tab'])
     frames['cosmetic_tab_right'] = Frame(frames['cosmetic_tab'])
     notebook.add(frames['rom_tab'], text='ROM Options')
@@ -130,6 +127,7 @@ def guiMain(settings=None):
     notebook.add(frames['logic_tab'], text='Detailed Logic')
     notebook.add(frames['other_tab'], text='Other')
     notebook.add(frames['cosmetic_tab'], text='Cosmetic')
+    notebook.add(frames['SFX_tab'], text='SFX')
 
     #######################
     # Randomizer controls #
@@ -150,16 +148,22 @@ def guiMain(settings=None):
 
     # Logic tab
     frames['checks']      = LabelFrame(frames['logic_tab'],          text='Adult Trade Sequence', labelanchor=NW)
-    frames['tricks']      = LabelFrame(frames['logic_tab'],          text='Lens of Truth',   labelanchor=NW)
+    frames['tricks']      = LabelFrame(frames['logic_tab'],          text='Lens of Truth',     labelanchor=NW)
 
     #Other Tab
     frames['convenience'] = LabelFrame(frames['other_tab'],          text='Timesavers',        labelanchor=NW)
     frames['other']       = LabelFrame(frames['other_tab'],          text='Misc',              labelanchor=NW)
 
     #Cosmetic tab
-    frames['cosmetic']    = LabelFrame(frames['cosmetic_tab'],       text='General',           labelanchor=NW)
-    frames['colors']      = LabelFrame(frames['cosmetic_tab_right'], text='Colors',            labelanchor=NW)
-    frames['sfx']         = LabelFrame(frames['cosmetic_tab_left'],  text='SFX',               labelanchor=NW)
+    frames['cosmetic']    = LabelFrame(frames['cosmetic_tab_left'],  text='General',           labelanchor=NW)
+    frames['sword_trails']= LabelFrame(frames['cosmetic_tab_left'],  text='Sword Trail Colors',labelanchor=NW)
+    frames['tunic_colors']= LabelFrame(frames['cosmetic_tab_right'], text='Tunics',            labelanchor=NW)
+    frames['navi_colors'] = LabelFrame(frames['cosmetic_tab_right'], text='Navi Colors',       labelanchor=NW)
+
+    #Cosmetic tab
+    frames['sfx']         = LabelFrame(frames['SFX_tab'],            text='General',           labelanchor=NW)
+    frames['menu_sfx']    = LabelFrame(frames['SFX_tab'],            text='Menu',              labelanchor=NW)
+    frames['npc_sfx']     = LabelFrame(frames['SFX_tab'],            text='NPC',               labelanchor=NW)
 
 
     # Shared
@@ -199,6 +203,16 @@ def guiMain(settings=None):
                 if color == (None, None):
                     color = ((0,0,0),'#000000')
                 guivars[info.name].set('Custom (' + color[1] + ')')
+
+            if info.type != list and info.name in guivars and guivars[info.name].get() == 'Custom Navi Color':
+                innerColor = colorchooser.askcolor(title='Pick an Inner Core color.')
+                if innerColor == (None, None):
+                    innerColor = ((0,0,0),'#000000')
+                outerColor = colorchooser.askcolor(title='Pick an Outer Glow color.')
+                if outerColor == (None, None):
+                    outerColor = ((0,0,0),'#000000')
+                guivars[info.name].set('Custom (%s %s)' % (innerColor[1], outerColor[1]))
+
         update_generation_type()
 
 
@@ -210,7 +224,7 @@ def guiMain(settings=None):
     romDialogFrame = Frame(fileDialogFrame)
     baseRomLabel = Label(romDialogFrame, text='Base ROM')
     guivars['rom'] = StringVar(value='')
-    romEntry = Entry(romDialogFrame, textvariable=guivars['rom'], width=46)
+    romEntry = Entry(romDialogFrame, textvariable=guivars['rom'], width=50)
 
     def RomSelect():
         rom = filedialog.askopenfilename(filetypes=[("ROM Files", (".z64", ".n64")), ("All Files", "*")])
@@ -218,7 +232,7 @@ def guiMain(settings=None):
             guivars['rom'].set(rom)
     romSelectButton = Button(romDialogFrame, text='Browse', command=RomSelect, width=10)
 
-    baseRomLabel.pack(side=LEFT, padx=(40,0))
+    baseRomLabel.pack(side=LEFT, padx=(34,0))
     romEntry.pack(side=LEFT, padx=3)
     romSelectButton.pack(side=LEFT)
 
@@ -234,23 +248,44 @@ def guiMain(settings=None):
     outputDialogFrame = Frame(frames['rom_tab'])
     outputDirLabel = Label(outputDialogFrame, text='Output Directory')
     guivars['output_dir'] = StringVar(value='')
-    outputDirEntry = Entry(outputDialogFrame, textvariable=guivars['output_dir'], width=46)
+    outputDirEntry = Entry(outputDialogFrame, textvariable=guivars['output_dir'], width=50)
     outputDirButton = Button(outputDialogFrame, text='Browse', command=output_dir_select, width=10)
     outputDirLabel.pack(side=LEFT, padx=(3,0))
     outputDirEntry.pack(side=LEFT, padx=3)
     outputDirButton.pack(side=LEFT)
     outputDialogFrame.pack(side=TOP, anchor=W, pady=3)
 
+    distFileDialogFrame = Frame(frames['rom_tab'])
+    distFileLabel = Label(distFileDialogFrame, text='Distribution File')
+    guivars['distribution_file'] = StringVar(value='')
+    distFileEntry = Entry(distFileDialogFrame, textvariable=guivars['distribution_file'], width=50)
+
+    def DistFileSelect():
+        distFile = filedialog.askopenfilename(filetypes=[("JSON Files", (".json")), ("All Files", "*")])
+        if distFile != '':
+            guivars['distribution_file'].set(distFile)
+    distFileSelectButton = Button(distFileDialogFrame, text='Browse', command=DistFileSelect, width=10)
+
+    distFileLabel.pack(side=LEFT, padx=(9,0))
+    distFileEntry.pack(side=LEFT, padx=3)
+    distFileSelectButton.pack(side=LEFT)
+
+    distFileDialogFrame.pack(side=TOP, anchor=W, pady=3)
+
     countDialogFrame = Frame(frames['rom_tab'])
     countLabel = Label(countDialogFrame, text='Generation Count')
     guivars['count'] = StringVar()
     widgets['count'] = Spinbox(countDialogFrame, from_=1, to=100, textvariable=guivars['count'], width=3)
 
-    if os.path.exists(local_path('README.html')):
-        def open_readme():
-            open_file(local_path('README.html'))
-        openReadmeButton = Button(countDialogFrame, text='Open Documentation', command=open_readme)
-        openReadmeButton.pack(side=RIGHT, padx=5)
+    def open_readme():
+        open_file('https://wiki.ootrandomizer.com/index.php?title=Main_Page')
+    openReadmeButton = Button(countDialogFrame, text='Open Wiki Page', command=open_readme)
+    openReadmeButton.pack(side=RIGHT, padx=5)
+
+    def open_output():
+        open_file(default_output_path(guivars['output_dir'].get()))
+    openOutputButton = Button(countDialogFrame, text='Open Output Directory', command=open_output)
+    openOutputButton.pack(side=RIGHT, padx=5)
 
     countLabel.pack(side=LEFT)
     widgets['count'].pack(side=LEFT, padx=2)
@@ -260,10 +295,10 @@ def guiMain(settings=None):
     ############
 
     for info in setting_infos:
-        if info.gui_params and 'group' in info.gui_params:
+        if 'group' in info.gui_params:
             if info.gui_params['widget'] == 'Checkbutton':
                 # Determine the initial value of the checkbox
-                default_value = 1 if info.gui_params['default'] == "checked" else 0
+                default_value = 1 if info.choices[info.default] == 'checked' else 0
                 # Create a variable to access the box's state
                 guivars[info.name] = IntVar(value=default_value)
                 # Create the checkbox
@@ -271,12 +306,10 @@ def guiMain(settings=None):
                 widgets[info.name].pack(expand=False, anchor=W)
             elif info.gui_params['widget'] == 'Combobox':
                 # Create the variable to store the user's decision
-                guivars[info.name] = StringVar(value=info.gui_params['default'])
+                guivars[info.name] = StringVar(value=info.choices[info.default])
                 # Create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
-                if isinstance(info.gui_params['options'], list):
-                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
-                dropdown = ttk.Combobox(widgets[info.name], textvariable=guivars[info.name], values=list(info.gui_params['options'].keys()), state='readonly', width=36)
+                dropdown = ttk.Combobox(widgets[info.name], textvariable=guivars[info.name], values=list(map(lambda choice: info.choices[choice], info.choice_list)), state='readonly', width=36)
                 dropdown.bind("<<ComboboxSelected>>", show_settings)
                 dropdown.pack(side=BOTTOM, anchor=W)
                 # Label the option
@@ -287,11 +320,9 @@ def guiMain(settings=None):
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Radiobutton':
                 # Create the variable to store the user's decision
-                guivars[info.name] = StringVar(value=info.gui_params['default'])
+                guivars[info.name] = StringVar(value=info.choices[info.default])
                 # Create the option menu
-                widgets[info.name] = LabelFrame(frames[info.gui_params['group']], text=info.gui_params['text'] if 'text' in info.gui_params else info["name"], labelanchor=NW)
-                if isinstance(info.gui_params['options'], list):
-                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
+                widgets[info.name] = LabelFrame(frames[info.gui_params['group']], text=info.gui_params.get('text', info.name), labelanchor=NW)
                 # Setup orientation
                 side = TOP
                 anchor = W
@@ -299,19 +330,19 @@ def guiMain(settings=None):
                     side = LEFT
                     anchor = N
                 # Add the radio buttons
-                for option in info.gui_params["options"]:
+                for option in map(lambda choice: info.choices[choice], info.choice_list):
                     radio_button = Radiobutton(widgets[info.name], text=option, value=option, variable=guivars[info.name], justify=LEFT, wraplength=220, indicatoron=False, command=show_settings)
                     radio_button.pack(expand=True, side=side, anchor=anchor)
                 # Pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Scale':
                 # Create the variable to store the user's decision
-                guivars[info.name] = IntVar(value=info.gui_params['default'])
+                guivars[info.name] = IntVar(value=info.choices[info.default])
                 # Create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
-                minval = 'min' in info.gui_params and info.gui_params['min'] or 0
-                maxval = 'max' in info.gui_params and info.gui_params['max'] or 100
-                stepval = 'step' in info.gui_params and info.gui_params['step'] or 1
+                minval = info.gui_params.get('min', 0)
+                maxval = info.gui_params.get('max', 100)
+                stepval = info.gui_params.get('step', 1)
                 scale = Scale(widgets[info.name], variable=guivars[info.name], from_=minval, to=maxval, tickinterval=stepval, resolution=stepval, showvalue=0, orient=HORIZONTAL, sliderlength=15, length=235, command=show_settings)
                 scale.pack(side=BOTTOM, anchor=W)
                 # Label the option
@@ -322,7 +353,7 @@ def guiMain(settings=None):
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
             elif info.gui_params['widget'] == 'Entry':
                 # Create the variable to store the user's decision
-                guivars[info.name] = StringVar(value=info.gui_params['default'])
+                guivars[info.name] = StringVar(value=info.default)
                 # Create the option menu
                 widgets[info.name] = Frame(frames[info.gui_params['group']])
 
@@ -337,18 +368,27 @@ def guiMain(settings=None):
                     label.pack(side=LEFT, anchor=W, padx=5)
                 # Pack the frame
                 widgets[info.name].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
-            elif info.gui_params['widget'] == 'SearchBox':
-                search_frame = LabelFrame(frames[info.gui_params['group']], text=info.gui_params['text'] if 'text' in info.gui_params else info["name"], labelanchor=NW)
-                if isinstance(info.gui_params['options'], list):
-                    info.gui_params['options'] = dict(zip(info.gui_params['options'], info.gui_params['options']))
+            elif info.gui_params['widget'] == 'SearchBox' or info.gui_params['widget'] == 'FilteredSearchBox':
+                filtered = (info.gui_params['widget'] == 'FilteredSearchBox')
+                search_frame = LabelFrame(frames[info.gui_params['group']], text=info.gui_params.get('text', info.name), labelanchor=NW)
 
-                widgets[info.name + '_entry'] = SearchBox(search_frame, list(info.gui_params['options'].keys()), width=78)
-                widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                if filtered:
+                    filter_frame = Frame(search_frame)
+                    widgets[info.name + '_filterlabel'] = Label(filter_frame, text="Filter: ")
+                    widgets[info.name + '_filterlabel'].pack(side=LEFT, anchor=W)
+                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(map(lambda choice: info.choices[choice], info.choice_list)), width=78)
+                    widgets[info.name + '_filter'] = SearchBoxFilterControl(filter_frame, widgets[info.name + '_entry'], info.gui_params['filterdata'], width=50)
+                    widgets[info.name + '_filter'].pack(expand=False, side=LEFT, anchor=W)
+                    filter_frame.pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
+                    widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W)
+                else:
+                    widgets[info.name + '_entry'] = SearchBox(search_frame, list(map(lambda choice: info.choices[choice], info.choice_list)), width=78)
+                    widgets[info.name + '_entry'].pack(expand=False, side=TOP, anchor=W, padx=3, pady=3)
 
                 list_frame = Frame(search_frame)
                 scrollbar = Scrollbar(list_frame, orient=VERTICAL)
                 widgets[info.name] = Listbox(list_frame, width=78, height=7, yscrollcommand=scrollbar.set)
-                guivars[info.name] = []
+                guivars[info.name] = list(info.default)
                 scrollbar.config(command=widgets[info.name].yview)
                 scrollbar.pack(side=RIGHT, fill=Y)
                 widgets[info.name].pack(side=LEFT)
@@ -356,6 +396,8 @@ def guiMain(settings=None):
 
                 if 'entry_tooltip' in info.gui_params:
                     ToolTips.register(widgets[info.name + '_entry'], info.gui_params['entry_tooltip'])
+                    if filtered:
+                        ToolTips.register(widgets[info.name + '_filter'], info.gui_params['entry_tooltip'])
                 if 'list_tooltip' in info.gui_params:
                     ToolTips.register(widgets[info.name], info.gui_params['list_tooltip'])
 
@@ -376,12 +418,22 @@ def guiMain(settings=None):
                     show_settings()
 
                 def add_list_all(name):
-                    widgets[name].delete(0, END)
-                    widgets[name].insert(0, *widgets[name +'_entry'].options)
-                    guivars[name] = list(widgets[name +'_entry'].options)
+                    for new_location in widgets[name + '_entry'].options:
+                        if new_location not in widgets[name].get(0, END):
+                            widgets[name].insert(END, new_location)
+                            guivars[name].append(new_location)
                     show_settings()
 
                 def remove_list_all(name):
+                    items = list(widgets[name].get(0, END))
+                    widgets[name].delete(0, END)
+                    guivars[name] = []
+                    for item in (x for x in items if x not in widgets[name + '_entry'].options):
+                        widgets[name].insert(END, item)
+                        guivars[name].append(item)
+                    show_settings()
+                    
+                def clear_list_all(name):
                     widgets[name].delete(0, END)
                     guivars[name] = []
                     show_settings()
@@ -396,6 +448,9 @@ def guiMain(settings=None):
                 list_add.pack(side=LEFT, anchor=N, padx=3, pady=3)
                 list_remove = Button(list_button_frame, width=10, text='None', command=get_lambda(remove_list_all, info.name))
                 list_remove.pack(side=LEFT, anchor=N, padx=3, pady=3)
+                if filtered:
+                    list_clear = Button(list_button_frame, width=10, text='Clear', command=get_lambda(clear_list_all, info.name))
+                    list_clear.pack(side=LEFT, anchor=N, padx=3, pady=3)
 
                 list_button_frame.pack(expand=False, side=TOP, padx=3, pady=3)
 
@@ -426,10 +481,16 @@ def guiMain(settings=None):
     frames['cosmetic_tab_right'].pack(fill=BOTH, expand=True, anchor=W, side=RIGHT)
 
     # Cosmetics tab - Left Side
-    frames['sfx'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))
+    frames['sword_trails'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))
 
     # Cosmetics tab - Right Side
-    frames['colors'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))
+    frames['tunic_colors'].pack(fill=BOTH, expand=True, anchor=N, side=TOP)
+    frames['navi_colors'].pack(fill=BOTH, expand=True, anchor=W, side=TOP, pady=(5,1))
+
+    #SFX tab
+    frames['sfx'].pack(          fill=BOTH, expand=True, anchor=N, side=LEFT, pady=(5,1))
+    frames['menu_sfx'].pack( fill=BOTH, expand=False, anchor=W, side=TOP, pady=(5,1))
+    frames['npc_sfx'].pack(fill=BOTH, expand=True, anchor=W, side=BOTTOM, pady=(5,1))
 
     notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
 
@@ -584,6 +645,7 @@ def guiMain(settings=None):
 
     # Create the generation menu
     def update_generation_type(event=None):
+        settings = guivars_to_settings(guivars)
         if generation_notebook.tab(generation_notebook.select())['text'] == 'Generate From Seed':
             notebook.tab(1, state="normal")
             if guivars['logic_rules'].get() == 'Glitchless':
@@ -591,8 +653,8 @@ def guiMain(settings=None):
             else:
                 notebook.tab(2, state="disabled")
             notebook.tab(3, state="normal")
-
-            settings = guivars_to_settings(guivars)
+            notebook.tab(4, state="normal")
+            notebook.tab(5, state="normal")
             toggle_widget(widgets['world_count'], settings.check_dependency('world_count'))
             toggle_widget(widgets['create_spoiler'], settings.check_dependency('create_spoiler'))
             toggle_widget(widgets['count'], settings.check_dependency('count'))
@@ -601,6 +663,14 @@ def guiMain(settings=None):
             notebook.tab(1, state="disabled")
             notebook.tab(2, state="disabled")
             notebook.tab(3, state="disabled")
+            if guivars['repatch_cosmetics'].get():
+                notebook.tab(4, state="normal")
+                notebook.tab(5, state="normal")
+                toggle_widget(widgets['create_cosmetics_log'], settings.check_dependency('create_cosmetics_log'))
+            else:
+                notebook.tab(4, state="disabled")
+                notebook.tab(5, state="disabled")
+                toggle_widget(widgets['create_cosmetics_log'], False)
             toggle_widget(widgets['world_count'], False)
             toggle_widget(widgets['create_spoiler'], False)
             toggle_widget(widgets['count'], False)
@@ -677,13 +747,13 @@ def guiMain(settings=None):
 
     patchFileLabel = Label(patchDialogFrame, text='Patch File')
     guivars['patch_file'] = StringVar(value='')
-    patchEntry = Entry(patchDialogFrame, textvariable=guivars['patch_file'], width=45)
+    patchEntry = Entry(patchDialogFrame, textvariable=guivars['patch_file'], width=52)
 
     def PatchSelect():
         patch_file = filedialog.askopenfilename(filetypes=[("Patch File Archive", "*.zpfz *.zpf"), ("All Files", "*")])
         if patch_file != '':
             guivars['patch_file'].set(patch_file)
-    patchSelectButton = Button(patchDialogFrame, text='Select File', command=PatchSelect, width=10)
+    patchSelectButton = Button(patchDialogFrame, text='Select File', command=PatchSelect, width=14)
 
     patchFileLabel.pack(side=LEFT, padx=(5,0))
     patchEntry.pack(side=LEFT, padx=3)
@@ -695,8 +765,14 @@ def guiMain(settings=None):
         settings = guivars_to_settings(guivars)
         BackgroundTaskProgress(mainWindow, "Generating From File %s..." % os.path.basename(settings.patch_file), from_patch_file, settings)
 
-    generateFileButton = Button(frames['gen_from_file'], text='Generate Patched ROM', command=generateFromFile)
-    generateFileButton.pack(side=BOTTOM, anchor=E, pady=(0,10), padx=(0, 10))
+    patchCosmeticsAndGenerateFrame = Frame(frames['gen_from_file'])
+    guivars['repatch_cosmetics'] = IntVar()
+    widgets['repatch_cosmetics'] = Checkbutton(patchCosmeticsAndGenerateFrame, text='Update Cosmetics', variable=guivars['repatch_cosmetics'], justify=LEFT, wraplength=220, command=show_settings)
+    widgets['repatch_cosmetics'].pack(side=LEFT, padx=5, anchor=W)
+
+    generateFileButton = Button(patchCosmeticsAndGenerateFrame, text='Generate!', width=14, command=generateFromFile)
+    generateFileButton.pack(side=RIGHT, anchor=E)
+    patchCosmeticsAndGenerateFrame.pack(side=BOTTOM, fill=BOTH, expand=True, pady=(0,10), padx=(0, 10))
 
     generation_notebook.pack(fill=BOTH, expand=True, padx=5, pady=5)
 
@@ -715,8 +791,8 @@ def guiMain(settings=None):
                 settings = Settings( json.load(f) )
         except:
             settings = Settings({})
-        settings.update_seed("")
         settings_to_guivars(settings, guivars)
+        guivars['seed'].set("")
 
         presets = {}
         for file in [data_path('presets_default.json')] \
@@ -756,6 +832,7 @@ def guiMain(settings=None):
     settings_file = local_path('settings.sav')
     with open(settings_file, 'w') as outfile:
         settings = guivars_to_settings(guivars)
+        del settings.__dict__["distribution"]
         del settings.__dict__["seed"]
         del settings.__dict__["numeric_seed"]
         del settings.__dict__["check_version"]

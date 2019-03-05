@@ -10,6 +10,7 @@ import struct
 import zipfile
 import io
 import hashlib
+import copy
 
 from World import World
 from State import State
@@ -27,6 +28,7 @@ from version import __version__
 from N64Patch import create_patch_file, apply_patch_file
 from SettingsList import setting_infos, logic_tricks
 from Rules import set_rules
+from Plandomizer import Distribution
 
 
 class dummy_window():
@@ -50,6 +52,7 @@ def main(settings, window=dummy_window()):
     for trick in logic_tricks.values():
         settings.__dict__[trick['name']] = trick['name'] in settings.allowed_tricks
 
+    settings.load_distribution()
 
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom == 'None' and not settings.create_spoiler:
@@ -69,27 +72,31 @@ def main(settings, window=dummy_window()):
         else:
             settings.player_num = 1
 
-    settings.remove_disabled()
-
     logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, settings.seed)
+    settings.remove_disabled()
     random.seed(settings.numeric_seed)
+    settings.resolve_random_settings()
+
     for i in range(0, settings.world_count):
         worlds.append(World(settings))
 
     window.update_status('Creating the Worlds')
     for id, world in enumerate(worlds):
         world.id = id
+        world.distribution = settings.distribution.world_dists[id]
         logger.info('Generating World %d.' % id)
 
         window.update_progress(0 + 1*(id + 1)/settings.world_count)
         logger.info('Creating Overworld')
 
         # Determine MQ Dungeons
-        td_count = len(world.dungeon_mq)
+        dungeon_pool = list(world.dungeon_mq)
+        dist_num_mq = world.distribution.configure_dungeons(world, dungeon_pool)
+
         if world.mq_dungeons_random:
-            world.mq_dungeons = random.randint(0, td_count)
+            world.mq_dungeons = dist_num_mq + random.randint(0, len(dungeon_pool))
         mqd_count = world.mq_dungeons
-        mqd_picks = random.sample(list(world.dungeon_mq), mqd_count)
+        mqd_picks = random.sample(dungeon_pool, mqd_count - dist_num_mq)
         for dung in mqd_picks:
             world.dungeon_mq[dung] = True
 
@@ -103,6 +110,7 @@ def main(settings, window=dummy_window()):
 
         if settings.shopsanity != 'off':
             world.random_shop_prices()
+        world.set_scrub_prices()
 
         window.update_progress(0 + 4*(id + 1)/settings.world_count)
         logger.info('Calculating Access Rules.')
@@ -137,7 +145,9 @@ def main(settings, window=dummy_window()):
     logger.info('Patching ROM.')
 
     settings_string_hash = hashlib.sha1(settings.settings_string.encode('utf-8')).hexdigest().upper()[:5]
-    if settings.world_count > 1:
+    if settings.output_file:
+        outfilebase = settings.output_file
+    elif settings.world_count > 1:
         outfilebase = 'OoT_%s_%s_W%d' % (settings_string_hash, settings.seed, settings.world_count)
     else:
         outfilebase = 'OoT_%s_%s' % (settings_string_hash, settings.seed)
@@ -157,9 +167,8 @@ def main(settings, window=dummy_window()):
                 patchfilename = '%s.zpf' % outfilebase
 
             random.setstate(rng_state)
-            if not settings.cosmetics_only:
-                patch_rom(spoiler, world, rom)
-            patch_cosmetics(settings, rom)
+            patch_rom(spoiler, world, rom)
+            cosmetics_log = patch_cosmetics(settings, rom)
             window.update_progress(65 + 20*(world.id + 1)/settings.world_count)
 
             window.update_status('Creating Patch File')
@@ -169,15 +178,26 @@ def main(settings, window=dummy_window()):
             rom.restore()
             window.update_progress(65 + 30*(world.id + 1)/settings.world_count)
 
+            if settings.create_cosmetics_log and cosmetics_log:
+                window.update_status('Creating Cosmetics Log')
+                if settings.world_count > 1:
+                    cosmetics_log_filename = "%sP%d_Cosmetics.txt" % (outfilebase, world.id + 1)
+                else:
+                    cosmetics_log_filename = '%s_Cosmetics.txt' % outfilebase
+                cosmetics_log.to_file(os.path.join(output_dir, cosmetics_log_filename))
+                file_list.append(cosmetics_log_filename)
+            cosmetics_log = None
+
         if settings.world_count > 1:
             window.update_status('Creating Patch Archive')
             output_path = os.path.join(output_dir, '%s.zpfz' % outfilebase)
             with zipfile.ZipFile(output_path, mode="w") as patch_archive:
                 for file in file_list:
                     file_path = os.path.join(output_dir, file)
-                    patch_archive.write(file_path, file, compress_type=zipfile.ZIP_DEFLATED)
+                    patch_archive.write(file_path, file.replace(outfilebase, ''), compress_type=zipfile.ZIP_DEFLATED)
             for file in file_list:
                 os.remove(os.path.join(output_dir, file))
+        logger.info("Created patchfile at: %s" % output_path)
         window.update_progress(95)
 
     elif settings.compress_rom != 'None':
@@ -218,32 +238,46 @@ def main(settings, window=dummy_window()):
                 compressor_path = ""
                 logger.info('OS not supported for compression')
 
+            output_compress_path = output_path[:output_path.rfind('.')] + '-comp.z64'
             if compressor_path != "":
-                run_process(window, logger, [compressor_path, output_path, output_path[:output_path.rfind('.')] + '-comp.z64'])
+                run_process(window, logger, [compressor_path, output_path, output_compress_path])
             os.remove(output_path)
+            logger.info("Created compessed rom at: %s" % output_compress_path)
+        else:
+            logger.info("Created uncompessed rom at: %s" % output_path)
         window.update_progress(95)
 
     for world in worlds:
-        for setting in world.settings.__dict__:
-            world.settings.__dict__[setting] = world.__dict__[setting]
+        for info in setting_infos:
+            world.settings.__dict__[info.name] = world.__dict__[info.name]
 
+    settings.distribution.update_spoiler(spoiler)
     if settings.create_spoiler:
         window.update_status('Creating Spoiler Log')
-        spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
+        spoiler_path = os.path.join(output_dir, '%s_Spoiler.json' % outfilebase)
+        settings.distribution.to_file(spoiler_path)
+        logger.info("Created spoiler log at: %s" % ('%s_Spoiler.json' % outfilebase))
     else:
         window.update_status('Creating Settings Log')
-        spoiler.to_file(os.path.join(output_dir, '%s_Settings.txt' % outfilebase))
+        settings_path = os.path.join(output_dir, '%s_Settings.json' % outfilebase)
+        settings.distribution.to_file(settings_path)
+        logger.info("Created settings log at: %s" % ('%s_Settings.json' % outfilebase))
 
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
-        if settings.world_count > 1:
+        if settings.world_count > 1 and not settings.output_file:
             filename = "%sP%d_Cosmetics.txt" % (outfilebase, settings.player_num)
         else:
             filename = '%s_Cosmetics.txt' % outfilebase
-        cosmetics_log.to_file(os.path.join(output_dir, filename))
+        cosmetic_path = os.path.join(output_dir, filename)
+        cosmetics_log.to_file(cosmetic_path)
+        logger.info("Created cosmetic log at: %s" % cosmetic_path)
 
     window.update_progress(100)
-    window.update_status('Success: Rom patched successfully')
+    if cosmetics_log and cosmetics_log.error:
+        window.update_status('Success: Rom patched successfully. Some cosmetics could not be applied.')
+    else:
+        window.update_status('Success: Rom patched successfully')
     logger.info('Done. Enjoy.')
     logger.debug('Total Time: %s', time.clock() - start)
 
@@ -263,7 +297,12 @@ def from_patch_file(settings, window=dummy_window()):
     logger.info('Patching ROM.')
 
     filename_split = os.path.basename(settings.patch_file).split('.')
-    outfilebase = filename_split[0]
+
+    if settings.output_file:
+        outfilebase = settings.output_file
+    else:
+        outfilebase = filename_split[0]
+
     extension = filename_split[-1]
 
     output_dir = default_output_path(settings.output_dir)
@@ -273,10 +312,13 @@ def from_patch_file(settings, window=dummy_window()):
     if extension == 'zpf':
         subfile = None
     else:
-        subfile = '%sP%d.zpf' % (outfilebase, settings.player_num)
-        output_path += 'P%d' % (settings.player_num)
+        subfile = 'P%d.zpf' % (settings.player_num)
+        if not settings.output_file:
+            output_path += 'P%d' % (settings.player_num)
     apply_patch_file(rom, settings.patch_file, subfile)
-    cosmetics_log = patch_cosmetics(settings, rom)
+    cosmetics_log = None
+    if settings.repatch_cosmetics:
+        cosmetics_log = patch_cosmetics(settings, rom)
     window.update_progress(65)
 
     window.update_status('Saving Uncompressed ROM')
@@ -304,17 +346,32 @@ def from_patch_file(settings, window=dummy_window()):
             compressor_path = ""
             logger.info('OS not supported for compression')
 
+        output_compress_path = output_path + '-comp.z64'
         if compressor_path != "":
-            run_process(window, logger, [compressor_path, uncompressed_output_path, output_path + '-comp.z64'])
+            run_process(window, logger, [compressor_path, uncompressed_output_path, output_compress_path])
         os.remove(uncompressed_output_path)
+        logger.info("Created compessed rom at: %s" % output_compress_path)
+    else:
+        logger.info("Created uncompessed rom at: %s" % output_path)
+
     window.update_progress(95)
 
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
-        cosmetics_log.to_file(os.path.join(output_dir, output_path + '_Cosmetics.txt'))
+        if settings.world_count > 1 and not settings.output_file:
+            filename = "%sP%d_Cosmetics.txt" % (outfilebase, settings.player_num)
+        else:
+            filename = '%s_Cosmetics.txt' % outfilebase
+        cosmetic_path = os.path.join(output_dir, filename)
+        cosmetics_log.to_file(cosmetic_path)
+        logger.info("Created cosmetic log at: %s" % cosmetic_path)
 
     window.update_progress(100)
-    window.update_status('Success: Rom patched successfully')
+    if cosmetics_log and cosmetics_log.error:
+        window.update_status('Success: Rom patched successfully. Some cosmetics could not be applied.')
+    else:
+        window.update_status('Success: Rom patched successfully')
+
     logger.info('Done. Enjoy.')
     logger.debug('Total Time: %s', time.clock() - start)
 
@@ -325,83 +382,75 @@ def cosmetic_patch(settings, window=dummy_window()):
     start = time.clock()
     logger = logging.getLogger('')
 
-    # we load the rom before creating the seed so that error get caught early
-    if settings.compress_rom == 'None':
-        raise Exception('An output type must be specified to produce anything.')
+    if settings.patch_file == '':
+        raise Exception('Cosmetic Only must have a patch file supplied.')
 
     window.update_status('Loading ROM')
     rom = LocalRom(settings)
 
-    logger.info('OoT Randomizer Version %s', __version__)
-
     logger.info('Patching ROM.')
 
-    outfilebase = 'OoT_cosmetics'
+    filename_split = os.path.basename(settings.patch_file).split('.')
+
+    if settings.output_file:
+        outfilebase = settings.output_file
+    else:
+        outfilebase = filename_split[0]
+
+    extension = filename_split[-1]
+
     output_dir = default_output_path(settings.output_dir)
+    output_path = os.path.join(output_dir, outfilebase)
 
-    if settings.compress_rom == 'Patch':
-        file_list = []
-        window.update_progress(65)
-        window.update_status('Patching ROM')
-        patchfilename = '%s.zpf' % outfilebase
+    window.update_status('Patching ROM')
+    if extension == 'zpf':
+        subfile = None
+    else:
+        subfile = 'P%d.zpf' % (settings.player_num)
+    apply_patch_file(rom, settings.patch_file, subfile)
+    window.update_progress(65)
 
-        patch_cosmetics(settings, rom)
-        window.update_progress(65 + 20)
+    # clear changes from the base patch file
+    patched_base_rom = copy.copy(rom.buffer)
+    rom.changed_address = {}
+    rom.changed_dma = {}
+    rom.force_patch = []
 
-        window.update_status('Creating Patch File')
-        output_path = os.path.join(output_dir, patchfilename)
-        file_list.append(patchfilename)
-        create_patch_file(rom, output_path)
-        window.update_progress(95)
+    window.update_status('Patching ROM')
+    patchfilename = '%s_Cosmetic.zpf' % output_path
+    cosmetics_log = patch_cosmetics(settings, rom)
+    window.update_progress(80)
 
-    elif settings.compress_rom != 'None':
-        window.update_status('Patching ROM')
-        cosmetics_log = patch_cosmetics(settings, rom)
-        window.update_progress(65)
+    window.update_status('Creating Patch File')
 
-        window.update_status('Saving Uncompressed ROM')
-        filename = '%s.z64' % outfilebase
-        output_path = os.path.join(output_dir, filename)
-        rom.write_to_file(output_path)
-        if settings.compress_rom == 'True':
-            window.update_status('Compressing ROM')
-            logger.info('Compressing ROM.')
+    # base the new patch file on the base patch file
+    rom.original = patched_base_rom
 
-            if is_bundled():
-                compressor_path = "."
-            else:
-                compressor_path = "Compress"
-
-            if platform.system() == 'Windows':
-                if 8 * struct.calcsize("P") == 64:
-                    compressor_path += "\\Compress.exe"
-                else:
-                    compressor_path += "\\Compress32.exe"
-            elif platform.system() == 'Linux':
-                if platform.uname()[4] == 'aarch64' or platform.uname()[4] == 'arm64':
-                    compressor_path += "/Compress_ARM64"
-                else:
-                    compressor_path += "/Compress"
-            elif platform.system() == 'Darwin':
-                compressor_path += "/Compress.out"
-            else:
-                compressor_path = ""
-                logger.info('OS not supported for compression')
-
-            if compressor_path != "":
-                run_process(window, logger, [compressor_path, output_path, output_path[:output_path.rfind('.')] + '-comp.z64'])
-            os.remove(output_path)
-        window.update_progress(95)
+    rom.update_crc()
+    create_patch_file(rom, patchfilename)
+    logger.info("Created patchfile at: %s" % patchfilename)
+    window.update_progress(95)
 
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
-        filename = '%s_Cosmetics.txt' % outfilebase
-        cosmetics_log.to_file(os.path.join(output_dir, filename))
+        if settings.world_count > 1 and not settings.output_file:
+            filename = "%sP%d_Cosmetics.txt" % (outfilebase, settings.player_num)
+        else:
+            filename = '%s_Cosmetics.txt' % outfilebase
+        cosmetic_path = os.path.join(output_dir, filename)
+        cosmetics_log.to_file(cosmetic_path)
+        logger.info("Created cosmetic log at: %s" % cosmetic_path)
 
     window.update_progress(100)
-    window.update_status('Success: Rom patched successfully')
+    if cosmetics_log and cosmetics_log.error:
+        window.update_status('Success: Rom patched successfully. Some cosmetics could not be applied.')
+    else:
+        window.update_status('Success: Rom patched successfully')
+
     logger.info('Done. Enjoy.')
     logger.debug('Total Time: %s', time.clock() - start)
+
+    return True
 
 
 def run_process(window, logger, args):

@@ -20,6 +20,22 @@ class GossipStone():
         self.reachable = True
 
 
+class GossipText():
+    def __init__(self, text, colors=None, prefix="They say that "):
+        text = prefix + text
+        text = text[:1].upper() + text[1:]
+        self.text = text
+        self.colors = colors
+
+
+    def to_json(self):
+        return {'text': self.text, 'colors': self.colors}
+
+
+    def __str__(self):
+        return get_raw_text(lineWrap(colorText(self)))
+
+
 gossipLocations = {
     0x0405: GossipStone('Death Mountain Crater (Bombable Wall)', 'Death Mountain Crater Gossip Stone'),
     0x0404: GossipStone('Death Mountain Trail (Biggoron)', 'Death Mountain Trail Gossip Stone'),
@@ -56,17 +72,6 @@ gossipLocations = {
 }
 
 
-def buildHintString(hintString):
-    if len(hintString) < 77:
-        hintString = "They say that " + hintString
-    elif len(hintString) < 82:
-        hintString = "They say " + hintString
-    # captitalize the sentance
-    hintString = hintString[:1].upper() + hintString[1:]
-
-    return hintString
-
-
 def getItemGenericName(item):
     if item.dungeonitem:
         return item.type
@@ -84,7 +89,7 @@ def isRestrictedDungeonItem(dungeon, item):
     return False
 
 
-def add_hint(spoiler, world, IDs, text, count, location=None, force_reachable=False):
+def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reachable=False):
     random.shuffle(IDs)
     skipped_ids = []
     first = True
@@ -102,14 +107,14 @@ def add_hint(spoiler, world, IDs, text, count, location=None, force_reachable=Fa
 
                     count -= 1
                     first = False
-                    spoiler.hints[world.id][id] = lineWrap(text)
+                    spoiler.hints[world.id][id] = gossip_text
                 else:
                     skipped_ids.append(id)
             else:
                 if not force_reachable:
                     # The stones are not readable at all in logic, so we ignore any kind of logic here
                     count -= 1
-                    spoiler.hints[world.id][id] = lineWrap(text)
+                    spoiler.hints[world.id][id] = gossip_text
                 else:
                     # If flagged to guarantee reachable, then skip
                     # If no stones are reachable, then this will place nothing
@@ -135,8 +140,8 @@ def can_reach_stone(worlds, stone_location, location):
 
 
 def writeGossipStoneHints(spoiler, world, messages):
-    for id,text in spoiler.hints[world.id].items():
-        update_message_by_id(messages, id, get_raw_text(text))
+    for id, gossip_text in spoiler.hints[world.id].items():
+        update_message_by_id(messages, id, str(gossip_text))
 
 
 def filterTrailingSpace(text):
@@ -168,7 +173,7 @@ def getSimpleHintNoPrefix(item):
     return hint
 
 
-def colorText(text, color):
+def colorText(gossip_text):
     colorMap = {
         'White':      '\x40',
         'Red':        '\x41',
@@ -180,22 +185,23 @@ def colorText(text, color):
         'Black':      '\x47',
     }
 
-    colorTags = False
-    while True:
-        splitText = text.split('#', 2)
-        if len(splitText) == 3:
-            splitText[1] = '\x05' + colorMap[color] + splitText[1] + '\x05\x40'
-            text = ''.join(splitText)
-            colorTags = True
-        else:
-            text = '#'.join(splitText)
-            break
+    text = gossip_text.text
+    colors = list(gossip_text.colors) if gossip_text.colors is not None else []
+    color = 'White'
 
-    if not colorTags:
+    while '#' in text:
+        splitText = text.split('#', 2)
+        if len(colors) > 0:
+            color = colors.pop()
+
         for prefix in hintPrefixes:
-            if text.startswith(prefix):
-                text = text[:len(prefix)] + '\x05' + colorMap[color] + text[len(prefix):] + '\x05\x40'
+            if splitText[1].startswith(prefix):
+                splitText[0] += splitText[1][:len(prefix)]
+                splitText[1] = splitText[1][len(prefix):]
                 break
+        
+        splitText[1] = '\x05' + colorMap[color] + splitText[1] + '\x05\x40'
+        text = ''.join(splitText)
 
     return text
 
@@ -210,10 +216,11 @@ def get_woth_hint(spoiler, world, checked):
     checked.append(location.name)
 
     if location.parent_region.dungeon:
-        return (buildHintString(colorText(getHint(location.parent_region.dungeon.name, world.clearer_hints).text, 'Light Blue') + \
-            " is on the way of the hero."), location)
+        location_text = getHint(location.parent_region.dungeon.name, world.clearer_hints).text
     else:
-        return (buildHintString(colorText(location.hint, 'Light Blue') + " is on the way of the hero."), location)
+        location_text = location.hint
+
+    return (GossipText('#%s# is on the way of the hero.' % location_text, ['Light Blue']), location)
 
 
 def get_barren_hint(spoiler, world, checked):
@@ -233,7 +240,7 @@ def get_barren_hint(spoiler, world, checked):
 
     checked.append(area)
 
-    return (buildHintString(colorText(area, 'Pink') + " is barren of treasure."), None)
+    return (GossipText("plundering #%s# is a foolish choice." % area, ['Pink']), None)
 
 
 def get_good_loc_hint(spoiler, world, checked):
@@ -246,8 +253,12 @@ def get_good_loc_hint(spoiler, world, checked):
     location = world.get_location(hint.name)
     checked.append(location.name)
 
-    return (buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
-                colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), location)
+    location_text = getHint(location.name, world.clearer_hints).text
+    if '#' not in location_text:
+        location_text = '#%s#' % location_text   
+    item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
+
+    return (GossipText('%s #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
 
 
 def get_good_item_hint(spoiler, world, checked):
@@ -261,12 +272,13 @@ def get_good_item_hint(spoiler, world, checked):
     location = random.choice(locations)
     checked.append(location.name)
 
+    item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
     if location.parent_region.dungeon:
-        return (buildHintString(colorText(getHint(location.parent_region.dungeon.name, world.clearer_hints).text, 'Green') + \
-            " hoards " + colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), location)
+        location_text = getHint(location.parent_region.dungeon.name, world.clearer_hints).text
+        return (GossipText('#%s# hoards #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
     else:
-        return (buildHintString(colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + \
-            " can be found at " + colorText(location.hint, 'Green') + "."), location)
+        location_text = location.hint
+        return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
 
 
 def get_overworld_hint(spoiler, world, checked):
@@ -282,8 +294,10 @@ def get_overworld_hint(spoiler, world, checked):
     location = random.choice(locations)
     checked.append(location.name)
 
-    return (buildHintString(colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + \
-        " can be found at " + colorText(location.hint, 'Green') + "."), location)
+    location_text = location.hint
+    item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
+
+    return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
 
 
 def get_dungeon_hint(spoiler, world, checked):
@@ -308,8 +322,10 @@ def get_dungeon_hint(spoiler, world, checked):
     location = random.choice(locations)
     checked.append(location.name)
 
-    return (buildHintString(colorText(getHint(dungeon.name, world.clearer_hints).text, 'Green') + " hoards " + \
-        colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), location)
+    location_text = getHint(dungeon.name, world.clearer_hints).text
+    item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
+
+    return (GossipText('#%s# hoards #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
 
 
 def get_junk_hint(spoiler, world, checked):
@@ -321,7 +337,7 @@ def get_junk_hint(spoiler, world, checked):
     hint = random.choice(hints)
     checked.append(hint.name)
 
-    return (hint.text, None)
+    return (GossipText(hint.text, prefix=''), None)
 
 
 hint_func = {
@@ -412,6 +428,9 @@ def buildGossipHints(spoiler, world):
     checkedLocations = []
 
     stoneIDs = list(gossipLocations.keys())
+
+    world.distribution.configure_gossip(spoiler, stoneIDs)
+
     random.shuffle(stoneIDs)
 
     hint_dist = hint_dist_sets[world.hint_dist]
@@ -423,22 +442,26 @@ def buildGossipHints(spoiler, world):
     for hint in alwaysLocations:
         location = world.get_location(hint.name)
         checkedLocations.append(hint.name)
-        add_hint(spoiler, world, stoneIDs, buildHintString(colorText(getHint(location.name, world.clearer_hints).text, 'Green') + " " + \
-            colorText(getHint(getItemGenericName(location.item), world.clearer_hints).text, 'Red') + "."), hint_dist['always'][1], location, force_reachable=True)
+
+    location_text = getHint(location.name, world.clearer_hints).text
+    if '#' not in location_text:
+        location_text = '#%s#' % location_text
+    item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
+    add_hint(spoiler, world, stoneIDs, GossipText('%s #%s#.' % (location_text, item_text), ['Green', 'Red']), hint_dist['always'][1], location, force_reachable=True)
 
     # Add trial hints
     if world.trials_random and world.trials == 6:
-        add_hint(spoiler, world, stoneIDs, buildHintString(colorText("Ganon's Tower", 'Pink') + " is protected by a powerful barrier."), hint_dist['trial'][1], force_reachable=True)
+        add_hint(spoiler, world, stoneIDs, GossipText("#Ganon's Tower# is protected by a powerful barrier.", ['Pink']), hint_dist['trial'][1], force_reachable=True)
     elif world.trials_random and world.trials == 0:
-        add_hint(spoiler, world, stoneIDs, buildHintString("Sheik dispelled the barrier around " + colorText("Ganon's Tower", 'Yellow')), hint_dist['trial'][1], force_reachable=True)
+        add_hint(spoiler, world, stoneIDs, GossipText("Sheik dispelled the barrier around #Ganon's Tower#.", ['Yellow']), hint_dist['trial'][1], force_reachable=True)
     elif world.trials < 6 and world.trials > 3:
         for trial,skipped in world.skipped_trials.items():
             if skipped:
-                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Yellow') + " was dispelled by Sheik."), hint_dist['trial'][1], force_reachable=True)
+                add_hint(spoiler, world, stoneIDs,GossipText("the #%s Trial#  was dispelled by Sheik." % trial, ['Yellow']), hint_dist['trial'][1], force_reachable=True)
     elif world.trials <= 3 and world.trials > 0:
         for trial,skipped in world.skipped_trials.items():
             if not skipped:
-                add_hint(spoiler, world, stoneIDs, buildHintString("the " + colorText(trial + " Trial", 'Pink') + " protects Ganon's Tower."), hint_dist['trial'][1], force_reachable=True)
+                add_hint(spoiler, world, stoneIDs, GossipText("the #%s Trial# protects Ganon's Tower." % trial, ['Pink']), hint_dist['trial'][1], force_reachable=True)
 
     hint_types = list(hint_types)
     hint_prob  = list(hint_prob)
@@ -465,8 +488,8 @@ def buildGossipHints(spoiler, world):
             index = hint_types.index(hint_type)
             hint_prob[index] = 0
         else:
-            text, location = hint
-            place_ok = add_hint(spoiler, world, stoneIDs, text, hint_dist[hint_type][1], location)
+            gossip_text, location = hint
+            place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, hint_dist[hint_type][1], location)
             if not place_ok and world.hint_dist == "tournament":
                 fixed_hint_types.insert(0, hint_type)
 
@@ -510,9 +533,10 @@ def buildBossString(reward, color, world):
     text = ''
     for location in world.get_filled_locations():
         if location.item.name == reward:
-            text += '\x08\x13' + chr(location.item.special['item_id'])
-            text += colorText(getHint(location.name, world.clearer_hints).text, color)
-    return text
+            item_icon = chr(location.item.special['item_id'])
+            location_text = getHint(location.name, world.clearer_hints).text
+            gossip_text = GossipText("\x08\x13%s%s" % (item_icon, location_text), [color], prefix='')
+    return str(gossip_text)
 
 
 # fun new lines for Ganon during the final battle
@@ -530,14 +554,16 @@ def buildGanonText(world, messages):
 
     # light arrow hint or validation chest item
     if world.trials == 0:
-        location = world.light_arrow_location
         text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
-        location_hint = location.hint.replace('Ganon\'s Castle', 'my castle') \
-                                     .replace('Ganon\'s Tower', 'my tower')
-        if world.id != location.world.id:
-            text += "\x05\x42Player %d's\x05\x40 %s" % (location.world.id +1, get_raw_text(location_hint))
+        if world.distribution.get_starting_item('Light Arrows') > 0:
+            text += "\x05\x42your pocket\x05\x40"
         else:
-            text += get_raw_text(location_hint)
+            location = world.light_arrow_location
+            location_hint = location.hint.replace('Ganon\'s Castle', 'my castle')
+            if world.id != location.world.id:
+                text += "\x05\x42Player %d's\x05\x40 %s" % (location.world.id +1, get_raw_text(location_hint))
+            else:
+                text += get_raw_text(location_hint)
         text += '!'
     else:
         text = get_raw_text(getHint('Validation Line', world.clearer_hints).text)

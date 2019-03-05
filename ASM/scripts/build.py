@@ -1,3 +1,5 @@
+#!/usr/bin/env/python3
+
 import argparse
 import json
 import os
@@ -28,6 +30,13 @@ if compile_c:
 os.chdir(run_dir + '/src')
 call(['armips', '-sym2', '../build/asm_symbols.txt', 'build.asm'])
 os.chdir(run_dir)
+
+with open('build/asm_symbols.txt', 'rb') as f:
+    asm_symbols_content = f.read()
+asm_symbols_content = asm_symbols_content.replace(b'\r\n', b'\n')
+asm_symbols_content = asm_symbols_content.replace(b'\x1A', b'')
+with open('build/asm_symbols.txt', 'wb') as f:
+    f.write(asm_symbols_content)
 
 # Parse symbols
 

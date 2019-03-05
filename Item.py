@@ -71,7 +71,10 @@ class Item(object):
 
     @property
     def majoritem(self):
-        if self.type == 'Token' or self.type == 'Event' or self.type == 'Shop' or not self.advancement:
+        if self.type == 'Token':
+            return self.world.bridge == 'tokens'
+
+        if self.type == 'Event' or self.type == 'Shop' or not self.advancement:
             return False
 
         if self.name.startswith('Bombchus') and not self.world.bombchus_in_logic:
@@ -117,3 +120,19 @@ def ItemFactory(items, world=None):
     if singleton:
         return ret[0]
     return ret
+
+
+def IsItem(name):
+    return name in item_table
+
+
+def isBottle(name):
+    item = ItemFactory(name)
+    return item.special.get('bottle', False)
+
+
+def ItemIterator(predicate=lambda loc: True, world=None):
+    for item_name in item_table:
+        item = ItemFactory(item_name, world)
+        if predicate(item):
+            yield item

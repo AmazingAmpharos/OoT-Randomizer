@@ -5,7 +5,7 @@
         "locations": {
             "Water Temple MQ Map Chest": "has_fire_source and Iron_Boots",
             "Water Temple MQ Central Pillar Chest": "
-                has_ZoraTunic and Iron_Boots and 
+                can_use(Zora_Tunic) and Iron_Boots and 
                 (can_use(Fire_Arrows) or (can_use(Dins_Fire) and can_play(Song_of_Time)))",
             # If the player leaves the dungeon without collecting the item at Morpha Heart,
             # they won't be able to come back without Iron Boots.
