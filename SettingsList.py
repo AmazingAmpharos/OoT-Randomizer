@@ -1,7 +1,11 @@
 import argparse
 import re
 import math
+<<<<<<< HEAD
 from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options, get_gauntlet_color_options, get_magic_color_options, get_heart_color_options
+=======
+from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options
+>>>>>>> set up for glitched logic
 from Location import LocationIterator
 import Sounds as sfx
 
@@ -43,8 +47,17 @@ class Setting_Info():
         elif self.type == list:
             self.default = []
 
-        if 'distribution' not in gui_params:
-            self.gui_params['distribution'] = [(choice, 1) for choice in self.choice_list]
+        if 'randomize_key' in gui_params:
+            # initialize random choice distribution if not set
+            if 'distribution' not in gui_params:
+                self.gui_params['distribution'] = [(choice, 1) for choice in self.choice_list]
+
+            # add dependency for randomize option
+            if self.dependency:
+                old_dependency = dependency
+                self.dependency = lambda settings: self.default if settings.__dict__[self.gui_params['randomize_key']] else old_dependency(settings)
+            else:
+                self.dependency = lambda settings: self.default if settings.__dict__[self.gui_params['randomize_key']] else None
 
 
     def calc_bitwidth(self, choices):
@@ -140,6 +153,19 @@ logic_tricks = {
                     Use the bombflower on the stairs or near Medigoron.
                     Timing is tight, especially without backwalking
                     '''},
+<<<<<<< HEAD
+=======
+    'Morpha with Gold Scale': {
+        'name'    : 'logic_morpha_with_scale',
+        'tooltip' : '''\
+                    Allows entering Water Temple and beating
+                    Morpha with Gold Scale instead of Iron Boots.
+                    Only applicable for keysanity and keysy due
+                    to the logic always seeing every chest in
+                    Water Temple that could contain the Boss Key
+                    as requiring Iron Boots.
+                    '''},
+>>>>>>> set up for glitched logic
     'Fewer Tunic Requirements': {
         'name'    : 'logic_fewer_tunic_requirements',
         'tooltip' : '''\
@@ -631,6 +657,7 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
+<<<<<<< HEAD
     Checkbutton(
         name           = 'child_lake_hylia_control',
         gui_text       = 'Child May Drain Lake Hylia',
@@ -648,6 +675,8 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
+=======
+>>>>>>> set up for glitched logic
     Combobox(
         name           = 'gerudo_fortress',
         default        = 'normal',
@@ -706,6 +735,7 @@ setting_infos = [
         },
     ),
     Combobox(
+<<<<<<< HEAD
         name           = 'logic_rules',
         default        = 'glitchless',
         choices        = {
@@ -728,6 +758,41 @@ setting_infos = [
         ''',
         shared         = True,
     ),
+=======
+            name           = 'logic_rules',
+            default        = 'glitchless',
+            choices        = {
+                'glitchless': 'Glitchless',
+                'glitched':   'Glitched',
+                'none':       'No Logic',
+                },
+            args_help      = '''\
+                             Sets the rules the logic uses to determine accessibility:
+                             glitchless:  No glitches are required, but may require some minor tricks
+                             glitched:    Movement oriented glitches are likely required. No locations excluded.
+                             none:        All locations are considered available. May not be beatable.
+                             ''',
+            gui_text       = 'Logic Rules',
+            gui_group      = 'world',
+            gui_tooltip    = '''\
+                             Sets the rules the logic uses
+                             to determine accessibility.
+        
+                             'Glitchless': No glitches are
+                             required, but may require some
+                             minor tricks
+
+                             'Glitched': Movement oriented
+                             glitches are likely required.
+                             No locations excluded.
+        
+                             'No Logic': All locations are
+                             considered available. May not
+                             be beatable.
+                             ''',
+            shared         = True,
+            ),
+>>>>>>> set up for glitched logic
     Checkbutton(
         name           = 'all_reachable',
         gui_text       = 'All Locations Reachable',
@@ -840,7 +905,10 @@ setting_infos = [
             Ganondorf and Ganon will be skipped.
         ''',
         shared         = True,
+<<<<<<< HEAD
         dependency     = lambda settings: True if settings.entrance_shuffle == 'indoors' else None,
+=======
+>>>>>>> set up for glitched logic
     ),
     Checkbutton(
         name           = 'no_guard_stealth',
@@ -1062,6 +1130,7 @@ setting_infos = [
         },
     ),
     Combobox(
+<<<<<<< HEAD
         name           = 'entrance_shuffle',
         default        = 'off',
         choices        = {
@@ -1115,6 +1184,8 @@ setting_infos = [
         },
     ),
     Combobox(
+=======
+>>>>>>> set up for glitched logic
         name           = 'shuffle_scrubs',
         default        = 'off',
         choices        = {
@@ -1376,7 +1447,10 @@ setting_infos = [
             If set, a random number of dungeons
             will have Master Quest designs.
         ''',
+<<<<<<< HEAD
         dependency     = lambda settings: False if settings.entrance_shuffle != 'off' else None,
+=======
+>>>>>>> set up for glitched logic
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -1404,7 +1478,11 @@ setting_infos = [
             12: All dungeons will have
             Master Quest redesigns.
             ''',
+<<<<<<< HEAD
         dependency     = lambda settings: 0 if settings.mq_dungeons_random or settings.entrance_shuffle != 'off' else None,
+=======
+        dependency     = lambda settings: 0 if settings.mq_dungeons_random else None,
+>>>>>>> set up for glitched logic
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -1590,12 +1668,22 @@ setting_infos = [
         gui_group      = 'other',
         gui_tooltip    = '''\
             Useless has nothing but junk hints.
+<<<<<<< HEAD
             Strong distribution has a good
             spread of different hint types.
             Multiworld distribution has only
             a few specific, useful hint types.
             Tournament distribution has a set
             number of hints for each type.
+=======
+            Strong distribution has some
+            duplicate hints and no junk hints.
+            Very Strong distribution has
+            only very useful hints.
+            Tournament distribution is
+            similar to Strong but with no
+            variation in hint types.
+>>>>>>> set up for glitched logic
         ''',
         shared         = True,
     ),
@@ -1952,6 +2040,7 @@ setting_infos = [
             'group':  'sword_trails',
             'widget': 'Combobox',
             'tooltip':'''\
+<<<<<<< HEAD
                       'Random Choice': Choose a random
                       color from this list of colors.
                       'Completely Random': Choose a random
@@ -1990,6 +2079,8 @@ setting_infos = [
             'group':  'gauntlet_colors',
             'widget': 'Combobox',
             'tooltip': '''\
+=======
+>>>>>>> set up for glitched logic
                 'Random Choice': Choose a random
                 color from this list of colors.
                 'Completely Random': Choose a random
@@ -1998,6 +2089,7 @@ setting_infos = [
             '''
         },
     ),
+<<<<<<< HEAD
     Setting_Info(
         name           = 'heart_color',
         type           = str,
@@ -2034,6 +2126,8 @@ setting_infos = [
             '''
         },
     ),
+=======
+>>>>>>> set up for glitched logic
     Combobox(
         name           = 'sfx_low_hp',
         choices        = sfx.get_setting_choices(sfx.SoundHooks.HP_LOW),
