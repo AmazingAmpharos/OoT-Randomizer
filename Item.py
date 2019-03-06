@@ -126,13 +126,16 @@ def IsItem(name):
     return name in item_table
 
 
-def isBottle(name):
-    item = ItemFactory(name)
-    return item.special.get('bottle', False)
-
-
 def ItemIterator(predicate=lambda loc: True, world=None):
     for item_name in item_table:
         item = ItemFactory(item_name, world)
         if predicate(item):
             yield item
+
+
+bottle_dict = {}
+for item in ItemIterator():
+    bottle_dict[item.name] = item.special.get('bottle', False)
+def isBottle(name):
+    return bottle_dict[name]
+
