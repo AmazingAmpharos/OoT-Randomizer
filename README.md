@@ -79,7 +79,8 @@ player.
 #### New Feature
 * Plan-domizer
   * Ability to create a custom seed by placing items where you want them.
-  * Need to supply an appropriately formatted JSON file.
+  * Spoiler log is now in JSON format
+  * Plan-domizer uses the spoiler log JSON format
 * Cow Sanity
   * Playing Epona's Song for a cow for the first time gives an item.
 * Starting Age Option
