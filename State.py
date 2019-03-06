@@ -21,7 +21,7 @@ class State(object):
         self.tod = None
 
 
-    ## Ensure that self.is_glitched will have a value
+    ## Ensure that this will always have a value
     @property
     def is_glitched(self):
         return self.world.logic_rules != 'glitchless'
@@ -541,6 +541,17 @@ class State(object):
     
     def can_weirdshot(self):
         return self.can_mega() and self.can_use('Hookshot')
+
+
+    # Used for fall damage and other situations where damage is unavoidable
+    def can_live_dmg(self,hearts):
+        mult = self.world.damage_multiplier
+        if hearts >= 1:
+            return mult != 'ohko' and mult != 'quadruple'
+        elif hearts < 1:
+            return mult != 'ohko'
+        else:
+            return True
 
 
     # Be careful using this function. It will not collect any
