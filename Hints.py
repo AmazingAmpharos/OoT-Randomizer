@@ -263,6 +263,30 @@ def get_good_item_hint(spoiler, world, checked):
         return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
 
 
+def get_random_location_hint(spoiler, world, checked):
+    locations = [location for location in world.get_filled_locations()
+            if not location.name in checked and \
+            location.item.type != 'Event' and \
+            location.item.type != 'Shop' and \
+            not (location.parent_region.dungeon and \
+                isRestrictedDungeonItem(location.parent_region.dungeon, location.item)) and
+            not location.locked]
+    if not locations:
+        return None
+
+    location = random.choice(locations)
+    checked.append(location.name)
+    dungeon = location.parent_region.dungeon
+
+    item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
+    if dungeon:
+        location_text = getHint(dungeon.name, world.clearer_hints).text
+        return (GossipText('#%s# hoards #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
+    else:
+        location_text = location.hint
+        return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
+
+
 def get_specific_hint(spoiler, world, checked, type):
     hintGroup = getHintGroup(type, world)
     hintGroup = list(filter(lambda hint: hint.name not in checked, hintGroup))
@@ -319,6 +343,7 @@ hint_func = {
     'minigame': get_minigame_hint,
     'ow':       get_overworld_hint,
     'dungeon':  get_dungeon_hint,
+    'random':   get_random_location_hint,
     'junk':     get_junk_hint,
 }
 
@@ -334,46 +359,50 @@ hint_dist_sets = {
         'minigame': (0.0, 0),
         'ow':       (0.0, 0),
         'dungeon':  (0.0, 0),
+        'random':   (0.0, 0),
         'junk':     (9.0, 1),
     },
     'balanced': {
         'trial':    (0.0, 1),
         'always':   (0.0, 1),
-        'woth':     (4.0, 1),
+        'woth':     (3.5, 1),
         'barren':   (2.0, 1),
-        'item':     (4.0, 1),
-        'song':     (1.5, 1),
-        'minigame': (1.0, 1),
-        'ow':       (4.0, 1),
-        'dungeon':  (3.0, 1),
+        'item':     (5.0, 1),
+        'song':     (1.0, 1),
+        'minigame': (0.5, 1),
+        'ow':       (2.0, 1),
+        'dungeon':  (1.5, 1),
+        'random':   (6.0, 1),
         'junk':     (3.0, 1),
     },
     'strong': {
         'trial':    (0.0, 1),
         'always':   (0.0, 2),
-        'woth':     (4.0, 2),
-        'barren':   (4.0, 2),
+        'woth':     (3.0, 2),
+        'barren':   (3.0, 1),
         'item':     (1.0, 1),
-        'song':     (1.0, 1),
-        'minigame': (1.0, 1),
-        'ow':       (2.0, 1),
-        'dungeon':  (2.0, 1),
+        'song':     (0.33, 1),
+        'minigame': (0.33, 1),
+        'ow':       (0.66, 1),
+        'dungeon':  (0.66, 1),
+        'random':   (2.0, 1),
         'junk':     (0.0, 0),
     },
-    'multiworld': {
+    'very_strong': {
         'trial':    (0.0, 1),
         'always':   (0.0, 2),
         'woth':     (3.0, 2),
-        'barren':   (3.0, 2),
-        'item':     (0.0, 1),
-        'song':     (0.0, 1),
-        'minigame': (0.0, 1),
-        'ow':       (2.0, 1),
-        'dungeon':  (2.0, 1),
+        'barren':   (3.0, 1),
+        'item':     (1.0, 1),
+        'song':     (0.5, 1),
+        'minigame': (0.5, 1),
+        'ow':       (1.5, 1),
+        'dungeon':  (1.5, 1),
+        'random':   (0.0, 0),
         'junk':     (0.0, 0),
     },
     'tournament': {
-        'trial':    (0.0, 0),
+        'trial':    (0.0, 2),
         'always':   (0.0, 2),
         'woth':     (4.0, 2),
         'barren':   (2.0, 2),
@@ -382,8 +411,9 @@ hint_dist_sets = {
         'minigame': (0.0, 1),
         'ow':       (2.0, 1),
         'dungeon':  (3.0, 1),
+        'random':   (0.0, 0),
         'junk':     (0.0, 0),
-    },    
+    },
 }
 
 
@@ -395,7 +425,7 @@ def buildGossipHints(spoiler, world):
     world.barren_dungeon = False
 
     max_states = State.get_states_with_items([w.state for w in spoiler.worlds], [])
-    for _,stone in gossipLocations.items():
+    for stone in gossipLocations.values():
         stone.reachable = \
             max_states[world.id].can_reach(stone.location, resolution_hint='Location') and \
             max_states[world.id].guarantee_hint()
@@ -450,10 +480,10 @@ def buildGossipHints(spoiler, world):
             if fixed_hint_types:
                 hint_type = fixed_hint_types.pop(0)
             else:
-                hint_type = 'item'
+                hint_type = 'random'
         else:
             try:
-                hint_type = random_choices(hint_types, weights=hint_prob)
+                hint_type = random_choices(hint_types, weights=hint_prob)[0]
             except IndexError:
                 raise Exception('Not enough valid hints to fill gossip stone locations.')
 

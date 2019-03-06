@@ -1530,7 +1530,7 @@ setting_infos = [
             'useless':     'Useless',
             'balanced':    'Balanced',
             'strong':      'Strong',
-            'multiworld':  'Multiworld',
+            'very_strong': 'Very Strong',
             'tournament':  'Tournament',
         },
         gui_text       = 'Hint Distribution',
