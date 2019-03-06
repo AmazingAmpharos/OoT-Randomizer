@@ -481,6 +481,7 @@ tradeitemoptions = (
 eventlocations = {
     'Ganon': 'Triforce',
     'Zeldas Letter': 'Zeldas Letter',
+    'Pierre': 'Scarecrow Song',
     'Magic Bean Salesman': 'Magic Bean',
     'Deliver Ruto\'s Letter': 'Deliver Letter',
     "Sell 1 Big Poe": 'Sell Big Poe',
@@ -997,6 +998,9 @@ def get_pool_core(world):
         world.state.collect(ItemFactory('Serenade of Water'))
         world.state.collect(ItemFactory('Farores Wind'))
         pool.extend(get_junk_item(3))
+        
+    if world.free_scarecrow:
+        world.state.collect(ItemFactory('Scarecrow Song'))
 
     if world.shuffle_mapcompass == 'remove' or world.shuffle_mapcompass == 'startwith':
         for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:

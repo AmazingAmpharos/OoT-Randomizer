@@ -121,6 +121,7 @@ location_table = {
     "Gerudo Fortress South F1 Carpenter":              ("Collectable", 0x0C,  0x0E, "Gerudo's Fortress",      None,                     ("Gerudo",)),
     "Gerudo Fortress South F2 Carpenter":              ("Collectable", 0x0C,  0x0F, "Gerudo's Fortress",      None,                     ("Gerudo",)),
 
+    "Pierre":                                          ("Event",       None,  None, "Lake Hylia",             None,                     None),
     "Magic Bean Salesman":                             ("Event",       None,  None, "Zora's River",           None,                     None),
     "Deliver Ruto's Letter":                           ("Event",       None,  None, "Zora's Domain",          None,                     None),
     "Sell 1 Big Poe":                                  ("Event",       None,  None, "Castle Market",          None,                     None),

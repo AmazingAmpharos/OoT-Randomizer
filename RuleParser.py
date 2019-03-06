@@ -43,6 +43,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                     ctx=ast.Load()),
                 args=[],
                 keywords=[])
+
         else:
             return ast.Str(node.id.replace('_', ' '))
 
@@ -87,14 +88,14 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     def visit_Call(self, node):
-        if node.func.id in lambda_methods:
+        if node.func.id in lambda_methods and len(node.args) > 0:
             node.args = [ast.Lambda(
-                            args=ast.arguments(
-                                args=[ast.arg(arg='state')],
-                                defaults=[],
-                                kwonlyargs=[], 
-                                kw_defaults=[]),
-                            body=node.args[0])]
+                args=ast.arguments(
+                    args=[ast.arg(arg='state')],
+                    defaults=[],
+                    kwonlyargs=[], 
+                    kw_defaults=[]),
+                body=node.args[0])]
 
         new_args = []
         for child in node.args:

@@ -141,19 +141,19 @@ class State(object):
         return lambda_rule_result
 
 
-    def as_either_here(self, lambda_rule):
+    def as_either_here(self, lambda_rule=lambda state: True):
         return self.as_either(self.add_reachability(lambda_rule))
 
 
-    def as_both_here(self, lambda_rule):
+    def as_both_here(self, lambda_rule=lambda state: True):
         return self.as_both(self.add_reachability(lambda_rule))
 
 
-    def as_adult_here(self, lambda_rule):
+    def as_adult_here(self, lambda_rule=lambda state: True):
         return self.as_adult(self.add_reachability(lambda_rule))
 
 
-    def as_child_here(self, lambda_rule):
+    def as_child_here(self, lambda_rule=lambda state: True):
         return self.as_child(self.add_reachability(lambda_rule))
 
 
@@ -281,9 +281,9 @@ class State(object):
         elif item == 'Golden Gauntlets':
             return self.has('Progressive Strength Upgrade', 3) and self.is_adult()
         elif item == 'Scarecrow':
-            return self.has('Progressive Hookshot') and self.is_adult() and self.has_ocarina() and self.has_scarecrow_song()
+            return self.has('Progressive Hookshot') and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Distant Scarecrow':
-            return self.has('Progressive Hookshot', 2) and self.is_adult() and self.has_ocarina() and self.has_scarecrow_song()
+            return self.has('Progressive Hookshot', 2) and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Magic Bean':
             # Magic Bean usability automatically checks for reachability as child to the current spot's parent region (with as_child_here)
             return self.as_child_here(lambda state: state.has('Magic Bean')) and self.is_adult()
@@ -338,10 +338,6 @@ class State(object):
         return self.has_bottle() and \
             (self.can_leave_forest() or self.has_sticks() or self.has('Kokiri Sword') or 
              self.has('Boomerang') or self.has_explosives() or self.has('Buy Bottle Bug'))
-
-
-    def has_scarecrow_song(self):
-        return self.world.free_scarecrow or (self.has_ocarina() and self.can_reach('Lake Hylia', age='both'))
 
 
     def can_use_projectile(self):
