@@ -78,28 +78,28 @@ player.
 
 #### New Feature
 * Plan-domizer
-  * Ability to create a custome seed by placing items where you want them.
+  * Ability to create a custom seed by placing items where you want them.
   * Need to supply an appropriately formatted JSON file.
 * Cow Sanity
   * Playing Epona's Song for a cow for the first time gives an item.
 * Starting Age Option
   * Can now start as child, adult, or random.
 * Hotrod Rolling Goron no longer checks for Bomb Bag.
-* Buying Piece of Heart/Heart Container fully heals Link.
 * Wearing bunny hood increases running speed.
-* Duplicate Bottle with Letter added to plentiful item pool
+* Duplicate Bottle with Letter added to plentiful item pool.
 
 #### New Option
 * Randomize Main Rules option.
-* Filter dropdow to Location Exclusion dropdown.
+* Filter dropdown to Location Exclusion dropdown.
 * Allow customization of Navi inner and outer glow.
 * Open Output Directory button.
 * Several tricks added to the Enable Tricks dropdown.
-* Shuffle Gerudo Card can now be enabled alongside Open Gerudo Fortress
+* Shuffle Gerudo Card can now be enabled alongside Open Gerudo Fortress.
 
 ####Bug Fix
 * No longer able to buy bombchus with only bomb bag when bombchus in logic.
 * Dampe freestanding Piece of Heart no longer checks for chest being opened.
+* Buying Piece of Heart/Heart Container fully heals Link.
 
 
 ### 4.0
