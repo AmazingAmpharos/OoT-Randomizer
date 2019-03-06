@@ -19,6 +19,7 @@ class State(object):
         self.current_spot = None
         self.adult = None
         self.tod = None
+        self.is_glitched = (self.world.logic_rules != 'glitchless')
 
 
     def clear_cached_unreachable(self):
@@ -282,14 +283,14 @@ class State(object):
 
     def has_blue_fire(self):
         return self.has_bottle() and \
-                (self.can_reach('Ice Cavern', age='adult')
+                (self.can_reach('Ice Cavern', age=('either' if self.is_glitched else 'adult'))
                 or self.can_reach('Ganons Castle Water Trial', age='either')
                 or self.has('Buy Blue Fire')
                 or (self.world.dungeon_mq['Gerudo Training Grounds'] and self.can_reach('Gerudo Training Grounds Stalfos Room', age='either')))
 
 
     def has_ocarina(self):
-        return (self.has('Ocarina') or self.has("Fairy Ocarina") or self.has("Ocarina of Time"))
+        return (self.has('Ocarina') or self.has('Fairy Ocarina') or self.has('Ocarina of Time'))
 
 
     def can_play(self, song):
@@ -363,7 +364,7 @@ class State(object):
 
 
     def can_blast_or_smash(self):
-        return self.has_explosives() or (self.is_adult() and self.has('Hammer'))
+        return self.has_explosives() or self.can_use('Hammer')
 
 
     def can_dive(self):
@@ -374,7 +375,6 @@ class State(object):
         return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
     
 
-
     def can_plant_bugs(self):
         return self.is_child() and self.has_bugs()
 
@@ -383,6 +383,10 @@ class State(object):
         return self.has_bottle() and \
             (self.can_leave_forest() or self.has_sticks() or self.has('Kokiri Sword') or 
              self.has('Boomerang') or self.has_explosives() or self.has('Buy Bottle Bug'))
+
+
+    def has_scarecrow_song(self):
+        return self.world.free_scarecrow or self.can_reach('Lake Hylia', age='both')
 
 
     def can_use_projectile(self):
@@ -402,33 +406,39 @@ class State(object):
 
 
     def can_leave_forest(self):
-        return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'), age='either')
-
+        return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'), age='either') \
+            or self.is_glitched
 
     def can_finish_adult_trades(self):
-        zora_thawed = self.can_reach('Zoras Domain', age='adult') and self.has_blue_fire()
-        
-        pocket_egg = self.has('Pocket Egg')
-        pocket_cucco = self.has('Pocket Cucco') or pocket_egg
-        cojiro = self.has('Cojiro') or (pocket_cucco and self.can_reach('Carpenter Boss House', age='adult'))
-        odd_mushroom = self.has('Odd Mushroom') or cojiro
-        odd_poutice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult')
-        poachers_saw = self.has('Poachers Saw') or odd_poutice
-        broken_sword = self.has('Broken Sword') or (poachers_saw and self.can_reach('Gerudo Valley Far Side', age='adult'))
-        prescription = self.has('Prescription') or broken_sword
-        eyeball_frog = (self.has('Eyeball Frog') or prescription) and zora_thawed
-        eyedrops = (self.has('Eyedrops') or eyeball_frog) and self.can_reach('Lake Hylia Lab', age='adult') and zora_thawed
-        claim_check = self.has('Claim Check') or \
+        if self.is_glitched:
+            zora_thawed = self.can_reach('Zoras Domain', age='adult')
+            carpenter_access = self.can_reach('Gerudo Valley Far Side', age='adult')
+            has_low_trade = (self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg'))
+            has_high_trade = (self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword'))
+            return self.can_reach('Death Mountain Crater Upper', age='adult') and (
+                self.has('Claim Check') or (has_high_trade and zora_thawed) or (has_low_trade and zora_thawed and carpenter_access)
+            )
+        else:
+            zora_thawed = self.can_reach('Zoras Domain', age='adult') and self.has_blue_fire()
+            pocket_egg = self.has('Pocket Egg')
+            pocket_cucco = self.has('Pocket Cucco') or pocket_egg
+            cojiro = self.has('Cojiro') or (pocket_cucco and self.can_reach('Carpenter Boss House', age='adult'))
+            odd_mushroom = self.has('Odd Mushroom') or cojiro
+            odd_poutice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult')
+            poachers_saw = self.has('Poachers Saw') or odd_poutice
+            broken_sword = self.has('Broken Sword') or (poachers_saw and self.can_reach('Gerudo Valley Far Side', age='adult'))
+            prescription = self.has('Prescription') or broken_sword
+            eyeball_frog = (self.has('Eyeball Frog') or prescription) and zora_thawed
+            eyedrops = (self.has('Eyedrops') or eyeball_frog) and self.can_reach('Lake Hylia Lab', age='adult') and zora_thawed
+            claim_check = self.has('Claim Check') or \
                       (eyedrops and \
                             (self.world.shuffle_interior_entrances or self.has('Progressive Strength Upgrade') or \
                              self.can_blast_or_smash() or self.has_bow() or self.world.logic_biggoron_bolero))
 
-        return claim_check
-
-
+             return claim_check
+    
     def has_skull_mask(self):
         return self.has('Zeldas Letter') and self.can_reach('Castle Town Mask Shop')
-
 
     def has_mask_of_truth(self):
         # Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man.
@@ -497,19 +507,20 @@ class State(object):
         else:
             return False
 
-
     def can_finish_GerudoFortress(self):
         if self.world.gerudo_fortress == 'normal':
-            return self.has('Small Key (Gerudo Fortress)', 4) and (self.can_use('Bow') or self.can_use('Hookshot') or self.can_use('Hover Boots') or self.world.logic_gerudo_kitchen)
+            return self.has('Small Key (Gerudo Fortress)', 4) and \
+                (self.can_use('Bow') or self.can_use('Hookshot') or self.can_use('Hover Boots') \
+                    or self.world.logic_gerudo_kitchen or self.is_glitched)
         elif self.world.gerudo_fortress == 'fast':
-            return self.has('Small Key (Gerudo Fortress)', 1) and self.is_adult()
+            return self.has('Small Key (Gerudo Fortress)', 1) and (self.is_adult() or self.is_glitched)
         else:
-            return self.is_adult()
+            return self.is_adult() or self.is_glitched
 
 
     def can_shield(self):
-        return self.has('Buy Deku Shield') or \
-            (self.is_adult() and (self.has('Buy Hylian Shield') or self.has('Mirror Shield')) )
+        return (self.is_adult() and (self.has('Buy Hylian Shield') or self.has('Mirror Shield'))) or \
+            (self.is_child() and self.has('Buy Deku Shield'))
 
     def can_mega(self):
         return self.has_explosives() and self.can_shield()
