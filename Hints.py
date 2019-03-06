@@ -243,24 +243,6 @@ def get_barren_hint(spoiler, world, checked):
     return (GossipText("plundering #%s# is a foolish choice." % area, ['Pink']), None)
 
 
-def get_good_loc_hint(spoiler, world, checked):
-    locations = getHintGroup('location', world)
-    locations = list(filter(lambda hint: hint.name not in checked, locations))
-    if not locations:
-        return None
-
-    hint = random.choice(locations)
-    location = world.get_location(hint.name)
-    checked.append(location.name)
-
-    location_text = getHint(location.name, world.clearer_hints).text
-    if '#' not in location_text:
-        location_text = '#%s#' % location_text   
-    item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
-
-    return (GossipText('%s #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
-
-
 def get_good_item_hint(spoiler, world, checked):
     locations = [location for location in world.get_filled_locations()
             if not location.name in checked and \
@@ -281,55 +263,42 @@ def get_good_item_hint(spoiler, world, checked):
         return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
 
 
-def get_overworld_hint(spoiler, world, checked):
-    locations = [location for location in world.get_filled_locations()
-            if not location.name in checked and \
-            location.item.type != 'Event' and \
-            location.item.type != 'Shop' and \
-            not location.locked and \
-            not location.parent_region.dungeon]
-    if not locations:
+def get_specific_hint(spoiler, world, checked, type):
+    hintGroup = getHintGroup(type, world)
+    hintGroup = list(filter(lambda hint: hint.name not in checked, hintGroup))
+    if not hintGroup:
         return None
 
-    location = random.choice(locations)
+    hint = random.choice(hintGroup)
+    location = world.get_location(hint.name)
     checked.append(location.name)
 
-    location_text = location.hint
+    location_text = hint.text
+    if '#' not in location_text:
+        location_text = '#%s#' % location_text   
     item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
 
-    return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
+    return (GossipText('%s #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
+
+
+def get_song_hint(spoiler, world, checked):
+    return get_specific_hint(spoiler, world, checked, 'song')
+
+
+def get_minigame_hint(spoiler, world, checked):
+    return get_specific_hint(spoiler, world, checked, 'minigame')
+
+
+def get_overworld_hint(spoiler, world, checked):
+    return get_specific_hint(spoiler, world, checked, 'overworld')
 
 
 def get_dungeon_hint(spoiler, world, checked):
-    dungeons = list(filter(lambda dungeon: dungeon.name not in checked, world.dungeons))
-    if not dungeons:
-        return None
-
-    dungeon = random.choice(dungeons)
-    checked.append(dungeon.name)
-
-    # Choose a random dungeon location that is a non-dungeon item
-    locations = [location for region in dungeon.regions for location in region.locations
-        if location.name not in checked and \
-           location.item and \
-           location.item.type != 'Event' and \
-           location.item.type != 'Shop' and \
-           not isRestrictedDungeonItem(dungeon, location.item) and \
-           not location.locked]
-    if not locations:
-        return get_dungeon_hint(world, checked)
-
-    location = random.choice(locations)
-    checked.append(location.name)
-
-    location_text = getHint(dungeon.name, world.clearer_hints).text
-    item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
-
-    return (GossipText('#%s# hoards #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
+    return get_specific_hint(spoiler, world, checked, 'dungeon')
 
 
 def get_junk_hint(spoiler, world, checked):
-    hints = getHintGroup('junkHint', world)
+    hints = getHintGroup('junk', world)
     hints = list(filter(lambda hint: hint.name not in checked, hints))
     if not hints:
         return None
@@ -345,8 +314,9 @@ hint_func = {
     'always':   lambda spoiler, world, checked: None,
     'woth':     get_woth_hint,
     'barren':   get_barren_hint,
-    'loc':      get_good_loc_hint,
     'item':     get_good_item_hint,
+    'song':     get_song_hint,
+    'minigame': get_minigame_hint,
     'ow':       get_overworld_hint,
     'dungeon':  get_dungeon_hint,
     'junk':     get_junk_hint,
@@ -359,8 +329,9 @@ hint_dist_sets = {
         'always':   (0.0, 0),
         'woth':     (0.0, 0),
         'barren':   (0.0, 0),
-        'loc':      (0.0, 0),
         'item':     (0.0, 0),
+        'song':     (0.0, 0),
+        'minigame': (0.0, 0),
         'ow':       (0.0, 0),
         'dungeon':  (0.0, 0),
         'junk':     (9.0, 1),
@@ -368,46 +339,50 @@ hint_dist_sets = {
     'balanced': {
         'trial':    (0.0, 1),
         'always':   (0.0, 1),
-        'woth':     (3.5, 1),
+        'woth':     (4.0, 1),
         'barren':   (2.0, 1),
-        'loc':      (5.0, 1),
-        'item':     (5.0, 1),
-        'ow':       (2.5, 1),
-        'dungeon':  (3.5, 1),
+        'item':     (4.0, 1),
+        'song':     (1.5, 1),
+        'minigame': (1.0, 1),
+        'ow':       (4.0, 1),
+        'dungeon':  (3.0, 1),
         'junk':     (3.0, 1),
     },
     'strong': {
         'trial':    (0.0, 1),
         'always':   (0.0, 2),
-        'woth':     (3.0, 2),
-        'barren':   (3.0, 1),
-        'loc':      (2.0, 1),
+        'woth':     (4.0, 2),
+        'barren':   (4.0, 2),
         'item':     (1.0, 1),
-        'ow':       (1.0, 1),
-        'dungeon':  (1.0, 1),
-        'junk':     (0.0, 1),
+        'song':     (1.0, 1),
+        'minigame': (1.0, 1),
+        'ow':       (2.0, 1),
+        'dungeon':  (2.0, 1),
+        'junk':     (0.0, 0),
     },
-    'very_strong': {
+    'multiworld': {
         'trial':    (0.0, 1),
         'always':   (0.0, 2),
         'woth':     (3.0, 2),
-        'barren':   (3.0, 1),
-        'loc':      (2.0, 1),
-        'item':     (2.0, 1),
-        'ow':       (0.0, 1),
-        'dungeon':  (0.0, 1),
-        'junk':     (0.0, 1),
+        'barren':   (3.0, 2),
+        'item':     (0.0, 1),
+        'song':     (0.0, 1),
+        'minigame': (0.0, 1),
+        'ow':       (2.0, 1),
+        'dungeon':  (2.0, 1),
+        'junk':     (0.0, 0),
     },
     'tournament': {
-        'trial':    (0.0, 2),
+        'trial':    (0.0, 0),
         'always':   (0.0, 2),
         'woth':     (4.0, 2),
         'barren':   (2.0, 2),
-        'loc':      (4.0, 2),
-        'item':     (0.0, 2),
-        'ow':       (0.0, 2),
-        'dungeon':  (0.0, 2),
-        'junk':     (0.0, 2),
+        'item':     (0.0, 1),
+        'song':     (1.0, 1),
+        'minigame': (0.0, 1),
+        'ow':       (2.0, 1),
+        'dungeon':  (3.0, 1),
+        'junk':     (0.0, 0),
     },    
 }
 
@@ -420,7 +395,7 @@ def buildGossipHints(spoiler, world):
     world.barren_dungeon = False
 
     max_states = State.get_states_with_items([w.state for w in spoiler.worlds], [])
-    for id,stone in gossipLocations.items():
+    for _,stone in gossipLocations.items():
         stone.reachable = \
             max_states[world.id].can_reach(stone.location, resolution_hint='Location') and \
             max_states[world.id].guarantee_hint()
@@ -435,19 +410,19 @@ def buildGossipHints(spoiler, world):
 
     hint_dist = hint_dist_sets[world.hint_dist]
     hint_types, hint_prob = zip(*hint_dist.items())
-    hint_prob, hint_count = zip(*hint_prob)
+    hint_prob, _ = zip(*hint_prob)
 
     # Add required location hints
-    alwaysLocations = getHintGroup('alwaysLocation', world)
+    alwaysLocations = getHintGroup('always', world)
     for hint in alwaysLocations:
         location = world.get_location(hint.name)
         checkedLocations.append(hint.name)
 
-    location_text = getHint(location.name, world.clearer_hints).text
-    if '#' not in location_text:
-        location_text = '#%s#' % location_text
-    item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
-    add_hint(spoiler, world, stoneIDs, GossipText('%s #%s#.' % (location_text, item_text), ['Green', 'Red']), hint_dist['always'][1], location, force_reachable=True)
+        location_text = getHint(location.name, world.clearer_hints).text
+        if '#' not in location_text:
+            location_text = '#%s#' % location_text
+        item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
+        add_hint(spoiler, world, stoneIDs, GossipText('%s #%s#.' % (location_text, item_text), ['Green', 'Red']), hint_dist['always'][1], location, force_reachable=True)
 
     # Add trial hints
     if world.trials_random and world.trials == 6:
@@ -475,10 +450,10 @@ def buildGossipHints(spoiler, world):
             if fixed_hint_types:
                 hint_type = fixed_hint_types.pop(0)
             else:
-                hint_type = 'loc'
+                hint_type = 'item'
         else:
             try:
-                [hint_type] = random_choices(hint_types, weights=hint_prob)
+                hint_type = random_choices(hint_types, weights=hint_prob)
             except IndexError:
                 raise Exception('Not enough valid hints to fill gossip stone locations.')
 
@@ -530,13 +505,12 @@ def buildBossRewardHints(world, messages):
 
 # pulls text string from hintlist for reward after sending the location to hintlist.
 def buildBossString(reward, color, world):
-    text = ''
     for location in world.get_filled_locations():
         if location.item.name == reward:
             item_icon = chr(location.item.special['item_id'])
             location_text = getHint(location.name, world.clearer_hints).text
-            gossip_text = GossipText("\x08\x13%s%s" % (item_icon, location_text), [color], prefix='')
-    return str(gossip_text)
+            return str(GossipText("\x08\x13%s%s" % (item_icon, location_text), [color], prefix=''))
+    return ''
 
 
 # fun new lines for Ganon during the final battle
