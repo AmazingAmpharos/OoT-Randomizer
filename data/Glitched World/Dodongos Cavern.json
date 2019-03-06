@@ -4,7 +4,7 @@
         "dungeon": "Dodongos Cavern",
         "exits": {
             "Dodongos Cavern Lobby": "
-                as_either_here(can_blast_or_smash) or Progressive_Strength_Upgrade"
+                as_either_here(can_blast_or_smash or has_blue_fire) or Progressive_Strength_Upgrade"
         }
     },
     {
@@ -14,7 +14,8 @@
             "Dodongos Cavern Map Chest": "True",
             "Dodongos Cavern Compass Chest": "
                 is_adult or has_sticks or 
-                (can_use(Dins_Fire) and (has_slingshot or has_explosives or Kokiri_Sword))",
+                (can_use(Dins_Fire) and (has_slingshot or has_explosives or Kokiri_Sword))
+                or can_shield",
             "GS Dodongo's Cavern East Side Room": "
                 has_explosives or is_adult or has_slingshot or 
                 Boomerang or has_sticks or Kokiri_Sword",

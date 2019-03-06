@@ -766,12 +766,7 @@ setting_infos = [
                 'glitched':   'Glitched',
                 'none':       'No Logic',
                 },
-            args_help      = '''\
-                             Sets the rules the logic uses to determine accessibility:
-                             glitchless:  No glitches are required, but may require some minor tricks
-                             glitched:    Movement oriented glitches are likely required. No locations excluded.
-                             none:        All locations are considered available. May not be beatable.
-                             ''',
+            
             gui_text       = 'Logic Rules',
             gui_group      = 'world',
             gui_tooltip    = '''\

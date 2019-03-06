@@ -19,7 +19,12 @@ class State(object):
         self.current_spot = None
         self.adult = None
         self.tod = None
-        self.is_glitched = (self.world.logic_rules != 'glitchless')
+
+
+    ## Ensure that self.is_glitched will have a value
+    @property
+    def is_glitched(self):
+        return self.world.logic_rules != 'glitchless'
 
 
     def clear_cached_unreachable(self):

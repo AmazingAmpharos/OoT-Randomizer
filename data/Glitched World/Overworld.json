@@ -662,11 +662,7 @@
             "Shield Grave": "True",
             "Composer Grave": "can_play(Zeldas_Lullaby)",
             "Heart Piece Grave": "True",
-<<<<<<< HEAD:data/World/Overworld.json
             "Dampes Grave": "is_adult",
-=======
-            "Dampes Grave": "can_reach(Shadow_Temple_Warp_Region)",
->>>>>>> prep for rebase:data/Glitched World/Overworld.json
             "Dampes House": "True",
             "Kakariko Village": "True"
         }
@@ -790,21 +786,9 @@
                 is_adult and 
                 ((can_play(Song_of_Time) and 
                     ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
-<<<<<<< HEAD:data/World/Overworld.json
                         can_use(Goron_Tunic) or can_use(Longshot) or can_use(Nayrus_Love))) or 
                 (damage_multiplier != 'ohko' and can_use(Goron_Tunic) and can_use(Hookshot)) or 
                 (can_use(Nayrus_Love) and can_use(Hookshot)))"
-=======
-                        has_GoronTunic or can_use(Longshot) or can_use(Nayrus_Love))) or 
-                (damage_multiplier != 'ohko' and has_GoronTunic and can_use(Hookshot)) or 
-                (can_use(Nayrus_Love) and can_use(Hookshot))))",
-            "Goron City Maze Gossip Stone": "
-                (hints == 'mask' and (has_explosives or (Progressive_Strength_Upgrade and can_shield))) or 
-                (hints != 'mask' and (can_blast_or_smash or can_use(Silver_Gauntlets) or 
-                (Progressive_Strength_Upgrade and can_shield)))",
-            "Goron City Medigoron Gossip Stone": "
-                can_blast_or_smash or Progressive_Strength_Upgrade"
->>>>>>> prep for rebase:data/Glitched World/Overworld.json
         }
     },
     {
@@ -855,17 +839,8 @@
         },
         "exits": {
             "Death Mountain": "True",
-<<<<<<< HEAD:data/World/Overworld.json
             "Death Mountain Crater Lower": "can_use(Hover_Boots)",
             "Death Mountain Crater Central": "can_use(Goron_Tunic) and can_use(Distant_Scarecrow) and 
-=======
-            "Death Mountain Crater Lower": "can_use(Hoverboots) or can_mega or
-                (is_adult and damage_multiplier != 'ohko' and has_bombs) or 
-                ( ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
-                    has_bottle) and can_use(Hammer))",
-            "Death Mountain Crater Central": "((has_GoronTunic and can_use(Distant_Scarecrow))
-                or can_mega) and 
->>>>>>> prep for rebase:data/Glitched World/Overworld.json
                 ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
                     has_bottle or can_use(Nayrus_Love))",
             "Top of Crater Grotto": "can_blast_or_smash"
@@ -989,47 +964,9 @@
         },
         "exits": {
             "Zoras Domain": "True",
-<<<<<<< HEAD:data/World/Overworld.json
             "Jabu Jabus Belly Beginning": "is_child and has_bottle",
             "Ice Cavern": "is_adult",
             "Zoras Fountain Fairy": "has_explosives"
-=======
-            "Jabu Jabus Belly Beginning Child": "has_bottle or can_jumpslash",
-            "Zoras Fountain Fairy": "has_explosives",
-            "Ice Cavern": "can_hover"
-        }
-    },
-    {
-        "region_name": "Zoras Domain Frozen",
-        "locations": {
-            "King Zora Thawed": "has_blue_fire or can_play(Sarias_Song) or 
-            Pocket_Egg or Pocket_Cucco or Cojiro or Odd_Mushroom or Odd_Potion or Poachers_Saw or
-            Broken_Sword or Prescription or Eyeball_Frog or Eyedrops or Claim_Check",
-            "GS Zora's Domain Frozen Waterfall": "nighttime"
-        },
-        "exits": {
-            "Outside Ice Cavern": "True",
-            "Zora Shop": "True",
-            "Zoras Domain Gossip Stone": "hints != 'mask'",
-            "Lake Hylia": "True"
-        }
-    },
-    {
-        "region_name": "Outside Ice Cavern",
-        "locations": {
-            "Zoras Fountain Iceberg Freestanding PoH": "True",
-            "Zoras Fountain Bottom Freestanding PoH": "Iron_Boots",
-            "GS Zora's Fountain Hidden Cave": "nighttime and
-                ( (can_shield and has_explosives) or 
-                ((can_use(Silver_Gauntlets) or (can_use(Hookshot) and has_bombs and can_shield)) and
-                (can_blast_or_smash))
-                ) and (can_use(Hookshot) or can_hover)
-                "
-        },
-        "exits": {
-            "Ice Cavern": "True",
-            "Jabu Jabus Belly Beginning Adult": "has_explosives and can_use(Hoverboots)"
->>>>>>> prep for rebase:data/Glitched World/Overworld.json
         }
     },
     {
