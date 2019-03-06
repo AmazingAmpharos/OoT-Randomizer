@@ -1576,7 +1576,7 @@ def set_grotto_id_data(rom):
     def set_grotto_id(rom, actor_id, actor, scene):
         if actor_id == 0x009B: #Grotto
             actor_zrot = rom.read_int16(actor + 12)
-            actor_var = rom.read_int16(actor + 14);
+            actor_var = rom.read_int16(actor + 14)
             grotto_scene = actor_var >> 12
             grotto_entrance = actor_zrot & 0x000F
             grotto_id = actor_var & 0x00FF

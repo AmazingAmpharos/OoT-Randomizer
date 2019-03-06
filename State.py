@@ -1,7 +1,7 @@
 from Region import Region
 from collections import Counter, defaultdict
 import copy
-from Item import isBottle
+from Item import ItemInfo
 
 
 class State(object):
@@ -373,12 +373,12 @@ class State(object):
 
     def has_bottle(self):
         # Extra Ruto's Letter are automatically emptied
-        return self.has_any(isBottle) or self.has('Bottle with Letter', 2)
+        return self.has_any(ItemInfo.isBottle) or self.has('Bottle with Letter', 2)
 
 
     def bottle_count(self):
         # Extra Ruto's Letter are automatically emptied
-        return sum([pritem for pritem in self.prog_items if isBottle(pritem)]) + max(self.prog_items['Bottle with Letter'] - 1, 0)
+        return sum([pritem for pritem in self.prog_items if ItemInfo.isBottle(pritem)]) + max(self.prog_items['Bottle with Letter'] - 1, 0)
 
 
     def has_hearts(self, count):
