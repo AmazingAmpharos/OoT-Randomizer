@@ -1002,13 +1002,13 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         rom.write_int32(0xE09F68, 0x8C6F00A4)
         rom.write_int32(0xE09F74, 0x01CFC024)
         rom.write_int32(0xE09FB0, 0x240F0001)
-        # epona
-        rom.write_int32(0xD7E77C, 0x8C4900A4)
-        rom.write_int32(0xD7E784, 0x8D088C24)
-        rom.write_int32s(0xD7E8D4, [0x8DCE8C24, 0x8C4F00A4])
+        # epona's song
         rom.write_int32s(0xD7E140, [0x8DCE8C24, 0x8C6F00A4])
-        rom.write_int32(0xD7EBBC, 0x14410008)
-        rom.write_int32(0xD7EC1C, 0x17010010)
+        rom.write_int32( 0xD7E77C, 0x8C4900A4)
+        rom.write_int32( 0xD7E784, 0x8D088C24)
+        rom.write_int32s(0xD7E8D4, [0x8DCE8C24, 0x8C4F00A4])
+        rom.write_int32( 0xD7EBBC, 0x14410008)
+        rom.write_int32( 0xD7EC1C, 0x17010010)
         # song of time
         rom.write_int32(0xDB532C, 0x24050003)
 
@@ -1041,8 +1041,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
                 rom.write_byte(0x0D12ECB, special['item_id'])
                 rom.write_byte(0x2E8E931, special['text_id']) #Fix text box
             elif location.name == 'Song from Malon':
-                if item.name == 'Suns Song':
-                    rom.write_byte(locationaddress, next_song_id)
                 rom.write_int16(0xD7E142, bit_mask_pointer)
                 rom.write_int16(0xD7E8D6, bit_mask_pointer)
                 rom.write_int16(0xD7E786, bit_mask_pointer)
