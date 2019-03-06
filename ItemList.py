@@ -151,6 +151,7 @@ item_table = {
     'Light Trial Clear':                ('Event',    True,  None, None),
     'Triforce':                         ('Event',    True,  None, None),
 
+    'Scarecrow Song':                   ('Event',    True,  None, None),
     'Minuet of Forest':                 ('Song',     True,  0xBB,
                                             {
                                                 'text_id': 0x73,

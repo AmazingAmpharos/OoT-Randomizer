@@ -208,6 +208,7 @@
     {
         "region_name": "Lake Hylia",
         "locations": {
+            "Pierre": "has_ocarina and as_both_here and not free_scarecrow",
             "Underwater Bottle": "is_child and can_dive",
             "Lake Hylia Sun": "
                 is_adult and 
