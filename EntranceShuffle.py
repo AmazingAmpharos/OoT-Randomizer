@@ -4,6 +4,21 @@ from State import State
 from Rules import set_entrances_based_rules
 
 
+dungeon_entrances = {
+    'Outside Deku Tree -> Deku Tree Lobby':                     ('Dungeon', []),
+    'Zoras Fountain -> Jabu Jabus Belly Beginning':             ('Dungeon', []),
+    'Dodongos Cavern Entryway -> Dodongos Cavern Beginning':    ('Dungeon', []),
+    'Sacred Forest Meadow -> Forest Temple Lobby':              ('Dungeon', []),
+    'Death Mountain Crater Central -> Fire Temple Lower':       ('Dungeon', []),
+    'Lake Hylia -> Water Temple Lobby':                         ('Dungeon', []),
+    'Shadow Temple Warp Region -> Shadow Temple Entryway':      ('Dungeon', []),
+    'Desert Colossus -> Spirit Temple Lobby':                   ('Dungeon', []),
+    'Kakariko Village -> Bottom of the Well':                   ('Dungeon', []),
+    'Zoras Fountain -> Ice Cavern Beginning':                   ('Dungeon', []),
+    'Gerudo Fortress -> Gerudo Training Grounds Lobby':         ('Dungeon', []),
+}
+
+
 class EntranceShuffleError(RuntimeError):
     pass
 
@@ -13,7 +28,8 @@ def set_entrances(worlds):
     for world in worlds:
         world.initialize_entrances()
 
-    shuffle_entrances(worlds)
+    if (worlds[0].shuffle_dungeon_entrances):
+        shuffle_entrances(worlds)
 
     set_entrances_based_rules(worlds)
 
@@ -28,8 +44,7 @@ def shuffle_entrances(worlds):
     all_locations = [location for world in worlds for location in world.get_locations()]
     already_unreachable_locations = [location for location in all_locations if not maximum_exploration_state_list[location.world.id].can_reach(location)]
 
-    # Figure out which entrances should be shuffled based on settings
-    entrances_to_shuffle_dict = {} # To replace by a dict of target regions of entrances to shuffle
+    entrances_to_shuffle_dict = dungeon_entrances
 
     # Shuffle entrances only within their own world
     for world in worlds:
