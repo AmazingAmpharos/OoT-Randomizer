@@ -542,13 +542,16 @@ class State(object):
     def can_weirdshot(self):
         return self.can_mega() and self.can_use('Hookshot')
 
+    def can_jumpslash(self):
+        return self.is_adult() or (self.is_child() and (self.has_sticks or self.has('Kokiri Sword')))
+
 
     # Used for fall damage and other situations where damage is unavoidable
     def can_live_dmg(self,hearts):
         mult = self.world.damage_multiplier
-        if hearts >= 1:
+        if hearts*4 >= 3:
             return mult != 'ohko' and mult != 'quadruple'
-        elif hearts < 1:
+        elif hearts*4 < 3:
             return mult != 'ohko'
         else:
             return True
