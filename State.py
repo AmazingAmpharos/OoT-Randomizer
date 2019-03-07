@@ -1,7 +1,7 @@
 from Region import Region
 from collections import Counter, defaultdict
 import copy
-from Item import isBottle
+from Item import ItemInfo
 
 
 class State(object):
@@ -141,19 +141,19 @@ class State(object):
         return lambda_rule_result
 
 
-    def as_either_here(self, lambda_rule):
+    def as_either_here(self, lambda_rule=lambda state: True):
         return self.as_either(self.add_reachability(lambda_rule))
 
 
-    def as_both_here(self, lambda_rule):
+    def as_both_here(self, lambda_rule=lambda state: True):
         return self.as_both(self.add_reachability(lambda_rule))
 
 
-    def as_adult_here(self, lambda_rule):
+    def as_adult_here(self, lambda_rule=lambda state: True):
         return self.as_adult(self.add_reachability(lambda_rule))
 
 
-    def as_child_here(self, lambda_rule):
+    def as_child_here(self, lambda_rule=lambda state: True):
         return self.as_child(self.add_reachability(lambda_rule))
 
 
@@ -281,9 +281,9 @@ class State(object):
         elif item == 'Golden Gauntlets':
             return self.has('Progressive Strength Upgrade', 3) and self.is_adult()
         elif item == 'Scarecrow':
-            return self.has('Progressive Hookshot') and self.is_adult() and self.has_ocarina() and self.has_scarecrow_song()
+            return self.has('Progressive Hookshot') and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Distant Scarecrow':
-            return self.has('Progressive Hookshot', 2) and self.is_adult() and self.has_ocarina() and self.has_scarecrow_song()
+            return self.has('Progressive Hookshot', 2) and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Magic Bean':
             # Magic Bean usability automatically checks for reachability as child to the current spot's parent region (with as_child_here)
             return self.as_child_here(lambda state: state.has('Magic Bean')) and self.is_adult()
@@ -340,9 +340,6 @@ class State(object):
              self.has('Boomerang') or self.has_explosives() or self.has('Buy Bottle Bug'))
 
 
-    def has_scarecrow_song(self):
-        return self.world.free_scarecrow or self.can_reach('Lake Hylia', age='both')
-
     def can_use_projectile(self):
         return self.has_explosives() or \
                (self.is_adult() and (self.has_bow() or self.has('Progressive Hookshot'))) or \
@@ -376,12 +373,12 @@ class State(object):
 
     def has_bottle(self):
         # Extra Ruto's Letter are automatically emptied
-        return self.has_any(isBottle) or self.has('Bottle with Letter', 2)
+        return self.has_any(ItemInfo.isBottle) or self.has('Bottle with Letter', 2)
 
 
     def bottle_count(self):
         # Extra Ruto's Letter are automatically emptied
-        return sum([pritem for pritem in self.prog_items if isBottle(pritem)]) + max(self.prog_items['Bottle with Letter'] - 1, 0)
+        return sum([pritem for pritem in self.prog_items if ItemInfo.isBottle(pritem)]) + max(self.prog_items['Bottle with Letter'] - 1, 0)
 
 
     def has_hearts(self, count):
