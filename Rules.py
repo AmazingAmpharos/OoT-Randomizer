@@ -1,6 +1,7 @@
 import collections
 import logging
 from Location import DisableType
+from State import State
 
 
 def set_rules(world):
@@ -39,10 +40,6 @@ def set_rules(world):
             else:
                 add_item_rule(location, lambda location, item: item.type == 'Shop' and item.world.id == location.world.id)
 
-            if location.parent_region.name in ['Castle Town Bombchu Shop', 'Castle Town Potion Shop', 'Castle Town Bazaar']:
-                if not world.check_beatable_only:
-                    forbid_item(location, 'Buy Goron Tunic')
-                    forbid_item(location, 'Buy Zora Tunic')
         elif not 'Deku Scrub' in location.name:
             add_item_rule(location, lambda location, item: item.type != 'Shop')
 
@@ -126,3 +123,20 @@ def set_shop_rules(world):
             if location.item.name in ['Buy Bombchu (10)', 'Buy Bombchu (20)', 'Buy Bombchu (5)']:
                 add_rule(location, lambda state: state.has_bombchus_item())
 
+
+# This function should be ran once after setting up entrances and before placing items
+# The goal is to automatically set item rules based on age requirements in case entrances were shuffled
+def set_entrances_based_rules(worlds):
+
+    # Use the states with all items available in the pools for this seed
+    complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
+    all_items_state_list = State.get_states_with_items([world.state for world in worlds], complete_itempool)
+
+    for world in worlds:
+        for location in world.get_locations():
+            if location.type == 'Shop':
+                # If All Locations Reachable is on, prevent shops only ever reachable as child from containing Buy Goron Tunic and Buy Zora Tunic items
+                if not world.check_beatable_only:
+                    if not all_items_state_list[world.id].can_reach(location.parent_region, age='adult'):
+                        forbid_item(location, 'Buy Goron Tunic')
+                        forbid_item(location, 'Buy Zora Tunic')

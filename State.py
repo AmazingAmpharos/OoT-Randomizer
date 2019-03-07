@@ -23,9 +23,7 @@ class State(object):
 
 
     def clear_cache(self):
-        self.region_cache = {}
-        self.location_cache = {}
-        self.entrance_cache = {}
+        self.region_cache = { 'child': {}, 'adult': {} }
 
 
     def copy(self, new_world=None):

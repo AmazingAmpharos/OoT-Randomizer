@@ -29,6 +29,7 @@ from N64Patch import create_patch_file, apply_patch_file
 from SettingsList import setting_infos, logic_tricks
 from Rules import set_rules
 from Plandomizer import Distribution
+from EntranceShuffle import set_entrances
 
 
 class dummy_window():
@@ -106,8 +107,6 @@ def main(settings, window=dummy_window()):
 
         create_dungeons(world)
 
-        world.initialize_entrances()
-
         if settings.shopsanity != 'off':
             world.random_shop_prices()
         world.set_scrub_prices()
@@ -120,6 +119,8 @@ def main(settings, window=dummy_window()):
         logger.info('Generating Item Pool.')
         generate_itempool(world)
 
+    logger.info('Setting Entrances.')
+    set_entrances(worlds)
 
     window.update_status('Placing the Items')
     logger.info('Fill the world.')
