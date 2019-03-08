@@ -38,7 +38,7 @@
         },
         "exits": {
             #// Adult would technically come from Kokiri Forest, but the transition in both directions is True
-            "Deku Tree Lobby": "as_child(True) or as_adult(has_explosives and Hover_Boots)",
+            "Deku Tree Lobby": "is_child or (is_adult and has_explosives and Hover_Boots)",
             "Kokiri Forest": "True"
         }
     },
@@ -130,7 +130,7 @@
         "locations": {
             "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
             "LW Deku Scrub Deku Sticks": "is_child and can_stun_deku",
-            "GS Lost Woods Above Stage": "nighttime and (can_use(Magic_Bean) or can_use(Longshot) or (has_bombchus and can_use(Hookshot)) or as_adult(can_hover))",
+            "GS Lost Woods Above Stage": "is_adult and nighttime and (can_use(Magic_Bean) or Longshot or (has_bombchus and Hookshot) or can_hover)",
             "GS Lost Woods Bean Patch Near Stage": "
                 can_plant_bugs and 
                 (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))"
@@ -157,7 +157,7 @@
         "locations": {
             "Song from Saria": "is_child and Zeldas_Letter",
             "Sheik Forest Song": "is_adult",
-            "GS Sacred Forest Meadow": "(can_use(Hookshot) or as_adult(can_hover)) and nighttime",
+            "GS Sacred Forest Meadow": "(can_use(Hookshot) or can_hover) and nighttime and is_adult",
             "Sacred Forest Meadow Maze Gossip Stone (Lower)": "True",
             "Sacred Forest Meadow Maze Gossip Stone (Upper)": "True",
             "Sacred Forest Meadow Saria Gossip Stone": "True"
@@ -200,7 +200,7 @@
             "Field Near Lake Outside Fence Grotto": "True",
             "Field Near Lake Inside Fence Grotto": "can_blast_or_smash",
             "Field Valley Grotto": "
-                as_child_here(has_explosives) or as_adult(Hammer or (has_explosives and can_shield))",
+                (is_child and has_explosives) or (is_adult and (Hammer or (has_explosives and can_shield)))",
             "Field West Castle Town Grotto": "can_blast_or_smash",
             "Field Far West Castle Town Grotto": "can_blast_or_smash",
             "Field Kakariko Grotto": "can_blast_or_smash",
