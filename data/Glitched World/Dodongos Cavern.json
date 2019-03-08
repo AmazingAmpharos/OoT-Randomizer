@@ -17,13 +17,11 @@
                 (can_use(Dins_Fire) and (has_slingshot or has_explosives or Kokiri_Sword))
                 or can_shield",
             "GS Dodongo's Cavern East Side Room": "
-                has_explosives or is_adult or has_slingshot or 
-                Boomerang or has_sticks or Kokiri_Sword",
-            "GS Dodongo's Cavern Scarecrow": "
-                can_use(Scarecrow) or can_use(Longshot) or logic_dc_scarecrow_gs",
+                has_explosives or is_adult or can_child_attack or has_blue_fire",
+            "GS Dodongo's Cavern Scarecrow": "True",
             "DC Deku Scrub Deku Sticks": "
                 is_adult or has_slingshot or has_sticks or 
-                has_explosives or Kokiri_Sword",
+                has_explosives or Kokiri_Sword or can_shield",
             "DC Deku Scrub Deku Shield": "True",
             "Dodongos Cavern Gossip Stone": "True"
         },
@@ -31,11 +29,14 @@
             "Dodongos Cavern Beginning": "True",
             "Dodongos Cavern Climb": "
                 as_either_here(
-                    (is_adult or 
-                        ((has_sticks or can_use(Dins_Fire)) and 
-                            (has_slingshot or has_sticks or has_explosives or Kokiri_Sword)))) and 
+                    (is_adult or can_shield or
+                        ( (has_sticks or can_use(Dins_Fire)) and 
+                            (has_slingshot or has_sticks or has_explosives or Kokiri_Sword) 
+                        )
+                    )
+                ) and 
                     (has_explosives or Progressive_Strength_Upgrade or 
-                        can_use(Dins_Fire) or (logic_dc_staircase and can_use(Bow)))"
+                        can_use(Dins_Fire) or can_use(Bow) )"
         }
     },
     {
@@ -44,14 +45,12 @@
         "locations": {
             "Dodongos Cavern Bomb Flower Platform": "True",
             "GS Dodongo's Cavern Vines Above Stairs": "True",
-            "DC Deku Scrub Deku Seeds": "can_blast_or_smash",
-            "DC Deku Scrub Deku Nuts": "can_blast_or_smash"
+            "DC Deku Scrub Deku Seeds": "can_blast_or_smash or (has_blue_fire and can_stun_deku)",
+            "DC Deku Scrub Deku Nuts": "can_blast_or_smash or (has_blue_fire and can_stun_deku)"
         },
         "exits": {
             "Dodongos Cavern Lobby": "True",
-            "Dodongos Cavern Far Bridge": "
-                as_child_here(has_slingshot) or 
-                as_adult_here(has_bow or Hover_Boots or can_use(Longshot) or logic_dc_jump)"
+            "Dodongos Cavern Far Bridge": "True"
         }
     },
     {
@@ -59,8 +58,9 @@
         "dungeon": "Dodongos Cavern",
         "locations": {
             "Dodongos Cavern Bomb Bag Chest": "True",
-            "Dodongos Cavern End of Bridge Chest": "can_blast_or_smash",
-            "GS Dodongo's Cavern Alcove Above Stairs": "can_use(Hookshot) or can_use(Boomerang)"
+            "Dodongos Cavern End of Bridge Chest": "can_blast_or_smash or has_blue_fire",
+            "GS Dodongo's Cavern Alcove Above Stairs": "can_use(Hookshot) or can_use(Boomerang)
+                or (can_live_dmg(0.5) and can_use(Hover_Boots)) or can_hover"
         },
         "exits": {
             "Dodongos Cavern Boss Area": "has_explosives",
@@ -73,11 +73,15 @@
         "locations": {
             "Chest Above King Dodongo": "True",
             "King Dodongo Heart": "
-                (has_bombs or Progressive_Strength_Upgrade) and 
+                (has_bombs or Progressive_Strength_Upgrade or
+                    (has_bombchus and ((is_adult and can_shield) or (is_child and can_isg)))
+                ) and 
                 (is_adult or has_sticks or Kokiri_Sword)",
             "King Dodongo": "
-                (has_bombs or Progressive_Strength_Upgrade) and 
-                (is_adult or has_sticks or Kokiri_Sword)",
+            (has_bombs or Progressive_Strength_Upgrade or
+                (has_bombchus and ((is_adult and can_shield) or (is_child and can_isg)))
+            ) and 
+            (is_adult or has_sticks or Kokiri_Sword)",
             "GS Dodongo's Cavern Back Room": "True"
         },
         "exits": {

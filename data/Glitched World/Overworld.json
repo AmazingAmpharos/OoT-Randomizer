@@ -786,7 +786,7 @@
                 is_adult and 
                 ( (can_play(Song_of_Time) and 
                     (can_live_dmg(1) or can_use(Goron_Tunic) or can_use(Longshot) or can_use(Nayrus_Love)) ) or 
-                (can_live_dmg(0.5) and can_use(Goron_Tunic) and can_use(Hookshot)) or 
+                ((can_live_dmg(0.5) or can_use(Goron_Tunic)) and can_use(Hookshot)) or 
                 ((can_use(Nayrus_Love) or can_use(Goron_Tunic)) and can_use(Hookshot))))"
         }
     },

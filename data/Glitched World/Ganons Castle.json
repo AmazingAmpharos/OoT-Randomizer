@@ -75,11 +75,11 @@
         "locations": {
             "Ganons Castle Spirit Trial First Chest": "True",
             #// include req for silver rupees here
-            "Ganons Castle Spirit Trial Second Chest": "(has_bombchus or (can_shield and (Longshot or Bow))",
+            "Ganons Castle Spirit Trial Second Chest": "has_bombchus or (can_shield and (Longshot or Bow))",
             #// previous 2 reqs here
             "Ganons Castle Spirit Trial Clear": "
                 can_use(Light_Arrows) and Mirror_Shield and 
-                (has_bombchus or (can_shield and (Longshot or Bow)) and True"
+                (has_bombchus or (can_shield and (Longshot or Bow))) and True"
         }
     },
     {
