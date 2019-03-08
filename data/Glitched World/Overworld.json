@@ -266,7 +266,7 @@
             "Lake Hylia": "True",
             "Gerudo Valley Far Side": "( is_child and (can_jumpslash or can_mega) )
                 or ( is_adult and (Epona or can_use(Hookshot) or gerudo_fortress == 'open' or can_mega))"
-            #// reverse wasteland as child is useless as to be able to do anything inside gerudo fortress you need the ability to attack
+            
         }
     },
     {
@@ -284,8 +284,8 @@
     {
         "region_name": "Gerudo Fortress",
         "locations": {
-            "Gerudo Fortress Rooftop Chest": "is_adult and
-                can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot) or can_mega",
+            "Gerudo Fortress Rooftop Chest": "(is_child and can_mega) or 
+                (is_adult and can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot) or can_mega)",
             #// known softlock if child opens this chest, so only put it in logic for adult
             "Horseback Archery 1000 Points": "
                 Carpenter_Rescue and Epona and Bow and is_adult",
@@ -782,13 +782,12 @@
             "Darunias Chamber": "
                     (is_child and (can_play(Zeldas_Lullaby) or ((Progressive_Strength_Upgrade or has_explosives) and can_shield))) or 
                     (is_adult and (Progressive_Strength_Upgrade or has_explosives or has_bow))",
-            "Goron City Grotto": "
+            "Goron City Grotto": "can_hover or (
                 is_adult and 
-                ((can_play(Song_of_Time) and 
-                    ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
-                        can_use(Goron_Tunic) or can_use(Longshot) or can_use(Nayrus_Love))) or 
-                (damage_multiplier != 'ohko' and can_use(Goron_Tunic) and can_use(Hookshot)) or 
-                (can_use(Nayrus_Love) and can_use(Hookshot)))"
+                ( (can_play(Song_of_Time) and 
+                    (can_live_dmg(1) or can_use(Goron_Tunic) or can_use(Longshot) or can_use(Nayrus_Love)) ) or 
+                (can_live_dmg(0.5) and can_use(Goron_Tunic) and can_use(Hookshot)) or 
+                ((can_use(Nayrus_Love) or can_use(Goron_Tunic)) and can_use(Hookshot))))"
         }
     },
     {
@@ -840,8 +839,9 @@
         "exits": {
             "Death Mountain": "True",
             "Death Mountain Crater Lower": "can_use(Hover_Boots) or can_mega",
-            "Death Mountain Crater Central": "can_use(Goron_Tunic) and (can_use(Distant_Scarecrow) or can_mega) and 
-                (can_live_dmg(1) or has_bottle or can_use(Nayrus_Love))",
+            "Death Mountain Crater Central": "(is_child and can_mega and (can_live_dmg(1) or has_bottle or can_use(Nayrus_Love)) and Hylian_Shield) or
+                (is_adult and can_use(Goron_Tunic) and (can_use(Distant_Scarecrow) or can_mega) and 
+                (can_live_dmg(1) or has_bottle or can_use(Nayrus_Love)))",
             "Top of Crater Grotto": "can_blast_or_smash"
         }
     },
@@ -925,11 +925,7 @@
             "Diving Minigame": "is_child",
             "Zoras Domain Torch Run": "can_use(Sticks)",
             "Deliver Ruto's Letter": "(is_child and Bottle_with_Letter) and not open_fountain",
-            #// cant' use the sign due to open_fountain and child possibly moving prior, so we need to be able to spawn a textbox
-            "King Zora Thawed": "is_adult and (has_blue_fire or can_play(Sarias_Song) or can_play(Minuet_of_Forest) or
-                can_play(Bolero_of_Fire) or can_play(Serenade_of_Water) or can_play(Nocturne_of_Shadow) or can_play(Requiem_of_Spirit) or
-                can_play(Prelude_of_Light) or Pocket_Egg or Pocket_Cucco or Cojiro or Odd_Mushroom or Odd_Potion or Poachers_Saw or
-                Broken_Sword or Prescription or Eyeball_Frog or Eyedrops or Claim_Check)",
+            "King Zora Thawed": "is_adult",
             "Zoras Domain Stick Pot": "is_child",
             "Zoras Domain Nut Pot": "True",
             "GS Zora's Domain Frozen Waterfall": "
