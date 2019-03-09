@@ -657,6 +657,93 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     for address in Short_item_descriptions:
         rom.write_byte(address,0x02)
 
+    et_original = rom.read_bytes(0xB6FBF0, 4 * 0x0614)
+
+    entrance_updates = []
+
+    def write_entrance(target_index, data_index):
+        ti = target_index * 4
+        rom.write_bytes(0xB6FBF0 + data_index * 4, et_original[ti:ti+16])
+
+    def write_scene_exit(target_index, data_index, scene_start, scene_data):
+        start_count = 0
+        current = scene_data
+        command = 0
+        while command != 0x14:
+            command = rom.read_byte(current)
+            if command == 0x00:
+                start_count = rom.read_byte(current + 1)
+            current = current + 8
+        command = 0
+        current = scene_data
+        while command != 0x14:
+            command = rom.read_byte(current)
+            if command == 0x13:
+                entrance_list = scene_start + (rom.read_int32(current + 4) & 0x00FFFFFF)
+                for _ in range (0, start_count):
+                    entrance = rom.read_int16(entrance_list)
+                    if (entrance == data_index):
+                        entrance_updates.append((entrance_list, target_index))
+                    entrance_list = entrance_list + 2
+            if command == 0x18: # Alternate header list
+                header_list = scene_start + (rom.read_int32(current + 4) & 0x00FFFFFF)
+                for alt_id in range(0,3):
+                    header_offset = rom.read_int32(header_list) & 0x00FFFFFF
+                    if header_offset != 0:
+                        write_scene_exit(target_index, data_index, scene_start, scene_start + header_offset)
+                    header_list = header_list + 4
+            current = current + 8
+
+    def write_scenes_exits(target_index, data_index):
+        scene_table = 0x00B71440
+        for scene in range(0x00, 0x65):
+            #really hacky
+            if data_index == 0 and scene != 0x55:
+                continue
+            scene_start = rom.read_int32(scene_table + (scene * 0x14));
+            write_scene_exit(target_index, data_index, scene_start, scene_start)
+
+        #Special case: Jabu with the fish is entered from a cutscene hardcode
+        if data_index == 0x0028:
+            entrance_updates.append((0xAC95C2, target_index))
+
+    symbol = rom.sym('NO_LAKE_FILL_CUTSCENE')
+    if world.shuffle_dungeon_entrances:
+
+        # Remove lake hylia fill
+        rom.write_int16(0xAC94FA, 0x060C)
+        rom.write_int16(0xAC9512, 0x0000)
+        rom.write_byte(symbol, 0x01)
+
+        remove_entrance_blockers(rom)
+        #Tell the Deku tree jaw actor we are always a child.
+        rom.write_int32(0x0C72C64, 0x240E0000)
+        rom.write_int32(0x0C72C74, 0x240F0001)
+
+        for world_entrance in world.get_shuffled_entrances(type='Dungeon'):
+            entrance = world_entrance.addresses
+            dungeon = world_entrance.replaces.addresses
+            write_scenes_exits(dungeon['forward'], entrance['forward'])
+            write_scenes_exits(entrance['return'], dungeon['return'])
+            if "blue" in dungeon:
+                if "blue" in entrance:
+                    blue_out_data =  entrance["blue"]
+                else:
+                    blue_out_data = entrance["return"]
+                # Blue warps have multiple hardcodes leading to them. The good news is
+                # the blue warps (excluding deku sprout and lake fill special cases) each
+                # have a nice consistent 4-entry in the table we can just shuffle. So just
+                # catch all the hardcode with entrance table rewrite. This covers the
+                # Forest temple and Water temple blue warp revisits. Deku sprout remains
+                # vanilla as it never took you to the exit and the lake fill is handled
+                # above by removing the cutscene completely.
+                write_entrance(blue_out_data, dungeon['blue'])
+    else:
+        rom.write_byte(symbol, 0x00)
+
+    for entrance, target in entrance_updates:
+        rom.write_int16(entrance, target)
+
     # Fix text for Pocket Cucco.
     rom.write_byte(0xBEEF45, 0x0B)
 
@@ -1545,6 +1632,17 @@ def get_override_itemid(override_table, scene, type, flags):
             return entry[4]
     return None
 
+def remove_entrance_blockers(rom):
+    def remove_entrance_blockers_do(rom, actor_id, actor, scene):
+        if actor_id == 0x014E and scene == 97:
+            actor_var = rom.read_int16(actor + 14);
+            if actor_var == 0xFF01:
+                rom.write_int16(actor + 14, 0x0700)
+        if actor_id == 0x0145:
+            rom.write_int16(actor, 0x014E)
+            rom.write_int16(actor + 14, 0x0700)
+
+    get_actor_list(rom, remove_entrance_blockers_do)
 
 def set_cow_id_data(rom, world):
     def set_cow_id(rom, actor_id, actor, scene):
