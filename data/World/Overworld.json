@@ -29,9 +29,13 @@
     {
         "region_name": "Outside Deku Tree",
         "locations": {
-            "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
+            #The Babas despawn for Adult on forest temple completion. For vanilla forest temple
+            #placement this is not an issue as Adult can go back to forest for the Baba's there.
+            #Entrance rando cannot rely on this for the case forest completion was done on non
+            #repeatable access.
+            "Deku Baba Sticks": "(is_adult and not shuffle_dungeon_entrances) or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
-                is_adult or has_slingshot or has_sticks or 
+                (is_adult and not shuffle_dungeon_entrances) or has_slingshot or has_sticks or 
                 has_explosives or Kokiri_Sword or can_use(Dins_Fire)",
             "Deku Tree Gossip Stone (Left)": "True",
             "Deku Tree Gossip Stone (Right)": "True"
@@ -231,7 +235,7 @@
             "Fishing Hole": "
                 is_child or can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location)",
             "Water Temple Lobby": "
-                (Iron_Boots or (logic_morpha_with_scale and (Progressive_Scale, 2))) and 
+                (Iron_Boots or (logic_morpha_with_scale and (Progressive_Scale, 2) and not shuffle_dungeon_entrances)) and 
                 can_use(Hookshot) and (logic_fewer_tunic_requirements or can_use(Zora_Tunic))",
             "Lake Hylia Grotto": "can_stun_deku"
         }
