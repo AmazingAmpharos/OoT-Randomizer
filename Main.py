@@ -501,7 +501,7 @@ def create_playthrough(spoiler):
     collection_spheres = []
     playthrough = Playthrough(state_list)
     while item_locations:
-        # Not collecting while the generator runs means we only get one sphere
+        # Not collecting while the generator runs means we only get one sphere at a time
         collected = set(playthrough.iter_reachable_locations(item_locations))
         if not collected: break
         for location in collected:
@@ -516,6 +516,7 @@ def create_playthrough(spoiler):
     # Reduce each sphere in reverse order, by checking if the game is beatable
     # when we remove the item. We do this to make sure that progressive items
     # like bow and slingshot appear as early as possible rather than as late as possible.
+    required_locations = set()
     for sphere in reversed(collection_spheres):
         for location in list(sphere):
             # we remove the item at location and check if game is still beatable
@@ -534,9 +535,26 @@ def create_playthrough(spoiler):
                 # still required, so remove the entry from collected_locations
                 # so it can be collected again by other attempts.
                 del state_list[location.world.id].collected_locations[location.name]
+                required_locations.add(location)
 
-    # It should not be possible for any sphere that comes before the Triforce's sphere
-    # to be empty, but we want to filter the trailing ones at least.
+    # Regenerate the spheres as we might not reach places the same way anymore.
+    for state in state_list:
+        state.collected_locations.clear()
+    playthrough = Playthrough(state_list)
+    collection_spheres = []
+    while required_locations:
+        # Not collecting while the generator runs means we only get one sphere at a time
+        collected = set(playthrough.iter_reachable_locations(required_locations))
+        if not collected: break
+        for location in collected:
+            # Mark the location collected in the state world it exists in
+            state_list[location.world.id].collected_locations[location.name] = True
+            # Collect the item for the state world it is for
+            state_list[location.item.world.id].collect(location.item)
+        collection_spheres.append(collected)
+        required_locations -= collected
+    logger.info('Collected %d final spheres', len(collection_spheres))
+
     # Then we can finally output our playthrough
-    spoiler.playthrough = OrderedDict((str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(filter(None, collection_spheres)))
+    spoiler.playthrough = OrderedDict((str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres))
 
