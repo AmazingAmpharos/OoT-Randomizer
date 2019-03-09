@@ -347,8 +347,12 @@ class World(object):
         return False
 
 
+    def get_entrances(self):
+        return [entrance for region in self.regions for entrance in region.entrances]
+
+
     def get_shuffled_entrances(self, type=None):
-        return [entrance for region in self.regions for entrance in region.entrances if entrance.shuffled and (type == None or entrance.type == type)]
+        return [entrance for entrance in self.get_entrances() if entrance.shuffled and (type == None or entrance.type == type)]
 
 
     def has_beaten_game(self, state):
