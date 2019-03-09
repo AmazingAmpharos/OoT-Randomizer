@@ -71,9 +71,9 @@ class Playthrough(object):
         validate_child = lambda exit: self.state_list[exit.parent_region.world.id].as_child(lambda s: s.with_spot(exit.access_rule, exit))
         validate_adult = lambda exit: self.state_list[exit.parent_region.world.id].as_adult(lambda s: s.with_spot(exit.access_rule, exit))
 
-        # simplified loc.can_reach(state), minus the disable check
+        # simplified loc.can_reach(state)
         # Check adult first; it's the most likely.
-        accessible = lambda loc: (
+        accessible = lambda loc: not loc.is_disabled() and (
                 loc.parent_region in adult_regions
                 and self.state_list[loc.world.id].as_adult(lambda s: s.with_spot(loc.access_rule, loc))
                 or (loc.parent_region in child_regions
