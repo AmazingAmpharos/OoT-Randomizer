@@ -29,6 +29,7 @@ from N64Patch import create_patch_file, apply_patch_file
 from SettingsList import setting_infos, logic_tricks
 from Rules import set_rules
 from Plandomizer import Distribution
+from Playthrough import Playthrough
 
 
 class dummy_window():
@@ -491,56 +492,51 @@ def create_playthrough(spoiler):
     state_list = [world.state for world in worlds]
 
     # Get all item locations in the worlds
-    required_locations = []
-    item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
-
-    # in the first phase, we create the generous spheres. Collecting every item in a sphere will
-    # mean that every item in the next sphere is collectable. Will contain every reachable item
-    logging.getLogger('').debug('Building up collection spheres.')
-
-    # will loop if there is more items opened up in the previous iteration. Always run once
-    reachable_items_locations = True
-    while reachable_items_locations:
-        # get reachable new items locations
-        reachable_items_locations = [location for location in item_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
-        for location in reachable_items_locations:
+    item_locations = {location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement}
+    # Generate a list of spheres by iterating over reachable locations without collecting as we go.
+    # Collecting every item in one sphere means that every item
+    # in the next sphere is collectable. Will contain every reachable item this way.
+    logger = logging.getLogger('')
+    logger.debug('Building up collection spheres.')
+    collection_spheres = []
+    playthrough = Playthrough(state_list)
+    while item_locations:
+        # Not collecting while the generator runs means we only get one sphere
+        collected = set(playthrough.iter_reachable_locations(item_locations))
+        if not collected: break
+        for location in collected:
             # Mark the location collected in the state world it exists in
             state_list[location.world.id].collected_locations[location.name] = True
             # Collect the item for the state world it is for
             state_list[location.item.world.id].collect(location.item)
-            required_locations.append(location)
+        collection_spheres.append(collected)
+        item_locations -= collected
+    logger.info('Collected %d spheres', len(collection_spheres))
 
-    # in the second phase, we cull each sphere such that the game is still beatable, reducing each
-    # range of influence to the bare minimum required inside it. Effectively creates a min play
-    for location in reversed(required_locations):
-        # we remove the item at location and check if game is still beatable
-        logging.getLogger('').debug('Checking if %s is required to beat the game.', location.item.name)
-        old_item = location.item
+    # Reduce each sphere in reverse order, by checking if the game is beatable
+    # when we remove the item. We do this to make sure that progressive items
+    # like bow and slingshot appear as early as possible rather than as late as possible.
+    for sphere in reversed(collection_spheres):
+        for location in list(sphere):
+            # we remove the item at location and check if game is still beatable
+            logger.debug('Checking if %s is required to beat the game.', location.item.name)
+            old_item = location.item
 
-        # Uncollect the item location. Removing it from the collected_locations
-        # will ensure that can_beat_game will try to collect it if it can.
-        # Because we search in reverse sphere order, all the later spheres will
-        # have their locations flagged to be re-searched.
-        location.item = None
-        state_list[old_item.world.id].remove(old_item)
-        del state_list[location.world.id].collected_locations[location.name]
+            # Uncollect the item and location.
+            state_list[old_item.world.id].remove(old_item)
+            playthrough.uncollect(location)
 
-        # remove the item from the world and test if the game is still beatable
-        if State.can_beat_game(state_list):
-            # cull entries for spoiler walkthrough at end
-            required_locations.remove(location)
-        else:
-            # still required, got to keep it around
-            location.item = old_item
+            # Test whether the game is still beatable from here.
+            if playthrough.can_beat_game():
+                # cull entries for spoiler walkthrough at end
+                sphere.remove(location)
+            else:
+                # still required, so remove the entry from collected_locations
+                # so it can be collected again by other attempts.
+                del state_list[location.world.id].collected_locations[location.name]
 
-    # This ensures the playthrough shows items being collected in the proper order.
-    collection_spheres = []
-    while required_locations:
-        sphere = [location for location in required_locations if state_list[location.world.id].can_reach(location)]
-        for location in sphere:
-            required_locations.remove(location)
-            state_list[location.item.world.id].collect(location.item)
-        collection_spheres.append(sphere)
+    # It should not be possible for any sphere that comes before the Triforce's sphere
+    # to be empty, but we want to filter the trailing ones at least.
+    # Then we can finally output our playthrough
+    spoiler.playthrough = OrderedDict((str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(filter(None, collection_spheres)))
 
-    # we can finally output our playthrough
-    spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
