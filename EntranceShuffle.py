@@ -3,7 +3,12 @@ import logging
 from State import State
 from Rules import set_entrances_based_rules
 
-dungeon_entrances = {
+
+def get_entrance_pool(type):
+    return {name: data for (name, data) in entrance_shuffle_table.items() if data[0] == type}
+
+
+entrance_shuffle_table = {
     'Outside Deku Tree -> Deku Tree Lobby':                     ('Dungeon', { 'forward': 0x0000, 'return' : 0x0209, 'blue' : 0x0457 }),
     'Dodongos Cavern Entryway -> Dodongos Cavern Beginning':    ('Dungeon', { 'forward': 0x0004, 'return' : 0x0242, 'blue' : 0x047A }),
     'Zoras Fountain -> Jabu Jabus Belly Beginning':             ('Dungeon', { 'forward': 0x0028, 'return' : 0x0221, 'blue' : 0x010E }),
@@ -17,6 +22,7 @@ dungeon_entrances = {
     'Gerudo Fortress -> Gerudo Training Grounds Lobby':         ('Dungeon', { 'forward': 0x0008, 'return' : 0x03A8, }),
 }
 
+
 class EntranceShuffleError(RuntimeError):
     pass
 
@@ -26,7 +32,7 @@ def set_entrances(worlds):
     for world in worlds:
         world.initialize_entrances()
 
-    if (worlds[0].shuffle_dungeon_entrances):
+    if worlds[0].shuffle_dungeon_entrances:
         shuffle_entrances(worlds)
 
     set_entrances_based_rules(worlds)
@@ -42,19 +48,59 @@ def shuffle_entrances(worlds):
     all_locations = [location for world in worlds for location in world.get_locations()]
     already_unreachable_locations = [location for location in all_locations if not maximum_exploration_state_list[location.world.id].can_reach(location)]
 
-    entrances_to_shuffle_dict = dungeon_entrances.copy()
-    #The fill algorithm will already make sure gohma is reachable, however it can end up putting
-    #a forest escape via the hands of spirit on Deku leading to Deku on spirit in logic. This is
-    #not really a closed forest anymore, so specifically remove Deke from closed forest
-    if (not worlds[0].open_forest):
-        del entrances_to_shuffle_dict["Outside Deku Tree -> Deku Tree Lobby"]
+    # Shuffle all entrance pools based on settings
+
+    if worlds[0].shuffle_dungeon_entrances:
+        dungeon_entrance_pool = get_entrance_pool('Dungeon')
+        # The fill algorithm will already make sure gohma is reachable, however it can end up putting
+        # a forest escape via the hands of spirit on Deku leading to Deku on spirit in logic. This is
+        # not really a closed forest anymore, so specifically remove Deku Tree from closed forest.
+        if (not worlds[0].open_forest):
+            del dungeon_entrance_pool["Outside Deku Tree -> Deku Tree Lobby"]
+        shuffle_entrance_pool(worlds, dungeon_entrance_pool, already_unreachable_locations)
+
+    # Multiple checks after shuffling entrances to make sure everything went fine
+
+    for world in worlds:
+        entrances_shuffled = world.get_shuffled_entrances()
+
+        # Check that all target regions have exactly one entrance among those we shuffled
+        target_regions = [entrance.connected_region for entrance in entrances_shuffled]
+        for region in target_regions:
+            region_shuffled_entrances = list(filter(lambda entrance: entrance in entrances_shuffled, region.entrances))
+            if len(region_shuffled_entrances) != 1:
+                logging.getLogger('').error('%s has %d shuffled entrances after shuffling, expected exactly 1 [World %d]',
+                                                region, len(region_shuffled_entrances), world.id)
+
+    maximum_exploration_state_list = State.get_states_with_items([world.state for world in worlds], complete_itempool)
+
+    # Log all locations unreachable due to shuffling entrances
+    alr_compliant = True
+    if not worlds[0].check_beatable_only:
+        for location in all_locations:
+            if not location in already_unreachable_locations and \
+               not maximum_exploration_state_list[location.world.id].can_reach(location):
+                logging.getLogger('').error('Location now unreachable after shuffling entrances: %s [World %d]', location, location.world.id)
+                alr_compliant = False
+
+    # Check for game beatability in all worlds
+    if not State.can_beat_game(maximum_exploration_state_list):
+        raise EntranceShuffleError('Cannot beat game!')
+
+    # Throw an error if shuffling entrances broke the contract of ALR (All Locations Reachable)
+    if not alr_compliant:
+        raise EntranceShuffleError('ALR is enabled but not all locations are reachable!')
+
+
+# Shuffle all entrances within a provided pool for all worlds
+def shuffle_entrance_pool(worlds, entrance_pool, already_unreachable_locations):
 
     # Shuffle entrances only within their own world
     for world in worlds:
-        
+
         # Initialize entrances to shuffle with their addresses and shuffle type
         entrances_to_shuffle = []
-        for entrance_name, (type, addresses) in entrances_to_shuffle_dict.items():
+        for entrance_name, (type, addresses) in entrance_pool.items():
             entrance = world.get_entrance(entrance_name)
             entrance.type = type
             entrance.addresses = addresses
@@ -80,52 +126,16 @@ def shuffle_entrances(worlds):
 
         # First, shuffle entrances that have potentially high access requirements
         # These entrances may be completely innaccessible in some combination of entrances, so we place them first
-        shuffle_entrances_restrictive(worlds, access_limited_entrances, target_regions, already_unreachable_locations, entrances_to_shuffle_dict)
+        shuffle_entrances_restrictive(worlds, access_limited_entrances, target_regions, already_unreachable_locations, entrance_pool)
 
         # Then, shuffle entrances with a possible limited age access
         # These entrances may not be accessible as both ages in some combination of entrances, so we place them in second
-        shuffle_entrances_restrictive(worlds, age_limited_entrances, target_regions, already_unreachable_locations, entrances_to_shuffle_dict)
+        shuffle_entrances_restrictive(worlds, age_limited_entrances, target_regions, already_unreachable_locations, entrance_pool)
 
         # Finally, shuffle the rest of the entrances that are especially versatile
         # These entrances will always be accessible as both ages no matter which combination of entraces we end up with
         # Thus, they can be placed without checking for reachability because they have no risk of making locations innaccessible
-        shuffle_entrances_fast(worlds, soft_entrances, target_regions, entrances_to_shuffle_dict)
-
-    # Multiple checks after shuffling entrances to make sure everything went fine
-
-    for world in worlds:
-        entrances_shuffled = [world.get_entrance(entrance_name) for entrance_name in entrances_to_shuffle_dict]
-
-        # Log all entrance replacements
-        for entrance in entrances_shuffled:
-            logging.getLogger('').debug('%s replaces %s [World %d]', entrance, entrance.replaces, world.id)
-
-        # Check that all target regions have exactly one entrance among those we shuffled
-        target_regions = [entrance.connected_region for entrance in entrances_shuffled]
-        for region in target_regions:
-            region_shuffled_entrances = list(filter(lambda entrance: entrance in entrances_shuffled, region.entrances))
-            if len(region_shuffled_entrances) != 1:
-                logging.getLogger('').error('%s has %d shuffled entrances after shuffling, expected exactly 1 [World %d]', 
-                                                region, len(region_shuffled_entrances), world.id)
-
-    maximum_exploration_state_list = State.get_states_with_items([world.state for world in worlds], complete_itempool)
-
-    # Log all locations unreachable due to shuffling entrances
-    alr_compliant = True
-    if not worlds[0].check_beatable_only:
-        for location in all_locations:
-            if not location in already_unreachable_locations and \
-               not maximum_exploration_state_list[location.world.id].can_reach(location):
-                logging.getLogger('').error('Location now unreachable after shuffling entrances: %s [World %d]', location, location.world.id)
-                alr_compliant = False
-
-    # Check for game beatability in all worlds
-    if not State.can_beat_game(maximum_exploration_state_list):
-        raise EntranceShuffleError('Cannot beat game!')
-
-    # Throw an error if shuffling entrances broke the contract of ALR (All Locations Reachable)
-    if not alr_compliant:
-        raise EntranceShuffleError('ALR is enabled but not all locations are reachable!')
+        shuffle_entrances_fast(worlds, soft_entrances, target_regions, entrance_pool)
 
 
 # Split entrances based on their requirements to figure out how each entrance should be handled when shuffling them
@@ -255,7 +265,7 @@ def shuffle_entrances_fast(worlds, entrances, target_regions, all_entrances):
 
         entrance_to_place = entrances.pop()
         region_to_connect = target_regions.pop()
-        
+
         # Only swap entrances if needed (i.e. the entrance to place is not already connected to that region)
         if not region_to_connect == entrance_to_place.connected_region:
             other_entrance = next(filter(lambda entrance: entrance.name in all_entrances, region_to_connect.entrances))
