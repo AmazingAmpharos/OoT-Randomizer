@@ -747,6 +747,16 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 write_entrance(blue_out_data + 2, dungeon["blue"] + 2, 2)
                 write_entrance(entrance["return"], dungeon["blue"], 2)
 
+    if world.shuffle_interior_entrances:
+        for world_entrance in world.get_shuffled_entrances(type='Interior'):
+            entrance = world_entrance.addresses
+            interior = world_entrance.connected_region.addresses
+            write_scenes_exits(interior['forward'], entrance['forward'])
+            write_scenes_exits(entrance['return'], interior['return'])
+            if "exit_address" in interior:
+                # Dynamic exits are special and have to be set on a specific address
+                rom.write_int16(interior["exit_address"], entrance['return'])
+
     for entrance, target in entrance_updates:
         rom.write_int16(entrance, target)
 
