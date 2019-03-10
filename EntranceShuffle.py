@@ -42,7 +42,12 @@ def shuffle_entrances(worlds):
     all_locations = [location for world in worlds for location in world.get_locations()]
     already_unreachable_locations = [location for location in all_locations if not maximum_exploration_state_list[location.world.id].can_reach(location)]
 
-    entrances_to_shuffle_dict = dungeon_entrances
+    entrances_to_shuffle_dict = dungeon_entrances.copy()
+    #The fill algorithm will already make sure gohma is reachable, however it can end up putting
+    #a forest escape via the hands of spirit on Deku leading to Deku on spirit in logic. This is
+    #not really a closed forest anymore, so specifically remove Deke from closed forest
+    if (not worlds[0].open_forest):
+        del entrances_to_shuffle_dict["Outside Deku Tree -> Deku Tree Lobby"]
 
     # Shuffle entrances only within their own world
     for world in worlds:
