@@ -1093,3 +1093,10 @@ skip_GS_BGS_text:
 .orga 0xBD9A04
     jal bunny_hood
     nop
+
+; ==================================================================================================
+; Prevent hyrule guards from casuing a softlock if they're culled 
+; ==================================================================================================
+.orga 0xE24E7C
+    jal guard_catch
+    nop
