@@ -10,7 +10,6 @@
 #include "z64.h"
 #include "chests.h"
 #include "ganon.h"
-#include "lake.h"
 
 void c_init() {
     heap_init();
@@ -31,7 +30,6 @@ void after_game_state_update() {
 }
 
 void after_scene_init() {
-    check_lake_fill();
     check_ganon_entry();
     models_reset();
 }

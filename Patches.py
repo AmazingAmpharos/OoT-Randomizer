@@ -707,13 +707,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         if data_index == 0x0028:
             entrance_updates.append((0xAC95C2, target_index))
 
-    symbol = rom.sym('NO_LAKE_FILL_CUTSCENE')
     if world.shuffle_dungeon_entrances:
 
-        # Remove lake hylia fill
-        rom.write_int16(0xAC94FA, 0x060C)
-        rom.write_int16(0xAC9512, 0x0000)
-        rom.write_byte(symbol, 0x01)
+        # Connect lake hylia fill exit to revisit exit (Hylia blue will then be rewired below)
+        rom.write_int16(0xAC995A, 0x060C)
 
         # Remove deku sprout and drop player at SFM after forest (SFM blue will then be rewired by ER below)
         rom.write_int16(0xAC9F96, 0x0608)
@@ -741,8 +738,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
                 # vanilla as it never took you to the exit and the lake fill is handled
                 # above by removing the cutscene completely.
                 write_entrance(blue_out_data, dungeon['blue'])
-    else:
-        rom.write_byte(symbol, 0x00)
 
     for entrance, target in entrance_updates:
         rom.write_int16(entrance, target)
