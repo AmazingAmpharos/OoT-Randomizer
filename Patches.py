@@ -715,6 +715,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         rom.write_int16(0xAC9512, 0x0000)
         rom.write_byte(symbol, 0x01)
 
+        # Remove deku sprout and drop player at SFM after forest (SFM blue will then be rewired by ER below)
+        rom.write_int16(0xAC9F96, 0x0608)
+
         remove_entrance_blockers(rom)
         #Tell the Deku tree jaw actor we are always a child.
         rom.write_int32(0x0C72C64, 0x240E0000)

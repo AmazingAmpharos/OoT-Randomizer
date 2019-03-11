@@ -1080,10 +1080,7 @@ setting_infos = [
                          can fully complete the dungeon if 'All locations reachable'
                          is selected. This may not always be the vanilla intended age.
 
-                         Blue warps will return link to the new dungeons entrance
-                         except for Forest Temple which will still take you to the
-                         Deku Sprout.
-
+                         Blue warps will return link to the new dungeons entrance.
                          Lake Hylia will be filled for adult after defeating Morpha.
 
                          Master quest dungeons and random settings are not yet
