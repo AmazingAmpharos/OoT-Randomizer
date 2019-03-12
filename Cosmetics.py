@@ -224,12 +224,12 @@ def patch_navi_colors(rom, settings, log, symbols):
     # patch navi colors
     navi = [
         # colors for Navi
-        ('Navi Idle', settings.navi_color_default, [0x00B5E184]),  # Default
-        ('Navi Targeting Enemy', settings.navi_color_enemy,   [0x00B5E19C, 0x00B5E1BC]),  # Enemy, Boss
-        ('Navi Targeting NPC', settings.navi_color_npc,     [0x00B5E194]),  # NPC
+        ('Navi Idle', settings.navi_color_default, [0x00B5E184]), # Default
+        ('Navi Targeting Enemy', settings.navi_color_enemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+        ('Navi Targeting NPC', settings.navi_color_npc,     [0x00B5E194]), # NPC
         ('Navi Targeting Prop', settings.navi_color_prop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
                                   0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4,
-                                  0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]),  # Everything else
+                                  0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
     ]
     navi_color_list = get_navi_colors()
     for navi_action, navi_option, navi_addresses in navi:
