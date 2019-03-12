@@ -291,10 +291,10 @@
                 Carpenter_Rescue and Epona and Bow and is_adult",
             "Horseback Archery 1500 Points": "
                 Carpenter_Rescue and Epona and Bow and is_adult",
-            "Gerudo Fortress North F1 Carpenter": "is_adult or (is_child and can_child_attack)",
-            "Gerudo Fortress North F2 Carpenter": "is_adult or (is_child and can_child_attack)",
-            "Gerudo Fortress South F1 Carpenter": "is_adult or (is_child and can_child_attack)",
-            "Gerudo Fortress South F2 Carpenter": "is_adult or (is_child and can_child_attack)",
+            "Gerudo Fortress North F1 Carpenter": "is_adult or (is_child and can_child_damage)",
+            "Gerudo Fortress North F2 Carpenter": "is_adult or (is_child and can_child_damage)",
+            "Gerudo Fortress South F1 Carpenter": "is_adult or (is_child and can_child_damage)",
+            "Gerudo Fortress South F2 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress Carpenter Rescue": "can_finish_GerudoFortress",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
             "GS Gerudo Fortress Archery Range": "can_use(Hookshot) and nighttime",
@@ -303,7 +303,7 @@
         "exits": {
             "Haunted Wasteland": "is_child or
                 (is_adult and (Carpenter_Rescue or (Hookshot and (Hover_Boots or can_mega)) or (can_isg and has_bombs) ) )",
-            "Gerudo Training Grounds Lobby": "(is_child and can_jumpslash) or is_adult"
+            "Gerudo Training Grounds Lobby": "True"
         }
     },
     {

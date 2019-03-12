@@ -258,6 +258,14 @@ class State(object):
                     self.has('Kokiri Sword') or \
                     self.can_use('Dins Fire'))
 
+    def can_child_damage(self):
+        return  self.is_child() and \
+                   (self.has_slingshot() or \
+                    self.has_sticks() or \
+                    self.has_explosives() or \
+                    self.has('Kokiri Sword') or \
+                    self.can_use('Dins Fire'))
+
 
     def can_stun_deku(self):
         return  self.is_adult() or \
