@@ -1229,9 +1229,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     for text_id, message in scrub_message_dict.items():
         update_message_by_id(messages, text_id, message)
 
-    # Update grotto id data
-    set_grotto_id_data(rom)
-
     if world.shuffle_cows:
         rom.write_byte(rom.sym('SHUFFLE_COWS'), 0x01)
         #Moves the cow in LLR Tower, as the two cows are too close in vanilla
@@ -1570,24 +1567,6 @@ def set_cow_id_data(rom, world):
     cow_count = 1
 
     get_actor_list(rom, set_cow_id)
-
-
-def set_grotto_id_data(rom):
-    def set_grotto_id(rom, actor_id, actor, scene):
-        if actor_id == 0x009B: #Grotto
-            actor_zrot = rom.read_int16(actor + 12)
-            actor_var = rom.read_int16(actor + 14)
-            grotto_scene = actor_var >> 12
-            grotto_entrance = actor_zrot & 0x000F
-            grotto_id = actor_var & 0x00FF
-
-            if grotto_scene == 0 and grotto_entrance in [2, 4, 7, 10]:
-                grotto_scenes.add(scene)
-                rom.write_byte(actor + 15, len(grotto_scenes))
-
-    grotto_scenes = set()
-
-    get_actor_list(rom, set_grotto_id)
 
 
 def set_deku_salesman_data(rom):
