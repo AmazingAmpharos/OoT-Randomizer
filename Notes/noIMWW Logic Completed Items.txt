@@ -2,7 +2,7 @@ GUI
 Implementation of the new files
 
 The overworld
-Trials -- need to check on spirit trial stuff
+Trials
 Botw
 Dodongo's Cavern
 

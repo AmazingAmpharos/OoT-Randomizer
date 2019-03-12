@@ -807,7 +807,9 @@
         },
         "exits": {
             "Goron City": "True",
-            "Death Mountain Crater Lower": "is_adult or (is_child and can_mega)"
+            "Death Mountain Crater Lower": "is_adult or
+                (is_child and
+                    (can_mega or (can_live_dmg(0.5) and has_explosives) or can_shield))"
         }
     },
     {
@@ -961,7 +963,7 @@
             "Zoras Domain": "True",
             "Jabu Jabus Belly Beginning": "(is_child and (can_jumpslash or has_bottle)) or 
                 (is_adult and Hover_Boots and has_bombchus and can_shield)",
-            "Ice Cavern": "is_adult or (is_child and can_isg and has_bombchus)",
+            "Ice Cavern": "is_adult or (is_child and can_hover)",
             "Zoras Fountain Fairy": "has_explosives or can_use(Hookshot)"
         }
     },
