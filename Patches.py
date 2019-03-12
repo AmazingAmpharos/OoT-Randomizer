@@ -722,7 +722,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
         for world_entrance in world.get_shuffled_entrances(type='Dungeon'):
             entrance = world_entrance.addresses
-            dungeon = world_entrance.replaces.addresses
+            dungeon = world_entrance.connected_region.addresses
             write_scenes_exits(dungeon['forward'], entrance['forward'])
             write_scenes_exits(entrance['return'], dungeon['return'])
             if "blue" in dungeon:

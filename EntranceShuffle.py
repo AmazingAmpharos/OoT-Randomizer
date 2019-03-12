@@ -2,6 +2,7 @@ import random
 import logging
 from State import State
 from Rules import set_entrances_based_rules
+from Entrance import Entrance
 
 
 def get_entrance_pool(type):
@@ -104,38 +105,31 @@ def shuffle_entrance_pool(worlds, entrance_pool, already_unreachable_locations):
             entrance = world.get_entrance(entrance_name)
             entrance.type = type
             entrance.addresses = addresses
+            # Regions should associate specific entrances with specific addresses. But for the moment, keep it simple as dungeon and
+            # interior ER only ever has one rando entrance per region.
+            if entrance.connected_region.addresses is not None:
+                raise EntranceShuffleError('Entrance rando of regions with multiple rando entrances not supported [World %d]' % world.id)
+            entrance.connected_region.addresses = addresses
             entrance.shuffled = True
             entrances_to_shuffle.append(entrance)
 
-        target_regions = [entrance.connected_region for entrance in entrances_to_shuffle]
+        # Split entrances between those that have requirements (restrictive) and those that do not (soft). These are primarly age requirements.
+        # Restrictive entrances should be placed first while more regions are available. The remaining regions are then just placed on
+        # soft entrances without any need for logic.
+        restrictive_entrances, soft_entrances = split_entrances_by_requirements(worlds, entrances_to_shuffle)
 
-        if not entrances_to_shuffle:
-            continue
+        # Assumed Fill: Unplace, and assume we have access to entrances by connecting them to the root of reachability
+        root = world.get_region("Links House")
+        target_regions = [entrance.disconnect() for entrance in entrances_to_shuffle]
+        target_entrances = []
+        for target_region in target_regions:
+            fill_entrance = Entrance("Root -> " + target_region.name, root)
+            fill_entrance.connect(target_region)
+            root.exits.append(fill_entrance)
+            target_entrances.append(fill_entrance)
 
-        if len(entrances_to_shuffle) != len(target_regions):
-            raise EntranceShuffleError('There should be the same amount of entrances to shuffle as regions to connect, but found %d entrances and %d regions'
-                                        % (len(entrances_to_shuffle), len(target_regions)))
-
-        # Shuffle all entrances once first to remove any potential bias
-        random.shuffle(entrances_to_shuffle)
-
-        # Split entrances to shuffle based on their requirements (primarly age requirements)
-        # One of the reasons is that some entrances are more limited so they should be placed first while more regions are available.
-        # The other reason is some entrances are versatile enough that we don't need to check for reachability/beatability when shuffling them
-        access_limited_entrances, age_limited_entrances, soft_entrances = split_entrances_by_requirements(worlds, entrances_to_shuffle)
-
-        # First, shuffle entrances that have potentially high access requirements
-        # These entrances may be completely innaccessible in some combination of entrances, so we place them first
-        shuffle_entrances_restrictive(worlds, access_limited_entrances, target_regions, already_unreachable_locations, entrance_pool)
-
-        # Then, shuffle entrances with a possible limited age access
-        # These entrances may not be accessible as both ages in some combination of entrances, so we place them in second
-        shuffle_entrances_restrictive(worlds, age_limited_entrances, target_regions, already_unreachable_locations, entrance_pool)
-
-        # Finally, shuffle the rest of the entrances that are especially versatile
-        # These entrances will always be accessible as both ages no matter which combination of entraces we end up with
-        # Thus, they can be placed without checking for reachability because they have no risk of making locations innaccessible
-        shuffle_entrances_fast(worlds, soft_entrances, target_regions, entrance_pool)
+        shuffle_entrances_restrictive(worlds, restrictive_entrances, target_entrances, already_unreachable_locations)
+        shuffle_entrances_fast(worlds, soft_entrances, target_entrances)
 
 
 # Split entrances based on their requirements to figure out how each entrance should be handled when shuffling them
@@ -157,18 +151,13 @@ def split_entrances_by_requirements(worlds, entrances_to_split):
     # Some entrances may not be reachable because of this, but this is fine as long as we deal with those entrances as being very limited
     maximum_exploration_state_list = State.get_states_with_items([world.state for world in worlds], complete_itempool)
 
-    access_limited_entrances = []
-    age_limited_entrances = []
+    restrictive_entrances = []
     soft_entrances = []
 
     for entrance in entrances_to_split:
-        # Here we look for entrances unreachable in both ages (because of other entrances being disconnected)
-        if not maximum_exploration_state_list[entrance.world.id].can_reach(entrance, age='either'):
-            access_limited_entrances.append(entrance)
-            continue
-        # Here, we find entrances that are only reachable as one age (with all other entrances disconnected)
+        # Here, we find entrances that may be unreachable under certain conditions
         if not maximum_exploration_state_list[entrance.world.id].can_reach(entrance, age='both'):
-            age_limited_entrances.append(entrance)
+            restrictive_entrances.append(entrance)
             continue
         # If an entrance is reachable as both ages with all the other entrances disconnected,
         # then it will always be accessible as both ages no matter which combination of entrances we end up with.
@@ -179,14 +168,14 @@ def split_entrances_by_requirements(worlds, entrances_to_split):
     for entrance in entrances_to_split:
         entrance.connect(original_connected_regions[entrance.name])
 
-    return access_limited_entrances, age_limited_entrances, soft_entrances
+    return restrictive_entrances, soft_entrances
 
 
 # Shuffle entrances by connecting them to a region among the provided target regions list
 # While shuffling entrances, the algorithm will use states generated from all items yet to be placed to figure how entrances can be placed
 # If ALR is enabled, this will mean checking that all locations previously reachable are still reachable every time we try to place an entrance
 # Otherwise, only the beatability of the game may be assured, which is what would be expected without ALR enabled
-def shuffle_entrances_restrictive(worlds, entrances, target_regions, already_unreachable_locations, all_entrances):
+def shuffle_entrances_restrictive(worlds, entrances, target_entrances, already_unreachable_locations, retry_count=16):
 
     all_locations = [location for world in worlds for location in world.get_locations()]
 
@@ -195,80 +184,80 @@ def shuffle_entrances_restrictive(worlds, entrances, target_regions, already_unr
 
     maximum_exploration_state_list = []
 
-    while entrances:
-        random.shuffle(target_regions)
+    for _ in range(retry_count):
+        success = True;
+        random.shuffle(entrances)
+        rollbacks = []
 
-        # Get an entrance to place and disconnect it from its current region
-        entrance_to_place = entrances.pop()
+        for entrance in entrances:
+            random.shuffle(target_entrances)
 
-        # Loop through all remaining regions and try to find one that can be connected (which could involve checking for reachability)
-        connected_region = None
+            for target in target_entrances:
+                entrance.connect(target.disconnect())
 
-        for tested_region in target_regions:
+                # Regenerate the states because the final states might have changed after connecting/disconnecting entrances
+                # We also clear all state caches first because what was reachable before could now be unreachable and vice versa
+                for maximum_exploration_state in maximum_exploration_state_list:
+                    maximum_exploration_state.clear_cache()
+                maximum_exploration_state_list = State.get_states_with_items([world.state for world in worlds], complete_itempool)
 
-            # If the tested region is the same as the region connected originally, we can just use that entrance without any extra checks
-            if tested_region == entrance_to_place.connected_region:
-                connected_region = tested_region
+                # If we only have to check that the game is still beatable, and the game is indeed still beatable, we can use that region
+                can_connect = True
+                if not (worlds[0].check_beatable_only and State.can_beat_game(maximum_exploration_state_list)):
+
+                    # Figure out if this entrance can be connected to the region being tested
+                    # We consider that it can be connected if ALL locations previously reachable are still reachable
+                    for location in all_locations:
+                        if not location in already_unreachable_locations and \
+                           not maximum_exploration_state_list[location.world.id].can_reach(location):
+                            logging.getLogger('').debug('Failed to connect %s To %s (because of %s) [World %d]',
+                                                            entrance, entrance.connected_region, location, entrance.world.id)
+
+                            can_connect = False
+                            break
+
+                if can_connect:
+                    rollbacks.append((target, entrance))
+                    used_target = target
+                    break
+
+                # The entrance and target combo no good, undo and continue try the next
+                target.connect(entrance.disconnect())
+
+            if entrance.connected_region is None:
+                # An entrance failed to place every remaining target. This attempt is a bust.
+                success = False
                 break
 
-            can_connect = True
+            target_entrances.remove(used_target)
 
-            # Swap the entrances between the tested region and the region connected originally
-            other_entrance = next(filter(lambda entrance: entrance.name in all_entrances, tested_region.entrances))
-            entrance_to_place.swap_connections(other_entrance)
+        if success:
+            for target, entrance in rollbacks:
+                logging.getLogger('').debug('Connected %s To %s [World %d]', entrance, entrance.connected_region, entrance.world.id)
+                target.parent_region.exits.remove(target)
+                del target
+            return
 
-            # Regenerate the states because the final states might have changed after connecting/disconnecting entrances
-            # We also clear all state caches first because what was reachable before could now be unreachable and vice versa
-            for maximum_exploration_state in maximum_exploration_state_list:
-                maximum_exploration_state.clear_cache()
-            maximum_exploration_state_list = State.get_states_with_items([world.state for world in worlds], complete_itempool)
+        for target, entrance in rollbacks:
+            region = entrance.disconnect()
+            target_entrances.append(region)
+            target.connect(region)
 
-            # If we only have to check that the game is still beatable, and the game is indeed still beatable, we can use that region
-            if not (worlds[0].check_beatable_only and State.can_beat_game(maximum_exploration_state_list)):
+        logging.getLogger('').debug('Entrance placement attempt failed [World %d]', entrances[0].world.id)
 
-                # Figure out if this entrance can be connected to the region being tested
-                # We consider that it can be connected if ALL locations previously reachable are still reachable
-                for location in all_locations:
-                    if not location in already_unreachable_locations and \
-                       not maximum_exploration_state_list[location.world.id].can_reach(location):
-                        logging.getLogger('').debug('Failed to connect %s To %s (because of %s) [World %d]',
-                                                        entrance_to_place, tested_region, location, entrance_to_place.world.id)
-                        can_connect = False
-                        break
-
-            if can_connect:
-                # If the entrance can successfully be connected to the region, keep the entrances as is and continue
-                connected_region = tested_region
-                break
-            else:
-                # If the tested region is not suitable, swap the entrances back
-                entrance_to_place.swap_connections(other_entrance)
-
-        # If we didn't find any suitable region, not all entrances can be placed so we should throw an error
-        if connected_region == None:
-            raise EntranceShuffleError('Game unbeatable: No more suitable regions to connect %s [World %d]' % (entrance_to_place, entrance_to_place.world.id))
-
-        # Remove the connected region from the pool of target regions
-        target_regions.remove(connected_region)
-
-        logging.getLogger('').debug('Connected %s To %s [World %d]', entrance_to_place, connected_region, entrance_to_place.world.id)
-
+    raise EntranceShuffleError('Fill attempt retry count exceeded [World %d]' % entrances[0].world.id)
 
 # Shuffle entrances by connecting them to a random region among the provided target regions list
 # This doesn't check for reachability nor beatability and just connects all entrances to random regions
 # This is only meant to be used to shuffle entrances that we already know as completely versatile
 # Which means that they can't ever permanently prevent the access of any locations, no matter how they are placed
-def shuffle_entrances_fast(worlds, entrances, target_regions, all_entrances):
+def shuffle_entrances_fast(worlds, entrances, target_entrances):
 
-    while entrances:
-        random.shuffle(target_regions)
+    random.shuffle(target_entrances)
+    for entrance in entrances:
+        target = target_entrances.pop()
+        entrance.connect(target.disconnect())
+        target.parent_region.exits.remove(target)
+        del target
+        logging.getLogger('').debug('Connected %s To %s [World %d]', entrance, entrance.connected_region, entrance.world.id)
 
-        entrance_to_place = entrances.pop()
-        region_to_connect = target_regions.pop()
-
-        # Only swap entrances if needed (i.e. the entrance to place is not already connected to that region)
-        if not region_to_connect == entrance_to_place.connected_region:
-            other_entrance = next(filter(lambda entrance: entrance.name in all_entrances, region_to_connect.entrances))
-            entrance_to_place.swap_connections(other_entrance)
-
-        logging.getLogger('').debug('Connected %s To %s [World %d]', entrance_to_place, region_to_connect, entrance_to_place.world.id)
