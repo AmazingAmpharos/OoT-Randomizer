@@ -1865,7 +1865,7 @@ setting_infos = [
         default        = 4,
         gui_text       = 'Sword Trail Duration',
         gui_group      = 'sword_trails',
-        gui_tooltip    ='''\
+        gui_tooltip    = '''\
             Select the duration for sword trails.
         ''',
     ),
@@ -1898,7 +1898,7 @@ setting_infos = [
             'text':   'Outer Color',
             'group':  'sword_trails',
             'widget': 'Combobox',
-            'tooltip': '''\
+            'tooltip':'''\
                       'Random Choice': Choose a random
                       color from this list of colors.
                       'Completely Random': Choose a random
