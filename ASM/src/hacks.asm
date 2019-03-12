@@ -1093,6 +1093,3 @@ skip_GS_BGS_text:
 .orga 0xBD9A04
     jal bunny_hood
     nop
-
-.orga 0x00D357D4
-    jal shooting_gallery_init ; addiu   t6, zero, 0x0001
