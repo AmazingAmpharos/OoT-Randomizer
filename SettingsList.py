@@ -1898,7 +1898,7 @@ setting_infos = [
             'text':   'Outer Color',
             'group':  'sword_trails',
             'widget': 'Combobox',
-            'tooltip':'''\
+            'tooltip': '''\
                       'Random Choice': Choose a random
                       color from this list of colors.
                       'Completely Random': Choose a random

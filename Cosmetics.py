@@ -274,9 +274,9 @@ def patch_navi_colors(rom, settings, log, symbols):
 def patch_sword_trails(rom, settings, log, symbols):
     # patch sword trail colors
     sword_trails = [
-        ('Inner Initial Sword Trail', settings.sword_trail_color_inner,
+        ('Inner Initial Sword Trail', settings.sword_trail_color_inner, 
             [(0x00BEFF80, 0xB0, 0x40), (0x00BEFF88, 0x20, 0x00)], symbols['CFG_RAINBOW_SWORD_INNER_ENABLED']),
-        ('Outer Initial Sword Trail', settings.sword_trail_color_outer,
+        ('Outer Initial Sword Trail', settings.sword_trail_color_outer, 
             [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
     ]
 
@@ -305,15 +305,13 @@ def patch_sword_trails(rom, settings, log, symbols):
                     8), random.getrandbits(8)]
                 if sword_trail_name not in log.sword_colors:
                     log.sword_colors[sword_trail_name] = list()
-                log.sword_colors[sword_trail_name].append(dict(
-                    option=sword_trail_option, color=''.join(['{:02X}'.format(c) for c in color[0:3]])))
+                log.sword_colors[sword_trail_name].append(dict(option=sword_trail_option, color=''.join(['{:02X}'.format(c) for c in color[0:3]])))
 
             elif sword_trail_option in sword_colors:
                 color = list(sword_colors[sword_trail_option][index])
             # build color from hex code
             else:
-                color = list(
-                    int(sword_trail_option[i:i+2], 16) for i in (0, 2, 4))
+                color = list(int(sword_trail_option[i:i+2], 16) for i in (0, 2, 4))
                 custom_color = True
 
             if sword_trail_option == 'White':
@@ -326,8 +324,7 @@ def patch_sword_trails(rom, settings, log, symbols):
         if custom_color:
             sword_trail_option = 'Custom'
         if sword_trail_name not in log.sword_colors:
-            log.sword_colors[sword_trail_name] = [dict(option=sword_trail_option, color=''.join([
-                                                       '{:02X}'.format(c) for c in color[0:3]]))]
+            log.sword_colors[sword_trail_name] = [dict(option=sword_trail_option, color=''.join(['{:02X}'.format(c) for c in color[0:3]]))]
     log.sword_trail_duration = settings.sword_trail_duration
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
