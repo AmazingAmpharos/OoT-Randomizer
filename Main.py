@@ -492,7 +492,7 @@ def create_playthrough(spoiler):
     state_list = [world.state for world in worlds]
 
     # Get all item locations in the worlds
-    item_locations = {location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement}
+    item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
     # Generate a list of spheres by iterating over reachable locations without collecting as we go.
     # Collecting every item in one sphere means that every item
     # in the next sphere is collectable. Will contain every reachable item this way.
@@ -500,9 +500,9 @@ def create_playthrough(spoiler):
     logger.debug('Building up collection spheres.')
     collection_spheres = []
     playthrough = Playthrough(state_list)
-    while item_locations:
+    while True:
         # Not collecting while the generator runs means we only get one sphere at a time
-        collected = set(playthrough.iter_reachable_locations(item_locations))
+        collected = list(playthrough.iter_reachable_locations(item_locations))
         if not collected: break
         for location in collected:
             # Mark the location collected in the state world it exists in
@@ -510,13 +510,12 @@ def create_playthrough(spoiler):
             # Collect the item for the state world it is for
             state_list[location.item.world.id].collect(location.item)
         collection_spheres.append(collected)
-        item_locations -= collected
     logger.info('Collected %d spheres', len(collection_spheres))
 
     # Reduce each sphere in reverse order, by checking if the game is beatable
     # when we remove the item. We do this to make sure that progressive items
     # like bow and slingshot appear as early as possible rather than as late as possible.
-    required_locations = set()
+    required_locations = []
     for sphere in reversed(collection_spheres):
         for location in list(sphere):
             # we remove the item at location and check if game is still beatable
@@ -535,16 +534,16 @@ def create_playthrough(spoiler):
                 # still required, so remove the entry from collected_locations
                 # so it can be collected again by other attempts.
                 del state_list[location.world.id].collected_locations[location.name]
-                required_locations.add(location)
+                required_locations.append(location)
 
     # Regenerate the spheres as we might not reach places the same way anymore.
     for state in state_list:
         state.collected_locations.clear()
     playthrough = Playthrough(state_list)
     collection_spheres = []
-    while required_locations:
+    while True:
         # Not collecting while the generator runs means we only get one sphere at a time
-        collected = set(playthrough.iter_reachable_locations(required_locations))
+        collected = list(playthrough.iter_reachable_locations(required_locations))
         if not collected: break
         for location in collected:
             # Mark the location collected in the state world it exists in
@@ -552,7 +551,6 @@ def create_playthrough(spoiler):
             # Collect the item for the state world it is for
             state_list[location.item.world.id].collect(location.item)
         collection_spheres.append(collected)
-        required_locations -= collected
     logger.info('Collected %d final spheres', len(collection_spheres))
 
     # Then we can finally output our playthrough

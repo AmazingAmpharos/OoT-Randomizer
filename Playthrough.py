@@ -53,13 +53,15 @@ class Playthrough(object):
 
     # Yields every reachable location, by iteratively deepening explored sets of
     # regions (one as child, one as adult) and invoking access rules without
-    # calling the recursive can_reach.
-    # item_locations is a set of Location objects from state_list that the caller
+    # calling a recursive form of can_reach.
+    # item_locations is a list of Location objects from state_list that the caller
     # has prefiltered (eg. by whether they contain advancement items).
     #
     # Inside the loop, the caller usually wants to collect items at these
-    # locations to see if the game is beatable. This function does not alter provided state.
+    # locations to see if the game is beatable.
+    # This function does not alter provided state.
     def iter_reachable_locations(self, item_locations):
+        # Set keeps track of collected locations, not for iteration.
         collected_set = set(itertools.chain.from_iterable(
             map(state.world.get_location, state.collected_locations)
             for id, state in enumerate(self.state_list)))
@@ -73,7 +75,7 @@ class Playthrough(object):
 
         # simplified loc.can_reach(state)
         # Check adult first; it's the most likely.
-        accessible = lambda loc: not loc.is_disabled() and (
+        accessible = lambda loc: loc not in collected_set and not loc.is_disabled() and (
                 loc.parent_region in adult_regions
                 and self.state_list[loc.world.id].as_adult(lambda s: s.with_spot(loc.access_rule, loc))
                 or (loc.parent_region in child_regions
@@ -90,18 +92,16 @@ class Playthrough(object):
                 child_queue = copy.copy(self.cached_spheres[-1]['child_queue'])
                 adult_queue = copy.copy(self.cached_spheres[-1]['adult_queue'])
             else:
-                child_regions = {
+                child_starting_regions = [
                         state.world.get_region('Links House') for state in self.state_list
-                        if state.world.starting_age == 'child'}
-                adult_regions = {
+                        if state.world.starting_age == 'child']
+                adult_starting_regions = [
                         state.world.get_region('Temple of Time') for state in self.state_list
-                        if state.world.starting_age == 'adult'}
-                child_queue = deque(
-                        exit for region in child_regions for exit in region.exits
-                        if exit.connected_region not in child_regions)
-                adult_queue = deque(
-                        exit for region in adult_regions for exit in region.exits
-                        if exit.connected_region not in adult_regions)
+                        if state.world.starting_age == 'adult']
+                child_queue = deque(exit for region in child_starting_regions for exit in region.exits)
+                adult_queue = deque(exit for region in adult_starting_regions for exit in region.exits)
+                child_regions = set(child_starting_regions)
+                adult_regions = set(adult_starting_regions)
 
             # 1. Use the queue to iteratively add regions to the accessed set,
             #    until we are stuck or out of regions.
@@ -119,7 +119,7 @@ class Playthrough(object):
 
             # 2. Get all locations in accessible_regions that aren't collected,
             #    and check if they can be reached. Collect them.
-            reachable_locations = filter(accessible, item_locations - collected_set)
+            reachable_locations = filter(accessible, item_locations)
             had_reachable_locations = False
             for location in reachable_locations:
                 had_reachable_locations = True
@@ -143,7 +143,7 @@ class Playthrough(object):
     # This function modifies provided state.
     def collect_locations(self):
         # Get all item locations in the worlds
-        item_locations = {location for state in self.state_list for location in state.world.get_filled_locations() if location.item.advancement}
+        item_locations = [location for state in self.state_list for location in state.world.get_filled_locations() if location.item.advancement]
         collected_locations = [s.collected_locations for s in self.state_list]
         for location in self.iter_reachable_locations(item_locations):
             # Mark the location collected in the state world it exists in
