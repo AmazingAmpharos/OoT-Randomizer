@@ -27,8 +27,7 @@ Guidelines for noIM/WW Glitched Logic
 	All sorts. FWWWs, void warps, and blue warp manips included.  These are too vastly misunderstood and non-repeatable to be considered.
 
 -Actor push clips
-	All except itemless forest escape are not being considered.  Itemless escape has a consistent setup
-	so it will be in logic.
+	Any setup with a documented video that is 100% consistent can be considered.  This video must be provided.
 
 -Reaching zelda without moving Talon
 	Getting the letter before the egg can lead to a softlock on masks, so this will not be considered
