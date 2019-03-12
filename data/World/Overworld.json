@@ -387,7 +387,7 @@
             "Sheik at Temple": "Forest_Medallion and is_adult"
         },
         "exits": {
-            "Temple of Time": "True"
+            "Temple of Time": "Master_Sword"
         }
     },
     {

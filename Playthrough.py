@@ -81,11 +81,10 @@ class Playthrough(object):
             loc not in collected_set
             and not loc.is_disabled()
             # Check adult first; it's the most likely.
-            # calling as_adult checks for MS to keep it required.
             and (loc.parent_region in adult_regions
-                 and self.state_list[loc.world.id].as_adult(lambda state: loc.can_reach(state, noparent=True))
+                 and self.state_list[loc.world.id].with_age(lambda state: loc.can_reach(state, noparent=True), 'adult')
                  or (loc.parent_region in child_regions
-                     and self.state_list[loc.world.id].as_child(lambda state: loc.can_reach(state, noparent=True)))))
+                     and self.state_list[loc.world.id].with_age(lambda state: loc.can_reach(state, noparent=True), 'child'))))
 
         had_reachable_locations = True
         # will loop as long as any collections were made, and at least once
