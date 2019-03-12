@@ -39,6 +39,9 @@ class Playthrough(object):
                 if validate(exit):
                     region_set.add(exit.connected_region)
                     exit_queue.extend(filter(new_exit, exit.connected_region.exits))
+                    # This will put all accessible cross-age regions into the current sphere,
+                    # but for child->adult, the state will not yet have Master Sword,
+                    # so adult locations will not yet be accessible.
                     if exit.connected_region.name == 'Beyond Door of Time':
                         cross_age_set.add(exit.connected_region)
                         cross_age_queue.extend(exit.connected_region.exits)
@@ -69,17 +72,20 @@ class Playthrough(object):
         new_child_exit = lambda exit: exit.connected_region not in child_regions
         new_adult_exit = lambda exit: exit.connected_region not in adult_regions
 
-        # simplified exit.can_reach(state)
-        validate_child = lambda exit: self.state_list[exit.parent_region.world.id].as_child(lambda s: s.with_spot(exit.access_rule, exit))
-        validate_adult = lambda exit: self.state_list[exit.parent_region.world.id].as_adult(lambda s: s.with_spot(exit.access_rule, exit))
+        # simplified exit.can_reach(state), with_age bypasses can_become_age
+        # which we've already accounted for
+        validate_child = lambda exit: self.state_list[exit.parent_region.world.id].with_age(lambda state: exit.can_reach(state, noparent=True), 'child')
+        validate_adult = lambda exit: self.state_list[exit.parent_region.world.id].with_age(lambda state: exit.can_reach(state, noparent=True), 'adult')
 
-        # simplified loc.can_reach(state)
-        # Check adult first; it's the most likely.
-        accessible = lambda loc: loc not in collected_set and not loc.is_disabled() and (
-                loc.parent_region in adult_regions
-                and self.state_list[loc.world.id].as_adult(lambda s: s.with_spot(loc.access_rule, loc))
-                or (loc.parent_region in child_regions
-                    and self.state_list[loc.world.id].as_child(lambda s: s.with_spot(loc.access_rule, loc))))
+        accessible = lambda loc: (
+            loc not in collected_set
+            and not loc.is_disabled()
+            # Check adult first; it's the most likely.
+            # calling as_adult checks for MS to keep it required.
+            and (loc.parent_region in adult_regions
+                 and self.state_list[loc.world.id].as_adult(lambda state: loc.can_reach(state, noparent=True))
+                 or (loc.parent_region in child_regions
+                     and self.state_list[loc.world.id].as_child(lambda state: loc.can_reach(state, noparent=True)))))
 
         had_reachable_locations = True
         # will loop as long as any collections were made, and at least once
@@ -105,17 +111,17 @@ class Playthrough(object):
 
             # 1. Use the queue to iteratively add regions to the accessed set,
             #    until we are stuck or out of regions.
-            child_failed = Playthrough._expand_regions(
-                    child_queue, child_regions, validate_child,
-                    adult_queue, adult_regions)
             adult_failed = Playthrough._expand_regions(
                     adult_queue, adult_regions, validate_adult,
                     child_queue, child_regions)
-            # This only does anything with an adult starting state if BDoT was reached.
-            if child_queue:
-                child_failed.extend(Playthrough._expand_regions(
-                        child_queue, child_regions, validate_child,
-                        adult_queue, adult_regions))
+            child_failed = Playthrough._expand_regions(
+                    child_queue, child_regions, validate_child,
+                    adult_queue, adult_regions)
+            # If child reached BDoT, we'll have added BDoT for adult,
+            # but until the state collects MS, there's no point expanding
+            # the sphere given that we check for MS in determining adult accessibility.
+            # So we do it next time.
+            adult_failed.extend(adult_queue)
 
             # 2. Get all locations in accessible_regions that aren't collected,
             #    and check if they can be reached. Collect them.
