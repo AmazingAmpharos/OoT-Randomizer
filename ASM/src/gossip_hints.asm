@@ -1,6 +1,18 @@
 gossip_hints:
     addiu   sp, sp, -0x18
     sw      ra, 0x0014(sp)
+
+    ; Get Message ID
+    lh      t7, 0x001C(s0)
+    andi    t8, t7, 0x00FF
+    addiu   v0, t8, 0x0400
+
+    ; If Special flag is set, always display message
+    andi    at, t7, 0x8000
+    bnez    at, @@return
+    nop
+
+    ; Switch case
     lw      t0, GOSSIP_HINT_CONDITION
     beq     t0, r0, @@default
     li      at, 1
@@ -8,23 +20,33 @@ gossip_hints:
     nop
 
 @@always_hint:
-    li      at, 0x0020
+    ; Always show message
     b       @@return
-    li      v0, 0x0020
+    nop
 
 @@stone_of_agony:
+    ; Show message only if stone of agony is obtained
     lb      at, (SAVE_CONTEXT+0xA5)
-    andi    at, at, 0x0020 ; Stone of Agony?
+    andi    at, at, 0x0020 ; Stone of Agony
+    beqz    at, @@no_hint
+    nop
     b       @@return
-    li      v0, 0x0020
+    nop
 
 @@default: 
-; hints == masks or "none"
+    ; Show message only if worn mask is the mask of truth
     jal     0x79B44
     nop
     li      at, 0x0008
+    beq     v0, at, @@return
+    nop
 
+@@no_hint:
+    ; Change message to no response message id
+    li      v0, 0x2053
 @@return:
+    ; Set the message id to play and return
+    sh      v0, 0x010E(s0)
     lw      ra, 0x0014(sp)
     jr      ra
     addiu   sp, sp, 0x18

@@ -941,6 +941,12 @@ skip_GS_BGS_text:
     jal     gossip_hints
     lw      a0, 0x002C(sp) ; global context
     nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
 
 ;==================================================================================================
 ; Potion Shop Fix
@@ -1093,3 +1099,17 @@ skip_GS_BGS_text:
 .orga 0xBD9A04
     jal bunny_hood
     nop
+
+
+; ==================================================================================================
+; Add ability to control Lake Hylia's water level
+; ==================================================================================================
+.orga 0xD5B264
+    jal Check_Fill_Lake
+
+.orga 0xD5B660
+    j   Fill_Lake_Destroy
+    nop
+
+.orga 0xEE7E4C
+    jal Hit_Gossip_Stone

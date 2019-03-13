@@ -708,6 +708,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
             entrance_updates.append((0xAC95C2, target_index))
 
     if world.shuffle_dungeon_entrances:
+        symbol = rom.sym('CFG_CHILD_CONTROL_LAKE')
+        rom.write_int32(symbol, 1)
 
         # Connect lake hylia fill exit to revisit exit (Hylia blue will then be rewired below)
         rom.write_int16(0xAC995A, 0x060C)
