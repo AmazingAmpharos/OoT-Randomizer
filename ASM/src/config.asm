@@ -5,26 +5,17 @@
 ; This is used to determine if and how the cosmetics can be patched
 ; It this moves then the version will no longer be valid, so it is important that this does not move
 COSMETIC_FORMAT_VERSION:
-.word 0x1F0693FA
+.word 0x1F0693FB
+CFG_MAGIC_COLOR:
+.halfword 0x0000, 0x00FF, 0x0000
+CFG_HEART_COLOR:
+.halfword 0x00FF, 0x0046, 0x0032
 CFG_DISPLAY_DPAD:
 .byte 0x01
 CFG_RAINBOW_SWORD_INNER_ENABLED:
 .byte 0x00
 CFG_RAINBOW_SWORD_OUTER_ENABLED:
 .byte 0x00
-CFG_MAGIC_COLOR_RED:
-.byte 0xFF
-CFG_MAGIC_COLOR_GREEN:
-.byte 0x00
-CFG_MAGIC_COLOR_BLUE:
-.byte 0xFF
-.align 4
-CFG_HEART_COLOR_R:
-.halfword 0xFF
-CFG_HEART_COLOR_G:
-.halfword 0x46
-CFG_HEART_COLOR_B:
-.halfword 0x32
 .align 4
 
 

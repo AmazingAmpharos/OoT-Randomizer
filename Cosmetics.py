@@ -352,16 +352,11 @@ def patch_gauntlet_colors(rom, settings, log, symbols):
 def patch_heart_colors(rom, settings, log, symbols):
     # patch tunic colors
     hearts = [
-        ('Heart Colors', settings.heart_color),
+        ('Heart Colors', settings.heart_color, symbols['CFG_HEART_COLOR']),
     ]
     heart_color_list = get_heart_colors()
-    symbol_list = [
-        symbols['CFG_HEART_COLOR_R'],
-        symbols['CFG_HEART_COLOR_G'],
-        symbols['CFG_HEART_COLOR_B']
-    ]
 
-    for heart, heart_option in hearts:
+    for heart, heart_option, symbol in hearts:
         # handle random
         if heart_option == 'Random Choice':
             heart_option = random.choice(heart_color_list)
@@ -375,23 +370,17 @@ def patch_heart_colors(rom, settings, log, symbols):
         else:
             color = list(int(heart_option[i:i+2], 16) for i in (0, 2, 4))
             heart_option = 'Custom'
-        for index, symbol in enumerate(symbol_list):
-            rom.write_byte(symbol, color[index])
+        rom.write_int16s(symbol, color)
         log.heart_colors[heart] = dict(option=heart_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
 def patch_magic_colors(rom, settings, log, symbols):
     magic = [
-        ('Magic Meter Color', settings.magic_color),
+        ('Magic Meter Color', settings.magic_color, symbols["CFG_MAGIC_COLOR"]),
     ]
     magic_color_list = get_magic_colors()
-    symbol_list = [
-        symbols["CFG_MAGIC_COLOR_RED"],
-        symbols["CFG_MAGIC_COLOR_GREEN"],
-        symbols["CFG_MAGIC_COLOR_BLUE"]
-    ]
 
-    for magic_color, magic_option in magic:
+    for magic_color, magic_option, symbol in magic:
         if magic_option == 'Random Choice':
            magic_option = random.choice(magic_color_list)
 
@@ -402,8 +391,7 @@ def patch_magic_colors(rom, settings, log, symbols):
         else:
             color = list(int(magic_option[i:i+2], 16) for i in (0, 2, 4))
             magic_option = 'Custom'
-        for index, symbol in enumerate(symbol_list):
-            rom.write_byte(symbol, color[index])
+        rom.write_int16s(symbol, color)
         log.magic_colors[magic_color] = dict(option=magic_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
@@ -497,22 +485,7 @@ patch_sets = {
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481006,
         },
     },
-    0x1F06AD90: {
-        "patches": [
-            patch_dpad,
-            patch_sword_trails,
-            patch_magic_colors,
-        ],
-        "symbols": {    
-            "CFG_DISPLAY_DPAD": 0x03481004,
-            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03481005,
-            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481006,
-            "CFG_MAGIC_COLOR_RED": 0x3481007,
-            "CFG_MAGIC_COLOR_GREEN": 0x3481008,
-            "CFG_MAGIC_COLOR_BLUE": 0x3481009,
-        },
-    },
-    0x1F0693FA: {
+    0x1F0693FB: {
         "patches": [
             patch_dpad,
             patch_sword_trails,
@@ -520,15 +493,11 @@ patch_sets = {
             patch_magic_colors,
         ],
         "symbols": {
-            "CFG_DISPLAY_DPAD": 0x03481004,
-            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03481005,
-            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481006,
-            "CFG_MAGIC_COLOR_RED": 0x3481007,
-            "CFG_MAGIC_COLOR_GREEN": 0x3481008,
-            "CFG_MAGIC_COLOR_BLUE": 0x3481009,
-            "CFG_HEART_COLOR_R": 0x0348100C,
-            "CFG_HEART_COLOR_G": 0x0348100E,
-            "CFG_HEART_COLOR_B": 0x03481010,
+            "CFG_DISPLAY_DPAD": 0x03481010,
+            "CFG_HEART_COLOR": 0x0348100A,
+            "CFG_MAGIC_COLOR": 0x03481004,
+            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03481011,
+            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481012,
         }
     }
 }
