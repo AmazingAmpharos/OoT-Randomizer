@@ -1113,3 +1113,6 @@ skip_GS_BGS_text:
 
 .orga 0xEE7E4C
     jal Hit_Gossip_Stone
+
+.orga 0x26C10E3
+    .byte 0xFF ; Set generic grotto text ID to load from grotto ID

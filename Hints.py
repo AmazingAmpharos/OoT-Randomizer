@@ -37,38 +37,47 @@ class GossipText():
 
 
 gossipLocations = {
-    0x0405: GossipStone('Death Mountain Crater (Bombable Wall)', 'Death Mountain Crater Gossip Stone'),
-    0x0404: GossipStone('Death Mountain Trail (Biggoron)', 'Death Mountain Trail Gossip Stone'),
-    0x041A: GossipStone('Desert Colossus (Spirit Temple)', 'Desert Colossus Gossip Stone'),
-    0x0414: GossipStone('Dodongos Cavern (Bombable Wall)', 'Dodongos Cavern Gossip Stone'),
-    0x0418: GossipStone('Generic Grotto', 'Generic Grotto Gossip Stone'),
-    0x0411: GossipStone('Gerudo Valley (Waterfall)', 'Gerudo Valley Gossip Stone'),
-    0x0415: GossipStone('Goron City (Maze)', 'Goron City Maze Gossip Stone'),
-    0x0419: GossipStone('Goron City (Medigoron)', 'Goron City Medigoron Gossip Stone'),
-    0x040A: GossipStone('Graveyard (Shadow Temple)', 'Graveyard Gossip Stone'),
-    0x0412: GossipStone('Hyrule Castle (Malon)', 'Hyrule Castle Malon Gossip Stone'),
-    0x040B: GossipStone('Hyrule Castle (Rock Wall)', 'Hyrule Castle Rock Wall Gossip Stone'),
-    0x0413: GossipStone('Hyrule Castle (Storms Grotto)', 'Castle Storms Grotto Gossip Stone'),
-    0x041B: GossipStone('Hyrule Field (Hammer Grotto)', 'Field Valley Grotto Gossip Stone'),
-    0x041F: GossipStone('Kokiri Forest (Deku Tree Left)', 'Deku Tree Gossip Stone (Left)'),
-    0x0420: GossipStone('Kokiri Forest (Deku Tree Right)', 'Deku Tree Gossip Stone (Right)'),
-    0x041E: GossipStone('Kokiri Forest (Storms)', 'Kokiri Forest Gossip Stone'),
-    0x0403: GossipStone('Lake Hylia (Lab)', 'Lake Hylia Lab Gossip Stone'),
-    0x040F: GossipStone('Lake Hylia (Southeast Corner)', 'Lake Hylia Gossip Stone (Southeast)'),
-    0x0408: GossipStone('Lake Hylia (Southwest Corner)', 'Lake Hylia Gossip Stone (Southwest)'),
-    0x041D: GossipStone('Lost Woods (Bridge)', 'Lost Woods Gossip Stone'),
-    0x0416: GossipStone('Sacred Forest Meadow (Maze Lower)', 'Sacred Forest Meadow Maze Gossip Stone (Lower)'),
-    0x0417: GossipStone('Sacred Forest Meadow (Maze Upper)', 'Sacred Forest Meadow Maze Gossip Stone (Upper)'),
-    0x041C: GossipStone('Sacred Forest Meadow (Saria)', 'Sacred Forest Meadow Saria Gossip Stone'),
-    0x0406: GossipStone('Temple of Time (Left)', 'Temple of Time Gossip Stone (Left)'),
-    0x0407: GossipStone('Temple of Time (Left-Center)', 'Temple of Time Gossip Stone (Left-Center)'),
-    0x0410: GossipStone('Temple of Time (Right)', 'Temple of Time Gossip Stone (Right)'),
-    0x040E: GossipStone('Temple of Time (Right-Center)', 'Temple of Time Gossip Stone (Right-Center)'),
-    0x0409: GossipStone('Zoras Domain (Mweep)', 'Zoras Domain Gossip Stone'),
-    0x0401: GossipStone('Zoras Fountain (Fairy)', 'Zoras Fountain Fairy Gossip Stone'),
-    0x0402: GossipStone('Zoras Fountain (Jabu)', 'Zoras Fountain Jabu Gossip Stone'),
-    0x040D: GossipStone('Zoras River (Plateau)', 'Zoras River Plateau Gossip Stone'),
-    0x040C: GossipStone('Zoras River (Waterfall)', 'Zoras River Waterfall Gossip Stone'),
+    0x0405: GossipStone('Death Mountain Crater (Bombable Wall)','Death Mountain Crater Gossip Stone'),
+    0x0404: GossipStone('Death Mountain Trail (Biggoron)',      'Death Mountain Trail Gossip Stone'),
+    0x041A: GossipStone('Desert Colossus (Spirit Temple)',      'Desert Colossus Gossip Stone'),
+    0x0414: GossipStone('Dodongos Cavern (Bombable Wall)',      'Dodongos Cavern Gossip Stone'),
+    0x0411: GossipStone('Gerudo Valley (Waterfall)',            'Gerudo Valley Gossip Stone'),
+    0x0415: GossipStone('Goron City (Maze)',                    'Goron City Maze Gossip Stone'),
+    0x0419: GossipStone('Goron City (Medigoron)',               'Goron City Medigoron Gossip Stone'),
+    0x040A: GossipStone('Graveyard (Shadow Temple)',            'Graveyard Gossip Stone'),
+    0x0412: GossipStone('Hyrule Castle (Malon)',                'Hyrule Castle Malon Gossip Stone'),
+    0x040B: GossipStone('Hyrule Castle (Rock Wall)',            'Hyrule Castle Rock Wall Gossip Stone'),
+    0x0413: GossipStone('Hyrule Castle (Storms Grotto)',        'Castle Storms Grotto Gossip Stone'),
+    0x041B: GossipStone('Hyrule Field (Hammer Grotto)',         'Field Valley Grotto Gossip Stone'),
+    0x041F: GossipStone('Kokiri Forest (Deku Tree Left)',       'Deku Tree Gossip Stone (Left)'),
+    0x0420: GossipStone('Kokiri Forest (Deku Tree Right)',      'Deku Tree Gossip Stone (Right)'),
+    0x041E: GossipStone('Kokiri Forest (Storms)',               'Kokiri Forest Gossip Stone'),
+    0x0403: GossipStone('Lake Hylia (Lab)',                     'Lake Hylia Lab Gossip Stone'),
+    0x040F: GossipStone('Lake Hylia (Southeast Corner)',        'Lake Hylia Gossip Stone (Southeast)'),
+    0x0408: GossipStone('Lake Hylia (Southwest Corner)',        'Lake Hylia Gossip Stone (Southwest)'),
+    0x041D: GossipStone('Lost Woods (Bridge)',                  'Lost Woods Gossip Stone'),
+    0x0416: GossipStone('Sacred Forest Meadow (Maze Lower)',    'Sacred Forest Meadow Maze Gossip Stone (Lower)'),
+    0x0417: GossipStone('Sacred Forest Meadow (Maze Upper)',    'Sacred Forest Meadow Maze Gossip Stone (Upper)'),
+    0x041C: GossipStone('Sacred Forest Meadow (Saria)',         'Sacred Forest Meadow Saria Gossip Stone'),
+    0x0406: GossipStone('Temple of Time (Left)',                'Temple of Time Gossip Stone (Left)'),
+    0x0407: GossipStone('Temple of Time (Left-Center)',         'Temple of Time Gossip Stone (Left-Center)'),
+    0x0410: GossipStone('Temple of Time (Right)',               'Temple of Time Gossip Stone (Right)'),
+    0x040E: GossipStone('Temple of Time (Right-Center)',        'Temple of Time Gossip Stone (Right-Center)'),
+    0x0409: GossipStone('Zoras Domain (Mweep)',                 'Zoras Domain Gossip Stone'),
+    0x0401: GossipStone('Zoras Fountain (Fairy)',               'Zoras Fountain Fairy Gossip Stone'),
+    0x0402: GossipStone('Zoras Fountain (Jabu)',                'Zoras Fountain Jabu Gossip Stone'),
+    0x040D: GossipStone('Zoras River (Plateau)',                'Zoras River Plateau Gossip Stone'),
+    0x040C: GossipStone('Zoras River (Waterfall)',              'Zoras River Waterfall Gossip Stone'),
+
+    0x0430: GossipStone('Hyrule Field (Castle Moat Grotto)',    'Field West Castle Town Grotto Gossip Stone'),
+    0x0432: GossipStone('Hyrule Field (Rock Grotto)',           'Remote Southern Grotto Gossip Stone'),
+    0x0433: GossipStone('Hyrule Field (Open Grotto)',           'Field Near Lake Outside Fence Grotto Gossip Stone'),
+    0x0438: GossipStone('Kakariko (Potion Grotto)',             'Kakariko Back Grotto Gossip Stone'),
+    0x0439: GossipStone('Zoras River (Open Grotto)',            'Zora River Plateau Open Grotto Gossip Stone'),
+    0x043C: GossipStone('Kokiri Forest (Storms Grotto)',        'Kokiri Forest Storms Grotto Gossip Stone'),
+    0x0444: GossipStone('Lost Woods (Rock Grotto)',             'Lost Woods Generic Grotto Gossip Stone'),
+    0x0447: GossipStone('Death Mountain Trail (Storms Grotto)', 'Mountain Storms Grotto Gossip Stone'),
+    0x044A: GossipStone('Death Mountain Crater (Rock Grotto)',  'Top of Crater Grotto Gossip Stone'),
 }
 
 
@@ -141,7 +150,7 @@ def can_reach_stone(worlds, stone_location, location):
 
 def writeGossipStoneHints(spoiler, world, messages):
     for id, gossip_text in spoiler.hints[world.id].items():
-        update_message_by_id(messages, id, str(gossip_text))
+        update_message_by_id(messages, id, str(gossip_text), 0x23)
 
 
 def filterTrailingSpace(text):

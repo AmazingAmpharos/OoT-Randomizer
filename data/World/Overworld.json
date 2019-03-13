@@ -187,8 +187,7 @@
             "Ocarina of Time": "
                 is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Song from Ocarina of Time": "
-                is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
-            "Generic Grotto Gossip Stone": "True"
+                is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint"
         },
         "exits": {
             "Lost Woods Bridge": "True",
@@ -1045,13 +1044,15 @@
     {
         "region_name": "Kokiri Forest Storms Grotto",
         "locations": {
-            "Kokiri Forest Storms Grotto Chest": "True"
+            "Kokiri Forest Storms Grotto Chest": "True",
+            "Kokiri Forest Storms Grotto Gossip Stone": "True"
         }
     },
     {
         "region_name": "Lost Woods Generic Grotto",
         "locations": {
-            "Lost Woods Generic Grotto Chest": "True"
+            "Lost Woods Generic Grotto Chest": "True",
+            "Lost Woods Generic Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1095,13 +1096,15 @@
     {
         "region_name": "Remote Southern Grotto",
         "locations": {
-            "Remote Southern Grotto Chest": "True"
+            "Remote Southern Grotto Chest": "True",
+            "Remote Southern Grotto Gossip Stone": "True"
         }
     },
     {
         "region_name": "Field Near Lake Outside Fence Grotto",
         "locations": {
-            "Field Near Lake Outside Fence Grotto Chest": "True"
+            "Field Near Lake Outside Fence Grotto Chest": "True",
+            "Field Near Lake Outside Fence Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1122,7 +1125,8 @@
     {
         "region_name": "Field West Castle Town Grotto",
         "locations": {
-            "Field West Castle Town Grotto Chest": "True"
+            "Field West Castle Town Grotto Chest": "True",
+            "Field West Castle Town Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1157,7 +1161,8 @@
     {
         "region_name": "Kakariko Back Grotto",
         "locations": {
-            "Kakariko Back Grotto Chest": "True"
+            "Kakariko Back Grotto Chest": "True",
+            "Kakariko Back Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1169,7 +1174,8 @@
     {
         "region_name": "Mountain Storms Grotto",
         "locations": {
-            "Mountain Storms Grotto Chest": "True"
+            "Mountain Storms Grotto Chest": "True",
+            "Mountain Storms Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1183,7 +1189,8 @@
     {
         "region_name": "Top of Crater Grotto",
         "locations": {
-            "Top of Crater Grotto Chest": "True"
+            "Top of Crater Grotto Chest": "True",
+            "Top of Crater Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1197,7 +1204,8 @@
     {
         "region_name": "Zora River Plateau Open Grotto",
         "locations": {
-            "Zora River Plateau Open Grotto Chest": "True"
+            "Zora River Plateau Open Grotto Chest": "True",
+            "Zora River Plateau Open Grotto Gossip Stone": "True"
         }
     },
     {

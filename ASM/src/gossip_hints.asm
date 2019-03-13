@@ -2,10 +2,19 @@ gossip_hints:
     addiu   sp, sp, -0x18
     sw      ra, 0x0014(sp)
 
+    li      v1, SAVE_CONTEXT
+
     ; Get Message ID
     lh      t7, 0x001C(s0)
     andi    t8, t7, 0x00FF
+    li      at, 0xFF
+    bne     t8, at, @@not_grotto
     addiu   v0, t8, 0x0400
+
+    lbu     t8, 0x1397(v1)       ; Grotto ID
+    andi    t8, t8, 0x1F
+    addiu   v0, t8, 0x0430
+@@not_grotto:
 
     ; If Special flag is set, always display message
     andi    at, t7, 0x8000
@@ -26,7 +35,7 @@ gossip_hints:
 
 @@stone_of_agony:
     ; Show message only if stone of agony is obtained
-    lb      at, (SAVE_CONTEXT+0xA5)
+    lb      at, 0xA5(v1)
     andi    at, at, 0x0020 ; Stone of Agony
     beqz    at, @@no_hint
     nop
