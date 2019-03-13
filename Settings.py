@@ -214,6 +214,7 @@ class Settings:
                 if new_value != None:
                     self.__dict__[info.name] = new_value
         self.settings_string = self.get_settings_string()
+        self.numeric_seed = self.get_numeric_seed()
 
 
     def resolve_random_settings(self):
