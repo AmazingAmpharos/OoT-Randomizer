@@ -94,7 +94,7 @@ Deku_Check_Sold_Out:
     bne     t2, at, @@continue ; If in grotto, use a free scene
 
     lb      t3, 0x1397(t1)   ; Grotto ID
-    addi    t2, t3, 0x2D
+    addi    t2, t3, -0xD6
 
 @@continue:
     lh      t3, 0x1C(s0)     ; var
@@ -124,7 +124,7 @@ Deku_Set_Sold_Out:
     bne     t2, at, @@continue ; If in grotto, use a free scene
 
     lb      t3, 0x1397(t1)   ; Grotto ID
-    addi    t2, t3, 0x2D
+    addi    t2, t3, -0xD6
 
 @@continue:
     lh      t3, 0x1C(a0)     ; var
