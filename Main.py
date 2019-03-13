@@ -95,11 +95,13 @@ def main(settings, window=dummy_window()):
         dist_num_mq = world.distribution.configure_dungeons(world, dungeon_pool)
 
         if world.mq_dungeons_random:
-            world.mq_dungeons = dist_num_mq + random.randint(0, len(dungeon_pool))
-        mqd_count = world.mq_dungeons
-        mqd_picks = random.sample(dungeon_pool, mqd_count - dist_num_mq)
-        for dung in mqd_picks:
-            world.dungeon_mq[dung] = True
+            for dungeon in dungeon_pool:
+                world.dungeon_mq[dungeon] = random.choice([True, False])
+            world.mq_dungeons = list(world.dungeon_mq.values()).count(True)
+        else:
+            mqd_picks = random.sample(dungeon_pool, world.mq_dungeons - dist_num_mq)
+            for dung in mqd_picks:
+                world.dungeon_mq[dung] = True
 
 
         overworld_data = os.path.join(data_path('World'), 'Overworld.json')
