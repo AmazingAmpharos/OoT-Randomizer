@@ -348,6 +348,9 @@ hint_func = {
 }
 
 
+# (relative weight, count)
+# count: number of times each hint is placed. 0 means none!
+# trial and always are special, and their weights irrelevant.
 hint_dist_sets = {
     'useless': {
         'trial':    (0.0, 0),
@@ -402,6 +405,7 @@ hint_dist_sets = {
         'junk':     (0.0, 0),
     },
     'tournament': {
+        # (number of hints, count per hint)
         'trial':    (0.0, 2),
         'always':   (0.0, 2),
         'woth':     (4.0, 2),
@@ -411,7 +415,7 @@ hint_dist_sets = {
         'minigame': (0.0, 1),
         'ow':       (2.0, 1),
         'dungeon':  (3.0, 1),
-        'random':   (0.0, 0),
+        'random':   (0.0, 1),
         'junk':     (0.0, 0),
     },
 }
@@ -492,6 +496,8 @@ def buildGossipHints(spoiler, world):
         if hint == None:
             index = hint_types.index(hint_type)
             hint_prob[index] = 0
+            if world.hint_dist == "tournament":
+                raise Exception('Not enough valid %s hints for tournament distribution' % hint_type)
         else:
             gossip_text, location = hint
             place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, hint_dist[hint_type][1], location)
