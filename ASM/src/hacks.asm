@@ -1100,3 +1100,62 @@ skip_GS_BGS_text:
 .orga 0xE24E7C
     jal guard_catch
     nop
+
+;==================================================================================================
+; Never override Heart Colors
+;==================================================================================================
+
+; Replaces:
+;   SH A2, 0x020E (V0)
+;   SH T9, 0x0212 (V0)
+;   SH A0, 0x0216 (V0)
+.org 0xADA8A8
+    nop
+    nop
+    nop
+
+; Replaces:
+;   SH T5, 0x0202 (V0)
+.org 0xADA97C
+    nop
+
+.org 0xADA9A8
+    nop
+
+.org 0xADA9BC
+    nop
+
+
+.org 0xADAA64
+    nop
+
+.org 0xADAA74
+    nop
+    nop
+
+
+.org 0xADABA8
+    nop
+
+.org 0xADABCC
+    nop
+
+.org 0xADABE4
+    nop
+
+;==================================================================================================
+; Magic Meter Colors
+;==================================================================================================
+;
+; Replaces: sh	r0, 0x0794 (t6)
+;           lw  t7, 0x0000 (v0)
+;           sh  r0, 0x0796 (t7)
+;           lw  t7, 0x0000 (v0)
+;           sh  r0, 0x0798 (t8)
+.org 0xB58320
+    sw      ra, 0x0000 (sp)
+    jal     magic_colors
+    nop
+    lw      ra, 0x0000 (sp)
+    nop
+    
