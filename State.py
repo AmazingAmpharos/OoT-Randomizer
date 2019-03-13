@@ -1,7 +1,10 @@
-from Region import Region
 from collections import Counter, defaultdict
 import copy
+import itertools
+
 from Item import ItemInfo
+from Playthrough import Playthrough
+from Region import Region
 
 
 class State(object):
@@ -495,55 +498,20 @@ class State(object):
                 if item.world.id == base_state.world.id: # Check world
                     new_state.collect(item)
             new_state_list.append(new_state)
-        State.collect_locations(new_state_list)
+        Playthrough(new_state_list).collect_locations()
         return new_state_list
 
-
-    # This collected all item locations available in the state list given that
+    # This collects all item locations available in the state list given that
     # the states have collected items. The purpose is that it will search for
     # all new items that become accessible with a new item set
     @staticmethod
     def collect_locations(state_list):
-        # Get all item locations in the worlds
-        item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
-
-        # will loop if there is more items opened up in the previous iteration. Always run once
-        reachable_items_locations = True
-        while reachable_items_locations:
-            # get reachable new items locations
-            reachable_items_locations = [location for location in item_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
-            for location in reachable_items_locations:
-                # Mark the location collected in the state world it exists in
-                state_list[location.world.id].collected_locations[location.name] = True
-                # Collect the item for the state world it is for
-                state_list[location.item.world.id].collect(location.item)
+        Playthrough(state_list).collect_locations()
 
 
-    # This returns True is every state is beatable. It's important to ensure
-    # all states beatable since items required in one world can be in another.
     @staticmethod
     def can_beat_game(state_list, scan_for_items=True):
-        if scan_for_items:
-            # Check if already beaten
-            game_beaten = True
-            for state in state_list:
-                if not state.has('Triforce'):
-                    game_beaten = False
-                    break
-            if game_beaten:
-                return True
-
-            # collect all available items
-            new_state_list = [state.copy() for state in state_list]
-            State.collect_locations(new_state_list)
-        else:
-            new_state_list = state_list
-
-        # if the every state got the Triforce, then return True
-        for state in new_state_list:
-            if not state.has('Triforce'):
-                return False
-        return True
+        return Playthrough(state_list).can_beat_game(scan_for_items)
 
 
     @staticmethod
@@ -552,38 +520,40 @@ class State(object):
         state_list = [world.state for world in worlds]
 
         # get list of all of the progressive items that can appear in hints
+        # all_locations: all progressive items. have to collect from these
+        # item_locations: only the ones that should appear as "required"/WotH
         all_locations = [location for world in worlds for location in world.get_filled_locations()]
-        item_locations = [location for location in all_locations if location.item.majoritem and not location.locked]
+        # Set to test inclusion against
+        item_locations = {location for location in all_locations if location.item.majoritem and not location.locked}
 
         # if the playthrough was generated, filter the list of locations to the
         # locations in the playthrough. The required locations is a subset of these
         # locations. Can't use the locations directly since they are location to the
         # copied spoiler world, so must try to find the matching locations by name
         if spoiler.playthrough:
-            spoiler_locations = defaultdict(lambda: [])
-            for location in [location for _,sphere in spoiler.playthrough.items() for location in sphere]:
+            spoiler_locations = defaultdict(list)
+            for location in itertools.chain.from_iterable(spoiler.playthrough.values()):
                 spoiler_locations[location.name].append(location.world.id)
-            item_locations = list(filter(lambda location: location.world.id in spoiler_locations[location.name], item_locations))
+            item_locations = set(filter(lambda location: location.world.id in spoiler_locations[location.name], item_locations))
 
         required_locations = []
-        reachable_items_locations = True
-        while (item_locations and reachable_items_locations):
-            reachable_items_locations = [location for location in all_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
-            for location in reachable_items_locations:
-                # Try to remove items one at a time and see if the game is still beatable
-                if location in item_locations:
-                    old_item = location.item
-                    location.item = None
-                    if not State.can_beat_game(state_list):
-                        required_locations.append(location)
-                    location.item = old_item
-                    item_locations.remove(location)
-                state_list[location.world.id].collected_locations[location.name] = True
-                state_list[location.item.world.id].collect(location.item)
+
+        playthrough = Playthrough(state_list)
+        for location in playthrough.iter_reachable_locations(all_locations):
+            # Try to remove items one at a time and see if the game is still beatable
+            if location in item_locations:
+                old_item = location.item
+                location.item = None
+                # copies state! This is very important as we're in the middle of a playthrough
+                # already, but beneficially, has playthrough it can start from
+                if not playthrough.can_beat_game():
+                    required_locations.append(location)
+                location.item = old_item
+            state_list[location.world.id].collected_locations[location.name] = True
+            state_list[location.item.world.id].collect(location.item)
 
         # Filter the required location to only include location in the world
         required_locations_dict = {}
         for world in worlds:
             required_locations_dict[world.id] = list(filter(lambda location: location.world.id == world.id, required_locations))
         spoiler.required_locations = required_locations_dict
-
