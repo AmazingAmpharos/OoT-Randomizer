@@ -15,7 +15,7 @@ import copy
 from World import World
 from State import State
 from Spoiler import Spoiler
-from Rom import LocalRom
+from Rom import Rom
 from Patches import patch_rom
 from Cosmetics import patch_cosmetics
 from DungeonList import create_dungeons
@@ -61,7 +61,7 @@ def main(settings, window=dummy_window()):
 
     if settings.compress_rom != 'None':
         window.update_status('Loading ROM')
-        rom = LocalRom(settings)
+        rom = Rom(settings.rom)
 
     if not settings.world_count:
         settings.world_count = 1
@@ -295,7 +295,7 @@ def from_patch_file(settings, window=dummy_window()):
     if settings.compress_rom == 'None' or settings.compress_rom == 'Patch':
         raise Exception('Output Type must be a ROM when patching from a patch file.')
     window.update_status('Loading ROM')
-    rom = LocalRom(settings)
+    rom = Rom(settings.rom)
 
     logger.info('Patching ROM.')
 
@@ -389,7 +389,7 @@ def cosmetic_patch(settings, window=dummy_window()):
         raise Exception('Cosmetic Only must have a patch file supplied.')
 
     window.update_status('Loading ROM')
-    rom = LocalRom(settings)
+    rom = Rom(settings.rom)
 
     logger.info('Patching ROM.')
 

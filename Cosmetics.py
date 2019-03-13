@@ -412,7 +412,7 @@ def patch_sfx(rom, settings, log, symbols):
     for selection, hook in sfx_config:
         if selection == 'default':
             for loc in hook.value.locations:
-                sound_id = int.from_bytes((rom.original[loc:loc+2]), byteorder='big', signed=False)
+                sound_id = rom.original.read_int16(loc)
                 rom.write_int16(loc, sound_id)
         else:
             if selection == 'random-choice':
@@ -623,14 +623,14 @@ def disable_music(rom):
 def restore_music(rom):
     # Restore all music from original
     for bgm in bgm_sequence_ids:
-        bgm_sequence = rom.original[0xB89AE0 + (bgm[1] * 0x10): 0xB89AE0 + (bgm[1] * 0x10) + 0x10]
+        bgm_sequence = rom.original.read_bytes(0xB89AE0 + (bgm[1] * 0x10), 0x10)
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
-        bgm_instrument = rom.original[0xB89910 + 0xDD + (bgm[1] * 2): 0xB89910 + 0xDD + (bgm[1] * 2) + 0x02]
-        rom.write_bytes(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
+        bgm_instrument = rom.original.read_int16(0xB89910 + 0xDD + (bgm[1] * 2))
+        rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
 
     # restore file select instrument
-    bgm_instrument = rom.original[0xB89910 + 0xDD + (0x57 * 2): 0xB89910 + 0xDD + (0x57 * 2) + 0x02]
-    rom.write_bytes(0xB89910 + 0xDD + (0x57 * 2), bgm_instrument)
+    bgm_instrument = rom.original.read_int16(0xB89910 + 0xDD + (0x57 * 2))
+    rom.write_int16(0xB89910 + 0xDD + (0x57 * 2), bgm_instrument)
 
 
 class CosmeticsLog(object):

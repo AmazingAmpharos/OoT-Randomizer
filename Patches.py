@@ -4,7 +4,7 @@ import itertools
 import re
 
 from World import World
-from Rom import LocalRom
+from Rom import Rom
 from Spoiler import Spoiler
 from LocationList import business_scrubs
 from Hints import writeGossipStoneHints, buildBossRewardHints, \
@@ -19,7 +19,7 @@ from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 from SaveContext import SaveContext
 
 
-def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
+def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     with open(data_path('generated/rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
