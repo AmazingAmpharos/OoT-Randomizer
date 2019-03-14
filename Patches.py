@@ -748,6 +748,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 write_entrance(entrance["return"], dungeon["blue"], 2)
 
     if world.shuffle_interior_entrances:
+        # Disable trade quest timers
+        rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
+
         for world_entrance in world.get_shuffled_entrances(type='Interior'):
             entrance = world_entrance.addresses
             interior = world_entrance.connected_region.addresses

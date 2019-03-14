@@ -1187,3 +1187,16 @@ skip_GS_BGS_text:
 
 .orga 0x26C10E3
     .byte 0xFF ; Set generic grotto text ID to load from grotto ID
+
+; ==================================================================================================
+; Disable timers 
+; ==================================================================================================
+; Replaces: lui     at, 0x800F
+;           sw      r0, 0x753C(at)
+.orga 0xAE986C ; in memory 8007390C
+    j   disable_trade_timers
+    lui at, 0x800F
+
+.orga 0xE7C398
+    jal disable_collapse_timer
+    nop
