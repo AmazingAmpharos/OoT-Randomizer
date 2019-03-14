@@ -647,6 +647,10 @@ setting_infos = [
         gui_tooltip    = '''\
             The switch to drain Lake Hylia after defeating morpha is
             enabled for child (in addition to adult).
+
+            This option gives another dungeon entrance available to
+            child for Entrance Randomizer and adds more items
+            potentially accessible from completing Water Temple.
         ''',
         shared         = True,
         gui_params     = {
