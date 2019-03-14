@@ -429,6 +429,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         symbol = rom.sym('OCARINAS_SHUFFLED')
         rom.write_byte(symbol,0x01)
 
+    if world.child_lake_hylia_control:
+        symbol = rom.sym('CFG_CHILD_CONTROL_LAKE')
+        rom.write_byte(symbol,0x01)
+
     # Speed Zelda Light Arrow cutscene
     rom.write_bytes(0x2531B40, [0x00, 0x28, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
     rom.write_bytes(0x2532FBC, [0x00, 0x75])

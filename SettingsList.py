@@ -149,16 +149,6 @@ logic_tricks = {
                     Use the bombflower on the stairs or near Medigoron.
                     Timing is tight, especially without backwalking
                     '''},
-    'Morpha with Gold Scale': {
-        'name'    : 'logic_morpha_with_scale',
-        'tooltip' : '''\
-                    Allows entering Water Temple and beating
-                    Morpha with Gold Scale instead of Iron Boots.
-                    Only applicable for keysanity and keysy due
-                    to the logic always seeing every chest in
-                    Water Temple that could contain the Boss Key
-                    as requiring Iron Boots.
-                    '''},
     'Fewer Tunic Requirements': {
         'name'    : 'logic_fewer_tunic_requirements',
         'tooltip' : '''\
@@ -644,6 +634,19 @@ setting_infos = [
         gui_tooltip    = '''\
             King Zora starts out as moved. This also removes
             Ruto's Letter from the item pool.
+        ''',
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
+    Checkbutton(
+        name           = 'child_lake_hylia_control',
+        gui_text       = 'Child May Drain Lake Hylia',
+        gui_group      = 'open',
+        gui_tooltip    = '''\
+            The switch to drain Lake Hylia after defeating morpha is
+            enabled for child (in addition to adult).
         ''',
         shared         = True,
         gui_params     = {

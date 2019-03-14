@@ -212,7 +212,9 @@
         "region_name": "Lake Hylia",
         "locations": {
             "Pierre": "has_ocarina and as_both_here and not free_scarecrow",
-            "Underwater Bottle": "is_child and can_dive",
+            "Underwater Bottle": "
+                is_child and
+                (can_dive or (as_adult(can_reach(Morpha, Location)) and child_lake_hylia_control))",
             "Lake Hylia Sun": "
                 is_adult and 
                 (can_use(Distant_Scarecrow) or can_reach(Morpha, Location)) and can_use(Bow)",
@@ -229,13 +231,16 @@
         },
         "exits": {
             "Hyrule Field": "True",
-            "Zoras Domain": "is_child and can_dive",
+            "Zoras Domain": "
+                is_child and
+                (can_dive or (as_adult(can_reach(Morpha, Location)) and child_lake_hylia_control))",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
                 is_child or can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location)",
             "Water Temple Lobby": "
-                (Iron_Boots or (logic_morpha_with_scale and (Progressive_Scale, 2) and not shuffle_dungeon_entrances)) and 
-                can_use(Hookshot) and (logic_fewer_tunic_requirements or can_use(Zora_Tunic))",
+                as_adult_here(can_use(Hookshot)) and
+                ((as_adult(can_reach(Morpha, Location)) and child_lake_hylia_control) or is_adult) and
+                ((Progressive_Scale, 2) or can_use(Iron_Boots))",
             "Lake Hylia Grotto": "can_stun_deku"
         }
     },
