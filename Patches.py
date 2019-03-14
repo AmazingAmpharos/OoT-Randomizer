@@ -661,9 +661,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
 
     entrance_updates = []
 
-    def write_entrance(target_index, data_index):
+    def write_entrance(target_index, data_index, length=4):
         ti = target_index * 4
-        rom.write_bytes(0xB6FBF0 + data_index * 4, et_original[ti:ti+16])
+        rom.write_bytes(0xB6FBF0 + data_index * 4, et_original[ti:ti+(4*length)])
 
     def write_scene_exit(target_index, data_index, scene_start, scene_data):
         start_count = 0
@@ -738,8 +738,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
                 # catch all the hardcode with entrance table rewrite. This covers the
                 # Forest temple and Water temple blue warp revisits. Deku sprout remains
                 # vanilla as it never took you to the exit and the lake fill is handled
-                # above by removing the cutscene completely.
-                write_entrance(blue_out_data, dungeon['blue'])
+                # above by removing the cutscene completely. Child has problems with Adult
+                # blue warps, so always use the return entrance if a child.
+                write_entrance(blue_out_data + 2, dungeon["blue"] + 2, 2)
+                write_entrance(entrance["return"], dungeon["blue"], 2)
 
     for entrance, target in entrance_updates:
         rom.write_int16(entrance, target)
