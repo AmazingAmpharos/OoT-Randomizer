@@ -1200,3 +1200,9 @@ skip_GS_BGS_text:
 .orga 0xE7C398
     jal disable_collapse_timer
     nop
+
+; ==================================================================================================
+; Remove Shooting gallery actor when entering the room with the wrong age
+; ==================================================================================================
+.orga 0x00D357D4
+    jal shooting_gallery_init ; addiu   t6, zero, 0x0001
