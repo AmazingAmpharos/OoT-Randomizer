@@ -29,15 +29,19 @@
     {
         "region_name": "Outside Deku Tree",
         "locations": {
-            "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
+            #The Babas despawn for Adult on forest temple completion. For vanilla forest temple
+            #placement this is not an issue as Adult can go back to forest for the Baba's there.
+            #Entrance rando cannot rely on this for the case forest completion was done on non
+            #repeatable access.
+            "Deku Baba Sticks": "(is_adult and not shuffle_dungeon_entrances) or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
-                is_adult or has_slingshot or has_sticks or 
+                (is_adult and not shuffle_dungeon_entrances) or has_slingshot or has_sticks or 
                 has_explosives or Kokiri_Sword or can_use(Dins_Fire)",
             "Deku Tree Gossip Stone (Left)": "True",
             "Deku Tree Gossip Stone (Right)": "True"
         },
         "exits": {
-            "Deku Tree Lobby": "is_child",
+            "Deku Tree Lobby": "is_child or shuffle_dungeon_entrances",
             "Kokiri Forest": "True"
         }
     },
@@ -183,8 +187,7 @@
             "Ocarina of Time": "
                 is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Song from Ocarina of Time": "
-                is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
-            "Generic Grotto Gossip Stone": "True"
+                is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint"
         },
         "exits": {
             "Lost Woods Bridge": "True",
@@ -209,7 +212,9 @@
         "region_name": "Lake Hylia",
         "locations": {
             "Pierre": "has_ocarina and as_both_here and not free_scarecrow",
-            "Underwater Bottle": "is_child and can_dive",
+            "Underwater Bottle": "
+                is_child and
+                (can_dive or (as_adult(can_reach(Morpha, Location)) and child_lake_hylia_control))",
             "Lake Hylia Sun": "
                 is_adult and 
                 (can_use(Distant_Scarecrow) or can_reach(Morpha, Location)) and can_use(Bow)",
@@ -226,13 +231,16 @@
         },
         "exits": {
             "Hyrule Field": "True",
-            "Zoras Domain": "is_child and can_dive",
+            "Zoras Domain": "
+                is_child and
+                (can_dive or (as_adult(can_reach(Morpha, Location)) and child_lake_hylia_control))",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
                 is_child or can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location)",
             "Water Temple Lobby": "
-                (Iron_Boots or (logic_morpha_with_scale and (Progressive_Scale, 2))) and 
-                can_use(Hookshot) and (logic_fewer_tunic_requirements or can_use(Zora_Tunic))",
+                as_adult_here(can_use(Hookshot)) and
+                ((as_adult(can_reach(Morpha, Location)) and child_lake_hylia_control) or is_adult) and
+                ((Progressive_Scale, 2) or can_use(Iron_Boots))",
             "Lake Hylia Grotto": "can_stun_deku"
         }
     },
@@ -563,7 +571,7 @@
             "Windmill": "True",
             "Kakariko Bazaar": "is_adult",
             "Kakariko Shooting Gallery": "True",
-            "Bottom of the Well": "is_child and can_play(Song_of_Storms)",
+            "Bottom of the Well": "can_play(Song_of_Storms) or (is_adult and shuffle_dungeon_entrances)",
             "Kakariko Potion Shop Front": "is_adult",
             "Kakariko Potion Shop Back": "is_adult",
             "Odd Medicine Building": "True",
@@ -871,7 +879,8 @@
             "Death Mountain Crater Lower": "
                 can_use(Hover_Boots) or can_use(Hookshot) or can_use(Magic_Bean)",
             "Fire Temple Lower": "
-                is_adult and (logic_fewer_tunic_requirements or can_use(Goron_Tunic))"
+                (is_child and shuffle_dungeon_entrances) or
+                (is_adult and (logic_fewer_tunic_requirements or can_use(Goron_Tunic)))"
         }
     },
     {
@@ -966,7 +975,7 @@
         "exits": {
             "Zoras Domain": "True",
             "Jabu Jabus Belly Beginning": "is_child and has_bottle",
-            "Ice Cavern": "is_adult",
+            "Ice Cavern Beginning": "is_adult",
             "Zoras Fountain Fairy": "has_explosives"
         }
     },
@@ -1040,13 +1049,15 @@
     {
         "region_name": "Kokiri Forest Storms Grotto",
         "locations": {
-            "Kokiri Forest Storms Grotto Chest": "True"
+            "Kokiri Forest Storms Grotto Chest": "True",
+            "Kokiri Forest Storms Grotto Gossip Stone": "True"
         }
     },
     {
         "region_name": "Lost Woods Generic Grotto",
         "locations": {
-            "Lost Woods Generic Grotto Chest": "True"
+            "Lost Woods Generic Grotto Chest": "True",
+            "Lost Woods Generic Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1090,13 +1101,15 @@
     {
         "region_name": "Remote Southern Grotto",
         "locations": {
-            "Remote Southern Grotto Chest": "True"
+            "Remote Southern Grotto Chest": "True",
+            "Remote Southern Grotto Gossip Stone": "True"
         }
     },
     {
         "region_name": "Field Near Lake Outside Fence Grotto",
         "locations": {
-            "Field Near Lake Outside Fence Grotto Chest": "True"
+            "Field Near Lake Outside Fence Grotto Chest": "True",
+            "Field Near Lake Outside Fence Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1117,7 +1130,8 @@
     {
         "region_name": "Field West Castle Town Grotto",
         "locations": {
-            "Field West Castle Town Grotto Chest": "True"
+            "Field West Castle Town Grotto Chest": "True",
+            "Field West Castle Town Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1152,7 +1166,8 @@
     {
         "region_name": "Kakariko Back Grotto",
         "locations": {
-            "Kakariko Back Grotto Chest": "True"
+            "Kakariko Back Grotto Chest": "True",
+            "Kakariko Back Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1164,7 +1179,8 @@
     {
         "region_name": "Mountain Storms Grotto",
         "locations": {
-            "Mountain Storms Grotto Chest": "True"
+            "Mountain Storms Grotto Chest": "True",
+            "Mountain Storms Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1178,7 +1194,8 @@
     {
         "region_name": "Top of Crater Grotto",
         "locations": {
-            "Top of Crater Grotto Chest": "True"
+            "Top of Crater Grotto Chest": "True",
+            "Top of Crater Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1192,7 +1209,8 @@
     {
         "region_name": "Zora River Plateau Open Grotto",
         "locations": {
-            "Zora River Plateau Open Grotto Chest": "True"
+            "Zora River Plateau Open Grotto Chest": "True",
+            "Zora River Plateau Open Grotto Gossip Stone": "True"
         }
     },
     {

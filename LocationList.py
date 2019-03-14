@@ -760,7 +760,6 @@ location_table = {
     "Death Mountain Trail Gossip Stone":               ("GossipStone", None,  None, None,                     None,                     None),
     "Desert Colossus Gossip Stone":                    ("GossipStone", None,  None, None,                     None,                     None),
     "Dodongos Cavern Gossip Stone":                    ("GossipStone", None,  None, None,                     None,                     None),
-    "Generic Grotto Gossip Stone":                     ("GossipStone", None,  None, None,                     None,                     None),
     "Gerudo Valley Gossip Stone":                      ("GossipStone", None,  None, None,                     None,                     None),
     "Goron City Maze Gossip Stone":                    ("GossipStone", None,  None, None,                     None,                     None),
     "Goron City Medigoron Gossip Stone":               ("GossipStone", None,  None, None,                     None,                     None),
@@ -788,6 +787,16 @@ location_table = {
     "Zoras Fountain Jabu Gossip Stone":                ("GossipStone", None,  None, None,                     None,                     None),
     "Zoras River Plateau Gossip Stone":                ("GossipStone", None,  None, None,                     None,                     None),
     "Zoras River Waterfall Gossip Stone":              ("GossipStone", None,  None, None,                     None,                     None),
+
+    "Field West Castle Town Grotto Gossip Stone":      ("GossipStone", None,  None, None,                     None,                     None),
+    "Remote Southern Grotto Gossip Stone":             ("GossipStone", None,  None, None,                     None,                     None),
+    "Field Near Lake Outside Fence Grotto Gossip Stone":("GossipStone",None,  None, None,                     None,                     None),
+    "Kakariko Back Grotto Gossip Stone":               ("GossipStone", None,  None, None,                     None,                     None),
+    "Zora River Plateau Open Grotto Gossip Stone":     ("GossipStone", None,  None, None,                     None,                     None),
+    "Kokiri Forest Storms Grotto Gossip Stone":        ("GossipStone", None,  None, None,                     None,                     None),
+    "Lost Woods Generic Grotto Gossip Stone":          ("GossipStone", None,  None, None,                     None,                     None),
+    "Mountain Storms Grotto Gossip Stone":             ("GossipStone", None,  None, None,                     None,                     None),
+    "Top of Crater Grotto Gossip Stone":               ("GossipStone", None,  None, None,                     None,                     None),
 }
 
 # Business Scrub Details

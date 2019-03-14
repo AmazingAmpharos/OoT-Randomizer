@@ -57,6 +57,7 @@
 .include "magic_color.asm"
 .include "debug.asm"
 .include "cow.asm"
+.include "lake_hylia.asm"
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:

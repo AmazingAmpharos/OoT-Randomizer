@@ -21,9 +21,6 @@
             "GS Well MQ Coffin Room": "
                 can_child_attack and 
                 (Small_Key_Bottom_of_the_Well, 2)"
-        },
-        "exits": {
-            "Kakariko Village": "True"
         }
     }
 ]

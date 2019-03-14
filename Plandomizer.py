@@ -24,6 +24,7 @@ per_world_keys = (
     'item_pool',
     'dungeons',
     'trials',
+    ':entrances',
     'locations',
     ':woth_locations',
     ':barren_regions',
@@ -136,6 +137,17 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
         })
 
 
+class EntranceRecord(SimpleRecord({'target': None})):
+    def __init__(self, src_dict):
+        if isinstance(src_dict, str):
+            src_dict = {'target':src_dict}
+        super().__init__(src_dict)
+
+
+    def to_json(self):
+        return self.target
+
+
 class StarterRecord(SimpleRecord({'count': 1})):
     def __init__(self, src_dict=1):
         if isinstance(src_dict, int):
@@ -179,6 +191,7 @@ class WorldDistribution(object):
             'trials': {name: TrialRecord(record) for (name, record) in src_dict.get('trials', {}).items()},
             'item_pool': {name: ItemPoolRecord(record) for (name, record) in src_dict.get('item_pool', {}).items()},
             'starting_items': {name: StarterRecord(record) for (name, record) in src_dict.get('starting_items', {}).items()},
+            'entrances': None,
             'locations': {name: [LocationRecord(rec) for rec in record] if is_pattern(name) else LocationRecord(record) for (name, record) in src_dict.get('locations', {}).items() if not is_output_only(name)},
             'woth_locations': None,
             'barren_regions': None,
@@ -207,6 +220,7 @@ class WorldDistribution(object):
             'dungeons': {name: record.to_json() for (name, record) in self.dungeons.items()},
             'trials': {name: record.to_json() for (name, record) in self.trials.items()},
             'item_pool': SortedDict({name: record.to_json() for (name, record) in self.item_pool.items()}),
+            ':entrances': None if self.entrances is None else {name: record.to_json() for (name, record) in self.entrances.items()},
             'locations': {name: [rec.to_json() for rec in record] if is_pattern(name) else record.to_json() for (name, record) in self.locations.items()},
             ':woth_locations': None if self.woth_locations is None else {name: record.to_json() for (name, record) in self.woth_locations.items()},
             ':barren_regions': self.barren_regions,
@@ -568,6 +582,7 @@ class Distribution(object):
             world_dist = self.world_dists[world.id]
             world_dist.dungeons = {dung: DungeonRecord({ 'mq': world.dungeon_mq[dung] }) for dung in world.dungeon_mq}
             world_dist.trials = {trial: TrialRecord({ 'active': not world.skipped_trials[trial] }) for trial in world.skipped_trials}
+            world_dist.entrances = {ent: EntranceRecord(target) for (ent, target) in spoiler.entrances[world.id].items()}
             world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
             world_dist.woth_locations = {loc.name: LocationRecord.from_item(loc.item) for loc in spoiler.required_locations[world.id]}
             world_dist.barren_regions = [*world.empty_areas]

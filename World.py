@@ -143,7 +143,8 @@ class World(object):
     def initialize_entrances(self):
         for region in self.regions:
             for exit in region.exits:
-                exit.connect(self.get_region(exit.connected_region))        
+                exit.connect(self.get_region(exit.connected_region))
+                exit.world = self
 
 
     def initialize_regions(self):
@@ -252,6 +253,10 @@ class World(object):
         return [loc.item for loc in self.get_filled_locations()] + self.itempool
 
 
+    def get_itempool_with_dungeon_items(self):
+        return self.get_restricted_dungeon_items() + self.get_unrestricted_dungeon_items() + self.itempool
+
+
     # get a list of items that should stay in their proper dungeon
     def get_restricted_dungeon_items(self):
         itempool = []
@@ -340,6 +345,14 @@ class World(object):
                 return True
 
         return False
+
+
+    def get_entrances(self):
+        return [entrance for region in self.regions for entrance in region.entrances]
+
+
+    def get_shuffled_entrances(self, type=None):
+        return [entrance for entrance in self.get_entrances() if entrance.shuffled and (type == None or entrance.type == type)]
 
 
     def has_beaten_game(self, state):
