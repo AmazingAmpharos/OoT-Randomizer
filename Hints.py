@@ -215,6 +215,17 @@ def colorText(gossip_text):
     return text
 
 
+def get_hint_area(location):
+    if location.parent_region.dungeon:
+        return location.parent_region.dungeon.hint
+    elif location.parent_region.hint:
+        return location.parent_region.hint
+    elif location.parent_region.entrances[0].parent_region.hint:
+        return location.parent_region.entrances[0].parent_region.hint
+    else:
+        raise RuntimeError('No hint area could be found for this location: %s [World %d]' % (location, location.world.id))
+
+
 def get_woth_hint(spoiler, world, checked):
     locations = spoiler.required_locations[world.id]
     locations = list(filter(lambda location: location.name not in checked, locations))
@@ -227,7 +238,7 @@ def get_woth_hint(spoiler, world, checked):
     if location.parent_region.dungeon:
         location_text = getHint(location.parent_region.dungeon.name, world.clearer_hints).text
     else:
-        location_text = location.hint
+        location_text = get_hint_area(location)
 
     return (GossipText('#%s# is on the way of the hero.' % location_text, ['Light Blue']), location)
 
@@ -268,7 +279,7 @@ def get_good_item_hint(spoiler, world, checked):
         location_text = getHint(location.parent_region.dungeon.name, world.clearer_hints).text
         return (GossipText('#%s# hoards #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
     else:
-        location_text = location.hint
+        location_text = get_hint_area(location)
         return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
 
 
@@ -292,7 +303,7 @@ def get_random_location_hint(spoiler, world, checked):
         location_text = getHint(dungeon.name, world.clearer_hints).text
         return (GossipText('#%s# hoards #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
     else:
-        location_text = location.hint
+        location_text = get_hint_area(location)
         return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
 
 
@@ -475,7 +486,7 @@ def buildGossipHints(spoiler, world):
     elif world.trials < 6 and world.trials > 3:
         for trial,skipped in world.skipped_trials.items():
             if skipped:
-                add_hint(spoiler, world, stoneIDs,GossipText("the #%s Trial#  was dispelled by Sheik." % trial, ['Yellow']), hint_dist['trial'][1], force_reachable=True)
+                add_hint(spoiler, world, stoneIDs,GossipText("the #%s Trial# was dispelled by Sheik." % trial, ['Yellow']), hint_dist['trial'][1], force_reachable=True)
     elif world.trials <= 3 and world.trials > 0:
         for trial,skipped in world.skipped_trials.items():
             if not skipped:
@@ -578,7 +589,7 @@ def buildGanonText(world, messages):
             text += "\x05\x42your pocket\x05\x40"
         else:
             location = world.light_arrow_location
-            location_hint = location.hint.replace('Ganon\'s Castle', 'my castle')
+            location_hint = get_hint_area(location).replace('Ganon\'s Castle', 'my castle')
             if world.id != location.world.id:
                 text += "\x05\x42Player %d's\x05\x40 %s" % (location.world.id +1, get_raw_text(location_hint))
             else:

@@ -118,12 +118,14 @@
     },
     {
         "region_name": "Mirror Shield Hand",
+        "hint": "Desert Colossus",
         "locations": {
             "Mirror Shield Chest": "True"
         }
     },
     {
         "region_name": "Silver Gauntlets Hand",
+        "hint": "Desert Colossus",
         "locations": {
             "Silver Gauntlets Chest": "True"
         }

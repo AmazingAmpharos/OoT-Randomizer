@@ -1,6 +1,7 @@
 [
     {
         "region_name": "Kokiri Forest",
+        "hint": "Kokiri Forest",
         "locations": {
             "Kokiri Sword Chest": "is_child",
             "GS Kokiri Know It All House": "
@@ -28,6 +29,7 @@
     },
     {
         "region_name": "Outside Deku Tree",
+        "hint": "Kokiri Forest",
         "locations": {
             #The Babas despawn for Adult on forest temple completion. For vanilla forest temple
             #placement this is not an issue as Adult can go back to forest for the Baba's there.
@@ -47,6 +49,7 @@
     },
     {
         "region_name": "Links House",
+        "hint": "Kokiri Forest",
         "locations": {
             "Links Pocket": "True",
             "Links House Cow": "is_adult and Epona"
@@ -96,6 +99,7 @@
     },
     {
         "region_name": "Lost Woods",
+        "hint": "the Lost Woods",
         "locations": {
             "Skull Kid": "is_child and can_play(Sarias_Song)",
             "Ocarina Memory Game": "is_child and has_ocarina",
@@ -114,6 +118,7 @@
     },
     {
         "region_name": "Lost Woods Beyond Mido",
+        "hint": "the Lost Woods",
         "locations": {
             "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
             "LW Deku Scrub Deku Sticks": "is_child and can_stun_deku",
@@ -131,6 +136,7 @@
     },
     {
         "region_name": "Sacred Forest Meadow Entryway",
+        "hint": "Sacred Forest Meadow",
         "exits": {
             "Lost Woods Beyond Mido": "True",
             "Sacred Forest Meadow": "
@@ -141,6 +147,7 @@
     },
     {
         "region_name": "Sacred Forest Meadow",
+        "hint": "Sacred Forest Meadow",
         "locations": {
             "Song from Saria": "is_child and Zeldas_Letter",
             "Sheik Forest Song": "is_adult",
@@ -158,6 +165,7 @@
     },
     {
         "region_name": "Lost Woods Bridge",
+        "hint": "the Lost Woods",
         "locations": {
             "Gift from Saria": "True"
         },
@@ -168,6 +176,7 @@
     },
     {
         "region_name": "Hyrule Field",
+        "hint": "Hyrule Field",
         "locations": {
             "Ocarina of Time": "
                 is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
@@ -195,6 +204,7 @@
     },
     {
         "region_name": "Lake Hylia",
+        "hint": "Lake Hylia",
         "locations": {
             "Pierre": "has_ocarina and as_both_here and not free_scarecrow",
             "Underwater Bottle": "
@@ -247,6 +257,7 @@
     },
     {
         "region_name": "Gerudo Valley",
+        "hint": "Gerudo Valley",
         "locations": {
             "Gerudo Valley Waterfall Freestanding PoH": "True",
             "Gerudo Valley Crate Freestanding PoH": "is_child or can_use(Longshot)",
@@ -265,6 +276,7 @@
     },
     {
         "region_name": "Gerudo Valley Far Side",
+        "hint": "Gerudo Valley",
         "locations": {
             "Gerudo Valley Hammer Rocks Chest": "can_use(Hammer)",
             "GS Gerudo Valley Behind Tent": "can_use(Hookshot) and nighttime",
@@ -281,6 +293,7 @@
     },
     {
         "region_name": "Gerudo Fortress",
+        "hint": "Gerudo's Fortress",
         "locations": {
             "Gerudo Fortress Rooftop Chest": "
                 can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot)",
@@ -311,6 +324,7 @@
     },
     {
         "region_name": "Haunted Wasteland",
+        "hint": "Haunted Wasteland",
         "locations": {
             "Haunted Wasteland Structure Chest": "has_fire_source",
             "Haunted Wasteland Bombchu Salesman": "Progressive_Wallet",
@@ -322,6 +336,7 @@
     },
     {
         "region_name": "Desert Colossus",
+        "hint": "Desert Colossus",
         "locations": {
             "Colossus Freestanding PoH": "can_use(Magic_Bean)",
             "Sheik at Colossus": "True",
@@ -346,6 +361,7 @@
     },
     {
         "region_name": "Castle Town",
+        "hint": "the Market",
         "locations": {
             "Temple of Time Gossip Stone (Left)": "True",
             "Temple of Time Gossip Stone (Left-Center)": "True",
@@ -371,6 +387,7 @@
     },
     {
         "region_name": "Temple of Time",
+        "hint": "Temple of Time",
         "locations": {
             "Zelda": "Shadow_Medallion and Spirit_Medallion and is_adult"
         },
@@ -381,6 +398,7 @@
     },
     {
         "region_name": "Beyond Door of Time",
+        "hint": "Temple of Time",
         "locations": {
             "Master Sword Pedestal": "True",
             "Sheik at Temple": "Forest_Medallion and is_adult"
@@ -391,6 +409,7 @@
     },
     {
         "region_name": "Hyrule Castle Grounds",
+        "hint": "Hyrule Castle",
         "locations": {
             "Malon Egg": "True",
             "GS Hyrule Castle Tree": "can_child_attack",
@@ -406,6 +425,7 @@
     },
     {
         "region_name": "Hyrule Castle Garden",
+        "hint": "Hyrule Castle",
         "locations": {
             "Zeldas Letter": "True",
             "Impa at Castle": "True"
@@ -422,6 +442,7 @@
     },
     {
         "region_name": "Ganons Castle Grounds",
+        "hint": "outside Ganon's Castle",
         "locations": {
             "GS Outside Ganon's Castle": "True"
         },
@@ -537,6 +558,7 @@
     },
     {
         "region_name": "Kakariko Village",
+        "hint": "Kakariko Village",
         "locations": {
             "Man on Roof": "logic_man_on_roof or can_use(Hookshot)",
             "Anju as Adult": "is_adult",
@@ -602,6 +624,7 @@
     },
     {
         "region_name": "Windmill",
+        "hint": "Kakariko Village",
         "locations": {
             "Windmill Freestanding PoH": "
                 (is_adult and (logic_windmill_poh or can_play(Song_of_Time))) or 
@@ -630,6 +653,7 @@
     },
     {
         "region_name": "Kakariko Potion Shop Front",
+        "hint": "Kakariko Village",
         "locations": {
             "Kakariko Potion Shop Item 1": "is_adult",
             "Kakariko Potion Shop Item 2": "is_adult",
@@ -649,6 +673,7 @@
     },
     {
         "region_name": "Graveyard",
+        "hint": "the Graveyard",
         "locations": {
             "Graveyard Freestanding PoH": "can_use(Magic_Bean) or can_use(Longshot)",
             "Gravedigging Tour": "is_child",
@@ -688,6 +713,7 @@
     },
     {
         "region_name": "Dampes Grave",
+        "hint": "the Graveyard",
         "locations": {
             "Dampes Grave Nut Pot": "True",
             "Hookshot Chest": "True",
@@ -709,6 +735,7 @@
     },
     {
         "region_name": "Death Mountain",
+        "hint": "Death Mountain Trail",
         "locations": {
             "Death Mountain Bombable Chest": "
                 can_blast_or_smash or 
@@ -725,12 +752,25 @@
         "exits": {
             "Kakariko Village": "True",
             "Goron City": "True",
-            "Death Mountain Crater Upper": "as_either_here(can_blast_or_smash)",
-            "Mountain Summit Fairy": "as_either_here(can_blast_or_smash)",
+            "Death Mountain Summit": "as_either_here(can_blast_or_smash)",
             "Dodongos Cavern Entryway": "
                 has_explosives or Progressive_Strength_Upgrade or is_adult",
             "Mountain Bombable Grotto": "as_either_here(can_blast_or_smash)",
             "Mountain Storms Grotto": "can_play(Song_of_Storms)"
+        }
+    },
+    {
+        "region_name": "Death Mountain Summit",
+        "hint": "Death Mountain Trail",
+        "locations": {
+            "Biggoron": "
+                is_adult and can_finish_adult_trades and guarantee_hint",
+            "Death Mountain Trail Gossip Stone": "True"
+        },
+        "exits": {
+            "Death Mountain": "True",
+            "Death Mountain Crater Upper": "True",
+            "Mountain Summit Fairy": "as_either_here(can_blast_or_smash)"
         }
     },
     {
@@ -742,6 +782,7 @@
     },
     {
         "region_name": "Goron City",
+        "hint": "Goron City",
         "locations": {
             "Goron City Leftmost Maze Chest": "
                 can_use(Hammer) or can_use(Silver_Gauntlets)",
@@ -800,6 +841,7 @@
     },
     {
         "region_name": "Darunias Chamber",
+        "hint": "Goron City",
         "locations": {
             "Darunias Joy": "is_child and can_play(Sarias_Song)"
         },
@@ -823,19 +865,17 @@
     },
     {
         "region_name": "Death Mountain Crater Upper",
+        "hint": "Death Mountain Crater",
         "locations": {
             "DM Crater Wall Freestanding PoH": "True",
-            "Biggoron": "
-                is_adult and can_finish_adult_trades and guarantee_hint",
             "GS Death Mountain Crater Crate": "
                 is_child and can_child_attack and as_either_here(can_blast_or_smash)",
             "DMC Deku Scrub Bombs": "
                 is_child and can_stun_deku and as_either_here(can_blast_or_smash)",
-            "Death Mountain Crater Gossip Stone": "has_explosives",
-            "Death Mountain Trail Gossip Stone": "True"
+            "Death Mountain Crater Gossip Stone": "has_explosives"
         },
         "exits": {
-            "Death Mountain": "True",
+            "Death Mountain Summit": "True",
             "Death Mountain Crater Lower": "can_use(Hover_Boots)",
             "Death Mountain Crater Central": "can_use(Goron_Tunic) and can_use(Distant_Scarecrow) and 
                 ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
@@ -845,6 +885,7 @@
     },
     {
         "region_name": "Death Mountain Crater Lower",
+        "hint": "Death Mountain Crater",
         "exits": {
             "Darunias Chamber": "True",
             "Crater Fairy": "can_use(Hammer)",
@@ -856,6 +897,7 @@
     },
     {
         "region_name": "Death Mountain Crater Central",
+        "hint": "Death Mountain Crater",
         "locations": {
             "DM Crater Volcano Freestanding PoH": "
                 can_use(Magic_Bean) or 
@@ -895,6 +937,7 @@
     },
     {
         "region_name": "Zora River",
+        "hint": "Zora's River",
         "locations": {
             "Magic Bean Salesman": "is_child",
             "Frog Ocarina Game": "
@@ -926,6 +969,7 @@
     },
     {
         "region_name": "Zoras Domain",
+        "hint": "Zora's Domain",
         "locations": {
             "Diving Minigame": "is_child",
             "Zoras Domain Torch Run": "can_use(Sticks)",
@@ -949,6 +993,7 @@
     },
     {
         "region_name": "Zoras Fountain",
+        "hint": "Zora's Fountain",
         "locations": {
             "Zoras Fountain Iceberg Freestanding PoH": "is_adult",
             "Zoras Fountain Bottom Freestanding PoH": "
@@ -989,6 +1034,7 @@
     },
     {
         "region_name": "Lon Lon Ranch",
+        "hint": "Lon Lon Ranch",
         "locations": {
             "Epona": "can_play(Eponas_Song) and is_adult",
             "Song from Malon": "is_child and Zeldas_Letter and has_ocarina",

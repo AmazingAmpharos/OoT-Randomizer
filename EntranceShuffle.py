@@ -56,7 +56,7 @@ entrance_shuffle_table = {
     'Hyrule Castle Grounds -> Hyrule Castle Fairy':             ('Interior', { 'forward': 0x0578, 'return': 0x0340, 'exit_address': 0xBEFD80 }),
     'Ganons Castle Grounds -> Ganons Castle Fairy':             ('Interior', { 'forward': 0x04C2, 'return': 0x0340, 'exit_address': 0xBEFD6C }),
     'Death Mountain Crater Lower -> Crater Fairy':              ('Interior', { 'forward': 0x04BE, 'return': 0x0482, 'exit_address': 0xBEFD6A }),
-    'Death Mountain -> Mountain Summit Fairy':                  ('Interior', { 'forward': 0x0315, 'return': 0x045B, 'exit_address': 0xBEFD68 }),
+    'Death Mountain Summit -> Mountain Summit Fairy':           ('Interior', { 'forward': 0x0315, 'return': 0x045B, 'exit_address': 0xBEFD68 }),
     'Zoras Fountain -> Zoras Fountain Fairy':                   ('Interior', { 'forward': 0x0371, 'return': 0x0394, 'exit_address': 0xBEFD7E }),
 
     'Desert Colossus -> Desert Colossus Grotto':                ('Grotto',   { 'scene': 0x5C, 'grotto_var': 0x00FD }),
