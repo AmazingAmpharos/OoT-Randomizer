@@ -18,7 +18,7 @@ Hit_Gossip_Stone:
     ; Check if control over lake is enabled
     ; If morpha is alive, do nothing
     li      v1, SAVE_CONTEXT
-    lhu     t5, 0x0EE0(v1)
+    lhu     t5, 0x0EDC(v1)
     andi    t5, t5, 0x0400     ;t5 = morpha flag
     beqz    t5, @@return
     nop
@@ -60,7 +60,7 @@ Check_Fill_Lake:
     beqz    t5, @@vanilla_check
     nop
 
-    lhu     t5, 0x0EE0(v1)
+    lhu     t5, 0x0EDC(v1)
     andi    t5, t5, 0x0400     ;t5 = morpha flag
     bnez    t5, @@return
     li      t6, 0              ; return false if morph is dead
@@ -134,8 +134,9 @@ Fill_Lake:
 
     ; if morpha is not dead, then return
     li      v0, SAVE_CONTEXT
-    lhu     t3, 0x0EE0(v0)
+    lhu     t3, 0x0EDC(v0)
     andi    t4, t3, 0x0400     ;t4 = morpha flag
+    lhu     t3, 0x0EE0(v0)
     beqz    t4, @@return
     nop
 
