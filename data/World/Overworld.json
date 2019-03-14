@@ -124,7 +124,7 @@
             "Goron City Woods Warp": "True",
             "Zora River": "can_dive and can_leave_forest",
             "Lost Woods Beyond Mido": "is_child or logic_adult_meadow_access or can_play(Sarias_Song)",
-            "Lost Woods Generic Grotto": "can_blast_or_smash"
+            "Lost Woods Generic Grotto": "as_either_here(can_blast_or_smash)"
         }
     },
     {
@@ -141,7 +141,7 @@
             "Lost Woods": "True",
             "Sacred Forest Meadow Entryway": "True",
             "Deku Theater": "True",
-            "Lost Woods Sales Grotto": "can_blast_or_smash"
+            "Lost Woods Sales Grotto": "as_either_here(can_blast_or_smash)"
         }
     },
     {
@@ -168,7 +168,7 @@
             "Sacred Forest Meadow Entryway": "True",
             "Forest Temple Lobby": "can_use(Hookshot)",
             "Meadow Fairy Grotto": "True",
-            "Meadow Storms Grotto": "can_play(Song_of_Storms) and can_stun_deku"
+            "Meadow Storms Grotto": "can_play(Song_of_Storms)"
         }
     },
     {
@@ -197,13 +197,13 @@
             "Kakariko Village": "True",
             "Zora River Front": "True",
             "Lon Lon Ranch": "True",
-            "Remote Southern Grotto": "can_blast_or_smash",
+            "Remote Southern Grotto": "as_either_here(can_blast_or_smash)",
             "Field Near Lake Outside Fence Grotto": "True",
             "Field Near Lake Inside Fence Grotto": "can_blast_or_smash",
-            "Field Valley Grotto": "
-                can_use(Hammer) or (is_child and has_explosives)",
-            "Field West Castle Town Grotto": "can_blast_or_smash",
-            "Field Far West Castle Town Grotto": "can_blast_or_smash",
+            "Field Valley Grotto": "can_use(Hammer) or (is_child and has_explosives)",
+                                   # There is a hammerable boulder as adult which is not there as child
+            "Field West Castle Town Grotto": "as_either_here(can_blast_or_smash)",
+            "Field Far West Castle Town Grotto": "as_either_here(can_blast_or_smash)",
             "Field Kakariko Grotto": "can_blast_or_smash",
             "Field North Lon Lon Grotto": "can_blast_or_smash"
         }
@@ -241,7 +241,7 @@
                 as_adult_here(can_use(Hookshot)) and
                 ((as_adult(can_reach(Morpha, Location)) and child_lake_hylia_control) or is_adult) and
                 ((Progressive_Scale, 2) or can_use(Iron_Boots))",
-            "Lake Hylia Grotto": "can_stun_deku"
+            "Lake Hylia Grotto": "True"
         }
     },
     {
@@ -273,6 +273,7 @@
         "exits": {
             "Hyrule Field": "True",
             "Lake Hylia": "True",
+            "Gerudo Valley Octorok Grotto": "can_use(Silver_Gauntlets)",
             "Gerudo Valley Far Side": "
                 is_adult and (Epona or can_use(Longshot) or gerudo_fortress == 'open')"
         }
@@ -286,7 +287,7 @@
         },
         "exits": {
             "Gerudo Fortress": "True",
-            "Gerudo Valley Storms Grotto": "can_play(Song_of_Storms)"
+            "Gerudo Valley Storms Grotto": "is_adult and can_play(Song_of_Storms)" # Not there as child
         }
     },
     {
@@ -315,7 +316,8 @@
             "Haunted Wasteland": "
                 Carpenter_Rescue and (logic_wasteland_crossing or can_use(Hover_Boots) or can_use(Longshot))",
             "Gerudo Training Grounds Lobby": "
-                Carpenter_Rescue and Gerudo_Membership_Card and is_adult"
+                Carpenter_Rescue and Gerudo_Membership_Card and is_adult",
+            "Gerudo Fortress Storms Grotto": "is_adult and can_play(Song_of_Storms)" # Not there as child
         }
     },
     {
@@ -575,10 +577,7 @@
             "Kakariko Potion Shop Front": "is_adult",
             "Kakariko Potion Shop Back": "is_adult",
             "Odd Medicine Building": "True",
-            "Kakariko Bombable Grotto": "
-                can_blast_or_smash and 
-                (is_adult or 
-                    (has_sticks or Kokiri_Sword or can_use(Dins_Fire)))",
+            "Kakariko Bombable Grotto": "can_blast_or_smash",
             "Kakariko Back Grotto": "True",
             "Graveyard": "True",
             "Death Mountain": "Zeldas_Letter or is_adult or open_kakariko"
@@ -741,7 +740,7 @@
             "Mountain Summit Fairy": "can_blast_or_smash",
             "Dodongos Cavern Entryway": "
                 has_explosives or Progressive_Strength_Upgrade or is_adult",
-            "Mountain Bombable Grotto": "can_blast_or_smash",
+            "Mountain Bombable Grotto": "as_either_here(can_blast_or_smash)",
             "Mountain Storms Grotto": "can_play(Song_of_Storms)"
         }
     },
@@ -852,7 +851,7 @@
             "Death Mountain Crater Central": "can_use(Goron_Tunic) and can_use(Distant_Scarecrow) and 
                 ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
                     has_bottle or can_use(Nayrus_Love))",
-            "Top of Crater Grotto": "can_blast_or_smash"
+            "Top of Crater Grotto": "as_either_here(can_blast_or_smash)"
         }
     },
     {
@@ -927,9 +926,9 @@
         "exits": {
             "Zora River Front": "True",
             "Zora River Plateau Open Grotto": "True",
-            "Zora River Plateau Bombable Grotto": "can_blast_or_smash",
+            "Zora River Plateau Bombable Grotto": "as_either_here(can_blast_or_smash)",
             "Lost Woods": "can_dive",
-            "Zora River Storms Grotto": "can_play(Song_of_Storms) and can_stun_deku",
+            "Zora River Storms Grotto": "can_play(Song_of_Storms)",
             "Zoras Domain": "
                 can_play(Zeldas_Lullaby) or
                 (can_use(Hover_Boots) and logic_zora_with_hovers) or
@@ -955,7 +954,8 @@
             "Zoras Fountain": "
                 open_fountain or 
                 (can_reach(Zoras_Domain, Region, child) and Bottle_with_Letter)",
-            "Zora Shop": "is_child or has_blue_fire"
+            "Zora Shop": "is_child or has_blue_fire",
+            "Zoras Domain Storms Grotto": "is_child and can_play(Song_of_Storms)"
         }
     },
     {
@@ -1013,7 +1013,7 @@
             "Talon House": "True",
             "Ingo Barn": "True",
             "Lon Lon Corner Tower": "True",
-            "Lon Lon Grotto": "is_child and can_stun_deku"
+            "Lon Lon Grotto": "is_child"
         }
     },
     {
@@ -1047,6 +1047,12 @@
         }
     },
     {
+        "region_name": "Gerudo Fortress Storms Grotto"
+    },
+    {
+        "region_name": "Zoras Domain Storms Grotto"
+    },
+    {
         "region_name": "Kokiri Forest Storms Grotto",
         "locations": {
             "Kokiri Forest Storms Grotto Chest": "True",
@@ -1070,8 +1076,8 @@
     {
         "region_name": "Lost Woods Sales Grotto",
         "locations": {
-            "LW Grotto Deku Scrub Arrows": "True",
-            "LW Grotto Deku Scrub Deku Nut Upgrade": "True"
+            "LW Grotto Deku Scrub Arrows": "can_stun_deku",
+            "LW Grotto Deku Scrub Deku Nut Upgrade": "can_stun_deku"
         }
     },
     {
@@ -1080,22 +1086,22 @@
     {
         "region_name": "Meadow Storms Grotto",
         "locations": {
-            "SFM Grotto Deku Scrub Red Potion": "True",
-            "SFM Grotto Deku Scrub Green Potion": "True"
+            "SFM Grotto Deku Scrub Red Potion": "can_stun_deku",
+            "SFM Grotto Deku Scrub Green Potion": "can_stun_deku"
         }
     },
     {
         "region_name": "Front of Meadow Grotto",
         "locations": {
-            "Wolfos Grotto Chest": "True"
+            "Wolfos Grotto Chest": "is_adult or can_child_attack"
         }
     },
     {
         "region_name": "Lon Lon Grotto",
         "locations": {
-            "LLR Grotto Deku Scrub Deku Nuts": "True",
-            "LLR Grotto Deku Scrub Bombs": "True",
-            "LLR Grotto Deku Scrub Arrows": "True"
+            "LLR Grotto Deku Scrub Deku Nuts": "can_stun_deku",
+            "LLR Grotto Deku Scrub Bombs": "can_stun_deku",
+            "LLR Grotto Deku Scrub Arrows": "can_stun_deku"
         }
     },
     {
@@ -1153,14 +1159,16 @@
     {
         "region_name": "Castle Storms Grotto",
         "locations": {
-            "GS Hyrule Castle Grotto": "can_use(Boomerang) and has_explosives",
-            "Castle Storms Grotto Gossip Stone": "has_explosives"
+            "GS Hyrule Castle Grotto": "can_blast_or_smash and (can_use(Boomerang) or can_use(Hookshot))",
+            "Castle Storms Grotto Gossip Stone": "can_blast_or_smash"
         }
     },
     {
         "region_name": "Kakariko Bombable Grotto",
         "locations": {
-            "Redead Grotto Chest": "True"
+            "Redead Grotto Chest": "
+                is_adult or 
+                (has_sticks or Kokiri_Sword or can_use(Dins_Fire))"
         }
     },
     {
@@ -1186,9 +1194,9 @@
     {
         "region_name": "Goron City Grotto",
         "locations": {
-            "Goron Grotto Deku Scrub Deku Nuts": "True",
-            "Goron Grotto Deku Scrub Bombs": "True",
-            "Goron Grotto Deku Scrub Arrows": "True"
+            "Goron Grotto Deku Scrub Deku Nuts": "can_stun_deku",
+            "Goron Grotto Deku Scrub Bombs": "can_stun_deku",
+            "Goron Grotto Deku Scrub Arrows": "can_stun_deku"
         }
     },
     {
@@ -1201,9 +1209,9 @@
     {
         "region_name": "DMC Hammer Grotto",
         "locations": {
-            "DMC Grotto Deku Scrub Deku Nuts": "True",
-            "DMC Grotto Deku Scrub Bombs": "True",
-            "DMC Grotto Deku Scrub Arrows": "True"
+            "DMC Grotto Deku Scrub Deku Nuts": "can_stun_deku",
+            "DMC Grotto Deku Scrub Bombs": "can_stun_deku",
+            "DMC Grotto Deku Scrub Arrows": "can_stun_deku"
         }
     },
     {
@@ -1219,30 +1227,33 @@
     {
         "region_name": "Zora River Storms Grotto",
         "locations": {
-            "ZR Grotto Deku Scrub Red Potion": "True",
-            "ZR Grotto Deku Scrub Green Potion": "True"
+            "ZR Grotto Deku Scrub Red Potion": "can_stun_deku",
+            "ZR Grotto Deku Scrub Green Potion": "can_stun_deku"
         }
     },
     {
         "region_name": "Lake Hylia Grotto",
         "locations": {
-            "LH Grotto Deku Scrub Deku Nuts": "True",
-            "LH Grotto Deku Scrub Bombs": "True",
-            "LH Grotto Deku Scrub Arrows": "True"
+            "LH Grotto Deku Scrub Deku Nuts": "can_stun_deku",
+            "LH Grotto Deku Scrub Bombs": "can_stun_deku",
+            "LH Grotto Deku Scrub Arrows": "can_stun_deku"
         }
     },
     {
         "region_name": "Desert Colossus Grotto",
         "locations": {
-            "Desert Grotto Deku Scrub Red Potion": "True",
-            "Desert Grotto Deku Scrub Green Potion": "True"
+            "Desert Grotto Deku Scrub Red Potion": "can_stun_deku",
+            "Desert Grotto Deku Scrub Green Potion": "can_stun_deku"
         }
+    },
+    {
+        "region_name": "Gerudo Valley Octorok Grotto"
     },
     {
         "region_name": "Gerudo Valley Storms Grotto",
         "locations": {
-            "Valley Grotto Deku Scrub Red Potion": "True",
-            "Valley Grotto Deku Scrub Green Potion": "True"
+            "Valley Grotto Deku Scrub Red Potion": "can_stun_deku",
+            "Valley Grotto Deku Scrub Green Potion": "can_stun_deku"
         }
     }
 ]
