@@ -362,14 +362,33 @@ class State(object):
 
 
     def can_finish_adult_trades(self):
-        zora_thawed = (self.can_play('Zeldas Lullaby') or (self.has('Hover Boots') and self.world.logic_zora_with_hovers)) and self.has_blue_fire()
-        carpenter_access = self.can_reach('Gerudo Valley Far Side')
-        return (self.has('Claim Check') or ((self.has('Progressive Strength Upgrade') or self.can_blast_or_smash() or self.has_bow() or self.world.logic_biggoron_bolero) and (((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))))
+        zora_thawed = self.can_reach('Zoras Domain', age='adult') and self.has_blue_fire()
+        
+        pocket_egg = self.has('Pocket Egg')
+        pocket_cucco = self.has('Pocket Cucco') or pocket_egg
+        cojiro = self.has('Cojiro') or (pocket_cucco and self.can_reach('Carpenter Boss House', age='adult'))
+        odd_mushroom = self.has('Odd Mushroom') or cojiro
+        odd_poutice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult')
+        poachers_saw = self.has('Poachers Saw') or odd_poutice
+        broken_sword = self.has('Broken Sword') or (poachers_saw and self.can_reach('Gerudo Valley Far Side', age='adult'))
+        prescription = self.has('Prescription') or broken_sword
+        eyeball_frog = (self.has('Eyeball Frog') or prescription) and zora_thawed
+        eyedrops = (self.has('Eyedrops') or eyeball_frog) and self.can_reach('Lake Hylia Lab', age='adult') and zora_thawed
+        claim_check = self.has('Claim Check') or \
+                      (eyedrops and \
+                            (self.world.shuffle_interior_entrances or self.has('Progressive Strength Upgrade') or \
+                             self.can_blast_or_smash() or self.has_bow() or self.world.logic_biggoron_bolero))
+
+        return claim_check
+
+
+    def has_skull_mask(self):
+        return self.has('Zeldas Letter') and self.can_reach('Castle Town Mask Shop')
 
 
     def has_mask_of_truth(self):
         # Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man.
-        return self.has('Zeldas Letter') and self.can_play('Sarias Song') and self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire')
+        return self.has_skull_mask() and self.can_play('Sarias Song') and self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire')
 
 
     def has_bottle(self):

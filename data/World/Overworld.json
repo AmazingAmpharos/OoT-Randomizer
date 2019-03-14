@@ -70,28 +70,16 @@
             "Mido Chest Top Right": "True",
             "Mido Chest Bottom Left": "True",
             "Mido Chest Bottom Right": "True"
-        },
-        "exits": {
-            "Kokiri Forest": "True"
         }
     },
     {
-        "region_name": "Saria House",
-        "exits": {
-            "Kokiri Forest": "True"
-        }
+        "region_name": "Saria House"
     },
     {
-        "region_name": "House of Twins",
-        "exits": {
-            "Kokiri Forest": "True"
-        }
+        "region_name": "House of Twins"
     },
     {
-        "region_name": "Know It All House",
-        "exits": {
-            "Kokiri Forest": "True"
-        }
+        "region_name": "Know It All House"
     },
     {
         "region_name": "Kokiri Shop",
@@ -104,9 +92,6 @@
             "Kokiri Shop Item 6": "True",
             "Kokiri Shop Item 7": "True",
             "Kokiri Shop Item 8": "True"
-        },
-        "exits": {
-            "Kokiri Forest": "True"
         }
     },
     {
@@ -287,8 +272,12 @@
         },
         "exits": {
             "Gerudo Fortress": "True",
+            "Carpenter Tent": "is_adult",
             "Gerudo Valley Storms Grotto": "is_adult and can_play(Song_of_Storms)" # Not there as child
         }
+    },
+    {
+        "region_name": "Carpenter Tent"
     },
     {
         "region_name": "Gerudo Fortress",
@@ -495,7 +484,7 @@
     {
         "region_name": "Castle Town Shooting Gallery",
         "locations": {
-            "Child Shooting Gallery": "True"
+            "Child Shooting Gallery": "is_child"
         }
     },
     {
@@ -572,11 +561,11 @@
             "Impas House Back": "True",
             "Windmill": "True",
             "Kakariko Bazaar": "is_adult",
-            "Kakariko Shooting Gallery": "True",
+            "Kakariko Shooting Gallery": "is_adult",
             "Bottom of the Well": "can_play(Song_of_Storms) or (is_adult and shuffle_dungeon_entrances)",
-            "Kakariko Potion Shop Front": "is_adult",
-            "Kakariko Potion Shop Back": "is_adult",
-            "Odd Medicine Building": "True",
+            "Kakariko Potion Shop Front": "True",
+            "Kakariko Potion Shop Back": "True",
+            "Odd Medicine Building": "is_adult",
             "Kakariko Bombable Grotto": "can_blast_or_smash",
             "Kakariko Back Grotto": "True",
             "Graveyard": "True",
@@ -642,14 +631,14 @@
     {
         "region_name": "Kakariko Potion Shop Front",
         "locations": {
-            "Kakariko Potion Shop Item 1": "True",
-            "Kakariko Potion Shop Item 2": "True",
-            "Kakariko Potion Shop Item 3": "True",
-            "Kakariko Potion Shop Item 4": "True",
-            "Kakariko Potion Shop Item 5": "True",
-            "Kakariko Potion Shop Item 6": "True",
-            "Kakariko Potion Shop Item 7": "True",
-            "Kakariko Potion Shop Item 8": "True"
+            "Kakariko Potion Shop Item 1": "is_adult",
+            "Kakariko Potion Shop Item 2": "is_adult",
+            "Kakariko Potion Shop Item 3": "is_adult",
+            "Kakariko Potion Shop Item 4": "is_adult",
+            "Kakariko Potion Shop Item 5": "is_adult",
+            "Kakariko Potion Shop Item 6": "is_adult",
+            "Kakariko Potion Shop Item 7": "is_adult",
+            "Kakariko Potion Shop Item 8": "is_adult"
         }
     },
     {
@@ -737,7 +726,7 @@
             "Kakariko Village": "True",
             "Goron City": "True",
             "Death Mountain Crater Upper": "as_either_here(can_blast_or_smash)",
-            "Mountain Summit Fairy": "can_blast_or_smash",
+            "Mountain Summit Fairy": "as_either_here(can_blast_or_smash)",
             "Dodongos Cavern Entryway": "
                 has_explosives or Progressive_Strength_Upgrade or is_adult",
             "Mountain Bombable Grotto": "as_either_here(can_blast_or_smash)",
@@ -1069,7 +1058,7 @@
     {
         "region_name": "Deku Theater",
         "locations": {
-            "Deku Theater Skull Mask": "is_child and Zeldas_Letter",
+            "Deku Theater Skull Mask": "is_child and has_skull_mask",
             "Deku Theater Mask of Truth": "is_child and has_mask_of_truth and guarantee_hint"
         }
     },

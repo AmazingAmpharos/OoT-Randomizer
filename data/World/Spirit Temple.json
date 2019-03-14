@@ -141,13 +141,10 @@
                 (Small_Key_Spirit_Temple, 4) and can_use(Silver_Gauntlets) and has_explosives"
         },
         "exits": {
-            "Desert Colossus": "(is_child and (Small_Key_Spirit_Temple, 5)) or
-                                (can_use(Silver_Gauntlets) and
-                                 (((Small_Key_Spirit_Temple, 3) and has_explosives) or (Small_Key_Spirit_Temple, 5)))",
-            #If we are in this region, we don't logically know Links age. Propagate this state of unknown
-            #age out in the Colossus and the Fairy which can be completed by either age. This has less
-            #requirements than the above regular colossus exit, where links age needs to be fully known.
-            "Colossus Fairy": "(has_explosives and (Small_Key_Spirit_Temple, 3))"
+            "Desert Colossus": "
+                (is_child and (Small_Key_Spirit_Temple, 5)) or
+                (can_use(Silver_Gauntlets) and
+                    (((Small_Key_Spirit_Temple, 3) and has_explosives) or (Small_Key_Spirit_Temple, 5)))"
         }
     },
     {
