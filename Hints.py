@@ -215,15 +215,15 @@ def colorText(gossip_text):
     return text
 
 
-def get_hint_area(location):
-    if location.parent_region.dungeon:
-        return location.parent_region.dungeon.hint
-    elif location.parent_region.hint:
-        return location.parent_region.hint
-    elif location.parent_region.entrances[0].parent_region.hint:
-        return location.parent_region.entrances[0].parent_region.hint
+def get_hint_area(spot):
+    if spot.parent_region.dungeon:
+        return spot.parent_region.dungeon.hint
+    elif spot.parent_region.hint:
+        return spot.parent_region.hint
+    elif spot.parent_region.entrances[0].parent_region.hint:
+        return spot.parent_region.entrances[0].parent_region.hint
     else:
-        raise RuntimeError('No hint area could be found for this location: %s [World %d]' % (location, location.world.id))
+        raise RuntimeError('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
 
 
 def get_woth_hint(spoiler, world, checked):
@@ -341,6 +341,37 @@ def get_dungeon_hint(spoiler, world, checked):
     return get_specific_hint(spoiler, world, checked, 'dungeon')
 
 
+def get_entrance_hint(spoiler, world, checked):
+    hintGroup = getHintGroup('region', world) + getHintGroup('dungeonName', world)
+    hintGroup = list(filter(lambda hint: hint.name not in checked, hintGroup))
+
+    hint_entrances = []
+    for entrance in world.get_shuffled_entrances():
+        for hint in hintGroup:
+            if entrance.connected_region.name == hint.name or \
+               entrance.connected_region.dungeon and entrance.connected_region.dungeon.name == hint.name:
+                hint_entrances.append(entrance)
+
+    if not hint_entrances:
+        return None
+
+    entrance = random.choice(hint_entrances)
+    checked.append(entrance.name)
+
+    area_text = get_hint_area(entrance)
+
+    connected_region = entrance.connected_region
+    if connected_region.dungeon:
+        region_text = getHint(connected_region.dungeon.name, world.clearer_hints).text
+    else:
+        region_text = getHint(connected_region.name, world.clearer_hints).text
+
+    if '#' not in region_text:
+        region_text = '#%s#' % region_text
+
+    return (GossipText('%s can be found in #%s#.' % (region_text, area_text), ['Light Blue', 'Green']), None)
+
+
 def get_junk_hint(spoiler, world, checked):
     hints = getHintGroup('junk', world)
     hints = list(filter(lambda hint: hint.name not in checked, hints))
@@ -363,6 +394,7 @@ hint_func = {
     'minigame': get_minigame_hint,
     'ow':       get_overworld_hint,
     'dungeon':  get_dungeon_hint,
+    'entrance': get_entrance_hint,
     'random':   get_random_location_hint,
     'junk':     get_junk_hint,
 }
@@ -382,6 +414,7 @@ hint_dist_sets = {
         'minigame': (0.0, 0),
         'ow':       (0.0, 0),
         'dungeon':  (0.0, 0),
+        'entrance': (0.0, 0),
         'random':   (0.0, 0),
         'junk':     (9.0, 1),
     },
@@ -395,6 +428,7 @@ hint_dist_sets = {
         'minigame': (0.5, 1),
         'ow':       (2.0, 1),
         'dungeon':  (1.5, 1),
+        'entrance': (3.0, 1),
         'random':   (6.0, 1),
         'junk':     (3.0, 1),
     },
@@ -408,6 +442,7 @@ hint_dist_sets = {
         'minigame': (0.33, 1),
         'ow':       (0.66, 1),
         'dungeon':  (0.66, 1),
+        'entrance': (1.0, 1),
         'random':   (2.0, 1),
         'junk':     (0.0, 0),
     },
@@ -421,6 +456,7 @@ hint_dist_sets = {
         'minigame': (0.5, 1),
         'ow':       (1.5, 1),
         'dungeon':  (1.5, 1),
+        'entrance': (2.0, 1),
         'random':   (0.0, 0),
         'junk':     (0.0, 0),
     },
@@ -435,6 +471,7 @@ hint_dist_sets = {
         'minigame': (0.0, 1),
         'ow':       (2.0, 1),
         'dungeon':  (3.0, 1),
+        'entrance': (4.0, 1),
         'random':   (0.0, 1),
         'junk':     (0.0, 0),
     },

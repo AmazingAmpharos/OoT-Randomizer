@@ -227,6 +227,15 @@ hintTable = {
     'Shadow Temple Hidden Floormaster Chest':                   (["shadows in an #invisible maze# guard", "after a free #boat ride# comes"], None, 'dungeon'),
     'Shadow Temple MQ Bomb Flower Chest':                       (["shadows in an #invisible maze# guard", "after a free #boat ride# comes"], None, 'dungeon'),
 
+    'House of Skulltula':                                       ("the #cursed family's house#", "the #House of Skulltulas#", 'region'),
+    'Mido House':                                               ("the #chest hoarder's house#", "Mido's house", 'region'),
+    'Lake Hylia Lab':                                           ("the lake scientist's #laboratory#", "the #Lakeside Laboratory#", 'region'),
+    'Fishing Hole':                                             ("a #fishing spot#", "the #Fishing Pond#", 'region'),
+    'Castle Town Mask Shop':                                    ("a #shop made to sell happiness#", "the #Happy Mask Shop#", 'region'),
+    'Castle Town Rupee Room':                                   ("a place with #lots of pots#", "the #Guard House#", 'region'),
+    'Kokiri Shop':                                              ("a #shop held by Kokiris#", "the #Kokiri Shop#", 'region'),
+    'Deku Theater':                                             ("a #stage# full of Deku Scrubs", "the #Forest Stage#", 'region'),
+
     '1001':                                                     ("Ganondorf 2020!", None, 'junk'),
     '1002':                                                     ("They say that monarchy is a terrible system of governance.", None, 'junk'),
     '1003':                                                     ("They say that Zelda is a poor leader.", None, 'junk'),
