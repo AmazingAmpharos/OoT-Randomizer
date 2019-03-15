@@ -1044,7 +1044,7 @@ def get_pool_core(world):
     # Make sure our pending_junk_pool is empty. If not, remove some random junk here.
     if pending_junk_pool:
         remove_junk_pool, _ = zip(*junk_pool_base)
-        remove_junk_pool.extend(['Recovery Heart', 'Bombs (20)', 'Arrows (30)', 'Ice Trap'])
+        remove_junk_pool = list(remove_junk_pool) + ['Recovery Heart', 'Bombs (20)', 'Arrows (30)', 'Ice Trap']
 
         junk_candidates = [item for item in pool if item in remove_junk_pool]
         for pending_item in pending_junk_pool:

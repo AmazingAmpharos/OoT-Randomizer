@@ -43,17 +43,8 @@ class Setting_Info():
         elif self.type == list:
             self.default = []
 
-        if 'randomize_key' in gui_params:
-            # initialize random choice distribution if not set
-            if 'distribution' not in gui_params:
-                self.gui_params['distribution'] = [(choice, 1) for choice in self.choice_list]
-
-            # add dependency for randomize option
-            if self.dependency:
-                old_dependency = dependency
-                self.dependency = lambda settings: self.default if settings.__dict__[self.gui_params['randomize_key']] else old_dependency(settings)
-            else:
-                self.dependency = lambda settings: self.default if settings.__dict__[self.gui_params['randomize_key']] else None
+        if 'distribution' not in gui_params:
+            self.gui_params['distribution'] = [(choice, 1) for choice in self.choice_list]
 
 
     def calc_bitwidth(self, choices):
@@ -1097,11 +1088,7 @@ setting_infos = [
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
-            'distribution':  [
-                (False, 1),
-            ]
         },
-        dependency     = lambda settings: False if settings.mq_dungeons_random or settings.mq_dungeons != 0 else None,
     ),
     Combobox(
         name           = 'shuffle_scrubs',
@@ -1365,6 +1352,7 @@ setting_infos = [
             If set, a random number of dungeons
             will have Master Quest designs.
         ''',
+        dependency     = lambda settings: False if settings.shuffle_dungeon_entrances else None,
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -1392,7 +1380,7 @@ setting_infos = [
             12: All dungeons will have
             Master Quest redesigns.
             ''',
-        dependency     = lambda settings: 0 if settings.mq_dungeons_random else None,
+        dependency     = lambda settings: 0 if settings.mq_dungeons_random or settings.shuffle_dungeon_entrances else None,
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',

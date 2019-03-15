@@ -31,7 +31,7 @@ class Playthrough(object):
     @staticmethod
     def _expand_regions(exit_queue, region_set, validate,
                         cross_age_queue, cross_age_set):
-        new_exit = lambda exit: exit.connected_region not in region_set
+        new_exit = lambda exit: exit.connected_region != None and exit.connected_region not in region_set
         failed = []
         while exit_queue:
             exit = exit_queue.popleft()
