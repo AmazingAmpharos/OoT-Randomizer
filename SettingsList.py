@@ -1066,7 +1066,7 @@ setting_infos = [
         gui_group      = 'shuffle',
         gui_tooltip    = '''\
                          Shuffle the entrances to dungeons, including medallion
-                         dungeons, stone dungeons, Bottom of The Well, Ice Cavern,
+                         dungeons, stone dungeons, Bottom of the Well, Ice Cavern,
                          and Gerudo Training Grounds. Ganon's Castle is not shuffled.
 
                          The dungeon entrances for the Deku Tree, Fire Temple and
