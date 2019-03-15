@@ -128,6 +128,8 @@ class World(object):
                 new_region.hint = region['hint']
             if 'dungeon' in region:
                 new_region.dungeon = region['dungeon']
+            if 'time_passes' in region:
+                new_region.time_passes = region['time_passes']
             if 'locations' in region:
                 for location, rule in region['locations'].items():
                     new_location = LocationFactory(location)

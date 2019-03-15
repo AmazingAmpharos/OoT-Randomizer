@@ -177,6 +177,7 @@
     {
         "region_name": "Hyrule Field",
         "hint": "Hyrule Field",
+        "time_passes": true,
         "locations": {
             "Ocarina of Time": "
                 is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
@@ -205,6 +206,7 @@
     {
         "region_name": "Lake Hylia",
         "hint": "Lake Hylia",
+        "time_passes": true,
         "locations": {
             "Pierre": "has_ocarina and as_both_here and not free_scarecrow",
             "Underwater Bottle": "
@@ -250,6 +252,7 @@
     },
     {
         "region_name": "Fishing Hole",
+        "time_passes": true,
         "locations": {
             "Child Fishing": "is_child",
             "Adult Fishing": "is_adult"
@@ -258,6 +261,7 @@
     {
         "region_name": "Gerudo Valley",
         "hint": "Gerudo Valley",
+        "time_passes": true,
         "locations": {
             "Gerudo Valley Waterfall Freestanding PoH": "True",
             "Gerudo Valley Crate Freestanding PoH": "is_child or can_use(Longshot)",
@@ -277,6 +281,7 @@
     {
         "region_name": "Gerudo Valley Far Side",
         "hint": "Gerudo Valley",
+        "time_passes": true,
         "locations": {
             "Gerudo Valley Hammer Rocks Chest": "can_use(Hammer)",
             "GS Gerudo Valley Behind Tent": "can_use(Hookshot) and nighttime",
@@ -337,6 +342,7 @@
     {
         "region_name": "Desert Colossus",
         "hint": "Desert Colossus",
+        "time_passes": true,
         "locations": {
             "Colossus Freestanding PoH": "can_use(Magic_Bean)",
             "Sheik at Colossus": "True",
@@ -374,15 +380,15 @@
             "Hyrule Castle Grounds": "is_child",
             "Ganons Castle Grounds": "is_adult",
             "Castle Town Rupee Room": "True",
-            "Castle Town Bazaar": "is_child",
-            "Castle Town Mask Shop": "is_child",
-            "Castle Town Shooting Gallery": "is_child",
+            "Castle Town Bazaar": "is_child and at_day",
+            "Castle Town Mask Shop": "is_child and at_day",
+            "Castle Town Shooting Gallery": "is_child and at_day",
             "Castle Town Bombchu Bowling": "is_child",
-            "Castle Town Potion Shop": "is_child",
-            "Castle Town Treasure Chest Game": "is_child",
-            "Castle Town Bombchu Shop": "is_child",
+            "Castle Town Potion Shop": "is_child and at_day",
+            "Castle Town Treasure Chest Game": "is_child and at_night",
+            "Castle Town Bombchu Shop": "is_child and at_night",
             "Castle Town Dog Lady": "is_child",
-            "Castle Town Man in Green House": "is_child"
+            "Castle Town Man in Green House": "is_child and at_night"
         }
     },
     {
@@ -410,6 +416,7 @@
     {
         "region_name": "Hyrule Castle Grounds",
         "hint": "Hyrule Castle",
+        "time_passes": true,
         "locations": {
             "Malon Egg": "True",
             "GS Hyrule Castle Tree": "can_child_attack",
@@ -550,7 +557,7 @@
     {
         "region_name": "Castle Town Dog Lady",
         "locations": {
-            "Dog Lady": "True"
+            "Dog Lady": "at_night"
         }
     },
     {
@@ -582,8 +589,8 @@
             "Impas House": "True",
             "Impas House Back": "True",
             "Windmill": "True",
-            "Kakariko Bazaar": "is_adult",
-            "Kakariko Shooting Gallery": "is_adult",
+            "Kakariko Bazaar": "is_adult and at_day",
+            "Kakariko Shooting Gallery": "is_adult and at_day",
             "Bottom of the Well": "can_play(Song_of_Storms) or (is_adult and shuffle_dungeon_entrances)",
             "Kakariko Potion Shop Front": "True",
             "Kakariko Potion Shop Back": "True",
@@ -685,7 +692,7 @@
             "Composer Grave": "can_play(Zeldas_Lullaby)",
             "Heart Piece Grave": "True",
             "Dampes Grave": "is_adult",
-            "Dampes House": "True",
+            "Dampes House": "is_adult or at_night",
             "Kakariko Village": "True"
         }
     },
@@ -736,6 +743,7 @@
     {
         "region_name": "Death Mountain",
         "hint": "Death Mountain Trail",
+        "time_passes": true,
         "locations": {
             "Death Mountain Bombable Chest": "
                 can_blast_or_smash or 
@@ -762,6 +770,7 @@
     {
         "region_name": "Death Mountain Summit",
         "hint": "Death Mountain Trail",
+        "time_passes": true,
         "locations": {
             "Biggoron": "
                 is_adult and can_finish_adult_trades and guarantee_hint",
@@ -938,6 +947,7 @@
     {
         "region_name": "Zora River",
         "hint": "Zora's River",
+        "time_passes": true,
         "locations": {
             "Magic Bean Salesman": "is_child",
             "Frog Ocarina Game": "
@@ -1045,7 +1055,7 @@
         },
         "exits": {
             "Hyrule Field": "True",
-            "Talon House": "True",
+            "Talon House": "is_adult or at_day",
             "Ingo Barn": "True",
             "Lon Lon Corner Tower": "True",
             "Lon Lon Grotto": "is_child"
@@ -1054,7 +1064,7 @@
     {
         "region_name": "Talon House",
         "locations": {
-            "Talons Chickens": "is_child and Zeldas_Letter"
+            "Talons Chickens": "is_child and at_day and Zeldas_Letter"
         }
     },
     {

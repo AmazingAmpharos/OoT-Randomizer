@@ -32,6 +32,7 @@ class Region(object):
         self.price = None
         self.world = None
         self.addresses = None
+        self.time_passes = False
 
 
     def copy(self, new_world):

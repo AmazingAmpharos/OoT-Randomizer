@@ -17,6 +17,7 @@ class State(object):
         self.collected_locations = {}
         self.current_spot = None
         self.adult = None
+        self.tod = None
 
 
     def clear_cached_unreachable(self):
@@ -54,12 +55,17 @@ class State(object):
             return spot           
 
 
-    def can_reach(self, spot=None, resolution_hint='Region', age=None):
+    def can_reach(self, spot=None, resolution_hint='Region', age=None, tod=None):
         if spot == None:
             # Default to the current spot's parent region, to allow can_reach to be used without arguments inside access rules
             spot = self.current_spot.parent_region
         else:
             spot = self.get_spot(spot, resolution_hint)
+
+        if tod == 'all':
+            return self.can_reach(spot, age=age, tod='day') and self.can_reach(spot, age=age, tod='night')
+        elif tod != None:
+            return self.with_tod(lambda state: state.can_reach(spot, age=age), tod)
 
         if age == None:
             # If the age parameter is missing, the current age should be used, but if it's not defined either, we default to age='either'
@@ -79,6 +85,11 @@ class State(object):
         if not isinstance(spot, Region):
             return spot.can_reach(self)
 
+        # If we are currently checking for reachability with a specific time of day and the time can be changed here, 
+        # we want to continue the reachability test without a time of day, to make sure we could actually get there
+        if self.tod != None and self.can_change_time(spot):
+            return self.with_tod(lambda state: state.can_reach(spot), None)
+
         # If we reached this point, it means the current age should be used
         if self.adult:
             age_type = 'adult'
@@ -88,7 +99,8 @@ class State(object):
         if spot.recursion_count[age_type] > 0:
             return False
 
-        if spot in self.region_cache[age_type]:
+        # The normal cache can't be used while checking for reachability with a specific time of day
+        if self.tod == None and spot in self.region_cache[age_type]:
             return self.region_cache[age_type][spot]
 
         # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that is what we are trying to figure out right now in the first place
@@ -160,6 +172,36 @@ class State(object):
 
     def add_reachability(self, lambda_rule):
         return lambda state: state.can_reach() and lambda_rule(state)
+
+
+    def at_day(self):
+        return self.at_tod('day')
+
+
+    def at_night(self):
+        return self.at_tod('night')
+
+
+    def at_tod(self, tod):
+        if self.tod == None:
+            return self.with_tod(lambda state: state.can_reach(), tod)
+        else:
+            return self.tod == tod
+
+
+    def with_tod(self, lambda_rule, tod):
+        # It's important to set the tod property back to what it was originally after executing the rule here
+        original_tod = self.tod
+        self.tod = tod
+        lambda_rule_result = lambda_rule(self)
+        self.tod = original_tod
+        return lambda_rule_result
+
+
+    def can_change_time(self, region):
+        # For now we assume that Sun's Song can be used to change time anywhere, 
+        # and that all time of day states used in logic can be reached by playing Sun's Song
+        return region.time_passes or self.can_play('Suns Song')
 
 
     def item_name(self, location):

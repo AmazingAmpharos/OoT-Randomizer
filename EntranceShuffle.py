@@ -235,12 +235,12 @@ def split_entrances_by_requirements(worlds, entrances_to_split):
 
     for entrance in entrances_to_split:
         # Here, we find entrances that may be unreachable under certain conditions
-        if not maximum_exploration_state_list[entrance.world.id].can_reach(entrance, age='both'):
+        if not maximum_exploration_state_list[entrance.world.id].can_reach(entrance, age='both', tod='all'):
             restrictive_entrances.append(entrance)
             continue
-        # If an entrance is reachable as both ages with all the other entrances disconnected,
-        # then it will always be accessible as both ages no matter which combination of entrances we end up with.
-        # Thus, those entrances aren't bound to any specific requirements and are very versatile
+        # If an entrance is reachable as both ages and all times of day with all the other entrances disconnected,
+        # then it can always be made accessible in all situations by the Fill algorithm, no matter which combination of entrances we end up with.
+        # Thus, those entrances aren't bound to any specific requirements and are very versatile during placement.
         soft_entrances.append(entrance)
 
     # Reconnect all entrances afterwards
