@@ -51,6 +51,9 @@ class World(object):
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
+        self.shuffle_dungeon_entrances = self.entrance_shuffle == 'dungeons' or self.entrance_shuffle == 'indoors'
+        self.shuffle_grotto_entrances = self.entrance_shuffle == 'indoors'
+        self.shuffle_interior_entrances = self.entrance_shuffle == 'indoors'
 
         # trials that can be skipped will be decided later
         self.skipped_trials = {

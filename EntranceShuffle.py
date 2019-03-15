@@ -33,7 +33,7 @@ def set_entrances(worlds):
     for world in worlds:
         world.initialize_entrances()
 
-    if worlds[0].shuffle_dungeon_entrances:
+    if worlds[0].entrance_shuffle != 'off':
         shuffle_entrances(worlds)
 
     set_entrances_based_rules(worlds)
