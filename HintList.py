@@ -32,6 +32,12 @@ def getHint(name, clearer_hint=False):
 def getHintGroup(group, world):
     ret = []
     for name in hintTable:
+
+        # Some hints have a confusing text in the scope of grotto entrance shuffle so we exclude them
+        if world.shuffle_grotto_entrances:
+            if name == 'GS Hyrule Castle Grotto' or name == 'GS Hyrule Field Near Gerudo Valley':
+                continue
+
         hint = getHint(name, world.clearer_hints)
 
         # 10 Big Poes does not require hint if 3 or less required.
