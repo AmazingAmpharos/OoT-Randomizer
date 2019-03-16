@@ -64,7 +64,7 @@
             "Water Temple Middle Water Level": "
                 (has_bow or can_use(Dins_Fire) or
                  ((Small_Key_Water_Temple, 5) and can_use(Hookshot)) or
-                 as_child(can_reach(Water_Temple_Lobby) and can_use(sticks))) and 
+                 as_child(can_reach(Water_Temple_Lobby) and can_use(Sticks))) and 
                 can_play(Zeldas_Lullaby)"
         }
     },
