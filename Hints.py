@@ -343,7 +343,6 @@ def get_dungeon_hint(spoiler, world, checked):
 
 def get_entrance_hint(spoiler, world, checked):
     hintGroup = getHintGroup('region', world) + getHintGroup('dungeonName', world)
-    hintGroup = list(filter(lambda hint: hint.name not in checked, hintGroup))
 
     hint_entrances = []
     for entrance in world.get_shuffled_entrances():
@@ -352,6 +351,7 @@ def get_entrance_hint(spoiler, world, checked):
                entrance.connected_region.dungeon and entrance.connected_region.dungeon.name == hint.name:
                 hint_entrances.append(entrance)
 
+    hint_entrances = list(filter(lambda entrance: entrance.name not in checked, hint_entrances))
     if not hint_entrances:
         return None
 
