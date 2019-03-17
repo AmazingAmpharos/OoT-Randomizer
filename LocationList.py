@@ -749,7 +749,7 @@ location_table = {
     "LLR Stables Right Cow":                           ("NPC",         0x36,  0x16, "Lon Lon Ranch",          None,                     ("Cow",)),
     "LLR Tower Right Cow":                             ("NPC",         0x4C,  0x15, "Lon Lon Ranch",          None,                     ("Cow",)),
     "LLR Tower Left Cow":                              ("NPC",         0x4C,  0x16, "Lon Lon Ranch",          None,                     ("Cow",)),
-    "Links House Cow":                                 ("NPC",         0x34,  0x15, "Links House",            None,                     ("Forest", "Cow")),
+    "Links House Cow":                                 ("NPC",         0x34,  0x15, "Links House",            None,                     ("Forest", "Cow", "Minigames")),
     "Impas House Cow":                                 ("NPC",         0x37,  0x15, "Kakariko Village",       None,                     ("Kakariko", "Cow")),
     "Gerudo Valley Cow":                               ("NPC",         0x5A,  0x15, "Gerudo Valley",          None,                     ("Gerudo", "Cow")),
     "DMT Grotto Cow":                                  ("NPC",         0x3E,  0x15, "Death Mountain Trail",   None,                     ("Death Mountain", "Cow")),
