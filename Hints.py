@@ -553,7 +553,7 @@ def buildGossipHints(spoiler, world):
         if hint == None:
             index = hint_types.index(hint_type)
             hint_prob[index] = 0
-            if world.hint_dist == "tournament":
+            if world.hint_dist == "tournament" and hint_type == 'random':
                 raise Exception('Not enough valid %s hints for tournament distribution' % hint_type)
         else:
             gossip_text, location = hint
