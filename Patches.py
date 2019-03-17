@@ -747,6 +747,19 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 write_entrance(blue_out_data + 2, dungeon["blue"] + 2, 2)
                 write_entrance(entrance["return"], dungeon["blue"], 2)
 
+    if world.shuffle_interior_entrances:
+        # Disable trade quest timers
+        rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
+
+        for world_entrance in world.get_shuffled_entrances(type='Interior'):
+            entrance = world_entrance.addresses
+            interior = world_entrance.connected_region.addresses
+            write_scenes_exits(interior['forward'], entrance['forward'])
+            write_scenes_exits(entrance['return'], interior['return'])
+            if "exit_address" in interior:
+                # Dynamic exits are special and have to be set on a specific address
+                rom.write_int16(interior["exit_address"], entrance['return'])
+
     for entrance, target in entrance_updates:
         rom.write_int16(entrance, target)
 
@@ -1322,6 +1335,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     for text_id, message in scrub_message_dict.items():
         update_message_by_id(messages, text_id, message)
 
+    if world.shuffle_grotto_entrances:
+        # Update grotto actors based on their new entrance
+        set_grotto_shuffle_data(rom, world)
+
     if world.shuffle_cows:
         rom.write_byte(rom.sym('SHUFFLE_COWS'), 0x01)
         #Moves the cow in LLR Tower, as the two cows are too close in vanilla
@@ -1671,6 +1688,50 @@ def set_cow_id_data(rom, world):
     cow_count = 1
 
     get_actor_list(rom, set_cow_id)
+
+
+def set_grotto_shuffle_data(rom, world):
+    def get_grotto_data(rom, actor_id, actor, scene):
+        if actor_id == 0x009B: #Grotto
+            actor_zrot = rom.read_int16(actor + 12)
+            actor_var = rom.read_int16(actor + 14)
+
+            grotto_table[actor] = {
+                'id': (scene << 16) + actor_var,
+                'scene': (actor_var >> 8) & 0xF0,
+                'entrance': actor_zrot & 0x00FF,
+                'content': actor_var & 0x00FF,
+            }
+
+    def override_grotto_data(rom, actor_id, actor, scene):
+        if actor_id == 0x009B: #Grotto
+            actor_zrot = rom.read_int16(actor + 12)
+            actor_var = rom.read_int16(actor + 14)
+            grotto_type = (actor_var >> 8) & 0x0F
+
+            grotto_data = grotto_override_table[actor]
+            rom.write_byte(actor + 14, grotto_type + grotto_data['scene'])
+            rom.write_byte(actor + 13, grotto_data['entrance'])
+            rom.write_byte(actor + 15, grotto_data['content'])
+
+    # Retrieve the original grotto data
+    grotto_table = {}
+    get_actor_list(rom, get_grotto_data)
+
+    # Build the override table based on shuffled grotto entrances
+    shuffled_grotto_table = {}
+    for entrance in world.get_shuffled_entrances(type='Grotto'):
+        grotto_id = (entrance.addresses['scene'] << 16) + entrance.addresses['grotto_var']
+        grotto_override_id = (entrance.connected_region.addresses['scene'] << 16) + entrance.connected_region.addresses['grotto_var']
+        shuffled_grotto_table[grotto_id] = grotto_override_id
+
+    grotto_override_table = {}
+    for actor in grotto_table:
+        grotto_id = grotto_table[actor]['id']
+        grotto_override_table[actor] = next(filter(lambda grotto_data: grotto_data['id'] == shuffled_grotto_table[grotto_id], grotto_table.values()))
+
+    # Override grotto actors data with the new table
+    get_actor_list(rom, override_grotto_data)
 
 
 def set_deku_salesman_data(rom):

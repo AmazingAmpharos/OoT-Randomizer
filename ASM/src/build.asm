@@ -58,6 +58,8 @@
 .include "debug.asm"
 .include "cow.asm"
 .include "lake_hylia.asm"
+.include "timers.asm"
+.include "shooting_gallery.asm"
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:

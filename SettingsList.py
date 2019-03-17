@@ -840,6 +840,7 @@ setting_infos = [
             Ganondorf and Ganon will be skipped.
         ''',
         shared         = True,
+        dependency     = lambda settings: True if settings.entrance_shuffle == 'indoors' else None,
     ),
     Checkbutton(
         name           = 'no_guard_stealth',
@@ -1060,34 +1061,57 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
-    Checkbutton(
-        name           = 'shuffle_dungeon_entrances',
-        gui_text       = 'Shuffle Dungeon Entrances',
+    Combobox(
+        name           = 'entrance_shuffle',
+        default        = 'off',
+        choices        = {
+            'off':       'Off',
+            'dungeons':  'Dungeons Only',
+            'indoors':   'All Indoors',
+        },
+        gui_text       = 'Entrance Shuffle',
         gui_group      = 'shuffle',
         gui_tooltip    = '''\
-                         Shuffle the entrances to dungeons including mediallion
-                         dungeons, stone dungeons, bottom of the well, ice cavern,
-                         and gerudo training grounds. Ganons castle is not shuffled.
+            Shuffle entrances bidirectionally within different pools.
 
-                         The dungeon entrances for the Deku Tree, Fire Temple and
-                         Bottom of the Well are opened for both adult and child to
-                         improve randomization. The Fire Temple entrance from Bolero
-                         is always in logic for child regardless of Tunic settings.
+            'Dungeons Only':
+            Shuffle dungeon entrances within each other, including Bottom 
+            of the Well, Ice Cavern, and Gerudo Training Grounds. 
+            However, Ganons Castle is not shuffled.
 
-                         Dungeons will be guaranteed reachable at an age where link
-                         can fully complete the dungeon if 'All locations reachable'
-                         is selected. This may not always be the vanilla intended age.
+            Additionally, the entrances of Deku Tree, Fire Temple and 
+            Bottom of the Well are opened for both adult and child to 
+            improve randomization, and accessing the Fire Temple from 
+            Bolero is always in logic for child regardless of Tunic settings.
 
-                         Blue warps will return link to the new dungeons entrance.
-                         Lake Hylia will be filled for adult after defeating Morpha.
+            Blue warps will return link to the new dungeons entrance. 
+            Lake Hylia will be filled for adult after defeating Morpha.
 
-                         Master quest dungeons and random settings are not yet
-                         supported, coming soon!
-                         ''',
-        default        = False,
+            Master Quest dungeons are not supported yet, coming soon!
+
+            'All Indoors':
+            Shuffle dungeon entrances along with grotto and interior 
+            entrances as described below. All entrances are still only 
+            shuffled within their own pool. This means, for example, 
+            that dungeons are only shuffled with other dungeons.
+
+            Grottos: All grottos in the game including small Fairy Fountains 
+            and the Lost Woods Stage.
+
+            Interiors: All Houses and Great Fairies in the game.
+            For now, this excludes Richard's house, the Windmill, the 
+            Kakariko Potion Shop, Link's House and Temple of Time.
+            Adult trade quest timers are disabled when shuffling this pool,
+            and it forces Skip Tower Escape Sequence to be enabled for now.
+        ''',
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
+            'distribution':  [
+                ('off', 2),
+                ('dungeons', 1),
+                ('indoors', 1),
+            ],
         },
     ),
     Combobox(
@@ -1352,7 +1376,7 @@ setting_infos = [
             If set, a random number of dungeons
             will have Master Quest designs.
         ''',
-        dependency     = lambda settings: False if settings.shuffle_dungeon_entrances else None,
+        dependency     = lambda settings: False if settings.entrance_shuffle != 'off' else None,
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -1380,7 +1404,7 @@ setting_infos = [
             12: All dungeons will have
             Master Quest redesigns.
             ''',
-        dependency     = lambda settings: 0 if settings.mq_dungeons_random or settings.shuffle_dungeon_entrances else None,
+        dependency     = lambda settings: 0 if settings.mq_dungeons_random or settings.entrance_shuffle != 'off' else None,
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',

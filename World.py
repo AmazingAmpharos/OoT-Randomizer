@@ -1,6 +1,7 @@
 from State import State
 from Region import Region
 from Entrance import Entrance
+from Hints import get_hint_area
 from Location import Location, LocationFactory
 from LocationList import business_scrubs
 from DungeonList import create_dungeons
@@ -51,6 +52,9 @@ class World(object):
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
+        self.shuffle_dungeon_entrances = self.entrance_shuffle == 'dungeons' or self.entrance_shuffle == 'indoors'
+        self.shuffle_grotto_entrances = self.entrance_shuffle == 'indoors'
+        self.shuffle_interior_entrances = self.entrance_shuffle == 'indoors'
 
         # trials that can be skipped will be decided later
         self.skipped_trials = {
@@ -120,8 +124,12 @@ class World(object):
         for region in region_json:
             new_region = Region(region['region_name'])
             new_region.world = self
+            if 'hint' in region:
+                new_region.hint = region['hint']
             if 'dungeon' in region:
                 new_region.dungeon = region['dungeon']
+            if 'time_passes' in region:
+                new_region.time_passes = region['time_passes']
             if 'locations' in region:
                 for location, rule in region['locations'].items():
                     new_location = LocationFactory(location)
@@ -372,17 +380,19 @@ class World(object):
         # Link's Pocket and None are not real areas
         excluded_areas = [None, "Link's Pocket"]
         for location in self.get_locations():
+            location_hint = get_hint_area(location)
+
             # We exclude event and locked locations. This means that medallions
             # and stones are not considered here. This is not really an accurate
             # way of doing this, but it's the only way to allow dungeons to appear.
             # So barren hints do not include these dungeon rewards.
-            if location.hint in excluded_areas or \
+            if location_hint in excluded_areas or \
                location.locked or \
                location.item is None or \
                location.item.type == "Event":
                 continue
 
-            area = location.hint
+            area = location_hint
 
             # Build the area list and their items
             if area not in areas:

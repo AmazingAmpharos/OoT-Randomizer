@@ -1187,3 +1187,22 @@ skip_GS_BGS_text:
 
 .orga 0x26C10E3
     .byte 0xFF ; Set generic grotto text ID to load from grotto ID
+
+; ==================================================================================================
+; Disable timers 
+; ==================================================================================================
+; Replaces: lui     at, 0x800F
+;           sw      r0, 0x753C(at)
+.orga 0xAE986C ; in memory 8007390C
+    j   disable_trade_timers
+    lui at, 0x800F
+
+.orga 0xE7C398
+    jal disable_collapse_timer
+    nop
+
+; ==================================================================================================
+; Remove Shooting gallery actor when entering the room with the wrong age
+; ==================================================================================================
+.orga 0x00D357D4
+    jal shooting_gallery_init ; addiu   t6, zero, 0x0001

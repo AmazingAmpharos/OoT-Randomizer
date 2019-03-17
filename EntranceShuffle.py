@@ -10,17 +10,88 @@ def get_entrance_pool(type):
 
 
 entrance_shuffle_table = {
-    'Outside Deku Tree -> Deku Tree Lobby':                     ('Dungeon', { 'forward': 0x0000, 'return' : 0x0209, 'blue' : 0x0457 }),
-    'Dodongos Cavern Entryway -> Dodongos Cavern Beginning':    ('Dungeon', { 'forward': 0x0004, 'return' : 0x0242, 'blue' : 0x047A }),
-    'Zoras Fountain -> Jabu Jabus Belly Beginning':             ('Dungeon', { 'forward': 0x0028, 'return' : 0x0221, 'blue' : 0x010E }),
-    'Sacred Forest Meadow -> Forest Temple Lobby':              ('Dungeon', { 'forward': 0x0169, 'return' : 0x0215, 'blue' : 0x0608 }),
-    'Death Mountain Crater Central -> Fire Temple Lower':       ('Dungeon', { 'forward': 0x0165, 'return' : 0x024A, 'blue' : 0x0564 }),
-    'Lake Hylia -> Water Temple Lobby':                         ('Dungeon', { 'forward': 0x0010, 'return' : 0x021D, 'blue' : 0x060C }),
-    'Desert Colossus -> Spirit Temple Lobby':                   ('Dungeon', { 'forward': 0x0082, 'return' : 0x01E1, 'blue' : 0x0610 }),
-    'Shadow Temple Warp Region -> Shadow Temple Entryway':      ('Dungeon', { 'forward': 0x0037, 'return' : 0x0205, 'blue' : 0x0580 }),
-    'Kakariko Village -> Bottom of the Well':                   ('Dungeon', { 'forward': 0x0098, 'return' : 0x02A6, }),
-    'Zoras Fountain -> Ice Cavern Beginning':                   ('Dungeon', { 'forward': 0x0088, 'return' : 0x03D4, }),
-    'Gerudo Fortress -> Gerudo Training Grounds Lobby':         ('Dungeon', { 'forward': 0x0008, 'return' : 0x03A8, }),
+    'Outside Deku Tree -> Deku Tree Lobby':                     ('Dungeon',  { 'forward': 0x0000, 'return' : 0x0209, 'blue' : 0x0457 }),
+    'Dodongos Cavern Entryway -> Dodongos Cavern Beginning':    ('Dungeon',  { 'forward': 0x0004, 'return' : 0x0242, 'blue' : 0x047A }),
+    'Zoras Fountain -> Jabu Jabus Belly Beginning':             ('Dungeon',  { 'forward': 0x0028, 'return' : 0x0221, 'blue' : 0x010E }),
+    'Sacred Forest Meadow -> Forest Temple Lobby':              ('Dungeon',  { 'forward': 0x0169, 'return' : 0x0215, 'blue' : 0x0608 }),
+    'Death Mountain Crater Central -> Fire Temple Lower':       ('Dungeon',  { 'forward': 0x0165, 'return' : 0x024A, 'blue' : 0x0564 }),
+    'Lake Hylia -> Water Temple Lobby':                         ('Dungeon',  { 'forward': 0x0010, 'return' : 0x021D, 'blue' : 0x060C }),
+    'Desert Colossus -> Spirit Temple Lobby':                   ('Dungeon',  { 'forward': 0x0082, 'return' : 0x01E1, 'blue' : 0x0610 }),
+    'Shadow Temple Warp Region -> Shadow Temple Entryway':      ('Dungeon',  { 'forward': 0x0037, 'return' : 0x0205, 'blue' : 0x0580 }),
+    'Kakariko Village -> Bottom of the Well':                   ('Dungeon',  { 'forward': 0x0098, 'return' : 0x02A6, }),
+    'Zoras Fountain -> Ice Cavern Beginning':                   ('Dungeon',  { 'forward': 0x0088, 'return' : 0x03D4, }),
+    'Gerudo Fortress -> Gerudo Training Grounds Lobby':         ('Dungeon',  { 'forward': 0x0008, 'return' : 0x03A8, }),
+
+    'Kokiri Forest -> Mido House':                              ('Interior', { 'forward': 0x0433, 'return': 0x0443 }),
+    'Kokiri Forest -> Saria House':                             ('Interior', { 'forward': 0x0437, 'return': 0x0447 }),
+    'Kokiri Forest -> House of Twins':                          ('Interior', { 'forward': 0x009C, 'return': 0x033C }),
+    'Kokiri Forest -> Know It All House':                       ('Interior', { 'forward': 0x00C9, 'return': 0x026A }),
+    'Kokiri Forest -> Kokiri Shop':                             ('Interior', { 'forward': 0x00C1, 'return': 0x0266 }),
+    'Lake Hylia -> Lake Hylia Lab':                             ('Interior', { 'forward': 0x0043, 'return': 0x03CC }),
+    'Lake Hylia -> Fishing Hole':                               ('Interior', { 'forward': 0x045F, 'return': 0x0309 }),
+    'Gerudo Valley Far Side -> Carpenter Tent':                 ('Interior', { 'forward': 0x03A0, 'return': 0x03D0 }),
+    'Castle Town -> Castle Town Rupee Room':                    ('Interior', { 'forward': 0x007E, 'return': 0x026E }),
+    'Castle Town -> Castle Town Mask Shop':                     ('Interior', { 'forward': 0x0530, 'return': 0x01D1 }),
+    'Castle Town -> Castle Town Bombchu Bowling':               ('Interior', { 'forward': 0x0507, 'return': 0x03BC }),
+    'Castle Town -> Castle Town Potion Shop':                   ('Interior', { 'forward': 0x0388, 'return': 0x02A2 }),
+    'Castle Town -> Castle Town Treasure Chest Game':           ('Interior', { 'forward': 0x0063, 'return': 0x01D5 }),
+    'Castle Town -> Castle Town Bombchu Shop':                  ('Interior', { 'forward': 0x0528, 'return': 0x03C0 }),
+    'Castle Town -> Castle Town Man in Green House':            ('Interior', { 'forward': 0x043B, 'return': 0x0067 }),
+    'Kakariko Village -> Carpenter Boss House':                 ('Interior', { 'forward': 0x02FD, 'return': 0x0349 }),
+    'Kakariko Village -> House of Skulltula':                   ('Interior', { 'forward': 0x0550, 'return': 0x04EE }),
+    'Kakariko Village -> Impas House':                          ('Interior', { 'forward': 0x039C, 'return': 0x0345 }),
+    'Kakariko Village -> Impas House Back':                     ('Interior', { 'forward': 0x05C8, 'return': 0x05DC }),
+    'Kakariko Village -> Odd Medicine Building':                ('Interior', { 'forward': 0x0072, 'return': 0x034D }),
+    'Graveyard -> Dampes House':                                ('Interior', { 'forward': 0x030D, 'return': 0x0355 }),
+    'Goron City -> Goron Shop':                                 ('Interior', { 'forward': 0x037C, 'return': 0x03FC }),
+    'Zoras Domain -> Zora Shop':                                ('Interior', { 'forward': 0x0380, 'return': 0x03C4 }),
+    'Lon Lon Ranch -> Talon House':                             ('Interior', { 'forward': 0x004F, 'return': 0x0378 }),
+    'Lon Lon Ranch -> Ingo Barn':                               ('Interior', { 'forward': 0x02F9, 'return': 0x042F }),
+    'Lon Lon Ranch -> Lon Lon Corner Tower':                    ('Interior', { 'forward': 0x05D0, 'return': 0x05D4 }),
+    'Castle Town -> Castle Town Bazaar':                        ('Interior', { 'forward': 0x052C, 'return': 0x03B8, 'exit_address': 0xBEFD74 }),
+    'Castle Town -> Castle Town Shooting Gallery':              ('Interior', { 'forward': 0x016D, 'return': 0x01CD, 'exit_address': 0xBEFD7C }),
+    'Kakariko Village -> Kakariko Bazaar':                      ('Interior', { 'forward': 0x00B7, 'return': 0x0201, 'exit_address': 0xBEFD72 }),
+    'Kakariko Village -> Kakariko Shooting Gallery':            ('Interior', { 'forward': 0x003B, 'return': 0x0463, 'exit_address': 0xBEFD7A }),
+    'Desert Colossus -> Colossus Fairy':                        ('Interior', { 'forward': 0x0588, 'return': 0x057C, 'exit_address': 0xBEFD82 }),
+    'Hyrule Castle Grounds -> Hyrule Castle Fairy':             ('Interior', { 'forward': 0x0578, 'return': 0x0340, 'exit_address': 0xBEFD80 }),
+    'Ganons Castle Grounds -> Ganons Castle Fairy':             ('Interior', { 'forward': 0x04C2, 'return': 0x0340, 'exit_address': 0xBEFD6C }),
+    'Death Mountain Crater Lower -> Crater Fairy':              ('Interior', { 'forward': 0x04BE, 'return': 0x0482, 'exit_address': 0xBEFD6A }),
+    'Death Mountain Summit -> Mountain Summit Fairy':           ('Interior', { 'forward': 0x0315, 'return': 0x045B, 'exit_address': 0xBEFD68 }),
+    'Zoras Fountain -> Zoras Fountain Fairy':                   ('Interior', { 'forward': 0x0371, 'return': 0x0394, 'exit_address': 0xBEFD7E }),
+
+    'Desert Colossus -> Desert Colossus Grotto':                ('Grotto',   { 'scene': 0x5C, 'grotto_var': 0x00FD }),
+    'Lake Hylia -> Lake Hylia Grotto':                          ('Grotto',   { 'scene': 0x57, 'grotto_var': 0x00EF }),
+    'Zora River -> Zora River Storms Grotto':                   ('Grotto',   { 'scene': 0x54, 'grotto_var': 0x01EB }),
+    'Zora River -> Zora River Plateau Bombable Grotto':         ('Grotto',   { 'scene': 0x54, 'grotto_var': 0x10E6 }),
+    'Zora River -> Zora River Plateau Open Grotto':             ('Grotto',   { 'scene': 0x54, 'grotto_var': 0x0029 }),
+    'Death Mountain Crater Lower -> DMC Hammer Grotto':         ('Grotto',   { 'scene': 0x61, 'grotto_var': 0x00F9 }),
+    'Death Mountain Crater Upper -> Top of Crater Grotto':      ('Grotto',   { 'scene': 0x61, 'grotto_var': 0x007A }),
+    'Goron City -> Goron City Grotto':                          ('Grotto',   { 'scene': 0x62, 'grotto_var': 0x00FB }),
+    'Death Mountain -> Mountain Storms Grotto':                 ('Grotto',   { 'scene': 0x60, 'grotto_var': 0x0157 }),
+    'Death Mountain -> Mountain Bombable Grotto':               ('Grotto',   { 'scene': 0x60, 'grotto_var': 0x00F8 }),
+    'Kakariko Village -> Kakariko Back Grotto':                 ('Grotto',   { 'scene': 0x52, 'grotto_var': 0x0028 }),
+    'Kakariko Village -> Kakariko Bombable Grotto':             ('Grotto',   { 'scene': 0x52, 'grotto_var': 0x02E7 }),
+    'Hyrule Castle Grounds -> Castle Storms Grotto':            ('Grotto',   { 'scene': 0x5F, 'grotto_var': 0x01F6 }),
+    'Hyrule Field -> Field North Lon Lon Grotto':               ('Grotto',   { 'scene': 0x51, 'grotto_var': 0x02E1 }),
+    'Hyrule Field -> Field Kakariko Grotto':                    ('Grotto',   { 'scene': 0x51, 'grotto_var': 0x02E5 }),
+    'Hyrule Field -> Field Far West Castle Town Grotto':        ('Grotto',   { 'scene': 0x51, 'grotto_var': 0x10FF }),
+    'Hyrule Field -> Field West Castle Town Grotto':            ('Grotto',   { 'scene': 0x51, 'grotto_var': 0x0000 }),
+    'Hyrule Field -> Field Valley Grotto':                      ('Grotto',   { 'scene': 0x51, 'grotto_var': 0x02E4 }),
+    'Hyrule Field -> Field Near Lake Inside Fence Grotto':      ('Grotto',   { 'scene': 0x51, 'grotto_var': 0x02E6 }),
+    'Hyrule Field -> Field Near Lake Outside Fence Grotto':     ('Grotto',   { 'scene': 0x51, 'grotto_var': 0x0003 }),
+    'Hyrule Field -> Remote Southern Grotto':                   ('Grotto',   { 'scene': 0x51, 'grotto_var': 0x0022 }),
+    'Lon Lon Ranch -> Lon Lon Grotto':                          ('Grotto',   { 'scene': 0x63, 'grotto_var': 0x00FC }),
+    'Sacred Forest Meadow Entryway -> Front of Meadow Grotto':  ('Grotto',   { 'scene': 0x56, 'grotto_var': 0x02ED }),
+    'Sacred Forest Meadow -> Meadow Storms Grotto':             ('Grotto',   { 'scene': 0x56, 'grotto_var': 0x01EE }),
+    'Sacred Forest Meadow -> Meadow Fairy Grotto':              ('Grotto',   { 'scene': 0x56, 'grotto_var': 0x10FF }),
+    'Lost Woods Beyond Mido -> Lost Woods Sales Grotto':        ('Grotto',   { 'scene': 0x5B, 'grotto_var': 0x00F5 }),
+    'Lost Woods -> Lost Woods Generic Grotto':                  ('Grotto',   { 'scene': 0x5B, 'grotto_var': 0x0014 }),
+    'Kokiri Forest -> Kokiri Forest Storms Grotto':             ('Grotto',   { 'scene': 0x55, 'grotto_var': 0x012C }),
+    'Zoras Domain -> Zoras Domain Storms Grotto':               ('Grotto',   { 'scene': 0x58, 'grotto_var': 0x11FF }),
+    'Gerudo Fortress -> Gerudo Fortress Storms Grotto':         ('Grotto',   { 'scene': 0x5D, 'grotto_var': 0x11FF }),
+    'Gerudo Valley Far Side -> Gerudo Valley Storms Grotto':    ('Grotto',   { 'scene': 0x5A, 'grotto_var': 0x01F0 }),
+    'Gerudo Valley -> Gerudo Valley Octorok Grotto':            ('Grotto',   { 'scene': 0x5A, 'grotto_var': 0x00F2 }),
+    'Lost Woods Beyond Mido -> Deku Theater':                   ('Grotto',   { 'scene': 0x5B, 'grotto_var': 0x00F3 }),
 }
 
 
@@ -33,7 +104,7 @@ def set_entrances(worlds):
     for world in worlds:
         world.initialize_entrances()
 
-    if worlds[0].shuffle_dungeon_entrances:
+    if worlds[0].entrance_shuffle != 'off':
         shuffle_entrances(worlds)
 
     set_entrances_based_rules(worlds)
@@ -59,6 +130,14 @@ def shuffle_entrances(worlds):
         if (not worlds[0].open_forest):
             del dungeon_entrance_pool["Outside Deku Tree -> Deku Tree Lobby"]
         shuffle_entrance_pool(worlds, dungeon_entrance_pool, already_unreachable_locations)
+
+    if worlds[0].shuffle_interior_entrances:
+        interior_entrance_pool = get_entrance_pool('Interior')
+        shuffle_entrance_pool(worlds, interior_entrance_pool, already_unreachable_locations)
+
+    if worlds[0].shuffle_grotto_entrances:
+        grotto_entrance_pool = get_entrance_pool('Grotto')
+        shuffle_entrance_pool(worlds, grotto_entrance_pool, already_unreachable_locations)
 
     # Multiple checks after shuffling entrances to make sure everything went fine
 
@@ -156,12 +235,12 @@ def split_entrances_by_requirements(worlds, entrances_to_split):
 
     for entrance in entrances_to_split:
         # Here, we find entrances that may be unreachable under certain conditions
-        if not maximum_exploration_state_list[entrance.world.id].can_reach(entrance, age='both'):
+        if not maximum_exploration_state_list[entrance.world.id].can_reach(entrance, age='both', tod='all'):
             restrictive_entrances.append(entrance)
             continue
-        # If an entrance is reachable as both ages with all the other entrances disconnected,
-        # then it will always be accessible as both ages no matter which combination of entrances we end up with.
-        # Thus, those entrances aren't bound to any specific requirements and are very versatile
+        # If an entrance is reachable as both ages and all times of day with all the other entrances disconnected,
+        # then it can always be made accessible in all situations by the Fill algorithm, no matter which combination of entrances we end up with.
+        # Thus, those entrances aren't bound to any specific requirements and are very versatile during placement.
         soft_entrances.append(entrance)
 
     # Reconnect all entrances afterwards

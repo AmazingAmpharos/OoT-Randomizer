@@ -1,6 +1,7 @@
 [
     {
         "region_name": "Ganons Castle Lobby",
+        "dungeon": "Ganons Castle",
         "exits": {
             "Ganons Castle Grounds": "True",
             "Ganons Castle Forest Trial": "True",
@@ -21,6 +22,7 @@
     },
     {
         "region_name": "Ganons Castle Deku Scrubs",
+        "dungeon": "Ganons Castle",
         "locations": {
             "GC MQ Deku Scrub Bombs": "True",
             "GC MQ Deku Scrub Arrows": "True",
