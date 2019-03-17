@@ -869,7 +869,7 @@
         "exits": {
             "Death Mountain Crater Lower": "
                 can_use(Hover_Boots) or can_use(Hookshot) or can_use(Magic_Bean)",
-            "Fire Temple Lower": "is_adultFf"
+            "Fire Temple Lower": "is_adult"
         }
     },
     {
