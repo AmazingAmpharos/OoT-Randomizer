@@ -21,3 +21,8 @@ This includes both tektite hover to fishing and the tektite hover in DMT, spirit
 Logical hovers will always require less than 20 bombs or with chus in logic 50 chus and will be infinitely repeatable.
 Non-standard logical hovers (usually for skulls) are generally short hovers, less than 9.  There is no hard and fast
 criteria, though.  Out of bounds hovers are not considered in logic at all as they can crash on N64.
+
+
+Child is not logically expected to enter Fire Temple at all.  This is due to child needing fairies and many explosives to get around.
+The hints can only deal with a single bottle, so you'll only ever have access to one fairy.  This may be added in the future, however
+for now it's a bit "mean" to allow.

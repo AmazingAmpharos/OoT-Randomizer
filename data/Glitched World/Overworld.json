@@ -426,7 +426,7 @@
         },
         "exits": {
             "Castle Town": "True",
-            "Ganons Castle Fairy": "can_use(Golden_Gauntlets) or has_explosives or can_use(Hover_Boots)",
+            "Ganons Castle Fairy": "can_use(Golden_Gauntlets) or (has_explosives and can_live_dmg(0.5)) or can_use(Hover_Boots)",
             "Ganons Castle Lobby": "(can_isg and has_explosives) or
                 (bridge == 'open')
                 or ((bridge == 'medallions') and
@@ -869,8 +869,7 @@
         "exits": {
             "Death Mountain Crater Lower": "
                 can_use(Hover_Boots) or can_use(Hookshot) or can_use(Magic_Bean)",
-            "Fire Temple Lower": "
-                is_adult and (logic_fewer_tunic_requirements or can_use(Goron_Tunic))"
+            "Fire Temple Lower": "is_adultFf"
         }
     },
     {
