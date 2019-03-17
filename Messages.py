@@ -59,8 +59,8 @@ SPECIAL_CHARACTERS = {
     0xAA: '[Control Stick]',
 }
 
-GOSSIP_STONE_MESSAGES = list( range(0x0401, 0x0421) ) # ids of the actual hints
-GOSSIP_STONE_MESSAGES += [0x2053, 0x2054, 0x0422] # shared initial stone messages
+GOSSIP_STONE_MESSAGES = list( range(0x0401, 0x04FF) ) # ids of the actual hints
+GOSSIP_STONE_MESSAGES += [0x2053, 0x2054] # shared initial stone messages
 TEMPLE_HINTS_MESSAGES = [0x7057, 0x707A] # dungeon reward hints from the temple of time pedestal
 LIGHT_ARROW_HINT = [0x70CC] # ganondorf's light arrow hint line
 GS_TOKEN_MESSAGES = [0x00B4, 0x00B5] # Get Gold Skulltula Token messages
