@@ -840,6 +840,7 @@ setting_infos = [
             Ganondorf and Ganon will be skipped.
         ''',
         shared         = True,
+        dependency     = lambda settings: True if settings.entrance_shuffle == 'indoors' else None,
     ),
     Checkbutton(
         name           = 'no_guard_stealth',
@@ -1100,7 +1101,8 @@ setting_infos = [
             Interiors: All Houses and Great Fairies in the game.
             For now, this excludes Richard's house, the Windmill, the 
             Kakariko Potion Shop, Link's House and Temple of Time.
-            Adult trade quest timers are disabled when shuffling this pool.
+            Adult trade quest timers are disabled when shuffling this pool,
+            and it forces Skip Tower Escape Sequence to be enabled for now.
         ''',
         shared         = True,
         gui_params     = {
