@@ -1075,9 +1075,9 @@ setting_infos = [
             Shuffle entrances bidirectionally within different pools.
 
             'Dungeons Only':
-            Shuffle dungeon entrances within each other, including Bottom 
+            Shuffle dungeon entrances with each other, including Bottom 
             of the Well, Ice Cavern, and Gerudo Training Grounds. 
-            However, Ganons Castle is not shuffled.
+            However, Ganon's Castle is not shuffled.
 
             Additionally, the entrances of Deku Tree, Fire Temple and 
             Bottom of the Well are opened for both adult and child to 
