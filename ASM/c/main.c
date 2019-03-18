@@ -11,6 +11,7 @@
 #include "z64.h"
 #include "chests.h"
 #include "ganon.h"
+#include "extern_ctxt.h"
 
 void c_init() {
     heap_init();
@@ -25,6 +26,7 @@ void before_game_state_update() {
     handle_dpad();
     update_color();
     update_heart_colors();
+    process_extern_ctxt();
 }
 
 void after_game_state_update() {

@@ -32,6 +32,7 @@
 RANDO_CONTEXT:
 .word COOP_CONTEXT
 .word COSMETIC_CONTEXT
+.word extern_ctxt
 .endarea
 
 .include "coop_state.asm" ; This should always come first
