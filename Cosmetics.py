@@ -447,7 +447,7 @@ def patch_instrument(rom, settings, log, symbols):
     log.sfx['Ocarina'] = choice
 
 
-cosmetic_data_headers = [
+legacy_cosmetic_data_headers = [
     0x03481000,
     0x03480810,
 ]
@@ -469,9 +469,9 @@ patch_sets = {
             patch_sword_trails,
         ],
         "symbols": {    
-            "CFG_DISPLAY_DPAD": 0x03480814,
-            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03480815,
-            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03480816,
+            "CFG_DISPLAY_DPAD": 0x0004,
+            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x0005,
+            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x0006,
         },
     },
     0x1F05D3F9: {
@@ -480,9 +480,9 @@ patch_sets = {
             patch_sword_trails,
         ],
         "symbols": {    
-            "CFG_DISPLAY_DPAD": 0x03481004,
-            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03481005,
-            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481006,
+            "CFG_DISPLAY_DPAD": 0x0004,
+            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x0005,
+            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x0006,
         },
     },
     0x1F0693FB: {
@@ -493,11 +493,11 @@ patch_sets = {
             patch_magic_colors,
         ],
         "symbols": {
-            "CFG_DISPLAY_DPAD": 0x03481010,
-            "CFG_HEART_COLOR": 0x0348100A,
-            "CFG_MAGIC_COLOR": 0x03481004,
-            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x03481011,
-            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x03481012,
+            "CFG_MAGIC_COLOR": 0x0004,
+            "CFG_HEART_COLOR": 0x000A,
+            "CFG_DISPLAY_DPAD": 0x0010,
+            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x0011,
+            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x0012,
         }
     }
 }
@@ -515,20 +515,35 @@ def patch_cosmetics(settings, rom):
 
     # try to detect the cosmetic patch data format
     versioned_patch_set = None
-    for header in cosmetic_data_headers:
-        # Search over all possible header locations
-        cosmetic_version = rom.read_int32(header)
-        if cosmetic_version in patch_sets:
-            versioned_patch_set = patch_sets[cosmetic_version]
-            break
+    cosmetic_context = rom.read_int32(rom.sym('RANDO_CONTEXT') + 4)
+    if cosmetic_context >= 0x80000000:
+        cosmetic_context = (cosmetic_context - 0x80400000) + 0x3480000 # convert from RAM to ROM address
+        cosmetic_version = rom.read_int32(cosmetic_context)
+        versioned_patch_set = patch_sets.get(cosmetic_version)
+    else:
+        # If cosmetic_context is not a valid pointer, then try to
+        # search over all possible legacy header locations.
+        for header in legacy_cosmetic_data_headers:
+            cosmetic_context = header
+            cosmetic_version = rom.read_int32(cosmetic_context)
+            if cosmetic_version in patch_sets:
+                versioned_patch_set = patch_sets[cosmetic_version]
+                break
 
     # patch version specific patches
     if versioned_patch_set:
+        # offset the cosmetic_context struct for absolute addressing
+        cosmetic_context_symbols = {
+            sym: address + cosmetic_context
+            for sym, address in versioned_patch_set['symbols'].items()
+        }
+
+        # warn if patching a legacy format
         if cosmetic_version != rom.read_int32(rom.sym('COSMETIC_FORMAT_VERSION')):
             log.error = "ROM uses old cosmetic patch format."
 
         for patch_func in versioned_patch_set['patches']:
-            patch_func(rom, settings, log, versioned_patch_set['symbols'])
+            patch_func(rom, settings, log, cosmetic_context_symbols)
     else:
         # Unknown patch format
         log.error = "Unable to patch some cosmetics. ROM uses unknown cosmetic patch format."

@@ -4,6 +4,8 @@
 
 ; This is used to determine if and how the cosmetics can be patched
 ; It this moves then the version will no longer be valid, so it is important that this does not move
+COSMETIC_CONTEXT:
+
 COSMETIC_FORMAT_VERSION:
 .word 0x1F0693FB
 CFG_MAGIC_COLOR:

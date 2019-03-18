@@ -27,9 +27,14 @@
 
 .org 0x80400000
 .area 0x10000
-.area 0x1000, 0
-.include "coop_state.asm" ; This should always come first
+
+.area 0x20, 0
+RANDO_CONTEXT:
+.word COOP_CONTEXT
+.word COSMETIC_CONTEXT
 .endarea
+
+.include "coop_state.asm" ; This should always come first
 .include "config.asm"
 .include "init.asm"
 .include "item_overrides.asm"
