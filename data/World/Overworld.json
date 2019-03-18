@@ -732,6 +732,7 @@
     },
     {
         "region_name": "Shadow Temple Warp Region",
+        "hint": "the Graveyard",
         "locations": {
             "Graveyard Gossip Stone": "True"
         },
