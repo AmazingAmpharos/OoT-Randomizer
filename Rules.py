@@ -34,9 +34,9 @@ def set_rules(world):
                 add_item_rule(location, lambda location, item: item.type != 'Shop')
                 location.price = world.shop_prices[location.name]
                 if location.price > 200:
-                    set_rule(location, lambda state: state.has('Progressive Wallet', 2))
+                    add_rule(location, lambda state: state.has('Progressive Wallet', 2))
                 elif location.price > 99:
-                    set_rule(location, lambda state: state.has('Progressive Wallet'))
+                    add_rule(location, lambda state: state.has('Progressive Wallet'))
             else:
                 add_item_rule(location, lambda location, item: item.type == 'Shop' and item.world.id == location.world.id)
 

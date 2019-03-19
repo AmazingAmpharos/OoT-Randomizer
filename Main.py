@@ -27,7 +27,7 @@ from Utils import default_output_path, is_bundled, subprocess_args, data_path
 from version import __version__
 from N64Patch import create_patch_file, apply_patch_file
 from SettingsList import setting_infos, logic_tricks
-from Rules import set_rules
+from Rules import set_rules, set_shop_rules
 from Plandomizer import Distribution
 from Playthrough import Playthrough
 from EntranceShuffle import set_entrances
@@ -121,6 +121,7 @@ def main(settings, window=dummy_window()):
         window.update_progress(0 + 5*(id + 1)/settings.world_count)
         logger.info('Generating Item Pool.')
         generate_itempool(world)
+        set_shop_rules(world)
 
     logger.info('Setting Entrances.')
     set_entrances(worlds)
