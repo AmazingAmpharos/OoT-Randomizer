@@ -319,7 +319,7 @@ def shuffle_entrances_restrictive(worlds, entrances, target_entrances, already_u
 
         for target, entrance in rollbacks:
             region = entrance.disconnect()
-            target_entrances.append(region)
+            target_entrances.append(target)
             target.connect(region)
 
         logging.getLogger('').debug('Entrance placement attempt failed [World %d]', entrances[0].world.id)
