@@ -499,7 +499,7 @@ class World(object):
                     max_progressive = self.settings.big_poe_count
                 else:
                     dupe_locations = duplicate_item_woth[world_id].get(item.name, [])
-                    max_progressive = item.special.get('Progressive', 1)
+                    max_progressive = item.special.get('progressive', 1)
 
                 # If this is a required item location, then it is not useless
                 for dupe_location in dupe_locations:
