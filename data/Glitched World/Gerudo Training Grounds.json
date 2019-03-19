@@ -20,15 +20,15 @@
         "dungeon": "Gerudo Training Grounds",
         "locations": {
             "Gerudo Training Grounds Hidden Ceiling Chest": "(Small_Key_Gerudo_Training_Grounds, 3)
-                or (can_use(Hookshot) and can_mega) or (is_child and has_explosives)",
+                or (can_use(Hookshot) and can_mega) or (is_child and has_explosives and (can_live_dmg(0.5) or can_use(Nayrus_Love)))",
             "Gerudo Training Grounds Maze Path First Chest": "(Small_Key_Gerudo_Training_Grounds, 4)
-                or (can_use(Hookshot) and can_mega) or (is_child and has_explosives)",
+                or (can_use(Hookshot) and can_mega) or (is_child and has_explosives and (can_live_dmg(1.0) or can_use(Nayrus_Love)))",
             "Gerudo Training Grounds Maze Path Second Chest": "(Small_Key_Gerudo_Training_Grounds, 6)
-                or (can_use(Hookshot) and can_mega) or (is_child and has_explosives)",
+                or (can_use(Hookshot) and can_mega) or (is_child and has_explosives and (can_live_dmg(1.0) or can_use(Nayrus_Love)))",
             "Gerudo Training Grounds Maze Path Third Chest": "(Small_Key_Gerudo_Training_Grounds, 7)
-                or (can_use(Hookshot) and can_mega) or (is_child and has_explosives)",
+                or (can_use(Hookshot) and can_mega) or (is_child and has_explosives and (can_live_dmg(0.5) or can_use(Nayrus_Love)))",
             "Gerudo Training Grounds Maze Path Final Chest": "(Small_Key_Gerudo_Training_Grounds, 9)
-                or (can_use(Hookshot) and can_mega) or (is_child and has_explosives)"
+                or (can_use(Hookshot) and can_mega) or (is_child and has_explosives and (can_live_dmg(0.5) or can_use(Nayrus_Love)))"
         },
         "exits": {
             "Gerudo Training Grounds Central Maze Right": "(Small_Key_Gerudo_Training_Grounds, 9)

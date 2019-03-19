@@ -329,7 +329,7 @@
             "Desert Colossus Gossip Stone": "True"
         },
         "exits": {
-            "Colossus Fairy": "has_explosives",
+            "Colossus Fairy": "has_explosives or (can_use(Hookshot) and can_use(Hover_Boots))",
             "Spirit Temple Lobby": "True",
             "Desert Colossus Grotto": "can_use(Silver_Gauntlets)",
             "Spirit Temple Outdoor Hands": "can_hover"

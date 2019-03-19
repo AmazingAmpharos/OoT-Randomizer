@@ -3,83 +3,106 @@
         "region_name": "Shadow Temple Entryway",
         "dungeon": "Shadow Temple",
         "exits": {
-            "Shadow Temple Beginning": "
-                can_see_with_lens and
-                (can_use(Hover_Boots) or can_use(Hookshot))"
+            "Shadow Temple Beginning": "can_use(Hover_Boots) or can_use(Hookshot) or can_mega"
         }
     },
     {
         "region_name": "Shadow Temple Beginning",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Map Chest": "True",
-            "Shadow Temple Hover Boots Chest": "True"
+            "Shadow Temple Map Chest": "can_jumpslash or (can_use(Dins_Fire) and has_projectile(child))",
+            "Shadow Temple Hover Boots Chest": "can_jumpslash"
         },
         "exits": {
             "Shadow Temple Entryway": "True",
-            "Shadow Temple First Beamos": "Hover_Boots"
+            "Shadow Temple First Beamos": "can_use(Hover_Boots) or can_mega",
+            "Shadow Boss": "can_hover and has_explosives and can_use(Hover_Boots) and 
+                can_live_dmg(2.0)"
         }
     },
     {
         "region_name": "Shadow Temple First Beamos",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Compass Chest": "True",
-            "Shadow Temple Early Silver Rupee Chest": "True"
+            "Shadow Temple Compass Chest": "can_jumpslash or can_use(Dins_Fire)",
+            "Shadow Temple Early Silver Rupee Chest": "is_adult or (is_child and can_hover)"
         },
         "exits": {
-            "Shadow Temple Huge Pit": "has_explosives and (Small_Key_Shadow_Temple, 1)"
+            "Shadow Temple Huge Pit": "has_explosives and (Small_Key_Shadow_Temple, 5)",
+            "Shadow Temple Boat": "can_jumpslash"
         }
     },
     {
         "region_name": "Shadow Temple Huge Pit",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Invisible Blades Visible Chest": "True",
-            "Shadow Temple Invisible Blades Invisible Chest": "True",
+            "Shadow Temple Invisible Blades Visible Chest": "can_jumpslash or has_slingshot",
+            "Shadow Temple Invisible Blades Invisible Chest": "can_jumpslash or has_slingshot",
             "Shadow Temple Falling Spikes Lower Chest": "True",
-            "Shadow Temple Falling Spikes Upper Chest": "Progressive_Strength_Upgrade",
-            "Shadow Temple Falling Spikes Switch Chest": "Progressive_Strength_Upgrade",
-            "Shadow Temple Invisible Spikes Chest": "(Small_Key_Shadow_Temple, 2)",
+            "Shadow Temple Falling Spikes Upper Chest": "is_adult or can_hover",
+            "Shadow Temple Falling Spikes Switch Chest": "is_adult or can_hover",
+            "Shadow Temple Invisible Spikes Chest": "(Small_Key_Shadow_Temple, 5) and (can_jumpslash or can_use(Dins_Fire))",
             "Shadow Temple Freestanding Key": "
-                (Small_Key_Shadow_Temple, 2) and Progressive_Hookshot and 
-                (has_bombs or Progressive_Strength_Upgrade or
-                    (logic_shadow_freestanding_key and has_bombchus))",
-            "GS Shadow Temple Like Like Room": "Progressive_Hookshot",
-            "GS Shadow Temple Crusher Room": "Progressive_Hookshot",
-            "GS Shadow Temple Single Giant Pot": "(Small_Key_Shadow_Temple, 2) and Progressive_Hookshot"
+                (Small_Key_Shadow_Temple, 5) and (can_use(Hookshot) or can_hover) 
+                and (Progressive_Strength_Upgrade or has_explosives)",
+            "GS Shadow Temple Like Like Room": "is_adult or can_use(Boomerang) or can_hover",
+            "GS Shadow Temple Crusher Room": "can_use(Hookshot) or (is_adult and can_mega) or (is_child and can_hover)",
+            "GS Shadow Temple Single Giant Pot": "(Small_Key_Shadow_Temple, 5) and (can_use(Hookshot) or can_hover)"
         },
         "exits": {
-            "Shadow Temple Wind Tunnel": "Progressive_Hookshot and (Small_Key_Shadow_Temple, 3)"
+            "Shadow Temple Wind Tunnel": "(can_use(Hookshot) or can_hover) and (Small_Key_Shadow_Temple, 5)"
         }
     },
     {
         "region_name": "Shadow Temple Wind Tunnel",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Wind Hint Chest": "True",
-            "Shadow Temple After Wind Enemy Chest": "True",
-            "Shadow Temple After Wind Hidden Chest": "True",
-            "GS Shadow Temple Near Ship": "can_use(Longshot) and (Small_Key_Shadow_Temple, 4)"
+            "Shadow Temple Wind Hint Chest": "can_jumpslash or can_use(Dins_Fire)",
+            "Shadow Temple After Wind Enemy Chest": "can_jumpslash or can_use(Dins_Fire)",
+            "Shadow Temple After Wind Hidden Chest": "has_explosives"
         },
         "exits": {
-            "Shadow Temple Beyond Boat": "can_play(Zeldas_Lullaby) and (Small_Key_Shadow_Temple, 4)"
+            "Shadow Temple Boat": "(Small_Key_Shadow_Temple, 5)",
+            "Shadow Temple Huge Pit": "can_hover"
+        }
+    },
+    {
+        "region_name": "Shadow Temple Boat",
+        "dungeon": "Shadow Temple",
+        "locations": {
+            "GS Shadow Temple Near Ship": "can_use(Longshot) or (can_use(Hover_Boots) and can_mega)
+                or (is_child and can_hover)"
+        },
+        "exits": {
+            "Shadow Temple Wind Tunnel": "(Small_Key_Shadow_Temple,5)",
+            "Shadow Temple Beyond Boat": "can_play(Zeldas_Lullaby) and
+                (is_adult or (is_child and can_hover))"
         }
     },
     {
         "region_name": "Shadow Temple Beyond Boat",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Spike Walls Left Chest": "can_use(Dins_Fire)",
-            "Shadow Temple Boss Key Chest": "can_use(Dins_Fire)",
+            "Shadow Temple Spike Walls Left Chest": "can_use(Dins_Fire) or can_live_dmg(0.5) or has_bottle or can_use(Nayrus_Love) or
+                (can_use(Hookshot) and can_mega)",
+            "Shadow Temple Boss Key Chest": "can_use(Dins_Fire) or can_live_dmg(0.5) or has_bottle or can_use(Nayrus_Love) or
+                (can_use(Hookshot) and can_mega)",
             "Shadow Temple Hidden Floormaster Chest": "True",
-            "Bongo Bongo Heart": "
-                (Small_Key_Shadow_Temple, 5) and 
-                (Bow or can_use(Distant_Scarecrow)) and Boss_Key_Shadow_Temple",
-            "Bongo Bongo": "
-                (Small_Key_Shadow_Temple, 5) and 
-                (Bow or can_use(Distant_Scarecrow)) and Boss_Key_Shadow_Temple",
             "GS Shadow Temple Triple Giant Pot": "True"
+        },
+        "exits": {
+            "Shadow Boss": "(has_bombchus or can_use(Distant_Scarecrow) or Bow or 
+                (can_mega and can_use(Hover_Boots)) or can_hover) and 
+                (Boss_Key_Shadow_Temple or (has_explosives and is_adult)) and
+                (can_mega or can_use(Hover_Boots)) and (Small_Key_Shadow_Temple, 5)"
+        }
+    },
+    {
+        "region_name": "Shadow Boss",
+        "dungeon": "Shadow Temple",
+        "locations": {
+            "Bongo Bongo Heart": "True",
+            "Bongo Bongo": "True"
         }
     }
 ]
