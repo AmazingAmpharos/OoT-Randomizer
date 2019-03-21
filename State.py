@@ -447,8 +447,7 @@ class State(object):
                       (eyedrops and \
                             (self.world.shuffle_interior_entrances or self.has('Progressive Strength Upgrade') or \
                              self.can_blast_or_smash() or self.has_bow() or self.world.logic_biggoron_bolero))
-
-             return claim_check
+            return claim_check
     
     def has_skull_mask(self):
         return self.has('Zeldas Letter') and self.can_reach('Castle Town Mask Shop')

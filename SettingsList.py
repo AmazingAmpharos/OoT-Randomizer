@@ -1390,15 +1390,14 @@ setting_infos = [
             If set, a random number of dungeons
             will have Master Quest designs.
         ''',
-        dependency     = lambda settings: False if settings.entrance_shuffle != 'off' else None,
+        dependency     = lambda settings: False if settings.entrance_shuffle != 'off' or settings.logic_rules == 'gltiched' else None,
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
             'distribution': [
                 (True, 1),
             ],
-        },
-        dependency     = lambda settings: 0 if settings.logic_rules == 'glitched' else None
+        }
     ),
     Scale(
         name           = 'mq_dungeons',

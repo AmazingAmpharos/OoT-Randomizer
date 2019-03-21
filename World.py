@@ -8,6 +8,7 @@ from DungeonList import create_dungeons
 from Rules import set_rules, set_shop_rules
 from Item import Item
 from RuleParser import parse_rule_string
+from SettingsList import get_setting_info
 import logging
 import copy
 import io
