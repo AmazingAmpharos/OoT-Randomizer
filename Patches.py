@@ -4,7 +4,7 @@ import itertools
 import re
 
 from World import World
-from Rom import LocalRom
+from Rom import Rom
 from Spoiler import Spoiler
 from LocationList import business_scrubs
 from Hints import writeGossipStoneHints, buildBossRewardHints, \
@@ -19,7 +19,7 @@ from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 from SaveContext import SaveContext
 
 
-def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
+def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     with open(data_path('generated/rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
@@ -429,6 +429,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         symbol = rom.sym('OCARINAS_SHUFFLED')
         rom.write_byte(symbol,0x01)
 
+    if world.child_lake_hylia_control:
+        symbol = rom.sym('CFG_CHILD_CONTROL_LAKE')
+        rom.write_byte(symbol,0x01)
+
     # Speed Zelda Light Arrow cutscene
     rom.write_bytes(0x2531B40, [0x00, 0x28, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02])
     rom.write_bytes(0x2532FBC, [0x00, 0x75])
@@ -656,6 +660,108 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     Short_item_descriptions = [0x92EC84, 0x92F9E3, 0x92F2B4, 0x92F37A, 0x92F513, 0x92F5C6, 0x92E93B, 0x92EA12]
     for address in Short_item_descriptions:
         rom.write_byte(address,0x02)
+
+    et_original = rom.read_bytes(0xB6FBF0, 4 * 0x0614)
+
+    entrance_updates = []
+
+    def write_entrance(target_index, data_index, length=4):
+        ti = target_index * 4
+        rom.write_bytes(0xB6FBF0 + data_index * 4, et_original[ti:ti+(4*length)])
+
+    def write_scene_exit(target_index, data_index, scene_start, scene_data):
+        start_count = 0
+        current = scene_data
+        command = 0
+        while command != 0x14:
+            command = rom.read_byte(current)
+            if command == 0x00:
+                start_count = rom.read_byte(current + 1)
+            current = current + 8
+        command = 0
+        current = scene_data
+        while command != 0x14:
+            command = rom.read_byte(current)
+            if command == 0x13:
+                entrance_list = scene_start + (rom.read_int32(current + 4) & 0x00FFFFFF)
+                for _ in range (0, start_count):
+                    entrance = rom.read_int16(entrance_list)
+                    if (entrance == data_index):
+                        entrance_updates.append((entrance_list, target_index))
+                    entrance_list = entrance_list + 2
+            if command == 0x18: # Alternate header list
+                header_list = scene_start + (rom.read_int32(current + 4) & 0x00FFFFFF)
+                for alt_id in range(0,3):
+                    header_offset = rom.read_int32(header_list) & 0x00FFFFFF
+                    if header_offset != 0:
+                        write_scene_exit(target_index, data_index, scene_start, scene_start + header_offset)
+                    header_list = header_list + 4
+            current = current + 8
+
+    def write_scenes_exits(target_index, data_index):
+        scene_table = 0x00B71440
+        for scene in range(0x00, 0x65):
+            #really hacky
+            if data_index == 0 and scene != 0x55:
+                continue
+            scene_start = rom.read_int32(scene_table + (scene * 0x14));
+            write_scene_exit(target_index, data_index, scene_start, scene_start)
+
+        #Special case: Jabu with the fish is entered from a cutscene hardcode
+        if data_index == 0x0028:
+            entrance_updates.append((0xAC95C2, target_index))
+
+    if world.shuffle_dungeon_entrances:
+        symbol = rom.sym('CFG_CHILD_CONTROL_LAKE')
+        rom.write_int32(symbol, 1)
+
+        # Connect lake hylia fill exit to revisit exit (Hylia blue will then be rewired below)
+        rom.write_int16(0xAC995A, 0x060C)
+
+        # Remove deku sprout and drop player at SFM after forest (SFM blue will then be rewired by ER below)
+        rom.write_int16(0xAC9F96, 0x0608)
+
+        remove_entrance_blockers(rom)
+        #Tell the Deku tree jaw actor we are always a child.
+        rom.write_int32(0x0C72C64, 0x240E0000)
+        rom.write_int32(0x0C72C74, 0x240F0001)
+
+        for world_entrance in world.get_shuffled_entrances(type='Dungeon'):
+            entrance = world_entrance.addresses
+            dungeon = world_entrance.connected_region.addresses
+            write_scenes_exits(dungeon['forward'], entrance['forward'])
+            write_scenes_exits(entrance['return'], dungeon['return'])
+            if "blue" in dungeon:
+                if "blue" in entrance:
+                    blue_out_data =  entrance["blue"]
+                else:
+                    blue_out_data = entrance["return"]
+                # Blue warps have multiple hardcodes leading to them. The good news is
+                # the blue warps (excluding deku sprout and lake fill special cases) each
+                # have a nice consistent 4-entry in the table we can just shuffle. So just
+                # catch all the hardcode with entrance table rewrite. This covers the
+                # Forest temple and Water temple blue warp revisits. Deku sprout remains
+                # vanilla as it never took you to the exit and the lake fill is handled
+                # above by removing the cutscene completely. Child has problems with Adult
+                # blue warps, so always use the return entrance if a child.
+                write_entrance(blue_out_data + 2, dungeon["blue"] + 2, 2)
+                write_entrance(entrance["return"], dungeon["blue"], 2)
+
+    if world.shuffle_interior_entrances:
+        # Disable trade quest timers
+        rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
+
+        for world_entrance in world.get_shuffled_entrances(type='Interior'):
+            entrance = world_entrance.addresses
+            interior = world_entrance.connected_region.addresses
+            write_scenes_exits(interior['forward'], entrance['forward'])
+            write_scenes_exits(entrance['return'], interior['return'])
+            if "exit_address" in interior:
+                # Dynamic exits are special and have to be set on a specific address
+                rom.write_int16(interior["exit_address"], entrance['return'])
+
+    for entrance, target in entrance_updates:
+        rom.write_int16(entrance, target)
 
     # Fix text for Pocket Cucco.
     rom.write_byte(0xBEEF45, 0x0B)
@@ -1006,13 +1112,13 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
         rom.write_int32(0xE09F68, 0x8C6F00A4)
         rom.write_int32(0xE09F74, 0x01CFC024)
         rom.write_int32(0xE09FB0, 0x240F0001)
-        # epona
-        rom.write_int32(0xD7E77C, 0x8C4900A4)
-        rom.write_int32(0xD7E784, 0x8D088C24)
-        rom.write_int32s(0xD7E8D4, [0x8DCE8C24, 0x8C4F00A4])
+        # epona's song
         rom.write_int32s(0xD7E140, [0x8DCE8C24, 0x8C6F00A4])
-        rom.write_int32(0xD7EBBC, 0x14410008)
-        rom.write_int32(0xD7EC1C, 0x17010010)
+        rom.write_int32( 0xD7E77C, 0x8C4900A4)
+        rom.write_int32( 0xD7E784, 0x8D088C24)
+        rom.write_int32s(0xD7E8D4, [0x8DCE8C24, 0x8C4F00A4])
+        rom.write_int32( 0xD7EBBC, 0x14410008)
+        rom.write_int32( 0xD7EC1C, 0x17010010)
         # song of time
         rom.write_int32(0xDB532C, 0x24050003)
 
@@ -1045,8 +1151,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
                 rom.write_byte(0x0D12ECB, special['item_id'])
                 rom.write_byte(0x2E8E931, special['text_id']) #Fix text box
             elif location.name == 'Song from Malon':
-                if item.name == 'Suns Song':
-                    rom.write_byte(locationaddress, next_song_id)
                 rom.write_int16(0xD7E142, bit_mask_pointer)
                 rom.write_int16(0xD7E8D6, bit_mask_pointer)
                 rom.write_int16(0xD7E786, bit_mask_pointer)
@@ -1235,8 +1339,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:LocalRom):
     for text_id, message in scrub_message_dict.items():
         update_message_by_id(messages, text_id, message)
 
-    # Update grotto id data
-    set_grotto_id_data(rom)
+    if world.shuffle_grotto_entrances:
+        # Update grotto actors based on their new entrance
+        set_grotto_shuffle_data(rom, world)
 
     if world.shuffle_cows:
         rom.write_byte(rom.sym('SHUFFLE_COWS'), 0x01)
@@ -1551,6 +1656,17 @@ def get_override_itemid(override_table, scene, type, flags):
             return entry[4]
     return None
 
+def remove_entrance_blockers(rom):
+    def remove_entrance_blockers_do(rom, actor_id, actor, scene):
+        if actor_id == 0x014E and scene == 97:
+            actor_var = rom.read_int16(actor + 14);
+            if actor_var == 0xFF01:
+                rom.write_int16(actor + 14, 0x0700)
+        if actor_id == 0x0145:
+            rom.write_int16(actor, 0x014E)
+            rom.write_int16(actor + 14, 0x0700)
+
+    get_actor_list(rom, remove_entrance_blockers_do)
 
 def set_cow_id_data(rom, world):
     def set_cow_id(rom, actor_id, actor, scene):
@@ -1578,22 +1694,48 @@ def set_cow_id_data(rom, world):
     get_actor_list(rom, set_cow_id)
 
 
-def set_grotto_id_data(rom):
-    def set_grotto_id(rom, actor_id, actor, scene):
+def set_grotto_shuffle_data(rom, world):
+    def get_grotto_data(rom, actor_id, actor, scene):
         if actor_id == 0x009B: #Grotto
             actor_zrot = rom.read_int16(actor + 12)
-            actor_var = rom.read_int16(actor + 14);
-            grotto_scene = actor_var >> 12
-            grotto_entrance = actor_zrot & 0x000F
-            grotto_id = actor_var & 0x00FF
+            actor_var = rom.read_int16(actor + 14)
 
-            if grotto_scene == 0 and grotto_entrance in [2, 4, 7, 10]:
-                grotto_scenes.add(scene)
-                rom.write_byte(actor + 15, len(grotto_scenes))
+            grotto_table[actor] = {
+                'id': (scene << 16) + actor_var,
+                'scene': (actor_var >> 8) & 0xF0,
+                'entrance': actor_zrot & 0x00FF,
+                'content': actor_var & 0x00FF,
+            }
 
-    grotto_scenes = set()
+    def override_grotto_data(rom, actor_id, actor, scene):
+        if actor_id == 0x009B: #Grotto
+            actor_zrot = rom.read_int16(actor + 12)
+            actor_var = rom.read_int16(actor + 14)
+            grotto_type = (actor_var >> 8) & 0x0F
 
-    get_actor_list(rom, set_grotto_id)
+            grotto_data = grotto_override_table[actor]
+            rom.write_byte(actor + 14, grotto_type + grotto_data['scene'])
+            rom.write_byte(actor + 13, grotto_data['entrance'])
+            rom.write_byte(actor + 15, grotto_data['content'])
+
+    # Retrieve the original grotto data
+    grotto_table = {}
+    get_actor_list(rom, get_grotto_data)
+
+    # Build the override table based on shuffled grotto entrances
+    shuffled_grotto_table = {}
+    for entrance in world.get_shuffled_entrances(type='Grotto'):
+        grotto_id = (entrance.addresses['scene'] << 16) + entrance.addresses['grotto_var']
+        grotto_override_id = (entrance.connected_region.addresses['scene'] << 16) + entrance.connected_region.addresses['grotto_var']
+        shuffled_grotto_table[grotto_id] = grotto_override_id
+
+    grotto_override_table = {}
+    for actor in grotto_table:
+        grotto_id = grotto_table[actor]['id']
+        grotto_override_table[actor] = next(filter(lambda grotto_data: grotto_data['id'] == shuffled_grotto_table[grotto_id], grotto_table.values()))
+
+    # Override grotto actors data with the new table
+    get_actor_list(rom, override_grotto_data)
 
 
 def set_deku_salesman_data(rom):

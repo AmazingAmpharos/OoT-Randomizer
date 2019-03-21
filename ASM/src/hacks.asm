@@ -517,6 +517,12 @@ nop
 .org 0xD74990
     skip_steal_tunic:
 
+; Meg starts at 1 health
+; Replaces: 
+;   0x0A
+.orga 0xCDE1FC
+    .byte 0x01
+
 ;==================================================================================================
 ; Ocarina Song Cutscene Overrides
 ;==================================================================================================
@@ -941,6 +947,12 @@ skip_GS_BGS_text:
     jal     gossip_hints
     lw      a0, 0x002C(sp) ; global context
     nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
 
 ;==================================================================================================
 ; Potion Shop Fix
@@ -1093,3 +1105,111 @@ skip_GS_BGS_text:
 .orga 0xBD9A04
     jal bunny_hood
     nop
+
+; ==================================================================================================
+; Prevent hyrule guards from casuing a softlock if they're culled 
+; ==================================================================================================
+.orga 0xE24E7C
+    jal guard_catch
+    nop
+
+;==================================================================================================
+; Never override Heart Colors
+;==================================================================================================
+
+; Replaces:
+;   SH A2, 0x020E (V0)
+;   SH T9, 0x0212 (V0)
+;   SH A0, 0x0216 (V0)
+.org 0xADA8A8
+    nop
+    nop
+    nop
+
+; Replaces:
+;   SH T5, 0x0202 (V0)
+.org 0xADA97C
+    nop
+
+.org 0xADA9A8
+    nop
+
+.org 0xADA9BC
+    nop
+
+
+.org 0xADAA64
+    nop
+
+.org 0xADAA74
+    nop
+    nop
+
+
+.org 0xADABA8
+    nop
+
+.org 0xADABCC
+    nop
+
+.org 0xADABE4
+    nop
+
+;==================================================================================================
+; Magic Meter Colors
+;==================================================================================================
+;
+; Replaces: sh	r0, 0x0794 (t6)
+;           lw  t7, 0x0000 (v0)
+;           sh  r0, 0x0796 (t7)
+;           lw  t7, 0x0000 (v0)
+;           sh  r0, 0x0798 (t8)
+.org 0xB58320
+    sw      ra, 0x0000 (sp)
+    jal     magic_colors
+    nop
+    lw      ra, 0x0000 (sp)
+    nop
+    
+
+; ==================================================================================================
+; Add ability to control Lake Hylia's water level
+; ==================================================================================================
+.orga 0xD5B264
+    jal Check_Fill_Lake
+
+.orga 0xD5B660
+    j   Fill_Lake_Destroy
+    nop
+
+.orga 0xEE7E4C
+    jal Hit_Gossip_Stone
+
+.orga 0x26C10E3
+    .byte 0xFF ; Set generic grotto text ID to load from grotto ID
+
+; ==================================================================================================
+; Disable timers 
+; ==================================================================================================
+; Replaces: lui     at, 0x800F
+;           sw      r0, 0x753C(at)
+.orga 0xAE986C ; in memory 8007390C
+    j   disable_trade_timers
+    lui at, 0x800F
+
+.orga 0xE7C398
+    jal disable_collapse_timer
+    nop
+
+; ==================================================================================================
+; Remove Shooting gallery actor when entering the room with the wrong age
+; ==================================================================================================
+.orga 0x00D357D4
+    jal shooting_gallery_init ; addiu   t6, zero, 0x0001
+
+
+; ==================================================================================================
+; static context init hook
+; ==================================================================================================
+.orga 0xAC7AD4
+    jal     Static_ctxt_Init

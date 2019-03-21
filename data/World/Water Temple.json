@@ -2,23 +2,18 @@
     {
         "region_name": "Water Temple Lobby",
         "dungeon": "Water Temple",
-        "locations": {
-            "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)"
-        },
         "exits": {
             # Child cannot do anything as the only entrant to Water Temple. So leave child
             # disconnected from here on to simplify logic as assumed adult. Child water assists
             # are still possible with as_child(can_reach(Water_Temple_Lobby) and ... )
-            "Water Temple Highest Water Level":"is_adult and Iron_Boots"
+            "Water Temple Highest Water Level":"is_adult"
         }
     },
     {
         "region_name": "Water Temple Highest Water Level",
         "dungeon":  "Water Temple",
         "locations": {
-            # If the player leaves the dungeon without collecting the item at Morpha Heart,
-            # they won't be able to come back without Iron Boots.
-            # If it is the Iron Boots or an item required to get them, it means a soft-lock.
+            "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)",
             "Morpha Heart": "Boss_Key_Water_Temple and can_use(Longshot)"
         },
         "exits": {
@@ -69,7 +64,7 @@
             "Water Temple Middle Water Level": "
                 (has_bow or can_use(Dins_Fire) or
                  ((Small_Key_Water_Temple, 5) and can_use(Hookshot)) or
-                 as_child(can_reach(Water_Temple_Lobby) and can_use(sticks))) and 
+                 as_child(can_reach(Water_Temple_Lobby) and can_use(Sticks))) and 
                 can_play(Zeldas_Lullaby)"
         }
     },

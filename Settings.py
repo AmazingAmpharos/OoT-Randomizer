@@ -164,7 +164,7 @@ class Settings:
 
     def get_numeric_seed(self):
         # salt seed with the settings, and hash to get a numeric seed
-        distribution = json.dumps(self.distribution.to_json())
+        distribution = json.dumps(self.distribution.to_json(include_output=False))
         full_string = self.settings_string + distribution + __version__ + self.seed
         return int(hashlib.sha256(full_string.encode('utf-8')).hexdigest(), 16)
 
@@ -199,29 +199,44 @@ class Settings:
         self.numeric_seed = self.get_numeric_seed()
 
 
-    def check_dependency(self, setting_name):
+    def check_dependency(self, setting_name, check_random=True):
+        return self.get_dependency(setting_name, check_random) == None
+
+
+    def get_dependency(self, setting_name, check_random=True):
         info = get_setting_info(setting_name)
-        if info.dependency != None:
-            return info.dependency(self) == None
+        if check_random and 'randomize_key' in info.gui_params and self.__dict__[info.gui_params['randomize_key']]:
+            return info.default
+        elif info.dependency != None:
+            return info.dependency(self)
         else:
-            return True
+            return None
 
 
     def remove_disabled(self):
         for info in setting_infos:
             if info.dependency != None:
-                new_value = info.dependency(self)
+                new_value = self.get_dependency(info.name)
                 if new_value != None:
                     self.__dict__[info.name] = new_value
+
         self.settings_string = self.get_settings_string()
+        self.numeric_seed = self.get_numeric_seed()
 
 
     def resolve_random_settings(self):
-        for info in setting_infos:
-            if 'randomize_key' in info.gui_params and self.__dict__[info.gui_params['randomize_key']]:
+        sorted_infos = list(setting_infos)
+        sort_key = lambda info: 0 if info.dependency is None else 1
+        sorted_infos.sort(key=sort_key)
+
+        for info in sorted_infos:
+            if not self.check_dependency(info.name, check_random=False):
+                continue
+
+            if 'randomize_key' in info.gui_params and self.__dict__[info.gui_params['randomize_key']]:               
                 choices, weights = zip(*info.gui_params['distribution'])
                 self.__dict__[info.name] = random_choices(choices, weights=weights)[0]
-                
+
 
     # add the settings as fields, and calculate information based on them
     def __init__(self, settings_dict):

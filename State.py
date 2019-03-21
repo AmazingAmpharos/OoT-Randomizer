@@ -1,7 +1,10 @@
-from Region import Region
 from collections import Counter, defaultdict
 import copy
-from Item import isBottle
+import itertools
+
+from Item import ItemInfo
+from Playthrough import Playthrough
+from Region import Region
 
 
 class State(object):
@@ -14,6 +17,7 @@ class State(object):
         self.collected_locations = {}
         self.current_spot = None
         self.adult = None
+        self.tod = None
 
 
     def clear_cached_unreachable(self):
@@ -23,9 +27,7 @@ class State(object):
 
 
     def clear_cache(self):
-        self.region_cache = {}
-        self.location_cache = {}
-        self.entrance_cache = {}
+        self.region_cache = { 'child': {}, 'adult': {} }
 
 
     def copy(self, new_world=None):
@@ -53,12 +55,17 @@ class State(object):
             return spot           
 
 
-    def can_reach(self, spot=None, resolution_hint='Region', age=None):
+    def can_reach(self, spot=None, resolution_hint='Region', age=None, tod=None):
         if spot == None:
             # Default to the current spot's parent region, to allow can_reach to be used without arguments inside access rules
             spot = self.current_spot.parent_region
         else:
             spot = self.get_spot(spot, resolution_hint)
+
+        if tod == 'all':
+            return self.can_reach(spot, age=age, tod='day') and self.can_reach(spot, age=age, tod='night')
+        elif tod != None:
+            return self.with_tod(lambda state: state.can_reach(spot, age=age), tod)
 
         if age == None:
             # If the age parameter is missing, the current age should be used, but if it's not defined either, we default to age='either'
@@ -78,6 +85,11 @@ class State(object):
         if not isinstance(spot, Region):
             return spot.can_reach(self)
 
+        # If we are currently checking for reachability with a specific time of day and the time can be changed here, 
+        # we want to continue the reachability test without a time of day, to make sure we could actually get there
+        if self.tod != None and self.can_change_time(spot):
+            return self.with_tod(lambda state: state.can_reach(spot), None)
+
         # If we reached this point, it means the current age should be used
         if self.adult:
             age_type = 'adult'
@@ -87,7 +99,8 @@ class State(object):
         if spot.recursion_count[age_type] > 0:
             return False
 
-        if spot in self.region_cache[age_type]:
+        # The normal cache can't be used while checking for reachability with a specific time of day
+        if self.tod == None and spot in self.region_cache[age_type]:
             return self.region_cache[age_type][spot]
 
         # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that is what we are trying to figure out right now in the first place
@@ -141,24 +154,54 @@ class State(object):
         return lambda_rule_result
 
 
-    def as_either_here(self, lambda_rule):
+    def as_either_here(self, lambda_rule=lambda state: True):
         return self.as_either(self.add_reachability(lambda_rule))
 
 
-    def as_both_here(self, lambda_rule):
+    def as_both_here(self, lambda_rule=lambda state: True):
         return self.as_both(self.add_reachability(lambda_rule))
 
 
-    def as_adult_here(self, lambda_rule):
+    def as_adult_here(self, lambda_rule=lambda state: True):
         return self.as_adult(self.add_reachability(lambda_rule))
 
 
-    def as_child_here(self, lambda_rule):
+    def as_child_here(self, lambda_rule=lambda state: True):
         return self.as_child(self.add_reachability(lambda_rule))
 
 
     def add_reachability(self, lambda_rule):
         return lambda state: state.can_reach() and lambda_rule(state)
+
+
+    def at_day(self):
+        return self.at_tod('day')
+
+
+    def at_night(self):
+        return self.at_tod('night')
+
+
+    def at_tod(self, tod):
+        if self.tod == None:
+            return self.with_tod(lambda state: state.can_reach(), tod)
+        else:
+            return self.tod == tod
+
+
+    def with_tod(self, lambda_rule, tod):
+        # It's important to set the tod property back to what it was originally after executing the rule here
+        original_tod = self.tod
+        self.tod = tod
+        lambda_rule_result = lambda_rule(self)
+        self.tod = original_tod
+        return lambda_rule_result
+
+
+    def can_change_time(self, region):
+        # For now we assume that Sun's Song can be used to change time anywhere, 
+        # and that all time of day states used in logic can be reached by playing Sun's Song
+        return region.time_passes or self.can_play('Suns Song')
 
 
     def item_name(self, location):
@@ -281,9 +324,9 @@ class State(object):
         elif item == 'Golden Gauntlets':
             return self.has('Progressive Strength Upgrade', 3) and self.is_adult()
         elif item == 'Scarecrow':
-            return self.has('Progressive Hookshot') and self.is_adult() and self.has_ocarina() and self.has_scarecrow_song()
+            return self.has('Progressive Hookshot') and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Distant Scarecrow':
-            return self.has('Progressive Hookshot', 2) and self.is_adult() and self.has_ocarina() and self.has_scarecrow_song()
+            return self.has('Progressive Hookshot', 2) and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Magic Bean':
             # Magic Bean usability automatically checks for reachability as child to the current spot's parent region (with as_child_here)
             return self.as_child_here(lambda state: state.has('Magic Bean')) and self.is_adult()
@@ -340,9 +383,6 @@ class State(object):
              self.has('Boomerang') or self.has_explosives() or self.has('Buy Bottle Bug'))
 
 
-    def has_scarecrow_song(self):
-        return self.world.free_scarecrow or self.can_reach('Lake Hylia', age='both')
-
     def can_use_projectile(self):
         return self.has_explosives() or \
                (self.is_adult() and (self.has_bow() or self.has('Progressive Hookshot'))) or \
@@ -364,24 +404,43 @@ class State(object):
 
 
     def can_finish_adult_trades(self):
-        zora_thawed = (self.can_play('Zeldas Lullaby') or (self.has('Hover Boots') and self.world.logic_zora_with_hovers)) and self.has_blue_fire()
-        carpenter_access = self.can_reach('Gerudo Valley Far Side')
-        return (self.has('Claim Check') or ((self.has('Progressive Strength Upgrade') or self.can_blast_or_smash() or self.has_bow() or self.world.logic_biggoron_bolero) and (((self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword')) and zora_thawed) or ((self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg')) and zora_thawed and carpenter_access))))
+        zora_thawed = self.can_reach('Zoras Domain', age='adult') and self.has_blue_fire()
+        
+        pocket_egg = self.has('Pocket Egg')
+        pocket_cucco = self.has('Pocket Cucco') or pocket_egg
+        cojiro = self.has('Cojiro') or (pocket_cucco and self.can_reach('Carpenter Boss House', age='adult'))
+        odd_mushroom = self.has('Odd Mushroom') or cojiro
+        odd_poutice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult')
+        poachers_saw = self.has('Poachers Saw') or odd_poutice
+        broken_sword = self.has('Broken Sword') or (poachers_saw and self.can_reach('Gerudo Valley Far Side', age='adult'))
+        prescription = self.has('Prescription') or broken_sword
+        eyeball_frog = (self.has('Eyeball Frog') or prescription) and zora_thawed
+        eyedrops = (self.has('Eyedrops') or eyeball_frog) and self.can_reach('Lake Hylia Lab', age='adult') and zora_thawed
+        claim_check = self.has('Claim Check') or \
+                      (eyedrops and \
+                            (self.world.shuffle_interior_entrances or self.has('Progressive Strength Upgrade') or \
+                             self.can_blast_or_smash() or self.has_bow() or self.world.logic_biggoron_bolero))
+
+        return claim_check
+
+
+    def has_skull_mask(self):
+        return self.has('Zeldas Letter') and self.can_reach('Castle Town Mask Shop')
 
 
     def has_mask_of_truth(self):
         # Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man.
-        return self.has('Zeldas Letter') and self.can_play('Sarias Song') and self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire')
+        return self.has_skull_mask() and self.can_play('Sarias Song') and self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire')
 
 
     def has_bottle(self):
         # Extra Ruto's Letter are automatically emptied
-        return self.has_any(isBottle) or self.has('Bottle with Letter', 2)
+        return self.has_any(ItemInfo.isBottle) or self.has('Bottle with Letter', 2)
 
 
     def bottle_count(self):
         # Extra Ruto's Letter are automatically emptied
-        return sum([pritem for pritem in self.prog_items if isBottle(pritem)]) + max(self.prog_items['Bottle with Letter'] - 1, 0)
+        return sum([pritem for pritem in self.prog_items if ItemInfo.isBottle(pritem)]) + max(self.prog_items['Bottle with Letter'] - 1, 0)
 
 
     def has_hearts(self, count):
@@ -498,55 +557,20 @@ class State(object):
                 if item.world.id == base_state.world.id: # Check world
                     new_state.collect(item)
             new_state_list.append(new_state)
-        State.collect_locations(new_state_list)
+        Playthrough(new_state_list).collect_locations()
         return new_state_list
 
-
-    # This collected all item locations available in the state list given that
+    # This collects all item locations available in the state list given that
     # the states have collected items. The purpose is that it will search for
     # all new items that become accessible with a new item set
     @staticmethod
     def collect_locations(state_list):
-        # Get all item locations in the worlds
-        item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
-
-        # will loop if there is more items opened up in the previous iteration. Always run once
-        reachable_items_locations = True
-        while reachable_items_locations:
-            # get reachable new items locations
-            reachable_items_locations = [location for location in item_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
-            for location in reachable_items_locations:
-                # Mark the location collected in the state world it exists in
-                state_list[location.world.id].collected_locations[location.name] = True
-                # Collect the item for the state world it is for
-                state_list[location.item.world.id].collect(location.item)
+        Playthrough(state_list).collect_locations()
 
 
-    # This returns True is every state is beatable. It's important to ensure
-    # all states beatable since items required in one world can be in another.
     @staticmethod
     def can_beat_game(state_list, scan_for_items=True):
-        if scan_for_items:
-            # Check if already beaten
-            game_beaten = True
-            for state in state_list:
-                if not state.has('Triforce'):
-                    game_beaten = False
-                    break
-            if game_beaten:
-                return True
-
-            # collect all available items
-            new_state_list = [state.copy() for state in state_list]
-            State.collect_locations(new_state_list)
-        else:
-            new_state_list = state_list
-
-        # if the every state got the Triforce, then return True
-        for state in new_state_list:
-            if not state.has('Triforce'):
-                return False
-        return True
+        return Playthrough(state_list).can_beat_game(scan_for_items)
 
 
     @staticmethod
@@ -555,38 +579,40 @@ class State(object):
         state_list = [world.state for world in worlds]
 
         # get list of all of the progressive items that can appear in hints
+        # all_locations: all progressive items. have to collect from these
+        # item_locations: only the ones that should appear as "required"/WotH
         all_locations = [location for world in worlds for location in world.get_filled_locations()]
-        item_locations = [location for location in all_locations if location.item.majoritem and not location.locked]
+        # Set to test inclusion against
+        item_locations = {location for location in all_locations if location.item.majoritem and not location.locked}
 
         # if the playthrough was generated, filter the list of locations to the
         # locations in the playthrough. The required locations is a subset of these
         # locations. Can't use the locations directly since they are location to the
         # copied spoiler world, so must try to find the matching locations by name
         if spoiler.playthrough:
-            spoiler_locations = defaultdict(lambda: [])
-            for location in [location for _,sphere in spoiler.playthrough.items() for location in sphere]:
+            spoiler_locations = defaultdict(list)
+            for location in itertools.chain.from_iterable(spoiler.playthrough.values()):
                 spoiler_locations[location.name].append(location.world.id)
-            item_locations = list(filter(lambda location: location.world.id in spoiler_locations[location.name], item_locations))
+            item_locations = set(filter(lambda location: location.world.id in spoiler_locations[location.name], item_locations))
 
         required_locations = []
-        reachable_items_locations = True
-        while (item_locations and reachable_items_locations):
-            reachable_items_locations = [location for location in all_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
-            for location in reachable_items_locations:
-                # Try to remove items one at a time and see if the game is still beatable
-                if location in item_locations:
-                    old_item = location.item
-                    location.item = None
-                    if not State.can_beat_game(state_list):
-                        required_locations.append(location)
-                    location.item = old_item
-                    item_locations.remove(location)
-                state_list[location.world.id].collected_locations[location.name] = True
-                state_list[location.item.world.id].collect(location.item)
+
+        playthrough = Playthrough(state_list)
+        for location in playthrough.iter_reachable_locations(all_locations):
+            # Try to remove items one at a time and see if the game is still beatable
+            if location in item_locations:
+                old_item = location.item
+                location.item = None
+                # copies state! This is very important as we're in the middle of a playthrough
+                # already, but beneficially, has playthrough it can start from
+                if not playthrough.can_beat_game():
+                    required_locations.append(location)
+                location.item = old_item
+            state_list[location.world.id].collected_locations[location.name] = True
+            state_list[location.item.world.id].collect(location.item)
 
         # Filter the required location to only include location in the world
         required_locations_dict = {}
         for world in worlds:
             required_locations_dict[world.id] = list(filter(lambda location: location.world.id == world.id, required_locations))
         spoiler.required_locations = required_locations_dict
-

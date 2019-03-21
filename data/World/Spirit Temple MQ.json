@@ -12,7 +12,6 @@
                 can_use(Slingshot) or can_use(Boomerang)"
         },
         "exits": {
-            "Desert Colossus": "True",
             "Child Spirit Temple": "is_child",
             "Adult Spirit Temple": "
                 has_bombchus and can_use(Longshot) and can_use(Silver_Gauntlets)"
@@ -119,12 +118,14 @@
     },
     {
         "region_name": "Mirror Shield Hand",
+        "hint": "Desert Colossus",
         "locations": {
             "Mirror Shield Chest": "True"
         }
     },
     {
         "region_name": "Silver Gauntlets Hand",
+        "hint": "Desert Colossus",
         "locations": {
             "Silver Gauntlets Chest": "True"
         }

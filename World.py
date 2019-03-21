@@ -1,6 +1,7 @@
 from State import State
 from Region import Region
 from Entrance import Entrance
+from Hints import get_hint_area
 from Location import Location, LocationFactory
 from LocationList import business_scrubs
 from DungeonList import create_dungeons
@@ -51,6 +52,9 @@ class World(object):
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
+        self.shuffle_dungeon_entrances = self.entrance_shuffle == 'dungeons' or self.entrance_shuffle == 'indoors'
+        self.shuffle_grotto_entrances = self.entrance_shuffle == 'indoors'
+        self.shuffle_interior_entrances = self.entrance_shuffle == 'indoors'
 
         # trials that can be skipped will be decided later
         self.skipped_trials = {
@@ -120,8 +124,12 @@ class World(object):
         for region in region_json:
             new_region = Region(region['region_name'])
             new_region.world = self
+            if 'hint' in region:
+                new_region.hint = region['hint']
             if 'dungeon' in region:
                 new_region.dungeon = region['dungeon']
+            if 'time_passes' in region:
+                new_region.time_passes = region['time_passes']
             if 'locations' in region:
                 for location, rule in region['locations'].items():
                     new_location = LocationFactory(location)
@@ -143,7 +151,8 @@ class World(object):
     def initialize_entrances(self):
         for region in self.regions:
             for exit in region.exits:
-                exit.connect(self.get_region(exit.connected_region))        
+                exit.connect(self.get_region(exit.connected_region))
+                exit.world = self
 
 
     def initialize_regions(self):
@@ -252,6 +261,10 @@ class World(object):
         return [loc.item for loc in self.get_filled_locations()] + self.itempool
 
 
+    def get_itempool_with_dungeon_items(self):
+        return self.get_restricted_dungeon_items() + self.get_unrestricted_dungeon_items() + self.itempool
+
+
     # get a list of items that should stay in their proper dungeon
     def get_restricted_dungeon_items(self):
         itempool = []
@@ -342,6 +355,14 @@ class World(object):
         return False
 
 
+    def get_entrances(self):
+        return [entrance for region in self.regions for entrance in region.entrances]
+
+
+    def get_shuffled_entrances(self, type=None):
+        return [entrance for entrance in self.get_entrances() if entrance.shuffled and (type == None or entrance.type == type)]
+
+
     def has_beaten_game(self, state):
         return state.has('Triforce')
 
@@ -359,17 +380,19 @@ class World(object):
         # Link's Pocket and None are not real areas
         excluded_areas = [None, "Link's Pocket"]
         for location in self.get_locations():
+            location_hint = get_hint_area(location)
+
             # We exclude event and locked locations. This means that medallions
             # and stones are not considered here. This is not really an accurate
             # way of doing this, but it's the only way to allow dungeons to appear.
             # So barren hints do not include these dungeon rewards.
-            if location.hint in excluded_areas or \
+            if location_hint in excluded_areas or \
                location.locked or \
                location.item is None or \
                location.item.type == "Event":
                 continue
 
-            area = location.hint
+            area = location_hint
 
             # Build the area list and their items
             if area not in areas:
@@ -476,7 +499,7 @@ class World(object):
                     max_progressive = self.settings.big_poe_count
                 else:
                     dupe_locations = duplicate_item_woth[world_id].get(item.name, [])
-                    max_progressive = item.special.get('Progressive', 1)
+                    max_progressive = item.special.get('progressive', 1)
 
                 # If this is a required item location, then it is not useless
                 for dupe_location in dupe_locations:

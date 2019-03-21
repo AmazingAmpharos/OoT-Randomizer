@@ -114,9 +114,9 @@ uint16_t seeds_to_rupee(z64_file_t *save, uint16_t item_id) {
 
 uint16_t letter_to_bottle(z64_file_t *save, uint16_t item_id) {
     if (save->event_chk_inf[3] & 0x0008) // "King Zora Moved Aside"
-        return 0xC9; // Redundant Letter Bottle
+        return 0xC8; // Redundant Letter Bottle
     if (save->items[Z64_SLOT_BOTTLE_1] == 0x1B || save->items[Z64_SLOT_BOTTLE_2] == 0x1B
      || save->items[Z64_SLOT_BOTTLE_3] == 0x1B || save->items[Z64_SLOT_BOTTLE_4] == 0x1B)
-        return 0xC9; // Redundant Letter Bottle
-    return 0x15; // Bottled Ruto's Letter
+        return 0xC8; // Redundant Letter Bottle
+    return item_id;
 }
