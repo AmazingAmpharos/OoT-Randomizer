@@ -119,12 +119,14 @@
     },
     {
         "region_name": "Mirror Shield Hand",
+        "dungeon": "Spirit Temple",
         "locations": {
             "Mirror Shield Chest": "True"
         }
     },
     {
         "region_name": "Silver Gauntlets Hand",
+        "dungeon": "Spirit Temple",
         "locations": {
             "Silver Gauntlets Chest": "True"
         }

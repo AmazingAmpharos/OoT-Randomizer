@@ -97,6 +97,7 @@
     },
     {
         "region_name": "Spirit Temple Outdoor Hands",
+        "dungeon": "Spirit Temple",
         "locations": {
             "Silver Gauntlets Chest": "can_reach('Desert Colossus -> Spirit Temple Outdoor Hands',Entrance) or 
                 can_reach('Spirit Temple Central Chamber') or 

@@ -133,7 +133,7 @@
     },
     {
         "region_name": "Spirit Temple Outdoor Hands",
-        "hint": "Desert Colossus",
+        "dungeon": "Spirit Temple",
         "locations": {
             "Silver Gauntlets Chest": "
                 ((Small_Key_Spirit_Temple, 3) and (Progressive_Hookshot, 2) and has_explosives) or 
