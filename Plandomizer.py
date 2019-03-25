@@ -423,7 +423,7 @@ class WorldDistribution(object):
             if item.advancement:
                 states_after = State.get_states_with_items([world.state for world in worlds], reduce(lambda a, b: a + b, item_pools))
                 if not State.can_beat_game(states_after, True):
-                    raise FillError('%s in world %d is not reachable without %s in world %d!' % (location.name, self.id + 1, item.name, player_world.id + 1))
+                    raise FillError('%s in world %d is not reachable without %s in world %d!' % (location.name, self.id + 1, item.name, player_id + 1))
             window.fillcount += 1
             window.update_progress(5 + ((window.fillcount / window.locationcount) * 30))
 
