@@ -59,7 +59,7 @@ class State(object):
             else:
                 raise AttributeError('Unknown resolution hint type: ' + str(resolution_hint))
         else:
-            return spot           
+            return spot
 
 
     def can_reach(self, spot=None, resolution_hint='Region', age=None, tod=None):
@@ -92,7 +92,7 @@ class State(object):
         if not isinstance(spot, Region):
             return spot.can_reach(self)
 
-        # If we are currently checking for reachability with a specific time of day and the time can be changed here, 
+        # If we are currently checking for reachability with a specific time of day and the time can be changed here,
         # we want to continue the reachability test without a time of day, to make sure we could actually get there
         if self.tod != None and self.can_change_time(spot):
             return self.with_tod(lambda state: state.can_reach(spot), None)
@@ -124,7 +124,6 @@ class State(object):
             self.region_cache[age_type][spot] = can_reach
 
         return can_reach
-        
 
 
     def as_either(self, lambda_rule):
@@ -141,7 +140,7 @@ class State(object):
 
     def as_child(self, lambda_rule):
         return self.can_become_child() and self.with_age(lambda_rule, 'child')
-            
+
 
     def with_age(self, lambda_rule, age):
         # It's important to set the age property back to what it was originally after executing the rule here
@@ -206,7 +205,7 @@ class State(object):
 
 
     def can_change_time(self, region):
-        # For now we assume that Sun's Song can be used to change time anywhere, 
+        # For now we assume that Sun's Song can be used to change time anywhere,
         # and that all time of day states used in logic can be reached by playing Sun's Song
         return region.time_passes or self.can_play('Suns Song')
 
@@ -386,7 +385,7 @@ class State(object):
 
     def can_see_with_lens(self):
         return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
-    
+
 
     def can_plant_bugs(self):
         return self.is_child() and self.has_bugs()
@@ -394,18 +393,15 @@ class State(object):
 
     def has_bugs(self):
         return self.has_bottle() and \
-            (self.can_leave_forest() or self.has_sticks() or self.has('Kokiri Sword') or 
+            (self.can_leave_forest() or self.has_sticks() or self.has('Kokiri Sword') or
              self.has('Boomerang') or self.has_explosives() or self.has('Buy Bottle Bug'))
-
-
-    def has_scarecrow_song(self):
-        return self.world.free_scarecrow or self.can_reach('Lake Hylia', age='both')
 
 
     def can_use_projectile(self):
         return self.has_explosives() or \
                (self.is_adult() and (self.has_bow() or self.has('Progressive Hookshot'))) or \
                (self.is_child() and (self.has_slingshot() or self.has('Boomerang')))
+
 
     def has_projectile(self, age='either'):
         if age == 'child':
@@ -421,6 +417,7 @@ class State(object):
     def can_leave_forest(self):
         return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'), age='either') \
             or self.is_glitched
+
 
     def can_finish_adult_trades(self):
         if self.is_glitched:
@@ -448,9 +445,11 @@ class State(object):
                             (self.world.shuffle_interior_entrances or self.has('Progressive Strength Upgrade') or \
                              self.can_blast_or_smash() or self.has_bow() or self.world.logic_biggoron_bolero))
             return claim_check
-    
+
+
     def has_skull_mask(self):
         return self.has('Zeldas Letter') and self.can_reach('Castle Town Mask Shop')
+
 
     def has_mask_of_truth(self):
         # Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man.
@@ -471,10 +470,12 @@ class State(object):
         # Warning: This only considers items that are marked as advancement items
         return self.heart_count() >= count
 
+
     def has_shield(self):
         #The mirror shield does not count as it cannot reflect deku scrub attack
         return (self.is_adult() and self.has('Buy Hylian Shield')) or \
         (self.is_child() and self.has('Buy Deku Shield'))
+
 
     def heart_count(self):
         # Warning: This only considers items that are marked as advancement items
@@ -488,8 +489,10 @@ class State(object):
     def has_fire_source(self):
         return self.can_use('Dins Fire') or self.can_use('Fire Arrows')
 
+
     def has_fire_source_with_torch(self):
         return self.has_fire_source() or (self.is_child() and self.has_sticks())
+
 
     def guarantee_hint(self):
         if(self.world.hints == 'mask'):
@@ -519,6 +522,7 @@ class State(object):
         else:
             return False
 
+
     def can_finish_GerudoFortress(self):
         if self.world.gerudo_fortress == 'normal':
             return self.has('Small Key (Gerudo Fortress)', 4) and \
@@ -534,10 +538,11 @@ class State(object):
         return (self.is_adult() and (self.has('Buy Hylian Shield') or self.has('Mirror Shield'))) or \
             (self.is_child() and self.has('Buy Deku Shield'))
 
+
     def can_mega(self):
         return self.has_explosives() and self.can_shield()
 
-    
+
     def can_isg(self):
         return self.can_shield() and (self.is_adult() or self.has_sticks() or self.has('Kokiri Sword'))
 
@@ -545,9 +550,10 @@ class State(object):
     def can_hover(self):
         return self.can_mega() and self.can_isg()
 
-    
+
     def can_weirdshot(self):
         return self.can_mega() and self.can_use('Hookshot')
+
 
     def can_jumpslash(self):
         return self.is_adult() or (self.is_child() and (self.has_sticks or self.has('Kokiri Sword')))

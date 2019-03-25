@@ -43,17 +43,8 @@ class Setting_Info():
         elif self.type == list:
             self.default = []
 
-        if 'randomize_key' in gui_params:
-            # initialize random choice distribution if not set
-            if 'distribution' not in gui_params:
-                self.gui_params['distribution'] = [(choice, 1) for choice in self.choice_list]
-
-            # add dependency for randomize option
-            if self.dependency:
-                old_dependency = dependency
-                self.dependency = lambda settings: self.default if settings.__dict__[self.gui_params['randomize_key']] else old_dependency(settings)
-            else:
-                self.dependency = lambda settings: self.default if settings.__dict__[self.gui_params['randomize_key']] else None
+        if 'distribution' not in gui_params:
+            self.gui_params['distribution'] = [(choice, 1) for choice in self.choice_list]
 
 
     def calc_bitwidth(self, choices):
