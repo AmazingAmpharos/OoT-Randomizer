@@ -706,28 +706,33 @@ setting_infos = [
         },
     ),
     Combobox(
-        name           = 'logic_rules',
-        default        = 'glitchless',
-        choices        = {
-            'glitchless': 'Glitchless',
-            'none':       'No Logic',
-        },
-        gui_text       = 'Logic Rules',
-        gui_group      = 'world',
-        gui_tooltip    = '''\
-            Sets the rules the logic uses
-            to determine accessibility.
+            name           = 'logic_rules',
+            default        = 'glitchless',
+            choices        = {
+                'glitchless': 'Glitchless',
+                'glitched':   'Glitched',
+                'none':       'No Logic',
+                },
+            gui_text       = 'Logic Rules',
+            gui_group      = 'world',
+            gui_tooltip    = '''\
+                             Sets the rules the logic uses
+                             to determine accessibility.
+        
+                             'Glitchless': No glitches are
+                             required, but may require some
+                             minor tricks
 
-            'Glitchless': No glitches are
-            required, but may require some
-            minor tricks
-
-            'No Logic': All locations are
-            considered available. May not
-            be beatable.
-        ''',
-        shared         = True,
-    ),
+                             'Glitched': Movement oriented
+                             glitches are likely required.
+                             No locations excluded.
+        
+                             'No Logic': All locations are
+                             considered available. May not
+                             be beatable.
+                             ''',
+            shared         = True,
+            ),
     Checkbutton(
         name           = 'all_reachable',
         gui_text       = 'All Locations Reachable',
@@ -1113,6 +1118,7 @@ setting_infos = [
                 ('indoors', 1),
             ],
         },
+        dependency     = lambda settings: 'off' if settings.logic_rules == 'glitched' else None,
     ),
     Combobox(
         name           = 'shuffle_scrubs',
@@ -1376,14 +1382,14 @@ setting_infos = [
             If set, a random number of dungeons
             will have Master Quest designs.
         ''',
-        dependency     = lambda settings: False if settings.entrance_shuffle != 'off' else None,
+        dependency     = lambda settings: False if settings.entrance_shuffle != 'off' or settings.logic_rules == 'glitched' else None,
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
             'distribution': [
                 (True, 1),
             ],
-        },
+        }
     ),
     Scale(
         name           = 'mq_dungeons',
@@ -1404,11 +1410,13 @@ setting_infos = [
             12: All dungeons will have
             Master Quest redesigns.
             ''',
-        dependency     = lambda settings: 0 if settings.mq_dungeons_random or settings.entrance_shuffle != 'off' else None,
+
+        dependency     = lambda settings: 0 if settings.mq_dungeons_random or settings.entrance_shuffle != 'off' or settings.logic_rules == 'glitched' else None,
+
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
-        },    
+        },
     ),
     Setting_Info(
         name           = 'disabled_locations', 

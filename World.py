@@ -120,7 +120,7 @@ class World(object):
             raise Exception("JSON parse error around text:\n" + \
                             json_string[error.pos-35:error.pos+35] + "\n" + \
                             "                                   ^^\n")
-
+            
         for region in region_json:
             new_region = Region(region['region_name'])
             new_region.world = self
