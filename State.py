@@ -222,10 +222,7 @@ class State(object):
 
 
     def has_any(self, predicate):
-        for pritem in self.prog_items:
-            if predicate(pritem):
-                return True
-        return False
+        return any(map(predicate, self.prog_items))
 
 
     def item_count(self, item):
@@ -357,18 +354,21 @@ class State(object):
 
 
     def has_bombchus(self):
-        return (self.world.bombchus_in_logic and \
-                    (self.has_any(lambda pritem: pritem.startswith('Bombchus')) and \
-                        self.can_buy_bombchus())) \
-            or (not self.world.bombchus_in_logic and self.has('Bomb Bag') and \
-                        self.can_buy_bombchus())
+        if self.can_buy_bombchus():
+            if self.world.bombchus_in_logic:
+                return self.has_any(lambda pritem: pritem.startswith('Bombchus'))
+            else:
+                return self.has('Bomb Bag')
+        else:
+            return False
 
 
     def has_bombchus_item(self):
-        return (self.world.bombchus_in_logic and \
-                (self.has_any(lambda pritem: pritem.startswith('Bombchus')) \
-                or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland', age='either')))) \
-            or (not self.world.bombchus_in_logic and self.has('Bomb Bag'))
+        if self.world.bombchus_in_logic:
+            return (self.has_any(lambda pritem: pritem.startswith('Bombchus'))
+                    or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland', age='either')))
+        else:
+            return self.has('Bomb Bag')
 
 
     def has_explosives(self):
@@ -404,14 +404,18 @@ class State(object):
 
 
     def has_projectile(self, age='either'):
+        if self.has_explosives():
+            return True
         if age == 'child':
-            return self.has_explosives() or self.has_slingshot() or self.has('Boomerang')
+            return self.has_slingshot() or self.has('Boomerang')
         elif age == 'adult':
-            return self.has_explosives() or self.has_bow() or self.has('Progressive Hookshot')
+            return self.has_bow() or self.has('Progressive Hookshot')
         elif age == 'both':
-            return self.has_explosives() or ((self.has_bow() or self.has('Progressive Hookshot')) and (self.has_slingshot() or self.has('Boomerang')))
+            return ((self.has_bow() or self.has('Progressive Hookshot'))
+                    and (self.has_slingshot() or self.has('Boomerang')))
         else:
-            return self.has_explosives() or ((self.has_bow() or self.has('Progressive Hookshot')) or (self.has_slingshot() or self.has('Boomerang')))
+            return ((self.has_bow() or self.has('Progressive Hookshot'))
+                    or (self.has_slingshot() or self.has('Boomerang')))
 
 
     def can_leave_forest(self):
@@ -426,25 +430,27 @@ class State(object):
             has_low_trade = (self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg'))
             has_high_trade = (self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword'))
             return self.can_reach('Death Mountain Crater Upper', age='adult') and (
-                self.has('Claim Check') or (has_high_trade and zora_thawed) or (has_low_trade and zora_thawed and carpenter_access)
-            )
+                self.has('Claim Check')
+                or (zora_thawed and (has_high_trade or (has_low_trade and carpenter_access))))
         else:
             zora_thawed = self.can_reach('Zoras Domain', age='adult') and self.has_blue_fire()
             pocket_egg = self.has('Pocket Egg')
             pocket_cucco = self.has('Pocket Cucco') or pocket_egg
             cojiro = self.has('Cojiro') or (pocket_cucco and self.can_reach('Carpenter Boss House', age='adult'))
             odd_mushroom = self.has('Odd Mushroom') or cojiro
-            odd_poutice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult')
-            poachers_saw = self.has('Poachers Saw') or odd_poutice
+            odd_poultice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult')
+            poachers_saw = self.has('Poachers Saw') or odd_poultice
             broken_sword = self.has('Broken Sword') or (poachers_saw and self.can_reach('Gerudo Valley Far Side', age='adult'))
             prescription = self.has('Prescription') or broken_sword
             eyeball_frog = (self.has('Eyeball Frog') or prescription) and zora_thawed
             eyedrops = (self.has('Eyedrops') or eyeball_frog) and self.can_reach('Lake Hylia Lab', age='adult') and zora_thawed
-            claim_check = self.has('Claim Check') or \
-                      (eyedrops and \
-                            (self.world.shuffle_interior_entrances or self.has('Progressive Strength Upgrade') or \
-                             self.can_blast_or_smash() or self.has_bow() or self.world.logic_biggoron_bolero))
-            return claim_check
+            return (self.has('Claim Check')
+                    or (eyedrops and
+                        (self.world.shuffle_interior_entrances
+                            or self.has('Progressive Strength Upgrade')
+                            or self.can_blast_or_smash()
+                            or self.has_bow()
+                            or self.world.logic_biggoron_bolero)))
 
 
     def has_skull_mask(self):
@@ -463,7 +469,7 @@ class State(object):
 
     def bottle_count(self):
         # Extra Ruto's Letter are automatically emptied
-        return sum([pritem for pritem in self.prog_items if ItemInfo.isBottle(pritem)]) + max(self.prog_items['Bottle with Letter'] - 1, 0)
+        return sum(filter(ItemInfo.isBottle, self.prog_items)) + max(self.prog_items['Bottle with Letter'] - 1, 0)
 
 
     def has_hearts(self, count):
@@ -473,8 +479,8 @@ class State(object):
 
     def has_shield(self):
         #The mirror shield does not count as it cannot reflect deku scrub attack
-        return (self.is_adult() and self.has('Buy Hylian Shield')) or \
-        (self.is_child() and self.has('Buy Deku Shield'))
+        return ((self.is_adult() and self.has('Buy Hylian Shield')) or
+                (self.is_child() and self.has('Buy Deku Shield')))
 
 
     def heart_count(self):
@@ -495,10 +501,10 @@ class State(object):
 
 
     def guarantee_hint(self):
-        if(self.world.hints == 'mask'):
+        if self.world.hints == 'mask':
             # has the mask of truth
             return self.has_mask_of_truth()
-        elif(self.world.hints == 'agony'):
+        elif self.world.hints == 'agony':
             # has the Stone of Agony
             return self.has('Stone of Agony')
         return True
@@ -525,18 +531,22 @@ class State(object):
 
     def can_finish_GerudoFortress(self):
         if self.world.gerudo_fortress == 'normal':
-            return self.has('Small Key (Gerudo Fortress)', 4) and \
-                (self.can_use('Bow') or self.can_use('Hookshot') or self.can_use('Hover Boots') \
-                    or self.world.logic_gerudo_kitchen or self.is_glitched)
+            return (self.has('Small Key (Gerudo Fortress)', 4) and
+                    (self.can_use('Bow')
+                        or self.can_use('Hookshot')
+                        or self.can_use('Hover Boots')
+                        or self.world.logic_gerudo_kitchen
+                        or self.is_glitched))
         elif self.world.gerudo_fortress == 'fast':
-            return self.has('Small Key (Gerudo Fortress)', 1) and (self.is_adult() or self.is_glitched)
+            return (self.has('Small Key (Gerudo Fortress)', 1) and
+                    (self.is_adult() or self.is_glitched))
         else:
             return self.is_adult() or self.is_glitched
 
 
     def can_shield(self):
-        return (self.is_adult() and (self.has('Buy Hylian Shield') or self.has('Mirror Shield'))) or \
-            (self.is_child() and self.has('Buy Deku Shield'))
+        return ((self.is_adult() and (self.has('Buy Hylian Shield') or self.has('Mirror Shield')))
+                or (self.is_child() and self.has('Buy Deku Shield')))
 
 
     def can_mega(self):
@@ -560,7 +570,7 @@ class State(object):
 
 
     # Used for fall damage and other situations where damage is unavoidable
-    def can_live_dmg(self,hearts):
+    def can_live_dmg(self, hearts):
         mult = self.world.damage_multiplier
         if hearts*4 >= 3:
             return mult != 'ohko' and mult != 'quadruple'
@@ -599,15 +609,6 @@ class State(object):
 
     def __setstate__(self, state):
         self.__dict__.update(state)
-
-
-    def __getattr__(self, item):
-        if item.startswith('can_reach_'):
-            return self.can_reach(item[10])
-        elif item.startswith('has_'):
-            return self.has(item[4])
-
-        raise RuntimeError('Cannot parse %s.' % item)
 
 
     # This function returns a list of states that is each of the base_states
