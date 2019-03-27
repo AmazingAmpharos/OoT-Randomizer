@@ -25,12 +25,11 @@ class Playthrough(object):
     def uncollect(self, location):
         self.cached_spheres[self.location_in_sphere[location]+1:] = []
 
-    # Internal to the iteration. Modifies the exit_queue, region_set,
-    # and may modify those for cross_age. Returns a queue of the exits
-    # whose access rule failed, as a cache for the exits to try on the next iteration.
+    # Internal to the iteration. Modifies the exit_queue, region_set. 
+    # Returns a queue of the exits whose access rule failed, 
+    # as a cache for the exits to try on the next iteration.
     @staticmethod
-    def _expand_regions(exit_queue, region_set, validate,
-                        cross_age_queue, cross_age_set):
+    def _expand_regions(exit_queue, region_set, validate):
         new_exit = lambda exit: exit.connected_region != None and exit.connected_region not in region_set
         failed = []
         while exit_queue:
@@ -39,13 +38,6 @@ class Playthrough(object):
                 if validate(exit):
                     region_set.add(exit.connected_region)
                     exit_queue.extend(filter(new_exit, exit.connected_region.exits))
-                    # This will put all accessible cross-age regions into the current sphere,
-                    # but the state will not yet have Time Travel yet,
-                    # so cross-age locations will not be accessible.
-                    if exit.connected_region.name == 'Beyond Door of Time':
-                        root = exit.world.get_region('Root')
-                        cross_age_set.add(root)
-                        cross_age_queue.extend(root.exits)
                 else:
                     failed.append(exit)
         return failed
@@ -94,32 +86,16 @@ class Playthrough(object):
                 child_queue = copy.copy(self.cached_spheres[-1]['child_queue'])
                 adult_queue = copy.copy(self.cached_spheres[-1]['adult_queue'])
             else:
-                child_starting_regions = [
-                        state.world.get_region('Root') for state in self.state_list
-                        if state.world.starting_age == 'child']
-                adult_starting_regions = [
-                        state.world.get_region('Root') for state in self.state_list
-                        if state.world.starting_age == 'adult']
-                child_queue = deque(exit for region in child_starting_regions for exit in region.exits)
-                adult_queue = deque(exit for region in adult_starting_regions for exit in region.exits)
-                child_regions = set(child_starting_regions)
-                adult_regions = set(adult_starting_regions)
+                root_regions = [state.world.get_region('Root') for state in self.state_list]
+                child_queue = deque(exit for region in root_regions for exit in region.exits)
+                adult_queue = deque(exit for region in root_regions for exit in region.exits)
+                child_regions = set(root_regions)
+                adult_regions = set(root_regions)
 
             # 1. Use the queue to iteratively add regions to the accessed set,
             #    until we are stuck or out of regions.
-            adult_failed = Playthrough._expand_regions(
-                    adult_queue, adult_regions, validate_adult,
-                    child_queue, child_regions)
-            child_failed = Playthrough._expand_regions(
-                    child_queue, child_regions, validate_child,
-                    adult_queue, adult_regions)
-            # If child reached BDoT, we'll have added the root region for adult.
-            # We always have to expand again before checking locations,
-            # since we could have collected all in child before running this.
-            if adult_queue:
-                adult_failed.extend(Playthrough._expand_regions(
-                        adult_queue, adult_regions, validate_adult,
-                        child_failed, child_regions))
+            adult_failed = Playthrough._expand_regions(adult_queue, adult_regions, validate_adult)
+            child_failed = Playthrough._expand_regions(child_queue, child_regions, validate_child)
 
             # 2. Get all locations in accessible_regions that aren't collected,
             #    and check if they can be reached. Collect them.
