@@ -40,15 +40,12 @@ class Playthrough(object):
                     region_set.add(exit.connected_region)
                     exit_queue.extend(filter(new_exit, exit.connected_region.exits))
                     # This will put all accessible cross-age regions into the current sphere,
-                    # but for child->adult, the state will not yet have Master Sword,
-                    # so adult locations will not yet be accessible.
+                    # but the state will not yet have Time Travel yet,
+                    # so cross-age locations will not be accessible.
                     if exit.connected_region.name == 'Beyond Door of Time':
-                        cross_age_set.add(exit.connected_region)
-                        cross_age_queue.extend(exit.connected_region.exits)
-                        # Adult savewarp point is Temple of Time, which is
-                        # always accessible from BDoT, so we can skip adding it specially
-                        # Child savewarp point is Links House, which is
-                        # always accessible from BDoT -> ToT -> CT -> HF -> LWB -> KF, so we can skip adding it specially
+                        root = exit.world.get_region('Root')
+                        cross_age_set.add(root)
+                        cross_age_queue.extend(root.exits)
                 else:
                     failed.append(exit)
         return failed
@@ -98,10 +95,10 @@ class Playthrough(object):
                 adult_queue = copy.copy(self.cached_spheres[-1]['adult_queue'])
             else:
                 child_starting_regions = [
-                        state.world.get_region('Links House') for state in self.state_list
+                        state.world.get_region('Root') for state in self.state_list
                         if state.world.starting_age == 'child']
                 adult_starting_regions = [
-                        state.world.get_region('Temple of Time') for state in self.state_list
+                        state.world.get_region('Root') for state in self.state_list
                         if state.world.starting_age == 'adult']
                 child_queue = deque(exit for region in child_starting_regions for exit in region.exits)
                 adult_queue = deque(exit for region in adult_starting_regions for exit in region.exits)
@@ -116,7 +113,7 @@ class Playthrough(object):
             child_failed = Playthrough._expand_regions(
                     child_queue, child_regions, validate_child,
                     adult_queue, adult_regions)
-            # If child reached BDoT, we'll have added BDoT for adult.
+            # If child reached BDoT, we'll have added the root region for adult.
             # We always have to expand again before checking locations,
             # since we could have collected all in child before running this.
             if adult_queue:

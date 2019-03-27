@@ -198,7 +198,7 @@ def shuffle_entrance_pool(worlds, entrance_pool, already_unreachable_locations):
         restrictive_entrances, soft_entrances = split_entrances_by_requirements(worlds, entrances_to_shuffle)
 
         # Assumed Fill: Unplace, and assume we have access to entrances by connecting them to the root of reachability
-        root = world.get_region("Links House")
+        root = world.get_region('Root')
         target_regions = [entrance.disconnect() for entrance in entrances_to_shuffle]
         target_entrances = []
         for target_region in target_regions:
