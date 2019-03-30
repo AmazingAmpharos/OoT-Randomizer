@@ -15,7 +15,6 @@ class State(object):
         self.world = parent
         self.region_cache = { 'child': {}, 'adult': {} }
         self.recursion_count = { 'child': 0, 'adult': 0 }
-        self.collected_locations = {}
         self.current_spot = None
         self.adult = None
         self.tod = None
@@ -43,7 +42,6 @@ class State(object):
         new_state = State(new_world)
         new_state.prog_items = copy.copy(self.prog_items)
         new_state.region_cache = {k: copy.copy(v) for k,v in self.region_cache.items()}
-        new_state.collected_locations = copy.copy(self.collected_locations)
         return new_state
 
 
@@ -677,7 +675,6 @@ class State(object):
                 if not playthrough.can_beat_game():
                     required_locations.append(location)
                 location.item = old_item
-            state_list[location.world.id].collected_locations[location.name] = True
             state_list[location.item.world.id].collect(location.item)
 
         # Filter the required location to only include location in the world
