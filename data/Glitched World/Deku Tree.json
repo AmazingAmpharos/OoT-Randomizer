@@ -17,7 +17,7 @@
                  as_either_here(can_use(Hookshot) or can_use(Boomerang) or can_hover)) or
                 (is_child and (has_explosives or has_blue_fire) and
                  (can_use(Boomerang) or can_hover) and has_fire_source_with_torch) or
-                (is_adult and has_explosives and Hookshot and Hover_Boots and can_live_dmg(0.5) and
+                (is_adult and has_explosives and Progressive_Hookshot and Hover_Boots and can_live_dmg(0.5) and
                     (Bow or has_fire_source))"
         },
         "exits": {

@@ -120,7 +120,7 @@
         "locations": {
             "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
             "LW Deku Scrub Deku Sticks": "is_child and can_stun_deku",
-            "GS Lost Woods Above Stage": "is_adult and nighttime and (can_use(Magic_Bean) or Longshot or (has_bombchus and Hookshot) or can_hover)",
+            "GS Lost Woods Above Stage": "is_adult and nighttime and (can_use(Magic_Bean) or can_use(Longshot) or (has_bombchus and Progressive_Hookshot) or can_hover)",
             "GS Lost Woods Bean Patch Near Stage": "
                 can_plant_bugs and 
                 (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))"
@@ -305,7 +305,7 @@
         },
         "exits": {
             "Haunted Wasteland": "is_child or
-                (is_adult and (Carpenter_Rescue or (Hookshot and (Hover_Boots or can_mega)) or (can_isg and has_bombs) ) )",
+                (is_adult and (Carpenter_Rescue or (Progressive_Hookshot and (Hover_Boots or can_mega)) or (can_isg and has_bombs) ) )",
             "Gerudo Training Grounds Lobby": "True"
         }
     },
@@ -315,7 +315,7 @@
         "locations": {
             "Haunted Wasteland Structure Chest": "has_fire_source",
             "Haunted Wasteland Bombchu Salesman": "Progressive_Wallet and can_jumpslash",
-            "GS Wasteland Ruins": "can_use(Boomerang) or (is_adult and (Hookshot or (has_bombs and can_shield)))"
+            "GS Wasteland Ruins": "can_use(Boomerang) or (is_adult and (Progressive_Hookshot or (has_bombs and can_shield)))"
         },
         "exits": {
             "Desert Colossus": "True",
@@ -945,7 +945,7 @@
             "Zora River Lower Freestanding PoH": "True",
             "Zora River Upper Freestanding PoH": "True",
             "GS Zora River Ladder": "is_child and nighttime and can_child_attack",
-            "GS Zora River Near Raised Grottos": "is_adult and (Hookshot or can_hover) and nighttime",
+            "GS Zora River Near Raised Grottos": "is_adult and (Progressive_Hookshot or can_hover) and nighttime",
             "GS Zora River Above Bridge": "can_use(Hookshot) and nighttime",
             "Zoras River Plateau Gossip Stone": "True",
             "Zoras River Waterfall Gossip Stone": "True"
