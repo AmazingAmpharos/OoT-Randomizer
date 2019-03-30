@@ -87,8 +87,6 @@ player.
   * Can now start as child, adult, or random.
 * Entrance Randomizer
   * Ability to randomize dungeon entrances or all interior entrances.
-  * Gossip stone added to Lake Hylia to change water level after beating Morpha to keep dungeon entrance accessible with Gold Scales.
-    * Entering Water Temple with Gold Scale and Longshot is now always in logic.
   * Deku Tree, Fire Temple, and Bottom of the Well dungeon entrances are accessible as both ages.
 * Glitched Logic
   * New Logic Rules option that takes movement glitches into consideration.
@@ -102,6 +100,8 @@ player.
 * Every generic grotto gossip stone has their own hint.
 * Meg (Purple Forest Temple Poe) dies in one hit.
 * Desert Colossus Hands are not logically part of Spirit Temple
+* Gossip stone added to Lake Hylia to change water level after beating Morpha to keep dungeon entrance accessible with Gold Scales.
+  * Entering Water Temple with Gold Scale and Longshot is now always in logic.
 
 #### New Option
 * Randomize Main Rules option.
@@ -111,6 +111,7 @@ player.
 * Several tricks added to the Enable Tricks dropdown.
 * Shuffle Gerudo Card can now be enabled alongside Open Gerudo Fortress.
 * Customizable Heart, Magic Meter, and Gauntlet colors.
+* Child may drain Lake Hylia using Gossip Stone.
 
 #### Bug Fix
 * No longer able to buy bombchus with only bomb bag when bombchus in logic.
