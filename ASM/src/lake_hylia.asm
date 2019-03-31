@@ -3,6 +3,9 @@ CFG_CHILD_CONTROL_LAKE:
 
                       ; ID      x       y       z       xrot    yrot    zrot    var
 Gossip_Actor: .halfword 0x01B9, 0xFB30, 0xFB25, 0x1B7B, 0x0000, 0xAAAC, 0x0000, 0x8022
+; x= 0xFCD5
+; z= 0x1AD2
+; yrot= 0xF2DC
 
 
 Hit_Gossip_Stone:
