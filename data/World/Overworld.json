@@ -939,6 +939,7 @@
     },
     {
         "region_name": "Zora River Front",
+        "hint": "Zora's River",
         "locations": {
             "GS Zora River Tree": "is_child and can_child_attack"
         },
