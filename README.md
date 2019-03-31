@@ -99,7 +99,7 @@ player.
 * Duplicate Bottle with Letter added to plentiful item pool.
 * Every generic grotto gossip stone has their own hint.
 * Meg (Purple Forest Temple Poe) dies in one hit.
-* Desert Colossus Hands are not logically part of Spirit Temple
+* Desert Colossus Hands are now logically part of Spirit Temple
 * Gossip stone added to Lake Hylia to change water level after beating Morpha to keep dungeon entrance accessible with Gold Scales.
   * Entering Water Temple with Gold Scale and Longshot is now always in logic.
 
@@ -119,7 +119,6 @@ player.
 * Buying Piece of Heart/Heart Container fully heals Link.
 * Learning Sun's Song from Malon no longer causes a softlock.
 * Castle and Gerudo guards can no longer cause softlock when catching you.
-* Progressive items can no longer show up as foolish choice when they aren't.
 * Vanilla shop items have correct price in spoiler log with shopsanity enabled.
 
 
