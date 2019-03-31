@@ -350,7 +350,7 @@ def fill_restrictive(window, worlds, base_playthrough, locations, itempool, coun
                         while parent_region:
                             try:
                                 source_region = item_to_place.world.get_region(parent_region.name)
-                                can_reach = max_playthrough.state_list[item_to_place.world.id].can_reach(source_region)
+                                can_reach = max_playthrough.can_reach(source_region)
                                 break
                             except KeyError:
                                 parent_region = parent_region.entrances[0].parent_region
@@ -358,7 +358,7 @@ def fill_restrictive(window, worlds, base_playthrough, locations, itempool, coun
                             continue
 
                 if location.disabled == DisableType.PENDING:
-                    if not max_playthrough.can_beat_game():
+                    if not max_playthrough.can_beat_game(False):
                         continue
                     location.disabled = DisableType.DISABLED
 

@@ -41,15 +41,25 @@ class Playthrough(object):
         self.state_list[item.world.id].collect(item)
 
 
-    # Truncates the sphere cache based on which sphere a location is in.
+    @staticmethod
+    def max_explore(state_list, itempool=None):
+        p = Playthrough([s.copy() for s in state_list])
+        if itempool:
+            p.collect_all(itempool)
+        p.collect_locations()
+        return p
+
+    # Truncates the sphere cache based on which sphere a location is in, and
+    # drops the location from the appropriate visited set.
     # Doesn't forget which sphere locations are in as an optimization, so be careful
     # to only unvisit locations in descending sphere order, or locations that
     # have been revisited in the most recent iteration.
     # Locations never visited in this Playthrough are assumed to have been visited
-    # prior to sphere 0, so unvisiting them will discard the entire cache.
+    # in sphere 0, so unvisiting them will discard the entire cache.
     # Not safe to call during iteration.
     def unvisit(self, location):
-        self.cached_spheres[self.location_in_sphere[location]:] = []
+        self.cached_spheres[self.location_in_sphere[location]+1:] = []
+        self.cached_spheres[-1]['visited_locations'].discard(location)
 
 
     # Drops the item from its respective state, and truncates the sphere cache
@@ -70,6 +80,8 @@ class Playthrough(object):
     # Not safe to call during iteration.
     def reset(self):
         self.cached_spheres[1:] = []
+        self.location_in_sphere.clear()
+        self.item_in_sphere.clear()
 
 
     # simplified exit.can_reach(state), with_age bypasses can_become_age
@@ -136,6 +148,7 @@ class Playthrough(object):
         self.cached_spheres.append({
             'child_regions': child_regions,
             'adult_regions': adult_regions,
+            # Didn't change here, but this will be the editable layer of the cache.
             'visited_locations': visited_locations,
             # Exits that didn't pass validation (and still point to new places)
             # are the only exits we'll be interested in
@@ -145,8 +158,7 @@ class Playthrough(object):
         return child_regions, adult_regions, visited_locations
 
     # Yields every reachable location, by iteratively deepening explored sets of
-    # regions (one as child, one as adult) and invoking access rules without
-    # calling a recursive form of can_reach.
+    # regions (one as child, one as adult) and invoking access rules.
     # item_locations is a list of Location objects from state_list that the caller
     # has prefiltered (eg. by whether they contain advancement items).
     #
@@ -166,44 +178,52 @@ class Playthrough(object):
 
 
         had_reachable_locations = True
-        # will loop as long as any collections were made, and at least once
+        # will loop as long as any visits were made, and at least once
         while had_reachable_locations:
             child_regions, adult_regions, visited_locations = self.next_sphere()
 
-            # 2. Get all locations in accessible_regions that aren't collected,
-            #    and check if they can be reached. Collect them.
+            # Get all locations in accessible_regions that aren't visited,
+            # and check if they can be reached. Collect them.
             reachable_locations = filter(accessible, item_locations)
             had_reachable_locations = False
             for location in reachable_locations:
                 had_reachable_locations = True
-                yield location
-                # Mark it collected for this algorithm
+                # Mark it visited for this algorithm
                 visited_locations.add(location)
-                self.location_in_sphere[location] = len(self.cached_spheres)
+                self.location_in_sphere[location] = len(self.cached_spheres) - 1
+                yield location
 
 
     # This collects all item locations available in the state list given that
     # the states have collected items. The purpose is that it will search for
     # all new items that become accessible with a new item set.
     # This function modifies provided state.
-    def collect_locations(self):
-        # Get all item locations in the worlds
-        item_locations = [location for state in self.state_list for location in state.world.get_filled_locations() if location.item.advancement]
+    def collect_locations(self, item_locations=None):
+        # Get all item locations in the worlds that have progression items
+        item_locations = item_locations or [location for state in self.state_list for location in state.world.get_filled_locations() if location.item.advancement]
         for location in self.iter_reachable_locations(item_locations):
             # Collect the item for the state world it is for
-            self.state_list[location.item.world.id].collect(location.item)
+            self.collect(location.item)
+
+    # A shorthand way to iterate over locations without collecting items.
+    def visit_locations(self, locations):
+        for _ in self.iter_reachable_locations(locations):
+            pass
+
 
     # This returns True if every state is beatable. It's important to ensure
     # all states beatable since items required in one world can be in another.
+    # A state is beatable if it can ever collect the Triforce.
+    # If scan_for_items is True, constructs and modifies a copy of the underlying
+    # state to determine beatability; otherwise, only checks that the playthrough
+    # has already acquired all the Triforces.
     def can_beat_game(self, scan_for_items=True):
+        def won(state):
+            return state.has('Triforce')
+
         if scan_for_items:
             # Check if already beaten
-            game_beaten = True
-            for state in self.state_list:
-                if not state.has('Triforce'):
-                    game_beaten = False
-                    break
-            if game_beaten:
+            if all(map(won, self.state_list)):
                 return True
 
             # collect all available items
@@ -213,8 +233,23 @@ class Playthrough(object):
         else:
             playthrough = self
 
-        # if the every state got the Triforce, then return True
-        for state in playthrough.state_list:
-            if not state.has('Triforce'):
-                return False
-        return True
+        # if every state got the Triforce, then return True
+        return all(map(won, playthrough.state_list))
+
+
+    # Use the cache in the playthrough to determine region reachability.
+    def can_reach(self, region, age=None):
+        if age == 'adult':
+            return region in self.cached_spheres[-1]['adult_regions']
+        elif age == 'child':
+            return region in self.cached_spheres[-1]['child_regions']
+        elif age == 'both':
+            return region in self.cached_spheres[-1]['adult_regions'] and region in self.cached_spheres[-1]['child_regions']
+        else:
+            # treat None as either
+            return region in self.cached_spheres[-1]['adult_regions'] and region in self.cached_spheres[-1]['child_regions']
+
+    # Use the cache in the playthrough to determine location reachability.
+    # Only works for locations that had progression items...
+    def visited(self, location):
+        return location in self.cached_spheres[-1]['visited_locations']

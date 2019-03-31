@@ -508,6 +508,7 @@ def create_playthrough(spoiler):
     playthrough = Playthrough(state_list)
     while True:
         # Not collecting while the generator runs means we only get one sphere at a time
+        # Otherwise, an item we collect could influence later item collection in the same sphere
         collected = list(playthrough.iter_reachable_locations(item_locations))
         if not collected: break
         for location in collected:
@@ -521,7 +522,7 @@ def create_playthrough(spoiler):
     # like bow and slingshot appear as early as possible rather than as late as possible.
     required_locations = []
     for sphere in reversed(collection_spheres):
-        for location in list(sphere):
+        for location in sphere:
             # we remove the item at location and check if game is still beatable
             logger.debug('Checking if %s is required to beat the game.', location.item.name)
             old_item = location.item
@@ -532,19 +533,17 @@ def create_playthrough(spoiler):
             playthrough.unvisit(location)
 
             # Test whether the game is still beatable from here.
-            if playthrough.can_beat_game():
-                # cull entries for spoiler walkthrough at end
-                sphere.remove(location)
-            else:
+            if not playthrough.can_beat_game():
                 # still required, so reset the item
                 location.item = old_item
                 required_locations.append(location)
 
     # Regenerate the spheres as we might not reach places the same way anymore.
-    playthrough = Playthrough(state_list)
+    playthrough.reset()  # playthrough state has no items, okay to reuse sphere 0 cache
     collection_spheres = []
     while True:
         # Not collecting while the generator runs means we only get one sphere at a time
+        # Otherwise, an item we collect could influence later item collection in the same sphere
         collected = list(playthrough.iter_reachable_locations(required_locations))
         if not collected: break
         for location in collected:

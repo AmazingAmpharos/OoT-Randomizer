@@ -612,29 +612,6 @@ class State(object):
         self.__dict__.update(state)
 
 
-    # This function returns a list of states that is each of the base_states
-    # with every item still in the itempool. It only adds items that belong
-    # to its respective world. See fill_restrictive
-    @staticmethod
-    def get_states_with_items(base_state_list, itempool):
-        new_state_list = []
-        for base_state in base_state_list:
-            new_state = base_state.copy()
-            for item in itempool:
-                if item.world.id == base_state.world.id: # Check world
-                    new_state.collect(item)
-            new_state_list.append(new_state)
-        Playthrough(new_state_list).collect_locations()
-        return new_state_list
-
-    # This collects all item locations available in the state list given that
-    # the states have collected items. The purpose is that it will search for
-    # all new items that become accessible with a new item set
-    @staticmethod
-    def collect_locations(state_list):
-        Playthrough(state_list).collect_locations()
-
-
     @staticmethod
     def can_beat_game(state_list, scan_for_items=True):
         return Playthrough(state_list).can_beat_game(scan_for_items)
@@ -655,12 +632,11 @@ class State(object):
         # if the playthrough was generated, filter the list of locations to the
         # locations in the playthrough. The required locations is a subset of these
         # locations. Can't use the locations directly since they are location to the
-        # copied spoiler world, so must try to find the matching locations by name
+        # copied spoiler world, so must compare via name and world id
         if spoiler.playthrough:
-            spoiler_locations = defaultdict(list)
-            for location in itertools.chain.from_iterable(spoiler.playthrough.values()):
-                spoiler_locations[location.name].append(location.world.id)
-            item_locations = set(filter(lambda location: location.world.id in spoiler_locations[location.name], item_locations))
+            translate = lambda loc: worlds[loc.world.id].get_location(loc.name)
+            spoiler_locations = set(map(translate, itertools.chain.from_iterable(spoiler.playthrough.values())))
+            item_locations &= spoiler_locations
 
         required_locations = []
 
