@@ -119,7 +119,8 @@ player.
 * Buying Piece of Heart/Heart Container fully heals Link.
 * Learning Sun's Song from Malon no longer causes a softlock.
 * Castle and Gerudo guards can no longer cause softlock when catching you.
-* Progressive items can no longer show up as foolish choice when they aren't
+* Progressive items can no longer show up as foolish choice when they aren't.
+* Vanilla shop items have correct price in spoiler log with shopsanity enabled.
 
 
 ### 4.0
