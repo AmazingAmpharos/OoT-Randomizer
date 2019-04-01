@@ -230,11 +230,11 @@ class State(object):
 
 
     def can_become_adult(self):
-        return self.world.starting_age == 'adult' or self.has('Master Sword')
+        return self.world.starting_age == 'adult' or self.has('Time Travel')
 
 
     def can_become_child(self):
-        return self.world.starting_age == 'child' or self.can_reach('Beyond Door of Time', age='adult')
+        return self.world.starting_age == 'child' or self.has('Time Travel')
 
 
     def is_adult(self):
@@ -243,6 +243,10 @@ class State(object):
 
     def is_child(self):
         return not self.adult
+
+
+    def is_starting_age(self):
+        return self.adult == (self.world.starting_age == 'adult')
 
 
     def can_child_attack(self):
@@ -419,8 +423,7 @@ class State(object):
 
 
     def can_leave_forest(self):
-        return self.world.open_forest or self.can_reach(self.world.get_location('Queen Gohma'), age='either') \
-            or self.is_glitched
+        return self.world.open_forest or self.is_adult() or self.is_glitched or self.can_reach(self.world.get_location('Queen Gohma'), age='either')
 
 
     def can_finish_adult_trades(self):
