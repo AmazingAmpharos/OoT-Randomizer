@@ -63,13 +63,13 @@
             "Water Temple Map Chest": "is_adult or can_child_damage",
             "Water Temple Cracked Wall Chest": "(can_use(Hookshot) and Iron_Boots) or
                 (can_play(Zeldas_Lullaby) and (can_use(Hookshot) or has_explosives)) ",
-            "Water Temple Torches Chest": "(as_child_here(can_use(sticks)) or has_fire_source or can_use(Bow))
+            "Water Temple Torches Chest": "(as_child_here(can_use(Sticks)) or has_fire_source or can_use(Bow))
                 and can_play(Zeldas_Lullaby)"
         },
         "exits": {
             "Central Pillar": "can_play(Zeldas_Lullaby) and 
                 ( (((Small_Key_Water_Temple, 5) and not keysanity) or (Small_Key_Water_Temple,6))
-                or as_child_here(can_use(sticks)) or has_fire_source or can_use(Bow))",
+                or as_child_here(can_use(Sticks)) or has_fire_source or can_use(Bow))",
             "Boss Key Area": "(((Small_Key_Water_Temple, 4) and not keysanity) or (Small_Key_Water_Temple,5)) and
                 (can_use(Longshot) or can_hover or can_use(Hover_Boots)) and can_play(Zeldas_Lullaby)",
             "Dragon Head Area": "Progressive_Strength_Upgrade and (is_adult or can_child_attack) and can_play(Zeldas_Lullaby)",

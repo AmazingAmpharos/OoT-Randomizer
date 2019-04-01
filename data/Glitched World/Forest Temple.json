@@ -143,7 +143,7 @@
             "GS Forest Temple Basement": "can_use(Hookshot) or can_use(Boomerang) or can_hover"
         },
         "exits":{
-            "Forest Temple Boss Room": "Forest_Temple_Boss_Key"
+            "Forest Temple Boss Room": "Boss_Key_Forest_Temple"
         }
     },
     {

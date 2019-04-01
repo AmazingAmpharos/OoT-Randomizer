@@ -19,7 +19,7 @@
                     ( (has_nuts or can_use(Boomerang)) and 
                         (can_use(Kokiri_Sword) or has_slingshot) ) ))",
             "Spirit Temple Child Right Chest": "(is_adult and has_fire_source) or 
-                (has_fire_source_with_torch and (as_adult_here(True) or
+                (has_fire_source_with_torch and (as_adult_here or
                 (
                 (can_use(Boomerang) or has_slingshot or has_bombchus or can_mega) and 
                 (has_sticks or has_explosives or 
@@ -61,7 +61,7 @@
         "locations": {
             "Spirit Temple Compass Chest": "can_play(Zeldas_Lullaby) and
                 (can_use(Hookshot) or can_hover) and has_projectile",
-            "Spirit Temple Early Adult Right Chest": "has(projectile)", 
+            "Spirit Temple Early Adult Right Chest": "has_projectile", 
             "Spirit Temple First Mirror Right Chest": "(Small_Key_Spirit_Temple, 2)",
             "Spirit Temple First Mirror Left Chest": "(Small_Key_Spirit_Temple, 2)",
             "GS Spirit Temple Boulder Room": "has_projectile and
@@ -75,8 +75,8 @@
         "region_name": "Spirit Temple Central Chamber",
         "dungeon": "Spirit Temple",
         "locations": {
-            "Spirit Temple Map Chest": "can_use(Bow) or has_fire_with_torch",
-            "Spirit Temple Sun Block Room Chest": "has_fire_with_torch or can_use(Bow)",
+            "Spirit Temple Map Chest": "can_use(Bow) or has_fire_source_with_torch",
+            "Spirit Temple Sun Block Room Chest": "has_fire_source_with_torch or can_use(Bow)",
             "Spirit Temple Statue Hand Chest": "can_play(Zeldas_Lullaby)
                 and can_jumpslash",
             "Spirit Temple NE Main Room Chest": "can_play(Zeldas_Lullaby) and can_jumpslash and
