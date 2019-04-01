@@ -22,6 +22,10 @@ class Playthrough(object):
         if not self.cached_spheres:
             self.next_sphere()
 
+        # Let the states reference this playthrough.
+        for state in self.state_list:
+            state.playthrough = self
+
 
     def copy(self):
         new_state_list = [state.copy() for state in self.state_list]

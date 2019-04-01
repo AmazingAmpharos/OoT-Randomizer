@@ -18,6 +18,7 @@ class State(object):
         self.current_spot = None
         self.adult = None
         self.tod = None
+        self.playthrough = None
 
 
     ## Ensure that this will always have a value
@@ -103,6 +104,9 @@ class State(object):
 
         if spot.recursion_count[age_type] > 0:
             return False
+
+        if self.tod == None and self.playthrough != None:
+            return self.playthrough.can_reach(spot, age=age_type)
 
         # The normal cache can't be used while checking for reachability with a specific time of day
         if self.tod == None and spot in self.region_cache[age_type]:
