@@ -84,6 +84,7 @@ class Playthrough(object):
     # Not safe to call during iteration.
     def reset(self):
         self.cached_spheres[1:] = []
+        self.cached_spheres[0]['visited_locations'].clear()
         self.location_in_sphere.clear()
         self.item_in_sphere.clear()
 
