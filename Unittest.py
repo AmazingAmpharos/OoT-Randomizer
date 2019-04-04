@@ -161,11 +161,21 @@ class TestValidSpoilers(unittest.TestCase):
             'count': 1,
             'create_spoiler': True,
             'output_file': os.path.join(output_dir, 'fuzz-%d' % i),
-        }) for i in range(5)]
+        }) for i in range(10)]
+        out_keys = ['randomize_settings', 'compress_rom', 'count',
+                    'create_spoiler', 'output_file', 'seed', 'numeric_seed']
         for settings in fuzz_settings:
             output_file = '%s_Spoiler.json' % settings.output_file
-            with self.subTest(out=output_file):
-                main(settings)
-                spoiler = load_spoiler(output_file)
-                self.verify_woth(spoiler)
-                self.verify_playthrough(spoiler)
+            settings_file = '%s_%s_Settings.json' % (settings.output_file, settings.seed)
+            with self.subTest(out=output_file, settings=settings_file):
+                try:
+                    main(settings)
+                    spoiler = load_spoiler(output_file)
+                    self.verify_woth(spoiler)
+                    self.verify_playthrough(spoiler)
+                except Exception as e:
+                    # output the settings file in case of any failure
+                    with open(settings_file, 'w') as f:
+                        json.dump(settings.to_json(), f, indent=0)
+                    raise
+
