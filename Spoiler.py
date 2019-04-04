@@ -78,7 +78,7 @@ class Spoiler(object):
 
         self.entrances = {}
         for world in self.worlds:
-            spoiler_entrances = [entrance for entrance in world.get_entrances() if entrance.shuffled]
+            spoiler_entrances = [entrance for entrance in world.get_entrances() if entrance.shuffled and entrance.primary]
             sort_order = {"OwlDrop": 0, "Overworld": -1, "Dungeon": -2, "SpecialInterior": -3, "Interior": -3, "Grotto": -4}
             spoiler_entrances.sort(key=lambda entrance: entrance.name)
             spoiler_entrances.sort(key=lambda entrance: sort_order.get(entrance.type, 1))

@@ -14,6 +14,7 @@ class Entrance(object):
         self.type = None
         self.shuffled = False
         self.data = None
+        self.primary = False
 
 
     def copy(self, new_region):
@@ -27,6 +28,7 @@ class Entrance(object):
         new_entrance.type = self.type
         new_entrance.shuffled = self.shuffled
         new_entrance.data = self.data
+        new_entrance.primary = self.primary
 
         return new_entrance
 
