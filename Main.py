@@ -44,7 +44,7 @@ class dummy_window():
 
 def main(settings, window=dummy_window()):
 
-    start = time.clock()
+    start = time.process_time()
 
     logger = logging.getLogger('')
 
@@ -286,13 +286,13 @@ def main(settings, window=dummy_window()):
     else:
         window.update_status('Success: Rom patched successfully')
     logger.info('Done. Enjoy.')
-    logger.debug('Total Time: %s', time.clock() - start)
+    logger.debug('Total Time: %s', time.process_time() - start)
 
     return worlds[settings.player_num - 1]
 
 
 def from_patch_file(settings, window=dummy_window()):
-    start = time.clock()
+    start = time.process_time()
     logger = logging.getLogger('')
 
     # we load the rom before creating the seed so that error get caught early
@@ -380,13 +380,13 @@ def from_patch_file(settings, window=dummy_window()):
         window.update_status('Success: Rom patched successfully')
 
     logger.info('Done. Enjoy.')
-    logger.debug('Total Time: %s', time.clock() - start)
+    logger.debug('Total Time: %s', time.process_time() - start)
 
     return True
 
 
 def cosmetic_patch(settings, window=dummy_window()):
-    start = time.clock()
+    start = time.process_time()
     logger = logging.getLogger('')
 
     if settings.patch_file == '':
@@ -455,7 +455,7 @@ def cosmetic_patch(settings, window=dummy_window()):
         window.update_status('Success: Rom patched successfully')
 
     logger.info('Done. Enjoy.')
-    logger.debug('Total Time: %s', time.clock() - start)
+    logger.debug('Total Time: %s', time.process_time() - start)
 
     return True
 
