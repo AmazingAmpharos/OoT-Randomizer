@@ -494,6 +494,7 @@ setting_infos = [
         min            = 1, 
         max            = 255, 
         default        = 1,
+        shared         = True,
     ),
     Scale('player_num', 
         min            = 1, 
