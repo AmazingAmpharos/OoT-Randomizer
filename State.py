@@ -106,7 +106,8 @@ class State(object):
             return False
 
         if self.tod == None and self.playthrough != None:
-            return self.playthrough.can_reach(spot, age=age_type)
+            if self.playthrough.can_reach(spot, age=age_type):
+                return True
 
         # The normal cache can't be used while checking for reachability with a specific time of day
         if self.tod == None and spot in self.region_cache[age_type]:
