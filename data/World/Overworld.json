@@ -607,8 +607,8 @@
             "Kakariko Bazaar": "is_adult and at_day",
             "Kakariko Shooting Gallery": "is_adult and at_day",
             "Bottom of the Well": "
-                (is_child and can_play(Song_of_Storms)) or 
-                (is_adult and shuffle_dungeon_entrances)",
+                as_child_here(can_play(Song_of_Storms)) and
+                (is_child or shuffle_dungeon_entrances)",
             "Kakariko Potion Shop Front": "True",
             "Kakariko Potion Shop Back": "True",
             "Odd Medicine Building": "is_adult",
