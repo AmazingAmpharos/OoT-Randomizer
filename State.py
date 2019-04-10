@@ -347,7 +347,7 @@ class State(object):
 
     def can_use(self, item):
         magic_items = ['Dins Fire', 'Farores Wind', 'Nayrus Love', 'Lens of Truth']
-        adult_items = ['Bow', 'Hammer', 'Iron Boots', 'Hover Boots', 'Epona']
+        adult_items = ['Bow', 'Hammer', 'Iron Boots', 'Hover Boots']
         adult_buy_or_find = ['Goron Tunic', 'Zora Tunic']
         child_items = ['Slingshot', 'Boomerang', 'Kokiri Sword']
         magic_arrows = ['Fire Arrows', 'Light Arrows']
@@ -373,6 +373,8 @@ class State(object):
             return self.has('Progressive Strength Upgrade', 2) and self.is_adult()
         elif item == 'Golden Gauntlets':
             return self.has('Progressive Strength Upgrade', 3) and self.is_adult()
+        elif item == 'Epona':
+            return self.has('Epona') and self.is_adult() and self.can_play('Eponas Song')
         elif item == 'Scarecrow':
             return self.has('Progressive Hookshot') and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Distant Scarecrow':

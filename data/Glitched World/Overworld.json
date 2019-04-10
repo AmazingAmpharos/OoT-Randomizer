@@ -73,7 +73,7 @@
         "region_name": "Links House",
         "hint": "Kokiri Forest",
         "locations": {
-            "Links House Cow": "is_adult and Epona"
+            "Links House Cow": "is_adult and can_play(Eponas_Song)"
         },
         "exits": {
             "Kokiri Forest": "True"
@@ -198,7 +198,7 @@
                 is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Song from Ocarina of Time": "
                 is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
-            "Big Poe Kill": "can_use(Bow) and Epona and has_bottle"
+            "Big Poe Kill": "can_use(Bow) and can_use(Epona) and has_bottle"
         },
         "exits": {
             "Lost Woods Bridge": "True",
@@ -283,7 +283,7 @@
             "Hyrule Field": "True",
             "Lake Hylia": "True",
             "Gerudo Valley Far Side": "( is_child and (can_jumpslash or can_mega) )
-                or ( is_adult and (Epona or can_use(Hookshot) or gerudo_fortress == 'open' or can_mega))"
+                or ( is_adult and (can_use(Epona) or can_use(Hookshot) or gerudo_fortress == 'open' or can_mega))"
             
         }
     },
@@ -309,9 +309,9 @@
                 (is_adult and can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot) or can_mega)",
             #// known softlock if child opens this chest, so only put it in logic for adult
             "Horseback Archery 1000 Points": "
-                Carpenter_Rescue and Epona and Bow and is_adult",
+                Carpenter_Rescue and can_use(Epona) and Bow and is_adult",
             "Horseback Archery 1500 Points": "
-                Carpenter_Rescue and Epona and Bow and is_adult",
+                Carpenter_Rescue and can_use(Epona) and Bow and is_adult",
             "Gerudo Fortress North F1 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress North F2 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress South F1 Carpenter": "is_adult or (is_child and can_child_damage)",

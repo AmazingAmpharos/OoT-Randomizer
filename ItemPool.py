@@ -1018,6 +1018,9 @@ def get_pool_core(world):
         
     if world.free_scarecrow:
         world.state.collect(ItemFactory('Scarecrow Song'))
+    
+    if world.no_epona_race:
+        world.state.collect(ItemFactory('Epona'))
 
     if world.shuffle_mapcompass == 'remove' or world.shuffle_mapcompass == 'startwith':
         for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:

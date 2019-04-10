@@ -218,7 +218,7 @@
                 is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Song from Ocarina of Time": "
                 is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
-            "Big Poe Kill": "can_use(Bow) and Epona and has_bottle"
+            "Big Poe Kill": "can_use(Bow) and can_use(Epona) and has_bottle"
         },
         "exits": {
             "Lost Woods Bridge": "True",
@@ -315,7 +315,7 @@
             "Gerudo Valley Octorok Grotto": "can_use(Silver_Gauntlets)",
             "Gerudo Valley Far Side": "
                 is_adult and 
-                (Epona or can_use(Longshot) or gerudo_fortress == 'open' or Carpenter_Rescue)"
+                (can_use(Epona) or can_use(Longshot) or gerudo_fortress == 'open' or Carpenter_Rescue)"
         }
     },
     {
@@ -362,9 +362,9 @@
             "Gerudo Fortress Rooftop Chest": "
                 can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot)",
             "Horseback Archery 1000 Points": "
-                Carpenter_Rescue and Epona and Bow and is_adult and at_day",
+                Carpenter_Rescue and can_use(Epona) and Bow and at_day",
             "Horseback Archery 1500 Points": "
-                Carpenter_Rescue and Epona and Bow and is_adult and at_day",
+                Carpenter_Rescue and can_use(Epona) and Bow and at_day",
             "Gerudo Fortress North F1 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress North F2 Carpenter": "
                 (is_adult or Kokiri_Sword) and 
