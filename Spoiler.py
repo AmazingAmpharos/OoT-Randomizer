@@ -49,7 +49,7 @@ class Spoiler(object):
         self.settings = worlds[0].settings
         self.playthrough = {}
         self.locations = {}
-        self.entrances = {}
+        self.entrances = []
         self.metadata = {}
         self.required_locations = {}
         self.hints = {world.id: {} for world in worlds}
@@ -82,4 +82,4 @@ class Spoiler(object):
             sort_order = {"OwlDrop": 0, "Overworld": -1, "Dungeon": -2, "SpecialInterior": -3, "Interior": -3, "Grotto": -4}
             spoiler_entrances.sort(key=lambda entrance: entrance.name)
             spoiler_entrances.sort(key=lambda entrance: sort_order.get(entrance.type, 1))
-            self.entrances[world.id] = OrderedDict([(str(entrance), str(entrance.connected_region)) for entrance in spoiler_entrances])
+            self.entrances[world.id] = spoiler_entrances

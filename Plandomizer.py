@@ -138,15 +138,36 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
         })
 
 
-class EntranceRecord(SimpleRecord({'target': None})):
+class EntranceRecord(SimpleRecord({'region': None, 'origin': None})):
     def __init__(self, src_dict):
         if isinstance(src_dict, str):
-            src_dict = {'target':src_dict}
+            src_dict = {'region':src_dict}
+        if 'from' in src_dict:
+            src_dict['origin'] = src_dict['from']
+            del src_dict['from']
         super().__init__(src_dict)
 
 
     def to_json(self):
-        return self.target
+        self_dict = super().to_json()
+        if list(self_dict.keys()) == ['region']:
+            return str(self.region)
+        else:
+            self_dict['from'] = self_dict['origin']
+            del self_dict['origin']
+            return CollapseDict(self_dict)
+
+
+    @staticmethod
+    def from_entrance(entrance):
+        if entrance.type in ['Overworld', 'OwlDrop']:
+            origin_name = entrance.replaces.parent_region.name
+        else:
+            origin_name = None
+        return EntranceRecord({
+            'region': entrance.connected_region.name,
+            'origin': origin_name,
+        })
 
 
 class StarterRecord(SimpleRecord({'count': 1})):
@@ -583,7 +604,7 @@ class Distribution(object):
             world_dist = self.world_dists[world.id]
             world_dist.dungeons = {dung: DungeonRecord({ 'mq': world.dungeon_mq[dung] }) for dung in world.dungeon_mq}
             world_dist.trials = {trial: TrialRecord({ 'active': not world.skipped_trials[trial] }) for trial in world.skipped_trials}
-            world_dist.entrances = {ent: EntranceRecord(target) for (ent, target) in spoiler.entrances[world.id].items()}
+            world_dist.entrances = {ent.name: EntranceRecord.from_entrance(ent) for ent in spoiler.entrances[world.id]}
             world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
             world_dist.woth_locations = {loc.name: LocationRecord.from_item(loc.item) for loc in spoiler.required_locations[world.id]}
             world_dist.barren_regions = [*world.empty_areas]
