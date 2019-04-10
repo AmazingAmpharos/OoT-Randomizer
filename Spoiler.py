@@ -48,6 +48,7 @@ class Spoiler(object):
         self.worlds = worlds
         self.settings = worlds[0].settings
         self.playthrough = {}
+        self.entrance_playthrough = {}
         self.locations = {}
         self.entrances = []
         self.metadata = {}
@@ -75,6 +76,14 @@ class Spoiler(object):
             sort_order = {"Song": 0, "Boss": -1}
             spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
             self.locations[world.id] = OrderedDict([(str(location), location.item) for location in spoiler_locations])
+
+        for (sphere_nr, sphere) in self.entrance_playthrough.items():
+            sorted_sphere = [entrance for entrance in sphere]
+            sort_order = {"OwlDrop": 0, "Overworld": -1, "Dungeon": -2, "SpecialInterior": -3, "Interior": -3, "Grotto": -4}
+            sorted_sphere.sort(key=lambda entrance: sort_order.get(entrance.type, 1))
+            sorted_sphere.sort(key=lambda entrance: entrance.name)
+            sorted_sphere.sort(key=lambda entrance: entrance.world.id)
+            self.entrance_playthrough[sphere_nr] = sorted_sphere
 
         self.entrances = {}
         for world in self.worlds:

@@ -589,6 +589,7 @@ class Distribution(object):
         update_dict = {
             'file_hash': (src_dict.get('file_hash', []) + [None, None, None, None, None])[0:5],
             'playthrough': None,
+            'entrance_playthrough': None,
         }
 
         if update_all:
@@ -636,6 +637,14 @@ class Distribution(object):
                         name: record.to_json() for name, record in sphere.items()
                     }
                     for (sphere_nr, sphere) in self.playthrough.items()
+                }, depth=2)
+
+            if self.entrance_playthrough is not None and len(self.entrance_playthrough) > 0:
+                self_dict[':entrance_playthrough'] = AllignedDict({
+                    sphere_nr: {
+                        name: record.to_json() for name, record in sphere.items()
+                    }
+                    for (sphere_nr, sphere) in self.entrance_playthrough.items()
                 }, depth=2)
 
         if not include_output:
@@ -691,6 +700,19 @@ class Distribution(object):
                     location_key = location.name
 
                 loc_rec_sphere[location_key] = LocationRecord.from_item(location.item)
+
+        self.entrance_playthrough = {}
+        for (sphere_nr, sphere) in spoiler.entrance_playthrough.items():
+            if len(sphere) > 0:
+                ent_rec_sphere = {}
+                self.entrance_playthrough[sphere_nr] = ent_rec_sphere
+                for entrance in sphere:
+                    if spoiler.settings.world_count > 1:
+                        entrance_key = '%s [W%d]' % (entrance.name, entrance.world.id + 1)
+                    else:
+                        entrance_key = entrance.name
+
+                    ent_rec_sphere[entrance_key] = EntranceRecord.from_entrance(entrance)
 
 
     @staticmethod
