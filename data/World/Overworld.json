@@ -360,7 +360,8 @@
             "Haunted Wasteland Structure Chest": "has_fire_source",
             "Haunted Wasteland Bombchu Salesman": "Progressive_Wallet",
             "GS Wasteland Ruins": "can_use(Hookshot)",
-            "Fairy Pot": "has_bottle"
+            "Fairy Pot": "has_bottle",
+            "Nut Pot": "True"
         },
         "exits": {
             "Desert Colossus": "(logic_lens == 'chest') or can_use(Lens_of_Truth)"
@@ -1259,7 +1260,8 @@
             "HF Grotto Cow": "has_fire_source and can_play(Eponas_Song)",
             "Field Valley Grotto Gossip Stone": "has_fire_source",
             "Gossip Stone Fairy": "has_fire_source and can_summon_gossip_fairy and has_bottle",
-            "Bug Shrub": "has_fire_source and can_cut_shrubs and has_bottle"
+            "Bug Shrub": "has_fire_source and can_cut_shrubs and has_bottle",
+            "Nut Pot": "has_fire_source"
         }
     },
     {
@@ -1298,7 +1300,8 @@
             "GS Hyrule Castle Grotto": "can_blast_or_smash and (can_use(Boomerang) or can_use(Hookshot))",
             "Castle Storms Grotto Gossip Stone": "can_blast_or_smash",
             "Gossip Stone Fairy": "can_blast_or_smash and can_summon_gossip_fairy and has_bottle",
-            "Wandering Bugs": "can_blast_or_smash and has_bottle"
+            "Wandering Bugs": "can_blast_or_smash and has_bottle",
+            "Nut Pot": "can_blast_or_smash"
         }
     },
     {

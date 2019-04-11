@@ -83,7 +83,8 @@
                 Progressive_Hookshot and has_bombchus and can_see_with_lens",
             "Ganons Castle Spirit Trial Clear": "
                 can_use(Light_Arrows) and Mirror_Shield and 
-                has_bombchus and Progressive_Hookshot"
+                has_bombchus and Progressive_Hookshot",
+            "Nut Pot": "Progressive_Hookshot and has_bombchus and Bow and Mirror_Shield"
         }
     },
     {

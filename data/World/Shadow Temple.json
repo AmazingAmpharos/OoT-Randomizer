@@ -13,7 +13,8 @@
         "dungeon": "Shadow Temple",
         "locations": {
             "Shadow Temple Map Chest": "True",
-            "Shadow Temple Hover Boots Chest": "True"
+            "Shadow Temple Hover Boots Chest": "True",
+            "Nut Pot": "True"
         },
         "exits": {
             "Shadow Temple Entryway": "True",

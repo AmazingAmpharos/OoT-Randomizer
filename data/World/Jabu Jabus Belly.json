@@ -40,7 +40,8 @@
         "locations": {
             "Barinade Heart": "True",
             "Barinade": "True",
-            "GS Jabu Jabu Near Boss": "True"
+            "GS Jabu Jabu Near Boss": "True",
+            "Nut Pot": "True"
         },
         "exits": {
             "Jabu Jabus Belly Main": "True"
