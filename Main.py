@@ -523,8 +523,7 @@ def create_playthrough(spoiler):
     required_locations = []
     for sphere in reversed(collection_spheres):
         for location in sphere:
-            # we remove the item at location and check if game is still beatable
-            logger.debug('Checking if %s is required to beat the game.', location.item.name)
+            # we remove the item at location and check if the game is still beatable in case the item could be required
             old_item = location.item
             location.item = None
 
@@ -532,11 +531,14 @@ def create_playthrough(spoiler):
             state_list[old_item.world.id].remove(old_item)
             playthrough.unvisit(location)
 
-            # Test whether the game is still beatable from here.
-            if not playthrough.can_beat_game():
-                # still required, so reset the item
-                location.item = old_item
-                required_locations.append(location)
+            # An item can only be required if it isn't already obtained or if it's progressive
+            if not state_list[old_item.world.id].has(old_item.name) or old_item.special.get('progressive'):
+                # Test whether the game is still beatable from here.
+                logger.debug('Checking if %s is required to beat the game.', old_item.name)
+                if not playthrough.can_beat_game():
+                    # still required, so reset the item
+                    location.item = old_item
+                    required_locations.append(location)
 
     # Regenerate the spheres as we might not reach places the same way anymore.
     playthrough.reset()  # playthrough state has no items, okay to reuse sphere 0 cache
