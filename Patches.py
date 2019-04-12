@@ -766,6 +766,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         write_entrance(0x01A5, 0x03B4, 2) # Captured with hookshot 1st time as child (overridden to Thrown out of fortress)
         write_entrance(0x01A5, 0x05F8, 2) # Captured with hookshot 2nd time as child (overridden to Thrown out of fortress)
 
+        # Patch Owl Drop entrances to their new indexes
+        for entrance in world.get_shuffled_entrances(type='OwlDrop'):
+            write_entrance(entrance.replaces.data['index'], entrance.data['index'])
+
         set_entrance_updates(world.get_shuffled_entrances(type='Overworld'))
 
     if world.shuffle_dungeon_entrances:

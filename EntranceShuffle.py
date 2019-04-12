@@ -236,6 +236,9 @@ entrance_shuffle_table = [
                         ('Zoras Domain -> Zora River Behind Waterfall',                     { 'index': 0x019D })),
     ('Overworld',       ('Zoras Domain Behind King Zora -> Zoras Fountain',                 { 'index': 0x0225 }),
                         ('Zoras Fountain -> Zoras Domain Behind King Zora',                 { 'index': 0x01A1 })),
+
+    ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E })),
+    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554 })),
 ]
 
 
@@ -278,6 +281,7 @@ def shuffle_random_entrances(worlds):
             entrance_pools['Overworld'] = entrance_instances(world, get_entrance_pool('Overworld'))
             # Overworld entrances should be shuffled from both directions, unlike other types of entrances
             entrance_pools['Overworld'] += [entrance.reverse for entrance in entrance_pools['Overworld']]
+            entrance_pools['OwlDrop'] = entrance_instances(world, get_entrance_pool('OwlDrop'))
 
         if worlds[0].shuffle_dungeon_entrances:
             entrance_pools['Dungeon'] = entrance_instances(world, get_entrance_pool('Dungeon'))
@@ -303,6 +307,17 @@ def shuffle_random_entrances(worlds):
             entrance_pools['SpecialInterior'] = [entrance.reverse for entrance in entrance_pools['SpecialInterior']]
             target_entrance_pools['SpecialInterior'] = [entrance.reverse for entrance in target_entrance_pools['Interior']]
 
+        # Owl Drops are extra entrances that will be connected to an owl drop or will be a duplicate entrance to an overworld entrance
+        # We don't assume they are reachable until placing them because we don't want the placement algorithm to expect all overworld regions to be reachable
+        if 'OwlDrop' in entrance_pools:
+            duplicate_overworld_targets = [target.copy(target.parent_region) for target in target_entrance_pools['Overworld']]
+            for target in duplicate_overworld_targets:
+                target.connect(world.get_region(target.connected_region))
+                target.parent_region.exits.append(target)
+            target_entrance_pools['OwlDrop'] += duplicate_overworld_targets
+            for target in target_entrance_pools['OwlDrop']:
+                target.access_rule = lambda state: False
+
         # Shuffle all entrances among the pools to shuffle
         for pool_type, entrance_pool in entrance_pools.items():
             if pool_type == 'SpecialInterior':
@@ -316,7 +331,7 @@ def shuffle_random_entrances(worlds):
                 entrance_pools[pool_type].remove(temple_of_time_exit)
                 entrance_pools[pool_type].remove(links_house_exit)
 
-            if pool_type in ['SpecialInterior', 'Overworld', 'Dungeon']:
+            if pool_type in ['SpecialInterior', 'Overworld', 'OwlDrop', 'Dungeon']:
                 # Those pools contain entrances leading to regions that might open access to completely new areas
                 # Dungeons are among those because exiting Spirit Temple from the hands is in logic 
                 # and could give access to Desert Colossus and potentially new areas from there
@@ -324,6 +339,11 @@ def shuffle_random_entrances(worlds):
             else:
                 # Other pools are only "internal", which means they are leaves in the world graph and can't open new access
                 shuffle_entrance_pool(worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable, internal=True)
+
+            if pool_type == 'OwlDrop':
+                # Delete all unused owl drop targets after placing the entrances, since the unused targets won't ever be replaced
+                for target in target_entrance_pools[pool_type]:
+                    delete_target_entrance(target)
 
     # Multiple checks after shuffling entrances to make sure everything went fine
     max_playthrough = Playthrough.max_explore([world.state for world in worlds], complete_itempool)

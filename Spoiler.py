@@ -79,7 +79,7 @@ class Spoiler(object):
         self.entrances = {}
         for world in self.worlds:
             spoiler_entrances = [entrance for entrance in world.get_entrances() if entrance.shuffled]
-            sort_order = {"Overworld": 0, "Dungeon": -1, "SpecialInterior": -2, "Interior": -2, "Grotto": -3}
+            sort_order = {"OwlDrop": 0, "Overworld": -1, "Dungeon": -2, "SpecialInterior": -3, "Interior": -3, "Grotto": -4}
             spoiler_entrances.sort(key=lambda entrance: entrance.name)
             spoiler_entrances.sort(key=lambda entrance: sort_order.get(entrance.type, 1))
             self.entrances[world.id] = OrderedDict([(str(entrance), str(entrance.connected_region)) for entrance in spoiler_entrances])

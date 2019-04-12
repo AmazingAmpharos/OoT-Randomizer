@@ -289,6 +289,7 @@
                 (can_dive or 
                     (child_lake_hylia_control and as_adult(can_reach(Morpha, Location)) and 
                         (Kokiri_Sword or Boomerang or Slingshot or as_adult_here)))",
+            "Lake Hylia Owl Flight": "is_child",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
                 is_child or can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location)",
@@ -297,6 +298,12 @@
                 ((Progressive_Scale, 2) or can_use(Iron_Boots)) and
                 (is_adult or (child_lake_hylia_control and as_adult(can_reach(Morpha, Location))))",
             "Lake Hylia Grotto": "True"
+        }
+    },
+    {
+        "region_name": "Lake Hylia Owl Flight",
+        "exits": {
+            "Hyrule Field": "True"
         }
     },
     {
@@ -1029,7 +1036,14 @@
         "exits": {
             "Death Mountain": "True",
             "Death Mountain Crater Upper": "True",
+            "Death Mountain Summit Owl Flight": "is_child",
             "Mountain Summit Fairy": "as_either_here(can_blast_or_smash)"
+        }
+    },
+    {
+        "region_name": "Death Mountain Summit Owl Flight",
+        "exits": {
+            "Kakariko Village": "True"
         }
     },
     {
