@@ -737,6 +737,37 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 write_entrance(blue_out_data + 2, new_entrance["blue_warp"] + 2, 2)
                 write_entrance(replaced_entrance["index"], new_entrance["blue_warp"], 2)
 
+    if world.shuffle_overworld_entrances:
+        # Prevent the ocarina cutscene from leading straight to hyrule field
+        symbol = rom.sym('OCARINAS_SHUFFLED')
+        rom.write_byte(symbol, 1)
+
+        # Patch all LLR exits by leaping over a fence to lead to the main LLR exit
+        main_entrance = 0x01F9 # Hyrule Field entrance from Lon Lon Ranch (main land entrance)
+        ranch_leap_entrances = [0x028A, 0x028E, 0x0292, 0x0476] # Southern, Western, Eastern, Front Gate
+        for entrance_idx in ranch_leap_entrances:
+            write_scenes_exits(main_entrance, entrance_idx)
+
+        # Patch the water exits between Hyrule Field and Zora River to lead to the land entrance instead of the water entrance
+        write_scenes_exits(0x00EA, 0x01D9) # Hyrule Field -> Zora River
+        write_scenes_exits(0x0181, 0x0311) # Zora River -> Hyrule Field
+
+        for entrance, target in entrance_updates:
+            rom.write_int16(entrance, target)
+        entrance_updates = []
+
+        # Change Impa escort to bring link at the hyrule castle grounds entrance from market, instead of hyrule field
+        write_entrance(0x0138, 0x0594) # After Impa escort (overridden to Hyrule Castle entrance from Market)
+
+        # Change Getting caught cutscene as adult without hookshot to keep Link inside the Fortress
+        write_entrance(0x0129, 0x01A5 + 2, 2) # Thrown out of fortress as adult (overridden to Gerudo Fortress entrance from Valley)
+
+        # Change Getting caught cutscene as child to always throw Link in the stream
+        write_entrance(0x01A5, 0x03B4, 2) # Captured with hookshot 1st time as child (overridden to Thrown out of fortress)
+        write_entrance(0x01A5, 0x05F8, 2) # Captured with hookshot 2nd time as child (overridden to Thrown out of fortress)
+
+        set_entrance_updates(world.get_shuffled_entrances(type='Overworld'))
+
     if world.shuffle_dungeon_entrances:
         symbol = rom.sym('CFG_CHILD_CONTROL_LAKE')
         rom.write_int32(symbol, 1)

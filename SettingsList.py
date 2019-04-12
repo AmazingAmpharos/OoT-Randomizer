@@ -1074,7 +1074,8 @@ setting_infos = [
             'off':              'Off',
             'dungeons':         'Dungeons Only',
             'simple-indoors':   'Simple Indoors',
-            'all-indoors':      'All Indoors'
+            'all-indoors':      'All Indoors',
+            'all':              'All Indoors & Overworld',
         },
         gui_text       = 'Entrance Shuffle',
         gui_group      = 'shuffle',

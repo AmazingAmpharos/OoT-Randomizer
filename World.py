@@ -53,9 +53,10 @@ class World(object):
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
         self.shuffle_dungeon_entrances = self.entrance_shuffle != 'off'
-        self.shuffle_grotto_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors']
-        self.shuffle_interior_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors']
-        self.shuffle_special_interior_entrances = self.entrance_shuffle == 'all-indoors'
+        self.shuffle_grotto_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all']
+        self.shuffle_interior_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all']
+        self.shuffle_special_interior_entrances = self.entrance_shuffle in ['all-indoors', 'all']
+        self.shuffle_overworld_entrances = self.entrance_shuffle == 'all'
 
         # trials that can be skipped will be decided later
         self.skipped_trials = {
@@ -431,8 +432,8 @@ class World(object):
         if self.hints != 'agony':
             # Stone of Agony only required if it's used for hints
             exclude_item_list.append('Stone of Agony')
-        if not self.shuffle_special_interior_entrances:
-            # Serenade and Prelude are never required with vanilla Links House/ToT entrances
+        if not self.shuffle_special_interior_entrances and not self.shuffle_overworld_entrances:
+            # Serenade and Prelude are never required with vanilla Links House/ToT and overworld entrances
             exclude_item_list.append('Serenade of Water')
             exclude_item_list.append('Prelude of Light')
 

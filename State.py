@@ -249,8 +249,8 @@ class State(object):
 
 
     def ensure_tod_access(self):
-        # Time of day only has to be ensured if we are shuffling certain entrances (interior & overworld), otherwise it's a waste of performance
-        return self.world.shuffle_interior_entrances
+        # Time of day only has to be ensured if we are shuffling certain entrances (e.g. interior & overworld), otherwise it's a waste of performance
+        return self.world.shuffle_interior_entrances or self.world.shuffle_overworld_entrances
 
 
     def item_name(self, location):
