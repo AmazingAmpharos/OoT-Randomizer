@@ -14,7 +14,8 @@
             "GS Jabu Jabu Water Switch Room": "True",
             "GS Jabu Jabu Lobby Basement Lower": "can_use(Boomerang) or can_use(Hookshot)",
             "GS Jabu Jabu Lobby Basement Upper": "can_use(Boomerang) or can_use(Hookshot)",
-            "Jabu Deku Scrub Deku Nuts": "can_dive or is_child"
+            "Jabu Deku Scrub Deku Nuts": "can_dive or is_child",
+            "Fairy Pot": "has_bottle"
         },
         "exits": {
             "Jabu Jabus Belly Beginning": "True",

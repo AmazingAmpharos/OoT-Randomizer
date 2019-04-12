@@ -592,7 +592,7 @@ class Distribution(object):
 
         for world in spoiler.worlds:
             for (_, item) in spoiler.locations[world.id].items():
-                if item.dungeonitem or item.type == 'Event':
+                if item.dungeonitem or item.type == 'Event' or item.type == 'Drop':
                     continue
                 player_dist = item.world.distribution
                 if item.name in player_dist.item_pool:

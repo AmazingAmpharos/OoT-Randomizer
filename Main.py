@@ -31,6 +31,7 @@ from Rules import set_rules, set_shop_rules
 from Plandomizer import Distribution
 from Playthrough import Playthrough
 from EntranceShuffle import set_entrances
+from LocationList import set_drop_location_names
 
 
 class dummy_window():
@@ -124,6 +125,7 @@ def main(settings, window=dummy_window()):
         logger.info('Generating Item Pool.')
         generate_itempool(world)
         set_shop_rules(world)
+        set_drop_location_names(world)
 
     logger.info('Setting Entrances.')
     set_entrances(worlds)

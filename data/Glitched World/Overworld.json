@@ -36,7 +36,8 @@
             "GS Kokiri House of Twins": "
                 is_adult and nighttime and 
                 (can_use(Hookshot) or can_use(Hover_Boots) or can_isg)",
-            "Kokiri Forest Gossip Stone": "True"
+            "Kokiri Forest Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
         },
         "exits": {
             "Links House": "True",
@@ -118,7 +119,8 @@
             "Target in Woods": "can_use(Slingshot)",
             "LW Deku Scrub Deku Stick Upgrade": "is_child and can_stun_deku",
             "GS Lost Woods Bean Patch Near Bridge": "can_plant_bugs and can_child_attack",
-            "Lost Woods Gossip Stone": "True"
+            "Lost Woods Gossip Stone": "True",
+            "Bug Shrub": "is_child and can_cut_shrubs and has_bottle"
         },
         "exits": {
             "Kokiri Forest": "True",
@@ -195,7 +197,8 @@
             "Ocarina of Time": "
                 is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Song from Ocarina of Time": "
-                is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint"
+                is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
+            "Big Poe Kill": "can_use(Bow) and Epona and has_bottle"
         },
         "exits": {
             "Lost Woods Bridge": "True",
@@ -487,7 +490,7 @@
             "Sell 4 Big Poe":"is_adult and (Bottle_with_Big_Poe, 4)",
             "10 Big Poes": "
                 is_adult and 
-                ((can_use(Bow) and Epona and has_bottle and (big_poe_count <= 3 or guarantee_hint)) or 
+                ((has_big_poe_drop and (big_poe_count <= 3 or guarantee_hint)) or 
                     (Bottle_with_Big_Poe, big_poe_count))",
             "GS Castle Market Guard House": "is_child"
         }
@@ -578,8 +581,9 @@
             "GS Kakariko Watchtower": "nighttime and 
                 is_child and (has_slingshot or has_bombchus or 
                     ( (has_sticks or Kokiri_Sword) and
-                    ( can_live_dmg(0.5) or has_bottle or can_use(Nayrus_Love) ) ) )",
-            "GS Kakariko Above Impa's House": "can_use(Hookshot) and nighttime"
+                    ( can_live_dmg(0.5) or has_fairy or can_use(Nayrus_Love) ) ) )",
+            "GS Kakariko Above Impa's House": "can_use(Hookshot) and nighttime",
+            "Bug Rock": "has_bottle"
         },
         "exits": {
             "Hyrule Field": "True",
@@ -724,9 +728,9 @@
         "region_name": "Dampes Grave",
         "hint": "the Graveyard",
         "locations": {
-            "Dampes Grave Nut Pot": "True",
             "Hookshot Chest": "True",
-            "Dampe Race Freestanding PoH": "True"
+            "Dampe Race Freestanding PoH": "True",
+            "Nut Pot": "True"
         }
     },
     {
@@ -753,7 +757,7 @@
                 (is_child and Progressive_Strength_Upgrade)",
             "DM Trail Freestanding PoH": "
                 is_child or can_live_dmg(0.5) or 
-                can_use(Nayrus_Love) or has_bottle or Hover_Boots",
+                can_use(Nayrus_Love) or has_fairy or Hover_Boots",
             "GS Mountain Trail Bean Patch": "
                 can_plant_bugs and (has_explosives or Progressive_Strength_Upgrade)",
             "GS Mountain Trail Bomb Alcove": "can_blast_or_smash",
@@ -815,11 +819,11 @@
                 (Progressive_Strength_Upgrade or has_explosives or has_bow or can_use(Dins_Fire) or has_blue_fire)",
             "GS Goron City Boulder Maze": "is_child and has_explosives",
             "GS Goron City Center Platform": "is_adult",
-            "Goron City Stick Pot": "is_child",
             "Goron City Maze Gossip Stone": "
                 can_blast_or_smash or can_use(Silver_Gauntlets) or (Progressive_Strength_Upgrade and can_shield)",
             "Goron City Medigoron Gossip Stone": "
-                can_blast_or_smash or Progressive_Strength_Upgrade or has_blue_fire"
+                can_blast_or_smash or Progressive_Strength_Upgrade or has_blue_fire",
+            "Stick Pot": "is_child"
         },
         "exits": {
             "Death Mountain": "True",
@@ -891,9 +895,9 @@
         "exits": {
             "Death Mountain Summit": "True",
             "Death Mountain Crater Lower": "can_use(Hover_Boots) or can_mega",
-            "Death Mountain Crater Central": "(is_child and can_mega and (can_live_dmg(1) or has_bottle or can_use(Nayrus_Love)) and Hylian_Shield) or
+            "Death Mountain Crater Central": "(is_child and can_mega and (can_live_dmg(1) or has_fairy or can_use(Nayrus_Love)) and Hylian_Shield) or
                 (is_adult and can_use(Goron_Tunic) and (can_use(Distant_Scarecrow) or can_mega) and 
-                (can_live_dmg(1) or has_bottle or can_use(Nayrus_Love)))",
+                (can_live_dmg(1) or has_fairy or can_use(Nayrus_Love)))",
             "Top of Crater Grotto": "as_either_here(can_blast_or_smash)"
         }
     },
@@ -982,13 +986,14 @@
             "Zoras Domain Torch Run": "can_use(Sticks)",
             "Deliver Ruto's Letter": "(is_child and Bottle_with_Letter) and not open_fountain",
             "King Zora Thawed": "is_adult",
-            "Zoras Domain Stick Pot": "is_child",
-            "Zoras Domain Nut Pot": "True",
             "GS Zora's Domain Frozen Waterfall": "
                 is_adult and nighttime and (Progressive_Hookshot or Bow or Magic_Meter or has_explosives or 
                 Biggoron_Sword or 
                 (Progressive_Wallet and can_reach(Goron_City,Region,adult) and (can_blast_or_smash or Progressive_Strength_Upgrade or has_blue_fire)))",
-            "Zoras Domain Gossip Stone": "True"
+            "Zoras Domain Gossip Stone": "True",
+            "Fish Group": "has_bottle",
+            "Stick Pot": "is_child",
+            "Nut Pot": "True"
         },
         "exits": {
             "Zora River": "True",
@@ -1016,7 +1021,7 @@
         },
         "exits": {
             "Zoras Domain": "True",
-            "Jabu Jabus Belly Beginning": "(is_child and (can_jumpslash or has_bottle)) or 
+            "Jabu Jabus Belly Beginning": "(is_child and (can_jumpslash or has_fish)) or 
                 (is_adult and Hover_Boots and has_bombchus and can_shield)",
             "Ice Cavern": "is_adult or (is_child and can_hover)",
             "Zoras Fountain Fairy": "has_explosives or can_use(Hookshot)"
@@ -1119,7 +1124,10 @@
         }
     },
     {
-        "region_name": "Meadow Fairy Grotto"
+        "region_name": "Meadow Fairy Grotto",
+        "locations": {
+            "Fountain Fairies": "has_bottle"
+        }
     },
     {
         "region_name": "Meadow Storms Grotto",

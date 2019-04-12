@@ -113,13 +113,13 @@ def set_entrances(worlds):
 # Shuffles entrances that need to be shuffled in all worlds
 def shuffle_entrances(worlds):
 
-    # Store all locations unreachable to differentiate which locations were already unreachable from those we made unreachable while shuffling entrances
+    # Store all locations reachable before shuffling to differentiate which locations were already unreachable from those we made unreachable
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
     max_playthrough = Playthrough.max_explore([world.state for world in worlds], complete_itempool)
 
-    all_locations = [location for world in worlds for location in world.get_locations()]
-    max_playthrough.visit_locations(all_locations)
-    already_unreachable_locations = [location for location in all_locations if not max_playthrough.visited(location)]
+    non_drop_locations = [location for world in worlds for location in world.get_locations() if location.type != 'Drop']
+    max_playthrough.visit_locations(non_drop_locations)
+    locations_to_ensure_reachable = [location for location in non_drop_locations if max_playthrough.visited(location)]
 
     # Shuffle all entrance pools based on settings
 
@@ -130,15 +130,15 @@ def shuffle_entrances(worlds):
         # not really a closed forest anymore, so specifically remove Deku Tree from closed forest.
         if (not worlds[0].open_forest):
             del dungeon_entrance_pool["Outside Deku Tree -> Deku Tree Lobby"]
-        shuffle_entrance_pool(worlds, dungeon_entrance_pool, already_unreachable_locations)
+        shuffle_entrance_pool(worlds, dungeon_entrance_pool, locations_to_ensure_reachable)
 
     if worlds[0].shuffle_interior_entrances:
         interior_entrance_pool = get_entrance_pool('Interior')
-        shuffle_entrance_pool(worlds, interior_entrance_pool, already_unreachable_locations)
+        shuffle_entrance_pool(worlds, interior_entrance_pool, locations_to_ensure_reachable)
 
     if worlds[0].shuffle_grotto_entrances:
         grotto_entrance_pool = get_entrance_pool('Grotto')
-        shuffle_entrance_pool(worlds, grotto_entrance_pool, already_unreachable_locations)
+        shuffle_entrance_pool(worlds, grotto_entrance_pool, locations_to_ensure_reachable)
 
     # Multiple checks after shuffling entrances to make sure everything went fine
 
@@ -155,14 +155,13 @@ def shuffle_entrances(worlds):
 
     # New playthrough with shuffled entrances
     max_playthrough = Playthrough.max_explore([world.state for world in worlds], complete_itempool)
-    max_playthrough.visit_locations(all_locations)
+    max_playthrough.visit_locations(locations_to_ensure_reachable)
 
     # Log all locations unreachable due to shuffling entrances
     alr_compliant = True
     if not worlds[0].check_beatable_only:
-        for location in all_locations:
-            if not location in already_unreachable_locations and \
-               not max_playthrough.visited(location):
+        for location in locations_to_ensure_reachable:
+            if not max_playthrough.visited(location):
                 logging.getLogger('').error('Location now unreachable after shuffling entrances: %s [World %d]', location, location.world.id)
                 alr_compliant = False
 
@@ -177,7 +176,7 @@ def shuffle_entrances(worlds):
 
 
 # Shuffle all entrances within a provided pool for all worlds
-def shuffle_entrance_pool(worlds, entrance_pool, already_unreachable_locations):
+def shuffle_entrance_pool(worlds, entrance_pool, locations_to_ensure_reachable):
 
     # Shuffle entrances only within their own world
     for world in worlds:
@@ -211,7 +210,7 @@ def shuffle_entrance_pool(worlds, entrance_pool, already_unreachable_locations):
             root.exits.append(fill_entrance)
             target_entrances.append(fill_entrance)
 
-        shuffle_entrances_restrictive(worlds, restrictive_entrances, target_entrances, already_unreachable_locations)
+        shuffle_entrances_restrictive(worlds, restrictive_entrances, target_entrances, locations_to_ensure_reachable)
         shuffle_entrances_fast(worlds, soft_entrances, target_entrances)
 
 
@@ -258,9 +257,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split):
 # While shuffling entrances, the algorithm will use states generated from all items yet to be placed to figure how entrances can be placed
 # If ALR is enabled, this will mean checking that all locations previously reachable are still reachable every time we try to place an entrance
 # Otherwise, only the beatability of the game may be assured, which is what would be expected without ALR enabled
-def shuffle_entrances_restrictive(worlds, entrances, target_entrances, already_unreachable_locations, retry_count=16):
-
-    all_locations = [location for world in worlds for location in world.get_locations()]
+def shuffle_entrances_restrictive(worlds, entrances, target_entrances, locations_to_ensure_reachable, retry_count=16):
 
     # Retrieve all items in the itempool, all worlds included
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
@@ -282,13 +279,12 @@ def shuffle_entrances_restrictive(worlds, entrances, target_entrances, already_u
                 # If we only have to check that the game is still beatable, and the game is indeed still beatable, we can use that region
                 can_connect = True
                 if not (worlds[0].check_beatable_only and max_playthrough.can_beat_game(False)):
-                    max_playthrough.visit_locations(all_locations)
+                    max_playthrough.visit_locations(locations_to_ensure_reachable)
 
                     # Figure out if this entrance can be connected to the region being tested
-                    # We consider that it can be connected if ALL locations previously reachable are still reachable
-                    for location in all_locations:
-                        if not location in already_unreachable_locations and \
-                           not max_playthrough.visited(location):
+                    # We consider that it can be connected if ALL locations we want to keep reachable are still reachable
+                    for location in locations_to_ensure_reachable:
+                        if not max_playthrough.visited(location):
                             logging.getLogger('').debug('Failed to connect %s To %s (because of %s) [World %d]',
                                                             entrance, entrance.connected_region, location, entrance.world.id)
 

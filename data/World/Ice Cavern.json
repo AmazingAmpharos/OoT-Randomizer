@@ -21,7 +21,8 @@
             "GS Ice Cavern Heart Piece Room": "
                 has_blue_fire and (can_use(Hookshot) or can_use(Boomerang))",
             "GS Ice Cavern Push Block Room": "
-                has_blue_fire and (can_use(Hookshot) or can_use(Boomerang))"
+                has_blue_fire and (can_use(Hookshot) or can_use(Boomerang))",
+            "Blue Fire": "is_adult and has_bottle"
         }
     }
 ]

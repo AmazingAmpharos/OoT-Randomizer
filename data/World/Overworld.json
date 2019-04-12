@@ -36,7 +36,8 @@
             "GS Kokiri House of Twins": "
                 is_adult and nighttime and 
                 (can_use(Hookshot) or (logic_adult_kokiri_gs and can_use(Hover_Boots)))",
-            "Kokiri Forest Gossip Stone": "True"
+            "Kokiri Forest Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
         },
         "exits": {
             "Links House": "True",
@@ -121,7 +122,9 @@
             "Target in Woods": "can_use(Slingshot)",
             "LW Deku Scrub Deku Stick Upgrade": "is_child and can_stun_deku",
             "GS Lost Woods Bean Patch Near Bridge": "can_plant_bugs and can_child_attack",
-            "Lost Woods Gossip Stone": "True"
+            "Lost Woods Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Bug Shrub": "is_child and can_cut_shrubs and has_bottle"
         },
         "exits": {
             "Kokiri Forest": "True",
@@ -140,7 +143,8 @@
             "GS Lost Woods Above Stage": "can_use(Magic_Bean) and nighttime",
             "GS Lost Woods Bean Patch Near Stage": "
                 can_plant_bugs and 
-                (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))"
+                (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle"
         },
         "exits": {
             "Lost Woods": "True",
@@ -169,7 +173,8 @@
             "GS Sacred Forest Meadow": "can_use(Hookshot) and nighttime",
             "Sacred Forest Meadow Maze Gossip Stone (Lower)": "True",
             "Sacred Forest Meadow Maze Gossip Stone (Upper)": "True",
-            "Sacred Forest Meadow Saria Gossip Stone": "True"
+            "Sacred Forest Meadow Saria Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
         },
         "exits": {
             "Sacred Forest Meadow Entryway": "True",
@@ -197,7 +202,8 @@
             "Ocarina of Time": "
                 is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
             "Song from Ocarina of Time": "
-                is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint"
+                is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
+            "Big Poe Kill": "can_use(Bow) and Epona and has_bottle"
         },
         "exits": {
             "Lost Woods Bridge": "True",
@@ -239,7 +245,10 @@
             "GS Lake Hylia Giant Tree": "can_use(Longshot)",
             "Lake Hylia Lab Gossip Stone": "True",
             "Lake Hylia Gossip Stone (Southeast)": "True",
-            "Lake Hylia Gossip Stone (Southwest)": "True"
+            "Lake Hylia Gossip Stone (Southwest)": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "is_child and can_cut_shrubs and has_bottle"
         },
         "exits": {
             "Hyrule Field": "True",
@@ -282,8 +291,10 @@
             "Gerudo Valley Crate Freestanding PoH": "is_child or can_use(Longshot)",
             "GS Gerudo Valley Small Bridge": "can_use(Boomerang) and nighttime",
             "GS Gerudo Valley Bean Patch": "can_plant_bugs and can_child_attack",
+            "Gerudo Valley Cow": "is_child and can_play(Eponas_Song)",
             "Gerudo Valley Gossip Stone": "True",
-            "Gerudo Valley Cow": "is_child and can_play(Eponas_Song)"
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Bug Rock": "is_child and has_bottle"
         },
         "exits": {
             "Hyrule Field": "True",
@@ -348,7 +359,8 @@
         "locations": {
             "Haunted Wasteland Structure Chest": "has_fire_source",
             "Haunted Wasteland Bombchu Salesman": "Progressive_Wallet",
-            "GS Wasteland Ruins": "can_use(Hookshot)"
+            "GS Wasteland Ruins": "can_use(Hookshot)",
+            "Fairy Pot": "has_bottle"
         },
         "exits": {
             "Desert Colossus": "(logic_lens == 'chest') or can_use(Lens_of_Truth)"
@@ -366,7 +378,10 @@
             "GS Desert Colossus Hill": "
                 (can_use(Magic_Bean) or can_use(Longshot) or 
                     (logic_colossus_gs and can_use(Hookshot))) and nighttime",
-            "Desert Colossus Gossip Stone": "True"
+            "Desert Colossus Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Fairy Pond": "can_play(Song_of_Storms) and has_bottle",
+            "Bug Rock": "has_bottle"
         },
         "exits": {
             "Colossus Fairy": "has_explosives",
@@ -387,7 +402,8 @@
             "Temple of Time Gossip Stone (Left)": "True",
             "Temple of Time Gossip Stone (Left-Center)": "True",
             "Temple of Time Gossip Stone (Right)": "True",
-            "Temple of Time Gossip Stone (Right-Center)": "True"
+            "Temple of Time Gossip Stone (Right-Center)": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
         },
         "exits": {
             "Hyrule Field": "True",
@@ -436,7 +452,10 @@
             "Malon Egg": "True",
             "GS Hyrule Castle Tree": "can_child_attack",
             "Hyrule Castle Malon Gossip Stone": "True",
-            "Hyrule Castle Rock Wall Gossip Stone": "True"
+            "Hyrule Castle Rock Wall Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Rock": "has_bottle"
         },
         "exits": {
             "Castle Town": "True",
@@ -503,7 +522,7 @@
             "Sell 4 Big Poe":"is_adult and (Bottle_with_Big_Poe, 4)",
             "10 Big Poes": "
                 is_adult and 
-                ((can_use(Bow) and Epona and has_bottle and (big_poe_count <= 3 or guarantee_hint)) or 
+                ((has_big_poe_drop and (big_poe_count <= 3 or guarantee_hint)) or 
                     (Bottle_with_Big_Poe, big_poe_count))",
             "GS Castle Market Guard House": "is_child"
         }
@@ -594,8 +613,9 @@
             "GS Kakariko Watchtower": "
                 is_child and (has_slingshot or has_bombchus or 
                     (logic_kakariko_tower_gs and (has_sticks or Kokiri_Sword) and
-                    (damage_multiplier != 'ohko' or has_bottle or can_use(Nayrus_Love)))) and nighttime",
-            "GS Kakariko Above Impa's House": "can_use(Hookshot) and nighttime"
+                    (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love)))) and nighttime",
+            "GS Kakariko Above Impa's House": "can_use(Hookshot) and nighttime",
+            "Bug Rock": "has_bottle"
         },
         "exits": {
             "Hyrule Field": "True",
@@ -702,7 +722,9 @@
             "Graveyard Freestanding PoH": "can_use(Magic_Bean) or can_use(Longshot)",
             "Gravedigging Tour": "is_child",
             "GS Graveyard Wall": "can_use(Boomerang) and nighttime",
-            "GS Graveyard Bean Patch": "can_plant_bugs and can_child_attack"
+            "GS Graveyard Bean Patch": "can_plant_bugs and can_child_attack",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Rock": "has_bottle"
         },
         "exits": {
             "Shield Grave": "True",
@@ -722,7 +744,8 @@
     {
         "region_name": "Heart Piece Grave",
         "locations": {
-            "Heart Piece Grave Chest": "can_play(Suns_Song)"
+            "Heart Piece Grave Chest": "can_play(Suns_Song)",
+            "Fountain Fairies": "can_blast_or_smash and has_bottle"
         }
     },
     {
@@ -739,9 +762,9 @@
         "region_name": "Dampes Grave",
         "hint": "the Graveyard",
         "locations": {
-            "Dampes Grave Nut Pot": "True",
             "Hookshot Chest": "True",
-            "Dampe Race Freestanding PoH": "True"
+            "Dampe Race Freestanding PoH": "True",
+            "Nut Pot": "True"
         }
     },
     {
@@ -751,7 +774,8 @@
         "region_name": "Shadow Temple Warp Region",
         "hint": "the Graveyard",
         "locations": {
-            "Graveyard Gossip Stone": "True"
+            "Graveyard Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
         },
         "exits": {
             "Graveyard": "True",
@@ -768,7 +792,7 @@
                 (logic_dmt_bombable and Progressive_Strength_Upgrade)",
             "DM Trail Freestanding PoH": "
                 is_child or (damage_multiplier != 'ohko') or 
-                can_use(Nayrus_Love) or has_bottle or Hover_Boots",
+                can_use(Nayrus_Love) or has_fairy or Hover_Boots",
             "GS Mountain Trail Bean Patch": "
                 can_plant_bugs and (has_explosives or Progressive_Strength_Upgrade)",
             "GS Mountain Trail Bomb Alcove": "can_blast_or_smash",
@@ -792,7 +816,9 @@
         "locations": {
             "Biggoron": "
                 is_adult and can_finish_adult_trades and guarantee_hint",
-            "Death Mountain Trail Gossip Stone": "True"
+            "Death Mountain Trail Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Bug Rock": "is_child and has_bottle"
         },
         "exits": {
             "Death Mountain": "True",
@@ -829,11 +855,15 @@
                 (Progressive_Strength_Upgrade or has_explosives or has_bow)",
             "GS Goron City Boulder Maze": "is_child and has_explosives",
             "GS Goron City Center Platform": "is_adult",
-            "Goron City Stick Pot": "is_child",
             "Goron City Maze Gossip Stone": "
                 can_blast_or_smash or can_use(Silver_Gauntlets)",
             "Goron City Medigoron Gossip Stone": "
-                can_blast_or_smash or Progressive_Strength_Upgrade"
+                can_blast_or_smash or Progressive_Strength_Upgrade",
+            "Gossip Stone Fairy": "
+                can_summon_gossip_fairy and has_bottle and
+                (can_blast_or_smash or can_use(Silver_Gauntlets) or Progressive_Strength_Upgrade)",
+            "Bug Rock": "(can_blast_or_smash or can_use(Silver_Gauntlets)) and has_bottle",
+            "Stick Pot": "is_child"
         },
         "exits": {
             "Death Mountain": "True",
@@ -899,14 +929,15 @@
                 is_child and can_child_attack and as_either_here(can_blast_or_smash)",
             "DMC Deku Scrub Bombs": "
                 is_child and can_stun_deku and as_either_here(can_blast_or_smash)",
-            "Death Mountain Crater Gossip Stone": "has_explosives"
+            "Death Mountain Crater Gossip Stone": "has_explosives",
+            "Gossip Stone Fairy": "has_explosives and can_summon_gossip_fairy and has_bottle"
         },
         "exits": {
             "Death Mountain Summit": "True",
             "Death Mountain Crater Lower": "can_use(Hover_Boots)",
             "Death Mountain Crater Central": "can_use(Goron_Tunic) and can_use(Distant_Scarecrow) and 
                 ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
-                    has_bottle or can_use(Nayrus_Love))",
+                    has_fairy or can_use(Nayrus_Love))",
             "Top of Crater Grotto": "as_either_here(can_blast_or_smash)"
         }
     },
@@ -982,7 +1013,10 @@
             "GS Zora River Near Raised Grottos": "can_use(Hookshot) and nighttime",
             "GS Zora River Above Bridge": "can_use(Hookshot) and nighttime",
             "Zoras River Plateau Gossip Stone": "True",
-            "Zoras River Waterfall Gossip Stone": "True"
+            "Zoras River Waterfall Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "can_cut_shrubs and has_bottle"
         },
         "exits": {
             "Zora River Front": "True",
@@ -1004,11 +1038,13 @@
             "Zoras Domain Torch Run": "can_use(Sticks)",
             "Deliver Ruto's Letter": "(is_child and Bottle_with_Letter) and not open_fountain",
             "King Zora Thawed": "is_adult and has_blue_fire",
-            "Zoras Domain Stick Pot": "is_child",
-            "Zoras Domain Nut Pot": "True",
             "GS Zora's Domain Frozen Waterfall": "
                 is_adult and nighttime and (Progressive_Hookshot or has_bow or Magic_Meter)",
-            "Zoras Domain Gossip Stone": "True"
+            "Zoras Domain Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Fish Group": "has_bottle",
+            "Stick Pot": "is_child",
+            "Nut Pot": "True"
         },
         "exits": {
             "Zora River": "True",
@@ -1033,11 +1069,13 @@
                 can_use(Silver_Gauntlets) and can_blast_or_smash and 
                 can_use(Hookshot) and nighttime",
             "Zoras Fountain Fairy Gossip Stone": "True",
-            "Zoras Fountain Jabu Gossip Stone": "True"
+            "Zoras Fountain Jabu Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle"
         },
         "exits": {
             "Zoras Domain": "True",
-            "Jabu Jabus Belly Beginning": "is_child and has_bottle",
+            "Jabu Jabus Belly Beginning": "is_child and has_fish",
             "Ice Cavern Beginning": "is_adult",
             "Zoras Fountain Fairy": "has_explosives"
         }
@@ -1111,23 +1149,37 @@
         }
     },
     {
-        "region_name": "Gerudo Fortress Storms Grotto"
+        "region_name": "Gerudo Fortress Storms Grotto",
+        "locations": {
+            "Fountain Fairies": "has_bottle"
+        }
     },
     {
-        "region_name": "Zoras Domain Storms Grotto"
+        "region_name": "Zoras Domain Storms Grotto",
+        "locations": {
+            "Fountain Fairies": "has_bottle"
+        }
     },
     {
         "region_name": "Kokiri Forest Storms Grotto",
         "locations": {
             "Kokiri Forest Storms Grotto Chest": "True",
-            "Kokiri Forest Storms Grotto Gossip Stone": "True"
+            "Kokiri Forest Storms Grotto Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "can_cut_shrubs and has_bottle",
+            "Lone Fish": "has_bottle"
         }
     },
     {
         "region_name": "Lost Woods Generic Grotto",
         "locations": {
             "Lost Woods Generic Grotto Chest": "True",
-            "Lost Woods Generic Grotto Gossip Stone": "True"
+            "Lost Woods Generic Grotto Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "can_cut_shrubs and has_bottle",
+            "Lone Fish": "has_bottle"
         }
     },
     {
@@ -1145,7 +1197,10 @@
         }
     },
     {
-        "region_name": "Meadow Fairy Grotto"
+        "region_name": "Meadow Fairy Grotto",
+        "locations": {
+            "Fountain Fairies": "has_bottle"
+        }
     },
     {
         "region_name": "Meadow Storms Grotto",
@@ -1172,14 +1227,22 @@
         "region_name": "Remote Southern Grotto",
         "locations": {
             "Remote Southern Grotto Chest": "True",
-            "Remote Southern Grotto Gossip Stone": "True"
+            "Remote Southern Grotto Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "can_cut_shrubs and has_bottle",
+            "Lone Fish": "has_bottle"
         }
     },
     {
         "region_name": "Field Near Lake Outside Fence Grotto",
         "locations": {
             "Field Near Lake Outside Fence Grotto Chest": "True",
-            "Field Near Lake Outside Fence Grotto Gossip Stone": "True"
+            "Field Near Lake Outside Fence Grotto Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "can_cut_shrubs and has_bottle",
+            "Lone Fish": "has_bottle"
         }
     },
     {
@@ -1194,18 +1257,27 @@
             "GS Hyrule Field Near Gerudo Valley": "
                 has_fire_source and (can_use(Hookshot) or can_use(Boomerang))",
             "HF Grotto Cow": "has_fire_source and can_play(Eponas_Song)",
-            "Field Valley Grotto Gossip Stone": "has_fire_source"
+            "Field Valley Grotto Gossip Stone": "has_fire_source",
+            "Gossip Stone Fairy": "has_fire_source and can_summon_gossip_fairy and has_bottle",
+            "Bug Shrub": "has_fire_source and can_cut_shrubs and has_bottle"
         }
     },
     {
         "region_name": "Field West Castle Town Grotto",
         "locations": {
             "Field West Castle Town Grotto Chest": "True",
-            "Field West Castle Town Grotto Gossip Stone": "True"
+            "Field West Castle Town Grotto Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "can_cut_shrubs and has_bottle",
+            "Lone Fish": "has_bottle"
         }
     },
     {
-        "region_name": "Field Far West Castle Town Grotto"
+        "region_name": "Field Far West Castle Town Grotto",
+        "locations": {
+            "Fountain Fairies": "has_bottle"
+        }
     },
     {
         "region_name": "Field Kakariko Grotto",
@@ -1224,7 +1296,9 @@
         "region_name": "Castle Storms Grotto",
         "locations": {
             "GS Hyrule Castle Grotto": "can_blast_or_smash and (can_use(Boomerang) or can_use(Hookshot))",
-            "Castle Storms Grotto Gossip Stone": "can_blast_or_smash"
+            "Castle Storms Grotto Gossip Stone": "can_blast_or_smash",
+            "Gossip Stone Fairy": "can_blast_or_smash and can_summon_gossip_fairy and has_bottle",
+            "Wandering Bugs": "can_blast_or_smash and has_bottle"
         }
     },
     {
@@ -1239,7 +1313,11 @@
         "region_name": "Kakariko Back Grotto",
         "locations": {
             "Kakariko Back Grotto Chest": "True",
-            "Kakariko Back Grotto Gossip Stone": "True"
+            "Kakariko Back Grotto Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "can_cut_shrubs and has_bottle",
+            "Lone Fish": "has_bottle"
         }
     },
     {
@@ -1252,7 +1330,11 @@
         "region_name": "Mountain Storms Grotto",
         "locations": {
             "Mountain Storms Grotto Chest": "True",
-            "Mountain Storms Grotto Gossip Stone": "True"
+            "Mountain Storms Grotto Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "can_cut_shrubs and has_bottle",
+            "Lone Fish": "has_bottle"
         }
     },
     {
@@ -1267,7 +1349,11 @@
         "region_name": "Top of Crater Grotto",
         "locations": {
             "Top of Crater Grotto Chest": "True",
-            "Top of Crater Grotto Gossip Stone": "True"
+            "Top of Crater Grotto Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "can_cut_shrubs and has_bottle",
+            "Lone Fish": "has_bottle"
         }
     },
     {
@@ -1282,11 +1368,18 @@
         "region_name": "Zora River Plateau Open Grotto",
         "locations": {
             "Zora River Plateau Open Grotto Chest": "True",
-            "Zora River Plateau Open Grotto Gossip Stone": "True"
+            "Zora River Plateau Open Grotto Gossip Stone": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Butterfly Fairy": "can_use(Sticks) and has_bottle",
+            "Bug Shrub": "can_cut_shrubs and has_bottle",
+            "Lone Fish": "has_bottle"
         }
     },
     {
-        "region_name": "Zora River Plateau Bombable Grotto"
+        "region_name": "Zora River Plateau Bombable Grotto",
+        "locations": {
+            "Fountain Fairies": "has_bottle"
+        }
     },
     {
         "region_name": "Zora River Storms Grotto",

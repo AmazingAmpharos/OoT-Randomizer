@@ -287,6 +287,7 @@ def get_random_location_hint(spoiler, world, checked):
     locations = [location for location in world.get_filled_locations()
             if not location.name in checked and \
             location.item.type != 'Event' and \
+            location.item.type != 'Drop' and \
             location.item.type != 'Shop' and \
             not (location.parent_region.dungeon and \
                 isRestrictedDungeonItem(location.parent_region.dungeon, location.item)) and

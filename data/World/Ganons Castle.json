@@ -53,7 +53,9 @@
         "locations": {
             "Ganons Castle Water Trial Left Chest": "True",
             "Ganons Castle Water Trial Right Chest": "True",
-            "Ganons Castle Water Trial Clear": "has_bottle and Hammer and can_use(Light_Arrows)"
+            "Ganons Castle Water Trial Clear": "has_blue_fire and Hammer and can_use(Light_Arrows)",
+            "Fairy Pot": "has_blue_fire and has_bottle",
+            "Blue Fire": "has_bottle"
         }
     },
     {

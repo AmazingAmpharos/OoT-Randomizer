@@ -297,14 +297,6 @@ class State(object):
         return self.has('Bomb Bag')
 
 
-    def has_blue_fire(self):
-        return self.has_bottle() and \
-                (self.can_reach('Ice Cavern', age=('either' if self.is_glitched else 'adult'))
-                or self.can_reach('Ganons Castle Water Trial', age='either')
-                or self.has('Buy Blue Fire')
-                or (self.world.dungeon_mq['Gerudo Training Grounds'] and self.can_reach('Gerudo Training Grounds Stalfos Room', age='either')))
-
-
     def has_ocarina(self):
         return (self.has('Ocarina') or self.has('Fairy Ocarina') or self.has('Ocarina of Time'))
 
@@ -394,14 +386,38 @@ class State(object):
         return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
 
 
+    def can_cut_shrubs(self):
+        return self.is_adult() or self.has_sticks() or self.has('Kokiri Sword') or \
+               self.has_explosives() or self.has('Boomerang')
+
+
+    def can_summon_gossip_fairy(self):
+        return self.can_play('Zeldas Lullaby') or self.can_play('Eponas Song') or \
+               self.can_play('Suns Song') or self.can_play('Song of Time')
+
+
     def can_plant_bugs(self):
         return self.is_child() and self.has_bugs()
 
 
     def has_bugs(self):
-        return self.has_bottle() and \
-            (self.can_leave_forest() or self.has_sticks() or self.has('Kokiri Sword') or
-             self.has('Boomerang') or self.has_explosives() or self.has('Buy Bottle Bug'))
+        return self.has('Bugs') or self.has('Buy Bottle Bug')
+
+
+    def has_blue_fire(self):
+        return self.has('Blue Fire') or self.has('Buy Blue Fire')
+
+
+    def has_fish(self):
+        return self.has('Fish') or self.has('Buy Fish')
+
+
+    def has_fairy(self):
+        return self.has('Fairy') or self.has('Buy Fairy\'s Spirit')
+
+
+    def has_big_poe_drop(self):
+        return self.has('Big Poe')
 
 
     def can_use_projectile(self):
