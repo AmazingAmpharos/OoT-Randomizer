@@ -31,8 +31,8 @@
         "dungeon": "Fire Temple",
         "locations": {
             "Fire Temple Big Lava Room Open Chest": "True",
-            "Fire Temple Big Lava Room Bombable Chest": "has_explosives",
-            "GS Fire Temple Song of Time Room": "can_play(Song_of_Time)"
+            "Fire Temple Big Lava Room Bombable Chest": "is_adult and has_explosives",
+            "GS Fire Temple Song of Time Room": "is_adult and can_play(Song_of_Time)"
         },
         "exits": {
             "Fire Temple Lower":  "True",
