@@ -201,8 +201,6 @@ entrance_shuffle_table = [
                         ('Lake Hylia -> Hyrule Field',                                      { 'index': 0x0189 })),
     ('Overworld',       ('Hyrule Field -> Gerudo Valley',                                   { 'index': 0x0117 }),
                         ('Gerudo Valley -> Hyrule Field',                                   { 'index': 0x018D })),
-    ('Overworld',       ('Hyrule Field -> Castle Town Entrance',                            { 'index': 0x0276 }),
-                        ('Castle Town Entrance -> Hyrule Field',                            { 'index': 0x01FD })),
     ('Overworld',       ('Hyrule Field -> Kakariko Village From Field',                     { 'index': 0x00DB }),
                         ('Kakariko Village -> Hyrule Field',                                { 'index': 0x017D })),
     ('Overworld',       ('Hyrule Field -> Zora River Front',                                { 'index': 0x00EA }),
