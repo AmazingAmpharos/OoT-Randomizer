@@ -496,17 +496,27 @@ class State(object):
                 self.has('Claim Check')
                 or (zora_thawed and (has_high_trade or (has_low_trade and carpenter_access))))
         else:
+            # Require certain warp songs based on ER settings to ensure the player doesn't have to savewarp in order to complete the trade quest
+            # This is meant to avoid possible logical softlocks until either the trade quest is reworked or a better solution is found
+            guaranteed_path = True
+            if self.world.shuffle_interior_entrances:
+                colossus_fairy_entrance = self.world.get_entrance('Desert Colossus -> Colossus Fairy')
+                if colossus_fairy_entrance.connected_region and colossus_fairy_entrance.connected_region.name == 'Lake Hylia Lab':
+                    guaranteed_path = (self.can_play('Prelude of Light') or self.can_play('Minuet of Forest') or
+                                        self.can_play('Serenade of Water') or self.can_play('Nocturne of Shadow'))
+
             zora_thawed = self.can_reach('Zoras Domain', age='adult') and self.has_blue_fire()
             pocket_egg = self.has('Pocket Egg')
             pocket_cucco = self.has('Pocket Cucco') or pocket_egg
             cojiro = self.has('Cojiro') or (pocket_cucco and self.can_reach('Carpenter Boss House', age='adult'))
             odd_mushroom = self.has('Odd Mushroom') or cojiro
-            odd_poultice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult')
-            poachers_saw = self.has('Poachers Saw') or odd_poultice
+            odd_poultice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult') and self.can_reach('Lost Woods', age='adult')
+            poachers_saw = self.has('Poachers Saw') or (odd_poultice and self.can_reach('Goron City', age='adult') and 
+                                                        (self.can_blast_or_smash() or self.has('Progressive Strength Upgrade')))
             broken_sword = self.has('Broken Sword') or (poachers_saw and self.can_reach('Gerudo Valley Far Side', age='adult'))
             prescription = self.has('Prescription') or broken_sword
-            eyeball_frog = (self.has('Eyeball Frog') or prescription) and zora_thawed
-            eyedrops = (self.has('Eyedrops') or eyeball_frog) and self.can_reach('Lake Hylia Lab', age='adult') and zora_thawed
+            eyeball_frog = self.has('Eyeball Frog') or prescription
+            eyedrops = (self.has('Eyedrops') or eyeball_frog) and self.can_reach('Lake Hylia Lab', age='adult') and zora_thawed and guaranteed_path
             return (self.has('Claim Check')
                     or (eyedrops and
                         (self.world.shuffle_interior_entrances
@@ -517,12 +527,14 @@ class State(object):
 
 
     def has_skull_mask(self):
-        return self.has('Zeldas Letter') and self.can_reach('Castle Town Mask Shop')
+        return self.has('Zeldas Letter') and self.can_reach('Kakariko Village', age='child') and self.can_reach('Castle Town Mask Shop')
 
 
     def has_mask_of_truth(self):
-        # Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man.
-        return self.has_skull_mask() and self.can_play('Sarias Song') and self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire')
+        # Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man, and access to Lost Woods, Graveyard (at day time) and Hyrule Field as child
+        return (self.has_skull_mask() and self.can_reach('Lost Woods', age='child') and self.can_play('Sarias Song') and 
+                self.can_reach('Graveyard', age='child', tod='day') and self.can_reach('Hyrule Field', age='child') and 
+                self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire'))
 
 
     def has_bottle(self):
