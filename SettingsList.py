@@ -1089,6 +1089,8 @@ setting_infos = [
             Bottom of the Well are opened for both adult and child to 
             improve randomization, and accessing the Fire Temple from 
             Bolero is always in logic for child regardless of Tunic settings.
+            Child must play song of storms at the windmill to open the 
+            well for Adult.
 
             Blue warps will return link to the new dungeons entrance. 
             Lake Hylia will be filled for adult after defeating Morpha.
