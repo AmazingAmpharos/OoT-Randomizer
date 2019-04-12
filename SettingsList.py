@@ -582,12 +582,15 @@ setting_infos = [
             in the forest.
 
             This is incompatible with start as adult.
+            This is also forced enabled when shuffling
+            "All Indoors" and/or "Overworld" entrances.
         ''',
         default        = True,
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
         },
+        dependency     = lambda settings: True if settings.entrance_shuffle in ['all-indoors', 'all'] else None,
     ),
     Checkbutton(
         name           = 'open_kakariko',
@@ -846,7 +849,7 @@ setting_infos = [
             Ganondorf and Ganon will be skipped.
         ''',
         shared         = True,
-        dependency     = lambda settings: True if settings.entrance_shuffle == 'indoors' else None,
+        dependency     = lambda settings: True if settings.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all'] else None,
     ),
     Checkbutton(
         name           = 'no_guard_stealth',
@@ -1086,41 +1089,30 @@ setting_infos = [
             Shuffle dungeon entrances with each other, including Bottom 
             of the Well, Ice Cavern, and Gerudo Training Grounds. 
             However, Ganon's Castle is not shuffled.
-
             Additionally, the entrances of Deku Tree, Fire Temple and 
-            Bottom of the Well are opened for both adult and child to 
-            improve randomization, and accessing the Fire Temple from 
-            Bolero is always in logic for child regardless of Tunic settings.
-            Child must play song of storms at the windmill to open the 
-            well for Adult.
-
-            Blue warps will return link to the new dungeons entrance. 
-            Lake Hylia will be filled for adult after defeating Morpha.
-
-            Master Quest dungeons are not supported yet, coming soon!
+            Bottom of the Well are opened for both adult and child.
 
             'Simple Indoors':
-            Shuffle dungeon entrances along with grotto and interior 
-            entrances as described below. All entrances are still only 
-            shuffled within their own pool. This means, for example, 
-            that dungeons are only shuffled with other dungeons.
+            Shuffle dungeon entrances along with Grottos and simple
+            Interior entrances (i.e. most Houses and Great Fairies).
 
-            Grottos: All grottos in the game including small Fairy Fountains 
-            and the Lost Woods Stage.
+            'All Indoors':
+            Extended version of 'Simple Indoors' with some extra entrances:
+            Windmill, Link's House and Temple of Time.
 
-            Interiors: Most Houses and all Great Fairies in the game.
-            This pool excludes Richard's house, the Windmill, the 
-            Kakariko Potion Shop, Link's House and Temple of Time.
-            Adult trade quest timers are disabled when shuffling this pool,
-            and it forces Skip Tower Escape Sequence to be enabled for now.
+            'All Indoors & Overworld':
+            Same as 'All Indoors' but with Overworld loading zones shuffled
+            in a new separate pool. Owl drop positions are also randomized.
         ''',
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
             'distribution':  [
-                ('off', 2),
+                ('off', 4),
                 ('dungeons', 1),
-                ('indoors', 1),
+                ('simple-indoors', 1),
+                ('all-indoors', 1),
+                ('all', 1),
             ],
         },
         dependency     = lambda settings: 'off' if settings.logic_rules == 'glitched' else None,
