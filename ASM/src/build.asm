@@ -66,6 +66,7 @@ RANDO_CONTEXT:
 .include "lake_hylia.asm"
 .include "timers.asm"
 .include "shooting_gallery.asm"
+.include "damage.asm"
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:
