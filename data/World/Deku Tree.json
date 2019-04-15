@@ -50,6 +50,8 @@
             "Queen Gohma Heart": "
                 as_either_here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)",
             "Queen Gohma": "
+                as_either_here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)",
+            "Deku Tree Clear": "
                 as_either_here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)"
         },
         "exits": {

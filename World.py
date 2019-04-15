@@ -394,7 +394,7 @@ class World(object):
             if location_hint in excluded_areas or \
                location.locked or \
                location.item is None or \
-               location.item.type == "Event":
+               location.item.type in ('Event', 'Sigil'):
                 continue
 
             area = location_hint
