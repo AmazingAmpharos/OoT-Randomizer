@@ -43,6 +43,7 @@ class Region(object):
         new_region.can_reach = self.can_reach
         new_region.addresses = self.addresses
         new_region.hint = self.hint
+        new_region.time_passes = self.time_passes
 
         if self.dungeon:
             new_region.dungeon = self.dungeon.name

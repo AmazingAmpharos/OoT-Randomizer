@@ -27,7 +27,7 @@ class Entrance(object):
 
 
     def can_reach(self, state, noparent=False):
-        return state.with_spot(self.access_rule, spot=self) and (noparent or state.can_reach(self.parent_region))
+        return state.with_spot(self.access_rule, spot=self) and (noparent or state.can_reach(self.parent_region, keep_tod=True))
 
 
     def connect(self, region):
