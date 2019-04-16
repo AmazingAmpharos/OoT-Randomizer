@@ -3,6 +3,7 @@
         "region_name": "Bottom of the Well",
         "dungeon": "Bottom of the Well",
         "exits": {
+            "Kakariko Village": "True",
             "Bottom of the Well Main Area" : "is_child and (can_child_attack or has_nuts)"
         }
     },

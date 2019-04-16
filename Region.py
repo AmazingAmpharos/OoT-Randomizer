@@ -31,7 +31,6 @@ class Region(object):
         self.recursion_count = { 'child': 0, 'adult': 0 }
         self.price = None
         self.world = None
-        self.addresses = None
         self.time_passes = False
 
 
@@ -41,7 +40,6 @@ class Region(object):
         new_region.spot_type = self.spot_type
         new_region.price = self.price
         new_region.can_reach = self.can_reach
-        new_region.addresses = self.addresses
         new_region.hint = self.hint
         new_region.time_passes = self.time_passes
 

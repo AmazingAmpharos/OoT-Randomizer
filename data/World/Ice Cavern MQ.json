@@ -3,6 +3,7 @@
         "region_name": "Ice Cavern Beginning",
         "dungeon": "Ice Cavern",
         "exits": {
+            "Zoras Fountain": "True",
             "Ice Cavern": "True"
         }
     },

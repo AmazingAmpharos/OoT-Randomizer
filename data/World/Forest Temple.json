@@ -10,6 +10,7 @@
             "Fairy Pot": "has_bottle and (is_adult or can_child_attack or has_nuts)"
         },
         "exits": {
+            "Sacred Forest Meadow": "True",
             "Forest Temple NW Outdoors": "can_play(Song_of_Time) or is_child",
             "Forest Temple NE Outdoors": "can_use(Bow) or can_use(Slingshot)",
             "Forest Temple Block Push Room": "(Small_Key_Forest_Temple, 1)",

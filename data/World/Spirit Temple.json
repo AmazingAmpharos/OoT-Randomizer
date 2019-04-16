@@ -3,6 +3,7 @@
         "region_name": "Spirit Temple Lobby",
         "dungeon": "Spirit Temple",
         "exits": {
+            "Desert Colossus": "True",
             "Child Spirit Temple": "is_child",
             "Early Adult Spirit Temple": "can_use(Silver_Gauntlets)"
         }

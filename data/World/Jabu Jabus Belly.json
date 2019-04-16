@@ -3,6 +3,7 @@
         "region_name": "Jabu Jabus Belly Beginning",
         "dungeon": "Jabu Jabus Belly",
         "exits": {
+            "Zoras Fountain": "True",
             "Jabu Jabus Belly Main": "can_use_projectile"
         }
     },
