@@ -30,7 +30,7 @@ entrance_shuffle_table = {
     'Lake Hylia -> Lake Hylia Lab':                             ('Interior', { 'forward': 0x0043, 'return': 0x03CC }),
     'Lake Hylia -> Fishing Hole':                               ('Interior', { 'forward': 0x045F, 'return': 0x0309 }),
     'Gerudo Valley Far Side -> Carpenter Tent':                 ('Interior', { 'forward': 0x03A0, 'return': 0x03D0 }),
-    'Castle Town -> Castle Town Rupee Room':                    ('Interior', { 'forward': 0x007E, 'return': 0x026E }),
+    'Castle Town Entrance -> Castle Town Rupee Room':           ('Interior', { 'forward': 0x007E, 'return': 0x026E }),
     'Castle Town -> Castle Town Mask Shop':                     ('Interior', { 'forward': 0x0530, 'return': 0x01D1 }),
     'Castle Town -> Castle Town Bombchu Bowling':               ('Interior', { 'forward': 0x0507, 'return': 0x03BC }),
     'Castle Town -> Castle Town Potion Shop':                   ('Interior', { 'forward': 0x0388, 'return': 0x02A2 }),

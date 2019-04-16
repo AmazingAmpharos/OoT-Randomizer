@@ -365,7 +365,8 @@ class State(object):
     def has_bombchus_item(self):
         if self.world.bombchus_in_logic:
             return (self.has_any(lambda pritem: pritem.startswith('Bombchus'))
-                    or (self.has('Progressive Wallet') and self.can_reach('Haunted Wasteland', age='either')))
+                    or (self.can_reach('Haunted Wasteland', age='either') and self.has('Progressive Wallet') and 
+                            (self.is_adult() or self.has_sticks() or self.has('Kokiri_Sword'))))
         else:
             return self.has('Bomb Bag')
 
@@ -554,16 +555,16 @@ class State(object):
     def can_finish_GerudoFortress(self):
         if self.world.gerudo_fortress == 'normal':
             return (self.has('Small Key (Gerudo Fortress)', 4) and
+                    (self.is_adult() or self.has('Kokiri Sword') or self.is_glitched) and
                     (self.can_use('Bow')
                         or self.can_use('Hookshot')
                         or self.can_use('Hover Boots')
                         or self.world.logic_gerudo_kitchen
                         or self.is_glitched))
         elif self.world.gerudo_fortress == 'fast':
-            return (self.has('Small Key (Gerudo Fortress)', 1) and
-                    (self.is_adult() or self.is_glitched))
+            return self.has('Small Key (Gerudo Fortress)', 1)
         else:
-            return self.is_adult() or self.is_glitched
+            return True
 
 
     def can_shield(self):
