@@ -25,6 +25,7 @@
     },
     {
         "region_name": "Kokiri Forest",
+        "scene": "Kokiri Forest",
         "hint": "Kokiri Forest",
         "locations": {
             "Kokiri Sword Chest": "is_child",
@@ -54,6 +55,7 @@
     },
     {
         "region_name": "Outside Deku Tree",
+        "scene": "Kokiri Forest",
         "hint": "Kokiri Forest",
         "locations": {
             #The Babas despawn for Adult on forest temple completion. For vanilla forest temple
@@ -136,6 +138,7 @@
     },
     {
         "region_name": "Lost Woods",
+        "scene": "Lost Woods",
         "hint": "the Lost Woods",
         "locations": {
             "Skull Kid": "is_child and can_play(Sarias_Song)",
@@ -158,6 +161,7 @@
     },
     {
         "region_name": "Lost Woods Beyond Mido",
+        "scene": "Lost Woods",
         "hint": "the Lost Woods",
         "locations": {
             "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
@@ -178,6 +182,7 @@
     },
     {
         "region_name": "Sacred Forest Meadow Entryway",
+        "scene": "Sacred Forest Meadow",
         "hint": "Sacred Forest Meadow",
         "exits": {
             "Lost Woods Beyond Mido": "True",
@@ -189,6 +194,7 @@
     },
     {
         "region_name": "Sacred Forest Meadow",
+        "scene": "Sacred Forest Meadow",
         "hint": "Sacred Forest Meadow",
         "locations": {
             "Song from Saria": "is_child and Zeldas_Letter",
@@ -208,6 +214,7 @@
     },
     {
         "region_name": "Lost Woods Bridge From Forest",
+        "scene": "Lost Woods",
         "hint": "the Lost Woods",
         "locations": {
             "Gift from Saria": "True"
@@ -218,6 +225,7 @@
     },
     {
         "region_name": "Lost Woods Bridge",
+        "scene": "Lost Woods",
         "hint": "the Lost Woods",
         "exits": {
             "Kokiri Forest": "True",
@@ -226,6 +234,7 @@
     },
     {
         "region_name": "Hyrule Field",
+        "scene": "Hyrule Field",
         "hint": "Hyrule Field",
         "time_passes": true,
         "locations": {
@@ -256,6 +265,7 @@
     },
     {
         "region_name": "Lake Hylia",
+        "scene": "Lake Hylia",
         "hint": "Lake Hylia",
         "time_passes": true,
         "locations": {
@@ -302,6 +312,7 @@
     },
     {
         "region_name": "Lake Hylia Owl Flight",
+        "scene": "Lake Hylia",
         "exits": {
             "Hyrule Field": "True"
         }
@@ -330,6 +341,7 @@
     },
     {
         "region_name": "Gerudo Valley",
+        "scene": "Gerudo Valley",
         "hint": "Gerudo Valley",
         "time_passes": true,
         "locations": {
@@ -348,6 +360,7 @@
     },
     {
         "region_name": "Gerudo Valley Stream",
+        "scene": "Gerudo Valley",
         "hint": "Gerudo Valley",
         "time_passes": true,
         "locations": {
@@ -363,6 +376,7 @@
     },
     {
         "region_name": "Gerudo Valley Far Side",
+        "scene": "Gerudo Valley",
         "hint": "Gerudo Valley",
         "time_passes": true,
         "locations": {
@@ -388,6 +402,7 @@
     },
     {
         "region_name": "Gerudo Fortress",
+        "scene": "Gerudo Fortress",
         "hint": "Gerudo's Fortress",
         "locations": {
             "Gerudo Fortress Rooftop Chest": "
@@ -421,6 +436,7 @@
     },
     {
         "region_name": "Gerudo Fortress Outside Gate",
+        "scene": "Gerudo Fortress",
         "exits": {
             "Gerudo Fortress": "as_adult(can_reach(Gerudo_Fortress) and Carpenter_Rescue)",
             "Haunted Wasteland Near Fortress": "True"
@@ -428,6 +444,7 @@
     },
     {
         "region_name": "Haunted Wasteland Near Fortress",
+        "scene": "Haunted Wasteland",
         "exits": {
             "Gerudo Fortress Outside Gate": "True",
             "Haunted Wasteland": "
@@ -436,6 +453,7 @@
     },
     {
         "region_name": "Haunted Wasteland",
+        "scene": "Haunted Wasteland",
         "hint": "Haunted Wasteland",
         "locations": {
             "Haunted Wasteland Structure Chest": "has_fire_source",
@@ -452,12 +470,14 @@
     },
     {
         "region_name": "Haunted Wasteland Near Colossus",
+        "scene": "Haunted Wasteland",
         "exits": {
             "Desert Colossus": "True"
         }
     },
     {
         "region_name": "Desert Colossus",
+        "scene": "Desert Colossus",
         "hint": "Desert Colossus",
         "time_passes": true,
         "locations": {
@@ -491,6 +511,7 @@
     },
     {
         "region_name": "Castle Town Entrance",
+        "scene": "Castle Town Entrance",
         "hint": "the Market",
         "exits": {
             "Hyrule Field": "is_adult or at_day",
@@ -500,6 +521,7 @@
     },
     {
         "region_name": "Castle Town",
+        "scene": "Castle Town",
         "hint": "the Market",
         "exits": {
             "Castle Town Entrance": "True",
@@ -518,6 +540,7 @@
     },
     {
         "region_name": "Temple of Time Exterior",
+        "scene": "Temple of Time Exterior",
         "hint": "the Market",
         "locations": {
             "Temple of Time Gossip Stone (Left)": "True",
@@ -555,6 +578,7 @@
     },
     {
         "region_name": "Castle Grounds",
+        "scene": "Castle Grounds",
         "exits": {
             "Castle Town": "True",
             "Hyrule Castle Grounds": "is_child",
@@ -563,6 +587,7 @@
     },
     {
         "region_name": "Hyrule Castle Grounds",
+        "scene": "Castle Grounds",
         "hint": "Hyrule Castle",
         "time_passes": true,
         "locations": {
@@ -583,6 +608,7 @@
     },
     {
         "region_name": "Hyrule Castle Garden",
+        "scene": "Castle Grounds",
         "hint": "Hyrule Castle",
         "locations": {
             "Zeldas Letter": "True",
@@ -603,6 +629,7 @@
     },
     {
         "region_name": "Ganons Castle Grounds",
+        "scene": "Castle Grounds",
         "hint": "outside Ganon's Castle",
         "locations": {
             "GS Outside Ganon's Castle": "True"
@@ -752,6 +779,7 @@
     },
     {
         "region_name": "Kakariko Village From Field",
+        "scene": "Kakariko Village",
         "hint": "Kakariko Village",
         "locations": {
             "Sheik in Kakariko": "
@@ -763,6 +791,7 @@
     },
     {
         "region_name": "Kakariko Village",
+        "scene": "Kakariko Village",
         "hint": "Kakariko Village",
         "locations": {
             "Man on Roof": "
@@ -908,6 +937,7 @@
     },
     {
         "region_name": "Graveyard",
+        "scene": "Graveyard",
         "hint": "the Graveyard",
         "locations": {
             "Graveyard Freestanding PoH": "can_use(Magic_Bean) or can_use(Longshot)",
@@ -978,6 +1008,7 @@
     },
     {
         "region_name": "Shadow Temple Warp Region",
+        "scene": "Graveyard",
         "hint": "the Graveyard",
         "locations": {
             "Graveyard Gossip Stone": "True",
@@ -990,6 +1021,7 @@
     },
     {
         "region_name": "Kakariko Village Behind Gate",
+        "scene": "Kakariko Village",
         "exits": {
             "Kakariko Village": "True",
             "Death Mountain": "True"
@@ -997,6 +1029,7 @@
     },
     {
         "region_name": "Death Mountain",
+        "scene": "Death Mountain",
         "hint": "Death Mountain Trail",
         "time_passes": true,
         "locations": {
@@ -1024,6 +1057,7 @@
     },
     {
         "region_name": "Death Mountain Summit",
+        "scene": "Death Mountain",
         "hint": "Death Mountain Trail",
         "time_passes": true,
         "locations": {
@@ -1042,12 +1076,14 @@
     },
     {
         "region_name": "Death Mountain Summit Owl Flight",
+        "scene": "Death Mountain",
         "exits": {
             "Kakariko Village": "True"
         }
     },
     {
         "region_name": "Dodongos Cavern Entryway",
+        "scene": "Death Mountain",
         "exits": {
             "Dodongos Cavern Beginning": "True",
             "Death Mountain": "True"
@@ -1055,6 +1091,7 @@
     },
     {
         "region_name": "Goron City",
+        "scene": "Goron City",
         "hint": "Goron City",
         "locations": {
             "Goron City Leftmost Maze Chest": "
@@ -1108,6 +1145,7 @@
     },
     {
         "region_name": "Goron City Woods Warp",
+        "scene": "Goron City",
         "exits": {
             "Goron City": "
                 can_leave_forest and 
@@ -1118,6 +1156,7 @@
     },
     {
         "region_name": "Darunias Chamber",
+        "scene": "Goron City",
         "hint": "Goron City",
         "locations": {
             "Darunias Joy": "is_child and can_play(Sarias_Song)"
@@ -1145,6 +1184,7 @@
     },
     {
         "region_name": "Death Mountain Crater Upper",
+        "scene": "Death Mountain Crater",
         "hint": "Death Mountain Crater",
         "locations": {
             "DM Crater Wall Freestanding PoH": "True",
@@ -1165,6 +1205,7 @@
     },
     {
         "region_name": "Death Mountain Crater Lower",
+        "scene": "Death Mountain Crater",
         "hint": "Death Mountain Crater",
         "exits": {
             "Darunias Chamber": "True",
@@ -1177,6 +1218,7 @@
     },
     {
         "region_name": "Death Mountain Crater Central",
+        "scene": "Death Mountain Crater",
         "hint": "Death Mountain Crater",
         "locations": {
             "DM Crater Volcano Freestanding PoH": "
@@ -1213,6 +1255,7 @@
     },
     {
         "region_name": "Zora River Front",
+        "scene": "Zora River",
         "hint": "Zora's River",
         "time_passes": true,
         "locations": {
@@ -1225,6 +1268,7 @@
     },
     {
         "region_name": "Zora River",
+        "scene": "Zora River",
         "hint": "Zora's River",
         "time_passes": true,
         "locations": {
@@ -1261,6 +1305,7 @@
     },
     {
         "region_name": "Zora River Behind Waterfall",
+        "scene": "Zora River",
         "exits": {
             "Zora River": "True",
             "Zoras Domain": "True"
@@ -1268,6 +1313,7 @@
     },
     {
         "region_name": "Zoras Domain",
+        "scene": "Zoras Domain",
         "hint": "Zora's Domain",
         "locations": {
             "Diving Minigame": "is_child",
@@ -1294,6 +1340,7 @@
     },
     {
         "region_name": "Zoras Domain Behind King Zora",
+        "scene": "Zoras Domain",
         "exits": {
             "Zoras Domain": "
                 can_reach('Zoras Domain -> Zoras Domain Behind King Zora', Entrance, child)",
@@ -1302,6 +1349,7 @@
     },
     {
         "region_name": "Zoras Fountain",
+        "scene": "Zoras Fountain",
         "hint": "Zora's Fountain",
         "locations": {
             "Zoras Fountain Iceberg Freestanding PoH": "is_adult",
@@ -1351,6 +1399,7 @@
     },
     {
         "region_name": "Lon Lon Ranch",
+        "scene": "Lon Lon Ranch",
         "hint": "Lon Lon Ranch",
         "locations": {
             "Epona": "can_play(Eponas_Song) and is_adult",

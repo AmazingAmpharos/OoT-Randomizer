@@ -32,6 +32,7 @@ class Region(object):
         self.price = None
         self.world = None
         self.time_passes = False
+        self.scene = None
 
 
     def copy(self, new_world):
@@ -42,6 +43,7 @@ class Region(object):
         new_region.can_reach = self.can_reach
         new_region.hint = self.hint
         new_region.time_passes = self.time_passes
+        new_region.scene = self.scene
 
         if self.dungeon:
             new_region.dungeon = self.dungeon.name
