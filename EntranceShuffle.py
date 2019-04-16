@@ -321,6 +321,9 @@ def shuffle_random_entrances(worlds):
             for target in target_entrance_pools['OwlDrop']:
                 target.access_rule = lambda state: False
 
+        # Set entrances defined in the distribution
+        world.distribution.set_shuffled_entrances(worlds, entrance_pools, target_entrance_pools, locations_to_ensure_reachable, complete_itempool)
+
         # Shuffle all entrances among the pools to shuffle
         for pool_type, entrance_pool in entrance_pools.items():
             if pool_type == 'SpecialInterior':
