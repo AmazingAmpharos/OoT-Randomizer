@@ -52,9 +52,10 @@ class World(object):
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'
         self.check_beatable_only = not self.all_reachable
-        self.shuffle_dungeon_entrances = self.entrance_shuffle == 'dungeons' or self.entrance_shuffle == 'indoors'
-        self.shuffle_grotto_entrances = self.entrance_shuffle == 'indoors'
-        self.shuffle_interior_entrances = self.entrance_shuffle == 'indoors'
+        self.shuffle_dungeon_entrances = self.entrance_shuffle != 'off'
+        self.shuffle_grotto_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors']
+        self.shuffle_interior_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors']
+        self.shuffle_special_interior_entrances = self.entrance_shuffle == 'all-indoors'
 
         # trials that can be skipped will be decided later
         self.skipped_trials = {
@@ -422,8 +423,6 @@ class World(object):
         exclude_item_list = [
             'Double Defense',
             'Ice Arrows',
-            'Serenade of Water',
-            'Prelude of Light',
             'Biggoron Sword',
         ]
         if self.damage_multiplier != 'ohko' and self.damage_multiplier != 'quadruple' and self.shuffle_scrubs == 'off':
@@ -432,6 +431,10 @@ class World(object):
         if self.hints != 'agony':
             # Stone of Agony only required if it's used for hints
             exclude_item_list.append('Stone of Agony')
+        if not self.shuffle_special_interior_entrances:
+            # Serenade and Prelude are never required with vanilla Links House/ToT entrances
+            exclude_item_list.append('Serenade of Water')
+            exclude_item_list.append('Prelude of Light')
 
         # The idea here is that if an item shows up in woth, then the only way
         # that another copy of that major item could ever be required is if it

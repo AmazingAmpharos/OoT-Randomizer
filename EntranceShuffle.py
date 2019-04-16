@@ -47,135 +47,142 @@ def assume_pool_reachable(world, entrance_pool):
 
 
 entrance_shuffle_table = [
-    ('Dungeon',  ('Outside Deku Tree -> Deku Tree Lobby',                    { 'index': 0x0000 }),
-                 ('Deku Tree Lobby -> Outside Deku Tree',                    { 'index': 0x0209, 'blue_warp': 0x0457 })),
-    ('Dungeon',  ('Dodongos Cavern Entryway -> Dodongos Cavern Beginning',   { 'index': 0x0004 }),
-                 ('Dodongos Cavern Beginning -> Dodongos Cavern Entryway',   { 'index': 0x0242, 'blue_warp': 0x047A })),
-    ('Dungeon',  ('Zoras Fountain -> Jabu Jabus Belly Beginning',            { 'index': 0x0028 }),
-                 ('Jabu Jabus Belly Beginning -> Zoras Fountain',            { 'index': 0x0221, 'blue_warp': 0x010E })),
-    ('Dungeon',  ('Sacred Forest Meadow -> Forest Temple Lobby',             { 'index': 0x0169 }),
-                 ('Forest Temple Lobby -> Sacred Forest Meadow',             { 'index': 0x0215, 'blue_warp': 0x0608 })),
-    ('Dungeon',  ('Death Mountain Crater Central -> Fire Temple Lower',      { 'index': 0x0165 }),
-                 ('Fire Temple Lower -> Death Mountain Crater Central',      { 'index': 0x024A, 'blue_warp': 0x0564 })),
-    ('Dungeon',  ('Lake Hylia -> Water Temple Lobby',                        { 'index': 0x0010 }),
-                 ('Water Temple Lobby -> Lake Hylia',                        { 'index': 0x021D, 'blue_warp': 0x060C })),
-    ('Dungeon',  ('Desert Colossus -> Spirit Temple Lobby',                  { 'index': 0x0082 }),
-                 ('Spirit Temple Lobby -> Desert Colossus',                  { 'index': 0x01E1, 'blue_warp': 0x0610 })),
-    ('Dungeon',  ('Shadow Temple Warp Region -> Shadow Temple Entryway',     { 'index': 0x0037 }),
-                 ('Shadow Temple Entryway -> Shadow Temple Warp Region',     { 'index': 0x0205, 'blue_warp': 0x0580 })),
-    ('Dungeon',  ('Kakariko Village -> Bottom of the Well',                  { 'index': 0x0098 }),
-                 ('Bottom of the Well -> Kakariko Village',                  { 'index': 0x02A6 })),
-    ('Dungeon',  ('Zoras Fountain -> Ice Cavern Beginning',                  { 'index': 0x0088 }),
-                 ('Ice Cavern Beginning -> Zoras Fountain',                  { 'index': 0x03D4 })),
-    ('Dungeon',  ('Gerudo Fortress -> Gerudo Training Grounds Lobby',        { 'index': 0x0008 }),
-                 ('Gerudo Training Grounds Lobby -> Gerudo Fortress',        { 'index': 0x03A8 })),
+    ('Dungeon',         ('Outside Deku Tree -> Deku Tree Lobby',                    { 'index': 0x0000 }),
+                        ('Deku Tree Lobby -> Outside Deku Tree',                    { 'index': 0x0209, 'blue_warp': 0x0457 })),
+    ('Dungeon',         ('Dodongos Cavern Entryway -> Dodongos Cavern Beginning',   { 'index': 0x0004 }),
+                        ('Dodongos Cavern Beginning -> Dodongos Cavern Entryway',   { 'index': 0x0242, 'blue_warp': 0x047A })),
+    ('Dungeon',         ('Zoras Fountain -> Jabu Jabus Belly Beginning',            { 'index': 0x0028 }),
+                        ('Jabu Jabus Belly Beginning -> Zoras Fountain',            { 'index': 0x0221, 'blue_warp': 0x010E })),
+    ('Dungeon',         ('Sacred Forest Meadow -> Forest Temple Lobby',             { 'index': 0x0169 }),
+                        ('Forest Temple Lobby -> Sacred Forest Meadow',             { 'index': 0x0215, 'blue_warp': 0x0608 })),
+    ('Dungeon',         ('Death Mountain Crater Central -> Fire Temple Lower',      { 'index': 0x0165 }),
+                        ('Fire Temple Lower -> Death Mountain Crater Central',      { 'index': 0x024A, 'blue_warp': 0x0564 })),
+    ('Dungeon',         ('Lake Hylia -> Water Temple Lobby',                        { 'index': 0x0010 }),
+                        ('Water Temple Lobby -> Lake Hylia',                        { 'index': 0x021D, 'blue_warp': 0x060C })),
+    ('Dungeon',         ('Desert Colossus -> Spirit Temple Lobby',                  { 'index': 0x0082 }),
+                        ('Spirit Temple Lobby -> Desert Colossus',                  { 'index': 0x01E1, 'blue_warp': 0x0610 })),
+    ('Dungeon',         ('Shadow Temple Warp Region -> Shadow Temple Entryway',     { 'index': 0x0037 }),
+                        ('Shadow Temple Entryway -> Shadow Temple Warp Region',     { 'index': 0x0205, 'blue_warp': 0x0580 })),
+    ('Dungeon',         ('Kakariko Village -> Bottom of the Well',                  { 'index': 0x0098 }),
+                        ('Bottom of the Well -> Kakariko Village',                  { 'index': 0x02A6 })),
+    ('Dungeon',         ('Zoras Fountain -> Ice Cavern Beginning',                  { 'index': 0x0088 }),
+                        ('Ice Cavern Beginning -> Zoras Fountain',                  { 'index': 0x03D4 })),
+    ('Dungeon',         ('Gerudo Fortress -> Gerudo Training Grounds Lobby',        { 'index': 0x0008 }),
+                        ('Gerudo Training Grounds Lobby -> Gerudo Fortress',        { 'index': 0x03A8 })),
 
-    ('Interior', ('Kokiri Forest -> Mido House',                             { 'index': 0x0433 }),
-                 ('Mido House -> Kokiri Forest',                             { 'index': 0x0443 })),
-    ('Interior', ('Kokiri Forest -> Saria House',                            { 'index': 0x0437 }),
-                 ('Saria House -> Kokiri Forest',                            { 'index': 0x0447 })),
-    ('Interior', ('Kokiri Forest -> House of Twins',                         { 'index': 0x009C }),
-                 ('House of Twins -> Kokiri Forest',                         { 'index': 0x033C })),
-    ('Interior', ('Kokiri Forest -> Know It All House',                      { 'index': 0x00C9 }),
-                 ('Know It All House -> Kokiri Forest',                      { 'index': 0x026A })),
-    ('Interior', ('Kokiri Forest -> Kokiri Shop',                            { 'index': 0x00C1 }),
-                 ('Kokiri Shop -> Kokiri Forest',                            { 'index': 0x0266 })),
-    ('Interior', ('Lake Hylia -> Lake Hylia Lab',                            { 'index': 0x0043 }),
-                 ('Lake Hylia Lab -> Lake Hylia',                            { 'index': 0x03CC })),
-    ('Interior', ('Lake Hylia -> Fishing Hole',                              { 'index': 0x045F }),
-                 ('Fishing Hole -> Lake Hylia',                              { 'index': 0x0309 })),
-    ('Interior', ('Gerudo Valley Far Side -> Carpenter Tent',                { 'index': 0x03A0 }),
-                 ('Carpenter Tent -> Gerudo Valley Far Side',                { 'index': 0x03D0 })),
-    ('Interior', ('Castle Town Entrance -> Castle Town Rupee Room',          { 'index': 0x007E }),
-                 ('Castle Town Rupee Room -> Castle Town Entrance',          { 'index': 0x026E })),
-    ('Interior', ('Castle Town -> Castle Town Mask Shop',                    { 'index': 0x0530 }),
-                 ('Castle Town Mask Shop -> Castle Town',                    { 'index': 0x01D1 })),
-    ('Interior', ('Castle Town -> Castle Town Bombchu Bowling',              { 'index': 0x0507 }),
-                 ('Castle Town Bombchu Bowling -> Castle Town',              { 'index': 0x03BC })),
-    ('Interior', ('Castle Town -> Castle Town Potion Shop',                  { 'index': 0x0388 }),
-                 ('Castle Town Potion Shop -> Castle Town',                  { 'index': 0x02A2 })),
-    ('Interior', ('Castle Town -> Castle Town Treasure Chest Game',          { 'index': 0x0063 }),
-                 ('Castle Town Treasure Chest Game -> Castle Town',          { 'index': 0x01D5 })),
-    ('Interior', ('Castle Town -> Castle Town Bombchu Shop',                 { 'index': 0x0528 }),
-                 ('Castle Town Bombchu Shop -> Castle Town',                 { 'index': 0x03C0 })),
-    ('Interior', ('Castle Town -> Castle Town Man in Green House',           { 'index': 0x043B }),
-                 ('Castle Town Man in Green House -> Castle Town',           { 'index': 0x0067 })),
-    ('Interior', ('Kakariko Village -> Carpenter Boss House',                { 'index': 0x02FD }),
-                 ('Carpenter Boss House -> Kakariko Village',                { 'index': 0x0349 })),
-    ('Interior', ('Kakariko Village -> House of Skulltula',                  { 'index': 0x0550 }),
-                 ('House of Skulltula -> Kakariko Village',                  { 'index': 0x04EE })),
-    ('Interior', ('Kakariko Village -> Impas House',                         { 'index': 0x039C }),
-                 ('Impas House -> Kakariko Village',                         { 'index': 0x0345 })),
-    ('Interior', ('Kakariko Village -> Impas House Back',                    { 'index': 0x05C8 }),
-                 ('Impas House Back -> Kakariko Village',                    { 'index': 0x05DC })),
-    ('Interior', ('Kakariko Village -> Odd Medicine Building',               { 'index': 0x0072 }),
-                 ('Odd Medicine Building -> Kakariko Village',               { 'index': 0x034D })),
-    ('Interior', ('Graveyard -> Dampes House',                               { 'index': 0x030D }),
-                 ('Dampes House -> Graveyard',                               { 'index': 0x0355 })),
-    ('Interior', ('Goron City -> Goron Shop',                                { 'index': 0x037C }),
-                 ('Goron Shop -> Goron City',                                { 'index': 0x03FC })),
-    ('Interior', ('Zoras Domain -> Zora Shop',                               { 'index': 0x0380 }),
-                 ('Zora Shop -> Zoras Domain',                               { 'index': 0x03C4 })),
-    ('Interior', ('Lon Lon Ranch -> Talon House',                            { 'index': 0x004F }),
-                 ('Talon House -> Lon Lon Ranch',                            { 'index': 0x0378 })),
-    ('Interior', ('Lon Lon Ranch -> Ingo Barn',                              { 'index': 0x02F9 }),
-                 ('Ingo Barn -> Lon Lon Ranch',                              { 'index': 0x042F })),
-    ('Interior', ('Lon Lon Ranch -> Lon Lon Corner Tower',                   { 'index': 0x05D0 }),
-                 ('Lon Lon Corner Tower -> Lon Lon Ranch',                   { 'index': 0x05D4 })),
-    ('Interior', ('Castle Town -> Castle Town Bazaar',                       { 'index': 0x052C }),
-                 ('Castle Town Bazaar -> Castle Town',                       { 'index': 0x03B8, 'dynamic_address': 0xBEFD74 })),
-    ('Interior', ('Castle Town -> Castle Town Shooting Gallery',             { 'index': 0x016D }),
-                 ('Castle Town Shooting Gallery -> Castle Town',             { 'index': 0x01CD, 'dynamic_address': 0xBEFD7C })),
-    ('Interior', ('Kakariko Village -> Kakariko Bazaar',                     { 'index': 0x00B7 }),
-                 ('Kakariko Bazaar -> Kakariko Village',                     { 'index': 0x0201, 'dynamic_address': 0xBEFD72 })),
-    ('Interior', ('Kakariko Village -> Kakariko Shooting Gallery',           { 'index': 0x003B }),
-                 ('Kakariko Shooting Gallery -> Kakariko Village',           { 'index': 0x0463, 'dynamic_address': 0xBEFD7A })),
-    ('Interior', ('Desert Colossus -> Colossus Fairy',                       { 'index': 0x0588 }),
-                 ('Colossus Fairy -> Desert Colossus',                       { 'index': 0x057C, 'dynamic_address': 0xBEFD82 })),
-    ('Interior', ('Hyrule Castle Grounds -> Hyrule Castle Fairy',            { 'index': 0x0578 }),
-                 ('Hyrule Castle Fairy -> Castle Grounds',                   { 'index': 0x0340, 'dynamic_address': 0xBEFD80 })),
-    ('Interior', ('Ganons Castle Grounds -> Ganons Castle Fairy',            { 'index': 0x04C2 }),
-                 ('Ganons Castle Fairy -> Castle Grounds',                   { 'index': 0x0340, 'dynamic_address': 0xBEFD6C })),
-    ('Interior', ('Death Mountain Crater Lower -> Crater Fairy',             { 'index': 0x04BE }),
-                 ('Crater Fairy -> Death Mountain Crater Lower',             { 'index': 0x0482, 'dynamic_address': 0xBEFD6A })),
-    ('Interior', ('Death Mountain Summit -> Mountain Summit Fairy',          { 'index': 0x0315 }),
-                 ('Mountain Summit Fairy -> Death Mountain Summit',          { 'index': 0x045B, 'dynamic_address': 0xBEFD68 })),
-    ('Interior', ('Zoras Fountain -> Zoras Fountain Fairy',                  { 'index': 0x0371 }),
-                 ('Zoras Fountain Fairy -> Zoras Fountain',                  { 'index': 0x0394, 'dynamic_address': 0xBEFD7E })),
+    ('Interior',        ('Kokiri Forest -> Mido House',                             { 'index': 0x0433 }),
+                        ('Mido House -> Kokiri Forest',                             { 'index': 0x0443 })),
+    ('Interior',        ('Kokiri Forest -> Saria House',                            { 'index': 0x0437 }),
+                        ('Saria House -> Kokiri Forest',                            { 'index': 0x0447 })),
+    ('Interior',        ('Kokiri Forest -> House of Twins',                         { 'index': 0x009C }),
+                        ('House of Twins -> Kokiri Forest',                         { 'index': 0x033C })),
+    ('Interior',        ('Kokiri Forest -> Know It All House',                      { 'index': 0x00C9 }),
+                        ('Know It All House -> Kokiri Forest',                      { 'index': 0x026A })),
+    ('Interior',        ('Kokiri Forest -> Kokiri Shop',                            { 'index': 0x00C1 }),
+                        ('Kokiri Shop -> Kokiri Forest',                            { 'index': 0x0266 })),
+    ('Interior',        ('Lake Hylia -> Lake Hylia Lab',                            { 'index': 0x0043 }),
+                        ('Lake Hylia Lab -> Lake Hylia',                            { 'index': 0x03CC })),
+    ('Interior',        ('Lake Hylia -> Fishing Hole',                              { 'index': 0x045F }),
+                        ('Fishing Hole -> Lake Hylia',                              { 'index': 0x0309 })),
+    ('Interior',        ('Gerudo Valley Far Side -> Carpenter Tent',                { 'index': 0x03A0 }),
+                        ('Carpenter Tent -> Gerudo Valley Far Side',                { 'index': 0x03D0 })),
+    ('Interior',        ('Castle Town Entrance -> Castle Town Rupee Room',          { 'index': 0x007E }),
+                        ('Castle Town Rupee Room -> Castle Town Entrance',          { 'index': 0x026E })),
+    ('Interior',        ('Castle Town -> Castle Town Mask Shop',                    { 'index': 0x0530 }),
+                        ('Castle Town Mask Shop -> Castle Town',                    { 'index': 0x01D1 })),
+    ('Interior',        ('Castle Town -> Castle Town Bombchu Bowling',              { 'index': 0x0507 }),
+                        ('Castle Town Bombchu Bowling -> Castle Town',              { 'index': 0x03BC })),
+    ('Interior',        ('Castle Town -> Castle Town Potion Shop',                  { 'index': 0x0388 }),
+                        ('Castle Town Potion Shop -> Castle Town',                  { 'index': 0x02A2 })),
+    ('Interior',        ('Castle Town -> Castle Town Treasure Chest Game',          { 'index': 0x0063 }),
+                        ('Castle Town Treasure Chest Game -> Castle Town',          { 'index': 0x01D5 })),
+    ('Interior',        ('Castle Town -> Castle Town Bombchu Shop',                 { 'index': 0x0528 }),
+                        ('Castle Town Bombchu Shop -> Castle Town',                 { 'index': 0x03C0 })),
+    ('Interior',        ('Castle Town -> Castle Town Man in Green House',           { 'index': 0x043B }),
+                        ('Castle Town Man in Green House -> Castle Town',           { 'index': 0x0067 })),
+    ('Interior',        ('Kakariko Village -> Carpenter Boss House',                { 'index': 0x02FD }),
+                        ('Carpenter Boss House -> Kakariko Village',                { 'index': 0x0349 })),
+    ('Interior',        ('Kakariko Village -> House of Skulltula',                  { 'index': 0x0550 }),
+                        ('House of Skulltula -> Kakariko Village',                  { 'index': 0x04EE })),
+    ('Interior',        ('Kakariko Village -> Impas House',                         { 'index': 0x039C }),
+                        ('Impas House -> Kakariko Village',                         { 'index': 0x0345 })),
+    ('Interior',        ('Kakariko Village -> Impas House Back',                    { 'index': 0x05C8 }),
+                        ('Impas House Back -> Kakariko Village',                    { 'index': 0x05DC })),
+    ('Interior',        ('Kakariko Village -> Odd Medicine Building',               { 'index': 0x0072 }),
+                        ('Odd Medicine Building -> Kakariko Village',               { 'index': 0x034D })),
+    ('Interior',        ('Graveyard -> Dampes House',                               { 'index': 0x030D }),
+                        ('Dampes House -> Graveyard',                               { 'index': 0x0355 })),
+    ('Interior',        ('Goron City -> Goron Shop',                                { 'index': 0x037C }),
+                        ('Goron Shop -> Goron City',                                { 'index': 0x03FC })),
+    ('Interior',        ('Zoras Domain -> Zora Shop',                               { 'index': 0x0380 }),
+                        ('Zora Shop -> Zoras Domain',                               { 'index': 0x03C4 })),
+    ('Interior',        ('Lon Lon Ranch -> Talon House',                            { 'index': 0x004F }),
+                        ('Talon House -> Lon Lon Ranch',                            { 'index': 0x0378 })),
+    ('Interior',        ('Lon Lon Ranch -> Ingo Barn',                              { 'index': 0x02F9 }),
+                        ('Ingo Barn -> Lon Lon Ranch',                              { 'index': 0x042F })),
+    ('Interior',        ('Lon Lon Ranch -> Lon Lon Corner Tower',                   { 'index': 0x05D0 }),
+                        ('Lon Lon Corner Tower -> Lon Lon Ranch',                   { 'index': 0x05D4 })),
+    ('Interior',        ('Castle Town -> Castle Town Bazaar',                       { 'index': 0x052C }),
+                        ('Castle Town Bazaar -> Castle Town',                       { 'index': 0x03B8, 'dynamic_address': 0xBEFD74 })),
+    ('Interior',        ('Castle Town -> Castle Town Shooting Gallery',             { 'index': 0x016D }),
+                        ('Castle Town Shooting Gallery -> Castle Town',             { 'index': 0x01CD, 'dynamic_address': 0xBEFD7C })),
+    ('Interior',        ('Kakariko Village -> Kakariko Bazaar',                     { 'index': 0x00B7 }),
+                        ('Kakariko Bazaar -> Kakariko Village',                     { 'index': 0x0201, 'dynamic_address': 0xBEFD72 })),
+    ('Interior',        ('Kakariko Village -> Kakariko Shooting Gallery',           { 'index': 0x003B }),
+                        ('Kakariko Shooting Gallery -> Kakariko Village',           { 'index': 0x0463, 'dynamic_address': 0xBEFD7A })),
+    ('Interior',        ('Desert Colossus -> Colossus Fairy',                       { 'index': 0x0588 }),
+                        ('Colossus Fairy -> Desert Colossus',                       { 'index': 0x057C, 'dynamic_address': 0xBEFD82 })),
+    ('Interior',        ('Hyrule Castle Grounds -> Hyrule Castle Fairy',            { 'index': 0x0578 }),
+                        ('Hyrule Castle Fairy -> Castle Grounds',                   { 'index': 0x0340, 'dynamic_address': 0xBEFD80 })),
+    ('Interior',        ('Ganons Castle Grounds -> Ganons Castle Fairy',            { 'index': 0x04C2 }),
+                        ('Ganons Castle Fairy -> Castle Grounds',                   { 'index': 0x0340, 'dynamic_address': 0xBEFD6C })),
+    ('Interior',        ('Death Mountain Crater Lower -> Crater Fairy',             { 'index': 0x04BE }),
+                        ('Crater Fairy -> Death Mountain Crater Lower',             { 'index': 0x0482, 'dynamic_address': 0xBEFD6A })),
+    ('Interior',        ('Death Mountain Summit -> Mountain Summit Fairy',          { 'index': 0x0315 }),
+                        ('Mountain Summit Fairy -> Death Mountain Summit',          { 'index': 0x045B, 'dynamic_address': 0xBEFD68 })),
+    ('Interior',        ('Zoras Fountain -> Zoras Fountain Fairy',                  { 'index': 0x0371 }),
+                        ('Zoras Fountain Fairy -> Zoras Fountain',                  { 'index': 0x0394, 'dynamic_address': 0xBEFD7E })),
 
-    ('Grotto',   ('Desert Colossus -> Desert Colossus Grotto',               { 'scene': 0x5C, 'grotto_var': 0x00FD })),
-    ('Grotto',   ('Lake Hylia -> Lake Hylia Grotto',                         { 'scene': 0x57, 'grotto_var': 0x00EF })),
-    ('Grotto',   ('Zora River -> Zora River Storms Grotto',                  { 'scene': 0x54, 'grotto_var': 0x01EB })),
-    ('Grotto',   ('Zora River -> Zora River Plateau Bombable Grotto',        { 'scene': 0x54, 'grotto_var': 0x10E6 })),
-    ('Grotto',   ('Zora River -> Zora River Plateau Open Grotto',            { 'scene': 0x54, 'grotto_var': 0x0029 })),
-    ('Grotto',   ('Death Mountain Crater Lower -> DMC Hammer Grotto',        { 'scene': 0x61, 'grotto_var': 0x00F9 })),
-    ('Grotto',   ('Death Mountain Crater Upper -> Top of Crater Grotto',     { 'scene': 0x61, 'grotto_var': 0x007A })),
-    ('Grotto',   ('Goron City -> Goron City Grotto',                         { 'scene': 0x62, 'grotto_var': 0x00FB })),
-    ('Grotto',   ('Death Mountain -> Mountain Storms Grotto',                { 'scene': 0x60, 'grotto_var': 0x0157 })),
-    ('Grotto',   ('Death Mountain -> Mountain Bombable Grotto',              { 'scene': 0x60, 'grotto_var': 0x00F8 })),
-    ('Grotto',   ('Kakariko Village -> Kakariko Back Grotto',                { 'scene': 0x52, 'grotto_var': 0x0028 })),
-    ('Grotto',   ('Kakariko Village -> Kakariko Bombable Grotto',            { 'scene': 0x52, 'grotto_var': 0x02E7 })),
-    ('Grotto',   ('Hyrule Castle Grounds -> Castle Storms Grotto',           { 'scene': 0x5F, 'grotto_var': 0x01F6 })),
-    ('Grotto',   ('Hyrule Field -> Field North Lon Lon Grotto',              { 'scene': 0x51, 'grotto_var': 0x02E1 })),
-    ('Grotto',   ('Hyrule Field -> Field Kakariko Grotto',                   { 'scene': 0x51, 'grotto_var': 0x02E5 })),
-    ('Grotto',   ('Hyrule Field -> Field Far West Castle Town Grotto',       { 'scene': 0x51, 'grotto_var': 0x10FF })),
-    ('Grotto',   ('Hyrule Field -> Field West Castle Town Grotto',           { 'scene': 0x51, 'grotto_var': 0x0000 })),
-    ('Grotto',   ('Hyrule Field -> Field Valley Grotto',                     { 'scene': 0x51, 'grotto_var': 0x02E4 })),
-    ('Grotto',   ('Hyrule Field -> Field Near Lake Inside Fence Grotto',     { 'scene': 0x51, 'grotto_var': 0x02E6 })),
-    ('Grotto',   ('Hyrule Field -> Field Near Lake Outside Fence Grotto',    { 'scene': 0x51, 'grotto_var': 0x0003 })),
-    ('Grotto',   ('Hyrule Field -> Remote Southern Grotto',                  { 'scene': 0x51, 'grotto_var': 0x0022 })),
-    ('Grotto',   ('Lon Lon Ranch -> Lon Lon Grotto',                         { 'scene': 0x63, 'grotto_var': 0x00FC })),
-    ('Grotto',   ('Sacred Forest Meadow Entryway -> Front of Meadow Grotto', { 'scene': 0x56, 'grotto_var': 0x02ED })),
-    ('Grotto',   ('Sacred Forest Meadow -> Meadow Storms Grotto',            { 'scene': 0x56, 'grotto_var': 0x01EE })),
-    ('Grotto',   ('Sacred Forest Meadow -> Meadow Fairy Grotto',             { 'scene': 0x56, 'grotto_var': 0x10FF })),
-    ('Grotto',   ('Lost Woods Beyond Mido -> Lost Woods Sales Grotto',       { 'scene': 0x5B, 'grotto_var': 0x00F5 })),
-    ('Grotto',   ('Lost Woods -> Lost Woods Generic Grotto',                 { 'scene': 0x5B, 'grotto_var': 0x0014 })),
-    ('Grotto',   ('Kokiri Forest -> Kokiri Forest Storms Grotto',            { 'scene': 0x55, 'grotto_var': 0x012C })),
-    ('Grotto',   ('Zoras Domain -> Zoras Domain Storms Grotto',              { 'scene': 0x58, 'grotto_var': 0x11FF })),
-    ('Grotto',   ('Gerudo Fortress -> Gerudo Fortress Storms Grotto',        { 'scene': 0x5D, 'grotto_var': 0x11FF })),
-    ('Grotto',   ('Gerudo Valley Far Side -> Gerudo Valley Storms Grotto',   { 'scene': 0x5A, 'grotto_var': 0x01F0 })),
-    ('Grotto',   ('Gerudo Valley -> Gerudo Valley Octorok Grotto',           { 'scene': 0x5A, 'grotto_var': 0x00F2 })),
-    ('Grotto',   ('Lost Woods Beyond Mido -> Deku Theater',                  { 'scene': 0x5B, 'grotto_var': 0x00F3 })),
+    ('SpecialInterior', ('Kokiri Forest -> Links House',                            { 'index': 0x0272 }),
+                        ('Links House -> Kokiri Forest',                            { 'index': 0x0211 })),
+    ('SpecialInterior', ('Temple of Time Exterior -> Temple of Time',               { 'index': 0x0053 }),
+                        ('Temple of Time -> Temple of Time Exterior',               { 'index': 0x0472 })),
+    ('SpecialInterior', ('Kakariko Village -> Windmill',                            { 'index': 0x0453 }),
+                        ('Windmill -> Kakariko Village',                            { 'index': 0x0351 })),
+
+    ('Grotto',          ('Desert Colossus -> Desert Colossus Grotto',               { 'scene': 0x5C, 'grotto_var': 0x00FD })),
+    ('Grotto',          ('Lake Hylia -> Lake Hylia Grotto',                         { 'scene': 0x57, 'grotto_var': 0x00EF })),
+    ('Grotto',          ('Zora River -> Zora River Storms Grotto',                  { 'scene': 0x54, 'grotto_var': 0x01EB })),
+    ('Grotto',          ('Zora River -> Zora River Plateau Bombable Grotto',        { 'scene': 0x54, 'grotto_var': 0x10E6 })),
+    ('Grotto',          ('Zora River -> Zora River Plateau Open Grotto',            { 'scene': 0x54, 'grotto_var': 0x0029 })),
+    ('Grotto',          ('Death Mountain Crater Lower -> DMC Hammer Grotto',        { 'scene': 0x61, 'grotto_var': 0x00F9 })),
+    ('Grotto',          ('Death Mountain Crater Upper -> Top of Crater Grotto',     { 'scene': 0x61, 'grotto_var': 0x007A })),
+    ('Grotto',          ('Goron City -> Goron City Grotto',                         { 'scene': 0x62, 'grotto_var': 0x00FB })),
+    ('Grotto',          ('Death Mountain -> Mountain Storms Grotto',                { 'scene': 0x60, 'grotto_var': 0x0157 })),
+    ('Grotto',          ('Death Mountain -> Mountain Bombable Grotto',              { 'scene': 0x60, 'grotto_var': 0x00F8 })),
+    ('Grotto',          ('Kakariko Village -> Kakariko Back Grotto',                { 'scene': 0x52, 'grotto_var': 0x0028 })),
+    ('Grotto',          ('Kakariko Village -> Kakariko Bombable Grotto',            { 'scene': 0x52, 'grotto_var': 0x02E7 })),
+    ('Grotto',          ('Hyrule Castle Grounds -> Castle Storms Grotto',           { 'scene': 0x5F, 'grotto_var': 0x01F6 })),
+    ('Grotto',          ('Hyrule Field -> Field North Lon Lon Grotto',              { 'scene': 0x51, 'grotto_var': 0x02E1 })),
+    ('Grotto',          ('Hyrule Field -> Field Kakariko Grotto',                   { 'scene': 0x51, 'grotto_var': 0x02E5 })),
+    ('Grotto',          ('Hyrule Field -> Field Far West Castle Town Grotto',       { 'scene': 0x51, 'grotto_var': 0x10FF })),
+    ('Grotto',          ('Hyrule Field -> Field West Castle Town Grotto',           { 'scene': 0x51, 'grotto_var': 0x0000 })),
+    ('Grotto',          ('Hyrule Field -> Field Valley Grotto',                     { 'scene': 0x51, 'grotto_var': 0x02E4 })),
+    ('Grotto',          ('Hyrule Field -> Field Near Lake Inside Fence Grotto',     { 'scene': 0x51, 'grotto_var': 0x02E6 })),
+    ('Grotto',          ('Hyrule Field -> Field Near Lake Outside Fence Grotto',    { 'scene': 0x51, 'grotto_var': 0x0003 })),
+    ('Grotto',          ('Hyrule Field -> Remote Southern Grotto',                  { 'scene': 0x51, 'grotto_var': 0x0022 })),
+    ('Grotto',          ('Lon Lon Ranch -> Lon Lon Grotto',                         { 'scene': 0x63, 'grotto_var': 0x00FC })),
+    ('Grotto',          ('Sacred Forest Meadow Entryway -> Front of Meadow Grotto', { 'scene': 0x56, 'grotto_var': 0x02ED })),
+    ('Grotto',          ('Sacred Forest Meadow -> Meadow Storms Grotto',            { 'scene': 0x56, 'grotto_var': 0x01EE })),
+    ('Grotto',          ('Sacred Forest Meadow -> Meadow Fairy Grotto',             { 'scene': 0x56, 'grotto_var': 0x10FF })),
+    ('Grotto',          ('Lost Woods Beyond Mido -> Lost Woods Sales Grotto',       { 'scene': 0x5B, 'grotto_var': 0x00F5 })),
+    ('Grotto',          ('Lost Woods -> Lost Woods Generic Grotto',                 { 'scene': 0x5B, 'grotto_var': 0x0014 })),
+    ('Grotto',          ('Kokiri Forest -> Kokiri Forest Storms Grotto',            { 'scene': 0x55, 'grotto_var': 0x012C })),
+    ('Grotto',          ('Zoras Domain -> Zoras Domain Storms Grotto',              { 'scene': 0x58, 'grotto_var': 0x11FF })),
+    ('Grotto',          ('Gerudo Fortress -> Gerudo Fortress Storms Grotto',        { 'scene': 0x5D, 'grotto_var': 0x11FF })),
+    ('Grotto',          ('Gerudo Valley Far Side -> Gerudo Valley Storms Grotto',   { 'scene': 0x5A, 'grotto_var': 0x01F0 })),
+    ('Grotto',          ('Gerudo Valley -> Gerudo Valley Octorok Grotto',           { 'scene': 0x5A, 'grotto_var': 0x00F2 })),
+    ('Grotto',          ('Lost Woods Beyond Mido -> Deku Theater',                  { 'scene': 0x5B, 'grotto_var': 0x00F3 })),
 ]
 
 
@@ -211,6 +218,9 @@ def shuffle_random_entrances(worlds):
         # Determine entrance pools based on settings, to be shuffled in the order we set them by
         entrance_pools = OrderedDict()
 
+        if worlds[0].shuffle_special_interior_entrances:
+            entrance_pools['SpecialInterior'] = entrance_instances(world, get_entrance_pool('SpecialInterior'))
+
         if worlds[0].shuffle_dungeon_entrances:
             entrance_pools['Dungeon'] = entrance_instances(world, get_entrance_pool('Dungeon'))
             # The fill algorithm will already make sure gohma is reachable, however it can end up putting
@@ -220,7 +230,7 @@ def shuffle_random_entrances(worlds):
                 entrance_pools['Dungeon'].remove(world.get_entrance('Outside Deku Tree -> Deku Tree Lobby'))
 
         if worlds[0].shuffle_interior_entrances:
-            entrance_pools['Interior'] = entrance_instances(world, get_entrance_pool('Interior'))
+            entrance_pools['Interior'] = entrance_instances(world, get_entrance_pool('Interior')) + entrance_pools.get('SpecialInterior', [])
 
         if worlds[0].shuffle_grotto_entrances:
             entrance_pools['Grotto'] = entrance_instances(world, get_entrance_pool('Grotto'))
@@ -230,9 +240,25 @@ def shuffle_random_entrances(worlds):
         for pool_type, entrance_pool in entrance_pools.items():
             target_entrance_pools[pool_type] = assume_pool_reachable(world, entrance_pool)
 
+        # Special interiors need to be handled specifically by placing them in reverse and among all interiors, including normal ones
+        if 'SpecialInterior' in entrance_pools:
+            entrance_pools['SpecialInterior'] = [entrance.reverse for entrance in entrance_pools['SpecialInterior']]
+            target_entrance_pools['SpecialInterior'] = [entrance.reverse for entrance in target_entrance_pools['Interior']]
+
         # Shuffle all entrances among the pools to shuffle
         for pool_type, entrance_pool in entrance_pools.items():
-            if pool_type in ['Dungeon']:
+            if pool_type == 'SpecialInterior':
+                # When placing special interiors, we pre place ToT and Links House first, making sure the assumed access rules are always valid
+                temple_of_time_exit = world.get_entrance('Temple of Time -> Temple of Time Exterior')
+                links_house_exit = world.get_entrance('Links House -> Kokiri Forest')
+                for target in target_entrance_pools[pool_type]:
+                    target.access_rule = lambda state: temple_of_time_exit.connected_region == None or (links_house_exit.connected_region == None and state.is_child())
+                shuffle_entrance_pool(worlds, [temple_of_time_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
+                shuffle_entrance_pool(worlds, [links_house_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
+                entrance_pools[pool_type].remove(temple_of_time_exit)
+                entrance_pools[pool_type].remove(links_house_exit)
+
+            if pool_type in ['SpecialInterior', 'Dungeon']:
                 # Those pools contain entrances leading to regions that might open access to completely new areas
                 # Dungeons are among those because exiting Spirit Temple from the hands is in logic 
                 # and could give access to Desert Colossus and potentially new areas from there
@@ -254,9 +280,9 @@ def shuffle_random_entrances(worlds):
     if not max_playthrough.can_beat_game(False):
         raise EntranceShuffleError('Cannot beat game!')
 
-    # Validate the worlds one last time to ensure all conditions are still valid
+    # Validate the worlds one last time to ensure all special conditions are still valid
     try:
-        validate_worlds(worlds, locations_to_ensure_reachable, complete_itempool)
+        validate_worlds(worlds, None, locations_to_ensure_reachable, complete_itempool)
     except EntranceShuffleError as error:
         raise EntranceShuffleError('Worlds are not valid after shuffling entrances, Reason: %s' % error)
 
@@ -342,7 +368,7 @@ def shuffle_entrances(worlds, entrances, target_entrances, locations_to_ensure_r
                 change_connections(entrance, target)
 
                 try:
-                    validate_worlds(worlds, locations_to_ensure_reachable, complete_itempool)
+                    validate_worlds(worlds, entrance, locations_to_ensure_reachable, complete_itempool)
                     rollbacks.append((entrance, target))
                     break
                 except EntranceShuffleError as error:
@@ -370,7 +396,7 @@ def shuffle_entrances(worlds, entrances, target_entrances, locations_to_ensure_r
 
 
 # Validate the provided worlds' structures, raising an error if it's not valid based on our criterias
-def validate_worlds(worlds, locations_to_ensure_reachable, itempool):
+def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, itempool):
 
     if locations_to_ensure_reachable:
         max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
@@ -382,7 +408,64 @@ def validate_worlds(worlds, locations_to_ensure_reachable, itempool):
                 if not max_playthrough.visited(location):
                     raise EntranceShuffleError('%s is unreachable' % location.name)
 
+    if (entrance_placed == None and worlds[0].shuffle_special_interior_entrances) or \
+       (entrance_placed != None and entrance_placed.type == 'SpecialInterior'):
+        if not locations_to_ensure_reachable:
+            max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
+
+        for world in worlds:
+            # Links House entrance should be reachable as child at some point in the seed
+            links_house_entrance = get_entrance_replacing(world.get_region('Links House'), 'Kokiri Forest -> Links House')
+            if not max_playthrough.state_list[world.id].can_reach(links_house_entrance, age='child'):
+                raise EntranceShuffleError('Links House Entrance is never reachable as child')
+
+            # Temple of Time entrance should be reachable as both ages at some point in the seed
+            temple_of_time_entrance = get_entrance_replacing(world.get_region('Temple of Time'), 'Temple of Time Exterior -> Temple of Time')
+            if not max_playthrough.state_list[world.id].can_reach(temple_of_time_entrance, age='both'):
+                raise EntranceShuffleError('Temple of Time Entrance is never reachable as both ages')
+
+            # Temple of Time shouldn't be placed inside the Fishing Pond to prevent potential issues with the lake hylia water control
+            if temple_of_time_entrance.name == 'Lake Hylia -> Fishing Hole':
+                raise EntranceShuffleError('Temple of Time is placed behind the Fishing Pond')
+
+            # Windmill door entrance should be reachable as both ages at some point in the seed
+            windmill_door_entrance = get_entrance_replacing(world.get_region('Windmill'), 'Kakariko Village -> Windmill')
+            if not max_playthrough.state_list[world.id].can_reach(windmill_door_entrance, age='both'):
+                raise EntranceShuffleError('Windmill Door Entrance is never reachable as both ages')
+
+        # At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
+        no_items_playthrough = Playthrough([State(world) for world in worlds])
+
+        valid_starting_regions = ['Kokiri Forest', 'Kakariko Village']
+        for world in worlds:
+            if not any(region for region in valid_starting_regions if no_items_playthrough.state_list[world.id].can_reach(region)):
+                raise EntranceShuffleError('Invalid starting area')
+
+        time_travel_playthrough = Playthrough([world.state.copy() for world in worlds])
+        for world in worlds:
+            time_travel_playthrough.collect(ItemFactory('Time Travel', world=world))
+        time_travel_playthrough.visit_locations()
+
+        for world in worlds:
+            # For now, we consider that time of day must always be reachable as both ages without having collected any items (except in closed forest)
+            # In ER, Time of day logic considers that the root always has access to time passing so this is important to ensure
+            if not (any(region for region in time_travel_playthrough.cached_spheres[-1]['child_regions'] if region.time_passes and region.world == world) and
+                    any(region for region in time_travel_playthrough.cached_spheres[-1]['adult_regions'] if region.time_passes and region.world == world)):
+                raise EntranceShuffleError('Time passing is not guaranteed as both ages')
+
+            # When starting as adult, child Link should be able to reach ToT without having collected any items
+            # This is important to ensure that the player never loses access to the pedestal after going child
+            if world.starting_age == 'adult' and not time_travel_playthrough.state_list[world.id].can_reach('Temple of Time', age='child'):
+                raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
     return
+
+
+# Shorthand function to find an entrance with the requested name leading to a specific region
+def get_entrance_replacing(region, entrance_name):
+    try:
+        return next(filter(lambda entrance: entrance.replaces and entrance.replaces.name == entrance_name, region.entrances))
+    except StopIteration:
+        return region.world.get_entrance(entrance_name)
 
 
 # Change connections between an entrance and a target assumed entrance, in order to test the connections afterwards if necessary

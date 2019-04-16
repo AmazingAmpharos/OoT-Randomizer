@@ -1071,9 +1071,10 @@ setting_infos = [
         name           = 'entrance_shuffle',
         default        = 'off',
         choices        = {
-            'off':       'Off',
-            'dungeons':  'Dungeons Only',
-            'indoors':   'All Indoors',
+            'off':              'Off',
+            'dungeons':         'Dungeons Only',
+            'simple-indoors':   'Simple Indoors',
+            'all-indoors':      'All Indoors'
         },
         gui_text       = 'Entrance Shuffle',
         gui_group      = 'shuffle',
@@ -1097,7 +1098,7 @@ setting_infos = [
 
             Master Quest dungeons are not supported yet, coming soon!
 
-            'All Indoors':
+            'Simple Indoors':
             Shuffle dungeon entrances along with grotto and interior 
             entrances as described below. All entrances are still only 
             shuffled within their own pool. This means, for example, 
@@ -1106,8 +1107,8 @@ setting_infos = [
             Grottos: All grottos in the game including small Fairy Fountains 
             and the Lost Woods Stage.
 
-            Interiors: All Houses and Great Fairies in the game.
-            For now, this excludes Richard's house, the Windmill, the 
+            Interiors: Most Houses and all Great Fairies in the game.
+            This pool excludes Richard's house, the Windmill, the 
             Kakariko Potion Shop, Link's House and Temple of Time.
             Adult trade quest timers are disabled when shuffling this pool,
             and it forces Skip Tower Escape Sequence to be enabled for now.

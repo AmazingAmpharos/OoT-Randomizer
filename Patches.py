@@ -763,6 +763,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
         set_entrance_updates(world.get_shuffled_entrances(type='Interior'))
 
+    if world.shuffle_special_interior_entrances:
+        set_entrance_updates(world.get_shuffled_entrances(type='SpecialInterior'))
+
     for entrance, target in entrance_updates:
         rom.write_int16(entrance, target)
 

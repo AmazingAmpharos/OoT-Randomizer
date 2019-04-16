@@ -501,7 +501,9 @@ class State(object):
             # Require certain warp songs based on ER settings to ensure the player doesn't have to savewarp in order to complete the trade quest
             # This is meant to avoid possible logical softlocks until either the trade quest is reworked or a better solution is found
             guaranteed_path = True
-            if self.world.shuffle_interior_entrances:
+            if self.world.shuffle_special_interior_entrances:
+                guaranteed_path = self.can_play('Prelude of Light')
+            elif self.world.shuffle_interior_entrances:
                 colossus_fairy_entrance = self.world.get_entrance('Desert Colossus -> Colossus Fairy')
                 if colossus_fairy_entrance.connected_region and colossus_fairy_entrance.connected_region.name == 'Lake Hylia Lab':
                     guaranteed_path = (self.can_play('Prelude of Light') or self.can_play('Minuet of Forest') or
