@@ -153,7 +153,7 @@
         "exits": {
             "Lost Woods Forest Exit": "True",
             "Goron City Woods Warp": "True",
-            "Lost Woods Bridge": "can_use(Magic_Bean)",
+            "Lost Woods Bridge": "can_use(Hover_Boots) or can_use(Longshot) or can_use(Magic_Bean)",
             "Zora River": "can_leave_forest and (can_dive or can_use(Iron_Boots))",
             "Lost Woods Beyond Mido": "is_child or logic_adult_meadow_access or can_play(Sarias_Song)",
             "Lost Woods Generic Grotto": "as_either_here(can_blast_or_smash)"
@@ -229,7 +229,8 @@
         "hint": "the Lost Woods",
         "exits": {
             "Kokiri Forest": "True",
-            "Hyrule Field": "True"
+            "Hyrule Field": "True",
+            "Lost Woods": "can_use(Longshot)"
         }
     },
     {
@@ -969,7 +970,7 @@
         "region_name": "Heart Piece Grave",
         "locations": {
             "Heart Piece Grave Chest": "can_play(Suns_Song)",
-            "Fountain Fairies": "can_blast_or_smash and has_bottle"
+            "Free Fairies": "can_blast_or_smash and has_bottle"
         },
         "exits": {
             "Graveyard": "True"
@@ -1324,7 +1325,7 @@
                 is_adult and at_night and (Progressive_Hookshot or has_bow or Magic_Meter)",
             "Zoras Domain Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
-            "Fish Group": "has_bottle",
+            "Fish Group": "is_child and has_bottle",
             "Stick Pot": "is_child",
             "Nut Pot": "True"
         },
@@ -1459,13 +1460,13 @@
     {
         "region_name": "Gerudo Fortress Storms Grotto",
         "locations": {
-            "Fountain Fairies": "has_bottle"
+            "Free Fairies": "has_bottle"
         }
     },
     {
         "region_name": "Zoras Domain Storms Grotto",
         "locations": {
-            "Fountain Fairies": "has_bottle"
+            "Free Fairies": "has_bottle"
         }
     },
     {
@@ -1507,7 +1508,7 @@
     {
         "region_name": "Meadow Fairy Grotto",
         "locations": {
-            "Fountain Fairies": "has_bottle"
+            "Free Fairies": "has_bottle"
         }
     },
     {
@@ -1585,7 +1586,7 @@
     {
         "region_name": "Field Far West Castle Town Grotto",
         "locations": {
-            "Fountain Fairies": "has_bottle"
+            "Free Fairies": "has_bottle"
         }
     },
     {
@@ -1688,7 +1689,7 @@
     {
         "region_name": "Zora River Plateau Bombable Grotto",
         "locations": {
-            "Fountain Fairies": "has_bottle"
+            "Free Fairies": "has_bottle"
         }
     },
     {

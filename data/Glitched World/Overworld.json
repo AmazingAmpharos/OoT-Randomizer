@@ -237,7 +237,8 @@
             "GS Lake Hylia Giant Tree": "can_use(Hookshot) and at_night",
             "Lake Hylia Lab Gossip Stone": "True",
             "Lake Hylia Gossip Stone (Southeast)": "True",
-            "Lake Hylia Gossip Stone (Southwest)": "True"
+            "Lake Hylia Gossip Stone (Southwest)": "True",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
         },
         "exits": {
             "Hyrule Field": "True",
@@ -991,7 +992,7 @@
                 Biggoron_Sword or 
                 (Progressive_Wallet and can_reach(Goron_City,Region,adult) and (can_blast_or_smash or Progressive_Strength_Upgrade or has_blue_fire)))",
             "Zoras Domain Gossip Stone": "True",
-            "Fish Group": "has_bottle",
+            "Fish Group": "is_child and has_bottle",
             "Stick Pot": "is_child",
             "Nut Pot": "True"
         },
@@ -1126,7 +1127,7 @@
     {
         "region_name": "Meadow Fairy Grotto",
         "locations": {
-            "Fountain Fairies": "has_bottle"
+            "Free Fairies": "has_bottle"
         }
     },
     {
