@@ -271,7 +271,7 @@
             "Gerudo Valley Waterfall Freestanding PoH": "True",
             "Gerudo Valley Crate Freestanding PoH": "is_child or can_use(Longshot) or 
                 (can_reach('Gerudo Valley Far Side') and (can_use(Hover_Boots) or can_mega) and (can_live_dmg(0.5) or has_bottle or can_use(Nayrus_Love)))",
-            "GS Gerudo Valley Small Bridge": "(can_use(Boomerang) or can_hover) and nighttime",
+            "GS Gerudo Valley Small Bridge": "(can_use(Boomerang) or (can_hover and is_child)) and nighttime",
             "GS Gerudo Valley Bean Patch": "can_plant_bugs and can_child_attack",
             "Gerudo Valley Gossip Stone": "True",
             "Gerudo Valley Cow": "is_child and can_play(Eponas_Song)"
@@ -685,7 +685,7 @@
         "locations": {
             "Graveyard Freestanding PoH": "can_use(Magic_Bean) or can_use(Hookshot) or can_hover",
             "Gravedigging Tour": "is_child",
-            "GS Graveyard Wall": "(can_use(Boomerang) or can_hover) and nighttime",
+            "GS Graveyard Wall": "(can_use(Boomerang) or (can_hover and is_child)) and nighttime",
             "GS Graveyard Bean Patch": "can_plant_bugs and can_child_attack"
         },
         "exits": {
@@ -1005,7 +1005,7 @@
             "Zoras Fountain Iceberg Freestanding PoH": "is_adult",
             "Zoras Fountain Bottom Freestanding PoH": "is_adult and Iron_Boots",
             "GS Zora's Fountain Tree": "is_child",
-            "GS Zora's Fountain Above the Log": "(can_use(Boomerang) or can_hover) and nighttime",
+            "GS Zora's Fountain Above the Log": "(can_use(Boomerang) or (can_hover and is_child)) and nighttime",
             "GS Zora's Fountain Hidden Cave": "nighttime and 
                 (
                 ((can_use(Silver_Gauntlets) and can_blast_or_smash) or (has_explosives and can_shield and (can_use(Bow) or can_use(Hookshot))))
