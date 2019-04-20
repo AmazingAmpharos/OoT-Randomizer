@@ -1412,7 +1412,7 @@ setting_infos = [
             If set, a random number of dungeons
             will have Master Quest designs.
         ''',
-        dependency     = lambda settings: False if settings.entrance_shuffle != 'off' or settings.logic_rules == 'glitched' else None,
+        dependency     = lambda settings: False if settings.logic_rules == 'glitched' else None,
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -1441,7 +1441,7 @@ setting_infos = [
             Master Quest redesigns.
             ''',
 
-        dependency     = lambda settings: 0 if settings.mq_dungeons_random or settings.entrance_shuffle != 'off' or settings.logic_rules == 'glitched' else None,
+        dependency     = lambda settings: 0 if settings.mq_dungeons_random or settings.logic_rules == 'glitched' else None,
 
         shared         = True,
         gui_params     = {
