@@ -300,6 +300,9 @@ guard_catch:
 
 ; Allow any entrance to kak to play burning cutscene
 burning_kak:
+    addiu   sp, sp, -0x18
+    sw      ra, 0x14(sp)
+    sw      a0, 0x18(sp)
     li      at, 0x800F9C90 ; entrance table
     sll     t9, t9, 2
     add     at, t9, at
@@ -307,14 +310,18 @@ burning_kak:
     li      t9, 0x52
     bne     t9, at, @@default
     lw      t9, 0x0000(s0)
-    lhu     v0, 0x0EDC(s0)
-    andi    t4, v0, 0x100
+    lhu     v0, 0x00A6(s0)
+    andi    t4, v0, 0x0001
     beqz    t4, @@default
-    andi    t4, v0, 0x200
+    andi    t4, v0, 0x002
     beqz    t4, @@default
-    andi    t4, v0, 0x400
+    andi    t4, v0, 0x004
     beqz    t4, @@default
+    addiu   a0, r0, 0xAA
+    jal     0x800288B4
     nop
+    bnez    v0, @@default    ; Burning Kak already Watched
+    lw      t9, 0x0000(s0)
     li      t9, 0xDB
     b       @@return
     sw      t9, 0x0000(s0)
@@ -323,5 +330,7 @@ burning_kak:
     li      at, 0x01E1
 
 @@return:
+    lw      ra, 0x14(sp)
+    lw      a0, 0x18(sp)
     jr      ra
-    nop
+    addiu   sp, sp, 0x18
