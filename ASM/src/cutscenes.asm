@@ -297,3 +297,30 @@ guard_catch:
     li      at, 0x14
     jr      ra
     sb      at, 0x1E15(v0) ; trigger load
+
+; Allow any entrance to kak to play burning cutscene
+burning_kak:
+    li      at, 0x800F9C90 ; entrance table
+    sll     t9, t9, 2
+    add     at, t9, at
+    lbu     at, 0x00(at)
+    li      t9, 0x52
+    bne     t9, at, @@default
+    lhu     v0, 0x0EDC(s0)
+    andi    t4, v0, 0x100
+    beqz    t4, @@default
+    andi    t4, v0, 0x200
+    beqz    t4, @@default
+    andi    t4, v0, 0x400
+    beqz    t4, @@default
+    nop
+    li      t9, 0xDB
+    b       @@return
+    sw      t9, 0x0000(s0)
+
+@@default:  
+    li      at, 0x01E1
+
+@@return:
+    jr      ra
+    nop
