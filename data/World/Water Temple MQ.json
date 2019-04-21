@@ -10,7 +10,7 @@
         "exits": {
             "Lake Hylia": "True",
             "Water Temple Dive": "
-                (can_use(Zora_Tunic) or logic_fewer_tunic_requirements) and Iron_Boots",
+                (can_use(Zora_Tunic) or logic_fewer_tunic_requirements) and can_use(Iron_Boots)",
             "Water Temple Dark Link Region": "
                 Small_Key_Water_Temple and can_use(Longshot)"
         }
@@ -19,9 +19,12 @@
         "region_name": "Water Temple Dive",
         "dungeon": "Water Temple",
         "locations": {
-            "Water Temple MQ Map Chest": "has_fire_source",
+            # This doesn't require the hookshot in its own right, however currently the hookshot is the expected
+            # way to restore water level to top level in the event the player drains the water before getting
+            # this check
+            "Water Temple MQ Map Chest": "has_fire_source and can_use(Hookshot)",
             "Water Temple MQ Central Pillar Chest": "
-                can_use(Zora_Tunic) and 
+                can_use(Zora_Tunic) and can_use(Hookshot) and
                 (can_use(Fire_Arrows) or (can_use(Dins_Fire) and can_play(Song_of_Time)))"
         },
         "exits": {
@@ -32,8 +35,10 @@
         "region_name": "Water Temple Lowered Water Levels",
         "dungeon": "Water Temple",
         "locations": {
-            "Water Temple MQ Compass Chest": "has_bow or can_use(Dins_Fire)",
-            "Water Temple MQ Longshot Chest": "True",
+            "Water Temple MQ Compass Chest": "
+                can_use(Bow) or can_use(Dins_Fire) or 
+                as_child(can_reach(Water_Temple_Lobby) and can_use(Sticks) and has_explosives)",
+            "Water Temple MQ Longshot Chest": "can_use(Hookshot)",
             "GS Water Temple MQ Lizalfos Hallway": "can_use(Dins_Fire)",
             "GS Water Temple MQ Before Upper Water Switch": "can_use(Longshot)"
         }
