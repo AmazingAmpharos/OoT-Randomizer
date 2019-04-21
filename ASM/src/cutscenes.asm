@@ -306,6 +306,7 @@ burning_kak:
     lbu     at, 0x00(at)
     li      t9, 0x52
     bne     t9, at, @@default
+    lw      t9, 0x0000(s0)
     lhu     v0, 0x0EDC(s0)
     andi    t4, v0, 0x100
     beqz    t4, @@default
