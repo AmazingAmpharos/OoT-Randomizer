@@ -4,32 +4,40 @@
         "dungeon": "Ice Cavern",
         "exits": {
             "Zoras Fountain": "True",
-            "Ice Cavern": "True"
+            "Ice Cavern Map Room": "
+                is_adult or can_use(Dins_Fire) or
+                (has_explosives and (can_use(Sticks) or can_use(Slingshot) or Kokiri_Sword))",
+            "Ice Cavern Compass Room": "is_adult",
+            "Ice Cavern Iron Boots Region": "has_blue_fire"
         }
     },
     {
-        "region_name": "Ice Cavern",
+        "region_name": "Ice Cavern Map Room",
         "dungeon": "Ice Cavern",
         "locations": {
+            "Ice Cavern MQ Map Chest": "
+                is_adult or can_use(Sticks) or Kokiri_Sword or can_use_projectile",
             "Blue Fire": "is_adult and has_bottle"
-        },
-        "exits": {
-            "Ice Cavern Interior": "has_blue_fire"
         }
     },
     {
-        "region_name": "Ice Cavern Interior",
+        "region_name": "Ice Cavern Iron Boots Region",
         "dungeon": "Ice Cavern",
         "locations": {
-            "Ice Cavern MQ Map Chest": "True",
-            "Ice Cavern MQ Compass Chest": "True",
-            "Ice Cavern MQ Iron Boots Chest": "True",
-            "Ice Cavern MQ Freestanding PoH": "has_explosives",
-            "Sheik in Ice Cavern": "True",
-            "GS Ice Cavern MQ Red Ice": "can_play(Song_of_Time)",
-            "GS Ice Cavern MQ Ice Block": "True",
+            "Ice Cavern MQ Iron Boots Chest": "is_adult",
+            "Sheik in Ice Cavern": "is_adult",
+            "GS Ice Cavern MQ Ice Block": "is_adult or can_child_attack",
             "GS Ice Cavern MQ Scarecrow": "
-                can_use(Scarecrow) or (Hover_Boots and can_use(Longshot))"
+                can_use(Scarecrow) or (can_use(Hover_Boots) and can_use(Longshot))"
+        }
+    },
+    {
+        "region_name": "Ice Cavern Compass Room",
+        "dungeon": "Ice Cavern",
+        "locations": {
+            "Ice Cavern MQ Compass Chest": "has_blue_fire",
+            "Ice Cavern MQ Freestanding PoH": "has_explosives",
+            "GS Ice Cavern MQ Red Ice": "has_blue_fire and can_play(Song_of_Time)"
         }
     }
 ]
