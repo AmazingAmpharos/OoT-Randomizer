@@ -311,12 +311,9 @@ burning_kak:
     bne     t9, at, @@default
     lw      t9, 0x0000(s0)
     lhu     v0, 0x00A6(s0)
-    andi    t4, v0, 0x0001
-    beqz    t4, @@default
-    andi    t4, v0, 0x002
-    beqz    t4, @@default
-    andi    t4, v0, 0x004
-    beqz    t4, @@default
+    andi    t4, v0, 0x0007
+    xori    t4, t4, 0x0007
+    bnez    t4, @@default
     addiu   a0, r0, 0xAA
     jal     0x800288B4
     nop
