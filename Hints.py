@@ -220,10 +220,10 @@ def get_hint_area(spot):
         return spot.parent_region.dungeon.hint
     elif spot.parent_region.hint:
         return spot.parent_region.hint
-    elif spot.parent_region.entrances[0].parent_region.hint:
-        return spot.parent_region.entrances[0].parent_region.hint
-    else:
-        raise RuntimeError('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
+    for entrance in spot.parent_region.entrances:
+        if entrance.parent_region.hint:
+            return entrance.parent_region.hint
+    raise RuntimeError('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
 
 
 def get_woth_hint(spoiler, world, checked):
@@ -287,6 +287,7 @@ def get_random_location_hint(spoiler, world, checked):
     locations = [location for location in world.get_filled_locations()
             if not location.name in checked and \
             location.item.type != 'Event' and \
+            location.item.type != 'Drop' and \
             location.item.type != 'Shop' and \
             not (location.parent_region.dungeon and \
                 isRestrictedDungeonItem(location.parent_region.dungeon, location.item)) and

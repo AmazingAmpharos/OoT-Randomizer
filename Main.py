@@ -31,6 +31,7 @@ from Rules import set_rules, set_shop_rules
 from Plandomizer import Distribution
 from Playthrough import Playthrough
 from EntranceShuffle import set_entrances
+from LocationList import set_drop_location_names
 
 
 class dummy_window():
@@ -124,6 +125,7 @@ def main(settings, window=dummy_window()):
         logger.info('Generating Item Pool.')
         generate_itempool(world)
         set_shop_rules(world)
+        set_drop_location_names(world)
 
     logger.info('Setting Entrances.')
     set_entrances(worlds)
@@ -543,17 +545,24 @@ def create_playthrough(spoiler):
     # Regenerate the spheres as we might not reach places the same way anymore.
     playthrough.reset()  # playthrough state has no items, okay to reuse sphere 0 cache
     collection_spheres = []
+    entrance_spheres = []
+    remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances() if entrance.primary)
     while True:
         # Not collecting while the generator runs means we only get one sphere at a time
         # Otherwise, an item we collect could influence later item collection in the same sphere
         collected = list(playthrough.iter_reachable_locations(required_locations))
+        accessed_entrances = set(filter(lambda entrance: state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
         if not collected: break
         for location in collected:
             # Collect the item for the state world it is for
             state_list[location.item.world.id].collect(location.item)
         collection_spheres.append(collected)
+        entrance_spheres.append(accessed_entrances)
+        remaining_entrances -= accessed_entrances
     logger.info('Collected %d final spheres', len(collection_spheres))
 
     # Then we can finally output our playthrough
     spoiler.playthrough = OrderedDict((str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres))
 
+    if worlds[0].entrance_shuffle != 'off':
+        spoiler.entrance_playthrough = OrderedDict((str(i + 1), list(sphere)) for i, sphere in enumerate(entrance_spheres))

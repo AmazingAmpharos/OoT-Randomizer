@@ -128,16 +128,6 @@ location_table = {
     "Sell 4 Big Poe":                                  ("Event",       None,  None, None,                     None),
     "Master Sword Pedestal":                           ("Event",       None,  None, None,                     None),
     "Epona":                                           ("Event",       None,  None, None,                     None),
-    "Deku Baba Sticks":                                ("Event",       None,  None, None,                     None),
-    "Deku Baba Nuts":                                  ("Event",       None,  None, None,                     None),
-    "Forest Temple Deku Baba Sticks":                  ("Event",       None,  None, None,                     None),
-    "Forest Temple Deku Baba Nuts":                    ("Event",       None,  None, None,                     None),
-    "Goron City Stick Pot":                            ("Event",       None,  None, None,                     None),
-    "Bottom of the Well Stick Pot":                    ("Event",       None,  None, None,                     None),
-    "Zoras Domain Stick Pot":                          ("Event",       None,  None, None,                     None),
-    "Zoras Domain Nut Pot":                            ("Event",       None,  None, None,                     None),
-    "Dampes Grave Nut Pot":                            ("Event",       None,  None, None,                     None),
-    "Spirit Temple Nut Crate":                         ("Event",       None,  None, None,                     None),
     "Gerudo Fortress Carpenter Rescue":                ("Event",       None,  None, None,                     None),
     "Haunted Wasteland Bombchu Salesman":              ("Event",       None,  None, None,                     ("Haunted Wasteland",)),
     "Ganons Castle Forest Trial Clear":                ("Event",       None,  None, None,                     None),
@@ -146,6 +136,24 @@ location_table = {
     "Ganons Castle Shadow Trial Clear":                ("Event",       None,  None, None,                     None),
     "Ganons Castle Spirit Trial Clear":                ("Event",       None,  None, None,                     None),
     "Ganons Castle Light Trial Clear":                 ("Event",       None,  None, None,                     None),
+
+    "Deku Baba Sticks":                                ("Drop",        None,  None, None,                     None),
+    "Deku Baba Nuts":                                  ("Drop",        None,  None, None,                     None),
+    "Stick Pot":                                       ("Drop",        None,  None, None,                     None),
+    "Nut Pot":                                         ("Drop",        None,  None, None,                     None),
+    "Nut Crate":                                       ("Drop",        None,  None, None,                     None),
+    "Blue Fire":                                       ("Drop",        None,  None, None,                     None),
+    "Lone Fish":                                       ("Drop",        None,  None, None,                     None),
+    "Fish Group":                                      ("Drop",        None,  None, None,                     None),
+    "Bug Rock":                                        ("Drop",        None,  None, None,                     None),
+    "Bug Shrub":                                       ("Drop",        None,  None, None,                     None),
+    "Wandering Bugs":                                  ("Drop",        None,  None, None,                     None),
+    "Fairy Pot":                                       ("Drop",        None,  None, None,                     None),
+    "Free Fairies":                                    ("Drop",        None,  None, None,                     None),
+    "Butterfly Fairy":                                 ("Drop",        None,  None, None,                     None),
+    "Gossip Stone Fairy":                              ("Drop",        None,  None, None,                     None),
+    "Fairy Pond":                                      ("Drop",        None,  None, None,                     None),
+    "Big Poe Kill":                                    ("Drop",        None,  None, None,                     None),
 
     # Deku Tree vanilla
     "Deku Tree Lobby Chest":                           ("Chest",       0x00,  0x03, None,                     ("Deku Tree",)),
@@ -825,3 +833,10 @@ location_groups = {
     'CollectableLike': [name for (name, data) in location_table.items() if data[0] in ('Collectable', 'BossHeart', 'GS Token')],
     'Dungeon': [name for (name, data) in location_table.items() if data[4] is not None and any(dungeon in data[4] for dungeon in dungeons)],
 }
+
+# Function to run exactly once after after placing items in drop locations for each world
+# Sets all Drop locations to a unique name in order to avoid name issues and to identify locations in the spoiler
+def set_drop_location_names(world):
+    for location in world.get_locations():
+        if location.type == 'Drop':
+            location.name = location.parent_region.name + " " + location.name
