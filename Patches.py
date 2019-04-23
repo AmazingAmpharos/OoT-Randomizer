@@ -785,6 +785,14 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         #Tell the well water we are always a child.
         rom.write_int32(0xDD5BF4, 0x00000000)
 
+        #Make the Adult well blocking stone dissappear if the well has been drained by
+        #checking the well drain event flag instead of links age. This actor doesn't need a
+        #code check for links age as the stone is absent for child via the scene alternate
+        #lists. So replace the age logic with drain logic.
+        rom.write_int32(0xE2887C, rom.read_int32(0xE28870)) #relocate this to nop delay slot
+        rom.write_int32(0xE2886C, 0x95CEB4B0) # lhu
+        rom.write_int32(0xE28870, 0x31CE0080) # andi
+
         remove_entrance_blockers(rom)
         #Tell the Deku tree jaw actor we are always a child.
         rom.write_int32(0x0C72C64, 0x240E0000)
@@ -1703,10 +1711,6 @@ def remove_entrance_blockers(rom):
             actor_var = rom.read_int16(actor + 14);
             if actor_var == 0xFF01:
                 rom.write_int16(actor + 14, 0x0700)
-        if actor_id == 0x0145:
-            rom.write_int16(actor, 0x014E)
-            rom.write_int16(actor + 14, 0x0700)
-
     get_actor_list(rom, remove_entrance_blockers_do)
 
 def set_cow_id_data(rom, world):
