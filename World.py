@@ -510,7 +510,7 @@ class World(object):
 
                 # If there are sufficient required item known, then the remaining
                 # copies of the items are useless.
-                if max_progressive is True or len(dupe_locations) < max_progressive:
+                if len(dupe_locations) < max_progressive:
                     useless_area = False
                     break
 
