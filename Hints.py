@@ -342,23 +342,24 @@ def get_dungeon_hint(spoiler, world, checked):
 
 
 def get_entrance_hint(spoiler, world, checked):
-    hintGroup = getHintGroup('region', world) + getHintGroup('dungeonName', world)
-
-    hint_entrances = []
-    for entrance in world.get_shuffled_entrances():
-        for hint in hintGroup:
-            if entrance.connected_region.name == hint.name or \
-               entrance.connected_region.dungeon and entrance.connected_region.dungeon.name == hint.name:
-                hint_entrances.append(entrance)
-
-    hint_entrances = list(filter(lambda entrance: entrance.name not in checked, hint_entrances))
-    if not hint_entrances:
+    if world.entrance_shuffle == 'off':
         return None
 
-    entrance = random.choice(hint_entrances)
+    entrance_hints = getHintGroup('entrance', world)
+    entrance_hints = list(filter(lambda hint: hint.name not in checked, entrance_hints))
+    valid_entrance_hints = [entrance_hint for entrance_hint in entrance_hints if world.get_entrance(entrance_hint.name).shuffled]
+
+    if not valid_entrance_hints:
+        return None
+
+    entrance_hint = random.choice(valid_entrance_hints)
+    entrance = world.get_entrance(entrance_hint.name)
     checked.append(entrance.name)
 
-    area_text = get_hint_area(entrance)
+    entrance_text = entrance_hint.text
+
+    if '#' not in entrance_text:
+        entrance_text = '#%s#' % entrance_text
 
     connected_region = entrance.connected_region
     if connected_region.dungeon:
@@ -369,7 +370,7 @@ def get_entrance_hint(spoiler, world, checked):
     if '#' not in region_text:
         region_text = '#%s#' % region_text
 
-    return (GossipText('%s can be found in #%s#.' % (region_text, area_text), ['Light Blue', 'Green']), None)
+    return (GossipText('%s %s.' % (entrance_text, region_text), ['Light Blue', 'Green']), None)
 
 
 def get_junk_hint(spoiler, world, checked):
