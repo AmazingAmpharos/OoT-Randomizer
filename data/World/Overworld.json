@@ -250,7 +250,7 @@
             "Lake Hylia": "True",
             "Gerudo Valley": "True",
             "Castle Town Entrance": "True",
-            "Kakariko Village From Field": "True",
+            "Kakariko Village": "True",
             "Zora River Front": "True",
             "Lon Lon Ranch": "True",
             "Remote Southern Grotto": "as_either_here(can_blast_or_smash)",
@@ -779,22 +779,12 @@
         }
     },
     {
-        "region_name": "Kakariko Village From Field",
-        "scene": "Kakariko Village",
-        "hint": "Kakariko Village",
-        "locations": {
-            "Sheik in Kakariko": "
-                is_adult and Forest_Medallion and Fire_Medallion and Water_Medallion"
-        },
-        "exits": {
-            "Kakariko Village": "True"
-        }
-    },
-    {
         "region_name": "Kakariko Village",
         "scene": "Kakariko Village",
         "hint": "Kakariko Village",
         "locations": {
+            "Sheik in Kakariko": "
+                is_adult and Forest_Medallion and Fire_Medallion and Water_Medallion",
             "Man on Roof": "
                 can_use(Hookshot) or 
                 (logic_man_on_roof and 
