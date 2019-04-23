@@ -265,7 +265,7 @@ def shuffle_random_entrances(worlds):
 
     non_drop_locations = [location for world in worlds for location in world.get_locations() if location.type != 'Drop']
     max_playthrough.visit_locations(non_drop_locations)
-    locations_to_ensure_reachable = [location for location in non_drop_locations if max_playthrough.visited(location)]
+    locations_to_ensure_reachable = list(filter(max_playthrough.visited, non_drop_locations))
 
     # Shuffle all entrances within their own worlds
     for world in worlds:
@@ -332,8 +332,6 @@ def shuffle_random_entrances(worlds):
                     target.access_rule = lambda state: temple_of_time_exit.connected_region == None or (links_house_exit.connected_region == None and state.is_child())
                 shuffle_entrance_pool(worlds, [temple_of_time_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
                 shuffle_entrance_pool(worlds, [links_house_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
-                entrance_pools[pool_type].remove(temple_of_time_exit)
-                entrance_pools[pool_type].remove(links_house_exit)
 
             if pool_type in ['SpecialInterior', 'Overworld', 'OwlDrop', 'Dungeon']:
                 # Those pools contain entrances leading to regions that might open access to completely new areas

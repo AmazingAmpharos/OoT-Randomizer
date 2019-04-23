@@ -614,11 +614,10 @@ def generate_itempool(world):
         world.get_location(location).locked = True
 
     drop_locations = list(filter(lambda loc: loc.type == 'Drop', world.get_locations()))
-    for location, item in droplocations.items():
-        for drop_location in drop_locations:
-            if drop_location.name == location:
-                world.push_item(drop_location, ItemFactory(item, world))
-                drop_location.locked = True
+    for drop_location in drop_locations:
+        item = droplocations[drop_location.name]
+        world.push_item(drop_location, ItemFactory(item, world))
+        drop_location.locked = True
 
     # set up item pool
     (pool, placed_items) = get_pool_core(world)

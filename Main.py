@@ -544,24 +544,23 @@ def create_playthrough(spoiler):
     playthrough.reset()  # playthrough state has no items, okay to reuse sphere 0 cache
     collection_spheres = []
     entrance_spheres = []
-    previously_accessed_entrances = []
+    remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances() if entrance.primary)
     while True:
         # Not collecting while the generator runs means we only get one sphere at a time
         # Otherwise, an item we collect could influence later item collection in the same sphere
         collected = list(playthrough.iter_reachable_locations(required_locations))
-        accessed_entrances = [entrance for world in worlds for entrance in world.get_shuffled_entrances() 
-                                if entrance not in previously_accessed_entrances and entrance.primary and playthrough.state_list[world.id].can_reach(entrance)]
+        accessed_entrances = set(filter(lambda entrance: state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
         if not collected: break
         for location in collected:
             # Collect the item for the state world it is for
             state_list[location.item.world.id].collect(location.item)
         collection_spheres.append(collected)
         entrance_spheres.append(accessed_entrances)
-        previously_accessed_entrances.extend(accessed_entrances)
+        remaining_entrances -= accessed_entrances
     logger.info('Collected %d final spheres', len(collection_spheres))
 
     # Then we can finally output our playthrough
     spoiler.playthrough = OrderedDict((str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres))
 
     if worlds[0].entrance_shuffle != 'off':
-        spoiler.entrance_playthrough = OrderedDict((str(i + 1), [entrance for entrance in sphere]) for i, sphere in enumerate(entrance_spheres))
+        spoiler.entrance_playthrough = OrderedDict((str(i + 1), list(sphere)) for i, sphere in enumerate(entrance_spheres))
