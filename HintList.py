@@ -251,6 +251,8 @@ hintTable = {
     'Zoras Fountain -> Ice Cavern Beginning':                   ("in #a frozen fountain#, an opening leads to", None, 'entrance'),
     'Zoras Fountain -> Jabu Jabus Belly Beginning':             ("inside #Jabu Jabu#, one can find", None, 'entrance'),
 
+    'Links House':                                              ("Link's House", None, 'region'),
+    'Temple of Time':                                           ("Temple of Time", None, 'region'),
     'Mido House':                                               ("Mido's house", None, 'region'),
     'Saria House':                                              ("Saria's House", None, 'region'),
     'House of Twins':                                           ("the #House of Twins#", None, 'region'),
@@ -266,6 +268,7 @@ hintTable = {
     'Castle Town Treasure Chest Game':                          ("the #Treasure Chest Game#", None, 'region'),
     'Castle Town Bombchu Shop':                                 ("the #Bombchu Shop#", None, 'region'),
     'Castle Town Man in Green House':                           ("Man in Green's House", None, 'region'),
+    'Windmill':                                                 ("Windmill", None, 'region'),
     'Carpenter Boss House':                                     ("the #Carpenters' Boss House#", None, 'region'),
     'House of Skulltula':                                       ("the #House of Skulltulas#", None, 'region'),
     'Impas House':                                              ("Impa's House", None, 'region'),
