@@ -665,9 +665,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     exit_updates = []
 
-    def write_entrance(target_index, data_index, length=4):
-        ti = target_index * 4
-        rom.write_bytes(0xB6FBF0 + data_index * 4, et_original[ti:ti+(4*length)])
+    def copy_entrance_record(source_index, destination_index, count=4):
+        ti = source_index * 4
+        rom.write_bytes(0xB6FBF0 + destination_index * 4, et_original[ti:ti+(4 * count)])
 
     def generate_exit_lookup_table():
         # Assumes that the last exit on a scene's exit list cannot be 0000
@@ -746,8 +746,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 # vanilla as it never took you to the exit and the lake fill is handled
                 # above by removing the cutscene completely. Child has problems with Adult
                 # blue warps, so always use the return entrance if a child.
-                write_entrance(blue_out_data + 2, new_entrance["blue_warp"] + 2, 2)
-                write_entrance(replaced_entrance["index"], new_entrance["blue_warp"], 2)
+                copy_entrance_record(blue_out_data + 2, new_entrance["blue_warp"] + 2, 2)
+                copy_entrance_record(replaced_entrance["index"], new_entrance["blue_warp"], 2)
 
     if world.shuffle_overworld_entrances:
         # Prevent the ocarina cutscene from leading straight to hyrule field
@@ -766,18 +766,18 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         ## writeback entrance updates
 
         # Change Impa escort to bring link at the hyrule castle grounds entrance from market, instead of hyrule field
-        write_entrance(0x0138, 0x0594) # After Impa escort (overridden to Hyrule Castle entrance from Market)
+        copy_entrance_record(0x0138, 0x0594) # After Impa escort (overridden to Hyrule Castle entrance from Market)
 
         # Change Getting caught cutscene as adult without hookshot to keep Link inside the Fortress
-        write_entrance(0x0129, 0x01A5 + 2, 2) # Thrown out of fortress as adult (overridden to Gerudo Fortress entrance from Valley)
+        copy_entrance_record(0x0129, 0x01A5 + 2, 2) # Thrown out of fortress as adult (overridden to Gerudo Fortress entrance from Valley)
 
         # Change Getting caught cutscene as child to always throw Link in the stream
-        write_entrance(0x01A5, 0x03B4, 2) # Captured with hookshot 1st time as child (overridden to Thrown out of fortress)
-        write_entrance(0x01A5, 0x05F8, 2) # Captured with hookshot 2nd time as child (overridden to Thrown out of fortress)
+        copy_entrance_record(0x01A5, 0x03B4, 2) # Captured with hookshot 1st time as child (overridden to Thrown out of fortress)
+        copy_entrance_record(0x01A5, 0x05F8, 2) # Captured with hookshot 2nd time as child (overridden to Thrown out of fortress)
 
         # Patch Owl Drop entrances to their new indexes
         for entrance in world.get_shuffled_entrances(type='OwlDrop'):
-            write_entrance(entrance.replaces.data['index'], entrance.data['index'])
+            copy_entrance_record(entrance.replaces.data['index'], entrance.data['index'])
 
         set_entrance_updates(world.get_shuffled_entrances(type='Overworld'))
 
