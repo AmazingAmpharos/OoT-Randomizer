@@ -727,7 +727,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         for entrance in entrances:
             new_entrance = entrance.data
             replaced_entrance = entrance.replaces.data
-            exit_updates.append(new_entrance['index'], replaced_entrance['index'])
+            exit_updates.append((new_entrance['index'], replaced_entrance['index']))
 
             if "dynamic_address" in new_entrance:
                 # Dynamic exits are special and have to be set on a specific address
@@ -749,21 +749,25 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 copy_entrance_record(blue_out_data + 2, new_entrance["blue_warp"] + 2, 2)
                 copy_entrance_record(replaced_entrance["index"], new_entrance["blue_warp"], 2)
 
+        
+    exit_table = generate_exit_lookup_table()
+
     if world.shuffle_overworld_entrances:
         # Prevent the ocarina cutscene from leading straight to hyrule field
         symbol = rom.sym('OCARINAS_SHUFFLED')
         rom.write_byte(symbol, 1)
 
-        # Patch all LLR exits by leaping over a fence to lead to the main LLR exit
-        main_entrance = 0x01F9 # Hyrule Field entrance from Lon Lon Ranch (main land entrance)
-        ranch_leap_entrances = [0x028A, 0x028E, 0x0292, 0x0476] # Southern, Western, Eastern, Front Gate
-        for entrance_idx in ranch_leap_entrances:
-            exit_updates.append(entrance_idx, main_entrance)
+        # Combine all fence hopping LLR exits to lead to the main LLR exit
+        for k in [0x028A, 0x028E, 0x0292]: # Southern, Western, Eastern Gates
+            exit_table[0x01F9] += exit_table[k] # Hyrule Field entrance from Lon Lon Ranch (main land entrance)
+            del exit_table[k]
+        exit_table[0x01F9].append(0xD52722) # 0x0476, Front Gate
 
-        # Patch the water exits between Hyrule Field and Zora River to lead to the land entrance instead of the water entrance
-        exit_updates.append(0x01D9, 0x00EA) # Hyrule Field -> Zora River
-        exit_updates.append(0x0311, 0x0181) # Zora River -> Hyrule Field
-        ## writeback entrance updates
+        # Combine the water exits between Hyrule Field and Zora River to lead to the land entrance instead of the water entrance
+        exit_table[0x00EA] += exit_table[0x01D9] # Hyrule Field -> Zora River
+        exit_table[0x0181] += exit_table[0x0311] # Zora River -> Hyrule Field
+        del exit_table[0x01D9]
+        del exit_table[0x0311]
 
         # Change Impa escort to bring link at the hyrule castle grounds entrance from market, instead of hyrule field
         copy_entrance_record(0x0138, 0x0594) # After Impa escort (overridden to Hyrule Castle entrance from Market)
@@ -817,8 +821,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     if world.shuffle_special_interior_entrances:
         set_entrance_updates(world.get_shuffled_entrances(type='SpecialInterior'))
-
-    exit_table = generate_exit_lookup_table()
 
     for k, v in [(k,v) for k, v in exit_updates if k in exit_table]:
         for addr in exit_table[k]:
