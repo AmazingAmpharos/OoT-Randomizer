@@ -1221,3 +1221,10 @@ skip_GS_BGS_text:
 .orga 0xACCD34
     jal     burning_kak
     lw      t9, 0x0000(s0)
+
+; ==================================================================================================
+; Set the Obtained Epona Flag when winning the 2nd Ingo Race
+; ==================================================================================================
+; Replaces: lw      t9, 0x24(s0)
+.orga 0xD52698
+    jal     ingo_race_win

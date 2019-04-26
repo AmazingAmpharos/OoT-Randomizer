@@ -331,3 +331,14 @@ burning_kak:
     lw      a0, 0x18(sp)
     jr      ra
     addiu   sp, sp, 0x18
+
+; Set the Obtained Epona Flag after winning Ingo's 2nd race
+ingo_race_win:
+    li      at, SAVE_CONTEXT
+    lb      t0, 0x0ED6 (at)
+    ori     t0, t0, 0x01     ; "Obtained Epona" Flag
+    sb      t0, 0x0ED6 (at)
+    li      t0, 0
+
+    jr      ra
+    lw      t9, 0x24 (s0)    ; Displaced Code
