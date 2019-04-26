@@ -739,8 +739,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     if world.shuffle_overworld_entrances:
         # Prevent the ocarina cutscene from leading straight to hyrule field
-        symbol = rom.sym('OCARINAS_SHUFFLED')
-        rom.write_byte(symbol, 1)
+        rom.write_byte(rom.sym('OCARINAS_SHUFFLED'), 1)
+
+        # Disable the fog state entirely to avoid fog glitches
+        rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
 
         # Patch all LLR exits by leaping over a fence to lead to the main LLR exit
         main_entrance = 0x01F9 # Hyrule Field entrance from Lon Lon Ranch (main land entrance)
