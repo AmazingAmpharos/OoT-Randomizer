@@ -804,6 +804,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         # Disable trade quest timers
         rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
 
+        # Change the Happy Mask Shop "throw out" entrance index to the new one (hardcode located in the shop actor)
+        rom.write_int16(0xC6DA5E, world.get_entrance('Castle Town Mask Shop -> Castle Town').replaces.data['index'])
+
         set_entrance_updates(world.get_shuffled_entrances(type='Interior'))
 
     if world.shuffle_special_interior_entrances:
