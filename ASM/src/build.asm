@@ -18,6 +18,7 @@
 .include "boot.asm"
 .include "hacks.asm"
 .include "malon.asm"
+.include "mido.asm"
 
 ;==================================================================================================
 ; New code region
