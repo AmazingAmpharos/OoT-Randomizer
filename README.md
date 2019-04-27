@@ -76,7 +76,8 @@ player.
 
 ### 5.0
 
-#### New Feature
+#### New Features
+
 * Plan-domizer
   * Ability to create a custom seed by placing items where you want them.
   * Spoiler log is now in JSON format.
@@ -90,7 +91,8 @@ player.
 * Gossip stone added to Lake Hylia to change water level after beating Morpha to keep dungeon entrance accessible with Gold Scales.
   * Entering Water Temple with Gold Scale and Longshot is now always in logic.
 
-#### New Option
+#### New Options
+
 * Cow Sanity
   * Playing Epona's Song for a cow for the first time gives an item.
 * Starting Age Option
@@ -114,7 +116,8 @@ player.
 * Child may drain Lake Hylia using Gossip Stone.
 * With start with max rupees option, finding wallet upgrade fills the wallet.
 
-#### Bug Fix
+#### Bug Fixes
+
 * No longer able to buy bombchus with only bomb bag when bombchus in logic.
 * Dampe freestanding Piece of Heart no longer checks for chest being opened.
 * Buying Piece of Heart/Heart Container fully heals Link.
