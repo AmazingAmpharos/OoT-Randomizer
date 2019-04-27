@@ -872,6 +872,17 @@ setting_infos = [
         shared         = True,
     ),
     Checkbutton(
+        name           = 'no_poe_cutscene',
+        gui_text       = 'Skip Forest Poe Cutscene',
+        gui_group      = 'convenience',
+        gui_tooltip    = '''\
+            The Cutscene to introduce the Poe Sisters
+            at the start of Forest Temple is skipped,
+            and the elevator will be down.
+        ''',
+        shared         = True,
+    ),
+    Checkbutton(
         name           = 'fast_chests',
         gui_text       = 'Fast Chest Cutscenes',
         gui_group      = 'convenience',
