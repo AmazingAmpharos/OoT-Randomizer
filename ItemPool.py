@@ -498,6 +498,8 @@ eventlocations = {
     'Goron City Woods Warp from City': 'Goron City Woods Warp Open',
     'Goron City Woods Warp from Darunia': 'Goron City Woods Warp Open',
     'Deku Tree Clear': 'Kokiri Forest Open',
+    'Forest Temple Poe Sisters 1': 'Forest Temple Jo and Beth',
+    'Forest Temple Poe Sisters 2': 'Forest Temple Amy and Meg',
     'Water Temple Clear': 'Lake Refill',
     'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
     'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',

@@ -136,6 +136,8 @@ location_table = {
     "Goron City Woods Warp from Darunia":              ("Event",       None,  None, None,                     None),
     "Goron City Woods Warp from Woods":                ("Event",       None,  None, None,                     None),
     "Deku Tree Clear":                                 ("Event",       None,  None, None,                     None),
+    "Forest Temple Poe Sisters 1":                     ("Event",       None,  None, None,                     None),
+    "Forest Temple Poe Sisters 2":                     ("Event",       None,  None, None,                     None),
     "Water Temple Clear":                              ("Event",       None,  None, None,                     None),
     "Ganons Castle Forest Trial Clear":                ("Event",       None,  None, None,                     None),
     "Ganons Castle Fire Trial Clear":                  ("Event",       None,  None, None,                     None),

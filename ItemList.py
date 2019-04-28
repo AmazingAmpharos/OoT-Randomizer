@@ -90,7 +90,6 @@ item_table = {
     'Deku Nut Capacity':                ('Item',     None,  0x87, None),
     'Deku Stick Capacity':              ('Item',     None,  0x88, None),
     'Bombchus':                         ('Item',     True,  0x89, None),
-    'Bombchu Drop':                     ('Item',     True,  None, None),
     'Magic Meter':                      ('Item',     True,  0x8A, None),
     'Ocarina':                          ('Item',     True,  0x8B, None),
     'Bottle with Red Potion':           ('Item',     True,  0x8C, {'bottle': True, 'shop_object': 0x0F}),
@@ -146,6 +145,8 @@ item_table = {
     'Drain Well':                       ('Event',    True,  None, None),
 
     'Kokiri Forest Open':               ('Event',    True,  None, None),
+    'Forest Temple Jo and Beth':        ('Event',    True,  None, None),
+    'Forest Temple Amy and Meg':        ('Event',    True,  None, None),
     'Lake Refill':                      ('Event',    True,  None, None),
     'Forest Trial Clear':               ('Event',    True,  None, None),
     'Fire Trial Clear':                 ('Event',    True,  None, None),
@@ -162,6 +163,7 @@ item_table = {
     'Fish':                             ('Drop',     True,  None, None),
     'Bugs':                             ('Drop',     True,  None, None),
     'Big Poe':                          ('Drop',     True,  None, None),
+    'Bombchu Drop':                     ('Drop',     True,  None, None),
 
     'Scarecrow Song':                   ('Event',    True,  None, None),
     'Minuet of Forest':                 ('Song',     True,  0xBB,
