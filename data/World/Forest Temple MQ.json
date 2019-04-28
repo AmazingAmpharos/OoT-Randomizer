@@ -31,7 +31,11 @@
             "Forest Temple After Block Puzzle": "
                 (is_adult and Progressive_Strength_Upgrade) or
                 (has_bombchus and logic_forest_mq_block_puzzle and can_use(Hookshot))",
-            "Forest Temple Outdoor Ledge": "can_use(Hover_Boots)",
+            "Forest Temple Outdoor Ledge": "
+                can_use(Hover_Boots) or
+                (can_use(Hookshot) and 
+                 (Progressive_Strength_Upgrade or
+                  (has_bombchus and logic_forest_mq_block_puzzle)))",
             "Forest Temple Boss Region": "
                 Forest_Temple_Jo_and_Beth and Forest_Temple_Amy_and_Meg"
         }
@@ -44,7 +48,7 @@
         },
         "exits": {
             "Forest Temple Bow Region": "(Small_Key_Forest_Temple, 4)",
-            "Forest Temple Outdoor Ledge": "True"
+            "Forest Temple Outdoor Ledge": "(Small_Key_Forest_Temple, 3)"
         }
     },
     {
