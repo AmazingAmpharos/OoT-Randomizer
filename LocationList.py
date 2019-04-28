@@ -140,6 +140,7 @@ location_table = {
     "Deku Tree Clear":                                 ("Event",       None,  None, None,                     None),
     "Forest Temple Poe Sisters 1":                     ("Event",       None,  None, None,                     None),
     "Forest Temple Poe Sisters 2":                     ("Event",       None,  None, None,                     None),
+    "Child in Water Temple":                           ("Event",       None,  None, None,                     None),
     "Water Temple Clear":                              ("Event",       None,  None, None,                     None),
     "Ganons Castle Forest Trial Clear":                ("Event",       None,  None, None,                     None),
     "Ganons Castle Fire Trial Clear":                  ("Event",       None,  None, None,                     None),

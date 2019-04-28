@@ -149,6 +149,7 @@ item_table = {
     'Kokiri Forest Open':               ('Event',    True,  None, None),
     'Forest Temple Jo and Beth':        ('Event',    True,  None, None),
     'Forest Temple Amy and Meg':        ('Event',    True,  None, None),
+    'Child Water Temple':               ('Event',    True,  None, None),
     'Lake Refill':                      ('Event',    True,  None, None),
     'Forest Trial Clear':               ('Event',    True,  None, None),
     'Fire Trial Clear':                 ('Event',    True,  None, None),
