@@ -81,7 +81,7 @@
             "Forest Temple MQ Well Chest": "can_use(Bow) or can_use(Slingshot)",
             "GS Forest Temple MQ Outdoor East": "can_use(Hookshot) or can_use(Boomerang)",
             "GS Forest Temple MQ Well": "
-                can_use(Iron_Boots) or can_use(Bow) or can_use(Slingshot)",
+                (can_use(Iron_Boots) and can_use(Hookshot)) or can_use(Bow) or can_use(Slingshot)",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
                 is_adult or has_slingshot or has_sticks or 
