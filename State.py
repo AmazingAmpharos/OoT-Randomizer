@@ -505,16 +505,17 @@ class State(object):
 
             zora_thawed = self.can_reach('Zoras Domain', age='adult') and self.has_blue_fire()
             pocket_cucco = self.has_any_of(('Pocket Egg', 'Pocket Cucco'))
+            # Technically also needs access to Lost Woods but we can check that once in odd_poultice
             odd_mushroom = self.has_any_of(('Odd Mushroom', 'Cojiro')) or (pocket_cucco and self.can_reach('Carpenter Boss House', age='adult'))
             odd_poultice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult') and self.can_reach('Lost Woods', age='adult')
-            # Not sure if this needs the warp or something else
-            poachers_saw = self.has('Poachers Saw') or (odd_poultice and self.has('Goron City Woods Warp Open'))
+            # Getting the saw from poultice requires access to the Lost Woods that we just checked
+            poachers_saw = self.has('Poachers Saw') or odd_poultice
             eyeball_frog = self.has_any_of(('Eyeball Frog', 'Prescription', 'Broken Sword')) or (poachers_saw and self.can_reach('Gerudo Valley Far Side', age='adult'))
             eyedrops = (self.has('Eyedrops') or eyeball_frog) and self.can_reach('Lake Hylia Lab', age='adult') and zora_thawed and guaranteed_path
             return (self.has('Claim Check')
                     or (eyedrops and
                         (self.world.shuffle_interior_entrances
-                            or self.has('Goron City Woods Warp Open')
+                            # Goron City -> Darunias Chamber as adult
                             or self.has('Progressive Strength Upgrade')
                             or self.can_blast_or_smash()
                             or self.has_bow()
