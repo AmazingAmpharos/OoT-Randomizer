@@ -73,7 +73,7 @@
         "region_name": "Links House",
         "hint": "Kokiri Forest",
         "locations": {
-            "Links House Cow": "is_adult and can_play(Eponas_Song)"
+            "Links House Cow": "is_adult and can_play(Eponas_Song) and Links_Cow"
         },
         "exits": {
             "Kokiri Forest": "True"
@@ -319,12 +319,13 @@
             "Gerudo Fortress South F2 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress Carpenter Rescue": "can_finish_GerudoFortress",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
+            "Gerudo Fortress Open Gate": "Carpenter_Rescue",
             "GS Gerudo Fortress Archery Range": "can_use(Hookshot) and at_night",
             "GS Gerudo Fortress Top Floor": "at_night and is_adult"
         },
         "exits": {
-            "Haunted Wasteland": "is_child or
-                (is_adult and (Carpenter_Rescue or (Progressive_Hookshot and (Hover_Boots or can_mega)) or (can_isg and has_bombs) ) )",
+            "Haunted Wasteland": "is_child or Gerudo_Fortress_Gate_Open or
+                ((Progressive_Hookshot and (Hover_Boots or can_mega)) or (can_isg and has_bombs) )",
             "Gerudo Training Grounds Lobby": "True"
         }
     },
@@ -338,7 +339,7 @@
         },
         "exits": {
             "Desert Colossus": "True",
-            "Gerudo Fortress": "as_adult(can_reach(Gerudo_Fortress) and Carpenter_Rescue)"
+            "Gerudo Fortress": "Gerudo_Fortress_Gate_Open"
         }
     },
     {
@@ -1055,6 +1056,7 @@
         "hint": "Lon Lon Ranch",
         "locations": {
             "Epona": "(can_play(Eponas_Song) or can_hover) and is_adult",
+            "Malon Race": "(can_play(Eponas_Song) or can_hover) and is_adult",
             "Song from Malon": "is_child and Zeldas_Letter and has_ocarina",
             "GS Lon Lon Ranch Tree": "is_child",
             "GS Lon Lon Ranch Rain Shed": "is_child and at_night",

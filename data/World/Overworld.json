@@ -77,7 +77,7 @@
     {
         "region_name": "Links House",
         "locations": {
-            "Links House Cow": "is_adult and can_play(Eponas_Song) and can_reach(Lon_Lon_Ranch)"
+            "Links House Cow": "is_adult and can_play(Eponas_Song) and Links_Cow"
         },
         "exits": {
             "Kokiri Forest": "True"
@@ -420,6 +420,7 @@
             "Gerudo Fortress South F2 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress Carpenter Rescue": "can_finish_GerudoFortress",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
+            "Gerudo Fortress Open Gate": "Carpenter_Rescue",
             "GS Gerudo Fortress Archery Range": "
                 can_use(Hookshot) and Carpenter_Rescue and at_night",
             "GS Gerudo Fortress Top Floor": "
@@ -429,7 +430,7 @@
         },
         "exits": {
             "Gerudo Valley Far Side": "True",
-            "Gerudo Fortress Outside Gate": "as_adult_here(Carpenter_Rescue)",
+            "Gerudo Fortress Outside Gate": "Gerudo_Fortress_Gate_Open",
             "Gerudo Training Grounds Lobby": "
                 Carpenter_Rescue and Gerudo_Membership_Card and is_adult",
             "Gerudo Fortress Storms Grotto": "is_adult and can_play(Song_of_Storms)" # Not there as child
@@ -439,7 +440,7 @@
         "region_name": "Gerudo Fortress Outside Gate",
         "scene": "Gerudo Fortress",
         "exits": {
-            "Gerudo Fortress": "as_adult(can_reach(Gerudo_Fortress) and Carpenter_Rescue)",
+            "Gerudo Fortress": "Gerudo_Fortress_Gate_Open",
             "Haunted Wasteland Near Fortress": "True"
         }
     },
@@ -1393,6 +1394,7 @@
         "hint": "Lon Lon Ranch",
         "locations": {
             "Epona": "can_play(Eponas_Song) and is_adult",
+            "Malon Race": "can_play(Eponas_Song) and is_adult",
             "Song from Malon": "is_child and Zeldas_Letter and has_ocarina",
             "GS Lon Lon Ranch Tree": "is_child",
             "GS Lon Lon Ranch Rain Shed": "is_child and at_night",

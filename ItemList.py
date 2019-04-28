@@ -141,8 +141,10 @@ item_table = {
     'Time Travel':                      ('Event',    True,  None, None),
     'Epona':                            ('Event',    True,  None, None),
     'Carpenter Rescue':                 ('Event',    True,  None, None),
+    'Gerudo Fortress Gate Open':        ('Event',    True,  None, None),
     'Goron City Woods Warp Open':       ('Event',    True,  None, None),
     'Drain Well':                       ('Event',    True,  None, None),
+    'Links Cow':                        ('Event',    True,  None, None),
 
     'Kokiri Forest Open':               ('Event',    True,  None, None),
     'Forest Temple Jo and Beth':        ('Event',    True,  None, None),
