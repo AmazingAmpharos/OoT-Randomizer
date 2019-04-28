@@ -16,7 +16,8 @@
         "dungeon": "Ice Cavern",
         "locations": {
             "Ice Cavern MQ Map Chest": "
-                is_adult or can_use(Sticks) or Kokiri_Sword or can_use_projectile",
+                has_blue_fire and
+                (is_adult or can_use(Sticks) or Kokiri_Sword or can_use_projectile)",
             "Blue Fire": "is_adult and has_bottle"
         }
     },

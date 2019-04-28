@@ -3,11 +3,6 @@
         "region_name": "Forest Temple Lobby",
         "dungeon": "Forest Temple",
         "locations": {
-            #If entrances are shuffled, Adult might lose access to the Kokiri forest
-            #Babas for nuts.  As this is sphere 0 for both ages, this case is covered
-            #by putting the babas here.
-            "Deku Baba Nuts": "True",
-            "Deku Baba Sticks": "True",
             "Forest Temple MQ First Chest": "
                 is_adult or can_use(Bombs) or can_use(Sticks) or
                 can_use(Dins_Fire) or Kokiri_Sword or can_use(Slingshot)",
@@ -66,7 +61,7 @@
         "region_name": "Forest Temple NW Outdoors",
         "dungeon": "Forest Temple",
         "locations": {
-            "GS Forest Temple MQ Outdoor West": "can_use(Hookshot) or can_use(Boomerang)"
+            "GS Forest Temple MQ Outdoor West": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors": "
@@ -82,7 +77,11 @@
             "Forest Temple MQ Well Chest": "can_use(Bow) or can_use(Slingshot)",
             "GS Forest Temple MQ Outdoor East": "can_use(Hookshot) or can_use(Boomerang)",
             "GS Forest Temple MQ Well": "
-                can_use(Iron_Boots) or can_use(Bow) or can_use(Slingshot)"
+                can_use(Iron_Boots) or can_use(Bow) or can_use(Slingshot)",
+            "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
+            "Deku Baba Nuts": "
+                is_adult or has_slingshot or has_sticks or 
+                has_explosives or Kokiri_Sword or can_use(Dins_Fire)"
         },
         "exits": {
             "Forest Temple Outdoors Top Ledges": "
