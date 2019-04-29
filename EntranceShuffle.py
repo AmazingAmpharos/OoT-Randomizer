@@ -526,22 +526,29 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             if not any(region for region in valid_starting_regions if no_items_playthrough.state_list[world.id].can_reach(region)):
                 raise EntranceShuffleError('Invalid starting area')
 
-        time_travel_playthrough = Playthrough([world.state.copy() for world in worlds])
+        # For now, we consider that time of day must always be reachable as both ages without having collected any items (except in closed forest)
+        # In ER, Time of day logic normally considers that the player always has access to time passing from the root so this is important to ensure
+        # This also means that, in order to test for this, we have to temporarily remove that assumption about root access to time passing
         for world in worlds:
-            time_travel_playthrough.collect(ItemFactory('Time Travel', world=world))
-        time_travel_playthrough.visit_locations()
+            world.get_region('Root').can_reach = lambda state: state.tod == None
+        no_time_passing_playthrough = Playthrough.with_items([world.state.copy() for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
+        for world in worlds:
+            world.get_region('Root').can_reach = lambda state: True
 
         for world in worlds:
-            # For now, we consider that time of day must always be reachable as both ages without having collected any items (except in closed forest)
-            # In ER, Time of day logic considers that the root always has access to time passing so this is important to ensure
-            if not (any(region for region in time_travel_playthrough.cached_spheres[-1]['child_regions'] if region.time_passes and region.world == world) and
-                    any(region for region in time_travel_playthrough.cached_spheres[-1]['adult_regions'] if region.time_passes and region.world == world)):
+            if not (any(region for region in no_time_passing_playthrough.cached_spheres[-1]['child_regions'] if region.time_passes and region.world == world) and
+                    any(region for region in no_time_passing_playthrough.cached_spheres[-1]['adult_regions'] if region.time_passes and region.world == world)):
                 raise EntranceShuffleError('Time passing is not guaranteed as both ages')
 
-            # When starting as adult, child Link should be able to reach ToT without having collected any items
-            # This is important to ensure that the player never loses access to the pedestal after going child
-            if world.starting_age == 'adult' and not time_travel_playthrough.state_list[world.id].can_reach('Temple of Time', age='child'):
-                raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
+        # When starting as adult, child Link should be able to reach ToT without having collected any items
+        # This is important to ensure that the player never loses access to the pedestal after going child
+        if any(world.starting_age == 'adult' for world in worlds):
+            # We can reuse the playthrough previously generated as this situation is the same except we have root time passing access now
+            time_travel_playthrough = no_time_passing_playthrough.copy()
+
+            for world in worlds:
+                if world.starting_age == 'adult' and not time_travel_playthrough.state_list[world.id].can_reach('Temple of Time', age='child'):
+                    raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
     return
 
 

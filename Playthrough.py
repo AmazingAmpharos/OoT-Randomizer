@@ -53,6 +53,14 @@ class Playthrough(object):
         p.collect_locations()
         return p
 
+    @staticmethod
+    def with_items(state_list, itempool=None):
+        p = Playthrough([s.copy() for s in state_list])
+        if itempool:
+            p.collect_all(itempool)
+        p.next_sphere()
+        return p
+
     # Truncates the sphere cache based on which sphere a location is in, and
     # drops the location from the appropriate visited set.
     # Doesn't forget which sphere locations are in as an optimization, so be careful

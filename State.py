@@ -210,7 +210,7 @@ class State(object):
 
         if self.ensure_tod_access():
             if self.tod == None:
-                return self.can_change_time_to(tod) or self.with_tod(lambda state: state.can_reach(), tod)
+                return self.can_change_time_to(tod) or self.with_tod(lambda state: state.can_reach(keep_tod=True), tod)
             else:
                 if tod == 'day':
                     return self.tod == 'day'
@@ -219,7 +219,7 @@ class State(object):
                 elif tod == 'dampe':
                     # If we are currently checking for reachability at night but dampe's time is required in the path, 
                     # we should make sure the current spot can be reached at dampe's time, and not just at night
-                    return self.tod == 'dampe' or (self.tod == 'night' and self.with_tod(lambda state: state.can_reach(), 'dampe'))
+                    return self.tod == 'dampe' or (self.tod == 'night' and self.with_tod(lambda state: state.can_reach(keep_tod=True), 'dampe'))
                 else:
                     raise AttributeError('Unknown tod parameter: ' + str(tod))
         return True
