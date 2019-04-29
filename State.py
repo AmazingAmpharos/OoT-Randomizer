@@ -515,11 +515,12 @@ class State(object):
             return (self.has('Claim Check')
                     or (eyedrops and
                         (self.world.shuffle_interior_entrances
-                            # Goron City -> Darunias Chamber as adult
+                            or self.world.logic_biggoron_bolero
+                            # Getting to Biggoron without ER or the trick above involves either
+                            # Darunia's Chamber access or clearing the boulders to get up DMT
                             or self.has('Progressive Strength Upgrade')
                             or self.can_blast_or_smash()
-                            or self.has_bow()
-                            or self.world.logic_biggoron_bolero)))
+                            or self.has_bow())))
 
 
     def has_skull_mask(self):
