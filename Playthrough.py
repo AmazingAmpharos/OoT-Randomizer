@@ -264,7 +264,7 @@ class Playthrough(object):
             return region in self.cached_spheres[-1]['adult_regions'] and region in self.cached_spheres[-1]['child_regions']
         else:
             # treat None as either
-            return region in self.cached_spheres[-1]['adult_regions'] and region in self.cached_spheres[-1]['child_regions']
+            return region in self.cached_spheres[-1]['adult_regions'] or region in self.cached_spheres[-1]['child_regions']
 
     # Use the cache in the playthrough to determine location reachability.
     # Only works for locations that had progression items...
