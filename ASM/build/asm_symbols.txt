@@ -28,10 +28,10 @@
 00DE1020 .byt:0020
 00DF2647 .byt:0001
 00E2F093 .byt:0001
-00E6298C @@return
-00E62994 @@branch_2988
-00E629C4 @@branch_29D0
-00E629D4 @@branch_29E4
+00E62998 @@success
+00E629A0 @@midos_house
+00E629C8 @@lost_woods
+00E629D4 @@failure
 00E9E1C8 .byt:0008
 00EBB8B0 @Deku_Check_True
 00EBB8C0 @Deku_Check_False

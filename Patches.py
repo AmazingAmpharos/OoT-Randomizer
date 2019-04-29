@@ -843,6 +843,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_bits(0x0ED4, 0x10) # "Met Deku Tree"
     save_context.write_bits(0x0ED5, 0x20) # "Deku Tree Opened Mouth"
     save_context.write_bits(0x0ED6, 0x08) # "Rented Horse From Ingo"
+    save_context.write_bits(0x0ED6, 0x10) # "Spoke to Mido After Deku Tree's Death"
     save_context.write_bits(0x0EDA, 0x08) # "Began Nabooru Battle"
     save_context.write_bits(0x0EDC, 0x80) # "Entered the Master Sword Chamber"
     save_context.write_bits(0x0EDD, 0x20) # "Pulled Master Sword from Pedestal"
