@@ -50,3 +50,22 @@
     nop
     nop
     nop
+
+; ==================================================================================================
+; Changes Mido's conversation flow in Kokiri. By default, he prioritizes talking about
+; Deku Tree's death instead of asking for you to get a Sword and Shield. This doesn't
+; matter normally but is a major issue for entrance randomizer.
+; ==================================================================================================
+.orga 0xE62630
+    sh      zero, 0x01F8(a0)
+    addiu   v1, v1, 0xA5D0
+    lhu     t9, 0x0ED4(v1)      ; If this is t9, it saves setting it later for the next branch.
+    li      t7, 0x0090          ; Mask for "Showed Mido Sword & Shield" and "Obtained Kokiri Emerald & Deku Tree Dead"
+    and     t8, t9, t7
+    bne     t8, t7, 0x00E62660
+    nop
+    b       0x00E626DC
+    li      v0, 0x1045          ; Mido complaining about Deku Tree's death.
+    nop
+    nop
+    nop
