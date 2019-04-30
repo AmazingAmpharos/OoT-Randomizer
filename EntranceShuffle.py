@@ -236,8 +236,8 @@ entrance_shuffle_table = [
     ('Overworld',       ('Zoras Domain Behind King Zora -> Zoras Fountain',                 { 'index': 0x0225 }),
                         ('Zoras Fountain -> Zoras Domain Behind King Zora',                 { 'index': 0x01A1 })),
 
-    ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E })),
-    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554 })),
+    ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E, 'code_address': 0xAC9F26 })),
+    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554, 'code_address': 0xAC9EF2 })),
 ]
 
 

@@ -767,9 +767,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         write_entrance(0x01A5, 0x03B4, 2) # Captured with hookshot 1st time as child (overridden to Thrown out of fortress)
         write_entrance(0x01A5, 0x05F8, 2) # Captured with hookshot 2nd time as child (overridden to Thrown out of fortress)
 
-        # Patch Owl Drop entrances to their new indexes
+        # Change hardcoded Owl Drop entrance indexes to their new indexes (cutscene hardcodes)
         for entrance in world.get_shuffled_entrances(type='OwlDrop'):
-            write_entrance(entrance.replaces.data['index'], entrance.data['index'])
+            rom.write_int16(entrance.data['code_address'], entrance.replaces.data['index'])
 
         set_entrance_updates(world.get_shuffled_entrances(type='Overworld'))
 
