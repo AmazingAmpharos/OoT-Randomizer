@@ -155,10 +155,12 @@
     {
         "region_name": "Boss Area",
         "dungeon": "Water Temple",
+        "events": {
+            "Water Temple Clear": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)"
+        },
         "locations": {
             "Morpha": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)",
-            "Morpha Heart": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)",
-            "Water Temple Clear": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)"
+            "Morpha Heart": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)"
         }
     }
 ]

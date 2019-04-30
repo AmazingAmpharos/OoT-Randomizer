@@ -264,11 +264,9 @@ class State(object):
         return self.prog_items[item] >= count
 
 
-    def has_any(self, predicate):
-        return any(map(predicate, self.prog_items))
-
     def has_any_of(self, items):
         return any(map(self.prog_items.__contains__, items))
+
 
     def has_all_of(self, items):
         return all(map(self.prog_items.__contains__, items))
@@ -387,8 +385,8 @@ class State(object):
         elif item == 'Distant Scarecrow':
             return self.has('Progressive Hookshot', 2) and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Magic Bean':
-            # Magic Bean usability automatically checks for reachability as child to the current spot's parent region (with as_child_here)
-            return self.as_child_here(lambda state: state.has('Magic Bean') or state.has('Magic Bean Pack')) and self.is_adult()
+            # Checks for the event item given for planting the bean in this region.
+            return self.is_adult() and self.has(self.current_spot.parent_region.name + ' Plant Bean')
         else:
             return self.has(item)
 
@@ -403,7 +401,7 @@ class State(object):
 
     def has_bombchus_item(self):
         if self.world.bombchus_in_logic:
-            return self.has_any(lambda pritem: pritem.startswith('Bombchus'))
+            return self.has_any_of(('Bombchus', 'Bombchus (5)', 'Bombchus (10)', 'Bombchus (20)'))
         else:
             return self.has('Bomb Bag')
 
@@ -480,7 +478,7 @@ class State(object):
 
 
     def can_leave_forest(self):
-        return self.world.open_forest != 'closed' or self.is_adult() or self.is_glitched or self.has('Kokiri Forest Open')
+        return self.world.open_forest != 'closed' or self.is_adult() or self.is_glitched or self.has('Deku Tree Clear')
 
 
     def can_finish_adult_trades(self):
@@ -537,12 +535,7 @@ class State(object):
 
     def has_bottle(self):
         # Extra Ruto's Letter are automatically emptied
-        return self.has_any(ItemInfo.isBottle) or self.has('Bottle with Letter', 2)
-
-
-    def bottle_count(self):
-        # Extra Ruto's Letter are automatically emptied
-        return sum(filter(ItemInfo.isBottle, self.prog_items)) + max(self.prog_items['Bottle with Letter'] - 1, 0)
+        return self.has_any_of(ItemInfo.bottles) or self.has('Bottle with Letter', 2)
 
 
     def has_hearts(self, count):

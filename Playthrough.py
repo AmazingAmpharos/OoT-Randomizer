@@ -71,7 +71,8 @@ class Playthrough(object):
     # Not safe to call during iteration.
     def unvisit(self, location):
         self.cached_spheres[self.location_in_sphere[location]+1:] = []
-        self.cached_spheres[-1]['visited_locations'].discard(location)
+        if self.cached_spheres:
+            self.cached_spheres[-1]['visited_locations'].discard(location)
 
 
     # Drops the item from its respective state, and truncates the sphere cache

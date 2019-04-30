@@ -21,6 +21,7 @@ from Cosmetics import patch_cosmetics
 from DungeonList import create_dungeons
 from Fill import distribute_items_restrictive, FillError
 from Item import Item
+from ItemList import item_table
 from ItemPool import generate_itempool
 from Hints import buildGossipHints
 from Utils import default_output_path, is_bundled, subprocess_args, data_path
@@ -131,6 +132,7 @@ def generate(settings, window):
         world.load_regions_from_json(overworld_data)
 
         create_dungeons(world)
+        world.check_event_items()
 
         if settings.shopsanity != 'off':
             world.random_shop_prices()
@@ -525,6 +527,8 @@ def create_playthrough(spoiler):
 
     # Get all item locations in the worlds
     item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
+    # Omit certain items from the playthrough
+    requirable_locations = {location for location in item_locations if location.item.name in item_table}
     # Generate a list of spheres by iterating over reachable locations without collecting as we go.
     # Collecting every item in one sphere means that every item
     # in the next sphere is collectable. Will contain every reachable item this way.
@@ -551,11 +555,19 @@ def create_playthrough(spoiler):
         for location in sphere:
             # we remove the item at location and check if the game is still beatable in case the item could be required
             old_item = location.item
-            location.item = None
 
             # Uncollect the item and location.
             state_list[old_item.world.id].remove(old_item)
             playthrough.unvisit(location)
+
+            # Generic events might show up or not, as usual, but since we don't
+            # show them in the final output, might as well skip over them. We'll
+            # still need them in the final pass, so make sure to include them.
+            if old_item.name not in item_table:
+                required_locations.append(location)
+                continue
+
+            location.item = None
 
             # An item can only be required if it isn't already obtained or if it's progressive
             if state_list[old_item.world.id].item_count(old_item.name) < old_item.special.get('progressive', 1):
@@ -574,15 +586,18 @@ def create_playthrough(spoiler):
     while True:
         # Not collecting while the generator runs means we only get one sphere at a time
         # Otherwise, an item we collect could influence later item collection in the same sphere
-        collected = list(playthrough.iter_reachable_locations(required_locations))
-        accessed_entrances = set(filter(lambda entrance: state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
+        collected = set(playthrough.iter_reachable_locations(required_locations))
         if not collected: break
+        sphere = collected & requirable_locations
+        # Gather the new entrances before collecting items.
+        if sphere:
+            collection_spheres.append(list(sphere))
+            accessed_entrances = set(filter(lambda entrance: state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
+            entrance_spheres.append(accessed_entrances)
+            remaining_entrances -= accessed_entrances
         for location in collected:
             # Collect the item for the state world it is for
             state_list[location.item.world.id].collect(location.item)
-        collection_spheres.append(collected)
-        entrance_spheres.append(accessed_entrances)
-        remaining_entrances -= accessed_entrances
     logger.info('Collected %d final spheres', len(collection_spheres))
 
     # Then we can finally output our playthrough

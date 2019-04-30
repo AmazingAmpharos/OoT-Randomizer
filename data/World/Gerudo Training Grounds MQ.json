@@ -21,11 +21,20 @@
         "region_name": "Gerudo Training Grounds Right Side",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds MQ Dinolfos Chest": "is_adult",
+            "Gerudo Training Grounds MQ Dinolfos Chest": "is_adult"
+        },
+        "exits": {
+            # Still requires has_fire_source in the room
+            "Gerudo Training Grounds Underwater": "can_use(Hover_Boots)"
+        }
+    },
+    {
+        "region_name": "Gerudo Training Grounds Underwater",
+        "dungeon": "Gerudo Training Grounds",
+        "locations": {
             "Gerudo Training Grounds MQ Underwater Silver Rupee Chest": "
-                (can_use(Hover_Boots) or (can_reach(Gerudo_Training_Grounds_Central_Maze_Right) and (can_use(Longshot) or has_bow))) and 
                 has_fire_source and can_use(Iron_Boots) and (logic_fewer_tunic_requirements or can_use(Zora_Tunic)) and 
-                (damage_multiplier != 'ohko' or (has_fairy or can_use(Nayrus_Love)))"
+                (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love))"
         }
     },
     {
@@ -61,6 +70,7 @@
             "Gerudo Training Grounds MQ Flame Circle Chest": "True"
         },
         "exits": {
+            # Hookshot implicitly required to get here
             "Gerudo Training Grounds Central Maze Right": "Hammer",
             "Gerudo Training Grounds Right Side": "can_use(Longshot)"
         }
@@ -75,6 +85,8 @@
                 (Small_Key_Gerudo_Training_Grounds, 3)"
         },
         "exits": {
+            # guarantees fire with torch
+            "Gerudo Training Grounds Underwater": "can_use(Longshot) or has_bow",
             "Gerudo Training Grounds Right Side": "True"
         }
     }

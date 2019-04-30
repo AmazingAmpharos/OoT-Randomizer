@@ -39,6 +39,9 @@
     {
         "region_name": "Deku Tree Basement Water Room",
         "dungeon": "Deku Tree",
+        "events": {
+            "Deku Tree Clear": "Buy_Deku_Shield and (Kokiri_Sword or has_sticks)"
+        },
         "locations": {
             "Deku Tree MQ Before Spinning Log Chest": "True",
             "Deku Tree MQ After Spinning Log Chest": "can_play(Song_of_Time)"
@@ -77,7 +80,9 @@
                 (is_adult or Kokiri_Sword or has_sticks)",
             "Queen Gohma": "
                 as_either_here(has_fire_source_with_torch) and as_either_here(has_shield) and
-                (is_adult or Kokiri_Sword or has_sticks)",
+                (is_adult or Kokiri_Sword or has_sticks)"
+        },
+        "events": {
             "Deku Tree Clear": "
                 as_either_here(has_fire_source_with_torch) and as_either_here(has_shield) and
                 (is_adult or Kokiri_Sword or has_sticks)"

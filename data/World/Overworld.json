@@ -269,16 +269,21 @@
         "scene": "Lake Hylia",
         "hint": "Lake Hylia",
         "time_passes": true,
+        "events": {
+            "Bonooru": "is_child and has_ocarina",
+            "Lake Hylia Child Lower Water": "
+                child_lake_hylia_control and Water_Temple_Clear and
+                    (is_adult or Kokiri_Sword)",
+            "Lake Hylia Water Temple Front Door": "
+                is_adult and (can_use(Hookshot) and Iron_Boots or can_use(Longshot))",
+            "Plant Bean": "is_child and (Magic_Bean or Magic_Bean_Pack)"
+        },
         "locations": {
-            "Pierre": "has_ocarina and as_both_here and not free_scarecrow",
-            "Underwater Bottle": "
-                is_child and
-                (can_dive or 
-                    (child_lake_hylia_control and Lake_Refill and 
-                        (Kokiri_Sword or as_adult_here)))",
+            "Pierre": "is_adult and Bonooru and not free_scarecrow",
+            "Underwater Bottle": "is_child and (can_dive or Lake_Hylia_Child_Lower_Water)",
             "Lake Hylia Sun": "
                 is_adult and 
-                (can_use(Distant_Scarecrow) or Lake_Refill) and can_use(Bow)",
+                (can_use(Distant_Scarecrow) or Water_Temple_Clear) and can_use(Bow)",
             "Lake Hylia Freestanding PoH": "can_use(Scarecrow) or can_use(Magic_Bean)",
             "GS Lake Hylia Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Lake Hylia Lab Wall": "
@@ -295,19 +300,15 @@
         },
         "exits": {
             "Hyrule Field": "True",
-            "Zoras Domain": "
-                is_child and
-                (can_dive or 
-                    (child_lake_hylia_control and Lake_Refill and 
-                        (Kokiri_Sword or as_adult_here)))",
+            "Zoras Domain": "is_child and (can_dive or Lake_Hylia_Child_Lower_Water)",
             "Lake Hylia Owl Flight": "is_child",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
-                is_child or can_use(Scarecrow) or can_use(Magic_Bean) or Lake_Refill",
+                is_child or can_use(Scarecrow) or can_use(Magic_Bean) or Water_Temple_Clear",
             "Water Temple Lobby": "
-                as_adult_here((can_use(Hookshot) and can_use(Iron_Boots)) or can_use(Longshot)) and
+                Lake_Hylia_Water_Temple_Front_Door and
                 ((Progressive_Scale, 2) or can_use(Iron_Boots)) and
-                (is_adult or (child_lake_hylia_control and Lake_Refill))",
+                (is_adult or (child_lake_hylia_control and Water_Temple_Clear))",
             "Lake Hylia Grotto": "True"
         }
     },
@@ -405,6 +406,10 @@
         "region_name": "Gerudo Fortress",
         "scene": "Gerudo Fortress",
         "hint": "Gerudo's Fortress",
+        "events": {
+            "Carpenter Rescue": "can_finish_GerudoFortress",
+            "Gerudo Fortress Gate Open": "is_adult and Carpenter_Rescue"
+        },
         "locations": {
             "Gerudo Fortress Rooftop Chest": "
                 can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot)",
@@ -418,9 +423,7 @@
                 (can_use(Bow) or can_use(Hookshot) or can_use(Hover_Boots) or logic_gerudo_kitchen)",
             "Gerudo Fortress South F1 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress South F2 Carpenter": "is_adult or Kokiri_Sword",
-            "Gerudo Fortress Carpenter Rescue": "can_finish_GerudoFortress",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
-            "Gerudo Fortress Open Gate": "is_adult and Carpenter_Rescue",
             "GS Gerudo Fortress Archery Range": "
                 can_use(Hookshot) and Carpenter_Rescue and at_night",
             "GS Gerudo Fortress Top Floor": "
@@ -667,14 +670,13 @@
     },
     {
         "region_name": "Castle Town Rupee Room",
+        "events": {
+            "Sell Big Poe": "is_adult and Bottle_with_Big_Poe"
+        },
         "locations": {
-            "Sell 1 Big Poe":"is_adult and (Bottle_with_Big_Poe, 1)",
-            "Sell 2 Big Poe":"is_adult and (Bottle_with_Big_Poe, 2)",
-            "Sell 3 Big Poe":"is_adult and (Bottle_with_Big_Poe, 3)",
-            "Sell 4 Big Poe":"is_adult and (Bottle_with_Big_Poe, 4)",
             "10 Big Poes": "
                 is_adult and 
-                ((has_big_poe_drop and (big_poe_count <= 3 or guarantee_hint)) or 
+                ((Big_Poe and (big_poe_count <= 3 or guarantee_hint)) or 
                     (Bottle_with_Big_Poe, big_poe_count))",
             "GS Castle Market Guard House": "is_child"
         },
@@ -868,13 +870,14 @@
     },
     {
         "region_name": "Windmill",
+        "events": {
+            "Drain Well": "is_child and can_play(Song_of_Storms)"
+        },
         "locations": {
             "Windmill Freestanding PoH": "
                 can_use(Boomerang) or
-                (is_adult and logic_windmill_poh) or 
-                can_reach('Dampes Grave -> Windmill', Entrance)",
-            "Song at Windmill": "is_adult and has_ocarina",
-            "Windmill Drain Well": "is_child and can_play(Song_of_Storms)"
+                (logic_windmill_poh and is_adult) or Dampes_Windmill_Access",
+            "Song at Windmill": "is_adult and has_ocarina"
         },
         "exits": {
             "Kakariko Village": "True"
@@ -983,6 +986,9 @@
     },
     {
         "region_name": "Dampes Grave",
+        "events": {
+            "Dampes Windmill Access": "can_play(Song_of_Time)"
+        },
         "locations": {
             "Hookshot Chest": "True",
             "Dampe Race Freestanding PoH": "True",
@@ -1086,6 +1092,11 @@
         "region_name": "Goron City",
         "scene": "Goron City",
         "hint": "Goron City",
+        "events": {
+            "Goron City Torches": "is_child and can_use(Dins_Fire)",
+            "Goron City Woods Warp Open": "
+                can_blast_or_smash or can_use(Dins_Fire) or can_use(Bow) or Progressive_Strength_Upgrade"
+        },
         "locations": {
             "Goron City Leftmost Maze Chest": "
                 can_use(Hammer) or can_use(Silver_Gauntlets)",
@@ -1094,9 +1105,8 @@
             "Goron City Right Maze Chest": "
                 can_blast_or_smash or can_use(Silver_Gauntlets)",
             "Goron City Pot Freestanding PoH": "
-                is_child and 
-                (has_bombs or Progressive_Strength_Upgrade) and 
-                (can_use(Dins_Fire) or (can_reach(Darunias_Chamber) and has_sticks))",
+                is_child and Goron_City_Torches and
+                (has_bombs or Progressive_Strength_Upgrade)",
             "Rolling Goron as Child": "
                 is_child and 
                 (has_explosives or (Progressive_Strength_Upgrade and logic_child_rolling_with_strength))",
@@ -1113,16 +1123,14 @@
                 can_summon_gossip_fairy and has_bottle and
                 (can_blast_or_smash or can_use(Silver_Gauntlets) or Progressive_Strength_Upgrade)",
             "Bug Rock": "(can_blast_or_smash or can_use(Silver_Gauntlets)) and has_bottle",
-            "Stick Pot": "is_child",
-            "Goron City Woods Warp from City": "
-                can_blast_or_smash or can_use(Dins_Fire) or can_use(Bow) or Progressive_Strength_Upgrade"
+            "Stick Pot": "is_child"
         },
         "exits": {
             "Death Mountain": "True",
             "Goron City Woods Warp": "Goron_City_Woods_Warp_Open",
             "Goron Shop": "
                 has_explosives or Progressive_Strength_Upgrade or can_use(Bow) or 
-                (is_child and (can_use(Dins_Fire) or (can_reach(Darunias_Chamber) and has_sticks)))",
+                (is_child and Goron_City_Torches)",
             "Darunias Chamber": "
                 (is_child and can_play(Zeldas_Lullaby)) or 
                 (is_adult and (Progressive_Strength_Upgrade or has_explosives or has_bow))",
@@ -1138,9 +1146,8 @@
     {
         "region_name": "Goron City Woods Warp",
         "scene": "Goron City",
-        "locations": {
-            "Goron City Woods Warp from Woods": "
-                can_blast_or_smash or can_use(Dins_Fire)"
+        "events": {
+            "Goron City Woods Warp Open": "can_blast_or_smash or can_use(Dins_Fire)"
         },
         "exits": {
             "Goron City": "can_leave_forest and Goron_City_Woods_Warp_Open",
@@ -1151,9 +1158,12 @@
         "region_name": "Darunias Chamber",
         "scene": "Goron City",
         "hint": "Goron City",
+        "events": {
+            "Goron City Torches": "is_child and has_sticks",
+            "Goron City Woods Warp Open": "is_child and has_sticks"
+        },
         "locations": {
-            "Darunias Joy": "is_child and can_play(Sarias_Song)",
-            "Goron City Woods Warp from Darunia": "is_child and has_sticks"
+            "Darunias Joy": "is_child and can_play(Sarias_Song)"
         },
         "exits": {
             "Goron City": "True",
@@ -1392,9 +1402,11 @@
         "region_name": "Lon Lon Ranch",
         "scene": "Lon Lon Ranch",
         "hint": "Lon Lon Ranch",
-        "locations": {
+        "events": {
             "Epona": "can_play(Eponas_Song) and is_adult and at_day",
-            "Malon Race": "can_play(Eponas_Song) and is_adult and at_day",
+            "Links Cow": "can_play(Eponas_Song) and is_adult and at_day"
+        },
+        "locations": {
             "Song from Malon": "is_child and Zeldas_Letter and has_ocarina and at_day",
             "GS Lon Lon Ranch Tree": "is_child",
             "GS Lon Lon Ranch Rain Shed": "is_child and at_night",

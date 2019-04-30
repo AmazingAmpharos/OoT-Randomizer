@@ -11,7 +11,7 @@
 "open_door_of_time": true,
 "open_fountain": false,
 "gerudo_fortress": "fast",
-"bridge": "medallions",
+"bridge": "dungeons",
 "logic_rules": "glitchless",
 "all_reachable": true,
 "bombchus_in_logic": true,
@@ -40,7 +40,7 @@
 "enhance_map_compass": false,
 "unlocked_ganondorf": true,
 "mq_dungeons_random": false,
-"mq_dungeons": 11,
+"mq_dungeons": 12,
 "disabled_locations": [
   "Deku Theater Mask of Truth"
 ],

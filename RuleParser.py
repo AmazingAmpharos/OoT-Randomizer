@@ -8,6 +8,8 @@ escaped_items = {}
 for item in item_table:
     escaped_items[re.sub(r'[\'()[\]]', '', item.replace(' ', '_'))] = item
 
+event_name = re.compile(r'\w+')
+
 lambda_methods = ['as_either', 'as_both', 'as_adult', 'as_child', 
                   'as_either_here', 'as_both_here', 'as_adult_here', 'as_child_here']
 
@@ -16,6 +18,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     def __init__(self, world):
         self.world = world
+        self.events = set()
 
 
     def visit_Name(self, node):
@@ -43,7 +46,15 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                     ctx=ast.Load()),
                 args=[],
                 keywords=[])
-
+        elif event_name.match(node.id) and node.id[0].isupper():
+            self.events.add(node.id.replace('_', ' '))
+            return ast.Call(
+                func=ast.Attribute(
+                    value=ast.Name(id='state', ctx=ast.Load()),
+                    attr='has',
+                    ctx=ast.Load()),
+                args=[ast.Str(node.id.replace('_', ' '))],
+                keywords=[])
         else:
             raise Exception('Parse Error: invalid node name %s', node.id)
 
@@ -157,15 +168,15 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         return node
 
 
-def parse_rule_string(rule, world):
-    if rule is None:
-        return lambda state: True
-    else:
-        rule = 'lambda state: ' + rule
-    rule = rule.split('#')[0]
+    def parse_rule_string(self, rule):
+        if rule is None:
+            return lambda state: True
+        else:
+            rule = 'lambda state: ' + rule
+        rule = rule.split('#')[0]
 
-    rule_ast = ast.parse(rule, mode='eval')
-    rule_ast = ast.fix_missing_locations(Rule_AST_Transformer(world).visit(rule_ast))
-    rule_lambda = eval(compile(rule_ast, '<string>', 'eval'))
-    return rule_lambda
+        rule_ast = ast.parse(rule, mode='eval')
+        rule_ast = ast.fix_missing_locations(self.visit(rule_ast))
+        rule_lambda = eval(compile(rule_ast, '<string>', 'eval'))
+        return rule_lambda
 
