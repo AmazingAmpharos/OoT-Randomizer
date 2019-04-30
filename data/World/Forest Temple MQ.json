@@ -30,7 +30,9 @@
                 (has_bombchus and logic_forest_mq_block_puzzle) or Progressive_Strength_Upgrade",
             "Forest Temple Outdoor Ledge": "
                 (has_bombchus and logic_forest_mq_block_puzzle) or 
-                Progressive_Strength_Upgrade or can_use(Hover_Boots)"
+                Progressive_Strength_Upgrade or can_use(Hover_Boots)",
+            "Forest Temple Boss Region": "
+                Forest_Temple_Jo_and_Beth and Forest_Temple_Amy_and_Meg"
         }
     },
     {
@@ -122,13 +124,10 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple MQ Falling Room Chest": "True",
-            "Forest Temple Poe Sisters 2": "can_use(Bow)"
+            "Forest Temple Poe Sisters 2": "can_use(Bow) and (Small_Key_Forest_Temple, 6)"
         },
         "exits": {
-            "Forest Temple NE Outdoors Ledge": "True",
-            "Forest Temple Boss Region": "
-                can_use(Bow) and (Small_Key_Forest_Temple, 6) and 
-                Forest_Temple_Jo_and_Beth and Forest_Temple_Amy_and_Meg"
+            "Forest Temple NE Outdoors Ledge": "True"
         }
     },
     {
