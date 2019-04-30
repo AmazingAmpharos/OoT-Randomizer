@@ -428,7 +428,8 @@ class World(object):
             'Ice Arrows',
             'Biggoron Sword',
         ]
-        if self.damage_multiplier != 'ohko' and self.damage_multiplier != 'quadruple' and self.shuffle_scrubs == 'off':
+        if (self.damage_multiplier != 'ohko' and self.damage_multiplier != 'quadruple' and 
+            self.shuffle_scrubs == 'off' and not self.shuffle_grotto_entrances):
             # nayru's love may be required to prevent forced damage
             exclude_item_list.append('Nayrus Love')
         if self.hints != 'agony':
