@@ -390,8 +390,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
     # First, disconnect all root assumed entrances and save which regions they were originally connected to, so we can reconnect them later
     original_connected_regions = {}
-    entrances_to_disconnect = assumed_entrances + [entrance.reverse for entrance in assumed_entrances 
-                                                    if entrance.reverse and entrance.reverse not in assumed_entrances]
+    entrances_to_disconnect = set(assumed_entrances).union(entrance.reverse for entrance in assumed_entrances if entrance.reverse)
     for entrance in entrances_to_disconnect:
         if entrance.connected_region:
             original_connected_regions[entrance] = entrance.disconnect()
@@ -423,7 +422,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
 
 # Shuffle entrances by placing them instead of entrances in the provided target entrances list
-# While shuffling entrances, if the check_valid parameter is true, the algorithm will ensure worlds are still valid based on settings
+# While shuffling entrances, the algorithm will ensure worlds are still valid based on multiple criterias
 def shuffle_entrances(worlds, entrances, target_entrances, locations_to_ensure_reachable=[], retry_count=20):
 
     # Retrieve all items in the itempool, all worlds included
@@ -434,7 +433,7 @@ def shuffle_entrances(worlds, entrances, target_entrances, locations_to_ensure_r
         random.shuffle(entrances)
         rollbacks = []
 
-        # Attempt to place all entrances in the pool, validating the states during every placement if necessary
+        # Attempt to place all entrances in the pool, validating worlds during every placement
         for entrance in entrances:
             if entrance.connected_region != None:
                 continue
@@ -483,6 +482,8 @@ def shuffle_entrances(worlds, entrances, target_entrances, locations_to_ensure_r
 # Validate the provided worlds' structures, raising an error if it's not valid based on our criterias
 def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, itempool):
 
+    max_playthrough = None
+
     if locations_to_ensure_reachable:
         max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
         # If ALR is enabled, ensure all locations we want to keep reachable are indeed still reachable 
@@ -495,7 +496,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
 
     if (entrance_placed == None and worlds[0].shuffle_special_interior_entrances) or \
        (entrance_placed != None and entrance_placed.type in ['SpecialInterior', 'Overworld']):
-        if not locations_to_ensure_reachable:
+        if max_playthrough == None:
             max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
 
         for world in worlds:
@@ -523,7 +524,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
 
         valid_starting_regions = ['Kokiri Forest', 'Kakariko Village']
         for world in worlds:
-            if not any(region for region in valid_starting_regions if no_items_playthrough.state_list[world.id].can_reach(region)):
+            if not any(region for region in valid_starting_regions if no_items_playthrough.can_reach(world.get_region(region))):
                 raise EntranceShuffleError('Invalid starting area')
 
         # For now, we consider that time of day must always be reachable as both ages without having collected any items (except in closed forest)
@@ -536,8 +537,8 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             world.get_region('Root').can_reach = lambda state: True
 
         for world in worlds:
-            if not (any(region for region in no_time_passing_playthrough.cached_spheres[-1]['child_regions'] if region.time_passes and region.world == world) and
-                    any(region for region in no_time_passing_playthrough.cached_spheres[-1]['adult_regions'] if region.time_passes and region.world == world)):
+            if not (any(region for region in no_time_passing_playthrough.reachable_regions('child') if region.time_passes and region.world == world) and
+                    any(region for region in no_time_passing_playthrough.reachable_regions('adult') if region.time_passes and region.world == world)):
                 raise EntranceShuffleError('Time passing is not guaranteed as both ages')
 
         # When starting as adult, child Link should be able to reach ToT without having collected any items
@@ -547,7 +548,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             time_travel_playthrough = no_time_passing_playthrough.copy()
 
             for world in worlds:
-                if world.starting_age == 'adult' and not time_travel_playthrough.state_list[world.id].can_reach('Temple of Time', age='child'):
+                if world.starting_age == 'adult' and not time_travel_playthrough.can_reach(world.get_region('Temple of Time'), age='child'):
                     raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
     return
 

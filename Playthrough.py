@@ -270,3 +270,12 @@ class Playthrough(object):
     # Only works for locations that had progression items...
     def visited(self, location):
         return location in self.cached_spheres[-1]['visited_locations']
+
+    # Use the cache in the playthrough to get all reachable regions.
+    def reachable_regions(self, age=None):
+        if age == 'adult':
+            return self.cached_spheres[-1]['adult_regions']
+        elif age == 'child':
+            return self.cached_spheres[-1]['child_regions']
+        else:
+            return self.cached_spheres[-1]['adult_regions'] + self.cached_spheres[-1]['child_regions']
