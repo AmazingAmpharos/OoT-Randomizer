@@ -1560,12 +1560,12 @@ setting_infos = [
     ),
     Checkbutton(
         name           = 'shuffle_gerudo_card',
-        gui_text       = 'Shuffle Gerudo Card',
+        gui_text       = "Shuffle Gerudo's Card",
         gui_tooltip    = '''\
-            Enabling this shuffles the Gerudo Card into the item pool.
+            Enabling this shuffles the Gerudo's Card into the item pool.
 
-            The Gerudo Card is required to enter the Gerudo Training Grounds,
-            however it does not prevent the guards throwing you in jail.
+            The Gerudo's Card is required to enter the Gerudo's Training Grounds
+            and prevents the guards from throwing you in jail.
         ''',
         shared         = True,
         gui_params     = {

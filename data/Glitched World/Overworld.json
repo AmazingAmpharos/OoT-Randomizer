@@ -312,16 +312,16 @@
         "hint": "Gerudo's Fortress",
         "events": {
             "Carpenter Rescue": "can_finish_GerudoFortress",
-            "Gerudo Fortress Gate Open": "is_adult and 'Carpenter Rescue'"
+            "Gerudo Fortress Gate Open": "is_adult and Gerudo_Membership_Card"
         },
         "locations": {
             "Gerudo Fortress Rooftop Chest": "(is_child and can_mega) or 
                 (is_adult and can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot) or can_mega)",
             #// known softlock if child opens this chest, so only put it in logic for adult
             "Horseback Archery 1000 Points": "
-                'Carpenter Rescue' and can_use(Epona) and Bow and is_adult",
+                Gerudo_Membership_Card and can_use(Epona) and Bow and is_adult",
             "Horseback Archery 1500 Points": "
-                'Carpenter Rescue' and can_use(Epona) and Bow and is_adult",
+                Gerudo_Membership_Card and can_use(Epona) and Bow and is_adult",
             "Gerudo Fortress North F1 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress North F2 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress South F1 Carpenter": "is_adult or (is_child and can_child_damage)",
