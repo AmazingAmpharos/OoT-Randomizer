@@ -86,3 +86,13 @@ void fill_wallet_upgrade(z64_file_t *save, int16_t arg1, int16_t arg2) {
     if(MAX_RUPEES)
         save->rupees = rupee_cap[arg1];
 }
+
+uint8_t GERUDO_CARD_OPENS_GATE = 0;
+void open_fortress_gate(z64_file_t *save, int16_t arg1, int16_t arg2) {
+    if (GERUDO_CARD_OPENS_GATE) {
+        save->scene_flags[0x5D].swch = save->scene_flags[0x5D].swch | 0x08;
+        if (z64_game.scene_index == 0x5D) {
+            z64_game.swch_flags = z64_game.swch_flags | 0x08;
+        }
+    }
+}

@@ -1566,6 +1566,9 @@ setting_infos = [
 
             The Gerudo's Card is required to enter the Gerudo's Training Grounds
             and prevents the guards from throwing you in jail.
+            
+            When the Gerudo's Card is shuffled, obtaining it automatically
+            opens the gate to the Haunted Wasteland in Gerudo's Fortress.
         ''',
         shared         = True,
         gui_params     = {

@@ -785,6 +785,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         # Disable the fog state entirely to avoid fog glitches
         rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
 
+        # Ensure that the Gerudo Fortress gate opens on obtaining Gerudo's Card.
+        rom.write_byte(rom.sym('GERUDO_CARD_OPENS_GATE'), 0x01)
+
         # Combine all fence hopping LLR exits to lead to the main LLR exit
         for k in [0x028A, 0x028E, 0x0292]: # Southern, Western, Eastern Gates
             exit_table[0x01F9] += exit_table[k] # Hyrule Field entrance from Lon Lon Ranch (main land entrance)
@@ -1042,6 +1045,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         save_context.write_bits(0x00D4 + 0x0C * 0x1C + 0x04 + 0x2, 0x01) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         save_context.write_bits(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         save_context.write_bits(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
+
+    # Ensure that the Gerudo Fortress gate opens on obtaining Gerudo's Card if it is shuffled.
+    if world.shuffle_gerudo_card:
+        rom.write_byte(rom.sym('GERUDO_CARD_OPENS_GATE'), 0x01)
 
     # start with maps/compasses
     if world.shuffle_mapcompass == 'startwith':

@@ -414,7 +414,9 @@
         "hint": "Gerudo's Fortress",
         "events": {
             "Carpenter Rescue": "can_finish_GerudoFortress",
-            "Gerudo Fortress Gate Open": "is_adult and Gerudo_Membership_Card"
+            "Gerudo Fortress Gate Open": "
+                Gerudo_Membership_Card and
+                (is_adult or shuffle_gerudo_card or shuffle_overworld_entrances)"
         },
         "locations": {
             "Gerudo Fortress Rooftop Chest": "
