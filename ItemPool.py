@@ -1211,6 +1211,9 @@ def get_pool_core(world):
     if not world.dungeon_mq['Water Temple']:
         world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
+    if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
+        placed_items['Zelda'] = 'Boss Key (Ganons Castle)'
+
     if world.item_pool_value == 'plentiful':
         pool.extend(easy_items)
     else:

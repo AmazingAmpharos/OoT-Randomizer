@@ -63,6 +63,16 @@ class World(object):
         self.shuffle_special_indoor_entrances = self.entrance_shuffle in ['all-indoors', 'all']
         self.shuffle_overworld_entrances = self.entrance_shuffle == 'all'
 
+        # Determine LACS Condition
+        if self.shuffle_ganon_bosskey == 'lacs_medallions':
+            self.lacs_condition = 'medallions'
+        elif self.shuffle_ganon_bosskey == 'lacs_dungeons':
+            self.lacs_condition = 'dungeons'
+        elif self.shuffle_ganon_bosskey == 'lacs_stones':
+            self.lacs_condition = 'stones'
+        else:
+            self.lacs_condition = 'vanilla'
+
         # trials that can be skipped will be decided later
         self.skipped_trials = {
             'Forest': False,

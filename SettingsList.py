@@ -1613,9 +1613,13 @@ setting_infos = [
         name           = 'shuffle_ganon_bosskey',
         default        = 'dungeon',
         choices        = {
-            'remove':    "Ganon's Boss Key: Remove",
-            'dungeon':   "Ganon's Boss Key: Dungeon Only",
-            'keysanity': "Ganon's Boss Key: Anywhere"
+            'remove':          "Ganon's Boss Key: Remove",
+            'dungeon':         "Ganon's Boss Key: Dungeon Only",
+            'keysanity':       "Ganon's Boss Key: Anywhere",
+            'lacs_vanilla':    "Ganon's Boss Key: On LACS: Vanilla",
+            'lacs_medallions': "Ganon's Boss Key: On LACS: Medallions",
+            'lacs_stones':     "Ganon's Boss Key: On LACS: Stones",
+            'lacs_dungeons':   "Ganon's Boss Key: On LACS: Dungeons",
         },
         gui_group      = 'shuffle',
         gui_tooltip    = '''\
@@ -1627,6 +1631,16 @@ setting_infos = [
 
             'Anywhere': Ganon's Castle Boss Key can appear
             anywhere in the world.
+            
+            'On LACS': These settings put the boss key on the
+            Light Arrow Cutscene location, from Zelda in Temple
+            of Time as adult, with differing requirements.
+            
+            'On LACS: Vanilla': Shadow and Spirit Medallions.
+            'On LACS: Medallions': All 6 Medallions.
+            'On LACS: Stones': All 3 Spiritual Stones.
+            'On LACS: Dungeons': All Spiritual Stones & Medallions.
+            
         ''',
         shared         = True,
         gui_params     = {

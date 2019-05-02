@@ -570,7 +570,17 @@
         "region_name": "Temple of Time",
         "hint": "Temple of Time",
         "locations": {
-            "Zelda": "Shadow_Medallion and Spirit_Medallion and is_adult"
+            "Zelda": "is_adult and
+                ((lacs_condition == 'vanilla' and Shadow_Medallion and Spirit_Medallion)
+                or (lacs_condition == 'medallions' and
+                    Forest_Medallion and Fire_Medallion and Water_Medallion and
+                    Shadow_Medallion and Spirit_Medallion and Light_Medallion)
+                or (lacs_condition == 'dungeons' and
+                    Forest_Medallion and Fire_Medallion and Water_Medallion and
+                    Shadow_Medallion and Spirit_Medallion and Light_Medallion and
+                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)
+                or (lacs_condition == 'stones' and
+                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire))"
         },
         "exits": {
             "Temple of Time Exterior": "True",

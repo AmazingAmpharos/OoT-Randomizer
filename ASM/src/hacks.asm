@@ -1334,3 +1334,19 @@ skip_GS_BGS_text:
 ; Replaces: bnez     at, 0x80AECC6C
 .orga 0xE6BEFC
     nop
+
+; ==================================================================================================
+; Change the Light Arrow Cutscene trigger condition.
+; ==================================================================================================
+.orga 0xACCE18
+    jal     lacs_condition_check
+    lw      v0, 0x00A4(s0)
+    beqz    v1, 0x00ACCE9C
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop

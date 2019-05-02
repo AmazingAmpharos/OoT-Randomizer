@@ -980,6 +980,17 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     elif world.bridge == 'tokens':
         rom.write_int32(symbol, 5)
 
+    # Set up LACS conditions.
+    symbol = rom.sym('LACS_CONDITION')
+    if world.lacs_condition == 'medallions':
+        rom.write_int32(symbol, 1)
+    elif world.lacs_condition == 'dungeons':
+        rom.write_int32(symbol, 2)
+    elif world.lacs_condition == 'stones':
+        rom.write_int32(symbol, 3)
+    else:
+        rom.write_int32(symbol, 0)
+
     if world.open_forest == 'open':
         save_context.write_bits(0xED5, 0x10) # "Showed Mido Sword & Shield"
 
