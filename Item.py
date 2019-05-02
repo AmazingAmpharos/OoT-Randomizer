@@ -148,7 +148,9 @@ class Item(object):
             return False
         if self.smallkey and self.world.shuffle_smallkeys == 'dungeon':
             return False
-        if self.bosskey and self.world.shuffle_bosskeys == 'dungeon':
+        if self.bosskey and not self.name.endswith('(Ganons Castle)') and self.world.shuffle_bosskeys == 'dungeon':
+            return False
+        if self.bosskey and self.name.endswith('(Ganons Castle)') and self.world.shuffle_ganon_bosskey == 'dungeon':
             return False
 
         return True

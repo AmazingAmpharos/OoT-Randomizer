@@ -1609,6 +1609,30 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
+    Combobox(
+        name           = 'shuffle_ganon_bosskey',
+        default        = 'dungeon',
+        choices        = {
+            'remove':    "Ganon's Boss Key: Remove",
+            'dungeon':   "Ganon's Boss Key: Dungeon Only",
+            'keysanity': "Ganon's Boss Key: Anywhere"
+        },
+        gui_group      = 'shuffle',
+        gui_tooltip    = '''\
+            'Remove': Ganon's Castle Boss Key is removed
+            and the boss door in Ganon's Tower starts unlocked.
+
+            'Dungeon': Ganon's Castle Boss Key can only appear
+            inside Ganon's Castle.
+
+            'Anywhere': Ganon's Castle Boss Key can appear
+            anywhere in the world.
+        ''',
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
     Checkbutton(
         name           = 'enhance_map_compass',
         gui_text       = 'Maps and Compasses Give Information',
@@ -1627,22 +1651,6 @@ setting_infos = [
             is available immediately from the dungeon menu.
         ''',
         default        = False,
-        shared         = True,
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-        },
-    ),
-    Checkbutton(
-        name           = 'unlocked_ganondorf',
-        gui_text       = 'Remove Ganon\'s Boss Door Lock',
-        gui_group      = 'shuffle',
-        gui_tooltip    = '''\
-            The Boss Key door in Ganon's Tower
-            will start unlocked. This is intended
-            to be used with reduced trial
-            requirements to make it more likely
-            that skipped trials can be avoided.
-        ''',
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',

@@ -1165,7 +1165,11 @@ def get_pool_core(world):
             world.state.collect(item)
             pool.extend(get_junk_item())
     if world.shuffle_bosskeys == 'remove':
-        for item in [item for dungeon in world.dungeons for item in dungeon.boss_key]:
+        for item in [item for dungeon in world.dungeons if dungeon.name != 'Ganons Castle' for item in dungeon.boss_key]:
+            world.state.collect(item)
+            pool.extend(get_junk_item())
+    if world.shuffle_ganon_bosskey == 'remove':
+        for item in [item for dungeon in world.dungeons if dungeon.name == 'Ganons Castle' for item in dungeon.boss_key]:
             world.state.collect(item)
             pool.extend(get_junk_item())
 

@@ -1133,8 +1133,7 @@
         "dungeon": "Ganons Castle",
         "locations": {
             "Ganons Tower Boss Key Chest": "True",
-            "Ganon": "
-                (Boss_Key_Ganons_Castle or unlocked_ganondorf) and can_use(Light_Arrows)"
+            "Ganon": "Boss_Key_Ganons_Castle and can_use(Light_Arrows)"
         }
     },
     {
