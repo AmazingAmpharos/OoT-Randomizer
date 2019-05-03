@@ -572,23 +572,22 @@ setting_infos = [
         name           = 'open_forest',
         default        = 'open',
         choices        = {
-            'open':        'Open',
+            'open':        'Open Forest',
             'closed_deku': 'Closed Deku',
-            'closed':      'Closed',
+            'closed':      'Closed Forest',
             },
-        gui_text       = 'Forest',
         gui_group      = 'open',
         gui_tooltip    = '''\
-            Open: Mido no longer blocks the path to the Deku Tree,
-            and the Kokiri boy no longer blocks the path out
-            of the forest.
+            Open Forest: Mido no longer blocks the path to the
+            Deku Tree, and the Kokiri boy no longer blocks the path
+            out of the forest.
             
             Closed Deku: The Kokiri boy no longer blocks the path
             out of the forest, but Mido still blocks the path to the
             Deku Tree, requiring Kokiri Sword and Deku Shield to access
             the Deku Tree.
 
-            Closed: The Kokiri Sword and Slingshot are always
+            Closed Forest: The Kokiri Sword and Slingshot are always
             available somewhere in the forest. This is incompatible with
             Start as Adult and shuffling "All Indoors" and/or "Overworld"
             entrances will force this to Closed Deku if selected.
