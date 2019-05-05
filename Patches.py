@@ -897,6 +897,15 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_bits(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
     save_context.write_bits(0x0F08, 0x08) # "Entered Hyrule Castle"
 
+    if world.fast_chickens:
+        # save_context.write_bits(0x0F2A, 0x08) # "Caught Cucco Near Cucco Pen"
+        save_context.write_bits(0x0F2A, 0x02) # "Caught Cucco Near Hyrule Field Entrance"
+        save_context.write_bits(0x0F2A, 0x04) # "Caught Cucco Near Bazaar"
+        save_context.write_bits(0x0F2A, 0x10) # "Caught Cucco Behind Windmill"
+        save_context.write_bits(0x0F2A, 0x20) # "Caught Cucco In Crate"
+        save_context.write_bits(0x0F2A, 0x40) # "Caught Cucco Near Skulltula House"
+        save_context.write_bits(0x0F2A, 0x80) # "Caught Cucco Behind Potion Shop"
+
     # Make the Kakariko Gate not open with the MS
     if not world.open_kakariko:
         rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
