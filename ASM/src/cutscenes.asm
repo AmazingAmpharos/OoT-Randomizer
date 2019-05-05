@@ -303,6 +303,9 @@ burning_kak:
     addiu   sp, sp, -0x18
     sw      ra, 0x14(sp)
     sw      a0, 0x18(sp)
+    lw      t9, 0x0004(s0)
+    bnez    t9, @@default
+    lw      t9, 0x0000(s0)
     li      at, 0x800F9C90 ; entrance table
     sll     t9, t9, 2
     add     at, t9, at
