@@ -65,6 +65,8 @@ FAST_CHESTS:
 .byte 0x01
 SHUFFLE_COWS:
 .byte 0x00
+SHUFFLE_BEANS:
+.byte 0x00
 DISABLE_TIMERS:
 .byte 0x00
 

@@ -381,7 +381,7 @@ class State(object):
             return self.has('Progressive Hookshot', 2) and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Magic Bean':
             # Magic Bean usability automatically checks for reachability as child to the current spot's parent region (with as_child_here)
-            return self.as_child_here(lambda state: state.has('Magic Bean')) and self.is_adult()
+            return self.as_child_here(lambda state: state.has('Magic Bean') or state.has('Magic Bean Pack')) and self.is_adult()
         else:
             return self.has(item)
 

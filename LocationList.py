@@ -75,6 +75,7 @@ location_table = {
     "40 Gold Skulltula Reward":                        ("NPC",         0x50,  0x03, None,                     ("Kakariko Village", "Kakariko", "Skulltula House")),
     "50 Gold Skulltula Reward":                        ("NPC",         0x50,  0x3E, None,                     ("Kakariko Village", "Kakariko", "Skulltula House")),
     "Man on Roof":                                     ("NPC",         0x52,  0x3E, None,                     ("Kakariko Village", "Kakariko",)),
+    "Magic Bean Salesman":                             ("NPC",         0x54,  0x16, None,                     ("Zora's River",)),
     "Frog Ocarina Game":                               ("NPC",         0x54,  0x76, None,                     ("Zora's River",)),
     "Frogs in the Rain":                               ("NPC",         0x54,  0x3E, None,                     ("Zora's River", "Minigames",)),
     "Horseback Archery 1000 Points":                   ("NPC",         0x5D,  0x3E, None,                     ("Gerudo's Fortress", "Gerudo", "Minigames")),
@@ -120,7 +121,6 @@ location_table = {
     "Gerudo Fortress South F2 Carpenter":              ("Collectable", 0x0C,  0x0F, None,                     ("Gerudo's Fortress", "Gerudo",)),
 
     "Pierre":                                          ("Event",       None,  None, None,                     None),
-    "Magic Bean Salesman":                             ("Event",       None,  None, None,                     None),
     "Deliver Ruto's Letter":                           ("Event",       None,  None, None,                     None),
     "Sell 1 Big Poe":                                  ("Event",       None,  None, None,                     None),
     "Sell 2 Big Poe":                                  ("Event",       None,  None, None,                     None),
