@@ -935,8 +935,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         save_context.write_bits(0x0F2A, 0x80) # "Caught Cucco Behind Potion Shop"
 
     # Make the Kakariko Gate not open with the MS
-    if not world.open_kakariko:
-        rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
+    rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
 
     if world.open_fountain:
         save_context.write_bits(0x0EDB, 0x08) #Move king zora

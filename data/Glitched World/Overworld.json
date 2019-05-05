@@ -608,7 +608,7 @@
                     (has_sticks or Kokiri_Sword or can_use(Dins_Fire)))",
             "Kakariko Back Grotto": "True",
             "Graveyard": "True",
-            "Death Mountain": "Zeldas_Letter or is_adult or open_kakariko or can_hover"
+            "Death Mountain": "Zeldas_Letter or is_adult or can_hover"
         }
     },
     {

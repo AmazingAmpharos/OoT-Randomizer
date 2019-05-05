@@ -823,7 +823,7 @@
             "Kakariko Bombable Grotto": "can_blast_or_smash",
             "Kakariko Back Grotto": "True",
             "Graveyard": "True",
-            "Kakariko Village Behind Gate": "Zeldas_Letter or is_adult or open_kakariko"
+            "Kakariko Village Behind Gate": "Zeldas_Letter or is_adult"
         }
     },
     {
