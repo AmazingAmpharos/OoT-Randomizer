@@ -1228,3 +1228,30 @@ skip_GS_BGS_text:
 ; Replaces: lw      t9, 0x24(s0)
 .orga 0xD52698
     jal     ingo_race_win
+
+;==================================================================================================
+; Magic Bean Salesman Shuffle
+;==================================================================================================
+; Replaces: addu    v0, v0, t7
+;           lb      v0, -0x59A4(v0)
+.orga 0xE20410
+    jal     bean_initial_check
+    nop
+
+; Replaces: addu    t0, v0, t9
+;           lb      t1, 0x008C(t0)
+.orga 0xE206DC
+    jal     bean_enough_rupees_check
+    nop
+
+; Replaces: addu    t7, t7, t6
+;           lb      t7, -0x59A4(t7)
+.orga 0xE20798
+    jal     bean_rupees_taken
+    nop
+
+; Replaces: sw    a0, 0x20(sp)
+;           sw    a1, 0x24(sp)
+.orga 0xE2076C
+    jal     bean_buy_item_hook
+    sw      a0, 0x20(sp)

@@ -482,7 +482,6 @@ eventlocations = {
     'Ganon': 'Triforce',
     'Zeldas Letter': 'Zeldas Letter',
     'Pierre': 'Scarecrow Song',
-    'Magic Bean Salesman': 'Magic Bean',
     'Deliver Ruto\'s Letter': 'Deliver Letter',
     "Sell 1 Big Poe": 'Sell Big Poe',
     "Sell 2 Big Poe": 'Sell Big Poe',
@@ -686,7 +685,11 @@ def get_pool_core(world):
         placed_items['HF Grotto Cow'] = 'Milk'
         if world.dungeon_mq['Jabu Jabus Belly']:
             placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
-        
+
+    if world.shuffle_beans:
+        pool.append('Magic Bean Pack')
+    else:
+        placed_items['Magic Bean Salesman'] = 'Magic Bean'
 
     if world.dungeon_mq['Deku Tree']:
         skulltula_locations_final = skulltula_locations + [

@@ -1089,6 +1089,21 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
+    Checkbutton(
+        name           = 'shuffle_beans',
+        gui_text       = 'Shuffle Magic Beans',
+        gui_group      = 'shuffle',
+        gui_tooltip    = '''\
+            Enabling this adds a pack of 10 beans to the item pool
+            and changes the Magic Bean Salesman to sell a random
+            item once at the price of 60 Rupees.
+        ''',
+        default        = False,
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
     Combobox(
         name           = 'entrance_shuffle',
         default        = 'off',

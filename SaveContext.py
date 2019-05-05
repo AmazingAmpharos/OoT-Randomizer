@@ -888,6 +888,10 @@ class SaveContext():
             'double_magic'          : [False, True],
         },
         "Rupees"                    : {'rupees' : None},
+        "Magic Bean Pack" : {
+            'item_slot.beans'            : 'beans',
+            'ammo.beans'                 : 10
+        },
     }
 
 

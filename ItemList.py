@@ -137,6 +137,7 @@ item_table = {
     'Small Key (Gerudo Fortress)':('FortressSmallKey',True, 0xB6, {'progressive': float('Inf')}),
     'Small Key (Ganons Castle)':        ('SmallKey', True,  0xB7, {'progressive': float('Inf')}),
     'Double Defense':                   ('Item',     True,  0xB8, None),
+    'Magic Bean Pack':                  ('Item',     True,  0xC9, None),
     'Zeldas Letter':                    ('Item',     True,  None, None),
     'Time Travel':                      ('Event',    True,  None, None),
     'Epona':                            ('Event',    True,  None, None),
