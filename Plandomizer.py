@@ -3,7 +3,6 @@ import json
 import logging
 import re
 import random
-import uuid
 
 from functools import reduce
 
@@ -205,6 +204,7 @@ class WorldDistribution(object):
         self.distribution = distribution
         self.id = id
         self.base_pool = []
+        self.song_as_items = False
         self.update(src_dict, update_all=True)
 
 
@@ -253,6 +253,15 @@ class WorldDistribution(object):
 
     def __str__(self):
         return dump_obj(self.to_json())
+
+
+    # adds the location entry only if there is no record for that location already
+    def add_location(self, new_location, new_item):
+        for (location, record) in self.locations.items():
+            pattern = pattern_matcher(location)
+            if pattern(new_location):
+                raise KeyError('Cannot add location that already exists')
+        self.locations[new_location] = LocationRecord(new_item)
 
 
     def configure_dungeons(self, world, dungeon_pool):
@@ -500,7 +509,15 @@ class WorldDistribution(object):
 
             if record.price is not None:
                 item.price = record.price
+
+            if location.type == 'Song' and item.type != 'Song':
+                print('activating song_as_items')
+                self.song_as_items = True
+
+            print('dist placing %s at %s' % (item.name, location.name))
             location.world.push_item(location, item, True)
+
+
             if item.advancement:
                 playthrough = Playthrough.max_explore([world.state for world in worlds], itertools.chain.from_iterable(item_pools))
                 if not playthrough.can_beat_game(False):
@@ -569,6 +586,15 @@ class Distribution(object):
         self.settings = settings
         self.world_dists = [WorldDistribution(self, id) for id in range(settings.world_count)]
         self.update(src_dict, update_all=True)
+
+
+    # adds the location entry only if there is no record for that location already
+    def add_location(self, new_location, new_item):
+        for world_dist in self.world_dists:
+            try:
+                world_dist.add_location(new_location, new_item)
+            except KeyError:
+                print('Cannot place item at excluded location because it already has an item defined in the Distribution.')
 
 
     def fill(self, window, worlds, location_pools, item_pools):

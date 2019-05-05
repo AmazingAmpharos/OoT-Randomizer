@@ -194,18 +194,16 @@ class Settings:
                 self.distribution = Distribution.from_file(self, self.distribution_file)
             except FileNotFoundError:
                 logging.getLogger('').warning("Distribution file not found at %s" % (self.distribution_file))
-        elif self.force_junk:
-            SongTable = ()
-            if not self.shuffle_song_items:
-                SongTable = (
-                'Sheik Forest Song', 'Sheik in Crater', 'Sheik in Ice Cavern', 'Sheik at Colossus', 'Sheik in Kakariko',
-                'Sheik at Temple', 'Impa at Castle', 'Song from Malon', 'Song from Saria', 'Song from Composer Grave',
-                'Song from Ocarina of Time', 'Song at Windmill')
-            self.distribution = Distribution(self, {
-                "locations": {location: "Rupees (5)" for location in self.disabled_locations if
-                              location not in SongTable}})
         else:
             self.distribution = Distribution(self)
+
+        for location in self.disabled_locations:
+            self.distribution.add_location(location, '#Junk')
+
+        for worlddist in self.distribution.world_dists:
+            print(worlddist.locations)
+
+
         self.numeric_seed = self.get_numeric_seed()
 
     def check_dependency(self, setting_name, check_random=True):

@@ -106,8 +106,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     if not worlds[0].shuffle_song_items:
         fill_ownworld_restrictive(window, worlds, playthrough, song_locations, songitempool, progitempool, "song")
         playthrough.collect_locations()
-        if worlds[0].start_with_fast_travel:
-            fill_locations += [location for location in song_locations if location.item is None]
+        fill_locations += [location for location in song_locations if location.item is None]
 
     # Put one item in every dungeon, needs to be done before other items are
     # placed to ensure there is a spot available for them
@@ -390,6 +389,8 @@ def fill_restrictive(window, worlds, base_playthrough, locations, itempool, coun
     # assert that the specified number of items were placed
     if count > 0:
         raise FillError('Could not place the specified number of item. %d remaining to be placed.' % count)
+    if count < 0 and len(itempool) > 0:
+        raise FillError('Could not place all the item. %d remaining to be placed.' % len(itempool))
     # re-add unplaced items that were skipped
     itempool.extend(unplaced_items)
 
