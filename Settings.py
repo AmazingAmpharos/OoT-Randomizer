@@ -187,7 +187,7 @@ class Settings:
     def update(self):
         self.settings_string = self.get_settings_string()
         self.numeric_seed = self.get_numeric_seed()
-    
+
     def load_distribution(self):
         if self.distribution_file is not None and self.distribution_file != '':
             try:
@@ -196,8 +196,15 @@ class Settings:
                 logging.getLogger('').warning("Distribution file not found at %s" % (self.distribution_file))
         else:
             self.distribution = Distribution(self)
-        self.numeric_seed = self.get_numeric_seed()
 
+        for location in self.disabled_locations:
+            self.distribution.add_location(location, '#Junk')
+
+        for worlddist in self.distribution.world_dists:
+            print(worlddist.locations)
+
+
+        self.numeric_seed = self.get_numeric_seed()
 
     def check_dependency(self, setting_name, check_random=True):
         return self.get_dependency(setting_name, check_random) == None

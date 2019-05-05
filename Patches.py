@@ -119,7 +119,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     rom.write_bytes(0x1FC0CF8, Block_code)
 
     # songs as items flag
-    songs_as_items = world.shuffle_song_items or world.start_with_fast_travel
+    songs_as_items = world.shuffle_song_items or \
+                     world.start_with_fast_travel or \
+                     world.distribution.song_as_items
 
     # Speed learning Zelda's Lullaby
     rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001]) # Terminator Execution

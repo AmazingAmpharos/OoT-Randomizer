@@ -1448,6 +1448,17 @@ setting_infos = [
             '''
         }
     ),
+
+    Checkbutton(
+        name='force_junk',
+        gui_text='Force Junk',
+        gui_group='logic_tab',
+        default=False,
+        gui_tooltip    = '''\
+            Forces blue rupees at excluded locations on this list. Any songs will not have junk at them (unless song sanity is turned on), but will not contain important items. Distribution files supersedes this setting.
+        ''',
+    ),
+
     Setting_Info(
         name           = 'allowed_tricks',
         type           = list,

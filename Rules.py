@@ -15,14 +15,13 @@ def set_rules(world):
     world.get_region('Root').can_reach = lambda state: True
 
     for location in world.get_locations():
-
         if not world.shuffle_song_items:
             if location.type == 'Song':
-                if not world.start_with_fast_travel:
-                    add_item_rule(location, lambda location, item: item.type == 'Song' and item.world.id == location.world.id)
-                else:
-                    # allow junk items, but songs must still have matching world
-                    add_item_rule(location, lambda location, item: item.type != 'Song' or (item.type == 'Song' and item.world.id == location.world.id))
+                # allow junk items, but songs must still have matching world
+                add_item_rule(location, lambda location, item: 
+                    ((location.world.distribution.song_as_items or world.start_with_fast_travel) 
+                        and item.type != 'Song')
+                    or (item.type == 'Song' and item.world.id == location.world.id))
             else:
                 add_item_rule(location, lambda location, item: item.type != 'Song')
 
