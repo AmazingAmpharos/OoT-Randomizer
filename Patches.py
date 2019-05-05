@@ -571,7 +571,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # Change Mido, Saria, and Kokiri to check for Deku Tree complete flag
     # bitwise pointer for 0x80
-    kokiriAddresses = [0xE52836, 0xE53A56, 0xE51D4E, 0xE51F3E, 0xE51D96, 0xE51E1E, 0xE51E7E, 0xE51EDE, 0xE51FC6, 0xE51F96, 0xE293B6, 0xE29B8E, 0xE62EDA, 0xE630D6, 0xE62642, 0xE633AA, 0xE6369E]
+    kokiriAddresses = [0xE52836, 0xE53A56, 0xE51D4E, 0xE51F3E, 0xE51D96, 0xE51E1E, 0xE51E7E, 0xE51EDE, 0xE51FC6, 0xE51F96, 0xE293B6, 0xE29B8E, 0xE62EDA, 0xE630D6, 0xE633AA, 0xE6369E]
     for kokiri in kokiriAddresses:
         rom.write_bytes(kokiri, [0x8C, 0x0C])
     # Kokiri
@@ -591,7 +591,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Mido
     rom.write_bytes(0xE62EDC, [0x94, 0x6F, 0x0E, 0xD4])
     rom.write_bytes(0xE630D8, [0x94, 0x4F, 0x0E, 0xD4])
-    rom.write_bytes(0xE62644, [0x94, 0x6F, 0x0E, 0xD4])
     rom.write_bytes(0xE633AC, [0x94, 0x68, 0x0E, 0xD4])
     rom.write_bytes(0xE636A0, [0x94, 0x48, 0x0E, 0xD4])
 
@@ -605,7 +604,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Change Pokey to check DT complete flag
     rom.write_bytes(0xE5400A, [0x8C, 0x4C])
     rom.write_bytes(0xE5400E, [0xB4, 0xA4])
-    if world.open_forest:
+    if world.open_forest != 'closed':
         rom.write_bytes(0xE5401C, [0x14, 0x0B])
 
     # Fix Shadow Temple to check for different rewards for scene
@@ -857,6 +856,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_bits(0x0ED4, 0x10) # "Met Deku Tree"
     save_context.write_bits(0x0ED5, 0x20) # "Deku Tree Opened Mouth"
     save_context.write_bits(0x0ED6, 0x08) # "Rented Horse From Ingo"
+    save_context.write_bits(0x0ED6, 0x10) # "Spoke to Mido After Deku Tree's Death"
     save_context.write_bits(0x0EDA, 0x08) # "Began Nabooru Battle"
     save_context.write_bits(0x0EDC, 0x80) # "Entered the Master Sword Chamber"
     save_context.write_bits(0x0EDD, 0x20) # "Pulled Master Sword from Pedestal"
@@ -938,7 +938,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     elif world.bridge == 'tokens':
         rom.write_int32(symbol, 5)
 
-    if world.open_forest:
+    if world.open_forest == 'open':
         save_context.write_bits(0xED5, 0x10) # "Showed Mido Sword & Shield"
 
     if world.open_door_of_time:

@@ -7,7 +7,7 @@
 "create_cosmetics_log": false,
 "compress_rom": "None",
 "randomize_settings": false,
-"open_forest": false,
+"open_forest": "open",
 "open_kakariko": false,
 "open_door_of_time": false,
 "open_fountain": false,

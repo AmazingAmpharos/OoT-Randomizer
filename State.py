@@ -485,7 +485,7 @@ class State(object):
 
 
     def can_leave_forest(self):
-        return self.world.open_forest or self.is_adult() or self.is_glitched or self.can_reach(self.world.get_location('Queen Gohma'), age='either')
+        return self.world.open_forest != 'closed' or self.is_adult() or self.is_glitched or self.can_reach(self.world.get_location('Queen Gohma'), age='either')
 
 
     def can_finish_adult_trades(self):

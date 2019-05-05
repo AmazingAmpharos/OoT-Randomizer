@@ -48,6 +48,8 @@ class World(object):
             self.starting_tod = random.choice(choices)
         if self.starting_age == 'random':
             self.starting_age = random.choice(['child', 'adult'])
+        if self.open_forest == 'closed' and self.entrance_shuffle in ['all-indoors', 'all']:
+            self.open_forest = 'closed_deku'
 
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys != 'dungeon'

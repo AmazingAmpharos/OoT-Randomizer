@@ -568,29 +568,39 @@ setting_infos = [
         default        = False,
         shared         = True,
     ),
-    Checkbutton(
+    Combobox(
         name           = 'open_forest',
-        gui_text       = 'Open Forest',
+        default        = 'open',
+        choices        = {
+            'open':        'Open Forest',
+            'closed_deku': 'Closed Deku',
+            'closed':      'Closed Forest',
+            },
         gui_group      = 'open',
         gui_tooltip    = '''\
-            Mido no longer blocks the path to the Deku Tree,
-            and the Kokiri boy no longer blocks the path out
-            of the forest.
+            Open Forest: Mido no longer blocks the path to the
+            Deku Tree, and the Kokiri boy no longer blocks the path
+            out of the forest.
+            
+            Closed Deku: The Kokiri boy no longer blocks the path
+            out of the forest, but Mido still blocks the path to the
+            Deku Tree, requiring Kokiri Sword and Deku Shield to access
+            the Deku Tree.
 
-            When this option is off, the Kokiri Sword and
-            Slingshot are always available somewhere
-            in the forest.
-
-            This is incompatible with start as adult.
-            This is also forced enabled when shuffling
-            "All Indoors" and/or "Overworld" entrances.
+            Closed Forest: The Kokiri Sword and Slingshot are always
+            available somewhere in the forest. This is incompatible with
+            Start as Adult and shuffling "All Indoors" and/or "Overworld"
+            entrances will force this to Closed Deku if selected.
         ''',
-        default        = True,
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
+            'distribution': [
+                ('open', 1),
+                ('closed_deku', 1),
+                ('closed', 1),
+            ],
         },
-        dependency     = lambda settings: True if settings.entrance_shuffle in ['all-indoors', 'all'] else None,
     ),
     Checkbutton(
         name           = 'open_kakariko',
@@ -1745,7 +1755,7 @@ setting_infos = [
             Closed Forest.
         ''',
         shared         = True,
-        dependency     = lambda settings: 'child' if not settings.open_forest else None,
+        dependency     = lambda settings: 'child' if settings.open_forest == 'closed' else None,
     ),
     Combobox(
         name           = 'default_targeting',

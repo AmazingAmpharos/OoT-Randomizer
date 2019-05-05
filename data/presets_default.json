@@ -5,7 +5,7 @@
     "Accessible Weekly (Old)": {
         "world_count": 1,
         "create_spoiler": true,
-        "open_forest": true,
+        "open_forest": "open",
         "open_kakariko": true,
         "open_door_of_time": true,
         "gerudo_fortress": "normal",
@@ -60,7 +60,7 @@
     "Accessible Tournament S2 (Qualifiers)": {
         "world_count": 1,
         "create_spoiler": true,
-        "open_forest": true,
+        "open_forest": "open",
         "open_kakariko": true,
         "open_door_of_time": true,
         "gerudo_fortress": "fast",
@@ -121,7 +121,7 @@
     "Accessible Tournament S2 (Brackets)": {
         "world_count": 1,
         "create_spoiler": true,
-        "open_forest": true,
+        "open_forest": "open",
         "open_kakariko": true,
         "open_door_of_time": true,
         "open_fountain": false,
