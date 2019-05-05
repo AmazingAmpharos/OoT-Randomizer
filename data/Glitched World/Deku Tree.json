@@ -44,6 +44,8 @@
             "Queen Gohma Heart": "(has_nuts or can_use(Slingshot) or has_bombchus or can_use(Hookshot) or can_use(Bow) or can_use(Boomerang)) and 
                 ( (as_either_here(has_shield or can_use(Hammer)) and (is_adult or Kokiri_Sword or has_sticks)) or is_adult)",
             "Queen Gohma": "(has_nuts or can_use(Slingshot) or has_bombchus or can_use(Hookshot) or can_use(Bow) or can_use(Boomerang)) and
+                ((as_either_here(has_shield or can_use(Hammer)) and (is_adult or Kokiri_Sword or has_sticks)) or is_adult)",
+            "Deku Tree Clear": "(has_nuts or can_use(Slingshot) or has_bombchus or can_use(Hookshot) or can_use(Bow) or can_use(Boomerang)) and
                 ((as_either_here(has_shield or can_use(Hammer)) and (is_adult or Kokiri_Sword or has_sticks)) or is_adult)"
         },
         "exits": {

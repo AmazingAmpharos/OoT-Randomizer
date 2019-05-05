@@ -490,8 +490,20 @@ eventlocations = {
     "Sell 4 Big Poe": 'Sell Big Poe',
     'Master Sword Pedestal': 'Time Travel',
     'Epona': 'Epona',
+    'Malon Race': 'Links Cow',
     'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
-    'Haunted Wasteland Bombchu Salesman': 'Bombchus',
+    'Gerudo Fortress Open Gate': 'Gerudo Fortress Gate Open',
+    'Bombchu Bowling Bombchus': 'Bombchu Drop',
+    'Haunted Wasteland Bombchu Salesman': 'Bombchu Drop',
+    'Windmill Drain Well': 'Drain Well',
+    'Goron City Woods Warp from Woods': 'Goron City Woods Warp Open',
+    'Goron City Woods Warp from City': 'Goron City Woods Warp Open',
+    'Goron City Woods Warp from Darunia': 'Goron City Woods Warp Open',
+    'Deku Tree Clear': 'Kokiri Forest Open',
+    'Forest Temple Poe Sisters 1': 'Forest Temple Jo and Beth',
+    'Forest Temple Poe Sisters 2': 'Forest Temple Amy and Meg',
+    'Child in Water Temple': 'Child Water Temple',
+    'Water Temple Clear': 'Lake Refill',
     'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
     'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',
     'Ganons Castle Water Trial Clear': 'Water Trial Clear',
@@ -609,9 +621,11 @@ def generate_itempool(world):
     elif world.junk_ice_traps in ['mayhem', 'onslaught']:
         junk_pool[:] = [('Ice Trap', 1)]
 
-    for location, item in eventlocations.items():
+    event_locations = list(filter(lambda loc: loc.name in eventlocations, world.get_locations()))
+    for location in event_locations:
+        item = eventlocations[location.name]
         world.push_item(location, ItemFactory(item, world))
-        world.get_location(location).locked = True
+        location.locked = True
 
     drop_locations = list(filter(lambda loc: loc.type == 'Drop', world.get_locations()))
     for drop_location in drop_locations:

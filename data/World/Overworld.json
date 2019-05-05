@@ -77,7 +77,7 @@
     {
         "region_name": "Links House",
         "locations": {
-            "Links House Cow": "is_adult and can_play(Eponas_Song) and can_reach(Lon_Lon_Ranch)"
+            "Links House Cow": "is_adult and can_play(Eponas_Song) and Links_Cow"
         },
         "exits": {
             "Kokiri Forest": "True"
@@ -274,11 +274,11 @@
             "Underwater Bottle": "
                 is_child and
                 (can_dive or 
-                    (child_lake_hylia_control and as_adult(can_reach(Morpha, Location)) and 
+                    (child_lake_hylia_control and Lake_Refill and
                         (Kokiri_Sword or Boomerang or Slingshot or as_adult_here)))",
             "Lake Hylia Sun": "
                 is_adult and 
-                (can_use(Distant_Scarecrow) or can_reach(Morpha, Location)) and can_use(Bow)",
+                (can_use(Distant_Scarecrow) or Lake_Refill) and can_use(Bow)",
             "Lake Hylia Freestanding PoH": "can_use(Scarecrow) or can_use(Magic_Bean)",
             "GS Lake Hylia Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Lake Hylia Lab Wall": "
@@ -298,16 +298,16 @@
             "Zoras Domain": "
                 is_child and
                 (can_dive or 
-                    (child_lake_hylia_control and as_adult(can_reach(Morpha, Location)) and 
+                    (child_lake_hylia_control and Lake_Refill and
                         (Kokiri_Sword or Boomerang or Slingshot or as_adult_here)))",
             "Lake Hylia Owl Flight": "is_child",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
-                is_child or can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location)",
+                is_child or can_use(Scarecrow) or can_use(Magic_Bean) or Lake_Refill",
             "Water Temple Lobby": "
                 as_adult_here((can_use(Hookshot) and can_use(Iron_Boots)) or can_use(Longshot)) and
                 ((Progressive_Scale, 2) or can_use(Iron_Boots)) and
-                (is_adult or (child_lake_hylia_control and as_adult(can_reach(Morpha, Location))))",
+                (is_adult or (child_lake_hylia_control and Lake_Refill))",
             "Lake Hylia Grotto": "True"
         }
     },
@@ -420,6 +420,7 @@
             "Gerudo Fortress South F2 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress Carpenter Rescue": "can_finish_GerudoFortress",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
+            "Gerudo Fortress Open Gate": "Carpenter_Rescue",
             "GS Gerudo Fortress Archery Range": "
                 can_use(Hookshot) and Carpenter_Rescue and at_night",
             "GS Gerudo Fortress Top Floor": "
@@ -429,7 +430,7 @@
         },
         "exits": {
             "Gerudo Valley Far Side": "True",
-            "Gerudo Fortress Outside Gate": "as_adult_here(Carpenter_Rescue)",
+            "Gerudo Fortress Outside Gate": "Gerudo_Fortress_Gate_Open",
             "Gerudo Training Grounds Lobby": "
                 Carpenter_Rescue and Gerudo_Membership_Card and is_adult",
             "Gerudo Fortress Storms Grotto": "is_adult and can_play(Song_of_Storms)" # Not there as child
@@ -439,7 +440,7 @@
         "region_name": "Gerudo Fortress Outside Gate",
         "scene": "Gerudo Fortress",
         "exits": {
-            "Gerudo Fortress": "as_adult(can_reach(Gerudo_Fortress) and Carpenter_Rescue)",
+            "Gerudo Fortress": "Gerudo_Fortress_Gate_Open",
             "Haunted Wasteland Near Fortress": "True"
         }
     },
@@ -715,8 +716,9 @@
     {
         "region_name": "Castle Town Bombchu Bowling",
         "locations": {
-            "Bombchu Bowling Bomb Bag": "has_bombchus",
-            "Bombchu Bowling Piece of Heart": "has_bombchus"
+            "Bombchu Bowling Bomb Bag": "has_bombchus_item",
+            "Bombchu Bowling Piece of Heart": "has_bombchus_item",
+            "Bombchu Bowling Bombchus": "has_bombchus_item"
         },
         "exits": {
             "Castle Town": "True"
@@ -814,8 +816,7 @@
             "Kakariko Bazaar": "is_adult and at_day",
             "Kakariko Shooting Gallery": "is_adult and at_day",
             "Bottom of the Well": "
-                as_child(can_reach(Windmill) and can_play(Song_of_Storms)) and
-                (is_child or shuffle_dungeon_entrances)",
+                Drain_Well and (is_child or shuffle_dungeon_entrances)",
             "Kakariko Potion Shop Front": "is_child or at_day",
             "Kakariko Potion Shop Back": "is_adult and at_day",
             "Odd Medicine Building": "is_adult",
@@ -872,7 +873,8 @@
                 can_use(Boomerang) or
                 (is_adult and logic_windmill_poh) or 
                 can_reach('Dampes Grave -> Windmill', Entrance)",
-            "Song at Windmill": "is_adult and has_ocarina"
+            "Song at Windmill": "is_adult and has_ocarina",
+            "Windmill Drain Well": "is_child and can_play(Song_of_Storms)"
         },
         "exits": {
             "Kakariko Village": "True"
@@ -1111,14 +1113,13 @@
                 can_summon_gossip_fairy and has_bottle and
                 (can_blast_or_smash or can_use(Silver_Gauntlets) or Progressive_Strength_Upgrade)",
             "Bug Rock": "(can_blast_or_smash or can_use(Silver_Gauntlets)) and has_bottle",
-            "Stick Pot": "is_child"
+            "Stick Pot": "is_child",
+            "Goron City Woods Warp from City": "
+                can_blast_or_smash or can_use(Dins_Fire) or can_use(Bow) or Progressive_Strength_Upgrade"
         },
         "exits": {
             "Death Mountain": "True",
-            "Goron City Woods Warp": "
-                as_child(can_reach(Darunias_Chamber) and has_sticks) or
-                as_either_here(can_blast_or_smash or can_use(Dins_Fire) or 
-                                can_use(Bow) or Progressive_Strength_Upgrade)",
+            "Goron City Woods Warp": "Goron_City_Woods_Warp_Open",
             "Goron Shop": "
                 has_explosives or Progressive_Strength_Upgrade or can_use(Bow) or 
                 (is_child and (can_use(Dins_Fire) or (can_reach(Darunias_Chamber) and has_sticks)))",
@@ -1137,11 +1138,12 @@
     {
         "region_name": "Goron City Woods Warp",
         "scene": "Goron City",
+        "locations": {
+            "Goron City Woods Warp from Woods": "
+                can_blast_or_smash or can_use(Dins_Fire)"
+        },
         "exits": {
-            "Goron City": "
-                can_leave_forest and 
-                (as_either_here(can_blast_or_smash or can_use(Dins_Fire)) or 
-                    can_reach('Goron City -> Goron City Woods Warp', Entrance, either))",
+            "Goron City": "can_leave_forest and Goron_City_Woods_Warp_Open",
             "Lost Woods": "True"
         }
     },
@@ -1150,7 +1152,8 @@
         "scene": "Goron City",
         "hint": "Goron City",
         "locations": {
-            "Darunias Joy": "is_child and can_play(Sarias_Song)"
+            "Darunias Joy": "is_child and can_play(Sarias_Song)",
+            "Goron City Woods Warp from Darunia": "is_child and has_sticks"
         },
         "exits": {
             "Goron City": "True",
@@ -1309,7 +1312,7 @@
         "locations": {
             "Diving Minigame": "is_child",
             "Zoras Domain Torch Run": "can_use(Sticks)",
-            "Deliver Ruto's Letter": "(is_child and Bottle_with_Letter) and not open_fountain",
+            "Deliver Ruto's Letter": "is_child and Bottle_with_Letter and not open_fountain",
             "King Zora Thawed": "is_adult and has_blue_fire",
             "GS Zora's Domain Frozen Waterfall": "
                 is_adult and at_night and (Progressive_Hookshot or has_bow or Magic_Meter)",
@@ -1322,9 +1325,7 @@
         "exits": {
             "Zora River Behind Waterfall": "True",
             "Lake Hylia": "is_child and can_dive",
-            "Zoras Domain Behind King Zora": "
-                open_fountain or 
-                as_child(can_reach(Zoras_Domain) and Bottle_with_Letter)",
+            "Zoras Domain Behind King Zora": "open_fountain or Deliver_Letter",
             "Zora Shop": "is_child or has_blue_fire",
             "Zoras Domain Storms Grotto": "is_child and can_play(Song_of_Storms)"
         }
@@ -1333,8 +1334,7 @@
         "region_name": "Zoras Domain Behind King Zora",
         "scene": "Zoras Domain",
         "exits": {
-            "Zoras Domain": "
-                can_reach('Zoras Domain -> Zoras Domain Behind King Zora', Entrance, child)",
+            "Zoras Domain": "open_fountain or Deliver_Letter",
             "Zoras Fountain": "True"
         }
     },
@@ -1394,6 +1394,7 @@
         "hint": "Lon Lon Ranch",
         "locations": {
             "Epona": "can_play(Eponas_Song) and is_adult",
+            "Malon Race": "can_play(Eponas_Song) and is_adult",
             "Song from Malon": "is_child and Zeldas_Letter and has_ocarina",
             "GS Lon Lon Ranch Tree": "is_child",
             "GS Lon Lon Ranch Rain Shed": "is_child and at_night",
