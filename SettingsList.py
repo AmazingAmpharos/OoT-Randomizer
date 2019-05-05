@@ -957,6 +957,15 @@ setting_infos = [
         ''',
         shared         = True,
     ),
+	Checkbutton(
+		name           = 'fast_chickens',
+        gui_text       = 'Fast Chickens',
+        gui_group      = 'convenience',
+        gui_tooltip    = '''\
+            Moves all except the Chicken near the pen into the pen.
+        ''',
+        shared         = True,
+    ),
     Checkbutton(
         name           = 'big_poe_count_random',
         gui_text       = 'Random Big Poe Target Count',
