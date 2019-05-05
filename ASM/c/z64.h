@@ -1127,6 +1127,7 @@ typedef struct
 #define z64_GetMatrixStackTop_addr              0x800AA78C
 #define z64_DisplayTextbox_addr                 0x800DCE14
 #define gspF3DEX2_NoN_fifoTextStart             0x800E3F70
+#define z64_fog_state_addr                      0x800F1640
 #define z64_day_speed_addr                      0x800F1650
 #define z64_light_handlers_addr                 0x800F1B40
 #define z64_object_table_addr                   0x800F8FF8
@@ -1198,6 +1199,7 @@ typedef float *(*z64_GetMatrixStackTop_proc)();
 #define z64_vi_counter          (*(uint32_t*)         z64_vi_counter_addr)
 #define z64_stab                (*(z64_stab_t*)       z64_stab_addr)
 #define z64_scene_table         ( (z64_scene_table_t*)z64_scene_table_addr)
+#define z64_fog_state           (*(uint8_t*)          z64_fog_state_addr)
 #define z64_day_speed           (*(uint16_t*)         z64_day_speed_addr)
 #define z64_light_handlers      ( (z64_light_handler_t*)                      \
                                                       z64_light_handlers_addr)

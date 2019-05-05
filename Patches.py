@@ -755,8 +755,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     if world.shuffle_overworld_entrances:
         # Prevent the ocarina cutscene from leading straight to hyrule field
-        symbol = rom.sym('OCARINAS_SHUFFLED')
-        rom.write_byte(symbol, 1)
+        rom.write_byte(rom.sym('OCARINAS_SHUFFLED'), 1)
+
+        # Disable the fog state entirely to avoid fog glitches
+        rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
 
         # Combine all fence hopping LLR exits to lead to the main LLR exit
         for k in [0x028A, 0x028E, 0x0292]: # Southern, Western, Eastern Gates
@@ -770,8 +772,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         del exit_table[0x01D9]
         del exit_table[0x0311]
 
-        # Change Impa escort to bring link at the hyrule castle grounds entrance from market, instead of hyrule field
-        copy_entrance_record(0x0138, 0x0594) # After Impa escort (overridden to Hyrule Castle entrance from Market)
+        # Change Impa escorts to bring link at the hyrule castle grounds entrance from market, instead of hyrule field
+        copy_entrance_record(0x0138, 0x0594) # After 1st Impa escort (overridden to Hyrule Castle entrance from Market)
+        copy_entrance_record(0x0138, 0x00CD) # After 2nd+ Impa escort (overridden to Hyrule Castle entrance from Market)
 
         # Change Getting caught cutscene as adult without hookshot to keep Link inside the Fortress
         copy_entrance_record(0x0129, 0x01A5 + 2, 2) # Thrown out of fortress as adult (overridden to Gerudo Fortress entrance from Valley)
@@ -780,9 +783,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         copy_entrance_record(0x01A5, 0x03B4, 2) # Captured with hookshot 1st time as child (overridden to Thrown out of fortress)
         copy_entrance_record(0x01A5, 0x05F8, 2) # Captured with hookshot 2nd time as child (overridden to Thrown out of fortress)
 
-        # Patch Owl Drop entrances to their new indexes
+        # Change hardcoded Owl Drop entrance indexes to their new indexes (cutscene hardcodes)
         for entrance in world.get_shuffled_entrances(type='OwlDrop'):
-            copy_entrance_record(entrance.replaces.data['index'], entrance.data['index'])
+            rom.write_int16(entrance.data['code_address'], entrance.replaces.data['index'])
 
         set_entrance_updates(world.get_shuffled_entrances(type='Overworld'))
 
@@ -817,6 +820,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     if world.shuffle_interior_entrances:
         # Disable trade quest timers
         rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
+
+        # Change the Happy Mask Shop "throw out" entrance index to the new one (hardcode located in the shop actor)
+        rom.write_int16(0xC6DA5E, world.get_entrance('Castle Town Mask Shop -> Castle Town').replaces.data['index'])
 
         set_entrance_updates(world.get_shuffled_entrances(type='Interior'))
 

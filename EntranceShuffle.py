@@ -201,6 +201,8 @@ entrance_shuffle_table = [
                         ('Lake Hylia -> Hyrule Field',                                      { 'index': 0x0189 })),
     ('Overworld',       ('Hyrule Field -> Gerudo Valley',                                   { 'index': 0x0117 }),
                         ('Gerudo Valley -> Hyrule Field',                                   { 'index': 0x018D })),
+    ('Overworld',       ('Hyrule Field -> Castle Town Entrance',                            { 'index': 0x0276 }),
+                        ('Castle Town Entrance -> Hyrule Field',                            { 'index': 0x01FD })),
     ('Overworld',       ('Hyrule Field -> Kakariko Village',                                { 'index': 0x00DB }),
                         ('Kakariko Village -> Hyrule Field',                                { 'index': 0x017D })),
     ('Overworld',       ('Hyrule Field -> Zora River Front',                                { 'index': 0x00EA }),
@@ -236,8 +238,8 @@ entrance_shuffle_table = [
     ('Overworld',       ('Zoras Domain Behind King Zora -> Zoras Fountain',                 { 'index': 0x0225 }),
                         ('Zoras Fountain -> Zoras Domain Behind King Zora',                 { 'index': 0x01A1 })),
 
-    ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E })),
-    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554 })),
+    ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E, 'code_address': 0xAC9F26 })),
+    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554, 'code_address': 0xAC9EF2 })),
 ]
 
 
