@@ -511,12 +511,8 @@ class WorldDistribution(object):
                 item.price = record.price
 
             if location.type == 'Song' and item.type != 'Song':
-                print('activating song_as_items')
                 self.song_as_items = True
-
-            print('dist placing %s at %s' % (item.name, location.name))
             location.world.push_item(location, item, True)
-
 
             if item.advancement:
                 playthrough = Playthrough.max_explore([world.state for world in worlds], itertools.chain.from_iterable(item_pools))
