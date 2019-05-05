@@ -162,7 +162,7 @@ class TestValidSpoilers(unittest.TestCase):
             'output_file': os.path.join(output_dir, 'fuzz-%d' % i),
         }) for i in range(10)]
         out_keys = ['randomize_settings', 'compress_rom',
-                    'create_spoiler', 'output_file', 'seed', 'numeric_seed']
+                    'create_spoiler', 'output_file', 'seed']
         for settings in fuzz_settings:
             output_file = '%s_Spoiler.json' % settings.output_file
             settings_file = '%s_%s_Settings.json' % (settings.output_file, settings.seed)
@@ -175,8 +175,7 @@ class TestValidSpoilers(unittest.TestCase):
                 except Exception as e:
                     # output the settings file in case of any failure
                     with open(settings_file, 'w') as f:
-                        d = settings.to_json()
-                        d.update({k: settings.__dict__[k] for k in out_keys})
+                        d = {k: settings.__dict__[k] for k in out_keys}
                         json.dump(d, f, indent=0)
                     raise
 
