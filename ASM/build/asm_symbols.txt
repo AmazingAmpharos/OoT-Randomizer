@@ -10,7 +10,6 @@
 00BAF750 .byt:0048
 00BDA354 @@after_chest_speed_check
 00CC453C .dbl:0004
-00CDE1FC .byt:0001
 00D74990 skip_steal_tunic
 00D7E180 @@not_in_ranch
 00D7E194 @@return
