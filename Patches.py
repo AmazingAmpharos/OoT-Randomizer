@@ -537,6 +537,12 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     rom.write_bytes(0xE0A176, [0x00, 0x02])
     rom.write_bytes(0xE0A35A, [0x00, 0x01, 0x00, 0x02])
 
+    # Speed up Lake Hylia Owl Flight
+    rom.write_bytes(0x20E60D2, [0x00, 0x01])
+
+    # Speed up Death Mountain Trail Owl Flight
+    rom.write_bytes(0x223B6B2, [0x00, 0x01])
+
     # Poacher's Saw no longer messes up Deku Theater
     rom.write_bytes(0xAE72CC, [0x00, 0x00, 0x00, 0x00])
 
