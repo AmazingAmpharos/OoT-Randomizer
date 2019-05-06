@@ -52,7 +52,7 @@ class World(object):
             self.open_forest = 'closed_deku'
 
         # rename a few attributes...
-        self.keysanity = self.shuffle_smallkeys != 'dungeon'
+        self.keysanity = self.shuffle_smallkeys in ['keysanity', 'remove']
         self.check_beatable_only = not self.all_reachable
         self.shuffle_dungeon_entrances = self.entrance_shuffle != 'off'
         self.shuffle_grotto_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all']

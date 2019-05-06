@@ -1216,8 +1216,8 @@ def get_pool_core(world):
             world.state.collect(ItemFactory('Small Key (Spirit Temple)'))
             world.state.collect(ItemFactory('Small Key (Spirit Temple)'))
             world.state.collect(ItemFactory('Small Key (Spirit Temple)'))
-        if not world.dungeon_mq['Fire Temple']:
-            world.state.collect(ItemFactory('Small Key (Fire Temple)'))
+        #if not world.dungeon_mq['Fire Temple']:
+        #    world.state.collect(ItemFactory('Small Key (Fire Temple)'))
     if world.shuffle_bosskeys == 'vanilla':
         for location, item in vanillaBK.items():
             try:
