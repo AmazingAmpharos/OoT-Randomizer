@@ -75,10 +75,12 @@ def main(settings, window=dummy_window()):
         else:
             settings.player_num = 1
 
-    logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, settings.seed)
+    logger.info('OoT Randomizer Version %s  -  Seed: %s', __version__, settings.seed)
     settings.remove_disabled()
+    logger.info('(Original) Settings string: %s\n', settings.settings_string)
     random.seed(settings.numeric_seed)
     settings.resolve_random_settings()
+    logger.debug(settings.get_settings_display())
 
     for i in range(0, settings.world_count):
         worlds.append(World(settings))
