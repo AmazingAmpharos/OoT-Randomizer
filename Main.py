@@ -19,7 +19,7 @@ from Rom import Rom
 from Patches import patch_rom
 from Cosmetics import patch_cosmetics
 from DungeonList import create_dungeons
-from Fill import distribute_items_restrictive
+from Fill import distribute_items_restrictive, FillError
 from Item import Item
 from ItemPool import generate_itempool
 from Hints import buildGossipHints
@@ -51,7 +51,6 @@ def main(settings, window=dummy_window()):
 
     worlds = []
 
-    allowed_tricks = {}
     for trick in logic_tricks.values():
         settings.__dict__[trick['name']] = trick['name'] in settings.allowed_tricks
 
@@ -64,6 +63,8 @@ def main(settings, window=dummy_window()):
     if settings.compress_rom != 'None':
         window.update_status('Loading ROM')
         rom = Rom(settings.rom)
+    else:
+        rom = None
 
     if not settings.world_count:
         settings.world_count = 1
@@ -81,7 +82,23 @@ def main(settings, window=dummy_window()):
     random.seed(settings.numeric_seed)
     settings.resolve_random_settings()
     logger.debug(settings.get_settings_display())
+    max_attempts = 3
+    for attempt in range(1, max_attempts + 1):
+        try:
+            spoiler = generate(settings, window)
+            break
+        except FillError as fe:
+            logger.warn('Failed attempt %d of %d: %s', attempt, max_attempts, fe)
+            if attempt >= max_attempts:
+                raise
+            else:
+                logger.info('Retrying...\n\n')
+    return patch_and_output(settings, window, spoiler, rom, start)
 
+
+def generate(settings, window):
+    logger = logging.getLogger('')
+    worlds = []
     for i in range(0, settings.world_count):
         worlds.append(World(settings))
 
@@ -138,7 +155,6 @@ def main(settings, window=dummy_window()):
     window.update_progress(35)
 
     spoiler = Spoiler(worlds)
-    cosmetics_log = None
     if settings.create_spoiler:
         window.update_status('Calculating Spoiler Data')
         logger.info('Calculating playthrough.')
@@ -152,8 +168,14 @@ def main(settings, window=dummy_window()):
             buildGossipHints(spoiler, world)
         window.update_progress(55)
     spoiler.build_file_hash()
+    return spoiler
 
+
+def patch_and_output(settings, window, spoiler, rom, start):
+    logger = logging.getLogger('')
     logger.info('Patching ROM.')
+    worlds = spoiler.worlds
+    cosmetics_log = None
 
     settings_string_hash = hashlib.sha1(settings.settings_string.encode('utf-8')).hexdigest().upper()[:5]
     if settings.output_file:
