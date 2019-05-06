@@ -1016,8 +1016,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     if world.shuffle_smallkeys == 'vanilla':
         if world.dungeon_mq['Spirit Temple']:
             save_context.addresses['keys']['spirit'].value = 3
-        if not world.dungeon_mq['Fire Temple']:
-            save_context.addresses['keys']['fire'].value = 1
 
     if world.start_with_wallet:
         world.distribution.give_item('Progressive Wallet', 3)
