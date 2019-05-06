@@ -307,7 +307,11 @@ def fill_restrictive(window, worlds, base_playthrough, locations, itempool, coun
 
         # get an item and remove it from the itempool
         item_to_place = itempool.pop()
-        random.shuffle(locations)
+        if item_to_place.majoritem:
+            l2cations = [l for l in locations if not l.minor_only]
+        else:
+            l2cations = locations
+        random.shuffle(l2cations)
 
         # generate the max playthrough with every remaining item
         # this will allow us to place this item in a reachable location
@@ -329,7 +333,7 @@ def fill_restrictive(window, worlds, base_playthrough, locations, itempool, coun
         # find a location that the item can be placed. It must be a valid location
         # in the world we are placing it (possibly checking for reachability)
         spot_to_fill = None
-        for location in locations:
+        for location in l2cations:
             if location.can_fill(max_playthrough.state_list[location.world.id], item_to_place, perform_access_check):
                 # for multiworld, make it so that the location is also reachable
                 # in the world the item is for. This is to prevent early restrictions
@@ -375,7 +379,7 @@ def fill_restrictive(window, worlds, base_playthrough, locations, itempool, coun
                 continue
             else:
                 # we expect all items to be placed
-                raise FillError('Game unbeatable: No more spots to place %s [World %d]' % (item_to_place, item_to_place.world.id))
+                raise FillError('Game unbeatable: No more spots to place %s [World %d] from %d locations (%d total); %d other items left to place, plus %d skipped' % (item_to_place, item_to_place.world.id, len(l2cations), len(locations), len(itempool), len(unplaced_items)))
 
         # Place the item in the world and continue
         spot_to_fill.world.push_item(spot_to_fill, item_to_place)

@@ -53,7 +53,7 @@ def start():
         cosmetic_patch(settings)
     elif settings.patch_file != '':
         from_patch_file(settings)
-    elif settings.count is not None:
+    elif settings.count > 1:
         orig_seed = settings.seed
         for i in range(settings.count):
             settings.update_seed(orig_seed + '-' + str(i))
