@@ -200,10 +200,6 @@ class Settings:
         for location in self.disabled_locations:
             self.distribution.add_location(location, '#Junk')
 
-        for worlddist in self.distribution.world_dists:
-            print(worlddist.locations)
-
-
         self.numeric_seed = self.get_numeric_seed()
 
     def check_dependency(self, setting_name, check_random=True):

@@ -1257,6 +1257,7 @@ setting_infos = [
         choices        = {
             'remove':    'Maps/Compasses: Remove',
             'startwith': 'Maps/Compasses: Start With',
+            'vanilla':   'Maps/Compasses: Vanilla Locations',
             'dungeon':   'Maps/Compasses: Dungeon Only',
             'keysanity': 'Maps/Compasses: Anywhere'
         },
@@ -1270,6 +1271,9 @@ setting_infos = [
             'Start With': Maps and Compasses are given to
             you from the start. This will add a small
             amount of money and refill items to the pool.
+
+            'Vanilla': Maps and Compasses will appear in
+            their vanilla locations.
 
             'Dungeon': Maps and Compasses can only appear
             in their respective dungeon.
@@ -1292,6 +1296,7 @@ setting_infos = [
         default        = 'dungeon',
         choices        = {
             'remove':    'Small Keys: Remove (Keysy)',
+            'vanilla':   'Small Keys: Vanilla Locations',            
             'dungeon':   'Small Keys: Dungeon Only',
             'keysanity': 'Small Keys: Anywhere (Keysanity)'
         },
@@ -1300,6 +1305,12 @@ setting_infos = [
             'Remove': Small Keys are removed. All locked
             doors in dungeons will be unlocked. An easier
             mode.
+
+            'Vanilla': Small Keys will appear in their 
+            vanilla locations. Because vanilla key layout
+            are not beatable in logic, you start with an
+            extra key in Fire Temple and 3 keys in Spirit
+            Temple MQ.
 
             'Dungeon': Small Keys can only appear in their
             respective dungeon. If Fire Temple is not a
@@ -1325,6 +1336,7 @@ setting_infos = [
         default        = 'dungeon',
         choices        = {
             'remove':    'Boss Keys: Remove (Keysy)',
+            'vanilla':   'Boss Keys: Vanilla Locations',            
             'dungeon':   'Boss Keys: Dungeon Only',
             'keysanity': 'Boss Keys: Anywhere (Keysanity)',
         },
@@ -1333,6 +1345,9 @@ setting_infos = [
             'Remove': Boss Keys are removed. All locked
             doors in dungeons will be unlocked. An easier
             mode.
+
+            'Vanilla': Boss Keys will appear in their 
+            vanilla locations.
 
             'Dungeon': Boss Keys can only appear in their
             respective dungeon.

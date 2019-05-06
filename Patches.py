@@ -1013,6 +1013,12 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
             save_context.addresses['dungeon_items'][dungeon]['compass'].value = True
             save_context.addresses['dungeon_items'][dungeon]['map'].value = True
 
+    if world.shuffle_smallkeys == 'vanilla':
+        if world.dungeon_mq['Spirit Temple']:
+            save_context.addresses['keys']['spirit'].value = 3
+        if not world.dungeon_mq['Fire Temple']:
+            save_context.addresses['keys']['fire'].value = 1
+
     if world.start_with_wallet:
         world.distribution.give_item('Progressive Wallet', 3)
     if world.start_with_rupees:
