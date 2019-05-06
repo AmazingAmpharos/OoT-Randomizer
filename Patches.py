@@ -1216,7 +1216,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # Set damage multiplier
     if world.damage_multiplier == 'half':
-        rom.write_byte(rom.sym('CFG_DAMAGE_MULTIPLYER'), -1)
+        rom.write_byte(rom.sym('CFG_DAMAGE_MULTIPLYER'), 0xFF)
     if world.damage_multiplier == 'normal':
         rom.write_byte(rom.sym('CFG_DAMAGE_MULTIPLYER'), 0)
     if world.damage_multiplier == 'double':
