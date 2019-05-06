@@ -1,5 +1,6 @@
 from version import __version__
 import random
+import Music as music
 import Sounds as sfx
 
 from collections import namedtuple
@@ -185,12 +186,12 @@ def patch_dpad(rom, settings, log, symbols):
 def patch_music(rom, settings, log, symbols):
     # patch music
     if settings.background_music == 'random':
-        restore_music(rom)
-        log.bgm = randomize_music(rom)
+        music.restore_music(rom)
+        log.bgm = music.randomize_music(rom)
     elif settings.background_music == 'off':
-        disable_music(rom)
+        music.disable_music(rom)
     else:
-        restore_music(rom)
+        music.restore_music(rom)
 
 
 def patch_tunic_colors(rom, settings, log, symbols):
@@ -551,103 +552,6 @@ def patch_cosmetics(settings, rom):
         log.error = "Unable to patch some cosmetics. ROM uses unknown cosmetic patch format."
 
     return log
-
-
-# Format: (Title, Sequence ID)
-bgm_sequence_ids = [
-    ('Hyrule Field', 0x02),
-    ('Dodongos Cavern', 0x18),
-    ('Kakariko Adult', 0x19),
-    ('Battle', 0x1A),
-    ('Boss Battle', 0x1B),
-    ('Inside Deku Tree', 0x1C),
-    ('Market', 0x1D),
-    ('Title Theme', 0x1E),
-    ('House', 0x1F),
-    ('Jabu Jabu', 0x26),
-    ('Kakariko Child', 0x27),
-    ('Fairy Fountain', 0x28),
-    ('Zelda Theme', 0x29),
-    ('Fire Temple', 0x2A),
-    ('Forest Temple', 0x2C),
-    ('Castle Courtyard', 0x2D),
-    ('Ganondorf Theme', 0x2E),
-    ('Lon Lon Ranch', 0x2F),
-    ('Goron City', 0x30),
-    ('Miniboss Battle', 0x38),
-    ('Temple of Time', 0x3A),
-    ('Kokiri Forest', 0x3C),
-    ('Lost Woods', 0x3E),
-    ('Spirit Temple', 0x3F),
-    ('Horse Race', 0x40),
-    ('Ingo Theme', 0x42),
-    ('Fairy Flying', 0x4A),
-    ('Deku Tree', 0x4B),
-    ('Windmill Hut', 0x4C),
-    ('Shooting Gallery', 0x4E),
-    ('Sheik Theme', 0x4F),
-    ('Zoras Domain', 0x50),
-    ('Shop', 0x55),
-    ('Chamber of the Sages', 0x56),
-    ('Ice Cavern', 0x58),
-    ('Kaepora Gaebora', 0x5A),
-    ('Shadow Temple', 0x5B),
-    ('Water Temple', 0x5C),
-    ('Gerudo Valley', 0x5F),
-    ('Potion Shop', 0x60),
-    ('Kotake and Koume', 0x61),
-    ('Castle Escape', 0x62),
-    ('Castle Underground', 0x63),
-    ('Ganondorf Battle', 0x64),
-    ('Ganon Battle', 0x65),
-    ('Fire Boss', 0x6B),
-    ('Mini-game', 0x6C)
-]
-
-
-def randomize_music(rom):
-    log = {}
-
-    # Read in all the Music data
-    bgm_data = []
-    for bgm in bgm_sequence_ids:
-        bgm_sequence = rom.read_bytes(0xB89AE0 + (bgm[1] * 0x10), 0x10)
-        bgm_instrument = rom.read_int16(0xB89910 + 0xDD + (bgm[1] * 2))
-        bgm_data.append((bgm[0], bgm_sequence, bgm_instrument))
-
-    # shuffle data
-    random.shuffle(bgm_data)
-
-    # Write Music data back in random ordering
-    for bgm in bgm_sequence_ids:
-        bgm_name, bgm_sequence, bgm_instrument = bgm_data.pop()
-        rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
-        rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
-        log[bgm[0]] = bgm_name
-
-    # Write Fairy Fountain instrument to File Select (uses same track but different instrument set pointer for some reason)
-    rom.write_int16(0xB89910 + 0xDD + (0x57 * 2), rom.read_int16(0xB89910 + 0xDD + (0x28 * 2)))
-    return log
-
-
-def disable_music(rom):
-    # First track is no music
-    blank_track = rom.read_bytes(0xB89AE0 + (0 * 0x10), 0x10)
-    for bgm in bgm_sequence_ids:
-        rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
-
-
-def restore_music(rom):
-    # Restore all music from original
-    for bgm in bgm_sequence_ids:
-        bgm_sequence = rom.original.read_bytes(0xB89AE0 + (bgm[1] * 0x10), 0x10)
-        rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
-        bgm_instrument = rom.original.read_int16(0xB89910 + 0xDD + (bgm[1] * 2))
-        rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
-
-    # restore file select instrument
-    bgm_instrument = rom.original.read_int16(0xB89910 + 0xDD + (0x57 * 2))
-    rom.write_int16(0xB89910 + 0xDD + (0x57 * 2), bgm_instrument)
 
 
 class CosmeticsLog(object):
