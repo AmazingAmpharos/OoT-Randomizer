@@ -695,8 +695,6 @@ remove_junk_items = [
     'Bombs (5)',
     'Deku Nuts (5)',
     'Deku Stick (1)',
-    'Deku Shield',
-    'Hylian Shield',
     'Recovery Heart',
     'Arrows (5)',
     'Arrows (10)',
