@@ -8,7 +8,7 @@
 "create_cosmetics_log": false,
 "compress_rom": "None",
 "randomize_settings": false,
-"open_forest": "open",
+"open_forest": true,
 "open_door_of_time": true,
 "open_fountain": false,
 "gerudo_fortress": "fast",
@@ -34,7 +34,7 @@
 "shuffle_cows": false,
 "shuffle_scrubs": "off",
 "shopsanity": "off",
-"tokensanity": "all",
+"tokensanity": "off",
 "shuffle_mapcompass": "startwith",
 "shuffle_smallkeys": "dungeon",
 "shuffle_bosskeys": "dungeon",
@@ -55,7 +55,7 @@
 "hint_dist": "tournament",
 "text_shuffle": "none",
 "junk_ice_traps": "normal",
-"item_pool_value": "balanced",
+"item_pool_value": "plentiful",
 "damage_multiplier": "normal",
 "starting_tod": "default"
 }

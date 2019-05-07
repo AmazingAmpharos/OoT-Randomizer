@@ -210,7 +210,7 @@ class State(object):
 
         if self.ensure_tod_access():
             if self.tod == None:
-                return self.can_change_time_to(tod) or self.with_tod(lambda state: state.can_reach(), tod)
+                return self.can_change_time_to(tod) or self.with_tod(lambda state: state.can_reach(keep_tod=True), tod)
             else:
                 if tod == 'day':
                     return self.tod == 'day'
@@ -219,7 +219,7 @@ class State(object):
                 elif tod == 'dampe':
                     # If we are currently checking for reachability at night but dampe's time is required in the path, 
                     # we should make sure the current spot can be reached at dampe's time, and not just at night
-                    return self.tod == 'dampe' or (self.tod == 'night' and self.with_tod(lambda state: state.can_reach(), 'dampe'))
+                    return self.tod == 'dampe' or (self.tod == 'night' and self.with_tod(lambda state: state.can_reach(keep_tod=True), 'dampe'))
                 else:
                     raise AttributeError('Unknown tod parameter: ' + str(tod))
         return True
@@ -266,6 +266,12 @@ class State(object):
 
     def has_any(self, predicate):
         return any(map(predicate, self.prog_items))
+
+    def has_any_of(self, items):
+        return any(map(self.prog_items.__contains__, items))
+
+    def has_all_of(self, items):
+        return all(map(self.prog_items.__contains__, items))
 
 
     def item_count(self, item):
@@ -318,11 +324,11 @@ class State(object):
 
 
     def has_nuts(self):
-        return self.has('Buy Deku Nut (5)') or self.has('Buy Deku Nut (10)') or self.has('Deku Nut Drop')
+        return self.has_any_of(('Buy Deku Nut (5)', 'Buy Deku Nut (10)', 'Deku Nut Drop'))
 
 
     def has_sticks(self):
-        return self.has('Buy Deku Stick (1)') or self.has('Deku Stick Drop')
+        return self.has_any_of(('Buy Deku Stick (1)', 'Deku Stick Drop'))
 
 
     def has_bow(self):
@@ -338,7 +344,7 @@ class State(object):
 
 
     def has_ocarina(self):
-        return (self.has('Ocarina') or self.has('Fairy Ocarina') or self.has('Ocarina of Time'))
+        return self.has_any_of(('Ocarina', 'Fairy Ocarina', 'Ocarina of Time'))
 
 
     def can_play(self, song):
@@ -381,34 +387,22 @@ class State(object):
             return self.has('Progressive Hookshot', 2) and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Magic Bean':
             # Magic Bean usability automatically checks for reachability as child to the current spot's parent region (with as_child_here)
-            return self.as_child_here(lambda state: state.has('Magic Bean')) and self.is_adult()
+            return self.as_child_here(lambda state: state.has('Magic Bean') or state.has('Magic Bean Pack')) and self.is_adult()
         else:
             return self.has(item)
 
 
     def can_buy_bombchus(self):
-        return self.has('Buy Bombchu (5)') or \
-               self.has('Buy Bombchu (10)') or \
-               self.has('Buy Bombchu (20)') or \
-               self.can_reach('Castle Town Bombchu Bowling', age='either') or \
-               self.can_reach('Haunted Wasteland Bombchu Salesman', 'Location', age='either')
+        return self.has_any_of(('Buy Bombchu (5)', 'Buy Bombchu (10)', 'Buy Bombchu (20)', 'Bombchu Drop'))
 
 
     def has_bombchus(self):
-        if self.can_buy_bombchus():
-            if self.world.bombchus_in_logic:
-                return self.has_any(lambda pritem: pritem.startswith('Bombchus'))
-            else:
-                return self.has('Bomb Bag')
-        else:
-            return False
+        return self.can_buy_bombchus()
 
 
     def has_bombchus_item(self):
         if self.world.bombchus_in_logic:
-            return (self.has_any(lambda pritem: pritem.startswith('Bombchus'))
-                    or (self.can_reach('Haunted Wasteland', age='either') and self.has('Progressive Wallet') and 
-                            (self.is_adult() or self.has_sticks() or self.has('Kokiri_Sword'))))
+            return self.has_any(lambda pritem: pritem.startswith('Bombchus'))
         else:
             return self.has('Bomb Bag')
 
@@ -426,12 +420,13 @@ class State(object):
 
 
     def can_see_with_lens(self):
-        return ((self.has('Magic Meter') and self.has('Lens of Truth')) or self.world.logic_lens != 'all')
+        return self.world.logic_lens != 'all' or self.has_all_of(('Magic Meter', 'Lens of Truth'))
 
 
     def can_cut_shrubs(self):
-        return self.is_adult() or self.has_sticks() or self.has('Kokiri Sword') or \
-               self.has_explosives() or self.has('Boomerang')
+        return self.is_adult() or self.has_sticks() or \
+               self.has_any_of(('Kokiri Sword', 'Boomerang')) or \
+               self.has_explosives()
 
 
     def can_summon_gossip_fairy(self):
@@ -444,19 +439,19 @@ class State(object):
 
 
     def has_bugs(self):
-        return self.has('Bugs') or self.has('Buy Bottle Bug')
+        return self.has_any_of(('Bugs', 'Buy Bottle Bug'))
 
 
     def has_blue_fire(self):
-        return self.has('Blue Fire') or self.has('Buy Blue Fire')
+        return self.has_any_of(('Blue Fire', 'Buy Blue Fire'))
 
 
     def has_fish(self):
-        return self.has('Fish') or self.has('Buy Fish')
+        return self.has_any_of(('Fish', 'Buy Fish'))
 
 
     def has_fairy(self):
-        return self.has('Fairy') or self.has('Buy Fairy\'s Spirit')
+        return self.has_any_of(('Fairy', 'Buy Fairy\'s Spirit'))
 
 
     def has_big_poe_drop(self):
@@ -473,27 +468,26 @@ class State(object):
         if self.has_explosives():
             return True
         if age == 'child':
-            return self.has_slingshot() or self.has('Boomerang')
+            return self.has_any_of(('Slingshot', 'Boomerang'))
         elif age == 'adult':
-            return self.has_bow() or self.has('Progressive Hookshot')
+            return self.has_any_of(('Bow', 'Progressive Hookshot'))
         elif age == 'both':
-            return ((self.has_bow() or self.has('Progressive Hookshot'))
-                    and (self.has_slingshot() or self.has('Boomerang')))
+            return (self.has_any_of(('Bow', 'Progressive Hookshot'))
+                    and self.has_any_of(('Slingshot', 'Boomerang')))
         else:
-            return ((self.has_bow() or self.has('Progressive Hookshot'))
-                    or (self.has_slingshot() or self.has('Boomerang')))
+            return self.has_any_of(('Bow', 'Progressive Hookshot', 'Slingshot', 'Boomerang'))
 
 
     def can_leave_forest(self):
-        return self.world.open_forest or self.is_adult() or self.is_glitched or self.can_reach(self.world.get_location('Queen Gohma'), age='either')
+        return self.world.open_forest != 'closed' or self.is_adult() or self.is_glitched or self.has('Kokiri Forest Open')
 
 
     def can_finish_adult_trades(self):
         if self.is_glitched:
             zora_thawed = self.can_reach('Zoras Domain', age='adult')
             carpenter_access = self.can_reach('Gerudo Valley Far Side', age='adult')
-            has_low_trade = (self.has('Poachers Saw') or self.has('Odd Mushroom') or self.has('Cojiro') or self.has('Pocket Cucco') or self.has('Pocket Egg'))
-            has_high_trade = (self.has('Eyedrops') or self.has('Eyeball Frog') or self.has('Prescription') or self.has('Broken Sword'))
+            has_low_trade = self.has_any_of(('Poachers Saw', 'Odd Mushroom', 'Cojiro', 'Pocket Cucco', 'Pocket Egg'))
+            has_high_trade = self.has_any_of(('Eyedrops', 'Eyeball Frog', 'Prescription', 'Broken Sword'))
             return self.can_reach('Death Mountain Crater Upper', age='adult') and (
                 self.has('Claim Check')
                 or (zora_thawed and (has_high_trade or (has_low_trade and carpenter_access))))
@@ -510,24 +504,23 @@ class State(object):
                                         self.can_play('Serenade of Water') or self.can_play('Nocturne of Shadow'))
 
             zora_thawed = self.can_reach('Zoras Domain', age='adult') and self.has_blue_fire()
-            pocket_egg = self.has('Pocket Egg')
-            pocket_cucco = self.has('Pocket Cucco') or pocket_egg
-            cojiro = self.has('Cojiro') or (pocket_cucco and self.can_reach('Carpenter Boss House', age='adult'))
-            odd_mushroom = self.has('Odd Mushroom') or cojiro
+            pocket_cucco = self.has_any_of(('Pocket Egg', 'Pocket Cucco'))
+            # Technically also needs access to Lost Woods but we can check that once in odd_poultice
+            odd_mushroom = self.has_any_of(('Odd Mushroom', 'Cojiro')) or (pocket_cucco and self.can_reach('Carpenter Boss House', age='adult'))
             odd_poultice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult') and self.can_reach('Lost Woods', age='adult')
-            poachers_saw = self.has('Poachers Saw') or (odd_poultice and self.can_reach('Goron City', age='adult') and 
-                                                        (self.can_blast_or_smash() or self.has('Progressive Strength Upgrade')))
-            broken_sword = self.has('Broken Sword') or (poachers_saw and self.can_reach('Gerudo Valley Far Side', age='adult'))
-            prescription = self.has('Prescription') or broken_sword
-            eyeball_frog = self.has('Eyeball Frog') or prescription
+            # Getting the saw from poultice requires access to the Lost Woods that we just checked
+            poachers_saw = self.has('Poachers Saw') or odd_poultice
+            eyeball_frog = self.has_any_of(('Eyeball Frog', 'Prescription', 'Broken Sword')) or (poachers_saw and self.can_reach('Gerudo Valley Far Side', age='adult'))
             eyedrops = (self.has('Eyedrops') or eyeball_frog) and self.can_reach('Lake Hylia Lab', age='adult') and zora_thawed and guaranteed_path
             return (self.has('Claim Check')
                     or (eyedrops and
                         (self.world.shuffle_interior_entrances
+                            or self.world.logic_biggoron_bolero
+                            # Getting to Biggoron without ER or the trick above involves either
+                            # Darunia's Chamber access or clearing the boulders to get up DMT
                             or self.has('Progressive Strength Upgrade')
                             or self.can_blast_or_smash()
-                            or self.has_bow()
-                            or self.world.logic_biggoron_bolero)))
+                            or self.has_bow())))
 
 
     def has_skull_mask(self):
@@ -538,7 +531,7 @@ class State(object):
         # Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man, and access to Lost Woods, Graveyard (at day time) and Hyrule Field as child
         return (self.has_skull_mask() and self.can_reach('Lost Woods', age='child') and self.can_play('Sarias Song') and 
                 self.can_reach('Graveyard', age='child', tod='day') and self.can_reach('Hyrule Field', age='child') and 
-                self.has('Kokiri Emerald') and self.has('Goron Ruby') and self.has('Zora Sapphire'))
+                self.has_all_of(('Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire')))
 
 
     def has_bottle(self):

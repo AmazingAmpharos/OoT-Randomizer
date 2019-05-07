@@ -245,6 +245,7 @@ item_row_t item_table[] = {
 
     [0xC7] = ITEM_ROW(0x53, 0, 0x41, 0x00F8, 0x00D1, 0x23, no_upgrade, give_tycoon_wallet, -1, -1), // Tycoon's Wallet
     [0xC8] = ITEM_ROW(0x53, 0, 0x14, 0x9099, 0x010B, 0x45, no_upgrade, no_effect, -1, -1), // Redundant Letter Bottle
+    [0xC9] = ITEM_ROW(0x53, 0, 0x41, 0x9048, 0x00F3, 0x3E, no_upgrade, give_bean_pack, -1, -1), // Magic Bean Pack
 
 };
 

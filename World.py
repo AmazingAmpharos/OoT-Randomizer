@@ -48,9 +48,11 @@ class World(object):
             self.starting_tod = random.choice(choices)
         if self.starting_age == 'random':
             self.starting_age = random.choice(['child', 'adult'])
+        if self.open_forest == 'closed' and self.entrance_shuffle in ['all-indoors', 'all']:
+            self.open_forest = 'closed_deku'
 
         # rename a few attributes...
-        self.keysanity = self.shuffle_smallkeys != 'dungeon'
+        self.keysanity = self.shuffle_smallkeys in ['keysanity', 'remove']
         self.check_beatable_only = not self.all_reachable
         self.shuffle_dungeon_entrances = self.entrance_shuffle != 'off'
         self.shuffle_grotto_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all']
@@ -394,7 +396,7 @@ class World(object):
             if location_hint in excluded_areas or \
                location.locked or \
                location.item is None or \
-               location.item.type == "Event":
+               location.item.type in ('Event', 'DungeonReward'):
                 continue
 
             area = location_hint
@@ -428,7 +430,8 @@ class World(object):
             'Ice Arrows',
             'Biggoron Sword',
         ]
-        if self.damage_multiplier != 'ohko' and self.damage_multiplier != 'quadruple' and self.shuffle_scrubs == 'off':
+        if (self.damage_multiplier != 'ohko' and self.damage_multiplier != 'quadruple' and 
+            self.shuffle_scrubs == 'off' and not self.shuffle_grotto_entrances):
             # nayru's love may be required to prevent forced damage
             exclude_item_list.append('Nayrus Love')
         if self.hints != 'agony':

@@ -201,6 +201,8 @@ entrance_shuffle_table = [
                         ('Lake Hylia -> Hyrule Field',                                      { 'index': 0x0189 })),
     ('Overworld',       ('Hyrule Field -> Gerudo Valley',                                   { 'index': 0x0117 }),
                         ('Gerudo Valley -> Hyrule Field',                                   { 'index': 0x018D })),
+    ('Overworld',       ('Hyrule Field -> Castle Town Entrance',                            { 'index': 0x0276 }),
+                        ('Castle Town Entrance -> Hyrule Field',                            { 'index': 0x01FD })),
     ('Overworld',       ('Hyrule Field -> Kakariko Village',                                { 'index': 0x00DB }),
                         ('Kakariko Village -> Hyrule Field',                                { 'index': 0x017D })),
     ('Overworld',       ('Hyrule Field -> Zora River Front',                                { 'index': 0x00EA }),
@@ -236,8 +238,8 @@ entrance_shuffle_table = [
     ('Overworld',       ('Zoras Domain Behind King Zora -> Zoras Fountain',                 { 'index': 0x0225 }),
                         ('Zoras Fountain -> Zoras Domain Behind King Zora',                 { 'index': 0x01A1 })),
 
-    ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E })),
-    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554 })),
+    ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E, 'code_address': 0xAC9F26 })),
+    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554, 'code_address': 0xAC9EF2 })),
 ]
 
 
@@ -289,7 +291,7 @@ def shuffle_random_entrances(worlds):
             # The fill algorithm will already make sure gohma is reachable, however it can end up putting
             # a forest escape via the hands of spirit on Deku leading to Deku on spirit in logic. This is
             # not really a closed forest anymore, so specifically remove Deku Tree from closed forest.
-            if not worlds[0].open_forest:
+            if worlds[0].open_forest == 'closed':
                 entrance_pools['Dungeon'].remove(world.get_entrance('Outside Deku Tree -> Deku Tree Lobby'))
 
         if worlds[0].shuffle_interior_entrances:
@@ -390,8 +392,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
     # First, disconnect all root assumed entrances and save which regions they were originally connected to, so we can reconnect them later
     original_connected_regions = {}
-    entrances_to_disconnect = assumed_entrances + [entrance.reverse for entrance in assumed_entrances 
-                                                    if entrance.reverse and entrance.reverse not in assumed_entrances]
+    entrances_to_disconnect = set(assumed_entrances).union(entrance.reverse for entrance in assumed_entrances if entrance.reverse)
     for entrance in entrances_to_disconnect:
         if entrance.connected_region:
             original_connected_regions[entrance] = entrance.disconnect()
@@ -423,7 +424,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
 
 # Shuffle entrances by placing them instead of entrances in the provided target entrances list
-# While shuffling entrances, if the check_valid parameter is true, the algorithm will ensure worlds are still valid based on settings
+# While shuffling entrances, the algorithm will ensure worlds are still valid based on multiple criterias
 def shuffle_entrances(worlds, entrances, target_entrances, locations_to_ensure_reachable=[], retry_count=20):
 
     # Retrieve all items in the itempool, all worlds included
@@ -434,7 +435,7 @@ def shuffle_entrances(worlds, entrances, target_entrances, locations_to_ensure_r
         random.shuffle(entrances)
         rollbacks = []
 
-        # Attempt to place all entrances in the pool, validating the states during every placement if necessary
+        # Attempt to place all entrances in the pool, validating worlds during every placement
         for entrance in entrances:
             if entrance.connected_region != None:
                 continue
@@ -483,6 +484,8 @@ def shuffle_entrances(worlds, entrances, target_entrances, locations_to_ensure_r
 # Validate the provided worlds' structures, raising an error if it's not valid based on our criterias
 def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, itempool):
 
+    max_playthrough = None
+
     if locations_to_ensure_reachable:
         max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
         # If ALR is enabled, ensure all locations we want to keep reachable are indeed still reachable 
@@ -495,7 +498,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
 
     if (entrance_placed == None and worlds[0].shuffle_special_interior_entrances) or \
        (entrance_placed != None and entrance_placed.type in ['SpecialInterior', 'Overworld']):
-        if not locations_to_ensure_reachable:
+        if max_playthrough == None:
             max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
 
         for world in worlds:
@@ -523,25 +526,32 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
 
         valid_starting_regions = ['Kokiri Forest', 'Kakariko Village']
         for world in worlds:
-            if not any(region for region in valid_starting_regions if no_items_playthrough.state_list[world.id].can_reach(region)):
+            if not any(region for region in valid_starting_regions if no_items_playthrough.can_reach(world.get_region(region))):
                 raise EntranceShuffleError('Invalid starting area')
 
-        time_travel_playthrough = Playthrough([world.state.copy() for world in worlds])
+        # For now, we consider that time of day must always be reachable as both ages without having collected any items (except in closed forest)
+        # In ER, Time of day logic normally considers that the player always has access to time passing from the root so this is important to ensure
+        # This also means that, in order to test for this, we have to temporarily remove that assumption about root access to time passing
         for world in worlds:
-            time_travel_playthrough.collect(ItemFactory('Time Travel', world=world))
-        time_travel_playthrough.visit_locations()
+            world.get_region('Root').can_reach = lambda state: state.tod == None
+        no_time_passing_playthrough = Playthrough.with_items([world.state.copy() for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
+        for world in worlds:
+            world.get_region('Root').can_reach = lambda state: True
 
         for world in worlds:
-            # For now, we consider that time of day must always be reachable as both ages without having collected any items (except in closed forest)
-            # In ER, Time of day logic considers that the root always has access to time passing so this is important to ensure
-            if not (any(region for region in time_travel_playthrough.cached_spheres[-1]['child_regions'] if region.time_passes and region.world == world) and
-                    any(region for region in time_travel_playthrough.cached_spheres[-1]['adult_regions'] if region.time_passes and region.world == world)):
+            if not (any(region for region in no_time_passing_playthrough.reachable_regions('child') if region.time_passes and region.world == world) and
+                    any(region for region in no_time_passing_playthrough.reachable_regions('adult') if region.time_passes and region.world == world)):
                 raise EntranceShuffleError('Time passing is not guaranteed as both ages')
 
-            # When starting as adult, child Link should be able to reach ToT without having collected any items
-            # This is important to ensure that the player never loses access to the pedestal after going child
-            if world.starting_age == 'adult' and not time_travel_playthrough.state_list[world.id].can_reach('Temple of Time', age='child'):
-                raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
+        # When starting as adult, child Link should be able to reach ToT without having collected any items
+        # This is important to ensure that the player never loses access to the pedestal after going child
+        if any(world.starting_age == 'adult' for world in worlds):
+            # We can reuse the playthrough previously generated as this situation is the same except we have root time passing access now
+            time_travel_playthrough = no_time_passing_playthrough.copy()
+
+            for world in worlds:
+                if world.starting_age == 'adult' and not time_travel_playthrough.can_reach(world.get_region('Temple of Time'), age='child'):
+                    raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
     return
 
 

@@ -1,8 +1,8 @@
 {
 "create_spoiler": true,
+"compress_rom": "None",
 "randomize_settings": false,
-"open_forest": true,
-"open_kakariko": false,
+"open_forest": "open",
 "open_door_of_time": false,
 "open_fountain": false,
 "child_lake_hylia_control": false,

@@ -2,11 +2,14 @@
     {
         "region_name": "Water Temple Lobby",
         "dungeon": "Water Temple",
+        "locations": {
+            "Child in Water Temple": "is_child"
+        },
         "exits": {
             "Lake Hylia": "True",
             # Child cannot do anything as the only entrant to Water Temple. So leave child
             # disconnected from here on to simplify logic as assumed adult. Child water assists
-            # are still possible with as_child(can_reach(Water_Temple_Lobby) and ... )
+            # are still possible with (Child_Water_Temple and ... )
             "Water Temple Highest Water Level":"is_adult"
         }
     },
@@ -15,7 +18,8 @@
         "dungeon":  "Water Temple",
         "locations": {
             "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)",
-            "Morpha Heart": "Boss_Key_Water_Temple and can_use(Longshot)"
+            "Morpha Heart": "Boss_Key_Water_Temple and can_use(Longshot)",
+            "Water Temple Clear": "Boss_Key_Water_Temple and can_use(Longshot)"
         },
         "exits": {
             "Water Temple Dark Link Region": "
@@ -40,7 +44,7 @@
                     ((logic_water_cracked_wall_hovers and Hover_Boots) or can_reach(Water_Temple_Middle_Water_Level))",
             "Water Temple Torches Chest": "
                 (has_bow or can_use(Dins_Fire) or 
-                 as_child(can_reach(Water_Temple_Lobby) and has_sticks and Kokiri_Sword and Magic_Meter)) and 
+                 (Child_Water_Temple and has_sticks and Kokiri_Sword and Magic_Meter)) and
                 can_play(Zeldas_Lullaby)",
             "Water Temple Dragon Chest": "
                 Iron_Boots and can_use(Hookshot) and
@@ -68,7 +72,7 @@
             "Water Temple Middle Water Level": "
                 (has_bow or can_use(Dins_Fire) or
                  ((Small_Key_Water_Temple, 5) and can_use(Hookshot)) or
-                 as_child(can_reach(Water_Temple_Lobby) and can_use(Sticks))) and 
+                 (Child_Water_Temple and has_sticks)) and
                 can_play(Zeldas_Lullaby)"
         }
     },
@@ -82,9 +86,8 @@
             "GS Water Temple Central Room": "
                 ((can_use(Longshot) or (can_use(Farores_Wind) and can_use(Hookshot))) and
                  ((Small_Key_Water_Temple, 5) or can_use(Bow) or can_use(Dins_Fire))) or
-                as_child(can_reach(Water_Temple_Lobby) and
-                         can_use(Boomerang) and can_use(Farores_Wind) and
-                         (can_use(Dins_Fire) or can_use(Sticks)))"
+                (Child_Water_Temple and Boomerang and can_use(Farores_Wind) and
+                    (can_use(Dins_Fire) or has_sticks))"
         }
     },
     {

@@ -568,43 +568,38 @@ setting_infos = [
         default        = False,
         shared         = True,
     ),
-    Checkbutton(
+    Combobox(
         name           = 'open_forest',
-        gui_text       = 'Open Forest',
+        default        = 'open',
+        choices        = {
+            'open':        'Open Forest',
+            'closed_deku': 'Closed Deku',
+            'closed':      'Closed Forest',
+            },
         gui_group      = 'open',
         gui_tooltip    = '''\
-            Mido no longer blocks the path to the Deku Tree,
-            and the Kokiri boy no longer blocks the path out
-            of the forest.
+            Open Forest: Mido no longer blocks the path to the
+            Deku Tree, and the Kokiri boy no longer blocks the path
+            out of the forest.
+            
+            Closed Deku: The Kokiri boy no longer blocks the path
+            out of the forest, but Mido still blocks the path to the
+            Deku Tree, requiring Kokiri Sword and Deku Shield to access
+            the Deku Tree.
 
-            When this option is off, the Kokiri Sword and
-            Slingshot are always available somewhere
-            in the forest.
-
-            This is incompatible with start as adult.
-            This is also forced enabled when shuffling
-            "All Indoors" and/or "Overworld" entrances.
-        ''',
-        default        = True,
-        shared         = True,
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-        },
-        dependency     = lambda settings: True if settings.entrance_shuffle in ['all-indoors', 'all'] else None,
-    ),
-    Checkbutton(
-        name           = 'open_kakariko',
-        gui_text       = 'Open Kakariko Gate',
-        gui_group      = 'open',
-        gui_tooltip    = '''\
-            The gate in Kakariko Village to Death Mountain Trail
-            is always open instead of needing Zelda's Letter.
-
-            Either way, the gate is always open as an adult.
+            Closed Forest: The Kokiri Sword and Slingshot are always
+            available somewhere in the forest. This is incompatible with
+            Start as Adult and shuffling "All Indoors" and/or "Overworld"
+            entrances will force this to Closed Deku if selected.
         ''',
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
+            'distribution': [
+                ('open', 1),
+                ('closed_deku', 1),
+                ('closed', 1),
+            ],
         },
     ),
     Checkbutton(
@@ -958,6 +953,15 @@ setting_infos = [
         ''',
         shared         = True,
     ),
+	Checkbutton(
+		name           = 'fast_chickens',
+        gui_text       = 'Fast Chickens',
+        gui_group      = 'convenience',
+        gui_tooltip    = '''\
+            Moves all except the Chicken near the pen into the pen.
+        ''',
+        shared         = True,
+    ),
     Checkbutton(
         name           = 'big_poe_count_random',
         gui_text       = 'Random Big Poe Target Count',
@@ -1074,6 +1078,21 @@ setting_infos = [
             Enabling this causes playing Epona's song infront
             of cows to give an item. There are 9 cows, and an
             extra in MQ Jabu
+        ''',
+        default        = False,
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
+    Checkbutton(
+        name           = 'shuffle_beans',
+        gui_text       = 'Shuffle Magic Beans',
+        gui_group      = 'shuffle',
+        gui_tooltip    = '''\
+            Enabling this adds a pack of 10 beans to the item pool
+            and changes the Magic Bean Salesman to sell a random
+            item once at the price of 60 Rupees.
         ''',
         default        = False,
         shared         = True,
@@ -1249,6 +1268,7 @@ setting_infos = [
         choices        = {
             'remove':    'Maps/Compasses: Remove',
             'startwith': 'Maps/Compasses: Start With',
+            'vanilla':   'Maps/Compasses: Vanilla Locations',
             'dungeon':   'Maps/Compasses: Dungeon Only',
             'keysanity': 'Maps/Compasses: Anywhere'
         },
@@ -1262,6 +1282,9 @@ setting_infos = [
             'Start With': Maps and Compasses are given to
             you from the start. This will add a small
             amount of money and refill items to the pool.
+
+            'Vanilla': Maps and Compasses will appear in
+            their vanilla locations.
 
             'Dungeon': Maps and Compasses can only appear
             in their respective dungeon.
@@ -1284,6 +1307,7 @@ setting_infos = [
         default        = 'dungeon',
         choices        = {
             'remove':    'Small Keys: Remove (Keysy)',
+            'vanilla':   'Small Keys: Vanilla Locations',            
             'dungeon':   'Small Keys: Dungeon Only',
             'keysanity': 'Small Keys: Anywhere (Keysanity)'
         },
@@ -1292,6 +1316,11 @@ setting_infos = [
             'Remove': Small Keys are removed. All locked
             doors in dungeons will be unlocked. An easier
             mode.
+
+            'Vanilla': Small Keys will appear in their 
+            vanilla locations. You start with 3 keys in 
+            Spirit Temple MQ because the vanilla key 
+            layout is not beatable in logic.
 
             'Dungeon': Small Keys can only appear in their
             respective dungeon. If Fire Temple is not a
@@ -1317,6 +1346,7 @@ setting_infos = [
         default        = 'dungeon',
         choices        = {
             'remove':    'Boss Keys: Remove (Keysy)',
+            'vanilla':   'Boss Keys: Vanilla Locations',            
             'dungeon':   'Boss Keys: Dungeon Only',
             'keysanity': 'Boss Keys: Anywhere (Keysanity)',
         },
@@ -1325,6 +1355,9 @@ setting_infos = [
             'Remove': Boss Keys are removed. All locked
             doors in dungeons will be unlocked. An easier
             mode.
+
+            'Vanilla': Boss Keys will appear in their 
+            vanilla locations.
 
             'Dungeon': Boss Keys can only appear in their
             respective dungeon.
@@ -1756,7 +1789,7 @@ setting_infos = [
             Closed Forest.
         ''',
         shared         = True,
-        dependency     = lambda settings: 'child' if not settings.open_forest else None,
+        dependency     = lambda settings: 'child' if settings.open_forest == 'closed' else None,
     ),
     Combobox(
         name           = 'default_targeting',

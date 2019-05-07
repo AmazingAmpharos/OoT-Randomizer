@@ -22,14 +22,14 @@ never_prefix = ['Bombs', 'Arrows', 'Rupee', 'Deku Seeds', 'Map', 'Compass']
 never_suffix = ['Mask', 'Capacity']
 never = {
     'Bunny Hood', 'Mask of Truth', 'Recovery Heart', 'Milk', 'Ice Arrows', 'Ice Trap',
-    'Double Defense', 'Serenade of Water', 'Prelude of Light', 'Biggoron Sword',
+    'Double Defense', 'Biggoron Sword',
 } | {item for item, (t, adv, _, special) in item_table.items() if adv is False
      or any(map(item.startswith, never_prefix)) or any(map(item.endswith, never_suffix))}
 
 # items required at most once, specifically things with multiple possible names
 # (except bottles)
 once = {
-    'Deku Nut', 'Bombchu', 'Deku Stick', 'Deku Shield', 'Hylian Shield',
+    'Deku Nut', 'Deku Stick', 'Deku Shield', 'Hylian Shield',
     'Goron Tunic', 'Zora Tunic',
 }
 
@@ -40,7 +40,7 @@ progressive = {
 
 bottles = {
     item for item, (_, _, _, special) in item_table.items()
-    if special and 'bottle' in special
+    if special and 'bottle' in special and item != 'Deliver Letter'
 }
 
 
@@ -158,12 +158,11 @@ class TestValidSpoilers(unittest.TestCase):
         fuzz_settings = [Settings({
             'randomize_settings': True,
             'compress_rom': "None",
-            'count': 1,
             'create_spoiler': True,
             'output_file': os.path.join(output_dir, 'fuzz-%d' % i),
         }) for i in range(10)]
-        out_keys = ['randomize_settings', 'compress_rom', 'count',
-                    'create_spoiler', 'output_file', 'seed', 'numeric_seed']
+        out_keys = ['randomize_settings', 'compress_rom',
+                    'create_spoiler', 'output_file', 'seed']
         for settings in fuzz_settings:
             output_file = '%s_Spoiler.json' % settings.output_file
             settings_file = '%s_%s_Settings.json' % (settings.output_file, settings.seed)
@@ -176,6 +175,7 @@ class TestValidSpoilers(unittest.TestCase):
                 except Exception as e:
                     # output the settings file in case of any failure
                     with open(settings_file, 'w') as f:
-                        json.dump(settings.to_json(), f, indent=0)
+                        d = {k: settings.__dict__[k] for k in out_keys}
+                        json.dump(d, f, indent=0)
                     raise
 
