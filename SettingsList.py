@@ -867,13 +867,13 @@ setting_infos = [
         shared         = True,
     ),
     Checkbutton(
-        name           = 'no_poe_cutscene',
-        gui_text       = 'Skip Forest Poe Cutscene',
+        name           = 'useful_cutscenes',
+        gui_text       = 'Enable Useful Cutscenes',
         gui_group      = 'convenience',
         gui_tooltip    = '''\
-            The Cutscene to introduce the Poe Sisters
-            at the start of Forest Temple is skipped,
-            and the elevator will be down.
+            The cutscenes of the Poes in Forest Temple,
+            Darunia in Fire Temple, and the introduction
+            to Twinrova will all play.
         ''',
         shared         = True,
     ),
