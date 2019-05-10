@@ -257,16 +257,42 @@ def rebuild_sequences(rom, sequences, log):
     return log
 
 
-def randomize_music(rom):
+def shuffle_pointers_table(rom, log):
+    # Read in all the Music data
+    bgm_data = []
+    for bgm in bgm_sequence_ids:
+        bgm_sequence = rom.read_bytes(0xB89AE0 + (bgm[1] * 0x10), 0x10)
+        bgm_instrument = rom.read_int16(0xB89910 + 0xDD + (bgm[1] * 2))
+        bgm_data.append((bgm[0], bgm_sequence, bgm_instrument))
+
+    # shuffle data
+    random.shuffle(bgm_data)
+
+    # Write Music data back in random ordering
+    for bgm in bgm_sequence_ids:
+        bgm_name, bgm_sequence, bgm_instrument = bgm_data.pop()
+        rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
+        rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
+        log[bgm[0]] = bgm_name
+
+    # Write Fairy Fountain instrument to File Select (uses same track but different instrument set pointer for some reason)
+    rom.write_int16(0xB89910 + 0xDD + (0x57 * 2), rom.read_int16(0xB89910 + 0xDD + (0x28 * 2)))
+    return log
+
+
+def randomize_music(rom, settings):
     log = {}
 
-    # Create empty sequence metadata arrays
-    sequences = []
-    target_sequences = []
+    if settings.compress_rom != 'Patch':
+        # Create empty sequence metadata arrays
+        sequences = []
+        target_sequences = []
 
-    sequences, target_sequences = process_sequences(rom, sequences, target_sequences)
-    sequences, log = shuffle_music(sequences, target_sequences, log)
-    log = rebuild_sequences(rom, sequences, log)
+        sequences, target_sequences = process_sequences(rom, sequences, target_sequences)
+        sequences, log = shuffle_music(sequences, target_sequences, log)
+        log = rebuild_sequences(rom, sequences, log)
+    else:
+        log = shuffle_pointers_table(rom, log)
 
     return log
 
