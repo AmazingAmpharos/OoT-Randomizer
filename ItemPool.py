@@ -493,7 +493,7 @@ eventlocations = {
     'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
     'Gerudo Fortress Open Gate': 'Gerudo Fortress Gate Open',
     'Bombchu Bowling Bombchus': 'Bombchu Drop',
-    'Haunted Wasteland Bombchu Salesman': 'Bombchu Drop',
+    'Haunted Wasteland Bombchu Salesman': 'Bombchus',
     'Windmill Drain Well': 'Drain Well',
     'Goron City Woods Warp from Woods': 'Goron City Woods Warp Open',
     'Goron City Woods Warp from City': 'Goron City Woods Warp Open',
