@@ -678,7 +678,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     def generate_exit_lookup_table():
         # Assumes that the last exit on a scene's exit list cannot be 0000
-        exit_table = {}
+        exit_table = {
+            0x0028: [0xAC95C2] #Jabu with the fish is entered from a cutscene hardcode
+            }
 
         def add_scene_exits(scene_start, offset = 0):
             current = scene_start + offset
@@ -724,9 +726,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
             scene_start = rom.read_int32(scene_table + (scene * 0x14));
             add_scene_exits(scene_start)
             
-        #Special case: Jabu with the fish is entered from a cutscene hardcode
-        exit_table[0x0028].append(0xAC95C2)
-
         return exit_table
 
 
