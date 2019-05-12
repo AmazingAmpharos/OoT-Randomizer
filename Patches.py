@@ -1021,6 +1021,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         world.distribution.give_item('Progressive Wallet', 3)
     if world.start_with_rupees:
         world.distribution.give_item('Rupees', 999)
+        rom.write_byte(rom.sym('MAX_RUPEES'), 0x01)
     if world.start_with_deku_equipment:
         if world.shopsanity == "off":
             world.distribution.give_item('Deku Shield')

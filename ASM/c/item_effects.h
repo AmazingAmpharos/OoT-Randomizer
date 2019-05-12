@@ -2,6 +2,7 @@
 #define ITEM_EFFECTS_H
 
 #include "z64.h"
+extern uint8_t MAX_RUPEES;
 
 void no_effect(z64_file_t *save, int16_t arg1, int16_t arg2);
 void full_heal(z64_file_t *save, int16_t arg1, int16_t arg2);
