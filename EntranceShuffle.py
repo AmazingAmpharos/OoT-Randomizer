@@ -335,14 +335,7 @@ def shuffle_random_entrances(worlds):
                 shuffle_entrance_pool(worlds, [temple_of_time_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
                 shuffle_entrance_pool(worlds, [links_house_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
 
-            if pool_type in ['SpecialInterior', 'Overworld', 'OwlDrop', 'Dungeon']:
-                # Those pools contain entrances leading to regions that might open access to completely new areas
-                # Dungeons are among those because exiting Spirit Temple from the hands is in logic 
-                # and could give access to Desert Colossus and potentially new areas from there
-                shuffle_entrance_pool(worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable)
-            else:
-                # Other pools are only "internal", which means they are leaves in the world graph and can't open new access
-                shuffle_entrance_pool(worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable, internal=True)
+            shuffle_entrance_pool(worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable)
 
             if pool_type == 'OwlDrop':
                 # Delete all unused owl drop targets after placing the entrances, since the unused targets won't ever be replaced
@@ -370,7 +363,7 @@ def shuffle_random_entrances(worlds):
 
 
 # Shuffle all entrances within a provided pool
-def shuffle_entrance_pool(worlds, entrance_pool, target_entrances, locations_to_ensure_reachable, internal=False):
+def shuffle_entrance_pool(worlds, entrance_pool, target_entrances, locations_to_ensure_reachable):
 
     # Split entrances between those that have requirements (restrictive) and those that do not (soft). These are primarily age or time of day requirements.
     restrictive_entrances, soft_entrances = split_entrances_by_requirements(worlds, entrance_pool, target_entrances)
@@ -378,13 +371,8 @@ def shuffle_entrance_pool(worlds, entrance_pool, target_entrances, locations_to_
     # Shuffle restrictive entrances first while more regions are available in order to heavily reduce the chances of the placement failing.
     shuffle_entrances(worlds, restrictive_entrances, target_entrances, locations_to_ensure_reachable)
 
-    # Shuffle the rest of the entrances
-    if internal:
-        # If we are shuffling an "internal" entrance pool, those entrances can be considered as completely versatile, 
-        # So we don't have to check for beatability and/or reachability of locations when shuffling them
-        shuffle_entrances(worlds, soft_entrances, target_entrances)
-    else:
-        shuffle_entrances(worlds, soft_entrances, target_entrances, locations_to_ensure_reachable)
+    # Shuffle the rest of the entrances, we don't have to check for beatability or reachability of locations when placing those
+    shuffle_entrances(worlds, soft_entrances, target_entrances)
 
 
 # Split entrances based on their requirements to figure out how each entrance should be handled when shuffling them
