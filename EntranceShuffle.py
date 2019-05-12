@@ -265,7 +265,7 @@ def shuffle_random_entrances(worlds):
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
     max_playthrough = Playthrough.max_explore([world.state for world in worlds], complete_itempool)
 
-    non_drop_locations = [location for world in worlds for location in world.get_locations() if location.type != 'Drop']
+    non_drop_locations = [location for world in worlds for location in world.get_locations() if location.type not in ('Drop', 'Event')]
     max_playthrough.visit_locations(non_drop_locations)
     locations_to_ensure_reachable = list(filter(max_playthrough.visited, non_drop_locations))
 
