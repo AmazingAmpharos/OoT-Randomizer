@@ -837,13 +837,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         # Change the Happy Mask Shop "throw out" entrance index to the new one (hardcode located in the shop actor)
         rom.write_int16(0xC6DA5E, world.get_entrance('Castle Town Mask Shop -> Castle Town').replaces.data['index'])
 
-        set_entrance_updates(world.get_shuffled_entrances(type='Interior'))
-
-    if world.shuffle_special_interior_entrances:
-        set_entrance_updates(world.get_shuffled_entrances(type='SpecialInterior'))
+        set_entrance_updates(world.get_shuffled_entrances(type='Interior') + world.get_shuffled_entrances(type='SpecialInterior'))
 
     if world.shuffle_grotto_entrances:
-        set_entrance_updates(world.get_shuffled_entrances(type='Grave'))
+        set_entrance_updates(world.get_shuffled_entrances(type='Grave') + world.get_shuffled_entrances(type='SpecialGrave'))
 
     for k, v in [(k,v) for k, v in exit_updates if k in exit_table]:
         for addr in exit_table[k]:

@@ -39,7 +39,7 @@ def assume_pool_reachable(world, entrance_pool):
         assumed_forward = entrance.assume_reachable()
         if entrance.reverse != None:
             assumed_return = entrance.reverse.assume_reachable()
-            if entrance.type in ('Dungeon', 'Interior', 'Grotto', 'Grave'):
+            if entrance.type in ('Dungeon', 'Interior', 'Grotto', 'Grave', 'SpecialGrave'):
                 # Dungeon, Grotto/Grave and Simple Interior exits shouldn't be assumed to be able to give access to their parent region
                 assumed_return.access_rule = lambda state: False
             assumed_forward.bind_two_way(assumed_return)
@@ -224,7 +224,8 @@ entrance_shuffle_table = [
                         ('Heart Piece Grave -> Graveyard',                                  { 'index': 0x0361 })),
     ('Grave',           ('Graveyard -> Composer Grave',                                     { 'index': 0x002D }),
                         ('Composer Grave -> Graveyard',                                     { 'index': 0x050B })),
-    ('Grave',           ('Graveyard -> Dampes Grave',                                       { 'index': 0x044F }),
+
+    ('SpecialGrave',    ('Graveyard -> Dampes Grave',                                       { 'index': 0x044F }),
                         ('Dampes Grave -> Graveyard',                                       { 'index': 0x0359 })),
 
     ('Overworld',       ('Kokiri Forest -> Lost Woods Bridge From Forest',                  { 'index': 0x05E0 }),
@@ -317,7 +318,7 @@ def shuffle_random_entrances(worlds):
         # Determine entrance pools based on settings, to be shuffled in the order we set them by
         entrance_pools = OrderedDict()
 
-        if worlds[0].shuffle_special_interior_entrances:
+        if worlds[0].shuffle_special_indoor_entrances:
             entrance_pools['SpecialInterior'] = entrance_instances(world, get_entrance_pool('SpecialInterior'))
 
         if worlds[0].shuffle_overworld_entrances:
@@ -341,6 +342,8 @@ def shuffle_random_entrances(worlds):
 
         if worlds[0].shuffle_grotto_entrances:
             entrance_pools['GrottoGrave'] = entrance_instances(world, get_entrance_pool('Grotto') + get_entrance_pool('Grave'))
+            if worlds[0].shuffle_special_indoor_entrances:
+                entrance_pools['GrottoGrave'] += entrance_instances(world, get_entrance_pool('SpecialGrave'))
 
         # Set the assumption that all entrances are reachable
         target_entrance_pools = {}
@@ -538,7 +541,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
                 if not max_playthrough.visited(location):
                     raise EntranceShuffleError('%s is unreachable' % location.name)
 
-    if (entrance_placed == None and worlds[0].shuffle_special_interior_entrances) or \
+    if (entrance_placed == None and worlds[0].shuffle_special_indoor_entrances) or \
        (entrance_placed != None and entrance_placed.type in ['SpecialInterior', 'Overworld']):
         if max_playthrough == None:
             max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
