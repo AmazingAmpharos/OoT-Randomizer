@@ -69,6 +69,7 @@ RANDO_CONTEXT:
 .include "shooting_gallery.asm"
 .include "damage.asm"
 .include "bean_salesman.asm"
+.include "grotto.asm"
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:

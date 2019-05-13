@@ -1249,3 +1249,18 @@ skip_GS_BGS_text:
 .orga 0xE2076C
     jal     bean_buy_item_hook
     sw      a0, 0x20(sp)
+
+; ==================================================================================================
+; Handle grottos shuffled with other entrances
+; ==================================================================================================
+; Replaces: lui     at, 1
+;           addu    at, at, a3
+.orga 0xCF73C8
+    jal     grotto_entrance
+    lui     at, 1
+
+; Replaces: addu    at, at, a3
+;           sh      t6, 0x1E1A(at)
+.orga 0xBD4C58
+    jal     scene_exit_hook
+    addu    at, at, a3

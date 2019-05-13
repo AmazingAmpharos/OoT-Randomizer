@@ -1452,12 +1452,18 @@
         "region_name": "Gerudo Fortress Storms Grotto",
         "locations": {
             "Free Fairies": "has_bottle"
+        },
+        "exits": {
+            "Gerudo Fortress": "True"
         }
     },
     {
         "region_name": "Zoras Domain Storms Grotto",
         "locations": {
             "Free Fairies": "has_bottle"
+        },
+        "exits": {
+            "Zoras Domain": "True"
         }
     },
     {
@@ -1469,6 +1475,9 @@
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
             "Lone Fish": "has_bottle"
+        },
+        "exits": {
+            "Kokiri Forest": "True"
         }
     },
     {
@@ -1480,6 +1489,9 @@
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
             "Lone Fish": "has_bottle"
+        },
+        "exits": {
+            "Lost Woods": "True"
         }
     },
     {
@@ -1487,6 +1499,9 @@
         "locations": {
             "Deku Theater Skull Mask": "is_child and has_skull_mask",
             "Deku Theater Mask of Truth": "is_child and has_mask_of_truth and guarantee_hint"
+        },
+        "exits": {
+            "Lost Woods Beyond Mido": "True"
         }
     },
     {
@@ -1494,12 +1509,18 @@
         "locations": {
             "LW Grotto Deku Scrub Arrows": "can_stun_deku",
             "LW Grotto Deku Scrub Deku Nut Upgrade": "can_stun_deku"
+        },
+        "exits": {
+            "Lost Woods Beyond Mido": "True"
         }
     },
     {
         "region_name": "Meadow Fairy Grotto",
         "locations": {
             "Free Fairies": "has_bottle"
+        },
+        "exits": {
+            "Sacred Forest Meadow": "True"
         }
     },
     {
@@ -1507,12 +1528,18 @@
         "locations": {
             "SFM Grotto Deku Scrub Red Potion": "can_stun_deku",
             "SFM Grotto Deku Scrub Green Potion": "can_stun_deku"
+        },
+        "exits": {
+            "Sacred Forest Meadow": "True"
         }
     },
     {
         "region_name": "Front of Meadow Grotto",
         "locations": {
             "Wolfos Grotto Chest": "is_adult or can_child_attack"
+        },
+        "exits": {
+            "Sacred Forest Meadow Entryway": "True"
         }
     },
     {
@@ -1521,6 +1548,9 @@
             "LLR Grotto Deku Scrub Deku Nuts": "can_stun_deku",
             "LLR Grotto Deku Scrub Bombs": "can_stun_deku",
             "LLR Grotto Deku Scrub Arrows": "can_stun_deku"
+        },
+        "exits": {
+            "Lon Lon Ranch": "True"
         }
     },
     {
@@ -1532,6 +1562,9 @@
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
             "Lone Fish": "has_bottle"
+        },
+        "exits": {
+            "Hyrule Field": "True"
         }
     },
     {
@@ -1543,12 +1576,18 @@
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
             "Lone Fish": "has_bottle"
+        },
+        "exits": {
+            "Hyrule Field": "True"
         }
     },
     {
         "region_name": "Field Near Lake Inside Fence Grotto",
         "locations": {
             "HF Grotto Deku Scrub Piece of Heart": "can_stun_deku"
+        },
+        "exits": {
+            "Hyrule Field": "True"
         }
     },
     {
@@ -1561,6 +1600,9 @@
             "Gossip Stone Fairy": "has_fire_source and can_summon_gossip_fairy and has_bottle",
             "Bug Shrub": "has_fire_source and can_cut_shrubs and has_bottle",
             "Nut Pot": "has_fire_source"
+        },
+        "exits": {
+            "Hyrule Field": "True"
         }
     },
     {
@@ -1572,18 +1614,27 @@
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
             "Lone Fish": "has_bottle"
+        },
+        "exits": {
+            "Hyrule Field": "True"
         }
     },
     {
         "region_name": "Field Far West Castle Town Grotto",
         "locations": {
             "Free Fairies": "has_bottle"
+        },
+        "exits": {
+            "Hyrule Field": "True"
         }
     },
     {
         "region_name": "Field Kakariko Grotto",
         "locations": {
             "GS Hyrule Field near Kakariko": "can_use(Boomerang) or can_use(Hookshot)"
+        },
+        "exits": {
+            "Hyrule Field": "True"
         }
     },
     {
@@ -1591,6 +1642,9 @@
         "locations": {
             "Tektite Grotto Freestanding PoH": "
                 (Progressive_Scale, 2) or can_use(Iron_Boots)"
+        },
+        "exits": {
+            "Hyrule Field": "True"
         }
     },
     {
@@ -1601,6 +1655,9 @@
             "Gossip Stone Fairy": "can_blast_or_smash and can_summon_gossip_fairy and has_bottle",
             "Wandering Bugs": "can_blast_or_smash and has_bottle",
             "Nut Pot": "can_blast_or_smash"
+        },
+        "exits": {
+            "Hyrule Castle Grounds": "True"
         }
     },
     {
@@ -1609,6 +1666,9 @@
             "Redead Grotto Chest": "
                 is_adult or 
                 (has_sticks or Kokiri_Sword or can_use(Dins_Fire))"
+        },
+        "exits": {
+            "Kakariko Village": "True"
         }
     },
     {
@@ -1620,12 +1680,18 @@
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
             "Lone Fish": "has_bottle"
+        },
+        "exits": {
+            "Kakariko Village": "True"
         }
     },
     {
         "region_name": "Mountain Bombable Grotto",
 		 "locations": {
             "DMT Grotto Cow": "can_play(Eponas_Song)"
+        },
+        "exits": {
+            "Death Mountain": "True"
         }
     },
     {
@@ -1637,6 +1703,9 @@
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
             "Lone Fish": "has_bottle"
+        },
+        "exits": {
+            "Death Mountain": "True"
         }
     },
     {
@@ -1645,6 +1714,9 @@
             "Goron Grotto Deku Scrub Deku Nuts": "can_stun_deku",
             "Goron Grotto Deku Scrub Bombs": "can_stun_deku",
             "Goron Grotto Deku Scrub Arrows": "can_stun_deku"
+        },
+        "exits": {
+            "Goron City": "True"
         }
     },
     {
@@ -1656,6 +1728,9 @@
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
             "Lone Fish": "has_bottle"
+        },
+        "exits": {
+            "Death Mountain Crater Upper": "True"
         }
     },
     {
@@ -1664,6 +1739,9 @@
             "DMC Grotto Deku Scrub Deku Nuts": "can_stun_deku",
             "DMC Grotto Deku Scrub Bombs": "can_stun_deku",
             "DMC Grotto Deku Scrub Arrows": "can_stun_deku"
+        },
+        "exits": {
+            "Death Mountain Crater Lower": "True"
         }
     },
     {
@@ -1675,12 +1753,18 @@
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
             "Lone Fish": "has_bottle"
+        },
+        "exits": {
+            "Zora River": "True"
         }
     },
     {
         "region_name": "Zora River Plateau Bombable Grotto",
         "locations": {
             "Free Fairies": "has_bottle"
+        },
+        "exits": {
+            "Zora River": "True"
         }
     },
     {
@@ -1688,6 +1772,9 @@
         "locations": {
             "ZR Grotto Deku Scrub Red Potion": "can_stun_deku",
             "ZR Grotto Deku Scrub Green Potion": "can_stun_deku"
+        },
+        "exits": {
+            "Zora River": "True"
         }
     },
     {
@@ -1696,6 +1783,9 @@
             "LH Grotto Deku Scrub Deku Nuts": "can_stun_deku",
             "LH Grotto Deku Scrub Bombs": "can_stun_deku",
             "LH Grotto Deku Scrub Arrows": "can_stun_deku"
+        },
+        "exits": {
+            "Lake Hylia": "True"
         }
     },
     {
@@ -1703,16 +1793,25 @@
         "locations": {
             "Desert Grotto Deku Scrub Red Potion": "can_stun_deku",
             "Desert Grotto Deku Scrub Green Potion": "can_stun_deku"
+        },
+        "exits": {
+            "Desert Colossus": "True"
         }
     },
     {
-        "region_name": "Gerudo Valley Octorok Grotto"
+        "region_name": "Gerudo Valley Octorok Grotto",
+        "exits": {
+            "Gerudo Valley": "True"
+        }
     },
     {
         "region_name": "Gerudo Valley Storms Grotto",
         "locations": {
             "Valley Grotto Deku Scrub Red Potion": "can_stun_deku",
             "Valley Grotto Deku Scrub Green Potion": "can_stun_deku"
+        },
+        "exits": {
+            "Gerudo Valley Far Side": "True"
         }
     }
 ]
