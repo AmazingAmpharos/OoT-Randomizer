@@ -112,6 +112,7 @@ player.
 * Shuffle Gerudo Card can now be enabled alongside Open Gerudo Fortress.
 * Customizable Heart, Magic Meter, and Gauntlet colors.
 * Child may drain Lake Hylia using Gossip Stone.
+* With start with max rupees option, finding wallet upgrade fills the wallet.
 
 #### Bug Fix
 * No longer able to buy bombchus with only bomb bag when bombchus in logic.
