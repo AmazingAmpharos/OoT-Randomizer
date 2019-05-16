@@ -255,7 +255,7 @@ def get_barren_hint(spoiler, world, checked):
     area_weights = [world.empty_areas[area]['weight'] for area in areas]
 
     area = random_choices(areas, weights=area_weights)[0]
-    if world.empty_areas[area]['dungeon']:
+    if world.hint_dist != 'very_strong' and world.empty_areas[area]['dungeon']:
         world.barren_dungeon = True
 
     checked.append(area)
