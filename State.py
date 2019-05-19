@@ -380,7 +380,8 @@ class State(object):
         elif item == 'Golden Gauntlets':
             return self.has('Progressive Strength Upgrade', 3) and self.is_adult()
         elif item == 'Epona':
-            return self.has('Epona') and self.is_adult() and self.can_play('Eponas Song')
+            # Glitched can steal Epona by hovering over the LLR fences instead of using Epona's Song
+            return self.has('Epona') and self.is_adult() and (self.can_play('Eponas Song') or (self.is_glitched and self.can_hover()))
         elif item == 'Scarecrow':
             return self.has('Progressive Hookshot') and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Distant Scarecrow':
