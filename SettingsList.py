@@ -867,6 +867,17 @@ setting_infos = [
         shared         = True,
     ),
     Checkbutton(
+        name           = 'useful_cutscenes',
+        gui_text       = 'Enable Useful Cutscenes',
+        gui_group      = 'convenience',
+        gui_tooltip    = '''\
+            The cutscenes of the Poes in Forest Temple,
+            Darunia in Fire Temple, and the introduction
+            to Twinrova will not be skipped.
+        ''',
+        shared         = True,
+    ),
+    Checkbutton(
         name           = 'fast_chests',
         gui_text       = 'Fast Chest Cutscenes',
         gui_group      = 'convenience',

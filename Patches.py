@@ -857,7 +857,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # Initial Save Data
 
-    save_context.write_bits(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (Poe Sisters cutscene)
+    if not world.useful_cutscenes:
+        save_context.write_bits(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (Poe Sisters cutscene)
     save_context.write_bits(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (Ruto)
     save_context.write_bits(0x00D4 + 0x51 * 0x1C + 0x04 + 0x2, 0x08) # Hyrule Field switch flag (Owl)
     save_context.write_bits(0x00D4 + 0x55 * 0x1C + 0x04 + 0x0, 0x80) # Kokiri Forest switch flag (Owl)
@@ -883,7 +884,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_bits(0x0EF9, 0x01) # "Greeted by Saria"
     save_context.write_bits(0x0F0A, 0x04) # "Spoke to Ingo Once as Adult"
     save_context.write_bits(0x0F0F, 0x40) # "Met Poe Collector in Ruined Market"
-    save_context.write_bits(0x0F1A, 0x04) # "Met Darunia in Fire Temple"
+    if not world.useful_cutscenes:
+        save_context.write_bits(0x0F1A, 0x04) # "Met Darunia in Fire Temple"
 
     save_context.write_bits(0x0ED7, 0x01) # "Spoke to Child Malon at Castle or Market"
     save_context.write_bits(0x0ED7, 0x20) # "Spoke to Child Malon at Ranch"
@@ -897,7 +899,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_bits(0x0EE2, 0x01) # "Began Ganondorf Battle"
     save_context.write_bits(0x0EE3, 0x80) # "Began Bongo Bongo Battle"
     save_context.write_bits(0x0EE3, 0x40) # "Began Barinade Battle"
-    save_context.write_bits(0x0EE3, 0x20) # "Began Twinrova Battle"
+    if not world.useful_cutscenes:
+        save_context.write_bits(0x0EE3, 0x20) # "Began Twinrova Battle"
     save_context.write_bits(0x0EE3, 0x10) # "Began Morpha Battle"
     save_context.write_bits(0x0EE3, 0x08) # "Began Volvagia Battle"
     save_context.write_bits(0x0EE3, 0x04) # "Began Phantom Ganon Battle"
