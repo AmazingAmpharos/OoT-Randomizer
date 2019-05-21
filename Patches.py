@@ -779,8 +779,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         del exit_table[0x0311]
 
         # Change Impa escorts to bring link at the hyrule castle grounds entrance from market, instead of hyrule field
-        copy_entrance_record(0x0138, 0x0594) # After 1st Impa escort (overridden to Hyrule Castle entrance from Market)
-        copy_entrance_record(0x0138, 0x00CD) # After 2nd+ Impa escort (overridden to Hyrule Castle entrance from Market)
+        rom.write_int16(0xACAA2E, 0x0138) # 1st Impa escort
+        rom.write_int16(0xD12D6E, 0x0138) # 2nd+ Impa escort
 
         # Change Getting caught cutscene as adult without hookshot to keep Link inside the Fortress
         copy_entrance_record(0x0129, 0x01A5 + 2, 2) # Thrown out of fortress as adult (overridden to Gerudo Fortress entrance from Valley)
