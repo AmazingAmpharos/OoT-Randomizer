@@ -274,8 +274,8 @@
             "Underwater Bottle": "
                 is_child and
                 (can_dive or 
-                    (child_lake_hylia_control and Lake_Refill and
-                        (Kokiri_Sword or Boomerang or Slingshot or as_adult_here)))",
+                    (child_lake_hylia_control and Lake_Refill and 
+                        (Kokiri_Sword or as_adult_here)))",
             "Lake Hylia Sun": "
                 is_adult and 
                 (can_use(Distant_Scarecrow) or Lake_Refill) and can_use(Bow)",
@@ -298,8 +298,8 @@
             "Zoras Domain": "
                 is_child and
                 (can_dive or 
-                    (child_lake_hylia_control and Lake_Refill and
-                        (Kokiri_Sword or Boomerang or Slingshot or as_adult_here)))",
+                    (child_lake_hylia_control and Lake_Refill and 
+                        (Kokiri_Sword or as_adult_here)))",
             "Lake Hylia Owl Flight": "is_child",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
@@ -420,7 +420,7 @@
             "Gerudo Fortress South F2 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress Carpenter Rescue": "can_finish_GerudoFortress",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
-            "Gerudo Fortress Open Gate": "Carpenter_Rescue",
+            "Gerudo Fortress Open Gate": "is_adult and Carpenter_Rescue",
             "GS Gerudo Fortress Archery Range": "
                 can_use(Hookshot) and Carpenter_Rescue and at_night",
             "GS Gerudo Fortress Top Floor": "
@@ -941,9 +941,9 @@
             "Bug Rock": "has_bottle"
         },
         "exits": {
-            "Shield Grave": "True",
+            "Shield Grave": "is_adult or at_night",
             "Composer Grave": "can_play(Zeldas_Lullaby)",
-            "Heart Piece Grave": "True",
+            "Heart Piece Grave": "is_adult or at_night",
             "Dampes Grave": "is_adult",
             "Dampes House": "is_adult or at_dampe_time",
             "Kakariko Village": "True"
@@ -1393,9 +1393,9 @@
         "scene": "Lon Lon Ranch",
         "hint": "Lon Lon Ranch",
         "locations": {
-            "Epona": "can_play(Eponas_Song) and is_adult",
-            "Malon Race": "can_play(Eponas_Song) and is_adult",
-            "Song from Malon": "is_child and Zeldas_Letter and has_ocarina",
+            "Epona": "can_play(Eponas_Song) and is_adult and at_day",
+            "Malon Race": "can_play(Eponas_Song) and is_adult and at_day",
+            "Song from Malon": "is_child and Zeldas_Letter and has_ocarina and at_day",
             "GS Lon Lon Ranch Tree": "is_child",
             "GS Lon Lon Ranch Rain Shed": "is_child and at_night",
             "GS Lon Lon Ranch House Window": "can_use(Boomerang) and at_night",

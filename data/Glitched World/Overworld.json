@@ -319,7 +319,7 @@
             "Gerudo Fortress South F2 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress Carpenter Rescue": "can_finish_GerudoFortress",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
-            "Gerudo Fortress Open Gate": "Carpenter_Rescue",
+            "Gerudo Fortress Open Gate": "is_adult and Carpenter_Rescue",
             "GS Gerudo Fortress Archery Range": "can_use(Hookshot) and at_night",
             "GS Gerudo Fortress Top Floor": "at_night and is_adult"
         },
