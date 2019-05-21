@@ -1816,7 +1816,8 @@ setting_infos = [
             is played.
 
             'Random': Area background music is
-            randomized.
+            randomized. Additional music can
+            be loaded from data/Music/
         ''',
     ),
     Checkbutton(
