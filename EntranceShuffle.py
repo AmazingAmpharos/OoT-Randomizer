@@ -265,7 +265,7 @@ def shuffle_random_entrances(worlds):
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
     max_playthrough = Playthrough.max_explore([world.state for world in worlds], complete_itempool)
 
-    non_drop_locations = [location for world in worlds for location in world.get_locations() if location.type != 'Drop']
+    non_drop_locations = [location for world in worlds for location in world.get_locations() if location.type not in ('Drop', 'Event')]
     max_playthrough.visit_locations(non_drop_locations)
     locations_to_ensure_reachable = list(filter(max_playthrough.visited, non_drop_locations))
 
@@ -335,14 +335,7 @@ def shuffle_random_entrances(worlds):
                 shuffle_entrance_pool(worlds, [temple_of_time_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
                 shuffle_entrance_pool(worlds, [links_house_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
 
-            if pool_type in ['SpecialInterior', 'Overworld', 'OwlDrop', 'Dungeon']:
-                # Those pools contain entrances leading to regions that might open access to completely new areas
-                # Dungeons are among those because exiting Spirit Temple from the hands is in logic 
-                # and could give access to Desert Colossus and potentially new areas from there
-                shuffle_entrance_pool(worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable)
-            else:
-                # Other pools are only "internal", which means they are leaves in the world graph and can't open new access
-                shuffle_entrance_pool(worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable, internal=True)
+            shuffle_entrance_pool(worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable)
 
             if pool_type == 'OwlDrop':
                 # Delete all unused owl drop targets after placing the entrances, since the unused targets won't ever be replaced
@@ -370,21 +363,34 @@ def shuffle_random_entrances(worlds):
 
 
 # Shuffle all entrances within a provided pool
-def shuffle_entrance_pool(worlds, entrance_pool, target_entrances, locations_to_ensure_reachable, internal=False):
+def shuffle_entrance_pool(worlds, entrance_pool, target_entrances, locations_to_ensure_reachable, retry_count=20):
 
     # Split entrances between those that have requirements (restrictive) and those that do not (soft). These are primarily age or time of day requirements.
     restrictive_entrances, soft_entrances = split_entrances_by_requirements(worlds, entrance_pool, target_entrances)
 
-    # Shuffle restrictive entrances first while more regions are available in order to heavily reduce the chances of the placement failing.
-    shuffle_entrances(worlds, restrictive_entrances, target_entrances, locations_to_ensure_reachable)
+    while retry_count:
+        retry_count -= 1
+        rollbacks = []
 
-    # Shuffle the rest of the entrances
-    if internal:
-        # If we are shuffling an "internal" entrance pool, those entrances can be considered as completely versatile, 
-        # So we don't have to check for beatability and/or reachability of locations when shuffling them
-        shuffle_entrances(worlds, soft_entrances, target_entrances)
-    else:
-        shuffle_entrances(worlds, soft_entrances, target_entrances, locations_to_ensure_reachable)
+        try:
+            # Shuffle restrictive entrances first while more regions are available in order to heavily reduce the chances of the placement failing.
+            shuffle_entrances(worlds, restrictive_entrances, target_entrances, rollbacks, locations_to_ensure_reachable)
+
+            # Shuffle the rest of the entrances, we don't have to check for beatability or reachability of locations when placing those
+            shuffle_entrances(worlds, soft_entrances, target_entrances, rollbacks)
+
+            # If all entrances could be connected without issues, log connections and continue
+            for entrance, target in rollbacks:
+                confirm_replacement(entrance, target)
+            return
+
+        except EntranceShuffleError as error:
+            for entrance, target in rollbacks:
+                restore_connections(entrance, target)
+            logging.getLogger('').info('Failed to place all entrances in a pool for world %d. Will retry %d more times', entrance_pool[0].world.id, retry_count)
+            logging.getLogger('').info('\t%s' % error)
+
+    raise EntranceShuffleError('Entrance placement attempt count exceeded for world %d' % entrance_pool[0].world.id)
 
 
 # Split entrances based on their requirements to figure out how each entrance should be handled when shuffling them
@@ -425,60 +431,43 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
 # Shuffle entrances by placing them instead of entrances in the provided target entrances list
 # While shuffling entrances, the algorithm will ensure worlds are still valid based on multiple criterias
-def shuffle_entrances(worlds, entrances, target_entrances, locations_to_ensure_reachable=[], retry_count=20):
+def shuffle_entrances(worlds, entrances, target_entrances, rollbacks, locations_to_ensure_reachable=[]):
 
     # Retrieve all items in the itempool, all worlds included
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
 
-    for _ in range(retry_count):
-        success = True
-        random.shuffle(entrances)
-        rollbacks = []
+    random.shuffle(entrances)
 
-        # Attempt to place all entrances in the pool, validating worlds during every placement
-        for entrance in entrances:
-            if entrance.connected_region != None:
+    # Place all entrances in the pool, validating worlds during every placement
+    for entrance in entrances:
+        if entrance.connected_region != None:
+            continue
+        random.shuffle(target_entrances)
+
+        for target in target_entrances:
+            if target.connected_region == None:
                 continue
-            random.shuffle(target_entrances)
 
-            for target in target_entrances:
-                if target.connected_region == None:
-                    continue
+            # An entrance shouldn't be connected to its own scene, so we fail in that situation
+            if entrance.parent_region.scene and entrance.parent_region.scene == target.connected_region.scene:
+                logging.getLogger('').debug('Failed to connect %s To %s (Reason: Self scene connections are forbidden) [World %d]',
+                                            entrance, target.connected_region, entrance.world.id)
+                continue
 
-                # An entrance shouldn't be connected to its own scene, so we fail in that situation
-                if entrance.parent_region.scene and entrance.parent_region.scene == target.connected_region.scene:
-                    logging.getLogger('').debug('Failed to connect %s To %s (Reason: Self scene connections are forbidden) [World %d]',
-                                                entrance, target.connected_region, entrance.world.id)
-                    continue
+            change_connections(entrance, target)
 
-                change_connections(entrance, target)
-
-                try:
-                    validate_worlds(worlds, entrance, locations_to_ensure_reachable, complete_itempool)
-                    rollbacks.append((entrance, target))
-                    break
-                except EntranceShuffleError as error:
-                    # If the entrance can't be placed there, log a debug message and change the connections back to what they were previously
-                    logging.getLogger('').debug('Failed to connect %s To %s (Reason: %s) [World %d]',
-                                                entrance, entrance.connected_region, error, entrance.world.id)
-                    restore_connections(entrance, target)
-
-            if entrance.connected_region == None:
-                success = False
+            try:
+                validate_worlds(worlds, entrance, locations_to_ensure_reachable, complete_itempool)
+                rollbacks.append((entrance, target))
                 break
-
-        # Check if all entrances were able to be placed, log connections and continue if that's the case, or rollback everything otherwise
-        if success:
-            for entrance, target in rollbacks:
-                confirm_replacement(entrance, target)
-            return
-        else:
-            for entrance, target in rollbacks:
+            except EntranceShuffleError as error:
+                # If the entrance can't be placed there, log a debug message and change the connections back to what they were previously
+                logging.getLogger('').debug('Failed to connect %s To %s (Reason: %s) [World %d]',
+                                            entrance, entrance.connected_region, error, entrance.world.id)
                 restore_connections(entrance, target)
 
-        logging.getLogger('').debug('Entrance placement attempt failed [World %d]', entrances[0].world.id)
-
-    raise EntranceShuffleError('Entrance placement attempt retry count exceeded [World %d]' % entrances[0].world.id)
+        if entrance.connected_region == None:
+            raise EntranceShuffleError('No more valid entrances to replace with %s in world %d' % (entrance, entrance.world.id))
 
 
 # Validate the provided worlds' structures, raising an error if it's not valid based on our criterias

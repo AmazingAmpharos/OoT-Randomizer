@@ -27,7 +27,7 @@
 "shuffle_gerudo_card": false,
 "shuffle_song_items": false,
 "shuffle_cows": false,
-"entrance_shuffle": "indoors",
+"entrance_shuffle": "all",
 "shuffle_scrubs": "off",
 "shopsanity": "off",
 "tokensanity": "off",
