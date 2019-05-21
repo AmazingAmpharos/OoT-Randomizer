@@ -35,15 +35,24 @@
             "Shadow Temple MQ Near Ship Invisible Chest": "True"
         },
         "exits": {
-            "Shadow Temple Huge Pit": "has_explosives and (Small_Key_Shadow_Temple, 2)"
+            "Shadow Temple Upper Huge Pit": "has_explosives and (Small_Key_Shadow_Temple, 2)"
         }
     },
     {
-        "region_name": "Shadow Temple Huge Pit",
+        "region_name": "Shadow Temple Upper Huge Pit",
         "dungeon": "Shadow Temple",
         "locations": {
             "Shadow Temple MQ Invisible Blades Visible Chest": "can_play(Song_of_Time)",
-            "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time)",
+            "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time)"
+        },
+        "exits": {
+            "Shadow Temple Lower Huge Pit": "has_fire_source"
+        }
+    },
+    {
+        "region_name": "Shadow Temple Lower Huge Pit",
+        "dungeon": "Shadow Temple",
+        "locations": {
             "Shadow Temple MQ Beamos Silver Rupees Chest": "can_use(Longshot)",
             "Shadow Temple MQ Falling Spikes Lower Chest": "True",
             "Shadow Temple MQ Falling Spikes Upper Chest": "Progressive_Strength_Upgrade",
@@ -91,8 +100,10 @@
         "region_name": "Shadow Temple Invisible Maze",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple MQ Spike Walls Left Chest": "(Small_Key_Shadow_Temple, 6)",
-            "Shadow Temple MQ Boss Key Chest": "(Small_Key_Shadow_Temple, 6)",
+            "Shadow Temple MQ Spike Walls Left Chest": "
+                can_use(Dins_Fire) and (Small_Key_Shadow_Temple, 6)",
+            "Shadow Temple MQ Boss Key Chest": "
+                can_use(Dins_Fire) and (Small_Key_Shadow_Temple, 6)",
             "Shadow Temple MQ Bomb Flower Chest": "True",
             "Shadow Temple MQ Freestanding Key": "True"
         }
