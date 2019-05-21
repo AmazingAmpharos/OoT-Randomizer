@@ -873,7 +873,7 @@ setting_infos = [
         gui_tooltip    = '''\
             The cutscenes of the Poes in Forest Temple,
             Darunia in Fire Temple, and the introduction
-            to Twinrova will all play.
+            to Twinrova will not be skipped.
         ''',
         shared         = True,
     ),
