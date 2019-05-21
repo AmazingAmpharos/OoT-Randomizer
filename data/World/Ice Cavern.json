@@ -16,7 +16,7 @@
             "Ice Cavern Compass Chest": "has_blue_fire",
             "Ice Cavern Iron Boots Chest": "has_blue_fire",
             "Ice Cavern Freestanding PoH": "has_blue_fire",
-            "Sheik in Ice Cavern": "has_blue_fire and is_adult",
+            "Sheik in Ice Cavern": "has_blue_fire",
             "GS Ice Cavern Spinning Scythe Room": "can_use(Hookshot) or can_use(Boomerang)",
             "GS Ice Cavern Heart Piece Room": "
                 has_blue_fire and (can_use(Hookshot) or can_use(Boomerang))",
