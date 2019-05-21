@@ -397,7 +397,7 @@ class State(object):
 
 
     def has_bombchus(self):
-        return self.can_buy_bombchus()
+        return self.can_buy_bombchus() and (self.world.bombchus_in_logic or self.has('Bomb Bag'))
 
 
     def has_bombchus_item(self):
@@ -408,7 +408,7 @@ class State(object):
 
 
     def has_explosives(self):
-        return self.has_bombs() or self.has_bombchus()
+        return self.has_bombs() or (self.world.bombchus_in_logic and self.has_bombchus())
 
 
     def can_blast_or_smash(self):
