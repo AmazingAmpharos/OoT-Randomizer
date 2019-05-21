@@ -3,12 +3,13 @@
         "region_name": "Jabu Jabus Belly Beginning",
         "dungeon": "Jabu Jabus Belly",
         "locations": {
-            "Jabu Jabus Belly MQ Map Chest": "has_explosives",
-            "Jabu Jabus Belly MQ Entry Side Chest": "has_slingshot"
+            "Nut Pot": "True",
+            "Jabu Jabus Belly MQ Map Chest": "can_blast_or_smash",
+            "Jabu Jabus Belly MQ Entry Side Chest": "can_use(Slingshot)"
         },
         "exits": {
             "Zoras Fountain": "True",
-            "Jabu Jabus Belly Main": "has_slingshot"
+            "Jabu Jabus Belly Main": "as_child_here(can_use(Slingshot))"
         }
     },
     {
@@ -16,17 +17,19 @@
         "dungeon": "Jabu Jabus Belly",
         "locations": {
             "Jabu Jabus Belly MQ Second Room Lower Chest": "True",
+            "Jabu Jabus Belly MQ Second Room Upper Chest": "
+                (can_use(Hover_Boots) or as_child(can_reach(Jabu_Jabus_Belly_Boss_Area)))",
             "Jabu Jabus Belly MQ Compass Chest": "True",
             "Jabu Jabus Belly MQ Basement South Chest": "True",
             "Jabu Jabus Belly MQ Basement North Chest": "True",
             "Jabu Jabus Belly MQ Boomerang Room Small Chest": "True",
             "MQ Boomerang Chest": "True",
             "GS Jabu Jabu MQ Boomerang Room": "
-                can_play(Song_of_Time) or (logic_jabu_mq_sot_gs and Boomerang)"
+                can_play(Song_of_Time) or (logic_jabu_mq_sot_gs and can_use(Boomerang))"
         },
         "exits": {
             "Jabu Jabus Belly Beginning": "True",
-            "Jabu Jabus Belly Depths": "has_explosives and Boomerang"
+            "Jabu Jabus Belly Depths": "has_explosives and can_use(Boomerang)"
         }
     },
     {
@@ -35,12 +38,13 @@
         "locations": {
             "Jabu Jabus Belly MQ Falling Like Like Room Chest": "True",
             "GS Jabu Jabu MQ Tailpasaran Room": "has_sticks or can_use(Dins_Fire)",
-            "GS Jabu Jabu MQ Invisible Enemies Room": "can_see_with_lens"
+            "GS Jabu Jabu MQ Invisible Enemies Room": "
+                can_see_with_lens or
+                as_adult(can_reach(Jabu_Jabus_Belly_Main) and can_use(Hover_Boots))"
         },
         "exits": {
             "Jabu Jabus Belly Main": "True",
-            "Jabu Jabus Belly Boss Area": "
-                has_sticks or (Kokiri_Sword and can_use(Dins_Fire))"
+            "Jabu Jabus Belly Boss Area": "has_sticks or (can_use(Dins_Fire) and Kokiri_Sword)"
         }
     },
     {
@@ -48,7 +52,6 @@
         "dungeon": "Jabu Jabus Belly",
         "locations": {
             "Jabu Jabus Belly MQ Cow" : "can_play(Eponas_Song)",
-            "Jabu Jabus Belly MQ Second Room Upper Chest": "True",
             "Jabu Jabus Belly MQ Near Boss Chest": "True",
             "Barinade Heart": "True",
             "Barinade": "True",

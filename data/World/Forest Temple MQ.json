@@ -3,34 +3,39 @@
         "region_name": "Forest Temple Lobby",
         "dungeon": "Forest Temple",
         "locations": {
-            #If entrances are shuffled, Adult might lose access to the Kokiri forest
-            #Babas for nuts.  As this is sphere 0 for both ages, this case is covered
-            #by putting the babas here.
-            "Deku Baba Nuts": "True",
-            "Deku Baba Sticks": "True",
-            "Forest Temple MQ First Chest": "True",
-            "GS Forest Temple MQ First Hallway": "True"
+            "Forest Temple MQ First Chest": "
+                is_adult or can_use(Bombs) or can_use(Sticks) or
+                can_use(Dins_Fire) or Kokiri_Sword or can_use(Slingshot)",
+            "GS Forest Temple MQ First Hallway": "can_use(Hookshot) or can_use(Boomerang)"
         },
         "exits": {
             "Sacred Forest Meadow": "True",
-            "Forest Temple Central Area": "(Small_Key_Forest_Temple, 1)"
+            "Forest Temple Central Area": "
+                (Small_Key_Forest_Temple, 1) and (is_adult or can_child_attack or has_nuts)"
         }
     },
     {
         "region_name": "Forest Temple Central Area",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple MQ Chest Behind Lobby": "can_play(Song_of_Time)",
-            "GS Forest Temple MQ Block Push Room": "True"
+            "Forest Temple MQ Chest Behind Lobby": "
+                    (can_play(Song_of_Time) or is_child) and
+                    (is_adult or can_use(Dins_Fire) or
+                     can_use(Sticks) or can_use(Slingshot) or Kokiri_Sword)",
+            "GS Forest Temple MQ Block Push Room": "is_adult or Kokiri_Sword"
         },
         "exits": {
-            "Forest Temple NW Outdoors": "can_use(Bow)",
-            "Forest Temple NE Outdoors": "can_use(Bow)",
+            "Forest Temple NW Outdoors": "can_use(Bow) or can_use(Slingshot)",
+            "Forest Temple NE Outdoors": "can_use(Bow) or can_use(Slingshot)",
+            #End of the road for child
             "Forest Temple After Block Puzzle": "
-                (has_bombchus and logic_forest_mq_block_puzzle) or Progressive_Strength_Upgrade",
+                (is_adult and Progressive_Strength_Upgrade) or
+                (has_bombchus and logic_forest_mq_block_puzzle and can_use(Hookshot))",
             "Forest Temple Outdoor Ledge": "
-                (has_bombchus and logic_forest_mq_block_puzzle) or 
-                Progressive_Strength_Upgrade or can_use(Hover_Boots)",
+                can_use(Hover_Boots) or
+                (can_use(Hookshot) and 
+                 (Progressive_Strength_Upgrade or
+                  (has_bombchus and logic_forest_mq_block_puzzle)))",
             "Forest Temple Boss Region": "
                 Forest_Temple_Jo_and_Beth and Forest_Temple_Amy_and_Meg"
         }
@@ -42,7 +47,8 @@
             "Forest Temple MQ Boss Key Chest": "(Small_Key_Forest_Temple, 3)"
         },
         "exits": {
-            "Forest Temple Bow Region": "(Small_Key_Forest_Temple, 4)"
+            "Forest Temple Bow Region": "(Small_Key_Forest_Temple, 4)",
+            "Forest Temple Outdoor Ledge": "(Small_Key_Forest_Temple, 3)"
         }
     },
     {
@@ -72,14 +78,20 @@
         "region_name": "Forest Temple NE Outdoors",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple MQ Well Chest": "can_use(Bow)",
-            "GS Forest Temple MQ Outdoor East": "True",
-            "GS Forest Temple MQ Well": "can_use(Iron_Boots) or can_use(Bow)"
+            "Forest Temple MQ Well Chest": "can_use(Bow) or can_use(Slingshot)",
+            "GS Forest Temple MQ Outdoor East": "can_use(Hookshot) or can_use(Boomerang)",
+            "GS Forest Temple MQ Well": "
+                (can_use(Iron_Boots) and can_use(Hookshot)) or can_use(Bow) or can_use(Slingshot)",
+            "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
+            "Deku Baba Nuts": "
+                is_adult or has_slingshot or has_sticks or 
+                has_explosives or Kokiri_Sword or can_use(Dins_Fire)"
         },
         "exits": {
             "Forest Temple Outdoors Top Ledges": "
-                can_use(Longshot) or can_use(Hover_Boots) or can_play(Song_of_Time) or 
-                (logic_forest_vines and can_use(Hookshot))",
+                can_use(Hookshot) and 
+                (can_use(Longshot) or can_use(Hover_Boots) or can_play(Song_of_Time) or 
+                 logic_forest_vines)",
             "Forest Temple NE Outdoors Ledge": "can_use(Longshot)"
         }
     },

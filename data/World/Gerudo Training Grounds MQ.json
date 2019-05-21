@@ -12,18 +12,19 @@
         },
         "exits": {
             "Gerudo Fortress": "True",
-            "Gerudo Training Grounds Left Side": "has_fire_source",
-            "Gerudo Training Grounds Right Side": "has_bow"
+            "Gerudo Training Grounds Left Side": "as_either_here(has_fire_source)",
+            "Gerudo Training Grounds Right Side": "
+                as_either_here(can_use(Bow) or can_use(Slingshot))"
         }
     },
     {
         "region_name": "Gerudo Training Grounds Right Side",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds MQ Dinolfos Chest": "True",
+            "Gerudo Training Grounds MQ Dinolfos Chest": "is_adult",
             "Gerudo Training Grounds MQ Underwater Silver Rupee Chest": "
-                (Hover_Boots or (can_reach(Gerudo_Training_Grounds_Central_Maze_Right) and (can_use(Longshot) or has_bow))) and 
-                has_fire_source and Iron_Boots and (logic_fewer_tunic_requirements or can_use(Zora_Tunic)) and 
+                (can_use(Hover_Boots) or (can_reach(Gerudo_Training_Grounds_Central_Maze_Right) and (can_use(Longshot) or has_bow))) and 
+                has_fire_source and can_use(Iron_Boots) and (logic_fewer_tunic_requirements or can_use(Zora_Tunic)) and 
                 (damage_multiplier != 'ohko' or (has_fairy or can_use(Nayrus_Love)))"
         }
     },
@@ -31,9 +32,11 @@
         "region_name": "Gerudo Training Grounds Left Side",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds MQ First Iron Knuckle Chest": "True"
+            "Gerudo Training Grounds MQ First Iron Knuckle Chest": "is_adult or Kokiri_Sword or has_explosives"
         },
         "exits": {
+            #Child cloud progress here after adult opens the door, but child logically
+            #inferior to adult so just keep child out for simplicity
             "Gerudo Training Grounds Stalfos Room": "can_use(Longshot) or (logic_gtg_mq_with_hookshot and can_use(Hookshot))"
         }
     },
