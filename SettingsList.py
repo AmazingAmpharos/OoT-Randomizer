@@ -929,7 +929,7 @@ setting_infos = [
         gui_text       = 'Start with Max Rupees',
         gui_group      = 'convenience',
         gui_tooltip    = '''\
-            Start the game with 99 rupees.
+            Start the game with 99 rupees. Wallet upgrades fill wallet.
         ''',
         shared         = True,
     ),
