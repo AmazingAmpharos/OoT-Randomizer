@@ -892,6 +892,19 @@ skip_GS_BGS_text:
 .org 0xDCBF9C
     lui     at, 0x4230
 
+; Remove most fish loss branches
+.orga 0xDC87A0
+    nop
+.orga 0xDC87BC
+    nop
+.orga 0xDC87CC
+    nop
+
+; Prevent RNG fish loss
+; Replaces: addiu   at, zero, 0x0002
+.orga 0xDC8828
+    move    at, t5
+
 ;==================================================================================================
 ; Bombchus In Logic Hooks
 ;==================================================================================================
