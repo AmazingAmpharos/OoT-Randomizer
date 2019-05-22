@@ -1123,12 +1123,12 @@ setting_infos = [
             Bottom of the Well are opened for both adult and child.
 
             'Simple Indoors':
-            Shuffle dungeon entrances along with Grottos and simple
+            Shuffle dungeon entrances along with simple Grotto and
             Interior entrances (i.e. most Houses and Great Fairies).
 
             'All Indoors':
             Extended version of 'Simple Indoors' with some extra entrances:
-            Windmill, Link's House and Temple of Time.
+            Windmill, Link's House, Temple of Time and Dampe's Grave.
 
             'All Indoors & Overworld':
             Same as 'All Indoors' but with Overworld loading zones shuffled

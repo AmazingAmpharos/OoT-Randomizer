@@ -1265,3 +1265,18 @@ skip_GS_BGS_text:
 ;           addiu   a1, a1, -0x6B90
 .org 0xB2E854
     lw      a1, 0x8000B198
+
+; ==================================================================================================
+; Handle grottos shuffled with other entrances
+; ==================================================================================================
+; Replaces: lui     at, 1
+;           addu    at, at, a3
+.orga 0xCF73C8
+    jal     grotto_entrance
+    lui     at, 1
+
+; Replaces: addu    at, at, a3
+;           sh      t6, 0x1E1A(at)
+.orga 0xBD4C58
+    jal     scene_exit_hook
+    addu    at, at, a3

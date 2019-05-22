@@ -39,8 +39,8 @@ def assume_pool_reachable(world, entrance_pool):
         assumed_forward = entrance.assume_reachable()
         if entrance.reverse != None:
             assumed_return = entrance.reverse.assume_reachable()
-            if entrance.type in ['Dungeon', 'Interior', 'Grotto']:
-                # Dungeon, Grotto and Simple Interior exits shouldn't be assumed to be able to give access to their parent region
+            if entrance.type in ('Dungeon', 'Interior', 'Grotto', 'Grave', 'SpecialGrave'):
+                # Dungeon, Grotto/Grave and Simple Interior exits shouldn't be assumed to be able to give access to their parent region
                 assumed_return.access_rule = lambda state: False
             assumed_forward.bind_two_way(assumed_return)
         assumed_pool.append(assumed_forward)
@@ -151,39 +151,82 @@ entrance_shuffle_table = [
     ('SpecialInterior', ('Kakariko Village -> Windmill',                                    { 'index': 0x0453 }),
                         ('Windmill -> Kakariko Village',                                    { 'index': 0x0351 })),
 
-    ('Grotto',          ('Desert Colossus -> Desert Colossus Grotto',                       { 'scene': 0x5C, 'grotto_var': 0x00FD })),
-    ('Grotto',          ('Lake Hylia -> Lake Hylia Grotto',                                 { 'scene': 0x57, 'grotto_var': 0x00EF })),
-    ('Grotto',          ('Zora River -> Zora River Storms Grotto',                          { 'scene': 0x54, 'grotto_var': 0x01EB })),
-    ('Grotto',          ('Zora River -> Zora River Plateau Bombable Grotto',                { 'scene': 0x54, 'grotto_var': 0x10E6 })),
-    ('Grotto',          ('Zora River -> Zora River Plateau Open Grotto',                    { 'scene': 0x54, 'grotto_var': 0x0029 })),
-    ('Grotto',          ('Death Mountain Crater Lower -> DMC Hammer Grotto',                { 'scene': 0x61, 'grotto_var': 0x00F9 })),
-    ('Grotto',          ('Death Mountain Crater Upper -> Top of Crater Grotto',             { 'scene': 0x61, 'grotto_var': 0x007A })),
-    ('Grotto',          ('Goron City -> Goron City Grotto',                                 { 'scene': 0x62, 'grotto_var': 0x00FB })),
-    ('Grotto',          ('Death Mountain -> Mountain Storms Grotto',                        { 'scene': 0x60, 'grotto_var': 0x0157 })),
-    ('Grotto',          ('Death Mountain -> Mountain Bombable Grotto',                      { 'scene': 0x60, 'grotto_var': 0x00F8 })),
-    ('Grotto',          ('Kakariko Village -> Kakariko Back Grotto',                        { 'scene': 0x52, 'grotto_var': 0x0028 })),
-    ('Grotto',          ('Kakariko Village -> Kakariko Bombable Grotto',                    { 'scene': 0x52, 'grotto_var': 0x02E7 })),
-    ('Grotto',          ('Hyrule Castle Grounds -> Castle Storms Grotto',                   { 'scene': 0x5F, 'grotto_var': 0x01F6 })),
-    ('Grotto',          ('Hyrule Field -> Field North Lon Lon Grotto',                      { 'scene': 0x51, 'grotto_var': 0x02E1 })),
-    ('Grotto',          ('Hyrule Field -> Field Kakariko Grotto',                           { 'scene': 0x51, 'grotto_var': 0x02E5 })),
-    ('Grotto',          ('Hyrule Field -> Field Far West Castle Town Grotto',               { 'scene': 0x51, 'grotto_var': 0x10FF })),
-    ('Grotto',          ('Hyrule Field -> Field West Castle Town Grotto',                   { 'scene': 0x51, 'grotto_var': 0x0000 })),
-    ('Grotto',          ('Hyrule Field -> Field Valley Grotto',                             { 'scene': 0x51, 'grotto_var': 0x02E4 })),
-    ('Grotto',          ('Hyrule Field -> Field Near Lake Inside Fence Grotto',             { 'scene': 0x51, 'grotto_var': 0x02E6 })),
-    ('Grotto',          ('Hyrule Field -> Field Near Lake Outside Fence Grotto',            { 'scene': 0x51, 'grotto_var': 0x0003 })),
-    ('Grotto',          ('Hyrule Field -> Remote Southern Grotto',                          { 'scene': 0x51, 'grotto_var': 0x0022 })),
-    ('Grotto',          ('Lon Lon Ranch -> Lon Lon Grotto',                                 { 'scene': 0x63, 'grotto_var': 0x00FC })),
-    ('Grotto',          ('Sacred Forest Meadow Entryway -> Front of Meadow Grotto',         { 'scene': 0x56, 'grotto_var': 0x02ED })),
-    ('Grotto',          ('Sacred Forest Meadow -> Meadow Storms Grotto',                    { 'scene': 0x56, 'grotto_var': 0x01EE })),
-    ('Grotto',          ('Sacred Forest Meadow -> Meadow Fairy Grotto',                     { 'scene': 0x56, 'grotto_var': 0x10FF })),
-    ('Grotto',          ('Lost Woods Beyond Mido -> Lost Woods Sales Grotto',               { 'scene': 0x5B, 'grotto_var': 0x00F5 })),
-    ('Grotto',          ('Lost Woods -> Lost Woods Generic Grotto',                         { 'scene': 0x5B, 'grotto_var': 0x0014 })),
-    ('Grotto',          ('Kokiri Forest -> Kokiri Forest Storms Grotto',                    { 'scene': 0x55, 'grotto_var': 0x012C })),
-    ('Grotto',          ('Zoras Domain -> Zoras Domain Storms Grotto',                      { 'scene': 0x58, 'grotto_var': 0x11FF })),
-    ('Grotto',          ('Gerudo Fortress -> Gerudo Fortress Storms Grotto',                { 'scene': 0x5D, 'grotto_var': 0x11FF })),
-    ('Grotto',          ('Gerudo Valley Far Side -> Gerudo Valley Storms Grotto',           { 'scene': 0x5A, 'grotto_var': 0x01F0 })),
-    ('Grotto',          ('Gerudo Valley -> Gerudo Valley Octorok Grotto',                   { 'scene': 0x5A, 'grotto_var': 0x00F2 })),
-    ('Grotto',          ('Lost Woods Beyond Mido -> Deku Theater',                          { 'scene': 0x5B, 'grotto_var': 0x00F3 })),
+    ('Grotto',          ('Desert Colossus -> Desert Colossus Grotto',                       { 'grotto_id': 0x00, 'entrance': 0x05BC, 'content': 0xFD, 'scene': 0x5C }),
+                        ('Desert Colossus Grotto -> Desert Colossus',                       { 'grotto_id': 0x00 })),
+    ('Grotto',          ('Lake Hylia -> Lake Hylia Grotto',                                 { 'grotto_id': 0x01, 'entrance': 0x05A4, 'content': 0xEF, 'scene': 0x57 }),
+                        ('Lake Hylia Grotto -> Lake Hylia',                                 { 'grotto_id': 0x01 })),
+    ('Grotto',          ('Zora River -> Zora River Storms Grotto',                          { 'grotto_id': 0x02, 'entrance': 0x05BC, 'content': 0xEB, 'scene': 0x54 }),
+                        ('Zora River Storms Grotto -> Zora River',                          { 'grotto_id': 0x02 })),
+    ('Grotto',          ('Zora River -> Zora River Plateau Bombable Grotto',                { 'grotto_id': 0x03, 'entrance': 0x036D, 'content': 0xE6, 'scene': 0x54 }),
+                        ('Zora River Plateau Bombable Grotto -> Zora River',                { 'grotto_id': 0x03 })),
+    ('Grotto',          ('Zora River -> Zora River Plateau Open Grotto',                    { 'grotto_id': 0x04, 'entrance': 0x003F, 'content': 0x29, 'scene': 0x54 }),
+                        ('Zora River Plateau Open Grotto -> Zora River',                    { 'grotto_id': 0x04 })),
+    ('Grotto',          ('Death Mountain Crater Lower -> DMC Hammer Grotto',                { 'grotto_id': 0x05, 'entrance': 0x05A4, 'content': 0xF9, 'scene': 0x61 }),
+                        ('DMC Hammer Grotto -> Death Mountain Crater Lower',                { 'grotto_id': 0x05 })),
+    ('Grotto',          ('Death Mountain Crater Upper -> Top of Crater Grotto',             { 'grotto_id': 0x06, 'entrance': 0x003F, 'content': 0x7A, 'scene': 0x61 }),
+                        ('Top of Crater Grotto -> Death Mountain Crater Upper',             { 'grotto_id': 0x06 })),
+    ('Grotto',          ('Goron City -> Goron City Grotto',                                 { 'grotto_id': 0x07, 'entrance': 0x05A4, 'content': 0xFB, 'scene': 0x62 }),
+                        ('Goron City Grotto -> Goron City',                                 { 'grotto_id': 0x07 })),
+    ('Grotto',          ('Death Mountain -> Mountain Storms Grotto',                        { 'grotto_id': 0x08, 'entrance': 0x003F, 'content': 0x57, 'scene': 0x60 }),
+                        ('Mountain Storms Grotto -> Death Mountain',                        { 'grotto_id': 0x08 })),
+    ('Grotto',          ('Death Mountain -> Mountain Bombable Grotto',                      { 'grotto_id': 0x09, 'entrance': 0x05FC, 'content': 0xF8, 'scene': 0x60 }),
+                        ('Mountain Bombable Grotto -> Death Mountain',                      { 'grotto_id': 0x09 })),
+    ('Grotto',          ('Kakariko Village -> Kakariko Back Grotto',                        { 'grotto_id': 0x0A, 'entrance': 0x003F, 'content': 0x28, 'scene': 0x52 }),
+                        ('Kakariko Back Grotto -> Kakariko Village',                        { 'grotto_id': 0x0A })),
+    ('Grotto',          ('Kakariko Village -> Kakariko Bombable Grotto',                    { 'grotto_id': 0x0B, 'entrance': 0x05A0, 'content': 0xE7, 'scene': 0x52 }),
+                        ('Kakariko Bombable Grotto -> Kakariko Village',                    { 'grotto_id': 0x0B })),
+    ('Grotto',          ('Hyrule Castle Grounds -> Castle Storms Grotto',                   { 'grotto_id': 0x0C, 'entrance': 0x05B8, 'content': 0xF6, 'scene': 0x5F }),
+                        ('Castle Storms Grotto -> Hyrule Castle Grounds',                   { 'grotto_id': 0x0C })),
+    ('Grotto',          ('Hyrule Field -> Field North Lon Lon Grotto',                      { 'grotto_id': 0x0D, 'entrance': 0x05C0, 'content': 0xE1, 'scene': 0x51 }),
+                        ('Field North Lon Lon Grotto -> Hyrule Field',                      { 'grotto_id': 0x0D })),
+    ('Grotto',          ('Hyrule Field -> Field Kakariko Grotto',                           { 'grotto_id': 0x0E, 'entrance': 0x0598, 'content': 0xE5, 'scene': 0x51 }),
+                        ('Field Kakariko Grotto -> Hyrule Field',                           { 'grotto_id': 0x0E })),
+    ('Grotto',          ('Hyrule Field -> Field Far West Castle Town Grotto',               { 'grotto_id': 0x0F, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x51 }),
+                        ('Field Far West Castle Town Grotto -> Hyrule Field',               { 'grotto_id': 0x0F })),
+    ('Grotto',          ('Hyrule Field -> Field West Castle Town Grotto',                   { 'grotto_id': 0x10, 'entrance': 0x003F, 'content': 0x00, 'scene': 0x51 }),
+                        ('Field West Castle Town Grotto -> Hyrule Field',                   { 'grotto_id': 0x10 })),
+    ('Grotto',          ('Hyrule Field -> Field Valley Grotto',                             { 'grotto_id': 0x11, 'entrance': 0x05A8, 'content': 0xE4, 'scene': 0x51 }),
+                        ('Field Valley Grotto -> Hyrule Field',                             { 'grotto_id': 0x11 })),
+    ('Grotto',          ('Hyrule Field -> Field Near Lake Inside Fence Grotto',             { 'grotto_id': 0x12, 'entrance': 0x059C, 'content': 0xE6, 'scene': 0x51 }),
+                        ('Field Near Lake Inside Fence Grotto -> Hyrule Field',             { 'grotto_id': 0x12 })),
+    ('Grotto',          ('Hyrule Field -> Field Near Lake Outside Fence Grotto',            { 'grotto_id': 0x13, 'entrance': 0x003F, 'content': 0x03, 'scene': 0x51 }),
+                        ('Field Near Lake Outside Fence Grotto -> Hyrule Field',            { 'grotto_id': 0x13 })),
+    ('Grotto',          ('Hyrule Field -> Remote Southern Grotto',                          { 'grotto_id': 0x14, 'entrance': 0x003F, 'content': 0x22, 'scene': 0x51 }),
+                        ('Remote Southern Grotto -> Hyrule Field',                          { 'grotto_id': 0x14 })),
+    ('Grotto',          ('Lon Lon Ranch -> Lon Lon Grotto',                                 { 'grotto_id': 0x15, 'entrance': 0x05A4, 'content': 0xFC, 'scene': 0x63 }),
+                        ('Lon Lon Grotto -> Lon Lon Ranch',                                 { 'grotto_id': 0x15 })),
+    ('Grotto',          ('Sacred Forest Meadow Entryway -> Front of Meadow Grotto',         { 'grotto_id': 0x16, 'entrance': 0x05B4, 'content': 0xED, 'scene': 0x56 }),
+                        ('Front of Meadow Grotto -> Sacred Forest Meadow Entryway',         { 'grotto_id': 0x16 })),
+    ('Grotto',          ('Sacred Forest Meadow -> Meadow Storms Grotto',                    { 'grotto_id': 0x17, 'entrance': 0x05BC, 'content': 0xEE, 'scene': 0x56 }),
+                        ('Meadow Storms Grotto -> Sacred Forest Meadow',                    { 'grotto_id': 0x17 })),
+    ('Grotto',          ('Sacred Forest Meadow -> Meadow Fairy Grotto',                     { 'grotto_id': 0x18, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x56 }),
+                        ('Meadow Fairy Grotto -> Sacred Forest Meadow',                     { 'grotto_id': 0x18 })),
+    ('Grotto',          ('Lost Woods Beyond Mido -> Lost Woods Sales Grotto',               { 'grotto_id': 0x19, 'entrance': 0x05B0, 'content': 0xF5, 'scene': 0x5B }),
+                        ('Lost Woods Sales Grotto -> Lost Woods Beyond Mido',               { 'grotto_id': 0x19 })),
+    ('Grotto',          ('Lost Woods -> Lost Woods Generic Grotto',                         { 'grotto_id': 0x1A, 'entrance': 0x003F, 'content': 0x14, 'scene': 0x5B }),
+                        ('Lost Woods Generic Grotto -> Lost Woods',                         { 'grotto_id': 0x1A })),
+    ('Grotto',          ('Kokiri Forest -> Kokiri Forest Storms Grotto',                    { 'grotto_id': 0x1B, 'entrance': 0x003F, 'content': 0x2C, 'scene': 0x55 }),
+                        ('Kokiri Forest Storms Grotto -> Kokiri Forest',                    { 'grotto_id': 0x1B })),
+    ('Grotto',          ('Zoras Domain -> Zoras Domain Storms Grotto',                      { 'grotto_id': 0x1C, 'entrance': 0x05BC, 'content': 0xFF, 'scene': 0x58 }),
+                        ('Zoras Domain Storms Grotto -> Zoras Domain',                      { 'grotto_id': 0x1C })),
+    ('Grotto',          ('Gerudo Fortress -> Gerudo Fortress Storms Grotto',                { 'grotto_id': 0x1D, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x5D }),
+                        ('Gerudo Fortress Storms Grotto -> Gerudo Fortress',                { 'grotto_id': 0x1D })),
+    ('Grotto',          ('Gerudo Valley Far Side -> Gerudo Valley Storms Grotto',           { 'grotto_id': 0x1E, 'entrance': 0x05BC, 'content': 0xF0, 'scene': 0x5A }),
+                        ('Gerudo Valley Storms Grotto -> Gerudo Valley Far Side',           { 'grotto_id': 0x1E })),
+    ('Grotto',          ('Gerudo Valley -> Gerudo Valley Octorok Grotto',                   { 'grotto_id': 0x1F, 'entrance': 0x05AC, 'content': 0xF2, 'scene': 0x5A }),
+                        ('Gerudo Valley Octorok Grotto -> Gerudo Valley',                   { 'grotto_id': 0x1F })),
+    ('Grotto',          ('Lost Woods Beyond Mido -> Deku Theater',                          { 'grotto_id': 0x20, 'entrance': 0x05C4, 'content': 0xF3, 'scene': 0x5B }),
+                        ('Deku Theater -> Lost Woods Beyond Mido',                          { 'grotto_id': 0x20 })),
+
+    ('Grave',           ('Graveyard -> Shield Grave',                                       { 'index': 0x004B }),
+                        ('Shield Grave -> Graveyard',                                       { 'index': 0x035D })),
+    ('Grave',           ('Graveyard -> Heart Piece Grave',                                  { 'index': 0x031C }),
+                        ('Heart Piece Grave -> Graveyard',                                  { 'index': 0x0361 })),
+    ('Grave',           ('Graveyard -> Composer Grave',                                     { 'index': 0x002D }),
+                        ('Composer Grave -> Graveyard',                                     { 'index': 0x050B })),
+
+    ('SpecialGrave',    ('Graveyard -> Dampes Grave',                                       { 'index': 0x044F }),
+                        ('Dampes Grave -> Graveyard',                                       { 'index': 0x0359 })),
 
     ('Overworld',       ('Kokiri Forest -> Lost Woods Bridge From Forest',                  { 'index': 0x05E0 }),
                         ('Lost Woods Bridge -> Kokiri Forest',                              { 'index': 0x020D })),
@@ -275,7 +318,7 @@ def shuffle_random_entrances(worlds):
         # Determine entrance pools based on settings, to be shuffled in the order we set them by
         entrance_pools = OrderedDict()
 
-        if worlds[0].shuffle_special_interior_entrances:
+        if worlds[0].shuffle_special_indoor_entrances:
             entrance_pools['SpecialInterior'] = entrance_instances(world, get_entrance_pool('SpecialInterior'))
 
         if worlds[0].shuffle_overworld_entrances:
@@ -298,7 +341,9 @@ def shuffle_random_entrances(worlds):
             entrance_pools['Interior'] = entrance_instances(world, get_entrance_pool('Interior')) + entrance_pools.get('SpecialInterior', [])
 
         if worlds[0].shuffle_grotto_entrances:
-            entrance_pools['Grotto'] = entrance_instances(world, get_entrance_pool('Grotto'))
+            entrance_pools['GrottoGrave'] = entrance_instances(world, get_entrance_pool('Grotto') + get_entrance_pool('Grave'))
+            if worlds[0].shuffle_special_indoor_entrances:
+                entrance_pools['GrottoGrave'] += entrance_instances(world, get_entrance_pool('SpecialGrave'))
 
         # Set the assumption that all entrances are reachable
         target_entrance_pools = {}
@@ -485,7 +530,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
                 if not max_playthrough.visited(location):
                     raise EntranceShuffleError('%s is unreachable' % location.name)
 
-    if (entrance_placed == None and worlds[0].shuffle_special_interior_entrances) or \
+    if (entrance_placed == None and worlds[0].shuffle_special_indoor_entrances) or \
        (entrance_placed != None and entrance_placed.type in ['SpecialInterior', 'Overworld']):
         if max_playthrough == None:
             max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
