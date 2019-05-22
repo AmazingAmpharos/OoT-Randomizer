@@ -531,6 +531,8 @@ def buildGossipHints(spoiler, world):
 
     hint_types = list(hint_types)
     hint_prob  = list(hint_prob)
+    hint_counts = {}
+
     if world.hint_dist == "tournament":
         fixed_hint_types = []
         for hint_type in hint_types:
@@ -544,7 +546,21 @@ def buildGossipHints(spoiler, world):
                 hint_type = 'random'
         else:
             try:
-                hint_type = random_choices(hint_types, weights=hint_prob)[0]
+                # Weight the probabilities such that hints that are over the expected proportion
+                # will be drawn less, and hints that are under will be drawn more.
+                # This tightens the variance quite a bit. The variance can be adjusted via the power
+                weighted_hint_prob = []
+                for w1_type, w1_prob in zip(hint_types, hint_prob):
+                    p = w1_prob
+                    if p != 0: # If the base prob is 0, then it's 0
+                        for w2_type, w2_prob in zip(hint_types, hint_prob):
+                            if w2_prob != 0: # If the other prob is 0, then it has no effect
+                                # Raising this term to a power greater than 1 will decrease variance
+                                # Conversely, a power less than 1 will increase variance
+                                p = p * (((hint_counts.get(w2_type, 0) / w2_prob) + 1) / ((hint_counts.get(w1_type, 0) / w1_prob) + 1))
+                    weighted_hint_prob.append(p)
+
+                hint_type = random_choices(hint_types, weights=weighted_hint_prob)[0]
             except IndexError:
                 raise Exception('Not enough valid hints to fill gossip stone locations.')
 
@@ -558,6 +574,8 @@ def buildGossipHints(spoiler, world):
         else:
             gossip_text, location = hint
             place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, hint_dist[hint_type][1], location)
+            if place_ok:
+                hint_counts[hint_type] = hint_counts.get(hint_type, 0) + 1
             if not place_ok and world.hint_dist == "tournament":
                 fixed_hint_types.insert(0, hint_type)
 
