@@ -892,6 +892,13 @@ skip_GS_BGS_text:
 .org 0xDCBF9C
     lui     at, 0x4230
 
+; Fish bite guaranteed when the hook is stable
+; Replaces: lwc1    f10, 0x0198(s0)
+;           mul.s   f4, f10, f2
+.orga 0xDC7090
+    jal     fishing_bite_when_stable
+    lwc1    f10, 0x0198(s0)
+
 ; Remove most fish loss branches
 .orga 0xDC87A0
     nop
