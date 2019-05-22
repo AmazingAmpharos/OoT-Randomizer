@@ -248,6 +248,11 @@ class Settings:
             if info.name not in self.__dict__:
                 self.__dict__[info.name] = info.default
 
+        if self.world_count < 1:
+            self.world_count = 1
+        if self.world_count > 255:
+            self.world_count = 255
+
         self.settings_string = self.get_settings_string()
         self.distribution = Distribution(self)
         self.update_seed(self.seed)
