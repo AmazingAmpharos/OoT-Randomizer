@@ -259,9 +259,9 @@ player.
   * Gerudo's Fortress
   * Zora's River
   * Red Rupee
-  * Textbox about Dampe's grave
+  * Textbox about Dampé's grave
 * "Ganon's Tower" is now just "Ganon's Castle"
-* Dampe's Gravediggin reward correctly flags collection on pickup
+* Dampé's Gravediggin reward correctly flags collection on pickup
 * Castle Moat Bridge no longer closes when playing the Zelda Escape cutscene
 * Various logic fixes
 
