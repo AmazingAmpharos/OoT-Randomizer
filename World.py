@@ -144,8 +144,9 @@ class World(object):
                 for location, rule in region['locations'].items():
                     new_location = LocationFactory(location)
                     new_location.parent_region = new_region
+                    new_location.rule_string = rule
                     if self.logic_rules != 'none':
-                        new_location.access_rule = self.parser.parse_rule_string(rule)
+                        self.parser.parse_spot_rule(new_location)
                     new_location.world = self
                     new_region.locations.append(new_location)
             if 'events' in region:
@@ -153,8 +154,9 @@ class World(object):
                     # Allow duplicate placement of events
                     lname = '%s from %s' % (event, new_region.name)
                     new_location = Location(lname, type='Event', parent=new_region)
+                    new_location.rule_string = rule
                     if self.logic_rules != 'none':
-                        new_location.access_rule = self.parser.parse_rule_string(rule)
+                        self.parser.parse_spot_rule(new_location)
                     new_location.world = self
                     new_region.locations.append(new_location)
                     iname = event
@@ -169,13 +171,15 @@ class World(object):
                 for exit, rule in region['exits'].items():
                     new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)
                     new_exit.connected_region = exit
+                    new_exit.rule_string = rule
                     if self.logic_rules != 'none':
-                        new_exit.access_rule = self.parser.parse_rule_string(rule)
+                        self.parser.parse_spot_rule(new_exit)
                     new_region.exits.append(new_exit)
             self.regions.append(new_region)
 
 
-    def check_event_items(self):
+    def create_internal_locations(self):
+        self.parser.create_delayed_rules()
         assert self.parser.events <= self.event_items, 'Parse error: undefined items %r' % (self.parser.events - self.event_items)
 
 

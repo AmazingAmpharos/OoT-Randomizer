@@ -132,7 +132,7 @@ def generate(settings, window):
         world.load_regions_from_json(overworld_data)
 
         create_dungeons(world)
-        world.check_event_items()
+        world.create_internal_locations()
 
         if settings.shopsanity != 'off':
             world.random_shop_prices()
@@ -594,7 +594,7 @@ def create_playthrough(spoiler):
             # collect only the internal events but don't record them in a sphere
             for location in internal:
                 state_list[location.item.world.id].collect(location.item)
-            # Remaining locations need to be saved
+            # Remaining locations need to be saved to be collected later
             collected -= internal
             continue
         # Gather the new entrances before collecting items.

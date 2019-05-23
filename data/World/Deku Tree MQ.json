@@ -20,7 +20,7 @@
                 as_either_here(has_fire_source_with_torch or can_use(Bow))",
             "Deku Tree Basement Water Room": "
                 as_either_here(can_use(Slingshot) or can_use(Bow)) and has_fire_source_with_torch",
-            "Deku Tree Basement Ledge": "as_adult_here(True)"
+            "Deku Tree Basement Ledge": "as_adult_here()"
         }
     },
     {
@@ -30,7 +30,7 @@
             "Deku Tree MQ Compass Chest": "True",
             "GS Deku Tree MQ Compass Room": "
                 (can_use(Hookshot) or can_use(Boomerang)) and
-                (has_bombchus or (has_bombs and (as_adult_here(True) or can_play(Song_of_Time))))"
+                (has_bombchus or (has_bombs and (as_adult_here() or can_play(Song_of_Time))))"
         },
         "exits": {
             "Deku Tree Lobby": "True"

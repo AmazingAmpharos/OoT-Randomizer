@@ -1,7 +1,12 @@
 import ast
-from ItemList import item_table
-from State import State
+from collections import defaultdict
+import logging
 import re
+
+from Item import ItemFactory
+from ItemList import item_table
+from Location import Location
+from State import State
 
 
 escaped_items = {}
@@ -10,8 +15,15 @@ for item in item_table:
 
 event_name = re.compile(r'\w+')
 
-lambda_methods = ['as_either', 'as_both', 'as_adult', 'as_child', 
-                  'as_either_here', 'as_both_here', 'as_adult_here', 'as_child_here']
+# There's no difference between as_age and as_age_here.
+age_subrules = {
+    'as_either': None,
+    'as_adult': 'is_adult',
+    'as_child': 'is_child',
+    'as_either_here': None,
+    'as_adult_here': 'is_adult',
+    'as_child_here': 'is_child',
+}
 
 
 class Rule_AST_Transformer(ast.NodeTransformer):
@@ -19,6 +31,10 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     def __init__(self, world):
         self.world = world
         self.events = set()
+        # map Region -> rule ast string -> item name
+        self.replaced_rules = defaultdict(dict)
+        # delayed rules need to keep: region name, ast node, event name
+        self.delayed_rules = []
 
 
     def visit_Name(self, node):
@@ -46,7 +62,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                     ctx=ast.Load()),
                 args=[],
                 keywords=[])
-        elif event_name.match(node.id) and node.id[0].isupper():
+        elif event_name.match(node.id):
             self.events.add(node.id.replace('_', ' '))
             return ast.Call(
                 func=ast.Attribute(
@@ -99,14 +115,10 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     def visit_Call(self, node):
-        if node.func.id in lambda_methods and len(node.args) > 0:
-            node.args = [ast.Lambda(
-                args=ast.arguments(
-                    args=[ast.arg(arg='state')],
-                    defaults=[],
-                    kwonlyargs=[], 
-                    kw_defaults=[]),
-                body=node.args[0])]
+        if node.func.id in age_subrules:
+            return self.replace_subrule(node, self.current_spot.parent_region.name)
+        elif node.func.id in dir(self):
+            return getattr(self, node.func.id)(node)
 
         new_args = []
         for child in node.args:
@@ -168,15 +180,111 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         return node
 
 
-    def parse_rule_string(self, rule):
-        if rule is None:
-            return lambda state: True
+    def replace_subrule(self, node, target):
+        rule = ast.dump(node, False)
+        if rule in self.replaced_rules[target]:
+            return self.replaced_rules[target][rule]
+
+        subrule_name = target + ' Subrule %d' % (1 + len(self.replaced_rules[target]))
+        # Save the info to be made into a rule later
+        self.delayed_rules.append((target, node, subrule_name))
+        # Replace the call with a reference to that item
+        item_rule = ast.Call(
+            func=ast.Attribute(
+                value=ast.Name(id='state', ctx=ast.Load()),
+                attr='has',
+                ctx=ast.Load()),
+            args=[ast.Str(subrule_name)],
+            keywords=[])
+        # Cache the subrule for any others in this region
+        # (and reserve the item name in the process)
+        self.replaced_rules[target][rule] = item_rule
+        return item_rule
+
+    def create_subrule(self, body=None, agefunc=None):
+        # todo: use rule/spot attributes to check adult_only/child_only/etc.
+        if agefunc:
+            agefunc = ast.Call(
+                func=ast.Attribute(
+                    value=ast.Name(id='state', ctx=ast.Load()),
+                    attr=agefunc,
+                    ctx=ast.Load()),
+                args=[],
+                keywords=[])
+
+        if body:
+            # This could, in theory, create further subrules.
+            body = self.visit(body)
+            if agefunc:
+                if isinstance(body, ast.BoolOp) and isinstance(body.op, ast.And):
+                    body.values = [agefunc] + body.values
+                else:
+                    return ast.BoolOp(op=ast.And(), values=[agefunc, body])
+            return body
+        elif agefunc:
+            return agefunc
         else:
-            rule = 'lambda state: ' + rule
+            return ast.NameConstant(True)
+
+
+    # Requires the target regions have been defined in the world.
+    def create_delayed_rules(self):
+        for region_name, node, subrule_name in self.delayed_rules:
+            region = self.world.get_region(region_name)
+            event = Location(subrule_name, type='Event', parent=region)
+            event.world = self.world
+
+            self.current_spot = event
+            if node.func.id in age_subrules:
+                body = self.create_subrule(
+                        body=node.args[0] if node.args else None,
+                        agefunc=age_subrules[node.func.id])
+            elif node.func.id == 'remote':
+                body = self.create_subrule(
+                        body=node.args[1] if len(node.args) > 1 else None)
+            else:
+                raise Exception('Parse Error: No such handler for subrule %s' % node.func.id)
+
+            newrule = ast.fix_missing_locations(
+                ast.Expression(ast.Lambda(
+                    args=ast.arguments(
+                        args=[ast.arg(arg='state')],
+                        defaults=[],
+                        kwonlyargs=[],
+                        kw_defaults=[]),
+                    body=body)))
+            event.access_rule = eval(compile(newrule, '<string>', 'eval'))
+            region.locations.append(event)
+
+            item = ItemFactory(subrule_name, self.world, event=True)
+            self.world.push_item(event, item)
+            event.locked = True
+            self.world.event_items.add(subrule_name)
+        # Safeguard in case this is called multiple times per world
+        self.delayed_rules.clear()
+
+
+    ## Handlers for specific internal functions used in the json logic.
+
+    # remote(region_name, rule)
+    # Creates an internal event at the remote region and depends on it.
+    def remote(self, node):
+        # Cache this under the target (region) name
+        if not node.args or not isinstance(node.args[0], ast.Str):
+            raise Exception('Parse Error: invalid remote() arguments')
+        return self.replace_subrule(node, node.args[0].s)
+
+
+
+    def parse_spot_rule(self, spot):
+        if spot.rule_string is None:
+            return lambda state: True
+
+        rule = 'lambda state: ' + spot.rule_string
         rule = rule.split('#')[0]
 
+        self.current_spot = spot
         rule_ast = ast.parse(rule, mode='eval')
         rule_ast = ast.fix_missing_locations(self.visit(rule_ast))
-        rule_lambda = eval(compile(rule_ast, '<string>', 'eval'))
-        return rule_lambda
+        spot.access_rule = eval(compile(rule_ast, '<string>', 'eval'))
 
