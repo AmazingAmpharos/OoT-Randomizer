@@ -389,7 +389,7 @@
             "Gerudo Fortress": "True",
             "Gerudo Valley Stream": "True",
             "Gerudo Valley": "
-                is_child or Epona or can_use(Longshot) or
+                is_child or can_use(Epona) or can_use(Longshot) or
                 gerudo_fortress == 'open' or Carpenter_Rescue",
             "Carpenter Tent": "is_adult", # Invisible as child so not in logic
             "Gerudo Valley Storms Grotto": "is_adult and can_play(Song_of_Storms)" # Not there as child
