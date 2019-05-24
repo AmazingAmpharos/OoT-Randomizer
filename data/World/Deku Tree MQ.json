@@ -39,9 +39,6 @@
     {
         "region_name": "Deku Tree Basement Water Room",
         "dungeon": "Deku Tree",
-        "events": {
-            "Deku Tree Clear": "Buy_Deku_Shield and (Kokiri_Sword or has_sticks)"
-        },
         "locations": {
             "Deku Tree MQ Before Spinning Log Chest": "True",
             "Deku Tree MQ After Spinning Log Chest": "can_play(Song_of_Time)"

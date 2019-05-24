@@ -164,7 +164,7 @@ class World(object):
                         iname = new_region.name + ' ' + event
                     self.push_item(new_location, ItemFactory(iname, self, event=True))
                     new_location.locked = True
-                    self.event_items.add(event)
+                    self.event_items.add(iname)
             if 'exits' in region:
                 for exit, rule in region['exits'].items():
                     new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)
