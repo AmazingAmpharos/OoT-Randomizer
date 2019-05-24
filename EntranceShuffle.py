@@ -207,7 +207,7 @@ entrance_shuffle_table = [
                         ('Lost Woods Generic Grotto -> Lost Woods',                         { 'grotto_id': 0x1A })),
     ('Grotto',          ('Kokiri Forest -> Kokiri Forest Storms Grotto',                    { 'grotto_id': 0x1B, 'entrance': 0x003F, 'content': 0x2C, 'scene': 0x55 }),
                         ('Kokiri Forest Storms Grotto -> Kokiri Forest',                    { 'grotto_id': 0x1B })),
-    ('Grotto',          ('Zoras Domain -> Zoras Domain Storms Grotto',                      { 'grotto_id': 0x1C, 'entrance': 0x05BC, 'content': 0xFF, 'scene': 0x58 }),
+    ('Grotto',          ('Zoras Domain -> Zoras Domain Storms Grotto',                      { 'grotto_id': 0x1C, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x58 }),
                         ('Zoras Domain Storms Grotto -> Zoras Domain',                      { 'grotto_id': 0x1C })),
     ('Grotto',          ('Gerudo Fortress -> Gerudo Fortress Storms Grotto',                { 'grotto_id': 0x1D, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x5D }),
                         ('Gerudo Fortress Storms Grotto -> Gerudo Fortress',                { 'grotto_id': 0x1D })),
