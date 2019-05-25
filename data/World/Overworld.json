@@ -990,7 +990,7 @@
         },
         "exits": {
             "Graveyard": "True",
-            "Windmill": "can_play(Song_of_Time)"
+            "Windmill": "is_adult and can_play(Song_of_Time)"
         }
     },
     {
