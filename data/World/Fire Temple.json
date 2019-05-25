@@ -11,12 +11,12 @@
                 ((Small_Key_Fire_Temple, 8) or not keysanity) and can_use(Hammer)",
             "Volvagia Heart": "
                 can_use(Goron_Tunic) and can_use(Hammer) and Boss_Key_Fire_Temple and 
-                (logic_volvagia_jump or Hover_Boots or (can_reach(Fire_Temple_Upper) and 
-                    (can_play(Song_of_Time) or has_explosives)))",
+                (logic_volvagia_jump or Hover_Boots or
+                    remote('Fire Temple Upper', can_play(Song_of_Time) or has_explosives))",
             "Volvagia": "
                 can_use(Goron_Tunic) and can_use(Hammer) and Boss_Key_Fire_Temple and 
-                (logic_volvagia_jump or Hover_Boots or (can_reach(Fire_Temple_Upper) and 
-                    (can_play(Song_of_Time) or has_explosives)))",
+                (logic_volvagia_jump or Hover_Boots or
+                    remote('Fire Temple Upper', can_play(Song_of_Time) or has_explosives))",
             "GS Fire Temple Basement": "
                 ((Small_Key_Fire_Temple, 8) or not keysanity) and can_use(Hammer)",
             "Fairy Pot": "
