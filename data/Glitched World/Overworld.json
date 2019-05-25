@@ -137,7 +137,7 @@
         "locations": {
             "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
             "LW Deku Scrub Deku Sticks": "is_child and can_stun_deku",
-            "GS Lost Woods Above Stage": "is_adult and at_night and (can_use(Magic_Bean) or can_use(Longshot) or (has_bombchus and Progressive_Hookshot) or can_hover)",
+            "GS Lost Woods Above Stage": "is_adult and at_night and (as_child(Magic_Bean or Magic_Bean_Pack) or can_use(Longshot) or (has_bombchus and Progressive_Hookshot) or can_hover)",
             "GS Lost Woods Bean Patch Near Stage": "
                 can_plant_bugs and 
                 (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))"
@@ -229,7 +229,9 @@
             "Lake Hylia Sun": "
                 is_adult and 
                 (can_use(Distant_Scarecrow) or can_reach(Morpha, Location) or can_hover) and can_use(Bow)",
-            "Lake Hylia Freestanding PoH": "can_use(Scarecrow) or can_use(Magic_Bean)",
+            "Lake Hylia Freestanding PoH": "
+                is_adult and
+                (can_use(Scarecrow) or as_child(Magic_Bean or Magic_Bean_Pack))",
             "GS Lake Hylia Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Lake Hylia Lab Wall": "
                 is_child and (Boomerang or can_jumpslash) and at_night",
@@ -245,7 +247,7 @@
             "Zoras Domain": "True",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
-                is_child or can_use(Scarecrow) or can_use(Magic_Bean) or can_reach(Morpha, Location) or can_isg",
+                is_child or can_use(Scarecrow) or as_child(Magic_Bean or Magic_Bean_Pack) or can_reach(Morpha, Location) or can_isg",
             "Water Temple Lobby": "True",
             "Lake Hylia Grotto": "can_stun_deku"
         }
@@ -349,7 +351,9 @@
         "hint": "Desert Colossus",
         "time_passes": true,
         "locations": {
-            "Colossus Freestanding PoH": "can_use(Magic_Bean) or (can_reach(Spirit_Temple_Outdoor_Hands) and can_mega)",
+            "Colossus Freestanding PoH": "
+                (is_adult and as_child(Magic_Bean or Magic_Bean_Pack)) or
+                (can_reach(Spirit_Temple_Outdoor_Hands) and can_mega)",
             "Sheik at Colossus": "True",
             "GS Desert Colossus Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Desert Colossus Tree": "can_use(Hookshot) and at_night",
@@ -694,7 +698,9 @@
         "region_name": "Graveyard",
         "hint": "the Graveyard",
         "locations": {
-            "Graveyard Freestanding PoH": "can_use(Magic_Bean) or can_use(Hookshot) or can_hover",
+            "Graveyard Freestanding PoH": "
+                (is_adult and as_child(Magic_Bean or Magic_Bean_Pack)) or
+                can_use(Hookshot) or can_hover",
             "Gravedigging Tour": "is_child",
             "GS Graveyard Wall": "(can_use(Boomerang) or (can_hover and is_child)) and at_night",
             "GS Graveyard Bean Patch": "can_plant_bugs and can_child_attack"
@@ -930,13 +936,15 @@
         "hint": "Death Mountain Crater",
         "locations": {
             "DM Crater Volcano Freestanding PoH": "
-                can_use(Magic_Bean) or can_use(Hover_Boots) or can_mega",
+                (is_adult and as_child(Magic_Bean or Magic_Bean_Pack)) or
+                can_use(Hover_Boots) or can_mega",
             "Sheik in Crater": "is_adult",
             "GS Mountain Crater Bean Patch": "can_plant_bugs and can_child_attack"
         },
         "exits": {
             "Death Mountain Crater Lower": "
-                can_use(Hover_Boots) or can_use(Hookshot) or can_use(Magic_Bean)",
+                (is_adult and as_child(Magic_Bean or Magic_Bean_Pack)) or
+                can_use(Hover_Boots) or can_use(Hookshot)",
             "Fire Temple Lower": "is_adult"
         }
     },

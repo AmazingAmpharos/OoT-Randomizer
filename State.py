@@ -384,9 +384,6 @@ class State(object):
             return self.has('Progressive Hookshot') and self.is_adult() and self.can_play('Scarecrow Song')
         elif item == 'Distant Scarecrow':
             return self.has('Progressive Hookshot', 2) and self.is_adult() and self.can_play('Scarecrow Song')
-        elif item == 'Magic Bean':
-            # Checks for the event item given for planting the bean in this region.
-            return self.is_adult() and self.has(self.current_spot.parent_region.name + ' Plant Bean')
         else:
             return self.has(item)
 

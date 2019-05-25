@@ -153,7 +153,10 @@
         "exits": {
             "Lost Woods Forest Exit": "True",
             "Goron City Woods Warp": "True",
-            "Lost Woods Bridge": "can_use(Hover_Boots) or can_use(Longshot) or can_use(Magic_Bean)",
+            "Lost Woods Bridge": "
+                is_adult and
+                (can_use(Hover_Boots) or can_use(Longshot) or
+                    as_child(Magic_Bean or Magic_Bean_Pack))",
             "Zora River": "can_leave_forest and (can_dive or can_use(Iron_Boots))",
             "Lost Woods Beyond Mido": "is_child or logic_adult_meadow_access or can_play(Sarias_Song)",
             "Lost Woods Generic Grotto": "as_either_here(can_blast_or_smash)"
@@ -166,7 +169,8 @@
         "locations": {
             "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
             "LW Deku Scrub Deku Sticks": "is_child and can_stun_deku",
-            "GS Lost Woods Above Stage": "can_use(Magic_Bean) and at_night",
+            "GS Lost Woods Above Stage": "
+                is_adult and as_child(Magic_Bean or Magic_Bean_Pack) and at_night",
             "GS Lost Woods Bean Patch Near Stage": "
                 can_plant_bugs and 
                 (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))",
@@ -284,7 +288,8 @@
             "Lake Hylia Sun": "
                 is_adult and 
                 (can_use(Distant_Scarecrow) or Water_Temple_Clear) and can_use(Bow)",
-            "Lake Hylia Freestanding PoH": "can_use(Scarecrow) or can_use(Magic_Bean)",
+            "Lake Hylia Freestanding PoH": "
+                is_adult and (can_use(Scarecrow) or as_child(Magic_Bean or Magic_Bean_Pack))",
             "GS Lake Hylia Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Lake Hylia Lab Wall": "
                 is_child and (Boomerang or 
@@ -304,7 +309,8 @@
             "Lake Hylia Owl Flight": "is_child",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
-                is_child or can_use(Scarecrow) or can_use(Magic_Bean) or Water_Temple_Clear",
+                is_child or can_use(Scarecrow) or
+                as_child(Magic_Bean or Magic_Bean_Pack) or Water_Temple_Clear",
             "Water Temple Lobby": "
                 Lake_Hylia_Water_Temple_Front_Door and
                 ((Progressive_Scale, 2) or can_use(Iron_Boots)) and
@@ -486,13 +492,14 @@
         "hint": "Desert Colossus",
         "time_passes": true,
         "locations": {
-            "Colossus Freestanding PoH": "can_use(Magic_Bean)",
+            "Colossus Freestanding PoH": "is_adult and as_child(Magic_Bean or Magic_Bean_Pack)",
             "Sheik at Colossus": "True",
             "GS Desert Colossus Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Desert Colossus Tree": "can_use(Hookshot) and at_night",
             "GS Desert Colossus Hill": "
-                (can_use(Magic_Bean) or can_use(Longshot) or 
-                    (logic_colossus_gs and can_use(Hookshot))) and at_night",
+                is_adult and at_night and
+                    (as_child(Magic_Bean or Magic_Bean_Pack) or can_use(Longshot) or
+                        (logic_colossus_gs and can_use(Hookshot)))",
             "Desert Colossus Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Fairy Pond": "can_play(Song_of_Storms) and has_bottle",
@@ -936,7 +943,8 @@
         "scene": "Graveyard",
         "hint": "the Graveyard",
         "locations": {
-            "Graveyard Freestanding PoH": "can_use(Magic_Bean) or can_use(Longshot)",
+            "Graveyard Freestanding PoH": "
+                is_adult and (as_child(Magic_Bean or Magic_Bean_Pack) or can_use(Longshot))",
             "Gravedigging Tour": "is_child and at_dampe_time",
             "GS Graveyard Wall": "can_use(Boomerang) and at_night",
             "GS Graveyard Bean Patch": "can_plant_bugs and can_child_attack",
@@ -1226,14 +1234,17 @@
         "hint": "Death Mountain Crater",
         "locations": {
             "DM Crater Volcano Freestanding PoH": "
-                can_use(Magic_Bean) or 
-                (logic_crater_bean_poh_with_hovers and can_use(Hover_Boots))",
+                is_adult and
+                (as_child(Magic_Bean or Magic_Bean_Pack) or 
+                    (logic_crater_bean_poh_with_hovers and can_use(Hover_Boots)))",
             "Sheik in Crater": "is_adult",
             "GS Mountain Crater Bean Patch": "can_plant_bugs and can_child_attack"
         },
         "exits": {
             "Death Mountain Crater Lower": "
-                can_use(Hover_Boots) or can_use(Hookshot) or can_use(Magic_Bean)",
+                is_adult and
+                (can_use(Hover_Boots) or can_use(Hookshot) or
+                    as_child(Magic_Bean or Magic_Bean_Pack))",
             "Fire Temple Lower": "
                 (is_child and shuffle_dungeon_entrances) or
                 (is_adult and (logic_fewer_tunic_requirements or can_use(Goron_Tunic)))"
