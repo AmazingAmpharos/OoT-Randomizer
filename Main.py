@@ -88,7 +88,7 @@ def main(settings, window=dummy_window()):
             spoiler = generate(settings, window)
             break
         except FillError as fe:
-            logger.warn('Failed attempt %d of %d: %s', attempt, max_attempts, fe)
+            logger.warning('Failed attempt %d of %d: %s', attempt, max_attempts, fe)
             if attempt >= max_attempts:
                 raise
             else:

@@ -7,6 +7,7 @@ import os
 import unittest
 
 from ItemList import item_table
+from ItemPool import remove_junk_items
 from Main import main
 from Settings import Settings
 
@@ -29,7 +30,6 @@ never = {
 # items required at most once, specifically things with multiple possible names
 # (except bottles)
 once = {
-    'Deku Nut', 'Deku Stick', 'Deku Shield', 'Hylian Shield',
     'Goron Tunic', 'Zora Tunic',
 }
 
@@ -42,6 +42,8 @@ bottles = {
     item for item, (_, _, _, special) in item_table.items()
     if special and 'bottle' in special and item != 'Deliver Letter'
 }
+
+junk = set(remove_junk_items)
 
 
 def load_settings(settings_file):
@@ -71,9 +73,12 @@ class TestValidSpoilers(unittest.TestCase):
     # woth: key is "World x". modify 1p games to {"World 1": woth} first
     # playthrough: key is sphere index (unimportantish), loc has [Wx]
     def loc_item_collection(self, locmaps):
-        # map from playernum to list/Counter
-        locations = defaultdict(list)
+        # playernum -> location set
+        locations = defaultdict(set)
+        # playernum -> item -> count
         items = defaultdict(Counter)
+        # location name -> item set
+        locitems = defaultdict(set)
         for key, locmap in locmaps.items():
             p = 0
             if key.startswith('World'):
@@ -83,23 +88,21 @@ class TestValidSpoilers(unittest.TestCase):
                 if w[:2] == '[W':
                     p = int(w[2:-1])
                     loc = loc[:loc.rindex(' ')]
-                else:
+                elif p == 0:
                     # Assume single-player playthrough
                     p = 1
-                locations[p].append(loc)
+                locations[p].add(loc)
                 if isinstance(item_json, dict):
                     item = item_json['item']
                     item_p = item_json.get('player', p)
                 else:
                     item = item_json
                     item_p = p
-                # Canonicalize some stuff
-                if not item.endswith('Capacity'):
-                    for n in once:
-                        if n in item:
-                            item = n
-                            break
                 items[item_p][item] += 1
+                locitems[loc].add(item)
+        return locations, items, locitems
+
+    def required_checks(self, spoiler, locations, items, locitems):
         # Checks to make against woth/playthrough:
         expected_none = {p: set() for p in items}
         # No 'never' items
@@ -107,6 +110,12 @@ class TestValidSpoilers(unittest.TestCase):
             expected_none,
             {p: never & c.keys() for p, c in items.items()},
             'Non-required items deemed required')
+        # No disabled locations
+        disables = set(spoiler[':settings'].get('disabled_locations', []))
+        self.assertEqual(
+            expected_none,
+            {p: disables & c for p, c in locations.items()},
+            'Disabled locations deemed required')
         # No more than one of any 'once' item
         multi = {p: {it for it, ct in c.items() if ct > 1}
                  for p, c in items.items()}
@@ -124,22 +133,37 @@ class TestValidSpoilers(unittest.TestCase):
             {p: 1 for p in items},
             {p: max(1, len(bottles & c.keys())) for p, c in items.items()},
             'Collected too many bottles')
-        return locations, items
 
     def verify_woth(self, spoiler):
         woth = spoiler[':woth_locations']
         if 'World 1' not in woth:
             woth = {'World 1': woth}
-        locations, items = self.loc_item_collection(woth)
+        self.required_checks(spoiler, *self.loc_item_collection(woth))
 
     def verify_playthrough(self, spoiler):
         pl = spoiler[':playthrough']
-        locations, items = self.loc_item_collection(pl)
+        locations, items, locitems = self.loc_item_collection(pl)
+        self.required_checks(spoiler, locations, items, locitems)
         # Everybody finished
         self.assertEqual(
             {p: 1 for p in items},
             {p: c['Triforce'] for p, c in items.items()},
             'Playthrough missing some (or having extra) Triforces')
+
+    def verify_disables(self, spoiler):
+        locmap = spoiler['locations']
+        if 'World 1' not in locmap:
+            locmap = {'World 1': locmap}
+        disables = set(spoiler[':settings'].get('disabled_locations', []))
+        dmap = {k: {loc: v[loc] for loc in disables if loc in v}
+                for k, v in locmap.items()}
+        locations, items, locitems = self.loc_item_collection(dmap)
+
+        # Only junk at disabled locations
+        self.assertEqual(
+            {loc: set() for loc in locitems},
+            {loc: items - junk for loc, items in locitems.items()},
+            'Disabled locations have non-junk')
 
     def test_spoiler(self):
         test_files = [filename
@@ -153,6 +177,7 @@ class TestValidSpoilers(unittest.TestCase):
                 spoiler = load_spoiler('%s_Spoiler.json' % settings.output_file)
                 self.verify_woth(spoiler)
                 self.verify_playthrough(spoiler)
+                self.verify_disables(spoiler)
 
     def test_fuzzer(self):
         fuzz_settings = [Settings({
@@ -172,6 +197,7 @@ class TestValidSpoilers(unittest.TestCase):
                     spoiler = load_spoiler(output_file)
                     self.verify_woth(spoiler)
                     self.verify_playthrough(spoiler)
+                    self.verify_disables(spoiler)
                 except Exception as e:
                     # output the settings file in case of any failure
                     with open(settings_file, 'w') as f:
