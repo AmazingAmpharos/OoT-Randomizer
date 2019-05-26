@@ -345,3 +345,39 @@ ingo_race_win:
 
     jr      ra
     lw      t9, 0x24 (s0)    ; Displaced Code
+
+; In ER, Rectify the "Getting Caught By Gerudo" entrance index if necessary, based on the age and current scene
+; Adult should be placed at the fortress entrance when getting caught in the fortress without a hookshot, instead of being thrown in the valley
+; Child should always be thrown in the stream when caught in the valley, and placed at the fortress entrance from valley when caught in the fortress
+; Registers safe to override: t3-t8
+gerudo_caught_entrance:
+    lb      t3, OVERWORLD_SHUFFLED
+    beqz    t3, @@return                ; only rectify entrances in Overworld ER
+
+    la      t3, GLOBAL_CONTEXT
+    lh      t3, 0x00A4(t3)              ; current scene number
+    li      t4, 0x005A                  ; Gerudo Valley scene number
+    bne     t3, t4, @@fortress          ; if we are not in the valley, then we are in the fortress
+
+    li      t3, 0x01A5                  ; else, use the thrown out in valley entrance index, even if you have a hookshot
+    sh      t3, 0x1E1A(at)
+    b       @@return
+
+@@fortress:
+    la      t4, SAVE_CONTEXT
+    lw      t4, 0x0004(t4)              ; current age
+    bnez    t4, @@fortress_entrance     ; if child, change to the fortress entrance no matter what, even if you have a hookshot
+
+    lh      t3, 0x1E1A(at)              ; original entrance index
+    li      t4, 0x01A5                  ; "Thrown out of Fortress" entrance index
+    beq     t3, t4, @@fortress_entrance ; if adult would be thrown in the valley, change to the fortress entrance (no hookshot)
+    nop
+    b       @@return                    ; else, keep the jail entrance index (owned hookshot)
+
+@@fortress_entrance:
+    li      t3, 0x0129                  ; Fortress from Valley entrance index
+    sh      t3, 0x1E1A(at)
+
+@@return:
+    jr      ra
+    nop
