@@ -224,11 +224,11 @@
         "hint": "Lake Hylia",
         "time_passes": true,
         "locations": {
-            "Pierre": "has_ocarina and as_both_here and not free_scarecrow",
+            "Pierre": "has_ocarina and as_child_here() and not free_scarecrow",
             "Underwater Bottle": "is_child and can_dive",
             "Lake Hylia Sun": "
                 is_adult and 
-                (can_use(Distant_Scarecrow) or can_reach(Morpha, Location) or can_hover) and can_use(Bow)",
+                (can_use(Distant_Scarecrow) or Water_Temple_Clear or can_hover) and can_use(Bow)",
             "Lake Hylia Freestanding PoH": "
                 is_adult and
                 (can_use(Scarecrow) or as_child(Magic_Bean or Magic_Bean_Pack))",
@@ -247,7 +247,7 @@
             "Zoras Domain": "True",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
-                is_child or can_use(Scarecrow) or as_child(Magic_Bean or Magic_Bean_Pack) or can_reach(Morpha, Location) or can_isg",
+                is_child or can_use(Scarecrow) or as_child(Magic_Bean or Magic_Bean_Pack) or Water_Temple_Clear or can_isg",
             "Water Temple Lobby": "True",
             "Lake Hylia Grotto": "can_stun_deku"
         }
@@ -276,7 +276,7 @@
         "locations": {
             "Gerudo Valley Waterfall Freestanding PoH": "True",
             "Gerudo Valley Crate Freestanding PoH": "is_child or can_use(Longshot) or 
-                (can_reach('Gerudo Valley Far Side') and (can_use(Hover_Boots) or can_mega) and (can_live_dmg(0.5) or has_bottle or can_use(Nayrus_Love)))",
+                remote('Gerudo Valley Far Side', (can_use(Hover_Boots) or can_mega) and (can_live_dmg(0.5) or has_bottle or can_use(Nayrus_Love)))",
             "GS Gerudo Valley Small Bridge": "(can_use(Boomerang) or (can_hover and is_child)) and at_night",
             "GS Gerudo Valley Bean Patch": "can_plant_bugs and can_child_attack",
             "Gerudo Valley Gossip Stone": "True",
@@ -353,7 +353,7 @@
         "locations": {
             "Colossus Freestanding PoH": "
                 (is_adult and as_child(Magic_Bean or Magic_Bean_Pack)) or
-                (can_reach(Spirit_Temple_Outdoor_Hands) and can_mega)",
+                remote('Spirit Temple Outdoor Hands', can_mega)",
             "Sheik at Colossus": "True",
             "GS Desert Colossus Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Desert Colossus Tree": "can_use(Hookshot) and at_night",
@@ -707,9 +707,9 @@
         },
         "exits": {
             "Shield Grave": "True",
-            "Composer Grave": "can_play(Zeldas_Lullaby) or can_reach(Shadow_Temple_Warp_Region)",
+            "Composer Grave": "can_play(Zeldas_Lullaby) or remote('Shadow Temple Warp Region')",
             "Heart Piece Grave": "True",
-            "Dampes Grave": "is_adult or can_reach(Shadow_Temple_Warp_Region)",
+            "Dampes Grave": "is_adult or remote('Shadow Temple Warp Region')",
             "Dampes House": "True",
             "Kakariko Village": "True",
             "Shadow Temple Warp Region": "can_hover or can_use(Hookshot)"
@@ -1011,7 +1011,7 @@
             "GS Zora's Domain Frozen Waterfall": "
                 is_adult and at_night and (Progressive_Hookshot or Bow or Magic_Meter or has_explosives or 
                 Biggoron_Sword or 
-                (Progressive_Wallet and can_reach(Goron_City,Region,adult) and (can_blast_or_smash or Progressive_Strength_Upgrade or has_blue_fire)))",
+                remote('Goron City', is_adult and Progressive_Wallet and (can_blast_or_smash or Progressive_Strength_Upgrade or has_blue_fire)))",
             "Zoras Domain Gossip Stone": "True",
             "Fish Group": "is_child and has_bottle",
             "Stick Pot": "is_child",
@@ -1020,8 +1020,8 @@
         "exits": {
             "Zora River": "True",
             "Lake Hylia": "True",
-            "Zoras Fountain": "open_fountain or (can_reach(Zoras_Domain, Region, child) and Bottle_with_Letter) 
-                or is_adult or (is_child and can_shield and has_bombchus)",
+            "Zoras Fountain": "open_fountain or Deliver_Letter
+                or is_adult or (can_shield and has_bombchus)",
             "Zora Shop": "True"
         }
     },

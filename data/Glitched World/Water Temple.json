@@ -6,7 +6,7 @@
         "exits": {
             "High Alcove": "is_adult or can_hover",
             "Boss Area": "can_use(Longshot) or can_hover or (can_use(Hover_Boots) and (can_mega or Hammer))",
-            "Dark Link Area": "((can_reach(High_Alcove) and can_play(Zeldas_Lullaby)) or 
+            "Dark Link Area": "(remote('High Alcove', can_play(Zeldas_Lullaby)) or 
                     (can_use(Hover_Boots) and (can_mega or Hammer)))
                 and (Small_Key_Water_Temple,5)",
             "Under Entrance Block": "can_use(Hookshot) and Iron_Boots",
@@ -89,9 +89,10 @@
             "Water Temple Central Pillar Chest": "can_use(Iron_Boots) and can_use(Hookshot) and
                 (can_reach('Water Temple Lobby -> Central Pillar', Entrance, either) or can_play(Zeldas_Lullaby))",
             "GS Water Temple Central Room": "can_reach('Water Temple Lobby -> Central Pillar', Entrance, either) or
-                can_use(Longshot) or 
-                (can_use(Farores_Wind) and can_play(Zeldas_Lullaby) 
-                    and can_reach(High_Alcove) and (can_use(Hookshot) or can_use(Boomerang)))"
+                can_use(Longshot) or
+                remote('High Alcove',
+                    can_use(Farores_Wind) and can_play(Zeldas_Lullaby)
+                    and (can_use(Hookshot) or can_use(Boomerang)))"
         },
         "exits": {
             "High Alcove": "(can_use(Hover_Boots) or can_use(Hookshot) or (is_adult and can_mega) or can_hover
@@ -146,7 +147,7 @@
         "region_name": "Dragon Head Area",
         "dungeon": "Water Temple",
         "locations": {
-            "Water Temple Dragon Chest": "(is_adult and can_reach(River_Chest)) or has_bombchus or (Iron_Boots and can_use(Hookshot))"
+            "Water Temple Dragon Chest": "remote('River Chest', is_adult) or has_bombchus or (Iron_Boots and can_use(Hookshot))"
         },
         "exits": {
             "River Chest": "can_hover"
