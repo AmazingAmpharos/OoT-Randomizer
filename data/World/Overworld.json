@@ -992,7 +992,7 @@
     {
         "region_name": "Dampes Grave",
         "events": {
-            "Dampes Windmill Access": "can_play(Song_of_Time)"
+            "Dampes Windmill Access": "is_adult and can_play(Song_of_Time)"
         },
         "locations": {
             "Hookshot Chest": "True",
