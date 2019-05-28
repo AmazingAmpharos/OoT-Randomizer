@@ -844,7 +844,6 @@ setting_infos = [
             Ganondorf and Ganon will be skipped.
         ''',
         shared         = True,
-        dependency     = lambda settings: True if settings.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all'] else None,
     ),
     Checkbutton(
         name           = 'no_guard_stealth',
