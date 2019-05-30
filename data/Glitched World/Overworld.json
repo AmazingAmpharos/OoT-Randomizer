@@ -223,8 +223,11 @@
         "region_name": "Lake Hylia",
         "hint": "Lake Hylia",
         "time_passes": true,
+        "events": {
+            "Bonooru": "is_child and has_ocarina"
+        },
         "locations": {
-            "Pierre": "has_ocarina and here_(is_child) and not free_scarecrow",
+            "Pierre": "is_adult and Bonooru and not free_scarecrow",
             "Underwater Bottle": "is_child and can_dive",
             "Lake Hylia Sun": "
                 is_adult and 

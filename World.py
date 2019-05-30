@@ -159,14 +159,9 @@ class World(object):
                         self.parser.parse_spot_rule(new_location)
                     new_location.world = self
                     new_region.locations.append(new_location)
-                    iname = event
-                    # Generate event names for planting beans to enforce name consistency
-                    # (Bean usage relies on region name being the same)
-                    if event == 'Plant Bean':
-                        iname = new_region.name + ' ' + event
-                    self.push_item(new_location, ItemFactory(iname, self, event=True))
+                    self.push_item(new_location, ItemFactory(event, self, event=True))
                     new_location.locked = True
-                    self.event_items.add(iname)
+                    self.event_items.add(event)
             if 'exits' in region:
                 for exit, rule in region['exits'].items():
                     new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)
