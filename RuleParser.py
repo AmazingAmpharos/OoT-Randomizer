@@ -71,6 +71,14 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         else:
             raise Exception('Parse Error: invalid node name %s', node.id)
 
+    def visit_Str(self, node):
+        return ast.Call(
+            func=ast.Attribute(
+                value=ast.Name(id='state', ctx=ast.Load()),
+                attr='has',
+                ctx=ast.Load()),
+            args=[ast.Str(node.s)],
+            keywords=[])
 
     def visit_Tuple(self, node):
         if len(node.elts) != 2:
@@ -78,11 +86,9 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
         item, count = node.elts
 
-        if isinstance(item, ast.Str):
-            item = ast.Name(id=item.s, ctx=ast.Load())
-
-        if not isinstance(item, ast.Name):
+        if not isinstance(item, (ast.Name, ast.Str)):
             raise Exception('Parse Error: first value must be an item. Got %s' % item.__class__.__name__)
+        iname = item.id if isinstance(item, ast.Name) else item.s
 
         if not (isinstance(count, ast.Name) or isinstance(count, ast.Num)):
             raise Exception('Parse Error: second value must be a number. Got %s' % item.__class__.__name__)
@@ -96,22 +102,25 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                 attr=count.id,
                 ctx=ast.Load())
 
-        if item.id in escaped_items:
-            item.id = escaped_items[item.id]
+        if iname in escaped_items:
+            iname = escaped_items[iname]
 
-        if not item.id in item_table:
-            raise Exception('Parse Error: invalid item name')
+        if iname not in item_table:
+            self.events.add(iname)
 
         return ast.Call(
             func=ast.Attribute(
                 value=ast.Name(id='state', ctx=ast.Load()),
                 attr='has',
                 ctx=ast.Load()),
-            args=[ast.Str(item.id), count],
+            args=[ast.Str(iname), count],
             keywords=[])
 
 
     def visit_Call(self, node):
+        if not isinstance(node.func, ast.Name):
+            return node
+
         if node.func.id in dir(self):
             return getattr(self, node.func.id)(node)
 
@@ -130,21 +139,17 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                     child = ast.Str(escaped_items[child.id])
                 else:
                     child = ast.Str(child.id.replace('_', ' '))
-            else:
-                self.visit(child)
+            elif not isinstance(child, ast.Str):
+                child = self.visit(child)
             new_args.append(child)
 
-        if isinstance(node.func, ast.Name):
-            return ast.Call(
-                func=ast.Attribute(
-                    value=ast.Name(id='state', ctx=ast.Load()),
-                    attr=node.func.id,
-                    ctx=ast.Load()),
-                args=new_args,
-                keywords=node.keywords)
-        else:
-            return node
-
+        return ast.Call(
+            func=ast.Attribute(
+                value=ast.Name(id='state', ctx=ast.Load()),
+                attr=node.func.id,
+                ctx=ast.Load()),
+            args=new_args,
+            keywords=node.keywords)
 
     def visit_Subscript(self, node):
         if isinstance(node.value, ast.Name):
@@ -163,15 +168,17 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     def visit_Compare(self, node):
-        if isinstance(node.left, ast.Name):
-            if node.left.id in escaped_items:
-                node.left = ast.Str(escaped_items[node.left.id])
+        def escape_or_string(n):
+            if isinstance(n, ast.Name) and n.id in escaped_items:
+                return ast.Str(escaped_items[n])
+            elif not isinstance(n, ast.Str):
+                return self.visit(n)
+            return n
 
-        if isinstance(node.comparators[0], ast.Name):
-            if node.comparators[0].id in escaped_items:
-                node.comparators[0] = ast.Str(escaped_items[node.comparators[0].id])
+        node.left = escape_or_string(node.left)
+        node.comparators = list(map(escape_or_string, node.comparators))
+        node.ops = list(map(self.visit, node.ops))
 
-        self.generic_visit(node)
         return node
 
 
@@ -257,5 +264,9 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         self.current_spot = spot
         rule_ast = ast.parse(rule, mode='eval')
         rule_ast = ast.fix_missing_locations(self.visit(rule_ast))
-        spot.access_rule = eval(compile(rule_ast, '<string>', 'eval'))
+        try:
+            spot.access_rule = eval(compile(rule_ast, '<string>', 'eval'))
+        except Exception as e:
+            print('Exception evaluting %r at spot %r' % (ast.dump(rule_ast, False), spot.name))
+            raise
 

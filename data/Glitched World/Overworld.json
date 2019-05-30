@@ -73,7 +73,7 @@
         "region_name": "Links House",
         "hint": "Kokiri Forest",
         "locations": {
-            "Links House Cow": "is_adult and can_play(Eponas_Song) and Links_Cow"
+            "Links House Cow": "is_adult and can_play(Eponas_Song) and 'Links Cow'"
         },
         "exits": {
             "Kokiri Forest": "True"
@@ -231,7 +231,7 @@
             "Underwater Bottle": "is_child and can_dive",
             "Lake Hylia Sun": "
                 is_adult and 
-                (can_use(Distant_Scarecrow) or Water_Temple_Clear or can_hover) and can_use(Bow)",
+                (can_use(Distant_Scarecrow) or 'Water Temple Clear' or can_hover) and can_use(Bow)",
             "Lake Hylia Freestanding PoH": "
                 is_adult and
                 (can_use(Scarecrow) or planted_bean_)",
@@ -250,7 +250,7 @@
             "Zoras Domain": "True",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
-                is_child or can_use(Scarecrow) or planted_bean_ or Water_Temple_Clear or can_isg",
+                is_child or can_use(Scarecrow) or planted_bean_ or 'Water Temple Clear' or can_isg",
             "Water Temple Lobby": "True",
             "Lake Hylia Grotto": "can_stun_deku"
         }
@@ -312,16 +312,16 @@
         "hint": "Gerudo's Fortress",
         "events": {
             "Carpenter Rescue": "can_finish_GerudoFortress",
-            "Gerudo Fortress Gate Open": "is_adult and Carpenter_Rescue"
+            "Gerudo Fortress Gate Open": "is_adult and 'Carpenter Rescue'"
         },
         "locations": {
             "Gerudo Fortress Rooftop Chest": "(is_child and can_mega) or 
                 (is_adult and can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot) or can_mega)",
             #// known softlock if child opens this chest, so only put it in logic for adult
             "Horseback Archery 1000 Points": "
-                Carpenter_Rescue and can_use(Epona) and Bow and is_adult",
+                'Carpenter Rescue' and can_use(Epona) and Bow and is_adult",
             "Horseback Archery 1500 Points": "
-                Carpenter_Rescue and can_use(Epona) and Bow and is_adult",
+                'Carpenter Rescue' and can_use(Epona) and Bow and is_adult",
             "Gerudo Fortress North F1 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress North F2 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress South F1 Carpenter": "is_adult or (is_child and can_child_damage)",
@@ -331,7 +331,7 @@
             "GS Gerudo Fortress Top Floor": "at_night and is_adult"
         },
         "exits": {
-            "Haunted Wasteland": "is_child or Gerudo_Fortress_Gate_Open or
+            "Haunted Wasteland": "is_child or 'Gerudo Fortress Gate Open' or
                 ((Progressive_Hookshot and (Hover_Boots or can_mega)) or (can_isg and has_bombs) )",
             "Gerudo Training Grounds Lobby": "True"
         }
@@ -346,7 +346,7 @@
         },
         "exits": {
             "Desert Colossus": "True",
-            "Gerudo Fortress": "Gerudo_Fortress_Gate_Open"
+            "Gerudo Fortress": "'Gerudo Fortress Gate Open'"
         }
     },
     {
@@ -605,7 +605,7 @@
             "Windmill": "True",
             "Kakariko Bazaar": "is_adult or (is_child and can_jumpslash)",
             "Kakariko Shooting Gallery": "is_adult",
-            "Bottom of the Well": "(is_child and (Drain_Well or can_jumpslash or can_isg or has_nuts))
+            "Bottom of the Well": "(is_child and ('Drain Well' or can_jumpslash or can_isg or has_nuts))
                 or (is_adult and has_explosives)",
             "Kakariko Potion Shop Front": "is_adult",
             "Kakariko Potion Shop Back": "is_adult",
@@ -847,7 +847,7 @@
         },
         "exits": {
             "Death Mountain": "True",
-            "Goron City Woods Warp": "Goron_City_Woods_Warp_Open",
+            "Goron City Woods Warp": "'Goron City Woods Warp Open'",
             "Goron Shop": "
                 has_explosives or Progressive_Strength_Upgrade or can_use(Bow) or 
                 (is_child and (can_use(Dins_Fire) or (can_play(Zeldas_Lullaby) and has_sticks)))",
@@ -868,7 +868,7 @@
             "Goron City Woods Warp Open": "can_blast_or_smash or can_use(Dins_Fire)"
         },
         "exits": {
-            "Goron City": "can_leave_forest and Goron_City_Woods_Warp_Open",
+            "Goron City": "can_leave_forest and 'Goron City Woods Warp Open'",
             "Lost Woods": "True"
         }
     },

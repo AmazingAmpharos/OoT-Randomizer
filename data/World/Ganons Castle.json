@@ -11,12 +11,12 @@
             "Ganons Castle Spirit Trial": "True",
             "Ganons Castle Light Trial": "can_use(Golden_Gauntlets)",
             "Ganons Castle Tower": "
-                (skipped_trials[Forest] or Forest_Trial_Clear) and 
-                (skipped_trials[Fire] or Fire_Trial_Clear) and 
-                (skipped_trials[Water] or Water_Trial_Clear) and 
-                (skipped_trials[Shadow] or Shadow_Trial_Clear) and 
-                (skipped_trials[Spirit] or Spirit_Trial_Clear) and 
-                (skipped_trials[Light] or Light_Trial_Clear)",
+                (skipped_trials[Forest] or 'Forest Trial Clear') and 
+                (skipped_trials[Fire] or 'Fire Trial Clear') and 
+                (skipped_trials[Water] or 'Water Trial Clear') and 
+                (skipped_trials[Shadow] or 'Shadow Trial Clear') and 
+                (skipped_trials[Spirit] or 'Spirit Trial Clear') and 
+                (skipped_trials[Light] or 'Light Trial Clear')",
             "Ganons Castle Deku Scrubs": "can_see_with_lens"
         }
     },
