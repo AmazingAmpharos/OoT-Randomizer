@@ -156,7 +156,7 @@
             "Lost Woods Bridge": "
                 is_adult and
                 (can_use(Hover_Boots) or can_use(Longshot) or
-                    here_(is_child and (Magic_Bean or Magic_Bean_Pack)))",
+                    planted_bean_)",
             "Zora River": "can_leave_forest and (can_dive or can_use(Iron_Boots))",
             "Lost Woods Beyond Mido": "is_child or logic_adult_meadow_access or can_play(Sarias_Song)",
             "Lost Woods Generic Grotto": "here_(can_blast_or_smash)"
@@ -170,7 +170,7 @@
             "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
             "LW Deku Scrub Deku Sticks": "is_child and can_stun_deku",
             "GS Lost Woods Above Stage": "
-                is_adult and here_(is_child and (Magic_Bean or Magic_Bean_Pack)) and at_night",
+                is_adult and planted_bean_ and at_night",
             "GS Lost Woods Bean Patch Near Stage": "
                 can_plant_bugs and 
                 (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))",
@@ -286,7 +286,7 @@
                 is_adult and 
                 (can_use(Distant_Scarecrow) or Water_Temple_Clear) and can_use(Bow)",
             "Lake Hylia Freestanding PoH": "
-                is_adult and (can_use(Scarecrow) or here_(is_child and (Magic_Bean or Magic_Bean_Pack)))",
+                is_adult and (can_use(Scarecrow) or planted_bean_)",
             "GS Lake Hylia Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Lake Hylia Lab Wall": "
                 is_child and (Boomerang or 
@@ -307,7 +307,7 @@
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
                 is_child or can_use(Scarecrow) or
-                here_(is_child and (Magic_Bean or Magic_Bean_Pack)) or Water_Temple_Clear",
+                planted_bean_ or Water_Temple_Clear",
             "Water Temple Lobby": "
                 here_(is_adult and (can_use(Hookshot) and Iron_Boots or can_use(Longshot))) and
                 ((Progressive_Scale, 2) or can_use(Iron_Boots)) and
@@ -489,13 +489,13 @@
         "hint": "Desert Colossus",
         "time_passes": true,
         "locations": {
-            "Colossus Freestanding PoH": "is_adult and here_(is_child and (Magic_Bean or Magic_Bean_Pack))",
+            "Colossus Freestanding PoH": "is_adult and planted_bean_",
             "Sheik at Colossus": "True",
             "GS Desert Colossus Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Desert Colossus Tree": "can_use(Hookshot) and at_night",
             "GS Desert Colossus Hill": "
                 is_adult and at_night and
-                    (here_(is_child and (Magic_Bean or Magic_Bean_Pack)) or can_use(Longshot) or
+                    (planted_bean_ or can_use(Longshot) or
                         (logic_colossus_gs and can_use(Hookshot)))",
             "Desert Colossus Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
@@ -941,7 +941,7 @@
         "hint": "the Graveyard",
         "locations": {
             "Graveyard Freestanding PoH": "
-                is_adult and (here_(is_child and (Magic_Bean or Magic_Bean_Pack)) or can_use(Longshot))",
+                is_adult and (planted_bean_ or can_use(Longshot))",
             "Gravedigging Tour": "is_child and at_dampe_time",
             "GS Graveyard Wall": "can_use(Boomerang) and at_night",
             "GS Graveyard Bean Patch": "can_plant_bugs and can_child_attack",
@@ -1232,7 +1232,7 @@
         "locations": {
             "DM Crater Volcano Freestanding PoH": "
                 is_adult and
-                (here_(is_child and (Magic_Bean or Magic_Bean_Pack)) or 
+                (planted_bean_ or 
                     (logic_crater_bean_poh_with_hovers and can_use(Hover_Boots)))",
             "Sheik in Crater": "is_adult",
             "GS Mountain Crater Bean Patch": "can_plant_bugs and can_child_attack"
@@ -1241,7 +1241,7 @@
             "Death Mountain Crater Lower": "
                 is_adult and
                 (can_use(Hover_Boots) or can_use(Hookshot) or
-                    here_(is_child and (Magic_Bean or Magic_Bean_Pack)))",
+                    planted_bean_)",
             "Fire Temple Lower": "
                 (is_child and shuffle_dungeon_entrances) or
                 (is_adult and (logic_fewer_tunic_requirements or can_use(Goron_Tunic)))"

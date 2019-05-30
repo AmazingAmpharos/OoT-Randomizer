@@ -15,6 +15,11 @@ for item in item_table:
 
 event_name = re.compile(r'\w+')
 
+# These can't be pre-parsed since visiting modifies the ast.
+rule_aliases = {
+    'planted_bean_': "here_(is_child and (Magic_Bean or Magic_Bean_Pack))",
+}
+
 
 class Rule_AST_Transformer(ast.NodeTransformer):
 
@@ -36,6 +41,8 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                     ctx=ast.Load()),
                 args=[ast.Str(escaped_items[node.id])],
                 keywords=[])
+        elif node.id in rule_aliases:
+            return self.visit(ast.parse(rule_aliases[node.id], mode='eval').body)
         elif node.id in self.world.__dict__:
             return ast.Attribute(
                 value=ast.Attribute(
@@ -227,14 +234,16 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         # Cache this under the target (region) name
         if not node.args or not isinstance(node.args[0], ast.Str):
             raise Exception('Parse Error: invalid from_() arguments')
-        return self.replace_subrule(node.args[0].s,
+        return self.replace_subrule(
+                node.args[0].s,
                 node.args[1] if len(node.args) > 1 else ast.NameConstant(True))
 
 
     # here_(rule=True)
     # Creates an internal event in the same region and depends on it.
     def here_(self, node):
-        return self.replace_subrule(self.current_spot.parent_region.name,
+        return self.replace_subrule(
+                self.current_spot.parent_region.name,
                 node.args[0] if node.args else ast.NameConstant(True))
 
 
