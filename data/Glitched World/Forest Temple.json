@@ -28,7 +28,7 @@
         "locations": {
             "GS Forest Temple Outdoor West": "
                 can_use(Longshot) or 
-                remote('Forest Temple Outside Upper Ledge', can_use(Hookshot) or can_hover)"
+                from_('Forest Temple Outside Upper Ledge', can_use(Hookshot) or can_hover)"
         },
         "exits": {
             "Forest Temple Outdoors High Balconies": "
@@ -46,10 +46,10 @@
         "locations": {
             "Forest Temple Outside Hookshot Chest": "
                 can_use(Hookshot) or
-                remote('Forest Temple Falling Room') or can_hover",
+                from_('Forest Temple Falling Room') or can_hover",
             "GS Forest Temple Outdoor East": "
                 can_use(Hookshot) or can_hover or
-                remote('Forest Temple Falling Room', can_use(Bow) or can_use(Dins_Fire) or has_explosives)"
+                from_('Forest Temple Falling Room', can_use(Bow) or can_use(Dins_Fire) or has_explosives)"
         },
         "exits": {
             "Forest Temple Outdoors High Balconies": "can_use(Hookshot)",
@@ -57,7 +57,7 @@
             "Forest Temple NW Outdoors": "can_use(Iron_Boots) or (Progressive_Scale, 2)",
             "Forest Temple Lobby": "True",
             "Forest Temple Falling Room": "can_hover or
-                remote('Forest Temple Outdoors High Balconies',
+                from_('Forest Temple Outdoors High Balconies',
                        can_use(Hover_Boots) and can_use(Scarecrow) and can_live_dmg(0.5))"
         }
     },

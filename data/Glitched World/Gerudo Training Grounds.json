@@ -11,7 +11,7 @@
         "exits": {
             "Gerudo Training Grounds Heavy Block Room": "True",
             "Gerudo Training Grounds Lava Room": "
-                as_either(has_explosives and can_jumpslash)",
+                here_(has_explosives and can_jumpslash)",
             "Gerudo Training Grounds Central Maze": "True"
         }
     },

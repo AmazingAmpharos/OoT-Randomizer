@@ -9,7 +9,7 @@
         },
         "exits": {
             "Zoras Fountain": "True",
-            "Jabu Jabus Belly Main": "as_child_here(can_use(Slingshot))"
+            "Jabu Jabus Belly Main": "here_(is_child and can_use(Slingshot))"
         }
     },
     {
@@ -18,7 +18,7 @@
         "locations": {
             "Jabu Jabus Belly MQ Second Room Lower Chest": "True",
             "Jabu Jabus Belly MQ Second Room Upper Chest": "
-                can_use(Hover_Boots) or remote('Jabu Jabus Belly Boss Area', is_child)",
+                can_use(Hover_Boots) or from_('Jabu Jabus Belly Boss Area', is_child)",
             "Jabu Jabus Belly MQ Compass Chest": "True",
             "Jabu Jabus Belly MQ Basement South Chest": "True",
             "Jabu Jabus Belly MQ Basement North Chest": "True",
@@ -40,7 +40,7 @@
             "GS Jabu Jabu MQ Tailpasaran Room": "has_sticks or can_use(Dins_Fire)",
             "GS Jabu Jabu MQ Invisible Enemies Room": "
                 can_see_with_lens or
-                remote('Jabu Jabus Belly Main', can_use(Hover_Boots))"
+                from_('Jabu Jabus Belly Main', can_use(Hover_Boots))"
         },
         "exits": {
             "Jabu Jabus Belly Main": "True",

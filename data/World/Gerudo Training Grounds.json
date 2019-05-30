@@ -12,7 +12,7 @@
             "Gerudo Fortress": "True",
             "Gerudo Training Grounds Heavy Block Room": "can_use(Hookshot)",
             "Gerudo Training Grounds Lava Room": "
-                as_either_here(has_explosives and (is_adult or Kokiri_Sword))",
+                here_(has_explosives and (is_adult or Kokiri_Sword))",
             "Gerudo Training Grounds Central Maze": "True"
         }
     },

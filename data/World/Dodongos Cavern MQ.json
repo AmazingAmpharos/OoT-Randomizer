@@ -5,7 +5,7 @@
         "exits": {
             "Dodongos Cavern Entryway": "True",
             "Dodongos Cavern Lobby": "
-                as_either_here(can_blast_or_smash or Progressive_Strength_Upgrade)"
+                here_(can_blast_or_smash or Progressive_Strength_Upgrade)"
         }
     },
     {
@@ -30,10 +30,10 @@
         },
         "exits": {
             "Dodongos Cavern Lower Right Side": "
-                as_either_here(can_blast_or_smash or
-                               ((can_use(Sticks) or can_use(Dins_Fire)) and
-                                (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love))))",
-            "Dodongos Cavern Bomb Bag Area": "is_adult or (as_adult_here(True) and has_explosives)",
+                here_(can_blast_or_smash or
+                      ((can_use(Sticks) or can_use(Dins_Fire)) and
+                       (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love))))",
+            "Dodongos Cavern Bomb Bag Area": "is_adult or (here_(is_adult) and has_explosives)",
             "Dodongos Cavern Boss Area": "has_explosives"
         }
     },
@@ -45,7 +45,7 @@
         },
         "exits": {
             "Dodongos Cavern Bomb Bag Area": "
-                (as_adult_here(can_use(Bow)) or Progressive_Strength_Upgrade or
+                (here_(is_adult and can_use(Bow)) or Progressive_Strength_Upgrade or
                  can_use(Dins_Fire) or has_explosives) and
                 (can_use(Slingshot))"
         }
@@ -56,7 +56,7 @@
         "locations": {
             "Dodongos Cavern MQ Bomb Bag Chest": "True",
             "GS Dodongo's Cavern MQ Scrub Room": "
-                (as_adult_here(can_use(Bow)) or Progressive_Strength_Upgrade or
+                (here_(is_adult and can_use(Bow)) or Progressive_Strength_Upgrade or
                  can_use(Dins_Fire) or has_explosives) and
                 (can_use(Hookshot) or can_use(Boomerang))"
         },

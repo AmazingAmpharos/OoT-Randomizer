@@ -12,9 +12,9 @@
         },
         "exits": {
             "Gerudo Fortress": "True",
-            "Gerudo Training Grounds Left Side": "as_either_here(has_fire_source)",
+            "Gerudo Training Grounds Left Side": "here_(has_fire_source)",
             "Gerudo Training Grounds Right Side": "
-                as_either_here(can_use(Bow) or can_use(Slingshot))"
+                here_(can_use(Bow) or can_use(Slingshot))"
         }
     },
     {

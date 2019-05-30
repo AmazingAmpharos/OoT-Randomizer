@@ -156,10 +156,10 @@
             "Lost Woods Bridge": "
                 is_adult and
                 (can_use(Hover_Boots) or can_use(Longshot) or
-                    as_child(Magic_Bean or Magic_Bean_Pack))",
+                    here_(is_child and (Magic_Bean or Magic_Bean_Pack)))",
             "Zora River": "can_leave_forest and (can_dive or can_use(Iron_Boots))",
             "Lost Woods Beyond Mido": "is_child or logic_adult_meadow_access or can_play(Sarias_Song)",
-            "Lost Woods Generic Grotto": "as_either_here(can_blast_or_smash)"
+            "Lost Woods Generic Grotto": "here_(can_blast_or_smash)"
         }
     },
     {
@@ -170,7 +170,7 @@
             "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
             "LW Deku Scrub Deku Sticks": "is_child and can_stun_deku",
             "GS Lost Woods Above Stage": "
-                is_adult and as_child(Magic_Bean or Magic_Bean_Pack) and at_night",
+                is_adult and here_(is_child and (Magic_Bean or Magic_Bean_Pack)) and at_night",
             "GS Lost Woods Bean Patch Near Stage": "
                 can_plant_bugs and 
                 (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))",
@@ -181,7 +181,7 @@
             "Lost Woods": "is_child or can_play(Sarias_Song)",
             "Sacred Forest Meadow Entryway": "True",
             "Deku Theater": "True",
-            "Lost Woods Sales Grotto": "as_either_here(can_blast_or_smash)"
+            "Lost Woods Sales Grotto": "here_(can_blast_or_smash)"
         }
     },
     {
@@ -257,13 +257,13 @@
             "Kakariko Village": "True",
             "Zora River Front": "True",
             "Lon Lon Ranch": "True",
-            "Remote Southern Grotto": "as_either_here(can_blast_or_smash)",
+            "Remote Southern Grotto": "here_(can_blast_or_smash)",
             "Field Near Lake Outside Fence Grotto": "True",
             "Field Near Lake Inside Fence Grotto": "can_blast_or_smash",
             "Field Valley Grotto": "can_use(Hammer) or (is_child and has_explosives)",
                                    # There is a hammerable boulder as adult which is not there as child
-            "Field West Castle Town Grotto": "as_either_here(can_blast_or_smash)",
-            "Field Far West Castle Town Grotto": "as_either_here(can_blast_or_smash)",
+            "Field West Castle Town Grotto": "here_(can_blast_or_smash)",
+            "Field Far West Castle Town Grotto": "here_(can_blast_or_smash)",
             "Field Kakariko Grotto": "can_blast_or_smash",
             "Field North Lon Lon Grotto": "can_blast_or_smash"
         }
@@ -286,7 +286,7 @@
                 is_adult and 
                 (can_use(Distant_Scarecrow) or Water_Temple_Clear) and can_use(Bow)",
             "Lake Hylia Freestanding PoH": "
-                is_adult and (can_use(Scarecrow) or as_child(Magic_Bean or Magic_Bean_Pack))",
+                is_adult and (can_use(Scarecrow) or here_(is_child and (Magic_Bean or Magic_Bean_Pack)))",
             "GS Lake Hylia Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Lake Hylia Lab Wall": "
                 is_child and (Boomerang or 
@@ -307,9 +307,9 @@
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
                 is_child or can_use(Scarecrow) or
-                as_child(Magic_Bean or Magic_Bean_Pack) or Water_Temple_Clear",
+                here_(is_child and (Magic_Bean or Magic_Bean_Pack)) or Water_Temple_Clear",
             "Water Temple Lobby": "
-                as_adult(can_use(Hookshot) and Iron_Boots or can_use(Longshot)) and
+                here_(is_adult and (can_use(Hookshot) and Iron_Boots or can_use(Longshot))) and
                 ((Progressive_Scale, 2) or can_use(Iron_Boots)) and
                 (is_adult or (child_lake_hylia_control and Water_Temple_Clear))",
             "Lake Hylia Grotto": "True"
@@ -489,13 +489,13 @@
         "hint": "Desert Colossus",
         "time_passes": true,
         "locations": {
-            "Colossus Freestanding PoH": "is_adult and as_child(Magic_Bean or Magic_Bean_Pack)",
+            "Colossus Freestanding PoH": "is_adult and here_(is_child and (Magic_Bean or Magic_Bean_Pack))",
             "Sheik at Colossus": "True",
             "GS Desert Colossus Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Desert Colossus Tree": "can_use(Hookshot) and at_night",
             "GS Desert Colossus Hill": "
                 is_adult and at_night and
-                    (as_child(Magic_Bean or Magic_Bean_Pack) or can_use(Longshot) or
+                    (here_(is_child and (Magic_Bean or Magic_Bean_Pack)) or can_use(Longshot) or
                         (logic_colossus_gs and can_use(Hookshot)))",
             "Desert Colossus Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
@@ -941,7 +941,7 @@
         "hint": "the Graveyard",
         "locations": {
             "Graveyard Freestanding PoH": "
-                is_adult and (as_child(Magic_Bean or Magic_Bean_Pack) or can_use(Longshot))",
+                is_adult and (here_(is_child and (Magic_Bean or Magic_Bean_Pack)) or can_use(Longshot))",
             "Gravedigging Tour": "is_child and at_dampe_time",
             "GS Graveyard Wall": "can_use(Boomerang) and at_night",
             "GS Graveyard Bean Patch": "can_plant_bugs and can_child_attack",
@@ -1052,10 +1052,10 @@
         "exits": {
             "Kakariko Village Behind Gate": "True",
             "Goron City": "True",
-            "Death Mountain Summit": "as_either_here(can_blast_or_smash)",
+            "Death Mountain Summit": "here_(can_blast_or_smash)",
             "Dodongos Cavern Entryway": "
                 has_explosives or Progressive_Strength_Upgrade or is_adult",
-            "Mountain Bombable Grotto": "as_either_here(can_blast_or_smash)",
+            "Mountain Bombable Grotto": "here_(can_blast_or_smash)",
             "Mountain Storms Grotto": "can_play(Song_of_Storms)"
         }
     },
@@ -1075,7 +1075,7 @@
             "Death Mountain": "True",
             "Death Mountain Crater Upper": "True",
             "Death Mountain Summit Owl Flight": "is_child",
-            "Mountain Summit Fairy": "as_either_here(can_blast_or_smash)"
+            "Mountain Summit Fairy": "here_(can_blast_or_smash)"
         }
     },
     {
@@ -1209,7 +1209,7 @@
                 can_use(Goron_Tunic) and can_use(Distant_Scarecrow) and 
                 ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
                     has_fairy or can_use(Nayrus_Love))",
-            "Top of Crater Grotto": "as_either_here(can_blast_or_smash)"
+            "Top of Crater Grotto": "here_(can_blast_or_smash)"
         }
     },
     {
@@ -1232,7 +1232,7 @@
         "locations": {
             "DM Crater Volcano Freestanding PoH": "
                 is_adult and
-                (as_child(Magic_Bean or Magic_Bean_Pack) or 
+                (here_(is_child and (Magic_Bean or Magic_Bean_Pack)) or 
                     (logic_crater_bean_poh_with_hovers and can_use(Hover_Boots)))",
             "Sheik in Crater": "is_adult",
             "GS Mountain Crater Bean Patch": "can_plant_bugs and can_child_attack"
@@ -1241,7 +1241,7 @@
             "Death Mountain Crater Lower": "
                 is_adult and
                 (can_use(Hover_Boots) or can_use(Hookshot) or
-                    as_child(Magic_Bean or Magic_Bean_Pack))",
+                    here_(is_child and (Magic_Bean or Magic_Bean_Pack)))",
             "Fire Temple Lower": "
                 (is_child and shuffle_dungeon_entrances) or
                 (is_adult and (logic_fewer_tunic_requirements or can_use(Goron_Tunic)))"
@@ -1306,7 +1306,7 @@
         "exits": {
             "Zora River Front": "True",
             "Zora River Plateau Open Grotto": "True",
-            "Zora River Plateau Bombable Grotto": "as_either_here(can_blast_or_smash)",
+            "Zora River Plateau Bombable Grotto": "here_(can_blast_or_smash)",
             "Lost Woods": "can_dive or can_use(Iron_Boots)",
             "Zora River Storms Grotto": "can_play(Song_of_Storms)",
             "Zora River Behind Waterfall": "

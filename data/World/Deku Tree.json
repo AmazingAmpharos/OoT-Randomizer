@@ -13,10 +13,10 @@
                 (logic_deku_basement_gs and (is_adult or has_sticks or Kokiri_Sword))",
             "GS Deku Tree Basement Gate": "is_adult or can_child_attack",
             "GS Deku Tree Basement Back Room": "
-                (as_either_here(has_fire_source_with_torch) and
-                 as_either_here(can_use(Slingshot) or can_use(Bow)) and
-                 as_either_here(can_blast_or_smash) and
-                 as_either_here(can_use(Hookshot) or can_use(Boomerang))) or
+                (here_(has_fire_source_with_torch) and
+                 here_(can_use(Slingshot) or can_use(Bow)) and
+                 here_(can_blast_or_smash) and
+                 here_(can_use(Hookshot) or can_use(Boomerang))) or
                 (as_adult_here and is_child and has_explosives and
                  can_use(Boomerang) and (has_sticks or can_use(Dins_Fire)))",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
@@ -26,10 +26,10 @@
         },
         "exits": {
             "Outside Deku Tree": "True",
-            "Deku Tree Slingshot Room": "as_either_here(has_shield)",
+            "Deku Tree Slingshot Room": "here_(has_shield)",
             "Deku Tree Boss Room": "
-                as_either_here(has_fire_source_with_torch) and
-                as_either_here(is_adult or can_use(Slingshot))"
+                here_(has_fire_source_with_torch) and
+                here_(is_adult or can_use(Slingshot))"
         }
     },
     {
@@ -48,13 +48,13 @@
         "dungeon": "Deku Tree",
         "events": {
             "Deku Tree Clear": "
-                as_either_here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)"
+                here_(has_shield) and (is_adult or Kokiri_Sword or has_sticks)"
         },
         "locations": {
             "Queen Gohma Heart": "
-                as_either_here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)",
+                here_(has_shield) and (is_adult or Kokiri_Sword or has_sticks)",
             "Queen Gohma": "
-                as_either_here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)"
+                here_(has_shield) and (is_adult or Kokiri_Sword or has_sticks)"
         },
         "exits": {
             "Deku Tree Lobby": "True"

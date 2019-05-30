@@ -15,16 +15,6 @@ for item in item_table:
 
 event_name = re.compile(r'\w+')
 
-# There's no difference between as_age and as_age_here.
-age_subrules = {
-    'as_either': None,
-    'as_adult': 'is_adult',
-    'as_child': 'is_child',
-    'as_either_here': None,
-    'as_adult_here': 'is_adult',
-    'as_child_here': 'is_child',
-}
-
 
 class Rule_AST_Transformer(ast.NodeTransformer):
 
@@ -115,9 +105,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     def visit_Call(self, node):
-        if node.func.id in age_subrules:
-            return self.replace_subrule(node, self.current_spot.parent_region.name)
-        elif node.func.id in dir(self):
+        if node.func.id in dir(self):
             return getattr(self, node.func.id)(node)
 
         new_args = []
@@ -180,7 +168,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         return node
 
 
-    def replace_subrule(self, node, target):
+    def replace_subrule(self, target, node):
         rule = ast.dump(node, False)
         if rule in self.replaced_rules[target]:
             return self.replaced_rules[target][rule]
@@ -201,31 +189,6 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         self.replaced_rules[target][rule] = item_rule
         return item_rule
 
-    def create_subrule(self, body=None, agefunc=None):
-        # todo: use rule/spot attributes to check adult_only/child_only/etc.
-        if agefunc:
-            agefunc = ast.Call(
-                func=ast.Attribute(
-                    value=ast.Name(id='state', ctx=ast.Load()),
-                    attr=agefunc,
-                    ctx=ast.Load()),
-                args=[],
-                keywords=[])
-
-        if body:
-            # This could, in theory, create further subrules.
-            body = self.visit(body)
-            if agefunc:
-                if isinstance(body, ast.BoolOp) and isinstance(body.op, ast.And):
-                    body.values = [agefunc] + body.values
-                else:
-                    return ast.BoolOp(op=ast.And(), values=[agefunc, body])
-            return body
-        elif agefunc:
-            return agefunc
-        else:
-            return ast.NameConstant(True)
-
 
     # Requires the target regions have been defined in the world.
     def create_delayed_rules(self):
@@ -235,16 +198,6 @@ class Rule_AST_Transformer(ast.NodeTransformer):
             event.world = self.world
 
             self.current_spot = event
-            if node.func.id in age_subrules:
-                body = self.create_subrule(
-                        body=node.args[0] if node.args else None,
-                        agefunc=age_subrules[node.func.id])
-            elif node.func.id == 'remote':
-                body = self.create_subrule(
-                        body=node.args[1] if len(node.args) > 1 else None)
-            else:
-                raise Exception('Parse Error: No such handler for subrule %s' % node.func.id)
-
             newrule = ast.fix_missing_locations(
                 ast.Expression(ast.Lambda(
                     args=ast.arguments(
@@ -252,7 +205,9 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                         defaults=[],
                         kwonlyargs=[],
                         kw_defaults=[]),
-                    body=body)))
+                    # This could, in theory, create further subrules.
+                    body=self.visit(node))))
+
             event.access_rule = eval(compile(newrule, '<string>', 'eval'))
             region.locations.append(event)
 
@@ -266,14 +221,21 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     ## Handlers for specific internal functions used in the json logic.
 
-    # remote(region_name, rule)
+    # from_(region_name, rule='True')
     # Creates an internal event at the remote region and depends on it.
-    def remote(self, node):
+    def from_(self, node):
         # Cache this under the target (region) name
         if not node.args or not isinstance(node.args[0], ast.Str):
-            raise Exception('Parse Error: invalid remote() arguments')
-        return self.replace_subrule(node, node.args[0].s)
+            raise Exception('Parse Error: invalid from_() arguments')
+        return self.replace_subrule(node.args[0].s,
+                node.args[1] if len(node.args) > 1 else ast.NameConstant(True))
 
+
+    # here_(rule=True)
+    # Creates an internal event in the same region and depends on it.
+    def here_(self, node):
+        return self.replace_subrule(self.current_spot.parent_region.name,
+                node.args[0] if node.args else ast.NameConstant(True))
 
 
     def parse_spot_rule(self, spot):
