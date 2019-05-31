@@ -71,7 +71,7 @@
         "exits": {
             "Water Temple Middle Water Level": "
                 (has_bow or can_use(Dins_Fire) or
-                 ((Small_Key_Water_Temple, 5) and can_use(Hookshot)) or
+                 ((Small_Key_Water_Temple, 6) and can_use(Hookshot)) or
                  (Child_Water_Temple and has_sticks)) and
                 can_play(Zeldas_Lullaby)"
         }
@@ -82,10 +82,10 @@
         "locations": {
             "Water Temple Central Pillar Chest": "
                 Iron_Boots and can_use(Zora_Tunic) and can_use(Hookshot) and 
-                ((Small_Key_Water_Temple, 5) or can_use(Bow) or can_use(Dins_Fire))",
+                ((Small_Key_Water_Temple, 6) or can_use(Bow) or can_use(Dins_Fire))",
             "GS Water Temple Central Room": "
                 ((can_use(Longshot) or (can_use(Farores_Wind) and can_use(Hookshot))) and
-                 ((Small_Key_Water_Temple, 5) or can_use(Bow) or can_use(Dins_Fire))) or
+                 ((Small_Key_Water_Temple, 6) or can_use(Bow) or can_use(Dins_Fire))) or
                 (Child_Water_Temple and Boomerang and can_use(Farores_Wind) and
                     (can_use(Dins_Fire) or has_sticks))"
         }
