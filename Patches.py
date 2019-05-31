@@ -1061,6 +1061,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         save_context.addresses['equip_items']['master_sword'].value = True  # Equip Master Sword by default
         save_context.addresses['equip_items']['kokiri_tunic'].value = True  # Equip Kokiri Tunic & Kokiri Boots by default
         save_context.addresses['equip_items']['kokiri_boots'].value = True  # (to avoid issues when going back child for the first time)
+        save_context.write_byte(0x0F33, 0x00)                               # Unset Swordless Flag (to avoid issues with sword getting unequipped)
 
     # Revert change that Skips the Epona Race
     if not world.no_epona_race:
