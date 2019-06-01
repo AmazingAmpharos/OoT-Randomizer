@@ -16,7 +16,7 @@
             "Death Mountain Crater Central": "True",
             "Fire Boss Room": "
                 has_fire_source and can_use(Goron_Tunic) and can_use(Hammer) and Boss_Key_Fire_Temple and
-                (logic_volvagia_jump or Hover_Boots or from_('Fire Temple Upper'))",
+                (logic_volvagia_jump or Hover_Boots or at('Fire Temple Upper', True))",
             "Fire Lower Locked Door": "
                 (Small_Key_Fire_Temple, 5) and 
                 (has_explosives or can_use(Hammer) or can_use(Hookshot))",

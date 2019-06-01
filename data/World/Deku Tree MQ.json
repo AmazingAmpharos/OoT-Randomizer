@@ -16,11 +16,11 @@
         "exits": {
             "Outside Deku Tree": "True",
             "Deku Tree Compass Room": "
-                here_(can_use(Slingshot) or can_use(Bow)) and
-                here_(has_fire_source_with_torch or can_use(Bow))",
+                here(can_use(Slingshot) or can_use(Bow)) and
+                here(has_fire_source_with_torch or can_use(Bow))",
             "Deku Tree Basement Water Room": "
-                here_(can_use(Slingshot) or can_use(Bow)) and has_fire_source_with_torch",
-            "Deku Tree Basement Ledge": "here_(is_adult)"
+                here(can_use(Slingshot) or can_use(Bow)) and has_fire_source_with_torch",
+            "Deku Tree Basement Ledge": "here(is_adult)"
         }
     },
     {
@@ -30,7 +30,7 @@
             "Deku Tree MQ Compass Chest": "True",
             "GS Deku Tree MQ Compass Room": "
                 (can_use(Hookshot) or can_use(Boomerang)) and
-                (has_bombchus or (has_bombs and (here_(is_adult) or can_play(Song_of_Time))))"
+                (has_bombchus or (has_bombs and (here(is_adult) or can_play(Song_of_Time))))"
         },
         "exits": {
             "Deku Tree Lobby": "True"
@@ -58,7 +58,7 @@
                 can_use(Longshot) or
                 (can_play(Song_of_Time) and (can_use(Boomerang) or can_use(Hookshot)))",
             "GS Deku Tree MQ Basement Back Room": "
-                here_(has_fire_source_with_torch) and
+                here(has_fire_source_with_torch) and
                 (can_use(Hookshot) or can_use(Boomerang))"
         },
         "exits": {
@@ -73,15 +73,15 @@
         "locations": {
             "DT MQ Deku Scrub Deku Shield": "can_stun_deku",
             "Queen Gohma Heart": "
-                here_(has_fire_source_with_torch) and here_(has_shield) and
+                here(has_fire_source_with_torch) and here(has_shield) and
                 (is_adult or Kokiri_Sword or has_sticks)",
             "Queen Gohma": "
-                here_(has_fire_source_with_torch) and here_(has_shield) and
+                here(has_fire_source_with_torch) and here(has_shield) and
                 (is_adult or Kokiri_Sword or has_sticks)"
         },
         "events": {
             "Deku Tree Clear": "
-                here_(has_fire_source_with_torch) and here_(has_shield) and
+                here(has_fire_source_with_torch) and here(has_shield) and
                 (is_adult or Kokiri_Sword or has_sticks)"
         },
         "exits" : {

@@ -36,7 +36,7 @@
         "locations": {
             "Water Temple MQ Compass Chest": "
                 can_use(Bow) or can_use(Dins_Fire) or 
-                from_('Water Temple Lobby', can_use(Sticks) and has_explosives)",
+                at('Water Temple Lobby', can_use(Sticks) and has_explosives)",
             "Water Temple MQ Longshot Chest": "can_use(Hookshot)",
             "GS Water Temple MQ Lizalfos Hallway": "can_use(Dins_Fire)",
             "GS Water Temple MQ Before Upper Water Switch": "can_use(Longshot)"

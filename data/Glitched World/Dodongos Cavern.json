@@ -4,7 +4,7 @@
         "dungeon": "Dodongos Cavern",
         "exits": {
             "Dodongos Cavern Lobby": "
-                here_(can_blast_or_smash or has_blue_fire) or Progressive_Strength_Upgrade"
+                here(can_blast_or_smash or has_blue_fire) or Progressive_Strength_Upgrade"
         }
     },
     {
@@ -28,7 +28,7 @@
         "exits": {
             "Dodongos Cavern Beginning": "True",
             "Dodongos Cavern Climb": "
-                here_(
+                here(
                     (is_adult or can_shield or
                         ( (has_sticks or can_use(Dins_Fire)) and 
                             (has_slingshot or has_sticks or has_explosives or Kokiri_Sword) 

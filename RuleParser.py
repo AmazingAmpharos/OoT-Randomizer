@@ -228,23 +228,23 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     ## Handlers for specific internal functions used in the json logic.
 
-    # from_(region_name, rule='True')
+    # at(region_name, rule)
     # Creates an internal event at the remote region and depends on it.
-    def from_(self, node):
+    def at(self, node):
         # Cache this under the target (region) name
-        if not node.args or not isinstance(node.args[0], ast.Str):
-            raise Exception('Parse Error: invalid from_() arguments')
-        return self.replace_subrule(
-                node.args[0].s,
-                node.args[1] if len(node.args) > 1 else ast.NameConstant(True))
+        if len(node.args) < 2 or not isinstance(node.args[0], ast.Str):
+            raise Exception('Parse Error: invalid at() arguments')
+        return self.replace_subrule(node.args[0].s, node.args[1])
 
 
-    # here_(rule=True)
+    # here(rule)
     # Creates an internal event in the same region and depends on it.
-    def here_(self, node):
+    def here(self, node):
+        if not node.args:
+            raise Exception('Parse Error: missing here() argument')
         return self.replace_subrule(
                 self.current_spot.parent_region.name,
-                node.args[0] if node.args else ast.NameConstant(True))
+                node.args[0])
 
 
     def parse_spot_rule(self, spot):

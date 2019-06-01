@@ -23,7 +23,7 @@
         "locations": {
             "GS Forest Temple Outdoor West": "
                 can_use(Longshot) or 
-                from_('Forest Temple Outside Upper Ledge', can_use(Hookshot))",
+                at('Forest Temple Outside Upper Ledge', can_use(Hookshot))",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
                 is_adult or has_slingshot or has_sticks or 
@@ -43,10 +43,10 @@
         "locations": {
             "Forest Temple Outside Hookshot Chest": "
                 can_use(Hookshot) or
-                from_('Forest Temple Falling Room')",
+                at('Forest Temple Falling Room', True)",
             "GS Forest Temple Outdoor East": "
                 can_use(Hookshot) or 
-                from_('Forest Temple Falling Room', can_use(Bow) or can_use(Dins_Fire) or has_explosives)",
+                at('Forest Temple Falling Room', can_use(Bow) or can_use(Dins_Fire) or has_explosives)",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
                 is_adult or has_slingshot or has_sticks or 

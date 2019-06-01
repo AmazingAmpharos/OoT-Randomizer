@@ -137,7 +137,7 @@
         "locations": {
             "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
             "LW Deku Scrub Deku Sticks": "is_child and can_stun_deku",
-            "GS Lost Woods Above Stage": "is_adult and at_night and (here_(can_plant_bean) or can_use(Longshot) or (has_bombchus and Progressive_Hookshot) or can_hover)",
+            "GS Lost Woods Above Stage": "is_adult and at_night and (here(can_plant_bean) or can_use(Longshot) or (has_bombchus and Progressive_Hookshot) or can_hover)",
             "GS Lost Woods Bean Patch Near Stage": "
                 can_plant_bugs and 
                 (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))"
@@ -234,7 +234,7 @@
                 (can_use(Distant_Scarecrow) or 'Water Temple Clear' or can_hover) and can_use(Bow)",
             "Lake Hylia Freestanding PoH": "
                 is_adult and
-                (can_use(Scarecrow) or here_(can_plant_bean))",
+                (can_use(Scarecrow) or here(can_plant_bean))",
             "GS Lake Hylia Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Lake Hylia Lab Wall": "
                 is_child and (Boomerang or can_jumpslash) and at_night",
@@ -250,7 +250,7 @@
             "Zoras Domain": "True",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
-                is_child or can_use(Scarecrow) or here_(can_plant_bean) or 'Water Temple Clear' or can_isg",
+                is_child or can_use(Scarecrow) or here(can_plant_bean) or 'Water Temple Clear' or can_isg",
             "Water Temple Lobby": "True",
             "Lake Hylia Grotto": "can_stun_deku"
         }
@@ -279,7 +279,7 @@
         "locations": {
             "Gerudo Valley Waterfall Freestanding PoH": "True",
             "Gerudo Valley Crate Freestanding PoH": "is_child or can_use(Longshot) or 
-                from_('Gerudo Valley Far Side', (can_use(Hover_Boots) or can_mega) and (can_live_dmg(0.5) or has_bottle or can_use(Nayrus_Love)))",
+                at('Gerudo Valley Far Side', (can_use(Hover_Boots) or can_mega) and (can_live_dmg(0.5) or has_bottle or can_use(Nayrus_Love)))",
             "GS Gerudo Valley Small Bridge": "(can_use(Boomerang) or (can_hover and is_child)) and at_night",
             "GS Gerudo Valley Bean Patch": "can_plant_bugs and can_child_attack",
             "Gerudo Valley Gossip Stone": "True",
@@ -355,8 +355,8 @@
         "time_passes": true,
         "locations": {
             "Colossus Freestanding PoH": "
-                (is_adult and here_(can_plant_bean)) or
-                from_('Spirit Temple Outdoor Hands', can_mega)",
+                (is_adult and here(can_plant_bean)) or
+                at('Spirit Temple Outdoor Hands', can_mega)",
             "Sheik at Colossus": "True",
             "GS Desert Colossus Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Desert Colossus Tree": "can_use(Hookshot) and at_night",
@@ -702,7 +702,7 @@
         "hint": "the Graveyard",
         "locations": {
             "Graveyard Freestanding PoH": "
-                (is_adult and here_(can_plant_bean)) or
+                (is_adult and here(can_plant_bean)) or
                 can_use(Hookshot) or can_hover",
             "Gravedigging Tour": "is_child",
             "GS Graveyard Wall": "(can_use(Boomerang) or (can_hover and is_child)) and at_night",
@@ -710,9 +710,9 @@
         },
         "exits": {
             "Shield Grave": "True",
-            "Composer Grave": "can_play(Zeldas_Lullaby) or from_('Shadow Temple Warp Region')",
+            "Composer Grave": "can_play(Zeldas_Lullaby) or at('Shadow Temple Warp Region', True)",
             "Heart Piece Grave": "True",
-            "Dampes Grave": "is_adult or from_('Shadow Temple Warp Region')",
+            "Dampes Grave": "is_adult or at('Shadow Temple Warp Region', True)",
             "Dampes House": "True",
             "Kakariko Village": "True",
             "Shadow Temple Warp Region": "can_hover or can_use(Hookshot)"
@@ -783,7 +783,7 @@
         "exits": {
             "Kakariko Village": "True",
             "Goron City": "True",
-            "Death Mountain Summit": "here_(can_blast_or_smash) or (is_child and can_isg) or can_use(Hookshot)",
+            "Death Mountain Summit": "here(can_blast_or_smash) or (is_child and can_isg) or can_use(Hookshot)",
             "Dodongos Cavern Entryway": "
                 has_explosives or Progressive_Strength_Upgrade or is_adult",
             "Mountain Bombable Grotto": "can_blast_or_smash",
@@ -802,7 +802,7 @@
         "exits": {
             "Death Mountain": "True",
             "Death Mountain Crater Upper": "True",
-            "Mountain Summit Fairy": "here_(can_blast_or_smash) or can_isg"
+            "Mountain Summit Fairy": "here(can_blast_or_smash) or can_isg"
         }
     },
     {
@@ -919,7 +919,7 @@
             "Death Mountain Crater Central": "(is_child and can_mega and (can_live_dmg(1) or has_fairy or can_use(Nayrus_Love)) and Hylian_Shield) or
                 (is_adult and can_use(Goron_Tunic) and (can_use(Distant_Scarecrow) or can_mega) and 
                 (can_live_dmg(1) or has_fairy or can_use(Nayrus_Love)))",
-            "Top of Crater Grotto": "here_(can_blast_or_smash)"
+            "Top of Crater Grotto": "here(can_blast_or_smash)"
         }
     },
     {
@@ -939,14 +939,14 @@
         "hint": "Death Mountain Crater",
         "locations": {
             "DM Crater Volcano Freestanding PoH": "
-                (is_adult and here_(can_plant_bean)) or
+                (is_adult and here(can_plant_bean)) or
                 can_use(Hover_Boots) or can_mega",
             "Sheik in Crater": "is_adult",
             "GS Mountain Crater Bean Patch": "can_plant_bugs and can_child_attack"
         },
         "exits": {
             "Death Mountain Crater Lower": "
-                (is_adult and here_(can_plant_bean)) or
+                (is_adult and here(can_plant_bean)) or
                 can_use(Hover_Boots) or can_use(Hookshot)",
             "Fire Temple Lower": "is_adult"
         }
@@ -1014,7 +1014,7 @@
             "GS Zora's Domain Frozen Waterfall": "
                 is_adult and at_night and (Progressive_Hookshot or Bow or Magic_Meter or has_explosives or 
                 Biggoron_Sword or 
-                from_('Goron City', is_adult and Progressive_Wallet and (can_blast_or_smash or Progressive_Strength_Upgrade or has_blue_fire)))",
+                at('Goron City', is_adult and Progressive_Wallet and (can_blast_or_smash or Progressive_Strength_Upgrade or has_blue_fire)))",
             "Zoras Domain Gossip Stone": "True",
             "Fish Group": "is_child and has_bottle",
             "Stick Pot": "is_child",
