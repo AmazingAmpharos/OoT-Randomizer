@@ -62,7 +62,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                 args=[ast.Str(node.id.replace('_', ' '))],
                 keywords=[])
         else:
-            raise Exception('Parse Error: invalid node name %s', node.id)
+            raise Exception('Parse Error: invalid node name %s' % node.id, self.current_spot.name, ast.parse(node, False))
 
     def visit_Str(self, node):
         return ast.Call(
@@ -75,16 +75,16 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     def visit_Tuple(self, node):
         if len(node.elts) != 2:
-            raise Exception('Parse Error: Tuple must has 2 values')
+            raise Exception('Parse Error: Tuple must have 2 values', self.current_spot.name, ast.parse(node, False))
 
         item, count = node.elts
 
         if not isinstance(item, (ast.Name, ast.Str)):
-            raise Exception('Parse Error: first value must be an item. Got %s' % item.__class__.__name__)
+            raise Exception('Parse Error: first value must be an item. Got %s' % item.__class__.__name__, self.current_spot.name, ast.parse(node, False))
         iname = item.id if isinstance(item, ast.Name) else item.s
 
         if not (isinstance(count, ast.Name) or isinstance(count, ast.Num)):
-            raise Exception('Parse Error: second value must be a number. Got %s' % item.__class__.__name__)
+            raise Exception('Parse Error: second value must be a number. Got %s' % item.__class__.__name__, self.current_spot.name, ast.parse(node, False))
 
         if isinstance(count, ast.Name):
             count = ast.Attribute(
@@ -233,7 +233,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     def at(self, node):
         # Cache this under the target (region) name
         if len(node.args) < 2 or not isinstance(node.args[0], ast.Str):
-            raise Exception('Parse Error: invalid at() arguments')
+            raise Exception('Parse Error: invalid at() arguments', self.current_spot.name, ast.dump(node, False))
         return self.replace_subrule(node.args[0].s, node.args[1])
 
 
@@ -241,7 +241,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     # Creates an internal event in the same region and depends on it.
     def here(self, node):
         if not node.args:
-            raise Exception('Parse Error: missing here() argument')
+            raise Exception('Parse Error: missing here() argument', self.current_spot.name, ast.parse(node, False))
         return self.replace_subrule(
                 self.current_spot.parent_region.name,
                 node.args[0])
@@ -257,9 +257,4 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         self.current_spot = spot
         rule_ast = ast.parse(rule, mode='eval')
         rule_ast = ast.fix_missing_locations(self.visit(rule_ast))
-        try:
-            spot.access_rule = eval(compile(rule_ast, '<string>', 'eval'))
-        except Exception as e:
-            print('Exception evaluting %r at spot %r' % (ast.dump(rule_ast, False), spot.name))
-            raise
-
+        spot.access_rule = eval(compile(rule_ast, '<string>', 'eval'))
