@@ -662,6 +662,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Forbid Sun's Song in Treasure Chest Minigame
     rom.write_byte(0xB6D34B, 0xD5)
 
+    # Allow Farore's Wind in dungeons where it's normally forbidden
+    rom.write_byte(0xB6D3D3, 0x00) # Gerudo Training Grounds
+    rom.write_byte(0xB6D42B, 0x00) # Inside Ganon's Castle
+
     # Remove disruptive text from Gerudo Training Grounds and early Shadow Temple (vanilla)
     Wonder_text = [0x27C00BC, 0x27C00CC, 0x27C00DC, 0x27C00EC, 0x27C00FC, 0x27C010C, 0x27C011C, 0x27C012C, 0x27CE080,
                    0x27CE090, 0x2887070, 0x2887080, 0x2887090, 0x2897070, 0x28C7134, 0x28D91BC, 0x28A60F4, 0x28AE084,
