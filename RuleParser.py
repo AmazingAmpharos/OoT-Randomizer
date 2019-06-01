@@ -15,11 +15,6 @@ for item in item_table:
 
 event_name = re.compile(r'\w+')
 
-# These can't be pre-parsed since visiting modifies the ast.
-rule_aliases = {
-    'planted_bean_': "here_(is_child and (Magic_Bean or Magic_Bean_Pack))",
-}
-
 
 class Rule_AST_Transformer(ast.NodeTransformer):
 
@@ -41,8 +36,6 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                     ctx=ast.Load()),
                 args=[ast.Str(escaped_items[node.id])],
                 keywords=[])
-        elif node.id in rule_aliases:
-            return self.visit(ast.parse(rule_aliases[node.id], mode='eval').body)
         elif node.id in self.world.__dict__:
             return ast.Attribute(
                 value=ast.Attribute(

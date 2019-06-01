@@ -345,6 +345,10 @@ class State(object):
         return self.has_any_of(('Ocarina', 'Fairy Ocarina', 'Ocarina of Time'))
 
 
+    def can_plant_bean(self):
+        return self.is_child() and self.has_any_of(('Magic Bean', 'Magic Bean Pack'))
+
+
     def can_play(self, song):
         return self.has_ocarina() and self.has(song)
 
