@@ -653,6 +653,15 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     for address in Suns_scenes:
         rom.write_byte(address,0x01)
 
+    # Allow Warp Songs in additional places
+    rom.write_byte(0xB6D3D2, 0x00) # Gerudo Training Grounds
+    rom.write_byte(0xB6D42A, 0x00) # Inside Ganon's Castle
+    rom.write_byte(0xB6D426, 0x00) # Dampe's Grave / Windmill
+    rom.write_byte(0xB6D34A, 0x10) # Treasure Chest Minigame
+
+    # Forbid Sun's Song in Treasure Chest Minigame
+    rom.write_byte(0xB6D34B, 0xD5)
+
     # Remove disruptive text from Gerudo Training Grounds and early Shadow Temple (vanilla)
     Wonder_text = [0x27C00BC, 0x27C00CC, 0x27C00DC, 0x27C00EC, 0x27C00FC, 0x27C010C, 0x27C011C, 0x27C012C, 0x27CE080,
                    0x27CE090, 0x2887070, 0x2887080, 0x2887090, 0x2897070, 0x28C7134, 0x28D91BC, 0x28A60F4, 0x28AE084,
