@@ -814,6 +814,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         #Tell the well water we are always a child.
         rom.write_int32(0xDD5BF4, 0x00000000)
 
+        #Tell Sheik at Ice Cavern we are always an Adult
+        rom.write_int32(0xC7B9C0, 0x00000000)
+        rom.write_int32(0xC7BAEC, 0x00000000)
+        rom.write_int32(0xc7BCA4, 0x00000000)
+
         #Make the Adult well blocking stone dissappear if the well has been drained by
         #checking the well drain event flag instead of links age. This actor doesn't need a
         #code check for links age as the stone is absent for child via the scene alternate
