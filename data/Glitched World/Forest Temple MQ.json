@@ -107,11 +107,13 @@
     {
         "region_name": "Forest Temple Bow Region",
         "dungeon": "Forest Temple",
+        "events": {
+            "Forest Temple Jo and Beth": "can_use(Bow)"
+        },
         "locations": {
             "Forest Temple MQ Bow Chest": "True",
             "Forest Temple MQ Map Chest": "can_use(Bow)",
-            "Forest Temple MQ Compass Chest": "can_use(Bow)",
-            "Forest Temple Poe Sisters 1": "can_use(Bow)"
+            "Forest Temple MQ Compass Chest": "can_use(Bow)"
         },
         "exits": {
             "Forest Temple Falling Room": "
@@ -122,9 +124,11 @@
     {
         "region_name": "Forest Temple Falling Room",
         "dungeon": "Forest Temple",
+        "events": {
+            "Forest Temple Amy and Meg": "can_use(Bow) and (Small_Key_Forest_Temple, 6)"
+        },
         "locations": {
-            "Forest Temple MQ Falling Room Chest": "True",
-            "Forest Temple Poe Sisters 2": "can_use(Bow) and (Small_Key_Forest_Temple, 6)"
+            "Forest Temple MQ Falling Room Chest": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors Ledge": "True"

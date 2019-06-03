@@ -28,7 +28,7 @@
         "locations": {
             "GS Forest Temple Outdoor West": "
                 can_use(Longshot) or 
-                ((can_use(Hookshot) or can_hover) and can_reach(Forest_Temple_Outside_Upper_Ledge))"
+                at('Forest Temple Outside Upper Ledge', can_use(Hookshot) or can_hover)"
         },
         "exits": {
             "Forest Temple Outdoors High Balconies": "
@@ -46,11 +46,10 @@
         "locations": {
             "Forest Temple Outside Hookshot Chest": "
                 can_use(Hookshot) or
-                can_reach(Forest_Temple_Falling_Room) or can_hover",
+                at('Forest Temple Falling Room', True) or can_hover",
             "GS Forest Temple Outdoor East": "
-                can_use(Hookshot) or 
-                (can_reach(Forest_Temple_Falling_Room) and 
-                 (can_use(Bow) or can_use(Dins_Fire) or has_explosives)) or can_hover"
+                can_use(Hookshot) or can_hover or
+                at('Forest Temple Falling Room', can_use(Bow) or can_use(Dins_Fire) or has_explosives)"
         },
         "exits": {
             "Forest Temple Outdoors High Balconies": "can_use(Hookshot)",
@@ -58,8 +57,8 @@
             "Forest Temple NW Outdoors": "can_use(Iron_Boots) or (Progressive_Scale, 2)",
             "Forest Temple Lobby": "True",
             "Forest Temple Falling Room": "can_hover or
-                (can_reach(Forest_Temple_Outdoors_High_Balconies) and can_use(Hover_Boots) and
-                can_use(Scarecrow) and can_live_dmg(0.5))" #For some reason you can't actually activate this from below. Cool game.
+                at('Forest Temple Outdoors High Balconies',
+                       can_use(Hover_Boots) and can_use(Scarecrow) and can_live_dmg(0.5))"
         }
     },
     {
@@ -77,9 +76,11 @@
     {
         "region_name": "Forest Temple Falling Room",
         "dungeon": "Forest Temple",
+        "events": {
+            "Forest Temple Amy and Meg": "can_use(Bow)"
+        },
         "locations": {
-            "Forest Temple Falling Room Chest": "True",
-            "Forest Temple Poe Sisters 2": "can_use(Bow)"
+            "Forest Temple Falling Room Chest": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors": "True"
@@ -125,11 +126,13 @@
     {
         "region_name": "Forest Temple Bow Region",
         "dungeon": "Forest Temple",
+        "events": {
+            "Forest Temple Jo and Beth": "can_use(Bow)"
+        },
         "locations": {
             "Forest Temple Bow Chest": "True",
             "Forest Temple Red Poe Chest": "can_use(Bow)",
-            "Forest Temple Blue Poe Chest": "can_use(Bow)",
-            "Forest Temple Poe Sisters 1": "can_use(Bow)"
+            "Forest Temple Blue Poe Chest": "can_use(Bow)"
         },
         "exits": {
             "Forest Temple Falling Room": "

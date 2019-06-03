@@ -6,7 +6,6 @@ import struct
 import random
 
 from HintList import getHint, getHintGroup, Hint, hintExclusions
-from ItemPool import eventlocations
 from Messages import update_message_by_id
 from Playthrough import Playthrough
 from TextBox import lineWrap

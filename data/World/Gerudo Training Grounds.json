@@ -12,7 +12,7 @@
             "Gerudo Fortress": "True",
             "Gerudo Training Grounds Heavy Block Room": "can_use(Hookshot)",
             "Gerudo Training Grounds Lava Room": "
-                as_either_here(has_explosives and (is_adult or Kokiri_Sword))",
+                here(has_explosives and (is_adult or Kokiri_Sword))",
             "Gerudo Training Grounds Central Maze": "True"
         }
     },
@@ -39,6 +39,7 @@
             "Gerudo Training Grounds Freestanding Key": "True"
         },
         "exits": {
+            "Gerudo Training Grounds Hammer Room": "can_use(Hookshot)",
             "Gerudo Training Grounds Lava Room": "True"
         }
     },
@@ -53,9 +54,7 @@
         "exits": {
             "Gerudo Training Grounds Central Maze Right": "can_play(Song_of_Time) or is_child",
             "Gerudo Training Grounds Hammer Room": "
-                (can_reach(Gerudo_Training_Grounds_Central_Maze_Right) or 
-                    can_use(Hover_Boots) or can_use(Longshot)) and
-                can_use(Hookshot)"
+                can_use(Longshot) or (can_use(Hookshot) and can_use(Hover_Boots))"
         }
     },
     {

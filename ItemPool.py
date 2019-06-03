@@ -478,37 +478,14 @@ tradeitemoptions = (
     'claim_check')
 
 
-eventlocations = {
+fixedlocations = {
     'Ganon': 'Triforce',
     'Zeldas Letter': 'Zeldas Letter',
     'Pierre': 'Scarecrow Song',
     'Deliver Ruto\'s Letter': 'Deliver Letter',
-    "Sell 1 Big Poe": 'Sell Big Poe',
-    "Sell 2 Big Poe": 'Sell Big Poe',
-    "Sell 3 Big Poe": 'Sell Big Poe',
-    "Sell 4 Big Poe": 'Sell Big Poe',
     'Master Sword Pedestal': 'Time Travel',
-    'Epona': 'Epona',
-    'Malon Race': 'Links Cow',
-    'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
-    'Gerudo Fortress Open Gate': 'Gerudo Fortress Gate Open',
     'Bombchu Bowling Bombchus': 'Bombchu Drop',
     'Haunted Wasteland Bombchu Salesman': 'Bombchus',
-    'Windmill Drain Well': 'Drain Well',
-    'Goron City Woods Warp from Woods': 'Goron City Woods Warp Open',
-    'Goron City Woods Warp from City': 'Goron City Woods Warp Open',
-    'Goron City Woods Warp from Darunia': 'Goron City Woods Warp Open',
-    'Deku Tree Clear': 'Kokiri Forest Open',
-    'Forest Temple Poe Sisters 1': 'Forest Temple Jo and Beth',
-    'Forest Temple Poe Sisters 2': 'Forest Temple Amy and Meg',
-    'Child in Water Temple': 'Child Water Temple',
-    'Water Temple Clear': 'Lake Refill',
-    'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
-    'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',
-    'Ganons Castle Water Trial Clear': 'Water Trial Clear',
-    'Ganons Castle Shadow Trial Clear': 'Shadow Trial Clear',
-    'Ganons Castle Spirit Trial Clear': 'Spirit Trial Clear',
-    'Ganons Castle Light Trial Clear': 'Light Trial Clear'
 }
 
 droplocations = {
@@ -760,9 +737,9 @@ def generate_itempool(world):
     elif world.junk_ice_traps in ['mayhem', 'onslaught']:
         junk_pool[:] = [('Ice Trap', 1)]
 
-    event_locations = list(filter(lambda loc: loc.name in eventlocations, world.get_locations()))
-    for location in event_locations:
-        item = eventlocations[location.name]
+    fixed_locations = list(filter(lambda loc: loc.name in fixedlocations, world.get_locations()))
+    for location in fixed_locations:
+        item = fixedlocations[location.name]
         world.push_item(location, ItemFactory(item, world))
         location.locked = True
 
@@ -1176,7 +1153,7 @@ def get_pool_core(world):
         world.state.collect(ItemFactory('Scarecrow Song'))
     
     if world.no_epona_race:
-        world.state.collect(ItemFactory('Epona'))
+        world.state.collect(ItemFactory('Epona', event=True))
 
     if world.shuffle_mapcompass == 'remove' or world.shuffle_mapcompass == 'startwith':
         for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:

@@ -5,7 +5,7 @@
         "exits": {
             "Zoras Fountain": "True",
             #Frezzards are weird, they are immune to KS completely. Leave sticks out as 8/10 is a lot
-            "Ice Cavern": "as_either_here(is_adult or has_explosives or can_use(Dins_Fire))"
+            "Ice Cavern": "here(is_adult or has_explosives or can_use(Dins_Fire))"
         }
     },
     {

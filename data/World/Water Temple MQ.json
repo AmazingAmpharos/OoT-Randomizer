@@ -2,10 +2,12 @@
     {
         "region_name": "Water Temple Lobby",
         "dungeon": "Water Temple",
+        "events": {
+            "Water Temple Clear": "Boss_Key_Water_Temple and can_use(Longshot)"
+        },
         "locations": {
             "Morpha Heart": "Boss_Key_Water_Temple and can_use(Longshot)",
-            "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)",
-            "Water Temple Clear": "Boss_Key_Water_Temple and can_use(Longshot)"
+            "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)"
         },
         "exits": {
             "Lake Hylia": "True",
@@ -34,7 +36,7 @@
         "locations": {
             "Water Temple MQ Compass Chest": "
                 can_use(Bow) or can_use(Dins_Fire) or 
-                as_child(can_reach(Water_Temple_Lobby) and can_use(Sticks) and has_explosives)",
+                at('Water Temple Lobby', can_use(Sticks) and has_explosives)",
             "Water Temple MQ Longshot Chest": "can_use(Hookshot)",
             "GS Water Temple MQ Lizalfos Hallway": "can_use(Dins_Fire)",
             "GS Water Temple MQ Before Upper Water Switch": "can_use(Longshot)"

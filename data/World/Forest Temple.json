@@ -23,7 +23,7 @@
         "locations": {
             "GS Forest Temple Outdoor West": "
                 can_use(Longshot) or 
-                (can_use(Hookshot) and can_reach(Forest_Temple_Outside_Upper_Ledge))",
+                at('Forest Temple Outside Upper Ledge', can_use(Hookshot))",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
                 is_adult or has_slingshot or has_sticks or 
@@ -43,11 +43,10 @@
         "locations": {
             "Forest Temple Outside Hookshot Chest": "
                 can_use(Hookshot) or
-                can_reach(Forest_Temple_Falling_Room)",
+                at('Forest Temple Falling Room', True)",
             "GS Forest Temple Outdoor East": "
                 can_use(Hookshot) or 
-                (can_reach(Forest_Temple_Falling_Room) and 
-                 (can_use(Bow) or can_use(Dins_Fire) or has_explosives))",
+                at('Forest Temple Falling Room', can_use(Bow) or can_use(Dins_Fire) or has_explosives)",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
                 is_adult or has_slingshot or has_sticks or 
@@ -77,9 +76,11 @@
     {
         "region_name": "Forest Temple Falling Room",
         "dungeon": "Forest Temple",
+        "events": {
+            "Forest Temple Amy and Meg": "can_use(Bow)"
+        },
         "locations": {
-            "Forest Temple Falling Room Chest": "True",
-            "Forest Temple Poe Sisters 2": "can_use(Bow)"
+            "Forest Temple Falling Room Chest": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors": "True"
@@ -124,11 +125,13 @@
     {
         "region_name": "Forest Temple Bow Region",
         "dungeon": "Forest Temple",
+        "events": {
+            "Forest Temple Jo and Beth": "can_use(Bow)"
+        },
         "locations": {
             "Forest Temple Bow Chest": "True",
             "Forest Temple Red Poe Chest": "can_use(Bow)",
-            "Forest Temple Blue Poe Chest": "can_use(Bow)",
-            "Forest Temple Poe Sisters 1": "can_use(Bow)"
+            "Forest Temple Blue Poe Chest": "can_use(Bow)"
         },
         "exits": {
             "Forest Temple Falling Room": "
