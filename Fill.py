@@ -71,7 +71,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 
     cloakable_locations = shop_locations + song_locations + fill_locations
     all_models = shopitempool + dungeon_items + songitempool + itempool
-    worlds[0].distribution.fill(window, worlds, [shop_locations, song_locations, fill_locations], [shopitempool, dungeon_items, songitempool, progitempool, prioitempool, restitempool])
+    worlds[0].settings.distribution.fill(window, worlds, [shop_locations, song_locations, fill_locations], [shopitempool, dungeon_items, songitempool, progitempool, prioitempool, restitempool])
     itempool = progitempool + prioitempool + restitempool
 
     # Start a playthrough cache here.
