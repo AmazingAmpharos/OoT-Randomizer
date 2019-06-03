@@ -76,28 +76,39 @@ player.
 
 ### 5.0
 
-#### New Feature
+#### New Features
+
 * Plan-domizer
-  * Ability to create a custom seed by placing items where you want them.
+  * Ability to create a custom seed by placing items, hints and/or entrances where you want them.
+  * Also includes the possibility to customize starting items, item pools, active trials and Master Quest dungeons.
   * Spoiler log is now in JSON format.
   * Plan-domizer uses the spoiler log JSON format.
 * Hotrod Rolling Goron no longer checks for Bomb Bag.
 * Wearing bunny hood increases running speed.
 * Duplicate Bottle with Letter added to plentiful item pool.
 * Every generic grotto gossip stone has their own hint.
-* Meg (Purple Forest Temple Poe) dies in one hit.
 * Desert Colossus Hands are now logically part of Spirit Temple
 * Gossip stone added to Lake Hylia to change water level after beating Morpha to keep dungeon entrance accessible with Gold Scales.
   * Entering Water Temple with Gold Scale and Longshot is now always in logic.
+* Burning Kakariko Cutscene is now triggered when entering Kakariko Village from any entrance once all requirements are met.
+* Speedup Owl Flying cutscenes to be almost instant.
+* Additional Background Music Sequences can now be provided to be shuffled when the Background Music is randomized.
+* The "Very Strong" hint setting can now give multiple barren dungeon hints.
 
-#### New Option
+#### New Options
+
 * Cow Sanity
   * Playing Epona's Song for a cow for the first time gives an item.
 * Starting Age Option
-  * Can now start as child, adult, or random.
+  * Can now start as child, adult, or random age.
 * Entrance Randomizer
-  * Ability to randomize dungeon entrances or all interior entrances.
+  * Ability to randomize entrances (loading zones) among multiple pools:
+    * Dungeon Entrances: All Dungeons except Ganon's Castle.
+    * Interior Entrances: Most Houses and all Great Fairies.
+    * Grotto Entrances: All hidden grottos, including small Fairy Foutains and the Lost Woods Stage, along with Graves.
+    * Overworld Entrances: Almost all loading zones connecting overworld areas, including Owls.
   * Deku Tree, Fire Temple, and Bottom of the Well dungeon entrances are accessible as both ages.
+  * Entrances are connected bidirectionally, and only shuffled with other entrances of the same pool.
 * Glitched Logic
   * New Logic Rules option that takes movement glitches into consideration.
   * Files included in the Notes folder with information regarding this feature.
@@ -113,8 +124,17 @@ player.
 * Customizable Heart, Magic Meter, and Gauntlet colors.
 * Child may drain Lake Hylia using Gossip Stone.
 * With start with max rupees option, finding wallet upgrade fills the wallet.
+* Closed Deku
+  * Hybrid of Open Forest and Closed Forest in which Mido only blocks you on the way to the Deku Tree.
+* Fast Chickens
+  * All chickens except the one near the pen are already caught from the beginning.
+* Shuffle Magic Beans
+  * A pack of 10 beans is shuffled into the pool and the Bean Salesman sells a random item once for 60 rupees.
+* Vanilla Placement for small keys, boss keys and maps/compasses.
+* Enable Useful Cutscenes which prevents some useful cutscenes from being skipped.
 
-#### Bug Fix
+#### Bug Fixes
+
 * No longer able to buy bombchus with only bomb bag when bombchus in logic.
 * Dampe freestanding Piece of Heart no longer checks for chest being opened.
 * Buying Piece of Heart/Heart Container fully heals Link.
