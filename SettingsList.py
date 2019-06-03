@@ -716,23 +716,6 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
-    Checkbutton(
-        name           = 'child_lake_hylia_control',
-        gui_text       = 'Child May Drain Lake Hylia',
-        gui_group      = 'open',
-        gui_tooltip    = '''\
-            The switch to drain Lake Hylia after defeating morpha is
-            enabled for child (in addition to adult).
-
-            This option gives another dungeon entrance available to
-            child for Entrance Randomizer and adds more items
-            potentially accessible from completing Water Temple.
-        ''',
-        shared         = True,
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-        },
-    ),
     Combobox(
         name           = 'gerudo_fortress',
         default        = 'normal',

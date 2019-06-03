@@ -274,14 +274,11 @@
         "hint": "Lake Hylia",
         "time_passes": true,
         "events": {
-            "Bonooru": "is_child and has_ocarina",
-            "Lake Hylia Child Lower Water": "
-                child_lake_hylia_control and 'Water Temple Clear' and
-                    (is_adult or Kokiri_Sword)"
+            "Bonooru": "is_child and has_ocarina"
         },
         "locations": {
             "Pierre": "is_adult and Bonooru and not free_scarecrow",
-            "Underwater Bottle": "is_child and (can_dive or 'Lake Hylia Child Lower Water')",
+            "Underwater Bottle": "is_child and can_dive",
             "Lake Hylia Sun": "
                 is_adult and 
                 (can_use(Distant_Scarecrow) or 'Water Temple Clear') and can_use(Bow)",
@@ -302,7 +299,7 @@
         },
         "exits": {
             "Hyrule Field": "True",
-            "Zoras Domain": "is_child and (can_dive or 'Lake Hylia Child Lower Water')",
+            "Zoras Domain": "is_child and can_dive",
             "Lake Hylia Owl Flight": "is_child",
             "Lake Hylia Lab": "True",
             "Fishing Hole": "
@@ -310,8 +307,7 @@
                 here(can_plant_bean) or 'Water Temple Clear'",
             "Water Temple Lobby": "
                 here(is_adult and (can_use(Hookshot) and Iron_Boots or can_use(Longshot))) and
-                ((Progressive_Scale, 2) or can_use(Iron_Boots)) and
-                (is_adult or (child_lake_hylia_control and 'Water Temple Clear'))",
+                ((Progressive_Scale, 2) or can_use(Iron_Boots)) and is_adult",
             "Lake Hylia Grotto": "True"
         }
     },
