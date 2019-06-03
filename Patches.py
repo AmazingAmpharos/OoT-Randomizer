@@ -766,6 +766,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     exit_table = generate_exit_lookup_table()
 
     if world.shuffle_overworld_entrances:
+        rom.write_byte(rom.sym('OVERWORLD_SHUFFLED'), 1)
+
         # Prevent the ocarina cutscene from leading straight to hyrule field
         rom.write_byte(rom.sym('OCARINAS_SHUFFLED'), 1)
 
@@ -787,13 +789,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         # Change Impa escorts to bring link at the hyrule castle grounds entrance from market, instead of hyrule field
         rom.write_int16(0xACAA2E, 0x0138) # 1st Impa escort
         rom.write_int16(0xD12D6E, 0x0138) # 2nd+ Impa escort
-
-        # Change Getting caught cutscene as adult without hookshot to keep Link inside the Fortress
-        copy_entrance_record(0x0129, 0x01A5 + 2, 2) # Thrown out of fortress as adult (overridden to Gerudo Fortress entrance from Valley)
-
-        # Change Getting caught cutscene as child to always throw Link in the stream
-        copy_entrance_record(0x01A5, 0x03B4, 2) # Captured with hookshot 1st time as child (overridden to Thrown out of fortress)
-        copy_entrance_record(0x01A5, 0x05F8, 2) # Captured with hookshot 2nd time as child (overridden to Thrown out of fortress)
 
         # Change hardcoded Owl Drop entrance indexes to their new indexes (cutscene hardcodes)
         for entrance in world.get_shuffled_entrances(type='OwlDrop'):

@@ -1280,3 +1280,24 @@ skip_GS_BGS_text:
 .orga 0xBD4C58
     jal     scene_exit_hook
     addu    at, at, a3
+
+; ==================================================================================================
+; Getting Caught by Gerudo NPCs in ER
+; ==================================================================================================
+; Replaces: lui     at, 0x0001
+;           addu    at, at, a1
+.orga 0xE11F90  ; White-clothed Gerudo
+    jal     gerudo_caught_entrance
+    nop
+.orga 0xE9F678  ; Patrolling Gerudo
+    jal     gerudo_caught_entrance
+    nop
+.orga 0xE9F7A8  ; Patrolling Gerudo
+    jal     gerudo_caught_entrance
+    nop
+
+; Replaces: lui     at, 0x0001
+;           addu    at, at, v0
+.orga 0xEC1120  ; Gerudo Fighter
+    jal     gerudo_caught_entrance
+    nop
