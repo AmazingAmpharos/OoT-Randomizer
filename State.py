@@ -601,7 +601,8 @@ class State(object):
                         or self.world.logic_gerudo_kitchen
                         or self.is_glitched))
         elif self.world.gerudo_fortress == 'fast':
-            return self.has('Small Key (Gerudo Fortress)', 1)
+            return (self.has('Small Key (Gerudo Fortress)', 1) and
+                    (self.is_adult() or self.has('Kokiri Sword') or self.is_glitched))
         else:
             return True
 
