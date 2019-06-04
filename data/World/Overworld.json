@@ -1094,9 +1094,10 @@
         "scene": "Goron City",
         "hint": "Goron City",
         "events": {
-            "Goron City Torches": "is_child and can_use(Dins_Fire)",
+            "Goron City Child Fire": "is_child and can_use(Dins_Fire)",
             "Goron City Woods Warp Open": "
-                can_blast_or_smash or can_use(Dins_Fire) or can_use(Bow) or Progressive_Strength_Upgrade"
+                can_blast_or_smash or can_use(Dins_Fire) or can_use(Bow) or 
+                Progressive_Strength_Upgrade or 'Goron City Child Fire'"
         },
         "locations": {
             "Goron City Leftmost Maze Chest": "
@@ -1106,7 +1107,7 @@
             "Goron City Right Maze Chest": "
                 can_blast_or_smash or can_use(Silver_Gauntlets)",
             "Goron City Pot Freestanding PoH": "
-                is_child and 'Goron City Torches' and
+                is_child and 'Goron City Child Fire' and
                 (has_bombs or Progressive_Strength_Upgrade)",
             "Rolling Goron as Child": "
                 is_child and 
@@ -1132,8 +1133,8 @@
             "Goron City Woods Warp": "'Goron City Woods Warp Open'",
             "Goron Shop": "
                 has_explosives or Progressive_Strength_Upgrade or can_use(Bow) or 
-                (can_use(Dins_Fire) and (is_child or logic_link_goron_dins)) or 
-                (is_child and at('Darunias Chamber', True) and has_sticks)",
+                (is_adult and logic_link_goron_dins and can_use(Dins_Fire)) or 
+                (is_child and 'Goron City Child Fire')",
             "Darunias Chamber": "
                 (is_child and can_play(Zeldas_Lullaby)) or 
                 (is_adult and
@@ -1164,8 +1165,7 @@
         "scene": "Goron City",
         "hint": "Goron City",
         "events": {
-            "Goron City Torches": "is_child and has_sticks",
-            "Goron City Woods Warp Open": "is_child and has_sticks"
+            "Goron City Child Fire": "can_use(Sticks)"
         },
         "locations": {
             "Darunias Joy": "is_child and can_play(Sarias_Song)"
