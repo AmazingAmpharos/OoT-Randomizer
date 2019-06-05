@@ -2241,6 +2241,42 @@ setting_infos = [
             be loaded from data/Music/
         ''',
     ),
+    Combobox(
+        name           = 'fanfares',
+        gui_text       = 'Fanfares',
+        default        = 'normal',
+        choices        = {
+            'normal': 'Normal',
+            'off':    'No Fanfares',
+            'random': 'Random',
+        },
+        disable        = {
+            'normal' : {'settings' : ['ocarina_fanfares']},
+        },
+        gui_tooltip    = '''\
+            'No Fanfares': No fanfares 
+            (short non-looping tracks)
+            are played.
+
+            'Random': Fanfares are randomized.
+            Additional fanfares can be loaded
+            from data/Music/
+        ''',
+    ),
+    Checkbutton(
+        name           = 'ocarina_fanfares',
+        gui_text       = 'Ocarina Songs as Fanfares',
+        gui_tooltip    = '''\
+            Include the songs that play when an ocarina song
+            is played as part of the fanfare pool when
+            shuffling or disabling fanfares. Note that these
+            are a bit longer than most fanfares.
+        ''',
+        gui_params  = {
+            "hide_when_disabled": True,
+        },
+        default        = False,
+    ),
     Checkbutton(
         name           = 'display_dpad',
         gui_text       = 'Display D-Pad HUD',
