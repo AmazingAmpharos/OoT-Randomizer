@@ -168,7 +168,7 @@ ipcMain.on('getGeneratorGUISettings', (event, arg) => {
   }
 
   //Load user presets
-  let userPresetPath = path.normalize(app.getAppPath() + "\\..\\presets.sav");
+  let userPresetPath = path.normalize(app.getAppPath() + "/../presets.sav");
 
   if (fs.existsSync(userPresetPath)) {
     let userPresets = JSON.parse(fs.readFileSync(userPresetPath, 'utf8'));

@@ -15,7 +15,7 @@ var platform = os.platform();
 console.log("Platform:", platform);
 
 var pythonPath = commander.python ? commander.python : "python";
-var pythonSourcePath = path.normalize(electron.remote.app.getAppPath() + "\\..\\");
+var pythonSourcePath = path.normalize(electron.remote.app.getAppPath() + "/../");
 var pythonGeneratorPath = pythonSourcePath + "OoTRandomizer.py";
 
 console.log("Python Executable Path:", pythonPath);
