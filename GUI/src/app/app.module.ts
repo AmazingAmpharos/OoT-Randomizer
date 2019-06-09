@@ -37,7 +37,6 @@ import {
 import { GUIGlobal } from './providers/GUIGlobal';
 
 //Custom Components
-import { PythonPathWindow } from './pages/generator/pythonPathWindow/pythonPathWindow.component';
 import { ProgressWindow } from './pages/generator/progressWindow/progressWindow.component';
 import { DialogWindow } from './pages/generator/dialogWindow/dialogWindow.component';
 import { ConfirmationWindow } from './pages/generator/confirmationWindow/confirmationWindow.component';
@@ -47,14 +46,12 @@ import { TextInputWindow } from './pages/generator/textInputWindow/textInputWind
   declarations: [
     AppComponent,
     BypassSecurityPipe,
-    PythonPathWindow,
     ProgressWindow,
     DialogWindow,
     ConfirmationWindow,
     TextInputWindow
   ],
   entryComponents: [
-    PythonPathWindow,
     ProgressWindow,
     DialogWindow,
     ConfirmationWindow,

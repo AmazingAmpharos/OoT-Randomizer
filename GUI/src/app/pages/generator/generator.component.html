@@ -4,8 +4,6 @@
             <nb-tabset *ngIf="global.getGlobalVar('generatorSettingsArray') && global.getGlobalVar('generatorSettingsArray').length > 0" #refTabSet class="settingsTabset" fullWidth>
                 <nb-tab *ngFor="let tab of global.getGlobalVar('generatorSettingsArray'); index as tabIndex" [disabled]="!global.generator_tabsVisibilityMap[tab.name]" [tabTitle]="tab.text" [active]="tabIndex==0" [nbSpinner]="settingsLocked" nbSpinnerStatus="primary" nbSpinnerSize="medium" nbSpinnerMessage="">
                     <mat-grid-list [responsiveCols]="{xs: 1, sm: 2, md: 4, lg: 4, xl: 4}" gutterSize="10px" rowHeight="fit">
-                        <!--make sm 1 or 2-->
-                        <!--maybe change sm to 1-->
                         <mat-grid-tile #refEl *ngFor="let section of tab.sections; index as sectionIndex" [colspan]="getColumnWidth(refEl, tab.sections, sectionIndex, tab.sections.length, section['col_span'] ? section['col_span'] : 0)" [rowspan]="section.row_span">
                             <mat-grid-tile-header *ngIf="section.text && section.text.length > 0">
                                 <h3>{{section.text}}</h3>
@@ -17,9 +15,6 @@
                                     <ng-template ngFor let-setting [ngForOf]="section.settings" let-itemIndex="index">
                                         <ng-container [ngSwitch]="setting.type">
                                             <ng-container *ngSwitchCase="'Checkbutton'">
-                                                <!--<ngx-switcher firstValue="false" secondValue="true" [firstValueLabel]="setting.text" [secondValueLabel]="setting.text" [value]="global.generator_settingsMap[setting.name]" vertical="vertical"></ngx-switcher>-->
-                                                <!--<mat-checkbox *ngIf="setting.tooltip && setting.tooltip.length > 0" labelPosition="after" [(ngModel)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverMode="hint" nbPopoverPlacement="right" nbPopoverAdjustment="clockwise">{{setting.text}}</mat-checkbox>-->
-                                                <!--<mat-checkbox *ngIf="!setting.tooltip || setting.tooltip.length == 0" labelPosition="after" [(ngModel)]="global.generator_settingsMap[setting.name]">{{setting.text}}</mat-checkbox>-->
                                                 <mat-slide-toggle *ngIf="setting.tooltip && setting.tooltip.length > 0" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" (ngModelChange)="checkVisibility($event, setting)" [(ngModel)]="global.generator_settingsMap[setting.name]"
                                                     [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="hint" nbPopoverPlacement="right" nbPopoverAdjustment="clockwise">{{setting.text}}</mat-slide-toggle>
                                                 <mat-slide-toggle *ngIf="!setting.tooltip || setting.tooltip.length == 0" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" (ngModelChange)="checkVisibility($event, setting)" [(ngModel)]="global.generator_settingsMap[setting.name]">{{setting.text}}</mat-slide-toggle>

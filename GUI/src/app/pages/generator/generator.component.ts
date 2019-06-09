@@ -10,7 +10,6 @@ import { NbDialogService } from '@nebular/theme';
 import { ColorPickerModule } from 'ngx-color-picker';
 
 import { GUITooltip } from './guiTooltip/guiTooltip.component';
-import { PythonPathWindow } from './pythonPathWindow/pythonPathWindow.component';
 import { ProgressWindow } from './progressWindow/progressWindow.component';
 import { DialogWindow } from './dialogWindow/dialogWindow.component';
 import { ConfirmationWindow } from './confirmationWindow/confirmationWindow.component';
@@ -248,13 +247,6 @@ export class GeneratorComponent implements OnInit {
     });
   }
 
-  //TODO
-  testPythonPathWindow() {
-    this.dialogService.open(PythonPathWindow, {
-      autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false
-    });
-  }
-
   loadPreset() {
     console.log("load preset");
 
@@ -280,7 +272,6 @@ export class GeneratorComponent implements OnInit {
         this.recheckAllSettings("", false, true);
         this.afterSettingChange();
 
-        //this.testPythonPathWindow(); //TEST
         console.log("Preset loaded");
       }
     }
@@ -451,7 +442,10 @@ export class GeneratorComponent implements OnInit {
       visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: false });
       visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count" }, value: false });
 
-      //this.toggleVisibility(visibilityUpdates, false); //Deactivated for now due re-activation issue
+      visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
+      visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
+
+      this.toggleVisibility(visibilityUpdates, false);
     }
     else if (event.tabTitle === "Generate From Seed") {
 
@@ -460,7 +454,10 @@ export class GeneratorComponent implements OnInit {
       visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: true });
       visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count" }, value: true });
 
-      //this.toggleVisibility(visibilityUpdates, false); //Deactivated for now due re-activation issue
+      visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: true });
+      visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: true });
+
+      this.toggleVisibility(visibilityUpdates, false);
     }
   }
 
@@ -470,7 +467,7 @@ export class GeneratorComponent implements OnInit {
     visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: value });
     visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: value });
 
-    //this.toggleVisibility(visibilityUpdates, false); //Deactivated for now due re-activation issue
+    this.toggleVisibility(visibilityUpdates, false);
     this.afterSettingChange(true);
   }
 
