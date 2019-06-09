@@ -614,7 +614,9 @@ export class GeneratorComponent implements OnInit {
           }
         });
       }
-      else if ("controls_visibility_section" in targetSetting) {
+
+      if ("controls_visibility_section" in targetSetting) {
+
         targetSetting["controls_visibility_section"].split(",").forEach(section => {
 
           let targetSection = null;
@@ -648,7 +650,9 @@ export class GeneratorComponent implements OnInit {
           }
         });
       }
-      else if ("controls_visibility_setting" in targetSetting) {
+
+      if ("controls_visibility_setting" in targetSetting) {
+
         targetSetting["controls_visibility_setting"].split(",").forEach(setting => {
 
           if (targetValue == true && this.global.generator_settingsVisibilityMap[setting] == false) //Only trigger change if a setting gets re-enabled

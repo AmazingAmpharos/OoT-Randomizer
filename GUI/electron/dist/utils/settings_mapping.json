@@ -77,14 +77,15 @@
             "name": "main-tab",
             "text": "Main Rules",
             "sections": [{
-                    "name": "main-section",
-                    "text": "",
-                    "col-span": 4,
-                    "row-span": 1,
+                   "name": "main-section",
+                   "text": "",
+                   "col-span": 4,
+                   "row-span": 1,
                     "settings": [{
-                        "name": "randomize_settings",
-                        "controls-visibility-section": "open-section,world-section,shuffle-section,shuffle-dungeon-section"
-                    }]
+                       "name": "randomize_settings",
+                       "controls-visibility-section": "open-section,shuffle-section,shuffle-dungeon-section",
+                       "controls-visibility-setting": "all_reachable,bombchus_in_logic,one_item_per_dungeon,mq_dungeons_random,mq_dungeons"
+                   }]
                 },
                 {
                     "name": "open-section",

@@ -266,12 +266,17 @@
         "text": "Glitchless"
       },
       {
+        "name": "glitched",
+        "text": "Glitched",
+        "controls-visibility-setting": "mq_dungeons_random,mq_dungeons,entrance_shuffle"
+      },
+      {
         "name": "none",
         "text": "No Logic",
         "controls-visibility-tab": "detailed-tab"
       }
     ],
-    "tooltip": "Sets the rules the logic uses to determine accessibility.<br>'Glitchless': No glitches arerequired, but may require someminor tricks<br>'No Logic': All locations are considered available. May not<br>be beatable."
+    "tooltip": "Sets the rules the logic uses to determine accessibility.<br>'Glitchless': No glitches are required, but may require some minor tricks.<br>'Glitched': Movement oriented glitches are likely required. No locations excluded.<br>'No Logic': All locations are considered available. May not be beatable."
   },
   {
     "default": true,
@@ -826,6 +831,10 @@
         "text": "Start With"
       },
       {
+        "name": "vanilla",
+        "text": "Vanilla Locations"
+      },
+      {
         "name": "dungeon",
         "text": "Dungeon Only"
       },
@@ -834,7 +843,7 @@
         "text": "Anywhere"
       }
     ],
-    "tooltip": "'Remove': Maps and Compasses are removed. This will add a small amount of money and refill items to the pool.<br>'Start With': Maps and Compasses are given to you from the start. This will add a small amount of money and refill items to the pool.<br>'Dungeon': Maps and Compasses can only appear in their respective dungeon.<br>'Anywhere': Maps and Compasses can appear anywhere in the world.<br>Setting 'Remove', 'Start With', or 'Anywhere' will add 2 more possible locations to each Dungeons.<br>This makes dungeons more profitable, especially Ice Cavern, Water Temple, and Jabu Jabu's Belly."
+    "tooltip": "'Remove': Maps and Compasses are removed. This will add a small amount of money and refill items to the pool.<br>'Start With': Maps and Compasses are given to you from the start. This will add a small amount of money and refill items to the pool.<br>'Vanilla': Maps and Compasses will appear in their vanilla locations.<br>'Dungeon': Maps and Compasses can only appear in their respective dungeon.<br>'Anywhere': Maps and Compasses can appear anywhere in the world.<br>Setting 'Remove', 'Start With', or 'Anywhere' will add 2 more possible locations to each Dungeon.<br>This makes dungeons more profitable, especially Ice Cavern, Water Temple, and Jabu Jabu's Belly."
   },
   {
     "default": "dungeon",
@@ -847,6 +856,10 @@
         "text": "Remove (Keysy)"
       },
       {
+        "name": "vanilla",
+        "text": "Vanilla Locations"
+      },
+      {
         "name": "dungeon",
         "text": "Dungeon Only"
       },
@@ -855,7 +868,7 @@
         "text": "Anywhere (Keysanity)"
       }
     ],
-    "tooltip": "'Remove': Small Keys are removed. All locked doors in dungeons will be unlocked. An easier mode.<br>'Dungeon': Small Keys can only appear in their respective dungeon. If Fire Temple is not a Master Quest dungeon, the door to the Boss Key chest will be unlocked<br>'Anywhere': Small Keys can appear anywhere in the world. A difficult mode since it is more likely to need to enter a dungeon multiple times.<br>Try different combinations out, such as:<br>'Dungeon' + 'Boss Keys: Anywhere' for a milder Keysanity experience."
+    "tooltip": "'Remove': Small Keys are removed. All locked doors in dungeons will be unlocked. An easier mode.<br>'Vanilla': Small Keys will appear in their vanilla locations. You start with 3 keys in Spirit Temple MQ because the vanilla key layout is not beatable in logic.<br>'Dungeon': Small Keys can only appear in their respective dungeon. If Fire Temple is not a Master Quest dungeon, the door to the Boss Key chest will be unlocked<br>'Anywhere': Small Keys can appear anywhere in the world. A difficult mode since it is more likely to need to enter a dungeon multiple times.<br>Try different combinations out, such as:<br>'Small Keys: Dungeon' + 'Boss Keys: Anywhere' for a milder Keysanity experience."
   },
   {
     "default": "dungeon",
@@ -868,6 +881,10 @@
         "text": "Remove (Keysy)"
       },
       {
+        "name": "vanilla",
+        "text": "Vanilla Locations"
+      },
+      {
         "name": "dungeon",
         "text": "Dungeon Only"
       },
@@ -876,7 +893,7 @@
         "text": "Anywhere (Keysanity)"
       }
     ],
-    "tooltip": "'Remove': Boss Keys are removed. All locked doors in dungeons will be unlocked. An easier mode.<br>'Dungeon': Boss Keys can only appear in their respective dungeon.<br>'Anywhere': Boss Keys can appear anywhere in the world. A difficult mode since it is more likely to need to enter a dungeon multiple times.<br>Try different combinations out, such as:<br>'Dungeon' + 'Boss Keys: Anywhere' for a milder Keysanity experience."
+    "tooltip": "'Remove': Boss Keys are removed. All locked doors in dungeons will be unlocked. An easier mode.<br>'Vanilla': Boss Keys will appear in their vanilla locations.<br>'Dungeon': Boss Keys can only appear in their respective dungeon.<br>'Anywhere': Boss Keys can appear anywhere in the world. A difficult mode since it is more likely to need to enter a dungeon multiple times.<br>Try different combinations out, such as:<br>'Small Keys: Dungeon' + 'Boss Keys: Anywhere' for a milder Keysanity experience."
   },
   {
     "default": false,
