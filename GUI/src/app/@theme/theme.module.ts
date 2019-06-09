@@ -39,14 +39,7 @@ import {
   FooterComponent,
   HeaderComponent
 } from './components';
-import {
-  CapitalizePipe,
-  PluralPipe,
-  RoundPipe,
-  TimingPipe,
-  NumberWithCommasPipe,
-  EvaIconsPipe,
-} from './pipes';
+
 import {
   GUILayoutComponent
 } from './layouts';
@@ -94,15 +87,6 @@ const COMPONENTS = [
 
 const ENTRY_COMPONENTS = [];
 
-const PIPES = [
-  CapitalizePipe,
-  PluralPipe,
-  RoundPipe,
-  TimingPipe,
-  NumberWithCommasPipe,
-  EvaIconsPipe,
-];
-
 const NB_THEME_PROVIDERS = [
   ...NbThemeModule.forRoot(
     {
@@ -119,8 +103,8 @@ const NB_THEME_PROVIDERS = [
 
 @NgModule({
   imports: [...BASE_MODULES, ...NB_MODULES],
-  exports: [...BASE_MODULES, ...NB_MODULES, ...COMPONENTS, ...PIPES],
-  declarations: [...COMPONENTS, ...PIPES],
+  exports: [...BASE_MODULES, ...NB_MODULES, ...COMPONENTS],
+  declarations: [...COMPONENTS],
   entryComponents: [...ENTRY_COMPONENTS],
 })
 export class ThemeModule {
