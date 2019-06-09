@@ -1,0 +1,6969 @@
+[
+  {
+    "default": "",
+    "name": "rom",
+    "text": "Base ROM",
+    "type": "Fileinput",
+    "options": [
+    ],
+    "tooltip": "Path to your OoT ROM."
+  },
+  {
+    "default": "",
+    "name": "output_dir",
+    "text": "Output Directory",
+    "type": "Directoryinput",
+    "options": [
+    ],
+    "tooltip": "Where to save the result."
+  },
+  {
+    "default": "",
+    "name": "distribution_file",
+    "text": "Distribution File",
+    "type": "Fileinput",
+    "options": [
+    ],
+    "tooltip": ""
+  },
+  {
+    "default": 1,
+    "name": "count",
+    "text": "Generation Count",
+    "type": "Numberinput",
+    "options": [
+    ],
+    "tooltip": ""
+  },
+  {
+    "default": true,
+    "name": "create_spoiler",
+    "text": "Create Spoiler Log",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Enabling this will change the seed."
+  },
+  {
+    "default": true,
+    "name": "create_cosmetics_log",
+    "text": "Create Cosmetics Log",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": ""
+  },
+  {
+    "default": "Patch",
+    "name": "compress_rom",
+    "text": "Output Type",
+    "type": "Radiobutton",
+    "options": [
+      {
+        "name": "True",
+        "text": "Compressed [Stable]"
+      },
+      {
+        "name": "False",
+        "text": "Uncompressed [Crashes]"
+      },
+      {
+        "name": "Patch",
+        "text": "Patch File",
+        "controls-visibility-setting": "player_num"
+      },
+      {
+        "name": "None",
+        "text": "No Output",
+        "controls-visibility-setting": "player_num,create_cosmetics_log"
+      }
+    ],
+    "tooltip": "The first time compressed generation will take a while,<br>but subsequent generations will be quick.<br>It is highly recommended to compress or the game will crash frequently except on real N64 hardware.<br>Patch files are used to send the patched data to other<br>people without sending the ROM file."
+  },
+  {
+    "default": 1,
+    "name": "world_count",
+    "text": "Player Count",
+    "type": "Numberinput",
+    "options": [
+    ],
+    "tooltip": "The amount of generated worlds (>1 for Multiworld)"
+  },
+  {
+    "default": 1,
+    "name": "player_num",
+    "text": "Player ID",
+    "type": "Numberinput",
+    "options": [
+    ],
+    "tooltip": "Generate for specific Player."
+  },
+  {
+    "default": "[New Preset]",
+    "name": "presets",
+    "text": "",
+    "type": "Presetinput",
+    "options": [
+    ],
+    "tooltip": "Select a setting preset to apply."
+  },
+  {
+    "default": "",
+    "name": "open_output_dir",
+    "text": "Open Output Directory",
+    "type": "Outputdirbutton"
+  },
+  {
+    "default": "open",
+    "name": "open_forest",
+    "text": "Open Forest",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "open",
+        "text": "Open Forest"
+      },
+      {
+        "name": "closed_deku",
+        "text": "Closed Deku"
+      },
+      {
+        "name": "closed",
+        "text": "Closed Forest"
+      }
+    ],
+    "tooltip": "Open Forest: Mido no longer blocks the path to the Deku Tree, and the Kokiri boy no longer blocks the path out of the forest.<br><br>Closed Deku: The Kokiri boy no longer blocks the path out of the forest, but Mido still blocks the path to the Deku Tree, requiring Kokiri Sword and Deku Shield to access the Deku Tree.<br><br>Closed Forest: The Kokiri Sword and Slingshot are always available somewhere in the forest. This is incompatible with Start as Adult and shuffling 'All Indoors' and/or 'Overworld' entrances will force this to Closed Deku if selected."
+  },
+  {
+    "default": false,
+    "name": "randomize_settings",
+    "text": "Randomize Main Rule Settings",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Randomizes most Main Rules."
+  },
+  {
+    "default": false,
+    "name": "open_door_of_time",
+    "text": "Open Door of Time",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "The Door of Time starts opened instead of needing to play the Song of Time.<br>If this is not set, only an Ocarina and Song of Time must be found to openthe Door of Time."
+  },
+  {
+    "default": false,
+    "name": "open_fountain",
+    "text": "Open Zora's Fountain",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "King Zora starts out as moved. This also removes Ruto's Letter from the item pool."
+  },
+  {
+    "default": "normal",
+    "name": "gerudo_fortress",
+    "text": "Gerudo Fortress",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "normal",
+        "text": "Default Behavior"
+      },
+      {
+        "name": "fast",
+        "text": "Rescue One Carpenter"
+      },
+      {
+        "name": "open",
+        "text": "Start with Gerudo Card"
+      }
+    ],
+    "tooltip": "'Rescue One Carpenter': Only the bottom left carpenter must be rescued.<br>'Start with Gerudo Card': The carpenters are rescued from the start of the game, and the player starts with the Gerudo Card in the inventory allowing access to Gerudo Training Grounds."
+  },
+  {
+    "default": "medallions",
+    "name": "bridge",
+    "text": "Rainbow Bridge Requirement",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "open",
+        "text": "Always Open"
+      },
+      {
+        "name": "vanilla",
+        "text": "Vanilla Requirements"
+      },
+      {
+        "name": "stones",
+        "text": "All Spiritual Stones"
+      },
+      {
+        "name": "medallions",
+        "text": "All Medallions"
+      },
+      {
+        "name": "dungeons",
+        "text": "All Dungeons"
+      },
+      {
+        "name": "tokens",
+        "text": "100 Gold Skulltula Tokens"
+      }
+    ],
+    "tooltip": "'Always Open': Rainbow Bridge is always present.<br>'Vanilla Requirements': Spirit/Shadow Medallions and Light Arrows.<br>'All Spiritual Stones': All 3 Spiritual Stones.<br>'All Medallions': All 6 Medallions.<br>'All Dungeons': All Medallions and Spiritual Stones.<br>'100 Gold Skulltula Tokens': All 100 Gold Skulltula Tokens."
+  },
+  {
+    "default": "glitchless",
+    "name": "logic_rules",
+    "text": "Logic Rules",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "glitchless",
+        "text": "Glitchless"
+      },
+      {
+        "name": "none",
+        "text": "No Logic",
+        "controls-visibility-tab": "detailed-tab"
+      }
+    ],
+    "tooltip": "Sets the rules the logic uses to determine accessibility.<br>'Glitchless': No glitches arerequired, but may require someminor tricks<br>'No Logic': All locations are considered available. May not<br>be beatable."
+  },
+  {
+    "default": true,
+    "name": "all_reachable",
+    "text": "All Locations Reachable",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "When this option is enabled, the randomizer will guarantee that every item is obtainable and every location is reachable.<br>When disabled, only required items and locations to beat the game will be guaranteed reachable.<br>Even when enabled, some locations may still be able to hold the keys needed to reach them."
+  },
+  {
+    "default": true,
+    "name": "bombchus_in_logic",
+    "text": "Bombchus Are Considered in Logic",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Bombchus are properly considered in logic. The first Bombchu pack will always be 20.<br>Subsequent packs will be 5 or 10 based on how many you have.<br>Bombchus can be purchased for 60/99/180 rupees once they have been found.<br>Bombchu Bowling opens with Bombchus.<br>Bombchus are available at Kokiri Shop and the Bazaar. Bombchu refills cannot be bought until Bombchus have been obtained."
+  },
+  {
+    "default": false,
+    "name": "one_item_per_dungeon",
+    "text": "Dungeons Have One Major Item",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Dungeons have exactly one major item. This naturally makes each dungeon similar in value instead of valued based on chest count.<br>Spirit Temple Colossus hands count as part of the dungeon.<br>Spirit Temple has TWO items to match vanilla distribution.<br>Dungeon items and GS Tokens do not count as major items."
+  },
+  {
+    "default": false,
+    "name": "trials_random",
+    "text": "Random Number of Ganon's Trials",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Sets a random number of trials to enter Ganon's Tower."
+  },
+  {
+    "default": 6,
+    "name": "trials",
+    "text": "Ganon's Trials Count",
+    "type": "Scale",
+    "options": [
+    ],
+    "tooltip": "Trials are randomly selected. If hints are enabled, then there will be hints for which trials need to be completed."
+  },
+  {
+    "default": false,
+    "name": "no_escape_sequence",
+    "text": "Skip Tower Escape Sequence",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "The tower escape sequence between Ganondorf and Ganon will be skipped."
+  },
+  {
+    "default": false,
+    "name": "no_guard_stealth",
+    "text": "Skip Child Stealth",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards."
+  },
+  {
+    "default": false,
+    "name": "no_epona_race",
+    "text": "Skip Epona Race",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Epona can be summoned with Epona's Song without needing to race Ingo."
+  },
+  {
+    "default": false,
+    "name": "useful_cutscenes",
+    "text": "Enable Useful Cutscenes",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "The cutscenes of the Poes in Forest Temple, Darunia in Fire Temple, and the introduction to Twinrova will not be skipped."
+  },
+  {
+    "default": true,
+    "name": "fast_chests",
+    "text": "Fast Chest Cutscenes",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "All chest animations are fast. If disabled, the animation time is slow for major items."
+  },
+  {
+    "default": false,
+    "name": "logic_no_night_tokens_without_suns_song",
+    "text": "Nighttime Skulltulas Expect Sun's Song",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "GS Tokens that can only be obtained during the night expect you to have Sun's Song to collect them. This prevents needing to wait until night for some locations."
+  },
+  {
+    "default": false,
+    "name": "free_scarecrow",
+    "text": "Free Scarecrow's Song",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Pulling out the Ocarina near a spot at which Pierre can spawn will do so, without needing the song."
+  },
+  {
+    "default": false,
+    "name": "start_with_fast_travel",
+    "text": "Start with Fast Travel",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Start the game with Prelude of Light, Serenade of Water, and Farore's Wind.<br>Two song locations will give items, instead of Prelude and Serenade."
+  },
+  {
+    "default": false,
+    "name": "start_with_rupees",
+    "text": "Start with Max Rupees",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Start the game with 99 rupees."
+  },
+  {
+    "default": false,
+    "name": "start_with_wallet",
+    "text": "Start with Tycoon's Wallet",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Start the game with the largest wallet (999 max)."
+  },
+  {
+    "default": false,
+    "name": "start_with_deku_equipment",
+    "text": "Start with Deku Equipment",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Start the game with 10 Deku sticks and 20 Deku nuts.<br>Additionally, start the game with a Deku shield equipped, unless playing with the Shopsanity setting."
+  },
+  {
+    "default": false,
+    "name": "fast_chickens",
+    "text": "Fast Chickens",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Moves all except the Chicken near the pen into the pen."
+  },
+  {
+    "default": false,
+    "name": "big_poe_count_random",
+    "text": "Random Big Poe Target Count",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "The Poe buyer will give a reward for turning in a random number of Big Poes."
+  },
+  {
+    "default": 10,
+    "name": "big_poe_count",
+    "text": "Big Poe Target Count",
+    "type": "Scale",
+    "options": [
+    ],
+    "tooltip": "The Poe buyer will give a reward for turning in the chosen number of Big Poes."
+  },
+  {
+    "default": true,
+    "name": "shuffle_kokiri_sword",
+    "text": "Shuffle Kokiri Sword",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Enabling this shuffles the Kokiri Sword into the pool.<br>This will require extensive use of sticks until the sword is found."
+  },
+  {
+    "default": true,
+    "name": "shuffle_ocarinas",
+    "text": "Shuffle Ocarinas",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the pool.<br>This will require finding an Ocarina before being able to play songs."
+  },
+  {
+    "default": true,
+    "name": "shuffle_weird_egg",
+    "text": "Shuffle Weird Egg",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Enabling this shuffles the Weird Egg from Malon into the pool.<br>This will require finding the Weird Egg to talk to Zelda in  Hyrule Castle, which in turn locks rewards from Impa, Saria, Malon, and Talon, as well as the Happy Mask sidequest.<br>If Open Kakariko Gate is disabled, the Weird Egg will also be required for Zelda's Letter to open the gate as child."
+  },
+  {
+    "default": false,
+    "name": "shuffle_gerudo_card",
+    "text": "Shuffle Gerudo Card",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Enabling this shuffles the Gerudo Card into the item pool.<br>The Gerudo Card is required to enter the Gerudo Training Grounds, however it does not prevent the guards throwing you in jail.<br>This has no effect if the option to Start with Gerudo Card is set."
+  },
+  {
+    "default": true,
+    "name": "shuffle_song_items",
+    "text": "Shuffle Songs with Items",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Enabling this shuffles the songs into the rest of the item pool.<br>This means that song locations can contain other items, and any location can contain a song.<br>Otherwise, songs are only shuffled among themselves."
+  },
+  {
+    "default": false,
+    "name": "shuffle_cows",
+    "text": "Shuffle Cows",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Enabling this causes playing Epona's song infront of cows to give an item. There are 9 cows, and an extra in MQ Jabu"
+  },
+  {
+    "default": false,
+    "name": "shuffle_beans",
+    "text": "Shuffle Magic Beans",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean Salesman to sell a random item once at the price of 60 Rupees."
+  },
+  {
+    "default": "off",
+    "name": "entrance_shuffle",
+    "text": "Entrance Shuffle",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "off",
+        "text": "Off"
+      },
+      {
+        "name": "dungeons",
+        "text": "Dungeons Only"
+      },
+      {
+        "name": "simple-indoors",
+        "text": "Simple Indoors"
+      },
+      {
+        "name": "all-indoors",
+        "text": "All Indoors"
+      },
+      {
+        "name": "all",
+        "text": "All Indoors & Overworld"
+      }
+    ],
+    "tooltip": "Shuffle entrances bidirectionally within different pools.<br>'Dungeons Only':<br>Shuffle dungeon entrances with each other, including Bottom of the Well, Ice Cavern, and Gerudo Training Grounds.<br>However, Ganon's Castle is not shuffled.<br>Additionally, the entrances of Deku Tree, Fire Temple and Bottom of the Well are opened for both adult and child.<br><br>'Simple Indoors':<br>Shuffle dungeon entrances along with simple Grotto and Interior entrances (i.e. most Houses and Great Fairies).<br><br>'All Indoors':<br>Extended version of 'Simple Indoors' with some extra entrances:<br>Windmill, Link's House, Temple of Time and Dampe's Grave.<br><br>'All Indoors & Overworld':<br>Same as 'All Indoors' but with Overworld loading zones shuffled in a new separate pool. Owl drop positions are also randomized."
+  },
+  {
+    "default": "off",
+    "name": "shuffle_scrubs",
+    "text": "Scrub Shuffle",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "off",
+        "text": "Off"
+      },
+      {
+        "name": "low",
+        "text": "On (Affordable)"
+      },
+      {
+        "name": "regular",
+        "text": "On (Expensive)"
+      },
+      {
+        "name": "random",
+        "text": "On (Random Prices)"
+      }
+    ],
+    "tooltip": "'Off': Only the 3 Scrubs that give one-time items in the vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.<br>'Affordable': All Scrub prices will be reduced to 10 rupees each.<br>'Expensive': All Scrub prices will be their vanilla prices. This will require spending over 1000 rupees on Scrubs.<br>'Random Prices': All Scrub prices will be between 0-99 rupees. This will on average be very, very expensive overall."
+  },
+  {
+    "default": "off",
+    "name": "shopsanity",
+    "text": "Shopsanity",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "off",
+        "text": "Off"
+      },
+      {
+        "name": "0",
+        "text": "Shuffled Shops (0 Items)"
+      },
+      {
+        "name": "1",
+        "text": "Shuffled Shops (1 Items)"
+      },
+      {
+        "name": "2",
+        "text": "Shuffled Shops (2 Items)"
+      },
+      {
+        "name": "3",
+        "text": "Shuffled Shops (3 Items)"
+      },
+      {
+        "name": "4",
+        "text": "Shuffled Shops (4 Items)"
+      },
+      {
+        "name": "random",
+        "text": "Shuffled Shops (Random)"
+      }
+    ],
+    "tooltip": "Shop contents are randomized.<br>(X Items): Shops have X random non-shop (Special Deal!) items. They will always be on the left side, and some of the lower value shop items will be replaced to make room for these.<br>(Random): Each shop will have a random number of non-shop items up to a maximum of 4.<br>The non-shop items have no requirements except money, while the normal shop items (such as 200/300 rupee tunics) have normal vanilla requirements. This means that, for example, as a child you cannot buy 200/300 rupee tunics, but you can buy non-shop tunics.<br>Non-shop Bombchus will unlock the chu slot in your inventory, which, if Bombchus are in logic, is needed to buy Bombchu refills.<br>Otherwise, the Bomb Bag is required."
+  },
+  {
+    "default": "off",
+    "name": "tokensanity",
+    "text": "Tokensanity",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "off",
+        "text": "Off"
+      },
+      {
+        "name": "dungeons",
+        "text": "Dungeons Only"
+      },
+      {
+        "name": "all",
+        "text": "All Tokens"
+      }
+    ],
+    "tooltip": "Token reward from Gold Skulltulas are shuffled into the pool.<br>'Dungeons Only': This only shuffles the GS locations that are within dungeons, increasing the value of most dungeons and making internal dungeon exploration more diverse.<br>'All Tokens': Effectively adds 100 new locations for items to appear."
+  },
+  {
+    "default": "dungeon",
+    "name": "shuffle_mapcompass",
+    "text": "Maps & Compasses",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "remove",
+        "text": "Remove"
+      },
+      {
+        "name": "startwith",
+        "text": "Start With"
+      },
+      {
+        "name": "dungeon",
+        "text": "Dungeon Only"
+      },
+      {
+        "name": "keysanity",
+        "text": "Anywhere"
+      }
+    ],
+    "tooltip": "'Remove': Maps and Compasses are removed. This will add a small amount of money and refill items to the pool.<br>'Start With': Maps and Compasses are given to you from the start. This will add a small amount of money and refill items to the pool.<br>'Dungeon': Maps and Compasses can only appear in their respective dungeon.<br>'Anywhere': Maps and Compasses can appear anywhere in the world.<br>Setting 'Remove', 'Start With', or 'Anywhere' will add 2 more possible locations to each Dungeons.<br>This makes dungeons more profitable, especially Ice Cavern, Water Temple, and Jabu Jabu's Belly."
+  },
+  {
+    "default": "dungeon",
+    "name": "shuffle_smallkeys",
+    "text": "Small Keys",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "remove",
+        "text": "Remove (Keysy)"
+      },
+      {
+        "name": "dungeon",
+        "text": "Dungeon Only"
+      },
+      {
+        "name": "keysanity",
+        "text": "Anywhere (Keysanity)"
+      }
+    ],
+    "tooltip": "'Remove': Small Keys are removed. All locked doors in dungeons will be unlocked. An easier mode.<br>'Dungeon': Small Keys can only appear in their respective dungeon. If Fire Temple is not a Master Quest dungeon, the door to the Boss Key chest will be unlocked<br>'Anywhere': Small Keys can appear anywhere in the world. A difficult mode since it is more likely to need to enter a dungeon multiple times.<br>Try different combinations out, such as:<br>'Dungeon' + 'Boss Keys: Anywhere' for a milder Keysanity experience."
+  },
+  {
+    "default": "dungeon",
+    "name": "shuffle_bosskeys",
+    "text": "Boss Keys",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "remove",
+        "text": "Remove (Keysy)"
+      },
+      {
+        "name": "dungeon",
+        "text": "Dungeon Only"
+      },
+      {
+        "name": "keysanity",
+        "text": "Anywhere (Keysanity)"
+      }
+    ],
+    "tooltip": "'Remove': Boss Keys are removed. All locked doors in dungeons will be unlocked. An easier mode.<br>'Dungeon': Boss Keys can only appear in their respective dungeon.<br>'Anywhere': Boss Keys can appear anywhere in the world. A difficult mode since it is more likely to need to enter a dungeon multiple times.<br>Try different combinations out, such as:<br>'Dungeon' + 'Boss Keys: Anywhere' for a milder Keysanity experience."
+  },
+  {
+    "default": false,
+    "name": "enhance_map_compass",
+    "text": "Maps and Compasses Give Information",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Gives the Map and Compass extra functionality. Map will tell if a dungeon is vanilla or Master Quest.<br>Compass will tell what medallion or stone is within. The Temple of Time Altar will no longer provide any information.<br>'Remove': The dungeon information is not available anywhere in the game.<br>'Start With': The dungeon information is available immediately from the dungeon menu."
+  },
+  {
+    "default": false,
+    "name": "unlocked_ganondorf",
+    "text": "Remove Ganon's Boss Door Lock",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "The Boss Key door in Ganon's Tower will start unlocked. This is intended to be used with reduced trial requirements to make it more likely that skipped trials can be avoided."
+  },
+  {
+    "default": false,
+    "name": "mq_dungeons_random",
+    "text": "Random Number of MQ Dungeons",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "If set, a random number of dungeons will have Master Quest designs."
+  },
+  {
+    "default": 0,
+    "name": "mq_dungeons",
+    "text": "Random MQ Dungeon Count",
+    "type": "Scale",
+    "options": [
+    ],
+    "tooltip": "Select a number of Master Quest dungeons to appear in the game.<br>0: All dungeon will have their<br>original designs. (default)<br>6: Half of all dungeons will be from Master Quest.<br>12: All dungeons will have Master Quest redesigns."
+  },
+  {
+    "default": [],
+    "name": "disabled_locations",
+    "text": "Exclude Locations",
+    "type": "SearchBox",
+    "options": [
+      {
+        "name": "Kokiri Sword Chest",
+        "text": "Kokiri Sword Chest"
+      },
+      {
+        "name": "Mido Chest Top Left",
+        "text": "Mido Chest Top Left"
+      },
+      {
+        "name": "Mido Chest Top Right",
+        "text": "Mido Chest Top Right"
+      },
+      {
+        "name": "Mido Chest Bottom Left",
+        "text": "Mido Chest Bottom Left"
+      },
+      {
+        "name": "Mido Chest Bottom Right",
+        "text": "Mido Chest Bottom Right"
+      },
+      {
+        "name": "Shield Grave Chest",
+        "text": "Shield Grave Chest"
+      },
+      {
+        "name": "Heart Piece Grave Chest",
+        "text": "Heart Piece Grave Chest"
+      },
+      {
+        "name": "Composer Grave Chest",
+        "text": "Composer Grave Chest"
+      },
+      {
+        "name": "Death Mountain Bombable Chest",
+        "text": "Death Mountain Bombable Chest"
+      },
+      {
+        "name": "Goron City Leftmost Maze Chest",
+        "text": "Goron City Leftmost Maze Chest"
+      },
+      {
+        "name": "Goron City Right Maze Chest",
+        "text": "Goron City Right Maze Chest"
+      },
+      {
+        "name": "Goron City Left Maze Chest",
+        "text": "Goron City Left Maze Chest"
+      },
+      {
+        "name": "Zoras Domain Torch Run",
+        "text": "Zoras Domain Torch Run"
+      },
+      {
+        "name": "Hookshot Chest",
+        "text": "Hookshot Chest"
+      },
+      {
+        "name": "Gerudo Valley Hammer Rocks Chest",
+        "text": "Gerudo Valley Hammer Rocks Chest"
+      },
+      {
+        "name": "Gerudo Fortress Rooftop Chest",
+        "text": "Gerudo Fortress Rooftop Chest"
+      },
+      {
+        "name": "Haunted Wasteland Structure Chest",
+        "text": "Haunted Wasteland Structure Chest"
+      },
+      {
+        "name": "Redead Grotto Chest",
+        "text": "Redead Grotto Chest"
+      },
+      {
+        "name": "Wolfos Grotto Chest",
+        "text": "Wolfos Grotto Chest"
+      },
+      {
+        "name": "Silver Gauntlets Chest",
+        "text": "Silver Gauntlets Chest"
+      },
+      {
+        "name": "Mirror Shield Chest",
+        "text": "Mirror Shield Chest"
+      },
+      {
+        "name": "Field West Castle Town Grotto Chest",
+        "text": "Field West Castle Town Grotto Chest"
+      },
+      {
+        "name": "Remote Southern Grotto Chest",
+        "text": "Remote Southern Grotto Chest"
+      },
+      {
+        "name": "Field Near Lake Outside Fence Grotto Chest",
+        "text": "Field Near Lake Outside Fence Grotto Chest"
+      },
+      {
+        "name": "Kakariko Back Grotto Chest",
+        "text": "Kakariko Back Grotto Chest"
+      },
+      {
+        "name": "Zora River Plateau Open Grotto Chest",
+        "text": "Zora River Plateau Open Grotto Chest"
+      },
+      {
+        "name": "Kokiri Forest Storms Grotto Chest",
+        "text": "Kokiri Forest Storms Grotto Chest"
+      },
+      {
+        "name": "Lost Woods Generic Grotto Chest",
+        "text": "Lost Woods Generic Grotto Chest"
+      },
+      {
+        "name": "Mountain Storms Grotto Chest",
+        "text": "Mountain Storms Grotto Chest"
+      },
+      {
+        "name": "Top of Crater Grotto Chest",
+        "text": "Top of Crater Grotto Chest"
+      },
+      {
+        "name": "Treasure Chest Game",
+        "text": "Treasure Chest Game"
+      },
+      {
+        "name": "Zelda",
+        "text": "Zelda"
+      },
+      {
+        "name": "Gift from Saria",
+        "text": "Gift from Saria"
+      },
+      {
+        "name": "Zoras Fountain Fairy Reward",
+        "text": "Zoras Fountain Fairy Reward"
+      },
+      {
+        "name": "Hyrule Castle Fairy Reward",
+        "text": "Hyrule Castle Fairy Reward"
+      },
+      {
+        "name": "Desert Colossus Fairy Reward",
+        "text": "Desert Colossus Fairy Reward"
+      },
+      {
+        "name": "Mountain Summit Fairy Reward",
+        "text": "Mountain Summit Fairy Reward"
+      },
+      {
+        "name": "Crater Fairy Reward",
+        "text": "Crater Fairy Reward"
+      },
+      {
+        "name": "Ganons Castle Fairy Reward",
+        "text": "Ganons Castle Fairy Reward"
+      },
+      {
+        "name": "Sheik Forest Song",
+        "text": "Sheik Forest Song"
+      },
+      {
+        "name": "Sheik in Crater",
+        "text": "Sheik in Crater"
+      },
+      {
+        "name": "Sheik in Ice Cavern",
+        "text": "Sheik in Ice Cavern"
+      },
+      {
+        "name": "Sheik at Colossus",
+        "text": "Sheik at Colossus"
+      },
+      {
+        "name": "Sheik in Kakariko",
+        "text": "Sheik in Kakariko"
+      },
+      {
+        "name": "Sheik at Temple",
+        "text": "Sheik at Temple"
+      },
+      {
+        "name": "Impa at Castle",
+        "text": "Impa at Castle"
+      },
+      {
+        "name": "Song from Malon",
+        "text": "Song from Malon"
+      },
+      {
+        "name": "Song from Saria",
+        "text": "Song from Saria"
+      },
+      {
+        "name": "Song from Composer Grave",
+        "text": "Song from Composer Grave"
+      },
+      {
+        "name": "Song from Ocarina of Time",
+        "text": "Song from Ocarina of Time"
+      },
+      {
+        "name": "Song at Windmill",
+        "text": "Song at Windmill"
+      },
+      {
+        "name": "Malon Egg",
+        "text": "Malon Egg"
+      },
+      {
+        "name": "Zeldas Letter",
+        "text": "Zeldas Letter"
+      },
+      {
+        "name": "Darunias Joy",
+        "text": "Darunias Joy"
+      },
+      {
+        "name": "Diving Minigame",
+        "text": "Diving Minigame"
+      },
+      {
+        "name": "Child Fishing",
+        "text": "Child Fishing"
+      },
+      {
+        "name": "Adult Fishing",
+        "text": "Adult Fishing"
+      },
+      {
+        "name": "Diving in the Lab",
+        "text": "Diving in the Lab"
+      },
+      {
+        "name": "Link the Goron",
+        "text": "Link the Goron"
+      },
+      {
+        "name": "King Zora Thawed",
+        "text": "King Zora Thawed"
+      },
+      {
+        "name": "Bombchu Bowling Bomb Bag",
+        "text": "Bombchu Bowling Bomb Bag"
+      },
+      {
+        "name": "Bombchu Bowling Piece of Heart",
+        "text": "Bombchu Bowling Piece of Heart"
+      },
+      {
+        "name": "Dog Lady",
+        "text": "Dog Lady"
+      },
+      {
+        "name": "Skull Kid",
+        "text": "Skull Kid"
+      },
+      {
+        "name": "Ocarina Memory Game",
+        "text": "Ocarina Memory Game"
+      },
+      {
+        "name": "10 Gold Skulltula Reward",
+        "text": "10 Gold Skulltula Reward"
+      },
+      {
+        "name": "20 Gold Skulltula Reward",
+        "text": "20 Gold Skulltula Reward"
+      },
+      {
+        "name": "30 Gold Skulltula Reward",
+        "text": "30 Gold Skulltula Reward"
+      },
+      {
+        "name": "40 Gold Skulltula Reward",
+        "text": "40 Gold Skulltula Reward"
+      },
+      {
+        "name": "50 Gold Skulltula Reward",
+        "text": "50 Gold Skulltula Reward"
+      },
+      {
+        "name": "Man on Roof",
+        "text": "Man on Roof"
+      },
+      {
+        "name": "Frog Ocarina Game",
+        "text": "Frog Ocarina Game"
+      },
+      {
+        "name": "Frogs in the Rain",
+        "text": "Frogs in the Rain"
+      },
+      {
+        "name": "Horseback Archery 1000 Points",
+        "text": "Horseback Archery 1000 Points"
+      },
+      {
+        "name": "Horseback Archery 1500 Points",
+        "text": "Horseback Archery 1500 Points"
+      },
+      {
+        "name": "Child Shooting Gallery",
+        "text": "Child Shooting Gallery"
+      },
+      {
+        "name": "Adult Shooting Gallery",
+        "text": "Adult Shooting Gallery"
+      },
+      {
+        "name": "Target in Woods",
+        "text": "Target in Woods"
+      },
+      {
+        "name": "Deku Theater Skull Mask",
+        "text": "Deku Theater Skull Mask"
+      },
+      {
+        "name": "Deku Theater Mask of Truth",
+        "text": "Deku Theater Mask of Truth"
+      },
+      {
+        "name": "Anju as Adult",
+        "text": "Anju as Adult"
+      },
+      {
+        "name": "Biggoron",
+        "text": "Biggoron"
+      },
+      {
+        "name": "Anjus Chickens",
+        "text": "Anjus Chickens"
+      },
+      {
+        "name": "Talons Chickens",
+        "text": "Talons Chickens"
+      },
+      {
+        "name": "10 Big Poes",
+        "text": "10 Big Poes"
+      },
+      {
+        "name": "Rolling Goron as Child",
+        "text": "Rolling Goron as Child"
+      },
+      {
+        "name": "Underwater Bottle",
+        "text": "Underwater Bottle"
+      },
+      {
+        "name": "Lake Hylia Sun",
+        "text": "Lake Hylia Sun"
+      },
+      {
+        "name": "Gerudo Fortress Membership Card",
+        "text": "Gerudo Fortress Membership Card"
+      },
+      {
+        "name": "Ocarina of Time",
+        "text": "Ocarina of Time"
+      },
+      {
+        "name": "Impa House Freestanding PoH",
+        "text": "Impa House Freestanding PoH"
+      },
+      {
+        "name": "Tektite Grotto Freestanding PoH",
+        "text": "Tektite Grotto Freestanding PoH"
+      },
+      {
+        "name": "Windmill Freestanding PoH",
+        "text": "Windmill Freestanding PoH"
+      },
+      {
+        "name": "Dampe Race Freestanding PoH",
+        "text": "Dampe Race Freestanding PoH"
+      },
+      {
+        "name": "Lon Lon Tower Freestanding PoH",
+        "text": "Lon Lon Tower Freestanding PoH"
+      },
+      {
+        "name": "Graveyard Freestanding PoH",
+        "text": "Graveyard Freestanding PoH"
+      },
+      {
+        "name": "Gravedigging Tour",
+        "text": "Gravedigging Tour"
+      },
+      {
+        "name": "Zora River Lower Freestanding PoH",
+        "text": "Zora River Lower Freestanding PoH"
+      },
+      {
+        "name": "Zora River Upper Freestanding PoH",
+        "text": "Zora River Upper Freestanding PoH"
+      },
+      {
+        "name": "Lake Hylia Freestanding PoH",
+        "text": "Lake Hylia Freestanding PoH"
+      },
+      {
+        "name": "Zoras Fountain Iceberg Freestanding PoH",
+        "text": "Zoras Fountain Iceberg Freestanding PoH"
+      },
+      {
+        "name": "Zoras Fountain Bottom Freestanding PoH",
+        "text": "Zoras Fountain Bottom Freestanding PoH"
+      },
+      {
+        "name": "Gerudo Valley Waterfall Freestanding PoH",
+        "text": "Gerudo Valley Waterfall Freestanding PoH"
+      },
+      {
+        "name": "Gerudo Valley Crate Freestanding PoH",
+        "text": "Gerudo Valley Crate Freestanding PoH"
+      },
+      {
+        "name": "Colossus Freestanding PoH",
+        "text": "Colossus Freestanding PoH"
+      },
+      {
+        "name": "DM Trail Freestanding PoH",
+        "text": "DM Trail Freestanding PoH"
+      },
+      {
+        "name": "DM Crater Wall Freestanding PoH",
+        "text": "DM Crater Wall Freestanding PoH"
+      },
+      {
+        "name": "DM Crater Volcano Freestanding PoH",
+        "text": "DM Crater Volcano Freestanding PoH"
+      },
+      {
+        "name": "Goron City Pot Freestanding PoH",
+        "text": "Goron City Pot Freestanding PoH"
+      },
+      {
+        "name": "Gerudo Fortress North F1 Carpenter",
+        "text": "Gerudo Fortress North F1 Carpenter"
+      },
+      {
+        "name": "Gerudo Fortress North F2 Carpenter",
+        "text": "Gerudo Fortress North F2 Carpenter"
+      },
+      {
+        "name": "Gerudo Fortress South F1 Carpenter",
+        "text": "Gerudo Fortress South F1 Carpenter"
+      },
+      {
+        "name": "Gerudo Fortress South F2 Carpenter",
+        "text": "Gerudo Fortress South F2 Carpenter"
+      },
+      {
+        "name": "King Zora Moves",
+        "text": "King Zora Moves"
+      },
+      {
+        "name": "Epona",
+        "text": "Epona"
+      },
+      {
+        "name": "Deku Baba Sticks",
+        "text": "Deku Baba Sticks"
+      },
+      {
+        "name": "Deku Baba Nuts",
+        "text": "Deku Baba Nuts"
+      },
+      {
+        "name": "Goron City Stick Pot",
+        "text": "Goron City Stick Pot"
+      },
+      {
+        "name": "Bottom of the Well Stick Pot",
+        "text": "Bottom of the Well Stick Pot"
+      },
+      {
+        "name": "Zoras Domain Stick Pot",
+        "text": "Zoras Domain Stick Pot"
+      },
+      {
+        "name": "Zoras Domain Nut Pot",
+        "text": "Zoras Domain Nut Pot"
+      },
+      {
+        "name": "Spirit Temple Nut Crate",
+        "text": "Spirit Temple Nut Crate"
+      },
+      {
+        "name": "Gerudo Fortress Carpenter Rescue",
+        "text": "Gerudo Fortress Carpenter Rescue"
+      },
+      {
+        "name": "Haunted Wasteland Bombchu Salesman",
+        "text": "Haunted Wasteland Bombchu Salesman"
+      },
+      {
+        "name": "Ganons Castle Forest Trial Clear",
+        "text": "Ganons Castle Forest Trial Clear"
+      },
+      {
+        "name": "Ganons Castle Fire Trial Clear",
+        "text": "Ganons Castle Fire Trial Clear"
+      },
+      {
+        "name": "Ganons Castle Water Trial Clear",
+        "text": "Ganons Castle Water Trial Clear"
+      },
+      {
+        "name": "Ganons Castle Shadow Trial Clear",
+        "text": "Ganons Castle Shadow Trial Clear"
+      },
+      {
+        "name": "Ganons Castle Spirit Trial Clear",
+        "text": "Ganons Castle Spirit Trial Clear"
+      },
+      {
+        "name": "Ganons Castle Light Trial Clear",
+        "text": "Ganons Castle Light Trial Clear"
+      },
+      {
+        "name": "Deku Tree Lobby Chest",
+        "text": "Deku Tree Lobby Chest"
+      },
+      {
+        "name": "Deku Tree Slingshot Chest",
+        "text": "Deku Tree Slingshot Chest"
+      },
+      {
+        "name": "Deku Tree Slingshot Room Side Chest",
+        "text": "Deku Tree Slingshot Room Side Chest"
+      },
+      {
+        "name": "Deku Tree Compass Chest",
+        "text": "Deku Tree Compass Chest"
+      },
+      {
+        "name": "Deku Tree Compass Room Side Chest",
+        "text": "Deku Tree Compass Room Side Chest"
+      },
+      {
+        "name": "Deku Tree Basement Chest",
+        "text": "Deku Tree Basement Chest"
+      },
+      {
+        "name": "Deku Tree MQ Lobby Chest",
+        "text": "Deku Tree MQ Lobby Chest"
+      },
+      {
+        "name": "Deku Tree MQ Compass Chest",
+        "text": "Deku Tree MQ Compass Chest"
+      },
+      {
+        "name": "Deku Tree MQ Slingshot Chest",
+        "text": "Deku Tree MQ Slingshot Chest"
+      },
+      {
+        "name": "Deku Tree MQ Slingshot Room Back Chest",
+        "text": "Deku Tree MQ Slingshot Room Back Chest"
+      },
+      {
+        "name": "Deku Tree MQ Basement Chest",
+        "text": "Deku Tree MQ Basement Chest"
+      },
+      {
+        "name": "Deku Tree MQ Before Spinning Log Chest",
+        "text": "Deku Tree MQ Before Spinning Log Chest"
+      },
+      {
+        "name": "Deku Tree MQ After Spinning Log Chest",
+        "text": "Deku Tree MQ After Spinning Log Chest"
+      },
+      {
+        "name": "Chest Above King Dodongo",
+        "text": "Chest Above King Dodongo"
+      },
+      {
+        "name": "Dodongos Cavern Map Chest",
+        "text": "Dodongos Cavern Map Chest"
+      },
+      {
+        "name": "Dodongos Cavern Compass Chest",
+        "text": "Dodongos Cavern Compass Chest"
+      },
+      {
+        "name": "Dodongos Cavern Bomb Flower Platform",
+        "text": "Dodongos Cavern Bomb Flower Platform"
+      },
+      {
+        "name": "Dodongos Cavern Bomb Bag Chest",
+        "text": "Dodongos Cavern Bomb Bag Chest"
+      },
+      {
+        "name": "Dodongos Cavern End of Bridge Chest",
+        "text": "Dodongos Cavern End of Bridge Chest"
+      },
+      {
+        "name": "Dodongos Cavern MQ Map Chest",
+        "text": "Dodongos Cavern MQ Map Chest"
+      },
+      {
+        "name": "Dodongos Cavern MQ Bomb Bag Chest",
+        "text": "Dodongos Cavern MQ Bomb Bag Chest"
+      },
+      {
+        "name": "Dodongos Cavern MQ Compass Chest",
+        "text": "Dodongos Cavern MQ Compass Chest"
+      },
+      {
+        "name": "Dodongos Cavern MQ Larva Room Chest",
+        "text": "Dodongos Cavern MQ Larva Room Chest"
+      },
+      {
+        "name": "Dodongos Cavern MQ Torch Puzzle Room Chest",
+        "text": "Dodongos Cavern MQ Torch Puzzle Room Chest"
+      },
+      {
+        "name": "Dodongos Cavern MQ Under Grave Chest",
+        "text": "Dodongos Cavern MQ Under Grave Chest"
+      },
+      {
+        "name": "Boomerang Chest",
+        "text": "Boomerang Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly Map Chest",
+        "text": "Jabu Jabus Belly Map Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly Compass Chest",
+        "text": "Jabu Jabus Belly Compass Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly MQ Entry Side Chest",
+        "text": "Jabu Jabus Belly MQ Entry Side Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly MQ Map Chest",
+        "text": "Jabu Jabus Belly MQ Map Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly MQ Second Room Lower Chest",
+        "text": "Jabu Jabus Belly MQ Second Room Lower Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly MQ Compass Chest",
+        "text": "Jabu Jabus Belly MQ Compass Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly MQ Second Room Upper Chest",
+        "text": "Jabu Jabus Belly MQ Second Room Upper Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly MQ Basement North Chest",
+        "text": "Jabu Jabus Belly MQ Basement North Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly MQ Basement South Chest",
+        "text": "Jabu Jabus Belly MQ Basement South Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly MQ Near Boss Chest",
+        "text": "Jabu Jabus Belly MQ Near Boss Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly MQ Falling Like Like Room Chest",
+        "text": "Jabu Jabus Belly MQ Falling Like Like Room Chest"
+      },
+      {
+        "name": "Jabu Jabus Belly MQ Boomerang Room Small Chest",
+        "text": "Jabu Jabus Belly MQ Boomerang Room Small Chest"
+      },
+      {
+        "name": "MQ Boomerang Chest",
+        "text": "MQ Boomerang Chest"
+      },
+      {
+        "name": "Forest Temple First Chest",
+        "text": "Forest Temple First Chest"
+      },
+      {
+        "name": "Forest Temple Chest Behind Lobby",
+        "text": "Forest Temple Chest Behind Lobby"
+      },
+      {
+        "name": "Forest Temple Well Chest",
+        "text": "Forest Temple Well Chest"
+      },
+      {
+        "name": "Forest Temple Map Chest",
+        "text": "Forest Temple Map Chest"
+      },
+      {
+        "name": "Forest Temple Outside Hookshot Chest",
+        "text": "Forest Temple Outside Hookshot Chest"
+      },
+      {
+        "name": "Forest Temple Falling Room Chest",
+        "text": "Forest Temple Falling Room Chest"
+      },
+      {
+        "name": "Forest Temple Block Push Chest",
+        "text": "Forest Temple Block Push Chest"
+      },
+      {
+        "name": "Forest Temple Boss Key Chest",
+        "text": "Forest Temple Boss Key Chest"
+      },
+      {
+        "name": "Forest Temple Floormaster Chest",
+        "text": "Forest Temple Floormaster Chest"
+      },
+      {
+        "name": "Forest Temple Bow Chest",
+        "text": "Forest Temple Bow Chest"
+      },
+      {
+        "name": "Forest Temple Red Poe Chest",
+        "text": "Forest Temple Red Poe Chest"
+      },
+      {
+        "name": "Forest Temple Blue Poe Chest",
+        "text": "Forest Temple Blue Poe Chest"
+      },
+      {
+        "name": "Forest Temple Near Boss Chest",
+        "text": "Forest Temple Near Boss Chest"
+      },
+      {
+        "name": "Forest Temple MQ First Chest",
+        "text": "Forest Temple MQ First Chest"
+      },
+      {
+        "name": "Forest Temple MQ Chest Behind Lobby",
+        "text": "Forest Temple MQ Chest Behind Lobby"
+      },
+      {
+        "name": "Forest Temple MQ Bow Chest",
+        "text": "Forest Temple MQ Bow Chest"
+      },
+      {
+        "name": "Forest Temple MQ NE Outdoors Lower Chest",
+        "text": "Forest Temple MQ NE Outdoors Lower Chest"
+      },
+      {
+        "name": "Forest Temple MQ NE Outdoors Upper Chest",
+        "text": "Forest Temple MQ NE Outdoors Upper Chest"
+      },
+      {
+        "name": "Forest Temple MQ Well Chest",
+        "text": "Forest Temple MQ Well Chest"
+      },
+      {
+        "name": "Forest Temple MQ Map Chest",
+        "text": "Forest Temple MQ Map Chest"
+      },
+      {
+        "name": "Forest Temple MQ Compass Chest",
+        "text": "Forest Temple MQ Compass Chest"
+      },
+      {
+        "name": "Forest Temple MQ Falling Room Chest",
+        "text": "Forest Temple MQ Falling Room Chest"
+      },
+      {
+        "name": "Forest Temple MQ Near Boss Chest",
+        "text": "Forest Temple MQ Near Boss Chest"
+      },
+      {
+        "name": "Forest Temple MQ Redead Chest",
+        "text": "Forest Temple MQ Redead Chest"
+      },
+      {
+        "name": "Forest Temple MQ Boss Key Chest",
+        "text": "Forest Temple MQ Boss Key Chest"
+      },
+      {
+        "name": "Fire Temple Chest Near Boss",
+        "text": "Fire Temple Chest Near Boss"
+      },
+      {
+        "name": "Fire Temple Fire Dancer Chest",
+        "text": "Fire Temple Fire Dancer Chest"
+      },
+      {
+        "name": "Fire Temple Boss Key Chest",
+        "text": "Fire Temple Boss Key Chest"
+      },
+      {
+        "name": "Fire Temple Big Lava Room Bombable Chest",
+        "text": "Fire Temple Big Lava Room Bombable Chest"
+      },
+      {
+        "name": "Fire Temple Big Lava Room Open Chest",
+        "text": "Fire Temple Big Lava Room Open Chest"
+      },
+      {
+        "name": "Fire Temple Boulder Maze Lower Chest",
+        "text": "Fire Temple Boulder Maze Lower Chest"
+      },
+      {
+        "name": "Fire Temple Boulder Maze Upper Chest",
+        "text": "Fire Temple Boulder Maze Upper Chest"
+      },
+      {
+        "name": "Fire Temple Boulder Maze Side Room",
+        "text": "Fire Temple Boulder Maze Side Room"
+      },
+      {
+        "name": "Fire Temple Boulder Maze Bombable Pit",
+        "text": "Fire Temple Boulder Maze Bombable Pit"
+      },
+      {
+        "name": "Fire Temple Scarecrow Chest",
+        "text": "Fire Temple Scarecrow Chest"
+      },
+      {
+        "name": "Fire Temple Map Chest",
+        "text": "Fire Temple Map Chest"
+      },
+      {
+        "name": "Fire Temple Compass Chest",
+        "text": "Fire Temple Compass Chest"
+      },
+      {
+        "name": "Fire Temple Highest Goron Chest",
+        "text": "Fire Temple Highest Goron Chest"
+      },
+      {
+        "name": "Fire Temple Megaton Hammer Chest",
+        "text": "Fire Temple Megaton Hammer Chest"
+      },
+      {
+        "name": "Fire Temple MQ Chest Near Boss",
+        "text": "Fire Temple MQ Chest Near Boss"
+      },
+      {
+        "name": "Fire Temple MQ Megaton Hammer Chest",
+        "text": "Fire Temple MQ Megaton Hammer Chest"
+      },
+      {
+        "name": "Fire Temple MQ Compass Chest",
+        "text": "Fire Temple MQ Compass Chest"
+      },
+      {
+        "name": "Fire Temple MQ Maze Lower Chest",
+        "text": "Fire Temple MQ Maze Lower Chest"
+      },
+      {
+        "name": "Fire Temple MQ Maze Upper Chest",
+        "text": "Fire Temple MQ Maze Upper Chest"
+      },
+      {
+        "name": "Fire Temple MQ West Tower Top Chest",
+        "text": "Fire Temple MQ West Tower Top Chest"
+      },
+      {
+        "name": "Fire Temple MQ Entrance Hallway Small Chest",
+        "text": "Fire Temple MQ Entrance Hallway Small Chest"
+      },
+      {
+        "name": "Fire Temple MQ Map Chest",
+        "text": "Fire Temple MQ Map Chest"
+      },
+      {
+        "name": "Fire Temple MQ Boss Key Chest",
+        "text": "Fire Temple MQ Boss Key Chest"
+      },
+      {
+        "name": "Fire Temple MQ Big Lava Room Bombable Chest",
+        "text": "Fire Temple MQ Big Lava Room Bombable Chest"
+      },
+      {
+        "name": "Fire Temple MQ Maze Side Room",
+        "text": "Fire Temple MQ Maze Side Room"
+      },
+      {
+        "name": "Fire Temple MQ Freestanding Key",
+        "text": "Fire Temple MQ Freestanding Key"
+      },
+      {
+        "name": "Water Temple Map Chest",
+        "text": "Water Temple Map Chest"
+      },
+      {
+        "name": "Water Temple Compass Chest",
+        "text": "Water Temple Compass Chest"
+      },
+      {
+        "name": "Water Temple Torches Chest",
+        "text": "Water Temple Torches Chest"
+      },
+      {
+        "name": "Water Temple Dragon Chest",
+        "text": "Water Temple Dragon Chest"
+      },
+      {
+        "name": "Water Temple Central Bow Target Chest",
+        "text": "Water Temple Central Bow Target Chest"
+      },
+      {
+        "name": "Water Temple Central Pillar Chest",
+        "text": "Water Temple Central Pillar Chest"
+      },
+      {
+        "name": "Water Temple Cracked Wall Chest",
+        "text": "Water Temple Cracked Wall Chest"
+      },
+      {
+        "name": "Water Temple Boss Key Chest",
+        "text": "Water Temple Boss Key Chest"
+      },
+      {
+        "name": "Water Temple Dark Link Chest",
+        "text": "Water Temple Dark Link Chest"
+      },
+      {
+        "name": "Water Temple River Chest",
+        "text": "Water Temple River Chest"
+      },
+      {
+        "name": "Water Temple MQ Central Pillar Chest",
+        "text": "Water Temple MQ Central Pillar Chest"
+      },
+      {
+        "name": "Water Temple MQ Boss Key Chest",
+        "text": "Water Temple MQ Boss Key Chest"
+      },
+      {
+        "name": "Water Temple MQ Longshot Chest",
+        "text": "Water Temple MQ Longshot Chest"
+      },
+      {
+        "name": "Water Temple MQ Compass Chest",
+        "text": "Water Temple MQ Compass Chest"
+      },
+      {
+        "name": "Water Temple MQ Map Chest",
+        "text": "Water Temple MQ Map Chest"
+      },
+      {
+        "name": "Water Temple MQ Freestanding Key",
+        "text": "Water Temple MQ Freestanding Key"
+      },
+      {
+        "name": "Spirit Temple Child Left Chest",
+        "text": "Spirit Temple Child Left Chest"
+      },
+      {
+        "name": "Spirit Temple Child Right Chest",
+        "text": "Spirit Temple Child Right Chest"
+      },
+      {
+        "name": "Spirit Temple Compass Chest",
+        "text": "Spirit Temple Compass Chest"
+      },
+      {
+        "name": "Spirit Temple Early Adult Right Chest",
+        "text": "Spirit Temple Early Adult Right Chest"
+      },
+      {
+        "name": "Spirit Temple First Mirror Right Chest",
+        "text": "Spirit Temple First Mirror Right Chest"
+      },
+      {
+        "name": "Spirit Temple First Mirror Left Chest",
+        "text": "Spirit Temple First Mirror Left Chest"
+      },
+      {
+        "name": "Spirit Temple Map Chest",
+        "text": "Spirit Temple Map Chest"
+      },
+      {
+        "name": "Spirit Temple Child Climb East Chest",
+        "text": "Spirit Temple Child Climb East Chest"
+      },
+      {
+        "name": "Spirit Temple Child Climb North Chest",
+        "text": "Spirit Temple Child Climb North Chest"
+      },
+      {
+        "name": "Spirit Temple Sun Block Room Chest",
+        "text": "Spirit Temple Sun Block Room Chest"
+      },
+      {
+        "name": "Spirit Temple Statue Hand Chest",
+        "text": "Spirit Temple Statue Hand Chest"
+      },
+      {
+        "name": "Spirit Temple NE Main Room Chest",
+        "text": "Spirit Temple NE Main Room Chest"
+      },
+      {
+        "name": "Spirit Temple Near Four Armos Chest",
+        "text": "Spirit Temple Near Four Armos Chest"
+      },
+      {
+        "name": "Spirit Temple Hallway Left Invisible Chest",
+        "text": "Spirit Temple Hallway Left Invisible Chest"
+      },
+      {
+        "name": "Spirit Temple Hallway Right Invisible Chest",
+        "text": "Spirit Temple Hallway Right Invisible Chest"
+      },
+      {
+        "name": "Spirit Temple Boss Key Chest",
+        "text": "Spirit Temple Boss Key Chest"
+      },
+      {
+        "name": "Spirit Temple Topmost Chest",
+        "text": "Spirit Temple Topmost Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Entrance Front Left Chest",
+        "text": "Spirit Temple MQ Entrance Front Left Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Entrance Back Right Chest",
+        "text": "Spirit Temple MQ Entrance Back Right Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Entrance Front Right Chest",
+        "text": "Spirit Temple MQ Entrance Front Right Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Entrance Back Left Chest",
+        "text": "Spirit Temple MQ Entrance Back Left Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Child Center Chest",
+        "text": "Spirit Temple MQ Child Center Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Map Chest",
+        "text": "Spirit Temple MQ Map Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Child Left Chest",
+        "text": "Spirit Temple MQ Child Left Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Child Climb North Chest",
+        "text": "Spirit Temple MQ Child Climb North Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Child Climb South Chest",
+        "text": "Spirit Temple MQ Child Climb South Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Compass Chest",
+        "text": "Spirit Temple MQ Compass Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Lower NE Main Room Chest",
+        "text": "Spirit Temple MQ Lower NE Main Room Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Upper NE Main Room Chest",
+        "text": "Spirit Temple MQ Upper NE Main Room Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Silver Block Hallway Chest",
+        "text": "Spirit Temple MQ Silver Block Hallway Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Sun Block Room Chest",
+        "text": "Spirit Temple MQ Sun Block Room Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Lower Adult Right Chest",
+        "text": "Spirit Temple MQ Lower Adult Right Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Lower Adult Left Chest",
+        "text": "Spirit Temple MQ Lower Adult Left Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Beamos Room Chest",
+        "text": "Spirit Temple MQ Beamos Room Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Ice Trap Chest",
+        "text": "Spirit Temple MQ Ice Trap Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Boss Key Chest",
+        "text": "Spirit Temple MQ Boss Key Chest"
+      },
+      {
+        "name": "Spirit Temple MQ Mirror Puzzle Invisible Chest",
+        "text": "Spirit Temple MQ Mirror Puzzle Invisible Chest"
+      },
+      {
+        "name": "Shadow Temple Map Chest",
+        "text": "Shadow Temple Map Chest"
+      },
+      {
+        "name": "Shadow Temple Hover Boots Chest",
+        "text": "Shadow Temple Hover Boots Chest"
+      },
+      {
+        "name": "Shadow Temple Compass Chest",
+        "text": "Shadow Temple Compass Chest"
+      },
+      {
+        "name": "Shadow Temple Early Silver Rupee Chest",
+        "text": "Shadow Temple Early Silver Rupee Chest"
+      },
+      {
+        "name": "Shadow Temple Invisible Blades Visible Chest",
+        "text": "Shadow Temple Invisible Blades Visible Chest"
+      },
+      {
+        "name": "Shadow Temple Invisible Blades Invisible Chest",
+        "text": "Shadow Temple Invisible Blades Invisible Chest"
+      },
+      {
+        "name": "Shadow Temple Falling Spikes Lower Chest",
+        "text": "Shadow Temple Falling Spikes Lower Chest"
+      },
+      {
+        "name": "Shadow Temple Falling Spikes Upper Chest",
+        "text": "Shadow Temple Falling Spikes Upper Chest"
+      },
+      {
+        "name": "Shadow Temple Falling Spikes Switch Chest",
+        "text": "Shadow Temple Falling Spikes Switch Chest"
+      },
+      {
+        "name": "Shadow Temple Invisible Spikes Chest",
+        "text": "Shadow Temple Invisible Spikes Chest"
+      },
+      {
+        "name": "Shadow Temple Wind Hint Chest",
+        "text": "Shadow Temple Wind Hint Chest"
+      },
+      {
+        "name": "Shadow Temple After Wind Enemy Chest",
+        "text": "Shadow Temple After Wind Enemy Chest"
+      },
+      {
+        "name": "Shadow Temple After Wind Hidden Chest",
+        "text": "Shadow Temple After Wind Hidden Chest"
+      },
+      {
+        "name": "Shadow Temple Spike Walls Left Chest",
+        "text": "Shadow Temple Spike Walls Left Chest"
+      },
+      {
+        "name": "Shadow Temple Boss Key Chest",
+        "text": "Shadow Temple Boss Key Chest"
+      },
+      {
+        "name": "Shadow Temple Hidden Floormaster Chest",
+        "text": "Shadow Temple Hidden Floormaster Chest"
+      },
+      {
+        "name": "Shadow Temple Freestanding Key",
+        "text": "Shadow Temple Freestanding Key"
+      },
+      {
+        "name": "Shadow Temple MQ Compass Chest",
+        "text": "Shadow Temple MQ Compass Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Hover Boots Chest",
+        "text": "Shadow Temple MQ Hover Boots Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Early Gibdos Chest",
+        "text": "Shadow Temple MQ Early Gibdos Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Map Chest",
+        "text": "Shadow Temple MQ Map Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Beamos Silver Rupees Chest",
+        "text": "Shadow Temple MQ Beamos Silver Rupees Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Falling Spikes Switch Chest",
+        "text": "Shadow Temple MQ Falling Spikes Switch Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Falling Spikes Lower Chest",
+        "text": "Shadow Temple MQ Falling Spikes Lower Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Falling Spikes Upper Chest",
+        "text": "Shadow Temple MQ Falling Spikes Upper Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Invisible Spikes Chest",
+        "text": "Shadow Temple MQ Invisible Spikes Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Boss Key Chest",
+        "text": "Shadow Temple MQ Boss Key Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Spike Walls Left Chest",
+        "text": "Shadow Temple MQ Spike Walls Left Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Stalfos Room Chest",
+        "text": "Shadow Temple MQ Stalfos Room Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Invisible Blades Invisible Chest",
+        "text": "Shadow Temple MQ Invisible Blades Invisible Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Invisible Blades Visible Chest",
+        "text": "Shadow Temple MQ Invisible Blades Visible Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Bomb Flower Chest",
+        "text": "Shadow Temple MQ Bomb Flower Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Wind Hint Chest",
+        "text": "Shadow Temple MQ Wind Hint Chest"
+      },
+      {
+        "name": "Shadow Temple MQ After Wind Hidden Chest",
+        "text": "Shadow Temple MQ After Wind Hidden Chest"
+      },
+      {
+        "name": "Shadow Temple MQ After Wind Enemy Chest",
+        "text": "Shadow Temple MQ After Wind Enemy Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Near Ship Invisible Chest",
+        "text": "Shadow Temple MQ Near Ship Invisible Chest"
+      },
+      {
+        "name": "Shadow Temple MQ Freestanding Key",
+        "text": "Shadow Temple MQ Freestanding Key"
+      },
+      {
+        "name": "Bottom of the Well Front Left Hidden Wall",
+        "text": "Bottom of the Well Front Left Hidden Wall"
+      },
+      {
+        "name": "Bottom of the Well Front Center Bombable",
+        "text": "Bottom of the Well Front Center Bombable"
+      },
+      {
+        "name": "Bottom of the Well Right Bottom Hidden Wall",
+        "text": "Bottom of the Well Right Bottom Hidden Wall"
+      },
+      {
+        "name": "Bottom of the Well Center Large Chest",
+        "text": "Bottom of the Well Center Large Chest"
+      },
+      {
+        "name": "Bottom of the Well Center Small Chest",
+        "text": "Bottom of the Well Center Small Chest"
+      },
+      {
+        "name": "Bottom of the Well Back Left Bombable",
+        "text": "Bottom of the Well Back Left Bombable"
+      },
+      {
+        "name": "Bottom of the Well Defeat Boss",
+        "text": "Bottom of the Well Defeat Boss"
+      },
+      {
+        "name": "Bottom of the Well Invisible Chest",
+        "text": "Bottom of the Well Invisible Chest"
+      },
+      {
+        "name": "Bottom of the Well Underwater Front Chest",
+        "text": "Bottom of the Well Underwater Front Chest"
+      },
+      {
+        "name": "Bottom of the Well Underwater Left Chest",
+        "text": "Bottom of the Well Underwater Left Chest"
+      },
+      {
+        "name": "Bottom of the Well Basement Chest",
+        "text": "Bottom of the Well Basement Chest"
+      },
+      {
+        "name": "Bottom of the Well Locked Pits",
+        "text": "Bottom of the Well Locked Pits"
+      },
+      {
+        "name": "Bottom of the Well Behind Right Grate",
+        "text": "Bottom of the Well Behind Right Grate"
+      },
+      {
+        "name": "Bottom of the Well Freestanding Key",
+        "text": "Bottom of the Well Freestanding Key"
+      },
+      {
+        "name": "Bottom of the Well MQ Map Chest",
+        "text": "Bottom of the Well MQ Map Chest"
+      },
+      {
+        "name": "Bottom of the Well MQ Lens Chest",
+        "text": "Bottom of the Well MQ Lens Chest"
+      },
+      {
+        "name": "Bottom of the Well MQ Compass Chest",
+        "text": "Bottom of the Well MQ Compass Chest"
+      },
+      {
+        "name": "Bottom of the Well MQ Dead Hand Freestanding Key",
+        "text": "Bottom of the Well MQ Dead Hand Freestanding Key"
+      },
+      {
+        "name": "Bottom of the Well MQ East Inner Room Freestanding Key",
+        "text": "Bottom of the Well MQ East Inner Room Freestanding Key"
+      },
+      {
+        "name": "Ice Cavern Map Chest",
+        "text": "Ice Cavern Map Chest"
+      },
+      {
+        "name": "Ice Cavern Compass Chest",
+        "text": "Ice Cavern Compass Chest"
+      },
+      {
+        "name": "Ice Cavern Iron Boots Chest",
+        "text": "Ice Cavern Iron Boots Chest"
+      },
+      {
+        "name": "Ice Cavern Freestanding PoH",
+        "text": "Ice Cavern Freestanding PoH"
+      },
+      {
+        "name": "Ice Cavern MQ Iron Boots Chest",
+        "text": "Ice Cavern MQ Iron Boots Chest"
+      },
+      {
+        "name": "Ice Cavern MQ Compass Chest",
+        "text": "Ice Cavern MQ Compass Chest"
+      },
+      {
+        "name": "Ice Cavern MQ Map Chest",
+        "text": "Ice Cavern MQ Map Chest"
+      },
+      {
+        "name": "Ice Cavern MQ Freestanding PoH",
+        "text": "Ice Cavern MQ Freestanding PoH"
+      },
+      {
+        "name": "Gerudo Training Grounds Lobby Left Chest",
+        "text": "Gerudo Training Grounds Lobby Left Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Lobby Right Chest",
+        "text": "Gerudo Training Grounds Lobby Right Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Stalfos Chest",
+        "text": "Gerudo Training Grounds Stalfos Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Beamos Chest",
+        "text": "Gerudo Training Grounds Beamos Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Hidden Ceiling Chest",
+        "text": "Gerudo Training Grounds Hidden Ceiling Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Maze Path First Chest",
+        "text": "Gerudo Training Grounds Maze Path First Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Maze Path Second Chest",
+        "text": "Gerudo Training Grounds Maze Path Second Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Maze Path Third Chest",
+        "text": "Gerudo Training Grounds Maze Path Third Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Maze Path Final Chest",
+        "text": "Gerudo Training Grounds Maze Path Final Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Maze Right Central Chest",
+        "text": "Gerudo Training Grounds Maze Right Central Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Maze Right Side Chest",
+        "text": "Gerudo Training Grounds Maze Right Side Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Underwater Silver Rupee Chest",
+        "text": "Gerudo Training Grounds Underwater Silver Rupee Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Hammer Room Clear Chest",
+        "text": "Gerudo Training Grounds Hammer Room Clear Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Hammer Room Switch Chest",
+        "text": "Gerudo Training Grounds Hammer Room Switch Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Eye Statue Chest",
+        "text": "Gerudo Training Grounds Eye Statue Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Near Scarecrow Chest",
+        "text": "Gerudo Training Grounds Near Scarecrow Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Before Heavy Block Chest",
+        "text": "Gerudo Training Grounds Before Heavy Block Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Heavy Block First Chest",
+        "text": "Gerudo Training Grounds Heavy Block First Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Heavy Block Second Chest",
+        "text": "Gerudo Training Grounds Heavy Block Second Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Heavy Block Third Chest",
+        "text": "Gerudo Training Grounds Heavy Block Third Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Heavy Block Fourth Chest",
+        "text": "Gerudo Training Grounds Heavy Block Fourth Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds Freestanding Key",
+        "text": "Gerudo Training Grounds Freestanding Key"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Lobby Right Chest",
+        "text": "Gerudo Training Grounds MQ Lobby Right Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Lobby Left Chest",
+        "text": "Gerudo Training Grounds MQ Lobby Left Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ First Iron Knuckle Chest",
+        "text": "Gerudo Training Grounds MQ First Iron Knuckle Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Before Heavy Block Chest",
+        "text": "Gerudo Training Grounds MQ Before Heavy Block Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Eye Statue Chest",
+        "text": "Gerudo Training Grounds MQ Eye Statue Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Flame Circle Chest",
+        "text": "Gerudo Training Grounds MQ Flame Circle Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Second Iron Knuckle Chest",
+        "text": "Gerudo Training Grounds MQ Second Iron Knuckle Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Dinolfos Chest",
+        "text": "Gerudo Training Grounds MQ Dinolfos Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Ice Arrows Chest",
+        "text": "Gerudo Training Grounds MQ Ice Arrows Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Maze Right Central Chest",
+        "text": "Gerudo Training Grounds MQ Maze Right Central Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Maze Path First Chest",
+        "text": "Gerudo Training Grounds MQ Maze Path First Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Maze Right Side Chest",
+        "text": "Gerudo Training Grounds MQ Maze Right Side Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Maze Path Third Chest",
+        "text": "Gerudo Training Grounds MQ Maze Path Third Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Maze Path Second Chest",
+        "text": "Gerudo Training Grounds MQ Maze Path Second Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Hidden Ceiling Chest",
+        "text": "Gerudo Training Grounds MQ Hidden Ceiling Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Underwater Silver Rupee Chest",
+        "text": "Gerudo Training Grounds MQ Underwater Silver Rupee Chest"
+      },
+      {
+        "name": "Gerudo Training Grounds MQ Heavy Block Chest",
+        "text": "Gerudo Training Grounds MQ Heavy Block Chest"
+      },
+      {
+        "name": "Ganons Tower Boss Key Chest",
+        "text": "Ganons Tower Boss Key Chest"
+      },
+      {
+        "name": "Ganons Castle Forest Trial Chest",
+        "text": "Ganons Castle Forest Trial Chest"
+      },
+      {
+        "name": "Ganons Castle Water Trial Left Chest",
+        "text": "Ganons Castle Water Trial Left Chest"
+      },
+      {
+        "name": "Ganons Castle Water Trial Right Chest",
+        "text": "Ganons Castle Water Trial Right Chest"
+      },
+      {
+        "name": "Ganons Castle Shadow Trial First Chest",
+        "text": "Ganons Castle Shadow Trial First Chest"
+      },
+      {
+        "name": "Ganons Castle Shadow Trial Second Chest",
+        "text": "Ganons Castle Shadow Trial Second Chest"
+      },
+      {
+        "name": "Ganons Castle Spirit Trial First Chest",
+        "text": "Ganons Castle Spirit Trial First Chest"
+      },
+      {
+        "name": "Ganons Castle Spirit Trial Second Chest",
+        "text": "Ganons Castle Spirit Trial Second Chest"
+      },
+      {
+        "name": "Ganons Castle Light Trial First Left Chest",
+        "text": "Ganons Castle Light Trial First Left Chest"
+      },
+      {
+        "name": "Ganons Castle Light Trial Second Left Chest",
+        "text": "Ganons Castle Light Trial Second Left Chest"
+      },
+      {
+        "name": "Ganons Castle Light Trial Third Left Chest",
+        "text": "Ganons Castle Light Trial Third Left Chest"
+      },
+      {
+        "name": "Ganons Castle Light Trial First Right Chest",
+        "text": "Ganons Castle Light Trial First Right Chest"
+      },
+      {
+        "name": "Ganons Castle Light Trial Second Right Chest",
+        "text": "Ganons Castle Light Trial Second Right Chest"
+      },
+      {
+        "name": "Ganons Castle Light Trial Third Right Chest",
+        "text": "Ganons Castle Light Trial Third Right Chest"
+      },
+      {
+        "name": "Ganons Castle Light Trial Invisible Enemies Chest",
+        "text": "Ganons Castle Light Trial Invisible Enemies Chest"
+      },
+      {
+        "name": "Ganons Castle Light Trial Lullaby Chest",
+        "text": "Ganons Castle Light Trial Lullaby Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Water Trial Chest",
+        "text": "Ganons Castle MQ Water Trial Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Forest Trial First Chest",
+        "text": "Ganons Castle MQ Forest Trial First Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Forest Trial Second Chest",
+        "text": "Ganons Castle MQ Forest Trial Second Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Light Trial Lullaby Chest",
+        "text": "Ganons Castle MQ Light Trial Lullaby Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Shadow Trial First Chest",
+        "text": "Ganons Castle MQ Shadow Trial First Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Shadow Trial Second Chest",
+        "text": "Ganons Castle MQ Shadow Trial Second Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Spirit Trial Golden Gauntlets Chest",
+        "text": "Ganons Castle MQ Spirit Trial Golden Gauntlets Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Spirit Trial Sun Back Right Chest",
+        "text": "Ganons Castle MQ Spirit Trial Sun Back Right Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Spirit Trial Sun Back Left Chest",
+        "text": "Ganons Castle MQ Spirit Trial Sun Back Left Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Spirit Trial Sun Front Left Chest",
+        "text": "Ganons Castle MQ Spirit Trial Sun Front Left Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Spirit Trial First Chest",
+        "text": "Ganons Castle MQ Spirit Trial First Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Spirit Trial Second Chest",
+        "text": "Ganons Castle MQ Spirit Trial Second Chest"
+      },
+      {
+        "name": "Ganons Castle MQ Forest Trial Freestanding Key",
+        "text": "Ganons Castle MQ Forest Trial Freestanding Key"
+      },
+      {
+        "name": "Links Pocket",
+        "text": "Links Pocket"
+      },
+      {
+        "name": "Queen Gohma",
+        "text": "Queen Gohma"
+      },
+      {
+        "name": "King Dodongo",
+        "text": "King Dodongo"
+      },
+      {
+        "name": "Barinade",
+        "text": "Barinade"
+      },
+      {
+        "name": "Phantom Ganon",
+        "text": "Phantom Ganon"
+      },
+      {
+        "name": "Volvagia",
+        "text": "Volvagia"
+      },
+      {
+        "name": "Morpha",
+        "text": "Morpha"
+      },
+      {
+        "name": "Twinrova",
+        "text": "Twinrova"
+      },
+      {
+        "name": "Bongo Bongo",
+        "text": "Bongo Bongo"
+      },
+      {
+        "name": "Queen Gohma Heart",
+        "text": "Queen Gohma Heart"
+      },
+      {
+        "name": "King Dodongo Heart",
+        "text": "King Dodongo Heart"
+      },
+      {
+        "name": "Barinade Heart",
+        "text": "Barinade Heart"
+      },
+      {
+        "name": "Phantom Ganon Heart",
+        "text": "Phantom Ganon Heart"
+      },
+      {
+        "name": "Volvagia Heart",
+        "text": "Volvagia Heart"
+      },
+      {
+        "name": "Morpha Heart",
+        "text": "Morpha Heart"
+      },
+      {
+        "name": "Twinrova Heart",
+        "text": "Twinrova Heart"
+      },
+      {
+        "name": "Bongo Bongo Heart",
+        "text": "Bongo Bongo Heart"
+      },
+      {
+        "name": "GS Deku Tree Basement Back Room",
+        "text": "GS Deku Tree Basement Back Room"
+      },
+      {
+        "name": "GS Deku Tree Basement Gate",
+        "text": "GS Deku Tree Basement Gate"
+      },
+      {
+        "name": "GS Deku Tree Basement Vines",
+        "text": "GS Deku Tree Basement Vines"
+      },
+      {
+        "name": "GS Deku Tree Compass Room",
+        "text": "GS Deku Tree Compass Room"
+      },
+      {
+        "name": "GS Deku Tree MQ Lobby",
+        "text": "GS Deku Tree MQ Lobby"
+      },
+      {
+        "name": "GS Deku Tree MQ Compass Room",
+        "text": "GS Deku Tree MQ Compass Room"
+      },
+      {
+        "name": "GS Deku Tree MQ Basement Ceiling",
+        "text": "GS Deku Tree MQ Basement Ceiling"
+      },
+      {
+        "name": "GS Deku Tree MQ Basement Back Room",
+        "text": "GS Deku Tree MQ Basement Back Room"
+      },
+      {
+        "name": "GS Dodongo's Cavern Vines Above Stairs",
+        "text": "GS Dodongo's Cavern Vines Above Stairs"
+      },
+      {
+        "name": "GS Dodongo's Cavern Scarecrow",
+        "text": "GS Dodongo's Cavern Scarecrow"
+      },
+      {
+        "name": "GS Dodongo's Cavern Alcove Above Stairs",
+        "text": "GS Dodongo's Cavern Alcove Above Stairs"
+      },
+      {
+        "name": "GS Dodongo's Cavern Back Room",
+        "text": "GS Dodongo's Cavern Back Room"
+      },
+      {
+        "name": "GS Dodongo's Cavern East Side Room",
+        "text": "GS Dodongo's Cavern East Side Room"
+      },
+      {
+        "name": "GS Dodongo's Cavern MQ Scrub Room",
+        "text": "GS Dodongo's Cavern MQ Scrub Room"
+      },
+      {
+        "name": "GS Dodongo's Cavern MQ Song of Time Block Room",
+        "text": "GS Dodongo's Cavern MQ Song of Time Block Room"
+      },
+      {
+        "name": "GS Dodongo's Cavern MQ Lizalfos Room",
+        "text": "GS Dodongo's Cavern MQ Lizalfos Room"
+      },
+      {
+        "name": "GS Dodongo's Cavern MQ Larva Room",
+        "text": "GS Dodongo's Cavern MQ Larva Room"
+      },
+      {
+        "name": "GS Dodongo's Cavern MQ Back Area",
+        "text": "GS Dodongo's Cavern MQ Back Area"
+      },
+      {
+        "name": "GS Jabu Jabu Lobby Basement Lower",
+        "text": "GS Jabu Jabu Lobby Basement Lower"
+      },
+      {
+        "name": "GS Jabu Jabu Lobby Basement Upper",
+        "text": "GS Jabu Jabu Lobby Basement Upper"
+      },
+      {
+        "name": "GS Jabu Jabu Near Boss",
+        "text": "GS Jabu Jabu Near Boss"
+      },
+      {
+        "name": "GS Jabu Jabu Water Switch Room",
+        "text": "GS Jabu Jabu Water Switch Room"
+      },
+      {
+        "name": "GS Jabu Jabu MQ Tailpasaran Room",
+        "text": "GS Jabu Jabu MQ Tailpasaran Room"
+      },
+      {
+        "name": "GS Jabu Jabu MQ Invisible Enemies Room",
+        "text": "GS Jabu Jabu MQ Invisible Enemies Room"
+      },
+      {
+        "name": "GS Jabu Jabu MQ Boomerang Room",
+        "text": "GS Jabu Jabu MQ Boomerang Room"
+      },
+      {
+        "name": "GS Jabu Jabu MQ Near Boss",
+        "text": "GS Jabu Jabu MQ Near Boss"
+      },
+      {
+        "name": "GS Forest Temple Outdoor East",
+        "text": "GS Forest Temple Outdoor East"
+      },
+      {
+        "name": "GS Forest Temple First Room",
+        "text": "GS Forest Temple First Room"
+      },
+      {
+        "name": "GS Forest Temple Outdoor West",
+        "text": "GS Forest Temple Outdoor West"
+      },
+      {
+        "name": "GS Forest Temple Lobby",
+        "text": "GS Forest Temple Lobby"
+      },
+      {
+        "name": "GS Forest Temple Basement",
+        "text": "GS Forest Temple Basement"
+      },
+      {
+        "name": "GS Forest Temple MQ First Hallway",
+        "text": "GS Forest Temple MQ First Hallway"
+      },
+      {
+        "name": "GS Forest Temple MQ Block Push Room",
+        "text": "GS Forest Temple MQ Block Push Room"
+      },
+      {
+        "name": "GS Forest Temple MQ Outdoor East",
+        "text": "GS Forest Temple MQ Outdoor East"
+      },
+      {
+        "name": "GS Forest Temple MQ Outdoor West",
+        "text": "GS Forest Temple MQ Outdoor West"
+      },
+      {
+        "name": "GS Forest Temple MQ Well",
+        "text": "GS Forest Temple MQ Well"
+      },
+      {
+        "name": "GS Fire Temple Song of Time Room",
+        "text": "GS Fire Temple Song of Time Room"
+      },
+      {
+        "name": "GS Fire Temple Basement",
+        "text": "GS Fire Temple Basement"
+      },
+      {
+        "name": "GS Fire Temple Unmarked Bomb Wall",
+        "text": "GS Fire Temple Unmarked Bomb Wall"
+      },
+      {
+        "name": "GS Fire Temple East Tower Top",
+        "text": "GS Fire Temple East Tower Top"
+      },
+      {
+        "name": "GS Fire Temple East Tower Climb",
+        "text": "GS Fire Temple East Tower Climb"
+      },
+      {
+        "name": "GS Fire Temple MQ Above Fire Wall Maze",
+        "text": "GS Fire Temple MQ Above Fire Wall Maze"
+      },
+      {
+        "name": "GS Fire Temple MQ Fire Wall Maze Center",
+        "text": "GS Fire Temple MQ Fire Wall Maze Center"
+      },
+      {
+        "name": "GS Fire Temple MQ Big Lava Room",
+        "text": "GS Fire Temple MQ Big Lava Room"
+      },
+      {
+        "name": "GS Fire Temple MQ Fire Wall Maze Side Room",
+        "text": "GS Fire Temple MQ Fire Wall Maze Side Room"
+      },
+      {
+        "name": "GS Fire Temple MQ East Tower Top",
+        "text": "GS Fire Temple MQ East Tower Top"
+      },
+      {
+        "name": "GS Water Temple South Basement",
+        "text": "GS Water Temple South Basement"
+      },
+      {
+        "name": "GS Water Temple Falling Platform Room",
+        "text": "GS Water Temple Falling Platform Room"
+      },
+      {
+        "name": "GS Water Temple Central Room",
+        "text": "GS Water Temple Central Room"
+      },
+      {
+        "name": "GS Water Temple Near Boss Key Chest",
+        "text": "GS Water Temple Near Boss Key Chest"
+      },
+      {
+        "name": "GS Water Temple Serpent River",
+        "text": "GS Water Temple Serpent River"
+      },
+      {
+        "name": "GS Water Temple MQ Before Upper Water Switch",
+        "text": "GS Water Temple MQ Before Upper Water Switch"
+      },
+      {
+        "name": "GS Water Temple MQ North Basement",
+        "text": "GS Water Temple MQ North Basement"
+      },
+      {
+        "name": "GS Water Temple MQ Lizalfos Hallway",
+        "text": "GS Water Temple MQ Lizalfos Hallway"
+      },
+      {
+        "name": "GS Water Temple MQ Serpent River",
+        "text": "GS Water Temple MQ Serpent River"
+      },
+      {
+        "name": "GS Water Temple MQ South Basement",
+        "text": "GS Water Temple MQ South Basement"
+      },
+      {
+        "name": "GS Spirit Temple Hall to West Iron Knuckle",
+        "text": "GS Spirit Temple Hall to West Iron Knuckle"
+      },
+      {
+        "name": "GS Spirit Temple Boulder Room",
+        "text": "GS Spirit Temple Boulder Room"
+      },
+      {
+        "name": "GS Spirit Temple Lobby",
+        "text": "GS Spirit Temple Lobby"
+      },
+      {
+        "name": "GS Spirit Temple Bomb for Light Room",
+        "text": "GS Spirit Temple Bomb for Light Room"
+      },
+      {
+        "name": "GS Spirit Temple Metal Fence",
+        "text": "GS Spirit Temple Metal Fence"
+      },
+      {
+        "name": "GS Spirit Temple MQ Lower Adult Right",
+        "text": "GS Spirit Temple MQ Lower Adult Right"
+      },
+      {
+        "name": "GS Spirit Temple MQ Lower Adult Left",
+        "text": "GS Spirit Temple MQ Lower Adult Left"
+      },
+      {
+        "name": "GS Spirit Temple MQ Iron Knuckle West",
+        "text": "GS Spirit Temple MQ Iron Knuckle West"
+      },
+      {
+        "name": "GS Spirit Temple MQ Iron Knuckle North",
+        "text": "GS Spirit Temple MQ Iron Knuckle North"
+      },
+      {
+        "name": "GS Spirit Temple MQ Sun Block Room",
+        "text": "GS Spirit Temple MQ Sun Block Room"
+      },
+      {
+        "name": "GS Shadow Temple Single Giant Pot",
+        "text": "GS Shadow Temple Single Giant Pot"
+      },
+      {
+        "name": "GS Shadow Temple Crusher Room",
+        "text": "GS Shadow Temple Crusher Room"
+      },
+      {
+        "name": "GS Shadow Temple Triple Giant Pot",
+        "text": "GS Shadow Temple Triple Giant Pot"
+      },
+      {
+        "name": "GS Shadow Temple Like Like Room",
+        "text": "GS Shadow Temple Like Like Room"
+      },
+      {
+        "name": "GS Shadow Temple Near Ship",
+        "text": "GS Shadow Temple Near Ship"
+      },
+      {
+        "name": "GS Shadow Temple MQ Crusher Room",
+        "text": "GS Shadow Temple MQ Crusher Room"
+      },
+      {
+        "name": "GS Shadow Temple MQ Wind Hint Room",
+        "text": "GS Shadow Temple MQ Wind Hint Room"
+      },
+      {
+        "name": "GS Shadow Temple MQ After Wind",
+        "text": "GS Shadow Temple MQ After Wind"
+      },
+      {
+        "name": "GS Shadow Temple MQ After Ship",
+        "text": "GS Shadow Temple MQ After Ship"
+      },
+      {
+        "name": "GS Shadow Temple MQ Near Boss",
+        "text": "GS Shadow Temple MQ Near Boss"
+      },
+      {
+        "name": "GS Well Like Like Cage",
+        "text": "GS Well Like Like Cage"
+      },
+      {
+        "name": "GS Well East Inner Room",
+        "text": "GS Well East Inner Room"
+      },
+      {
+        "name": "GS Well West Inner Room",
+        "text": "GS Well West Inner Room"
+      },
+      {
+        "name": "GS Well MQ Basement",
+        "text": "GS Well MQ Basement"
+      },
+      {
+        "name": "GS Well MQ Coffin Room",
+        "text": "GS Well MQ Coffin Room"
+      },
+      {
+        "name": "GS Well MQ West Inner Room",
+        "text": "GS Well MQ West Inner Room"
+      },
+      {
+        "name": "GS Ice Cavern Push Block Room",
+        "text": "GS Ice Cavern Push Block Room"
+      },
+      {
+        "name": "GS Ice Cavern Spinning Scythe Room",
+        "text": "GS Ice Cavern Spinning Scythe Room"
+      },
+      {
+        "name": "GS Ice Cavern Heart Piece Room",
+        "text": "GS Ice Cavern Heart Piece Room"
+      },
+      {
+        "name": "GS Ice Cavern MQ Scarecrow",
+        "text": "GS Ice Cavern MQ Scarecrow"
+      },
+      {
+        "name": "GS Ice Cavern MQ Ice Block",
+        "text": "GS Ice Cavern MQ Ice Block"
+      },
+      {
+        "name": "GS Ice Cavern MQ Red Ice",
+        "text": "GS Ice Cavern MQ Red Ice"
+      },
+      {
+        "name": "GS Hyrule Field Near Gerudo Valley",
+        "text": "GS Hyrule Field Near Gerudo Valley"
+      },
+      {
+        "name": "GS Hyrule Field near Kakariko",
+        "text": "GS Hyrule Field near Kakariko"
+      },
+      {
+        "name": "GS Lon Lon Ranch Back Wall",
+        "text": "GS Lon Lon Ranch Back Wall"
+      },
+      {
+        "name": "GS Lon Lon Ranch Rain Shed",
+        "text": "GS Lon Lon Ranch Rain Shed"
+      },
+      {
+        "name": "GS Lon Lon Ranch House Window",
+        "text": "GS Lon Lon Ranch House Window"
+      },
+      {
+        "name": "GS Lon Lon Ranch Tree",
+        "text": "GS Lon Lon Ranch Tree"
+      },
+      {
+        "name": "GS Kokiri Bean Patch",
+        "text": "GS Kokiri Bean Patch"
+      },
+      {
+        "name": "GS Kokiri Know It All House",
+        "text": "GS Kokiri Know It All House"
+      },
+      {
+        "name": "GS Kokiri House of Twins",
+        "text": "GS Kokiri House of Twins"
+      },
+      {
+        "name": "GS Lost Woods Bean Patch Near Bridge",
+        "text": "GS Lost Woods Bean Patch Near Bridge"
+      },
+      {
+        "name": "GS Lost Woods Bean Patch Near Stage",
+        "text": "GS Lost Woods Bean Patch Near Stage"
+      },
+      {
+        "name": "GS Lost Woods Above Stage",
+        "text": "GS Lost Woods Above Stage"
+      },
+      {
+        "name": "GS Sacred Forest Meadow",
+        "text": "GS Sacred Forest Meadow"
+      },
+      {
+        "name": "GS Outside Ganon's Castle",
+        "text": "GS Outside Ganon's Castle"
+      },
+      {
+        "name": "GS Hyrule Castle Grotto",
+        "text": "GS Hyrule Castle Grotto"
+      },
+      {
+        "name": "GS Hyrule Castle Tree",
+        "text": "GS Hyrule Castle Tree"
+      },
+      {
+        "name": "GS Castle Market Guard House",
+        "text": "GS Castle Market Guard House"
+      },
+      {
+        "name": "GS Mountain Crater Bean Patch",
+        "text": "GS Mountain Crater Bean Patch"
+      },
+      {
+        "name": "GS Mountain Trail Bean Patch",
+        "text": "GS Mountain Trail Bean Patch"
+      },
+      {
+        "name": "GS Mountain Trail Bomb Alcove",
+        "text": "GS Mountain Trail Bomb Alcove"
+      },
+      {
+        "name": "GS Mountain Trail Above Dodongo's Cavern",
+        "text": "GS Mountain Trail Above Dodongo's Cavern"
+      },
+      {
+        "name": "GS Mountain Trail Path to Crater",
+        "text": "GS Mountain Trail Path to Crater"
+      },
+      {
+        "name": "GS Goron City Center Platform",
+        "text": "GS Goron City Center Platform"
+      },
+      {
+        "name": "GS Goron City Boulder Maze",
+        "text": "GS Goron City Boulder Maze"
+      },
+      {
+        "name": "GS Death Mountain Crater Crate",
+        "text": "GS Death Mountain Crater Crate"
+      },
+      {
+        "name": "GS Kakariko House Under Construction",
+        "text": "GS Kakariko House Under Construction"
+      },
+      {
+        "name": "GS Kakariko Skulltula House",
+        "text": "GS Kakariko Skulltula House"
+      },
+      {
+        "name": "GS Kakariko Guard's House",
+        "text": "GS Kakariko Guard's House"
+      },
+      {
+        "name": "GS Kakariko Tree",
+        "text": "GS Kakariko Tree"
+      },
+      {
+        "name": "GS Kakariko Watchtower",
+        "text": "GS Kakariko Watchtower"
+      },
+      {
+        "name": "GS Kakariko Above Impa's House",
+        "text": "GS Kakariko Above Impa's House"
+      },
+      {
+        "name": "GS Graveyard Wall",
+        "text": "GS Graveyard Wall"
+      },
+      {
+        "name": "GS Graveyard Bean Patch",
+        "text": "GS Graveyard Bean Patch"
+      },
+      {
+        "name": "GS Zora River Ladder",
+        "text": "GS Zora River Ladder"
+      },
+      {
+        "name": "GS Zora River Tree",
+        "text": "GS Zora River Tree"
+      },
+      {
+        "name": "GS Zora's Fountain Above the Log",
+        "text": "GS Zora's Fountain Above the Log"
+      },
+      {
+        "name": "GS Zora River Above Bridge",
+        "text": "GS Zora River Above Bridge"
+      },
+      {
+        "name": "GS Zora River Near Raised Grottos",
+        "text": "GS Zora River Near Raised Grottos"
+      },
+      {
+        "name": "GS Zora's Fountain Hidden Cave",
+        "text": "GS Zora's Fountain Hidden Cave"
+      },
+      {
+        "name": "GS Zora's Domain Frozen Waterfall",
+        "text": "GS Zora's Domain Frozen Waterfall"
+      },
+      {
+        "name": "GS Zora's Fountain Tree",
+        "text": "GS Zora's Fountain Tree"
+      },
+      {
+        "name": "GS Lake Hylia Bean Patch",
+        "text": "GS Lake Hylia Bean Patch"
+      },
+      {
+        "name": "GS Lake Hylia Small Island",
+        "text": "GS Lake Hylia Small Island"
+      },
+      {
+        "name": "GS Lake Hylia Lab Wall",
+        "text": "GS Lake Hylia Lab Wall"
+      },
+      {
+        "name": "GS Lab Underwater Crate",
+        "text": "GS Lab Underwater Crate"
+      },
+      {
+        "name": "GS Lake Hylia Giant Tree",
+        "text": "GS Lake Hylia Giant Tree"
+      },
+      {
+        "name": "GS Gerudo Valley Bean Patch",
+        "text": "GS Gerudo Valley Bean Patch"
+      },
+      {
+        "name": "GS Gerudo Valley Small Bridge",
+        "text": "GS Gerudo Valley Small Bridge"
+      },
+      {
+        "name": "GS Gerudo Valley Pillar",
+        "text": "GS Gerudo Valley Pillar"
+      },
+      {
+        "name": "GS Gerudo Valley Behind Tent",
+        "text": "GS Gerudo Valley Behind Tent"
+      },
+      {
+        "name": "GS Gerudo Fortress Archery Range",
+        "text": "GS Gerudo Fortress Archery Range"
+      },
+      {
+        "name": "GS Gerudo Fortress Top Floor",
+        "text": "GS Gerudo Fortress Top Floor"
+      },
+      {
+        "name": "GS Desert Colossus Bean Patch",
+        "text": "GS Desert Colossus Bean Patch"
+      },
+      {
+        "name": "GS Wasteland Ruins",
+        "text": "GS Wasteland Ruins"
+      },
+      {
+        "name": "GS Desert Colossus Hill",
+        "text": "GS Desert Colossus Hill"
+      },
+      {
+        "name": "GS Desert Colossus Tree",
+        "text": "GS Desert Colossus Tree"
+      },
+      {
+        "name": "Kokiri Shop Item 1",
+        "text": "Kokiri Shop Item 1"
+      },
+      {
+        "name": "Kokiri Shop Item 2",
+        "text": "Kokiri Shop Item 2"
+      },
+      {
+        "name": "Kokiri Shop Item 3",
+        "text": "Kokiri Shop Item 3"
+      },
+      {
+        "name": "Kokiri Shop Item 4",
+        "text": "Kokiri Shop Item 4"
+      },
+      {
+        "name": "Kokiri Shop Item 5",
+        "text": "Kokiri Shop Item 5"
+      },
+      {
+        "name": "Kokiri Shop Item 6",
+        "text": "Kokiri Shop Item 6"
+      },
+      {
+        "name": "Kokiri Shop Item 7",
+        "text": "Kokiri Shop Item 7"
+      },
+      {
+        "name": "Kokiri Shop Item 8",
+        "text": "Kokiri Shop Item 8"
+      },
+      {
+        "name": "Kakariko Potion Shop Item 1",
+        "text": "Kakariko Potion Shop Item 1"
+      },
+      {
+        "name": "Kakariko Potion Shop Item 2",
+        "text": "Kakariko Potion Shop Item 2"
+      },
+      {
+        "name": "Kakariko Potion Shop Item 3",
+        "text": "Kakariko Potion Shop Item 3"
+      },
+      {
+        "name": "Kakariko Potion Shop Item 4",
+        "text": "Kakariko Potion Shop Item 4"
+      },
+      {
+        "name": "Kakariko Potion Shop Item 5",
+        "text": "Kakariko Potion Shop Item 5"
+      },
+      {
+        "name": "Kakariko Potion Shop Item 6",
+        "text": "Kakariko Potion Shop Item 6"
+      },
+      {
+        "name": "Kakariko Potion Shop Item 7",
+        "text": "Kakariko Potion Shop Item 7"
+      },
+      {
+        "name": "Kakariko Potion Shop Item 8",
+        "text": "Kakariko Potion Shop Item 8"
+      },
+      {
+        "name": "Bombchu Shop Item 1",
+        "text": "Bombchu Shop Item 1"
+      },
+      {
+        "name": "Bombchu Shop Item 2",
+        "text": "Bombchu Shop Item 2"
+      },
+      {
+        "name": "Bombchu Shop Item 3",
+        "text": "Bombchu Shop Item 3"
+      },
+      {
+        "name": "Bombchu Shop Item 4",
+        "text": "Bombchu Shop Item 4"
+      },
+      {
+        "name": "Bombchu Shop Item 5",
+        "text": "Bombchu Shop Item 5"
+      },
+      {
+        "name": "Bombchu Shop Item 6",
+        "text": "Bombchu Shop Item 6"
+      },
+      {
+        "name": "Bombchu Shop Item 7",
+        "text": "Bombchu Shop Item 7"
+      },
+      {
+        "name": "Bombchu Shop Item 8",
+        "text": "Bombchu Shop Item 8"
+      },
+      {
+        "name": "Castle Town Potion Shop Item 1",
+        "text": "Castle Town Potion Shop Item 1"
+      },
+      {
+        "name": "Castle Town Potion Shop Item 2",
+        "text": "Castle Town Potion Shop Item 2"
+      },
+      {
+        "name": "Castle Town Potion Shop Item 3",
+        "text": "Castle Town Potion Shop Item 3"
+      },
+      {
+        "name": "Castle Town Potion Shop Item 4",
+        "text": "Castle Town Potion Shop Item 4"
+      },
+      {
+        "name": "Castle Town Potion Shop Item 5",
+        "text": "Castle Town Potion Shop Item 5"
+      },
+      {
+        "name": "Castle Town Potion Shop Item 6",
+        "text": "Castle Town Potion Shop Item 6"
+      },
+      {
+        "name": "Castle Town Potion Shop Item 7",
+        "text": "Castle Town Potion Shop Item 7"
+      },
+      {
+        "name": "Castle Town Potion Shop Item 8",
+        "text": "Castle Town Potion Shop Item 8"
+      },
+      {
+        "name": "Castle Town Bazaar Item 1",
+        "text": "Castle Town Bazaar Item 1"
+      },
+      {
+        "name": "Castle Town Bazaar Item 2",
+        "text": "Castle Town Bazaar Item 2"
+      },
+      {
+        "name": "Castle Town Bazaar Item 3",
+        "text": "Castle Town Bazaar Item 3"
+      },
+      {
+        "name": "Castle Town Bazaar Item 4",
+        "text": "Castle Town Bazaar Item 4"
+      },
+      {
+        "name": "Castle Town Bazaar Item 5",
+        "text": "Castle Town Bazaar Item 5"
+      },
+      {
+        "name": "Castle Town Bazaar Item 6",
+        "text": "Castle Town Bazaar Item 6"
+      },
+      {
+        "name": "Castle Town Bazaar Item 7",
+        "text": "Castle Town Bazaar Item 7"
+      },
+      {
+        "name": "Castle Town Bazaar Item 8",
+        "text": "Castle Town Bazaar Item 8"
+      },
+      {
+        "name": "Kakariko Bazaar Item 1",
+        "text": "Kakariko Bazaar Item 1"
+      },
+      {
+        "name": "Kakariko Bazaar Item 2",
+        "text": "Kakariko Bazaar Item 2"
+      },
+      {
+        "name": "Kakariko Bazaar Item 3",
+        "text": "Kakariko Bazaar Item 3"
+      },
+      {
+        "name": "Kakariko Bazaar Item 4",
+        "text": "Kakariko Bazaar Item 4"
+      },
+      {
+        "name": "Kakariko Bazaar Item 5",
+        "text": "Kakariko Bazaar Item 5"
+      },
+      {
+        "name": "Kakariko Bazaar Item 6",
+        "text": "Kakariko Bazaar Item 6"
+      },
+      {
+        "name": "Kakariko Bazaar Item 7",
+        "text": "Kakariko Bazaar Item 7"
+      },
+      {
+        "name": "Kakariko Bazaar Item 8",
+        "text": "Kakariko Bazaar Item 8"
+      },
+      {
+        "name": "Zora Shop Item 1",
+        "text": "Zora Shop Item 1"
+      },
+      {
+        "name": "Zora Shop Item 2",
+        "text": "Zora Shop Item 2"
+      },
+      {
+        "name": "Zora Shop Item 3",
+        "text": "Zora Shop Item 3"
+      },
+      {
+        "name": "Zora Shop Item 4",
+        "text": "Zora Shop Item 4"
+      },
+      {
+        "name": "Zora Shop Item 5",
+        "text": "Zora Shop Item 5"
+      },
+      {
+        "name": "Zora Shop Item 6",
+        "text": "Zora Shop Item 6"
+      },
+      {
+        "name": "Zora Shop Item 7",
+        "text": "Zora Shop Item 7"
+      },
+      {
+        "name": "Zora Shop Item 8",
+        "text": "Zora Shop Item 8"
+      },
+      {
+        "name": "Goron Shop Item 1",
+        "text": "Goron Shop Item 1"
+      },
+      {
+        "name": "Goron Shop Item 2",
+        "text": "Goron Shop Item 2"
+      },
+      {
+        "name": "Goron Shop Item 3",
+        "text": "Goron Shop Item 3"
+      },
+      {
+        "name": "Goron Shop Item 4",
+        "text": "Goron Shop Item 4"
+      },
+      {
+        "name": "Goron Shop Item 5",
+        "text": "Goron Shop Item 5"
+      },
+      {
+        "name": "Goron Shop Item 6",
+        "text": "Goron Shop Item 6"
+      },
+      {
+        "name": "Goron Shop Item 7",
+        "text": "Goron Shop Item 7"
+      },
+      {
+        "name": "Goron Shop Item 8",
+        "text": "Goron Shop Item 8"
+      },
+      {
+        "name": "DC Deku Scrub Deku Nuts",
+        "text": "DC Deku Scrub Deku Nuts"
+      },
+      {
+        "name": "DC Deku Scrub Deku Sticks",
+        "text": "DC Deku Scrub Deku Sticks"
+      },
+      {
+        "name": "DC Deku Scrub Deku Seeds",
+        "text": "DC Deku Scrub Deku Seeds"
+      },
+      {
+        "name": "DC Deku Scrub Deku Shield",
+        "text": "DC Deku Scrub Deku Shield"
+      },
+      {
+        "name": "Jabu Deku Scrub Deku Nuts",
+        "text": "Jabu Deku Scrub Deku Nuts"
+      },
+      {
+        "name": "GC Deku Scrub Bombs",
+        "text": "GC Deku Scrub Bombs"
+      },
+      {
+        "name": "GC Deku Scrub Arrows",
+        "text": "GC Deku Scrub Arrows"
+      },
+      {
+        "name": "GC Deku Scrub Red Potion",
+        "text": "GC Deku Scrub Red Potion"
+      },
+      {
+        "name": "GC Deku Scrub Green Potion",
+        "text": "GC Deku Scrub Green Potion"
+      },
+      {
+        "name": "DT MQ Deku Scrub Deku Shield",
+        "text": "DT MQ Deku Scrub Deku Shield"
+      },
+      {
+        "name": "DC MQ Deku Scrub Deku Sticks",
+        "text": "DC MQ Deku Scrub Deku Sticks"
+      },
+      {
+        "name": "DC MQ Deku Scrub Deku Seeds",
+        "text": "DC MQ Deku Scrub Deku Seeds"
+      },
+      {
+        "name": "DC MQ Deku Scrub Deku Shield",
+        "text": "DC MQ Deku Scrub Deku Shield"
+      },
+      {
+        "name": "DC MQ Deku Scrub Red Potion",
+        "text": "DC MQ Deku Scrub Red Potion"
+      },
+      {
+        "name": "GC MQ Deku Scrub Deku Nuts",
+        "text": "GC MQ Deku Scrub Deku Nuts"
+      },
+      {
+        "name": "GC MQ Deku Scrub Bombs",
+        "text": "GC MQ Deku Scrub Bombs"
+      },
+      {
+        "name": "GC MQ Deku Scrub Arrows",
+        "text": "GC MQ Deku Scrub Arrows"
+      },
+      {
+        "name": "GC MQ Deku Scrub Red Potion",
+        "text": "GC MQ Deku Scrub Red Potion"
+      },
+      {
+        "name": "GC MQ Deku Scrub Green Potion",
+        "text": "GC MQ Deku Scrub Green Potion"
+      },
+      {
+        "name": "HF Grotto Deku Scrub Piece of Heart",
+        "text": "HF Grotto Deku Scrub Piece of Heart"
+      },
+      {
+        "name": "ZR Grotto Deku Scrub Red Potion",
+        "text": "ZR Grotto Deku Scrub Red Potion"
+      },
+      {
+        "name": "ZR Grotto Deku Scrub Green Potion",
+        "text": "ZR Grotto Deku Scrub Green Potion"
+      },
+      {
+        "name": "SFM Grotto Deku Scrub Red Potion",
+        "text": "SFM Grotto Deku Scrub Red Potion"
+      },
+      {
+        "name": "SFM Grotto Deku Scrub Green Potion",
+        "text": "SFM Grotto Deku Scrub Green Potion"
+      },
+      {
+        "name": "LH Grotto Deku Scrub Deku Nuts",
+        "text": "LH Grotto Deku Scrub Deku Nuts"
+      },
+      {
+        "name": "LH Grotto Deku Scrub Bombs",
+        "text": "LH Grotto Deku Scrub Bombs"
+      },
+      {
+        "name": "LH Grotto Deku Scrub Arrows",
+        "text": "LH Grotto Deku Scrub Arrows"
+      },
+      {
+        "name": "Valley Grotto Deku Scrub Red Potion",
+        "text": "Valley Grotto Deku Scrub Red Potion"
+      },
+      {
+        "name": "Valley Grotto Deku Scrub Green Potion",
+        "text": "Valley Grotto Deku Scrub Green Potion"
+      },
+      {
+        "name": "LW Deku Scrub Deku Nuts",
+        "text": "LW Deku Scrub Deku Nuts"
+      },
+      {
+        "name": "LW Deku Scrub Deku Sticks",
+        "text": "LW Deku Scrub Deku Sticks"
+      },
+      {
+        "name": "LW Deku Scrub Deku Stick Upgrade",
+        "text": "LW Deku Scrub Deku Stick Upgrade"
+      },
+      {
+        "name": "LW Grotto Deku Scrub Arrows",
+        "text": "LW Grotto Deku Scrub Arrows"
+      },
+      {
+        "name": "LW Grotto Deku Scrub Deku Nut Upgrade",
+        "text": "LW Grotto Deku Scrub Deku Nut Upgrade"
+      },
+      {
+        "name": "Desert Grotto Deku Scrub Red Potion",
+        "text": "Desert Grotto Deku Scrub Red Potion"
+      },
+      {
+        "name": "Desert Grotto Deku Scrub Green Potion",
+        "text": "Desert Grotto Deku Scrub Green Potion"
+      },
+      {
+        "name": "DMC Deku Scrub Bombs",
+        "text": "DMC Deku Scrub Bombs"
+      },
+      {
+        "name": "DMC Grotto Deku Scrub Deku Nuts",
+        "text": "DMC Grotto Deku Scrub Deku Nuts"
+      },
+      {
+        "name": "DMC Grotto Deku Scrub Bombs",
+        "text": "DMC Grotto Deku Scrub Bombs"
+      },
+      {
+        "name": "DMC Grotto Deku Scrub Arrows",
+        "text": "DMC Grotto Deku Scrub Arrows"
+      },
+      {
+        "name": "Goron Grotto Deku Scrub Deku Nuts",
+        "text": "Goron Grotto Deku Scrub Deku Nuts"
+      },
+      {
+        "name": "Goron Grotto Deku Scrub Bombs",
+        "text": "Goron Grotto Deku Scrub Bombs"
+      },
+      {
+        "name": "Goron Grotto Deku Scrub Arrows",
+        "text": "Goron Grotto Deku Scrub Arrows"
+      },
+      {
+        "name": "LLR Grotto Deku Scrub Deku Nuts",
+        "text": "LLR Grotto Deku Scrub Deku Nuts"
+      },
+      {
+        "name": "LLR Grotto Deku Scrub Bombs",
+        "text": "LLR Grotto Deku Scrub Bombs"
+      },
+      {
+        "name": "LLR Grotto Deku Scrub Arrows",
+        "text": "LLR Grotto Deku Scrub Arrows"
+      },
+      {
+        "name": "Death Mountain Crater Gossip Stone",
+        "text": "Death Mountain Crater Gossip Stone"
+      },
+      {
+        "name": "Death Mountain Trail Gossip Stone",
+        "text": "Death Mountain Trail Gossip Stone"
+      },
+      {
+        "name": "Desert Colossus Gossip Stone",
+        "text": "Desert Colossus Gossip Stone"
+      },
+      {
+        "name": "Dodongos Cavern Gossip Stone",
+        "text": "Dodongos Cavern Gossip Stone"
+      },
+      {
+        "name": "Generic Grotto Gossip Stone",
+        "text": "Generic Grotto Gossip Stone"
+      },
+      {
+        "name": "Gerudo Valley Gossip Stone",
+        "text": "Gerudo Valley Gossip Stone"
+      },
+      {
+        "name": "Goron City Maze Gossip Stone",
+        "text": "Goron City Maze Gossip Stone"
+      },
+      {
+        "name": "Goron City Medigoron Gossip Stone",
+        "text": "Goron City Medigoron Gossip Stone"
+      },
+      {
+        "name": "Graveyard Gossip Stone",
+        "text": "Graveyard Gossip Stone"
+      },
+      {
+        "name": "Hyrule Castle Malon Gossip Stone",
+        "text": "Hyrule Castle Malon Gossip Stone"
+      },
+      {
+        "name": "Hyrule Castle Rock Wall Gossip Stone",
+        "text": "Hyrule Castle Rock Wall Gossip Stone"
+      },
+      {
+        "name": "Castle Storms Grotto Gossip Stone",
+        "text": "Castle Storms Grotto Gossip Stone"
+      },
+      {
+        "name": "Field Valley Grotto Gossip Stone",
+        "text": "Field Valley Grotto Gossip Stone"
+      },
+      {
+        "name": "Deku Tree Gossip Stone (Left)",
+        "text": "Deku Tree Gossip Stone (Left)"
+      },
+      {
+        "name": "Deku Tree Gossip Stone (Right)",
+        "text": "Deku Tree Gossip Stone (Right)"
+      },
+      {
+        "name": "Kokiri Forest Gossip Stone",
+        "text": "Kokiri Forest Gossip Stone"
+      },
+      {
+        "name": "Lake Hylia Lab Gossip Stone",
+        "text": "Lake Hylia Lab Gossip Stone"
+      },
+      {
+        "name": "Lake Hylia Gossip Stone (Southeast)",
+        "text": "Lake Hylia Gossip Stone (Southeast)"
+      },
+      {
+        "name": "Lake Hylia Gossip Stone (Southwest)",
+        "text": "Lake Hylia Gossip Stone (Southwest)"
+      },
+      {
+        "name": "Lost Woods Gossip Stone",
+        "text": "Lost Woods Gossip Stone"
+      },
+      {
+        "name": "Sacred Forest Meadow Maze Gossip Stone (Lower)",
+        "text": "Sacred Forest Meadow Maze Gossip Stone (Lower)"
+      },
+      {
+        "name": "Sacred Forest Meadow Maze Gossip Stone (Upper)",
+        "text": "Sacred Forest Meadow Maze Gossip Stone (Upper)"
+      },
+      {
+        "name": "Sacred Forest Meadow Saria Gossip Stone",
+        "text": "Sacred Forest Meadow Saria Gossip Stone"
+      },
+      {
+        "name": "Temple of Time Gossip Stone (Left)",
+        "text": "Temple of Time Gossip Stone (Left)"
+      },
+      {
+        "name": "Temple of Time Gossip Stone (Left-Center)",
+        "text": "Temple of Time Gossip Stone (Left-Center)"
+      },
+      {
+        "name": "Temple of Time Gossip Stone (Right)",
+        "text": "Temple of Time Gossip Stone (Right)"
+      },
+      {
+        "name": "Temple of Time Gossip Stone (Right-Center)",
+        "text": "Temple of Time Gossip Stone (Right-Center)"
+      },
+      {
+        "name": "Zoras Domain Gossip Stone",
+        "text": "Zoras Domain Gossip Stone"
+      },
+      {
+        "name": "Zoras Fountain Fairy Gossip Stone",
+        "text": "Zoras Fountain Fairy Gossip Stone"
+      },
+      {
+        "name": "Zoras Fountain Jabu Gossip Stone",
+        "text": "Zoras Fountain Jabu Gossip Stone"
+      },
+      {
+        "name": "Zoras River Plateau Gossip Stone",
+        "text": "Zoras River Plateau Gossip Stone"
+      },
+      {
+        "name": "Zoras River Waterfall Gossip Stone",
+        "text": "Zoras River Waterfall Gossip Stone"
+      }
+    ],
+    "tooltip": "Prevent locations from being required. Major<br>items can still appear there, however they<br>will never be required to beat the game.<br>Most dungeon locations have a MQ alternative.<br>If the location does not exist because of MQ<br>then it will be ignored. So make sure to<br>disable both versions if that is the intent."
+  },
+  {
+    "default": [],
+    "name": "allowed_tricks",
+    "text": "Enable Tricks",
+    "type": "SearchBox",
+    "options": [
+      {
+        "name": "logic_child_rolling_with_strength",
+        "text": "Rolling Goron (Hot Rodder Goron) as Child with Strength",
+        "tooltip": "Use the bombflower on the stairs or near Medigoron. Timing is tight, especially without backwalking"
+      },
+      {
+        "name": "logic_morpha_with_scale",
+        "text": "Morpha with Gold Scale",
+        "tooltip": "Allows entering Water Temple and beating Morpha with Gold Scale instead of Iron Boots. \r\nOnly applicable for keysanity and keysy due to the logic always seeing every chest in Water Temple that could contain the Boss Key as requiring Iron Boots."
+      },
+      {
+        "name": "logic_fewer_tunic_requirements",
+        "text": "Fewer Tunic Requirements",
+        "tooltip": "Allows the following possible without Tunics: \r\n- Enter Water Temple. The key below the center pillar still requires Zora Tunic. \r\n- Enter Fire Temple. Only the first floor is accessible, and not Volvagia. \r\n- Zora's Fountain Bottom Freestanding PoH. Might not have enough health to resurface. \r\n- Gerudo Training Grounds Underwater Silver Rupee Chest. May need to make multiple trips."
+      },
+      {
+        "name": "logic_child_deadhand",
+        "text": "Child Deadhand without Kokiri Sword",
+        "tooltip": "Requires 9 sticks or 5 jump slashes."
+      },
+      {
+        "name": "logic_man_on_roof",
+        "text": "Man on Roof without Hookshot",
+        "tooltip": "Can be reached by side-hopping off the watchtower."
+      },
+      {
+        "name": "logic_dc_staircase",
+        "text": "Dodongo's Cavern Staircase with Bow",
+        "tooltip": "The Bow can be used to knock down the stairs with two well-timed shots."
+      },
+      {
+        "name": "logic_dc_jump",
+        "text": "Dodongo's Cavern Spike Trap Room Jump without Hover Boots",
+        "tooltip": "Jump is adult only."
+      },
+      {
+        "name": "logic_gerudo_kitchen",
+        "text": "Gerudo Fortress \"Kitchen\" with No Additional Items",
+        "tooltip": "The logic normally guarantees one of Bow, Hookshot, or Hover Boots."
+      },
+      {
+        "name": "logic_deku_basement_gs",
+        "text": "Deku Tree Basement Vines GS with Jump Slash",
+        "tooltip": "Can be defeated by doing a precise jump slash."
+      },
+      {
+        "name": "logic_rusted_switches",
+        "text": "Hammer Rusted Switches Through Walls",
+        "tooltip": "Applies to: \r\n- Fire Temple Highest Goron Chest \r\n- MQ Fire Temple Lizalfos Maze\r\n- MQ Spirit Trial"
+      },
+      {
+        "name": "logic_botw_basement",
+        "text": "Bottom of the Well Basement Chest with Strength & Sticks",
+        "tooltip": "The chest in the basement can be reached with strength by doing a jump slash with a lit stick to access the bomb flowers."
+      },
+      {
+        "name": "logic_forest_mq_block_puzzle",
+        "text": "Skip Forest Temple MQ Block Puzzle with Bombchu",
+        "tooltip": "Send the Bombchu straight up the center of the wall directly to the left upon entering the room."
+      },
+      {
+        "name": "logic_spirit_child_bombchu",
+        "text": "Spirit Temple Child Side Bridge with Bombchu",
+        "tooltip": "A carefully-timed Bombchu can hit the switch."
+      },
+      {
+        "name": "logic_windmill_poh",
+        "text": "Windmill PoH as Adult with Nothing",
+        "tooltip": "Can jump up to the spinning platform from below as adult."
+      },
+      {
+        "name": "logic_crater_bean_poh_with_hovers",
+        "text": "Crater's Bean PoH with Hover Boots",
+        "tooltip": "Hover from the base of the bridge near Goron City and walk up the very steep slope."
+      },
+      {
+        "name": "logic_zora_with_cucco",
+        "text": "Zora's Domain Entry with Cucco",
+        "tooltip": "Can fly behind the waterfall with cucco as child."
+      },
+      {
+        "name": "logic_gtg_mq_with_hookshot",
+        "text": "Gerudo Training Grounds MQ Left Side Silver Rupees with Hookshot",
+        "tooltip": "The highest silver rupee can be obtained by hookshotting the target and then immediately jump slashing toward the rupee."
+      },
+      {
+        "name": "logic_forest_vines",
+        "text": "Forest Temple East Courtyard Vines with Hookshot",
+        "tooltip": "The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with just the Hookshot."
+      },
+      {
+        "name": "logic_forest_well_swim",
+        "text": "Swim Through Forest Temple MQ Well with Hookshot",
+        "tooltip": "Shoot the vines in the well as low and as far to the right as possible, and then immediately swim under the ceiling to the right. This can only be required if Forest Temple is in its Master Quest form."
+      },
+      {
+        "name": "logic_dmt_bombable",
+        "text": "Death Mountain Trail Bombable Chest with Strength",
+        "tooltip": "Child Link can blow up the wall using a nearby bomb flower. You must backwalk with the flower and then quickly throw it toward the wall."
+      },
+      {
+        "name": "logic_water_bk_chest",
+        "text": "Water Temple Boss Key Chest with No Additional Items",
+        "tooltip": "After reaching the Boss Key chest's area with Iron Boots and Longshot, the chest can be reached with no additional items aside from Small Keys. \r\nStand on the blue switch with the Iron Boots, wait for the water to rise all the way up, and then swim straight to the exit. You should grab the ledge as you surface. \r\nIt works best if you don't mash B."
+      },
+      {
+        "name": "logic_adult_kokiri_gs",
+        "text": "Adult Kokiri Forest GS with Hover Boots",
+        "tooltip": "Can be obtained without Hookshot by using the Hover Boots off of one of the roots."
+      },
+      {
+        "name": "logic_spirit_mq_frozen_eye",
+        "text": "Spirit Temple MQ Frozen Eye Switch without Fire",
+        "tooltip": "You can melt the ice by shooting an arrow through a torch. The only way to find a line of sight for thisshot is to first spawn a Song of Time block, and then stand on the very edge of it."
+      },
+      {
+        "name": "logic_fire_mq_bk_chest",
+        "text": "Fire Temple MQ Boss Key Chest without Bow",
+        "tooltip": "Din's alone can be used to unbar the door to the boss key chest's room thanks to an oversight in the way the game counts how many torches have been lit."
+      },
+      {
+        "name": "logic_zora_with_cucco",
+        "text": "Zora's Domain Entry with Cucco",
+        "tooltip": "Can fly behind the waterfall with a cucco as child."
+      },
+      {
+        "name": "logic_zora_with_hovers",
+        "text": "Zora's Domain Entry with Hover Boots",
+        "tooltip": "Can hover behind the waterfall as adult. This is very difficult."
+      }
+    ],
+    "tooltip": null
+  },
+  {
+    "default": "pocket_egg",
+    "name": "logic_earliest_adult_trade",
+    "text": "Earliest",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "pocket_egg",
+        "text": "Pocket Egg"
+      },
+      {
+        "name": "pocket_cucco",
+        "text": "Pocket Cucco"
+      },
+      {
+        "name": "cojiro",
+        "text": "Cojiro"
+      },
+      {
+        "name": "odd_mushroom",
+        "text": "Odd Mushroom"
+      },
+      {
+        "name": "poachers_saw",
+        "text": "Poacher's Saw"
+      },
+      {
+        "name": "broken_sword",
+        "text": "Broken Sword"
+      },
+      {
+        "name": "prescription",
+        "text": "Prescription"
+      },
+      {
+        "name": "eyeball_frog",
+        "text": "Eyeball Frog"
+      },
+      {
+        "name": "eyedrops",
+        "text": "Eyedrops"
+      },
+      {
+        "name": "claim_check",
+        "text": "Claim Check"
+      }
+    ],
+    "tooltip": "Select the earliest item that can appear in the adult trade sequence."
+  },
+  {
+    "default": "claim_check",
+    "name": "logic_latest_adult_trade",
+    "text": "Latest",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "pocket_egg",
+        "text": "Pocket Egg"
+      },
+      {
+        "name": "pocket_cucco",
+        "text": "Pocket Cucco"
+      },
+      {
+        "name": "cojiro",
+        "text": "Cojiro"
+      },
+      {
+        "name": "odd_mushroom",
+        "text": "Odd Mushroom"
+      },
+      {
+        "name": "poachers_saw",
+        "text": "Poacher's Saw"
+      },
+      {
+        "name": "broken_sword",
+        "text": "Broken Sword"
+      },
+      {
+        "name": "prescription",
+        "text": "Prescription"
+      },
+      {
+        "name": "eyeball_frog",
+        "text": "Eyeball Frog"
+      },
+      {
+        "name": "eyedrops",
+        "text": "Eyedrops"
+      },
+      {
+        "name": "claim_check",
+        "text": "Claim Check"
+      }
+    ],
+    "tooltip": "Select the latest item that can appear in the adult trade sequence."
+  },
+  {
+    "default": "all",
+    "name": "logic_lens",
+    "text": "Lens of Truth",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "all",
+        "text": "Required Everywhere"
+      },
+      {
+        "name": "chest-wasteland",
+        "text": "Wasteland and Chest Minigame"
+      },
+      {
+        "name": "chest",
+        "text": "Only Chest Minigame"
+      }
+    ],
+    "tooltip": "'Required everywhere': every invisible or fake object will expect you to have the Lens of Truth and Magic. The exception is passing through the first wall in Bottom of the Well, since that is required in vanilla.<br>'Wasteland': The lens is needed to follow the ghost guide across the Haunted Wasteland."
+  },
+  {
+    "default": false,
+    "name": "ocarina_songs",
+    "text": "Randomize Ocarina Song Notes",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Will need to memorize a new set of songs. Can be silly, but difficult.<br>Songs are generally sensible, and warp songs are typically more difficult."
+  },
+  {
+    "default": false,
+    "name": "correct_chest_sizes",
+    "text": "Chest Size Matches Contents",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Chests will be large if they contain a major item and small if they don't. Boss keys will be in gold chests. This allows skippingchests if they are small.<br>However, skipping small chests will mean having low health, ammo, and rupees, so doing so is a risk."
+  },
+  {
+    "default": false,
+    "name": "clearer_hints",
+    "text": "Clearer Hints",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "The hints provided by Gossip Stones will be very direct if this option is enabled."
+  },
+  {
+    "default": "agony",
+    "name": "hints",
+    "text": "Gossip Stones",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "none",
+        "text": "No Hints"
+      },
+      {
+        "name": "mask",
+        "text": "Hints; Need Mask of Truth"
+      },
+      {
+        "name": "agony",
+        "text": "Hints; Need Stone of Agony"
+      },
+      {
+        "name": "always",
+        "text": "Hints; Need Nothing"
+      }
+    ],
+    "tooltip": "Gossip Stones can be made to give hints about where items can be found.<br>Different settings can be chosen to decide which item is needed to speak to Gossip Stones.<br>Choosing to stick with the Mask of Truth will make the hints very difficult to obtain.<br>Hints for 'on the way of the hero' are locations that contain items that are required to beat the game."
+  },
+  {
+    "default": "balanced",
+    "name": "hint_dist",
+    "text": "Hint Distribution",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "useless",
+        "text": "Useless"
+      },
+      {
+        "name": "balanced",
+        "text": "Balanced"
+      },
+      {
+        "name": "strong",
+        "text": "Strong"
+      },
+      {
+        "name": "very_strong",
+        "text": "Very Strong"
+      },
+      {
+        "name": "tournament",
+        "text": "Tournament"
+      }
+    ],
+    "tooltip": "Useless has nothing but junk hints.<br>Strong distribution has some duplicate hints and no junk hints.<br>Very Strong distribution has only very useful hints.<br>Tournament distribution is similar to Strong but with no variation in hint types."
+  },
+  {
+    "default": "none",
+    "name": "text_shuffle",
+    "text": "Text Shuffle",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "none",
+        "text": "No Text Shuffled"
+      },
+      {
+        "name": "except_hints",
+        "text": "Shuffled except Hints and Keys"
+      },
+      {
+        "name": "complete",
+        "text": "All Text Shuffled"
+      }
+    ],
+    "tooltip": "Will make things confusing for comedic value.<br>'Shuffled except Hints and Keys': Key texts are not shuffled because in keysanity it is inconvenient to figure out which keys are which without the correct text.<br>Similarly, non-shop items sold in shops will also retain standard text for the purpose of accurate price checks."
+  },
+  {
+    "default": "normal",
+    "name": "junk_ice_traps",
+    "text": "Ice Traps",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "off",
+        "text": "No Ice Traps"
+      },
+      {
+        "name": "normal",
+        "text": "Normal Ice Traps"
+      },
+      {
+        "name": "on",
+        "text": "Extra Ice Traps"
+      },
+      {
+        "name": "mayhem",
+        "text": "Ice Trap Mayhem"
+      },
+      {
+        "name": "onslaught",
+        "text": "Ice Trap Onslaught"
+      }
+    ],
+    "tooltip": "Off: All Ice Traps are removed.<br>Normal: Only Ice Traps from the base item pool are placed.<br>Extra Ice Traps: Chance to add extra Ice Traps when junk items are added to the itempool.<br>Ice Trap Mayhem: All added junk items will be Ice Traps.<br>Ice Trap Onslaught: All junk items will be replaced by Ice Traps, even those in the base pool."
+  },
+  {
+    "default": "balanced",
+    "name": "item_pool_value",
+    "text": "Item Pool",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "plentiful",
+        "text": "Plentiful"
+      },
+      {
+        "name": "balanced",
+        "text": "Balanced"
+      },
+      {
+        "name": "scarce",
+        "text": "Scarce"
+      },
+      {
+        "name": "minimal",
+        "text": "Minimal"
+      }
+    ],
+    "tooltip": "Changes the amount of bonus items that are available in the game.<br>'Plentiful': Extra major items are added.<br>'Balanced': Original item pool.<br>'Scarce': Some excess items are removed, including health upgrades.<br>'Minimal': Most excess items are removed."
+  },
+  {
+    "default": "normal",
+    "name": "damage_multiplier",
+    "text": "Damage Multiplier",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "half",
+        "text": "Half"
+      },
+      {
+        "name": "normal",
+        "text": "Normal"
+      },
+      {
+        "name": "double",
+        "text": "Double"
+      },
+      {
+        "name": "quadruple",
+        "text": "Quadruple"
+      },
+      {
+        "name": "ohko",
+        "text": "OHKO"
+      }
+    ],
+    "tooltip": "Changes the amount of damage taken.<br>'OHKO': Link dies in one hit."
+  },
+  {
+    "default": "default",
+    "name": "starting_tod",
+    "text": "Starting Time of Day",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "default",
+        "text": "Default"
+      },
+      {
+        "name": "random",
+        "text": "Random Choice"
+      },
+      {
+        "name": "early-morning",
+        "text": "Early Morning"
+      },
+      {
+        "name": "morning",
+        "text": "Morning"
+      },
+      {
+        "name": "noon",
+        "text": "Noon"
+      },
+      {
+        "name": "afternoon",
+        "text": "Afternoon"
+      },
+      {
+        "name": "evening",
+        "text": "Evening"
+      },
+      {
+        "name": "dusk",
+        "text": "Dusk"
+      },
+      {
+        "name": "midnight",
+        "text": "Midnight"
+      },
+      {
+        "name": "witching-hour",
+        "text": "Witching Hour"
+      }
+    ],
+    "tooltip": "Change up Link's sleep routine.<br>Daytime officially starts at 6:30, nighttime at 18:00 (6:00 PM).<br>Default is 10:00 in the morning.<br>The alternatives are multiples of 3 hours."
+  },
+  {
+    "default": "child",
+    "name": "starting_age",
+    "text": "Starting Age",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "child",
+        "text": "Child"
+      },
+      {
+        "name": "adult",
+        "text": "Adult"
+      },
+      {
+        "name": "random",
+        "text": "Random"
+      }
+    ],
+    "tooltip": "Choose which age Link will start as.<br>Starting as adult means you start with the master sword in your inventory.<brOnly the child option is compatible with Closed Forest."
+  },
+  {
+    "default": "hold",
+    "name": "default_targeting",
+    "text": "Default Targeting Option",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "hold",
+        "text": "Hold"
+      },
+      {
+        "name": "switch",
+        "text": "Switch"
+      }
+    ],
+    "tooltip": null
+  },
+  {
+    "default": "normal",
+    "name": "background_music",
+    "text": "Background Music",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "normal",
+        "text": "Normal"
+      },
+      {
+        "name": "off",
+        "text": "No Music"
+      },
+      {
+        "name": "random",
+        "text": "Random"
+      }
+    ],
+    "tooltip": "'No Music': No background music is played.<br>'Random': Area background music is randomized."
+  },
+  {
+    "default": true,
+    "name": "display_dpad",
+    "text": "Display D-Pad HUD",
+    "type": "Checkbutton",
+    "options": [
+      {
+        "name": true,
+        "text": "checked"
+      },
+      {
+        "name": false,
+        "text": "unchecked"
+      }
+    ],
+    "tooltip": "Shows an additional HUD element displaying current available options on the D-Pad."
+  },
+  {
+    "default": "Kokiri Green",
+    "name": "kokiri_color",
+    "text": "Kokiri Tunic",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Kokiri Green",
+        "text": "Kokiri Green"
+      },
+      {
+        "name": "Goron Red",
+        "text": "Goron Red"
+      },
+      {
+        "name": "Zora Blue",
+        "text": "Zora Blue"
+      },
+      {
+        "name": "Black",
+        "text": "Black"
+      },
+      {
+        "name": "White",
+        "text": "White"
+      },
+      {
+        "name": "Azure Blue",
+        "text": "Azure Blue"
+      },
+      {
+        "name": "Vivid Cyan",
+        "text": "Vivid Cyan"
+      },
+      {
+        "name": "Light Red",
+        "text": "Light Red"
+      },
+      {
+        "name": "Fuchsia",
+        "text": "Fuchsia"
+      },
+      {
+        "name": "Purple",
+        "text": "Purple"
+      },
+      {
+        "name": "Majora Purple",
+        "text": "Majora Purple"
+      },
+      {
+        "name": "Twitch Purple",
+        "text": "Twitch Purple"
+      },
+      {
+        "name": "Purple Heart",
+        "text": "Purple Heart"
+      },
+      {
+        "name": "Persian Rose",
+        "text": "Persian Rose"
+      },
+      {
+        "name": "Dirty Yellow",
+        "text": "Dirty Yellow"
+      },
+      {
+        "name": "Blush Pink",
+        "text": "Blush Pink"
+      },
+      {
+        "name": "Hot Pink",
+        "text": "Hot Pink"
+      },
+      {
+        "name": "Rose Pink",
+        "text": "Rose Pink"
+      },
+      {
+        "name": "Orange",
+        "text": "Orange"
+      },
+      {
+        "name": "Gray",
+        "text": "Gray"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "Silver",
+        "text": "Silver"
+      },
+      {
+        "name": "Beige",
+        "text": "Beige"
+      },
+      {
+        "name": "Teal",
+        "text": "Teal"
+      },
+      {
+        "name": "Blood Red",
+        "text": "Blood Red"
+      },
+      {
+        "name": "Blood Orange",
+        "text": "Blood Orange"
+      },
+      {
+        "name": "Royal Blue",
+        "text": "Royal Blue"
+      },
+      {
+        "name": "Sonic Blue",
+        "text": "Sonic Blue"
+      },
+      {
+        "name": "NES Green",
+        "text": "NES Green"
+      },
+      {
+        "name": "Dark Green",
+        "text": "Dark Green"
+      },
+      {
+        "name": "Lumen",
+        "text": "Lumen"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": "Goron Red",
+    "name": "goron_color",
+    "text": "Goron Tunic",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Kokiri Green",
+        "text": "Kokiri Green"
+      },
+      {
+        "name": "Goron Red",
+        "text": "Goron Red"
+      },
+      {
+        "name": "Zora Blue",
+        "text": "Zora Blue"
+      },
+      {
+        "name": "Black",
+        "text": "Black"
+      },
+      {
+        "name": "White",
+        "text": "White"
+      },
+      {
+        "name": "Azure Blue",
+        "text": "Azure Blue"
+      },
+      {
+        "name": "Vivid Cyan",
+        "text": "Vivid Cyan"
+      },
+      {
+        "name": "Light Red",
+        "text": "Light Red"
+      },
+      {
+        "name": "Fuchsia",
+        "text": "Fuchsia"
+      },
+      {
+        "name": "Purple",
+        "text": "Purple"
+      },
+      {
+        "name": "Majora Purple",
+        "text": "Majora Purple"
+      },
+      {
+        "name": "Twitch Purple",
+        "text": "Twitch Purple"
+      },
+      {
+        "name": "Purple Heart",
+        "text": "Purple Heart"
+      },
+      {
+        "name": "Persian Rose",
+        "text": "Persian Rose"
+      },
+      {
+        "name": "Dirty Yellow",
+        "text": "Dirty Yellow"
+      },
+      {
+        "name": "Blush Pink",
+        "text": "Blush Pink"
+      },
+      {
+        "name": "Hot Pink",
+        "text": "Hot Pink"
+      },
+      {
+        "name": "Rose Pink",
+        "text": "Rose Pink"
+      },
+      {
+        "name": "Orange",
+        "text": "Orange"
+      },
+      {
+        "name": "Gray",
+        "text": "Gray"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "Silver",
+        "text": "Silver"
+      },
+      {
+        "name": "Beige",
+        "text": "Beige"
+      },
+      {
+        "name": "Teal",
+        "text": "Teal"
+      },
+      {
+        "name": "Blood Red",
+        "text": "Blood Red"
+      },
+      {
+        "name": "Blood Orange",
+        "text": "Blood Orange"
+      },
+      {
+        "name": "Royal Blue",
+        "text": "Royal Blue"
+      },
+      {
+        "name": "Sonic Blue",
+        "text": "Sonic Blue"
+      },
+      {
+        "name": "NES Green",
+        "text": "NES Green"
+      },
+      {
+        "name": "Dark Green",
+        "text": "Dark Green"
+      },
+      {
+        "name": "Lumen",
+        "text": "Lumen"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": "Zora Blue",
+    "name": "zora_color",
+    "text": "Zora Tunic",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Kokiri Green",
+        "text": "Kokiri Green"
+      },
+      {
+        "name": "Goron Red",
+        "text": "Goron Red"
+      },
+      {
+        "name": "Zora Blue",
+        "text": "Zora Blue"
+      },
+      {
+        "name": "Black",
+        "text": "Black"
+      },
+      {
+        "name": "White",
+        "text": "White"
+      },
+      {
+        "name": "Azure Blue",
+        "text": "Azure Blue"
+      },
+      {
+        "name": "Vivid Cyan",
+        "text": "Vivid Cyan"
+      },
+      {
+        "name": "Light Red",
+        "text": "Light Red"
+      },
+      {
+        "name": "Fuchsia",
+        "text": "Fuchsia"
+      },
+      {
+        "name": "Purple",
+        "text": "Purple"
+      },
+      {
+        "name": "Majora Purple",
+        "text": "Majora Purple"
+      },
+      {
+        "name": "Twitch Purple",
+        "text": "Twitch Purple"
+      },
+      {
+        "name": "Purple Heart",
+        "text": "Purple Heart"
+      },
+      {
+        "name": "Persian Rose",
+        "text": "Persian Rose"
+      },
+      {
+        "name": "Dirty Yellow",
+        "text": "Dirty Yellow"
+      },
+      {
+        "name": "Blush Pink",
+        "text": "Blush Pink"
+      },
+      {
+        "name": "Hot Pink",
+        "text": "Hot Pink"
+      },
+      {
+        "name": "Rose Pink",
+        "text": "Rose Pink"
+      },
+      {
+        "name": "Orange",
+        "text": "Orange"
+      },
+      {
+        "name": "Gray",
+        "text": "Gray"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "Silver",
+        "text": "Silver"
+      },
+      {
+        "name": "Beige",
+        "text": "Beige"
+      },
+      {
+        "name": "Teal",
+        "text": "Teal"
+      },
+      {
+        "name": "Blood Red",
+        "text": "Blood Red"
+      },
+      {
+        "name": "Blood Orange",
+        "text": "Blood Orange"
+      },
+      {
+        "name": "Royal Blue",
+        "text": "Royal Blue"
+      },
+      {
+        "name": "Sonic Blue",
+        "text": "Sonic Blue"
+      },
+      {
+        "name": "NES Green",
+        "text": "NES Green"
+      },
+      {
+        "name": "Dark Green",
+        "text": "Dark Green"
+      },
+      {
+        "name": "Lumen",
+        "text": "Lumen"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": "White",
+    "name": "navi_color_default",
+    "text": "Navi Idle",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "White",
+        "text": "White"
+      },
+      {
+        "name": "Green",
+        "text": "Green"
+      },
+      {
+        "name": "Light Blue",
+        "text": "Light Blue"
+      },
+      {
+        "name": "Yellow",
+        "text": "Yellow"
+      },
+      {
+        "name": "Red",
+        "text": "Red"
+      },
+      {
+        "name": "Magenta",
+        "text": "Magenta"
+      },
+      {
+        "name": "Black",
+        "text": "Black"
+      },
+      {
+        "name": "Tatl",
+        "text": "Tatl"
+      },
+      {
+        "name": "Tael",
+        "text": "Tael"
+      },
+      {
+        "name": "Fi",
+        "text": "Fi"
+      },
+      {
+        "name": "Ciela",
+        "text": "Ciela"
+      },
+      {
+        "name": "Epona",
+        "text": "Epona"
+      },
+      {
+        "name": "Ezlo",
+        "text": "Ezlo"
+      },
+      {
+        "name": "King of Red Lions",
+        "text": "King of Red Lions"
+      },
+      {
+        "name": "Linebeck",
+        "text": "Linebeck"
+      },
+      {
+        "name": "Loftwing",
+        "text": "Loftwing"
+      },
+      {
+        "name": "Midna",
+        "text": "Midna"
+      },
+      {
+        "name": "Phantom Zelda",
+        "text": "Phantom Zelda"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": "Yellow",
+    "name": "navi_color_enemy",
+    "text": "Navi Targeting Enemy",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "White",
+        "text": "White"
+      },
+      {
+        "name": "Green",
+        "text": "Green"
+      },
+      {
+        "name": "Light Blue",
+        "text": "Light Blue"
+      },
+      {
+        "name": "Yellow",
+        "text": "Yellow"
+      },
+      {
+        "name": "Red",
+        "text": "Red"
+      },
+      {
+        "name": "Magenta",
+        "text": "Magenta"
+      },
+      {
+        "name": "Black",
+        "text": "Black"
+      },
+      {
+        "name": "Tatl",
+        "text": "Tatl"
+      },
+      {
+        "name": "Tael",
+        "text": "Tael"
+      },
+      {
+        "name": "Fi",
+        "text": "Fi"
+      },
+      {
+        "name": "Ciela",
+        "text": "Ciela"
+      },
+      {
+        "name": "Epona",
+        "text": "Epona"
+      },
+      {
+        "name": "Ezlo",
+        "text": "Ezlo"
+      },
+      {
+        "name": "King of Red Lions",
+        "text": "King of Red Lions"
+      },
+      {
+        "name": "Linebeck",
+        "text": "Linebeck"
+      },
+      {
+        "name": "Loftwing",
+        "text": "Loftwing"
+      },
+      {
+        "name": "Midna",
+        "text": "Midna"
+      },
+      {
+        "name": "Phantom Zelda",
+        "text": "Phantom Zelda"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": "Light Blue",
+    "name": "navi_color_npc",
+    "text": "Navi Targeting NPC",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "White",
+        "text": "White"
+      },
+      {
+        "name": "Green",
+        "text": "Green"
+      },
+      {
+        "name": "Light Blue",
+        "text": "Light Blue"
+      },
+      {
+        "name": "Yellow",
+        "text": "Yellow"
+      },
+      {
+        "name": "Red",
+        "text": "Red"
+      },
+      {
+        "name": "Magenta",
+        "text": "Magenta"
+      },
+      {
+        "name": "Black",
+        "text": "Black"
+      },
+      {
+        "name": "Tatl",
+        "text": "Tatl"
+      },
+      {
+        "name": "Tael",
+        "text": "Tael"
+      },
+      {
+        "name": "Fi",
+        "text": "Fi"
+      },
+      {
+        "name": "Ciela",
+        "text": "Ciela"
+      },
+      {
+        "name": "Epona",
+        "text": "Epona"
+      },
+      {
+        "name": "Ezlo",
+        "text": "Ezlo"
+      },
+      {
+        "name": "King of Red Lions",
+        "text": "King of Red Lions"
+      },
+      {
+        "name": "Linebeck",
+        "text": "Linebeck"
+      },
+      {
+        "name": "Loftwing",
+        "text": "Loftwing"
+      },
+      {
+        "name": "Midna",
+        "text": "Midna"
+      },
+      {
+        "name": "Phantom Zelda",
+        "text": "Phantom Zelda"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": "Green",
+    "name": "navi_color_prop",
+    "text": "Navi Targeting Prop",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "White",
+        "text": "White"
+      },
+      {
+        "name": "Green",
+        "text": "Green"
+      },
+      {
+        "name": "Light Blue",
+        "text": "Light Blue"
+      },
+      {
+        "name": "Yellow",
+        "text": "Yellow"
+      },
+      {
+        "name": "Red",
+        "text": "Red"
+      },
+      {
+        "name": "Magenta",
+        "text": "Magenta"
+      },
+      {
+        "name": "Black",
+        "text": "Black"
+      },
+      {
+        "name": "Tatl",
+        "text": "Tatl"
+      },
+      {
+        "name": "Tael",
+        "text": "Tael"
+      },
+      {
+        "name": "Fi",
+        "text": "Fi"
+      },
+      {
+        "name": "Ciela",
+        "text": "Ciela"
+      },
+      {
+        "name": "Epona",
+        "text": "Epona"
+      },
+      {
+        "name": "Ezlo",
+        "text": "Ezlo"
+      },
+      {
+        "name": "King of Red Lions",
+        "text": "King of Red Lions"
+      },
+      {
+        "name": "Linebeck",
+        "text": "Linebeck"
+      },
+      {
+        "name": "Loftwing",
+        "text": "Loftwing"
+      },
+      {
+        "name": "Midna",
+        "text": "Midna"
+      },
+      {
+        "name": "Phantom Zelda",
+        "text": "Phantom Zelda"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": 4,
+    "name": "sword_trail_duration",
+    "text": "Sword Trail Duration",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": 4,
+        "text": "Default"
+      },
+      {
+        "name": 10,
+        "text": "Long"
+      },
+      {
+        "name": 15,
+        "text": "Very Long"
+      },
+      {
+        "name": 20,
+        "text": "Lightsaber"
+      }
+    ],
+    "tooltip": "Select the duration for sword trails."
+  },
+  {
+    "default": "White",
+    "name": "sword_trail_color_inner",
+    "text": "Inner Color",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Rainbow",
+        "text": "Rainbow"
+      },
+      {
+        "name": "White",
+        "text": "White"
+      },
+      {
+        "name": "Red",
+        "text": "Red"
+      },
+      {
+        "name": "Green",
+        "text": "Green"
+      },
+      {
+        "name": "Blue",
+        "text": "Blue"
+      },
+      {
+        "name": "Cyan",
+        "text": "Cyan"
+      },
+      {
+        "name": "Magenta",
+        "text": "Magenta"
+      },
+      {
+        "name": "Orange",
+        "text": "Orange"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "Purple",
+        "text": "Purple"
+      },
+      {
+        "name": "Pink",
+        "text": "Pink"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw.<br>'Rainbow': Rainbow sword trails."
+  },
+  {
+    "default": "White",
+    "name": "sword_trail_color_outer",
+    "text": "Outer Color",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Rainbow",
+        "text": "Rainbow"
+      },
+      {
+        "name": "White",
+        "text": "White"
+      },
+      {
+        "name": "Red",
+        "text": "Red"
+      },
+      {
+        "name": "Green",
+        "text": "Green"
+      },
+      {
+        "name": "Blue",
+        "text": "Blue"
+      },
+      {
+        "name": "Cyan",
+        "text": "Cyan"
+      },
+      {
+        "name": "Magenta",
+        "text": "Magenta"
+      },
+      {
+        "name": "Orange",
+        "text": "Orange"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "Purple",
+        "text": "Purple"
+      },
+      {
+        "name": "Pink",
+        "text": "Pink"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw. 'Rainbow': Rainbow sword trails."
+  },
+  {
+    "default": "Red",
+    "name": "heart_color",
+    "text": "Heart Color",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Red",
+        "text": "Red"
+      },
+      {
+        "name": "Green",
+        "text": "Green"
+      },
+      {
+        "name": "Blue",
+        "text": "Blue"
+      },
+      {
+        "name": "Yellow",
+        "text": "Yellow"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": "Green",
+    "name": "magic_color",
+    "text": "Magic Color",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Green",
+        "text": "Green"
+      },
+      {
+        "name": "Red",
+        "text": "Red"
+      },
+      {
+        "name": "Blue",
+        "text": "Blue"
+      },
+      {
+        "name": "Purple",
+        "text": "Purple"
+      },
+      {
+        "name": "Pink",
+        "text": "Pink"
+      },
+      {
+        "name": "Yellow",
+        "text": "Yellow"
+      },
+      {
+        "name": "White",
+        "text": "White"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": "Silver",
+    "name": "silver_gauntlets_color",
+    "text": "Silver Gauntlets Color",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Silver",
+        "text": "Silver"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "Black",
+        "text": "Black"
+      },
+      {
+        "name": "Green",
+        "text": "Green"
+      },
+      {
+        "name": "Blue",
+        "text": "Blue"
+      },
+      {
+        "name": "Bronze",
+        "text": "Bronze"
+      },
+      {
+        "name": "Red",
+        "text": "Red"
+      },
+      {
+        "name": "Sky Blue",
+        "text": "Sky Blue"
+      },
+      {
+        "name": "Pink",
+        "text": "Pink"
+      },
+      {
+        "name": "Magenta",
+        "text": "Magenta"
+      },
+      {
+        "name": "Orange",
+        "text": "Orange"
+      },
+      {
+        "name": "Lime",
+        "text": "Lime"
+      },
+      {
+        "name": "Purple",
+        "text": "Purple"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": "Gold",
+    "name": "golden_gauntlets_color",
+    "text": "Golden Gauntlets Color",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "Random Choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "Completely Random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "Custom Color",
+        "text": "Custom Color"
+      },
+      {
+        "name": "Gold",
+        "text": "Gold"
+      },
+      {
+        "name": "Silver",
+        "text": "Silver"
+      },
+      {
+        "name": "Black",
+        "text": "Black"
+      },
+      {
+        "name": "Green",
+        "text": "Green"
+      },
+      {
+        "name": "Blue",
+        "text": "Blue"
+      },
+      {
+        "name": "Bronze",
+        "text": "Bronze"
+      },
+      {
+        "name": "Red",
+        "text": "Red"
+      },
+      {
+        "name": "Sky Blue",
+        "text": "Sky Blue"
+      },
+      {
+        "name": "Pink",
+        "text": "Pink"
+      },
+      {
+        "name": "Magenta",
+        "text": "Magenta"
+      },
+      {
+        "name": "Orange",
+        "text": "Orange"
+      },
+      {
+        "name": "Lime",
+        "text": "Lime"
+      },
+      {
+        "name": "Purple",
+        "text": "Purple"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+  },
+  {
+    "default": "default",
+    "name": "sfx_low_hp",
+    "text": "Low HP",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "default",
+        "text": "Default"
+      },
+      {
+        "name": "completely-random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "random-ear-safe",
+        "text": "Random Ear-Safe"
+      },
+      {
+        "name": "random-choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "none",
+        "text": "None"
+      },
+      {
+        "name": "cluck",
+        "text": "Cluck"
+      },
+      {
+        "name": "soft-beep",
+        "text": "Soft Beep"
+      },
+      {
+        "name": "recover-health",
+        "text": "Recover Health"
+      },
+      {
+        "name": "timer",
+        "text": "Timer"
+      },
+      {
+        "name": "notification",
+        "text": "Notification"
+      },
+      {
+        "name": "tambourine",
+        "text": "Tambourine"
+      },
+      {
+        "name": "carrot-refill",
+        "text": "Carrot Refill"
+      },
+      {
+        "name": "navi-random",
+        "text": "Navi Random"
+      },
+      {
+        "name": "navi-hey",
+        "text": "Navi \"Hey!\""
+      },
+      {
+        "name": "adult-zelda-gasp",
+        "text": "Adult Zelda Gasp"
+      },
+      {
+        "name": "mweep",
+        "text": "Mweep!"
+      },
+      {
+        "name": "iron-boots",
+        "text": "Iron Boots"
+      },
+      {
+        "name": "sword-bonk",
+        "text": "Sword Bonk"
+      },
+      {
+        "name": "bow-twang",
+        "text": "Bow Twang"
+      },
+      {
+        "name": "horse-trot",
+        "text": "Horse Trot"
+      },
+      {
+        "name": "drawbridge-set",
+        "text": "Drawbridge Set"
+      },
+      {
+        "name": "switch",
+        "text": "Switch"
+      },
+      {
+        "name": "bomb-bounce",
+        "text": "Bomb Bounce"
+      },
+      {
+        "name": "bark",
+        "text": "Bark"
+      },
+      {
+        "name": "ribbit",
+        "text": "Ribbit"
+      },
+      {
+        "name": "shattering-pot",
+        "text": "Shattering Pot"
+      },
+      {
+        "name": "business-scrub",
+        "text": "Business Scrub"
+      },
+      {
+        "name": "guay",
+        "text": "Guay"
+      },
+      {
+        "name": "bongo-bongo-low",
+        "text": "Bongo Bongo Low"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random sound from this list.<br>'Default': Beep. Beep. Beep."
+  },
+  {
+    "default": "default",
+    "name": "sfx_navi_overworld",
+    "text": "Navi Overworld",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "default",
+        "text": "Default"
+      },
+      {
+        "name": "completely-random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "random-ear-safe",
+        "text": "Random Ear-Safe"
+      },
+      {
+        "name": "random-choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "none",
+        "text": "None"
+      },
+      {
+        "name": "cluck",
+        "text": "Cluck"
+      },
+      {
+        "name": "soft-beep",
+        "text": "Soft Beep"
+      },
+      {
+        "name": "recover-health",
+        "text": "Recover Health"
+      },
+      {
+        "name": "timer",
+        "text": "Timer"
+      },
+      {
+        "name": "low-health",
+        "text": "Low Health"
+      },
+      {
+        "name": "notification",
+        "text": "Notification"
+      },
+      {
+        "name": "tambourine",
+        "text": "Tambourine"
+      },
+      {
+        "name": "carrot-refill",
+        "text": "Carrot Refill"
+      },
+      {
+        "name": "adult-zelda-gasp",
+        "text": "Adult Zelda Gasp"
+      },
+      {
+        "name": "mweep",
+        "text": "Mweep!"
+      },
+      {
+        "name": "shattering-ice",
+        "text": "Shattering Ice"
+      },
+      {
+        "name": "explosion",
+        "text": "Explosion"
+      },
+      {
+        "name": "exploding-crate",
+        "text": "Exploding Crate"
+      },
+      {
+        "name": "great-fairy",
+        "text": "Great Fairy"
+      },
+      {
+        "name": "moo",
+        "text": "Moo"
+      },
+      {
+        "name": "bark",
+        "text": "Bark"
+      },
+      {
+        "name": "ribbit",
+        "text": "Ribbit"
+      },
+      {
+        "name": "shattering-pot",
+        "text": "Shattering Pot"
+      },
+      {
+        "name": "cockadoodledoo",
+        "text": "Cockadoodledoo"
+      },
+      {
+        "name": "horse-neigh",
+        "text": "Horse Neigh"
+      },
+      {
+        "name": "skulltula",
+        "text": "Skulltula"
+      },
+      {
+        "name": "redead-scream",
+        "text": "Redead Scream"
+      },
+      {
+        "name": "poe",
+        "text": "Poe"
+      },
+      {
+        "name": "ruto-giggle",
+        "text": "Ruto Giggle"
+      },
+      {
+        "name": "dusk-howl",
+        "text": "Dusk Howl"
+      },
+      {
+        "name": "business-scrub",
+        "text": "Business Scrub"
+      },
+      {
+        "name": "guay",
+        "text": "Guay"
+      },
+      {
+        "name": "navi-hello",
+        "text": "Navi \"Hello!\""
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random sound from this list."
+  },
+  {
+    "default": "default",
+    "name": "sfx_navi_enemy",
+    "text": "Navi Enemy",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "default",
+        "text": "Default"
+      },
+      {
+        "name": "completely-random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "random-ear-safe",
+        "text": "Random Ear-Safe"
+      },
+      {
+        "name": "random-choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "none",
+        "text": "None"
+      },
+      {
+        "name": "cluck",
+        "text": "Cluck"
+      },
+      {
+        "name": "soft-beep",
+        "text": "Soft Beep"
+      },
+      {
+        "name": "recover-health",
+        "text": "Recover Health"
+      },
+      {
+        "name": "timer",
+        "text": "Timer"
+      },
+      {
+        "name": "low-health",
+        "text": "Low Health"
+      },
+      {
+        "name": "notification",
+        "text": "Notification"
+      },
+      {
+        "name": "tambourine",
+        "text": "Tambourine"
+      },
+      {
+        "name": "carrot-refill",
+        "text": "Carrot Refill"
+      },
+      {
+        "name": "adult-zelda-gasp",
+        "text": "Adult Zelda Gasp"
+      },
+      {
+        "name": "mweep",
+        "text": "Mweep!"
+      },
+      {
+        "name": "shattering-ice",
+        "text": "Shattering Ice"
+      },
+      {
+        "name": "explosion",
+        "text": "Explosion"
+      },
+      {
+        "name": "exploding-crate",
+        "text": "Exploding Crate"
+      },
+      {
+        "name": "great-fairy",
+        "text": "Great Fairy"
+      },
+      {
+        "name": "moo",
+        "text": "Moo"
+      },
+      {
+        "name": "bark",
+        "text": "Bark"
+      },
+      {
+        "name": "ribbit",
+        "text": "Ribbit"
+      },
+      {
+        "name": "shattering-pot",
+        "text": "Shattering Pot"
+      },
+      {
+        "name": "cockadoodledoo",
+        "text": "Cockadoodledoo"
+      },
+      {
+        "name": "horse-neigh",
+        "text": "Horse Neigh"
+      },
+      {
+        "name": "skulltula",
+        "text": "Skulltula"
+      },
+      {
+        "name": "redead-scream",
+        "text": "Redead Scream"
+      },
+      {
+        "name": "poe",
+        "text": "Poe"
+      },
+      {
+        "name": "ruto-giggle",
+        "text": "Ruto Giggle"
+      },
+      {
+        "name": "dusk-howl",
+        "text": "Dusk Howl"
+      },
+      {
+        "name": "business-scrub",
+        "text": "Business Scrub"
+      },
+      {
+        "name": "guay",
+        "text": "Guay"
+      },
+      {
+        "name": "navi-hello",
+        "text": "Navi \"Hello!\""
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random sound from this list."
+  },
+  {
+    "default": "default",
+    "name": "sfx_menu_cursor",
+    "text": "Menu Cursor",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "default",
+        "text": "Default"
+      },
+      {
+        "name": "completely-random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "random-ear-safe",
+        "text": "Random Ear-Safe"
+      },
+      {
+        "name": "random-choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "none",
+        "text": "None"
+      },
+      {
+        "name": "armos",
+        "text": "Armos"
+      },
+      {
+        "name": "bark",
+        "text": "Bark"
+      },
+      {
+        "name": "bomb-bounce",
+        "text": "Bomb Bounce"
+      },
+      {
+        "name": "iron-boots",
+        "text": "Iron Boots"
+      },
+      {
+        "name": "bottle-cork",
+        "text": "Bottle Cork"
+      },
+      {
+        "name": "bow-twang",
+        "text": "Bow Twang"
+      },
+      {
+        "name": "bubble-laugh",
+        "text": "Bubble Laugh"
+      },
+      {
+        "name": "bongo-bongo-high",
+        "text": "Bongo Bongo High"
+      },
+      {
+        "name": "bongo-bongo-low",
+        "text": "Bongo Bongo Low"
+      },
+      {
+        "name": "carrot-refill",
+        "text": "Carrot Refill"
+      },
+      {
+        "name": "cartoon-fall",
+        "text": "Cartoon Fall"
+      },
+      {
+        "name": "change-item",
+        "text": "Change Item"
+      },
+      {
+        "name": "chest-open",
+        "text": "Chest Open"
+      },
+      {
+        "name": "child-cringe",
+        "text": "Child Cringe"
+      },
+      {
+        "name": "child-gasp",
+        "text": "Child Gasp"
+      },
+      {
+        "name": "child-hurt",
+        "text": "Child Hurt"
+      },
+      {
+        "name": "child-owo",
+        "text": "Child owo"
+      },
+      {
+        "name": "child-pant",
+        "text": "Child Pant"
+      },
+      {
+        "name": "child-scream",
+        "text": "Child Scream"
+      },
+      {
+        "name": "exploding-crate",
+        "text": "Exploding Crate"
+      },
+      {
+        "name": "cluck",
+        "text": "Cluck"
+      },
+      {
+        "name": "cockadoodledoo",
+        "text": "Cockadoodledoo"
+      },
+      {
+        "name": "cursed-attack",
+        "text": "Cursed Attack"
+      },
+      {
+        "name": "drawbridge-set",
+        "text": "Drawbridge Set"
+      },
+      {
+        "name": "dusk-howl",
+        "text": "Dusk Howl"
+      },
+      {
+        "name": "deku-baba",
+        "text": "Deku Baba"
+      },
+      {
+        "name": "baby-epona",
+        "text": "Baby Epona"
+      },
+      {
+        "name": "explosion",
+        "text": "Explosion"
+      },
+      {
+        "name": "medium-fanfare",
+        "text": "Medium Fanfare"
+      },
+      {
+        "name": "light-fanfare",
+        "text": "Light Fanfare"
+      },
+      {
+        "name": "field-shrub",
+        "text": "Field Shrub"
+      },
+      {
+        "name": "flare-dancer-laugh",
+        "text": "Flare Dancer Laugh"
+      },
+      {
+        "name": "flare-dancer-startled",
+        "text": "Flare Dancer Startled"
+      },
+      {
+        "name": "ganondorf-teh",
+        "text": "Ganondorf \"Teh!\""
+      },
+      {
+        "name": "gohma-larva-croak",
+        "text": "Gohma Larva Croak"
+      },
+      {
+        "name": "gold-skull-token",
+        "text": "Gold Skull Token"
+      },
+      {
+        "name": "goron-wake",
+        "text": "Goron Wake"
+      },
+      {
+        "name": "guay",
+        "text": "Guay"
+      },
+      {
+        "name": "gunshot",
+        "text": "Gunshot"
+      },
+      {
+        "name": "hammer-bonk",
+        "text": "Hammer Bonk"
+      },
+      {
+        "name": "horse-trot",
+        "text": "Horse Trot"
+      },
+      {
+        "name": "low-health",
+        "text": "Low Health"
+      },
+      {
+        "name": "recover-health",
+        "text": "Recover Health"
+      },
+      {
+        "name": "shattering-ice",
+        "text": "Shattering Ice"
+      },
+      {
+        "name": "ingo-wooah",
+        "text": "Ingo \"Wooah!\""
+      },
+      {
+        "name": "iron-knuckle",
+        "text": "Iron Knuckle"
+      },
+      {
+        "name": "kaah",
+        "text": "Kaah!"
+      },
+      {
+        "name": "moblin-club-ground",
+        "text": "Moblin Club Ground"
+      },
+      {
+        "name": "moblin-club-swing",
+        "text": "Moblin Club Swing"
+      },
+      {
+        "name": "moo",
+        "text": "Moo"
+      },
+      {
+        "name": "navi-hello",
+        "text": "Navi \"Hello!\""
+      },
+      {
+        "name": "navi-hey",
+        "text": "Navi \"Hey!\""
+      },
+      {
+        "name": "navi-random",
+        "text": "Navi Random"
+      },
+      {
+        "name": "notification",
+        "text": "Notification"
+      },
+      {
+        "name": "phantom-ganon-laugh",
+        "text": "Phantom Ganon Laugh"
+      },
+      {
+        "name": "plant-explode",
+        "text": "Plant Explode"
+      },
+      {
+        "name": "poe",
+        "text": "Poe"
+      },
+      {
+        "name": "shattering-pot",
+        "text": "Shattering Pot"
+      },
+      {
+        "name": "redead-moan",
+        "text": "Redead Moan"
+      },
+      {
+        "name": "ribbit",
+        "text": "Ribbit"
+      },
+      {
+        "name": "silver-rupee",
+        "text": "Silver Rupee"
+      },
+      {
+        "name": "ruto-crash",
+        "text": "Ruto Crash"
+      },
+      {
+        "name": "ruto-excited",
+        "text": "Ruto Excited"
+      },
+      {
+        "name": "ruto-giggle",
+        "text": "Ruto Giggle"
+      },
+      {
+        "name": "ruto-lift",
+        "text": "Ruto Lift"
+      },
+      {
+        "name": "ruto-thrown",
+        "text": "Ruto Thrown"
+      },
+      {
+        "name": "ruto-wiggle",
+        "text": "Ruto Wiggle"
+      },
+      {
+        "name": "business-scrub",
+        "text": "Business Scrub"
+      },
+      {
+        "name": "scrub-emerge",
+        "text": "Scrub Emerge"
+      },
+      {
+        "name": "shabom-bounce",
+        "text": "Shabom Bounce"
+      },
+      {
+        "name": "shabom-pop",
+        "text": "Shabom Pop"
+      },
+      {
+        "name": "shellblade",
+        "text": "Shellblade"
+      },
+      {
+        "name": "skulltula",
+        "text": "Skulltula"
+      },
+      {
+        "name": "soft-beep",
+        "text": "Soft Beep"
+      },
+      {
+        "name": "spit-nut",
+        "text": "Spit Nut"
+      },
+      {
+        "name": "stalchild-attack",
+        "text": "Stalchild Attack"
+      },
+      {
+        "name": "switch",
+        "text": "Switch"
+      },
+      {
+        "name": "sword-bonk",
+        "text": "Sword Bonk"
+      },
+      {
+        "name": "tambourine",
+        "text": "Tambourine"
+      },
+      {
+        "name": "target-enemy",
+        "text": "Target Enemy"
+      },
+      {
+        "name": "target-neutral",
+        "text": "Target Neutral"
+      },
+      {
+        "name": "talon-cry",
+        "text": "Talon Cry"
+      },
+      {
+        "name": "talon-hmm",
+        "text": "Talon \"Hmm\""
+      },
+      {
+        "name": "talon-snore",
+        "text": "Talon Snore"
+      },
+      {
+        "name": "talon-wtf",
+        "text": "Talon Wtf"
+      },
+      {
+        "name": "thunder",
+        "text": "Thunder"
+      },
+      {
+        "name": "timer",
+        "text": "Timer"
+      },
+      {
+        "name": "wolfos-howl",
+        "text": "Wolfos Howl"
+      },
+      {
+        "name": "adult-zelda-gasp",
+        "text": "Adult Zelda Gasp"
+      },
+      {
+        "name": "mweep",
+        "text": "Mweep!"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random sound from this list."
+  },
+  {
+    "default": "default",
+    "name": "sfx_menu_select",
+    "text": "Menu Select",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "default",
+        "text": "Default"
+      },
+      {
+        "name": "completely-random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "random-ear-safe",
+        "text": "Random Ear-Safe"
+      },
+      {
+        "name": "random-choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "none",
+        "text": "None"
+      },
+      {
+        "name": "armos",
+        "text": "Armos"
+      },
+      {
+        "name": "bark",
+        "text": "Bark"
+      },
+      {
+        "name": "bomb-bounce",
+        "text": "Bomb Bounce"
+      },
+      {
+        "name": "iron-boots",
+        "text": "Iron Boots"
+      },
+      {
+        "name": "bottle-cork",
+        "text": "Bottle Cork"
+      },
+      {
+        "name": "bow-twang",
+        "text": "Bow Twang"
+      },
+      {
+        "name": "bubble-laugh",
+        "text": "Bubble Laugh"
+      },
+      {
+        "name": "bongo-bongo-high",
+        "text": "Bongo Bongo High"
+      },
+      {
+        "name": "bongo-bongo-low",
+        "text": "Bongo Bongo Low"
+      },
+      {
+        "name": "carrot-refill",
+        "text": "Carrot Refill"
+      },
+      {
+        "name": "cartoon-fall",
+        "text": "Cartoon Fall"
+      },
+      {
+        "name": "change-item",
+        "text": "Change Item"
+      },
+      {
+        "name": "chest-open",
+        "text": "Chest Open"
+      },
+      {
+        "name": "child-cringe",
+        "text": "Child Cringe"
+      },
+      {
+        "name": "child-gasp",
+        "text": "Child Gasp"
+      },
+      {
+        "name": "child-hurt",
+        "text": "Child Hurt"
+      },
+      {
+        "name": "child-owo",
+        "text": "Child owo"
+      },
+      {
+        "name": "child-pant",
+        "text": "Child Pant"
+      },
+      {
+        "name": "child-scream",
+        "text": "Child Scream"
+      },
+      {
+        "name": "exploding-crate",
+        "text": "Exploding Crate"
+      },
+      {
+        "name": "cluck",
+        "text": "Cluck"
+      },
+      {
+        "name": "cockadoodledoo",
+        "text": "Cockadoodledoo"
+      },
+      {
+        "name": "cursed-attack",
+        "text": "Cursed Attack"
+      },
+      {
+        "name": "drawbridge-set",
+        "text": "Drawbridge Set"
+      },
+      {
+        "name": "dusk-howl",
+        "text": "Dusk Howl"
+      },
+      {
+        "name": "deku-baba",
+        "text": "Deku Baba"
+      },
+      {
+        "name": "baby-epona",
+        "text": "Baby Epona"
+      },
+      {
+        "name": "explosion",
+        "text": "Explosion"
+      },
+      {
+        "name": "medium-fanfare",
+        "text": "Medium Fanfare"
+      },
+      {
+        "name": "light-fanfare",
+        "text": "Light Fanfare"
+      },
+      {
+        "name": "field-shrub",
+        "text": "Field Shrub"
+      },
+      {
+        "name": "flare-dancer-laugh",
+        "text": "Flare Dancer Laugh"
+      },
+      {
+        "name": "flare-dancer-startled",
+        "text": "Flare Dancer Startled"
+      },
+      {
+        "name": "ganondorf-teh",
+        "text": "Ganondorf \"Teh!\""
+      },
+      {
+        "name": "gohma-larva-croak",
+        "text": "Gohma Larva Croak"
+      },
+      {
+        "name": "gold-skull-token",
+        "text": "Gold Skull Token"
+      },
+      {
+        "name": "goron-wake",
+        "text": "Goron Wake"
+      },
+      {
+        "name": "guay",
+        "text": "Guay"
+      },
+      {
+        "name": "gunshot",
+        "text": "Gunshot"
+      },
+      {
+        "name": "hammer-bonk",
+        "text": "Hammer Bonk"
+      },
+      {
+        "name": "horse-trot",
+        "text": "Horse Trot"
+      },
+      {
+        "name": "low-health",
+        "text": "Low Health"
+      },
+      {
+        "name": "recover-health",
+        "text": "Recover Health"
+      },
+      {
+        "name": "shattering-ice",
+        "text": "Shattering Ice"
+      },
+      {
+        "name": "ingo-wooah",
+        "text": "Ingo \"Wooah!\""
+      },
+      {
+        "name": "iron-knuckle",
+        "text": "Iron Knuckle"
+      },
+      {
+        "name": "kaah",
+        "text": "Kaah!"
+      },
+      {
+        "name": "moblin-club-ground",
+        "text": "Moblin Club Ground"
+      },
+      {
+        "name": "moblin-club-swing",
+        "text": "Moblin Club Swing"
+      },
+      {
+        "name": "moo",
+        "text": "Moo"
+      },
+      {
+        "name": "navi-hello",
+        "text": "Navi \"Hello!\""
+      },
+      {
+        "name": "navi-hey",
+        "text": "Navi \"Hey!\""
+      },
+      {
+        "name": "navi-random",
+        "text": "Navi Random"
+      },
+      {
+        "name": "notification",
+        "text": "Notification"
+      },
+      {
+        "name": "phantom-ganon-laugh",
+        "text": "Phantom Ganon Laugh"
+      },
+      {
+        "name": "plant-explode",
+        "text": "Plant Explode"
+      },
+      {
+        "name": "poe",
+        "text": "Poe"
+      },
+      {
+        "name": "shattering-pot",
+        "text": "Shattering Pot"
+      },
+      {
+        "name": "redead-moan",
+        "text": "Redead Moan"
+      },
+      {
+        "name": "ribbit",
+        "text": "Ribbit"
+      },
+      {
+        "name": "silver-rupee",
+        "text": "Silver Rupee"
+      },
+      {
+        "name": "ruto-crash",
+        "text": "Ruto Crash"
+      },
+      {
+        "name": "ruto-excited",
+        "text": "Ruto Excited"
+      },
+      {
+        "name": "ruto-giggle",
+        "text": "Ruto Giggle"
+      },
+      {
+        "name": "ruto-lift",
+        "text": "Ruto Lift"
+      },
+      {
+        "name": "ruto-thrown",
+        "text": "Ruto Thrown"
+      },
+      {
+        "name": "ruto-wiggle",
+        "text": "Ruto Wiggle"
+      },
+      {
+        "name": "business-scrub",
+        "text": "Business Scrub"
+      },
+      {
+        "name": "scrub-emerge",
+        "text": "Scrub Emerge"
+      },
+      {
+        "name": "shabom-bounce",
+        "text": "Shabom Bounce"
+      },
+      {
+        "name": "shabom-pop",
+        "text": "Shabom Pop"
+      },
+      {
+        "name": "shellblade",
+        "text": "Shellblade"
+      },
+      {
+        "name": "skulltula",
+        "text": "Skulltula"
+      },
+      {
+        "name": "soft-beep",
+        "text": "Soft Beep"
+      },
+      {
+        "name": "spit-nut",
+        "text": "Spit Nut"
+      },
+      {
+        "name": "stalchild-attack",
+        "text": "Stalchild Attack"
+      },
+      {
+        "name": "switch",
+        "text": "Switch"
+      },
+      {
+        "name": "sword-bonk",
+        "text": "Sword Bonk"
+      },
+      {
+        "name": "tambourine",
+        "text": "Tambourine"
+      },
+      {
+        "name": "target-enemy",
+        "text": "Target Enemy"
+      },
+      {
+        "name": "target-neutral",
+        "text": "Target Neutral"
+      },
+      {
+        "name": "talon-cry",
+        "text": "Talon Cry"
+      },
+      {
+        "name": "talon-hmm",
+        "text": "Talon \"Hmm\""
+      },
+      {
+        "name": "talon-snore",
+        "text": "Talon Snore"
+      },
+      {
+        "name": "talon-wtf",
+        "text": "Talon Wtf"
+      },
+      {
+        "name": "thunder",
+        "text": "Thunder"
+      },
+      {
+        "name": "timer",
+        "text": "Timer"
+      },
+      {
+        "name": "wolfos-howl",
+        "text": "Wolfos Howl"
+      },
+      {
+        "name": "adult-zelda-gasp",
+        "text": "Adult Zelda Gasp"
+      },
+      {
+        "name": "mweep",
+        "text": "Mweep!"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random sound from this list."
+  },
+  {
+    "default": "default",
+    "name": "sfx_horse_neigh",
+    "text": "Horse",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "default",
+        "text": "Default"
+      },
+      {
+        "name": "completely-random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "random-ear-safe",
+        "text": "Random Ear-Safe"
+      },
+      {
+        "name": "random-choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "none",
+        "text": "None"
+      },
+      {
+        "name": "moo",
+        "text": "Moo"
+      },
+      {
+        "name": "child-scream",
+        "text": "Child Scream"
+      },
+      {
+        "name": "ruto-wiggle",
+        "text": "Ruto Wiggle"
+      },
+      {
+        "name": "great-fairy",
+        "text": "Great Fairy"
+      },
+      {
+        "name": "armos",
+        "text": "Armos"
+      },
+      {
+        "name": "redead-scream",
+        "text": "Redead Scream"
+      },
+      {
+        "name": "stalchild-attack",
+        "text": "Stalchild Attack"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random sound from this list. 'Default': Neigh. Neigh. Neigh."
+  },
+  {
+    "default": "default",
+    "name": "sfx_nightfall",
+    "text": "Nightfall",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "default",
+        "text": "Default"
+      },
+      {
+        "name": "completely-random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "random-ear-safe",
+        "text": "Random Ear-Safe"
+      },
+      {
+        "name": "random-choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "none",
+        "text": "None"
+      },
+      {
+        "name": "cockadoodledoo",
+        "text": "Cockadoodledoo"
+      },
+      {
+        "name": "redead-moan",
+        "text": "Redead Moan"
+      },
+      {
+        "name": "talon-snore",
+        "text": "Talon Snore"
+      },
+      {
+        "name": "great-fairy",
+        "text": "Great Fairy"
+      },
+      {
+        "name": "thunder",
+        "text": "Thunder"
+      },
+      {
+        "name": "moo",
+        "text": "Moo"
+      },
+      {
+        "name": "gold-skull-token",
+        "text": "Gold Skull Token"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random sound from this list. 'Default': Wolf Howl"
+  },
+  {
+    "default": "default",
+    "name": "sfx_hover_boots",
+    "text": "Hover Boots",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "default",
+        "text": "Default"
+      },
+      {
+        "name": "completely-random",
+        "text": "Completely Random"
+      },
+      {
+        "name": "random-ear-safe",
+        "text": "Random Ear-Safe"
+      },
+      {
+        "name": "random-choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "none",
+        "text": "None"
+      },
+      {
+        "name": "bark",
+        "text": "Bark"
+      },
+      {
+        "name": "shabom-pop",
+        "text": "Shabom Pop"
+      },
+      {
+        "name": "cartoon-fall",
+        "text": "Cartoon Fall"
+      },
+      {
+        "name": "mweep",
+        "text": "Mweep!"
+      },
+      {
+        "name": "tambourine",
+        "text": "Tambourine"
+      }
+    ],
+    "tooltip": "'Random Choice': Choose a random sound from this list."
+  },
+  {
+    "default": "ocarina",
+    "name": "sfx_ocarina",
+    "text": "Ocarina",
+    "type": "Combobox",
+    "options": [
+      {
+        "name": "ocarina",
+        "text": "Default"
+      },
+      {
+        "name": "random-choice",
+        "text": "Random Choice"
+      },
+      {
+        "name": "flute",
+        "text": "Flute"
+      },
+      {
+        "name": "harp",
+        "text": "Harp"
+      },
+      {
+        "name": "whistle",
+        "text": "Whistle"
+      },
+      {
+        "name": "malon",
+        "text": "Malon"
+      },
+      {
+        "name": "grind-organ",
+        "text": "Grind Organ"
+      }
+    ],
+    "tooltip": "Change the sound of the ocarina."
+  }
+]

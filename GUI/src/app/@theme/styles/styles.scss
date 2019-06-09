@@ -1,0 +1,141 @@
+// themes - our custom or/and out of the box themes
+@import 'themes';
+// framework component themes (styles tied to theme variables)
+@import '~@nebular/theme/styles/globals';
+@import '~@nebular/bootstrap/styles/globals';
+// ...
+// global app font size
+@import './font-size';
+// loading progress bar theme
+@import './pace.theme';
+@import './bootstrap-rtl';
+// install the framework and custom global styles
+@include nb-install() {
+    // framework global styles
+    @include nb-theme-global();
+    @include nb-bootstrap-global();
+    // loading progress bar
+    @include ngx-pace-theme();
+    // fixed in rc.9 and can be removed after upgrade
+    .custom-control .custom-control-indicator {
+        border-radius: 50%; // TODO: quickfix for https://github.com/akveo/nebular/issues/275
+    }
+    //DB: Tooltip delay
+    @keyframes tooltipFadeIn {
+        0% {
+            opacity: 0;
+        }
+        75% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    .cdk-overlay-pane>nb-popover {
+        animation-name: tooltipFadeIn;
+        animation-duration: 1s;
+    }
+    @include bootstrap-rtl();
+}
+
+.columns {
+    top: 40px;
+    height: 91%;
+    left: 0px;
+    padding-left: 0px;
+    position: absolute;
+}
+
+nb-layout-header {
+    .fixed {
+        height: 0.7rem !important;
+    }
+}
+
+nb-layout-footer {
+    height: 3.5rem;
+    padding: 0 !important;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-bottom: 0.9rem;
+    .fixed {
+        height: 40px;
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        width: 100%;
+        color: white !important;
+    }
+}
+
+.themes-switcher {
+    color: white !important;
+}
+
+.tabset .tab a::before {
+    background: rgb(65, 0, 85)!important;
+    background-image: rgb(65, 0, 85)!important;
+}
+
+.tabset .tab a {
+    color: black !important
+}
+
+.tabset .tab.active a {
+    color: rgb(65, 0, 85) !important;
+}
+
+.record-picker .selected {
+    background-color: #37b364 !important;
+}
+
+nb-popover {
+    border: 2px solid #37b364 !important;
+}
+
+nb-popover .arrow {
+    border-bottom: 11px solid #37b364 !important;
+}
+
+nb-card-body .selected {
+    background: #37b364 !important;
+}
+
+nb-card.select.primary {
+    border: 2px solid rgb(65, 0, 85) !important;
+}
+
+.btn-xsmall {
+    max-width: 300px;
+}
+
+nb-select {
+    line-height: 0.8 !important;
+}
+
+nb-option:hover {
+    background-color: rgb(65, 0, 85) !important;
+    color: white !important;
+}
+
+.textInput:focus {
+    border-color: rgb(65, 0, 85) !important;
+}
+
+.numberInput:focus {
+    border-color: rgb(65, 0, 85) !important;
+}
+
+.progress-value.success {
+    background-color: #37b364 !important;
+    color: black;
+}
+
+.form-control {
+    background-color: white !important;
+}
+
+.form-control:focus {
+    background-color: white !important;
+}

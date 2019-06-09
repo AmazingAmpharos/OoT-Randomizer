@@ -1,0 +1,23 @@
+/deep/ {
+  .progress-window {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+
+    button {
+      float: right;
+      margin-top: -10px;
+      margin-right: -10px;
+    }
+
+    button + button {
+      margin-left: 1rem;
+    }
+  }
+
+  @media (min-width: 40rem) {
+    .progress-window {
+      width: 38rem;
+    }
+  }
+}
