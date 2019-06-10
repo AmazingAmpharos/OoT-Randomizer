@@ -820,6 +820,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_int32(0x0C72C64, 0x240E0000)
         rom.write_int32(0x0C72C74, 0x240F0001)
 
+        #Purge temp flags on entrance to spirit from colossus through the front
+        #door.
+        rom.write_byte(0x021862E3, 0xC2)
+
         set_entrance_updates(world.get_shuffled_entrances(type='Dungeon'))
 
     if world.shuffle_interior_entrances:
