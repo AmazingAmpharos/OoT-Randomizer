@@ -4,13 +4,15 @@ import {
   NbThemeService,
 } from '@nebular/theme';
 
+import { GUIGlobal } from '../../../providers/GUIGlobal';
+
 @Component({
   selector: 'gui-layout',
   styleUrls: ['./gui.layout.scss'],
   template: `
     <nb-layout>
       <nb-layout-header fixed>
-        <div class="dragRegion"></div>
+        <div *ngIf="platform != 'darwin' || !isMaximized" class="dragRegion"></div>
         <ngx-header></ngx-header>
       </nb-layout-header>
 
@@ -29,13 +31,38 @@ export class GUILayoutComponent implements OnDestroy {
   private alive = true;
   currentTheme: string;
 
-  constructor(protected themeService: NbThemeService) {
+  platform: string = (<any>window).apiPlatform;
+  isMaximized: boolean = false
+
+  constructor(protected themeService: NbThemeService, public global: GUIGlobal) {
 
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {
         this.currentTheme = theme.name;
     });
+  }
+
+  ngOnInit() {
+
+    if (this.global.getGlobalVar('apiAvailable')) {
+
+      this.global.isWindowMaximized().then(res => {
+        this.isMaximized = res;
+      }).catch((err) => {
+        console.log(err);
+      });
+
+      this.global.globalEmitter.subscribe(eventObj => {
+
+        if (eventObj.name == "window_maximized") {
+          this.isMaximized = true;
+        }
+        else if (eventObj.name == "window_unmaximized") {
+          this.isMaximized = false;
+        }
+      });
+    }
   }
 
   ngOnDestroy() {

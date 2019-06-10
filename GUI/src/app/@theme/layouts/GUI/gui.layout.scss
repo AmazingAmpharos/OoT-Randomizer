@@ -3,41 +3,6 @@
 @import '~@nebular/theme/styles/global/breakpoints';
 
 @include nb-install-component() {
-  /*
-  .layout-container {
-    padding-top: 2.75rem !important;
-  }
-
-  nb-layout-header {
-    nav {
-      height: 3.75rem !important;
-    }
-  }
-
-  nb-layout-column {
-    padding-left: 0.75rem !important;
-    padding-right: 0rem !important;
-    padding-top: 2.0rem !important;
-    padding-bottom: 0.75rem !important;
-  }
-
-  nb-sidebar {
-    .main-container {
-      width: 10.25rem !important;
-      height: calc(100vh - 4.75rem) !important;
-    }
-  }
-
-
-
-  nb-sidebar.start {
-    width: 10.25rem !important;
-  }
-
-  nb-sidebar.expanded {
-    width: 10.25rem !important;
-  }
-  */
 
   .dragRegion {
     position: absolute;

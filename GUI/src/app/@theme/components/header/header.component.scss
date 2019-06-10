@@ -20,9 +20,16 @@
   }
 
   .logo-containter {
-    display: flex;
     align-items: center;
     width: calc(#{nb-theme(sidebar-width)} - #{nb-theme(header-padding)});
+
+    .left {
+      display: flex;
+    }
+
+    .right {
+      float: right;
+    }
   }
 
   .control-item {

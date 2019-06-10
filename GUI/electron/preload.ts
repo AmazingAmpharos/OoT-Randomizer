@@ -247,7 +247,14 @@ post.on('window-is-maximized', function (event) {
 });
 
 post.on('window-close', function (event) {
-  electron.remote.app.quit();
+
+  //Only close the window on macOS, on every other OS exit immediately
+  if (os.platform() == "darwin") {
+    electron.remote.getCurrentWindow().close();
+  }
+  else {
+    electron.remote.app.quit();
+  }
 });
 
 post.on('saveCurrentSettingsToFile', function (event) {

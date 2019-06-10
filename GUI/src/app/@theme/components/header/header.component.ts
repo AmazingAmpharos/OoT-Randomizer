@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { GUIGlobal } from '../../../providers/GUIGlobal';
 
 @Component({
@@ -8,7 +8,6 @@ import { GUIGlobal } from '../../../providers/GUIGlobal';
 })
 export class HeaderComponent {
 
-  @Input() position = 'normal';
   isMaximized: boolean = false;
   platform: string = (<any>window).apiPlatform;
 

@@ -30,11 +30,11 @@ function createApp() {
     defaultHeight: 930
   });
 
-  let browserOptions = { icon: path.join(__dirname, 'assets/icon/png/64x64.png'), opacity: 1.00, minWidth: 880, minHeight: 680, width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, show: false, webPreferences: { nodeIntegration: false, contextIsolation: true, webviewTag: false, preload: path.join(__dirname, 'preload.js') } };
+  let browserOptions = { icon: path.join(__dirname, 'assets/icon/png/64x64.png'), title: 'OoT Randomizer GUI', opacity: 1.00, backgroundColor: '#000000', minWidth: 880, minHeight: 680, width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, fullscreen: false, fullscreenable: false, show: false, webPreferences: { nodeIntegration: false, contextIsolation: true, webviewTag: false, preload: path.join(__dirname, 'preload.js') } };
 
   //macOS uses titleBarStyle
   if (os.platform() == "darwin")
-    browserOptions["titleBarStyle"] = 'hidden';
+    browserOptions["titleBarStyle"] = 'hiddenInset';
   else
     browserOptions["frame"] = false;
 
@@ -66,7 +66,7 @@ function createApp() {
       win.webContents.openDevTools();
   });
 
-  //macOS exclusive
+  //macOS exclusive, goes to idle state
   win.on("closed", () => {
     win = null;
   });
@@ -75,7 +75,7 @@ function createApp() {
 //LISTENERS
 app.on("ready", createApp);
 
-//macOS exclusive
+//macOS exclusive, handles soft re-launches
 app.on("activate", () => {
   if (win === null) {
     createApp();
@@ -83,9 +83,15 @@ app.on("activate", () => {
 });
 
 app.on("window-all-closed", () => {
-  setTimeout(() => { //Ensures the electron process always shuts down properly if all windows have been closed
-    app.quit();
-  }, 1000);
+
+  //Ensures the electron process always shuts down properly if all windows have been closed
+  //Don't do this on macOS as users expect to be able to re-launch the app quickly from the dock after all windows get closed
+  if (os.platform() != "darwin") {
+
+    setTimeout(() => {
+      app.quit();
+    }, 1000);
+  }
 });
 
 //Limit navigation to safe URLs and defer unsafe popups to system browser
