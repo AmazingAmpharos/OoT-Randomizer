@@ -11,8 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "ng-dev": "ng serve --configuration hmr",
-    "ng-prod": "ng build --base-href ./",
-    "ng-release": "ng build --prod --base-href ./",
+    "ng-prod": "ng build --prod --base-href ./",
+    "ng-release": "ng build --base-href ./",
     "electron-dev": "tsc --p electron && electron .",
     "electron-release": "tsc --p electron && electron . release"
   },

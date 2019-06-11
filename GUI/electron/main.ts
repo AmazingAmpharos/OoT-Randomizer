@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, session, ipcMain, globalShortcut } from "electron";
+import { app, BrowserWindow, shell, session, ipcMain, globalShortcut, Menu, MenuItem } from "electron";
 import * as os from "os";
 import * as fs from "fs";
 import * as path from "path";
@@ -30,15 +30,41 @@ function createApp() {
     defaultHeight: 930
   });
 
+  //Browser Window common options
   let browserOptions = { icon: path.join(__dirname, 'assets/icon/png/64x64.png'), title: 'OoT Randomizer GUI', opacity: 1.00, backgroundColor: '#000000', minWidth: 880, minHeight: 680, width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, fullscreen: false, fullscreenable: false, show: false, webPreferences: { nodeIntegration: false, contextIsolation: true, webviewTag: false, preload: path.join(__dirname, 'preload.js') } };
 
-  //macOS uses titleBarStyle
-  if (os.platform() == "darwin")
-    browserOptions["titleBarStyle"] = 'hiddenInset';
-  else
-    browserOptions["frame"] = false;
+  //Override menu (only need dev tools shortcut)
+  let appMenu = new Menu();
+  let subMenu = new Menu();
+
+  subMenu.append(new MenuItem({
+    label: 'Toggle Developer Tools',
+    accelerator: os.platform() === 'darwin' ? 'Alt+Cmd+I' : 'Ctrl+Shift+I',
+    click: () => { win.webContents.openDevTools(); }
+  }));
+
+  appMenu.append(new MenuItem({
+    label: 'Electron',
+    type: 'submenu',
+    role: null,
+    accelerator: null,
+    submenu: subMenu
+  }));
+
+  //macOS specific overrides
+  if (os.platform() == "darwin") {
+    browserOptions["titleBarStyle"] = 'hiddenInset'; //macOS uses titleBarStyle
+
+    //Alter the dock icon on macOS and make it bounce to indicate activity until the browser window is created
+    app.dock.setIcon(path.join(__dirname, 'assets/icon/png/64x64.png'));
+    app.dock.bounce("critical");
+  }
+  else {
+    browserOptions["frame"] = false; //Hide menu bar entirely on every other platform
+  }
 
   win = new BrowserWindow(browserOptions);
+  win.setMenu(appMenu);
 
   //WindowStateKeeper will automatically persist window state changes to file
   mainWindowState.manage(win);
@@ -50,9 +76,24 @@ function createApp() {
     win.loadURL("http://localhost:4200/"); //Dev server
   }
   else { //Load release dist
+
+    //Check if it exists first
+    let indexPath = path.join(__dirname, `/../../dist/ootr-electron-gui/index.html`);
+
+    if (!fs.existsSync(indexPath)) {
+
+      console.error("No release found");
+
+      setTimeout(() => {
+        app.quit();
+      }, 0);
+
+      throw Error("No Electron GUI found! Did you compile it properly?");
+    }
+
     win.loadURL(
       url.format({
-        pathname: path.join(__dirname, `/../../dist/ootr-electron-gui/index.html`),
+        pathname: indexPath,
         protocol: "file:",
         slashes: true
       })
@@ -94,7 +135,7 @@ app.on("window-all-closed", () => {
   }
 });
 
-//Limit navigation to safe URLs and defer unsafe popups to system browser
+//Limit navigation to safe URLs and defer unsafe popups to system browser as well as handle page loading errors
 app.on('web-contents-created', (event, contents) => {
   contents.on('will-navigate', (event, navigationUrl) => {
     const parsedUrl = new URL(navigationUrl);
@@ -130,6 +171,20 @@ app.on('web-contents-created', (event, contents) => {
 
     shell.openExternal(navigationUrl);
   });
+
+  contents.on("did-fail-load", () => {
+    console.error("GUI load failed");
+
+    setTimeout(() => {
+      app.quit();
+    }, 0);
+
+    if (!isRelease)
+      throw Error("Couldn't connect to localhost:4200. Please start the Angular development server first before attempting to boot the Electron GUI!");
+    else
+      throw Error("The Electron GUI failed to load. Please delete the dist folder and re-compile!");
+  });
+
 });
 
 //CSP
