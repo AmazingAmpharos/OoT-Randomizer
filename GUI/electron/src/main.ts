@@ -7,8 +7,12 @@ import * as url from "url";
 import * as windowStateKeeper from "electron-window-state";
 import * as commander from 'commander';
 
-const settingsParser = require(path.join(__dirname, 'modules/settingsParser'));
-settingsParser.generate();
+const settingsParser = require(path.join(__dirname, '../src/modules/settingsParser'));
+
+const settingsFilePath = path.join(__dirname, "../src/utils/settings_list.json");
+const mappingFilePath = path.join(__dirname, "../src/utils/settings_mapping.json");
+
+settingsParser.generate(settingsFilePath, mappingFilePath);
 
 var win: BrowserWindow;
 var isRelease: boolean = false;
@@ -31,7 +35,7 @@ function createApp() {
   });
 
   //Browser Window common options
-  let browserOptions = { icon: path.join(__dirname, 'assets/icon/png/64x64.png'), title: 'OoT Randomizer GUI', opacity: 1.00, backgroundColor: '#000000', minWidth: 880, minHeight: 680, width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, fullscreen: false, fullscreenable: false, show: false, webPreferences: { nodeIntegration: false, contextIsolation: true, webviewTag: false, preload: path.join(__dirname, 'preload.js') } };
+  let browserOptions = { icon: path.join(__dirname, '../src/assets/icon/png/64x64.png'), title: 'OoT Randomizer GUI', opacity: 1.00, backgroundColor: '#000000', minWidth: 880, minHeight: 680, width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, fullscreen: false, fullscreenable: false, show: false, webPreferences: { nodeIntegration: false, contextIsolation: true, webviewTag: false, preload: path.join(__dirname, 'preload.js') } };
 
   //Override menu (only need dev tools shortcut)
   let appMenu = new Menu();
@@ -56,7 +60,7 @@ function createApp() {
     browserOptions["titleBarStyle"] = 'hiddenInset'; //macOS uses titleBarStyle
 
     //Alter the dock icon on macOS and make it bounce to indicate activity until the browser window is created
-    app.dock.setIcon(path.join(__dirname, 'assets/icon/png/64x64.png'));
+    app.dock.setIcon(path.join(__dirname, '../src/assets/icon/png/64x64.png'));
     app.dock.bounce("critical");
   }
   else {
@@ -78,7 +82,7 @@ function createApp() {
   else { //Load release dist
 
     //Check if it exists first
-    let indexPath = path.join(__dirname, `/../../dist/ootr-electron-gui/index.html`);
+    let indexPath = path.join(__dirname, '../../dist/ootr-electron-gui/index.html');
 
     if (!fs.existsSync(indexPath)) {
 
@@ -213,7 +217,7 @@ ipcMain.on('getGeneratorGUISettings', (event, arg) => {
   };
 
   //Load built in presets
-  let builtInPresetsPath = path.join(__dirname, 'utils/presets.json');
+  let builtInPresetsPath = path.join(__dirname, '../src/utils/presets.json');
 
   if (fs.existsSync(builtInPresetsPath)) {
     let builtInPresets = JSON.parse(fs.readFileSync(builtInPresetsPath, 'utf8'));

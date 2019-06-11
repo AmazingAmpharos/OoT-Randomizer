@@ -3,10 +3,10 @@ const path = require('path');
 
 var settingsData = {};
 
-function parseSettings() {
+function parseSettings(settingsFilePath, mappingFilePath) {
 
-    var responseSettings = JSON.parse(fs.readFileSync(path.join(__dirname, "../utils/settings_list.json")));
-    var responseMapping = JSON.parse(fs.readFileSync(path.join(__dirname, "../utils/settings_mapping.json")));
+    var responseSettings = JSON.parse(fs.readFileSync(settingsFilePath));
+    var responseMapping = JSON.parse(fs.readFileSync(mappingFilePath));
 
     var resultObject = {};
     var resultArray = [];
@@ -96,8 +96,8 @@ function parseSettings() {
 }
 
 module.exports = {
-    generate: function () {
-        parseSettings();
+    generate: function (settingsFilePath, mappingFilePath) {
+        parseSettings(settingsFilePath, mappingFilePath);
     },
     getSettingsData: function () {
         return { settingsArray: settingsData.settingsArray, settingsObj: settingsData.settingsObject, cosmeticsArray: settingsData.cosmeticsArray, cosmeticsObject: settingsData.cosmeticsObject };
