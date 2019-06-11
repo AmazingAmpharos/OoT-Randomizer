@@ -25,7 +25,7 @@ import {
 } from '@angular/material';
 
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
-import { ZsrListboxModule } from '../../components/zsrListbox/zsrListbox';
+import { GUIListboxModule } from '../../components/guiListbox/guiListbox';
 import { ColorPickerModule } from 'ngx-color-picker';
 
 //Custom Directives
@@ -60,11 +60,11 @@ import { GUITooltip } from './guiTooltip/guiTooltip.component';
     GeneratorComponent,
     ResponsiveColsDirective,
     GUITooltip,
-    ZsrListboxModule
+    GUIListboxModule
   ],
   entryComponents: [
     GUITooltip,
-    ZsrListboxModule
+    GUIListboxModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

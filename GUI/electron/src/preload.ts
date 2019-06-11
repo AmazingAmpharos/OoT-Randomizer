@@ -30,10 +30,23 @@ electron.webFrame.executeJavaScript('window.apiPlatform = "' + platform + '";');
 electron.remote.getCurrentWindow().on('maximize', () => {
   post.send(window, 'window-maximized', true);
 });
+electron.remote.getCurrentWindow().on('enter-full-screen', () => { //macOS exclusive
+  post.send(window, 'window-maximized', true);
+});
+electron.remote.getCurrentWindow().on('enter-html-full-screen', () => {
+  post.send(window, 'window-maximized', true);
+});
 
 electron.remote.getCurrentWindow().on('unmaximize', () => {
   post.send(window, 'window-maximized', false);
 });
+electron.remote.getCurrentWindow().on('leave-full-screen', () => {
+  post.send(window, 'window-maximized', false);
+});
+electron.remote.getCurrentWindow().on('leave-html-full-screen', () => {
+  post.send(window, 'window-maximized', false);
+});
+
 
 //FUNCTIONS
 function dumpSettingsToFile(settingsObj) {

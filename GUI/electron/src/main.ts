@@ -35,7 +35,7 @@ function createApp() {
   });
 
   //Browser Window common options
-  let browserOptions = { icon: path.join(__dirname, '../src/assets/icon/png/64x64.png'), title: 'OoT Randomizer GUI', opacity: 1.00, backgroundColor: '#000000', minWidth: 880, minHeight: 680, width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, fullscreen: false, fullscreenable: false, show: false, webPreferences: { nodeIntegration: false, contextIsolation: true, webviewTag: false, preload: path.join(__dirname, 'preload.js') } };
+  let browserOptions = { icon: path.join(__dirname, '../src/assets/icon/png/64x64.png'), title: 'OoT Randomizer GUI', opacity: 1.00, backgroundColor: '#000000', minWidth: 880, minHeight: 680, width: mainWindowState.width, height: mainWindowState.height, x: mainWindowState.x, y: mainWindowState.y, show: false, webPreferences: { nodeIntegration: false, contextIsolation: true, webviewTag: false, preload: path.join(__dirname, 'preload.js') } };
 
   //Override menu (only need dev tools shortcut)
   let appMenu = new Menu();
@@ -57,14 +57,16 @@ function createApp() {
 
   //macOS specific overrides
   if (os.platform() == "darwin") {
-    browserOptions["titleBarStyle"] = 'hiddenInset'; //macOS uses titleBarStyle
+    browserOptions["titleBarStyle"] = 'hiddenInset'; //macOS uses titleBarStyle to maintain a native feel with the finder menu and shortcuts users expect
 
     //Alter the dock icon on macOS and make it bounce to indicate activity until the browser window is created
     app.dock.setIcon(path.join(__dirname, '../src/assets/icon/png/64x64.png'));
     app.dock.bounce("critical");
   }
   else {
-    browserOptions["frame"] = false; //Hide menu bar entirely on every other platform
+    browserOptions["frame"] = false; //Hide menu and frame entirely on every other platform since we use our custom title bar
+    browserOptions["fullscreen"] = false; //Fullscreen mode is confusing with our custom title bar on Windows/Linux
+    browserOptions["fullscreenable"] = false;
   }
 
   win = new BrowserWindow(browserOptions);
@@ -107,7 +109,7 @@ function createApp() {
   win.once('ready-to-show', () => {
     win.show();
 
-    if (!isRelease) //Open dev tools automatically if dev mode
+    if (!isRelease && !win.isMaximized()) //Open dev tools automatically if dev mode and not maximized
       win.webContents.openDevTools();
   });
 
