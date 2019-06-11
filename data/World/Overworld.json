@@ -1097,7 +1097,11 @@
             "Goron City Child Fire": "is_child and can_use(Dins_Fire)",
             "Goron City Woods Warp Open": "
                 can_blast_or_smash or can_use(Dins_Fire) or can_use(Bow) or 
-                Progressive_Strength_Upgrade or 'Goron City Child Fire'"
+                Progressive_Strength_Upgrade or 'Goron City Child Fire'",
+            "Stop Link the Goron": "
+                is_adult and 
+                (Progressive_Strength_Upgrade or has_explosives or has_bow or
+                    (logic_link_goron_dins and can_use(Dins_Fire)))"
         },
         "locations": {
             "Goron City Leftmost Maze Chest": "
@@ -1112,10 +1116,7 @@
             "Rolling Goron as Child": "
                 is_child and 
                 (has_explosives or (Progressive_Strength_Upgrade and logic_child_rolling_with_strength))",
-            "Link the Goron": "
-                is_adult and 
-                    (Progressive_Strength_Upgrade or has_explosives or has_bow or
-                    (logic_link_goron_dins and can_use(Dins_Fire)))",
+            "Link the Goron": "'Stop Link the Goron'",
             "GS Goron City Boulder Maze": "is_child and has_explosives",
             "GS Goron City Center Platform": "is_adult",
             "Goron City Maze Gossip Stone": "
@@ -1132,14 +1133,11 @@
             "Death Mountain": "True",
             "Goron City Woods Warp": "'Goron City Woods Warp Open'",
             "Goron Shop": "
-                has_explosives or Progressive_Strength_Upgrade or can_use(Bow) or 
-                (is_adult and logic_link_goron_dins and can_use(Dins_Fire)) or 
-                (is_child and 'Goron City Child Fire')",
+                (is_adult and 'Stop Link the Goron') or 
+                (is_child and (has_explosives or Progressive_Strength_Upgrade or 'Goron City Child Fire'))",
             "Darunias Chamber": "
-                (is_child and can_play(Zeldas_Lullaby)) or 
-                (is_adult and
-                    (Progressive_Strength_Upgrade or has_explosives or has_bow or
-                    (logic_link_goron_dins and can_use(Dins_Fire))))",
+                (is_adult and 'Stop Link the Goron') or
+                (is_child and can_play(Zeldas_Lullaby))",
             "Goron City Grotto": "
                 is_adult and 
                 ((can_play(Song_of_Time) and 
