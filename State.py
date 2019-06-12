@@ -518,10 +518,8 @@ class State(object):
                             or self.world.logic_biggoron_bolero
                             # Getting to Biggoron without ER or the trick above involves either
                             # Darunia's Chamber access or clearing the boulders to get up DMT
-                            or self.has('Progressive Strength Upgrade')
                             or self.can_blast_or_smash()
-                            or self.has_bow()
-                            or (self.world.logic_link_goron_dins and self.can_use('Dins Fire')))))
+                            or self.has('Stop Link the Goron'))))
 
 
     def has_skull_mask(self):
