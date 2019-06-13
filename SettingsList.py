@@ -555,7 +555,14 @@ logic_tricks = {
         'tooltip' : '''\
                     A precise jump can be used to reach this alcove.
                     '''},
-
+    'Pass Through Visible One-Way Collisions': {
+        'name'    : 'logic_visible_collisions',
+        'tooltip' : '''\
+                    Allows climbing through the platform to reach 
+                    Impa's House Back as adult with no items and 
+                    going through the Kakariko Village Gate as child
+                    when coming from the Mountain Trail side.
+                    '''},
 
 
 }
