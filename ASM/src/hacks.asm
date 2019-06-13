@@ -1307,3 +1307,8 @@ skip_GS_BGS_text:
 .orga 0xE6BF4C
     li      t5, 0
     nop
+
+; Remove the internal cooldown between storm effects (to open grottos, grow bean plants...)
+; Replaces: bnez     at, 0x80AECC6C
+.orga 0xE6BEFC
+    nop
