@@ -27,6 +27,7 @@ import {
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
 import { GUIListboxModule } from '../../components/guiListbox/guiListbox';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { ngfModule } from "angular-file";
 
 //Custom Directives
 import { ResponsiveColsDirective } from '../../directives/responsiveCols.directive';
@@ -54,7 +55,8 @@ import { GUITooltip } from './guiTooltip/guiTooltip.component';
     MatSlideToggleModule,
     MatTableModule,
     FlexLayoutModule,
-    ColorPickerModule
+    ColorPickerModule,
+    ngfModule
   ],
   declarations: [
     GeneratorComponent,

@@ -35,6 +35,7 @@
     "@nebular/theme": "3.5.0",
     "@ng-bootstrap/ng-bootstrap": "^4.0.0",
     "angular-dual-listbox": "^4.7.0",
+    "angular-file": "^1.2.2",
     "bootstrap": "4.0.0",
     "commander": "^2.20.0",
     "core-js": "^2.5.4",

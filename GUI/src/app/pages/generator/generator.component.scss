@@ -2,14 +2,24 @@
     height: 100%;
 }
 
-:host nb-card {
-    height: 97%;
-    margin-top: 1rem;
+:host nb-card { //Electron
+    height: 98%;
     overflow: inherit;
+}
+
+.webLayout { //Web
+  :host nb-card {
+    height: 100%;
+  }
 }
 
 :host nb-card {
     line-height: 1.25;
+}
+
+:host nb-card {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 /deep/ .tabset {
@@ -82,11 +92,6 @@
 
 :host .radioGroupLabel {
     margin-bottom: 0.8rem;
-}
-
-:host nb-card {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
 }
 
 .tileContainer {

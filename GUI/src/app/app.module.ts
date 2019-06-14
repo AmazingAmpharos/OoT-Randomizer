@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, ComponentFactoryResolver, ApplicationRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NbDialogModule } from '@nebular/theme/components/dialog';
 
 import { HttpClientModule } from '@angular/common/http';
@@ -42,6 +42,7 @@ import { DialogWindow } from './pages/generator/dialogWindow/dialogWindow.compon
 import { ConfirmationWindow } from './pages/generator/confirmationWindow/confirmationWindow.component';
 import { TextInputWindow } from './pages/generator/textInputWindow/textInputWindow.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +53,7 @@ import { TextInputWindow } from './pages/generator/textInputWindow/textInputWind
     TextInputWindow
   ],
   entryComponents: [
+    AppComponent,
     ProgressWindow,
     DialogWindow,
     ConfirmationWindow,
@@ -93,7 +95,34 @@ import { TextInputWindow } from './pages/generator/textInputWindow/textInputWind
   providers: [
     { provide: APP_BASE_HREF, useValue: '/' },
     GUIGlobal
-  ],
-  bootstrap: [AppComponent]
+  ]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(private resolver: ComponentFactoryResolver) { }
+
+  ngDoBootstrap(appRef: ApplicationRef) { //Custom bootstrapper allows to intialize multiple instances of the same app, e.g. generator and patcher
+    const factory = this.resolver.resolveComponentFactory(AppComponent);
+    const selectorName = factory.selector;
+
+    let elements = document.getElementsByTagName(selectorName);
+
+    //Return if no elements found
+    if (elements.length == 0) {
+      return;
+    }
+
+    //More than one root level component found, bootstrap unique instances
+    if (elements.length > 1) {
+
+      for (let i = 0; i < elements.length; i++) {
+        console.log("Bootstrap:", elements[i].id);
+        appRef.bootstrap(factory, elements[i]);
+      }
+    }
+    else { //Only a single root level component found, bootstrap as usual
+      console.log("Bootstrap single GUI app");
+      appRef.bootstrap(factory);
+    }
+  }
+}

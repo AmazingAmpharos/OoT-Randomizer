@@ -8,6 +8,7 @@ import { NbTabsetComponent } from '@nebular/theme/components/tabset/tabset.compo
 import { NbSelectComponent } from '@nebular/theme/components/select/select.component';
 import { NbDialogService } from '@nebular/theme';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { ngfModule, ngf } from "angular-file";
 
 import { GUITooltip } from './guiTooltip/guiTooltip.component';
 import { ProgressWindow } from './progressWindow/progressWindow.component';
@@ -67,46 +68,45 @@ export class GeneratorComponent implements OnInit {
   generateSeedButtonEnabled: boolean = true;
 
   constructor(private overlayContainer: OverlayContainer, private cd: ChangeDetectorRef, public global: GUIGlobal, private dialogService: NbDialogService) {
-
     overlayContainer.getContainerElement().classList.add('deeppurple-amber-dark');
   }
 
   ngOnInit() {
-    //this.analytics.trackPageViews();
 
     if ((<any>window).apiTestMode) {
-      console.log("test mode is active");
+      console.log("Test mode is active!");
     }
 
-    if (this.global.getGlobalVar('apiAvailable')) {
+    //Apply config on startup if ready or wait until ready event is fired
+    if (this.global.getGlobalVar("appReady")) {
+      this.recheckAllSettings();
+      this.cd.markForCheck();
+      this.cd.detectChanges();
 
-      //Apply config on startup
-      if (this.global.getGlobalVar("appReady")) {
-        this.recheckAllSettings();
-        this.cd.markForCheck();
-        this.cd.detectChanges();
-
+      if (this.global.getGlobalVar('electronAvailable')) //Version check is Electron only
         this.runVersionCheck();
-        this.runEventListeners();
-      }
-      else {
 
-        this.global.globalEmitter.subscribe(eventObj => {
-
-          //Ensure the GUI is rendered after the global config is loaded
-          if (eventObj.name == "init_finished") {
-            console.log("init finished event");
-
-            this.recheckAllSettings();
-            this.cd.markForCheck();
-            this.cd.detectChanges();
-
-            this.runVersionCheck();
-            this.runEventListeners();
-          }
-        });
-      }
+      this.runEventListeners();
     }
+    else {
+
+      this.global.globalEmitter.subscribe(eventObj => {
+
+        //Ensure the GUI is rendered after the global config is loaded
+        if (eventObj.name == "init_finished") {
+          console.log("init finished event");
+
+          this.recheckAllSettings();
+          this.cd.markForCheck();
+          this.cd.detectChanges();
+
+          if (this.global.getGlobalVar('electronAvailable')) //Version check is Electron only
+            this.runVersionCheck();
+
+          this.runEventListeners();
+        }
+      });
+    }  
   }
 
   runEventListeners() {
@@ -130,34 +130,46 @@ export class GeneratorComponent implements OnInit {
     //console.log(this.global.generator_settingsMap);
     //console.log(this.global.generator_customColorMap);
 
-    let dialogRef = this.dialogService.open(ProgressWindow, {
-      autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dashboardRef: this }
-    });
+    if (this.global.getGlobalVar('electronAvailable')) { //Electron
 
-    this.global.generateSeed(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
-      console.log('Gen Success');
+      let dialogRef = this.dialogService.open(ProgressWindow, {
+        autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dashboardRef: this }
+      });
 
-      this.generateSeedButtonEnabled = true;
+      this.global.generateSeed(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
+        console.log('Gen Success');
 
-      if (dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance) {
-        dialogRef.componentRef.instance.progressStatus = 1;
-        dialogRef.componentRef.instance.progressPercentage = 100;
-        dialogRef.componentRef.instance.progressMessage = "Done. Enjoy.";
-        dialogRef.componentRef.instance.refreshLayout();
-      }
-      //dialogRef.close();
-    }).catch((err) => {
-      console.log('Gen Error');
+        this.generateSeedButtonEnabled = true;
 
-      this.generateSeedButtonEnabled = true;
+        if (dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance) {
+          dialogRef.componentRef.instance.progressStatus = 1;
+          dialogRef.componentRef.instance.progressPercentage = 100;
+          dialogRef.componentRef.instance.progressMessage = "Done. Enjoy.";
+          dialogRef.componentRef.instance.refreshLayout();
+        }
+        //dialogRef.close();
+      }).catch((err) => {
+        console.log('Gen Error');
 
-      if (dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance) {
-        dialogRef.componentRef.instance.progressStatus = -1;
-        dialogRef.componentRef.instance.progressPercentage = 100;
-        dialogRef.componentRef.instance.progressMessage = err;
-        dialogRef.componentRef.instance.refreshLayout();
-      }
-    });
+        this.generateSeedButtonEnabled = true;
+
+        if (dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance) {
+          dialogRef.componentRef.instance.progressStatus = -1;
+          dialogRef.componentRef.instance.progressPercentage = 100;
+          dialogRef.componentRef.instance.progressMessage = err;
+          dialogRef.componentRef.instance.refreshLayout();
+        }
+      });
+    }
+    else { //Web
+      this.global.generateSeed(null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
+        console.log('Success');
+        this.generateSeedButtonEnabled = true;
+      }).catch((err) => {
+        console.log('Gen Error');
+        this.generateSeedButtonEnabled = true;
+      });
+    }
   }
 
   async cancelGeneration() {
@@ -227,7 +239,7 @@ export class GeneratorComponent implements OnInit {
     });
   }
 
-  runVersionCheck() {
+  runVersionCheck() { //Electron only
 
     this.global.versionCheck().then(res => {
 
@@ -300,7 +312,7 @@ export class GeneratorComponent implements OnInit {
               });
             }
             else {
-              this.global.generator_presets[trimmedName] = { settings: this.global.createSettingsFileObject(false, true) };
+              this.global.generator_presets[trimmedName] = { settings: this.global.createSettingsFileObject(false, true, !this.global.getGlobalVar('electronAvailable')) };
               this.global.generator_settingsMap["presets"] = trimmedName;
               this.global.saveCurrentPresetsToFile();
 
@@ -330,7 +342,7 @@ export class GeneratorComponent implements OnInit {
         }).onClose.subscribe(confirmed => {
 
           if (confirmed) {
-            this.global.generator_presets[this.global.generator_settingsMap["presets"]] = { settings: this.global.createSettingsFileObject(false, true) };
+            this.global.generator_presets[this.global.generator_settingsMap["presets"]] = { settings: this.global.createSettingsFileObject(false, true, !this.global.getGlobalVar('electronAvailable')) };
             this.global.saveCurrentPresetsToFile();
 
             console.log("preset overwritten");
@@ -376,7 +388,7 @@ export class GeneratorComponent implements OnInit {
     }
   }
 
-  openOutputDir() {
+  openOutputDir() { //Electron only
 
     var path = "";
 
@@ -403,7 +415,7 @@ export class GeneratorComponent implements OnInit {
     });
   }
 
-  browseForFile(setting: any) {
+  browseForFile(setting: any) { //Electron only
     this.global.browseForFile(setting.file_types).then(res => {
       this.global.generator_settingsMap[setting.name] = res;
       this.cd.markForCheck();
@@ -413,7 +425,7 @@ export class GeneratorComponent implements OnInit {
     });
   }
 
-  browseForDirectory(setting: any) {
+  browseForDirectory(setting: any) { //Electron only
     this.global.browseForDirectory().then(res => {
       this.global.generator_settingsMap[setting.name] = res;
       this.cd.markForCheck();
@@ -423,7 +435,7 @@ export class GeneratorComponent implements OnInit {
     });
   }
 
-  browseForPatchFile() {
+  browseForPatchFile() { //Electron only
     this.global.browseForFile([{ name: 'Patch File Archive', 'extensions': ['zpfz', 'zpf'] }, { 'name': 'All Files', 'extensions': ['*'] }]).then(res => {
       this.global.generator_settingsMap['patch_file'] = res;
       this.cd.markForCheck();
@@ -750,22 +762,39 @@ export class GeneratorComponent implements OnInit {
 
   afterSettingChange(saveOnly: boolean = false) {
 
-    this.settingsLocked = true;
+    if (this.global.getGlobalVar('electronAvailable')) { //Electron
 
-    setTimeout(() => {
-      console.log(this.global.generator_settingsMap);
-      console.log(this.global.generator_customColorMap);
+      this.settingsLocked = true;
 
-      if (saveOnly) {
+      setTimeout(() => {
+        console.log(this.global.generator_settingsMap);
+        console.log(this.global.generator_customColorMap);
+
+        if (saveOnly) {
+          this.global.saveCurrentSettingsToFile();
+
+          this.settingsLocked = false;
+          this.cd.markForCheck();
+          this.cd.detectChanges();
+        }
+        else {
+          this.getSettingsString();
+        }
+      }, 0);
+    }
+    else { //Web
+
+      setTimeout(() => {
+
+        console.log(this.global.generator_settingsMap);
+        console.log(this.global.generator_customColorMap);
+
         this.global.saveCurrentSettingsToFile();
 
         this.settingsLocked = false;
         this.cd.markForCheck();
         this.cd.detectChanges();
-      }
-      else {
-        this.getSettingsString();
-      }
-    }, 0);
+      }, 0);
+    }
   }
 }

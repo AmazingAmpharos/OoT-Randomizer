@@ -15,7 +15,7 @@ export class HeaderComponent {
 
   ngOnInit() {
 
-    if (this.global.getGlobalVar('apiAvailable')) {
+    if (this.global.getGlobalVar('electronAvailable')) {
 
       this.global.isWindowMaximized().then(res => {
         this.isMaximized = res;

@@ -10,8 +10,8 @@ import { GUIGlobal } from '../../../providers/GUIGlobal';
   selector: 'gui-layout',
   styleUrls: ['./gui.layout.scss'],
   template: `
-    <nb-layout>
-      <nb-layout-header fixed>
+    <nb-layout [ngClass]="{webLayout: !global.getGlobalVar('electronAvailable')}">
+      <nb-layout-header fixed *ngIf="global.getGlobalVar('electronAvailable')">
         <div *ngIf="platform != 'darwin' || !isMaximized" class="dragRegion"></div>
         <ngx-header></ngx-header>
       </nb-layout-header>
@@ -20,7 +20,7 @@ import { GUIGlobal } from '../../../providers/GUIGlobal';
         <ng-content select="router-outlet"></ng-content>
       </nb-layout-column>
 
-      <nb-layout-footer fixed>
+      <nb-layout-footer fixed *ngIf="global.getGlobalVar('electronAvailable')">
         <ngx-footer></ngx-footer>
       </nb-layout-footer>
     </nb-layout>
@@ -45,7 +45,7 @@ export class GUILayoutComponent implements OnDestroy {
 
   ngOnInit() {
 
-    if (this.global.getGlobalVar('apiAvailable')) {
+    if (this.global.getGlobalVar('electronAvailable')) {
 
       this.global.isWindowMaximized().then(res => {
         this.isMaximized = res;

@@ -25,7 +25,7 @@ export class FooterComponent {
 
   ngOnInit() {
 
-    if (this.global.getGlobalVar('apiAvailable')) {
+    if (this.global.getGlobalVar('electronAvailable')) {
 
       this.global.globalEmitter.subscribe(eventObj => {
 

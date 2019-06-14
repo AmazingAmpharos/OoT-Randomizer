@@ -9,6 +9,7 @@ const routes: Routes = [
 
 const config: ExtraOptions = {
   useHash: true,
+  initialNavigation: false //Route manually at the start to avoid URL changes in the browser
 };
 
 @NgModule({

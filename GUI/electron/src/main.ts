@@ -200,7 +200,7 @@ function manageCSP() {
     callback({
       responseHeaders: {
         ...details.responseHeaders,
-        'Content-Security-Policy': ['default-src \'self\' *.gstatic.com; img-src \'self\' data: *; style-src \'self\' \'unsafe-inline\' *.googleapis.com; script-src \'self\' \'unsafe-eval\' *.googleapis.com; connect-src \'self\' *.githubusercontent.com ws: localhost:4200*']
+        'Content-Security-Policy': ['default-src \'self\' *.gstatic.com; img-src \'self\' data: *; style-src \'self\' \'unsafe-inline\' *.googleapis.com; script-src \'self\' \'unsafe-eval\' \'unsafe-inline\' *.googleapis.com; connect-src \'self\' *.githubusercontent.com ws: localhost:4200*']
       }
     })
   });

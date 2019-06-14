@@ -1,5 +1,5 @@
 <div class="pageContainer">
-    <nb-card [nbSpinner]="generatorBusy" nbSpinnerStatus="danger" nbSpinnerSize="large" nbSpinnerMessage="Please wait...">
+    <nb-card [ngClass]="{webLayout: !global.getGlobalVar('electronAvailable')}" [nbSpinner]="generatorBusy" nbSpinnerStatus="danger" nbSpinnerSize="large" nbSpinnerMessage="Please wait...">
         <nb-card-body>
             <nb-tabset *ngIf="global.getGlobalVar('generatorSettingsArray') && global.getGlobalVar('generatorSettingsArray').length > 0" #refTabSet class="settingsTabset" fullWidth>
                 <nb-tab *ngFor="let tab of global.getGlobalVar('generatorSettingsArray'); index as tabIndex" [disabled]="!global.generator_tabsVisibilityMap[tab.name]" [tabTitle]="tab.text" [active]="tabIndex==0" [nbSpinner]="settingsLocked" nbSpinnerStatus="primary" nbSpinnerSize="medium" nbSpinnerMessage="">
@@ -80,41 +80,52 @@
                                             </ng-container>
                                             <!--Exclusive to Main Tab-->
                                             <ng-container *ngSwitchCase="'Fileinput'">
-                                                <p class="ioInputLabel">{{setting.text}}</p>
+                                              <p class="ioInputLabel">{{setting.text}}</p>
+                                              <!--Electron-->
+                                              <ng-container *ngIf="global.getGlobalVar('electronAvailable')">
                                                 <input *ngIf="setting.tooltip && setting.tooltip.length > 0" class="ioInput" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" maxlength="260" nbInput fieldSize="small" [(ngModel)]="global.generator_settingsMap[setting.name]"
-                                                    (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="click" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
+                                                       (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="click" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
                                                 <input *ngIf="!setting.tooltip || setting.tooltip.length == 0" class="ioInput" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" maxlength="260" nbInput fieldSize="small" [(ngModel)]="global.generator_settingsMap[setting.name]"
-                                                    (ngModelChange)="afterSettingChange()">
+                                                       (ngModelChange)="afterSettingChange()">
                                                 <button class="ioInputBrowseButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="browseForFile(setting)">Browse</button>
+                                              </ng-container>
+                                              <!--Web-->
+                                              <ng-container *ngIf="!global.getGlobalVar('electronAvailable')">
+                                                <input *ngIf="setting.tooltip && setting.tooltip.length > 0" class="ioInput" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" readonly type="text" maxlength="260" nbInput fieldSize="small" [(ngModel)]="global.generator_settingsMap[setting.name].name"
+                                                       (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="click" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise" ngfDrop [(file)]="global.generator_settingsMap[setting.name]">
+                                                <input *ngIf="!setting.tooltip || setting.tooltip.length == 0" class="ioInput" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" readonly type="text" maxlength="260" nbInput fieldSize="small" [(ngModel)]="global.generator_settingsMap[setting.name].name"
+                                                       (ngModelChange)="afterSettingChange()" ngfDrop [(file)]="global.generator_settingsMap[setting.name]">
+                                                <button class="ioInputBrowseButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" ngfSelect [(file)]="global.generator_settingsMap[setting.name]">Browse</button>
+                                              </ng-container>
                                             </ng-container>
-                                            <ng-container *ngSwitchCase="'Directoryinput'">
+                                              <ng-container *ngSwitchCase="'Directoryinput'">
                                                 <p class="ioInputLabel">{{setting.text}}</p>
                                                 <input *ngIf="setting.tooltip && setting.tooltip.length > 0" class="ioInput" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" maxlength="260" nbInput fieldSize="small" [(ngModel)]="global.generator_settingsMap[setting.name]"
-                                                    (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="click" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
+                                                       (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="click" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
                                                 <input *ngIf="!setting.tooltip || setting.tooltip.length == 0" class="ioInput" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" maxlength="260" nbInput fieldSize="small" [(ngModel)]="global.generator_settingsMap[setting.name]"
-                                                    (ngModelChange)="afterSettingChange()">
+                                                       (ngModelChange)="afterSettingChange()">
                                                 <button class="ioInputBrowseButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="browseForDirectory(setting)">Browse</button>
-                                            </ng-container>
-                                            <ng-container *ngSwitchCase="'Presetinput'">
+                                              </ng-container>
+                                              <ng-container *ngSwitchCase="'Presetinput'">
                                                 <nb-select #refPresetSelect [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="click" nbPopoverPlacement="right"
-                                                    nbPopoverAdjustment="counterclockwise" size="xsmall">
-                                                    <nb-option *ngFor="let preset of global.generator_presets | keyvalue:presetKeyOrder; index as presetIndex" [value]="preset.key">{{preset.key}}</nb-option>
+                                                           nbPopoverAdjustment="counterclockwise" size="xsmall">
+                                                  <nb-option *ngFor="let preset of global.generator_presets | keyvalue:presetKeyOrder; index as presetIndex" [value]="preset.key">{{preset.key}}</nb-option>
                                                 </nb-select>
                                                 <button class="presetButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="loadPreset()">Load</button>
                                                 <button class="presetButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="savePreset(refPresetSelect)">Save</button>
                                                 <button class="presetButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="deletePreset()">Remove</button>
-                                            </ng-container>
-                                            <ng-container *ngSwitchCase="'Outputdirbutton'">
+                                              </ng-container>
+                                              <ng-container *ngSwitchCase="'Outputdirbutton'">
                                                 <button class="outputDirButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="openOutputDir()">{{setting.text}}</button>
-                                            </ng-container>
-                                            <!--Exclusive to Detailed Tab-->
-                                            <ng-container *ngSwitchCase="'SearchBox'">
+                                              </ng-container>
+                                              <!--Exclusive to Detailed Tab-->
+                                              <ng-container *ngSwitchCase="'SearchBox'">
                                                 <gui-listbox *ngIf="setting.tooltip && setting.tooltip.length > 0" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [source]="setting.options" [(destination)]="global.generator_settingsMap[setting.name]" (destinationChange)="afterSettingChange()"
-                                                    height="70%" key="name" display="text" filter="true" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="click" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise"></gui-listbox>
+                                                             height="70%" key="name" display="text" filter="true" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="click" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise"></gui-listbox>
                                                 <gui-listbox *ngIf="!setting.tooltip || setting.tooltip.length == 0" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [source]="setting.options" [(destination)]="global.generator_settingsMap[setting.name]" (destinationChange)="afterSettingChange()"
-                                                    height="70%" key="name" display="text" filter="true"></gui-listbox>
+                                                             height="70%" key="name" display="text" filter="true"></gui-listbox>
+                                              </ng-container>
                                             </ng-container>
-                                        </ng-container>
 
                                         <div *ngIf="section.settings.length > itemIndex + 1 && !setting.no_line_break" class="settingPadding"></div>
                                         <!--Padding-->

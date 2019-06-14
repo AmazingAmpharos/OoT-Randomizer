@@ -22,7 +22,7 @@ console.log("Python Executable Path:", pythonPath);
 console.log("Python Source Path:", pythonGeneratorPath);
 
 //Enable API in client window
-electron.webFrame.executeJavaScript('window.apiAvailable = true;');
+electron.webFrame.executeJavaScript('window.electronAvailable = true;');
 electron.webFrame.executeJavaScript('window.apiTestMode = ' + testMode + ';');
 electron.webFrame.executeJavaScript('window.apiPlatform = "' + platform + '";');
 
@@ -416,7 +416,7 @@ else {
 
 //Test if python executable exists and can be called
 generator.testPythonPath(pythonPath).then(() => {
-  console.log("Python executable found");
+  console.log("Python executable confirmed working");
 }).catch(err => {
   console.error(err);
   displayPythonErrorAndExit();
