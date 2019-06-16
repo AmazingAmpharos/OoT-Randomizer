@@ -356,7 +356,8 @@
         "locations": {
             "Colossus Freestanding PoH": "
                 (is_adult and here(can_plant_bean)) or
-                at('Spirit Temple Outdoor Hands', can_mega)",
+                at('Mirror Shield Hand', can_mega) or
+                at('Silver Gauntlets Hand', can_mega)",
             "Sheik at Colossus": "True",
             "GS Desert Colossus Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Desert Colossus Tree": "can_use(Hookshot) and at_night",
