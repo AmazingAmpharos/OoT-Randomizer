@@ -804,7 +804,13 @@
         "time_passes": true,
         "locations": {
             "Biggoron": "
-                is_adult and can_finish_adult_trades and guarantee_hint",
+                is_adult and guarantee_hint and
+                (Claim_Check or (
+                    at('Death Mountain Crater Upper', is_adult) and
+                    at('Zoras Domain', is_adult) and (
+                        Eyedrops or Eyeball_Frog or Prescription or Broken_Sword or
+                        at('Gerudo Valley Far Side', is_adult and (
+                            Poachers_Saw or Odd_Mushroom or Cojiro or Pocket_Cucco or Pocket_Egg)))))",
             "Death Mountain Trail Gossip Stone": "True"
         },
         "exits": {

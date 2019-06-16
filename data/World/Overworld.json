@@ -1080,8 +1080,17 @@
         "hint": "Death Mountain Trail",
         "time_passes": true,
         "locations": {
-            "Biggoron": "
-                is_adult and can_finish_adult_trades and guarantee_hint",
+            "Biggoron": "is_adult and guarantee_hint and (
+                Claim_Check or (
+                    guarantee_trade_path and 'Zora Thawed' and
+                    at('Lake Hylia Lab', is_adult) and (
+                        Eyedrops or Eyeball_Frog or Prescription or Broken_Sword or (
+                            at('Gerudo Valley Far Side', is_adult) and (
+                                Poachers_Saw or (
+                                    at('Lost Woods', is_adult) and
+                                    at('Odd Medicine Building', is_adult) and (
+                                        Odd_Mushroom or Cojiro or (
+                                            at('Carpenter Boss House', is_adult and (Pocket_Egg or Pocket_Cucco))))))))))",
             "Death Mountain Trail Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Bug Rock": "is_child and has_bottle"
@@ -1348,11 +1357,14 @@
         "region_name": "Zoras Domain",
         "scene": "Zoras Domain",
         "hint": "Zora's Domain",
+        "events": {
+            "Zora Thawed": "is_adult and has_blue_fire"
+        },
         "locations": {
             "Diving Minigame": "is_child",
             "Zoras Domain Torch Run": "can_use(Sticks)",
             "Deliver Ruto's Letter": "is_child and Bottle_with_Letter and not open_fountain",
-            "King Zora Thawed": "is_adult and has_blue_fire",
+            "King Zora Thawed": "'Zora Thawed'",
             "GS Zora's Domain Frozen Waterfall": "
                 is_adult and at_night and (Progressive_Hookshot or has_bow or Magic_Meter)",
             "Zoras Domain Gossip Stone": "True",
