@@ -361,30 +361,6 @@ class World(object):
         return [location for location in self.get_locations() if location.item is not None]
 
 
-    def get_reachable_locations(self, state=None):
-        if state is None:
-            state = self.state
-        return [location for location in self.get_locations() if state.can_reach(location)]
-
-
-    def get_placeable_locations(self, state=None):
-        if state is None:
-            state = self.state
-        return [location for location in self.get_locations() if location.item is None and state.can_reach(location)]
-
-
-    def unlocks_new_location(self, item):
-        temp_state = self.state.copy()
-        temp_state.clear_cached_unreachable()
-        temp_state.collect(item)
-
-        for location in self.get_unfilled_locations():
-            if temp_state.can_reach(location) and not self.state.can_reach(location):
-                return True
-
-        return False
-
-
     def get_entrances(self):
         return [entrance for region in self.regions for entrance in region.entrances]
 
