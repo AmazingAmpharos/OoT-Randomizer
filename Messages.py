@@ -771,7 +771,6 @@ def read_messages(rom):
 def repack_messages(rom, messages, permutation=None, speed_up_text=True):
 
     rom.update_dmadata_record(TEXT_START, TEXT_START, TEXT_START + ENG_TEXT_SIZE_LIMIT)
-    always_allow_skip=True
 
     if permutation is None:
         permutation = range(len(messages))
@@ -779,7 +778,6 @@ def repack_messages(rom, messages, permutation=None, speed_up_text=True):
     # repack messages
     offset = 0
     text_size_limit = ENG_TEXT_SIZE_LIMIT
-    text_bank = 0x07
 
     for old_index, new_index in enumerate(permutation):
         old_message = messages[old_index]
