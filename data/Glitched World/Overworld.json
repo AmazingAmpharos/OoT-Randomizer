@@ -520,7 +520,14 @@
         }
     },
     {
-        "region_name": "Castle Town Mask Shop"
+        "region_name": "Castle Town Mask Shop",
+        "events": {
+            "Skull Mask": "at('Kakariko Village', is_child and Zeldas_Letter)",
+            "Mask of Truth": "'Skull Mask' and
+                at('Lost Woods', is_child and can_play(Sarias_Song)) and
+                at('Graveyard', is_child and at_day) and
+                at('Hyrule Field', is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)"
+        }
     },
     {
         "region_name": "Castle Town Shooting Gallery",
@@ -1141,8 +1148,8 @@
     {
         "region_name": "Deku Theater",
         "locations": {
-            "Deku Theater Skull Mask": "is_child and Zeldas_Letter",
-            "Deku Theater Mask of Truth": "is_child and has_mask_of_truth and guarantee_hint"
+            "Deku Theater Skull Mask": "is_child and 'Skull Mask'",
+            "Deku Theater Mask of Truth": "is_child and 'Mask of Truth' and guarantee_hint"
         }
     },
     {

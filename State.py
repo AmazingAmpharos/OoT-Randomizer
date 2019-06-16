@@ -522,17 +522,6 @@ class State(object):
                             or self.has('Stop Link the Goron'))))
 
 
-    def has_skull_mask(self):
-        return self.has('Zeldas Letter') and self.can_reach('Kakariko Village', age='child') and self.can_reach('Castle Town Mask Shop')
-
-
-    def has_mask_of_truth(self):
-        # Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man, and access to Lost Woods, Graveyard (at day time) and Hyrule Field as child
-        return (self.has_skull_mask() and self.can_reach('Lost Woods', age='child') and self.can_play('Sarias Song') and 
-                self.can_reach('Graveyard', age='child', tod='day') and self.can_reach('Hyrule Field', age='child') and 
-                self.has_all_of(('Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire')))
-
-
     def has_bottle(self):
         # Extra Ruto's Letter are automatically emptied
         return self.has_any_of(ItemInfo.bottles) or self.has('Bottle with Letter', 2)
@@ -569,7 +558,7 @@ class State(object):
     def guarantee_hint(self):
         if self.world.hints == 'mask':
             # has the mask of truth
-            return self.has_mask_of_truth()
+            return self.has('Mask of Truth')
         elif self.world.hints == 'agony':
             # has the Stone of Agony
             return self.has('Stone of Agony')
