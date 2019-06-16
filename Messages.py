@@ -6,7 +6,7 @@ TABLE_START = 0xB849EC
 TEXT_START = 0x92D000
 
 TABLE_SIZE_LIMIT = 0x43A8
-ENG_TEXT_SIZE_LIMIT = 0x38130
+ENG_TEXT_SIZE_LIMIT = 0x39000
 JPN_TEXT_SIZE_LIMIT = 0x3A150
 
 
@@ -396,67 +396,29 @@ class Message():
         return not (self.has_goto or self.has_keep_open or self.has_event or self.has_fade or self.has_ocarina or self.has_two_choice or self.has_three_choice)
 
 
-    # writes a Message back into the rom, using the given index and offset to update the table
-    # returns the offset of the next message
-    def size(self, replace_ending=False, ending=None, always_allow_skip=True, speed_up_text=True):
+    # computes the size of a message, including padding
+    def size(self):
         size = 0
 
-        ending_codes = [0x02, 0x07, 0x0A, 0x0B, 0x0E, 0x10]
-        box_breaks = [0x04, 0x0C]
-        slows_text = [0x08, 0x09, 0x14]
-
-        # # speed the text
-        if speed_up_text:
-            size += 1
-
-        # write the message
         for code in self.text_codes:
-            # ignore ending codes if it's going to be replaced
-            if replace_ending and code.code in ending_codes:
-                pass
-            # ignore the "make unskippable flag"
-            elif always_allow_skip and code.code == 0x1A:
-                pass
-            # ignore anything that slows down text
-            elif speed_up_text and code.code in slows_text:
-                pass
-            elif speed_up_text and code.code in box_breaks:
-                size += 2
-            else:
-                size += code.size()
+            size += code.size()
 
-        if replace_ending:
-            if ending:
-                if speed_up_text and ending.code == 0x10: # ocarina
-                    size += 1
-                size += ending.size() # write special ending
-            size += 1
-
-        while size % 4 > 0:
-            size += 1
+        size = (size + 3) & -4 # align to nearest 4 bytes
 
         return size
-
-
-    # writes a Message back into the rom, using the given index and offset to update the table
-    # returns the offset of the next message
-    def write(self, rom, index, offset, replace_ending=False, ending=None, always_allow_skip=True, speed_up_text=True, bank=0x07):
-
-        # construct the table entry
-        id_bytes = int_to_bytes(self.id, 2)
-        offset_bytes = int_to_bytes(offset, 3)
-        entry = id_bytes + bytes([self.opts, 0x00, bank]) + offset_bytes
-        # write it back
-        entry_offset = TABLE_START + 8 * index
-        rom.write_bytes(entry_offset, entry)
+    
+    # applies whatever transformations we want to the dialogs
+    def transform(self, replace_ending=False, ending=None, always_allow_skip=True, speed_up_text=True):
 
         ending_codes = [0x02, 0x07, 0x0A, 0x0B, 0x0E, 0x10]
         box_breaks = [0x04, 0x0C]
         slows_text = [0x08, 0x09, 0x14]
 
+        text_codes = []
+
         # # speed the text
         if speed_up_text:
-            offset = Text_Code(0x08, 0).write(rom, offset) # allow instant
+            text_codes.append(Text_Code(0x08, 0)) # allow instant
 
         # write the message
         for code in self.text_codes:
@@ -471,25 +433,43 @@ class Message():
                 pass
             elif speed_up_text and code.code in box_breaks:
                 if self.id == 0x605A: #special case for twinrova text
-                    offset = code.write(rom, offset)
+                    text_codes.append(code)
                 else:
-                    offset = Text_Code(0x04, 0).write(rom, offset) # un-delayed break
-                    offset = Text_Code(0x08, 0).write(rom, offset) # allow instant
+                    text_codes.append(Text_Code(0x04, 0)) # un-delayed break
+                    text_codes.append(Text_Code(0x08, 0)) # allow instant
             else:
-                offset = code.write(rom, offset)
+                text_codes.append(code)
 
         if replace_ending:
             if ending:
                 if speed_up_text and ending.code == 0x10: # ocarina
-                    offset = Text_Code(0x09, 0).write(rom, offset) # disallow instant text
-                offset = ending.write(rom, offset) # write special ending
-            offset = Text_Code(0x02, 0).write(rom, offset) # write end code
+                    text_codes.append(Text_Code(0x09, 0)) # disallow instant text
+                text_codes.append(ending) # write special ending
+            text_codes.append(Text_Code(0x02, 0)) # write end code
 
+        self.text_codes = text_codes;
+
+        
+    # writes a Message back into the rom, using the given index and offset to update the table
+    # returns the offset of the next message
+    def write(self, rom, index, offset):
+
+        # construct the table entry
+        id_bytes = int_to_bytes(self.id, 2)
+        offset_bytes = int_to_bytes(offset, 3)
+        entry = id_bytes + bytes([self.opts, 0x00, 0x07]) + offset_bytes
+        # write it back
+        entry_offset = TABLE_START + 8 * index
+        rom.write_bytes(entry_offset, entry)
+
+        for code in self.text_codes:
+            offset = code.write(rom, offset)
 
         while offset % 4 > 0:
             offset = Text_Code(0x00, 0).write(rom, offset) # pad to 4 byte align
 
         return offset
+
 
     def __init__(self, raw_text, index, id, opts, offset, length):
 
@@ -497,7 +477,7 @@ class Message():
 
         self.index = index
         self.id = id
-        self.opts = opts
+        self.opts = opts  # Textbox type and y position
         self.box_type = (self.opts & 0xF0) >> 4
         self.position = (self.opts & 0x0F)
         self.offset = offset
@@ -690,6 +670,9 @@ def move_shop_item_messages(messages, shop_items):
     for id in ids:
         # should be a singleton list, but in case something funky is going on, handle it as a list regardless
         relevant_messages = [message for message in messages if message.id == id]
+        if len(relevant_messages) >= 2:
+            raise(TypeError("duplicate id in move_shop_item_messages"))
+
         for message in relevant_messages:
             message.id |= 0x8000
     # update them in the shop item list
@@ -785,7 +768,10 @@ def read_messages(rom):
     return messages
 
 # write the messages back
-def repack_messages(rom, messages, permutation=None, always_allow_skip=True, speed_up_text=True):
+def repack_messages(rom, messages, permutation=None, speed_up_text=True):
+
+    rom.update_dmadata_record(TEXT_START, TEXT_START, TEXT_START + ENG_TEXT_SIZE_LIMIT)
+    always_allow_skip=True
 
     if permutation is None:
         permutation = range(len(messages))
@@ -801,24 +787,18 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True, spe
         remember_id = new_message.id
         new_message.id = old_message.id
 
-        # check if there is space to write the message
-        message_size = new_message.size(True, old_message.ending, always_allow_skip, speed_up_text)
-        if message_size + offset > text_size_limit:
-            # if there is no room then switch banks
-            if text_bank == 0x07:
-                text_size_limit = JPN_TEXT_SIZE_LIMIT
-                text_bank = 0x08
-                offset = 0
+        # modify message, making it represent how we want it to be written
+        new_message.transform(True, old_message.ending, always_allow_skip, speed_up_text)
 
         # actually write the message
-        offset = new_message.write(rom, old_index, offset, True, old_message.ending, always_allow_skip, speed_up_text, text_bank)
+        offset = new_message.write(rom, old_index, offset)
 
         new_message.id = remember_id
 
     # raise an exception if too much is written
     # we raise it at the end so that we know how much overflow there is
     if offset > text_size_limit:
-        raise(TypeError("Message Text table is too large: 0x" + "{:x}".format(ENG_TEXT_SIZE_LIMIT + offset) + " written / 0x" + "{:x}".format(ENG_TEXT_SIZE_LIMIT + JPN_TEXT_SIZE_LIMIT) + " allowed."))
+        raise(TypeError("Message Text table is too large: 0x" + "{:x}".format(offset) + " written / 0x" + "{:x}".format(ENG_TEXT_SIZE_LIMIT) + " allowed."))
 
     # end the table
     table_index = len(messages)
@@ -832,9 +812,7 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True, spe
     rom.write_bytes(entry_offset, [0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
 
 # shuffles the messages in the game, making sure to keep various message types in their own group
-def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
-
-    messages = read_messages(rom)
+def shuffle_messages(messages, except_hints=True, always_allow_skip=True):
 
     permutation = [i for i, _ in enumerate(messages)]
 
@@ -872,5 +850,4 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
         have_three_choice,
     ]))
 
-    # write the messages back
-    repack_messages(rom, messages, permutation, always_allow_skip, False)
+    return permutation

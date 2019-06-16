@@ -233,7 +233,8 @@ class Rom(BigStream):
                 '\n-------------------------------------\n'.join(overlapping_records))
 
 
-    # if key is not found, then add an entry
+    # update dmadata record with start vrom address "key"
+    # if key is not found, then attempt to add a new dmadata entry
     def update_dmadata_record(self, key, start, end, from_file=None):
         cur, dma_data_end = self.get_dma_table_range()
         dma_index = 0
