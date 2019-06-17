@@ -786,6 +786,9 @@
         "region_name": "Kakariko Village",
         "scene": "Kakariko Village",
         "hint": "Kakariko Village",
+        "events": {
+            "Kakariko Village Gate Open": "is_child and Zeldas_Letter"
+        },
         "locations": {
             "Sheik in Kakariko": "
                 is_adult and Forest_Medallion and Fire_Medallion and Water_Medallion",
@@ -813,7 +816,7 @@
             "Carpenter Boss House": "True",
             "House of Skulltula": "True",
             "Impas House": "True",
-            "Impas House Back": "True",
+            "Impas House Back": "is_child or logic_visible_collisions or can_use(Hookshot)",
             "Windmill": "True",
             "Kakariko Bazaar": "is_adult and at_day",
             "Kakariko Shooting Gallery": "is_adult and at_day",
@@ -825,7 +828,7 @@
             "Kakariko Bombable Grotto": "can_blast_or_smash",
             "Kakariko Back Grotto": "True",
             "Graveyard": "True",
-            "Kakariko Village Behind Gate": "Zeldas_Letter or is_adult"
+            "Kakariko Village Behind Gate": "is_adult or 'Kakariko Village Gate Open'"
         }
     },
     {
@@ -1023,7 +1026,8 @@
         "region_name": "Kakariko Village Behind Gate",
         "scene": "Kakariko Village",
         "exits": {
-            "Kakariko Village": "True",
+            "Kakariko Village": "
+                is_adult or logic_visible_collisions or 'Kakariko Village Gate Open'",
             "Death Mountain": "True"
         }
     },
