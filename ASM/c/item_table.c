@@ -106,8 +106,8 @@ item_row_t item_table[] = {
     [0x42] = ITEM_ROW(0x53, 3, 0x77, 0x0060, 0x00AA, 0x02, no_upgrade, no_effect, -1, -1), // Small Key
     [0x43] = ITEM_ROW(0x53, 1, 0x78, 0x0052, 0x00CD, 0x1E, no_upgrade, no_effect, -1, -1), // Small Magic Jar
     [0x44] = ITEM_ROW(0x53, 1, 0x79, 0x0052, 0x00CD, 0x1F, no_upgrade, no_effect, -1, -1), // Large Magic Jar
-    [0x45] = ITEM_ROW(0x53, 0, 0x56, 0x005E, 0x00D1, 0x22, no_upgrade, fill_wallet_upgrade, -1, -1), // Adult's Wallet
-    [0x46] = ITEM_ROW(0x53, 0, 0x57, 0x005F, 0x00D1, 0x23, no_upgrade, fill_wallet_upgrade, -1, -1), // Giant's Wallet
+    [0x45] = ITEM_ROW(0x53, 0, 0x56, 0x005E, 0x00D1, 0x22, no_upgrade, fill_wallet_upgrade, 1, -1), // Adult's Wallet
+    [0x46] = ITEM_ROW(0x53, 0, 0x57, 0x005F, 0x00D1, 0x23, no_upgrade, fill_wallet_upgrade, 2, -1), // Giant's Wallet
     [0x47] = ITEM_ROW(0x53, 0, 0x21, 0x009A, 0x00DA, 0x29, no_upgrade, no_effect, -1, -1), // Weird Egg
     [0x48] = ITEM_ROW(0x4D, 1, 0x83, 0x0055, 0x00B7, 0x09, no_upgrade, no_effect, -1, -1), // Recovery Heart
     [0x49] = ITEM_ROW(0x4D, 1, 0x92, 0x00E6, 0x00D8, 0x25, arrows_to_rupee, no_effect, -1, -1), // Arrows (5)
@@ -243,7 +243,7 @@ item_row_t item_table[] = {
     [0xC5] = ITEM_ROW(0x53, 0, 0x41, 0x00D5, 0x00B6, 0x05, no_upgrade, give_song, 16, -1), // Song of Time
     [0xC6] = ITEM_ROW(0x53, 0, 0x41, 0x00D6, 0x00B6, 0x07, no_upgrade, give_song, 17, -1), // Song of Storms
 
-    [0xC7] = ITEM_ROW(0x53, 0, 0x41, 0x00F8, 0x00D1, 0x23, no_upgrade, give_tycoon_wallet, -1, -1), // Tycoon's Wallet
+    [0xC7] = ITEM_ROW(0x53, 0, 0x41, 0x00F8, 0x00D1, 0x23, no_upgrade, give_tycoon_wallet, 3, -1), // Tycoon's Wallet
     [0xC8] = ITEM_ROW(0x53, 0, 0x14, 0x9099, 0x010B, 0x45, no_upgrade, no_effect, -1, -1), // Redundant Letter Bottle
     [0xC9] = ITEM_ROW(0x53, 0, 0x41, 0x9048, 0x00F3, 0x3E, no_upgrade, give_bean_pack, -1, -1), // Magic Bean Pack
 
