@@ -12,13 +12,11 @@ LINES_PER_BOX = 4
 # appear in lower areas of the text box. Eventually, the text box will become uncloseable.
 MAX_CHARACTERS_PER_BOX = 200
 
-LINE_BREAK = ['&', '\x01']
-BOX_BREAK  = ['^', '\x04']
+LINE_BREAK = ['\x01', '&']
+BOX_BREAK  = ['\x04', '^']
 TEXT_END   = '\x02'
 
 def lineWrap(text):
-    text = text.split(TEXT_END)[0]
-
     boxes = text.split('|'.join(BOX_BREAK))
     boxesWithWrappedLines = []
 

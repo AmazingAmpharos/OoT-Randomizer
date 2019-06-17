@@ -1,6 +1,7 @@
 # text details: https://wiki.cloudmodding.com/oot/Text_Format
 
 import random
+from TextBox import lineWrap
 
 TABLE_START = 0xB849EC
 TEXT_START = 0x92D000
@@ -721,6 +722,12 @@ def make_player_message(text):
     # because names are longer, we shorten the verbs to they fit in the textboxes better
     for find_text, replace_text in verb_mapping.items():
         new_text = new_text.replace(find_text, replace_text)
+
+    wrapped_text = lineWrap(new_text)
+    if (wrapped_text != new_text):
+        # remove line wrappings and rewrap if wrapping is required
+        new_text = new_text.replace('\x01', ' ').replace('\x04', ' ')
+        new_text = lineWrap(new_text)
 
     return new_text
 
