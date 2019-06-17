@@ -656,11 +656,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Allow Warp Songs in additional places
     rom.write_byte(0xB6D3D2, 0x00) # Gerudo Training Grounds
     rom.write_byte(0xB6D42A, 0x00) # Inside Ganon's Castle
-    rom.write_byte(0xB6D426, 0x00) # Dampe's Grave / Windmill
-    rom.write_byte(0xB6D34A, 0x10) # Treasure Chest Minigame
-
-    # Forbid Sun's Song in Treasure Chest Minigame
-    rom.write_byte(0xB6D34B, 0xD5)
 
     # Allow Farore's Wind in dungeons where it's normally forbidden
     rom.write_byte(0xB6D3D3, 0x00) # Gerudo Training Grounds
