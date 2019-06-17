@@ -141,6 +141,7 @@ location_table = {
     "Free Fairies":                                    ("Drop",        None,  None, None,                     None),
     "Butterfly Fairy":                                 ("Drop",        None,  None, None,                     None),
     "Gossip Stone Fairy":                              ("Drop",        None,  None, None,                     None),
+    "Bean Plant Fairy":                                ("Drop",        None,  None, None,                     None),
     "Fairy Pond":                                      ("Drop",        None,  None, None,                     None),
     "Big Poe Kill":                                    ("Drop",        None,  None, None,                     None),
 

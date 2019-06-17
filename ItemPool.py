@@ -504,6 +504,7 @@ droplocations = {
     'Free Fairies': 'Fairy',
     'Butterfly Fairy': 'Fairy',
     'Gossip Stone Fairy': 'Fairy',
+    'Bean Plant Fairy': 'Fairy',
     'Fairy Pond': 'Fairy',
     'Big Poe Kill': 'Big Poe',
 }
