@@ -768,7 +768,7 @@ def read_messages(rom):
     return messages
 
 # write the messages back
-def repack_messages(rom, messages, permutation=None, speed_up_text=True):
+def repack_messages(rom, messages, permutation=None, always_allow_skip=True, speed_up_text=True):
 
     rom.update_dmadata_record(TEXT_START, TEXT_START, TEXT_START + ENG_TEXT_SIZE_LIMIT)
 
