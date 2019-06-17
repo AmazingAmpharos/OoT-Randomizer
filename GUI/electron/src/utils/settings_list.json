@@ -1,6 +1,69 @@
 [
   {
     "default": "",
+    "name": "web_wad_file",
+    "text": "WAD File",
+    "type": "Fileinput",
+    "options": [
+    ],
+    "tooltip": "Your original OoT 1.2 NTSC-U / NTSC-J WAD file (.wad)"
+  },
+  {
+    "default": "",
+    "name": "web_common_key_file",
+    "text": "Wii Common Key File",
+    "type": "Fileinput",
+    "options": [
+    ],
+    "tooltip": "The Wii Common Key is a copyrighted 32 character string needed for WAD encryption.<br>Google to find it! Do not ask on Discord!"
+  },
+  {
+    "default": "",
+    "name": "web_common_key_string",
+    "text": "Alternatively Enter Wii Common Key",
+    "type": "Textinput",
+    "options": [
+    ],
+    "tooltip": "The Wii Common Key is a copyrighted 32 character string needed for WAD encryption.<br>Google to find it! Do not ask on Discord!"
+  },
+  {
+    "default": "OOTE",
+    "name": "web_wad_channel_id",
+    "text": "WAD Channel ID",
+    "type": "Textinput",
+    "options": [
+    ],
+    "tooltip": "4 characters, should end with E to ensure Dolphin compatibility.<br>Note: If you have multiple OoTR WAD files with different Channel IDs installed, the game can crash on a soft reset. Use a Title Deleter to remove old WADs."
+  },
+  {
+    "default": "OoTRandomizer",
+    "name": "web_wad_channel_title",
+    "text": "WAD Channel Title",
+    "type": "Textinput",
+    "options": [
+    ],
+    "tooltip": "20 characters max"
+  },
+  {
+    "default": "z64",
+    "name": "web_output_type",
+    "text": "Output Type",
+    "type": "Radiobutton",
+    "options": [
+      {
+        "name": "z64",
+        "text": ".z64 (N64/Emulator)",
+        "controls-visibility-setting": "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title"
+      },
+      {
+        "name": "wad",
+        "text": ".wad (WiiVC)"
+      }
+    ],
+    "tooltip": ""
+  },
+  {
+    "default": "",
     "name": "rom",
     "text": "Base ROM",
     "type": "Fileinput",

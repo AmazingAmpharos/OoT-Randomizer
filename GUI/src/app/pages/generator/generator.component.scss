@@ -1,10 +1,10 @@
 .pageContainer {
-    height: 100%;
+  height: 100%;
 }
 
 :host nb-card { //Electron
-    height: 98%;
-    overflow: inherit;
+  height: 98%;
+  overflow: inherit;
 }
 
 .webLayout { //Web
@@ -14,23 +14,24 @@
 }
 
 :host nb-card {
-    line-height: 1.25;
+  line-height: 1.25;
 }
 
 :host nb-card {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 /deep/ .tabset {
-    li.disabled {
-        opacity: 0.4 !important;
-    }
-    li {
-        line-height: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-    }
+  li.disabled {
+    opacity: 0.4 !important;
+  }
+
+  li {
+    line-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }
 
 /deep/ nb-spinner {
@@ -38,202 +39,256 @@
 }
 
 .settingsTabset {
-    height: 70%;
-    padding: 0.5rem !important;
-    nb-tab {
-        height: 102.5%; //adjust for top offset
-        padding: 1.25rem;
-        padding-left: 0.25rem;
-        padding-right: 0.25rem;
-    }
+  height: 70%;
+  padding: 0.5rem !important;
+
+  nb-tab {
+    height: 102.5%; //adjust for top offset
+    padding: 1.25rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
 }
 
 .footerTabset {
-    position: absolute;
-    bottom: -5px;
-    width: 100%;
-    margin: 0 auto;
-    margin-top: 5px;
-    nb-tab {
-        padding: 1.25rem;
-    }
+  position: absolute;
+  bottom: -5px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 5px;
+
+  nb-tab {
+    padding: 1.25rem;
+  }
 }
 
 :host mat-grid-list {
-    height: 98%;
+  height: 98%;
 }
 
 :host mat-grid-tile {
-    border: 1px solid darkgrey;
-    //min-width: 300px;
+  border: 1px solid darkgrey;
+  //min-width: 300px;
 }
 
 :host mat-grid-tile-header {
-    height: 25px;
+  height: 25px;
 }
 
 :host .mat-slide-toggle {
-    margin-right: 2rem;
+  margin-right: 2rem;
 }
 
 :host nb-input {
-    margin-right: 2rem;
+  margin-right: 2rem;
 }
 
 :host .input-sm {
-    padding-top: 0.15rem;
-    padding-bottom: 0.15rem;
-    margin-right: 2rem;
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
+  margin-right: 2rem;
 }
 
 :host .btn-small {
-    padding: 0.275rem 1.5rem;
+  padding: 0.275rem 1.5rem;
 }
 
 :host .radioGroupLabel {
-    margin-bottom: 0.8rem;
+  margin-bottom: 0.8rem;
 }
 
 .tileContainer {
+  position: relative;
+  width: 100%;
+  height: calc(100% + -2px);
+  top: 0px;
+  margin-bottom: 7px;
+  overflow: hidden;
+  overflow-y: scroll;
+
+  .tileContent {
     position: relative;
-    width: 100%;
-    height: calc(100% + -2px);
-    top: 0px;
-    margin-bottom: 7px;
-    overflow: hidden;
-    overflow-y: scroll;
-    .tileContent {
-        position: relative;
-        height: 100%;
-        left: 7px;
-        top: 7px;
-        margin-right: 13px;
-    }
+    height: 100%;
+    left: 7px;
+    top: 7px;
+    margin-right: 13px;
+  }
 }
 
 .tileContainerWithHeader {
-    height: calc(100% - 45px);
-    top: 7px;
+  height: calc(100% - 45px);
+  top: 7px;
 }
 
 .subheaderLabel {
-    position: relative;
-    left: 10px;
-    line-height: 15px;
+  position: relative;
+  left: 10px;
+  line-height: 15px;
 }
 
 .comboBoxLabel {
-    position: relative;
-    left: 10px;
+  position: relative;
+  left: 10px;
 }
 
 .radioGroupLabel {
-    position: relative;
-    left: 10px;
+  position: relative;
+  left: 10px;
 }
 
 .radioButton {
-    margin-right: 10px;
+  margin-right: 10px;
+}
+
+.textInputLabel {
+  position: relative;
+  left: 10px;
+  line-height: 0px;
+  margin-bottom: 0px;
+  margin-top: 8px;
+}
+
+.textInputSmall {
+  position: relative;
+  left: 15px;
+  max-width: 50px;
+  text-align: center;
+  padding-left: 0.375rem !important;
+  padding-right: 0.375rem !important;
+}
+
+.textInputMedium {
+  position: relative;
+  left: 15px;
+  max-width: 120px;
+  text-align: center;
+  padding-left: 0.375rem !important;
+  padding-right: 0.375rem !important;
+}
+
+.textInputFull {
+  position: relative;
+  left: 0px;
+  width: calc(100% - 120px);
+  text-align: left;
+  padding-left: 0.375rem !important;
+  margin-top: 1.0rem !important;
+  margin-right: 1.0rem !important;
 }
 
 .numberInputLabel {
-    position: relative;
-    left: 10px;
-    line-height: 0px;
-    margin-bottom: 0px;
-    margin-top: 8px;
+  position: relative;
+  left: 10px;
+  line-height: 0px;
+  margin-bottom: 0px;
+  margin-top: 8px;
 }
 
 .numberInput {
-    position: relative;
-    left: 15px;
-    max-width: 36px;
-    text-align: center;
-    padding-left: 0.375rem !important;
-    padding-right: 0.375rem !important;
+  position: relative;
+  left: 15px;
+  max-width: 36px;
+  text-align: center;
+  padding-left: 0.375rem !important;
+  padding-right: 0.375rem !important;
 }
 
 .colorPickerContainer {
-    height: 0px;
-    width: 0px;
-    overflow: hidden;
+  height: 0px;
+  width: 0px;
+  overflow: hidden;
 }
 
 .scale {
-    position: relative;
-    top: -7px;
-    min-width: 100%;
+  position: relative;
+  top: -7px;
+  min-width: 100%;
 }
 
 .ioInputLabel {
-    position: relative;
-    left: 10px;
-    line-height: 0px;
-    margin-bottom: 0px;
-    margin-top: 8px;
+  position: relative;
+  left: 10px;
+  line-height: 0px;
+  margin-bottom: 0px;
+  margin-top: 8px;
 }
 
 .ioInput {
-    position: relative;
-    left: 0px;
-    width: calc(100% - 120px);
-    text-align: left;
-    padding-left: 0.375rem !important;
-    margin-top: 1.0rem !important;
-    margin-right: 1.0rem !important;
+  position: relative;
+  left: 0px;
+  width: calc(100% - 120px);
+  text-align: left;
+  padding-left: 0.375rem !important;
+  margin-top: 1.0rem !important;
+  margin-right: 1.0rem !important;
 }
 
 .presetButton {
-    margin-top: 1.0rem !important;
-    margin-right: 6px !important;
+  margin-top: 1.0rem !important;
+  margin-right: 6px !important;
 }
 
 .outputDirButton {
-    margin-top: 1.0rem !important;
-    margin-right: 6px !important;
+  margin-top: 1.0rem !important;
+  margin-right: 6px !important;
 }
 
 .footerInputLabel {
-    position: relative;
-    left: 10px;
-    line-height: 0px;
-    margin-bottom: 0px;
-    margin-top: 3px;
+  position: relative;
+  left: 10px;
+  line-height: 0px;
+  margin-bottom: 0px;
+  margin-top: 3px;
 }
 
 .footerInput {
-    position: relative;
-    left: 0px;
-    width: calc(100% - 200px);
-    text-align: left;
-    padding-left: 0.375rem !important;
-    margin-top: 1.0rem !important;
-    margin-right: 1.0rem !important;
+  position: relative;
+  left: 0px;
+  width: calc(100% - 200px);
+  text-align: left;
+  padding-left: 0.375rem !important;
+  margin-top: 1.0rem !important;
+  margin-right: 1.0rem !important;
+}
+
+.footerInputShort {
+  position: relative;
+  left: 0px;
+  width: calc(100% - 270px);
+  text-align: left;
+  padding-left: 0.375rem !important;
+  margin-top: 1.0rem !important;
+  margin-right: 1.0rem !important;
 }
 
 .footerButton {
-    margin-right: 6px !important;
+  margin-right: 6px !important;
+}
+
+.footerGenerateButtonSmall {
+  margin-right: 6px !important;
+  width: calc(50% - 6px);
 }
 
 .tabsetPadding {
-    height: 14px;
+  height: 14px;
 }
 
 .settingPadding {
-    height: 8px;
+  height: 8px;
 }
 
 // Custom Stuff
 nb-card-body {
-    padding: 0;
+  padding: 0;
 }
 
 .noLB {
-    display: inline-block;
-    margin-right: 5%;
-    margin-left: 18px;
-    width: 32%;
-    line-height: 2 !important;
+  display: inline-block;
+  margin-right: 5%;
+  margin-left: 18px;
+  width: 32%;
+  line-height: 2 !important;
 }
 
 

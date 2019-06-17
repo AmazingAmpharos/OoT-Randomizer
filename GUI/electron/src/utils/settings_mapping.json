@@ -1,504 +1,749 @@
 {
-    "Tabs": [{
-            "name": "general-tab",
-            "text": "ROM Options",
-            "sections": [{
-                    "name": "general-section",
-                    "text": "",
-                    "col-span": 4,
-                    "row-span": 2,
-                    "settings": [{
-                            "name": "rom",
-                            "file-types": [
-                                { "name": "ROM Files", "extensions": ["z64", "n64"] },
-                                { "name": "All Files", "extensions": ["*"] }
-                            ]
-                        },
-                        {
-                            "name": "output_dir"
-                        },
-                        {
-                            "name": "distribution_file",
-                            "file-types": [
-                                { "name": "JSON Files", "extensions": ["json"] },
-                                { "name": "All Files", "extensions": ["*"] }
-                            ]
-                        },
-                        {
-                            "name": "count",
-                            "min": 1,
-                            "max": 100
-                        },
-                        {
-                            "name": "create_spoiler",
-                            "no-line-break": true
-                        },
-                        {
-                            "name": "create_cosmetics_log"
-                        },
-                        {
-                            "name": "compress_rom"
-                        },
-                        {
-                            "name": "open_output_dir"
-                        }
-                    ]
+  "Tabs": [
+    {
+      "name": "general-tab-electron",
+      "text": "ROM Options",
+      "exclude-from-web": true,
+      "sections": [
+        {
+          "name": "general-section",
+          "text": "",
+          "col-span": 4,
+          "row-span": 2,
+          "settings": [
+            {
+              "name": "rom",
+              "file-types": [
+                {
+                  "name": "ROM Files",
+                  "extensions": [ "z64", "n64" ]
                 },
                 {
-                    "name": "multiworld-section",
-                    "text": "Multi-World Generation",
-                    "subheader": "This is used for co-op generations. Increasing Player Count will drastically increase the generation time.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk-co-op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk-co-op</a>",
-                    "row-span": 1,
-                    "settings": [{
-                            "name": "world_count",
-                            "min": 1,
-                            "max": 255,
-                            "no-line-break": true
-                        },
-                        {
-                            "name": "player_num",
-                            "min": 1,
-                            "max": 255
-                        }
-                    ]
-                },
-                {
-                    "name": "preset-section",
-                    "text": "Settings Presets",
-                    "subheader": "Presets are settings that can be saved and loaded from.<br>Loading a preset will overwrite all settings that affect the seed.",
-                    "row-span": 1,
-                    "settings": [{
-                        "name": "presets"
-                    }]
+                  "name": "All Files",
+                  "extensions": [ "*" ]
                 }
-            ]
+              ]
+            },
+            {
+              "name": "output_dir"
+            },
+            {
+              "name": "distribution_file",
+              "file-types": [
+                {
+                  "name": "JSON Files",
+                  "extensions": [ "json" ]
+                },
+                {
+                  "name": "All Files",
+                  "extensions": [ "*" ]
+                }
+              ]
+            },
+            {
+              "name": "count",
+              "min": 1,
+              "max": 100
+            },
+            {
+              "name": "create_spoiler",
+              "no-line-break": true
+            },
+            {
+              "name": "create_cosmetics_log"
+            },
+            {
+              "name": "compress_rom"
+            },
+            {
+              "name": "open_output_dir"
+            }
+          ]
         },
         {
-            "name": "main-tab",
-            "text": "Main Rules",
-            "sections": [{
-                   "name": "main-section",
-                   "text": "",
-                   "col-span": 4,
-                   "row-span": 1,
-                    "settings": [{
-                       "name": "randomize_settings",
-                       "controls-visibility-section": "open-section,shuffle-section,shuffle-dungeon-section",
-                       "controls-visibility-setting": "all_reachable,bombchus_in_logic,one_item_per_dungeon,mq_dungeons_random,mq_dungeons"
-                   }]
-                },
-                {
-                    "name": "open-section",
-                    "text": "Open",
-                    "row-span": 6,
-                    "settings": [{
-                            "name": "open_forest"
-                        },
-                        {
-                            "name": "open_door_of_time"
-                        },
-                        {
-                            "name": "open_fountain"
-                        },
-                        {
-                            "name": "gerudo_fortress"
-                        },
-                        {
-                            "name": "bridge"
-                        },
-                        {
-                            "name": "trials_random",
-                            "controls-visibility-setting": "trials"
-                        },
-                        {
-                            "name": "trials",
-                            "min": 0,
-                            "max": 6
-                        }
-                    ]
-                },
-                {
-                    "name": "world-section",
-                    "text": "World",
-                    "row-span": 6,
-                    "settings": [{
-                            "name": "logic_rules"
-                        },
-                        {
-                            "name": "all_reachable"
-                        },
-                        {
-                            "name": "bombchus_in_logic"
-                        },
-                        {
-                            "name": "one_item_per_dungeon"
-                        },
-                        {
-                            "name": "mq_dungeons_random",
-                            "controls-visibility-setting": "mq_dungeons"
-                        },
-                        {
-                            "name": "mq_dungeons",
-                            "min": 0,
-                            "max": 12
-                        }
-                    ]
-                },
-                {
-                    "name": "shuffle-section",
-                    "text": "Shuffle",
-                    "row-span": 6,
-                    "settings": [{
-                            "name": "shuffle_kokiri_sword"
-                        },
-                        {
-                            "name": "shuffle_ocarinas"
-                        },
-                        {
-                            "name": "shuffle_weird_egg"
-                        },
-                        {
-                            "name": "shuffle_gerudo_card"
-                        },
-                        {
-                            "name": "shuffle_song_items"
-                        },
-                        {
-                            "name": "shuffle_cows"
-                        },
-                        {
-                            "name": "shuffle_beans"
-                        },
-                        {
-                            "name": "entrance_shuffle"
-                        },
-                        {
-                            "name": "shuffle_scrubs"
-                        },
-                        {
-                            "name": "shopsanity"
-                        },
-                        {
-                            "name": "tokensanity"
-                        }
-                    ]
-                },
-                {
-                    "name": "shuffle-dungeon-section",
-                    "text": "Shuffle Dungeon Items",
-                    "row-span": 6,
-                    "settings": [{
-                            "name": "shuffle_mapcompass"
-                        },
-                        {
-                            "name": "shuffle_smallkeys"
-                        },
-                        {
-                            "name": "shuffle_bosskeys"
-                        },
-                        {
-                            "name": "enhance_map_compass"
-                        },
-                        {
-                            "name": "unlocked_ganondorf"
-                        }
-                    ]
-                }
-            ]
+          "name": "multiworld-section",
+          "text": "Multi-World Generation",
+          "subheader": "This is used for co-op generations. Increasing Player Count will drastically increase the generation time.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk-co-op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk-co-op</a>",
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "world_count",
+              "min": 1,
+              "max": 255,
+              "no-line-break": true
+            },
+            {
+              "name": "player_num",
+              "min": 1,
+              "max": 255
+            }
+          ]
         },
         {
-            "name": "detailed-tab",
-            "text": "Detailed Logic",
-            "sections": [{
-                    "name": "disabled-locations-section",
-                    "text": "Exclude Locations",
-                    "col-span": 2,
-                    "row-span": 6,
-                    "settings": [{
-                        "name": "disabled_locations"
-                    }]
-                },
-                {
-                    "name": "allowed-tricks-section",
-                    "text": "Enable Tricks",
-                    "col-span": 2,
-                    "row-span": 6,
-                    "settings": [{
-                        "name": "allowed_tricks"
-                    }]
-                },
-                {
-                    "name": "ats",
-                    "text": "Adult Trade Sequence",
-                    "col-span": 2,
-                    "row-span": 4,
-                    "settings": [{
-                            "name": "logic_earliest_adult_trade",
-                            "no-line-break": "true"
-                        },
-                        {
-                            "name": "logic_latest_adult_trade",
-                            "no-line-break": true
-                        }
-                    ]
-                },
-                {
-                    "name": "lens",
-                    "text": "Lens of Truth",
-                    "col-span": 2,
-                    "row-span": 4,
-                    "settings": [{
-                        "name": "logic_lens"
-                    }]
-                }
-            ]
-        },
-        {
-            "name": "other-tab",
-            "text": "Other",
-            "sections": [{
-                    "name": "speedup-section",
-                    "text": "Timesavers",
-                    "row-span": 1,
-                    "settings": [{
-                            "name": "no_escape_sequence"
-                        },
-                        {
-                            "name": "no_guard_stealth"
-                        },
-                        {
-                            "name": "no_epona_race"
-                        },
-                        {
-                            "name": "useful_cutscenes"
-                        },
-                        {
-                            "name": "fast_chests"
-                        },
-                        {
-                            "name": "logic_no_night_tokens_without_suns_song"
-                        },
-                        {
-                            "name": "free_scarecrow"
-                        },
-                        {
-                            "name": "start_with_fast_travel"
-                        },
-                        {
-                            "name": "start_with_rupees"
-                        },
-                        {
-                            "name": "start_with_wallet"
-                        },
-                        {
-                            "name": "start_with_deku_equipment"
-                        },
-                        {
-                            "name": "fast_chickens"
-                        },
-                        {
-                            "name": "big_poe_count_random",
-                            "controls-visibility-setting": "big_poe_count"
-                        },
-                        {
-                            "name": "big_poe_count",
-                            "min": 1,
-                            "max": 10
-                        }
-                    ]
-                },
-                {
-                    "name": "misc-section",
-                    "text": "Misc",
-                    "row-span": 1,
-                    "settings": [{
-                            "name": "ocarina_songs"
-                        },
-                        {
-                            "name": "correct_chest_sizes"
-                        },
-                        {
-                            "name": "clearer_hints"
-                        },
-                        {
-                            "name": "hints"
-                        },
-                        {
-                            "name": "hint_dist"
-                        },
-                        {
-                            "name": "text_shuffle"
-                        },
-                        {
-                            "name": "junk_ice_traps"
-                        },
-                        {
-                            "name": "item_pool_value"
-                        },
-                        {
-                            "name": "damage_multiplier"
-                        },
-                        {
-                            "name": "starting_tod"
-                        },
-                        {
-                            "name": "starting_age"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "cosmetics-tab",
-            "text": "Cosmetics",
-            "is-cosmetics": true,
-            "sections": [{
-                    "name": "generalcosmetics-section",
-                    "text": "General",
-                    "row-span": 1,
-                    "settings": [{
-                            "name": "default_targeting"
-                        },
-                        {
-                            "name": "display_dpad"
-                        }
-                    ]
-                },
-                {
-                    "name": "tunics-section",
-                    "text": "Tunics",
-                    "is-colors": true,
-                    "row-span": 1,
-                    "settings": [{
-                            "name": "kokiri_color"
-                        },
-                        {
-                            "name": "goron_color"
-                        },
-                        {
-                            "name": "zora_color"
-                        }
-                    ]
-                },
-                {
-                    "name": "swordtrail-section",
-                    "text": "Sword Trail Colors",
-                    "is-colors": true,
-                    "row-span": 1,
-                    "settings": [{
-                            "name": "sword_trail_duration"
-                        },
-                        {
-                            "name": "sword_trail_color_inner"
-                        },
-                        {
-                            "name": "sword_trail_color_outer"
-                        }
-                    ]
-                },
-                {
-                    "name": "ui-section",
-                    "text": "UI Colors",
-                    "is-colors": true,
-                    "row-span": 1,
-                    "settings": [{
-                            "name": "heart_color"
-                        },
-                        {
-                            "name": "magic_color"
-                        }
-                    ]
-                },
-                {
-                    "name": "navi-section",
-                    "text": "Navi Colors",
-                    "is-colors": true,
-                    "row-span": 1,
-                    "settings": [{
-                            "name": "navi_color_default"
-                        },
-                        {
-                            "name": "navi_color_enemy"
-                        },
-                        {
-                            "name": "navi_color_npc"
-                        },
-                        {
-                            "name": "navi_color_prop"
-                        }
-                    ]
-                },
-                {
-                    "name": "gauntlet-section",
-                    "text": "Gauntlet Colors",
-                    "is-colors": true,
-                    "row-span": 1,
-                    "settings": [{
-                            "name": "silver_gauntlets_color"
-                        },
-                        {
-                            "name": "golden_gauntlets_color"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "sfx-tab",
-            "text": "SFX",
-            "is-cosmetics": true,
-            "sections": [{
-                    "name": "generalsfx-section",
-                    "text": "General",
-                    "is-sfx": true,
-                    "row-span": 3,
-                    "settings": [{
-                            "name": "background_music"
-                        },
-                        {
-                            "name": "sfx_low_hp"
-                        },
-                        {
-                            "name": "sfx_horse_neigh"
-                        },
-                        {
-                            "name": "sfx_nightfall"
-                        },
-                        {
-                            "name": "sfx_hover_boots"
-                        },
-                        {
-                            "name": "sfx_ocarina"
-                        }
-                    ]
-                },
-                {
-                    "name": "menusfx-section",
-                    "text": "Menu",
-                    "is-sfx": true,
-                    "row-span": 3,
-                    "settings": [{
-                            "name": "sfx_menu_cursor"
-                        },
-                        {
-                            "name": "sfx_menu_select"
-                        }
-                    ]
-                },
-                {
-                    "name": "npcsfx-section",
-                    "text": "NPC",
-                    "is-sfx": true,
-                    "row-span": 3,
-                    "settings": [{
-                            "name": "sfx_navi_overworld"
-                        },
-                        {
-                            "name": "sfx_navi_enemy"
-                        }
-                    ]
-                }
-            ]
+          "name": "preset-section",
+          "text": "Settings Presets",
+          "subheader": "Presets are settings that can be saved and loaded from.<br>Loading a preset will overwrite all settings that affect the seed.",
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "presets"
+            }
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "name": "general-tab-web-generator",
+      "text": "ROM Options",
+      "app-type": "generator",
+      "exclude-from-electron": true,
+      "sections": [
+        {
+          "name": "general-section",
+          "text": "",
+          "col-span": 4,
+          "row-span": 2,
+          "settings": [
+            {
+              "name": "rom",
+              "file-types": [
+                {
+                  "name": "ROM Files",
+                  "extensions": [ "z64", "n64" ]
+                },
+                {
+                  "name": "All Files",
+                  "extensions": [ "*" ]
+                }
+              ]
+            },
+            {
+              "name": "web_wad_file",
+              "file-types": [
+                {
+                  "name": "WAD Files",
+                  "extensions": [ "wad" ]
+                },
+                {
+                  "name": "All Files",
+                  "extensions": [ "*" ]
+                }
+              ]
+            },
+            {
+              "name": "web_common_key_file",
+              "file-types": [
+                {
+                  "name": "BIN Files",
+                  "extensions": [ "bin" ]
+                },
+                {
+                  "name": "All Files",
+                  "extensions": [ "*" ]
+                }
+              ]
+            },
+            {
+              "name": "web_common_key_string",
+              "size": "full",
+              "max-length": 32
+            },
+            {
+              "name": "web_wad_channel_id",
+              "size": "small",
+              "max-length": 4,
+              "no-line-break": true
+            },
+            {
+              "name": "web_wad_channel_title",
+              "size": "medium",
+              "max-length": 20
+            },
+            {
+              "name": "create_spoiler"
+            },
+            {
+              "name": "web_output_type"
+            }
+          ]
+        },
+        {
+          "name": "multiworld-section",
+          "text": "Multi-World Generation",
+          "subheader": "This is used for co-op generations. Increasing Player Count will drastically increase the generation time.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk-co-op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk-co-op</a>",
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "world_count",
+              "min": 1,
+              "max": 15,
+              "no-line-break": true
+            },
+            {
+              "name": "player_num",
+              "min": 1,
+              "max": 255
+            }
+          ]
+        },
+        {
+          "name": "preset-section",
+          "text": "Settings Presets",
+          "subheader": "Presets are settings that can be saved and loaded from.<br>Loading a preset will overwrite all settings that affect the seed.",
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "presets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "general-tab-web-patcher",
+      "text": "ROM Generation",
+      "app-type": "patcher",
+      "exclude-from-electron": true,
+      "sections": [
+        {
+          "name": "general-section",
+          "text": "",
+          "col-span": 4,
+          "row-span": 2,
+          "settings": [
+            {
+              "name": "rom",
+              "file-types": [
+                {
+                  "name": "ROM Files",
+                  "extensions": [ "z64", "n64" ]
+                },
+                {
+                  "name": "All Files",
+                  "extensions": [ "*" ]
+                }
+              ]
+            },
+            {
+              "name": "web_wad_file",
+              "file-types": [
+                {
+                  "name": "WAD Files",
+                  "extensions": [ "wad" ]
+                },
+                {
+                  "name": "All Files",
+                  "extensions": [ "*" ]
+                }
+              ]
+            },
+            {
+              "name": "web_common_key_file",
+              "file-types": [
+                {
+                  "name": "BIN Files",
+                  "extensions": [ "bin" ]
+                },
+                {
+                  "name": "All Files",
+                  "extensions": [ "*" ]
+                }
+              ]
+            },
+            {
+              "name": "web_common_key_string",
+              "size": "full",
+              "max-length": 32
+            },
+            {
+              "name": "web_wad_channel_id",
+              "size": "small",
+              "max-length": 4,
+              "no-line-break": true
+            },
+            {
+              "name": "web_wad_channel_title",
+              "size": "medium",
+              "max-length": 20
+            },
+            {
+              "name": "web_output_type"
+            }
+          ]
+        },
+        {
+          "name": "multiworld-section",
+          "text": "Multi-World Generation",
+          "subheader": "This is used for co-op generations.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk-co-op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk-co-op</a>",
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "player_num",
+              "min": 1,
+              "max": 255
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "main-tab",
+      "text": "Main Rules",
+      "app-type": "generator",
+      "sections": [
+        {
+          "name": "main-section",
+          "text": "",
+          "col-span": 4,
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "randomize_settings",
+              "controls-visibility-section": "open-section,shuffle-section,shuffle-dungeon-section",
+              "controls-visibility-setting": "all_reachable,bombchus_in_logic,one_item_per_dungeon,mq_dungeons_random,mq_dungeons"
+            }
+          ]
+        },
+        {
+          "name": "open-section",
+          "text": "Open",
+          "row-span": 6,
+          "settings": [
+            {
+              "name": "open_forest"
+            },
+            {
+              "name": "open_door_of_time"
+            },
+            {
+              "name": "open_fountain"
+            },
+            {
+              "name": "gerudo_fortress"
+            },
+            {
+              "name": "bridge"
+            },
+            {
+              "name": "trials_random",
+              "controls-visibility-setting": "trials"
+            },
+            {
+              "name": "trials",
+              "min": 0,
+              "max": 6
+            }
+          ]
+        },
+        {
+          "name": "world-section",
+          "text": "World",
+          "row-span": 6,
+          "settings": [
+            {
+              "name": "logic_rules"
+            },
+            {
+              "name": "all_reachable"
+            },
+            {
+              "name": "bombchus_in_logic"
+            },
+            {
+              "name": "one_item_per_dungeon"
+            },
+            {
+              "name": "mq_dungeons_random",
+              "controls-visibility-setting": "mq_dungeons"
+            },
+            {
+              "name": "mq_dungeons",
+              "min": 0,
+              "max": 12
+            }
+          ]
+        },
+        {
+          "name": "shuffle-section",
+          "text": "Shuffle",
+          "row-span": 6,
+          "settings": [
+            {
+              "name": "shuffle_kokiri_sword"
+            },
+            {
+              "name": "shuffle_ocarinas"
+            },
+            {
+              "name": "shuffle_weird_egg"
+            },
+            {
+              "name": "shuffle_gerudo_card"
+            },
+            {
+              "name": "shuffle_song_items"
+            },
+            {
+              "name": "shuffle_cows"
+            },
+            {
+              "name": "shuffle_beans"
+            },
+            {
+              "name": "entrance_shuffle"
+            },
+            {
+              "name": "shuffle_scrubs"
+            },
+            {
+              "name": "shopsanity"
+            },
+            {
+              "name": "tokensanity"
+            }
+          ]
+        },
+        {
+          "name": "shuffle-dungeon-section",
+          "text": "Shuffle Dungeon Items",
+          "row-span": 6,
+          "settings": [
+            {
+              "name": "shuffle_mapcompass"
+            },
+            {
+              "name": "shuffle_smallkeys"
+            },
+            {
+              "name": "shuffle_bosskeys"
+            },
+            {
+              "name": "enhance_map_compass"
+            },
+            {
+              "name": "unlocked_ganondorf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "detailed-tab",
+      "text": "Detailed Logic",
+      "app-type": "generator",
+      "sections": [
+        {
+          "name": "disabled-locations-section",
+          "text": "Exclude Locations",
+          "col-span": 2,
+          "row-span": 6,
+          "settings": [
+            {
+              "name": "disabled_locations"
+            }
+          ]
+        },
+        {
+          "name": "allowed-tricks-section",
+          "text": "Enable Tricks",
+          "col-span": 2,
+          "row-span": 6,
+          "settings": [
+            {
+              "name": "allowed_tricks"
+            }
+          ]
+        },
+        {
+          "name": "ats",
+          "text": "Adult Trade Sequence",
+          "col-span": 2,
+          "row-span": 4,
+          "settings": [
+            {
+              "name": "logic_earliest_adult_trade",
+              "no-line-break": "true"
+            },
+            {
+              "name": "logic_latest_adult_trade",
+              "no-line-break": true
+            }
+          ]
+        },
+        {
+          "name": "lens",
+          "text": "Lens of Truth",
+          "col-span": 2,
+          "row-span": 4,
+          "settings": [
+            {
+              "name": "logic_lens"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "other-tab",
+      "text": "Other",
+      "app-type": "generator",
+      "sections": [
+        {
+          "name": "speedup-section",
+          "text": "Timesavers",
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "no_escape_sequence"
+            },
+            {
+              "name": "no_guard_stealth"
+            },
+            {
+              "name": "no_epona_race"
+            },
+            {
+              "name": "useful_cutscenes"
+            },
+            {
+              "name": "fast_chests"
+            },
+            {
+              "name": "logic_no_night_tokens_without_suns_song"
+            },
+            {
+              "name": "free_scarecrow"
+            },
+            {
+              "name": "start_with_fast_travel"
+            },
+            {
+              "name": "start_with_rupees"
+            },
+            {
+              "name": "start_with_wallet"
+            },
+            {
+              "name": "start_with_deku_equipment"
+            },
+            {
+              "name": "fast_chickens"
+            },
+            {
+              "name": "big_poe_count_random",
+              "controls-visibility-setting": "big_poe_count"
+            },
+            {
+              "name": "big_poe_count",
+              "min": 1,
+              "max": 10
+            }
+          ]
+        },
+        {
+          "name": "misc-section",
+          "text": "Misc",
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "ocarina_songs"
+            },
+            {
+              "name": "correct_chest_sizes"
+            },
+            {
+              "name": "clearer_hints"
+            },
+            {
+              "name": "hints"
+            },
+            {
+              "name": "hint_dist"
+            },
+            {
+              "name": "text_shuffle"
+            },
+            {
+              "name": "junk_ice_traps"
+            },
+            {
+              "name": "item_pool_value"
+            },
+            {
+              "name": "damage_multiplier"
+            },
+            {
+              "name": "starting_tod"
+            },
+            {
+              "name": "starting_age"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cosmetics-tab",
+      "text": "Cosmetics",
+      "is-cosmetics": true,
+      "sections": [
+        {
+          "name": "generalcosmetics-section",
+          "text": "General",
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "default_targeting"
+            },
+            {
+              "name": "display_dpad"
+            }
+          ]
+        },
+        {
+          "name": "tunics-section",
+          "text": "Tunics",
+          "is-colors": true,
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "kokiri_color"
+            },
+            {
+              "name": "goron_color"
+            },
+            {
+              "name": "zora_color"
+            }
+          ]
+        },
+        {
+          "name": "swordtrail-section",
+          "text": "Sword Trail Colors",
+          "is-colors": true,
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "sword_trail_duration"
+            },
+            {
+              "name": "sword_trail_color_inner"
+            },
+            {
+              "name": "sword_trail_color_outer"
+            }
+          ]
+        },
+        {
+          "name": "ui-section",
+          "text": "UI Colors",
+          "is-colors": true,
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "heart_color"
+            },
+            {
+              "name": "magic_color"
+            }
+          ]
+        },
+        {
+          "name": "navi-section",
+          "text": "Navi Colors",
+          "is-colors": true,
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "navi_color_default"
+            },
+            {
+              "name": "navi_color_enemy"
+            },
+            {
+              "name": "navi_color_npc"
+            },
+            {
+              "name": "navi_color_prop"
+            }
+          ]
+        },
+        {
+          "name": "gauntlet-section",
+          "text": "Gauntlet Colors",
+          "is-colors": true,
+          "row-span": 1,
+          "settings": [
+            {
+              "name": "silver_gauntlets_color"
+            },
+            {
+              "name": "golden_gauntlets_color"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sfx-tab",
+      "text": "SFX",
+      "is-cosmetics": true,
+      "sections": [
+        {
+          "name": "generalsfx-section",
+          "text": "General",
+          "is-sfx": true,
+          "row-span": 3,
+          "settings": [
+            {
+              "name": "background_music"
+            },
+            {
+              "name": "sfx_low_hp"
+            },
+            {
+              "name": "sfx_horse_neigh"
+            },
+            {
+              "name": "sfx_nightfall"
+            },
+            {
+              "name": "sfx_hover_boots"
+            },
+            {
+              "name": "sfx_ocarina"
+            }
+          ]
+        },
+        {
+          "name": "menusfx-section",
+          "text": "Menu",
+          "is-sfx": true,
+          "row-span": 3,
+          "settings": [
+            {
+              "name": "sfx_menu_cursor"
+            },
+            {
+              "name": "sfx_menu_select"
+            }
+          ]
+        },
+        {
+          "name": "npcsfx-section",
+          "text": "NPC",
+          "is-sfx": true,
+          "row-span": 3,
+          "settings": [
+            {
+              "name": "sfx_navi_overworld"
+            },
+            {
+              "name": "sfx_navi_enemy"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

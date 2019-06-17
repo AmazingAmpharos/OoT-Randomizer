@@ -16,9 +16,6 @@ import { DialogWindow } from './dialogWindow/dialogWindow.component';
 import { ConfirmationWindow } from './confirmationWindow/confirmationWindow.component';
 import { TextInputWindow } from './textInputWindow/textInputWindow.component';
 
-import * as post from 'post-robot';
-
-
 @Component({
   selector: 'app-generator',
   styleUrls: ['./generator.component.scss'],
@@ -30,8 +27,8 @@ export class GeneratorComponent implements OnInit {
   tooltipComponent = GUITooltip;
 
   @ViewChild('refTabSet') tabSet: NbTabsetComponent;
-  activeTab: string = "ROM Options";
-  generatorBusy: boolean = false;
+  activeTab: string = "";
+  generatorBusy: boolean = true;
   settingsLocked: boolean = false;
 
   toggle: boolean = false;
@@ -79,6 +76,12 @@ export class GeneratorComponent implements OnInit {
 
     //Apply config on startup if ready or wait until ready event is fired
     if (this.global.getGlobalVar("appReady")) {
+
+      this.generatorBusy = false;
+
+      //Set active tab on boot
+      this.activeTab = this.global.getGlobalVar('generatorSettingsArray')[0].text;
+
       this.recheckAllSettings();
       this.cd.markForCheck();
       this.cd.detectChanges();
@@ -95,6 +98,11 @@ export class GeneratorComponent implements OnInit {
         //Ensure the GUI is rendered after the global config is loaded
         if (eventObj.name == "init_finished") {
           console.log("init finished event");
+
+          this.generatorBusy = false;
+
+          //Set active tab on boot
+          this.activeTab = this.global.getGlobalVar('generatorSettingsArray')[0].text;
 
           this.recheckAllSettings();
           this.cd.markForCheck();
@@ -122,7 +130,7 @@ export class GeneratorComponent implements OnInit {
     }, 0);
   }
 
-  generateSeed(fromPatchFile: boolean = false) {
+  generateSeed(fromPatchFile: boolean = false, webRaceSeed: boolean = false) {
 
     this.generateSeedButtonEnabled = false;
 
@@ -136,10 +144,12 @@ export class GeneratorComponent implements OnInit {
         autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dashboardRef: this }
       });
 
-      this.global.generateSeed(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
+      this.global.generateSeedElectron(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
         console.log('Gen Success');
 
         this.generateSeedButtonEnabled = true;
+        this.cd.markForCheck();
+        this.cd.detectChanges();
 
         if (dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance) {
           dialogRef.componentRef.instance.progressStatus = 1;
@@ -152,6 +162,8 @@ export class GeneratorComponent implements OnInit {
         console.log('Gen Error');
 
         this.generateSeedButtonEnabled = true;
+        this.cd.markForCheck();
+        this.cd.detectChanges();
 
         if (dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance) {
           dialogRef.componentRef.instance.progressStatus = -1;
@@ -162,19 +174,61 @@ export class GeneratorComponent implements OnInit {
       });
     }
     else { //Web
-      this.global.generateSeed(null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
-        console.log('Success');
-        this.generateSeedButtonEnabled = true;
+
+      this.global.generateSeedWeb(webRaceSeed, this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(seedID => {
+
+        //Save last seed id in browser cache
+        localStorage.setItem("lastSeed", seedID);
+
+        //Re-direct to seed (waiting) page
+        let seedURL = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/get?id=" + seedID;
+
+        console.log('Success, will re-direct to:', seedURL);
+
+        setTimeout(() => {
+          (<any>window).location.href = seedURL;
+        }, 250);
+
       }).catch((err) => {
         console.log('Gen Error');
+
+        if (err.status == 403) { //Rate Limited
+          this.dialogService.open(DialogWindow, {
+            autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: "You may only generate one seed per minute to prevent spam!" }
+          });
+        }
+        else {
+          this.dialogService.open(DialogWindow, {
+            autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: err.error && typeof (err.error) == "string" ? err.error : err.message }
+          });
+        }
+
         this.generateSeedButtonEnabled = true;
+        this.cd.markForCheck();
+        this.cd.detectChanges();
       });
     }
   }
 
-  async cancelGeneration() {
+  async cancelGeneration() { //Electron only
     console.log("Cancel active generation");
-    return await this.global.cancelGenerateSeed();
+    return await this.global.cancelGenerateSeedElectron();
+  }
+
+  patchROM() { //Web only
+
+    this.generateSeedButtonEnabled = false;
+
+    console.log("Patch ROM");
+
+    this.global.patchROMWeb();
+
+    //No callback, just deactivate button for 1 second
+    setTimeout(() => {
+      this.generateSeedButtonEnabled = true;
+      this.cd.markForCheck();
+      this.cd.detectChanges();
+    }, 1000);
   }
 
   copySettingsString() {
@@ -447,29 +501,79 @@ export class GeneratorComponent implements OnInit {
 
   changeFooterTabSelection(event) {
 
-    if (event.tabTitle === "Generate From File") {
+    if (this.global.getGlobalVar('electronAvailable')) { //Electron
 
-      let visibilityUpdates = [];
-      visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
-      visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: false });
-      visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count" }, value: false });
+      if (event.tabTitle === "Generate From File") {
 
-      visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
-      visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
+        let visibilityUpdates = [];
+        visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
+        visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: false });
+        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count" }, value: false });
 
-      this.toggleVisibility(visibilityUpdates, false);
+        visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
+        visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
+
+        this.toggleVisibility(visibilityUpdates, false);
+      }
+      else if (event.tabTitle === "Generate From Seed") {
+
+        let visibilityUpdates = [];
+        visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
+        visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: true });
+        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count" }, value: true });
+
+        visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: true });
+        visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: true });
+
+        this.toggleVisibility(visibilityUpdates, false);
+      }
     }
-    else if (event.tabTitle === "Generate From Seed") {
+    else { //Web
 
-      let visibilityUpdates = [];
-      visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
-      visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: true });
-      visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count" }, value: true });
+      if (this.global.getGlobalVar("appType") == "generator") {
 
-      visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: true });
-      visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: true });
+        if (event.tabTitle === "Generate From File") {
 
-      this.toggleVisibility(visibilityUpdates, false);
+          let visibilityUpdates = [];
+          visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
+          visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: false });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count" }, value: false });
+
+          visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: true });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: this.global.generator_settingsMap['web_output_type'] == "wad" });
+
+          visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
+
+          this.toggleVisibility(visibilityUpdates, false);
+        }
+        else if (event.tabTitle === "Generate From Seed") {
+
+          let visibilityUpdates = [];
+          visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
+          visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: true });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count" }, value: true });
+
+          visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: false });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: false });
+
+          visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: true });
+
+          this.toggleVisibility(visibilityUpdates, false);
+        }
+      }
+      else if (this.global.getGlobalVar("appType") == "patcher") {
+
+        if (event.tabTitle === "Generate From File") {
+
+          let visibilityUpdates = [];
+          visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
+
+          visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: true });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: this.global.generator_settingsMap['web_output_type'] == "wad" });
+
+          this.toggleVisibility(visibilityUpdates, false);
+        }
+      }
     }
   }
 
@@ -477,7 +581,9 @@ export class GeneratorComponent implements OnInit {
 
     let visibilityUpdates = [];
     visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: value });
-    visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: value });
+
+    if (this.global.getGlobalVar('electronAvailable')) //Create Cosmetics Log is Electron only
+      visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: value });
 
     this.toggleVisibility(visibilityUpdates, false);
     this.afterSettingChange(true);
@@ -539,6 +645,10 @@ export class GeneratorComponent implements OnInit {
 
   findOption(options: any, optionName: string) {
     return options.find(option => { return option.name == optionName });
+  }
+
+  getVariableType(variable: any) {
+    return typeof (variable);
   }
 
   checkVisibility(newValue: any, setting: any, option: any = null, refColorPicker: HTMLInputElement = null, disableOnly: boolean = false, noValueChange: boolean = false) {

@@ -348,19 +348,29 @@ export class GUIGlobal {
   parseGeneratorGUISettings(guiSettings, userSettings) {
 
     //console.log(guiSettings);
-    console.log("userSettings", userSettings);
+    //console.log("userSettings", userSettings);
 
-    this.setGlobalVar('generatorSettingsArray', guiSettings.settingsArray);
-    this.setGlobalVar('generatorSettingsObj', guiSettings.settingsObj);
-    this.setGlobalVar('generatorCosmeticsArray', guiSettings.cosmeticsArray);
-    this.setGlobalVar('generatorCosmeticsObj', guiSettings.cosmeticsObj);
-
-    this.generator_presets = guiSettings.presets;
-
-    var isRGBHex = /[0-9A-Fa-f]{6}/g;
+    const isRGBHex = /[0-9A-Fa-f]{6}/g;
 
     //Intialize settings maps
-    guiSettings.settingsArray.forEach(tab => {
+    for (let tabIndex = 0; tabIndex < guiSettings.settingsArray.length; tabIndex++) {
+      let tab = guiSettings.settingsArray[tabIndex];
+
+      //Skip tabs that don't belong to this app and delete them from the guiSettings
+      if ("app_type" in tab && tab.app_type && tab.app_type != this.getGlobalVar("appType")) {
+
+        guiSettings.settingsArray.splice(tabIndex, 1);
+        tabIndex--;
+
+        let index = guiSettings.cosmeticsArray.findIndex(entry => entry.name == tab.name);
+        if (index != -1)
+          guiSettings.cosmeticsArray.splice(index, 1);
+
+        delete guiSettings.settingsObj[tab.name];
+        delete guiSettings.cosmeticsObj[tab.name];
+
+        continue;
+      }
 
       this.generator_tabsVisibilityMap[tab.name] = true;
 
@@ -406,7 +416,7 @@ export class GUIGlobal {
           }
         });
       });
-    });
+    }
 
     //Add GUI only options
     this.generator_settingsMap["settings_string"] = userSettings && "settings_string" in userSettings ? userSettings["settings_string"] : "";
@@ -419,6 +429,14 @@ export class GUIGlobal {
     this.generator_settingsVisibilityMap["repatch_cosmetics"] = true;
 
     console.log(this.generator_settingsMap);
+
+    //Save settings after parsing them
+    this.setGlobalVar('generatorSettingsArray', guiSettings.settingsArray);
+    this.setGlobalVar('generatorSettingsObj', guiSettings.settingsObj);
+    this.setGlobalVar('generatorCosmeticsArray', guiSettings.cosmeticsArray);
+    this.setGlobalVar('generatorCosmeticsObj', guiSettings.cosmeticsObj);
+
+    this.generator_presets = guiSettings.presets;
   }
 
   async versionCheck() { //Electron only
@@ -547,7 +565,7 @@ export class GUIGlobal {
     });
   }
 
-  createSettingsFileObject(includeFromPatchFileSettings: boolean = true, sanitizeForPreset: boolean = false, sanitizeForBrowserCache: boolean = false) {
+  createSettingsFileObject(includeFromPatchFileSettings: boolean = true, includeSeedSettingsOnly: boolean = false, sanitizeForBrowserCache: boolean = false) {
 
     let settingsFile: any = {};
 
@@ -590,8 +608,10 @@ export class GUIGlobal {
       delete settingsFile["repatch_cosmetics"];
     }
 
-    //Keys not saved in presets
-    if (sanitizeForPreset) {
+    //Delete keys not included in the seed
+    if (includeSeedSettingsOnly) {
+      delete settingsFile["patch_file"];
+      delete settingsFile["repatch_cosmetics"];
       delete settingsFile["cosmetics_only"];
       delete settingsFile["distribution_file"];
       delete settingsFile["checked_version"];
@@ -599,7 +619,6 @@ export class GUIGlobal {
       delete settingsFile["output_dir"];
       delete settingsFile["output_file"];
       delete settingsFile["count"];
-      delete settingsFile["world_count"];
       delete settingsFile["player_num"];
       delete settingsFile["create_cosmetics_log"];
       delete settingsFile["compress_rom"];
@@ -613,17 +632,36 @@ export class GUIGlobal {
           });
         });      
       });
+
+      //Web only keys
+      if (!this.getGlobalVar('electronAvailable')) {
+        delete settingsFile["web_wad_file"];
+        delete settingsFile["web_common_key_file"];
+        delete settingsFile["web_common_key_string"];
+        delete settingsFile["web_wad_channel_id"];
+        delete settingsFile["web_wad_channel_title"];
+        delete settingsFile["web_output_type"];
+      }
     }
 
     //Delete keys the browser can't save (web only)
     if (sanitizeForBrowserCache) {
-      delete settingsFile["rom"];
-      delete settingsFile["patch_file"];
-      delete settingsFile["distribution_file"];
-      //ToDo: Add WAD file settings here
-    }
 
-    //ToDo: Possibly Delete additional new keys in web mode
+      if (settingsFile["rom"] && typeof (settingsFile["rom"]) == "object") //File objects can not be saved due browser sandbox
+        delete settingsFile["rom"];
+
+      if (settingsFile["patch_file"] && typeof (settingsFile["patch_file"]) == "object")
+        delete settingsFile["patch_file"];
+
+      if (settingsFile["distribution_file"] && typeof (settingsFile["distribution_file"]) == "object")
+        delete settingsFile["distribution_file"];
+
+      if (settingsFile["web_wad_file"] && typeof (settingsFile["web_wad_file"]) == "object")
+        delete settingsFile["web_wad_file"];
+
+      if (settingsFile["web_common_key_file"] && typeof (settingsFile["web_common_key_file"]) == "object")
+        delete settingsFile["web_common_key_file"];
+    }
 
     return settingsFile;
   }
@@ -649,7 +687,7 @@ export class GUIGlobal {
 
       if (self.getGlobalVar('electronAvailable')) { //Electron
 
-        post.send(window, 'convertSettingsToString', self.createSettingsFileObject()).then(event => {
+        post.send(window, 'convertSettingsToString', self.createSettingsFileObject(false, true)).then(event => {
 
           console.log("returned, wait for success");
 
@@ -684,7 +722,7 @@ export class GUIGlobal {
         let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/settings/parse?version=" + (self.getGlobalVar("webIsMasterVersion") ? "" : "dev_") + self.getGlobalVar("webSourceVersion").replace(/ /g, "_");
         console.log("Request string from:", url);
 
-        self.http.post(url, JSON.stringify(self.createSettingsFileObject()), { responseType: "text", headers: { "Content-Type": "application/json" } }).toPromise().then(res => {
+        self.http.post(url, JSON.stringify(self.createSettingsFileObject(false, true, true)), { responseType: "text", headers: { "Content-Type": "application/json" } }).toPromise().then(res => {
           resolve(res);
         }).catch(err => {
           console.error(err);
@@ -841,78 +879,72 @@ export class GUIGlobal {
     }
   }
 
-  generateSeed(progressWindowRef: ProgressWindow, fromPatchFile: boolean = false, useStaticSeed: string = "") {
+  generateSeedElectron(progressWindowRef: ProgressWindow, fromPatchFile: boolean = false, useStaticSeed: string = "") { //Electron only
     var self = this;
 
     return new Promise(function (resolve, reject) {
 
-      if (self.getGlobalVar('electronAvailable')) { //Electron
+      post.send(window, 'generateSeed', { settingsFile: self.createSettingsFileObject(fromPatchFile), staticSeed: useStaticSeed }).then(event => {
 
-        post.send(window, 'generateSeed', { settingsFile: self.createSettingsFileObject(fromPatchFile), staticSeed: useStaticSeed }).then(event => {
+        console.log("returned, start progress window");
 
-          console.log("returned, start progress window");
+        var listenerProgress = post.on('generateSeedProgress', function (event) {
 
-          var listenerProgress = post.on('generateSeedProgress', function (event) {
+          let data = event.data;
 
-            let data = event.data;
+          console.log("progress report", data);
 
-            console.log("progress report", data);
-
-            if (progressWindowRef) {
-              progressWindowRef.progressPercentage = data.progress;
-              progressWindowRef.progressMessage = data.message;
-              progressWindowRef.refreshLayout();
-            }
-          });
-
-          var listenerSuccess = post.once('generateSeedSuccess', function (event) {
-
-            listenerProgress.cancel();
-            listenerCancel.cancel();
-            listenerError.cancel();
-
-            let data = event.data;
-
-            console.log("success", data);
-
-            resolve();
-          });
-
-          var listenerError = post.once('generateSeedError', function (event) {
-
-            listenerProgress.cancel();
-            listenerCancel.cancel();
-            listenerSuccess.cancel();
-
-            let data = event.data;
-
-            console.log("error", data);
-
-            reject(data);
-          });
-
-          var listenerCancel = post.once('generateSeedCancelled', function (event) {
-
-            listenerProgress.cancel();
-            listenerSuccess.cancel();
-            listenerError.cancel();
-
-            console.log("user cancelled");
-
-            reject("Generation cancelled.");
-          });
-        }).catch(err => {
-          console.error(err);
-          reject(err);
+          if (progressWindowRef) {
+            progressWindowRef.progressPercentage = data.progress;
+            progressWindowRef.progressMessage = data.message;
+            progressWindowRef.refreshLayout();
+          }
         });
-      }
-      else { //Web
-        //ToDo: Add
-      }
+
+        var listenerSuccess = post.once('generateSeedSuccess', function (event) {
+
+          listenerProgress.cancel();
+          listenerCancel.cancel();
+          listenerError.cancel();
+
+          let data = event.data;
+
+          console.log("success", data);
+
+          resolve();
+        });
+
+        var listenerError = post.once('generateSeedError', function (event) {
+
+          listenerProgress.cancel();
+          listenerCancel.cancel();
+          listenerSuccess.cancel();
+
+          let data = event.data;
+
+          console.log("error", data);
+
+          reject(data);
+        });
+
+        var listenerCancel = post.once('generateSeedCancelled', function (event) {
+
+          listenerProgress.cancel();
+          listenerSuccess.cancel();
+          listenerError.cancel();
+
+          console.log("user cancelled");
+
+          reject("Generation cancelled.");
+        });
+      }).catch(err => {
+        console.error(err);
+        reject(err);
+      });
     });
   }
 
-  async cancelGenerateSeed() { //Electron only
+  async cancelGenerateSeedElectron() { //Electron only
 
     if (!this.getGlobalVar('electronAvailable'))
       throw Error("electron_not_available");
@@ -931,5 +963,56 @@ export class GUIGlobal {
       console.error("couldn't cancel due post error", err);
       throw Error(err);
     }
+  }
+
+  generateSeedWeb(raceSeed: boolean = false, useStaticSeed: string = "") { //Web only
+    var self = this;
+
+    return new Promise<any>(function (resolve, reject) {
+
+      let settingsFile = self.createSettingsFileObject(false, false, true);
+
+      if (raceSeed) {
+        useStaticSeed = ""; //Static seeds aren't allowed in race mode
+        settingsFile["create_spoiler"] = true; //Force spoiler mode to on
+        settingsFile["encrypt"] = true;
+      }
+      else {
+        delete settingsFile["encrypt"];
+      }
+
+      if (useStaticSeed) {
+        console.log("Use Static Seed:", useStaticSeed);
+        settingsFile["seed"] = useStaticSeed;
+      }
+      else {
+        delete settingsFile["seed"];
+      }
+
+      console.log(settingsFile);
+      console.log("Race Seed:", raceSeed);
+
+      //Request Seed Generation
+      let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/create?version=" + (self.getGlobalVar("webIsMasterVersion") ? "" : "dev_") + self.getGlobalVar("webSourceVersion").replace(/ /g, "_");
+      console.log("Request seed id from:", url);
+
+      self.http.post(url, JSON.stringify(settingsFile), { responseType: "text", headers: { "Content-Type": "application/json" } }).toPromise().then(res => {
+        resolve(res);
+      }).catch(err => {
+        console.error(err);
+        reject(err);
+      });
+    });
+  }
+
+  patchROMWeb() { //Web only
+ 
+    let settingsFile = this.createSettingsFileObject();
+    console.log(settingsFile);
+
+    if (typeof (<any>window).patchROM === "function") //Try to call patchROM function on the DOM
+      (<any>window).patchROM(5, settingsFile); //Patch Version 5
+    else
+      console.error("Patcher not available");
   }
 }
