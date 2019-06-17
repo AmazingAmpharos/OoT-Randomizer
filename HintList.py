@@ -242,7 +242,7 @@ hintTable = {
     'Hyrule Castle Grounds -> Castle Storms Grotto':            ("a #storm near the castle# reveals", None, 'entrance'),
     'Desert Colossus -> Colossus Fairy':                        ("a fractured wall #in the desert# hides", None, 'entrance'),
     'Ganons Castle Grounds -> Ganons Castle Fairy':             ("a heavy pillar #outside the castle# obstructs", None, 'entrance'),
-    'Death Mountain Crater Lower -> Crater Fairy':              ("using a hammer #in the Crater# opens the path to", None, 'entrance'),
+    'Death Mountain Crater Lower Limited -> Crater Fairy':      ("using a hammer #in the Crater# opens the path to", None, 'entrance'),
     'Zoras Fountain -> Zoras Fountain Fairy':                   ("a particular wall in #Zora's Fountain# hides", None, 'entrance'),
     'Gerudo Valley Far Side -> Carpenter Tent':                 ("a #tent in the valley# covers", None, 'entrance'),
     'Shadow Temple Warp Region -> Shadow Temple Entryway':      ("at the back of #the Graveyard#, there is", None, 'entrance'),

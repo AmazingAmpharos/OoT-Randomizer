@@ -1227,26 +1227,58 @@
         }
     },
     {
+        "region_name": "Death Mountain Crater Upper Limited",
+        "scene": "Death Mountain Crater",
+        "hint": "Death Mountain Crater",
+        "exits": {
+            "Death Mountain Crater Upper": "can_use(Goron_Tunic)",
+            "Death Mountain Summit": "True",
+            "Top of Crater Grotto": "here(can_blast_or_smash)"
+        }
+    },
+    {
         "region_name": "Death Mountain Crater Upper",
         "scene": "Death Mountain Crater",
         "hint": "Death Mountain Crater",
         "locations": {
             "DM Crater Wall Freestanding PoH": "True",
             "GS Death Mountain Crater Crate": "is_child and can_child_attack",
-            "DMC Deku Scrub Bombs": "is_child and can_stun_deku",
             "Death Mountain Crater Gossip Stone": "has_explosives",
             "Gossip Stone Fairy": "has_explosives and can_summon_gossip_fairy and has_bottle"
         },
         "exits": {
-            "Death Mountain Summit": "True",
-            "Death Mountain Crater Lower": "
-                can_use(Hover_Boots) or
-                (logic_crater_upper_to_lower and can_use(Hammer))",
+            "Death Mountain Crater Upper Limited": "True",
+            "Death Mountain Crater Lower Ladder Area": "True",
             "Death Mountain Crater Central": "
                 can_use(Goron_Tunic) and can_use(Distant_Scarecrow) and 
                 ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
-                    has_fairy or can_use(Nayrus_Love))",
-            "Top of Crater Grotto": "here(can_blast_or_smash)"
+                    has_fairy or can_use(Nayrus_Love))"
+        }
+    },
+    {
+        "region_name": "Death Mountain Crater Lower Ladder Area",
+        "scene": "Death Mountain Crater",
+        "hint": "Death Mountain Crater",
+        "locations": {
+            "DMC Deku Scrub Bombs": "is_child and can_stun_deku"
+        },
+        "exits": {
+            "Death Mountain Crater Upper Limited": "is_adult",
+            "Death Mountain Crater Lower Limited": "
+                can_use(Hover_Boots) or
+                (logic_crater_upper_to_lower and can_use(Hammer))"
+        }
+    },
+    {
+        "region_name": "Death Mountain Crater Lower Limited",
+        "scene": "Death Mountain Crater",
+        "hint": "Death Mountain Crater",
+        "exits": {
+            "Death Mountain Crater Lower": "can_use(Goron_Tunic)",
+            "Darunias Chamber": "True",
+            "Crater Fairy": "can_use(Hammer)",
+            "DMC Hammer Grotto": "can_use(Hammer)",
+            "Death Mountain Crater Central Limited": "can_use(Hover_Boots) or can_use(Hookshot)"
         }
     },
     {
@@ -1254,12 +1286,26 @@
         "scene": "Death Mountain Crater",
         "hint": "Death Mountain Crater",
         "exits": {
-            "Darunias Chamber": "True",
-            "Crater Fairy": "can_use(Hammer)",
-            "Death Mountain Crater Central": "
-                can_use(Hover_Boots) or can_use(Hookshot)",
-            "Death Mountain Crater Upper": "is_adult",
-            "DMC Hammer Grotto": "can_use(Hammer)"
+            "Death Mountain Crater Lower Limited": "True",
+            "Death Mountain Crater Lower Ladder Area": "True",
+            "Fire Temple Entrance": "
+                (can_use(Hover_Boots) or can_use(Hookshot)) and
+                (logic_fewer_tunic_requirements or can_use(Goron_Tunic))"
+        }
+    },
+    {
+        "region_name": "Death Mountain Crater Central Limited",
+        "scene": "Death Mountain Crater",
+        "hint": "Death Mountain Crater",
+        "locations": {
+            "DM Crater Volcano Freestanding PoH": "
+                is_adult and
+                (here(can_plant_bean) or 
+                    (logic_crater_bean_poh_with_hovers and Hover_Boots))",
+            "Sheik in Crater": "is_adult"
+        },
+        "exits": {
+            "Death Mountain Crater Central": "can_use(Goron_Tunic)"
         }
     },
     {
@@ -1267,22 +1313,26 @@
         "scene": "Death Mountain Crater",
         "hint": "Death Mountain Crater",
         "locations": {
-            "DM Crater Volcano Freestanding PoH": "
-                is_adult and
-                (here(can_plant_bean) or 
-                    (logic_crater_bean_poh_with_hovers and can_use(Hover_Boots)))",
-            "Sheik in Crater": "is_adult",
             "GS Mountain Crater Bean Patch": "can_plant_bugs and can_child_attack",
             "Bean Plant Fairy": "can_plant_bean and can_play(Song_of_Storms) and has_bottle"
         },
         "exits": {
-            "Death Mountain Crater Lower": "
+            "Death Mountain Crater Central Limited": "True",
+            "Death Mountain Crater Lower Limited": "
                 is_adult and
-                (can_use(Hover_Boots) or can_use(Hookshot) or
-                    here(can_plant_bean))",
-            "Fire Temple Lower": "
+                (can_use(Hover_Boots) or can_use(Hookshot) or here(can_plant_bean))",
+            "Death Mountain Crater Upper Limited": "is_adult and here(can_plant_bean)",
+            "Fire Temple Entrance": "
                 (is_child and shuffle_dungeon_entrances) or
                 (is_adult and (logic_fewer_tunic_requirements or can_use(Goron_Tunic)))"
+        }
+    },
+    {
+        "region_name": "Fire Temple Entrance",
+        "scene": "Death Mountain Crater",
+        "hint": "Death Mountain Crater",
+        "exits": {
+            "Fire Temple Lower": "True"
         }
     },
     {
