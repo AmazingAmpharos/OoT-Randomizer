@@ -1319,3 +1319,18 @@ skip_GS_BGS_text:
 .orga 0xEC1120  ; Gerudo Fighter
     jal     gerudo_caught_entrance
     nop
+
+; ==================================================================================================
+; Song of Storms Effect Trigger Changes
+; ==================================================================================================
+; Allow a storm to be triggered with the song in any environment
+; Replaces: lui     t5, 0x800F
+;           lbu     t5, 0x1648(t5)
+.orga 0xE6BF4C
+    li      t5, 0
+    nop
+
+; Remove the internal cooldown between storm effects (to open grottos, grow bean plants...)
+; Replaces: bnez     at, 0x80AECC6C
+.orga 0xE6BEFC
+    nop

@@ -1349,7 +1349,7 @@
             "Lake Hylia": "is_child and can_dive",
             "Zoras Domain Behind King Zora": "open_fountain or Deliver_Letter",
             "Zora Shop": "is_child or has_blue_fire",
-            "Zoras Domain Storms Grotto": "is_child and can_play(Song_of_Storms)"
+            "Zoras Domain Storms Grotto": "can_play(Song_of_Storms)"
         }
     },
     {
