@@ -191,7 +191,7 @@
         "exits": {
             "Lost Woods Beyond Mido": "True",
             "Sacred Forest Meadow": "
-                is_adult or has_slingshot or has_sticks or has_explosives or 
+                is_adult or has_slingshot or has_sticks or 
                 Kokiri_Sword or can_use(Dins_Fire)",
             "Front of Meadow Grotto": "can_blast_or_smash"
         }
@@ -1560,7 +1560,9 @@
     {
         "region_name": "Front of Meadow Grotto",
         "locations": {
-            "Wolfos Grotto Chest": "is_adult or can_child_attack"
+            "Wolfos Grotto Chest": "
+                is_adult or has_slingshot or has_sticks or 
+                Kokiri_Sword or can_use(Dins_Fire)"
         },
         "exits": {
             "Sacred Forest Meadow Entryway": "True"
