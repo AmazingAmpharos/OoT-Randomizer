@@ -143,7 +143,7 @@ export class GUIGlobal {
 
     if (this.getGlobalVar('electronAvailable')) { //Electron
       post.send(window, 'copyToClipboard', { content: content }).then(event => {
-        console.log('copied');
+        console.log('copied to clipboard');
       }).catch(err => {
         console.error(err);
       });
@@ -213,7 +213,7 @@ export class GUIGlobal {
       return;
 
     post.send(window, 'window-minimize').then(() => {
-      console.log('minimized');
+      console.log('window minimized');
     }).catch(err => {
       console.error(err);
     });
@@ -225,7 +225,7 @@ export class GUIGlobal {
       return;
 
     post.send(window, 'window-maximize').then(() => {
-      console.log('maximize state updated');
+      console.log('window maximize state updated');
     }).catch(err => {
       console.error(err);
     });
@@ -240,7 +240,7 @@ export class GUIGlobal {
       let event = await post.send(window, 'window-is-maximized');
       let res = event.data;
 
-      console.log("window maximized state:", res);
+      //console.log("window maximized state:", res);
       return res;
     }
     catch (err) {
@@ -259,7 +259,7 @@ export class GUIGlobal {
     setTimeout(() => {
 
       post.send(window, 'window-close').then(() => {
-        console.log('closed');
+        console.log('window closed');
       }).catch(err => {
         console.error(err);
       });
@@ -350,7 +350,7 @@ export class GUIGlobal {
     //console.log(guiSettings);
     //console.log("userSettings", userSettings);
 
-    const isRGBHex = /[0-9A-Fa-f]{6}/g;
+    const isRGBHex = /[0-9A-Fa-f]{6}/;
 
     //Intialize settings maps
     for (let tabIndex = 0; tabIndex < guiSettings.settingsArray.length; tabIndex++) {
@@ -396,9 +396,23 @@ export class GUIGlobal {
                 valueArray.push(optionEntry);
             });
 
-            console.log(setting.name, valueArray);
-
             this.generator_settingsMap[setting.name] = valueArray;
+          }
+          else if (setting.type == "Combobox" && userSettings && setting.name in userSettings) { //Ensure combobox option exists before applying it (in case of outdated settings being loaded)
+
+            if (section.is_colors && typeof (userSettings[setting.name]) == "string" && isRGBHex.test(userSettings[setting.name])) { //Custom Color is treated as an exception
+              this.generator_settingsMap[setting.name] = userSettings[setting.name];
+            }
+            else {
+              let optionEntry = setting.options.find(option => {
+                if (option.name == userSettings[setting.name])
+                  return true;
+
+                return false;
+              });
+
+              this.generator_settingsMap[setting.name] = optionEntry ? userSettings[setting.name] : setting.default;
+            }
           }
           else { //Everything else
             this.generator_settingsMap[setting.name] = userSettings && setting.name in userSettings ? userSettings[setting.name] : setting.default;
@@ -428,7 +442,7 @@ export class GUIGlobal {
     this.generator_settingsMap["repatch_cosmetics"] = userSettings && "repatch_cosmetics" in userSettings ? userSettings["repatch_cosmetics"] : false;
     this.generator_settingsVisibilityMap["repatch_cosmetics"] = true;
 
-    console.log(this.generator_settingsMap);
+    console.log("Settings Map", this.generator_settingsMap);
 
     //Save settings after parsing them
     this.setGlobalVar('generatorSettingsArray', guiSettings.settingsArray);
@@ -501,7 +515,7 @@ export class GUIGlobal {
     if (!settingsObj)
       return;
 
-    var isRGBHex = /[0-9A-Fa-f]{6}/g;
+    const isRGBHex = /[0-9A-Fa-f]{6}/;
 
     this.getGlobalVar('generatorSettingsArray').forEach(tab => {
       tab.sections.forEach(section => {
@@ -528,6 +542,18 @@ export class GUIGlobal {
 
               this.generator_settingsMap[setting.name] = valueArray;
             }
+            else if (setting.type == "Combobox") { //Ensure combobox option exists before applying it (in case of outdated settings being loaded)
+
+              let optionEntry = setting.options.find(option => {
+                if (option.name == settingsObj[setting.name])
+                  return true;
+
+                return false;
+              });
+
+              if (optionEntry)
+                this.generator_settingsMap[setting.name] = settingsObj[setting.name];
+            }
             else { //Everything else            
               this.generator_settingsMap[setting.name] = settingsObj[setting.name];
             }
@@ -535,8 +561,8 @@ export class GUIGlobal {
             //Color section handling
             if (section.is_colors) {
 
-              if (typeof (this.generator_settingsMap[setting.name]) == "string" && isRGBHex.test(this.generator_settingsMap[setting.name])) { //Resolve Custom Color
-                this.generator_customColorMap[setting.name] = "#" + this.generator_settingsMap[setting.name];
+              if (typeof (settingsObj[setting.name]) == "string" && isRGBHex.test(settingsObj[setting.name])) { //Resolve Custom Color
+                this.generator_customColorMap[setting.name] = "#" + settingsObj[setting.name];
                 this.generator_settingsMap[setting.name] = "Custom Color";
               }
               else {
@@ -670,7 +696,7 @@ export class GUIGlobal {
 
     if (this.getGlobalVar('electronAvailable')) { //Electron
       post.send(window, 'saveCurrentSettingsToFile', this.createSettingsFileObject()).then(event => {
-        console.log("success");
+        console.log("settings saved to file");
       }).catch(err => {
         console.error(err);
       });
@@ -689,16 +715,11 @@ export class GUIGlobal {
 
         post.send(window, 'convertSettingsToString', self.createSettingsFileObject(false, true)).then(event => {
 
-          console.log("returned, wait for success");
-
           var listenerSuccess = post.once('convertSettingsToStringSuccess', function (event) {
 
             listenerError.cancel();
 
             let data = event.data;
-
-            console.log("success");
-
             resolve(data);
           });
 
@@ -741,16 +762,11 @@ export class GUIGlobal {
 
         post.send(window, 'convertStringToSettings', settingsString).then(event => {
 
-          console.log("returned, wait for success");
-
           var listenerSuccess = post.once('convertStringToSettingsSuccess', function (event) {
 
             listenerError.cancel();
 
             let data = event.data;
-
-            console.log("success getting settings");
-
             resolve(data);
           });
 
@@ -856,7 +872,7 @@ export class GUIGlobal {
       let preset = this.generator_presets[presetKey];
 
       if (!("isNewPreset" in preset) && !("isDefaultPreset" in preset) && !("isProtectedPreset" in preset) && ("settings" in preset) && typeof (preset.settings) == "object" && Object.keys(preset.settings).length > 0) {
-        console.log("store " + presetKey, preset.settings);
+        //console.log("store " + presetKey, preset.settings);
         presetsFile[presetKey] = preset.settings;
       }
     });
@@ -868,7 +884,7 @@ export class GUIGlobal {
 
     if (this.getGlobalVar('electronAvailable')) { //Electron
       post.send(window, 'saveCurrentPresetsToFile', JSON.stringify(this.createPresetFileObject(), null, 4)).then(event => {
-        console.log("success");
+        console.log("presets saved to file");
       }).catch(err => {
         console.error(err);
       });
@@ -886,13 +902,11 @@ export class GUIGlobal {
 
       post.send(window, 'generateSeed', { settingsFile: self.createSettingsFileObject(fromPatchFile), staticSeed: useStaticSeed }).then(event => {
 
-        console.log("returned, start progress window");
-
         var listenerProgress = post.on('generateSeedProgress', function (event) {
 
           let data = event.data;
 
-          console.log("progress report", data);
+          //console.log("progress report", data);
 
           if (progressWindowRef) {
             progressWindowRef.progressPercentage = data.progress;
@@ -908,9 +922,6 @@ export class GUIGlobal {
           listenerError.cancel();
 
           let data = event.data;
-
-          console.log("success", data);
-
           resolve();
         });
 
@@ -923,7 +934,6 @@ export class GUIGlobal {
           let data = event.data;
 
           console.log("error", data);
-
           reject(data);
         });
 
@@ -932,8 +942,6 @@ export class GUIGlobal {
           listenerProgress.cancel();
           listenerSuccess.cancel();
           listenerError.cancel();
-
-          console.log("user cancelled");
 
           reject("Generation cancelled.");
         });
@@ -1008,7 +1016,6 @@ export class GUIGlobal {
   patchROMWeb() { //Web only
  
     let settingsFile = this.createSettingsFileObject();
-    console.log(settingsFile);
 
     if (typeof (<any>window).patchROM === "function") //Try to call patchROM function on the DOM
       (<any>window).patchROM(5, settingsFile); //Patch Version 5

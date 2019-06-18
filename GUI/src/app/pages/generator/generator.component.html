@@ -2,7 +2,7 @@
   <nb-card [ngClass]="{webLayout: !global.getGlobalVar('electronAvailable')}" [nbSpinner]="generatorBusy" nbSpinnerStatus="danger" nbSpinnerSize="large" nbSpinnerMessage="Please wait...">
     <nb-card-body *ngIf="global.getGlobalVar('appReady')">
       <nb-tabset *ngIf="global.getGlobalVar('generatorSettingsArray') && global.getGlobalVar('generatorSettingsArray').length > 0" #refTabSet class="settingsTabset" fullWidth>
-        <nb-tab *ngFor="let tab of global.getGlobalVar('generatorSettingsArray'); index as tabIndex" [disabled]="!global.generator_tabsVisibilityMap[tab.name]" [tabTitle]="tab.text" [active]="tabIndex==0" [nbSpinner]="settingsLocked" nbSpinnerStatus="primary" nbSpinnerSize="medium" nbSpinnerMessage="">
+        <nb-tab *ngFor="let tab of global.getGlobalVar('generatorSettingsArray'); index as tabIndex" [disabled]="!global.generator_tabsVisibilityMap[tab.name]" [tabTitle]="tab.text" [active]="tabIndex==0" [nbSpinner]="settingsBusy" nbSpinnerStatus="primary" nbSpinnerSize="medium" nbSpinnerMessage="">
           <mat-grid-list [responsiveCols]="{xs: 1, sm: 2, md: 4, lg: 4, xl: 4}" gutterSize="10px" rowHeight="fit">
             <mat-grid-tile #refEl *ngFor="let section of tab.sections; index as sectionIndex" [colspan]="getColumnWidth(refEl, tab.sections, sectionIndex, tab.sections.length, section['col_span'] ? section['col_span'] : 0)" [rowspan]="section.row_span">
               <mat-grid-tile-header *ngIf="section.text && section.text.length > 0">
@@ -175,7 +175,7 @@
           <ng-container *ngIf="!global.getGlobalVar('electronAvailable')">
             <input class="footerInputShort" type="text" maxlength="260" nbInput fieldSize="small" [(ngModel)]="global.generator_settingsMap['settings_string']" (ngModelChange)="afterSettingChange(true)">
             <button class="footerButton" nbButton status="info" size="small" (click)="copySettingsString()">Copy</button>
-            <button class="footerButton" nbButton status="info" size="small" (click)="getSettingsString()">Get</button>
+            <button class="footerButton" nbButton status="info" size="small" (click)="settingsBusy = true; getSettingsString()">Get</button>
             <button class="footerButton" nbButton status="info" size="small" (click)="importSettingsString()">Import</button>
             <!--Padding-->
             <div class="settingPadding"></div>

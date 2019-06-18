@@ -51,7 +51,7 @@ function romBuilding(pythonPath, randoPath, settings) {
     var compressionTotalFiles = -1;
     var compressionPercentagePerFile = -1;
 
-    console.log("Trigger spawn");
+    //console.log("Trigger spawn");
 
     //Using a user defined static seed
     if (seedString.length > 0) {
@@ -142,12 +142,12 @@ function romBuilding(pythonPath, randoPath, settings) {
     }
 
     romBuildingGenerator.stderr.on('data', data => {
-      console.log("stderr data", data.toString());
+      //console.log("stderr data", data.toString());
       handleMessage(data);    
     });
 
     romBuildingGenerator.stdout.on('data', data => {
-      console.log("stdout data", data.toString());
+      //console.log("stdout data", data.toString());
       handleMessage(data); 
     });
 
@@ -155,7 +155,7 @@ function romBuilding(pythonPath, randoPath, settings) {
 
     promiseFromChildProcess(romBuildingGenerator).then(function () {
 
-      console.log("Spawn Seed Generation finished");
+      //console.log("Spawn Seed Generation finished");
 
       if (romBuildingUserCancelled) {
 
@@ -245,7 +245,7 @@ function getSettings(pythonPath, randoPath, settingsString) {
 
     let args = ['--convert_settings', '--settings_string', settingsString];
 
-    console.log("Get settings now with spawn!");
+    //console.log("Get settings now with spawn!");
 
     let settingsPY = spawn(pythonPath + ' ' + randoPath, args, { shell: true }).on('error', err => {
       console.log("[getSettings] Error spawning process: ", err);
@@ -263,7 +263,7 @@ function getSettings(pythonPath, randoPath, settingsString) {
 
     promiseFromChildProcess(settingsPY).then(function () {
 
-      console.log("Get settings DONE!");
+      //console.log("Get settings DONE!");
 
       if (error)
         reject(output);
@@ -284,7 +284,7 @@ function parseSettings(pythonPath, randoPath) {
     let output = "";
     let error = false;
 
-    console.log("Parse settings now with spawn!");
+    //console.log("Parse settings now with spawn!");
 
     let args = ['--convert_settings'];
 
@@ -303,9 +303,8 @@ function parseSettings(pythonPath, randoPath) {
 
     promiseFromChildProcess(settingsPY).then(() => {
 
-      console.log("Settings fully parsed!");
-
-      console.log("output:" + output);
+      //console.log("Settings fully parsed!");
+      //console.log("output:" + output);
 
       if (error)
         reject(output);

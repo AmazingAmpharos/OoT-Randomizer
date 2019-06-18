@@ -146,7 +146,7 @@ app.on('web-contents-created', (event, contents) => {
   contents.on('will-navigate', (event, navigationUrl) => {
     const parsedUrl = new URL(navigationUrl);
 
-    console.log("Navigation attempt to:", parsedUrl.origin);
+    //console.log("Navigation attempt to:", parsedUrl.origin);
 
     //Whitelist for dev server in dev mode
     if (!isRelease) {
@@ -162,7 +162,7 @@ app.on('web-contents-created', (event, contents) => {
 
     const parsedUrl = new URL(navigationUrl);
 
-    console.log("New window creation attempt:", parsedUrl.origin);
+    //console.log("New window creation attempt:", parsedUrl.origin);
 
     //Whitelist for dev server in dev mode
     if (!isRelease) {
@@ -172,9 +172,6 @@ app.on('web-contents-created', (event, contents) => {
     }
         
     event.preventDefault();
-
-    console.log("Deferred to system browser");
-
     shell.openExternal(navigationUrl);
   });
 

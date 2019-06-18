@@ -3873,7 +3873,7 @@
       {
         "name": "logic_fewer_tunic_requirements",
         "text": "Fewer Tunic Requirements",
-        "tooltip": "Allows the following possible without Tunics: \r\n- Enter Water Temple. The key below the center pillar still requires Zora Tunic. \r\n- Enter Fire Temple. Only the first floor is accessible, and not Volvagia. \r\n- Zora's Fountain Bottom Freestanding PoH. Might not have enough health to resurface. \r\n- Gerudo Training Grounds Underwater Silver Rupee Chest. May need to make multiple trips."
+        "tooltip": "Allows the following possible without Tunics: <br>- Enter Water Temple. The key below the center pillar still requires Zora Tunic. <br>- Enter Fire Temple. Only the first floor is accessible, and not Volvagia. <br>- Zora's Fountain Bottom Freestanding PoH. Might not have enough health to resurface. <br>- Gerudo Training Grounds Underwater Silver Rupee Chest. May need to make multiple trips."
       },
       {
         "name": "logic_child_deadhand",
@@ -3908,7 +3908,7 @@
       {
         "name": "logic_rusted_switches",
         "text": "Hammer Rusted Switches Through Walls",
-        "tooltip": "Applies to: \r\n- Fire Temple Highest Goron Chest \r\n- MQ Fire Temple Lizalfos Maze\r\n- MQ Spirit Trial"
+        "tooltip": "Applies to: <br>- Fire Temple Highest Goron Chest <br>- MQ Fire Temple Lizalfos Maze<br>- MQ Spirit Trial"
       },
       {
         "name": "logic_botw_basement",
@@ -3963,7 +3963,7 @@
       {
         "name": "logic_water_bk_chest",
         "text": "Water Temple Boss Key Chest with No Additional Items",
-        "tooltip": "After reaching the Boss Key chest's area with Iron Boots and Longshot, the chest can be reached with no additional items aside from Small Keys. \r\nStand on the blue switch with the Iron Boots, wait for the water to rise all the way up, and then swim straight to the exit. You should grab the ledge as you surface. \r\nIt works best if you don't mash B."
+        "tooltip": "After reaching the Boss Key chest's area with Iron Boots and Longshot, the chest can be reached with no additional items aside from Small Keys. <br>Stand on the blue switch with the Iron Boots, wait for the water to rise all the way up, and then swim straight to the exit. You should grab the ledge as you surface. <br>It works best if you don't mash B."
       },
       {
         "name": "logic_adult_kokiri_gs",
@@ -3983,7 +3983,7 @@
       {
         "name": "logic_spirit_lobby_gs",
         "text": "Spirit Temple Main Room GS with Boomerang",
-        "tooltip": "Standing on the highest part of the arm of the statue, a precise Boomerang throw can kill and obtain this Gold Skulltula. \r\nYou must throw the Boomerang slightly off to the side so that it curves into the Skulltula, as aiming directly at it will clank off of the wall in front."
+        "tooltip": "Standing on the highest part of the arm of the statue, a precise Boomerang throw can kill and obtain this Gold Skulltula. <br>You must throw the Boomerang slightly off to the side so that it curves into the Skulltula, as aiming directly at it will clank off of the wall in front."
       },
       {
         "name": "logic_spirit_mq_sun_block_gs",
@@ -4003,12 +4003,12 @@
       {
         "name": "logic_fire_flame_maze",
         "text": "Fire Temple Flame Wall Maze Skip",
-        "tooltip": "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. To do it without taking damage is more precise.\r\nAllows you to progress without needing either a Small Key or Hover Boots."
+        "tooltip": "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. To do it without taking damage is more precise.<br>Allows you to progress without needing either a Small Key or Hover Boots."
       },
       {
         "name": "logic_fire_mq_flame_maze",
         "text": "Fire Temple MQ Flame Wall Maze Skip",
-        "tooltip": "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. To do it without taking damage is more precise.\r\nAllows you to reach a GS without needing either Song of Time or Hover Boots."
+        "tooltip": "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. To do it without taking damage is more precise.<br>Allows you to reach a GS without needing either Song of Time or Hover Boots."
       },
       {
         "name": "logic_fire_mq_near_boss",
@@ -4048,7 +4048,7 @@
       {
         "name": "logic_volvagia_jump",
         "text": "Reach Volvagia without Hover Boots or Pillar",
-        "tooltip": "The Fire Temple Boss Door can be reached with a precise jump.\r\nYou must be touching the side wall of the room so that Link will grab the ledge from farther away than is normally possible."
+        "tooltip": "The Fire Temple Boss Door can be reached with a precise jump.<br>You must be touching the side wall of the room so that Link will grab the ledge from farther away than is normally possible."
       },
       {
         "name": "logic_lab_diving",
@@ -4058,7 +4058,7 @@
       {
         "name": "logic_biggoron_bolero",
         "text": "Deliver Eye Drops with Bolero of Fire",
-        "tooltip": "If you do not wear the Goron Tunic, the heat timer inside the crater will override the trade item's timer.\r\nWhen you exit to Death Mountain Trail you will have one second to deliver the Eye Drops before the timer expires.\r\nIt works best if you play Bolero as quickly as possible upon receiving the Eye Drops.\r\nIf you have few hearts, there is enough time to dip Goron City to refresh the heat timer as long as you've already pulled the block."
+        "tooltip": "If you do not wear the Goron Tunic, the heat timer inside the crater will override the trade item's timer.<br>When you exit to Death Mountain Trail you will have one second to deliver the Eye Drops before the timer expires.<br>It works best if you play Bolero as quickly as possible upon receiving the Eye Drops.<br>If you have few hearts, there is enough time to dip Goron City to refresh the heat timer as long as you've already pulled the block."
       },
       {
         "name": "logic_wasteland_crossing",
@@ -4073,7 +4073,7 @@
       {
         "name": "logic_dc_scarecrow_gs",
         "text": "Dodongo's Cavern Scarecrow GS with Armos Statue",
-        "tooltip": "You can jump off an Armos Statue to reach the alcove with the Gold Skulltula. It takes quite a long time to pull the statue the entire way.\r\nThe jump to the alcove can be a pit picky when done as child."
+        "tooltip": "You can jump off an Armos Statue to reach the alcove with the Gold Skulltula. It takes quite a long time to pull the statue the entire way.<br>The jump to the alcove can be a pit picky when done as child."
       },
       {
         "name": "logic_kakariko_tower_gs",
@@ -4088,7 +4088,7 @@
       {
         "name": "logic_spirit_mq_lower_adult'",
         "text": "Spirit Temple MQ Lower Adult without Fire Arrows",
-        "tooltip": "It can be done with Din's Fire and Bow. Whenever an arrow passes through a lit torch, it resets the timer. \r\nIt's finicky but it's also possible to stand on the pillar next to the center torch, which makes it easier."
+        "tooltip": "It can be done with Din's Fire and Bow. Whenever an arrow passes through a lit torch, it resets the timer. <br>It's finicky but it's also possible to stand on the pillar next to the center torch, which makes it easier."
       },
       {
         "name": "logic_spirit_map_chest",
@@ -4098,17 +4098,17 @@
       {
         "name": "logic_spirit_sun_chest",
         "text": "Spirit Temple Sun Block Room Chest with Bow",
-        "tooltip": "Using the blocks in the room as platforms you can get lines of sight to all three torches.\r\nThe timer on the torches is quite short so you must move quickly in order to light all three."
+        "tooltip": "Using the blocks in the room as platforms you can get lines of sight to all three torches.<br>The timer on the torches is quite short so you must move quickly in order to light all three."
       },
       {
         "name": "logic_forest_outdoors_ledge",
         "text": "Forest Temple NE Outdoors Ledge with Hover Boots",
-        "tooltip": "With precise Hover Boots movement you can fall down to this ledge from upper balconies.\r\nIf done precisely enough, it is not necessary to take fall damage.\r\nIn MQ, this skips a Longshot requirement.\r\nIn Vanilla, this can skip a Hookshot requirement in entrance randomizer."
+        "tooltip": "With precise Hover Boots movement you can fall down to this ledge from upper balconies.<br>If done precisely enough, it is not necessary to take fall damage.<br>In MQ, this skips a Longshot requirement.<br>In Vanilla, this can skip a Hookshot requirement in entrance randomizer."
       },
       {
         "name": "logic_water_boss_key_region",
         "text": "Water Temple Boss Key Region with Hover Boots",
-        "tooltip": "With precise Hover Boots movement it is possible to reach the boss key chest's region without needing the Longshot.\r\nIt is not necessary to take damage from the spikes.\r\nThe Gold Skulltula Token in the following room can also be obtained with just the Hover Boots."
+        "tooltip": "With precise Hover Boots movement it is possible to reach the boss key chest's region without needing the Longshot.<br>It is not necessary to take damage from the spikes.<br>The Gold Skulltula Token in the following room can also be obtained with just the Hover Boots."
       },
       {
         "name": "logic_water_falling_platform_gs",
@@ -4148,17 +4148,22 @@
       {
         "name": "logic_fire_mq_bombable_chest",
         "text": "Fire Temple MQ Big Lava Room Bombable Chest without Hookshot",
-        "tooltip": "A precisely-angled jump can get over the wall of fire in this room.\r\nIt's expected that you will take damage as you do this. As it may take multiple attempts, you won't be expected to use a fairy to survive."
+        "tooltip": "A precisely-angled jump can get over the wall of fire in this room.<br>It's expected that you will take damage as you do this. As it may take multiple attempts, you won't be expected to use a fairy to survive."
       },
       {
         "name": "logic_light_trial_mq",
         "text": "Light Trial MQ without Hookshot",
-        "tooltip": "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you.\r\nIn this case it doesn't seem possible to do it without taking damage."
+        "tooltip": "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you.<br>In this case it doesn't seem possible to do it without taking damage."
       },
       {
         "name": "logic_ice_mq_scarecrow",
         "text": "Ice Cavern MQ Scarecrow GS with No Additional Items",
         "tooltip": "A precise jump can be used to reach this alcove."
+      },
+      {
+        "name": "logic_visible_collisions",
+        "text": "Pass Through Visible One-Way Collisions",
+        "tooltip": "Allows climbing through the platform to reach Impa's House Back as adult with no items and<br> going through the Kakariko Village Gate as child when coming from the Mountain Trail side."
       }
     ],
     "tooltip": null

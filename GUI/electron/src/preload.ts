@@ -205,16 +205,11 @@ post.on('browseForFile', function (event) {
   if (!data || typeof (data) != "object" || Object.keys(data).length != 1 || !data["fileTypes"] || typeof (data["fileTypes"]) != "object")
     return false;
 
-  console.log("browse for file", data);
-
   return electron.remote.dialog.showOpenDialog({ filters: data.fileTypes, properties: ["openFile", "treatPackageAsDirectory"]});
 });
 
 
 post.on('browseForDirectory', function (event) {
-
-  console.log("browse for dir");
-
   return electron.remote.dialog.showOpenDialog({ properties: ["openDirectory", "createDirectory", "treatPackageAsDirectory"] });
 });
 
@@ -224,8 +219,6 @@ post.on('createAndOpenPath', function (event) {
 
   if (!data || typeof (data) != "string" || data.length < 1)
     return false;
-
-  console.log("create and open dir");
 
   if (!path.isAbsolute(data))
     data = pythonSourcePath + data;
@@ -279,8 +272,6 @@ post.on('saveCurrentSettingsToFile', function (event) {
 
   //Write settings obj to settings.sav
   dumpSettingsToFile(data);
-
-  console.log("settings saved to .sav");
 });
 
 post.on('convertSettingsToString', function (event) {
@@ -293,10 +284,10 @@ post.on('convertSettingsToString', function (event) {
   //Write settings obj to settings.sav
   dumpSettingsToFile(data);
 
-  console.log("generate string with settings obj", data);
+  //console.log("generate string with settings obj", data);
 
   generator.parseSettings(pythonPath, pythonGeneratorPath).then(res => {
-    console.log('[Preload] Success');
+    //console.log('[Preload] Success');
 
     post.send(window, 'convertSettingsToStringSuccess', res);
   }).catch((err) => {
@@ -318,10 +309,10 @@ post.on('convertStringToSettings', function (event) {
   if (!data || typeof (data) != "string" || data.length < 1)
     return false;
 
-  console.log("get settings from string", data);
+  //console.log("get settings from string", data);
 
   generator.getSettings(pythonPath, pythonGeneratorPath, data).then(res => {
-    console.log('[Preload] Success');
+    //console.log('[Preload] Success');
 
     let settingsObj = parseRawSettings(res);
 
@@ -348,7 +339,7 @@ post.on('saveCurrentPresetsToFile', function (event) {
   //Write file contents to presets.sav
   dumpPresetsToFile(data);
 
-  console.log("presets saved to .sav");
+  //console.log("presets saved to .sav");
 });
 
 post.on('generateSeed', function (event) {
@@ -366,10 +357,10 @@ post.on('generateSeed', function (event) {
   //Write settings obj to settings.sav
   dumpSettingsToFile(settingsFile);
 
-  console.log("generate seed with settings:", data);
+  //console.log("generate seed with settings:", data);
 
   generator.romBuilding(pythonPath, pythonGeneratorPath, data).then(res => {
-    console.log('[Preload] Success');
+    //console.log('[Preload] Success');
     post.send(window, 'generateSeedSuccess', res);
   }).catch((err) => {
 
@@ -387,8 +378,6 @@ post.on('generateSeed', function (event) {
 });
 
 post.on('cancelGenerateSeed', function (event) {
-
-  console.log("cancel generation if one is in-progress");
 
   if (generator.cancelRomBuilding())
     return true;

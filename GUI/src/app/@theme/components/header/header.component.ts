@@ -29,14 +29,14 @@ export class HeaderComponent {
       this.global.globalEmitter.subscribe(eventObj => {
 
         if (eventObj.name == "window_maximized") {
-          console.log("maximized event");
+          //console.log("maximized event");
           this.isMaximized = true;
 
           this.cd.markForCheck();
           this.cd.detectChanges();
         }
         else if (eventObj.name == "window_unmaximized") {
-          console.log("unmaximized event");
+          //console.log("unmaximized event");
           this.isMaximized = false;
 
           this.cd.markForCheck();

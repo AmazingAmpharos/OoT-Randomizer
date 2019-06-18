@@ -28,13 +28,14 @@ export class GeneratorComponent implements OnInit {
 
   @ViewChild('refTabSet') tabSet: NbTabsetComponent;
   activeTab: string = "";
-  generatorBusy: boolean = true;
   settingsLocked: boolean = false;
 
-  toggle: boolean = false;
+  //Busy Spinners
+  generatorBusy: boolean = true;
+  settingsBusy: boolean = false;
+  settingsBusySaveOnly: boolean = true;
 
   //For KeyValue pipe
-  keepOriginalOrder = (a, b) => a.key;
   presetKeyOrder = (a, b) => { //SYSTEM PRESETS > BUILT-IN PRESETS > USER PRESETS
 
     if ("isNewPreset" in a.value) {
@@ -61,11 +62,9 @@ export class GeneratorComponent implements OnInit {
 
   //Local (non persistent) Variables
   seedString: string = "";
-
   generateSeedButtonEnabled: boolean = true;
 
   constructor(private overlayContainer: OverlayContainer, private cd: ChangeDetectorRef, public global: GUIGlobal, private dialogService: NbDialogService) {
-    overlayContainer.getContainerElement().classList.add('deeppurple-amber-dark');
   }
 
   ngOnInit() {
@@ -97,7 +96,7 @@ export class GeneratorComponent implements OnInit {
 
         //Ensure the GUI is rendered after the global config is loaded
         if (eventObj.name == "init_finished") {
-          console.log("init finished event");
+          console.log("Init finished event");
 
           this.generatorBusy = false;
 
@@ -123,7 +122,6 @@ export class GeneratorComponent implements OnInit {
     setTimeout(() => {
 
       this.tabSet.changeTab.subscribe(eventObj => {
-        console.log("tab event", eventObj);
         this.activeTab = eventObj.tabTitle;
       });
 
@@ -134,7 +132,7 @@ export class GeneratorComponent implements OnInit {
 
     this.generateSeedButtonEnabled = false;
 
-    console.log(fromPatchFile);
+    //console.log("fromPatchFile:", fromPatchFile);
     //console.log(this.global.generator_settingsMap);
     //console.log(this.global.generator_customColorMap);
 
@@ -211,7 +209,6 @@ export class GeneratorComponent implements OnInit {
   }
 
   async cancelGeneration() { //Electron only
-    console.log("Cancel active generation");
     return await this.global.cancelGenerateSeedElectron();
   }
 
@@ -241,11 +238,17 @@ export class GeneratorComponent implements OnInit {
 
     this.global.convertSettingsToString().then(res => {
 
-      console.log("string got");
+      //console.log("String got:", res);
       this.global.generator_settingsMap["settings_string"] = res;
       this.global.saveCurrentSettingsToFile();
 
       this.settingsLocked = false;
+
+      if (this.settingsBusy) { //Execute delayed task
+        this.settingsBusy = false;
+        this.afterSettingChange(this.settingsBusySaveOnly);
+        this.settingsBusySaveOnly = true;
+      }
 
       this.cd.markForCheck();
       this.cd.detectChanges();
@@ -254,19 +257,25 @@ export class GeneratorComponent implements OnInit {
       console.log('Python Error', err);
 
       this.settingsLocked = false;
+
+      if (this.settingsBusy) { //Execute delayed task
+        this.settingsBusy = false;
+        this.afterSettingChange(this.settingsBusySaveOnly);
+        this.settingsBusySaveOnly = true;
+      }
+
       this.cd.markForCheck();
       this.cd.detectChanges();
     });
   }
 
   importSettingsString() {
-    console.log("import settings string");
 
     this.generatorBusy = true;
 
     this.global.convertStringToSettings(this.global.generator_settingsMap["settings_string"]).then(res => {
 
-      console.log(res);
+      //console.log(res);
 
       this.global.applySettingsObject(res);
       this.global.saveCurrentSettingsToFile();
@@ -277,8 +286,6 @@ export class GeneratorComponent implements OnInit {
 
       this.cd.markForCheck();
       this.cd.detectChanges();
-
-      console.log("all done importing settings string");
 
     }).catch((err) => {
       console.log('Python Error', err);
@@ -302,7 +309,6 @@ export class GeneratorComponent implements OnInit {
         this.dialogService.open(ConfirmationWindow, {
           autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "New Version Available!", dialogMessage: "You are on version " + res.currentVersion + ", and the latest is version " + res.latestVersion + ". Do you want to download the latest version now?" }
         }).onClose.subscribe(confirmed => {
-          console.log(confirmed);
 
           if (confirmed)
             window.open("https://github.com/TestRunnerSRL/OoT-Randomizer/tree/Dev", "_blank");
@@ -314,7 +320,6 @@ export class GeneratorComponent implements OnInit {
   }
 
   loadPreset() {
-    console.log("load preset");
 
     let targetPreset = this.global.generator_presets[this.global.generator_settingsMap["presets"]];
 
@@ -326,25 +331,23 @@ export class GeneratorComponent implements OnInit {
       }
       else {
 
-        this.settingsLocked = true;
-
         if (("isDefaultPreset" in targetPreset) && targetPreset.isDefaultPreset == true) { //RESTORE DEFAULTS
           this.global.applyDefaultSettings();
         }
-        else {        
+        else {
+          this.global.applyDefaultSettings(); //Restore defaults first in case the user loads an old preset that misses settings
           this.global.applySettingsObject(this.global.generator_presets[this.global.generator_settingsMap["presets"]].settings);
         }
 
         this.recheckAllSettings("", false, true);
         this.afterSettingChange();
 
-        console.log("Preset loaded");
+        //console.log("Preset loaded");
       }
     }
   }
 
   savePreset(refPresetSelect: NbSelectComponent<string>) {
-    console.log("save preset");
 
     let targetPreset = this.global.generator_presets[this.global.generator_settingsMap["presets"]];
 
@@ -375,7 +378,7 @@ export class GeneratorComponent implements OnInit {
 
               refPresetSelect.setSelected = trimmedName;
 
-              console.log("preset created");
+              //console.log("Preset created");
             }
           }
         });
@@ -399,7 +402,7 @@ export class GeneratorComponent implements OnInit {
             this.global.generator_presets[this.global.generator_settingsMap["presets"]] = { settings: this.global.createSettingsFileObject(false, true, !this.global.getGlobalVar('electronAvailable')) };
             this.global.saveCurrentPresetsToFile();
 
-            console.log("preset overwritten");
+            console.log("Preset overwritten");
           }
         });
       }
@@ -407,7 +410,6 @@ export class GeneratorComponent implements OnInit {
   }
 
   deletePreset() {
-    console.log("delete preset");
 
     let targetPreset = this.global.generator_presets[this.global.generator_settingsMap["presets"]];
 
@@ -435,7 +437,7 @@ export class GeneratorComponent implements OnInit {
             this.cd.markForCheck();
             this.cd.detectChanges();
 
-            console.log("preset deleted");
+            //console.log("Preset deleted");
           }
         });
       }
@@ -452,9 +454,9 @@ export class GeneratorComponent implements OnInit {
       path = this.global.generator_settingsMap["output_dir"];
  
     this.global.createAndOpenPath(path).then(() => {
-      console.log("path opened");
+      console.log("Output dir opened");
     }).catch(err => {
-      console.error("path not opened", err);
+      console.error("Error:", err);
 
       if (err.message.includes("no such file or directory")) {
         this.dialogService.open(DialogWindow, {
@@ -730,7 +732,7 @@ export class GeneratorComponent implements OnInit {
           if (!targetValue && this.global.getGlobalVar("generatorSettingsObj")) {
 
             if (this.activeTab == this.global.getGlobalVar("generatorSettingsObj")[tab.replace(/-/g, "_")].text) {
-              console.log("kick user out of tab");
+              //console.log("Kick user out of tab");
               this.tabSet.selectTab(this.tabSet.tabs.first);
             }
           }
@@ -874,16 +876,35 @@ export class GeneratorComponent implements OnInit {
 
     if (this.global.getGlobalVar('electronAvailable')) { //Electron
 
+      //Show waiting spinner if another settings action is currently running and delay the task
+      if (this.settingsLocked) {
+        this.settingsBusy = true;
+
+        if (!saveOnly)
+          this.settingsBusySaveOnly = false;
+
+        this.cd.markForCheck();
+        this.cd.detectChanges();
+        return;
+      }
+
       this.settingsLocked = true;
 
       setTimeout(() => {
-        console.log(this.global.generator_settingsMap);
-        console.log(this.global.generator_customColorMap);
+        //console.log(this.global.generator_settingsMap);
+        //console.log(this.global.generator_customColorMap);
 
         if (saveOnly) {
           this.global.saveCurrentSettingsToFile();
 
           this.settingsLocked = false;
+
+          if (this.settingsBusy) { //Execute delayed task
+            this.settingsBusy = false;
+            this.afterSettingChange(this.settingsBusySaveOnly);
+            this.settingsBusySaveOnly = true;
+          }
+
           this.cd.markForCheck();
           this.cd.detectChanges();
         }
@@ -896,8 +917,8 @@ export class GeneratorComponent implements OnInit {
 
       setTimeout(() => {
 
-        console.log(this.global.generator_settingsMap);
-        console.log(this.global.generator_customColorMap);
+        //console.log(this.global.generator_settingsMap);
+        //console.log(this.global.generator_customColorMap);
 
         this.global.saveCurrentSettingsToFile();
 
