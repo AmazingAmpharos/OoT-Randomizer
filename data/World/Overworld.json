@@ -821,7 +821,7 @@
         "hint": "Kakariko Village",
         "events": {
             "Cojiro Access": "is_adult and 'Wake Up Adult Talon'",
-            "Kakariko Village Gate Open": "is_child and Zeldas_Letter"
+            "Kakariko Village Gate Open": "is_child and (Zeldas_Letter or open_kakariko)"
         },
         "locations": {
             "Sheik in Kakariko": "
@@ -1116,7 +1116,7 @@
         "scene": "Kakariko Village",
         "exits": {
             "Kakariko Village": "
-                is_adult or logic_visible_collisions or 'Kakariko Village Gate Open'",
+                is_adult or logic_visible_collisions or 'Kakariko Village Gate Open' or open_kakariko",
             "Death Mountain": "True"
         }
     },
