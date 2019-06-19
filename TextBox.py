@@ -30,10 +30,6 @@ def lineWrap(text):
         lines = [line.strip() for forcedLine in forcedLines for line in _wrapLines(forcedLine, line_width)]
 
         while lines:
-            if '\x10' in lines[0]:
-                boxesWithWrappedLines.append(lines.pop())
-                continue
-
             bow = LINE_BREAK[0].join(lines[:4])
             lines = lines[4:]
             boxesWithWrappedLines.append(bow)

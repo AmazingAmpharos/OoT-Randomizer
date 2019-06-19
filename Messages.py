@@ -354,41 +354,58 @@ class Message():
             return True
         return False
 
-    def parse_text(self):
-        self.text_codes = []
+    @staticmethod
+    def parse_control_codes(text):
+        if isinstance(text, list):
+            bytes = text
+        elif isinstance(text, bytearray):
+            bytes = list(text)
+        else:
+            bytes = list(text.encode('utf-8'))
 
+        text_codes = []
         index = 0
-        while index < self.length:
-            next_char = self.raw_text[index]
+        while index < len(bytes):
+            next_char = bytes[index]
             data = 0
             index += 1
             if next_char in CONTROL_CODES:
                 extra_bytes = CONTROL_CODES[next_char][1]
                 if extra_bytes > 0:
-                    data = bytes_to_int(self.raw_text[index : index + extra_bytes])
+                    data = bytes_to_int(bytes[index : index + extra_bytes])
                     index += extra_bytes
             text_code = Text_Code(next_char, data)
-            self.text_codes.append(text_code)
-            if next_char == 0x02: # message end code
+            text_codes.append(text_code)
+
+        return text_codes
+
+
+    def parse_text(self):
+        self.text_codes = Message.parse_control_codes(self.raw_text)
+
+        index = 0
+        for text_code in self.text_codes:
+            index += text_code.size()
+            if text_code.code == 0x02: # message end code
                 break
-            if next_char == 0x07: # goto
+            if text_code.code == 0x07: # goto
                 self.has_goto = True
                 self.ending = text_code
-            if next_char == 0x0A: # keep-open
+            if text_code.code == 0x0A: # keep-open
                 self.has_keep_open = True
                 self.ending = text_code
-            if next_char == 0x0B: # event
+            if text_code.code == 0x0B: # event
                 self.has_event = True
                 self.ending = text_code
-            if next_char == 0x0E: # fade out
+            if text_code.code == 0x0E: # fade out
                 self.has_fade = True
                 self.ending = text_code
-            if next_char == 0x10: # ocarina
+            if text_code.code == 0x10: # ocarina
                 self.has_ocarina = True
                 self.ending = text_code
-            if next_char == 0x1B: # two choice
+            if text_code.code == 0x1B: # two choice
                 self.has_two_choice = True
-            if next_char == 0x1C: # three choice
+            if text_code.code == 0x1C: # three choice
                 self.has_three_choice = True
         self.text = display_code_list(self.text_codes)
         self.unpadded_length = index
@@ -448,7 +465,7 @@ class Message():
                 text_codes.append(ending) # write special ending
             text_codes.append(Text_Code(0x02, 0)) # write end code
 
-        self.text_codes = text_codes;
+        self.text_codes = text_codes
 
         
     # writes a Message back into the rom, using the given index and offset to update the table
@@ -726,8 +743,19 @@ def make_player_message(text):
     wrapped_text = lineWrap(new_text)
     if (wrapped_text != new_text):
         # remove line wrappings and rewrap if wrapping is required
-        new_text = new_text.replace('\x01', ' ').replace('\x04', ' ')
-        new_text = lineWrap(new_text)
+        index = 0
+        no_line_breaks_text = ''
+        text_codes = Message.parse_control_codes(new_text)
+        for text_code in text_codes:
+            if text_code.code in [0x01, 0x04]:
+                if no_line_breaks_text[-1] != ' ':
+                    no_line_breaks_text += ' '
+                index += 1
+                continue
+            current_index = index
+            index += text_code.size()
+            no_line_breaks_text += new_text[current_index:index]
+        new_text = lineWrap(no_line_breaks_text)
 
     return new_text
 
