@@ -439,7 +439,7 @@ export class GUIGlobal {
     this.generator_settingsMap["patch_file"] = userSettings && "patch_file" in userSettings ? userSettings["patch_file"] : "";
     this.generator_settingsVisibilityMap["patch_file"] = true;
 
-    this.generator_settingsMap["repatch_cosmetics"] = userSettings && "repatch_cosmetics" in userSettings ? userSettings["repatch_cosmetics"] : false;
+    this.generator_settingsMap["repatch_cosmetics"] = userSettings && "repatch_cosmetics" in userSettings ? userSettings["repatch_cosmetics"] : true;
     this.generator_settingsVisibilityMap["repatch_cosmetics"] = true;
 
     console.log("Settings Map", this.generator_settingsMap);

@@ -1,4 +1,3 @@
-const path = require('path');
 const fs = require('fs');
 const EventEmitter = require('events').EventEmitter;
 const spawn = require('child_process').spawn;
@@ -59,10 +58,10 @@ function romBuilding(pythonPath, randoPath, settings) {
       let args = ['--seed', seedString];
       //args["checked_version"] = false;
 
-      romBuildingGenerator = spawn(pythonPath + ' ' + randoPath, args, { shell: true });
+      romBuildingGenerator = spawn('"' + pythonPath + '"' + ' ' + '"' + randoPath + '"', args, { shell: true });
     }
     else { //Random Seed
-      romBuildingGenerator = spawn(pythonPath + ' ' + randoPath, { shell: true });
+      romBuildingGenerator = spawn('"' + pythonPath + '"' + ' ' + '"' + randoPath + '"', { shell: true });
     }
 
     romBuildingGenerator.on('error', err => {
@@ -209,7 +208,7 @@ function testPythonPath(pythonPath) {
 
     var error = "";
 
-    let pythonExec = spawn(pythonPath, { shell: true }).on('error', err => {
+    let pythonExec = spawn('"' + pythonPath + '"', { shell: true }).on('error', err => {
       reject(err);
     });
 
@@ -247,7 +246,7 @@ function getSettings(pythonPath, randoPath, settingsString) {
 
     //console.log("Get settings now with spawn!");
 
-    let settingsPY = spawn(pythonPath + ' ' + randoPath, args, { shell: true }).on('error', err => {
+    let settingsPY = spawn('"' + pythonPath + '"' + ' ' + '"' + randoPath + '"', args, { shell: true }).on('error', err => {
       console.log("[getSettings] Error spawning process: ", err);
       reject(err);
     });
@@ -288,7 +287,7 @@ function parseSettings(pythonPath, randoPath) {
 
     let args = ['--convert_settings'];
 
-    let settingsPY = spawn(pythonPath + ' ' + randoPath, args, { shell: true }).on('error', err => {
+    let settingsPY = spawn('"' + pythonPath + '"' + ' ' + '"' + randoPath + '"', args, { shell: true }).on('error', err => {
       console.log("[parseSettings] Error spawning process: ", err);
       reject(err);
     });

@@ -259,9 +259,9 @@ async function runElectron() {
     }
 
     if (releaseMode)
-        await spawnDetachedSubProcess("npm run electron-release", ["python", pythonPath], true).catch(err => { throw Error("Failed to launch Electron"); });
+        await spawnDetachedSubProcess("npm run electron-release", ["python", '"' + pythonPath + '"'], true).catch(err => { throw Error("Failed to launch Electron"); });
     else
-        await spawnDetachedSubProcess("npm run electron-dev", ["python", pythonPath], true).catch(err => { throw Error("Failed to launch Electron"); });
+        await spawnDetachedSubProcess("npm run electron-dev", ["python", '"' + pythonPath + '"'], true).catch(err => { throw Error("Failed to launch Electron"); });
 
     console.log("Electron started");
 }
