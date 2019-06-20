@@ -82,11 +82,9 @@ export class GeneratorComponent implements OnInit {
       this.activeTab = this.global.getGlobalVar('generatorSettingsArray')[0].text;
 
       this.recheckAllSettings();
+
       this.cd.markForCheck();
       this.cd.detectChanges();
-
-      if (this.global.getGlobalVar('electronAvailable')) //Version check is Electron only
-        this.runVersionCheck();
 
       this.runEventListeners();
     }
@@ -106,9 +104,6 @@ export class GeneratorComponent implements OnInit {
           this.recheckAllSettings();
           this.cd.markForCheck();
           this.cd.detectChanges();
-
-          if (this.global.getGlobalVar('electronAvailable')) //Version check is Electron only
-            this.runVersionCheck();
 
           this.runEventListeners();
         }
@@ -297,25 +292,6 @@ export class GeneratorComponent implements OnInit {
       this.dialogService.open(DialogWindow, {
         autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: "The entered settings string seems to be invalid!" }
       });
-    });
-  }
-
-  runVersionCheck() { //Electron only
-
-    this.global.versionCheck().then(res => {
-
-      if (res && res.hasUpdate) {
-
-        this.dialogService.open(ConfirmationWindow, {
-          autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "New Version Available!", dialogMessage: "You are on version " + res.currentVersion + ", and the latest is version " + res.latestVersion + ". Do you want to download the latest version now?" }
-        }).onClose.subscribe(confirmed => {
-
-          if (confirmed)
-            window.open("https://github.com/TestRunnerSRL/OoT-Randomizer/tree/Dev", "_blank");
-        });
-      }
-    }).catch((err) => {
-      console.log('Error checking version', err);
     });
   }
 

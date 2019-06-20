@@ -205,18 +205,18 @@ async function spawnChildSubProcess(path, args, shell) {
         if (error == true)
             return;
 
-        if (data.includes("Exception:") || data.includes("error:") || data.includes("Error:") || data.includes("PermissionError:") || data.includes("TypeError:") || data.includes("ValueError:")) {
+        if (data.toLowerCase().includes("exception") || data.toLowerCase().includes("error")) {
             error = true;
-            console.error(data.toString());
+            console.error(data);
         }
     }
 
     npmSpawn.stderr.on('data', data => {
-        handleMessage(data);
+        handleMessage(data.toString());
     });
 
     npmSpawn.stdout.on('data', data => {
-        handleMessage(data);
+        handleMessage(data.toString());
     });
 
     await promiseFromChildProcess(npmSpawn);
