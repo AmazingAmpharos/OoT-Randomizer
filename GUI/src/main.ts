@@ -8,7 +8,7 @@ import { hmrBootstrap } from './hmr';
 
 import 'hammerjs';
 
-if (environment.production) {
+if (environment.production || !environment.hmr) {
   enableProdMode();
 }
 
