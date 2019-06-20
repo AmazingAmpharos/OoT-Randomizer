@@ -1,7 +1,7 @@
 # text details: https://wiki.cloudmodding.com/oot/Text_Format
 
 import random
-from TextBox import lineWrap
+from TextBox import line_wrap
 
 TABLE_START = 0xB849EC
 TEXT_START = 0x92D000
@@ -254,19 +254,50 @@ MISC_MESSAGES = {
     0x0422: ("They say that once \x05\x41Morpha's Curse\x05\x40\x01is lifted, striking \x05\x42this stone\x05\x40 can\x01shift the tides of \x05\x44Lake Hylia\x05\x40.\x02", 0x23),
 }
 
+
 # convert byte array to an integer
 def bytes_to_int(bytes, signed=False):
     return int.from_bytes(bytes, byteorder='big', signed=signed)
 
+
 # convert int to an array of bytes of the given width
 def int_to_bytes(num, width, signed=False):
     return int.to_bytes(num, width, byteorder='big', signed=signed)
+
 
 def display_code_list(codes):
     message = ""
     for code in codes:
         message += str(code)
     return message
+
+
+def parse_control_codes(text):
+    if isinstance(text, list):
+        bytes = text
+    elif isinstance(text, bytearray):
+        bytes = list(text)
+    else:
+        bytes = list(text.encode('utf-8'))
+
+    text_codes = []
+    index = 0
+    while index < len(bytes):
+        next_char = bytes[index]
+        data = 0
+        index += 1
+        if next_char in CONTROL_CODES:
+            extra_bytes = CONTROL_CODES[next_char][1]
+            if extra_bytes > 0:
+                data = bytes_to_int(bytes[index : index + extra_bytes])
+                index += extra_bytes
+        text_code = Text_Code(next_char, data)
+        text_codes.append(text_code)
+        if text_code.code == 0x02:  # message end code
+            break
+
+    return text_codes
+
 
 # holds a single character or control code of a string
 class Text_Code():
@@ -294,6 +325,18 @@ class Text_Code():
             return '\\x%02X' % self.code
         elif self.code >= 0x7F:
             return '?'
+        else:
+            return chr(self.code)
+
+    def get_string(self):
+        if self.code in CONTROL_CODES:
+            ret = ''
+            subdata = self.data
+            for _ in range(0, CONTROL_CODES[self.code][1]):
+                ret = chr(subdata & 0xFF) + ret
+                subdata = subdata >> 8
+            ret = chr(self.code) + ret
+            return ret
         else:
             return chr(self.code)
 
@@ -354,34 +397,9 @@ class Message():
             return True
         return False
 
-    @staticmethod
-    def parse_control_codes(text):
-        if isinstance(text, list):
-            bytes = text
-        elif isinstance(text, bytearray):
-            bytes = list(text)
-        else:
-            bytes = list(text.encode('utf-8'))
-
-        text_codes = []
-        index = 0
-        while index < len(bytes):
-            next_char = bytes[index]
-            data = 0
-            index += 1
-            if next_char in CONTROL_CODES:
-                extra_bytes = CONTROL_CODES[next_char][1]
-                if extra_bytes > 0:
-                    data = bytes_to_int(bytes[index : index + extra_bytes])
-                    index += extra_bytes
-            text_code = Text_Code(next_char, data)
-            text_codes.append(text_code)
-
-        return text_codes
-
 
     def parse_text(self):
-        self.text_codes = Message.parse_control_codes(self.raw_text)
+        self.text_codes = parse_control_codes(self.raw_text)
 
         index = 0
         for text_code in self.text_codes:
@@ -740,22 +758,9 @@ def make_player_message(text):
     for find_text, replace_text in verb_mapping.items():
         new_text = new_text.replace(find_text, replace_text)
 
-    wrapped_text = lineWrap(new_text)
-    if (wrapped_text != new_text):
-        # remove line wrappings and rewrap if wrapping is required
-        index = 0
-        no_line_breaks_text = ''
-        text_codes = Message.parse_control_codes(new_text)
-        for text_code in text_codes:
-            if text_code.code in [0x01, 0x04]:
-                if no_line_breaks_text[-1] != ' ':
-                    no_line_breaks_text += ' '
-                index += 1
-                continue
-            current_index = index
-            index += text_code.size()
-            no_line_breaks_text += new_text[current_index:index]
-        new_text = lineWrap(no_line_breaks_text)
+    wrapped_text = line_wrap(new_text, False, False, False)
+    if wrapped_text != new_text:
+        new_text = line_wrap(new_text, True, True, False)
 
     return new_text
 
