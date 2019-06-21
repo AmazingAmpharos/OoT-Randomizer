@@ -1,13 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DualListComponent } from 'angular-dual-listbox';
 
-/*
-import {
-  Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
-  Output, SimpleChange
-} from '@angular/core';
-*/
-
 @Component({
   selector: 'gui-listbox',
   templateUrl: './guiListbox.html',
