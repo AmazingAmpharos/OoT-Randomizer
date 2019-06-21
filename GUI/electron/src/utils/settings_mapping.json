@@ -461,12 +461,10 @@
           "row-span": 4,
           "settings": [
             {
-              "name": "logic_earliest_adult_trade",
-              "no-line-break": "true"
+              "name": "logic_earliest_adult_trade"
             },
             {
-              "name": "logic_latest_adult_trade",
-              "no-line-break": true
+              "name": "logic_latest_adult_trade"
             }
           ]
         },

@@ -139,9 +139,9 @@
                       <!--Exclusive to Detailed Tab-->
                       <ng-container *ngSwitchCase="'SearchBox'">
                         <gui-listbox *ngIf="setting.tooltip && setting.tooltip.length > 0" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [source]="setting.options" [(destination)]="global.generator_settingsMap[setting.name]" (destinationChange)="afterSettingChange()"
-                                     height="70%" key="name" display="text" filter="true" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="click" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise"></gui-listbox>
+                                     height="74%" key="name" display="text" filter="true" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" nbPopoverTrigger="click" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise"></gui-listbox>
                         <gui-listbox *ngIf="!setting.tooltip || setting.tooltip.length == 0" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [source]="setting.options" [(destination)]="global.generator_settingsMap[setting.name]" (destinationChange)="afterSettingChange()"
-                                     height="70%" key="name" display="text" filter="true"></gui-listbox>
+                                     height="74%" key="name" display="text" filter="true"></gui-listbox>
                       </ng-container>
                     </ng-container>
                     <!--Padding-->

@@ -367,7 +367,7 @@
 }
 
 .mat-grid-tile-header {
-    background: rgb(65, 0, 85) !important;
+    background: #052F5F !important;
     height: 25px !important;
 }
 
@@ -2164,29 +2164,29 @@ th.mat-header-cell {
 .mat-radio-button.mat-primary .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
 .mat-radio-button.mat-primary.mat-radio-checked .mat-radio-persistent-ripple,
 .mat-radio-button.mat-primary:active .mat-radio-persistent-ripple {
-    background-color: #37B364
+    background-color: #06A77D
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-    border-color: #37B364
+    border-color: #06A77D
 }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle,
 .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
 .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
-    background-color: #37B364
+    background-color: #06A77D
 }
 
 .mat-radio-button.mat-warn.mat-radio-checked .mat-radio-outer-circle {
-    border-color: #37B364
+    border-color: #06A77D
 }
 
 .mat-radio-button.mat-warn .mat-radio-inner-circle,
 .mat-radio-button.mat-warn .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
 .mat-radio-button.mat-warn.mat-radio-checked .mat-radio-persistent-ripple,
 .mat-radio-button.mat-warn:active .mat-radio-persistent-ripple {
-    background-color: #37B364
+    background-color: #06A77D
 }
 
 .mat-radio-button.mat-radio-disabled .mat-radio-outer-circle,
@@ -2301,15 +2301,15 @@ th.mat-header-cell {
 }
 
 .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-    background-color: #37B364
+    background-color: #06A77D
 }
 
 .mat-slide-toggle.mat-checked .mat-ripple-element {
-    background-color: #37B364
+    background-color: #06A77D
 }
 
 .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-thumb {
-    background-color: #37B364
+    background-color: #06A77D
 }
 
 .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
@@ -2362,7 +2362,7 @@ th.mat-header-cell {
 .mat-accent .mat-slider-thumb,
 .mat-accent .mat-slider-thumb-label,
 .mat-accent .mat-slider-track-fill {
-    background-color: rgb(65, 0, 85)
+    background-color: #052F5F
 }
 
 .mat-accent .mat-slider-thumb-label-text {
