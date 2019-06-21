@@ -30,7 +30,7 @@ function createApp() {
 
   //Load the previous window state with fallback to defaults
   let mainWindowState = windowStateKeeper({
-    defaultWidth: 960,
+    defaultWidth: 970,
     defaultHeight: 930
   });
 
