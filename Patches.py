@@ -1049,14 +1049,14 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Set starting time of day
     if world.starting_tod != 'default':
         tod = {
+            'sunrise':       0x4555,
+            'morning':       0x6000,
+            'noon':          0x8001,
+            'afternoon':     0xA000,
+            'sunset':        0xC001,
+            'evening':       0xE000,
             'midnight':      0x0000,
             'witching-hour': 0x2000,
-            'early-morning': 0x4000,
-            'morning':       0x6000,
-            'noon':          0x8000,
-            'afternoon':     0xA000,
-            'evening':       0xC000,
-            'dusk':          0xE000,
         }
         save_context.addresses['time_of_day'].value = tod[world.starting_tod]
 
