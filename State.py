@@ -579,11 +579,10 @@ class State(object):
     def had_night_start(self):
         stod = self.world.starting_tod
         # These are all between 6:30 and 18:00
-        if (stod == 'evening' or        # 18
-            stod == 'dusk' or           # 21
+        if (stod == 'sunset' or         # 18
+            stod == 'eevning' or        # 21
             stod == 'midnight' or       # 00
-            stod == 'witching-hour' or  # 03
-            stod == 'early-morning'):   # 06
+            stod == 'witching-hour'):   # 03
             return True
         else:
             return False
