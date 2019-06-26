@@ -22,6 +22,10 @@
   margin-bottom: 0 !important;
 }
 
+nb-card-body {
+  padding: 0;
+}
+
 /deep/ .tabset {
   li.disabled {
     opacity: 0.4 !important;
@@ -68,7 +72,6 @@
 
 :host mat-grid-tile {
   border: 1px solid darkgrey;
-  //min-width: 300px;
 }
 
 :host mat-grid-tile-header {
@@ -100,15 +103,14 @@
 .tileContainer {
   position: relative;
   width: 100%;
-  height: calc(100% + -2px);
+  height: 100%;
   top: 0px;
-  margin-bottom: 7px;
   overflow: hidden;
   overflow-y: scroll;
 
   .tileContent {
     position: relative;
-    height: 100%;
+    height: calc(100% - 15px);
     left: 7px;
     top: 7px;
     margin-right: 13px;
@@ -117,7 +119,21 @@
 
 .tileContainerWithHeader {
   height: calc(100% - 25px);
-  top: 16px;
+  top: 13px;
+
+  .tileContent {
+    height: calc(100% - 7px);
+  }
+}
+
+//Scrollbar style for tileContainers
+.tileContainer::-webkit-scrollbar-track {
+  background: #eee;
+  box-shadow: 0px 0px 3px #dfdfdf inset;
+}
+
+.tileContainer::-webkit-scrollbar-thumb {
+  background: #06A77D;
 }
 
 .subheaderLabel {
@@ -140,7 +156,7 @@
   margin-right: 10px;
 }
 
-.textInputLabel {
+.numberTextInputLabel {
   position: relative;
   left: 10px;
   line-height: 0px;
@@ -148,49 +164,31 @@
   margin-top: 8px;
 }
 
-.textInputSmall {
-  position: relative;
-  left: 15px;
-  max-width: 50px;
-  text-align: center;
-  padding-left: 0.375rem !important;
-  padding-right: 0.375rem !important;
-}
-
-.textInputMedium {
-  position: relative;
-  left: 15px;
-  max-width: 120px;
-  text-align: center;
-  padding-left: 0.375rem !important;
-  padding-right: 0.375rem !important;
-}
-
-.textInputFull {
-  position: relative;
-  left: 0px;
-  width: calc(100% - 120px);
-  text-align: left;
-  padding-left: 0.375rem !important;
-  margin-top: 1.0rem !important;
-  margin-right: 1.0rem !important;
-}
-
-.numberInputLabel {
-  position: relative;
-  left: 10px;
-  line-height: 0px;
-  margin-bottom: 0px;
-  margin-top: 8px;
-}
-
-.numberInput {
+.numberTextInput {
   position: relative;
   left: 15px;
   max-width: 36px;
   text-align: center;
   padding-left: 0.375rem !important;
   padding-right: 0.375rem !important;
+}
+
+.numberTextInputSmall {
+  max-width: 50px;
+}
+
+.numberTextInputMedium {
+  max-width: 120px;
+}
+
+.numberTextInputFull {
+  left: 0px;
+  width: 100%;
+  max-width: initial !important;
+  text-align: left;
+  padding-right: initial !important;
+  margin-top: 1.0rem !important;
+  margin-right: 1.0rem !important;
 }
 
 .colorPickerContainer {
@@ -278,22 +276,15 @@
   height: 8px;
 }
 
-// Custom Stuff
-nb-card-body {
-  padding: 0;
+//Disabled elements
+p.disabled {
+  opacity: 0.38;
 }
 
-.noLB {
-  display: inline-block;
-  margin-right: 5%;
-  margin-left: 18px;
-  width: 32%;
-  line-height: 2 !important;
+span.disabled {
+  opacity: 0.38;
 }
 
-
-/*
-.selectWithLabel .selectHasValue {
-  -webkit-transform: translate3d(0, 0, 0) scale(0.8);
+input:disabled {
+  opacity: 0.38;
 }
-*/

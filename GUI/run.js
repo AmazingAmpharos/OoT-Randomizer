@@ -2,6 +2,7 @@
 const os = require('os');
 const fs = require('fs');
 const spawn = require('child_process').spawn;
+const exec = require('child_process').exec;
 
 //Helpers
 const waitFor = (ms) => new Promise(r => setTimeout(r, ms));
@@ -179,9 +180,9 @@ async function pingServiceUntilLive(host, port) {
     }
 }
 
-async function spawnDetachedSubProcess(path, args, shell) {
+async function spawnDetachedSubProcess(path, args, shell, hide) {
 
-    var npmSpawn = args ? spawn(path, args, { shell: shell, detached: true, stdio: 'ignore' }) : spawn(path, { shell: shell, detached: true, stdio: 'ignore' });
+  var npmSpawn = args ? spawn(path, args, { shell: shell, detached: true, windowsHide: hide, stdio: 'ignore' }) : spawn(path, { shell: shell, detached: true, windowsHide: hide, stdio: 'ignore' });
 
     npmSpawn.on('error', err => {
         throw Error(err);
@@ -256,14 +257,15 @@ async function runElectron() {
     else if (devServerStarted) {
         console.log("Running Electron. Please wait until Angular finishes initial compile...");
         await waitFor(5000);
-    }
+  }
 
+    //npm run electron-release", ["python", '"' + pythonPath + '"']
     if (releaseMode)
-        await spawnDetachedSubProcess("npm run electron-release", ["python", '"' + pythonPath + '"'], true).catch(err => { throw Error("Failed to launch Electron"); });
+        await spawnDetachedSubProcess("node", ["node_modules/electron/cli.js", ".", "release", "python", '"' + pythonPath + '"'], false, true).catch(err => { throw Error("Failed to launch Electron"); }); //Spawn without a shell so the window is hidden on Windows
     else
-        await spawnDetachedSubProcess("npm run electron-dev", ["python", '"' + pythonPath + '"'], true).catch(err => { throw Error("Failed to launch Electron"); });
+        await spawnDetachedSubProcess("npm run electron-dev", ["python", '"' + pythonPath + '"'], true, false).catch(err => { throw Error("Failed to launch Electron"); });
 
-    console.log("Electron started");
+  console.log("Electron started");
 }
 
 async function compileAngular() {
@@ -288,7 +290,7 @@ async function runAngularDevServer() {
         console.log("Angular dev server is NOT running");
         console.log("Starting Angular dev server...");
 
-        await spawnDetachedSubProcess("npm run ng-dev", null, true).catch(err => { throw Error("Failed to launch Angular dev server"); });
+        await spawnDetachedSubProcess("npm run ng-dev", null, true, false).catch(err => { throw Error("Failed to launch Angular dev server"); });
 
         console.log("Waiting for server to come live. This can take a bit...");
 

@@ -12,8 +12,6 @@ const settingsParser = require(path.join(__dirname, '../src/modules/settingsPars
 const settingsFilePath = path.join(__dirname, "../src/utils/settings_list.json");
 const mappingFilePath = path.join(__dirname, "../src/utils/settings_mapping.json");
 
-settingsParser.generate(settingsFilePath, mappingFilePath);
-
 var win: BrowserWindow;
 var isRelease: boolean = false;
 
@@ -45,6 +43,12 @@ function createApp() {
     label: 'Toggle Developer Tools',
     accelerator: os.platform() === 'darwin' ? 'Alt+Cmd+I' : 'Ctrl+Shift+I',
     click: () => { win.webContents.openDevTools(); }
+  }));
+
+  subMenu.append(new MenuItem({
+    label: 'Refresh GUI',
+    accelerator: 'F5',
+    click: () => { win.webContents.reload(); }
   }));
 
   appMenu.append(new MenuItem({
@@ -206,6 +210,8 @@ function manageCSP() {
 
 //IPC
 ipcMain.on('getGeneratorGUISettings', (event, arg) => {
+
+  settingsParser.generate(settingsFilePath, mappingFilePath);
 
   let guiSettings = settingsParser.getSettingsData();
 

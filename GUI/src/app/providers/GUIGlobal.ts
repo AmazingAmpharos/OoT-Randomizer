@@ -347,7 +347,7 @@ export class GUIGlobal {
 
   parseGeneratorGUISettings(guiSettings, userSettings) {
 
-    //console.log(guiSettings);
+    console.log(guiSettings);
     //console.log("userSettings", userSettings);
 
     const isRGBHex = /[0-9A-Fa-f]{6}/;

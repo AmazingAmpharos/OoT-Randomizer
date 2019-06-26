@@ -115,7 +115,8 @@
                   "name": "All Files",
                   "extensions": [ "*" ]
                 }
-              ]
+              ],
+              "hide-when-disabled": true
             },
             {
               "name": "web_wad_file",
@@ -128,7 +129,8 @@
                   "name": "All Files",
                   "extensions": [ "*" ]
                 }
-              ]
+              ],
+              "hide-when-disabled": true
             },
             {
               "name": "web_common_key_file",
@@ -141,29 +143,34 @@
                   "name": "All Files",
                   "extensions": [ "*" ]
                 }
-              ]
+              ],
+              "hide-when-disabled": true
             },
             {
               "name": "web_common_key_string",
               "size": "full",
-              "max-length": 32
+              "max-length": 32,
+              "hide-when-disabled": true
             },
             {
               "name": "web_wad_channel_id",
               "size": "small",
               "max-length": 4,
-              "no-line-break": true
+              "no-line-break": true,
+              "hide-when-disabled": true
             },
             {
               "name": "web_wad_channel_title",
               "size": "medium",
-              "max-length": 20
+              "max-length": 20,
+              "hide-when-disabled": true
             },
             {
               "name": "create_spoiler"
             },
             {
-              "name": "web_output_type"
+              "name": "web_output_type",
+              "hide-when-disabled": true
             }
           ]
         },
@@ -235,7 +242,8 @@
                   "name": "All Files",
                   "extensions": [ "*" ]
                 }
-              ]
+              ],
+              "hide-when-disabled": true
             },
             {
               "name": "web_common_key_file",
@@ -248,23 +256,27 @@
                   "name": "All Files",
                   "extensions": [ "*" ]
                 }
-              ]
+              ],
+              "hide-when-disabled": true
             },
             {
               "name": "web_common_key_string",
               "size": "full",
-              "max-length": 32
+              "max-length": 32,
+              "hide-when-disabled": true
             },
             {
               "name": "web_wad_channel_id",
               "size": "small",
               "max-length": 4,
-              "no-line-break": true
+              "no-line-break": true,
+              "hide-when-disabled": true
             },
             {
               "name": "web_wad_channel_title",
               "size": "medium",
-              "max-length": 20
+              "max-length": 20,
+              "hide-when-disabled": true
             },
             {
               "name": "web_output_type"

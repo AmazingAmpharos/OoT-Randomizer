@@ -73,42 +73,37 @@ export class GeneratorComponent implements OnInit {
       console.log("Test mode is active!");
     }
 
-    //Apply config on startup if ready or wait until ready event is fired
+    //Refresh/render GUI on startup if ready or wait until ready event is fired
     if (this.global.getGlobalVar("appReady")) {
-
-      this.generatorBusy = false;
-
-      //Set active tab on boot
-      this.activeTab = this.global.getGlobalVar('generatorSettingsArray')[0].text;
-
-      this.recheckAllSettings();
-
-      this.cd.markForCheck();
-      this.cd.detectChanges();
-
-      this.runEventListeners();
+      this.generatorReady();
     }
     else {
 
       this.global.globalEmitter.subscribe(eventObj => {
 
-        //Ensure the GUI is rendered after the global config is loaded
         if (eventObj.name == "init_finished") {
           console.log("Init finished event");
-
-          this.generatorBusy = false;
-
-          //Set active tab on boot
-          this.activeTab = this.global.getGlobalVar('generatorSettingsArray')[0].text;
-
-          this.recheckAllSettings();
-          this.cd.markForCheck();
-          this.cd.detectChanges();
-
-          this.runEventListeners();
+          this.generatorReady();
         }
       });
     }  
+  }
+
+  generatorReady() {
+    this.generatorBusy = false;
+
+    //Set active tab on boot
+    this.activeTab = this.global.getGlobalVar('generatorSettingsArray')[0].text;
+
+    this.recheckAllSettings();
+    this.cd.markForCheck();
+    this.cd.detectChanges();
+
+    this.runEventListeners();
+
+    //Electron only: Ensure settings string is up-to-date on app launch
+    if (this.global.getGlobalVar('electronAvailable'))
+      this.getSettingsString();
   }
 
   runEventListeners() {

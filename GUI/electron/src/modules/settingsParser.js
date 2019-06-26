@@ -45,7 +45,7 @@ function parseSettings(settingsFilePath, mappingFilePath, webVersion) {
       section.settings.forEach(setting => {
 
         var settingName = setting.name;
-        var settingEntry = { controls_visibility_tab: setting["controls-visibility-tab"], controls_visibility_section: setting["controls-visibility-section"], controls_visibility_setting: setting["controls-visibility-setting"], min: setting["min"], max: setting["max"], size: setting["size"], max_length: setting["max-length"], file_types: setting["file-types"], no_line_break: setting["no-line-break"], current_value: undefined };
+        var settingEntry = { controls_visibility_tab: setting["controls-visibility-tab"], controls_visibility_section: setting["controls-visibility-section"], controls_visibility_setting: setting["controls-visibility-setting"], hide_when_disabled: setting["hide-when-disabled"], min: setting["min"], max: setting["max"], size: setting["size"], max_length: setting["max-length"], file_types: setting["file-types"], no_line_break: setting["no-line-break"], current_value: undefined };
 
         //Find setting in responseSettings, then add that data into the obj
         let settingData = responseSettings.find(setting => {

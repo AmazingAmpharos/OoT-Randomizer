@@ -157,7 +157,7 @@
         "controls-visibility-setting": "player_num,create_cosmetics_log"
       }
     ],
-    "tooltip": "The first time compressed generation will take a while,<br>but subsequent generations will be quick.<br>It is highly recommended to compress or the game will crash frequently except on real N64 hardware.<br>Patch files are used to send the patched data to other<br>people without sending the ROM file."
+    "tooltip": "The first time compressed generation will take a while,<br>but subsequent generations will be quick.<br><br>It is highly recommended to compress or the game will<br>crash frequently except on real N64 hardware.<br><br>Patch files are used to send the patched data to other<br>people without sending the ROM file."
   },
   {
     "default": 1,
@@ -195,7 +195,7 @@
   {
     "default": "open",
     "name": "open_forest",
-    "text": "Open Forest",
+    "text": "Forest",
     "type": "Combobox",
     "options": [
       {
@@ -211,7 +211,7 @@
         "text": "Closed Forest"
       }
     ],
-    "tooltip": "Open Forest: Mido no longer blocks the path to the Deku Tree, and the Kokiri boy no longer blocks the path out of the forest.<br><br>Closed Deku: The Kokiri boy no longer blocks the path out of the forest, but Mido still blocks the path to the Deku Tree, requiring Kokiri Sword and Deku Shield to access the Deku Tree.<br><br>Closed Forest: The Kokiri Sword and Slingshot are always available somewhere in the forest. This is incompatible with Start as Adult and shuffling 'All Indoors' and/or 'Overworld' entrances will force this to Closed Deku if selected."
+    "tooltip": "'Open Forest': Mido no longer blocks the path to the Deku Tree,<br> and the Kokiri boy no longer blocks the path out of the forest.<br><br>'Closed Deku': The Kokiri boy no longer blocks the path out of the forest,<br> but Mido still blocks the path to the Deku Tree, requiring Kokiri Sword<br> and Deku Shield to access the Deku Tree.<br><br>'Closed Forest': The Kokiri Sword and Slingshot are always available<br>somewhere in the forest. This is incompatible with Start as Adult and<br>shuffling 'All Indoors' and/or 'Overworld' entrances will force this to<br>Closed Deku if selected."
   },
   {
     "default": false,
@@ -283,7 +283,7 @@
         "text": "Start with Gerudo Card"
       }
     ],
-    "tooltip": "'Rescue One Carpenter': Only the bottom left carpenter must be rescued.<br>'Start with Gerudo Card': The carpenters are rescued from the start of the game, and the player starts with the Gerudo Card in the inventory allowing access to Gerudo Training Grounds."
+    "tooltip": "'Rescue One Carpenter': Only the bottom left carpenter must be rescued.<br><br>'Start with Gerudo Card': The carpenters are rescued from the start of<br>the game, and the player starts with the Gerudo Card in the<br>inventory allowing access to Gerudo Training Grounds."
   },
   {
     "default": "medallions",
@@ -316,7 +316,7 @@
         "text": "100 Gold Skulltula Tokens"
       }
     ],
-    "tooltip": "'Always Open': Rainbow Bridge is always present.<br>'Vanilla Requirements': Spirit/Shadow Medallions and Light Arrows.<br>'All Spiritual Stones': All 3 Spiritual Stones.<br>'All Medallions': All 6 Medallions.<br>'All Dungeons': All Medallions and Spiritual Stones.<br>'100 Gold Skulltula Tokens': All 100 Gold Skulltula Tokens."
+    "tooltip": "'Always Open': Rainbow Bridge is always present.<br><br>'Vanilla Requirements': Spirit/Shadow Medallions and Light Arrows.<br><br>'All Spiritual Stones': All 3 Spiritual Stones.<br><br>'All Medallions': All 6 Medallions.<br><br>'All Dungeons': All Medallions and Spiritual Stones.<br><br>'100 Gold Skulltula Tokens': All 100 Gold Skulltula Tokens."
   },
   {
     "default": "glitchless",
@@ -339,7 +339,7 @@
         "controls-visibility-tab": "detailed-tab"
       }
     ],
-    "tooltip": "Sets the rules the logic uses to determine accessibility.<br>'Glitchless': No glitches are required, but may require some minor tricks.<br>'Glitched': Movement oriented glitches are likely required. No locations excluded.<br>'No Logic': All locations are considered available. May not be beatable."
+    "tooltip": "Sets the rules the logic uses to determine accessibility.<br><br>'Glitchless': No glitches are required, but may require some minor tricks.<br><br>'Glitched': Movement oriented glitches are likely required. No locations excluded.<br><br>'No Logic': All locations are considered available. May not be beatable."
   },
   {
     "default": true,
@@ -356,7 +356,7 @@
         "text": "unchecked"
       }
     ],
-    "tooltip": "When this option is enabled, the randomizer will guarantee that every item is obtainable and every location is reachable.<br>When disabled, only required items and locations to beat the game will be guaranteed reachable.<br>Even when enabled, some locations may still be able to hold the keys needed to reach them."
+    "tooltip": "When this option is enabled, the randomizer will guarantee that every item is obtainable and<br>every location is reachable.<br>When disabled, only required items and locations to beat the game will be guaranteed reachable.<br>Even when enabled, some locations may still be able to hold the keys needed to reach them."
   },
   {
     "default": true,
@@ -373,7 +373,7 @@
         "text": "unchecked"
       }
     ],
-    "tooltip": "Bombchus are properly considered in logic. The first Bombchu pack will always be 20.<br>Subsequent packs will be 5 or 10 based on how many you have.<br>Bombchus can be purchased for 60/99/180 rupees once they have been found.<br>Bombchu Bowling opens with Bombchus.<br>Bombchus are available at Kokiri Shop and the Bazaar. Bombchu refills cannot be bought until Bombchus have been obtained."
+    "tooltip": "Bombchus are properly considered in logic. The first Bombchu pack will always be 20.<br>Subsequent packs will be 5 or 10 based on how many you have.<br>Bombchus can be purchased for 60/99/180 rupees once they have been found.<br>Bombchu Bowling opens with Bombchus.<br>Bombchus are available at Kokiri Shop and the Bazaar.<br>Bombchu refills cannot be bought until Bombchus have been obtained."
   },
   {
     "default": false,
@@ -390,7 +390,7 @@
         "text": "unchecked"
       }
     ],
-    "tooltip": "Dungeons have exactly one major item. This naturally makes each dungeon similar in value instead of valued based on chest count.<br>Spirit Temple Colossus hands count as part of the dungeon.<br>Spirit Temple has TWO items to match vanilla distribution.<br>Dungeon items and GS Tokens do not count as major items."
+    "tooltip": "Dungeons have exactly one major item. This naturally makes each dungeon similar in value<br>instead of valued based on chest count.<br>Spirit Temple Colossus hands count as part of the dungeon.<br>Spirit Temple has TWO items to match vanilla distribution.<br>Dungeon items and GS Tokens do not count as major items."
   },
   {
     "default": false,
@@ -484,7 +484,7 @@
         "text": "unchecked"
       }
     ],
-    "tooltip": "The cutscenes of the Poes in Forest Temple, Darunia in Fire Temple, and the introduction to Twinrova will not be skipped."
+    "tooltip": "The cutscenes of the Poes in Forest Temple, Darunia in Fire Temple, and the<br>introduction to Twinrova will not be skipped."
   },
   {
     "default": true,
@@ -646,7 +646,7 @@
     "type": "Scale",
     "options": [
     ],
-    "tooltip": "The Poe buyer will give a reward for turning in the chosen number of Big Poes."
+    "tooltip": "The Poe buyer will give a reward for turning in<br>the chosen number of Big Poes."
   },
   {
     "default": true,
@@ -697,7 +697,7 @@
         "text": "unchecked"
       }
     ],
-    "tooltip": "Enabling this shuffles the Weird Egg from Malon into the pool.<br>This will require finding the Weird Egg to talk to Zelda in  Hyrule Castle, which in turn locks rewards from Impa, Saria, Malon, and Talon, as well as the Happy Mask sidequest.<br>If Open Kakariko Gate is disabled, the Weird Egg will also be required for Zelda's Letter to open the gate as child."
+    "tooltip": "Enabling this shuffles the Weird Egg from Malon into the pool.<br>This will require finding the Weird Egg to talk to Zelda in  Hyrule Castle,<br>which in turn locks rewards from Impa, Saria, Malon, and Talon, as well as the Happy Mask sidequest.<br>If Open Kakariko Gate is disabled, the Weird Egg will also be required for Zelda's Letter to open the gate as child."
   },
   {
     "default": false,
@@ -714,7 +714,7 @@
         "text": "unchecked"
       }
     ],
-    "tooltip": "Enabling this shuffles the Gerudo Card into the item pool.<br>The Gerudo Card is required to enter the Gerudo Training Grounds, however it does not prevent the guards throwing you in jail.<br>This has no effect if the option to Start with Gerudo Card is set."
+    "tooltip": "Enabling this shuffles the Gerudo Card into the item pool.<br>The Gerudo Card is required to enter the Gerudo Training Grounds,<br>however it does not prevent the guards throwing you in jail.<br>This has no effect if the option to Start with Gerudo Card is set."
   },
   {
     "default": true,
@@ -748,7 +748,7 @@
         "text": "unchecked"
       }
     ],
-    "tooltip": "Enabling this causes playing Epona's song infront of cows to give an item. There are 9 cows, and an extra in MQ Jabu"
+    "tooltip": "Enabling this causes playing Epona's song infront of cows to give an item. There are 9 cows, and an extra in MQ Jabu."
   },
   {
     "default": false,
@@ -794,7 +794,7 @@
         "text": "All Indoors & Overworld"
       }
     ],
-    "tooltip": "Shuffle entrances bidirectionally within different pools.<br>'Dungeons Only':<br>Shuffle dungeon entrances with each other, including Bottom of the Well, Ice Cavern, and Gerudo Training Grounds.<br>However, Ganon's Castle is not shuffled.<br>Additionally, the entrances of Deku Tree, Fire Temple and Bottom of the Well are opened for both adult and child.<br><br>'Simple Indoors':<br>Shuffle dungeon entrances along with simple Grotto and Interior entrances (i.e. most Houses and Great Fairies).<br><br>'All Indoors':<br>Extended version of 'Simple Indoors' with some extra entrances:<br>Windmill, Link's House, Temple of Time and Dampe's Grave.<br><br>'All Indoors & Overworld':<br>Same as 'All Indoors' but with Overworld loading zones shuffled in a new separate pool. Owl drop positions are also randomized."
+    "tooltip": "Shuffle entrances bidirectionally within different pools.<br><br>'Dungeons Only':<br>Shuffle dungeon entrances with each other, including:<br>Bottom of the Well, Ice Cavern, and Gerudo Training Grounds.<br>However, Ganon's Castle is not shuffled.<br>Additionally, the entrances of Deku Tree, Fire Temple and Bottom of the Well are opened for both adult and child.<br><br>'Simple Indoors':<br>Shuffle dungeon entrances along with simple Grotto and Interior entrances (i.e. most Houses and Great Fairies).<br><br>'All Indoors':<br>Extended version of 'Simple Indoors' with some extra entrances:<br>Windmill, Link's House, Temple of Time and Dampe's Grave.<br><br>'All Indoors & Overworld':<br>Same as 'All Indoors' but with Overworld loading zones shuffled in a new separate pool.<br>Owl drop positions are also randomized."
   },
   {
     "default": "off",
@@ -819,7 +819,7 @@
         "text": "On (Random Prices)"
       }
     ],
-    "tooltip": "'Off': Only the 3 Scrubs that give one-time items in the vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.<br>'Affordable': All Scrub prices will be reduced to 10 rupees each.<br>'Expensive': All Scrub prices will be their vanilla prices. This will require spending over 1000 rupees on Scrubs.<br>'Random Prices': All Scrub prices will be between 0-99 rupees. This will on average be very, very expensive overall."
+    "tooltip": "'Off': Only the 3 Scrubs that give one-time items in the vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.<br><br>'Affordable': All Scrub prices will be reduced to 10 rupees each.<br><br>'Expensive': All Scrub prices will be their vanilla prices. This will require spending over 1000 rupees on Scrubs.<br><br>'Random Prices': All Scrub prices will be between 0-99 rupees. This will on average be very, very expensive overall."
   },
   {
     "default": "off",
@@ -856,7 +856,7 @@
         "text": "Shuffled Shops (Random)"
       }
     ],
-    "tooltip": "Shop contents are randomized.<br>(X Items): Shops have X random non-shop (Special Deal!) items. They will always be on the left side, and some of the lower value shop items will be replaced to make room for these.<br>(Random): Each shop will have a random number of non-shop items up to a maximum of 4.<br>The non-shop items have no requirements except money, while the normal shop items (such as 200/300 rupee tunics) have normal vanilla requirements. This means that, for example, as a child you cannot buy 200/300 rupee tunics, but you can buy non-shop tunics.<br>Non-shop Bombchus will unlock the chu slot in your inventory, which, if Bombchus are in logic, is needed to buy Bombchu refills.<br>Otherwise, the Bomb Bag is required."
+    "tooltip": "Shop contents are randomized.<br><br>(X Items): Shops have X random non-shop (Special Deal!) items. They will always be on the left side, and<br>some of the lower value shop items will be replaced to make room for these.<br><br>(Random): Each shop will have a random number of non-shop items up to a maximum of 4.<br>The non-shop items have no requirements except money, while the normal shop<br>items (such as 200/300 rupee tunics) have normal vanilla requirements.<br>This means that, for example, as a child you cannot buy 200/300 rupee tunics, but you can buy non-shop tunics.<br>Non-shop Bombchus will unlock the chu slot in your inventory, which, if Bombchus are in logic, is<br>needed to buy Bombchu refills. Otherwise, the Bomb Bag is required."
   },
   {
     "default": "off",
@@ -877,7 +877,7 @@
         "text": "All Tokens"
       }
     ],
-    "tooltip": "Token reward from Gold Skulltulas are shuffled into the pool.<br>'Dungeons Only': This only shuffles the GS locations that are within dungeons, increasing the value of most dungeons and making internal dungeon exploration more diverse.<br>'All Tokens': Effectively adds 100 new locations for items to appear."
+    "tooltip": "Token reward from Gold Skulltulas are shuffled into the pool.<br><br>'Dungeons Only': This only shuffles the GS locations that are within dungeons, increasing<br>the value of most dungeons and making internal dungeon exploration more diverse.<br><br>'All Tokens': Effectively adds 100 new locations for items to appear."
   },
   {
     "default": "dungeon",
@@ -906,7 +906,7 @@
         "text": "Anywhere"
       }
     ],
-    "tooltip": "'Remove': Maps and Compasses are removed. This will add a small amount of money and refill items to the pool.<br>'Start With': Maps and Compasses are given to you from the start. This will add a small amount of money and refill items to the pool.<br>'Vanilla': Maps and Compasses will appear in their vanilla locations.<br>'Dungeon': Maps and Compasses can only appear in their respective dungeon.<br>'Anywhere': Maps and Compasses can appear anywhere in the world.<br>Setting 'Remove', 'Start With', or 'Anywhere' will add 2 more possible locations to each Dungeon.<br>This makes dungeons more profitable, especially Ice Cavern, Water Temple, and Jabu Jabu's Belly."
+    "tooltip": "'Remove': Maps and Compasses are removed.<br>This will add a small amount of money and refill items to the pool.<br><br>'Start With': Maps and Compasses are given to you from the start.<br>This will add a small amount of money and refill items to the pool.<br><br>'Vanilla': Maps and Compasses will appear in their vanilla locations.<br><br>'Dungeon': Maps and Compasses can only appear in their respective dungeon.<br><br>'Anywhere': Maps and Compasses can appear anywhere in the world.<br><br>Setting 'Remove', 'Start With', or 'Anywhere' will add 2 more possible locations to each Dungeon.<br>This makes dungeons more profitable, especially Ice Cavern, Water Temple, and Jabu Jabu's Belly."
   },
   {
     "default": "dungeon",
@@ -931,7 +931,7 @@
         "text": "Anywhere (Keysanity)"
       }
     ],
-    "tooltip": "'Remove': Small Keys are removed. All locked doors in dungeons will be unlocked. An easier mode.<br>'Vanilla': Small Keys will appear in their vanilla locations. You start with 3 keys in Spirit Temple MQ because the vanilla key layout is not beatable in logic.<br>'Dungeon': Small Keys can only appear in their respective dungeon. If Fire Temple is not a Master Quest dungeon, the door to the Boss Key chest will be unlocked<br>'Anywhere': Small Keys can appear anywhere in the world. A difficult mode since it is more likely to need to enter a dungeon multiple times.<br>Try different combinations out, such as:<br>'Small Keys: Dungeon' + 'Boss Keys: Anywhere' for a milder Keysanity experience."
+    "tooltip": "'Remove': Small Keys are removed. All locked doors in dungeons will be unlocked.<br>An easier mode.<br><br>'Vanilla': Small Keys will appear in their vanilla locations. You start with 3 keys in<br>Spirit Temple MQ because the vanilla key layout is not beatable in logic.<br><br>'Dungeon': Small Keys can only appear in their respective dungeon.<br>If Fire Temple is not a Master Quest dungeon, the door to the Boss Key chest will be unlocked.<br><br>'Anywhere': Small Keys can appear anywhere in the world.<br>A difficult mode since it is more likely to need to enter a dungeon multiple times.<br><br>Try different combinations out, such as:<br>'Small Keys: Dungeon Only' + 'Boss Keys: Anywhere' for a milder Keysanity experience."
   },
   {
     "default": "dungeon",
@@ -956,7 +956,7 @@
         "text": "Anywhere (Keysanity)"
       }
     ],
-    "tooltip": "'Remove': Boss Keys are removed. All locked doors in dungeons will be unlocked. An easier mode.<br>'Vanilla': Boss Keys will appear in their vanilla locations.<br>'Dungeon': Boss Keys can only appear in their respective dungeon.<br>'Anywhere': Boss Keys can appear anywhere in the world. A difficult mode since it is more likely to need to enter a dungeon multiple times.<br>Try different combinations out, such as:<br>'Small Keys: Dungeon' + 'Boss Keys: Anywhere' for a milder Keysanity experience."
+    "tooltip": "'Remove': Boss Keys are removed. All locked doors in dungeons will be unlocked.<br>An easier mode.<br><br>'Vanilla': Boss Keys will appear in their vanilla locations.<br><br>'Dungeon': Boss Keys can only appear in their respective dungeon.<br><br>'Anywhere': Boss Keys can appear anywhere in the world. A difficult mode since<br>it is more likely to need to enter a dungeon multiple times.<br><br>Try different combinations out, such as:<br>'Small Keys: Dungeon Only' + 'Boss Keys: Anywhere' for a milder Keysanity experience."
   },
   {
     "default": false,
@@ -973,7 +973,7 @@
         "text": "unchecked"
       }
     ],
-    "tooltip": "Gives the Map and Compass extra functionality. Map will tell if a dungeon is vanilla or Master Quest.<br>Compass will tell what medallion or stone is within. The Temple of Time Altar will no longer provide any information.<br>'Remove': The dungeon information is not available anywhere in the game.<br>'Start With': The dungeon information is available immediately from the dungeon menu."
+    "tooltip": "Gives the Map and Compass extra functionality. Map will tell if a dungeon is vanilla or Master Quest.<br>Compass will tell what medallion or stone is within. The Temple of Time Altar will no longer<br>provide any information.<br><br>'Maps & Compasses: Remove': The dungeon information is not available anywhere in the game.<br>'Maps & Compasses: Start With': The dungeon information is available immediately from the dungeon menu."
   },
   {
     "default": false,
@@ -990,7 +990,7 @@
         "text": "unchecked"
       }
     ],
-    "tooltip": "The Boss Key door in Ganon's Tower will start unlocked. This is intended to be used with reduced trial requirements to make it more likely that skipped trials can be avoided."
+    "tooltip": "The Boss Key door in Ganon's Tower will start unlocked.<br>This is intended to be used with reduced trial requirements to<br>make it more likely that skipped trials can be avoided."
   },
   {
     "default": false,
@@ -1016,7 +1016,7 @@
     "type": "Scale",
     "options": [
     ],
-    "tooltip": "Select a number of Master Quest dungeons to appear in the game.<br>0: All dungeon will have their<br>original designs. (default)<br>6: Half of all dungeons will be from Master Quest.<br>12: All dungeons will have Master Quest redesigns."
+    "tooltip": "Select a number of Master Quest dungeons to appear in the game.<br><br>0: All dungeon will have their original designs. (default)<br><br>6: Half of all dungeons will be from Master Quest.<br><br>12: All dungeons will have Master Quest redesigns."
   },
   {
     "default": [],
@@ -4285,7 +4285,7 @@
         "text": "Only Chest Minigame"
       }
     ],
-    "tooltip": "'Required everywhere': every invisible or fake object will expect you to have the Lens of Truth and Magic. The exception is passing through the first wall in Bottom of the Well, since that is required in vanilla.<br>'Wasteland': The lens is needed to follow the ghost guide across the Haunted Wasteland."
+    "tooltip": "'Required Everywhere': Every invisible or fake object will expect you to<br>have the Lens of Truth and Magic. The exception is passing through the<br>first wall in Bottom of the Well, since that is required in vanilla.<br><br>'Wasteland and Chest Minigame': The lens is needed to follow the<br>ghost guide across the Haunted Wasteland."
   },
   {
     "default": false,
@@ -4319,7 +4319,7 @@
         "text": "unchecked"
       }
     ],
-    "tooltip": "Chests will be large if they contain a major item and small if they don't. Boss keys will be in gold chests. This allows skippingchests if they are small.<br>However, skipping small chests will mean having low health, ammo, and rupees, so doing so is a risk."
+    "tooltip": "Chests will be large if they contain a major item and small if they don't. Boss keys will be in gold chests.<br>This allows skipping chests if they are small.<br>However, skipping small chests will mean having low health, ammo, and rupees, so doing so is a risk."
   },
   {
     "default": false,
@@ -4361,7 +4361,7 @@
         "text": "Hints; Need Nothing"
       }
     ],
-    "tooltip": "Gossip Stones can be made to give hints about where items can be found.<br>Different settings can be chosen to decide which item is needed to speak to Gossip Stones.<br>Choosing to stick with the Mask of Truth will make the hints very difficult to obtain.<br>Hints for 'on the way of the hero' are locations that contain items that are required to beat the game."
+    "tooltip": "Gossip Stones can be made to give hints about where items can be found.<br>Different settings can be chosen to decide which item is needed to speak to<br>Gossip Stones.<br><br>Choosing to stick with the Mask of Truth will make the hints very difficult<br>to obtain.<br><br>Hints for 'on the way of the hero' are locations that contain items that are<br>required to beat the game."
   },
   {
     "default": "balanced",
@@ -4390,7 +4390,7 @@
         "text": "Tournament"
       }
     ],
-    "tooltip": "Useless has nothing but junk hints.<br>Strong distribution has some duplicate hints and no junk hints.<br>Very Strong distribution has only very useful hints.<br>Tournament distribution is similar to Strong but with no variation in hint types."
+    "tooltip": "'Useless' has nothing but junk hints.<br><br>'Strong' distribution has some duplicate hints and no junk hints.<br><br>'Very Strong' distribution has only very useful hints.<br><br>'Tournament' distribution is similar to 'Strong' but with no<br>variation in hint types."
   },
   {
     "default": "none",
@@ -4411,7 +4411,7 @@
         "text": "All Text Shuffled"
       }
     ],
-    "tooltip": "Will make things confusing for comedic value.<br>'Shuffled except Hints and Keys': Key texts are not shuffled because in keysanity it is inconvenient to figure out which keys are which without the correct text.<br>Similarly, non-shop items sold in shops will also retain standard text for the purpose of accurate price checks."
+    "tooltip": "Will make things confusing for comedic value.<br><br>'Shuffled except Hints and Keys': Key texts are not shuffled because in<br>keysanity it is inconvenient to figure out which keys are which without<br>the correct text.<br><br>Similarly, non-shop items sold in shops will also retain standard text<br>for the purpose of accurate price checks."
   },
   {
     "default": "normal",
@@ -4440,7 +4440,7 @@
         "text": "Ice Trap Onslaught"
       }
     ],
-    "tooltip": "Off: All Ice Traps are removed.<br>Normal: Only Ice Traps from the base item pool are placed.<br>Extra Ice Traps: Chance to add extra Ice Traps when junk items are added to the itempool.<br>Ice Trap Mayhem: All added junk items will be Ice Traps.<br>Ice Trap Onslaught: All junk items will be replaced by Ice Traps, even those in the base pool."
+    "tooltip": "'No Ice Traps': All Ice Traps are removed.<br><br>'Normal Ice Traps': Only Ice Traps from the base item pool are placed.<br><br>'Extra Ice Traps': Chance to add extra Ice Traps when junk items are<br>added to the itempool.<br><br>'Ice Trap Mayhem': All added junk items will be Ice Traps.<br><br>'Ice Trap Onslaught': All junk items will be replaced by Ice Traps,<br>even those in the base pool."
   },
   {
     "default": "balanced",
@@ -4465,7 +4465,7 @@
         "text": "Minimal"
       }
     ],
-    "tooltip": "Changes the amount of bonus items that are available in the game.<br>'Plentiful': Extra major items are added.<br>'Balanced': Original item pool.<br>'Scarce': Some excess items are removed, including health upgrades.<br>'Minimal': Most excess items are removed."
+    "tooltip": "Changes the amount of bonus items that are available in the game.<br><br>'Plentiful': Extra major items are added.<br><br>'Balanced': Original item pool.<br><br>'Scarce': Some excess items are removed, including health upgrades.<br><br>'Minimal': Most excess items are removed."
   },
   {
     "default": "normal",
@@ -4494,7 +4494,7 @@
         "text": "OHKO"
       }
     ],
-    "tooltip": "Changes the amount of damage taken.<br>'OHKO': Link dies in one hit."
+    "tooltip": "Changes the amount of damage taken.<br><br>'OHKO': Link dies in one hit."
   },
   {
     "default": "default",
@@ -4602,7 +4602,7 @@
         "text": "Random"
       }
     ],
-    "tooltip": "'No Music': No background music is played.<br>'Random': Area background music is randomized."
+    "tooltip": "'No Music': No background music is played.<br><br>'Random': Area background music is randomized."
   },
   {
     "default": true,
@@ -4764,7 +4764,7 @@
         "text": "Lumen"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color the N64 can draw."
   },
   {
     "default": "Goron Red",
@@ -4909,7 +4909,7 @@
         "text": "Lumen"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color the N64 can draw."
   },
   {
     "default": "Zora Blue",
@@ -5054,7 +5054,7 @@
         "text": "Lumen"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color the N64 can draw."
   },
   {
     "default": "White",
@@ -5151,7 +5151,7 @@
         "text": "Phantom Zelda"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color<br>the N64 can draw."
   },
   {
     "default": "Yellow",
@@ -5248,7 +5248,7 @@
         "text": "Phantom Zelda"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color<br>the N64 can draw."
   },
   {
     "default": "Light Blue",
@@ -5345,7 +5345,7 @@
         "text": "Phantom Zelda"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color<br>the N64 can draw."
   },
   {
     "default": "Green",
@@ -5442,7 +5442,7 @@
         "text": "Phantom Zelda"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color<br>the N64 can draw."
   },
   {
     "default": 4,
@@ -5532,7 +5532,7 @@
         "text": "Pink"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw.<br>'Rainbow': Rainbow sword trails."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color the N64 can draw.<br><br>'Rainbow': Rainbow sword trails."
   },
   {
     "default": "White",
@@ -5597,7 +5597,7 @@
         "text": "Pink"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw. 'Rainbow': Rainbow sword trails."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color the N64 can draw.<br><br>'Rainbow': Rainbow sword trails."
   },
   {
     "default": "Red",
@@ -5634,7 +5634,7 @@
         "text": "Yellow"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color the N64 can draw."
   },
   {
     "default": "Green",
@@ -5683,7 +5683,7 @@
         "text": "White"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color the N64 can draw."
   },
   {
     "default": "Silver",
@@ -5756,7 +5756,7 @@
         "text": "Purple"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color<br>the N64 can draw."
   },
   {
     "default": "Gold",
@@ -5829,7 +5829,7 @@
         "text": "Purple"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br>'Completely Random': Choose a random color from any color the N64 can draw."
+    "tooltip": "'Random Choice': Choose a random color from this list of colors.<br><br>'Completely Random': Choose a random color from any color<br>the N64 can draw."
   },
   {
     "default": "default",
@@ -5954,7 +5954,7 @@
         "text": "Bongo Bongo Low"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random sound from this list.<br>'Default': Beep. Beep. Beep."
+    "tooltip": "'Random Choice': Choose a random sound from this list.<br><br>'Default': Beep. Beep. Beep."
   },
   {
     "default": "default",
@@ -7071,7 +7071,7 @@
         "text": "Stalchild Attack"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random sound from this list. 'Default': Neigh. Neigh. Neigh."
+    "tooltip": "'Random Choice': Choose a random sound from this list.<br><br>'Default': Neigh. Neigh. Neigh."
   },
   {
     "default": "default",
@@ -7128,7 +7128,7 @@
         "text": "Gold Skull Token"
       }
     ],
-    "tooltip": "'Random Choice': Choose a random sound from this list. 'Default': Wolf Howl"
+    "tooltip": "'Random Choice': Choose a random sound from this list.<br><br>'Default': Wolf Howl"
   },
   {
     "default": "default",

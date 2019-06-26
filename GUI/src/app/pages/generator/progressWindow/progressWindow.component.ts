@@ -6,12 +6,15 @@ import { NbDialogRef } from '@nebular/theme';
     <nb-card class="progress-window">
       <nb-card-header>
       Generating Seed
-      <button nbButton size="xsmall" status="danger" [disabled]="cancellationInProgress" (click)="cancelGeneration()">X</button>
+      <button nbButton class="headerButton" size="xsmall" status="danger" [disabled]="cancellationInProgress" (click)="cancelGeneration()">X</button>
       </nb-card-header>
       <nb-card-body>
         {{ progressMessage }}
         <p></p>
-        <nb-progress-bar [value]="progressPercentage" [status]="progressStatus == 0 ? 'info': progressStatus == 1 ? 'success' : 'danger'" [displayValue]="true"></nb-progress-bar>       
+        <nb-progress-bar [value]="progressPercentage" [status]="progressStatus == 0 ? 'info': progressStatus == 1 ? 'success' : 'danger'" [displayValue]="true"></nb-progress-bar>
+        <div *ngIf="progressPercentage == 100" class="footerButtonWrapper">
+          <button nbButton [disabled]="cancellationInProgress" size="small" status="primary" (click)="cancelGeneration()">OK</button>
+        </div>
       </nb-card-body>
     </nb-card>
   `,

@@ -37,7 +37,17 @@
 
   .cdk-overlay-pane > nb-popover {
     animation-name: tooltipFadeIn;
-    animation-duration: 1s;
+    animation-duration: 600ms;
+  }
+
+  //Scrollbar style for Combobox
+  .cdk-overlay-pane > nb-card > nb-card-body::-webkit-scrollbar-track {
+    background: #eee;
+    box-shadow: 0px 0px 3px #dfdfdf inset;
+  }
+
+  .cdk-overlay-pane > nb-card > nb-card-body::-webkit-scrollbar-thumb {
+    background: #337ab7;
   }
 
   @include bootstrap-rtl();
@@ -86,8 +96,8 @@ nb-layout-footer {
 }
 
 .tabset .tab a::before {
-  background: rgb(65, 0, 85) !important;
-  background-image: rgb(65, 0, 85) !important;
+  background: #052F5F !important;
+  //background-image: #052F5F !important;
 }
 
 .tabset .tab a {
@@ -95,7 +105,7 @@ nb-layout-footer {
 }
 
 .tabset .tab.active a {
-  color: rgb(65, 0, 85) !important;
+  color: #052F5F !important;
 }
 
 .record-picker .selected {
@@ -115,7 +125,7 @@ nb-card-body .selected {
 }
 
 nb-card.select.primary {
-  border: 2px solid rgb(65, 0, 85) !important;
+  border: 2px solid #052F5F !important;
 }
 
 .btn-xsmall {
@@ -127,16 +137,16 @@ nb-select {
 }
 
 nb-option:hover {
-  background-color: rgb(65, 0, 85) !important;
+  background-color: #052F5F !important;
   color: white !important;
 }
 
 .textInput:focus {
-  border-color: rgb(65, 0, 85) !important;
+  border-color: #052F5F !important;
 }
 
 .numberInput:focus {
-  border-color: rgb(65, 0, 85) !important;
+  border-color: #052F5F !important;
 }
 
 .progress-value.success {
