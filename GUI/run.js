@@ -2,7 +2,6 @@
 const os = require('os');
 const fs = require('fs');
 const spawn = require('child_process').spawn;
-const exec = require('child_process').exec;
 
 //Helpers
 const waitFor = (ms) => new Promise(r => setTimeout(r, ms));

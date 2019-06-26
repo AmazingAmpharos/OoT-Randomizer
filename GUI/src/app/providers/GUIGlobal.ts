@@ -347,9 +347,6 @@ export class GUIGlobal {
 
   parseGeneratorGUISettings(guiSettings, userSettings) {
 
-    console.log(guiSettings);
-    //console.log("userSettings", userSettings);
-
     const isRGBHex = /[0-9A-Fa-f]{6}/;
 
     //Intialize settings maps
@@ -442,7 +439,9 @@ export class GUIGlobal {
     this.generator_settingsMap["repatch_cosmetics"] = userSettings && "repatch_cosmetics" in userSettings ? userSettings["repatch_cosmetics"] : true;
     this.generator_settingsVisibilityMap["repatch_cosmetics"] = true;
 
-    console.log("Settings Map", this.generator_settingsMap);
+    console.log("JSON Settings Data:", guiSettings);
+    console.log("Last User Settings:", userSettings);
+    console.log("Final Settings Map", this.generator_settingsMap);
 
     //Save settings after parsing them
     this.setGlobalVar('generatorSettingsArray', guiSettings.settingsArray);
