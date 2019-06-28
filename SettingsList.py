@@ -1028,13 +1028,27 @@ setting_infos = [
         ''',
         shared         = True,
     ),
-	Checkbutton(
-		name           = 'fast_chickens',
-        gui_text       = 'Fast Chickens',
+    Checkbutton(
+        name           = 'chicken_count_random',
+        gui_text       = 'Random Cucco Count',
         gui_group      = 'convenience',
         gui_tooltip    = '''\
-            Moves all except the Chicken near the pen into the pen.
+            Anju will give a reward for collecting a random
+            number of Cuccos.
         ''',
+        shared         = True,
+    ),
+    Scale(
+        name           = 'chicken_count',
+        default        = 7,
+        min            = 0,
+        max            = 7,
+        gui_group      = 'convenience',
+        gui_tooltip    = '''\
+            Anju will give a reward for turning
+            in the chosen number of Cuccos.
+        ''',
+        dependency     = lambda settings: 1 if settings.chicken_count_random else None,
         shared         = True,
     ),
     Checkbutton(
