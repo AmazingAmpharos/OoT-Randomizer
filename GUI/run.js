@@ -258,11 +258,10 @@ async function runElectron() {
         await waitFor(5000);
   }
 
-    //npm run electron-release", ["python", '"' + pythonPath + '"']
     if (releaseMode)
-        await spawnDetachedSubProcess("node", ["node_modules/electron/cli.js", ".", "release", "python", '"' + pythonPath + '"'], false, true).catch(err => { throw Error("Failed to launch Electron"); }); //Spawn without a shell so the window is hidden on Windows
+        await spawnDetachedSubProcess("node", ["node_modules/electron/cli.js", ".", "release", "python", pythonPath], false, true).catch(err => { throw Error("Failed to launch Electron"); }); //Spawn without a shell so the window is hidden on Windows
     else
-        await spawnDetachedSubProcess("npm run electron-dev", ["python", '"' + pythonPath + '"'], true, false).catch(err => { throw Error("Failed to launch Electron"); });
+        await spawnDetachedSubProcess("npm run electron-dev", ["python", '"' + pythonPath + '"'], true, false).catch(err => { throw Error("Failed to launch Electron"); }); //Need to wrap pythonPath again since it gets passed to another batch file which removes one layer
 
   console.log("Electron started");
 }

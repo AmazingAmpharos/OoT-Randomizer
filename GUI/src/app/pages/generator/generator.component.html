@@ -40,14 +40,14 @@
                               <input #refColorPicker [(colorPicker)]="global.generator_customColorMap[setting.name]" [cpAlphaChannel]="disabled" [cpOutputFormat]="hex" [cpUseRootViewContainer]="true" [cpAddColorButton]="true" [cpPresetColors]="['#fff', '#000']" [cpMaxPresetColorsLength]="5"
                                      (colorPickerClose)="afterSettingChange(true)" />
                             </div>
-                            <nb-select [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" (selectedChange)="checkVisibility($event, setting, findOption(setting.options, $event), refColorPicker)"
+                            <nb-select class="selectXSmall" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" (selectedChange)="checkVisibility($event, setting, findOption(setting.options, $event), refColorPicker)"
                                        [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'click' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise" size="xsmall">
                               <nb-option *ngFor="let option of setting.options; index as optionIndex" [value]="option.name">{{option.text}}</nb-option>
                             </nb-select>
                           </ng-container>
                           <!--Normal Combobox-->
                           <ng-container *ngIf="!section.is_colors">
-                            <nb-select [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" (selectedChange)="checkVisibility($event, setting, findOption(setting.options, $event))"
+                            <nb-select class="selectXSmall" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" (selectedChange)="checkVisibility($event, setting, findOption(setting.options, $event))"
                                        [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'click' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise" size="xsmall">
                               <nb-option *ngFor="let option of setting.options; index as optionIndex" [value]="option.name">{{option.text}}</nb-option>
                             </nb-select>
@@ -107,7 +107,7 @@
                           <button class="ioInputBrowseButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="browseForDirectory(setting)">Browse</button>
                         </ng-container>
                         <ng-container *ngSwitchCase="'Presetinput'">
-                          <nb-select #refPresetSelect [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'click' : 'noop'" nbPopoverPlacement="right"
+                          <nb-select #refPresetSelect class="selectXSmall" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'click' : 'noop'" nbPopoverPlacement="right"
                                      nbPopoverAdjustment="counterclockwise" size="xsmall">
                             <nb-option *ngFor="let preset of global.generator_presets | keyvalue:presetKeyOrder; index as presetIndex" [value]="preset.key">{{preset.key}}</nb-option>
                           </nb-select>
@@ -167,8 +167,8 @@
             <div class="tabsetPadding"></div>
             <!--Release Versions Only-->
             <ng-container *ngIf="global.getGlobalVar('webIsMasterVersion')">
-              <button class="footerGenerateButtonSmall" nbButton status="success" [disabled]="!generateSeedButtonEnabled" (click)="generateSeed()">Generate Seed!</button>
-              <button class="footerGenerateButtonSmall" nbButton status="info" [disabled]="!generateSeedButtonEnabled" (click)="generateSeed(false, true)">Generate Race Seed!</button>
+              <button class="footerGenerateButtonNormalSmall" nbButton status="success" [disabled]="!generateSeedButtonEnabled" (click)="generateSeed()">Generate Seed!</button>
+              <button class="footerGenerateButtonRaceSmall" nbButton status="info" [disabled]="!generateSeedButtonEnabled" (click)="generateSeed(false, true)">Generate Race Seed!</button>
             </ng-container>
             <!--Dev Version-->
             <ng-container *ngIf="!global.getGlobalVar('webIsMasterVersion')">
@@ -181,7 +181,7 @@
           <ng-container *ngIf="global.getGlobalVar('electronAvailable')">
             <p class="footerInputLabel">Patch File</p>
             <input class="footerInput" nbInput type="text" maxlength="260" fieldSize="small" [(ngModel)]="global.generator_settingsMap['patch_file']" (ngModelChange)="afterSettingChange(true)">
-            <button class="footerButton" nbButton status="info" size="small" (click)="browseForPatchFile()">Select File</button>
+            <button class="footerButtonPatchFileBrowse" nbButton status="info" size="small" (click)="browseForPatchFile()">Select File</button>
             <!--Padding-->
             <div class="settingPadding"></div>
             <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Update Cosmetics</mat-slide-toggle>
@@ -195,7 +195,7 @@
             <ng-container *ngIf="global.getGlobalVar('appType') == 'generator'">
               <p class="footerInputLabel">Patch File</p>
               <input class="footerInput" nbInput readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap['patch_file']) == 'string' ? global.generator_settingsMap['patch_file'] : global.generator_settingsMap['patch_file'].name" (ngModelChange)="afterSettingChange(true)" ngfDrop [(file)]="global.generator_settingsMap['patch_file']">
-              <button class="footerButton" nbButton status="info" size="small" ngfSelect [(file)]="global.generator_settingsMap['patch_file']">Select File</button>
+              <button class="footerButtonPatchFileBrowse" nbButton status="info" size="small" ngfSelect [(file)]="global.generator_settingsMap['patch_file']">Select File</button>
               <!--Padding-->
               <div class="settingPadding"></div>
               <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Update Cosmetics</mat-slide-toggle>

@@ -3,7 +3,7 @@
 }
 
 :host nb-card { //Electron
-  height: 98%;
+  height: 99%;
   overflow: inherit;
 }
 
@@ -35,6 +35,22 @@ nb-card-body {
     line-height: 0;
     padding-top: 0;
     padding-bottom: 0;
+
+    @media (max-width: 680px) {
+      line-height: 15px;
+    }
+  }
+
+  a {
+    @media (max-width: 500px) {
+      padding-right: 0.5rem !important;
+      padding-left: 0.5rem !important;
+    }
+
+    @media (max-width: 400px) {
+      padding-right: 0.2rem !important;
+      padding-left: 0.2rem !important;
+    }
   }
 }
 
@@ -43,8 +59,20 @@ nb-card-body {
 }
 
 .settingsTabset {
-  height: 70%;
+  height: 68%;
   padding: 0.5rem !important;
+
+  @media (max-width: 700px) {
+    height: 71%;
+  }
+
+  @media (max-width: 700px) and (max-height: 910px) {
+    height: 68%;
+  }
+
+  @media (max-width: 400px) and (max-height: 770px) {
+    height: 67%;
+  }
 
   nb-tab {
     height: 102.5%; //adjust for top offset
@@ -54,15 +82,25 @@ nb-card-body {
   }
 }
 
+
 .footerTabset {
   position: absolute;
-  bottom: -5px;
+  bottom: 4px;
   width: 100%;
+  height: 215px;
   margin: 0 auto;
   margin-top: 5px;
 
+  @media (max-width: 700px) {
+    height: 210px;
+  }
+
   nb-tab {
     padding: 1.25rem;
+
+    @media (max-width: 680px) {
+      padding: 0.5rem;
+    }
   }
 }
 
@@ -125,7 +163,6 @@ nb-card-body {
     height: calc(100% - 7px);
   }
 }
-
 //Scrollbar style for tileContainers
 .tileContainer::-webkit-scrollbar-track {
   background: #eee;
@@ -154,6 +191,10 @@ nb-card-body {
 
 .radioButton {
   margin-right: 10px;
+}
+
+.selectXSmall {
+  max-width: 300px;
 }
 
 .numberTextInputLabel {
@@ -247,6 +288,16 @@ nb-card-body {
   padding-left: 0.375rem !important;
   margin-top: 1.0rem !important;
   margin-right: 1.0rem !important;
+
+  @media (max-width: 550px) {
+    width: calc(100% - 120px);
+    margin-right: 0.5rem !important;
+  }
+
+  @media (max-width: 430px) {
+    width: calc(100% - 90px);
+    margin-right: 0.2rem !important;
+  }
 }
 
 .footerInputShort {
@@ -257,25 +308,107 @@ nb-card-body {
   padding-left: 0.375rem !important;
   margin-top: 1.0rem !important;
   margin-right: 1.0rem !important;
+
+  @media (max-width: 550px) {
+    width: calc(100% - 170px);
+    margin-right: 0.5rem !important;
+  }
+
+  @media (max-width: 430px) {
+    width: calc(100% - 130px);
+    margin-right: 0.2rem !important;
+  }
 }
 
 .footerButton {
   margin-right: 6px !important;
+
+  @media (max-width: 550px) {
+    width: 50px;
+    font-size: 0.8rem !important;
+    margin-right: 3px !important;
+    padding-right: 0rem !important;
+    padding-left: 0rem !important;
+  }
+
+  @media (max-width: 430px) {
+    width: 40px;
+    font-size: 0.7rem !important;
+    margin-right: 2px !important;
+  }
 }
 
-.footerGenerateButtonSmall {
+.footerButtonPatchFileBrowse {
   margin-right: 6px !important;
-  width: calc(50% - 6px);
+
+  @media (max-width: 550px) {
+    width: 90px;
+    font-size: 0.83rem !important;
+    margin-right: 3px !important;
+    padding-right: 0rem !important;
+    padding-left: 0rem !important;
+  }
+
+  @media (max-width: 430px) {
+    width: 70px;
+    font-size: 0.7rem !important;
+    margin-right: 2px !important;
+  }
+}
+
+.footerGenerateButton {
+  position: absolute;
+  width: calc(100% - 40px) !important;
+  bottom: 13px;
+
+  @media (max-width: 680px) {
+    width: calc(100% - 15px) !important;
+  }
+}
+
+.footerGenerateButtonNormalSmall {
+  position: absolute;
+  width: calc(50% - 20px) !important;
+  bottom: 13px;
+  margin-right: 6px !important;
+
+  @media (max-width: 680px) {
+    width: calc(50% - 25px) !important;
+  }
+
+  @media (max-width: 450px) {
+    width: calc(50% - 15px) !important;
+    left: 10px;
+    font-size: 0.7rem !important;
+  }
+}
+
+.footerGenerateButtonRaceSmall {
+  position: absolute;
+  width: calc(50% - 20px) !important;
+  left: calc(50% - 20px + 25px) !important;
+  bottom: 13px;
+  margin-right: 6px !important;
+
+  @media (max-width: 680px) {
+    width: calc(50% - 25px) !important;
+    left: calc(50% - 25px + 40px) !important;
+  }
+
+  @media (max-width: 450px) {
+    width: calc(50% - 15px) !important;
+    left: calc(50% - 15px + 20px) !important;
+    font-size: 0.7rem !important;
+  }
 }
 
 .tabsetPadding {
-  height: 14px;
+  height: 30px;
 }
 
 .settingPadding {
   height: 8px;
 }
-
 //Disabled elements
 p.disabled {
   opacity: 0.38;

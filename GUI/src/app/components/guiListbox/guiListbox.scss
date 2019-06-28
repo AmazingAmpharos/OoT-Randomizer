@@ -136,7 +136,12 @@ div.record-picker::-webkit-scrollbar-thumb {
     margin-right: 3px;
 }
 .buttonBox .switchButton {
-    width: 40%;
+  width: 40%;
+
+  @media (max-width: 420px) {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 
 button.btn-block {
