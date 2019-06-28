@@ -57,7 +57,8 @@
                 (Small_Key_Water_Temple, 6) and 
                 (can_play(Zeldas_Lullaby) or keysanity) and 
                 (can_use(Longshot) or (logic_water_boss_key_region and can_use(Hover_Boots))) and
-                ((logic_water_bk_chest and Iron_Boots) or (has_explosives and Progressive_Strength_Upgrade) or Hover_Boots)",
+                ((logic_water_bk_chest and Iron_Boots) or logic_water_north_basement or
+                    (has_explosives and Progressive_Strength_Upgrade) or Hover_Boots)",
             "GS Water Temple South Basement": "
                 (can_use(Hookshot) or can_use(Hover_Boots)) and 
                 has_explosives and can_play(Zeldas_Lullaby)",
@@ -69,8 +70,8 @@
         },
         "exits": {
             "Water Temple Cracked Wall": "
-                can_play(Zeldas_Lullaby) and logic_water_cracked_wall_hovers and
-                can_use(Hover_Boots)",
+                can_play(Zeldas_Lullaby) and
+                (logic_water_cracked_wall_nothing or (logic_water_cracked_wall_hovers and can_use(Hover_Boots)))",
             "Water Temple Middle Water Level": "
                 (has_bow or can_use(Dins_Fire) or
                  ((Small_Key_Water_Temple, 6) and can_use(Hookshot)) or

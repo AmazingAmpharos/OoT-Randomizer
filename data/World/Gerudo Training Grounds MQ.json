@@ -13,8 +13,7 @@
         "exits": {
             "Gerudo Fortress": "True",
             "Gerudo Training Grounds Left Side": "here(has_fire_source)",
-            "Gerudo Training Grounds Right Side": "
-                here(can_use(Bow) or can_use(Slingshot))"
+            "Gerudo Training Grounds Right Side": "here(can_use(Bow) or can_use(Slingshot))"
         }
     },
     {
@@ -25,7 +24,8 @@
         },
         "exits": {
             # Still requires has_fire_source in the room
-            "Gerudo Training Grounds Underwater": "can_use(Hover_Boots)"
+            "Gerudo Training Grounds Underwater": "
+                (has_bow or can_use(Longshot)) and can_use(Hover_Boots)"
         }
     },
     {
@@ -33,7 +33,8 @@
         "dungeon": "Gerudo Training Grounds",
         "locations": {
             "Gerudo Training Grounds MQ Underwater Silver Rupee Chest": "
-                has_fire_source and can_use(Iron_Boots) and (logic_fewer_tunic_requirements or can_use(Zora_Tunic)) and 
+                has_fire_source and can_use(Iron_Boots) and
+                (logic_fewer_tunic_requirements or can_use(Zora_Tunic)) and 
                 (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love))"
         }
     },
@@ -44,21 +45,24 @@
             "Gerudo Training Grounds MQ First Iron Knuckle Chest": "is_adult or Kokiri_Sword or has_explosives"
         },
         "exits": {
-            #Child cloud progress here after adult opens the door, but child logically
-            #inferior to adult so just keep child out for simplicity
-            "Gerudo Training Grounds Stalfos Room": "can_use(Longshot) or (logic_gtg_mq_with_hookshot and can_use(Hookshot))"
+            "Gerudo Training Grounds Stalfos Room": "
+                can_use(Longshot) or logic_gtg_mq_without_hookshot or
+                (logic_gtg_mq_with_hookshot and can_use(Hookshot))"
         }
     },
     {
         "region_name": "Gerudo Training Grounds Stalfos Room",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds MQ Before Heavy Block Chest": "True",
+            # Very difficult to fight the Stalfos and Stulltulas under the time limit as child.
+            "Gerudo Training Grounds MQ Before Heavy Block Chest": "is_adult",
             "Gerudo Training Grounds MQ Heavy Block Chest": "can_use(Silver_Gauntlets)",
             "Blue Fire": "has_bottle"
         },
         "exits": {
-            "Gerudo Training Grounds Back Areas": "can_play(Song_of_Time) and can_see_with_lens and has_blue_fire"
+            "Gerudo Training Grounds Back Areas": "
+                is_adult and can_see_with_lens and has_blue_fire and
+                (can_play(Song_of_Time) or (logic_gtg_fake_wall and can_use(Hover_Boots)))"
         }
     },
     {
@@ -67,10 +71,9 @@
         "locations": {
             "Gerudo Training Grounds MQ Eye Statue Chest": "has_bow",
             "Gerudo Training Grounds MQ Second Iron Knuckle Chest": "True",
-            "Gerudo Training Grounds MQ Flame Circle Chest": "True"
+            "Gerudo Training Grounds MQ Flame Circle Chest": "can_use(Hookshot) or has_bow or has_explosives"
         },
         "exits": {
-            # Hookshot implicitly required to get here
             "Gerudo Training Grounds Central Maze Right": "Hammer",
             "Gerudo Training Grounds Right Side": "can_use(Longshot)"
         }
@@ -81,13 +84,15 @@
         "locations": {
             "Gerudo Training Grounds MQ Maze Right Central Chest": "True",
             "Gerudo Training Grounds MQ Maze Right Side Chest": "True",
+            # The switch that opens the door to the Ice Arrows chest can be hit with a precise jumpslash.
             "Gerudo Training Grounds MQ Ice Arrows Chest": "
                 (Small_Key_Gerudo_Training_Grounds, 3)"
         },
         "exits": {
             # guarantees fire with torch
-            "Gerudo Training Grounds Underwater": "can_use(Longshot) or has_bow",
-            "Gerudo Training Grounds Right Side": "True"
+            "Gerudo Training Grounds Underwater": "
+                can_use(Longshot) or (can_use(Hookshot) and has_bow)",
+            "Gerudo Training Grounds Right Side": "can_use(Hookshot)"
         }
     }
 ]

@@ -14,7 +14,9 @@
         "dungeon": "Shadow Temple",
         "exits": {
             "Shadow Temple Entryway": "True",
-            "Shadow Temple First Beamos": "can_use(Fire_Arrows) or Hover_Boots",
+            "Shadow Temple First Beamos": "
+                can_use(Fire_Arrows) or Hover_Boots or
+                (logic_shadow_mq_gap and can_use(Longshot))",
             "Shadow Temple Dead Hand Area": "has_explosives and (Small_Key_Shadow_Temple, 6)"
         }
     },
@@ -55,8 +57,10 @@
         "locations": {
             "Shadow Temple MQ Beamos Silver Rupees Chest": "can_use(Longshot)",
             "Shadow Temple MQ Falling Spikes Lower Chest": "True",
-            "Shadow Temple MQ Falling Spikes Upper Chest": "Progressive_Strength_Upgrade",
-            "Shadow Temple MQ Falling Spikes Switch Chest": "Progressive_Strength_Upgrade",
+            "Shadow Temple MQ Falling Spikes Upper Chest": "
+                (logic_shadow_umbrella and Hover_Boots) or Progressive_Strength_Upgrade",
+            "Shadow Temple MQ Falling Spikes Switch Chest": "
+                (logic_shadow_umbrella and Hover_Boots) or Progressive_Strength_Upgrade",
             "Shadow Temple MQ Invisible Spikes Chest": "Hover_Boots and (Small_Key_Shadow_Temple, 3)",
             "Shadow Temple MQ Stalfos Room Chest": "
                 Hover_Boots and (Small_Key_Shadow_Temple, 3) and Progressive_Hookshot",
