@@ -939,9 +939,20 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_bits(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
     save_context.write_bits(0x0F08, 0x08) # "Entered Hyrule Castle"
 
+    # Set the number of chickens to collect
+    # Generate random number if needed
     if world.chicken_count_random:
         world.chicken_count = random.randint(0, 7)
     rom.write_byte(0x00E1E523, world.chicken_count)
+    
+    # Change Anju to always say how many chickens are needed
+    # Does not affect text for collecting item or afterwards
+    rom.write_int16(0x00E1F3C2, 0x5036)
+    rom.write_int16(0x00E1F3C4, 0x5036)
+    rom.write_int16(0x00E1F3C6, 0x5036)
+    rom.write_int16(0x00E1F3C8, 0x5036)
+    rom.write_int16(0x00E1F3CA, 0x5036)
+    rom.write_int16(0x00E1F3CC, 0x5036)
 
     # Make the Kakariko Gate not open with the MS
     rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
