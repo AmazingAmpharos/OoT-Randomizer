@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef, ElementRef } from '@angular/core';
+import { Component, ViewContainerRef, ElementRef, ViewEncapsulation } from '@angular/core';
 import { PipeTransform, Pipe } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from "@angular/platform-browser";
@@ -15,7 +15,11 @@ export class BypassSecurityPipe implements PipeTransform {
 
 @Component({
   selector: 'ngx-app',
-  template: '<router-outlet></router-outlet>',
+  template: `<body class="nb-theme-corporate">
+    <router-outlet></router-outlet>
+  </body>`,
+  styleUrls: ["../app.component.scss"],
+  encapsulation: ViewEncapsulation.ShadowDom //Encapsulate in Shadow DOM to prevent style interference on the website
 })
 export class AppComponent {
 
