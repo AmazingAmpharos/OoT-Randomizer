@@ -354,7 +354,7 @@ async function main(commandLine) {
     var electronIndexUpdated = false;
 
     //Check if electron index and compiled build exists
-    if (!fs.existsSync("./electron/dist") || !fs.existsSync("./electron/dist/index.json") || !fs.existsSync("./electron/dist/main.js")) {
+    if (forceRecompile || !fs.existsSync("./electron/dist") || !fs.existsSync("./electron/dist/index.json") || !fs.existsSync("./electron/dist/main.js")) {
 
         if (!environmentChecked)
             await setupNodeEnvironment();
@@ -432,7 +432,7 @@ async function main(commandLine) {
         var angularIndexUpdated = false;
 
         //Check if Angular index and compiled build exists
-        if (!fs.existsSync("./dist") || !fs.existsSync("./dist/index.json") || !fs.existsSync("./dist/ootr-electron-gui") || !fs.existsSync("./dist/ootr-electron-gui/index.html")) {
+        if (forceRecompile || !fs.existsSync("./dist") || !fs.existsSync("./dist/index.json") || !fs.existsSync("./dist/ootr-electron-gui") || !fs.existsSync("./dist/ootr-electron-gui/index.html")) {
 
             console.log("Create Angular Index...");
 
