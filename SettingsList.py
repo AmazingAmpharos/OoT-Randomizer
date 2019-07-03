@@ -1822,12 +1822,12 @@ setting_infos = [
         choices        = {
             'default':       'Default',
             'random':        'Random Choice',
-            'early-morning': 'Early Morning',
+            'sunrise':       'Sunrise',
             'morning':       'Morning',
             'noon':          'Noon',
             'afternoon':     'Afternoon',
+            'sunset':        'Sunset',
             'evening':       'Evening',
-            'dusk':          'Dusk',
             'midnight':      'Midnight',
             'witching-hour': 'Witching Hour',
         },
@@ -1840,7 +1840,6 @@ setting_infos = [
             nighttime at 18:00 (6:00 PM).
 
             Default is 10:00 in the morning.
-            The alternatives are multiples of 3 hours.
         ''',
         shared         = True,
     ),
