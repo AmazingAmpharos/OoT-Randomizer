@@ -336,6 +336,8 @@ def shuffle_random_entrances(worlds):
             # not really a closed forest anymore, so specifically remove Deku Tree from closed forest.
             if worlds[0].open_forest == 'closed':
                 entrance_pools['Dungeon'].remove(world.get_entrance('Outside Deku Tree -> Deku Tree Lobby'))
+                world.get_entrance('Outside Deku Tree -> Deku Tree Lobby').shuffled = False
+                world.get_entrance('Deku Tree Lobby -> Outside Deku Tree').shuffled = False
 
         if worlds[0].shuffle_interior_entrances:
             entrance_pools['Interior'] = entrance_instances(world, get_entrance_pool('Interior')) + entrance_pools.get('SpecialInterior', [])
