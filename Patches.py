@@ -1056,11 +1056,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     if world.starting_tod != 'default':
         tod = {
              'sunrise':       0x4555,
--            'morning':       0x6000,
--            'noon':          0x8001,
--            'afternoon':     0xA000,
--            'sunset':        0xC001,
--            'evening':       0xE000,
+             'morning':       0x6000,
+             'noon':          0x8001,
+             'afternoon':     0xA000,
+             'sunset':        0xC001,
+             'evening':       0xE000,
              'midnight':      0x0000,
              'witching-hour': 0x2000,
 
