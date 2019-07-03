@@ -154,6 +154,14 @@ logic_tricks = {
                     Silver Rupee Chest. May need to make multiple
                     trips.
                     '''},
+    'Pass Through Visible One-Way Collisions': {
+        'name'    : 'logic_visible_collisions',
+        'tooltip' : '''\
+                    Allows climbing through the platform to reach 
+                    Impa's House Back as adult with no items and 
+                    going through the Kakariko Village Gate as child
+                    when coming from the Mountain Trail side.
+                    '''},
     'Child Deadhand without Kokiri Sword': {
         'name'    : 'logic_child_deadhand',
         'tooltip' : '''\
@@ -555,16 +563,152 @@ logic_tricks = {
         'tooltip' : '''\
                     A precise jump can be used to reach this alcove.
                     '''},
-    'Pass Through Visible One-Way Collisions': {
-        'name'    : 'logic_visible_collisions',
+    'Zora\'s River Upper Freestanding PoH as Adult with Nothing': {
+        'name'    : 'logic_zora_river_upper',
         'tooltip' : '''\
-                    Allows climbing through the platform to reach 
-                    Impa's House Back as adult with no items and 
-                    going through the Kakariko Village Gate as child
-                    when coming from the Mountain Trail side.
+                    Adult can reach this PoH with a precise jump,
+                    no Hover Boots required.
                     '''},
-
-
+    'Shadow Temple MQ Truth Spinner Gap with Longshot': {
+        'name'    : 'logic_shadow_mq_gap',
+        'tooltip' : '''\
+                    You can Longshot a torch and jumpslash-recoil onto
+                    the tongue. It works best if you Longshot the right
+                    torch from the left side of the room.
+                    '''},
+    'Lost Woods Adult GS without Bean': {
+        'name'    : 'logic_lost_woods_gs_bean',
+        'tooltip' : '''\
+                    You can collect the token with a precise
+                    Hookshot use, as long as you can kill the
+                    Skulltula somehow first. It can be killed
+                    using Longshot, Bow, Bombchus or Din's Fire.
+                    '''},
+    'Graveyard Freestanding PoH with Boomerang': {
+        'name'    : 'logic_graveyard_poh',
+        'tooltip' : '''\
+                    Using a precise moving setup you can obtain
+                    the Piece of Heart by having the Boomerang
+                    interact with it along the return path.
+                    '''},
+    'Death Mountain Trail Soil GS without Destroying Boulder': {
+        'name'    : 'logic_dmt_soil_gs',
+        'tooltip' : '''\
+                    Bugs will go into the soft soil even while the boulder is
+                    still blocking the entrance.
+                    Then, using a precise moving setup you can kill the Gold
+                    Skulltula and obtain the token by having the Boomerang
+                    interact with it along the return path.
+                    '''},
+    'Gerudo Training Grounds Left Side Silver Rupees without Hookshot': {
+        'name'    : 'logic_gtg_without_hookshot',
+        'tooltip' : '''\
+                    After collecting the rest of the silver rupees in the room,
+                    you can reach the final silver rupee on the ceiling by being
+                    pulled up into it after getting grabbed by the Wallmaster.
+                    Then, you must also reach the exit of the room without the
+                    use of the Hookshot. If you move quickly you can sneak past
+                    the edge of a flame wall before it can rise up to block you.
+                    To do so without taking damage is more precise.
+                    '''},
+    'Gerudo Training Grounds MQ Left Side Silver Rupees without Hookshot': {
+        'name'    : 'logic_gtg_mq_without_hookshot',
+        'tooltip' : '''\
+                    After collecting the rest of the silver rupees in the room,
+                    you can reach the final silver rupee on the ceiling by being
+                    pulled up into it after getting grabbed by the Wallmaster.
+                    The Wallmaster will not track you to directly underneath the
+                    rupee. You should take the last step to be under the rupee
+                    after the Wallmaster has begun its attempt to grab you.
+                    Also included with this trick is that fact that the switch
+                    that unbars the door to the final chest of GTG can be hit
+                    without a projectile, using a precise jumpslash.
+                    This trick supersedes "Gerudo Training Grounds MQ Left Side
+                    Silver Rupees with Hookshot".
+                    '''},
+    'Reach Gerudo Training Grounds Fake Wall Ledge with Hover Boots': {
+        'name'    : 'logic_gtg_fake_wall',
+        'tooltip' : '''\
+                    A precise Hover Boots use from the top of the chest can allow
+                    you to grab the ledge without needing the usual requirements.
+                    In Master Quest, this always skips a Song of Time requirement.
+                    In Vanilla, this skips a Hookshot requirement, but is only
+                    relevant if "Gerudo Training Grounds Left Side Silver Rupees
+                    without Hookshot" is enabled.
+                    '''},
+    'Water Temple Cracked Wall with No Additional Items': {
+        'name'    : 'logic_water_cracked_wall_nothing',
+        'tooltip' : '''\
+                    A precise jumpslash (among other methods) will
+                    get you to the cracked wall without needing the
+                    Hover Boots or to raise the water to the middle
+                    level. This trick supersedes "Water Temple
+                    Cracked Wall with Hover Boots".
+                    '''},
+    'Water Temple North Basement Ledge with Precise Jump': {
+        'name'    : 'logic_water_north_basement',
+        'tooltip' : '''\
+                    In the northern basement there's a ledge from where, in
+                    vanilla Water Temple, boulders roll out into the room.
+                    Normally to jump directly to this ledge logically
+                    requires the Hover Boots, but with precise jump, it can
+                    be done without them. This trick supersedes "Water Temple
+                    Boss Key Chest with Iron Boots" and applies to both
+                    Vanilla and Master Quest.
+                    '''},
+    'Goron City Leftmost Maze Chest with Hover Boots': {
+        'name'    : 'logic_goron_city_leftmost',
+        'tooltip' : '''\
+                    A precise backwalk starting from on top of the
+                    crate and ending with a precisely-timed backflip
+                    can reach this chest without needing either
+                    the Hammer or Silver Gauntlets.
+                    '''},
+    'Deku Tree Basement without Slingshot': {
+        'name'    : 'logic_deku_b1_skip',
+        'tooltip' : '''\
+                    A precise jump can be used to skip
+                    needing to use the Slingshot to go
+                    around B1 of the Deku Tree. If used
+                    with the "Closed Forest" setting, a
+                    Slingshot will not be guaranteed to
+                    exist somewhere inside the Forest.
+                    This trick applies to both Vanilla
+                    and Master Quest.
+                    '''},
+    'Forest Temple Scarecrow Route': {
+        'name'    : 'logic_forest_scarecrow',
+        'tooltip' : '''\
+                    From on top of the door frame in the NE
+                    courtyard, you can summon Pierre. You
+                    can get there with a precise Hover Boots
+                    movement. You will take fall damage.
+                    This allows you to reach the falling
+                    ceiling room early.
+                    '''},
+    'Spirit Trial without Hookshot': {
+        'name'    : 'logic_spirit_trial_hookshot',
+        'tooltip' : '''\
+                    A precise jump off of an Armos can
+                    collect the highest rupee.
+                    '''},
+    'Shadow Temple Stone Umbrella Skip': {
+        'name'    : 'logic_shadow_umbrella',
+        'tooltip' : '''\
+                    A very precise Hover Boots movement
+                    from off of the lower chest can get you
+                    on top of the crushing spikes without
+                    needing to pull the block. Applies to
+                    both Vanilla and Master Quest.
+                    '''},
+    'Shadow Temple Entry with Fire Arrows': {
+        'name'    : 'logic_shadow_fire_arrow_entry',
+        'tooltip' : '''\
+                    It is possible to light all of the torches to
+                    open the Shadow Temple entrance with just Fire
+                    Arrows, but you must be very quick, precise,
+                    and strategic with how you take your shots.
+                    '''},
 }
 
 

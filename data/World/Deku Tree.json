@@ -14,11 +14,12 @@
             "GS Deku Tree Basement Gate": "is_adult or can_child_attack",
             "GS Deku Tree Basement Back Room": "
                 (here(has_fire_source_with_torch) and
-                 here(can_use(Slingshot) or can_use(Bow)) and
-                 here(can_blast_or_smash) and
-                 here(can_use(Hookshot) or can_use(Boomerang))) or
-                (as_adult_here and is_child and has_explosives and
-                 can_use(Boomerang) and (has_sticks or can_use(Dins_Fire)))",
+                    here(can_use(Slingshot) or can_use(Bow)) and
+                    here(can_blast_or_smash) and
+                    here(can_use(Hookshot) or can_use(Boomerang))) or
+                ((logic_deku_b1_skip or as_adult_here) and is_child and
+                    has_explosives and can_use(Boomerang) and
+                    (has_sticks or can_use(Dins_Fire)))",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
                 is_adult or has_slingshot or has_sticks or 
@@ -29,7 +30,7 @@
             "Deku Tree Slingshot Room": "here(has_shield)",
             "Deku Tree Boss Room": "
                 here(has_fire_source_with_torch) and
-                here(is_adult or can_use(Slingshot))"
+                (logic_deku_b1_skip or here(is_adult or can_use(Slingshot)))"
         }
     },
     {

@@ -86,14 +86,18 @@
         "dungeon": "Ganons Castle",
         "events": {
             "Spirit Trial Clear": "
-                can_use(Light_Arrows) and Mirror_Shield and 
-                has_bombchus and Progressive_Hookshot"
+                can_use(Light_Arrows) and Mirror_Shield and has_bombchus and
+                (logic_spirit_trial_hookshot or Progressive_Hookshot)"
         },
         "locations": {
-            "Ganons Castle Spirit Trial First Chest": "Progressive_Hookshot",
+            "Ganons Castle Spirit Trial First Chest": "
+                (logic_spirit_trial_hookshot or Progressive_Hookshot)",
             "Ganons Castle Spirit Trial Second Chest": "
-                Progressive_Hookshot and has_bombchus and can_see_with_lens",
-            "Nut Pot": "Progressive_Hookshot and has_bombchus and Bow and Mirror_Shield"
+                (logic_spirit_trial_hookshot or Progressive_Hookshot) and
+                has_bombchus and can_see_with_lens",
+            "Nut Pot": "
+                (logic_spirit_trial_hookshot or Progressive_Hookshot) and
+                has_bombchus and Bow and Mirror_Shield"
         }
     },
     {

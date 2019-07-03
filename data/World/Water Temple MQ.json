@@ -51,16 +51,20 @@
         },
         "exits": {
             "Water Temple Basement Gated Areas": "
-                can_use(Dins_Fire) and (Hover_Boots or can_use(Scarecrow)) and can_use(Iron_Boots)"
+                can_use(Dins_Fire) and can_use(Iron_Boots)"
         }
     },
     {
         "region_name": "Water Temple Basement Gated Areas",
         "dungeon": "Water Temple",
         "locations": {
-            "Water Temple MQ Freestanding Key": "True",
-            "GS Water Temple MQ South Basement": "can_use(Fire_Arrows)",
-            "GS Water Temple MQ North Basement": "(Small_Key_Water_Temple, 2)"
+            "Water Temple MQ Freestanding Key": "
+                Hover_Boots or can_use(Scarecrow) or logic_water_north_basement",
+            "GS Water Temple MQ South Basement": "
+                can_use(Fire_Arrows) and (Hover_Boots or can_use(Scarecrow))",
+            "GS Water Temple MQ North Basement": "
+                (Small_Key_Water_Temple, 2) and
+                (Hover_Boots or can_use(Scarecrow) or logic_water_north_basement)"
         }
     }
 ]

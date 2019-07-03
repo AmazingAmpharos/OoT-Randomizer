@@ -172,7 +172,10 @@
             "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
             "LW Deku Scrub Deku Sticks": "is_child and can_stun_deku",
             "GS Lost Woods Above Stage": "
-                is_adult and here(can_plant_bean) and at_night",
+                is_adult and at_night and
+                (here(can_plant_bean) or
+                     (logic_lost_woods_gs_bean and can_use(Hookshot) and
+                     (can_use(Longshot) or can_use(Bow) or has_bombchus or can_use(Dins_Fire))))",
             "GS Lost Woods Bean Patch Near Stage": "
                 can_plant_bugs and 
                 (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))",
@@ -951,7 +954,8 @@
         "hint": "the Graveyard",
         "locations": {
             "Graveyard Freestanding PoH": "
-                is_adult and (here(can_plant_bean) or can_use(Longshot))",
+                (is_adult and (here(can_plant_bean) or can_use(Longshot))) or
+                (logic_graveyard_poh and can_use(Boomerang))",
             "Gravedigging Tour": "is_child and at_dampe_time",
             "GS Graveyard Wall": "can_use(Boomerang) and at_night",
             "GS Graveyard Bean Patch": "can_plant_bugs and can_child_attack",
@@ -1031,7 +1035,9 @@
         },
         "exits": {
             "Graveyard": "True",
-            "Shadow Temple Entryway": "can_use(Dins_Fire)"
+            "Shadow Temple Entryway": "
+                can_use(Dins_Fire) or
+                (logic_shadow_fire_arrow_entry and can_use(Fire_Arrows))"
         }
     },
     {
@@ -1056,7 +1062,9 @@
                 is_child or (damage_multiplier != 'ohko') or 
                 can_use(Nayrus_Love) or has_fairy or Hover_Boots",
             "GS Mountain Trail Bean Patch": "
-                can_plant_bugs and (has_explosives or Progressive_Strength_Upgrade)",
+                can_plant_bugs and
+                    (has_explosives or Progressive_Strength_Upgrade or
+                    (logic_dmt_soil_gs and can_use(Boomerang)))",
             "GS Mountain Trail Bomb Alcove": "can_blast_or_smash",
             "GS Mountain Trail Path to Crater": "can_use(Hammer) and at_night",
             "GS Mountain Trail Above Dodongo's Cavern": "can_use(Hammer) and at_night",
@@ -1133,7 +1141,8 @@
         },
         "locations": {
             "Goron City Leftmost Maze Chest": "
-                can_use(Hammer) or can_use(Silver_Gauntlets)",
+                can_use(Hammer) or can_use(Silver_Gauntlets) or
+                (logic_goron_city_leftmost and has_explosives and can_use(Hover_Boots))",
             "Goron City Left Maze Chest": "
                 can_blast_or_smash or can_use(Silver_Gauntlets)",
             "Goron City Right Maze Chest": "
@@ -1322,7 +1331,7 @@
             "Zora River Lower Freestanding PoH": "
                 is_child or can_use(Hover_Boots) or (is_adult and logic_zora_river_lower)",
             "Zora River Upper Freestanding PoH": "
-                is_child or can_use(Hover_Boots)",
+                is_child or can_use(Hover_Boots) or (is_adult and logic_zora_river_upper)",
             "GS Zora River Ladder": "is_child and at_night and can_child_attack",
             "GS Zora River Near Raised Grottos": "can_use(Hookshot) and at_night",
             "GS Zora River Above Bridge": "can_use(Hookshot) and at_night",
