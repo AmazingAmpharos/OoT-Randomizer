@@ -939,14 +939,20 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_bits(0x0EEB, 0x01) # "Entered Dodongo's Cavern"
     save_context.write_bits(0x0F08, 0x08) # "Entered Hyrule Castle"
 
-    if world.fast_chickens:
-        # save_context.write_bits(0x0F2A, 0x08) # "Caught Cucco Near Cucco Pen"
-        save_context.write_bits(0x0F2A, 0x02) # "Caught Cucco Near Hyrule Field Entrance"
-        save_context.write_bits(0x0F2A, 0x04) # "Caught Cucco Near Bazaar"
-        save_context.write_bits(0x0F2A, 0x10) # "Caught Cucco Behind Windmill"
-        save_context.write_bits(0x0F2A, 0x20) # "Caught Cucco In Crate"
-        save_context.write_bits(0x0F2A, 0x40) # "Caught Cucco Near Skulltula House"
-        save_context.write_bits(0x0F2A, 0x80) # "Caught Cucco Behind Potion Shop"
+    # Set the number of chickens to collect
+    # Generate random number if needed
+    if world.chicken_count_random:
+        world.chicken_count = random.randint(0, 7)
+    rom.write_byte(0x00E1E523, world.chicken_count)
+    
+    # Change Anju to always say how many chickens are needed
+    # Does not affect text for collecting item or afterwards
+    rom.write_int16(0x00E1F3C2, 0x5036)
+    rom.write_int16(0x00E1F3C4, 0x5036)
+    rom.write_int16(0x00E1F3C6, 0x5036)
+    rom.write_int16(0x00E1F3C8, 0x5036)
+    rom.write_int16(0x00E1F3CA, 0x5036)
+    rom.write_int16(0x00E1F3CC, 0x5036)
 
     # Make the Kakariko Gate not open with the MS
     rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
@@ -1176,6 +1182,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         new_message = "\x1AWait a minute! WOW!\x04\x1AYou have earned \x05\x41%d points\x05\x40!\x04\x1AYoung man, you are a genuine\x01\x05\x41Ghost Hunter\x05\x40!\x04\x1AIs that what you expected me to\x01say? Heh heh heh!\x04\x1ABecause of you, I have extra\x01inventory of \x05\x41Big Poes\x05\x40, so this will\x01be the last time I can buy a \x01ghost.\x04\x1AYou're thinking about what I \x01promised would happen when you\x01earned %d points. Heh heh.\x04\x1ADon't worry, I didn't forget.\x01Just take this." % (poe_points, poe_points)
         update_message_by_id(messages, 0x70f8, new_message)
 
+    # Update Child Anju's dialogue
+    new_message = "\x08What should I do!?\x01My \x05\x41Cuccos\x05\x40 have all flown away!\x04You, little boy, please!\x01Please gather at least \x05\x41%d Cuccos\x05\x40\x01for me.\x02" % world.chicken_count
+    update_message_by_id(messages, 0x5036, new_message)
 
     # use faster jabu elevator
     if not world.dungeon_mq['Jabu Jabus Belly'] and world.shuffle_scrubs == 'off':
