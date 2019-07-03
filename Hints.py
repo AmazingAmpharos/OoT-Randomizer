@@ -8,7 +8,7 @@ import random
 from HintList import getHint, getHintGroup, Hint, hintExclusions
 from Messages import update_message_by_id
 from Playthrough import Playthrough
-from TextBox import lineWrap
+from TextBox import line_wrap
 from Utils import random_choices
 
 
@@ -32,7 +32,7 @@ class GossipText():
 
 
     def __str__(self):
-        return get_raw_text(lineWrap(colorText(self)))
+        return get_raw_text(line_wrap(colorText(self)))
 
 
 gossipLocations = {
