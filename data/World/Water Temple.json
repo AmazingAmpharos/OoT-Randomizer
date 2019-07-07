@@ -91,7 +91,7 @@
         "dungeon": "Water Temple",
         "locations": {
             "Water Temple Central Pillar Chest": "
-                Iron_Boots and can_use(Zora_Tunic) and can_use(Hookshot) and 
+                can_use(Iron_Boots) and can_use(Zora_Tunic) and can_use(Hookshot) and 
                 ((Small_Key_Water_Temple, 6) or can_use(Bow) or can_use(Dins_Fire))",
             "GS Water Temple Central Room": "
                 ((can_use(Longshot) or (can_use(Farores_Wind) and can_use(Hookshot))) and
