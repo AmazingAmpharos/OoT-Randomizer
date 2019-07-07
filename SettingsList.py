@@ -314,6 +314,13 @@ logic_tricks = {
                     curves through the side of the glass block
                     to hit the Gold Skulltula.
                     '''},
+    'Jabu Scrub as Adult with Jump Dive': {
+        'name'    : 'logic_jabu_scrub_jump_dive',
+        'tooltip' : '''\
+                    Standing above the underwater tunnel leading to the scrub,
+                    jump down and swim through the tunnel. This allows adult to
+                    access the scrub with no Scale or Iron Boots.
+                    '''},
     'Jabu MQ Song of Time Block GS with Boomerang': {
         'name'    : 'logic_jabu_mq_sot_gs',
         'tooltip' : '''\
