@@ -392,8 +392,8 @@ logic_tricks = {
                     With a specific position and angle, you can
                     backflip over Mido.
                     '''},
-    'Reach Volvagia without Hover Boots or Pillar': {
-        'name'    : 'logic_volvagia_jump',
+    'Fire Temple Boss Door without Hover Boots or Pillar': {
+        'name'    : 'logic_fire_boss_door_jump',
         'tooltip' : '''\
                     The Fire Temple Boss Door can be reached with a precise
                     jump. You must be touching the side wall of the room so
