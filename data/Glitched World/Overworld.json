@@ -37,7 +37,7 @@
                 is_adult and at_night and 
                 (can_use(Hookshot) or can_use(Hover_Boots) or can_isg)",
             "Kokiri Forest Gossip Stone": "True",
-            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
+            "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle"
         },
         "exits": {
             "Links House": "True",
