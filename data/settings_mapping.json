@@ -1,0 +1,395 @@
+{
+  "Tabs": [
+    {
+      "name": "general_tab_electron",
+      "text": "ROM Options",
+      "exclude_from_web": true,
+      "sections": [
+        {
+          "name": "general_section",
+          "text": "",
+          "col_span": 4,
+          "row_span": 2,
+          "settings": [
+            "rom",
+            "output_dir",
+            "distribution_file",
+            "count",
+            "create_spoiler",
+            "create_cosmetics_log",
+            "compress_rom",
+            "open_output_dir"
+          ]
+        },
+        {
+          "name": "multiworld_section",
+          "text": "Multi_World Generation",
+          "subheader": "This is used for co_op generations. Increasing Player Count will drastically increase the generation time.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk_co_op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk_co_op</a>",
+          "row_span": 1,
+          "settings": [
+            "world_count",
+            "player_num"
+          ]
+        },
+        {
+          "name": "preset_section",
+          "text": "Settings Presets",
+          "subheader": "Presets are settings that can be saved and loaded from.<br>Loading a preset will overwrite all settings that affect the seed.",
+          "row_span": 1,
+          "settings": [
+            "presets"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "general_tab_web_generator",
+      "text": "ROM Options",
+      "app_type": "generator",
+      "exclude_from_electron": true,
+      "sections": [
+        {
+          "name": "general_section",
+          "text": "",
+          "col_span": 4,
+          "row_span": 2,
+          "settings": [
+            "rom",
+            "web_wad_file",
+            "web_common_key_file",
+            "web_common_key_string",
+            "web_wad_channel_id",
+            "web_wad_channel_title",
+            "create_spoiler",
+            "web_output_type"
+          ]
+        },
+        {
+          "name": "multiworld_section",
+          "text": "Multi_World Generation",
+          "subheader": "This is used for co_op generations. Increasing Player Count will drastically increase the generation time.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk_co_op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk_co_op</a>",
+          "row_span": 1,
+          "settings": [
+            "world_count",
+            "player_num"
+          ]
+        },
+        {
+          "name": "preset_section",
+          "text": "Settings Presets",
+          "subheader": "Presets are settings that can be saved and loaded from.<br>Loading a preset will overwrite all settings that affect the seed.",
+          "row_span": 1,
+          "settings": [
+            "presets"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "general_tab_web_patcher",
+      "text": "ROM Generation",
+      "app_type": "patcher",
+      "exclude_from_electron": true,
+      "sections": [
+        {
+          "name": "general_section",
+          "text": "",
+          "col_span": 4,
+          "row_span": 2,
+          "settings": [
+            "rom",
+            "web_wad_file",
+            "web_common_key_file",
+            "web_common_key_string",
+            "web_wad_channel_id",
+            "web_wad_channel_title",
+            "web_output_type"
+          ]
+        },
+        {
+          "name": "multiworld_section",
+          "text": "Multi_World Generation",
+          "subheader": "This is used for co_op generations.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk_co_op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk_co_op</a>",
+          "row_span": 1,
+          "settings": [
+            "player_num"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "main_tab",
+      "text": "Main Rules",
+      "app_type": "generator",
+      "sections": [
+        {
+          "name": "main_section",
+          "text": "",
+          "col_span": 4,
+          "row_span": 1,
+          "settings": [
+            "randomize_settings"
+          ]
+        },
+        {
+          "name": "open_section",
+          "text": "Open",
+          "row_span": 6,
+          "settings": [
+            "open_forest",
+            "open_door_of_time",
+            "open_fountain",
+            "gerudo_fortress",
+            "bridge",
+            "trials_random",
+            "trials"
+          ]
+        },
+        {
+          "name": "world_section",
+          "text": "World",
+          "row_span": 6,
+          "settings": [
+            "logic_rules",
+            "all_reachable",
+            "bombchus_in_logic",
+            "one_item_per_dungeon",
+            "mq_dungeons_random",
+            "mq_dungeons"
+          ]
+        },
+        {
+          "name": "shuffle_section",
+          "text": "Shuffle",
+          "row_span": 6,
+          "settings": [
+            "shuffle_kokiri_sword",
+            "shuffle_ocarinas",
+            "shuffle_weird_egg",
+            "shuffle_gerudo_card",
+            "shuffle_song_items",
+            "shuffle_cows",
+            "shuffle_beans",
+            "entrance_shuffle",
+            "shuffle_scrubs",
+            "shopsanity",
+            "tokensanity"
+          ]
+        },
+        {
+          "name": "shuffle_dungeon_section",
+          "text": "Shuffle Dungeon Items",
+          "row_span": 6,
+          "settings": [
+            "shuffle_mapcompass",
+            "shuffle_smallkeys",
+            "shuffle_bosskeys",
+            "enhance_map_compass",
+            "unlocked_ganondorf"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "detailed_tab",
+      "text": "Detailed Logic",
+      "app_type": "generator",
+      "sections": [
+        {
+          "name": "disabled_locations_section",
+          "text": "Exclude Locations",
+          "col_span": 2,
+          "row_span": 6,
+          "settings": [
+            "disabled_locations"
+          ]
+        },
+        {
+          "name": "allowed_tricks_section",
+          "text": "Enable Tricks",
+          "col_span": 2,
+          "row_span": 6,
+          "settings": [
+            "allowed_tricks"
+          ]
+        },
+        {
+          "name": "ats",
+          "text": "Adult Trade Sequence",
+          "col_span": 2,
+          "row_span": 4,
+          "settings": [
+            "logic_earliest_adult_trade",
+            "logic_latest_adult_trade"
+          ]
+        },
+        {
+          "name": "lens",
+          "text": "Lens of Truth",
+          "col_span": 2,
+          "row_span": 4,
+          "settings": [
+            "logic_lens"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "other_tab",
+      "text": "Other",
+      "app_type": "generator",
+      "sections": [
+        {
+          "name": "speedup_section",
+          "text": "Timesavers",
+          "row_span": 1,
+          "settings": [
+            "no_escape_sequence",
+            "no_guard_stealth",
+            "no_epona_race",
+            "useful_cutscenes",
+            "fast_chests",
+            "logic_no_night_tokens_without_suns_song",
+            "free_scarecrow",
+            "start_with_fast_travel",
+            "start_with_rupees",
+            "start_with_wallet",
+            "start_with_deku_equipment",
+            "fast_chickens",
+            "big_poe_count_random",
+            "big_poe_count"
+          ]
+        },
+        {
+          "name": "misc_section",
+          "text": "Misc",
+          "row_span": 1,
+          "settings": [
+            "ocarina_songs",
+            "correct_chest_sizes",
+            "clearer_hints",
+            "hints",
+            "hint_dist",
+            "text_shuffle",
+            "junk_ice_traps",
+            "item_pool_value",
+            "damage_multiplier",
+            "starting_tod",
+            "starting_age"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cosmetics_tab",
+      "text": "Cosmetics",
+      "is_cosmetics": true,
+      "sections": [
+        {
+          "name": "generalcosmetics_section",
+          "text": "General",
+          "row_span": 1,
+          "settings": [
+            "default_targeting",
+            "display_dpad"
+          ]
+        },
+        {
+          "name": "tunics_section",
+          "text": "Tunics",
+          "is_colors": true,
+          "row_span": 1,
+          "settings": [
+            "kokiri_color",
+            "goron_color",
+            "zora_color"
+          ]
+        },
+        {
+          "name": "swordtrail_section",
+          "text": "Sword Trail Colors",
+          "is_colors": true,
+          "row_span": 1,
+          "settings": [
+            "sword_trail_duration",
+            "sword_trail_color_inner",
+            "sword_trail_color_outer"
+          ]
+        },
+        {
+          "name": "ui_section",
+          "text": "UI Colors",
+          "is_colors": true,
+          "row_span": 1,
+          "settings": [
+            "heart_color",
+            "magic_color"
+          ]
+        },
+        {
+          "name": "navi_section",
+          "text": "Navi Colors",
+          "is_colors": true,
+          "row_span": 1,
+          "settings": [
+            "navi_color_default",
+            "navi_color_enemy",
+            "navi_color_npc",
+            "navi_color_prop"
+          ]
+        },
+        {
+          "name": "gauntlet_section",
+          "text": "Gauntlet Colors",
+          "is_colors": true,
+          "row_span": 1,
+          "settings": [
+            "silver_gauntlets_color",
+            "golden_gauntlets_color"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sfx_tab",
+      "text": "SFX",
+      "is_cosmetics": true,
+      "sections": [
+        {
+          "name": "generalsfx_section",
+          "text": "General",
+          "is_sfx": true,
+          "row_span": 3,
+          "settings": [
+            "background_music",
+            "sfx_low_hp",
+            "sfx_horse_neigh",
+            "sfx_nightfall",
+            "sfx_hover_boots",
+            "sfx_ocarina"
+          ]
+        },
+        {
+          "name": "menusfx_section",
+          "text": "Menu",
+          "is_sfx": true,
+          "row_span": 3,
+          "settings": [
+            "sfx_menu_cursor",
+            "sfx_menu_select"
+          ]
+        },
+        {
+          "name": "npcsfx_section",
+          "text": "NPC",
+          "is_sfx": true,
+          "row_span": 3,
+          "settings": [
+            "sfx_navi_overworld",
+            "sfx_navi_enemy"
+          ]
+        }
+      ]
+    }
+  ]
+}
