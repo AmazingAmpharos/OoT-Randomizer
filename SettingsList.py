@@ -724,15 +724,8 @@ setting_infos = [
 
     # GUI Settings
     Setting_Info('presets',           str, "Presets", "Presets", False, {}), # speacial hardcoded
-    Checkbutton(
-        name           = 'repatch_cosmetics',
-        gui_text       = 'Patch Cosmetics',
-        gui_tooltip    = '''\
-                         Enabling this will re-patch cosmetics based on current settings.
-                         Otherwise, it will utilize the cosmetics that are in the patch file.
-                         ''',
-        default        = True,
-        shared         = False,
+    Setting_Info('repatch_cosmetics', bool, None, None, False, {},
+        default        = True
     ),
     Checkbutton(
         name           = 'create_spoiler',
@@ -2292,10 +2285,10 @@ def get_setting_info(name):
 def create_dependency(setting, disabling_setting, option):
     disabled_info = get_setting_info(setting)
     if disabled_info.dependency is None:
-        disabled_info.dependency = lambda settings: settings.getattr(disabling_setting.name) == option
+        disabled_info.dependency = lambda settings: getattr(settings, disabling_setting.name) == option
     else:
         old_dependency = disabled_info.dependency
-        disabled_info.dependency = lambda settings: settings.getattr(disabling_setting.name) == option or old_dependency(settings)
+        disabled_info.dependency = lambda settings: getattr(settings, disabling_setting.name) == option or old_dependency(settings)
 
 
 def get_settings_from_section(section_name):
@@ -2316,10 +2309,25 @@ def get_settings_from_tab(tab_name):
             return
 
 
+def is_mapped(setting_name):
+    for tab in setting_map['Tabs']:
+        for section in tab['sections']:
+            if setting_name in section['settings']:
+                return True
+    return False
+
+
+class UnmappedSettingError(Exception):
+    pass
+
+
 with open(data_path('settings_mapping.json')) as f:
     setting_map = json.load(f)
 
 for info in setting_infos:
+    if info.gui_text is not None and not is_mapped(info.name):
+        raise UnmappedSettingError(f'{info.name} is defined but is not in the settings map. Add it to the settings_mapping or set the gui_text to None to suppress.')
+
     if info.disable != None:
         for option, disabling in info.disable.items():
             for setting in disabling.get('settings', []):
