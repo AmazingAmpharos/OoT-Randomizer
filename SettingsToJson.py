@@ -176,3 +176,12 @@ def CreateJSON(path, web_version=False):
 
     with open(path, 'w') as f:
         json.dump(settingOutputJson, f, indent=2)
+
+ 
+def settingToJsonMain():
+    web_version = '--web' in sys.argv
+    CreateJSON(local_path('setting_list.json'), web_version)
+
+
+if __name__ == '__main__':
+    settingToJsonMain()
