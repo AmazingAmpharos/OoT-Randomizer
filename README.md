@@ -74,6 +74,54 @@ player.
 
 ## Changelog
 
+### 5.0
+
+#### New Feature
+* Plan-domizer
+  * Ability to create a custom seed by placing items where you want them.
+  * Spoiler log is now in JSON format.
+  * Plan-domizer uses the spoiler log JSON format.
+* Hotrod Rolling Goron no longer checks for Bomb Bag.
+* Wearing bunny hood increases running speed.
+* Duplicate Bottle with Letter added to plentiful item pool.
+* Every generic grotto gossip stone has their own hint.
+* Meg (Purple Forest Temple Poe) dies in one hit.
+* Desert Colossus Hands are now logically part of Spirit Temple
+* Gossip stone added to Lake Hylia to change water level after beating Morpha to keep dungeon entrance accessible with Gold Scales.
+  * Entering Water Temple with Gold Scale and Longshot is now always in logic.
+
+#### New Option
+* Cow Sanity
+  * Playing Epona's Song for a cow for the first time gives an item.
+* Starting Age Option
+  * Can now start as child, adult, or random.
+* Entrance Randomizer
+  * Ability to randomize dungeon entrances or all interior entrances.
+  * Deku Tree, Fire Temple, and Bottom of the Well dungeon entrances are accessible as both ages.
+* Glitched Logic
+  * New Logic Rules option that takes movement glitches into consideration.
+  * Files included in the Notes folder with information regarding this feature.
+    * Logic Notes contains notes on how the logic was constructed.
+    * Tricks contains video links to tricks that may be required.
+    * Oddities contains other miscellaneous oddities of Glitched Logic.
+* Randomize Main Rules option.
+* Filter dropdown to Location Exclusion dropdown.
+* Allow customization of Navi inner and outer glow.
+* Open Output Directory button.
+* Several tricks added to the Enable Tricks dropdown.
+* Shuffle Gerudo Card can now be enabled alongside Open Gerudo Fortress.
+* Customizable Heart, Magic Meter, and Gauntlet colors.
+* Child may drain Lake Hylia using Gossip Stone.
+
+#### Bug Fix
+* No longer able to buy bombchus with only bomb bag when bombchus in logic.
+* Dampe freestanding Piece of Heart no longer checks for chest being opened.
+* Buying Piece of Heart/Heart Container fully heals Link.
+* Learning Sun's Song from Malon no longer causes a softlock.
+* Castle and Gerudo guards can no longer cause softlock when catching you.
+* Vanilla shop items have correct price in spoiler log with shopsanity enabled.
+
+
 ### 4.0
 
 #### New Features
@@ -149,8 +197,6 @@ player.
     * Can set the inner and outer colors
     * Can set color to "Rainbow"
   * Additional SFX options
-
-
 
 #### Updated Features
 

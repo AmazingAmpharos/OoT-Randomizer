@@ -16,6 +16,7 @@ dungeon_table = [
     },
     {
         'name': 'Dodongos Cavern',
+        'hint': 'Dodongo\'s Cavern',
         'boss_key':     0, 
         'small_key':    0,
         'small_key_mq': 0,
@@ -23,6 +24,7 @@ dungeon_table = [
     },
     {
         'name': 'Jabu Jabus Belly',
+        'hint': 'Jabu Jabu\'s Belly',
         'boss_key':     0, 
         'small_key':    0,
         'small_key_mq': 0,
@@ -86,6 +88,7 @@ dungeon_table = [
     },
     {
         'name': 'Ganons Castle',
+        'hint': 'Ganon\'s Castle',
         'boss_key':     1, 
         'small_key':    2,
         'small_key_mq': 3,
@@ -97,10 +100,20 @@ dungeon_table = [
 def create_dungeons(world):
     for dungeon_info in dungeon_table:
         name = dungeon_info['name']
-        if not world.dungeon_mq[name]:
-            dungeon_json = os.path.join(data_path('World'), name + '.json')
+        hint = dungeon_info['hint'] if 'hint' in dungeon_info else name
+        
+        if world.settings.logic_rules == 'glitched':
+            if not world.dungeon_mq[name]:
+                dungeon_json = os.path.join(data_path('Glitched World'), name + '.json')
+            else:
+                dungeon_json = os.path.join(data_path('Glitched World'), name + ' MQ.json')
         else:
-            dungeon_json = os.path.join(data_path('World'), name + ' MQ.json')
+            if not world.dungeon_mq[name]:
+                dungeon_json = os.path.join(data_path('World'), name + '.json')
+            else:
+                dungeon_json = os.path.join(data_path('World'), name + ' MQ.json')
+
+        
         world.load_regions_from_json(dungeon_json)
 
         boss_keys = ItemFactory(['Boss Key (%s)' % name] * dungeon_info['boss_key'])
@@ -111,5 +124,5 @@ def create_dungeons(world):
         dungeon_items = ItemFactory(['Map (%s)' % name, 
                                      'Compass (%s)' % name] * dungeon_info['dungeon_item'])
 
-        world.dungeons.append(Dungeon(world, name, boss_keys, small_keys, dungeon_items))
+        world.dungeons.append(Dungeon(world, name, hint, boss_keys, small_keys, dungeon_items))
 

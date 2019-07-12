@@ -15,7 +15,7 @@ import copy
 from World import World
 from State import State
 from Spoiler import Spoiler
-from Rom import LocalRom
+from Rom import Rom
 from Patches import patch_rom
 from Cosmetics import patch_cosmetics
 from DungeonList import create_dungeons
@@ -27,7 +27,11 @@ from Utils import default_output_path, is_bundled, subprocess_args, data_path
 from version import __version__
 from N64Patch import create_patch_file, apply_patch_file
 from SettingsList import setting_infos, logic_tricks
-from Rules import set_rules
+from Rules import set_rules, set_shop_rules
+from Plandomizer import Distribution
+from Playthrough import Playthrough
+from EntranceShuffle import set_entrances
+from LocationList import set_drop_location_names
 
 
 class dummy_window():
@@ -41,7 +45,7 @@ class dummy_window():
 
 def main(settings, window=dummy_window()):
 
-    start = time.clock()
+    start = time.process_time()
 
     logger = logging.getLogger('')
 
@@ -51,6 +55,7 @@ def main(settings, window=dummy_window()):
     for trick in logic_tricks.values():
         settings.__dict__[trick['name']] = trick['name'] in settings.allowed_tricks
 
+    settings.load_distribution()
 
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom == 'None' and not settings.create_spoiler:
@@ -58,7 +63,7 @@ def main(settings, window=dummy_window()):
 
     if settings.compress_rom != 'None':
         window.update_status('Loading ROM')
-        rom = LocalRom(settings)
+        rom = Rom(settings.rom)
 
     if not settings.world_count:
         settings.world_count = 1
@@ -70,37 +75,43 @@ def main(settings, window=dummy_window()):
         else:
             settings.player_num = 1
 
-    settings.remove_disabled()
-
     logger.info('OoT Randomizer Version %s  -  Seed: %s\n\n', __version__, settings.seed)
+    settings.remove_disabled()
     random.seed(settings.numeric_seed)
+    settings.resolve_random_settings()
+
     for i in range(0, settings.world_count):
         worlds.append(World(settings))
 
     window.update_status('Creating the Worlds')
     for id, world in enumerate(worlds):
         world.id = id
+        world.distribution = settings.distribution.world_dists[id]
         logger.info('Generating World %d.' % id)
 
         window.update_progress(0 + 1*(id + 1)/settings.world_count)
         logger.info('Creating Overworld')
 
         # Determine MQ Dungeons
-        td_count = len(world.dungeon_mq)
+        dungeon_pool = list(world.dungeon_mq)
+        dist_num_mq = world.distribution.configure_dungeons(world, dungeon_pool)
+
         if world.mq_dungeons_random:
-            world.mq_dungeons = random.randint(0, td_count)
-        mqd_count = world.mq_dungeons
-        mqd_picks = random.sample(list(world.dungeon_mq), mqd_count)
-        for dung in mqd_picks:
-            world.dungeon_mq[dung] = True
+            for dungeon in dungeon_pool:
+                world.dungeon_mq[dungeon] = random.choice([True, False])
+            world.mq_dungeons = list(world.dungeon_mq.values()).count(True)
+        else:
+            mqd_picks = random.sample(dungeon_pool, world.mq_dungeons - dist_num_mq)
+            for dung in mqd_picks:
+                world.dungeon_mq[dung] = True
 
-
-        overworld_data = os.path.join(data_path('World'), 'Overworld.json')
+        if settings.logic_rules == 'glitched':
+            overworld_data = os.path.join(data_path('Glitched World'), 'Overworld.json')
+        else:
+            overworld_data = os.path.join(data_path('World'), 'Overworld.json')
         world.load_regions_from_json(overworld_data)
 
         create_dungeons(world)
-
-        world.initialize_entrances()
 
         if settings.shopsanity != 'off':
             world.random_shop_prices()
@@ -113,7 +124,11 @@ def main(settings, window=dummy_window()):
         window.update_progress(0 + 5*(id + 1)/settings.world_count)
         logger.info('Generating Item Pool.')
         generate_itempool(world)
+        set_shop_rules(world)
+        set_drop_location_names(world)
 
+    logger.info('Setting Entrances.')
+    set_entrances(worlds)
 
     window.update_status('Placing the Items')
     logger.info('Fill the world.')
@@ -162,7 +177,7 @@ def main(settings, window=dummy_window()):
 
             random.setstate(rng_state)
             patch_rom(spoiler, world, rom)
-            patch_cosmetics(settings, rom)
+            cosmetics_log = patch_cosmetics(settings, rom)
             window.update_progress(65 + 20*(world.id + 1)/settings.world_count)
 
             window.update_status('Creating Patch File')
@@ -172,13 +187,23 @@ def main(settings, window=dummy_window()):
             rom.restore()
             window.update_progress(65 + 30*(world.id + 1)/settings.world_count)
 
+            if settings.create_cosmetics_log and cosmetics_log:
+                window.update_status('Creating Cosmetics Log')
+                if settings.world_count > 1:
+                    cosmetics_log_filename = "%sP%d_Cosmetics.txt" % (outfilebase, world.id + 1)
+                else:
+                    cosmetics_log_filename = '%s_Cosmetics.txt' % outfilebase
+                cosmetics_log.to_file(os.path.join(output_dir, cosmetics_log_filename))
+                file_list.append(cosmetics_log_filename)
+            cosmetics_log = None
+
         if settings.world_count > 1:
             window.update_status('Creating Patch Archive')
             output_path = os.path.join(output_dir, '%s.zpfz' % outfilebase)
             with zipfile.ZipFile(output_path, mode="w") as patch_archive:
-                for index, file in enumerate(file_list):
+                for file in file_list:
                     file_path = os.path.join(output_dir, file)
-                    patch_archive.write(file_path, 'P%d.zpf' % (index + 1), compress_type=zipfile.ZIP_DEFLATED)
+                    patch_archive.write(file_path, file.replace(outfilebase, ''), compress_type=zipfile.ZIP_DEFLATED)
             for file in file_list:
                 os.remove(os.path.join(output_dir, file))
         logger.info("Created patchfile at: %s" % output_path)
@@ -232,16 +257,20 @@ def main(settings, window=dummy_window()):
         window.update_progress(95)
 
     for world in worlds:
-        for setting in world.settings.__dict__:
-            world.settings.__dict__[setting] = world.__dict__[setting]
+        for info in setting_infos:
+            world.settings.__dict__[info.name] = world.__dict__[info.name]
 
+    settings.distribution.update_spoiler(spoiler)
     if settings.create_spoiler:
         window.update_status('Creating Spoiler Log')
-        spoiler.to_file(os.path.join(output_dir, '%s_Spoiler.txt' % outfilebase))
+        spoiler_path = os.path.join(output_dir, '%s_Spoiler.json' % outfilebase)
+        settings.distribution.to_file(spoiler_path)
+        logger.info("Created spoiler log at: %s" % ('%s_Spoiler.json' % outfilebase))
     else:
         window.update_status('Creating Settings Log')
-        spoiler.to_file(os.path.join(output_dir, '%s_Settings.txt' % outfilebase))
-    logger.info("Created spoiler log at: %s" % ('%s_Settings.txt' % outfilebase))
+        settings_path = os.path.join(output_dir, '%s_Settings.json' % outfilebase)
+        settings.distribution.to_file(settings_path)
+        logger.info("Created settings log at: %s" % ('%s_Settings.json' % outfilebase))
 
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
@@ -259,20 +288,20 @@ def main(settings, window=dummy_window()):
     else:
         window.update_status('Success: Rom patched successfully')
     logger.info('Done. Enjoy.')
-    logger.debug('Total Time: %s', time.clock() - start)
+    logger.debug('Total Time: %s', time.process_time() - start)
 
     return worlds[settings.player_num - 1]
 
 
 def from_patch_file(settings, window=dummy_window()):
-    start = time.clock()
+    start = time.process_time()
     logger = logging.getLogger('')
 
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom == 'None' or settings.compress_rom == 'Patch':
         raise Exception('Output Type must be a ROM when patching from a patch file.')
     window.update_status('Loading ROM')
-    rom = LocalRom(settings)
+    rom = Rom(settings.rom)
 
     logger.info('Patching ROM.')
 
@@ -296,7 +325,9 @@ def from_patch_file(settings, window=dummy_window()):
         if not settings.output_file:
             output_path += 'P%d' % (settings.player_num)
     apply_patch_file(rom, settings.patch_file, subfile)
-    cosmetics_log = patch_cosmetics(settings, rom)
+    cosmetics_log = None
+    if settings.repatch_cosmetics:
+        cosmetics_log = patch_cosmetics(settings, rom)
     window.update_progress(65)
 
     window.update_status('Saving Uncompressed ROM')
@@ -351,20 +382,20 @@ def from_patch_file(settings, window=dummy_window()):
         window.update_status('Success: Rom patched successfully')
 
     logger.info('Done. Enjoy.')
-    logger.debug('Total Time: %s', time.clock() - start)
+    logger.debug('Total Time: %s', time.process_time() - start)
 
     return True
 
 
 def cosmetic_patch(settings, window=dummy_window()):
-    start = time.clock()
+    start = time.process_time()
     logger = logging.getLogger('')
 
     if settings.patch_file == '':
         raise Exception('Cosmetic Only must have a patch file supplied.')
 
     window.update_status('Loading ROM')
-    rom = LocalRom(settings)
+    rom = Rom(settings.rom)
 
     logger.info('Patching ROM.')
 
@@ -388,8 +419,8 @@ def cosmetic_patch(settings, window=dummy_window()):
     apply_patch_file(rom, settings.patch_file, subfile)
     window.update_progress(65)
 
-    rom.update_crc()
-    rom.original = copy.copy(rom.buffer)
+    # clear changes from the base patch file
+    patched_base_rom = copy.copy(rom.buffer)
     rom.changed_address = {}
     rom.changed_dma = {}
     rom.force_patch = []
@@ -400,6 +431,11 @@ def cosmetic_patch(settings, window=dummy_window()):
     window.update_progress(80)
 
     window.update_status('Creating Patch File')
+
+    # base the new patch file on the base patch file
+    rom.original = patched_base_rom
+
+    rom.update_crc()
     create_patch_file(rom, patchfilename)
     logger.info("Created patchfile at: %s" % patchfilename)
     window.update_progress(95)
@@ -421,7 +457,7 @@ def cosmetic_patch(settings, window=dummy_window()):
         window.update_status('Success: Rom patched successfully')
 
     logger.info('Done. Enjoy.')
-    logger.debug('Total Time: %s', time.clock() - start)
+    logger.debug('Total Time: %s', time.process_time() - start)
 
     return True
 
@@ -464,56 +500,69 @@ def create_playthrough(spoiler):
     state_list = [world.state for world in worlds]
 
     # Get all item locations in the worlds
-    required_locations = []
     item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
-
-    # in the first phase, we create the generous spheres. Collecting every item in a sphere will
-    # mean that every item in the next sphere is collectable. Will contain every reachable item
-    logging.getLogger('').debug('Building up collection spheres.')
-
-    # will loop if there is more items opened up in the previous iteration. Always run once
-    reachable_items_locations = True
-    while reachable_items_locations:
-        # get reachable new items locations
-        reachable_items_locations = [location for location in item_locations if location.name not in state_list[location.world.id].collected_locations and state_list[location.world.id].can_reach(location)]
-        for location in reachable_items_locations:
-            # Mark the location collected in the state world it exists in
-            state_list[location.world.id].collected_locations[location.name] = True
+    # Generate a list of spheres by iterating over reachable locations without collecting as we go.
+    # Collecting every item in one sphere means that every item
+    # in the next sphere is collectable. Will contain every reachable item this way.
+    logger = logging.getLogger('')
+    logger.debug('Building up collection spheres.')
+    collection_spheres = []
+    playthrough = Playthrough(state_list)
+    while True:
+        # Not collecting while the generator runs means we only get one sphere at a time
+        # Otherwise, an item we collect could influence later item collection in the same sphere
+        collected = list(playthrough.iter_reachable_locations(item_locations))
+        if not collected: break
+        for location in collected:
             # Collect the item for the state world it is for
             state_list[location.item.world.id].collect(location.item)
-            required_locations.append(location)
+        collection_spheres.append(collected)
+    logger.info('Collected %d spheres', len(collection_spheres))
 
-    # in the second phase, we cull each sphere such that the game is still beatable, reducing each
-    # range of influence to the bare minimum required inside it. Effectively creates a min play
-    for location in reversed(required_locations):
-        # we remove the item at location and check if game is still beatable
-        logging.getLogger('').debug('Checking if %s is required to beat the game.', location.item.name)
-        old_item = location.item
-
-        # Uncollect the item location. Removing it from the collected_locations
-        # will ensure that can_beat_game will try to collect it if it can.
-        # Because we search in reverse sphere order, all the later spheres will
-        # have their locations flagged to be re-searched.
-        location.item = None
-        state_list[old_item.world.id].remove(old_item)
-        del state_list[location.world.id].collected_locations[location.name]
-
-        # remove the item from the world and test if the game is still beatable
-        if State.can_beat_game(state_list):
-            # cull entries for spoiler walkthrough at end
-            required_locations.remove(location)
-        else:
-            # still required, got to keep it around
-            location.item = old_item
-
-    # This ensures the playthrough shows items being collected in the proper order.
-    collection_spheres = []
-    while required_locations:
-        sphere = [location for location in required_locations if state_list[location.world.id].can_reach(location)]
+    # Reduce each sphere in reverse order, by checking if the game is beatable
+    # when we remove the item. We do this to make sure that progressive items
+    # like bow and slingshot appear as early as possible rather than as late as possible.
+    required_locations = []
+    for sphere in reversed(collection_spheres):
         for location in sphere:
-            required_locations.remove(location)
-            state_list[location.item.world.id].collect(location.item)
-        collection_spheres.append(sphere)
+            # we remove the item at location and check if the game is still beatable in case the item could be required
+            old_item = location.item
+            location.item = None
 
-    # we can finally output our playthrough
-    spoiler.playthrough = OrderedDict([(str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres)])
+            # Uncollect the item and location.
+            state_list[old_item.world.id].remove(old_item)
+            playthrough.unvisit(location)
+
+            # An item can only be required if it isn't already obtained or if it's progressive
+            if state_list[old_item.world.id].item_count(old_item.name) < old_item.special.get('progressive', 1):
+                # Test whether the game is still beatable from here.
+                logger.debug('Checking if %s is required to beat the game.', old_item.name)
+                if not playthrough.can_beat_game():
+                    # still required, so reset the item
+                    location.item = old_item
+                    required_locations.append(location)
+
+    # Regenerate the spheres as we might not reach places the same way anymore.
+    playthrough.reset()  # playthrough state has no items, okay to reuse sphere 0 cache
+    collection_spheres = []
+    entrance_spheres = []
+    remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances() if entrance.primary)
+    while True:
+        # Not collecting while the generator runs means we only get one sphere at a time
+        # Otherwise, an item we collect could influence later item collection in the same sphere
+        collected = list(playthrough.iter_reachable_locations(required_locations))
+        accessed_entrances = set(filter(lambda entrance: state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
+        if not collected: break
+        for location in collected:
+            # Collect the item for the state world it is for
+            state_list[location.item.world.id].collect(location.item)
+        collection_spheres.append(collected)
+        entrance_spheres.append(accessed_entrances)
+        remaining_entrances -= accessed_entrances
+    logger.info('Collected %d final spheres', len(collection_spheres))
+
+    # Then we can finally output our playthrough
+    spoiler.playthrough = OrderedDict((str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres))
+
+    if worlds[0].entrance_shuffle != 'off':
+        spoiler.entrance_playthrough = OrderedDict((str(i + 1), list(sphere)) for i, sphere in enumerate(entrance_spheres))

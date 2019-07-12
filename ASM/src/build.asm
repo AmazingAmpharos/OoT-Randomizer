@@ -27,9 +27,15 @@
 
 .org 0x80400000
 .area 0x10000
-.area 0x1000, 0
-.include "coop_state.asm" ; This should always come first
+
+.area 0x20, 0
+RANDO_CONTEXT:
+.word COOP_CONTEXT
+.word COSMETIC_CONTEXT
+.word extern_ctxt
 .endarea
+
+.include "coop_state.asm" ; This should always come first
 .include "config.asm"
 .include "init.asm"
 .include "item_overrides.asm"
@@ -53,8 +59,15 @@
 .include "dampe.asm"
 .include "dpad.asm"
 .include "chests.asm"
+.include "bunny_hood.asm"
+.include "magic_color.asm"
 .include "debug.asm"
 .include "extended_objects.asm"
+.include "cow.asm"
+.include "lake_hylia.asm"
+.include "timers.asm"
+.include "shooting_gallery.asm"
+.include "damage.asm"
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:
