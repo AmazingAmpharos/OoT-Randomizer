@@ -947,6 +947,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_int32(symbol, 4)
     elif world.bridge == 'tokens':
         rom.write_int32(symbol, 5)
+    elif world.bridge == 'triforce':
+        rom.write_int32(symbol, 6)
 
     if world.open_forest:
         save_context.write_bits(0xED5, 0x10) # "Showed Mido Sword & Shield"

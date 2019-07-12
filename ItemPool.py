@@ -532,7 +532,7 @@ junk_pool_base = [
     ('Rupees (5)',      10),
     ('Rupees (20)',     4),
     ('Rupees (50)',     1),
-    ('TEST', 10000),
+    ('Triforce Piece', 10000),
 ]
 
 pending_junk_pool = []

@@ -3,7 +3,7 @@
 #              None  -> Normal
 #    Item:                            (type, Progessive, GetItemID, special),
 item_table = {
-    'TEST':                             ('Item',     None,  0xC8, None),
+    'Triforce Piece':                   ('Item',     True,  0xC9, {'progressive': float('Inf')}),
     'Bombs (5)':                        ('Item',     None,  0x01, None),
     'Deku Nuts (5)':                    ('Item',     None,  0x02, None),
     'Bombchus (10)':                    ('Item',     True,  0x03, None),

@@ -55,6 +55,7 @@ def getHintGroup(group, world):
 # @ will print the player name
 # # sets color to white (currently only used for dungeon reward hints).
 hintTable = {
+    'Triforce Piece':                                           (["TODO get good hints for triforce pieces"], "A piece of the Triforce", "item"),
     'Magic Meter':                                              (["mystic training", "pixie dust", "a green rectangle"], "a Magic Meter", 'item'),
     'Double Defense':                                           (["a white outline", "damage decrease", "strengthened love"], "Double Defense", 'item'),
     'Slingshot':                                                (["a seed shooter", "a rubberband", "a child's catapult"], "a Slingshot", 'item'),

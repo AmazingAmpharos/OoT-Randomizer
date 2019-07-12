@@ -21,6 +21,10 @@ rainbow_bridge:
     beq       t2, at, @@rainbow_bridge_tokens
     nop
 
+    li        at, 6
+    beq       t2, at, @@rainbow_bridge_triforce
+    nop
+
 @@rainbow_bridge_dungeons:
     li        at, 0x1C003F ; stones and medallions
     jr        ra
@@ -50,3 +54,9 @@ rainbow_bridge:
     li        t2, 0
     jr        ra
     li        at, 0
+
+@@rainbow_bridge_triforce:
+    li        at, 0
+    lw        t7, 0x8C4(a3) ; Triforce pieces
+    jr        ra
+    slti      t2, t7, 0x14

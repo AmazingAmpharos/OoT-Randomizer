@@ -685,7 +685,8 @@ setting_infos = [
             'stones':	  'All Spiritual Stones',
             'medallions': 'All Medallions',
             'dungeons':   'All Dungeons',
-            'tokens':     '100 Gold Skulltula Tokens'
+            'tokens':     '100 Gold Skulltula Tokens',
+            'triforce':   '20 Triforce Pieces'
         },
         gui_text       = 'Rainbow Bridge Requirement',
         gui_group      = 'open',
@@ -696,6 +697,7 @@ setting_infos = [
             'All Medallions': All 6 Medallions.
             'All Dungeons': All Medallions and Spiritual Stones.
             '100 Gold Skulltula Tokens': All 100 Gold Skulltula Tokens.
+            '20 Triforce Pieces': New piece of triforce item found at random locations. Find 20 of them.
         ''',
         shared         = True,
         gui_params     = {
@@ -706,6 +708,7 @@ setting_infos = [
                 ('stones',     1),
                 ('medallions', 1),
                 ('dungeons',   1),
+                ('triforce',   1),
             ],
         },
     ),
