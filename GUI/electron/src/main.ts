@@ -211,9 +211,25 @@ function manageCSP() {
 //IPC
 ipcMain.on('getGeneratorGUISettings', (event, arg) => {
 
-  settingsParser.generate(settingsFilePath, mappingFilePath);
+  //settingsParser.generate(settingsFilePath, mappingFilePath);
+  //let guiSettings = settingsParser.getSettingsData();
 
-  let guiSettings = settingsParser.getSettingsData();
+  //Load compiled settings_list.json
+  let compiledSettingsMapPath = path.normalize(app.getAppPath() + "/../data/settings_list.json");
+  let guiSettings;
+
+  if (fs.existsSync(compiledSettingsMapPath)) {
+    guiSettings = JSON.parse(fs.readFileSync(compiledSettingsMapPath, 'utf8'));
+  }
+  else {
+    console.error("No settings_list.json found!");
+
+    setTimeout(() => {
+      app.quit();
+    }, 0);
+
+    throw Error("No settings_list.json found! Please restart the GUI using the Gui.py");
+  }
 
   //Add static presets
   guiSettings.presets = {
@@ -222,7 +238,7 @@ ipcMain.on('getGeneratorGUISettings', (event, arg) => {
   };
 
   //Load built in presets
-  let builtInPresetsPath = path.join(__dirname, '../src/utils/presets.json');
+  let builtInPresetsPath = path.normalize(app.getAppPath() + "/../data/presets_default.json");
 
   if (fs.existsSync(builtInPresetsPath)) {
     let builtInPresets = JSON.parse(fs.readFileSync(builtInPresetsPath, 'utf8'));

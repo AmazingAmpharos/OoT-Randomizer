@@ -1,4 +1,6 @@
 from SettingsList import setting_infos, setting_map, get_setting_info
+from Utils import data_path
+import sys
 import json
 
 
@@ -175,12 +177,12 @@ def CreateJSON(path, web_version=False):
             settingOutputJson['cosmeticsArray'].append(tabJsonArr)
 
     with open(path, 'w') as f:
-        json.dump(settingOutputJson, f, indent=2)
+        json.dump(settingOutputJson, f)
 
  
 def settingToJsonMain():
     web_version = '--web' in sys.argv
-    CreateJSON(local_path('setting_list.json'), web_version)
+    CreateJSON(data_path('settings_list.json'), web_version)
 
 
 if __name__ == '__main__':
