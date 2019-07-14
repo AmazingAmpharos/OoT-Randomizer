@@ -1277,8 +1277,7 @@
             "Death Mountain Crater Lower Local": "can_use(Goron_Tunic)",
             "Darunias Chamber": "True",
             "Crater Fairy": "can_use(Hammer)",
-            "DMC Hammer Grotto": "can_use(Hammer)",
-            "Death Mountain Crater Central Nearby": "can_use(Hover_Boots) or can_use(Hookshot)"
+            "DMC Hammer Grotto": "can_use(Hammer)"
         }
     },
     {
@@ -1288,6 +1287,7 @@
         "exits": {
             "Death Mountain Crater Lower Nearby": "True",
             "Death Mountain Crater Ladder Area Nearby": "True",
+            "Death Mountain Crater Central Nearby": "can_use(Hover_Boots) or can_use(Hookshot)",
             "Fire Temple Entrance": "
                 (can_use(Hover_Boots) or can_use(Hookshot)) and
                 (logic_fewer_tunic_requirements or can_use(Goron_Tunic))"
