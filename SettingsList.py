@@ -703,27 +703,29 @@ setting_infos = [
             'min' : 1,
         }
     ),
-    Scale('world_count', 
-        gui_text       = "Player Count",
-        min            = 1, 
-        max            = 255, 
+    Setting_Info('world_count',       int, "Player Count", "Numberinput", False, {}, 
         default        = 1,
-        shared         = True,
-        gui_params     = {
+        gui_params = {
+            'min' : 1,
+            'max' : 255,
             'no_line_break'     : True,
             'web:max'           : 15,
-            'web:no_line_break' : True,
-        },
+            'web:no_line_break' : True,            
+        }
     ),
-    Scale('player_num', 
-        gui_text       = "Player ID",
-        min            = 1, 
-        max            = 255, 
-        default        = 1
+    Setting_Info('player_num',        int, "Player ID", "Numberinput", False, {}, 
+        default        = 1,
+        gui_params = {
+            'min' : 1,
+            'max' : 255,
+        }
     ),
 
     # GUI Settings
-    Setting_Info('presets',           str, "Presets", "Presets", False, {}), # speacial hardcoded
+    Setting_Info('presets',           str, "", "Presetinput", False, {},
+        default        = "[New Preset]",
+        gui_tooltip    = 'Select a setting preset to apply.',
+    ),
     Setting_Info('repatch_cosmetics', bool, None, None, False, {},
         default        = True
     ),

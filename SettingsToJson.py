@@ -58,6 +58,8 @@ def GetSettingJson(setting, web_version, as_array=False):
         else:
             settingJson['options'] = {}
 
+        tags_list = []
+
         for option_name in setting_info.choice_list:
             if as_array:
                 optionJson = {
@@ -85,11 +87,19 @@ def GetSettingJson(setting, web_version, as_array=False):
             option_filter = setting_info.gui_params.get('filterdata', {}).get(option_name, None)
             if option_filter != None:
                 optionJson['tags'] = option_filter
+                for tag in option_filter:
+                    if tag not in tags_list:
+                        tags_list.append(tag)
 
             if as_array:
                 settingJson['options'].append(optionJson)
             else:
                 settingJson['options'][option_name] = optionJson
+
+        if tags_list:
+            tags_list.sort()
+            settingJson['tags'] = tags_list
+            settingJson['filter_by_tag'] = True
 
     elif setting_info.disable != None and True in setting_info.disable:
         disable_option = setting_info.disable[True]
@@ -177,7 +187,7 @@ def CreateJSON(path, web_version=False):
             settingOutputJson['cosmeticsArray'].append(tabJsonArr)
 
     with open(path, 'w') as f:
-        json.dump(settingOutputJson, f)
+        json.dump(settingOutputJson, f, indent=2)
 
  
 def settingToJsonMain():
