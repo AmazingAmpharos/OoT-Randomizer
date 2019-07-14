@@ -100,6 +100,7 @@ item_difficulty_max = {
         'Slingshot': 2, 
         'Bomb Bag': 2,
         'Heart Container': 0,
+        'Triforce Piece' : 25,
     },
     'minimal': {
         'Bombchus': 1,
@@ -116,6 +117,7 @@ item_difficulty_max = {
         'Bomb Bag': 1,
         'Heart Container': 0,
         'Piece of Heart': 0,
+        'Triforce Piece' : 20,
     },
 }
 
@@ -532,7 +534,6 @@ junk_pool_base = [
     ('Rupees (5)',      10),
     ('Rupees (20)',     4),
     ('Rupees (50)',     1),
-    ('Triforce Piece', 10000),
 ]
 
 pending_junk_pool = []
@@ -673,7 +674,7 @@ def get_pool_core(world):
         placed_items['HF Grotto Cow'] = 'Milk'
         if world.dungeon_mq['Jabu Jabus Belly']:
             placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
-        
+
 
     if world.dungeon_mq['Deku Tree']:
         skulltula_locations_final = skulltula_locations + [
@@ -1039,10 +1040,18 @@ def get_pool_core(world):
     if not world.dungeon_mq['Water Temple']:
         world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
+
+    if world.bridge == 'triforce': 
+        pending_junk_pool.extend(['Triforce Piece'] * 20)
+
     if world.item_pool_value == 'plentiful':
         pool.extend(easy_items)
+        if world.bridge == 'triforce': 
+            pending_junk_pool.extend(['Triforce Piece'] * 15)
     else:
         pool.extend(normal_items)
+        if world.bridge == 'triforce': 
+            pending_junk_pool.extend(['Triforce Piece'] * 10)
 
     if not world.shuffle_kokiri_sword:
         replace_max_item(pool, 'Kokiri Sword', 0)
