@@ -300,7 +300,7 @@ export class GUIGlobal {
     }
     else { //Dev versions on the web request a pre-built settings map from the server at runtime
 
-      let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/angular/dev/" + this.getGlobalVar("webSourceVersion").replace(/ /g, "_") + "/utils/settings_map.json";
+      let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/angular/dev/" + this.getGlobalVar("webSourceVersion").replace(/ /g, "_") + "/utils/settings_list.json";
       console.log("Settings map is not available. Request it:", url);
 
       res = await this.http.get(url, { responseType: "json" }).toPromise();

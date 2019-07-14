@@ -181,3 +181,18 @@ button.pull-left {
     left: calc(100% - 21px);
     position: relative;
 }
+
+.tagFilterSelect {
+  max-width: 100%;
+  width: 100%;
+  padding-bottom: 0.3rem !important;
+
+  /deep/ button {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
+.tagFilterSelectPadding {
+  height: 31px;
+}

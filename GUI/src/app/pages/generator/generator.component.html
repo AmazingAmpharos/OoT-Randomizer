@@ -73,7 +73,7 @@
                         <ng-container *ngSwitchCase="'Numberinput'">
                           <span *ngIf="!setting.size || setting.size == 'small' || setting.size == 'medium'" class="numberTextInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}:</span>
                           <p *ngIf="setting.size == 'full'" class="numberTextInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}</p>
-                          <input class="numberTextInput" [ngClass]="{numberTextInputSmall: setting.size == 'small', numberTextInputMedium: setting.size == 'medium', numberTextInputFull: setting.size == 'full'}" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" [maxlength]="setting.max.length" fieldSize="small" (ngModelChange)="numberInputChange($event, setting)"
+                          <input class="numberTextInput" [ngClass]="{numberTextInputSmall: setting.size == 'small', numberTextInputMedium: setting.size == 'medium', numberTextInputFull: setting.size == 'full'}" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" [maxlength]="setting.max ? setting.max.length : 6" fieldSize="small" (ngModelChange)="numberInputChange($event, setting)"
                                  [(ngModel)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
                         </ng-container>
                         <!--Exclusive to Main Tab-->
@@ -121,7 +121,7 @@
                         <!--Exclusive to Detailed Tab-->
                         <ng-container *ngSwitchCase="'SearchBox'">
                           <gui-listbox [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [source]="setting.options" [(destination)]="global.generator_settingsMap[setting.name]" (destinationChange)="afterSettingChange()"
-                                       height="77%" key="name" display="text" filter="true" [tooltipComponent]="tooltipComponent" tooltip="tooltip" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'click' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
+                                       height="77%" key="name" display="text" filter="true" [tagFilter]="setting.tags && setting.tags.length > 0 ? setting.tags : null" [tooltipComponent]="tooltipComponent" tooltip="tooltip" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'click' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
                           </gui-listbox>
                         </ng-container>
                       </ng-container>

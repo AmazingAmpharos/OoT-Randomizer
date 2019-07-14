@@ -11,6 +11,9 @@
         </button>
         </div>
         <form *ngIf="filter" class="filter">
+            <nb-select *ngIf="tagFilter" class="tagFilterSelect" [(selected)]="selectedTag" (selectedChange)="onFilter(available)" size="xsmall">
+              <nb-option *ngFor="let tag of tagFilter; index as tagIndex" [value]="tag">{{tag}}</nb-option>
+            </nb-select>
             <input nbInput class="form-control" name="filterSource" [(ngModel)]="available.picker" (ngModelChange)="onFilter(available)">
         </form>
 
@@ -35,6 +38,7 @@
         </button>
         </div>
         <form *ngIf="filter" class="filter">
+            <div *ngIf="tagFilter" class="tagFilterSelectPadding"></div>
             <input nbInput class="form-control" name="filterDestination" [(ngModel)]="confirmed.picker" (ngModelChange)="onFilter(confirmed)">
         </form>
 

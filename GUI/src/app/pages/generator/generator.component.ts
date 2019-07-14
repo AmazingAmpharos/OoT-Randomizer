@@ -803,7 +803,7 @@ export class GeneratorComponent implements OnInit {
     }, 0);
   }
 
-  numberInputChange(newValue: any, setting: Object) {
+  numberInputChange(newValue: any, setting: object) {
 
     //Existence check
     if (!newValue || newValue.length == 0) {
@@ -818,17 +818,17 @@ export class GeneratorComponent implements OnInit {
     }
 
     //Min/Max check
-    let settingMin: Number = setting["min"];
-    let settingMax: Number = setting["max"];
+    let settingMin: number = setting["min"];
+    let settingMax: number = setting["max"];
 
-    if (newValue < settingMin) {
+    if (("min" in setting) && newValue < settingMin) {
       setTimeout(() => {
         this.global.generator_settingsMap[setting["name"]] = settingMin;
         this.cd.markForCheck();
         this.afterSettingChange();
       }, 0);
     }
-    else if (newValue > settingMax) {
+    else if (("max" in setting) && newValue > settingMax) {
       setTimeout(() => {
         this.global.generator_settingsMap[setting["name"]] = settingMax;
         this.cd.markForCheck();
