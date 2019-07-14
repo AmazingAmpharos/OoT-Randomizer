@@ -632,7 +632,7 @@ export class GeneratorComponent implements OnInit {
     //Array of settings that should have its visibility altered
     var targetSettings = [];
 
-    if (setting["type"] === "Combobox") {
+    if (setting["type"] === "Checkbutton" || setting["type"] === "Radiobutton" || setting["type"] === "Combobox") {
       let value = typeof (newValue) == "object" ? newValue.value : newValue;
 
       //Open color picker if custom color is selected
@@ -654,26 +654,6 @@ export class GeneratorComponent implements OnInit {
       });
 
       targetSettings.push({ target: option, value: false });
-    }
-    else if (setting["type"] === "Checkbutton") { //Simple visibility changes depending on checkbox state
-      targetSettings.push({ target: setting, value: !Boolean(newValue) });
-    }
-    else if (setting["type"] === "Radiobutton") {
-
-      let selectedOption = {};
-
-      //Build list of options
-      setting.options.forEach(optionToAdd => {
-
-        if (optionToAdd.name === newValue) { //Add currently selected item last for priority
-          selectedOption = optionToAdd;
-          return;
-        }
-
-        targetSettings.push({ target: optionToAdd, value: optionToAdd.name != newValue });
-      });
-
-      targetSettings.push({ target: selectedOption, value: false });
     }
 
     //Handle activations/deactivations
@@ -771,7 +751,7 @@ export class GeneratorComponent implements OnInit {
       if (skipSetting && checkSetting.name === skipSetting)
         return;
 
-      if (checkSetting["type"] === "Combobox") {
+      if (checkSetting["type"] === "Checkbutton" || checkSetting["type"] === "Radiobutton" || checkSetting["type"] === "Combobox") {
 
         let targetOption = checkSetting.options.find(option => {
 
@@ -784,9 +764,6 @@ export class GeneratorComponent implements OnInit {
         if (targetOption) {
           this.checkVisibility({ value: this.global.generator_settingsMap[checkSetting.name] }, checkSetting, targetOption, null, disableOnly, noValueChange);
         }
-      }
-      else if (checkSetting["type"] === "Checkbutton" || checkSetting["type"] === "Radiobutton") {
-        this.checkVisibility(this.global.generator_settingsMap[checkSetting.name], checkSetting, null, null, disableOnly, noValueChange);
       }
     })));
   }
