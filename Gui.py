@@ -8,7 +8,7 @@ from Utils import data_path
 def guiMain():
     web_version = '--web' in sys.argv
     if '--skip-settingslist' not in sys.argv:
-        CreateJSON(data_path('settings_list.json'), web_version)
+        CreateJSON(data_path('generated/settings_list.json'), web_version)
 
     args = ["node", "run.js", "release", "python", sys.executable]
     subprocess.Popen(args,shell=False,cwd="GUI")

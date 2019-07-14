@@ -215,7 +215,7 @@ ipcMain.on('getGeneratorGUISettings', (event, arg) => {
   //let guiSettings = settingsParser.getSettingsData();
 
   //Load compiled settings_list.json
-  let compiledSettingsMapPath = path.normalize(app.getAppPath() + "/../data/settings_list.json");
+  let compiledSettingsMapPath = path.normalize(app.getAppPath() + "/../data/generated/settings_list.json");
   let guiSettings;
 
   if (fs.existsSync(compiledSettingsMapPath)) {

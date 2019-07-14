@@ -172,7 +172,7 @@ def CreateJSON(path, web_version=False):
 
         settingOutputJson['settingsObj'][tab['name']] = tabJsonObj
         settingOutputJson['settingsArray'].append(tabJsonArr)
-        if tab.get('is_cosmetic', False):
+        if tab.get('is_cosmetics', False):
             settingOutputJson['cosmeticsObj'][tab['name']] = tabJsonObj
             settingOutputJson['cosmeticsArray'].append(tabJsonArr)
 
@@ -182,7 +182,7 @@ def CreateJSON(path, web_version=False):
  
 def settingToJsonMain():
     web_version = '--web' in sys.argv
-    CreateJSON(data_path('settings_list.json'), web_version)
+    CreateJSON(data_path('generated/settings_list.json'), web_version)
 
 
 if __name__ == '__main__':
