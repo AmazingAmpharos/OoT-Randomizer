@@ -5217,6 +5217,7 @@
               "type": "SearchBox",
               "current_value": [],
               "tags": [
+                "(all)",
                 "Bottom of the Well",
                 "Castle Town",
                 "Cow",
@@ -14203,6 +14204,7 @@
               "type": "SearchBox",
               "name": "disabled_locations",
               "tags": [
+                "(all)",
                 "Bottom of the Well",
                 "Castle Town",
                 "Cow",

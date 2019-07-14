@@ -98,7 +98,7 @@ def GetSettingJson(setting, web_version, as_array=False):
 
         if tags_list:
             tags_list.sort()
-            settingJson['tags'] = tags_list
+            settingJson['tags'] = ['(all)'] + tags_list
             settingJson['filter_by_tag'] = True
 
     elif setting_info.disable != None and True in setting_info.disable:
