@@ -7,11 +7,6 @@ import * as url from "url";
 import * as windowStateKeeper from "electron-window-state";
 import * as commander from 'commander';
 
-const settingsParser = require(path.join(__dirname, '../src/modules/settingsParser'));
-
-const settingsFilePath = path.join(__dirname, "../src/utils/settings_list.json");
-const mappingFilePath = path.join(__dirname, "../src/utils/settings_mapping.json");
-
 var win: BrowserWindow;
 var isRelease: boolean = false;
 
@@ -210,9 +205,6 @@ function manageCSP() {
 
 //IPC
 ipcMain.on('getGeneratorGUISettings', (event, arg) => {
-
-  //settingsParser.generate(settingsFilePath, mappingFilePath);
-  //let guiSettings = settingsParser.getSettingsData();
 
   //Load compiled settings_list.json
   let compiledSettingsMapPath = path.normalize(app.getAppPath() + "/../data/generated/settings_list.json");

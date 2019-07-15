@@ -103,8 +103,11 @@ nb-layout-footer {
 }
 
 .ioInput,
-.numberTextInput {
-    background: white !important;
+.numberTextInput,
+.footerInput,
+.footerInputShort
+{
+  background: white !important;
 }
 
 .record-picker .selected {

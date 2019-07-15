@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChange  } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DualListComponent } from 'angular-dual-listbox';
 import { BasicList } from 'angular-dual-listbox';
 
@@ -14,8 +14,6 @@ export class GUIListboxModule extends DualListComponent {
   @Input() tagFilter: any = null;
 
   selectedTag: string = "(all)";
-
-  private sorterElements = (a: any, b: any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
 
   clearFilter(source: BasicList, isAvailable: boolean = false) {
     if (source) {
