@@ -3,7 +3,6 @@
 #              None  -> Normal
 #    Item:                            (type, Progessive, GetItemID, special),
 item_table = {
-    'Triforce Piece':                   ('Item',     True,  0xC9, {'progressive': float('Inf')}),
     'Bombs (5)':                        ('Item',     None,  0x01, None),
     'Deku Nuts (5)':                    ('Item',     None,  0x02, None),
     'Bombchus (10)':                    ('Item',     True,  0x03, None),
@@ -139,6 +138,7 @@ item_table = {
     'Small Key (Ganons Castle)':        ('SmallKey', True,  0xB7, {'progressive': float('Inf')}),
     'Double Defense':                   ('Item',     True,  0xB8, None),
     'Magic Bean Pack':                  ('Item',     True,  0xC9, None),
+    'Triforce Piece':                   ('Item',     True,  0xCA, {'progressive': float('Inf')}),
     'Zeldas Letter':                    ('Item',     True,  None, None),
     'Time Travel':                      ('Event',    True,  None, None),
     'Scarecrow Song':                   ('Event',    True,  None, None),
