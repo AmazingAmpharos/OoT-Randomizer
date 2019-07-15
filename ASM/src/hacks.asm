@@ -517,12 +517,6 @@ nop
 .org 0xD74990
     skip_steal_tunic:
 
-; Meg starts at 1 health
-; Replaces: 
-;   0x0A
-.orga 0xCDE1FC
-    .byte 0x01
-
 ;==================================================================================================
 ; Ocarina Song Cutscene Overrides
 ;==================================================================================================
@@ -898,6 +892,26 @@ skip_GS_BGS_text:
 .org 0xDCBF9C
     lui     at, 0x4230
 
+; Fish bite guaranteed when the hook is stable
+; Replaces: lwc1    f10, 0x0198(s0)
+;           mul.s   f4, f10, f2
+.orga 0xDC7090
+    jal     fishing_bite_when_stable
+    lwc1    f10, 0x0198(s0)
+
+; Remove most fish loss branches
+.orga 0xDC87A0
+    nop
+.orga 0xDC87BC
+    nop
+.orga 0xDC87CC
+    nop
+
+; Prevent RNG fish loss
+; Replaces: addiu   at, zero, 0x0002
+.orga 0xDC8828
+    move    at, t5
+
 ;==================================================================================================
 ; Bombchus In Logic Hooks
 ;==================================================================================================
@@ -1199,17 +1213,13 @@ skip_GS_BGS_text:
     .byte 0xFF ; Set generic grotto text ID to load from grotto ID
 
 ; ==================================================================================================
-; Disable timers 
+; Disable trade quest timers in ER
 ; ==================================================================================================
 ; Replaces: lui     at, 0x800F
 ;           sw      r0, 0x753C(at)
 .orga 0xAE986C ; in memory 8007390C
     j   disable_trade_timers
     lui at, 0x800F
-
-.orga 0xE7C398
-    jal disable_collapse_timer
-    nop
 
 ; ==================================================================================================
 ; Remove Shooting gallery actor when entering the room with the wrong age
@@ -1232,3 +1242,106 @@ skip_GS_BGS_text:
 .orga 0xACCD34
     jal     burning_kak
     lw      t9, 0x0000(s0)
+
+; ==================================================================================================
+; Set the Obtained Epona Flag when winning the 2nd Ingo Race
+; ==================================================================================================
+; Replaces: lw      t9, 0x0024(s0)
+;           sw      t9, 0x0000(t7)
+.orga 0xD52698
+    jal     ingo_race_win
+    lw      t9, 0x0024(s0)
+
+;==================================================================================================
+; Magic Bean Salesman Shuffle
+;==================================================================================================
+; Replaces: addu    v0, v0, t7
+;           lb      v0, -0x59A4(v0)
+.orga 0xE20410
+    jal     bean_initial_check
+    nop
+
+; Replaces: addu    t0, v0, t9
+;           lb      t1, 0x008C(t0)
+.orga 0xE206DC
+    jal     bean_enough_rupees_check
+    nop
+
+; Replaces: addu    t7, t7, t6
+;           lb      t7, -0x59A4(t7)
+.orga 0xE20798
+    jal     bean_rupees_taken
+    nop
+
+; Replaces: sw    a0, 0x20(sp)
+;           sw    a1, 0x24(sp)
+.orga 0xE2076C
+    jal     bean_buy_item_hook
+    sw      a0, 0x20(sp)
+
+;==================================================================================================
+; Load Audioseq using dmadata
+;==================================================================================================
+; Replaces: lui     a1, 0x0003
+;           addiu   a1, a1, -0x6220
+.org 0xB2E82C ; in memory 0x800B88CC
+    lw      a1, 0x8000B188
+
+;==================================================================================================
+; Load Audiotable using dmadata
+;==================================================================================================
+; Replaces: lui     a1, 0x0008
+;           addiu   a1, a1, -0x6B90
+.org 0xB2E854
+    lw      a1, 0x8000B198
+
+; ==================================================================================================
+; Handle grottos shuffled with other entrances
+; ==================================================================================================
+; Replaces: lui     at, 1
+;           addu    at, at, a3
+.orga 0xCF73C8
+    jal     grotto_entrance
+    lui     at, 1
+
+; Replaces: addu    at, at, a3
+;           sh      t6, 0x1E1A(at)
+.orga 0xBD4C58
+    jal     scene_exit_hook
+    addu    at, at, a3
+
+; ==================================================================================================
+; Getting Caught by Gerudo NPCs in ER
+; ==================================================================================================
+; Replaces: lui     at, 0x0001
+;           addu    at, at, a1
+.orga 0xE11F90  ; White-clothed Gerudo
+    jal     gerudo_caught_entrance
+    nop
+.orga 0xE9F678  ; Patrolling Gerudo
+    jal     gerudo_caught_entrance
+    nop
+.orga 0xE9F7A8  ; Patrolling Gerudo
+    jal     gerudo_caught_entrance
+    nop
+
+; Replaces: lui     at, 0x0001
+;           addu    at, at, v0
+.orga 0xEC1120  ; Gerudo Fighter
+    jal     gerudo_caught_entrance
+    nop
+
+; ==================================================================================================
+; Song of Storms Effect Trigger Changes
+; ==================================================================================================
+; Allow a storm to be triggered with the song in any environment
+; Replaces: lui     t5, 0x800F
+;           lbu     t5, 0x1648(t5)
+.orga 0xE6BF4C
+    li      t5, 0
+    nop
+
+; Remove the internal cooldown between storm effects (to open grottos, grow bean plants...)
+; Replaces: bnez     at, 0x80AECC6C
+.orga 0xE6BEFC
+    nop

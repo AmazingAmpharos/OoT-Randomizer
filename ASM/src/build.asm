@@ -18,6 +18,7 @@
 .include "boot.asm"
 .include "hacks.asm"
 .include "malon.asm"
+.include "mido.asm"
 
 ;==================================================================================================
 ; New code region
@@ -68,6 +69,8 @@ RANDO_CONTEXT:
 .include "timers.asm"
 .include "shooting_gallery.asm"
 .include "damage.asm"
+.include "bean_salesman.asm"
+.include "grotto.asm"
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:

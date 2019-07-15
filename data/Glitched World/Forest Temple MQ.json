@@ -30,7 +30,9 @@
                 (has_bombchus and logic_forest_mq_block_puzzle) or Progressive_Strength_Upgrade",
             "Forest Temple Outdoor Ledge": "
                 (has_bombchus and logic_forest_mq_block_puzzle) or 
-                Progressive_Strength_Upgrade or can_use(Hover_Boots)"
+                Progressive_Strength_Upgrade or can_use(Hover_Boots)",
+            "Forest Temple Boss Region": "
+                Forest_Temple_Jo_and_Beth and Forest_Temple_Amy_and_Meg"
         }
     },
     {
@@ -105,6 +107,9 @@
     {
         "region_name": "Forest Temple Bow Region",
         "dungeon": "Forest Temple",
+        "events": {
+            "Forest Temple Jo and Beth": "can_use(Bow)"
+        },
         "locations": {
             "Forest Temple MQ Bow Chest": "True",
             "Forest Temple MQ Map Chest": "can_use(Bow)",
@@ -119,14 +124,14 @@
     {
         "region_name": "Forest Temple Falling Room",
         "dungeon": "Forest Temple",
+        "events": {
+            "Forest Temple Amy and Meg": "can_use(Bow) and (Small_Key_Forest_Temple, 6)"
+        },
         "locations": {
             "Forest Temple MQ Falling Room Chest": "True"
         },
         "exits": {
-            "Forest Temple NE Outdoors Ledge": "True",
-            "Forest Temple Boss Region": "
-                can_use(Bow) and (Small_Key_Forest_Temple, 6) and 
-                can_reach(Forest_Temple_Bow_Region)"
+            "Forest Temple NE Outdoors Ledge": "True"
         }
     },
     {

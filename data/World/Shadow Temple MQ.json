@@ -14,7 +14,9 @@
         "dungeon": "Shadow Temple",
         "exits": {
             "Shadow Temple Entryway": "True",
-            "Shadow Temple First Beamos": "can_use(Fire_Arrows) or Hover_Boots",
+            "Shadow Temple First Beamos": "
+                can_use(Fire_Arrows) or Hover_Boots or
+                (logic_shadow_mq_gap and can_use(Longshot))",
             "Shadow Temple Dead Hand Area": "has_explosives and (Small_Key_Shadow_Temple, 6)"
         }
     },
@@ -35,19 +37,30 @@
             "Shadow Temple MQ Near Ship Invisible Chest": "True"
         },
         "exits": {
-            "Shadow Temple Huge Pit": "has_explosives and (Small_Key_Shadow_Temple, 2)"
+            "Shadow Temple Upper Huge Pit": "has_explosives and (Small_Key_Shadow_Temple, 2)"
         }
     },
     {
-        "region_name": "Shadow Temple Huge Pit",
+        "region_name": "Shadow Temple Upper Huge Pit",
         "dungeon": "Shadow Temple",
         "locations": {
             "Shadow Temple MQ Invisible Blades Visible Chest": "can_play(Song_of_Time)",
-            "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time)",
+            "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time)"
+        },
+        "exits": {
+            "Shadow Temple Lower Huge Pit": "has_fire_source"
+        }
+    },
+    {
+        "region_name": "Shadow Temple Lower Huge Pit",
+        "dungeon": "Shadow Temple",
+        "locations": {
             "Shadow Temple MQ Beamos Silver Rupees Chest": "can_use(Longshot)",
             "Shadow Temple MQ Falling Spikes Lower Chest": "True",
-            "Shadow Temple MQ Falling Spikes Upper Chest": "Progressive_Strength_Upgrade",
-            "Shadow Temple MQ Falling Spikes Switch Chest": "Progressive_Strength_Upgrade",
+            "Shadow Temple MQ Falling Spikes Upper Chest": "
+                (logic_shadow_umbrella and Hover_Boots) or Progressive_Strength_Upgrade",
+            "Shadow Temple MQ Falling Spikes Switch Chest": "
+                (logic_shadow_umbrella and Hover_Boots) or Progressive_Strength_Upgrade",
             "Shadow Temple MQ Invisible Spikes Chest": "Hover_Boots and (Small_Key_Shadow_Temple, 3)",
             "Shadow Temple MQ Stalfos Room Chest": "
                 Hover_Boots and (Small_Key_Shadow_Temple, 3) and Progressive_Hookshot",
@@ -77,10 +90,14 @@
         "region_name": "Shadow Temple Beyond Boat",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Bongo Bongo Heart": "has_bow and Boss_Key_Shadow_Temple",
-            "Bongo Bongo": "has_bow and Boss_Key_Shadow_Temple",
+            "Bongo Bongo Heart": "
+                (has_bow or (logic_shadow_statue and has_bombchus)) and
+                Boss_Key_Shadow_Temple",
+            "Bongo Bongo": "
+                (has_bow or (logic_shadow_statue and has_bombchus)) and
+                Boss_Key_Shadow_Temple",
             "GS Shadow Temple MQ After Ship": "True",
-            "GS Shadow Temple MQ Near Boss": "has_bow"
+            "GS Shadow Temple MQ Near Boss": "has_bow or (logic_shadow_statue and has_bombchus)"
         },
         "exits": {
             "Shadow Temple Invisible Maze": "
@@ -91,8 +108,10 @@
         "region_name": "Shadow Temple Invisible Maze",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple MQ Spike Walls Left Chest": "(Small_Key_Shadow_Temple, 6)",
-            "Shadow Temple MQ Boss Key Chest": "(Small_Key_Shadow_Temple, 6)",
+            "Shadow Temple MQ Spike Walls Left Chest": "
+                can_use(Dins_Fire) and (Small_Key_Shadow_Temple, 6)",
+            "Shadow Temple MQ Boss Key Chest": "
+                can_use(Dins_Fire) and (Small_Key_Shadow_Temple, 6)",
             "Shadow Temple MQ Bomb Flower Chest": "True",
             "Shadow Temple MQ Freestanding Key": "True"
         }

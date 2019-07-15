@@ -2,6 +2,9 @@
     {
         "region_name": "Water Temple Lobby",
         "dungeon": "Water Temple",
+        "events": {
+            "Water Temple Clear": "Boss_Key_Water_Temple and can_use(Longshot)"
+        },
         "locations": {
             "Water Temple MQ Map Chest": "has_fire_source and Iron_Boots",
             "Water Temple MQ Central Pillar Chest": "

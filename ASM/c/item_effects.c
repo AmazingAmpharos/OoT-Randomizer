@@ -3,6 +3,9 @@
 #include "icetrap.h"
 #include "z64.h"
 
+#define rupee_cap ((uint16_t*)0x800F8CEC)
+volatile uint8_t MAX_RUPEES = 0;
+
 void no_effect(z64_file_t *save, int16_t arg1, int16_t arg2) {
 }
 
@@ -16,6 +19,8 @@ void give_triforce_piece(z64_file_t *save, int16_t arg1, int16_t arg2) {
 
 void give_tycoon_wallet(z64_file_t *save, int16_t arg1, int16_t arg2) {
     save->wallet = 3;
+    if(MAX_RUPEES)
+        save->rupees = rupee_cap[arg1];
 }
 
 void give_biggoron_sword(z64_file_t *save, int16_t arg1, int16_t arg2) {
@@ -74,4 +79,14 @@ void give_song(z64_file_t *save, int16_t quest_bit, int16_t arg2) {
 
 void ice_trap_effect(z64_file_t *save, int16_t arg1, int16_t arg2) {
     push_pending_ice_trap();
+}
+
+void give_bean_pack(z64_file_t *save, int16_t arg1, int16_t arg2) {
+    save->items[Z64_SLOT_BEANS] = Z64_ITEM_BEANS;
+    save->ammo[14] += 10; // 10 Magic Beans
+}
+
+void fill_wallet_upgrade(z64_file_t *save, int16_t arg1, int16_t arg2) {
+    if(MAX_RUPEES)
+        save->rupees = rupee_cap[arg1];
 }

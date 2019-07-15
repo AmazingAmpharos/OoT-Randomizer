@@ -10,9 +10,11 @@
         },
         "exits": {
             "Gerudo Fortress": "True",
-            "Gerudo Training Grounds Heavy Block Room": "can_use(Hookshot)",
+            "Gerudo Training Grounds Heavy Block Room": "
+                (is_adult or Kokiri_Sword) and
+                (can_use(Hookshot) or logic_gtg_without_hookshot)",
             "Gerudo Training Grounds Lava Room": "
-                as_either_here(has_explosives and (is_adult or Kokiri_Sword))",
+                here(has_explosives and (is_adult or Kokiri_Sword))",
             "Gerudo Training Grounds Central Maze": "True"
         }
     },
@@ -39,6 +41,7 @@
             "Gerudo Training Grounds Freestanding Key": "True"
         },
         "exits": {
+            "Gerudo Training Grounds Hammer Room": "can_use(Hookshot)",
             "Gerudo Training Grounds Lava Room": "True"
         }
     },
@@ -53,9 +56,7 @@
         "exits": {
             "Gerudo Training Grounds Central Maze Right": "can_play(Song_of_Time) or is_child",
             "Gerudo Training Grounds Hammer Room": "
-                (can_reach(Gerudo_Training_Grounds_Central_Maze_Right) or 
-                    can_use(Hover_Boots) or can_use(Longshot)) and
-                can_use(Hookshot)"
+                can_use(Longshot) or (can_use(Hookshot) and can_use(Hover_Boots))"
         }
     },
     {
@@ -94,14 +95,26 @@
         "region_name": "Gerudo Training Grounds Heavy Block Room",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds Before Heavy Block Chest": "True",
-            "Gerudo Training Grounds Heavy Block First Chest": "can_use(Silver_Gauntlets) and can_see_with_lens",
-            "Gerudo Training Grounds Heavy Block Second Chest": "can_use(Silver_Gauntlets) and can_see_with_lens",
-            "Gerudo Training Grounds Heavy Block Third Chest": "can_use(Silver_Gauntlets) and can_see_with_lens",
-            "Gerudo Training Grounds Heavy Block Fourth Chest": "can_use(Silver_Gauntlets) and can_see_with_lens"
+            "Gerudo Training Grounds Before Heavy Block Chest": "True"
         },
         "exits": {
-            "Gerudo Training Grounds Eye Statue Upper": "can_use(Hookshot) and can_see_with_lens"
+            "Gerudo Training Grounds Eye Statue Upper": "
+                can_see_with_lens and
+                (can_use(Hookshot) or (logic_gtg_fake_wall and can_use(Hover_Boots)))",
+            "Gerudo Training Grounds Like Like Room": "
+                can_use(Silver_Gauntlets) and can_see_with_lens and
+                (can_use(Hookshot) or (logic_gtg_fake_wall and can_use(Hover_Boots)))"
+        }
+    },
+    {
+        "region_name": "Gerudo Training Grounds Like Like Room",
+        "dungeon": "Gerudo Training Grounds",
+        "locations": {
+            "Gerudo Training Grounds Heavy Block First Chest": "True",
+            "Gerudo Training Grounds Heavy Block Second Chest": "True",
+            "Gerudo Training Grounds Heavy Block Third Chest": "True",
+            "Gerudo Training Grounds Heavy Block Fourth Chest": "True"
         }
     }
+
 ]

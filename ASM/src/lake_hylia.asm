@@ -1,6 +1,3 @@
-CFG_CHILD_CONTROL_LAKE:
-    .word 0x00000000
-
                       ; ID      x       y       z       xrot    yrot    zrot    var
 Gossip_Actor: .halfword 0x01B9, 0xFCD5, 0xFB25, 0x1AD2, 0x0000, 0xF2DC, 0x0000, 0x8022
 
@@ -23,15 +20,9 @@ Hit_Gossip_Stone:
     beqz    t5, @@return
     nop
 
-    ; Adult always has control
+    ; Only Adult has control
     lw      t6, 0x0004(v1)     
-    beqz    t6, @@trigger_fill
-    nop
-
-    ; Child only has controls if CFG setting is set
-    li      t5, CFG_CHILD_CONTROL_LAKE
-    lw      t5, 0x00(t5)
-    beqz    t5, @@return
+    bnez    t6, @@return
     nop
 
 @@trigger_fill:
@@ -54,19 +45,7 @@ Hit_Gossip_Stone:
 
 
 Check_Fill_Lake:
-    ; If child cannot control the lake, then only check age
-    li      t5, CFG_CHILD_CONTROL_LAKE
-    lw      t5, 0x00(t5)
-    beqz    t5, @@vanilla_check
-    nop
-
-    lhu     t5, 0x0EDC(v1)
-    andi    t5, t5, 0x0400     ;t5 = morpha flag
-    bnez    t5, @@return
-    li      t6, 0              ; return false if morph is dead
-@@vanilla_check:
     lw      t6, 0x0004(v1)     ; otherwise return if age is child
-@@return:
     jr      ra
     nop
 
@@ -79,14 +58,10 @@ Fill_Lake_Destroy:
     bne t0, at, @@destroy
     nop
 
-    ; if child and CFG_CHILD_CONTROL_LAKE is false, then destroy
+    ; if child then destroy
     li      v0, SAVE_CONTEXT
     lw      t3, 0x0004(v0)
-    beqz    t3, @@setup_fill_control
-    nop
-    li      t5, CFG_CHILD_CONTROL_LAKE
-    lw      t5, 0x00(t5)
-    beqz    t5, @@return
+    bnez    t3, @@return
     nop
 
 @@setup_fill_control:

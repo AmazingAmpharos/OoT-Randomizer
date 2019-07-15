@@ -13,6 +13,7 @@
 #include "chests.h"
 #include "ganon.h"
 #include "extern_ctxt.h"
+#include "fog.h"
 
 void c_init() {
     heap_init();
@@ -28,6 +29,7 @@ void before_game_state_update() {
     update_color();
     update_heart_colors();
     process_extern_ctxt();
+    override_fog_state();
 }
 
 void after_game_state_update() {

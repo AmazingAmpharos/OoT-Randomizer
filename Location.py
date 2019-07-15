@@ -102,7 +102,7 @@ def LocationFactory(locations, world=None):
             if addresses is None:
                 addresses = (None, None)
             address, address2 = addresses
-            ret.append(Location(location, address, address2, default, type, scene, ret, filter_tags))
+            ret.append(Location(location, address, address2, default, type, scene, filter_tags=filter_tags))
         else:
             raise KeyError('Unknown Location: %s', location)
 

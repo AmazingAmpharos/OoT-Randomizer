@@ -6,10 +6,9 @@ import struct
 import random
 
 from HintList import getHint, getHintGroup, Hint, hintExclusions
-from ItemPool import eventlocations
 from Messages import update_message_by_id
 from Playthrough import Playthrough
-from TextBox import lineWrap
+from TextBox import line_wrap
 from Utils import random_choices
 
 
@@ -33,7 +32,7 @@ class GossipText():
 
 
     def __str__(self):
-        return get_raw_text(lineWrap(colorText(self)))
+        return get_raw_text(line_wrap(colorText(self)))
 
 
 gossipLocations = {
@@ -255,7 +254,7 @@ def get_barren_hint(spoiler, world, checked):
     area_weights = [world.empty_areas[area]['weight'] for area in areas]
 
     area = random_choices(areas, weights=area_weights)[0]
-    if world.empty_areas[area]['dungeon']:
+    if world.hint_dist != 'very_strong' and world.empty_areas[area]['dungeon']:
         world.barren_dungeon = True
 
     checked.append(area)
@@ -286,9 +285,7 @@ def get_good_item_hint(spoiler, world, checked):
 def get_random_location_hint(spoiler, world, checked):
     locations = [location for location in world.get_filled_locations()
             if not location.name in checked and \
-            location.item.type != 'Event' and \
-            location.item.type != 'Drop' and \
-            location.item.type != 'Shop' and \
+            location.item.type not in ('Drop', 'Event', 'Shop', 'DungeonReward') and \
             not (location.parent_region.dungeon and \
                 isRestrictedDungeonItem(location.parent_region.dungeon, location.item)) and
             not location.locked]
@@ -533,6 +530,8 @@ def buildGossipHints(spoiler, world):
 
     hint_types = list(hint_types)
     hint_prob  = list(hint_prob)
+    hint_counts = {}
+
     if world.hint_dist == "tournament":
         fixed_hint_types = []
         for hint_type in hint_types:
@@ -546,7 +545,21 @@ def buildGossipHints(spoiler, world):
                 hint_type = 'random'
         else:
             try:
-                hint_type = random_choices(hint_types, weights=hint_prob)[0]
+                # Weight the probabilities such that hints that are over the expected proportion
+                # will be drawn less, and hints that are under will be drawn more.
+                # This tightens the variance quite a bit. The variance can be adjusted via the power
+                weighted_hint_prob = []
+                for w1_type, w1_prob in zip(hint_types, hint_prob):
+                    p = w1_prob
+                    if p != 0: # If the base prob is 0, then it's 0
+                        for w2_type, w2_prob in zip(hint_types, hint_prob):
+                            if w2_prob != 0: # If the other prob is 0, then it has no effect
+                                # Raising this term to a power greater than 1 will decrease variance
+                                # Conversely, a power less than 1 will increase variance
+                                p = p * (((hint_counts.get(w2_type, 0) / w2_prob) + 1) / ((hint_counts.get(w1_type, 0) / w1_prob) + 1))
+                    weighted_hint_prob.append(p)
+
+                hint_type = random_choices(hint_types, weights=weighted_hint_prob)[0]
             except IndexError:
                 raise Exception('Not enough valid hints to fill gossip stone locations.')
 
@@ -560,6 +573,8 @@ def buildGossipHints(spoiler, world):
         else:
             gossip_text, location = hint
             place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, hint_dist[hint_type][1], location)
+            if place_ok:
+                hint_counts[hint_type] = hint_counts.get(hint_type, 0) + 1
             if not place_ok and world.hint_dist == "tournament":
                 fixed_hint_types.insert(0, hint_type)
 
@@ -604,7 +619,7 @@ def buildBossString(reward, color, world):
         if location.item.name == reward:
             item_icon = chr(location.item.special['item_id'])
             location_text = getHint(location.name, world.clearer_hints).text
-            return str(GossipText("\x08\x13%s%s" % (item_icon, location_text), [color], prefix=''))
+            return str(GossipText("\x08\x13%s%s" % (item_icon, location_text), [color], prefix='')) + '\x04'
     return ''
 
 

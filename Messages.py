@@ -1,12 +1,13 @@
 # text details: https://wiki.cloudmodding.com/oot/Text_Format
 
 import random
+from TextBox import line_wrap
 
 TABLE_START = 0xB849EC
 TEXT_START = 0x92D000
 
 TABLE_SIZE_LIMIT = 0x43A8
-ENG_TEXT_SIZE_LIMIT = 0x38130
+ENG_TEXT_SIZE_LIMIT = 0x39000
 JPN_TEXT_SIZE_LIMIT = 0x3A150
 
 
@@ -70,19 +71,19 @@ ERROR_MESSAGE = 0x0001
 # ids are in the space freed up by move_shop_item_messages()
 ITEM_MESSAGES = {
     0x0001: "\x08\x06\x30\x05\x41TEXT ID ERROR!\x05\x40",
-    0x9001: "\x08\x13\x2DYou borrowed a \x05\x41Pocket Egg\x05\x40!\x01A Pocket Cucco will hatch from\x01it overnight. Be sure to give it\x01back when you are done with it.",
+    0x9001: "\x08\x13\x2DYou borrowed a \x05\x41Pocket Egg\x05\x40!\x01A Pocket Cucco will hatch from\x01it overnight. Be sure to give it\x01back.",
     0x0002: "\x08\x13\x2FYou returned the Pocket Cucco\x01and got \x05\x41Cojiro\x05\x40 in return!\x01Unlike other Cuccos, Cojiro\x01rarely crows.",
-    0x0003: "\x08\x13\x30You got an \x05\x41Odd Mushroom\x05\x40!\x01A fresh mushroom like this is\x01sure to spoil quickly! Take it to\x01the Kakariko Potion Shop, quickly!",
+    0x0003: "\x08\x13\x30You got an \x05\x41Odd Mushroom\x05\x40!\x01It is sure to spoil quickly! Take\x01it to the Kakariko Potion Shop.",
     0x0004: "\x08\x13\x31You received an \x05\x41Odd Potion\x05\x40!\x01It may be useful for something...\x01Hurry to the Lost Woods!",
-    0x0005: "\x08\x13\x32You returned the Odd Potion \x01and got the \x05\x41Poacher's Saw\x05\x40!\x01The young punk guy must have\x01left this behind.",
+    0x0005: "\x08\x13\x32You returned the Odd Potion \x01and got the \x05\x41Poacher's Saw\x05\x40!\x01The young punk guy must have\x01left this.",
     0x0007: "\x08\x13\x48You got a \x01\x05\x41Deku Seeds Bullet Bag\x05\x40.\x01This bag can hold up to \x05\x4640\x05\x40\x01slingshot bullets.",
     0x0008: "\x08\x13\x33You traded the Poacher's Saw \x01for a \x05\x41Broken Goron's Sword\x05\x40!\x01Visit Biggoron to get it repaired!",
     0x0009: "\x08\x13\x34You checked in the Broken \x01Goron's Sword and received a \x01\x05\x41Prescription\x05\x40!\x01Go see King Zora!",
-    0x000A: "\x08\x13\x37The Biggoron's Sword...\x01You got a \x05\x41Claim Check \x05\x40for it!\x01You can't wait for the sword\x01to be completed!",
+    0x000A: "\x08\x13\x37The Biggoron's Sword...\x01You got a \x05\x41Claim Check \x05\x40for it!\x01You can't wait for the sword!",
     0x000B: "\x08\x13\x2EYou got a \x05\x41Pocket Cucco, \x05\x40one\x01of Anju's prized hens! It fits \x01in your pocket.",
-    0x000C: "\x08\x13\x3DYou handed in the Claim Check\x01and got the \x05\x41Biggoron's Sword\x05\x40!\x01This blade was forged by a \x01master smith and won't break!",
-    0x000D: "\x08\x13\x35You used the Prescription and\x01received an \x05\x41Eyeball Frog\x05\x40!\x01Be quick and deliver it to Lake \x01Hylia while it's cold!",
-    0x000E: "\x08\x13\x36You traded the Eyeball Frog \x01for the \x05\x41World's Finest Eye Drops\x05\x40!\x01Hurry! Take them to Biggoron\x01before they go bad!",
+    0x000C: "\x08\x13\x3DYou got the \x05\x41Biggoron's Sword\x05\x40!\x01This blade was forged by a \x01master smith and won't break!",
+    0x000D: "\x08\x13\x35You used the Prescription and\x01received an \x05\x41Eyeball Frog\x05\x40!\x01Be quick and deliver it to Lake \x01Hylia!",
+    0x000E: "\x08\x13\x36You traded the Eyeball Frog \x01for the \x05\x41World's Finest Eye Drops\x05\x40!\x01Hurry! Take them to Biggoron!",
     0x0010: "\x08\x13\x25You borrowed a \x05\x41Skull Mask\x05\x40.\x01You feel like a monster while you\x01wear this mask!",
     0x0011: "\x08\x13\x26You borrowed a \x05\x41Spooky Mask\x05\x40.\x01You can scare many people\x01with this mask!",
     0x0012: "\x08\x13\x24You borrowed a \x05\x41Keaton Mask\x05\x40.\x01You'll be a popular guy with\x01this mask on!",
@@ -115,6 +116,7 @@ ITEM_MESSAGES = {
     0x0046: "\x08\x13\x18You caught a \x05\x41Fairy\x05\x40 in a bottle!\x01It will revive you\x01the moment you run out of life \x01energy.",
     0x0047: "\x08\x13\x19You got a \x05\x41Fish\x05\x40!\x01It looks so fresh and\x01delicious!",
     0x0048: "\x08\x13\x10You got a \x05\x41Magic Bean\x05\x40!\x01Find a suitable spot for a garden\x01and plant it.",
+    0x9048: "\x08\x13\x10You got a \x05\x41Pack of Magic Beans\x05\x40!\x01Find suitable spots for a garden\x01and plant them.",
     0x004A: "\x08\x13\x07You received the \x05\x41Fairy Ocarina\x05\x40!\x01This is a memento from Saria.",
     0x004B: "\x08\x13\x3DYou got the \x05\x42Giant's Knife\x05\x40!\x01Hold it with both hands to\x01attack! It's so long, you\x01can't use it with a \x05\x44shield\x05\x40.",
     0x004C: "\x08\x13\x3EYou got a \x05\x44Deku Shield\x05\x40!",
@@ -128,7 +130,7 @@ ITEM_MESSAGES = {
     0x0054: "\x08\x13\x46You got the \x05\x41Hover Boots\x05\x40!\x01With these mysterious boots\x01you can hover above the ground.",
     0x0055: "\x08You got a \x05\x45Recovery Heart\x05\x40!\x01Your life energy is recovered!",
     0x0056: "\x08\x13\x4BYou upgraded your quiver to a\x01\x05\x41Big Quiver\x05\x40!\x01Now you can carry more arrows-\x01\x05\x4640 \x05\x40in total!",
-    0x0057: "\x08\x13\x4BYou upgraded your quiver to\x01the \x05\x41Biggest Quiver\x05\x40!\x01Now you can carry even more \x01arrows, to a maximum of \x05\x4650\x05\x40!",
+    0x0057: "\x08\x13\x4BYou upgraded your quiver to\x01the \x05\x41Biggest Quiver\x05\x40!\x01Now you can carry to a\x01maximum of \x05\x4650\x05\x40 arrows!",
     0x0058: "\x08\x13\x4DYou found a \x05\x41Bomb Bag\x05\x40!\x01You found \x05\x4120 Bombs\x05\x40 inside!",
     0x0059: "\x08\x13\x4EYou got a \x05\x41Big Bomb Bag\x05\x40!\x01Now you can carry more \x01Bombs, up to a maximum of \x05\x4630\x05\x40!",
     0x005A: "\x08\x13\x4FYou got the \x01\x05\x41Biggest Bomb Bag\x05\x40!\x01Now, you can carry up to \x01\x05\x4640\x05\x40 Bombs!",
@@ -155,8 +157,8 @@ ITEM_MESSAGES = {
     0x0078: "\x08\x06\x28You have learned the\x01\x06\x32\x05\x44Prelude of Light\x05\x40!",
     0x0079: "\x08\x13\x50You got the \x05\x41Goron's Bracelet\x05\x40!\x01Now you can pull up Bomb\x01Flowers.",
     0x007A: "\x08\x13\x1DYou put a \x05\x41Bug \x05\x40in the bottle!\x01This kind of bug prefers to\x01live in small holes in the ground.",
-    0x007B: "\x08\x13\x70You obtained the \x05\x41Gerudo's \x01Membership Card\x05\x40!\x01You can get into the Gerudo's\x01training ground in their hideout.",
-    0x0080: "\x08\x13\x6CYou got the \x05\x42Kokiri's Emerald\x05\x40!\x01This is the Spiritual Stone of \x01the Forest, now entrusted to \x01you by the Great Deku Tree.",
+    0x007B: "\x08\x13\x70You obtained the \x05\x41Gerudo's \x01Membership Card\x05\x40!\x01You can get into the Gerudo's\x01training ground.",
+    0x0080: "\x08\x13\x6CYou got the \x05\x42Kokiri's Emerald\x05\x40!\x01This is the Spiritual Stone of \x01Forest passed down by the\x01Great Deku Tree.",
     0x0081: "\x08\x13\x6DYou obtained the \x05\x41Goron's Ruby\x05\x40!\x01This is the Spiritual Stone of \x01Fire passed down by the Gorons!",
     0x0082: "\x08\x13\x6EYou obtained \x05\x43Zora's Sapphire\x05\x40!\x01This is the Spiritual Stone of\x01Water passed down by the\x01Zoras!",
     0x0090: "\x08\x13\x00Now you can pick up \x01many \x05\x41Deku Sticks\x05\x40!\x01You can carry up to \x05\x4620\x05\x40 of them!",
@@ -253,19 +255,50 @@ MISC_MESSAGES = {
     0x0422: ("They say that once \x05\x41Morpha's Curse\x05\x40\x01is lifted, striking \x05\x42this stone\x05\x40 can\x01shift the tides of \x05\x44Lake Hylia\x05\x40.\x02", 0x23),
 }
 
+
 # convert byte array to an integer
 def bytes_to_int(bytes, signed=False):
     return int.from_bytes(bytes, byteorder='big', signed=signed)
 
+
 # convert int to an array of bytes of the given width
 def int_to_bytes(num, width, signed=False):
     return int.to_bytes(num, width, byteorder='big', signed=signed)
+
 
 def display_code_list(codes):
     message = ""
     for code in codes:
         message += str(code)
     return message
+
+
+def parse_control_codes(text):
+    if isinstance(text, list):
+        bytes = text
+    elif isinstance(text, bytearray):
+        bytes = list(text)
+    else:
+        bytes = list(text.encode('utf-8'))
+
+    text_codes = []
+    index = 0
+    while index < len(bytes):
+        next_char = bytes[index]
+        data = 0
+        index += 1
+        if next_char in CONTROL_CODES:
+            extra_bytes = CONTROL_CODES[next_char][1]
+            if extra_bytes > 0:
+                data = bytes_to_int(bytes[index : index + extra_bytes])
+                index += extra_bytes
+        text_code = Text_Code(next_char, data)
+        text_codes.append(text_code)
+        if text_code.code == 0x02:  # message end code
+            break
+
+    return text_codes
+
 
 # holds a single character or control code of a string
 class Text_Code():
@@ -293,6 +326,18 @@ class Text_Code():
             return '\\x%02X' % self.code
         elif self.code >= 0x7F:
             return '?'
+        else:
+            return chr(self.code)
+
+    def get_string(self):
+        if self.code in CONTROL_CODES:
+            ret = ''
+            subdata = self.data
+            for _ in range(0, CONTROL_CODES[self.code][1]):
+                ret = chr(subdata & 0xFF) + ret
+                subdata = subdata >> 8
+            ret = chr(self.code) + ret
+            return ret
         else:
             return chr(self.code)
 
@@ -353,41 +398,33 @@ class Message():
             return True
         return False
 
+
     def parse_text(self):
-        self.text_codes = []
+        self.text_codes = parse_control_codes(self.raw_text)
 
         index = 0
-        while index < self.length:
-            next_char = self.raw_text[index]
-            data = 0
-            index += 1
-            if next_char in CONTROL_CODES:
-                extra_bytes = CONTROL_CODES[next_char][1]
-                if extra_bytes > 0:
-                    data = bytes_to_int(self.raw_text[index : index + extra_bytes])
-                    index += extra_bytes
-            text_code = Text_Code(next_char, data)
-            self.text_codes.append(text_code)
-            if next_char == 0x02: # message end code
+        for text_code in self.text_codes:
+            index += text_code.size()
+            if text_code.code == 0x02: # message end code
                 break
-            if next_char == 0x07: # goto
+            if text_code.code == 0x07: # goto
                 self.has_goto = True
                 self.ending = text_code
-            if next_char == 0x0A: # keep-open
+            if text_code.code == 0x0A: # keep-open
                 self.has_keep_open = True
                 self.ending = text_code
-            if next_char == 0x0B: # event
+            if text_code.code == 0x0B: # event
                 self.has_event = True
                 self.ending = text_code
-            if next_char == 0x0E: # fade out
+            if text_code.code == 0x0E: # fade out
                 self.has_fade = True
                 self.ending = text_code
-            if next_char == 0x10: # ocarina
+            if text_code.code == 0x10: # ocarina
                 self.has_ocarina = True
                 self.ending = text_code
-            if next_char == 0x1B: # two choice
+            if text_code.code == 0x1B: # two choice
                 self.has_two_choice = True
-            if next_char == 0x1C: # three choice
+            if text_code.code == 0x1C: # three choice
                 self.has_three_choice = True
         self.text = display_code_list(self.text_codes)
         self.unpadded_length = index
@@ -396,67 +433,29 @@ class Message():
         return not (self.has_goto or self.has_keep_open or self.has_event or self.has_fade or self.has_ocarina or self.has_two_choice or self.has_three_choice)
 
 
-    # writes a Message back into the rom, using the given index and offset to update the table
-    # returns the offset of the next message
-    def size(self, replace_ending=False, ending=None, always_allow_skip=True, speed_up_text=True):
+    # computes the size of a message, including padding
+    def size(self):
         size = 0
 
-        ending_codes = [0x02, 0x07, 0x0A, 0x0B, 0x0E, 0x10]
-        box_breaks = [0x04, 0x0C]
-        slows_text = [0x08, 0x09, 0x14]
-
-        # # speed the text
-        if speed_up_text:
-            size += 1
-
-        # write the message
         for code in self.text_codes:
-            # ignore ending codes if it's going to be replaced
-            if replace_ending and code.code in ending_codes:
-                pass
-            # ignore the "make unskippable flag"
-            elif always_allow_skip and code.code == 0x1A:
-                pass
-            # ignore anything that slows down text
-            elif speed_up_text and code.code in slows_text:
-                pass
-            elif speed_up_text and code.code in box_breaks:
-                size += 2
-            else:
-                size += code.size()
+            size += code.size()
 
-        if replace_ending:
-            if ending:
-                if speed_up_text and ending.code == 0x10: # ocarina
-                    size += 1
-                size += ending.size() # write special ending
-            size += 1
-
-        while size % 4 > 0:
-            size += 1
+        size = (size + 3) & -4 # align to nearest 4 bytes
 
         return size
-
-
-    # writes a Message back into the rom, using the given index and offset to update the table
-    # returns the offset of the next message
-    def write(self, rom, index, offset, replace_ending=False, ending=None, always_allow_skip=True, speed_up_text=True, bank=0x07):
-
-        # construct the table entry
-        id_bytes = int_to_bytes(self.id, 2)
-        offset_bytes = int_to_bytes(offset, 3)
-        entry = id_bytes + bytes([self.opts, 0x00, bank]) + offset_bytes
-        # write it back
-        entry_offset = TABLE_START + 8 * index
-        rom.write_bytes(entry_offset, entry)
+    
+    # applies whatever transformations we want to the dialogs
+    def transform(self, replace_ending=False, ending=None, always_allow_skip=True, speed_up_text=True):
 
         ending_codes = [0x02, 0x07, 0x0A, 0x0B, 0x0E, 0x10]
         box_breaks = [0x04, 0x0C]
         slows_text = [0x08, 0x09, 0x14]
 
+        text_codes = []
+
         # # speed the text
         if speed_up_text:
-            offset = Text_Code(0x08, 0).write(rom, offset) # allow instant
+            text_codes.append(Text_Code(0x08, 0)) # allow instant
 
         # write the message
         for code in self.text_codes:
@@ -471,25 +470,43 @@ class Message():
                 pass
             elif speed_up_text and code.code in box_breaks:
                 if self.id == 0x605A: #special case for twinrova text
-                    offset = code.write(rom, offset)
+                    text_codes.append(code)
                 else:
-                    offset = Text_Code(0x04, 0).write(rom, offset) # un-delayed break
-                    offset = Text_Code(0x08, 0).write(rom, offset) # allow instant
+                    text_codes.append(Text_Code(0x04, 0)) # un-delayed break
+                    text_codes.append(Text_Code(0x08, 0)) # allow instant
             else:
-                offset = code.write(rom, offset)
+                text_codes.append(code)
 
         if replace_ending:
             if ending:
                 if speed_up_text and ending.code == 0x10: # ocarina
-                    offset = Text_Code(0x09, 0).write(rom, offset) # disallow instant text
-                offset = ending.write(rom, offset) # write special ending
-            offset = Text_Code(0x02, 0).write(rom, offset) # write end code
+                    text_codes.append(Text_Code(0x09, 0)) # disallow instant text
+                text_codes.append(ending) # write special ending
+            text_codes.append(Text_Code(0x02, 0)) # write end code
 
+        self.text_codes = text_codes
+
+        
+    # writes a Message back into the rom, using the given index and offset to update the table
+    # returns the offset of the next message
+    def write(self, rom, index, offset):
+
+        # construct the table entry
+        id_bytes = int_to_bytes(self.id, 2)
+        offset_bytes = int_to_bytes(offset, 3)
+        entry = id_bytes + bytes([self.opts, 0x00, 0x07]) + offset_bytes
+        # write it back
+        entry_offset = TABLE_START + 8 * index
+        rom.write_bytes(entry_offset, entry)
+
+        for code in self.text_codes:
+            offset = code.write(rom, offset)
 
         while offset % 4 > 0:
             offset = Text_Code(0x00, 0).write(rom, offset) # pad to 4 byte align
 
         return offset
+
 
     def __init__(self, raw_text, index, id, opts, offset, length):
 
@@ -497,7 +514,7 @@ class Message():
 
         self.index = index
         self.id = id
-        self.opts = opts
+        self.opts = opts  # Textbox type and y position
         self.box_type = (self.opts & 0xF0) >> 4
         self.position = (self.opts & 0x0F)
         self.offset = offset
@@ -690,6 +707,9 @@ def move_shop_item_messages(messages, shop_items):
     for id in ids:
         # should be a singleton list, but in case something funky is going on, handle it as a list regardless
         relevant_messages = [message for message in messages if message.id == id]
+        if len(relevant_messages) >= 2:
+            raise(TypeError("duplicate id in move_shop_item_messages"))
+
         for message in relevant_messages:
             message.id |= 0x8000
     # update them in the shop item list
@@ -739,6 +759,10 @@ def make_player_message(text):
     for find_text, replace_text in verb_mapping.items():
         new_text = new_text.replace(find_text, replace_text)
 
+    wrapped_text = line_wrap(new_text, False, False, False)
+    if wrapped_text != new_text:
+        new_text = line_wrap(new_text, True, True, False)
+
     return new_text
 
 
@@ -787,13 +811,14 @@ def read_messages(rom):
 # write the messages back
 def repack_messages(rom, messages, permutation=None, always_allow_skip=True, speed_up_text=True):
 
+    rom.update_dmadata_record(TEXT_START, TEXT_START, TEXT_START + ENG_TEXT_SIZE_LIMIT)
+
     if permutation is None:
         permutation = range(len(messages))
 
     # repack messages
     offset = 0
     text_size_limit = ENG_TEXT_SIZE_LIMIT
-    text_bank = 0x07
 
     for old_index, new_index in enumerate(permutation):
         old_message = messages[old_index]
@@ -801,24 +826,18 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True, spe
         remember_id = new_message.id
         new_message.id = old_message.id
 
-        # check if there is space to write the message
-        message_size = new_message.size(True, old_message.ending, always_allow_skip, speed_up_text)
-        if message_size + offset > text_size_limit:
-            # if there is no room then switch banks
-            if text_bank == 0x07:
-                text_size_limit = JPN_TEXT_SIZE_LIMIT
-                text_bank = 0x08
-                offset = 0
+        # modify message, making it represent how we want it to be written
+        new_message.transform(True, old_message.ending, always_allow_skip, speed_up_text)
 
         # actually write the message
-        offset = new_message.write(rom, old_index, offset, True, old_message.ending, always_allow_skip, speed_up_text, text_bank)
+        offset = new_message.write(rom, old_index, offset)
 
         new_message.id = remember_id
 
     # raise an exception if too much is written
     # we raise it at the end so that we know how much overflow there is
     if offset > text_size_limit:
-        raise(TypeError("Message Text table is too large: 0x" + "{:x}".format(ENG_TEXT_SIZE_LIMIT + offset) + " written / 0x" + "{:x}".format(ENG_TEXT_SIZE_LIMIT + JPN_TEXT_SIZE_LIMIT) + " allowed."))
+        raise(TypeError("Message Text table is too large: 0x" + "{:x}".format(offset) + " written / 0x" + "{:x}".format(ENG_TEXT_SIZE_LIMIT) + " allowed."))
 
     # end the table
     table_index = len(messages)
@@ -832,9 +851,7 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True, spe
     rom.write_bytes(entry_offset, [0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
 
 # shuffles the messages in the game, making sure to keep various message types in their own group
-def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
-
-    messages = read_messages(rom)
+def shuffle_messages(messages, except_hints=True, always_allow_skip=True):
 
     permutation = [i for i, _ in enumerate(messages)]
 
@@ -872,5 +889,4 @@ def shuffle_messages(rom, except_hints=True, always_allow_skip=True):
         have_three_choice,
     ]))
 
-    # write the messages back
-    repack_messages(rom, messages, permutation, always_allow_skip, False)
+    return permutation

@@ -39,8 +39,8 @@ def assume_pool_reachable(world, entrance_pool):
         assumed_forward = entrance.assume_reachable()
         if entrance.reverse != None:
             assumed_return = entrance.reverse.assume_reachable()
-            if entrance.type in ['Dungeon', 'Interior', 'Grotto']:
-                # Dungeon, Grotto and Simple Interior exits shouldn't be assumed to be able to give access to their parent region
+            if entrance.type in ('Dungeon', 'Interior', 'Grotto', 'Grave', 'SpecialGrave'):
+                # Dungeon, Grotto/Grave and Simple Interior exits shouldn't be assumed to be able to give access to their parent region
                 assumed_return.access_rule = lambda state: False
             assumed_forward.bind_two_way(assumed_return)
         assumed_pool.append(assumed_forward)
@@ -151,39 +151,82 @@ entrance_shuffle_table = [
     ('SpecialInterior', ('Kakariko Village -> Windmill',                                    { 'index': 0x0453 }),
                         ('Windmill -> Kakariko Village',                                    { 'index': 0x0351 })),
 
-    ('Grotto',          ('Desert Colossus -> Desert Colossus Grotto',                       { 'scene': 0x5C, 'grotto_var': 0x00FD })),
-    ('Grotto',          ('Lake Hylia -> Lake Hylia Grotto',                                 { 'scene': 0x57, 'grotto_var': 0x00EF })),
-    ('Grotto',          ('Zora River -> Zora River Storms Grotto',                          { 'scene': 0x54, 'grotto_var': 0x01EB })),
-    ('Grotto',          ('Zora River -> Zora River Plateau Bombable Grotto',                { 'scene': 0x54, 'grotto_var': 0x10E6 })),
-    ('Grotto',          ('Zora River -> Zora River Plateau Open Grotto',                    { 'scene': 0x54, 'grotto_var': 0x0029 })),
-    ('Grotto',          ('Death Mountain Crater Lower -> DMC Hammer Grotto',                { 'scene': 0x61, 'grotto_var': 0x00F9 })),
-    ('Grotto',          ('Death Mountain Crater Upper -> Top of Crater Grotto',             { 'scene': 0x61, 'grotto_var': 0x007A })),
-    ('Grotto',          ('Goron City -> Goron City Grotto',                                 { 'scene': 0x62, 'grotto_var': 0x00FB })),
-    ('Grotto',          ('Death Mountain -> Mountain Storms Grotto',                        { 'scene': 0x60, 'grotto_var': 0x0157 })),
-    ('Grotto',          ('Death Mountain -> Mountain Bombable Grotto',                      { 'scene': 0x60, 'grotto_var': 0x00F8 })),
-    ('Grotto',          ('Kakariko Village -> Kakariko Back Grotto',                        { 'scene': 0x52, 'grotto_var': 0x0028 })),
-    ('Grotto',          ('Kakariko Village -> Kakariko Bombable Grotto',                    { 'scene': 0x52, 'grotto_var': 0x02E7 })),
-    ('Grotto',          ('Hyrule Castle Grounds -> Castle Storms Grotto',                   { 'scene': 0x5F, 'grotto_var': 0x01F6 })),
-    ('Grotto',          ('Hyrule Field -> Field North Lon Lon Grotto',                      { 'scene': 0x51, 'grotto_var': 0x02E1 })),
-    ('Grotto',          ('Hyrule Field -> Field Kakariko Grotto',                           { 'scene': 0x51, 'grotto_var': 0x02E5 })),
-    ('Grotto',          ('Hyrule Field -> Field Far West Castle Town Grotto',               { 'scene': 0x51, 'grotto_var': 0x10FF })),
-    ('Grotto',          ('Hyrule Field -> Field West Castle Town Grotto',                   { 'scene': 0x51, 'grotto_var': 0x0000 })),
-    ('Grotto',          ('Hyrule Field -> Field Valley Grotto',                             { 'scene': 0x51, 'grotto_var': 0x02E4 })),
-    ('Grotto',          ('Hyrule Field -> Field Near Lake Inside Fence Grotto',             { 'scene': 0x51, 'grotto_var': 0x02E6 })),
-    ('Grotto',          ('Hyrule Field -> Field Near Lake Outside Fence Grotto',            { 'scene': 0x51, 'grotto_var': 0x0003 })),
-    ('Grotto',          ('Hyrule Field -> Remote Southern Grotto',                          { 'scene': 0x51, 'grotto_var': 0x0022 })),
-    ('Grotto',          ('Lon Lon Ranch -> Lon Lon Grotto',                                 { 'scene': 0x63, 'grotto_var': 0x00FC })),
-    ('Grotto',          ('Sacred Forest Meadow Entryway -> Front of Meadow Grotto',         { 'scene': 0x56, 'grotto_var': 0x02ED })),
-    ('Grotto',          ('Sacred Forest Meadow -> Meadow Storms Grotto',                    { 'scene': 0x56, 'grotto_var': 0x01EE })),
-    ('Grotto',          ('Sacred Forest Meadow -> Meadow Fairy Grotto',                     { 'scene': 0x56, 'grotto_var': 0x10FF })),
-    ('Grotto',          ('Lost Woods Beyond Mido -> Lost Woods Sales Grotto',               { 'scene': 0x5B, 'grotto_var': 0x00F5 })),
-    ('Grotto',          ('Lost Woods -> Lost Woods Generic Grotto',                         { 'scene': 0x5B, 'grotto_var': 0x0014 })),
-    ('Grotto',          ('Kokiri Forest -> Kokiri Forest Storms Grotto',                    { 'scene': 0x55, 'grotto_var': 0x012C })),
-    ('Grotto',          ('Zoras Domain -> Zoras Domain Storms Grotto',                      { 'scene': 0x58, 'grotto_var': 0x11FF })),
-    ('Grotto',          ('Gerudo Fortress -> Gerudo Fortress Storms Grotto',                { 'scene': 0x5D, 'grotto_var': 0x11FF })),
-    ('Grotto',          ('Gerudo Valley Far Side -> Gerudo Valley Storms Grotto',           { 'scene': 0x5A, 'grotto_var': 0x01F0 })),
-    ('Grotto',          ('Gerudo Valley -> Gerudo Valley Octorok Grotto',                   { 'scene': 0x5A, 'grotto_var': 0x00F2 })),
-    ('Grotto',          ('Lost Woods Beyond Mido -> Deku Theater',                          { 'scene': 0x5B, 'grotto_var': 0x00F3 })),
+    ('Grotto',          ('Desert Colossus -> Desert Colossus Grotto',                       { 'grotto_id': 0x00, 'entrance': 0x05BC, 'content': 0xFD, 'scene': 0x5C }),
+                        ('Desert Colossus Grotto -> Desert Colossus',                       { 'grotto_id': 0x00 })),
+    ('Grotto',          ('Lake Hylia -> Lake Hylia Grotto',                                 { 'grotto_id': 0x01, 'entrance': 0x05A4, 'content': 0xEF, 'scene': 0x57 }),
+                        ('Lake Hylia Grotto -> Lake Hylia',                                 { 'grotto_id': 0x01 })),
+    ('Grotto',          ('Zora River -> Zora River Storms Grotto',                          { 'grotto_id': 0x02, 'entrance': 0x05BC, 'content': 0xEB, 'scene': 0x54 }),
+                        ('Zora River Storms Grotto -> Zora River',                          { 'grotto_id': 0x02 })),
+    ('Grotto',          ('Zora River -> Zora River Plateau Bombable Grotto',                { 'grotto_id': 0x03, 'entrance': 0x036D, 'content': 0xE6, 'scene': 0x54 }),
+                        ('Zora River Plateau Bombable Grotto -> Zora River',                { 'grotto_id': 0x03 })),
+    ('Grotto',          ('Zora River -> Zora River Plateau Open Grotto',                    { 'grotto_id': 0x04, 'entrance': 0x003F, 'content': 0x29, 'scene': 0x54 }),
+                        ('Zora River Plateau Open Grotto -> Zora River',                    { 'grotto_id': 0x04 })),
+    ('Grotto',          ('Death Mountain Crater Lower -> DMC Hammer Grotto',                { 'grotto_id': 0x05, 'entrance': 0x05A4, 'content': 0xF9, 'scene': 0x61 }),
+                        ('DMC Hammer Grotto -> Death Mountain Crater Lower',                { 'grotto_id': 0x05 })),
+    ('Grotto',          ('Death Mountain Crater Upper -> Top of Crater Grotto',             { 'grotto_id': 0x06, 'entrance': 0x003F, 'content': 0x7A, 'scene': 0x61 }),
+                        ('Top of Crater Grotto -> Death Mountain Crater Upper',             { 'grotto_id': 0x06 })),
+    ('Grotto',          ('Goron City -> Goron City Grotto',                                 { 'grotto_id': 0x07, 'entrance': 0x05A4, 'content': 0xFB, 'scene': 0x62 }),
+                        ('Goron City Grotto -> Goron City',                                 { 'grotto_id': 0x07 })),
+    ('Grotto',          ('Death Mountain -> Mountain Storms Grotto',                        { 'grotto_id': 0x08, 'entrance': 0x003F, 'content': 0x57, 'scene': 0x60 }),
+                        ('Mountain Storms Grotto -> Death Mountain',                        { 'grotto_id': 0x08 })),
+    ('Grotto',          ('Death Mountain -> Mountain Bombable Grotto',                      { 'grotto_id': 0x09, 'entrance': 0x05FC, 'content': 0xF8, 'scene': 0x60 }),
+                        ('Mountain Bombable Grotto -> Death Mountain',                      { 'grotto_id': 0x09 })),
+    ('Grotto',          ('Kakariko Village -> Kakariko Back Grotto',                        { 'grotto_id': 0x0A, 'entrance': 0x003F, 'content': 0x28, 'scene': 0x52 }),
+                        ('Kakariko Back Grotto -> Kakariko Village',                        { 'grotto_id': 0x0A })),
+    ('Grotto',          ('Kakariko Village -> Kakariko Bombable Grotto',                    { 'grotto_id': 0x0B, 'entrance': 0x05A0, 'content': 0xE7, 'scene': 0x52 }),
+                        ('Kakariko Bombable Grotto -> Kakariko Village',                    { 'grotto_id': 0x0B })),
+    ('Grotto',          ('Hyrule Castle Grounds -> Castle Storms Grotto',                   { 'grotto_id': 0x0C, 'entrance': 0x05B8, 'content': 0xF6, 'scene': 0x5F }),
+                        ('Castle Storms Grotto -> Hyrule Castle Grounds',                   { 'grotto_id': 0x0C })),
+    ('Grotto',          ('Hyrule Field -> Field North Lon Lon Grotto',                      { 'grotto_id': 0x0D, 'entrance': 0x05C0, 'content': 0xE1, 'scene': 0x51 }),
+                        ('Field North Lon Lon Grotto -> Hyrule Field',                      { 'grotto_id': 0x0D })),
+    ('Grotto',          ('Hyrule Field -> Field Kakariko Grotto',                           { 'grotto_id': 0x0E, 'entrance': 0x0598, 'content': 0xE5, 'scene': 0x51 }),
+                        ('Field Kakariko Grotto -> Hyrule Field',                           { 'grotto_id': 0x0E })),
+    ('Grotto',          ('Hyrule Field -> Field Far West Castle Town Grotto',               { 'grotto_id': 0x0F, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x51 }),
+                        ('Field Far West Castle Town Grotto -> Hyrule Field',               { 'grotto_id': 0x0F })),
+    ('Grotto',          ('Hyrule Field -> Field West Castle Town Grotto',                   { 'grotto_id': 0x10, 'entrance': 0x003F, 'content': 0x00, 'scene': 0x51 }),
+                        ('Field West Castle Town Grotto -> Hyrule Field',                   { 'grotto_id': 0x10 })),
+    ('Grotto',          ('Hyrule Field -> Field Valley Grotto',                             { 'grotto_id': 0x11, 'entrance': 0x05A8, 'content': 0xE4, 'scene': 0x51 }),
+                        ('Field Valley Grotto -> Hyrule Field',                             { 'grotto_id': 0x11 })),
+    ('Grotto',          ('Hyrule Field -> Field Near Lake Inside Fence Grotto',             { 'grotto_id': 0x12, 'entrance': 0x059C, 'content': 0xE6, 'scene': 0x51 }),
+                        ('Field Near Lake Inside Fence Grotto -> Hyrule Field',             { 'grotto_id': 0x12 })),
+    ('Grotto',          ('Hyrule Field -> Field Near Lake Outside Fence Grotto',            { 'grotto_id': 0x13, 'entrance': 0x003F, 'content': 0x03, 'scene': 0x51 }),
+                        ('Field Near Lake Outside Fence Grotto -> Hyrule Field',            { 'grotto_id': 0x13 })),
+    ('Grotto',          ('Hyrule Field -> Remote Southern Grotto',                          { 'grotto_id': 0x14, 'entrance': 0x003F, 'content': 0x22, 'scene': 0x51 }),
+                        ('Remote Southern Grotto -> Hyrule Field',                          { 'grotto_id': 0x14 })),
+    ('Grotto',          ('Lon Lon Ranch -> Lon Lon Grotto',                                 { 'grotto_id': 0x15, 'entrance': 0x05A4, 'content': 0xFC, 'scene': 0x63 }),
+                        ('Lon Lon Grotto -> Lon Lon Ranch',                                 { 'grotto_id': 0x15 })),
+    ('Grotto',          ('Sacred Forest Meadow Entryway -> Front of Meadow Grotto',         { 'grotto_id': 0x16, 'entrance': 0x05B4, 'content': 0xED, 'scene': 0x56 }),
+                        ('Front of Meadow Grotto -> Sacred Forest Meadow Entryway',         { 'grotto_id': 0x16 })),
+    ('Grotto',          ('Sacred Forest Meadow -> Meadow Storms Grotto',                    { 'grotto_id': 0x17, 'entrance': 0x05BC, 'content': 0xEE, 'scene': 0x56 }),
+                        ('Meadow Storms Grotto -> Sacred Forest Meadow',                    { 'grotto_id': 0x17 })),
+    ('Grotto',          ('Sacred Forest Meadow -> Meadow Fairy Grotto',                     { 'grotto_id': 0x18, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x56 }),
+                        ('Meadow Fairy Grotto -> Sacred Forest Meadow',                     { 'grotto_id': 0x18 })),
+    ('Grotto',          ('Lost Woods Beyond Mido -> Lost Woods Sales Grotto',               { 'grotto_id': 0x19, 'entrance': 0x05B0, 'content': 0xF5, 'scene': 0x5B }),
+                        ('Lost Woods Sales Grotto -> Lost Woods Beyond Mido',               { 'grotto_id': 0x19 })),
+    ('Grotto',          ('Lost Woods -> Lost Woods Generic Grotto',                         { 'grotto_id': 0x1A, 'entrance': 0x003F, 'content': 0x14, 'scene': 0x5B }),
+                        ('Lost Woods Generic Grotto -> Lost Woods',                         { 'grotto_id': 0x1A })),
+    ('Grotto',          ('Kokiri Forest -> Kokiri Forest Storms Grotto',                    { 'grotto_id': 0x1B, 'entrance': 0x003F, 'content': 0x2C, 'scene': 0x55 }),
+                        ('Kokiri Forest Storms Grotto -> Kokiri Forest',                    { 'grotto_id': 0x1B })),
+    ('Grotto',          ('Zoras Domain -> Zoras Domain Storms Grotto',                      { 'grotto_id': 0x1C, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x58 }),
+                        ('Zoras Domain Storms Grotto -> Zoras Domain',                      { 'grotto_id': 0x1C })),
+    ('Grotto',          ('Gerudo Fortress -> Gerudo Fortress Storms Grotto',                { 'grotto_id': 0x1D, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x5D }),
+                        ('Gerudo Fortress Storms Grotto -> Gerudo Fortress',                { 'grotto_id': 0x1D })),
+    ('Grotto',          ('Gerudo Valley Far Side -> Gerudo Valley Storms Grotto',           { 'grotto_id': 0x1E, 'entrance': 0x05BC, 'content': 0xF0, 'scene': 0x5A }),
+                        ('Gerudo Valley Storms Grotto -> Gerudo Valley Far Side',           { 'grotto_id': 0x1E })),
+    ('Grotto',          ('Gerudo Valley -> Gerudo Valley Octorok Grotto',                   { 'grotto_id': 0x1F, 'entrance': 0x05AC, 'content': 0xF2, 'scene': 0x5A }),
+                        ('Gerudo Valley Octorok Grotto -> Gerudo Valley',                   { 'grotto_id': 0x1F })),
+    ('Grotto',          ('Lost Woods Beyond Mido -> Deku Theater',                          { 'grotto_id': 0x20, 'entrance': 0x05C4, 'content': 0xF3, 'scene': 0x5B }),
+                        ('Deku Theater -> Lost Woods Beyond Mido',                          { 'grotto_id': 0x20 })),
+
+    ('Grave',           ('Graveyard -> Shield Grave',                                       { 'index': 0x004B }),
+                        ('Shield Grave -> Graveyard',                                       { 'index': 0x035D })),
+    ('Grave',           ('Graveyard -> Heart Piece Grave',                                  { 'index': 0x031C }),
+                        ('Heart Piece Grave -> Graveyard',                                  { 'index': 0x0361 })),
+    ('Grave',           ('Graveyard -> Composer Grave',                                     { 'index': 0x002D }),
+                        ('Composer Grave -> Graveyard',                                     { 'index': 0x050B })),
+
+    ('SpecialGrave',    ('Graveyard -> Dampes Grave',                                       { 'index': 0x044F }),
+                        ('Dampes Grave -> Graveyard',                                       { 'index': 0x0359 })),
 
     ('Overworld',       ('Kokiri Forest -> Lost Woods Bridge From Forest',                  { 'index': 0x05E0 }),
                         ('Lost Woods Bridge -> Kokiri Forest',                              { 'index': 0x020D })),
@@ -201,6 +244,8 @@ entrance_shuffle_table = [
                         ('Lake Hylia -> Hyrule Field',                                      { 'index': 0x0189 })),
     ('Overworld',       ('Hyrule Field -> Gerudo Valley',                                   { 'index': 0x0117 }),
                         ('Gerudo Valley -> Hyrule Field',                                   { 'index': 0x018D })),
+    ('Overworld',       ('Hyrule Field -> Castle Town Entrance',                            { 'index': 0x0276 }),
+                        ('Castle Town Entrance -> Hyrule Field',                            { 'index': 0x01FD })),
     ('Overworld',       ('Hyrule Field -> Kakariko Village',                                { 'index': 0x00DB }),
                         ('Kakariko Village -> Hyrule Field',                                { 'index': 0x017D })),
     ('Overworld',       ('Hyrule Field -> Zora River Front',                                { 'index': 0x00EA }),
@@ -236,8 +281,8 @@ entrance_shuffle_table = [
     ('Overworld',       ('Zoras Domain Behind King Zora -> Zoras Fountain',                 { 'index': 0x0225 }),
                         ('Zoras Fountain -> Zoras Domain Behind King Zora',                 { 'index': 0x01A1 })),
 
-    ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E })),
-    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554 })),
+    ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E, 'code_address': 0xAC9F26 })),
+    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554, 'code_address': 0xAC9EF2 })),
 ]
 
 
@@ -263,7 +308,7 @@ def shuffle_random_entrances(worlds):
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
     max_playthrough = Playthrough.max_explore([world.state for world in worlds], complete_itempool)
 
-    non_drop_locations = [location for world in worlds for location in world.get_locations() if location.type != 'Drop']
+    non_drop_locations = [location for world in worlds for location in world.get_locations() if location.type not in ('Drop', 'Event')]
     max_playthrough.visit_locations(non_drop_locations)
     locations_to_ensure_reachable = list(filter(max_playthrough.visited, non_drop_locations))
 
@@ -273,7 +318,7 @@ def shuffle_random_entrances(worlds):
         # Determine entrance pools based on settings, to be shuffled in the order we set them by
         entrance_pools = OrderedDict()
 
-        if worlds[0].shuffle_special_interior_entrances:
+        if worlds[0].shuffle_special_indoor_entrances:
             entrance_pools['SpecialInterior'] = entrance_instances(world, get_entrance_pool('SpecialInterior'))
 
         if worlds[0].shuffle_overworld_entrances:
@@ -289,14 +334,18 @@ def shuffle_random_entrances(worlds):
             # The fill algorithm will already make sure gohma is reachable, however it can end up putting
             # a forest escape via the hands of spirit on Deku leading to Deku on spirit in logic. This is
             # not really a closed forest anymore, so specifically remove Deku Tree from closed forest.
-            if not worlds[0].open_forest:
+            if worlds[0].open_forest == 'closed':
                 entrance_pools['Dungeon'].remove(world.get_entrance('Outside Deku Tree -> Deku Tree Lobby'))
+                world.get_entrance('Outside Deku Tree -> Deku Tree Lobby').shuffled = False
+                world.get_entrance('Deku Tree Lobby -> Outside Deku Tree').shuffled = False
 
         if worlds[0].shuffle_interior_entrances:
             entrance_pools['Interior'] = entrance_instances(world, get_entrance_pool('Interior')) + entrance_pools.get('SpecialInterior', [])
 
         if worlds[0].shuffle_grotto_entrances:
-            entrance_pools['Grotto'] = entrance_instances(world, get_entrance_pool('Grotto'))
+            entrance_pools['GrottoGrave'] = entrance_instances(world, get_entrance_pool('Grotto') + get_entrance_pool('Grave'))
+            if worlds[0].shuffle_special_indoor_entrances:
+                entrance_pools['GrottoGrave'] += entrance_instances(world, get_entrance_pool('SpecialGrave'))
 
         # Set the assumption that all entrances are reachable
         target_entrance_pools = {}
@@ -333,14 +382,7 @@ def shuffle_random_entrances(worlds):
                 shuffle_entrance_pool(worlds, [temple_of_time_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
                 shuffle_entrance_pool(worlds, [links_house_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
 
-            if pool_type in ['SpecialInterior', 'Overworld', 'OwlDrop', 'Dungeon']:
-                # Those pools contain entrances leading to regions that might open access to completely new areas
-                # Dungeons are among those because exiting Spirit Temple from the hands is in logic 
-                # and could give access to Desert Colossus and potentially new areas from there
-                shuffle_entrance_pool(worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable)
-            else:
-                # Other pools are only "internal", which means they are leaves in the world graph and can't open new access
-                shuffle_entrance_pool(worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable, internal=True)
+            shuffle_entrance_pool(worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable)
 
             if pool_type == 'OwlDrop':
                 # Delete all unused owl drop targets after placing the entrances, since the unused targets won't ever be replaced
@@ -368,21 +410,34 @@ def shuffle_random_entrances(worlds):
 
 
 # Shuffle all entrances within a provided pool
-def shuffle_entrance_pool(worlds, entrance_pool, target_entrances, locations_to_ensure_reachable, internal=False):
+def shuffle_entrance_pool(worlds, entrance_pool, target_entrances, locations_to_ensure_reachable, retry_count=20):
 
     # Split entrances between those that have requirements (restrictive) and those that do not (soft). These are primarily age or time of day requirements.
     restrictive_entrances, soft_entrances = split_entrances_by_requirements(worlds, entrance_pool, target_entrances)
 
-    # Shuffle restrictive entrances first while more regions are available in order to heavily reduce the chances of the placement failing.
-    shuffle_entrances(worlds, restrictive_entrances, target_entrances, locations_to_ensure_reachable)
+    while retry_count:
+        retry_count -= 1
+        rollbacks = []
 
-    # Shuffle the rest of the entrances
-    if internal:
-        # If we are shuffling an "internal" entrance pool, those entrances can be considered as completely versatile, 
-        # So we don't have to check for beatability and/or reachability of locations when shuffling them
-        shuffle_entrances(worlds, soft_entrances, target_entrances)
-    else:
-        shuffle_entrances(worlds, soft_entrances, target_entrances, locations_to_ensure_reachable)
+        try:
+            # Shuffle restrictive entrances first while more regions are available in order to heavily reduce the chances of the placement failing.
+            shuffle_entrances(worlds, restrictive_entrances, target_entrances, rollbacks, locations_to_ensure_reachable)
+
+            # Shuffle the rest of the entrances, we don't have to check for beatability or reachability of locations when placing those
+            shuffle_entrances(worlds, soft_entrances, target_entrances, rollbacks)
+
+            # If all entrances could be connected without issues, log connections and continue
+            for entrance, target in rollbacks:
+                confirm_replacement(entrance, target)
+            return
+
+        except EntranceShuffleError as error:
+            for entrance, target in rollbacks:
+                restore_connections(entrance, target)
+            logging.getLogger('').info('Failed to place all entrances in a pool for world %d. Will retry %d more times', entrance_pool[0].world.id, retry_count)
+            logging.getLogger('').info('\t%s' % error)
+
+    raise EntranceShuffleError('Entrance placement attempt count exceeded for world %d' % entrance_pool[0].world.id)
 
 
 # Split entrances based on their requirements to figure out how each entrance should be handled when shuffling them
@@ -390,8 +445,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
     # First, disconnect all root assumed entrances and save which regions they were originally connected to, so we can reconnect them later
     original_connected_regions = {}
-    entrances_to_disconnect = assumed_entrances + [entrance.reverse for entrance in assumed_entrances 
-                                                    if entrance.reverse and entrance.reverse not in assumed_entrances]
+    entrances_to_disconnect = set(assumed_entrances).union(entrance.reverse for entrance in assumed_entrances if entrance.reverse)
     for entrance in entrances_to_disconnect:
         if entrance.connected_region:
             original_connected_regions[entrance] = entrance.disconnect()
@@ -423,65 +477,50 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
 
 # Shuffle entrances by placing them instead of entrances in the provided target entrances list
-# While shuffling entrances, if the check_valid parameter is true, the algorithm will ensure worlds are still valid based on settings
-def shuffle_entrances(worlds, entrances, target_entrances, locations_to_ensure_reachable=[], retry_count=20):
+# While shuffling entrances, the algorithm will ensure worlds are still valid based on multiple criterias
+def shuffle_entrances(worlds, entrances, target_entrances, rollbacks, locations_to_ensure_reachable=[]):
 
     # Retrieve all items in the itempool, all worlds included
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
 
-    for _ in range(retry_count):
-        success = True
-        random.shuffle(entrances)
-        rollbacks = []
+    random.shuffle(entrances)
 
-        # Attempt to place all entrances in the pool, validating the states during every placement if necessary
-        for entrance in entrances:
-            if entrance.connected_region != None:
+    # Place all entrances in the pool, validating worlds during every placement
+    for entrance in entrances:
+        if entrance.connected_region != None:
+            continue
+        random.shuffle(target_entrances)
+
+        for target in target_entrances:
+            if target.connected_region == None:
                 continue
-            random.shuffle(target_entrances)
 
-            for target in target_entrances:
-                if target.connected_region == None:
-                    continue
+            # An entrance shouldn't be connected to its own scene, so we fail in that situation
+            if entrance.parent_region.scene and entrance.parent_region.scene == target.connected_region.scene:
+                logging.getLogger('').debug('Failed to connect %s To %s (Reason: Self scene connections are forbidden) [World %d]',
+                                            entrance, target.connected_region, entrance.world.id)
+                continue
 
-                # An entrance shouldn't be connected to its own scene, so we fail in that situation
-                if entrance.parent_region.scene and entrance.parent_region.scene == target.connected_region.scene:
-                    logging.getLogger('').debug('Failed to connect %s To %s (Reason: Self scene connections are forbidden) [World %d]',
-                                                entrance, target.connected_region, entrance.world.id)
-                    continue
+            change_connections(entrance, target)
 
-                change_connections(entrance, target)
-
-                try:
-                    validate_worlds(worlds, entrance, locations_to_ensure_reachable, complete_itempool)
-                    rollbacks.append((entrance, target))
-                    break
-                except EntranceShuffleError as error:
-                    # If the entrance can't be placed there, log a debug message and change the connections back to what they were previously
-                    logging.getLogger('').debug('Failed to connect %s To %s (Reason: %s) [World %d]',
-                                                entrance, entrance.connected_region, error, entrance.world.id)
-                    restore_connections(entrance, target)
-
-            if entrance.connected_region == None:
-                success = False
+            try:
+                validate_worlds(worlds, entrance, locations_to_ensure_reachable, complete_itempool)
+                rollbacks.append((entrance, target))
                 break
-
-        # Check if all entrances were able to be placed, log connections and continue if that's the case, or rollback everything otherwise
-        if success:
-            for entrance, target in rollbacks:
-                confirm_replacement(entrance, target)
-            return
-        else:
-            for entrance, target in rollbacks:
+            except EntranceShuffleError as error:
+                # If the entrance can't be placed there, log a debug message and change the connections back to what they were previously
+                logging.getLogger('').debug('Failed to connect %s To %s (Reason: %s) [World %d]',
+                                            entrance, entrance.connected_region, error, entrance.world.id)
                 restore_connections(entrance, target)
 
-        logging.getLogger('').debug('Entrance placement attempt failed [World %d]', entrances[0].world.id)
-
-    raise EntranceShuffleError('Entrance placement attempt retry count exceeded [World %d]' % entrances[0].world.id)
+        if entrance.connected_region == None:
+            raise EntranceShuffleError('No more valid entrances to replace with %s in world %d' % (entrance, entrance.world.id))
 
 
 # Validate the provided worlds' structures, raising an error if it's not valid based on our criterias
 def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, itempool):
+
+    max_playthrough = None
 
     if locations_to_ensure_reachable:
         max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
@@ -493,9 +532,9 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
                 if not max_playthrough.visited(location):
                     raise EntranceShuffleError('%s is unreachable' % location.name)
 
-    if (entrance_placed == None and worlds[0].shuffle_special_interior_entrances) or \
+    if (entrance_placed == None and worlds[0].shuffle_special_indoor_entrances) or \
        (entrance_placed != None and entrance_placed.type in ['SpecialInterior', 'Overworld']):
-        if not locations_to_ensure_reachable:
+        if max_playthrough == None:
             max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
 
         for world in worlds:
@@ -523,25 +562,32 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
 
         valid_starting_regions = ['Kokiri Forest', 'Kakariko Village']
         for world in worlds:
-            if not any(region for region in valid_starting_regions if no_items_playthrough.state_list[world.id].can_reach(region)):
+            if not any(region for region in valid_starting_regions if no_items_playthrough.can_reach(world.get_region(region))):
                 raise EntranceShuffleError('Invalid starting area')
 
-        time_travel_playthrough = Playthrough([world.state.copy() for world in worlds])
+        # For now, we consider that time of day must always be reachable as both ages without having collected any items (except in closed forest)
+        # In ER, Time of day logic normally considers that the player always has access to time passing from the root so this is important to ensure
+        # This also means that, in order to test for this, we have to temporarily remove that assumption about root access to time passing
         for world in worlds:
-            time_travel_playthrough.collect(ItemFactory('Time Travel', world=world))
-        time_travel_playthrough.visit_locations()
+            world.get_region('Root').can_reach = lambda state: state.tod == None
+        no_time_passing_playthrough = Playthrough.with_items([world.state.copy() for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
+        for world in worlds:
+            world.get_region('Root').can_reach = lambda state: True
 
         for world in worlds:
-            # For now, we consider that time of day must always be reachable as both ages without having collected any items (except in closed forest)
-            # In ER, Time of day logic considers that the root always has access to time passing so this is important to ensure
-            if not (any(region for region in time_travel_playthrough.cached_spheres[-1]['child_regions'] if region.time_passes and region.world == world) and
-                    any(region for region in time_travel_playthrough.cached_spheres[-1]['adult_regions'] if region.time_passes and region.world == world)):
+            if not (any(region for region in no_time_passing_playthrough.reachable_regions('child') if region.time_passes and region.world == world) and
+                    any(region for region in no_time_passing_playthrough.reachable_regions('adult') if region.time_passes and region.world == world)):
                 raise EntranceShuffleError('Time passing is not guaranteed as both ages')
 
-            # When starting as adult, child Link should be able to reach ToT without having collected any items
-            # This is important to ensure that the player never loses access to the pedestal after going child
-            if world.starting_age == 'adult' and not time_travel_playthrough.state_list[world.id].can_reach('Temple of Time', age='child'):
-                raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
+        # When starting as adult, child Link should be able to reach ToT without having collected any items
+        # This is important to ensure that the player never loses access to the pedestal after going child
+        if any(world.starting_age == 'adult' for world in worlds):
+            # We can reuse the playthrough previously generated as this situation is the same except we have root time passing access now
+            time_travel_playthrough = no_time_passing_playthrough.copy()
+
+            for world in worlds:
+                if world.starting_age == 'adult' and not time_travel_playthrough.can_reach(world.get_region('Temple of Time'), age='child'):
+                    raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
     return
 
 

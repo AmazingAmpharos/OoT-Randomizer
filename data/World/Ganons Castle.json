@@ -11,12 +11,12 @@
             "Ganons Castle Spirit Trial": "True",
             "Ganons Castle Light Trial": "can_use(Golden_Gauntlets)",
             "Ganons Castle Tower": "
-                (skipped_trials[Forest] or Forest_Trial_Clear) and 
-                (skipped_trials[Fire] or Fire_Trial_Clear) and 
-                (skipped_trials[Water] or Water_Trial_Clear) and 
-                (skipped_trials[Shadow] or Shadow_Trial_Clear) and 
-                (skipped_trials[Spirit] or Spirit_Trial_Clear) and 
-                (skipped_trials[Light] or Light_Trial_Clear)",
+                (skipped_trials[Forest] or 'Forest Trial Clear') and 
+                (skipped_trials[Fire] or 'Fire Trial Clear') and 
+                (skipped_trials[Water] or 'Water Trial Clear') and 
+                (skipped_trials[Shadow] or 'Shadow Trial Clear') and 
+                (skipped_trials[Spirit] or 'Spirit Trial Clear') and 
+                (skipped_trials[Light] or 'Light Trial Clear')",
             "Ganons Castle Deku Scrubs": "can_see_with_lens"
         }
     },
@@ -34,16 +34,18 @@
     {
         "region_name": "Ganons Castle Forest Trial",
         "dungeon": "Ganons Castle",
+        "events": {
+            "Forest Trial Clear": "can_use(Light_Arrows) and (Fire_Arrows or Dins_Fire)"
+        },
         "locations": {
-            "Ganons Castle Forest Trial Chest": "True",
-            "Ganons Castle Forest Trial Clear": "can_use(Light_Arrows) and (Fire_Arrows or Dins_Fire)"
+            "Ganons Castle Forest Trial Chest": "True"
         }
     },
     {
         "region_name": "Ganons Castle Fire Trial",
         "dungeon": "Ganons Castle",
-        "locations": {
-            "Ganons Castle Fire Trial Clear": "
+        "events": {
+            "Fire Trial Clear": "
                 can_use(Goron_Tunic) and can_use(Golden_Gauntlets) and 
                 can_use(Light_Arrows) and can_use(Longshot)"
         }
@@ -51,10 +53,12 @@
     {
         "region_name": "Ganons Castle Water Trial",
         "dungeon": "Ganons Castle",
+        "events": {
+            "Water Trial Clear": "has_blue_fire and Hammer and can_use(Light_Arrows)"
+        },
         "locations": {
             "Ganons Castle Water Trial Left Chest": "True",
             "Ganons Castle Water Trial Right Chest": "True",
-            "Ganons Castle Water Trial Clear": "has_blue_fire and Hammer and can_use(Light_Arrows)",
             "Fairy Pot": "has_blue_fire and has_bottle",
             "Blue Fire": "has_bottle"
         }
@@ -62,35 +66,48 @@
     {
         "region_name": "Ganons Castle Shadow Trial",
         "dungeon": "Ganons Castle",
+        "events": {
+            "Shadow Trial Clear": "
+                can_use(Light_Arrows) and Hammer and 
+                ((Fire_Arrows and can_see_with_lens) or 
+                    (can_use(Longshot) and (Hover_Boots or (Dins_Fire and can_see_with_lens))))"
+        },
         "locations": {
             "Ganons Castle Shadow Trial First Chest": "
                 can_use(Fire_Arrows) or Progressive_Hookshot or 
                 Hover_Boots or can_play(Song_of_Time)",
             "Ganons Castle Shadow Trial Second Chest": "
                 can_use(Fire_Arrows) or 
-                (can_use(Longshot) and (Hover_Boots or can_use(Dins_Fire)))",
-            "Ganons Castle Shadow Trial Clear": "
-                can_use(Light_Arrows) and Hammer and 
-                ((Fire_Arrows and can_see_with_lens) or 
-                    (can_use(Longshot) and (Hover_Boots or (Dins_Fire and can_see_with_lens))))"
+                (can_use(Longshot) and (Hover_Boots or can_use(Dins_Fire)))"
         }
     },
     {
         "region_name": "Ganons Castle Spirit Trial",
         "dungeon": "Ganons Castle",
+        "events": {
+            "Spirit Trial Clear": "
+                can_use(Light_Arrows) and Mirror_Shield and has_bombchus and
+                (logic_spirit_trial_hookshot or Progressive_Hookshot)"
+        },
         "locations": {
-            "Ganons Castle Spirit Trial First Chest": "Progressive_Hookshot",
+            "Ganons Castle Spirit Trial First Chest": "
+                (logic_spirit_trial_hookshot or Progressive_Hookshot)",
             "Ganons Castle Spirit Trial Second Chest": "
-                Progressive_Hookshot and has_bombchus and can_see_with_lens",
-            "Ganons Castle Spirit Trial Clear": "
-                can_use(Light_Arrows) and Mirror_Shield and 
-                has_bombchus and Progressive_Hookshot",
-            "Nut Pot": "Progressive_Hookshot and has_bombchus and Bow and Mirror_Shield"
+                (logic_spirit_trial_hookshot or Progressive_Hookshot) and
+                has_bombchus and can_see_with_lens",
+            "Nut Pot": "
+                (logic_spirit_trial_hookshot or Progressive_Hookshot) and
+                has_bombchus and Bow and Mirror_Shield"
         }
     },
     {
         "region_name": "Ganons Castle Light Trial",
         "dungeon": "Ganons Castle",
+        "events": {
+            "Light Trial Clear": "
+                can_use(Light_Arrows) and Progressive_Hookshot and 
+                (Small_Key_Ganons_Castle, 2) and can_see_with_lens"
+        },
         "locations": {
             "Ganons Castle Light Trial First Left Chest": "True",
             "Ganons Castle Light Trial Second Left Chest": "True",
@@ -100,10 +117,7 @@
             "Ganons Castle Light Trial Third Right Chest": "True",
             "Ganons Castle Light Trial Invisible Enemies Chest": "can_see_with_lens",
             "Ganons Castle Light Trial Lullaby Chest": "
-                can_play(Zeldas_Lullaby) and (Small_Key_Ganons_Castle, 1)",
-            "Ganons Castle Light Trial Clear": "
-                can_use(Light_Arrows) and Progressive_Hookshot and 
-                (Small_Key_Ganons_Castle, 2)"
+                can_play(Zeldas_Lullaby) and (Small_Key_Ganons_Castle, 1)"
         }
     }
 ]

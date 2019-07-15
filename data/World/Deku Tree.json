@@ -13,12 +13,13 @@
                 (logic_deku_basement_gs and (is_adult or has_sticks or Kokiri_Sword))",
             "GS Deku Tree Basement Gate": "is_adult or can_child_attack",
             "GS Deku Tree Basement Back Room": "
-                (as_either_here(has_fire_source_with_torch) and
-                 as_either_here(can_use(Slingshot) or can_use(Bow)) and
-                 as_either_here(can_blast_or_smash) and
-                 as_either_here(can_use(Hookshot) or can_use(Boomerang))) or
-                (as_adult_here and is_child and has_explosives and
-                 can_use(Boomerang) and (has_sticks or can_use(Dins_Fire)))",
+                (here(has_fire_source_with_torch) and
+                    here(can_use(Slingshot) or can_use(Bow)) and
+                    here(can_blast_or_smash) and
+                    here(can_use(Hookshot) or can_use(Boomerang))) or
+                ((logic_deku_b1_skip or as_adult_here) and is_child and
+                    has_explosives and can_use(Boomerang) and
+                    (has_sticks or can_use(Dins_Fire)))",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
                 is_adult or has_slingshot or has_sticks or 
@@ -26,10 +27,10 @@
         },
         "exits": {
             "Outside Deku Tree": "True",
-            "Deku Tree Slingshot Room": "as_either_here(has_shield)",
+            "Deku Tree Slingshot Room": "here(has_shield)",
             "Deku Tree Boss Room": "
-                as_either_here(has_fire_source_with_torch) and
-                as_either_here(is_adult or can_use(Slingshot))"
+                here(has_fire_source_with_torch) and
+                (logic_deku_b1_skip or here(is_adult or can_use(Slingshot)))"
         }
     },
     {
@@ -46,11 +47,15 @@
     {
         "region_name": "Deku Tree Boss Room",
         "dungeon": "Deku Tree",
+        "events": {
+            "Deku Tree Clear": "
+                here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)"
+        },
         "locations": {
             "Queen Gohma Heart": "
-                as_either_here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)",
+                here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)",
             "Queen Gohma": "
-                as_either_here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)"
+                here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)"
         },
         "exits": {
             "Deku Tree Lobby": "True"

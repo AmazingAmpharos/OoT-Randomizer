@@ -3,13 +3,21 @@ from ItemList import item_table
 
 class ItemInfo(object):
     items = {}
+    events = {}
+    bottles = set()
 
-    def __init__(self, name=''):
-        (type, progessive, itemID, special) = item_table[name]
+    def __init__(self, name='', event=False):
+        if event:
+            type = 'Event'
+            progressive = True
+            itemID = None
+            special = None
+        else:
+            (type, progressive, itemID, special) = item_table[name]
 
         self.name = name
-        self.advancement = (progessive == True)
-        self.priority = (progessive == False)
+        self.advancement = (progressive == True)
+        self.priority = (progressive == False)
         self.type = type
         self.special = special or {}
         self.index = itemID
@@ -17,20 +25,29 @@ class ItemInfo(object):
         self.bottle = self.special.get('bottle', False)
 
 
+    @staticmethod
     def isBottle(name):
-        return ItemInfo.items[name].bottle
+        return name in ItemInfo.bottles
 
 
 for item_name in item_table:
     ItemInfo.items[item_name] = ItemInfo(item_name)
+    if ItemInfo.items[item_name].bottle:
+        ItemInfo.bottles.add(item_name)
 
 
 class Item(object):
 
-    def __init__(self, name='', world=None):
+    def __init__(self, name='', world=None, event=False):
         self.name = name
         self.location = None
-        self.info = ItemInfo.items[name]
+        self.event = event
+        if event:
+            if name not in ItemInfo.events:
+                ItemInfo.events[name] = ItemInfo(name, event=True)
+            self.info = ItemInfo.events[name]
+        else:
+            self.info = ItemInfo.items[name]
         self.price = self.info.special.get('price')
         self.world = world
         self.looks_like_item = None
@@ -67,7 +84,7 @@ class Item(object):
         if new_world is not None and self.world is not None and new_world.id != self.world.id:
             new_world = None
 
-        new_item = Item(self.name, new_world)
+        new_item = Item(self.name, new_world, self.event)
         new_item.price = self.price
 
         if new_world is None and self.world is not None:
@@ -121,7 +138,7 @@ class Item(object):
         if self.type == 'Token':
             return self.world.bridge == 'tokens'
 
-        if self.type == 'Event' or self.type == 'Drop' or self.type == 'Shop' or not self.advancement:
+        if self.type in ('Drop', 'Event', 'Shop', 'DungeonReward') or not self.advancement:
             return False
 
         if self.name.startswith('Bombchus') and not self.world.bombchus_in_logic:
@@ -145,20 +162,18 @@ class Item(object):
         return '%s' % self.name
 
 
-def ItemFactory(items, world=None):
-    ret = []
-    singleton = False
+def ItemFactory(items, world=None, event=False):
     if isinstance(items, str):
-        items = [items]
-        singleton = True
-    for item in items:
-        if item in ItemInfo.items:
-            ret.append(Item(item, world))
-        else:
-            raise KeyError('Unknown Item: %s', item)
+        if not event and items not in ItemInfo.items:
+            raise KeyError('Unknown Item: %s', items)
+        return Item(items, world, event)
 
-    if singleton:
-        return ret[0]
+    ret = []
+    for item in items:
+        if not event and item not in ItemInfo.items:
+            raise KeyError('Unknown Item: %s', item)
+        ret.append(Item(item, world, event))
+
     return ret
 
 

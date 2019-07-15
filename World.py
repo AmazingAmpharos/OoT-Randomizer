@@ -6,8 +6,8 @@ from Location import Location, LocationFactory
 from LocationList import business_scrubs
 from DungeonList import create_dungeons
 from Rules import set_rules, set_shop_rules
-from Item import Item
-from RuleParser import parse_rule_string
+from Item import Item, ItemFactory
+from RuleParser import Rule_AST_Transformer
 from SettingsList import get_setting_info
 import logging
 import copy
@@ -33,6 +33,9 @@ class World(object):
         self.scrub_prices = {}
         self.light_arrow_location = None
 
+        self.parser = Rule_AST_Transformer(self)
+        self.event_items = set()
+
         # dump settings directly into world's namespace
         # this gives the world an attribute for every setting listed in Settings.py
         self.settings = settings
@@ -48,14 +51,16 @@ class World(object):
             self.starting_tod = random.choice(choices)
         if self.starting_age == 'random':
             self.starting_age = random.choice(['child', 'adult'])
+        if self.open_forest == 'closed' and self.entrance_shuffle in ['all-indoors', 'all']:
+            self.open_forest = 'closed_deku'
 
         # rename a few attributes...
-        self.keysanity = self.shuffle_smallkeys != 'dungeon'
+        self.keysanity = self.shuffle_smallkeys in ['keysanity', 'remove']
         self.check_beatable_only = not self.all_reachable
         self.shuffle_dungeon_entrances = self.entrance_shuffle != 'off'
         self.shuffle_grotto_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all']
         self.shuffle_interior_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all']
-        self.shuffle_special_interior_entrances = self.entrance_shuffle in ['all-indoors', 'all']
+        self.shuffle_special_indoor_entrances = self.entrance_shuffle in ['all-indoors', 'all']
         self.shuffle_overworld_entrances = self.entrance_shuffle == 'all'
 
         # trials that can be skipped will be decided later
@@ -139,18 +144,38 @@ class World(object):
                 for location, rule in region['locations'].items():
                     new_location = LocationFactory(location)
                     new_location.parent_region = new_region
+                    new_location.rule_string = rule
                     if self.logic_rules != 'none':
-                        new_location.access_rule = parse_rule_string(rule, self)
+                        self.parser.parse_spot_rule(new_location)
                     new_location.world = self
                     new_region.locations.append(new_location)
+            if 'events' in region:
+                for event, rule in region['events'].items():
+                    # Allow duplicate placement of events
+                    lname = '%s from %s' % (event, new_region.name)
+                    new_location = Location(lname, type='Event', parent=new_region)
+                    new_location.rule_string = rule
+                    if self.logic_rules != 'none':
+                        self.parser.parse_spot_rule(new_location)
+                    new_location.world = self
+                    new_region.locations.append(new_location)
+                    self.push_item(new_location, ItemFactory(event, self, event=True))
+                    new_location.locked = True
+                    self.event_items.add(event)
             if 'exits' in region:
                 for exit, rule in region['exits'].items():
                     new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)
                     new_exit.connected_region = exit
+                    new_exit.rule_string = rule
                     if self.logic_rules != 'none':
-                        new_exit.access_rule = parse_rule_string(rule, self)
+                        self.parser.parse_spot_rule(new_exit)
                     new_region.exits.append(new_exit)
             self.regions.append(new_region)
+
+
+    def create_internal_locations(self):
+        self.parser.create_delayed_rules()
+        assert self.parser.events <= self.event_items, 'Parse error: undefined items %r' % (self.parser.events - self.event_items)
 
 
     def initialize_entrances(self):
@@ -336,30 +361,6 @@ class World(object):
         return [location for location in self.get_locations() if location.item is not None]
 
 
-    def get_reachable_locations(self, state=None):
-        if state is None:
-            state = self.state
-        return [location for location in self.get_locations() if state.can_reach(location)]
-
-
-    def get_placeable_locations(self, state=None):
-        if state is None:
-            state = self.state
-        return [location for location in self.get_locations() if location.item is None and state.can_reach(location)]
-
-
-    def unlocks_new_location(self, item):
-        temp_state = self.state.copy()
-        temp_state.clear_cached_unreachable()
-        temp_state.collect(item)
-
-        for location in self.get_unfilled_locations():
-            if temp_state.can_reach(location) and not self.state.can_reach(location):
-                return True
-
-        return False
-
-
     def get_entrances(self):
         return [entrance for region in self.regions for entrance in region.entrances]
 
@@ -394,7 +395,7 @@ class World(object):
             if location_hint in excluded_areas or \
                location.locked or \
                location.item is None or \
-               location.item.type == "Event":
+               location.item.type in ('Event', 'DungeonReward'):
                 continue
 
             area = location_hint
@@ -428,13 +429,14 @@ class World(object):
             'Ice Arrows',
             'Biggoron Sword',
         ]
-        if self.damage_multiplier != 'ohko' and self.damage_multiplier != 'quadruple' and self.shuffle_scrubs == 'off':
+        if (self.damage_multiplier != 'ohko' and self.damage_multiplier != 'quadruple' and 
+            self.shuffle_scrubs == 'off' and not self.shuffle_grotto_entrances):
             # nayru's love may be required to prevent forced damage
             exclude_item_list.append('Nayrus Love')
         if self.hints != 'agony':
             # Stone of Agony only required if it's used for hints
             exclude_item_list.append('Stone of Agony')
-        if not self.shuffle_special_interior_entrances and not self.shuffle_overworld_entrances:
+        if not self.shuffle_special_indoor_entrances and not self.shuffle_overworld_entrances:
             # Serenade and Prelude are never required with vanilla Links House/ToT and overworld entrances
             exclude_item_list.append('Serenade of Water')
             exclude_item_list.append('Prelude of Light')

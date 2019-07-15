@@ -10,10 +10,10 @@
                 ((Small_Key_Fire_Temple, 8) or not keysanity) and can_use(Hammer)) or (can_mega and can_use(Hookshot))",
             "Volvagia Heart": "
                 (can_use(Goron_Tunic) or (has_fairy and has_explosives)) and can_use(Hammer) and 
-                (Boss_Key_Fire_Temple or can_reach(Fire_Temple_Flame_Maze))",
+                (Boss_Key_Fire_Temple or at('Fire Temple Flame Maze', True))",
             "Volvagia": "
                 (can_use(Goron_Tunic) or (has_fairy and has_explosives)) and can_use(Hammer) and 
-                (Boss_Key_Fire_Temple or can_reach(Fire_Temple_Flame_Maze))",
+                (Boss_Key_Fire_Temple or at('Fire Temple Flame Maze', True))",
             "GS Fire Temple Basement": "
                 ((Small_Key_Fire_Temple, 8) or not keysanity)"
         },

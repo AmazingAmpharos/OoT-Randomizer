@@ -6,11 +6,11 @@
         "exits": {
             "High Alcove": "is_adult or can_hover",
             "Boss Area": "can_use(Longshot) or can_hover or (can_use(Hover_Boots) and (can_mega or Hammer))",
-            "Dark Link Area": "((can_reach(High_Alcove) and can_play(Zeldas_Lullaby)) or 
+            "Dark Link Area": "(at('High Alcove', can_play(Zeldas_Lullaby)) or 
                     (can_use(Hover_Boots) and (can_mega or Hammer)))
                 and (Small_Key_Water_Temple,5)",
             "Under Entrance Block": "can_use(Hookshot) and Iron_Boots",
-            "Central Pillar": "can_use(Hookshot) and Iron_Boots and
+            "Central Pillar from Lobby": "can_use(Hookshot) and Iron_Boots and
                 (Small_Key_Water_Temple,5)",
             "Compass Room": "can_use(Iron_Boots) and can_use(Hookshot)",
             "Ruto Column": "can_use(Iron_Boots) or can_use(Longshot) or can_jumpslash"
@@ -63,13 +63,13 @@
             "Water Temple Map Chest": "is_adult or can_child_damage",
             "Water Temple Cracked Wall Chest": "(can_use(Hookshot) and Iron_Boots) or
                 (can_play(Zeldas_Lullaby) and (can_use(Hookshot) or has_explosives)) ",
-            "Water Temple Torches Chest": "(as_child_here(can_use(Sticks)) or has_fire_source or can_use(Bow))
+            "Water Temple Torches Chest": "(here(is_child and can_use(Sticks)) or has_fire_source or can_use(Bow))
                 and can_play(Zeldas_Lullaby)"
         },
         "exits": {
             "Central Pillar": "can_play(Zeldas_Lullaby) and 
                 ((Small_Key_Water_Temple,6)
-                or as_child_here(can_use(Sticks)) or has_fire_source or can_use(Bow))",
+                or here(is_child and can_use(Sticks)) or has_fire_source or can_use(Bow))",
             "Boss Key Area": "(Small_Key_Water_Temple,5) and
                 (can_use(Longshot) or can_hover or can_use(Hover_Boots)) and can_play(Zeldas_Lullaby)",
             "Dragon Head Area": "Progressive_Strength_Upgrade and (is_adult or can_child_attack) and can_play(Zeldas_Lullaby)",
@@ -83,15 +83,23 @@
         }
     },
     {
+        "region_name": "Central Pillar from Lobby",
+        "dungeon": "Water Temple",
+        "exits": {
+            "Central Pillar": "True"
+        }
+    },
+    {
         "region_name": "Central Pillar",
         "dungeon": "Water Temple",
         "locations": {
             "Water Temple Central Pillar Chest": "can_use(Iron_Boots) and can_use(Hookshot) and
-                (can_reach('Water Temple Lobby -> Central Pillar', Entrance, either) or can_play(Zeldas_Lullaby))",
-            "GS Water Temple Central Room": "can_reach('Water Temple Lobby -> Central Pillar', Entrance, either) or
-                can_use(Longshot) or 
-                (can_use(Farores_Wind) and can_play(Zeldas_Lullaby) 
-                    and can_reach(High_Alcove) and (can_use(Hookshot) or can_use(Boomerang)))"
+                (at('Central Pillar from Lobby', True) or can_play(Zeldas_Lullaby))",
+            "GS Water Temple Central Room": "at('Central Pillar from Lobby', True) or
+                can_use(Longshot) or
+                at('High Alcove',
+                    can_use(Farores_Wind) and can_play(Zeldas_Lullaby)
+                    and (can_use(Hookshot) or can_use(Boomerang)))"
         },
         "exits": {
             "High Alcove": "(can_use(Hover_Boots) or can_use(Hookshot) or (is_adult and can_mega) or can_hover
@@ -146,7 +154,7 @@
         "region_name": "Dragon Head Area",
         "dungeon": "Water Temple",
         "locations": {
-            "Water Temple Dragon Chest": "(is_adult and can_reach(River_Chest)) or has_bombchus or (Iron_Boots and can_use(Hookshot))"
+            "Water Temple Dragon Chest": "at('River Chest', is_adult) or has_bombchus or (Iron_Boots and can_use(Hookshot))"
         },
         "exits": {
             "River Chest": "can_hover"
@@ -155,6 +163,9 @@
     {
         "region_name": "Boss Area",
         "dungeon": "Water Temple",
+        "events": {
+            "Water Temple Clear": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)"
+        },
         "locations": {
             "Morpha": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)",
             "Morpha Heart": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)"

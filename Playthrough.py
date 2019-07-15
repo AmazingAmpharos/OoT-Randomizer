@@ -53,6 +53,14 @@ class Playthrough(object):
         p.collect_locations()
         return p
 
+    @staticmethod
+    def with_items(state_list, itempool=None):
+        p = Playthrough([s.copy() for s in state_list])
+        if itempool:
+            p.collect_all(itempool)
+        p.next_sphere()
+        return p
+
     # Truncates the sphere cache based on which sphere a location is in, and
     # drops the location from the appropriate visited set.
     # Doesn't forget which sphere locations are in as an optimization, so be careful
@@ -63,7 +71,8 @@ class Playthrough(object):
     # Not safe to call during iteration.
     def unvisit(self, location):
         self.cached_spheres[self.location_in_sphere[location]+1:] = []
-        self.cached_spheres[-1]['visited_locations'].discard(location)
+        if self.cached_spheres:
+            self.cached_spheres[-1]['visited_locations'].discard(location)
 
 
     # Drops the item from its respective state, and truncates the sphere cache
@@ -256,9 +265,18 @@ class Playthrough(object):
             return region in self.cached_spheres[-1]['adult_regions'] and region in self.cached_spheres[-1]['child_regions']
         else:
             # treat None as either
-            return region in self.cached_spheres[-1]['adult_regions'] and region in self.cached_spheres[-1]['child_regions']
+            return region in self.cached_spheres[-1]['adult_regions'] or region in self.cached_spheres[-1]['child_regions']
 
     # Use the cache in the playthrough to determine location reachability.
     # Only works for locations that had progression items...
     def visited(self, location):
         return location in self.cached_spheres[-1]['visited_locations']
+
+    # Use the cache in the playthrough to get all reachable regions.
+    def reachable_regions(self, age=None):
+        if age == 'adult':
+            return self.cached_spheres[-1]['adult_regions']
+        elif age == 'child':
+            return self.cached_spheres[-1]['child_regions']
+        else:
+            return self.cached_spheres[-1]['adult_regions'] + self.cached_spheres[-1]['child_regions']

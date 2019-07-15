@@ -480,26 +480,14 @@ tradeitemoptions = (
     'claim_check')
 
 
-eventlocations = {
+fixedlocations = {
     'Ganon': 'Triforce',
     'Zeldas Letter': 'Zeldas Letter',
     'Pierre': 'Scarecrow Song',
-    'Magic Bean Salesman': 'Magic Bean',
     'Deliver Ruto\'s Letter': 'Deliver Letter',
-    "Sell 1 Big Poe": 'Sell Big Poe',
-    "Sell 2 Big Poe": 'Sell Big Poe',
-    "Sell 3 Big Poe": 'Sell Big Poe',
-    "Sell 4 Big Poe": 'Sell Big Poe',
     'Master Sword Pedestal': 'Time Travel',
-    'Epona': 'Epona',
-    'Gerudo Fortress Carpenter Rescue': 'Carpenter Rescue',
+    'Bombchu Bowling Bombchus': 'Bombchu Drop',
     'Haunted Wasteland Bombchu Salesman': 'Bombchus',
-    'Ganons Castle Forest Trial Clear': 'Forest Trial Clear',
-    'Ganons Castle Fire Trial Clear': 'Fire Trial Clear',
-    'Ganons Castle Water Trial Clear': 'Water Trial Clear',
-    'Ganons Castle Shadow Trial Clear': 'Shadow Trial Clear',
-    'Ganons Castle Spirit Trial Clear': 'Spirit Trial Clear',
-    'Ganons Castle Light Trial Clear': 'Light Trial Clear'
 }
 
 droplocations = {
@@ -518,10 +506,153 @@ droplocations = {
     'Free Fairies': 'Fairy',
     'Butterfly Fairy': 'Fairy',
     'Gossip Stone Fairy': 'Fairy',
+    'Bean Plant Fairy': 'Fairy',
     'Fairy Pond': 'Fairy',
     'Big Poe Kill': 'Big Poe',
 }
 
+vanillaBK = {
+    'Fire Temple Boss Key Chest': 'Boss Key (Fire Temple)',
+    'Ganons Tower Boss Key Chest': 'Boss Key (Ganons Castle)',
+    'Shadow Temple Boss Key Chest': 'Boss Key (Shadow Temple)',
+    'Spirit Temple Boss Key Chest': 'Boss Key (Spirit Temple)',
+    'Water Temple Boss Key Chest': 'Boss Key (Water Temple)',
+    'Forest Temple Boss Key Chest': 'Boss Key (Forest Temple)',
+
+    'Fire Temple MQ Boss Key Chest': 'Boss Key (Fire Temple)',
+    'Ganons Tower Boss Key Chest': 'Boss Key (Ganons Castle)',
+    'Shadow Temple MQ Boss Key Chest': 'Boss Key (Shadow Temple)',
+    'Spirit Temple MQ Boss Key Chest': 'Boss Key (Spirit Temple)',
+    'Water Temple MQ Boss Key Chest': 'Boss Key (Water Temple)',
+    'Forest Temple MQ Boss Key Chest': 'Boss Key (Forest Temple)',    
+}
+
+vanillaMC = {
+    'Bottom of the Well Center Large Chest': 'Compass (Bottom of the Well)',
+    'Deku Tree Compass Chest': 'Compass (Deku Tree)',
+    'Dodongos Cavern Compass Chest': 'Compass (Dodongos Cavern)',
+    'Fire Temple Compass Chest': 'Compass (Fire Temple)',
+    'Forest Temple Blue Poe Chest': 'Compass (Forest Temple)',
+    'Ice Cavern Compass Chest': 'Compass (Ice Cavern)',
+    'Jabu Jabus Belly Compass Chest': 'Compass (Jabu Jabus Belly)',
+    'Shadow Temple Compass Chest': 'Compass (Shadow Temple)',
+    'Spirit Temple Compass Chest': 'Compass (Spirit Temple)',
+    'Water Temple Compass Chest': 'Compass (Water Temple)',
+
+    'Bottom of the Well Basement Chest': 'Map (Bottom of the Well)',
+    'Deku Tree Lobby Chest': 'Map (Deku Tree)',
+    'Dodongos Cavern Map Chest': 'Map (Dodongos Cavern)',
+    'Fire Temple Map Chest': 'Map (Fire Temple)',
+    'Forest Temple Map Chest': 'Map (Forest Temple)',
+    'Ice Cavern Map Chest': 'Map (Ice Cavern)',
+    'Jabu Jabus Belly Map Chest': 'Map (Jabu Jabus Belly)',
+    'Shadow Temple Map Chest': 'Map (Shadow Temple)',
+    'Spirit Temple Map Chest': 'Map (Spirit Temple)',
+    'Water Temple Map Chest': 'Map (Water Temple)',
+
+    'Bottom of the Well MQ Compass Chest': 'Compass (Bottom of the Well)',
+    'Deku Tree MQ Compass Chest': 'Compass (Deku Tree)',
+    'Dodongos Cavern MQ Compass Chest': 'Compass (Dodongos Cavern)',
+    'Fire Temple MQ Compass Chest': 'Compass (Fire Temple)',
+    'Forest Temple MQ Compass Chest': 'Compass (Forest Temple)',
+    'Ice Cavern MQ Compass Chest': 'Compass (Ice Cavern)',
+    'Jabu Jabus Belly MQ Compass Chest': 'Compass (Jabu Jabus Belly)',
+    'Shadow Temple MQ Compass Chest': 'Compass (Shadow Temple)',
+    'Spirit Temple MQ Compass Chest': 'Compass (Spirit Temple)',
+    'Water Temple MQ Compass Chest': 'Compass (Water Temple)',
+
+    'Bottom of the Well MQ Map Chest': 'Map (Bottom of the Well)',
+    'Deku Tree MQ Lobby Chest': 'Map (Deku Tree)',
+    'Dodongos Cavern MQ Map Chest': 'Map (Dodongos Cavern)',
+    'Fire Temple MQ Map Chest': 'Map (Fire Temple)',
+    'Forest Temple MQ Map Chest': 'Map (Forest Temple)',
+    'Ice Cavern MQ Map Chest': 'Map (Ice Cavern)',
+    'Jabu Jabus Belly MQ Map Chest': 'Map (Jabu Jabus Belly)',
+    'Shadow Temple MQ Early Gibdos Chest': 'Map (Shadow Temple)',
+    'Spirit Temple MQ Map Chest': 'Map (Spirit Temple)',
+    'Water Temple MQ Map Chest': 'Map (Water Temple)',
+}
+
+vanillaSK = {
+    'Bottom of the Well Front Left Hidden Wall': 'Small Key (Bottom of the Well)',
+    'Bottom of the Well Right Bottom Hidden Wall': 'Small Key (Bottom of the Well)',
+    'Bottom of the Well Freestanding Key': 'Small Key (Bottom of the Well)',
+    'Fire Temple Big Lava Room Bombable Chest': 'Small Key (Fire Temple)',
+    'Fire Temple Big Lava Room Open Chest': 'Small Key (Fire Temple)',
+    'Fire Temple Boulder Maze Bombable Pit': 'Small Key (Fire Temple)',
+    'Fire Temple Boulder Maze Lower Chest': 'Small Key (Fire Temple)',
+    'Fire Temple Boulder Maze Side Room': 'Small Key (Fire Temple)',
+    'Fire Temple Boulder Maze Upper Chest': 'Small Key (Fire Temple)',
+    'Fire Temple Chest Near Boss': 'Small Key (Fire Temple)',
+    'Fire Temple Highest Goron Chest': 'Small Key (Fire Temple)',
+    'Forest Temple Chest Behind Lobby': 'Small Key (Forest Temple)',
+    'Forest Temple First Chest': 'Small Key (Forest Temple)',
+    'Forest Temple Floormaster Chest': 'Small Key (Forest Temple)',
+    'Forest Temple Red Poe Chest': 'Small Key (Forest Temple)',
+    'Forest Temple Well Chest': 'Small Key (Forest Temple)',
+    'Ganons Castle Light Trial Invisible Enemies Chest': 'Small Key (Ganons Castle)',
+    'Ganons Castle Light Trial Lullaby Chest': 'Small Key (Ganons Castle)',
+    'Gerudo Training Grounds Beamos Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Grounds Eye Statue Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Grounds Hammer Room Switch Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Grounds Heavy Block Third Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Grounds Hidden Ceiling Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Grounds Near Scarecrow Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Grounds Stalfos Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Grounds Underwater Silver Rupee Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Grounds Freestanding Key': 'Small Key (Gerudo Training Grounds)',
+    'Shadow Temple After Wind Hidden Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple Early Silver Rupee Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple Falling Spikes Switch Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple Hidden Floormaster Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple Freestanding Key': 'Small Key (Shadow Temple)',
+    'Spirit Temple Child Right Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple Early Adult Right Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple Near Four Armos Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple Statue Hand Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple Sun Block Room Chest': 'Small Key (Spirit Temple)',
+    'Water Temple Central Bow Target Chest': 'Small Key (Water Temple)',
+    'Water Temple Central Pillar Chest': 'Small Key (Water Temple)',
+    'Water Temple Cracked Wall Chest': 'Small Key (Water Temple)',
+    'Water Temple Dragon Chest': 'Small Key (Water Temple)',
+    'Water Temple River Chest': 'Small Key (Water Temple)',
+    'Water Temple Torches Chest': 'Small Key (Water Temple)',
+
+    'Bottom of the Well MQ Dead Hand Freestanding Key': 'Small Key (Bottom of the Well)',
+    'Bottom of the Well MQ East Inner Room Freestanding Key': 'Small Key (Bottom of the Well)',
+    'Fire Temple MQ Big Lava Room Bombable Chest': 'Small Key (Fire Temple)',
+    'Fire Temple MQ Chest Near Boss': 'Small Key (Fire Temple)',
+    'Fire Temple MQ Maze Side Room': 'Small Key (Fire Temple)',
+    'Fire Temple MQ West Tower Top Chest': 'Small Key (Fire Temple)',
+    'Fire Temple MQ Freestanding Key': 'Small Key (Fire Temple)',
+    'Forest Temple MQ Chest Behind Lobby': 'Small Key (Forest Temple)',
+    'Forest Temple MQ First Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ NE Outdoors Lower Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ NE Outdoors Upper Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ Redead Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ Well Chest': 'Small Key (Forest Temple)',
+    'Ganons Castle MQ Shadow Trial Second Chest': 'Small Key (Ganons Castle)',
+    'Ganons Castle MQ Spirit Trial Sun Back Left Chest': 'Small Key (Ganons Castle)',
+    'Ganons Castle MQ Forest Trial Freestanding Key': 'Small Key (Ganons Castle)',
+    'Gerudo Training Grounds MQ Dinolfos Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Grounds MQ Flame Circle Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Grounds MQ Underwater Silver Rupee Chest': 'Small Key (Gerudo Training Grounds)',
+    'Shadow Temple MQ Falling Spikes Switch Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple MQ Invisible Blades Invisible Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple MQ Map Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple MQ Near Ship Invisible Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple MQ Wind Hint Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple MQ Freestanding Key': 'Small Key (Shadow Temple)',
+    'Spirit Temple MQ Child Center Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple MQ Child Climb South Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple MQ Child Left Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple MQ Entrance Back Left Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple MQ Entrance Front Right Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple MQ Mirror Puzzle Invisible Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple MQ Silver Block Hallway Chest': 'Small Key (Spirit Temple)',
+    'Water Temple MQ Central Pillar Chest': 'Small Key (Water Temple)',
+    'Water Temple MQ Freestanding Key': 'Small Key (Water Temple)',    
+}
 
 junk_pool_base = [
     ('Bombs (5)',       8),
@@ -544,8 +675,6 @@ remove_junk_items = [
     'Bombs (5)',
     'Deku Nuts (5)',
     'Deku Stick (1)',
-    'Deku Shield',
-    'Hylian Shield',
     'Recovery Heart',
     'Arrows (5)',
     'Arrows (10)',
@@ -611,9 +740,11 @@ def generate_itempool(world):
     elif world.junk_ice_traps in ['mayhem', 'onslaught']:
         junk_pool[:] = [('Ice Trap', 1)]
 
-    for location, item in eventlocations.items():
+    fixed_locations = list(filter(lambda loc: loc.name in fixedlocations, world.get_locations()))
+    for location in fixed_locations:
+        item = fixedlocations[location.name]
         world.push_item(location, ItemFactory(item, world))
-        world.get_location(location).locked = True
+        location.locked = True
 
     drop_locations = list(filter(lambda loc: loc.type == 'Drop', world.get_locations()))
     for drop_location in drop_locations:
@@ -675,6 +806,10 @@ def get_pool_core(world):
         if world.dungeon_mq['Jabu Jabus Belly']:
             placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
 
+    if world.shuffle_beans:
+        pool.append('Magic Bean Pack')
+    else:
+        placed_items['Magic Bean Salesman'] = 'Magic Bean'
 
     if world.dungeon_mq['Deku Tree']:
         skulltula_locations_final = skulltula_locations + [
@@ -1021,7 +1156,7 @@ def get_pool_core(world):
         world.state.collect(ItemFactory('Scarecrow Song'))
     
     if world.no_epona_race:
-        world.state.collect(ItemFactory('Epona'))
+        world.state.collect(ItemFactory('Epona', event=True))
 
     if world.shuffle_mapcompass == 'remove' or world.shuffle_mapcompass == 'startwith':
         for item in [item for dungeon in world.dungeons for item in dungeon.dungeon_items]:
@@ -1035,6 +1170,40 @@ def get_pool_core(world):
         for item in [item for dungeon in world.dungeons for item in dungeon.boss_key]:
             world.state.collect(item)
             pool.extend(get_junk_item())
+
+    if world.shuffle_mapcompass == 'vanilla':
+        for location, item in vanillaMC.items():
+            try:
+                world.get_location(location)
+                placed_items[location] = item
+            except KeyError:
+                continue
+    if world.shuffle_smallkeys == 'vanilla':
+        for location, item in vanillaSK.items():
+            try:
+                world.get_location(location)
+                placed_items[location] = item
+            except KeyError:
+                continue
+        # Logic cannot handle vanilla key layout in some dungeons
+        # this is because vanilla expects the dungeon major item to be
+        # locked behind the keys, which is not always true in rando.
+        # We can resolve this by starting with some extra keys
+        if world.dungeon_mq['Spirit Temple']:
+            # Yes somehow you need 3 keys. This dungeon is bonkers
+            world.state.collect(ItemFactory('Small Key (Spirit Temple)'))
+            world.state.collect(ItemFactory('Small Key (Spirit Temple)'))
+            world.state.collect(ItemFactory('Small Key (Spirit Temple)'))
+        #if not world.dungeon_mq['Fire Temple']:
+        #    world.state.collect(ItemFactory('Small Key (Fire Temple)'))
+    if world.shuffle_bosskeys == 'vanilla':
+        for location, item in vanillaBK.items():
+            try:
+                world.get_location(location)
+                placed_items[location] = item
+            except KeyError:
+                continue
+
     if not world.keysanity and not world.dungeon_mq['Fire Temple']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
     if not world.dungeon_mq['Water Temple']:
