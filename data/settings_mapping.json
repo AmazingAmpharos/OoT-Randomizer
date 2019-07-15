@@ -23,8 +23,8 @@
         },
         {
           "name": "multiworld_section",
-          "text": "Multi_World Generation",
-          "subheader": "This is used for co_op generations. Increasing Player Count will drastically increase the generation time.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk_co_op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk_co_op</a>",
+          "text": "Multi-World Generation",
+          "subheader": "This is used for co-op generations. Increasing Player Count will drastically increase the generation time.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk-co-op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk-co-op</a>",
           "row_span": 1,
           "settings": [
             "world_count",
@@ -66,8 +66,8 @@
         },
         {
           "name": "multiworld_section",
-          "text": "Multi_World Generation",
-          "subheader": "This is used for co_op generations. Increasing Player Count will drastically increase the generation time.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk_co_op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk_co_op</a>",
+          "text": "Multi-World Generation",
+          "subheader": "This is used for co-op generations. Increasing Player Count will drastically increase the generation time.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk-co-op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk-co-op</a>",
           "row_span": 1,
           "settings": [
             "world_count",
@@ -108,7 +108,7 @@
         },
         {
           "name": "multiworld_section",
-          "text": "Multi_World Generation",
+          "text": "Multi-World Generation",
           "subheader": "This is used for co-op generations.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk-co-op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk-co-op</a>",
           "row_span": 1,
           "settings": [
