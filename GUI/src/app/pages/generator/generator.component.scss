@@ -152,6 +152,21 @@ nb-card-body {
     left: 7px;
     top: 7px;
     margin-right: 13px;
+
+    /deep/ span {
+
+      @media (max-width: 800px) {
+        white-space: pre-line;
+      }
+
+      @media (max-width: 400px) {
+        font-size: 0.8rem;
+      }
+
+      @media (max-width: 340px) {
+        font-size: 0.7rem;
+      }
+    }
   }
 }
 
