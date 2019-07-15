@@ -21,8 +21,8 @@ void draw_triforce_count(z64_disp_buf_t *db) {
 
     int total_w = 2 * font_sprite.tile_w + triforce_sprite.tile_w;
     int draw_x = Z64_SCREEN_WIDTH / 2 - total_w / 2;
-    int draw_y_text = Z64_SCREEN_HEIGHT - (font_sprite.tile_h * 1.5) + 2;
-    int draw_y_triforce = Z64_SCREEN_HEIGHT - (triforce_sprite.tile_h * 1.5) + 3 + 2;
+    int draw_y_text = Z64_SCREEN_HEIGHT - (font_sprite.tile_h * 1.5) + 1;
+    int draw_y_triforce = Z64_SCREEN_HEIGHT - (triforce_sprite.tile_h * 1.5) + 3 + 1;
 
     gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetPrimColor(db->p++, 0, 0, 0xF4, 0xEC, 0x30, 0xFF);

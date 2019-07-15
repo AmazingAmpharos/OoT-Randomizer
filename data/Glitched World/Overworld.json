@@ -484,7 +484,9 @@
                 or ((bridge == 'stones') and
                     Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)
                 or ((bridge == 'tokens') and
-                    (Gold_Skulltula_Token, 100))"
+                    (Gold_Skulltula_Token, 100))
+                or ((bridge == 'triforce') and
+                    (Triforce_Piece, 20))"
         }
     },
     {
