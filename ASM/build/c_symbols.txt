@@ -59,6 +59,7 @@ SYMBOL TABLE:
 00000008 l       .rodata.cst8	00000000 $LC0
 00000010 l       .rodata.cst8	00000000 $LC1
 00000018 l       .rodata.cst8	00000000 $LC2
+00000020 l       .rodata.cst8	00000000 $LC3
 00000000 l    df *ABS*	00000000 util.c
 000030a8 g     F .text	0000007c scale_factor
 000028a4 g     F .text	0000001c give_defense
@@ -117,7 +118,7 @@ SYMBOL TABLE:
 00003200 g     F .text	0000002c models_reset
 00000170 g     O .data	00000010 quest_items_sprite
 00001d50 g     F .text	00000058 after_key_received
-00003e54 g     F .text	00000034 heap_alloc
+00003e80 g     F .text	00000034 heap_alloc
 00000030 g     O .sbss	00000004 active_item_row
 00002ce8 g     F .text	0000003c after_game_state_update
 000008c8 g     F .text	00000a14 draw_dungeon_info
@@ -215,7 +216,7 @@ SYMBOL TABLE:
 000000d4 g     O .data	00000040 hash_symbols
 00001340 g     F .text	00000018 extern_scene_init
 00002f7c g     F .text	0000004c set_object_segment
-00003e40 g     F .text	00000014 heap_init
+00003e6c g     F .text	00000014 heap_init
 000033b4 g     F .text	00000064 heart_container_draw
 00001028 g     O .bss	00000040 object_slots
 00002884 g     F .text	00000020 give_small_key
@@ -228,9 +229,9 @@ SYMBOL TABLE:
 00001d1c g     F .text	00000034 pop_pending_item
 0000223c g     F .text	00000028 sprite_bytes_per_tile
 00002940 g     F .text	0000003c get_item_row
-00003e88 g     F .text	00000044 file_init
+00003eb4 g     F .text	00000044 file_init
 00000000         *UND*	00000000 EXTENDED_OBJECT_TABLE
-00003bd0 g     F .text	00000270 draw_triforce_count
+00003bd0 g     F .text	0000029c draw_triforce_count
 00000000         *UND*	00000000 PLAYER_NAME_ID
 00000000 g     O .sbss	00000004 cfg_dungeon_info_reward_need_altar
 00000000 g     O .sdata	00000004 cfg_dungeon_info_enable

@@ -38,7 +38,6 @@ enum dungeon {
 // Action ID 0x41 (give kokiri tunic) is used to indicate no action.
 
 item_row_t item_table[] = {
-    [0xC9] = ITEM_ROW(0x53, 1, 0x85, 0x00FA, 0x0193, 0x35, no_upgrade, give_triforce_piece, -1, -1), // Triforce piece
     [0x01] = ITEM_ROW(0x4D, 1, 0x8E, 0x0032, 0x00CE, 0x20, bombs_to_rupee, no_effect, -1, -1), // Bombs (5)
     [0x02] = ITEM_ROW(0x4D, 1, 0x8C, 0x0034, 0x00BB, 0x12, no_upgrade, no_effect, -1, -1), // Deku Nuts (5)
     [0x03] = ITEM_ROW(0x4D, 1, 0x09, 0x0033, 0x00D9, 0x28, no_upgrade, no_effect, -1, -1), // Bombchu (10)
@@ -246,6 +245,7 @@ item_row_t item_table[] = {
 
     [0xC7] = ITEM_ROW(0x53, 0, 0x41, 0x00F8, 0x00D1, 0x23, no_upgrade, give_tycoon_wallet, -1, -1), // Tycoon's Wallet
     [0xC8] = ITEM_ROW(0x53, 0, 0x14, 0x9099, 0x010B, 0x45, no_upgrade, no_effect, -1, -1), // Redundant Letter Bottle
+    [0xC9] = ITEM_ROW(0x53, 1, 0x41, 0x00FA, 0x0193, 0x35, no_upgrade, give_triforce_piece, -1, -1), // Triforce piece
 
 };
 
