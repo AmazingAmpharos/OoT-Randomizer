@@ -100,7 +100,7 @@ def GetSettingJson(setting, web_version, as_array=False):
             tags_list.sort()
             settingJson['tags'] = ['(all)'] + tags_list
             settingJson['filter_by_tag'] = True
-            
+
     return settingJson
 
 
@@ -178,7 +178,7 @@ def CreateJSON(path, web_version=False):
             settingOutputJson['cosmeticsArray'].append(tabJsonArr)
 
     with open(path, 'w') as f:
-        json.dump(settingOutputJson, f, indent=2)
+        json.dump(settingOutputJson, f)
 
  
 def settingToJsonMain():
