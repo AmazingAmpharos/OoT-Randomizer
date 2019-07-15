@@ -120,7 +120,14 @@
               "type": "Radiobutton",
               "current_value": "True"
             },
-            "open_output_dir": {}
+            "open_output_dir": {
+              "options": [],
+              "default": "",
+              "text": "Open Output Directory",
+              "tooltip": "",
+              "type": "Outputdirbutton",
+              "current_value": ""
+            }
           },
           "text": "",
           "col_span": 4,
@@ -8352,6 +8359,11 @@
               "name": "compress_rom"
             },
             {
+              "options": [],
+              "default": "",
+              "text": "Open Output Directory",
+              "tooltip": "",
+              "type": "Outputdirbutton",
               "name": "open_output_dir"
             }
           ],

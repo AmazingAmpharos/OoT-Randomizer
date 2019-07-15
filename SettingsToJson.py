@@ -100,16 +100,7 @@ def GetSettingJson(setting, web_version, as_array=False):
             tags_list.sort()
             settingJson['tags'] = ['(all)'] + tags_list
             settingJson['filter_by_tag'] = True
-
-    elif setting_info.disable != None and True in setting_info.disable:
-        disable_option = setting_info.disable[True]
-        if disable_option.get('settings') != None:
-            settingJson['controls_visibility_setting'] = ','.join(disable_option['settings'])
-        if disable_option.get('sections') != None:
-            settingJson['controls_visibility_section'] = ','.join(disable_option['sections'])
-        if disable_option.get('tabs') != None:
-            settingJson['controls_visibility_tab'] = ','.join(disable_option['tabs'])
-
+            
     return settingJson
 
 

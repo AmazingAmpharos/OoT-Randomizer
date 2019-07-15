@@ -726,6 +726,7 @@ setting_infos = [
         default        = "[New Preset]",
         gui_tooltip    = 'Select a setting preset to apply.',
     ),
+    Setting_Info('open_output_dir',   str, "Open Output Directory", "Outputdirbutton", False, {}),   
     Setting_Info('repatch_cosmetics', bool, None, None, False, {},
         default        = True
     ),
