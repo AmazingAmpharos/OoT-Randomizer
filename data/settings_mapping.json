@@ -109,7 +109,7 @@
         {
           "name": "multiworld_section",
           "text": "Multi_World Generation",
-          "subheader": "This is used for co_op generations.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk_co_op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk_co_op</a>",
+          "subheader": "This is used for co-op generations.<br>For more information, see:<br><a href='https://github.com/TestRunnerSRL/bizhawk-co-op' target='_blank'>https://github.com/TestRunnerSRL/bizhawk-co-op</a>",
           "row_span": 1,
           "settings": [
             "player_num"
