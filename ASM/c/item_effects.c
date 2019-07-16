@@ -1,6 +1,7 @@
 #include "item_effects.h"
 
 #include "icetrap.h"
+#include "triforce.h"
 #include "z64.h"
 
 #define rupee_cap ((uint16_t*)0x800F8CEC)
@@ -15,6 +16,7 @@ void full_heal(z64_file_t *save, int16_t arg1, int16_t arg2) {
 
 void give_triforce_piece(z64_file_t *save, int16_t arg1, int16_t arg2) {
     save->scene_flags[0x48].unk_00_ += 1; //Unused word in scene x48. 
+    set_triforce_render();
 }
 
 void give_tycoon_wallet(z64_file_t *save, int16_t arg1, int16_t arg2) {

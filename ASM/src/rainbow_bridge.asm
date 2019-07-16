@@ -56,7 +56,8 @@ rainbow_bridge:
     li        at, 0
 
 @@rainbow_bridge_triforce:
-    li        at, 0
+    lw        at, TRIFORCE_PIECES_REQUIRED
     lw        t7, 0x8C4(a3) ; Triforce pieces
+    slt       t2, t7, at
     jr        ra
-    slti      t2, t7, 0x14
+    li        at, 0
