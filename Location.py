@@ -65,6 +65,12 @@ class Location(object):
         return state.with_spot(self.access_rule, spot=self) and (noparent or state.can_reach(self.parent_region, keep_tod=True))
 
 
+    def can_reach_simple(self, state):
+        # todo: raw evaluation of access_rule? requires nonrecursive tod checks in state
+        # and GS Token and Gossip Stone Fairy have special checks as well
+        return state.with_spot(self.access_rule, spot=self)
+
+
     def is_disabled(self):
         return (self.disabled == DisableType.DISABLED) or \
                (self.disabled == DisableType.PENDING and self.locked)

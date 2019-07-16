@@ -61,27 +61,27 @@ class State(object):
             return spot
 
 
-    def can_reach(self, spot=None, resolution_hint='Region', age=None, tod=None, keep_tod=False):
+    def can_reach(self, spot=None, resolution_hint='Region', tod=None, keep_tod=False):
         if spot == None:
             # Default to the current spot's parent region, to allow can_reach to be used without arguments inside access rules
             spot = self.current_spot.parent_region
         else:
             spot = self.get_spot(spot, resolution_hint)
 
-        if age == None:
-            # If the age parameter is missing, the current age should be used, but if it's not defined either, we default to age='either'
-            if self.adult == None:
-                return self.as_either(lambda state: state.can_reach(spot, tod=tod))
-        elif age == 'either':
-            return self.as_either(lambda state: state.can_reach(spot, tod=tod))
-        elif age == 'both':
-           return self.as_both(lambda state: state.can_reach(spot, tod=tod))
-        elif age == 'adult':
-            return self.as_adult(lambda state: state.can_reach(spot, tod=tod))
-        elif age == 'child':
-            return self.as_child(lambda state: state.can_reach(spot, tod=tod))
-        else:
-            raise AttributeError('Unknown age parameter type: ' + str(age))
+        # If the current age is not defined, we try either
+        if self.adult == None:
+            if self.can_become_adult():
+                self.adult = True
+                if self.can_reach(spot, tod=tod):
+                    self.adult = None
+                    return True
+            if self.can_become_child():
+                self.adult = False
+                if self.can_reach(spot, tod=tod):
+                    self.adult = None
+                    return True
+            self.adult = None
+            return False
 
         if tod != None and self.ensure_tod_access():
             if tod == 'all':
@@ -137,28 +137,33 @@ class State(object):
         return can_reach
 
 
-    def as_either(self, lambda_rule):
-        return self.as_adult(lambda_rule) or self.as_child(lambda_rule)
-
-
-    def as_both(self, lambda_rule):
-        return self.as_adult(lambda_rule) and self.as_child(lambda_rule)
+    def can_reach_as_both(self, spot, tod=None):
+        if self.can_become_adult() and self.can_become_child():
+            self.adult = True
+            if not self.can_reach(spot, tod=tod):
+                self.adult = None
+                return False
+            self.adult = False
+            r = self.can_reach(spot, tod=tod)
+            self.adult = None
+            return r
+        else:
+            return False
 
 
     def as_adult(self, lambda_rule):
-        return self.can_become_adult() and self.with_age(lambda_rule, 'adult')
+        # It's important to set the age property back to what it was originally after executing the rule here
+        self.adult = True
+        lambda_rule_result = lambda_rule(self)
+        self.adult = None
+        return lambda_rule_result
 
 
     def as_child(self, lambda_rule):
-        return self.can_become_child() and self.with_age(lambda_rule, 'child')
-
-
-    def with_age(self, lambda_rule, age):
         # It's important to set the age property back to what it was originally after executing the rule here
-        original_adult = self.adult
-        self.adult = (age == 'adult')
+        self.adult = False
         lambda_rule_result = lambda_rule(self)
-        self.adult = original_adult
+        self.adult = None
         return lambda_rule_result
 
 

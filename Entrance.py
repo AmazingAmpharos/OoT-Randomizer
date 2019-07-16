@@ -37,6 +37,11 @@ class Entrance(object):
         return state.with_spot(self.access_rule, spot=self) and (noparent or state.can_reach(self.parent_region, keep_tod=True))
 
 
+    def can_reach_simple(self, state):
+        # todo: raw evaluation of access_rule? requires nonrecursive tod checks in state
+        return state.with_spot(self.access_rule, spot=self)
+
+
     def connect(self, region):
         self.connected_region = region
         region.entrances.append(self)
