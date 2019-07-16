@@ -8,9 +8,9 @@ static uint32_t frames = 0;
 static uint32_t render_triforce_flag = 0;
 #define FRAMES_PER_CYCLE 2
 #define TRIFORCE_SPRITE_FRAMES 16
-#define TRIFORCE_FRAMES_VISIBLE 100 // About 5 seconds
-#define TRIFORCE_FRAMES_FADE_AWAY 80 // About 4 seoconds
-#define TRIFORCE_FRAMES_FADE_INTO 20 // About 1 second
+#define TRIFORCE_FRAMES_VISIBLE 100 // 20 Frames seems to be about 1 second
+#define TRIFORCE_FRAMES_FADE_AWAY 80 
+#define TRIFORCE_FRAMES_FADE_INTO 5 
 extern uint32_t RAINBOW_BRIDGE_CONDITION;
 extern uint32_t TRIFORCE_PIECES_REQUIRED;
 
@@ -39,7 +39,7 @@ void draw_triforce_count(z64_disp_buf_t *db) {
         } else if (frames <= TRIFORCE_FRAMES_FADE_INTO + TRIFORCE_FRAMES_VISIBLE ) {
             alpha = 255;
         } else if (frames <= TRIFORCE_FRAMES_FADE_INTO + TRIFORCE_FRAMES_VISIBLE + TRIFORCE_FRAMES_FADE_AWAY) {
-            alpha = frames * 255 /  TRIFORCE_FRAMES_FADE_AWAY;
+            alpha = (frames - TRIFORCE_FRAMES_FADE_INTO - TRIFORCE_FRAMES_VISIBLE) * 255 /  TRIFORCE_FRAMES_FADE_AWAY;
             alpha = 255 - alpha;
         } else {
             render_triforce_flag = 0;
