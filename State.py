@@ -171,22 +171,6 @@ class State(object):
         return lambda_rule_result
 
 
-    def as_either_here(self, lambda_rule=lambda state: True):
-        return self.as_either(self.add_reachability(lambda_rule))
-
-
-    def as_both_here(self, lambda_rule=lambda state: True):
-        return self.as_both(self.add_reachability(lambda_rule))
-
-
-    def as_adult_here(self, lambda_rule=lambda state: True):
-        return self.as_adult(self.add_reachability(lambda_rule))
-
-
-    def as_child_here(self, lambda_rule=lambda state: True):
-        return self.as_child(self.add_reachability(lambda_rule))
-
-
     def add_reachability(self, lambda_rule):
         return lambda state: state.can_reach() and lambda_rule(state)
 
