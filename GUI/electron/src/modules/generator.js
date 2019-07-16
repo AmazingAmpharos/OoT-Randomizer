@@ -37,13 +37,16 @@ function romBuilding(pythonPath, randoPath, settings) {
 
     let error = false;
     let errorMsg = "";
+    let errorMsgFull = "";
 
     var isMultiWorld = isMulti(settingsObj);
     var percentagePerGeneration = settingsObj["count"] && settingsObj["count"] > 0 ? 100 / settingsObj["count"] : 100;
     var percentagePerWorld = isMultiWorld ? (percentagePerGeneration / 5) / settingsObj["world_count"] : percentagePerGeneration / 5;
+    var maxWorldCount = isMultiWorld ? settingsObj["world_count"] : 1;
 
     var currentWorld = 1;
     var currentGeneration = 1;
+    var lockGenerationCounter = false;
     var currentGenerationPercentage = 0;
     var nextGenerationPercentage = 0;
 
@@ -65,9 +68,9 @@ function romBuilding(pythonPath, randoPath, settings) {
     }
 
     romBuildingGenerator.on('error', err => {
-      console.log("err", err);
+      console.error("[romBuilding] Error spawning process:", err);
       romBuildingGenerator = null;
-      reject(err);
+      reject({ short: err, long: err });
     });
 
     function handleMessage(data) {
@@ -79,15 +82,15 @@ function romBuilding(pythonPath, randoPath, settings) {
         currentGenerationPercentage = nextGenerationPercentage;
 
         module.exports.emit('patchJobProgress', { progress: Math.floor(currentGenerationPercentage + (currentWorld * percentagePerWorld)), message: data.toString().split("\n")[0] });
-        currentWorld++;
+
+        if (currentWorld < maxWorldCount)
+          currentWorld++;
       }
       else if (data.toString().includes("Fill the world")) {
         module.exports.emit('patchJobProgress', { progress: Math.floor(currentGenerationPercentage + (percentagePerGeneration / 3)), message: data.toString().split("\n")[0] });
 
-        nextGenerationPercentage = percentagePerGeneration * currentGeneration;
-        currentGeneration++;
+        lockGenerationCounter = false;
         currentWorld = 1;
-
         compressionTotalFiles = -1;
         compressionPercentagePerFile = -1;
       }
@@ -96,9 +99,23 @@ function romBuilding(pythonPath, randoPath, settings) {
       }
       else if (data.toString().includes("Calculating playthrough")) {
         module.exports.emit('patchJobProgress', { progress: Math.floor(currentGenerationPercentage + (percentagePerGeneration / 1.5)), message: data.toString().split("\n")[0] });
+
+        if (!lockGenerationCounter) {
+          nextGenerationPercentage = percentagePerGeneration * currentGeneration;
+          currentGeneration++;
+        }
+
+        lockGenerationCounter = true;
       }
       else if (data.toString().includes("Patching ROM")) {
         module.exports.emit('patchJobProgress', { progress: Math.floor(currentGenerationPercentage + (percentagePerGeneration / 1.25)), message: data.toString().split("\n")[0] });
+
+        if (!lockGenerationCounter) {
+          nextGenerationPercentage = percentagePerGeneration * currentGeneration;
+          currentGeneration++;
+        }
+
+        lockGenerationCounter = true;
       }
       else if (data.toString().includes("Starting compression")) {
         module.exports.emit('patchJobProgress', { progress: Math.floor(currentGenerationPercentage + (percentagePerGeneration / 1.2)), message: data.toString().split("\n")[0] });
@@ -116,11 +133,11 @@ function romBuilding(pythonPath, randoPath, settings) {
       }
       else if (data.toString().includes("Exception:") || data.toString().includes("error:") || data.toString().includes("Error:") || data.toString().includes("PermissionError:") || data.toString().includes("TypeError:") || data.toString().includes("ValueError:")) {
         error = true;
-        console.error(data.toString());
 
         //Filter out last line to show to the user provided it is safe to do so
         let errorRaw = data.toString().split("\n");
         errorMsg = data.toString().trim();
+        errorMsgFull = errorMsg;
 
         if (errorRaw.length > 5) {
           let tempErrorMsg = errorRaw[errorRaw.length - 2];
@@ -132,8 +149,9 @@ function romBuilding(pythonPath, randoPath, settings) {
       }
       else if (data.toString().includes("Could not find valid base rom")) { //Requires manual kill
         error = true;
-        console.error(data.toString());
+
         errorMsg = data.toString().replace("Please run with -h to see help for further information.", "").replace("Press Enter to exit.", "").trim();
+        errorMsgFull = errorMsg; 
 
         if (romBuildingGenerator)
           treeKill(romBuildingGenerator.pid);
@@ -161,7 +179,7 @@ function romBuilding(pythonPath, randoPath, settings) {
         romBuildingGenerator = null;
         romBuildingUserCancelled = false;
 
-        reject("user_cancelled");
+        reject({ short: "user_cancelled", long: "user_cancelled" });
         return;
       }
       else {
@@ -171,10 +189,12 @@ function romBuilding(pythonPath, randoPath, settings) {
 
         if (error) {
 
-          if (errorMsg.length > 0)
-            reject("Python error - " + errorMsg);
+          console.error('[romBuilding] romBuildingGenerator error: ' + errorMsgFull);
+
+          if (errorMsgFull.length > 0)
+            reject({ short: errorMsg, long: errorMsgFull });
           else
-            reject("Python code error");
+            reject({ short: "Python code error", long: "Python code error" });
 
           return;
         }
@@ -183,8 +203,8 @@ function romBuilding(pythonPath, randoPath, settings) {
       resolve();
       
     }).catch((err) => { //Promise RomGeneration
-      console.log('[romBuilding] Rom promise rejected: ' + err);
-      reject(err);
+      console.error('[romBuilding] Rom promise rejected: ' + err);
+      reject({ short: err, long: err });
     });
   });
 }
@@ -247,16 +267,16 @@ function getSettings(pythonPath, randoPath, settingsString) {
     //console.log("Get settings now with spawn!");
 
     let settingsPY = spawn('"' + pythonPath + '"' + ' ' + '"' + randoPath + '"', args, { shell: true }).on('error', err => {
-      console.log("[getSettings] Error spawning process: ", err);
+      console.error("[getSettings] Error spawning process:", err);
       reject(err);
     });
 
     settingsPY.stdout.on('data', data => {
-      output = output + data;
+      output = output + data.toString();
       error = false;
     });
     settingsPY.stderr.on('data', data => {
-      output = output + data;
+      output = output + data.toString();
       error = true;
     });
 
@@ -264,13 +284,16 @@ function getSettings(pythonPath, randoPath, settingsString) {
 
       //console.log("Get settings DONE!");
 
-      if (error)
+      if (error) {
+        console.error('[getSettings] settingsPY error: ' + output);
         reject(output);
-      else
+      }
+      else {
         resolve(output.replace(/\r?\n|\r/g, "\r\n"));
+      }
 
     }).catch(err => {
-      console.log('[getSettings] settingsPY promise rejected: ' + err);
+      console.error('[getSettings] settingsPY promise rejected: ' + err);
       reject(err);
     });
   });
@@ -288,15 +311,15 @@ function parseSettings(pythonPath, randoPath) {
     let args = ['--convert_settings'];
 
     let settingsPY = spawn('"' + pythonPath + '"' + ' ' + '"' + randoPath + '"', args, { shell: true }).on('error', err => {
-      console.log("[parseSettings] Error spawning process: ", err);
+      console.error("[parseSettings] Error spawning process:", err);
       reject(err);
     });
     settingsPY.stdout.on('data', data => {
-      output = output + data;
+      output = output + data.toString();
       error = false;
     });
     settingsPY.stderr.on('data', data => {
-      output = output + data;
+      output = output + data.toString();
       error = true;
     });
 
@@ -305,13 +328,16 @@ function parseSettings(pythonPath, randoPath) {
       //console.log("Settings fully parsed!");
       //console.log("output:" + output);
 
-      if (error)
+      if (error) {
+        console.error('[parseSettings] settingsPY error: ' + output);
         reject(output);
-      else
+      }
+      else {
         resolve(output.match(/([a-zA-Z0-9])\w+/g)[0]);
+      }
 
     }).catch(err => {
-      console.log('[parseSettings] settingsPY promise rejected: ' + err);
+      console.error('[parseSettings] settingsPY promise rejected: ' + err);
       reject(err);
     });
   });

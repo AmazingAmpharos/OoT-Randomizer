@@ -39,6 +39,7 @@ import { GUIGlobal } from './providers/GUIGlobal';
 //Custom Components
 import { ProgressWindow } from './pages/generator/progressWindow/progressWindow.component';
 import { DialogWindow } from './pages/generator/dialogWindow/dialogWindow.component';
+import { ErrorDetailsWindow } from './pages/generator/errorDetailsWindow/errorDetailsWindow.component';
 import { ConfirmationWindow } from './pages/generator/confirmationWindow/confirmationWindow.component';
 import { TextInputWindow } from './pages/generator/textInputWindow/textInputWindow.component';
 
@@ -49,6 +50,7 @@ import { TextInputWindow } from './pages/generator/textInputWindow/textInputWind
     BypassSecurityPipe,
     ProgressWindow,
     DialogWindow,
+    ErrorDetailsWindow,
     ConfirmationWindow,
     TextInputWindow
   ],
@@ -56,6 +58,7 @@ import { TextInputWindow } from './pages/generator/textInputWindow/textInputWind
     AppComponent,
     ProgressWindow,
     DialogWindow,
+    ErrorDetailsWindow,
     ConfirmationWindow,
     TextInputWindow
   ],

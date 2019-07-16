@@ -13,6 +13,7 @@ import { ngfModule, ngf } from "angular-file";
 import { GUITooltip } from './guiTooltip/guiTooltip.component';
 import { ProgressWindow } from './progressWindow/progressWindow.component';
 import { DialogWindow } from './dialogWindow/dialogWindow.component';
+import { ErrorDetailsWindow } from './errorDetailsWindow/errorDetailsWindow.component';
 import { ConfirmationWindow } from './confirmationWindow/confirmationWindow.component';
 import { TextInputWindow } from './textInputWindow/textInputWindow.component';
 
@@ -133,7 +134,7 @@ export class GeneratorComponent implements OnInit {
       });
 
       this.global.generateSeedElectron(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
-        console.log('Gen Success');
+        console.log('[Electron] Gen Success');
 
         this.generateSeedButtonEnabled = true;
         this.cd.markForCheck();
@@ -143,11 +144,11 @@ export class GeneratorComponent implements OnInit {
           dialogRef.componentRef.instance.progressStatus = 1;
           dialogRef.componentRef.instance.progressPercentage = 100;
           dialogRef.componentRef.instance.progressMessage = "Done. Enjoy.";
+          dialogRef.componentRef.instance.progressErrorDetails = "";
           dialogRef.componentRef.instance.refreshLayout();
         }
-        //dialogRef.close();
       }).catch((err) => {
-        console.log('Gen Error');
+        console.log('[Electron] Gen Error');
 
         this.generateSeedButtonEnabled = true;
         this.cd.markForCheck();
@@ -156,7 +157,8 @@ export class GeneratorComponent implements OnInit {
         if (dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance) {
           dialogRef.componentRef.instance.progressStatus = -1;
           dialogRef.componentRef.instance.progressPercentage = 100;
-          dialogRef.componentRef.instance.progressMessage = err;
+          dialogRef.componentRef.instance.progressMessage = err.short;
+          dialogRef.componentRef.instance.progressErrorDetails = err.short === err.long ? "" : err.long;
           dialogRef.componentRef.instance.refreshLayout();
         }
       });
@@ -171,14 +173,14 @@ export class GeneratorComponent implements OnInit {
         //Re-direct to seed (waiting) page
         let seedURL = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/get?id=" + seedID;
 
-        console.log('Success, will re-direct to:', seedURL);
+        console.log('[Web] Success, will re-direct to:', seedURL);
 
         setTimeout(() => {
           (<any>window).location.href = seedURL;
         }, 250);
 
       }).catch((err) => {
-        console.log('Gen Error');
+        console.log('[Web] Gen Error');
 
         if (err.status == 403) { //Rate Limited
           this.dialogService.open(DialogWindow, {
@@ -244,7 +246,6 @@ export class GeneratorComponent implements OnInit {
       this.cd.detectChanges();
 
     }).catch((err) => {
-      console.log('Python Error', err);
 
       this.settingsLocked = false;
 
@@ -256,6 +257,10 @@ export class GeneratorComponent implements OnInit {
 
       this.cd.markForCheck();
       this.cd.detectChanges();
+
+      this.dialogService.open(ErrorDetailsWindow, {
+        autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { errorMessage: err }
+      });
     });
   }
 
@@ -278,7 +283,6 @@ export class GeneratorComponent implements OnInit {
       this.cd.detectChanges();
 
     }).catch((err) => {
-      console.log('Python Error', err);
 
       this.generatorBusy = false;
       this.cd.markForCheck();

@@ -728,13 +728,12 @@ export class GUIGlobal {
 
             let data = event.data;
 
-            console.log("error", data);
-
+            console.error("[convertSettingsToString] Python Error:", data);
             reject(data);
           });
 
         }).catch(err => {
-          console.error(err);
+          console.error("[convertSettingsToString] Post-Robot Error:", err);
           reject(err);
         });
       }
@@ -745,7 +744,7 @@ export class GUIGlobal {
         self.http.post(url, JSON.stringify(self.createSettingsFileObject(false, true, true)), { responseType: "text", headers: { "Content-Type": "application/json" } }).toPromise().then(res => {
           resolve(res);
         }).catch(err => {
-          console.error(err);
+          console.error("[convertSettingsToString] Web Error:", err);
           reject(err);
         });
       }
@@ -775,13 +774,12 @@ export class GUIGlobal {
 
             let data = event.data;
 
-            console.log("error", data);
-
+            console.error("[convertStringToSettings] Python Error:", data);
             reject(data);
           });
 
         }).catch(err => {
-          console.error(err);
+          console.error("[convertStringToSettings] Post-Robot Error:", err);
           reject(err);
         });
       }
@@ -795,7 +793,7 @@ export class GUIGlobal {
           resolve(settingsObj);
 
         }).catch(err => {
-          console.error(err);
+          console.error("[convertStringToSettings] Web Error:", err);
           reject(err);
         });
       }
@@ -932,7 +930,7 @@ export class GUIGlobal {
 
           let data = event.data;
 
-          console.log("error", data);
+          console.error("[generateSeedElectron] Python Error:", data);
           reject(data);
         });
 
@@ -942,11 +940,11 @@ export class GUIGlobal {
           listenerSuccess.cancel();
           listenerError.cancel();
 
-          reject("Generation cancelled.");
+          reject({ short: "Generation cancelled.", long: "Generation cancelled." });
         });
       }).catch(err => {
-        console.error(err);
-        reject(err);
+        console.error("[generateSeedElectron] Post-Robot Error:", err);
+        reject({ short: err, long: err });
       });
     });
   }
@@ -967,7 +965,7 @@ export class GUIGlobal {
         throw Error("cancel_failed");
     }
     catch (err) {
-      console.error("couldn't cancel due post error", err);
+      console.error("[cancelGenerateSeedElectron] Couldn't cancel due Post-Robot Error:", err);
       throw Error(err);
     }
   }
@@ -1006,7 +1004,7 @@ export class GUIGlobal {
       self.http.post(url, JSON.stringify(settingsFile), { responseType: "text", headers: { "Content-Type": "application/json" } }).toPromise().then(res => {
         resolve(res);
       }).catch(err => {
-        console.error(err);
+        console.error("[generateSeedWeb] Web Error:", err);
         reject(err);
       });
     });
@@ -1019,6 +1017,6 @@ export class GUIGlobal {
     if (typeof (<any>window).patchROM === "function") //Try to call patchROM function on the DOM
       (<any>window).patchROM(5, settingsFile); //Patch Version 5
     else
-      console.error("Patcher not available");
+      console.error("[patchROMWeb] Patcher not available!");
   }
 }

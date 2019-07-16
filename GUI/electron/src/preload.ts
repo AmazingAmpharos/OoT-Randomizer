@@ -364,11 +364,11 @@ post.on('generateSeed', function (event) {
     post.send(window, 'generateSeedSuccess', res);
   }).catch((err) => {
 
-    if (err.includes("ImportError: No module named tkinter")) {
+    if (err.long.includes("ImportError: No module named tkinter")) {
       displayPythonErrorAndExit(true);
     }
 
-    if (err == "user_cancelled")
+    if (err.short == "user_cancelled")
       post.send(window, 'generateSeedCancelled'); 
     else
       post.send(window, 'generateSeedError', err);
@@ -393,7 +393,6 @@ generator.on("patchJobProgress", status => {
 
 
 //STARTUP
-
 //Test if we are in the proper path, else exit
 if (fs.existsSync(pythonGeneratorPath)) {
   electron.webFrame.executeJavaScript('window.apiPythonSourceFound = true;');

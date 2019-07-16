@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectorRef } from '@angular/core';
-import { NbDialogRef } from '@nebular/theme';
+import { NbDialogRef, NbDialogService } from '@nebular/theme';
+import { ErrorDetailsWindow } from '../errorDetailsWindow/errorDetailsWindow.component';
 
 @Component({
   template: `
@@ -14,6 +15,7 @@ import { NbDialogRef } from '@nebular/theme';
         <nb-progress-bar [value]="progressPercentage" [status]="progressStatus == 0 ? 'info': progressStatus == 1 ? 'success' : 'danger'" [displayValue]="true"></nb-progress-bar>
         <div *ngIf="progressPercentage == 100" class="footerButtonWrapper">
           <button nbButton [disabled]="cancellationInProgress" size="small" status="primary" (click)="cancelGeneration()">OK</button>
+          <button *ngIf="progressErrorDetails.length > 0" nbButton [disabled]="cancellationInProgress" size="small" status="danger" (click)="showErrorDetails()">Details</button>
         </div>
       </nb-card-body>
     </nb-card>
@@ -27,11 +29,12 @@ export class ProgressWindow {
   progressPercentage: number = 0;
   progressStatus: number = 0;
   progressMessage: string = "Starting.";
+  progressErrorDetails: string = "";
 
   cancellationInProgress: boolean = false;
   closed: boolean = false;
 
-  constructor(protected ref: NbDialogRef<ProgressWindow>, private cd: ChangeDetectorRef) {
+  constructor(protected ref: NbDialogRef<ProgressWindow>, private cd: ChangeDetectorRef, private dialogService: NbDialogService) {
   }
 
   refreshLayout() {
@@ -61,5 +64,12 @@ export class ProgressWindow {
       this.closed = true;
       this.ref.close();
     }
+  }
+
+  showErrorDetails() {
+    this.cancelGeneration();
+    this.dialogService.open(ErrorDetailsWindow, {
+      autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { errorMessage: this.progressErrorDetails }
+    });
   }
 }
