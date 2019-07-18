@@ -208,6 +208,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
             newrule = ast.fix_missing_locations(
                 ast.Expression(ast.Lambda(
                     args=ast.arguments(
+                        posonlyargs=[],
                         args=[ast.arg(arg='state')],
                         defaults=[],
                         kwonlyargs=[],
