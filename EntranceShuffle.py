@@ -151,6 +151,10 @@ entrance_shuffle_table = [
                         ('Temple of Time -> Temple of Time Exterior',                       { 'index': 0x0472 })),
     ('SpecialInterior', ('Kakariko Village -> Windmill',                                    { 'index': 0x0453 }),
                         ('Windmill -> Kakariko Village',                                    { 'index': 0x0351 })),
+    ('SpecialInterior', ('Kakariko Village -> Kakariko Potion Shop Front',                  { 'index': 0x0384 }),
+                        ('Kakariko Potion Shop Front -> Kakariko Village',                  { 'index': 0x044B })),
+    ('SpecialInterior', ('Kakariko Backyard -> Kakariko Potion Shop Back',                  { 'index': 0x03EC }),
+                        ('Kakariko Potion Shop Back -> Kakariko Backyard',                  { 'index': 0x04FF })),
 
     ('Grotto',          ('Desert Colossus -> Desert Colossus Grotto',                       { 'grotto_id': 0x00, 'entrance': 0x05BC, 'content': 0xFD, 'scene': 0x5C }),
                         ('Desert Colossus Grotto -> Desert Colossus',                       { 'grotto_id': 0x00 })),
@@ -557,6 +561,21 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             windmill_door_entrance = get_entrance_replacing(world.get_region('Windmill'), 'Kakariko Village -> Windmill')
             if not max_playthrough.state_list[world.id].as_both(windmill_door_entrance):
                 raise EntranceShuffleError('Windmill Door Entrance is never reachable as both ages')
+
+            # Potion Shop front door should be reachable as both ages at some point in the seed
+            potion_front_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Front'), 'Kakariko Village -> Kakariko Potion Shop Front')
+            if not max_playthrough.state_list[world.id].as_both(potion_front_entrance):
+                raise EntranceShuffleError('Adult Potion Front Entrance is never reachable as both ages')
+
+            # Potion Shop back door should be reachable as adult at some point in the seed
+            potion_back_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Back'), 'Kakariko Backyard -> Kakariko Potion Shop Back')
+            if not max_playthrough.state_list[world.id].as_age(potion_back_entrance, adult=True):
+                raise EntranceShuffleError('Adult Potion Back Entrance is never reachable as Adult')
+
+            if  potion_front_entrance.parent_region.hint is not None and \
+                potion_back_entrance.parent_region.hint is not None and \
+                potion_front_entrance.parent_region.hint != potion_back_entrance.parent_region.hint:
+                raise EntranceShuffleError('Adult Potion Shop Entrances not in same hint region')
 
         # At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
         no_items_playthrough = Playthrough([State(world) for world in worlds])
