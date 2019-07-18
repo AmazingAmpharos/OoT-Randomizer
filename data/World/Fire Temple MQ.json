@@ -13,7 +13,7 @@
                         can_use(Bow) or (Progressive_Hookshot, 2)))))"
         },
         "exits": {
-            "Death Mountain Crater Central": "True",
+            "Fire Temple Entrance": "True",
             "Fire Boss Room": "
                 has_fire_source and can_use(Goron_Tunic) and can_use(Hammer) and Boss_Key_Fire_Temple and
                 (logic_volvagia_jump or Hover_Boots or at('Fire Temple Upper', True))",
