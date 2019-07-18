@@ -22,6 +22,8 @@
         "region_name": "Child Spirit Temple",
         "dungeon": "Spirit Temple",
         "locations": {
+            "Spirit Temple MQ Child Center Chest": "
+                at('Adult Spirit Temple', (Small_Key_Spirit_Temple, 7) and Hammer)",
             "Spirit Temple MQ Child Left Chest": "
                 (has_sticks or Kokiri_Sword) and 
                 has_bombchus and has_slingshot and can_use(Dins_Fire)",
@@ -42,8 +44,6 @@
         "region_name": "Adult Spirit Temple",
         "dungeon": "Spirit Temple",
         "locations": {
-            "Spirit Temple MQ Child Center Chest": "
-                (Small_Key_Spirit_Temple, 7) and Hammer and can_play(Requiem_of_Spirit)",
             "Spirit Temple MQ Child Climb South Chest": "(Small_Key_Spirit_Temple, 7)",
             "Spirit Temple MQ Lower NE Main Room Chest": "can_play(Zeldas_Lullaby)",
             "Spirit Temple MQ Upper NE Main Room Chest": "can_see_with_lens",
