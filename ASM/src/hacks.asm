@@ -1092,6 +1092,11 @@ skip_GS_BGS_text:
 .orga 0xAD193C ; 0x8005B9DC
     b . + 0x4C
 
+
+;==================================================================================================
+; Extended Objects Table 
+;==================================================================================================
+
 ; extends object table lookup for on chest open
 .org 0xBD6958
     jal extended_object_lookup_GI
@@ -1103,6 +1108,14 @@ skip_GS_BGS_text:
     jal extended_object_lookup_load
     subu    t7, r0, a2
     lw      ra, 0x0C (sp)
+
+; extends object table lookup for shop item load
+.org 0xAF74F8
+    sw      ra, 0x44 (sp)
+    jal extended_object_lookup_shop
+    nop
+    lw      ra, 0x44 (sp)
+
 ;==================================================================================================
 ; Cow Shuffle
 ;==================================================================================================

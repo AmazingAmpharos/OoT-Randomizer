@@ -24,3 +24,19 @@ extended_object_lookup_load:
     ADDIU   A2, A2, -0x193
     
 
+extended_object_lookup_shop:
+    LH      T9, 0x00(S0) ; displaced
+    LW      A1, 0x04(S0) ; displaced
+    ADDIU   A0, S0, 0x08 ; displaced
+    SUBU    T0, R0, T9 ; displaced
+
+    BGE     T0, 0x192, @@extended_item
+    nop
+    @@normal_item:
+    LUI     S3, 0x8010
+    JR RA
+    ADDIU   S3, S3, 0x8FF8
+    @@extended_item:
+    LA      S3, EXTENDED_OBJECT_TABLE
+    JR      RA
+    ADDIU   T0, T0, -0x193
