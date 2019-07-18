@@ -775,6 +775,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         # Prevent the ocarina cutscene from leading straight to hyrule field
         rom.write_byte(rom.sym('OCARINAS_SHUFFLED'), 1)
 
+        # Disable trade quest timers
+        rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
+
         # Disable the fog state entirely to avoid fog glitches
         rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
 
@@ -831,6 +834,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         #Purge temp flags on entrance to spirit from colossus through the front
         #door.
         rom.write_byte(0x021862E3, 0xC2)
+
+        # Disable the fog state entirely to avoid fog glitches
+        rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
 
         set_entrance_updates(world.get_shuffled_entrances(type='Dungeon'))
 
