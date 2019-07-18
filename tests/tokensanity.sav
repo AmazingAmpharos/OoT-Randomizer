@@ -39,7 +39,7 @@
 "shuffle_smallkeys": "dungeon",
 "shuffle_bosskeys": "dungeon",
 "enhance_map_compass": false,
-"unlocked_ganondorf": false,
+"shuffle_ganon_bosskey": "dungeon"
 "mq_dungeons_random": false,
 "mq_dungeons": 0,
 "disabled_locations": [

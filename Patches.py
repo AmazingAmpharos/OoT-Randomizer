@@ -980,6 +980,17 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     elif world.bridge == 'tokens':
         rom.write_int32(symbol, 5)
 
+    # Set up LACS conditions.
+    symbol = rom.sym('LACS_CONDITION')
+    if world.lacs_condition == 'medallions':
+        rom.write_int32(symbol, 1)
+    elif world.lacs_condition == 'dungeons':
+        rom.write_int32(symbol, 2)
+    elif world.lacs_condition == 'stones':
+        rom.write_int32(symbol, 3)
+    else:
+        rom.write_int32(symbol, 0)
+
     if world.open_forest == 'open':
         save_context.write_bits(0xED5, 0x10) # "Showed Mido Sword & Shield"
 
@@ -994,8 +1005,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_byte(symbol, 0x01)
     else:
         rom.write_byte(symbol, 0x00)
-    if world.unlocked_ganondorf:
-        save_context.write_bits(0x00D4 + 0x0A * 0x1C + 0x04 + 0x1, 0x10) # Ganon's Tower switch flag (unlock boss key door)
     if world.skipped_trials['Forest']:
         save_context.write_bits(0x0EEA, 0x08) # "Completed Forest Trial"
     if world.skipped_trials['Fire']:
@@ -1480,7 +1489,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         # Change first magic bean to cost 60 (is used as the price for the one time item when beans are shuffled)
         rom.write_byte(0xE209FD, 0x3C)
 
-    if world.shuffle_smallkeys == 'remove' or world.shuffle_bosskeys == 'remove':
+    if world.shuffle_smallkeys == 'remove' or world.shuffle_bosskeys == 'remove' or world.shuffle_ganon_bosskey == 'remove':
         locked_doors = get_locked_doors(rom, world)
         for _,[door_byte, door_bits] in locked_doors.items():
             save_context.write_bits(door_byte, door_bits)
@@ -1880,7 +1889,7 @@ def get_locked_doors(rom, world):
                 return [0x00D4 + scene * 0x1C + 0x04 + flag_byte, flag_bits]
 
         # If boss door, set the door's unlock flag
-        if world.shuffle_bosskeys == 'remove':
+        if (world.shuffle_bosskeys == 'remove' and scene != 0x0A) or (world.shuffle_ganon_bosskey == 'remove' and scene == 0x0A):
             if actor_id == 0x002E and actor_type == 0x05:
                 return [0x00D4 + scene * 0x1C + 0x04 + flag_byte, flag_bits]
 

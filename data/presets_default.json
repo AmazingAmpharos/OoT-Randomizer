@@ -33,7 +33,7 @@
         "shuffle_smallkeys": "dungeon",
         "shuffle_bosskeys": "dungeon",
         "enhance_map_compass": false,
-        "unlocked_ganondorf": true,
+        "shuffle_ganon_bosskey": "remove",
         "tokensanity": "off",
         "mq_dungeons_random": false,
         "mq_dungeons": 0,
@@ -93,7 +93,7 @@
         "shuffle_smallkeys": "dungeon",
         "shuffle_bosskeys": "dungeon",
         "enhance_map_compass": false,
-        "unlocked_ganondorf": true,
+        "shuffle_ganon_bosskey": "remove",
         "mq_dungeons_random": false,
         "mq_dungeons": 0,
         "disabled_locations": [
@@ -154,7 +154,7 @@
         "shuffle_smallkeys": "dungeon",
         "shuffle_bosskeys": "dungeon",
         "enhance_map_compass": false,
-        "unlocked_ganondorf": true,
+        "shuffle_ganon_bosskey": "remove",
         "mq_dungeons_random": false,
         "mq_dungeons": 0,
         "disabled_locations": [
