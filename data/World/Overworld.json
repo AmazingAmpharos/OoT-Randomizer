@@ -1011,7 +1011,7 @@
         },
         "locations": {
             "Hookshot Chest": "True",
-            "Dampe Race Freestanding PoH": "True",
+            "Dampe Race Freestanding PoH": "is_adult or logic_child_dampe_poh",
             "Nut Pot": "True"
         },
         "exits": {

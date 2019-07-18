@@ -709,6 +709,13 @@ logic_tricks = {
                     Arrows, but you must be very quick, precise,
                     and strategic with how you take your shots.
                     '''},
+    'Dampe PoH as Child': {
+        'name'    : 'logic_child_dampe_poh',
+        'tooltip' : '''\
+                    It is possible to complete the second dampe
+                    race as child in under a minute, but it is
+                    a very strict time limit.
+                    '''},
 }
 
 
