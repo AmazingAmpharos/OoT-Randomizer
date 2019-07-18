@@ -56,8 +56,8 @@ entrance_shuffle_table = [
                         ('Jabu Jabus Belly Beginning -> Zoras Fountain',                    { 'index': 0x0221, 'blue_warp': 0x010E })),
     ('Dungeon',         ('Sacred Forest Meadow -> Forest Temple Lobby',                     { 'index': 0x0169 }),
                         ('Forest Temple Lobby -> Sacred Forest Meadow',                     { 'index': 0x0215, 'blue_warp': 0x0608 })),
-    ('Dungeon',         ('Death Mountain Crater Central -> Fire Temple Lower',              { 'index': 0x0165 }),
-                        ('Fire Temple Lower -> Death Mountain Crater Central',              { 'index': 0x024A, 'blue_warp': 0x0564 })),
+    ('Dungeon',         ('Fire Temple Entrance -> Fire Temple Lower',                       { 'index': 0x0165 }),
+                        ('Fire Temple Lower -> Fire Temple Entrance',                       { 'index': 0x024A, 'blue_warp': 0x0564 })),
     ('Dungeon',         ('Lake Hylia -> Water Temple Lobby',                                { 'index': 0x0010 }),
                         ('Water Temple Lobby -> Lake Hylia',                                { 'index': 0x021D, 'blue_warp': 0x060C })),
     ('Dungeon',         ('Desert Colossus -> Spirit Temple Lobby',                          { 'index': 0x0082 }),
@@ -137,8 +137,8 @@ entrance_shuffle_table = [
                         ('Hyrule Castle Fairy -> Castle Grounds',                           { 'index': 0x0340, 'dynamic_address': 0xBEFD80 })),
     ('Interior',        ('Ganons Castle Grounds -> Ganons Castle Fairy',                    { 'index': 0x04C2 }),
                         ('Ganons Castle Fairy -> Castle Grounds',                           { 'index': 0x0340, 'dynamic_address': 0xBEFD6C })),
-    ('Interior',        ('Death Mountain Crater Lower -> Crater Fairy',                     { 'index': 0x04BE }),
-                        ('Crater Fairy -> Death Mountain Crater Lower',                     { 'index': 0x0482, 'dynamic_address': 0xBEFD6A })),
+    ('Interior',        ('Death Mountain Crater Lower Nearby -> Crater Fairy',              { 'index': 0x04BE }),
+                        ('Crater Fairy -> Death Mountain Crater Lower Local',               { 'index': 0x0482, 'dynamic_address': 0xBEFD6A })),
     ('Interior',        ('Death Mountain Summit -> Mountain Summit Fairy',                  { 'index': 0x0315 }),
                         ('Mountain Summit Fairy -> Death Mountain Summit',                  { 'index': 0x045B, 'dynamic_address': 0xBEFD68 })),
     ('Interior',        ('Zoras Fountain -> Zoras Fountain Fairy',                          { 'index': 0x0371 }),
@@ -161,10 +161,10 @@ entrance_shuffle_table = [
                         ('Zora River Plateau Bombable Grotto -> Zora River',                { 'grotto_id': 0x03 })),
     ('Grotto',          ('Zora River -> Zora River Plateau Open Grotto',                    { 'grotto_id': 0x04, 'entrance': 0x003F, 'content': 0x29, 'scene': 0x54 }),
                         ('Zora River Plateau Open Grotto -> Zora River',                    { 'grotto_id': 0x04 })),
-    ('Grotto',          ('Death Mountain Crater Lower -> DMC Hammer Grotto',                { 'grotto_id': 0x05, 'entrance': 0x05A4, 'content': 0xF9, 'scene': 0x61 }),
-                        ('DMC Hammer Grotto -> Death Mountain Crater Lower',                { 'grotto_id': 0x05 })),
-    ('Grotto',          ('Death Mountain Crater Upper -> Top of Crater Grotto',             { 'grotto_id': 0x06, 'entrance': 0x003F, 'content': 0x7A, 'scene': 0x61 }),
-                        ('Top of Crater Grotto -> Death Mountain Crater Upper',             { 'grotto_id': 0x06 })),
+    ('Grotto',          ('Death Mountain Crater Lower Nearby -> DMC Hammer Grotto',         { 'grotto_id': 0x05, 'entrance': 0x05A4, 'content': 0xF9, 'scene': 0x61 }),
+                        ('DMC Hammer Grotto -> Death Mountain Crater Lower Local',          { 'grotto_id': 0x05 })),
+    ('Grotto',          ('Death Mountain Crater Upper Nearby -> Top of Crater Grotto',      { 'grotto_id': 0x06, 'entrance': 0x003F, 'content': 0x7A, 'scene': 0x61 }),
+                        ('Top of Crater Grotto -> Death Mountain Crater Upper Local',       { 'grotto_id': 0x06 })),
     ('Grotto',          ('Goron City -> Goron City Grotto',                                 { 'grotto_id': 0x07, 'entrance': 0x05A4, 'content': 0xFB, 'scene': 0x62 }),
                         ('Goron City Grotto -> Goron City',                                 { 'grotto_id': 0x07 })),
     ('Grotto',          ('Death Mountain -> Mountain Storms Grotto',                        { 'grotto_id': 0x08, 'entrance': 0x003F, 'content': 0x57, 'scene': 0x60 }),
@@ -272,10 +272,10 @@ entrance_shuffle_table = [
                         ('Death Mountain -> Kakariko Village Behind Gate',                  { 'index': 0x0191 })),
     ('Overworld',       ('Death Mountain -> Goron City',                                    { 'index': 0x014D }),
                         ('Goron City -> Death Mountain',                                    { 'index': 0x01B9 })),
-    ('Overworld',       ('Darunias Chamber -> Death Mountain Crater Lower',                 { 'index': 0x0246 }),
-                        ('Death Mountain Crater Lower -> Darunias Chamber',                 { 'index': 0x01C1 })),
-    ('Overworld',       ('Death Mountain Summit -> Death Mountain Crater Upper',            { 'index': 0x0147 }),
-                        ('Death Mountain Crater Upper -> Death Mountain Summit',            { 'index': 0x01BD })),
+    ('Overworld',       ('Darunias Chamber -> Death Mountain Crater Lower Local',           { 'index': 0x0246 }),
+                        ('Death Mountain Crater Lower Nearby -> Darunias Chamber',          { 'index': 0x01C1 })),
+    ('Overworld',       ('Death Mountain Summit -> Death Mountain Crater Upper Local',      { 'index': 0x0147 }),
+                        ('Death Mountain Crater Upper Nearby -> Death Mountain Summit',     { 'index': 0x01BD })),
     ('Overworld',       ('Zora River Behind Waterfall -> Zoras Domain',                     { 'index': 0x0108 }),
                         ('Zoras Domain -> Zora River Behind Waterfall',                     { 'index': 0x019D })),
     ('Overworld',       ('Zoras Domain Behind King Zora -> Zoras Fountain',                 { 'index': 0x0225 }),
@@ -336,6 +336,8 @@ def shuffle_random_entrances(worlds):
             # not really a closed forest anymore, so specifically remove Deku Tree from closed forest.
             if worlds[0].open_forest == 'closed':
                 entrance_pools['Dungeon'].remove(world.get_entrance('Outside Deku Tree -> Deku Tree Lobby'))
+                world.get_entrance('Outside Deku Tree -> Deku Tree Lobby').shuffled = False
+                world.get_entrance('Deku Tree Lobby -> Outside Deku Tree').shuffled = False
 
         if worlds[0].shuffle_interior_entrances:
             entrance_pools['Interior'] = entrance_instances(world, get_entrance_pool('Interior')) + entrance_pools.get('SpecialInterior', [])

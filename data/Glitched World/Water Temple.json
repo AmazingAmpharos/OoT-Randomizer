@@ -10,7 +10,7 @@
                     (can_use(Hover_Boots) and (can_mega or Hammer)))
                 and (Small_Key_Water_Temple,5)",
             "Under Entrance Block": "can_use(Hookshot) and Iron_Boots",
-            "Central Pillar": "can_use(Hookshot) and Iron_Boots and
+            "Central Pillar from Lobby": "can_use(Hookshot) and Iron_Boots and
                 (Small_Key_Water_Temple,5)",
             "Compass Room": "can_use(Iron_Boots) and can_use(Hookshot)",
             "Ruto Column": "can_use(Iron_Boots) or can_use(Longshot) or can_jumpslash"
@@ -83,12 +83,19 @@
         }
     },
     {
+        "region_name": "Central Pillar from Lobby",
+        "dungeon": "Water Temple",
+        "exits": {
+            "Central Pillar": "True"
+        }
+    },
+    {
         "region_name": "Central Pillar",
         "dungeon": "Water Temple",
         "locations": {
             "Water Temple Central Pillar Chest": "can_use(Iron_Boots) and can_use(Hookshot) and
-                (can_reach('Water Temple Lobby -> Central Pillar', Entrance, either) or can_play(Zeldas_Lullaby))",
-            "GS Water Temple Central Room": "can_reach('Water Temple Lobby -> Central Pillar', Entrance, either) or
+                (at('Central Pillar from Lobby', True) or can_play(Zeldas_Lullaby))",
+            "GS Water Temple Central Room": "at('Central Pillar from Lobby', True) or
                 can_use(Longshot) or
                 at('High Alcove',
                     can_use(Farores_Wind) and can_play(Zeldas_Lullaby)

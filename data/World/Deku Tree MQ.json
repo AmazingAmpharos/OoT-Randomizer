@@ -20,7 +20,7 @@
                 here(has_fire_source_with_torch or can_use(Bow))",
             "Deku Tree Basement Water Room": "
                 here(can_use(Slingshot) or can_use(Bow)) and has_fire_source_with_torch",
-            "Deku Tree Basement Ledge": "here(is_adult)"
+            "Deku Tree Basement Ledge": "logic_deku_b1_skip or here(is_adult)"
         }
     },
     {

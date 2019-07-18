@@ -132,6 +132,14 @@ logic_tricks = {
                     Silver Rupee Chest. May need to make multiple
                     trips.
                     '''},
+    'Pass Through Visible One-Way Collisions': {
+        'name'    : 'logic_visible_collisions',
+        'tooltip' : '''\
+                    Allows climbing through the platform to reach 
+                    Impa's House Back as adult with no items and 
+                    going through the Kakariko Village Gate as child
+                    when coming from the Mountain Trail side.
+                    '''},
     'Child Deadhand without Kokiri Sword': {
         'name'    : 'logic_child_deadhand',
         'tooltip' : '''\
@@ -164,6 +172,22 @@ logic_tricks = {
         'name'    : 'logic_deku_basement_gs',
         'tooltip' : '''\
                     Can be defeated by doing a precise jump slash.
+                    '''},
+    'Deku Tree Basement Webs with Bow': {
+        'name'    : 'logic_deku_b1_webs_with_bow',
+        'tooltip' : '''\
+                    All spider web walls in Deku Tree basement can be burnt
+                    by adult using just a bow shooting through torches. Applies
+                    to the web obstructing the door to the single scrub room,
+                    the web obstrcuting the bombable wall in the back room
+                    and the circular floor web dropping to Gohma.
+
+                    For the cicular web dropping to Gohma, backflip onto the
+                    chest near the torch at the bottom of the vine wall. With a
+                    precise position you can shoot throught the torch to the
+                    right edge of the circular web.
+
+                    This allows complete adult Deku Tree with no fire source.
                     '''},
     'Hammer Rusted Switches Through Walls': {
         'name'    : 'logic_rusted_switches',
@@ -284,6 +308,13 @@ logic_tricks = {
                     curves through the side of the glass block
                     to hit the Gold Skulltula.
                     '''},
+    'Jabu Scrub as Adult with Jump Dive': {
+        'name'    : 'logic_jabu_scrub_jump_dive',
+        'tooltip' : '''\
+                    Standing above the underwater tunnel leading to the scrub,
+                    jump down and swim through the tunnel. This allows adult to
+                    access the scrub with no Scale or Iron Boots.
+                    '''},
     'Jabu MQ Song of Time Block GS with Boomerang': {
         'name'    : 'logic_jabu_mq_sot_gs',
         'tooltip' : '''\
@@ -362,8 +393,8 @@ logic_tricks = {
                     With a specific position and angle, you can
                     backflip over Mido.
                     '''},
-    'Reach Volvagia without Hover Boots or Pillar': {
-        'name'    : 'logic_volvagia_jump',
+    'Fire Temple Boss Door without Hover Boots or Pillar': {
+        'name'    : 'logic_fire_boss_door_jump',
         'tooltip' : '''\
                     The Fire Temple Boss Door can be reached with a precise
                     jump. You must be touching the side wall of the room so
@@ -532,6 +563,177 @@ logic_tricks = {
         'name'    : 'logic_ice_mq_scarecrow',
         'tooltip' : '''\
                     A precise jump can be used to reach this alcove.
+                    '''},
+    'Zora\'s River Upper Freestanding PoH as Adult with Nothing': {
+        'name'    : 'logic_zora_river_upper',
+        'tooltip' : '''\
+                    Adult can reach this PoH with a precise jump,
+                    no Hover Boots required.
+                    '''},
+    'Shadow Temple MQ Truth Spinner Gap with Longshot': {
+        'name'    : 'logic_shadow_mq_gap',
+        'tooltip' : '''\
+                    You can Longshot a torch and jumpslash-recoil onto
+                    the tongue. It works best if you Longshot the right
+                    torch from the left side of the room.
+                    '''},
+    'Lost Woods Adult GS without Bean': {
+        'name'    : 'logic_lost_woods_gs_bean',
+        'tooltip' : '''\
+                    You can collect the token with a precise
+                    Hookshot use, as long as you can kill the
+                    Skulltula somehow first. It can be killed
+                    using Longshot, Bow, Bombchus or Din's Fire.
+                    '''},
+    'Graveyard Freestanding PoH with Boomerang': {
+        'name'    : 'logic_graveyard_poh',
+        'tooltip' : '''\
+                    Using a precise moving setup you can obtain
+                    the Piece of Heart by having the Boomerang
+                    interact with it along the return path.
+                    '''},
+    'Death Mountain Trail Soil GS without Destroying Boulder': {
+        'name'    : 'logic_dmt_soil_gs',
+        'tooltip' : '''\
+                    Bugs will go into the soft soil even while the boulder is
+                    still blocking the entrance.
+                    Then, using a precise moving setup you can kill the Gold
+                    Skulltula and obtain the token by having the Boomerang
+                    interact with it along the return path.
+                    '''},
+    'Gerudo Training Grounds Left Side Silver Rupees without Hookshot': {
+        'name'    : 'logic_gtg_without_hookshot',
+        'tooltip' : '''\
+                    After collecting the rest of the silver rupees in the room,
+                    you can reach the final silver rupee on the ceiling by being
+                    pulled up into it after getting grabbed by the Wallmaster.
+                    Then, you must also reach the exit of the room without the
+                    use of the Hookshot. If you move quickly you can sneak past
+                    the edge of a flame wall before it can rise up to block you.
+                    To do so without taking damage is more precise.
+                    '''},
+    'Gerudo Training Grounds MQ Left Side Silver Rupees without Hookshot': {
+        'name'    : 'logic_gtg_mq_without_hookshot',
+        'tooltip' : '''\
+                    After collecting the rest of the silver rupees in the room,
+                    you can reach the final silver rupee on the ceiling by being
+                    pulled up into it after getting grabbed by the Wallmaster.
+                    The Wallmaster will not track you to directly underneath the
+                    rupee. You should take the last step to be under the rupee
+                    after the Wallmaster has begun its attempt to grab you.
+                    Also included with this trick is that fact that the switch
+                    that unbars the door to the final chest of GTG can be hit
+                    without a projectile, using a precise jumpslash.
+                    This trick supersedes "Gerudo Training Grounds MQ Left Side
+                    Silver Rupees with Hookshot".
+                    '''},
+    'Reach Gerudo Training Grounds Fake Wall Ledge with Hover Boots': {
+        'name'    : 'logic_gtg_fake_wall',
+        'tooltip' : '''\
+                    A precise Hover Boots use from the top of the chest can allow
+                    you to grab the ledge without needing the usual requirements.
+                    In Master Quest, this always skips a Song of Time requirement.
+                    In Vanilla, this skips a Hookshot requirement, but is only
+                    relevant if "Gerudo Training Grounds Left Side Silver Rupees
+                    without Hookshot" is enabled.
+                    '''},
+    'Water Temple Boss Key Jump Dive': {
+        'name'    : 'logic_water_bk_jump_dive',
+        'tooltip' : '''\
+                    Stand on the very edge of raised corridor leading from the
+                    push block room to the rolling boulder corridor. Face the
+                    gold skulltula on the waterfall and jump over the boulder
+                    corridor floor into the pool of water, swimming right once
+                    underwater. This allows access to the boss key room without
+                    Iron boots. 
+                    '''},
+    'Water Temple Cracked Wall with No Additional Items': {
+        'name'    : 'logic_water_cracked_wall_nothing',
+        'tooltip' : '''\
+                    A precise jumpslash (among other methods) will
+                    get you to the cracked wall without needing the
+                    Hover Boots or to raise the water to the middle
+                    level. This trick supersedes "Water Temple
+                    Cracked Wall with Hover Boots".
+                    '''},
+    'Water Temple North Basement Ledge with Precise Jump': {
+        'name'    : 'logic_water_north_basement_ledge_jump',
+        'tooltip' : '''\
+                    In the northern basement there's a ledge from where, in
+                    vanilla Water Temple, boulders roll out into the room.
+                    Normally to jump directly to this ledge logically
+                    requires the Hover Boots, but with precise jump, it can
+                    be done without them. This trick supersedes "Water Temple
+                    Boss Key Chest with Iron Boots" and applies to both
+                    Vanilla and Master Quest.
+                    '''},
+    'Water Temple Torch Longshot': {
+        'name'    : 'logic_water_temple_torch_longshot',
+        'tooltip' : '''\
+                    Stand on the eastern side of the central pillar and longshot
+                    the torches on the bottom level. Swim through the corridor
+                    and float up to the top level. This allows access to this
+                    area and lower water levels without Iron Boots.
+                    '''},
+    'Goron City Leftmost Maze Chest with Hover Boots': {
+        'name'    : 'logic_goron_city_leftmost',
+        'tooltip' : '''\
+                    A precise backwalk starting from on top of the
+                    crate and ending with a precisely-timed backflip
+                    can reach this chest without needing either
+                    the Hammer or Silver Gauntlets.
+                    '''},
+    'Deku Tree Basement without Slingshot': {
+        'name'    : 'logic_deku_b1_skip',
+        'tooltip' : '''\
+                    A precise jump can be used to skip
+                    needing to use the Slingshot to go
+                    around B1 of the Deku Tree. If used
+                    with the "Closed Forest" setting, a
+                    Slingshot will not be guaranteed to
+                    exist somewhere inside the Forest.
+                    This trick applies to both Vanilla
+                    and Master Quest.
+                    '''},
+    'Forest Temple Scarecrow Route': {
+        'name'    : 'logic_forest_scarecrow',
+        'tooltip' : '''\
+                    From on top of the door frame in the NE
+                    courtyard, you can summon Pierre. You
+                    can get there with a precise Hover Boots
+                    movement. You will take fall damage.
+                    This allows you to reach the falling
+                    ceiling room early.
+                    '''},
+    'Spirit Trial without Hookshot': {
+        'name'    : 'logic_spirit_trial_hookshot',
+        'tooltip' : '''\
+                    A precise jump off of an Armos can
+                    collect the highest rupee.
+                    '''},
+    'Shadow Temple Stone Umbrella Skip': {
+        'name'    : 'logic_shadow_umbrella',
+        'tooltip' : '''\
+                    A very precise Hover Boots movement
+                    from off of the lower chest can get you
+                    on top of the crushing spikes without
+                    needing to pull the block. Applies to
+                    both Vanilla and Master Quest.
+                    '''},
+    'Shadow Temple Entry with Fire Arrows': {
+        'name'    : 'logic_shadow_fire_arrow_entry',
+        'tooltip' : '''\
+                    It is possible to light all of the torches to
+                    open the Shadow Temple entrance with just Fire
+                    Arrows, but you must be very quick, precise,
+                    and strategic with how you take your shots.
+                    '''},
+    'Second Dampe Race as Child': {
+        'name'    : 'logic_child_dampe_race_poh',
+        'tooltip' : '''\
+                    It is possible to complete the second dampe
+                    race as child in under a minute, but it is
+                    a very strict time limit.
                     '''},
 }
 
@@ -1150,11 +1352,27 @@ setting_infos = [
         ''',
         shared         = True,
     ),
-	Checkbutton(
-		name           = 'fast_chickens',
-        gui_text       = 'Fast Chickens',
+    Checkbutton(
+        name           = 'chicken_count_random',
+        gui_text       = 'Random Cucco Count',
         gui_tooltip    = '''\
-            Moves all except the Chicken near the pen into the pen.
+            Anju will give a reward for collecting a random
+            number of Cuccos.
+        ''',
+        disable        = {
+            True : {'settings' : ['chicken_count']}
+        },        
+        shared         = True,
+    ),
+    Scale(
+        name           = 'chicken_count',
+        gui_text       = 'Cucco Count',
+        default        = 7,
+        min            = 0,
+        max            = 7,
+        gui_tooltip    = '''\
+            Anju will give a reward for turning
+            in the chosen number of Cuccos.
         ''',
         shared         = True,
     ),
@@ -1561,6 +1779,58 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
+    Combobox(
+        name           = 'shuffle_ganon_bosskey',
+        gui_text       = 'Ganon\'s Boss Keys',
+        default        = 'dungeon',
+        choices        = {
+            'remove':          "Remove",
+            'dungeon':         "Dungeon Only",
+            'vanilla':         "Vanilla",
+            'keysanity':       "Anywhere",
+            'lacs_vanilla':    "On LACS: Vanilla",
+            'lacs_medallions': "On LACS: Medallions",
+            'lacs_stones':     "On LACS: Stones",
+            'lacs_dungeons':   "On LACS: Dungeons",
+        },
+        gui_tooltip    = '''\
+            'Remove': Ganon's Castle Boss Key is removed
+            and the boss door in Ganon's Tower starts unlocked.
+
+            'Dungeon': Ganon's Castle Boss Key can only appear
+            inside Ganon's Castle.
+
+            'Vanilla': Ganon's Castle Boss Key will appear in 
+            the vanilla location.
+
+            'Anywhere': Ganon's Castle Boss Key can appear
+            anywhere in the world.
+            
+            'On LACS': These settings put the boss key on the
+            Light Arrow Cutscene location, from Zelda in Temple
+            of Time as adult, with differing requirements.
+            
+            'On LACS: Vanilla': Shadow and Spirit Medallions.
+            'On LACS: Medallions': All 6 Medallions.
+            'On LACS: Stones': All 3 Spiritual Stones.
+            'On LACS: Dungeons': All Spiritual Stones & Medallions.
+            
+        ''',
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+            'distribution': [
+                ('remove',          4),
+                ('dungeon',         2),
+                ('vanilla',         2),
+                ('keysanity',       4),
+                ('lacs_vanilla',    1),
+                ('lacs_medallions', 1),
+                ('lacs_stones',     1),
+                ('lacs_dungeons',   1),
+            ],            
+        },
+    ),
     Checkbutton(
         name           = 'enhance_map_compass',
         gui_text       = 'Maps and Compasses Give Information',
@@ -1578,21 +1848,6 @@ setting_infos = [
             is available immediately from the dungeon menu.
         ''',
         default        = False,
-        shared         = True,
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-        },
-    ),
-    Checkbutton(
-        name           = 'unlocked_ganondorf',
-        gui_text       = 'Remove Ganon\'s Boss Door Lock',
-        gui_tooltip    = '''\
-            The Boss Key door in Ganon's Tower
-            will start unlocked. This is intended
-            to be used with reduced trial
-            requirements to make it more likely
-            that skipped trials can be avoided.
-        ''',
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -1917,12 +2172,12 @@ setting_infos = [
         choices        = {
             'default':       'Default',
             'random':        'Random Choice',
-            'early-morning': 'Early Morning',
+            'sunrise':       'Sunrise',
             'morning':       'Morning',
             'noon':          'Noon',
             'afternoon':     'Afternoon',
+            'sunset':        'Sunset',
             'evening':       'Evening',
-            'dusk':          'Dusk',
             'midnight':      'Midnight',
             'witching-hour': 'Witching Hour',
         },
@@ -1933,7 +2188,6 @@ setting_infos = [
             nighttime at 18:00 (6:00 PM).
 
             Default is 10:00 in the morning.
-            The alternatives are multiples of 3 hours.
         ''',
         shared         = True,
     ),

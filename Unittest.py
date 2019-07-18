@@ -20,9 +20,9 @@ logging.basicConfig(level=logging.INFO, filename=os.path.join(output_dir, 'LAST_
 # items never required:
 # refills, maps, compasses, capacity upgrades, masks (not listed in logic)
 never_prefix = ['Bombs', 'Arrows', 'Rupee', 'Deku Seeds', 'Map', 'Compass']
-never_suffix = ['Mask', 'Capacity']
+never_suffix = ['Capacity']
 never = {
-    'Bunny Hood', 'Mask of Truth', 'Recovery Heart', 'Milk', 'Ice Arrows', 'Ice Trap',
+    'Bunny Hood', 'Recovery Heart', 'Milk', 'Ice Arrows', 'Ice Trap',
     'Double Defense', 'Biggoron Sword',
 } | {item for item, (t, adv, _, special) in item_table.items() if adv is False
      or any(map(item.startswith, never_prefix)) or any(map(item.endswith, never_suffix))}

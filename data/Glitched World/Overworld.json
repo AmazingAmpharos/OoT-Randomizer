@@ -37,7 +37,7 @@
                 is_adult and at_night and 
                 (can_use(Hookshot) or can_use(Hover_Boots) or can_isg)",
             "Kokiri Forest Gossip Stone": "True",
-            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
+            "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle"
         },
         "exits": {
             "Links House": "True",
@@ -356,7 +356,8 @@
         "locations": {
             "Colossus Freestanding PoH": "
                 (is_adult and here(can_plant_bean)) or
-                at('Spirit Temple Outdoor Hands', can_mega)",
+                at('Mirror Shield Hand', can_mega) or
+                at('Silver Gauntlets Hand', can_mega)",
             "Sheik at Colossus": "True",
             "GS Desert Colossus Bean Patch": "can_plant_bugs and can_child_attack",
             "GS Desert Colossus Tree": "can_use(Hookshot) and at_night",
@@ -406,7 +407,17 @@
         "region_name": "Temple of Time",
         "hint": "Temple of Time",
         "locations": {
-            "Zelda": "Shadow_Medallion and Spirit_Medallion and is_adult"
+            "Zelda": "is_adult and
+                ((lacs_condition == 'vanilla' and Shadow_Medallion and Spirit_Medallion)
+                or (lacs_condition == 'medallions' and
+                    Forest_Medallion and Fire_Medallion and Water_Medallion and
+                    Shadow_Medallion and Spirit_Medallion and Light_Medallion)
+                or (lacs_condition == 'dungeons' and
+                    Forest_Medallion and Fire_Medallion and Water_Medallion and
+                    Shadow_Medallion and Spirit_Medallion and Light_Medallion and
+                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)
+                or (lacs_condition == 'stones' and
+                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire))"
         },
         "exits": {
             "Castle Town": "True",
@@ -519,7 +530,14 @@
         }
     },
     {
-        "region_name": "Castle Town Mask Shop"
+        "region_name": "Castle Town Mask Shop",
+        "events": {
+            "Skull Mask": "at('Kakariko Village', is_child and Zeldas_Letter)",
+            "Mask of Truth": "'Skull Mask' and
+                at('Lost Woods', is_child and can_play(Sarias_Song)) and
+                at('Graveyard', is_child and at_day) and
+                at('Hyrule Field', is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)"
+        }
     },
     {
         "region_name": "Castle Town Shooting Gallery",
@@ -796,7 +814,13 @@
         "time_passes": true,
         "locations": {
             "Biggoron": "
-                is_adult and can_finish_adult_trades and guarantee_hint",
+                is_adult and guarantee_hint and
+                (Claim_Check or (
+                    at('Death Mountain Crater Upper', is_adult) and
+                    at('Zoras Domain', is_adult) and (
+                        Eyedrops or Eyeball_Frog or Prescription or Broken_Sword or
+                        at('Gerudo Valley Far Side', is_adult and (
+                            Poachers_Saw or Odd_Mushroom or Cojiro or Pocket_Cucco or Pocket_Egg)))))",
             "Death Mountain Trail Gossip Stone": "True"
         },
         "exits": {
@@ -1119,8 +1143,7 @@
         "dungeon": "Ganons Castle",
         "locations": {
             "Ganons Tower Boss Key Chest": "True",
-            "Ganon": "
-                (Boss_Key_Ganons_Castle or unlocked_ganondorf) and can_use(Light_Arrows)"
+            "Ganon": "Boss_Key_Ganons_Castle and can_use(Light_Arrows)"
         }
     },
     {
@@ -1140,8 +1163,8 @@
     {
         "region_name": "Deku Theater",
         "locations": {
-            "Deku Theater Skull Mask": "is_child and Zeldas_Letter",
-            "Deku Theater Mask of Truth": "is_child and has_mask_of_truth and guarantee_hint"
+            "Deku Theater Skull Mask": "is_child and 'Skull Mask'",
+            "Deku Theater Mask of Truth": "is_child and 'Mask of Truth' and guarantee_hint"
         }
     },
     {

@@ -48,6 +48,13 @@ RAINBOW_BRIDGE_CONDITION:
 ; 4 = Vanilla
 ; 5 = Tokens
 
+LACS_CONDITION:
+.word 0x00
+; 0 = Vanilla
+; 1 = Medallions
+; 2 = Dungeons
+; 3 = Stones
+
 GOSSIP_HINT_CONDITION:
 .word 0x00
 ; 0 = Mask of Truth

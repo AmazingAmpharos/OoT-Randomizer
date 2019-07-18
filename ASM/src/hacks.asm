@@ -892,6 +892,26 @@ skip_GS_BGS_text:
 .org 0xDCBF9C
     lui     at, 0x4230
 
+; Fish bite guaranteed when the hook is stable
+; Replaces: lwc1    f10, 0x0198(s0)
+;           mul.s   f4, f10, f2
+.orga 0xDC7090
+    jal     fishing_bite_when_stable
+    lwc1    f10, 0x0198(s0)
+
+; Remove most fish loss branches
+.orga 0xDC87A0
+    nop
+.orga 0xDC87BC
+    nop
+.orga 0xDC87CC
+    nop
+
+; Prevent RNG fish loss
+; Replaces: addiu   at, zero, 0x0002
+.orga 0xDC8828
+    move    at, t5
+
 ;==================================================================================================
 ; Bombchus In Logic Hooks
 ;==================================================================================================
@@ -1215,9 +1235,11 @@ skip_GS_BGS_text:
 ; ==================================================================================================
 ; Set the Obtained Epona Flag when winning the 2nd Ingo Race
 ; ==================================================================================================
-; Replaces: lw      t9, 0x24(s0)
+; Replaces: lw      t9, 0x0024(s0)
+;           sw      t9, 0x0000(t7)
 .orga 0xD52698
     jal     ingo_race_win
+    lw      t9, 0x0024(s0)
 
 ;==================================================================================================
 ; Magic Bean Salesman Shuffle
@@ -1296,4 +1318,35 @@ skip_GS_BGS_text:
 ;           addu    at, at, v0
 .orga 0xEC1120  ; Gerudo Fighter
     jal     gerudo_caught_entrance
+    nop
+
+; ==================================================================================================
+; Song of Storms Effect Trigger Changes
+; ==================================================================================================
+; Allow a storm to be triggered with the song in any environment
+; Replaces: lui     t5, 0x800F
+;           lbu     t5, 0x1648(t5)
+.orga 0xE6BF4C
+    li      t5, 0
+    nop
+
+; Remove the internal cooldown between storm effects (to open grottos, grow bean plants...)
+; Replaces: bnez     at, 0x80AECC6C
+.orga 0xE6BEFC
+    nop
+
+; ==================================================================================================
+; Change the Light Arrow Cutscene trigger condition.
+; ==================================================================================================
+.orga 0xACCE18
+    jal     lacs_condition_check
+    lw      v0, 0x00A4(s0)
+    beqz    v1, 0x00ACCE9C
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
     nop

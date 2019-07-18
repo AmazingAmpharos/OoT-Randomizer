@@ -21,7 +21,7 @@ override_great_fairy_cutscene:
     ; Handle upgrade fairies
     addu    t4, a0, t2
     lbu     t5, 0x1D28 (t4) ; t5 = chest flag for this fairy
-    bnez    t5, @@return ; Use default behavior if the item is already obtained
+    bnez    t5, @@refills ; Just refills if the item is already obtained
     nop
     li      t5, 1
     sb      t5, 0x1D28 (t4) ; Mark item as obtained
@@ -34,7 +34,7 @@ override_great_fairy_cutscene:
     sllv    t4, t4, t2 ; t4 = fairy item mask
     lbu     t5, 0x0EF2 (t3) ; t5 = fairy item flags
     and     t6, t5, t4
-    bnez    t6, @@return ; Use default behavior if the item is already obtained
+    bnez    t6, @@refills ; Just refills if the item is already obtained
     nop
     or      t6, t5, t4
     sb      t6, 0x0EF2 (t3) ; Mark item as obtained
@@ -49,10 +49,15 @@ override_great_fairy_cutscene:
     jal     push_delayed_item
     move    a0, t2
 
-    li      v0, 0 ; Prevent fairy animation
+@@refills:
+
+    jal     health_and_magic_refill
+    nop
 
 @@return:
     lw      ra, 0x10 (sp)
+    li      v0, 0 ; Prevent fairy animation
+
     jr      ra
     addiu   sp, sp, 0x18
 
@@ -337,14 +342,14 @@ burning_kak:
 
 ; Set the Obtained Epona Flag after winning Ingo's 2nd race
 ingo_race_win:
-    li      at, SAVE_CONTEXT
-    lb      t0, 0x0ED6 (at)
-    ori     t0, t0, 0x01     ; "Obtained Epona" Flag
-    sb      t0, 0x0ED6 (at)
+    la      at, SAVE_CONTEXT
+    lb      t0, 0x0ED6(at)
+    ori     t0, t0, 0x01    ; "Obtained Epona" Flag
+    sb      t0, 0x0ED6(at)
     li      t0, 0
 
     jr      ra
-    lw      t9, 0x24 (s0)    ; Displaced Code
+    sw      t9, 0x0000(t7)  ; Displaced Code
 
 ; In ER, Rectify the "Getting Caught By Gerudo" entrance index if necessary, based on the age and current scene
 ; Adult should be placed at the fortress entrance when getting caught in the fortress without a hookshot, instead of being thrown in the valley

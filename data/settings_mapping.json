@@ -184,8 +184,8 @@
             "shuffle_mapcompass",
             "shuffle_smallkeys",
             "shuffle_bosskeys",
-            "enhance_map_compass",
-            "unlocked_ganondorf"
+            "shuffle_ganon_bosskey",
+            "enhance_map_compass"
           ]
         }
       ]
@@ -255,7 +255,8 @@
             "start_with_rupees",
             "start_with_wallet",
             "start_with_deku_equipment",
-            "fast_chickens",
+            "chicken_count_random",
+            "chicken_count",
             "big_poe_count_random",
             "big_poe_count"
           ]

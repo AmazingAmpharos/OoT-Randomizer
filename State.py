@@ -430,8 +430,11 @@ class State(object):
 
 
     def can_summon_gossip_fairy(self):
-        return self.can_play('Zeldas Lullaby') or self.can_play('Eponas Song') or self.can_play('Song of Time') or \
-               (self.current_spot.parent_region.time_passes and self.can_play('Suns Song'))
+        return self.has_ocarina() and self.has_any_of(('Zeldas Lullaby', 'Eponas Song', 'Song of Time', 'Suns Song'))
+
+
+    def can_summon_gossip_fairy_without_suns(self):
+        return self.has_ocarina() and self.has_any_of(('Zeldas Lullaby', 'Eponas Song', 'Song of Time'))
 
 
     def can_plant_bugs(self):
@@ -482,57 +485,28 @@ class State(object):
         return self.world.open_forest != 'closed' or self.is_adult() or self.is_glitched or self.has('Deku Tree Clear')
 
 
-    def can_finish_adult_trades(self):
-        if self.is_glitched:
-            zora_thawed = self.can_reach('Zoras Domain', age='adult')
-            carpenter_access = self.can_reach('Gerudo Valley Far Side', age='adult')
-            has_low_trade = self.has_any_of(('Poachers Saw', 'Odd Mushroom', 'Cojiro', 'Pocket Cucco', 'Pocket Egg'))
-            has_high_trade = self.has_any_of(('Eyedrops', 'Eyeball Frog', 'Prescription', 'Broken Sword'))
-            return self.can_reach('Death Mountain Crater Upper', age='adult') and (
-                self.has('Claim Check')
-                or (zora_thawed and (has_high_trade or (has_low_trade and carpenter_access))))
+    def guarantee_trade_path(self):
+        # Require certain warp songs based on ER settings to ensure the player doesn't have to savewarp in order to complete the trade quest
+        # This is meant to avoid possible logical softlocks until either the trade quest is reworked or a better solution is found
+        if self.world.shuffle_special_indoor_entrances:
+            return self.can_play('Prelude of Light')
+        elif self.world.shuffle_interior_entrances:
+            colossus_fairy_entrance = self.world.get_entrance('Desert Colossus -> Colossus Fairy')
+            if colossus_fairy_entrance.connected_region and colossus_fairy_entrance.connected_region.name == 'Lake Hylia Lab':
+                return self.has_ocarina() and self.has_any_of(
+                    ('Prelude of Light', 'Minuet of Forest', 'Serenade of Water', 'Nocturne of Shadow'))
+
+            # timer is disabled with shuffle_interior_entrances
+            return True
         else:
-            # Require certain warp songs based on ER settings to ensure the player doesn't have to savewarp in order to complete the trade quest
-            # This is meant to avoid possible logical softlocks until either the trade quest is reworked or a better solution is found
-            guaranteed_path = True
-            if self.world.shuffle_special_indoor_entrances:
-                guaranteed_path = self.can_play('Prelude of Light')
-            elif self.world.shuffle_interior_entrances:
-                colossus_fairy_entrance = self.world.get_entrance('Desert Colossus -> Colossus Fairy')
-                if colossus_fairy_entrance.connected_region and colossus_fairy_entrance.connected_region.name == 'Lake Hylia Lab':
-                    guaranteed_path = (self.can_play('Prelude of Light') or self.can_play('Minuet of Forest') or
-                                        self.can_play('Serenade of Water') or self.can_play('Nocturne of Shadow'))
-
-            zora_thawed = self.can_reach('Zoras Domain', age='adult') and self.has_blue_fire()
-            pocket_cucco = self.has_any_of(('Pocket Egg', 'Pocket Cucco'))
-            # Technically also needs access to Lost Woods but we can check that once in odd_poultice
-            odd_mushroom = self.has_any_of(('Odd Mushroom', 'Cojiro')) or (pocket_cucco and self.can_reach('Carpenter Boss House', age='adult'))
-            odd_poultice = odd_mushroom and self.can_reach('Odd Medicine Building', age='adult') and self.can_reach('Lost Woods', age='adult')
-            # Getting the saw from poultice requires access to the Lost Woods that we just checked
-            poachers_saw = self.has('Poachers Saw') or odd_poultice
-            eyeball_frog = self.has_any_of(('Eyeball Frog', 'Prescription', 'Broken Sword')) or (poachers_saw and self.can_reach('Gerudo Valley Far Side', age='adult'))
-            eyedrops = (self.has('Eyedrops') or eyeball_frog) and self.can_reach('Lake Hylia Lab', age='adult') and zora_thawed and guaranteed_path
-            return (self.has('Claim Check')
-                    or (eyedrops and
-                        (self.world.shuffle_interior_entrances
-                            or self.world.logic_biggoron_bolero
-                            # Getting to Biggoron without ER or the trick above involves either
-                            # Darunia's Chamber access or clearing the boulders to get up DMT
-                            or self.has('Progressive Strength Upgrade')
-                            or self.can_blast_or_smash()
-                            or self.has_bow()
-                            or (self.world.logic_link_goron_dins and self.can_use('Dins Fire')))))
-
-
-    def has_skull_mask(self):
-        return self.has('Zeldas Letter') and self.can_reach('Kakariko Village', age='child') and self.can_reach('Castle Town Mask Shop')
-
-
-    def has_mask_of_truth(self):
-        # Must befriend Skull Kid to sell Skull Mask, all stones to spawn running man, and access to Lost Woods, Graveyard (at day time) and Hyrule Field as child
-        return (self.has_skull_mask() and self.can_reach('Lost Woods', age='child') and self.can_play('Sarias Song') and 
-                self.can_reach('Graveyard', age='child', tod='day') and self.can_reach('Hyrule Field', age='child') and 
-                self.has_all_of(('Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire')))
+            return (
+                # check necessary items for the paths that fit in the timer
+                self.world.logic_biggoron_bolero
+                # Getting to Biggoron without ER or the trick above involves either
+                # Darunia's Chamber access or clearing the boulders to get up DMT
+                or self.can_blast_or_smash()
+                or self.has('Stop Link the Goron')
+            )
 
 
     def has_bottle(self):
@@ -571,7 +545,7 @@ class State(object):
     def guarantee_hint(self):
         if self.world.hints == 'mask':
             # has the mask of truth
-            return self.has_mask_of_truth()
+            return self.has('Mask of Truth')
         elif self.world.hints == 'agony':
             # has the Stone of Agony
             return self.has('Stone of Agony')
@@ -580,12 +554,11 @@ class State(object):
 
     def had_night_start(self):
         stod = self.world.starting_tod
-        # These are all between 6:30 and 18:00
-        if (stod == 'evening' or        # 18
-            stod == 'dusk' or           # 21
+        # These are all not between 6:30 and 18:00
+        if (stod == 'sunset' or         # 18
+            stod == 'evening' or        # 21
             stod == 'midnight' or       # 00
-            stod == 'witching-hour' or  # 03
-            stod == 'early-morning'):   # 06
+            stod == 'witching-hour'):   # 03
             return True
         else:
             return False

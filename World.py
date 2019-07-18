@@ -63,6 +63,16 @@ class World(object):
         self.shuffle_special_indoor_entrances = self.entrance_shuffle in ['all-indoors', 'all']
         self.shuffle_overworld_entrances = self.entrance_shuffle == 'all'
 
+        # Determine LACS Condition
+        if self.shuffle_ganon_bosskey == 'lacs_medallions':
+            self.lacs_condition = 'medallions'
+        elif self.shuffle_ganon_bosskey == 'lacs_dungeons':
+            self.lacs_condition = 'dungeons'
+        elif self.shuffle_ganon_bosskey == 'lacs_stones':
+            self.lacs_condition = 'stones'
+        else:
+            self.lacs_condition = 'vanilla'
+
         # trials that can be skipped will be decided later
         self.skipped_trials = {
             'Forest': False,
@@ -303,7 +313,9 @@ class World(object):
         if self.shuffle_smallkeys == 'dungeon':
             itempool.extend([item for dungeon in self.dungeons for item in dungeon.small_keys])
         if self.shuffle_bosskeys == 'dungeon':
-            itempool.extend([item for dungeon in self.dungeons for item in dungeon.boss_key])
+            itempool.extend([item for dungeon in self.dungeons if dungeon.name != 'Ganons Castle' for item in dungeon.boss_key])
+        if self.shuffle_ganon_bosskey == 'dungeon':
+            itempool.extend([item for dungeon in self.dungeons if dungeon.name == 'Ganons Castle' for item in dungeon.boss_key])
 
         for item in itempool:
             item.world = self
@@ -318,7 +330,9 @@ class World(object):
         if self.shuffle_smallkeys == 'keysanity':
             itempool.extend([item for dungeon in self.dungeons for item in dungeon.small_keys])
         if self.shuffle_bosskeys == 'keysanity':
-            itempool.extend([item for dungeon in self.dungeons for item in dungeon.boss_key])
+            itempool.extend([item for dungeon in self.dungeons if dungeon.name != 'Ganons Castle' for item in dungeon.boss_key])
+        if self.shuffle_ganon_bosskey == 'keysanity':
+            itempool.extend([item for dungeon in self.dungeons if dungeon.name == 'Ganons Castle' for item in dungeon.boss_key])
 
         for item in itempool:
             item.world = self
@@ -359,30 +373,6 @@ class World(object):
 
     def get_filled_locations(self):
         return [location for location in self.get_locations() if location.item is not None]
-
-
-    def get_reachable_locations(self, state=None):
-        if state is None:
-            state = self.state
-        return [location for location in self.get_locations() if state.can_reach(location)]
-
-
-    def get_placeable_locations(self, state=None):
-        if state is None:
-            state = self.state
-        return [location for location in self.get_locations() if location.item is None and state.can_reach(location)]
-
-
-    def unlocks_new_location(self, item):
-        temp_state = self.state.copy()
-        temp_state.clear_cached_unreachable()
-        temp_state.collect(item)
-
-        for location in self.get_unfilled_locations():
-            if temp_state.can_reach(location) and not self.state.can_reach(location):
-                return True
-
-        return False
 
 
     def get_entrances(self):
