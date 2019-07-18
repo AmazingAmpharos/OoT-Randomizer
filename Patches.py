@@ -644,6 +644,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Allow owl to always carry the kid down Death Mountain
     rom.write_bytes(0xE304F0, [0x24, 0x0E, 0x00, 0x01])
 
+    # Fix Vanilla Dodongo's Cavern Gossip Stone to not use a permanent flag for the fairy
+    if not world.dungeon_mq['Dodongos Cavern']:
+        rom.write_byte(0x1F281FE, 0x38)
+
     # Forbid Sun's Song from a bunch of cutscenes
     Suns_scenes = [0x2016FC9, 0x2017219, 0x20173D9, 0x20174C9, 0x2017679, 0x20C1539, 0x20C15D9, 0x21A0719, 0x21A07F9, 0x2E90129, 0x2E901B9, 0x2E90249, 0x225E829, 0x225E939, 0x306D009]
     for address in Suns_scenes:

@@ -38,7 +38,7 @@
                 is_adult and at_night and 
                 (can_use(Hookshot) or (logic_adult_kokiri_gs and can_use(Hover_Boots)))",
             "Kokiri Forest Gossip Stone": "True",
-            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle",
             "Bean Plant Fairy": "can_plant_bean and can_play(Song_of_Storms) and has_bottle"
         },
         "exits": {
@@ -148,7 +148,7 @@
             "LW Deku Scrub Deku Stick Upgrade": "is_child and can_stun_deku",
             "GS Lost Woods Bean Patch Near Bridge": "can_plant_bugs and can_child_attack",
             "Lost Woods Gossip Stone": "True",
-            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle",
             "Bean Plant Fairy": "can_plant_bean and can_play(Song_of_Storms) and has_bottle",
             "Bug Shrub": "is_child and can_cut_shrubs and has_bottle"
         },
@@ -212,7 +212,7 @@
             "Sacred Forest Meadow Maze Gossip Stone (Lower)": "True",
             "Sacred Forest Meadow Maze Gossip Stone (Upper)": "True",
             "Sacred Forest Meadow Saria Gossip Stone": "True",
-            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
+            "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle"
         },
         "exits": {
             "Sacred Forest Meadow Entryway": "True",
@@ -559,7 +559,7 @@
             "Temple of Time Gossip Stone (Left-Center)": "True",
             "Temple of Time Gossip Stone (Right)": "True",
             "Temple of Time Gossip Stone (Right-Center)": "True",
-            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
+            "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle"
         },
         "exits": {
             "Castle Town": "True",
@@ -1041,7 +1041,7 @@
         "hint": "the Graveyard",
         "locations": {
             "Graveyard Gossip Stone": "True",
-            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle"
+            "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle"
         },
         "exits": {
             "Graveyard": "True",
@@ -1171,7 +1171,7 @@
             "Goron City Medigoron Gossip Stone": "
                 can_blast_or_smash or Progressive_Strength_Upgrade",
             "Gossip Stone Fairy": "
-                can_summon_gossip_fairy and has_bottle and
+                can_summon_gossip_fairy_without_suns and has_bottle and
                 (can_blast_or_smash or can_use(Silver_Gauntlets) or Progressive_Strength_Upgrade)",
             "Bug Rock": "(can_blast_or_smash or can_use(Silver_Gauntlets)) and has_bottle",
             "Stick Pot": "is_child"
@@ -1254,7 +1254,8 @@
             "DM Crater Wall Freestanding PoH": "True",
             "GS Death Mountain Crater Crate": "is_child and can_child_attack",
             "Death Mountain Crater Gossip Stone": "has_explosives",
-            "Gossip Stone Fairy": "has_explosives and can_summon_gossip_fairy and has_bottle"
+            "Gossip Stone Fairy": "
+                has_explosives and can_summon_gossip_fairy_without_suns and has_bottle"
         },
         "exits": {
             "Death Mountain Crater Upper Nearby": "True",
@@ -1437,7 +1438,7 @@
             "GS Zora's Domain Frozen Waterfall": "
                 is_adult and at_night and (Progressive_Hookshot or has_bow or Magic_Meter)",
             "Zoras Domain Gossip Stone": "True",
-            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle",
             "Fish Group": "is_child and has_bottle",
             "Stick Pot": "is_child",
             "Nut Pot": "True"
@@ -1473,7 +1474,7 @@
                 can_use(Hookshot) and at_night",
             "Zoras Fountain Fairy Gossip Stone": "True",
             "Zoras Fountain Jabu Gossip Stone": "True",
-            "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
+            "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle",
             "Butterfly Fairy": "can_use(Sticks) and at_day and has_bottle"
         },
         "exits": {
