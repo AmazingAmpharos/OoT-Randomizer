@@ -1663,6 +1663,7 @@ setting_infos = [
         choices        = {
             'remove':          "Ganon's Boss Key: Remove",
             'dungeon':         "Ganon's Boss Key: Dungeon Only",
+            'vanilla':         "Ganon's Boss Key: Vanilla",
             'keysanity':       "Ganon's Boss Key: Anywhere",
             'lacs_vanilla':    "Ganon's Boss Key: On LACS: Vanilla",
             'lacs_medallions': "Ganon's Boss Key: On LACS: Medallions",
@@ -1676,6 +1677,9 @@ setting_infos = [
 
             'Dungeon': Ganon's Castle Boss Key can only appear
             inside Ganon's Castle.
+
+            'Vanilla': Ganon's Castle Boss Key will appear in 
+            the vanilla location.
 
             'Anywhere': Ganon's Castle Boss Key can appear
             anywhere in the world.
@@ -1693,6 +1697,16 @@ setting_infos = [
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
+            'distribution': [
+                ('remove',          4),
+                ('dungeon',         2),
+                ('vanilla',         2),
+                ('keysanity',       4),
+                ('lacs_vanilla',    1),
+                ('lacs_medallions', 1),
+                ('lacs_stones',     1),
+                ('lacs_dungeons',   1),
+            ],            
         },
     ),
     Checkbutton(

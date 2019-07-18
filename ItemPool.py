@@ -511,14 +511,12 @@ droplocations = {
 
 vanillaBK = {
     'Fire Temple Boss Key Chest': 'Boss Key (Fire Temple)',
-    'Ganons Tower Boss Key Chest': 'Boss Key (Ganons Castle)',
     'Shadow Temple Boss Key Chest': 'Boss Key (Shadow Temple)',
     'Spirit Temple Boss Key Chest': 'Boss Key (Spirit Temple)',
     'Water Temple Boss Key Chest': 'Boss Key (Water Temple)',
     'Forest Temple Boss Key Chest': 'Boss Key (Forest Temple)',
 
     'Fire Temple MQ Boss Key Chest': 'Boss Key (Fire Temple)',
-    'Ganons Tower Boss Key Chest': 'Boss Key (Ganons Castle)',
     'Shadow Temple MQ Boss Key Chest': 'Boss Key (Shadow Temple)',
     'Spirit Temple MQ Boss Key Chest': 'Boss Key (Spirit Temple)',
     'Water Temple MQ Boss Key Chest': 'Boss Key (Water Temple)',
@@ -1205,6 +1203,9 @@ def get_pool_core(world):
                 placed_items[location] = item
             except KeyError:
                 continue
+
+    if world.shuffle_ganon_bosskey == 'vanilla':
+        placed_items['Ganons Tower Boss Key Chest'] = 'Boss Key (Ganons Castle)'
 
     if not world.keysanity and not world.dungeon_mq['Fire Temple']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
