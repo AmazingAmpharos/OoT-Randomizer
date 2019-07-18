@@ -314,6 +314,13 @@ logic_tricks = {
                     curves through the side of the glass block
                     to hit the Gold Skulltula.
                     '''},
+    'Jabu Scrub as Adult with Jump Dive': {
+        'name'    : 'logic_jabu_scrub_jump_dive',
+        'tooltip' : '''\
+                    Standing above the underwater tunnel leading to the scrub,
+                    jump down and swim through the tunnel. This allows adult to
+                    access the scrub with no Scale or Iron Boots.
+                    '''},
     'Jabu MQ Song of Time Block GS with Boomerang': {
         'name'    : 'logic_jabu_mq_sot_gs',
         'tooltip' : '''\
@@ -392,8 +399,8 @@ logic_tricks = {
                     With a specific position and angle, you can
                     backflip over Mido.
                     '''},
-    'Reach Volvagia without Hover Boots or Pillar': {
-        'name'    : 'logic_volvagia_jump',
+    'Fire Temple Boss Door without Hover Boots or Pillar': {
+        'name'    : 'logic_fire_boss_door_jump',
         'tooltip' : '''\
                     The Fire Temple Boss Door can be reached with a precise
                     jump. You must be touching the side wall of the room so
@@ -636,6 +643,16 @@ logic_tricks = {
                     relevant if "Gerudo Training Grounds Left Side Silver Rupees
                     without Hookshot" is enabled.
                     '''},
+    'Water Temple Boss Key Jump Dive': {
+        'name'    : 'logic_water_bk_jump_dive',
+        'tooltip' : '''\
+                    Stand on the very edge of raised corridor leading from the
+                    push block room to the rolling boulder corridor. Face the
+                    gold skulltula on the waterfall and jump over the boulder
+                    corridor floor into the pool of water, swimming right once
+                    underwater. This allows access to the boss key room without
+                    Iron boots. 
+                    '''},
     'Water Temple Cracked Wall with No Additional Items': {
         'name'    : 'logic_water_cracked_wall_nothing',
         'tooltip' : '''\
@@ -646,7 +663,7 @@ logic_tricks = {
                     Cracked Wall with Hover Boots".
                     '''},
     'Water Temple North Basement Ledge with Precise Jump': {
-        'name'    : 'logic_water_north_basement',
+        'name'    : 'logic_water_north_basement_ledge_jump',
         'tooltip' : '''\
                     In the northern basement there's a ledge from where, in
                     vanilla Water Temple, boulders roll out into the room.
@@ -655,6 +672,14 @@ logic_tricks = {
                     be done without them. This trick supersedes "Water Temple
                     Boss Key Chest with Iron Boots" and applies to both
                     Vanilla and Master Quest.
+                    '''},
+    'Water Temple Torch Longshot': {
+        'name'    : 'logic_water_temple_torch_longshot',
+        'tooltip' : '''\
+                    Stand on the eastern side of the central pillar and longshot
+                    the torches on the bottom level. Swim through the corridor
+                    and float up to the top level. This allows access to this
+                    area and lower water levels without Iron Boots.
                     '''},
     'Goron City Leftmost Maze Chest with Hover Boots': {
         'name'    : 'logic_goron_city_leftmost',
