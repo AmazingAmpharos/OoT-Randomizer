@@ -2395,7 +2395,7 @@ th.mat-header-cell {
 .mat-slider-disabled .mat-slider-thumb,
 .mat-slider-disabled .mat-slider-track-background,
 .mat-slider-disabled .mat-slider-track-fill {
-    background-color: rgba(255, 255, 255, .3)
+    background-color: rgba(255, 255, 255, .3) !important;
 }
 
 .mat-slider-disabled:hover .mat-slider-track-background {

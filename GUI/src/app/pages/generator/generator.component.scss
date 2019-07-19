@@ -155,8 +155,17 @@ nb-card-body {
 
     /deep/ span {
 
-      @media (max-width: 800px) {
+      @media (max-width: 1350px) {
+        font-size: 0.95rem;
+      }
+
+      @media (max-width: 1300px) {
         white-space: pre-line;
+        line-height: 1.2;
+      }
+
+      @media (max-width: 1000px) {
+        font-size: 0.9rem;
       }
 
       @media (max-width: 400px) {

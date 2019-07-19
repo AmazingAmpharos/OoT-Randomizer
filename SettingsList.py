@@ -1375,6 +1375,9 @@ setting_infos = [
             in the chosen number of Cuccos.
         ''',
         shared         = True,
+        gui_params     = {
+            'no_line_break': True,
+        },
     ),
     Checkbutton(
         name           = 'big_poe_count_random',

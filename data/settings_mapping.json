@@ -199,7 +199,7 @@
           "name": "disabled_locations_section",
           "text": "Exclude Locations",
           "col_span": 2,
-          "row_span": 6,
+          "row_span": 8,
           "settings": [
             "disabled_locations"
           ]
@@ -208,7 +208,7 @@
           "name": "allowed_tricks_section",
           "text": "Enable Tricks",
           "col_span": 2,
-          "row_span": 6,
+          "row_span": 8,
           "settings": [
             "allowed_tricks"
           ]

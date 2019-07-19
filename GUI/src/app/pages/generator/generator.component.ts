@@ -129,8 +129,12 @@ export class GeneratorComponent implements OnInit {
 
     if (this.global.getGlobalVar('electronAvailable')) { //Electron
 
+      //Hack: Fix Generation Count being None occasionally
+      if (!this.global.generator_settingsMap["count"] || this.global.generator_settingsMap["count"] < 1)
+        this.global.generator_settingsMap["count"] = 1;
+
       let dialogRef = this.dialogService.open(ProgressWindow, {
-        autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dashboardRef: this }
+        autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dashboardRef: this, totalGenerationCount: this.global.generator_settingsMap["count"] }
       });
 
       this.global.generateSeedElectron(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
@@ -142,7 +146,8 @@ export class GeneratorComponent implements OnInit {
 
         if (dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance) {
           dialogRef.componentRef.instance.progressStatus = 1;
-          dialogRef.componentRef.instance.progressPercentage = 100;
+          dialogRef.componentRef.instance.progressPercentageCurrent = 100;
+          dialogRef.componentRef.instance.progressPercentageTotal = 100;
           dialogRef.componentRef.instance.progressMessage = "Done. Enjoy.";
           dialogRef.componentRef.instance.progressErrorDetails = "";
           dialogRef.componentRef.instance.refreshLayout();
@@ -156,7 +161,8 @@ export class GeneratorComponent implements OnInit {
 
         if (dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance) {
           dialogRef.componentRef.instance.progressStatus = -1;
-          dialogRef.componentRef.instance.progressPercentage = 100;
+          dialogRef.componentRef.instance.progressPercentageCurrent = 100;
+          dialogRef.componentRef.instance.progressPercentageTotal = 100;
           dialogRef.componentRef.instance.progressMessage = err.short;
           dialogRef.componentRef.instance.progressErrorDetails = err.short === err.long ? "" : err.long;
           dialogRef.componentRef.instance.refreshLayout();

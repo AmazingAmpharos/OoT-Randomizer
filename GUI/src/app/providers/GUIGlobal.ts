@@ -906,7 +906,9 @@ export class GUIGlobal {
           //console.log("progress report", data);
 
           if (progressWindowRef) {
-            progressWindowRef.progressPercentage = data.progress;
+            progressWindowRef.currentGenerationIndex = data.generationIndex;
+            progressWindowRef.progressPercentageCurrent = data.progressCurrent;
+            progressWindowRef.progressPercentageTotal = data.progressTotal;
             progressWindowRef.progressMessage = data.message;
             progressWindowRef.refreshLayout();
           }

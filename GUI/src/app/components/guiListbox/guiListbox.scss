@@ -1,13 +1,32 @@
 div.record-picker {
-    overflow-x: hidden;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    position: relative;
-    min-height: 100%;
-    max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  position: relative;
+  min-height: calc(100% - 4.9rem);
+  max-height: calc(100% - 4.9rem);
+
+  @media (max-width: 960px) and (max-height: 960px) {
+    min-height: calc(100% - 3.5rem);
+    max-height: calc(100% - 3.5rem);
+  }
 }
 
+div.pickerWithTagFilter {
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  position: relative;
+  min-height: calc(100% - 7.2rem);
+  max-height: calc(100% - 7.2rem);
+
+  @media (max-width: 960px) and (max-height: 960px) {
+    min-height: calc(100% - 4.9rem);
+    max-height: calc(100% - 5.0rem);
+  }
+}
 
 /* http://www.ourtuts.com/how-to-customize-browser-scrollbars-using-css3/ */
 
