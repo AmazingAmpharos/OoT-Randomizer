@@ -430,8 +430,11 @@ class State(object):
 
 
     def can_summon_gossip_fairy(self):
-        return self.can_play('Zeldas Lullaby') or self.can_play('Eponas Song') or self.can_play('Song of Time') or \
-               (self.current_spot.parent_region.time_passes and self.can_play('Suns Song'))
+        return self.has_ocarina() and self.has_any_of(('Zeldas Lullaby', 'Eponas Song', 'Song of Time', 'Suns Song'))
+
+
+    def can_summon_gossip_fairy_without_suns(self):
+        return self.has_ocarina() and self.has_any_of(('Zeldas Lullaby', 'Eponas Song', 'Song of Time'))
 
 
     def can_plant_bugs(self):

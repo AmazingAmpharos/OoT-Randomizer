@@ -59,12 +59,12 @@
         "dungeon": "Water Temple",
         "locations": {
             "Water Temple MQ Freestanding Key": "
-                Hover_Boots or can_use(Scarecrow) or logic_water_north_basement",
+                Hover_Boots or can_use(Scarecrow) or logic_water_north_basement_ledge_jump",
             "GS Water Temple MQ South Basement": "
                 can_use(Fire_Arrows) and (Hover_Boots or can_use(Scarecrow))",
             "GS Water Temple MQ North Basement": "
                 (Small_Key_Water_Temple, 2) and
-                (Hover_Boots or can_use(Scarecrow) or logic_water_north_basement)"
+                (Hover_Boots or can_use(Scarecrow) or logic_water_north_basement_ledge_jump)"
         }
     }
 ]

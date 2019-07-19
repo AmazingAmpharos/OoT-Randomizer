@@ -195,6 +195,22 @@ logic_tricks = {
         'tooltip' : '''\
                     Can be defeated by doing a precise jump slash.
                     '''},
+    'Deku Tree Basement Webs with Bow': {
+        'name'    : 'logic_deku_b1_webs_with_bow',
+        'tooltip' : '''\
+                    All spider web walls in Deku Tree basement can be burnt
+                    by adult using just a bow shooting through torches. Applies
+                    to the web obstructing the door to the single scrub room,
+                    the web obstrcuting the bombable wall in the back room
+                    and the circular floor web dropping to Gohma.
+
+                    For the cicular web dropping to Gohma, backflip onto the
+                    chest near the torch at the bottom of the vine wall. With a
+                    precise position you can shoot throught the torch to the
+                    right edge of the circular web.
+
+                    This allows complete adult Deku Tree with no fire source.
+                    '''},
     'Hammer Rusted Switches Through Walls': {
         'name'    : 'logic_rusted_switches',
         'tooltip' : '''\
@@ -314,6 +330,13 @@ logic_tricks = {
                     curves through the side of the glass block
                     to hit the Gold Skulltula.
                     '''},
+    'Jabu Scrub as Adult with Jump Dive': {
+        'name'    : 'logic_jabu_scrub_jump_dive',
+        'tooltip' : '''\
+                    Standing above the underwater tunnel leading to the scrub,
+                    jump down and swim through the tunnel. This allows adult to
+                    access the scrub with no Scale or Iron Boots.
+                    '''},
     'Jabu MQ Song of Time Block GS with Boomerang': {
         'name'    : 'logic_jabu_mq_sot_gs',
         'tooltip' : '''\
@@ -392,8 +415,8 @@ logic_tricks = {
                     With a specific position and angle, you can
                     backflip over Mido.
                     '''},
-    'Reach Volvagia without Hover Boots or Pillar': {
-        'name'    : 'logic_volvagia_jump',
+    'Fire Temple Boss Door without Hover Boots or Pillar': {
+        'name'    : 'logic_fire_boss_door_jump',
         'tooltip' : '''\
                     The Fire Temple Boss Door can be reached with a precise
                     jump. You must be touching the side wall of the room so
@@ -636,6 +659,16 @@ logic_tricks = {
                     relevant if "Gerudo Training Grounds Left Side Silver Rupees
                     without Hookshot" is enabled.
                     '''},
+    'Water Temple Boss Key Jump Dive': {
+        'name'    : 'logic_water_bk_jump_dive',
+        'tooltip' : '''\
+                    Stand on the very edge of raised corridor leading from the
+                    push block room to the rolling boulder corridor. Face the
+                    gold skulltula on the waterfall and jump over the boulder
+                    corridor floor into the pool of water, swimming right once
+                    underwater. This allows access to the boss key room without
+                    Iron boots. 
+                    '''},
     'Water Temple Cracked Wall with No Additional Items': {
         'name'    : 'logic_water_cracked_wall_nothing',
         'tooltip' : '''\
@@ -646,7 +679,7 @@ logic_tricks = {
                     Cracked Wall with Hover Boots".
                     '''},
     'Water Temple North Basement Ledge with Precise Jump': {
-        'name'    : 'logic_water_north_basement',
+        'name'    : 'logic_water_north_basement_ledge_jump',
         'tooltip' : '''\
                     In the northern basement there's a ledge from where, in
                     vanilla Water Temple, boulders roll out into the room.
@@ -655,6 +688,14 @@ logic_tricks = {
                     be done without them. This trick supersedes "Water Temple
                     Boss Key Chest with Iron Boots" and applies to both
                     Vanilla and Master Quest.
+                    '''},
+    'Water Temple Torch Longshot': {
+        'name'    : 'logic_water_temple_torch_longshot',
+        'tooltip' : '''\
+                    Stand on the eastern side of the central pillar and longshot
+                    the torches on the bottom level. Swim through the corridor
+                    and float up to the top level. This allows access to this
+                    area and lower water levels without Iron Boots.
                     '''},
     'Goron City Leftmost Maze Chest with Hover Boots': {
         'name'    : 'logic_goron_city_leftmost',
@@ -708,6 +749,13 @@ logic_tricks = {
                     open the Shadow Temple entrance with just Fire
                     Arrows, but you must be very quick, precise,
                     and strategic with how you take your shots.
+                    '''},
+    'Second Dampe Race as Child': {
+        'name'    : 'logic_child_dampe_race_poh',
+        'tooltip' : '''\
+                    It is possible to complete the second dampe
+                    race as child in under a minute, but it is
+                    a very strict time limit.
                     '''},
 }
 
@@ -1612,6 +1660,58 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
+    Combobox(
+        name           = 'shuffle_ganon_bosskey',
+        default        = 'dungeon',
+        choices        = {
+            'remove':          "Ganon's Boss Key: Remove",
+            'dungeon':         "Ganon's Boss Key: Dungeon Only",
+            'vanilla':         "Ganon's Boss Key: Vanilla",
+            'keysanity':       "Ganon's Boss Key: Anywhere",
+            'lacs_vanilla':    "Ganon's Boss Key: On LACS: Vanilla",
+            'lacs_medallions': "Ganon's Boss Key: On LACS: Medallions",
+            'lacs_stones':     "Ganon's Boss Key: On LACS: Stones",
+            'lacs_dungeons':   "Ganon's Boss Key: On LACS: Dungeons",
+        },
+        gui_group      = 'shuffle',
+        gui_tooltip    = '''\
+            'Remove': Ganon's Castle Boss Key is removed
+            and the boss door in Ganon's Tower starts unlocked.
+
+            'Dungeon': Ganon's Castle Boss Key can only appear
+            inside Ganon's Castle.
+
+            'Vanilla': Ganon's Castle Boss Key will appear in 
+            the vanilla location.
+
+            'Anywhere': Ganon's Castle Boss Key can appear
+            anywhere in the world.
+            
+            'On LACS': These settings put the boss key on the
+            Light Arrow Cutscene location, from Zelda in Temple
+            of Time as adult, with differing requirements.
+            
+            'On LACS: Vanilla': Shadow and Spirit Medallions.
+            'On LACS: Medallions': All 6 Medallions.
+            'On LACS: Stones': All 3 Spiritual Stones.
+            'On LACS: Dungeons': All Spiritual Stones & Medallions.
+            
+        ''',
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+            'distribution': [
+                ('remove',          4),
+                ('dungeon',         2),
+                ('vanilla',         2),
+                ('keysanity',       4),
+                ('lacs_vanilla',    1),
+                ('lacs_medallions', 1),
+                ('lacs_stones',     1),
+                ('lacs_dungeons',   1),
+            ],            
+        },
+    ),
     Checkbutton(
         name           = 'enhance_map_compass',
         gui_text       = 'Maps and Compasses Give Information',
@@ -1630,22 +1730,6 @@ setting_infos = [
             is available immediately from the dungeon menu.
         ''',
         default        = False,
-        shared         = True,
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-        },
-    ),
-    Checkbutton(
-        name           = 'unlocked_ganondorf',
-        gui_text       = 'Remove Ganon\'s Boss Door Lock',
-        gui_group      = 'shuffle',
-        gui_tooltip    = '''\
-            The Boss Key door in Ganon's Tower
-            will start unlocked. This is intended
-            to be used with reduced trial
-            requirements to make it more likely
-            that skipped trials can be avoided.
-        ''',
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',

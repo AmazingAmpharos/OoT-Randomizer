@@ -57,6 +57,13 @@ RAINBOW_BRIDGE_CONDITION:
 TRIFORCE_PIECES_REQUIRED:
 .word 0x14
 
+LACS_CONDITION:
+.word 0x00
+; 0 = Vanilla
+; 1 = Medallions
+; 2 = Dungeons
+; 3 = Stones
+
 GOSSIP_HINT_CONDITION:
 .word 0x00
 ; 0 = Mask of Truth

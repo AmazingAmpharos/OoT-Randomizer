@@ -513,14 +513,12 @@ droplocations = {
 
 vanillaBK = {
     'Fire Temple Boss Key Chest': 'Boss Key (Fire Temple)',
-    'Ganons Tower Boss Key Chest': 'Boss Key (Ganons Castle)',
     'Shadow Temple Boss Key Chest': 'Boss Key (Shadow Temple)',
     'Spirit Temple Boss Key Chest': 'Boss Key (Spirit Temple)',
     'Water Temple Boss Key Chest': 'Boss Key (Water Temple)',
     'Forest Temple Boss Key Chest': 'Boss Key (Forest Temple)',
 
     'Fire Temple MQ Boss Key Chest': 'Boss Key (Fire Temple)',
-    'Ganons Tower Boss Key Chest': 'Boss Key (Ganons Castle)',
     'Shadow Temple MQ Boss Key Chest': 'Boss Key (Shadow Temple)',
     'Spirit Temple MQ Boss Key Chest': 'Boss Key (Spirit Temple)',
     'Water Temple MQ Boss Key Chest': 'Boss Key (Water Temple)',
@@ -1167,7 +1165,11 @@ def get_pool_core(world):
             world.state.collect(item)
             pool.extend(get_junk_item())
     if world.shuffle_bosskeys == 'remove':
-        for item in [item for dungeon in world.dungeons for item in dungeon.boss_key]:
+        for item in [item for dungeon in world.dungeons if dungeon.name != 'Ganons Castle' for item in dungeon.boss_key]:
+            world.state.collect(item)
+            pool.extend(get_junk_item())
+    if world.shuffle_ganon_bosskey == 'remove':
+        for item in [item for dungeon in world.dungeons if dungeon.name == 'Ganons Castle' for item in dungeon.boss_key]:
             world.state.collect(item)
             pool.extend(get_junk_item())
 
@@ -1204,14 +1206,19 @@ def get_pool_core(world):
             except KeyError:
                 continue
 
+    if world.shuffle_ganon_bosskey == 'vanilla':
+        placed_items['Ganons Tower Boss Key Chest'] = 'Boss Key (Ganons Castle)'
+
     if not world.keysanity and not world.dungeon_mq['Fire Temple']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
     if not world.dungeon_mq['Water Temple']:
         world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
-
     if world.bridge == 'triforce': 
         pending_junk_pool.extend(['Triforce Piece'] * 20)
+
+    if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
+        placed_items['Zelda'] = 'Boss Key (Ganons Castle)'
 
     if world.item_pool_value == 'plentiful':
         pool.extend(easy_items)

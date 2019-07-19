@@ -7,7 +7,7 @@
             "Ice Cavern Map Room": "
                 is_adult or can_use(Dins_Fire) or
                 (has_explosives and (can_use(Sticks) or can_use(Slingshot) or Kokiri_Sword))",
-            "Ice Cavern Compass Room": "is_adult",
+            "Ice Cavern Compass Room": "is_adult and has_blue_fire",
             "Ice Cavern Iron Boots Region": "has_blue_fire"
         }
     },
@@ -37,9 +37,9 @@
         "region_name": "Ice Cavern Compass Room",
         "dungeon": "Ice Cavern",
         "locations": {
-            "Ice Cavern MQ Compass Chest": "has_blue_fire",
+            "Ice Cavern MQ Compass Chest": "True",
             "Ice Cavern MQ Freestanding PoH": "has_explosives",
-            "GS Ice Cavern MQ Red Ice": "has_blue_fire and can_play(Song_of_Time)"
+            "GS Ice Cavern MQ Red Ice": "can_play(Song_of_Time)"
         }
     }
 ]
