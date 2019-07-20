@@ -12,7 +12,11 @@ from Playthrough import Playthrough
 from functools import reduce
 
 
-class FillError(RuntimeError):
+class ShuffleError(RuntimeError):
+    pass
+
+
+class FillError(ShuffleError):
     pass
 
 

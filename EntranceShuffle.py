@@ -1,5 +1,6 @@
 import random
 import logging
+from Fill import ShuffleError
 from collections import OrderedDict
 from Playthrough import Playthrough
 from Rules import set_entrances_based_rules
@@ -286,7 +287,7 @@ entrance_shuffle_table = [
 ]
 
 
-class EntranceShuffleError(RuntimeError):
+class EntranceShuffleError(ShuffleError):
     pass
 
 
