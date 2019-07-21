@@ -990,7 +990,7 @@ setting_infos = [
         disable        = {
             True : {
                 'sections' : ['open_section', 'shuffle_section', 'shuffle_dungeon_section'],
-                'settings' : ['all_reachable','bombchus_in_logic','one_item_per_dungeon','mq_dungeons_random','mq_dungeons'],
+                'settings' : ['starting_age', 'bombchus_in_logic','one_item_per_dungeon','mq_dungeons_random','mq_dungeons'],
             }
         },
         shared         = True,
@@ -1159,10 +1159,7 @@ setting_infos = [
             to hold the keys needed to reach them.
         ''',
         default        = True,
-        shared         = True,
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-        },
+        shared         = True
     ),
     Checkbutton(
         name           = 'bombchus_in_logic',
@@ -1936,7 +1933,7 @@ setting_infos = [
     ),
     Combobox(
         name           = 'logic_earliest_adult_trade',
-        gui_text       = 'Earliest',
+        gui_text       = 'Adult Trade Sequence Earliest Item',
         default        = 'pocket_egg',
         choices        = {
             'pocket_egg':   'Pocket Egg',
@@ -1957,7 +1954,7 @@ setting_infos = [
     ),
     Combobox(
         name           = 'logic_latest_adult_trade',
-        gui_text       = 'Latest',
+        gui_text       = 'Adult Trade Sequence Latest Item',
         default        = 'claim_check',
         choices        = {
             'pocket_egg':   'Pocket Egg',
@@ -2213,6 +2210,12 @@ setting_infos = [
             Closed Forest.
         ''',
         shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+            'distribution': [
+                ('random', 1),
+            ],
+        }
     ),
     Combobox(
         name           = 'default_targeting',

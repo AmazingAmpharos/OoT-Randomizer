@@ -126,8 +126,9 @@
           "name": "main_section",
           "text": "",
           "col_span": 4,
-          "row_span": 1,
+          "row_span": 2,
           "settings": [
+            "logic_rules",
             "randomize_settings"
           ]
         },
@@ -150,12 +151,11 @@
           "text": "World",
           "row_span": 6,
           "settings": [
-            "logic_rules",
-            "all_reachable",
             "bombchus_in_logic",
             "one_item_per_dungeon",
             "mq_dungeons_random",
-            "mq_dungeons"
+            "mq_dungeons",
+            "starting_age"
           ]
         },
         {
@@ -196,6 +196,17 @@
       "app_type": "generator",
       "sections": [
         {
+          "name": "main_section",
+          "text": "",
+          "col_span": 4,
+          "row_span": 3,
+          "settings": [
+            "all_reachable",
+            "logic_no_night_tokens_without_suns_song",
+            "logic_lens"
+          ]
+        },
+        {
           "name": "disabled_locations_section",
           "text": "Exclude Locations",
           "col_span": 2,
@@ -212,25 +223,6 @@
           "settings": [
             "allowed_tricks"
           ]
-        },
-        {
-          "name": "ats",
-          "text": "Adult Trade Sequence",
-          "col_span": 2,
-          "row_span": 4,
-          "settings": [
-            "logic_earliest_adult_trade",
-            "logic_latest_adult_trade"
-          ]
-        },
-        {
-          "name": "lens",
-          "text": "Lens of Truth",
-          "col_span": 2,
-          "row_span": 4,
-          "settings": [
-            "logic_lens"
-          ]
         }
       ]
     },
@@ -242,6 +234,7 @@
         {
           "name": "speedup_section",
           "text": "Timesavers",
+          "col_span": 1,
           "row_span": 1,
           "settings": [
             "no_escape_sequence",
@@ -249,7 +242,6 @@
             "no_epona_race",
             "useful_cutscenes",
             "fast_chests",
-            "logic_no_night_tokens_without_suns_song",
             "free_scarecrow",
             "start_with_fast_travel",
             "start_with_rupees",
@@ -264,6 +256,7 @@
         {
           "name": "misc_section",
           "text": "Misc",
+          "col_span": 1,
           "row_span": 1,
           "settings": [
             "ocarina_songs",
@@ -272,11 +265,20 @@
             "hints",
             "hint_dist",
             "text_shuffle",
+            "damage_multiplier",
+            "starting_tod"
+          ]
+        },
+        {
+          "name": "item_pool_section",
+          "text": "Item Pool",
+          "col_span": 1,
+          "row_span": 1,
+          "settings": [
             "junk_ice_traps",
             "item_pool_value",
-            "damage_multiplier",
-            "starting_tod",
-            "starting_age"
+            "logic_earliest_adult_trade",
+            "logic_latest_adult_trade"
           ]
         }
       ]
