@@ -58,11 +58,11 @@ class Location(object):
         return (self.parent_region.can_fill(item, manual) and self.item_rule(self, item))
 
 
-    def can_reach(self, state, noparent=False):
+    def can_reach(self, state):
         if self.is_disabled():
             return False
 
-        return state.with_spot(self.access_rule, spot=self) and (noparent or state.can_reach(self.parent_region, keep_tod=True))
+        return state.with_spot(self.access_rule, spot=self) and state.can_reach(self.parent_region, keep_tod=True)
 
 
     def can_reach_simple(self, state):
