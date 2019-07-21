@@ -101,12 +101,12 @@ class Playthrough(object):
     # simplified exit.can_reach(state), bypasses can_become_age
     # which we've already accounted for
     def validate_child(self, exit):
-        return self.state_list[exit.parent_region.world.id].as_child(
-                exit.can_reach_simple)
+        return self.state_list[exit.parent_region.world.id].with_age(
+                exit.can_reach_simple, adult=False)
 
     def validate_adult(self, exit):
-        return self.state_list[exit.parent_region.world.id].as_adult(
-                exit.can_reach_simple)
+        return self.state_list[exit.parent_region.world.id].with_age(
+                exit.can_reach_simple, adult=True)
 
 
     # Internal to the iteration. Modifies the exit_queue, region_set. 
@@ -182,9 +182,9 @@ class Playthrough(object):
                     and not loc.is_disabled()
                     # Check adult first; it's the most likely.
                     and (loc.parent_region in adult_regions
-                         and self.state_list[loc.world.id].as_adult(loc.can_reach_simple)
+                         and self.state_list[loc.world.id].with_age(loc.can_reach_simple, adult=True)
                      or (loc.parent_region in child_regions
-                         and self.state_list[loc.world.id].as_child(loc.can_reach_simple))))
+                         and self.state_list[loc.world.id].with_age(loc.can_reach_simple, adult=False))))
 
 
         had_reachable_locations = True

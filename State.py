@@ -70,18 +70,7 @@ class State(object):
 
         # If the current age is not defined, we try either
         if self.adult == None:
-            if self.can_become_adult():
-                self.adult = True
-                if self.can_reach(spot, tod=tod):
-                    self.adult = None
-                    return True
-            if self.can_become_child():
-                self.adult = False
-                if self.can_reach(spot, tod=tod):
-                    self.adult = None
-                    return True
-            self.adult = None
-            return False
+            return self.as_either(spot, tod=tod)
 
         if tod != None and self.ensure_tod_access():
             if tod == 'all':
@@ -137,31 +126,30 @@ class State(object):
         return can_reach
 
 
-    def can_reach_as_both(self, spot, tod=None):
+    def as_either(self, spot, tod=None):
+        reach = lambda state: state.can_reach(spot, tod=tod)
+        return ((self.can_become_adult() and self.with_age(reach, adult=True)) or
+                (self.can_become_child() and self.with_age(reach, adult=False)))
+
+
+    def as_both(self, spot, tod=None):
         if self.can_become_adult() and self.can_become_child():
-            self.adult = True
-            if not self.can_reach(spot, tod=tod):
-                self.adult = None
-                return False
-            self.adult = False
-            r = self.can_reach(spot, tod=tod)
-            self.adult = None
-            return r
+            reach = lambda state: state.can_reach(spot, tod=tod)
+            return self.with_age(reach, adult=True) and self.with_age(reach, adult=False)
         else:
             return False
 
 
-    def as_adult(self, lambda_rule):
-        # It's important to set the age property back to what it was originally after executing the rule here
-        self.adult = True
-        lambda_rule_result = lambda_rule(self)
-        self.adult = None
-        return lambda_rule_result
+    def as_age(self, spot, tod=None, adult=True):
+        if (self.can_become_adult() if adult else self.can_become_child()):
+            return self.with_age(lambda state: state.can_reach(spot, tod=tod))
+        return False
 
 
-    def as_child(self, lambda_rule):
+    def with_age(self, lambda_rule, adult=True):
+        # Does *not* check that we can_become the age!
         # It's important to set the age property back to what it was originally after executing the rule here
-        self.adult = False
+        self.adult = adult
         lambda_rule_result = lambda_rule(self)
         self.adult = None
         return lambda_rule_result
