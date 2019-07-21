@@ -19,7 +19,7 @@ from Rom import Rom
 from Patches import patch_rom
 from Cosmetics import patch_cosmetics
 from DungeonList import create_dungeons
-from Fill import distribute_items_restrictive, FillError
+from Fill import distribute_items_restrictive, ShuffleError
 from Item import Item
 from ItemList import item_table
 from ItemPool import generate_itempool
@@ -88,8 +88,8 @@ def main(settings, window=dummy_window()):
         try:
             spoiler = generate(settings, window)
             break
-        except FillError as fe:
-            logger.warning('Failed attempt %d of %d: %s', attempt, max_attempts, fe)
+        except ShuffleError as e:
+            logger.warning('Failed attempt %d of %d: %s', attempt, max_attempts, e)
             if attempt >= max_attempts:
                 raise
             else:
