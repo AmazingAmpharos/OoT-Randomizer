@@ -989,8 +989,7 @@ setting_infos = [
         default        = False,
         disable        = {
             True : {
-                'sections' : ['open_section', 'shuffle_section', 'shuffle_dungeon_section'],
-                'settings' : ['starting_age', 'bombchus_in_logic','one_item_per_dungeon','mq_dungeons_random','mq_dungeons'],
+                'sections' : ['open_section', 'world_section', 'shuffle_section', 'shuffle_dungeon_section'],
             }
         },
         shared         = True,

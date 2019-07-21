@@ -151,11 +151,12 @@
           "text": "World",
           "row_span": 6,
           "settings": [
-            "bombchus_in_logic",
+            "starting_age",
+            "entrance_shuffle",
+            "bombchus_in_logic",            
             "one_item_per_dungeon",
             "mq_dungeons_random",
-            "mq_dungeons",
-            "starting_age"
+            "mq_dungeons"
           ]
         },
         {
@@ -163,17 +164,16 @@
           "text": "Shuffle",
           "row_span": 6,
           "settings": [
+            "shopsanity",
+            "tokensanity",
+            "shuffle_scrubs",
+            "shuffle_cows",
+            "shuffle_song_items",
             "shuffle_kokiri_sword",
             "shuffle_ocarinas",
             "shuffle_weird_egg",
             "shuffle_gerudo_card",
-            "shuffle_song_items",
-            "shuffle_cows",
-            "shuffle_beans",
-            "entrance_shuffle",
-            "shuffle_scrubs",
-            "shopsanity",
-            "tokensanity"
+            "shuffle_beans"
           ]
         },
         {
@@ -275,8 +275,8 @@
           "col_span": 1,
           "row_span": 1,
           "settings": [
-            "junk_ice_traps",
             "item_pool_value",
+            "junk_ice_traps",
             "logic_earliest_adult_trade",
             "logic_latest_adult_trade"
           ]
