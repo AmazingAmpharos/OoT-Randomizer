@@ -38,7 +38,10 @@ class Setting_Info():
 
         # number of bits needed to store the setting, used in converting settings to a string
         if shared:
-            self.bitwidth = self.calc_bitwidth(choices)
+            if self.gui_params.get('min') and self.gui_params.get('max') and not choices:
+                self.bitwidth = math.ceil(math.log(self.gui_params.get('max') - self.gui_params.get('min') + 1, 2))
+            else:
+                self.bitwidth = self.calc_bitwidth(choices)
         else:
             self.bitwidth = 0
 
@@ -905,7 +908,7 @@ setting_infos = [
             'min' : 1,
         }
     ),
-    Setting_Info('world_count',       int, "Player Count", "Numberinput", False, {}, 
+    Setting_Info('world_count',       int, "Player Count", "Numberinput", True, {}, 
         default        = 1,
         gui_params = {
             'min' : 1,
