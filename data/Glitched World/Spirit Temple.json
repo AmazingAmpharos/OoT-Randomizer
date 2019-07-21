@@ -19,18 +19,18 @@
                     ( (has_nuts or can_use(Boomerang)) and 
                         (can_use(Kokiri_Sword) or has_slingshot) ) ))",
             "Spirit Temple Child Right Chest": "(is_adult and has_fire_source) or 
-                (has_fire_source_with_torch and (as_adult_here or
+                (has_fire_source_with_torch and (here(is_adult) or
                 (
                 (can_use(Boomerang) or has_slingshot or has_bombchus or can_mega) and 
                 (has_sticks or has_explosives or 
                     ( (has_nuts or can_use(Boomerang)) and 
                         (can_use(Kokiri_Sword) or has_slingshot) ) ))))",
             "GS Spirit Temple Metal Fence": "is_adult or
-            (
-            (can_use(Boomerang) or has_slingshot or has_bombchus or can_mega) and 
-            (has_sticks or has_explosives or 
-                ( (has_nuts or can_use(Boomerang)) and 
-                    (can_use(Kokiri_Sword) or has_slingshot) ) ))",
+                (
+                (can_use(Boomerang) or has_slingshot or has_bombchus or can_mega) and 
+                (has_sticks or has_explosives or 
+                    ( (has_nuts or can_use(Boomerang)) and 
+                        (can_use(Kokiri_Sword) or has_slingshot) ) ))",
             "Nut Crate": "True"
         },
         "exits": {

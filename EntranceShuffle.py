@@ -460,7 +460,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
     for entrance in entrances_to_split:
         # Here, we find entrances that may be unreachable under certain conditions
-        if not max_playthrough.state_list[entrance.world.id].can_reach(entrance, age='both', tod='all'):
+        if not max_playthrough.state_list[entrance.world.id].as_both(entrance, tod='all'):
             restrictive_entrances.append(entrance)
             continue
         # If an entrance is reachable as both ages and all times of day with all the other entrances disconnected,
@@ -540,12 +540,12 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
         for world in worlds:
             # Links House entrance should be reachable as child at some point in the seed
             links_house_entrance = get_entrance_replacing(world.get_region('Links House'), 'Kokiri Forest -> Links House')
-            if not max_playthrough.state_list[world.id].can_reach(links_house_entrance, age='child'):
+            if not max_playthrough.state_list[world.id].as_age(links_house_entrance, adult=False):
                 raise EntranceShuffleError('Links House Entrance is never reachable as child')
 
             # Temple of Time entrance should be reachable as both ages at some point in the seed
             temple_of_time_entrance = get_entrance_replacing(world.get_region('Temple of Time'), 'Temple of Time Exterior -> Temple of Time')
-            if not max_playthrough.state_list[world.id].can_reach(temple_of_time_entrance, age='both'):
+            if not max_playthrough.state_list[world.id].as_both(temple_of_time_entrance):
                 raise EntranceShuffleError('Temple of Time Entrance is never reachable as both ages')
 
             # Temple of Time shouldn't be placed inside the Fishing Pond to prevent potential issues with the lake hylia water control
@@ -554,7 +554,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
 
             # Windmill door entrance should be reachable as both ages at some point in the seed
             windmill_door_entrance = get_entrance_replacing(world.get_region('Windmill'), 'Kakariko Village -> Windmill')
-            if not max_playthrough.state_list[world.id].can_reach(windmill_door_entrance, age='both'):
+            if not max_playthrough.state_list[world.id].as_both(windmill_door_entrance):
                 raise EntranceShuffleError('Windmill Door Entrance is never reachable as both ages')
 
         # At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
