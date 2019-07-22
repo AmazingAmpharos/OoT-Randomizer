@@ -6,6 +6,9 @@ from SettingsToJson import CreateJSON
 from Utils import data_path, check_python_version, compare_version, VersionError
 import shutil
 
+# Python 2 will through an error here...
+f'PLease use python 3.6+'
+
 def guiMain():
     try:
         check_python_version()
