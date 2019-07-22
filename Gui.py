@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
 import os
 import sys
-import subprocess
-from SettingsToJson import CreateJSON
-from Utils import data_path, check_python_version, compare_version, VersionError
-import shutil
 
-# Python 2 will through an error here...
-f'PLease use python 3.6+'
+min_python_version = [3,6,0]
+for i,v in enumerate(min_python_version):
+    if sys.version_info[i] < v:
+        print("Randomizer requires at least version 3.6 and you are using %s" % '.'.join([str(i) for i in sys.version_info[0:3]]))
+        exit(1)
+    if sys.version_info[i] > v:
+        break
+
+import subprocess
+import shutil
+import webbrowser
+from Utils import local_path, data_path, check_python_version, compare_version, VersionError
+from SettingsToJson import CreateJSON
 
 def guiMain():
     try:
-        check_python_version()
-        version_check("Node", "8.0.0")
-        version_check("NPM", "0.0.0")
+        version_check("Node", "8.0.0", "https://nodejs.org/en/download/")
+        version_check("NPM", "5.3.0", "https://nodejs.org/en/download/")
     except VersionError as ex:
-        print(ex)
+        print(ex.args[0])
+        webbrowser.open(ex.args[1])
         return
 
     web_version = '--web' in sys.argv
@@ -23,23 +30,22 @@ def guiMain():
         CreateJSON(data_path('generated/settings_list.json'), web_version)
 
     args = ["node", "run.js", "release", "python", sys.executable]
-    subprocess.Popen(args,shell=False,cwd="GUI")
+    subprocess.Popen(args,shell=False,cwd=local_path("GUI"))
 
 
-def version_check(name, version):
+def version_check(name, version, URL):
     try:
         process = subprocess.Popen([shutil.which(name.lower()), "--version"], stdout=subprocess.PIPE)
     except Exception as ex:
-        raise VersionError(f'{name} is not installed. Please install {name} {version} or later')
+        raise VersionError('{name} is not installed. Please install {name} {version} or later'.format(name=name, version=version), URL)
 
     while True:
         line = str(process.stdout.readline().strip(), 'UTF-8')
         if line == '':
             break
         if compare_version(line, version) < 0:
-            raise VersionError(f'{name} {version} or later is requires but you are using {line}')
-        print(f'Using {name} {line}')
-
+            raise VersionError('{name} {version} or later is required but you are using {line}'.format(name=name, version=version, line=line), URL)
+        print('Using {name} {line}'.format(name=name, line=line))
 
 if __name__ == '__main__':
     guiMain()
