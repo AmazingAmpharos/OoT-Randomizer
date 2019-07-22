@@ -209,7 +209,6 @@
         {
           "name": "disabled_locations_section",
           "text": "Exclude Locations",
-          "col_span": 2,
           "row_span": 8,
           "settings": [
             "disabled_locations"
@@ -218,7 +217,6 @@
         {
           "name": "allowed_tricks_section",
           "text": "Enable Tricks",
-          "col_span": 2,
           "row_span": 8,
           "settings": [
             "allowed_tricks"
@@ -234,7 +232,6 @@
         {
           "name": "speedup_section",
           "text": "Timesavers",
-          "col_span": 1,
           "row_span": 1,
           "settings": [
             "no_escape_sequence",
@@ -256,7 +253,6 @@
         {
           "name": "misc_section",
           "text": "Misc",
-          "col_span": 1,
           "row_span": 1,
           "settings": [
             "ocarina_songs",
@@ -272,7 +268,6 @@
         {
           "name": "item_pool_section",
           "text": "Item Pool",
-          "col_span": 1,
           "row_span": 1,
           "settings": [
             "item_pool_value",

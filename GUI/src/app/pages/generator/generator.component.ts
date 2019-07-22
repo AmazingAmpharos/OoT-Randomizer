@@ -578,7 +578,10 @@ export class GeneratorComponent implements OnInit {
 
     //col_span override
     if (colSpan > 0)
-      return columnCount >= colSpan ? colSpan : columnCount;
+      if (columnCount == 12) //Treat 12x1 column setup as 4x1 internally
+        return 4 >= colSpan ? colSpan * 3 : 12;
+      else
+        return columnCount >= colSpan ? colSpan : columnCount;
 
     //Account for col_span override sections in a special way
     let searchIndex = 0;
@@ -588,7 +591,13 @@ export class GeneratorComponent implements OnInit {
 
       if (section.col_span > 0) {
 
-        let sectionsToAdd = (columnCount >= section.col_span ? section.col_span : columnCount) - 1;
+        let sectionsToAdd;
+
+        if (columnCount == 12) //Treat 12x1 column setup as 4x1 internally
+          sectionsToAdd = (4 >= section.col_span ? section.col_span : 4) - 1;
+        else
+          sectionsToAdd = (columnCount >= section.col_span ? section.col_span : columnCount) - 1;
+
         length += sectionsToAdd;
 
         if (searchIndex < sectionIndex)
@@ -621,6 +630,49 @@ export class GeneratorComponent implements OnInit {
         if (index % 4 == 0)
           return 2;
       }
+    }
+    else if (columnCount == 12) { //We limit max sections per line at 4 in a 12x1 column setup
+
+      if (index == length - 1) {
+        if (index % 4 == 0)
+          return 12;
+        else if (index % 4 == 1)
+          return 6;
+        else if (index % 4 == 2)
+          return 4;
+      }
+      else if (index + 1 == length - 1) {
+        if (index % 4 == 0)
+          return 6;
+        else if (index % 4 == 1)
+          return 4;
+      }
+      else if (index + 2 == length - 1) {
+        if (index % 4 == 0)
+          return 4;
+      }
+
+      return 3;
+
+      /*
+      if (length > 4) {
+        if (index == length - 1) {
+          if (index % 4 == 0)
+            return 12;
+          else if (index % 4 == 1)
+            return 6;
+        }
+        else if (index + 1 == length - 1) {
+          if (index % 4 == 0)
+            return 6;
+        }
+
+        return 3;
+      }
+      else {
+        return 12 / length;
+      }
+      */
     }
 
     return 1;
