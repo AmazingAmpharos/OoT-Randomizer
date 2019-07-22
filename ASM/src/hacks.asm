@@ -1116,6 +1116,13 @@ skip_GS_BGS_text:
     nop
     lw      ra, 0x44 (sp)
 
+; extends object table lookup for shop item load after you unpause
+.org 0xAF7650
+    sw      ra, 0x34 (sp)
+    jal extended_object_lookup_shop_unpause
+    nop
+    lw      ra, 0x34 (sp)
+
 ;==================================================================================================
 ; Cow Shuffle
 ;==================================================================================================
