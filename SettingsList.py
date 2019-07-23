@@ -260,6 +260,13 @@ logic_tricks = {
                     required if Forest Temple is in its Master Quest
                     form.
                     '''},
+    'Reach Forest Temple MQ Twisted Hallway Switch with Hookshot': {
+        'name'    : 'logic_forest_mq_hallway_switch',
+        'tooltip' : '''\
+                    There's a very small gap between the glass block
+                    and the wall. Through that gap you can hookshot
+                    the target on the ceiling.
+                    '''},
     'Death Mountain Trail Bombable Chest with Strength': {
         'name'    : 'logic_dmt_bombable',
         'tooltip' : '''\
@@ -323,6 +330,12 @@ logic_tricks = {
         'tooltip' : '''\
                     Allow the Boomerang to return to you through
                     the Song of Time block to grab the token.
+                    '''},
+    'Bottom of the Well Cage GS without Boomerang': {
+        'name'    : 'logic_botw_cage_gs',
+        'tooltip' : '''\
+                    After killing the Skulltula, the Like Like
+                    can be used to boost you into the token.
                     '''},
     'Bottom of the Well MQ Dead Hand Freestanding Key with Boomerang': {
         'name'    : 'logic_botw_mq_dead_hand_key',
@@ -483,6 +496,15 @@ logic_tricks = {
                     on the torches is quite short so you must move
                     quickly in order to light all three.
                     '''},
+    'Shadow Trial MQ Torch with Bow': {
+        'name'    : 'logic_shadow_trial_mq',
+        'tooltip' : '''\
+                    You can light the torch in this room without a fire
+                    source by shooting an arrow through the lit torch
+                    at the beginning of the room. Because the room is
+                    so dark and the unlit torch is so far away, it can
+                    be difficult to aim the shot correctly.
+                    '''},
     'Forest Temple NE Outdoors Ledge with Hover Boots': {
         'name'    : 'logic_forest_outdoors_ledge',
         'tooltip' : '''\
@@ -508,6 +530,19 @@ logic_tricks = {
         'tooltip' : '''\
                     If you stand on the very edge of the platform, this
                     Gold Skulltula can be obtained with only the Hookshot.
+                    '''},
+    'Death Mountain Trail Upper Red Rock GS without Hammer': {
+        'name'    : 'logic_trail_gs_upper',
+        'tooltip' : '''\
+                    After killing the Skulltula, the token can be collected
+                    by backflipping into the rock at the correct angle.
+                    '''},
+    'Death Mountain Trail Lower Red Rock GS without Hammer': {
+        'name'    : 'logic_trail_gs_lower',
+        'tooltip' : '''\
+                    After killing the Skulltula, the token can be fished
+                    out of the rock without needing to destroy it, by
+                    using the Hookshot in the correct way.
                     '''},
     'Death Mountain Crater Upper to Lower with Hammer': {
         'name'    : 'logic_crater_upper_to_lower',
@@ -566,6 +601,23 @@ logic_tricks = {
         'name'    : 'logic_ice_mq_scarecrow',
         'tooltip' : '''\
                     A precise jump can be used to reach this alcove.
+                    '''},
+    'Reverse Wasteland': {
+        'name'    : 'logic_reverse_wasteland',
+        'tooltip' : '''\
+                    By memorizing the path, you can travel through the
+                    Wasteland in reverse.
+                    Note that jumping to the carpet merchant as child
+                    requires a fairly precise jumpslash.
+                    To enable the equivalent trick for going forward
+                    through the Wasteland, set the Lens of Truth logic
+                    to "Only Chest Minigame."
+                    To cross the river of sand with no additional items,
+                    be sure to also enable "Wasteland Crossing without
+                    Hover Boots or Longshot."
+                    Unless all overworld entrances are randomized, child
+                    Link will not be expected to do anything at Gerudo's
+                    Fortress.
                     '''},
     'Zora\'s River Upper Freestanding PoH as Adult with Nothing': {
         'name'    : 'logic_zora_river_upper',
@@ -698,6 +750,20 @@ logic_tricks = {
                     This trick applies to both Vanilla
                     and Master Quest.
                     '''},
+    'Spirit Temple Lower Adult Switch with Bombs': {
+        'name'    : 'logic_spirit_lower_adult_switch',
+        'tooltip' : '''\
+                    A bomb can be used to hit the switch on the ceiling,
+                    but it must be thrown from a particular distance
+                    away and with precise timing.
+                    '''},
+    'Forest Temple Outside Backdoor without Hover Boots': {
+        'name'    : 'logic_forest_outside_backdoor',
+        'tooltip' : '''\
+                    With a precise jumpslash from above, you
+                    can reach the backdoor to the west
+                    countyard without Hover Boots.
+                    '''},
     'Forest Temple Scarecrow Route': {
         'name'    : 'logic_forest_scarecrow',
         'tooltip' : '''\
@@ -707,6 +773,30 @@ logic_tricks = {
                     movement. You will take fall damage.
                     This allows you to reach the falling
                     ceiling room early.
+                    '''},
+    'Dodongo\'s Cavern MQ Early Bomb Bag Area as Child': {
+        'name'    : 'logic_dc_mq_child_bombs',
+        'tooltip' : '''\
+                    With a precise jumpslash from above, you
+                    can reach the Bomb Bag area as only child
+                    without needing a Slingshot. You will
+                    take fall damage.
+                    '''},
+    'Dodongo\'s Cavern Child Slingshot Skips': {
+        'name'    : 'logic_dc_slingshot_skip',
+        'tooltip' : '''\
+                    With precise platforming, child can cross the
+                    platforms while the flame circles are there.
+                    When enabling this trick, it's recommended that
+                    you also enable the Adult variant: "Dodongo's
+                    Cavern Spike Trap Room Jump without Hover Boots."
+                    '''},
+    'Goron City Spinning Pot PoH with Bombchu': {
+        'name'    : 'logic_goron_city_pot',
+        'tooltip' : '''\
+                    A Bombchu can be used to stop the spinning
+                    pot, but it can be quite finicky to get it
+                    to work.
                     '''},
     'Spirit Trial without Hookshot': {
         'name'    : 'logic_spirit_trial_hookshot',
@@ -723,6 +813,22 @@ logic_tricks = {
                     needing to pull the block. Applies to
                     both Vanilla and Master Quest.
                     '''},
+    'Water Temple Central Bow Target without Longshot or Hover Boots': {
+        'name'    : 'logic_water_central_bow',
+        'tooltip' : '''\
+                    A very precise Bow shot can hit the eye
+                    switch from the floor above. Then, you
+                    can jump down into the hallway and make
+                    through it before the gate closes.
+                    '''},
+    'Fire Temple East Tower without Scarecrow\'s Song': {
+        'name'    : 'logic_fire_scarecrow',
+        'tooltip' : '''\
+                    Also known as "Pixelshot."
+                    The Longshot can reach the target on the elevator
+                    itself, allowing you to skip needing to spawn the
+                    scarecrow.
+                    '''},
     'Shadow Temple Entry with Fire Arrows': {
         'name'    : 'logic_shadow_fire_arrow_entry',
         'tooltip' : '''\
@@ -736,7 +842,7 @@ logic_tricks = {
         'tooltip' : '''\
                     It is possible to complete the second dampe
                     race as child in under a minute, but it is
-                    a very strict time limit.
+                    a strict time limit.
                     '''},
 }
 
