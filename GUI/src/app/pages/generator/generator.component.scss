@@ -138,6 +138,78 @@ nb-card-body {
   margin-bottom: 0.8rem;
 }
 
+:host .oneLineComboBox {
+  display: inline-block !important;
+  margin-bottom: 10px;
+}
+
+:host .oLCBLabelFirst {
+  width: 248px;
+  left: 0px;
+
+  @media (max-width: 1390px) {
+    width: 223px;
+  }
+
+  @media (max-width: 1290px) {
+    width: 160px;
+  }
+
+  @media (max-width: 1075px) {
+    width: 140px;
+  }
+
+  @media (max-width: 1000px) {
+    width: 125px;
+  }
+}
+
+:host .oLCBLabelSecond {
+  width: 112px;
+  left: 0px;
+
+  @media (max-width: 1390px) {
+    width: 108px;
+  }
+
+  @media (max-width: 1290px) {
+    width: 100px;
+  }
+
+  @media (max-width: 1075px) {
+    width: 80px;
+  }
+
+  @media (max-width: 1000px) {
+    width: 62px;
+  }
+}
+
+:host .oLCBSelect {
+  width: 21%;
+  margin-right: 10px;
+
+  @media (max-width: 1290px) {
+    margin-right: 2px;
+    width: 23%;
+  }
+
+  @media (max-width: 1075px) {
+    margin-right: 2px;
+    width: 25%;
+  }
+
+  @media (max-width: 1000px) {
+    margin-right: 2px;
+    width: 27%;
+  }
+
+  @media (max-width: 915px) {
+    margin-right: 2px;
+    width: 23%;
+  }
+}
+
 .tileContainer {
   position: relative;
   width: 100%;
@@ -155,13 +227,11 @@ nb-card-body {
 
     /deep/ span {
 
+      white-space: pre-line;
+      line-height: 1.2;
+
       @media (max-width: 1350px) {
         font-size: 0.95rem;
-      }
-
-      @media (max-width: 1300px) {
-        white-space: pre-line;
-        line-height: 1.2;
       }
 
       @media (max-width: 1000px) {

@@ -330,10 +330,14 @@
           "is_colors": true,
           "row_span": 1,
           "settings": [
-            "navi_color_default",
-            "navi_color_enemy",
-            "navi_color_npc",
-            "navi_color_prop"
+            "navi_color_default_inner",
+            "navi_color_default_outer",
+            "navi_color_enemy_inner",
+            "navi_color_enemy_outer",
+            "navi_color_npc_inner",
+            "navi_color_npc_outer",
+            "navi_color_prop_inner",
+            "navi_color_prop_outer"
           ]
         },
         {

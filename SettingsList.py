@@ -2302,9 +2302,27 @@ setting_infos = [
         '''
     ),
     Setting_Info(
-        name           = 'navi_color_default',
+        name           = 'navi_color_default_inner',
         type           = str,
-        gui_text       = "Navi Idle",
+        gui_text       = "Navi Idle Inner",
+        gui_type       = "Combobox",
+        gui_params     = {
+            'no_line_break' : True,
+        },
+        shared         = False,
+        choices        = get_navi_color_options(),
+        default        = 'White',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+        '''
+    ),
+        Setting_Info(
+        name           = 'navi_color_default_outer',
+        type           = str,
+        gui_text       = "Outer",
         gui_type       = "Combobox",
         shared         = False,
         choices        = get_navi_color_options(),
@@ -2317,9 +2335,27 @@ setting_infos = [
         '''
     ),
     Setting_Info(
-        name           = 'navi_color_enemy',
+        name           = 'navi_color_enemy_inner',
         type           = str,
-        gui_text       = 'Navi Targeting Enemy',
+        gui_text       = 'Navi Targeting Enemy Inner',
+        gui_type       = "Combobox",
+        gui_params     = {
+            'no_line_break' : True,
+        },
+        shared         = False,
+        choices        = get_navi_color_options(),
+        default        = 'Yellow',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+        '''
+    ),
+    Setting_Info(
+        name           = 'navi_color_enemy_outer',
+        type           = str,
+        gui_text       = 'Outer',
         gui_type       = "Combobox",
         shared         = False,
         choices        = get_navi_color_options(),
@@ -2332,9 +2368,27 @@ setting_infos = [
         '''
     ),
     Setting_Info(
-        name           = 'navi_color_npc',
+        name           = 'navi_color_npc_inner',
         type           = str,
-        gui_text       = 'Navi Targeting NPC',
+        gui_text       = 'Navi Targeting NPC Inner',
+        gui_type       = "Combobox",
+        gui_params     = {
+            'no_line_break' : True,
+        },
+        shared         = False,
+        choices        = get_navi_color_options(),
+        default        = 'Light Blue',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+        '''
+    ),
+    Setting_Info(
+        name           = 'navi_color_npc_outer',
+        type           = str,
+        gui_text       = 'Outer',
         gui_type       = "Combobox",
         shared         = False,
         choices        = get_navi_color_options(),
@@ -2347,9 +2401,27 @@ setting_infos = [
         '''
     ),
     Setting_Info(
-        name           = 'navi_color_prop',
+        name           = 'navi_color_prop_inner',
         type           = str,
-        gui_text       = 'Navi Targeting Prop',
+        gui_text       = 'Navi Targeting Prop Inner',
+        gui_type       = "Combobox",
+        shared         = False,
+        gui_params     = {
+            'no_line_break' : True,
+        },
+        choices        = get_navi_color_options(),
+        default        = 'Green',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+        '''
+    ),
+    Setting_Info(
+        name           = 'navi_color_prop_outer',
+        type           = str,
+        gui_text       = 'Outer',
         gui_type       = "Combobox",
         shared         = False,
         choices        = get_navi_color_options(),
