@@ -470,8 +470,12 @@ class State(object):
         elif self.world.shuffle_interior_entrances:
             colossus_fairy_entrance = self.world.get_entrance('Desert Colossus -> Colossus Fairy')
             if colossus_fairy_entrance.connected_region and colossus_fairy_entrance.connected_region.name == 'Lake Hylia Lab':
-                return self.has_ocarina() and self.has_any_of(
-                    ('Prelude of Light', 'Minuet of Forest', 'Serenade of Water', 'Nocturne of Shadow'))
+                return (self.has_ocarina() and \
+                           self.has_any_of(('Prelude of Light', 'Minuet of Forest', 'Serenade of Water', 'Nocturne of Shadow'))) or \
+                       (self.can_play('Bolero of Fire') and (self.has_any_of(('Progressive Hookshot', 'Hover Boots')) or \
+                           (self.can_become_child() and self.has_any_of(('Magic Bean', 'Magic Bean Pack'))))) or \
+                       (self.world.logic_reverse_wasteland and \
+                           (self.world.logic_wasteland_crossing or self.has('Hover Boots') or self.has('Progressive Hookshot', 2)))
 
             # timer is disabled with shuffle_interior_entrances
             return True
