@@ -19,7 +19,7 @@ from SettingsToJson import CreateJSON
 def guiMain():
     try:
         version_check("Node", "8.0.0", "https://nodejs.org/en/download/")
-        version_check("NPM", "5.3.0", "https://nodejs.org/en/download/")
+        version_check("NPM", "3.5.2", "https://nodejs.org/en/download/")
     except VersionError as ex:
         print(ex.args[0])
         webbrowser.open(ex.args[1])

@@ -309,7 +309,7 @@ async function main(commandLine) {
 
     //Verify binary folder exists
     if (!fs.existsSync("./node_modules/.bin")) {
-        throw Error("node_modules/.bin folder is missing. Please delete the entire node_modules folder and try again!");
+        throw Error("GUI/node_modules/.bin folder is missing. Please delete the entire GUI/node_modules folder and try again!");
     }
 
     //Verify core modules
