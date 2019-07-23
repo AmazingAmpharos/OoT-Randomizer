@@ -2325,8 +2325,8 @@ setting_infos = [
         gui_text       = "Outer",
         gui_type       = "Combobox",
         shared         = False,
-        choices        = get_navi_color_options(),
-        default        = 'White',
+        choices        = get_navi_color_options(True),
+        default        = '[Same as Inner]',
         gui_tooltip    = '''\
             'Random Choice': Choose a random
             color from this list of colors.
@@ -2358,8 +2358,8 @@ setting_infos = [
         gui_text       = 'Outer',
         gui_type       = "Combobox",
         shared         = False,
-        choices        = get_navi_color_options(),
-        default        = 'Yellow',
+        choices        = get_navi_color_options(True),
+        default        = '[Same as Inner]',
         gui_tooltip    = '''\
             'Random Choice': Choose a random
             color from this list of colors.
@@ -2391,8 +2391,8 @@ setting_infos = [
         gui_text       = 'Outer',
         gui_type       = "Combobox",
         shared         = False,
-        choices        = get_navi_color_options(),
-        default        = 'Light Blue',
+        choices        = get_navi_color_options(True),
+        default        = '[Same as Inner]',
         gui_tooltip    = '''\
             'Random Choice': Choose a random
             color from this list of colors.
@@ -2424,8 +2424,8 @@ setting_infos = [
         gui_text       = 'Outer',
         gui_type       = "Combobox",
         shared         = False,
-        choices        = get_navi_color_options(),
-        default        = 'Green',
+        choices        = get_navi_color_options(True),
+        default        = '[Same as Inner]',
         gui_tooltip    = '''\
             'Random Choice': Choose a random
             color from this list of colors.
