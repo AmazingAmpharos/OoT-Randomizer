@@ -74,8 +74,12 @@ class Rule_AST_Transformer(ast.NodeTransformer):
             keywords=[])
 
     # python 3.8 compatibility: ast walking now uses visit_Constant for Constant subclasses
-    # this includes Num, Str, NameConstant, Bytes, and Ellipsis. We only use Str, so...
-    visit_Constant = visit_Str
+    # this includes Num, Str, NameConstant, Bytes, and Ellipsis. We only handle Str.
+    def visit_Constant(self, node):
+        if isinstance(node, ast.Str):
+            return self.visit_Str(node)
+        return node
+
 
     def visit_Tuple(self, node):
         if len(node.elts) != 2:
