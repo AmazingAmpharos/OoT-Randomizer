@@ -129,8 +129,11 @@ def get_navi_colors():
     return list(NaviColors.keys())
 
 
-def get_navi_color_options():
-    return ["Random Choice", "Completely Random"] + get_navi_colors()
+def get_navi_color_options(outer=False):
+    if outer:
+        return ["[Same as Inner]", "Random Choice", "Completely Random"] + get_navi_colors()
+    else:
+        return ["Random Choice", "Completely Random"] + get_navi_colors()
 
     
 def get_sword_colors():
@@ -225,46 +228,73 @@ def patch_navi_colors(rom, settings, log, symbols):
     # patch navi colors
     navi = [
         # colors for Navi
-        ('Navi Idle', settings.navi_color_default, [0x00B5E184]), # Default
-        ('Navi Targeting Enemy', settings.navi_color_enemy,   [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
-        ('Navi Targeting NPC', settings.navi_color_npc,     [0x00B5E194]), # NPC
-        ('Navi Targeting Prop', settings.navi_color_prop,    [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
-                                  0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4,
-                                  0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
+        ('Navi Idle',            settings.navi_color_default_inner, settings.navi_color_default_outer,
+            [0x00B5E184]), # Default
+        ('Navi Targeting Enemy', settings.navi_color_enemy_inner,   settings.navi_color_enemy_outer,
+            [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+        ('Navi Targeting NPC',   settings.navi_color_npc_inner,     settings.navi_color_npc_outer,
+            [0x00B5E194]), # NPC
+        ('Navi Targeting Prop',  settings.navi_color_prop_inner,    settings.navi_color_prop_outer,
+            [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
+            0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4,
+            0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
     ]
     navi_color_list = get_navi_colors()
-    for navi_action, navi_option, navi_addresses in navi:
+    for navi_action, navi_option_inner, navi_option_outer, navi_addresses in navi:
+
         # choose a random choice for the whole group
-        if navi_option == 'Random Choice':
-            navi_option = random.choice(navi_color_list)
-        custom_color = False
+        if navi_option_inner == 'Random Choice':
+            navi_option_inner = random.choice(navi_color_list)
+        if navi_option_outer == 'Random Choice':
+            navi_option_outer = random.choice(navi_color_list)
+
+        if navi_option_outer == '[Same as Inner]':
+            navi_option_outer = navi_option_inner
+
+        inner_color = None
+        outer_color = None
+        colors = []
         for address in navi_addresses:
             # completely random is random for every subgroup
-            if navi_option == 'Completely Random':
-                colors = ([random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)],
-                         [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)])
-                if navi_action not in log.navi_colors:
-                    log.navi_colors[navi_action] = list()
-                log.navi_colors[navi_action].append(dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in list(colors[0])]), color2=''.join(['{:02X}'.format(c) for c in list(colors[1])])))
-            # grab the color from the list
-            elif navi_option in NaviColors:
-                colors = list(NaviColors[navi_option][0]), list(NaviColors[navi_option][1])
-            # build color from hex code
-            else:
-                inner_color = list(int(navi_option[i:i+2], 16) for i in (0, 2, 4))
-                if len(navi_option) / 6 == 1:
-                    outer_color = inner_color
-                else:
-                    outer_color = list(int(navi_option[i:i+2], 16) for i in (6, 8, 10))
-                colors = (inner_color, outer_color)
-                custom_color = True
+            if navi_option_inner == 'Completely Random':
+                inner_color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+            if navi_option_outer == 'Completely Random':
+                outer_color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
 
-            color = colors[0] + [0xFF] + colors[1] + [0xFF]
+            # grab the color from the list
+            if navi_option_inner in NaviColors:
+                inner_color = list(NaviColors[navi_option_inner][0])
+            if navi_option_outer in NaviColors:
+                outer_color = list(NaviColors[navi_option_outer][1])
+
+            # build color from hex code
+            if inner_color is None:
+                inner_color = list(int(navi_option_inner[i:i+2], 16) for i in (0, 2, 4))
+                navi_option_inner = 'Custom'
+            if outer_color is None:
+                outer_color = list(int(navi_option_outer[i:i+2], 16) for i in (0, 2, 4))
+                navi_option_outer = 'Custom'
+
+            # Check color validity
+            if inner_color is None:
+                raise Exception(f'Invalid inner color {navi_option_inner} for {navi_action}')
+            if outer_color is None:
+                raise Exception(f'Invalid outer color {navi_option_outer} for {navi_action}')
+
+            # make color set a list for the log if they are completely random (different per address)
+            if navi_option_inner == 'Completely Random' or navi_option_outer == 'Completely Random':
+                colors.append((inner_color, outer_color))
+            else:
+                colors = [(inner_color, outer_color)]
+
+            # write color
+            color = inner_color + [0xFF] + outer_color + [0xFF]
             rom.write_bytes(address, color)
-        if custom_color:
-            navi_option = 'Custom'
-        if navi_action not in log.navi_colors:
-            log.navi_colors[navi_action] = [dict(option=navi_option, color1=''.join(['{:02X}'.format(c) for c in list(colors[0])]), color2=''.join(['{:02X}'.format(c) for c in list(colors[1])]))]
+
+        log.navi_colors[navi_action] = [dict(
+            option1=navi_option_inner, color1=''.join(['{:02X}'.format(c) for c in inner_c]), 
+            option2=navi_option_outer, color2=''.join(['{:02X}'.format(c) for c in outer_c]))
+            for (inner_c, outer_c) in colors]
 
 
 def patch_sword_trails(rom, settings, log, symbols):
@@ -597,8 +627,8 @@ class CosmeticsLog(object):
 
         for navi_action, list in self.navi_colors.items():
             for i, options in enumerate(list):
-                color_option_string = '{option} (#{color1}, #{color2})'
-                output += format_string.format(key=(navi_action+':') if i == 0 else '', value=color_option_string.format(option=options['option'], color1=options['color1'], color2=options['color2']), width=padding)
+                color_option_string = '{option1}, {option2} (#{color1}, #{color2})'
+                output += format_string.format(key=(navi_action+':') if i == 0 else '', value=color_option_string.format(option1=options['option1'], color1=options['color1'], option2=options['option2'], color2=options['color2']), width=padding)
 
         if 'sword_colors' in self.__dict__:
             for sword_trail, list in self.sword_colors.items():

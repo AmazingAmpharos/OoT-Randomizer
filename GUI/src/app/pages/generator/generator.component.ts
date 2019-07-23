@@ -572,9 +572,13 @@ export class GeneratorComponent implements OnInit {
     this.afterSettingChange(true);
   }
 
+  getColumnCount(tileRef: MatGridTile) {
+    return tileRef._gridList.cols;
+  }
+
   getColumnWidth(tileRef: MatGridTile, sections: any, index: number, length: number, colSpan: number = 0) {
 
-    let columnCount = tileRef._gridList.cols;
+    let columnCount = this.getColumnCount(tileRef);
 
     //col_span override
     if (colSpan > 0)

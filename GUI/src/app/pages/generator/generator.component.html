@@ -32,22 +32,22 @@
                         </ng-container>
                         <!--Combo-->
                         <ng-container *ngSwitchCase="'Combobox'">
-                          <span *ngIf="section.is_colors && global.generator_settingsMap[setting.name] === 'Custom Color' && global.generator_customColorMap[setting.name].length > 0" class="comboBoxLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}} ({{global.generator_customColorMap[setting.name]}})</span>
-                          <span *ngIf="!section.is_colors || global.generator_settingsMap[setting.name] != 'Custom Color' || global.generator_customColorMap[setting.name].length == 0" class="comboBoxLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}</span>
+                          <span *ngIf="section.is_colors && global.generator_settingsMap[setting.name] === 'Custom Color' && global.generator_customColorMap[setting.name].length > 0" class="comboBoxLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name], 'oneLineComboBox': getColumnCount(refEl) > 2 && (setting.no_line_break || (itemIndex > 0 && section.settings[itemIndex-1].no_line_break)), 'oLCBLabelFirst': getColumnCount(refEl) > 2 && setting.no_line_break, 'oLCBLabelSecond': getColumnCount(refEl) > 2 && itemIndex > 0 && section.settings[itemIndex-1].no_line_break}">{{setting.text}} ({{global.generator_customColorMap[setting.name]}})</span>
+                          <span *ngIf="!section.is_colors || global.generator_settingsMap[setting.name] != 'Custom Color' || global.generator_customColorMap[setting.name].length == 0" class="comboBoxLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name], 'oneLineComboBox': getColumnCount(refEl) > 2 && (setting.no_line_break || (itemIndex > 0 && section.settings[itemIndex-1].no_line_break)), 'oLCBLabelFirst': getColumnCount(refEl) > 2 && setting.no_line_break, 'oLCBLabelSecond': getColumnCount(refEl) > 2 && itemIndex > 0 && section.settings[itemIndex-1].no_line_break}">{{setting.text}}</span>
                           <!--Combobox with Custom Color Picker for Cosmetics-->
                           <ng-container *ngIf="section.is_colors">
-                            <div class="colorPickerContainer">
+                            <div class="colorPickerContainer" [ngClass]="{'oneLineComboBox oLCBPicker': getColumnCount(refEl) > 2 && (setting.no_line_break || (itemIndex > 0 && section.settings[itemIndex-1].no_line_break))}">
                               <input #refColorPicker [(colorPicker)]="global.generator_customColorMap[setting.name]" [cpAlphaChannel]="disabled" [cpOutputFormat]="hex" [cpUseRootViewContainer]="true" [cpAddColorButton]="true" [cpPresetColors]="['#fff', '#000']" [cpMaxPresetColorsLength]="5"
                                      (colorPickerClose)="afterSettingChange(true)" />
                             </div>
-                            <nb-select class="selectXSmall" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" (selectedChange)="checkVisibility($event, setting, findOption(setting.options, $event), refColorPicker)"
+                            <nb-select class="selectXSmall" [ngClass]="{'oneLineComboBox oLCBSelect': getColumnCount(refEl) > 2 && (setting.no_line_break || (itemIndex > 0 && section.settings[itemIndex-1].no_line_break)) }" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" (selectedChange)="checkVisibility($event, setting, findOption(setting.options, $event), refColorPicker)"
                                        [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'click' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise" size="xsmall">
                               <nb-option *ngFor="let option of setting.options; index as optionIndex" [value]="option.name">{{option.text}}</nb-option>
                             </nb-select>
                           </ng-container>
                           <!--Normal Combobox-->
                           <ng-container *ngIf="!section.is_colors">
-                            <nb-select class="selectXSmall" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" (selectedChange)="checkVisibility($event, setting, findOption(setting.options, $event))"
+                            <nb-select class="selectXSmall" [ngClass]="{'oneLineComboBox oLCBSelect': getColumnCount(refEl) > 2 && setting.no_line_break}" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" (selectedChange)="checkVisibility($event, setting, findOption(setting.options, $event))"
                                        [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'click' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise" size="xsmall">
                               <nb-option *ngFor="let option of setting.options; index as optionIndex" [value]="option.name">{{option.text}}</nb-option>
                             </nb-select>
