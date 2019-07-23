@@ -10,7 +10,7 @@ from Fill import FillError
 from EntranceShuffle import EntranceShuffleError, change_connections, confirm_replacement, validate_worlds
 from Hints import gossipLocations, GossipText
 from Item import ItemFactory, ItemIterator, IsItem
-from ItemPool import item_groups, rewardlist, get_junk_item
+from ItemPool import item_groups, get_junk_item
 from Location import LocationIterator, LocationFactory, IsLocation
 from LocationList import location_groups
 from Playthrough import Playthrough
@@ -21,6 +21,7 @@ from JSONDump import dump_obj, CollapseList, CollapseDict, AllignedDict, SortedD
 
 
 per_world_keys = (
+    ':randomized_settings',
     'starting_items',
     'item_pool',
     'dungeons',
@@ -210,6 +211,7 @@ class WorldDistribution(object):
 
     def update(self, src_dict, update_all=False):
         update_dict = {
+            'randomized_settings': None,
             'dungeons': {name: DungeonRecord(record) for (name, record) in src_dict.get('dungeons', {}).items()},
             'trials': {name: TrialRecord(record) for (name, record) in src_dict.get('trials', {}).items()},
             'item_pool': {name: ItemPoolRecord(record) for (name, record) in src_dict.get('item_pool', {}).items()},
@@ -239,6 +241,7 @@ class WorldDistribution(object):
 
     def to_json(self):
         return {
+            ':randomized_settings': self.randomized_settings,      
             'starting_items': SortedDict({name: record.to_json() for (name, record) in self.starting_items.items()}),
             'dungeons': {name: record.to_json() for (name, record) in self.dungeons.items()},
             'trials': {name: record.to_json() for (name, record) in self.trials.items()},
@@ -694,6 +697,7 @@ class Distribution(object):
 
         for world in spoiler.worlds:
             world_dist = self.world_dists[world.id]
+            world_dist.randomized_settings = {randomized_item: getattr(world, randomized_item) for randomized_item in world.randomized_list}
             world_dist.dungeons = {dung: DungeonRecord({ 'mq': world.dungeon_mq[dung] }) for dung in world.dungeon_mq}
             world_dist.trials = {trial: TrialRecord({ 'active': not world.skipped_trials[trial] }) for trial in world.skipped_trials}
             world_dist.entrances = {ent.name: EntranceRecord.from_entrance(ent) for ent in spoiler.entrances[world.id]}
