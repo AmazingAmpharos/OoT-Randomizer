@@ -146,6 +146,7 @@ nb-card-body {
 :host .oLCBLabelFirst {
   width: 248px;
   left: 0px;
+  text-align: center;
 
   @media (max-width: 1390px) {
     width: 223px;
@@ -167,6 +168,7 @@ nb-card-body {
 :host .oLCBLabelSecond {
   width: 112px;
   left: 0px;
+  text-align: center;
 
   @media (max-width: 1390px) {
     width: 108px;
