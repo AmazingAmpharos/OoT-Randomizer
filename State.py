@@ -142,7 +142,7 @@ class State(object):
 
     def as_age(self, spot, tod=None, adult=True):
         if (self.can_become_adult() if adult else self.can_become_child()):
-            return self.with_age(lambda state: state.can_reach(spot, tod=tod))
+            return self.with_age(lambda state: state.can_reach(spot, tod=tod), adult=adult)
         return False
 
 
