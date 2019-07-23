@@ -764,7 +764,7 @@ export class GUIGlobal {
 
             listenerError.cancel();
 
-            let data = event.data;
+            let data = JSON.parse(event.data);
             resolve(data);
           });
 
@@ -787,77 +787,14 @@ export class GUIGlobal {
         let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/settings/get?version=" + (self.getGlobalVar("webIsMasterVersion") ? "" : "dev_") + self.getGlobalVar("webSourceVersion").replace(/ /g, "_") + "&settingsString=" + settingsString;
         console.log("Request settings from:", url);
 
-        self.http.get(url, { responseType: "text" }).toPromise().then(res => {
-
-          let settingsObj = self.convertRawSettingsToObj(res);
-          resolve(settingsObj);
-
+        self.http.get(url, { responseType: "json" }).toPromise().then(res => {
+          resolve(res);
         }).catch(err => {
           console.error("[convertStringToSettings] Web Error:", err);
           reject(err);
         });
       }
     });
-  }
-
-  convertRawSettingsToObj(rawSettings: string) { //Web only
-
-    var settingsResult = {};
-
-    var lines = rawSettings.split("\n");
-    var lineSettingElement = "";
-
-    lines.forEach(line => {
-
-      if (line.trim().length == 0 || line.includes("Online Patcher")) //Remove title line
-        return;
-
-      let lineValue: any = "";
-
-      if (line.includes(":")) { //setting with value
-        lineSettingElement = line.trim().substr(0, line.trim().indexOf(":"));
-        lineValue = line.trim().substr(line.trim().indexOf(":") + 1);
-        lineValue = lineValue.trim();
-      }
-      else {
-        lineValue = line.trim(); //just option without setting
-      }
-
-      if (lineValue.length < 1)
-        return;
-
-      if (lineSettingElement in settingsResult) { //Exception for listboxes/arrays
-
-        if (typeof (settingsResult[lineSettingElement]) != "object" || !Array.isArray(settingsResult[lineSettingElement])) {
-          //Transform value into array
-          let originalValue = settingsResult[lineSettingElement];
-
-          settingsResult[lineSettingElement] = [];
-          settingsResult[lineSettingElement].push(originalValue);
-        }
-
-        settingsResult[lineSettingElement].push(Number(parseInt(lineValue)) != lineValue ? lineValue : parseInt(lineValue));
-      }
-      else {
-
-        if (lineValue == "True") //Checkbox True/False handling
-          settingsResult[lineSettingElement] = true;
-        else if (lineValue == "False")
-          settingsResult[lineSettingElement] = false;
-        else //String/Numbers/Array first value
-          settingsResult[lineSettingElement] = Number(parseInt(lineValue)) != lineValue ? lineValue : parseInt(lineValue);
-
-        if (lineSettingElement == "disabled_locations" || lineSettingElement == "allowed_tricks") {
-          //DIRTY: Transform value into array for both listboxes or the rando doesn't understand single disabled locations/tricks
-          let originalValue = settingsResult[lineSettingElement];
-
-          settingsResult[lineSettingElement] = [];
-          settingsResult[lineSettingElement].push(originalValue);
-        }
-      }
-    });
-
-    return settingsResult;
   }
 
   createPresetFileObject() {

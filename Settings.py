@@ -297,7 +297,7 @@ def get_settings_from_command_line_args():
 
     if args.convert_settings:
         if args.settings_string is not None:
-            print(settings.get_settings_display())
+            print(json.dumps(settings.to_json()))
         else:
             print(settings.get_settings_string())
         sys.exit(0)

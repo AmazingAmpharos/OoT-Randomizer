@@ -80,86 +80,6 @@ function readSettingsFromFile() {
     return false;
 }
 
-function parseRawSettings(settingsRaw) {
-
-  var lines = settingsRaw.split("\n");
-  var lineSettingElement = "";
-
-  var settingsList = JSON.parse(electron.ipcRenderer.sendSync('getGeneratorGUISettings'));
-  var parsedSettings = {};
-
-  lines.forEach(line => {
-    if (line.trim().length < 1 || line.includes("Online Patcher"))
-      return;
-
-    var lineValue = "";
-
-    if (line.includes(":")) {
-      lineSettingElement = line.trim().substr(0, line.trim().indexOf(":"));
-      lineValue = line.trim().substr(line.trim().indexOf(":") + 1)
-      lineValue = lineValue.trim();
-    }
-    else {
-      lineValue = line.trim();
-    }
-
-    //Lookup lineElement in global settings list and push lineValue to it. If type SearchBox push to selected elements array instead
-    settingsList.settingsArray.find(tab => {
-
-      var foundSection = tab.sections.find(section => {
-
-        var foundSetting = section.settings.find(setting => {
-
-          if (setting.name == lineSettingElement) {
-
-            if (setting.type == "SearchBox") {
-              if (lineValue.trim().length > 0)
-                if (parsedSettings[setting.name])
-                  parsedSettings[setting.name].push(lineValue);
-                else
-                  parsedSettings[setting.name] = [lineValue];
-              else
-                if (!parsedSettings[setting.name])
-                  parsedSettings[setting.name] = [];
-            }
-            else {
-
-              if (lineValue == "True")
-                parsedSettings[setting.name] = true;
-              else if (lineValue == "False")
-                parsedSettings[setting.name] = false;
-              else
-                if (String(parseInt(lineValue)) == lineValue)
-                  parsedSettings[setting.name] = parseInt(lineValue);
-                else
-                  parsedSettings[setting.name] = lineValue;
-
-              //console.log(lineSettingElement, lineValue);
-            }
-
-            return true;
-          }
-
-          return false;
-        });
-
-        if (foundSetting)
-          return true;
-        else
-          return false;
-      });
-
-      if (foundSection)
-        return true;
-      else
-        return false;
-
-    });
-  });
-
-  return parsedSettings;
-}
-
 //POST ROBOT
 post.on('getCurrentSourceVersion', function (event) {
 
@@ -314,9 +234,7 @@ post.on('convertStringToSettings', function (event) {
   generator.getSettings(pythonPath, pythonGeneratorPath, data).then(res => {
     //console.log('[Preload] Success');
 
-    let settingsObj = parseRawSettings(res);
-
-    post.send(window, 'convertStringToSettingsSuccess', settingsObj);
+    post.send(window, 'convertStringToSettingsSuccess', res);
   }).catch((err) => {
 
     if (err.includes("ImportError: No module named tkinter")) {

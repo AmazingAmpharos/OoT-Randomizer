@@ -653,26 +653,6 @@ export class GeneratorComponent implements OnInit {
       }
 
       return 3;
-
-      /*
-      if (length > 4) {
-        if (index == length - 1) {
-          if (index % 4 == 0)
-            return 12;
-          else if (index % 4 == 1)
-            return 6;
-        }
-        else if (index + 1 == length - 1) {
-          if (index % 4 == 0)
-            return 6;
-        }
-
-        return 3;
-      }
-      else {
-        return 12 / length;
-      }
-      */
     }
 
     return 1;
