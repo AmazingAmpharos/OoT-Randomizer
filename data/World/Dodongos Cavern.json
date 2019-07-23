@@ -52,7 +52,8 @@
         "exits": {
             "Dodongos Cavern Lobby": "True",
             "Dodongos Cavern Far Bridge": "
-                here(is_child and has_slingshot) or 
+                here(is_child and (has_slingshot or
+                    (logic_dc_slingshot_skip and (has_sticks or has_explosives or Kokiri_Sword)))) or 
                 here(is_adult and (has_bow or Hover_Boots or can_use(Longshot) or logic_dc_jump))"
         }
     },
