@@ -32,6 +32,7 @@ class World(object):
         self.shop_prices = {}
         self.scrub_prices = {}
         self.light_arrow_location = None
+        self.triforce_goal = float("inf")
 
         self.parser = Rule_AST_Transformer(self)
         self.event_items = set()
@@ -111,6 +112,8 @@ class World(object):
         new_world.starting_age = self.starting_age
         new_world.can_take_damage = self.can_take_damage
         new_world.shop_prices = copy.copy(self.shop_prices)
+        new_world.triforce_goal = self.triforce_goal
+
         new_world.id = self.id
         new_world.distribution = self.distribution
 

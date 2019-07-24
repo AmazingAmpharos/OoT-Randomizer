@@ -100,7 +100,6 @@ item_difficulty_max = {
         'Slingshot': 2, 
         'Bomb Bag': 2,
         'Heart Container': 0,
-        'Triforce Piece' : 25,
     },
     'minimal': {
         'Bombchus': 1,
@@ -117,10 +116,15 @@ item_difficulty_max = {
         'Bomb Bag': 1,
         'Heart Container': 0,
         'Piece of Heart': 0,
-        'Triforce Piece' : 20,
     },
 }
 
+TriforceCounts = {
+    'plentiful': 40,
+    'balanced':  30,
+    'scarce':    25,
+    'minimal':   20,
+}
 
 DT_vanilla = (
     ['Recovery Heart'] * 2)
@@ -1215,19 +1219,16 @@ def get_pool_core(world):
         world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
     if world.bridge == 'triforce': 
-        pending_junk_pool.extend(['Triforce Piece'] * 20)
+        world.triforce_goal = TriforceCounts[world.item_pool_value]
+        pending_junk_pool.extend(['Triforce Piece'] * world.triforce_goal)
 
     if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
         placed_items['Zelda'] = 'Boss Key (Ganons Castle)'
 
     if world.item_pool_value == 'plentiful':
         pool.extend(easy_items)
-        if world.bridge == 'triforce': 
-            pending_junk_pool.extend(['Triforce Piece'] * 15)
     else:
         pool.extend(normal_items)
-        if world.bridge == 'triforce': 
-            pending_junk_pool.extend(['Triforce Piece'] * 10)
 
     if not world.shuffle_kokiri_sword:
         replace_max_item(pool, 'Kokiri Sword', 0)
