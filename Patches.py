@@ -972,9 +972,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_bits(0x0F08, 0x08) # "Entered Hyrule Castle"
 
     # Set the number of chickens to collect
-    # Generate random number if needed
-    if world.chicken_count_random:
-        world.chicken_count = random.randint(0, 7)
     rom.write_byte(0x00E1E523, world.chicken_count)
     
     # Change Anju to always say how many chickens are needed

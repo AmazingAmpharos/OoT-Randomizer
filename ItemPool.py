@@ -360,31 +360,6 @@ deku_scrubs_items = (
     ['Rupees (5)'] * 4) # ['Green Potion']
 
 
-boss_location_names = [
-    'Queen Gohma',
-    'King Dodongo',
-    'Barinade',
-    'Phantom Ganon',
-    'Volvagia',
-    'Morpha',
-    'Bongo Bongo',
-    'Twinrova',
-    'Links Pocket'
-]
-
-
-rewardlist = [
-    'Kokiri Emerald',
-    'Goron Ruby',
-    'Zora Sapphire',
-    'Forest Medallion',
-    'Fire Medallion',
-    'Water Medallion',
-    'Spirit Medallion',
-    'Shadow Medallion',
-    'Light Medallion']
-
-
 songlist = [
     'Zeldas Lullaby',
     'Eponas Song',
@@ -760,9 +735,6 @@ def generate_itempool(world):
     for (location, item) in placed_items.items():
         world.push_item(location, ItemFactory(item, world))
         world.get_location(location).locked = True
-
-    choose_trials(world)
-    fill_bosses(world)
 
     world.initialize_items()
 
@@ -1267,38 +1239,3 @@ def get_pool_core(world):
     world.distribution.collect_starters(world.state)
 
     return (pool, placed_items)
-
-
-def choose_trials(world):
-    trial_pool = list(world.skipped_trials)
-    dist_chosen = world.distribution.configure_trials(trial_pool)
-    dist_num_chosen = len(dist_chosen)
-
-    if world.trials_random:
-        world.trials = dist_num_chosen + random.randint(0, len(trial_pool))
-    num_trials = int(world.trials)
-    choosen_trials = random.sample(trial_pool, num_trials - dist_num_chosen)
-    for trial in world.skipped_trials:
-        if trial not in choosen_trials and trial not in dist_chosen:
-            world.skipped_trials[trial] = True
-
-
-def fill_bosses(world, bossCount=9):
-    boss_rewards = ItemFactory(rewardlist, world)
-    boss_locations = [world.get_location(loc) for loc in boss_location_names]
-
-    placed_prizes = [loc.item.name for loc in boss_locations if loc.item is not None]
-    unplaced_prizes = [item for item in boss_rewards if item.name not in placed_prizes]
-    empty_boss_locations = [loc for loc in boss_locations if loc.item is None]
-    prizepool = list(unplaced_prizes)
-    prize_locs = list(empty_boss_locations)
-
-    bossCount -= world.distribution.fill_bosses(world, prize_locs, prizepool)
-
-    while bossCount:
-        bossCount -= 1
-        random.shuffle(prizepool)
-        random.shuffle(prize_locs)
-        item = prizepool.pop()
-        loc = prize_locs.pop()
-        world.push_item(loc, item)

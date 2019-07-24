@@ -61,27 +61,16 @@ class State(object):
             return spot
 
 
-    def can_reach(self, spot=None, resolution_hint='Region', age=None, tod=None, keep_tod=False):
+    def can_reach(self, spot=None, resolution_hint='Region', tod=None, keep_tod=False):
         if spot == None:
             # Default to the current spot's parent region, to allow can_reach to be used without arguments inside access rules
             spot = self.current_spot.parent_region
         else:
             spot = self.get_spot(spot, resolution_hint)
 
-        if age == None:
-            # If the age parameter is missing, the current age should be used, but if it's not defined either, we default to age='either'
-            if self.adult == None:
-                return self.as_either(lambda state: state.can_reach(spot, tod=tod))
-        elif age == 'either':
-            return self.as_either(lambda state: state.can_reach(spot, tod=tod))
-        elif age == 'both':
-           return self.as_both(lambda state: state.can_reach(spot, tod=tod))
-        elif age == 'adult':
-            return self.as_adult(lambda state: state.can_reach(spot, tod=tod))
-        elif age == 'child':
-            return self.as_child(lambda state: state.can_reach(spot, tod=tod))
-        else:
-            raise AttributeError('Unknown age parameter type: ' + str(age))
+        # If the current age is not defined, we try either
+        if self.adult == None:
+            return self.as_either(spot, tod=tod)
 
         if tod != None and self.ensure_tod_access():
             if tod == 'all':
@@ -137,28 +126,32 @@ class State(object):
         return can_reach
 
 
-    def as_either(self, lambda_rule):
-        return self.as_adult(lambda_rule) or self.as_child(lambda_rule)
+    def as_either(self, spot, tod=None):
+        reach = lambda state: state.can_reach(spot, tod=tod)
+        return ((self.can_become_adult() and self.with_age(reach, adult=True)) or
+                (self.can_become_child() and self.with_age(reach, adult=False)))
 
 
-    def as_both(self, lambda_rule):
-        return self.as_adult(lambda_rule) and self.as_child(lambda_rule)
+    def as_both(self, spot, tod=None):
+        if self.can_become_adult() and self.can_become_child():
+            reach = lambda state: state.can_reach(spot, tod=tod)
+            return self.with_age(reach, adult=True) and self.with_age(reach, adult=False)
+        else:
+            return False
 
 
-    def as_adult(self, lambda_rule):
-        return self.can_become_adult() and self.with_age(lambda_rule, 'adult')
+    def as_age(self, spot, tod=None, adult=True):
+        if (self.can_become_adult() if adult else self.can_become_child()):
+            return self.with_age(lambda state: state.can_reach(spot, tod=tod), adult=adult)
+        return False
 
 
-    def as_child(self, lambda_rule):
-        return self.can_become_child() and self.with_age(lambda_rule, 'child')
-
-
-    def with_age(self, lambda_rule, age):
+    def with_age(self, lambda_rule, adult=True):
+        # Does *not* check that we can_become the age!
         # It's important to set the age property back to what it was originally after executing the rule here
-        original_adult = self.adult
-        self.adult = (age == 'adult')
+        self.adult = adult
         lambda_rule_result = lambda_rule(self)
-        self.adult = original_adult
+        self.adult = None
         return lambda_rule_result
 
 
@@ -169,22 +162,6 @@ class State(object):
         lambda_rule_result = lambda_rule(self)
         self.current_spot = original_spot
         return lambda_rule_result
-
-
-    def as_either_here(self, lambda_rule=lambda state: True):
-        return self.as_either(self.add_reachability(lambda_rule))
-
-
-    def as_both_here(self, lambda_rule=lambda state: True):
-        return self.as_both(self.add_reachability(lambda_rule))
-
-
-    def as_adult_here(self, lambda_rule=lambda state: True):
-        return self.as_adult(self.add_reachability(lambda_rule))
-
-
-    def as_child_here(self, lambda_rule=lambda state: True):
-        return self.as_child(self.add_reachability(lambda_rule))
 
 
     def add_reachability(self, lambda_rule):

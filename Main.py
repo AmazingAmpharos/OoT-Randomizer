@@ -19,7 +19,7 @@ from Rom import Rom
 from Patches import patch_rom
 from Cosmetics import patch_cosmetics
 from DungeonList import create_dungeons
-from Fill import distribute_items_restrictive, FillError
+from Fill import distribute_items_restrictive, ShuffleError
 from Item import Item
 from ItemList import item_table
 from ItemPool import generate_itempool
@@ -88,8 +88,8 @@ def main(settings, window=dummy_window()):
         try:
             spoiler = generate(settings, window)
             break
-        except FillError as fe:
-            logger.warning('Failed attempt %d of %d: %s', attempt, max_attempts, fe)
+        except ShuffleError as e:
+            logger.warning('Failed attempt %d of %d: %s', attempt, max_attempts, e)
             if attempt >= max_attempts:
                 raise
             else:
@@ -101,29 +101,14 @@ def generate(settings, window):
     logger = logging.getLogger('')
     worlds = []
     for i in range(0, settings.world_count):
-        worlds.append(World(settings))
+        worlds.append(World(i, settings))
 
     window.update_status('Creating the Worlds')
     for id, world in enumerate(worlds):
-        world.id = id
-        world.distribution = settings.distribution.world_dists[id]
         logger.info('Generating World %d.' % id)
 
         window.update_progress(0 + 1*(id + 1)/settings.world_count)
         logger.info('Creating Overworld')
-
-        # Determine MQ Dungeons
-        dungeon_pool = list(world.dungeon_mq)
-        dist_num_mq = world.distribution.configure_dungeons(world, dungeon_pool)
-
-        if world.mq_dungeons_random:
-            for dungeon in dungeon_pool:
-                world.dungeon_mq[dungeon] = random.choice([True, False])
-            world.mq_dungeons = list(world.dungeon_mq.values()).count(True)
-        else:
-            mqd_picks = random.sample(dungeon_pool, world.mq_dungeons - dist_num_mq)
-            for dung in mqd_picks:
-                world.dungeon_mq[dung] = True
 
         if settings.logic_rules == 'glitched':
             overworld_data = os.path.join(data_path('Glitched World'), 'Overworld.json')
@@ -147,6 +132,7 @@ def generate(settings, window):
         generate_itempool(world)
         set_shop_rules(world)
         set_drop_location_names(world)
+        world.fill_bosses()
 
     logger.info('Setting Entrances.')
     set_entrances(worlds)
@@ -281,10 +267,6 @@ def patch_and_output(settings, window, spoiler, rom, start):
         else:
             logger.info("Created uncompessed rom at: %s" % output_path)
         window.update_progress(95)
-
-    for world in worlds:
-        for info in setting_infos:
-            world.settings.__dict__[info.name] = world.__dict__[info.name]
 
     settings.distribution.update_spoiler(spoiler)
     if settings.create_spoiler:

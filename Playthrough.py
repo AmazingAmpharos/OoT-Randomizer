@@ -1,5 +1,5 @@
 import copy
-from collections import deque, defaultdict
+from collections import defaultdict
 import itertools
 
 
@@ -18,13 +18,13 @@ class Playthrough(object):
         # Mapping from item to sphere index, if this is tracking items. 0-based.
         self.item_in_sphere = defaultdict(int)
 
-        # Prefill sphere 0 if not already filled.
-        if not self.cached_spheres:
-            self.next_sphere()
-
         # Let the states reference this playthrough.
         for state in self.state_list:
             state.playthrough = self
+
+        # Prefill sphere 0 if not already filled.
+        if not self.cached_spheres:
+            self.next_sphere()
 
 
     def copy(self):
@@ -98,15 +98,15 @@ class Playthrough(object):
         self.item_in_sphere.clear()
 
 
-    # simplified exit.can_reach(state), with_age bypasses can_become_age
+    # simplified exit.can_reach(state), bypasses can_become_age
     # which we've already accounted for
     def validate_child(self, exit):
         return self.state_list[exit.parent_region.world.id].with_age(
-                lambda state: exit.can_reach(state, noparent=True), 'child')
+                exit.can_reach_simple, adult=False)
 
     def validate_adult(self, exit):
         return self.state_list[exit.parent_region.world.id].with_age(
-                lambda state: exit.can_reach(state, noparent=True), 'adult')
+                exit.can_reach_simple, adult=True)
 
 
     # Internal to the iteration. Modifies the exit_queue, region_set. 
@@ -114,14 +114,13 @@ class Playthrough(object):
     # as a cache for the exits to try on the next iteration.
     @staticmethod
     def _expand_regions(exit_queue, region_set, validate):
-        new_exit = lambda exit: exit.connected_region != None and exit.connected_region not in region_set
+        new_exit = lambda exit: exit.connected_region and exit.connected_region not in region_set
         failed = []
-        while exit_queue:
-            exit = exit_queue.popleft()
+        for exit in exit_queue:
             if new_exit(exit):
                 if validate(exit):
                     region_set.add(exit.connected_region)
-                    exit_queue.extend(filter(new_exit, exit.connected_region.exits))
+                    exit_queue.extend(exit.connected_region.exits)
                 else:
                     failed.append(exit)
         return failed
@@ -144,8 +143,8 @@ class Playthrough(object):
             visited_locations = copy.copy(self.cached_spheres[-1]['visited_locations'])
         else:
             root_regions = [state.world.get_region('Root') for state in self.state_list]
-            child_queue = deque(exit for region in root_regions for exit in region.exits)
-            adult_queue = deque(exit for region in root_regions for exit in region.exits)
+            child_queue = list(exit for region in root_regions for exit in region.exits)
+            adult_queue = list(exit for region in root_regions for exit in region.exits)
             child_regions = set(root_regions)
             adult_regions = set(root_regions)
             visited_locations = set()
@@ -156,18 +155,15 @@ class Playthrough(object):
         child_failed = Playthrough._expand_regions(child_queue, child_regions, self.validate_child)
 
         # Save the current data into the cache.
-        new_child_exit = lambda exit: exit.connected_region not in child_regions
-        new_adult_exit = lambda exit: exit.connected_region not in adult_regions
-
         self.cached_spheres.append({
             'child_regions': child_regions,
             'adult_regions': adult_regions,
             # Didn't change here, but this will be the editable layer of the cache.
             'visited_locations': visited_locations,
-            # Exits that didn't pass validation (and still point to new places)
+            # Exits that didn't pass validation
             # are the only exits we'll be interested in
-            'child_queue': deque(filter(new_child_exit, child_failed)),
-            'adult_queue': deque(filter(new_adult_exit, adult_failed)),
+            'child_queue': child_failed,
+            'adult_queue': adult_failed,
         })
         return child_regions, adult_regions, visited_locations
 
@@ -186,9 +182,9 @@ class Playthrough(object):
                     and not loc.is_disabled()
                     # Check adult first; it's the most likely.
                     and (loc.parent_region in adult_regions
-                         and self.state_list[loc.world.id].with_age(lambda state: loc.can_reach(state, noparent=True), 'adult')
+                         and self.state_list[loc.world.id].with_age(loc.can_reach_simple, adult=True)
                      or (loc.parent_region in child_regions
-                         and self.state_list[loc.world.id].with_age(lambda state: loc.can_reach(state, noparent=True), 'child'))))
+                         and self.state_list[loc.world.id].with_age(loc.can_reach_simple, adult=False))))
 
 
         had_reachable_locations = True
@@ -269,6 +265,7 @@ class Playthrough(object):
 
     # Use the cache in the playthrough to determine region reachability.
     def can_reach(self, region, age=None):
+        if not self.cached_spheres: return False
         if age == 'adult':
             return region in self.cached_spheres[-1]['adult_regions']
         elif age == 'child':
