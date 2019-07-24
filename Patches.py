@@ -1013,7 +1013,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_int32(symbol, 5)
 
     if world.triforce_hunt:
-        rom.write_int32(symbol, 6)
         rom.write_int16(rom.sym('triforce_pieces_requied'), world.triforce_goal)
         rom.write_int16(rom.sym('triforce_hunt_enabled'), 1)
 
