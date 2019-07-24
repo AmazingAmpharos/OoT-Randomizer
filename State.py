@@ -463,31 +463,22 @@ class State(object):
 
 
     def guarantee_trade_path(self):
-        # Require certain warp songs based on ER settings to ensure the player doesn't have to savewarp in order to complete the trade quest
-        # This is meant to avoid possible logical softlocks until either the trade quest is reworked or a better solution is found
-        if self.world.shuffle_special_indoor_entrances:
-            return self.can_play('Prelude of Light')
-        elif self.world.shuffle_interior_entrances:
-            colossus_fairy_entrance = self.world.get_entrance('Desert Colossus -> Colossus Fairy')
-            if colossus_fairy_entrance.connected_region and colossus_fairy_entrance.connected_region.name == 'Lake Hylia Lab':
-                return (self.has_ocarina() and \
-                           self.has_any_of(('Prelude of Light', 'Minuet of Forest', 'Serenade of Water', 'Nocturne of Shadow'))) or \
-                       (self.can_play('Bolero of Fire') and (self.has_any_of(('Progressive Hookshot', 'Hover Boots')) or \
-                           (self.can_become_child() and self.has_any_of(('Magic Bean', 'Magic Bean Pack'))))) or \
-                       (self.world.logic_reverse_wasteland and \
-                           (self.world.logic_wasteland_crossing or self.has('Hover Boots') or self.has('Progressive Hookshot', 2)))
-
-            # timer is disabled with shuffle_interior_entrances
+        if self.world.shuffle_interior_entrances or self.world.shuffle_overworld_entrances:
+            # Timers are disabled and items don't revert on save warp in those ER settings
             return True
         else:
             return (
-                # check necessary items for the paths that fit in the timer
+                # Check necessary items for the paths to Biggoron that fit the timer
                 self.world.logic_biggoron_bolero
                 # Getting to Biggoron without ER or the trick above involves either
                 # Darunia's Chamber access or clearing the boulders to get up DMT
                 or self.can_blast_or_smash()
                 or self.has('Stop Link the Goron')
             )
+
+
+    def disabled_trade_revert(self):
+        return self.world.shuffle_interior_entrances or self.world.shuffle_overworld_entrances
 
 
     def has_bottle(self):
