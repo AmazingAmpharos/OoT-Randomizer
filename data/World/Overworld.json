@@ -451,7 +451,7 @@
         "exits": {
             "Gerudo Fortress": "
                 ((shuffle_overworld_entrances or is_adult) and 'Gerudo Fortress Gate Open') or
-                (is_adult and not shuffle_overworld_entrances)",
+                (is_adult and (not shuffle_overworld_entrances) and at('Gerudo Valley', is_adult))",
             "Haunted Wasteland Near Fortress": "True"
         }
     },
