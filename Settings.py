@@ -272,6 +272,7 @@ def get_settings_from_command_line_args():
     parser.add_argument('--convert_settings', help='Only convert the specified settings to a settings string. If a settings string is specified output the used settings instead.', action='store_true')
     parser.add_argument('--settings', help='Use the specified settings file to use for generation')
     parser.add_argument('--seed', help='Generate the specified seed.')
+    parser.add_argument('--no_log', help='Suppresses the generation of a log file.', action='store_true')
 
     args = parser.parse_args()
 
@@ -302,4 +303,4 @@ def get_settings_from_command_line_args():
             print(settings.get_settings_string())
         sys.exit(0)
         
-    return settings, args.gui, args.loglevel
+    return settings, args.gui, args.loglevel, args.no_log
