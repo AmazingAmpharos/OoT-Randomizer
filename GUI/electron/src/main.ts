@@ -23,8 +23,8 @@ function createApp() {
 
   //Load the previous window state with fallback to defaults
   let mainWindowState = windowStateKeeper({
-    defaultWidth: 970,
-    defaultHeight: 930
+    defaultWidth: 961,
+    defaultHeight: 888
   });
 
   //Browser Window common options

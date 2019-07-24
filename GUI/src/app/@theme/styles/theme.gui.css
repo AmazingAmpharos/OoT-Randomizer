@@ -417,7 +417,7 @@ input.mat-input-element {
     height: 1.125em
 }
 .mat-slide-toggle {
-    height: 18px !important;
+    height: fit-content !important;
 }
 .mat-slide-toggle-content {
     font-family: Roboto, "Helvetica Neue", sans-serif

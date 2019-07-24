@@ -146,44 +146,57 @@ nb-card-body {
 :host .oLCBLabelFirst {
   width: 248px;
   left: 0px;
-  text-align: center;
+  text-align: left;
 
-  @media (max-width: 1390px) {
-    width: 223px;
+  @media (max-width: 1430px) {
+    width: 230px;
   }
 
-  @media (max-width: 1290px) {
+  @media (max-width: 1355px) {
     width: 160px;
   }
 
-  @media (max-width: 1075px) {
+  @media (max-width: 1160px) {
     width: 140px;
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1075px) {
     width: 125px;
+  }
+
+  @media (max-width: 1000px) {
+    width: 120px;
+  }
+
+  @media (max-width: 970px) {
+    width: 110px;
   }
 }
 
 :host .oLCBLabelSecond {
-  width: 112px;
+  width: 106px;
   left: 0px;
-  text-align: center;
+  text-align: right;
+  margin-right: 12px;
 
-  @media (max-width: 1390px) {
-    width: 108px;
+  @media (max-width: 1430px) {
+    width: 105px;
+    margin-right: 10px;
   }
 
-  @media (max-width: 1290px) {
-    width: 100px;
+  @media (max-width: 1355px) {
+    width: 104px;
+    margin-right: 8px;
+  }
+
+  @media (max-width: 1160px) {
+    width: 76px;
+    margin-right: 6px;
   }
 
   @media (max-width: 1075px) {
-    width: 80px;
-  }
-
-  @media (max-width: 1000px) {
-    width: 62px;
+    width: 58px;
+    margin-right: 6px;
   }
 }
 
@@ -196,17 +209,27 @@ nb-card-body {
     width: 23%;
   }
 
-  @media (max-width: 1075px) {
+  @media (max-width: 1160px) {
     margin-right: 2px;
     width: 25%;
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1075px) {
     margin-right: 2px;
     width: 27%;
   }
 
-  @media (max-width: 915px) {
+  @media (max-width: 1000px) {
+    margin-right: 2px;
+    width: 28%;
+  }
+
+  @media (max-width: 970px) {
+    margin-right: 2px;
+    width: 29%;
+  }
+
+  @media (max-width: 920px) {
     margin-right: 2px;
     width: 23%;
   }
@@ -505,6 +528,11 @@ nb-card-body {
 .settingPadding {
   height: 8px;
 }
+
+.settingCBPadding {
+  height: 13px;
+}
+
 //Disabled elements
 p.disabled {
   opacity: 0.38;
