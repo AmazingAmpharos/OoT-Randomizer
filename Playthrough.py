@@ -235,13 +235,23 @@ class Playthrough(object):
     # If scan_for_items is True, constructs and modifies a copy of the underlying
     # state to determine beatability; otherwise, only checks that the playthrough
     # has already acquired all the Triforces.
+    #
+    # The above comment was specifically for collecting the triforce. Other win 
+    # conditions are possible, such as in Triforce Hunt, where only the total
+    # amount of an item across all worlds matter, not specifcally who has it
+    #
+    # Win condition can be a string that gets mapped to a function(state_list) here
+    # or just a function(state_list)
     def can_beat_game(self, scan_for_items=True):
-        def won(state):
-            return state.has('Triforce')
+
+        # This currently assumed all worlds have the same win condition.
+        # This might not be true in the future
+        def won(state_list):  
+            return state_list[0].world.win_condition(state_list)
 
         if scan_for_items:
             # Check if already beaten
-            if all(map(won, self.state_list)):
+            if won(self.state_list):
                 return True
 
             # collect all available items
@@ -252,8 +262,7 @@ class Playthrough(object):
             playthrough = self
 
         # if every state got the Triforce, then return True
-        return all(map(won, playthrough.state_list))
-
+        return won(playthrough.state_list)
 
     # Use the cache in the playthrough to determine region reachability.
     def can_reach(self, region, age=None):

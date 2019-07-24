@@ -1013,6 +1013,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_int32(symbol, 5)
     elif world.bridge == 'triforce':
         rom.write_int32(symbol, 6)
+        rom.write_int32(rom.sym('TRIFORCE_PIECES_REQUIRED'), world.triforce_goal)
 
     # Set up LACS conditions.
     symbol = rom.sym('LACS_CONDITION')

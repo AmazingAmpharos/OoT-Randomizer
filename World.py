@@ -64,6 +64,14 @@ class World(object):
         self.shuffle_special_indoor_entrances = self.entrance_shuffle in ['all-indoors', 'all']
         self.shuffle_overworld_entrances = self.entrance_shuffle == 'all'
 
+        # define win conditions for various modes
+        if self.bridge == 'triforce':
+            # Leaving this win condition here till we get a warp going
+            #self.win_condition = lambda state_list: sum([state.item_count('Triforce Piece') for state in state_list]) >= 20 * self.world_count
+            self.win_condition = lambda state_list: all(map(lambda state: state.has('Triforce'), state_list))
+        else:
+            self.win_condition = lambda state_list: all(map(lambda state: state.has('Triforce'), state_list))
+
         # Determine LACS Condition
         if self.shuffle_ganon_bosskey == 'lacs_medallions':
             self.lacs_condition = 'medallions'
