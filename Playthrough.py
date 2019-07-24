@@ -246,12 +246,15 @@ class Playthrough(object):
 
         # This currently assumed all worlds have the same win condition.
         # This might not be true in the future
-        def won(state_list):  
-            return state_list[0].world.win_condition(state_list)
+        def won(state):
+            if state.world.triforce_hunt:
+                return state.has('Triforce Piece', state.world.triforce_count)
+            else:
+                return state.has('Triforce')
 
         if scan_for_items:
             # Check if already beaten
-            if won(self.state_list):
+            if all(map(won, self.state_list)):
                 return True
 
             # collect all available items
@@ -262,7 +265,7 @@ class Playthrough(object):
             playthrough = self
 
         # if every state got the Triforce, then return True
-        return won(playthrough.state_list)
+        return all(map(won, playthrough.state_list))
 
     # Use the cache in the playthrough to determine region reachability.
     def can_reach(self, region, age=None):

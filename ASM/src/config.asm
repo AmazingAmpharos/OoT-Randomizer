@@ -51,11 +51,6 @@ RAINBOW_BRIDGE_CONDITION:
 ; 3 = Stones
 ; 4 = Vanilla
 ; 5 = Tokens
-; 6 = Triforce Hunt
-
-
-TRIFORCE_PIECES_REQUIRED:
-.word 0x14
 
 LACS_CONDITION:
 .word 0x00

@@ -74,6 +74,10 @@ class Region(object):
 
         if is_dungeon_restricted and not manual:
             return self.dungeon and self.dungeon.is_dungeon_item(item) and item.world.id == self.world.id
+
+        if item.name == 'Triforce Piece':
+            return item.world.id == self.world.id
+
         return True
 
 

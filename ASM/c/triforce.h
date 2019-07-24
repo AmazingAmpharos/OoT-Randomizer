@@ -1,7 +1,12 @@
-#include "z64.h"
-
 #ifndef TRIFORCE_H 
 #define TRIFORCE_H 
+
+#include "z64.h"
+#include "gfx.h"
+#include "text.h"
+#include "util.h"
+
+extern uint16_t triforce_pieces_requied;
 
 void draw_triforce_count();
 void set_triforce_render();

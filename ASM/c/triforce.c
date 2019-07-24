@@ -1,8 +1,4 @@
 #include "triforce.h"
-#include "gfx.h"
-#include "text.h"
-#include "util.h"
-#include "z64.h"
 
 static uint32_t frames = 0;
 static uint32_t render_triforce_flag = 0;
@@ -11,19 +7,20 @@ static uint32_t render_triforce_flag = 0;
 #define TRIFORCE_FRAMES_VISIBLE 100 // 20 Frames seems to be about 1 second
 #define TRIFORCE_FRAMES_FADE_AWAY 80 
 #define TRIFORCE_FRAMES_FADE_INTO 5 
-extern uint32_t RAINBOW_BRIDGE_CONDITION;
-extern uint32_t TRIFORCE_PIECES_REQUIRED;
-
 #define MY_DEBUG_POINT ( (uint32_t*) 0x80480000 )
+
+uint16_t triforce_hunt_enabled = 0;
+uint16_t triforce_pieces_requied = 0xFFFF;
 
 void set_triforce_render() {
     render_triforce_flag = 1;
+    frames = frames > TRIFORCE_FRAMES_FADE_INTO ? TRIFORCE_FRAMES_FADE_INTO : frames;
 }
 
 void draw_triforce_count(z64_disp_buf_t *db) {
     
     // Must be triforce hunt and triforce should be drawable, and we should either be on the pause screen or the render triforce flag should be set
-    if (!(RAINBOW_BRIDGE_CONDITION == 6 && CAN_DRAW_TRIFORCE && (render_triforce_flag == 1 || z64_game.pause_ctxt.state == 6))) {
+    if (!(triforce_hunt_enabled && CAN_DRAW_TRIFORCE && (render_triforce_flag == 1 || z64_game.pause_ctxt.state == 6))) {
         return;
     }
     
@@ -66,8 +63,8 @@ void draw_triforce_count(z64_disp_buf_t *db) {
     int tens_place = (pieces / 10) % 10;
     int ones_place = pieces % 10;
 
-    int required_tens_place = (TRIFORCE_PIECES_REQUIRED / 10) % 10;
-    int required_ones_place = TRIFORCE_PIECES_REQUIRED % 10;
+    int required_tens_place = (triforce_pieces_requied / 10) % 10;
+    int required_ones_place = triforce_pieces_requied % 10;
 
     char text[] = { (char) (tens_place + 48), (char) (ones_place + 48), (char) 0x2F , (char) (required_tens_place + 48), (char) (required_ones_place + 48)  };
     text_print(text , draw_x, draw_y_text);

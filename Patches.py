@@ -1011,9 +1011,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_int32(symbol, 4)
     elif world.bridge == 'tokens':
         rom.write_int32(symbol, 5)
-    elif world.bridge == 'triforce':
+
+    if world.triforce_hunt:
         rom.write_int32(symbol, 6)
-        rom.write_int32(rom.sym('TRIFORCE_PIECES_REQUIRED'), world.triforce_goal)
+        rom.write_int16(rom.sym('triforce_pieces_requied'), world.triforce_goal)
+        rom.write_int16(rom.sym('triforce_hunt_enabled'), 1)
 
     # Set up LACS conditions.
     symbol = rom.sym('LACS_CONDITION')

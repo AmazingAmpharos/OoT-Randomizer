@@ -1218,9 +1218,9 @@ def get_pool_core(world):
     if not world.dungeon_mq['Water Temple']:
         world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
-    if world.bridge == 'triforce': 
-        world.triforce_goal = TriforceCounts[world.item_pool_value]
-        pending_junk_pool.extend(['Triforce Piece'] * world.triforce_goal)
+    if world.triforce_hunt: 
+        world.triforce_count = TriforceCounts[world.item_pool_value]
+        pending_junk_pool.extend(['Triforce Piece'] * world.triforce_count)
 
     if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
         placed_items['Zelda'] = 'Boss Key (Ganons Castle)'

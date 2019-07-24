@@ -141,6 +141,7 @@ override_action:
 
     li      t0, active_override_is_outgoing
     lw      t0, 0x00 (t0)
+    andi    t0, t0, 0x01
     bnez    t0, @@return
     li      s0, 0x41 ; Outgoing co-op item, do nothing for this player
 

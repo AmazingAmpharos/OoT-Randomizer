@@ -32,7 +32,8 @@ class World(object):
         self.shop_prices = {}
         self.scrub_prices = {}
         self.light_arrow_location = None
-        self.triforce_goal = float("inf")
+        self.triforce_count = 0
+        self.triforce_goal = 20 * settings.world_count
 
         self.parser = Rule_AST_Transformer(self)
         self.event_items = set()
@@ -63,14 +64,6 @@ class World(object):
         self.shuffle_interior_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all']
         self.shuffle_special_indoor_entrances = self.entrance_shuffle in ['all-indoors', 'all']
         self.shuffle_overworld_entrances = self.entrance_shuffle == 'all'
-
-        # define win conditions for various modes
-        if self.bridge == 'triforce':
-            # Leaving this win condition here till we get a warp going
-            #self.win_condition = lambda state_list: sum([state.item_count('Triforce Piece') for state in state_list]) >= 20 * self.world_count
-            self.win_condition = lambda state_list: all(map(lambda state: state.has('Triforce'), state_list))
-        else:
-            self.win_condition = lambda state_list: all(map(lambda state: state.has('Triforce'), state_list))
 
         # Determine LACS Condition
         if self.shuffle_ganon_bosskey == 'lacs_medallions':
@@ -121,6 +114,7 @@ class World(object):
         new_world.can_take_damage = self.can_take_damage
         new_world.shop_prices = copy.copy(self.shop_prices)
         new_world.triforce_goal = self.triforce_goal
+        new_world.triforce_count = self.triforce_count
 
         new_world.id = self.id
         new_world.distribution = self.distribution

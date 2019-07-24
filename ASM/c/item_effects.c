@@ -1,9 +1,5 @@
 #include "item_effects.h"
 
-#include "icetrap.h"
-#include "triforce.h"
-#include "z64.h"
-
 #define rupee_cap ((uint16_t*)0x800F8CEC)
 volatile uint8_t MAX_RUPEES = 0;
 
@@ -15,8 +11,18 @@ void full_heal(z64_file_t *save, int16_t arg1, int16_t arg2) {
 }
 
 void give_triforce_piece(z64_file_t *save, int16_t arg1, int16_t arg2) {
-    save->scene_flags[0x48].unk_00_ += 1; //Unused word in scene x48. 
+    save->scene_flags[0x48].unk_00_ += 1; //Unused word in scene x48.
     set_triforce_render();
+
+    if (save->scene_flags[0x48].unk_00_ >= triforce_pieces_requied) {
+        int entrance_index = 0x00A0;
+        int cutscene_index = 0xFFF8;
+
+        z64_file.cutscene_next = cutscene_index;
+        z64_game.entrance_index = entrance_index;
+        z64_game.scene_load_flag = 0x14;
+        z64_game.fadeout_transition = 0x01;
+    }
 }
 
 void give_tycoon_wallet(z64_file_t *save, int16_t arg1, int16_t arg2) {

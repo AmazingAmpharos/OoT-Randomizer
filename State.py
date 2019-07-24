@@ -649,8 +649,6 @@ class State(object):
                 self.has('Zora Sapphire'))
         if self.world.bridge == 'tokens':
             return self.has('Gold Skulltula Token', 100)
-        if self.world.bridge == 'triforce':
-            return self.has('Triforce Piece', self.world.triforce_goal)
         raise Exception ('Unknown Rainbow Bridge Logic')
 
 

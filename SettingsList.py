@@ -949,7 +949,6 @@ setting_infos = [
             'medallions': 'All Medallions',
             'dungeons':   'All Dungeons',
             'tokens':     '100 Gold Skulltula Tokens',
-            'triforce':   'Triforce Hunt'
         },
         gui_text       = 'Rainbow Bridge Requirement',
         gui_group      = 'open',
@@ -960,7 +959,6 @@ setting_infos = [
             'All Medallions': All 6 Medallions.
             'All Dungeons': All Medallions and Spiritual Stones.
             '100 Gold Skulltula Tokens': All 100 Gold Skulltula Tokens.
-            'Triforce Hunt': Pieces of the Triforce have been scattered around the world. Find 20 of them to open the Rainbow bridge.
         ''',
         shared         = True,
         gui_params     = {
@@ -971,10 +969,23 @@ setting_infos = [
                 ('stones',     1),
                 ('medallions', 1),
                 ('dungeons',   1),
-                ('triforce',   1),
             ],
         },
     ),
+    Checkbutton(
+        name           = 'triforce_hunt',
+        gui_text       = 'Triforce Hunt',
+        gui_group      = 'open',
+        gui_tooltip    = '''\
+            Pieces of the Triforce have been scattered around the world. 
+            Find 20 of them to beat the game. In multiworld, 20 per world
+            must be collectively obtained.
+        ''',
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),    
     Combobox(
             name           = 'logic_rules',
             default        = 'glitchless',
