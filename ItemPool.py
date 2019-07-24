@@ -664,6 +664,7 @@ remove_junk_items = [
 
 item_groups = {
     'Junk': remove_junk_items,
+    'JunkSong': ('Prelude of Light', 'Serenade of Water'),
     'AdultTrade': tradeitems,
     'Bottle': normal_bottles,
     'Spell': ('Dins Fire', 'Farores Wind', 'Nayrus Love'),
