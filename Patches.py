@@ -773,14 +773,16 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         
     exit_table = generate_exit_lookup_table()
 
+    if world.shuffle_interior_entrances or world.shuffle_overworld_entrances:
+        # Disable trade quest timers and prevent trade items from reverting on save load
+        rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
+        rom.write_int32(0xB064CC, 0x10000010) # b 0xB06510 (skip trade item revert)
+
     if world.shuffle_overworld_entrances:
         rom.write_byte(rom.sym('OVERWORLD_SHUFFLED'), 1)
 
         # Prevent the ocarina cutscene from leading straight to hyrule field
         rom.write_byte(rom.sym('OCARINAS_SHUFFLED'), 1)
-
-        # Disable trade quest timers
-        rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
 
         # Disable the fog state entirely to avoid fog glitches
         rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
@@ -845,9 +847,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         set_entrance_updates(world.get_shuffled_entrances(type='Dungeon'))
 
     if world.shuffle_interior_entrances:
-        # Disable trade quest timers
-        rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
-
         # Change the Happy Mask Shop "throw out" entrance index to the new one (hardcode located in the shop actor)
         rom.write_int16(0xC6DA5E, world.get_entrance('Castle Town Mask Shop -> Castle Town').replaces.data['index'])
 
