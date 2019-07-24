@@ -128,8 +128,8 @@
           "col_span": 4,
           "row_span": 2,
           "settings": [
-            "logic_rules",
-            "randomize_settings"
+            "randomize_settings",
+            "logic_rules"
           ]
         },
         {
