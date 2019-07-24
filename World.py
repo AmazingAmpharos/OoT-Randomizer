@@ -18,7 +18,8 @@ import re
 
 class World(object):
 
-    def __init__(self, settings):
+    def __init__(self, id, settings):
+        self.id = id
         self.shuffle = 'vanilla'
         self.dungeons = []
         self.regions = []
@@ -40,17 +41,8 @@ class World(object):
         # this gives the world an attribute for every setting listed in Settings.py
         self.settings = settings
         self.__dict__.update(settings.__dict__)
-        self.distribution = None
+        self.distribution = settings.distribution.world_dists[id]
 
-        # evaluate settings (important for logic, nice for spoiler)
-        if self.big_poe_count_random:
-            self.big_poe_count = random.randint(1, 10)
-        if self.starting_tod == 'random':
-            setting_info = get_setting_info('starting_tod')
-            choices = [ch for ch in setting_info.choices if ch not in ['default', 'random']]
-            self.starting_tod = random.choice(choices)
-        if self.starting_age == 'random':
-            self.starting_age = random.choice(['child', 'adult'])
         if self.open_forest == 'closed' and self.entrance_shuffle in ['all-indoors', 'all']:
             self.open_forest = 'closed_deku'
 
@@ -101,9 +93,11 @@ class World(object):
 
         self.can_take_damage = True
 
+        self.resolve_random_settings()
+
 
     def copy(self):
-        new_world = World(self.settings)
+        new_world = World(self.id, self.settings)
         new_world.skipped_trials = copy.copy(self.skipped_trials)
         new_world.dungeon_mq = copy.copy(self.dungeon_mq)
         new_world.big_poe_count = copy.copy(self.big_poe_count)
@@ -111,7 +105,6 @@ class World(object):
         new_world.starting_age = self.starting_age
         new_world.can_take_damage = self.can_take_damage
         new_world.shop_prices = copy.copy(self.shop_prices)
-        new_world.id = self.id
         new_world.distribution = self.distribution
 
         new_world.regions = [region.copy(new_world) for region in self.regions]
@@ -123,7 +116,59 @@ class World(object):
         new_world.itempool = [item.copy(new_world) for item in self.itempool]
         new_world.state = self.state.copy(new_world)
 
+        # copy any randomized settings to match the original copy
+        new_world.randomized_list = list(self.randomized_list)
+        for randomized_item in new_world.randomized_list:
+            setattr(new_world, randomized_item, getattr(self, randomized_item))
+
         return new_world
+
+
+    def resolve_random_settings(self):
+        # evaluate settings (important for logic, nice for spoiler)
+        self.randomized_list = []
+        if self.big_poe_count_random:
+            self.big_poe_count = random.randint(1, 10)
+            self.randomized_list.append('big_poe_count')
+        if self.starting_tod == 'random':
+            setting_info = get_setting_info('starting_tod')
+            choices = [ch for ch in setting_info.choices if ch not in ['default', 'random']]
+            self.starting_tod = random.choice(choices)
+            self.randomized_list.append('starting_tod')
+        if self.starting_age == 'random':
+            self.starting_age = random.choice(['child', 'adult'])
+            self.randomized_list.append('starting_age')
+        if self.chicken_count_random:
+            self.chicken_count = random.randint(0, 7)
+            self.randomized_list.append('chicken_count')
+
+        # Determine Ganon Trials
+        trial_pool = list(self.skipped_trials)
+        dist_chosen = self.distribution.configure_trials(trial_pool)
+        dist_num_chosen = len(dist_chosen)
+
+        if self.trials_random:
+            self.trials = dist_num_chosen + random.randint(0, len(trial_pool))
+            self.randomized_list.append('trials')
+        num_trials = int(self.trials)
+        choosen_trials = random.sample(trial_pool, num_trials - dist_num_chosen)
+        for trial in self.skipped_trials:
+            if trial not in choosen_trials and trial not in dist_chosen:
+                self.skipped_trials[trial] = True
+
+        # Determine MQ Dungeons
+        dungeon_pool = list(self.dungeon_mq)
+        dist_num_mq = self.distribution.configure_dungeons(self, dungeon_pool)
+
+        if self.mq_dungeons_random:
+            for dungeon in dungeon_pool:
+                self.dungeon_mq[dungeon] = random.choice([True, False])
+            self.mq_dungeons = list(self.dungeon_mq.values()).count(True)
+            self.randomized_list.append('mq_dungeons')
+        else:
+            mqd_picks = random.sample(dungeon_pool, self.mq_dungeons - dist_num_mq)
+            for dung in mqd_picks:
+                self.dungeon_mq[dung] = True
 
 
     def load_regions_from_json(self, file_path):
@@ -254,6 +299,49 @@ class World(object):
                     location.price = price
                     if location.item is not None:
                         location.item.price = price
+
+
+    rewardlist = (
+        'Kokiri Emerald',
+        'Goron Ruby',
+        'Zora Sapphire',
+        'Forest Medallion',
+        'Fire Medallion',
+        'Water Medallion',
+        'Spirit Medallion',
+        'Shadow Medallion',
+        'Light Medallion'
+    )
+    boss_location_names = (
+        'Queen Gohma',
+        'King Dodongo',
+        'Barinade',
+        'Phantom Ganon',
+        'Volvagia',
+        'Morpha',
+        'Bongo Bongo',
+        'Twinrova',
+        'Links Pocket'
+    )
+    def fill_bosses(self, bossCount=9):
+        boss_rewards = ItemFactory(self.rewardlist, self)
+        boss_locations = [self.get_location(loc) for loc in self.boss_location_names]
+
+        placed_prizes = [loc.item.name for loc in boss_locations if loc.item is not None]
+        unplaced_prizes = [item for item in boss_rewards if item.name not in placed_prizes]
+        empty_boss_locations = [loc for loc in boss_locations if loc.item is None]
+        prizepool = list(unplaced_prizes)
+        prize_locs = list(empty_boss_locations)
+
+        bossCount -= self.distribution.fill_bosses(self, prize_locs, prizepool)
+
+        while bossCount:
+            bossCount -= 1
+            random.shuffle(prizepool)
+            random.shuffle(prize_locs)
+            item = prizepool.pop()
+            loc = prize_locs.pop()
+            self.push_item(loc, item)
 
 
     def get_region(self, regionname):
