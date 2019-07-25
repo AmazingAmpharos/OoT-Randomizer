@@ -135,7 +135,7 @@ class LocationRecord(SimpleRecord({'item': None, 'player': None, 'price': None, 
             'item': item.name,
             'player': player,
             'model': item.looks_like_item.name if item.looks_like_item is not None and item.location.has_preview() and can_cloak(item, item.looks_like_item) else None,
-            'price': item.price,
+            'price': item.location.price,
         })
 
 
@@ -515,8 +515,9 @@ class WorldDistribution(object):
                 except KeyError:
                     raise RuntimeError('Too many items were added to world %d, and not enough junk is available to be removed.' % (self.id + 1))
 
-            if record.price is not None:
-                item.price = record.price
+            if record.price is not None and item.type != 'Shop':
+                location.price = record.price
+                world.shop_prices[location.name] = record.price
 
             if location.type == 'Song' and item.type != 'Song':
                 self.song_as_items = True
