@@ -1236,7 +1236,7 @@ setting_infos = [
 
             'Glitchless': No glitches are
             required, but may require some
-            minor tricks
+            minor tricks.
 
             'Glitched': Movement oriented
             glitches are likely required.
@@ -1549,8 +1549,8 @@ setting_infos = [
             This will require finding the Weird Egg to talk to Zelda in
             Hyrule Castle, which in turn locks rewards from Impa, Saria,
             Malon, and Talon, as well as the Happy Mask sidequest.
-            If Open Kakariko Gate is disabled, the Weird Egg will also
-            be required for Zelda's Letter to open the gate as child.
+            The Weird Egg is also required for Zelda's Letter to open 
+            the Kakariko Gate as child which can lock some progression.
         ''',
         default        = True,
         shared         = True,
@@ -1595,7 +1595,7 @@ setting_infos = [
         gui_tooltip    = '''\
             Enabling this causes playing Epona's song infront
             of cows to give an item. There are 9 cows, and an
-            extra in MQ Jabu
+            extra in MQ Jabu.
         ''',
         default        = False,
         shared         = True,
@@ -1889,7 +1889,7 @@ setting_infos = [
     ),
     Combobox(
         name           = 'shuffle_ganon_bosskey',
-        gui_text       = 'Ganon\'s Boss Keys',
+        gui_text       = 'Ganon\'s Boss Key',
         default        = 'dungeon',
         choices        = {
             'remove':          "Remove",
