@@ -3,6 +3,11 @@
 #define rupee_cap ((uint16_t*)0x800F8CEC)
 volatile uint8_t MAX_RUPEES = 0;
 
+typedef void (*commit_scene_flags_fn)(z64_game_t* game_ctxt);
+#define commit_scene_flags ((commit_scene_flags_fn)0x8009D894)
+typedef void (*save_game_fn)(void* unk);
+#define save_game ((save_game_fn)0x800905D4)
+
 void no_effect(z64_file_t *save, int16_t arg1, int16_t arg2) {
 }
 
@@ -14,12 +19,17 @@ void give_triforce_piece(z64_file_t *save, int16_t arg1, int16_t arg2) {
     save->scene_flags[0x48].unk_00_ += 1; //Unused word in scene x48.
     set_triforce_render();
 
-    if (save->scene_flags[0x48].unk_00_ >= triforce_pieces_requied) {
-        int entrance_index = 0x00A0;
-        int cutscene_index = 0xFFF8;
+    // Trigger win when the target is hit
+    if (save->scene_flags[0x48].unk_00_ == triforce_pieces_requied) {
+        // Save Game
+        save->entrance_index = z64_game.entrance_index;
+        save->scene_index = z64_game.scene_index;
+        commit_scene_flags(&z64_game);
+        save_game(&z64_game + 0x1F74);
 
-        z64_file.cutscene_next = cutscene_index;
-        z64_game.entrance_index = entrance_index;
+        // warp to start of credits sequence
+        z64_file.cutscene_next = 0xFFF8;
+        z64_game.entrance_index = 0x00A0;
         z64_game.scene_load_flag = 0x14;
         z64_game.fadeout_transition = 0x01;
     }
