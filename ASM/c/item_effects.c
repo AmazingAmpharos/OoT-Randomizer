@@ -21,6 +21,9 @@ void give_triforce_piece(z64_file_t *save, int16_t arg1, int16_t arg2) {
 
     // Trigger win when the target is hit
     if (save->scene_flags[0x48].unk_00_ == triforce_pieces_requied) {
+        // Give GC boss key to allow beating the game again afterwards
+        give_dungeon_item(save, 0x01, 10);
+
         // Save Game
         save->entrance_index = z64_game.entrance_index;
         save->scene_index = z64_game.scene_index;

@@ -146,11 +146,11 @@ class Item(object):
 
         if self.map or self.compass:
             return False
-        if self.smallkey and self.world.shuffle_smallkeys == 'dungeon':
+        if self.smallkey and self.world.shuffle_smallkeys in ['dungeon', 'vanilla']:
             return False
-        if self.bosskey and not self.name.endswith('(Ganons Castle)') and self.world.shuffle_bosskeys == 'dungeon':
+        if self.bosskey and not self.name.endswith('(Ganons Castle)') and self.world.shuffle_bosskeys in ['dungeon', 'vanilla']:
             return False
-        if self.bosskey and self.name.endswith('(Ganons Castle)') and self.world.shuffle_ganon_bosskey == 'dungeon':
+        if self.bosskey and self.name.endswith('(Ganons Castle)') and self.world.shuffle_ganon_bosskey in ['dungeon', 'vanilla']:
             return False
 
         return True

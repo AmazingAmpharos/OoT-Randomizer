@@ -1144,7 +1144,7 @@ def get_pool_core(world):
         for item in [item for dungeon in world.dungeons if dungeon.name != 'Ganons Castle' for item in dungeon.boss_key]:
             world.state.collect(item)
             pool.extend(get_junk_item())
-    if world.shuffle_ganon_bosskey == 'remove':
+    if world.shuffle_ganon_bosskey in ['remove', 'triforce']:
         for item in [item for dungeon in world.dungeons if dungeon.name == 'Ganons Castle' for item in dungeon.boss_key]:
             world.state.collect(item)
             pool.extend(get_junk_item())
@@ -1182,20 +1182,20 @@ def get_pool_core(world):
             except KeyError:
                 continue
 
-    if world.shuffle_ganon_bosskey == 'vanilla':
-        placed_items['Ganons Tower Boss Key Chest'] = 'Boss Key (Ganons Castle)'
 
     if not world.keysanity and not world.dungeon_mq['Fire Temple']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
     if not world.dungeon_mq['Water Temple']:
         world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
-    if world.triforce_hunt: 
+    if world.triforce_hunt:
         world.triforce_count = TriforceCounts[world.item_pool_value]
         pending_junk_pool.extend(['Triforce Piece'] * world.triforce_count)
 
     if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
         placed_items['Zelda'] = 'Boss Key (Ganons Castle)'
+    elif world.shuffle_ganon_bosskey == 'vanilla':
+        placed_items['Ganons Tower Boss Key Chest'] = 'Boss Key (Ganons Castle)'
 
     if world.item_pool_value == 'plentiful':
         pool.extend(easy_items)
