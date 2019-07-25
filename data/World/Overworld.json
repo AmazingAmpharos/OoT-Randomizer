@@ -414,9 +414,7 @@
         "hint": "Gerudo's Fortress",
         "events": {
             "Carpenter Rescue": "can_finish_GerudoFortress",
-            "Gerudo Fortress Gate Open": "
-                Gerudo_Membership_Card and
-                (is_adult or shuffle_gerudo_card or shuffle_overworld_entrances)"
+            "Gerudo Fortress Gate Open": "is_adult and Gerudo_Membership_Card"
         },
         "locations": {
             "Gerudo Fortress Rooftop Chest": "
@@ -428,7 +426,8 @@
             "Gerudo Fortress North F1 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress North F2 Carpenter": "
                 (is_adult or Kokiri_Sword) and 
-                (can_use(Bow) or can_use(Hookshot) or can_use(Hover_Boots) or logic_gerudo_kitchen)",
+                (Gerudo_Membership_Card or can_use(Bow) or can_use(Hookshot)
+                    or can_use(Hover_Boots) or logic_gerudo_kitchen)",
             "Gerudo Fortress South F1 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress South F2 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
@@ -449,10 +448,13 @@
     {
         "region_name": "Gerudo Fortress Outside Gate",
         "scene": "Gerudo Fortress",
+        "events": {
+            "Gerudo Fortress Gate Open": "
+                is_adult and Gerudo_Membership_Card and
+                (shuffle_gerudo_card or shuffle_overworld_entrances or shuffle_special_indoor_entrances)"
+        },
         "exits": {
-            "Gerudo Fortress": "
-                ((shuffle_overworld_entrances or is_adult) and 'Gerudo Fortress Gate Open') or
-                (is_adult and (not shuffle_overworld_entrances) and at('Gerudo Valley', is_adult))",
+            "Gerudo Fortress": "is_adult or (shuffle_overworld_entrances and 'Gerudo Fortress Gate Open')",
             "Haunted Wasteland Near Fortress": "True"
         }
     },

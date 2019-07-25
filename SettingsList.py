@@ -1560,15 +1560,12 @@ setting_infos = [
     ),
     Checkbutton(
         name           = 'shuffle_gerudo_card',
-        gui_text       = "Shuffle Gerudo's Card",
+        gui_text       = "Shuffle Gerudo Card",
         gui_tooltip    = '''\
-            Enabling this shuffles the Gerudo's Card into the item pool.
+            Enabling this shuffles the Gerudo Card into the item pool.
 
-            The Gerudo's Card is required to enter the Gerudo's Training Grounds
+            The Gerudo Card is required to enter the Gerudo Training Ground
             and prevents the guards from throwing you in jail.
-            
-            When the Gerudo's Card is shuffled, obtaining it automatically
-            opens the gate to the Haunted Wasteland in Gerudo's Fortress.
         ''',
         shared         = True,
         gui_params     = {
