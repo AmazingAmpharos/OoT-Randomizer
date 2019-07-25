@@ -1783,7 +1783,7 @@ setting_infos = [
     ),
     Combobox(
         name           = 'shuffle_ganon_bosskey',
-        gui_text       = 'Ganon\'s Boss Keys',
+        gui_text       = 'Ganon\'s Boss Key',
         default        = 'dungeon',
         choices        = {
             'remove':          "Remove",
