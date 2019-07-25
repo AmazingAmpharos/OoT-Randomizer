@@ -33,7 +33,10 @@
                 here(can_blast_or_smash or
                       ((can_use(Sticks) or can_use(Dins_Fire)) and
                        (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love))))",
-            "Dodongos Cavern Bomb Bag Area": "is_adult or (here(is_adult) and has_explosives)",
+            "Dodongos Cavern Bomb Bag Area": "
+                is_adult or (here(is_adult) and has_explosives) or
+                (logic_dc_mq_child_bombs and (Kokiri_Sword or has_sticks) and
+                    (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love)))",
             "Dodongos Cavern Boss Area": "has_explosives"
         }
     },

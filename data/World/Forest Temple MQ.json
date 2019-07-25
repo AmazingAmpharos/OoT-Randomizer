@@ -34,7 +34,7 @@
             "Forest Temple Outdoor Ledge": "
                 can_use(Hover_Boots) or
                 (can_use(Hookshot) and 
-                 (Progressive_Strength_Upgrade or
+                 (Progressive_Strength_Upgrade or logic_forest_mq_hallway_switch or
                   (has_bombchus and logic_forest_mq_block_puzzle)))",
             "Forest Temple Boss Region": "
                 Forest_Temple_Jo_and_Beth and Forest_Temple_Amy_and_Meg"
