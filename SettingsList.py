@@ -1130,7 +1130,7 @@ setting_infos = [
 
             'Glitchless': No glitches are
             required, but may require some
-            minor tricks
+            minor tricks.
 
             'Glitched': Movement oriented
             glitches are likely required.
@@ -1489,7 +1489,7 @@ setting_infos = [
         gui_tooltip    = '''\
             Enabling this causes playing Epona's song infront
             of cows to give an item. There are 9 cows, and an
-            extra in MQ Jabu
+            extra in MQ Jabu.
         ''',
         default        = False,
         shared         = True,
