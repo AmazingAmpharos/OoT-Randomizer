@@ -502,6 +502,9 @@ class WorldDistribution(object):
                 else:
                     raise RuntimeError('Location already filled in world %d: %s' % (self.id + 1, location_name))
 
+            if record.item == '#Junk' and location.type == 'Song' and not world.shuffle_song_items:
+                record.item = '#JunkSong'
+
             try:
                 item = self.pool_remove_item(item_pools, record.item, 1, world_id=player_id)[0]
             except KeyError:

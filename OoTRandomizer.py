@@ -5,11 +5,12 @@ import logging
 import random
 import textwrap
 import sys
-import hashlib
+import time
+import datetime
 
 from Gui import guiMain
 from Main import main, from_patch_file, cosmetic_patch
-from Utils import is_bundled, close_console, check_version, VersionError, check_python_version, default_output_path
+from Utils import is_bundled, close_console, check_version, VersionError, check_python_version, local_path
 from Settings import get_settings_from_command_line_args
 
 
@@ -21,7 +22,7 @@ class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 
 def start():
 
-    settings, gui, args_loglevel = get_settings_from_command_line_args()
+    settings, gui, args_loglevel, no_log_file = get_settings_from_command_line_args()
 
     if is_bundled() and len(sys.argv) == 1:
         # for the bundled builds, if we have no arguments, the user
@@ -43,17 +44,15 @@ def start():
 
     logger = logging.getLogger('')
 
-    settings_string_hash = hashlib.sha1(settings.settings_string.encode('utf-8')).hexdigest().upper()[:5]
-    if settings.output_file:
-        outfilebase = settings.output_file
-    elif settings.world_count > 1:
-        outfilebase = 'OoT_%s_%s_W%d' % (settings_string_hash, settings.seed, settings.world_count)
-    else:
-        outfilebase = 'OoT_%s_%s' % (settings_string_hash, settings.seed)
-    output_dir = default_output_path(settings.output_dir)
-    log_path = os.path.join(output_dir, '%s.log' % outfilebase)
-    log_file = logging.FileHandler(log_path)
-    logger.addHandler(log_file)
+    if not no_log_file:
+        ts = time.time()
+        st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H-%M-%S')
+        log_dir = local_path('Logs')
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+        log_path = os.path.join(log_dir, '%s.log' % st)
+        log_file = logging.FileHandler(log_path)
+        logger.addHandler(log_file)
 
     if not settings.check_version:
         try:
