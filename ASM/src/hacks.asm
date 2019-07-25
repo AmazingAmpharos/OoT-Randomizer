@@ -1350,3 +1350,21 @@ skip_GS_BGS_text:
     nop
     nop
     nop
+
+; ==================================================================================================
+; Fix Lab Diving to always be available
+; ==================================================================================================
+; Replaces: lbu     t7, -0x709C(t7)
+;           lui     a1, 0x8012
+;           addiu   a1, a1, 0xA5D0      ; a1 = save context
+;           addu    t8, a1, t7
+;           lbu     t9, 0x0074(t8)      ; t9 = owned adult trade item
+.orga 0xE2CC1C
+    lui     a1, 0x8012
+    addiu   a1, a1, 0xA5D0      ; a1 = save context
+    lh      t0, 0x0270(s0)      ; t0 = recent diving depth (in meters)
+    bne     t0, zero, @skip_eyedrops_dialog
+    lbu     t9, 0x008A(a1)      ; t9 = owned adult trade item
+
+.orga 0xE2CC50
+@skip_eyedrops_dialog:
