@@ -364,6 +364,8 @@
           "row_span": 3,
           "settings": [
             "background_music",
+            "fanfares",
+            "ocarina_fanfares",
             "sfx_low_hp",
             "sfx_horse_neigh",
             "sfx_nightfall",

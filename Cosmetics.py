@@ -188,11 +188,9 @@ def patch_dpad(rom, settings, log, symbols):
 
 def patch_music(rom, settings, log, symbols):
     # patch music
-    if settings.background_music == 'random':
+    if settings.background_music != 'normal' or settings.fanfares != 'normal':
         music.restore_music(rom)
         log.bgm = music.randomize_music(rom, settings)
-    elif settings.background_music == 'off':
-        music.disable_music(rom)
     else:
         music.restore_music(rom)
 
