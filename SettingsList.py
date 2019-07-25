@@ -1443,8 +1443,8 @@ setting_infos = [
             This will require finding the Weird Egg to talk to Zelda in
             Hyrule Castle, which in turn locks rewards from Impa, Saria,
             Malon, and Talon, as well as the Happy Mask sidequest.
-            If Open Kakariko Gate is disabled, the Weird Egg will also
-            be required for Zelda's Letter to open the gate as child.
+            The Weird Egg is also required for Zelda's Letter to open 
+            the Kakariko Gate as child which can lock some progression.
         ''',
         default        = True,
         shared         = True,
