@@ -7,7 +7,6 @@ static uint32_t render_triforce_flag = 0;
 #define TRIFORCE_FRAMES_VISIBLE 100 // 20 Frames seems to be about 1 second
 #define TRIFORCE_FRAMES_FADE_AWAY 80 
 #define TRIFORCE_FRAMES_FADE_INTO 5 
-#define MY_DEBUG_POINT ( (uint32_t*) 0x80480000 )
 
 uint16_t triforce_hunt_enabled = 0;
 uint16_t triforce_pieces_requied = 0xFFFF;
@@ -18,7 +17,7 @@ void set_triforce_render() {
 }
 
 void draw_triforce_count(z64_disp_buf_t *db) {
-    
+
     // Must be triforce hunt and triforce should be drawable, and we should either be on the pause screen or the render triforce flag should be set
     if (!(triforce_hunt_enabled && CAN_DRAW_TRIFORCE && (render_triforce_flag == 1 || z64_game.pause_ctxt.state == 6))) {
         return;
@@ -47,28 +46,54 @@ void draw_triforce_count(z64_disp_buf_t *db) {
 
     frames++;
 
-    // Call setup display list and setup draw coords
-    gSPDisplayList(db->p++, &setup_db);
+    int pieces = z64_file.scene_flags[0x48].unk_00_; //Unused word in scene x48. 
 
-    int total_w = 5 * font_sprite.tile_w + triforce_sprite.tile_w;
+    // Get length of string to draw
+    // Theres probably a better way to do this, log 10 wasnt working though
+    int pieces_digits = 0;
+    int pieces_copy = pieces;
+    while(pieces_copy >= 1) {
+        pieces_digits++;
+        pieces_copy /= 10;
+    }
+    pieces_digits = pieces_digits == 0 ? 1 : pieces_digits;
+    int required_digits = 0;
+    int required_copy = triforce_pieces_requied;
+    while(required_copy >= 1) {
+        required_digits++;
+        required_copy /= 10;
+    }
+    required_digits = required_digits == 0 ? 1 : required_digits;
+
+    // Setup draw location
+    int str_len = required_digits + pieces_digits + 1;
+    int total_w = str_len * font_sprite.tile_w + triforce_sprite.tile_w;
     int draw_x = Z64_SCREEN_WIDTH / 2 - total_w / 2;
     int draw_y_text = Z64_SCREEN_HEIGHT - (font_sprite.tile_h * 1.5) + 1;
     int draw_y_triforce = Z64_SCREEN_HEIGHT - (triforce_sprite.tile_h * 1.5) + 3 + 1;
 
+    // Create collected/required string
+    char text[str_len];
+    pieces_copy = pieces;
+    for(int i = pieces_digits - 1; i >= 0; i--) {
+        text[i] = (pieces_copy % 10) + '0';
+        pieces_copy /= 10;
+    }
+    text[pieces_digits] = 0x2F; // writes a slash (/)
+    required_copy = triforce_pieces_requied;
+    for(int i = str_len - 1; i > pieces_digits; i--) {
+        text[i] = (required_copy % 10) + '0';
+        required_copy /= 10;
+    }
+
+    // Call setup display list
+    gSPDisplayList(db->p++, &setup_db);
+    gDPPipeSync(db->p++);
     gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetPrimColor(db->p++, 0, 0, 0xDA, 0xD3, 0x0B, alpha);
 
-    // Draw count
-    int pieces = z64_file.scene_flags[0x48].unk_00_; //Unused word in scene x48. 
-    int tens_place = (pieces / 10) % 10;
-    int ones_place = pieces % 10;
-
-    int required_tens_place = (triforce_pieces_requied / 10) % 10;
-    int required_ones_place = triforce_pieces_requied % 10;
-
-    char text[] = { (char) (tens_place + 48), (char) (ones_place + 48), (char) 0x2F , (char) (required_tens_place + 48), (char) (required_ones_place + 48)  };
     text_print(text , draw_x, draw_y_text);
-    draw_x += 5 * font_sprite.tile_w;
+    draw_x += str_len * font_sprite.tile_w;
 
     gDPSetPrimColor(db->p++, 0, 0, 0xF4, 0xEC, 0x30, alpha);
     // Draw triforce

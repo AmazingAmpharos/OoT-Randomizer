@@ -126,7 +126,7 @@ SYMBOL TABLE:
 000033cc g     F .text	0000002c models_reset
 00000170 g     O .data	00000010 quest_items_sprite
 00001d84 g     F .text	00000060 after_key_received
-00004250 g     F .text	00000034 heap_alloc
+00004344 g     F .text	00000034 heap_alloc
 00000030 g     O .sbss	00000004 active_item_row
 00002eb4 g     F .text	0000003c after_game_state_update
 00000000         *UND*	00000000 NO_FOG_STATE
@@ -227,7 +227,7 @@ SYMBOL TABLE:
 000000d4 g     O .data	00000040 hash_symbols
 00001340 g     F .text	00000018 extern_scene_init
 00003148 g     F .text	0000004c set_object_segment
-0000423c g     F .text	00000014 heap_init
+00004330 g     F .text	00000014 heap_init
 00003580 g     F .text	00000064 heart_container_draw
 00001028 g     O .bss	00000040 object_slots
 00002a04 g     F .text	00000020 give_small_key
@@ -241,9 +241,9 @@ SYMBOL TABLE:
 00001d50 g     F .text	00000034 pop_pending_item
 00002324 g     F .text	00000028 sprite_bytes_per_tile
 00002b04 g     F .text	0000003c get_item_row
-00004284 g     F .text	00000044 file_init
+00004378 g     F .text	00000044 file_init
 00000000         *UND*	00000000 EXTENDED_OBJECT_TABLE
-00003dec g     F .text	00000450 draw_triforce_count
+00003dec g     F .text	00000544 draw_triforce_count
 00000000         *UND*	00000000 PLAYER_NAME_ID
 00000000 g     O .sbss	00000004 cfg_dungeon_info_reward_need_altar
 00000000 g     O .sdata	00000004 cfg_dungeon_info_enable
