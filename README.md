@@ -106,7 +106,7 @@ player.
   * Added Randomized Fanfares (additional details below in New Options)
 * Optimized algorithms for faster/more efficient seed generation times
 * New Electron GUI
-  * New GUI now utilizes both Python and Node to bring you and even better interface
+  * New GUI now utilizes both Python and Node to bring you an even better interface
   * Now requires Node (with NPM), in addition to the Python requirement
   * Now outputs an additional log with generation, documenting the generation process itself and if any errors occurred
   * Now has two progress bars during generation, showing progress on both the current seed and overall progress (particularly useful when Generation Count is set higher than 1)
@@ -139,7 +139,7 @@ player.
   * The number of cuccos to be gathered for Anju can be reduced or randomized, and Anju will tell you in-game the target number to catch (similar to 10 Big Poes).
 * Shuffle Magic Beans
   * A pack of 10 beans is shuffled into the pool and the Bean Salesman sells a random item once for 60 rupees.
-* Enable Useful Cutscenes which prevents some useful cutscenes from being skipped
+* Enable Useful Cutscenes prevents three useful cutscenes from being skipped (Poes at Forest Temple, Darunia at Fire Temple, and Twinrova at Spirit Temple)
 * Ganon's Boss Key 
   * Split Ganon’s Boss Key settings from the rest of the Boss Keys setting
   * Remove, Dungeon Only, Vanilla, Anywhere, or On LACS settings added
@@ -160,7 +160,7 @@ player.
 
 #### Bug Fixes
 * No longer able to buy Bombchus with only bomb bag when Bombchus in logic
-* Dampé freestanding Piece of Heart no longer checks for chest being opened in order to earn
+* Dampé freestanding Piece of Heart no longer checks for chest being opened in order to earn it from him
 * Buying Piece of Heart/Heart Container fully heals Link
 * Learning Sun's Song from Malon no longer causes a softlock.
 * Castle and Gerudo guards can no longer cause softlock when catching you.
