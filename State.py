@@ -477,10 +477,6 @@ class State(object):
             )
 
 
-    def disabled_trade_revert(self):
-        return self.world.shuffle_interior_entrances or self.world.shuffle_overworld_entrances
-
-
     def has_bottle(self):
         # Extra Ruto's Letter are automatically emptied
         return self.has_any_of(ItemInfo.bottles) or self.has('Bottle with Letter', 2)
