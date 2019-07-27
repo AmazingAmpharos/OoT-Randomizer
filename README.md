@@ -92,13 +92,15 @@ player.
   * Disabled Locations can only hold Junk (as opposed to previous implementation, where items that weren’t logically required to complete a seed but may still be very useful could be placed)
 * Hint Changes
   * Every generic grotto gossip stone has their own hint.
-  *  The "Very Strong" hint setting can now give multiple Foolish dungeon hints.
+  * The "Very Strong" hint setting can now give multiple Foolish dungeon hints.
 * Gameplay Changes
   * Mechanically, Hot Rodder Goron no longer checks for Bomb Bag
   * Wearing Bunny Hood increases running speed to match backwalking speed
 * Cutscene Changes
   * Burning Kakariko Cutscene is now triggered when entering Kakariko Village from any entrance as Adult once all requirements are met.
   * Speedup Owl Flying cutscenes to be almost instant.
+  * Enable Useful Cutscenes setting added (additional details below in New Options)
+  * Great Fairy cutscene no longer plays on additional visits for health and magic refills
 * Audio Changes
   * Additional Background Music Sequences can now be provided to be shuffled when the Background Music is randomized.
   * Added Randomized Fanfares (additional details below in New Options)
