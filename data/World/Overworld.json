@@ -853,7 +853,7 @@
                     (is_adult or at_day or has_slingshot or has_bombchus or 
                         (logic_kakariko_tower_gs and (has_sticks or Kokiri_Sword) and
                             (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love)))))",
-            "Kakariko Backyard": "is_adult or (is_child and at_day)",
+            "Kakariko Village Backyard": "is_adult or (is_child and at_day)",
             "Graveyard": "True",
             "Kakariko Village Behind Gate": "is_adult or 'Kakariko Village Gate Open'"
         }
@@ -866,11 +866,11 @@
             "Man on Roof": "True"
         },
         "exits": {
-            "Kakariko Backyard": "True"
+            "Kakariko Village Backyard": "True"
         }
     },
     {
-        "region_name": "Kakariko Backyard",
+        "region_name": "Kakariko Village Backyard",
         "scene": "Kakariko Village",
         "hint": "Kakariko Village",
         "exits": {
@@ -980,14 +980,14 @@
     {
         "region_name": "Kakariko Potion Shop Back",
         "exits": {
-            "Kakariko Backyard": "is_adult",
+            "Kakariko Village Backyard": "is_adult",
             "Kakariko Potion Shop Front": "True"
         }
     },
     {
         "region_name": "Odd Medicine Building",
         "exits": {
-            "Kakariko Backyard": "True"
+            "Kakariko Village Backyard": "True"
         }
     },
     {
@@ -1840,7 +1840,7 @@
             "Lone Fish": "has_bottle"
         },
         "exits": {
-            "Kakariko Backyard": "True"
+            "Kakariko Village Backyard": "True"
         }
     },
     {

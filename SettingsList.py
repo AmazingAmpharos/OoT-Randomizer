@@ -1645,9 +1645,8 @@ setting_infos = [
             'All Indoors':
             Extended version of 'Simple Indoors' with some extra entrances:
             Adult Potion Shop, Windmill, Link's House, Temple of Time and
-            Dampe's Grave. Both doors to the Adult Potion shop will be
-            placed in the same hint region.
-
+            Dampe's Grave.
+ 
             'All Indoors & Overworld':
             Same as 'All Indoors' but with Overworld loading zones shuffled
             in a new separate pool. Owl drop positions are also randomized.

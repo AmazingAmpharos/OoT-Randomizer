@@ -110,8 +110,8 @@ entrance_shuffle_table = [
                         ('Impas House -> Kakariko Village',                                 { 'index': 0x0345 })),
     ('Interior',        ('Kakariko Village -> Impas House Back',                            { 'index': 0x05C8 }),
                         ('Impas House Back -> Kakariko Village',                            { 'index': 0x05DC })),
-    ('Interior',        ('Kakariko Backyard -> Odd Medicine Building',                      { 'index': 0x0072 }),
-                        ('Odd Medicine Building -> Kakariko Backyard',                      { 'index': 0x034D })),
+    ('Interior',        ('Kakariko Village Backyard -> Odd Medicine Building',              { 'index': 0x0072 }),
+                        ('Odd Medicine Building -> Kakariko Village Backyard',              { 'index': 0x034D })),
     ('Interior',        ('Graveyard -> Dampes House',                                       { 'index': 0x030D }),
                         ('Dampes House -> Graveyard',                                       { 'index': 0x0355 })),
     ('Interior',        ('Goron City -> Goron Shop',                                        { 'index': 0x037C }),
@@ -153,8 +153,8 @@ entrance_shuffle_table = [
                         ('Windmill -> Kakariko Village',                                    { 'index': 0x0351 })),
     ('SpecialInterior', ('Kakariko Village -> Kakariko Potion Shop Front',                  { 'index': 0x0384 }),
                         ('Kakariko Potion Shop Front -> Kakariko Village',                  { 'index': 0x044B })),
-    ('SpecialInterior', ('Kakariko Backyard -> Kakariko Potion Shop Back',                  { 'index': 0x03EC }),
-                        ('Kakariko Potion Shop Back -> Kakariko Backyard',                  { 'index': 0x04FF })),
+    ('SpecialInterior', ('Kakariko Village Backyard -> Kakariko Potion Shop Back',          { 'index': 0x03EC }),
+                        ('Kakariko Potion Shop Back -> Kakariko Village Backyard',          { 'index': 0x04FF })),
 
     ('Grotto',          ('Desert Colossus -> Desert Colossus Grotto',                       { 'grotto_id': 0x00, 'entrance': 0x05BC, 'content': 0xFD, 'scene': 0x5C }),
                         ('Desert Colossus Grotto -> Desert Colossus',                       { 'grotto_id': 0x00 })),
@@ -176,8 +176,8 @@ entrance_shuffle_table = [
                         ('Mountain Storms Grotto -> Death Mountain',                        { 'grotto_id': 0x08 })),
     ('Grotto',          ('Death Mountain Summit -> Mountain Bombable Grotto',               { 'grotto_id': 0x09, 'entrance': 0x05FC, 'content': 0xF8, 'scene': 0x60 }),
                         ('Mountain Bombable Grotto -> Death Mountain Summit',               { 'grotto_id': 0x09 })),
-    ('Grotto',          ('Kakariko Backyard -> Kakariko Back Grotto',                       { 'grotto_id': 0x0A, 'entrance': 0x003F, 'content': 0x28, 'scene': 0x52 }),
-                        ('Kakariko Back Grotto -> Kakariko Backyard',                       { 'grotto_id': 0x0A })),
+    ('Grotto',          ('Kakariko Village Backyard -> Kakariko Back Grotto',               { 'grotto_id': 0x0A, 'entrance': 0x003F, 'content': 0x28, 'scene': 0x52 }),
+                        ('Kakariko Back Grotto -> Kakariko Village Backyard',               { 'grotto_id': 0x0A })),
     ('Grotto',          ('Kakariko Village -> Kakariko Bombable Grotto',                    { 'grotto_id': 0x0B, 'entrance': 0x05A0, 'content': 0xE7, 'scene': 0x52 }),
                         ('Kakariko Bombable Grotto -> Kakariko Village',                    { 'grotto_id': 0x0B })),
     ('Grotto',          ('Hyrule Castle Grounds -> Castle Storms Grotto',                   { 'grotto_id': 0x0C, 'entrance': 0x05B8, 'content': 0xF6, 'scene': 0x5F }),
@@ -568,7 +568,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
                 raise EntranceShuffleError('Adult Potion Front Entrance is never reachable as both ages')
 
             # Potion Shop back door should be reachable as adult at some point in the seed
-            potion_back_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Back'), 'Kakariko Backyard -> Kakariko Potion Shop Back')
+            potion_back_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Back'), 'Kakariko Village Backyard -> Kakariko Potion Shop Back')
             if not max_playthrough.state_list[world.id].as_age(potion_back_entrance, adult=True):
                 raise EntranceShuffleError('Adult Potion Back Entrance is never reachable as Adult')
 
