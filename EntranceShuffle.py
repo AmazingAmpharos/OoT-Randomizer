@@ -431,6 +431,10 @@ def shuffle_entrance_pool(worlds, entrance_pool, target_entrances, locations_to_
             # Shuffle the rest of the entrances, we don't have to check for beatability or reachability of locations when placing those
             shuffle_entrances(worlds, soft_entrances, target_entrances, rollbacks)
 
+            # Fully validate the resulting worlds to ensure everything is still fine after shuffling this pool
+            complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
+            validate_worlds(worlds, None, locations_to_ensure_reachable, complete_itempool)
+
             # If all entrances could be connected without issues, log connections and continue
             for entrance, target in rollbacks:
                 confirm_replacement(entrance, target)
