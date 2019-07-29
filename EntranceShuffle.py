@@ -553,10 +553,6 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             if not max_playthrough.state_list[world.id].as_both(temple_of_time_entrance):
                 raise EntranceShuffleError('Temple of Time Entrance is never reachable as both ages')
 
-            # Temple of Time shouldn't be placed inside the Fishing Pond to prevent potential issues with the lake hylia water control
-            if temple_of_time_entrance.name == 'Lake Hylia -> Fishing Hole':
-                raise EntranceShuffleError('Temple of Time is placed behind the Fishing Pond')
-
             # Windmill door entrance should be reachable as both ages at some point in the seed
             windmill_door_entrance = get_entrance_replacing(world.get_region('Windmill'), 'Kakariko Village -> Windmill')
             if not max_playthrough.state_list[world.id].as_both(windmill_door_entrance):
