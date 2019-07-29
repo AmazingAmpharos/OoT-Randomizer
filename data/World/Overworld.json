@@ -824,12 +824,6 @@
         "locations": {
             "Sheik in Kakariko": "
                 is_adult and Forest_Medallion and Fire_Medallion and Water_Medallion",
-            "Man on Roof": "
-                can_use(Hookshot) or 
-                (logic_man_on_roof and 
-                    (is_adult or at_day or has_slingshot or has_bombchus or 
-                        (logic_kakariko_tower_gs and (has_sticks or Kokiri_Sword) and
-                            (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love)))))",
             "Anju as Adult": "is_adult and at_day",
             "Anjus Chickens": "is_child and at_day",
             "GS Kakariko House Under Construction": "is_child and at_night",
@@ -855,12 +849,38 @@
             "Bottom of the Well": "
                 'Drain Well' and (is_child or shuffle_dungeon_entrances)",
             "Kakariko Potion Shop Front": "is_child or at_day",
-            "Kakariko Potion Shop Back": "is_adult and at_day",
-            "Odd Medicine Building": "is_adult",
             "Kakariko Bombable Grotto": "can_blast_or_smash",
-            "Kakariko Back Grotto": "True",
+            "Kakariko Rooftop": "
+                can_use(Hookshot) or 
+                (logic_man_on_roof and 
+                    (is_adult or at_day or has_slingshot or has_bombchus or 
+                        (logic_kakariko_tower_gs and (has_sticks or Kokiri_Sword) and
+                            (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love)))))",
+            "Kakariko Village Backyard": "is_adult or (is_child and at_day)",
             "Graveyard": "True",
             "Kakariko Village Behind Gate": "is_adult or 'Kakariko Village Gate Open'"
+        }
+    },
+    {
+        "region_name": "Kakariko Rooftop",
+        "scene": "Kakariko Village",
+        "hint": "Kakariko Village",
+        "locations": {
+            "Man on Roof": "True"
+        },
+        "exits": {
+            "Kakariko Village Backyard": "True"
+        }
+    },
+    {
+        "region_name": "Kakariko Village Backyard",
+        "scene": "Kakariko Village",
+        "hint": "Kakariko Village",
+        "exits": {
+            "Kakariko Village": "True",
+            "Kakariko Back Grotto": "True",
+            "Odd Medicine Building": "is_adult",
+            "Kakariko Potion Shop Back": "is_adult and at_day"
         }
     },
     {
@@ -945,7 +965,6 @@
     },
     {
         "region_name": "Kakariko Potion Shop Front",
-        "hint": "Kakariko Village",
         "locations": {
             "Kakariko Potion Shop Item 1": "is_adult",
             "Kakariko Potion Shop Item 2": "is_adult",
@@ -955,15 +974,23 @@
             "Kakariko Potion Shop Item 6": "is_adult",
             "Kakariko Potion Shop Item 7": "is_adult",
             "Kakariko Potion Shop Item 8": "is_adult"
+        },
+        "exits": {
+            "Kakariko Village": "True",
+            "Kakariko Potion Shop Back": "is_adult"
         }
     },
     {
-        "region_name": "Kakariko Potion Shop Back"
+        "region_name": "Kakariko Potion Shop Back",
+        "exits": {
+            "Kakariko Village Backyard": "is_adult",
+            "Kakariko Potion Shop Front": "True"
+        }
     },
     {
         "region_name": "Odd Medicine Building",
         "exits": {
-            "Kakariko Village": "True"
+            "Kakariko Village Backyard": "True"
         }
     },
     {
@@ -1816,7 +1843,7 @@
             "Lone Fish": "has_bottle"
         },
         "exits": {
-            "Kakariko Village": "True"
+            "Kakariko Village Backyard": "True"
         }
     },
     {
