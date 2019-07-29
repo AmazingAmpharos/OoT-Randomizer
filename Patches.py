@@ -2,6 +2,7 @@ import random
 import struct
 import itertools
 import re
+import zlib
 
 from World import World
 from Rom import Rom
@@ -29,16 +30,20 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Write Randomizer title screen logo
     with open(data_path('title.bin'), 'rb') as stream:
         writeAddress = 0x01795300
-        titleBytesDiff = stream.read()
-        originalBytes = rom.buffer[writeAddress: writeAddress+ len(titleBytesDiff)]
+        titleBytesComp = stream.read()
+        titleBytesDiff = zlib.decompress(titleBytesComp)
+
+        originalBytes = rom.original.buffer[writeAddress: writeAddress+ len(titleBytesDiff)]
         titleBytes = bytearray([a ^ b for a, b in zip(titleBytesDiff, originalBytes)])
         rom.write_bytes(writeAddress, titleBytes)
 
     # Fixes the typo of keatan mask in the item select screen
     with open(data_path('keaton.bin'), 'rb') as stream:
         writeAddress = 0x8A7C00
-        keatonBytesDiff = stream.read()
-        originalBytes = rom.buffer[writeAddress: writeAddress+ len(keatonBytesDiff)]
+        keatonBytesComp = stream.read()
+        keatonBytesDiff = zlib.decompress(keatonBytesComp)
+
+        originalBytes = rom.original.buffer[writeAddress: writeAddress+ len(keatonBytesDiff)]
         keatonBytes = bytearray([a ^ b for a, b in zip(keatonBytesDiff, originalBytes)])
         rom.write_bytes(writeAddress, keatonBytes)
 
