@@ -1043,6 +1043,14 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         save_context.write_bits(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         save_context.write_bits(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
 
+    # Add a gate-opening guard on the Wasteland side of the Gerudo gate when the card is shuffled or certain levels of ER.
+    # Overrides the generic guard at the bottom of the ladder in Gerudo Fortress
+    if world.shuffle_gerudo_card or world.shuffle_overworld_entrances or world.shuffle_special_indoor_entrances:
+        # Add a gate opening guard on the Wasteland side of the Gerudo Fortress' gate
+        new_gate_opening_guard = [0x0138, 0xFAC8, 0x005D, 0xF448, 0x0000, 0x95B0, 0x0000, 0x0301]
+        rom.write_int16s(0x21BD3EC, new_gate_opening_guard)  # Adult Day
+        rom.write_int16s(0x21BD62C, new_gate_opening_guard)  # Adult Night
+
     # start with maps/compasses
     if world.shuffle_mapcompass == 'startwith':
         for dungeon in ['deku', 'dodongo', 'jabu', 'forest', 'fire', 'water', 'spirit', 'shadow', 'botw', 'ice']:

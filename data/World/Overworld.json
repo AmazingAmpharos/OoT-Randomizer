@@ -414,44 +414,47 @@
         "hint": "Gerudo's Fortress",
         "events": {
             "Carpenter Rescue": "can_finish_GerudoFortress",
-            "Gerudo Fortress Gate Open": "is_adult and 'Carpenter Rescue'"
+            "Gerudo Fortress Gate Open": "is_adult and Gerudo_Membership_Card"
         },
         "locations": {
             "Gerudo Fortress Rooftop Chest": "
                 can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot)",
             "Horseback Archery 1000 Points": "
-                'Carpenter Rescue' and can_use(Epona) and Bow and at_day",
+                Gerudo_Membership_Card and can_use(Epona) and Bow and at_day",
             "Horseback Archery 1500 Points": "
-                'Carpenter Rescue' and can_use(Epona) and Bow and at_day",
+                Gerudo_Membership_Card and can_use(Epona) and Bow and at_day",
             "Gerudo Fortress North F1 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress North F2 Carpenter": "
                 (is_adult or Kokiri_Sword) and 
-                (can_use(Bow) or can_use(Hookshot) or can_use(Hover_Boots) or logic_gerudo_kitchen)",
+                (Gerudo_Membership_Card or can_use(Bow) or can_use(Hookshot)
+                    or can_use(Hover_Boots) or logic_gerudo_kitchen)",
             "Gerudo Fortress South F1 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress South F2 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
             "GS Gerudo Fortress Archery Range": "
-                can_use(Hookshot) and 'Carpenter Rescue' and at_night",
+                can_use(Hookshot) and Gerudo_Membership_Card and at_night",
             "GS Gerudo Fortress Top Floor": "
                 is_adult and at_night and 
-                ('Carpenter Rescue' or can_use(Bow) or can_use(Hookshot) or 
+                (Gerudo_Membership_Card or can_use(Bow) or can_use(Hookshot) or
                     can_use(Hover_Boots) or logic_gerudo_kitchen)"
         },
         "exits": {
             "Gerudo Valley Far Side": "True",
             "Gerudo Fortress Outside Gate": "'Gerudo Fortress Gate Open'",
-            "Gerudo Training Grounds Lobby": "
-                'Carpenter Rescue' and Gerudo_Membership_Card and is_adult",
+            "Gerudo Training Grounds Lobby": "Gerudo_Membership_Card and is_adult",
             "Gerudo Fortress Storms Grotto": "is_adult and can_play(Song_of_Storms)" # Not there as child
         }
     },
     {
         "region_name": "Gerudo Fortress Outside Gate",
         "scene": "Gerudo Fortress",
+        "events": {
+            "Gerudo Fortress Gate Open": "
+                is_adult and Gerudo_Membership_Card and
+                (shuffle_gerudo_card or shuffle_overworld_entrances or shuffle_special_indoor_entrances)"
+        },
         "exits": {
-            "Gerudo Fortress": "
-                ((shuffle_overworld_entrances or is_adult) and 'Gerudo Fortress Gate Open') or
-                (is_adult and (not shuffle_overworld_entrances) and at('Gerudo Valley', is_adult))",
+            "Gerudo Fortress": "is_adult or (shuffle_overworld_entrances and 'Gerudo Fortress Gate Open')",
             "Haunted Wasteland Near Fortress": "True"
         }
     },

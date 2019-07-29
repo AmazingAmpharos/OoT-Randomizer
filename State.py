@@ -552,6 +552,7 @@ class State(object):
                     (self.can_use('Bow')
                         or self.can_use('Hookshot')
                         or self.can_use('Hover Boots')
+                        or self.has('Gerudo Membership Card')
                         or self.world.logic_gerudo_kitchen
                         or self.is_glitched))
         elif self.world.gerudo_fortress == 'fast':

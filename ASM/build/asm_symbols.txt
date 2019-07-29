@@ -26,6 +26,7 @@
 00DB13D3 .byt:0001
 00DE1020 .byt:0020
 00DF2647 .byt:0001
+00E11EAC @@return
 00E2CC50 @skip_eyedrops_dialog
 00E2F093 .byt:0001
 00E62998 @@success
@@ -33,6 +34,7 @@
 00E629C8 @@lost_woods
 00E629D4 @@failure
 00E9E1C8 .byt:0008
+00E9F5B0 @@return
 00EBB8B0 @Deku_Check_True
 00EBB8C0 @Deku_Check_False
 00EC68D0 .byt:0014
