@@ -1650,6 +1650,9 @@ setting_infos = [
             'All Indoors & Overworld':
             Same as 'All Indoors' but with Overworld loading zones shuffled
             in a new separate pool. Owl drop positions are also randomized.
+
+            Note: If Interior or Overworld entrances are shuffled, trade timers 
+            are disabled and trade items don't revert when loading a save.
         ''',
         shared         = True,
         gui_params     = {

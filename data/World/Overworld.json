@@ -141,6 +141,10 @@
         "region_name": "Lost Woods",
         "scene": "Lost Woods",
         "hint": "the Lost Woods",
+        "events": {
+            "Odd Mushroom Access": "is_adult and ('Cojiro Access' or Cojiro)",
+            "Poachers Saw Access": "is_adult and 'Odd Potion Access'"
+        },
         "locations": {
             "Skull Kid": "is_child and can_play(Sarias_Song)",
             "Ocarina Memory Game": "is_child and has_ocarina",
@@ -326,6 +330,11 @@
     },
     {
         "region_name": "Lake Hylia Lab",
+        "events": {
+            "Eyedrops Access": "
+                is_adult and 
+                ('Eyeball Frog Access' or (Eyeball_Frog and disable_trade_revert))"
+        },
         "locations": {
             "Diving in the Lab": "
                 (Progressive_Scale, 2) or
@@ -387,6 +396,9 @@
         "scene": "Gerudo Valley",
         "hint": "Gerudo Valley",
         "time_passes": true,
+        "events": {
+            "Broken Sword Access": "is_adult and ('Poachers Saw Access' or Poachers_Saw)"
+        },
         "locations": {
             "Gerudo Valley Hammer Rocks Chest": "can_use(Hammer)",
             "GS Gerudo Valley Behind Tent": "can_use(Hookshot) and at_night",
@@ -819,6 +831,7 @@
         "scene": "Kakariko Village",
         "hint": "Kakariko Village",
         "events": {
+            "Cojiro Access": "is_adult and 'Wake Up Adult Talon'",
             "Kakariko Village Gate Open": "is_child and Zeldas_Letter"
         },
         "locations": {
@@ -885,6 +898,9 @@
     },
     {
         "region_name": "Carpenter Boss House",
+        "events": {
+            "Wake Up Adult Talon": "is_adult and (Pocket_Egg or Pocket_Cucco)"
+        },
         "exits": {
             "Kakariko Village": "True"
         }
@@ -989,6 +1005,11 @@
     },
     {
         "region_name": "Odd Medicine Building",
+        "events": {
+            "Odd Potion Access": "
+                is_adult and
+                ('Odd Mushroom Access' or (Odd_Mushroom and disable_trade_revert))"
+        },
         "exits": {
             "Kakariko Village Backyard": "True"
         }
@@ -1131,18 +1152,15 @@
         "scene": "Death Mountain",
         "hint": "Death Mountain Trail",
         "time_passes": true,
+        "events": {
+            "Prescription Access": "is_adult and ('Broken Sword Access' or Broken_Sword)"
+        },
         "locations": {
-            "Biggoron": "is_adult and guarantee_hint and (
-                Claim_Check or (
-                    guarantee_trade_path and 'Zora Thawed' and
-                    at('Lake Hylia Lab', is_adult) and (
-                        Eyedrops or Eyeball_Frog or Prescription or Broken_Sword or (
-                            at('Gerudo Valley Far Side', is_adult) and (
-                                Poachers_Saw or (
-                                    at('Lost Woods', is_adult) and
-                                    at('Odd Medicine Building', is_adult) and (
-                                        Odd_Mushroom or Cojiro or (
-                                            at('Carpenter Boss House', is_adult and (Pocket_Egg or Pocket_Cucco))))))))))",
+            "Biggoron": "
+                is_adult and guarantee_hint and 
+                (Claim_Check or 
+                    (guarantee_trade_path and 
+                    ('Eyedrops Access' or (Eyedrops and disable_trade_revert))))",
             "GS Mountain Trail Path to Crater": "
                 (can_use(Hammer) or logic_trail_gs_upper) and at_night",
             "Death Mountain Trail Gossip Stone": "True",
@@ -1465,7 +1483,10 @@
         "scene": "Zoras Domain",
         "hint": "Zora's Domain",
         "events": {
-            "Zora Thawed": "is_adult and has_blue_fire"
+            "Zora Thawed": "is_adult and has_blue_fire",
+            "Eyeball Frog Access": "
+                is_adult and 'Zora Thawed' and 
+                (Eyedrops or Eyeball_Frog or Prescription or 'Prescription Access')"
         },
         "locations": {
             "Diving Minigame": "is_child",
