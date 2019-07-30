@@ -83,7 +83,11 @@
             "Silver Gauntlets Hand": "
                 ((Small_Key_Spirit_Temple, 7) and (can_play(Song_of_Time) or is_adult)) or 
                 ((Small_Key_Spirit_Temple, 4) and can_play(Song_of_Time) and 
-                 can_see_with_lens)"
+                 can_see_with_lens)",
+            "Desert Colossus": "
+                ((Small_Key_Spirit_Temple, 7) and (can_play(Song_of_Time) or is_adult)) or
+                ((Small_Key_Spirit_Temple, 4) and can_play(Song_of_Time) and
+                 can_see_with_lens and is_adult)"
         }
     },
     {
