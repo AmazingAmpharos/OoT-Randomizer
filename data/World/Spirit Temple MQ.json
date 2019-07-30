@@ -72,23 +72,18 @@
         "locations": {
             "Spirit Temple MQ Child Climb North Chest": "(Small_Key_Spirit_Temple, 6)",
             "Spirit Temple MQ Compass Chest": "
-                ((Small_Key_Spirit_Temple, 7) and can_use(Slingshot)) or 
-                (can_use(Longshot) and can_use(Silver_Gauntlets) and has_bow) or 
-                (has_slingshot and has_bow)",
-            "Spirit Temple MQ Sun Block Room Chest": "
-                can_play(Song_of_Time) or 
-                (can_use(Longshot) and can_use(Silver_Gauntlets))",
+                (can_use(Slingshot) and (has_bow or (Small_Key_Spirit_Temple, 7))) or
+                can_use(Bow)",
+            "Spirit Temple MQ Sun Block Room Chest": " can_play(Song_of_Time) or is_adult",
             "GS Spirit Temple MQ Sun Block Room": "
                 (logic_spirit_mq_sun_block_gs and can_play(Song_of_Time) and Boomerang) or
-                (can_use(Longshot) and can_use(Silver_Gauntlets))"
+                is_adult"
         },
         "exits": {
             "Silver Gauntlets Hand": "
-                ((Small_Key_Spirit_Temple, 7) and 
-                    (can_play(Song_of_Time) or 
-                        (can_use(Longshot) and can_use(Silver_Gauntlets)))) or 
+                ((Small_Key_Spirit_Temple, 7) and (can_play(Song_of_Time) or is_adult)) or 
                 ((Small_Key_Spirit_Temple, 4) and can_play(Song_of_Time) and 
-                    can_see_with_lens)"
+                 can_see_with_lens)"
         }
     },
     {
