@@ -316,8 +316,8 @@
                 is_child or can_use(Scarecrow) or
                 here(can_plant_bean) or 'Water Temple Clear'",
             "Water Temple Lobby": "
-                here(is_adult and (can_use(Hookshot) and Iron_Boots or can_use(Longshot))) and
-                ((Progressive_Scale, 2) or can_use(Iron_Boots)) and is_adult",
+                (can_use(Hookshot) and can_use(Iron_Boots)) or
+                (can_use(Longshot) and (Progressive_Scale, 2))",
             "Lake Hylia Grotto": "True"
         }
     },
