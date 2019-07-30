@@ -1898,7 +1898,7 @@ setting_infos = [
         choices        = {
             'remove':          "Remove",
             'dungeon':         "Dungeon Only",
-            'vanilla':         "Vanilla",
+            'vanilla':         "Vanilla Location",
             'keysanity':       "Anywhere",
             'lacs_vanilla':    "On LACS: Vanilla",
             'lacs_medallions': "On LACS: Medallions",
@@ -1985,7 +1985,7 @@ setting_infos = [
     ),
     Scale(
         name           = 'mq_dungeons',
-        gui_text       = "Random MQ Dungeon Count",
+        gui_text       = "MQ Dungeon Count",
         default        = 0,
         min            = 0,
         max            = 12,
