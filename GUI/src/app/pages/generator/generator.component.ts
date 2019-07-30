@@ -129,6 +129,15 @@ export class GeneratorComponent implements OnInit {
 
     if (this.global.getGlobalVar('electronAvailable')) { //Electron
 
+      //Delay the generation if settings are currently locked to avoid race conditions
+      if (this.settingsLocked) {
+        setTimeout(() => {
+          this.generateSeed(fromPatchFile, webRaceSeed);
+        }, 50);
+
+        return;
+      }
+
       //Hack: Fix Generation Count being None occasionally
       if (!this.global.generator_settingsMap["count"] || this.global.generator_settingsMap["count"] < 1)
         this.global.generator_settingsMap["count"] = 1;

@@ -29,10 +29,7 @@ def set_rules(world):
             if location.name in world.shop_prices:
                 add_item_rule(location, lambda location, item: item.type != 'Shop')
                 location.price = world.shop_prices[location.name]
-                if location.price > 200:
-                    add_rule(location, lambda state: state.has('Progressive Wallet', 2))
-                elif location.price > 99:
-                    add_rule(location, lambda state: state.has('Progressive Wallet'))
+                add_rule(location, create_shop_rule(location))
             else:
                 add_item_rule(location, lambda location, item: item.type == 'Shop' and item.world.id == location.world.id)
 
@@ -51,6 +48,17 @@ def set_rules(world):
             world.get_location(location).disabled = DisableType.PENDING
         except:
             logger.debug('Tried to disable location that does not exist: %s' % location)
+
+
+def create_shop_rule(location):
+    def required_wallets(price):
+        if price > 200:
+            return 2
+        if price > 99:
+            return 1
+        else:
+            return 0
+    return lambda state: state.has('Progressive Wallet', required_wallets(location.price))
 
 
 def set_rule(spot, rule):

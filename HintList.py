@@ -285,6 +285,8 @@ hintTable = {
     'Castle Town Bazaar':                                       ("the #Market Bazaar#", None, 'region'),
     'Castle Town Shooting Gallery':                             ("Child Shooting Gallery", None, 'region'),
     'Kakariko Bazaar':                                          ("the #Kakariko Bazaar#", None, 'region'),
+    'Kakariko Potion Shop Front':                               ("the #Kakariko Potion Shop#", None, 'region'),
+    'Kakariko Potion Shop Back':                                ("the #Kakariko Potion Shop#", None, 'region'),
     'Kakariko Shooting Gallery':                                ("Adult Shooting Gallery", None, 'region'),
     'Colossus Fairy':                                           ("a #Great Fairy Fountain#", None, 'region'),
     'Hyrule Castle Fairy':                                      ("a #Great Fairy Fountain#", None, 'region'),

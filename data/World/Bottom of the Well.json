@@ -41,7 +41,8 @@
                 Boomerang and can_see_with_lens and 
                 (Small_Key_Bottom_of_the_Well, 3)",
             "GS Well Like Like Cage": "
-                (Small_Key_Bottom_of_the_Well, 3) and Boomerang and can_see_with_lens",
+                (Small_Key_Bottom_of_the_Well, 3) and can_see_with_lens and
+                (Boomerang or (logic_botw_cage_gs and can_child_attack))",
             "Stick Pot": "True",
             "Nut Pot": "True"
         },

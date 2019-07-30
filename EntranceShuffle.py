@@ -110,8 +110,8 @@ entrance_shuffle_table = [
                         ('Impas House -> Kakariko Village',                                 { 'index': 0x0345 })),
     ('Interior',        ('Kakariko Village -> Impas House Back',                            { 'index': 0x05C8 }),
                         ('Impas House Back -> Kakariko Village',                            { 'index': 0x05DC })),
-    ('Interior',        ('Kakariko Village -> Odd Medicine Building',                       { 'index': 0x0072 }),
-                        ('Odd Medicine Building -> Kakariko Village',                       { 'index': 0x034D })),
+    ('Interior',        ('Kakariko Village Backyard -> Odd Medicine Building',              { 'index': 0x0072 }),
+                        ('Odd Medicine Building -> Kakariko Village Backyard',              { 'index': 0x034D })),
     ('Interior',        ('Graveyard -> Dampes House',                                       { 'index': 0x030D }),
                         ('Dampes House -> Graveyard',                                       { 'index': 0x0355 })),
     ('Interior',        ('Goron City -> Goron Shop',                                        { 'index': 0x037C }),
@@ -151,6 +151,10 @@ entrance_shuffle_table = [
                         ('Temple of Time -> Temple of Time Exterior',                       { 'index': 0x0472 })),
     ('SpecialInterior', ('Kakariko Village -> Windmill',                                    { 'index': 0x0453 }),
                         ('Windmill -> Kakariko Village',                                    { 'index': 0x0351 })),
+    ('SpecialInterior', ('Kakariko Village -> Kakariko Potion Shop Front',                  { 'index': 0x0384 }),
+                        ('Kakariko Potion Shop Front -> Kakariko Village',                  { 'index': 0x044B })),
+    ('SpecialInterior', ('Kakariko Village Backyard -> Kakariko Potion Shop Back',          { 'index': 0x03EC }),
+                        ('Kakariko Potion Shop Back -> Kakariko Village Backyard',          { 'index': 0x04FF })),
 
     ('Grotto',          ('Desert Colossus -> Desert Colossus Grotto',                       { 'grotto_id': 0x00, 'entrance': 0x05BC, 'content': 0xFD, 'scene': 0x5C }),
                         ('Desert Colossus Grotto -> Desert Colossus',                       { 'grotto_id': 0x00 })),
@@ -170,10 +174,10 @@ entrance_shuffle_table = [
                         ('Goron City Grotto -> Goron City',                                 { 'grotto_id': 0x07 })),
     ('Grotto',          ('Death Mountain -> Mountain Storms Grotto',                        { 'grotto_id': 0x08, 'entrance': 0x003F, 'content': 0x57, 'scene': 0x60 }),
                         ('Mountain Storms Grotto -> Death Mountain',                        { 'grotto_id': 0x08 })),
-    ('Grotto',          ('Death Mountain -> Mountain Bombable Grotto',                      { 'grotto_id': 0x09, 'entrance': 0x05FC, 'content': 0xF8, 'scene': 0x60 }),
-                        ('Mountain Bombable Grotto -> Death Mountain',                      { 'grotto_id': 0x09 })),
-    ('Grotto',          ('Kakariko Village -> Kakariko Back Grotto',                        { 'grotto_id': 0x0A, 'entrance': 0x003F, 'content': 0x28, 'scene': 0x52 }),
-                        ('Kakariko Back Grotto -> Kakariko Village',                        { 'grotto_id': 0x0A })),
+    ('Grotto',          ('Death Mountain Summit -> Mountain Bombable Grotto',               { 'grotto_id': 0x09, 'entrance': 0x05FC, 'content': 0xF8, 'scene': 0x60 }),
+                        ('Mountain Bombable Grotto -> Death Mountain Summit',               { 'grotto_id': 0x09 })),
+    ('Grotto',          ('Kakariko Village Backyard -> Kakariko Back Grotto',               { 'grotto_id': 0x0A, 'entrance': 0x003F, 'content': 0x28, 'scene': 0x52 }),
+                        ('Kakariko Back Grotto -> Kakariko Village Backyard',               { 'grotto_id': 0x0A })),
     ('Grotto',          ('Kakariko Village -> Kakariko Bombable Grotto',                    { 'grotto_id': 0x0B, 'entrance': 0x05A0, 'content': 0xE7, 'scene': 0x52 }),
                         ('Kakariko Bombable Grotto -> Kakariko Village',                    { 'grotto_id': 0x0B })),
     ('Grotto',          ('Hyrule Castle Grounds -> Castle Storms Grotto',                   { 'grotto_id': 0x0C, 'entrance': 0x05B8, 'content': 0xF6, 'scene': 0x5F }),
@@ -557,6 +561,21 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             windmill_door_entrance = get_entrance_replacing(world.get_region('Windmill'), 'Kakariko Village -> Windmill')
             if not max_playthrough.state_list[world.id].as_both(windmill_door_entrance):
                 raise EntranceShuffleError('Windmill Door Entrance is never reachable as both ages')
+
+            # Potion Shop front door should be reachable as both ages at some point in the seed
+            potion_front_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Front'), 'Kakariko Village -> Kakariko Potion Shop Front')
+            if not max_playthrough.state_list[world.id].as_both(potion_front_entrance):
+                raise EntranceShuffleError('Adult Potion Front Entrance is never reachable as both ages')
+
+            # Potion Shop back door should be reachable as adult at some point in the seed
+            potion_back_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Back'), 'Kakariko Village Backyard -> Kakariko Potion Shop Back')
+            if not max_playthrough.state_list[world.id].as_age(potion_back_entrance, adult=True):
+                raise EntranceShuffleError('Adult Potion Back Entrance is never reachable as Adult')
+
+            if  potion_front_entrance.parent_region.hint is not None and \
+                potion_back_entrance.parent_region.hint is not None and \
+                potion_front_entrance.parent_region.hint != potion_back_entrance.parent_region.hint:
+                raise EntranceShuffleError('Adult Potion Shop Entrances not in same hint region')
 
         # At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
         no_items_playthrough = Playthrough([State(world) for world in worlds])

@@ -71,7 +71,7 @@
         "events": {
             "Shadow Trial Clear": "
                 can_use(Light_Arrows) and can_see_with_lens and 
-                (Hover_Boots or (Progressive_Hookshot and has_fire_source))"
+                (Hover_Boots or (Progressive_Hookshot and (has_fire_source or logic_shadow_trial_mq)))"
         },
         "locations": {
             "Ganons Castle MQ Shadow Trial First Chest": "
@@ -80,7 +80,7 @@
                     (has_explosives or Progressive_Strength_Upgrade or can_use(Dins_Fire)))",
             "Ganons Castle MQ Shadow Trial Second Chest": "
                 has_bow and can_see_with_lens and 
-                (Hover_Boots or (Progressive_Hookshot and has_fire_source))"
+                (Hover_Boots or (Progressive_Hookshot and (has_fire_source or logic_shadow_trial_mq)))"
         }
     },
     {

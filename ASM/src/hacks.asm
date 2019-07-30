@@ -1381,3 +1381,58 @@ skip_GS_BGS_text:
     nop
     nop
     nop
+
+; ==================================================================================================
+; Fix Lab Diving to always be available
+; ==================================================================================================
+; Replaces: lbu     t7, -0x709C(t7)
+;           lui     a1, 0x8012
+;           addiu   a1, a1, 0xA5D0      ; a1 = save context
+;           addu    t8, a1, t7
+;           lbu     t9, 0x0074(t8)      ; t9 = owned adult trade item
+.orga 0xE2CC1C
+    lui     a1, 0x8012
+    addiu   a1, a1, 0xA5D0      ; a1 = save context
+    lh      t0, 0x0270(s0)      ; t0 = recent diving depth (in meters)
+    bne     t0, zero, @skip_eyedrops_dialog
+    lbu     t9, 0x008A(a1)      ; t9 = owned adult trade item
+
+.orga 0xE2CC50
+@skip_eyedrops_dialog:
+
+; ==================================================================================================
+; Change Gerudo Guards to respond to the Gerudo's Card, not freeing the carpenters.
+; ==================================================================================================
+; Patrolling Gerudo
+.orga 0xE9F598
+    lui     t6, 0x8012
+    lhu     t7, 0xA674(t6)
+    andi    t8, t7, 0x0040
+    beqzl   t8, @@return
+    move    v0, zero
+    li      v0, 1
+@@return:
+    jr      ra
+    nop
+    nop
+    nop
+    nop
+
+; White-clothed Gerudo
+.orga 0xE11E94
+    lui     v0, 0x8012
+    lhu     v0, 0xA674(v0)
+    andi    t6, v0, 0x0040
+    beqzl   t6, @@return
+    move    v0, zero
+    li      v0, 1
+@@return:
+    jr      ra
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop

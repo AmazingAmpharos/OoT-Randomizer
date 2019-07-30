@@ -2,6 +2,7 @@ import random
 import struct
 import itertools
 import re
+import zlib
 
 from World import World
 from Rom import Rom
@@ -28,13 +29,23 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # Write Randomizer title screen logo
     with open(data_path('title.bin'), 'rb') as stream:
-        titleBytes = stream.read()
-        rom.write_bytes(0x01795300, titleBytes)
+        writeAddress = 0x01795300
+        titleBytesComp = stream.read()
+        titleBytesDiff = zlib.decompress(titleBytesComp)
+
+        originalBytes = rom.original.buffer[writeAddress: writeAddress+ len(titleBytesDiff)]
+        titleBytes = bytearray([a ^ b for a, b in zip(titleBytesDiff, originalBytes)])
+        rom.write_bytes(writeAddress, titleBytes)
 
     # Fixes the typo of keatan mask in the item select screen
     with open(data_path('keaton.bin'), 'rb') as stream:
-        keatonBytes = stream.read()
-        rom.write_bytes(0x8A7C00, keatonBytes)
+        writeAddress = 0x8A7C00
+        keatonBytesComp = stream.read()
+        keatonBytesDiff = zlib.decompress(keatonBytesComp)
+
+        originalBytes = rom.original.buffer[writeAddress: writeAddress+ len(keatonBytesDiff)]
+        keatonBytes = bytearray([a ^ b for a, b in zip(keatonBytesDiff, originalBytes)])
+        rom.write_bytes(writeAddress, keatonBytes)
 
     # Load triforce model into a file
     triforce_obj_file = File({
@@ -795,14 +806,16 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         
     exit_table = generate_exit_lookup_table()
 
+    if world.shuffle_interior_entrances or world.shuffle_overworld_entrances:
+        # Disable trade quest timers and prevent trade items from reverting on save load
+        rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
+        rom.write_int32(0xB064CC, 0x10000010) # b 0xB06510 (skip trade item revert)
+
     if world.shuffle_overworld_entrances:
         rom.write_byte(rom.sym('OVERWORLD_SHUFFLED'), 1)
 
         # Prevent the ocarina cutscene from leading straight to hyrule field
         rom.write_byte(rom.sym('OCARINAS_SHUFFLED'), 1)
-
-        # Disable trade quest timers
-        rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
 
         # Disable the fog state entirely to avoid fog glitches
         rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
@@ -867,9 +880,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         set_entrance_updates(world.get_shuffled_entrances(type='Dungeon'))
 
     if world.shuffle_interior_entrances:
-        # Disable trade quest timers
-        rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
-
         # Change the Happy Mask Shop "throw out" entrance index to the new one (hardcode located in the shop actor)
         rom.write_int16(0xC6DA5E, world.get_entrance('Castle Town Mask Shop -> Castle Town').replaces.data['index'])
 
@@ -1068,6 +1078,14 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         save_context.write_bits(0x00D4 + 0x0C * 0x1C + 0x04 + 0x2, 0x01) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         save_context.write_bits(0x00D4 + 0x0C * 0x1C + 0x04 + 0x3, 0xDC) # Thieves' Hideout switch flags (heard yells/unlocked doors)
         save_context.write_bits(0x00D4 + 0x0C * 0x1C + 0x0C + 0x2, 0xC4) # Thieves' Hideout collection flags (picked up keys, marks fights finished as well)
+
+    # Add a gate-opening guard on the Wasteland side of the Gerudo gate when the card is shuffled or certain levels of ER.
+    # Overrides the generic guard at the bottom of the ladder in Gerudo Fortress
+    if world.shuffle_gerudo_card or world.shuffle_overworld_entrances or world.shuffle_special_indoor_entrances:
+        # Add a gate opening guard on the Wasteland side of the Gerudo Fortress' gate
+        new_gate_opening_guard = [0x0138, 0xFAC8, 0x005D, 0xF448, 0x0000, 0x95B0, 0x0000, 0x0301]
+        rom.write_int16s(0x21BD3EC, new_gate_opening_guard)  # Adult Day
+        rom.write_int16s(0x21BD62C, new_gate_opening_guard)  # Adult Night
 
     # start with maps/compasses
     if world.shuffle_mapcompass == 'startwith':

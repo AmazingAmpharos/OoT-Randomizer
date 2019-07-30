@@ -52,8 +52,8 @@
                     ((Small_Key_Water_Temple, 6) and 
                         can_play(Song_of_Time) and has_bow))",
             "Water Temple Central Bow Target Chest": "
-                has_bow and Progressive_Strength_Upgrade and 
-                can_play(Zeldas_Lullaby) and (Hover_Boots or can_use(Longshot))",
+                has_bow and Progressive_Strength_Upgrade and can_play(Zeldas_Lullaby) and 
+                (logic_water_central_bow or Hover_Boots or can_use(Longshot))",
             "GS Water Temple South Basement": "
                 (can_use(Hookshot) or can_use(Hover_Boots)) and 
                 has_explosives and can_play(Zeldas_Lullaby) and

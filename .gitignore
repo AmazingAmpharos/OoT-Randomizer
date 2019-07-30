@@ -5,6 +5,8 @@
 /Output
 /build
 /dist
+/Logs
+/__pychache__
 ARCHIVE.bin
 
 *.[nz]64

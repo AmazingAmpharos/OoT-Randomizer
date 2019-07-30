@@ -141,6 +141,10 @@
         "region_name": "Lost Woods",
         "scene": "Lost Woods",
         "hint": "the Lost Woods",
+        "events": {
+            "Odd Mushroom Access": "is_adult and ('Cojiro Access' or Cojiro)",
+            "Poachers Saw Access": "is_adult and 'Odd Potion Access'"
+        },
         "locations": {
             "Skull Kid": "is_child and can_play(Sarias_Song)",
             "Ocarina Memory Game": "is_child and has_ocarina",
@@ -326,6 +330,11 @@
     },
     {
         "region_name": "Lake Hylia Lab",
+        "events": {
+            "Eyedrops Access": "
+                is_adult and 
+                ('Eyeball Frog Access' or (Eyeball_Frog and disable_trade_revert))"
+        },
         "locations": {
             "Diving in the Lab": "
                 (Progressive_Scale, 2) or
@@ -387,6 +396,9 @@
         "scene": "Gerudo Valley",
         "hint": "Gerudo Valley",
         "time_passes": true,
+        "events": {
+            "Broken Sword Access": "is_adult and ('Poachers Saw Access' or Poachers_Saw)"
+        },
         "locations": {
             "Gerudo Valley Hammer Rocks Chest": "can_use(Hammer)",
             "GS Gerudo Valley Behind Tent": "can_use(Hookshot) and at_night",
@@ -414,42 +426,47 @@
         "hint": "Gerudo's Fortress",
         "events": {
             "Carpenter Rescue": "can_finish_GerudoFortress",
-            "Gerudo Fortress Gate Open": "is_adult and 'Carpenter Rescue'"
+            "Gerudo Fortress Gate Open": "is_adult and Gerudo_Membership_Card"
         },
         "locations": {
             "Gerudo Fortress Rooftop Chest": "
                 can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot)",
             "Horseback Archery 1000 Points": "
-                'Carpenter Rescue' and can_use(Epona) and Bow and at_day",
+                Gerudo_Membership_Card and can_use(Epona) and Bow and at_day",
             "Horseback Archery 1500 Points": "
-                'Carpenter Rescue' and can_use(Epona) and Bow and at_day",
+                Gerudo_Membership_Card and can_use(Epona) and Bow and at_day",
             "Gerudo Fortress North F1 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress North F2 Carpenter": "
                 (is_adult or Kokiri_Sword) and 
-                (can_use(Bow) or can_use(Hookshot) or can_use(Hover_Boots) or logic_gerudo_kitchen)",
+                (Gerudo_Membership_Card or can_use(Bow) or can_use(Hookshot)
+                    or can_use(Hover_Boots) or logic_gerudo_kitchen)",
             "Gerudo Fortress South F1 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress South F2 Carpenter": "is_adult or Kokiri_Sword",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
             "GS Gerudo Fortress Archery Range": "
-                can_use(Hookshot) and 'Carpenter Rescue' and at_night",
+                can_use(Hookshot) and Gerudo_Membership_Card and at_night",
             "GS Gerudo Fortress Top Floor": "
                 is_adult and at_night and 
-                ('Carpenter Rescue' or can_use(Bow) or can_use(Hookshot) or 
+                (Gerudo_Membership_Card or can_use(Bow) or can_use(Hookshot) or
                     can_use(Hover_Boots) or logic_gerudo_kitchen)"
         },
         "exits": {
             "Gerudo Valley Far Side": "True",
             "Gerudo Fortress Outside Gate": "'Gerudo Fortress Gate Open'",
-            "Gerudo Training Grounds Lobby": "
-                'Carpenter Rescue' and Gerudo_Membership_Card and is_adult",
+            "Gerudo Training Grounds Lobby": "Gerudo_Membership_Card and is_adult",
             "Gerudo Fortress Storms Grotto": "is_adult and can_play(Song_of_Storms)" # Not there as child
         }
     },
     {
         "region_name": "Gerudo Fortress Outside Gate",
         "scene": "Gerudo Fortress",
+        "events": {
+            "Gerudo Fortress Gate Open": "
+                is_adult and Gerudo_Membership_Card and
+                (shuffle_gerudo_card or shuffle_overworld_entrances or shuffle_special_indoor_entrances)"
+        },
         "exits": {
-            "Gerudo Fortress": "'Gerudo Fortress Gate Open'",
+            "Gerudo Fortress": "is_adult or (shuffle_overworld_entrances and 'Gerudo Fortress Gate Open')",
             "Haunted Wasteland Near Fortress": "True"
         }
     },
@@ -476,14 +493,17 @@
             "Nut Pot": "True"
         },
         "exits": {
-            "Haunted Wasteland Near Colossus": "(logic_lens == 'chest') or can_use(Lens_of_Truth)"
+            "Haunted Wasteland Near Colossus": "(logic_lens == 'chest') or can_use(Lens_of_Truth)",
+            "Haunted Wasteland Near Fortress": "
+                logic_wasteland_crossing or can_use(Hover_Boots) or can_use(Longshot)"
         }
     },
     {
         "region_name": "Haunted Wasteland Near Colossus",
         "scene": "Haunted Wasteland",
         "exits": {
-            "Desert Colossus": "True"
+            "Desert Colossus": "True",
+            "Haunted Wasteland": "logic_reverse_wasteland"
         }
     },
     {
@@ -797,17 +817,12 @@
         "scene": "Kakariko Village",
         "hint": "Kakariko Village",
         "events": {
+            "Cojiro Access": "is_adult and 'Wake Up Adult Talon'",
             "Kakariko Village Gate Open": "is_child and Zeldas_Letter"
         },
         "locations": {
             "Sheik in Kakariko": "
                 is_adult and Forest_Medallion and Fire_Medallion and Water_Medallion",
-            "Man on Roof": "
-                can_use(Hookshot) or 
-                (logic_man_on_roof and 
-                    (is_adult or at_day or has_slingshot or has_bombchus or 
-                        (logic_kakariko_tower_gs and (has_sticks or Kokiri_Sword) and
-                            (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love)))))",
             "Anju as Adult": "is_adult and at_day",
             "Anjus Chickens": "is_child and at_day",
             "GS Kakariko House Under Construction": "is_child and at_night",
@@ -833,16 +848,45 @@
             "Bottom of the Well": "
                 'Drain Well' and (is_child or shuffle_dungeon_entrances)",
             "Kakariko Potion Shop Front": "is_child or at_day",
-            "Kakariko Potion Shop Back": "is_adult and at_day",
-            "Odd Medicine Building": "is_adult",
             "Kakariko Bombable Grotto": "can_blast_or_smash",
-            "Kakariko Back Grotto": "True",
+            "Kakariko Rooftop": "
+                can_use(Hookshot) or 
+                (logic_man_on_roof and 
+                    (is_adult or at_day or has_slingshot or has_bombchus or 
+                        (logic_kakariko_tower_gs and (has_sticks or Kokiri_Sword) and
+                            (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love)))))",
+            "Kakariko Village Backyard": "is_adult or (is_child and at_day)",
             "Graveyard": "True",
             "Kakariko Village Behind Gate": "is_adult or 'Kakariko Village Gate Open'"
         }
     },
     {
+        "region_name": "Kakariko Rooftop",
+        "scene": "Kakariko Village",
+        "hint": "Kakariko Village",
+        "locations": {
+            "Man on Roof": "True"
+        },
+        "exits": {
+            "Kakariko Village Backyard": "True"
+        }
+    },
+    {
+        "region_name": "Kakariko Village Backyard",
+        "scene": "Kakariko Village",
+        "hint": "Kakariko Village",
+        "exits": {
+            "Kakariko Village": "True",
+            "Kakariko Back Grotto": "True",
+            "Odd Medicine Building": "is_adult",
+            "Kakariko Potion Shop Back": "is_adult and at_day"
+        }
+    },
+    {
         "region_name": "Carpenter Boss House",
+        "events": {
+            "Wake Up Adult Talon": "is_adult and (Pocket_Egg or Pocket_Cucco)"
+        },
         "exits": {
             "Kakariko Village": "True"
         }
@@ -923,7 +967,6 @@
     },
     {
         "region_name": "Kakariko Potion Shop Front",
-        "hint": "Kakariko Village",
         "locations": {
             "Kakariko Potion Shop Item 1": "is_adult",
             "Kakariko Potion Shop Item 2": "is_adult",
@@ -933,15 +976,28 @@
             "Kakariko Potion Shop Item 6": "is_adult",
             "Kakariko Potion Shop Item 7": "is_adult",
             "Kakariko Potion Shop Item 8": "is_adult"
+        },
+        "exits": {
+            "Kakariko Village": "True",
+            "Kakariko Potion Shop Back": "is_adult"
         }
     },
     {
-        "region_name": "Kakariko Potion Shop Back"
+        "region_name": "Kakariko Potion Shop Back",
+        "exits": {
+            "Kakariko Village Backyard": "is_adult",
+            "Kakariko Potion Shop Front": "True"
+        }
     },
     {
         "region_name": "Odd Medicine Building",
+        "events": {
+            "Odd Potion Access": "
+                is_adult and
+                ('Odd Mushroom Access' or (Odd_Mushroom and disable_trade_revert))"
+        },
         "exits": {
-            "Kakariko Village": "True"
+            "Kakariko Village Backyard": "True"
         }
     },
     {
@@ -1062,8 +1118,8 @@
                     (has_explosives or Progressive_Strength_Upgrade or
                     (logic_dmt_soil_gs and can_use(Boomerang)))",
             "GS Mountain Trail Bomb Alcove": "can_blast_or_smash",
-            "GS Mountain Trail Path to Crater": "can_use(Hammer) and at_night",
-            "GS Mountain Trail Above Dodongo's Cavern": "can_use(Hammer) and at_night",
+            "GS Mountain Trail Above Dodongo's Cavern": "
+                (can_use(Hammer) or (logic_trail_gs_lower and can_use(Hookshot))) and at_night",
             "Bean Plant Fairy": "
                 can_plant_bean and can_play(Song_of_Storms) and has_bottle and
                 (has_explosives or Progressive_Strength_Upgrade)"
@@ -1074,7 +1130,6 @@
             "Death Mountain Summit": "here(can_blast_or_smash)",
             "Dodongos Cavern Entryway": "
                 has_explosives or Progressive_Strength_Upgrade or is_adult",
-            "Mountain Bombable Grotto": "here(can_blast_or_smash)",
             "Mountain Storms Grotto": "can_play(Song_of_Storms)"
         }
     },
@@ -1083,18 +1138,17 @@
         "scene": "Death Mountain",
         "hint": "Death Mountain Trail",
         "time_passes": true,
+        "events": {
+            "Prescription Access": "is_adult and ('Broken Sword Access' or Broken_Sword)"
+        },
         "locations": {
-            "Biggoron": "is_adult and guarantee_hint and (
-                Claim_Check or (
-                    guarantee_trade_path and 'Zora Thawed' and
-                    at('Lake Hylia Lab', is_adult) and (
-                        Eyedrops or Eyeball_Frog or Prescription or Broken_Sword or (
-                            at('Gerudo Valley Far Side', is_adult) and (
-                                Poachers_Saw or (
-                                    at('Lost Woods', is_adult) and
-                                    at('Odd Medicine Building', is_adult) and (
-                                        Odd_Mushroom or Cojiro or (
-                                            at('Carpenter Boss House', is_adult and (Pocket_Egg or Pocket_Cucco))))))))))",
+            "Biggoron": "
+                is_adult and guarantee_hint and 
+                (Claim_Check or 
+                    (guarantee_trade_path and 
+                    ('Eyedrops Access' or (Eyedrops and disable_trade_revert))))",
+            "GS Mountain Trail Path to Crater": "
+                (can_use(Hammer) or logic_trail_gs_upper) and at_night",
             "Death Mountain Trail Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Bug Rock": "is_child and has_bottle"
@@ -1103,6 +1157,7 @@
             "Death Mountain": "True",
             "Death Mountain Crater Upper Local": "True",
             "Death Mountain Summit Owl Flight": "is_child",
+            "Mountain Bombable Grotto": "here(can_blast_or_smash)",
             "Mountain Summit Fairy": "here(can_blast_or_smash)"
         }
     },
@@ -1145,7 +1200,7 @@
                 can_blast_or_smash or can_use(Silver_Gauntlets)",
             "Goron City Pot Freestanding PoH": "
                 is_child and 'Goron City Child Fire' and
-                (has_bombs or Progressive_Strength_Upgrade)",
+                (has_bombs or Progressive_Strength_Upgrade or (has_bombchus and logic_goron_city_pot))",
             "Rolling Goron as Child": "
                 is_child and 
                 (has_explosives or (Progressive_Strength_Upgrade and logic_child_rolling_with_strength))",
@@ -1414,7 +1469,10 @@
         "scene": "Zoras Domain",
         "hint": "Zora's Domain",
         "events": {
-            "Zora Thawed": "is_adult and has_blue_fire"
+            "Zora Thawed": "is_adult and has_blue_fire",
+            "Eyeball Frog Access": "
+                is_adult and 'Zora Thawed' and 
+                (Eyedrops or Eyeball_Frog or Prescription or 'Prescription Access')"
         },
         "locations": {
             "Diving Minigame": "is_child",
@@ -1792,7 +1850,7 @@
             "Lone Fish": "has_bottle"
         },
         "exits": {
-            "Kakariko Village": "True"
+            "Kakariko Village Backyard": "True"
         }
     },
     {
@@ -1801,7 +1859,7 @@
             "DMT Grotto Cow": "can_play(Eponas_Song)"
         },
         "exits": {
-            "Death Mountain": "True"
+            "Death Mountain Summit": "True"
         }
     },
     {

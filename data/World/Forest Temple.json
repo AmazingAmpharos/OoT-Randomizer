@@ -97,7 +97,8 @@
         },
         "exits": {
             #end of the road for child forest. No hovers and too short to climb push blocks
-            "Forest Temple Outside Upper Ledge": "can_use(Hover_Boots)",
+            "Forest Temple Outside Upper Ledge": "
+                can_use(Hover_Boots) or (logic_forest_outside_backdoor and is_adult and Progressive_Strength_Upgrade)",
             "Forest Temple Bow Region": "
                 Progressive_Strength_Upgrade and (Small_Key_Forest_Temple, 3) and is_adult",
             "Forest Temple Straightened Hall": "
