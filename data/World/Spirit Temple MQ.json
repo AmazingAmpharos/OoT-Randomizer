@@ -67,13 +67,18 @@
         }
     },
     {
+        #In this region, child reachability really means age-unknown, but with the caveat
+        #that child has as least entered the dungeon. is_adult means is_adult as usual.
+        #All child specific logic must be anded with 7 keys to convert child-as-unknown-age
+        #back to child.
         "region_name": "Spirit Temple Shared",
         "dungeon": "Spirit Temple",
         "locations": {
             "Spirit Temple MQ Child Climb North Chest": "(Small_Key_Spirit_Temple, 6)",
             "Spirit Temple MQ Compass Chest": "
-                (can_use(Slingshot) and (has_bow or (Small_Key_Spirit_Temple, 7))) or
-                can_use(Bow)",
+                (can_use(Slingshot) and (Small_Key_Spirit_Temple, 7)) or
+                can_use(Bow) or
+                (has_bow and has_slingshot)",
             "Spirit Temple MQ Sun Block Room Chest": " can_play(Song_of_Time) or is_adult",
             "GS Spirit Temple MQ Sun Block Room": "
                 (logic_spirit_mq_sun_block_gs and can_play(Song_of_Time) and Boomerang) or
