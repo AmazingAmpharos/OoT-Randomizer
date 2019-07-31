@@ -84,21 +84,21 @@ player.
   * New Logic Rules option that takes movement glitches into consideration
   * Check out the Wiki for more information
 * Entrance Randomizer
-  * Randomize entrances/loading zones (additional details below in New Options)
-  * Entrances are connected bidirectionally, and only shuffled with other entrances of the same pool.
+  * Randomize entrances/loading zones
+  * Entrances are connected bidirectionally, and only shuffled with other entrances of the same pool
   * Ability to randomize entrances (loading zones) among multiple pools:
     * `Dungeons Onlys`: All Dungeons except Ganon's Castle
     * `Simple Indoors`: Dungeons; as well as Houses, Great Fairies, all Open and Hidden Grottos (including small Fairy Fountains and the Lost Woods Stage), and Graves.
     * `All Indoors`: Dungeons and Simple Indoors, as well as Link’s House, the Temple of Time, the Windmill, and Dampe’s Grave.
     * `All Indoors & Overworld Entrances`: Almost all loading zones connecting overworld areas, including Owls
-  * Deku Tree, Fire Temple, and Bottom of the Well dungeon entrances are accessible as both ages.
+  * Deku Tree, Fire Temple, and Bottom of the Well dungeon entrances are accessible as both ages
 * Starting Age Option
   * Can now start as child, adult, or random
 * Plan-domizer
   * Create a custom seed by placing items, hints and/or entrances where you want them
   * Customize starting items, item pools, active trials and Master Quest dungeons
   * Distribution files match the spoiler log JSON format
-* Cosmetics
+* Additional Customization
   * Additional Background Music Sequences can now be provided to be shuffled in
   * Fanfares randomization
   * Customizable Heart, Magic Meter, and Gauntlet colors
@@ -111,7 +111,7 @@ player.
 * Cucco Count
   * The number of cuccos to be gathered for Anju can be reduced or randomized, and Anju will tell you in-game the target number to catch (similar to 10 Big Poes).
 * Enable Useful Cutscenes prevents some useful cutscenes from being skipped
-  * Poes at Forest Temple, Darunia at Fire Temple, and Twinrova at Spirit Temple
+  * Re-enables Poes at Forest Temple, Darunia at Fire Temple, and Twinrova at Spirit Temple
 
 #### Major Changes
 * Seeds generation is significantly faster
@@ -134,8 +134,8 @@ player.
 * Cutscene Changes
   * Burning Kakariko Cutscene can be triggered when entering Kakariko Village from any entrance.
   * Speedup Owl Flying cutscenes to be almost instant.
-  * Enable Useful Cutscenes setting added (additional details below in New Options)
-  * Great Fairy cutscene no longer plays on additional visits for health and magic refills
+  * Enable Useful Cutscenes setting added (see above in New Features)
+  * Great Fairy cutscene no longer plays on additional visits for health and magic refills.
 
 #### Updated Settings 
 * Filter added to `Location Exclusion` dropdown
@@ -158,8 +158,8 @@ player.
 * No longer able to buy Bombchus with only bomb bag when Bombchus in logic
 * Dampé freestanding Piece of Heart no longer requires opening the chest
 * Buying Piece of Heart/Heart Container fully heals Link
-* Learning Sun's Song from Malon no longer causes a softlock.
-* Castle and Gerudo guards can no longer cause softlock when catching you.
+* Learning Sun's Song from Malon no longer causes a softlock
+* Castle and Gerudo guards can no longer cause softlock when catching you
 * Vanilla shop items have correct price in spoiler log with shopsanity enabled
 * Fixed Song of Storms not being usable in Sacred Forest Meadow immediately after learning it
 * Improved Bottled Fairy logic rules for OHKO in ER
