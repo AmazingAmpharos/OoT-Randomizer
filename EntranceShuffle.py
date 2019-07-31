@@ -610,7 +610,8 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
                     raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
 
     if entrance_placed == None or (entrance_placed != None and entrance_placed.type in ['Interior', 'SpecialInterior', 'Overworld']):
-        # The Big Poe Shop should always be accessible as adult without the need to use any bottles (eg. without any items)
+        # The Big Poe Shop should always be accessible as adult without the need to use any bottles
+        # Since we can't guarantee that items in the pool won't be placed behind bottles, we guarantee the access without using any items
         # This is important to ensure that players can never lock their only bottles by filling them with Big Poes they can't sell
         no_items_time_travel_playthrough = Playthrough.with_items([State(world) for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
 
