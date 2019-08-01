@@ -41,7 +41,7 @@ def set_rules(world):
             forbid_item(location, 'Boss Key (Forest Temple)')
 
         if location.type == 'GossipStone' and world.hints == 'mask':
-            add_rule(location, lambda state: state.is_child())
+            location.add_rule(lambda state: state.is_child())
 
     for location in world.disabled_locations:
         try:

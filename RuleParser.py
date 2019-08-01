@@ -280,18 +280,8 @@ class Rule_AST_Transformer(ast.NodeTransformer):
             event.world = self.world
 
             self.current_spot = event
-            newrule = ast.fix_missing_locations(
-                ast.Expression(ast.Lambda(
-                    args=ast.arguments(
-                        posonlyargs=[],
-                        args=[ast.arg(arg='state')],
-                        defaults=[],
-                        kwonlyargs=[],
-                        kw_defaults=[]),
-                    # This could, in theory, create further subrules.
-                    body=self.visit(node))))
-
-            event.access_rule = eval(compile(newrule, '<string>', 'eval'))
+            # This could, in theory, create further subrules.
+            event.access_rule = self.make_access_rule(self.visit(node))
             region.locations.append(event)
 
             item = ItemFactory(subrule_name, self.world, event=True)
@@ -300,6 +290,20 @@ class Rule_AST_Transformer(ast.NodeTransformer):
             self.world.event_items.add(subrule_name)
         # Safeguard in case this is called multiple times per world
         self.delayed_rules.clear()
+
+
+    def make_access_rule(self, body):
+        return eval(compile(
+            ast.fix_missing_locations(
+                ast.Expression(ast.Lambda(
+                    args=ast.arguments(
+                        posonlyargs=[],
+                        args=[ast.arg(arg='state')],
+                        defaults=[],
+                        kwonlyargs=[],
+                        kw_defaults=[]),
+                    body=body))),
+            '<string>', 'eval'))
 
 
     ## Handlers for specific internal functions used in the json logic.
@@ -324,13 +328,8 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     def parse_spot_rule(self, spot):
-        if spot.rule_string is None:
-            return lambda state: True
-
-        rule = 'lambda state: ' + spot.rule_string
-        rule = rule.split('#')[0]
+        rule = spot.rule_string.split('#', 1)[0].strip()
 
         self.current_spot = spot
-        rule_ast = ast.parse(rule, mode='eval')
-        rule_ast = ast.fix_missing_locations(self.visit(rule_ast))
-        spot.access_rule = eval(compile(rule_ast, '<string>', 'eval'))
+        rule_ast = ast.parse(rule, mode='eval').body
+        spot.access_rule = self.make_access_rule(self.visit(rule_ast))
