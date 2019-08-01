@@ -113,10 +113,9 @@ class Playthrough(object):
     # as a cache for the exits to try on the next iteration.
     @staticmethod
     def _expand_regions(exit_queue, region_set, validate):
-        new_exit = lambda exit: exit.connected_region and exit.connected_region not in region_set
         failed = []
         for exit in exit_queue:
-            if new_exit(exit):
+            if exit.connected_region and exit.connected_region not in region_set:
                 if validate(exit):
                     region_set.add(exit.connected_region)
                     exit_queue.extend(exit.connected_region.exits)
