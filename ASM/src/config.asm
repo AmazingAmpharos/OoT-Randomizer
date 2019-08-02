@@ -48,6 +48,9 @@ RAINBOW_BRIDGE_CONDITION:
 ; 4 = Vanilla
 ; 5 = Tokens
 
+RAINBOW_BRIDGE_TOKENS:
+.halfword 0x64
+
 LACS_CONDITION:
 .word 0x00
 ; 0 = Vanilla
