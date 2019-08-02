@@ -52,6 +52,7 @@ def start():
             os.makedirs(log_dir)
         log_path = os.path.join(log_dir, '%s.log' % st)
         log_file = logging.FileHandler(log_path)
+        log_file.setFormatter(logging.Formatter('[%(asctime)s] %(message)s', datefmt='%H:%M:%S'))
         logger.addHandler(log_file)
 
     if not settings.check_version:
