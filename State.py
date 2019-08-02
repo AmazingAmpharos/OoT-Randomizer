@@ -624,7 +624,7 @@ class State(object):
     @staticmethod
     def update_required_items(spoiler):
         worlds = spoiler.worlds
-        state_list = [world.state for world in worlds]
+        state_list = [world.state.copy() for world in worlds]
 
         # get list of all of the progressive items that can appear in hints
         # all_locations: all progressive items. have to collect from these
