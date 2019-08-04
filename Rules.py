@@ -134,7 +134,7 @@ def set_entrances_based_rules(worlds):
 
     # Use the states with all items available in the pools for this seed
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
-    playthrough = Playthrough([world.state.copy() for world in worlds])
+    playthrough = Playthrough([world.state for world in worlds])
     playthrough.collect_all(complete_itempool)
     playthrough.collect_locations()
 

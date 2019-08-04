@@ -97,6 +97,14 @@ def isRestrictedDungeonItem(dungeon, item):
     return False
 
 
+def add_stone_reachability(stone_location, rule):
+    def new_rule(state):
+        sloc = state.world.get_location(stone_location)
+        # Tests access as child only! adult may not be able to reach this stone, and it breaks everything to test as adult
+        return state.playthrough.can_reach(sloc.parent_region, age='child') and state.guarantee_hint() and sloc.access_rule(state) and rule(state)
+    return new_rule
+
+
 def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reachable=False):
     random.shuffle(IDs)
     skipped_ids = []
@@ -110,8 +118,9 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
                 stone_location = gossipLocations[id].location
                 if not first or can_reach_stone(spoiler.worlds, stone_location, location):
                     if first and location:
-                        old_rule = location.access_rule
-                        location.access_rule = lambda state: state.can_reach(stone_location, resolution_hint='Location') and old_rule(state)
+                        # This mostly guarantees that we don't lock the player out of an item hint
+                        # by establishing a (hint -> item) -> hint -> item -> (first hint) loop
+                        location.access_rule = add_stone_reachability(stone_location, location.access_rule)
 
                     count -= 1
                     first = False

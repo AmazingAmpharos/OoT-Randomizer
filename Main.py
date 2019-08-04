@@ -505,10 +505,9 @@ def create_playthrough(spoiler):
     if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Cannot beat game. Something went terribly wrong here!')
 
-    state_list = [world.state for world in worlds]
-
+    playthrough = Playthrough([world.state for world in worlds])
     # Get all item locations in the worlds
-    item_locations = [location for state in state_list for location in state.world.get_filled_locations() if location.item.advancement]
+    item_locations = [location for state in playthrough.state_list for location in state.world.get_filled_locations() if location.item.advancement]
     # Omit certain items from the playthrough
     internal_locations = {location for location in item_locations if location.item.name not in item_table}
     # Generate a list of spheres by iterating over reachable locations without collecting as we go.
@@ -517,7 +516,6 @@ def create_playthrough(spoiler):
     logger = logging.getLogger('')
     logger.debug('Building up collection spheres.')
     collection_spheres = []
-    playthrough = Playthrough(state_list)
     while True:
         # Not collecting while the generator runs means we only get one sphere at a time
         # Otherwise, an item we collect could influence later item collection in the same sphere
@@ -525,7 +523,7 @@ def create_playthrough(spoiler):
         if not collected: break
         for location in collected:
             # Collect the item for the state world it is for
-            state_list[location.item.world.id].collect(location.item)
+            playthrough.state_list[location.item.world.id].collect(location.item)
         collection_spheres.append(collected)
     logger.info('Collected %d spheres', len(collection_spheres))
 
@@ -539,7 +537,7 @@ def create_playthrough(spoiler):
             old_item = location.item
 
             # Uncollect the item and location.
-            state_list[old_item.world.id].remove(old_item)
+            playthrough.state_list[old_item.world.id].remove(old_item)
             playthrough.unvisit(location)
 
             # Generic events might show up or not, as usual, but since we don't
@@ -552,7 +550,7 @@ def create_playthrough(spoiler):
             location.item = None
 
             # An item can only be required if it isn't already obtained or if it's progressive
-            if state_list[old_item.world.id].item_count(old_item.name) < old_item.special.get('progressive', 1):
+            if playthrough.state_list[old_item.world.id].item_count(old_item.name) < old_item.special.get('progressive', 1):
                 # Test whether the game is still beatable from here.
                 logger.debug('Checking if %s is required to beat the game.', old_item.name)
                 if not playthrough.can_beat_game():
@@ -575,18 +573,18 @@ def create_playthrough(spoiler):
         if internal:
             # collect only the internal events but don't record them in a sphere
             for location in internal:
-                state_list[location.item.world.id].collect(location.item)
+                playthrough.state_list[location.item.world.id].collect(location.item)
             # Remaining locations need to be saved to be collected later
             collected -= internal
             continue
         # Gather the new entrances before collecting items.
         collection_spheres.append(list(collected))
-        accessed_entrances = set(filter(lambda entrance: state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
+        accessed_entrances = set(filter(lambda entrance: playthrough.state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
         entrance_spheres.append(accessed_entrances)
         remaining_entrances -= accessed_entrances
         for location in collected:
             # Collect the item for the state world it is for
-            state_list[location.item.world.id].collect(location.item)
+            playthrough.state_list[location.item.world.id].collect(location.item)
         collected.clear()
     logger.info('Collected %d final spheres', len(collection_spheres))
 

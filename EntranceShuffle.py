@@ -590,7 +590,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
         # This also means that, in order to test for this, we have to temporarily remove that assumption about root access to time passing
         for world in worlds:
             world.get_region('Root').can_reach = lambda state: state.tod == None
-        no_time_passing_playthrough = Playthrough.with_items([world.state.copy() for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
+        no_time_passing_playthrough = Playthrough.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
         for world in worlds:
             world.get_region('Root').can_reach = lambda state: True
 
