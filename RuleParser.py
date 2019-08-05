@@ -282,6 +282,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
             self.current_spot = event
             # This could, in theory, create further subrules.
             event.access_rule = self.make_access_rule(self.visit(node))
+            event.set_rule(event.access_rule)
             region.locations.append(event)
 
             item = ItemFactory(subrule_name, self.world, event=True)
@@ -333,3 +334,4 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         self.current_spot = spot
         rule_ast = ast.parse(rule, mode='eval').body
         spot.access_rule = self.make_access_rule(self.visit(rule_ast))
+        spot.set_rule(spot.access_rule)
