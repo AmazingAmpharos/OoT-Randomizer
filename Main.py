@@ -527,7 +527,7 @@ def create_playthrough(spoiler):
         if not collected: break
         # Gather the new entrances before collecting items.
         collection_spheres.append(collected)
-        accessed_entrances = set(filter(lambda entrance: state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
+        accessed_entrances = set(filter(lambda entrance: playthrough.state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
         entrance_spheres.append(accessed_entrances)
         remaining_entrances -= accessed_entrances
         for location in collected:
@@ -574,17 +574,17 @@ def create_playthrough(spoiler):
             old_connected_region = entrance.disconnect()
 
             # we use a new playthrough to ensure the disconnected entrance is no longer used
-            playthrough = Playthrough(state_list)
+            sub_playthrough = Playthrough([world.state for world in worlds])
 
             # Test whether the game is still beatable from here.
             logger.debug('Checking if reaching %s, through %s, is required to beat the game.', old_connected_region.name, entrance.name)
-            if not playthrough.can_beat_game():
+            if not sub_playthrough.can_beat_game():
                 # still required, so reconnect the entrance
                 entrance.connect(old_connected_region)
                 required_entrances.append(entrance)
 
     # Regenerate the spheres as we might not reach places the same way anymore.
-    playthrough = Playthrough(state_list) # state has no items
+    playthrough.reset() # playthrough state has no items, okay to reuse sphere 0 cache
     collection_spheres = []
     entrance_spheres = []
     remaining_entrances = set(required_entrances)
