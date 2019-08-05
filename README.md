@@ -87,7 +87,7 @@ player.
   * Randomize entrances/loading zones
   * Entrances are connected bidirectionally, and only shuffled with other entrances of the same pool
   * Ability to randomize entrances (loading zones) among multiple pools:
-    * `Dungeons Onlys`: All Dungeons except Ganon's Castle
+    * `Dungeons Only`: All Dungeons except Ganon's Castle
     * `Simple Indoors`: Dungeons; as well as Houses, Great Fairies, all Open and Hidden Grottos (including small Fairy Fountains and the Lost Woods Stage), and Graves.
     * `All Indoors`: Dungeons and Simple Indoors, as well as Link’s House, the Temple of Time, the Windmill, and Dampe’s Grave.
     * `All Indoors & Overworld Entrances`: Almost all loading zones connecting overworld areas, including Owls
@@ -135,7 +135,6 @@ player.
   * Burning Kakariko Cutscene can be triggered when entering Kakariko Village from any entrance.
   * Speedup Owl Flying cutscenes to be almost instant.
   * Enable Useful Cutscenes setting added (see above in New Features)
-  * Great Fairy cutscene no longer plays on additional visits for health and magic refills.
 
 #### Updated Settings 
 * Filter added to `Location Exclusion` dropdown
@@ -168,6 +167,7 @@ player.
 * Add compatibility support for Python 3.8
 * Improved Spoiler Logs for Multiworlds with differing Random settings between worlds
 * Lab Dive now completable even with Eyedrops in your possession
+* Great Fairy cutscene no longer plays on additional visits for health and magic refills.
 
 
 ### 4.0
