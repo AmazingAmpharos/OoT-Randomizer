@@ -517,16 +517,22 @@ def create_playthrough(spoiler):
     logger = logging.getLogger('')
     logger.debug('Building up collection spheres.')
     collection_spheres = []
+    entrance_spheres = []
+    remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances())
     playthrough = Playthrough(state_list)
     while True:
         # Not collecting while the generator runs means we only get one sphere at a time
         # Otherwise, an item we collect could influence later item collection in the same sphere
         collected = list(playthrough.iter_reachable_locations(item_locations))
         if not collected: break
+        # Gather the new entrances before collecting items.
+        collection_spheres.append(collected)
+        accessed_entrances = set(filter(lambda entrance: state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
+        entrance_spheres.append(accessed_entrances)
+        remaining_entrances -= accessed_entrances
         for location in collected:
             # Collect the item for the state world it is for
             state_list[location.item.world.id].collect(location.item)
-        collection_spheres.append(collected)
     logger.info('Collected %d spheres', len(collection_spheres))
 
     # Reduce each sphere in reverse order, by checking if the game is beatable
@@ -560,11 +566,28 @@ def create_playthrough(spoiler):
                     location.item = old_item
                     required_locations.append(location)
 
+    # Reduce each entrance sphere in reverse order, by checking if the game is beatable when we disconnect the entrance.
+    required_entrances = []
+    for sphere in reversed(entrance_spheres):
+        for entrance in sphere:
+            # we disconnect the entrance and check if the game is still beatable
+            old_connected_region = entrance.disconnect()
+
+            # we use a new playthrough to ensure the disconnected entrance is no longer used
+            playthrough = Playthrough(state_list)
+
+            # Test whether the game is still beatable from here.
+            logger.debug('Checking if reaching %s, through %s, is required to beat the game.', old_connected_region.name, entrance.name)
+            if not playthrough.can_beat_game():
+                # still required, so reconnect the entrance
+                entrance.connect(old_connected_region)
+                required_entrances.append(entrance)
+
     # Regenerate the spheres as we might not reach places the same way anymore.
-    playthrough.reset()  # playthrough state has no items, okay to reuse sphere 0 cache
+    playthrough = Playthrough(state_list) # state has no items
     collection_spheres = []
     entrance_spheres = []
-    remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances() if entrance.primary)
+    remaining_entrances = set(required_entrances)
     collected = set()
     while True:
         # Not collecting while the generator runs means we only get one sphere at a time
