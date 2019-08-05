@@ -105,7 +105,7 @@ def generate(settings, window):
 
     window.update_status('Creating the Worlds')
     for id, world in enumerate(worlds):
-        logger.info('Generating World %d.' % id)
+        logger.info('Generating World %d.' % (id + 1))
 
         window.update_progress(0 + 1*(id + 1)/settings.world_count)
         logger.info('Creating Overworld')
@@ -150,6 +150,7 @@ def generate(settings, window):
         window.update_progress(50)
     if settings.create_spoiler or settings.hints != 'none':
         window.update_status('Calculating Hint Data')
+        logger.info('Calculating hint data.')
         State.update_required_items(spoiler)
         for world in worlds:
             world.update_useless_areas(spoiler)
