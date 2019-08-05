@@ -79,7 +79,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     itempool = progitempool + prioitempool + restitempool
 
     # Start a playthrough cache here.
-    playthrough = Playthrough([world.state.copy() for world in worlds])
+    playthrough = Playthrough([world.state for world in worlds])
 
     # We place all the shop items first. Like songs, they have a more limited
     # set of locations that they can be placed in, so placing them first will
