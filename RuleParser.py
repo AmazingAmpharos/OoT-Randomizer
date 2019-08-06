@@ -203,8 +203,6 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     def visit_BoolOp(self, node):
-        # TO BE FIXED: Names that correspond to items, and Strs should be put
-        # in a has_any_of/has_all_of list
         # Everything else must be visited, then can be removed/reduced to.
         # visit the children first
         self.generic_visit(node)
