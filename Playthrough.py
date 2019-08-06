@@ -177,7 +177,6 @@ class Playthrough(object):
         # tests reachability, skipping recursive can_reach region check
         def accessible(loc):
             return (loc not in visited_locations
-                    and not loc.is_disabled()
                     # Check adult first; it's the most likely.
                     and (loc.parent_region in adult_regions
                          and self.state_list[loc.world.id].with_age(loc.can_reach_simple, adult=True)
