@@ -3,7 +3,7 @@ from collections import defaultdict
 import logging
 import re
 
-from Item import ItemFactory
+from Item import MakeEventItem
 from ItemList import item_table
 from Location import Location
 from State import State
@@ -285,10 +285,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
             event.set_rule(event.access_rule)
             region.locations.append(event)
 
-            item = ItemFactory(subrule_name, self.world, event=True)
-            self.world.push_item(event, item)
-            event.locked = True
-            self.world.event_items.add(subrule_name)
+            MakeEventItem(subrule_name, event)
         # Safeguard in case this is called multiple times per world
         self.delayed_rules.clear()
 

@@ -6,7 +6,7 @@ import struct
 import random
 
 from HintList import getHint, getHintGroup, Hint, hintExclusions
-from Item import ItemFactory
+from Item import MakeEventItem
 from Messages import update_message_by_id
 from Playthrough import Playthrough
 from TextBox import line_wrap
@@ -99,11 +99,8 @@ def isRestrictedDungeonItem(dungeon, item):
 
 
 def stone_reachability(world, stone_location):
-    sloc = world.get_location(stone_location)
-    item = ItemFactory(stone_location, world, event=True)
-    world.push_item(sloc, item)
-    sloc.locked = True
-    world.event_items.add(stone_location)
+    # just name the event item after the gossip stone directly
+    MakeEventItem(stone_location, world.get_location(stone_location))
 
     return lambda state: state.has(stone_location)
 
