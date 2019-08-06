@@ -785,9 +785,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     exit_table = generate_exit_lookup_table()
 
     if world.shuffle_interior_entrances or world.shuffle_overworld_entrances:
-        # Disable trade quest timers and prevent trade items from reverting on save load
+        # Disable trade quest timers and prevent trade items from ever reverting
         rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
-        rom.write_int32(0xB064CC, 0x10000010) # b 0xB06510 (skip trade item revert)
+        rom.write_int16s(0xB6D460, [0x0030, 0x0035, 0x0036]) # Change trade items revert table to prevent all reverts
 
     if world.shuffle_overworld_entrances:
         rom.write_byte(rom.sym('OVERWORLD_SHUFFLED'), 1)

@@ -1652,7 +1652,7 @@ setting_infos = [
             in a new separate pool. Owl drop positions are also randomized.
 
             Note: If Interior or Overworld entrances are shuffled, trade timers 
-            are disabled and trade items don't revert when loading a save.
+            are disabled and trade items never revert.
         ''',
         shared         = True,
         gui_params     = {
