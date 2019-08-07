@@ -821,6 +821,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         set_entrance_updates(world.get_shuffled_entrances(type='Overworld'))
 
     if world.shuffle_dungeon_entrances:
+        rom.write_byte(rom.sym('DUNGEONS_SHUFFLED'), 1)
+
         # Connect lake hylia fill exit to revisit exit (Hylia blue will then be rewired below)
         rom.write_int16(0xAC995A, 0x060C)
 
@@ -844,9 +846,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_int32(0xE28870, 0x31CE0080) # andi
 
         remove_entrance_blockers(rom)
-        #Tell the Deku tree jaw actor we are always a child.
-        rom.write_int32(0x0C72C64, 0x240E0000)
-        rom.write_int32(0x0C72C74, 0x240F0001)
 
         #Purge temp flags on entrance to spirit from colossus through the front
         #door.
