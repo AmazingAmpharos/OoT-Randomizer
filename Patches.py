@@ -1071,20 +1071,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         if world.dungeon_mq['Spirit Temple']:
             save_context.addresses['keys']['spirit'].value = 3
 
-    if world.start_with_wallet:
-        world.distribution.give_item('Progressive Wallet', 3)
     if world.start_with_rupees:
-        world.distribution.give_item('Rupees', 999)
         rom.write_byte(rom.sym('MAX_RUPEES'), 0x01)
-    if world.start_with_deku_equipment:
-        if world.shopsanity == "off":
-            world.distribution.give_item('Deku Shield')
-        world.distribution.give_item('Deku Sticks', 99)
-        world.distribution.give_item('Deku Nuts', 99)
-    if world.start_with_fast_travel:
-        world.distribution.give_item('Prelude of Light')
-        world.distribution.give_item('Serenade of Water')
-        world.distribution.give_item('Farores Wind')
 
     # Set starting time of day
     if world.starting_tod != 'default':
