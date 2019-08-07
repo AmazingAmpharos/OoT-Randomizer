@@ -321,9 +321,10 @@ def randomize_music(rom, settings):
     fanfare_target_sequences = []
 
     # Include ocarina songs in fanfare pool if checked
-    ff_ids = fanfare_sequence_ids
+    ff_ids = []
+    ff_ids.extend(fanfare_sequence_ids)
     if settings.ocarina_fanfares:
-        ff_ids += ocarina_sequence_ids
+        ff_ids.extend(ocarina_sequence_ids)
 
     # If not creating patch file, shuffle audio sequences. Otherwise, shuffle pointer table
     if settings.compress_rom != 'Patch':
