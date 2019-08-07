@@ -6,6 +6,7 @@ import struct
 import random
 
 from HintList import getHint, getHintGroup, Hint, hintExclusions
+from Item import MakeEventItem
 from Messages import update_message_by_id
 from Playthrough import Playthrough
 from TextBox import line_wrap
@@ -97,12 +98,11 @@ def isRestrictedDungeonItem(dungeon, item):
     return False
 
 
-def add_stone_reachability(stone_location, rule):
-    def new_rule(state):
-        sloc = state.world.get_location(stone_location)
-        # Tests access as child only! adult may not be able to reach this stone, and it breaks everything to test as adult
-        return state.playthrough.can_reach(sloc.parent_region, age='child') and state.guarantee_hint() and sloc.access_rule(state) and rule(state)
-    return new_rule
+def stone_reachability(world, stone_location):
+    # just name the event item after the gossip stone directly
+    MakeEventItem(stone_location, world.get_location(stone_location))
+
+    return lambda state: state.has(stone_location)
 
 
 def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reachable=False):
@@ -120,7 +120,7 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
                     if first and location:
                         # This mostly guarantees that we don't lock the player out of an item hint
                         # by establishing a (hint -> item) -> hint -> item -> (first hint) loop
-                        location.access_rule = add_stone_reachability(stone_location, location.access_rule)
+                        location.add_rule(stone_reachability(world, stone_location))
 
                     count -= 1
                     first = False

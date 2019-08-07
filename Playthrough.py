@@ -113,10 +113,9 @@ class Playthrough(object):
     # as a cache for the exits to try on the next iteration.
     @staticmethod
     def _expand_regions(exit_queue, region_set, validate):
-        new_exit = lambda exit: exit.connected_region and exit.connected_region not in region_set
         failed = []
         for exit in exit_queue:
-            if new_exit(exit):
+            if exit.connected_region and exit.connected_region not in region_set:
                 if validate(exit):
                     region_set.add(exit.connected_region)
                     exit_queue.extend(exit.connected_region.exits)
@@ -178,7 +177,6 @@ class Playthrough(object):
         # tests reachability, skipping recursive can_reach region check
         def accessible(loc):
             return (loc not in visited_locations
-                    and not loc.is_disabled()
                     # Check adult first; it's the most likely.
                     and (loc.parent_region in adult_regions
                          and self.state_list[loc.world.id].with_age(loc.can_reach_simple, adult=True)
