@@ -78,16 +78,16 @@
         "region_name": "Fire Temple Upper",
         "dungeon": "Fire Temple",
         "locations": {
-            "Fire Temple Highest Goron Chest": " ((
-                can_use(Hover_Boots) or can_mega or has_explosives or
-                (can_use(Hammer) and (can_live_dmg(2.0) or can_use(Farores_Wind))
-                )) and (can_use(Hammer) or (can_mega and can_use(Hookshot)))
-                )
-                or (
-                (can_mega and can_use(Hookshot)) or (can_play(Song_of_Time) and can_use(Hammer))
-                )",
+            "Fire Temple Highest Goron Chest": "(
+                (has_explosives or can_use(Hammer)) and can_live_dmg(1.0)
+                ) or
+                ((can_mega and can_use(Hookshot)) or (can_play(Song_of_Time) and
+                    (can_use(Hammer) or can_use(Hover_Boots) or (has_explosives and can_live(0.5))))
+
+                    )
+                ",
             "Fire Temple Megaton Hammer Chest": "has_explosives or
-                (can_use(Hammer) and (can_live_dmg(2.0) or can_use(Farores_Wind)))"
+                can_use(Hammer)"
         }
     }
 ]
