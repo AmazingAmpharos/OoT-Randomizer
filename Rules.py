@@ -32,8 +32,9 @@ def set_rules(world):
                 location.add_rule(create_shop_rule(location))
             else:
                 add_item_rule(location, lambda location, item: item.type == 'Shop' and item.world.id == location.world.id)
-
-        elif not 'Deku Scrub' in location.name:
+        elif 'Deku Scrub' in location.name:
+            location.add_rule(create_shop_rule(location))
+        else:
             add_item_rule(location, lambda location, item: item.type != 'Shop')
 
         if location.name == 'Forest Temple MQ First Chest' and world.shuffle_bosskeys == 'dungeon' and world.shuffle_smallkeys == 'dungeon' and world.tokensanity == 'off':
@@ -52,12 +53,13 @@ def set_rules(world):
 
 def create_shop_rule(location):
     def required_wallets(price):
+        if price > 500:
+            return 3
         if price > 200:
             return 2
         if price > 99:
             return 1
-        else:
-            return 0
+        return 0
     return lambda state: state.has('Progressive Wallet', required_wallets(location.price))
 
 

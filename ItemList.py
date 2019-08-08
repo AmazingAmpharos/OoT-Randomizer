@@ -85,7 +85,7 @@ item_table = {
     'Bomb Bag':                         ('Item',     True,  0x82, None),
     'Bow':                              ('Item',     True,  0x83, None),
     'Slingshot':                        ('Item',     True,  0x84, None),
-    'Progressive Wallet':               ('Item',     True,  0x85, {'progressive': 2}),
+    'Progressive Wallet':               ('Item',     True,  0x85, {'progressive': 3}),
     'Progressive Scale':                ('Item',     True,  0x86, {'progressive': 2}),
     'Deku Nut Capacity':                ('Item',     None,  0x87, None),
     'Deku Stick Capacity':              ('Item',     None,  0x88, None),
