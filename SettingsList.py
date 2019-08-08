@@ -1671,7 +1671,7 @@ setting_infos = [
             in a new separate pool. Owl drop positions are also randomized.
 
             Note: If Interior or Overworld entrances are shuffled, trade timers 
-            are disabled and trade items don't revert when loading a save.
+            are disabled and trade items never revert.
         ''',
         shared         = True,
         gui_params     = {
@@ -1918,7 +1918,7 @@ setting_infos = [
         choices        = {
             'remove':          "Remove",
             'dungeon':         "Dungeon Only",
-            'vanilla':         "Vanilla",
+            'vanilla':         "Vanilla Location",
             'keysanity':       "Anywhere",
             'lacs_vanilla':    "On LACS: Vanilla",
             'lacs_medallions': "On LACS: Medallions",
@@ -2004,7 +2004,7 @@ setting_infos = [
     ),
     Scale(
         name           = 'mq_dungeons',
-        gui_text       = "Random MQ Dungeon Count",
+        gui_text       = "MQ Dungeon Count",
         default        = 0,
         min            = 0,
         max            = 12,
@@ -2374,6 +2374,12 @@ setting_infos = [
             randomized. Additional music can
             be loaded from data/Music/
         ''',
+        gui_params  = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random', 1),
+            ]
+        },
     ),
     Combobox(
         name           = 'fanfares',
@@ -2396,6 +2402,12 @@ setting_infos = [
             Additional fanfares can be loaded
             from data/Music/
         ''',
+        gui_params  = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random', 1),
+            ]
+        },
     ),
     Checkbutton(
         name           = 'ocarina_fanfares',
@@ -2408,6 +2420,10 @@ setting_infos = [
         ''',
         gui_params  = {
             "hide_when_disabled": True,
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                (True, 1),
+            ]
         },
         default        = False,
     ),
@@ -2420,7 +2436,19 @@ setting_infos = [
         ''',
         default        = True,
     ),
+    Checkbutton(
+        name           = 'randomize_all_cosmetics',
+        gui_text       = 'Randomize All Cosmetics',
+        gui_tooltip    = '''\
+            Randomize all cosmetics settings
+        ''',
+        default        = False,
+        disable    = {
+            True : {'sections' : [ "equipment_section", "ui_section", "navi_section" ]
+            }
+        }
 
+    ),
     Setting_Info(
         name           = 'kokiri_color',
         type           = str,
@@ -2434,7 +2462,13 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
     ),
     Setting_Info(
         name           = 'goron_color',
@@ -2449,7 +2483,14 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'zora_color',
@@ -2464,16 +2505,20 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'navi_color_default_inner',
         type           = str,
         gui_text       = "Navi Idle Inner",
         gui_type       = "Combobox",
-        gui_params     = {
-            'no_line_break' : True,
-        },
         shared         = False,
         choices        = get_navi_color_options(),
         default        = 'White',
@@ -2482,7 +2527,14 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'no_line_break' : True,
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
     ),
         Setting_Info(
         name           = 'navi_color_default_outer',
@@ -2497,16 +2549,20 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'navi_color_enemy_inner',
         type           = str,
         gui_text       = 'Navi Targeting Enemy Inner',
         gui_type       = "Combobox",
-        gui_params     = {
-            'no_line_break' : True,
-        },
         shared         = False,
         choices        = get_navi_color_options(),
         default        = 'Yellow',
@@ -2515,7 +2571,15 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'no_line_break' : True,
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'navi_color_enemy_outer',
@@ -2530,16 +2594,20 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'navi_color_npc_inner',
         type           = str,
         gui_text       = 'Navi Targeting NPC Inner',
         gui_type       = "Combobox",
-        gui_params     = {
-            'no_line_break' : True,
-        },
         shared         = False,
         choices        = get_navi_color_options(),
         default        = 'Light Blue',
@@ -2548,7 +2616,15 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'no_line_break' : True,
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'navi_color_npc_outer',
@@ -2563,7 +2639,14 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'navi_color_prop_inner',
@@ -2571,9 +2654,6 @@ setting_infos = [
         gui_text       = 'Navi Targeting Prop Inner',
         gui_type       = "Combobox",
         shared         = False,
-        gui_params     = {
-            'no_line_break' : True,
-        },
         choices        = get_navi_color_options(),
         default        = 'Green',
         gui_tooltip    = '''\
@@ -2581,7 +2661,15 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'no_line_break' : True,
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'navi_color_prop_outer',
@@ -2596,7 +2684,14 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Combobox(
         name           = 'sword_trail_duration',
@@ -2611,11 +2706,20 @@ setting_infos = [
         gui_tooltip    = '''\
             Select the duration for sword trails.
         ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                (4, 1),
+                (10, 1),
+                (15, 1),
+                (20, 1)
+            ]
+        }
     ),
     Setting_Info(
         name           = 'sword_trail_color_inner',
         type           = str,
-        gui_text       = 'Inner Color',
+        gui_text       = 'Sword Trail Inner Color',
         gui_type       = "Combobox",
         shared         = False,
         choices        = get_sword_color_options(),
@@ -2626,12 +2730,19 @@ setting_infos = [
             'Completely Random': Choose a random
             color from any color the N64 can draw.
             'Rainbow': Rainbow sword trails.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'sword_trail_color_outer',
         type           = str,
-        gui_text       = 'Outer Color',
+        gui_text       = 'Sword Trail Outer Color',
         gui_type       = "Combobox",
         shared         = False,
         choices        = get_sword_color_options(),
@@ -2642,7 +2753,14 @@ setting_infos = [
                   'Completely Random': Choose a random
                   color from any color the N64 can draw.
                   'Rainbow': Rainbow sword trails.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'silver_gauntlets_color',
@@ -2658,7 +2776,14 @@ setting_infos = [
             'Completely Random': Choose a random
             color from any color the N64 can draw.
             'Rainbow': Rainbow sword trails.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'golden_gauntlets_color',
@@ -2674,7 +2799,14 @@ setting_infos = [
             'Completely Random': Choose a random
             color from any color the N64 can draw.
             'Rainbow': Rainbow sword trails.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'heart_color',
@@ -2689,7 +2821,14 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
     ),
     Setting_Info(
         name           = 'magic_color',
@@ -2704,7 +2843,27 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-        '''
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
+    ),
+    Checkbutton(
+        name           = 'randomize_all_sfx',
+        gui_text       = 'Randomize All Sound Effects',
+        gui_tooltip    = '''\
+            Randomize all sound effects and music settings (ear safe)
+        ''',
+        default        = False,
+        disable    = {
+            True : {'sections' : [ "generalsfx_section", "menusfx_section", "npcsfx_section" ]
+            }
+        }
+
     ),
     Combobox(
         name           = 'sfx_low_hp',
@@ -2716,48 +2875,96 @@ setting_infos = [
             sound from this list.
             'Default': Beep. Beep. Beep.
         ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random-ear-safe', 1),
+            ]
+        }
     ),
     Combobox(
         name           = 'sfx_navi_overworld',
         gui_text       = 'Navi Overworld',
         choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI_OVERWORLD),
         default        = 'default',
+        gui_params     = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random-ear-safe', 1),
+            ]
+        }
     ),
     Combobox(
         name           = 'sfx_navi_enemy',
         gui_text       = 'Navi Enemy',
         choices        = sfx.get_setting_choices(sfx.SoundHooks.NAVI_ENEMY),
         default        = 'default',
+        gui_params     = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random-ear-safe', 1),
+            ]
+        }
     ),
     Combobox(
         name           = 'sfx_menu_cursor',
         gui_text       = 'Menu Cursor',
         choices        = sfx.get_setting_choices(sfx.SoundHooks.MENU_CURSOR),
         default        = 'default',
+        gui_params     = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random-ear-safe', 1),
+            ]
+        }
     ),
     Combobox(
         name           = 'sfx_menu_select',
         gui_text       = 'Menu Select',
         choices        = sfx.get_setting_choices(sfx.SoundHooks.MENU_SELECT),
         default        = 'default',
+        gui_params     = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random-ear-safe', 1),
+            ]
+        }
     ),
     Combobox(
         name           = 'sfx_horse_neigh',
         gui_text       = 'Horse',
         choices        = sfx.get_setting_choices(sfx.SoundHooks.HORSE_NEIGH),
         default        = 'default',
+        gui_params     = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random-ear-safe', 1),
+            ]
+        }
     ),
     Combobox(
         name           = 'sfx_nightfall',
         gui_text       = 'Nightfall',
         choices        = sfx.get_setting_choices(sfx.SoundHooks.NIGHTFALL),
         default        = 'default',
+        gui_params     = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random-ear-safe', 1),
+            ]
+        }
     ),
     Combobox(
         name           = 'sfx_hover_boots',
         gui_text       = 'Hover Boots',
         choices        = sfx.get_setting_choices(sfx.SoundHooks.BOOTS_HOVER),
         default        = 'default',
+        gui_params     = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random-ear-safe', 1),
+            ]
+        }
     ),
     Combobox(
         name           = 'sfx_ocarina',
@@ -2775,6 +2982,12 @@ setting_infos = [
         gui_tooltip    = '''\
             Change the sound of the ocarina.
         ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_sfx',
+            'distribution': [
+                ('random-choice', 1),
+            ]
+        }
     ),
 ]
 
