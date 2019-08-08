@@ -694,17 +694,17 @@ class Distribution(object):
 
             if self.playthrough is not None:
                 self_dict[':playthrough'] = AllignedDict({
-                    sphere_nr: {
+                    sphere_nr: SortedDict({
                         name: record.to_json() for name, record in sphere.items()
-                    }
+                    })
                     for (sphere_nr, sphere) in self.playthrough.items()
                 }, depth=2)
 
             if self.entrance_playthrough is not None and len(self.entrance_playthrough) > 0:
                 self_dict[':entrance_playthrough'] = AllignedDict({
-                    sphere_nr: {
+                    sphere_nr: SortedDict({
                         name: record.to_json() for name, record in sphere.items()
-                    }
+                    })
                     for (sphere_nr, sphere) in self.entrance_playthrough.items()
                 }, depth=2)
 
