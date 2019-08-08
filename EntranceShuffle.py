@@ -42,7 +42,7 @@ def assume_pool_reachable(world, entrance_pool):
             assumed_return = entrance.reverse.assume_reachable()
             if entrance.type in ('Dungeon', 'Interior', 'Grotto', 'Grave', 'SpecialGrave'):
                 # Dungeon, Grotto/Grave and Simple Interior exits shouldn't be assumed to be able to give access to their parent region
-                assumed_return.set_rule(lambda state: False)
+                assumed_return.set_rule(lambda state, **kwargs: False)
             assumed_forward.bind_two_way(assumed_return)
         assumed_pool.append(assumed_forward)
     return assumed_pool
@@ -371,7 +371,7 @@ def shuffle_random_entrances(worlds):
                 target.parent_region.exits.append(target)
             target_entrance_pools['OwlDrop'] += duplicate_overworld_targets
             for target in target_entrance_pools['OwlDrop']:
-                target.set_rule(lambda state: False)
+                target.set_rule(lambda state, **kwargs: False)
 
         # Set entrances defined in the distribution
         world.distribution.set_shuffled_entrances(worlds, entrance_pools, target_entrance_pools, locations_to_ensure_reachable, complete_itempool)
@@ -383,7 +383,7 @@ def shuffle_random_entrances(worlds):
                 temple_of_time_exit = world.get_entrance('Temple of Time -> Temple of Time Exterior')
                 links_house_exit = world.get_entrance('Links House -> Kokiri Forest')
                 for target in target_entrance_pools[pool_type]:
-                    target.set_rule(lambda state: temple_of_time_exit.connected_region == None or (links_house_exit.connected_region == None and state.is_child()))
+                    target.set_rule(lambda state, age=None, **kwargs: temple_of_time_exit.connected_region == None or (links_house_exit.connected_region == None and (age == 'child' or state.is_child())))
                 shuffle_entrance_pool(worlds, [temple_of_time_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
                 shuffle_entrance_pool(worlds, [links_house_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
 

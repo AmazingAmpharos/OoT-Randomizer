@@ -330,41 +330,41 @@ class State(object):
         return self.has_ocarina() and self.has(song)
 
 
-    def can_use(self, item):
+    def can_use(self, item, age=None):
         magic_items = ['Dins Fire', 'Farores Wind', 'Nayrus Love', 'Lens of Truth']
         adult_items = ['Bow', 'Hammer', 'Iron Boots', 'Hover Boots']
         adult_buy_or_find = ['Goron Tunic', 'Zora Tunic']
         child_items = ['Slingshot', 'Boomerang', 'Kokiri Sword']
         magic_arrows = ['Fire Arrows', 'Light Arrows']
         if item in magic_items:
-            return self.has(item) and self.has('Magic Meter')
+            return self.has_all_of((item, 'Magic Meter'))
         elif item in child_items:
-            return self.has(item) and self.is_child()
+            return age == 'child' and self.has(item)
         elif item in adult_buy_or_find:
-            return (self.has(item) or self.has('Buy ' + item)) and self.is_adult()
+            return age == 'adult' and self.has_any_of((item, 'Buy ' + item))
         elif item in adult_items:
-            return self.has(item) and self.is_adult()
+            return age == 'adult' and self.has(item)
         elif item in magic_arrows:
-            return self.has(item) and self.is_adult() and self.has_bow() and self.has('Magic Meter')
+            return age == 'adult' and self.has_all_of((item, 'Bow', 'Magic Meter'))
         elif item == 'Sticks':
-            return self.has_sticks() and self.is_child()
+            return age == 'child' and self.has_sticks()
         elif item == 'Deku Shield':
-            return self.has('Buy Deku Shield') and self.is_child()
+            return age == 'child' and self.has('Buy Deku Shield')
         elif item == 'Hookshot':
-            return self.has('Progressive Hookshot') and self.is_adult()
+            return age == 'adult' and self.has('Progressive Hookshot')
         elif item == 'Longshot':
-            return self.has('Progressive Hookshot', 2) and self.is_adult()
+            return age == 'adult' and self.has('Progressive Hookshot', 2)
         elif item == 'Silver Gauntlets':
-            return self.has('Progressive Strength Upgrade', 2) and self.is_adult()
+            return age == 'adult' and self.has('Progressive Strength Upgrade', 2)
         elif item == 'Golden Gauntlets':
-            return self.has('Progressive Strength Upgrade', 3) and self.is_adult()
+            return age == 'adult' and self.has('Progressive Strength Upgrade', 3)
         elif item == 'Epona':
             # Glitched can steal Epona by hovering over the LLR fences instead of using Epona's Song
-            return self.has('Epona') and self.is_adult() and (self.can_play('Eponas Song') or (self.is_glitched and self.can_hover()))
+            return age == 'adult' and self.has('Epona') and (self.can_play('Eponas Song') or (self.is_glitched and self.can_hover()))
         elif item == 'Scarecrow':
-            return self.has('Progressive Hookshot') and self.is_adult() and self.can_play('Scarecrow Song')
+            return age == 'adult' and self.has('Progressive Hookshot') and self.can_play('Scarecrow Song')
         elif item == 'Distant Scarecrow':
-            return self.has('Progressive Hookshot', 2) and self.is_adult() and self.can_play('Scarecrow Song')
+            return age == 'adult' and self.has('Progressive Hookshot', 2) and self.can_play('Scarecrow Song')
         else:
             return self.has(item)
 
@@ -444,22 +444,22 @@ class State(object):
                (self.is_child() and (self.has_slingshot() or self.has('Boomerang')))
 
 
-    def has_projectile(self, age='either'):
+    def has_projectile(self, for_age='either'):
         if self.has_explosives():
             return True
-        if age == 'child':
+        if for_age == 'child':
             return self.has_any_of(('Slingshot', 'Boomerang'))
-        elif age == 'adult':
+        elif for_age == 'adult':
             return self.has_any_of(('Bow', 'Progressive Hookshot'))
-        elif age == 'both':
+        elif for_age == 'both':
             return (self.has_any_of(('Bow', 'Progressive Hookshot'))
                     and self.has_any_of(('Slingshot', 'Boomerang')))
         else:
             return self.has_any_of(('Bow', 'Progressive Hookshot', 'Slingshot', 'Boomerang'))
 
 
-    def can_leave_forest(self):
-        return self.world.open_forest != 'closed' or self.is_adult() or self.is_glitched or self.has('Deku Tree Clear')
+    def can_leave_forest(self, age=None):
+        return self.world.open_forest != 'closed' or age == 'adult' or self.is_glitched or self.has('Deku Tree Clear')
 
 
     def guarantee_trade_path(self):

@@ -240,6 +240,22 @@ class Playthrough(object):
         else:
             return self._cache['adult_regions'] + self._cache['child_regions']
 
+    # Returns whether the given age can access the spot at this age and tod,
+    # by checking whether the playthrough has reached the containing region, and evaluating the spot's access rule.
+    def spot_access(self, spot, age, tod=None):
+        if age == 'both':
+            return (self.can_reach(spot.parent_region, age=age)
+                    and self.state_list[spot.world.id].with_age(spot.can_reach_simple, adult=True)
+                    and self.state_list[spot.world.id].with_age(spot.can_reach_simple, adult=False))
+        elif age == 'either':
+            return (self.can_reach(spot.parent_region, age='adult')
+                    and self.state_list[spot.world.id].with_age(spot.can_reach_simple, adult=True)) or (
+                            self.can_reach(spot.parent_region, age='child')
+                            and self.state_list[spot.world.id].with_age(spot.can_reach_simple, adult=False))
+        else:
+            return (self.can_reach(spot.parent_region, age=age)
+                    and self.state_list[spot.world.id].with_age(spot.can_reach_simple, adult=age == 'adult'))
+
 
 class RewindablePlaythrough(Playthrough):
 

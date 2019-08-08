@@ -102,7 +102,7 @@ def stone_reachability(world, stone_location):
     # just name the event item after the gossip stone directly
     MakeEventItem(stone_location, world.get_location(stone_location))
 
-    return lambda state: state.has(stone_location)
+    return lambda state, **kwargs: state.has(stone_location)
 
 
 def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reachable=False):

@@ -1,5 +1,6 @@
 import ast
 from collections import defaultdict
+from inspect import signature
 import logging
 import re
 
@@ -14,6 +15,7 @@ for item in item_table:
     escaped_items[re.sub(r'[\'()[\]]', '', item.replace(' ', '_'))] = item
 
 event_name = re.compile(r'\w+')
+valid_kwargs = {'age', 'spot', 'tod'}
 
 def isliteral(expr):
     return isinstance(expr, (ast.Num, ast.Str, ast.Bytes, ast.NameConstant))
@@ -31,7 +33,9 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     def visit_Name(self, node):
-        if node.id in escaped_items:
+        if node.id in dir(self):
+            return getattr(self, node.id)(node)
+        elif node.id in escaped_items:
             return ast.Call(
                 func=ast.Attribute(
                     value=ast.Name(id='state', ctx=ast.Load()),
@@ -43,13 +47,9 @@ class Rule_AST_Transformer(ast.NodeTransformer):
             # Settings are constant
             return ast.parse('%r' % self.world.__dict__[node.id], mode='eval').body
         elif node.id in State.__dict__:
-            return ast.Call(
-                func=ast.Attribute(
-                    value=ast.Name(id='state', ctx=ast.Load()),
-                    attr=node.id,
-                    ctx=ast.Load()),
-                args=[],
-                keywords=[])
+            return self.make_call(node, node.id, [], [])
+        elif node.id in valid_kwargs:
+            return node
         elif event_name.match(node.id):
             self.events.add(node.id.replace('_', ' '))
             return ast.Call(
@@ -60,7 +60,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                 args=[ast.Str(node.id.replace('_', ' '))],
                 keywords=[])
         else:
-            raise Exception('Parse Error: invalid node name %s' % node.id, self.current_spot.name, ast.parse(node, False))
+            raise Exception('Parse Error: invalid node name %s' % node.id, self.current_spot.name, ast.dump(node, False))
 
     def visit_Str(self, node):
         return ast.Call(
@@ -81,16 +81,16 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     def visit_Tuple(self, node):
         if len(node.elts) != 2:
-            raise Exception('Parse Error: Tuple must have 2 values', self.current_spot.name, ast.parse(node, False))
+            raise Exception('Parse Error: Tuple must have 2 values', self.current_spot.name, ast.dump(node, False))
 
         item, count = node.elts
 
         if not isinstance(item, (ast.Name, ast.Str)):
-            raise Exception('Parse Error: first value must be an item. Got %s' % item.__class__.__name__, self.current_spot.name, ast.parse(node, False))
+            raise Exception('Parse Error: first value must be an item. Got %s' % item.__class__.__name__, self.current_spot.name, ast.dump(node, False))
         iname = item.id if isinstance(item, ast.Name) else item.s
 
         if not (isinstance(count, ast.Name) or isinstance(count, ast.Num)):
-            raise Exception('Parse Error: second value must be a number. Got %s' % item.__class__.__name__, self.current_spot.name, ast.parse(node, False))
+            raise Exception('Parse Error: second value must be a number. Got %s' % item.__class__.__name__, self.current_spot.name, ast.dump(node, False))
 
         if isinstance(count, ast.Name):
             # Must be a settings constant
@@ -137,13 +137,8 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                 child = self.visit(child)
             new_args.append(child)
 
-        return ast.Call(
-            func=ast.Attribute(
-                value=ast.Name(id='state', ctx=ast.Load()),
-                attr=node.func.id,
-                ctx=ast.Load()),
-            args=new_args,
-            keywords=node.keywords)
+        return self.make_call(node, node.func.id, new_args, node.keywords)
+
 
     def visit_Subscript(self, node):
         if isinstance(node.value, ast.Name):
@@ -248,6 +243,24 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         return node
 
 
+    def make_call(self, node, name, args, keywords):
+        func = getattr(State, name, None)
+        if not func:
+            raise Exception('Parse Error: No such function State.%s' % name, self.current_spot.name, ast.dump(node, False))
+        # If the function accepts any kwargs, pass them in
+        params = signature(func).parameters.keys() & valid_kwargs
+        for p in params:
+            keywords.append(ast.keyword(arg=p, value=ast.Name(id=p, ctx=ast.Load())))
+
+        return ast.Call(
+            func=ast.Attribute(
+                value=ast.Name(id='state', ctx=ast.Load()),
+                attr=name,
+                ctx=ast.Load()),
+            args=args,
+            keywords=keywords)
+
+
     def replace_subrule(self, target, node):
         rule = ast.dump(node, False)
         if rule in self.replaced_rules[target]:
@@ -289,6 +302,8 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     def make_access_rule(self, body):
+        kwargs = [ast.arg(arg=k) for k in sorted(valid_kwargs)]
+        kwd = [ast.NameConstant(None) for k in valid_kwargs]
         return eval(compile(
             ast.fix_missing_locations(
                 ast.Expression(ast.Lambda(
@@ -296,8 +311,8 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                         posonlyargs=[],
                         args=[ast.arg(arg='state')],
                         defaults=[],
-                        kwonlyargs=[],
-                        kw_defaults=[]),
+                        kwonlyargs=kwargs,
+                        kw_defaults=kwd),
                     body=body))),
             '<string>', 'eval'))
 
@@ -317,10 +332,23 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     # Creates an internal event in the same region and depends on it.
     def here(self, node):
         if not node.args:
-            raise Exception('Parse Error: missing here() argument', self.current_spot.name, ast.parse(node, False))
+            raise Exception('Parse Error: missing here() argument', self.current_spot.name, ast.dump(node, False))
         return self.replace_subrule(
                 self.current_spot.parent_region.name,
                 node.args[0])
+
+
+    def is_child(self, node):
+        return ast.Compare(
+                left=ast.Name(id='age', ctx=ast.Load()),
+                ops=[ast.Eq()],
+                comparators=[ast.Str('child')])
+
+    def is_adult(self, node):
+        return ast.Compare(
+                left=ast.Name(id='age', ctx=ast.Load()),
+                ops=[ast.Eq()],
+                comparators=[ast.Str('adult')])
 
 
     def parse_spot_rule(self, spot):

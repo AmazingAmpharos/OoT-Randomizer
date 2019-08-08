@@ -16,7 +16,7 @@ class Location(object):
         self.spot_type = 'Location'
         self.recursion_count = { 'child': 0, 'adult': 0 }
         self.staleness_count = 0
-        self.access_rule = lambda state: True
+        self.access_rule = lambda state, **kwargs: True
         self.access_rules = []
         self.item_rule = lambda location, item: True
         self.locked = False
@@ -49,7 +49,7 @@ class Location(object):
 
     def add_rule(self, lambda_rule):
         self.access_rules.append(lambda_rule)
-        self.access_rule = lambda state: all(rule(state) for rule in self.access_rules)
+        self.access_rule = lambda state, **kwargs: all(rule(state, **kwargs) for rule in self.access_rules)
 
 
     def set_rule(self, lambda_rule):
@@ -63,7 +63,7 @@ class Location(object):
         return (
             not self.is_disabled() and 
             self.can_fill_fast(item) and
-            (not check_access or state.can_reach(self)))
+            (not check_access or state.playthrough.spot_access(self, 'either')))
 
 
     def can_fill_fast(self, item, manual=False):
@@ -80,7 +80,10 @@ class Location(object):
     def can_reach_simple(self, state):
         # todo: raw evaluation of access_rule? requires nonrecursive tod checks in state
         # and GS Token and Gossip Stone Fairy have special checks as well
-        return state.with_spot(self.access_rule, spot=self)
+        state.current_spot = self
+        r = self.access_rule(state, age='adult' if state.adult else 'child', spot=self)
+        state.current_spot = None
+        return r
 
 
     def is_disabled(self):

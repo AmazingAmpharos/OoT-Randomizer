@@ -7,7 +7,7 @@ class Entrance(object):
         self.connected_region = None
         self.spot_type = 'Entrance'
         self.recursion_count = { 'child': 0, 'adult': 0 }
-        self.access_rule = lambda state: True
+        self.access_rule = lambda state, **kwargs: True
         self.access_rules = []
         self.reverse = None
         self.replaces = None
@@ -37,7 +37,7 @@ class Entrance(object):
 
     def add_rule(self, lambda_rule):
         self.access_rules.append(lambda_rule)
-        self.access_rule = lambda state: all(rule(state) for rule in self.access_rules)
+        self.access_rule = lambda state, **kwargs: all(rule(state, **kwargs) for rule in self.access_rules)
 
 
     def set_rule(self, lambda_rule):
@@ -51,7 +51,11 @@ class Entrance(object):
 
     def can_reach_simple(self, state):
         # todo: raw evaluation of access_rule? requires nonrecursive tod checks in state
-        return state.with_spot(self.access_rule, spot=self)
+        state.current_spot = self
+        r = self.access_rule(state, age='adult' if state.adult else 'child', spot=self)
+        state.current_spot = None
+        return r
+        return state.with_spot(lambda state: self.access_rule(state, age='adult' if state.adult else 'child', spot=self), self)
 
 
     def connect(self, region):
