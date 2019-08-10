@@ -10,7 +10,8 @@
                 (can_use(Hookshot) and (can_use(Fire_Arrows) or 
                     (can_use(Dins_Fire) and 
                     ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or can_use(Goron_Tunic) or 
-                        can_use(Bow) or (Progressive_Hookshot, 2)))))"
+                        can_use(Bow) or (Progressive_Hookshot, 2)))))",
+            "Fairy Pot": "has_bottle and (Small_Key_Fire_Temple, 5)"
         },
         "exits": {
             "Fire Temple Entrance": "True",
@@ -42,7 +43,11 @@
                 has_fire_source and has_explosives and
                 (Progressive_Hookshot or
                     (logic_fire_mq_bombable_chest and (damage_multiplier != 'ohko' or can_use(Nayrus_Love))))",
-            "GS Fire Temple MQ Big Lava Room": "True"
+            "GS Fire Temple MQ Big Lava Room": "True",
+            "Fairy Pot": "
+                has_bottle and has_fire_source and (has_bow or logic_fire_mq_bk_chest) and
+                (Progressive_Hookshot or logic_fire_song_of_time)"
+
         },
         "exits": {
             "Fire Lower Maze": "
@@ -69,7 +74,9 @@
             "Fire Temple MQ Maze Upper Chest": "True",
             "Fire Temple MQ Compass Chest": "has_explosives",
             "GS Fire Temple MQ East Tower Top": "
-                can_play(Song_of_Time) or can_use(Longshot)"
+                can_play(Song_of_Time) or can_use(Longshot)",
+            "Wall Switch Fairy": "
+                has_bottle and (can_play(Song_of_Time) or can_use(Longshot))"
         },
         "exits": {
             "Fire Temple Upper": "(Small_Key_Fire_Temple, 3) and has_bow"
@@ -84,7 +91,8 @@
             "GS Fire Temple MQ Fire Wall Maze Side Room": "
                 can_play(Song_of_Time) or Hover_Boots or logic_fire_mq_flame_maze",
             "GS Fire Temple MQ Fire Wall Maze Center": "has_explosives",
-            "GS Fire Temple MQ Above Fire Wall Maze": "(Small_Key_Fire_Temple, 5)"
+            "GS Fire Temple MQ Above Fire Wall Maze": "(Small_Key_Fire_Temple, 5)",
+            "Fairy Pot": "has_bottle"
         }
     },
     {

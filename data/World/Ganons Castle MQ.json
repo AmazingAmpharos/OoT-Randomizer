@@ -28,7 +28,8 @@
             "GC MQ Deku Scrub Arrows": "True",
             "GC MQ Deku Scrub Red Potion": "True",
             "GC MQ Deku Scrub Green Potion": "True",
-            "GC MQ Deku Scrub Deku Nuts": "True"
+            "GC MQ Deku Scrub Deku Nuts": "True",
+            "Free Fairies": "has_bottle"
         }
     },
     {
@@ -107,6 +108,9 @@
                 can_use(Fire_Arrows) and Mirror_Shield",
             "Ganons Castle MQ Spirit Trial Sun Back Right Chest": "
                 Hammer and has_bombchus and 
+                can_use(Fire_Arrows) and Mirror_Shield",
+            "Nut Pot": "
+                Hammer and has_bombchus and
                 can_use(Fire_Arrows) and Mirror_Shield"
         }
     },

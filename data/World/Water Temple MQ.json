@@ -47,7 +47,9 @@
         "dungeon": "Water Temple",
         "locations": {
             "Water Temple MQ Boss Key Chest": "can_use(Dins_Fire)",
-            "GS Water Temple MQ Serpent River": "True"
+            "GS Water Temple MQ Serpent River": "True",
+            "Fairy Pot": "has_bottle",
+            "Nut Pot": "True"
         },
         "exits": {
             "Water Temple Basement Gated Areas": "
