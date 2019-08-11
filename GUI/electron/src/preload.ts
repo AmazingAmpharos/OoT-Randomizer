@@ -50,6 +50,7 @@ electron.remote.getCurrentWindow().on('leave-html-full-screen', () => {
 
 //FUNCTIONS
 function dumpSettingsToFile(settingsObj) {
+  settingsObj["check_version"] = true;    
   fs.writeFileSync(pythonSourcePath + "settings.sav", JSON.stringify(settingsObj, null, 4));
 }
 
