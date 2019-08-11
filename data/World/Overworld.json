@@ -1044,7 +1044,8 @@
     {
         "region_name": "Shield Grave",
         "locations": {
-            "Shield Grave Chest": "True"
+            "Shield Grave Chest": "True",
+            "Free Fairies": "can_blast_or_smash and has_bottle"
         },
         "exits": {
             "Graveyard": "True"
@@ -1053,8 +1054,7 @@
     {
         "region_name": "Heart Piece Grave",
         "locations": {
-            "Heart Piece Grave Chest": "can_play(Suns_Song)",
-            "Free Fairies": "can_blast_or_smash and has_bottle"
+            "Heart Piece Grave Chest": "can_play(Suns_Song)"
         },
         "exits": {
             "Graveyard": "True"
