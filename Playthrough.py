@@ -13,11 +13,6 @@ class Playthrough(object):
         #  visited_locations: set of Locations visited in or before that sphere.
         self.cached_spheres = cached_spheres or []
 
-        # Mapping from location to sphere index. 0-based.
-        self.location_in_sphere = defaultdict(int)
-        # Mapping from item to sphere index, if this is tracking items. 0-based.
-        self.item_in_sphere = defaultdict(int)
-
         # Let the states reference this playthrough.
         for state in self.state_list:
             state.playthrough = self
@@ -30,31 +25,29 @@ class Playthrough(object):
     def copy(self):
         # we only need to copy the top sphere since that's what we're starting with and we don't go back
         new_cache = [{k: copy.copy(v) for k,v in self.cached_spheres[-1].items()}]
-        return Playthrough(self.state_list, new_cache)
+        return self.__class__(self.state_list, cached_spheres=new_cache)
 
 
     def collect_all(self, itempool):
         for item in itempool:
-            self.item_in_sphere[item] = len(self.cached_spheres)
             self.state_list[item.world.id].collect(item)
 
 
     def collect(self, item):
-        self.item_in_sphere[item] = len(self.cached_spheres)
         self.state_list[item.world.id].collect(item)
 
 
-    @staticmethod
-    def max_explore(state_list, itempool=None):
-        p = Playthrough(state_list)
+    @classmethod
+    def max_explore(cls, state_list, itempool=None):
+        p = cls(state_list)
         if itempool:
             p.collect_all(itempool)
         p.collect_locations()
         return p
 
-    @staticmethod
-    def with_items(state_list, itempool=None):
-        p = Playthrough(state_list)
+    @classmethod
+    def with_items(cls, state_list, itempool=None):
+        p = cls(state_list)
         if itempool:
             p.collect_all(itempool)
         p.next_sphere()
@@ -69,9 +62,7 @@ class Playthrough(object):
     # in sphere 0, so unvisiting them will discard the entire cache.
     # Not safe to call during iteration.
     def unvisit(self, location):
-        self.cached_spheres[self.location_in_sphere[location]+1:] = []
-        if self.cached_spheres:
-            self.cached_spheres[-1]['visited_locations'].discard(location)
+        raise Exception('Unimplemented for Playthrough. Perhaps you want ReversiblePlaythrough.')
 
 
     # Drops the item from its respective state, and truncates the sphere cache
@@ -85,16 +76,13 @@ class Playthrough(object):
     # Not safe to call during iteration.
     def uncollect(self, item):
         self.state_list[item.world.id].remove(item)
-        self.cached_spheres[self.item_in_sphere[item]:] = []
+
 
     # Resets the sphere cache to the first entry only.
     # Does not uncollect any items!
     # Not safe to call during iteration.
     def reset(self):
-        self.cached_spheres[1:] = []
-        self.cached_spheres[0]['visited_locations'].clear()
-        self.location_in_sphere.clear()
-        self.item_in_sphere.clear()
+        raise Exception('Unimplemented for Playthrough. Perhaps you want ReversiblePlaythrough.')
 
 
     # simplified exit.can_reach(state), bypasses can_become_age
@@ -126,12 +114,7 @@ class Playthrough(object):
     # Adds a new layer to the sphere cache, as a copy of the previous.
     # If there is no sphere cache, initialize the starting values.
     def checkpoint(self):
-        if self.cached_spheres:
-            # Save the current data into the cache.
-            self.cached_spheres.append({
-                k: copy.copy(v) for k, v in self.cached_spheres[-1].items()
-            })
-        else:
+        if not self.cached_spheres:
             root_regions = [state.world.get_region('Root') for state in self.state_list]
             self.cached_spheres.append({
                 'child_queue': list(exit for region in root_regions for exit in region.exits),
@@ -192,7 +175,8 @@ class Playthrough(object):
                 had_reachable_locations = True
                 # Mark it visited for this algorithm
                 visited_locations.add(location)
-                self.location_in_sphere[location] = len(self.cached_spheres) - 1
+                if self.__class__ == ReversiblePlaythrough:
+                    self.location_in_sphere[location] = len(self.cached_spheres) - 1
                 yield location
 
 
@@ -267,3 +251,53 @@ class Playthrough(object):
             return self.cached_spheres[-1]['child_regions']
         else:
             return self.cached_spheres[-1]['adult_regions'] + self.cached_spheres[-1]['child_regions']
+
+
+class ReversiblePlaythrough(Playthrough):
+
+    def __init__(self, *args, **kwargs):
+        # Mapping from location to sphere index. 0-based.
+        self.location_in_sphere = defaultdict(int)
+        # Mapping from item to sphere index, if this is tracking items. 0-based.
+        self.item_in_sphere = defaultdict(int)
+
+        super().__init__(*args, **kwargs)
+
+
+    def collect_all(self, itempool):
+        for item in itempool:
+            self.item_in_sphere[item] = len(self.cached_spheres)
+            self.state_list[item.world.id].collect(item)
+
+
+    def collect(self, item):
+        self.item_in_sphere[item] = len(self.cached_spheres)
+        self.state_list[item.world.id].collect(item)
+
+
+    def unvisit(self, location):
+        self.cached_spheres[self.location_in_sphere[location]+1:] = []
+        if self.cached_spheres:
+            self.cached_spheres[-1]['visited_locations'].discard(location)
+
+
+    def uncollect(self, item):
+        self.state_list[item.world.id].remove(item)
+        self.cached_spheres[self.item_in_sphere[item]:] = []
+
+
+    def reset(self):
+        self.cached_spheres[1:] = []
+        self.cached_spheres[0]['visited_locations'].clear()
+        self.location_in_sphere.clear()
+        self.item_in_sphere.clear()
+
+
+    def checkpoint(self):
+        if self.cached_spheres:
+            # Save the current data into the cache.
+            self.cached_spheres.append({
+                k: copy.copy(v) for k, v in self.cached_spheres[-1].items()
+            })
+        else:
+            super().checkpoint()

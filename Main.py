@@ -30,7 +30,7 @@ from N64Patch import create_patch_file, apply_patch_file
 from SettingsList import setting_infos, logic_tricks
 from Rules import set_rules, set_shop_rules
 from Plandomizer import Distribution
-from Playthrough import Playthrough
+from Playthrough import Playthrough, ReversiblePlaythrough
 from EntranceShuffle import set_entrances
 from LocationList import set_drop_location_names
 
@@ -506,7 +506,7 @@ def create_playthrough(spoiler):
     if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Cannot beat game. Something went terribly wrong here!')
 
-    playthrough = Playthrough([world.state for world in worlds])
+    playthrough = ReversiblePlaythrough([world.state for world in worlds])
     # Get all item locations in the worlds
     item_locations = [location for state in playthrough.state_list for location in state.world.get_filled_locations() if location.item.advancement]
     # Omit certain items from the playthrough
