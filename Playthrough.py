@@ -65,15 +65,8 @@ class Playthrough(object):
         raise Exception('Unimplemented for Playthrough. Perhaps you want ReversiblePlaythrough.')
 
 
-    # Drops the item from its respective state, and truncates the sphere cache
-    # based on which sphere an item was in.
-    # Does *not* uncollect any other items in or above that sphere!
-    # Doesn't forget which sphere items are in as an optimization, so be careful
-    # to only uncollect items in descending sphere order, or only track collected
-    # items in one sphere.
-    # Items not collected in this Playthrough are assumed to have been collected
-    # prior to sphere 0, so uncollecting them will discard the entire cache.
-    # Not safe to call during iteration.
+    # Drops the item from its respective state.
+    # Has no effect on cache!
     def uncollect(self, item):
         self.state_list[item.world.id].remove(item)
 
@@ -258,21 +251,8 @@ class ReversiblePlaythrough(Playthrough):
     def __init__(self, *args, **kwargs):
         # Mapping from location to sphere index. 0-based.
         self.location_in_sphere = defaultdict(int)
-        # Mapping from item to sphere index, if this is tracking items. 0-based.
-        self.item_in_sphere = defaultdict(int)
 
         super().__init__(*args, **kwargs)
-
-
-    def collect_all(self, itempool):
-        for item in itempool:
-            self.item_in_sphere[item] = len(self.cached_spheres)
-            self.state_list[item.world.id].collect(item)
-
-
-    def collect(self, item):
-        self.item_in_sphere[item] = len(self.cached_spheres)
-        self.state_list[item.world.id].collect(item)
 
 
     def unvisit(self, location):
@@ -281,16 +261,10 @@ class ReversiblePlaythrough(Playthrough):
             self.cached_spheres[-1]['visited_locations'].discard(location)
 
 
-    def uncollect(self, item):
-        self.state_list[item.world.id].remove(item)
-        self.cached_spheres[self.item_in_sphere[item]:] = []
-
-
     def reset(self):
         self.cached_spheres[1:] = []
         self.cached_spheres[0]['visited_locations'].clear()
         self.location_in_sphere.clear()
-        self.item_in_sphere.clear()
 
 
     def checkpoint(self):
