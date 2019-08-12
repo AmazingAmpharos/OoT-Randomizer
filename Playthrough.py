@@ -123,47 +123,42 @@ class Playthrough(object):
                     failed.append(exit)
         return failed
 
-    # Explores available exits, based on the most recent cache entry, and pushes
-    # the result as a new entry in the cache.
+    # Adds a new layer to the sphere cache, as a copy of the previous.
+    # If there is no sphere cache, initialize the starting values.
+    def checkpoint(self):
+        if self.cached_spheres:
+            # Save the current data into the cache.
+            self.cached_spheres.append({
+                k: copy.copy(v) for k, v in self.cached_spheres[-1].items()
+            })
+        else:
+            root_regions = [state.world.get_region('Root') for state in self.state_list]
+            self.cached_spheres.append({
+                'child_queue': list(exit for region in root_regions for exit in region.exits),
+                'adult_queue': list(exit for region in root_regions for exit in region.exits),
+                'visited_locations': set(),
+                'child_regions': set(root_regions),
+                'adult_regions': set(root_regions),
+            })
+
+    # Explores available exits, updating relevant entries in the cache in-place.
     # Returns the set of regions accessible in the new sphere as child,
     # the set of regions accessible as adult, and the set of visited locations.
     # These are references to the new entry in the cache, so they can be modified
-    # directly (likely only useful for visited_locations).
+    # directly.
     def next_sphere(self):
-        # Use cached regions and queues or initialize starting values.
-        if self.cached_spheres:
-            child_regions = copy.copy(self.cached_spheres[-1]['child_regions'])
-            adult_regions = copy.copy(self.cached_spheres[-1]['adult_regions'])
-            # queues of Entrance where the entrance is not yet validated
-            child_queue = copy.copy(self.cached_spheres[-1]['child_queue'])
-            adult_queue = copy.copy(self.cached_spheres[-1]['adult_queue'])
-            # Locations already visited
-            visited_locations = copy.copy(self.cached_spheres[-1]['visited_locations'])
-        else:
-            root_regions = [state.world.get_region('Root') for state in self.state_list]
-            child_queue = list(exit for region in root_regions for exit in region.exits)
-            adult_queue = list(exit for region in root_regions for exit in region.exits)
-            child_regions = set(root_regions)
-            adult_regions = set(root_regions)
-            visited_locations = set()
+        self.checkpoint()
+        cs = self.cached_spheres[-1]
 
         # Use the queue to iteratively add regions to the accessed set,
         # until we are stuck or out of regions.
-        adult_failed = Playthrough._expand_regions(adult_queue, adult_regions, self.validate_adult)
-        child_failed = Playthrough._expand_regions(child_queue, child_regions, self.validate_child)
-
-        # Save the current data into the cache.
-        self.cached_spheres.append({
-            'child_regions': child_regions,
-            'adult_regions': adult_regions,
-            # Didn't change here, but this will be the editable layer of the cache.
-            'visited_locations': visited_locations,
-            # Exits that didn't pass validation
-            # are the only exits we'll be interested in
-            'child_queue': child_failed,
-            'adult_queue': adult_failed,
+        cs.update({
+            # Replace the queues (which have been modified) with just the
+            # failed exits that we can retry next time.
+            'adult_queue': Playthrough._expand_regions(cs['adult_queue'], cs['adult_regions'], self.validate_adult),
+            'child_queue': Playthrough._expand_regions(cs['child_queue'], cs['child_regions'], self.validate_child),
         })
-        return child_regions, adult_regions, visited_locations
+        return cs['child_regions'], cs['adult_regions'], cs['visited_locations']
 
     # Yields every reachable location, by iteratively deepening explored sets of
     # regions (one as child, one as adult) and invoking access rules.
