@@ -251,7 +251,6 @@ def rebuild_sequences(rom, sequences, log):
 
         # Append new audio sequence
         new_address = rom.free_space()
-        new_address += 0x10 - (new_address % 0x10)
         rom.write_bytes(new_address, new_audio_sequence)
 
         #Update dmatable
