@@ -240,6 +240,10 @@ def rebuild_sequences(rom, sequences, log):
 
         # Concatenate the full audio sequence and the new sequence data
         if new_entry.data != [] and new_entry.size > 0:
+            # Align sequences to 0x10
+            if new_entry.size % 0x10 != 0:
+                new_entry.data.extend(bytearray(0x10 - (new_entry.size % 0x10)))
+                new_entry.size += 0x10 - (new_entry.size % 0x10)
             new_audio_sequence.extend(new_entry.data)
             # Increment the current address by the size of the new sequence
             address += new_entry.size
