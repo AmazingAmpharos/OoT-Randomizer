@@ -585,7 +585,7 @@ class WorldDistribution(object):
             stoneID = pull_random_element([stoneIDs], lambda id: matcher(gossipLocations[id].name))
             if stoneID is None:
                 raise RuntimeError('Gossip stone unknown or already assigned in world %d: %s' % (self.id + 1, name))
-            spoiler.hints[self.id][stoneID] = GossipText(text=record.text, colors=record.colors)
+            spoiler.hints[self.id][stoneID] = GossipText(text=record.text, colors=record.colors, prefix='')
 
 
     def give_item(self, item, count=1):
