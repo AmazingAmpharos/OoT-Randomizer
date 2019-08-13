@@ -35,7 +35,8 @@ class Playthrough(object):
     def copy(self):
         # we only need to copy the top sphere since that's what we're starting with and we don't go back
         new_cache = {k: copy.copy(v) for k,v in self._cache.items()}
-        return self.__class__(self.state_list, initial_cache=new_cache)
+        # copy always makes a nonreversible instance
+        return Playthrough(self.state_list, initial_cache=new_cache)
 
 
     def collect_all(self, itempool):
