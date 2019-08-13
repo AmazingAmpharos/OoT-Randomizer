@@ -73,7 +73,7 @@ class Playthrough(object):
     # in sphere 0, so unvisiting them will discard the entire cache.
     # Not safe to call during iteration.
     def unvisit(self, location):
-        raise Exception('Unimplemented for Playthrough. Perhaps you want ReversiblePlaythrough.')
+        raise Exception('Unimplemented for Playthrough. Perhaps you want RewindablePlaythrough.')
 
 
     # Drops the item from its respective state.
@@ -86,7 +86,7 @@ class Playthrough(object):
     # Does not uncollect any items!
     # Not safe to call during iteration.
     def reset(self):
-        raise Exception('Unimplemented for Playthrough. Perhaps you want ReversiblePlaythrough.')
+        raise Exception('Unimplemented for Playthrough. Perhaps you want RewindablePlaythrough.')
 
 
     # simplified exit.can_reach(state), bypasses can_become_age
@@ -241,7 +241,7 @@ class Playthrough(object):
             return self._cache['adult_regions'] + self._cache['child_regions']
 
 
-class ReversiblePlaythrough(Playthrough):
+class RewindablePlaythrough(Playthrough):
 
     def unvisit(self, location):
         # A location being unvisited is either:
