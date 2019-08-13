@@ -36,20 +36,35 @@ nb-card-body {
     padding-top: 0;
     padding-bottom: 0;
 
-    @media (max-width: 680px) {
+    @media (max-width: 995px) {
       line-height: 15px;
     }
   }
 
   a {
-    @media (max-width: 500px) {
+
+    @media (max-width: 770px) {
       padding-right: 0.5rem !important;
       padding-left: 0.5rem !important;
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 550px) {
       padding-right: 0.2rem !important;
       padding-left: 0.2rem !important;
+    }
+  }
+
+  span {
+    @media (max-width: 770px) {
+      font-size: 1rem;
+    }
+
+    @media (max-width: 693px) {
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 510px) {
+      font-size: 0.8rem;
     }
   }
 }

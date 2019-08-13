@@ -31,7 +31,7 @@
     "@angular/router": "7.2.15",
     "@fortawesome/fontawesome-free": "5.9.0",
     "@nebular/bootstrap": "3.5.0",
-    "@nebular/theme": "https://github.com/dragonbane0/nebular/tarball/581a542ebe6f24fe73557ed491b9c93452d77887",
+    "@nebular/theme": "https://github.com/dragonbane0/nebular/tarball/2ab1e12d9c10b26bcc0680acde44048d63345991",
     "@ng-bootstrap/ng-bootstrap": "4.2.1",
     "angular-dual-listbox": "4.7.0",
     "angular-file": "1.3.2",

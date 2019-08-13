@@ -52,7 +52,7 @@
           "name": "general_section",
           "text": "",
           "col_span": 4,
-          "row_span": 2,
+          "row_span": 1,
           "settings": [
             "rom",
             "web_wad_file",
@@ -95,7 +95,7 @@
           "name": "general_section",
           "text": "",
           "col_span": 4,
-          "row_span": 2,
+          "row_span": 1,
           "settings": [
             "rom",
             "web_wad_file",
