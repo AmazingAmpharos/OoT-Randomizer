@@ -1050,6 +1050,7 @@ setting_infos = [
         default        = True,
         gui_params     = {
             'no_line_break' : True,
+            'web:no_line_break' : False,
         },
         shared         = True,
     ),
