@@ -521,6 +521,7 @@ def create_playthrough(spoiler):
     remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances())
     
     while True:
+        playthrough.checkpoint()
         # Not collecting while the generator runs means we only get one sphere at a time
         # Otherwise, an item we collect could influence later item collection in the same sphere
         collected = list(playthrough.iter_reachable_locations(item_locations))

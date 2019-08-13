@@ -115,17 +115,12 @@ class Playthrough(object):
                     failed.append(exit)
         return failed
 
-    # Adds a new layer to the sphere cache, as a copy of the previous.
-    def checkpoint(self):
-        pass
-
     # Explores available exits, updating relevant entries in the cache in-place.
     # Returns the set of regions accessible in the new sphere as child,
     # the set of regions accessible as adult, and the set of visited locations.
     # These are references to the new entry in the cache, so they can be modified
     # directly.
     def next_sphere(self):
-        self.checkpoint()
 
         # Use the queue to iteratively add regions to the accessed set,
         # until we are stuck or out of regions.
@@ -171,8 +166,6 @@ class Playthrough(object):
                 had_reachable_locations = True
                 # Mark it visited for this algorithm
                 visited_locations.add(location)
-                if self.__class__ == ReversiblePlaythrough:
-                    self.location_in_sphere[location] = len(self.cached_spheres) - 1
                 yield location
 
 
@@ -250,26 +243,24 @@ class Playthrough(object):
 
 class ReversiblePlaythrough(Playthrough):
 
-    def __init__(self, *args, **kwargs):
-        # Mapping from location to sphere index. 0-based.
-        self.location_in_sphere = defaultdict(int)
-
-        super().__init__(*args, **kwargs)
-
-
     def unvisit(self, location):
-        self.cached_spheres[self.location_in_sphere[location]+1:] = []
-        self._cache = self.cached_spheres[-1]
+        # A location being unvisited is either:
+        # in the top two caches (if it's the first being unvisited for a sphere)
+        # in the topmost cache only (otherwise)
+        # After we unvisit every location in a sphere, the top two caches have identical visited locations.
+        assert location in self.cached_spheres[-1]['visited_locations']
+        if location in self.cached_spheres[-2]['visited_locations']:
+            self.cached_spheres.pop()
+            self._cache = self.cached_spheres[-1]
         self._cache['visited_locations'].discard(location)
 
 
     def reset(self):
-        self.cached_spheres[1:] = []
-        self.cached_spheres[0]['visited_locations'].clear()
-        self.location_in_sphere.clear()
         self._cache = self.cached_spheres[0]
+        self.cached_spheres[1:] = []
 
 
+    # Adds a new layer to the sphere cache, as a copy of the previous.
     def checkpoint(self):
         # Save the current data into the cache.
         self.cached_spheres.append({
