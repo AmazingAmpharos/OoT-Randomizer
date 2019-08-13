@@ -5,27 +5,37 @@ import itertools
 
 class Playthrough(object):
 
-    def __init__(self, state_list, cached_spheres=None):
+    def __init__(self, state_list, initial_cache=None):
         self.state_list = [state.copy() for state in state_list]
-        # Each cached sphere is a dict with 5 values:
-        #  child_regions, adult_regions: sets of Region, all the regions in that sphere
-        #  child_queue, adult_queue: queue of Entrance, all the exits to try next sphere
-        #  visited_locations: set of Locations visited in or before that sphere.
-        self.cached_spheres = cached_spheres or []
 
         # Let the states reference this playthrough.
         for state in self.state_list:
             state.playthrough = self
 
-        # Prefill sphere 0 if not already filled.
-        if not self.cached_spheres:
+        if initial_cache:
+            self._cache = initial_cache
+            self.cached_spheres = [self._cache]
+        else:
+            root_regions = [state.world.get_region('Root') for state in self.state_list]
+            # The cache is a dict with 5 values:
+            #  child_regions, adult_regions: sets of Region, all the regions in that sphere
+            #  child_queue, adult_queue: queue of Entrance, all the exits to try next sphere
+            #  visited_locations: set of Locations visited in or before that sphere.
+            self._cache = {
+                'child_queue': list(exit for region in root_regions for exit in region.exits),
+                'adult_queue': list(exit for region in root_regions for exit in region.exits),
+                'visited_locations': set(),
+                'child_regions': set(root_regions),
+                'adult_regions': set(root_regions),
+            }
+            self.cached_spheres = [self._cache]
             self.next_sphere()
 
 
     def copy(self):
         # we only need to copy the top sphere since that's what we're starting with and we don't go back
-        new_cache = [{k: copy.copy(v) for k,v in self.cached_spheres[-1].items()}]
-        return self.__class__(self.state_list, cached_spheres=new_cache)
+        new_cache = {k: copy.copy(v) for k,v in self._cache.items()}
+        return self.__class__(self.state_list, initial_cache=new_cache)
 
 
     def collect_all(self, itempool):
@@ -105,17 +115,8 @@ class Playthrough(object):
         return failed
 
     # Adds a new layer to the sphere cache, as a copy of the previous.
-    # If there is no sphere cache, initialize the starting values.
     def checkpoint(self):
-        if not self.cached_spheres:
-            root_regions = [state.world.get_region('Root') for state in self.state_list]
-            self.cached_spheres.append({
-                'child_queue': list(exit for region in root_regions for exit in region.exits),
-                'adult_queue': list(exit for region in root_regions for exit in region.exits),
-                'visited_locations': set(),
-                'child_regions': set(root_regions),
-                'adult_regions': set(root_regions),
-            })
+        pass
 
     # Explores available exits, updating relevant entries in the cache in-place.
     # Returns the set of regions accessible in the new sphere as child,
@@ -124,17 +125,18 @@ class Playthrough(object):
     # directly.
     def next_sphere(self):
         self.checkpoint()
-        cs = self.cached_spheres[-1]
 
         # Use the queue to iteratively add regions to the accessed set,
         # until we are stuck or out of regions.
-        cs.update({
+        self._cache.update({
             # Replace the queues (which have been modified) with just the
             # failed exits that we can retry next time.
-            'adult_queue': Playthrough._expand_regions(cs['adult_queue'], cs['adult_regions'], self.validate_adult),
-            'child_queue': Playthrough._expand_regions(cs['child_queue'], cs['child_regions'], self.validate_child),
+            'adult_queue': Playthrough._expand_regions(
+                self._cache['adult_queue'], self._cache['adult_regions'], self.validate_adult),
+            'child_queue': Playthrough._expand_regions(
+                self._cache['child_queue'], self._cache['child_regions'], self.validate_child),
         })
-        return cs['child_regions'], cs['adult_regions'], cs['visited_locations']
+        return self._cache['child_regions'], self._cache['adult_regions'], self._cache['visited_locations']
 
     # Yields every reachable location, by iteratively deepening explored sets of
     # regions (one as child, one as adult) and invoking access rules.
@@ -220,30 +222,29 @@ class Playthrough(object):
 
     # Use the cache in the playthrough to determine region reachability.
     def can_reach(self, region, age=None):
-        if not self.cached_spheres: return False
         if age == 'adult':
-            return region in self.cached_spheres[-1]['adult_regions']
+            return region in self._cache['adult_regions']
         elif age == 'child':
-            return region in self.cached_spheres[-1]['child_regions']
+            return region in self._cache['child_regions']
         elif age == 'both':
-            return region in self.cached_spheres[-1]['adult_regions'] and region in self.cached_spheres[-1]['child_regions']
+            return region in self._cache['adult_regions'] and region in self._cache['child_regions']
         else:
             # treat None as either
-            return region in self.cached_spheres[-1]['adult_regions'] or region in self.cached_spheres[-1]['child_regions']
+            return region in self._cache['adult_regions'] or region in self._cache['child_regions']
 
     # Use the cache in the playthrough to determine location reachability.
     # Only works for locations that had progression items...
     def visited(self, location):
-        return location in self.cached_spheres[-1]['visited_locations']
+        return location in self._cache['visited_locations']
 
     # Use the cache in the playthrough to get all reachable regions.
     def reachable_regions(self, age=None):
         if age == 'adult':
-            return self.cached_spheres[-1]['adult_regions']
+            return self._cache['adult_regions']
         elif age == 'child':
-            return self.cached_spheres[-1]['child_regions']
+            return self._cache['child_regions']
         else:
-            return self.cached_spheres[-1]['adult_regions'] + self.cached_spheres[-1]['child_regions']
+            return self._cache['adult_regions'] + self._cache['child_regions']
 
 
 class ReversiblePlaythrough(Playthrough):
@@ -257,21 +258,20 @@ class ReversiblePlaythrough(Playthrough):
 
     def unvisit(self, location):
         self.cached_spheres[self.location_in_sphere[location]+1:] = []
-        if self.cached_spheres:
-            self.cached_spheres[-1]['visited_locations'].discard(location)
+        self._cache = self.cached_spheres[-1]
+        self._cache['visited_locations'].discard(location)
 
 
     def reset(self):
         self.cached_spheres[1:] = []
         self.cached_spheres[0]['visited_locations'].clear()
         self.location_in_sphere.clear()
+        self._cache = self.cached_spheres[0]
 
 
     def checkpoint(self):
-        if self.cached_spheres:
-            # Save the current data into the cache.
-            self.cached_spheres.append({
-                k: copy.copy(v) for k, v in self.cached_spheres[-1].items()
-            })
-        else:
-            super().checkpoint()
+        # Save the current data into the cache.
+        self.cached_spheres.append({
+            k: copy.copy(v) for k, v in self._cache.items()
+        })
+        self._cache = self.cached_spheres[-1]
