@@ -18,7 +18,8 @@
         "locations": {
             "Jabu Jabus Belly MQ Second Room Lower Chest": "True",
             "Jabu Jabus Belly MQ Second Room Upper Chest": "
-                can_use(Hover_Boots) or at('Jabu Jabus Belly Boss Area', is_child)",
+                can_use(Hover_Boots) or can_use(Hookshot) or
+                at('Jabu Jabus Belly Boss Area', is_child)",
             "Jabu Jabus Belly MQ Compass Chest": "True",
             "Jabu Jabus Belly MQ Basement South Chest": "True",
             "Jabu Jabus Belly MQ Basement North Chest": "True",

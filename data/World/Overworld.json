@@ -165,9 +165,9 @@
             "Lost Woods Bridge": "
                 is_adult and
                 (can_use(Hover_Boots) or can_use(Longshot) or
-                    here(can_plant_bean))",
+                    here(can_plant_bean) or logic_lost_woods_bridge)",
             "Zora River": "can_leave_forest and (can_dive or can_use(Iron_Boots))",
-            "Lost Woods Beyond Mido": "is_child or logic_adult_meadow_access or can_play(Sarias_Song)",
+            "Lost Woods Beyond Mido": "is_child or logic_mido_backflip or can_play(Sarias_Song)",
             "Lost Woods Generic Grotto": "here(can_blast_or_smash)"
         }
     },
@@ -319,8 +319,9 @@
                 is_child or can_use(Scarecrow) or
                 here(can_plant_bean) or 'Water Temple Clear'",
             "Water Temple Lobby": "
-                (can_use(Hookshot) and can_use(Iron_Boots)) or
-                (can_use(Longshot) and (Progressive_Scale, 2))",
+                can_use(Hookshot) and
+                (can_use(Iron_Boots) or
+                    ((can_use(Longshot) or logic_water_hookshot_entry) and (Progressive_Scale, 2)))",
             "Lake Hylia Grotto": "True"
         }
     },
@@ -364,13 +365,13 @@
         "hint": "Gerudo Valley",
         "time_passes": true,
         "locations": {
-            "Gerudo Valley Crate Freestanding PoH": "is_child or can_use(Longshot)",
             "GS Gerudo Valley Small Bridge": "can_use(Boomerang) and at_night",
             "Bug Rock": "is_child and has_bottle"
         },
         "exits": {
             "Hyrule Field": "True",
             "Gerudo Valley Stream": "True",
+            "Gerudo Valley Crate Ledge": "is_child or can_use(Longshot)",
             "Gerudo Valley Octorok Grotto": "can_use(Silver_Gauntlets)",
             "Gerudo Valley Far Side": "
                 is_adult and 
@@ -395,6 +396,15 @@
         }
     },
     {
+        "region_name": "Gerudo Valley Crate Ledge",
+        "scene": "Gerudo Valley",
+        "hint": "Gerudo Valley",
+        "time_passes": true,
+        "locations": {
+            "Gerudo Valley Crate Freestanding PoH": "True"
+        }
+    },
+    {
         "region_name": "Gerudo Valley Far Side",
         "scene": "Gerudo Valley",
         "hint": "Gerudo Valley",
@@ -410,6 +420,7 @@
         "exits": {
             "Gerudo Fortress": "True",
             "Gerudo Valley Stream": "True",
+            "Gerudo Valley Crate Ledge": "logic_valley_crate_hovers and can_use(Hover_Boots)",
             "Gerudo Valley": "
                 is_child or can_use(Epona) or can_use(Longshot) or
                 gerudo_fortress == 'open' or 'Carpenter Rescue'",
@@ -858,7 +869,6 @@
             "Carpenter Boss House": "True",
             "House of Skulltula": "True",
             "Impas House": "True",
-            "Impas House Back": "is_child or logic_visible_collisions or can_use(Hookshot)",
             "Windmill": "True",
             "Kakariko Bazaar": "is_adult and at_day",
             "Kakariko Shooting Gallery": "is_adult and at_day",
@@ -866,6 +876,8 @@
                 'Drain Well' and (is_child or shuffle_dungeon_entrances)",
             "Kakariko Potion Shop Front": "is_child or at_day",
             "Kakariko Bombable Grotto": "can_blast_or_smash",
+            "Kakariko Impa Ledge": "
+                (is_child and at_day) or (is_adult and logic_visible_collisions) or can_use(Hookshot)",
             "Kakariko Rooftop": "
                 can_use(Hookshot) or 
                 (logic_man_on_roof and 
@@ -875,6 +887,15 @@
             "Kakariko Village Backyard": "is_adult or (is_child and at_day)",
             "Graveyard": "True",
             "Kakariko Village Behind Gate": "is_adult or 'Kakariko Village Gate Open'"
+        }
+    },
+    {
+        "region_name": "Kakariko Impa Ledge",
+        "scene": "Kakariko Village",
+        "hint": "Kakariko Village",
+        "exits": {
+            "Impas House Back": "True",
+            "Kakariko Village": "True"
         }
     },
     {
@@ -939,7 +960,7 @@
             "Impas House Cow": "can_play(Eponas_Song)"
         },
         "exits": {
-            "Kakariko Village": "True"
+            "Kakariko Impa Ledge": "True"
         }
     },
     {
@@ -976,7 +997,7 @@
     {
         "region_name": "Kakariko Shooting Gallery",
         "locations": {
-            "Adult Shooting Gallery": "can_use(Bow)"
+            "Adult Shooting Gallery": "is_adult and Bow"
         },
         "exits": {
             "Kakariko Village": "True"
@@ -1126,17 +1147,17 @@
         "locations": {
             "Death Mountain Bombable Chest": "
                 can_blast_or_smash or 
-                (logic_dmt_bombable and Progressive_Strength_Upgrade)",
-            "DM Trail Freestanding PoH": "
-                is_child or (damage_multiplier != 'ohko') or 
-                can_use(Nayrus_Love) or has_fairy or Hover_Boots",
+                (logic_dmt_bombable and is_child and Progressive_Strength_Upgrade)",
+            "DM Trail Freestanding PoH": "True",
             "GS Mountain Trail Bean Patch": "
                 can_plant_bugs and
                     (has_explosives or Progressive_Strength_Upgrade or
                     (logic_dmt_soil_gs and can_use(Boomerang)))",
             "GS Mountain Trail Bomb Alcove": "can_blast_or_smash",
             "GS Mountain Trail Above Dodongo's Cavern": "
-                (can_use(Hammer) or (logic_trail_gs_lower and can_use(Hookshot))) and at_night",
+                is_adult and at_night and
+                (can_use(Hammer) or (logic_trail_gs_lower_hookshot and can_use(Hookshot)) or
+                    (logic_trail_gs_lower_bean and here(can_plant_bean and (has_explosives or Progressive_Strength_Upgrade))))",
             "Bean Plant Fairy": "
                 can_plant_bean and can_play(Song_of_Storms) and has_bottle and
                 (has_explosives or Progressive_Strength_Upgrade)"
@@ -1144,7 +1165,8 @@
         "exits": {
             "Kakariko Village Behind Gate": "True",
             "Goron City": "True",
-            "Death Mountain Summit": "here(can_blast_or_smash)",
+            "Death Mountain Summit": "
+                here(can_blast_or_smash) or (is_adult and here(can_plant_bean and Progressive_Strength_Upgrade))",
             "Dodongos Cavern Entryway": "
                 has_explosives or Progressive_Strength_Upgrade or is_adult",
             "Mountain Storms Grotto": "can_play(Song_of_Storms)"
@@ -1165,7 +1187,7 @@
                     (guarantee_trade_path and 
                     ('Eyedrops Access' or (Eyedrops and disable_trade_revert))))",
             "GS Mountain Trail Path to Crater": "
-                (can_use(Hammer) or logic_trail_gs_upper) and at_night",
+                is_adult and (can_use(Hammer) or logic_trail_gs_upper) and at_night",
             "Death Mountain Trail Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Bug Rock": "is_child and has_bottle"
@@ -1182,7 +1204,7 @@
         "region_name": "Death Mountain Summit Owl Flight",
         "scene": "Death Mountain",
         "exits": {
-            "Kakariko Village": "True"
+            "Kakariko Impa Ledge": "True"
         }
     },
     {
@@ -1230,7 +1252,7 @@
                 can_blast_or_smash or Progressive_Strength_Upgrade",
             "Gossip Stone Fairy": "
                 can_summon_gossip_fairy_without_suns and has_bottle and
-                (can_blast_or_smash or can_use(Silver_Gauntlets) or Progressive_Strength_Upgrade)",
+                (can_blast_or_smash or Progressive_Strength_Upgrade)",
             "Bug Rock": "(can_blast_or_smash or can_use(Silver_Gauntlets)) and has_bottle",
             "Stick Pot": "is_child"
         },
@@ -1319,9 +1341,9 @@
             "Death Mountain Crater Upper Nearby": "True",
             "Death Mountain Crater Ladder Area Nearby": "True",
             "Death Mountain Crater Central Nearby": "
-                can_use(Goron_Tunic) and can_use(Distant_Scarecrow) and 
+                can_use(Goron_Tunic) and can_use(Longshot) and 
                 ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
-                    has_fairy or can_use(Nayrus_Love))"
+                    (has_fairy and not shuffle_dungeon_entrances) or can_use(Nayrus_Love))"
         }
     },
     {

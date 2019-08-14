@@ -48,7 +48,7 @@
             "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time)"
         },
         "exits": {
-            "Shadow Temple Lower Huge Pit": "has_fire_source"
+            "Shadow Temple Lower Huge Pit": "has_fire_source or logic_shadow_mq_huge_pit"
         }
     },
     {
