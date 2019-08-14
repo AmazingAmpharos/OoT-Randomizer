@@ -207,17 +207,17 @@ class State(object):
         return lambda_rule_result
 
 
-    def can_change_time_to(self, tod):
+    def can_change_time_to(self, provide_tod):
         # Sun's Song is only useful in cases where we need the normal day or night times (e.g. not dampe's time)
-        return (tod == 'day' or tod == 'night') and self.can_play('Suns Song')
+        return (provide_tod == 'day' or provide_tod == 'night') and self.can_play('Suns Song')
 
 
-    def can_provide_time(self, region, tod):
+    def can_provide_time(self, region, provide_tod):
         if region.time_passes:
             return True
         # Ganon's Castle Grounds is a special scene that forces time to be the start of the night (aka dampe's time)
         if region.name == 'Ganons Castle Grounds':
-            return tod == 'night' or tod == 'dampe'
+            return provide_tod == 'night' or provide_tod == 'dampe'
         return False
 
 
