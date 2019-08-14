@@ -45,17 +45,13 @@ class Entrance(object):
         self.access_rules = [lambda_rule]
 
 
-    def can_reach(self, state):
-        return state.with_spot(self.access_rule, spot=self) and state.can_reach(self.parent_region, keep_tod=True)
+    # tod is passed explicitly only when we want to test for it
+    def can_reach(self, state, age=None, tod=None):
+        return self.access_rule(state, spot=self, age=age, tod=tod) and state.can_reach(self.parent_region, age=age)
 
 
-    def can_reach_simple(self, state):
-        # todo: raw evaluation of access_rule? requires nonrecursive tod checks in state
-        state.current_spot = self
-        r = self.access_rule(state, age='adult' if state.adult else 'child', spot=self)
-        state.current_spot = None
-        return r
-        return state.with_spot(lambda state: self.access_rule(state, age='adult' if state.adult else 'child', spot=self), self)
+    def can_reach_simple(self, state, age=None):
+        return self.access_rule(state, age=age, spot=self)
 
 
     def connect(self, region):

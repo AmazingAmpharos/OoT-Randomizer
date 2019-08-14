@@ -58,6 +58,7 @@ class World(object):
         self.shuffle_overworld_entrances = self.entrance_shuffle == 'all'
 
         self.disable_trade_revert = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
+        self.ensure_tod_access = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
 
         # Determine LACS Condition
         if self.shuffle_ganon_bosskey == 'lacs_medallions':

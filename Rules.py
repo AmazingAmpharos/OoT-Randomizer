@@ -12,7 +12,7 @@ def set_rules(world):
     world.get_location('Ganon').item_rule = lambda location, item: item.name == 'Triforce'
 
     # the root of the world graph is always considered reachable because the player can save&quit
-    world.get_region('Root').can_reach = lambda state: True
+    world.get_region('Root').can_reach = lambda state, **kwargs: True
 
     for location in world.get_locations():
         if not world.shuffle_song_items:
@@ -42,7 +42,7 @@ def set_rules(world):
             forbid_item(location, 'Boss Key (Forest Temple)')
 
         if location.type == 'GossipStone' and world.hints == 'mask':
-            location.add_rule(lambda state, age=None, **kwargs: age == 'child' or state.is_child())
+            location.add_rule(lambda state, age=None, **kwargs: age == 'child')
 
     for location in world.disabled_locations:
         try:
@@ -101,7 +101,7 @@ def set_shop_rules(world):
 
             # Add adult only checks
             if location.item.name in ['Buy Goron Tunic', 'Buy Zora Tunic']:
-                location.add_rule(lambda state, age=None, **kwargs: age == 'adult' or state.is_adult())
+                location.add_rule(lambda state, age=None, **kwargs: age == 'adult')
 
             # Add item prerequisit checks
             if location.item.name in ['Buy Blue Fire',

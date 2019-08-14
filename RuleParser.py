@@ -247,6 +247,9 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         return node
 
 
+    # Generates an ast.Call invoking the given State function 'name',
+    # providing given args and keywords, and adding in additional
+    # keyword args from valid_kwargs (age, etc.)
     def make_call(self, node, name, args, keywords):
         func = getattr(State, name, None)
         if not func:
@@ -345,6 +348,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                 self.current_spot.parent_region.name,
                 node.args[0])
 
+    ## Handlers for compile-time optimizations (former State functions)
 
     def is_child(self, node):
         return ast.Compare(
@@ -366,6 +370,31 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                 comparators=[ast.Str(self.world.starting_age)])
 
 
+    def at_day(self, node):
+        if self.world.ensure_tod_access:
+            # tod == 'day' or (tod == None and (ss or find a path from a provider))
+            # obviously faster than constructing this expression by hand
+            return ast.parse("(tod == 'day') if tod != None else (state.can_play('Suns Song') or state.can_reach(age=age, spot=spot.parent_region, tod='day'))", mode='eval').body
+        return ast.NameConstant(True)
+
+    def at_dampe_time(self, node):
+        if self.world.ensure_tod_access:
+            # tod == 'dampe' or (tod == None and (find a path from a provider))
+            # obviously faster than constructing this expression by hand
+            return ast.parse("(tod == 'dampe') if tod != None else state.can_reach(age=age, spot=spot.parent_region, tod='dampe')", mode='eval').body
+        return ast.NameConstant(True)
+
+    def at_night(self, node):
+        if self.current_spot.type == 'GS Token' and self.world.logic_no_night_tokens_without_suns_song:
+            return self.make_call(node, 'can_play', [ast.Str('Suns Song')], [])
+        if self.world.ensure_tod_access:
+            # tod == 'dampe' or (tod == None and (ss or find a path from a provider))
+            # obviously faster than constructing this expression by hand
+            return ast.parse("(tod == 'dampe') if tod != None else (state.can_play('Suns Song') or state.can_reach(age=age, spot=spot.parent_region, tod='dampe'))", mode='eval').body
+        return ast.NameConstant(True)
+
+
+    # Parse entry point
     def parse_spot_rule(self, spot):
         rule = spot.rule_string.split('#', 1)[0].strip()
 

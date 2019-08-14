@@ -53,9 +53,10 @@ class Region(object):
         return new_region
 
 
-    def can_reach(self, state):
+    # tod is passed explicitly only when we want to test it
+    def can_reach(self, state, age=None, tod=None):
         for entrance in self.entrances:
-            if entrance.can_reach(state):
+            if entrance.can_reach(state, age=age, tod=tod):
                 return True
 
         return False

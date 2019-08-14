@@ -15,9 +15,6 @@ class State(object):
         self.world = parent
         self.region_cache = { 'child': {}, 'adult': {} }
         self.recursion_count = { 'child': 0, 'adult': 0 }
-        self.current_spot = None
-        self.adult = None
-        self.tod = None
         self.playthrough = None
 
 
@@ -61,155 +58,65 @@ class State(object):
             return spot
 
 
-    def can_reach(self, spot=None, resolution_hint='Region', tod=None, keep_tod=False):
-        if spot == None:
-            # Default to the current spot's parent region, to allow can_reach to be used without arguments inside access rules
-            spot = self.current_spot.parent_region
-        else:
-            spot = self.get_spot(spot, resolution_hint)
+    def can_reach(self, spot=None, resolution_hint='Region', tod=None, age=None):
+        assert spot != None
+        spot = self.get_spot(spot, resolution_hint)
 
         # If the current age is not defined, we try either
-        if self.adult == None:
-            return self.as_either(spot, tod=tod)
+        if age == None:
+            return self.can_reach(spot, tod=tod, age='adult') or self.can_reach(spot, tod=tod, age='child')
 
-        if tod != None and self.ensure_tod_access():
-            if tod == 'all':
-                # If a spot is reachable at day and at dampe's time, then it's reachable at all times of day
-                return self.can_reach(spot, tod='day') and self.can_reach(spot, tod='dampe')
-            elif self.can_change_time_to(tod):
-                return self.can_reach(spot)
-            else:
-                return self.with_tod(lambda state: state.can_reach(spot, keep_tod=True), tod)
-
-        # Only keep the current time of day state if we actually want to check for reachability at that time of day
-        if self.tod != None and not keep_tod:
-            return self.with_tod(lambda state: state.can_reach(spot), None)
+        if tod == 'all':
+            # If a spot is reachable at day and at dampe's time, then it's reachable at all times of day
+            return self.can_reach(spot, age=age, tod='day') and self.can_reach(spot, age=age, tod='dampe')
 
         if not isinstance(spot, Region):
-            return spot.can_reach(self)
+            return spot.can_reach(self, age=age, tod=tod)
 
         # If we are currently checking for reachability with a specific time of day and the needed time can be obtained here,
         # we want to continue the reachability test without a time of day, to make sure we could actually get there
-        if self.tod != None and self.can_provide_time(spot, self.tod):
-            return self.with_tod(lambda state: state.can_reach(spot), None)
+        if tod != None and self.can_provide_time(spot, tod):
+            return spot.can_reach(self, age=age)
 
         # If we reached this point, it means the current age should be used
-        if self.adult:
-            age_type = 'adult'
-        else:
-            age_type = 'child'
-
-        if spot.recursion_count[age_type] > 0:
+        if spot.recursion_count[age] > 0:
             return False
 
         # Normal caches can't be used while checking for reachability with a specific time of day
-        if self.tod == None:
-            if self.playthrough != None and self.playthrough.can_reach(spot, age=age_type):
+        if tod == None:
+            if self.playthrough != None and self.playthrough.can_reach(spot, age=age):
                 return True
 
-            if spot in self.region_cache[age_type]:
-                return self.region_cache[age_type][spot]
+            if spot in self.region_cache[age]:
+                return self.region_cache[age][spot]
 
         # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that is what we are trying to figure out right now in the first place
-        spot.recursion_count[age_type] += 1
-        self.recursion_count[age_type] += 1
+        spot.recursion_count[age] += 1
+        self.recursion_count[age] += 1
 
-        can_reach = spot.can_reach(self)
+        can_reach = spot.can_reach(self, age=age, tod=tod)
 
-        spot.recursion_count[age_type] -= 1
-        self.recursion_count[age_type] -= 1
+        spot.recursion_count[age] -= 1
+        self.recursion_count[age] -= 1
 
         # we store true results and qualified false results (i.e. ones not inside a hypothetical)
-        if self.tod == None and (can_reach or self.recursion_count[age_type] == 0):
-            self.region_cache[age_type][spot] = can_reach
+        if tod == None and (can_reach or self.recursion_count[age] == 0):
+            self.region_cache[age][spot] = can_reach
 
         return can_reach
 
 
-    def as_either(self, spot, tod=None):
-        reach = lambda state: state.can_reach(spot, tod=tod)
-        return ((self.can_become_adult() and self.with_age(reach, adult=True)) or
-                (self.can_become_child() and self.with_age(reach, adult=False)))
-
-
     def as_both(self, spot, tod=None):
         if self.can_become_adult() and self.can_become_child():
-            reach = lambda state: state.can_reach(spot, tod=tod)
-            return self.with_age(reach, adult=True) and self.with_age(reach, adult=False)
+            return self.can_reach(spot, age='adult', tod=tod) and self.can_reach(spot, age='child', tod=tod)
         else:
             return False
 
 
-    def as_age(self, spot, tod=None, adult=True):
-        if (self.can_become_adult() if adult else self.can_become_child()):
-            return self.with_age(lambda state: state.can_reach(spot, tod=tod), adult=adult)
+    def as_age(self, spot, age, tod=None):
+        if (self.can_become_adult() if age == 'adult' else self.can_become_child()):
+            return self.can_reach(spot, tod=tod, age=age)
         return False
-
-
-    def with_age(self, lambda_rule, adult=True):
-        # Does *not* check that we can_become the age!
-        # It's important to set the age property back to what it was originally after executing the rule here
-        self.adult = adult
-        lambda_rule_result = lambda_rule(self)
-        self.adult = None
-        return lambda_rule_result
-
-
-    def with_spot(self, lambda_rule, spot):
-        # It's important to set the spot property back to what it was originally after executing the rule here
-        original_spot = self.current_spot
-        self.current_spot = spot
-        lambda_rule_result = lambda_rule(self)
-        self.current_spot = original_spot
-        return lambda_rule_result
-
-
-    def at_day(self):
-        return self.at_tod('day')
-
-
-    def at_night(self, **kwargs):
-        return self.at_tod('night')
-
-
-    def at_dampe_time(self):
-        return self.at_tod('dampe')
-
-
-    def at_tod(self, tod):
-        # When checking for reachability of a night time GS, we force require suns song if the corresponding setting was selected
-        if self.world.logic_no_night_tokens_without_suns_song and tod == 'night' and self.current_spot and self.current_spot.type == 'GS Token':
-            return self.can_play('Suns Song')
-
-        if self.ensure_tod_access():
-            if self.tod == None:
-                return self.can_change_time_to(tod) or self.with_tod(lambda state: state.can_reach(keep_tod=True), tod)
-            else:
-                if tod == 'day':
-                    return self.tod == 'day'
-                elif tod == 'night':
-                    return self.tod == 'night' or self.tod == 'dampe'
-                elif tod == 'dampe':
-                    # If we are currently checking for reachability at night but dampe's time is required in the path, 
-                    # we should make sure the current spot can be reached at dampe's time, and not just at night
-                    return self.tod == 'dampe' or (self.tod == 'night' and self.with_tod(lambda state: state.can_reach(keep_tod=True), 'dampe'))
-                else:
-                    raise AttributeError('Unknown tod parameter: ' + str(tod))
-        return True
-
-
-    def with_tod(self, lambda_rule, tod):
-        # It's important to set the tod property back to what it was originally after executing the rule here
-        original_tod = self.tod
-        self.tod = tod
-        lambda_rule_result = lambda_rule(self)
-        self.tod = original_tod
-        return lambda_rule_result
-
-
-    def can_change_time_to(self, provide_tod):
-        # Sun's Song is only useful in cases where we need the normal day or night times (e.g. not dampe's time)
-        return (provide_tod == 'day' or provide_tod == 'night') and self.can_play('Suns Song')
 
 
     def can_provide_time(self, region, provide_tod):
@@ -217,13 +124,8 @@ class State(object):
             return True
         # Ganon's Castle Grounds is a special scene that forces time to be the start of the night (aka dampe's time)
         if region.name == 'Ganons Castle Grounds':
-            return provide_tod == 'night' or provide_tod == 'dampe'
+            return provide_tod == 'dampe'
         return False
-
-
-    def ensure_tod_access(self):
-        # Time of day only has to be ensured if we are shuffling certain entrances (e.g. interior & overworld), otherwise it's a waste of performance
-        return self.world.shuffle_interior_entrances or self.world.shuffle_overworld_entrances
 
 
     def item_name(self, location):
@@ -255,18 +157,6 @@ class State(object):
 
     def can_become_child(self):
         return self.world.starting_age == 'child' or self.has('Time Travel')
-
-
-    def is_adult(self):
-        return self.adult
-
-
-    def is_child(self):
-        return not self.adult
-
-
-    def is_starting_age(self, age=None):
-        return age == self.world.starting_age
 
 
     def can_child_attack(self, age=None):
