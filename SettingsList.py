@@ -115,12 +115,6 @@ class Scale(Setting_Info):
 
 
 logic_tricks = {
-    'Rolling Goron (Hot Rodder Goron) as Child with Strength': {
-        'name'    : 'logic_child_rolling_with_strength',
-        'tooltip' : '''\
-                    Use the bombflower on the stairs or near Medigoron.
-                    Timing is tight, especially without backwalking
-                    '''},
     'Fewer Tunic Requirements': {
         'name'    : 'logic_fewer_tunic_requirements',
         'tooltip' : '''\
@@ -147,6 +141,13 @@ logic_tricks = {
         'name'    : 'logic_child_deadhand',
         'tooltip' : '''\
                     Requires 9 sticks or 5 jump slashes.
+                    '''},
+    'Second Dampe Race as Child': {
+        'name'    : 'logic_child_dampe_race_poh',
+        'tooltip' : '''\
+                    It is possible to complete the second dampe
+                    race as child in under a minute, but it is
+                    a strict time limit.
                     '''},
     'Man on Roof without Hookshot': {
         'name'    : 'logic_man_on_roof',
@@ -251,6 +252,12 @@ logic_tricks = {
                     drain switch is in the standard form can be barely
                     reached with just the Hookshot.
                     '''},
+    'Forest Temple East Courtyard GS with Boomerang': {
+        'name'    : 'logic_forest_outdoor_east_gs',
+        'tooltip' : '''\
+                    Precise Boomerang throws can allow child to
+                    kill the Skulltula and collect the token.
+                    '''},
     'Swim Through Forest Temple MQ Well with Hookshot': {
         'name'    : 'logic_forest_well_swim',
         'tooltip' : '''\
@@ -336,6 +343,9 @@ logic_tricks = {
         'tooltip' : '''\
                     After killing the Skulltula, the Like Like
                     can be used to boost you into the token.
+                    It is possible to do this in such a way
+                    that you collect the token prior to taking
+                    damage from the Like Like.
                     '''},
     'Bottom of the Well MQ Dead Hand Freestanding Key with Boomerang': {
         'name'    : 'logic_botw_mq_dead_hand_key',
@@ -360,6 +370,13 @@ logic_tricks = {
                     To do it without taking damage is more precise.
                     Allows you to reach a GS without needing either
                     Song of Time or Hover Boots.
+                    '''},
+    'Fire Temple MQ Climb without Fire Source': {
+        'name'    : 'logic_fire_mq_climb',
+        'tooltip' : '''\
+                    You can use the Hover Boots to hover around to
+                    the climbable wall, skipping the need to use a
+                    fire source and spawn a Hookshot target.
                     '''},
     'Fire Temple MQ Chest Near Boss without Breaking Crate': {
         'name'    : 'logic_fire_mq_near_boss',
@@ -403,8 +420,16 @@ logic_tricks = {
                     Release the Bombchu with good timing so that
                     it explodes near the bottom of the pot.
                     '''},
-    'Adult Meadow Access without Saria\'s or Minuet': {
-        'name'    : 'logic_adult_meadow_access',
+    'Shadow Temple MQ Lower Huge Pit without Fire Source': {
+        'name'    : 'logic_shadow_mq_huge_pit',
+        'tooltip' : '''\
+                    Normally a frozen eye switch spawns some platforms
+                    that you can use to climb down, but there's actually
+                    a small piece of ground that you can stand on that
+                    you can just jump down to.
+                    '''},
+    'Backflip over Mido as Adult': {
+        'name'    : 'logic_mido_backflip',
         'tooltip' : '''\
                     With a specific position and angle, you can
                     backflip over Mido.
@@ -531,18 +556,44 @@ logic_tricks = {
                     If you stand on the very edge of the platform, this
                     Gold Skulltula can be obtained with only the Hookshot.
                     '''},
+    'Water Temple Serpent River GS without Iron Boots': {
+        'name'    : 'logic_water_river_gs',
+        'tooltip' : '''\
+                    Standing on the exposed ground toward the end of
+                    the river, a precise Longhost use can obtain the
+                    token. The Longshot cannot normally reach far
+                    enough to kill the Skulltula, however. You'll
+                    first have to find some other way of killing it.
+                    '''},
+    'Water Temple Entry without Iron Boots using Hookshot': {
+        'name'    : 'logic_water_hookshot_entry',
+        'tooltip' : '''\
+                    When entering Water Temple using Gold Scale instead
+                    of Iron Boots, the Longshot is usually used to be
+                    able to hit the switch and open the gate. But, by
+                    standing in a particular spot, the switch can be hit
+                    with only the reach of the Hookshot.
+                    '''},
     'Death Mountain Trail Upper Red Rock GS without Hammer': {
         'name'    : 'logic_trail_gs_upper',
         'tooltip' : '''\
                     After killing the Skulltula, the token can be collected
                     by backflipping into the rock at the correct angle.
                     '''},
-    'Death Mountain Trail Lower Red Rock GS without Hammer': {
-        'name'    : 'logic_trail_gs_lower',
+    'Death Mountain Trail Lower Red Rock GS with Hookshot': {
+        'name'    : 'logic_trail_gs_lower_hookshot',
         'tooltip' : '''\
                     After killing the Skulltula, the token can be fished
                     out of the rock without needing to destroy it, by
                     using the Hookshot in the correct way.
+                    '''},
+    'Death Mountain Trail Lower Red Rock GS with Magic Bean': {
+        'name'    : 'logic_trail_gs_lower_bean',
+        'tooltip' : '''\
+                    After killing the Skulltula, the token can be
+                    collected without needing to destroy the rock by
+                    jumping down onto it from the bean plant,
+                    midflight, with precise timing and positioning.
                     '''},
     'Death Mountain Crater Upper to Lower with Hammer': {
         'name'    : 'logic_crater_upper_to_lower',
@@ -574,7 +625,7 @@ logic_tricks = {
         'tooltip' : '''\
                     A precise jump can be used to reach this room.
                     '''},
-    'Climb Fire Temple without Strength': {
+    'Fire Temple Climb without Strength': {
         'name'    : 'logic_fire_strength',
         'tooltip' : '''\
                     A precise jump can be used to skip
@@ -640,6 +691,17 @@ logic_tricks = {
                     Skulltula somehow first. It can be killed
                     using Longshot, Bow, Bombchus or Din's Fire.
                     '''},
+    'Jabu Near Boss GS without Boomerang as Adult': {
+        'name'    : 'logic_jabu_boss_gs_adult',
+        'tooltip' : '''\
+                    You can easily get over to the door to the
+                    near boss area early with Hover Boots. The
+                    tricky part is getting through the door
+                    without being able to use a box to keep the
+                    switch pressed. One way is to quickly roll
+                    from the switch and open the door before it
+                    closes.
+                    '''},
     'Graveyard Freestanding PoH with Boomerang': {
         'name'    : 'logic_graveyard_poh',
         'tooltip' : '''\
@@ -692,16 +754,6 @@ logic_tricks = {
                     relevant if "Gerudo Training Grounds Left Side Silver Rupees
                     without Hookshot" is enabled.
                     '''},
-    'Water Temple Boss Key Jump Dive': {
-        'name'    : 'logic_water_bk_jump_dive',
-        'tooltip' : '''\
-                    Stand on the very edge of raised corridor leading from the
-                    push block room to the rolling boulder corridor. Face the
-                    gold skulltula on the waterfall and jump over the boulder
-                    corridor floor into the pool of water, swimming right once
-                    underwater. This allows access to the boss key room without
-                    Iron boots. 
-                    '''},
     'Water Temple Cracked Wall with No Additional Items': {
         'name'    : 'logic_water_cracked_wall_nothing',
         'tooltip' : '''\
@@ -729,6 +781,40 @@ logic_tricks = {
                     the torches on the bottom level. Swim through the corridor
                     and float up to the top level. This allows access to this
                     area and lower water levels without Iron Boots.
+                    The majority of the tricks that allow you to skip Iron Boots
+                    in the Water Temple are not going to be relevant unless this
+                    trick is first enabled.
+                    '''},
+    'Water Temple Boss Key Jump Dive': {
+        'name'    : 'logic_water_bk_jump_dive',
+        'tooltip' : '''\
+                    Stand on the very edge of raised corridor leading from the
+                    push block room to the rolling boulder corridor. Face the
+                    gold skulltula on the waterfall and jump over the boulder
+                    corridor floor into the pool of water, swimming right once
+                    underwater. This allows access to the boss key room without
+                    Iron boots.
+                    '''},
+    'Water Temple Dragon Statue Jump Dive': {
+        'name'    : 'logic_water_dragon_jump_dive',
+        'tooltip' : '''\
+                    If you come into the dragon statue room from the
+                    serpent river, you can jump down from above and get
+                    into the tunnel without needing either Iron Boots
+                    or a Scale. You must shoot the switch from above
+                    with the Bow, and then quickly get through the
+                    tunnel before the gate closes.
+                    '''},
+    'Water Temple Dragon Statue with Bombchu': {
+        'name'    : 'logic_water_dragon_bombchu',
+        'tooltip' : '''\
+                    You can hit the switch in the dragon statue room
+                    with a Bombchu. Use the time that the Bombchu is
+                    traveling to the switch to begin a dive (with at
+                    least Silver Scale) into the tunnel. This allows
+                    you to reach the chest without Iron Boots or
+                    coming into this room from above by going through
+                    the serpent river.
                     '''},
     'Goron City Leftmost Maze Chest with Hover Boots': {
         'name'    : 'logic_goron_city_leftmost',
@@ -791,12 +877,33 @@ logic_tricks = {
                     you also enable the Adult variant: "Dodongo's
                     Cavern Spike Trap Room Jump without Hover Boots."
                     '''},
+    'Rolling Goron (Hot Rodder Goron) as Child with Strength': {
+        'name'    : 'logic_child_rolling_with_strength',
+        'tooltip' : '''\
+                    Use the bombflower on the stairs or near Medigoron.
+                    Timing is tight, especially without backwalking.
+                    '''},
     'Goron City Spinning Pot PoH with Bombchu': {
         'name'    : 'logic_goron_city_pot',
         'tooltip' : '''\
                     A Bombchu can be used to stop the spinning
                     pot, but it can be quite finicky to get it
                     to work.
+                    '''},
+    'Gerudo Valley Crate PoH as Adult with Hover Boots': {
+        'name'    : 'logic_valley_crate_hovers',
+        'tooltip' : '''\
+                    From the far side of Gerudo Valley, a precise
+                    Hover Boots movement and jumpslash recoil can
+                    allow adult to reach the ledge with the crate
+                    PoH without needing Longshot.
+                    '''},
+    'Jump onto the Lost Woods Bridge as Adult with Nothing': {
+        'name'    : 'logic_lost_woods_bridge',
+        'tooltip' : '''\
+                    With very precise movement it's possible for
+                    adult to jump onto the bridge without needing
+                    Longshot, Hover Boots, or Bean.
                     '''},
     'Spirit Trial without Hookshot': {
         'name'    : 'logic_spirit_trial_hookshot',
@@ -820,6 +927,8 @@ logic_tricks = {
                     switch from the floor above. Then, you
                     can jump down into the hallway and make
                     through it before the gate closes.
+                    It can also be done as child, using the
+                    Slingshot instead of the Bow.
                     '''},
     'Fire Temple East Tower without Scarecrow\'s Song': {
         'name'    : 'logic_fire_scarecrow',
@@ -836,13 +945,6 @@ logic_tricks = {
                     open the Shadow Temple entrance with just Fire
                     Arrows, but you must be very quick, precise,
                     and strategic with how you take your shots.
-                    '''},
-    'Second Dampe Race as Child': {
-        'name'    : 'logic_child_dampe_race_poh',
-        'tooltip' : '''\
-                    It is possible to complete the second dampe
-                    race as child in under a minute, but it is
-                    a strict time limit.
                     '''},
 }
 
