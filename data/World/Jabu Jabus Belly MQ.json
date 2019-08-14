@@ -55,7 +55,8 @@
             "Jabu Jabus Belly MQ Near Boss Chest": "True",
             "Barinade Heart": "True",
             "Barinade": "True",
-            "GS Jabu Jabu MQ Near Boss": "True"
+            "GS Jabu Jabu MQ Near Boss": "True",
+            "Fairy Pot": "has_bottle"
         },
         "exits": {
             "Jabu Jabus Belly Main": "True"

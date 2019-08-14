@@ -22,7 +22,8 @@
                     (can_play(Song_of_Time) or is_child) and
                     (is_adult or can_use(Dins_Fire) or
                      can_use(Sticks) or can_use(Slingshot) or Kokiri_Sword)",
-            "GS Forest Temple MQ Block Push Room": "is_adult or Kokiri_Sword"
+            "GS Forest Temple MQ Block Push Room": "is_adult or Kokiri_Sword",
+            "Fairy Pot": "has_bottle and (can_play(Song_of_Time) or is_child)"
         },
         "exits": {
             "Forest Temple NW Outdoors": "can_use(Bow) or can_use(Slingshot)",
