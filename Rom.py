@@ -311,5 +311,5 @@ class Rom(BigStream):
 
             max_end = max(max_end, this_end)
             cur += 0x10
-        max_end += 0x10 - (max_end % 0x10)
+        max_end = ((max_end + 0x0F) >> 4) << 4
         return max_end
