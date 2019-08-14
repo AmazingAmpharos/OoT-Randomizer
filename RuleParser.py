@@ -1,6 +1,6 @@
 import ast
 from collections import defaultdict
-from inspect import signature
+from inspect import signature, _ParameterKind
 import logging
 import re
 
@@ -15,6 +15,10 @@ for item in item_table:
     escaped_items[re.sub(r'[\'()[\]]', '', item.replace(' ', '_'))] = item
 
 event_name = re.compile(r'\w+')
+# All generated lambdas must accept these keyword args!
+# For evaluation at a certain age (required as all rules are evaluated at a specific age)
+# or at a certain spot (can be omitted in many cases)
+# or at a specific time of day (todo after determining what does tod=None mean?)
 valid_kwargs = {'age', 'spot', 'tod'}
 
 def isliteral(expr):
@@ -248,8 +252,12 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         if not func:
             raise Exception('Parse Error: No such function State.%s' % name, self.current_spot.name, ast.dump(node, False))
         # If the function accepts any kwargs, pass them in
-        params = signature(func).parameters.keys() & valid_kwargs
-        for p in params:
+        params = signature(func).parameters
+        if any(p.kind == _ParameterKind.VAR_KEYWORD for p in params.values()):
+            pass_args = valid_kwargs
+        else:
+            pass_args = valid_kwargs & params.keys()
+        for p in pass_args:
             keywords.append(ast.keyword(arg=p, value=ast.Name(id=p, ctx=ast.Load())))
 
         return ast.Call(
@@ -349,6 +357,13 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                 left=ast.Name(id='age', ctx=ast.Load()),
                 ops=[ast.Eq()],
                 comparators=[ast.Str('adult')])
+
+
+    def is_starting_age(self, node):
+        return ast.Compare(
+                left=ast.Name(id='age', ctx=ast.Load()),
+                ops=[ast.Eq()],
+                comparators=[ast.Str(self.world.starting_age)])
 
 
     def parse_spot_rule(self, spot):

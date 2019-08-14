@@ -164,15 +164,11 @@ class State(object):
         return lambda_rule_result
 
 
-    def add_reachability(self, lambda_rule):
-        return lambda state: state.can_reach() and lambda_rule(state)
-
-
     def at_day(self):
         return self.at_tod('day')
 
 
-    def at_night(self):
+    def at_night(self, **kwargs):
         return self.at_tod('night')
 
 
@@ -269,12 +265,12 @@ class State(object):
         return not self.adult
 
 
-    def is_starting_age(self):
-        return self.adult == (self.world.starting_age == 'adult')
+    def is_starting_age(self, age=None):
+        return age == self.world.starting_age
 
 
-    def can_child_attack(self):
-        return  self.is_child() and \
+    def can_child_attack(self, age=None):
+        return  age == 'child' and \
                    (self.has_slingshot() or \
                     self.has('Boomerang') or \
                     self.has_sticks() or \
@@ -282,8 +278,8 @@ class State(object):
                     self.has('Kokiri Sword') or \
                     self.can_use('Dins Fire'))
 
-    def can_child_damage(self):
-        return  self.is_child() and \
+    def can_child_damage(self, age=None):
+        return  age == 'child' and \
                    (self.has_slingshot() or \
                     self.has_sticks() or \
                     self.has_explosives() or \
@@ -291,11 +287,11 @@ class State(object):
                     self.can_use('Dins Fire'))
 
 
-    def can_stun_deku(self):
-        return  self.is_adult() or \
-                self.can_child_attack() or \
+    def can_stun_deku(self, age=None):
+        return  age == 'adult' or \
+                self.can_child_attack(age=age) or \
                 self.has_nuts() or \
-                self.can_use('Deku Shield')
+                self.can_use('Deku Shield', age=age)
 
 
     def has_nuts(self):
@@ -322,8 +318,8 @@ class State(object):
         return self.has_any_of(('Ocarina', 'Fairy Ocarina', 'Ocarina of Time'))
 
 
-    def can_plant_bean(self):
-        return self.is_child() and self.has_any_of(('Magic Bean', 'Magic Bean Pack'))
+    def can_plant_bean(self, age=None):
+        return age == 'child' and self.has_any_of(('Magic Bean', 'Magic Bean Pack'))
 
 
     def can_play(self, song):
@@ -388,8 +384,8 @@ class State(object):
         return self.has_bombs() or (self.world.bombchus_in_logic and self.has_bombchus())
 
 
-    def can_blast_or_smash(self):
-        return self.has_explosives() or self.can_use('Hammer')
+    def can_blast_or_smash(self, age=None):
+        return self.has_explosives() or self.can_use('Hammer', age=age)
 
 
     def can_dive(self):
@@ -400,8 +396,8 @@ class State(object):
         return self.world.logic_lens != 'all' or self.has_all_of(('Magic Meter', 'Lens of Truth'))
 
 
-    def can_cut_shrubs(self):
-        return self.is_adult() or self.has_sticks() or \
+    def can_cut_shrubs(self, age=None):
+        return age == 'adult' or self.has_sticks() or \
                self.has_any_of(('Kokiri Sword', 'Boomerang')) or \
                self.has_explosives()
 
@@ -414,8 +410,8 @@ class State(object):
         return self.has_ocarina() and self.has_any_of(('Zeldas Lullaby', 'Eponas Song', 'Song of Time'))
 
 
-    def can_plant_bugs(self):
-        return self.is_child() and self.has_bugs()
+    def can_plant_bugs(self, age=None):
+        return age == 'child' and self.has_bugs()
 
 
     def has_bugs(self):
@@ -438,10 +434,13 @@ class State(object):
         return self.has('Big Poe')
 
 
-    def can_use_projectile(self):
-        return self.has_explosives() or \
-               (self.is_adult() and (self.has_bow() or self.has('Progressive Hookshot'))) or \
-               (self.is_child() and (self.has_slingshot() or self.has('Boomerang')))
+    def can_use_projectile(self, age=None):
+        if self.has_explosives():
+            return True
+        if age == 'adult':
+            return self.has_any_of(('Bow', 'Progressive Hookshot'))
+        else:
+            return age == 'child' and self.has_any_of(('Slingshot', 'Boomerang'))
 
 
     def has_projectile(self, for_age='either'):
@@ -462,7 +461,7 @@ class State(object):
         return self.world.open_forest != 'closed' or age == 'adult' or self.is_glitched or self.has('Deku Tree Clear')
 
 
-    def guarantee_trade_path(self):
+    def guarantee_trade_path(self, age=None):
         if self.world.shuffle_interior_entrances or self.world.shuffle_overworld_entrances:
             # Timers are disabled and items don't revert on save warp in those ER settings
             return True
@@ -472,7 +471,7 @@ class State(object):
                 self.world.logic_biggoron_bolero
                 # Getting to Biggoron without ER or the trick above involves either
                 # Darunia's Chamber access or clearing the boulders to get up DMT
-                or self.can_blast_or_smash()
+                or self.can_blast_or_smash(age=age)
                 or self.has('Stop Link the Goron')
             )
 
@@ -487,10 +486,12 @@ class State(object):
         return self.heart_count() >= count
 
 
-    def has_shield(self):
+    def has_shield(self, age=None):
         #The mirror shield does not count as it cannot reflect deku scrub attack
-        return ((self.is_adult() and self.has('Buy Hylian Shield')) or
-                (self.is_child() and self.has('Buy Deku Shield')))
+        if age == 'adult':
+            return self.has('Buy Hylian Shield')
+        else:
+            return age == 'child' and self.has('Buy Deku Shield')
 
 
     def heart_count(self):
@@ -502,12 +503,12 @@ class State(object):
         )
 
 
-    def has_fire_source(self):
-        return self.can_use('Dins Fire') or self.can_use('Fire Arrows')
+    def has_fire_source(self, age=None):
+        return self.can_use('Dins Fire') or self.can_use('Fire Arrows', age=age)
 
 
-    def has_fire_source_with_torch(self):
-        return self.has_fire_source() or (self.is_child() and self.has_sticks())
+    def has_fire_source_with_torch(self, age=None):
+        return self.has_fire_source() or (age == 'child' and self.has_sticks())
 
 
     def guarantee_hint(self):
@@ -532,46 +533,48 @@ class State(object):
             return False
 
 
-    def can_finish_GerudoFortress(self):
+    def can_finish_GerudoFortress(self, age=None):
         if self.world.gerudo_fortress == 'normal':
             return (self.has('Small Key (Gerudo Fortress)', 4) and
-                    (self.is_adult() or self.has('Kokiri Sword') or self.is_glitched) and
-                    (self.can_use('Bow')
-                        or self.can_use('Hookshot')
-                        or self.can_use('Hover Boots')
+                    (age == 'adult' or self.has('Kokiri Sword') or self.is_glitched) and
+                    (self.can_use('Bow', age=age)
+                        or self.can_use('Hookshot', age=age)
+                        or self.can_use('Hover Boots', age=age)
                         or self.has('Gerudo Membership Card')
                         or self.world.logic_gerudo_kitchen
                         or self.is_glitched))
         elif self.world.gerudo_fortress == 'fast':
             return (self.has('Small Key (Gerudo Fortress)', 1) and
-                    (self.is_adult() or self.has('Kokiri Sword') or self.is_glitched))
+                    (age == 'adult' or self.has('Kokiri Sword') or self.is_glitched))
         else:
             return True
 
 
-    def can_shield(self):
-        return ((self.is_adult() and (self.has('Buy Hylian Shield') or self.has('Mirror Shield')))
-                or (self.is_child() and self.has('Buy Deku Shield')))
+    def can_shield(self, age=None):
+        if age == 'adult':
+            return self.has_any_of(('Buy Hylian Shield', 'Mirror Shield'))
+        else:
+            return age == 'child' and self.has('Buy Deku Shield')
 
 
-    def can_mega(self):
-        return self.has_explosives() and self.can_shield()
+    def can_mega(self, age=None):
+        return self.has_explosives() and self.can_shield(age=age)
 
 
-    def can_isg(self):
-        return self.can_shield() and (self.is_adult() or self.has_sticks() or self.has('Kokiri Sword'))
+    def can_isg(self, age=None):
+        return self.can_shield(age=age) and (age == 'adult' or self.has_sticks() or self.has('Kokiri Sword'))
 
 
-    def can_hover(self):
-        return self.can_mega() and self.can_isg()
+    def can_hover(self, age=None):
+        return self.can_mega(age=age) and self.can_isg(age=age)
 
 
-    def can_weirdshot(self):
-        return self.can_mega() and self.can_use('Hookshot')
+    def can_weirdshot(self, age=None):
+        return self.can_mega(age=age) and self.can_use('Hookshot', age=age)
 
 
-    def can_jumpslash(self):
-        return self.is_adult() or (self.is_child() and (self.has_sticks or self.has('Kokiri Sword')))
+    def can_jumpslash(self, age=None):
+        return age == 'adult' or (age == 'child' and (self.has_sticks or self.has('Kokiri Sword')))
 
 
     # Used for fall damage and other situations where damage is unavoidable
