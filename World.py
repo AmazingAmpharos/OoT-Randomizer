@@ -32,6 +32,7 @@ class World(object):
         self.required_locations = []
         self.shop_prices = {}
         self.scrub_prices = {}
+        self.maximum_wallets = 2
         self.light_arrow_location = None
 
         self.parser = Rule_AST_Transformer(self)
@@ -108,6 +109,7 @@ class World(object):
         new_world.starting_age = self.starting_age
         new_world.can_take_damage = self.can_take_damage
         new_world.shop_prices = copy.copy(self.shop_prices)
+        new_world.maximum_wallets = self.maximum_wallets
         new_world.distribution = self.distribution
 
         new_world.regions = [region.copy(new_world) for region in self.regions]
@@ -613,6 +615,9 @@ class World(object):
                     # The max number of requred Big Poe Bottles is based on the setting
                     dupe_locations = duplicate_item_woth[world_id].get(item.name, [])
                     max_progressive = self.settings.big_poe_count
+                elif item.name == 'Progressive Wallet':
+                    dupe_locations = duplicate_item_woth[world_id].get(item.name, [])
+                    max_progressive = self.maximum_wallets
                 else:
                     dupe_locations = duplicate_item_woth[world_id].get(item.name, [])
                     max_progressive = item.special.get('progressive', 1)
