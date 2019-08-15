@@ -164,16 +164,14 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 
     for world in worlds:
         for location in world.get_filled_locations():
-            # Get the maximum amount of wallets required to purchase a major item.
-            if world.maximum_wallets < 3 and location.price and location.item.majoritem:
+            # Get the maximum amount of wallets required to purchase an advancement item.
+            if world.maximum_wallets < 3 and location.price and location.item.advancement:
                 if location.price > 500:
                     world.maximum_wallets = 3
                 elif world.maximum_wallets < 2 and location.price > 200:
                     world.maximum_wallets = 2
                 elif world.maximum_wallets < 1 and location.price > 99:
                     world.maximum_wallets = 1
-                else:
-                    world.maximum_wallets = 0
 
             # Get Light Arrow location for later usage.
             if location.item and location.item.name == 'Light Arrows':

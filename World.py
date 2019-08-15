@@ -32,7 +32,7 @@ class World(object):
         self.required_locations = []
         self.shop_prices = {}
         self.scrub_prices = {}
-        self.maximum_wallets = 2
+        self.maximum_wallets = 0
         self.light_arrow_location = None
 
         self.parser = Rule_AST_Transformer(self)
