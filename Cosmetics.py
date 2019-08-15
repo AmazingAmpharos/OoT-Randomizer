@@ -614,6 +614,9 @@ class CosmeticsLog(object):
 
         output += format_string.format(key='Default Targeting Option:', value=self.settings.default_targeting, width=padding)
         output += format_string.format(key='Background Music:', value=self.settings.background_music, width=padding)
+        output += format_string.format(key='Fanfares:', value=self.settings.fanfares, width=padding)
+        if self.settings.fanfares == 'random':
+            output += format_string.format(key='Ocarina Fanfares:', value=self.settings.ocarina_fanfares, width=padding)
 
         if 'display_dpad' in self.__dict__:
             output += format_string.format(key='Display D-Pad HUD:', value=self.display_dpad, width=padding)
@@ -657,7 +660,7 @@ class CosmeticsLog(object):
         for key, value in self.sfx.items():
             output += format_string.format(key=key+':', value=value, width=padding)
 
-        if self.settings.background_music == 'random':
+        if self.settings.background_music == 'random' or self.settings.fanfares == 'random':
             #music_padding = 1 + len(max(self.bgm.keys(), key=len))
             music_padding = 40
             output += '\n\nBackground Music:\n'
