@@ -722,10 +722,10 @@ class Distribution(object):
         return dump_obj(self.to_json())
 
 
-    def update_spoiler(self, spoiler):
+    def update_spoiler(self, spoiler, output_spoiler):
         self.file_hash = [HASH_ICONS[icon] for icon in spoiler.file_hash]
 
-        if not self.settings.create_spoiler:
+        if not output_spoiler:
             return
 
         spoiler.parse_data()
@@ -785,8 +785,8 @@ class Distribution(object):
         return Distribution(settings, src_dict)
 
 
-    def to_file(self, filename):
-        json = self.to_str(spoiler=self.settings.create_spoiler)
+    def to_file(self, filename, output_spoiler):
+        json = self.to_str(spoiler=output_spoiler)
         with open(filename, 'w') as outfile:
             outfile.write(json)
 

@@ -269,17 +269,18 @@ def patch_and_output(settings, window, spoiler, rom, start):
             logger.info("Created uncompessed rom at: %s" % output_path)
         window.update_progress(95)
 
-    settings.distribution.update_spoiler(spoiler)
-    if settings.create_spoiler:
-        window.update_status('Creating Spoiler Log')
-        spoiler_path = os.path.join(output_dir, '%s_Spoiler.json' % outfilebase)
-        settings.distribution.to_file(spoiler_path)
-        logger.info("Created spoiler log at: %s" % ('%s_Spoiler.json' % outfilebase))
-    else:
+    if not settings.create_spoiler or settings.output_settings:
+        settings.distribution.update_spoiler(spoiler, False)
         window.update_status('Creating Settings Log')
         settings_path = os.path.join(output_dir, '%s_Settings.json' % outfilebase)
-        settings.distribution.to_file(settings_path)
+        settings.distribution.to_file(settings_path, False)
         logger.info("Created settings log at: %s" % ('%s_Settings.json' % outfilebase))
+    if settings.create_spoiler:
+        settings.distribution.update_spoiler(spoiler, True)
+        window.update_status('Creating Spoiler Log')
+        spoiler_path = os.path.join(output_dir, '%s_Spoiler.json' % outfilebase)
+        settings.distribution.to_file(spoiler_path, True)
+        logger.info("Created spoiler log at: %s" % ('%s_Spoiler.json' % outfilebase))
 
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
