@@ -238,9 +238,9 @@ class Playthrough(object):
         else:
             return self._cache['adult_regions'] + self._cache['child_regions']
 
-    # Returns whether the given age can access the spot at this age and tod,
+    # Returns whether the given age can access the spot at this age,
     # by checking whether the playthrough has reached the containing region, and evaluating the spot's access rule.
-    def spot_access(self, spot, age, tod=None):
+    def spot_access(self, spot, age):
         if age == 'both':
             return (self.can_reach(spot.parent_region, age=age)
                     and spot.can_reach_simple(self.state_list[spot.world.id], age='adult')
