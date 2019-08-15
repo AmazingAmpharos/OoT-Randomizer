@@ -42,7 +42,7 @@ def assume_pool_reachable(world, entrance_pool):
             assumed_return = entrance.reverse.assume_reachable()
             if entrance.type in ('Dungeon', 'Interior', 'Grotto', 'Grave', 'SpecialGrave'):
                 # Dungeon, Grotto/Grave and Simple Interior exits shouldn't be assumed to be able to give access to their parent region
-                assumed_return.set_rule(lambda state: False)
+                assumed_return.set_rule(lambda state, **kwargs: False)
             assumed_forward.bind_two_way(assumed_return)
         assumed_pool.append(assumed_forward)
     return assumed_pool
@@ -371,7 +371,7 @@ def shuffle_random_entrances(worlds):
                 target.parent_region.exits.append(target)
             target_entrance_pools['OwlDrop'] += duplicate_overworld_targets
             for target in target_entrance_pools['OwlDrop']:
-                target.set_rule(lambda state: False)
+                target.set_rule(lambda state, **kwargs: False)
 
         # Set entrances defined in the distribution
         world.distribution.set_shuffled_entrances(worlds, entrance_pools, target_entrance_pools, locations_to_ensure_reachable, complete_itempool)
@@ -383,7 +383,7 @@ def shuffle_random_entrances(worlds):
                 temple_of_time_exit = world.get_entrance('Temple of Time -> Temple of Time Exterior')
                 links_house_exit = world.get_entrance('Links House -> Kokiri Forest')
                 for target in target_entrance_pools[pool_type]:
-                    target.set_rule(lambda state: temple_of_time_exit.connected_region == None or (links_house_exit.connected_region == None and state.is_child()))
+                    target.set_rule(lambda state, age=None, **kwargs: temple_of_time_exit.connected_region == None or (links_house_exit.connected_region == None and age == 'child'))
                 shuffle_entrance_pool(worlds, [temple_of_time_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
                 shuffle_entrance_pool(worlds, [links_house_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
 
@@ -549,7 +549,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
         for world in worlds:
             # Links House entrance should be reachable as child at some point in the seed
             links_house_entrance = get_entrance_replacing(world.get_region('Links House'), 'Kokiri Forest -> Links House')
-            if not max_playthrough.state_list[world.id].as_age(links_house_entrance, adult=False):
+            if not max_playthrough.state_list[world.id].as_age(links_house_entrance, age='child'):
                 raise EntranceShuffleError('Links House Entrance is never reachable as child')
 
             # Temple of Time entrance should be reachable as both ages at some point in the seed
@@ -569,7 +569,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
 
             # Potion Shop back door should be reachable as adult at some point in the seed
             potion_back_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Back'), 'Kakariko Village Backyard -> Kakariko Potion Shop Back')
-            if not max_playthrough.state_list[world.id].as_age(potion_back_entrance, adult=True):
+            if not max_playthrough.state_list[world.id].as_age(potion_back_entrance, age='adult'):
                 raise EntranceShuffleError('Adult Potion Back Entrance is never reachable as Adult')
 
             if  potion_front_entrance.parent_region.hint is not None and \
@@ -589,10 +589,10 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
         # In ER, Time of day logic normally considers that the player always has access to time passing from the root so this is important to ensure
         # This also means that, in order to test for this, we have to temporarily remove that assumption about root access to time passing
         for world in worlds:
-            world.get_region('Root').can_reach = lambda state: state.tod == None
+            world.get_region('Root').can_reach = lambda state, tod=None, **kwargs: tod == None
         no_time_passing_playthrough = Playthrough.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
         for world in worlds:
-            world.get_region('Root').can_reach = lambda state: True
+            world.get_region('Root').can_reach = lambda state, **kwargs: True
 
         for world in worlds:
             if not (any(region for region in no_time_passing_playthrough.reachable_regions('child') if region.time_passes and region.world == world) and

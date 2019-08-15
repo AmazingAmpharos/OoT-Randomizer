@@ -16,7 +16,7 @@ class Location(object):
         self.spot_type = 'Location'
         self.recursion_count = { 'child': 0, 'adult': 0 }
         self.staleness_count = 0
-        self.access_rule = lambda state: True
+        self.access_rule = lambda state, **kwargs: True
         self.access_rules = []
         self.item_rule = lambda location, item: True
         self.locked = False
@@ -49,7 +49,7 @@ class Location(object):
 
     def add_rule(self, lambda_rule):
         self.access_rules.append(lambda_rule)
-        self.access_rule = lambda state: all(rule(state) for rule in self.access_rules)
+        self.access_rule = lambda state, **kwargs: all(rule(state, **kwargs) for rule in self.access_rules)
 
 
     def set_rule(self, lambda_rule):
@@ -63,24 +63,25 @@ class Location(object):
         return (
             not self.is_disabled() and 
             self.can_fill_fast(item) and
-            (not check_access or state.can_reach(self)))
+            (not check_access or state.playthrough.spot_access(self, 'either')))
 
 
     def can_fill_fast(self, item, manual=False):
         return (self.parent_region.can_fill(item, manual) and self.item_rule(self, item))
 
 
-    def can_reach(self, state):
+    # tod is passed explicitly only when we want to test for it
+    def can_reach(self, state, age=None, tod=None):
         if self.is_disabled():
             return False
 
-        return state.with_spot(self.access_rule, spot=self) and state.can_reach(self.parent_region, keep_tod=True)
+        return self.access_rule(state, spot=self, age=age, tod=tod) and state.can_reach(self.parent_region, age=age, tod=tod)
 
 
-    def can_reach_simple(self, state):
+    def can_reach_simple(self, state, age=None):
         # todo: raw evaluation of access_rule? requires nonrecursive tod checks in state
         # and GS Token and Gossip Stone Fairy have special checks as well
-        return state.with_spot(self.access_rule, spot=self)
+        return self.access_rule(state, age=age, spot=self)
 
 
     def is_disabled(self):
