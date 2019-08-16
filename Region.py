@@ -1,4 +1,4 @@
-from enum import Enum, IntFlag, auto, unique
+from enum import Enum, unique
 
 
 @unique
@@ -16,11 +16,11 @@ class RegionType(Enum):
         return self in (RegionType.Interior, RegionType.Dungeon, RegionType.Grotto)
 
 
-@unique
-class TimeOfDay(IntFlag):
+# Pretends to be an enum, but when the values are raw ints, it's much faster
+class TimeOfDay(object):
     NONE = 0
-    DAY = auto()
-    DAMPE = auto()
+    DAY = 1
+    DAMPE = 2
     ALL = DAY | DAMPE
 
 

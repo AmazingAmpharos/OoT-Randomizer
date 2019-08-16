@@ -126,7 +126,7 @@ class Playthrough(object):
         for exit in exit_queue:
             # We don't look for new regions, just spreading the tod to our existing regions
             if exit.connected_region in regions and tod & ~regions[exit.connected_region]:
-                if validate(exit, tod=tod.name):
+                if validate(exit, tod=tod):
                     regions[exit.connected_region] |= tod
                     if exit.connected_region == goal_region:
                         return True
@@ -236,15 +236,15 @@ class Playthrough(object):
     # Use the cache in the playthrough to determine region reachability.
     def can_reach(self, region, age=None, tod=TimeOfDay.NONE):
         if age == 'adult':
-            if tod == TimeOfDay.NONE:
-                return region in self._cache['adult_regions']
-            else:
+            if tod:
                 return region in self._cache['adult_regions'] and (self._cache['adult_regions'][region] & tod or Playthrough._expand_tod_regions(self._cache['adult_regions'], region, self.validate_adult, tod))
-        elif age == 'child':
-            if tod == TimeOfDay.NONE:
-                return region in self._cache['child_regions']
             else:
+                return region in self._cache['adult_regions']
+        elif age == 'child':
+            if tod:
                 return region in self._cache['child_regions'] and (self._cache['child_regions'][region] & tod or Playthrough._expand_tod_regions(self._cache['child_regions'], region, self.validate_child, tod))
+            else:
+                return region in self._cache['child_regions']
         elif age == 'both':
             return self.can_reach(region, age='adult', tod=tod) and self.can_reach(region, age='child', tod=tod)
         else:
