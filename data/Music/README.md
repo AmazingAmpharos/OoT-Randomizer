@@ -8,6 +8,8 @@ C
 
 Additionally, if the sequence is to be shuffled with the non-looping fanfares, a third line must exist containing the word 'fanfare'.
 
+Any sub-directories in this folder will also be read from, but the .meta file and matching .seq file must be in the same folder.
+
 Sequences are in the seq64 format. Other known games that use this format and may be compatible are (list from https://github.com/sauraen/seq64)
 ```
 Super Mario 64
