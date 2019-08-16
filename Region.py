@@ -36,7 +36,6 @@ class Region(object):
         self.world = None
         self.hint = None
         self.spot_type = 'Region'
-        self.recursion_count = { 'child': 0, 'adult': 0 }
         self.price = None
         self.world = None
         self.time_passes = False

@@ -9,7 +9,6 @@ class Entrance(object):
         self.world = parent.world
         self.connected_region = None
         self.spot_type = 'Entrance'
-        self.recursion_count = { 'child': 0, 'adult': 0 }
         self.access_rule = lambda state, **kwargs: True
         self.access_rules = []
         self.reverse = None

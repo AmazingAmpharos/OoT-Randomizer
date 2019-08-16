@@ -15,7 +15,6 @@ class Location(object):
         self.type = type
         self.scene = scene
         self.spot_type = 'Location'
-        self.recursion_count = { 'child': 0, 'adult': 0 }
         self.staleness_count = 0
         self.access_rule = lambda state, **kwargs: True
         self.access_rules = []
@@ -80,8 +79,6 @@ class Location(object):
 
 
     def can_reach_simple(self, state, age=None):
-        # todo: raw evaluation of access_rule? requires nonrecursive tod checks in state
-        # and GS Token and Gossip Stone Fairy have special checks as well
         return self.access_rule(state, age=age, spot=self)
 
 
