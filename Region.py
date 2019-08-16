@@ -64,7 +64,7 @@ class Region(object):
 
 
     # tod is passed explicitly only when we want to test it
-    def can_reach(self, state, age=None, tod=None):
+    def can_reach(self, state, age=None, tod=TimeOfDay.NONE):
         for entrance in self.entrances:
             if entrance.can_reach(state, age=age, tod=tod):
                 return True

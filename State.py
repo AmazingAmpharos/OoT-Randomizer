@@ -58,7 +58,7 @@ class State(object):
             return spot
 
 
-    def can_reach(self, spot=None, resolution_hint='Region', tod=None, age=None):
+    def can_reach(self, spot=None, resolution_hint='Region', tod=TimeOfDay.NONE, age=None):
         assert spot != None
         spot = self.get_spot(spot, resolution_hint)
 
@@ -66,9 +66,9 @@ class State(object):
         if age == None:
             return self.can_reach(spot, tod=tod, age='adult') or self.can_reach(spot, tod=tod, age='child')
 
-        if tod == 'all':
+        if tod == TimeOfDay.ALL:
             # If a spot is reachable at day and at dampe's time, then it's reachable at all times of day
-            return self.can_reach(spot, age=age, tod=1) and self.can_reach(spot, age=age, tod=2)
+            return self.can_reach(spot, age=age, tod=TimeOfDay.DAY) and self.can_reach(spot, age=age, tod=TimeOfDay.DAMPE)
 
         if not isinstance(spot, Region):
             return spot.can_reach(self, age=age, tod=tod)
@@ -108,14 +108,14 @@ class State(object):
         return can_reach
 
 
-    def as_both(self, spot, tod=None):
+    def as_both(self, spot, tod=TimeOfDay.NONE):
         if self.can_become_adult() and self.can_become_child():
             return self.can_reach(spot, age='adult', tod=tod) and self.can_reach(spot, age='child', tod=tod)
         else:
             return False
 
 
-    def as_age(self, spot, age, tod=None):
+    def as_age(self, spot, age, tod=TimeOfDay.NONE):
         if (self.can_become_adult() if age == 'adult' else self.can_become_child()):
             return self.can_reach(spot, tod=tod, age=age)
         return False

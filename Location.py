@@ -1,4 +1,5 @@
 from LocationList import location_table
+from Region import TimeOfDay
 from enum import Enum
 
 
@@ -71,7 +72,7 @@ class Location(object):
 
 
     # tod is passed explicitly only when we want to test for it
-    def can_reach(self, state, age=None, tod=None):
+    def can_reach(self, state, age=None, tod=TimeOfDay.NONE):
         if self.is_disabled():
             return False
 

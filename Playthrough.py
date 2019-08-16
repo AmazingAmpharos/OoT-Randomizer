@@ -93,10 +93,10 @@ class Playthrough(object):
 
     # simplified exit.can_reach(state), bypasses can_become_age
     # which we've already accounted for
-    def validate_child(self, exit, tod=None):
+    def validate_child(self, exit, tod=TimeOfDay.NONE):
         return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='child', tod=tod)
 
-    def validate_adult(self, exit, tod=None):
+    def validate_adult(self, exit, tod=TimeOfDay.NONE):
         return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='adult', tod=tod)
 
 

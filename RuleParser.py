@@ -7,6 +7,7 @@ import re
 from Item import MakeEventItem
 from ItemList import item_table
 from Location import Location
+from Region import TimeOfDay
 from State import State
 
 
@@ -18,8 +19,15 @@ event_name = re.compile(r'\w+')
 # All generated lambdas must accept these keyword args!
 # For evaluation at a certain age (required as all rules are evaluated at a specific age)
 # or at a certain spot (can be omitted in many cases)
-# or at a specific time of day (todo after determining what does tod=None mean?)
-valid_kwargs = {'age', 'spot', 'tod'}
+# or at a specific time of day (often unused)
+kwarg_defaults = {
+    'age': None,
+    'spot': None,
+    'tod': TimeOfDay.NONE,
+}
+
+allowed_globals = {'TimeOfDay': TimeOfDay}
+
 
 def isliteral(expr):
     return isinstance(expr, (ast.Num, ast.Str, ast.Bytes, ast.NameConstant))
@@ -52,7 +60,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
             return ast.parse('%r' % self.world.__dict__[node.id], mode='eval').body
         elif node.id in State.__dict__:
             return self.make_call(node, node.id, [], [])
-        elif node.id in valid_kwargs:
+        elif node.id in kwarg_defaults or node.id in allowed_globals:
             return node
         elif event_name.match(node.id):
             self.events.add(node.id.replace('_', ' '))
@@ -249,7 +257,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     # Generates an ast.Call invoking the given State function 'name',
     # providing given args and keywords, and adding in additional
-    # keyword args from valid_kwargs (age, etc.)
+    # keyword args from kwarg_defaults (age, etc.)
     def make_call(self, node, name, args, keywords):
         func = getattr(State, name, None)
         if not func:
@@ -257,9 +265,9 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         # If the function accepts any kwargs, pass them in
         params = signature(func).parameters
         if any(p.kind == _ParameterKind.VAR_KEYWORD for p in params.values()):
-            pass_args = valid_kwargs
+            pass_args = kwarg_defaults.keys()
         else:
-            pass_args = valid_kwargs & params.keys()
+            pass_args = kwarg_defaults.keys() & params.keys()
         for p in pass_args:
             keywords.append(ast.keyword(arg=p, value=ast.Name(id=p, ctx=ast.Load())))
 
@@ -313,8 +321,9 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     def make_access_rule(self, body):
-        kwargs = [ast.arg(arg=k) for k in sorted(valid_kwargs)]
-        kwd = [ast.NameConstant(None) for k in valid_kwargs]
+        # requires consistent iteration on dicts
+        kwargs = list(map(ast.arg, kwarg_defaults.keys()))
+        kwd = list(map(ast.Constant, kwarg_defaults.values()))
         return eval(compile(
             ast.fix_missing_locations(
                 ast.Expression(ast.Lambda(
@@ -325,7 +334,9 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                         kwonlyargs=kwargs,
                         kw_defaults=kwd),
                     body=body))),
-            '<string>', 'eval'))
+            '<string>', 'eval'),
+            # globals/locals. if undefined, everything in the namespace *now* would be allowed
+            allowed_globals)
 
 
     ## Handlers for specific internal functions used in the json logic.
@@ -372,25 +383,25 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     def at_day(self, node):
         if self.world.ensure_tod_access:
-            # tod == 'day' or (tod == None and (ss or find a path from a provider))
-            # obviously faster than constructing this expression by hand
-            return ast.parse("(tod & 1) if tod != None else (state.can_play('Suns Song') or state.can_reach(age=age, spot=spot.parent_region, tod=1))", mode='eval').body
+            # tod has DAY or (tod == NONE and (ss or find a path from a provider))
+            # parsing is better than constructing this expression by hand
+            return ast.parse("(tod & TimeOfDay.DAY) if tod else (state.can_play('Suns Song') or state.playthrough.can_reach(spot.parent_region, age=age, tod=TimeOfDay.DAY))", mode='eval').body
         return ast.NameConstant(True)
 
     def at_dampe_time(self, node):
         if self.world.ensure_tod_access:
-            # tod == 'dampe' or (tod == None and (find a path from a provider))
-            # obviously faster than constructing this expression by hand
-            return ast.parse("(tod & 2) if tod != None else state.can_reach(age=age, spot=spot.parent_region, tod=2)", mode='eval').body
+            # tod has DAMPE or (tod == NONE and (find a path from a provider))
+            # parsing is better than constructing this expression by hand
+            return ast.parse("(tod & TimeOfDay.DAMPE) if tod else state.playthrough.can_reach(spot.parent_region, age=age, tod=TimeOfDay.DAMPE)", mode='eval').body
         return ast.NameConstant(True)
 
     def at_night(self, node):
         if self.current_spot.type == 'GS Token' and self.world.logic_no_night_tokens_without_suns_song:
             return self.make_call(node, 'can_play', [ast.Str('Suns Song')], [])
         if self.world.ensure_tod_access:
-            # tod == 'dampe' or (tod == None and (ss or find a path from a provider))
-            # obviously faster than constructing this expression by hand
-            return ast.parse("(tod & 2) if tod != None else (state.can_play('Suns Song') or state.can_reach(age=age, spot=spot.parent_region, tod=2))", mode='eval').body
+            # tod has DAMPE or (tod == NONE and (ss or find a path from a provider))
+            # parsing is better than constructing this expression by hand
+            return ast.parse("(tod & TimeOfDay.DAMPE) if tod else (state.can_play('Suns Song') or state.playthrough.can_reach(spot.parent_region, age=age, tod=TimeOfDay.DAMPE))", mode='eval').body
         return ast.NameConstant(True)
 
 
