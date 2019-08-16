@@ -2,6 +2,8 @@ import copy
 from collections import defaultdict
 import itertools
 
+from Region import TimeOfDay
+
 
 class Playthrough(object):
 
@@ -25,8 +27,8 @@ class Playthrough(object):
                 'child_queue': list(exit for region in root_regions for exit in region.exits),
                 'adult_queue': list(exit for region in root_regions for exit in region.exits),
                 'visited_locations': set(),
-                'child_regions': set(root_regions),
-                'adult_regions': set(root_regions),
+                'child_regions': {region: TimeOfDay.NONE for region in root_regions},
+                'adult_regions': {region: TimeOfDay.NONE for region in root_regions},
             }
             self.cached_spheres = [self._cache]
             self.next_sphere()
@@ -91,11 +93,11 @@ class Playthrough(object):
 
     # simplified exit.can_reach(state), bypasses can_become_age
     # which we've already accounted for
-    def validate_child(self, exit):
-        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='child')
+    def validate_child(self, exit, tod=None):
+        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='child', tod=tod)
 
-    def validate_adult(self, exit):
-        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='adult')
+    def validate_adult(self, exit, tod=None):
+        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='adult', tod=tod)
 
 
     # Internal to the iteration. Modifies the exit_queue, region_set. 
@@ -107,11 +109,30 @@ class Playthrough(object):
         for exit in exit_queue:
             if exit.connected_region and exit.connected_region not in region_set:
                 if validate(exit):
-                    region_set.add(exit.connected_region)
+                    region_set[exit.connected_region] = exit.connected_region.provides_time
+                    region_set[exit.world.get_region('Root')] |= exit.connected_region.provides_time
                     exit_queue.extend(exit.connected_region.exits)
                 else:
                     failed.append(exit)
         return failed
+
+
+    @staticmethod
+    def _expand_tod_regions(regions, goal_region, validate, tod):
+        # grab all the exits from the regions with the given tod in the same world as our goal.
+        # we want those that go to existing regions without the tod, until we reach the goal.
+        has_tod_world = lambda region, rtod: rtod & tod and region.world == goal_region.world
+        exit_queue = list(itertools.chain.from_iterable(region.exits for region, _ in filter(has_tod_world, regions.items())))
+        for exit in exit_queue:
+            # We don't look for new regions, just spreading the tod to our existing regions
+            if exit.connected_region in regions and tod & ~regions[exit.connected_region]:
+                if validate(exit, tod=tod):
+                    regions[exit.connected_region] |= tod
+                    if exit.connected_region == goal_region:
+                        return True
+                    exit_queue.extend(exit.connected_region.exits)
+        return False
+
 
     # Explores available exits, updating relevant entries in the cache in-place.
     # Returns the set of regions accessible in the new sphere as child,
@@ -232,11 +253,11 @@ class Playthrough(object):
     # Use the cache in the playthrough to get all reachable regions.
     def reachable_regions(self, age=None):
         if age == 'adult':
-            return self._cache['adult_regions']
+            return self._cache['adult_regions'].keys()
         elif age == 'child':
-            return self._cache['child_regions']
+            return self._cache['child_regions'].keys()
         else:
-            return self._cache['adult_regions'] + self._cache['child_regions']
+            return self._cache['adult_regions'].keys() + self._cache['child_regions'].keys()
 
     # Returns whether the given age can access the spot at this age,
     # by checking whether the playthrough has reached the containing region, and evaluating the spot's access rule.

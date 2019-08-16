@@ -50,8 +50,8 @@ class Entrance(object):
         return self.access_rule(state, spot=self, age=age, tod=tod) and state.can_reach(self.parent_region, age=age, tod=tod)
 
 
-    def can_reach_simple(self, state, age=None):
-        return self.access_rule(state, age=age, spot=self)
+    def can_reach_simple(self, state, age=None, tod=None):
+        return self.access_rule(state, spot=self, age=age, tod=tod)
 
 
     def connect(self, region):

@@ -1,4 +1,4 @@
-from enum import Enum, unique
+from enum import Enum, Flag, auto, unique
 
 
 @unique
@@ -14,6 +14,14 @@ class RegionType(Enum):
     def is_indoors(self):
         """Shorthand for checking if Interior or Dungeon"""
         return self in (RegionType.Interior, RegionType.Dungeon, RegionType.Grotto)
+
+
+@unique
+class TimeOfDay(Flag):
+    NONE = 0
+    DAY = auto()
+    DAMPE = auto()
+    ALL = DAY | DAMPE
 
 
 class Region(object):
@@ -32,6 +40,7 @@ class Region(object):
         self.price = None
         self.world = None
         self.time_passes = False
+        self.provides_time = TimeOfDay.NONE
         self.scene = None
 
 
@@ -43,6 +52,7 @@ class Region(object):
         new_region.can_reach = self.can_reach
         new_region.hint = self.hint
         new_region.time_passes = self.time_passes
+        new_region.provides_time = self.provides_time
         new_region.scene = self.scene
 
         if self.dungeon:
