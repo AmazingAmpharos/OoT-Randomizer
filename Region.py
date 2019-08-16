@@ -1,4 +1,4 @@
-from enum import Enum, Flag, auto, unique
+from enum import Enum, IntFlag, auto, unique
 
 
 @unique
@@ -17,7 +17,7 @@ class RegionType(Enum):
 
 
 @unique
-class TimeOfDay(Flag):
+class TimeOfDay(IntFlag):
     NONE = 0
     DAY = auto()
     DAMPE = auto()

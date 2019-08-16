@@ -4,7 +4,7 @@ import itertools
 
 from Item import ItemInfo
 from Playthrough import Playthrough
-from Region import Region
+from Region import Region, TimeOfDay
 
 
 
@@ -68,10 +68,15 @@ class State(object):
 
         if tod == 'all':
             # If a spot is reachable at day and at dampe's time, then it's reachable at all times of day
-            return self.can_reach(spot, age=age, tod='day') and self.can_reach(spot, age=age, tod='dampe')
+            return self.can_reach(spot, age=age, tod='DAY') and self.can_reach(spot, age=age, tod='DAMPE')
 
         if not isinstance(spot, Region):
             return spot.can_reach(self, age=age, tod=tod)
+
+        if tod != None:
+            return self.playthrough.can_reach(spot, age=age, tod=getattr(TimeOfDay, tod))
+
+        return self.playthrough.can_reach(spot, age=age)
 
         # If we are currently checking for reachability with a specific time of day and the needed time can be obtained here,
         # we want to continue the reachability test without a time of day, to make sure we could actually get there

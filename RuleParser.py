@@ -374,14 +374,14 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         if self.world.ensure_tod_access:
             # tod == 'day' or (tod == None and (ss or find a path from a provider))
             # obviously faster than constructing this expression by hand
-            return ast.parse("(tod == 'day') if tod != None else (state.can_play('Suns Song') or state.can_reach(age=age, spot=spot.parent_region, tod='day'))", mode='eval').body
+            return ast.parse("(tod == 'DAY') if tod != None else (state.can_play('Suns Song') or state.can_reach(age=age, spot=spot.parent_region, tod='DAY'))", mode='eval').body
         return ast.NameConstant(True)
 
     def at_dampe_time(self, node):
         if self.world.ensure_tod_access:
             # tod == 'dampe' or (tod == None and (find a path from a provider))
             # obviously faster than constructing this expression by hand
-            return ast.parse("(tod == 'dampe') if tod != None else state.can_reach(age=age, spot=spot.parent_region, tod='dampe')", mode='eval').body
+            return ast.parse("(tod == 'DAMPE') if tod != None else state.can_reach(age=age, spot=spot.parent_region, tod='DAMPE')", mode='eval').body
         return ast.NameConstant(True)
 
     def at_night(self, node):
@@ -390,7 +390,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         if self.world.ensure_tod_access:
             # tod == 'dampe' or (tod == None and (ss or find a path from a provider))
             # obviously faster than constructing this expression by hand
-            return ast.parse("(tod == 'dampe') if tod != None else (state.can_play('Suns Song') or state.can_reach(age=age, spot=spot.parent_region, tod='dampe'))", mode='eval').body
+            return ast.parse("(tod == 'DAMPE') if tod != None else (state.can_play('Suns Song') or state.can_reach(age=age, spot=spot.parent_region, tod='DAMPE'))", mode='eval').body
         return ast.NameConstant(True)
 
 

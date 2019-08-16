@@ -121,12 +121,12 @@ class Playthrough(object):
     def _expand_tod_regions(regions, goal_region, validate, tod):
         # grab all the exits from the regions with the given tod in the same world as our goal.
         # we want those that go to existing regions without the tod, until we reach the goal.
-        has_tod_world = lambda region, rtod: rtod & tod and region.world == goal_region.world
+        has_tod_world = lambda regtod: regtod[1] & tod and regtod[0].world == goal_region.world
         exit_queue = list(itertools.chain.from_iterable(region.exits for region, _ in filter(has_tod_world, regions.items())))
         for exit in exit_queue:
             # We don't look for new regions, just spreading the tod to our existing regions
             if exit.connected_region in regions and tod & ~regions[exit.connected_region]:
-                if validate(exit, tod=tod):
+                if validate(exit, tod=tod.name):
                     regions[exit.connected_region] |= tod
                     if exit.connected_region == goal_region:
                         return True
@@ -234,16 +234,23 @@ class Playthrough(object):
 
 
     # Use the cache in the playthrough to determine region reachability.
-    def can_reach(self, region, age=None):
+    def can_reach(self, region, age=None, tod=TimeOfDay.NONE):
         if age == 'adult':
-            return region in self._cache['adult_regions']
+            if tod == TimeOfDay.NONE:
+                return region in self._cache['adult_regions']
+            else:
+                return region in self._cache['adult_regions'] and (self._cache['adult_regions'][region] & tod or Playthrough._expand_tod_regions(self._cache['adult_regions'], region, self.validate_adult, tod))
         elif age == 'child':
-            return region in self._cache['child_regions']
+            if tod == TimeOfDay.NONE:
+                return region in self._cache['child_regions']
+            else:
+                return region in self._cache['child_regions'] and (self._cache['child_regions'][region] & tod or Playthrough._expand_tod_regions(self._cache['child_regions'], region, self.validate_child, tod))
         elif age == 'both':
-            return region in self._cache['adult_regions'] and region in self._cache['child_regions']
+            return self.can_reach(region, age='adult', tod=tod) and self.can_reach(region, age='child', tod=tod)
         else:
             # treat None as either
-            return region in self._cache['adult_regions'] or region in self._cache['child_regions']
+            return self.can_reach(region, age='adult', tod=tod) or self.can_reach(region, age='child', tod=tod)
+
 
     # Use the cache in the playthrough to determine location reachability.
     # Only works for locations that had progression items...
