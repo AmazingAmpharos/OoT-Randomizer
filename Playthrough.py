@@ -20,7 +20,8 @@ class Playthrough(object):
         else:
             root_regions = [state.world.get_region('Root') for state in self.state_list]
             # The cache is a dict with 5 values:
-            #  child_regions, adult_regions: sets of Region, all the regions in that sphere
+            #  child_regions, adult_regions: maps of Region -> tod, all the regions in that sphere
+            #    values are lazily-determined tod flags (see TimeOfDay).
             #  child_queue, adult_queue: queue of Entrance, all the exits to try next sphere
             #  visited_locations: set of Locations visited in or before that sphere.
             self._cache = {
@@ -100,17 +101,17 @@ class Playthrough(object):
         return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='adult', tod=tod)
 
 
-    # Internal to the iteration. Modifies the exit_queue, region_set. 
+    # Internal to the iteration. Modifies the exit_queue, regions. 
     # Returns a queue of the exits whose access rule failed, 
     # as a cache for the exits to try on the next iteration.
     @staticmethod
-    def _expand_regions(exit_queue, region_set, validate):
+    def _expand_regions(exit_queue, regions, validate):
         failed = []
         for exit in exit_queue:
-            if exit.connected_region and exit.connected_region not in region_set:
+            if exit.connected_region and exit.connected_region not in regions:
                 if validate(exit):
-                    region_set[exit.connected_region] = exit.connected_region.provides_time
-                    region_set[exit.world.get_region('Root')] |= exit.connected_region.provides_time
+                    regions[exit.connected_region] = exit.connected_region.provides_time
+                    regions[exit.world.get_region('Root')] |= exit.connected_region.provides_time
                     exit_queue.extend(exit.connected_region.exits)
                 else:
                     failed.append(exit)
@@ -135,8 +136,8 @@ class Playthrough(object):
 
 
     # Explores available exits, updating relevant entries in the cache in-place.
-    # Returns the set of regions accessible in the new sphere as child,
-    # the set of regions accessible as adult, and the set of visited locations.
+    # Returns the regions accessible in the new sphere as child,
+    # the regions accessible as adult, and the set of visited locations.
     # These are references to the new entry in the cache, so they can be modified
     # directly.
     def next_sphere(self):
