@@ -443,7 +443,7 @@ def cosmetic_patch(settings, window=dummy_window()):
     window.update_status('Creating Patch File')
 
     # base the new patch file on the base patch file
-    rom.original = patched_base_rom
+    rom.original.buffer = patched_base_rom
 
     rom.update_crc()
     create_patch_file(rom, patchfilename)
