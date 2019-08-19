@@ -1,4 +1,5 @@
 import io
+import itertools
 import json
 import logging
 import os
@@ -8,7 +9,7 @@ import subprocess
 import random
 import copy
 from Utils import is_bundled, subprocess_args, local_path, data_path, default_output_path, get_version_bytes
-from ntype import BigStream
+from ntype import BigStream, uint32
 from version import __version__
 
 DMADATA_START = 0x7430
@@ -143,10 +144,13 @@ class Rom(BigStream):
         t1 = t2 = t3 = t4 = t5 = t6 = 0xDF26F436
         u32 = 0xFFFFFFFF
 
-        words  = list(map(self.read_int32, range(0x1000, 0x101000, 4)))
-        words2 = list(map(self.read_int32, range(0x750,  0x850,    4)))
+        m1 = self.read_bytes(0x1000, 0x100000)
+        words = (map(uint32.value, zip(m1[0::4], m1[1::4], m1[2::4], m1[3::4])))
 
-        for cur, d in enumerate(words):
+        m2 = self.read_bytes(0x750, 0x100)
+        words2 = (map(uint32.value, zip(m2[0::4], m2[1::4], m2[2::4], m2[3::4])))
+
+        for d, d2 in zip(words, itertools.cycle(words2)):
             if ((t6 + d) & u32) < t6:
                 t4 += 1
 
@@ -161,8 +165,7 @@ class Rom(BigStream):
             else:
                 t2 ^= t6 ^ d
 
-            data2 = words2[cur & 0x3F]
-            t1 += data2 ^ d
+            t1 += d2 ^ d
             t1 &= u32
 
         crc0 = t6 ^ t4 ^ t3
