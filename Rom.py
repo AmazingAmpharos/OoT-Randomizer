@@ -151,25 +151,26 @@ class Rom(BigStream):
         words2 = (map(uint32.value, zip(m2[0::4], m2[1::4], m2[2::4], m2[3::4])))
 
         for d, d2 in zip(words, itertools.cycle(words2)):
+            # keep t2 and t6 in u32 for comparisons; others can wait to be truncated
             if ((t6 + d) & u32) < t6:
                 t4 += 1
 
             t6 = (t6+d) & u32
             t3 ^= d
             shift = d & 0x1F
-            r = ((d << shift) | (d >> (32 - shift))) & u32
-            t5 = (t5 + r) & u32
+            r = ((d << shift) | (d >> (32 - shift)))
+            t5 += r
 
             if t2 > d:
-                t2 ^= r
+                t2 ^= r & u32
             else:
                 t2 ^= t6 ^ d
 
             t1 += d2 ^ d
-            t1 &= u32
 
-        crc0 = t6 ^ t4 ^ t3
-        crc1 = t5 ^ t2 ^ t1
+        crc0 = (t6 ^ t4 ^ t3) & u32
+        crc1 = (t5 ^ t2 ^ t1) & u32
+        #print(hex(crc0), hex(crc1))
 
         # Finally write the crc back to the rom
         self.write_int32s(0x10, [crc0, crc1])
