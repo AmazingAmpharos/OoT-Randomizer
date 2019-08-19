@@ -161,8 +161,8 @@ class BigStream(object):
     def write_bytes(self, startaddress, values):
         if startaddress == None:
             startaddress = self.last_address
-        for i, value in enumerate(values):
-            self.write_byte(startaddress + i, value)
+        self.last_address = startaddress + len(values)
+        self.buffer[startaddress:startaddress + len(values)] = values
 
 
     def write_int16s(self, startaddress, values):
