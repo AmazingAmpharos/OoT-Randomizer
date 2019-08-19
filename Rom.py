@@ -145,10 +145,10 @@ class Rom(BigStream):
         u32 = 0xFFFFFFFF
 
         m1 = self.read_bytes(0x1000, 0x100000)
-        words = (map(uint32.value, zip(m1[0::4], m1[1::4], m1[2::4], m1[3::4])))
+        words = map(uint32.value, zip(m1[0::4], m1[1::4], m1[2::4], m1[3::4]))
 
         m2 = self.read_bytes(0x750, 0x100)
-        words2 = (map(uint32.value, zip(m2[0::4], m2[1::4], m2[2::4], m2[3::4])))
+        words2 = map(uint32.value, zip(m2[0::4], m2[1::4], m2[2::4], m2[3::4]))
 
         for d, d2 in zip(words, itertools.cycle(words2)):
             # keep t2 and t6 in u32 for comparisons; others can wait to be truncated
