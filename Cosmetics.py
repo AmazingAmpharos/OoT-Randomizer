@@ -229,6 +229,9 @@ def patch_tunic_colors(rom, settings, log, symbols):
         else:
             color = list(int(tunic_option[i:i+2], 16) for i in (0, 2 ,4))
             tunic_option = 'Custom'
+        # "Weird" weirdshots will crash if the Kokiri Tunic Green value is > 0x90. Brickwall it.
+        if settings.logic_rules != 'glitchless' and tunic == 'Kokiri Tunic':
+            color[1] = min(color[1],0x90)
         rom.write_bytes(address, color)
 
         # patch the tunic icon
