@@ -5,7 +5,6 @@ class Entrance(object):
         self.parent_region = parent
         self.world = parent.world
         self.connected_region = None
-        self.spot_type = 'Entrance'
         self.recursion_count = { 'child': 0, 'adult': 0 }
         self.access_rule = lambda state, **kwargs: True
         self.access_rules = []
@@ -21,7 +20,6 @@ class Entrance(object):
     def copy(self, new_region):
         new_entrance = Entrance(self.name, new_region)
         new_entrance.connected_region = self.connected_region.name
-        new_entrance.spot_type = self.spot_type
         new_entrance.access_rule = self.access_rule
         new_entrance.access_rules = list(self.access_rules)
         new_entrance.reverse = self.reverse

@@ -27,7 +27,6 @@ class Region(object):
         self.dungeon = None
         self.world = None
         self.hint = None
-        self.spot_type = 'Region'
         self.recursion_count = { 'child': 0, 'adult': 0 }
         self.price = None
         self.world = None
@@ -38,7 +37,6 @@ class Region(object):
     def copy(self, new_world):
         new_region = Region(self.name, self.type)
         new_region.world = new_world
-        new_region.spot_type = self.spot_type
         new_region.price = self.price
         new_region.can_reach = self.can_reach
         new_region.hint = self.hint
