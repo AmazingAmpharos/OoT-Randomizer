@@ -1079,7 +1079,7 @@ setting_infos = [
     Checkbutton('cosmetics_only', None),
     Checkbutton('check_version', None),
     Checkbutton('output_settings', None),
-    Setting_Info('distribution_file', str, "Distribution File", "Fileinput", False, {},
+    Setting_Info('distribution_file', str, "Plandomizer File", "Fileinput", False, {},
         gui_params = {
             "file_types": [
                 {
