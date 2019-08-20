@@ -8,8 +8,8 @@ This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
   * [Settings](#settings)
   * [Known Issues](#known-issues)
 * [Changelog](#changelog)
-  * [5.0](#5.0)
-  * [4.0](#4.0)
+  * [5.0](#50)
+  * [4.0](#40)
 
 ## Installation
 
