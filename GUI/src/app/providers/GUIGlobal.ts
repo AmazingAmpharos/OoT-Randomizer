@@ -101,6 +101,30 @@ export class GUIGlobal {
     this.electronEvents.push(maximizedEvent);
   }
 
+  createWebEvents() { //Web only
+
+    var self = this;
+
+    (<any>window).addEventListener('emscripten_cache_file_found', function (event) {
+
+      let detail = event.detail;
+
+      //Update settings entry for cached file and then refresh GUI
+      if (detail) {
+
+        if (detail.name == "ROM")
+          self.generator_settingsMap["rom"] = "<using cached ROM>";
+        else if (detail.name == "WAD")
+          self.generator_settingsMap["web_wad_file"] = "<using cached WAD>";
+        else if (detail.name == "COMMONKEY")
+          self.generator_settingsMap["web_common_key_file"] = "<using cached common key>";
+
+        self.globalEmitter.emit({ name: "refresh_gui" });
+      }
+
+    }, false);
+  }
+
   destroyElectronEvents() {
     this.electronEvents.forEach(postRobotEvent => {
       postRobotEvent.cancel();
@@ -343,6 +367,18 @@ export class GUIGlobal {
     }
 
     this.parseGeneratorGUISettings(res, userSettings);
+
+    //Check for cached files and then create web events after
+    if ((<any>window).emscriptenFoundCachedROMFile)
+      this.generator_settingsMap["rom"] = "<using cached ROM>";
+
+    if ((<any>window).emscriptenFoundCachedWADFile)
+      this.generator_settingsMap["web_wad_file"] = "<using cached WAD>";
+
+    if ((<any>window).emscriptenFoundCachedCommonKeyFile)
+      this.generator_settingsMap["web_common_key_file"] = "<using cached common key>";
+
+    this.createWebEvents();
   }
 
   parseGeneratorGUISettings(guiSettings, userSettings) {
@@ -438,6 +474,12 @@ export class GUIGlobal {
 
     this.generator_settingsMap["repatch_cosmetics"] = userSettings && "repatch_cosmetics" in userSettings ? userSettings["repatch_cosmetics"] : true;
     this.generator_settingsVisibilityMap["repatch_cosmetics"] = true;
+
+    //Add Web only options
+    if (!this.getGlobalVar('electronAvailable')) {
+      this.generator_settingsMap["web_persist_in_cache"] = userSettings && "web_persist_in_cache" in userSettings ? userSettings["web_persist_in_cache"] : true;
+      this.generator_settingsVisibilityMap["web_persist_in_cache"] = true;
+    }
 
     console.log("JSON Settings Data:", guiSettings);
     console.log("Last User Settings:", userSettings);
@@ -631,6 +673,11 @@ export class GUIGlobal {
     if (!includeFromPatchFileSettings) {
       delete settingsFile["patch_file"];
       delete settingsFile["repatch_cosmetics"];
+
+      //Web only keys
+      if (!this.getGlobalVar('electronAvailable')) {
+        delete settingsFile["web_persist_in_cache"];
+      }
     }
 
     //Delete keys not included in the seed
@@ -666,26 +713,19 @@ export class GUIGlobal {
         delete settingsFile["web_wad_channel_id"];
         delete settingsFile["web_wad_channel_title"];
         delete settingsFile["web_output_type"];
+        delete settingsFile["web_persist_in_cache"];
       }
     }
 
     //Delete keys the browser can't save (web only)
     if (sanitizeForBrowserCache) {
 
-      if (settingsFile["rom"] && typeof (settingsFile["rom"]) == "object") //File objects can not be saved due browser sandbox
-        delete settingsFile["rom"];
-
-      if (settingsFile["patch_file"] && typeof (settingsFile["patch_file"]) == "object")
-        delete settingsFile["patch_file"];
-
-      if (settingsFile["distribution_file"] && typeof (settingsFile["distribution_file"]) == "object")
-        delete settingsFile["distribution_file"];
-
-      if (settingsFile["web_wad_file"] && typeof (settingsFile["web_wad_file"]) == "object")
-        delete settingsFile["web_wad_file"];
-
-      if (settingsFile["web_common_key_file"] && typeof (settingsFile["web_common_key_file"]) == "object")
-        delete settingsFile["web_common_key_file"];
+      //File objects can not be saved due browser sandbox
+      delete settingsFile["rom"];
+      delete settingsFile["patch_file"];
+      delete settingsFile["distribution_file"];
+      delete settingsFile["web_wad_file"];
+      delete settingsFile["web_common_key_file"];
     }
 
     return settingsFile;

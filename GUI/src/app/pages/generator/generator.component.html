@@ -199,6 +199,7 @@
               <!--Padding-->
               <div class="settingPadding"></div>
               <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Update Cosmetics</mat-slide-toggle>
+              <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['web_persist_in_cache']" (ngModelChange)="afterSettingChange(true)">Persist Files in Cache</mat-slide-toggle>
               <!--Padding-->
               <div class="tabsetPadding"></div>
               <button class="footerGenerateButton" nbButton fullWidth status="success" [disabled]="!generateSeedButtonEnabled" (click)="patchROM()">Patch ROM!</button>
@@ -206,6 +207,7 @@
             <!--Patcher-->
             <ng-container *ngIf="global.getGlobalVar('appType') == 'patcher'">
               <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Update Cosmetics</mat-slide-toggle>
+              <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['web_persist_in_cache']" (ngModelChange)="afterSettingChange(true)">Persist Files in Cache</mat-slide-toggle>
               <!--Padding-->
               <div class="tabsetPadding"></div>
               <button class="footerGenerateButton" nbButton fullWidth status="success" [disabled]="!generateSeedButtonEnabled" (click)="patchROM()">Patch ROM!</button>

@@ -80,11 +80,13 @@ export class GeneratorComponent implements OnInit {
     }
     else {
 
-      this.global.globalEmitter.subscribe(eventObj => {
+      let eventSub = this.global.globalEmitter.subscribe(eventObj => {
 
         if (eventObj.name == "init_finished") {
           console.log("Init finished event");
           this.generatorReady();
+
+          eventSub.unsubscribe();
         }
       });
     }  
@@ -114,6 +116,14 @@ export class GeneratorComponent implements OnInit {
 
       this.tabSet.changeTab.subscribe(eventObj => {
         this.activeTab = eventObj.tabTitle;
+      });
+
+      this.global.globalEmitter.subscribe(eventObj => {
+
+        if (eventObj.name == "refresh_gui") {
+          this.cd.markForCheck();
+          this.cd.detectChanges();
+        }
       });
 
     }, 0);
