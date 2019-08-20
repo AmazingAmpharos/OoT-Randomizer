@@ -2282,13 +2282,13 @@ setting_infos = [
             'tournament':  'Tournament',
         },
         gui_tooltip    = '''\
-            Useless has nothing but junk hints.
-            Strong distribution has a good
-            spread of different hint types.
-            Multiworld distribution has only
-            a few specific, useful hint types.
-            Tournament distribution has a set
-            number of hints for each type.
+            Useless: Only junk hints.
+            Balanced: Recommended hint spread.
+            Strong: More useful hints.
+            Very Strong: Many powerful hints.
+            Tournament: Fixed number of hints 
+            for each type, contains duplicates,
+            and only useful hints.
         ''',
         shared         = True,
     ),
