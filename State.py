@@ -4,7 +4,7 @@ import itertools
 
 from Item import ItemInfo
 from Playthrough import Playthrough
-from Region import Region
+from Region import Region, TimeOfDay
 
 
 
@@ -13,8 +13,6 @@ class State(object):
     def __init__(self, parent):
         self.prog_items = Counter()
         self.world = parent
-        self.region_cache = { 'child': {}, 'adult': {} }
-        self.recursion_count = { 'child': 0, 'adult': 0 }
         self.playthrough = None
 
 
@@ -24,22 +22,11 @@ class State(object):
         return self.world.logic_rules != 'glitchless'
 
 
-    def clear_cached_unreachable(self):
-        # we only need to invalidate results which were False, places we could reach before we can still reach after adding more items
-        for cache_type in self.region_cache:
-            self.region_cache[cache_type] = {k: v for k, v in self.region_cache[cache_type].items() if v}
-
-
-    def clear_cache(self):
-        self.region_cache = { 'child': {}, 'adult': {} }
-
-
     def copy(self, new_world=None):
         if not new_world:
             new_world = self.world
         new_state = State(new_world)
         new_state.prog_items = copy.copy(self.prog_items)
-        new_state.region_cache = {k: copy.copy(v) for k,v in self.region_cache.items()}
         return new_state
 
 
@@ -58,7 +45,7 @@ class State(object):
             return spot
 
 
-    def can_reach(self, spot=None, resolution_hint='Region', tod=None, age=None):
+    def can_reach(self, spot=None, resolution_hint='Region', tod=TimeOfDay.NONE, age=None):
         assert spot != None
         spot = self.get_spot(spot, resolution_hint)
 
@@ -66,65 +53,30 @@ class State(object):
         if age == None:
             return self.can_reach(spot, tod=tod, age='adult') or self.can_reach(spot, tod=tod, age='child')
 
-        if tod == 'all':
+        if tod == TimeOfDay.ALL:
             # If a spot is reachable at day and at dampe's time, then it's reachable at all times of day
-            return self.can_reach(spot, age=age, tod='day') and self.can_reach(spot, age=age, tod='dampe')
+            return self.can_reach(spot, age=age, tod=TimeOfDay.DAY) and self.can_reach(spot, age=age, tod=TimeOfDay.DAMPE)
 
         if not isinstance(spot, Region):
             return spot.can_reach(self, age=age, tod=tod)
 
-        # If we are currently checking for reachability with a specific time of day and the needed time can be obtained here,
-        # we want to continue the reachability test without a time of day, to make sure we could actually get there
-        if tod != None and self.can_provide_time(spot, tod):
-            return spot.can_reach(self, age=age)
-
-        # If we reached this point, it means the current age should be used
-        if spot.recursion_count[age] > 0:
-            return False
-
-        # Normal caches can't be used while checking for reachability with a specific time of day
-        if tod == None:
-            if self.playthrough != None and self.playthrough.can_reach(spot, age=age):
-                return True
-
-            if spot in self.region_cache[age]:
-                return self.region_cache[age][spot]
-
-        # for the purpose of evaluating results, recursion is resolved by always denying recursive access (as that is what we are trying to figure out right now in the first place
-        spot.recursion_count[age] += 1
-        self.recursion_count[age] += 1
-
-        can_reach = spot.can_reach(self, age=age, tod=tod)
-
-        spot.recursion_count[age] -= 1
-        self.recursion_count[age] -= 1
-
-        # we store true results and qualified false results (i.e. ones not inside a hypothetical)
-        if tod == None and (can_reach or self.recursion_count[age] == 0):
-            self.region_cache[age][spot] = can_reach
-
-        return can_reach
+        # At this point, we're looking to verify access to the region at a specific age and time.
+        # If we have a playthrough (we do), it should already be able to tell us fast if we have access.
+        # We can also be confident when it says no, since otherwise this recursion would
+        # find a path the playthrough should have found.
+        return self.playthrough.can_reach(spot, age=age, tod=tod)
 
 
-    def as_both(self, spot, tod=None):
+    def as_both(self, spot, tod=TimeOfDay.NONE):
         if self.can_become_adult() and self.can_become_child():
             return self.can_reach(spot, age='adult', tod=tod) and self.can_reach(spot, age='child', tod=tod)
         else:
             return False
 
 
-    def as_age(self, spot, age, tod=None):
+    def as_age(self, spot, age, tod=TimeOfDay.NONE):
         if (self.can_become_adult() if age == 'adult' else self.can_become_child()):
             return self.can_reach(spot, tod=tod, age=age)
-        return False
-
-
-    def can_provide_time(self, region, provide_tod):
-        if region.time_passes:
-            return True
-        # Ganon's Castle Grounds is a special scene that forces time to be the start of the night (aka dampe's time)
-        if region.name == 'Ganons Castle Grounds':
-            return provide_tod == 'dampe'
         return False
 
 
@@ -483,7 +435,6 @@ class State(object):
     def collect(self, item):
         if item.advancement:
             self.prog_items[item.name] += 1
-            self.clear_cached_unreachable()
 
 
     # Be careful using this function. It will not uncollect any
@@ -493,12 +444,6 @@ class State(object):
             self.prog_items[item.name] -= 1
             if self.prog_items[item.name] <= 0:
                 del self.prog_items[item.name]
-
-            # invalidate collected cache. unreachable regions are still unreachable
-            for cache_type in self.region_cache:
-                self.region_cache[cache_type] = {k: v for k, v in self.region_cache[cache_type].items() if not v}
-
-            self.recursion_count = {k: 0 for k in self.recursion_count}
 
 
     def __getstate__(self):

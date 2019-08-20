@@ -3,6 +3,7 @@ import logging
 from Fill import ShuffleError
 from collections import OrderedDict
 from Playthrough import Playthrough
+from Region import TimeOfDay
 from Rules import set_entrances_based_rules
 from Entrance import Entrance
 from State import State
@@ -469,7 +470,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
     for entrance in entrances_to_split:
         # Here, we find entrances that may be unreachable under certain conditions
-        if not max_playthrough.state_list[entrance.world.id].as_both(entrance, tod='all'):
+        if not max_playthrough.state_list[entrance.world.id].as_both(entrance, tod=TimeOfDay.ALL):
             restrictive_entrances.append(entrance)
             continue
         # If an entrance is reachable as both ages and all times of day with all the other entrances disconnected,
@@ -589,7 +590,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
         # In ER, Time of day logic normally considers that the player always has access to time passing from the root so this is important to ensure
         # This also means that, in order to test for this, we have to temporarily remove that assumption about root access to time passing
         for world in worlds:
-            world.get_region('Root').can_reach = lambda state, tod=None, **kwargs: tod == None
+            world.get_region('Root').can_reach = lambda state, tod=TimeOfDay.NONE, **kwargs: tod == TimeOfDay.NONE
         no_time_passing_playthrough = Playthrough.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
         for world in worlds:
             world.get_region('Root').can_reach = lambda state, **kwargs: True

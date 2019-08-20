@@ -2,6 +2,8 @@ import copy
 from collections import defaultdict
 import itertools
 
+from Region import TimeOfDay
+
 
 class Playthrough(object):
 
@@ -18,15 +20,16 @@ class Playthrough(object):
         else:
             root_regions = [state.world.get_region('Root') for state in self.state_list]
             # The cache is a dict with 5 values:
-            #  child_regions, adult_regions: sets of Region, all the regions in that sphere
+            #  child_regions, adult_regions: maps of Region -> tod, all the regions in that sphere
+            #    values are lazily-determined tod flags (see TimeOfDay).
             #  child_queue, adult_queue: queue of Entrance, all the exits to try next sphere
             #  visited_locations: set of Locations visited in or before that sphere.
             self._cache = {
                 'child_queue': list(exit for region in root_regions for exit in region.exits),
                 'adult_queue': list(exit for region in root_regions for exit in region.exits),
                 'visited_locations': set(),
-                'child_regions': set(root_regions),
-                'adult_regions': set(root_regions),
+                'child_regions': {region: TimeOfDay.NONE for region in root_regions},
+                'adult_regions': {region: TimeOfDay.NONE for region in root_regions},
             }
             self.cached_spheres = [self._cache]
             self.next_sphere()
@@ -91,31 +94,50 @@ class Playthrough(object):
 
     # simplified exit.can_reach(state), bypasses can_become_age
     # which we've already accounted for
-    def validate_child(self, exit):
-        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='child')
+    def validate_child(self, exit, tod=TimeOfDay.NONE):
+        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='child', tod=tod)
 
-    def validate_adult(self, exit):
-        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='adult')
+    def validate_adult(self, exit, tod=TimeOfDay.NONE):
+        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='adult', tod=tod)
 
 
-    # Internal to the iteration. Modifies the exit_queue, region_set. 
+    # Internal to the iteration. Modifies the exit_queue, regions. 
     # Returns a queue of the exits whose access rule failed, 
     # as a cache for the exits to try on the next iteration.
     @staticmethod
-    def _expand_regions(exit_queue, region_set, validate):
+    def _expand_regions(exit_queue, regions, validate):
         failed = []
         for exit in exit_queue:
-            if exit.connected_region and exit.connected_region not in region_set:
+            if exit.connected_region and exit.connected_region not in regions:
                 if validate(exit):
-                    region_set.add(exit.connected_region)
+                    regions[exit.connected_region] = exit.connected_region.provides_time
+                    regions[exit.world.get_region('Root')] |= exit.connected_region.provides_time
                     exit_queue.extend(exit.connected_region.exits)
                 else:
                     failed.append(exit)
         return failed
 
+
+    @staticmethod
+    def _expand_tod_regions(regions, goal_region, validate, tod):
+        # grab all the exits from the regions with the given tod in the same world as our goal.
+        # we want those that go to existing regions without the tod, until we reach the goal.
+        has_tod_world = lambda regtod: regtod[1] & tod and regtod[0].world == goal_region.world
+        exit_queue = list(itertools.chain.from_iterable(region.exits for region, _ in filter(has_tod_world, regions.items())))
+        for exit in exit_queue:
+            # We don't look for new regions, just spreading the tod to our existing regions
+            if exit.connected_region in regions and tod & ~regions[exit.connected_region]:
+                if validate(exit, tod=tod):
+                    regions[exit.connected_region] |= tod
+                    if exit.connected_region == goal_region:
+                        return True
+                    exit_queue.extend(exit.connected_region.exits)
+        return False
+
+
     # Explores available exits, updating relevant entries in the cache in-place.
-    # Returns the set of regions accessible in the new sphere as child,
-    # the set of regions accessible as adult, and the set of visited locations.
+    # Returns the regions accessible in the new sphere as child,
+    # the regions accessible as adult, and the set of visited locations.
     # These are references to the new entry in the cache, so they can be modified
     # directly.
     def next_sphere(self):
@@ -213,16 +235,23 @@ class Playthrough(object):
 
 
     # Use the cache in the playthrough to determine region reachability.
-    def can_reach(self, region, age=None):
+    def can_reach(self, region, age=None, tod=TimeOfDay.NONE):
         if age == 'adult':
-            return region in self._cache['adult_regions']
+            if tod:
+                return region in self._cache['adult_regions'] and (self._cache['adult_regions'][region] & tod or Playthrough._expand_tod_regions(self._cache['adult_regions'], region, self.validate_adult, tod))
+            else:
+                return region in self._cache['adult_regions']
         elif age == 'child':
-            return region in self._cache['child_regions']
+            if tod:
+                return region in self._cache['child_regions'] and (self._cache['child_regions'][region] & tod or Playthrough._expand_tod_regions(self._cache['child_regions'], region, self.validate_child, tod))
+            else:
+                return region in self._cache['child_regions']
         elif age == 'both':
-            return region in self._cache['adult_regions'] and region in self._cache['child_regions']
+            return self.can_reach(region, age='adult', tod=tod) and self.can_reach(region, age='child', tod=tod)
         else:
             # treat None as either
-            return region in self._cache['adult_regions'] or region in self._cache['child_regions']
+            return self.can_reach(region, age='adult', tod=tod) or self.can_reach(region, age='child', tod=tod)
+
 
     # Use the cache in the playthrough to determine location reachability.
     # Only works for locations that had progression items...
@@ -232,11 +261,11 @@ class Playthrough(object):
     # Use the cache in the playthrough to get all reachable regions.
     def reachable_regions(self, age=None):
         if age == 'adult':
-            return self._cache['adult_regions']
+            return self._cache['adult_regions'].keys()
         elif age == 'child':
-            return self._cache['child_regions']
+            return self._cache['child_regions'].keys()
         else:
-            return self._cache['adult_regions'] + self._cache['child_regions']
+            return self._cache['adult_regions'].keys() + self._cache['child_regions'].keys()
 
     # Returns whether the given age can access the spot at this age,
     # by checking whether the playthrough has reached the containing region, and evaluating the spot's access rule.

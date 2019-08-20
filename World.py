@@ -1,5 +1,5 @@
 from State import State
-from Region import Region
+from Region import Region, TimeOfDay
 from Entrance import Entrance
 from Hints import get_hint_area
 from Location import Location, LocationFactory
@@ -203,6 +203,9 @@ class World(object):
                 new_region.dungeon = region['dungeon']
             if 'time_passes' in region:
                 new_region.time_passes = region['time_passes']
+                new_region.provides_time = TimeOfDay.ALL
+            if new_region.name == 'Ganons Castle Grounds':
+                new_region.provides_time = TimeOfDay.DAMPE
             if 'locations' in region:
                 for location, rule in region['locations'].items():
                     new_location = LocationFactory(location)

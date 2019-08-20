@@ -198,9 +198,6 @@ def fill_dungeons_restrictive(window, worlds, playthrough, shuffled_locations, d
     # place dungeon items
     fill_restrictive(window, worlds, base_playthrough, shuffled_locations, dungeon_items)
 
-    for world in worlds:
-        world.state.clear_cached_unreachable()
-
 
 # Places items into dungeon locations. This is used when there should be exactly
 # one progression item per dungeon. This should be ran before all the progression
