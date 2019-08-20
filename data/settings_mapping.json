@@ -45,7 +45,7 @@
     {
       "name": "general_tab_web_generator",
       "text": "ROM Options",
-      "app_type": "generator",
+      "app_type": ["generator"],
       "exclude_from_electron": true,
       "sections": [
         {
@@ -88,7 +88,7 @@
     {
       "name": "general_tab_web_patcher",
       "text": "ROM Generation",
-      "app_type": "patcher",
+      "app_type": ["patcher", "patcher_only"],
       "exclude_from_electron": true,
       "sections": [
         {
@@ -120,7 +120,7 @@
     {
       "name": "main_tab",
       "text": "Main Rules",
-      "app_type": "generator",
+      "app_type": ["generator"],
       "sections": [
         {
           "name": "main_section",
@@ -193,7 +193,7 @@
     {
       "name": "detailed_tab",
       "text": "Detailed Logic",
-      "app_type": "generator",
+      "app_type": ["generator"],
       "sections": [
         {
           "name": "main_section",
@@ -227,7 +227,7 @@
     {
       "name": "other_tab",
       "text": "Other",
-      "app_type": "generator",
+      "app_type": ["generator"],
       "sections": [
         {
           "name": "speedup_section",
@@ -281,6 +281,7 @@
     {
       "name": "cosmetics_tab",
       "text": "Cosmetics",
+      "app_type": ["generator", "patcher"],
       "is_cosmetics": true,
       "sections": [
         {
@@ -343,6 +344,7 @@
     {
       "name": "sfx_tab",
       "text": "SFX",
+      "app_type": ["generator", "patcher"],
       "is_cosmetics": true,
       "sections": [
         {

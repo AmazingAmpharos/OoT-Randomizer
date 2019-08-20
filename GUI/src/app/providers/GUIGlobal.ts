@@ -390,7 +390,7 @@ export class GUIGlobal {
       let tab = guiSettings.settingsArray[tabIndex];
 
       //Skip tabs that don't belong to this app and delete them from the guiSettings
-      if ("app_type" in tab && tab.app_type && tab.app_type != this.getGlobalVar("appType")) {
+      if ("app_type" in tab && tab.app_type && tab.app_type.indexOf(this.getGlobalVar("appType")) == -1) {
 
         guiSettings.settingsArray.splice(tabIndex, 1);
         tabIndex--;

@@ -137,7 +137,7 @@
       </nb-tabset>
       <div class="tabsetPadding"></div>
       <!--Static Footer Tabset-->
-      <nb-tabset #refTabFooter class="footerTabset" (changeTab)="changeFooterTabSelection($event)" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: '\'Generate From Seed\': Generate a fresh seed with your provided settings.<br><br>\'Generate From File\': Use your pre-existing patch file to generate your ROM.'}" [nbPopoverTrigger]="global.getGlobalVar('electronAvailable') || global.getGlobalVar('appType') == 'patcher' ? 'noop' : 'hint'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
+      <nb-tabset #refTabFooter class="footerTabset" (changeTab)="changeFooterTabSelection($event)" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: '\'Generate From Seed\': Generate a fresh seed with your provided settings.<br><br>\'Generate From File\': Use your pre-existing patch file to generate your ROM.'}" [nbPopoverTrigger]="global.getGlobalVar('electronAvailable') || global.getGlobalVar('appType') == 'patcher' || global.getGlobalVar('appType') == 'patcher_only' ? 'noop' : 'hint'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
         <nb-tab *ngIf="global.getGlobalVar('appType') == 'generator'" tabTitle="Generate From Seed" active>
           <p class="footerInputLabel">Settings String</p>
           <!--Electron-->
@@ -205,8 +205,8 @@
               <button class="footerGenerateButton" nbButton fullWidth status="success" [disabled]="!generateSeedButtonEnabled" (click)="patchROM()">Patch ROM!</button>
             </ng-container>
             <!--Patcher-->
-            <ng-container *ngIf="global.getGlobalVar('appType') == 'patcher'">
-              <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Update Cosmetics</mat-slide-toggle>
+            <ng-container *ngIf="global.getGlobalVar('appType') == 'patcher' || global.getGlobalVar('appType') == 'patcher_only'">
+              <mat-slide-toggle *ngIf="global.getGlobalVar('appType') == 'patcher'" labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Update Cosmetics</mat-slide-toggle>
               <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['web_persist_in_cache']" (ngModelChange)="afterSettingChange(true)">Persist Files in Cache</mat-slide-toggle>
               <!--Padding-->
               <div class="tabsetPadding"></div>

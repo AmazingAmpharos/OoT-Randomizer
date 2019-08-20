@@ -576,6 +576,17 @@ export class GeneratorComponent implements OnInit {
           this.toggleVisibility(visibilityUpdates, false);
         }
       }
+      else if (this.global.getGlobalVar("appType") == "patcher_only") {
+
+        if (event.tabTitle === "Generate From File") {
+
+          let visibilityUpdates = [];
+          visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type" }, value: true });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: this.global.generator_settingsMap['web_output_type'] == "wad" });
+
+          this.toggleVisibility(visibilityUpdates, false);
+        }
+      }
     }
   }
 
