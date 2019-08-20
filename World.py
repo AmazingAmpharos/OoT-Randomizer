@@ -6,7 +6,7 @@ from Location import Location, LocationFactory
 from LocationList import business_scrubs
 from DungeonList import create_dungeons
 from Rules import set_rules, set_shop_rules
-from Item import Item, ItemFactory
+from Item import Item, ItemFactory, MakeEventItem
 from RuleParser import Rule_AST_Transformer
 from SettingsList import get_setting_info
 import logging
@@ -222,9 +222,7 @@ class World(object):
                         self.parser.parse_spot_rule(new_location)
                     new_location.world = self
                     new_region.locations.append(new_location)
-                    self.push_item(new_location, ItemFactory(event, self, event=True))
-                    new_location.locked = True
-                    self.event_items.add(event)
+                    MakeEventItem(event, new_location)
             if 'exits' in region:
                 for exit, rule in region['exits'].items():
                     new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)

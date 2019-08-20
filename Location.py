@@ -40,6 +40,7 @@ class Location(object):
         new_location.access_rules = list(self.access_rules)
         new_location.item_rule = self.item_rule
         new_location.locked = self.locked
+        new_location.internal = self.internal
         new_location.minor_only = self.minor_only
         new_location.disabled = self.disabled
 
