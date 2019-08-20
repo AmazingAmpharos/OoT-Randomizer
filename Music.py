@@ -129,28 +129,28 @@ def process_sequences(rom, sequences, target_sequences, ids, seq_type = 'bgm'):
     # Process music data in data/Music/
     # Each sequence requires a valid .seq sequence file and a .meta metadata file
     # Current .meta format: Cosmetic Name\nInstrument Set\nPool
-    for f in os.listdir('data/Music'):
-        fname = os.fsdecode(f)
-        # Find meta file and check if corresponding seq file exists
-        if fname.endswith('.meta') and os.path.isfile('data/Music/' + fname.split('.')[0] + '.seq'):
-            # Read meta info
-            try:
-                with open('data/Music/' + fname, 'r') as stream:
-                    lines = stream.readlines()
-                # Strip newline(s) which doesn't like to work for some reason
-                for line in lines:
-                    line = line.rstrip()
-            except FileNotFoundError as ex:
-                raise FileNotFoundError('No meta file for: "' + fname + '". This should never happen')
+    for dirpath, _, filenames in os.walk(u'./data/Music'):
+        for fname in filenames:
+            # Find meta file and check if corresponding seq file exists
+            if fname.endswith('.meta') and os.path.isfile(os.path.join(dirpath, fname.split('.')[0] + '.seq')):
+                # Read meta info
+                try:
+                    with open(os.path.join(dirpath, fname), 'r') as stream:
+                        lines = stream.readlines()
+                    # Strip newline(s) which doesn't like to work for some reason
+                    for line in lines:
+                        line = line.rstrip()
+                except FileNotFoundError as ex:
+                    raise FileNotFoundError('No meta file for: "' + fname + '". This should never happen')
 
-            # Create new sequence, checking third line for correct type
-            if (len(lines) > 2 and (lines[2].lower().rstrip() == seq_type.lower() or lines[2] == '')) or (len(lines) <= 2 and seq_type == 'bgm'):
-                seq = TableEntry(fname.split('.')[0], lines[0], instrument_set = int(lines[1], 16))
+                # Create new sequence, checking third line for correct type
+                if (len(lines) > 2 and (lines[2].lower().rstrip() == seq_type.lower() or lines[2] == '')) or (len(lines) <= 2 and seq_type == 'bgm'):
+                    seq = TableEntry(os.path.join(dirpath, fname.split('.')[0]), lines[0], instrument_set = int(lines[1], 16))
 
-                if seq.instrument_set < 0x00 or seq.instrument_set > 0x25:
-                    raise Exception('Sequence instrument must be in range [0x00, 0x25]')
+                    if seq.instrument_set < 0x00 or seq.instrument_set > 0x25:
+                        raise Exception('Sequence instrument must be in range [0x00, 0x25]')
 
-                sequences.append(seq)
+                    sequences.append(seq)
 
     return sequences, target_sequences
 
@@ -224,7 +224,7 @@ def rebuild_sequences(rom, sequences, log):
             else:
                 # Read sequence info
                 try:
-                    with open('data/Music/' + s.name + '.seq', 'rb') as stream:
+                    with open(s.name + '.seq', 'rb') as stream:
                         new_entry.data = bytearray(stream.read())
                     new_entry.size = len(new_entry.data)
                     if new_entry.size <= 0x10:
