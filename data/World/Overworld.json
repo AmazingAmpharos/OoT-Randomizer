@@ -1148,7 +1148,9 @@
             "Death Mountain Bombable Chest": "
                 can_blast_or_smash or 
                 (logic_dmt_bombable and is_child and Progressive_Strength_Upgrade)",
-            "DM Trail Freestanding PoH": "True",
+            "DM Trail Freestanding PoH": "
+                (damage_multiplier != 'ohko') or can_use(Nayrus_Love) or has_fairy or can_use(Hover_Boots) or
+                (is_adult and here(can_plant_bean and (has_explosives or Progressive_Strength_Upgrade)))",
             "GS Mountain Trail Bean Patch": "
                 can_plant_bugs and
                     (has_explosives or Progressive_Strength_Upgrade or
