@@ -108,8 +108,8 @@ entrance_shuffle_table = [
                         ('House of Skulltula -> Kakariko Village',                          { 'index': 0x04EE })),
     ('Interior',        ('Kakariko Village -> Impas House',                                 { 'index': 0x039C }),
                         ('Impas House -> Kakariko Village',                                 { 'index': 0x0345 })),
-    ('Interior',        ('Kakariko Village -> Impas House Back',                            { 'index': 0x05C8 }),
-                        ('Impas House Back -> Kakariko Village',                            { 'index': 0x05DC })),
+    ('Interior',        ('Kakariko Impa Ledge -> Impas House Back',                         { 'index': 0x05C8 }),
+                        ('Impas House Back -> Kakariko Impa Ledge',                         { 'index': 0x05DC })),
     ('Interior',        ('Kakariko Village Backyard -> Odd Medicine Building',              { 'index': 0x0072 }),
                         ('Odd Medicine Building -> Kakariko Village Backyard',              { 'index': 0x034D })),
     ('Interior',        ('Graveyard -> Dampes House',                                       { 'index': 0x030D }),
@@ -287,7 +287,7 @@ entrance_shuffle_table = [
                         ('Zoras Fountain -> Zoras Domain Behind King Zora',                 { 'index': 0x01A1 })),
 
     ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E, 'code_address': 0xAC9F26 })),
-    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554, 'code_address': 0xAC9EF2 })),
+    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Impa Ledge',         { 'index': 0x0554, 'code_address': 0xAC9EF2 })),
 ]
 
 

@@ -5,7 +5,7 @@
         "locations": {
             "Deku Tree MQ Lobby Chest": "True",
             "Deku Tree MQ Slingshot Chest": "is_adult or can_child_attack",
-            "Deku Tree MQ Slingshot Room Back Chest": "has_fire_source_with_torch",
+            "Deku Tree MQ Slingshot Room Back Chest": "has_fire_source_with_torch or can_use(Bow)",
             "Deku Tree MQ Basement Chest": "has_fire_source_with_torch or can_use(Bow)",
             "GS Deku Tree MQ Lobby": "is_adult or can_child_attack",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
@@ -19,7 +19,7 @@
                 here(can_use(Slingshot) or can_use(Bow)) and
                 here(has_fire_source_with_torch or can_use(Bow))",
             "Deku Tree Basement Water Room": "
-                here(can_use(Slingshot) or can_use(Bow)) and has_fire_source_with_torch",
+                here(can_use(Slingshot) or can_use(Bow)) and here(has_fire_source_with_torch)",
             "Deku Tree Basement Ledge": "logic_deku_b1_skip or here(is_adult)"
         }
     },

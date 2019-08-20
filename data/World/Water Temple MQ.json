@@ -53,6 +53,7 @@
         },
         "exits": {
             "Water Temple Basement Gated Areas": "
+                (can_use(Zora_Tunic) or logic_fewer_tunic_requirements) and
                 can_use(Dins_Fire) and can_use(Iron_Boots)"
         }
     },

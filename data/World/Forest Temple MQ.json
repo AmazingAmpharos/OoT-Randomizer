@@ -4,7 +4,7 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple MQ First Chest": "
-                is_adult or can_use(Bombs) or can_use(Sticks) or
+                is_adult or has_bombs or can_use(Sticks) or has_nuts or can_use(Boomerang) or
                 can_use(Dins_Fire) or Kokiri_Sword or can_use(Slingshot)",
             "GS Forest Temple MQ First Hallway": "can_use(Hookshot) or can_use(Boomerang)"
         },
