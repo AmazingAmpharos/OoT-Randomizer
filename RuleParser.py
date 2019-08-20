@@ -322,7 +322,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     def make_access_rule(self, body):
         # requires consistent iteration on dicts
-        kwargs = list(map(ast.arg, kwarg_defaults.keys()))
+        kwargs = [ast.arg(arg=k) for k in kwarg_defaults.keys()]
         kwd = list(map(ast.Constant, kwarg_defaults.values()))
         return eval(compile(
             ast.fix_missing_locations(
