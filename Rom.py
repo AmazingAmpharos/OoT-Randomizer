@@ -115,6 +115,11 @@ class Rom(BigStream):
         self.changed_address[self.last_address-1] = value
 
 
+    def write_bytes(self, address, values):
+        super().write_bytes(address, values)
+        self.changed_address.update(zip(range(address, address+len(values)), values))
+
+
     def restore(self):
         self.buffer = copy.copy(self.original.buffer)
         self.changed_address = {}
