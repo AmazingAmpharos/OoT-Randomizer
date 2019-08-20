@@ -306,7 +306,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     def create_delayed_rules(self):
         for region_name, node, subrule_name in self.delayed_rules:
             region = self.world.get_region(region_name)
-            event = Location(subrule_name, type='Event', parent=region)
+            event = Location(subrule_name, type='Event', parent=region, internal=True)
             event.world = self.world
 
             self.current_spot = event
