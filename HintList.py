@@ -189,6 +189,7 @@ hintTable = {
     'Bombchu Bowling Piece of Heart':                           ("the #second explosive prize# is", None, 'minigame'),
     'Treasure Chest Game':                                      (["#gambling# grants", "there is a #1/32 chance# to win"], "the #treasure chest game# grants", ['minigame', 'sometimes']),
     'Horseback Archery 1500 Points':                            ("mastery of #horseback archery# grants", "scoring 1500 in #horseback archery# grants", ['minigame', 'sometimes']),
+    'Links House Cow':                                          ("the #bovine bounty of a horseback hustle# gifts", None, ['minigame', 'sometimes']),
 
     'Deku Theater Skull Mask':                                  ("the #Skull Mask# yields", None, 'overworld'),
     '20 Gold Skulltula Reward':                                 ("slaying #20 Gold Skulltulas# reveals", None, ['overworld', 'sometimes']),
