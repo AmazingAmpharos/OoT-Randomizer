@@ -950,17 +950,28 @@
     {
         "region_name": "Impas House",
         "exits": {
-            "Kakariko Village": "True"
+            "Kakariko Village": "True",
+            "Impas House Near Cow": "True"
         }
     },
     {
         "region_name": "Impas House Back",
         "locations": {
-            "Impa House Freestanding PoH": "True",
+            "Impa House Freestanding PoH": "True"
+        },
+        "exits": {
+            "Kakariko Impa Ledge": "True",
+            "Impas House Near Cow": "True"
+        }
+    },
+    {
+        "region_name": "Impas House Near Cow",
+        "locations": {
             "Impas House Cow": "can_play(Eponas_Song)"
         },
         "exits": {
-            "Kakariko Impa Ledge": "True"
+            #For hints purposes
+            "Impas House Back": "False"
         }
     },
     {
