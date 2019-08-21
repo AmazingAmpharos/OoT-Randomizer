@@ -229,9 +229,14 @@ def get_hint_area(spot):
         return spot.parent_region.dungeon.hint
     elif spot.parent_region.hint:
         return spot.parent_region.hint
+    #Depth first search for connected regions with a max depth of 2
     for entrance in spot.parent_region.entrances:
         if entrance.parent_region.hint:
             return entrance.parent_region.hint
+    for entrance in spot.parent_region.entrances:
+        for entrance2 in entrance.parent_region.entrances:
+            if entrance2.parent_region.hint:
+                return entrance2.parent_region.hint
     raise RuntimeError('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
 
 
