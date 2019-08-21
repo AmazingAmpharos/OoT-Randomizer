@@ -67,19 +67,6 @@ class State(object):
         return self.playthrough.can_reach(spot, age=age, tod=tod)
 
 
-    def as_both(self, spot, tod=TimeOfDay.NONE):
-        if self.can_become_adult() and self.can_become_child():
-            return self.can_reach(spot, age='adult', tod=tod) and self.can_reach(spot, age='child', tod=tod)
-        else:
-            return False
-
-
-    def as_age(self, spot, age, tod=TimeOfDay.NONE):
-        if (self.can_become_adult() if age == 'adult' else self.can_become_child()):
-            return self.can_reach(spot, tod=tod, age=age)
-        return False
-
-
     def item_name(self, location):
         location = self.world.get_location(location)
         if location.item is None:
@@ -101,14 +88,6 @@ class State(object):
 
     def item_count(self, item):
         return self.prog_items[item]
-
-
-    def can_become_adult(self):
-        return self.world.starting_age == 'adult' or self.has('Time Travel')
-
-
-    def can_become_child(self):
-        return self.world.starting_age == 'child' or self.has('Time Travel')
 
 
     def can_child_attack(self, age=None):

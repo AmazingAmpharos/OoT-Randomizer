@@ -75,11 +75,11 @@ class Location(object):
         if self.is_disabled():
             return False
 
-        return self.access_rule(state, spot=self, age=age, tod=tod) and state.can_reach(self.parent_region, age=age, tod=tod)
+        return state.playthrough.spot_access(self, age=age, tod=tod)
 
 
-    def can_reach_simple(self, state, age=None):
-        return self.access_rule(state, age=age, spot=self)
+    def can_reach_simple(self, state, age=None, tod=TimeOfDay.NONE):
+        return self.access_rule(state, age=age, spot=self, tod=tod)
 
 
     def is_disabled(self):

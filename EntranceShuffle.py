@@ -470,7 +470,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
     for entrance in entrances_to_split:
         # Here, we find entrances that may be unreachable under certain conditions
-        if not max_playthrough.state_list[entrance.world.id].as_both(entrance, tod=TimeOfDay.ALL):
+        if not max_playthrough.spot_access(entrance, age='both', tod=TimeOfDay.ALL):
             restrictive_entrances.append(entrance)
             continue
         # If an entrance is reachable as both ages and all times of day with all the other entrances disconnected,
@@ -550,27 +550,27 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
         for world in worlds:
             # Links House entrance should be reachable as child at some point in the seed
             links_house_entrance = get_entrance_replacing(world.get_region('Links House'), 'Kokiri Forest -> Links House')
-            if not max_playthrough.state_list[world.id].as_age(links_house_entrance, age='child'):
+            if not max_playthrough.spot_access(links_house_entrance, age='child'):
                 raise EntranceShuffleError('Links House Entrance is never reachable as child')
 
             # Temple of Time entrance should be reachable as both ages at some point in the seed
             temple_of_time_entrance = get_entrance_replacing(world.get_region('Temple of Time'), 'Temple of Time Exterior -> Temple of Time')
-            if not max_playthrough.state_list[world.id].as_both(temple_of_time_entrance):
+            if not max_playthrough.spot_access(temple_of_time_entrance, age='both'):
                 raise EntranceShuffleError('Temple of Time Entrance is never reachable as both ages')
 
             # Windmill door entrance should be reachable as both ages at some point in the seed
             windmill_door_entrance = get_entrance_replacing(world.get_region('Windmill'), 'Kakariko Village -> Windmill')
-            if not max_playthrough.state_list[world.id].as_both(windmill_door_entrance):
+            if not max_playthrough.spot_access(windmill_door_entrance, age='both'):
                 raise EntranceShuffleError('Windmill Door Entrance is never reachable as both ages')
 
             # Potion Shop front door should be reachable as both ages at some point in the seed
             potion_front_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Front'), 'Kakariko Village -> Kakariko Potion Shop Front')
-            if not max_playthrough.state_list[world.id].as_both(potion_front_entrance):
+            if not max_playthrough.spot_access(potion_front_entrance, age='both'):
                 raise EntranceShuffleError('Adult Potion Front Entrance is never reachable as both ages')
 
             # Potion Shop back door should be reachable as adult at some point in the seed
             potion_back_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Back'), 'Kakariko Village Backyard -> Kakariko Potion Shop Back')
-            if not max_playthrough.state_list[world.id].as_age(potion_back_entrance, age='adult'):
+            if not max_playthrough.spot_access(potion_back_entrance, age='adult'):
                 raise EntranceShuffleError('Adult Potion Back Entrance is never reachable as Adult')
 
             check_same_hint_region(potion_front_entrance, potion_back_entrance)

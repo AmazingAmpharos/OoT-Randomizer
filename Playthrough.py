@@ -235,6 +235,7 @@ class Playthrough(object):
 
 
     # Use the cache in the playthrough to determine region reachability.
+    # Implicitly requires is_starting_age or Time_Travel.
     def can_reach(self, region, age=None, tod=TimeOfDay.NONE):
         if age == 'adult':
             if tod:
@@ -267,21 +268,21 @@ class Playthrough(object):
         else:
             return self._cache['adult_regions'].keys() + self._cache['child_regions'].keys()
 
-    # Returns whether the given age can access the spot at this age,
+    # Returns whether the given age can access the spot at this age and tod,
     # by checking whether the playthrough has reached the containing region, and evaluating the spot's access rule.
-    def spot_access(self, spot, age):
+    def spot_access(self, spot, age, tod=TimeOfDay.NONE):
         if age == 'both':
-            return (self.can_reach(spot.parent_region, age=age)
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age='adult')
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age='child'))
+            return (self.can_reach(spot.parent_region, age=age, tod=tod)
+                    and spot.can_reach_simple(self.state_list[spot.world.id], age='adult', tod=tod)
+                    and spot.can_reach_simple(self.state_list[spot.world.id], age='child', tod=tod))
         elif age == 'either':
-            return (self.can_reach(spot.parent_region, age='adult')
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age='adult')) or (
-                            self.can_reach(spot.parent_region, age='child')
-                            and spot.can_reach_simple(self.state_list[spot.world.id], age='child'))
+            return (self.can_reach(spot.parent_region, age='adult', tod=tod)
+                    and spot.can_reach_simple(self.state_list[spot.world.id], age='adult', tod=tod)) or (
+                            self.can_reach(spot.parent_region, age='child', tod=tod)
+                            and spot.can_reach_simple(self.state_list[spot.world.id], age='child', tod=tod))
         else:
-            return (self.can_reach(spot.parent_region, age=age)
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age=age))
+            return (self.can_reach(spot.parent_region, age=age, tod=tod)
+                    and spot.can_reach_simple(self.state_list[spot.world.id], age=age, tod=tod))
 
 
 class RewindablePlaythrough(Playthrough):
