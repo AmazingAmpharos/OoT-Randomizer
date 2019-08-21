@@ -573,10 +573,17 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             if not max_playthrough.state_list[world.id].as_age(potion_back_entrance, age='adult'):
                 raise EntranceShuffleError('Adult Potion Back Entrance is never reachable as Adult')
 
-            if  potion_front_entrance.parent_region.hint is not None and \
-                potion_back_entrance.parent_region.hint is not None and \
-                potion_front_entrance.parent_region.hint != potion_back_entrance.parent_region.hint:
-                raise EntranceShuffleError('Adult Potion Shop Entrances not in same hint region')
+            def check_same_hint_region(first, second):
+                if  first.parent_region.hint is not None and second.parent_region.hint is not None and \
+                    first.parent_region.hint != second.parent_region.hint:
+                    raise EntranceShuffleError('Entrances not in same hint region')
+
+            check_same_hint_region(potion_front_entrance, potion_back_entrance)
+
+            if world.shuffle_cows:
+                impas_front_entrance = get_entrance_replacing(world.get_region('Impas House'), 'Kakariko Village -> Impas House')
+                impas_back_entrance = get_entrance_replacing(world.get_region('Impas House Back'), 'Kakariko Impa Ledge -> Impas House Back')
+                check_same_hint_region(impas_front_entrance, impas_back_entrance)
 
         # At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
         no_items_playthrough = Playthrough([State(world) for world in worlds])
