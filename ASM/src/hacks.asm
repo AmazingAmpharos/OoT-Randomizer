@@ -1233,7 +1233,7 @@ skip_GS_BGS_text:
     lw      t9, 0x0000(s0)
 
 ; ==================================================================================================
-; Set the Obtained Epona Flag when winning the 2nd Ingo Race
+; Set the Obtained Epona Flag when winning the 2nd Ingo Race in ER
 ; ==================================================================================================
 ; Replaces: lw      t9, 0x0024(s0)
 ;           sw      t9, 0x0000(t7)
