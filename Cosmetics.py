@@ -536,6 +536,7 @@ def patch_cosmetics(settings, rom):
 
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
+    settings.resolve_random_settings(cosmetic=True)
 
     # patch cosmetics that use vanilla oot data, and always compatible
     for patch_func in global_patch_sets:

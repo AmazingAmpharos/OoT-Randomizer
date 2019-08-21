@@ -227,12 +227,16 @@ class Settings:
         self.numeric_seed = self.get_numeric_seed()
 
 
-    def resolve_random_settings(self):
+    def resolve_random_settings(self, cosmetic):
         sorted_infos = list(setting_infos)
         sort_key = lambda info: 0 if info.dependency is None else 1
         sorted_infos.sort(key=sort_key)
 
         for info in sorted_infos:
+            # only randomize cosmetics options or non-cosmetic
+            if cosmetic == info.shared:
+                continue
+
             if not self.check_dependency(info.name, check_random=False):
                 continue
 

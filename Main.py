@@ -80,7 +80,7 @@ def main(settings, window=dummy_window()):
     settings.remove_disabled()
     logger.info('(Original) Settings string: %s\n', settings.settings_string)
     random.seed(settings.numeric_seed)
-    settings.resolve_random_settings()
+    settings.resolve_random_settings(cosmetic=False)
     logger.debug(settings.get_settings_display())
     max_attempts = 3
     for attempt in range(1, max_attempts + 1):
@@ -306,10 +306,6 @@ def from_patch_file(settings, window=dummy_window()):
     start = time.process_time()
     logger = logging.getLogger('')
 
-    random.seed()
-    settings.remove_disabled()
-    settings.resolve_random_settings()
-
     # we load the rom before creating the seed so that error get caught early
     if settings.compress_rom == 'None' or settings.compress_rom == 'Patch':
         raise Exception('Output Type must be a ROM when patching from a patch file.')
@@ -403,10 +399,6 @@ def from_patch_file(settings, window=dummy_window()):
 def cosmetic_patch(settings, window=dummy_window()):
     start = time.process_time()
     logger = logging.getLogger('')
-
-    random.seed()
-    settings.remove_disabled()
-    settings.resolve_random_settings()
 
     if settings.patch_file == '':
         raise Exception('Cosmetic Only must have a patch file supplied.')
