@@ -1,0 +1,18 @@
+{
+    "starting_items":   {
+        "Ocarina": 1,
+        "Requiem of Spirit": 1,
+        "Progressive Hookshot": 1,
+        "Bomb Bag": 3,
+        "Bombchus": 50,
+        "Bombs": 40,
+        "Master Sword": 1,
+        "Hylian Shield": 1,
+        "Hover Boots": 1,
+        "Progressive Strength Upgrade": 2
+        },
+    "locations": {
+        "Silver Gauntlets Chest": "Rupee (1)"
+    }
+
+}

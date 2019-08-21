@@ -17,7 +17,7 @@
             "Forest Temple NW Outdoors": "True",
             "Forest Temple NE Outdoors": "can_use(Bow) or can_use(Slingshot)",
             "Forest Temple Block Push Room": "(Small_Key_Forest_Temple, 1)",
-            "Forest Temple Basement": "Forest_Temple_Jo_and_Beth and Forest_Temple_Amy_and_Meg",
+            "Forest Temple Basement": "(Forest_Temple_Jo_and_Beth and Forest_Temple_Amy_and_Meg) or (can_use(Hover_Boots) and can_mega)",
             "Forest Temple Falling Room": "can_hover or (can_use(Hover_Boots) and has_bombs and can_live_dmg(0.5))",
             "Forest Temple Boss Room": "is_adult"
         }
@@ -49,7 +49,7 @@
                 at('Forest Temple Falling Room', True) or can_hover",
             "GS Forest Temple Outdoor East": "
                 can_use(Hookshot) or can_hover or
-                at('Forest Temple Falling Room', can_use(Bow) or can_use(Dins_Fire) or has_explosives)"
+                at('Forest Temple Falling Room', can_use(Bow) or can_use(Dins_Fire) or has_explosives or can_use(Boomerang))"
         },
         "exits": {
             "Forest Temple Outdoors High Balconies": "can_use(Hookshot)",
