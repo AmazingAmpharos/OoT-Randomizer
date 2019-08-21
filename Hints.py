@@ -229,7 +229,7 @@ def get_hint_area(spot):
         return spot.parent_region.dungeon.hint
     elif spot.parent_region.hint:
         return spot.parent_region.hint
-    #Depth first search for connected regions with a max depth of 2
+    #Breadth first search for connected regions with a max depth of 2
     for entrance in spot.parent_region.entrances:
         if entrance.parent_region.hint:
             return entrance.parent_region.hint
