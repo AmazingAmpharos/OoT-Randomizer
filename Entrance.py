@@ -45,10 +45,6 @@ class Entrance(object):
         self.access_rules = [lambda_rule]
 
 
-    def can_reach_simple(self, state, age=None, tod=TimeOfDay.NONE):
-        return self.access_rule(state, spot=self, age=age, tod=tod)
-
-
     def connect(self, region):
         self.connected_region = region
         region.entrances.append(self)

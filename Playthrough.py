@@ -95,10 +95,10 @@ class Playthrough(object):
     # simplified exit.can_reach(state), bypasses can_become_age
     # which we've already accounted for
     def validate_child(self, exit, tod=TimeOfDay.NONE):
-        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='child', tod=tod)
+        return exit.access_rule(self.state_list[exit.parent_region.world.id], spot=exit, age='child', tod=tod)
 
     def validate_adult(self, exit, tod=TimeOfDay.NONE):
-        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='adult', tod=tod)
+        return exit.access_rule(self.state_list[exit.parent_region.world.id], spot=exit, age='adult', tod=tod)
 
 
     # Internal to the iteration. Modifies the exit_queue, regions. 
@@ -168,9 +168,9 @@ class Playthrough(object):
             return (loc not in visited_locations
                     # Check adult first; it's the most likely.
                     and (loc.parent_region in adult_regions
-                         and loc.can_reach_simple(self.state_list[loc.world.id], age='adult')
+                         and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='adult')
                          or (loc.parent_region in child_regions
-                             and loc.can_reach_simple(self.state_list[loc.world.id], age='child'))))
+                             and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='child'))))
 
 
         had_reachable_locations = True
@@ -273,16 +273,16 @@ class Playthrough(object):
     def spot_access(self, spot, age=None, tod=TimeOfDay.NONE):
         if age == 'adult' or age == 'child':
             return (self.can_reach(spot.parent_region, age=age, tod=tod)
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age=age, tod=tod))
+                    and spot.access_rule(self.state_list[spot.world.id], spot=spot, age=age, tod=tod))
         elif age == 'both':
             return (self.can_reach(spot.parent_region, age=age, tod=tod)
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age='adult', tod=tod)
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age='child', tod=tod))
+                    and spot.access_rule(self.state_list[spot.world.id], spot=spot, age='adult', tod=tod)
+                    and spot.access_rule(self.state_list[spot.world.id], spot=spot, age='child', tod=tod))
         else:
             return (self.can_reach(spot.parent_region, age='adult', tod=tod)
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age='adult', tod=tod)) or (
+                    and spot.access_rule(self.state_list[spot.world.id], spot=spot, age='adult', tod=tod)) or (
                             self.can_reach(spot.parent_region, age='child', tod=tod)
-                            and spot.can_reach_simple(self.state_list[spot.world.id], age='child', tod=tod))
+                            and spot.access_rule(self.state_list[spot.world.id], spot=spot, age='child', tod=tod))
 
 
 class RewindablePlaythrough(Playthrough):

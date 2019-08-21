@@ -70,10 +70,6 @@ class Location(object):
         return (self.parent_region.can_fill(item, manual) and self.item_rule(self, item))
 
 
-    def can_reach_simple(self, state, age=None, tod=TimeOfDay.NONE):
-        return self.access_rule(state, age=age, spot=self, tod=tod)
-
-
     def is_disabled(self):
         return (self.disabled == DisableType.DISABLED) or \
                (self.disabled == DisableType.PENDING and self.locked)
