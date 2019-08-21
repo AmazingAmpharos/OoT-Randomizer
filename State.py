@@ -30,43 +30,6 @@ class State(object):
         return new_state
 
 
-    def get_spot(self, spot, resolution_hint='Region'):
-        if isinstance(spot, str):
-            # try to resolve a name
-            if resolution_hint == 'Location':
-                return self.world.get_location(spot)
-            elif resolution_hint == 'Entrance':
-                return self.world.get_entrance(spot)
-            elif resolution_hint == 'Region':
-                return self.world.get_region(spot)
-            else:
-                raise AttributeError('Unknown resolution hint type: ' + str(resolution_hint))
-        else:
-            return spot
-
-
-    def can_reach(self, spot=None, resolution_hint='Region', tod=TimeOfDay.NONE, age=None):
-        assert spot != None
-        spot = self.get_spot(spot, resolution_hint)
-
-        # If the current age is not defined, we try either
-        if age == None:
-            return self.can_reach(spot, tod=tod, age='adult') or self.can_reach(spot, tod=tod, age='child')
-
-        if tod == TimeOfDay.ALL:
-            # If a spot is reachable at day and at dampe's time, then it's reachable at all times of day
-            return self.can_reach(spot, age=age, tod=TimeOfDay.DAY) and self.can_reach(spot, age=age, tod=TimeOfDay.DAMPE)
-
-        if not isinstance(spot, Region):
-            return spot.can_reach(self, age=age, tod=tod)
-
-        # At this point, we're looking to verify access to the region at a specific age and time.
-        # If we have a playthrough (we do), it should already be able to tell us fast if we have access.
-        # We can also be confident when it says no, since otherwise this recursion would
-        # find a path the playthrough should have found.
-        return self.playthrough.can_reach(spot, age=age, tod=tod)
-
-
     def item_name(self, location):
         location = self.world.get_location(location)
         if location.item is None:
