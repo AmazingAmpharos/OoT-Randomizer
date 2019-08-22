@@ -510,7 +510,7 @@ export class GeneratorComponent implements OnInit {
         let visibilityUpdates = [];
         visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
         visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: false });
-        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count" }, value: false });
+        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count,distribution_file" }, value: false });
 
         visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
         visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
@@ -522,7 +522,7 @@ export class GeneratorComponent implements OnInit {
         let visibilityUpdates = [];
         visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
         visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: true });
-        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count" }, value: true });
+        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count,distribution_file" }, value: true });
 
         visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: true });
         visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: true });
@@ -539,7 +539,7 @@ export class GeneratorComponent implements OnInit {
           let visibilityUpdates = [];
           visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
           visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: false });
-          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count" }, value: false });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count,distribution_file" }, value: false });
 
           visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: true });
           visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: this.global.generator_settingsMap['web_output_type'] == "wad" });
@@ -553,7 +553,7 @@ export class GeneratorComponent implements OnInit {
           let visibilityUpdates = [];
           visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
           visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: true });
-          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count" }, value: true });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count,distribution_file" }, value: true });
 
           visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: false });
           visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: false });

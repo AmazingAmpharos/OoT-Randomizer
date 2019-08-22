@@ -89,15 +89,16 @@
                           <ng-container *ngIf="!global.getGlobalVar('electronAvailable')">
                             <!--Visible: Drag Enabled-->
                             <ng-container *ngIf="global.generator_settingsVisibilityMap[setting.name]">
-                              <input class="ioInput" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap[setting.name]) == 'string' ? global.generator_settingsMap[setting.name] : global.generator_settingsMap[setting.name].name"
+                              <input class="ioInputWeb" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap[setting.name]) == 'string' ? global.generator_settingsMap[setting.name] : global.generator_settingsMap[setting.name].name"
                                      (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise" ngfDrop [(file)]="global.generator_settingsMap[setting.name]">
                             </ng-container>
                             <!--Not Visible: Drag Disabled-->
                             <ng-container *ngIf="!global.generator_settingsVisibilityMap[setting.name]">
-                              <input class="ioInput" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap[setting.name]) == 'string' ? global.generator_settingsMap[setting.name] : global.generator_settingsMap[setting.name].name"
+                              <input class="ioInputWeb" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap[setting.name]) == 'string' ? global.generator_settingsMap[setting.name] : global.generator_settingsMap[setting.name].name"
                                      (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
                             </ng-container>
                             <button class="ioInputBrowseButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" ngfSelect [(file)]="global.generator_settingsMap[setting.name]">Browse</button>
+                            <button class="ioInputBrowseButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="global.generator_settingsMap[setting.name] = ''">Clear</button>
                           </ng-container>
                         </ng-container>
                         <ng-container *ngSwitchCase="'Directoryinput'">
@@ -194,8 +195,9 @@
             <!--Generator-->
             <ng-container *ngIf="global.getGlobalVar('appType') == 'generator'">
               <p class="footerInputLabel">Patch File</p>
-              <input class="footerInput" nbInput readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap['patch_file']) == 'string' ? global.generator_settingsMap['patch_file'] : global.generator_settingsMap['patch_file'].name" (ngModelChange)="afterSettingChange(true)" ngfDrop [(file)]="global.generator_settingsMap['patch_file']">
+              <input class="footerInputWeb" nbInput readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap['patch_file']) == 'string' ? global.generator_settingsMap['patch_file'] : global.generator_settingsMap['patch_file'].name" (ngModelChange)="afterSettingChange(true)" ngfDrop [(file)]="global.generator_settingsMap['patch_file']">
               <button class="footerButtonPatchFileBrowse" nbButton status="info" size="small" ngfSelect [(file)]="global.generator_settingsMap['patch_file']">Select File</button>
+              <button class="footerButtonPatchFileBrowse" nbButton status="info" size="small" (click)="global.generator_settingsMap['patch_file'] = ''">Clear</button>
               <!--Padding-->
               <div class="settingPadding"></div>
               <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Update Cosmetics</mat-slide-toggle>

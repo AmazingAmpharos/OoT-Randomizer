@@ -396,6 +396,20 @@ nb-card-body {
   margin-right: 1.0rem !important;
 }
 
+.ioInputWeb {
+  position: relative;
+  left: 0px;
+  width: calc(100% - 210px);
+  text-align: left;
+  padding-left: 0.375rem !important;
+  margin-top: 1.0rem !important;
+  margin-right: 1.0rem !important;
+}
+
+.ioInputBrowseButton {
+  margin-right: 6px !important;
+}
+
 .presetButton {
   margin-top: 1.0rem !important;
   margin-right: 6px !important;
@@ -430,6 +444,26 @@ nb-card-body {
 
   @media (max-width: 430px) {
     width: calc(100% - 90px);
+    margin-right: 0.2rem !important;
+  }
+}
+
+.footerInputWeb {
+  position: relative;
+  left: 0px;
+  width: calc(100% - 290px);
+  text-align: left;
+  padding-left: 0.375rem !important;
+  margin-top: 1.0rem !important;
+  margin-right: 1.0rem !important;
+
+  @media (max-width: 550px) {
+    width: calc(100% - 210px);
+    margin-right: 0.5rem !important;
+  }
+
+  @media (max-width: 430px) {
+    width: calc(100% - 180px);
     margin-right: 0.2rem !important;
   }
 }

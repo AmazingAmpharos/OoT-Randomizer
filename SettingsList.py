@@ -1080,6 +1080,10 @@ setting_infos = [
     Checkbutton('check_version', None),
     Checkbutton('output_settings', None),
     Setting_Info('distribution_file', str, "Plandomizer File", "Fileinput", False, {},
+        gui_tooltip = """\
+            Optional. Place a plandomizer JSON file here 
+            to get total control over the item placement.
+        """,
         gui_params = {
             "file_types": [
                 {
@@ -1090,7 +1094,8 @@ setting_infos = [
                   "name": "All Files",
                   "extensions": [ "*" ]
                 }
-            ]        
+            ],
+            "web:hide_when_disabled" : True,    
         }),
     Setting_Info('checked_version',   str, None, None, False, {}),
     Setting_Info('rom',               str, "Base ROM", "Fileinput", False, {},

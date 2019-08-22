@@ -949,44 +949,117 @@ export class GUIGlobal {
     }
   }
 
-  generateSeedWeb(raceSeed: boolean = false, useStaticSeed: string = "") { //Web only
-    var self = this;
+  readFileIntoMemoryWeb(fileObject: any, useArrayBuffer: boolean) { //Web only
 
     return new Promise<any>(function (resolve, reject) {
 
-      let settingsFile = self.createSettingsFileObject(false, false, true);
+      let fileReader = new FileReader();
+      fileReader.onabort = function (event) {
+        console.error("Loading of the file was aborted unexpectedly!");
+        reject();
+      };
+      fileReader.onerror = function (event) {
+        console.error("An error occurred during the loading of the file!");
+        reject();
+      };
+      fileReader.onload = function (event) {
 
-      if (raceSeed) {
-        useStaticSeed = ""; //Static seeds aren't allowed in race mode
-        settingsFile["create_spoiler"] = true; //Force spoiler mode to on
-        settingsFile["encrypt"] = true;
-      }
-      else {
-        delete settingsFile["encrypt"];
-      }
+        console.log("Read in file successfully");
+        resolve(event.target["result"]); 
+      };
 
-      if (useStaticSeed) {
-        console.log("Use Static Seed:", useStaticSeed);
-        settingsFile["seed"] = useStaticSeed;
-      }
-      else {
-        delete settingsFile["seed"];
-      }
-
-      console.log(settingsFile);
-      console.log("Race Seed:", raceSeed);
-
-      //Request Seed Generation
-      let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/create?version=" + (self.getGlobalVar("webIsMasterVersion") ? "" : "dev_") + self.getGlobalVar("webSourceVersion").replace(/ /g, "_");
-      console.log("Request seed id from:", url);
-
-      self.http.post(url, JSON.stringify(settingsFile), { responseType: "text", headers: { "Content-Type": "application/json" } }).toPromise().then(res => {
-        resolve(res);
-      }).catch(err => {
-        console.error("[generateSeedWeb] Web Error:", err);
-        reject(err);
-      });
+      if (useArrayBuffer)
+        fileReader.readAsArrayBuffer(fileObject);
+      else
+        fileReader.readAsText(fileObject);
     });
+  }
+
+  async generateSeedWeb(raceSeed: boolean = false, useStaticSeed: string = "") { //Web only
+
+    let plandoFile = this.generator_settingsMap["distribution_file"];
+
+    if (plandoFile && typeof (plandoFile) == "object" && plandoFile.name && plandoFile.name.length > 0) {
+
+      if (!plandoFile.name.toLowerCase().endsWith(".json")) { //JSON extension test
+        throw { error: "Invalid plandomizer file extension! Plandomizer files must use the JSON file format." };
+      }
+
+      if (raceSeed) { //No support for race seeds
+        throw { error: "Plandomizer is currently not supported for race seeds due security concerns. Please use a normal seed instead!" };
+      }
+
+      //Try to resolve the distribution file by reading it into memory
+      console.log("Read Plando JSON file: " + plandoFile.name);
+
+      let plandoFileJSON = await this.readFileIntoMemoryWeb(plandoFile, false);
+
+      if (!plandoFileJSON || plandoFileJSON.length < 1) {
+        throw { error: "The plandomizer file specified is not valid!" };
+      }
+
+      if (plandoFileJSON.length > 500000) { //Impose size limit to avoid server overload
+        throw { error: "The plandomizer file specified is too big! The maximum file size allowed is 500 KB." };
+      }
+
+      //Test JSON parse it
+      try {
+        let plandoFileParsed = JSON.parse(plandoFileJSON);
+
+        if (!plandoFileParsed || Object.keys(plandoFileParsed).length < 1) {
+          throw { error: "The plandomizer file specified is not valid JSON! Please verify the syntax." };
+        }
+      }
+      catch (err) {
+        console.error(err);
+        throw { error: "The plandomizer file specified is not valid JSON! Please verify the syntax. Detail: " + err.message };
+      }
+
+      plandoFile = plandoFileJSON;
+    }
+    else {
+      plandoFile = null;
+    }
+
+    let settingsFile = this.createSettingsFileObject(false, false, true);
+
+    //Add distribution file back into map as string if available
+    if (plandoFile) {
+      settingsFile["distribution_file"] = plandoFile;
+    }
+
+    if (raceSeed) {
+      useStaticSeed = ""; //Static seeds aren't allowed in race mode
+      settingsFile["create_spoiler"] = true; //Force spoiler mode to on
+      settingsFile["encrypt"] = true;
+    }
+    else {
+      delete settingsFile["encrypt"];
+    }
+
+    if (useStaticSeed) {
+      console.log("Use Static Seed:", useStaticSeed);
+      settingsFile["seed"] = useStaticSeed;
+    }
+    else {
+      delete settingsFile["seed"];
+    }
+
+    console.log(settingsFile);
+    console.log("Race Seed:", raceSeed);
+
+    //Request Seed Generation
+    let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/create?version=" + (this.getGlobalVar("webIsMasterVersion") ? "" : "dev_") + this.getGlobalVar("webSourceVersion").replace(/ /g, "_");
+    console.log("Request seed id from:", url);
+
+    try {
+      let res = await this.http.post(url, JSON.stringify(settingsFile), { responseType: "text", headers: { "Content-Type": "application/json" } }).toPromise();
+      return res;
+    }
+    catch (err) {
+      console.error("[generateSeedWeb] Web Error:", err);
+      throw err;
+    }
   }
 
   patchROMWeb() { //Web only
