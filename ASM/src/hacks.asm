@@ -1423,16 +1423,22 @@ skip_GS_BGS_text:
     li      a0, 999
 
 ; ==================================================================================================
-; Load secondary sequence in its own RAM
+; Set primary AudioSeq RAM
+; ==================================================================================================
+.orga 0xB2A2F4
+    jal     set_primary_sequence_ram
+    lui     t6, 0x8013
+
+; ==================================================================================================
+; Set secondary AudioSeq RAM
 ; ==================================================================================================
 .orga 0xB2A3FC
     jal     set_secondary_sequence_ram
     lui     t6, 0x8013
 
 ; ==================================================================================================
-; Load opening sequence in normal primary sequence RAM
+; Set fanfare AudioSeq RAM
 ; ==================================================================================================
-
-.orga 0xB29D78
-    jal     set_opening_sequence_ram
-    lw      a2, 0x0000(s0)
+.orga 0xB2A4D4
+    jal     set_fanfare_sequence_ram
+    sw      t3, 0x0030(sp)
