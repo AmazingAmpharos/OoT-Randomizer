@@ -1488,6 +1488,17 @@ setting_infos = [
         shared         = True,
     ),
     Checkbutton(
+        name           = 'no_first_dampe_race',
+        gui_text       = 'Skip First Dampe Race',
+        gui_tooltip    = '''\
+            Dampe will start with the second race so you can
+            finish the race in under a minute and get both rewards
+            at once. You still get the first reward from the chest
+            even if you don't complete the race in under a minute.
+        ''',
+        shared         = True,
+    ),
+    Checkbutton(
         name           = 'useful_cutscenes',
         gui_text       = 'Enable Useful Cutscenes',
         gui_tooltip    = '''\
