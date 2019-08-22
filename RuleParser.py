@@ -212,18 +212,17 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     def visit_BoolOp(self, node):
         # Everything else must be visited, then can be removed/reduced to.
         # visit the children first
-        self.generic_visit(node)
 
         early_return = isinstance(node.op, ast.Or)
-        items = []
+        items = set()
         new_values = []
         # if any elt is True(And)/False(Or), we can omit it
         # if any is False(And)/True(Or), the whole node can be replaced with it
         for elt in list(node.values):
             if isinstance(elt, ast.Str):
-                items.append(elt.s)
+                items.add(elt.s)
             elif isinstance(elt, ast.Name) and elt.id in escaped_items:
-                items.append(escaped_items[elt.id])
+                items.add(escaped_items[elt.id])
             else:
                 # It's possible this returns a single item check,
                 # but it's already wrapped in a Call.
@@ -246,7 +245,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                     value=ast.Name(id='state', ctx=ast.Load()),
                     attr='has_any_of' if early_return else 'has_all_of',
                     ctx=ast.Load()),
-                args=[ast.Tuple(tuple(items))],
+                args=[ast.Tuple([ast.Str(i) for i in items], ctx=ast.Load())],
                 keywords=[])] + new_values
         else:
             node.values = new_values
@@ -324,19 +323,22 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         # requires consistent iteration on dicts
         kwargs = [ast.arg(arg=k) for k in kwarg_defaults.keys()]
         kwd = list(map(ast.Constant, kwarg_defaults.values()))
-        return eval(compile(
-            ast.fix_missing_locations(
-                ast.Expression(ast.Lambda(
-                    args=ast.arguments(
-                        posonlyargs=[],
-                        args=[ast.arg(arg='state')],
-                        defaults=[],
-                        kwonlyargs=kwargs,
-                        kw_defaults=kwd),
-                    body=body))),
-            '<string>', 'eval'),
-            # globals/locals. if undefined, everything in the namespace *now* would be allowed
-            allowed_globals)
+        try:
+            return eval(compile(
+                ast.fix_missing_locations(
+                    ast.Expression(ast.Lambda(
+                        args=ast.arguments(
+                            posonlyargs=[],
+                            args=[ast.arg(arg='state')],
+                            defaults=[],
+                            kwonlyargs=kwargs,
+                            kw_defaults=kwd),
+                        body=body))),
+                '<string>', 'eval'),
+                # globals/locals. if undefined, everything in the namespace *now* would be allowed
+                allowed_globals)
+        except TypeError as e:
+            raise Exception('Parse Error: %s' % e, self.current_spot.name, ast.dump(body, False))
 
 
     ## Handlers for specific internal functions used in the json logic.
