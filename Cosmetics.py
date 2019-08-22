@@ -110,6 +110,24 @@ magic_colors = {
     "White":             Color(0xFF, 0xFF, 0xFF),
 }
 
+a_button_colors = {
+    "N64 Blue":         Color(0x5A, 0x5A, 0xFF),
+    "GameCube Green":   Color(0x00, 0xC8, 0x32),
+}
+
+b_button_colors = {
+    "N64 Green":        Color(0x00, 0x96, 0x00),
+    "GameCube Red":     Color(0xFF, 0x1E, 0x1E),
+}
+
+c_button_colors = {
+    "Default Yellow":   Color(0xFF, 0xA0, 0x00),
+}
+
+start_button_colors = {
+    "N64 Red":          Color(0xC8, 0x00, 0x00),
+    "GameCube Grey":    Color(0x78, 0x78, 0x78),
+}
 
 meta_color_choices = ["Random Choice", "Completely Random", "Custom Color"]
 
@@ -163,6 +181,38 @@ def get_magic_colors():
 
 def get_magic_color_options():
     return meta_color_choices + get_magic_colors()
+
+
+def get_a_button_colors():
+    return list(a_button_colors.keys())
+
+
+def get_a_button_color_options():
+    return meta_color_choices + get_a_button_colors()
+
+
+def get_b_button_colors():
+    return list(b_button_colors.keys())
+
+
+def get_b_button_color_options():
+    return meta_color_choices + get_b_button_colors()
+
+
+def get_c_button_colors():
+    return list(c_button_colors.keys())
+
+
+def get_c_button_color_options():
+    return meta_color_choices + get_c_button_colors()
+
+
+def get_start_button_colors():
+    return list(start_button_colors.keys())
+
+
+def get_start_button_color_options():
+    return meta_color_choices + get_start_button_colors()
 
 
 def patch_targeting(rom, settings, log, symbols):
@@ -376,7 +426,6 @@ def patch_gauntlet_colors(rom, settings, log, symbols):
 
 
 def patch_heart_colors(rom, settings, log, symbols):
-    # patch tunic colors
     hearts = [
         ('Heart Colors', settings.heart_color, symbols['CFG_HEART_COLOR']),
     ]
@@ -419,6 +468,37 @@ def patch_magic_colors(rom, settings, log, symbols):
             magic_option = 'Custom'
         rom.write_int16s(symbol, color)
         log.magic_colors[magic_color] = dict(option=magic_option, color=''.join(['{:02X}'.format(c) for c in color]))
+
+
+def patch_button_colors(rom, settings, log, symbols):
+    buttons = [
+        ('A Button Color', settings.a_button_color, a_button_colors, symbols['CFG_A_BUTTON_COLOR']),
+        ('B Button Color', settings.b_button_color, b_button_colors, symbols['CFG_B_BUTTON_COLOR']),
+        ('C Button Color', settings.c_button_color, c_button_colors, symbols['CFG_C_BUTTON_COLOR']),
+        ('Start Button Color', settings.start_button_color, start_button_colors, symbols['CFG_START_BUTTON_COLOR']),
+    ]
+
+    for button, button_option, button_colors, symbol in buttons:
+        # handle random
+        if button_option == 'Random Choice':
+            button_option = random.choice(button_colors.keys())
+        # handle completely random
+        if button_option == 'Completely Random':
+            color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+        # grab the color from the list
+        elif button_option in button_colors:
+            color = list(button_colors[button_option])
+        # build color from hex code
+        else:
+            color = list(int(button_option[i:i+2], 16) for i in (0, 2, 4))
+            button_option = 'Custom'
+
+        if button == 'Start Button Color':
+            rom.write_bytes(symbol, color)
+        else:
+            rom.write_int16s(symbol, color)
+
+        log.button_colors[button] = dict(option=button_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
 def patch_sfx(rom, settings, log, symbols):
@@ -527,7 +607,27 @@ patch_sets = {
             "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x0011,
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x0012,
         }
-    }
+    },
+    0x1F073FC8: {
+        "patches": [
+            patch_dpad,
+            patch_sword_trails,
+            patch_heart_colors,
+            patch_magic_colors,
+            patch_button_colors,
+        ],
+        "symbols": {
+            "CFG_MAGIC_COLOR": 0x0004,
+            "CFG_HEART_COLOR": 0x000A,
+            "CFG_A_BUTTON_COLOR": 0x0010,
+            "CFG_B_BUTTON_COLOR": 0x0016,
+            "CFG_C_BUTTON_COLOR": 0x001C,
+            "CFG_START_BUTTON_COLOR": 0x0022,
+            "CFG_DISPLAY_DPAD": 0x0025,
+            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x0026,
+            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x0027,
+        }
+    },
 }
 
 
@@ -590,6 +690,7 @@ class CosmeticsLog(object):
         self.gauntlet_colors = {}
         self.heart_colors = {}
         self.magic_colors = {}
+        self.button_colors = {}
         self.sfx = {}
         self.bgm = {}
         self.error = None
@@ -653,6 +754,10 @@ class CosmeticsLog(object):
         for magic, options in self.magic_colors.items():
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=magic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+
+        for button, options in self.button_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=button+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         output += '\n\nSFX:\n'
         for key, value in self.sfx.items():
