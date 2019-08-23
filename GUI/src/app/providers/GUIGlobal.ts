@@ -977,6 +977,7 @@ export class GUIGlobal {
 
   async generateSeedWeb(raceSeed: boolean = false, useStaticSeed: string = "") { //Web only
 
+    //Plando Logic
     let plandoFile = this.generator_settingsMap["distribution_file"];
 
     if (plandoFile && typeof (plandoFile) == "object" && plandoFile.name && plandoFile.name.length > 0) {
@@ -1020,6 +1021,7 @@ export class GUIGlobal {
     else {
       plandoFile = null;
     }
+
 
     let settingsFile = this.createSettingsFileObject(false, false, true);
 
