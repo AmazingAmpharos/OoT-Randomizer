@@ -1442,3 +1442,10 @@ skip_GS_BGS_text:
 .orga 0xB2A4D4
     jal     set_fanfare_sequence_ram
     sw      t3, 0x0030(sp)
+
+; ==================================================================================================
+; Force seqeunces to load as proper type regardless of ?
+; ==================================================================================================
+.orga 0xB29E10
+    jal     force_sequence_type
+    sw      a1, 0x0054(sp)
