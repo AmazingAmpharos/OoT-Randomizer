@@ -17,13 +17,13 @@
                       <ng-container [ngSwitch]="setting.type">
                         <!--Toggle-->
                         <ng-container *ngSwitchCase="'Checkbutton'">
-                          <mat-slide-toggle [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" (ngModelChange)="checkVisibility($event, setting, findOption(setting.options, $event))" [(ngModel)]="global.generator_settingsMap[setting.name]"
+                          <mat-slide-toggle [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" [(ngModel)]="global.generator_settingsMap[setting.name]" (ngModelChange)="checkVisibility($event, setting, findOption(setting.options, $event))" 
                                             [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="clockwise">{{setting.text}}</mat-slide-toggle>
                         </ng-container>
                         <!--Radio-->
                         <ng-container *ngSwitchCase="'Radiobutton'">
                           <p class="radioGroupLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}</p>
-                          <mat-radio-group [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" (ngModelChange)="checkVisibility($event, setting, findOption(setting.options, $event))" [(ngModel)]="global.generator_settingsMap[setting.name]"
+                          <mat-radio-group [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" [(ngModel)]="global.generator_settingsMap[setting.name]" (ngModelChange)="checkVisibility($event, setting, findOption(setting.options, $event))"
                                            [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
                             <mat-radio-button *ngFor="let option of setting.options; index as optionIndex" class="radioButton" [value]="option.name">
                               {{option.text}}

@@ -28,7 +28,9 @@ export class GeneratorComponent implements OnInit {
   tooltipComponent = GUITooltip;
 
   @ViewChild('refTabSet') tabSet: NbTabsetComponent;
+  @ViewChild('refTabFooter') tabSetFooter: NbTabsetComponent;
   activeTab: string = "";
+  activeFooterTab: string = "";
   settingsLocked: boolean = false;
 
   //Busy Spinners
@@ -98,6 +100,14 @@ export class GeneratorComponent implements OnInit {
     //Set active tab on boot
     this.activeTab = this.global.getGlobalVar('generatorSettingsArray')[0].text;
 
+    //Set active footer tab on boot
+    if (this.global.getGlobalVar('appType') == 'generator') {
+      this.activeFooterTab = "Generate From Seed";
+    }
+    else {
+      this.activeFooterTab = "Generate From File";
+    }
+
     this.recheckAllSettings();
     this.cd.markForCheck();
     this.cd.detectChanges();
@@ -116,6 +126,10 @@ export class GeneratorComponent implements OnInit {
 
       this.tabSet.changeTab.subscribe(eventObj => {
         this.activeTab = eventObj.tabTitle;
+      });
+
+      this.tabSetFooter.changeTab.subscribe(eventObj => {
+        this.activeFooterTab = eventObj.tabTitle;
       });
 
       this.global.globalEmitter.subscribe(eventObj => {
@@ -502,10 +516,24 @@ export class GeneratorComponent implements OnInit {
   }
 
   changeFooterTabSelection(event) {
+    this.checkFooterTabVisibility(event);
+  }
+
+  checkFooterTabVisibility(event = null) {
+
+    let title = "";
+
+    if (event) {
+      title = event.tabTitle;
+      this.activeFooterTab = title;
+    }
+    else {
+      title = this.activeFooterTab;
+    }
 
     if (this.global.getGlobalVar('electronAvailable')) { //Electron
 
-      if (event.tabTitle === "Generate From File") {
+      if (title === "Generate From File") {
 
         let visibilityUpdates = [];
         visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
@@ -517,7 +545,7 @@ export class GeneratorComponent implements OnInit {
 
         this.toggleVisibility(visibilityUpdates, false);
       }
-      else if (event.tabTitle === "Generate From Seed") {
+      else if (title === "Generate From Seed") {
 
         let visibilityUpdates = [];
         visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
@@ -534,7 +562,7 @@ export class GeneratorComponent implements OnInit {
 
       if (this.global.getGlobalVar("appType") == "generator") {
 
-        if (event.tabTitle === "Generate From File") {
+        if (title === "Generate From File") {
 
           let visibilityUpdates = [];
           visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
@@ -548,7 +576,7 @@ export class GeneratorComponent implements OnInit {
 
           this.toggleVisibility(visibilityUpdates, false);
         }
-        else if (event.tabTitle === "Generate From Seed") {
+        else if (title === "Generate From Seed") {
 
           let visibilityUpdates = [];
           visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
@@ -565,7 +593,7 @@ export class GeneratorComponent implements OnInit {
       }
       else if (this.global.getGlobalVar("appType") == "patcher") {
 
-        if (event.tabTitle === "Generate From File") {
+        if (title === "Generate From File") {
 
           let visibilityUpdates = [];
           visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
@@ -578,7 +606,7 @@ export class GeneratorComponent implements OnInit {
       }
       else if (this.global.getGlobalVar("appType") == "patcher_only") {
 
-        if (event.tabTitle === "Generate From File") {
+        if (title === "Generate From File") {
 
           let visibilityUpdates = [];
           visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type" }, value: true });
@@ -842,6 +870,9 @@ export class GeneratorComponent implements OnInit {
         }
       }
     })));
+
+    //Check bottom tabset last
+    this.checkFooterTabVisibility();  
   }
 
   revertToPriorValue(settingName: string, forceChangeDetection: boolean) {
