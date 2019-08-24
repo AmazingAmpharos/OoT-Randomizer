@@ -1,67 +1,64 @@
+.align 0x10
+@secondary_audioseq_ram:
+.area 0x3200, 0
+.endarea
+
+.align 0x10
+@secondary_audiobank_ram:
+.area 0x1720, 0
+.endarea
+
 set_primary_sequence_ram:
     addiu   t7, t6, 0x8124      
-    lui     t8, 0x801C      
-    addiu   t6, t8, 0x6E60      ; 0x801C6E60 = new primary AudioSeq end
-    bne     t7, a3, @@pbank     ; ensure setting primary AudioSeq pointer, otherwise set primary AudioBank
-    addiu   t9, t6, -0x3200     ; 2800 = maximum bgm sequence size
-    beq     r0, r0, @@preturn
+    li      at, 0x801C6C50      ; 0x801C6C50 = new primary AudioSeq end
+    bne     t7, a3, @@bank      ; ensure setting primary AudioSeq pointer, otherwise set primary AudioBank
+    addiu   t9, at, -0x3200     ; 3200 = maximum bgm sequence size
+    beq     r0, r0, @@return
     nop
-@@pbank:
-    addiu   t9, t9, -0x1720     
-@@preturn:
+@@bank:
+    addiu   t9, t9, -0x1720     ; 1720 = Ending Orchestra 2 AudioBank size
+@@return:
     sw      t9, 0x0014(a3)
     jr      ra
     lw      t6, 0x005C(sp)
 
 set_fanfare_sequence_ram:
-    lui     t6, 0x8013
-    addiu   t7, t6, 0x8054      ; 0x80128054 = fanfare AudioSeq pointer
-    lui     t8, 0x801C
-    addiu   v0, t8, 0x0CF0      ; 0x801C0CF0 = new fanfare AudioSeq start
-    bne     t7, a0, @@fbank
+    li      at, 0x80128054
+    li      v0, 0x801C2330
+    bne     at, a0, @@bank
+    addiu   v0, v0, -0x1640         ; 1640 = maximum fanfare sequence size
+    beq     r0, r0, @@return
     nop
-    beq     r0, r0, @@freturn
-    nop
-@@fbank:
-    lui     t6, 0x8013
-    addiu   t7, t6, 0x8164      ; 0x80128164 = fanfare AudioBank pointer
-    bne     t7, a0, @@freturn   ; for some reasons some rando seeds call this function when the opening starts
-    nop
+@@bank:
     addiu   v0, v0, -0x1720
-@@freturn:
+@@return:
     jr      ra
     or      v1, v0, r0
 
 set_secondary_sequence_ram:
     addiu   t7, t6, 0x8124      
-    lui     t8, 0x8080      
-    addiu   t6, t8, 0xFFF0       ; currently using very end of ram
-    bne     t7, a3, @@sbank      ; ensure setting secondary AudioSeq pointer, otherwise set secondary AudioBank
-    addiu   t9, t6, -0x3200      ; 3200 = maximum bgm sequence size
-    beq     r0, r0, @@sreturn
+    bne     t7, a3, @@bank                  ; ensure setting secondary AudioSeq pointer
     nop
-@@sbank:
-    addiu   t9, t9, -0x1720     
-@@sreturn:
-    sw      t9, 0x0020(a3)
+    beq     r0, r0, @@return
+    la      at, @secondary_audioseq_ram
+@@bank:
+    la      at, @secondary_audiobank_ram    ; otherwise set secondary AudioBank
+@@return:
+    sw      at, 0x0020(a3)
     jr      ra
     lw      t6, 0x005C(sp)
 
 force_sequence_type:
-    lui     t9, 0x8013
-    addiu   t8, t9, 0x8CC0
-    bne     t8, s4, @@check_if_primary
+    li      at, 0x80128CC0
+    bne     at, s4, @@check_if_primary
     nop
-    addiu   a2, r0, 0x0001      ; force large fanfares to load as fanfares
     beq     r0, r0, @@return
+    addiu   a2, r0, 0x0001      ; force large fanfares to load as fanfares
+@@check_if_primary:
+    li      at, 0x80128B60
+    bne     at, s4, @@return
     nop
-@@check_if_primary:             
-    lui     t9, 0x8013
-    addiu   t8, t9, 0x8B60
-    bne     t8, s4, @@return
-    nop
-    addu   a2, r0, r0           ; force small primary sequences to load as primary
-    nop
+    addu    a2, r0, r0          ; force small primary sequences to load as primary
 @@return:
     jr      ra
     sw      a3, 0x005C(sp)
