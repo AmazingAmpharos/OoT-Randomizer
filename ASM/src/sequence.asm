@@ -39,8 +39,9 @@ set_secondary_sequence_ram:
     addiu   t7, t6, 0x8124      
     bne     t7, a3, @@bank                  ; ensure setting secondary AudioSeq pointer
     nop
-    beq     r0, r0, @@return
     la      at, @secondary_audioseq_ram
+    beq     r0, r0, @@return
+    nop
 @@bank:
     la      at, @secondary_audiobank_ram    ; otherwise set secondary AudioBank
 @@return:
