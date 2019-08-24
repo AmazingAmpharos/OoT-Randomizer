@@ -531,7 +531,6 @@ def shuffle_entrances(worlds, entrances, target_entrances, rollbacks, locations_
 def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, itempool):
 
     max_playthrough = None
-    no_items_time_travel_playthrough = None
 
     if locations_to_ensure_reachable:
         max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
@@ -577,6 +576,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             check_same_hint_region(potion_front_entrance, potion_back_entrance)
 
         # At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
+        # Note this creates an empty State rather than reuse world.state (which already has starting items).
         no_items_playthrough = Playthrough([State(world) for world in worlds])
 
         valid_starting_regions = ['Kokiri Forest', 'Kakariko Village']
@@ -585,26 +585,26 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
                 raise EntranceShuffleError('Invalid starting area')
 
         # Check that a region where time passes is always reachable as both ages without having collected any items (except in closed forest)
-        no_items_time_travel_playthrough = Playthrough.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
+        time_travel_playthrough = Playthrough.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
 
         for world in worlds:
-            if not (any(region for region in no_items_time_travel_playthrough.reachable_regions('child') if region.time_passes and region.world == world) and
-                    any(region for region in no_items_time_travel_playthrough.reachable_regions('adult') if region.time_passes and region.world == world)):
+            if not (any(region for region in time_travel_playthrough.reachable_regions('child') if region.time_passes and region.world == world) and
+                    any(region for region in time_travel_playthrough.reachable_regions('adult') if region.time_passes and region.world == world)):
                 raise EntranceShuffleError('Time passing is not guaranteed as both ages')
 
         # When starting as adult, child Link should be able to reach ToT without having collected any items
         # This is important to ensure that the player never loses access to the pedestal after going child
         if any(world.starting_age == 'adult' for world in worlds):
             for world in worlds:
-                if world.starting_age == 'adult' and not no_items_time_travel_playthrough.can_reach(world.get_region('Temple of Time'), age='child'):
+                if world.starting_age == 'adult' and not time_travel_playthrough.can_reach(world.get_region('Temple of Time'), age='child'):
                     raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
 
     if entrance_placed == None or (entrance_placed != None and entrance_placed.type in ['Interior', 'SpecialInterior', 'Overworld']):
         # The Big Poe Shop should always be accessible as adult without the need to use any bottles
         # Since we can't guarantee that items in the pool won't be placed behind bottles, we guarantee the access without using any items
         # This is important to ensure that players can never lock their only bottles by filling them with Big Poes they can't sell
-        if no_items_time_travel_playthrough == None:
-            no_items_time_travel_playthrough = Playthrough.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
+        no_items_time_travel_playthrough = Playthrough.with_items([State(world) for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
+
         for world in worlds:
             if not no_items_time_travel_playthrough.can_reach(world.get_region('Castle Town Rupee Room'), age='adult'):
                 raise EntranceShuffleError('Big Poe Shop access is not guaranteed as adult')
