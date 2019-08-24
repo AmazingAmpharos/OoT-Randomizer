@@ -9,14 +9,14 @@
 .endarea
 
 set_primary_sequence_ram:
-    addiu   t7, t6, 0x8124      
-    li      at, 0x801C6C50      ; 0x801C6C50 = new primary AudioSeq end
+    addiu   t7, t6, 0x8124
+    li      t9, 0x801C0C10      ; 0x801BF5D0 = new primary AudioSeq start
     bne     t7, a3, @@bank      ; ensure setting primary AudioSeq pointer, otherwise set primary AudioBank
-    addiu   t9, at, -0x3200     ; 3200 = maximum bgm sequence size
+    nop
     beq     r0, r0, @@return
     nop
 @@bank:
-    addiu   t9, t9, -0x1720     ; 1720 = Ending Orchestra 2 AudioBank size
+    li      t9, 0x801C5530
 @@return:
     sw      t9, 0x0014(a3)
     jr      ra
@@ -24,19 +24,19 @@ set_primary_sequence_ram:
 
 set_fanfare_sequence_ram:
     li      at, 0x80128054
-    li      v0, 0x801C2330
+    li      v0, 0x801BF5D0
     bne     at, a0, @@bank
-    addiu   v0, v0, -0x1640         ; 1640 = maximum fanfare sequence size
+    nop
     beq     r0, r0, @@return
     nop
 @@bank:
-    addiu   v0, v0, -0x1720
+    li      v0, 0x801C3E10
 @@return:
     jr      ra
     or      v1, v0, r0
 
 set_secondary_sequence_ram:
-    addiu   t7, t6, 0x8124      
+    addiu   t7, t6, 0x8124
     bne     t7, a3, @@bank                  ; ensure setting secondary AudioSeq pointer
     nop
     la      at, @secondary_audioseq_ram
