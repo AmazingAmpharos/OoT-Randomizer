@@ -10,7 +10,7 @@ import { GUIGlobal } from '../../../providers/GUIGlobal';
   selector: 'gui-layout',
   styleUrls: ['./gui.layout.scss'],
   template: `
-    <nb-layout [ngClass]="{webLayout: !global.getGlobalVar('electronAvailable')}">
+    <nb-layout [ngClass]="{webLayout: !global.getGlobalVar('electronAvailable'), electronLayout: global.getGlobalVar('electronAvailable')}">
       <nb-layout-header fixed *ngIf="global.getGlobalVar('electronAvailable')">
         <div *ngIf="platform != 'darwin' || !isMaximized" class="dragRegion"></div>
         <ngx-header></ngx-header>

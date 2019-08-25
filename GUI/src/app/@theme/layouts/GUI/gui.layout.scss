@@ -16,9 +16,20 @@
 
   .main-content {
     min-width: 900px; //min 900x780 space for content, everything else adds scrollbars to the "browser"
-    min-height: 780px;
     overflow: scroll;
     background: #d0cfd3;
+  }
+
+  .electronLayout {
+    .main-content {
+      min-height: 780px;
+    }
+  }
+
+  .webLayout {
+    /deep/ .layout {
+      min-height: unset;
+    }
   }
 
   nb-layout-column {
@@ -27,7 +38,18 @@
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     margin-top: 0 !important;
-    height: 104%;
+  }
+
+  .electronLayout {
+    nb-layout-column {
+      height: 104%;
+    }
+  }
+
+  .webLayout {
+    nb-layout-column {
+      height: 100%;
+    }
   }
 
   nb-sidebar {
