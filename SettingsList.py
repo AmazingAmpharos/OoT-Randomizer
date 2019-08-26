@@ -2005,10 +2005,10 @@ setting_infos = [
         gui_text       = 'Ganon\'s Boss Key',
         default        = 'dungeon',
         choices        = {
-            'remove':          "Remove",
-            'dungeon':         "Dungeon Only",
+            'remove':          "Remove (Keysy)",
             'vanilla':         "Vanilla Location",
-            'keysanity':       "Anywhere",
+            'dungeon':         "Dungeon Only",
+            'keysanity':       "Anywhere (Keysanity)",
             'lacs_vanilla':    "On LACS: Vanilla",
             'lacs_medallions': "On LACS: Medallions",
             'lacs_stones':     "On LACS: Stones",
