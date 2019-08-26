@@ -1371,9 +1371,6 @@ setting_infos = [
 
             When disabled, only required items and locations
             to beat the game will be guaranteed reachable.
-
-            Even when enabled, some locations may still be able
-            to hold the keys needed to reach them.
         ''',
         default        = True,
         shared         = True
