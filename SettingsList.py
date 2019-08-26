@@ -2125,9 +2125,8 @@ setting_infos = [
         choices        = [location.name for location in LocationIterator(lambda loc: loc.filter_tags is not None)],
         default        = [],
         gui_tooltip    = '''
-            Prevent locations from being required. Major
-            items can still appear there, however they
-            will never be required to beat the game.
+            Prevent locations from being required.
+            Only junk items will appear at those locations.
 
             Most dungeon locations have a MQ alternative.
             If the location does not exist because of MQ
