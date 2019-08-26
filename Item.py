@@ -183,6 +183,8 @@ def MakeEventItem(name, location):
     item = ItemFactory(name, location.world, event=True)
     location.world.push_item(location, item)
     location.locked = True
+    if name not in item_table:
+        location.internal = True
     location.world.event_items.add(name)
     return item
 

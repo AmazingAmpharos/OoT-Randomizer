@@ -28,7 +28,8 @@
                 (can_play(Zeldas_Lullaby) or has_explosives) and can_see_with_lens",
             "GS Well MQ Coffin Room": "
                 can_child_attack and 
-                (Small_Key_Bottom_of_the_Well, 2)"
+                (Small_Key_Bottom_of_the_Well, 2)",
+            "Fairy Pot": "has_bottle and has_explosives and has_slingshot"
         },
         "exits": {
             "Bottom of the Well" : "True"

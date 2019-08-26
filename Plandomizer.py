@@ -585,7 +585,7 @@ class WorldDistribution(object):
             stoneID = pull_random_element([stoneIDs], lambda id: matcher(gossipLocations[id].name))
             if stoneID is None:
                 raise RuntimeError('Gossip stone unknown or already assigned in world %d: %s' % (self.id + 1, name))
-            spoiler.hints[self.id][stoneID] = GossipText(text=record.text, colors=record.colors)
+            spoiler.hints[self.id][stoneID] = GossipText(text=record.text, colors=record.colors, prefix='')
 
 
     def give_item(self, item, count=1):
@@ -694,17 +694,17 @@ class Distribution(object):
 
             if self.playthrough is not None:
                 self_dict[':playthrough'] = AllignedDict({
-                    sphere_nr: {
+                    sphere_nr: SortedDict({
                         name: record.to_json() for name, record in sphere.items()
-                    }
+                    })
                     for (sphere_nr, sphere) in self.playthrough.items()
                 }, depth=2)
 
             if self.entrance_playthrough is not None and len(self.entrance_playthrough) > 0:
                 self_dict[':entrance_playthrough'] = AllignedDict({
-                    sphere_nr: {
+                    sphere_nr: SortedDict({
                         name: record.to_json() for name, record in sphere.items()
-                    }
+                    })
                     for (sphere_nr, sphere) in self.entrance_playthrough.items()
                 }, depth=2)
 
@@ -722,10 +722,10 @@ class Distribution(object):
         return dump_obj(self.to_json())
 
 
-    def update_spoiler(self, spoiler):
+    def update_spoiler(self, spoiler, output_spoiler):
         self.file_hash = [HASH_ICONS[icon] for icon in spoiler.file_hash]
 
-        if not self.settings.create_spoiler:
+        if not output_spoiler:
             return
 
         spoiler.parse_data()
@@ -785,8 +785,8 @@ class Distribution(object):
         return Distribution(settings, src_dict)
 
 
-    def to_file(self, filename):
-        json = self.to_str(spoiler=self.settings.create_spoiler)
+    def to_file(self, filename, output_spoiler):
+        json = self.to_str(spoiler=output_spoiler)
         with open(filename, 'w') as outfile:
             outfile.write(json)
 

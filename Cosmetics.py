@@ -7,7 +7,6 @@ from collections import namedtuple
 Color = namedtuple('Color', '  R     G     B')
 
 tunic_colors = {
-    "Custom Color":      Color(0x00, 0x00, 0x00),
     "Kokiri Green":      Color(0x1E, 0x69, 0x1B),
     "Goron Red":         Color(0x64, 0x14, 0x00),
     "Zora Blue":         Color(0x00, 0x3C, 0x64),
@@ -43,7 +42,6 @@ tunic_colors = {
 
 
 NaviColors = {          # Inner Core Color         Outer Glow Color
-    "Custom Color":      (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
     "Gold":              (Color(0xFE, 0xCC, 0x3C), Color(0xFE, 0xC0, 0x07)),
     "White":             (Color(0xFF, 0xFF, 0xFF), Color(0x00, 0x00, 0xFF)),
     "Green":             (Color(0x00, 0xFF, 0x00), Color(0x00, 0xFF, 0x00)),
@@ -66,7 +64,6 @@ NaviColors = {          # Inner Core Color         Outer Glow Color
 }
 
 sword_colors = {        # Initial Color            Fade Color
-    "Custom Color":      (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
     "Rainbow":           (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
     "White":             (Color(0xFF, 0xFF, 0xFF), Color(0xFF, 0xFF, 0xFF)),
     "Red":               (Color(0xFF, 0x00, 0x00), Color(0xFF, 0x00, 0x00)),
@@ -81,7 +78,6 @@ sword_colors = {        # Initial Color            Fade Color
 }
 
 gauntlet_colors = {
-    "Custom Color":      Color(0x00, 0x00, 0x00),
     "Silver":            Color(0xFF, 0xFF, 0xFF),
     "Gold":              Color(0xFE, 0xCF, 0x0F),
     "Black":             Color(0x00, 0x00, 0x06),
@@ -98,7 +94,6 @@ gauntlet_colors = {
 }
 
 heart_colors = {
-    "Custom Color": Color(0x00, 0x00, 0x00),
     "Red":          Color(0xFF, 0x46, 0x32),
     "Green":        Color(0x46, 0xC8, 0x32),
     "Blue":         Color(0x32, 0x46, 0xFF),
@@ -106,7 +101,6 @@ heart_colors = {
 }
 
 magic_colors = {
-    "Custom Color":      Color(0x00, 0x00, 0x00),
     "Green":             Color(0x00, 0xC8, 0x00),
     "Red":               Color(0xC8, 0x00, 0x00),
     "Blue":              Color(0x00, 0x30, 0xFF),
@@ -117,12 +111,15 @@ magic_colors = {
 }
 
 
+meta_color_choices = ["Random Choice", "Completely Random", "Custom Color"]
+
+
 def get_tunic_colors():
     return list(tunic_colors.keys())
 
 
 def get_tunic_color_options():
-    return ["Random Choice", "Completely Random"] + get_tunic_colors()
+    return meta_color_choices + get_tunic_colors()
 
 
 def get_navi_colors():
@@ -131,9 +128,9 @@ def get_navi_colors():
 
 def get_navi_color_options(outer=False):
     if outer:
-        return ["[Same as Inner]", "Random Choice", "Completely Random"] + get_navi_colors()
+        return ["[Same as Inner]"] + meta_color_choices + get_navi_colors()
     else:
-        return ["Random Choice", "Completely Random"] + get_navi_colors()
+        return meta_color_choices + get_navi_colors()
 
     
 def get_sword_colors():
@@ -141,7 +138,7 @@ def get_sword_colors():
 
 
 def get_sword_color_options():
-    return ["Random Choice", "Completely Random"] + get_sword_colors()
+    return meta_color_choices + get_sword_colors()
 
 
 def get_gauntlet_colors():
@@ -149,7 +146,7 @@ def get_gauntlet_colors():
 
 
 def get_gauntlet_color_options():
-    return ["Random Choice", "Completely Random"] + get_gauntlet_colors()
+    return meta_color_choices + get_gauntlet_colors()
 
 
 def get_heart_colors():
@@ -157,7 +154,7 @@ def get_heart_colors():
 
 
 def get_heart_color_options():
-    return ["Random Choice", "Completely Random"] + get_heart_colors()
+    return meta_color_choices + get_heart_colors()
 
 
 def get_magic_colors():
@@ -165,7 +162,7 @@ def get_magic_colors():
 
 
 def get_magic_color_options():
-    return ["Random Choice", "Completely Random"] + get_magic_colors()
+    return meta_color_choices + get_magic_colors()
 
 
 def patch_targeting(rom, settings, log, symbols):
@@ -539,6 +536,7 @@ def patch_cosmetics(settings, rom):
 
     # re-seed for aesthetic effects. They shouldn't be affected by the generation seed
     random.seed()
+    settings.resolve_random_settings(cosmetic=True)
 
     # patch cosmetics that use vanilla oot data, and always compatible
     for patch_func in global_patch_sets:
@@ -614,6 +612,9 @@ class CosmeticsLog(object):
 
         output += format_string.format(key='Default Targeting Option:', value=self.settings.default_targeting, width=padding)
         output += format_string.format(key='Background Music:', value=self.settings.background_music, width=padding)
+        output += format_string.format(key='Fanfares:', value=self.settings.fanfares, width=padding)
+        if self.settings.fanfares == 'random':
+            output += format_string.format(key='Ocarina Fanfares:', value=self.settings.ocarina_fanfares, width=padding)
 
         if 'display_dpad' in self.__dict__:
             output += format_string.format(key='Display D-Pad HUD:', value=self.display_dpad, width=padding)
@@ -657,7 +658,7 @@ class CosmeticsLog(object):
         for key, value in self.sfx.items():
             output += format_string.format(key=key+':', value=value, width=padding)
 
-        if self.settings.background_music == 'random':
+        if self.settings.background_music == 'random' or self.settings.fanfares == 'random':
             #music_padding = 1 + len(max(self.bgm.keys(), key=len))
             music_padding = 40
             output += '\n\nBackground Music:\n'

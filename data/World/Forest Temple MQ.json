@@ -4,7 +4,7 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple MQ First Chest": "
-                is_adult or can_use(Bombs) or can_use(Sticks) or
+                is_adult or has_bombs or can_use(Sticks) or has_nuts or can_use(Boomerang) or
                 can_use(Dins_Fire) or Kokiri_Sword or can_use(Slingshot)",
             "GS Forest Temple MQ First Hallway": "can_use(Hookshot) or can_use(Boomerang)"
         },
@@ -22,7 +22,8 @@
                     (can_play(Song_of_Time) or is_child) and
                     (is_adult or can_use(Dins_Fire) or
                      can_use(Sticks) or can_use(Slingshot) or Kokiri_Sword)",
-            "GS Forest Temple MQ Block Push Room": "is_adult or Kokiri_Sword"
+            "GS Forest Temple MQ Block Push Room": "is_adult or Kokiri_Sword",
+            "Fairy Pot": "has_bottle and (can_play(Song_of_Time) or is_child)"
         },
         "exits": {
             "Forest Temple NW Outdoors": "can_use(Bow) or can_use(Slingshot)",

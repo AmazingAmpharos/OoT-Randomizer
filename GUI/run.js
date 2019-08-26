@@ -25,7 +25,7 @@ var electronIndex = {};
 function promiseFromChildProcess(child) {
     return new Promise(function (resolve, reject) {
         child.addListener("error", reject);
-        child.addListener("exit", resolve);
+        child.on("exit", (exitCode) => resolve(exitCode));
     });
 }
 
@@ -191,10 +191,10 @@ async function spawnDetachedSubProcess(path, args, shell, hide) {
     npmSpawn.unref();
 }
 
-async function spawnChildSubProcess(path, args, shell) {
+async function spawnChildSubProcess(path, args, shell, verbose, stderrSetting = "pipe") {
 
-    var error = false;
-    var npmSpawn = args ? spawn(path, args, { shell: shell }) : spawn(path, { shell: shell });
+    var lastMessage = "";
+    var npmSpawn = args ? spawn(path, args, { shell: shell, stdio: ['pipe', 'pipe', stderrSetting] }) : spawn(path, { shell: shell, stdio: ['pipe', 'pipe', stderrSetting] });
 
     npmSpawn.on('error', err => {
         throw Error(err);
@@ -202,39 +202,47 @@ async function spawnChildSubProcess(path, args, shell) {
 
     function handleMessage(data) {
 
-        if (error == true)
-            return;
-
-        if (data.toLowerCase().includes("exception") || data.toLowerCase().includes("error")) {
-            error = true;
-            console.error(data);
+        if (data.toLowerCase().includes("exception") || data.toLowerCase().includes("error") || verbose) {
+            console.log(data);
         }
+
+        lastMessage = data;
     }
 
-    npmSpawn.stderr.on('data', data => {
-        handleMessage(data.toString());
-    });
+    if (stderrSetting == "pipe") {
+        npmSpawn.stderr.on('data', data => {
+            handleMessage(data.toString());
+        });
+    }
 
     npmSpawn.stdout.on('data', data => {
         handleMessage(data.toString());
     });
 
-    await promiseFromChildProcess(npmSpawn);
+    let exitCode = await promiseFromChildProcess(npmSpawn);
 
-    if (error)
-        throw Error("process_error");   
+    if (exitCode != 0) {
+        console.error("Child Process failed with exit code:", exitCode);
+
+        if (lastMessage && lastMessage.length > 0)
+            console.error("Last message:", lastMessage);
+
+        throw Error("process_error");  
+    } 
 }
 
 async function setupNodeEnvironment(freshSetup = false) {
 
     if (freshSetup)
-        console.log("Creating environment. Please be patient, this can take up to 5 minutes depending on your internet connection...");
+        console.log("Creating environment. Please be patient, this can take 5-10 minutes depending on your internet connection and HDD speed...");
     else
         console.log("Updating environment. Please wait...");
 
+    await waitFor(1000);
+
     environmentChecked = true;
 
-    await spawnChildSubProcess("npm install", null, true).catch(err => { throw Error("Environment setup failed"); });
+    await spawnChildSubProcess("npm install --verbose", null, true, true, "inherit").catch(err => { throw Error("Environment setup failed"); });
 
     console.log("Environment setup completed");
 }
@@ -243,7 +251,7 @@ async function compileElectron() {
 
     console.log("Compiling Electron...");
 
-    await spawnChildSubProcess("npm run electron-compile", null, true).catch(err => { throw Error("Electron compile failed"); });
+    await spawnChildSubProcess("npm run electron-compile", null, true, false).catch(err => { throw Error("Electron compile failed"); });
 
     console.log("Electron compile completed");
 }
@@ -270,7 +278,7 @@ async function compileAngular() {
 
     console.log("Compiling Angular. This can take a minute...");
 
-    await spawnChildSubProcess("npm run ng-release", null, true).catch(err => { throw Error("Angular compile failed"); });
+    await spawnChildSubProcess("npm run ng-release", null, true, false).catch(err => { throw Error("Angular compile failed"); });
  
     console.log("Angular compile completed");
 }
@@ -309,7 +317,7 @@ async function main(commandLine) {
 
     //Verify binary folder exists
     if (!fs.existsSync("./node_modules/.bin")) {
-        throw Error("GUI/node_modules/.bin folder is missing. Please delete the entire GUI/node_modules folder and try again!");
+        //throw Error("GUI/node_modules/.bin folder is missing. Please delete the entire GUI/node_modules folder and try again!");
     }
 
     //Verify core modules

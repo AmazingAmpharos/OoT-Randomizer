@@ -17,13 +17,13 @@
                       <ng-container [ngSwitch]="setting.type">
                         <!--Toggle-->
                         <ng-container *ngSwitchCase="'Checkbutton'">
-                          <mat-slide-toggle [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" (ngModelChange)="checkVisibility($event, setting, findOption(setting.options, $event))" [(ngModel)]="global.generator_settingsMap[setting.name]"
+                          <mat-slide-toggle [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" [(ngModel)]="global.generator_settingsMap[setting.name]" (ngModelChange)="checkVisibility($event, setting, findOption(setting.options, $event))" 
                                             [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="clockwise">{{setting.text}}</mat-slide-toggle>
                         </ng-container>
                         <!--Radio-->
                         <ng-container *ngSwitchCase="'Radiobutton'">
                           <p class="radioGroupLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}</p>
-                          <mat-radio-group [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" (ngModelChange)="checkVisibility($event, setting, findOption(setting.options, $event))" [(ngModel)]="global.generator_settingsMap[setting.name]"
+                          <mat-radio-group [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" [(ngModel)]="global.generator_settingsMap[setting.name]" (ngModelChange)="checkVisibility($event, setting, findOption(setting.options, $event))"
                                            [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
                             <mat-radio-button *ngFor="let option of setting.options; index as optionIndex" class="radioButton" [value]="option.name">
                               {{option.text}}
@@ -89,15 +89,16 @@
                           <ng-container *ngIf="!global.getGlobalVar('electronAvailable')">
                             <!--Visible: Drag Enabled-->
                             <ng-container *ngIf="global.generator_settingsVisibilityMap[setting.name]">
-                              <input class="ioInput" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap[setting.name]) == 'string' ? global.generator_settingsMap[setting.name] : global.generator_settingsMap[setting.name].name"
+                              <input class="ioInputWeb" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap[setting.name]) == 'string' ? global.generator_settingsMap[setting.name] : global.generator_settingsMap[setting.name].name"
                                      (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise" ngfDrop [(file)]="global.generator_settingsMap[setting.name]">
                             </ng-container>
                             <!--Not Visible: Drag Disabled-->
                             <ng-container *ngIf="!global.generator_settingsVisibilityMap[setting.name]">
-                              <input class="ioInput" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap[setting.name]) == 'string' ? global.generator_settingsMap[setting.name] : global.generator_settingsMap[setting.name].name"
+                              <input class="ioInputWeb" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap[setting.name]) == 'string' ? global.generator_settingsMap[setting.name] : global.generator_settingsMap[setting.name].name"
                                      (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
                             </ng-container>
                             <button class="ioInputBrowseButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" ngfSelect [(file)]="global.generator_settingsMap[setting.name]">Browse</button>
+                            <button class="ioInputBrowseButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="global.generator_settingsMap[setting.name] = ''">Clear</button>
                           </ng-container>
                         </ng-container>
                         <ng-container *ngSwitchCase="'Directoryinput'">
@@ -137,7 +138,7 @@
       </nb-tabset>
       <div class="tabsetPadding"></div>
       <!--Static Footer Tabset-->
-      <nb-tabset #refTabFooter class="footerTabset" (changeTab)="changeFooterTabSelection($event)" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: '\'Generate From Seed\': Generate a fresh seed with your provided settings.<br><br>\'Generate From File\': Use your pre-existing patch file to generate your ROM.'}" [nbPopoverTrigger]="global.getGlobalVar('electronAvailable') || global.getGlobalVar('appType') == 'patcher' ? 'noop' : 'hint'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
+      <nb-tabset #refTabFooter class="footerTabset" (changeTab)="changeFooterTabSelection($event)" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: '\'Generate From Seed\': Generate a fresh seed with your provided settings.<br><br>\'Generate From File\': Use your pre-existing patch file to generate your ROM.'}" [nbPopoverTrigger]="global.getGlobalVar('electronAvailable') || global.getGlobalVar('appType') == 'patcher' || global.getGlobalVar('appType') == 'patcher_only' ? 'noop' : 'hint'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
         <nb-tab *ngIf="global.getGlobalVar('appType') == 'generator'" tabTitle="Generate From Seed" active>
           <p class="footerInputLabel">Settings String</p>
           <!--Electron-->
@@ -162,7 +163,7 @@
             <!--Padding-->
             <div class="settingPadding"></div>
             <p class="footerInputLabel">Seed</p>
-            <input class="footerInput" nbInput type="text" maxlength="260" fieldSize="small" [(ngModel)]="seedString">
+            <input class="footerInputShort" nbInput type="text" maxlength="260" fieldSize="small" [(ngModel)]="seedString">
             <!--Padding-->
             <div class="tabsetPadding"></div>
             <!--Release Versions Only-->
@@ -194,18 +195,21 @@
             <!--Generator-->
             <ng-container *ngIf="global.getGlobalVar('appType') == 'generator'">
               <p class="footerInputLabel">Patch File</p>
-              <input class="footerInput" nbInput readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap['patch_file']) == 'string' ? global.generator_settingsMap['patch_file'] : global.generator_settingsMap['patch_file'].name" (ngModelChange)="afterSettingChange(true)" ngfDrop [(file)]="global.generator_settingsMap['patch_file']">
+              <input class="footerInputWeb" nbInput readonly type="text" maxlength="260" fieldSize="small" [(ngModel)]="getVariableType(global.generator_settingsMap['patch_file']) == 'string' ? global.generator_settingsMap['patch_file'] : global.generator_settingsMap['patch_file'].name" (ngModelChange)="afterSettingChange(true)" ngfDrop [(file)]="global.generator_settingsMap['patch_file']">
               <button class="footerButtonPatchFileBrowse" nbButton status="info" size="small" ngfSelect [(file)]="global.generator_settingsMap['patch_file']">Select File</button>
+              <button class="footerButtonPatchFileBrowse" nbButton status="info" size="small" (click)="global.generator_settingsMap['patch_file'] = ''">Clear</button>
               <!--Padding-->
               <div class="settingPadding"></div>
               <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Update Cosmetics</mat-slide-toggle>
+              <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['web_persist_in_cache']" (ngModelChange)="afterSettingChange(true)">Persist Files in Cache</mat-slide-toggle>
               <!--Padding-->
               <div class="tabsetPadding"></div>
               <button class="footerGenerateButton" nbButton fullWidth status="success" [disabled]="!generateSeedButtonEnabled" (click)="patchROM()">Patch ROM!</button>
             </ng-container>
             <!--Patcher-->
-            <ng-container *ngIf="global.getGlobalVar('appType') == 'patcher'">
-              <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Update Cosmetics</mat-slide-toggle>
+            <ng-container *ngIf="global.getGlobalVar('appType') == 'patcher' || global.getGlobalVar('appType') == 'patcher_only'">
+              <mat-slide-toggle *ngIf="global.getGlobalVar('appType') == 'patcher'" labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Update Cosmetics</mat-slide-toggle>
+              <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['web_persist_in_cache']" (ngModelChange)="afterSettingChange(true)">Persist Files in Cache</mat-slide-toggle>
               <!--Padding-->
               <div class="tabsetPadding"></div>
               <button class="footerGenerateButton" nbButton fullWidth status="success" [disabled]="!generateSeedButtonEnabled" (click)="patchROM()">Patch ROM!</button>

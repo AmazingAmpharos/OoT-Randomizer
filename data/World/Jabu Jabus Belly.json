@@ -21,7 +21,8 @@
         },
         "exits": {
             "Jabu Jabus Belly Beginning": "True",
-            "Jabu Jabus Belly Depths": "can_use(Boomerang)"
+            "Jabu Jabus Belly Depths": "can_use(Boomerang)",
+            "Jabu Jabus Belly Boss Area": "logic_jabu_boss_gs_adult and can_use(Hover_Boots)"
         }
     },
     {
@@ -40,8 +41,8 @@
         "region_name": "Jabu Jabus Belly Boss Area",
         "dungeon": "Jabu Jabus Belly",
         "locations": {
-            "Barinade Heart": "True",
-            "Barinade": "True",
+            "Barinade Heart": "can_use(Boomerang)",
+            "Barinade": "can_use(Boomerang)",
             "GS Jabu Jabu Near Boss": "True",
             "Nut Pot": "True"
         },

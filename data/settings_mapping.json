@@ -45,14 +45,14 @@
     {
       "name": "general_tab_web_generator",
       "text": "ROM Options",
-      "app_type": "generator",
+      "app_type": ["generator"],
       "exclude_from_electron": true,
       "sections": [
         {
           "name": "general_section",
           "text": "",
           "col_span": 4,
-          "row_span": 2,
+          "row_span": 1,
           "settings": [
             "rom",
             "web_wad_file",
@@ -60,6 +60,7 @@
             "web_common_key_string",
             "web_wad_channel_id",
             "web_wad_channel_title",
+            "distribution_file",
             "create_spoiler",
             "web_output_type"
           ]
@@ -88,14 +89,14 @@
     {
       "name": "general_tab_web_patcher",
       "text": "ROM Generation",
-      "app_type": "patcher",
+      "app_type": ["patcher", "patcher_only"],
       "exclude_from_electron": true,
       "sections": [
         {
           "name": "general_section",
           "text": "",
           "col_span": 4,
-          "row_span": 2,
+          "row_span": 1,
           "settings": [
             "rom",
             "web_wad_file",
@@ -120,7 +121,7 @@
     {
       "name": "main_tab",
       "text": "Main Rules",
-      "app_type": "generator",
+      "app_type": ["generator"],
       "sections": [
         {
           "name": "main_section",
@@ -194,7 +195,7 @@
     {
       "name": "detailed_tab",
       "text": "Detailed Logic",
-      "app_type": "generator",
+      "app_type": ["generator"],
       "sections": [
         {
           "name": "main_section",
@@ -228,7 +229,7 @@
     {
       "name": "other_tab",
       "text": "Other",
-      "app_type": "generator",
+      "app_type": ["generator"],
       "sections": [
         {
           "name": "speedup_section",
@@ -282,6 +283,7 @@
     {
       "name": "cosmetics_tab",
       "text": "Cosmetics",
+      "app_type": ["generator", "patcher"],
       "is_cosmetics": true,
       "sections": [
         {
@@ -344,6 +346,7 @@
     {
       "name": "sfx_tab",
       "text": "SFX",
+      "app_type": ["generator", "patcher"],
       "is_cosmetics": true,
       "sections": [
         {

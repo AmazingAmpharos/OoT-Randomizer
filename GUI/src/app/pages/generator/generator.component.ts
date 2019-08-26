@@ -28,7 +28,9 @@ export class GeneratorComponent implements OnInit {
   tooltipComponent = GUITooltip;
 
   @ViewChild('refTabSet') tabSet: NbTabsetComponent;
+  @ViewChild('refTabFooter') tabSetFooter: NbTabsetComponent;
   activeTab: string = "";
+  activeFooterTab: string = "";
   settingsLocked: boolean = false;
 
   //Busy Spinners
@@ -80,11 +82,13 @@ export class GeneratorComponent implements OnInit {
     }
     else {
 
-      this.global.globalEmitter.subscribe(eventObj => {
+      let eventSub = this.global.globalEmitter.subscribe(eventObj => {
 
         if (eventObj.name == "init_finished") {
           console.log("Init finished event");
           this.generatorReady();
+
+          eventSub.unsubscribe();
         }
       });
     }  
@@ -95,6 +99,14 @@ export class GeneratorComponent implements OnInit {
 
     //Set active tab on boot
     this.activeTab = this.global.getGlobalVar('generatorSettingsArray')[0].text;
+
+    //Set active footer tab on boot
+    if (this.global.getGlobalVar('appType') == 'generator') {
+      this.activeFooterTab = "Generate From Seed";
+    }
+    else {
+      this.activeFooterTab = "Generate From File";
+    }
 
     this.recheckAllSettings();
     this.cd.markForCheck();
@@ -114,6 +126,18 @@ export class GeneratorComponent implements OnInit {
 
       this.tabSet.changeTab.subscribe(eventObj => {
         this.activeTab = eventObj.tabTitle;
+      });
+
+      this.tabSetFooter.changeTab.subscribe(eventObj => {
+        this.activeFooterTab = eventObj.tabTitle;
+      });
+
+      this.global.globalEmitter.subscribe(eventObj => {
+
+        if (eventObj.name == "refresh_gui") {
+          this.cd.markForCheck();
+          this.cd.detectChanges();
+        }
       });
 
     }, 0);
@@ -492,27 +516,41 @@ export class GeneratorComponent implements OnInit {
   }
 
   changeFooterTabSelection(event) {
+    this.checkFooterTabVisibility(event);
+  }
+
+  checkFooterTabVisibility(event = null) {
+
+    let title = "";
+
+    if (event) {
+      title = event.tabTitle;
+      this.activeFooterTab = title;
+    }
+    else {
+      title = this.activeFooterTab;
+    }
 
     if (this.global.getGlobalVar('electronAvailable')) { //Electron
 
-      if (event.tabTitle === "Generate From File") {
+      if (title === "Generate From File") {
 
         let visibilityUpdates = [];
         visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
         visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: false });
-        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count" }, value: false });
+        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count,distribution_file" }, value: false });
 
         visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
         visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
 
         this.toggleVisibility(visibilityUpdates, false);
       }
-      else if (event.tabTitle === "Generate From Seed") {
+      else if (title === "Generate From Seed") {
 
         let visibilityUpdates = [];
         visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
         visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: true });
-        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count" }, value: true });
+        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count,distribution_file" }, value: true });
 
         visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: true });
         visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: true });
@@ -524,12 +562,12 @@ export class GeneratorComponent implements OnInit {
 
       if (this.global.getGlobalVar("appType") == "generator") {
 
-        if (event.tabTitle === "Generate From File") {
+        if (title === "Generate From File") {
 
           let visibilityUpdates = [];
           visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
           visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: false });
-          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count" }, value: false });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count,distribution_file" }, value: false });
 
           visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: true });
           visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: this.global.generator_settingsMap['web_output_type'] == "wad" });
@@ -538,12 +576,12 @@ export class GeneratorComponent implements OnInit {
 
           this.toggleVisibility(visibilityUpdates, false);
         }
-        else if (event.tabTitle === "Generate From Seed") {
+        else if (title === "Generate From Seed") {
 
           let visibilityUpdates = [];
           visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
           visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: true });
-          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count" }, value: true });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count,distribution_file" }, value: true });
 
           visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: false });
           visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: false });
@@ -555,12 +593,23 @@ export class GeneratorComponent implements OnInit {
       }
       else if (this.global.getGlobalVar("appType") == "patcher") {
 
-        if (event.tabTitle === "Generate From File") {
+        if (title === "Generate From File") {
 
           let visibilityUpdates = [];
           visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
 
           visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: true });
+          visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: this.global.generator_settingsMap['web_output_type'] == "wad" });
+
+          this.toggleVisibility(visibilityUpdates, false);
+        }
+      }
+      else if (this.global.getGlobalVar("appType") == "patcher_only") {
+
+        if (title === "Generate From File") {
+
+          let visibilityUpdates = [];
+          visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type" }, value: true });
           visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: this.global.generator_settingsMap['web_output_type'] == "wad" });
 
           this.toggleVisibility(visibilityUpdates, false);
@@ -821,6 +870,9 @@ export class GeneratorComponent implements OnInit {
         }
       }
     })));
+
+    //Check bottom tabset last
+    this.checkFooterTabVisibility();  
   }
 
   revertToPriorValue(settingName: string, forceChangeDetection: boolean) {

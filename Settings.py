@@ -227,12 +227,16 @@ class Settings:
         self.numeric_seed = self.get_numeric_seed()
 
 
-    def resolve_random_settings(self):
+    def resolve_random_settings(self, cosmetic):
         sorted_infos = list(setting_infos)
         sort_key = lambda info: 0 if info.dependency is None else 1
         sorted_infos.sort(key=sort_key)
 
         for info in sorted_infos:
+            # only randomize cosmetics options or non-cosmetic
+            if cosmetic == info.shared:
+                continue
+
             if not self.check_dependency(info.name, check_random=False):
                 continue
 
@@ -273,6 +277,7 @@ def get_settings_from_command_line_args():
     parser.add_argument('--settings', help='Use the specified settings file to use for generation')
     parser.add_argument('--seed', help='Generate the specified seed.')
     parser.add_argument('--no_log', help='Suppresses the generation of a log file.', action='store_true')
+    parser.add_argument('--output_settings', help='Always outputs a settings.json file even when spoiler is enabled.', action='store_true')
 
     args = parser.parse_args()
 
@@ -289,6 +294,8 @@ def get_settings_from_command_line_args():
             settings = Settings({})
         else:
             raise ex
+
+    settings.output_settings = args.output_settings
 
     if args.settings_string is not None:
         settings.update_with_settings_string(args.settings_string)

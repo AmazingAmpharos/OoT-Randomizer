@@ -483,6 +483,7 @@ droplocations = {
     'Wandering Bugs': 'Bugs',
     'Fairy Pot': 'Fairy',
     'Free Fairies': 'Fairy',
+    'Wall Switch Fairy': 'Fairy',
     'Butterfly Fairy': 'Fairy',
     'Gossip Stone Fairy': 'Fairy',
     'Bean Plant Fairy': 'Fairy',

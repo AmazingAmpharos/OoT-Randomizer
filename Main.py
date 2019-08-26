@@ -21,7 +21,6 @@ from Cosmetics import patch_cosmetics
 from DungeonList import create_dungeons
 from Fill import distribute_items_restrictive, ShuffleError
 from Item import Item
-from ItemList import item_table
 from ItemPool import generate_itempool
 from Hints import buildGossipHints
 from Utils import default_output_path, is_bundled, subprocess_args, data_path
@@ -30,7 +29,7 @@ from N64Patch import create_patch_file, apply_patch_file
 from SettingsList import setting_infos, logic_tricks
 from Rules import set_rules, set_shop_rules
 from Plandomizer import Distribution
-from Playthrough import Playthrough
+from Playthrough import Playthrough, RewindablePlaythrough
 from EntranceShuffle import set_entrances
 from LocationList import set_drop_location_names
 
@@ -81,9 +80,9 @@ def main(settings, window=dummy_window()):
     settings.remove_disabled()
     logger.info('(Original) Settings string: %s\n', settings.settings_string)
     random.seed(settings.numeric_seed)
-    settings.resolve_random_settings()
+    settings.resolve_random_settings(cosmetic=False)
     logger.debug(settings.get_settings_display())
-    max_attempts = 3
+    max_attempts = 1
     for attempt in range(1, max_attempts + 1):
         try:
             spoiler = generate(settings, window)
@@ -269,17 +268,18 @@ def patch_and_output(settings, window, spoiler, rom, start):
             logger.info("Created uncompessed rom at: %s" % output_path)
         window.update_progress(95)
 
-    settings.distribution.update_spoiler(spoiler)
-    if settings.create_spoiler:
-        window.update_status('Creating Spoiler Log')
-        spoiler_path = os.path.join(output_dir, '%s_Spoiler.json' % outfilebase)
-        settings.distribution.to_file(spoiler_path)
-        logger.info("Created spoiler log at: %s" % ('%s_Spoiler.json' % outfilebase))
-    else:
+    if not settings.create_spoiler or settings.output_settings:
+        settings.distribution.update_spoiler(spoiler, False)
         window.update_status('Creating Settings Log')
         settings_path = os.path.join(output_dir, '%s_Settings.json' % outfilebase)
-        settings.distribution.to_file(settings_path)
+        settings.distribution.to_file(settings_path, False)
         logger.info("Created settings log at: %s" % ('%s_Settings.json' % outfilebase))
+    if settings.create_spoiler:
+        settings.distribution.update_spoiler(spoiler, True)
+        window.update_status('Creating Spoiler Log')
+        spoiler_path = os.path.join(output_dir, '%s_Spoiler.json' % outfilebase)
+        settings.distribution.to_file(spoiler_path, True)
+        logger.info("Created spoiler log at: %s" % ('%s_Spoiler.json' % outfilebase))
 
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
@@ -442,7 +442,7 @@ def cosmetic_patch(settings, window=dummy_window()):
     window.update_status('Creating Patch File')
 
     # base the new patch file on the base patch file
-    rom.original = patched_base_rom
+    rom.original.buffer = patched_base_rom
 
     rom.update_crc()
     create_patch_file(rom, patchfilename)
@@ -506,11 +506,11 @@ def create_playthrough(spoiler):
     if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Cannot beat game. Something went terribly wrong here!')
 
-    playthrough = Playthrough([world.state for world in worlds])
+    playthrough = RewindablePlaythrough([world.state for world in worlds])
     # Get all item locations in the worlds
     item_locations = [location for state in playthrough.state_list for location in state.world.get_filled_locations() if location.item.advancement]
     # Omit certain items from the playthrough
-    internal_locations = {location for location in item_locations if location.item.name not in item_table}
+    internal_locations = {location for location in item_locations if location.internal}
     # Generate a list of spheres by iterating over reachable locations without collecting as we go.
     # Collecting every item in one sphere means that every item
     # in the next sphere is collectable. Will contain every reachable item this way.
@@ -521,6 +521,7 @@ def create_playthrough(spoiler):
     remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances())
     
     while True:
+        playthrough.checkpoint()
         # Not collecting while the generator runs means we only get one sphere at a time
         # Otherwise, an item we collect could influence later item collection in the same sphere
         collected = list(playthrough.iter_reachable_locations(item_locations))
@@ -551,7 +552,7 @@ def create_playthrough(spoiler):
             # Generic events might show up or not, as usual, but since we don't
             # show them in the final output, might as well skip over them. We'll
             # still need them in the final pass, so make sure to include them.
-            if old_item.name not in item_table:
+            if location.internal:
                 required_locations.append(location)
                 continue
 

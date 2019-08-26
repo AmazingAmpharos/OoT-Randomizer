@@ -1152,7 +1152,7 @@
     {
         "region_name": "Deku Theater",
         "locations": {
-            "Deku Theater Skull Mask": "is_child and 'Skull Mask'",
+            "Deku Theater Skull Mask": "is_child and 'Skull Mask' and (hint_dist != 'tournament' or guarantee_hint)",
             "Deku Theater Mask of Truth": "is_child and 'Mask of Truth' and guarantee_hint"
         }
     },

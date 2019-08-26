@@ -3,6 +3,7 @@ import logging
 from Fill import ShuffleError
 from collections import OrderedDict
 from Playthrough import Playthrough
+from Region import TimeOfDay
 from Rules import set_entrances_based_rules
 from Entrance import Entrance
 from State import State
@@ -42,7 +43,7 @@ def assume_pool_reachable(world, entrance_pool):
             assumed_return = entrance.reverse.assume_reachable()
             if entrance.type in ('Dungeon', 'Interior', 'Grotto', 'Grave', 'SpecialGrave'):
                 # Dungeon, Grotto/Grave and Simple Interior exits shouldn't be assumed to be able to give access to their parent region
-                assumed_return.set_rule(lambda state: False)
+                assumed_return.set_rule(lambda state, **kwargs: False)
             assumed_forward.bind_two_way(assumed_return)
         assumed_pool.append(assumed_forward)
     return assumed_pool
@@ -108,8 +109,8 @@ entrance_shuffle_table = [
                         ('House of Skulltula -> Kakariko Village',                          { 'index': 0x04EE })),
     ('Interior',        ('Kakariko Village -> Impas House',                                 { 'index': 0x039C }),
                         ('Impas House -> Kakariko Village',                                 { 'index': 0x0345 })),
-    ('Interior',        ('Kakariko Village -> Impas House Back',                            { 'index': 0x05C8 }),
-                        ('Impas House Back -> Kakariko Village',                            { 'index': 0x05DC })),
+    ('Interior',        ('Kakariko Impa Ledge -> Impas House Back',                         { 'index': 0x05C8 }),
+                        ('Impas House Back -> Kakariko Impa Ledge',                         { 'index': 0x05DC })),
     ('Interior',        ('Kakariko Village Backyard -> Odd Medicine Building',              { 'index': 0x0072 }),
                         ('Odd Medicine Building -> Kakariko Village Backyard',              { 'index': 0x034D })),
     ('Interior',        ('Graveyard -> Dampes House',                                       { 'index': 0x030D }),
@@ -287,7 +288,7 @@ entrance_shuffle_table = [
                         ('Zoras Fountain -> Zoras Domain Behind King Zora',                 { 'index': 0x01A1 })),
 
     ('OwlDrop',         ('Lake Hylia Owl Flight -> Hyrule Field',                           { 'index': 0x027E, 'code_address': 0xAC9F26 })),
-    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Village',            { 'index': 0x0554, 'code_address': 0xAC9EF2 })),
+    ('OwlDrop',         ('Death Mountain Summit Owl Flight -> Kakariko Impa Ledge',         { 'index': 0x0554, 'code_address': 0xAC9EF2 })),
 ]
 
 
@@ -371,7 +372,7 @@ def shuffle_random_entrances(worlds):
                 target.parent_region.exits.append(target)
             target_entrance_pools['OwlDrop'] += duplicate_overworld_targets
             for target in target_entrance_pools['OwlDrop']:
-                target.set_rule(lambda state: False)
+                target.set_rule(lambda state, **kwargs: False)
 
         # Set entrances defined in the distribution
         world.distribution.set_shuffled_entrances(worlds, entrance_pools, target_entrance_pools, locations_to_ensure_reachable, complete_itempool)
@@ -383,7 +384,7 @@ def shuffle_random_entrances(worlds):
                 temple_of_time_exit = world.get_entrance('Temple of Time -> Temple of Time Exterior')
                 links_house_exit = world.get_entrance('Links House -> Kokiri Forest')
                 for target in target_entrance_pools[pool_type]:
-                    target.set_rule(lambda state: temple_of_time_exit.connected_region == None or (links_house_exit.connected_region == None and state.is_child()))
+                    target.set_rule(lambda state, age=None, **kwargs: temple_of_time_exit.connected_region == None or (links_house_exit.connected_region == None and age == 'child'))
                 shuffle_entrance_pool(worlds, [temple_of_time_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
                 shuffle_entrance_pool(worlds, [links_house_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
 
@@ -469,7 +470,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
     for entrance in entrances_to_split:
         # Here, we find entrances that may be unreachable under certain conditions
-        if not max_playthrough.state_list[entrance.world.id].as_both(entrance, tod='all'):
+        if not max_playthrough.state_list[entrance.world.id].as_both(entrance, tod=TimeOfDay.ALL):
             restrictive_entrances.append(entrance)
             continue
         # If an entrance is reachable as both ages and all times of day with all the other entrances disconnected,
@@ -549,7 +550,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
         for world in worlds:
             # Links House entrance should be reachable as child at some point in the seed
             links_house_entrance = get_entrance_replacing(world.get_region('Links House'), 'Kokiri Forest -> Links House')
-            if not max_playthrough.state_list[world.id].as_age(links_house_entrance, adult=False):
+            if not max_playthrough.state_list[world.id].as_age(links_house_entrance, age='child'):
                 raise EntranceShuffleError('Links House Entrance is never reachable as child')
 
             # Temple of Time entrance should be reachable as both ages at some point in the seed
@@ -569,13 +570,10 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
 
             # Potion Shop back door should be reachable as adult at some point in the seed
             potion_back_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Back'), 'Kakariko Village Backyard -> Kakariko Potion Shop Back')
-            if not max_playthrough.state_list[world.id].as_age(potion_back_entrance, adult=True):
+            if not max_playthrough.state_list[world.id].as_age(potion_back_entrance, age='adult'):
                 raise EntranceShuffleError('Adult Potion Back Entrance is never reachable as Adult')
 
-            if  potion_front_entrance.parent_region.hint is not None and \
-                potion_back_entrance.parent_region.hint is not None and \
-                potion_front_entrance.parent_region.hint != potion_back_entrance.parent_region.hint:
-                raise EntranceShuffleError('Adult Potion Shop Entrances not in same hint region')
+            check_same_hint_region(potion_front_entrance, potion_back_entrance)
 
         # At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
         no_items_playthrough = Playthrough([State(world) for world in worlds])
@@ -589,10 +587,10 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
         # In ER, Time of day logic normally considers that the player always has access to time passing from the root so this is important to ensure
         # This also means that, in order to test for this, we have to temporarily remove that assumption about root access to time passing
         for world in worlds:
-            world.get_region('Root').can_reach = lambda state: state.tod == None
+            world.get_region('Root').can_reach = lambda state, tod=TimeOfDay.NONE, **kwargs: tod == TimeOfDay.NONE
         no_time_passing_playthrough = Playthrough.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
         for world in worlds:
-            world.get_region('Root').can_reach = lambda state: True
+            world.get_region('Root').can_reach = lambda state, **kwargs: True
 
         for world in worlds:
             if not (any(region for region in no_time_passing_playthrough.reachable_regions('child') if region.time_passes and region.world == world) and
@@ -619,7 +617,19 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             if not no_items_time_travel_playthrough.can_reach(world.get_region('Castle Town Rupee Room'), age='adult'):
                 raise EntranceShuffleError('Big Poe Shop access is not guaranteed as adult')
 
+        if world.shuffle_cows:
+            impas_front_entrance = get_entrance_replacing(world.get_region('Impas House'), 'Kakariko Village -> Impas House')
+            impas_back_entrance = get_entrance_replacing(world.get_region('Impas House Back'), 'Kakariko Impa Ledge -> Impas House Back')
+            check_same_hint_region(impas_front_entrance, impas_back_entrance)
+
     return
+
+
+# Shorthand function to check and validate that two entrances are in the same hint region
+def check_same_hint_region(first, second):
+    if  first.parent_region.hint is not None and second.parent_region.hint is not None and \
+        first.parent_region.hint != second.parent_region.hint:
+        raise EntranceShuffleError('Entrances are not in the same hint region')
 
 
 # Shorthand function to find an entrance with the requested name leading to a specific region

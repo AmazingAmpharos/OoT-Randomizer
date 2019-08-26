@@ -1,12 +1,12 @@
 from State import State
-from Region import Region
+from Region import Region, TimeOfDay
 from Entrance import Entrance
 from Hints import get_hint_area
 from Location import Location, LocationFactory
 from LocationList import business_scrubs
 from DungeonList import create_dungeons
 from Rules import set_rules, set_shop_rules
-from Item import Item, ItemFactory
+from Item import Item, ItemFactory, MakeEventItem
 from RuleParser import Rule_AST_Transformer
 from SettingsList import get_setting_info
 import logging
@@ -32,6 +32,7 @@ class World(object):
         self.required_locations = []
         self.shop_prices = {}
         self.scrub_prices = {}
+        self.maximum_wallets = 0
         self.light_arrow_location = None
         self.triforce_count = 0
         self.triforce_goal = 20 * settings.world_count
@@ -59,6 +60,7 @@ class World(object):
         self.shuffle_overworld_entrances = self.entrance_shuffle == 'all'
 
         self.disable_trade_revert = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
+        self.ensure_tod_access = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
 
         # Determine LACS Condition
         if self.shuffle_ganon_bosskey == 'lacs_medallions':
@@ -112,8 +114,7 @@ class World(object):
         new_world.shop_prices = copy.copy(self.shop_prices)
         new_world.triforce_goal = self.triforce_goal
         new_world.triforce_count = self.triforce_count
-
-        new_world.id = self.id
+        new_world.maximum_wallets = self.maximum_wallets
         new_world.distribution = self.distribution
 
         new_world.regions = [region.copy(new_world) for region in self.regions]
@@ -206,6 +207,9 @@ class World(object):
                 new_region.dungeon = region['dungeon']
             if 'time_passes' in region:
                 new_region.time_passes = region['time_passes']
+                new_region.provides_time = TimeOfDay.ALL
+            if new_region.name == 'Ganons Castle Grounds':
+                new_region.provides_time = TimeOfDay.DAMPE
             if 'locations' in region:
                 for location, rule in region['locations'].items():
                     new_location = LocationFactory(location)
@@ -225,9 +229,7 @@ class World(object):
                         self.parser.parse_spot_rule(new_location)
                     new_location.world = self
                     new_region.locations.append(new_location)
-                    self.push_item(new_location, ItemFactory(event, self, event=True))
-                    new_location.locked = True
-                    self.event_items.add(event)
+                    MakeEventItem(event, new_location)
             if 'exits' in region:
                 for exit, rule in region['exits'].items():
                     new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)
@@ -619,6 +621,9 @@ class World(object):
                     # The max number of requred Big Poe Bottles is based on the setting
                     dupe_locations = duplicate_item_woth[world_id].get(item.name, [])
                     max_progressive = self.settings.big_poe_count
+                elif item.name == 'Progressive Wallet':
+                    dupe_locations = duplicate_item_woth[world_id].get(item.name, [])
+                    max_progressive = self.maximum_wallets
                 else:
                     dupe_locations = duplicate_item_woth[world_id].get(item.name, [])
                     max_progressive = item.special.get('progressive', 1)

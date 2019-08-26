@@ -8,13 +8,8 @@ This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
   * [Settings](#settings)
   * [Known Issues](#known-issues)
 * [Changelog](#changelog)
-  * [New Features](#new-features)
-  * [New Options](#new-options)
-  * [Updated Features](#updated-features)
-  * [Updated Options](#updated-options)
-  * [Bug Fixes](#bug-fixes)
-  * [Multiworld Changes](#multiworld-changes)
-  * [Development Version Changes](#development-version-changes)
+  * [5.0](#50)
+  * [4.0](#40)
 
 ## Installation
 
@@ -97,7 +92,7 @@ player.
 * Plan-domizer
   * Create a custom seed by placing items, hints and/or entrances where you want them
   * Customize starting items, item pools, active trials and Master Quest dungeons
-  * Distribution files match the spoiler log JSON format
+  * Plandomizer files match the spoiler log JSON format
 * Additional Customization
   * Additional Background Music Sequences can now be provided to be shuffled in
   * Fanfares randomization
@@ -128,9 +123,14 @@ player.
   * All Gerudo now check for Gerudo Membership Card instead of Carpenters being freed
     * This only affects when `Shuffle Gerudo Card` is enabled or in Entrance Randomizer
     * In the affected modes, a Gerudo is added behind the Wasteland gate who can open the gate
+  * Removed RNG from Fishing Minigame
+    * Note: The optimal strategy is to have the line stationary for the fish to bite
+  * Can now cast Farore's Wind and play Warp Songs from within Gerudo Training Grounds and all of Ganon's Castle
 * Hint Changes
   * Every generic grotto gossip stone has their own hint.
   * The "Very Strong" hint setting can now give multiple Foolish dungeon hints.
+  * The “Tournament” hint setting was revised to utilize all 40 hint stones.
+    * Increased to 5 WOTH hints (with a new maximum of 2 Dungeon regions hinted); increased to 3 Foolish hints; Skull Mask added to Tournament hints’ Always hints; 5 Sometimes hints; all hints in this distribution are duplicated onto two Gossip Stones.
 * Cutscene Changes
   * Burning Kakariko Cutscene can be triggered when entering Kakariko Village from any entrance.
   * Speedup Owl Flying cutscenes to be almost instant.
@@ -168,6 +168,7 @@ player.
 * Improved Spoiler Logs for Multiworlds with differing Random settings between worlds
 * Lab Dive now completable even with Eyedrops in your possession
 * Great Fairy cutscene no longer plays on additional visits for health and magic refills.
+* Running Man can now fill a Tycoon’s wallet when buying the Bunny Hood from the player
 
 
 ### 4.0

@@ -2,6 +2,9 @@
     {
         "region_name": "Ice Cavern Beginning",
         "dungeon": "Ice Cavern",
+        "locations": {
+            "Fairy Pot": "has_bottle"
+        },
         "exits": {
             "Zoras Fountain": "True",
             "Ice Cavern Map Room": "

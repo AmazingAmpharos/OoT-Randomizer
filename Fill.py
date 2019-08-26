@@ -162,9 +162,18 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 
     worlds[0].settings.distribution.cloak(worlds, [cloakable_locations], [all_models])
 
-    # Get Light Arrow location for later usage.
     for world in worlds:
         for location in world.get_filled_locations():
+            # Get the maximum amount of wallets required to purchase an advancement item.
+            if world.maximum_wallets < 3 and location.price and location.item.advancement:
+                if location.price > 500:
+                    world.maximum_wallets = 3
+                elif world.maximum_wallets < 2 and location.price > 200:
+                    world.maximum_wallets = 2
+                elif world.maximum_wallets < 1 and location.price > 99:
+                    world.maximum_wallets = 1
+
+            # Get Light Arrow location for later usage.
             if location.item and location.item.name == 'Light Arrows':
                 location.item.world.light_arrow_location = location
 
@@ -188,9 +197,6 @@ def fill_dungeons_restrictive(window, worlds, playthrough, shuffled_locations, d
 
     # place dungeon items
     fill_restrictive(window, worlds, base_playthrough, shuffled_locations, dungeon_items)
-
-    for world in worlds:
-        world.state.clear_cached_unreachable()
 
 
 # Places items into dungeon locations. This is used when there should be exactly

@@ -15,7 +15,7 @@ export class BypassSecurityPipe implements PipeTransform {
 
 @Component({
   selector: 'ngx-app',
-  template: `<body class="nb-theme-corporate">
+  template: `<body>
     <router-outlet></router-outlet>
   </body>`,
   styleUrls: ["../app.component.scss"],

@@ -48,7 +48,7 @@
             "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time)"
         },
         "exits": {
-            "Shadow Temple Lower Huge Pit": "has_fire_source"
+            "Shadow Temple Lower Huge Pit": "has_fire_source or logic_shadow_mq_huge_pit"
         }
     },
     {
@@ -79,7 +79,8 @@
             "Shadow Temple MQ After Wind Enemy Chest": "True",
             "Shadow Temple MQ After Wind Hidden Chest": "True",
             "GS Shadow Temple MQ Wind Hint Room": "True",
-            "GS Shadow Temple MQ After Wind": "True"
+            "GS Shadow Temple MQ After Wind": "True",
+            "Nut Pot": "True"
         },
         "exits": {
             "Shadow Temple Beyond Boat": "

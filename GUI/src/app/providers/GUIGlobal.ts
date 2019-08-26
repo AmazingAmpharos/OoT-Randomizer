@@ -101,6 +101,30 @@ export class GUIGlobal {
     this.electronEvents.push(maximizedEvent);
   }
 
+  createWebEvents() { //Web only
+
+    var self = this;
+
+    (<any>window).addEventListener('emscripten_cache_file_found', function (event) {
+
+      let detail = event.detail;
+
+      //Update settings entry for cached file and then refresh GUI
+      if (detail) {
+
+        if (detail.name == "ROM")
+          self.generator_settingsMap["rom"] = "<using cached ROM>";
+        else if (detail.name == "WAD")
+          self.generator_settingsMap["web_wad_file"] = "<using cached WAD>";
+        else if (detail.name == "COMMONKEY")
+          self.generator_settingsMap["web_common_key_file"] = "<using cached common key>";
+
+        self.globalEmitter.emit({ name: "refresh_gui" });
+      }
+
+    }, false);
+  }
+
   destroyElectronEvents() {
     this.electronEvents.forEach(postRobotEvent => {
       postRobotEvent.cancel();
@@ -343,6 +367,18 @@ export class GUIGlobal {
     }
 
     this.parseGeneratorGUISettings(res, userSettings);
+
+    //Check for cached files and then create web events after
+    if ((<any>window).emscriptenFoundCachedROMFile)
+      this.generator_settingsMap["rom"] = "<using cached ROM>";
+
+    if ((<any>window).emscriptenFoundCachedWADFile)
+      this.generator_settingsMap["web_wad_file"] = "<using cached WAD>";
+
+    if ((<any>window).emscriptenFoundCachedCommonKeyFile)
+      this.generator_settingsMap["web_common_key_file"] = "<using cached common key>";
+
+    this.createWebEvents();
   }
 
   parseGeneratorGUISettings(guiSettings, userSettings) {
@@ -354,7 +390,7 @@ export class GUIGlobal {
       let tab = guiSettings.settingsArray[tabIndex];
 
       //Skip tabs that don't belong to this app and delete them from the guiSettings
-      if ("app_type" in tab && tab.app_type && tab.app_type != this.getGlobalVar("appType")) {
+      if ("app_type" in tab && tab.app_type && tab.app_type.indexOf(this.getGlobalVar("appType")) == -1) {
 
         guiSettings.settingsArray.splice(tabIndex, 1);
         tabIndex--;
@@ -438,6 +474,12 @@ export class GUIGlobal {
 
     this.generator_settingsMap["repatch_cosmetics"] = userSettings && "repatch_cosmetics" in userSettings ? userSettings["repatch_cosmetics"] : true;
     this.generator_settingsVisibilityMap["repatch_cosmetics"] = true;
+
+    //Add Web only options
+    if (!this.getGlobalVar('electronAvailable')) {
+      this.generator_settingsMap["web_persist_in_cache"] = userSettings && "web_persist_in_cache" in userSettings ? userSettings["web_persist_in_cache"] : true;
+      this.generator_settingsVisibilityMap["web_persist_in_cache"] = true;
+    }
 
     console.log("JSON Settings Data:", guiSettings);
     console.log("Last User Settings:", userSettings);
@@ -631,6 +673,11 @@ export class GUIGlobal {
     if (!includeFromPatchFileSettings) {
       delete settingsFile["patch_file"];
       delete settingsFile["repatch_cosmetics"];
+
+      //Web only keys
+      if (!this.getGlobalVar('electronAvailable')) {
+        delete settingsFile["web_persist_in_cache"];
+      }
     }
 
     //Delete keys not included in the seed
@@ -666,26 +713,19 @@ export class GUIGlobal {
         delete settingsFile["web_wad_channel_id"];
         delete settingsFile["web_wad_channel_title"];
         delete settingsFile["web_output_type"];
+        delete settingsFile["web_persist_in_cache"];
       }
     }
 
     //Delete keys the browser can't save (web only)
     if (sanitizeForBrowserCache) {
 
-      if (settingsFile["rom"] && typeof (settingsFile["rom"]) == "object") //File objects can not be saved due browser sandbox
-        delete settingsFile["rom"];
-
-      if (settingsFile["patch_file"] && typeof (settingsFile["patch_file"]) == "object")
-        delete settingsFile["patch_file"];
-
-      if (settingsFile["distribution_file"] && typeof (settingsFile["distribution_file"]) == "object")
-        delete settingsFile["distribution_file"];
-
-      if (settingsFile["web_wad_file"] && typeof (settingsFile["web_wad_file"]) == "object")
-        delete settingsFile["web_wad_file"];
-
-      if (settingsFile["web_common_key_file"] && typeof (settingsFile["web_common_key_file"]) == "object")
-        delete settingsFile["web_common_key_file"];
+      //File objects can not be saved due browser sandbox
+      delete settingsFile["rom"];
+      delete settingsFile["patch_file"];
+      delete settingsFile["distribution_file"];
+      delete settingsFile["web_wad_file"];
+      delete settingsFile["web_common_key_file"];
     }
 
     return settingsFile;
@@ -909,44 +949,119 @@ export class GUIGlobal {
     }
   }
 
-  generateSeedWeb(raceSeed: boolean = false, useStaticSeed: string = "") { //Web only
-    var self = this;
+  readFileIntoMemoryWeb(fileObject: any, useArrayBuffer: boolean) { //Web only
 
     return new Promise<any>(function (resolve, reject) {
 
-      let settingsFile = self.createSettingsFileObject(false, false, true);
+      let fileReader = new FileReader();
+      fileReader.onabort = function (event) {
+        console.error("Loading of the file was aborted unexpectedly!");
+        reject();
+      };
+      fileReader.onerror = function (event) {
+        console.error("An error occurred during the loading of the file!");
+        reject();
+      };
+      fileReader.onload = function (event) {
 
-      if (raceSeed) {
-        useStaticSeed = ""; //Static seeds aren't allowed in race mode
-        settingsFile["create_spoiler"] = true; //Force spoiler mode to on
-        settingsFile["encrypt"] = true;
-      }
-      else {
-        delete settingsFile["encrypt"];
-      }
+        console.log("Read in file successfully");
+        resolve(event.target["result"]); 
+      };
 
-      if (useStaticSeed) {
-        console.log("Use Static Seed:", useStaticSeed);
-        settingsFile["seed"] = useStaticSeed;
-      }
-      else {
-        delete settingsFile["seed"];
-      }
-
-      console.log(settingsFile);
-      console.log("Race Seed:", raceSeed);
-
-      //Request Seed Generation
-      let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/create?version=" + (self.getGlobalVar("webIsMasterVersion") ? "" : "dev_") + self.getGlobalVar("webSourceVersion").replace(/ /g, "_");
-      console.log("Request seed id from:", url);
-
-      self.http.post(url, JSON.stringify(settingsFile), { responseType: "text", headers: { "Content-Type": "application/json" } }).toPromise().then(res => {
-        resolve(res);
-      }).catch(err => {
-        console.error("[generateSeedWeb] Web Error:", err);
-        reject(err);
-      });
+      if (useArrayBuffer)
+        fileReader.readAsArrayBuffer(fileObject);
+      else
+        fileReader.readAsText(fileObject);
     });
+  }
+
+  async generateSeedWeb(raceSeed: boolean = false, useStaticSeed: string = "") { //Web only
+
+    //Plando Logic
+    let plandoFile = this.generator_settingsMap["distribution_file"];
+
+    if (plandoFile && typeof (plandoFile) == "object" && plandoFile.name && plandoFile.name.length > 0) {
+
+      if (!plandoFile.name.toLowerCase().endsWith(".json")) { //JSON extension test
+        throw { error: "Invalid plandomizer file extension! Plandomizer files must use the JSON file format." };
+      }
+
+      if (raceSeed) { //No support for race seeds
+        throw { error: "Plandomizer is currently not supported for race seeds due security concerns. Please use a normal seed instead!" };
+      }
+
+      //Try to resolve the distribution file by reading it into memory
+      console.log("Read Plando JSON file: " + plandoFile.name);
+
+      let plandoFileJSON = await this.readFileIntoMemoryWeb(plandoFile, false);
+
+      if (!plandoFileJSON || plandoFileJSON.length < 1) {
+        throw { error: "The plandomizer file specified is not valid!" };
+      }
+
+      if (plandoFileJSON.length > 500000) { //Impose size limit to avoid server overload
+        throw { error: "The plandomizer file specified is too big! The maximum file size allowed is 500 KB." };
+      }
+
+      //Test JSON parse it
+      try {
+        let plandoFileParsed = JSON.parse(plandoFileJSON);
+
+        if (!plandoFileParsed || Object.keys(plandoFileParsed).length < 1) {
+          throw { error: "The plandomizer file specified is not valid JSON! Please verify the syntax." };
+        }
+      }
+      catch (err) {
+        console.error(err);
+        throw { error: "The plandomizer file specified is not valid JSON! Please verify the syntax. Detail: " + err.message };
+      }
+
+      plandoFile = plandoFileJSON;
+    }
+    else {
+      plandoFile = null;
+    }
+
+
+    let settingsFile = this.createSettingsFileObject(false, false, true);
+
+    //Add distribution file back into map as string if available
+    if (plandoFile) {
+      settingsFile["distribution_file"] = plandoFile;
+    }
+
+    if (raceSeed) {
+      useStaticSeed = ""; //Static seeds aren't allowed in race mode
+      settingsFile["create_spoiler"] = true; //Force spoiler mode to on
+      settingsFile["encrypt"] = true;
+    }
+    else {
+      delete settingsFile["encrypt"];
+    }
+
+    if (useStaticSeed) {
+      console.log("Use Static Seed:", useStaticSeed);
+      settingsFile["seed"] = useStaticSeed;
+    }
+    else {
+      delete settingsFile["seed"];
+    }
+
+    console.log(settingsFile);
+    console.log("Race Seed:", raceSeed);
+
+    //Request Seed Generation
+    let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/create?version=" + (this.getGlobalVar("webIsMasterVersion") ? "" : "dev_") + this.getGlobalVar("webSourceVersion").replace(/ /g, "_");
+    console.log("Request seed id from:", url);
+
+    try {
+      let res = await this.http.post(url, JSON.stringify(settingsFile), { responseType: "text", headers: { "Content-Type": "application/json" } }).toPromise();
+      return res;
+    }
+    catch (err) {
+      console.error("[generateSeedWeb] Web Error:", err);
+      throw err;
+    }
   }
 
   patchROMWeb() { //Web only
