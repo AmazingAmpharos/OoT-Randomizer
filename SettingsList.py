@@ -1404,18 +1404,20 @@ setting_infos = [
         name           = 'one_item_per_dungeon',
         gui_text       = 'Dungeons Have One Major Item',
         gui_tooltip    = '''\
-            Dungeons have exactly one major
-            item. This naturally makes each
-            dungeon similar in value instead
-            of valued based on chest count.
+            Dungeons have exactly one major item. 
+            This naturally makes each dungeon similar in 
+            value instead of valued based on chest count.
 
-            Spirit Temple Colossus hands count
-            as part of the dungeon. Spirit
-            Temple has TWO items to match
-            vanilla distribution.
+            Spirit Temple Colossus hands count as part 
+            of the dungeon. Spirit Temple has TWO items 
+            to match vanilla distribution.
 
-            Dungeon items and GS Tokens do
-            not count as major items.
+            Keys only count as major items if they are 
+            shuffled everywhere (ie. in keysanity).
+            GS Tokens only count as major items if the 
+            bridge condition is set to "All GS Tokens".
+            Bombchus only count as major items if they
+            are considered in logic.
         ''',
         shared         = True,
         gui_params     = {
