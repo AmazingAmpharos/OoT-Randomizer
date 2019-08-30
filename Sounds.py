@@ -100,8 +100,8 @@ class Sounds(Enum):
     IRON_BOOTS         = Sound(0x080D, 'iron-boots',            'Iron Boots',                [Tags.BRIEF, Tags.HPLOW, Tags.QUIET])
     IRON_KNUCKLE       = Sound(0x3929, 'iron-knuckle',          'Iron Knuckle',              [])
     INGO_KAAH          = Sound(0x6855, 'kaah',                  'Kaah!',                     [Tags.PAINFUL]) 
-    MOBLIN_CLUB_GROUND = Sound(0x38EF, 'moblin-club-ground',    'Moblin Club Ground',        [Tags.PAINFUL]) #Incorrect sound - is actually a poe
-    MOBLIN_CLUB_SWING  = Sound(0x39E1, 'moblin-club-swing',     'Moblin Club Swing',         []) #Incorrect sound - is something creaking
+    MOBLIN_CLUB_GROUND = Sound(0x38E1, 'moblin-club-ground',    'Moblin Club Ground',        [Tags.PAINFUL]) 
+    MOBLIN_CLUB_SWING  = Sound(0x39EF, 'moblin-club-swing',     'Moblin Club Swing',         [Tags.PAINFUL]) 
     MOO                = Sound(0x28DF, 'moo',                   'Moo',                       [Tags.NAVI, Tags.NIGHTFALL, Tags.HORSE, Tags.HPLOW])
     MWEEP              = Sound(0x687A, 'mweep',                 'Mweep!',                    [Tags.BRIEF, Tags.NAVI, Tags.HPLOW, Tags.HOVERBOOT])
     NAVI_HELLO         = Sound(0x6844, 'navi-hello',            'Navi "Hello!"',             [Tags.PAINFUL, Tags.NAVI])
