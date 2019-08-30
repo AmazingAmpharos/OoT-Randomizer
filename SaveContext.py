@@ -589,6 +589,7 @@ class SaveContext():
             },
             'defense_hearts'             : Address(size=1, max=20),
             'gs_tokens'                  : Address(size=2, max=100),
+            'triforce_pieces'            : Address(0xD4 + 0x1C * 0x48 + 0x10, size=4), # Unused word in scene x48
         }
 
 
@@ -783,7 +784,7 @@ class SaveContext():
         },
         "Bomb Bag": {
             'item_slot.bomb'             : 'bomb',
-            'upgrades.bomb_bag'         : None,
+            'upgrades.bomb_bag'          : None,
         },
         "Bombs" : {
             'ammo.bomb'                  : None,
@@ -889,9 +890,10 @@ class SaveContext():
         },
         "Rupees"                    : {'rupees' : None},
         "Magic Bean Pack" : {
-            'item_slot.beans'            : 'beans',
-            'ammo.beans'                 : 10
+            'item_slot.beans'       : 'beans',
+            'ammo.beans'            : 10
         },
+        "Triforce Piece"            : {'triforce_pieces': None},
     }
 
 

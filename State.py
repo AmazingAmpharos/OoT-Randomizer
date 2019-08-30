@@ -430,40 +430,41 @@ class State(object):
             return True
 
 
+    def has_all_stones(self):
+        return self.has_all_of(('Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire'))
+
+
+    def has_all_medallions(self):
+        return self.has_all_of(('Forest Medallion', 'Fire Medallion', 'Water Medallion', 
+                                'Shadow Medallion', 'Spirit Medallion', 'Light Medallion'))
+
+
     def can_build_rainbow_bridge(self):
         if self.world.bridge == 'open':
             return True
-        if self.world.bridge == 'medallions':
-            return (
-                self.has('Forest Medallion') and
-                self.has('Fire Medallion') and
-                self.has('Water Medallion') and
-                self.has('Shadow Medallion') and
-                self.has('Spirit Medallion') and
-                self.has('Light Medallion'))
         if self.world.bridge == 'vanilla':
-            return (
-                self.has('Shadow Medallion') and
-                self.has('Spirit Medallion'))
-        if self.world.bridge == 'dungeons':
-            return (
-                self.has('Kokiri Emerald') and
-                self.has('Goron Ruby') and
-                self.has('Zora Sapphire') and
-                self.has('Forest Medallion') and
-                self.has('Fire Medallion') and
-                self.has('Water Medallion') and
-                self.has('Shadow Medallion') and
-                self.has('Spirit Medallion') and
-                self.has('Light Medallion'))
+            return self.has_all_of(('Shadow Medallion', 'Spirit Medallion'))
         if self.world.bridge == 'stones':
-            return (
-                self.has('Kokiri Emerald') and
-                self.has('Goron Ruby') and
-                self.has('Zora Sapphire'))
+            return self.has_all_stones()
+        if self.world.bridge == 'medallions':
+            return self.has_all_medallions()
+        if self.world.bridge == 'dungeons':
+            return self.has_all_stones() and self.has_all_medallions()
         if self.world.bridge == 'tokens':
             return self.has('Gold Skulltula Token', 100)
         raise Exception ('Unknown Rainbow Bridge Logic')
+
+
+    def can_trigger_lacs(self):
+        if self.world.lacs_condition == 'vanilla':
+            return self.has_all_of(('Shadow Medallion', 'Spirit Medallion'))
+        if self.world.lacs_condition == 'stones':
+            return self.has_all_stones()
+        if self.world.lacs_condition == 'medallions':
+            return self.has_all_medallions()
+        if self.world.lacs_condition == 'dungeons':
+            return self.has_all_stones() and self.has_all_medallions()
+        raise Exception ('Unknown Light Arrow Cutscene Logic')
 
 
     # Be careful using this function. It will not collect any

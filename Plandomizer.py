@@ -409,6 +409,17 @@ class WorldDistribution(object):
         return pool
 
 
+    def set_complete_itempool(self, pool):
+        self.item_pool = {}
+        for item in pool:
+            if item.dungeonitem or item.type in ('Drop', 'Event', 'DungeonReward'):
+                continue
+            if item.name in self.item_pool:
+                self.item_pool[item.name].count += 1
+            else:
+                self.item_pool[item.name] = ItemPoolRecord()
+
+
     def collect_starters(self, state):
         for (name, record) in self.starting_items.items():
             for _ in range(record.count):
@@ -639,6 +650,23 @@ class Distribution(object):
             world_dist.cloak(worlds, location_pools, model_pools)
 
 
+    def configure_triforce_hunt(self, worlds):
+        total_count = 0
+        total_starting_count = 0
+        for world in worlds:
+            world.triforce_count = world.distribution.item_pool['Triforce Piece'].count
+            if 'Triforce Piece' in world.distribution.starting_items:
+                world.triforce_count += world.distribution.starting_items['Triforce Piece'].count
+                total_starting_count += world.distribution.starting_items['Triforce Piece'].count
+            total_count += world.triforce_count
+
+        if total_count < worlds[0].triforce_goal:
+            raise RuntimeError('Not enough Triforce Pieces in the worlds. There should be at least %d and there are only %d.' % (worlds[0].triforce_goal, total_count))
+
+        if total_starting_count >= worlds[0].triforce_goal:
+            raise RuntimeError('Too many Triforce Pieces in starting items. There should be at most %d and there are %d.' % (worlds[0].triforce_goal - 1, total_starting_count))
+
+
     def update(self, src_dict, update_all=False):
         update_dict = {
             'file_hash': (src_dict.get('file_hash', []) + [None, None, None, None, None])[0:5],
@@ -740,17 +768,6 @@ class Distribution(object):
             world_dist.woth_locations = {loc.name: LocationRecord.from_item(loc.item) for loc in spoiler.required_locations[world.id]}
             world_dist.barren_regions = [*world.empty_areas]
             world_dist.gossip_stones = {gossipLocations[loc].name: GossipRecord(spoiler.hints[world.id][loc].to_json()) for loc in spoiler.hints[world.id]}
-            world_dist.item_pool = {}
-
-        for world in spoiler.worlds:
-            for (_, item) in spoiler.locations[world.id].items():
-                if item.dungeonitem or item.type in ('Drop', 'Event', 'DungeonReward'):
-                    continue
-                player_dist = item.world.distribution
-                if item.name in player_dist.item_pool:
-                    player_dist.item_pool[item.name].count += 1
-                else:
-                    player_dist.item_pool[item.name] = ItemPoolRecord()
 
         self.playthrough = {}
         for (sphere_nr, sphere) in spoiler.playthrough.items():
