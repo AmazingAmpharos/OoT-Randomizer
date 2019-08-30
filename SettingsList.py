@@ -1349,6 +1349,14 @@ setting_infos = [
             True  : {'settings' : ['shuffle_ganon_bosskey']},
         },
     ),    
+    Scale(
+        name           = 'triforce_goal_per_world',
+        gui_text       = None,
+        default        = 20,
+        min            = 1,
+        max            = 256,
+        shared         = True,
+    ),
     Combobox(
         name           = 'logic_rules',
         gui_text       = 'Logic Rules',
