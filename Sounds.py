@@ -129,7 +129,7 @@ class Sounds(Enum):
     SHELLBLADE         = Sound(0x3849, 'shellblade',            'Shellblade',                [])
     SKULLTULA          = Sound(0x39DA, 'skulltula',             'Skulltula',                 [Tags.BRIEF, Tags.NAVI])
     SOFT_BEEP          = Sound(0x4804, 'soft-beep',             'Soft Beep',                 [Tags.NAVI, Tags.HPLOW])
-    SPIKE_TRAP         = Sound(0x38E9, 'spike-trap',            'Spike Trap',                [Tags.LOOPED])
+    SPIKE_TRAP         = Sound(0x38E9, 'spike-trap',            'Spike Trap',                [Tags.LOOPED, Tags.PAINFUL])
     SPIT_NUT           = Sound(0x387E, 'spit-nut',              'Spit Nut',                  [Tags.IMMEDIATE, Tags.BRIEF])
     STALCHILD_ATTACK   = Sound(0x3831, 'stalchild-attack',      'Stalchild Attack',          [Tags.PAINFUL, Tags.HORSE])
     STINGER_CRY        = Sound(0x39A3, 'stinger-squeak',        'Stinger Squeak',            [Tags.PAINFUL])
@@ -144,7 +144,7 @@ class Sounds(Enum):
     TARGETING_NEUTRAL  = Sound(0x480C, 'target-neutral',        'Target Neutral',            [])
     THUNDER            = Sound(0x282E, 'thunder',               'Thunder',                   [Tags.NIGHTFALL])
     TIMER              = Sound(0x481A, 'timer',                 'Timer',                     [Tags.INC_NE, Tags.NAVI, Tags.HPLOW])
-    TWINROVA_BICKER    = Sound(0x39E7, 'twinrova-bicker',       'Twinrova Bicker',           [Tags.LOOPED, Tags.NAVI, Tags.NIGHTFALL, Tags.MENUMOVE, Tags.MENUSELECT, Tags.HPLOW, Tags.HORSE, Tags.HOVERBOOT])
+    TWINROVA_BICKER    = Sound(0x39E7, 'twinrova-bicker',       'Twinrova Bicker',           [Tags.LOOPED, Tags.PAINFUL, Tags.NAVI, Tags.NIGHTFALL, Tags.MENUMOVE, Tags.MENUSELECT, Tags.HPLOW, Tags.HORSE, Tags.HOVERBOOT])
     WOLFOS_HOWL        = Sound(0x383C, 'wolfos-howl',           'Wolfos Howl',               [Tags.PAINFUL])
     ZELDA_ADULT_GASP   = Sound(0x6879, 'adult-zelda-gasp',      'Zelda Gasp (Adult)',        [Tags.NAVI, Tags.HPLOW])
 
