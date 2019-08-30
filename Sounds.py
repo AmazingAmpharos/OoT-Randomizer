@@ -92,7 +92,7 @@ class Sounds(Enum):
     HAMMER_BONK        = Sound(0x180A, 'hammer-bonk',           'Hammer Bonk',               [])
     HORSE_NEIGH        = Sound(0x2805, 'horse-neigh',           'Horse Neigh',               [Tags.PAINFUL, Tags.NAVI])
     HORSE_TROT         = Sound(0x2804, 'horse-trot',            'Horse Trot',                [Tags.HPLOW])
-    HOVER_BOOTS        = Sound(0x08C9, 'hover-boots',           'Hover Boots',               [Tags.LOOPED])
+    HOVER_BOOTS        = Sound(0x08C9, 'hover-boots',           'Hover Boots',               [Tags.LOOPED, Tags.PAINFUL])
     HP_LOW             = Sound(0x481B, 'low-health',            'HP Low',                    [Tags.INC_NE, Tags.NAVI])
     HP_RECOVER         = Sound(0x480B, 'recover-health',        'HP Recover',                [Tags.NAVI, Tags.HPLOW])
     ICE_SHATTER        = Sound(0x0875, 'shattering-ice',        'Ice Shattering',            [Tags.PAINFUL, Tags.NAVI])
