@@ -144,7 +144,7 @@ class Sounds(Enum):
     TARGETING_NEUTRAL  = Sound(0x480C, 'target-neutral',        'Target Neutral',            [])
     THUNDER            = Sound(0x282E, 'thunder',               'Thunder',                   [Tags.NIGHTFALL])
     TIMER              = Sound(0x481A, 'timer',                 'Timer',                     [Tags.INC_NE, Tags.NAVI, Tags.HPLOW])
-    TWINROVA_BICKER    = Sound(0x39E7, 'twinrova-bicker',       'Twinrova Bicker',           [Tags.LOOPED, Tags.PAINFUL, Tags.NAVI, Tags.NIGHTFALL, Tags.MENUMOVE, Tags.MENUSELECT, Tags.HPLOW, Tags.HORSE, Tags.HOVERBOOT])
+    TWINROVA_BICKER    = Sound(0x39E7, 'twinrova-bicker',       'Twinrova Bicker',           [Tags.LOOPED, Tags.PAINFUL])
     WOLFOS_HOWL        = Sound(0x383C, 'wolfos-howl',           'Wolfos Howl',               [Tags.PAINFUL])
     ZELDA_ADULT_GASP   = Sound(0x6879, 'adult-zelda-gasp',      'Zelda Gasp (Adult)',        [Tags.NAVI, Tags.HPLOW])
 
