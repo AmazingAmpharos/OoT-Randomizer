@@ -334,12 +334,19 @@ export class GUIGlobal {
     try {
       userSettings = localStorage.getItem(this.getGlobalVar("appType") == "generator" ? "generatorSettings_" + this.getGlobalVar("webSourceVersion") : "patcherSettings_" + this.getGlobalVar("webSourceVersion"));
 
+      if (userSettings && userSettings.length > 0) {
+        userSettings = JSON.parse(userSettings);
+      }
+      else { //Try the opposite app type to see if a cached settings map is available there
+        userSettings = localStorage.getItem(this.getGlobalVar("appType") == "generator" ? "patcherSettings_" + this.getGlobalVar("webSourceVersion") : "generatorSettings_" + this.getGlobalVar("webSourceVersion"));
+
+        if (userSettings && userSettings.length > 0) {
+          userSettings = JSON.parse(userSettings);
+        }
+      }
     } catch (err) {
       console.error("Local storage not available");
     }
-
-    if (userSettings && userSettings.length > 0)
-      userSettings = JSON.parse(userSettings);
 
     //Get user presets if appType = generator
     if (this.getGlobalVar("appType") == "generator") {
@@ -447,6 +454,10 @@ export class GUIGlobal {
               this.generator_settingsMap[setting.name] = optionEntry ? userSettings[setting.name] : setting.default;
             }
           }
+          else if (userSettings && setting.name in userSettings && (setting.type == "Scale" || setting.type == "Numberinput")) { //Validate numberic values again before applying them
+            this.verifyNumericSetting(userSettings, setting, false);
+            this.generator_settingsMap[setting.name] = userSettings[setting.name];
+          }
           else { //Everything else
             this.generator_settingsMap[setting.name] = userSettings && setting.name in userSettings ? userSettings[setting.name] : setting.default;
           }
@@ -551,6 +562,76 @@ export class GUIGlobal {
     }
   }
 
+  verifyNumericSetting(settingsFile: any, setting: any, syncToGlobalMap: boolean = false) {
+
+    let settingValue: any = settingsFile[setting.name];
+    let error = false;
+    let didCast = false;
+
+    if (typeof (settingValue) != "string" && typeof (settingValue) != "number") { //Can't recover, bad type
+      error = true;
+    }
+    else if (typeof (settingValue) == "string") { //Try to cast it
+
+      if (Number(parseInt(settingValue)) != Number(settingValue)) { //Cast failed, not numeric    
+        error = true;
+      }
+      else {
+        settingValue = parseInt(settingValue);
+        didCast = true;
+      }
+    }
+
+    if (!error) {
+
+      //Min/Max check
+      let settingMin: number = setting["min"];
+      let settingMax: number = setting["max"];
+
+      if (("min" in setting) && settingValue < settingMin) {
+
+        settingsFile[setting.name]  = settingMin;
+
+        if (syncToGlobalMap) { //Global too if needed and refresh GUI after to signal change
+          this.generator_settingsMap[setting.name] = settingMin;
+          this.globalEmitter.emit({ name: "refresh_gui" });
+        }
+
+        error = true;
+      }
+      else if (("max" in setting) && settingValue > settingMax) {
+
+        settingsFile[setting.name]  = settingMax;
+
+        if (syncToGlobalMap) { //Global too if needed and refresh GUI after to signal change
+          this.generator_settingsMap[setting.name] = settingMax;
+          this.globalEmitter.emit({ name: "refresh_gui" });
+        }
+
+        error = true;
+      }
+
+      if (!error && didCast) { //No error, but setting had to be casted from string, fix it
+        settingsFile[setting.name] = settingValue;
+
+        if (syncToGlobalMap) { //Global too if needed and refresh GUI after to signal change
+          this.generator_settingsMap[setting.name] = settingValue;
+          this.globalEmitter.emit({ name: "refresh_gui" });
+        }
+      }
+    }
+    else { //Critical error, reset local value to default
+      settingsFile[setting.name] = setting.default;
+
+      if (syncToGlobalMap) { //Global too if needed and refresh GUI after to signal change
+        this.generator_settingsMap[setting.name] = setting.default;
+        this.globalEmitter.emit({ name: "refresh_gui" });
+      }
+    }
+
+    return error;
+  }
+
   applySettingsObject(settingsObj) {
 
     if (!settingsObj)
@@ -595,7 +676,11 @@ export class GUIGlobal {
               if (optionEntry)
                 this.generator_settingsMap[setting.name] = settingsObj[setting.name];
             }
-            else { //Everything else            
+            else if (setting.type == "Scale" || setting.type == "Numberinput") { //Validate numberic values again before applying them
+              this.verifyNumericSetting(settingsObj, setting, false);
+              this.generator_settingsMap[setting.name] = settingsObj[setting.name];
+            }
+            else { //Everything else
               this.generator_settingsMap[setting.name] = settingsObj[setting.name];
             }
 
@@ -632,7 +717,7 @@ export class GUIGlobal {
     });
   }
 
-  createSettingsFileObject(includeFromPatchFileSettings: boolean = true, includeSeedSettingsOnly: boolean = false, sanitizeForBrowserCache: boolean = false) {
+  createSettingsFileObject(includeFromPatchFileSettings: boolean = true, includeSeedSettingsOnly: boolean = false, sanitizeForBrowserCache: boolean = false, cancelWhenError: boolean = false) {
 
     let settingsFile: any = {};
 
@@ -644,6 +729,8 @@ export class GUIGlobal {
         settingsFile[colorSettingName] = this.generator_customColorMap[colorSettingName].substr(1);
       }
     });
+
+    let invalidSettingsList = [];
 
     //Resolve search box entries (name only)
     this.getGlobalVar("generatorSettingsArray").forEach(tab => {
@@ -660,10 +747,26 @@ export class GUIGlobal {
             });
 
             settingsFile[setting.name] = valueArray;
-          }      
+          }
+          else if (setting.type == "Scale" || setting.type == "Numberinput") { //Validate numberic values again before saving them
+
+            let error = this.verifyNumericSetting(settingsFile, setting, true);
+
+            if (error) { //Input could not be recovered, abort
+              invalidSettingsList.push(setting.text);
+            }       
+          }     
         });
       });
     });
+
+    //Abort if any invalid settings were found
+    if (invalidSettingsList && invalidSettingsList.length > 0) {
+      this.globalEmitter.emit({ name: "dialog_error", message: "Some invalid settings were detected and had to be reset! This can happen if you type too fast into an input box. Please try again. The following settings were affected: " + invalidSettingsList.join(", ") });
+
+      if (cancelWhenError)
+        return null;
+    }
 
     //Delete keys the python source doesn't need
     delete settingsFile["presets"];
@@ -874,7 +977,14 @@ export class GUIGlobal {
 
     return new Promise(function (resolve, reject) {
 
-      post.send(window, 'generateSeed', { settingsFile: self.createSettingsFileObject(fromPatchFile), staticSeed: useStaticSeed }).then(event => {
+      let settingsMap = self.createSettingsFileObject(fromPatchFile, false, false, true);
+
+      if (!settingsMap) {
+        reject({ short: "Generation aborted.", long: "Generation aborted." });
+        return;
+      }
+
+      post.send(window, 'generateSeed', { settingsFile: settingsMap, staticSeed: useStaticSeed }).then(event => {
 
         var listenerProgress = post.on('generateSeedProgress', function (event) {
 
@@ -982,8 +1092,11 @@ export class GUIGlobal {
 
     if (plandoFile && typeof (plandoFile) == "object" && plandoFile.name && plandoFile.name.length > 0) {
 
-      if (!plandoFile.name.toLowerCase().endsWith(".json")) { //JSON extension test
-        throw { error: "Invalid plandomizer file extension! Plandomizer files must use the JSON file format." };
+      if (plandoFile.name.toLowerCase().endsWith(".z64") || plandoFile.name.toLowerCase().endsWith(".n64") || plandoFile.name.toLowerCase().endsWith(".v64")) { //Not a ROM check...
+        throw { error: "Your Ocarina of Time ROM doesn't belong into the plandomizer setting. If you don't know what plandomizer is, or don't plan to use it, leave that setting blank and try again." };
+      }
+      else if (!plandoFile.name.toLowerCase().endsWith(".json")) { //JSON extension test
+        throw { error: "Invalid plandomizer file extension! Plandomizer files must use the JSON file format. Note: Leave this setting blank if you don't actually want to use the plandomizer feature." };
       }
 
       if (raceSeed) { //No support for race seeds
@@ -993,7 +1106,14 @@ export class GUIGlobal {
       //Try to resolve the distribution file by reading it into memory
       console.log("Read Plando JSON file: " + plandoFile.name);
 
-      let plandoFileJSON = await this.readFileIntoMemoryWeb(plandoFile, false);
+      let plandoFileJSON;
+
+      try {
+        plandoFileJSON = await this.readFileIntoMemoryWeb(plandoFile, false);
+      }
+      catch (ex) {
+        throw { error: "An error occurred during the loading of the plandomizer file! Please try to enter it again." };
+      }
 
       if (!plandoFileJSON || plandoFileJSON.length < 1) {
         throw { error: "The plandomizer file specified is not valid!" };
@@ -1023,7 +1143,11 @@ export class GUIGlobal {
     }
 
 
-    let settingsFile = this.createSettingsFileObject(false, false, true);
+    let settingsFile = this.createSettingsFileObject(false, false, true, true);
+
+    if (!settingsFile) {
+      throw { error: "The generation was aborted due to previous errors!" };
+    }
 
     //Add distribution file back into map as string if available
     if (plandoFile) {
@@ -1066,7 +1190,11 @@ export class GUIGlobal {
 
   patchROMWeb() { //Web only
  
-    let settingsFile = this.createSettingsFileObject();
+    let settingsFile = this.createSettingsFileObject(true, false, false, true);
+
+    if (!settingsFile) {
+      return;
+    }
 
     if (typeof (<any>window).patchROM === "function") //Try to call patchROM function on the DOM
       (<any>window).patchROM(5, settingsFile); //Patch Version 5

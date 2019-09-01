@@ -117,6 +117,19 @@ export class GeneratorComponent implements OnInit {
     //Electron only: Ensure settings string is up-to-date on app launch
     if (this.global.getGlobalVar('electronAvailable'))
       this.getSettingsString();
+
+    //Remove pace and global spinner element if it exists (to prevent it from ever coming up again in the same session) 
+    let pace = (<any>document).querySelector(".pace");
+
+    if (pace) {
+      pace.parentNode.removeChild(pace);
+    }
+
+    let globalSpinner = (<any>document).querySelector("#nb-global-spinner");
+
+    if (globalSpinner) {
+      globalSpinner.parentNode.removeChild(globalSpinner);
+    }
   }
 
   runEventListeners() {
@@ -137,6 +150,11 @@ export class GeneratorComponent implements OnInit {
         if (eventObj.name == "refresh_gui") {
           this.cd.markForCheck();
           this.cd.detectChanges();
+        }
+        else if (eventObj.name == "dialog_error") {
+          this.dialogService.open(DialogWindow, {
+            autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: eventObj.message }
+          });
         }
       });
 

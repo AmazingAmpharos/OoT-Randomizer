@@ -1079,7 +1079,7 @@ setting_infos = [
     Checkbutton('cosmetics_only', None),
     Checkbutton('check_version', None),
     Checkbutton('output_settings', None),
-    Setting_Info('distribution_file', str, "Plandomizer File", "Fileinput", False, {},
+    Setting_Info('distribution_file', str, "Plandomizer File (Optional)", "Fileinput", False, {},
         gui_tooltip = """\
             Optional. Place a plandomizer JSON file here 
             to get total control over the item placement.

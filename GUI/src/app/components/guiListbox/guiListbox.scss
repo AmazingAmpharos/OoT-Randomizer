@@ -56,12 +56,8 @@ div.record-picker::-webkit-scrollbar-thumb {
   margin-bottom: -1px;
   font-size: 0.85em;
   cursor: pointer;
-  white-space: nowrap;
+  white-space: pre-line; //always text wrap to be safe
   min-height: 16px;
-
-  @media (max-width: 1630px) {
-    white-space: pre-line;
-  }
 }
 
 .record-picker li:hover {
