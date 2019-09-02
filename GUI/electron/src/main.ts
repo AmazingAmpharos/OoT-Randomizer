@@ -12,6 +12,12 @@ var isRelease: boolean = false;
 
 function createApp() {
 
+  //Fix up empty node command line in bundled mode (crashes commander otherwise)
+  if (app.isPackaged) {
+    process.argv[0] = 'main.js';
+    process.argv.unshift('node');
+  }
+
   //Parse command line
   commander
     .option('p, python <path>', 'Path to your python executable')
@@ -19,7 +25,7 @@ function createApp() {
     .parse(process.argv);
 
   global["commandLineArgs"] = commander;
-  isRelease = commander.release;
+  isRelease = commander.release || app.isPackaged;
 
   //Load the previous window state with fallback to defaults
   let mainWindowState = windowStateKeeper({
@@ -206,8 +212,10 @@ function manageCSP() {
 //IPC
 ipcMain.on('getGeneratorGUISettings', (event, arg) => {
 
+  let pythonRootPath = app.isPackaged ? app.getAppPath() + "/python/" : app.getAppPath() + "/../";
+
   //Load compiled settings_list.json
-  let compiledSettingsMapPath = path.normalize(app.getAppPath() + "/../data/generated/settings_list.json");
+  let compiledSettingsMapPath = path.normalize(pythonRootPath + "data/generated/settings_list.json");
   let guiSettings;
 
   if (fs.existsSync(compiledSettingsMapPath)) {
@@ -230,7 +238,7 @@ ipcMain.on('getGeneratorGUISettings', (event, arg) => {
   };
 
   //Load built in presets
-  let builtInPresetsPath = path.normalize(app.getAppPath() + "/../data/presets_default.json");
+  let builtInPresetsPath = path.normalize(pythonRootPath + "data/presets_default.json");
 
   if (fs.existsSync(builtInPresetsPath)) {
     let builtInPresets = JSON.parse(fs.readFileSync(builtInPresetsPath, 'utf8'));
@@ -246,7 +254,7 @@ ipcMain.on('getGeneratorGUISettings', (event, arg) => {
   }
 
   //Load user presets
-  let userPresetPath = path.normalize(app.getAppPath() + "/../presets.sav");
+  let userPresetPath = path.normalize(pythonRootPath + "presets.sav");
 
   if (fs.existsSync(userPresetPath)) {
     let userPresets = JSON.parse(fs.readFileSync(userPresetPath, 'utf8'));

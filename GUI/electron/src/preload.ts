@@ -8,14 +8,14 @@ import * as post from 'post-robot';
 const generator = electron.remote.require(path.join(__dirname, '../src/modules/generator.js'));
 const commander = electron.remote.getGlobal("commandLineArgs");
 
-var testMode = commander.release ? false : true;
+var testMode = commander.release || electron.remote.app.isPackaged ? false : true;
 console.log("Test Mode:", testMode);
 
 var platform = os.platform();
 console.log("Platform:", platform);
 
-var pythonPath = commander.python ? commander.python : platform == "win32" ? "python" : "python3";
-var pythonSourcePath = path.normalize(electron.remote.app.getAppPath() + "/../");
+var pythonPath = commander.python ? commander.python : platform == "win32" ? "py" : "python3";
+var pythonSourcePath = path.normalize(electron.remote.app.isPackaged ? electron.remote.app.getAppPath() + "/python/" : electron.remote.app.getAppPath() + "/../");
 var pythonGeneratorPath = pythonSourcePath + "OoTRandomizer.py";
 
 console.log("Python Executable Path:", pythonPath);
