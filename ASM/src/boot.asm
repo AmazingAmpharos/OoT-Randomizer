@@ -7,7 +7,7 @@
 ;   - this isn't strictly necessary, but adds flexibility for the future
 .org 0xD1B0
 .area 0x100, 0
-    .word 0x03480000, 0x03490000, 0x03480000, 0
+    .word 0x03480000, 0x034A0000, 0x03480000, 0
 .endarea
 
 ; Load new code from ROM
@@ -28,7 +28,7 @@
     lui     a0, 0x8040
     lui     a1, 0x0348
     jal     0x80000DF0
-    lui     a2, 0x0001
+    lui     a2, 0x0002
 
     jal     init
     nop

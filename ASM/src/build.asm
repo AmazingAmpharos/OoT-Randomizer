@@ -27,7 +27,7 @@
 .headersize (0x80400000 - 0x03480000)
 
 .org 0x80400000
-.area 0x10000
+.area 0x20000
 
 .area 0x20, 0
 RANDO_CONTEXT:
