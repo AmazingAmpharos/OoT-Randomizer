@@ -786,23 +786,6 @@ skip_GS_BGS_text:
 .org 0xD35EFC
     nop
 
-; Change Bazaar check to Bomb Bag
-.org 0xC00828
-    nop
-    li      t6, 0x18
-    lw      t7, 0x00A0(v0)
-
-; Change ? check to Bomb Bag (Adult?)
-.org 0xDF7A8C
-    nop
-    li      t6, 0x18
-    lw      t7, 0x00A0(v0)
-
-; Change Goron Shop check to Bomb Bag
-.org 0xC6ED84
-    lhu     t7, 0x00A2(v1)
-    andi    t8, t7, 0x0018
-
 ; Fix Link the Goron to always work
 .org 0xED2FAC
     lb      t6, 0x0F18(v1)
@@ -1449,3 +1432,27 @@ skip_GS_BGS_text:
 .orga 0xB29E10
     jal     force_sequence_type
     sw      a1, 0x0054(sp)
+
+; ==================================================================================================
+; Change relevant checks to Bomb Bag
+; ==================================================================================================
+; Bazaar Shop
+; Replaces: lw      t6, -0x73C4(t6)
+;           lw      t7, 0x00A4(v0)
+.org 0xC0082C
+    li      t6, 0x18
+    lw      t7, 0x00A0(v0)
+
+; Goron Shop
+; Replaces: lhu     t7, 0x0ED8(v1)
+;           andi    t8, t7, 0x0020
+.org 0xC6ED84
+    lhu     t7, 0x00A2(v1)
+    andi    t8, t7, 0x0018
+
+; Deku Salesman
+; Replaces: lw      t6, -0x73C4(t6)
+;           lw      t7, 0x00A4(v0)
+.org 0xDF7A90
+    li      t6, 0x18
+    lw      t7, 0x00A0(v0)
