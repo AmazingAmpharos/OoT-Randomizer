@@ -1456,3 +1456,10 @@ skip_GS_BGS_text:
 .org 0xDF7A90
     li      t6, 0x18
     lw      t7, 0x00A0(v0)
+
+; Bazaar Goron
+; Replaces: lw      t6, -0x73C4(t6)
+;           lw      t7, 0x00A4(a2)
+.orga 0xED5A28
+    li      t6, 0x18
+    lw      t7, 0x00A0(a2)
