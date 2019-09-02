@@ -1,4 +1,9 @@
 .align 0x10
+@fanfare_audioseq_ram:
+.area 0x1640, 0
+.endarea
+
+.align 0x10
 @secondary_audioseq_ram:
 .area 0x3200, 0
 .endarea
@@ -24,7 +29,8 @@ set_primary_sequence_ram:
 
 set_fanfare_sequence_ram:
     li      at, 0x80128054
-    li      v0, 0x801BF5D0
+    ;li      v0, 0x801BF5D0	possibly writes to unsafe memory
+    la      v0, @fanfare_audioseq_ram
     bne     at, a0, @@bank
     nop
     beq     r0, r0, @@return
