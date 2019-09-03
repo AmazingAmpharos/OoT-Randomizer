@@ -659,6 +659,12 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     if not world.dungeon_mq['Dodongos Cavern']:
         rom.write_byte(0x1F281FE, 0x38)
 
+    # Fix "...???" textbox outside Child Colossus Fairy to use the right flag and disappear once the wall is destroyed
+    rom.write_byte(0x21A026F, 0xDD)
+
+    # Remove the "...???" textbox outside the Crater Fairy (change it to an actor that does nothing)
+    rom.write_int16s(0x225E7DC, [0x00B5, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xFFFF])
+
     # Forbid Sun's Song from a bunch of cutscenes
     Suns_scenes = [0x2016FC9, 0x2017219, 0x20173D9, 0x20174C9, 0x2017679, 0x20C1539, 0x20C15D9, 0x21A0719, 0x21A07F9, 0x2E90129, 0x2E901B9, 0x2E90249, 0x225E829, 0x225E939, 0x306D009]
     for address in Suns_scenes:
