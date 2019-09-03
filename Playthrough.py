@@ -92,24 +92,15 @@ class Playthrough(object):
         raise Exception('Unimplemented for Playthrough. Perhaps you want RewindablePlaythrough.')
 
 
-    # simplified exit.can_reach(state), bypasses can_become_age
-    # which we've already accounted for
-    def validate_child(self, exit, tod=TimeOfDay.NONE):
-        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='child', tod=tod)
-
-    def validate_adult(self, exit, tod=TimeOfDay.NONE):
-        return exit.can_reach_simple(self.state_list[exit.parent_region.world.id], age='adult', tod=tod)
-
-
     # Internal to the iteration. Modifies the exit_queue, regions. 
     # Returns a queue of the exits whose access rule failed, 
     # as a cache for the exits to try on the next iteration.
-    @staticmethod
-    def _expand_regions(exit_queue, regions, validate):
+    def _expand_regions(self, exit_queue, regions, age):
         failed = []
         for exit in exit_queue:
             if exit.connected_region and exit.connected_region not in regions:
-                if validate(exit):
+                # Evaluate the access rule directly, without tod
+                if exit.access_rule(self.state_list[exit.world.id], spot=exit, age=age):
                     regions[exit.connected_region] = exit.connected_region.provides_time
                     regions[exit.world.get_region('Root')] |= exit.connected_region.provides_time
                     exit_queue.extend(exit.connected_region.exits)
@@ -118,8 +109,7 @@ class Playthrough(object):
         return failed
 
 
-    @staticmethod
-    def _expand_tod_regions(regions, goal_region, validate, tod):
+    def _expand_tod_regions(self, regions, goal_region, age, tod):
         # grab all the exits from the regions with the given tod in the same world as our goal.
         # we want those that go to existing regions without the tod, until we reach the goal.
         has_tod_world = lambda regtod: regtod[1] & tod and regtod[0].world == goal_region.world
@@ -127,7 +117,8 @@ class Playthrough(object):
         for exit in exit_queue:
             # We don't look for new regions, just spreading the tod to our existing regions
             if exit.connected_region in regions and tod & ~regions[exit.connected_region]:
-                if validate(exit, tod=tod):
+                # Evaluate the access rule directly
+                if exit.access_rule(self.state_list[exit.world.id], spot=exit, age=age, tod=tod):
                     regions[exit.connected_region] |= tod
                     if exit.connected_region == goal_region:
                         return True
@@ -147,10 +138,10 @@ class Playthrough(object):
         self._cache.update({
             # Replace the queues (which have been modified) with just the
             # failed exits that we can retry next time.
-            'adult_queue': Playthrough._expand_regions(
-                self._cache['adult_queue'], self._cache['adult_regions'], self.validate_adult),
-            'child_queue': Playthrough._expand_regions(
-                self._cache['child_queue'], self._cache['child_regions'], self.validate_child),
+            'adult_queue': self._expand_regions(
+                self._cache['adult_queue'], self._cache['adult_regions'], 'adult'),
+            'child_queue': self._expand_regions(
+                self._cache['child_queue'], self._cache['child_regions'], 'child'),
         })
         return self._cache['child_regions'], self._cache['adult_regions'], self._cache['visited_locations']
 
@@ -168,9 +159,9 @@ class Playthrough(object):
             return (loc not in visited_locations
                     # Check adult first; it's the most likely.
                     and (loc.parent_region in adult_regions
-                         and loc.can_reach_simple(self.state_list[loc.world.id], age='adult')
+                         and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='adult')
                          or (loc.parent_region in child_regions
-                             and loc.can_reach_simple(self.state_list[loc.world.id], age='child'))))
+                             and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='child'))))
 
 
         had_reachable_locations = True
@@ -235,15 +226,16 @@ class Playthrough(object):
 
 
     # Use the cache in the playthrough to determine region reachability.
+    # Implicitly requires is_starting_age or Time_Travel.
     def can_reach(self, region, age=None, tod=TimeOfDay.NONE):
         if age == 'adult':
             if tod:
-                return region in self._cache['adult_regions'] and (self._cache['adult_regions'][region] & tod or Playthrough._expand_tod_regions(self._cache['adult_regions'], region, self.validate_adult, tod))
+                return region in self._cache['adult_regions'] and (self._cache['adult_regions'][region] & tod or self._expand_tod_regions(self._cache['adult_regions'], region, age, tod))
             else:
                 return region in self._cache['adult_regions']
         elif age == 'child':
             if tod:
-                return region in self._cache['child_regions'] and (self._cache['child_regions'][region] & tod or Playthrough._expand_tod_regions(self._cache['child_regions'], region, self.validate_child, tod))
+                return region in self._cache['child_regions'] and (self._cache['child_regions'][region] & tod or self._expand_tod_regions(self._cache['child_regions'], region, age, tod))
             else:
                 return region in self._cache['child_regions']
         elif age == 'both':
@@ -267,21 +259,21 @@ class Playthrough(object):
         else:
             return self._cache['adult_regions'].keys() + self._cache['child_regions'].keys()
 
-    # Returns whether the given age can access the spot at this age,
+    # Returns whether the given age can access the spot at this age and tod,
     # by checking whether the playthrough has reached the containing region, and evaluating the spot's access rule.
-    def spot_access(self, spot, age):
-        if age == 'both':
-            return (self.can_reach(spot.parent_region, age=age)
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age='adult')
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age='child'))
-        elif age == 'either':
-            return (self.can_reach(spot.parent_region, age='adult')
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age='adult')) or (
-                            self.can_reach(spot.parent_region, age='child')
-                            and spot.can_reach_simple(self.state_list[spot.world.id], age='child'))
+    def spot_access(self, spot, age=None, tod=TimeOfDay.NONE):
+        if age == 'adult' or age == 'child':
+            return (self.can_reach(spot.parent_region, age=age, tod=tod)
+                    and spot.access_rule(self.state_list[spot.world.id], spot=spot, age=age, tod=tod))
+        elif age == 'both':
+            return (self.can_reach(spot.parent_region, age=age, tod=tod)
+                    and spot.access_rule(self.state_list[spot.world.id], spot=spot, age='adult', tod=tod)
+                    and spot.access_rule(self.state_list[spot.world.id], spot=spot, age='child', tod=tod))
         else:
-            return (self.can_reach(spot.parent_region, age=age)
-                    and spot.can_reach_simple(self.state_list[spot.world.id], age=age))
+            return (self.can_reach(spot.parent_region, age='adult', tod=tod)
+                    and spot.access_rule(self.state_list[spot.world.id], spot=spot, age='adult', tod=tod)) or (
+                            self.can_reach(spot.parent_region, age='child', tod=tod)
+                            and spot.access_rule(self.state_list[spot.world.id], spot=spot, age='child', tod=tod))
 
 
 class RewindablePlaythrough(Playthrough):
