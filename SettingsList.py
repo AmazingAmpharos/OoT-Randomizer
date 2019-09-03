@@ -1308,7 +1308,7 @@ setting_infos = [
             'stones':	  'All Spiritual Stones',
             'medallions': 'All Medallions',
             'dungeons':   'All Dungeons',
-            'tokens':     '100 Gold Skulltula Tokens'
+            'tokens':     'Gold Skulltula Tokens'
         },
         gui_tooltip    = '''\
             'Always Open': Rainbow Bridge is always present.
@@ -1316,9 +1316,16 @@ setting_infos = [
             'All Spiritual Stones': All 3 Spiritual Stones.
             'All Medallions': All 6 Medallions.
             'All Dungeons': All Medallions and Spiritual Stones.
-            '100 Gold Skulltula Tokens': All 100 Gold Skulltula Tokens.
+            'Gold Skulltula Tokens': Gold Skulltula Tokens.
         ''',
         shared         = True,
+        disable={
+            'open':       {'settings': ['bridge_tokens']},
+            'vanilla':    {'settings': ['bridge_tokens']},
+            'stones':     {'settings': ['bridge_tokens']},
+            'medallions': {'settings': ['bridge_tokens']},
+            'dungeons':   {'settings': ['bridge_tokens']},
+        },
         gui_params     = {
             'randomize_key': 'randomize_settings',
             'distribution':  [
@@ -1328,6 +1335,21 @@ setting_infos = [
                 ('medallions', 1),
                 ('dungeons',   1),
             ],
+        },
+    ),
+    Scale(
+        name           = 'bridge_tokens',
+        gui_text       = "Skulltulas Required for Bridge",
+        default        = 100,
+        min            = 1,
+        max            = 100,
+        gui_tooltip    = '''\
+            Select the amount of Gold Skulltula Tokens required to spawn the rainbow bridge.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
         },
     ),
     Combobox(

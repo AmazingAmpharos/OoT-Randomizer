@@ -995,6 +995,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_int32(symbol, 4)
     elif world.bridge == 'tokens':
         rom.write_int32(symbol, 5)
+        rom.write_int16(rom.sym('RAINBOW_BRIDGE_TOKENS'), world.bridge_tokens)
 
     # Set up LACS conditions.
     symbol = rom.sym('LACS_CONDITION')
