@@ -136,7 +136,7 @@
         {
           "name": "open_section",
           "text": "Open",
-          "row_span": 6,
+          "row_span": 9,
           "settings": [
             "open_forest",
             "open_door_of_time",
@@ -151,7 +151,7 @@
         {
           "name": "world_section",
           "text": "World",
-          "row_span": 6,
+          "row_span": 9,
           "settings": [
             "starting_age",
             "entrance_shuffle",
@@ -164,7 +164,7 @@
         {
           "name": "shuffle_section",
           "text": "Shuffle",
-          "row_span": 6,
+          "row_span": 9,
           "settings": [
             "shopsanity",
             "tokensanity",
@@ -181,7 +181,7 @@
         {
           "name": "shuffle_dungeon_section",
           "text": "Shuffle Dungeon Items",
-          "row_span": 6,
+          "row_span": 9,
           "settings": [
             "shuffle_mapcompass",
             "shuffle_smallkeys",
@@ -211,7 +211,7 @@
         {
           "name": "disabled_locations_section",
           "text": "Exclude Locations",
-          "row_span": 8,
+          "row_span": 10,
           "settings": [
             "disabled_locations"
           ]
@@ -219,7 +219,7 @@
         {
           "name": "allowed_tricks_section",
           "text": "Enable Tricks",
-          "row_span": 8,
+          "row_span": 10,
           "settings": [
             "allowed_tricks"
           ]
@@ -362,7 +362,7 @@
           "name": "generalsfx_section",
           "text": "General",
           "is_sfx": true,
-          "row_span": 6,
+          "row_span": 10,
           "settings": [
             "background_music",
             "fanfares",
@@ -378,7 +378,7 @@
           "name": "menusfx_section",
           "text": "Menu",
           "is_sfx": true,
-          "row_span": 6,
+          "row_span": 10,
           "settings": [
             "sfx_menu_cursor",
             "sfx_menu_select"
@@ -388,7 +388,7 @@
           "name": "npcsfx_section",
           "text": "NPC",
           "is_sfx": true,
-          "row_span": 6,
+          "row_span": 10,
           "settings": [
             "sfx_navi_overworld",
             "sfx_navi_enemy"
