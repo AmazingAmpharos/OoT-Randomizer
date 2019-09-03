@@ -7,7 +7,7 @@
 #include "util.h"
 #include "dpad.h"
 #include "rainbow_sword.h"
-#include "heart_colors.h"
+#include "hud_colors.h"
 #include "z64.h"
 #include "chests.h"
 #include "ganon.h"
