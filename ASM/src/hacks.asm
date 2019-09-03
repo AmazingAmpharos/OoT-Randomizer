@@ -1435,3 +1435,22 @@ skip_GS_BGS_text:
 .orga 0xED5A28
     li      t6, 0x18
     lw      t7, 0x00A0(a2)
+
+
+; ==================================================================================================
+; HUD Rupee Icon color
+; ==================================================================================================
+; Replaces: lui     at, 0xC8FF
+;           addiu   t8, s1, 0x0008
+;           sw      t8, 0x02B0(s4)
+;           sw      t9, 0x0000(s1)
+;           lhu     t4, 0x0252(s7)
+;           ori     at, at, 0x6400      ; at = HUD Rupee Icon Color
+.orga 0xAEB764
+    addiu   t8, s1, 0x0008
+    sw      t8, 0x02B0(s4)
+    jal     rupee_hud_color
+    sw      t9, 0x0000(s1)
+    lhu     t4, 0x0252(s7)
+    move    at, v0
+    
