@@ -1887,9 +1887,10 @@ setting_infos = [
         gui_text       = 'Tokensanity',
         default        = 'off',
         choices        = {
-            'off':      'Off',
-            'dungeons': 'Dungeons Only',
-            'all':      'All Tokens',
+            'off':       'Off',
+            'dungeons':  'Dungeons Only',
+            'overworld': 'Overworld Only',
+            'all':       'All Tokens',
             },
         gui_tooltip    = '''\
             Token reward from Gold Skulltulas are
@@ -1900,6 +1901,10 @@ setting_infos = [
             dungeons, increasing the value of
             most dungeons and making internal
             dungeon exploration more diverse.
+
+            'Overworld Only': This only shuffles
+            the GS locations that are outside
+            of dungeons.
 
             'All Tokens': Effectively adds 100
             new locations for items to appear.
