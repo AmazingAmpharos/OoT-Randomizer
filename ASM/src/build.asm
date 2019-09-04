@@ -28,6 +28,7 @@
 
 .org 0x80400000
 .area 0x20000
+PAYLOAD_START:
 
 .area 0x20, 0
 RANDO_CONTEXT:
@@ -78,6 +79,9 @@ FONT_TEXTURE:
 .incbin("../resources/font.bin")
 DPAD_TEXTURE:
 .incbin("../resources/dpad.bin")
+
+.align 0x10
+PAYLOAD_END:
 .endarea
 
 .close

@@ -6,9 +6,5 @@
 .definelabel GET_ITEMTABLE,     0x803A9E7E
 
 ; Extended memory map:
-ASM_MEM equ 0x80480000
-C_MEM   equ 0x80500000
-
-.definelabel DEBUG_BUFFER, ASM_MEM + 0 ; Size 0x1000
-
-.definelabel C_HEAP, C_MEM + 0
+.definelabel DEBUG_BUFFER,		0x804FF000 ; size 0x1000
+.definelabel C_HEAP,			0x80500000
