@@ -6,6 +6,8 @@ import os
 import re
 from subprocess import check_call as call
 from rom_diff import create_diff
+from ntype import BigStream
+from crc import calculate_crc
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--pj64sym', help="Output path for PJ64 debugging symbols")
@@ -101,6 +103,13 @@ if pj64_sym_path:
         key = lambda pair: pair[1]['address']
         for sym_name, sym in sorted(symbols.items(), key=key):
             f.write('{0},{1},{2}\n'.format(sym['address'], sym['type'], sym_name))
+
+
+with open('roms/patched.z64', 'r+b') as stream:
+    buffer = bytearray(stream.read(0x101000))
+    crc = calculate_crc(BigStream(buffer))
+    stream.seek(0x10)
+    stream.write(bytearray(crc))
 
 # Diff ROMs
 create_diff('roms/base.z64', 'roms/patched.z64', '../data/generated/rom_patch.txt')
