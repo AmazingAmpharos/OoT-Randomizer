@@ -134,6 +134,7 @@ class Rom(BigStream):
 
     def write_to_file(self, file):
         self.verify_dmadata()
+        self.update_rom_title()
         self.update_crc()
         with open(file, 'wb') as outfile:
             outfile.write(self.buffer)
@@ -144,7 +145,6 @@ class Rom(BigStream):
 
 
     def update_crc(self):
-        self.update_rom_title()
 
         t1 = t2 = t3 = t4 = t5 = t6 = 0xDF26F436
         u32 = 0xFFFFFFFF
