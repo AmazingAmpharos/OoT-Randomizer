@@ -69,6 +69,25 @@ player.
 
 ## Changelog
 
+### 5.1
+
+#### New Features
+* `Skip First Dampé Race` 
+  * Allows getting both reward in one race if the 60 second target is cleared
+* Rupee Icon Color changes based on your current wallet upgrade
+
+#### Updated Settings 
+* Improve `Ear Safe` to be less painful
+* `Tokensanity: Overworld Only` 
+  * Shuffles Gold Skultulla Tokens in the overworld to compliment `Dungeons Only`
+* Configurable Skulltula target for the Bridge Requirement
+
+#### Bug Fixes
+* Improve stability of music related features
+* Fix "...???" textboxes at the entrance of Great Fairies
+* Minor GUI tweaks
+
+
 ### 5.0
 
 #### New Features
@@ -84,7 +103,7 @@ player.
   * Ability to randomize entrances (loading zones) among multiple pools:
     * `Dungeons Only`: All Dungeons except Ganon's Castle
     * `Simple Indoors`: Dungeons; as well as Houses, Great Fairies, all Open and Hidden Grottos (including small Fairy Fountains and the Lost Woods Stage), and Graves.
-    * `All Indoors`: Dungeons and Simple Indoors, as well as Link’s House, the Temple of Time, the Windmill, and Dampe’s Grave.
+    * `All Indoors`: Dungeons and Simple Indoors, as well as Link’s House, the Temple of Time, the Windmill, and Dampé’s Grave.
     * `All Indoors & Overworld Entrances`: Almost all loading zones connecting overworld areas, including Owls
   * Deku Tree, Fire Temple, and Bottom of the Well dungeon entrances are accessible as both ages
 * Starting Age Option
