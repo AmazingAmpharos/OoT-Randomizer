@@ -15,7 +15,7 @@
 ; we are expected to return 1 if Malon should spawn, and 0 if she should not
 
 ;function 809F0C54 to 809F0D98, 0xD7E344 to 00D7E488
-.org 0xD7E398
+.orga 0xD7E398
                                 ; this is the state we need for Malon to move to Lon Lon Ranch
     lhu  t1,0x0ed6(a0)          ; this half holds both the following flags
     andi t0,t1,0x14             ; 0x10 = "Talon has fled castle"
@@ -59,11 +59,11 @@
 ; Replaces
 ; lw  t6,0x8C24(t6)
 ; lw  t7,0x00A4(v1)
-.org 0xD7E140 ; mutated by Patches.py
+.orga 0xD7E140 ; mutated by Patches.py
     li  t6,0x01
     lb  t7,0x0EDE(v1) ; check learned song from malon flag
 
-.org 0xD7E160
+.orga 0xD7E160
     la  a0, GLOBAL_CONTEXT
     lh  t0,0xA4(a0)     ; t0 = current scene number
     li  at,0x63         ; at = 0x63 (Lon Lon Ranch)
@@ -97,7 +97,7 @@ return_from_the_other_function:
 ;   at = 0x5f (Hyrule Castle)
 ;   v0 = pointer to save context
 
-.org 0xD7E890
+.orga 0xD7E890
     nop                         ;bne     t1,at,@@not_hyrule  ; if scene is not Hyrule Castle
     addiu   v0,v0,0xa5d0        ; v0 = 0x8012a5d0 # save context
     lhu     t2,0x0ed6(v0)       ; this byte holds the two flags below
@@ -126,34 +126,34 @@ return_from_the_other_function:
     and     t8,t6,t7            ; t8 = "Has Epona's Song"
     bnezl   t8,ev0_return       ; return if we have Malon's song
 
-.org 0xD7E920
+.orga 0xD7E920
 ev0_return:
 
 
 ;
 ; ; Replaces:
 ; ;   addiu v0,v0,0xa5d0
-; .org 0xD7E760
+; .orga 0xD7E760
 ;     lw    t8,68(sp)         ; t8 = global context
 ;
 ; ; Replaces:
 ; ;   lhu   t8,3798(v0)
-; .org 0xD7E76C
+; .orga 0xD7E76C
 ;     lh    t8,0xA4(t8)       ; t8 = current scene number
 ;
 ; ; Replaces:
 ; ;   andi  t9,t8,0x10
 ; ;   beqz  t9,ev_egg
-; .org 0xD7E778
+; .orga 0xD7E778
 ;     li    t9,0x5f           ; t9 = 0x5f (Hyrule Castle)
 ;     beq   t8,t9,ev_egg      ; jump if the scene is Hyrule Castle
 ;
 ; ; Replace:
 ; ;   lw  t1,164(v0)
-; .org 0xD7E788
+; .orga 0xD7E788
 ;     lw  t1,0xA674(v0)       ; t1 = quest status
 ;
-; .org 0xD7E7A0
+; .orga 0xD7E7A0
 ; ev_egg:
 
 
@@ -165,7 +165,7 @@ ev0_return:
 ;   andi  t3,t2,0x40
 ;   beqzl t3,@@return_block
 ;   lw    ra,28(sp)
-;.org 0xD7EA48
+;.orga 0xD7EA48
 ;    lw    a1,44(sp)         ; a1 = pointer to the global context
 ;    jal   malon_ev1_hack    ; run the extra checks
 ;    nop                     ; Note that malon_ev1_hack will be able to return
@@ -181,7 +181,7 @@ ev0_return:
 ; note that we need to be insainly careful not to change any instructions that may be reallocated,
 ; or else it would cause issues and other changes would need to be made
 
-.org 0xD7E76C
+.orga 0xD7E76C
     lw      t8,68(sp)           ; t8 = global context
     lui     t3,hi(0x809F1128)
     lui     t0,0x8010
@@ -205,14 +205,14 @@ ev0_return:
 @@set_ev0:
     sw      t3,0x180(s0)        ; write f_9f1128 to actor + 0x180
 
-.org 0xD7E7B8
+.orga 0xD7E7B8
 set_ev1:
 
 
-.org 0xD7EBBC
+.orga 0xD7EBBC
     jal override_epona_song ;bne v0,at,loc_0x00000408 ; if v0? == 7 then: Return // if preview is not done
 
-.org 0xD7EC1C
+.orga 0xD7EC1C
     nop     ; bne t8,at,loc_0x00000488 ; if t8 != 3 then: Return // if song not played successfully
     li t1,5 ;li  t1,42        ; t1 = 0x2A
 

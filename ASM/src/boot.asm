@@ -1,7 +1,7 @@
 ; Add dmatable entries for new code
 ; Remove the unused files at the bottom the DMA Table
 ;   - this isn't strictly necessary, but adds flexibility for the future
-.org 0xD1B0
+.orga 0xD1B0
 .area 0x100, 0
     .word 0x03480000, 0x03480000 + PAYLOAD_END - PAYLOAD_START, 0x03480000, 0
 .endarea
@@ -17,7 +17,7 @@
 ;   sw      t6, 0xE500 (at)
 ;   lui     at, 0x8010
 ;   addiu	t7, r0, 0x00F0
-.org 0xB17BB4 ; In memory: 0x800A1C54
+.orga 0xB17BB4 ; In memory: 0x800A1C54
 .area 0x24, 0
     sw      ra, 0x001C (sp)
     sw      a0, 0x0140 (sp)
