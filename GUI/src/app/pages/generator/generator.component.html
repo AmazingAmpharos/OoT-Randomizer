@@ -3,8 +3,8 @@
     <nb-card-body *ngIf="global.getGlobalVar('appReady')">
       <nb-tabset *ngIf="global.getGlobalVar('generatorSettingsArray') && global.getGlobalVar('generatorSettingsArray').length > 0" #refTabSet class="settingsTabset" fullWidth>
         <nb-tab *ngFor="let tab of global.getGlobalVar('generatorSettingsArray'); index as tabIndex" [disabled]="!global.generator_tabsVisibilityMap[tab.name]" [tabTitle]="tab.text" [active]="tabIndex==0" [nbSpinner]="settingsBusy" nbSpinnerStatus="primary" nbSpinnerSize="medium" nbSpinnerMessage="">
-          <mat-grid-list [responsiveCols]="{xs: 1, sm: 2, md: 12, lg: 12, xl: 12}" gutterSize="10px" rowHeight="fit">
-            <mat-grid-tile #refEl *ngFor="let section of tab.sections; index as sectionIndex" [colspan]="getColumnWidth(refEl, tab.sections, sectionIndex, tab.sections.length, section['col_span'] ? section['col_span'] : 0)" [rowspan]="section.row_span">
+          <mat-grid-list #refList [responsiveCols]="{xs: 1, sm: 2, md: 12, lg: 12, xl: 12}" gutterSize="0.5%" [rowHeight]="calculateRowHeight(refList, tab)">
+            <mat-grid-tile #refEl *ngFor="let section of tab.sections; index as sectionIndex" [colspan]="getColumnWidth(refEl, tab.sections, sectionIndex, tab.sections.length, section['col_span'] ? section['col_span'] : 0)" [rowspan]="getColumnHeight(refEl, section)">
               <mat-grid-tile-header *ngIf="section.text && section.text.length > 0">
                 <h3>{{section.text}}</h3>
               </mat-grid-tile-header>

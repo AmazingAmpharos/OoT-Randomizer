@@ -648,13 +648,49 @@ export class GeneratorComponent implements OnInit {
     this.afterSettingChange(true);
   }
 
-  getColumnCount(tileRef: MatGridTile) {
-    return tileRef._gridList.cols;
+  calculateRowHeight(listRef: MatGridList, tab: any) {
+    let columnCount = this.verifyColumnCount(listRef.cols);
+    let absoluteRowCount = 0;
+    let absoluteRowIndex = 0;
+    let gutterPercentage = 0;
+
+    for (let i = 0; i < tab.sections.length; i++) {
+
+      let section = tab.sections[i];
+
+      absoluteRowIndex += this.getColumnWidth(null, tab.sections, i, tab.sections.length, section['col_span'] ? section['col_span'] : 0, columnCount);
+
+      if (absoluteRowIndex >= columnCount) {
+        absoluteRowIndex = 0;
+
+        let columnRowCount = this.getColumnHeight(null, section, columnCount);
+        absoluteRowCount += columnRowCount;
+        gutterPercentage += (columnRowCount * 0.5);
+      }
+    }
+
+    let heightPerRow = (100 - gutterPercentage) / absoluteRowCount;
+    return heightPerRow + "%";
   }
 
-  getColumnWidth(tileRef: MatGridTile, sections: any, index: number, length: number, colSpan: number = 0) {
+  getColumnCount(tileRef: MatGridTile) {
+    return this.verifyColumnCount(tileRef._gridList.cols);
+  }
 
-    let columnCount = this.getColumnCount(tileRef);
+  verifyColumnCount(count: number) {
+
+    if (count != 1 && count != 2 && count != 12) {
+      return 1;
+    }
+
+    return count;
+  }
+
+  getColumnWidth(tileRef: MatGridTile, sections: any, index: number, length: number, colSpan: number = 0, columnCount: number = -1) {
+
+    if (columnCount == -1) {
+      columnCount = this.getColumnCount(tileRef);
+    }
 
     //col_span override
     if (colSpan > 0)
@@ -736,6 +772,26 @@ export class GeneratorComponent implements OnInit {
     }
 
     return 1;
+  }
+
+  getColumnHeight(tileRef: MatGridTile, section: any, columnCount: number = -1) {
+
+    if (columnCount == -1) {
+      columnCount = this.getColumnCount(tileRef);
+    }
+
+    let spanIndex = 0;
+
+    switch (columnCount) {
+      case 2:
+        spanIndex = 1;
+        break;
+      case 12:
+        spanIndex = 2;
+        break;
+    }
+
+    return section.row_span[spanIndex];
   }
 
   findOption(options: any, optionName: string) {

@@ -120,7 +120,7 @@ nb-card-body {
 }
 
 :host mat-grid-list {
-  height: 98%;
+  height: 100% !important;
 }
 
 :host mat-grid-tile {
