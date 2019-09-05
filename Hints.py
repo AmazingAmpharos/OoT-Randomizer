@@ -494,8 +494,7 @@ hint_dist_sets = {
         'barren':    (3.0, 2),
         'entrance':  (4.0, 2),
         'sometimes': (0.0, 2),
-        'random':    (0.0, 1),
-        'junk':      (0.0, 0),
+        'random':    (0.0, 2),
     }),
 }
 
