@@ -243,6 +243,22 @@ export class GeneratorComponent implements OnInit {
           this.dialogService.open(DialogWindow, {
             autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: "You may only generate one seed per minute to prevent spam!" }
           });
+        } 
+        else if (err.hasOwnProperty('errorRomInPlando')) {
+          console.log("Plando Error", err.errorRomInPlando);
+          let plandoDisclaimer = "Your OoT ROM doesn't belong into the plandomizer setting. This entirely optional setting is used to plan out seeds before generation by manipulating spoiler log files. If you want to generate a normal seed, click YES.";
+          this.dialogService.open(ConfirmationWindow, {
+            autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Your rom doesn't belong here!", dialogMessage: plandoDisclaimer }
+          }).onClose.subscribe(confirmed => {
+            if (confirmed) {
+              this.global.generator_settingsMap["distribution_file"] = null;
+              this.generateSeed(fromPatchFile, webRaceSeed);
+            } else {
+              this.generateSeedButtonEnabled = true;
+              this.cd.markForCheck();
+              this.cd.detectChanges();
+            }
+          });
         }
         else {
           this.dialogService.open(DialogWindow, {
