@@ -802,6 +802,20 @@ export class GeneratorComponent implements OnInit {
     return typeof (variable);
   }
 
+  getNextVisibleSetting(settings: any, startingIndex: number) {
+
+    if (settings.length > startingIndex) {
+      for (let i = startingIndex; i < settings.length; i++) {
+        let setting = settings[i];
+
+        if (this.global.generator_settingsVisibilityMap[setting.name] || !setting.hide_when_disabled)
+          return setting;
+      }
+    }
+
+    return null;
+  }
+
   checkVisibility(newValue: any, setting: any, option: any = null, refColorPicker: HTMLInputElement = null, disableOnly: boolean = false, noValueChange: boolean = false) {
 
     if (!disableOnly && !noValueChange)

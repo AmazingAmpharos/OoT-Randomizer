@@ -127,7 +127,7 @@
                         </ng-container>
                       </ng-container>
                       <!--Padding-->
-                      <div *ngIf="section.settings.length > itemIndex + 1 && !setting.no_line_break" class="settingPadding" [ngClass]="{'settingCBPadding': setting.type != 'Checkbutton' && section.settings[itemIndex + 1].type == 'Checkbutton'}"></div>
+                      <div *ngIf="getNextVisibleSetting(section.settings, itemIndex + 1) && !setting.no_line_break" class="settingPadding" [ngClass]="{'settingCBPadding': setting.type != 'Checkbutton' && getNextVisibleSetting(section.settings, itemIndex + 1).type == 'Checkbutton'}"></div>
                     </ng-container>
                   </ng-template>
                 </div>
