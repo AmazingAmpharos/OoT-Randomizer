@@ -14,7 +14,8 @@ var crc32 = null;
 //Command line args
 var forceRecompile = false;
 var releaseMode = false;
-var pythonPath = os.platform() == "win32" ? "python" : "python3";
+var webMode = false;
+var pythonPath = os.platform() == "win32" ? "py" : "python3";
 
 //Globals
 var environmentChecked = false;
@@ -179,9 +180,9 @@ async function pingServiceUntilLive(host, port) {
     }
 }
 
-async function spawnDetachedSubProcess(path, args, shell, hide) {
+async function spawnDetachedSubProcess(path, args, shell, hide, cwd = "") {
 
-  var npmSpawn = args ? spawn(path, args, { shell: shell, detached: true, windowsHide: hide, stdio: 'ignore' }) : spawn(path, { shell: shell, detached: true, windowsHide: hide, stdio: 'ignore' });
+    var npmSpawn = args ? spawn(path, args, { shell: shell, detached: true, windowsHide: hide, stdio: 'ignore', cwd: cwd }) : spawn(path, { shell: shell, detached: true, windowsHide: hide, stdio: 'ignore', cwd: cwd });
 
     npmSpawn.on('error', err => {
         throw Error(err);
@@ -191,10 +192,10 @@ async function spawnDetachedSubProcess(path, args, shell, hide) {
     npmSpawn.unref();
 }
 
-async function spawnChildSubProcess(path, args, shell, verbose, stderrSetting = "pipe") {
+async function spawnChildSubProcess(path, args, shell, verbose, stderrSetting = "pipe", cwd = "") {
 
     var lastMessage = "";
-    var npmSpawn = args ? spawn(path, args, { shell: shell, stdio: ['pipe', 'pipe', stderrSetting] }) : spawn(path, { shell: shell, stdio: ['pipe', 'pipe', stderrSetting] });
+    var npmSpawn = args ? spawn(path, args, { shell: shell, stdio: ['pipe', 'pipe', stderrSetting], cwd: cwd }) : spawn(path, { shell: shell, stdio: ['pipe', 'pipe', stderrSetting], cwd: cwd });
 
     npmSpawn.on('error', err => {
         throw Error(err);
@@ -245,6 +246,17 @@ async function setupNodeEnvironment(freshSetup = false) {
     await spawnChildSubProcess("npm install --verbose", null, true, true, "inherit").catch(err => { throw Error("Environment setup failed"); });
 
     console.log("Environment setup completed");
+}
+
+async function setupWebTestNodeEnvironment() {
+
+    console.log("Creating web test environment...");
+
+    await waitFor(1000);
+
+    await spawnChildSubProcess("npm install --verbose", null, true, true, "inherit", "webTest").catch(err => { throw Error("Web test environment setup failed"); });
+
+    console.log("Web test environment setup completed");
 }
 
 async function compileElectron() {
@@ -307,6 +319,15 @@ async function runAngularDevServer() {
     }   
 }
 
+async function runWebTestServer() {
+ 
+    console.log("Running Web Server...");
+
+    await spawnDetachedSubProcess("node", ["server.js"], true, false, "webTest").catch(err => { throw Error("Failed to launch Web Server"); });
+
+    console.log("Web Server started");
+}
+
 async function main(commandLine) {
 
     console.log("OoT Randomizer GUI is booting up");
@@ -337,6 +358,7 @@ async function main(commandLine) {
     commander
         .option('p, python <path>', 'Path to your python executable')
         .option('r, release', 'Runs electron in release mode')
+        .option('w, web', 'Runs the GUI in your browser')
         .option('f, force', 'Force an environment check and Angular/Electron re-compile')
         .parse(commandLine);
 
@@ -345,11 +367,14 @@ async function main(commandLine) {
 
     if (commander["release"])
         releaseMode = true;
+    else
+        if (commander["web"])
+            webMode = true;
 
     if (commander["force"])
         forceRecompile = true;
 
-    console.log("Mode: " + (releaseMode ? "Release" : "Dev"));
+    console.log("Mode: " + (releaseMode ? "Release" : webMode ? "Web" : "Dev"));
     console.log("Python Path:", pythonPath);
 
     if (forceRecompile)
@@ -432,10 +457,10 @@ async function main(commandLine) {
     if (electronIndexUpdated)
         fs.writeFileSync("./electron/dist/index.json", JSON.stringify(electronIndex));
 
-    if (!releaseMode) { //Start Angular dev server in dev mode
+    if (!releaseMode && !webMode) { //Start Angular dev server in dev mode
         await runAngularDevServer();
     }
-    else { //Release mode
+    else { //Release/Web mode
 
         var angularIndexUpdated = false;
 
@@ -491,8 +516,18 @@ async function main(commandLine) {
             fs.writeFileSync("./dist/index.json", JSON.stringify(angularIndex));
     }
 
-    //Finally start Electron
-    await runElectron();
+    if (webMode) { //Web mode
+        if (!fs.existsSync("webTest/node_modules") || forceRecompile)
+            await setupWebTestNodeEnvironment();
+
+        //Spawn web server
+        await runWebTestServer();
+    }
+    else { //Release/dev mode
+        //Finally start Electron
+        await runElectron();
+    }
+
     console.log("All done");
 
     setTimeout(() => {
