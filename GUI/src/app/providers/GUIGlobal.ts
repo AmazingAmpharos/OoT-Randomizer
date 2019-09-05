@@ -1093,7 +1093,7 @@ export class GUIGlobal {
     if (plandoFile && typeof (plandoFile) == "object" && plandoFile.name && plandoFile.name.length > 0) {
 
       if (plandoFile.name.toLowerCase().endsWith(".z64") || plandoFile.name.toLowerCase().endsWith(".n64") || plandoFile.name.toLowerCase().endsWith(".v64")) { //Not a ROM check...
-        throw { errorRomInPlando: "Your Ocarina of Time ROM doesn't belong into the plandomizer setting. If you don't know what plandomizer is, or don't plan to use it, leave that setting blank and try again." };
+        throw { errorRomInPlando: "Your Ocarina of Time ROM doesn't belong in the plandomizer setting. If you don't know what plandomizer is, or don't plan to use it, leave that setting blank and try again." };
       }
       else if (!plandoFile.name.toLowerCase().endsWith(".json")) { //JSON extension test
         throw { error: "Invalid plandomizer file extension! Plandomizer files must use the JSON file format. Note: Leave this setting blank if you don't actually want to use the plandomizer feature." };
