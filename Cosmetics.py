@@ -110,23 +110,9 @@ magic_colors = {
     "White":             Color(0xFF, 0xFF, 0xFF),
 }
 
-a_button_colors = {
-    "N64 Blue":         Color(0x5A, 0x5A, 0xFF),
-    "GameCube Green":   Color(0x00, 0xC8, 0x32),
-}
-
-b_button_colors = {
-    "N64 Green":        Color(0x00, 0x96, 0x00),
-    "GameCube Red":     Color(0xFF, 0x1E, 0x1E),
-}
-
-c_button_colors = {
-    "Default Yellow":   Color(0xFF, 0xA0, 0x00),
-}
-
-start_button_colors = {
-    "N64 Red":          Color(0xC8, 0x00, 0x00),
-    "GameCube Grey":    Color(0x78, 0x78, 0x78),
+button_colors = {
+    "N64":         [Color(0x5A, 0x5A, 0xFF), Color(0x00, 0x96, 0x00), Color(0xFF, 0xA0, 0x00), Color(0xC8, 0x00, 0x00)],
+    "GameCube":    [Color(0x00, 0xC8, 0x32), Color(0xFF, 0x1E, 0x1E), Color(0xFF, 0xA0, 0x00), Color(0x78, 0x78, 0x78)],
 }
 
 meta_color_choices = ["Random Choice", "Completely Random", "Custom Color"]
@@ -183,36 +169,12 @@ def get_magic_color_options():
     return meta_color_choices + get_magic_colors()
 
 
-def get_a_button_colors():
-    return list(a_button_colors.keys())
+def get_button_colors():
+    return list(button_colors.keys())
 
 
-def get_a_button_color_options():
-    return meta_color_choices + get_a_button_colors()
-
-
-def get_b_button_colors():
-    return list(b_button_colors.keys())
-
-
-def get_b_button_color_options():
-    return meta_color_choices + get_b_button_colors()
-
-
-def get_c_button_colors():
-    return list(c_button_colors.keys())
-
-
-def get_c_button_color_options():
-    return meta_color_choices + get_c_button_colors()
-
-
-def get_start_button_colors():
-    return list(start_button_colors.keys())
-
-
-def get_start_button_color_options():
-    return meta_color_choices + get_start_button_colors()
+def get_button_color_options():
+    return ["Random Choice", "Completely Random"] + get_button_colors()
 
 
 def patch_targeting(rom, settings, log, symbols):
@@ -471,27 +433,34 @@ def patch_magic_colors(rom, settings, log, symbols):
 
 
 def patch_button_colors(rom, settings, log, symbols):
+    # Since these are all one option, handle random choice for all of them first.
+    if settings.button_colors == 'Random Choice':
+        button_color = random.choice(list(button_colors.keys()))
+    else:
+        button_color = settings.button_colors
+
     buttons = [
-        ('A Button Color', settings.a_button_color, a_button_colors, symbols['CFG_A_BUTTON_COLOR']),
-        ('B Button Color', settings.b_button_color, b_button_colors, symbols['CFG_B_BUTTON_COLOR']),
-        ('C Button Color', settings.c_button_color, c_button_colors, symbols['CFG_C_BUTTON_COLOR']),
-        ('Start Button Color', settings.start_button_color, start_button_colors, symbols['CFG_START_BUTTON_COLOR']),
+        ('A Button Color', button_color, symbols['CFG_A_BUTTON_COLOR']),
+        ('B Button Color', button_color, symbols['CFG_B_BUTTON_COLOR']),
+        ('C Button Color', button_color, symbols['CFG_C_BUTTON_COLOR']),
+        ('Start Button Color', button_color, symbols['CFG_START_BUTTON_COLOR']),
     ]
 
-    for button, button_option, button_colors, symbol in buttons:
+    i = 0
+    for button, button_option, symbol in buttons:
         # handle random
         if button_option == 'Random Choice':
-            button_option = random.choice(button_colors.keys())
+            button_option = random.choice(list(button_colors.keys()))
         # handle completely random
         if button_option == 'Completely Random':
             color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
         # grab the color from the list
         elif button_option in button_colors:
-            color = list(button_colors[button_option])
-        # build color from hex code
+            color = list(button_colors[button_option][i])
         else:
-            color = list(int(button_option[i:i+2], 16) for i in (0, 2, 4))
-            button_option = 'Custom'
+            # Custom color not supported for these right now.
+            log.error = "%s is an incorrect value. Skipping patching for that button." % button
+            continue
 
         if button == 'Start Button Color':
             rom.write_bytes(symbol, color)
@@ -499,6 +468,7 @@ def patch_button_colors(rom, settings, log, symbols):
             rom.write_int16s(symbol, color)
 
         log.button_colors[button] = dict(option=button_option, color=''.join(['{:02X}'.format(c) for c in color]))
+        i += 1
 
 
 def patch_sfx(rom, settings, log, symbols):
