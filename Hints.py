@@ -493,9 +493,8 @@ hint_dist_sets = {
         'woth':      (5.0, 2),
         'barren':    (3.0, 2),
         'entrance':  (4.0, 2),
-        'sometimes': (5.0, 2),
-        'random':    (0.0, 1),
-        'junk':      (0.0, 0),
+        'sometimes': (0.0, 2),
+        'random':    (0.0, 2),
     }),
 }
 
@@ -560,13 +559,15 @@ def buildGossipHints(spoiler, world):
         fixed_hint_types = []
         for hint_type in hint_types:
             fixed_hint_types.extend([hint_type] * int(hint_dist[hint_type][0]))
+        fill_hint_types = ['sometimes', 'random']
+        current_fill_type = fill_hint_types.pop(0)
 
     while stoneIDs:
         if world.hint_dist == "tournament":
             if fixed_hint_types:
                 hint_type = fixed_hint_types.pop(0)
             else:
-                hint_type = 'random'
+                hint_type = current_fill_type
         else:
             try:
                 # Weight the probabilities such that hints that are over the expected proportion
@@ -592,8 +593,13 @@ def buildGossipHints(spoiler, world):
         if hint == None:
             index = hint_types.index(hint_type)
             hint_prob[index] = 0
-            if world.hint_dist == "tournament" and hint_type == 'random':
-                raise Exception('Not enough valid %s hints for tournament distribution' % hint_type)
+            if world.hint_dist == "tournament" and hint_type == current_fill_type:
+                logging.getLogger('').info('Not enough valid %s hints for tournament distribution.', hint_type)
+                if fill_hint_types:
+                    current_fill_type = fill_hint_types.pop(0)
+                    logging.getLogger('').info('Switching to %s hints to fill remaining gossip stone locations.', current_fill_type)
+                else:
+                    raise Exception('Not enough valid hints for tournament distribution.')
         else:
             gossip_text, location = hint
             place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, hint_dist[hint_type][1], location)
