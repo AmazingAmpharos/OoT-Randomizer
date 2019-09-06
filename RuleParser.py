@@ -245,7 +245,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                     value=ast.Name(id='state', ctx=ast.Load()),
                     attr='has_any_of' if early_return else 'has_all_of',
                     ctx=ast.Load()),
-                args=[ast.Tuple([ast.Str(i) for i in items], ctx=ast.Load())],
+                args=[ast.Tuple(elts=[ast.Str(i) for i in items], ctx=ast.Load())],
                 keywords=[])] + new_values
         else:
             node.values = new_values
