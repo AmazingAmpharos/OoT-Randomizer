@@ -896,7 +896,8 @@ logic_tricks = {
                     From the far side of Gerudo Valley, a precise
                     Hover Boots movement and jumpslash recoil can
                     allow adult to reach the ledge with the crate
-                    PoH without needing Longshot.
+                    PoH without needing Longshot. You will take 
+                    fall damage.
                     '''},
     'Jump onto the Lost Woods Bridge as Adult with Nothing': {
         'name'    : 'logic_lost_woods_bridge',
