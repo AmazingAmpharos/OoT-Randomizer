@@ -1236,16 +1236,16 @@ setting_infos = [
             'closed':      'Closed Forest',
             },
         gui_tooltip    = '''\
-            Open Forest: Mido no longer blocks the path to the
+            'Open Forest': Mido no longer blocks the path to the
             Deku Tree, and the Kokiri boy no longer blocks the path
             out of the forest.
             
-            Closed Deku: The Kokiri boy no longer blocks the path
+            'Closed Deku': The Kokiri boy no longer blocks the path
             out of the forest, but Mido still blocks the path to the
             Deku Tree, requiring Kokiri Sword and Deku Shield to access
             the Deku Tree.
 
-            Closed Forest: The Kokiri Sword and Slingshot are always
+            'Closed Forest': The Kokiri Sword and Slingshot are always
             available somewhere in the forest. This is incompatible with
             Start as Adult and shuffling "All Indoors" and/or "Overworld"
             entrances will force this to Closed Deku if selected.
@@ -2337,11 +2337,11 @@ setting_infos = [
             'tournament':  'Tournament',
         },
         gui_tooltip    = '''\
-            Useless: Only junk hints.
-            Balanced: Recommended hint spread.
-            Strong: More useful hints.
-            Very Strong: Many powerful hints.
-            Tournament: Fixed number of hints 
+            'Useless': Only junk hints.
+            'Balanced': Recommended hint spread.
+            'Strong': More useful hints.
+            'Very Strong': Many powerful hints.
+            'Tournament': Fixed number of hints 
             for each type, contains duplicates,
             and only useful hints.
         ''',
@@ -2380,14 +2380,18 @@ setting_infos = [
             'onslaught': 'Ice Trap Onslaught',
         },
         gui_tooltip    = '''\
-            Off: All Ice Traps are removed.
-            Normal: Only Ice Traps from the base item pool
+            'Off': All Ice Traps are removed.
+
+            'Normal': Only Ice Traps from the base item pool
             are placed.
-            Extra Ice Traps: Chance to add extra Ice Traps
+
+            'Extra Ice Traps': Chance to add extra Ice Traps
             when junk items are added to the itempool.
-            Ice Trap Mayhem: All added junk items will
+
+            'Ice Trap Mayhem': All added junk items will
             be Ice Traps.
-            Ice Trap Onslaught: All junk items will be
+
+            'Ice Trap Onslaught': All junk items will be
             replaced by Ice Traps, even those in the
             base pool.
         ''',
@@ -2580,7 +2584,7 @@ setting_infos = [
         name           = 'randomize_all_cosmetics',
         gui_text       = 'Randomize All Cosmetics',
         gui_tooltip    = '''\
-            Randomize all cosmetics settings
+            Randomize all cosmetics settings.
         ''',
         default        = False,
         disable    = {
