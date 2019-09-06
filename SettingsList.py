@@ -1236,16 +1236,16 @@ setting_infos = [
             'closed':      'Closed Forest',
             },
         gui_tooltip    = '''\
-            Open Forest: Mido no longer blocks the path to the
+            'Open Forest': Mido no longer blocks the path to the
             Deku Tree, and the Kokiri boy no longer blocks the path
             out of the forest.
             
-            Closed Deku: The Kokiri boy no longer blocks the path
+            'Closed Deku': The Kokiri boy no longer blocks the path
             out of the forest, but Mido still blocks the path to the
             Deku Tree, requiring Kokiri Sword and Deku Shield to access
             the Deku Tree.
 
-            Closed Forest: The Kokiri Sword and Slingshot are always
+            'Closed Forest': The Kokiri Sword and Slingshot are always
             available somewhere in the forest. This is incompatible with
             Start as Adult and shuffling "All Indoors" and/or "Overworld"
             entrances will force this to Closed Deku if selected.
@@ -1330,7 +1330,7 @@ setting_infos = [
             'All Spiritual Stones': All 3 Spiritual Stones.
             'All Medallions': All 6 Medallions.
             'All Dungeons': All Medallions and Spiritual Stones.
-            'Gold Skulltula Tokens': Gold Skulltula Tokens.
+            'Gold Skulltula Tokens': A configurable amount of Gold Skulltula Tokens.
         ''',
         shared         = True,
         disable={
@@ -1376,21 +1376,17 @@ setting_infos = [
             'none':       'No Logic',
             },
         gui_tooltip    = '''\
-            Sets the rules the logic uses
-            to determine accessibility.
+            Sets the rules the logic uses to determine accessibility.
 
-            'Glitchless': No glitches are
-            required, but may require some
-            minor tricks.
+            'Glitchless': No glitches are required, but may require 
+            some minor tricks.
 
-            'Glitched': Movement oriented
-            glitches are likely required.
+            'Glitched': Movement oriented glitches are likely required.
             No locations excluded.
 
-            'No Logic': All locations are
-            considered available. May not
-            be beatable.
-            ''',
+            'No Logic': All locations are considered available. 
+            May not be beatable.
+        ''',
         disable        = {
             'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons']},
             'none'      : {'tabs'     : ['detailed_tab']},
@@ -1427,8 +1423,7 @@ setting_infos = [
             Bombchu Bowling opens with Bombchus.
             Bombchus are available at Kokiri Shop
             and the Bazaar. Bombchu refills cannot
-            be bought until Bombchus have been
-            obtained.
+            be bought until Bombchus have been obtained.
         ''',
         default        = True,
         shared         = True,
@@ -1464,9 +1459,8 @@ setting_infos = [
         name           = 'trials_random',
         gui_text       = 'Random Number of Ganon\'s Trials',
         gui_tooltip    = '''\
-                         Sets a random number of trials to
-                         enter Ganon's Tower.
-                         ''',
+            Sets a random number of trials to enter Ganon's Tower.
+        ''',
         shared         = True,
         disable        = {
             True : {'settings' : ['trials']}
@@ -2337,11 +2331,15 @@ setting_infos = [
             'tournament':  'Tournament',
         },
         gui_tooltip    = '''\
-            Useless: Only junk hints.
-            Balanced: Recommended hint spread.
-            Strong: More useful hints.
-            Very Strong: Many powerful hints.
-            Tournament: Fixed number of hints 
+            'Useless': Only junk hints.
+
+            'Balanced': Recommended hint spread.
+
+            'Strong': More useful hints.
+
+            'Very Strong': Many powerful hints.
+
+            'Tournament': Fixed number of hints 
             for each type, contains duplicates,
             and only useful hints.
         ''',
@@ -2380,14 +2378,18 @@ setting_infos = [
             'onslaught': 'Ice Trap Onslaught',
         },
         gui_tooltip    = '''\
-            Off: All Ice Traps are removed.
-            Normal: Only Ice Traps from the base item pool
+            'Off': All Ice Traps are removed.
+
+            'Normal': Only Ice Traps from the base item pool
             are placed.
-            Extra Ice Traps: Chance to add extra Ice Traps
+
+            'Extra Ice Traps': Chance to add extra Ice Traps
             when junk items are added to the itempool.
-            Ice Trap Mayhem: All added junk items will
+
+            'Ice Trap Mayhem': All added junk items will
             be Ice Traps.
-            Ice Trap Onslaught: All junk items will be
+
+            'Ice Trap Onslaught': All junk items will be
             replaced by Ice Traps, even those in the
             base pool.
         ''',
@@ -2507,12 +2509,10 @@ setting_infos = [
             'random': 'Random',
         },
         gui_tooltip    = '''\
-            'No Music': No background music.
-            is played.
+            'No Music': No background music is played.
 
-            'Random': Area background music is
-            randomized. Additional music can
-            be loaded from data/Music/
+            'Random': Area background music is randomized. 
+            Additional music can be loaded from data/Music/
         ''',
         gui_params  = {
             'randomize_key': 'randomize_all_sfx',
@@ -2534,13 +2534,10 @@ setting_infos = [
             'normal' : {'settings' : ['ocarina_fanfares']},
         },
         gui_tooltip    = '''\
-            'No Fanfares': No fanfares 
-            (short non-looping tracks)
-            are played.
+            'No Fanfares': No fanfares (short non-looping tracks) are played.
 
             'Random': Fanfares are randomized.
-            Additional fanfares can be loaded
-            from data/Music/
+            Additional fanfares can be loaded from data/Music/
         ''',
         gui_params  = {
             'randomize_key': 'randomize_all_sfx',
@@ -2580,7 +2577,7 @@ setting_infos = [
         name           = 'randomize_all_cosmetics',
         gui_text       = 'Randomize All Cosmetics',
         gui_tooltip    = '''\
-            Randomize all cosmetics settings
+            Randomize all cosmetics settings.
         ''',
         default        = False,
         disable    = {
@@ -3011,8 +3008,7 @@ setting_infos = [
         choices        = sfx.get_setting_choices(sfx.SoundHooks.HP_LOW),
         default        = 'default',
         gui_tooltip    = '''\
-            'Random Choice': Choose a random
-            sound from this list.
+            'Random Choice': Choose a random sound from this list.
             'Default': Beep. Beep. Beep.
         ''',
         gui_params     = {
