@@ -1438,7 +1438,7 @@ setting_infos = [
             Keys only count as major items if they are 
             shuffled everywhere (ie. in keysanity).
             GS Tokens only count as major items if the 
-            bridge condition is set to "All GS Tokens".
+            bridge requirement is set to "GS Tokens".
             Bombchus only count as major items if they
             are considered in logic.
         ''',
