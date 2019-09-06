@@ -86,7 +86,10 @@ player.
 #### Bug Fixes
 * Improve stability of music related features
 * Fix "...???" textboxes at the entrance of Great Fairies
+* In the unlikely event `Tournament Hints` runs out of hints, the remaining hints are filled with more "Sometimes Good" hints. If those run out as well then it will fill with "Random Locations" hints.
+* The `Gerudo Valley Crate PoH as Adult with Hover Boots` trick now properly takes OHKO into account.
 * Minor GUI tweaks
+* Improve error feedback in GUI and Rules JSON
 
 
 ### 5.0
