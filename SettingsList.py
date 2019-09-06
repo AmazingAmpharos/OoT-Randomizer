@@ -1376,21 +1376,17 @@ setting_infos = [
             'none':       'No Logic',
             },
         gui_tooltip    = '''\
-            Sets the rules the logic uses
-            to determine accessibility.
+            Sets the rules the logic uses to determine accessibility.
 
-            'Glitchless': No glitches are
-            required, but may require some
-            minor tricks.
+            'Glitchless': No glitches are required, but may require 
+            some minor tricks.
 
-            'Glitched': Movement oriented
-            glitches are likely required.
+            'Glitched': Movement oriented glitches are likely required.
             No locations excluded.
 
-            'No Logic': All locations are
-            considered available. May not
-            be beatable.
-            ''',
+            'No Logic': All locations are considered available. 
+            May not be beatable.
+        ''',
         disable        = {
             'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons']},
             'none'      : {'tabs'     : ['detailed_tab']},
@@ -1427,8 +1423,7 @@ setting_infos = [
             Bombchu Bowling opens with Bombchus.
             Bombchus are available at Kokiri Shop
             and the Bazaar. Bombchu refills cannot
-            be bought until Bombchus have been
-            obtained.
+            be bought until Bombchus have been obtained.
         ''',
         default        = True,
         shared         = True,
@@ -1464,9 +1459,8 @@ setting_infos = [
         name           = 'trials_random',
         gui_text       = 'Random Number of Ganon\'s Trials',
         gui_tooltip    = '''\
-                         Sets a random number of trials to
-                         enter Ganon's Tower.
-                         ''',
+            Sets a random number of trials to enter Ganon's Tower.
+        ''',
         shared         = True,
         disable        = {
             True : {'settings' : ['trials']}
@@ -2338,9 +2332,13 @@ setting_infos = [
         },
         gui_tooltip    = '''\
             'Useless': Only junk hints.
+
             'Balanced': Recommended hint spread.
+
             'Strong': More useful hints.
+
             'Very Strong': Many powerful hints.
+
             'Tournament': Fixed number of hints 
             for each type, contains duplicates,
             and only useful hints.
@@ -2511,12 +2509,10 @@ setting_infos = [
             'random': 'Random',
         },
         gui_tooltip    = '''\
-            'No Music': No background music.
-            is played.
+            'No Music': No background music is played.
 
-            'Random': Area background music is
-            randomized. Additional music can
-            be loaded from data/Music/
+            'Random': Area background music is randomized. 
+            Additional music can be loaded from data/Music/
         ''',
         gui_params  = {
             'randomize_key': 'randomize_all_sfx',
@@ -2538,13 +2534,10 @@ setting_infos = [
             'normal' : {'settings' : ['ocarina_fanfares']},
         },
         gui_tooltip    = '''\
-            'No Fanfares': No fanfares 
-            (short non-looping tracks)
-            are played.
+            'No Fanfares': No fanfares (short non-looping tracks) are played.
 
             'Random': Fanfares are randomized.
-            Additional fanfares can be loaded
-            from data/Music/
+            Additional fanfares can be loaded from data/Music/
         ''',
         gui_params  = {
             'randomize_key': 'randomize_all_sfx',
@@ -3015,8 +3008,7 @@ setting_infos = [
         choices        = sfx.get_setting_choices(sfx.SoundHooks.HP_LOW),
         default        = 'default',
         gui_tooltip    = '''\
-            'Random Choice': Choose a random
-            sound from this list.
+            'Random Choice': Choose a random sound from this list.
             'Default': Beep. Beep. Beep.
         ''',
         gui_params     = {
