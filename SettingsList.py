@@ -1330,7 +1330,7 @@ setting_infos = [
             'All Spiritual Stones': All 3 Spiritual Stones.
             'All Medallions': All 6 Medallions.
             'All Dungeons': All Medallions and Spiritual Stones.
-            'Gold Skulltula Tokens': Gold Skulltula Tokens.
+            'Gold Skulltula Tokens': A configurable amount of Gold Skulltula Tokens.
         ''',
         shared         = True,
         disable={
