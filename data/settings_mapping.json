@@ -13,6 +13,7 @@
           "settings": [
             "rom",
             "output_dir",
+            "enable_distribution_file",
             "distribution_file",
             "count",
             "create_spoiler",
@@ -60,6 +61,7 @@
             "web_common_key_string",
             "web_wad_channel_id",
             "web_wad_channel_title",
+            "enable_distribution_file",           
             "distribution_file",
             "create_spoiler",
             "web_output_type"

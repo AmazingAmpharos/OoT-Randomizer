@@ -1080,7 +1080,20 @@ setting_infos = [
     Checkbutton('cosmetics_only', None),
     Checkbutton('check_version', None),
     Checkbutton('output_settings', None),
-    Setting_Info('distribution_file', str, "Plandomizer File (Optional)", "Fileinput", False, {},
+    Checkbutton(
+        name           = 'enable_distribution_file',
+        gui_text       = 'Enable Plandomizer (Optional)',
+        gui_tooltip    = '''\
+            Optional. Use a plandomizer JSON file to get 
+            total control over the item placement.
+        ''',
+        default        = False,
+        disable        = {
+            False  : {'settings' : ['distribution_file']},
+        },
+        shared         = False,
+    ),
+    Setting_Info('distribution_file', str, "Plandomizer File", "Fileinput", False, {},
         gui_tooltip = """\
             Optional. Place a plandomizer JSON file here 
             to get total control over the item placement.
@@ -1096,7 +1109,7 @@ setting_infos = [
                   "extensions": [ "*" ]
                 }
             ],
-            "web:hide_when_disabled" : True,    
+            "hide_when_disabled" : True,    
         }),
     Setting_Info('checked_version',   str, None, None, False, {}),
     Setting_Info('rom',               str, "Base ROM", "Fileinput", False, {},
@@ -1183,7 +1196,7 @@ setting_infos = [
         },
         default        = 'True',
         disable        = {
-            'None'  : {'settings' : ['player_num', 'create_cosmetics_log']},
+            'None'  : {'settings' : ['player_num', 'create_cosmetics_log', 'rom']},
             'Patch' : {'settings' : ['player_num']}
         },
         gui_tooltip = '''\
