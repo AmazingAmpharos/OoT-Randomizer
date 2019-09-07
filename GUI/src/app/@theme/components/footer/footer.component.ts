@@ -63,8 +63,11 @@ export class FooterComponent {
     this.dialogService.open(ConfirmationWindow, {
       autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "New Version Available!", dialogMessage: "You are on version " + this.localVersion + ", and the latest is version " + this.remoteVersion + ". Do you want to download the latest version now?" }
     }).onClose.subscribe(confirmed => {
-      if (confirmed)
-        (<any>window).open("https://github.com/TestRunnerSRL/OoT-Randomizer/tree/Dev", "_blank");
+
+      if (confirmed) {
+        let link = this.remoteVersion.includes("Release") ? "https://www.ootrandomizer.com/downloads" : "https://github.com/TestRunnerSRL/OoT-Randomizer/tree/Dev";
+        (<any>window).open(link, "_blank");
+      }
     });
   }
 }
