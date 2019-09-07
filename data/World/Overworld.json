@@ -150,7 +150,7 @@
         },
         "locations": {
             "Skull Kid": "is_child and can_play(Sarias_Song)",
-            "Ocarina Memory Game": "is_child and has_ocarina",
+            "Ocarina Memory Game": "is_child and Ocarina",
             "Target in Woods": "can_use(Slingshot)",
             "LW Deku Scrub Deku Stick Upgrade": "is_child and can_stun_deku",
             "GS Lost Woods Bean Patch Near Bridge": "can_plant_bugs and can_child_attack",
@@ -284,7 +284,7 @@
         "hint": "Lake Hylia",
         "time_passes": true,
         "events": {
-            "Bonooru": "is_child and has_ocarina"
+            "Bonooru": "is_child and Ocarina"
         },
         "locations": {
             "Pierre": "is_adult and Bonooru and not free_scarecrow",
@@ -977,7 +977,7 @@
             "Windmill Freestanding PoH": "
                 can_use(Boomerang) or
                 (logic_windmill_poh and is_adult) or 'Dampes Windmill Access'",
-            "Song at Windmill": "is_adult and has_ocarina"
+            "Song at Windmill": "is_adult and Ocarina"
         },
         "exits": {
             "Kakariko Village": "True"
@@ -1608,7 +1608,7 @@
             "Links Cow": "can_play(Eponas_Song) and is_adult and at_day"
         },
         "locations": {
-            "Song from Malon": "is_child and Zeldas_Letter and has_ocarina and at_day",
+            "Song from Malon": "is_child and Zeldas_Letter and Ocarina and at_day",
             "GS Lon Lon Ranch Tree": "is_child",
             "GS Lon Lon Ranch Rain Shed": "is_child and at_night",
             "GS Lon Lon Ranch House Window": "can_use(Boomerang) and at_night",

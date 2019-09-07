@@ -1,0 +1,28 @@
+{
+    "Deku_Shield": "Buy_Deku_Shield",
+    "Nuts": "Buy_Deku_Nut_5 or Buy_Deku_Nut_10 or Deku_Nut_Drop",
+    "Sticks": "Buy_Deku_Stick_1 or Deku_Stick_Drop",
+    "Hookshot": "Progressive_Hookshot",
+    "Longshot": "(Progressive_Hookshot, 2)",
+    "Silver_Gauntlets": "(Progressive_Strength_Upgrade, 2)",
+    "Golden_Gauntlets": "(Progressive_Strength_Upgrade, 3)",
+    "Scarecrow": "is_adult and Progressive_Hookshot and can_play(Scarecrow_Song)",
+    "Distant_Scarecrow": "is_adult and (Progressive_Hookshot, 2) and can_play(Scarecrow_Song)",
+    "Goron_Tunic": "'Goron Tunic' or Buy_Goron_Tunic",
+    "Zora_Tunic": "'Zora Tunic' or Buy_Zora_Tunic",
+    "is_child": "age == 'child'",
+    "is_adult": "age == 'adult'",
+    "is_starting_age": "age == starting_age",
+    "has_bow": "Bow",
+    "has_bombs": "Bomb_Bag",
+    "has_epona": "is_adult and Epona and (can_play(Eponas_Song) or (logic_rules != 'glitchless' and can_hover))",
+    "has_slingshot": "Slingshot",
+    "can_plant_bean": "is_child and (Magic_Bean or Magic_Bean_Pack)",
+    "can_play(song)": "Ocarina and song",
+    "can_use(item)": "((item == Dins_Fire or item == Farores_Wind or item == Nayrus_Love or item == Lens_of_Truth) and item and Magic_Meter)
+            or ((item == Bow or item == Hammer or item == Iron_Boots or item == Hover_Boots or item == Hookshot or item == Longshot or item == Silver_Gauntlets or item == Golden_Gauntlets or item == Goron_Tunic or item == Zora_Tunic) and is_adult and item)
+            or ((item == Fire_Arrows or item == Light_Arrows) and is_adult and Bow and Magic_Meter and item)
+            or ((item == Slingshot or item == Boomerang or item == Kokiri_Sword or item == Sticks or item == Deku_Shield) and is_child and item)
+            or ((item == Epona) and has_epona)
+            or ((item == Scarecrow or item == Distant_Scarecrow) and item)"
+}

@@ -97,13 +97,13 @@
         "locations": {
             "Spirit Temple MQ Lower Adult Left Chest": "True",
             "Spirit Temple MQ Lower Adult Right Chest": "
-                (Small_Key_Spirit_Temple, 7) and Hammer and has_ocarina and 
+                (Small_Key_Spirit_Temple, 7) and Hammer and Ocarina and 
                 Song_of_Time and Eponas_Song and Suns_Song and 
                 Song_of_Storms and Zeldas_Lullaby",
             "Spirit Temple MQ Entrance Front Right Chest": "Hammer",
             "GS Spirit Temple MQ Lower Adult Left": "True",
             "GS Spirit Temple MQ Lower Adult Right": "
-                (Small_Key_Spirit_Temple, 7) and Hammer and has_ocarina and 
+                (Small_Key_Spirit_Temple, 7) and Hammer and Ocarina and 
                 Song_of_Time and Eponas_Song and Suns_Song and 
                 Song_of_Storms and Zeldas_Lullaby"
         }
