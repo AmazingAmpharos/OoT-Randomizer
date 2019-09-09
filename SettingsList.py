@@ -1100,6 +1100,17 @@ setting_infos = [
                 'settings' : ['repatch_cosmetics'],
             },
         },
+        gui_params     = {
+            'web:disable' : {
+                True : {
+                    'settings' : [
+                        'rom','web_output_type','player_num', 
+                        'web_wad_file', 'web_common_key_file', 'web_common_key_string',
+                        'web_wad_channel_id','web_wad_channel_title'
+                    ],
+                },          
+            }
+        },
         shared         = False,
     ),
     Checkbutton(
