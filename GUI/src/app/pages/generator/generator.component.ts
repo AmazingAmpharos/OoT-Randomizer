@@ -161,6 +161,24 @@ export class GeneratorComponent implements OnInit {
     }, 0);
   }
 
+  getTabList(footer: boolean) {
+    let filteredTabList = [];
+
+    this.global.getGlobalVar('generatorSettingsArray').forEach(tab => {
+
+      if (!footer) {
+        if (!("footer" in tab) || !tab.footer)
+          filteredTabList.push(tab);
+      }
+      else {
+        if ("footer" in tab && tab.footer)
+          filteredTabList.push(tab);
+      }
+    });
+
+    return filteredTabList;
+  }
+
   generateSeed(fromPatchFile: boolean = false, webRaceSeed: boolean = false) {
 
     this.generateSeedButtonEnabled = false;
@@ -511,6 +529,19 @@ export class GeneratorComponent implements OnInit {
           autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: err }
         });
       }
+    });
+  }
+
+  openPythonDir() { //Electron only
+
+    this.global.createAndOpenPath("").then(() => {
+      console.log("Python dir opened");
+    }).catch(err => {
+      console.error("Error:", err);
+
+      this.dialogService.open(DialogWindow, {
+        autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: err }
+      });   
     });
   }
 

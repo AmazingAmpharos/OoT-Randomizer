@@ -1075,11 +1075,33 @@ setting_infos = [
             }
         }
     ),
-
+    Checkbutton(
+        name           = 'web_persist_in_cache',
+        gui_text       = 'Persist Files in Cache',
+        default        = True,
+        shared         = False,
+    ),
+    
     # Non-GUI Settings
     Checkbutton('cosmetics_only', None),
     Checkbutton('check_version', None),
     Checkbutton('output_settings', None),
+    Checkbutton(
+        name           = 'generate_from_file',
+        gui_text       = 'Generate From File',
+        default        = False,
+        disable        = {
+            True : {
+                'tabs' : ['main_tab', 'detailed_tab', 'other_tab'],
+                'sections' : ['preset_section'],
+                'settings' : ['count', 'create_spoiler', 'world_count', 'enable_distribution_file', 'distribution_file'],
+            },
+            False : {
+                'settings' : ['repatch_cosmetics'],
+            },
+        },
+        shared         = False,
+    ),
     Checkbutton(
         name           = 'enable_distribution_file',
         gui_text       = 'Enable Plandomizer (Optional)',
@@ -1129,7 +1151,19 @@ setting_infos = [
     Setting_Info('output_dir',        str, "Output Directory", "Directoryinput", False, {}),
     Setting_Info('output_file',       str, None, None, False, {}),
     Setting_Info('seed',              str, None, None, False, {}),
-    Setting_Info('patch_file',        str, None, None, False, {}),
+    Setting_Info('patch_file',        str, "Patch File", "Fileinput", False, {},
+        gui_params = {
+            "file_types": [
+                {
+                  "name": "Patch File Archive",
+                  "extensions": [ "zpfz", "zpf" ]
+                },
+                {
+                  "name": "All Files",
+                  "extensions": [ "*" ]
+                }
+            ],
+        }),
     Setting_Info('count',             int, "Generation Count", "Numberinput", False, {}, 
         default        = 1,
         gui_params = {
@@ -1159,9 +1193,28 @@ setting_infos = [
         default        = "[New Preset]",
         gui_tooltip    = 'Select a setting preset to apply.',
     ),
-    Setting_Info('open_output_dir',   str, "Open Output Directory", "Outputdirbutton", False, {}),   
-    Setting_Info('repatch_cosmetics', bool, None, None, False, {},
-        default        = True
+    Setting_Info('open_output_dir',   str, "Open Output Directory", "Button", False, {},
+        gui_params = {
+            'function' : "openOutputDir",
+            'no_line_break' : True,
+        }
+    ), 
+    Setting_Info('open_python_dir',   str, "Open App Directory", "Button", False, {},
+        gui_params = {
+            'function' : "openPythonDir",
+        }
+    ), 
+    Checkbutton(
+        name           = 'repatch_cosmetics',
+        gui_text       = 'Update Cosmetics',
+        default        = True,
+        disable        = {
+            False : {
+                'tabs': ['cosmetics_tab','sfx_tab'],
+                'settings' : ['create_cosmetics_log'],    
+            },
+        },
+        shared         = False,
     ),
     Checkbutton(
         name           = 'create_spoiler',

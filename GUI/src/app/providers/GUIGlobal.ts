@@ -480,18 +480,6 @@ export class GUIGlobal {
     this.generator_settingsMap["settings_string"] = userSettings && "settings_string" in userSettings ? userSettings["settings_string"] : "";
     this.generator_settingsVisibilityMap["settings_string"] = true;
 
-    this.generator_settingsMap["patch_file"] = userSettings && "patch_file" in userSettings ? userSettings["patch_file"] : "";
-    this.generator_settingsVisibilityMap["patch_file"] = true;
-
-    this.generator_settingsMap["repatch_cosmetics"] = userSettings && "repatch_cosmetics" in userSettings ? userSettings["repatch_cosmetics"] : true;
-    this.generator_settingsVisibilityMap["repatch_cosmetics"] = true;
-
-    //Add Web only options
-    if (!this.getGlobalVar('electronAvailable')) {
-      this.generator_settingsMap["web_persist_in_cache"] = userSettings && "web_persist_in_cache" in userSettings ? userSettings["web_persist_in_cache"] : true;
-      this.generator_settingsVisibilityMap["web_persist_in_cache"] = true;
-    }
-
     console.log("JSON Settings Data:", guiSettings);
     console.log("Last User Settings:", userSettings);
     console.log("Final Settings Map", this.generator_settingsMap);
@@ -772,6 +760,7 @@ export class GUIGlobal {
     //Delete keys the python source doesn't need
     delete settingsFile["presets"];
     delete settingsFile["open_output_dir"];
+    delete settingsFile["generate_from_file"];
 
     //Delete fromPatchFile keys if mode is fromSeed
     if (!includeFromPatchFileSettings) {

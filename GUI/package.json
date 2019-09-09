@@ -33,6 +33,7 @@
       "!bin/*",
       "!obj/*",
       "!e2e/*",
+      "!webTest/*",
       "!dist/index.json",
       "!electron/src/*.ts",
       "!electron/tsconfig.json",

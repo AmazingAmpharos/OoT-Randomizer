@@ -19,7 +19,8 @@
             "create_spoiler",
             "create_cosmetics_log",
             "compress_rom",
-            "open_output_dir"
+            "open_output_dir",
+            "open_python_dir"
           ]
         },
         {
@@ -395,6 +396,53 @@
           "settings": [
             "sfx_navi_overworld",
             "sfx_navi_enemy"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "footer_tab_electron",
+      "text": "",
+      "exclude_from_web": true,
+      "footer": true,
+      "sections": [
+        {
+          "name": "seed_section",
+          "text": "",
+          "settings": [
+            "generate_from_file"
+          ]
+        },
+        {
+          "name": "file_section",
+          "text": "",
+          "settings": [
+            "patch_file",
+            "repatch_cosmetics"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "footer_tab_web",
+      "text": "",
+      "exclude_from_electron": true,
+      "footer": true,
+      "sections": [
+        {
+          "name": "seed_section",
+          "text": "",
+          "settings": [
+            "generate_from_file"
+          ]
+        },
+        {
+          "name": "file_section",
+          "text": "",
+          "settings": [
+            "patch_file",
+            "repatch_cosmetics",
+            "web_persist_in_cache"
           ]
         }
       ]

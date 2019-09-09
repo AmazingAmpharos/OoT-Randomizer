@@ -138,11 +138,14 @@ post.on('createAndOpenPath', function (event) {
 
   let data = event.data;
 
-  if (!data || typeof (data) != "string" || data.length < 1)
-    return false;
-
-  if (!path.isAbsolute(data))
-    data = pythonSourcePath + data;
+  //Use python dir if not specified otherwise
+  if (!data || typeof (data) != "string" || data.length < 1) {
+    data = pythonSourcePath;
+  }
+  else {
+    if (!path.isAbsolute(data))
+      data = pythonSourcePath + data;
+  }
 
   if (fs.existsSync(data)) {
     return electron.remote.shell.openItem(data);

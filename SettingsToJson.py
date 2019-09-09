@@ -4,9 +4,9 @@ import sys
 import json
 
 
-tab_keys     = ['text', 'app_type']
+tab_keys     = ['text', 'app_type', 'footer']
 section_keys = ['text', 'is_colors', 'is_sfx', 'col_span', 'row_span', 'subheader']
-setting_keys = ['hide_when_disabled', 'min', 'max', 'size', 'max_length', 'file_types', 'no_line_break']
+setting_keys = ['hide_when_disabled', 'min', 'max', 'size', 'max_length', 'file_types', 'no_line_break', 'function']
 types_with_options = ['Checkbutton', 'Radiobutton', 'Combobox', 'SearchBox']
 
 
@@ -36,6 +36,7 @@ def GetSettingJson(setting, web_version, as_array=False):
         'text':          setting_info.gui_text,
         'tooltip':       RemoveTrailingLines('<br>'.join(line.strip() for line in setting_info.gui_tooltip.split('\n'))),
         'type':          setting_info.gui_type,
+        'shared':        setting_info.shared,
     }
 
     if as_array:
