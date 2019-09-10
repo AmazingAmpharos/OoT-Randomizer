@@ -99,6 +99,15 @@
     if (w.H)
         alert("Your browser is not compatible with this website. Please use Firefox v63+, Chrome v53+, Opera v40+, Safari v10+ or Edge v76+ (Chromium Branch)!");
 </script>
+
+<!--Disable pace after initial page load (to prevent it from ever coming up again in the same session)-->
+<script type="text/javascript">
+    window.paceOptions = {
+      restartOnPushState: false,
+      restartOnRequestAfter: false
+    };
+</script>
+
 <script type="text/javascript" src="runtime.js"></script><script type="text/javascript" src="es2015-polyfills.js" nomodule></script><script type="text/javascript" src="polyfills.js"></script><script type="text/javascript" src="styles.js"></script><script type="text/javascript" src="scripts.js"></script><script type="text/javascript" src="vendor.js"></script><script type="text/javascript" src="main.js"></script>
 <script type="text/javascript" src="/js/settingsGUI.js"></script>
 </body>
