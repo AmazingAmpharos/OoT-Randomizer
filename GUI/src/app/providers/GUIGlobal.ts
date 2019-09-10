@@ -1064,60 +1064,60 @@ export class GUIGlobal {
   async generateSeedWeb(raceSeed: boolean = false, useStaticSeed: string = "") { //Web only
 
     //Plando Logic
-    let plandoFile = this.generator_settingsMap["distribution_file"];
+    let plandoFile = null;
+    if (this.generator_settingsMap["enable_distribution_file"]) {
 
-    if (plandoFile && typeof (plandoFile) == "object" && plandoFile.name && plandoFile.name.length > 0) {
+      plandoFile = this.generator_settingsMap["distribution_file"];
 
-      if (plandoFile.name.toLowerCase().endsWith(".z64") || plandoFile.name.toLowerCase().endsWith(".n64") || plandoFile.name.toLowerCase().endsWith(".v64")) { //Not a ROM check...
-        throw { errorRomInPlando: "Your Ocarina of Time ROM doesn't belong in the plandomizer setting. If you don't know what plandomizer is, or don't plan to use it, leave that setting blank and try again." };
-      }
-      else if (!plandoFile.name.toLowerCase().endsWith(".json")) { //JSON extension test
-        throw { error: "Invalid plandomizer file extension! Plandomizer files must use the JSON file format. Note: Leave this setting blank if you don't actually want to use the plandomizer feature." };
-      }
+      if (plandoFile && typeof (plandoFile) == "object" && plandoFile.name && plandoFile.name.length > 0) {
 
-      if (raceSeed) { //No support for race seeds
-        throw { error: "Plandomizer is currently not supported for race seeds due security concerns. Please use a normal seed instead!" };
-      }
-
-      //Try to resolve the distribution file by reading it into memory
-      console.log("Read Plando JSON file: " + plandoFile.name);
-
-      let plandoFileJSON;
-
-      try {
-        plandoFileJSON = await this.readFileIntoMemoryWeb(plandoFile, false);
-      }
-      catch (ex) {
-        throw { error: "An error occurred during the loading of the plandomizer file! Please try to enter it again." };
-      }
-
-      if (!plandoFileJSON || plandoFileJSON.length < 1) {
-        throw { error: "The plandomizer file specified is not valid!" };
-      }
-
-      if (plandoFileJSON.length > 500000) { //Impose size limit to avoid server overload
-        throw { error: "The plandomizer file specified is too big! The maximum file size allowed is 500 KB." };
-      }
-
-      //Test JSON parse it
-      try {
-        let plandoFileParsed = JSON.parse(plandoFileJSON);
-
-        if (!plandoFileParsed || Object.keys(plandoFileParsed).length < 1) {
-          throw { error: "The plandomizer file specified is not valid JSON! Please verify the syntax." };
+        if (plandoFile.name.toLowerCase().endsWith(".z64") || plandoFile.name.toLowerCase().endsWith(".n64") || plandoFile.name.toLowerCase().endsWith(".v64")) { //Not a ROM check...
+          throw { error_rom_in_plando: "Your Ocarina of Time ROM doesn't belong in the plandomizer setting. This entirely optional setting is used to plan out seeds before generation by manipulating spoiler log files. If you want to generate a normal seed instead, please click YES!" };
         }
-      }
-      catch (err) {
-        console.error(err);
-        throw { error: "The plandomizer file specified is not valid JSON! Please verify the syntax. Detail: " + err.message };
-      }
 
-      plandoFile = plandoFileJSON;
-    }
-    else {
-      plandoFile = null;
-    }
+        if (raceSeed) { //No support for race seeds
+          throw { error: "Plandomizer is currently not supported for race seeds due security concerns. Please use a normal seed instead!" };
+        }
 
+        //Try to resolve the distribution file by reading it into memory
+        console.log("Read Plando JSON file: " + plandoFile.name);
+
+        let plandoFileJSON;
+
+        try {
+          plandoFileJSON = await this.readFileIntoMemoryWeb(plandoFile, false);
+        }
+        catch (ex) {
+          throw { error: "An error occurred during the loading of the plandomizer file! Please try to enter it again." };
+        }
+
+        if (!plandoFileJSON || plandoFileJSON.length < 1) {
+          throw { error: "The plandomizer file specified is not valid!" };
+        }
+
+        if (plandoFileJSON.length > 500000) { //Impose size limit to avoid server overload
+          throw { error: "The plandomizer file specified is too big! The maximum file size allowed is 500 KB." };
+        }
+
+        //Test JSON parse it
+        try {
+          let plandoFileParsed = JSON.parse(plandoFileJSON);
+
+          if (!plandoFileParsed || Object.keys(plandoFileParsed).length < 1) {
+            throw { error: "The plandomizer file specified is not valid JSON! Please verify the syntax." };
+          }
+        }
+        catch (err) {
+          console.error(err);
+          throw { error: "The plandomizer file specified is not valid JSON! Please verify the syntax. Detail: " + err.message };
+        }
+
+        plandoFile = plandoFileJSON;
+      }
+      else {
+        plandoFile = null;
+      }
+    }
 
     let settingsFile = this.createSettingsFileObject(false, false, true, true);
 
@@ -1125,9 +1125,13 @@ export class GUIGlobal {
       throw { error: "The generation was aborted due to previous errors!" };
     }
 
-    //Add distribution file back into map as string if available
+    //Add distribution file back into map as string if available, else clear it
     if (plandoFile) {
       settingsFile["distribution_file"] = plandoFile;
+    }
+    else {
+      settingsFile["enable_distribution_file"] = false;
+      settingsFile["distribution_file"] = "";
     }
 
     if (raceSeed) {
