@@ -1102,7 +1102,7 @@ setting_infos = [
         },
         gui_params     = {
             'web:disable' : {
-                True : {
+                False : {
                     'settings' : [
                         'rom','web_output_type','player_num', 
                         'web_wad_file', 'web_common_key_file', 'web_common_key_string',

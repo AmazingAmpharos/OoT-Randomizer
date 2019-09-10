@@ -56,16 +56,16 @@
           "col_span": 4,
           "row_span": [1,1,1],
           "settings": [
+            "enable_distribution_file",
+            "distribution_file",
+            "create_spoiler",
+            "web_output_type",
             "rom",
             "web_wad_file",
             "web_common_key_file",
             "web_common_key_string",
             "web_wad_channel_id",
-            "web_wad_channel_title",
-            "enable_distribution_file",           
-            "distribution_file",
-            "create_spoiler",
-            "web_output_type"
+            "web_wad_channel_title"
           ]
         },
         {
@@ -101,13 +101,13 @@
           "col_span": 4,
           "row_span": [1,1,1],
           "settings": [
+            "web_output_type",
             "rom",
             "web_wad_file",
             "web_common_key_file",
             "web_common_key_string",
             "web_wad_channel_id",
-            "web_wad_channel_title",
-            "web_output_type"
+            "web_wad_channel_title"
           ]
         },
         {

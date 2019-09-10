@@ -103,9 +103,11 @@ export class GeneratorComponent implements OnInit {
     //Set active footer tab on boot
     if (this.global.getGlobalVar('appType') == 'generator') {
       this.activeFooterTab = "Generate From Seed";
+      this.global.generator_settingsMap["generate_from_file"] = false;
     }
     else {
       this.activeFooterTab = "Generate From File";
+      this.global.generator_settingsMap["generate_from_file"] = true;
     }
 
     this.recheckAllSettings();
@@ -576,12 +578,9 @@ export class GeneratorComponent implements OnInit {
   }
 
   changeFooterTabSelection(event) {
-    this.checkFooterTabVisibility(event);
-  }
-
-  checkFooterTabVisibility(event = null) {
 
     let title = "";
+    let value = false;
 
     if (event) {
       title = event.tabTitle;
@@ -591,103 +590,19 @@ export class GeneratorComponent implements OnInit {
       title = this.activeFooterTab;
     }
 
-    if (this.global.getGlobalVar('electronAvailable')) { //Electron
-
-      if (title === "Generate From File") {
-
-        let visibilityUpdates = [];
-        visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
-        visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: false });
-        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count,distribution_file" }, value: false });
-
-        visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
-        visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
-
-        this.toggleVisibility(visibilityUpdates, false);
-      }
-      else if (title === "Generate From Seed") {
-
-        let visibilityUpdates = [];
-        visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
-        visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: true });
-        visibilityUpdates.push({ target: { controls_visibility_setting: "count,create_spoiler,world_count,distribution_file" }, value: true });
-
-        visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: true });
-        visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: true });
-
-        this.toggleVisibility(visibilityUpdates, false);
-      }
+    if (title === "Generate From File") {
+      value = true;
     }
-    else { //Web
 
-      if (this.global.getGlobalVar("appType") == "generator") {
+    this.global.generator_settingsMap['generate_from_file'] = value;
 
-        if (title === "Generate From File") {
-
-          let visibilityUpdates = [];
-          visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: false });
-          visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: false });
-          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count,distribution_file" }, value: false });
-
-          visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: true });
-          visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: this.global.generator_settingsMap['web_output_type'] == "wad" });
-
-          visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
-
-          this.toggleVisibility(visibilityUpdates, false);
-        }
-        else if (title === "Generate From Seed") {
-
-          let visibilityUpdates = [];
-          visibilityUpdates.push({ target: { controls_visibility_tab: "main-tab,detailed-tab,other-tab" }, value: true });
-          visibilityUpdates.push({ target: { controls_visibility_section: "preset-section" }, value: true });
-          visibilityUpdates.push({ target: { controls_visibility_setting: "create_spoiler,world_count,distribution_file" }, value: true });
-
-          visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: false });
-          visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: false });
-
-          visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: true });
-
-          this.toggleVisibility(visibilityUpdates, false);
-        }
-      }
-      else if (this.global.getGlobalVar("appType") == "patcher") {
-
-        if (title === "Generate From File") {
-
-          let visibilityUpdates = [];
-          visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: this.global.generator_settingsMap['repatch_cosmetics'] });
-
-          visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type,player_num" }, value: true });
-          visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: this.global.generator_settingsMap['web_output_type'] == "wad" });
-
-          this.toggleVisibility(visibilityUpdates, false);
-        }
-      }
-      else if (this.global.getGlobalVar("appType") == "patcher_only") {
-
-        if (title === "Generate From File") {
-
-          let visibilityUpdates = [];
-          visibilityUpdates.push({ target: { controls_visibility_setting: "rom,web_output_type" }, value: true });
-          visibilityUpdates.push({ target: { controls_visibility_setting: "web_wad_file,web_common_key_file,web_common_key_string,web_wad_channel_id,web_wad_channel_title" }, value: this.global.generator_settingsMap['web_output_type'] == "wad" });
-
-          this.toggleVisibility(visibilityUpdates, false);
-        }
-      }
-    }
+    let setting = this.findSettingByName("generate_from_file");
+    this.checkVisibility(value, setting, this.findOption(setting.options, value));
   }
 
   updateCosmeticsCheckboxChange(value) {
-
-    let visibilityUpdates = [];
-    visibilityUpdates.push({ target: { controls_visibility_tab: "cosmetics-tab,sfx-tab" }, value: value });
-
-    if (this.global.getGlobalVar('electronAvailable')) //Create Cosmetics Log is Electron only
-      visibilityUpdates.push({ target: { controls_visibility_setting: "create_cosmetics_log" }, value: value });
-
-    this.toggleVisibility(visibilityUpdates, false);
-    this.afterSettingChange(true);
+    let setting = this.findSettingByName("repatch_cosmetics");
+    this.checkVisibility(value, setting, this.findOption(setting.options, value));
   }
 
   calculateRowHeight(listRef: MatGridList, tab: any) {
@@ -836,7 +751,27 @@ export class GeneratorComponent implements OnInit {
     return section.row_span[spanIndex];
   }
 
-  findOption(options: any, optionName: string) {
+  findSettingByName(settingName: string) {
+
+    for (let tabIndex = 0; tabIndex < this.global.getGlobalVar('generatorSettingsArray').length; tabIndex++) {
+      let tab = this.global.getGlobalVar('generatorSettingsArray')[tabIndex];
+
+      for (let sectionIndex = 0; sectionIndex < tab.sections.length; sectionIndex++) {
+        let section = tab.sections[sectionIndex];
+
+        for (let settingIndex = 0; settingIndex < section.settings.length; settingIndex++) {
+          let setting = section.settings[settingIndex];
+
+          if (setting.name == settingName)
+            return setting;     
+        }
+      }
+    }
+
+    return false;
+  }
+
+  findOption(options: any, optionName: any) {
     return options.find(option => { return option.name == optionName });
   }
 
@@ -906,70 +841,8 @@ export class GeneratorComponent implements OnInit {
       if (disableOnly && targetValue == true)
         return;
 
-      if ("controls_visibility_tab" in targetSetting) {
-
-        //console.log(targetSetting, setting);
-
-        targetSetting["controls_visibility_tab"].split(",").forEach(tab => {
-          this.global.generator_tabsVisibilityMap[tab.replace(/-/g, "_")] = targetValue;
-
-          //Kick user out of active tab and go back to root if it gets disabled here
-          if (!targetValue && this.global.getGlobalVar("generatorSettingsObj")) {
-
-            if (this.activeTab == this.global.getGlobalVar("generatorSettingsObj")[tab.replace(/-/g, "_")].text) {
-              //console.log("Kick user out of tab");
-              this.tabSet.selectTab(this.tabSet.tabs.first);
-            }
-          }
-        });
-      }
-
-      if ("controls_visibility_section" in targetSetting) {
-
-        targetSetting["controls_visibility_section"].split(",").forEach(section => {
-
-          let targetSection = null;
-
-          //Find section
-          for (let i = 0; i < this.global.getGlobalVar('generatorSettingsArray').length; i++) {
-            let tab = this.global.getGlobalVar('generatorSettingsArray')[i];
-
-            for (let n = 0; n < tab.sections.length; n++) {
-
-              if (tab.sections[n].name === section.replace(/-/g, "_")) {
-                targetSection = tab.sections[n];
-                break;
-              }
-            }
-
-            if (targetSection)
-              break;
-          }
-
-          //Disable/Enable entire section
-          if (targetSection) {
-
-            targetSection.settings.forEach(setting => {
-
-              if (targetValue == true && this.global.generator_settingsVisibilityMap[setting.name] == false) //Only trigger change if a setting gets re-enabled
-                triggeredChange = true;
-
-              this.global.generator_settingsVisibilityMap[setting.name] = targetValue;
-            });
-          }
-        });
-      }
-
-      if ("controls_visibility_setting" in targetSetting) {
-
-        targetSetting["controls_visibility_setting"].split(",").forEach(setting => {
-
-          if (targetValue == true && this.global.generator_settingsVisibilityMap[setting] == false) //Only trigger change if a setting gets re-enabled
-            triggeredChange = true;
-
-          this.global.generator_settingsVisibilityMap[setting] = targetValue;
-        });
-      }
+      if (this.executeVisibilityForSetting(targetSetting, targetValue))
+        triggeredChange = true;
     });
 
     //Re-run function with every single setting to ensure integrity (nothing gets re-activated when it shouldn't)
@@ -978,11 +851,127 @@ export class GeneratorComponent implements OnInit {
     }
   }
 
+  executeVisibilityForSetting(targetSetting: any, targetValue: boolean) {
+
+    var triggeredChange = false;
+
+    if ("controls_visibility_tab" in targetSetting) {
+
+      //console.log(targetSetting, setting);
+
+      targetSetting["controls_visibility_tab"].split(",").forEach(tab => {
+
+        //Ignore tabs that don't exist in this specific app
+        if (!(tab in this.global.generator_tabsVisibilityMap))
+          return;
+
+        this.global.generator_tabsVisibilityMap[tab] = targetValue;
+
+        //Kick user out of active tab and go back to root if it gets disabled here
+        if (!targetValue && this.global.getGlobalVar("generatorSettingsObj")) {
+
+          if (this.activeTab == this.global.getGlobalVar("generatorSettingsObj")[tab].text) {
+            //console.log("Kick user out of tab");
+            this.tabSet.selectTab(this.tabSet.tabs.first);
+          }
+        }
+      });
+    }
+
+    if ("controls_visibility_section" in targetSetting) {
+
+      targetSetting["controls_visibility_section"].split(",").forEach(section => {
+
+        let targetSection = null;
+
+        //Find section
+        for (let i = 0; i < this.global.getGlobalVar('generatorSettingsArray').length; i++) {
+          let tab = this.global.getGlobalVar('generatorSettingsArray')[i];
+
+          for (let n = 0; n < tab.sections.length; n++) {
+
+            if (tab.sections[n].name === section) {
+              targetSection = tab.sections[n];
+              break;
+            }
+          }
+
+          if (targetSection)
+            break;
+        }
+
+        //Disable/Enable entire section
+        if (targetSection) {
+
+          targetSection.settings.forEach(setting => {
+
+            //Ignore settings that don't exist in this specific app
+            if (!(setting.name in this.global.generator_settingsVisibilityMap))
+              return;
+
+            let enabledChildren = false;
+
+            //If a setting gets disabled, re-enable all the settings that this setting caused to deactivate. The later full check will fix any potential issues
+            if (targetValue == false && this.global.generator_settingsVisibilityMap[setting.name] == true) {
+              enabledChildren = this.clearDeactivationsOfSetting(setting);
+            }
+
+            if ((targetValue == true && this.global.generator_settingsVisibilityMap[setting.name] == false) || (enabledChildren)) //Only trigger change if a (sub) setting gets re-enabled
+              triggeredChange = true;
+
+            this.global.generator_settingsVisibilityMap[setting.name] = targetValue;
+          });
+        }
+      });
+    }
+
+    if ("controls_visibility_setting" in targetSetting) {
+
+      targetSetting["controls_visibility_setting"].split(",").forEach(setting => {
+
+        //Ignore settings that don't exist in this specific app
+        if (!(setting in this.global.generator_settingsVisibilityMap))
+          return;
+
+        let enabledChildren = false;
+
+        if (targetValue == false && this.global.generator_settingsVisibilityMap[setting] == true) {
+          enabledChildren = this.clearDeactivationsOfSetting(this.findSettingByName(setting));
+        }
+
+        if ((targetValue == true && this.global.generator_settingsVisibilityMap[setting] == false) || (enabledChildren)) //Only trigger change if a (sub) setting gets re-enabled
+          triggeredChange = true;
+
+        this.global.generator_settingsVisibilityMap[setting] = targetValue;
+      });
+    }
+
+    return triggeredChange;
+  }
+
+  clearDeactivationsOfSetting(setting: any) {
+
+    let enabledChildren = false;
+
+    if (setting["type"] === "Checkbutton" || setting["type"] === "Radiobutton" || setting["type"] === "Combobox") {
+
+      //Get current option
+      let currentOption = this.findOption(setting.options, this.global.generator_settingsMap[setting.name]);
+
+      if (currentOption) {
+        if (this.executeVisibilityForSetting(currentOption, true))
+          enabledChildren = true;
+      }
+    }
+
+    return enabledChildren;
+  }
+
   recheckAllSettings(skipSetting: string = "", disableOnly: boolean = true, noValueChange: boolean = false) {
 
     this.global.getGlobalVar('generatorSettingsArray').forEach(tab => tab.sections.forEach(section => section.settings.forEach(checkSetting => {
 
-      if (skipSetting && checkSetting.name === skipSetting)
+      if (skipSetting && checkSetting.name === skipSetting || !this.global.generator_settingsVisibilityMap[checkSetting.name]) //Disabled settings can not alter visibility anymore
         return;
 
       if (checkSetting["type"] === "Checkbutton" || checkSetting["type"] === "Radiobutton" || checkSetting["type"] === "Combobox") {
@@ -1000,9 +989,6 @@ export class GeneratorComponent implements OnInit {
         }
       }
     })));
-
-    //Check bottom tabset last
-    this.checkFooterTabVisibility();  
   }
 
   revertToPriorValue(settingName: string, forceChangeDetection: boolean) {
