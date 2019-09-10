@@ -706,6 +706,21 @@ export class GUIGlobal {
     });
   }
 
+  deleteSettingsFromMapWithCondition(settingsMap: any, keyName: string, keyValue: any) {
+
+    this.getGlobalVar("generatorSettingsArray").forEach(tab => {
+
+      tab.sections.forEach(section => {
+        section.settings.forEach(setting => {
+
+          if (keyName in setting && setting[keyName] == keyValue) {
+            delete settingsMap[setting.name];
+          }
+        });
+      });
+    });
+  }
+
   createSettingsFileObject(includeFromPatchFileSettings: boolean = true, includeSeedSettingsOnly: boolean = false, sanitizeForBrowserCache: boolean = false, cancelWhenError: boolean = false) {
 
     let settingsFile: any = {};
@@ -760,6 +775,7 @@ export class GUIGlobal {
     //Delete keys the python source doesn't need
     delete settingsFile["presets"];
     delete settingsFile["open_output_dir"];
+    delete settingsFile["open_python_dir"];
     delete settingsFile["generate_from_file"];
 
     //Delete fromPatchFile keys if mode is fromSeed
@@ -775,50 +791,20 @@ export class GUIGlobal {
 
     //Delete keys not included in the seed
     if (includeSeedSettingsOnly) {
-      delete settingsFile["patch_file"];
-      delete settingsFile["repatch_cosmetics"];
-      delete settingsFile["cosmetics_only"];
-      delete settingsFile["distribution_file"];
-      delete settingsFile["checked_version"];
-      delete settingsFile["rom"];
-      delete settingsFile["output_dir"];
-      delete settingsFile["output_file"];
-      delete settingsFile["count"];
-      delete settingsFile["player_num"];
-      delete settingsFile["create_cosmetics_log"];
-      delete settingsFile["compress_rom"];
+
+      //Not mapped settings need to be deleted manually
       delete settingsFile["settings_string"];
 
-      //Delete Cosmetics keys
-      this.getGlobalVar("generatorCosmeticsArray").forEach(tab => {
-        tab.sections.forEach(section => {
-          section.settings.forEach(setting => {
-            delete settingsFile[setting.name];
-          });
-        });      
-      });
-
-      //Web only keys
-      if (!this.getGlobalVar('electronAvailable')) {
-        delete settingsFile["web_wad_file"];
-        delete settingsFile["web_common_key_file"];
-        delete settingsFile["web_common_key_string"];
-        delete settingsFile["web_wad_channel_id"];
-        delete settingsFile["web_wad_channel_title"];
-        delete settingsFile["web_output_type"];
-        delete settingsFile["web_persist_in_cache"];
-      }
+      //Delete all shared = false keys from map since they aren't included in the seed
+      this.deleteSettingsFromMapWithCondition(settingsFile, "shared", false);
     }
 
     //Delete keys the browser can't save (web only)
     if (sanitizeForBrowserCache) {
 
-      //File objects can not be saved due browser sandbox
-      delete settingsFile["rom"];
-      delete settingsFile["patch_file"];
-      delete settingsFile["distribution_file"];
-      delete settingsFile["web_wad_file"];
-      delete settingsFile["web_common_key_file"];
+      //Delete all settings of type Fileinput/Directoryinput. File objects can not be saved due browser sandbox
+      this.deleteSettingsFromMapWithCondition(settingsFile, "type", "Fileinput");
+      this.deleteSettingsFromMapWithCondition(settingsFile, "type", "Directoryinput");
     }
 
     return settingsFile;
