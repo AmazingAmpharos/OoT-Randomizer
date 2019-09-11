@@ -16,7 +16,7 @@
 ;   lui     at, 0x8010
 ;   sw      t6, 0xE500 (at)
 ;   lui     at, 0x8010
-;   addiu	t7, r0, 0x00F0
+;   addiu   t7, r0, 0x00F0
 .orga 0xB17BB4 ; In memory: 0x800A1C54
 .area 0x24, 0
     sw      ra, 0x001C (sp)
@@ -24,7 +24,7 @@
 
     ; Load first code file from ROM
     lui     a0, 0x8040
-	li		a2, PAYLOAD_END - PAYLOAD_START
+    li      a2, PAYLOAD_END - PAYLOAD_START
     jal     0x80000DF0
     lui     a1, 0x0348
 

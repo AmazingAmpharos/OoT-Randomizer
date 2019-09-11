@@ -10,9 +10,9 @@
 
 ; Prevents FW from being unset on time travel
 ; Replaces:
-;   SW	R0, 0x0E80 (V1)
+;   SW  R0, 0x0E80 (V1)
 .orga 0xAC91B4 ; In memory: 0x80053254
-	nop
+    nop
 
 ; Replaces:
 ;   jal     8006FDCC ; Give Item
@@ -830,7 +830,7 @@ skip_GS_BGS_text:
 
 ; Fix adult shooting gallery reward to be static
 .orga 0xD35F54
-    b_a		0xD35F78
+    b_a     0xD35F78
 
 
 ; Learning Serenade tied to opening chest in room
@@ -939,33 +939,20 @@ skip_GS_BGS_text:
 ;==================================================================================================
 
 .orga 0xE2B434
-	jal		rainbow_bridge
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
+.area 0x30, 0
+    jal     rainbow_bridge
+    nop
+.endarea
 
 ;==================================================================================================
 ; Gossip Stone Hints
 ;==================================================================================================
 
 .orga 0xEE7B84
+.area 0x24, 0
     jal     gossip_hints
     lw      a0, 0x002C(sp) ; global context
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
+.endarea
 
 ;==================================================================================================
 ; Potion Shop Fix
@@ -973,7 +960,7 @@ skip_GS_BGS_text:
 
 .orga 0xE2C03C
     jal     potion_shop_fix
-	addiu   v0, v0, 0xA5D0 ; displaced
+    addiu   v0, v0, 0xA5D0 ; displaced
 
 ;==================================================================================================
 ; Jabu Jabu Elevator
@@ -981,7 +968,7 @@ skip_GS_BGS_text:
 
 ;Replaces: addiu t5, r0, 0x0200
 .orga 0xD4BE6C
-	jal		jabu_elevator
+    jal     jabu_elevator
 
 ;==================================================================================================
 ; DPAD Display
@@ -990,8 +977,8 @@ skip_GS_BGS_text:
 ; Replaces lw    t6, 0x1C44(s6)
 ;          lui   t8, 0xDB06
 .orga 0xAEB67C ; In Memory: 0x8007571C
-	jal		dpad_draw
-	nop
+    jal     dpad_draw
+    nop
 
 ;==================================================================================================
 ; Correct Chest Sizes
@@ -1039,14 +1026,14 @@ skip_GS_BGS_text:
 .orga 0xED645C
     jal     bgs_fix
     nop
-	
+
 ;==================================================================================================
 ; Hot Rodder Goron without Bomb Bag
 ;==================================================================================================
 ;
-;Replaces: LW	T8, 0x00A0 (V0)
+;Replaces: LW   T8, 0x00A0 (V0)
 .orga 0xED2858
-	addi	t8, r0, 0x0008
+    addi    t8, r0, 0x0008
 
 ;==================================================================================================
 ; Warp song speedup
@@ -1172,7 +1159,7 @@ skip_GS_BGS_text:
 ; Magic Meter Colors
 ;==================================================================================================
 ;
-; Replaces: sh	r0, 0x0794 (t6)
+; Replaces: sh  r0, 0x0794 (t6)
 ;           lw  t7, 0x0000 (v0)
 ;           sh  r0, 0x0796 (t7)
 ;           lw  t7, 0x0000 (v0)
@@ -1341,7 +1328,7 @@ skip_GS_BGS_text:
 .orga 0xACCE18
     jal     lacs_condition_check
     lw      v0, 0x00A4(s0)
-    beqz_a	v1, 0x00ACCE9C
+    beqz_a  v1, 0x00ACCE9C
     nop
     nop
     nop
@@ -1432,19 +1419,19 @@ skip_GS_BGS_text:
 //reserve the thread's heap
 .org 0x800C7DDC 
 .area 0x1C
-	lui     at, hi(AUDIO_THREAD_INFO_MEM_START)
-	lw      a0, lo(AUDIO_THREAD_INFO_MEM_START)(at)
-	jal     0x800B8654
-	lw      a1, lo(AUDIO_THREAD_INFO_MEM_SIZE)(at)
-	lw      ra, 0x0014(sp)
-	jr      ra
-	addiu   sp, sp, 0x0018
+    lui     at, hi(AUDIO_THREAD_INFO_MEM_START)
+    lw      a0, lo(AUDIO_THREAD_INFO_MEM_START)(at)
+    jal     0x800B8654
+    lw      a1, lo(AUDIO_THREAD_INFO_MEM_SIZE)(at)
+    lw      ra, 0x0014(sp)
+    jr      ra
+    addiu   sp, sp, 0x0018
 .endarea
 
 //reserve more memory for fanfares and primary/secondary bgm
 .org 0x800B5528
 .area 0x18, 0
-	jal		set_0x800B5528
+    j       set_0x800B5528
 .endarea
 
 .org 0x800B5590
