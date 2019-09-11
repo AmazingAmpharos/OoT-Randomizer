@@ -82,6 +82,7 @@ player.
 * `Tokensanity: Overworld Only` 
   * Shuffles Gold Skultulla Tokens in the overworld to compliment `Dungeons Only`
 * Configurable Skulltula target for the Bridge Requirement
+* `Randomize Main Rule Settings` still allows setting the `MQ Dungeon Count`
 
 #### Bug Fixes
 * Improve stability of music related features

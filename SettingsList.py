@@ -1285,7 +1285,8 @@ setting_infos = [
         default        = False,
         disable        = {
             True : {
-                'sections' : ['open_section', 'world_section', 'shuffle_section', 'shuffle_dungeon_section'],
+                'sections' : ['open_section', 'shuffle_section', 'shuffle_dungeon_section'],
+                'settings' : ['starting_age', 'entrance_shuffle', 'bombchus_in_logic', 'one_item_per_dungeon'],
             }
         },
         shared         = True,
@@ -2193,13 +2194,7 @@ setting_infos = [
         shared         = True,
         disable        = {
             True : {'settings' : ['mq_dungeons']}
-        },        
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-            'distribution': [
-                (True, 1),
-            ],
-        }
+        },
     ),
     Scale(
         name           = 'mq_dungeons',
@@ -2221,9 +2216,6 @@ setting_infos = [
             Master Quest redesigns.
             ''',
         shared         = True,
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-        },
     ),
     Setting_Info(
         name           = 'disabled_locations', 
