@@ -1421,3 +1421,43 @@ skip_GS_BGS_text:
 ; ==================================================================================================
 .orga 0xE50888
     li      a0, 999
+
+
+; ==================================================================================================
+; Expand Audio Thread memory
+; ==================================================================================================
+
+.headersize (0x800110A0 - 0xA87000)
+
+//reserve the thread's heap
+.org 0x800C7DDC 
+.area 0x1C
+	lui     at, hi(AUDIO_THREAD_INFO_MEM_START)
+	lw      a0, lo(AUDIO_THREAD_INFO_MEM_START)(at)
+	jal     0x800B8654
+	lw      a1, lo(AUDIO_THREAD_INFO_MEM_SIZE)(at)
+	lw      ra, 0x0014(sp)
+	jr      ra
+	addiu   sp, sp, 0x0018
+.endarea
+
+//reserve more memory for fanfares and primary/secondary bgm
+.org 0x800B5528
+.area 0x18, 0
+	jal		set_0x800B5528
+.endarea
+
+.org 0x800B5590
+.area (0xE0 - 0x90), 0
+    li      a0, 0x80128A50
+    li      a1, AUDIO_THREAD_INFO
+    jal     0x80057030 //memcopy
+    li      a2, 0x18
+    li      a0, 0x80128A50
+    jal     0x800B3D18
+    nop
+    li      a0, 0x80128A5C
+    jal     0x800B3DDC
+    nop
+.endarea
+.headersize 0

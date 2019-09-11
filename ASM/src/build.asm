@@ -28,7 +28,7 @@
 .headersize (0x80400000 - 0x03480000)
 
 .org 0x80400000
-.area 0x20000
+.area 0x20000 //payload max memory
 PAYLOAD_START:
 
 .area 0x20, 0
@@ -74,6 +74,7 @@ RANDO_CONTEXT:
 .include "bean_salesman.asm"
 .include "grotto.asm"
 .include "deku_mouth_condition.asm"
+.include "audio.asm"
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:
@@ -83,6 +84,8 @@ DPAD_TEXTURE:
 
 .align 0x10
 PAYLOAD_END:
-.endarea
+.endarea //payload max memory
 
+AUDIO_THREAD_MEM_START:
+.skip AUDIO_THREAD_MEM_SIZE
 .close
