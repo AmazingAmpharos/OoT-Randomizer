@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "heart_colors.h"
+#include "hud_colors.h"
 
 extern colorRGB16_t CFG_HEART_COLOR;
 
@@ -28,4 +28,16 @@ void update_heart_colors() {
   
   (*beating_dd) = heartColor;
   (*normal_dd)  = heartColor;
+}
+
+colorRGB8_t rupee_colors[] = {
+  { 0xC8, 0xFF, 0x64 }, // Base Wallet (Green)
+  { 0x82, 0x82, 0xFF }, // Adult's Wallet (Blue)
+  { 0xFF, 0x64, 0x64 }, // Giant's Wallet (Red)
+  { 0xFF, 0x5A, 0xFF }, // Tycoon's Wallet (Purple)
+};
+
+uint32_t rupee_hud_color() {
+  colorRGB8_t current_color = rupee_colors[z64_file.wallet];
+  return (current_color.r << 24) +  (current_color.g << 16) +  (current_color.b << 8);
 }

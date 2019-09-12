@@ -45,15 +45,6 @@ class Entrance(object):
         self.access_rules = [lambda_rule]
 
 
-    # tod is passed explicitly only when we want to test for it
-    def can_reach(self, state, age=None, tod=TimeOfDay.NONE):
-        return self.access_rule(state, spot=self, age=age, tod=tod) and state.can_reach(self.parent_region, age=age, tod=tod)
-
-
-    def can_reach_simple(self, state, age=None, tod=TimeOfDay.NONE):
-        return self.access_rule(state, spot=self, age=age, tod=tod)
-
-
     def connect(self, region):
         self.connected_region = region
         region.entrances.append(self)

@@ -23,5 +23,14 @@
     <div class="blob blob-4"></div>
     <div class="blob blob-5"></div>
   </div>
+
+  <!--Disable pace after initial page load (to prevent it from ever coming up again in the same session)-->
+  <script type="text/javascript">
+      window.paceOptions = {
+        restartOnPushState: false,
+        restartOnRequestAfter: false
+      };
+  </script>
+
 </body>
 </html>

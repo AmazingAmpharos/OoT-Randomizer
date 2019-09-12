@@ -896,7 +896,8 @@ logic_tricks = {
                     From the far side of Gerudo Valley, a precise
                     Hover Boots movement and jumpslash recoil can
                     allow adult to reach the ledge with the crate
-                    PoH without needing Longshot.
+                    PoH without needing Longshot. You will take 
+                    fall damage.
                     '''},
     'Jump onto the Lost Woods Bridge as Adult with Nothing': {
         'name'    : 'logic_lost_woods_bridge',
@@ -1074,12 +1075,58 @@ setting_infos = [
             }
         }
     ),
-
+    Checkbutton(
+        name           = 'web_persist_in_cache',
+        gui_text       = 'Persist Files in Cache',
+        default        = True,
+        shared         = False,
+    ),
+    
     # Non-GUI Settings
     Checkbutton('cosmetics_only', None),
     Checkbutton('check_version', None),
     Checkbutton('output_settings', None),
-    Setting_Info('distribution_file', str, "Plandomizer File (Optional)", "Fileinput", False, {},
+    Checkbutton(
+        name           = 'generate_from_file',
+        gui_text       = 'Generate From File',
+        default        = False,
+        disable        = {
+            True : {
+                'tabs' : ['main_tab', 'detailed_tab', 'other_tab'],
+                'sections' : ['preset_section'],
+                'settings' : ['count', 'create_spoiler', 'world_count', 'enable_distribution_file', 'distribution_file'],
+            },
+            False : {
+                'settings' : ['repatch_cosmetics'],
+            },
+        },
+        gui_params     = {
+            'web:disable' : {
+                False : {
+                    'settings' : [
+                        'rom','web_output_type','player_num', 
+                        'web_wad_file', 'web_common_key_file', 'web_common_key_string',
+                        'web_wad_channel_id','web_wad_channel_title'
+                    ],
+                },          
+            }
+        },
+        shared         = False,
+    ),
+    Checkbutton(
+        name           = 'enable_distribution_file',
+        gui_text       = 'Enable Plandomizer (Optional)',
+        gui_tooltip    = '''\
+            Optional. Use a plandomizer JSON file to get 
+            total control over the item placement.
+        ''',
+        default        = False,
+        disable        = {
+            False  : {'settings' : ['distribution_file']},
+        },
+        shared         = False,
+    ),
+    Setting_Info('distribution_file', str, "Plandomizer File", "Fileinput", False, {},
         gui_tooltip = """\
             Optional. Place a plandomizer JSON file here 
             to get total control over the item placement.
@@ -1095,7 +1142,7 @@ setting_infos = [
                   "extensions": [ "*" ]
                 }
             ],
-            "web:hide_when_disabled" : True,    
+            "hide_when_disabled" : True,    
         }),
     Setting_Info('checked_version',   str, None, None, False, {}),
     Setting_Info('rom',               str, "Base ROM", "Fileinput", False, {},
@@ -1115,7 +1162,19 @@ setting_infos = [
     Setting_Info('output_dir',        str, "Output Directory", "Directoryinput", False, {}),
     Setting_Info('output_file',       str, None, None, False, {}),
     Setting_Info('seed',              str, None, None, False, {}),
-    Setting_Info('patch_file',        str, None, None, False, {}),
+    Setting_Info('patch_file',        str, "Patch File", "Fileinput", False, {},
+        gui_params = {
+            "file_types": [
+                {
+                  "name": "Patch File Archive",
+                  "extensions": [ "zpfz", "zpf" ]
+                },
+                {
+                  "name": "All Files",
+                  "extensions": [ "*" ]
+                }
+            ],
+        }),
     Setting_Info('count',             int, "Generation Count", "Numberinput", False, {}, 
         default        = 1,
         gui_params = {
@@ -1145,9 +1204,28 @@ setting_infos = [
         default        = "[New Preset]",
         gui_tooltip    = 'Select a setting preset to apply.',
     ),
-    Setting_Info('open_output_dir',   str, "Open Output Directory", "Outputdirbutton", False, {}),   
-    Setting_Info('repatch_cosmetics', bool, None, None, False, {},
-        default        = True
+    Setting_Info('open_output_dir',   str, "Open Output Directory", "Button", False, {},
+        gui_params = {
+            'function' : "openOutputDir",
+            'no_line_break' : True,
+        }
+    ), 
+    Setting_Info('open_python_dir',   str, "Open App Directory", "Button", False, {},
+        gui_params = {
+            'function' : "openPythonDir",
+        }
+    ), 
+    Checkbutton(
+        name           = 'repatch_cosmetics',
+        gui_text       = 'Update Cosmetics',
+        default        = True,
+        disable        = {
+            False : {
+                'tabs': ['cosmetics_tab','sfx_tab'],
+                'settings' : ['create_cosmetics_log'],    
+            },
+        },
+        shared         = False,
     ),
     Checkbutton(
         name           = 'create_spoiler',
@@ -1182,7 +1260,7 @@ setting_infos = [
         },
         default        = 'True',
         disable        = {
-            'None'  : {'settings' : ['player_num', 'create_cosmetics_log']},
+            'None'  : {'settings' : ['player_num', 'create_cosmetics_log', 'rom']},
             'Patch' : {'settings' : ['player_num']}
         },
         gui_tooltip = '''\
@@ -1207,7 +1285,8 @@ setting_infos = [
         default        = False,
         disable        = {
             True : {
-                'sections' : ['open_section', 'world_section', 'shuffle_section', 'shuffle_dungeon_section'],
+                'sections' : ['open_section', 'shuffle_section', 'shuffle_dungeon_section'],
+                'settings' : ['starting_age', 'entrance_shuffle', 'bombchus_in_logic', 'one_item_per_dungeon'],
             }
         },
         shared         = True,
@@ -1222,16 +1301,16 @@ setting_infos = [
             'closed':      'Closed Forest',
             },
         gui_tooltip    = '''\
-            Open Forest: Mido no longer blocks the path to the
+            'Open Forest': Mido no longer blocks the path to the
             Deku Tree, and the Kokiri boy no longer blocks the path
             out of the forest.
             
-            Closed Deku: The Kokiri boy no longer blocks the path
+            'Closed Deku': The Kokiri boy no longer blocks the path
             out of the forest, but Mido still blocks the path to the
             Deku Tree, requiring Kokiri Sword and Deku Shield to access
             the Deku Tree.
 
-            Closed Forest: The Kokiri Sword and Slingshot are always
+            'Closed Forest': The Kokiri Sword and Slingshot are always
             available somewhere in the forest. This is incompatible with
             Start as Adult and shuffling "All Indoors" and/or "Overworld"
             entrances will force this to Closed Deku if selected.
@@ -1308,7 +1387,7 @@ setting_infos = [
             'stones':	  'All Spiritual Stones',
             'medallions': 'All Medallions',
             'dungeons':   'All Dungeons',
-            'tokens':     '100 Gold Skulltula Tokens'
+            'tokens':     'Gold Skulltula Tokens'
         },
         gui_tooltip    = '''\
             'Always Open': Rainbow Bridge is always present.
@@ -1316,9 +1395,16 @@ setting_infos = [
             'All Spiritual Stones': All 3 Spiritual Stones.
             'All Medallions': All 6 Medallions.
             'All Dungeons': All Medallions and Spiritual Stones.
-            '100 Gold Skulltula Tokens': All 100 Gold Skulltula Tokens.
+            'Gold Skulltula Tokens': A configurable amount of Gold Skulltula Tokens.
         ''',
         shared         = True,
+        disable={
+            'open':       {'settings': ['bridge_tokens']},
+            'vanilla':    {'settings': ['bridge_tokens']},
+            'stones':     {'settings': ['bridge_tokens']},
+            'medallions': {'settings': ['bridge_tokens']},
+            'dungeons':   {'settings': ['bridge_tokens']},
+        },
         gui_params     = {
             'randomize_key': 'randomize_settings',
             'distribution':  [
@@ -1328,6 +1414,21 @@ setting_infos = [
                 ('medallions', 1),
                 ('dungeons',   1),
             ],
+        },
+    ),
+    Scale(
+        name           = 'bridge_tokens',
+        gui_text       = "Skulltulas Required for Bridge",
+        default        = 100,
+        min            = 1,
+        max            = 100,
+        gui_tooltip    = '''\
+            Select the amount of Gold Skulltula Tokens required to spawn the rainbow bridge.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
         },
     ),
     Combobox(
@@ -1340,21 +1441,17 @@ setting_infos = [
             'none':       'No Logic',
             },
         gui_tooltip    = '''\
-            Sets the rules the logic uses
-            to determine accessibility.
+            Sets the rules the logic uses to determine accessibility.
 
-            'Glitchless': No glitches are
-            required, but may require some
-            minor tricks.
+            'Glitchless': No glitches are required, but may require 
+            some minor tricks.
 
-            'Glitched': Movement oriented
-            glitches are likely required.
+            'Glitched': Movement oriented glitches are likely required.
             No locations excluded.
 
-            'No Logic': All locations are
-            considered available. May not
-            be beatable.
-            ''',
+            'No Logic': All locations are considered available. 
+            May not be beatable.
+        ''',
         disable        = {
             'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons']},
             'none'      : {'tabs'     : ['detailed_tab']},
@@ -1371,9 +1468,6 @@ setting_infos = [
 
             When disabled, only required items and locations
             to beat the game will be guaranteed reachable.
-
-            Even when enabled, some locations may still be able
-            to hold the keys needed to reach them.
         ''',
         default        = True,
         shared         = True
@@ -1394,8 +1488,7 @@ setting_infos = [
             Bombchu Bowling opens with Bombchus.
             Bombchus are available at Kokiri Shop
             and the Bazaar. Bombchu refills cannot
-            be bought until Bombchus have been
-            obtained.
+            be bought until Bombchus have been obtained.
         ''',
         default        = True,
         shared         = True,
@@ -1407,18 +1500,20 @@ setting_infos = [
         name           = 'one_item_per_dungeon',
         gui_text       = 'Dungeons Have One Major Item',
         gui_tooltip    = '''\
-            Dungeons have exactly one major
-            item. This naturally makes each
-            dungeon similar in value instead
-            of valued based on chest count.
+            Dungeons have exactly one major item. 
+            This naturally makes each dungeon similar in 
+            value instead of valued based on chest count.
 
-            Spirit Temple Colossus hands count
-            as part of the dungeon. Spirit
-            Temple has TWO items to match
-            vanilla distribution.
+            Spirit Temple Colossus hands count as part 
+            of the dungeon. Spirit Temple has TWO items 
+            to match vanilla distribution.
 
-            Dungeon items and GS Tokens do
-            not count as major items.
+            Keys only count as major items if they are 
+            shuffled everywhere (ie. in keysanity).
+            GS Tokens only count as major items if the 
+            bridge requirement is set to "GS Tokens".
+            Bombchus only count as major items if they
+            are considered in logic.
         ''',
         shared         = True,
         gui_params     = {
@@ -1429,9 +1524,8 @@ setting_infos = [
         name           = 'trials_random',
         gui_text       = 'Random Number of Ganon\'s Trials',
         gui_tooltip    = '''\
-                         Sets a random number of trials to
-                         enter Ganon's Tower.
-                         ''',
+            Sets a random number of trials to enter Ganon's Tower.
+        ''',
         shared         = True,
         disable        = {
             True : {'settings' : ['trials']}
@@ -1484,6 +1578,17 @@ setting_infos = [
         gui_tooltip    = '''\
             Epona can be summoned with Epona's Song
             without needing to race Ingo.
+        ''',
+        shared         = True,
+    ),
+    Checkbutton(
+        name           = 'no_first_dampe_race',
+        gui_text       = 'Skip First Dampe Race',
+        gui_tooltip    = '''\
+            Dampe will start with the second race so you can
+            finish the race in under a minute and get both rewards
+            at once. You still get the first reward from the chest
+            even if you don't complete the race in under a minute.
         ''',
         shared         = True,
     ),
@@ -1865,9 +1970,10 @@ setting_infos = [
         gui_text       = 'Tokensanity',
         default        = 'off',
         choices        = {
-            'off':      'Off',
-            'dungeons': 'Dungeons Only',
-            'all':      'All Tokens',
+            'off':       'Off',
+            'dungeons':  'Dungeons Only',
+            'overworld': 'Overworld Only',
+            'all':       'All Tokens',
             },
         gui_tooltip    = '''\
             Token reward from Gold Skulltulas are
@@ -1878,6 +1984,10 @@ setting_infos = [
             dungeons, increasing the value of
             most dungeons and making internal
             dungeon exploration more diverse.
+
+            'Overworld Only': This only shuffles
+            the GS locations that are outside
+            of dungeons.
 
             'All Tokens': Effectively adds 100
             new locations for items to appear.
@@ -2005,10 +2115,10 @@ setting_infos = [
         gui_text       = 'Ganon\'s Boss Key',
         default        = 'dungeon',
         choices        = {
-            'remove':          "Remove",
-            'dungeon':         "Dungeon Only",
+            'remove':          "Remove (Keysy)",
             'vanilla':         "Vanilla Location",
-            'keysanity':       "Anywhere",
+            'dungeon':         "Dungeon Only",
+            'keysanity':       "Anywhere (Keysanity)",
             'lacs_vanilla':    "On LACS: Vanilla",
             'lacs_medallions': "On LACS: Medallions",
             'lacs_stones':     "On LACS: Stones",
@@ -2084,13 +2194,7 @@ setting_infos = [
         shared         = True,
         disable        = {
             True : {'settings' : ['mq_dungeons']}
-        },        
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-            'distribution': [
-                (True, 1),
-            ],
-        }
+        },
     ),
     Scale(
         name           = 'mq_dungeons',
@@ -2112,9 +2216,6 @@ setting_infos = [
             Master Quest redesigns.
             ''',
         shared         = True,
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-        },
     ),
     Setting_Info(
         name           = 'disabled_locations', 
@@ -2125,9 +2226,8 @@ setting_infos = [
         choices        = [location.name for location in LocationIterator(lambda loc: loc.filter_tags is not None)],
         default        = [],
         gui_tooltip    = '''
-            Prevent locations from being required. Major
-            items can still appear there, however they
-            will never be required to beat the game.
+            Prevent locations from being required.
+            Only junk items will appear at those locations.
 
             Most dungeon locations have a MQ alternative.
             If the location does not exist because of MQ
@@ -2287,11 +2387,15 @@ setting_infos = [
             'tournament':  'Tournament',
         },
         gui_tooltip    = '''\
-            Useless: Only junk hints.
-            Balanced: Recommended hint spread.
-            Strong: More useful hints.
-            Very Strong: Many powerful hints.
-            Tournament: Fixed number of hints 
+            'Useless': Only junk hints.
+
+            'Balanced': Recommended hint spread.
+
+            'Strong': More useful hints.
+
+            'Very Strong': Many powerful hints.
+
+            'Tournament': Fixed number of hints 
             for each type, contains duplicates,
             and only useful hints.
         ''',
@@ -2330,14 +2434,18 @@ setting_infos = [
             'onslaught': 'Ice Trap Onslaught',
         },
         gui_tooltip    = '''\
-            Off: All Ice Traps are removed.
-            Normal: Only Ice Traps from the base item pool
+            'Off': All Ice Traps are removed.
+
+            'Normal': Only Ice Traps from the base item pool
             are placed.
-            Extra Ice Traps: Chance to add extra Ice Traps
+
+            'Extra Ice Traps': Chance to add extra Ice Traps
             when junk items are added to the itempool.
-            Ice Trap Mayhem: All added junk items will
+
+            'Ice Trap Mayhem': All added junk items will
             be Ice Traps.
-            Ice Trap Onslaught: All junk items will be
+
+            'Ice Trap Onslaught': All junk items will be
             replaced by Ice Traps, even those in the
             base pool.
         ''',
@@ -2457,12 +2565,10 @@ setting_infos = [
             'random': 'Random',
         },
         gui_tooltip    = '''\
-            'No Music': No background music.
-            is played.
+            'No Music': No background music is played.
 
-            'Random': Area background music is
-            randomized. Additional music can
-            be loaded from data/Music/
+            'Random': Area background music is randomized. 
+            Additional music can be loaded from data/Music/
         ''',
         gui_params  = {
             'randomize_key': 'randomize_all_sfx',
@@ -2484,13 +2590,10 @@ setting_infos = [
             'normal' : {'settings' : ['ocarina_fanfares']},
         },
         gui_tooltip    = '''\
-            'No Fanfares': No fanfares 
-            (short non-looping tracks)
-            are played.
+            'No Fanfares': No fanfares (short non-looping tracks) are played.
 
             'Random': Fanfares are randomized.
-            Additional fanfares can be loaded
-            from data/Music/
+            Additional fanfares can be loaded from data/Music/
         ''',
         gui_params  = {
             'randomize_key': 'randomize_all_sfx',
@@ -2530,7 +2633,7 @@ setting_infos = [
         name           = 'randomize_all_cosmetics',
         gui_text       = 'Randomize All Cosmetics',
         gui_tooltip    = '''\
-            Randomize all cosmetics settings
+            Randomize all cosmetics settings.
         ''',
         default        = False,
         disable    = {
@@ -2961,8 +3064,7 @@ setting_infos = [
         choices        = sfx.get_setting_choices(sfx.SoundHooks.HP_LOW),
         default        = 'default',
         gui_tooltip    = '''\
-            'Random Choice': Choose a random
-            sound from this list.
+            'Random Choice': Choose a random sound from this list.
             'Default': Beep. Beep. Beep.
         ''',
         gui_params     = {

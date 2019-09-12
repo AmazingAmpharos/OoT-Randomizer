@@ -2,9 +2,9 @@
   <nb-card [ngClass]="{webLayout: !global.getGlobalVar('electronAvailable')}" [nbSpinner]="generatorBusy" nbSpinnerStatus="danger" nbSpinnerSize="large" nbSpinnerMessage="Please wait...">
     <nb-card-body *ngIf="global.getGlobalVar('appReady')">
       <nb-tabset *ngIf="global.getGlobalVar('generatorSettingsArray') && global.getGlobalVar('generatorSettingsArray').length > 0" #refTabSet class="settingsTabset" fullWidth>
-        <nb-tab *ngFor="let tab of global.getGlobalVar('generatorSettingsArray'); index as tabIndex" [disabled]="!global.generator_tabsVisibilityMap[tab.name]" [tabTitle]="tab.text" [active]="tabIndex==0" [nbSpinner]="settingsBusy" nbSpinnerStatus="primary" nbSpinnerSize="medium" nbSpinnerMessage="">
-          <mat-grid-list [responsiveCols]="{xs: 1, sm: 2, md: 12, lg: 12, xl: 12}" gutterSize="10px" rowHeight="fit">
-            <mat-grid-tile #refEl *ngFor="let section of tab.sections; index as sectionIndex" [colspan]="getColumnWidth(refEl, tab.sections, sectionIndex, tab.sections.length, section['col_span'] ? section['col_span'] : 0)" [rowspan]="section.row_span">
+        <nb-tab *ngFor="let tab of getTabList(false); index as tabIndex" [disabled]="!global.generator_tabsVisibilityMap[tab.name]" [tabTitle]="tab.text" [active]="tabIndex==0" [nbSpinner]="settingsBusy" nbSpinnerStatus="primary" nbSpinnerSize="medium" nbSpinnerMessage="">
+          <mat-grid-list #refList [responsiveCols]="{xs: 1, sm: 2, md: 12, lg: 12, xl: 12}" gutterSize="0.5%" [rowHeight]="calculateRowHeight(refList, tab)">
+            <mat-grid-tile #refEl *ngFor="let section of tab.sections; index as sectionIndex" [colspan]="getColumnWidth(refEl, tab.sections, sectionIndex, tab.sections.length, section['col_span'] ? section['col_span'] : 0)" [rowspan]="getColumnHeight(refEl, section)">
               <mat-grid-tile-header *ngIf="section.text && section.text.length > 0">
                 <h3>{{section.text}}</h3>
               </mat-grid-tile-header>
@@ -17,7 +17,7 @@
                       <ng-container [ngSwitch]="setting.type">
                         <!--Toggle-->
                         <ng-container *ngSwitchCase="'Checkbutton'">
-                          <mat-slide-toggle [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" [(ngModel)]="global.generator_settingsMap[setting.name]" (ngModelChange)="checkVisibility($event, setting, findOption(setting.options, $event))" 
+                          <mat-slide-toggle [disabled]="!global.generator_settingsVisibilityMap[setting.name]" labelPosition="after" [(ngModel)]="global.generator_settingsMap[setting.name]" (ngModelChange)="checkVisibility($event, setting, findOption(setting.options, $event))"
                                             [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="clockwise">{{setting.text}}</mat-slide-toggle>
                         </ng-container>
                         <!--Radio-->
@@ -76,6 +76,10 @@
                           <input class="numberTextInput" [ngClass]="{numberTextInputSmall: setting.size == 'small', numberTextInputMedium: setting.size == 'medium', numberTextInputFull: setting.size == 'full'}" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" [maxlength]="setting.max ? setting.max.length : 6" fieldSize="small" (ngModelChange)="numberInputChange($event, setting)"
                                  [(ngModel)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
                         </ng-container>
+                        <!--Button-->
+                        <ng-container *ngSwitchCase="'Button'">
+                          <button class="settingButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="this[setting.function]()">{{setting.text}}</button>
+                        </ng-container>
                         <!--Exclusive to Main Tab-->
                         <ng-container *ngSwitchCase="'Fileinput'">
                           <p class="ioInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}</p>
@@ -116,9 +120,6 @@
                           <button class="presetButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="savePreset(refPresetSelect)">Save</button>
                           <button class="presetButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="deletePreset()">Remove</button>
                         </ng-container>
-                        <ng-container *ngSwitchCase="'Outputdirbutton'">
-                          <button class="outputDirButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="openOutputDir()">{{setting.text}}</button>
-                        </ng-container>
                         <!--Exclusive to Detailed Tab-->
                         <ng-container *ngSwitchCase="'SearchBox'">
                           <gui-listbox [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [source]="setting.options" [(destination)]="global.generator_settingsMap[setting.name]" (destinationChange)="afterSettingChange()"
@@ -127,7 +128,7 @@
                         </ng-container>
                       </ng-container>
                       <!--Padding-->
-                      <div *ngIf="section.settings.length > itemIndex + 1 && !setting.no_line_break" class="settingPadding" [ngClass]="{'settingCBPadding': setting.type != 'Checkbutton' && section.settings[itemIndex + 1].type == 'Checkbutton'}"></div>
+                      <div *ngIf="getNextVisibleSetting(section.settings, itemIndex + 1) && !setting.no_line_break" class="settingPadding" [ngClass]="{'settingCBPadding': setting.type != 'Checkbutton' && getNextVisibleSetting(section.settings, itemIndex + 1).type == 'Checkbutton'}"></div>
                     </ng-container>
                   </ng-template>
                 </div>

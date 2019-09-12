@@ -420,7 +420,9 @@
         "exits": {
             "Gerudo Fortress": "True",
             "Gerudo Valley Stream": "True",
-            "Gerudo Valley Crate Ledge": "logic_valley_crate_hovers and can_use(Hover_Boots)",
+            "Gerudo Valley Crate Ledge": "
+                logic_valley_crate_hovers and can_use(Hover_Boots) and
+                (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love))",
             "Gerudo Valley": "
                 is_child or can_use(Epona) or can_use(Longshot) or
                 gerudo_fortress == 'open' or 'Carpenter Rescue'",
@@ -707,7 +709,7 @@
                 or ((bridge == 'stones') and
                     Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)
                 or ((bridge == 'tokens') and
-                    (Gold_Skulltula_Token, 100))"
+                    (Gold_Skulltula_Token, bridge_tokens))"
         }
     },
     {

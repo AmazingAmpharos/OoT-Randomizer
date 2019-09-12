@@ -528,7 +528,7 @@ def create_playthrough(spoiler):
         if not collected: break
         # Gather the new entrances before collecting items.
         collection_spheres.append(collected)
-        accessed_entrances = set(filter(lambda entrance: playthrough.state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
+        accessed_entrances = set(filter(playthrough.spot_access, remaining_entrances))
         entrance_spheres.append(accessed_entrances)
         remaining_entrances -= accessed_entrances
         for location in collected:
@@ -605,7 +605,7 @@ def create_playthrough(spoiler):
             continue
         # Gather the new entrances before collecting items.
         collection_spheres.append(list(collected))
-        accessed_entrances = set(filter(lambda entrance: playthrough.state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
+        accessed_entrances = set(filter(playthrough.spot_access, remaining_entrances))
         entrance_spheres.append(accessed_entrances)
         remaining_entrances -= accessed_entrances
         for location in collected:

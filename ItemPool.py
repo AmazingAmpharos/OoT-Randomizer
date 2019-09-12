@@ -918,6 +918,12 @@ def get_pool_core(world):
                 placed_items[location] = 'Gold Skulltula Token'
             else:
                 pool.append('Gold Skulltula Token')
+    elif world.tokensanity == 'overworld':
+        for location in skulltula_locations_final:
+            if world.get_location(location).scene < 0x0A:
+                placed_items[location] = 'Gold Skulltula Token'
+            else:
+                pool.append('Gold Skulltula Token')
     else:
         pool.extend(['Gold Skulltula Token'] * 100)
 

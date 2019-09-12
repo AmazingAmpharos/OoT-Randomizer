@@ -99,11 +99,11 @@ def isRestrictedDungeonItem(dungeon, item):
     return False
 
 
-def stone_reachability(world, stone_location):
+def stone_reachability(stone_name, stone_location):
     # just name the event item after the gossip stone directly
-    MakeEventItem(stone_location, world.get_location(stone_location))
+    MakeEventItem(stone_name, stone_location)
 
-    return lambda state, **kwargs: state.has(stone_location)
+    return lambda state, **kwargs: state.has(stone_name)
 
 
 def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reachable=False):
@@ -116,12 +116,13 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
             id = IDs.pop(0)
 
             if gossipLocations[id].reachable:
-                stone_location = gossipLocations[id].location
+                stone_name = gossipLocations[id].location
+                stone_location = world.get_location(stone_name)
                 if not first or can_reach_stone(spoiler.worlds, stone_location, location):
                     if first and location:
                         # This mostly guarantees that we don't lock the player out of an item hint
                         # by establishing a (hint -> item) -> hint -> item -> (first hint) loop
-                        location.add_rule(stone_reachability(world, stone_location))
+                        location.add_rule(stone_reachability(stone_name, stone_location))
 
                     count -= 1
                     first = False
@@ -153,7 +154,7 @@ def can_reach_stone(worlds, stone_location, location):
     playthrough = Playthrough.max_explore([world.state for world in worlds])
     location.item = old_item
 
-    return (playthrough.state_list[location.world.id].can_reach(stone_location, resolution_hint='Location')
+    return (playthrough.spot_access(stone_location)
             and playthrough.state_list[location.world.id].guarantee_hint())
 
 
@@ -492,9 +493,8 @@ hint_dist_sets = {
         'woth':      (5.0, 2),
         'barren':    (3.0, 2),
         'entrance':  (4.0, 2),
-        'sometimes': (5.0, 2),
-        'random':    (0.0, 1),
-        'junk':      (0.0, 0),
+        'sometimes': (0.0, 2),
+        'random':    (0.0, 2),
     }),
 }
 
@@ -510,7 +510,7 @@ def buildGossipHints(spoiler, world):
     playthrough = Playthrough.max_explore([w.state for w in spoiler.worlds])
     for stone in gossipLocations.values():
         stone.reachable = (
-            playthrough.state_list[world.id].can_reach(stone.location, resolution_hint='Location')
+            playthrough.spot_access(world.get_location(stone.location))
             and playthrough.state_list[world.id].guarantee_hint())
 
     checkedLocations = []
@@ -559,13 +559,15 @@ def buildGossipHints(spoiler, world):
         fixed_hint_types = []
         for hint_type in hint_types:
             fixed_hint_types.extend([hint_type] * int(hint_dist[hint_type][0]))
+        fill_hint_types = ['sometimes', 'random']
+        current_fill_type = fill_hint_types.pop(0)
 
     while stoneIDs:
         if world.hint_dist == "tournament":
             if fixed_hint_types:
                 hint_type = fixed_hint_types.pop(0)
             else:
-                hint_type = 'random'
+                hint_type = current_fill_type
         else:
             try:
                 # Weight the probabilities such that hints that are over the expected proportion
@@ -591,8 +593,13 @@ def buildGossipHints(spoiler, world):
         if hint == None:
             index = hint_types.index(hint_type)
             hint_prob[index] = 0
-            if world.hint_dist == "tournament" and hint_type == 'random':
-                raise Exception('Not enough valid %s hints for tournament distribution' % hint_type)
+            if world.hint_dist == "tournament" and hint_type == current_fill_type:
+                logging.getLogger('').info('Not enough valid %s hints for tournament distribution.', hint_type)
+                if fill_hint_types:
+                    current_fill_type = fill_hint_types.pop(0)
+                    logging.getLogger('').info('Switching to %s hints to fill remaining gossip stone locations.', current_fill_type)
+                else:
+                    raise Exception('Not enough valid hints for tournament distribution.')
         else:
             gossip_text, location = hint
             place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, hint_dist[hint_type][1], location)

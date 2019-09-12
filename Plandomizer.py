@@ -20,6 +20,10 @@ from Utils import random_choices
 from JSONDump import dump_obj, CollapseList, CollapseDict, AllignedDict, SortedDict
 
 
+class InvalidFileException(Exception):
+    pass
+
+
 per_world_keys = (
     'randomized_settings',
     'starting_items',
@@ -780,8 +784,14 @@ class Distribution(object):
 
     @staticmethod
     def from_file(settings, filename):
-        with open(filename) as infile:
-            src_dict = json.load(infile)
+        if any(map(filename.endswith, ['.z64', '.n64', '.v64'])):
+            raise InvalidFileException("Your Ocarina of Time ROM doesn't belong in the plandomizer setting. If you don't know what plandomizer is, or don't plan to use it, leave that setting blank and try again.")
+
+        try:
+            with open(filename) as infile:
+                src_dict = json.load(infile)
+        except json.decoder.JSONDecodeError as e:
+            raise InvalidFileException(f"Invalid Plandomizer File. Make sure the file is a valid JSON file. Failure reason: {str(e)}") from None
         return Distribution(settings, src_dict)
 
 

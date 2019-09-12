@@ -16,6 +16,11 @@ function createApp() {
   if (app.isPackaged) {
     process.argv[0] = 'main.js';
     process.argv.unshift('node');
+
+    //Fix PATH on macOS when bundled
+    if (os.platform() == "darwin") {
+      process.env.PATH = ['/usr/local/bin', process.env.PATH].join(':');
+    }
   }
 
   //Parse command line

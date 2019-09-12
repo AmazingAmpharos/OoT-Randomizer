@@ -189,7 +189,7 @@ class Settings:
         self.numeric_seed = self.get_numeric_seed()
 
     def load_distribution(self):
-        if self.distribution_file is not None and self.distribution_file != '':
+        if self.enable_distribution_file and self.distribution_file is not None and self.distribution_file != '':
             try:
                 self.distribution = Distribution.from_file(self, self.distribution_file)
             except FileNotFoundError:
