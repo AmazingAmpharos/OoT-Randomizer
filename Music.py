@@ -163,7 +163,7 @@ def process_sequences(rom, sequences, target_sequences, ids, seq_type = 'bgm'):
     return sequences, target_sequences
 
 
-def shuffle_music(sequences, target_sequences, log):
+def shuffle_music(sequences, target_sequences, music_mapping, log):
     sequence_dict = {}
     sequence_ids = []
 
@@ -171,7 +171,7 @@ def shuffle_music(sequences, target_sequences, log):
         if sequence.cosmetic_name in sequence_dict:
             raise Exception('Sequence names should be unique. Duplicate sequence name: %s' % sequence.cosmetic_name)
         sequence_dict[sequence.cosmetic_name] = sequence
-        if sequence.cosmetic_name not in bgm_mapping.values():
+        if sequence.cosmetic_name not in music_mapping.values():
             sequence_ids.append(sequence.cosmetic_name)
 
     # Shuffle the sequences
@@ -181,8 +181,8 @@ def shuffle_music(sequences, target_sequences, log):
 
     sequences = []
     for target_sequence in target_sequences:
-        sequence = sequence_dict[sequence_ids.pop()].copy() if target_sequence.cosmetic_name not in bgm_mapping \
-            else sequence_dict[bgm_mapping[target_sequence.cosmetic_name]].copy()
+        sequence = sequence_dict[sequence_ids.pop()].copy() if target_sequence.cosmetic_name not in music_mapping \
+            else sequence_dict[music_mapping[target_sequence.cosmetic_name]].copy()
         sequences.append(sequence)
         sequence.replaces = target_sequence.replaces
         log[target_sequence.cosmetic_name] = sequence.cosmetic_name
@@ -190,7 +190,7 @@ def shuffle_music(sequences, target_sequences, log):
     return sequences, log
 
 
-def rebuild_sequences(rom, sequences, log):
+def rebuild_sequences(rom, sequences):
     # List of sequences (actual sequence data objects) containing the vanilla sequence data
     old_sequences = []
 
@@ -312,10 +312,8 @@ def rebuild_sequences(rom, sequences, log):
         if j != -1:
             rom.write_byte(base, j.instrument_set)
 
-    return log
 
-
-def shuffle_pointers_table(rom, ids, log):
+def shuffle_pointers_table(rom, ids, music_mapping, log):
     # Read in all the Music data
     bgm_data = {}
     bgm_ids = []
@@ -324,7 +322,7 @@ def shuffle_pointers_table(rom, ids, log):
         bgm_sequence = rom.read_bytes(0xB89AE0 + (bgm[1] * 0x10), 0x10)
         bgm_instrument = rom.read_int16(0xB89910 + 0xDD + (bgm[1] * 2))
         bgm_data[bgm[0]] = (bgm[0], bgm_sequence, bgm_instrument)
-        if bgm[0] not in bgm_mapping.values():
+        if bgm[0] not in music_mapping.values():
             bgm_ids.append(bgm[0])
 
     # shuffle data
@@ -332,7 +330,7 @@ def shuffle_pointers_table(rom, ids, log):
 
     # Write Music data back in random ordering
     for bgm in ids:
-        bgm_name = bgm_ids.pop() if bgm[0] not in bgm_mapping else bgm_mapping[bgm[0]]
+        bgm_name = bgm_ids.pop() if bgm[0] not in music_mapping else music_mapping[bgm[0]]
         bgm_name, bgm_sequence, bgm_instrument = bgm_data[bgm_name]
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
         rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
@@ -349,53 +347,66 @@ def randomize_music(rom, settings):
     target_sequences = []
     fanfare_sequences = []
     fanfare_target_sequences = []
+    music_mapping = bgm_mapping.copy()
 
     # Include ocarina songs in fanfare pool if checked
-    ff_ids = []
-    ff_ids.extend(fanfare_sequence_ids)
+    ff_ids = fanfare_sequence_ids.copy()
     if settings.ocarina_fanfares:
         ff_ids.extend(ocarina_sequence_ids)
 
+    # Map music to itself if music is set to normal.
+    if music_mapping:
+        normal_ids = [music_id for music_id in bgm_sequence_ids if settings.background_music == 'normal']
+        normal_ids += [music_id for music_id in ff_ids if settings.fanfares == 'normal']
+        for bgm in normal_ids:
+            if bgm[0] not in music_mapping:
+                music_mapping[bgm[0]] = bgm[0]
+
+
     # If not creating patch file, shuffle audio sequences. Otherwise, shuffle pointer table
     if settings.compress_rom != 'Patch':
-        if settings.background_music in ['random', 'random_custom_only']:
+        if settings.background_music in ['random', 'random_custom_only'] or music_mapping:
             sequences, target_sequences = process_sequences(rom, sequences, target_sequences, bgm_sequence_ids)
             if settings.background_music == 'random_custom_only':
-                sequences = [seq for seq in sequences if seq.cosmetic_name not in [x[0] for x in bgm_sequence_ids]]
-            sequences, log = shuffle_music(sequences, target_sequences, log)
+                sequences = [seq for seq in sequences if seq.cosmetic_name not in [x[0] for x in bgm_sequence_ids] or seq.cosmetic_name in music_mapping]
+            sequences, log = shuffle_music(sequences, target_sequences, music_mapping, log)
 
-        if settings.fanfares in ['random', 'random_custom_only']:
+        if settings.fanfares in ['random', 'random_custom_only'] or music_mapping:
             fanfare_sequences, fanfare_target_sequences = process_sequences(rom, fanfare_sequences, fanfare_target_sequences, ff_ids, 'fanfare')
             if settings.fanfares == 'random_custom_only':
-                fanfare_sequences = [seq for seq in fanfare_sequences if seq.cosmetic_name not in [x[0] for x in fanfare_sequence_ids]]
-            fanfare_sequences, log = shuffle_music(fanfare_sequences, fanfare_target_sequences, log)
+                fanfare_sequences = [seq for seq in fanfare_sequences if seq.cosmetic_name not in [x[0] for x in fanfare_sequence_ids] or seq.cosmetic_name in music_mapping]
+            fanfare_sequences, log = shuffle_music(fanfare_sequences, fanfare_target_sequences, music_mapping, log)
 
-        log = rebuild_sequences(rom, sequences + fanfare_sequences, log)
+        rebuild_sequences(rom, sequences + fanfare_sequences)
 
         if settings.background_music == 'off':
             disable_music(rom, bgm_sequence_ids)
         if settings.fanfares == 'off':
             disable_music(rom, ff_ids)
 
+        rebuild_sequences(rom, sequences + fanfare_sequences)
     else:
-        if settings.background_music == 'random':
-            log = shuffle_pointers_table(rom, bgm_sequence_ids, log)
-        elif settings.background_music == 'off':
-            disable_music(rom, bgm_sequence_ids)
+        if settings.background_music == 'random' or music_mapping:
+            log = shuffle_pointers_table(rom, bgm_sequence_ids, music_mapping, log)
 
-        if settings.fanfares == 'random':
-            log = shuffle_pointers_table(rom, ff_ids, log)
-        elif settings.fanfares == 'off':
-            disable_music(rom, ff_ids)
+        if settings.fanfares == 'random' or music_mapping:
+            log = shuffle_pointers_table(rom, ff_ids, music_mapping, log)
 
+    if settings.background_music == 'off':
+        log = disable_music(rom, [music_id for music_id in bgm_sequence_ids if music_id[0] not in music_mapping], log)
+    if settings.fanfares == 'off':
+        log = disable_music(rom, [music_id for music_id in ff_ids if music_id[0] not in music_mapping], log)
     return log
 
 
-def disable_music(rom, ids):
+def disable_music(rom, ids, log):
     # First track is no music
     blank_track = rom.read_bytes(0xB89AE0 + (0 * 0x10), 0x10)
     for bgm in ids:
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), blank_track)
+        log.pop(bgm[0], None)
+
+    return log
 
 
 def restore_music(rom):
