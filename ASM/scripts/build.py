@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../..'))
 
 import argparse
 import json
-import os
 import re
 from subprocess import check_call as call
 from rom_diff import create_diff
