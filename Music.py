@@ -88,6 +88,10 @@ ocarina_sequence_ids = [
     ("Song of Storms", 0x49)
 ]
 
+# Hardcoded Plando
+bgm_mapping = {
+}
+
 # Represents the information associated with a sequence, aside from the sequence data itself
 class TableEntry(object):
     def __init__(self, name, cosmetic_name, type = 0x0202, instrument_set = 0x03, replaces = -1, vanilla_id = -1):
@@ -97,6 +101,11 @@ class TableEntry(object):
         self.vanilla_id = vanilla_id
         self.type = type
         self.instrument_set = instrument_set
+
+
+    def copy(self):
+        copy = TableEntry(self.name, self.cosmetic_name, self.type, self.instrument_set, self.replaces, self.vanilla_id)
+        return copy
 
 
 # Represents actual sequence data, along with metadata for the sequence data block
@@ -137,14 +146,13 @@ def process_sequences(rom, sequences, target_sequences, ids, seq_type = 'bgm'):
                 try:
                     with open(os.path.join(dirpath, fname), 'r') as stream:
                         lines = stream.readlines()
-                    # Strip newline(s) which doesn't like to work for some reason
-                    for line in lines:
-                        line = line.rstrip()
+                    # Strip newline(s)
+                    lines = [line.rstrip() for line in lines]
                 except FileNotFoundError as ex:
                     raise FileNotFoundError('No meta file for: "' + fname + '". This should never happen')
 
                 # Create new sequence, checking third line for correct type
-                if (len(lines) > 2 and (lines[2].lower().rstrip() == seq_type.lower() or lines[2] == '')) or (len(lines) <= 2 and seq_type == 'bgm'):
+                if (len(lines) > 2 and (lines[2].lower() == seq_type.lower() or lines[2] == '')) or (len(lines) <= 2 and seq_type == 'bgm'):
                     seq = TableEntry(os.path.join(dirpath, fname.split('.')[0]), lines[0], instrument_set = int(lines[1], 16))
 
                     if seq.instrument_set < 0x00 or seq.instrument_set > 0x25:
@@ -156,17 +164,28 @@ def process_sequences(rom, sequences, target_sequences, ids, seq_type = 'bgm'):
 
 
 def shuffle_music(sequences, target_sequences, log):
+    sequence_dict = {}
+    sequence_ids = []
+
+    for sequence in sequences:
+        if sequence.cosmetic_name in sequence_dict:
+            raise Exception('Sequence names should be unique. Duplicate sequence name: %s' % sequence.cosmetic_name)
+        sequence_dict[sequence.cosmetic_name] = sequence
+        if sequence.cosmetic_name not in bgm_mapping.values():
+            sequence_ids.append(sequence.cosmetic_name)
+
     # Shuffle the sequences
     if len(sequences) < len(target_sequences):
         raise Exception("Not enough custom music/fanfares to omit base Ocarina of Time sequences.")
-    random.shuffle(sequences)
+    random.shuffle(sequence_ids)
 
-    for i in range(len(target_sequences)):
-        sequences[i].replaces = target_sequences[i].replaces
-        log[target_sequences[i].cosmetic_name] = sequences[i].cosmetic_name.rstrip()
-
-    # Set sequences to only be the assigned sequences
-    del sequences[len(target_sequences):]
+    sequences = []
+    for target_sequence in target_sequences:
+        sequence = sequence_dict[sequence_ids.pop()].copy() if target_sequence.cosmetic_name not in bgm_mapping \
+            else sequence_dict[bgm_mapping[target_sequence.cosmetic_name]].copy()
+        sequences.append(sequence)
+        sequence.replaces = target_sequence.replaces
+        log[target_sequence.cosmetic_name] = sequence.cosmetic_name
 
     return sequences, log
 
@@ -298,18 +317,23 @@ def rebuild_sequences(rom, sequences, log):
 
 def shuffle_pointers_table(rom, ids, log):
     # Read in all the Music data
-    bgm_data = []
+    bgm_data = {}
+    bgm_ids = []
+
     for bgm in ids:
         bgm_sequence = rom.read_bytes(0xB89AE0 + (bgm[1] * 0x10), 0x10)
         bgm_instrument = rom.read_int16(0xB89910 + 0xDD + (bgm[1] * 2))
-        bgm_data.append((bgm[0], bgm_sequence, bgm_instrument))
+        bgm_data[bgm[0]] = (bgm[0], bgm_sequence, bgm_instrument)
+        if bgm[0] not in bgm_mapping.values():
+            bgm_ids.append(bgm[0])
 
     # shuffle data
-    random.shuffle(bgm_data)
+    random.shuffle(bgm_ids)
 
     # Write Music data back in random ordering
     for bgm in ids:
-        bgm_name, bgm_sequence, bgm_instrument = bgm_data.pop()
+        bgm_name = bgm_ids.pop() if bgm[0] not in bgm_mapping else bgm_mapping[bgm[0]]
+        bgm_name, bgm_sequence, bgm_instrument = bgm_data[bgm_name]
         rom.write_bytes(0xB89AE0 + (bgm[1] * 0x10), bgm_sequence)
         rom.write_int16(0xB89910 + 0xDD + (bgm[1] * 2), bgm_instrument)
         log[bgm[0]] = bgm_name
