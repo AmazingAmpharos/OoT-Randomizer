@@ -26,11 +26,11 @@ AUDIO_THREAD_INFO_MEM_SIZE:
 .word AUDIO_THREAD_MEM_SIZE
 
 //used to calculate the remaining free size of the audio thread heap
-set_0x800B5528:
+get_audio_pointers:
     li      t9, @fanfare_audioseq_size
     li      t2, @fanfare_audiobank_size
     li      t5, @fanfare_unk_size
     li      t4, @bgm_audioseq_size
     li      t6, @bgm_audiobank_size
-    j       0x800B5540
+    jr      ra
     li      t8, @bgm_unk_size

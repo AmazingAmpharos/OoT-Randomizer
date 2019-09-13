@@ -1447,7 +1447,7 @@ skip_GS_BGS_text:
 
 .headersize (0x800110A0 - 0xA87000)
 
-//reserve the thread's heap
+//reserve the audio thread's heap
 .org 0x800C7DDC 
 .area 0x1C
     lui     at, hi(AUDIO_THREAD_INFO_MEM_START)
@@ -1459,10 +1459,10 @@ skip_GS_BGS_text:
     addiu   sp, sp, 0x0018
 .endarea
 
-//reserve more memory for fanfares and primary/secondary bgm
+//allocate memory for fanfares and primary/secondary bgm
 .org 0x800B5528
 .area 0x18, 0
-    j       set_0x800B5528
+    jal     get_audio_pointers
 .endarea
 
 .org 0x800B5590
@@ -1478,4 +1478,5 @@ skip_GS_BGS_text:
     jal     0x800B3DDC
     nop
 .endarea
+
 .headersize 0
