@@ -239,7 +239,7 @@ ipcMain.on('getGeneratorGUISettings', (event, arg) => {
   //Add static presets
   guiSettings.presets = {
     "[New Preset]": { isNewPreset: true },
-    "Default": { isDefaultPreset: true }
+    "Default / Beginner": { isDefaultPreset: true }
   };
 
   //Load built in presets
