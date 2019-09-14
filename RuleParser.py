@@ -320,17 +320,8 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     # providing given args and keywords, and adding in additional
     # keyword args from kwarg_defaults (age, etc.)
     def make_call(self, node, name, args, keywords):
-        func = getattr(State, name, None)
-        if not func:
+        if not hasattr(State, name):
             raise Exception('Parse Error: No such function State.%s' % name, self.current_spot.name, ast.dump(node, False))
-        # If the function accepts any kwargs, pass them in
-        params = signature(func).parameters
-        if any(p.kind == _ParameterKind.VAR_KEYWORD for p in params.values()):
-            pass_args = kwarg_defaults.keys()
-        else:
-            pass_args = kwarg_defaults.keys() & params.keys()
-        for p in pass_args:
-            keywords.append(ast.keyword(arg=p, value=ast.Name(id=p, ctx=ast.Load())))
 
         return ast.Call(
             func=ast.Attribute(
