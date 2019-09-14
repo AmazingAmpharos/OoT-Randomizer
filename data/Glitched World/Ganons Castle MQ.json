@@ -36,7 +36,7 @@
             "Forest Trial Clear": "can_use(Light_Arrows) and can_play(Song_of_Time)"
         },
         "locations": {
-            "Ganons Castle MQ Forest Trial First Chest": "has_bow",
+            "Ganons Castle MQ Forest Trial First Chest": "Bow",
             "Ganons Castle MQ Forest Trial Second Chest": "has_fire_source",
             "Ganons Castle MQ Forest Trial Freestanding Key": "Progressive_Hookshot"
         }
@@ -55,11 +55,11 @@
         "dungeon": "Ganons Castle",
         "events": {
             "Water Trial Clear": "
-                has_blue_fire and can_use(Light_Arrows) and 
+                Blue_Fire and can_use(Light_Arrows) and 
                 (Small_Key_Ganons_Castle, 3)"
         },
         "locations": {
-            "Ganons Castle MQ Water Trial Chest": "has_blue_fire",
+            "Ganons Castle MQ Water Trial Chest": "Blue_Fire",
             "Blue Fire": "has_bottle"
         }
     },
@@ -73,11 +73,11 @@
         },
         "locations": {
             "Ganons Castle MQ Shadow Trial First Chest": "
-                (has_bow and (Progressive_Hookshot or Hover_Boots)) or 
+                (Bow and (Progressive_Hookshot or Hover_Boots)) or 
                 (Hover_Boots and can_see_with_lens and 
                     (has_explosives or Progressive_Strength_Upgrade or can_use(Dins_Fire)))",
             "Ganons Castle MQ Shadow Trial Second Chest": "
-                has_bow and can_see_with_lens and 
+                Bow and can_see_with_lens and 
                 (Hover_Boots or (Progressive_Hookshot and has_fire_source))"
         }
     },
@@ -90,9 +90,9 @@
                 has_bombchus and Fire_Arrows and Mirror_Shield"
         },
         "locations": {
-            "Ganons Castle MQ Spirit Trial First Chest": "(has_bow or logic_rusted_switches) and Hammer",
+            "Ganons Castle MQ Spirit Trial First Chest": "(Bow or logic_rusted_switches) and Hammer",
             "Ganons Castle MQ Spirit Trial Second Chest": "
-                (has_bow or logic_rusted_switches) and Hammer and 
+                (Bow or logic_rusted_switches) and Hammer and 
                 has_bombchus and can_see_with_lens",
             "Ganons Castle MQ Spirit Trial Sun Front Left Chest": "
                 Hammer and has_bombchus and 

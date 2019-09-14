@@ -40,7 +40,7 @@ def load_aliases():
             args = [re.compile(r'\b%s\b' % a.strip()) for a in args.split(',')]
         else:
             rule = s
-            args = None
+            args = ()
         rule_aliases[rule] = (args, repl)
     nonaliases = escaped_items.keys() - rule_aliases.keys()
 
@@ -425,31 +425,11 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     ## Handlers for compile-time optimizations (former State functions)
 
-    def is_child(self, node):
-        return ast.Compare(
-                left=ast.Name(id='age', ctx=ast.Load()),
-                ops=[ast.Eq()],
-                comparators=[ast.Str('child')])
-
-    def is_adult(self, node):
-        return ast.Compare(
-                left=ast.Name(id='age', ctx=ast.Load()),
-                ops=[ast.Eq()],
-                comparators=[ast.Str('adult')])
-
-
-    def is_starting_age(self, node):
-        return ast.Compare(
-                left=ast.Name(id='age', ctx=ast.Load()),
-                ops=[ast.Eq()],
-                comparators=[ast.Str(self.world.starting_age)])
-
-
     def at_day(self, node):
         if self.world.ensure_tod_access:
             # tod has DAY or (tod == NONE and (ss or find a path from a provider))
             # parsing is better than constructing this expression by hand
-            return ast.parse("(tod & TimeOfDay.DAY) if tod else (state.can_play('Suns Song') or state.playthrough.can_reach(spot.parent_region, age=age, tod=TimeOfDay.DAY))", mode='eval').body
+            return ast.parse("(tod & TimeOfDay.DAY) if tod else (state.has_all_of(('Ocarina', 'Suns Song')) or state.playthrough.can_reach(spot.parent_region, age=age, tod=TimeOfDay.DAY))", mode='eval').body
         return ast.NameConstant(True)
 
     def at_dampe_time(self, node):
@@ -461,11 +441,12 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     def at_night(self, node):
         if self.current_spot.type == 'GS Token' and self.world.logic_no_night_tokens_without_suns_song:
-            return self.make_call(node, 'can_play', [ast.Str('Suns Song')], [])
+            # Using visit here to resolve 'can_play' rule
+            return self.visit(ast.parse('can_play(Suns_Song)', mode='eval').body)
         if self.world.ensure_tod_access:
             # tod has DAMPE or (tod == NONE and (ss or find a path from a provider))
             # parsing is better than constructing this expression by hand
-            return ast.parse("(tod & TimeOfDay.DAMPE) if tod else (state.can_play('Suns Song') or state.playthrough.can_reach(spot.parent_region, age=age, tod=TimeOfDay.DAMPE))", mode='eval').body
+            return ast.parse("(tod & TimeOfDay.DAMPE) if tod else (state.has_all_of(('Ocarina', 'Suns Song')) or state.playthrough.can_reach(spot.parent_region, age=age, tod=TimeOfDay.DAMPE))", mode='eval').body
         return ast.NameConstant(True)
 
 
@@ -477,3 +458,29 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         rule_ast = ast.parse(rule, mode='eval').body
         spot.access_rule = self.make_access_rule(self.visit(rule_ast))
         spot.set_rule(spot.access_rule)
+
+
+    # Retrieves a rule out of the json file for use elsewhere in seed generation/validation.
+    # Currently only works for rules that don't use at()/here() rules.
+    # For parameterized rules, returns a function that accepts the parameters, as they would
+    # appear in rules, as strings. Note this means escaping items, e.g.:
+    #   can_play = parser.get_alias('can_play')
+    #   ss = can_play('Suns_Song')  # or can_play(repr('Suns Song'))
+    def get_alias(self, rule):
+        if rule not in rule_aliases:
+            return None
+        re_args, repl = rule_aliases[rule]
+        # This will throw an exception if the alias uses the "here" rule.
+        self.current_spot = None
+        if re_args:
+            # Inexact parameterization, but eh...
+            def _alias(state, *val_args):
+                assert len(re_args) == len(val_args)
+                # straightforward string manip
+                for arg_re, arg_val in zip(re_args, args):
+                    repl = arg_re.sub(val, repl)
+                return self.make_access_rule(self.visit(ast.parse(repl, mode='eval').body))(state)
+
+            return _alias
+        else:
+            return self.make_access_rule(self.visit(ast.parse(rule, mode='eval').body))

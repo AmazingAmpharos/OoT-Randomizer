@@ -14,23 +14,23 @@
         "locations": {
             "Spirit Temple Child Left Chest": "is_adult or
                 (
-                (can_use(Boomerang) or has_slingshot or has_bombchus or can_mega) and 
-                (has_sticks or has_explosives or 
-                    ( (has_nuts or can_use(Boomerang)) and 
-                        (can_use(Kokiri_Sword) or has_slingshot) ) ))",
+                (can_use(Boomerang) or Slingshot or has_bombchus or can_mega) and 
+                (Sticks or has_explosives or 
+                    ( (Nuts or can_use(Boomerang)) and 
+                        (can_use(Kokiri_Sword) or Slingshot) ) ))",
             "Spirit Temple Child Right Chest": "(is_adult and has_fire_source) or 
                 (has_fire_source_with_torch and (here(is_adult) or
                 (
-                (can_use(Boomerang) or has_slingshot or has_bombchus or can_mega) and 
-                (has_sticks or has_explosives or 
-                    ( (has_nuts or can_use(Boomerang)) and 
-                        (can_use(Kokiri_Sword) or has_slingshot) ) ))))",
+                (can_use(Boomerang) or Slingshot or has_bombchus or can_mega) and 
+                (Sticks or has_explosives or 
+                    ( (Nuts or can_use(Boomerang)) and 
+                        (can_use(Kokiri_Sword) or Slingshot) ) ))))",
             "GS Spirit Temple Metal Fence": "is_adult or
                 (
-                (can_use(Boomerang) or has_slingshot or has_bombchus or can_mega) and 
-                (has_sticks or has_explosives or 
-                    ( (has_nuts or can_use(Boomerang)) and 
-                        (can_use(Kokiri_Sword) or has_slingshot) ) ))",
+                (can_use(Boomerang) or Slingshot or has_bombchus or can_mega) and 
+                (Sticks or has_explosives or 
+                    ( (Nuts or can_use(Boomerang)) and 
+                        (can_use(Kokiri_Sword) or Slingshot) ) ))",
             "Nut Crate": "True"
         },
         "exits": {
@@ -48,8 +48,8 @@
             "Spirit Temple Child Climb North Chest": "at('Spirit Temple Central Chamber', True)
                 or is_child or has_projectile(adult)",
             "GS Spirit Temple Bomb for Light Room": "can_use(Boomerang) or can_use(Hookshot) or
-                (can_child_damage and (can_live_dmg(0.5) or has_fairy or can_use(Nayrus_Love))) or 
-                (is_adult and (can_live_dmg(0.5) or has_fairy or can_use(Nayrus_Love)))"
+                (can_child_damage and (can_live_dmg(0.5) or Fairy or can_use(Nayrus_Love))) or 
+                (is_adult and (can_live_dmg(0.5) or Fairy or can_use(Nayrus_Love)))"
         },
         "exits": {
             "Spirit Temple Central Chamber": "has_explosives"
@@ -60,11 +60,11 @@
         "dungeon": "Spirit Temple",
         "locations": {
             "Spirit Temple Compass Chest": "can_play(Zeldas_Lullaby) and
-                (can_use(Hookshot) or can_hover) and has_projectile",
-            "Spirit Temple Early Adult Right Chest": "has_projectile", 
+                (can_use(Hookshot) or can_hover) and has_projectile(either)",
+            "Spirit Temple Early Adult Right Chest": "has_projectile(either)", 
             "Spirit Temple First Mirror Right Chest": "(Small_Key_Spirit_Temple, 2)",
             "Spirit Temple First Mirror Left Chest": "(Small_Key_Spirit_Temple, 2)",
-            "GS Spirit Temple Boulder Room": "has_projectile and
+            "GS Spirit Temple Boulder Room": "has_projectile(either) and
                 (can_play(Song_of_Time) or can_use(Hover_Boots))"
         },
         "exits": {
@@ -151,7 +151,7 @@
         "dungeon": "Spirit Temple",
         "locations": {
             "Spirit Temple Boss Key Chest": "
-                can_play(Zeldas_Lullaby) and (can_live_dmg(1.0) or (has_bow and 
+                can_play(Zeldas_Lullaby) and (can_live_dmg(1.0) or (Bow and 
                 Progressive_Hookshot))",
             "Spirit Temple Topmost Chest": "Mirror_Shield"
         },

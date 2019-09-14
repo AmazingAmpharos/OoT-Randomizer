@@ -34,7 +34,7 @@
         },
         "exits": {
             "Jabu Jabus Belly Main": "True",
-            "Jabu Jabus Belly Boss Area": "has_sticks or Kokiri_Sword"
+            "Jabu Jabus Belly Boss Area": "Sticks or Kokiri_Sword"
         }
     },
     {

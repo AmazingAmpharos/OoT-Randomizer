@@ -7,7 +7,7 @@
             "Forest Temple Chest Behind Lobby": "is_adult or Kokiri_Sword",
             "GS Forest Temple First Room": "can_use(Dins_Fire) or can_use_projectile",
             "GS Forest Temple Lobby": "can_use(Hookshot) or can_use(Boomerang)",
-            "Fairy Pot": "has_bottle and (is_adult or can_child_attack or has_nuts)"
+            "Fairy Pot": "has_bottle and (is_adult or can_child_attack or Nuts)"
         },
         "exits": {
             "Sacred Forest Meadow": "True",
@@ -26,15 +26,15 @@
                 at('Forest Temple Outside Upper Ledge', can_use(Hookshot))",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
-                is_adult or has_slingshot or has_sticks or 
+                is_adult or Slingshot or Sticks or 
                 has_explosives or Kokiri_Sword or can_use(Dins_Fire)"
         },
         "exits": {
             "Forest Temple Outdoors High Balconies": "
                 is_adult or 
                 (has_explosives or
-                 ((can_use(Boomerang) or has_nuts or Buy_Deku_Shield) and
-                  (has_sticks or Kokiri_Sword or can_use(Slingshot))))"
+                 ((can_use(Boomerang) or Nuts or Buy_Deku_Shield) and
+                  (Sticks or Kokiri_Sword or can_use(Slingshot))))"
         }
     },
     {
@@ -50,7 +50,7 @@
                 at('Forest Temple Falling Room', can_use(Bow) or can_use(Dins_Fire) or has_explosives)",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
-                is_adult or has_slingshot or has_sticks or 
+                is_adult or Slingshot or Sticks or 
                 has_explosives or Kokiri_Sword or can_use(Dins_Fire)"
         },
         "exits": {
@@ -138,7 +138,7 @@
         },
         "exits": {
             "Forest Temple Falling Room": "
-            (Small_Key_Forest_Temple, 5) and (has_bow or can_use(Dins_Fire))"
+            (Small_Key_Forest_Temple, 5) and (Bow or can_use(Dins_Fire))"
         }
     },
     {

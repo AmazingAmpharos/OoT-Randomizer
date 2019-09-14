@@ -14,7 +14,7 @@
         "locations": {
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or can_use(Boomerang)",
             "Dodongos Cavern MQ Map Chest": "True",
-            "Dodongos Cavern MQ Compass Chest": "is_adult or can_child_attack or has_nuts",
+            "Dodongos Cavern MQ Compass Chest": "is_adult or can_child_attack or Nuts",
             "Dodongos Cavern MQ Larva Room Chest": "can_use(Sticks) or has_fire_source",
             "Dodongos Cavern MQ Torch Puzzle Room Chest": "
                 can_blast_or_smash or can_use(Sticks) or can_use(Dins_Fire) or 
@@ -33,11 +33,11 @@
             "Dodongos Cavern Lower Right Side": "
                 here(can_blast_or_smash or
                       ((can_use(Sticks) or can_use(Dins_Fire)) and
-                       (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love))))",
+                       (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love))))",
             "Dodongos Cavern Bomb Bag Area": "
                 is_adult or (here(is_adult) and has_explosives) or
-                (logic_dc_mq_child_bombs and (Kokiri_Sword or has_sticks) and
-                    (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love)))",
+                (logic_dc_mq_child_bombs and (Kokiri_Sword or Sticks) and
+                    (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love)))",
             "Dodongos Cavern Boss Area": "has_explosives"
         }
     },
@@ -75,11 +75,11 @@
             "Dodongos Cavern MQ Under Grave Chest": "True",
             "Chest Above King Dodongo": "True",
             "King Dodongo Heart": "
-                (has_bombs or Progressive_Strength_Upgrade) and 
-                (is_adult or has_sticks or Kokiri_Sword)",
+                (Bombs or Progressive_Strength_Upgrade) and 
+                (is_adult or Sticks or Kokiri_Sword)",
             "King Dodongo": "
-                (has_bombs or Progressive_Strength_Upgrade) and 
-                (is_adult or has_sticks or Kokiri_Sword)",
+                (Bombs or Progressive_Strength_Upgrade) and 
+                (is_adult or Sticks or Kokiri_Sword)",
             "GS Dodongo's Cavern MQ Back Area": "True",
             "Fairy Pot": "has_bottle"
         }

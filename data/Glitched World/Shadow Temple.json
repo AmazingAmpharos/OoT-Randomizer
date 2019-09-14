@@ -36,8 +36,8 @@
         "region_name": "Shadow Temple Huge Pit",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Invisible Blades Visible Chest": "can_jumpslash or has_slingshot",
-            "Shadow Temple Invisible Blades Invisible Chest": "can_jumpslash or has_slingshot",
+            "Shadow Temple Invisible Blades Visible Chest": "can_jumpslash or Slingshot",
+            "Shadow Temple Invisible Blades Invisible Chest": "can_jumpslash or Slingshot",
             "Shadow Temple Falling Spikes Lower Chest": "True",
             "Shadow Temple Falling Spikes Upper Chest": "is_adult or can_hover",
             "Shadow Temple Falling Spikes Switch Chest": "is_adult or can_hover",
@@ -83,9 +83,9 @@
         "region_name": "Shadow Temple Beyond Boat",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Spike Walls Left Chest": "can_use(Dins_Fire) or can_live_dmg(0.5) or has_fairy or can_use(Nayrus_Love) or
+            "Shadow Temple Spike Walls Left Chest": "can_use(Dins_Fire) or can_live_dmg(0.5) or Fairy or can_use(Nayrus_Love) or
                 (can_use(Hookshot) and can_mega)",
-            "Shadow Temple Boss Key Chest": "can_use(Dins_Fire) or can_live_dmg(0.5) or has_fairy or can_use(Nayrus_Love) or
+            "Shadow Temple Boss Key Chest": "can_use(Dins_Fire) or can_live_dmg(0.5) or Fairy or can_use(Nayrus_Love) or
                 (can_use(Hookshot) and can_mega)",
             "Shadow Temple Hidden Floormaster Chest": "True",
             "GS Shadow Temple Triple Giant Pot": "True"

@@ -91,6 +91,7 @@ def item_in_locations(state, item, locations):
 # This function should also be called when a world is copied if the original world
 # had called this function because the world.copy does not copy the rules
 def set_shop_rules(world):
+    found_bombchus = world.parser.get_alias('found_bombchus')
     for location in world.get_filled_locations():
         if location.item.type == 'Shop':
             # Add wallet requirements
@@ -103,7 +104,7 @@ def set_shop_rules(world):
             if location.item.name in ['Buy Goron Tunic', 'Buy Zora Tunic']:
                 location.add_rule(lambda state, age=None, **kwargs: age == 'adult')
 
-            # Add item prerequisit checks
+            # Add item prerequisite checks
             if location.item.name in ['Buy Blue Fire',
                                       'Buy Blue Potion',
                                       'Buy Bottle Bug',
@@ -114,9 +115,9 @@ def set_shop_rules(world):
                                       'Buy Red Potion [40]',
                                       'Buy Red Potion [50]',
                                       'Buy Fairy\'s Spirit']:
-                location.add_rule(lambda state, **kwargs: state.has_bottle())
+                location.add_rule(State.has_bottle)
             if location.item.name in ['Buy Bombchu (10)', 'Buy Bombchu (20)', 'Buy Bombchu (5)']:
-                location.add_rule(lambda state, **kwargs: state.has_bombchus_item())
+                location.add_rule(found_bombchus)
 
 
 # This function should be ran once after setting up entrances and before placing items
