@@ -33,7 +33,7 @@ rule_aliases = {}
 nonaliases = set()
 
 def load_aliases():
-    j = read_json(data_path('rules.json'))
+    j = read_json(data_path('LogicHelpers.json'))
     for s, repl in j.items():
         if '(' in s:
             rule, args = s[:-1].split('(', 1)

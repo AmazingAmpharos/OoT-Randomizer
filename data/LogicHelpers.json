@@ -1,6 +1,6 @@
 {
-    # Rules here define replacement "functions" or item aliases
-    # the alias must always alphanumeric only--string items bypass the aliasing.
+    # Rules here define replacement "functions" or item aliases.
+    # The alias itself must always be alphanumeric only--string items bypass the aliasing.
     # Rules should be simple python and can invoke other aliases or even the
     # at/here metarules.
     "Hookshot": "Progressive_Hookshot",
@@ -14,6 +14,7 @@
     # to avoid infinite recursion.
     "Goron_Tunic": "'Goron Tunic' or Buy_Goron_Tunic",
     "Zora_Tunic": "'Zora Tunic' or Buy_Zora_Tunic",
+
     # Refill aliases. If we start considering Bow etc refills we can enable these aliases
     # without editing all logic files.
     # "Bow": "'Bow'",
@@ -58,7 +59,8 @@
             or (for_age == adult and (Bow or Hookshot))
             or (for_age == both and (Slingshot or Boomerang) and (Bow or Hookshot))
             or (for_age == either and (Slingshot or Boomerang or Bow or Hookshot))",
-    # can_use and helpers.
+
+    # can_use and helpers
     # The parser reduces this to smallest form based on item category.
     # Note that can_use(item) is False for any item not covered here.
     "can_use(item)": "(_is_magic_item(item) and item and Magic_Meter)
@@ -69,6 +71,7 @@
     "_is_adult_item(item)": "item == Bow or item == Hammer or item == Iron_Boots or item == Hover_Boots or item == Hookshot or item == Longshot or item == Silver_Gauntlets or item == Golden_Gauntlets or item == Goron_Tunic or item == Zora_Tunic or item == Scarecrow or item == Distant_Scarecrow",
     "_is_child_item(item)": "item == Slingshot or item == Boomerang or item == Kokiri_Sword or item == Sticks or item == Deku_Shield",
     "_is_magic_arrow(item)": "item == Fire_Arrows or item == Light_Arrows",
+
     # Biggoron's trade path
     # ER with these settings disables timers and prevents items from reverting on save warp.
     # Otherwise, to get to Biggoron requires: a trick, clearing boulders on DMT, or Darunia's Chamber
@@ -76,6 +79,7 @@
     "guarantee_hint": "(hints == 'mask' and Mask_of_Truth) or (hints == 'agony' and Stone_of_Agony) or (hints != 'mask' and hints != 'agony')",
     "has_fire_source": "can_use(Dins_Fire) or can_use(Fire_Arrows)",
     "has_fire_source_with_torch": "has_fire_source or (is_child and Sticks)",
+
     # Gerudo Fortress
     "can_finish_GerudoFortress": "(gerudo_fortress == 'normal' and (Small_Key_Gerudo_Fortress, 4) and (is_adult or Kokiri_Sword or is_glitched) and (is_adult and (Bow or Hookshot or Hover_Boots) or Gerudo_Membership_Card or logic_gerudo_kitchen or is_glitched))
             or (gerudo_fortress == 'fast' and Small_Key_Gerudo_Fortress and (is_adult or Kokiri_Sword or is_glitched))
