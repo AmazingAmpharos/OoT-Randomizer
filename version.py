@@ -1,1 +1,1 @@
-__version__ = '5.0.0 Release'
+__version__ = '5.0.0 Release - Triforce Hunt'
