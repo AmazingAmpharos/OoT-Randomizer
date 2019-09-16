@@ -91,7 +91,7 @@ def item_in_locations(state, item, locations):
 # This function should also be called when a world is copied if the original world
 # had called this function because the world.copy does not copy the rules
 def set_shop_rules(world):
-    found_bombchus = world.parser.get_alias('found_bombchus')
+    found_bombchus = world.parser.parse_rule('found_bombchus')
     for location in world.get_filled_locations():
         if location.item.type == 'Shop':
             # Add wallet requirements

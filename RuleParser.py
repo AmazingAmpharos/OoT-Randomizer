@@ -442,36 +442,13 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     # Parse entry point
+    # If spot is None, here() rules won't work.
+    def parse_rule(self, rule_string, spot=None):
+        self.current_spot = spot
+        return self.make_access_rule(self.visit(ast.parse(rule_string, mode='eval').body))
+
     def parse_spot_rule(self, spot):
         rule = spot.rule_string.split('#', 1)[0].strip()
 
-        self.current_spot = spot
-        rule_ast = ast.parse(rule, mode='eval').body
-        spot.access_rule = self.make_access_rule(self.visit(rule_ast))
+        spot.access_rule = self.parse_rule(rule, spot)
         spot.set_rule(spot.access_rule)
-
-
-    # Retrieves a rule out of the json file for use elsewhere in seed generation/validation.
-    # Currently only works for rules that don't use at()/here() rules.
-    # For parameterized rules, returns a function that accepts the parameters, as they would
-    # appear in rules, as strings. Note this means escaping items, e.g.:
-    #   can_play = parser.get_alias('can_play')
-    #   ss = can_play('Suns_Song')  # or can_play(repr('Suns Song'))
-    def get_alias(self, rule):
-        if rule not in rule_aliases:
-            return None
-        re_args, repl = rule_aliases[rule]
-        # This will throw an exception if the alias uses the "here" rule.
-        self.current_spot = None
-        if re_args:
-            # Inexact parameterization, but eh...
-            def _alias(state, *val_args):
-                assert len(re_args) == len(val_args)
-                # straightforward string manip
-                for arg_re, arg_val in zip(re_args, args):
-                    repl = arg_re.sub(val, repl)
-                return self.make_access_rule(self.visit(ast.parse(repl, mode='eval').body))(state)
-
-            return _alias
-        else:
-            return self.make_access_rule(self.visit(ast.parse(rule, mode='eval').body))

@@ -17,14 +17,6 @@ class State(object):
         self.playthrough = None
 
 
-    ## If a function is not defined here, check the aliases
-    def __getattr__(self, name):
-        rule = self.world.parser.get_alias(name)
-        if rule:
-            return partial(rule, self)
-        raise AttributeError('%r object has no attribute %r' % (self.__class__.__name__, name))
-
-
     ## Ensure that this will always have a value
     @property
     def is_glitched(self):
@@ -102,6 +94,11 @@ class State(object):
             return mult != 'ohko'
         else:
             return True
+
+
+    # Use the guarantee_hint rule defined in json.
+    def guarantee_hint(self):
+        return self.world.parser.parse_rule('guarantee_hint')(self)
 
 
     # Be careful using this function. It will not collect any
