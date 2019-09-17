@@ -1531,7 +1531,8 @@
         "locations": {
             "Diving Minigame": "is_child",
             "Zoras Domain Torch Run": "can_use(Sticks)",
-            "Deliver Ruto's Letter": "is_child and Bottle_with_Letter and not open_fountain",
+            "Deliver Ruto's Letter": "
+                is_child and Bottle_with_Letter and zora_fountain != 'open'",
             "King Zora Thawed": "'Zora Thawed'",
             "GS Zora's Domain Frozen Waterfall": "
                 is_adult and at_night and (Progressive_Hookshot or has_bow or Magic_Meter)",
@@ -1544,7 +1545,9 @@
         "exits": {
             "Zora River Behind Waterfall": "True",
             "Lake Hylia": "is_child and can_dive",
-            "Zoras Domain Behind King Zora": "open_fountain or Deliver_Letter",
+            "Zoras Domain Behind King Zora": "
+                Deliver_Letter or zora_fountain == 'open' or
+                (zora_fountain == 'adult' and is_adult)",
             "Zora Shop": "is_child or has_blue_fire",
             "Zoras Domain Storms Grotto": "can_play(Song_of_Storms)"
         }
@@ -1553,7 +1556,9 @@
         "region_name": "Zoras Domain Behind King Zora",
         "scene": "Zoras Domain",
         "exits": {
-            "Zoras Domain": "open_fountain or Deliver_Letter",
+            "Zoras Domain": "
+                Deliver_Letter or zora_fountain == 'open' or
+                (zora_fountain == 'adult' and is_adult)",
             "Zoras Fountain": "True"
         }
     },
