@@ -5,7 +5,7 @@
 "randomize_settings": false,
 "open_forest": "open",
 "open_door_of_time": false,
-"open_fountain": false,
+"zora_fountain": "closed",
 "gerudo_fortress": "fast",
 "bridge": "medallions",
 "logic_rules": "glitchless",
