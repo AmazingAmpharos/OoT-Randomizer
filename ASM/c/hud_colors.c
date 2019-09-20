@@ -1,11 +1,15 @@
 #include <stdint.h>
 #include "hud_colors.h"
 
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+
 extern colorRGB16_t CFG_HEART_COLOR;
 extern colorRGB16_t CFG_A_BUTTON_COLOR;
 extern colorRGB16_t CFG_B_BUTTON_COLOR;
 extern colorRGB16_t CFG_C_BUTTON_COLOR;
-extern colorRGB8_t CFG_START_BUTTON_COLOR;
+extern colorRGB16_t CFG_A_NOTE_COLOR;
+extern colorRGB16_t CFG_C_NOTE_COLOR;
+extern colorRGB16_t CFG_TEXT_CURSOR_COLOR;
 
 colorRGB16_t defaultHeart   = { 0xFF, 0x46, 0x32 };
 colorRGB16_t defaultDDHeart = { 0xC8, 0x00, 0x00 };
@@ -19,10 +23,27 @@ colorRGB16_t* a_button        = (colorRGB16_t*)0x801C7950;
 colorRGB16_t* b_button        = (colorRGB16_t*)0x801C767A;
 colorRGB16_t* c_button        = (colorRGB16_t*)0x801C7672;
 
-uint8_t* start_button_r          = (uint8_t*)0x80073F66;
-uint8_t* start_button_g          = (uint8_t*)0x80073F67;
-uint8_t* start_button_b          = (uint8_t*)0x80073F7A;
-uint8_t* start_button_b_required = (uint8_t*)0x80073F78;
+uint16_t* a_note_r  = (uint16_t*)0x8012BE10;
+uint16_t* a_note_g  = (uint16_t*)0x8012BE14;
+uint16_t* a_note_b  = (uint16_t*)0x8012BE12;
+
+uint16_t* c_note_r  = (uint16_t*)0x8012BE1C;
+uint16_t* c_note_g  = (uint16_t*)0x8012BE20;
+uint16_t* c_note_b  = (uint16_t*)0x8012BE1E;
+
+colorRGB16_t* a_note_glow_base       = (colorRGB16_t*)0x801131E0;
+colorRGB16_t* a_note_glow_max        = (colorRGB16_t*)0x801131E6;
+colorRGB16_t* a_note_font_glow_base  = (colorRGB16_t*)0x801131EC;
+colorRGB16_t* a_note_font_glow_max   = (colorRGB16_t*)0x801131F2;
+colorRGB16_t* c_note_glow_base       = (colorRGB16_t*)0x801131F8;
+colorRGB16_t* c_note_glow_max        = (colorRGB16_t*)0x801131FE;
+colorRGB16_t* c_note_font_glow_base  = (colorRGB16_t*)0x80113204;
+colorRGB16_t* c_note_font_glow_max   = (colorRGB16_t*)0x8011320A;
+
+colorRGB16_t* text_cursor_inner_base  = (colorRGB16_t*)0x80112F08;
+colorRGB16_t* text_cursor_inner_max   = (colorRGB16_t*)0x80112F0E;
+colorRGB16_t* text_cursor_border_base  = (colorRGB16_t*)0x80112F14;
+colorRGB16_t* text_cursor_border_max   = (colorRGB16_t*)0x80112F1A;
 
 void update_hud_colors() {
   colorRGB16_t heartColor = CFG_HEART_COLOR;
@@ -46,12 +67,39 @@ void update_hud_colors() {
   (*b_button) = CFG_B_BUTTON_COLOR;
   (*c_button) = CFG_C_BUTTON_COLOR;
 
-  (*start_button_r) = CFG_START_BUTTON_COLOR.r;
-  (*start_button_g) = CFG_START_BUTTON_COLOR.g;
-  (*start_button_b) = CFG_START_BUTTON_COLOR.b;
-  if (CFG_START_BUTTON_COLOR.b != 0) {
-    (*start_button_b_required) = 0x35;
-  }
+  (*a_note_r) = CFG_A_NOTE_COLOR.r;
+  (*a_note_g) = CFG_A_NOTE_COLOR.g;
+  (*a_note_b) = CFG_A_NOTE_COLOR.b;
+
+  (*c_note_r) = CFG_C_NOTE_COLOR.r;
+  (*c_note_g) = CFG_C_NOTE_COLOR.g;
+  (*c_note_b) = CFG_C_NOTE_COLOR.b;
+
+  (*a_note_glow_base) = CFG_A_NOTE_COLOR;
+  (*c_note_glow_base) = CFG_C_NOTE_COLOR;
+  colorRGB16_t a_note_glow_color = {
+    MIN(CFG_A_NOTE_COLOR.r + 0x32, 0xFF),
+    MIN(CFG_A_NOTE_COLOR.g + 0x32, 0xFF),
+    MIN(CFG_A_NOTE_COLOR.b + 0x32, 0xFF),
+  };
+  colorRGB16_t c_note_glow_color = {
+    MIN(CFG_C_NOTE_COLOR.r + 0x32, 0xFF),
+    MIN(CFG_C_NOTE_COLOR.g + 0x32, 0xFF),
+    MIN(CFG_C_NOTE_COLOR.b + 0x32, 0xFF),
+  };
+  (*a_note_glow_max) = a_note_glow_color;
+  (*c_note_glow_max) = c_note_glow_color;
+  (*a_note_font_glow_max) = CFG_A_NOTE_COLOR;
+  (*c_note_font_glow_max) = CFG_C_NOTE_COLOR;
+
+  (*text_cursor_inner_base) = CFG_TEXT_CURSOR_COLOR;
+  colorRGB16_t text_cursor_glow_color = {
+    MIN(CFG_TEXT_CURSOR_COLOR.r + 0x32, 0xFF),
+    MIN(CFG_TEXT_CURSOR_COLOR.g + 0x32, 0xFF),
+    MIN(CFG_TEXT_CURSOR_COLOR.b + 0x32, 0xFF),
+  };
+  (*text_cursor_inner_max) = text_cursor_glow_color;
+  (*text_cursor_border_max) = text_cursor_glow_color;
 }
 
 colorRGB8_t rupee_colors[] = {

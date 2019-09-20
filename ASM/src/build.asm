@@ -64,7 +64,7 @@ RANDO_CONTEXT:
 .include "dpad.asm"
 .include "chests.asm"
 .include "bunny_hood.asm"
-.include "magic_color.asm"
+.include "colors.asm"
 .include "debug.asm"
 .include "cow.asm"
 .include "lake_hylia.asm"
