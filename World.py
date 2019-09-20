@@ -9,6 +9,7 @@ from Rules import set_rules, set_shop_rules
 from Item import Item, ItemFactory, MakeEventItem
 from RuleParser import Rule_AST_Transformer
 from SettingsList import get_setting_info
+from HintList import getRequiredHints
 import logging
 import copy
 import io
@@ -99,6 +100,8 @@ class World(object):
         self.can_take_damage = True
 
         self.resolve_random_settings()
+
+        self.always_hints = [hint.name for hint in getRequiredHints(self)]
 
 
     def copy(self):

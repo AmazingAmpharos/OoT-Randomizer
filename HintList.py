@@ -40,10 +40,19 @@ def getHintGroup(group, world):
 
         hint = getHint(name, world.clearer_hints)
 
-        if hint.name in conditional_always and conditional_always[hint.name](world):
+        if hint.name in world.always_hints:
             hint.type = 'always'
 
         if group in hint.type and not (name in hintExclusions(world)):
+            ret.append(hint)
+    return ret
+
+
+def getRequiredHints(world):
+    ret = []
+    for name in hintTable:
+        hint = getHint(name)
+        if 'always' in hint.type or hint.name in conditional_always and conditional_always[hint.name](world):
             ret.append(hint)
     return ret
 
