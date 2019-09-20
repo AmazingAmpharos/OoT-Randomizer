@@ -130,6 +130,8 @@ class World(object):
         for randomized_item in new_world.randomized_list:
             setattr(new_world, randomized_item, getattr(self, randomized_item))
 
+        new_world.always_hints = list(new_world.always_hints)
+
         return new_world
 
 
