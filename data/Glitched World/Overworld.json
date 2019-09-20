@@ -197,10 +197,8 @@
         "hint": "Hyrule Field",
         "time_passes": true,
         "locations": {
-            "Ocarina of Time": "
-                is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
-            "Song from Ocarina of Time": "
-                is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire and guarantee_hint",
+            "Ocarina of Time": "is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire",
+            "Song from Ocarina of Time": "is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire",
             "Big Poe Kill": "can_use(Bow) and can_use(Epona) and has_bottle"
         },
         "exits": {
@@ -514,8 +512,7 @@
         "locations": {
             "10 Big Poes": "
                 is_adult and 
-                ((has_big_poe_drop and (big_poe_count <= 3 or guarantee_hint)) or 
-                    (Bottle_with_Big_Poe, big_poe_count))",
+                (Big_Poe or (Bottle_with_Big_Poe, big_poe_count))",
             "GS Castle Market Guard House": "is_child"
         }
     },
@@ -646,16 +643,11 @@
     {
         "region_name": "House of Skulltula",
         "locations": {
-            "10 Gold Skulltula Reward": "
-                (Gold_Skulltula_Token, 10)",
-            "20 Gold Skulltula Reward": "
-                (Gold_Skulltula_Token, 20)",
-            "30 Gold Skulltula Reward": "
-                (Gold_Skulltula_Token, 30) and guarantee_hint",
-            "40 Gold Skulltula Reward": "
-                (Gold_Skulltula_Token, 40) and guarantee_hint",
-            "50 Gold Skulltula Reward": "
-                (Gold_Skulltula_Token, 50) and guarantee_hint"
+            "10 Gold Skulltula Reward": "(Gold_Skulltula_Token, 10)",
+            "20 Gold Skulltula Reward": "(Gold_Skulltula_Token, 20)",
+            "30 Gold Skulltula Reward": "(Gold_Skulltula_Token, 30)",
+            "40 Gold Skulltula Reward": "(Gold_Skulltula_Token, 40)",
+            "50 Gold Skulltula Reward": "(Gold_Skulltula_Token, 50)"
         }
     },
     {
@@ -817,7 +809,7 @@
         "time_passes": true,
         "locations": {
             "Biggoron": "
-                is_adult and guarantee_hint and
+                is_adult and
                 (Claim_Check or (
                     at('Death Mountain Crater Upper', is_adult) and
                     at('Zoras Domain', is_adult) and (
@@ -1011,7 +1003,7 @@
             "Frog Ocarina Game": "
                 is_child and can_play(Zeldas_Lullaby) and can_play(Sarias_Song) and 
                 can_play(Suns_Song) and can_play(Eponas_Song) and 
-                can_play(Song_of_Time) and can_play(Song_of_Storms) and guarantee_hint",
+                can_play(Song_of_Time) and can_play(Song_of_Storms)",
             "Frogs in the Rain": "is_child and can_play(Song_of_Storms)",
             "Zora River Lower Freestanding PoH": "True",
             "Zora River Upper Freestanding PoH": "True",
@@ -1166,8 +1158,8 @@
     {
         "region_name": "Deku Theater",
         "locations": {
-            "Deku Theater Skull Mask": "is_child and 'Skull Mask' and (hint_dist != 'tournament' or guarantee_hint)",
-            "Deku Theater Mask of Truth": "is_child and 'Mask of Truth' and guarantee_hint"
+            "Deku Theater Skull Mask": "is_child and 'Skull Mask'",
+            "Deku Theater Mask of Truth": "is_child and 'Mask of Truth'"
         }
     },
     {
