@@ -631,7 +631,7 @@ patch_sets = {
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x0012,
         }
     },
-    0x1F073FC8: {
+    0x1F073FC9: {
         "patches": [
             patch_dpad,
             patch_sword_trails,
