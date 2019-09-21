@@ -99,13 +99,6 @@ def isRestrictedDungeonItem(dungeon, item):
     return False
 
 
-def stone_reachability(stone_name, stone_location):
-    # just name the event item after the gossip stone directly
-    MakeEventItem(stone_name, stone_location)
-
-    return lambda state, **kwargs: state.has(stone_name)
-
-
 def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reachable=False):
     random.shuffle(IDs)
     skipped_ids = []
@@ -120,9 +113,11 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
                 stone_location = world.get_location(stone_name)
                 if not first or can_reach_stone(spoiler.worlds, stone_location, location):
                     if first and location:
+                        # just name the event item after the gossip stone directly
+                        MakeEventItem(stone_name, stone_location)
                         # This mostly guarantees that we don't lock the player out of an item hint
                         # by establishing a (hint -> item) -> hint -> item -> (first hint) loop
-                        location.add_rule(stone_reachability(stone_name, stone_location))
+                        location.add_rule(world.parser.parse_rule(repr(stone_name)))
 
                     count -= 1
                     first = False
