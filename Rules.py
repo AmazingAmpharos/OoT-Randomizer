@@ -41,6 +41,9 @@ def set_rules(world):
         if location.type == 'GossipStone' and world.hints == 'mask':
             location.add_rule(lambda state, age=None, **kwargs: age == 'child')
 
+        if location.name in world.always_hints:
+            location.add_rule(lambda state, **kwargs: state.guarantee_hint())
+
     for location in world.disabled_locations:
         try:
             world.get_location(location).disabled = DisableType.PENDING

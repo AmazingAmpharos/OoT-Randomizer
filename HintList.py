@@ -40,15 +40,35 @@ def getHintGroup(group, world):
 
         hint = getHint(name, world.clearer_hints)
 
-        # 10 Big Poes does not require hint if 3 or less required.
-        if name == '10 Big Poes' and world.big_poe_count <= 3:
-            hint.type = ['overworld', 'sometimes']
-        if name == 'Deku Theater Skull Mask' and world.hint_dist == 'tournament':
+        if hint.name in world.always_hints:
             hint.type = 'always'
 
         if group in hint.type and not (name in hintExclusions(world)):
             ret.append(hint)
     return ret
+
+
+def getRequiredHints(world):
+    ret = []
+    for name in hintTable:
+        hint = getHint(name)
+        if 'always' in hint.type or hint.name in conditional_always and conditional_always[hint.name](world):
+            ret.append(hint)
+    return ret
+
+
+# Hints required under certain settings
+conditional_always = {
+    '10 Big Poes':               lambda world: world.big_poe_count > 3,
+    'Deku Theater Skull Mask':   lambda world: world.hint_dist == 'tournament',
+    'Song from Ocarina of Time': lambda world: world.bridge not in ('stones', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_stones', 'lacs_dungeons'),
+    'Ocarina of Time':           lambda world: world.bridge not in ('stones', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_stones', 'lacs_dungeons'),
+    'Sheik in Kakariko':         lambda world: world.bridge not in ('medallions', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_medallions', 'lacs_dungeons'),
+    'Biggoron':                  lambda world: world.logic_earliest_adult_trade != 'claim_check' or world.logic_latest_adult_trade != 'claim_check',
+    '50 Gold Skulltula Reward':  lambda world: world.bridge != 'tokens' or world.bridge_tokens < 50,
+    '40 Gold Skulltula Reward':  lambda world: world.bridge != 'tokens' or world.bridge_tokens < 40,
+    '30 Gold Skulltula Reward':  lambda world: world.bridge != 'tokens' or world.bridge_tokens < 30,
+}
 
 
 # table of hints, format is (name, hint text, clear hint text, type of hint) there are special characters that are read for certain in game commands:
@@ -163,16 +183,10 @@ hintTable = {
     'Deku Seeds (30)':                                          (["catapult ammo", "lots-o-seeds"], "Deku Seeds (30 pieces)", 'item'),
     'Gold Skulltula Token':                                     (["proof of destruction", "an arachnid chip", "spider remains", "one percent of a curse"], "a Gold Skulltula Token", 'item'),
 
-    '10 Big Poes':                                              (["#Big Poes# leads to", "#ghost hunters# will be rewarded with"], None, 'always'),
     'Deku Theater Mask of Truth':                               ("the #Mask of Truth# yields", None, 'always'),
-    '30 Gold Skulltula Reward':                                 ("slaying #30 Gold Skulltulas# reveals", None, 'always'),
-    '40 Gold Skulltula Reward':                                 ("slaying #40 Gold Skulltulas# reveals", None, 'always'),
-    '50 Gold Skulltula Reward':                                 ("slaying #50 Gold Skulltulas# reveals", None, 'always'),
-    'Ocarina of Time':                                          ("the #treasure thrown by Princess Zelda# is", None, 'always'),
-    'Song from Ocarina of Time':                                ("the #Ocarina of Time# teaches", None, 'always'),
-    'Biggoron':                                                 ("#Biggoron# crafts", None, 'always'),
     'Frog Ocarina Game':                                        (["an #amphibian feast# yields", "the #croaking choir's magnum opus# awards", "the #froggy finale# yields"], "the final reward from the #Frogs of Zora's River# is", 'always'),
 
+    'Song from Ocarina of Time':                                ("the #Ocarina of Time# teaches", None, ['song', 'sometimes']),
     'Song from Composer Grave':                                 (["in the #Composers' Grave#, ReDead guard", "the #Composer Brothers# wrote"], None, ['song', 'sometimes']),
     'Sheik Forest Song':                                        ("deep in #the forest# Sheik teaches", None, ['song', 'sometimes']),
     'Sheik at Temple':                                          ("Sheik waits at a #monument to time# to teach", None, ['song', 'sometimes']),
@@ -191,7 +205,13 @@ hintTable = {
     'Horseback Archery 1500 Points':                            ("mastery of #horseback archery# grants", "scoring 1500 in #horseback archery# grants", ['minigame', 'sometimes']),
     'Links House Cow':                                          ("the #bovine bounty of a horseback hustle# gifts", None, ['minigame', 'sometimes']),
 
-    'Deku Theater Skull Mask':                                  ("the #Skull Mask# yields", None, 'overworld'),
+    '10 Big Poes':                                              (["#Big Poes# leads to", "#ghost hunters# will be rewarded with"], None, ['overworld', 'sometimes']),
+    'Deku Theater Skull Mask':                                  ("the #Skull Mask# yields", None, ['overworld', 'sometimes']),
+    'Ocarina of Time':                                          ("the #treasure thrown by Princess Zelda# is", None, ['overworld', 'sometimes']),
+    'Biggoron':                                                 ("#Biggoron# crafts", None, ['overworld', 'sometimes']),
+    '50 Gold Skulltula Reward':                                 ("slaying #50 Gold Skulltulas# reveals", None, ['overworld', 'sometimes']),
+    '40 Gold Skulltula Reward':                                 ("slaying #40 Gold Skulltulas# reveals", None, ['overworld', 'sometimes']),
+    '30 Gold Skulltula Reward':                                 ("slaying #30 Gold Skulltulas# reveals", None, ['overworld', 'sometimes']),
     '20 Gold Skulltula Reward':                                 ("slaying #20 Gold Skulltulas# reveals", None, ['overworld', 'sometimes']),
     'Anjus Chickens':                                           ("#collecting cuccos# rewards", None, 'sometimes'),
     'Darunias Joy':                                             ("#Darunia's dance# leads to", None, ['overworld', 'sometimes']),

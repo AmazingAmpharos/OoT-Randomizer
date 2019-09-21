@@ -857,7 +857,7 @@ export class GUIGlobal {
         });
       }
       else { //Web
-        let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/settings/parse?version=" + (self.getGlobalVar("webIsMasterVersion") ? "" : "dev_") + self.getGlobalVar("webSourceVersion").replace(/ /g, "_");
+        let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/settings/parse?version=" + self.getGlobalVar("webSourceVersion");
         console.log("Request string from:", url);
 
         self.http.post(url, JSON.stringify(self.createSettingsFileObject(false, true, true)), { responseType: "text", headers: { "Content-Type": "application/json" } }).toPromise().then(res => {
@@ -903,7 +903,7 @@ export class GUIGlobal {
         });
       }
       else { //Web
-        let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/settings/get?version=" + (self.getGlobalVar("webIsMasterVersion") ? "" : "dev_") + self.getGlobalVar("webSourceVersion").replace(/ /g, "_") + "&settingsString=" + settingsString;
+        let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/settings/get?version=" + self.getGlobalVar("webSourceVersion") + "&settingsString=" + settingsString;
         console.log("Request settings from:", url);
 
         self.http.get(url, { responseType: "json" }).toPromise().then(res => {
@@ -1155,7 +1155,7 @@ export class GUIGlobal {
     console.log("Race Seed:", raceSeed);
 
     //Request Seed Generation
-    let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/create?version=" + (this.getGlobalVar("webIsMasterVersion") ? "" : "dev_") + this.getGlobalVar("webSourceVersion").replace(/ /g, "_");
+    let url = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/create?version=" + this.getGlobalVar("webSourceVersion");
     console.log("Request seed id from:", url);
 
     try {

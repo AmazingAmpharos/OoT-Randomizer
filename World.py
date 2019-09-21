@@ -9,6 +9,7 @@ from Rules import set_rules, set_shop_rules
 from Item import Item, ItemFactory, MakeEventItem
 from RuleParser import Rule_AST_Transformer
 from SettingsList import get_setting_info
+from HintList import getRequiredHints
 import logging
 import copy
 import io
@@ -100,6 +101,8 @@ class World(object):
 
         self.resolve_random_settings()
 
+        self.always_hints = [hint.name for hint in getRequiredHints(self)]
+
 
     def copy(self):
         new_world = World(self.id, self.settings)
@@ -126,6 +129,8 @@ class World(object):
         new_world.randomized_list = list(self.randomized_list)
         for randomized_item in new_world.randomized_list:
             setattr(new_world, randomized_item, getattr(self, randomized_item))
+
+        new_world.always_hints = list(self.always_hints)
 
         return new_world
 

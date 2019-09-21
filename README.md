@@ -83,6 +83,9 @@ player.
   * Shuffles Gold Skultulla Tokens in the overworld to compliment `Dungeons Only`
 * Configurable Skulltula target for the Bridge Requirement
 * `Randomize Main Rule Settings` still allows setting the `MQ Dungeon Count`
+* `Always Guaranteed Hints` are now determined conditionally based on settings
+* `Default Presets` are updated to better reflect first time beginner settings
+  * The previous `Beginner Preset` is renamed to `Easy Preset`
 
 #### Bug Fixes
 * Improve stability of music related features
