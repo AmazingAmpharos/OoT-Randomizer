@@ -609,10 +609,10 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             if not no_items_time_travel_playthrough.can_reach(world.get_region('Castle Town Rupee Room'), age='adult'):
                 raise EntranceShuffleError('Big Poe Shop access is not guaranteed as adult')
 
-        if world.shuffle_cows:
-            impas_front_entrance = get_entrance_replacing(world.get_region('Impas House'), 'Kakariko Village -> Impas House')
-            impas_back_entrance = get_entrance_replacing(world.get_region('Impas House Back'), 'Kakariko Impa Ledge -> Impas House Back')
-            check_same_hint_region(impas_front_entrance, impas_back_entrance)
+            if world.shuffle_cows:
+                impas_front_entrance = get_entrance_replacing(world.get_region('Impas House'), 'Kakariko Village -> Impas House')
+                impas_back_entrance = get_entrance_replacing(world.get_region('Impas House Back'), 'Kakariko Impa Ledge -> Impas House Back')
+                check_same_hint_region(impas_front_entrance, impas_back_entrance)
 
     return
 
