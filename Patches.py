@@ -47,27 +47,16 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         keatonBytes = bytearray([a ^ b for a, b in zip(keatonBytesDiff, originalBytes)])
         rom.write_bytes(writeAddress, keatonBytes)
 
-    # Load triforce model into a file
-    triforce_obj_file = File({
-            'Name':'shop1_room_1',
-            'Start':'0',
-            'End':'0',
-        })
-
+    # Load Triforce model into a file
+    triforce_obj_file = File({ 'Name': 'object_gi_triforce' })
     triforce_obj_file.copy(rom)
-
     with open(data_path('triforce.bin'), 'rb') as stream:
         obj_data = stream.read()
         rom.write_bytes(triforce_obj_file.start, obj_data)
-
-    triforce_obj_file.end = triforce_obj_file.start + len(obj_data)
-
+        triforce_obj_file.end = triforce_obj_file.start + len(obj_data)
     update_dmadata(rom, triforce_obj_file)
-
-    #Add to extended object table
-    sym = rom.sym('EXTENDED_OBJECT_TABLE')
-    rom.write_int32(sym, triforce_obj_file.start)
-    rom.write_int32(sym + 4, triforce_obj_file.end)
+    # Add it to the extended object table
+    add_to_extended_object_table(rom, 0x193, triforce_obj_file)
 
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)
@@ -1693,6 +1682,13 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_save_table(rom)
 
     return rom
+
+
+NUM_VANILLA_OBJECTS = 0x192
+def add_to_extended_object_table(rom, object_id, object_file):
+    extended_id = object_id - NUM_VANILLA_OBJECTS - 1
+    extended_object_table = rom.sym('EXTENDED_OBJECT_TABLE')
+    rom.write_int32s(extended_object_table + extended_id * 8, [object_file.start, object_file.end])
 
 
 item_row_struct = struct.Struct('>BBHHBBIIhh') # Match item_row_t in item_table.h
