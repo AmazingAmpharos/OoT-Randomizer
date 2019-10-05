@@ -46,7 +46,6 @@ class Region(object):
         new_region = Region(self.name, self.type)
         new_region.world = new_world
         new_region.price = self.price
-        new_region.can_reach = self.can_reach
         new_region.hint = self.hint
         new_region.time_passes = self.time_passes
         new_region.provides_time = self.provides_time
@@ -58,15 +57,6 @@ class Region(object):
         new_region.exits = [exit.copy(new_region) for exit in self.exits]
 
         return new_region
-
-
-    # tod is passed explicitly only when we want to test it
-    def can_reach(self, state, age=None, tod=TimeOfDay.NONE):
-        for entrance in self.entrances:
-            if entrance.can_reach(state, age=age, tod=tod):
-                return True
-
-        return False
 
 
     def can_fill(self, item, manual=False):

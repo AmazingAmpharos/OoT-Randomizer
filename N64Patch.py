@@ -89,8 +89,6 @@ def write_block_section(start, key_skip, in_data, patch_data, is_continue):
 # too important, but I tried to choose from a section that didn't really
 # have big gaps of 0s which we want to avoid.
 def create_patch_file(rom, file, xor_range=(0x00B8AD30, 0x00F029A0)):
-    # get rom header info
-    rom.update_crc()
     dma_start, dma_end = rom.get_dma_table_range()
 
     # add header
@@ -100,7 +98,7 @@ def create_patch_file(rom, file, xor_range=(0x00B8AD30, 0x00F029A0)):
     patch_data.append_int32(xor_range[0])
     patch_data.append_int32(xor_range[1])
 
-    # get random xor key. This range is chosed because it generally
+    # get random xor key. This range is chosen because it generally
     # doesn't have many sections of 0s
     xor_address = random.Random().randint(*xor_range)
     patch_data.append_int32(xor_address)

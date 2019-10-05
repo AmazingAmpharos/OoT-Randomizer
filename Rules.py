@@ -11,9 +11,6 @@ def set_rules(world):
     # ganon can only carry triforce
     world.get_location('Ganon').item_rule = lambda location, item: item.name == 'Triforce'
 
-    # the root of the world graph is always considered reachable because the player can save&quit
-    world.get_region('Root').can_reach = lambda state, **kwargs: True
-
     for location in world.get_locations():
         if not world.shuffle_song_items:
             if location.type == 'Song':
@@ -43,6 +40,9 @@ def set_rules(world):
 
         if location.type == 'GossipStone' and world.hints == 'mask':
             location.add_rule(lambda state, age=None, **kwargs: age == 'child')
+
+        if location.name in world.always_hints:
+            location.add_rule(lambda state, **kwargs: state.guarantee_hint())
 
     for location in world.disabled_locations:
         try:

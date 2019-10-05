@@ -470,7 +470,7 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
 
     for entrance in entrances_to_split:
         # Here, we find entrances that may be unreachable under certain conditions
-        if not max_playthrough.state_list[entrance.world.id].as_both(entrance, tod=TimeOfDay.ALL):
+        if not max_playthrough.spot_access(entrance, age='both', tod=TimeOfDay.ALL):
             restrictive_entrances.append(entrance)
             continue
         # If an entrance is reachable as both ages and all times of day with all the other entrances disconnected,
@@ -550,32 +550,33 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
         for world in worlds:
             # Links House entrance should be reachable as child at some point in the seed
             links_house_entrance = get_entrance_replacing(world.get_region('Links House'), 'Kokiri Forest -> Links House')
-            if not max_playthrough.state_list[world.id].as_age(links_house_entrance, age='child'):
+            if not max_playthrough.spot_access(links_house_entrance, age='child'):
                 raise EntranceShuffleError('Links House Entrance is never reachable as child')
 
             # Temple of Time entrance should be reachable as both ages at some point in the seed
             temple_of_time_entrance = get_entrance_replacing(world.get_region('Temple of Time'), 'Temple of Time Exterior -> Temple of Time')
-            if not max_playthrough.state_list[world.id].as_both(temple_of_time_entrance):
+            if not max_playthrough.spot_access(temple_of_time_entrance, age='both'):
                 raise EntranceShuffleError('Temple of Time Entrance is never reachable as both ages')
 
             # Windmill door entrance should be reachable as both ages at some point in the seed
             windmill_door_entrance = get_entrance_replacing(world.get_region('Windmill'), 'Kakariko Village -> Windmill')
-            if not max_playthrough.state_list[world.id].as_both(windmill_door_entrance):
+            if not max_playthrough.spot_access(windmill_door_entrance, age='both'):
                 raise EntranceShuffleError('Windmill Door Entrance is never reachable as both ages')
 
             # Potion Shop front door should be reachable as both ages at some point in the seed
             potion_front_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Front'), 'Kakariko Village -> Kakariko Potion Shop Front')
-            if not max_playthrough.state_list[world.id].as_both(potion_front_entrance):
+            if not max_playthrough.spot_access(potion_front_entrance, age='both'):
                 raise EntranceShuffleError('Adult Potion Front Entrance is never reachable as both ages')
 
             # Potion Shop back door should be reachable as adult at some point in the seed
             potion_back_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Back'), 'Kakariko Village Backyard -> Kakariko Potion Shop Back')
-            if not max_playthrough.state_list[world.id].as_age(potion_back_entrance, age='adult'):
+            if not max_playthrough.spot_access(potion_back_entrance, age='adult'):
                 raise EntranceShuffleError('Adult Potion Back Entrance is never reachable as Adult')
 
             check_same_hint_region(potion_front_entrance, potion_back_entrance)
 
         # At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
+        # Note this creates an empty State rather than reuse world.state (which already has starting items).
         no_items_playthrough = Playthrough([State(world) for world in worlds])
 
         valid_starting_regions = ['Kokiri Forest', 'Kakariko Village']
@@ -583,26 +584,17 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
             if not any(region for region in valid_starting_regions if no_items_playthrough.can_reach(world.get_region(region))):
                 raise EntranceShuffleError('Invalid starting area')
 
-        # For now, we consider that time of day must always be reachable as both ages without having collected any items (except in closed forest)
-        # In ER, Time of day logic normally considers that the player always has access to time passing from the root so this is important to ensure
-        # This also means that, in order to test for this, we have to temporarily remove that assumption about root access to time passing
-        for world in worlds:
-            world.get_region('Root').can_reach = lambda state, tod=TimeOfDay.NONE, **kwargs: tod == TimeOfDay.NONE
-        no_time_passing_playthrough = Playthrough.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
-        for world in worlds:
-            world.get_region('Root').can_reach = lambda state, **kwargs: True
+        # Check that a region where time passes is always reachable as both ages without having collected any items (except in closed forest)
+        time_travel_playthrough = Playthrough.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
 
         for world in worlds:
-            if not (any(region for region in no_time_passing_playthrough.reachable_regions('child') if region.time_passes and region.world == world) and
-                    any(region for region in no_time_passing_playthrough.reachable_regions('adult') if region.time_passes and region.world == world)):
+            if not (any(region for region in time_travel_playthrough.reachable_regions('child') if region.time_passes and region.world == world) and
+                    any(region for region in time_travel_playthrough.reachable_regions('adult') if region.time_passes and region.world == world)):
                 raise EntranceShuffleError('Time passing is not guaranteed as both ages')
 
         # When starting as adult, child Link should be able to reach ToT without having collected any items
         # This is important to ensure that the player never loses access to the pedestal after going child
         if any(world.starting_age == 'adult' for world in worlds):
-            # We can reuse the playthrough previously generated as this situation is the same except we have root time passing access now
-            time_travel_playthrough = no_time_passing_playthrough.copy()
-
             for world in worlds:
                 if world.starting_age == 'adult' and not time_travel_playthrough.can_reach(world.get_region('Temple of Time'), age='child'):
                     raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')

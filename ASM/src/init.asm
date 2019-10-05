@@ -11,6 +11,7 @@ init:
     addiu   t6, r0, 0x0140
     lui     at, 0x8010
     sw      t6, 0xE500 (at)
+    addiu   t7, r0, 0x00F0
 
     lw      ra, 0x10 (sp)
     jr      ra

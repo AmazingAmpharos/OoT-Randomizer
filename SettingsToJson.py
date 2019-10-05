@@ -1,12 +1,13 @@
-from SettingsList import setting_infos, setting_map, get_setting_info
+from SettingsList import setting_infos, setting_map, get_setting_info, get_settings_from_section, get_settings_from_tab
 from Utils import data_path
 import sys
 import json
+import copy
 
 
-tab_keys     = ['text', 'app_type']
+tab_keys     = ['text', 'app_type', 'footer']
 section_keys = ['text', 'is_colors', 'is_sfx', 'col_span', 'row_span', 'subheader']
-setting_keys = ['hide_when_disabled', 'min', 'max', 'size', 'max_length', 'file_types', 'no_line_break']
+setting_keys = ['hide_when_disabled', 'min', 'max', 'size', 'max_length', 'file_types', 'no_line_break', 'function']
 types_with_options = ['Checkbutton', 'Radiobutton', 'Combobox', 'SearchBox']
 
 
@@ -16,6 +17,17 @@ def RemoveTrailingLines(text):
     while text.startswith('<br>'):
         text = text[4:]
     return text
+
+
+def deep_update(source, new_dict):
+    for k, v in new_dict.items():
+        if isinstance(v, dict):
+            source[k] = deep_update(source.get(k, { }), v)
+        elif isinstance(v, list):
+            source[k] = (source.get(k, []) + v)
+        else:
+            source[k] = v
+    return source
 
 
 def GetSettingJson(setting, web_version, as_array=False):
@@ -36,6 +48,7 @@ def GetSettingJson(setting, web_version, as_array=False):
         'text':          setting_info.gui_text,
         'tooltip':       RemoveTrailingLines('<br>'.join(line.strip() for line in setting_info.gui_tooltip.split('\n'))),
         'type':          setting_info.gui_type,
+        'shared':        setting_info.shared,
     }
 
     if as_array:
@@ -43,14 +56,39 @@ def GetSettingJson(setting, web_version, as_array=False):
     else:
         settingJson['current_value'] = setting_info.default
 
+    setting_disable = {}
+    if setting_info.disable != None:
+        setting_disable = copy.deepcopy(setting_info.disable)
 
     for key, value in setting_info.gui_params.items():
+        if key.startswith('web:'):
+            if web_version:
+                key = key[4:]
+            else:
+                continue
+        if key.startswith('electron:'):
+            if not web_version:
+                key = key[9:]
+            else:
+                continue
+
         if key in setting_keys:
             settingJson[key] = value
-        if key.startswith('web:') and web_version:
-            settingJson[key[4:]] = value
-        if key.startswith('electron:') and not web_version:
-            settingJson[key[9:]] = value
+        if key == 'disable':
+            for option,types in value.items():
+                for s in types.get('settings', []):
+                    if get_setting_info(s).shared:
+                        raise ValueError(f'Cannot disable setting {s}. Disabling "shared" settings in the gui_params is forbidden. Use the non gui_param version of disable instead.')
+                for section in types.get('sections', []):
+                    for s in get_settings_from_section(section):
+                        if get_setting_info(s).shared:
+                            raise ValueError(f'Cannot disable setting {s} in {section}. Disabling "shared" settings in the gui_params is forbidden. Use the non gui_param version of disable instead.')
+                for tab in types.get('tabs', []):
+                    for s in get_settings_from_tab(tab):
+                        if get_setting_info(s).shared:
+                            raise ValueError(f'Cannot disable setting {s} in {tab}. Disabling "shared" settings in the gui_params is forbidden. Use the non gui_param version of disable instead.')
+            deep_update(setting_disable, value)
+
 
     if settingJson['type'] in types_with_options:
         if as_array:
@@ -71,8 +109,8 @@ def GetSettingJson(setting, web_version, as_array=False):
                     'text':     setting_info.choices[option_name],
                 }
 
-            if setting_info.disable != None and option_name in setting_info.disable:
-                disable_option = setting_info.disable[option_name]
+            if option_name in setting_disable:
+                disable_option = setting_disable[option_name]
                 if disable_option.get('settings') != None:
                     optionJson['controls_visibility_setting'] = ','.join(disable_option['settings'])
                 if disable_option.get('sections') != None:

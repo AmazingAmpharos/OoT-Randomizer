@@ -70,18 +70,6 @@ class Location(object):
         return (self.parent_region.can_fill(item, manual) and self.item_rule(self, item))
 
 
-    # tod is passed explicitly only when we want to test for it
-    def can_reach(self, state, age=None, tod=TimeOfDay.NONE):
-        if self.is_disabled():
-            return False
-
-        return self.access_rule(state, spot=self, age=age, tod=tod) and state.can_reach(self.parent_region, age=age, tod=tod)
-
-
-    def can_reach_simple(self, state, age=None):
-        return self.access_rule(state, age=age, spot=self)
-
-
     def is_disabled(self):
         return (self.disabled == DisableType.DISABLED) or \
                (self.disabled == DisableType.PENDING and self.locked)

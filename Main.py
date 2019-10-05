@@ -193,6 +193,8 @@ def patch_and_output(settings, window, spoiler, rom, start):
             random.setstate(rng_state)
             patch_rom(spoiler, world, rom)
             cosmetics_log = patch_cosmetics(settings, rom)
+            rom.update_header()
+
             window.update_progress(65 + 20*(world.id + 1)/settings.world_count)
 
             window.update_status('Creating Patch File')
@@ -446,8 +448,7 @@ def cosmetic_patch(settings, window=dummy_window()):
 
     # base the new patch file on the base patch file
     rom.original.buffer = patched_base_rom
-
-    rom.update_crc()
+    rom.update_header()
     create_patch_file(rom, patchfilename)
     logger.info("Created patchfile at: %s" % patchfilename)
     window.update_progress(95)
@@ -531,7 +532,7 @@ def create_playthrough(spoiler):
         if not collected: break
         # Gather the new entrances before collecting items.
         collection_spheres.append(collected)
-        accessed_entrances = set(filter(lambda entrance: playthrough.state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
+        accessed_entrances = set(filter(playthrough.spot_access, remaining_entrances))
         entrance_spheres.append(accessed_entrances)
         remaining_entrances -= accessed_entrances
         for location in collected:
@@ -608,7 +609,7 @@ def create_playthrough(spoiler):
             continue
         # Gather the new entrances before collecting items.
         collection_spheres.append(list(collected))
-        accessed_entrances = set(filter(lambda entrance: playthrough.state_list[entrance.world.id].can_reach(entrance), remaining_entrances))
+        accessed_entrances = set(filter(playthrough.spot_access, remaining_entrances))
         entrance_spheres.append(accessed_entrances)
         remaining_entrances -= accessed_entrances
         for location in collected:

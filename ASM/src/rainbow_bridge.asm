@@ -43,8 +43,9 @@ rainbow_bridge:
 @@rainbow_bridge_tokens:
     li        at, 0
     lh        t7, 0xD0(a3) ; Gold Skulltulas
+    lh        t8, RAINBOW_BRIDGE_TOKENS
     jr        ra
-    slti      t2, t7, 0x64
+    slt       t2, t7, t8
 
 @@rainbow_bridge_open:
     li        t2, 0

@@ -681,6 +681,12 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     if not world.dungeon_mq['Dodongos Cavern']:
         rom.write_byte(0x1F281FE, 0x38)
 
+    # Fix "...???" textbox outside Child Colossus Fairy to use the right flag and disappear once the wall is destroyed
+    rom.write_byte(0x21A026F, 0xDD)
+
+    # Remove the "...???" textbox outside the Crater Fairy (change it to an actor that does nothing)
+    rom.write_int16s(0x225E7DC, [0x00B5, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xFFFF])
+
     # Forbid Sun's Song from a bunch of cutscenes
     Suns_scenes = [0x2016FC9, 0x2017219, 0x20173D9, 0x20174C9, 0x2017679, 0x20C1539, 0x20C15D9, 0x21A0719, 0x21A07F9, 0x2E90129, 0x2E901B9, 0x2E90249, 0x225E829, 0x225E939, 0x306D009]
     for address in Suns_scenes:
@@ -992,6 +998,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     rom.write_int16(0x00E1F3CA, 0x5036)
     rom.write_int16(0x00E1F3CC, 0x5036)
 
+    if world.no_first_dampe_race:
+        save_context.write_bits(0x00D4 + 0x48 * 0x1C + 0x08 + 0x3, 0x10) # Beat First Dampe Race (& Chest Spawned)
+
     # Make the Kakariko Gate not open with the MS
     rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
 
@@ -1017,6 +1026,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_int32(symbol, 4)
     elif world.bridge == 'tokens':
         rom.write_int32(symbol, 5)
+        rom.write_int16(rom.sym('RAINBOW_BRIDGE_TOKENS'), world.bridge_tokens)
 
     if world.triforce_hunt:
         rom.write_int16(rom.sym('triforce_pieces_requied'), world.triforce_goal)

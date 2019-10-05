@@ -29,9 +29,11 @@ def guiMain():
     if '--skip-settingslist' not in sys.argv:
         CreateJSON(data_path('generated/settings_list.json'), web_version)
 
-    args = ["node", "run.js", "release", "python", sys.executable]
+    if web_version:
+        args = ["node", "run.js", "web"]
+    else:
+        args = ["node", "run.js", "release", "python", sys.executable]
     subprocess.Popen(args,shell=False,cwd=local_path("GUI"))
-
 
 def version_check(name, version, URL):
     try:

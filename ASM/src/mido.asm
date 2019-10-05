@@ -62,9 +62,9 @@
     lhu     t9, 0x0ED4(v1)      ; If this is t9, it saves setting it later for the next branch.
     li      t7, 0x0090          ; Mask for "Showed Mido Sword & Shield" and "Obtained Kokiri Emerald & Deku Tree Dead"
     and     t8, t9, t7
-    bne     t8, t7, 0x00E62660
+    bne_a   t8, t7, 0x00E62660
     nop
-    b       0x00E626DC
+    b_a     0x00E626DC
     li      v0, 0x1045          ; Mido complaining about Deku Tree's death.
     nop
     nop
