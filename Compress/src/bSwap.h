@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-uint32_t bSwap_32(uint32_t a)
+uint32_t bSwap32(uint32_t a)
 {
     return( (a & 0x000000FF) << 24 |
             (a & 0x0000FF00) <<  8 |
@@ -11,7 +11,7 @@ uint32_t bSwap_32(uint32_t a)
             (a & 0xFF000000) >> 24 );
 }
 
-uint16_t bSwap_16(uint16_t a)
+uint16_t bSwap16(uint16_t a)
 {
     return( (a & 0x00FF) << 8 |
             (a & 0xFF00) >> 8 );

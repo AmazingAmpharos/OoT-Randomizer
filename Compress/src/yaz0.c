@@ -30,9 +30,9 @@ uint32_t RabinKarp(uint8_t* src, int srcSize, int srcPos, uint32_t* matchPos)
         startPos = 0;
 
     /* Generate "hash" by converting to an int */
-    hash = bSwap_32(*(int*)(src + srcPos));
+    hash = bSwap32(*(int*)(src + srcPos));
     hash = hash >> 8;
-    curHash = bSwap_32(*(int*)(src + startPos));
+    curHash = bSwap32(*(int*)(src + startPos));
     curHash = curHash >> 8;
 
     /* Search through data */
@@ -175,7 +175,7 @@ void yaz0_encode(uint8_t* src, int srcSize, uint8_t* dst, int* dstSize)
     int temp;
 
     /* Write Yaz0 header */
-    temp = bSwap_32(srcSize);
+    temp = bSwap32(srcSize);
     memcpy(dst, "Yaz0", 4);
     memcpy(dst + 4, &temp, 4);
 

@@ -8,15 +8,19 @@
 #include "yaz0.c"
 #include "crc.c"
 
+/* Needed to compile on Windows */
 #ifdef _WIN32
 #include <Windows.h>
 #endif
 
+/* Different ROM sizes */
 #define UINTSIZE 0x1000000
 #define COMPSIZE 0x2000000
-#define DCMPSIZE 0x4000000
 
-/* Structs */
+/* Number of extra bytes to add to compression buffer */
+#define COMPBUFF 0x250
+
+/* DMA table entry */
 typedef struct
 {
     uint32_t startV;
@@ -26,6 +30,7 @@ typedef struct
 }
 table_t;
 
+/* Temporary storage for output data */
 typedef struct
 {
     table_t table;
@@ -35,6 +40,7 @@ typedef struct
 }
 output_t;
 
+/* Archive struct */
 typedef struct
 {
     uint32_t fileCount;
@@ -55,14 +61,15 @@ int32_t  getNumCores();
 int32_t  getNext();
 
 /* Globals */
-char* name;
+char* inName;
+char* outName;
 uint8_t* inROM;
 uint8_t* outROM;
 uint8_t* refTab;
 pthread_mutex_t filelock;
 pthread_mutex_t countlock;
-int32_t numFiles, nextFile, arcCount;
-int32_t junk;
+int32_t numFiles, nextFile;
+int32_t arcCount, outSize;
 uint32_t* fileTab;
 archive_t* archive;
 output_t* out;
@@ -70,8 +77,8 @@ output_t* out;
 int main(int argc, char** argv)
 {
     FILE* file;
-    int32_t tabStart, tabSize, tabCount;
-    volatile int32_t prev; //prevComp;
+    int32_t tabStart, tabSize, tabCount, junk;
+    volatile int32_t prev;
     int32_t i, j, size, numCores, tempSize;
     pthread_t* threads;
     table_t tab;
@@ -82,8 +89,11 @@ int main(int argc, char** argv)
 
     /* Open input, read into inROM */
     file = fopen(argv[1], "rb");
-    inROM = calloc(DCMPSIZE, sizeof(uint8_t));
-    junk = fread(inROM, DCMPSIZE, 1, file);
+    fseek(file, 0, SEEK_END);
+    tempSize = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    inROM = calloc(tempSize, sizeof(uint8_t));
+    junk = fread(inROM, tempSize, 1, file);
     fclose(file);
 
     /* Read archive if it exists*/
@@ -147,8 +157,8 @@ int main(int argc, char** argv)
     /* Read in the rest of the exclusion list */
     for(i = 0; fscanf(file, "%d", &j) == 1; i++)
     {
-        /* Bounds check */
-        if(j > size)
+        /* Make sure the number is within the dmaTable */
+        if(j > size || j < -size)
         {
             fprintf(stderr, "Error: Entry %d in dmaTable.dat is out of bounds\n", i);
             exit(1);
@@ -168,6 +178,7 @@ int main(int argc, char** argv)
     pthread_mutex_init(&filelock, NULL);
     pthread_mutex_init(&countlock, NULL);
     numFiles = tabCount;
+    outSize = COMPSIZE;
     nextFile = 3;
     arcCount = 0;
 
@@ -185,13 +196,28 @@ int main(int argc, char** argv)
     /* Wait for all of the threads to finish */
     for(i = 0; i < numCores; i++)
         pthread_join(threads[i], NULL);
+    printf("\n");
+
+    /* Get size of new ROM */
+    /* Start with size of first 3 files */
+    tempSize = tabStart + tabSize;
+    for(i = 3; i < tabCount; i++)
+        tempSize += out[i].size;
+
+    /* If ROM is too big, update size */
+    if(tempSize > outSize)
+    {
+        fprintf(stderr, "Warning: Compressed ROM larger than normal. Expanding ROM size.\n");
+        fprintf(stderr, "         Normal size:     %d | 0x%08x\n", outSize, outSize);
+        fprintf(stderr, "         Compressed size: %d | 0x%08x\n", tempSize, tempSize);
+        outSize = tempSize;
+    }
 
     /* Setup for copying to outROM */
-    printf("\nFiles compressed, writing new ROM.\n");
-    outROM = calloc(COMPSIZE, sizeof(uint8_t));
+    printf("Files compressed, writing new ROM.\n");
+    outROM = calloc(outSize, sizeof(uint8_t));
     memcpy(outROM, inROM, tabStart + tabSize);
     prev = tabStart + tabSize;
-    /* prevComp = refTab[2]; */
     tabStart += 0x20;
 
     /* Free some stuff */
@@ -218,38 +244,26 @@ int main(int argc, char** argv)
         /* Finish table and copy to outROM */
         if(tab.startV != tab.endV)
         {
+            /* Set up physical addresses */
             tab.startP = prev;
             if(out[i].comp == 1)
                 tab.endP = tab.startP + size;
             else if(out[i].comp == 2)
                 tab.startP = tab.endP = 0xFFFFFFFF;
 
-            if(tab.endP != -1 && tab.endP > COMPSIZE)
-            {
-                fprintf(stderr, "Warning: File %d has gone out of bounds\n", i);
-                fprintf(stderr, "         tab.startV = %8d | 0x%08x\n", tab.startV, tab.startV);
-                fprintf(stderr, "         tab.endV   = %8d | 0x%08x\n", tab.endV, tab.endV);
-                fprintf(stderr, "         tab.startP = %8d | 0x%08x\n", tab.startP, tab.startP);
-                fprintf(stderr, "         tab.endP   = %8d | 0x%08x\n", tab.endP, tab.endP);
-                fprintf(stderr, "         size       = %8d | 0x%08x\n", size, size);
-            }
-
             /* If the file existed, write it */
             if(tab.startP != 0xFFFFFFFF)
                 memcpy(outROM + tab.startP, out[i].data, size);
             
             /* Write the table entry */
-            tab.startV = bSwap_32(tab.startV);
-			tab.endV   = bSwap_32(tab.endV);
-			tab.startP = bSwap_32(tab.startP);
-			tab.endP   = bSwap_32(tab.endP);
+            tab.startV = bSwap32(tab.startV);
+			tab.endV   = bSwap32(tab.endV);
+			tab.startP = bSwap32(tab.startP);
+			tab.endP   = bSwap32(tab.endP);
             memcpy(outROM + tabStart, &tab, sizeof(table_t));
         }
 
-        
         prev += size;
-        /* prevComp = out[i].comp; */
-        
         if(out[i].data != NULL)
             free(out[i].data);
     }
@@ -259,22 +273,25 @@ int main(int argc, char** argv)
     fix_crc(outROM);
     
     /* Make and fill the output ROM */
-    file = fopen(name, "wb");
-    fwrite(outROM, COMPSIZE, 1, file);
+    file = fopen(outName, "wb");
+    fwrite(outROM, outSize, 1, file);
     fclose(file);
 
     /* Make the archive if needed */
     if(archive == NULL)
     {
         printf("Creating archive.\n");
-        makeArchive(argv[1], name);
+        makeArchive();
     }
 
-    printf("Compression complete.\n");
+    /* Free up the last bit of memory */
     if(argc != 3)
-        free(name);
+        free(outName);
     free(inROM);
     free(outROM);
+    
+    printf("Compression complete.\n");
+    
     return(0);
 }
 
@@ -301,10 +318,10 @@ uint32_t findTable(uint8_t* argROM)
 
 void getTableEnt(table_t* tab, uint32_t* files, uint32_t i)
 {
-	tab->startV = bSwap_32(files[i*4]);
-	tab->endV   = bSwap_32(files[(i*4)+1]);
-	tab->startP = bSwap_32(files[(i*4)+2]);
-	tab->endP   = bSwap_32(files[(i*4)+3]);
+	tab->startV = bSwap32(files[i*4]);
+	tab->endV   = bSwap32(files[(i*4)+1]);
+	tab->startP = bSwap32(files[(i*4)+2]);
+	tab->endP   = bSwap32(files[(i*4)+3]);
 }
 
 void* threadFunc(void* null)
@@ -341,12 +358,13 @@ void* threadFunc(void* null)
             }
             else
             {
-                size = srcSize + 0x250;
+                size = srcSize + COMPBUFF;
                 dst = calloc(size, sizeof(uint8_t));
                 yaz0_encode(src, srcSize, dst, &(size));
                 out[i].comp = 1;
                 out[i].data = malloc(size);
                 memcpy(out[i].data, dst, size);
+                free(dst);
             }
             
             if(archive != NULL)
@@ -485,7 +503,7 @@ int32_t getNext()
     /* Progress tracker */
     if (file < numFiles)
     {
-	temp = numFiles - (file + 1);
+        temp = numFiles - (file + 1);
         printf("%d files remaining\n", temp);
         fflush(stdout);
     }
@@ -501,35 +519,26 @@ int32_t getNext()
 
 void errorCheck(int argc, char** argv)
 {
-    int i;
+    int i, j;
     FILE* file;
 
     /* Check for arguments */
-    if(argc < 2 || argc > 3)
+    if(argc < 2)
     {
         fprintf(stderr, "Usage: %s [Input ROM] <Output ROM>\n", argv[0]);
         exit(1);
     }
 
-    /* Check that input ROM exists */
-    file = fopen(argv[1], "rb");
+    /* Check that input ROM exists & has permissions */
+    inName = argv[1];
+    file = fopen(inName, "rb");
     if(file == NULL)
     {
-        perror(argv[1]);
+        perror(inName);
         exit(1);
     }
 
-    /* Check that input ROM is correct size */
-    fseek(file, 0, SEEK_END);
-    i = ftell(file);
-    fclose(file);
-    if(i != DCMPSIZE)
-    {
-        fprintf(stderr, "Error: Invalid input ROM size!\n");
-        exit(1);
-    }
-
-    /* Check that dmaTable.dat exists */
+    /* Check that dmaTable.dat exists & has permissions */
     file = fopen("dmaTable.dat", "r");
     if(file == NULL)
     {
@@ -540,38 +549,38 @@ void errorCheck(int argc, char** argv)
 
     /* Check that output ROM is writeable */
     /* Create output filename if needed */
-    if(argc == 2)
+    if(argc < 3)
     {
-        i = strlen(argv[1]) + 6;
-        name = malloc(i);
-        strcpy(name, argv[1]);
+        i = strlen(inName) + 6;
+        outName = malloc(i);
+        strcpy(outName, inName);
         for(; i >= 0; i--)
         {
-            if(name[i] == '.')
+            if(outName[i] == '.')
             {
-                name[i] = '\0';
+                outName[i] = '\0';
                 break;
             }
         }
-        strcat(name, "-comp.z64");
-        file = fopen(name, "wb");
+        strcat(outName, "-comp.z64");
+        file = fopen(outName, "wb");
         if(file == NULL)
         {
-            perror(name);
-            free(name);
+            perror(outName);
+            free(outName);
             exit(1);
         }
         fclose(file);
     }
     else
     {
-        file = fopen(argv[2], "wb");
+        outName = argv[2];
+        file = fopen(outName, "wb");
         if(file == NULL)
         {
-            perror(argv[2]);
+            perror(outName);
             exit(1);
         }
         fclose(file);
-        name = argv[2];
     }
 }
