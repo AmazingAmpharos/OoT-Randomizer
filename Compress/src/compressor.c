@@ -20,6 +20,7 @@
 /* Number of extra bytes to add to compression buffer */
 #define COMPBUFF 0x250
 
+//Structs {{{1
 /* DMA table entry */
 typedef struct
 {
@@ -50,8 +51,9 @@ typedef struct
     uint8_t**      src;
 }
 archive_t;
+/* 1}}} */
 
-/* Functions */
+/* Functions {{{1 */
 uint32_t findTable(uint8_t*);
 void     getTableEnt(table_t*, uint32_t*, uint32_t);
 void*    threadFunc(void*);
@@ -59,8 +61,9 @@ void     errorCheck(int, char**);
 void     makeArchive();
 int32_t  getNumCores();
 int32_t  getNext();
+/* 1}}} */
 
-/* Globals */
+/* Globals {{{1 */
 char* inName;
 char* outName;
 uint8_t* inROM;
@@ -73,7 +76,9 @@ int32_t arcCount, outSize;
 uint32_t* fileTab;
 archive_t* archive;
 output_t* out;
+/* 1}}} */
 
+/* int main(int, char**) {{{1 */
 int main(int argc, char** argv)
 {
     FILE* file;
@@ -167,7 +172,7 @@ int main(int argc, char** argv)
         /* If j was negative, the file shouldn't exist */
         /* Otherwise, set file to not compress */
         if(j < 0)
-            refTab[(j * -1)] = 2;
+            refTab[(~j + 1)] = 2;
         else
             refTab[j] = 0;
     }
@@ -206,12 +211,7 @@ int main(int argc, char** argv)
 
     /* If ROM is too big, update size */
     if(tempSize > outSize)
-    {
-        fprintf(stderr, "Warning: Compressed ROM larger than normal. Expanding ROM size.\n");
-        fprintf(stderr, "         Normal size:     %d | 0x%08x\n", outSize, outSize);
-        fprintf(stderr, "         Compressed size: %d | 0x%08x\n", tempSize, tempSize);
         outSize = tempSize;
-    }
 
     /* Setup for copying to outROM */
     printf("Files compressed, writing new ROM.\n");
@@ -234,7 +234,7 @@ int main(int argc, char** argv)
     free(threads);
     free(refTab);
 
-    /* Copy to outROM loop */
+    /* Write data to outROM */
     for(i = 3; i < tabCount; i++)
     {
         tab = out[i].table;
@@ -294,7 +294,9 @@ int main(int argc, char** argv)
     
     return(0);
 }
+/* 1}}} */
 
+/* uint32_t findTAble(uint8_t*) {{{1 */
 uint32_t findTable(uint8_t* argROM)
 {
     uint32_t i;
@@ -315,7 +317,9 @@ uint32_t findTable(uint8_t* argROM)
     fprintf(stderr, "Error: Couldn't find dma table in ROM!\n");
     exit(1);
 }
+/* 1}}} */
 
+/* void getTableEnt(table_t*, uint32_t*, uint32_t) {{{1 */
 void getTableEnt(table_t* tab, uint32_t* files, uint32_t i)
 {
 	tab->startV = bSwap32(files[i*4]);
@@ -323,7 +327,9 @@ void getTableEnt(table_t* tab, uint32_t* files, uint32_t i)
 	tab->startP = bSwap32(files[(i*4)+2]);
 	tab->endP   = bSwap32(files[(i*4)+3]);
 }
+/* 1}}} */
 
+/* void* threadFunc(void*) {{{1 */
 void* threadFunc(void* null)
 {
     uint8_t* src;
@@ -394,7 +400,9 @@ void* threadFunc(void* null)
 
     return(NULL);
 }
+/* 1}}} */
 
+/* void makeArchive() {{{1 */
 void makeArchive()
 {
     table_t tab;
@@ -453,7 +461,9 @@ void makeArchive()
 
     fclose(file);
 }
+/* 1}}} */
 
+/* int32_t getNumCores() {{{1 */
 int32_t getNumCores()
 {
     /* Windows */
@@ -491,7 +501,9 @@ int32_t getNumCores()
 
     #endif
 }
+/* 1}}} */
 
+/* int32_t getNext() {{{1 */
 int32_t getNext()
 {
     int32_t file, temp;
@@ -516,7 +528,9 @@ int32_t getNext()
 
     return(file);
 }
+/* 1}}} */
 
+/* void errorCheck(int, char**) {{{1 */
 void errorCheck(int argc, char** argv)
 {
     int i, j;
@@ -584,3 +598,4 @@ void errorCheck(int argc, char** argv)
         fclose(file);
     }
 }
+/* 1}}} */
