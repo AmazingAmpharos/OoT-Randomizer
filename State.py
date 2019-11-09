@@ -385,7 +385,7 @@ class State(object):
         if self.world.bridge == 'open':
             return True
         if self.world.bridge == 'vanilla':
-            return self.has_all_of(('Shadow Medallion', 'Spirit Medallion'))
+            return self.has_all_of(('Shadow Medallion', 'Spirit Medallion', 'Light Arrows'))
         if self.world.bridge == 'stones':
             return self.has_all_stones()
         if self.world.bridge == 'medallions':
