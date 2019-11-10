@@ -336,8 +336,8 @@ location_table = {
     # Shadow Temple MQ
     "Shadow Temple MQ Compass Chest":                  ("Chest",       0x07,  0x01, None,                     ("Shadow Temple",)),
     "Shadow Temple MQ Hover Boots Chest":              ("Chest",       0x07,  0x07, None,                     ("Shadow Temple",)),
-    "Shadow Temple MQ Early Gibdos Chest":             ("Chest",       0x07,  0x02, None,                     ("Shadow Temple",)),
-    "Shadow Temple MQ Map Chest":                      ("Chest",       0x07,  0x03, None,                     ("Shadow Temple",)),
+    "Shadow Temple MQ Early Gibdos Chest":             ("Chest",       0x07,  0x03, None,                     ("Shadow Temple",)),
+    "Shadow Temple MQ Map Chest":                      ("Chest",       0x07,  0x02, None,                     ("Shadow Temple",)),
     "Shadow Temple MQ Beamos Silver Rupees Chest":     ("Chest",       0x07,  0x0F, None,                     ("Shadow Temple",)),
     "Shadow Temple MQ Falling Spikes Switch Chest":    ("Chest",       0x07,  0x04, None,                     ("Shadow Temple",)),
     "Shadow Temple MQ Falling Spikes Lower Chest":     ("Chest",       0x07,  0x05, None,                     ("Shadow Temple",)),
