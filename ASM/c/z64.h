@@ -595,11 +595,13 @@ typedef struct
   uint8_t         z_targeting;              /* 0x140C */
   char            unk_1A_[0x0001];          /* 0x140D */
   uint16_t        disable_music_flag;       /* 0x140E */
-  char            unk_1B_[0x0014];          /* 0x1410 */
+  char            unk_1B_[0x0002];          /* 0x1410 */
+  uint16_t        cutscene_next;            /* 0x1412 */
+  char            unk_1C_[0x0010];          /* 0x1414 */
   uint16_t        refill_hearts;            /* 0x1424 */
-  char            unk_1C_[0x000A];          /* 0x1426 */
+  char            unk_1D_[0x000A];          /* 0x1426 */
   z64_gameinfo_t *gameinfo;                 /* 0x1430 */
-  char            unk_1D_[0x001C];          /* 0x1434 */
+  char            unk_1E_[0x001C];          /* 0x1434 */
                                             /* 0x1450 */
 } z64_file_t;
 

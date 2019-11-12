@@ -7,6 +7,7 @@
 
 #define slot_count 8
 #define object_size 0x1E70
+#define num_vanilla_objects 0x192
 
 typedef struct {
     uint16_t object_id;
@@ -18,10 +19,18 @@ typedef struct {
     uint8_t *buf;
 } loaded_object_t;
 
+extern uint32_t EXTENDED_OBJECT_TABLE;
+
 loaded_object_t object_slots[slot_count] = { 0 };
 
 void load_object_file(uint32_t object_id, uint8_t *buf) {
-    z64_object_table_t *entry = &(z64_object_table[object_id]);
+    z64_object_table_t *entry;
+    if (object_id <= num_vanilla_objects) {
+        entry = &(z64_object_table[object_id]);
+    } else {
+        z64_object_table_t *extended_table = (z64_object_table_t *) (&EXTENDED_OBJECT_TABLE);
+        entry = extended_table + (object_id - num_vanilla_objects) * sizeof(z64_object_table) / 8;
+    }
     uint32_t vrom_start = entry->vrom_start;
     uint32_t size = entry->vrom_end - vrom_start;
     read_file(buf, vrom_start, size);

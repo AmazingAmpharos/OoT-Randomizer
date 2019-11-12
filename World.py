@@ -35,6 +35,7 @@ class World(object):
         self.scrub_prices = {}
         self.maximum_wallets = 0
         self.light_arrow_location = None
+        self.triforce_count = 0
 
         self.parser = Rule_AST_Transformer(self)
         self.event_items = set()
@@ -60,6 +61,8 @@ class World(object):
 
         self.disable_trade_revert = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
         self.ensure_tod_access = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
+
+        self.triforce_goal = self.triforce_goal_per_world * settings.world_count
 
         # Determine LACS Condition
         if self.shuffle_ganon_bosskey == 'lacs_medallions':
@@ -113,6 +116,8 @@ class World(object):
         new_world.starting_age = self.starting_age
         new_world.can_take_damage = self.can_take_damage
         new_world.shop_prices = copy.copy(self.shop_prices)
+        new_world.triforce_goal = self.triforce_goal
+        new_world.triforce_count = self.triforce_count
         new_world.maximum_wallets = self.maximum_wallets
         new_world.distribution = self.distribution
 

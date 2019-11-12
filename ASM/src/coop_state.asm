@@ -1,12 +1,14 @@
 COOP_CONTEXT:
 
 COOP_VERSION:
-.word 1 ; Increment this if layout of co-op state changes
+.word 2 ; Increment this if layout of co-op state changes
 
 PLAYER_ID:
 .byte 0x00 ; Written by frontend
 PLAYER_NAME_ID:
 .byte 0x00
+INCOMING_PLAYER:
+.halfword 0x0000
 INCOMING_ITEM:
 .halfword 0x0000
 .align 4

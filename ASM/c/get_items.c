@@ -16,6 +16,7 @@ z64_actor_t *dummy_actor = NULL;
 // Co-op state
 extern uint8_t PLAYER_ID;
 extern uint8_t PLAYER_NAME_ID;
+extern uint16_t INCOMING_PLAYER;
 extern uint16_t INCOMING_ITEM;
 extern override_key_t OUTGOING_KEY;
 extern uint16_t OUTGOING_ITEM;
@@ -122,7 +123,10 @@ void activate_override(override_t override) {
     item_row_t *item_row = get_item_row(resolved_item_id);
 
     active_override = override;
-    active_override_is_outgoing = override.value.player != PLAYER_ID;
+    if (resolved_item_id == 0xCA)
+        active_override_is_outgoing = 2; // Send to everyone
+    else
+        active_override_is_outgoing = override.value.player != PLAYER_ID;
     active_item_row = item_row;
     active_item_action_id = item_row->action_id;
     active_item_text_id = item_row->text_id;
@@ -168,7 +172,7 @@ void push_coop_item() {
         override.key.scene = 0xFF;
         override.key.type = OVR_DELAYED;
         override.key.flag = 0xFF;
-        override.value.player = PLAYER_ID;
+        override.value.player = INCOMING_PLAYER;
         override.value.item_id = INCOMING_ITEM;
         push_pending_item(override);
     }
@@ -195,6 +199,7 @@ void pop_pending_item() {
 void after_key_received(override_key_t key) {
     if (key.type == OVR_DELAYED && key.flag == 0xFF) {
         INCOMING_ITEM = 0;
+        INCOMING_PLAYER = 0;
         uint16_t *received_item_counter = (uint16_t *)(z64_file_addr + 0x90);
         (*received_item_counter)++;
         return;
@@ -260,6 +265,16 @@ void try_pending_item() {
     override_t override = pending_item_queue[0];
 
     if(override.key.all == 0) {
+        return;
+    }
+
+    if (override.value.item_id == 0xCA && override.value.player != PLAYER_ID) {
+        uint16_t resolved_item_id = resolve_upgrades(override.value.item_id);
+        item_row_t *item_row = get_item_row(resolved_item_id);
+        call_effect_function(item_row);
+        pop_pending_item();
+        after_key_received(override.key);        
+        clear_override();
         return;
     }
 
@@ -335,7 +350,12 @@ void get_skulltula_token(z64_actor_t *token_actor) {
     PLAYER_NAME_ID = player;
     z64_DisplayTextbox(&z64_game, item_row->text_id, 0);
 
-    if (player != PLAYER_ID) {
+    if (resolved_item_id == 0xCA) {
+        // Send triforce to everyone
+        set_outgoing_override(&override);
+        z64_GiveItem(&z64_game, item_row->action_id);
+        call_effect_function(item_row);
+    } else if (player != PLAYER_ID) {
         set_outgoing_override(&override);
     } else {
         z64_GiveItem(&z64_game, item_row->action_id);

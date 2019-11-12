@@ -1416,6 +1416,50 @@ setting_infos = [
             ],
         },
     ),
+    Checkbutton(
+        name           = 'triforce_hunt',
+        gui_text       = 'Triforce Hunt',
+        gui_tooltip    = '''\
+            Pieces of the Triforce have been scattered around the world. 
+            Find some of them to beat the game.
+
+            Game is saved on completion, and Ganon's Castle key is given
+            if beating the game again is desired.
+        ''',
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+        disable        = {
+            True  : {'settings' : ['shuffle_ganon_bosskey']},
+            False : {'settings' : ['triforce_goal_per_world']}
+        },
+    ),    
+    Scale(
+        name           = 'triforce_goal_per_world',
+        gui_text       = 'Required Triforces Per World',
+        default        = 20,
+        min            = 1,
+        max            = 100,
+        shared         = True,
+        gui_tooltip    = '''\
+            Select the amount of Triforce Pieces required to beat the game.
+
+            In multiworld, each world will have the same number of triforces 
+            in them. The required ammount will be per world collectively. 
+            For example, if this is set to 20 in a 2 player multiworld, players 
+            need 40 total, but one player could obtain 30 and the other 10. 
+
+            Extra pieces are determined by the the Item Pool setting:
+            'Plentiful': 100% Extra
+            'Balanced': 50% Extra
+            'Scarce': 25% Extra
+            'Minimal: No Extra
+        ''',
+        gui_params     = {
+            "hide_when_disabled": True,
+        },
+    ),
     Scale(
         name           = 'bridge_tokens',
         gui_text       = "Skulltulas Required for Bridge",
@@ -2114,6 +2158,7 @@ setting_infos = [
         name           = 'shuffle_ganon_bosskey',
         gui_text       = 'Ganon\'s Boss Key',
         default        = 'dungeon',
+        disabled_default = 'triforce',
         choices        = {
             'remove':          "Remove (Keysy)",
             'vanilla':         "Vanilla Location",
@@ -2145,7 +2190,6 @@ setting_infos = [
             'On LACS: Medallions': All 6 Medallions.
             'On LACS: Stones': All 3 Spiritual Stones.
             'On LACS: Dungeons': All Spiritual Stones & Medallions.
-            
         ''',
         shared         = True,
         gui_params     = {

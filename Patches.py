@@ -47,6 +47,28 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         keatonBytes = bytearray([a ^ b for a, b in zip(keatonBytesDiff, originalBytes)])
         rom.write_bytes(writeAddress, keatonBytes)
 
+    # Load triforce model into a file
+    triforce_obj_file = File({
+            'Name':'shop1_room_1',
+            'Start':'0',
+            'End':'0',
+        })
+
+    triforce_obj_file.copy(rom)
+
+    with open(data_path('triforce.bin'), 'rb') as stream:
+        obj_data = stream.read()
+        rom.write_bytes(triforce_obj_file.start, obj_data)
+
+    triforce_obj_file.end = triforce_obj_file.start + len(obj_data)
+
+    update_dmadata(rom, triforce_obj_file)
+
+    #Add to extended object table
+    sym = rom.sym('EXTENDED_OBJECT_TABLE')
+    rom.write_int32(sym, triforce_obj_file.start)
+    rom.write_int32(sym + 4, triforce_obj_file.end)
+
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)
     rom.force_patch.append(0x3E)
@@ -1005,6 +1027,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     elif world.bridge == 'tokens':
         rom.write_int32(symbol, 5)
         rom.write_int16(rom.sym('RAINBOW_BRIDGE_TOKENS'), world.bridge_tokens)
+
+    if world.triforce_hunt:
+        rom.write_int16(rom.sym('triforce_pieces_requied'), world.triforce_goal)
+        rom.write_int16(rom.sym('triforce_hunt_enabled'), 1)
 
     # Set up LACS conditions.
     symbol = rom.sym('LACS_CONDITION')

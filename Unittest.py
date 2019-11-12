@@ -68,6 +68,15 @@ def load_spoiler(json_file):
 
 class TestValidSpoilers(unittest.TestCase):
 
+    # Normalizes spoiler dict for single world or multiple worlds
+    # Single world worlds_dict is a map of key -> value
+    # Multi world worlds_dict is a map of "World x" -> {map of key -> value} (with x the player/world number)
+    # Always returns a map of playernum -> {map of key -> value}
+    def normalize_worlds_dict(self, worlds_dict):
+        if 'World 1' not in worlds_dict:
+            worlds_dict = {'World 1': worlds_dict}
+        return {int(key.split()[1]): content for key, content in worlds_dict.items()}
+
     # Collect all the locations and items from the woth or playthrough.
     # locmaps is a map of key -> {map of loc -> item}
     # woth: key is "World x". modify 1p games to {"World 1": woth} first
@@ -144,11 +153,18 @@ class TestValidSpoilers(unittest.TestCase):
         pl = spoiler[':playthrough']
         locations, items, locitems = self.loc_item_collection(pl)
         self.required_checks(spoiler, locations, items, locitems)
-        # Everybody finished
-        self.assertEqual(
-            {p: 1 for p in items},
-            {p: c['Triforce'] for p, c in items.items()},
-            'Playthrough missing some (or having extra) Triforces')
+        # Everybody reached the win condition in the playthrough
+        if spoiler['settings'].get('triforce_hunt', False):
+            item_pool = self.normalize_worlds_dict(spoiler['item_pool'])
+            self.assertEqual(
+                {p: item_pool[p]['Triforce Piece'] for p in items},
+                {p: c['Triforce Piece'] for p, c in items.items()},
+                'Playthrough missing some (or having extra) Triforce Pieces')
+        else:
+            self.assertEqual(
+                {p: 1 for p in items},
+                {p: c['Triforce'] for p, c in items.items()},
+                'Playthrough missing some (or having extra) Triforces')
 
     def verify_disables(self, spoiler):
         locmap = spoiler['locations']

@@ -133,6 +133,9 @@ def generate(settings, window):
         set_drop_location_names(world)
         world.fill_bosses()
 
+    if settings.triforce_hunt:
+        settings.distribution.configure_triforce_hunt(worlds)
+
     logger.info('Setting Entrances.')
     set_entrances(worlds)
 

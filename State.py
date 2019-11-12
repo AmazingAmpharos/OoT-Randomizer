@@ -372,6 +372,43 @@ class State(object):
             return True
 
 
+    def has_all_stones(self):
+        return self.has_all_of(('Kokiri Emerald', 'Goron Ruby', 'Zora Sapphire'))
+
+
+    def has_all_medallions(self):
+        return self.has_all_of(('Forest Medallion', 'Fire Medallion', 'Water Medallion', 
+                                'Shadow Medallion', 'Spirit Medallion', 'Light Medallion'))
+
+
+    def can_build_rainbow_bridge(self):
+        if self.world.bridge == 'open':
+            return True
+        if self.world.bridge == 'vanilla':
+            return self.has_all_of(('Shadow Medallion', 'Spirit Medallion', 'Light Arrows'))
+        if self.world.bridge == 'stones':
+            return self.has_all_stones()
+        if self.world.bridge == 'medallions':
+            return self.has_all_medallions()
+        if self.world.bridge == 'dungeons':
+            return self.has_all_stones() and self.has_all_medallions()
+        if self.world.bridge == 'tokens':
+            return self.has('Gold Skulltula Token', 100)
+        raise Exception ('Unknown Rainbow Bridge Logic')
+
+
+    def can_trigger_lacs(self):
+        if self.world.lacs_condition == 'vanilla':
+            return self.has_all_of(('Shadow Medallion', 'Spirit Medallion'))
+        if self.world.lacs_condition == 'stones':
+            return self.has_all_stones()
+        if self.world.lacs_condition == 'medallions':
+            return self.has_all_medallions()
+        if self.world.lacs_condition == 'dungeons':
+            return self.has_all_stones() and self.has_all_medallions()
+        raise Exception ('Unknown Light Arrow Cutscene Logic')
+
+
     # Be careful using this function. It will not collect any
     # items that may be locked behind the item, only the item itself.
     def collect(self, item):
@@ -410,7 +447,7 @@ class State(object):
         # item_locations: only the ones that should appear as "required"/WotH
         all_locations = [location for world in worlds for location in world.get_filled_locations()]
         # Set to test inclusion against
-        item_locations = {location for location in all_locations if location.item.majoritem and not location.locked}
+        item_locations = {location for location in all_locations if location.item.majoritem and not location.locked and location.item.name != 'Triforce Piece'}
 
         # if the playthrough was generated, filter the list of locations to the
         # locations in the playthrough. The required locations is a subset of these

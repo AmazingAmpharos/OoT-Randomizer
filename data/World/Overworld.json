@@ -255,8 +255,10 @@
         "hint": "Hyrule Field",
         "time_passes": true,
         "locations": {
-            "Ocarina of Time": "is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire",
-            "Song from Ocarina of Time": "is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire",
+            "Ocarina of Time": "
+                is_child and has_all_stones and guarantee_hint",
+            "Song from Ocarina of Time": "
+                is_child and has_all_stones and guarantee_hint",
             "Big Poe Kill": "can_use(Bow) and can_use(Epona) and has_bottle"
         },
         "exits": {
@@ -604,17 +606,7 @@
         "region_name": "Temple of Time",
         "hint": "Temple of Time",
         "locations": {
-            "Zelda": "is_adult and
-                ((lacs_condition == 'vanilla' and Shadow_Medallion and Spirit_Medallion)
-                or (lacs_condition == 'medallions' and
-                    Forest_Medallion and Fire_Medallion and Water_Medallion and
-                    Shadow_Medallion and Spirit_Medallion and Light_Medallion)
-                or (lacs_condition == 'dungeons' and
-                    Forest_Medallion and Fire_Medallion and Water_Medallion and
-                    Shadow_Medallion and Spirit_Medallion and Light_Medallion and
-                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)
-                or (lacs_condition == 'stones' and
-                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire))"
+            "Zelda": "is_adult and can_trigger_lacs"
         },
         "exits": {
             "Temple of Time Exterior": "True",
@@ -693,21 +685,7 @@
         "exits": {
             "Castle Grounds": "at_night",
             "Ganons Castle Fairy": "can_use(Golden_Gauntlets) and at_night",
-            "Ganons Castle Lobby": "
-                (bridge == 'open')
-                or ((bridge == 'medallions') and
-                    Forest_Medallion and Fire_Medallion and Water_Medallion and
-                    Shadow_Medallion and Spirit_Medallion and Light_Medallion)
-                or ((bridge == 'vanilla') and
-                    Light_Arrows and Shadow_Medallion and Spirit_Medallion)
-                or ((bridge == 'dungeons') and
-                    Forest_Medallion and Fire_Medallion and Water_Medallion and 
-                    Shadow_Medallion and Spirit_Medallion and Light_Medallion and
-                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)
-                or ((bridge == 'stones') and
-                    Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)
-                or ((bridge == 'tokens') and
-                    (Gold_Skulltula_Token, bridge_tokens))"
+            "Ganons Castle Lobby": "can_build_rainbow_bridge"
         }
     },
     {
@@ -757,7 +735,7 @@
             "Mask of Truth": "'Skull Mask' and
                 at('Lost Woods', is_child and can_play(Sarias_Song)) and
                 at('Graveyard', is_child and at_day) and
-                at('Hyrule Field', is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)"
+                at('Hyrule Field', is_child and has_all_stones)"
         },
         "exits": {
             "Castle Town": "True"
