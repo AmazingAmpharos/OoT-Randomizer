@@ -1516,7 +1516,7 @@
             "Zoras Domain Behind King Zora": "
                 Deliver_Letter or zora_fountain == 'open' or
                 (zora_fountain == 'adult' and is_adult)",
-            "Zora Shop": "is_child or has_blue_fire",
+            "Zora Shop": "is_child or Blue_Fire",
             "Zoras Domain Storms Grotto": "can_play(Song_of_Storms)"
         }
     },
