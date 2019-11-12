@@ -255,8 +255,8 @@
         "hint": "Hyrule Field",
         "time_passes": true,
         "locations": {
-            "Ocarina of Time": "is_child and has_all_stones and guarantee_hint",
-            "Song from Ocarina of Time": "is_child and has_all_stones and guarantee_hint",
+            "Ocarina of Time": "is_child and has_all_stones",
+            "Song from Ocarina of Time": "is_child and has_all_stones",
             "Big Poe Kill": "can_use(Bow) and can_ride_epona and has_bottle"
         },
         "exits": {
