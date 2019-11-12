@@ -282,9 +282,13 @@ def get_barren_hint(spoiler, world, checked):
     return (GossipText("plundering #%s# is a foolish choice." % area, ['Pink']), None)
 
 
+def is_not_checked(location, checked):
+    return not (location in checked or get_hint_area(location) in checked)
+
+
 def get_good_item_hint(spoiler, world, checked):
     locations = [location for location in world.get_filled_locations()
-            if not location.name in checked and \
+            if is_not_checked(location, checked) and \
             location.item.majoritem and \
             not location.locked]
     if not locations:
@@ -304,7 +308,7 @@ def get_good_item_hint(spoiler, world, checked):
 
 def get_random_location_hint(spoiler, world, checked):
     locations = [location for location in world.get_filled_locations()
-            if not location.name in checked and \
+            if is_not_checked(location, checked) and \
             location.item.type not in ('Drop', 'Event', 'Shop', 'DungeonReward') and \
             not (location.parent_region.dungeon and \
                 isRestrictedDungeonItem(location.parent_region.dungeon, location.item)) and
@@ -327,7 +331,7 @@ def get_random_location_hint(spoiler, world, checked):
 
 def get_specific_hint(spoiler, world, checked, type):
     hintGroup = getHintGroup(type, world)
-    hintGroup = list(filter(lambda hint: hint.name not in checked, hintGroup))
+    hintGroup = list(filter(lambda hint: is_not_checked(world.get_location(hint.name), checked), hintGroup))
     if not hintGroup:
         return None
 
@@ -512,15 +516,6 @@ def buildGossipHints(spoiler, world):
             and playthrough.state_list[world.id].guarantee_hint())
 
     checkedLocations = set()
-    for location in world.get_locations():
-        if location.locked or \
-           location.item is None or \
-           location.item.type in ('Event', 'DungeonReward'):
-            continue
-
-        area_hint = get_hint_area(location)
-        if area_hint in world.empty_areas:
-            checkedLocations.add(location.name)
 
     stoneIDs = list(gossipLocations.keys())
 
