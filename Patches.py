@@ -1004,8 +1004,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Make the Kakariko Gate not open with the MS
     rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
 
-    if world.open_fountain:
-        save_context.write_bits(0x0EDB, 0x08) #Move king zora
+    if world.zora_fountain == 'open':
+        save_context.write_bits(0x0EDB, 0x08) # "Moved King Zora"
+    elif world.zora_fountain == 'adult':
+        rom.write_byte(rom.sym('MOVED_ADULT_KING_ZORA'), 1)
 
     # Make all chest opening animations fast
     rom.write_byte(rom.sym('FAST_CHESTS'), int(world.fast_chests))

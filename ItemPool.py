@@ -752,7 +752,7 @@ def get_pool_core(world):
         placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
 
     ruto_bottles = 1
-    if world.open_fountain:
+    if world.zora_fountain == 'open':
         ruto_bottles = 0
     elif world.item_pool_value == 'plentiful':
         ruto_bottles += 1

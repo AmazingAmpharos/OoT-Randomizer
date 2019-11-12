@@ -1342,12 +1342,27 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
-    Checkbutton(
-        name           = 'open_fountain',
-        gui_text       = 'Open Zora\'s Fountain',
+    Combobox(
+        name           = 'zora_fountain',
+        gui_text       = 'Zora\'s Fountain',
+        default        = 'closed',
+        choices        = {
+            'closed': 'Default Behavior (Closed)',
+            'adult':  'Open For Adult',
+            'open':   'Always Open',
+        },
         gui_tooltip    = '''\
-            King Zora starts out as moved. This also removes
-            Ruto's Letter from the item pool.
+            'Default Behavior': King Zora obstructs the way to
+            Zora's Fountain. Ruto's Letter must be shown as
+            child in order to move him for both eras.
+
+            'Open For Adult': King Zora is always moved in 
+            the adult era. This means Ruto's Letter is only
+            required to access Zora's Fountain as child.
+
+            'Always Open': King Zora starts as moved in
+            both the child and adult eras. This also removes 
+            Ruto's Letter from the pool since it can't be used.
         ''',
         shared         = True,
         gui_params     = {
