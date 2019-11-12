@@ -1421,8 +1421,7 @@ setting_infos = [
         gui_text       = 'Triforce Hunt',
         gui_tooltip    = '''\
             Pieces of the Triforce have been scattered around the world. 
-            Find 20 of them to beat the game. In multiworld, 20 per world
-            must be collectively obtained.
+            Find some of them to beat the game.
 
             Game is saved on completion, and Ganon's Castle key is given
             if beating the game again is desired.
@@ -1433,15 +1432,33 @@ setting_infos = [
         },
         disable        = {
             True  : {'settings' : ['shuffle_ganon_bosskey']},
+            False : {'settings' : ['triforce_goal_per_world']}
         },
     ),    
     Scale(
         name           = 'triforce_goal_per_world',
-        gui_text       = None,
+        gui_text       = 'Required Triforces Per World',
         default        = 20,
         min            = 1,
-        max            = 256,
+        max            = 100,
         shared         = True,
+        gui_tooltip    = '''\
+            Select the amount of Triforce Pieces required to beat the game.
+
+            In multiworld, each world will have the same number of triforces 
+            in them. The required ammount will be per world collectively. 
+            For example, if this is set to 20 in a 2 player multiworld, players 
+            need 40 total, but one player could obtain 30 and the other 10. 
+
+            Extra pieces are determined by the the Item Pool setting:
+            'Plentiful': 100% Extra
+            'Balanced': 50% Extra
+            'Scarce': 25% Extra
+            'Minimal: No Extra
+        ''',
+        gui_params     = {
+            "hide_when_disabled": True,
+        },
     ),
     Scale(
         name           = 'bridge_tokens',
