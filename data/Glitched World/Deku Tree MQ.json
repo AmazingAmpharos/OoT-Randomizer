@@ -5,14 +5,14 @@
         "locations": {
             "Deku Tree MQ Lobby Chest": "True",
             "Deku Tree MQ Slingshot Chest": "can_child_attack",
-            "Deku Tree MQ Slingshot Room Back Chest": "has_sticks or can_use(Dins_Fire)",
-            "Deku Tree MQ Basement Chest": "has_sticks or can_use(Dins_Fire)",
+            "Deku Tree MQ Slingshot Room Back Chest": "Sticks or can_use(Dins_Fire)",
+            "Deku Tree MQ Basement Chest": "Sticks or can_use(Dins_Fire)",
             "GS Deku Tree MQ Lobby": "can_child_attack"
         },
         "exits": {
             "Outside Deku Tree": "True",
-            "Deku Tree Compass Room": "has_slingshot and (has_sticks or can_use(Dins_Fire))",
-            "Deku Tree Boss Room": "has_slingshot and (has_sticks or can_use(Dins_Fire))"
+            "Deku Tree Compass Room": "Slingshot and (Sticks or can_use(Dins_Fire))",
+            "Deku Tree Boss Room": "Slingshot and (Sticks or can_use(Dins_Fire))"
         }
     },
     {
@@ -21,7 +21,7 @@
         "locations": {
             "Deku Tree MQ Compass Chest": "True",
             "GS Deku Tree MQ Compass Room": "
-                Boomerang and ((has_bombs and can_play(Song_of_Time)) or has_bombchus)"
+                Boomerang and ((Bombs and can_play(Song_of_Time)) or has_bombchus)"
         },
         "exits": {
             "Deku Tree Lobby": "True"
@@ -31,7 +31,7 @@
         "region_name": "Deku Tree Boss Room",
         "dungeon": "Deku Tree",
         "events": {
-            "Deku Tree Clear": "Buy_Deku_Shield and (Kokiri_Sword or has_sticks)"
+            "Deku Tree Clear": "Buy_Deku_Shield and (Kokiri_Sword or Sticks)"
         },
         "locations": {
             "Deku Tree MQ Before Spinning Log Chest": "True",
@@ -39,8 +39,8 @@
             "GS Deku Tree MQ Basement Ceiling": "Boomerang and can_play(Song_of_Time)",
             "GS Deku Tree MQ Basement Back Room": "Boomerang",
             "DT MQ Deku Scrub Deku Shield": "True",
-            "Queen Gohma Heart": "Buy_Deku_Shield and (Kokiri_Sword or has_sticks)",
-            "Queen Gohma": "Buy_Deku_Shield and (Kokiri_Sword or has_sticks)"
+            "Queen Gohma Heart": "Buy_Deku_Shield and (Kokiri_Sword or Sticks)",
+            "Queen Gohma": "Buy_Deku_Shield and (Kokiri_Sword or Sticks)"
         },
         "exits": {
             "Deku Tree Lobby": "True"

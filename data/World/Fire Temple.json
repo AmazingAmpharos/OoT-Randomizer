@@ -44,7 +44,7 @@
             "Fire Temple Middle": "
                 can_use(Goron_Tunic) and (Small_Key_Fire_Temple, 4) and
                 (Progressive_Strength_Upgrade or logic_fire_strength) and 
-                (has_explosives or has_bow or Progressive_Hookshot)"
+                (has_explosives or Bow or Progressive_Hookshot)"
         }
     },
     {

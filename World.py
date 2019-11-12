@@ -1,21 +1,20 @@
-from State import State
-from Region import Region, TimeOfDay
+import copy
+import logging
+import random
+
+from DungeonList import create_dungeons
 from Entrance import Entrance
+from HintList import getRequiredHints
 from Hints import get_hint_area
+from Item import Item, ItemFactory, MakeEventItem
 from Location import Location, LocationFactory
 from LocationList import business_scrubs
-from DungeonList import create_dungeons
+from Region import Region, TimeOfDay
 from Rules import set_rules, set_shop_rules
-from Item import Item, ItemFactory, MakeEventItem
 from RuleParser import Rule_AST_Transformer
 from SettingsList import get_setting_info
-from HintList import getRequiredHints
-import logging
-import copy
-import io
-import json
-import random
-import re
+from State import State
+from Utils import read_json
 
 class World(object):
 
@@ -190,17 +189,7 @@ class World(object):
 
 
     def load_regions_from_json(self, file_path):
-        json_string = ""
-        with io.open(file_path, 'r') as file:
-            for line in file.readlines():
-                json_string += line.split('#')[0].replace('\n', ' ')
-        json_string = re.sub(' +', ' ', json_string)
-        try:
-            region_json = json.loads(json_string)
-        except json.JSONDecodeError as error:
-            raise Exception("JSON parse error around text:\n" + \
-                            json_string[error.pos-35:error.pos+35] + "\n" + \
-                            "                                   ^^\n")
+        region_json = read_json(file_path)
             
         for region in region_json:
             new_region = Region(region['region_name'])

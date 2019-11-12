@@ -4,14 +4,14 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple MQ First Chest": "
-                is_adult or has_bombs or can_use(Sticks) or has_nuts or can_use(Boomerang) or
+                is_adult or Bombs or can_use(Sticks) or Nuts or can_use(Boomerang) or
                 can_use(Dins_Fire) or Kokiri_Sword or can_use(Slingshot)",
             "GS Forest Temple MQ First Hallway": "can_use(Hookshot) or can_use(Boomerang)"
         },
         "exits": {
             "Sacred Forest Meadow": "True",
             "Forest Temple Central Area": "
-                (Small_Key_Forest_Temple, 1) and (is_adult or can_child_attack or has_nuts)"
+                (Small_Key_Forest_Temple, 1) and (is_adult or can_child_attack or Nuts)"
         }
     },
     {
@@ -85,7 +85,7 @@
                 (can_use(Iron_Boots) and can_use(Hookshot)) or can_use(Bow) or can_use(Slingshot)",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
-                is_adult or has_slingshot or has_sticks or 
+                is_adult or Slingshot or Sticks or 
                 has_explosives or Kokiri_Sword or can_use(Dins_Fire)"
         },
         "exits": {

@@ -12,22 +12,22 @@
         "region_name": "Ice Cavern",
         "dungeon": "Ice Cavern",
         "locations": {
-            "Ice Cavern Map Chest": "has_blue_fire and is_adult",
-            "Ice Cavern Compass Chest": "has_blue_fire",
+            "Ice Cavern Map Chest": "Blue_Fire and is_adult",
+            "Ice Cavern Compass Chest": "Blue_Fire",
             "Ice Cavern Iron Boots Chest": "
-                has_blue_fire and 
-                (is_adult or has_slingshot or has_sticks or 
+                Blue_Fire and 
+                (is_adult or Slingshot or Sticks or 
                     Kokiri_Sword or can_use(Dins_Fire))",
             "Sheik in Ice Cavern": "
-                has_blue_fire and 
-                (is_adult or has_slingshot or has_sticks or 
+                Blue_Fire and 
+                (is_adult or Slingshot or Sticks or 
                     Kokiri_Sword or can_use(Dins_Fire))",
-            "Ice Cavern Freestanding PoH": "has_blue_fire",
+            "Ice Cavern Freestanding PoH": "Blue_Fire",
             "GS Ice Cavern Spinning Scythe Room": "can_use(Hookshot) or can_use(Boomerang)",
             "GS Ice Cavern Heart Piece Room": "
-                has_blue_fire and (can_use(Hookshot) or can_use(Boomerang))",
+                Blue_Fire and (can_use(Hookshot) or can_use(Boomerang))",
             "GS Ice Cavern Push Block Room": "
-                has_blue_fire and (can_use(Hookshot) or can_use(Boomerang))",
+                Blue_Fire and (can_use(Hookshot) or can_use(Boomerang))",
             "Blue Fire": "is_adult and has_bottle"
         }
     }

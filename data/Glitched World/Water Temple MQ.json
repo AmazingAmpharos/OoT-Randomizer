@@ -28,7 +28,7 @@
         "region_name": "Water Temple Lowered Water Levels",
         "dungeon": "Water Temple",
         "locations": {
-            "Water Temple MQ Compass Chest": "has_bow or can_use(Dins_Fire)",
+            "Water Temple MQ Compass Chest": "Bow or can_use(Dins_Fire)",
             "Water Temple MQ Longshot Chest": "True",
             "GS Water Temple MQ Lizalfos Hallway": "can_use(Dins_Fire)",
             "GS Water Temple MQ Before Upper Water Switch": "can_use(Longshot)"
@@ -43,7 +43,7 @@
         },
         "exits": {
             "Water Temple Basement Gated Areas": "
-                can_use(Dins_Fire) and (Hover_Boots or has_ocarina)"
+                can_use(Dins_Fire) and (Hover_Boots or Ocarina)"
         }
     },
     {

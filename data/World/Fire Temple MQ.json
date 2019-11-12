@@ -39,7 +39,7 @@
         "dungeon": "Fire Temple",
         "locations": {
             "Fire Temple MQ Boss Key Chest": "
-                has_fire_source and (has_bow or logic_fire_mq_bk_chest) and 
+                has_fire_source and (Bow or logic_fire_mq_bk_chest) and 
                 Progressive_Hookshot",
             "Fire Temple MQ Big Lava Room Bombable Chest": "
                 has_fire_source and has_explosives and
@@ -47,7 +47,7 @@
                     (logic_fire_mq_bombable_chest and (damage_multiplier != 'ohko' or can_use(Nayrus_Love))))",
             "GS Fire Temple MQ Big Lava Room": "True",
             "Fairy Pot": "
-                has_bottle and has_fire_source and (has_bow or logic_fire_mq_bk_chest) and
+                has_bottle and has_fire_source and (Bow or logic_fire_mq_bk_chest) and
                 (Progressive_Hookshot or logic_fire_song_of_time)"
 
         },
@@ -82,7 +82,7 @@
                 has_bottle and (can_play(Song_of_Time) or can_use(Longshot))"
         },
         "exits": {
-            "Fire Temple Upper": "(Small_Key_Fire_Temple, 3) and has_bow"
+            "Fire Temple Upper": "(Small_Key_Fire_Temple, 3) and Bow"
         }
     },
     {

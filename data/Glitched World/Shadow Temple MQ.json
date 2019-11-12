@@ -22,7 +22,7 @@
         "dungeon": "Shadow Temple",
         "locations": {
             "Shadow Temple MQ Compass Chest": "True",
-            "Shadow Temple MQ Hover Boots Chest": "can_play(Song_of_Time) and has_bow"
+            "Shadow Temple MQ Hover Boots Chest": "can_play(Song_of_Time) and Bow"
         }
     },
     {
@@ -76,14 +76,14 @@
         "region_name": "Shadow Temple Beyond Boat",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Bongo Bongo Heart": "has_bow and Boss_Key_Shadow_Temple",
-            "Bongo Bongo": "has_bow and Boss_Key_Shadow_Temple",
+            "Bongo Bongo Heart": "Bow and Boss_Key_Shadow_Temple",
+            "Bongo Bongo": "Bow and Boss_Key_Shadow_Temple",
             "GS Shadow Temple MQ After Ship": "True",
-            "GS Shadow Temple MQ Near Boss": "has_bow"
+            "GS Shadow Temple MQ Near Boss": "Bow"
         },
         "exits": {
             "Shadow Temple Invisible Maze": "
-                has_bow and can_play(Song_of_Time) and can_use(Longshot)"
+                Bow and can_play(Song_of_Time) and can_use(Longshot)"
         }
     },
     {

@@ -14,7 +14,7 @@
             "Blue Fire": "is_adult and has_bottle"
         },
         "exits": {
-            "Ice Cavern Interior": "has_blue_fire"
+            "Ice Cavern Interior": "Blue_Fire"
         }
     },
     {

@@ -44,13 +44,13 @@
             "Water Temple Compass Chest": "
                 (can_play(Zeldas_Lullaby) or Iron_Boots) and can_use(Hookshot)",
             "Water Temple Torches Chest": "
-                (has_bow or can_use(Dins_Fire) or 
-                 (Child_Water_Temple and has_sticks and Kokiri_Sword and Magic_Meter)) and
+                (Bow or can_use(Dins_Fire) or 
+                 (Child_Water_Temple and Sticks and Kokiri_Sword and Magic_Meter)) and
                 can_play(Zeldas_Lullaby)",
             "Water Temple Central Bow Target Chest": "
                 Progressive_Strength_Upgrade and can_play(Zeldas_Lullaby) and 
-                ((has_bow and (logic_water_central_bow or Hover_Boots or can_use(Longshot))) or
-                    (logic_water_central_bow and Child_Water_Temple and has_slingshot and at('Water Temple Middle Water Level', True)))",
+                ((Bow and (logic_water_central_bow or Hover_Boots or can_use(Longshot))) or
+                    (logic_water_central_bow and Child_Water_Temple and Slingshot and at('Water Temple Middle Water Level', True)))",
             "GS Water Temple South Basement": "
                 (can_use(Hookshot) or can_use(Hover_Boots)) and 
                 has_explosives and can_play(Zeldas_Lullaby) and
@@ -61,9 +61,9 @@
                 can_play(Zeldas_Lullaby) and (can_use(Hookshot) or can_use(Hover_Boots)) and
                 (logic_water_cracked_wall_nothing or (logic_water_cracked_wall_hovers and can_use(Hover_Boots)))",
             "Water Temple Middle Water Level": "
-                (has_bow or can_use(Dins_Fire) or
+                (Bow or can_use(Dins_Fire) or
                  ((Small_Key_Water_Temple, 6) and can_use(Hookshot)) or
-                 (Child_Water_Temple and has_sticks)) and
+                 (Child_Water_Temple and Sticks)) and
                 can_play(Zeldas_Lullaby)",
             "Water Temple North Basement": "
                 (Small_Key_Water_Temple, 5) and
@@ -119,7 +119,7 @@
                 ((can_use(Longshot) or (can_use(Farores_Wind) and can_use(Hookshot))) and
                  ((Small_Key_Water_Temple, 6) or can_use(Bow) or can_use(Dins_Fire))) or
                 (Child_Water_Temple and Boomerang and can_use(Farores_Wind) and
-                    (can_use(Dins_Fire) or has_sticks))"
+                    (can_use(Dins_Fire) or Sticks))"
         },
         "exits": {
             "Water Temple Cracked Wall": "True"
@@ -131,10 +131,10 @@
         "locations": {
             "Water Temple Dark Link Chest": "(Small_Key_Water_Temple, 6)",
             "Water Temple River Chest": "
-                (Small_Key_Water_Temple, 6) and can_play(Song_of_Time) and has_bow",
+                (Small_Key_Water_Temple, 6) and can_play(Song_of_Time) and Bow",
             "GS Water Temple Serpent River": "
                 can_play(Song_of_Time) and (Small_Key_Water_Temple, 6) and 
-                (Iron_Boots or (logic_water_river_gs and can_use(Longshot) and (has_bow or has_bombchus)))",
+                (Iron_Boots or (logic_water_river_gs and can_use(Longshot) and (Bow or has_bombchus)))",
             "GS Water Temple Falling Platform Room": "
                 can_use(Longshot) or
                 (logic_water_falling_platform_gs and can_use(Hookshot))",
@@ -143,7 +143,7 @@
         },
         "exits": {
             "Water Temple Dragon Statue": "
-                (Small_Key_Water_Temple, 6) and can_play(Song_of_Time) and has_bow and
+                (Small_Key_Water_Temple, 6) and can_play(Song_of_Time) and Bow and
                 ((Iron_Boots and (can_use(Zora_Tunic) or logic_fewer_tunic_requirements)) or
                     logic_water_dragon_jump_dive or
                     (logic_water_dragon_bombchu and has_bombchus and can_dive))"

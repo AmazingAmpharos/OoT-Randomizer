@@ -54,12 +54,12 @@
         "region_name": "Ganons Castle Water Trial",
         "dungeon": "Ganons Castle",
         "events": {
-            "Water Trial Clear": "has_blue_fire and Hammer and can_use(Light_Arrows)"
+            "Water Trial Clear": "Blue_Fire and Hammer and can_use(Light_Arrows)"
         },
         "locations": {
             "Ganons Castle Water Trial Left Chest": "True",
             "Ganons Castle Water Trial Right Chest": "True",
-            "Fairy Pot": "has_blue_fire and has_bottle",
+            "Fairy Pot": "Blue_Fire and has_bottle",
             "Blue Fire": "has_bottle"
         }
     },

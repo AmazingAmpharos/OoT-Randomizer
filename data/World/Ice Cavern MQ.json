@@ -10,8 +10,8 @@
             "Ice Cavern Map Room": "
                 is_adult or can_use(Dins_Fire) or
                 (has_explosives and (can_use(Sticks) or can_use(Slingshot) or Kokiri_Sword))",
-            "Ice Cavern Compass Room": "is_adult and has_blue_fire",
-            "Ice Cavern Iron Boots Region": "has_blue_fire"
+            "Ice Cavern Compass Room": "is_adult and Blue_Fire",
+            "Ice Cavern Iron Boots Region": "Blue_Fire"
         }
     },
     {
@@ -19,7 +19,7 @@
         "dungeon": "Ice Cavern",
         "locations": {
             "Ice Cavern MQ Map Chest": "
-                has_blue_fire and
+                Blue_Fire and
                 (is_adult or can_use(Sticks) or Kokiri_Sword or can_use_projectile)",
             "Blue Fire": "is_adult and has_bottle"
         }
