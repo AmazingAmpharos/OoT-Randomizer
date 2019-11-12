@@ -2559,24 +2559,22 @@ setting_infos = [
         gui_text       = 'Starting Time of Day',
         default        = 'default',
         choices        = {
-            'default':       'Default',
+            'default':       'Default (10:00)',
             'random':        'Random Choice',
-            'sunrise':       'Sunrise',
-            'morning':       'Morning',
-            'noon':          'Noon',
-            'afternoon':     'Afternoon',
-            'sunset':        'Sunset',
-            'evening':       'Evening',
-            'midnight':      'Midnight',
-            'witching-hour': 'Witching Hour',
+            'sunrise':       'Sunrise (6:30)',
+            'morning':       'Morning (9:00)',
+            'noon':          'Noon (12:00)',
+            'afternoon':     'Afternoon (15:00)',
+            'sunset':        'Sunset (18:00)',
+            'evening':       'Evening (21:00)',
+            'midnight':      'Midnight (00:00)',
+            'witching-hour': 'Witching Hour (03:00)',
         },
         gui_tooltip    = '''\
             Change up Link's sleep routine.
 
             Daytime officially starts at 6:30,
             nighttime at 18:00 (6:00 PM).
-
-            Default is 10:00 in the morning.
         ''',
         shared         = True,
     ),
