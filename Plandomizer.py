@@ -400,9 +400,9 @@ class WorldDistribution(object):
                     removed_items = self.pool_remove_item([pool], item_name, -add_count)
                     for item in removed_items:
                         if bottle_matcher(item):
-                            self.pool_add_item([pool], "#Bottle", 1)
+                            self.pool_add_item(pool, "#Bottle", 1)
                         elif trade_matcher(item):
-                            self.pool_add_item([pool], "#AdultTrade", 1)
+                            self.pool_add_item(pool, "#AdultTrade", 1)
 
         junk_to_add = pool_size - len(pool)
         if junk_to_add > 0:
