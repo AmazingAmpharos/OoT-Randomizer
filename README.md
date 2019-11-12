@@ -70,6 +70,24 @@ player.
 
 ## Changelog
 
+#### New Features
+* Triforce Hunt
+  * Collect some number of Triforce Pieces to beat the game instead of beating Ganon
+  * Multiworld Triforce counts are collective, so once the total is reach across all players everyone wins.
+
+#### Updated Settings 
+* Open Zora Fountain now has an open only adult option.
+
+#### Other Changed
+* Non-Always Location hints cannot be placed for an area that already has a Foolish hint.
+  * If the location hint is placed first, then it can still appear in a foolish hinted area, however in Tournament hint distribution the Foolish hints are placed first so that cannot happen.
+* Refactored Logic once again. It now uses helper json rules and rules and reference other rules
+
+#### Bug Fixes
+* Minor stability fix in Plando
+* Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers
+
+
 ### 5.1
 
 #### New Features
