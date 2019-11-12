@@ -546,7 +546,7 @@ vanillaMC = {
     'Forest Temple MQ Map Chest': 'Map (Forest Temple)',
     'Ice Cavern MQ Map Chest': 'Map (Ice Cavern)',
     'Jabu Jabus Belly MQ Map Chest': 'Map (Jabu Jabus Belly)',
-    'Shadow Temple MQ Early Gibdos Chest': 'Map (Shadow Temple)',
+    'Shadow Temple MQ Map Chest': 'Map (Shadow Temple)',
     'Spirit Temple MQ Map Chest': 'Map (Spirit Temple)',
     'Water Temple MQ Map Chest': 'Map (Water Temple)',
 }
@@ -617,7 +617,7 @@ vanillaSK = {
     'Gerudo Training Grounds MQ Underwater Silver Rupee Chest': 'Small Key (Gerudo Training Grounds)',
     'Shadow Temple MQ Falling Spikes Switch Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Invisible Blades Invisible Chest': 'Small Key (Shadow Temple)',
-    'Shadow Temple MQ Map Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple MQ Early Gibdos Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Near Ship Invisible Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Wind Hint Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Freestanding Key': 'Small Key (Shadow Temple)',
