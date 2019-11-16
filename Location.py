@@ -87,6 +87,16 @@ class Location(object):
         return False
 
 
+    def has_item(self):
+        return self.item is not None
+
+    def has_no_item(self):
+        return self.item is None
+
+    def has_progression_item(self):
+        return self.item is not None and self.item.advancement
+
+
     def __str__(self):
         return str(self.__unicode__())
 
