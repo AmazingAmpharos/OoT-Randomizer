@@ -283,7 +283,7 @@ def get_barren_hint(spoiler, world, checked):
 
 
 def is_not_checked(location, checked):
-    return not (location in checked or get_hint_area(location) in checked)
+    return not (location.name in checked or get_hint_area(location) in checked)
 
 
 def get_good_item_hint(spoiler, world, checked):
