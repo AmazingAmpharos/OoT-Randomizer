@@ -378,11 +378,11 @@ def patch_gauntlet_colors(rom, settings, log, symbols):
 def patch_heart_colors(rom, settings, log, symbols):
     # patch tunic colors
     hearts = [
-        ('Heart Colors', settings.heart_color, symbols['CFG_HEART_COLOR']),
+        ('Heart Colors', settings.heart_color, symbols['CFG_HEART_COLOR'], 0xBB0994),
     ]
     heart_color_list = get_heart_colors()
 
-    for heart, heart_option, symbol in hearts:
+    for heart, heart_option, symbol, file_select_address in hearts:
         # handle random
         if heart_option == 'Random Choice':
             heart_option = random.choice(heart_color_list)
@@ -396,7 +396,10 @@ def patch_heart_colors(rom, settings, log, symbols):
         else:
             color = list(int(heart_option[i:i+2], 16) for i in (0, 2, 4))
             heart_option = 'Custom'
-        rom.write_int16s(symbol, color)
+        rom.write_int16s(symbol, color) # symbol for ingame HUD
+        rom.write_int16s(file_select_address, color) # file select normal hearts
+        if heart_option != 'Red':
+            rom.write_int16s(file_select_address + 6, color) # file select DD hearts
         log.heart_colors[heart] = dict(option=heart_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
