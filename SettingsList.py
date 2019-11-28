@@ -1286,7 +1286,7 @@ setting_infos = [
         disable        = {
             True : {
                 'sections' : ['open_section', 'shuffle_section', 'shuffle_dungeon_section'],
-                'settings' : ['starting_age', 'entrance_shuffle', 'bombchus_in_logic', 'one_item_per_dungeon'],
+                'settings' : ['starting_age', 'triforce_hunt', 'triforce_goal_per_world', 'entrance_shuffle', 'bombchus_in_logic', 'one_item_per_dungeon'],
             }
         },
         shared         = True,
@@ -3297,7 +3297,7 @@ for info in setting_infos:
         for option, disabling in info.disable.items():
             for setting in disabling.get('settings', []):
                 create_dependency(setting, info, option)
-            for section in disabling.get('setions', []):
+            for section in disabling.get('sections', []):
                 for setting in get_settings_from_section(section):
                     create_dependency(setting, info, option)
             for tab in disabling.get('tabs', []):

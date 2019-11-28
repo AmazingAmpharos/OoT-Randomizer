@@ -73,7 +73,8 @@ player.
 #### New Features
 * Triforce Hunt
   * Collect some number of Triforce Pieces to beat the game instead of beating Ganon
-  * Multiworld Triforce counts are collective, so once the total is reach across all players everyone wins.
+  * Multiworld Triforce counts are collective, so once the total is reached across all players everyone wins.
+  * If enabled via randomizing main rules, the count is always 20.
 
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
@@ -90,6 +91,7 @@ player.
 * Minor stability fix in Plando
 * Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers
 * Removed (unnecessarily) duplicated/overlapping hints.
+* Randomizing main rules now works correctly.
 
 
 ### 5.1
