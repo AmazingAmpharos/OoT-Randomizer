@@ -81,11 +81,13 @@ player.
 #### Other Changed
 * Non-Always Location hints cannot be placed for an area that already has a Foolish hint.
   * If the location hint is placed first, then it can still appear in a foolish hinted area, however in Tournament hint distribution the Foolish hints are placed first so that cannot happen.
-* Refactored Logic once again. It now uses helper json rules and rules and reference other rules
+* Refactored Logic once again. It now uses helper json rules and rules and reference other rules.
+* Updated Compressor. The GUI progress bar is now granular. If for some reason, the rom won't fit into 32MB, then the compressor will increase the output size.
 
 #### Bug Fixes
 * Minor stability fix in Plando
 * Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers
+* Removed (unnecessarily) duplicated/overlapping hints.
 
 
 ### 5.1
