@@ -1,4 +1,5 @@
 {
+"seed": "TESTTESTTEST",
 "create_spoiler": true,
 "compress_rom": "None",
 "distribution_file": "tests/cfairy.dist",

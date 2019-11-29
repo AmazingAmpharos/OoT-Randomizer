@@ -46,7 +46,7 @@ bottles = {
 junk = set(remove_junk_items)
 
 
-def load_settings(settings_file):
+def load_settings(settings_file, seed=None):
     sfile = os.path.join(test_dir, settings_file)
     ofile = os.path.join(test_dir, 'Output', os.path.splitext(settings_file)[0])
     with open(sfile) as f:
@@ -58,6 +58,8 @@ def load_settings(settings_file):
         'create_spoiler': True,
         'output_file': ofile,
     })
+    if seed and 'seed' not in j:
+        j['seed'] = seed
     return Settings(j)
 
 
@@ -187,7 +189,7 @@ class TestValidSpoilers(unittest.TestCase):
                       if filename.endswith('.sav')]
         for filename in test_files:
             with self.subTest(filename=filename):
-                settings = load_settings(filename)
+                settings = load_settings(filename, seed='TESTTESTTEST')
                 main(settings)
                 # settings.output_file contains the first part of the filename
                 spoiler = load_spoiler('%s_Spoiler.json' % settings.output_file)

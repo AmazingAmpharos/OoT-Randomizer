@@ -1,4 +1,5 @@
 {
+    "seed": "TESTTESTTEST",
     "create_spoiler": true,
     "world_count": 1,
     "randomize_settings": false,
