@@ -3,8 +3,8 @@
 logic_chus__bowling_lady_1:
 ; Change Bowling Alley check to Bombchus or Bomb Bag (Part 1)
 
-    lb      at, BOMBCHUS_IN_LOGIC
-    beq     at, r0, @@logic_chus_false
+    lb      t7, BOMBCHUS_IN_LOGIC
+    beq     t7, r0, @@logic_chus_false
     nop
 
 @@logic_chus_true:
@@ -29,8 +29,8 @@ logic_chus__bowling_lady_1:
 logic_chus__bowling_lady_2:
 ; Change Bowling Alley check to bombchus or Bomb Bag (Part 2)
 
-    lb      at, BOMBCHUS_IN_LOGIC
-    beq     at, r0, @@logic_chus_false
+    lb      t3, BOMBCHUS_IN_LOGIC
+    beq     t3, r0, @@logic_chus_false
     nop
 
 @@logic_chus_true:
@@ -51,11 +51,12 @@ logic_chus__bowling_lady_2:
     jr      ra
     nop
 
+
 logic_chus__shopkeeper:
 ; Cannot buy bombchu refills without Bomb Bag
 
-    lb      at, BOMBCHUS_IN_LOGIC
-    beq     at, r0, @@logic_chus_false
+    lb      t1, BOMBCHUS_IN_LOGIC
+    beq     t1, r0, @@logic_chus_false
     nop
     
 @@logic_chus_true:
