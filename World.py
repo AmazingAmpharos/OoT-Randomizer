@@ -464,11 +464,15 @@ class World(object):
 
 
     def get_unfilled_locations(self):
-        return [location for location in self.get_locations() if location.item is None]
+        return filter(Location.has_no_item, self.get_locations())
 
 
     def get_filled_locations(self):
-        return [location for location in self.get_locations() if location.item is not None]
+        return filter(Location.has_item, self.get_locations())
+
+
+    def get_progression_locations(self):
+        return filter(Location.has_progression_item, self.get_locations())
 
 
     def get_entrances(self):

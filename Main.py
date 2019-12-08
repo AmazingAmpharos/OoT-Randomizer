@@ -512,7 +512,7 @@ def create_playthrough(spoiler):
 
     playthrough = RewindablePlaythrough([world.state for world in worlds])
     # Get all item locations in the worlds
-    item_locations = [location for state in playthrough.state_list for location in state.world.get_filled_locations() if location.item.advancement]
+    item_locations = playthrough.progression_locations()
     # Omit certain items from the playthrough
     internal_locations = {location for location in item_locations if location.internal}
     # Generate a list of spheres by iterating over reachable locations without collecting as we go.

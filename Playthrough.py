@@ -154,16 +154,6 @@ class Playthrough(object):
     # locations to see if the game is beatable. Collection should be done
     # using internal State (recommended to just call playthrough.collect).
     def iter_reachable_locations(self, item_locations):
-        # tests reachability, skipping recursive can_reach region check
-        def accessible(loc):
-            return (loc not in visited_locations
-                    # Check adult first; it's the most likely.
-                    and (loc.parent_region in adult_regions
-                         and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='adult')
-                         or (loc.parent_region in child_regions
-                             and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='child'))))
-
-
         had_reachable_locations = True
         # will loop as long as any visits were made, and at least once
         while had_reachable_locations:
@@ -171,13 +161,18 @@ class Playthrough(object):
 
             # Get all locations in accessible_regions that aren't visited,
             # and check if they can be reached. Collect them.
-            reachable_locations = filter(accessible, item_locations)
             had_reachable_locations = False
-            for location in reachable_locations:
-                had_reachable_locations = True
-                # Mark it visited for this algorithm
-                visited_locations.add(location)
-                yield location
+            for loc in item_locations:
+                if (loc not in visited_locations
+                    # Check adult first; it's the most likely.
+                    and (loc.parent_region in adult_regions
+                         and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='adult')
+                         or (loc.parent_region in child_regions
+                             and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='child')))):
+                    had_reachable_locations = True
+                    # Mark it visited for this algorithm
+                    visited_locations.add(loc)
+                    yield loc
 
 
     # This collects all item locations available in the state list given that
@@ -197,7 +192,7 @@ class Playthrough(object):
 
     # Retrieve all item locations in the worlds that have progression items
     def progression_locations(self):
-        return [location for state in self.state_list for location in state.world.get_filled_locations() if location.item.advancement]
+        return [location for state in self.state_list for location in state.world.get_locations() if location.item and location.item.advancement]
 
 
     # This returns True if every state is beatable. It's important to ensure

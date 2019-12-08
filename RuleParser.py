@@ -61,6 +61,8 @@ class Rule_AST_Transformer(ast.NodeTransformer):
         # lazy load aliases
         if not rule_aliases:
             load_aliases()
+        # final rule cache
+        self.rule_cache = {}
 
 
     def visit_Name(self, node):
@@ -373,25 +375,28 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
 
     def make_access_rule(self, body):
-        # requires consistent iteration on dicts
-        kwargs = [ast.arg(arg=k) for k in kwarg_defaults.keys()]
-        kwd = list(map(ast.Constant, kwarg_defaults.values()))
-        try:
-            return eval(compile(
-                ast.fix_missing_locations(
-                    ast.Expression(ast.Lambda(
-                        args=ast.arguments(
-                            posonlyargs=[],
-                            args=[ast.arg(arg='state')],
-                            defaults=[],
-                            kwonlyargs=kwargs,
-                            kw_defaults=kwd),
-                        body=body))),
-                '<string>', 'eval'),
-                # globals/locals. if undefined, everything in the namespace *now* would be allowed
-                allowed_globals)
-        except TypeError as e:
-            raise Exception('Parse Error: %s' % e, self.current_spot.name, ast.dump(body, False))
+        rule_str = ast.dump(body, False)
+        if rule_str not in self.rule_cache:
+            # requires consistent iteration on dicts
+            kwargs = [ast.arg(arg=k) for k in kwarg_defaults.keys()]
+            kwd = list(map(ast.Constant, kwarg_defaults.values()))
+            try:
+                self.rule_cache[rule_str] = eval(compile(
+                    ast.fix_missing_locations(
+                        ast.Expression(ast.Lambda(
+                            args=ast.arguments(
+                                posonlyargs=[],
+                                args=[ast.arg(arg='state')],
+                                defaults=[],
+                                kwonlyargs=kwargs,
+                                kw_defaults=kwd),
+                            body=body))),
+                    '<string>', 'eval'),
+                    # globals/locals. if undefined, everything in the namespace *now* would be allowed
+                    allowed_globals)
+            except TypeError as e:
+                raise Exception('Parse Error: %s' % e, self.current_spot.name, ast.dump(body, False))
+        return self.rule_cache[rule_str]
 
 
     ## Handlers for specific internal functions used in the json logic.
