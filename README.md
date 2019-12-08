@@ -92,6 +92,7 @@ player.
 * Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers
 * Removed (unnecessarily) duplicated/overlapping hints.
 * Randomizing main rules now works correctly.
+* Removed a misleading random "trials" value from the non-randomized settings in the spoiler.
 
 
 ### 5.1
