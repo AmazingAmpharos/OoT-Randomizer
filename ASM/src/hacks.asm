@@ -917,6 +917,30 @@ skip_GS_BGS_text:
     nop
     nop
 
+; Carpet Salesman checks that player owns Bombchu
+
+; Replaces:
+;    lh      t6, -0x59FC(t6)           # t6 was 0x80120000, now t6 = [0x8011A604 (number of rupees)]
+;    or      a0, a2, $zero
+;    slti    $at, t6, 0x00C8           # at = (rupees < 200)
+;    beq     $at, $zero, 0x80ADB7B4
+;    nop
+;    jal     0x800DCE80
+;    addiu   a1, $zero, 0x6075         # a1 = 00006075
+.orga 0xE5B5C8     ; 0x80ADB788
+    jal     logic_chus__carpet_salesman_purchase ; sets a1 == 0 to allow purchase; textID otherwise
+    or      a0, a2, r0
+
+    beq     a1, r0, @label_80ADB7B4 ; jump to purchase code if a1 == 0
+    nop
+    nop
+
+.skip 4    ; jal     0x800DCE80 ; call message display code
+    nop
+
+.skip 4 * 4
+@label_80ADB7B4:
+
 ;==================================================================================================
 ; Rainbow Bridge
 ;==================================================================================================
