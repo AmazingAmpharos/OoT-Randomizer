@@ -466,7 +466,7 @@ fixedlocations = {
     'Deliver Ruto\'s Letter': 'Deliver Letter',
     'Master Sword Pedestal': 'Time Travel',
     'Bombchu Bowling Bombchus': 'Bombchu Drop',
-    'Haunted Wasteland Bombchu Salesman': 'Bombchus',
+    'Haunted Wasteland Bombchu Salesman': 'Bombchu Drop',
 }
 
 droplocations = {
