@@ -154,9 +154,7 @@ def generate(settings, window):
         window.update_status('Calculating Hint Data')
         logger.info('Calculating hint data.')
         State.update_required_items(spoiler)
-        for world in worlds:
-            world.update_useless_areas(spoiler)
-            buildGossipHints(spoiler, world)
+        buildGossipHints(spoiler, worlds)
         window.update_progress(55)
     spoiler.build_file_hash()
     return spoiler

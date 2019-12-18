@@ -86,6 +86,7 @@ player.
 * Updated Compressor. The GUI progress bar is now granular. If for some reason, the rom won't fit into 32MB, then the compressor will increase the output size.
 * Cosmetic heart color setting now applies in the file select screen.
 * Ganondorf no longer hints at his Boss Key chest contents.
+* The location containing Light Arrows will be considered a hinted location if Ganondorf's hint can be reached without them.
 * Further seed generation speed improvements.
 
 #### Bug Fixes
