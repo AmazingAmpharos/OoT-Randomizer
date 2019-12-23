@@ -5,7 +5,7 @@ from Rules import set_shop_rules
 from Location import DisableType
 from ItemPool import junk_pool, item_groups
 from LocationList import location_groups
-from ItemPool import songlist, get_junk_item, junk_pool, item_groups
+from ItemPool import songlist, get_junk_item, junk_pool, item_groups, remove_junk_items
 from ItemList import item_table
 from Item import ItemFactory
 from Playthrough import Playthrough
@@ -64,13 +64,28 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 
     # set ice traps to have the appearance of other random items in the item pool
     ice_traps = [item for item in itempool if item.name == 'Ice Trap']
+    junk_items = ['Bombs (5)','Bombs (10)','Bombs (20)',
+                'Deku Nuts (5)','Deku Nuts (10)','Deku Stick (1)','Recovery Heart',
+                'Arrows (5)','Arrows (10)','Arrows (30)','Deku Seeds (30)',
+                'Rupees (5)','Rupees (20)','Rupees (50)','Rupees (200)']
+    major_items = [item for (item, data) in item_table.items() if data[0] == 'Item' and data[1] and data[2] is not None]
     fake_items = []
-    major_items = [item for item in itempool if item.majoritem]
-    if len(major_items) == 0: # All major items were somehow removed from the pool (can happen in plando)
-        major_items = ItemFactory([item for (item, data) in item_table.items() if data[0] == 'Item' and data[1] and data[2] is not None])
+    model_items = []
+    if worlds[0].settings.ice_trap_appearance == 'major_only':
+        model_items = [item for item in itempool if item.majoritem]
+        if len(model_items) == 0: # All major items were somehow removed from the pool (can happen in plando)
+            model_items = ItemFactory(major_items)
+    elif worlds[0].settings.ice_trap_appearance == 'junk_only':
+        model_items = [item for item in itempool if item.name in junk_items]
+        if len(model_items) == 0: # All junk was removed
+            model_items = ItemFactory(junk_items)
+    else: # world[0].settings.ice_trap_appearance == 'anything':
+        model_items = [item for item in itempool if item.majoritem or item.name in junk_items]
+        if len(model_items) == 0: # All major items and junk were somehow removed from the pool (can happen in plando)
+            model_items = ItemFactory(major_items) + ItemFactory(junk_items)
     while len(ice_traps) > len(fake_items):
-        # if there are more ice traps than major items, then double up on major items
-        fake_items.extend(major_items)
+        # if there are more ice traps than model items, then double up on model items
+        fake_items.extend(model_items)
     for random_item in random.sample(fake_items, len(ice_traps)):
         ice_trap = ice_traps.pop(0)
         ice_trap.looks_like_item = random_item

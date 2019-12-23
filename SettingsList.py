@@ -2480,6 +2480,30 @@ setting_infos = [
         shared         = True,
     ),
     Combobox(
+        name           = 'ice_trap_appearance',
+        gui_text       = 'Ice Trap Appearance',
+        default        = 'major_only',
+        choices        = {
+            'major_only': 'Major Items Only',
+            'junk_only': 'Junk Items Only',
+            'anything':     'Anything'
+        },
+        gui_tooltip    = '''\
+            Changes the categories of items Ice Traps may
+            appear as both when freestanding and when in
+            chests with Chest Size Matches Conents enabled. 
+
+            'Major Items Only': Ice Traps appear as Major
+            Items and in large chests if CSMC enabled.
+
+            'Junk Items Only': Ice Traps apepar as Junk
+            Items and in small chests if CSMC enabled.
+
+            'Anything': Ice Traps may appear as anything.
+        ''',
+        shared         = True,
+    ),
+    Combobox(
         name           = 'junk_ice_traps',
         gui_text       = 'Ice Traps',
         default        = 'normal',
