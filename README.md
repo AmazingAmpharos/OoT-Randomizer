@@ -94,7 +94,7 @@ player.
 * Removed (unnecessarily) duplicated/overlapping hints.
 * Randomizing main rules now works correctly.
 * Removed a misleading random "trials" value from the non-randomized settings in the spoiler.
-
+* Miscellaneous logic fixes.
 
 ### 5.1
 
