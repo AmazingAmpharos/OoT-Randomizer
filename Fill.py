@@ -3,9 +3,8 @@ import logging
 from State import State
 from Rules import set_shop_rules
 from Location import DisableType
-from ItemPool import junk_pool, item_groups
 from LocationList import location_groups
-from ItemPool import songlist, get_junk_item, junk_pool, item_groups, remove_junk_items
+from ItemPool import songlist, get_junk_item, item_groups, remove_junk_items
 from ItemList import item_table
 from Item import ItemFactory
 from Playthrough import Playthrough
@@ -64,10 +63,8 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 
     # set ice traps to have the appearance of other random items in the item pool
     ice_traps = [item for item in itempool if item.name == 'Ice Trap']
-    junk_items = ['Bombs (5)','Bombs (10)','Bombs (20)',
-                'Deku Nuts (5)','Deku Nuts (10)','Deku Stick (1)','Recovery Heart',
-                'Arrows (5)','Arrows (10)','Arrows (30)','Deku Seeds (30)',
-                'Rupees (5)','Rupees (20)','Rupees (50)','Rupees (200)']
+    junk_items = remove_junk_items
+    junk_items.remove('Ice Trap')
     major_items = [item for (item, data) in item_table.items() if data[0] == 'Item' and data[1] and data[2] is not None]
     fake_items = []
     model_items = []
