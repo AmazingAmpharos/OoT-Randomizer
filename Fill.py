@@ -63,7 +63,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
 
     # set ice traps to have the appearance of other random items in the item pool
     ice_traps = [item for item in itempool if item.name == 'Ice Trap']
-    junk_items = remove_junk_items
+    junk_items = remove_junk_items.copy()
     junk_items.remove('Ice Trap')
     major_items = [item for (item, data) in item_table.items() if data[0] == 'Item' and data[1] and data[2] is not None]
     fake_items = []
@@ -77,7 +77,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
         if len(model_items) == 0: # All junk was removed
             model_items = ItemFactory(junk_items)
     else: # world[0].settings.ice_trap_appearance == 'anything':
-        model_items = [item for item in itempool if item.majoritem or item.name in junk_items]
+        model_items = [item for item in itempool if item.name != 'Ice Trap']
         if len(model_items) == 0: # All major items and junk were somehow removed from the pool (can happen in plando)
             model_items = ItemFactory(major_items) + ItemFactory(junk_items)
     while len(ice_traps) > len(fake_items):
