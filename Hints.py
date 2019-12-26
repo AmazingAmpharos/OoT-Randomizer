@@ -108,10 +108,7 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
     total = int(random.random() + count)
     while total:
         if IDs:
-            if not first and duplicates:
-                id = duplicates.pop(0)
-            else:
-                id = IDs.pop(0)
+            id = IDs.pop(0)
 
             if gossipLocations[id].reachable:
                 stone_name = gossipLocations[id].location
