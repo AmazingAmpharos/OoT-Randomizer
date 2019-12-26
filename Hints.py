@@ -105,7 +105,11 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
     duplicates = []
     first = True
     success = True
-    total = int(random.random() + count)
+    # early failure if not enough
+    if len(IDs) < int(count):
+        return False
+    # Randomly round up, if we have enough IDs left
+    total = int(random.random() + count) if len(IDs) > count else int(count)
     while total:
         if IDs:
             id = IDs.pop(0)
@@ -135,13 +139,29 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
             else:
                 if not force_reachable:
                     # The stones are not readable at all in logic, so we ignore any kind of logic here
-                    count -= 1
-                    spoiler.hints[world.id][id] = gossip_text
+                    if not first:
+                        total -= 1
+                        spoiler.hints[world.id][id] = gossip_text
+                    else:
+                        # Temporarily skip this stone but consider it for duplicates
+                        duplicates.append(id)
                 else:
                     # If flagged to guarantee reachable, then skip
                     # If no stones are reachable, then this will place nothing
                     skipped_ids.append(id)                
         else:
+            # Out of IDs
+            if not force_reachable and len(duplicates) >= total:
+                # Didn't find any appropriate stones for this hint, but maybe enough completely unreachable ones.
+                # We'd rather not use reachable stones for this.
+                unr = [id for id in duplicates if not gossipLocations[id].reachable]
+                if len(unr) >= total:
+                    duplicates = [id for id in duplicates if id not in unr[:total]]
+                    for id in unr[:total]:
+                        spoiler.hints[world.id][id] = gossip_text
+                    # Success
+                    break
+            # Failure
             success = False
             break
     IDs.extend(duplicates)
