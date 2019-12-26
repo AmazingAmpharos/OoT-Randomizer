@@ -102,11 +102,16 @@ def isRestrictedDungeonItem(dungeon, item):
 def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reachable=False):
     random.shuffle(IDs)
     skipped_ids = []
+    duplicates = []
     first = True
     success = True
-    while random.random() < count:
+    total = int(random.random() + count)
+    while total:
         if IDs:
-            id = IDs.pop(0)
+            if not first and duplicates:
+                id = duplicates.pop(0)
+            else:
+                id = IDs.pop(0)
 
             if gossipLocations[id].reachable:
                 stone_name = gossipLocations[id].location
@@ -119,11 +124,17 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
                         # by establishing a (hint -> item) -> hint -> item -> (first hint) loop
                         location.add_rule(world.parser.parse_rule(repr(stone_name)))
 
-                    count -= 1
+                    total -= 1
                     first = False
                     spoiler.hints[world.id][id] = gossip_text
+                    # Immediately start choosing duplicates from stones we passed up earlier
+                    while duplicates and total:
+                        id = duplicates.pop(0)
+                        total -= 1
+                        spoiler.hints[world.id][id] = gossip_text
                 else:
-                    skipped_ids.append(id)
+                    # Temporarily skip this stone but consider it for duplicates
+                    duplicates.append(id)
             else:
                 if not force_reachable:
                     # The stones are not readable at all in logic, so we ignore any kind of logic here
@@ -136,6 +147,7 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
         else:
             success = False
             break
+    IDs.extend(duplicates)
     IDs.extend(skipped_ids)
     return success
 
@@ -608,6 +620,7 @@ def buildGossipHints(spoiler, world):
             if place_ok:
                 hint_counts[hint_type] = hint_counts.get(hint_type, 0) + 1
             if not place_ok and world.hint_dist == "tournament":
+                logging.getLogger('').debug('Failed to place %s hint for %s.', hint_type, location.name)
                 fixed_hint_types.insert(0, hint_type)
 
 
