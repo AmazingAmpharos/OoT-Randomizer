@@ -373,9 +373,9 @@ def from_patch_file(settings, window=dummy_window()):
         if compressor_path != "":
             run_process(window, logger, [compressor_path, uncompressed_output_path, output_compress_path])
         os.remove(uncompressed_output_path)
-        logger.info("Created compessed rom at: %s" % output_compress_path)
+        logger.info("Created compressed rom at: %s" % output_compress_path)
     else:
-        logger.info("Created uncompessed rom at: %s" % output_path)
+        logger.info("Created uncompressed rom at: %s" % output_path)
 
     window.update_progress(95)
 
