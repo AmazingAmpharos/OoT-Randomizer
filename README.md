@@ -95,6 +95,7 @@ player.
 
 #### Bug Fixes
 * Minor stability fix in Plando
+* Fixed the dungeon entrance minimap marker appearing in areas with no dungeon entrance.
 * Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers
 * Removed (unnecessarily) duplicated/overlapping hints.
 * Randomizing main rules now works correctly.
