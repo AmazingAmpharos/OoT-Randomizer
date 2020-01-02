@@ -78,11 +78,9 @@ player.
 
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
-* With Bombchus in Logic on, the Carpet Merchant will not sell you Bombchus until you find them elsewhere.
 * Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance can affect chest size with Chest Size Matches Contents enabled.
 
 #### Other Changes
-* The Carpet Merchant will not sell you Bombchus past your maximum (50).
 * Cosmetic heart color setting now applies in the file select screen.
 * Non-Always Location hints cannot be placed for an area that already has a Foolish hint.
   * If the location hint is placed first, then it can still appear in a foolish hinted area, however in Tournament hint distribution the Foolish hints are placed first so that cannot happen.
