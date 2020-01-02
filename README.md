@@ -79,7 +79,7 @@ player.
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
 * With Bombchus in Logic on, the Carpet Merchant will not sell you Bombchus until you find them elsewhere.
-* Added a new setting 'Ice Trap Appearance' to select whether ice traps appear as major items (the default), junk items, or anything. This appearance can affect chest size with Chest Size Matches Contents enabled.
+* Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance can affect chest size with Chest Size Matches Contents enabled.
 
 #### Other Changes
 * The Carpet Merchant will not sell you Bombchus past your maximum (50).
@@ -96,7 +96,7 @@ player.
 #### Bug Fixes
 * Minor stability fix in Plando
 * Fixed the dungeon entrance minimap marker appearing in areas with no dungeon entrance.
-* Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers
+* Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers.
 * Removed (unnecessarily) duplicated/overlapping hints.
 * Hints that should come in multiples (duplicates) no longer come in singletons in certain corner cases.
 * Randomizing main rules now works correctly.
@@ -107,7 +107,7 @@ player.
 
 #### New Features
 * `Skip First Dampé Race` 
-  * Allows getting both reward in one race if the 60 second target is cleared
+  * Allows getting both rewards in one race if the 60 second target is cleared
 * Rupee Icon Color changes based on your current wallet upgrade
 
 #### Updated Settings 
