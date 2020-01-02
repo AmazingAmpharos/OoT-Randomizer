@@ -102,9 +102,15 @@ def isRestrictedDungeonItem(dungeon, item):
 def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reachable=False):
     random.shuffle(IDs)
     skipped_ids = []
+    duplicates = []
     first = True
     success = True
-    while random.random() < count:
+    # early failure if not enough
+    if len(IDs) < int(count):
+        return False
+    # Randomly round up, if we have enough IDs left
+    total = int(random.random() + count) if len(IDs) > count else int(count)
+    while total:
         if IDs:
             id = IDs.pop(0)
 
@@ -119,23 +125,46 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
                         # by establishing a (hint -> item) -> hint -> item -> (first hint) loop
                         location.add_rule(world.parser.parse_rule(repr(stone_name)))
 
-                    count -= 1
+                    total -= 1
                     first = False
                     spoiler.hints[world.id][id] = gossip_text
+                    # Immediately start choosing duplicates from stones we passed up earlier
+                    while duplicates and total:
+                        id = duplicates.pop(0)
+                        total -= 1
+                        spoiler.hints[world.id][id] = gossip_text
                 else:
-                    skipped_ids.append(id)
+                    # Temporarily skip this stone but consider it for duplicates
+                    duplicates.append(id)
             else:
                 if not force_reachable:
                     # The stones are not readable at all in logic, so we ignore any kind of logic here
-                    count -= 1
-                    spoiler.hints[world.id][id] = gossip_text
+                    if not first:
+                        total -= 1
+                        spoiler.hints[world.id][id] = gossip_text
+                    else:
+                        # Temporarily skip this stone but consider it for duplicates
+                        duplicates.append(id)
                 else:
                     # If flagged to guarantee reachable, then skip
                     # If no stones are reachable, then this will place nothing
                     skipped_ids.append(id)                
         else:
+            # Out of IDs
+            if not force_reachable and len(duplicates) >= total:
+                # Didn't find any appropriate stones for this hint, but maybe enough completely unreachable ones.
+                # We'd rather not use reachable stones for this.
+                unr = [id for id in duplicates if not gossipLocations[id].reachable]
+                if len(unr) >= total:
+                    duplicates = [id for id in duplicates if id not in unr[:total]]
+                    for id in unr[:total]:
+                        spoiler.hints[world.id][id] = gossip_text
+                    # Success
+                    break
+            # Failure
             success = False
             break
+    IDs.extend(duplicates)
     IDs.extend(skipped_ids)
     return success
 
@@ -629,6 +658,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
             if place_ok:
                 hint_counts[hint_type] = hint_counts.get(hint_type, 0) + 1
             if not place_ok and world.hint_dist == "tournament":
+                logging.getLogger('').debug('Failed to place %s hint for %s.', hint_type, location.name)
                 fixed_hint_types.insert(0, hint_type)
 
 
