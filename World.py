@@ -142,6 +142,9 @@ class World(object):
     def resolve_random_settings(self):
         # evaluate settings (important for logic, nice for spoiler)
         self.randomized_list = []
+        if self.randomize_settings:
+            rnd_settings = get_setting_info('randomize_settings').disable[True]['settings']
+            self.randomized_list.extend(rnd_settings)
         if self.big_poe_count_random:
             self.big_poe_count = random.randint(1, 10)
             self.randomized_list.append('big_poe_count')

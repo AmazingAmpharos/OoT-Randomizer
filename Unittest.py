@@ -156,7 +156,7 @@ class TestValidSpoilers(unittest.TestCase):
         locations, items, locitems = self.loc_item_collection(pl)
         self.required_checks(spoiler, locations, items, locitems)
         # Everybody reached the win condition in the playthrough
-        if spoiler['settings'].get('triforce_hunt', False):
+        if spoiler['settings'].get('triforce_hunt', False) or spoiler['randomized_settings'].get('triforce_hunt', False):
             item_pool = self.normalize_worlds_dict(spoiler['item_pool'])
             self.assertEqual(
                 {p: item_pool[p]['Triforce Piece'] for p in items},
