@@ -79,6 +79,7 @@ player.
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
 * With Bombchus in Logic on, the Carpet Merchant will not sell you Bombchus until you find them elsewhere.
+* Added a new setting 'Ice Trap Appearance' to select whether ice traps appear as major items (the default), junk items, or anything. This appearance can affect chest size with Chest Size Matches Contents enabled.
 
 #### Other Changes
 * The Carpet Merchant will not sell you Bombchus past your maximum (50).
