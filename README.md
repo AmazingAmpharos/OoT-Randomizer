@@ -78,14 +78,16 @@ player.
 
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
+* With Bombchus in Logic on, the Carpet Merchant will not sell you Bombchus until you find them elsewhere.
 
 #### Other Changes
+* The Carpet Merchant will not sell you Bombchus past your maximum (50).
+* Cosmetic heart color setting now applies in the file select screen.
 * Non-Always Location hints cannot be placed for an area that already has a Foolish hint.
   * If the location hint is placed first, then it can still appear in a foolish hinted area, however in Tournament hint distribution the Foolish hints are placed first so that cannot happen.
-* Refactored Logic once again. It now uses helper json rules and rules can reference other rules.
-* Updated Compressor. The GUI progress bar is now granular. If for some reason, the rom won't fit into 32MB, then the compressor will increase the output size.
-* Cosmetic heart color setting now applies in the file select screen.
 * Ganondorf no longer hints at his Boss Key chest contents.
+* Updated Compressor. The GUI progress bar is now granular. If for some reason, the rom won't fit into 32MB, then the compressor will increase the output size.
+* Refactored Logic once again. It now uses helper json rules and rules can reference other rules.
 * Disabled settings don't show up in the spoiler.
 * Further seed generation speed improvements.
 
