@@ -183,15 +183,15 @@ logic_tricks = {
                     All spider web walls in Deku Tree basement can be burnt
                     by adult using just a bow shooting through torches. Applies
                     to the web obstructing the door to the single scrub room,
-                    the web obstrcuting the bombable wall in the back room
+                    the web obstructing the bombable wall in the back room
                     and the circular floor web dropping to Gohma.
 
-                    For the cicular web dropping to Gohma, backflip onto the
+                    For the circular web dropping to Gohma, backflip onto the
                     chest near the torch at the bottom of the vine wall. With a
-                    precise position you can shoot throught the torch to the
+                    precise position you can shoot through the torch to the
                     right edge of the circular web.
 
-                    This allows complete adult Deku Tree with no fire source.
+                    This allows completion of adult Deku Tree with no fire source.
                     '''},
     'Hammer Rusted Switches Through Walls': {
         'name'    : 'logic_rusted_switches',
@@ -560,7 +560,7 @@ logic_tricks = {
         'name'    : 'logic_water_river_gs',
         'tooltip' : '''\
                     Standing on the exposed ground toward the end of
-                    the river, a precise Longhost use can obtain the
+                    the river, a precise Longshot use can obtain the
                     token. The Longshot cannot normally reach far
                     enough to kill the Skulltula, however. You'll
                     first have to find some other way of killing it.
@@ -848,7 +848,7 @@ logic_tricks = {
         'tooltip' : '''\
                     With a precise jumpslash from above, you
                     can reach the backdoor to the west
-                    countyard without Hover Boots.
+                    courtyard without Hover Boots.
                     '''},
     'Forest Temple Scarecrow Route': {
         'name'    : 'logic_forest_scarecrow',
@@ -1461,7 +1461,7 @@ setting_infos = [
             Select the amount of Triforce Pieces required to beat the game.
 
             In multiworld, each world will have the same number of triforces 
-            in them. The required ammount will be per world collectively. 
+            in them. The required amount will be per world collectively. 
             For example, if this is set to 20 in a 2 player multiworld, players 
             need 40 total, but one player could obtain 30 and the other 10. 
 
