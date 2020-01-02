@@ -501,8 +501,28 @@ hint_dist_sets = {
 }
 
 
+def buildGossipHints(spoiler, worlds):
+    checkedLocations = dict()
+    # Add Light Arrow locations to "checked" locations if Ganondorf is reachable without it.
+    for world in worlds:
+        location = world.light_arrow_location
+        if location is None:
+            continue
+        # Didn't you know that Ganondorf is a gossip stone?
+        if can_reach_stone(worlds, world.get_location("Ganondorf Hint"), location):
+            light_arrow_world = location.world
+            if light_arrow_world.id not in checkedLocations:
+                checkedLocations[light_arrow_world.id] = set()
+            checkedLocations[light_arrow_world.id].add(location.name)
+
+    # Build all the hints.
+    for world in worlds:
+        world.update_useless_areas(spoiler)
+        buildWorldGossipHints(spoiler, world, checkedLocations.pop(world.id, None))
+
+
 #builds out general hints based on location and whether an item is required or not
-def buildGossipHints(spoiler, world):
+def buildWorldGossipHints(spoiler, world, checkedLocations=None):
     # rebuild hint exclusion list
     hintExclusions(world, clear_cache=True)
 
@@ -515,7 +535,8 @@ def buildGossipHints(spoiler, world):
             playthrough.spot_access(world.get_location(stone.location))
             and playthrough.state_list[world.id].guarantee_hint())
 
-    checkedLocations = set()
+    if checkedLocations is None:
+        checkedLocations = set()
 
     stoneIDs = list(gossipLocations.keys())
 
