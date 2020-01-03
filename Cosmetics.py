@@ -193,6 +193,17 @@ def patch_music(rom, settings, log, symbols):
         music.restore_music(rom)
 
 
+def patch_model_colors(rom, color, model_addresses):
+    main_addresses, dark_addresses = model_addresses
+
+    for address in main_addresses:
+        rom.write_bytes(address, color)
+
+    darkened_color = list(map(lambda light: int(max((light - 0x32) * 0.6, 0)), color))
+    for address in dark_addresses:
+        rom.write_bytes(address, darkened_color)
+
+
 def patch_tunic_icon(rom, tunic, color):
     # patch tunic icon colors
     icon_locations = {
@@ -371,12 +382,14 @@ def patch_sword_trails(rom, settings, log, symbols):
 def patch_gauntlet_colors(rom, settings, log, symbols):
     # patch gauntlet colors
     gauntlets = [
-        ('Silver Gauntlets', settings.silver_gauntlets_color, 0x00B6DA44),
-        ('Gold Gauntlets', settings.golden_gauntlets_color,  0x00B6DA47),
+        ('Silver Gauntlets', settings.silver_gauntlets_color, 0x00B6DA44,
+            ([0x173B4CC], [0x173B4D4, 0x173B50C, 0x173B514])), # GI Model DList colors
+        ('Gold Gauntlets', settings.golden_gauntlets_color,  0x00B6DA47,
+            ([0x173B4EC], [0x173B4F4, 0x173B52C, 0x173B534])), # GI Model DList colors
     ]
     gauntlet_color_list = get_gauntlet_colors()
 
-    for gauntlet, gauntlet_option, address in gauntlets:
+    for gauntlet, gauntlet_option, address, model_addresses in gauntlets:
         # handle random
         if gauntlet_option == 'Random Choice':
             gauntlet_option = random.choice(gauntlet_color_list)
@@ -391,17 +404,22 @@ def patch_gauntlet_colors(rom, settings, log, symbols):
             color = list(int(gauntlet_option[i:i+2], 16) for i in (0, 2 ,4))
             gauntlet_option = 'Custom'
         rom.write_bytes(address, color)
+        if settings.correct_model_colors:
+            patch_model_colors(rom, color, model_addresses)
         log.gauntlet_colors[gauntlet] = dict(option=gauntlet_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
 def patch_heart_colors(rom, settings, log, symbols):
-    # patch tunic colors
+    # patch heart colors
     hearts = [
-        ('Heart Colors', settings.heart_color, symbols['CFG_HEART_COLOR'], 0xBB0994),
+        ('Heart Colors', settings.heart_color, symbols['CFG_HEART_COLOR'], 0xBB0994
+            ([0x14DA474, 0x14DA594, 0x14B701C, 0x14B70DC], 
+             [0x14B70FC, 0x14DA494, 0x14DA5B4, 0x14B700C, 0x14B702C, 0x14B703C, 0x14B704C, 0x14B705C, 
+              0x14B706C, 0x14B707C, 0x14B708C, 0x14B709C, 0x14B70AC, 0x14B70BC, 0x14B70CC])), # GI Model DList colors
     ]
     heart_color_list = get_heart_colors()
 
-    for heart, heart_option, symbol, file_select_address in hearts:
+    for heart, heart_option, symbol, file_select_address, model_addresses in hearts:
         # handle random
         if heart_option == 'Random Choice':
             heart_option = random.choice(heart_color_list)
@@ -419,16 +437,20 @@ def patch_heart_colors(rom, settings, log, symbols):
         rom.write_int16s(file_select_address, color) # file select normal hearts
         if heart_option != 'Red':
             rom.write_int16s(file_select_address + 6, color) # file select DD hearts
+            if settings.correct_model_colors:
+                patch_model_colors(rom, color, model_addresses)
         log.heart_colors[heart] = dict(option=heart_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
 def patch_magic_colors(rom, settings, log, symbols):
+    # patch magic colors
     magic = [
-        ('Magic Meter Color', settings.magic_color, symbols["CFG_MAGIC_COLOR"]),
+        ('Magic Meter Color', settings.magic_color, symbols["CFG_MAGIC_COLOR"],
+            ([0x154C654, 0x154CFB4], [0x154C65C, 0x154CFBC])), # GI Model DList colors
     ]
     magic_color_list = get_magic_colors()
 
-    for magic_color, magic_option, symbol in magic:
+    for magic_color, magic_option, symbol, model_addresses in magic:
         if magic_option == 'Random Choice':
            magic_option = random.choice(magic_color_list)
 
@@ -440,6 +462,8 @@ def patch_magic_colors(rom, settings, log, symbols):
             color = list(int(magic_option[i:i+2], 16) for i in (0, 2, 4))
             magic_option = 'Custom'
         rom.write_int16s(symbol, color)
+        if magic_option != 'Green' and settings.correct_model_colors:
+            patch_model_colors(rom, color, model_addresses)
         log.magic_colors[magic_color] = dict(option=magic_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 

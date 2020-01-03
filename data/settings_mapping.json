@@ -300,6 +300,7 @@
           "settings": [
             "default_targeting",
             "display_dpad",
+            "correct_model_colors",
             "randomize_all_cosmetics"
           ]
         },
@@ -308,7 +309,7 @@
           "text": "Equipment",
           "is_colors": true,
           "col_span": 1,
-          "row_span": [6,6,6],
+          "row_span": [5,5,5],
           "settings": [
             "kokiri_color",
             "goron_color",
@@ -325,7 +326,7 @@
           "text": "UI Colors",
           "is_colors": true,
           "col_span": 1,
-          "row_span": [6,6,6],
+          "row_span": [5,5,5],
           "settings": [
             "heart_color",
             "magic_color"
@@ -336,7 +337,7 @@
           "text": "Navi Colors",
           "is_colors": true,
           "col_span": 2,
-          "row_span": [6,6,6],
+          "row_span": [5,5,5],
           "settings": [
             "navi_color_default_inner",
             "navi_color_default_outer",
