@@ -875,7 +875,7 @@ def pattern_matcher(pattern):
 def pattern_dict_items(pattern_dict, itempool=None):
     for (key, value) in pattern_dict.items():
         if isinstance(value.item, list):
-            if itempool:
+            if itempool is not None:
                 # Currently only used by boss prize placement
                 available_items = []
                 for item in itempool:
@@ -883,6 +883,8 @@ def pattern_dict_items(pattern_dict, itempool=None):
                 valid_items = [item for item in value.item if item in available_items]
             else:
                 valid_items = value.item
+            if not valid_items:
+                continue
             value.item = random_choices(valid_items)[0]
         if is_pattern(key):
             pattern = lambda loc: pattern_matcher(key)(loc.name)
