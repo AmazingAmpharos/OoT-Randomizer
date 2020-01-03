@@ -874,6 +874,8 @@ def pattern_matcher(pattern):
 
 def pattern_dict_items(pattern_dict):
     for (key, value) in pattern_dict.items():
+        if isinstance(value.item, list):
+            value.item = random_choices(value.item)[0]
         if is_pattern(key):
             pattern = lambda loc: pattern_matcher(key)(loc.name)
             for location in LocationIterator(pattern):
