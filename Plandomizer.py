@@ -494,7 +494,7 @@ class WorldDistribution(object):
 
     def fill_bosses(self, world, prize_locs, prizepool):
         count = 0
-        for (name, record) in pattern_dict_items(self.locations):
+        for (name, record) in pattern_dict_items(self.locations, prizepool):
             boss = pull_item_or_location([prize_locs], world, name)
             if boss is None:
                 try:
@@ -872,10 +872,18 @@ def pattern_matcher(pattern):
             return lambda s: invert != (s == pattern)
 
 
-def pattern_dict_items(pattern_dict):
+def pattern_dict_items(pattern_dict, itempool=None):
     for (key, value) in pattern_dict.items():
         if isinstance(value.item, list):
-            value.item = random_choices(value.item)[0]
+            if itempool:
+                # Currently only used by boss prize placement
+                available_items = []
+                for item in itempool:
+                    available_items.append(item.name)
+                valid_items = [item for item in value.item if item in available_items]
+            else:
+                valid_items = value.item
+            value.item = random_choices(valid_items)[0]
         if is_pattern(key):
             pattern = lambda loc: pattern_matcher(key)(loc.name)
             for location in LocationIterator(pattern):
