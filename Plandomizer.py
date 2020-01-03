@@ -520,7 +520,8 @@ class WorldDistribution(object):
 
     def fill(self, window, worlds, location_pools, item_pools):
         world = worlds[self.id]
-        for (location_name, record) in pattern_dict_items(self.locations):
+        exhausted = []
+        for (location_name, record) in pattern_dict_items(self.locations, world.itempool, exhausted):
             if record.item is None:
                 continue
 
@@ -872,20 +873,28 @@ def pattern_matcher(pattern):
             return lambda s: invert != (s == pattern)
 
 
-def pattern_dict_items(pattern_dict, itempool=None):
+def pattern_dict_items(pattern_dict, itempool=None, exhausted=None):
     for (key, value) in pattern_dict.items():
         if isinstance(value.item, list):
             if itempool is not None:
-                # Currently only used by boss prize placement
                 available_items = []
                 for item in itempool:
                     available_items.append(item.name)
-                valid_items = [item for item in value.item if item in available_items]
+                valid_items = [item for item in available_items if item in value.item]
+                if exhausted is not None:
+                    for item in exhausted:
+                        if item in valid_items:
+                            valid_items.remove(item)
             else:
                 valid_items = value.item
-            if not valid_items:
+            if not valid_items and exhausted is None:
                 continue
-            value.item = random_choices(valid_items)[0]
+            elif not valid_items:
+                value.item = random_choices(value.item)[0]
+            else:
+                value.item = random_choices(valid_items)[0]
+                if exhausted is not None:
+                    exhausted.append(value.item)
         if is_pattern(key):
             pattern = lambda loc: pattern_matcher(key)(loc.name)
             for location in LocationIterator(pattern):
