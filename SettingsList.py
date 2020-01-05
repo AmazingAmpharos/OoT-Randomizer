@@ -2490,14 +2490,15 @@ setting_infos = [
         },
         gui_tooltip    = '''\
             Changes the categories of items Ice Traps may
-            appear as, both when freestanding and when in
-            chests with Chest Size Matches Contents enabled. 
+            appear as when freestanding.
+            (With Chest Size Matches Contents enabled,
+            Ice Traps will always appear in large chests.)
 
             'Major Items Only': Ice Traps appear as Major
-            Items (and in large chests if CSMC enabled).
+            Items.
 
             'Junk Items Only': Ice Traps appear as Junk
-            Items (and in small chests if CSMC enabled).
+            Items.
 
             'Anything': Ice Traps may appear as anything.
         ''',
