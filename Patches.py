@@ -58,6 +58,22 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Add it to the extended object table
     add_to_extended_object_table(rom, 0x193, triforce_obj_file)
 
+    # Build a Double Defense model from the Heart Container model
+    dd_obj_file = File({ 
+        'Name': 'object_gi_hearts',
+        'Start': '014D9000',
+        'End': '014DA590',
+    })
+    dd_obj_file.copy(rom)
+    # Update colors for the Double Defense variant
+    rom.write_bytes(dd_obj_file.start + 0x1294, [0xFF, 0xCF, 0x0F]) # Exterior Primary Color
+    rom.write_bytes(dd_obj_file.start + 0x12B4, [0xFF, 0x46, 0x32]) # Exterior Env Color
+    rom.write_bytes(dd_obj_file.start + 0x1474, [0xFF, 0xFF, 0xFF]) # Interior Primary Color
+    rom.write_bytes(dd_obj_file.start + 0x1494, [0xFF, 0xFF, 0xFF]) # Interior Env Color
+    update_dmadata(rom, dd_obj_file)
+    # Add it to the extended object table
+    add_to_extended_object_table(rom, 0x194, dd_obj_file)
+
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)
     rom.force_patch.append(0x3E)
