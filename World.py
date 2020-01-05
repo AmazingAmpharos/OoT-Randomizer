@@ -144,10 +144,9 @@ class World(object):
         self.randomized_list = []
         if self.randomize_settings:
             setting_info = get_setting_info('randomize_settings')
-            rnd_settings = setting_info.disable[True]['settings']
+            self.randomized_list.extend(setting_info.disable[True]['settings'])
             for section in setting_info.disable[True]['sections']:
-                rnd_settings += get_settings_from_section(section)
-            self.randomized_list.extend(rnd_settings)
+                self.randomized_list.extend(get_settings_from_section(section))
         if self.big_poe_count_random:
             self.big_poe_count = random.randint(1, 10)
             self.randomized_list.append('big_poe_count')
