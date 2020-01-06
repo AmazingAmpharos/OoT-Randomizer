@@ -89,6 +89,8 @@ player.
 * Updated Compressor. The GUI progress bar is now granular. If for some reason, the rom won't fit into 32MB, then the compressor will increase the output size.
 * Refactored Logic once again. It now uses helper json rules and rules can reference other rules.
 * Disabled settings don't show up in the spoiler.
+* Plando will now accept JSON lists for `item` in the location dictionary to randomly choose between for placement.
+  * Attempts to not exceed item pool values until all the pool counts for the items in the list are reached.
 * Further seed generation speed improvements.
 
 #### Bug Fixes
