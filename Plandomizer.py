@@ -520,8 +520,9 @@ class WorldDistribution(object):
 
     def fill(self, window, worlds, location_pools, item_pools):
         world = worlds[self.id]
+        locations = {loc: self.locations[loc] for loc in random.sample(self.locations.keys(), len(self.locations))}
         exhausted = []
-        for (location_name, record) in pattern_dict_items(self.locations, world.itempool, exhausted):
+        for (location_name, record) in pattern_dict_items(locations, world.itempool, exhausted):
             if record.item is None:
                 continue
 
