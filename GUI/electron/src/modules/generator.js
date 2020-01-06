@@ -60,7 +60,7 @@ function romBuilding(pythonPath, randoPath, settings) {
     //Using a user defined static seed
     if (seedString.length > 0) {
 
-      let args = ['--seed', seedString];
+      let args = ['--seed', JSON.stringify(seedString)];
       //args["checked_version"] = false;
 
       romBuildingGenerator = spawn('"' + pythonPath + '"' + ' ' + '"' + randoPath + '"', args, { shell: true });
