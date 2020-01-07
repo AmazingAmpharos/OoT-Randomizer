@@ -102,7 +102,7 @@
         (bridge == 'stones' and has_all_stones) or
         (bridge == 'medallions' and has_all_medallions) or
         (bridge == 'dungeons' and has_all_stones and has_all_medallions) or
-        (bridge == 'tokens' and (Gold_Skulltula_Token, 100)))",
+        (bridge == 'tokens' and (Gold_Skulltula_Token, bridge_tokens)))",
     "can_trigger_lacs": "(
         (lacs_condition == 'vanilla' and Shadow_Medallion and Spirit_Medallion) or
         (lacs_condition == 'stones' and has_all_stones) or
