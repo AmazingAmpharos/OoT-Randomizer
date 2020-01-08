@@ -968,6 +968,11 @@ skip_GS_BGS_text:
 ;==================================================================================================
 
 ; Replaces:
+;   c.lt.s  f0, f2
+.orga 0xBE4A14
+    jal     agony_distance_hook
+
+    ; Replaces:
 ;   c.lt.s  f4, f6
 .orga 0xBE4A40
     jal     agony_vibrate_hook
