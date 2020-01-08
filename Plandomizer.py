@@ -546,6 +546,8 @@ class WorldDistribution(object):
             is_invert = pattern_matcher(record.item)('!')
             if is_invert and location.type != 'Song' and not world.shuffle_song_items:
                 ignore_pools = [2]
+            if is_invert and location.type == 'Song' and not world.shuffle_song_items:
+                ignore_pools = [i for i, pools in enumerate(item_pools) if i != 2]
 
             try:
                 item = self.pool_remove_item(item_pools, record.item, 1, world_id=player_id, ignore_pools=ignore_pools)[0]
