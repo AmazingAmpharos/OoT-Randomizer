@@ -91,7 +91,7 @@ void draw_agony_graphic(int offset, unsigned char alpha) {
     gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
     sprite_load(db, &quest_items_sprite, 9, 1);
-    sprite_draw(db, &quest_items_sprite, 0, 26+offset, 190, 16, 16);
+    sprite_draw(db, &quest_items_sprite, 0, 27+offset, 189, 16, 16);
     gDPPipeSync(db->p++);
 }
 
