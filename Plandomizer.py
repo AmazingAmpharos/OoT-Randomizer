@@ -521,8 +521,7 @@ class WorldDistribution(object):
     def fill(self, window, worlds, location_pools, item_pools):
         world = worlds[self.id]
         locations = {loc: self.locations[loc] for loc in random.sample(self.locations.keys(), len(self.locations))}
-        exhausted = []
-        for (location_name, record) in pattern_dict_items(locations, world.itempool, exhausted):
+        for (location_name, record) in pattern_dict_items(locations, world.itempool, []):
             if record.item is None:
                 continue
 
@@ -878,14 +877,9 @@ def pattern_dict_items(pattern_dict, itempool=None, exhausted=None):
     for (key, value) in pattern_dict.items():
         if isinstance(value.item, list):
             if itempool is not None:
-                available_items = []
-                for item in itempool:
-                    available_items.append(item.name)
-                valid_items = [item for item in available_items if item in value.item]
+                valid_items = [item.name for item in itempool if item.name in value.item]
                 if exhausted is not None:
-                    for item in exhausted:
-                        if item in valid_items:
-                            valid_items.remove(item)
+                    [valid_items.remove(item) for item in exhausted if item in valid_items]
             else:
                 valid_items = value.item
             if not valid_items and exhausted is None:
