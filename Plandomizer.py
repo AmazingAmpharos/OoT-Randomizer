@@ -494,11 +494,7 @@ class WorldDistribution(object):
 
     def fill_bosses(self, world, prize_locs, prizepool):
         count = 0
-        locations = {loc.name: self.locations[loc.name] for loc in prize_locs if loc.name in self.locations}
-        for (name, record) in pattern_dict_items(locations):
-            if record.item not in item_groups['DungeonReward']:
-                raise RuntimeError('Cannot place non-dungeon reward item in world %d in dungeon reward location.' % (self.id + 1))
-
+        for (name, record) in pattern_dict_items(self.locations):
             boss = pull_item_or_location([prize_locs], world, name)
             if boss is None:
                 try:
@@ -513,6 +509,8 @@ class WorldDistribution(object):
                 raise RuntimeError('A boss can only give rewards in its own world')
             reward = pull_item_or_location([prizepool], world, record.item)
             if reward is None:
+                if record.item not in item_groups['DungeonReward']:
+                    raise RuntimeError('Cannot place non-dungeon reward %s in world %d on location %s.' % (record.item, self.id + 1, name))
                 if IsItem(record.item):
                     raise RuntimeError('Reward already placed in world %d: %s' % (world.id + 1, record.item))
                 else:
@@ -524,13 +522,9 @@ class WorldDistribution(object):
 
     def fill(self, window, worlds, location_pools, item_pools):
         world = worlds[self.id]
-        locations = {loc.name: self.locations[loc.name] for pool in location_pools if pool for loc in pool if loc.name in self.locations}
-        for (location_name, record) in pattern_dict_items(locations):
+        for (location_name, record) in pattern_dict_items(self.locations):
             if record.item is None:
                 continue
-
-            if record.item in item_groups['DungeonReward']:
-                raise RuntimeError('Cannot place dungeon reward in world %d in non-dungeon reward location.' % (self.id + 1))
 
             player_id = self.id if record.player is None else record.player - 1
 
@@ -547,6 +541,9 @@ class WorldDistribution(object):
                     continue
                 else:
                     raise RuntimeError('Location already filled in world %d: %s' % (self.id + 1, location_name))
+
+            if record.item in item_groups['DungeonReward']:
+                raise RuntimeError('Cannot place dungeon reward %s in world %d in location %s.' % (record.item, self.id + 1, location_name))
 
             if record.item == '#Junk' and location.type == 'Song' and not world.shuffle_song_items:
                 record.item = '#JunkSong'
@@ -567,6 +564,8 @@ class WorldDistribution(object):
                     item = random.choice(list(ItemIterator(item_matcher, worlds[player_id])))
                 except KeyError:
                     raise RuntimeError('Too many items were added to world %d, and not enough junk is available to be removed.' % (self.id + 1))
+                except IndexError:
+                    raise RuntimeError('Unknown item %s being placed on location %s in world %d.' % (record.item, location, self.id + 1))
 
             if record.price is not None and item.type != 'Shop':
                 location.price = record.price
