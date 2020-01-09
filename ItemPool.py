@@ -223,6 +223,19 @@ normal_bottles = [
 bottle_count = 4
 
 
+dungeon_rewards = [
+    'Kokiri Emerald',
+    'Goron Ruby',
+    'Zora Sapphire',
+    'Forest Medallion',
+    'Fire Medallion',
+    'Water Medallion',
+    'Shadow Medallion',
+    'Spirit Medallion',
+    'Light Medallion'
+]
+
+
 normal_rupees = (
     ['Rupees (5)'] * 13 +
     ['Rupees (20)'] * 5 +
@@ -681,6 +694,7 @@ item_groups = {
     'WarpSong': songlist[6:],
     'HealthUpgrade': ('Heart Container', 'Piece of Heart'),
     'ProgressItem': [name for (name, data) in item_table.items() if data[0] == 'Item' and data[1]],
+    'DungeonReward': dungeon_rewards,
 
     'ForestFireWater': ('Forest Medallion', 'Fire Medallion', 'Water Medallion'),
     'FireWater': ('Fire Medallion', 'Water Medallion'),

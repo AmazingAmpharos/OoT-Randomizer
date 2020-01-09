@@ -494,7 +494,11 @@ class WorldDistribution(object):
 
     def fill_bosses(self, world, prize_locs, prizepool):
         count = 0
-        for (name, record) in pattern_dict_items(self.locations):
+        locations = {loc.name: self.locations[loc.name] for loc in prize_locs if loc.name in self.locations}
+        for (name, record) in pattern_dict_items(locations):
+            if record.item not in item_groups['DungeonReward']:
+                raise RuntimeError('Cannot place non-dungeon reward item in world %d in dungeon reward location.' % (self.id + 1))
+
             boss = pull_item_or_location([prize_locs], world, name)
             if boss is None:
                 try:
@@ -520,9 +524,13 @@ class WorldDistribution(object):
 
     def fill(self, window, worlds, location_pools, item_pools):
         world = worlds[self.id]
-        for (location_name, record) in pattern_dict_items(self.locations):
+        locations = {loc.name: self.locations[loc.name] for pool in location_pools if pool for loc in pool if loc.name in self.locations}
+        for (location_name, record) in pattern_dict_items(locations):
             if record.item is None:
                 continue
+
+            if record.item in item_groups['DungeonReward']:
+                raise RuntimeError('Cannot place dungeon reward in world %d in non-dungeon reward location.' % (self.id + 1))
 
             player_id = self.id if record.player is None else record.player - 1
 
