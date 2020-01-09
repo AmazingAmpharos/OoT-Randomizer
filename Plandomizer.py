@@ -543,6 +543,7 @@ class WorldDistribution(object):
             if record.item == '#Junk' and location.type == 'Song' and not world.shuffle_song_items:
                 record.item = '#JunkSong'
 
+            ignore_pools = None
             is_invert = pattern_matcher(record.item)('!')
             if is_invert and location.type != 'Song' and not world.shuffle_song_items:
                 ignore_pools = [2]
