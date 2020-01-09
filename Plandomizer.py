@@ -53,6 +53,8 @@ def SimpleRecord(props):
         def update(self, src_dict, update_all=False):
             if src_dict is None:
                 src_dict = {}
+            if isinstance(src_dict, list):
+                src_dict = {"item": src_dict}
             for k, p in props.items():
                 if update_all or k in src_dict:
                     setattr(self, k, src_dict.get(k, p))
