@@ -3,77 +3,59 @@
 #include "z64.h"
 
 typedef struct {
-    unsigned char alpha_level;
-    unsigned char num_frames;
-    unsigned char vibrate;
-    unsigned char next;
+    unsigned char alpha_level : 8;
+    signed char   pos         : 2;
+    unsigned char next        : 6;
 } alpha_data_t;
 
 static const alpha_data_t ALPHA_DATA[] = {
-    {0x00,255, 0,  0}, // 0 - Terminates here
-    {0x33,  0, 1,  2}, // 1 - Animation starts here
-    {0x66,  0, 1,  3}, // 2
-    {0x99,  0, 1,  4}, // 3
-    {0xCC,  0, 1,  5}, // 4
-    {0xFF,  4, 1,  6}, // 5 - Hold here at full vibrate
-    {0xE0,  0, 1,  7}, // 6 - Then go to hold step
-    {0xC2,  0, 1,  8}, // 7
-    {0xA3,  0, 1,  9}, // 8
-    {0x85,  0, 1, 10}, // 9
-    {0x66,255, 0, 10}, // 10 - Wait here for another vibrate
-    {0x44,  0, 0, 12}, // 11 - Jump here to fade out
-    {0x22,  0, 0,  0}, // 12 - Stop after this
-    {0x85,  0, 1, 14}, // 13 - Jump here if new vibration received mid-animation
-    {0xA3,  0, 1, 15}, // 14
-    {0xC2,  0, 1, 16}, // 15
-    {0xE0,  0, 1,  5}  // 16 - Then go to hold step
+    {0x00,  0,  0}, // 0 - Zero
+    {0x33, -1,  2}, // 1 - Fade in from zero
+    {0x66,  1,  3}, // 2
+    {0x99, -1,  4}, // 3
+    {0xCC,  1,  5}, // 4
+    {0xFF, -1,  6}, // 5 - Full intensity
+    {0xFF,  1,  7}, // 6
+    {0xFF, -1,  8}, // 7
+    {0xFF,  1,  9}, // 8
+    {0xE0, -1, 10}, // 9 - Fade out to hold
+    {0xC2,  1, 11}, // 10
+    {0xA3, -1, 12}, // 11
+    {0x85,  1, 13}, // 12
+    {0x66,  0, 13}, // 13 - Hold
+    {0x44,  0, 15}, // 14 - Fade out
+    {0x22,  0,  0}, // 15
+    {0x85, -1, 17}, // 16 - Fade in from hold
+    {0xA3,  1, 18}, // 17
+    {0xC2, -1, 19}, // 18
+    {0xE0,  1,  5}  // 19
 };
 
 #define ALPHA_ANIM_TERMINATE  0
 #define ALPHA_ANIM_START      1
-#define ALPHA_ANIM_HOLD      10
-#define ALPHA_ANIM_FADE      11
-#define ALPHA_ANIM_INTERRUPT 13
+#define ALPHA_ANIM_HOLD      13
+#define ALPHA_ANIM_FADE      14
+#define ALPHA_ANIM_INTERRUPT 16
 
-static unsigned char alpha_index = 0;
-static unsigned char alpha_frame = 0;
-static signed char alpha_pos = 1;
-
-static void advance_alpha_major_step() {
-    alpha_index = ALPHA_DATA[alpha_index].next;
-    alpha_frame = 0;
-}
-
-static void advance_alpha_minor_step() {
-    ++alpha_frame;
-    if (alpha_frame > ALPHA_DATA[alpha_index].num_frames) {
-        advance_alpha_major_step();
-    }
-}
-
-static void advance_alpha() {
-    advance_alpha_minor_step();
-}
+static const alpha_data_t* alpha_frame = ALPHA_DATA + ALPHA_ANIM_TERMINATE;
 
 void agony_inside_radius_setup() {
 }
 
 void agony_outside_radius_setup()
 {
-    if (alpha_index == ALPHA_ANIM_HOLD) {
-        alpha_index = ALPHA_ANIM_FADE;
-        alpha_frame = 0;
+    if (alpha_frame == ALPHA_DATA + ALPHA_ANIM_HOLD) {
+        alpha_frame = ALPHA_DATA + ALPHA_ANIM_FADE;
     }
 }
 
 void agony_vibrate_setup() {
-    if (alpha_index == ALPHA_ANIM_TERMINATE) {
-        alpha_index = ALPHA_ANIM_START;
+    if (alpha_frame == ALPHA_DATA + ALPHA_ANIM_TERMINATE) {
+        alpha_frame = ALPHA_DATA + ALPHA_ANIM_START;
     }
     else {
-        alpha_index = ALPHA_ANIM_INTERRUPT;
+        alpha_frame = ALPHA_DATA + ALPHA_ANIM_INTERRUPT;
     }
-    alpha_frame = 0;
 }
 
 void draw_agony_graphic(int offset, unsigned char alpha) {
@@ -96,14 +78,11 @@ void draw_agony_graphic(int offset, unsigned char alpha) {
 }
 
 void draw_agony() {
-    if (alpha_index != ALPHA_ANIM_TERMINATE) {
-        int pos = 0;
-        if (ALPHA_DATA[alpha_index].vibrate) {
-            alpha_pos = -alpha_pos;
-            pos = alpha_pos;
-        }
-        draw_agony_graphic(pos, ALPHA_DATA[alpha_index].alpha_level);
-        advance_alpha();
+    if (alpha_frame != ALPHA_DATA + ALPHA_ANIM_TERMINATE) {
+        unsigned char alpha = alpha_frame->alpha_level;
+        int offset = alpha_frame->pos;
+        alpha_frame = ALPHA_DATA + alpha_frame->next;
+        draw_agony_graphic(offset, alpha);
     }
 }
 
