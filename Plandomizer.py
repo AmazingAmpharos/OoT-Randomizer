@@ -13,7 +13,7 @@ from Item import ItemFactory, ItemIterator, IsItem
 from ItemPool import item_groups, get_junk_item
 from Location import LocationIterator, LocationFactory, IsLocation
 from LocationList import location_groups
-from Playthrough import Playthrough
+from Search import Playthrough
 from Spoiler import HASH_ICONS
 from version import __version__
 from Utils import random_choices

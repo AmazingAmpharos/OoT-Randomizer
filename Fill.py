@@ -7,7 +7,7 @@ from LocationList import location_groups
 from ItemPool import songlist, get_junk_item, item_groups, remove_junk_items
 from ItemList import item_table
 from Item import ItemFactory
-from Playthrough import Playthrough
+from Search import Playthrough
 from functools import reduce
 
 logger = logging.getLogger('')

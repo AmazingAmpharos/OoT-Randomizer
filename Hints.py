@@ -9,7 +9,7 @@ from collections import OrderedDict
 from HintList import getHint, getHintGroup, Hint, hintExclusions
 from Item import MakeEventItem
 from Messages import update_message_by_id
-from Playthrough import Playthrough
+from Search import Playthrough
 from TextBox import line_wrap
 from Utils import random_choices
 

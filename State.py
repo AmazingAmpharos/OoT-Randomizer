@@ -4,7 +4,7 @@ from functools import partial
 import itertools
 
 from Item import ItemInfo
-from Playthrough import Playthrough
+from Search import Playthrough
 from Region import Region, TimeOfDay
 
 

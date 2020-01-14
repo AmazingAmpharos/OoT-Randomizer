@@ -2,7 +2,7 @@ import random
 import logging
 from Fill import ShuffleError
 from collections import OrderedDict
-from Playthrough import Playthrough
+from Search import Playthrough
 from Region import TimeOfDay
 from Rules import set_entrances_based_rules
 from Entrance import Entrance

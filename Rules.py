@@ -1,7 +1,7 @@
 import collections
 import logging
 from Location import DisableType
-from Playthrough import Playthrough
+from Search import Playthrough
 from State import State
 
 
