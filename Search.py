@@ -5,14 +5,14 @@ import itertools
 from Region import TimeOfDay
 
 
-class Playthrough(object):
+class Search(object):
 
     def __init__(self, state_list, initial_cache=None):
         self.state_list = [state.copy() for state in state_list]
 
-        # Let the states reference this playthrough.
+        # Let the states reference this search.
         for state in self.state_list:
-            state.playthrough = self
+            state.search = self
 
         if initial_cache:
             self._cache = initial_cache
@@ -39,7 +39,7 @@ class Playthrough(object):
         # we only need to copy the top sphere since that's what we're starting with and we don't go back
         new_cache = {k: copy.copy(v) for k,v in self._cache.items()}
         # copy always makes a nonreversible instance
-        return Playthrough(self.state_list, initial_cache=new_cache)
+        return Search(self.state_list, initial_cache=new_cache)
 
 
     def collect_all(self, itempool):
@@ -72,11 +72,11 @@ class Playthrough(object):
     # Doesn't forget which sphere locations are in as an optimization, so be careful
     # to only unvisit locations in descending sphere order, or locations that
     # have been revisited in the most recent iteration.
-    # Locations never visited in this Playthrough are assumed to have been visited
+    # Locations never visited in this Search are assumed to have been visited
     # in sphere 0, so unvisiting them will discard the entire cache.
     # Not safe to call during iteration.
     def unvisit(self, location):
-        raise Exception('Unimplemented for Playthrough. Perhaps you want RewindablePlaythrough.')
+        raise Exception('Unimplemented for Search. Perhaps you want RewindableSearch.')
 
 
     # Drops the item from its respective state.
@@ -89,7 +89,7 @@ class Playthrough(object):
     # Does not uncollect any items!
     # Not safe to call during iteration.
     def reset(self):
-        raise Exception('Unimplemented for Playthrough. Perhaps you want RewindablePlaythrough.')
+        raise Exception('Unimplemented for Search. Perhaps you want RewindableSearch.')
 
 
     # Internal to the iteration. Modifies the exit_queue, regions. 
@@ -152,7 +152,7 @@ class Playthrough(object):
     #
     # Inside the loop, the caller usually wants to collect items at these
     # locations to see if the game is beatable. Collection should be done
-    # using internal State (recommended to just call playthrough.collect).
+    # using internal State (recommended to just call search.collect).
     def iter_reachable_locations(self, item_locations):
         had_reachable_locations = True
         # will loop as long as any visits were made, and at least once
@@ -199,7 +199,7 @@ class Playthrough(object):
     # all states beatable since items required in one world can be in another.
     # A state is beatable if it can ever collect the Triforce.
     # If scan_for_items is True, constructs and modifies a copy of the underlying
-    # state to determine beatability; otherwise, only checks that the playthrough
+    # state to determine beatability; otherwise, only checks that the search
     # has already acquired all the Triforces.
     #
     # The above comment was specifically for collecting the triforce. Other win 
@@ -224,15 +224,15 @@ class Playthrough(object):
 
         if scan_for_items:
             # collect all available items
-            # make a new playthrough since we might be iterating over one already
-            playthrough = self.copy()
-            playthrough.collect_locations()
+            # make a new search since we might be iterating over one already
+            search = self.copy()
+            search.collect_locations()
             # if every state got the Triforce, then return True
-            return all(map(won, playthrough.state_list))
+            return all(map(won, search.state_list))
         else:
             return False
 
-    # Use the cache in the playthrough to determine region reachability.
+    # Use the cache in the search to determine region reachability.
     # Implicitly requires is_starting_age or Time_Travel.
     def can_reach(self, region, age=None, tod=TimeOfDay.NONE):
         if age == 'adult':
@@ -252,12 +252,12 @@ class Playthrough(object):
             return self.can_reach(region, age='adult', tod=tod) or self.can_reach(region, age='child', tod=tod)
 
 
-    # Use the cache in the playthrough to determine location reachability.
+    # Use the cache in the search to determine location reachability.
     # Only works for locations that had progression items...
     def visited(self, location):
         return location in self._cache['visited_locations']
 
-    # Use the cache in the playthrough to get all reachable regions.
+    # Use the cache in the search to get all reachable regions.
     def reachable_regions(self, age=None):
         if age == 'adult':
             return self._cache['adult_regions'].keys()
@@ -267,7 +267,7 @@ class Playthrough(object):
             return self._cache['adult_regions'].keys() + self._cache['child_regions'].keys()
 
     # Returns whether the given age can access the spot at this age and tod,
-    # by checking whether the playthrough has reached the containing region, and evaluating the spot's access rule.
+    # by checking whether the search has reached the containing region, and evaluating the spot's access rule.
     def spot_access(self, spot, age=None, tod=TimeOfDay.NONE):
         if age == 'adult' or age == 'child':
             return (self.can_reach(spot.parent_region, age=age, tod=tod)
@@ -283,7 +283,7 @@ class Playthrough(object):
                             and spot.access_rule(self.state_list[spot.world.id], spot=spot, age='child', tod=tod))
 
 
-class RewindablePlaythrough(Playthrough):
+class RewindableSearch(Search):
 
     def unvisit(self, location):
         # A location being unvisited is either:

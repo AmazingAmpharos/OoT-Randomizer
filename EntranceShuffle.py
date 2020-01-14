@@ -2,7 +2,7 @@ import random
 import logging
 from Fill import ShuffleError
 from collections import OrderedDict
-from Search import Playthrough
+from Search import Search
 from Region import TimeOfDay
 from Rules import set_entrances_based_rules
 from Entrance import Entrance
@@ -312,11 +312,11 @@ def shuffle_random_entrances(worlds):
 
     # Store all locations reachable before shuffling to differentiate which locations were already unreachable from those we made unreachable
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
-    max_playthrough = Playthrough.max_explore([world.state for world in worlds], complete_itempool)
+    max_search = Search.max_explore([world.state for world in worlds], complete_itempool)
 
     non_drop_locations = [location for world in worlds for location in world.get_locations() if location.type not in ('Drop', 'Event')]
-    max_playthrough.visit_locations(non_drop_locations)
-    locations_to_ensure_reachable = list(filter(max_playthrough.visited, non_drop_locations))
+    max_search.visit_locations(non_drop_locations)
+    locations_to_ensure_reachable = list(filter(max_search.visited, non_drop_locations))
 
     # Shuffle all entrances within their own worlds
     for world in worlds:
@@ -396,7 +396,7 @@ def shuffle_random_entrances(worlds):
                     delete_target_entrance(target)
 
     # Multiple checks after shuffling entrances to make sure everything went fine
-    max_playthrough = Playthrough.max_explore([world.state for world in worlds], complete_itempool)
+    max_search = Search.max_explore([world.state for world in worlds], complete_itempool)
 
     # Check that all shuffled entrances are properly connected to a region
     for world in worlds:
@@ -405,7 +405,7 @@ def shuffle_random_entrances(worlds):
                 logging.getLogger('').error('%s was shuffled but still isn\'t connected to any region [World %d]', entrance, world.id)
 
     # Check for game beatability in all worlds
-    if not max_playthrough.can_beat_game(False):
+    if not max_search.can_beat_game(False):
         raise EntranceShuffleError('Cannot beat game!')
 
     # Validate the worlds one last time to ensure all special conditions are still valid
@@ -463,14 +463,14 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
     # Generate the states with all assumed entrances disconnected
     # This ensures no assumed entrances corresponding to those we are shuffling are required in order for an entrance to be reachable as some age/tod
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
-    max_playthrough = Playthrough.max_explore([world.state for world in worlds], complete_itempool)
+    max_search = Search.max_explore([world.state for world in worlds], complete_itempool)
 
     restrictive_entrances = []
     soft_entrances = []
 
     for entrance in entrances_to_split:
         # Here, we find entrances that may be unreachable under certain conditions
-        if not max_playthrough.spot_access(entrance, age='both', tod=TimeOfDay.ALL):
+        if not max_search.spot_access(entrance, age='both', tod=TimeOfDay.ALL):
             restrictive_entrances.append(entrance)
             continue
         # If an entrance is reachable as both ages and all times of day with all the other entrances disconnected,
@@ -530,83 +530,83 @@ def shuffle_entrances(worlds, entrances, target_entrances, rollbacks, locations_
 # Validate the provided worlds' structures, raising an error if it's not valid based on our criterias
 def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, itempool):
 
-    max_playthrough = None
+    max_search = None
 
     if locations_to_ensure_reachable:
-        max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
+        max_search = Search.max_explore([world.state for world in worlds], itempool)
         # If ALR is enabled, ensure all locations we want to keep reachable are indeed still reachable 
         # Otherwise, just continue if the game is still beatable
-        if not (worlds[0].check_beatable_only and max_playthrough.can_beat_game(False)):
-            max_playthrough.visit_locations(locations_to_ensure_reachable)
+        if not (worlds[0].check_beatable_only and max_search.can_beat_game(False)):
+            max_search.visit_locations(locations_to_ensure_reachable)
             for location in locations_to_ensure_reachable:
-                if not max_playthrough.visited(location):
+                if not max_search.visited(location):
                     raise EntranceShuffleError('%s is unreachable' % location.name)
 
     if (entrance_placed == None and worlds[0].shuffle_special_indoor_entrances) or \
        (entrance_placed != None and entrance_placed.type in ['SpecialInterior', 'Overworld']):
-        if max_playthrough == None:
-            max_playthrough = Playthrough.max_explore([world.state for world in worlds], itempool)
+        if max_search == None:
+            max_search = Search.max_explore([world.state for world in worlds], itempool)
 
         for world in worlds:
             # Links House entrance should be reachable as child at some point in the seed
             links_house_entrance = get_entrance_replacing(world.get_region('Links House'), 'Kokiri Forest -> Links House')
-            if not max_playthrough.spot_access(links_house_entrance, age='child'):
+            if not max_search.spot_access(links_house_entrance, age='child'):
                 raise EntranceShuffleError('Links House Entrance is never reachable as child')
 
             # Temple of Time entrance should be reachable as both ages at some point in the seed
             temple_of_time_entrance = get_entrance_replacing(world.get_region('Temple of Time'), 'Temple of Time Exterior -> Temple of Time')
-            if not max_playthrough.spot_access(temple_of_time_entrance, age='both'):
+            if not max_search.spot_access(temple_of_time_entrance, age='both'):
                 raise EntranceShuffleError('Temple of Time Entrance is never reachable as both ages')
 
             # Windmill door entrance should be reachable as both ages at some point in the seed
             windmill_door_entrance = get_entrance_replacing(world.get_region('Windmill'), 'Kakariko Village -> Windmill')
-            if not max_playthrough.spot_access(windmill_door_entrance, age='both'):
+            if not max_search.spot_access(windmill_door_entrance, age='both'):
                 raise EntranceShuffleError('Windmill Door Entrance is never reachable as both ages')
 
             # Potion Shop front door should be reachable as both ages at some point in the seed
             potion_front_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Front'), 'Kakariko Village -> Kakariko Potion Shop Front')
-            if not max_playthrough.spot_access(potion_front_entrance, age='both'):
+            if not max_search.spot_access(potion_front_entrance, age='both'):
                 raise EntranceShuffleError('Adult Potion Front Entrance is never reachable as both ages')
 
             # Potion Shop back door should be reachable as adult at some point in the seed
             potion_back_entrance = get_entrance_replacing(world.get_region('Kakariko Potion Shop Back'), 'Kakariko Village Backyard -> Kakariko Potion Shop Back')
-            if not max_playthrough.spot_access(potion_back_entrance, age='adult'):
+            if not max_search.spot_access(potion_back_entrance, age='adult'):
                 raise EntranceShuffleError('Adult Potion Back Entrance is never reachable as Adult')
 
             check_same_hint_region(potion_front_entrance, potion_back_entrance)
 
         # At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
         # Note this creates an empty State rather than reuse world.state (which already has starting items).
-        no_items_playthrough = Playthrough([State(world) for world in worlds])
+        no_items_search = Search([State(world) for world in worlds])
 
         valid_starting_regions = ['Kokiri Forest', 'Kakariko Village']
         for world in worlds:
-            if not any(region for region in valid_starting_regions if no_items_playthrough.can_reach(world.get_region(region))):
+            if not any(region for region in valid_starting_regions if no_items_search.can_reach(world.get_region(region))):
                 raise EntranceShuffleError('Invalid starting area')
 
         # Check that a region where time passes is always reachable as both ages without having collected any items (except in closed forest)
-        time_travel_playthrough = Playthrough.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
+        time_travel_search = Search.with_items([world.state for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
 
         for world in worlds:
-            if not (any(region for region in time_travel_playthrough.reachable_regions('child') if region.time_passes and region.world == world) and
-                    any(region for region in time_travel_playthrough.reachable_regions('adult') if region.time_passes and region.world == world)):
+            if not (any(region for region in time_travel_search.reachable_regions('child') if region.time_passes and region.world == world) and
+                    any(region for region in time_travel_search.reachable_regions('adult') if region.time_passes and region.world == world)):
                 raise EntranceShuffleError('Time passing is not guaranteed as both ages')
 
         # When starting as adult, child Link should be able to reach ToT without having collected any items
         # This is important to ensure that the player never loses access to the pedestal after going child
         if any(world.starting_age == 'adult' for world in worlds):
             for world in worlds:
-                if world.starting_age == 'adult' and not time_travel_playthrough.can_reach(world.get_region('Temple of Time'), age='child'):
+                if world.starting_age == 'adult' and not time_travel_search.can_reach(world.get_region('Temple of Time'), age='child'):
                     raise EntranceShuffleError('Links House to Temple of Time path as child is not guaranteed')
 
     if entrance_placed == None or (entrance_placed != None and entrance_placed.type in ['Interior', 'SpecialInterior', 'Overworld']):
         # The Big Poe Shop should always be accessible as adult without the need to use any bottles
         # Since we can't guarantee that items in the pool won't be placed behind bottles, we guarantee the access without using any items
         # This is important to ensure that players can never lock their only bottles by filling them with Big Poes they can't sell
-        no_items_time_travel_playthrough = Playthrough.with_items([State(world) for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
+        no_items_time_travel_search = Search.with_items([State(world) for world in worlds], [ItemFactory('Time Travel', world=world) for world in worlds])
 
         for world in worlds:
-            if not no_items_time_travel_playthrough.can_reach(world.get_region('Castle Town Rupee Room'), age='adult'):
+            if not no_items_time_travel_search.can_reach(world.get_region('Castle Town Rupee Room'), age='adult'):
                 raise EntranceShuffleError('Big Poe Shop access is not guaranteed as adult')
 
             if world.shuffle_cows:
