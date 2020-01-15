@@ -171,6 +171,7 @@ export class GeneratorComponent implements OnInit {
   generateSeed(fromPatchFile: boolean = false, webRaceSeed: boolean = false) {
 
     this.generateSeedButtonEnabled = false;
+    this.seedString = this.seedString.trim().replace(/[^a-zA-Z0-9_-]/g, '')
 
     //console.log("fromPatchFile:", fromPatchFile);
     //console.log(this.global.generator_settingsMap);
