@@ -99,6 +99,7 @@ player.
 * Hints that should come in multiples (duplicates) no longer come in singletons in certain corner cases.
 * Randomizing main rules now works correctly.
 * Removed a misleading random "trials" value from the non-randomized settings in the spoiler.
+* Fix seed values with spaces no longer working.
 * Miscellaneous logic fixes.
 
 ### 5.1

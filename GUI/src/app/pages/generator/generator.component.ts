@@ -171,6 +171,7 @@ export class GeneratorComponent implements OnInit {
   generateSeed(fromPatchFile: boolean = false, webRaceSeed: boolean = false) {
 
     this.generateSeedButtonEnabled = false;
+    this.seedString = this.seedString.trim().replace(/[^a-zA-Z0-9_-]/g, '');
 
     //console.log("fromPatchFile:", fromPatchFile);
     //console.log(this.global.generator_settingsMap);
@@ -195,7 +196,7 @@ export class GeneratorComponent implements OnInit {
         autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dashboardRef: this, totalGenerationCount: this.global.generator_settingsMap["count"] }
       });
 
-      this.global.generateSeedElectron(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
+      this.global.generateSeedElectron(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.length > 0 ? this.seedString : "").then(res => {
         console.log('[Electron] Gen Success');
 
         this.generateSeedButtonEnabled = true;
@@ -229,7 +230,7 @@ export class GeneratorComponent implements OnInit {
     }
     else { //Web
 
-      this.global.generateSeedWeb(webRaceSeed, this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(seedID => {
+      this.global.generateSeedWeb(webRaceSeed, this.seedString.length > 0 ? this.seedString : "").then(seedID => {
 
         //Save last seed id in browser cache
         localStorage.setItem("lastSeed", seedID);
