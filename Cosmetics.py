@@ -2,7 +2,6 @@ from version import __version__
 import random
 import Music as music
 import Sounds as sfx
-import IconManip as icon
 
 from collections import namedtuple
 Color = namedtuple('Color', '  R     G     B')
@@ -193,19 +192,6 @@ def patch_music(rom, settings, log, symbols):
         music.restore_music(rom)
 
 
-def patch_tunic_icon(rom, tunic, color):
-    # patch tunic icon colors
-    icon_locations = {
-        'Kokiri Tunic': 0x007FE000,
-        'Goron Tunic': 0x007FF000,
-        'Zora Tunic': 0x00800000,
-    }
-
-    tunic_icon = icon.generate_tunic_icon(color)
-
-    rom.write_bytes(icon_locations[tunic], tunic_icon)
-
-
 def patch_tunic_colors(rom, settings, log, symbols):
     # patch tunic colors
     tunics = [
@@ -230,11 +216,6 @@ def patch_tunic_colors(rom, settings, log, symbols):
             color = list(int(tunic_option[i:i+2], 16) for i in (0, 2 ,4))
             tunic_option = 'Custom'
         rom.write_bytes(address, color)
-
-        # patch the tunic icon
-        if [tunic, tunic_option] not in [['Kokiri Tunic', 'Kokiri Green'], ['Goron Tunic', 'Goron Red'], ['Zora Tunic', 'Zora Blue']]:
-            patch_tunic_icon(rom, tunic, color)
-
         log.tunic_colors[tunic] = dict(option=tunic_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
