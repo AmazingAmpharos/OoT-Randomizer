@@ -53,6 +53,8 @@ def SimpleRecord(props):
         def update(self, src_dict, update_all=False):
             if src_dict is None:
                 src_dict = {}
+            if isinstance(src_dict, list):
+                src_dict = {"item": src_dict}
             for k, p in props.items():
                 if update_all or k in src_dict:
                     setattr(self, k, src_dict.get(k, p))
@@ -494,7 +496,7 @@ class WorldDistribution(object):
 
     def fill_bosses(self, world, prize_locs, prizepool):
         count = 0
-        for (name, record) in pattern_dict_items(self.locations):
+        for (name, record) in pattern_dict_items(self.locations, prizepool):
             boss = pull_item_or_location([prize_locs], world, name)
             if boss is None:
                 try:
@@ -520,7 +522,10 @@ class WorldDistribution(object):
 
     def fill(self, window, worlds, location_pools, item_pools):
         world = worlds[self.id]
-        for (location_name, record) in pattern_dict_items(self.locations):
+        locations = {}
+        if self.locations:
+            locations = {loc: self.locations[loc] for loc in random.sample(self.locations.keys(), len(self.locations))}
+        for (location_name, record) in pattern_dict_items(locations, world.itempool, []):
             if record.item is None:
                 continue
 
@@ -872,8 +877,23 @@ def pattern_matcher(pattern):
             return lambda s: invert != (s == pattern)
 
 
-def pattern_dict_items(pattern_dict):
+def pattern_dict_items(pattern_dict, itempool=None, exhausted=None):
     for (key, value) in pattern_dict.items():
+        if isinstance(value.item, list):
+            if itempool is not None:
+                valid_items = [item.name for item in itempool if item.name in value.item]
+                if exhausted is not None:
+                    [valid_items.remove(item) for item in exhausted if item in valid_items]
+            else:
+                valid_items = value.item
+            if not valid_items and exhausted is None:
+                continue
+            elif not valid_items:
+                value.item = random_choices(value.item)[0]
+            else:
+                value.item = random_choices(valid_items)[0]
+                if exhausted is not None:
+                    exhausted.append(value.item)
         if is_pattern(key):
             pattern = lambda loc: pattern_matcher(key)(loc.name)
             for location in LocationIterator(pattern):
