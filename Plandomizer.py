@@ -317,7 +317,7 @@ class WorldDistribution(object):
             self.give_item('Farores Wind')
 
 
-    def pool_remove_item(self, pools, item_name, count, world_id=None, use_base_pool=True):
+    def pool_remove_item(self, pools, item_name, count, world_id=None, use_base_pool=True, ignore_pools=None):
         removed_items = []
 
         base_remove_matcher = pattern_matcher(item_name)
@@ -328,7 +328,7 @@ class WorldDistribution(object):
             predicate = lambda item: item.world.id == world_id and remove_matcher(item.name)
 
         for i in range(count):
-            removed_item = pull_random_element(pools, predicate)
+            removed_item = pull_random_element(pools, predicate, ignore_pools=ignore_pools)
             if removed_item is None:
                 if not use_base_pool:
                     if IsItem(item_name):
@@ -511,6 +511,8 @@ class WorldDistribution(object):
                 raise RuntimeError('A boss can only give rewards in its own world')
             reward = pull_item_or_location([prizepool], world, record.item)
             if reward is None:
+                if record.item not in item_groups['DungeonReward']:
+                    raise RuntimeError('Cannot place non-dungeon reward %s in world %d on location %s.' % (record.item, self.id + 1, name))
                 if IsItem(record.item):
                     raise RuntimeError('Reward already placed in world %d: %s' % (world.id + 1, record.item))
                 else:
@@ -537,7 +539,7 @@ class WorldDistribution(object):
                 try:
                     location = LocationFactory(location_name)
                 except KeyError:
-                    raise RuntimeError('Unknown location in world %d: %s' % (world.id + 1, name))
+                    raise RuntimeError('Unknown location in world %d: %s' % (world.id + 1, location_name))
                 if location.type == 'Boss':
                     continue
                 elif location.name in world.disabled_locations:
@@ -545,11 +547,21 @@ class WorldDistribution(object):
                 else:
                     raise RuntimeError('Location already filled in world %d: %s' % (self.id + 1, location_name))
 
+            if record.item in item_groups['DungeonReward']:
+                raise RuntimeError('Cannot place dungeon reward %s in world %d in location %s.' % (record.item, self.id + 1, location_name))
+
             if record.item == '#Junk' and location.type == 'Song' and not world.shuffle_song_items:
                 record.item = '#JunkSong'
 
+            ignore_pools = None
+            is_invert = pattern_matcher(record.item)('!')
+            if is_invert and location.type != 'Song' and not world.shuffle_song_items:
+                ignore_pools = [2]
+            if is_invert and location.type == 'Song' and not world.shuffle_song_items:
+                ignore_pools = [i for i in range(len(item_pools)) if i != 2]
+
             try:
-                item = self.pool_remove_item(item_pools, record.item, 1, world_id=player_id)[0]
+                item = self.pool_remove_item(item_pools, record.item, 1, world_id=player_id, ignore_pools=ignore_pools)[0]
             except KeyError:
                 try:
                     self.pool_remove_item(item_pools, "#Junk", 1, world_id=player_id)
@@ -557,6 +569,8 @@ class WorldDistribution(object):
                     item = random.choice(list(ItemIterator(item_matcher, worlds[player_id])))
                 except KeyError:
                     raise RuntimeError('Too many items were added to world %d, and not enough junk is available to be removed.' % (self.id + 1))
+                except IndexError:
+                    raise RuntimeError('Unknown item %s being placed on location %s in world %d.' % (record.item, location, self.id + 1))
 
             if record.price is not None and item.type != 'Shop':
                 location.price = record.price
@@ -912,8 +926,11 @@ def pull_first_element(pools, predicate=lambda k:True, remove=True):
     return None
 
 
-def pull_random_element(pools, predicate=lambda k:True, remove=True):
-    candidates = [(element, pool) for pool in pools for element in pool if predicate(element)]
+def pull_random_element(pools, predicate=lambda k:True, remove=True, ignore_pools=None):
+    if ignore_pools:
+        candidates = [(element, pool) for i, pool in enumerate(pools) if i not in ignore_pools for element in pool if predicate(element)]
+    else:
+        candidates = [(element, pool) for pool in pools for element in pool if predicate(element)]
     if len(candidates) == 0:
         return None
     element, pool = random.choice(candidates)
