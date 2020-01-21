@@ -87,6 +87,9 @@ player.
 * Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance does not presently affect chest size with Chest Size Matches Contents enabled, due to a bug.
 
 #### Other Changes
+* Logic now requires Stone of Agony to access any hidden grotto.
+  * A new trick `Hidden Grottos without Stone of Agony` will bypass this.
+  * Stone of Agony is now only considered a useless item (for barren areas) when this trick is on and Gossip Stones do not use it.
 * Cosmetic heart color setting now applies in the file select screen.
 * Non-Always Location hints cannot be placed for an area that already has a Foolish hint.
   * If the location hint is placed first, then it can still appear in a foolish hinted area, however in Tournament hint distribution the Foolish hints are placed first so that cannot happen.
