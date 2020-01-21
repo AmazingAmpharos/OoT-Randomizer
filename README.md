@@ -75,6 +75,8 @@ player.
   * Collect some number of Triforce Pieces to beat the game instead of beating Ganon
   * Multiworld Triforce counts are collective, so once the total is reached across all players everyone wins.
   * If enabled via randomizing main rules, the count is always 20.
+* Separate Double Defense model
+  * Now appears as a color-shifted version of the Heart Container, with a transparent interior and prominent gold border.
 
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
