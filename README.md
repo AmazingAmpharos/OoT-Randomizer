@@ -85,12 +85,13 @@ player.
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
 * Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance does not presently affect chest size with Chest Size Matches Contents enabled, due to a bug.
-* Added a new trick `Goron City Spinning Pot PoH without Explosives`, which allows stopping the Spinning Pot using a bomb flower.
-
-#### Other Changes
 * Logic now requires Stone of Agony to access any hidden grotto.
   * A new trick `Hidden Grottos without Stone of Agony` will bypass this.
   * Stone of Agony is now only considered a useless item (for barren areas) when this trick is on and Gossip Stones do not use it.
+* Added a new trick `Goron City Spinning Pot PoH without Explosives`, which allows stopping the Spinning Pot using a bomb flower.
+* Hell Mode preset includes both the above tricks.
+
+#### Other Changes
 * Cosmetic heart color setting now applies in the file select screen.
 * Cosmetic tunic color setting now applies to the icons in the pause menu.
 * Non-Always Location hints cannot be placed for an area that already has a Foolish hint.

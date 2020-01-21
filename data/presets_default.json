@@ -114,6 +114,7 @@
     "allowed_tricks": [
       "logic_child_rolling_with_strength",
       "logic_fewer_tunic_requirements",
+      "logic_grottos_without_agony",
       "logic_visible_collisions",
       "logic_child_deadhand",
       "logic_man_on_roof",
@@ -215,6 +216,7 @@
       "logic_jabu_boss_gs_adult",
       "logic_water_dragon_jump_dive",
       "logic_water_dragon_bombchu",
+      "logic_goron_pot_no_explosives",
       "logic_valley_crate_hovers",
       "logic_lost_woods_bridge"
     ],
