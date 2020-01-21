@@ -953,6 +953,13 @@ logic_tricks = {
                     Arrows, but you must be very quick, precise,
                     and strategic with how you take your shots.
                     '''},
+    'Goron City Spinning Pot PoH without Explosives': {
+        'name'    : 'logic_goron_pot_no_explosives',
+        'tooltip' : '''\
+                    Allows for stopping the Goron City Spinning
+                    Pot using a bomb flower alone, requiring 
+                    strength in lieu of inventory explosives.
+                    '''},
 }
 
 

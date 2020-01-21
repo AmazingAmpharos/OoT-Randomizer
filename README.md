@@ -85,6 +85,7 @@ player.
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
 * Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance does not presently affect chest size with Chest Size Matches Contents enabled, due to a bug.
+* Added a new trick `Goron City Spinning Pot PoH without Explosives`, which allows stopping the Spinning Pot using a bomb flower.
 
 #### Other Changes
 * Logic now requires Stone of Agony to access any hidden grotto.
