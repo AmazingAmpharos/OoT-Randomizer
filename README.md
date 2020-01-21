@@ -92,6 +92,7 @@ player.
   * A new trick `Hidden Grottos without Stone of Agony` will bypass this.
   * Stone of Agony is now only considered a useless item (for barren areas) when this trick is on and Gossip Stones do not use it.
 * Cosmetic heart color setting now applies in the file select screen.
+* Cosmetic tunic color setting now applies to the icons in the pause menu.
 * Non-Always Location hints cannot be placed for an area that already has a Foolish hint.
   * If the location hint is placed first, then it can still appear in a foolish hinted area, however in Tournament hint distribution the Foolish hints are placed first so that cannot happen.
 * The location containing Light Arrows will be considered a hinted location if Ganondorf's hint can be reached without them.
