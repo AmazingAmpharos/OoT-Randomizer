@@ -896,6 +896,13 @@ logic_tricks = {
                     pot, but it can be quite finicky to get it
                     to work.
                     '''},
+    'Goron City Spinning Pot PoH without Explosives': {
+        'name'    : 'logic_goron_pot_no_explosives',
+        'tooltip' : '''\
+                    Allows for stopping the Goron City Spinning
+                    Pot using a bomb flower alone, requiring 
+                    strength in lieu of inventory explosives.
+                    '''},
     'Gerudo Valley Crate PoH as Adult with Hover Boots': {
         'name'    : 'logic_valley_crate_hovers',
         'tooltip' : '''\
@@ -952,13 +959,6 @@ logic_tricks = {
                     open the Shadow Temple entrance with just Fire
                     Arrows, but you must be very quick, precise,
                     and strategic with how you take your shots.
-                    '''},
-    'Goron City Spinning Pot PoH without Explosives': {
-        'name'    : 'logic_goron_pot_no_explosives',
-        'tooltip' : '''\
-                    Allows for stopping the Goron City Spinning
-                    Pot using a bomb flower alone, requiring 
-                    strength in lieu of inventory explosives.
                     '''},
 }
 
