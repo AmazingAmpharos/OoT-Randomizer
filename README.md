@@ -77,6 +77,10 @@ player.
   * If enabled via randomizing main rules, the count is always 20.
 * Separate Double Defense model
   * Now appears as a color-shifted version of the Heart Container, with a transparent interior and prominent gold border.
+* Visual Stone of Agony indicator
+  * When the player has the Stone of Agony, it will appear on-screen above the rupee count when the player is near a hidden grotto.
+  * The icon vibrates based on proximity to the grotto entrance, similar to the rumble pak.
+  * A real rumble pak is not required.
 
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
