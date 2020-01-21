@@ -107,6 +107,7 @@ player.
 #### Bug Fixes
 * Minor stability fix in Plando
 * Plando no longer occasionally attempts to place an item on a location where it's not allowed.
+* Starting items for adult that auto-equip do so correctly now. (Non-Kokiri Tunics won't autoequip at the moment.)
 * Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers.
 * Removed (unnecessarily) duplicated/overlapping hints.
 * Hints that should come in multiples (duplicates) no longer come in singletons in certain corner cases.

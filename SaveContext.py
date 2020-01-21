@@ -285,6 +285,8 @@ class SaveContext():
                 if self.addresses['equip_items'][item].get_value():
                     item_value = self.addresses['equip_items'][item].get_value_raw()
                     self.addresses[equip_type]['equips'][equip_item].set_value_raw(item_value)
+                    if equip_item == 'tunic':
+                        self.addresses[equip_type]['equips'][equip_item].value = 0
                     if equip_item == 'sword':
                         self.addresses[equip_type]['button_items']['b'].value = item
                     break
@@ -373,10 +375,10 @@ class SaveContext():
                     'right'              : Address(size=1, choices=SaveContext.slot_id_map),
                 },
                 'equips' : {
-                    'sword'              : Address(0x0070, size=2, mask=0x000F),
-                    'shield'             : Address(0x0070, size=2, mask=0x00F0),
-                    'tunic'              : Address(0x0070, size=2, mask=0x0F00),
-                    'boots'              : Address(0x0070, size=2, mask=0xF000),                
+                    'sword'              : Address(0x0070, size=2, mask=0x000F, max=3),
+                    'shield'             : Address(0x0070, size=2, mask=0x00F0, max=3),
+                    'tunic'              : Address(0x0070, size=2, mask=0x0F00, max=3),
+                    'boots'              : Address(0x0070, size=2, mask=0xF000, max=3),                
                 },
             },
             'unk_07'                     : Address(size=2),
@@ -847,6 +849,7 @@ class SaveContext():
         "Biggoron Sword" : {
             'equip_items.biggoron_sword' : True,
             'bgs_flag'                   : True,
+            'bgs_hits_left'              : True,
         },
         "Gerudo Membership Card" : {'quest.gerudos_card'             : True},
         "Stone of Agony"         : {'quest.stone_of_agony'           : True},
