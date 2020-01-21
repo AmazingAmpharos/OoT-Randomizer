@@ -103,6 +103,7 @@ player.
 * Plando will now accept JSON lists for `item` in the location dictionary to randomly choose between for placement.
   * Attempts to not exceed item pool values until all the pool counts for the items in the list are reached.
 * Further seed generation speed improvements.
+* The main search algorithm was renamed Search (from Playthrough) to avoid confusion with the spoiler playthrough.
 
 #### Bug Fixes
 * Minor stability fix in Plando

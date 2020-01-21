@@ -13,7 +13,7 @@ from Item import ItemFactory, ItemIterator, IsItem
 from ItemPool import item_groups, get_junk_item
 from Location import LocationIterator, LocationFactory, IsLocation
 from LocationList import location_groups
-from Playthrough import Playthrough
+from Search import Search
 from Spoiler import HASH_ICONS
 from version import __version__
 from Utils import random_choices
@@ -581,8 +581,8 @@ class WorldDistribution(object):
             location.world.push_item(location, item, True)
 
             if item.advancement:
-                playthrough = Playthrough.max_explore([world.state for world in worlds], itertools.chain.from_iterable(item_pools))
-                if not playthrough.can_beat_game(False):
+                search = Search.max_explore([world.state for world in worlds], itertools.chain.from_iterable(item_pools))
+                if not search.can_beat_game(False):
                     raise FillError('%s in world %d is not reachable without %s in world %d!' % (location.name, self.id + 1, item.name, player_id + 1))
             window.fillcount += 1
             window.update_progress(5 + ((window.fillcount / window.locationcount) * 30))
@@ -660,8 +660,8 @@ class Distribution(object):
 
 
     def fill(self, window, worlds, location_pools, item_pools):
-        playthrough = Playthrough.max_explore([world.state for world in worlds], itertools.chain.from_iterable(item_pools))
-        if not playthrough.can_beat_game(False):
+        search = Search.max_explore([world.state for world in worlds], itertools.chain.from_iterable(item_pools))
+        if not search.can_beat_game(False):
             raise FillError('Item pool does not contain items required to beat game!')
 
         for world_dist in self.world_dists:
