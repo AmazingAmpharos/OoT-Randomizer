@@ -90,6 +90,10 @@ player.
   * Stone of Agony is now only considered a useless item (for barren areas) when this trick is on and Gossip Stones do not use it.
 * Added a new trick `Goron City Spinning Pot PoH without Explosives`, which allows stopping the Spinning Pot using a bomb flower.
 * Hell Mode preset includes both the above tricks.
+* Tricks enabled/disabled in a Plandomizer file now take precedence over Tricks in Detailed Logic, even if the Plandomizer file has an empty list.
+  * An empty list means the seed will be beatable without any tricks.
+  * If there's no `allowed_tricks` item in the file, the Detailed Logic tricks apply instead.
+  * If there is an `allowed_tricks` list in the file, it will not be possible to disable any of the enabled tricks (or enabling more) without editing the file.
 
 #### Other Changes
 * Cosmetic heart color setting now applies in the file select screen.
@@ -109,6 +113,7 @@ player.
 
 #### Bug Fixes
 * Minor stability fix in Plando
+* Spoilers for plando'd seeds now correctly show the tricks enabled for the seed.
 * Plando no longer occasionally attempts to place an item on a location where it's not allowed.
 * Plando starting items and items set in specific locations now count toward the pool allocation. (Starting items are replaced with junk.)
 * Plando now refuses to place more than the maximum amount of bottles, adult trade items, or total non-junk items.

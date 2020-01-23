@@ -51,12 +51,18 @@ def main(settings, window=dummy_window()):
 
     worlds = []
 
+    old_tricks = settings.allowed_tricks
+    settings.load_distribution()
+
+    # compare pointers to lists rather than contents, so even if the two are identical
+    # we'll still log the error and note the dist file overrides completely.
+    if old_tricks and old_tricks is not settings.allowed_tricks:
+        logger.error('Tricks are set in two places! Using only the tricks from the distribution file.')
+
     for trick in logic_tricks.values():
         settings.__dict__[trick['name']] = trick['name'] in settings.allowed_tricks
 
-    settings.load_distribution()
-
-    # we load the rom before creating the seed so that error get caught early
+    # we load the rom before creating the seed so that errors get caught early
     if settings.compress_rom == 'None' and not settings.create_spoiler:
         raise Exception('`No Output` must have spoiler enabled to produce anything.')
 
@@ -113,8 +119,9 @@ def generate(settings, window):
             overworld_data = os.path.join(data_path('Glitched World'), 'Overworld.json')
         else:
             overworld_data = os.path.join(data_path('World'), 'Overworld.json')
-        world.load_regions_from_json(overworld_data)
 
+        # Compile the json rules based on settings
+        world.load_regions_from_json(overworld_data)
         create_dungeons(world)
         world.create_internal_locations()
 
