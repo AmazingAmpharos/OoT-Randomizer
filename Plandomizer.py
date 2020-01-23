@@ -537,8 +537,8 @@ class WorldDistribution(object):
         locations = {}
         if self.locations:
             locations = {loc: self.locations[loc] for loc in random.sample(self.locations.keys(), len(self.locations))}
-        for starting_item, record in pattern_dict_items(self.starting_items):
-            for _ in range(record.count):
+        for starting_item in self.starting_items:
+            for _ in range(self.starting_items[starting_item].count):
                 try:
                     if starting_item in item_groups['DungeonReward']:
                         continue
