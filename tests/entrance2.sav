@@ -2,6 +2,7 @@
 "seed": "TESTTESTTEST",
 "create_spoiler": true,
 "compress_rom": "None",
+"enable_distribution_file": true,
 "distribution_file": "tests/cfairy.dist",
 "randomize_settings": false,
 "open_forest": "open",
