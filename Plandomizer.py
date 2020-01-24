@@ -598,7 +598,13 @@ class WorldDistribution(object):
             try:
                 item = self.pool_remove_item(item_pools, record.item, 1, world_id=player_id, ignore_pools=ignore_pools)[0]
             except KeyError:
-                if record.item in item_groups['Bottle']:
+                if location.type == 'Shop' and "Buy" in record.item:
+                    try:
+                        self.pool_remove_item([item_pools[0]], "Buy *", 1, world_id=player_id)
+                        item = ItemFactory([record.item], world=world)[0]
+                    except KeyError:
+                        raise RuntimeError('Too many shop buy items were added to world %d, and not enough shop buy items are available in the item pool to be removed.' % (self.id + 1))
+                elif record.item in item_groups['Bottle']:
                     try:
                         item = self.pool_replace_item(item_pools, "#Bottle", player_id, record.item, worlds)
                     except KeyError:
