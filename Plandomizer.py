@@ -942,7 +942,7 @@ def pattern_matcher(pattern):
 
 def pattern_dict_items(pattern_dict, itempool=None, exhausted=None):
     for (key, value) in pattern_dict.items():
-        if isinstance(value.item, list):
+        if hasattr(value, 'item') and isinstance(value.item, list):
             if itempool is not None:
                 valid_items = [item.name for item in itempool if item.name in value.item]
                 if exhausted is not None:
