@@ -125,6 +125,7 @@ player.
 * Removed a misleading random "trials" value from the non-randomized settings in the spoiler.
 * Fix seed values with spaces no longer working.
 * Miscellaneous logic fixes.
+* Other bug fixes.
 
 ### 5.1
 
