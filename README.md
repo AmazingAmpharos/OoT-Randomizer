@@ -108,6 +108,7 @@ player.
 * Disabled settings don't show up in the spoiler.
 * Plando will now accept JSON lists for `item` in the location dictionary to randomly choose between for placement.
   * Attempts to not exceed item pool values until all the pool counts for the items in the list are reached.
+* "Start with" settings are now handled by the Plando library.
 * Further seed generation speed improvements.
 * The main search algorithm was renamed Search (from Playthrough) to avoid confusion with the spoiler playthrough.
 
