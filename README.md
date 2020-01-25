@@ -116,7 +116,7 @@ player.
 * Spoilers for plando'd seeds now correctly show the tricks enabled for the seed.
 * Plando no longer occasionally attempts to place an item on a location where it's not allowed.
 * Plando starting items and items set in specific locations now count toward the pool allocation. (Starting items are replaced with junk.)
-* Plando now refuses to place more than the maximum amount of bottles, adult trade items, or total non-junk items.
+* Plando now refuses to place more than the maximum amount of bottles, adult trade items, shop items, or total non-junk items.
 * Starting items for adult that auto-equip should do so correctly now. (Non-Kokiri Tunics won't autoequip at the moment.)
 * Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers.
 * Removed (unnecessarily) duplicated/overlapping hints.
