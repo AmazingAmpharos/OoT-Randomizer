@@ -548,7 +548,10 @@ class WorldDistribution(object):
                     elif starting_item in item_groups['AdultTrade']:
                         item = self.pool_replace_item(item_pools, "#AdultTrade", self.id, "#Junk", worlds)
                     elif IsItem(starting_item):
-                        item = self.pool_replace_item(item_pools, starting_item, self.id, "#Junk", worlds)
+                        try:
+                            item = self.pool_replace_item(item_pools, starting_item, self.id, "#Junk", worlds)
+                        except KeyError:
+                            pass  # If a normal item exceeds the item pool count, continue.
                 except KeyError:
                     raise RuntimeError('Started with too many "%s" in world %d, and not enough "%s" are available in the item pool to be removed.' % (starting_item, self.id + 1, starting_item))
 
