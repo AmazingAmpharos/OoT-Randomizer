@@ -63,7 +63,7 @@ class Location(object):
         return (
             not self.is_disabled() and 
             self.can_fill_fast(item) and
-            (not check_access or state.playthrough.spot_access(self, 'either')))
+            (not check_access or state.search.spot_access(self, 'either')))
 
 
     def can_fill_fast(self, item, manual=False):

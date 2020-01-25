@@ -38,31 +38,6 @@ export class GeneratorComponent implements OnInit {
   settingsBusy: boolean = false;
   settingsBusySaveOnly: boolean = true;
 
-  //For KeyValue pipe
-  presetKeyOrder = (a, b) => { //SYSTEM PRESETS > BUILT-IN PRESETS > USER PRESETS
-
-    if ("isNewPreset" in a.value) {
-      return -1;
-    }
-    else if ("isNewPreset" in b.value) {
-      return 1;
-    }
-    else if ("isDefaultPreset" in a.value) {
-      return -1;
-    }
-    else if ("isDefaultPreset" in b.value) {
-      return 1;
-    }
-    else if ("isProtectedPreset" in a.value) {
-      return -1;
-    }
-    else if ("isProtectedPreset" in b.value) {
-      return 1;
-    }
-    else
-      return 1;
-  };
-
   //Local (non persistent) Variables
   seedString: string = "";
   generateSeedButtonEnabled: boolean = true;
@@ -369,6 +344,10 @@ export class GeneratorComponent implements OnInit {
         autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: "The entered settings string seems to be invalid!" }
       });
     });
+  }
+
+  getPresetArray() {
+    return Object.keys(this.global.generator_presets);
   }
 
   loadPreset() {

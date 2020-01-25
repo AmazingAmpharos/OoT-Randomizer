@@ -54,12 +54,9 @@ SCENE_TABLE = 0xB71440
 class File(object):
     def __init__(self, file):
         self.name = file['Name']
-        self.start = int(file['Start'], 16)
-        self.end = int(file['End'], 16)
-        try:
-            self.remap = file['RemapStart']
-        except KeyError:
-            self.remap = None
+        self.start = int(file['Start'], 16) if 'Start' in file else 0
+        self.end = int(file['End'], 16) if 'End' in file else self.start
+        self.remap = file['RemapStart'] if 'RemapStart' in file else None
         self.from_file = self.start
 
         # used to update the file's associated dmadata record
