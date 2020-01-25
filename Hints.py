@@ -9,7 +9,7 @@ from collections import OrderedDict
 from HintList import getHint, getHintGroup, Hint, hintExclusions
 from Item import MakeEventItem
 from Messages import update_message_by_id
-from Playthrough import Playthrough
+from Search import Search
 from TextBox import line_wrap
 from Utils import random_choices
 
@@ -175,11 +175,11 @@ def can_reach_stone(worlds, stone_location, location):
 
     old_item = location.item
     location.item = None
-    playthrough = Playthrough.max_explore([world.state for world in worlds])
+    search = Search.max_explore([world.state for world in worlds])
     location.item = old_item
 
-    return (playthrough.spot_access(stone_location)
-            and playthrough.state_list[location.world.id].guarantee_hint())
+    return (search.spot_access(stone_location)
+            and search.state_list[location.world.id].guarantee_hint())
 
 
 def writeGossipStoneHints(spoiler, world, messages):
@@ -558,11 +558,11 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
     world.barren_dungeon = False
     world.woth_dungeon = 0
 
-    playthrough = Playthrough.max_explore([w.state for w in spoiler.worlds])
+    search = Search.max_explore([w.state for w in spoiler.worlds])
     for stone in gossipLocations.values():
         stone.reachable = (
-            playthrough.spot_access(world.get_location(stone.location))
-            and playthrough.state_list[world.id].guarantee_hint())
+            search.spot_access(world.get_location(stone.location))
+            and search.state_list[world.id].guarantee_hint())
 
     if checkedLocations is None:
         checkedLocations = set()

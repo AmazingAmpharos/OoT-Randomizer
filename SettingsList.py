@@ -129,6 +129,12 @@ logic_tricks = {
                     Silver Rupee Chest. May need to make multiple
                     trips.
                     '''},
+    'Hidden Grottos without Stone of Agony': {
+        'name'    : 'logic_grottos_without_agony',
+        'tooltip' : '''\
+                    Allows entering hidden grottos without the
+                    Stone of Agony.
+                    '''},
     'Pass Through Visible One-Way Collisions': {
         'name'    : 'logic_visible_collisions',
         'tooltip' : '''\
@@ -889,6 +895,13 @@ logic_tricks = {
                     A Bombchu can be used to stop the spinning
                     pot, but it can be quite finicky to get it
                     to work.
+                    '''},
+    'Goron City Spinning Pot PoH without Explosives': {
+        'name'    : 'logic_goron_pot_no_explosives',
+        'tooltip' : '''\
+                    Allows for stopping the Goron City Spinning
+                    Pot using a bomb flower alone, requiring 
+                    strength in lieu of inventory explosives.
                     '''},
     'Gerudo Valley Crate PoH as Adult with Hover Boots': {
         'name'    : 'logic_valley_crate_hovers',
