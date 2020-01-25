@@ -287,6 +287,13 @@ logic_tricks = {
                     flower. You must backwalk with the flower and then
                     quickly throw it toward the wall.
                     '''},
+    'Goron City Spinning Pot PoH with Strength': {
+        'name'    : 'logic_goron_city_pot_with_strength',
+        'tooltip' : '''\
+                    Allows for stopping the Goron City Spinning
+                    Pot using a bomb flower alone, requiring 
+                    strength in lieu of inventory explosives.
+                    '''},
     'Water Temple Boss Key Chest with Iron Boots': {
         'name'    : 'logic_water_bk_chest',
         'tooltip' : '''\
@@ -895,13 +902,6 @@ logic_tricks = {
                     A Bombchu can be used to stop the spinning
                     pot, but it can be quite finicky to get it
                     to work.
-                    '''},
-    'Goron City Spinning Pot PoH without Explosives': {
-        'name'    : 'logic_goron_pot_no_explosives',
-        'tooltip' : '''\
-                    Allows for stopping the Goron City Spinning
-                    Pot using a bomb flower alone, requiring 
-                    strength in lieu of inventory explosives.
                     '''},
     'Gerudo Valley Crate PoH as Adult with Hover Boots': {
         'name'    : 'logic_valley_crate_hovers',

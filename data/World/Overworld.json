@@ -1222,7 +1222,7 @@
                 can_blast_or_smash or can_use(Silver_Gauntlets)",
             "Goron City Pot Freestanding PoH": "
                 is_child and 'Goron City Child Fire' and
-                (Bombs or (Progressive_Strength_Upgrade and logic_goron_pot_no_explosives) or (has_bombchus and logic_goron_city_pot))",
+                (Bombs or (Progressive_Strength_Upgrade and logic_goron_city_pot_with_strength) or (has_bombchus and logic_goron_city_pot))",
             "Rolling Goron as Child": "
                 is_child and 
                 (has_explosives or (Progressive_Strength_Upgrade and logic_child_rolling_with_strength))",
