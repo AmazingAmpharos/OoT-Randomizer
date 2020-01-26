@@ -2728,6 +2728,7 @@ setting_infos = [
         gui_tooltip    = '''\
             Ingame models for items such as Heart Containers have 
             colors matching the colors chosen for cosmetic settings.
+            Heart and magic drop icons also have matching colors.
 
             Tunic colors are excluded from this to prevent not being 
             able to discern freestanding Tunics from each other.
