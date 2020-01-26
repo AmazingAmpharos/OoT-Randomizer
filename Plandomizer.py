@@ -561,7 +561,8 @@ class WorldDistribution(object):
                 # Update item_pool
                 if item is not None:
                     if item not in self.item_pool:
-                        self.item_pool[item.name] = ItemPoolRecord({'type': 'set', 'count': 1})
+                        self.item_pool[item.name] = ItemPoolRecord()
+                        self.item_pool[item.name].count = self.base_pool.count(item.name) + 1
                     else:
                         self.item_pool[item.name].count += 1
                     item_pools[5].append(ItemFactory(item.name, world))
@@ -624,7 +625,7 @@ class WorldDistribution(object):
                         raise RuntimeError('Too many items were added to world %d, and not enough junk is available to be removed.' % (self.id + 1))
                 # Update item_pool
                 if item.name not in self.item_pool:
-                    self.item_pool[item.name] = ItemPoolRecord({'type': 'set', 'count': 1})
+                    self.item_pool[item.name] = ItemPoolRecord()
                 else:
                     self.item_pool[item.name].count += 1
             except IndexError:
