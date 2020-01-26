@@ -412,7 +412,7 @@ def patch_gauntlet_colors(rom, settings, log, symbols):
 def patch_heart_colors(rom, settings, log, symbols):
     # patch heart colors
     hearts = [
-        ('Heart Colors', settings.heart_color, symbols['CFG_HEART_COLOR'], 0xBB0994
+        ('Heart Colors', settings.heart_color, symbols['CFG_HEART_COLOR'], 0xBB0994,
             ([0x14DA474, 0x14DA594, 0x14B701C, 0x14B70DC], 
              [0x14B70FC, 0x14DA494, 0x14DA5B4, 0x14B700C, 0x14B702C, 0x14B703C, 0x14B704C, 0x14B705C, 
               0x14B706C, 0x14B707C, 0x14B708C, 0x14B709C, 0x14B70AC, 0x14B70BC, 0x14B70CC])), # GI Model DList colors
@@ -438,7 +438,8 @@ def patch_heart_colors(rom, settings, log, symbols):
         if heart_option != 'Red':
             rom.write_int16s(file_select_address + 6, color) # file select DD hearts
             if settings.correct_model_colors:
-                patch_model_colors(rom, color, model_addresses)
+                patch_model_colors(rom, color, model_addresses) # heart model colors
+                icon.patch_overworld_icon(rom, color, 0xF43D80) # Overworld Heart Icon
         log.heart_colors[heart] = dict(option=heart_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
@@ -464,6 +465,8 @@ def patch_magic_colors(rom, settings, log, symbols):
         rom.write_int16s(symbol, color)
         if magic_option != 'Green' and settings.correct_model_colors:
             patch_model_colors(rom, color, model_addresses)
+            icon.patch_overworld_icon(rom, color, 0xF45650, ".\\data\\icons\\magicSmallExtras.raw") # Overworld Small Pot
+            icon.patch_overworld_icon(rom, color, 0xF47650, ".\\data\\icons\\magicLargeExtras.raw") # Overworld Big Pot
         log.magic_colors[magic_color] = dict(option=magic_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
