@@ -956,9 +956,34 @@ def pattern_dict_items(pattern_dict, itempool=None, exhausted=None):
     for (key, value) in pattern_dict.items():
         if hasattr(value, 'item') and isinstance(value.item, list):
             if itempool is not None:
-                valid_items = [item.name for item in itempool if item.name in value.item]
+                valid_items = []
+                pool_bottles = []
+                pool_adult_trade = []
+                choice_bottles = list(set(value.item) & set(item_groups["Bottle"]))
+                choice_adult_trade = list(set(value.item) & set(item_groups["AdultTrade"]))
+                for item in itempool:
+                    if item.name in value.item:
+                        valid_items.append(item.name)
+                    if choice_bottles and item.name in item_groups["Bottle"]:
+                        pool_bottles.append(item.name)
+                    if choice_adult_trade and item.name in item_groups["AdultTrade"]:
+                        pool_adult_trade.append(item.name)
                 if exhausted is not None:
-                    [valid_items.remove(item) for item in exhausted if item in valid_items]
+                    for item in exhausted:
+                        if item in valid_items:
+                            valid_items.remove(item)
+                        if item in item_groups["Bottle"] and pool_bottles:
+                            pool_bottles.pop()
+                        if item in item_groups["AdultTrade"] and pool_adult_trade:
+                            pool_adult_trade = []
+                    for _ in pool_bottles:
+                        valid_items.append(choice_bottles.pop())
+                        if not choice_bottles:
+                            break
+                    for _ in pool_adult_trade:
+                        valid_items.append(choice_adult_trade.pop())
+                        if not choice_adult_trade:
+                            break
             else:
                 valid_items = value.item
             if not valid_items and exhausted is None:
