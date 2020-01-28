@@ -349,14 +349,16 @@ class WorldDistribution(object):
 
 
     def pool_add_item(self, pool, item_name, count):
-        added_items = []
         if item_name == '#Junk':
             added_items = get_junk_item(count)
         elif is_pattern(item_name):
             add_matcher = lambda item: pattern_matcher(item_name)(item.name)
-            candidates = [item.name for item in ItemIterator(predicate=add_matcher)]
+            candidates = [
+                item.name for item in ItemIterator(predicate=add_matcher)
+                if item.name not in self.item_pool or self.item_pool[item.name].count != 0
+            ]  # Only allow items to be candidates if they haven't been set to 0
             if len(candidates) == 0:
-                raise RuntimeError("Unknown item could not be added: " + item_name)
+                raise RuntimeError("Unknown item, or item set to 0 in the item pool could not be added: " + item_name)
             added_items = random_choices(candidates, k=count)
         else:
             if not IsItem(item_name):
