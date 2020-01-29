@@ -957,33 +957,31 @@ def pattern_dict_items(pattern_dict, itempool=None, exhausted=None):
         if hasattr(value, 'item') and isinstance(value.item, list):
             if itempool is not None:
                 valid_items = []
-                pool_bottles = []
-                pool_adult_trade = []
-                choice_bottles = list(set(value.item) & set(item_groups["Bottle"]))
-                choice_adult_trade = list(set(value.item) & set(item_groups["AdultTrade"]))
+                pool_group_items = []
                 for item in itempool:
                     if item.name in value.item:
                         valid_items.append(item.name)
-                    if choice_bottles and item.name in item_groups["Bottle"]:
-                        pool_bottles.append(item.name)
-                    if choice_adult_trade and item.name in item_groups["AdultTrade"]:
-                        pool_adult_trade.append(item.name)
+                    else:
+                        for group in item_groups:
+                            if '#' + group in value.item:
+                                if item.name in item_groups[group]:
+                                    pool_group_items.append(item.name)
                 if exhausted is not None:
-                    for item in exhausted:
-                        if item in valid_items:
-                            valid_items.remove(item)
-                        if item in item_groups["Bottle"] and pool_bottles:
-                            pool_bottles.pop()
-                        if item in item_groups["AdultTrade"] and pool_adult_trade:
-                            pool_adult_trade = []
-                    for _ in pool_bottles:
-                        valid_items.append(choice_bottles.pop())
-                        if not choice_bottles:
-                            break
-                    for _ in pool_adult_trade:
-                        valid_items.append(choice_adult_trade.pop())
-                        if not choice_adult_trade:
-                            break
+                    for used_item in exhausted:
+                        if used_item in valid_items:
+                            valid_items.remove(used_item)
+                        else:
+                            for group in item_groups:
+                                if group == "AdultTrade":
+                                    # Special handling for AdultTrade item
+                                    if used_item in item_groups[group]:
+                                        pool_group_items = [i for i in pool_group_items if i not in item_groups[group]]
+                                        continue
+                                for item in item_groups[group]:
+                                    if '#' + group in value.item and used_item == item and item in pool_group_items:
+                                        pool_group_items.remove(item)
+                                        break
+                    valid_items.extend(pool_group_items)
             else:
                 valid_items = value.item
             if not valid_items and exhausted is None:
