@@ -568,7 +568,8 @@ class WorldDistribution(object):
                     else:
                         self.item_pool[item.name].count += 1
                     item_pools[5].append(ItemFactory(item.name, world))
-        for (location_name, record) in pattern_dict_items(locations, world.itempool, []):
+        exhausted = []
+        for (location_name, record) in pattern_dict_items(locations, world.itempool, exhausted):
             if record.item is None:
                 continue
 
@@ -645,6 +646,7 @@ class WorldDistribution(object):
                 search = Search.max_explore([world.state for world in worlds], itertools.chain.from_iterable(item_pools))
                 if not search.can_beat_game(False):
                     raise FillError('%s in world %d is not reachable without %s in world %d!' % (location.name, self.id + 1, item.name, player_id + 1))
+            exhausted.append(item.name)
             window.fillcount += 1
             window.update_progress(5 + ((window.fillcount / window.locationcount) * 30))
 
