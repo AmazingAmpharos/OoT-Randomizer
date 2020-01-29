@@ -603,7 +603,32 @@ class WorldDistribution(object):
                 ignore_pools = [i for i in range(len(item_pools)) if i != 2]
 
             try:
-                item = self.pool_remove_item(item_pools, record.item, 1, world_id=player_id, ignore_pools=ignore_pools)[0]
+                if record.item == "#Bottle":
+                    try:
+                        item = self.pool_replace_item(item_pools, "#Bottle", player_id, record.item, worlds)
+                        # Update item_pool
+                        if item.name not in self.item_pool:
+                            self.item_pool[item.name] = ItemPoolRecord()
+                        else:
+                            self.item_pool[item.name].count += 1
+                    except KeyError:
+                        raise RuntimeError(
+                            'Too many bottles were added to world %d, and not enough bottles are available in the item pool to be removed.' % (
+                                        self.id + 1))
+                elif record.item == "#AdultTrade":
+                    try:
+                        item = self.pool_replace_item(item_pools, "#AdultTrade", player_id, record.item, worlds)
+                        # Update item_pool
+                        if item.name not in self.item_pool:
+                            self.item_pool[item.name] = ItemPoolRecord()
+                        else:
+                            self.item_pool[item.name].count += 1
+                    except KeyError:
+                        raise RuntimeError(
+                            'Too many adult trade items were added to world %d, and not enough adult trade items are available in the item pool to be removed.' % (
+                                        self.id + 1))
+                else:
+                    item = self.pool_remove_item(item_pools, record.item, 1, world_id=player_id, ignore_pools=ignore_pools)[0]
             except KeyError:
                 if location.type == 'Shop' and "Buy" in record.item:
                     try:
