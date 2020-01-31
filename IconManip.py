@@ -1,3 +1,5 @@
+from Utils import data_path
+
 # TODO
 # Move the tunic to the generalized system
 
@@ -29,7 +31,7 @@ def add_belt(tunic, belt, tiff=False):
 
 # Function for putting tunic colors together
 def generate_tunic_icon(color):
-    with open('./data/icons/grey.tiff', 'rb') as grey_fil, open('./data/icons/belt.tiff', 'rb') as belt_fil:
+    with open(data_path('icons/grey.tiff'), 'rb') as grey_fil, open(data_path('icons/belt.tiff'), 'rb') as belt_fil:
         grey = list(grey_fil.read())
         belt = list(belt_fil.read())
         return add_belt(add_hue(grey, color, True), belt, True)[154:]
