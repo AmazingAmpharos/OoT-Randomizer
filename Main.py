@@ -49,8 +49,6 @@ def main(settings, window=dummy_window()):
 
     logger = logging.getLogger('')
 
-    worlds = []
-
     old_tricks = settings.allowed_tricks
     settings.load_distribution()
 
@@ -74,13 +72,15 @@ def main(settings, window=dummy_window()):
 
     if not settings.world_count:
         settings.world_count = 1
-    if settings.world_count < 1 or settings.world_count > 255:
+    elif settings.world_count < 1 or settings.world_count > 255:
         raise Exception('World Count must be between 1 and 255')
-    if settings.player_num > settings.world_count or settings.player_num < 1:
-        if settings.compress_rom not in ['None', 'Patch']:
-            raise Exception('Player Num must be between 1 and %d' % settings.world_count)
-        else:
-            settings.player_num = 1
+    if settings.compress_rom not in ['None', 'Patch']:
+        raise Exception(f'Invalid rom compression setting: {settings.compress_rom}')
+    # Bounds-check the player_num settings. If they're invalid, snap them to something semi-sane.
+    if settings.player_num > settings.world_count:
+        settings.player_num = settings.world_count
+    elif settings.player_num < 1:
+        settings.player_num = 1
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s', __version__, settings.seed)
     settings.remove_disabled()
@@ -528,7 +528,7 @@ def create_playthrough(spoiler):
     collection_spheres = []
     entrance_spheres = []
     remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances())
-    
+
     while True:
         search.checkpoint()
         # Not collecting while the generator runs means we only get one sphere at a time
