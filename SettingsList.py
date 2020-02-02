@@ -2329,9 +2329,11 @@ setting_infos = [
         },
         gui_tooltip='''
             Tricks moved to the right column are in-logic
-            and MAY be required in to complete the game.
+            and MAY be required to complete the game.
             
             Tricks in the left column are NEVER required.
+            
+            Tricks are only relevant for Glitchless logic.
         '''
     ),
     Combobox(
