@@ -1513,19 +1513,22 @@ setting_infos = [
             'none':       'No Logic',
             },
         gui_tooltip    = '''\
-            Sets the rules the logic uses to determine accessibility.
+            Logic provides guiding sets of rules for world generation
+            which the Randomizer uses to ensure the generated seeds 
+            are beatable.
 
             'Glitchless': No glitches are required, but may require 
-            some minor tricks.
+            some minor tricks. Add minor tricks to consider for logic
+            in the 'Detailed Logic' tab.
 
-            'Glitched': Movement oriented glitches are likely required.
+            'Glitched': Movement-oriented glitches are likely required.
             No locations excluded.
 
-            'No Logic': All locations are considered available. 
-            May not be beatable.
+            'No Logic': Maximize randomization, All locations are 
+            considered available. MAY BE IMPOSSIBLE TO BEAT.
         ''',
         disable        = {
-            'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons']},
+            'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons', 'allowed_tricks']},
             'none'      : {'tabs'     : ['detailed_tab']},
         },
         shared         = True,
