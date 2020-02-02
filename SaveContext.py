@@ -167,7 +167,10 @@ class SaveContext():
 
         for ammo, (upgrade, maxes) in ammo_maxes.items():
             upgrade_count = self.addresses['upgrades'][upgrade].get_value()
-            ammo_max = maxes[upgrade_count]
+            try:
+                ammo_max = maxes[upgrade_count]
+            except IndexError:
+                ammo_max = maxes[-1]
             if ammo == 'rupees':
                 self.addresses[ammo].max = ammo_max
             else:
