@@ -74,13 +74,14 @@ def main(settings, window=dummy_window()):
         settings.world_count = 1
     elif settings.world_count < 1 or settings.world_count > 255:
         raise Exception('World Count must be between 1 and 255')
-    if settings.compress_rom not in ['None', 'Patch']:
-        raise Exception(f'Invalid rom compression setting: {settings.compress_rom}')
+
     # Bounds-check the player_num settings. If they're invalid, snap them to something semi-sane.
-    if settings.player_num > settings.world_count:
-        settings.player_num = settings.world_count
-    elif settings.player_num < 1:
+    if settings.player_num < 1:
         settings.player_num = 1
+    if settings.player_num > settings.world_count:
+        if settings.compress_rom not in ['None', 'Patch']:
+            raise Exception(f'Invalid player count: {settings.player_num} and compression setting: {settings.compress_rom}')
+        settings.player_num = settings.world_count
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s', __version__, settings.seed)
     settings.remove_disabled()
@@ -89,7 +90,7 @@ def main(settings, window=dummy_window()):
     settings.resolve_random_settings(cosmetic=False)
     logger.debug(settings.get_settings_display())
     max_attempts = 1
-    for attempt in range(1, max_attempts + 1):
+    for attempt in range(1, max_attemptgss + 1):
         try:
             spoiler = generate(settings, window)
             break
