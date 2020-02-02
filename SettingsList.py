@@ -2298,10 +2298,9 @@ setting_infos = [
             Locations in the left column may contain items
             required to complete the game. 
             
-            Locations in the right column will never contain 
-            items required for game completion. 
-            
-            Only junk items will appear at those locations.
+            Locations in the right column will never have 
+            items that are required to complete the game, 
+            and will only contain junk
 
             Most dungeon locations have a MQ alternative.
             If the location does not exist because of MQ
@@ -2326,10 +2325,10 @@ setting_infos = [
             'choice_tooltip': {choice['name']: choice['tooltip'] for choice in logic_tricks.values()},
         },
         gui_tooltip='''
-            Tricks moved to the right column are added to
-            the logic, and may be required in to complete the game.
+            Tricks moved to the right column are in-logic
+            and MAY be required in to complete the game.
             
-            Tricks in the left column are removed from logic consideration.
+            Tricks in the left column are NEVER required.
         '''
     ),
     Combobox(
