@@ -2283,7 +2283,7 @@ setting_infos = [
 
             12: All dungeons will have
             Master Quest redesigns.
-         ''',
+        ''',
         shared         = True,
     ),
     Setting_Info(
