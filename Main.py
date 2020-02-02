@@ -90,7 +90,7 @@ def main(settings, window=dummy_window()):
     settings.resolve_random_settings(cosmetic=False)
     logger.debug(settings.get_settings_display())
     max_attempts = 1
-    for attempt in range(1, max_attemptgss + 1):
+    for attempt in range(1, max_attempts + 1):
         try:
             spoiler = generate(settings, window)
             break
