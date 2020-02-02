@@ -80,7 +80,7 @@ def main(settings, window=dummy_window()):
         settings.player_num = 1
     if settings.player_num > settings.world_count:
         if settings.compress_rom not in ['None', 'Patch']:
-            raise Exception(f'Player count: {settings.player_num} must be between (1, {settings.world_count})')
+            raise Exception(f'Player Num: {settings.player_num} must be between (1, {settings.world_count})')
         settings.player_num = settings.world_count
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s', __version__, settings.seed)
