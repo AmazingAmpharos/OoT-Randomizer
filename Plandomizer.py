@@ -535,10 +535,33 @@ class WorldDistribution(object):
 
 
     def fill(self, window, worlds, location_pools, item_pools):
+        """Fills the world with restrictions defined in a plandomizer JSON file.
+
+        :param window:
+        :param worlds: A list of the world objects that define the rules of each game world.
+        :param location_pools: A list containing all of the location pools.
+            0: Shop Locations
+            1: Song Locations
+            2: Fill locations
+        :param item_pools: A list containing all of the item pools.
+            0: Shop Items
+            1: Dungeon Items
+            2: Songs
+            3: Progression Items
+            4: Priority Items
+            5: The rest of the Item pool
+        """
         world = worlds[self.id]
         locations = {}
         if self.locations:
             locations = {loc: self.locations[loc] for loc in random.sample(self.locations.keys(), len(self.locations))}
+        if world.open_fountain:
+            item = self.pool_replace_item(item_pools, 'Bottle with Letter', self.id, '#Bottle', worlds)
+            if item.name in self.item_pool:
+                self.item_pool[item.name].count += 1
+            else:
+                self.item_pool[item.name] = ItemPoolRecord()
+            item_pools[3].append(item)
         for starting_item in self.starting_items:
             for _ in range(self.starting_items[starting_item].count):
                 try:
