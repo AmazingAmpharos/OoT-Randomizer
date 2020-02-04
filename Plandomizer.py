@@ -555,13 +555,6 @@ class WorldDistribution(object):
         locations = {}
         if self.locations:
             locations = {loc: self.locations[loc] for loc in random.sample(self.locations.keys(), len(self.locations))}
-        if world.open_fountain:
-            item = self.pool_replace_item(item_pools, 'Bottle with Letter', self.id, '#Bottle', worlds)
-            if item.name in self.item_pool:
-                self.item_pool[item.name].count += 1
-            else:
-                self.item_pool[item.name] = ItemPoolRecord()
-            item_pools[3].append(item)
         for starting_item in self.starting_items:
             for _ in range(self.starting_items[starting_item].count):
                 try:
