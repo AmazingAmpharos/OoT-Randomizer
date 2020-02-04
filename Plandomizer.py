@@ -591,8 +591,8 @@ class WorldDistribution(object):
                     else:
                         self.item_pool[item.name].count += 1
                     item_pools[5].append(ItemFactory(item.name, world))
-        exhausted = []
-        for (location_name, record) in pattern_dict_items(locations, world.itempool, exhausted):
+        used_items = []
+        for (location_name, record) in pattern_dict_items(locations, world.itempool, used_items):
             if record.item is None:
                 continue
 
@@ -694,7 +694,7 @@ class WorldDistribution(object):
                 search = Search.max_explore([world.state for world in worlds], itertools.chain.from_iterable(item_pools))
                 if not search.can_beat_game(False):
                     raise FillError('%s in world %d is not reachable without %s in world %d!' % (location.name, self.id + 1, item.name, player_id + 1))
-            exhausted.append(item.name)
+            used_items.append(item.name)
             window.fillcount += 1
             window.update_progress(5 + ((window.fillcount / window.locationcount) * 30))
 
@@ -1002,7 +1002,7 @@ def pattern_matcher(pattern):
             return lambda s: invert != (s == pattern)
 
 
-def pattern_dict_items(pattern_dict, itempool=None, exhausted=None):
+def pattern_dict_items(pattern_dict, itempool=None, used_items=None):
     for (key, value) in pattern_dict.items():
         if hasattr(value, 'item') and isinstance(value.item, list):
             if itempool is not None:
@@ -1016,8 +1016,8 @@ def pattern_dict_items(pattern_dict, itempool=None, exhausted=None):
                             if '#' + group in value.item:
                                 if item.name in item_groups[group]:
                                     pool_group_items.append(item.name)
-                if exhausted is not None:
-                    for used_item in exhausted:
+                if used_items is not None:
+                    for used_item in used_items:
                         if used_item in valid_items:
                             valid_items.remove(used_item)
                         else:
@@ -1034,14 +1034,14 @@ def pattern_dict_items(pattern_dict, itempool=None, exhausted=None):
                     valid_items.extend(pool_group_items)
             else:
                 valid_items = value.item
-            if not valid_items and exhausted is None:
+            if not valid_items and used_items is None:
                 continue
             elif not valid_items:
                 value.item = random_choices(value.item)[0]
             else:
                 value.item = random_choices(valid_items)[0]
-                if exhausted is not None:
-                    exhausted.append(value.item)
+                if used_items is not None:
+                    used_items.append(value.item)
         if is_pattern(key):
             pattern = lambda loc: pattern_matcher(key)(loc.name)
             for location in LocationIterator(pattern):
