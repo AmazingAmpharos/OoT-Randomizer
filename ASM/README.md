@@ -1,9 +1,9 @@
-- Download the armips assembler: <https://github.com/Kingcom/armips> and put
+- Download the armips assembler: <https://github.com/Kingcom/armips>, build it if necessary, and put
   the executable in the `scripts` directory, or somewhere in your PATH
-- Put the ROM you want to patch at `roms/base.z64`
+- Put the ROM you want to patch at `roms/base.z64`. This needs to be an uncompressed ROM; OoTRandomizer will produce one at ZOOTDEC.z64 when you run it with a compressed ROM.
 - Run `python scripts/build.py`, which will:
   - create `roms/patched.z64`
-  - update `../data/rom_patch.txt` and `../data/symbols.json`
+  - update some `txt` files in `build/` and in `../data/generated/`. Check `git status` to see which ones have changed. Make sure you submit them all together!
 
 To generate debugging symbols for the Project 64 debugger, use the `--pj64sym`
 option:

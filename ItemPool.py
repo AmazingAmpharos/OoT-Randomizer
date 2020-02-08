@@ -223,6 +223,19 @@ normal_bottles = [
 bottle_count = 4
 
 
+dungeon_rewards = [
+    'Kokiri Emerald',
+    'Goron Ruby',
+    'Zora Sapphire',
+    'Forest Medallion',
+    'Fire Medallion',
+    'Water Medallion',
+    'Shadow Medallion',
+    'Spirit Medallion',
+    'Light Medallion'
+]
+
+
 normal_rupees = (
     ['Rupees (5)'] * 13 +
     ['Rupees (20)'] * 5 +
@@ -681,6 +694,7 @@ item_groups = {
     'WarpSong': songlist[6:],
     'HealthUpgrade': ('Heart Container', 'Piece of Heart'),
     'ProgressItem': [name for (name, data) in item_table.items() if data[0] == 'Item' and data[1]],
+    'DungeonReward': dungeon_rewards,
 
     'ForestFireWater': ('Forest Medallion', 'Fire Medallion', 'Water Medallion'),
     'FireWater': ('Fire Medallion', 'Water Medallion'),
@@ -1126,12 +1140,6 @@ def get_pool_core(world):
     pool.append(tradeitem)
 
     pool.extend(songlist)
-    if world.start_with_fast_travel:
-        pool.remove('Prelude of Light')
-        pool.remove('Serenade of Water')
-        pool.remove('Farores Wind')
-        pool.extend(get_junk_item(3))
-        
     if world.free_scarecrow:
         world.state.collect(ItemFactory('Scarecrow Song'))
     
@@ -1219,9 +1227,6 @@ def get_pool_core(world):
 
     for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
-
-    if world.start_with_wallet:
-        replace_max_item(pool, 'Progressive Wallet', 0)
 
     # Make sure our pending_junk_pool is empty. If not, remove some random junk here.
     if pending_junk_pool:

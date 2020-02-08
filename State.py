@@ -4,7 +4,7 @@ from functools import partial
 import itertools
 
 from Item import ItemInfo
-from Playthrough import Playthrough
+from Search import Search
 from Region import Region, TimeOfDay
 
 
@@ -14,7 +14,7 @@ class State(object):
     def __init__(self, parent):
         self.prog_items = Counter()
         self.world = parent
-        self.playthrough = None
+        self.search = None
 
 
     ## Ensure that this will always have a value
@@ -127,7 +127,7 @@ class State(object):
 
     @staticmethod
     def can_beat_game(state_list):
-        return Playthrough(state_list).can_beat_game()
+        return Search(state_list).can_beat_game()
 
 
     @staticmethod
@@ -152,18 +152,18 @@ class State(object):
 
         required_locations = []
 
-        playthrough = Playthrough([world.state for world in worlds])
-        for location in playthrough.iter_reachable_locations(all_locations):
+        search = Search([world.state for world in worlds])
+        for location in search.iter_reachable_locations(all_locations):
             # Try to remove items one at a time and see if the game is still beatable
             if location in item_locations:
                 old_item = location.item
                 location.item = None
-                # copies state! This is very important as we're in the middle of a playthrough
-                # already, but beneficially, has playthrough it can start from
-                if not playthrough.can_beat_game():
+                # copies state! This is very important as we're in the middle of a search
+                # already, but beneficially, has search it can start from
+                if not search.can_beat_game():
                     required_locations.append(location)
                 location.item = old_item
-            playthrough.state_list[location.item.world.id].collect(location.item)
+            search.state_list[location.item.world.id].collect(location.item)
 
         # Filter the required location to only include location in the world
         required_locations_dict = {}

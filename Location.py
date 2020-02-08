@@ -63,7 +63,7 @@ class Location(object):
         return (
             not self.is_disabled() and 
             self.can_fill_fast(item) and
-            (not check_access or state.playthrough.spot_access(self, 'either')))
+            (not check_access or state.search.spot_access(self, 'either')))
 
 
     def can_fill_fast(self, item, manual=False):
@@ -81,7 +81,7 @@ class Location(object):
         if self.type in ('Collectable', 'BossHeart', 'GS Token', 'Shop'):
             return True
         if self.type == 'Chest':
-            return self.scene == 0x10 # Treasure Chest Game Prize
+            return self.scene == 0x10 or self.world.correct_chest_sizes  # Treasure Chest Game Prize or CSMC
         if self.type == 'NPC':
             return self.scene in (0x4B, 0x51, 0x57) # Bombchu Bowling, Hyrule Field (OoT), Lake Hylia (RL/FA)
         return False

@@ -797,6 +797,8 @@ location_table = {
     "Lost Woods Generic Grotto Gossip Stone":          ("GossipStone", None,  None, None,                     None),
     "Mountain Storms Grotto Gossip Stone":             ("GossipStone", None,  None, None,                     None),
     "Top of Crater Grotto Gossip Stone":               ("GossipStone", None,  None, None,                     None),
+
+    "Ganondorf Hint":                                  ("GossipStone", None,  None, None,                     None),
 }
 
 # Business Scrub Details

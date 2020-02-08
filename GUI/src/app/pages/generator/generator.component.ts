@@ -38,31 +38,6 @@ export class GeneratorComponent implements OnInit {
   settingsBusy: boolean = false;
   settingsBusySaveOnly: boolean = true;
 
-  //For KeyValue pipe
-  presetKeyOrder = (a, b) => { //SYSTEM PRESETS > BUILT-IN PRESETS > USER PRESETS
-
-    if ("isNewPreset" in a.value) {
-      return -1;
-    }
-    else if ("isNewPreset" in b.value) {
-      return 1;
-    }
-    else if ("isDefaultPreset" in a.value) {
-      return -1;
-    }
-    else if ("isDefaultPreset" in b.value) {
-      return 1;
-    }
-    else if ("isProtectedPreset" in a.value) {
-      return -1;
-    }
-    else if ("isProtectedPreset" in b.value) {
-      return 1;
-    }
-    else
-      return 1;
-  };
-
   //Local (non persistent) Variables
   seedString: string = "";
   generateSeedButtonEnabled: boolean = true;
@@ -171,6 +146,7 @@ export class GeneratorComponent implements OnInit {
   generateSeed(fromPatchFile: boolean = false, webRaceSeed: boolean = false) {
 
     this.generateSeedButtonEnabled = false;
+    this.seedString = this.seedString.trim().replace(/[^a-zA-Z0-9_-]/g, '');
 
     //console.log("fromPatchFile:", fromPatchFile);
     //console.log(this.global.generator_settingsMap);
@@ -195,7 +171,7 @@ export class GeneratorComponent implements OnInit {
         autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dashboardRef: this, totalGenerationCount: this.global.generator_settingsMap["count"] }
       });
 
-      this.global.generateSeedElectron(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
+      this.global.generateSeedElectron(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.length > 0 ? this.seedString : "").then(res => {
         console.log('[Electron] Gen Success');
 
         this.generateSeedButtonEnabled = true;
@@ -229,7 +205,7 @@ export class GeneratorComponent implements OnInit {
     }
     else { //Web
 
-      this.global.generateSeedWeb(webRaceSeed, this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(seedID => {
+      this.global.generateSeedWeb(webRaceSeed, this.seedString.length > 0 ? this.seedString : "").then(seedID => {
 
         //Save last seed id in browser cache
         localStorage.setItem("lastSeed", seedID);
@@ -368,6 +344,10 @@ export class GeneratorComponent implements OnInit {
         autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: "The entered settings string seems to be invalid!" }
       });
     });
+  }
+
+  getPresetArray() {
+    return Object.keys(this.global.generator_presets);
   }
 
   loadPreset() {

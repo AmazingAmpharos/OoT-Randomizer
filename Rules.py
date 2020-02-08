@@ -1,7 +1,7 @@
 import collections
 import logging
 from Location import DisableType
-from Playthrough import Playthrough
+from Search import Search
 from State import State
 
 
@@ -132,15 +132,15 @@ def set_entrances_based_rules(worlds):
 
     # Use the states with all items available in the pools for this seed
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
-    playthrough = Playthrough([world.state for world in worlds])
-    playthrough.collect_all(complete_itempool)
-    playthrough.collect_locations()
+    search = Search([world.state for world in worlds])
+    search.collect_all(complete_itempool)
+    search.collect_locations()
 
     for world in worlds:
         for location in world.get_locations():
             if location.type == 'Shop':
                 # If All Locations Reachable is on, prevent shops only ever reachable as child from containing Buy Goron Tunic and Buy Zora Tunic items
                 if not world.check_beatable_only:
-                    if not playthrough.can_reach(location.parent_region, age='adult'):
+                    if not search.can_reach(location.parent_region, age='adult'):
                         forbid_item(location, 'Buy Goron Tunic')
                         forbid_item(location, 'Buy Zora Tunic')
