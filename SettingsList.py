@@ -6,6 +6,8 @@ from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword
 from Location import LocationIterator
 import Sounds as sfx
 from Utils import data_path
+from itertools import chain
+import StartingItems
 
 # holds the info for a single setting
 class Setting_Info():
@@ -1703,40 +1705,19 @@ setting_infos = [
         shared         = True,
     ),
     Checkbutton(
-        name           = 'start_with_fast_travel',
-        gui_text       = 'Start with Fast Travel',
-        gui_tooltip    = '''\
-            Start the game with Prelude of Light,
-            Serenade of Water, and Farore's Wind.
-
-            Two song locations will give items,
-            instead of Prelude and Serenade.
-        ''',
-        shared         = True,
-    ),
-    Checkbutton(
         name           = 'start_with_rupees',
         gui_text       = 'Start with Max Rupees',
         gui_tooltip    = '''\
-            Start the game with 99 rupees. Wallet upgrades fill wallet.
+            Start the game with 99 rupees.
         ''',
         shared         = True,
     ),
     Checkbutton(
-        name           = 'start_with_wallet',
-        gui_text       = 'Start with Tycoon\'s Wallet',
+        name           = 'start_with_consumables',
+        gui_text       = 'Start with Consumables',
         gui_tooltip    = '''\
-            Start the game with the largest wallet (999 max).
-        ''',
-        shared         = True,
-    ),
-    Checkbutton(
-        name           = 'start_with_deku_equipment',
-        gui_text       = 'Start with Deku Equipment',
-        gui_tooltip    = '''\
-            Start the game with 10 Deku sticks and 20 Deku nuts.
-            Additionally, start the game with a Deku shield equipped,
-            unless playing with the Shopsanity setting.
+            Start the game with maxed out Deku Sticks and Deku Nuts,
+            along with maximum ammo for any other starting items.
         ''',
         shared         = True,
     ),
@@ -2383,6 +2364,55 @@ setting_infos = [
             the ghost guide across the Haunted Wasteland.
         ''',
         shared         = True,
+    ),
+    Setting_Info(
+        name           = 'starting_equipment',
+        type           = list,
+        gui_text       = "Starting Equipment",
+        gui_type       = "SearchBox",
+        shared         = True,
+        choices        = {
+            key: value.guitext for key, value in StartingItems.equipment.items()
+        },
+        default        = [],
+        gui_params     = {
+            'choice_tooltip': {key: value.guitext for key, value in StartingItems.equipment.items()},
+        },
+        disable        = {
+            'kokiri_sword': {'settings' : ['shuffle_kokiri_sword']}
+        }
+    ),
+    Setting_Info(
+        name           = 'starting_items',
+        type           = list,
+        gui_text       = "Starting Items",
+        gui_type       = "SearchBox",
+        shared         = True,
+        choices        = {
+            key: value.guitext for key, value in StartingItems.inventory.items()
+        },
+        default        = [],
+        gui_params     = {
+            'choice_tooltip': {key: value.guitext for key, value in StartingItems.inventory.items()},
+        },
+        disable        = {
+            'ocarina'  : {'settings' : ['shuffle_ocarinas']},
+            'ocarina2' : {'settings' : ['shuffle_ocarinas']}
+        }
+    ),
+    Setting_Info(
+        name           = 'starting_songs',
+        type           = list,
+        gui_text       = "Starting Songs",
+        gui_type       = "SearchBox",
+        shared         = True,
+        choices        = {
+            key: value.guitext for key, value in StartingItems.songs.items()
+        },
+        default        = [],
+        gui_params     = {
+            'choice_tooltip': {key: value.guitext for key, value in StartingItems.songs.items()},
+        }
     ),
     Checkbutton(
         name           = 'ocarina_songs',

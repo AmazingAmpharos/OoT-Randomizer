@@ -1,10 +1,12 @@
 from collections import namedtuple
 import logging
 import random
+from itertools import chain
 from Utils import random_choices
 from Item import ItemFactory
 from ItemList import item_table
 from LocationList import location_groups
+import StartingItems
 
 
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
@@ -760,6 +762,12 @@ def get_pool_core(world):
     pool = []
     placed_items = {}
 
+    # override settings for starting items
+    if 'kokiri_sword' in world.starting_equipment:
+        world.shuffle_kokiri_sword = True
+    if any(item in world.starting_items for item in ('ocarina', 'ocarina2')):
+        world.shuffle_ocarinas = True
+
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')
     else:
@@ -1227,6 +1235,46 @@ def get_pool_core(world):
 
     for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
+
+    starting_items = list(chain(world.starting_equipment, world.starting_items, world.starting_songs))
+    for item in StartingItems.everything.values():
+        if item.settingname in starting_items:
+            if item.special:
+                if item.itemname == "Bottle" or (item.itemname == "Bottle with Letter" and world.open_fountain):
+                    bottle_items = [(idx,x) for idx,x in enumerate(pool) if x in normal_bottles]
+                    if bottle_items:
+                        idx = bottle_items[0][0]
+                        del pool[idx]
+                    elif ruto_bottles > 1 or (ruto_bottles == 1 and world.open_fountain):
+                        # remove a ruto bottle
+                        pool.remove("Bottle with Letter")
+                        ruto_bottles -= 1
+                    world.state.collect(ItemFactory('Bottle'))
+                    pool.extend(get_junk_item())
+                elif item.itemname == "Bottle with Letter":
+                    pool.remove("Bottle with Letter")
+                    world.state.collect(ItemFactory('Bottle with Letter'))
+                    pool.extend(get_junk_item())
+                elif item.itemname == "Magic Beans":
+                    world.state.collect(ItemFactory('Magic Bean'))
+                elif item.itemname == "Bombchus":
+                    # remove one from pool
+                    for bombchu in ('Bombchus', 'Bombchus (5)', 'Bombchus (10)', 'Bombchus (20)'):
+                        if bombchu in pool:
+                            pool.remove(bombchu)
+                            pool.extend(get_junk_item())
+                            break
+                    if world.bombchus_in_logic:
+                        world.state.collect(ItemFactory("Bombchus"))
+                    else:
+                        world.state.collect(ItemFactory("Bombchus (5)"))
+                else:
+                    raise KeyError("invalid special item: {}".format(item.itemname))
+            else: # not a special item
+                if item.itemname in pool:
+                    pool.remove(item.itemname)
+                    pool.extend(get_junk_item())
+                world.state.collect(ItemFactory(item.itemname))
 
     # Make sure our pending_junk_pool is empty. If not, remove some random junk here.
     if pending_junk_pool:
