@@ -80,7 +80,7 @@ def main(settings, window=dummy_window()):
         settings.player_num = 1
     if settings.player_num > settings.world_count:
         if settings.compress_rom not in ['None', 'Patch']:
-            raise Exception(f'Player Num: {settings.player_num} must be between (1, {settings.world_count})')
+            raise Exception(f'Player Num is {settings.player_num}; must be between (1, {settings.world_count})')
         settings.player_num = settings.world_count
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s', __version__, settings.seed)
@@ -274,9 +274,9 @@ def patch_and_output(settings, window, spoiler, rom, start):
             if compressor_path != "":
                 run_process(window, logger, [compressor_path, output_path, output_compress_path])
             os.remove(output_path)
-            logger.info("Created compessed rom at: %s" % output_compress_path)
+            logger.info("Created compressed rom at: %s" % output_compress_path)
         else:
-            logger.info("Created uncompessed rom at: %s" % output_path)
+            logger.info("Created uncompressed rom at: %s" % output_path)
         window.update_progress(95)
 
     if not settings.create_spoiler or settings.output_settings:

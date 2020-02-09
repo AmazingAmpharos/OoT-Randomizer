@@ -301,7 +301,7 @@ class WorldDistribution(object):
                 world.randomized_list.append(name)
 
 
-    def configure_stating_items_settings(self, world):
+    def configure_starting_items_settings(self, world):
         if world.start_with_wallet:
             self.give_item('Progressive Wallet', 3)
         if world.start_with_rupees:

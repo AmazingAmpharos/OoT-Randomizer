@@ -2303,7 +2303,7 @@ setting_infos = [
             
             Locations in the right column will never have 
             items that are required to complete the game, 
-            and will only contain junk
+            and will only contain junk.
 
             Most dungeon locations have a MQ alternative.
             If the location does not exist because of MQ
