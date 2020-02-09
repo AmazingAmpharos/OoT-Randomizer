@@ -104,6 +104,7 @@ player.
 * Ganondorf no longer hints at his Boss Key chest contents.
 * Improved Entrance Randomizer hints.
 * Updated Compressor. The GUI progress bar is now granular. If for some reason, the rom won't fit into 32MB, then the compressor will increase the output size.
+* Revised some settings tooltips.
 * Refactored Logic once again. It now uses helper json rules and rules can reference other rules.
 * Disabled settings don't show up in the spoiler.
 * Plando will now accept JSON lists for `item` in the location dictionary to randomly choose between for placement.
@@ -111,6 +112,7 @@ player.
 * "Start with" settings are now handled by the Plando library.
 * Further seed generation speed improvements.
 * The main search algorithm was renamed Search (from Playthrough) to avoid confusion with the spoiler playthrough.
+* General code cleanup and typo fixes.
 
 #### Bug Fixes
 * Minor stability fix in Plando
