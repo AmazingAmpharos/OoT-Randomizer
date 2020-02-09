@@ -1541,3 +1541,12 @@ skip_GS_BGS_text:
     jal     kz_moved_check
     nop
     or      a0, s0, zero
+
+; ==================================================================================================
+; Chain Horseback Archery Rewards
+; ==================================================================================================
+; Replaces: lui     t6, 0x80A9
+;           addiu   t6, t6, 0x0718
+.orga 0xE12A14
+    jal     handle_hba_rewards_chain
+    nop

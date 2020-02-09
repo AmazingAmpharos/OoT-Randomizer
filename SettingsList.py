@@ -1651,13 +1651,21 @@ setting_infos = [
         shared         = True,
     ),
     Checkbutton(
-        name           = 'no_first_dampe_race',
-        gui_text       = 'Skip First Dampe Race',
+        name           = 'no_first_minigame_phases',
+        gui_text       = 'Skip First Minigame Phases',
         gui_tooltip    = '''\
-            Dampe will start with the second race so you can
-            finish the race in under a minute and get both rewards
-            at once. You still get the first reward from the chest
-            even if you don't complete the race in under a minute.
+            Skip the first phase of two-phase minigames:
+            Dampe Race and Gerudo Horseback Archery.
+
+            Dampe will start with the second race so you can finish 
+            the race in under a minute and get both rewards at once. 
+            You still get the first reward from the chest even if you 
+            don't complete the race in under a minute.
+
+            Both rewards at the Gerudo Horseback Archery will be 
+            available from the first time you play the minigame. 
+            This means you can get both rewards at once if you get 
+            1500 points in a single attempt.
         ''',
         shared         = True,
     ),
