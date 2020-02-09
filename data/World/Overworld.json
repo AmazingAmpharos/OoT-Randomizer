@@ -1227,6 +1227,9 @@
                 is_child and 
                 (has_explosives or (Progressive_Strength_Upgrade and logic_child_rolling_with_strength))",
             "Link the Goron": "'Stop Link the Goron'",
+            "Medigoron": "
+                Progressive_Wallet and 
+                (can_blast_or_smash or Progressive_Strength_Upgrade)",
             "GS Goron City Boulder Maze": "is_child and has_explosives",
             "GS Goron City Center Platform": "is_adult",
             "Goron City Maze Gossip Stone": "

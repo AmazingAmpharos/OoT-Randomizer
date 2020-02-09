@@ -832,6 +832,9 @@
             "Link the Goron": "
                 is_adult and 
                 (Progressive_Strength_Upgrade or has_explosives or Bow or can_use(Dins_Fire) or Blue_Fire)",
+            "Medigoron": "
+                Progressive_Wallet and 
+                (can_blast_or_smash or Progressive_Strength_Upgrade or Blue_Fire)",
             "GS Goron City Boulder Maze": "is_child and has_explosives",
             "GS Goron City Center Platform": "is_adult",
             "Goron City Maze Gossip Stone": "

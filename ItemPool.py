@@ -479,7 +479,6 @@ fixedlocations = {
     'Deliver Ruto\'s Letter': 'Deliver Letter',
     'Master Sword Pedestal': 'Time Travel',
     'Bombchu Bowling Bombchus': 'Bombchu Drop',
-    'Haunted Wasteland Bombchu Salesman': 'Bombchus',
 }
 
 droplocations = {
@@ -802,6 +801,11 @@ def get_pool_core(world):
     else:
         placed_items['Magic Bean Salesman'] = 'Magic Bean'
 
+    if world.shuffle_medigoron_carpet_salesman:
+        pool.append('Giants Knife')
+    else:
+        placed_items['Medigoron'] = 'Giants Knife'
+
     if world.dungeon_mq['Deku Tree']:
         skulltula_locations_final = skulltula_locations + [
             'GS Deku Tree MQ Lobby',
@@ -959,6 +963,8 @@ def get_pool_core(world):
             pool.extend(['Bombchus'])
         if world.dungeon_mq['Gerudo Training Grounds']:
             pool.extend(['Bombchus'])
+        if world.shuffle_medigoron_carpet_salesman:
+            pool.append('Bombchus')
 
     else:
         pool.extend(['Bombchus (5)'] + ['Bombchus (10)'] * 2)
@@ -974,6 +980,11 @@ def get_pool_core(world):
             pool.extend(['Bombchus (10)'])
         else:
             pool.extend(['Bombchus (20)'])
+        if world.shuffle_medigoron_carpet_salesman:
+            pool.append('Bombchus (10)')
+
+    if not world.shuffle_medigoron_carpet_salesman:
+        placed_items['Haunted Wasteland Bombchu Salesman'] = 'Bombchus (10)'
 
     pool.extend(['Ice Trap'])
     if not world.dungeon_mq['Gerudo Training Grounds']:

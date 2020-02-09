@@ -1541,3 +1541,52 @@ skip_GS_BGS_text:
     jal     kz_moved_check
     nop
     or      a0, s0, zero
+
+;==================================================================================================
+; Carpet Salesman Shop Shuffle
+;==================================================================================================
+; Replaces: sw      a1, 0x001C(sp)
+;           sw      a2, 0x0020(sp)
+.orga 0xE5B2F4
+    jal     carpet_inital_message
+    sw      a1, 0x001C(sp)
+
+; Replaces: lui     a3, 0x461C
+;           ori     a3, a3, 0x4000
+.orga 0xE5B538
+    jal     carpet_buy_item_hook
+    lui     a3, 0x461C
+
+;==================================================================================================
+; Medigoron Shop Shuffle
+;==================================================================================================
+; Replaces: lui     a3, 0x43CF
+;           ori     a3, a3, 0x8000
+.orga 0xE1FEAC
+    jal     medigoron_buy_item_hook
+    lui     a3, 0x43CF
+
+; Replaces: lui     v1, 0x8012
+;           addiu   v1, v1, 0xA5D0
+;           lw      t6, 0x0004(v1)
+;           addiu   at, zero, 0x0005
+;           addiu   v0, zero, 0x0011
+;           beq     t6, zero, @medigoron_check_2nd_part
+;           lui     a0, 0x8010
+;           b       @medigoron_check_2nd_part
+;           addiu   v0, zero, 0x0005
+; @medigoron_check_2nd_part:
+.orga 0xE1F72C
+    addiu   sp, sp, -0x18
+    jal     medigoron_inital_check
+    sw      ra, 0x14(sp)
+    lw      ra, 0x14(sp)
+    bnez    v0, @medigoron_check_return
+    addiu   sp, sp, 0x18
+    beq     t6, zero, @medigoron_check_2nd_part
+    addiu   v0, zero, 0x0011
+    addiu   v0, zero, 0x0005
+@medigoron_check_2nd_part:
+
+.orga 0xE1F794
+@medigoron_check_return:
