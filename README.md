@@ -101,7 +101,7 @@ player.
 * Non-Always Location hints cannot be placed for an area that already has a Foolish hint.
   * If the location hint is placed first, then it can still appear in a foolish hinted area, however in Tournament hint distribution the Foolish hints are placed first so that cannot happen.
 * The location containing Light Arrows will be considered a hinted location if Ganondorf's hint can be reached without them.
-* Ganondorf no longer hints at his Boss Key chest contents.
+* Ganondorf no longer hints at his Boss Key chest contents, except when Light Arrows don't exist (only possible in Triforce Hunt).
 * Improved Entrance Randomizer hints.
 * Updated Compressor. The GUI progress bar is now granular. If for some reason, the rom won't fit into 32MB, then the compressor will increase the output size.
 * Revised some settings tooltips.
