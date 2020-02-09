@@ -289,7 +289,7 @@ class SaveContext():
                     item_value = self.addresses['equip_items'][item].get_value_raw()
                     self.addresses[equip_type]['equips'][equip_item].set_value_raw(item_value)
                     if equip_item == 'tunic':
-                        self.addresses[equip_type]['equips'][equip_item].value = 0
+                        self.addresses[equip_type]['equips'][equip_item].value = 1
                     if equip_item == 'sword':
                         self.addresses[equip_type]['button_items']['b'].value = item
                     break
