@@ -270,7 +270,8 @@
           "row_span": [1,1,1],
           "settings": [
             "start_with_consumables",
-            "start_with_rupees"
+            "start_with_rupees",
+            "starting_hearts"
           ]
         }
       ]

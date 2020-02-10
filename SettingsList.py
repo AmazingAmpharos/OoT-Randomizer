@@ -1724,6 +1724,20 @@ setting_infos = [
         ''',
         shared         = True,
     ),
+    Scale(
+        name           = 'starting_hearts',
+        gui_text       = "Starting Hearts",
+        default        = 3,
+        min            = 3,
+        max            = 20,
+        gui_tooltip    = '''\
+            Start the game with the selected number of hearts.
+            Heart Containers and Pieces of Heart are removed
+            from the item pool in equal proportion.
+        ''',
+        disabled_default = 1,
+        shared         = True,
+    ),
     Checkbutton(
         name           = 'chicken_count_random',
         gui_text       = 'Random Cucco Count',
