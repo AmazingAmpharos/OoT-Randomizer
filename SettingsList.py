@@ -2375,9 +2375,9 @@ setting_infos = [
             key: value.guitext for key, value in StartingItems.equipment.items()
         },
         default        = [],
-        gui_params     = {
-            'choice_tooltip': {key: value.guitext for key, value in StartingItems.equipment.items()},
-        },
+        gui_tooltip    = '''\
+            Begin the game with the selected equipment.
+        ''',
         disable        = {
             'kokiri_sword': {'settings' : ['shuffle_kokiri_sword']}
         }
@@ -2392,9 +2392,17 @@ setting_infos = [
             key: value.guitext for key, value in StartingItems.inventory.items()
         },
         default        = [],
-        gui_params     = {
-            'choice_tooltip': {key: value.guitext for key, value in StartingItems.inventory.items()},
-        },
+        gui_tooltip    = '''\
+            Begin the game with the selected inventory items.
+            Unless "Start with Consumables" is selected, items
+            don't come with any ammo.
+            
+            Selecting multiple progressive items will give
+            the appropriate number of upgrades.
+            
+            If playing with Open Zora Fountain, the Bottle
+            with Letter is converted to a regular Bottle.
+        ''',
         disable        = {
             'ocarina'  : {'settings' : ['shuffle_ocarinas']},
             'ocarina2' : {'settings' : ['shuffle_ocarinas']}
@@ -2410,9 +2418,9 @@ setting_infos = [
             key: value.guitext for key, value in StartingItems.songs.items()
         },
         default        = [],
-        gui_params     = {
-            'choice_tooltip': {key: value.guitext for key, value in StartingItems.songs.items()},
-        }
+        gui_tooltip    = '''\
+            Begin the game with the selected songs already learnt.
+        ''',
     ),
     Checkbutton(
         name           = 'ocarina_songs',
