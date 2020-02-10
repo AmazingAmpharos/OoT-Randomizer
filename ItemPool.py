@@ -1240,12 +1240,12 @@ def get_pool_core(world):
     for item in StartingItems.everything.values():
         if item.settingname in starting_items:
             if item.special:
-                if item.itemname == "Bottle" or (item.itemname == "Bottle with Letter" and world.open_fountain):
+                if item.itemname == "Bottle" or (item.itemname == "Bottle with Letter" and world.zora_fountain == 'open'):
                     bottle_items = [(idx,x) for idx,x in enumerate(pool) if x in normal_bottles]
                     if bottle_items:
                         idx = bottle_items[0][0]
                         del pool[idx]
-                    elif ruto_bottles > 1 or (ruto_bottles == 1 and world.open_fountain):
+                    elif ruto_bottles > 1 or (ruto_bottles == 1 and world.zora_fountain == 'open'):
                         # remove a ruto bottle
                         pool.remove("Bottle with Letter")
                         ruto_bottles -= 1
@@ -1293,7 +1293,7 @@ def get_pool_core(world):
 
     world.distribution.alter_pool(world, pool)
 
-    world.distribution.configure_stating_items_settings(world)
+    world.distribution.configure_starting_items_settings(world)
     world.distribution.collect_starters(world.state)
 
     return (pool, placed_items)

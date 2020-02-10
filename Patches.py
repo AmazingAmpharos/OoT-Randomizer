@@ -1130,7 +1130,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                     world.distribution.give_item("Bombchu Item")
                     world.distribution.give_item("Bombchus", 0) # for spoiler log
                 elif item.itemname == 'Bottle with Letter':
-                    world.distribution.give_item("Bottle with Letter" if not world.open_fountain else "Bottle")
+                    world.distribution.give_item("Bottle with Letter" if world.zora_fountain != 'open' else "Bottle")
                 elif item.itemname == 'Bottle':
                     world.distribution.give_item("Bottle")
                 else:
