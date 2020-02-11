@@ -662,6 +662,14 @@ class WorldDistribution(object):
                         item = self.pool_replace_item(item_pools, "#AdultTrade", player_id, record.item, worlds)
                     except KeyError:
                         raise RuntimeError('Too many adult trade items were added to world %d, and not enough adult trade items are available in the item pool to be removed.' % (self.id + 1))
+                elif record.item == "Weird Egg":
+                    # If Letter has not been shown to guard before obtaining a second weird egg a softlock can occur
+                    # if there are important items at deku theater or an important location locked behind the gate
+                    # or if Keaton Mask gets overwritten before giving it to the guard.
+                    try:
+                        item = self.pool_replace_item(item_pools, "Weird Egg", player_id, record.item, worlds)
+                    except KeyError:
+                        raise RuntimeError('Weird Egg already placed in World %d.' % (self.id + 1))
                 else:
                     try:
                         item = self.pool_replace_item(item_pools, "#Junk", player_id, record.item, worlds)
