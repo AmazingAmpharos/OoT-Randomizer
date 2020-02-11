@@ -1107,7 +1107,7 @@ setting_infos = [
         default        = False,
         disable        = {
             True : {
-                'tabs' : ['main_tab', 'detailed_tab', 'other_tab'],
+                'tabs' : ['main_tab', 'detailed_tab', 'starting_tab', 'other_tab'],
                 'sections' : ['preset_section'],
                 'settings' : ['count', 'create_spoiler', 'world_count', 'enable_distribution_file', 'distribution_file'],
             },
