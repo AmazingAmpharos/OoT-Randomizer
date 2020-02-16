@@ -112,7 +112,10 @@ def LocationFactory(locations, world=None):
         locations = [locations]
         singleton = True
     for location in locations:
-        match_location = [k for k in location_table if k.lower() == location.lower()][0]
+        if location in location_table:
+            match_location = location
+        else:
+            match_location = next(filter(lambda k: k.lower() == location.lower(), location_table), None)
         if match_location:
             type, scene, default, addresses, filter_tags = location_table[match_location]
             if addresses is None:

@@ -508,7 +508,7 @@ class WorldDistribution(object):
                 try:
                     location = LocationFactory(name)
                 except KeyError:
-                    raise RuntimeError('Unknown boss in world %d: %s' % (world.id + 1, name))
+                    raise RuntimeError('Unknown location in world %d: %s' % (world.id + 1, name))
                 if location.type == 'Boss':
                     raise RuntimeError('Boss or already placed in world %d: %s' % (world.id + 1, name))
                 else:
