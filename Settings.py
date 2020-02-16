@@ -204,8 +204,9 @@ class Settings:
         else:
             self.distribution = Distribution(self)
 
-        for location in self.disabled_locations:
-            self.distribution.add_location(location, '#Junk')
+        if self.logic_rules == 'glitchless':
+            for location in self.disabled_locations:
+                self.distribution.add_location(location, '#Junk')
 
         self.numeric_seed = self.get_numeric_seed()
 

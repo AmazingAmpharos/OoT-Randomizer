@@ -580,7 +580,7 @@ class WorldDistribution(object):
                     raise RuntimeError('Unknown location in world %d: %s' % (world.id + 1, location_name))
                 if location.type == 'Boss':
                     continue
-                elif location.name in world.disabled_locations:
+                elif world.settings.logic_rules == 'glitchless' and location.name in world.disabled_locations:
                     continue
                 else:
                     raise RuntimeError('Location already filled in world %d: %s' % (self.id + 1, location_name))
