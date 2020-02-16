@@ -112,11 +112,9 @@ class Settings:
                     i_bits.extend(item_bits)
                 i_bits.extend(terminal)
 
-            else:
-                # pad it
-                i_bits += [0] * ( setting.bitwidth - len(i_bits) )
+            # pad it
+            i_bits += [0] * ( setting.bitwidth - len(i_bits) )
             bits += i_bits
-
         return bit_string_to_text(bits)
 
 
