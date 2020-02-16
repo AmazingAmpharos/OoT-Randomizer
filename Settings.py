@@ -204,6 +204,7 @@ class Settings:
         else:
             self.distribution = Distribution(self)
 
+        #Only glitchless supports having disabled locations
         if self.logic_rules == 'glitchless':
             for location in self.disabled_locations:
                 self.distribution.add_location(location, '#Junk')

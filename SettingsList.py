@@ -1528,8 +1528,8 @@ setting_infos = [
             considered available. MAY BE IMPOSSIBLE TO BEAT.
         ''',
         disable        = {
-            'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons', 'allowed_tricks']},
-            'none'      : {'tabs'     : ['detailed_tab']},
+            'glitched'  : {'settings' : ['entrance_shuffle', 'disabled_locations', 'mq_dungeons_random', 'mq_dungeons', 'allowed_tricks']},
+            'none'      : {'tabs'     : ['detailed_tab'], 'settings': ['disabled_locations']},
         },
         shared         = True,
     ),
