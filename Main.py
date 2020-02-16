@@ -75,9 +75,9 @@ def main(settings, window=dummy_window()):
     elif settings.world_count < 1 or settings.world_count > 255:
         raise Exception('World Count must be between 1 and 255')
 
-    # Bounds-check the player_num settings. If they're invalid, snap them to something semi-sane.
+    # Bounds-check the player_num settings, in case something's gone wrong we want to know.
     if settings.player_num < 1:
-        settings.player_num = 1
+        raise Exception(f'Invalid player num: {settings.player_num}; must be between (1, {settings.world_count})')
     if settings.player_num > settings.world_count:
         if settings.compress_rom not in ['None', 'Patch']:
             raise Exception(f'Player Num is {settings.player_num}; must be between (1, {settings.world_count})')
