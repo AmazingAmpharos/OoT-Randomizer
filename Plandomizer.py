@@ -585,7 +585,7 @@ class WorldDistribution(object):
 
             player_id = self.id if record.player is None else record.player - 1
 
-            location_matcher = lambda loc: loc.world.id == world.id and loc.name == location_name
+            location_matcher = lambda loc: loc.world.id == world.id and loc.name.lower() == location_name.lower()
             location = pull_first_element(location_pools, location_matcher)
             if location is None:
                 try:
