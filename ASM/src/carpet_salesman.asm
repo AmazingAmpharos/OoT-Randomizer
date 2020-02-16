@@ -9,7 +9,7 @@ carpet_inital_message:
 
     la      t1, GLOBAL_CONTEXT
     lw      t0, 0x1D44(t1)      ; load scene collectible flags (Haunted Wasteland)
-    andi    t0, t0, 0x1         ; check 0x1 flag (normally unused flag)
+    andi    t0, t0, 0x2         ; check flag 1 (normally unused flag)
     beqz    t0, @@return        ; if the flag is not set, continue with the default message
     nop
     li      a2, 0x9100          ; else, display a sold out message
@@ -25,7 +25,7 @@ carpet_buy_item_hook:
 
     la      t1, GLOBAL_CONTEXT
     lw      t0, 0x1D44(t1)      ; load scene collectible flags (Haunted Wasteland)
-    ori     t0, t0, 0x1         ; set 0x1 flag (custom carpet salesman flag)
+    ori     t0, t0, 0x2         ; set flag 1 (custom carpet salesman flag)
     sw      t0, 0x1D44(t1)
 
 @@return:

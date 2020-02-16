@@ -19,7 +19,7 @@ medigoron_inital_check:
 
     la      t1, GLOBAL_CONTEXT
     lw      t0, 0x1D44(t1)      ; load scene collectible flags (Goron City)
-    andi    t0, t0, 0x1         ; check 0x1 flag (normally unused flag)
+    andi    t0, t0, 0x2         ; check flag 1 (normally unused flag)
     beqz    t0, @@return        
     li      v0, 1               ; if the flag is not set, return with v0 = 1 to offer a purchase
     li      v0, 3               ; else, return with v0 = 3 to display the "sold out" message
@@ -35,7 +35,7 @@ medigoron_buy_item_hook:
 
     la      t1, GLOBAL_CONTEXT
     lw      t0, 0x1D44(t1)      ; load scene collectible flags (Goron City)
-    ori     t0, t0, 0x1         ; set 0x1 flag (custom medigoron flag)
+    ori     t0, t0, 0x2         ; set flag 1 (custom medigoron flag)
     sw      t0, 0x1D44(t1)
 
 @@return:

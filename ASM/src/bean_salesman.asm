@@ -12,7 +12,7 @@ bean_initial_check:
 
     la      t2, GLOBAL_CONTEXT
     lw      t1, 0x1D44(t2)      ; load scene collectible flags (Zora River)
-    andi    at, t1, 0x1         ; check 0x1 flag (normally unused flag)
+    andi    at, t1, 0x2         ; check flag 1 (normally unused flag)
     bnez    at, @@return
     li      v0, 0xA             ; if the flag is set, return with bean count = 10 (results in sold out)
     li      v0, 0               ; else, return with bean count = 0 (results in sell first bean)
@@ -54,7 +54,7 @@ bean_buy_item_hook:
 
     la      t2, GLOBAL_CONTEXT
     lw      t1, 0x1D44(t2)      ; load scene collectible flags (Zora River)
-    ori     t1, t1, 0x1         ; set 0x1 flag (custom bean salesman flag)
+    ori     t1, t1, 0x2         ; set flag 1 (custom bean salesman flag)
     sw      t1, 0x1D44(t2)
 
 @@return:
