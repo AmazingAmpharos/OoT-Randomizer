@@ -226,6 +226,8 @@ class SaveContext():
             self.give_health(count / 4)
         elif item == "Heart Container":
             self.give_health(count)
+        elif item == "Bombchu Item":
+            self.give_bombchu_item()
         elif item in SaveContext.save_writes_table:
             for address, value in SaveContext.save_writes_table[item].items():
                 if value is None:
@@ -247,7 +249,7 @@ class SaveContext():
                     address_value = address_value[sub_address]
                     prev_sub_address = sub_address
                 if not isinstance(address_value, Address):
-                    raise ValueError('%s does not resolve to an Adress in SaveContext' % (sub_address))
+                    raise ValueError('%s does not resolve to an Address in SaveContext' % (sub_address))
 
                 if isinstance(value, int) and value < address_value.get_value():
                     continue
@@ -255,6 +257,10 @@ class SaveContext():
                 address_value.value = value
         else:
             raise ValueError("Cannot give unknown starting item %s" % item)
+
+
+    def give_bombchu_item(self):
+        self.give_item("Bombchus", 0)
 
 
     def equip_default_items(self, age):

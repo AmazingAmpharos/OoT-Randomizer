@@ -232,6 +232,51 @@
       ]
     },
     {
+      "name": "starting_tab",
+      "text": "Starting Inventory",
+      "app_type": "generator",
+      "sections": [
+        {
+          "name": "starting_equipment_section",
+          "text": "Starting Equipment",
+          "col_span": 2,
+          "row_span": [2,2,2],
+          "settings": [
+            "starting_equipment"
+          ]
+        },
+        {
+          "name": "starting_items_section",
+          "text": "Starting Items",
+          "col_span": 2,
+          "row_span": [3,3,3],
+          "settings": [
+            "starting_items"
+          ]
+        },
+        {
+          "name": "starting_songs_section",
+          "text": "Starting Songs",
+          "col_span": 2,
+          "row_span": [2,2,2],
+          "settings": [
+            "starting_songs"
+          ]
+        },
+        {
+          "name": "starting_other_section",
+          "text": "Other",
+          "col_span": 2,
+          "row_span": [1,1,1],
+          "settings": [
+            "start_with_consumables",
+            "start_with_rupees",
+            "starting_hearts"
+          ]
+        }
+      ]
+    },
+    {
       "name": "other_tab",
       "text": "Other",
       "app_type": ["generator"],
@@ -248,10 +293,6 @@
             "useful_cutscenes",
             "fast_chests",
             "free_scarecrow",
-            "start_with_fast_travel",
-            "start_with_rupees",
-            "start_with_wallet",
-            "start_with_deku_equipment",
             "chicken_count_random",
             "chicken_count",
             "big_poe_count_random",

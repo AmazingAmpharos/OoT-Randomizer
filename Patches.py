@@ -3,6 +3,7 @@ import struct
 import itertools
 import re
 import zlib
+from collections import defaultdict
 
 from World import World
 from Rom import Rom
@@ -18,6 +19,7 @@ from Messages import read_messages, update_message_by_id, read_shop_items, \
 from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 from SaveContext import SaveContext
+import StartingItems
 
 
 def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
@@ -159,8 +161,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # songs as items flag
     songs_as_items = world.shuffle_song_items or \
-                     world.start_with_fast_travel or \
-                     world.distribution.song_as_items
+                     world.distribution.song_as_items or \
+                     world.starting_songs
 
     # Speed learning Zelda's Lullaby
     rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001]) # Terminator Execution
@@ -1114,8 +1116,41 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         if world.dungeon_mq['Spirit Temple']:
             save_context.addresses['keys']['spirit'].value = 3
 
+    starting_items = list(itertools.chain(world.starting_equipment, world.starting_items, world.starting_songs))
+    starting_item_names = set()
+    for item in StartingItems.everything.values():
+        if item.settingname in starting_items:
+            starting_item_names.add(item.itemname)
+            if not item.special:
+                world.distribution.give_item(item.itemname)
+            else:
+                if item.itemname == 'Magic Beans':
+                    world.distribution.give_item("Magic Bean", 10)
+                elif item.itemname == 'Bombchus':
+                    world.distribution.give_item("Bombchu Item")
+                    world.distribution.give_item("Bombchus", 0) # for spoiler log
+                elif item.itemname == 'Bottle with Letter':
+                    world.distribution.give_item("Bottle with Letter" if world.zora_fountain != 'open' else "Bottle")
+                elif item.itemname == 'Bottle':
+                    world.distribution.give_item("Bottle")
+                else:
+                    raise KeyError("invalid special item: {}".format(item.itemname))
+
     if world.start_with_rupees:
         rom.write_byte(rom.sym('MAX_RUPEES'), 0x01)
+    if world.start_with_consumables:
+        world.distribution.give_item('Deku Sticks', 99)
+        world.distribution.give_item('Deku Nuts', 99)
+        if "Bow" in starting_item_names:
+            world.distribution.give_item('Arrows', 99)
+        if "Bomb Bag" in starting_item_names:
+            world.distribution.give_item('Bombs', 99)
+        if "Slingshot" in starting_item_names:
+            world.distribution.give_item('Deku Seeds', 99)
+        if "Bombchus" in starting_item_names:
+            world.distribution.give_item('Bombchus', 99)
+    if world.starting_hearts > 3:
+        world.distribution.give_item('Heart Container', world.starting_hearts - 3)
 
     # Set starting time of day
     if world.starting_tod != 'default':

@@ -72,7 +72,7 @@ player.
 
 #### New Features
 * Triforce Hunt
-  * Collect some number of Triforce Pieces to beat the game instead of beating Ganon
+  * Collect some number of Triforce Pieces to beat the game instead of beating Ganon.
   * Multiworld Triforce counts are collective, so once the total is reached across all players everyone wins.
   * If enabled via randomizing main rules, the count is always 20.
 * Separate Double Defense model
@@ -81,10 +81,20 @@ player.
   * When the player has the Stone of Agony, it will appear on-screen above the rupee count when the player is near a hidden grotto.
   * The icon vibrates based on proximity to the grotto entrance, similar to the rumble pak.
   * A real rumble pak is not required.
+* Starting Inventory
+  * A new tab in the GUI allows setting initial inventory, without having to create a Plandomizer file.
+  * Items are divided into sections in the GUI based on category.
+  * Trade quest items, Gerudo Membership Card, Scarecrow Song not included.
+    * For Gerudo Membership Card, in the "Main Rules" tab, set `Gerudo Fortress` to `Open Fortress` instead.
+    * For Scarecrow Song, in the "Other" tab, enable `Free Scarecrow's Song`.
 
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
 * Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance does not presently affect chest size with Chest Size Matches Contents enabled, due to a bug.
+* Removed settings `Start with Fast Travel`, `Start with Tycoon's Wallet`, `Start with Deku Equipment`.
+  * These have been replaced with settings in the "Starting Inventory" tab.
+* New settings `Start with Consumables` (enable to start with max Sticks, Nuts, and ammo), `Starting Hearts` (changes starting max health).
+* New list settings `Starting Equipment` (swords, shields, strength, etc.), `Starting Items` (c-items), `Starting Songs` (songs).
 * Logic now requires Stone of Agony to access any hidden grotto.
   * A new trick `Hidden Grottos without Stone of Agony` will bypass this.
   * Stone of Agony is now only considered a useless item (for barren areas) when this trick is on and Gossip Stones do not use it.

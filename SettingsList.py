@@ -6,6 +6,8 @@ from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword
 from Location import LocationIterator
 import Sounds as sfx
 from Utils import data_path
+from itertools import chain
+import StartingItems
 
 # holds the info for a single setting
 class Setting_Info():
@@ -1105,7 +1107,7 @@ setting_infos = [
         default        = False,
         disable        = {
             True : {
-                'tabs' : ['main_tab', 'detailed_tab', 'other_tab'],
+                'tabs' : ['main_tab', 'detailed_tab', 'starting_tab', 'other_tab'],
                 'sections' : ['preset_section'],
                 'settings' : ['count', 'create_spoiler', 'world_count', 'enable_distribution_file', 'distribution_file'],
             },
@@ -1706,41 +1708,34 @@ setting_infos = [
         shared         = True,
     ),
     Checkbutton(
-        name           = 'start_with_fast_travel',
-        gui_text       = 'Start with Fast Travel',
-        gui_tooltip    = '''\
-            Start the game with Prelude of Light,
-            Serenade of Water, and Farore's Wind.
-
-            Two song locations will give items,
-            instead of Prelude and Serenade.
-        ''',
-        shared         = True,
-    ),
-    Checkbutton(
         name           = 'start_with_rupees',
         gui_text       = 'Start with Max Rupees',
         gui_tooltip    = '''\
-            Start the game with 99 rupees. Wallet upgrades fill wallet.
+            Start the game with 99 rupees.
         ''',
         shared         = True,
     ),
     Checkbutton(
-        name           = 'start_with_wallet',
-        gui_text       = 'Start with Tycoon\'s Wallet',
+        name           = 'start_with_consumables',
+        gui_text       = 'Start with Consumables',
         gui_tooltip    = '''\
-            Start the game with the largest wallet (999 max).
+            Start the game with maxed out Deku Sticks and Deku Nuts,
+            along with maximum ammo for any other starting items.
         ''',
         shared         = True,
     ),
-    Checkbutton(
-        name           = 'start_with_deku_equipment',
-        gui_text       = 'Start with Deku Equipment',
+    Scale(
+        name           = 'starting_hearts',
+        gui_text       = "Starting Hearts",
+        default        = 3,
+        min            = 3,
+        max            = 20,
         gui_tooltip    = '''\
-            Start the game with 10 Deku sticks and 20 Deku nuts.
-            Additionally, start the game with a Deku shield equipped,
-            unless playing with the Shopsanity setting.
+            Start the game with the selected number of hearts.
+            Heart Containers and Pieces of Heart are removed
+            from the item pool in equal proportion.
         ''',
+        disabled_default = 1,
         shared         = True,
     ),
     Checkbutton(
@@ -2398,6 +2393,63 @@ setting_infos = [
             the ghost guide across the Haunted Wasteland.
         ''',
         shared         = True,
+    ),
+    Setting_Info(
+        name           = 'starting_equipment',
+        type           = list,
+        gui_text       = "Starting Equipment",
+        gui_type       = "SearchBox",
+        shared         = True,
+        choices        = {
+            key: value.guitext for key, value in StartingItems.equipment.items()
+        },
+        default        = [],
+        gui_tooltip    = '''\
+            Begin the game with the selected equipment.
+        ''',
+        disable        = {
+            'kokiri_sword': {'settings' : ['shuffle_kokiri_sword']}
+        }
+    ),
+    Setting_Info(
+        name           = 'starting_items',
+        type           = list,
+        gui_text       = "Starting Items",
+        gui_type       = "SearchBox",
+        shared         = True,
+        choices        = {
+            key: value.guitext for key, value in StartingItems.inventory.items()
+        },
+        default        = [],
+        gui_tooltip    = '''\
+            Begin the game with the selected inventory items.
+            Unless "Start with Consumables" is selected, items
+            don't come with any ammo.
+            
+            Selecting multiple progressive items will give
+            the appropriate number of upgrades.
+            
+            If playing with Open Zora Fountain, the Bottle
+            with Letter is converted to a regular Bottle.
+        ''',
+        disable        = {
+            'ocarina'  : {'settings' : ['shuffle_ocarinas']},
+            'ocarina2' : {'settings' : ['shuffle_ocarinas']}
+        }
+    ),
+    Setting_Info(
+        name           = 'starting_songs',
+        type           = list,
+        gui_text       = "Starting Songs",
+        gui_type       = "SearchBox",
+        shared         = True,
+        choices        = {
+            key: value.guitext for key, value in StartingItems.songs.items()
+        },
+        default        = [],
+        gui_tooltip    = '''\
+            Begin the game with the selected songs already learnt.
+        ''',
     ),
     Checkbutton(
         name           = 'ocarina_songs',

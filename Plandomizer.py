@@ -302,19 +302,13 @@ class WorldDistribution(object):
 
 
     def configure_starting_items_settings(self, world):
-        if world.start_with_wallet:
-            self.give_item('Progressive Wallet', 3)
         if world.start_with_rupees:
             self.give_item('Rupees', 999)
-        if world.start_with_deku_equipment:
+        if world.start_with_consumables:
             if world.shopsanity == "off":
                 self.give_item('Deku Shield')
             self.give_item('Deku Sticks', 99)
             self.give_item('Deku Nuts', 99)
-        if world.start_with_fast_travel:
-            self.give_item('Prelude of Light')
-            self.give_item('Serenade of Water')
-            self.give_item('Farores Wind')
 
 
     def pool_remove_item(self, pools, item_name, count, world_id=None, use_base_pool=True, ignore_pools=None):
