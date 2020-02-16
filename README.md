@@ -101,9 +101,10 @@ player.
 * Non-Always Location hints cannot be placed for an area that already has a Foolish hint.
   * If the location hint is placed first, then it can still appear in a foolish hinted area, however in Tournament hint distribution the Foolish hints are placed first so that cannot happen.
 * The location containing Light Arrows will be considered a hinted location if Ganondorf's hint can be reached without them.
-* Ganondorf no longer hints at his Boss Key chest contents.
+* Ganondorf no longer hints at his Boss Key chest contents, except when Light Arrows don't exist (only possible in Triforce Hunt).
 * Improved Entrance Randomizer hints.
 * Updated Compressor. The GUI progress bar is now granular. If for some reason, the rom won't fit into 32MB, then the compressor will increase the output size.
+* Revised some settings tooltips.
 * Refactored Logic once again. It now uses helper json rules and rules can reference other rules.
 * Disabled settings don't show up in the spoiler.
 * Plando will now accept JSON lists for `item` in the location dictionary to randomly choose between for placement.
@@ -111,6 +112,7 @@ player.
 * "Start with" settings are now handled by the Plando library.
 * Further seed generation speed improvements.
 * The main search algorithm was renamed Search (from Playthrough) to avoid confusion with the spoiler playthrough.
+* General code cleanup and typo fixes.
 
 #### Bug Fixes
 * Minor stability fix in Plando
@@ -118,6 +120,7 @@ player.
 * Plando no longer occasionally attempts to place an item on a location where it's not allowed.
 * Plando starting items and items set in specific locations now count toward the pool allocation. (Starting items are replaced with junk.)
 * Plando now refuses to place more than the maximum amount of bottles, adult trade items, shop items, or total non-junk items.
+* Other various Plando bug fixes.
 * Starting items for adult that auto-equip should do so correctly now. (Non-Kokiri Tunics won't autoequip at the moment.)
 * Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers.
 * Removed (unnecessarily) duplicated/overlapping hints.

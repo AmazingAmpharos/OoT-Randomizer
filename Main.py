@@ -49,8 +49,6 @@ def main(settings, window=dummy_window()):
 
     logger = logging.getLogger('')
 
-    worlds = []
-
     old_tricks = settings.allowed_tricks
     settings.load_distribution()
 
@@ -74,13 +72,16 @@ def main(settings, window=dummy_window()):
 
     if not settings.world_count:
         settings.world_count = 1
-    if settings.world_count < 1 or settings.world_count > 255:
+    elif settings.world_count < 1 or settings.world_count > 255:
         raise Exception('World Count must be between 1 and 255')
-    if settings.player_num > settings.world_count or settings.player_num < 1:
+
+    # Bounds-check the player_num settings. If they're invalid, snap them to something semi-sane.
+    if settings.player_num < 1:
+        settings.player_num = 1
+    if settings.player_num > settings.world_count:
         if settings.compress_rom not in ['None', 'Patch']:
-            raise Exception('Player Num must be between 1 and %d' % settings.world_count)
-        else:
-            settings.player_num = 1
+            raise Exception(f'Player Num is {settings.player_num}; must be between (1, {settings.world_count})')
+        settings.player_num = settings.world_count
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s', __version__, settings.seed)
     settings.remove_disabled()
@@ -273,9 +274,9 @@ def patch_and_output(settings, window, spoiler, rom, start):
             if compressor_path != "":
                 run_process(window, logger, [compressor_path, output_path, output_compress_path])
             os.remove(output_path)
-            logger.info("Created compessed rom at: %s" % output_compress_path)
+            logger.info("Created compressed rom at: %s" % output_compress_path)
         else:
-            logger.info("Created uncompessed rom at: %s" % output_path)
+            logger.info("Created uncompressed rom at: %s" % output_path)
         window.update_progress(95)
 
     if not settings.create_spoiler or settings.output_settings:
@@ -528,7 +529,7 @@ def create_playthrough(spoiler):
     collection_spheres = []
     entrance_spheres = []
     remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances())
-    
+
     while True:
         search.checkpoint()
         # Not collecting while the generator runs means we only get one sphere at a time

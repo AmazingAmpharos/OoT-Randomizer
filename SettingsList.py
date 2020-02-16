@@ -77,7 +77,7 @@ class Setting_Info():
 
 class Checkbutton(Setting_Info):
 
-    def __init__(self, name, gui_text, gui_tooltip=None, disable=None, 
+    def __init__(self, name, gui_text, gui_tooltip=None, disable=None,
             disabled_default=None, default=False, shared=False, gui_params=None):
 
         choices = {
@@ -90,7 +90,7 @@ class Checkbutton(Setting_Info):
 
 class Combobox(Setting_Info):
 
-    def __init__(self, name, gui_text, choices, default, gui_tooltip=None, 
+    def __init__(self, name, gui_text, choices, default, gui_tooltip=None,
             disable=None, disabled_default=None, shared=False, gui_params=None):
 
         super().__init__(name, str, gui_text, 'Combobox', shared, choices, default, disabled_default, disable, gui_tooltip, gui_params)
@@ -99,14 +99,14 @@ class Combobox(Setting_Info):
 class Scale(Setting_Info):
 
     def __init__(self, name, gui_text, min, max, default, step=1,
-            gui_tooltip=None, disable=None, disabled_default=None, 
+            gui_tooltip=None, disable=None, disabled_default=None,
             shared=False, gui_params=None):
 
         choices = {
             i: str(i) for i in range(min, max+1, step)
         }
         if gui_params == None:
-            gui_params = {}       
+            gui_params = {}
         gui_params['min']    = min
         gui_params['max']    = max
         gui_params['step']   = step
@@ -967,10 +967,10 @@ logic_tricks = {
 setting_infos = [
     # Web Only Settings
     Setting_Info(
-        name        = 'web_wad_file',   
-        type        = str, 
-        gui_text    = "WAD File", 
-        gui_type    = "Fileinput", 
+        name        = 'web_wad_file',
+        type        = str,
+        gui_text    = "WAD File",
+        gui_type    = "Fileinput",
         shared      = False,
         choices     = {},
         gui_tooltip = "Your original OoT 1.2 NTSC-U / NTSC-J WAD file (.wad)",
@@ -989,11 +989,11 @@ setting_infos = [
         }
     ),
     Setting_Info(
-        name        = 'web_common_key_file',   
-        type        = str, 
-        gui_text    = "Wii Common Key File", 
-        gui_type    = "Fileinput", 
-        shared      = False, 
+        name        = 'web_common_key_file',
+        type        = str,
+        gui_text    = "Wii Common Key File",
+        gui_type    = "Fileinput",
+        shared      = False,
         choices     = {},
         gui_tooltip = """\
             The Wii Common Key is a copyrighted 32 character string needed for WAD encryption.
@@ -1011,14 +1011,14 @@ setting_infos = [
                 }
             ],
             "hide_when_disabled": True,
-        }        
+        }
     ),
     Setting_Info(
-        name        = 'web_common_key_string',   
-        type        = str, 
-        gui_text    = "Alternatively Enter Wii Common Key", 
-        gui_type    = "Textinput", 
-        shared      = False, 
+        name        = 'web_common_key_string',
+        type        = str,
+        gui_text    = "Alternatively Enter Wii Common Key",
+        gui_type    = "Textinput",
+        shared      = False,
         choices     = {},
         gui_tooltip = """\
             The Wii Common Key is a copyrighted 32 character string needed for WAD encryption.
@@ -1031,9 +1031,9 @@ setting_infos = [
         }
     ),
     Setting_Info(
-        name        = 'web_wad_channel_id',   
-        type        = str, 
-        gui_text    = "WAD Channel ID", 
+        name        = 'web_wad_channel_id',
+        type        = str,
+        gui_text    = "WAD Channel ID",
         gui_type    = "Textinput",
         shared      = False,
         choices     = {},
@@ -1050,9 +1050,9 @@ setting_infos = [
         }
     ),
     Setting_Info(
-        name        = 'web_wad_channel_title',   
-        type        = str, 
-        gui_text    = "WAD Channel Title", 
+        name        = 'web_wad_channel_title',
+        type        = str,
+        gui_text    = "WAD Channel Title",
         gui_type    = "Textinput",
         shared      = False,
         choices     = {},
@@ -1065,9 +1065,9 @@ setting_infos = [
         }
     ),
     Setting_Info(
-        name       = 'web_output_type',   
-        type       = str, 
-        gui_text   = "Output Type", 
+        name       = 'web_output_type',
+        type       = str,
+        gui_text   = "Output Type",
         gui_type   = "Radiobutton",
         shared     = False,
         choices    = {
@@ -1076,7 +1076,7 @@ setting_infos = [
         },
         gui_params  = {
             "hide_when_disabled" : True,
-        },        
+        },
         default    = "z64",
         disable    = {
             'z64' : {'settings' : [
@@ -1094,7 +1094,7 @@ setting_infos = [
         default        = True,
         shared         = False,
     ),
-    
+
     # Non-GUI Settings
     Checkbutton('cosmetics_only', None),
     Checkbutton('check_version', None),
@@ -1117,11 +1117,11 @@ setting_infos = [
             'web:disable' : {
                 False : {
                     'settings' : [
-                        'rom','web_output_type','player_num', 
+                        'rom','web_output_type','player_num',
                         'web_wad_file', 'web_common_key_file', 'web_common_key_string',
                         'web_wad_channel_id','web_wad_channel_title'
                     ],
-                },          
+                },
             }
         },
         shared         = False,
@@ -1155,7 +1155,7 @@ setting_infos = [
                   "extensions": [ "*" ]
                 }
             ],
-            "hide_when_disabled" : True,    
+            "hide_when_disabled" : True,
         }),
     Setting_Info('checked_version',   str, None, None, False, {}),
     Setting_Info('rom',               str, "Base ROM", "Fileinput", False, {},
@@ -1188,23 +1188,23 @@ setting_infos = [
                 }
             ],
         }),
-    Setting_Info('count',             int, "Generation Count", "Numberinput", False, {}, 
+    Setting_Info('count',             int, "Generation Count", "Numberinput", False, {},
         default        = 1,
         gui_params = {
             'min' : 1,
         }
     ),
-    Setting_Info('world_count',       int, "Player Count", "Numberinput", True, {}, 
+    Setting_Info('world_count',       int, "Player Count", "Numberinput", True, {},
         default        = 1,
         gui_params = {
             'min' : 1,
             'max' : 255,
             'no_line_break'     : True,
             'web:max'           : 15,
-            'web:no_line_break' : True,            
+            'web:no_line_break' : True,
         }
     ),
-    Setting_Info('player_num',        int, "Player ID", "Numberinput", False, {}, 
+    Setting_Info('player_num',        int, "Player ID", "Numberinput", False, {},
         default        = 1,
         gui_params = {
             'min' : 1,
@@ -1222,12 +1222,12 @@ setting_infos = [
             'function' : "openOutputDir",
             'no_line_break' : True,
         }
-    ), 
+    ),
     Setting_Info('open_python_dir',   str, "Open App Directory", "Button", False, {},
         gui_params = {
             'function' : "openPythonDir",
         }
-    ), 
+    ),
     Checkbutton(
         name           = 'repatch_cosmetics',
         gui_text       = 'Update Cosmetics',
@@ -1235,7 +1235,7 @@ setting_infos = [
         disable        = {
             False : {
                 'tabs': ['cosmetics_tab','sfx_tab'],
-                'settings' : ['create_cosmetics_log'],    
+                'settings' : ['create_cosmetics_log'],
             },
         },
         shared         = False,
@@ -1331,7 +1331,7 @@ setting_infos = [
         shared         = True,
         disable        = {
             'closed' : {'settings' : ['starting_age']}
-        },        
+        },
         gui_params     = {
             'randomize_key': 'randomize_settings',
             'distribution': [
@@ -1462,7 +1462,7 @@ setting_infos = [
             True  : {'settings' : ['shuffle_ganon_bosskey']},
             False : {'settings' : ['triforce_goal_per_world']}
         },
-    ),    
+    ),
     Scale(
         name           = 'triforce_goal_per_world',
         gui_text       = 'Required Triforces Per World',
@@ -1513,19 +1513,22 @@ setting_infos = [
             'none':       'No Logic',
             },
         gui_tooltip    = '''\
-            Sets the rules the logic uses to determine accessibility.
+            Logic provides guiding sets of rules for world generation
+            which the Randomizer uses to ensure the generated seeds 
+            are beatable.
 
             'Glitchless': No glitches are required, but may require 
-            some minor tricks.
+            some minor tricks. Add minor tricks to consider for logic
+            in the 'Detailed Logic' tab.
 
-            'Glitched': Movement oriented glitches are likely required.
+            'Glitched': Movement-oriented glitches are likely required.
             No locations excluded.
 
-            'No Logic': All locations are considered available. 
-            May not be beatable.
+            'No Logic': Maximize randomization, All locations are 
+            considered available. MAY BE IMPOSSIBLE TO BEAT.
         ''',
         disable        = {
-            'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons']},
+            'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons', 'allowed_tricks']},
             'none'      : {'tabs'     : ['detailed_tab']},
         },
         shared         = True,
@@ -1749,7 +1752,7 @@ setting_infos = [
         ''',
         disable        = {
             True : {'settings' : ['chicken_count']}
-        },        
+        },
         shared         = True,
     ),
     Scale(
@@ -2111,7 +2114,7 @@ setting_infos = [
         default        = 'dungeon',
         choices        = {
             'remove':    'Remove (Keysy)',
-            'vanilla':   'Vanilla Locations',            
+            'vanilla':   'Vanilla Locations',
             'dungeon':   'Dungeon Only',
             'keysanity': 'Anywhere (Keysanity)'
         },
@@ -2150,7 +2153,7 @@ setting_infos = [
         default        = 'dungeon',
         choices        = {
             'remove':    'Remove (Keysy)',
-            'vanilla':   'Vanilla Locations',            
+            'vanilla':   'Vanilla Locations',
             'dungeon':   'Dungeon Only',
             'keysanity': 'Anywhere (Keysanity)',
         },
@@ -2228,7 +2231,7 @@ setting_infos = [
                 ('lacs_medallions', 1),
                 ('lacs_stones',     1),
                 ('lacs_dungeons',   1),
-            ],            
+            ],
         },
     ),
     Checkbutton(
@@ -2272,7 +2275,7 @@ setting_infos = [
         min            = 0,
         max            = 12,
         gui_tooltip    = '''\
-            Select a number of Master Quest
+            Specify the number of Master Quest
             dungeons to appear in the game.
 
             0: All dungeon will have their
@@ -2283,11 +2286,11 @@ setting_infos = [
 
             12: All dungeons will have
             Master Quest redesigns.
-            ''',
+        ''',
         shared         = True,
     ),
     Setting_Info(
-        name           = 'disabled_locations', 
+        name           = 'disabled_locations',
         type           = list,
         gui_text       = "Exclude Locations",
         gui_type       = "SearchBox",
@@ -2295,8 +2298,12 @@ setting_infos = [
         choices        = [location.name for location in LocationIterator(lambda loc: loc.filter_tags is not None)],
         default        = [],
         gui_tooltip    = '''
-            Prevent locations from being required.
-            Only junk items will appear at those locations.
+            Locations in the left column may contain items
+            required to complete the game. 
+            
+            Locations in the right column will never have 
+            items that are required to complete the game, 
+            and will only contain junk.
 
             Most dungeon locations have a MQ alternative.
             If the location does not exist because of MQ
@@ -2319,7 +2326,15 @@ setting_infos = [
         default        = [],
         gui_params     = {
             'choice_tooltip': {choice['name']: choice['tooltip'] for choice in logic_tricks.values()},
-        }
+        },
+        gui_tooltip='''
+            Tricks moved to the right column are in-logic
+            and MAY be required to complete the game.
+            
+            Tricks in the left column are NEVER required.
+            
+            Tricks are only relevant for Glitchless logic.
+        '''
     ),
     Combobox(
         name           = 'logic_earliest_adult_trade',
