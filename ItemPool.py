@@ -842,7 +842,10 @@ def get_pool_core(world):
             placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
 
     if world.shuffle_beans:
-        pool.append('Magic Bean Pack')
+        if world.distribution.get_starting_item('Magic Bean') < 10:
+            pool.append('Magic Bean Pack')
+        else:
+            pool.extend(get_junk_item())
     else:
         placed_items['Magic Bean Salesman'] = 'Magic Bean'
 
