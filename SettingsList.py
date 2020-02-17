@@ -1719,8 +1719,7 @@ setting_infos = [
         name           = 'start_with_consumables',
         gui_text       = 'Start with Consumables',
         gui_tooltip    = '''\
-            Start the game with maxed out Deku Sticks and Deku Nuts,
-            along with maximum ammo for any other starting items.
+            Start the game with maxed out Deku Sticks and Deku Nuts.
         ''',
         shared         = True,
     ),

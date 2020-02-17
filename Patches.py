@@ -1118,17 +1118,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     if world.start_with_rupees:
         rom.write_byte(rom.sym('MAX_RUPEES'), 0x01)
-    if world.start_with_consumables:
-        world.distribution.give_item('Deku Sticks', 99)
-        world.distribution.give_item('Deku Nuts', 99)
-        if "Bow" in starting_item_names:
-            world.distribution.give_item('Arrows', 99)
-        if "Bomb Bag" in starting_item_names:
-            world.distribution.give_item('Bombs', 99)
-        if "Slingshot" in starting_item_names:
-            world.distribution.give_item('Deku Seeds', 99)
-        if "Bombchus" in starting_item_names:
-            world.distribution.give_item('Bombchus', 99)
 
     # Set starting time of day
     if world.starting_tod != 'default':

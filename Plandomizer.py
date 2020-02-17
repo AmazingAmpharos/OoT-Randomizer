@@ -307,8 +307,6 @@ class WorldDistribution(object):
         if world.start_with_rupees:
             self.give_item('Rupees', 999)
         if world.start_with_consumables:
-            if world.shopsanity == "off":
-                self.give_item('Deku Shield')
             self.give_item('Deku Sticks', 99)
             self.give_item('Deku Nuts', 99)
 
