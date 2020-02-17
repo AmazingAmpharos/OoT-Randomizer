@@ -1129,8 +1129,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
             world.distribution.give_item('Deku Seeds', 99)
         if "Bombchus" in starting_item_names:
             world.distribution.give_item('Bombchus', 99)
-    if world.starting_hearts > 3:
-        world.distribution.give_item('Heart Container', world.starting_hearts - 3)
 
     # Set starting time of day
     if world.starting_tod != 'default':

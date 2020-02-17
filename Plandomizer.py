@@ -854,12 +854,26 @@ class Distribution(object):
                         raise KeyError("invalid special item: {}".format(item.itemname))
             else:
                 raise KeyError("invalid starting item: {}".format(item.itemname))            
+
         # add ammo
         for item in list(data.keys()):
             match = [x for x in StartingItems.inventory.values() if x.itemname == item]
             if match and match[0].ammo:
                 for ammo,qty in match[0].ammo.items():
                     data[ammo] += qty[data[item]-1]
+
+        # add hearts
+        if self.settings.starting_hearts > 3:
+            data['Piece of Heart (Treasure Chest Game)'] = 1
+            data['Piece of Heart'] -= 1
+            num_hearts_to_collect = self.settings.starting_hearts - 3
+            if num_hearts_to_collect % 2 == 1:
+                data['Piece of Heart'] += 4
+                num_hearts_to_collect -= 1
+            for i in range(0, num_hearts_to_collect, 2):
+                data['Piece of Heart'] += 4
+                data['Heart Container'] += 4
+
         for world in self.world_dists:
             world.update({'starting_items': data})
 

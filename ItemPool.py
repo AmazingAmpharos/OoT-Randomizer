@@ -1275,15 +1275,6 @@ def get_pool_core(world):
     for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
 
-    if world.starting_hearts > 3:
-        num_hearts_to_collect = world.starting_hearts - 3
-        if num_hearts_to_collect % 2 == 1:
-            collect_pieces_of_heart(world, pool)
-            num_hearts_to_collect -= 1
-        for i in range(0, num_hearts_to_collect, 2):
-            collect_pieces_of_heart(world, pool)
-            collect_heart_container(world, pool)
-
     # Make sure our pending_junk_pool is empty. If not, remove some random junk here.
     if pending_junk_pool:
         remove_junk_pool, _ = zip(*junk_pool_base)
