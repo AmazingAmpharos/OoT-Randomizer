@@ -1272,46 +1272,6 @@ def get_pool_core(world):
     for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
 
-    starting_items = list(chain(world.starting_equipment, world.starting_items, world.starting_songs))
-    for item in StartingItems.everything.values():
-        if item.settingname in starting_items:
-            if item.special:
-                if item.itemname == "Bottle" or (item.itemname == "Bottle with Letter" and world.zora_fountain == 'open'):
-                    bottle_items = [(idx,x) for idx,x in enumerate(pool) if x in normal_bottles]
-                    if bottle_items:
-                        idx = bottle_items[0][0]
-                        del pool[idx]
-                    elif ruto_bottles > 1 or (ruto_bottles == 1 and world.zora_fountain == 'open'):
-                        # remove a ruto bottle
-                        pool.remove("Bottle with Letter")
-                        ruto_bottles -= 1
-                    world.state.collect(ItemFactory('Bottle'))
-                    pool.extend(get_junk_item())
-                elif item.itemname == "Bottle with Letter":
-                    pool.remove("Bottle with Letter")
-                    world.state.collect(ItemFactory('Bottle with Letter'))
-                    pool.extend(get_junk_item())
-                elif item.itemname == "Magic Beans":
-                    world.state.collect(ItemFactory('Magic Bean'))
-                elif item.itemname == "Bombchus":
-                    # remove one from pool
-                    for bombchu in ('Bombchus', 'Bombchus (5)', 'Bombchus (10)', 'Bombchus (20)'):
-                        if bombchu in pool:
-                            pool.remove(bombchu)
-                            pool.extend(get_junk_item())
-                            break
-                    if world.bombchus_in_logic:
-                        world.state.collect(ItemFactory("Bombchus"))
-                    else:
-                        world.state.collect(ItemFactory("Bombchus (5)"))
-                else:
-                    raise KeyError("invalid special item: {}".format(item.itemname))
-            else: # not a special item
-                if item.itemname in pool:
-                    pool.remove(item.itemname)
-                    pool.extend(get_junk_item())
-                world.state.collect(ItemFactory(item.itemname))
-
     if world.starting_hearts > 3:
         num_hearts_to_collect = world.starting_hearts - 3
         if num_hearts_to_collect % 2 == 1:

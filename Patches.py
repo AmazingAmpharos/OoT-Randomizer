@@ -1116,26 +1116,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         if world.dungeon_mq['Spirit Temple']:
             save_context.addresses['keys']['spirit'].value = 3
 
-    starting_items = list(itertools.chain(world.starting_equipment, world.starting_items, world.starting_songs))
-    starting_item_names = set()
-    for item in StartingItems.everything.values():
-        if item.settingname in starting_items:
-            starting_item_names.add(item.itemname)
-            if not item.special:
-                world.distribution.give_item(item.itemname)
-            else:
-                if item.itemname == 'Magic Beans':
-                    world.distribution.give_item("Magic Bean", 10)
-                elif item.itemname == 'Bombchus':
-                    world.distribution.give_item("Bombchu Item")
-                    world.distribution.give_item("Bombchus", 0) # for spoiler log
-                elif item.itemname == 'Bottle with Letter':
-                    world.distribution.give_item("Bottle with Letter" if world.zora_fountain != 'open' else "Bottle")
-                elif item.itemname == 'Bottle':
-                    world.distribution.give_item("Bottle")
-                else:
-                    raise KeyError("invalid special item: {}".format(item.itemname))
-
     if world.start_with_rupees:
         rom.write_byte(rom.sym('MAX_RUPEES'), 0x01)
     if world.start_with_consumables:
