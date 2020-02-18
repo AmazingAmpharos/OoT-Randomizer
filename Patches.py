@@ -9,7 +9,7 @@ from World import World
 from Rom import Rom
 from Spoiler import Spoiler
 from LocationList import business_scrubs
-from Hints import writeGossipStoneHints, buildBossRewardHints, \
+from Hints import writeGossipStoneHints, buildAltarHints, \
         buildGanonText, getSimpleHintNoPrefix
 from Utils import data_path
 from Messages import read_messages, update_message_by_id, read_shop_items, \
@@ -1678,11 +1678,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                         map_message = "\x13\x76\x08You found the \x05\x41Dungeon Map\x05\x40\x01for %s\x05\x40!\x01It\'s %s!\x09" % (dungeon_name, "masterful" if world.dungeon_mq[dungeon] else "ordinary")
                     update_message_by_id(messages, map_id, map_message)
 
-    else:
-        # Set hints for boss reward shuffle
-        rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
-        rom.write_bytes(0xE2ADB6, [0x70, 0x57])
-        buildBossRewardHints(world, messages)
+    # Set hints on the altar inside ToT
+    rom.write_int16(0xE2ADB2, 0x707A)
+    rom.write_int16(0xE2ADB6, 0x7057)
+    buildAltarHints(world, messages, include_rewards=not world.enhance_map_compass)
 
     # update happy mask shop to use new SOLD OUT text id
     rom.write_int16(shop_item_file.start + 0x1726, shop_items[0x26].description_message)
@@ -2109,7 +2108,7 @@ def boss_reward_index(world, boss_name):
 
 def configure_dungeon_info(rom, world):
     mq_enable = (world.mq_dungeons_random or world.mq_dungeons != 0 and world.mq_dungeons != 12)
-    mapcompass_keysanity = world.settings.enhance_map_compass
+    enhance_map_compass = world.settings.enhance_map_compass
 
     bosses = ['Queen Gohma', 'King Dodongo', 'Barinade', 'Phantom Ganon',
             'Volvagia', 'Morpha', 'Twinrova', 'Bongo Bongo']
@@ -2123,8 +2122,8 @@ def configure_dungeon_info(rom, world):
 
     rom.write_int32(rom.sym('cfg_dungeon_info_enable'), 1)
     rom.write_int32(rom.sym('cfg_dungeon_info_mq_enable'), int(mq_enable))
-    rom.write_int32(rom.sym('cfg_dungeon_info_mq_need_map'), int(mapcompass_keysanity))
-    rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_compass'), int(mapcompass_keysanity))
-    rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_altar'), int(not mapcompass_keysanity))
+    rom.write_int32(rom.sym('cfg_dungeon_info_mq_need_map'), int(enhance_map_compass))
+    rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_compass'), int(enhance_map_compass))
+    rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_altar'), int(not enhance_map_compass))
     rom.write_bytes(rom.sym('cfg_dungeon_rewards'), dungeon_rewards)
     rom.write_bytes(rom.sym('cfg_dungeon_is_mq'), dungeon_is_mq)

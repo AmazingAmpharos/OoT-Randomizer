@@ -2236,8 +2236,8 @@ setting_infos = [
             Gives the Map and Compass extra functionality.
             Map will tell if a dungeon is vanilla or Master Quest.
             Compass will tell what medallion or stone is within.
-            The Temple of Time Altar will no longer provide any
-            information.
+            The Temple of Time Altar will no longer provide
+            information on the location of medallions and stones.
 
             'Maps/Compasses: Remove': The dungeon information is
             not available anywhere in the game.
