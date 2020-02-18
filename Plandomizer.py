@@ -572,7 +572,12 @@ class WorldDistribution(object):
 
                 # Update item_pool
                 if item is not None:
-                    if item not in self.item_pool:
+                    item_in_pool = False
+                    for record in self.item_pool:
+                        if item.name == record:
+                            item_in_pool = True
+                            break
+                    if not item_in_pool:
                         self.item_pool[item.name] = ItemPoolRecord()
                         self.item_pool[item.name].count = self.base_pool.count(item.name) + 1
                     else:
