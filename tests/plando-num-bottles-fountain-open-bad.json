@@ -1,0 +1,12 @@
+{
+  "settings": {
+    "zora_fountain": "open"
+  },
+  "locations": {
+    "Mido Chest Top Left":                                   "Bottle with Milk",
+    "Mido Chest Top Right":                                  "Bottle with Milk",
+    "Mido Chest Bottom Left":                                "Bottle with Milk",
+    "Mido Chest Bottom Right":                               "Bottle with Milk",
+    "Ocarina Memory Game":                                   "Bottle with Milk"
+  }
+}

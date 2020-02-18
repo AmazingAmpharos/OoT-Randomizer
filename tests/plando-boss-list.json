@@ -1,0 +1,12 @@
+{
+  "locations": {
+    "Queen Gohma":    ["Kokiri Emerald", "Goron Ruby", "Zora Sapphire"],
+    "King Dodongo":   ["Kokiri Emerald", "Goron Ruby", "Zora Sapphire"],
+    "Barinade":       ["Kokiri Emerald", "Goron Ruby", "Zora Sapphire"],
+    "Phantom Ganon":  ["Forest Medallion", "Fire Medallion", "Water Medallion"],
+    "Volvagia":       ["Forest Medallion", "Fire Medallion", "Water Medallion"],
+    "Morpha":         ["Forest Medallion", "Fire Medallion", "Water Medallion"],
+    "Bongo Bongo":    ["Shadow Medallion", "Spirit Medallion"],
+    "Twinrova":       ["Shadow Medallion", "Spirit Medallion"]
+  }
+}

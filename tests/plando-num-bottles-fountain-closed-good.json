@@ -1,0 +1,10 @@
+{
+  "settings": {
+    "zora_fountain": "closed"
+  },
+  "locations": {
+    "Mido Chest Top Left":                                   "Bottle with Milk",
+    "Mido Chest Top Right":                                  "Bottle with Milk",
+    "Mido Chest Bottom Left":                                "Bottle with Milk"
+  }
+}

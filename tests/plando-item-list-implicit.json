@@ -1,0 +1,8 @@
+{
+  "locations": {
+    "Mido Chest Top Left":                                   ["Bow", "Light Arrows", "Magic Meter"],
+    "Mido Chest Top Right":                                  ["Bow", "Light Arrows", "Magic Meter"],
+    "Mido Chest Bottom Left":                                ["Bow", "Light Arrows", "Magic Meter"],
+    "Mido Chest Bottom Right":                               ["Bow", "Light Arrows", "Magic Meter"]
+  }
+}
