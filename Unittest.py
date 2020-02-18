@@ -8,6 +8,7 @@ import unittest
 
 from ItemList import item_table
 from ItemPool import remove_junk_items
+from LocationList import location_groups
 from Main import main
 from Settings import Settings
 
@@ -250,11 +251,22 @@ class TestPlandomizer(unittest.TestCase):
     def test_ice_trap_has_model(self):
         filename = "item-pool-matches-items-placed-after-starting-items-replaced"
         distribution_file, spoiler = generate_with_plandomizer(filename)
-        for location, item in spoiler['locations'].items():
-            if isinstance(item, dict) and item['item'] == "Ice Trap":
-                self.assertIn("model", item)
-            else:
-                self.assertNotIn("Ice Trap", item)
+        locations_with_previews = location_groups['CollectableLike']
+        for location in locations_with_previews:
+            if location in spoiler['locations']:
+                item = spoiler['locations'][location]
+                if isinstance(spoiler['locations'][location], dict):
+                    self.assertIn("model", item)
+                else:
+                    self.assertNotIn("Ice Trap", item)
+        distribution_file, spoiler = generate_with_plandomizer("plando-new-placed-ice-traps")
+        for location in locations_with_previews:
+            if location in spoiler['locations']:
+                item = spoiler['locations'][location]
+                if isinstance(spoiler['locations'][location], dict):
+                    self.assertIn("model", item)
+                else:
+                    self.assertNotIn("Ice Trap", item)
 
     def test_ammo_max_out_of_bounds_use_last_list_element(self):
         # This issue only appeared while patching
