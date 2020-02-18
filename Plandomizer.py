@@ -1030,7 +1030,11 @@ def pattern_dict_items(pattern_dict, itempool=None, used_items=None):
                 valid_items = value.item
             if not valid_items and used_items is None:
                 continue
-            elif not valid_items:
+            elif not valid_items and used_items is not None:
+                limited_items = ['Weird Egg', '#AdultTrade', '#Bottle']
+                for item in value.item:
+                    if item in limited_items or item in item_groups['AdultTrade'] or item in item_groups['Bottle']:
+                        value.item.remove(item)
                 value.item = random_choices(value.item)[0]
             else:
                 value.item = random_choices(valid_items)[0]
