@@ -122,123 +122,24 @@ class TestPlandomizer(unittest.TestCase):
             else:
                 self.assertIn(spoiler_value, item_list)
 
-    def test_boss_item_list(self):
-        filenames = ["plando-boss-list-child", "plando-boss-list-adult", "plando-boss-list"]
-        for filename in filenames:
-            with self.subTest(filename):
-                distribution_file, spoiler = generate_with_plandomizer(filename)
-                for location, item_list in distribution_file['locations'].items():
-                    self.assertIn(spoiler['locations'][location], item_list)
-
-    def test_item_list_exhaustion(self):
-        filename = "plando-list-exhaustion"
-        distribution_file, spoiler = generate_with_plandomizer(filename)
-        item_pool = distribution_file['item_pool']
-        for location, item in spoiler['locations'].items():
-            if isinstance(item, dict):
-                test_item = item['item']
-            else:
-                test_item = item
-            if test_item in item_pool:
-                item_pool[test_item] -= 1
-                self.assertGreaterEqual(item_pool[test_item], 0)
-
     def test_num_bottles_fountain_closed(self):
-        filename = "plando-num-bottles-fountain-closed-good"
-        generate_with_plandomizer(filename)
         filename = "plando-num-bottles-fountain-closed-bad"
         self.assertRaises((RuntimeError, IndexError), generate_with_plandomizer, filename)
 
     def test_num_bottles_fountain_open(self):
-        filename = "plando-num-bottles-fountain-open-good"
-        generate_with_plandomizer(filename)
         filename = "plando-num-bottles-fountain-open-bad"
         self.assertRaises((RuntimeError, IndexError), generate_with_plandomizer, filename)
 
-    def test_bottles_in_list(self):
-        filename = "plando-bottles-in-list"
-        generate_with_plandomizer(filename)
-
-    def test_bottle_item_group(self):
-        filename = "plando-bottle-item-group"
-        generate_with_plandomizer(filename)
-
-    def test_bottle_item_group_in_list(self):
-        filename = "plando-bottle-item-group-in-list"
-        generate_with_plandomizer(filename)
-
     def test_num_adult_trade_item(self):
-        filename = "plando-num-adult-trade-item-good"
-        generate_with_plandomizer(filename)
         filename = "plando-num-adult-trade-item-bad"
         self.assertRaises((RuntimeError, KeyError), generate_with_plandomizer, filename)
 
-    def test_adult_trade_in_list(self):
-        filename = "plando-adult-trade-in-list"
-        generate_with_plandomizer(filename)
-
-    def test_adult_trade_item_group(self):
-        filename = "plando-adult-trade-item-group"
-        generate_with_plandomizer(filename)
-
-    def test_adult_trade_item_group_in_list(self):
-        filename = "plando-adult-trade-item-group-in-list"
-        generate_with_plandomizer(filename)
-
     def test_num_weird_egg_item(self):
-        filename = "plando-num-weird-egg-item-good"
-        generate_with_plandomizer(filename)
         filename = "plando-num-weird-egg-item-bad"
         self.assertRaises((RuntimeError, KeyError), generate_with_plandomizer, filename)
 
-    def test_weird_egg_in_list(self):
-        filename = "plando-weird-egg-in-list"
-        generate_with_plandomizer(filename)
-
-    def test_item_pool_matches_items_placed(self):
-        filename = "empty"
-        distribution_file, spoiler = generate_with_plandomizer(filename)
-        final_pool = spoiler['item_pool']
-        for location, item in spoiler['locations'].items():
-            if isinstance(item, dict):
-                test_item = item['item']
-            else:
-                test_item = item
-            if test_item in final_pool:
-                final_pool[test_item] -= 1
-                self.assertGreaterEqual(final_pool[test_item], 0)
-        filename = "plando-list"
-        distribution_file, spoiler = generate_with_plandomizer(filename)
-        final_pool = spoiler['item_pool']
-        for location, item in spoiler['locations'].items():
-            if isinstance(item, dict):
-                test_item = item['item']
-            else:
-                test_item = item
-            if test_item in final_pool:
-                final_pool[test_item] -= 1
-                self.assertGreaterEqual(final_pool[test_item], 0)
-
-    def test_item_pool_matches_items_placed_after_starting_items_replaced(self):
-        filename = "item-pool-matches-items-placed-after-starting-items-replaced"
-        distribution_file, spoiler = generate_with_plandomizer(filename)
-        final_pool = spoiler['item_pool']
-        for location, item in spoiler['locations'].items():
-            if isinstance(item, dict):
-                test_item = item['item']
-            else:
-                test_item = item
-            if test_item in final_pool:
-                final_pool[test_item] -= 1
-                self.assertGreaterEqual(final_pool[test_item], 0)
-
-    def test_shop_items(self):
-        filename = "plando-shop-items"
-        generate_with_plandomizer(filename)
-
     def test_excess_starting_items(self):
-        filename = "plando-excess-starting-items"
-        distribution_file, spoiler = generate_with_plandomizer(filename)
+        distribution_file, spoiler = generate_with_plandomizer("plando-excess-starting-items")
         excess_item = list(distribution_file['starting_items'])[0]
         for location, item in spoiler['locations'].items():
             if isinstance(item, dict):
@@ -249,8 +150,9 @@ class TestPlandomizer(unittest.TestCase):
         self.assertNotIn(excess_item, spoiler['item_pool'])
 
     def test_ice_trap_has_model(self):
-        filename = "item-pool-matches-items-placed-after-starting-items-replaced"
-        distribution_file, spoiler = generate_with_plandomizer(filename)
+        distribution_file, spoiler = generate_with_plandomizer(
+            "plando-item-pool-matches-items-placed-after-starting-items-replaced"
+        )
         locations_with_previews = location_groups['CollectableLike']
         for location in locations_with_previews:
             if location in spoiler['locations']:
@@ -283,9 +185,58 @@ class TestPlandomizer(unittest.TestCase):
         })
         main(settings)
 
-    def test_case_insensitive_location_matching(self):
-        filename = "plando-list-case-sensitivity"
-        generate_with_plandomizer(filename)
+    def test_should_not_throw_exception(self):
+        filenames = [
+            "plando-bottles-in-list",
+            "plando-bottle-item-group",
+            "plando-bottle-item-group-in-list",
+            "plando-adult-trade-in-list",
+            "plando-adult-trade-item-group",
+            "plando-adult-trade-item-group-in-list",
+            "plando-weird-egg-in-list",
+            "plando-shop-items",
+            "plando-list-case-sensitivity",
+            "plando-num-adult-trade-item-good",
+            "plando-num-weird-egg-item-good",
+            "plando-num-bottles-fountain-closed-good",
+            "plando-num-bottles-fountain-open-good"
+        ]
+        for filename in filenames:
+            with self.subTest(filename):
+                generate_with_plandomizer(filename)
+
+    def test_boss_item_list(self):
+        filenames = ["plando-boss-list-child", "plando-boss-list-adult", "plando-boss-list"]
+        for filename in filenames:
+            with self.subTest(filename):
+                distribution_file, spoiler = generate_with_plandomizer(filename)
+                for location, item_list in distribution_file['locations'].items():
+                    self.assertIn(spoiler['locations'][location], item_list)
+
+    def test_pool_accuracy(self):
+        filenames = [
+            "empty",
+            "plando-list",
+            "plando-item-pool-matches-items-placed-after-starting-items-replaced"
+        ]
+        for filename in filenames:
+            with self.subTest(filename + " pool accuracy"):
+                distribution_file, spoiler = generate_with_plandomizer(filename)
+                self.check_pool_accuracy(spoiler, spoiler['item_pool'])
+        filename = "plando-list-exhaustion"
+        with self.subTest(filename + " pool accuracy"):
+            distribution_file, spoiler = generate_with_plandomizer(filename)
+            self.check_pool_accuracy(spoiler, distribution_file['item_pool'])
+
+    def check_pool_accuracy(self, spoiler, pool):
+        for location, item in spoiler['locations'].items():
+            if isinstance(item, dict):
+                test_item = item['item']
+            else:
+                test_item = item
+            if test_item in pool:
+                pool[test_item] -= 1
+                self.assertGreaterEqual(pool[test_item], 0)
 
 
 class TestValidSpoilers(unittest.TestCase):
