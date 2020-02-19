@@ -22,3 +22,5 @@ tests/Output
 
 # In order to keep this file tidy, please add any personal conventions to your
 # global git configuration.
+/ASM/build/bundle_r.txt
+/ASM/build/bundle_d.txt

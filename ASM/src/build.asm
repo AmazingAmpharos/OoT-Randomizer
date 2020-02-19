@@ -78,6 +78,8 @@ RANDO_CONTEXT:
 .include "audio.asm"
 .include "king_zora.asm"
 .include "agony.asm"
+
+.align 0x10
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:

@@ -14,10 +14,12 @@ from crc import calculate_crc
 parser = argparse.ArgumentParser()
 parser.add_argument('--pj64sym', help="Output path for PJ64 debugging symbols")
 parser.add_argument('--compile-c', action='store_true', help="Recompile C modules")
+parser.add_argument('--diff-only', action='store_true', help="Creates diff output without running armips")
 
 args = parser.parse_args()
 pj64_sym_path = args.pj64sym
 compile_c = args.compile_c
+diff_only = args.diff_only
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 run_dir = script_dir + '/..'
@@ -31,8 +33,10 @@ if compile_c:
     os.chdir(run_dir + '/c')
     call(['make'])
 
-os.chdir(run_dir + '/src')
-call(['armips', '-sym2', '../build/asm_symbols.txt', 'build.asm'])
+if not diff_only:
+    os.chdir(run_dir + '/src')
+    call(['armips', '-sym2', '../build/asm_symbols.txt', 'build.asm'])
+
 os.chdir(run_dir)
 
 with open('build/asm_symbols.txt', 'rb') as f:
