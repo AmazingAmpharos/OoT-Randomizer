@@ -54,7 +54,7 @@ def load_settings(settings_file, seed=None, filename=None):
             ofile = os.path.join(test_dir, 'Output', filename)
             j.update({
                 'enable_distribution_file': True,
-                'distribution_file': os.path.join(test_dir, filename + '.json')
+                'distribution_file': os.path.join(test_dir, 'plando', filename + '.json')
             })
         except TypeError:
             raise RuntimeError("Running test with in memory file but did not supply a filename for output file.")
@@ -81,13 +81,13 @@ def load_spoiler(json_file):
 
 
 def generate_with_plandomizer(filename):
-    distribution_file = load_spoiler(os.path.join(test_dir, filename + '.json'))
+    distribution_file = load_spoiler(os.path.join(test_dir, 'plando', filename + '.json'))
     try:
         settings = load_settings(distribution_file['settings'], seed='TESTTESTTEST', filename=filename)
     except KeyError:
         settings = Settings({
             'enable_distribution_file': True,
-            'distribution_file': os.path.join(test_dir, filename + '.json'),
+            'distribution_file': os.path.join(test_dir, 'plando', filename + '.json'),
             'compress_rom': "None",
             'count': 1,
             'create_spoiler': True,
