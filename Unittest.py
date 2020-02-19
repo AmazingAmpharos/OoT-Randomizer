@@ -48,7 +48,7 @@ junk = set(remove_junk_items)
 
 
 def load_settings(settings_file, seed=None, filename=None):
-    if isinstance(settings_file, dict):
+    if isinstance(settings_file, dict):  # Check if settings_file is a distribution file settings dict
         try:
             j = settings_file
             ofile = os.path.join(test_dir, 'Output', filename)
@@ -84,7 +84,7 @@ def generate_with_plandomizer(filename):
     distribution_file = load_spoiler(os.path.join(test_dir, 'plando', filename + '.json'))
     try:
         settings = load_settings(distribution_file['settings'], seed='TESTTESTTEST', filename=filename)
-    except KeyError:
+    except KeyError:  # No settings dict in distribution file, create minimal consistent configuration
         settings = Settings({
             'enable_distribution_file': True,
             'distribution_file': os.path.join(test_dir, 'plando', filename + '.json'),
@@ -100,43 +100,36 @@ def generate_with_plandomizer(filename):
 
 
 class TestPlandomizer(unittest.TestCase):
-    def test_item_list_explicit(self):
-        filename = "plando-item-list-explicit"
-        distribution_file, spoiler = generate_with_plandomizer(filename)
-        for location, item in distribution_file['locations'].items():
-            self.assertIn(spoiler['locations'][location], item['item'])
-
-    def test_item_list_implicit(self):
-        filename = "plando-item-list-implicit"
-        distribution_file, spoiler = generate_with_plandomizer(filename)
-        for location, item_list in distribution_file['locations'].items():
-            self.assertIn(spoiler['locations'][location], item_list)
-
     def test_item_list(self):
-        filename = "plando-list"
-        distribution_file, spoiler = generate_with_plandomizer(filename)
-        for location, item_list in distribution_file['locations'].items():
-            spoiler_value = spoiler['locations'][location]
-            if isinstance(spoiler_value, dict):
-                self.assertIn(spoiler_value['item'], item_list)
-            else:
-                self.assertIn(spoiler_value, item_list)
+        filenames = [
+            "plando-list",
+            "plando-item-list-implicit",
+            "plando-item-list-explicit"
+        ]
+        for filename in filenames:
+            with self.subTest(filename):
+                distribution_file, spoiler = generate_with_plandomizer(filename)
+                for location, item_value in distribution_file['locations'].items():
+                    spoiler_value = spoiler['locations'][location]
+                    if isinstance(item_value, dict):
+                        item_list = item_value['item']
+                    else:
+                        item_list = item_value
+                    if isinstance(spoiler_value, dict):
+                        self.assertIn(spoiler_value['item'], item_list)
+                    else:
+                        self.assertIn(spoiler_value, item_list)
 
-    def test_num_bottles_fountain_closed(self):
-        filename = "plando-num-bottles-fountain-closed-bad"
-        self.assertRaises((RuntimeError, IndexError), generate_with_plandomizer, filename)
-
-    def test_num_bottles_fountain_open(self):
-        filename = "plando-num-bottles-fountain-open-bad"
-        self.assertRaises((RuntimeError, IndexError), generate_with_plandomizer, filename)
-
-    def test_num_adult_trade_item(self):
-        filename = "plando-num-adult-trade-item-bad"
-        self.assertRaises((RuntimeError, KeyError), generate_with_plandomizer, filename)
-
-    def test_num_weird_egg_item(self):
-        filename = "plando-num-weird-egg-item-bad"
-        self.assertRaises((RuntimeError, KeyError), generate_with_plandomizer, filename)
+    def test_num_limited_items(self):
+        filenames = [
+            "plando-num-bottles-fountain-closed-bad",
+            "plando-num-bottles-fountain-open-bad",
+            "plando-num-adult-trade-item-bad",
+            "plando-num-weird-egg-item-bad"
+        ]
+        for filename in filenames:
+            with self.subTest(filename):
+                self.assertRaises(RuntimeError, generate_with_plandomizer, filename)
 
     def test_excess_starting_items(self):
         distribution_file, spoiler = generate_with_plandomizer("plando-excess-starting-items")
@@ -203,7 +196,10 @@ class TestPlandomizer(unittest.TestCase):
                 generate_with_plandomizer(filename)
 
     def test_boss_item_list(self):
-        filenames = ["plando-boss-list-child", "plando-boss-list-adult", "plando-boss-list"]
+        filenames = [
+            "plando-boss-list-child",
+            "plando-boss-list-adult",
+            "plando-boss-list"]
         for filename in filenames:
             with self.subTest(filename):
                 distribution_file, spoiler = generate_with_plandomizer(filename)
@@ -226,6 +222,12 @@ class TestPlandomizer(unittest.TestCase):
             self.check_pool_accuracy(spoiler, distribution_file['item_pool'])
 
     def check_pool_accuracy(self, spoiler, pool):
+        """Ensures pool values match spoiler item distribution
+
+        :param spoiler: Spoiler log output from generator
+        :param pool: Item pool to use for verification
+        :return:
+        """
         for location, item in spoiler['locations'].items():
             if isinstance(item, dict):
                 test_item = item['item']
