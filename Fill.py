@@ -92,9 +92,12 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     worlds[0].settings.distribution.fill(window, worlds, [shop_locations, song_locations, fill_locations], [shopitempool, dungeon_items, songitempool, progitempool, prioitempool, restitempool])
     itempool = progitempool + prioitempool + restitempool
 
-    ice_traps = [
+    # New ice traps in pool from starting_items being replaced
+    ice_traps = [item for item in itempool if item.name == 'Ice Trap' and item.looks_like_item is None]
+    # Extend with ice traps manually placed in plandomizer
+    ice_traps.extend([
         location.item for location in cloakable_locations
-        if location.item is not None and location.item.name == 'Ice Trap' and location.item.looks_like_item is None]
+        if location.item is not None and location.item.name == 'Ice Trap' and location.item.looks_like_item is None])
     fake_items = []
     while len(ice_traps) > len(fake_items):
         # if there are more ice traps than model items, then double up on model items
