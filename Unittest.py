@@ -149,27 +149,6 @@ class TestPlandomizer(unittest.TestCase):
             self.assertNotIn(excess_item, test_item)
         self.assertNotIn(excess_item, spoiler['item_pool'])
 
-    def test_ice_trap_has_model(self):
-        distribution_file, spoiler = generate_with_plandomizer(
-            "plando-item-pool-matches-items-placed-after-starting-items-replaced"
-        )
-        locations_with_previews = location_groups['CollectableLike']
-        for location in locations_with_previews:
-            if location in spoiler['locations']:
-                item = spoiler['locations'][location]
-                if isinstance(spoiler['locations'][location], dict):
-                    self.assertIn("model", item)
-                else:
-                    self.assertNotIn("Ice Trap", item)
-        distribution_file, spoiler = generate_with_plandomizer("plando-new-placed-ice-traps")
-        for location in locations_with_previews:
-            if location in spoiler['locations']:
-                item = spoiler['locations'][location]
-                if isinstance(spoiler['locations'][location], dict):
-                    self.assertIn("model", item)
-                else:
-                    self.assertNotIn("Ice Trap", item)
-
     def test_ammo_max_out_of_bounds_use_last_list_element(self):
         # This issue only appeared while patching
         filename = "plando-ammo-max-out-of-bounds"
@@ -184,6 +163,24 @@ class TestPlandomizer(unittest.TestCase):
             'seed': 'TESTTESTTEST'
         })
         main(settings)
+
+    def test_ice_trap_has_model(self):
+        filenames = [
+            "plando-item-pool-matches-items-placed-after-starting-items-replaced",
+            "plando-new-placed-ice-traps",
+            "plando-placed-and-added-ice-traps"
+        ]
+        for filename in filenames:
+            with self.subTest(filename):
+                distribution_file, spoiler = generate_with_plandomizer(filename)
+                locations_with_previews = location_groups['CanSee']
+                for location in locations_with_previews:
+                    if location in spoiler['locations']:
+                        item = spoiler['locations'][location]
+                        if isinstance(item, dict) and item['item'] == "Ice Trap":
+                            self.assertIn("model", item)
+                        else:
+                            self.assertNotIn("Ice Trap", item)
 
     def test_should_not_throw_exception(self):
         filenames = [
