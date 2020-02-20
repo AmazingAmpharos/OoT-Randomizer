@@ -268,7 +268,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     def visit_BoolOp(self, node):
         # Everything else must be visited, then can be removed/reduced to.
         early_return = isinstance(node.op, ast.Or)
-        groupable = 'has_any_if' if early_return else 'has_all_of'
+        groupable = 'has_any_of' if early_return else 'has_all_of'
         items = set()
         new_values = []
         # if any elt is True(And)/False(Or), we can omit it
