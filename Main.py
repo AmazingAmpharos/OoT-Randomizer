@@ -1,19 +1,19 @@
 from collections import OrderedDict
+import copy
+import hashlib
+import io
+import itertools
 import logging
+import os, os.path
 import platform
 import random
 import subprocess
-import time
-import os, os.path
 import sys
 import struct
+import time
 import zipfile
-import io
-import hashlib
-import copy
 
 from World import World
-from State import State
 from Spoiler import Spoiler
 from Rom import Rom
 from Patches import patch_rom
@@ -161,7 +161,7 @@ def generate(settings, window):
     if settings.create_spoiler or settings.hints != 'none':
         window.update_status('Calculating Hint Data')
         logger.info('Calculating hint data.')
-        State.update_required_items(spoiler)
+        update_required_items(spoiler)
         buildGossipHints(spoiler, worlds)
         window.update_progress(55)
     spoiler.build_file_hash()
@@ -504,16 +504,57 @@ def copy_worlds(worlds):
     return worlds
 
 
+def update_required_items(spoiler):
+    worlds = spoiler.worlds
+
+    # get list of all of the progressive items that can appear in hints
+    # all_locations: all progressive items. have to collect from these
+    # item_locations: only the ones that should appear as "required"/WotH
+    all_locations = [location for world in worlds for location in world.get_filled_locations()]
+    # Set to test inclusion against
+    item_locations = {location for location in all_locations if location.item.majoritem and not location.locked and location.item.name != 'Triforce Piece'}
+
+    # if the playthrough was generated, filter the list of locations to the
+    # locations in the playthrough. The required locations is a subset of these
+    # locations. Can't use the locations directly since they are location to the
+    # copied spoiler world, so must compare via name and world id
+    if spoiler.playthrough:
+        translate = lambda loc: worlds[loc.world.id].get_location(loc.name)
+        spoiler_locations = set(map(translate, itertools.chain.from_iterable(spoiler.playthrough.values())))
+        item_locations &= spoiler_locations
+
+    required_locations = []
+
+    search = Search([world.state for world in worlds])
+    for location in search.iter_reachable_locations(all_locations):
+        # Try to remove items one at a time and see if the game is still beatable
+        if location in item_locations:
+            old_item = location.item
+            location.item = None
+            # copies state! This is very important as we're in the middle of a search
+            # already, but beneficially, has search it can start from
+            if not search.can_beat_game():
+                required_locations.append(location)
+            location.item = old_item
+        search.state_list[location.item.world.id].collect(location.item)
+
+    # Filter the required location to only include location in the world
+    required_locations_dict = {}
+    for world in worlds:
+        required_locations_dict[world.id] = list(filter(lambda location: location.world.id == world.id, required_locations))
+    spoiler.required_locations = required_locations_dict
+
+
 def create_playthrough(spoiler):
     worlds = spoiler.worlds
-    if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
+    if worlds[0].check_beatable_only and not Search([world.state for world in worlds]).can_beat_game():
         raise RuntimeError('Uncopied is broken too.')
     # create a copy as we will modify it
     old_worlds = worlds
     worlds = copy_worlds(worlds)
 
     # if we only check for beatable, we can do this sanity check first before writing down spheres
-    if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
+    if worlds[0].check_beatable_only and not Search([world.state for world in worlds]).can_beat_game():
         raise RuntimeError('Cannot beat game. Something went terribly wrong here!')
 
     search = RewindableSearch([world.state for world in worlds])

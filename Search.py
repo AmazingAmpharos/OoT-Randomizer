@@ -3,7 +3,7 @@ from collections import defaultdict
 import itertools
 
 from Region import TimeOfDay
-
+from State import State
 
 class Search(object):
 
@@ -210,16 +210,8 @@ class Search(object):
     # or just a function(state_list)
     def can_beat_game(self, scan_for_items=True):
 
-        # This currently assumed all worlds have the same win condition.
-        # This might not be true in the future
-        def won(state):
-            if state.world.triforce_hunt:
-                return state.has('Triforce Piece', state.world.triforce_count)
-            else:
-                return state.has('Triforce')
-
         # Check if already beaten
-        if all(map(won, self.state_list)):
+        if all(map(State.won, self.state_list)):
             return True
 
         if scan_for_items:
@@ -228,7 +220,7 @@ class Search(object):
             search = self.copy()
             search.collect_locations()
             # if every state got the Triforce, then return True
-            return all(map(won, search.state_list))
+            return all(map(State.won, search.state_list))
         else:
             return False
 

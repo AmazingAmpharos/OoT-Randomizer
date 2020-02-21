@@ -24,7 +24,6 @@ class World(object):
         self.dungeons = []
         self.regions = []
         self.itempool = []
-        self.state = State(self)
         self._cached_locations = None
         self._entrance_cache = {}
         self._region_cache = {}
@@ -104,6 +103,7 @@ class World(object):
         self.resolve_random_settings()
 
         self.always_hints = [hint.name for hint in getRequiredHints(self)]
+        self.state = State(self)
 
 
     def copy(self):
