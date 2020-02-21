@@ -344,7 +344,7 @@ class WorldDistribution(object):
 
     def pool_add_item(self, pool, item_name, count):
         if item_name == '#Junk':
-            added_items = get_junk_item(count)
+            added_items = get_junk_item(count, pool=pool, plando_pool=self.item_pool)
         elif is_pattern(item_name):
             add_matcher = lambda item: pattern_matcher(item_name)(item.name)
             candidates = [
@@ -439,6 +439,11 @@ class WorldDistribution(object):
             self.item_pool[removed_item.name].count -= 1
         else:
             del self.item_pool[removed_item.name]
+        if new_item == "#Junk":
+            if self.distribution.settings.enable_distribution_file:
+                return ItemFactory(get_junk_item(1, self.base_pool, self.item_pool))[0]
+            else:  # Generator settings that add junk to the pool should not be strict about the item_pool definitions
+                return ItemFactory(get_junk_item(1))[0]
         return random.choice(list(ItemIterator(item_matcher, worlds[player_id])))
 
 
