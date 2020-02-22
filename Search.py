@@ -163,12 +163,18 @@ class Search(object):
             # and check if they can be reached. Collect them.
             had_reachable_locations = False
             for loc in item_locations:
-                if (loc not in visited_locations
-                    # Check adult first; it's the most likely.
-                    and (loc.parent_region in adult_regions
-                         and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='adult')
-                         or (loc.parent_region in child_regions
-                             and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='child')))):
+                if loc in visited_locations:
+                    continue
+                # Check adult first; it's the most likely.
+                if (loc.parent_region in adult_regions
+                        and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='adult')):
+                    had_reachable_locations = True
+                    # Mark it visited for this algorithm
+                    visited_locations.add(loc)
+                    yield loc
+
+                elif (loc.parent_region in child_regions
+                      and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='child')):
                     had_reachable_locations = True
                     # Mark it visited for this algorithm
                     visited_locations.add(loc)
