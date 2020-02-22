@@ -24,6 +24,8 @@ class Location(object):
         self.minor_only = False
         self.world = None
         self.disabled = DisableType.ENABLED
+        self.always = False
+        self.never = False
         if filter_tags is None:
             self.filter_tags = None
         else:
@@ -43,11 +45,19 @@ class Location(object):
         new_location.internal = self.internal
         new_location.minor_only = self.minor_only
         new_location.disabled = self.disabled
+        new_location.always = self.always
+        new_location.never = self.never
 
         return new_location
 
 
     def add_rule(self, lambda_rule):
+        if self.always:
+            self.set_rule(lambda_rule)
+            self.always = False
+            return
+        if self.never:
+            return
         self.access_rules.append(lambda_rule)
         self.access_rule = lambda state, **kwargs: all(rule(state, **kwargs) for rule in self.access_rules)
 

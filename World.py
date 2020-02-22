@@ -217,6 +217,9 @@ class World(object):
                     new_location.rule_string = rule
                     if self.logic_rules != 'none':
                         self.parser.parse_spot_rule(new_location)
+                    if new_location.never:
+                        # We still need to fill the location even if ALR is off.
+                        logging.getLogger('').debug('Unreachable location: %s', new_location.name)
                     new_location.world = self
                     new_region.locations.append(new_location)
             if 'events' in region:
@@ -227,9 +230,12 @@ class World(object):
                     new_location.rule_string = rule
                     if self.logic_rules != 'none':
                         self.parser.parse_spot_rule(new_location)
-                    new_location.world = self
-                    new_region.locations.append(new_location)
-                    MakeEventItem(event, new_location)
+                    if new_location.never:
+                        logging.getLogger('').debug('Dropping unreachable event: %s', new_location.name)
+                    else:
+                        new_location.world = self
+                        new_region.locations.append(new_location)
+                        MakeEventItem(event, new_location)
             if 'exits' in region:
                 for exit, rule in region['exits'].items():
                     new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)
@@ -237,7 +243,10 @@ class World(object):
                     new_exit.rule_string = rule
                     if self.logic_rules != 'none':
                         self.parser.parse_spot_rule(new_exit)
-                    new_region.exits.append(new_exit)
+                    if new_exit.never:
+                        logging.getLogger('').debug('Dropping unreachable exit: %s', new_exit.name)
+                    else:
+                        new_region.exits.append(new_exit)
             self.regions.append(new_region)
 
 
