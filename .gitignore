@@ -2,6 +2,7 @@
 /.vs
 /.vscode
 /.idea
+/ASM/build/bin
 /Output
 /build
 /dist
