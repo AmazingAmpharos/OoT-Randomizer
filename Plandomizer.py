@@ -572,12 +572,7 @@ class WorldDistribution(object):
 
                 # Update item_pool
                 if item is not None:
-                    item_in_pool = False
-                    for record in self.item_pool:
-                        if item.name == record:
-                            item_in_pool = True
-                            break
-                    if not item_in_pool:
+                    if item.name not in self.item_pool:
                         self.item_pool[item.name] = ItemPoolRecord()
                         self.item_pool[item.name].count = self.base_pool.count(item.name) + 1
                     else:
@@ -1037,9 +1032,10 @@ def pattern_dict_items(pattern_dict, itempool=None, used_items=None):
                 continue
             elif not valid_items and used_items is not None:
                 limited_items = ['Weird Egg', '#AdultTrade', '#Bottle']
-                for item in value.item:
-                    if item in limited_items or item in item_groups['AdultTrade'] or item in item_groups['Bottle']:
-                        value.item.remove(item)
+                value.item = [v for v in value.item
+                              if (v not in limited_items
+                                  and v not in item_groups['AdultTrade']
+                                  and v not in item_groups['Bottle'])]
                 value.item = random_choices(value.item)[0]
             else:
                 value.item = random_choices(valid_items)[0]

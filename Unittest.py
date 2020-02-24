@@ -139,7 +139,7 @@ class TestPlandomizer(unittest.TestCase):
                 test_item = spoiler['locations'][location]['item']
             else:
                 test_item = spoiler['locations'][location]
-            self.assertNotIn(excess_item, test_item)
+            self.assertNotEqual(excess_item, test_item)
         self.assertNotIn(excess_item, spoiler['item_pool'])
 
     def test_ammo_max_out_of_bounds_use_last_list_element(self):
@@ -155,7 +155,7 @@ class TestPlandomizer(unittest.TestCase):
             'output_file': os.path.join(test_dir, 'Output', filename),
             'seed': 'TESTTESTTEST'
         })
-        main(settings)
+        main(settings)  # Should not crash
 
     def test_ice_trap_has_model(self):
         filenames = [
@@ -372,7 +372,7 @@ class TestValidSpoilers(unittest.TestCase):
             'randomize_settings': True,
             'compress_rom': "None",
             'create_spoiler': True,
-            'output_file': os.path.join(output_dir, 'fuzz-%d' % i)
+            'output_file': os.path.join(output_dir, 'fuzz-%d' % i),
         }) for i in range(10)]
         out_keys = ['randomize_settings', 'compress_rom',
                     'create_spoiler', 'output_file', 'seed']
