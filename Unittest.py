@@ -146,7 +146,9 @@ class TestPlandomizer(unittest.TestCase):
             distribution_file, spoiler = generate_with_plandomizer("plando-explicit-item-pool")
             for item, value in distribution_file['item_pool'].items():
                 self.assertEqual(value, spoiler['item_pool'][item])
-            self.check_pool_accuracy(spoiler, spoiler['item_pool'])
+            actual_pool = get_actual_pool(spoiler)
+            for item in spoiler['item_pool']:
+                self.assertEqual(actual_pool[item], spoiler['item_pool'][item])
         with self.subTest("even if item pool is large"):
             generate_with_plandomizer("plando-explicit-item-pool-3")
         with self.subTest("except when not enough junk can be added"):
