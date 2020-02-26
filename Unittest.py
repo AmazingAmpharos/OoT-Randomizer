@@ -7,7 +7,7 @@ import os
 import unittest
 
 from ItemList import item_table
-from ItemPool import remove_junk_items
+from ItemPool import remove_junk_items, item_groups
 from LocationList import location_groups
 from Main import main
 from Settings import Settings
@@ -99,6 +99,27 @@ def generate_with_plandomizer(filename):
     return distribution_file, spoiler
 
 
+def get_actual_pool(spoiler):
+    """Retrieves the actual item pool based on items placed in the spoiler log.
+
+    :param spoiler: Spoiler log output from generator
+    :return: dict:
+                key: Item name
+                value: count in spoiler
+    """
+    actual_pool = {}
+    for location, item in spoiler['locations'].items():
+        if isinstance(item, dict):
+            test_item = item['item']
+        else:
+            test_item = item
+        try:
+            actual_pool[test_item] += 1
+        except KeyError:
+            actual_pool[test_item] = 1
+    return actual_pool
+
+
 class TestPlandomizer(unittest.TestCase):
     def test_item_list(self):
         filenames = [
@@ -170,8 +191,9 @@ class TestPlandomizer(unittest.TestCase):
                 for location in locations_with_previews:
                     if location in spoiler['locations']:
                         item = spoiler['locations'][location]
-                        if isinstance(item, dict) and item['item'] == "Ice Trap":
-                            self.assertIn("model", item)
+                        if isinstance(item, dict):
+                            if item['item'] == "Ice Trap":
+                                self.assertIn("model", item)
                         else:
                             self.assertNotIn("Ice Trap", item)
 
@@ -215,27 +237,21 @@ class TestPlandomizer(unittest.TestCase):
         for filename in filenames:
             with self.subTest(filename + " pool accuracy"):
                 distribution_file, spoiler = generate_with_plandomizer(filename)
-                self.check_pool_accuracy(spoiler, spoiler['item_pool'])
+                actual_pool = get_actual_pool(spoiler)
+                for item in spoiler['item_pool']:
+                    self.assertEqual(actual_pool[item], spoiler['item_pool'][item])
         filename = "plando-list-exhaustion"
         with self.subTest(filename + " pool accuracy"):
             distribution_file, spoiler = generate_with_plandomizer(filename)
-            self.check_pool_accuracy(spoiler, distribution_file['item_pool'])
-
-    def check_pool_accuracy(self, spoiler, pool):
-        """Ensures pool values match spoiler item distribution
-
-        :param spoiler: Spoiler log output from generator
-        :param pool: Item pool to use for verification
-        :return:
-        """
-        for location, item in spoiler['locations'].items():
-            if isinstance(item, dict):
-                test_item = item['item']
-            else:
-                test_item = item
-            if test_item in pool:
-                pool[test_item] -= 1
-                self.assertGreaterEqual(pool[test_item], 0)
+            actual_pool = get_actual_pool(spoiler)
+            for item in distribution_file['item_pool']:
+                self.assertEqual(actual_pool[item], distribution_file['item_pool'][item])
+        filename = "plando-item-pool-matches-items-placed-after-starting-items-replaced"
+        with self.subTest("starting items not in actual_pool"):
+            distribution_file, spoiler = generate_with_plandomizer(filename)
+            actual_pool = get_actual_pool(spoiler)
+            for item in distribution_file['starting_items']:
+                self.assertNotIn(item, actual_pool)
 
 
 class TestValidSpoilers(unittest.TestCase):
