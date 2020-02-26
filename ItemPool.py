@@ -713,22 +713,15 @@ def get_junk_item(count=1, pool=None, plando_pool=None):
         return_pool = [pending_junk_pool.pop() for _ in range(pending_count)]
         count -= pending_count
 
-    junk_items, junk_weights = zip(*junk_pool)
     if pool and plando_pool:
-        junk_list = list(junk_items)
-        weights_list = list(junk_weights)
-        for junk in junk_list.copy():
-            try:
-                if pool.count(junk) >= plando_pool[junk].count:
-                    del weights_list[junk_list.index(junk)]
-                    junk_list.remove(junk)
-            except KeyError:
-                continue
-        if len(junk_list) <= 0 and len(weights_list) <= 0:
+        jw_list = [(junk, weight) for (junk, weight) in junk_pool
+                   if junk not in plando_pool or pool.count(junk) < plando_pool[junk].count]
+        try:
+            junk_items, junk_weights = zip(*jw_list)
+        except ValueError:
             raise RuntimeError("Not enough junk is available in the item pool to replace removed items.")
-        else:
-            junk_items = tuple(junk_list)
-            junk_weights = tuple(weights_list)
+    else:
+        junk_items, junk_weights = zip(*junk_pool)
     return_pool.extend(random_choices(junk_items, weights=junk_weights, k=count))
 
     return return_pool
