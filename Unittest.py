@@ -4,6 +4,7 @@ from collections import Counter, defaultdict
 import json
 import logging
 import os
+import random
 import unittest
 
 from ItemList import item_table
@@ -384,6 +385,7 @@ class TestValidSpoilers(unittest.TestCase):
                 self.verify_disables(spoiler)
 
     def test_fuzzer(self):
+        random.seed()
         fuzz_settings = [Settings({
             'randomize_settings': True,
             'compress_rom': "None",
