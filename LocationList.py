@@ -824,7 +824,7 @@ location_groups = {
     'Collectable': [name for (name, data) in location_table.items() if data[0] == 'Collectable'],
     'BossHeart': [name for (name, data) in location_table.items() if data[0] == 'BossHeart'],
     'CollectableLike': [name for (name, data) in location_table.items() if data[0] in ('Collectable', 'BossHeart', 'GS Token')],
-    'CanSee': [name for (name, data) in location_table.items() if data[0] in ('CollectableLike', 'Shop')],
+    'CanSee': [name for (name, data) in location_table.items() if data[0] in ('Collectable', 'BossHeart', 'GS Token', 'Shop')],
     'Dungeon': [name for (name, data) in location_table.items() if data[4] is not None and any(dungeon in data[4] for dungeon in dungeons)],
 }
 
