@@ -140,6 +140,7 @@ player.
 * Randomizing main rules now works correctly.
 * Removed a misleading random "trials" value from the non-randomized settings in the spoiler.
 * Fix seed values with spaces no longer working.
+* Removed a mispasted option description from Gauntlets colors tooltips.
 * Miscellaneous logic fixes.
 * Other bug fixes.
 
