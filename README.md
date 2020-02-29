@@ -124,6 +124,7 @@ player.
 * Further seed generation speed improvements.
 * The main search algorithm was renamed Search (from Playthrough) to avoid confusion with the spoiler playthrough.
 * General code cleanup and typo fixes.
+* Added more Plando unittests.
 
 #### Bug Fixes
 * Minor stability fix in Plando
