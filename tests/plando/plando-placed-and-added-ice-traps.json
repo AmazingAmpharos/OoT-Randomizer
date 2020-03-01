@@ -1,6 +1,7 @@
 {
   "settings": {
-    "shopsanity": 4
+    "shopsanity": 4,
+    "junk_ice_traps": "on"
   },
   "starting_items": {
     "Boomerang": 1,

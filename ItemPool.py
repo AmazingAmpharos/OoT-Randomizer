@@ -703,7 +703,7 @@ item_groups = {
 }
 
 
-def get_junk_item(count=1):
+def get_junk_item(count=1, pool=None, plando_pool=None):
     if count < 1:
         raise ValueError("get_junk_item argument 'count' must be greater than 0.")
 
@@ -713,7 +713,15 @@ def get_junk_item(count=1):
         return_pool = [pending_junk_pool.pop() for _ in range(pending_count)]
         count -= pending_count
 
-    junk_items, junk_weights = zip(*junk_pool)
+    if pool and plando_pool:
+        jw_list = [(junk, weight) for (junk, weight) in junk_pool
+                   if junk not in plando_pool or pool.count(junk) < plando_pool[junk].count]
+        try:
+            junk_items, junk_weights = zip(*jw_list)
+        except ValueError:
+            raise RuntimeError("Not enough junk is available in the item pool to replace removed items.")
+    else:
+        junk_items, junk_weights = zip(*junk_pool)
     return_pool.extend(random_choices(junk_items, weights=junk_weights, k=count))
 
     return return_pool

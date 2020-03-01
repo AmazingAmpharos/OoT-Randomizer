@@ -142,6 +142,19 @@ class TestPlandomizer(unittest.TestCase):
                     else:
                         self.assertIn(spoiler_value, item_list)
 
+    def test_explicit_item_pool(self):
+        with self.subTest("generate with defined item pool"):
+            distribution_file, spoiler = generate_with_plandomizer("plando-explicit-item-pool")
+            for item, value in distribution_file['item_pool'].items():
+                self.assertEqual(value, spoiler['item_pool'][item])
+            actual_pool = get_actual_pool(spoiler)
+            for item in spoiler['item_pool']:
+                self.assertEqual(actual_pool[item], spoiler['item_pool'][item])
+        with self.subTest("even if item pool is large"):
+            generate_with_plandomizer("plando-explicit-item-pool-3")
+        with self.subTest("except when not enough junk can be added"):
+            self.assertRaises(RuntimeError, generate_with_plandomizer, "plando-explicit-item-pool-2")
+
     def test_num_limited_items(self):
         filenames = [
             "plando-num-bottles-fountain-closed-bad",
@@ -179,7 +192,7 @@ class TestPlandomizer(unittest.TestCase):
         })
         main(settings)  # Should not crash
 
-    def test_ice_trap_has_model(self):
+    def test_ice_traps(self):
         filenames = [
             "plando-item-pool-matches-items-placed-after-starting-items-replaced",
             "plando-new-placed-ice-traps",
@@ -197,6 +210,13 @@ class TestPlandomizer(unittest.TestCase):
                                 self.assertIn("model", item)
                         else:
                             self.assertNotIn("Ice Trap", item)
+                if filename == "plando-item-pool-matches-items-placed-after-starting-items-replaced":
+                    with self.subTest("ice traps not junk with junk ice traps off"):
+                        self.assertEqual(spoiler['item_pool']['Ice Trap'], 6)
+                    with self.subTest("ice traps junk with junk ice traps on"):
+                        # This distribution file should set all junk items to 1 except for ice traps so we will reuse it
+                        _, spoiler = generate_with_plandomizer("plando-explicit-item-pool")
+                        self.assertGreater(spoiler['item_pool']['Ice Trap'], 6)
 
     def test_should_not_throw_exception(self):
         filenames = [

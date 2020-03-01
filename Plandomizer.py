@@ -344,7 +344,7 @@ class WorldDistribution(object):
 
     def pool_add_item(self, pool, item_name, count):
         if item_name == '#Junk':
-            added_items = get_junk_item(count)
+            added_items = get_junk_item(count, pool=pool, plando_pool=self.item_pool)
         elif is_pattern(item_name):
             add_matcher = lambda item: pattern_matcher(item_name)(item.name)
             candidates = [
@@ -402,6 +402,19 @@ class WorldDistribution(object):
                         elif trade_matcher(item):
                             self.pool_add_item(pool, "#AdultTrade", 1)
 
+        for item_name, record in self.starting_items.items():
+            if bottle_matcher(item_name):
+                self.pool_remove_item([pool], "#Bottle", record.count)
+            elif trade_matcher(item_name):
+                self.pool_remove_item([pool], "#AdultTrade", record.count)
+            elif IsItem(item_name):
+                try:
+                    self.pool_remove_item([pool], item_name, record.count)
+                except KeyError:
+                    pass
+                if item_name in item_groups["Song"]:
+                    self.song_as_items = True
+
         junk_to_add = pool_size - len(pool)
         if junk_to_add > 0:
             junk_items = self.pool_add_item(pool, "#Junk", junk_to_add)
@@ -439,6 +452,11 @@ class WorldDistribution(object):
             self.item_pool[removed_item.name].count -= 1
         else:
             del self.item_pool[removed_item.name]
+        if new_item == "#Junk":
+            if self.distribution.settings.enable_distribution_file:
+                return ItemFactory(get_junk_item(1, self.base_pool, self.item_pool))[0]
+            else:  # Generator settings that add junk to the pool should not be strict about the item_pool definitions
+                return ItemFactory(get_junk_item(1))[0]
         return random.choice(list(ItemIterator(item_matcher, worlds[player_id])))
 
 
@@ -549,35 +567,6 @@ class WorldDistribution(object):
         locations = {}
         if self.locations:
             locations = {loc: self.locations[loc] for loc in random.sample(self.locations.keys(), len(self.locations))}
-        for starting_item in self.starting_items:
-            for _ in range(self.starting_items[starting_item].count):
-                try:
-                    if starting_item in item_groups['DungeonReward']:
-                        continue
-                    item = None
-                    if starting_item in item_groups['Bottle']:
-                        item = self.pool_replace_item(item_pools, "#Bottle", self.id, "#Junk", worlds)
-                    elif starting_item in item_groups['AdultTrade']:
-                        item = self.pool_replace_item(item_pools, "#AdultTrade", self.id, "#Junk", worlds)
-                    elif IsItem(starting_item):
-                        try:
-                            item = self.pool_replace_item(item_pools, starting_item, self.id, "#Junk", worlds)
-                        except KeyError:
-                            pass  # If a normal item exceeds the item pool count, continue.
-                except KeyError:
-                    raise RuntimeError('Started with too many "%s" in world %d, and not enough "%s" are available in the item pool to be removed.' % (starting_item, self.id + 1, starting_item))
-
-                if starting_item in item_groups['Song']:
-                    self.song_as_items = True
-
-                # Update item_pool
-                if item is not None:
-                    if item.name not in self.item_pool:
-                        self.item_pool[item.name] = ItemPoolRecord()
-                        self.item_pool[item.name].count = self.base_pool.count(item.name) + 1
-                    else:
-                        self.item_pool[item.name].count += 1
-                    item_pools[5].append(ItemFactory(item.name, world))
         used_items = []
         for (location_name, record) in pattern_dict_items(locations, world.itempool, used_items):
             if record.item is None:
