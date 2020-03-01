@@ -1,5 +1,5 @@
 
-../build/bundle.o:     file format elf32-bigmips
+build/bundle.o:     file format elf32-bigmips
 
 SYMBOL TABLE:
 00000000 l    d  .MIPS.abiflags	00000000 .MIPS.abiflags
