@@ -30,7 +30,6 @@ $(OBJDIR):
 $(OBJECTS): | $(OBJDIR)
 
 bundle: $(OBJECTS)
-	@echo $(OBJECTS)
 	$(LD) -o $(OUTDIR)/bundle.o -i -L. $(patsubst %.o,-l:%.o,$(OBJECTS))
 
 symbols: bundle

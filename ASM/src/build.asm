@@ -2,11 +2,9 @@
 .relativeinclude on
 
 // version guard, prevent people from building with older armips versions
-// 7000+ is an unofficial build by mzxrules. modify this check for when 
-// an official patch is made
-.if (version() < 7000) 
+.if (version() < 101)
 .notice version()
-.error   "Due to a bug in armips, official builds are not supported at this time. Please install https://github.com/mzxrules/armips/tree/mips_objimport"
+.error   "Detected armips build is too old. Please install https://github.com/Kingcom/armips from HEAD, then locally remove this notice, or increase the ARMIPS_VERSION_REVISION in armips and rebuild to bypass this notice."
 .endif
 
 .create "../roms/patched.z64", 0
