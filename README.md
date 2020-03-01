@@ -127,7 +127,7 @@ player.
 * Added more Plando unittests.
 
 #### Bug Fixes
-* Minor stability fix in Plando
+* Minor stability fix in Plando.
 * Spoilers for plando'd seeds now correctly show the tricks enabled for the seed.
 * Plando no longer occasionally attempts to place an item on a location where it's not allowed.
 * Plando starting items and items set in specific locations now count toward the pool allocation. (Starting items are replaced with junk.)
@@ -142,6 +142,7 @@ player.
 * Removed a misleading random "trials" value from the non-randomized settings in the spoiler.
 * Fix seed values with spaces no longer working.
 * Removed a mispasted option description from Gauntlets colors tooltips.
+* Major armips fix should prevent some crashes in Dev builds. (Devs: required armips version >= 0.10.0-68-g8669ffd)
 * Miscellaneous logic fixes.
 * Other bug fixes.
 
