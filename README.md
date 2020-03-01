@@ -41,7 +41,7 @@ The randomizer will ensure a glitchless path through the seed will exist, but th
 Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or other items that may not have been as important in the original game.
 
 Each major dungeon will earn you a random Spiritual Stone or Medallion once completed.
-The particular dungeons where these can be found, as well as other relevant dungeon inforomation can be viewed in the pause menu by holding the "A" button on the C-Item Menu.
+The particular dungeons where these can be found, as well as other relevant dungeon information can be viewed in the pause menu by holding the "A" button on the C-Item Menu.
 
 As a service to the player in this very long game, many cutscenes have been greatly shortened, and text is as often as possible either omitted or sped up. It is likely that someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
 
@@ -65,7 +65,7 @@ easily avoided by playing on a different emulator and probably also avoidable by
 * Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.
 * Saving and quitting on the very first frame after becoming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
 do that.
-* This randomizer is based on the 1.0 version of _Ocarina of Time_, so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantagous to the
+* This randomizer is based on the 1.0 version of _Ocarina of Time_, so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantageous to the
 player.
 
 ## Changelog
@@ -281,7 +281,7 @@ player.
 * Quick boot equips
   * Use D-pad left to equip Iron Boots if they're in the inventory, or D-pad right to equip Hover Boots if they're in the inventory.
   * Press the button again to equip Kokiri Boots.
-* Quck Ocarina
+* Quick Ocarina
   * Use D-pad down to pull out the Ocarina.
 * Freestanding models
   * All freestanding item locations now display the model of the item you will receive.
