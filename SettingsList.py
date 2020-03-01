@@ -1712,8 +1712,7 @@ setting_infos = [
         gui_text       = 'Start with Max Rupees',
         gui_tooltip    = '''\
             Start the game with a full wallet.
-            Wallet upgrades will also contain
-            rupees.
+            Wallet upgrades will also fill the wallet.
         ''',
         shared         = True,
     ),
