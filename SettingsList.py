@@ -1711,7 +1711,9 @@ setting_infos = [
         name           = 'start_with_rupees',
         gui_text       = 'Start with Max Rupees',
         gui_tooltip    = '''\
-            Start the game with 99 rupees.
+            Start the game with a full wallet.
+            Wallet upgrades will also contain
+            rupees.
         ''',
         shared         = True,
     ),
@@ -2422,9 +2424,6 @@ setting_infos = [
         default        = [],
         gui_tooltip    = '''\
             Begin the game with the selected inventory items.
-            Unless "Start with Consumables" is selected, items
-            don't come with any ammo.
-            
             Selecting multiple progressive items will give
             the appropriate number of upgrades.
             
