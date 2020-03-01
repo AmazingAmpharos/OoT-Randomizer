@@ -6,7 +6,6 @@ from Utils import random_choices
 from Item import ItemFactory
 from ItemList import item_table
 from LocationList import location_groups
-import StartingItems
 
 
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
@@ -797,12 +796,6 @@ def collect_heart_container(world, pool):
 def get_pool_core(world):
     pool = []
     placed_items = {}
-
-    # override settings for starting items
-    if 'kokiri_sword' in world.starting_equipment:
-        world.shuffle_kokiri_sword = True
-    if any(item in world.starting_items for item in ('ocarina', 'ocarina2')):
-        world.shuffle_ocarinas = True
 
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')

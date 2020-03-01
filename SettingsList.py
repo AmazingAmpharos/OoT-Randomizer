@@ -2408,9 +2408,6 @@ setting_infos = [
         gui_tooltip    = '''\
             Begin the game with the selected equipment.
         ''',
-        disable        = {
-            'kokiri_sword': {'settings' : ['shuffle_kokiri_sword']}
-        }
     ),
     Setting_Info(
         name           = 'starting_items',
@@ -2430,10 +2427,6 @@ setting_infos = [
             If playing with Open Zora Fountain, the Bottle
             with Letter is converted to a regular Bottle.
         ''',
-        disable        = {
-            'ocarina'  : {'settings' : ['shuffle_ocarinas']},
-            'ocarina2' : {'settings' : ['shuffle_ocarinas']}
-        }
     ),
     Setting_Info(
         name           = 'starting_songs',
