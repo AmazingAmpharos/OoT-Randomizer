@@ -90,7 +90,7 @@ player.
 
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
-* Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance does not presently affect chest size with Chest Size Matches Contents enabled, due to a bug.
+* Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance can affect chest size with Chest Size Matches Contents enabled.
 * Removed settings `Start with Fast Travel`, `Start with Tycoon's Wallet`, `Start with Deku Equipment`.
   * These have been replaced with settings in the "Starting Inventory" tab.
 * New settings `Start with Consumables` (enable to start with max Sticks, Nuts, and ammo), `Starting Hearts` (changes starting max health).
