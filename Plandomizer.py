@@ -572,7 +572,7 @@ class WorldDistribution(object):
 
                 # Update item_pool
                 if item is not None:
-                    if item not in self.item_pool:
+                    if item.name not in self.item_pool:
                         self.item_pool[item.name] = ItemPoolRecord()
                         self.item_pool[item.name].count = self.base_pool.count(item.name) + 1
                     else:
@@ -689,7 +689,6 @@ class WorldDistribution(object):
                 search = Search.max_explore([world.state for world in worlds], itertools.chain.from_iterable(item_pools))
                 if not search.can_beat_game(False):
                     raise FillError('%s in world %d is not reachable without %s in world %d!' % (location.name, self.id + 1, item.name, player_id + 1))
-            used_items.append(item.name)
             window.fillcount += 1
             window.update_progress(5 + ((window.fillcount / window.locationcount) * 30))
 
@@ -1077,12 +1076,19 @@ def pattern_dict_items(pattern_dict, itempool=None, used_items=None):
                 valid_items = value.item
             if not valid_items and used_items is None:
                 continue
-            elif not valid_items:
+            elif not valid_items and used_items is not None:
+                limited_items = ['Weird Egg', '#AdultTrade', '#Bottle']
+                value.item = [v for v in value.item
+                              if (v not in limited_items
+                                  and v not in item_groups['AdultTrade']
+                                  and v not in item_groups['Bottle'])]
                 value.item = random_choices(value.item)[0]
             else:
                 value.item = random_choices(valid_items)[0]
                 if used_items is not None:
                     used_items.append(value.item)
+        elif used_items is not None:
+            used_items.append(value.item)
         if is_pattern(key):
             pattern = lambda loc: pattern_matcher(key)(loc.name)
             for location in LocationIterator(pattern):

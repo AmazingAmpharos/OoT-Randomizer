@@ -824,8 +824,10 @@ location_groups = {
     'Collectable': [name for (name, data) in location_table.items() if data[0] == 'Collectable'],
     'BossHeart': [name for (name, data) in location_table.items() if data[0] == 'BossHeart'],
     'CollectableLike': [name for (name, data) in location_table.items() if data[0] in ('Collectable', 'BossHeart', 'GS Token')],
+    'CanSee': [name for (name, data) in location_table.items() if data[0] in ('Collectable', 'BossHeart', 'GS Token', 'Shop')],
     'Dungeon': [name for (name, data) in location_table.items() if data[4] is not None and any(dungeon in data[4] for dungeon in dungeons)],
 }
+
 
 # Function to run exactly once after after placing items in drop locations for each world
 # Sets all Drop locations to a unique name in order to avoid name issues and to identify locations in the spoiler

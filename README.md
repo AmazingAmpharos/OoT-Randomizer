@@ -124,6 +124,7 @@ player.
 * Further seed generation speed improvements.
 * The main search algorithm was renamed Search (from Playthrough) to avoid confusion with the spoiler playthrough.
 * General code cleanup and typo fixes.
+* Added more Plando unittests.
 
 #### Bug Fixes
 * Minor stability fix in Plando
@@ -139,6 +140,7 @@ player.
 * Randomizing main rules now works correctly.
 * Removed a misleading random "trials" value from the non-randomized settings in the spoiler.
 * Fix seed values with spaces no longer working.
+* Removed a mispasted option description from Gauntlets colors tooltips.
 * Miscellaneous logic fixes.
 * Other bug fixes.
 

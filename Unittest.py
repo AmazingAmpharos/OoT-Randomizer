@@ -4,10 +4,12 @@ from collections import Counter, defaultdict
 import json
 import logging
 import os
+import random
 import unittest
 
 from ItemList import item_table
-from ItemPool import remove_junk_items
+from ItemPool import remove_junk_items, item_groups
+from LocationList import location_groups
 from Main import main
 from Settings import Settings
 
@@ -46,11 +48,22 @@ bottles = {
 junk = set(remove_junk_items)
 
 
-def load_settings(settings_file, seed=None):
-    sfile = os.path.join(test_dir, settings_file)
-    ofile = os.path.join(test_dir, 'Output', os.path.splitext(settings_file)[0])
-    with open(sfile) as f:
-        j = json.load(f)
+def load_settings(settings_file, seed=None, filename=None):
+    if isinstance(settings_file, dict):  # Check if settings_file is a distribution file settings dict
+        try:
+            j = settings_file
+            ofile = os.path.join(test_dir, 'Output', filename)
+            j.update({
+                'enable_distribution_file': True,
+                'distribution_file': os.path.join(test_dir, 'plando', filename + '.json')
+            })
+        except TypeError:
+            raise RuntimeError("Running test with in memory file but did not supply a filename for output file.")
+    else:
+        sfile = os.path.join(test_dir, settings_file)
+        ofile = os.path.join(test_dir, 'Output', os.path.splitext(settings_file)[0])
+        with open(sfile) as f:
+            j = json.load(f)
     # Some consistent settings for testability
     j.update({
         'compress_rom': "None",
@@ -66,6 +79,180 @@ def load_settings(settings_file, seed=None):
 def load_spoiler(json_file):
     with open(json_file) as f:
         return json.load(f)
+
+
+def generate_with_plandomizer(filename):
+    distribution_file = load_spoiler(os.path.join(test_dir, 'plando', filename + '.json'))
+    try:
+        settings = load_settings(distribution_file['settings'], seed='TESTTESTTEST', filename=filename)
+    except KeyError:  # No settings dict in distribution file, create minimal consistent configuration
+        settings = Settings({
+            'enable_distribution_file': True,
+            'distribution_file': os.path.join(test_dir, 'plando', filename + '.json'),
+            'compress_rom': "None",
+            'count': 1,
+            'create_spoiler': True,
+            'output_file': os.path.join(test_dir, 'Output', filename),
+            'seed': 'TESTTESTTEST'
+        })
+    main(settings)
+    spoiler = load_spoiler('%s_Spoiler.json' % settings.output_file)
+    return distribution_file, spoiler
+
+
+def get_actual_pool(spoiler):
+    """Retrieves the actual item pool based on items placed in the spoiler log.
+
+    :param spoiler: Spoiler log output from generator
+    :return: dict:
+                key: Item name
+                value: count in spoiler
+    """
+    actual_pool = {}
+    for location, item in spoiler['locations'].items():
+        if isinstance(item, dict):
+            test_item = item['item']
+        else:
+            test_item = item
+        try:
+            actual_pool[test_item] += 1
+        except KeyError:
+            actual_pool[test_item] = 1
+    return actual_pool
+
+
+class TestPlandomizer(unittest.TestCase):
+    def test_item_list(self):
+        filenames = [
+            "plando-list",
+            "plando-item-list-implicit",
+            "plando-item-list-explicit"
+        ]
+        for filename in filenames:
+            with self.subTest(filename):
+                distribution_file, spoiler = generate_with_plandomizer(filename)
+                for location, item_value in distribution_file['locations'].items():
+                    spoiler_value = spoiler['locations'][location]
+                    if isinstance(item_value, dict):
+                        item_list = item_value['item']
+                    else:
+                        item_list = item_value
+                    if isinstance(spoiler_value, dict):
+                        self.assertIn(spoiler_value['item'], item_list)
+                    else:
+                        self.assertIn(spoiler_value, item_list)
+
+    def test_num_limited_items(self):
+        filenames = [
+            "plando-num-bottles-fountain-closed-bad",
+            "plando-num-bottles-fountain-open-bad",
+            "plando-num-adult-trade-item-bad",
+            "plando-num-weird-egg-item-bad"
+        ]
+        for filename in filenames:
+            with self.subTest(filename):
+                self.assertRaises(RuntimeError, generate_with_plandomizer, filename)
+
+    def test_excess_starting_items(self):
+        distribution_file, spoiler = generate_with_plandomizer("plando-excess-starting-items")
+        excess_item = list(distribution_file['starting_items'])[0]
+        for location, item in spoiler['locations'].items():
+            if isinstance(item, dict):
+                test_item = spoiler['locations'][location]['item']
+            else:
+                test_item = spoiler['locations'][location]
+            self.assertNotEqual(excess_item, test_item)
+        self.assertNotIn(excess_item, spoiler['item_pool'])
+
+    def test_ammo_max_out_of_bounds_use_last_list_element(self):
+        # This issue only appeared while patching
+        filename = "plando-ammo-max-out-of-bounds"
+        settings = Settings({
+            'enable_distribution_file': True,
+            'distribution_file': os.path.join(test_dir, filename + '.json'),
+            'compress_rom': "Patch",
+            'count': 1,
+            'create_spoiler': True,
+            'create_cosmetics_log': False,
+            'output_file': os.path.join(test_dir, 'Output', filename),
+            'seed': 'TESTTESTTEST'
+        })
+        main(settings)  # Should not crash
+
+    def test_ice_trap_has_model(self):
+        filenames = [
+            "plando-item-pool-matches-items-placed-after-starting-items-replaced",
+            "plando-new-placed-ice-traps",
+            "plando-placed-and-added-ice-traps"
+        ]
+        for filename in filenames:
+            with self.subTest(filename):
+                distribution_file, spoiler = generate_with_plandomizer(filename)
+                locations_with_previews = location_groups['CanSee']
+                for location in locations_with_previews:
+                    if location in spoiler['locations']:
+                        item = spoiler['locations'][location]
+                        if isinstance(item, dict):
+                            if item['item'] == "Ice Trap":
+                                self.assertIn("model", item)
+                        else:
+                            self.assertNotIn("Ice Trap", item)
+
+    def test_should_not_throw_exception(self):
+        filenames = [
+            "plando-bottles-in-list",
+            "plando-bottle-item-group",
+            "plando-bottle-item-group-in-list",
+            "plando-adult-trade-in-list",
+            "plando-adult-trade-item-group",
+            "plando-adult-trade-item-group-in-list",
+            "plando-weird-egg-in-list",
+            "plando-shop-items",
+            "plando-list-case-sensitivity",
+            "plando-num-adult-trade-item-good",
+            "plando-num-weird-egg-item-good",
+            "plando-num-bottles-fountain-closed-good",
+            "plando-num-bottles-fountain-open-good"
+        ]
+        for filename in filenames:
+            with self.subTest(filename):
+                generate_with_plandomizer(filename)
+
+    def test_boss_item_list(self):
+        filenames = [
+            "plando-boss-list-child",
+            "plando-boss-list-adult",
+            "plando-boss-list"]
+        for filename in filenames:
+            with self.subTest(filename):
+                distribution_file, spoiler = generate_with_plandomizer(filename)
+                for location, item_list in distribution_file['locations'].items():
+                    self.assertIn(spoiler['locations'][location], item_list)
+
+    def test_pool_accuracy(self):
+        filenames = [
+            "empty",
+            "plando-list",
+            "plando-item-pool-matches-items-placed-after-starting-items-replaced"
+        ]
+        for filename in filenames:
+            with self.subTest(filename + " pool accuracy"):
+                distribution_file, spoiler = generate_with_plandomizer(filename)
+                actual_pool = get_actual_pool(spoiler)
+                for item in spoiler['item_pool']:
+                    self.assertEqual(actual_pool[item], spoiler['item_pool'][item])
+        filename = "plando-list-exhaustion"
+        with self.subTest(filename + " pool accuracy"):
+            distribution_file, spoiler = generate_with_plandomizer(filename)
+            actual_pool = get_actual_pool(spoiler)
+            for item in distribution_file['item_pool']:
+                self.assertEqual(actual_pool[item], distribution_file['item_pool'][item])
+        filename = "plando-item-pool-matches-items-placed-after-starting-items-replaced"
+        with self.subTest("starting items not in actual_pool"):
+            distribution_file, spoiler = generate_with_plandomizer(filename)
+            actual_pool = get_actual_pool(spoiler)
+            for item in distribution_file['starting_items']:
+                self.assertNotIn(item, actual_pool)
 
 
 class TestValidSpoilers(unittest.TestCase):
@@ -198,6 +385,7 @@ class TestValidSpoilers(unittest.TestCase):
                 self.verify_disables(spoiler)
 
     def test_fuzzer(self):
+        random.seed()
         fuzz_settings = [Settings({
             'randomize_settings': True,
             'compress_rom': "None",
