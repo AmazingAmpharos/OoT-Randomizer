@@ -869,7 +869,7 @@ class Distribution(object):
                 num_hearts_to_collect -= 1
             for i in range(0, num_hearts_to_collect, 2):
                 data['Piece of Heart'] += 4
-                data['Heart Container'] += 4
+                data['Heart Container'] += 1
 
         for world in self.world_dists:
             world.update({'starting_items': data})
