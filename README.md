@@ -85,12 +85,12 @@ player.
   * A new tab in the GUI allows setting initial inventory, without having to create a Plandomizer file.
   * Items are divided into sections in the GUI based on category.
   * Trade quest items, Gerudo Membership Card, Scarecrow Song not included.
-    * For Gerudo Membership Card, in the "Main Rules" tab, set `Gerudo Fortress` to `Open Fortress` instead.
-    * For Scarecrow Song, in the "Other" tab, enable `Free Scarecrow's Song`.
+    * To start with the Gerudo Membership Card, set `Gerudo Fortress` to `Open Fortress` and disable `Shuffle Gerudo Card` ('Main Rules' tab).
+    * To start with the Scarecrow Song, enable `Free Scarecrow's Song` ('Other' tab).
 
 #### Updated Settings 
 * Open Zora Fountain now has an open only adult option.
-* Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance can affect chest size with Chest Size Matches Contents enabled.
+* Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance can affect chest size with `Chest Size Matches Contents` enabled.
 * Removed settings `Start with Fast Travel`, `Start with Tycoon's Wallet`, `Start with Deku Equipment`.
   * These have been replaced with settings in the "Starting Inventory" tab.
 * New settings `Start with Consumables` (enable to start with max Sticks, Nuts, and ammo), `Starting Hearts` (changes starting max health).
@@ -100,7 +100,7 @@ player.
   * Stone of Agony is now only considered a useless item (for barren areas) when this trick is on and Gossip Stones do not use it.
 * Added a new trick `Goron City Spinning Pot PoH without Explosives`, which allows stopping the Spinning Pot using a bomb flower.
 * Hell Mode preset includes both the above tricks.
-* Tricks enabled/disabled in a Plandomizer file now take precedence over Tricks in Detailed Logic, even if the Plandomizer file has an empty list.
+* Tricks enabled/disabled in a Plandomizer file now take precedence over Tricks in 'Detailed Logic', even if the Plandomizer file has an empty list.
   * An empty list means the seed will be beatable without any tricks.
   * If there's no `allowed_tricks` item in the file, the Detailed Logic tricks apply instead.
   * If there is an `allowed_tricks` list in the file, it will not be possible to disable any of the enabled tricks (or enabling more) without editing the file.

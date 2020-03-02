@@ -5,6 +5,7 @@ import re
 import random
 
 from functools import reduce
+from collections import defaultdict
 
 from Fill import FillError
 from EntranceShuffle import EntranceShuffleError, change_connections, confirm_replacement, validate_worlds
@@ -18,6 +19,7 @@ from Spoiler import HASH_ICONS
 from version import __version__
 from Utils import random_choices
 from JSONDump import dump_obj, CollapseList, CollapseDict, AllignedDict, SortedDict
+import StartingItems
 
 
 class InvalidFileException(Exception):
@@ -305,8 +307,6 @@ class WorldDistribution(object):
         if world.start_with_rupees:
             self.give_item('Rupees', 999)
         if world.start_with_consumables:
-            if world.shopsanity == "off":
-                self.give_item('Deku Shield')
             self.give_item('Deku Sticks', 99)
             self.give_item('Deku Nuts', 99)
 
@@ -738,7 +738,9 @@ class WorldDistribution(object):
 
 
 class Distribution(object):
-    def __init__(self, settings, src_dict={}):
+    def __init__(self, settings, src_dict=None):
+        if src_dict is None:
+            src_dict = {}
         self.settings = settings
         self.world_dists = [WorldDistribution(self, id) for id in range(settings.world_count)]
         self.update(src_dict, update_all=True)
@@ -806,6 +808,9 @@ class Distribution(object):
                 setattr(self, k, update_dict[k])
 
 
+        if 'starting_items' not in src_dict:
+            self.populate_starting_items_from_settings()
+
         for k in per_world_keys:
             if k in src_dict:
                 for world_id, world in enumerate(self.world_dists):
@@ -816,6 +821,47 @@ class Distribution(object):
                 for world in self.world_dists:
                     if src_dict[k]:
                         world.update({k: src_dict[k]})
+
+
+    def populate_starting_items_from_settings(self):
+        starting_items = list(itertools.chain(self.settings.starting_equipment, self.settings.starting_items, self.settings.starting_songs))
+        data = defaultdict(int)
+        for itemsetting in starting_items:
+            if itemsetting in StartingItems.everything:
+                item = StartingItems.everything[itemsetting]
+                if not item.special:
+                    data[item.itemname] += 1
+                else:
+                    if item.itemname == 'Bottle with Letter' and self.settings.zora_fountain != 'open':
+                        data['Bottle with Letter'] = 1
+                    elif item.itemname in ['Bottle', 'Bottle with Letter']:
+                        data['Bottle'] += 1
+                    else:
+                        raise KeyError("invalid special item: {}".format(item.itemname))
+            else:
+                raise KeyError("invalid starting item: {}".format(item.itemname))
+
+        # add ammo
+        for item in list(data.keys()):
+            match = [x for x in StartingItems.inventory.values() if x.itemname == item]
+            if match and match[0].ammo:
+                for ammo,qty in match[0].ammo.items():
+                    data[ammo] += qty[data[item]-1]
+
+        # add hearts
+        if self.settings.starting_hearts > 3:
+            data['Piece of Heart (Treasure Chest Game)'] = 1
+            data['Piece of Heart'] -= 1
+            num_hearts_to_collect = self.settings.starting_hearts - 3
+            if num_hearts_to_collect % 2 == 1:
+                data['Piece of Heart'] += 4
+                num_hearts_to_collect -= 1
+            for i in range(0, num_hearts_to_collect, 2):
+                data['Piece of Heart'] += 4
+                data['Heart Container'] += 1
+
+        for world in self.world_dists:
+            world.update({'starting_items': data})
 
 
     def to_json(self, include_output=True, spoiler=True):
