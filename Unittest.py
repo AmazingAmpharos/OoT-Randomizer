@@ -182,7 +182,7 @@ class TestPlandomizer(unittest.TestCase):
         filename = "plando-ammo-max-out-of-bounds"
         settings = Settings({
             'enable_distribution_file': True,
-            'distribution_file': os.path.join(test_dir, filename + '.json'),
+            'distribution_file': os.path.join(test_dir, 'plando', filename + '.json'),
             'compress_rom': "Patch",
             'count': 1,
             'create_spoiler': True,
