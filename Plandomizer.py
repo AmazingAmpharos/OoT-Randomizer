@@ -370,6 +370,7 @@ class WorldDistribution(object):
         pool_size = len(pool)
         bottle_matcher = pattern_matcher("#Bottle")
         trade_matcher  = pattern_matcher("#AdultTrade")
+        bottles = 0
 
         for item_name, record in self.item_pool.items():
             if record.type == 'add':
@@ -391,16 +392,21 @@ class WorldDistribution(object):
                     added_items = self.pool_add_item(pool, item_name, add_count)
                     for item in added_items:
                         if bottle_matcher(item):
-                            self.pool_remove_item([pool], "#Bottle", 1)
+                            bottles += 1
                         elif trade_matcher(item):
                             self.pool_remove_item([pool], "#AdultTrade", 1)
                 else:
                     removed_items = self.pool_remove_item([pool], item_name, -add_count)
                     for item in removed_items:
                         if bottle_matcher(item):
-                            self.pool_add_item(pool, "#Bottle", 1)
+                            bottles -= 1
                         elif trade_matcher(item):
                             self.pool_add_item(pool, "#AdultTrade", 1)
+
+        if bottles > 0:
+            self.pool_remove_item([pool], '#Bottle', bottles)
+        else:
+            self.pool_add_item(pool, '#Bottle', -bottles)
 
         for item_name, record in self.starting_items.items():
             if bottle_matcher(item_name):
