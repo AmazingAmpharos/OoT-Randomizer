@@ -347,7 +347,10 @@ export class GeneratorComponent implements OnInit {
   }
 
   getPresetArray() {
-    return Object.keys(this.global.generator_presets);
+    if (typeof (this.global.generator_presets) == "object")
+      return Object.keys(this.global.generator_presets);
+    else
+      return [];
   }
 
   loadPreset() {
