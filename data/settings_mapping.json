@@ -307,7 +307,6 @@
             "ocarina_songs",
             "correct_chest_sizes",
             "clearer_hints",
-            "ice_trap_appearance",
             "hints",
             "hint_dist",
             "text_shuffle",
@@ -322,6 +321,7 @@
           "settings": [
             "item_pool_value",
             "junk_ice_traps",
+            "ice_trap_appearance",
             "logic_earliest_adult_trade",
             "logic_latest_adult_trade"
           ]

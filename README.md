@@ -8,6 +8,7 @@ This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
   * [Settings](#settings)
   * [Known Issues](#known-issues)
 * [Changelog](#changelog)
+  * [5.2](#52)
   * [5.1](#51)
   * [5.0](#50)
   * [4.0](#40)
@@ -54,6 +55,20 @@ With a game the size of _Ocarina of Time_, it's quite easy for new Randomizer pl
 The OoT Randomizer offers many different settings to customize your play experience.
 A comprehensive list can be found [here](https://wiki.ootrandomizer.com/index.php?title=Readme).
 
+#### Plandomizer
+
+"Plan"-domizer is a feature that gives some additional control over the seed generation using a separate distribution file. In such a file you can:
+* Place items at specific locations or restrict items from being placed at specific locations.
+* Add or remove items from the item pool.
+* Select items to start with.
+* Set specific dungeons to be vanilla vs Master Quest.
+* Set which trials are required.
+* Set any regular settings.
+
+Caveat: Plandomizer settings will override most settings in the main OoTR generator settings, particularly list-based settings like enabled tricks or starting inventory. For example, if the Plandomizer distribution file contains an empty list of starting items, and the generator settings include additional starting equipment, the player will start with none of them instead. You will have to edit the Plandomizer file to change such settings, or **delete** completely the line in the Plandomizer file with the given setting to allow the main generator to alter the setting.
+
+See [the Plandomizer wiki page](https://wiki.ootrandomizer.com/index.php?title=Plandomizer) for full details.
+
 ### Known issues
 
 Unfortunately, a few known issues exist. These will hopefully be addressed in future versions.
@@ -69,6 +84,8 @@ do that.
 player.
 
 ## Changelog
+
+### 5.2
 
 #### New Features
 * Triforce Hunt
@@ -98,7 +115,7 @@ player.
 * Logic now requires Stone of Agony to access any hidden grotto.
   * A new trick `Hidden Grottos without Stone of Agony` will bypass this.
   * Stone of Agony is now only considered a useless item (for barren areas) when this trick is on and Gossip Stones do not use it.
-* Added a new trick `Goron City Spinning Pot PoH without Explosives`, which allows stopping the Spinning Pot using a bomb flower.
+* Added a new trick `Goron City Spinning Pot PoH with Strength`, which allows stopping the Spinning Pot using a bomb flower.
 * Hell Mode preset includes both the above tricks.
 * Tricks enabled/disabled in a Plandomizer file now take precedence over Tricks in 'Detailed Logic', even if the Plandomizer file has an empty list.
   * An empty list means the seed will be beatable without any tricks.
