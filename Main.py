@@ -29,7 +29,7 @@ from N64Patch import create_patch_file, apply_patch_file
 from SettingsList import setting_infos, logic_tricks
 from Rules import set_rules, set_shop_rules
 from Plandomizer import Distribution
-from Playthrough import Playthrough, RewindablePlaythrough
+from Search import Search, RewindableSearch
 from EntranceShuffle import set_entrances
 from LocationList import set_drop_location_names
 
@@ -49,14 +49,18 @@ def main(settings, window=dummy_window()):
 
     logger = logging.getLogger('')
 
-    worlds = []
+    old_tricks = settings.allowed_tricks
+    settings.load_distribution()
+
+    # compare pointers to lists rather than contents, so even if the two are identical
+    # we'll still log the error and note the dist file overrides completely.
+    if old_tricks and old_tricks is not settings.allowed_tricks:
+        logger.error('Tricks are set in two places! Using only the tricks from the distribution file.')
 
     for trick in logic_tricks.values():
         settings.__dict__[trick['name']] = trick['name'] in settings.allowed_tricks
 
-    settings.load_distribution()
-
-    # we load the rom before creating the seed so that error get caught early
+    # we load the rom before creating the seed so that errors get caught early
     if settings.compress_rom == 'None' and not settings.create_spoiler:
         raise Exception('`No Output` must have spoiler enabled to produce anything.')
 
@@ -68,13 +72,16 @@ def main(settings, window=dummy_window()):
 
     if not settings.world_count:
         settings.world_count = 1
-    if settings.world_count < 1 or settings.world_count > 255:
+    elif settings.world_count < 1 or settings.world_count > 255:
         raise Exception('World Count must be between 1 and 255')
-    if settings.player_num > settings.world_count or settings.player_num < 1:
+
+    # Bounds-check the player_num settings, in case something's gone wrong we want to know.
+    if settings.player_num < 1:
+        raise Exception(f'Invalid player num: {settings.player_num}; must be between (1, {settings.world_count})')
+    if settings.player_num > settings.world_count:
         if settings.compress_rom not in ['None', 'Patch']:
-            raise Exception('Player Num must be between 1 and %d' % settings.world_count)
-        else:
-            settings.player_num = 1
+            raise Exception(f'Player Num is {settings.player_num}; must be between (1, {settings.world_count})')
+        settings.player_num = settings.world_count
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s', __version__, settings.seed)
     settings.remove_disabled()
@@ -113,8 +120,9 @@ def generate(settings, window):
             overworld_data = os.path.join(data_path('Glitched World'), 'Overworld.json')
         else:
             overworld_data = os.path.join(data_path('World'), 'Overworld.json')
-        world.load_regions_from_json(overworld_data)
 
+        # Compile the json rules based on settings
+        world.load_regions_from_json(overworld_data)
         create_dungeons(world)
         world.create_internal_locations()
 
@@ -132,6 +140,9 @@ def generate(settings, window):
         set_shop_rules(world)
         set_drop_location_names(world)
         world.fill_bosses()
+
+    if settings.triforce_hunt:
+        settings.distribution.configure_triforce_hunt(worlds)
 
     logger.info('Setting Entrances.')
     set_entrances(worlds)
@@ -151,9 +162,7 @@ def generate(settings, window):
         window.update_status('Calculating Hint Data')
         logger.info('Calculating hint data.')
         State.update_required_items(spoiler)
-        for world in worlds:
-            world.update_useless_areas(spoiler)
-            buildGossipHints(spoiler, world)
+        buildGossipHints(spoiler, worlds)
         window.update_progress(55)
     spoiler.build_file_hash()
     return spoiler
@@ -265,9 +274,9 @@ def patch_and_output(settings, window, spoiler, rom, start):
             if compressor_path != "":
                 run_process(window, logger, [compressor_path, output_path, output_compress_path])
             os.remove(output_path)
-            logger.info("Created compessed rom at: %s" % output_compress_path)
+            logger.info("Created compressed rom at: %s" % output_compress_path)
         else:
-            logger.info("Created uncompessed rom at: %s" % output_path)
+            logger.info("Created uncompressed rom at: %s" % output_path)
         window.update_progress(95)
 
     if not settings.create_spoiler or settings.output_settings:
@@ -370,9 +379,9 @@ def from_patch_file(settings, window=dummy_window()):
         if compressor_path != "":
             run_process(window, logger, [compressor_path, uncompressed_output_path, output_compress_path])
         os.remove(uncompressed_output_path)
-        logger.info("Created compessed rom at: %s" % output_compress_path)
+        logger.info("Created compressed rom at: %s" % output_compress_path)
     else:
-        logger.info("Created uncompessed rom at: %s" % output_path)
+        logger.info("Created uncompressed rom at: %s" % output_path)
 
     window.update_progress(95)
 
@@ -507,9 +516,9 @@ def create_playthrough(spoiler):
     if worlds[0].check_beatable_only and not State.can_beat_game([world.state for world in worlds]):
         raise RuntimeError('Cannot beat game. Something went terribly wrong here!')
 
-    playthrough = RewindablePlaythrough([world.state for world in worlds])
+    search = RewindableSearch([world.state for world in worlds])
     # Get all item locations in the worlds
-    item_locations = [location for state in playthrough.state_list for location in state.world.get_filled_locations() if location.item.advancement]
+    item_locations = search.progression_locations()
     # Omit certain items from the playthrough
     internal_locations = {location for location in item_locations if location.internal}
     # Generate a list of spheres by iterating over reachable locations without collecting as we go.
@@ -520,21 +529,21 @@ def create_playthrough(spoiler):
     collection_spheres = []
     entrance_spheres = []
     remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances())
-    
+
     while True:
-        playthrough.checkpoint()
+        search.checkpoint()
         # Not collecting while the generator runs means we only get one sphere at a time
         # Otherwise, an item we collect could influence later item collection in the same sphere
-        collected = list(playthrough.iter_reachable_locations(item_locations))
+        collected = list(search.iter_reachable_locations(item_locations))
         if not collected: break
         # Gather the new entrances before collecting items.
         collection_spheres.append(collected)
-        accessed_entrances = set(filter(playthrough.spot_access, remaining_entrances))
+        accessed_entrances = set(filter(search.spot_access, remaining_entrances))
         entrance_spheres.append(accessed_entrances)
         remaining_entrances -= accessed_entrances
         for location in collected:
             # Collect the item for the state world it is for
-            playthrough.state_list[location.item.world.id].collect(location.item)
+            search.state_list[location.item.world.id].collect(location.item)
     logger.info('Collected %d spheres', len(collection_spheres))
 
     # Reduce each sphere in reverse order, by checking if the game is beatable
@@ -547,8 +556,8 @@ def create_playthrough(spoiler):
             old_item = location.item
 
             # Uncollect the item and location.
-            playthrough.state_list[old_item.world.id].remove(old_item)
-            playthrough.unvisit(location)
+            search.state_list[old_item.world.id].remove(old_item)
+            search.unvisit(location)
 
             # Generic events might show up or not, as usual, but since we don't
             # show them in the final output, might as well skip over them. We'll
@@ -560,10 +569,10 @@ def create_playthrough(spoiler):
             location.item = None
 
             # An item can only be required if it isn't already obtained or if it's progressive
-            if playthrough.state_list[old_item.world.id].item_count(old_item.name) < old_item.special.get('progressive', 1):
+            if search.state_list[old_item.world.id].item_count(old_item.name) < old_item.special.get('progressive', 1):
                 # Test whether the game is still beatable from here.
                 logger.debug('Checking if %s is required to beat the game.', old_item.name)
-                if not playthrough.can_beat_game():
+                if not search.can_beat_game():
                     # still required, so reset the item
                     location.item = old_item
                     required_locations.append(location)
@@ -575,18 +584,18 @@ def create_playthrough(spoiler):
             # we disconnect the entrance and check if the game is still beatable
             old_connected_region = entrance.disconnect()
 
-            # we use a new playthrough to ensure the disconnected entrance is no longer used
-            sub_playthrough = Playthrough([world.state for world in worlds])
+            # we use a new search to ensure the disconnected entrance is no longer used
+            sub_search = Search([world.state for world in worlds])
 
             # Test whether the game is still beatable from here.
             logger.debug('Checking if reaching %s, through %s, is required to beat the game.', old_connected_region.name, entrance.name)
-            if not sub_playthrough.can_beat_game():
+            if not sub_search.can_beat_game():
                 # still required, so reconnect the entrance
                 entrance.connect(old_connected_region)
                 required_entrances.append(entrance)
 
     # Regenerate the spheres as we might not reach places the same way anymore.
-    playthrough.reset() # playthrough state has no items, okay to reuse sphere 0 cache
+    search.reset() # search state has no items, okay to reuse sphere 0 cache
     collection_spheres = []
     entrance_spheres = []
     remaining_entrances = set(required_entrances)
@@ -594,24 +603,24 @@ def create_playthrough(spoiler):
     while True:
         # Not collecting while the generator runs means we only get one sphere at a time
         # Otherwise, an item we collect could influence later item collection in the same sphere
-        collected.update(playthrough.iter_reachable_locations(required_locations))
+        collected.update(search.iter_reachable_locations(required_locations))
         if not collected: break
         internal = collected & internal_locations
         if internal:
             # collect only the internal events but don't record them in a sphere
             for location in internal:
-                playthrough.state_list[location.item.world.id].collect(location.item)
+                search.state_list[location.item.world.id].collect(location.item)
             # Remaining locations need to be saved to be collected later
             collected -= internal
             continue
         # Gather the new entrances before collecting items.
         collection_spheres.append(list(collected))
-        accessed_entrances = set(filter(playthrough.spot_access, remaining_entrances))
+        accessed_entrances = set(filter(search.spot_access, remaining_entrances))
         entrance_spheres.append(accessed_entrances)
         remaining_entrances -= accessed_entrances
         for location in collected:
             # Collect the item for the state world it is for
-            playthrough.state_list[location.item.world.id].collect(location.item)
+            search.state_list[location.item.world.id].collect(location.item)
         collected.clear()
     logger.info('Collected %d final spheres', len(collection_spheres))
 

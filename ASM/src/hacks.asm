@@ -964,6 +964,27 @@ skip_GS_BGS_text:
     nop
 
 ;==================================================================================================
+; Stone of Agony indicator
+;==================================================================================================
+
+; Replaces:
+;   c.lt.s  f0, f2
+.orga 0xBE4A14
+    jal     agony_distance_hook
+
+    ; Replaces:
+;   c.lt.s  f4, f6
+.orga 0xBE4A40
+    jal     agony_vibrate_hook
+
+; Replaces:
+;   addiu   sp, sp, 0x20
+;   jr      ra
+.orga 0xBE4A60
+    j       agony_post_hook
+    nop
+
+;==================================================================================================
 ; Correct Chest Sizes
 ;==================================================================================================
 ; Replaces lbu   v0,0x01E9(s0)
@@ -1061,6 +1082,37 @@ skip_GS_BGS_text:
 ; Replaces: bnezl t7, 0xAD1988 ; 0x8005BA28
 .orga 0xAD193C ; 0x8005B9DC
     b . + 0x4C
+
+
+;==================================================================================================
+; Extended Objects Table 
+;==================================================================================================
+
+; extends object table lookup for on chest open
+.org 0xBD6958
+    jal extended_object_lookup_GI
+    nop
+
+; extends object table lookup for on scene loads
+.org 0xAF76B8
+    sw      ra, 0x0C (sp)
+    jal extended_object_lookup_load
+    subu    t7, r0, a2
+    lw      ra, 0x0C (sp)
+
+; extends object table lookup for shop item load
+.org 0xAF74F8
+    sw      ra, 0x44 (sp)
+    jal extended_object_lookup_shop
+    nop
+    lw      ra, 0x44 (sp)
+
+; extends object table lookup for shop item load after you unpause
+.org 0xAF7650
+    sw      ra, 0x34 (sp)
+    jal extended_object_lookup_shop_unpause
+    nop
+    lw      ra, 0x34 (sp)
 
 ;==================================================================================================
 ; Cow Shuffle
@@ -1422,7 +1474,6 @@ skip_GS_BGS_text:
     li      t6, 0x18
     lw      t7, 0x00A0(a2)
 
-
 ;==================================================================================================
 ; HUD Rupee Icon color
 ;==================================================================================================
@@ -1440,7 +1491,6 @@ skip_GS_BGS_text:
     lhu     t4, 0x0252(s7)
     move    at, v0
     
-
 ;==================================================================================================
 ; Expand Audio Thread memory
 ;==================================================================================================
@@ -1480,3 +1530,14 @@ skip_GS_BGS_text:
 .endarea
 
 .headersize 0
+
+;==================================================================================================
+; King Zora Init Moved Check Override
+;==================================================================================================
+; Replaces: lhu     t0, 0x0EDA(v0)
+;           or      a0, s0, zero
+;           andi    t1, t0, 0x0008
+.orga 0xE565D0
+    jal     kz_moved_check
+    nop
+    or      a0, s0, zero

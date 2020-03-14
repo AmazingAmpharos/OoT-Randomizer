@@ -820,7 +820,9 @@ export class GUIGlobal {
       });
     }
     else { //Web
-      localStorage.setItem(this.getGlobalVar("appType") == "generator" ? "generatorSettings_" + this.getGlobalVar("webSourceVersion") : "patcherSettings_" + this.getGlobalVar("webSourceVersion"), JSON.stringify(this.createSettingsFileObject(true, false, true)));
+      try {
+        localStorage.setItem(this.getGlobalVar("appType") == "generator" ? "generatorSettings_" + this.getGlobalVar("webSourceVersion") : "patcherSettings_" + this.getGlobalVar("webSourceVersion"), JSON.stringify(this.createSettingsFileObject(true, false, true)));
+      } catch { }
     }
   }
 
@@ -943,8 +945,11 @@ export class GUIGlobal {
       });
     }
     else { //Web
-      if (this.getGlobalVar("appType") == "generator") //Generator only
-        localStorage.setItem("generatorPresets_" + this.getGlobalVar("webSourceVersion"), JSON.stringify(this.createPresetFileObject(), null, 4));
+      if (this.getGlobalVar("appType") == "generator") { //Generator only
+        try {
+          localStorage.setItem("generatorPresets_" + this.getGlobalVar("webSourceVersion"), JSON.stringify(this.createPresetFileObject(), null, 4));
+        } catch { }
+      }
     }
   }
 

@@ -63,7 +63,7 @@ class Location(object):
         return (
             not self.is_disabled() and 
             self.can_fill_fast(item) and
-            (not check_access or state.playthrough.spot_access(self, 'either')))
+            (not check_access or state.search.spot_access(self, 'either')))
 
 
     def can_fill_fast(self, item, manual=False):
@@ -81,10 +81,20 @@ class Location(object):
         if self.type in ('Collectable', 'BossHeart', 'GS Token', 'Shop'):
             return True
         if self.type == 'Chest':
-            return self.scene == 0x10 # Treasure Chest Game Prize
+            return self.scene == 0x10 or self.world.correct_chest_sizes  # Treasure Chest Game Prize or CSMC
         if self.type == 'NPC':
             return self.scene in (0x4B, 0x51, 0x57) # Bombchu Bowling, Hyrule Field (OoT), Lake Hylia (RL/FA)
         return False
+
+
+    def has_item(self):
+        return self.item is not None
+
+    def has_no_item(self):
+        return self.item is None
+
+    def has_progression_item(self):
+        return self.item is not None and self.item.advancement
 
 
     def __str__(self):
@@ -103,11 +113,15 @@ def LocationFactory(locations, world=None):
         singleton = True
     for location in locations:
         if location in location_table:
-            type, scene, default, addresses, filter_tags = location_table[location]
+            match_location = location
+        else:
+            match_location = next(filter(lambda k: k.lower() == location.lower(), location_table), None)
+        if match_location:
+            type, scene, default, addresses, filter_tags = location_table[match_location]
             if addresses is None:
                 addresses = (None, None)
             address, address2 = addresses
-            ret.append(Location(location, address, address2, default, type, scene, filter_tags=filter_tags))
+            ret.append(Location(match_location, address, address2, default, type, scene, filter_tags=filter_tags))
         else:
             raise KeyError('Unknown Location: %s', location)
 

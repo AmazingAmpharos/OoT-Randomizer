@@ -13,7 +13,7 @@
         "exits": {
             "Gerudo Fortress": "True",
             "Gerudo Training Grounds Left Side": "has_fire_source",
-            "Gerudo Training Grounds Right Side": "has_bow"
+            "Gerudo Training Grounds Right Side": "Bow"
         }
     },
     {
@@ -22,9 +22,9 @@
         "locations": {
             "Gerudo Training Grounds MQ Dinolfos Chest": "True",
             "Gerudo Training Grounds MQ Underwater Silver Rupee Chest": "
-                (Hover_Boots or at('Gerudo Training Grounds Central Maze Right', can_use(Longshot) or has_bow)) and 
+                (Hover_Boots or at('Gerudo Training Grounds Central Maze Right', can_use(Longshot) or Bow)) and 
                 has_fire_source and Iron_Boots and (logic_fewer_tunic_requirements or can_use(Zora_Tunic)) and 
-                (damage_multiplier != 'ohko' or (has_fairy or can_use(Nayrus_Love)))"
+                (damage_multiplier != 'ohko' or (Fairy or can_use(Nayrus_Love)))"
         }
     },
     {
@@ -46,14 +46,14 @@
             "Blue Fire": "has_bottle"
         },
         "exits": {
-            "Gerudo Training Grounds Back Areas": "can_play(Song_of_Time) and can_see_with_lens and has_blue_fire"
+            "Gerudo Training Grounds Back Areas": "can_play(Song_of_Time) and can_see_with_lens and Blue_Fire"
         }
     },
     {
         "region_name": "Gerudo Training Grounds Back Areas",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds MQ Eye Statue Chest": "has_bow",
+            "Gerudo Training Grounds MQ Eye Statue Chest": "Bow",
             "Gerudo Training Grounds MQ Second Iron Knuckle Chest": "True",
             "Gerudo Training Grounds MQ Flame Circle Chest": "True"
         },

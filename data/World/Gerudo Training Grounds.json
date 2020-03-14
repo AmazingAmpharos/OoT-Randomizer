@@ -67,7 +67,7 @@
             "Gerudo Training Grounds Hammer Room Switch Chest": "can_use(Hammer)"
         },
         "exits": {
-            "Gerudo Training Grounds Eye Statue Lower": "can_use(Hammer) and has_bow",
+            "Gerudo Training Grounds Eye Statue Lower": "can_use(Hammer) and Bow",
             "Gerudo Training Grounds Lava Room": "True"
         }
     },

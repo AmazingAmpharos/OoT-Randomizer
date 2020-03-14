@@ -114,15 +114,15 @@
                         <ng-container *ngSwitchCase="'Presetinput'">
                           <nb-select #refPresetSelect class="selectXSmall" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [(selected)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'click' : 'noop'" nbPopoverPlacement="right"
                                      nbPopoverAdjustment="counterclockwise" size="xsmall">
-                            <nb-option *ngFor="let preset of global.generator_presets | keyvalue:presetKeyOrder; index as presetIndex" [value]="preset.key">{{preset.key}}</nb-option>
+                            <nb-option *ngFor="let presetKey of getPresetArray(); index as presetIndex" [value]="presetKey">{{presetKey}}</nb-option>
                           </nb-select>
                           <button class="presetButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="loadPreset()">Load</button>
                           <button class="presetButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="savePreset(refPresetSelect)">Save</button>
                           <button class="presetButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="deletePreset()">Remove</button>
                         </ng-container>
-                        <!--Exclusive to Detailed Tab-->
+                        <!--SearchBox-->
                         <ng-container *ngSwitchCase="'SearchBox'">
-                          <gui-listbox [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [source]="setting.options" [(destination)]="global.generator_settingsMap[setting.name]" (destinationChange)="afterSettingChange()"
+                          <gui-listbox [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [source]="setting.options" [(destination)]="global.generator_settingsMap[setting.name]" (destinationChange)="checkVisibility($event, setting)"
                                        height="100%" key="name" display="text" filter="true" [tagFilter]="setting.tags && setting.tags.length > 0 ? setting.tags : null" [tooltipComponent]="tooltipComponent" tooltip="tooltip" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'click' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
                           </gui-listbox>
                         </ng-container>

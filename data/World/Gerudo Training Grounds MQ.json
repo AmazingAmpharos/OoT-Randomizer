@@ -25,7 +25,7 @@
         "exits": {
             # Still requires has_fire_source in the room
             "Gerudo Training Grounds Underwater": "
-                (has_bow or can_use(Longshot)) and can_use(Hover_Boots)"
+                (Bow or can_use(Longshot)) and can_use(Hover_Boots)"
         }
     },
     {
@@ -35,7 +35,7 @@
             "Gerudo Training Grounds MQ Underwater Silver Rupee Chest": "
                 has_fire_source and can_use(Iron_Boots) and
                 (logic_fewer_tunic_requirements or can_use(Zora_Tunic)) and 
-                (damage_multiplier != 'ohko' or has_fairy or can_use(Nayrus_Love))"
+                (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love))"
         }
     },
     {
@@ -61,7 +61,7 @@
         },
         "exits": {
             "Gerudo Training Grounds Back Areas": "
-                is_adult and can_see_with_lens and has_blue_fire and
+                is_adult and can_see_with_lens and Blue_Fire and
                 (can_play(Song_of_Time) or (logic_gtg_fake_wall and can_use(Hover_Boots)))"
         }
     },
@@ -69,9 +69,9 @@
         "region_name": "Gerudo Training Grounds Back Areas",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds MQ Eye Statue Chest": "has_bow",
+            "Gerudo Training Grounds MQ Eye Statue Chest": "Bow",
             "Gerudo Training Grounds MQ Second Iron Knuckle Chest": "True",
-            "Gerudo Training Grounds MQ Flame Circle Chest": "can_use(Hookshot) or has_bow or has_explosives"
+            "Gerudo Training Grounds MQ Flame Circle Chest": "can_use(Hookshot) or Bow or has_explosives"
         },
         "exits": {
             "Gerudo Training Grounds Central Maze Right": "Hammer",
@@ -91,7 +91,7 @@
         "exits": {
             # guarantees fire with torch
             "Gerudo Training Grounds Underwater": "
-                can_use(Longshot) or (can_use(Hookshot) and has_bow)",
+                can_use(Longshot) or (can_use(Hookshot) and Bow)",
             "Gerudo Training Grounds Right Side": "can_use(Hookshot)"
         }
     }

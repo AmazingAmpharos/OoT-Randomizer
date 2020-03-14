@@ -336,8 +336,8 @@ location_table = {
     # Shadow Temple MQ
     "Shadow Temple MQ Compass Chest":                  ("Chest",       0x07,  0x01, None,                     ("Shadow Temple",)),
     "Shadow Temple MQ Hover Boots Chest":              ("Chest",       0x07,  0x07, None,                     ("Shadow Temple",)),
-    "Shadow Temple MQ Early Gibdos Chest":             ("Chest",       0x07,  0x02, None,                     ("Shadow Temple",)),
-    "Shadow Temple MQ Map Chest":                      ("Chest",       0x07,  0x03, None,                     ("Shadow Temple",)),
+    "Shadow Temple MQ Early Gibdos Chest":             ("Chest",       0x07,  0x03, None,                     ("Shadow Temple",)),
+    "Shadow Temple MQ Map Chest":                      ("Chest",       0x07,  0x02, None,                     ("Shadow Temple",)),
     "Shadow Temple MQ Beamos Silver Rupees Chest":     ("Chest",       0x07,  0x0F, None,                     ("Shadow Temple",)),
     "Shadow Temple MQ Falling Spikes Switch Chest":    ("Chest",       0x07,  0x04, None,                     ("Shadow Temple",)),
     "Shadow Temple MQ Falling Spikes Lower Chest":     ("Chest",       0x07,  0x05, None,                     ("Shadow Temple",)),
@@ -797,6 +797,8 @@ location_table = {
     "Lost Woods Generic Grotto Gossip Stone":          ("GossipStone", None,  None, None,                     None),
     "Mountain Storms Grotto Gossip Stone":             ("GossipStone", None,  None, None,                     None),
     "Top of Crater Grotto Gossip Stone":               ("GossipStone", None,  None, None,                     None),
+
+    "Ganondorf Hint":                                  ("GossipStone", None,  None, None,                     None),
 }
 
 # Business Scrub Details
@@ -822,8 +824,10 @@ location_groups = {
     'Collectable': [name for (name, data) in location_table.items() if data[0] == 'Collectable'],
     'BossHeart': [name for (name, data) in location_table.items() if data[0] == 'BossHeart'],
     'CollectableLike': [name for (name, data) in location_table.items() if data[0] in ('Collectable', 'BossHeart', 'GS Token')],
+    'CanSee': [name for (name, data) in location_table.items() if data[0] in ('Collectable', 'BossHeart', 'GS Token', 'Shop')],
     'Dungeon': [name for (name, data) in location_table.items() if data[4] is not None and any(dungeon in data[4] for dungeon in dungeons)],
 }
+
 
 # Function to run exactly once after after placing items in drop locations for each world
 # Sets all Drop locations to a unique name in order to avoid name issues and to identify locations in the spoiler

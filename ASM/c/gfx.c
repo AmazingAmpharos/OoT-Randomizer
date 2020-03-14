@@ -3,10 +3,9 @@
 #include "util.h"
 #include "z64.h"
 
-extern char FONT_TEXTURE;
-extern char DPAD_TEXTURE;
-#define font_texture_raw ((uint8_t *)&FONT_TEXTURE)
-#define dpad_texture_raw ((uint8_t *)&DPAD_TEXTURE)
+extern uint8_t FONT_TEXTURE[];
+extern uint8_t DPAD_TEXTURE[];
+extern uint8_t TRIFORCE_ICON_TEXTURE[];
 
 Gfx setup_db[] =
 {
@@ -56,6 +55,11 @@ sprite_t font_sprite = {
 sprite_t dpad_sprite = {
     NULL, 32, 32, 1,
     G_IM_FMT_IA, G_IM_SIZ_16b, 2
+};  
+
+sprite_t triforce_sprite = {
+    NULL, 16, 16, 16,
+    G_IM_FMT_IA, G_IM_SIZ_8b, 1
 };  
 
 int sprite_bytes_per_tile(sprite_t *sprite) {
@@ -115,12 +119,13 @@ void gfx_init() {
     medals_sprite.buf = title_static.buf + 0x2980;
     items_sprite.buf = icon_item_static.buf;
     quest_items_sprite.buf = icon_item_24_static.buf;
-    dpad_sprite.buf = dpad_texture_raw;
+    dpad_sprite.buf = DPAD_TEXTURE;
+    triforce_sprite.buf = TRIFORCE_ICON_TEXTURE;
 
     int font_bytes = sprite_bytes(&font_sprite);
     font_sprite.buf = heap_alloc(font_bytes);
     for (int i = 0; i < font_bytes / 2; i++) {
-        font_sprite.buf[2*i] = (font_texture_raw[i] >> 4) | 0xF0;
-        font_sprite.buf[2*i + 1] = font_texture_raw[i] | 0xF0;
+        font_sprite.buf[2*i] = (FONT_TEXTURE[i] >> 4) | 0xF0;
+        font_sprite.buf[2*i + 1] = FONT_TEXTURE[i] | 0xF0;
     }
 }

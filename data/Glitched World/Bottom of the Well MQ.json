@@ -4,7 +4,7 @@
         "dungeon": "Bottom of the Well",
         "locations": {
             "Bottom of the Well MQ Compass Chest": "
-                Kokiri_Sword or (has_sticks and logic_child_deadhand)",
+                Kokiri_Sword or (Sticks and logic_child_deadhand)",
             "Bottom of the Well MQ Map Chest": "
                 can_play(Zeldas_Lullaby) or has_explosives",
             "Bottom of the Well MQ Lens Chest": "

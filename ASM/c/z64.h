@@ -595,11 +595,13 @@ typedef struct
   uint8_t         z_targeting;              /* 0x140C */
   char            unk_1A_[0x0001];          /* 0x140D */
   uint16_t        disable_music_flag;       /* 0x140E */
-  char            unk_1B_[0x0014];          /* 0x1410 */
+  char            unk_1B_[0x0002];          /* 0x1410 */
+  uint16_t        cutscene_next;            /* 0x1412 */
+  char            unk_1C_[0x0010];          /* 0x1414 */
   uint16_t        refill_hearts;            /* 0x1424 */
-  char            unk_1C_[0x000A];          /* 0x1426 */
+  char            unk_1D_[0x000A];          /* 0x1426 */
   z64_gameinfo_t *gameinfo;                 /* 0x1430 */
-  char            unk_1D_[0x001C];          /* 0x1434 */
+  char            unk_1E_[0x001C];          /* 0x1434 */
                                             /* 0x1450 */
 } z64_file_t;
 
@@ -710,7 +712,7 @@ struct z64_actor_s
   char            unk_01_[0x0002];  /* 0x001A */
   uint16_t        variable;         /* 0x001C */
   uint8_t         alloc_index;      /* 0x001E */
-  char            unk_02_;          /* 0x001F */
+  char            navi_tgt_dist;    /* 0x001F */
   uint16_t        sound_effect;     /* 0x0020 */
   char            unk_03_[0x0002];  /* 0x0022 */
   z64_xyzf_t      pos_2;            /* 0x0024 */
@@ -728,9 +730,12 @@ struct z64_actor_s
   float           min_vel_y;        /* 0x0070 */
   void           *unk_08_;          /* 0x0074 */
   z64_col_poly_t *floor_poly;       /* 0x0078 */
-  char            unk_0A_[0x000C];  /* 0x007C */
+  char            unk_09_[0x000C];  /* 0x007C */
   uint16_t        unk_flags_00;     /* 0x0088 */
-  char            unk_0B_[0x000E];  /* 0x0090 */
+  int16_t         unk_roty;         /* 0x008A */
+  float           distsq_from_link; /* 0x008C */
+  float           xzdist_from_link; /* 0x0090 */
+  float           ydist_from_link;  /* 0x0094 */
   void           *damage_table;     /* 0x0098 */
   z64_xyzf_t      vel_2;            /* 0x009C */
   char            unk_0C_[0x0006];  /* 0x00A8 */

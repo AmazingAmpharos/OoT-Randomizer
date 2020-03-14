@@ -3,6 +3,7 @@ import struct
 import itertools
 import re
 import zlib
+from collections import defaultdict
 
 from World import World
 from Rom import Rom
@@ -18,6 +19,7 @@ from Messages import read_messages, update_message_by_id, read_shop_items, \
 from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 from SaveContext import SaveContext
+import StartingItems
 
 
 def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
@@ -46,6 +48,34 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         originalBytes = rom.original.buffer[writeAddress: writeAddress+ len(keatonBytesDiff)]
         keatonBytes = bytearray([a ^ b for a, b in zip(keatonBytesDiff, originalBytes)])
         rom.write_bytes(writeAddress, keatonBytes)
+
+    # Load Triforce model into a file
+    triforce_obj_file = File({ 'Name': 'object_gi_triforce' })
+    triforce_obj_file.copy(rom)
+    with open(data_path('triforce.bin'), 'rb') as stream:
+        obj_data = stream.read()
+        rom.write_bytes(triforce_obj_file.start, obj_data)
+        triforce_obj_file.end = triforce_obj_file.start + len(obj_data)
+    update_dmadata(rom, triforce_obj_file)
+    # Add it to the extended object table
+    add_to_extended_object_table(rom, 0x193, triforce_obj_file)
+
+    # Build a Double Defense model from the Heart Container model
+    dd_obj_file = File({ 
+        'Name': 'object_gi_hearts',
+        'Start': '014D9000',
+        'End': '014DA590',
+    })
+    dd_obj_file.copy(rom)
+    # Update colors for the Double Defense variant
+    rom.write_bytes(dd_obj_file.start + 0x1294, [0xFF, 0xCF, 0x0F]) # Exterior Primary Color
+    rom.write_bytes(dd_obj_file.start + 0x12B4, [0xFF, 0x46, 0x32]) # Exterior Env Color
+    rom.write_int32s(dd_obj_file.start + 0x12A8, [0xFC173C60, 0x150C937F]) # Exterior Combine Mode
+    rom.write_bytes(dd_obj_file.start + 0x1474, [0xFF, 0xFF, 0xFF]) # Interior Primary Color
+    rom.write_bytes(dd_obj_file.start + 0x1494, [0xFF, 0xFF, 0xFF]) # Interior Env Color
+    update_dmadata(rom, dd_obj_file)
+    # Add it to the extended object table
+    add_to_extended_object_table(rom, 0x194, dd_obj_file)
 
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)
@@ -131,8 +161,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # songs as items flag
     songs_as_items = world.shuffle_song_items or \
-                     world.start_with_fast_travel or \
-                     world.distribution.song_as_items
+                     world.distribution.song_as_items or \
+                     world.starting_songs
 
     # Speed learning Zelda's Lullaby
     rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001]) # Terminator Execution
@@ -982,8 +1012,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Make the Kakariko Gate not open with the MS
     rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
 
-    if world.open_fountain:
-        save_context.write_bits(0x0EDB, 0x08) #Move king zora
+    if world.zora_fountain == 'open':
+        save_context.write_bits(0x0EDB, 0x08) # "Moved King Zora"
+    elif world.zora_fountain == 'adult':
+        rom.write_byte(rom.sym('MOVED_ADULT_KING_ZORA'), 1)
 
     # Make all chest opening animations fast
     rom.write_byte(rom.sym('FAST_CHESTS'), int(world.fast_chests))
@@ -1005,6 +1037,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     elif world.bridge == 'tokens':
         rom.write_int32(symbol, 5)
         rom.write_int16(rom.sym('RAINBOW_BRIDGE_TOKENS'), world.bridge_tokens)
+
+    if world.triforce_hunt:
+        rom.write_int16(rom.sym('triforce_pieces_requied'), world.triforce_goal)
+        rom.write_int16(rom.sym('triforce_hunt_enabled'), 1)
 
     # Set up LACS conditions.
     symbol = rom.sym('LACS_CONDITION')
@@ -1665,6 +1701,13 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_save_table(rom)
 
     return rom
+
+
+NUM_VANILLA_OBJECTS = 0x192
+def add_to_extended_object_table(rom, object_id, object_file):
+    extended_id = object_id - NUM_VANILLA_OBJECTS - 1
+    extended_object_table = rom.sym('EXTENDED_OBJECT_TABLE')
+    rom.write_int32s(extended_object_table + extended_id * 8, [object_file.start, object_file.end])
 
 
 item_row_struct = struct.Struct('>BBHHBBIIhh') # Match item_row_t in item_table.h

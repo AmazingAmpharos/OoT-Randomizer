@@ -15,7 +15,7 @@ else {
 //Add static presets
 guiSettings.presets = {
   "[New Preset]": { isNewPreset: true },
-  "Default": { isDefaultPreset: true }
+  "Default / Beginner": { isDefaultPreset: true }
 };
 
 //Load built in presets
@@ -35,9 +35,9 @@ if (fs.existsSync(builtInPresetsPath)) {
 }
 
 let file = JSON.stringify(guiSettings);
-let targetPath = path.join(__dirname, '../public/angular/dev/Test/utils/settings_list.json');
+let targetPath = path.join(__dirname, 'settings_list.json');
 
-console.log(guiSettings);
+console.log("Settings map:", guiSettings);
 
 fs.writeFileSync(targetPath, file);
 

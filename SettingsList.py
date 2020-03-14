@@ -6,6 +6,8 @@ from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword
 from Location import LocationIterator
 import Sounds as sfx
 from Utils import data_path
+from itertools import chain
+import StartingItems
 
 # holds the info for a single setting
 class Setting_Info():
@@ -77,7 +79,7 @@ class Setting_Info():
 
 class Checkbutton(Setting_Info):
 
-    def __init__(self, name, gui_text, gui_tooltip=None, disable=None, 
+    def __init__(self, name, gui_text, gui_tooltip=None, disable=None,
             disabled_default=None, default=False, shared=False, gui_params=None):
 
         choices = {
@@ -90,7 +92,7 @@ class Checkbutton(Setting_Info):
 
 class Combobox(Setting_Info):
 
-    def __init__(self, name, gui_text, choices, default, gui_tooltip=None, 
+    def __init__(self, name, gui_text, choices, default, gui_tooltip=None,
             disable=None, disabled_default=None, shared=False, gui_params=None):
 
         super().__init__(name, str, gui_text, 'Combobox', shared, choices, default, disabled_default, disable, gui_tooltip, gui_params)
@@ -99,14 +101,14 @@ class Combobox(Setting_Info):
 class Scale(Setting_Info):
 
     def __init__(self, name, gui_text, min, max, default, step=1,
-            gui_tooltip=None, disable=None, disabled_default=None, 
+            gui_tooltip=None, disable=None, disabled_default=None,
             shared=False, gui_params=None):
 
         choices = {
             i: str(i) for i in range(min, max+1, step)
         }
         if gui_params == None:
-            gui_params = {}       
+            gui_params = {}
         gui_params['min']    = min
         gui_params['max']    = max
         gui_params['step']   = step
@@ -128,6 +130,12 @@ logic_tricks = {
                     - Gerudo Training Grounds Underwater
                     Silver Rupee Chest. May need to make multiple
                     trips.
+                    '''},
+    'Hidden Grottos without Stone of Agony': {
+        'name'    : 'logic_grottos_without_agony',
+        'tooltip' : '''\
+                    Allows entering hidden grottos without the
+                    Stone of Agony.
                     '''},
     'Pass Through Visible One-Way Collisions': {
         'name'    : 'logic_visible_collisions',
@@ -183,15 +191,15 @@ logic_tricks = {
                     All spider web walls in Deku Tree basement can be burnt
                     by adult using just a bow shooting through torches. Applies
                     to the web obstructing the door to the single scrub room,
-                    the web obstrcuting the bombable wall in the back room
+                    the web obstructing the bombable wall in the back room
                     and the circular floor web dropping to Gohma.
 
-                    For the cicular web dropping to Gohma, backflip onto the
+                    For the circular web dropping to Gohma, backflip onto the
                     chest near the torch at the bottom of the vine wall. With a
-                    precise position you can shoot throught the torch to the
+                    precise position you can shoot through the torch to the
                     right edge of the circular web.
 
-                    This allows complete adult Deku Tree with no fire source.
+                    This allows completion of adult Deku Tree with no fire source.
                     '''},
     'Hammer Rusted Switches Through Walls': {
         'name'    : 'logic_rusted_switches',
@@ -280,6 +288,13 @@ logic_tricks = {
                     Child Link can blow up the wall using a nearby bomb
                     flower. You must backwalk with the flower and then
                     quickly throw it toward the wall.
+                    '''},
+    'Goron City Spinning Pot PoH with Strength': {
+        'name'    : 'logic_goron_city_pot_with_strength',
+        'tooltip' : '''\
+                    Allows for stopping the Goron City Spinning
+                    Pot using a bomb flower alone, requiring 
+                    strength in lieu of inventory explosives.
                     '''},
     'Water Temple Boss Key Chest with Iron Boots': {
         'name'    : 'logic_water_bk_chest',
@@ -560,7 +575,7 @@ logic_tricks = {
         'name'    : 'logic_water_river_gs',
         'tooltip' : '''\
                     Standing on the exposed ground toward the end of
-                    the river, a precise Longhost use can obtain the
+                    the river, a precise Longshot use can obtain the
                     token. The Longshot cannot normally reach far
                     enough to kill the Skulltula, however. You'll
                     first have to find some other way of killing it.
@@ -848,7 +863,7 @@ logic_tricks = {
         'tooltip' : '''\
                     With a precise jumpslash from above, you
                     can reach the backdoor to the west
-                    countyard without Hover Boots.
+                    courtyard without Hover Boots.
                     '''},
     'Forest Temple Scarecrow Route': {
         'name'    : 'logic_forest_scarecrow',
@@ -954,10 +969,10 @@ logic_tricks = {
 setting_infos = [
     # Web Only Settings
     Setting_Info(
-        name        = 'web_wad_file',   
-        type        = str, 
-        gui_text    = "WAD File", 
-        gui_type    = "Fileinput", 
+        name        = 'web_wad_file',
+        type        = str,
+        gui_text    = "WAD File",
+        gui_type    = "Fileinput",
         shared      = False,
         choices     = {},
         gui_tooltip = "Your original OoT 1.2 NTSC-U / NTSC-J WAD file (.wad)",
@@ -976,11 +991,11 @@ setting_infos = [
         }
     ),
     Setting_Info(
-        name        = 'web_common_key_file',   
-        type        = str, 
-        gui_text    = "Wii Common Key File", 
-        gui_type    = "Fileinput", 
-        shared      = False, 
+        name        = 'web_common_key_file',
+        type        = str,
+        gui_text    = "Wii Common Key File",
+        gui_type    = "Fileinput",
+        shared      = False,
         choices     = {},
         gui_tooltip = """\
             The Wii Common Key is a copyrighted 32 character string needed for WAD encryption.
@@ -998,14 +1013,14 @@ setting_infos = [
                 }
             ],
             "hide_when_disabled": True,
-        }        
+        }
     ),
     Setting_Info(
-        name        = 'web_common_key_string',   
-        type        = str, 
-        gui_text    = "Alternatively Enter Wii Common Key", 
-        gui_type    = "Textinput", 
-        shared      = False, 
+        name        = 'web_common_key_string',
+        type        = str,
+        gui_text    = "Alternatively Enter Wii Common Key",
+        gui_type    = "Textinput",
+        shared      = False,
         choices     = {},
         gui_tooltip = """\
             The Wii Common Key is a copyrighted 32 character string needed for WAD encryption.
@@ -1018,9 +1033,9 @@ setting_infos = [
         }
     ),
     Setting_Info(
-        name        = 'web_wad_channel_id',   
-        type        = str, 
-        gui_text    = "WAD Channel ID", 
+        name        = 'web_wad_channel_id',
+        type        = str,
+        gui_text    = "WAD Channel ID",
         gui_type    = "Textinput",
         shared      = False,
         choices     = {},
@@ -1037,9 +1052,9 @@ setting_infos = [
         }
     ),
     Setting_Info(
-        name        = 'web_wad_channel_title',   
-        type        = str, 
-        gui_text    = "WAD Channel Title", 
+        name        = 'web_wad_channel_title',
+        type        = str,
+        gui_text    = "WAD Channel Title",
         gui_type    = "Textinput",
         shared      = False,
         choices     = {},
@@ -1052,9 +1067,9 @@ setting_infos = [
         }
     ),
     Setting_Info(
-        name       = 'web_output_type',   
-        type       = str, 
-        gui_text   = "Output Type", 
+        name       = 'web_output_type',
+        type       = str,
+        gui_text   = "Output Type",
         gui_type   = "Radiobutton",
         shared     = False,
         choices    = {
@@ -1063,7 +1078,7 @@ setting_infos = [
         },
         gui_params  = {
             "hide_when_disabled" : True,
-        },        
+        },
         default    = "z64",
         disable    = {
             'z64' : {'settings' : [
@@ -1081,7 +1096,7 @@ setting_infos = [
         default        = True,
         shared         = False,
     ),
-    
+
     # Non-GUI Settings
     Checkbutton('cosmetics_only', None),
     Checkbutton('check_version', None),
@@ -1092,7 +1107,7 @@ setting_infos = [
         default        = False,
         disable        = {
             True : {
-                'tabs' : ['main_tab', 'detailed_tab', 'other_tab'],
+                'tabs' : ['main_tab', 'detailed_tab', 'starting_tab', 'other_tab'],
                 'sections' : ['preset_section'],
                 'settings' : ['count', 'create_spoiler', 'world_count', 'enable_distribution_file', 'distribution_file'],
             },
@@ -1104,11 +1119,11 @@ setting_infos = [
             'web:disable' : {
                 False : {
                     'settings' : [
-                        'rom','web_output_type','player_num', 
+                        'rom','web_output_type','player_num',
                         'web_wad_file', 'web_common_key_file', 'web_common_key_string',
                         'web_wad_channel_id','web_wad_channel_title'
                     ],
-                },          
+                },
             }
         },
         shared         = False,
@@ -1142,7 +1157,7 @@ setting_infos = [
                   "extensions": [ "*" ]
                 }
             ],
-            "hide_when_disabled" : True,    
+            "hide_when_disabled" : True,
         }),
     Setting_Info('checked_version',   str, None, None, False, {}),
     Setting_Info('rom',               str, "Base ROM", "Fileinput", False, {},
@@ -1175,23 +1190,23 @@ setting_infos = [
                 }
             ],
         }),
-    Setting_Info('count',             int, "Generation Count", "Numberinput", False, {}, 
+    Setting_Info('count',             int, "Generation Count", "Numberinput", False, {},
         default        = 1,
         gui_params = {
             'min' : 1,
         }
     ),
-    Setting_Info('world_count',       int, "Player Count", "Numberinput", True, {}, 
+    Setting_Info('world_count',       int, "Player Count", "Numberinput", True, {},
         default        = 1,
         gui_params = {
             'min' : 1,
             'max' : 255,
             'no_line_break'     : True,
             'web:max'           : 15,
-            'web:no_line_break' : True,            
+            'web:no_line_break' : True,
         }
     ),
-    Setting_Info('player_num',        int, "Player ID", "Numberinput", False, {}, 
+    Setting_Info('player_num',        int, "Player ID", "Numberinput", False, {},
         default        = 1,
         gui_params = {
             'min' : 1,
@@ -1209,12 +1224,12 @@ setting_infos = [
             'function' : "openOutputDir",
             'no_line_break' : True,
         }
-    ), 
+    ),
     Setting_Info('open_python_dir',   str, "Open App Directory", "Button", False, {},
         gui_params = {
             'function' : "openPythonDir",
         }
-    ), 
+    ),
     Checkbutton(
         name           = 'repatch_cosmetics',
         gui_text       = 'Update Cosmetics',
@@ -1222,7 +1237,7 @@ setting_infos = [
         disable        = {
             False : {
                 'tabs': ['cosmetics_tab','sfx_tab'],
-                'settings' : ['create_cosmetics_log'],    
+                'settings' : ['create_cosmetics_log'],
             },
         },
         shared         = False,
@@ -1286,7 +1301,7 @@ setting_infos = [
         disable        = {
             True : {
                 'sections' : ['open_section', 'shuffle_section', 'shuffle_dungeon_section'],
-                'settings' : ['starting_age', 'entrance_shuffle', 'bombchus_in_logic', 'one_item_per_dungeon'],
+                'settings' : ['starting_age', 'triforce_hunt', 'triforce_goal_per_world', 'entrance_shuffle', 'bombchus_in_logic', 'one_item_per_dungeon'],
             }
         },
         shared         = True,
@@ -1318,7 +1333,7 @@ setting_infos = [
         shared         = True,
         disable        = {
             'closed' : {'settings' : ['starting_age']}
-        },        
+        },
         gui_params     = {
             'randomize_key': 'randomize_settings',
             'distribution': [
@@ -1342,12 +1357,27 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
-    Checkbutton(
-        name           = 'open_fountain',
-        gui_text       = 'Open Zora\'s Fountain',
+    Combobox(
+        name           = 'zora_fountain',
+        gui_text       = 'Zora\'s Fountain',
+        default        = 'closed',
+        choices        = {
+            'closed': 'Default Behavior (Closed)',
+            'adult':  'Open For Adult',
+            'open':   'Always Open',
+        },
         gui_tooltip    = '''\
-            King Zora starts out as moved. This also removes
-            Ruto's Letter from the item pool.
+            'Default Behavior': King Zora obstructs the way to
+            Zora's Fountain. Ruto's Letter must be shown as
+            child in order to move him for both eras.
+
+            'Open For Adult': King Zora is always moved in 
+            the adult era. This means Ruto's Letter is only
+            required to access Zora's Fountain as child.
+
+            'Always Open': King Zora starts as moved in
+            both the child and adult eras. This also removes 
+            Ruto's Letter from the pool since it can't be used.
         ''',
         shared         = True,
         gui_params     = {
@@ -1416,6 +1446,50 @@ setting_infos = [
             ],
         },
     ),
+    Checkbutton(
+        name           = 'triforce_hunt',
+        gui_text       = 'Triforce Hunt',
+        gui_tooltip    = '''\
+            Pieces of the Triforce have been scattered around the world. 
+            Find some of them to beat the game.
+
+            Game is saved on completion, and Ganon's Castle key is given
+            if beating the game again is desired.
+        ''',
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+        disable        = {
+            True  : {'settings' : ['shuffle_ganon_bosskey']},
+            False : {'settings' : ['triforce_goal_per_world']}
+        },
+    ),
+    Scale(
+        name           = 'triforce_goal_per_world',
+        gui_text       = 'Required Triforces Per World',
+        default        = 20,
+        min            = 1,
+        max            = 100,
+        shared         = True,
+        gui_tooltip    = '''\
+            Select the amount of Triforce Pieces required to beat the game.
+
+            In multiworld, each world will have the same number of triforces 
+            in them. The required amount will be per world collectively. 
+            For example, if this is set to 20 in a 2 player multiworld, players 
+            need 40 total, but one player could obtain 30 and the other 10. 
+
+            Extra pieces are determined by the the Item Pool setting:
+            'Plentiful': 100% Extra
+            'Balanced': 50% Extra
+            'Scarce': 25% Extra
+            'Minimal: No Extra
+        ''',
+        gui_params     = {
+            "hide_when_disabled": True,
+        },
+    ),
     Scale(
         name           = 'bridge_tokens',
         gui_text       = "Skulltulas Required for Bridge",
@@ -1441,19 +1515,22 @@ setting_infos = [
             'none':       'No Logic',
             },
         gui_tooltip    = '''\
-            Sets the rules the logic uses to determine accessibility.
+            Logic provides guiding sets of rules for world generation
+            which the Randomizer uses to ensure the generated seeds 
+            are beatable.
 
             'Glitchless': No glitches are required, but may require 
-            some minor tricks.
+            some minor tricks. Add minor tricks to consider for logic
+            in the 'Detailed Logic' tab.
 
-            'Glitched': Movement oriented glitches are likely required.
+            'Glitched': Movement-oriented glitches are likely required.
             No locations excluded.
 
-            'No Logic': All locations are considered available. 
-            May not be beatable.
+            'No Logic': Maximize randomization, All locations are 
+            considered available. MAY BE IMPOSSIBLE TO BEAT.
         ''',
         disable        = {
-            'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons']},
+            'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons', 'allowed_tricks']},
             'none'      : {'tabs'     : ['detailed_tab']},
         },
         shared         = True,
@@ -1550,9 +1627,6 @@ setting_infos = [
         ''',
         shared         = True,
         disabled_default = 0,
-        gui_params     = {
-            'randomize_key': 'randomize_settings',
-        },
     ),
     Checkbutton(
         name           = 'no_escape_sequence',
@@ -1634,41 +1708,34 @@ setting_infos = [
         shared         = True,
     ),
     Checkbutton(
-        name           = 'start_with_fast_travel',
-        gui_text       = 'Start with Fast Travel',
-        gui_tooltip    = '''\
-            Start the game with Prelude of Light,
-            Serenade of Water, and Farore's Wind.
-
-            Two song locations will give items,
-            instead of Prelude and Serenade.
-        ''',
-        shared         = True,
-    ),
-    Checkbutton(
         name           = 'start_with_rupees',
         gui_text       = 'Start with Max Rupees',
         gui_tooltip    = '''\
-            Start the game with 99 rupees. Wallet upgrades fill wallet.
+            Start the game with a full wallet.
+            Wallet upgrades will also fill the wallet.
         ''',
         shared         = True,
     ),
     Checkbutton(
-        name           = 'start_with_wallet',
-        gui_text       = 'Start with Tycoon\'s Wallet',
+        name           = 'start_with_consumables',
+        gui_text       = 'Start with Consumables',
         gui_tooltip    = '''\
-            Start the game with the largest wallet (999 max).
+            Start the game with maxed out Deku Sticks and Deku Nuts.
         ''',
         shared         = True,
     ),
-    Checkbutton(
-        name           = 'start_with_deku_equipment',
-        gui_text       = 'Start with Deku Equipment',
+    Scale(
+        name           = 'starting_hearts',
+        gui_text       = "Starting Hearts",
+        default        = 3,
+        min            = 3,
+        max            = 20,
         gui_tooltip    = '''\
-            Start the game with 10 Deku sticks and 20 Deku nuts.
-            Additionally, start the game with a Deku shield equipped,
-            unless playing with the Shopsanity setting.
+            Start the game with the selected number of hearts.
+            Heart Containers and Pieces of Heart are removed
+            from the item pool in equal proportion.
         ''',
+        disabled_default = 1,
         shared         = True,
     ),
     Checkbutton(
@@ -1680,7 +1747,7 @@ setting_infos = [
         ''',
         disable        = {
             True : {'settings' : ['chicken_count']}
-        },        
+        },
         shared         = True,
     ),
     Scale(
@@ -2042,7 +2109,7 @@ setting_infos = [
         default        = 'dungeon',
         choices        = {
             'remove':    'Remove (Keysy)',
-            'vanilla':   'Vanilla Locations',            
+            'vanilla':   'Vanilla Locations',
             'dungeon':   'Dungeon Only',
             'keysanity': 'Anywhere (Keysanity)'
         },
@@ -2081,7 +2148,7 @@ setting_infos = [
         default        = 'dungeon',
         choices        = {
             'remove':    'Remove (Keysy)',
-            'vanilla':   'Vanilla Locations',            
+            'vanilla':   'Vanilla Locations',
             'dungeon':   'Dungeon Only',
             'keysanity': 'Anywhere (Keysanity)',
         },
@@ -2114,6 +2181,7 @@ setting_infos = [
         name           = 'shuffle_ganon_bosskey',
         gui_text       = 'Ganon\'s Boss Key',
         default        = 'dungeon',
+        disabled_default = 'triforce',
         choices        = {
             'remove':          "Remove (Keysy)",
             'vanilla':         "Vanilla Location",
@@ -2145,7 +2213,6 @@ setting_infos = [
             'On LACS: Medallions': All 6 Medallions.
             'On LACS: Stones': All 3 Spiritual Stones.
             'On LACS: Dungeons': All Spiritual Stones & Medallions.
-            
         ''',
         shared         = True,
         gui_params     = {
@@ -2159,7 +2226,7 @@ setting_infos = [
                 ('lacs_medallions', 1),
                 ('lacs_stones',     1),
                 ('lacs_dungeons',   1),
-            ],            
+            ],
         },
     ),
     Checkbutton(
@@ -2203,7 +2270,7 @@ setting_infos = [
         min            = 0,
         max            = 12,
         gui_tooltip    = '''\
-            Select a number of Master Quest
+            Specify the number of Master Quest
             dungeons to appear in the game.
 
             0: All dungeon will have their
@@ -2214,11 +2281,11 @@ setting_infos = [
 
             12: All dungeons will have
             Master Quest redesigns.
-            ''',
+        ''',
         shared         = True,
     ),
     Setting_Info(
-        name           = 'disabled_locations', 
+        name           = 'disabled_locations',
         type           = list,
         gui_text       = "Exclude Locations",
         gui_type       = "SearchBox",
@@ -2226,8 +2293,12 @@ setting_infos = [
         choices        = [location.name for location in LocationIterator(lambda loc: loc.filter_tags is not None)],
         default        = [],
         gui_tooltip    = '''
-            Prevent locations from being required.
-            Only junk items will appear at those locations.
+            Locations in the left column may contain items
+            required to complete the game. 
+            
+            Locations in the right column will never have 
+            items that are required to complete the game, 
+            and will only contain junk.
 
             Most dungeon locations have a MQ alternative.
             If the location does not exist because of MQ
@@ -2250,7 +2321,15 @@ setting_infos = [
         default        = [],
         gui_params     = {
             'choice_tooltip': {choice['name']: choice['tooltip'] for choice in logic_tricks.values()},
-        }
+        },
+        gui_tooltip='''
+            Tricks moved to the right column are in-logic
+            and MAY be required to complete the game.
+            
+            Tricks in the left column are NEVER required.
+            
+            Tricks are only relevant for Glitchless logic.
+        '''
     ),
     Combobox(
         name           = 'logic_earliest_adult_trade',
@@ -2314,6 +2393,53 @@ setting_infos = [
             the ghost guide across the Haunted Wasteland.
         ''',
         shared         = True,
+    ),
+    Setting_Info(
+        name           = 'starting_equipment',
+        type           = list,
+        gui_text       = "Starting Equipment",
+        gui_type       = "SearchBox",
+        shared         = True,
+        choices        = {
+            key: value.guitext for key, value in StartingItems.equipment.items()
+        },
+        default        = [],
+        gui_tooltip    = '''\
+            Begin the game with the selected equipment.
+        ''',
+    ),
+    Setting_Info(
+        name           = 'starting_items',
+        type           = list,
+        gui_text       = "Starting Items",
+        gui_type       = "SearchBox",
+        shared         = True,
+        choices        = {
+            key: value.guitext for key, value in StartingItems.inventory.items()
+        },
+        default        = [],
+        gui_tooltip    = '''\
+            Begin the game with the selected inventory items.
+            Selecting multiple progressive items will give
+            the appropriate number of upgrades.
+            
+            If playing with Open Zora Fountain, the Bottle
+            with Letter is converted to a regular Bottle.
+        ''',
+    ),
+    Setting_Info(
+        name           = 'starting_songs',
+        type           = list,
+        gui_text       = "Starting Songs",
+        gui_type       = "SearchBox",
+        shared         = True,
+        choices        = {
+            key: value.guitext for key, value in StartingItems.songs.items()
+        },
+        default        = [],
+        gui_tooltip    = '''\
+            Begin the game with the selected songs already learnt.
+        ''',
     ),
     Checkbutton(
         name           = 'ocarina_songs',
@@ -2424,6 +2550,30 @@ setting_infos = [
         shared         = True,
     ),
     Combobox(
+        name           = 'ice_trap_appearance',
+        gui_text       = 'Ice Trap Appearance',
+        default        = 'major_only',
+        choices        = {
+            'major_only': 'Major Items Only',
+            'junk_only':  'Junk Items Only',
+            'anything':   'Anything',
+        },
+        gui_tooltip    = '''\
+            Changes the categories of items Ice Traps may
+            appear as, both when freestanding and when in
+            chests with Chest Size Matches Contents enabled. 
+
+            'Major Items Only': Ice Traps appear as Major
+            Items (and in large chests if CSMC enabled).
+
+            'Junk Items Only': Ice Traps appear as Junk
+            Items (and in small chests if CSMC enabled).
+
+            'Anything': Ice Traps may appear as anything.
+        ''',
+        shared         = True,
+    ),
+    Combobox(
         name           = 'junk_ice_traps',
         gui_text       = 'Ice Traps',
         default        = 'normal',
@@ -2500,24 +2650,22 @@ setting_infos = [
         gui_text       = 'Starting Time of Day',
         default        = 'default',
         choices        = {
-            'default':       'Default',
+            'default':       'Default (10:00)',
             'random':        'Random Choice',
-            'sunrise':       'Sunrise',
-            'morning':       'Morning',
-            'noon':          'Noon',
-            'afternoon':     'Afternoon',
-            'sunset':        'Sunset',
-            'evening':       'Evening',
-            'midnight':      'Midnight',
-            'witching-hour': 'Witching Hour',
+            'sunrise':       'Sunrise (6:30)',
+            'morning':       'Morning (9:00)',
+            'noon':          'Noon (12:00)',
+            'afternoon':     'Afternoon (15:00)',
+            'sunset':        'Sunset (18:00)',
+            'evening':       'Evening (21:00)',
+            'midnight':      'Midnight (00:00)',
+            'witching-hour': 'Witching Hour (03:00)',
         },
         gui_tooltip    = '''\
             Change up Link's sleep routine.
 
             Daytime officially starts at 6:30,
             nighttime at 18:00 (6:00 PM).
-
-            Default is 10:00 in the morning.
         ''',
         shared         = True,
     ),
@@ -2969,7 +3117,6 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-            'Rainbow': Rainbow sword trails.
         ''',
         gui_params     = {
             'randomize_key': 'randomize_all_cosmetics',
@@ -2992,7 +3139,6 @@ setting_infos = [
             color from this list of colors.
             'Completely Random': Choose a random
             color from any color the N64 can draw.
-            'Rainbow': Rainbow sword trails.
         ''',
         gui_params     = {
             'randomize_key': 'randomize_all_cosmetics',
@@ -3240,7 +3386,7 @@ for info in setting_infos:
         for option, disabling in info.disable.items():
             for setting in disabling.get('settings', []):
                 create_dependency(setting, info, option)
-            for section in disabling.get('setions', []):
+            for section in disabling.get('sections', []):
                 for setting in get_settings_from_section(section):
                     create_dependency(setting, info, option)
             for tab in disabling.get('tabs', []):

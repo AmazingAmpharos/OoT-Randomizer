@@ -21,6 +21,7 @@ sprite_t items_sprite;
 sprite_t quest_items_sprite;
 sprite_t font_sprite;
 sprite_t dpad_sprite;
+sprite_t triforce_sprite;
 
 void gfx_init();
 

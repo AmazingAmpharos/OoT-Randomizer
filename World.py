@@ -1,21 +1,20 @@
-from State import State
-from Region import Region, TimeOfDay
+import copy
+import logging
+import random
+
+from DungeonList import create_dungeons
 from Entrance import Entrance
+from HintList import getRequiredHints
 from Hints import get_hint_area
+from Item import Item, ItemFactory, MakeEventItem
 from Location import Location, LocationFactory
 from LocationList import business_scrubs
-from DungeonList import create_dungeons
+from Region import Region, TimeOfDay
 from Rules import set_rules, set_shop_rules
-from Item import Item, ItemFactory, MakeEventItem
 from RuleParser import Rule_AST_Transformer
-from SettingsList import get_setting_info
-from HintList import getRequiredHints
-import logging
-import copy
-import io
-import json
-import random
-import re
+from SettingsList import get_setting_info, get_settings_from_section
+from State import State
+from Utils import read_json
 
 class World(object):
 
@@ -35,6 +34,7 @@ class World(object):
         self.scrub_prices = {}
         self.maximum_wallets = 0
         self.light_arrow_location = None
+        self.triforce_count = 0
 
         self.parser = Rule_AST_Transformer(self)
         self.event_items = set()
@@ -60,6 +60,8 @@ class World(object):
 
         self.disable_trade_revert = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
         self.ensure_tod_access = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
+
+        self.triforce_goal = self.triforce_goal_per_world * settings.world_count
 
         # Determine LACS Condition
         if self.shuffle_ganon_bosskey == 'lacs_medallions':
@@ -113,6 +115,8 @@ class World(object):
         new_world.starting_age = self.starting_age
         new_world.can_take_damage = self.can_take_damage
         new_world.shop_prices = copy.copy(self.shop_prices)
+        new_world.triforce_goal = self.triforce_goal
+        new_world.triforce_count = self.triforce_count
         new_world.maximum_wallets = self.maximum_wallets
         new_world.distribution = self.distribution
 
@@ -138,6 +142,11 @@ class World(object):
     def resolve_random_settings(self):
         # evaluate settings (important for logic, nice for spoiler)
         self.randomized_list = []
+        if self.randomize_settings:
+            setting_info = get_setting_info('randomize_settings')
+            self.randomized_list.extend(setting_info.disable[True]['settings'])
+            for section in setting_info.disable[True]['sections']:
+                self.randomized_list.extend(get_settings_from_section(section))
         if self.big_poe_count_random:
             self.big_poe_count = random.randint(1, 10)
             self.randomized_list.append('big_poe_count')
@@ -185,17 +194,7 @@ class World(object):
 
 
     def load_regions_from_json(self, file_path):
-        json_string = ""
-        with io.open(file_path, 'r') as file:
-            for line in file.readlines():
-                json_string += line.split('#')[0].replace('\n', ' ')
-        json_string = re.sub(' +', ' ', json_string)
-        try:
-            region_json = json.loads(json_string)
-        except json.JSONDecodeError as error:
-            raise Exception("JSON parse error around text:\n" + \
-                            json_string[error.pos-35:error.pos+35] + "\n" + \
-                            "                                   ^^\n")
+        region_json = read_json(file_path)
             
         for region in region_json:
             new_region = Region(region['region_name'])
@@ -470,11 +469,15 @@ class World(object):
 
 
     def get_unfilled_locations(self):
-        return [location for location in self.get_locations() if location.item is None]
+        return filter(Location.has_no_item, self.get_locations())
 
 
     def get_filled_locations(self):
-        return [location for location in self.get_locations() if location.item is not None]
+        return filter(Location.has_item, self.get_locations())
+
+
+    def get_progression_locations(self):
+        return filter(Location.has_progression_item, self.get_locations())
 
 
     def get_entrances(self):
@@ -549,8 +552,8 @@ class World(object):
             self.shuffle_scrubs == 'off' and not self.shuffle_grotto_entrances):
             # nayru's love may be required to prevent forced damage
             exclude_item_list.append('Nayrus Love')
-        if self.hints != 'agony':
-            # Stone of Agony only required if it's used for hints
+        if self.logic_grottos_without_agony and self.hints != 'agony':
+            # Stone of Agony skippable if not used for hints or grottos
             exclude_item_list.append('Stone of Agony')
         if not self.shuffle_special_indoor_entrances and not self.shuffle_overworld_entrances:
             # Serenade and Prelude are never required with vanilla Links House/ToT and overworld entrances

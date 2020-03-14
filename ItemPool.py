@@ -1,6 +1,7 @@
 from collections import namedtuple
 import logging
 import random
+from itertools import chain
 from Utils import random_choices
 from Item import ItemFactory
 from ItemList import item_table
@@ -119,6 +120,12 @@ item_difficulty_max = {
     },
 }
 
+TriforceCounts = {
+    'plentiful': 2.00,
+    'balanced':  1.50,
+    'scarce':    1.25,
+    'minimal':   1.00,
+}
 
 DT_vanilla = (
     ['Recovery Heart'] * 2)
@@ -215,6 +222,19 @@ normal_bottles = [
     'Bottle with Blue Fire']
 
 bottle_count = 4
+
+
+dungeon_rewards = [
+    'Kokiri Emerald',
+    'Goron Ruby',
+    'Zora Sapphire',
+    'Forest Medallion',
+    'Fire Medallion',
+    'Water Medallion',
+    'Shadow Medallion',
+    'Spirit Medallion',
+    'Light Medallion'
+]
 
 
 normal_rupees = (
@@ -540,7 +560,7 @@ vanillaMC = {
     'Forest Temple MQ Map Chest': 'Map (Forest Temple)',
     'Ice Cavern MQ Map Chest': 'Map (Ice Cavern)',
     'Jabu Jabus Belly MQ Map Chest': 'Map (Jabu Jabus Belly)',
-    'Shadow Temple MQ Early Gibdos Chest': 'Map (Shadow Temple)',
+    'Shadow Temple MQ Map Chest': 'Map (Shadow Temple)',
     'Spirit Temple MQ Map Chest': 'Map (Spirit Temple)',
     'Water Temple MQ Map Chest': 'Map (Water Temple)',
 }
@@ -611,7 +631,7 @@ vanillaSK = {
     'Gerudo Training Grounds MQ Underwater Silver Rupee Chest': 'Small Key (Gerudo Training Grounds)',
     'Shadow Temple MQ Falling Spikes Switch Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Invisible Blades Invisible Chest': 'Small Key (Shadow Temple)',
-    'Shadow Temple MQ Map Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple MQ Early Gibdos Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Near Ship Invisible Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Wind Hint Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Freestanding Key': 'Small Key (Shadow Temple)',
@@ -675,13 +695,14 @@ item_groups = {
     'WarpSong': songlist[6:],
     'HealthUpgrade': ('Heart Container', 'Piece of Heart'),
     'ProgressItem': [name for (name, data) in item_table.items() if data[0] == 'Item' and data[1]],
+    'DungeonReward': dungeon_rewards,
 
     'ForestFireWater': ('Forest Medallion', 'Fire Medallion', 'Water Medallion'),
     'FireWater': ('Fire Medallion', 'Water Medallion'),
 }
 
 
-def get_junk_item(count=1):
+def get_junk_item(count=1, pool=None, plando_pool=None):
     if count < 1:
         raise ValueError("get_junk_item argument 'count' must be greater than 0.")
 
@@ -691,7 +712,15 @@ def get_junk_item(count=1):
         return_pool = [pending_junk_pool.pop() for _ in range(pending_count)]
         count -= pending_count
 
-    junk_items, junk_weights = zip(*junk_pool)
+    if pool and plando_pool:
+        jw_list = [(junk, weight) for (junk, weight) in junk_pool
+                   if junk not in plando_pool or pool.count(junk) < plando_pool[junk].count]
+        try:
+            junk_items, junk_weights = zip(*jw_list)
+        except ValueError:
+            raise RuntimeError("Not enough junk is available in the item pool to replace removed items.")
+    else:
+        junk_items, junk_weights = zip(*junk_pool)
     return_pool.extend(random_choices(junk_items, weights=junk_weights, k=count))
 
     return return_pool
@@ -733,6 +762,43 @@ def generate_itempool(world):
         world.get_location(location).locked = True
 
     world.initialize_items()
+    world.distribution.set_complete_itempool(world.itempool)
+
+
+def try_collect_heart_container(world, pool):
+    if 'Heart Container' in pool:
+        pool.remove('Heart Container')
+        pool.extend(get_junk_item())
+        world.state.collect(ItemFactory('Heart Container'))
+        return True
+    return False
+
+
+def try_collect_pieces_of_heart(world, pool):
+    n = pool.count('Piece of Heart') + pool.count('Piece of Heart (Treasure Chest Game)')
+    if n >= 4:
+        for i in range(4):
+            if 'Piece of Heart' in pool:
+                pool.remove('Piece of Heart')
+                world.state.collect(ItemFactory('Piece of Heart'))
+            else:
+                pool.remove('Piece of Heart (Treasure Chest Game)')
+                world.state.collect(ItemFactory('Piece of Heart (Treasure Chest Game)'))
+            pool.extend(get_junk_item())
+        return True
+    return False
+
+
+def collect_pieces_of_heart(world, pool):
+    success = try_collect_pieces_of_heart(world, pool)
+    if not success:
+        try_collect_heart_container(world, pool)
+
+
+def collect_heart_container(world, pool):
+    success = try_collect_heart_container(world, pool)
+    if not success:
+        try_collect_pieces_of_heart(world, pool)
 
 
 def get_pool_core(world):
@@ -745,7 +811,7 @@ def get_pool_core(world):
         placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
 
     ruto_bottles = 1
-    if world.open_fountain:
+    if world.zora_fountain == 'open':
         ruto_bottles = 0
     elif world.item_pool_value == 'plentiful':
         ruto_bottles += 1
@@ -777,7 +843,10 @@ def get_pool_core(world):
             placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
 
     if world.shuffle_beans:
-        pool.append('Magic Bean Pack')
+        if world.distribution.get_starting_item('Magic Bean') < 10:
+            pool.append('Magic Bean Pack')
+        else:
+            pool.extend(get_junk_item())
     else:
         placed_items['Magic Bean Salesman'] = 'Magic Bean'
 
@@ -1119,12 +1188,6 @@ def get_pool_core(world):
     pool.append(tradeitem)
 
     pool.extend(songlist)
-    if world.start_with_fast_travel:
-        pool.remove('Prelude of Light')
-        pool.remove('Serenade of Water')
-        pool.remove('Farores Wind')
-        pool.extend(get_junk_item(3))
-        
     if world.free_scarecrow:
         world.state.collect(ItemFactory('Scarecrow Song'))
     
@@ -1143,7 +1206,7 @@ def get_pool_core(world):
         for item in [item for dungeon in world.dungeons if dungeon.name != 'Ganons Castle' for item in dungeon.boss_key]:
             world.state.collect(item)
             pool.extend(get_junk_item())
-    if world.shuffle_ganon_bosskey == 'remove':
+    if world.shuffle_ganon_bosskey in ['remove', 'triforce']:
         for item in [item for dungeon in world.dungeons if dungeon.name == 'Ganons Castle' for item in dungeon.boss_key]:
             world.state.collect(item)
             pool.extend(get_junk_item())
@@ -1181,16 +1244,20 @@ def get_pool_core(world):
             except KeyError:
                 continue
 
-    if world.shuffle_ganon_bosskey == 'vanilla':
-        placed_items['Ganons Tower Boss Key Chest'] = 'Boss Key (Ganons Castle)'
 
     if not world.keysanity and not world.dungeon_mq['Fire Temple']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
     if not world.dungeon_mq['Water Temple']:
         world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
+    if world.triforce_hunt:
+        trifroce_count = int(world.triforce_goal_per_world * TriforceCounts[world.item_pool_value])
+        pending_junk_pool.extend(['Triforce Piece'] * trifroce_count)
+
     if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
         placed_items['Zelda'] = 'Boss Key (Ganons Castle)'
+    elif world.shuffle_ganon_bosskey == 'vanilla':
+        placed_items['Ganons Tower Boss Key Chest'] = 'Boss Key (Ganons Castle)'
 
     if world.item_pool_value == 'plentiful':
         pool.extend(easy_items)
@@ -1209,9 +1276,6 @@ def get_pool_core(world):
     for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
 
-    if world.start_with_wallet:
-        replace_max_item(pool, 'Progressive Wallet', 0)
-
     # Make sure our pending_junk_pool is empty. If not, remove some random junk here.
     if pending_junk_pool:
         remove_junk_pool, _ = zip(*junk_pool_base)
@@ -1229,7 +1293,7 @@ def get_pool_core(world):
 
     world.distribution.alter_pool(world, pool)
 
-    world.distribution.configure_stating_items_settings(world)
+    world.distribution.configure_starting_items_settings(world)
     world.distribution.collect_starters(world.state)
 
     return (pool, placed_items)

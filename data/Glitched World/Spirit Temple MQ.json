@@ -23,16 +23,16 @@
         "dungeon": "Spirit Temple",
         "locations": {
             "Spirit Temple MQ Child Left Chest": "
-                (has_sticks or Kokiri_Sword) and 
-                has_bombchus and has_slingshot and can_use(Dins_Fire)",
+                (Sticks or Kokiri_Sword) and 
+                has_bombchus and Slingshot and can_use(Dins_Fire)",
             "Spirit Temple MQ Map Chest": "
-                has_sticks or Kokiri_Sword or has_explosives",
+                Sticks or Kokiri_Sword or has_explosives",
             "Spirit Temple MQ Silver Block Hallway Chest": "
-                has_bombchus and (Small_Key_Spirit_Temple, 7) and has_slingshot and 
+                has_bombchus and (Small_Key_Spirit_Temple, 7) and Slingshot and 
                 (can_use(Dins_Fire) or 
                     here(is_adult and can_use(Longshot) and can_use(Silver_Gauntlets) and 
                           (can_use(Fire_Arrows) or
-                              (logic_spirit_mq_frozen_eye and has_bow and can_play(Song_of_Time)))))"
+                              (logic_spirit_mq_frozen_eye and Bow and can_play(Song_of_Time)))))"
         },
         "exits": {
             "Spirit Temple Shared": "has_bombchus and (Small_Key_Spirit_Temple, 2)"
@@ -58,7 +58,7 @@
         "exits": {
             "Lower Adult Spirit Temple": "
                 (can_use(Fire_Arrows) or
-                    (logic_spirit_mq_lower_adult and can_use(Dins_Fire) and has_bow)) and Mirror_Shield",
+                    (logic_spirit_mq_lower_adult and can_use(Dins_Fire) and Bow)) and Mirror_Shield",
             "Spirit Temple Shared": "True",
             "Spirit Temple Boss Area": "
                 (Small_Key_Spirit_Temple, 6) and can_play(Zeldas_Lullaby) and Hammer",
@@ -73,8 +73,8 @@
             "Spirit Temple MQ Child Climb North Chest": "(Small_Key_Spirit_Temple, 6)",
             "Spirit Temple MQ Compass Chest": "
                 ((Small_Key_Spirit_Temple, 7) and can_use(Slingshot)) or 
-                (can_use(Longshot) and can_use(Silver_Gauntlets) and has_bow) or 
-                (has_slingshot and has_bow)",
+                (can_use(Longshot) and can_use(Silver_Gauntlets) and Bow) or 
+                (Slingshot and Bow)",
             "Spirit Temple MQ Sun Block Room Chest": "
                 can_play(Song_of_Time) or 
                 (can_use(Longshot) and can_use(Silver_Gauntlets))",
@@ -97,13 +97,13 @@
         "locations": {
             "Spirit Temple MQ Lower Adult Left Chest": "True",
             "Spirit Temple MQ Lower Adult Right Chest": "
-                (Small_Key_Spirit_Temple, 7) and Hammer and has_ocarina and 
+                (Small_Key_Spirit_Temple, 7) and Hammer and Ocarina and 
                 Song_of_Time and Eponas_Song and Suns_Song and 
                 Song_of_Storms and Zeldas_Lullaby",
             "Spirit Temple MQ Entrance Front Right Chest": "Hammer",
             "GS Spirit Temple MQ Lower Adult Left": "True",
             "GS Spirit Temple MQ Lower Adult Right": "
-                (Small_Key_Spirit_Temple, 7) and Hammer and has_ocarina and 
+                (Small_Key_Spirit_Temple, 7) and Hammer and Ocarina and 
                 Song_of_Time and Eponas_Song and Suns_Song and 
                 Song_of_Storms and Zeldas_Lullaby"
         }

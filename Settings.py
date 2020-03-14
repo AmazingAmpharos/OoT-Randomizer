@@ -189,11 +189,18 @@ class Settings:
         self.numeric_seed = self.get_numeric_seed()
 
     def load_distribution(self):
-        if self.enable_distribution_file and self.distribution_file is not None and self.distribution_file != '':
-            try:
-                self.distribution = Distribution.from_file(self, self.distribution_file)
-            except FileNotFoundError:
-                logging.getLogger('').warning("Distribution file not found at %s" % (self.distribution_file))
+        if self.enable_distribution_file:
+            if self.distribution_file:
+                try:
+                    self.distribution = Distribution.from_file(self, self.distribution_file)
+                    self.using_distribution_file = True
+                except FileNotFoundError:
+                    logging.getLogger('').warning("Distribution file not found at %s" % (self.distribution_file))
+            else:
+                logging.getLogger('').warning("Plandomizer enabled, but no distribution file provided.")
+        elif self.distribution_file:
+            logging.getLogger('').warning("Distribution file provided, but using it not enabled. "
+                    "Did you mean to set enable_distribution_file?")
         else:
             self.distribution = Distribution(self)
 
@@ -222,6 +229,7 @@ class Settings:
                 new_value = self.get_dependency(info.name)
                 if new_value != None:
                     self.__dict__[info.name] = new_value
+                    self._disabled.add(info.name)
 
         self.settings_string = self.get_settings_string()
         self.numeric_seed = self.get_numeric_seed()
@@ -237,7 +245,7 @@ class Settings:
             if cosmetic == info.shared:
                 continue
 
-            if not self.check_dependency(info.name, check_random=False):
+            if self.check_dependency(info.name, check_random=True):
                 continue
 
             if 'randomize_key' in info.gui_params and self.__dict__[info.gui_params['randomize_key']]:               
@@ -257,13 +265,15 @@ class Settings:
         if self.world_count > 255:
             self.world_count = 255
 
+        self._disabled = set()
         self.settings_string = self.get_settings_string()
         self.distribution = Distribution(self)
         self.update_seed(self.seed)
 
 
     def to_json(self):
-        return {setting.name: self.__dict__[setting.name] for setting in setting_infos if setting.shared}
+        return {setting.name: self.__dict__[setting.name] for setting in setting_infos
+                if setting.shared and setting.name not in self._disabled}
 
 
 # gets the randomizer settings, whether to open the gui, and the logger level from command line arguments

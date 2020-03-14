@@ -167,7 +167,10 @@ class SaveContext():
 
         for ammo, (upgrade, maxes) in ammo_maxes.items():
             upgrade_count = self.addresses['upgrades'][upgrade].get_value()
-            ammo_max = maxes[upgrade_count]
+            try:
+                ammo_max = maxes[upgrade_count]
+            except IndexError:
+                ammo_max = maxes[-1]
             if ammo == 'rupees':
                 self.addresses[ammo].max = ammo_max
             else:
@@ -223,6 +226,8 @@ class SaveContext():
             self.give_health(count / 4)
         elif item == "Heart Container":
             self.give_health(count)
+        elif item == "Bombchu Item":
+            self.give_bombchu_item()
         elif item in SaveContext.save_writes_table:
             for address, value in SaveContext.save_writes_table[item].items():
                 if value is None:
@@ -244,7 +249,7 @@ class SaveContext():
                     address_value = address_value[sub_address]
                     prev_sub_address = sub_address
                 if not isinstance(address_value, Address):
-                    raise ValueError('%s does not resolve to an Adress in SaveContext' % (sub_address))
+                    raise ValueError('%s does not resolve to an Address in SaveContext' % (sub_address))
 
                 if isinstance(value, int) and value < address_value.get_value():
                     continue
@@ -252,6 +257,10 @@ class SaveContext():
                 address_value.value = value
         else:
             raise ValueError("Cannot give unknown starting item %s" % item)
+
+
+    def give_bombchu_item(self):
+        self.give_item("Bombchus", 0)
 
 
     def equip_default_items(self, age):
@@ -285,6 +294,8 @@ class SaveContext():
                 if self.addresses['equip_items'][item].get_value():
                     item_value = self.addresses['equip_items'][item].get_value_raw()
                     self.addresses[equip_type]['equips'][equip_item].set_value_raw(item_value)
+                    if equip_item == 'tunic':
+                        self.addresses[equip_type]['equips'][equip_item].value = 1
                     if equip_item == 'sword':
                         self.addresses[equip_type]['button_items']['b'].value = item
                     break
@@ -373,10 +384,10 @@ class SaveContext():
                     'right'              : Address(size=1, choices=SaveContext.slot_id_map),
                 },
                 'equips' : {
-                    'sword'              : Address(0x0070, size=2, mask=0x000F),
-                    'shield'             : Address(0x0070, size=2, mask=0x00F0),
-                    'tunic'              : Address(0x0070, size=2, mask=0x0F00),
-                    'boots'              : Address(0x0070, size=2, mask=0xF000),                
+                    'sword'              : Address(0x0070, size=2, mask=0x000F, max=3),
+                    'shield'             : Address(0x0070, size=2, mask=0x00F0, max=3),
+                    'tunic'              : Address(0x0070, size=2, mask=0x0F00, max=3),
+                    'boots'              : Address(0x0070, size=2, mask=0xF000, max=3),                
                 },
             },
             'unk_07'                     : Address(size=2),
@@ -589,6 +600,7 @@ class SaveContext():
             },
             'defense_hearts'             : Address(size=1, max=20),
             'gs_tokens'                  : Address(size=2, max=100),
+            'triforce_pieces'            : Address(0xD4 + 0x1C * 0x48 + 0x10, size=4), # Unused word in scene x48
         }
 
 
@@ -783,7 +795,7 @@ class SaveContext():
         },
         "Bomb Bag": {
             'item_slot.bomb'             : 'bomb',
-            'upgrades.bomb_bag'         : None,
+            'upgrades.bomb_bag'          : None,
         },
         "Bombs" : {
             'ammo.bomb'                  : None,
@@ -846,6 +858,7 @@ class SaveContext():
         "Biggoron Sword" : {
             'equip_items.biggoron_sword' : True,
             'bgs_flag'                   : True,
+            'bgs_hits_left'              : True,
         },
         "Gerudo Membership Card" : {'quest.gerudos_card'             : True},
         "Stone of Agony"         : {'quest.stone_of_agony'           : True},
@@ -889,9 +902,10 @@ class SaveContext():
         },
         "Rupees"                    : {'rupees' : None},
         "Magic Bean Pack" : {
-            'item_slot.beans'            : 'beans',
-            'ammo.beans'                 : 10
+            'item_slot.beans'       : 'beans',
+            'ammo.beans'            : 10
         },
+        "Triforce Piece"            : {'triforce_pieces': None},
     }
 
 

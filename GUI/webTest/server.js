@@ -44,7 +44,7 @@ async function setupAngular() {
     fs.copySync("../dist/ootr-electron-gui", appPath);
 
     //Copy util files
-    fs.copyFileSync("../../data/generated/settings_list.json", utilsPath + "/settings_list.json");
+    fs.copyFileSync("./settingsParser/settings_list.json", utilsPath + "/settings_list.json");
     fs.copyFileSync("./index_web.html", appPath + "/index.html");
 
     console.log("[App] Angular Setup completed");

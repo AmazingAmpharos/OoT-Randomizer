@@ -1,3 +1,5 @@
+import io
+import json
 import os, os.path
 import subprocess
 import sys
@@ -50,6 +52,20 @@ def default_output_path(path):
     if not os.path.exists(path):
         os.mkdir(path)
     return path
+
+
+def read_json(file_path):
+    json_string = ""
+    with io.open(file_path, 'r') as file:
+        for line in file.readlines():
+            json_string += line.split('#')[0].replace('\n', ' ')
+    json_string = re.sub(' +', ' ', json_string)
+    try:
+        return json.loads(json_string)
+    except json.JSONDecodeError as error:
+        raise Exception("JSON parse error around text:\n" + \
+                        json_string[error.pos-35:error.pos+35] + "\n" + \
+                        "                                   ^^\n")
 
 
 def open_file(filename):

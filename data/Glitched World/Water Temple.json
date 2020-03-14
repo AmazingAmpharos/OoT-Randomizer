@@ -103,7 +103,7 @@
         },
         "exits": {
             "High Alcove": "(can_use(Hover_Boots) or can_use(Hookshot) or (is_adult and can_mega) or can_hover
-                or has_projectile)
+                or has_projectile(either))
             and can_play(Zeldas_Lullaby)",
             "Compass Room": "can_play(Zeldas_Lullaby) and can_use(Hookshot)"
         }
@@ -126,7 +126,7 @@
             "GS Water Temple Falling Platform Room": "can_use(Hookshot)"
         },
         "exits": {
-            "River": "can_play(Song_of_Time) or (can_use(Hookshot) and (Hover_Boots or (has_bombs and can_live_dmg(0.5))))"
+            "River": "can_play(Song_of_Time) or (can_use(Hookshot) and (Hover_Boots or (Bombs and can_live_dmg(0.5))))"
         }
     },
     {

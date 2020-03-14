@@ -77,6 +77,7 @@ conditional_always = {
 # @ will print the player name
 # # sets color to white (currently only used for dungeon reward hints).
 hintTable = {
+    'Triforce Piece':                                           (["a triumph fork", "cheese", "a gold fragment"], "a Piece of the Triforce", "item"),
     'Magic Meter':                                              (["mystic training", "pixie dust", "a green rectangle"], "a Magic Meter", 'item'),
     'Double Defense':                                           (["a white outline", "damage decrease", "strengthened love"], "Double Defense", 'item'),
     'Slingshot':                                                (["a seed shooter", "a rubberband", "a child's catapult"], "a Slingshot", 'item'),
@@ -273,7 +274,7 @@ hintTable = {
     'Shadow Temple Warp Region -> Shadow Temple Entryway':      ("at the back of #the Graveyard#, there is", None, 'entrance'),
     'Lake Hylia -> Water Temple Lobby':                         ("deep #under a vast lake#, one can find", None, 'entrance'),
     'Sacred Forest Meadow -> Forest Temple Lobby':              ("deep #within the Meadow#, one can find", None, 'entrance'),
-    'Gerudo Fortress -> Gerudo Training Grounds Lobby':         ("#thieves# train within", None, 'entrance'),
+    'Gerudo Fortress -> Gerudo Training Grounds Lobby':         ("paying a fee #within Gerudo's Fortress# grants access to", None, 'entrance'),
     'Zoras Fountain -> Ice Cavern Beginning':                   ("in #a frozen fountain#, an opening leads to", None, 'entrance'),
     'Zoras Fountain -> Jabu Jabus Belly Beginning':             ("inside #Jabu Jabu#, one can find", None, 'entrance'),
 
@@ -294,7 +295,7 @@ hintTable = {
     'Castle Town Treasure Chest Game':                          ("the #Treasure Chest Game#", None, 'region'),
     'Castle Town Bombchu Shop':                                 ("the #Bombchu Shop#", None, 'region'),
     'Castle Town Man in Green House':                           ("Man in Green's House", None, 'region'),
-    'Windmill':                                                 ("Windmill", None, 'region'),
+    'Windmill':                                                 ("the #Windmill#", None, 'region'),
     'Carpenter Boss House':                                     ("the #Carpenters' Boss House#", None, 'region'),
     'House of Skulltula':                                       ("the #House of Skulltulas#", None, 'region'),
     'Impas House':                                              ("Impa's House", None, 'region'),
@@ -307,11 +308,11 @@ hintTable = {
     'Ingo Barn':                                                ("a #stable#", None, 'region'),
     'Lon Lon Corner Tower':                                     ("the #Lon Lon Tower#", None, 'region'),
     'Castle Town Bazaar':                                       ("the #Market Bazaar#", None, 'region'),
-    'Castle Town Shooting Gallery':                             ("Child Shooting Gallery", None, 'region'),
+    'Castle Town Shooting Gallery':                             ("a #Slingshot Shooting Gallery#", None, 'region'),
     'Kakariko Bazaar':                                          ("the #Kakariko Bazaar#", None, 'region'),
     'Kakariko Potion Shop Front':                               ("the #Kakariko Potion Shop#", None, 'region'),
     'Kakariko Potion Shop Back':                                ("the #Kakariko Potion Shop#", None, 'region'),
-    'Kakariko Shooting Gallery':                                ("Adult Shooting Gallery", None, 'region'),
+    'Kakariko Shooting Gallery':                                ("a #Bow Shooting Gallery#", None, 'region'),
     'Colossus Fairy':                                           ("a #Great Fairy Fountain#", None, 'region'),
     'Hyrule Castle Fairy':                                      ("a #Great Fairy Fountain#", None, 'region'),
     'Ganons Castle Fairy':                                      ("a #Great Fairy Fountain#", None, 'region'),

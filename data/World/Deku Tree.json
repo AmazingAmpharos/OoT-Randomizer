@@ -6,11 +6,11 @@
             "Deku Tree Lobby Chest": "True",
             "Deku Tree Compass Chest": "True",
             "Deku Tree Compass Room Side Chest": "True",
-            "Deku Tree Basement Chest": "is_adult or can_child_attack or has_nuts",
+            "Deku Tree Basement Chest": "is_adult or can_child_attack or Nuts",
             "GS Deku Tree Compass Room": "is_adult or can_child_attack",
             "GS Deku Tree Basement Vines": "
                 can_use_projectile or can_use(Dins_Fire) or
-                (logic_deku_basement_gs and (is_adult or has_sticks or Kokiri_Sword))",
+                (logic_deku_basement_gs and (is_adult or Sticks or Kokiri_Sword))",
             "GS Deku Tree Basement Gate": "is_adult or can_child_attack",
             "GS Deku Tree Basement Back Room": "
                 (here(has_fire_source_with_torch or
@@ -20,10 +20,10 @@
                     here(can_use(Hookshot) or can_use(Boomerang))) or
                 ((logic_deku_b1_skip or here(is_adult)) and is_child and
                     has_explosives and can_use(Boomerang) and
-                    (has_sticks or can_use(Dins_Fire)))",
+                    (Sticks or can_use(Dins_Fire)))",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
-                is_adult or has_slingshot or has_sticks or 
+                is_adult or Slingshot or Sticks or 
                 has_explosives or Kokiri_Sword or can_use(Dins_Fire)"
         },
         "exits": {
@@ -51,13 +51,13 @@
         "dungeon": "Deku Tree",
         "events": {
             "Deku Tree Clear": "
-                here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)"
+                here(has_shield) and (is_adult or Kokiri_Sword or Sticks)"
         },
         "locations": {
             "Queen Gohma Heart": "
-                here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)",
+                here(has_shield) and (is_adult or Kokiri_Sword or Sticks)",
             "Queen Gohma": "
-                here(has_shield) and (is_adult or Kokiri_Sword or has_sticks)"
+                here(has_shield) and (is_adult or Kokiri_Sword or Sticks)"
         },
         "exits": {
             "Deku Tree Lobby": "True"

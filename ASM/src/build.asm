@@ -1,6 +1,12 @@
 .n64
 .relativeinclude on
 
+// version guard, prevent people from building with older armips versions
+.if (version() < 101)
+.notice version()
+.error   "Detected armips build is too old. Please install https://github.com/Kingcom/armips from HEAD, then locally remove this notice, or increase the ARMIPS_VERSION_REVISION in armips and rebuild to bypass this notice."
+.endif
+
 .create "../roms/patched.z64", 0
 .incbin "../roms/base.z64"
 .include "macros.asm"
@@ -66,6 +72,7 @@ RANDO_CONTEXT:
 .include "bunny_hood.asm"
 .include "magic_color.asm"
 .include "debug.asm"
+.include "extended_objects.asm"
 .include "cow.asm"
 .include "lake_hylia.asm"
 .include "timers.asm"
@@ -75,12 +82,18 @@ RANDO_CONTEXT:
 .include "grotto.asm"
 .include "deku_mouth_condition.asm"
 .include "audio.asm"
+.include "king_zora.asm"
+.include "agony.asm"
+
+.align 0x10
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:
 .incbin("../resources/font.bin")
 DPAD_TEXTURE:
 .incbin("../resources/dpad.bin")
+TRIFORCE_ICON_TEXTURE:
+.incbin("../resources/triforce_sprite.bin")
 
 .align 0x10
 PAYLOAD_END:

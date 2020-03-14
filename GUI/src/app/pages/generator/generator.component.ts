@@ -38,31 +38,6 @@ export class GeneratorComponent implements OnInit {
   settingsBusy: boolean = false;
   settingsBusySaveOnly: boolean = true;
 
-  //For KeyValue pipe
-  presetKeyOrder = (a, b) => { //SYSTEM PRESETS > BUILT-IN PRESETS > USER PRESETS
-
-    if ("isNewPreset" in a.value) {
-      return -1;
-    }
-    else if ("isNewPreset" in b.value) {
-      return 1;
-    }
-    else if ("isDefaultPreset" in a.value) {
-      return -1;
-    }
-    else if ("isDefaultPreset" in b.value) {
-      return 1;
-    }
-    else if ("isProtectedPreset" in a.value) {
-      return -1;
-    }
-    else if ("isProtectedPreset" in b.value) {
-      return 1;
-    }
-    else
-      return 1;
-  };
-
   //Local (non persistent) Variables
   seedString: string = "";
   generateSeedButtonEnabled: boolean = true;
@@ -171,6 +146,7 @@ export class GeneratorComponent implements OnInit {
   generateSeed(fromPatchFile: boolean = false, webRaceSeed: boolean = false) {
 
     this.generateSeedButtonEnabled = false;
+    this.seedString = this.seedString.trim().replace(/[^a-zA-Z0-9_-]/g, '');
 
     //console.log("fromPatchFile:", fromPatchFile);
     //console.log(this.global.generator_settingsMap);
@@ -195,7 +171,7 @@ export class GeneratorComponent implements OnInit {
         autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dashboardRef: this, totalGenerationCount: this.global.generator_settingsMap["count"] }
       });
 
-      this.global.generateSeedElectron(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(res => {
+      this.global.generateSeedElectron(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.length > 0 ? this.seedString : "").then(res => {
         console.log('[Electron] Gen Success');
 
         this.generateSeedButtonEnabled = true;
@@ -229,10 +205,34 @@ export class GeneratorComponent implements OnInit {
     }
     else { //Web
 
-      this.global.generateSeedWeb(webRaceSeed, this.seedString.trim().length > 0 ? this.seedString.trim() : "").then(seedID => {
+      this.global.generateSeedWeb(webRaceSeed, this.seedString.length > 0 ? this.seedString : "").then(seedID => {
 
-        //Save last seed id in browser cache
-        localStorage.setItem("lastSeed", seedID);
+        try {
+          //Save last seed id in browser cache
+          localStorage.setItem("lastSeed", seedID);
+
+          //Save up to 10 seed ids in a sliding array in browser cache
+          let seedHistory = localStorage.getItem("seedHistory");
+
+          if (seedHistory == null || seedHistory.length < 1) { //First entry
+            localStorage.setItem("seedHistory", JSON.stringify([seedID]));
+          }
+          else { //Update array (10 entries max)
+            let seedHistoryArray = JSON.parse(seedHistory);
+
+            if (seedHistoryArray && typeof (seedHistoryArray) == "object" && Array.isArray(seedHistoryArray)) {
+
+              if (seedHistoryArray.length > 9) {
+                seedHistoryArray.shift();
+              }
+
+              seedHistoryArray.push(seedID);
+              localStorage.setItem("seedHistory", JSON.stringify(seedHistoryArray));
+            }
+          }
+        } catch (e) {
+          //Browser doesn't allow localStorage access
+        }
 
         //Re-direct to seed (waiting) page
         let seedURL = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/get?id=" + seedID;
@@ -368,6 +368,13 @@ export class GeneratorComponent implements OnInit {
         autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: "The entered settings string seems to be invalid!" }
       });
     });
+  }
+
+  getPresetArray() {
+    if (typeof (this.global.generator_presets) == "object")
+      return Object.keys(this.global.generator_presets);
+    else
+      return [];
   }
 
   loadPreset() {
@@ -789,8 +796,8 @@ export class GeneratorComponent implements OnInit {
     //Array of settings that should have its visibility altered
     var targetSettings = [];
 
-    if (setting["type"] === "Checkbutton" || setting["type"] === "Radiobutton" || setting["type"] === "Combobox") {
-      let value = typeof (newValue) == "object" ? newValue.value : newValue;
+    if (setting["type"] === "Checkbutton" || setting["type"] === "Radiobutton" || setting["type"] === "Combobox" || setting["type"] === "SearchBox") {
+      let value = (typeof (newValue) == "object") && ("value" in newValue) ? newValue.value : newValue;
 
       //Open color picker if custom color is selected
       if (refColorPicker && value == "Custom Color") {
@@ -801,16 +808,44 @@ export class GeneratorComponent implements OnInit {
         refColorPicker.click();
       }
 
-      //Build list of options
-      setting.options.forEach(optionToAdd => {
+      if (setting["type"] === "SearchBox") { //Special handling for type "SearchBox"
 
-        if (optionToAdd.name === option.name) //Add currently selected item last for priority
-          return;
+        let optionsSelected = value && typeof (value) == "object" && Array.isArray(value) && value.length > 0;
+     
+        //First build a complete list consisting of every option that hasn't been selected yet with a true value
+        setting.options.forEach(optionToAdd => {
 
-        targetSettings.push({ target: optionToAdd, value: optionToAdd.name != value });
-      });
+          //Ensure option isn't selected before adding it
+          if (optionsSelected) {
+            let alreadySelected = value.find(selectedItem => selectedItem.name == optionToAdd.name);
 
-      targetSettings.push({ target: option, value: false });
+            if (alreadySelected)
+              return;
+          }
+
+          targetSettings.push({ target: optionToAdd, value: true });
+        });
+
+        //Push every selected option last with a false value
+        if (optionsSelected) {
+          value.forEach(selectedItem => {
+            targetSettings.push({ target: selectedItem, value: false });
+          });
+        }
+      }
+      else { //Every other settings type
+
+        //Build list of options
+        setting.options.forEach(optionToAdd => {
+
+          if (optionToAdd.name === option.name) //Add currently selected item last for priority
+            return;
+
+          targetSettings.push({ target: optionToAdd, value: optionToAdd.name != value });
+        });
+
+        targetSettings.push({ target: option, value: false }); //Selected setting uses false as it can disable settings now
+      }
     }
 
     //Handle activations/deactivations
@@ -941,14 +976,26 @@ export class GeneratorComponent implements OnInit {
 
     let enabledChildren = false;
 
-    if (setting["type"] === "Checkbutton" || setting["type"] === "Radiobutton" || setting["type"] === "Combobox") {
+    if (setting["type"] === "Checkbutton" || setting["type"] === "Radiobutton" || setting["type"] === "Combobox" || setting["type"] === "SearchBox") {
 
-      //Get current option
-      let currentOption = this.findOption(setting.options, this.global.generator_settingsMap[setting.name]);
+      if (setting["type"] === "SearchBox") { //Special handling for type "SearchBox"
 
-      if (currentOption) {
-        if (this.executeVisibilityForSetting(currentOption, true))
-          enabledChildren = true;
+        //Get every option currently added to the list
+        if (this.global.generator_settingsMap[setting.name] && this.global.generator_settingsMap[setting.name].length > 0) {
+          this.global.generator_settingsMap[setting.name].forEach(selectedItem => {
+            if (this.executeVisibilityForSetting(selectedItem, true))
+              enabledChildren = true;
+          });
+        }
+      }
+      else { //Every other settings type
+        //Get currently selected option
+        let currentOption = this.findOption(setting.options, this.global.generator_settingsMap[setting.name]);
+
+        if (currentOption) {
+          if (this.executeVisibilityForSetting(currentOption, true))
+            enabledChildren = true;
+        }
       }
     }
 
@@ -962,18 +1009,25 @@ export class GeneratorComponent implements OnInit {
       if (skipSetting && checkSetting.name === skipSetting || !this.global.generator_settingsVisibilityMap[checkSetting.name]) //Disabled settings can not alter visibility anymore
         return;
 
-      if (checkSetting["type"] === "Checkbutton" || checkSetting["type"] === "Radiobutton" || checkSetting["type"] === "Combobox") {
+      if (checkSetting["type"] === "Checkbutton" || checkSetting["type"] === "Radiobutton" || checkSetting["type"] === "Combobox" || checkSetting["type"] === "SearchBox") {
 
-        let targetOption = checkSetting.options.find(option => {
+        if (checkSetting["type"] === "SearchBox") { //Special handling for type "SearchBox"
+          //Call checkVisibility right away which will perform a full list check
+          this.checkVisibility({ value: this.global.generator_settingsMap[checkSetting.name] }, checkSetting, null, null, disableOnly, noValueChange);
+        }
+        else { //Every other settings type
 
-          if (option.name === this.global.generator_settingsMap[checkSetting.name])
-            return true;
+          let targetOption = checkSetting.options.find(option => {
 
-          return false;
-        });
+            if (option.name === this.global.generator_settingsMap[checkSetting.name])
+              return true;
 
-        if (targetOption) {
-          this.checkVisibility({ value: this.global.generator_settingsMap[checkSetting.name] }, checkSetting, targetOption, null, disableOnly, noValueChange);
+            return false;
+          });
+
+          if (targetOption) {
+            this.checkVisibility({ value: this.global.generator_settingsMap[checkSetting.name] }, checkSetting, targetOption, null, disableOnly, noValueChange);
+          }
         }
       }
     })));
