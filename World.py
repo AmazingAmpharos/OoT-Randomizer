@@ -108,9 +108,8 @@ class World(object):
 
         # Allows us to cut down on checking whether some items are required
         self.max_progressions = {
-                item: value[3]['progressive']
+                item: value[3].get('progressive', 1) if value[3] else 1
                 for item, value in item_table.items()
-                if value[3] and 'progressive' in value[3]
         }
         max_tokens = 0
         if self.bridge == 'tokens':

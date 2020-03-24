@@ -569,7 +569,7 @@ def create_playthrough(spoiler):
             location.item = None
 
             # An item can only be required if it isn't already obtained or if it's progressive
-            if search.state_list[old_item.world.id].item_count(old_item.name) < old_item.world.max_progressions.get(old_item.name, 1):
+            if search.state_list[old_item.world.id].item_count(old_item.name) < old_item.world.max_progressions[old_item.name]:
                 # Test whether the game is still beatable from here.
                 logger.debug('Checking if %s is required to beat the game.', old_item.name)
                 if not search.can_beat_game():
