@@ -1544,16 +1544,31 @@ setting_infos = [
             ],
         },
     ),
-    Checkbutton(
+    Combobox(
         name           = 'open_kakariko',
-        gui_text       = 'Open Kakariko Gate',
+        gui_text       = 'Kakariko Gate',
+        default        = 'closed',
+        choices        = {
+            'open':   'Open Gate',
+            'zelda':  "Zelda's Letter Opens Gate",
+            'closed': 'Closed Gate',
+            },
         gui_tooltip    = '''\
-            The gate in Kakariko Village to Death Mountain Trail
-            is always open instead of needing Zelda's Letter.
-            The Happy Mask shop opens upon obtaining Zelda's
-            Letter without requiring showing it to the guard.
-
-            Either way, the gate is always open as an adult.
+            This changes the behavior of the Kakario Gate to
+            Death Mountain Trail as child. The gate is always
+            open as adult.
+            
+            "Open Gate": The gate is always open instead of
+            needing Zelda's Letter. The Happy Mask Shop opens
+            upon obtaining Zelda's Letter without requiring
+            showing it to the guard.
+            
+            "Zelda's Letter Opens Gate": The gate is closed at
+            the start, but opens automatically along with the
+            Happy Mask Shop upon obtaining Zelda's Letter.
+            
+            "Closed": The gate and Happy Mask Shop remain closed
+            until showing Zelda's Letter to the guard in Kakariko.
         ''',
         shared         = True,
         gui_params     = {

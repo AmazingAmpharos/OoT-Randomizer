@@ -1007,8 +1007,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     rom.write_int16(0x00E1F3CC, 0x5036)
 
     # Make the Kakariko Gate not open with the MS
-    if not world.open_kakariko:
+    if world.open_kakariko != 'open':
         rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
+    if world.open_kakariko == 'closed':
         rom.write_byte(rom.sym('OPEN_KAKARIKO'), 0)
     else:
         rom.write_byte(rom.sym('OPEN_KAKARIKO'), 1)
