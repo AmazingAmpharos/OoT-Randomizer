@@ -7,6 +7,7 @@ from Entrance import Entrance
 from HintList import getRequiredHints
 from Hints import get_hint_area
 from Item import Item, ItemFactory, MakeEventItem
+from ItemList import item_table
 from Location import Location, LocationFactory
 from LocationList import business_scrubs
 from Region import Region, TimeOfDay
@@ -105,6 +106,20 @@ class World(object):
 
         self.always_hints = [hint.name for hint in getRequiredHints(self)]
 
+        # Allows us to cut down on checking whether some items are required
+        self.max_progressions = {
+                item: value[3].get('progressive', 1) if value[3] else 1
+                for item, value in item_table.items()
+        }
+        max_tokens = 0
+        if self.bridge == 'tokens':
+            max_tokens = self.bridge_tokens
+        tokens = [50, 40, 30, 20, 10]
+        for t in tokens:
+            if t > max_tokens and f'{t} Gold Skulltula Reward' not in self.disabled_locations:
+                max_tokens = t
+        self.max_progressions['Gold Skulltula Token'] = max_tokens
+
 
     def copy(self):
         new_world = World(self.id, self.settings)
@@ -135,6 +150,7 @@ class World(object):
             setattr(new_world, randomized_item, getattr(self, randomized_item))
 
         new_world.always_hints = list(self.always_hints)
+        new_world.max_progressions = copy.copy(self.max_progressions)
 
         return new_world
 
