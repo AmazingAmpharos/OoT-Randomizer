@@ -85,6 +85,11 @@ player.
 
 ## Changelog
 
+### Dev
+
+#### Other Changes
+* Performance improvements to seed generation.
+
 ### 5.2
 
 #### New Features
