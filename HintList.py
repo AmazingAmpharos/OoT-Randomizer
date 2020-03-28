@@ -452,7 +452,7 @@ hintTable = {
     'lacs_dungeons':                                            ("all Spiritual Stones and Medallions", None, 'lacs'),
 
     'Spiritual Stone Text Start':                               ("3 Spiritual Stones found in Hyrule...", None, 'altar'),
-    'Child Altar Text End':                                     ("\x13\x08Ye who may become a Hero...&Stand with the Ocarina of Time&and play the Song of Time.", None, 'altar'),
+    'Child Altar Text End':                                     ("\x13\x08Ye who may become a Hero...&Stand with the Ocarina and&play the Song of Time.", None, 'altar'),
     'Adult Altar Text Start':                                   ("When evil rules all, an awakening&voice from the Sacred Realm will&call those destined to be Sages,&who dwell in the \x05\x41five temples\x05\x40.", None, 'altar'),
 
     'Validation Line':                                          ("Hmph... Since you made it this far,&I'll let you know what glorious&prize of Ganon's you likely&missed out on in my tower.^Behold...^", None, 'validation line'),
