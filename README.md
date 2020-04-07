@@ -89,6 +89,7 @@ player.
 
 #### Other Changes
 * Performance improvements to seed generation.
+* Updated development n64 compilation process to use latest available toolchain.
 
 ### 5.2
 
