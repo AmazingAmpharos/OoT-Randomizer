@@ -111,6 +111,24 @@ magic_colors = {
     "White":             Color(0xFF, 0xFF, 0xFF),
 }
 
+#                   A Button                 B Button                 C Button                 Start Button
+#                   Text Cursor              Shop Cursor              Save/Death Cursor
+#                   Pause Menu A Cursor      Pause Menu C Cursor
+#                   Pause Menu A Icon        Pause Menu C Icon
+#                   A Note                   C Note
+button_colors = {
+    "N64":         (Color(0x5A, 0x5A, 0xFF), Color(0x00, 0x96, 0x00), Color(0xFF, 0xA0, 0x00), Color(0xC8, 0x00, 0x00),
+                    Color(0x00, 0x50, 0xC8), Color(0x00, 0x50, 0xFF), Color(0x64, 0x64, 0xFF),
+                    Color(0x00, 0x32, 0xFF), Color(0xFF, 0xFF, 0x00),
+                    Color(0x00, 0x64, 0xFF), Color(0xFF, 0x96, 0x00),
+                    Color(0x50, 0x96, 0xFF), Color(0xFF, 0xFF, 0x32)),
+
+    "GameCube":    (Color(0x00, 0xC8, 0x32), Color(0xFF, 0x1E, 0x1E), Color(0xFF, 0xA0, 0x00), Color(0x78, 0x78, 0x78),
+                    Color(0x00, 0xC8, 0x50), Color(0x00, 0xFF, 0x50), Color(0x64, 0xFF, 0x64),
+                    Color(0x00, 0xFF, 0x32), Color(0xFF, 0xFF, 0x00),
+                    Color(0x00, 0xFF, 0x64), Color(0xFF, 0x96, 0x00),
+                    Color(0x50, 0xFF, 0x96), Color(0xFF, 0xFF, 0x32)),
+}
 
 meta_color_choices = ["Random Choice", "Completely Random", "Custom Color"]
 
@@ -164,6 +182,14 @@ def get_magic_colors():
 
 def get_magic_color_options():
     return meta_color_choices + get_magic_colors()
+
+
+def get_button_colors():
+    return list(button_colors.keys())
+
+
+def get_button_color_options():
+    return ["Random Choice", "Completely Random"] + get_button_colors()
 
 
 def patch_targeting(rom, settings, log, symbols):
@@ -395,7 +421,6 @@ def patch_gauntlet_colors(rom, settings, log, symbols):
 
 
 def patch_heart_colors(rom, settings, log, symbols):
-    # patch tunic colors
     hearts = [
         ('Heart Colors', settings.heart_color, symbols['CFG_HEART_COLOR'], 0xBB0994),
     ]
@@ -441,6 +466,84 @@ def patch_magic_colors(rom, settings, log, symbols):
             magic_option = 'Custom'
         rom.write_int16s(symbol, color)
         log.magic_colors[magic_color] = dict(option=magic_option, color=''.join(['{:02X}'.format(c) for c in color]))
+
+
+def patch_button_colors(rom, settings, log, symbols):
+    # Since these are all one option, handle random choice for all of them first.
+    if settings.button_colors == 'Random Choice':
+        button_option = random.choice(list(button_colors.keys()))
+    else:
+        button_option = settings.button_colors
+
+    buttons = [
+        ('A Button Color', symbols['CFG_A_BUTTON_COLOR'], None),
+        ('B Button Color', symbols['CFG_B_BUTTON_COLOR'], None),
+        ('C Button Color', symbols['CFG_C_BUTTON_COLOR'], None),
+        ('Start Button Color', None, [(0xAE9EC6, 0xAE9EC7, 0xAE9EDA)]),
+    ]
+
+    colors_picked = {}
+
+    i = 0
+    for button, symbol, byte_addresses in buttons:
+        # handle completely random
+        if button_option == 'Completely Random':
+            color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+        # grab the color from the list
+        elif button_option in button_colors:
+            color = list(button_colors[button_option][i])
+        else:
+            # Custom color not supported for these right now.
+            log.error = "%s is an incorrect value. Skipping patching for that button." % button
+            continue
+
+        if symbol:
+            rom.write_int16s(symbol, color)
+
+        if byte_addresses:
+            for r_addr, g_addr, b_addr in byte_addresses:
+                rom.write_byte(r_addr, color[0])
+                rom.write_byte(g_addr, color[1])
+                rom.write_byte(b_addr, color[2])
+
+        colors_picked[button] = color
+        log.button_colors[button] = dict(option=button_option, color=''.join(['{:02X}'.format(c) for c in color]))
+        i += 1
+
+    extra_patches = [
+        ('Text Cursor Color', 'A Button Color', symbols['CFG_TEXT_CURSOR_COLOR'], 
+            [(0xB88E81, 0xB88E85, 0xB88E9)]), # Initial Inner Color
+        ('Shop Cursor Color', 'A Button Color', symbols['CFG_SHOP_CURSOR_COLOR'], None),
+        ('Save/Death Cursor Color', 'A Button Color', None, 
+            [(0xBBEBC2, 0xBBEBC3, 0xBBEBD6), (0xBBEDDA, 0xBBEDDB, 0xBBEDDE)]), # Save Cursor / Death Cursor
+        ('Pause Menu A Cursor Color', 'A Button Color', None, 
+            [(0xBC7849, 0xBC784B, 0xBC784D), (0xBC78A9, 0xBC78AB, 0xBC78AD), (0xBC78BB, 0xBC78BD, 0xBC78BF)]), # Inner / Pulse 1 / Pulse 2
+        ('Pause Menu C Cursor Color', 'C Button Color', None, 
+            [(0xBC7843, 0xBC7845, 0xBC7847), (0xBC7891, 0xBC7893, 0xBC7895), (0xBC78A3, 0xBC78A5, 0xBC78A7)]), # Inner / Pulse 1 / Pulse 2
+        ('Pause Menu A Icon Color', 'A Button Color', None, [(0x845754, 0x845755, 0x845756)]),
+        ('Pause Menu C Icon Color', 'C Button Color', None, [(0x8456FC, 0x8456FD, 0x8456FE)]),
+        ('A Note Color', 'A Button Color', symbols['CFG_A_NOTE_COLOR'], # For Textbox Song Display
+            [(0xBB299A, 0xBB299B, 0xBB299E), (0xBB2C8E, 0xBB2C8F, 0xBB2C92), (0xBB2F8A, 0xBB2F8B, 0xBB2F96)]), # Pause Menu Song Display 
+        ('C Note Color', 'C Button Color', symbols['CFG_C_NOTE_COLOR'], # For Textbox Song Display
+            [(0xBB2996, 0xBB2997, 0xBB29A2), (0xBB2C8A, 0xBB2C8B, 0xBB2C96), (0xBB2F86, 0xBB2F87, 0xBB2F9A)]), # Pause Menu Song Display
+    ]
+
+    for patch, reference, symbol, byte_addresses in extra_patches:
+        if button_option != 'Completely Random':
+            color = list(button_colors[button_option][i])
+        else:
+            color = colors_picked[reference]
+
+        if symbol:
+            rom.write_int16s(symbol, color)
+
+        if byte_addresses:
+            for r_addr, g_addr, b_addr in byte_addresses:
+                rom.write_byte(r_addr, color[0])
+                rom.write_byte(g_addr, color[1])
+                rom.write_byte(b_addr, color[2])
+
+        i += 1
 
 
 def patch_sfx(rom, settings, log, symbols):
@@ -549,7 +652,30 @@ patch_sets = {
             "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x0011,
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x0012,
         }
-    }
+    },
+    0x1F073FC9: {
+        "patches": [
+            patch_dpad,
+            patch_sword_trails,
+            patch_heart_colors,
+            patch_magic_colors,
+            patch_button_colors,
+        ],
+        "symbols": {
+            "CFG_MAGIC_COLOR": 0x0004,
+            "CFG_HEART_COLOR": 0x000A,
+            "CFG_A_BUTTON_COLOR": 0x0010,
+            "CFG_B_BUTTON_COLOR": 0x0016,
+            "CFG_C_BUTTON_COLOR": 0x001C,
+            "CFG_TEXT_CURSOR_COLOR": 0x0022,
+            "CFG_SHOP_CURSOR_COLOR": 0x0028,
+            "CFG_A_NOTE_COLOR": 0x002E,
+            "CFG_C_NOTE_COLOR": 0x0034,
+            "CFG_DISPLAY_DPAD": 0x003A,
+            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x003B,
+            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x003C,
+        }
+    },
 }
 
 
@@ -612,6 +738,7 @@ class CosmeticsLog(object):
         self.gauntlet_colors = {}
         self.heart_colors = {}
         self.magic_colors = {}
+        self.button_colors = {}
         self.sfx = {}
         self.bgm = {}
         self.error = None
@@ -675,6 +802,10 @@ class CosmeticsLog(object):
         for magic, options in self.magic_colors.items():
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=magic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+
+        for button, options in self.button_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=button+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         output += '\n\nSFX:\n'
         for key, value in self.sfx.items():

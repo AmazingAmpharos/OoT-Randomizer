@@ -87,6 +87,11 @@ player.
 
 ### Dev
 
+### Updated Settings
+* HUD Button Colors
+  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme.
+  * Or you can completely randomize all the button colors.
+
 #### Other Changes
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.

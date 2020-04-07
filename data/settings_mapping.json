@@ -369,7 +369,8 @@
           "row_span": [6,6,6],
           "settings": [
             "heart_color",
-            "magic_color"
+            "magic_color",
+            "button_colors"
           ]
         },
         {
