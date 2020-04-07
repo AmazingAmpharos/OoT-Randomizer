@@ -726,22 +726,19 @@ skip_GS_BGS_text:
     jal     empty_bomb
     or      s0, a0, r0
 
-; Replaces:
-;or      a0, s1, r0
-;bnel    v0, 0 
-;lh      t8, 0(v0)
-;jal     func_808326A0            
-;or      a1, s0, r0
-;b
-;addiu   v0, r0, 1
+.orga 0xBD1190 ;branch over unused code
+    .word 0x10000006
+    nop
+.orga 0xBCDD4F ;change branch targets so empty bomb code is not skipped
+    .byte 0x0D
+.orga 0xBCDD5F
+    .byte 0x09
 
-.orga 0xBD1190
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
+.orga 0xBCDD7C ;reorder instructions so branch can work
+    and     t7, t6, at
+    sw      t7, 0x066C(s0)
+    ;jal to empty bomb code
+.orga 0xBCDD88
     nop
 
 ;==================================================================================================

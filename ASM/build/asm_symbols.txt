@@ -8,6 +8,9 @@
 00B17BD4 .byt:0004
 00B529A0 skip_GS_BGS_text
 00BAF750 .byt:0048
+00BCDD4F .byt:0001
+00BCDD5F .byt:0001
+00BD1190 .dbl:0004
 00BDA354 @@after_chest_speed_check
 00CC453C .dbl:0004
 00D74990 skip_steal_tunic
