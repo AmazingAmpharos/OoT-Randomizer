@@ -713,15 +713,36 @@ nop
 skip_GS_BGS_text:
 
 ;==================================================================================================
-; Empty bomb fix
+; Empty Bomb Fix
 ;==================================================================================================
 
 ; Replaces:
-;   lw      a1, 0x0018 (sp) ; bomb ovl+134
-;   lw      a0, 0x001C (sp)
-.orga 0xC0E404
-    jal     empty_bomb_fix
-    lw      a1, 0x0018 (sp)
+;or      s0, a0, r0
+;or      s1, a1, r0
+;sw      ra, 0x1C(sp)
+
+.orga 0xBD112C
+    sw      ra, 0x1C(sp)
+    jal     empty_bomb
+    or      s0, a0, r0
+
+; Replaces:
+;or      a0, s1, r0
+;bnel    v0, 0 
+;lh      t8, 0(v0)
+;jal     func_808326A0            
+;or      a1, s0, r0
+;b
+;addiu   v0, r0, 1
+
+.orga 0xBD1190
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
 
 ;==================================================================================================
 ; Damage Multiplier

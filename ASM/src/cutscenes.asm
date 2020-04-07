@@ -278,6 +278,9 @@ warp_speedup:
     addu   t2, t1, t2 
     lh     t1, 0x0(t2) 
     sh     t1, 0x1956(t0) ;next entrance 
+    la     t4, 0x801D84A0 ;globalctx+10000
+    li     t1, 0x03
+    sb     t1, 0x1E5E(t4) ;transition fade type
     li     t1, 0x14
     sb     t1, 0x1951(t0) ;scene load flag
     la     t0, SAVE_CONTEXT
