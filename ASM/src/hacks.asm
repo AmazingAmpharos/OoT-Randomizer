@@ -717,30 +717,13 @@ skip_GS_BGS_text:
 ;==================================================================================================
 
 ; Replaces:
-;or      s0, a0, r0
-;or      s1, a1, r0
-;sw      ra, 0x1C(sp)
+;sw      r0, 0x0428(v0)
+;sw      t5, 0x066C(v0)
 
-.orga 0xBD112C
-    sw      ra, 0x1C(sp)
+.orga 0xC0E77C
     jal     empty_bomb
-    or      s0, a0, r0
-
-.orga 0xBD1190 ;branch over unused code
-    .word 0x10000006
-    nop
-.orga 0xBCDD4F ;change branch targets so empty bomb code is not skipped
-    .byte 0x0D
-.orga 0xBCDD5F
-    .byte 0x09
-
-.orga 0xBCDD7C ;reorder instructions so branch can work
-    and     t7, t6, at
-    sw      t7, 0x066C(s0)
-    ;jal to empty bomb code
-.orga 0xBCDD88
-    nop
-
+    sw      r0, 0x0428(v0)
+    
 ;==================================================================================================
 ; Damage Multiplier
 ;==================================================================================================

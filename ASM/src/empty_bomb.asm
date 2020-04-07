@@ -1,20 +1,12 @@
-;move the call to 8038C110 to the beginning of the function guarded by a null check for the grabbed actor
-;this is the exact fix they did in 1.1 to patch empty bomb
+;At the end of the bombs explosion it sets a bunch of variables if Link is still holding the bomb instance.
+;This hooks into that check and sets three additional variables to prevent empty bomb
+;This is NOT the same fix that was made in version 1.1 of the game. 
+;Doing it this way prevents the Bomb OI glitch that the OoT devs added in 1.1 and onwards.
 
 empty_bomb:
-   ;displaced
-   or      s1, a1, r0
-
-   addiu   sp, sp, -0x10
-   sw      ra, 0x04(sp)
-   lw      t6, 0x039C(a0) ;link grabbed actor
-   bnez    t6, @@return     ;return if null
-   nop
-   or      a0, a1, r0
-   jal     0x8038B040     ;clear action parameter related things
-   or      a1, s0, r0
-
-@@return:
-   lw     ra, 0x04(sp)
-   jr     ra
-   addiu  sp, sp, 0x10
+   sw      t5, 0x066C(v0) ;displaced
+   sb      r0, 0x141(v0)  ;Action Parameter 1
+   sb      r0, 0x144(v0)  ;Action Parameter 2
+   li      t6, 0xFE
+   jr      ra
+   sb      t6, 0x142(v0)  ;Last Held Item ID
