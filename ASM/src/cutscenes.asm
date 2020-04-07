@@ -215,6 +215,7 @@ set_dungeon_knowledge:
 
     jr      ra
     nop
+;==================================================================================================
 
 ;Break free of the talon cutscene after event flag is set
 
@@ -260,6 +261,14 @@ talon_break_free:
     jr     ra
     addiu    sp, sp, 0x20
 
+;==================================================================================================
+
+PLAYED_WARP_SONG:
+.byte 0x00
+.align 4
+
+;When a warp song is played, index the list of warp entrances in Links overlay and trigger a warp manually
+;PLAYED_WARP_SONG is set so that the white fade in can be used on the other side of the warp
 warp_speedup:
 
     la     t2, 0x800FE49C ;pointer to links overlay in RAM 
@@ -283,6 +292,8 @@ warp_speedup:
     sb     t1, 0x1E5E(t4) ;transition fade type
     li     t1, 0x14
     sb     t1, 0x1951(t0) ;scene load flag
+    li     t1, 0x01       ;set warp flag for correct fade in
+    sb     t1, PLAYED_WARP_SONG
     la     t0, SAVE_CONTEXT
     lh     t1, 0x13D2(t0) ; Timer 2 state
     beqz   t1, @@return
@@ -295,6 +306,24 @@ warp_speedup:
     jr     ra
     nop
 
+;If PLAYED_WARP_SONG is set, override the transition fade-in type to be 03 (medium speed white)
+set_fade_in:
+    ori    at, at, 0x241C ;displaced
+
+    la     t5, PLAYED_WARP_SONG
+    lb     t1, 0x00(t5)
+    beqz   t1, @@return
+    la     t4, 0x801D84A0  ;globalctx+10000
+    li     t1, 0x03
+    sb     t1, 0x1E5E(t4)  ;transition fade type
+    sb     r0, 0x00(t5)    ;clear warp song flag
+
+    @@return:
+    jr     ra
+    nop
+
+;==================================================================================================
+
 ; Prevent hyrule castle guards from causing a softlock.
 guard_catch:
     la      v0, GLOBAL_CONTEXT
@@ -305,6 +334,8 @@ guard_catch:
     li      at, 0x14
     jr      ra
     sb      at, 0x1E15(v0) ; trigger load
+
+;==================================================================================================
 
 ; Allow any entrance to kak to play burning cutscene
 burning_kak:
@@ -342,6 +373,7 @@ burning_kak:
     lw      a0, 0x18(sp)
     jr      ra
     addiu   sp, sp, 0x18
+;==================================================================================================
 
 ; In ER, set the "Obtained Epona" Flag after winning Ingo's 2nd race
 ingo_race_win:
@@ -357,6 +389,8 @@ ingo_race_win:
     li      t0, 0
     jr      ra
     sw      t9, 0x0000(t7)              ; Displaced Code
+
+;==================================================================================================
 
 ; In ER, Rectify the "Getting Caught By Gerudo" entrance index if necessary, based on the age and current scene
 ; Adult should be placed at the fortress entrance when getting caught in the fortress without a hookshot, instead of being thrown in the valley
