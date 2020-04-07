@@ -87,10 +87,13 @@ player.
 
 ### Dev
 
-### Updated Settings
-* HUD Button Colors
+### New Features
+* New cosmetic setting `HUD Button Colors`
   * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme.
   * Or you can completely randomize all the button colors.
+* New cosmetic setting `Item Model Colors Match Cosmetics`
+  * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
+  * Tunics are not affected, in order to keep freestanding tunics recognizable.
 
 #### Other Changes
 * Performance improvements to seed generation.

@@ -2780,6 +2780,19 @@ setting_infos = [
         default        = True,
     ),
     Checkbutton(
+        name           = 'correct_model_colors',
+        gui_text       = 'Item Model Colors Match Cosmetics',
+        gui_tooltip    = '''\
+            Ingame models for items such as Heart Containers have 
+            colors matching the colors chosen for cosmetic settings.
+            Heart and magic drop icons also have matching colors.
+
+            Tunic colors are excluded from this to prevent not being 
+            able to discern freestanding Tunics from each other.
+        ''',
+        default        = False,
+    ),
+    Checkbutton(
         name           = 'randomize_all_cosmetics',
         gui_text       = 'Randomize All Cosmetics',
         gui_tooltip    = '''\
@@ -2790,7 +2803,6 @@ setting_infos = [
             True : {'sections' : [ "equipment_section", "ui_section", "navi_section" ]
             }
         }
-
     ),
     Setting_Info(
         name           = 'kokiri_color',
