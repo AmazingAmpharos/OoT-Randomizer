@@ -1542,7 +1542,50 @@ skip_GS_BGS_text:
 ; Replaces: lhu     t0, 0x0EDA(v0)
 ;           or      a0, s0, zero
 ;           andi    t1, t0, 0x0008
+
 .orga 0xE565D0
     jal     kz_moved_check
     nop
     or      a0, s0, zero
+
+;==================================================================================================
+; Make Twinrova Wait For Link
+;==================================================================================================
+
+;Hook into twinrova update function and check for links height
+; Replaces: 
+;           sw      s2, 0x44(sp)
+;           sw      s0, 0x3C(sp)
+
+.orga 0xD68D68
+    jal     rova_check_pos
+    sw      s2, 0x44(sp)
+
+;If the height check hasnt been met yet, branch to the end of the update function
+;This freezes twinrova until the condition is met
+; Replaces: 
+;           sdc1    f24, 0x30(sp)
+;           lw      s2, 0x1C44(s3)
+;           addiu   t6, r0, 0x03
+;           sb      t6, 0x05B0(s1)
+;           lbu     t7, 0x07AF(s3)
+;           mfc1    a2, f22
+;           mfc1    a3, f20
+
+.orga 0xD68D70
+    la      t1, START_TWINROVA_FIGHT
+    lb      t1, 0x00(t1)
+    beqz    t1, @Twinrova_Update_Return
+    lw      ra, 0x4C(sp)
+    jal     twinrova_displaced
+    sdc1    f24, 0x30(sp)
+
+.orga 0xD69398
+@Twinrova_Update_Return:
+
+;Remove the function call to set the boss music in Init
+; Replaces: 
+;           jal     800CAA70
+
+.orga 0xD62128
+    nop

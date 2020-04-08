@@ -83,6 +83,7 @@ RANDO_CONTEXT:
 .include "deku_mouth_condition.asm"
 .include "audio.asm"
 .include "king_zora.asm"
+.include "twinrova_wait.asm"
 .include "agony.asm"
 
 .align 0x10
