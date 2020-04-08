@@ -1589,3 +1589,16 @@ skip_GS_BGS_text:
 
 .orga 0xD62128
     nop
+
+;==================================================================================================
+; Fix Links Angle in Fairy Fountains
+;==================================================================================================
+
+;Hook great fairy update function and set position/angle when conditions are met
+; Replaces: 
+;           or      a0, s0, r0
+;           or      a1, s1, r0
+
+.orga 0xC8B24C
+    jal     fountain_set_posrot
+    or      a0, s0, r0

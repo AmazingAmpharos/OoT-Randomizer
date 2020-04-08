@@ -427,3 +427,41 @@ gerudo_caught_entrance:
 @@return:
     jr      ra
     nop
+
+;==================================================================================================
+;After Link recieves an item in a fairy fountain, fix position and angle to be as if the cutscene finished
+;IF GET_ITEM_TRIGGERED IS 1 AND GET ITEM IS 0, DO THE FIX
+
+GET_ITEM_TRIGGERED:
+.byte 0x00
+.align 4
+
+fountain_set_posrot:
+    or      a1, s1, r0 ;displaced
+
+    la      t1, GET_ITEM_TRIGGERED
+    la      t2, PLAYER_ACTOR
+    lb      t3, 0x424(t2) ;Get Item
+    beqz    t3, @@skip_set
+    li      t4, 0x1
+    sb      t4, 0x0(t1)
+    @@skip_set:
+    lb      t4, 0x0(t1) ;GET_ITEM_TRIGGERED
+    beqz    t4, @@return
+    nop
+    bnez    t3, @@return
+    li      t5, 0x8000
+    sh      t5, 0xB6(t2) ;set angle
+    li      t5, 0xC1A00000
+    sw      t5, 0x24(t2) ;set x
+    li      t5, 0x41200000 
+    sw      t5, 0x28(t2) ;set y
+    li      t5, 0xC4458000
+    sw      t5, 0x2C(t2) ;set z
+    sb      r0, 0x0(t1)  ;zero out item triggered
+
+    @@return:
+    jr      ra
+    nop
+
+
