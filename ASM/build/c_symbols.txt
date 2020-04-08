@@ -140,7 +140,7 @@ SYMBOL TABLE:
 00000000 g     F .text	00000008 agony_inside_radius_setup
 00000170 g     O .data	00000010 quest_items_sprite
 00001f50 g     F .text	00000088 after_key_received
-00004888 g     F .text	0000003c heap_alloc
+00004890 g     F .text	0000003c heap_alloc
 00000030 g     O .sbss	00000004 active_item_row
 00003438 g     F .text	0000003c after_game_state_update
 00000000         *UND*	00000000 NO_FOG_STATE
@@ -262,7 +262,7 @@ SYMBOL TABLE:
 00001520 g     F .text	00000018 extern_scene_init
 00003694 g     F .text	0000004c set_object_segment
 000001b4 g     F .text	00000064 draw_agony
-00004874 g     F .text	00000014 heap_init
+0000487c g     F .text	00000014 heap_init
 00003ad4 g     F .text	00000064 heart_container_draw
 00001028 g     O .bss	00000040 object_slots
 00002f7c g     F .text	00000020 give_small_key
@@ -277,10 +277,10 @@ SYMBOL TABLE:
 00000000         *UND*	00000000 CFG_A_BUTTON_COLOR
 00002520 g     F .text	00000028 sprite_bytes_per_tile
 0000307c g     F .text	0000003c get_item_row
-000048c4 g     F .text	00000044 file_init
+000048cc g     F .text	00000044 file_init
 000001b0 g     O .data	0000000c rupee_colors
 00000000         *UND*	00000000 EXTENDED_OBJECT_TABLE
-00004348 g     F .text	0000052c draw_triforce_count
+00004348 g     F .text	00000534 draw_triforce_count
 00000000         *UND*	00000000 PLAYER_NAME_ID
 00000000 g     O .sbss	00000004 cfg_dungeon_info_reward_need_altar
 00000000 g     O .sdata	00000004 cfg_dungeon_info_enable

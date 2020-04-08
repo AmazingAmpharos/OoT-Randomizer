@@ -97,6 +97,7 @@ player.
 
 #### Bug Fixes
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
+* Prevent an errant `@` from showing up in Triforce Hunt.
 
 #### Other Changes
 * Performance improvements to seed generation.
