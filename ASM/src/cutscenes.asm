@@ -430,7 +430,6 @@ gerudo_caught_entrance:
 
 ;==================================================================================================
 ;After Link recieves an item in a fairy fountain, fix position and angle to be as if the cutscene finished
-;IF GET_ITEM_TRIGGERED IS 1 AND GET ITEM IS 0, DO THE FIX
 
 GET_ITEM_TRIGGERED:
 .byte 0x00
