@@ -12,6 +12,7 @@
 #include "z64.h"
 #include "chests.h"
 #include "ganon.h"
+#include "twinrova.h"
 #include "extern_ctxt.h"
 #include "fog.h"
 
@@ -39,6 +40,7 @@ void after_game_state_update() {
 
 void after_scene_init() {
     check_ganon_entry();
+    clear_twinrova_flag();
     models_reset();
     extern_scene_init();
 }
