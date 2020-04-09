@@ -1495,7 +1495,7 @@ skip_GS_BGS_text:
     sw      t9, 0x0000(s1)
     lhu     t4, 0x0252(s7)
     move    at, v0
-    
+
 ;==================================================================================================
 ; Expand Audio Thread memory
 ;==================================================================================================
@@ -1547,6 +1547,34 @@ skip_GS_BGS_text:
     jal     kz_moved_check
     nop
     or      a0, s0, zero
+
+; ==================================================================================================
+; HUD Button Colors
+; ==================================================================================================
+; Fix HUD Start Button to allow a value other than 00 for the blue intensity
+; Replaces: andi    t6, t7, 0x00FF
+.orga 0xAE9ED8
+    ori     t6, t7, 0x0000 ; add blue intensity to the start button color (Value Mutated in Cosmetics.py)
+
+; Handle Dynamic Shop Cursor Colors
+.orga 0xC6FF30
+.area 0x4C, 0
+    mul.s   f16, f10, f0
+    mfc1    a1, f8          ; color delta 1 (for extreme colors)
+    trunc.w.s f18, f16
+    mfc1    a2, f18         ; color delta 2 (for general colors)
+    swc1    f0, 0x023C(a0)  ; displaced code
+
+    addiu   sp, sp, -0x18
+    sw      ra, 0x04(sp)
+    jal     shop_cursor_colors
+    nop
+    lw      ra, 0x04(sp)
+    addiu   sp, sp, 0x18
+
+    jr      ra
+    nop
+.endarea
 
 ;==================================================================================================
 ; Make Twinrova Wait For Link
@@ -1602,3 +1630,4 @@ skip_GS_BGS_text:
 .orga 0xC8B24C
     jal     fountain_set_posrot
     or      a0, s0, r0
+

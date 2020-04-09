@@ -2,7 +2,8 @@ import argparse
 import re
 import math
 import json
-from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options, get_gauntlet_color_options, get_magic_color_options, get_heart_color_options
+from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options,\
+    get_gauntlet_color_options, get_magic_color_options, get_heart_color_options, get_button_color_options
 from Location import LocationIterator
 import Sounds as sfx
 from Utils import data_path
@@ -2779,6 +2780,19 @@ setting_infos = [
         default        = True,
     ),
     Checkbutton(
+        name           = 'correct_model_colors',
+        gui_text       = 'Item Model Colors Match Cosmetics',
+        gui_tooltip    = '''\
+            Ingame models for items such as Heart Containers have 
+            colors matching the colors chosen for cosmetic settings.
+            Heart and magic drop icons also have matching colors.
+
+            Tunic colors are excluded from this to prevent not being 
+            able to discern freestanding Tunics from each other.
+        ''',
+        default        = False,
+    ),
+    Checkbutton(
         name           = 'randomize_all_cosmetics',
         gui_text       = 'Randomize All Cosmetics',
         gui_tooltip    = '''\
@@ -2789,7 +2803,6 @@ setting_infos = [
             True : {'sections' : [ "equipment_section", "ui_section", "navi_section" ]
             }
         }
-
     ),
     Setting_Info(
         name           = 'kokiri_color',
@@ -3179,6 +3192,31 @@ setting_infos = [
         choices        = get_magic_color_options(),
         default        = 'Green',
         gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
+    ),
+    Setting_Info(
+        name           = 'button_colors',
+        type           = str,
+        gui_text       = 'HUD Button Colors',
+        gui_type       = "Combobox",
+        shared         = False,
+        choices        = get_button_color_options(),
+        default        = 'N64',
+        gui_tooltip    = '''\
+            'N64': Default button colors.
+            'GameCube': Uses the button colors from
+            the GameCube releases of the game.
             'Random Choice': Choose a random
             color from this list of colors.
             'Completely Random': Choose a random

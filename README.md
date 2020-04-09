@@ -87,8 +87,23 @@ player.
 
 ### Dev
 
+#### New Features
+* New cosmetic setting `HUD Button Colors`
+  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme.
+  * Or you can completely randomize all the button colors.
+* New cosmetic setting `Item Model Colors Match Cosmetics`
+  * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
+  * Tunics are not affected, in order to keep freestanding tunics recognizable.
+
+#### Bug Fixes
+* Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
+* Prevent an errant `@` from showing up in Triforce Hunt.
+
 #### Other Changes
 * Performance improvements to seed generation.
+* Updated development n64 compilation process to use latest available toolchain.
+* Added decompressor source and updated Decompress binaries.
+* Mweep.
 
 ### 5.2
 
