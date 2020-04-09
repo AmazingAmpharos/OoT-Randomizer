@@ -437,28 +437,31 @@ GET_ITEM_TRIGGERED:
 .align 4
 
 fountain_set_posrot:
-    or      a1, s1, r0 ;displaced
+    or      a1, s1, r0     ;displaced
 
     la      t1, GET_ITEM_TRIGGERED
     la      t2, PLAYER_ACTOR
-    lb      t3, 0x424(t2) ;Get Item
-    beqz    t3, @@skip_set
+    lb      t3, 0x424(t2)  
+    beqz    t3, @@skip     ;dont set flag if get item is 0
+    lb      t6, 0x0(t1)    
+    bnez    t6, @@skip     ;skip setting flag if its already set
     li      t4, 0x1
-    sb      t4, 0x0(t1)
-    @@skip_set:
-    lb      t4, 0x0(t1) ;GET_ITEM_TRIGGERED
-    beqz    t4, @@return
+    sb      t4, 0x0(t1)    ;set flag
+    li      t5, 0xC1A00000
+    sw      t5, 0x24(t2)   ;set x
+    li      t5, 0x41200000 
+    sw      t5, 0x28(t2)   ;set y
+    li      t5, 0xC4458000
+    sw      t5, 0x2C(t2)   ;set z
+
+    @@skip:
+    beqz    t6, @@return
     nop
     bnez    t3, @@return
     li      t5, 0x8000
-    sh      t5, 0xB6(t2) ;set angle
-    li      t5, 0xC1A00000
-    sw      t5, 0x24(t2) ;set x
-    li      t5, 0x41200000 
-    sw      t5, 0x28(t2) ;set y
-    li      t5, 0xC4458000
-    sw      t5, 0x2C(t2) ;set z
-    sb      r0, 0x0(t1)  ;zero out item triggered
+    sh      t5, 0xB6(t2)   ;set angle
+
+    sb      r0, 0x0(t1)    ;set flag to 0
 
     @@return:
     jr      ra
