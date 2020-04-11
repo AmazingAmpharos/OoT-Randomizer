@@ -33,11 +33,6 @@ def getHintGroup(group, world):
     ret = []
     for name in hintTable:
 
-        # Some hints have a confusing text in the scope of grotto entrance shuffle so we exclude them
-        if world.shuffle_grotto_entrances:
-            if name == 'GS Hyrule Castle Grotto' or name == 'GS Hyrule Field Near Gerudo Valley':
-                continue
-
         hint = getHint(name, world.clearer_hints)
 
         if hint.name in world.always_hints:
@@ -186,6 +181,7 @@ hintTable = {
 
     'Deku Theater Mask of Truth':                               ("the #Mask of Truth# yields", None, 'always'),
     'Frog Ocarina Game':                                        (["an #amphibian feast# yields", "the #croaking choir's magnum opus# awards", "the #froggy finale# yields"], "the final reward from the #Frogs of Zora's River# is", 'always'),
+    'Links House Cow':                                          ("the #bovine bounty of a horseback hustle# gifts", "#Malon's obstacle course# leads to", 'always'),
 
     'Song from Ocarina of Time':                                ("the #Ocarina of Time# teaches", None, ['song', 'sometimes']),
     'Song from Composer Grave':                                 (["#ReDead in the Composers' Grave# guard", "the #Composer Brothers wrote#"], None, ['song', 'sometimes']),
@@ -214,13 +210,13 @@ hintTable = {
     'Goron City Leftmost Maze Chest':                           ("in #Goron City# the hammer unlocks", None, ['overworld', 'sometimes']),
     'Gerudo Valley Hammer Rocks Chest':                         ("in #Gerudo Valley# the hammer unlocks", None, ['overworld', 'sometimes']),
     'Gerudo Valley Cow':                                        ("a #cow in Gerudo Valley# gifts", None, ['overworld', 'sometimes']),
-    'GS Hyrule Castle Grotto':                                  ("a #storm near the castle# reveals", None, ['overworld', 'sometimes']),
-    'GS Hyrule Field Near Gerudo Valley':                       ("a #spider buried near the valley# holds", None, ['overworld', 'sometimes']),
-    'HF Grotto Cow':                                            ("a #cow buried near the valley# gifts", None, ['overworld', 'sometimes']),
+    'GS Hyrule Castle Grotto':                                  ("a #spider behind a muddy wall# in a grotto holds", None, ['overworld', 'sometimes']),
+    'GS Hyrule Field Near Gerudo Valley':                       ("a #spider behind webs# in a grotto holds", None, ['overworld', 'sometimes']),
+    'HF Grotto Cow':                                            ("a #cow behind webs# in a grotto gifts", None, ['overworld', 'sometimes']),
     'GS Zora\'s Fountain Hidden Cave':                          ("a spider high #above the icy waters# holds", None, ['overworld', 'sometimes']),
     'Haunted Wasteland Structure Chest':                        (["#deep in the wasteland# is", "beneath #the sands#, flames reveal"], None, ['overworld', 'sometimes']),
     'GS Wasteland Ruins':                                       ("a #spider in the wasteland# holds", None, ['overworld', 'sometimes']),
-    'Composer Grave Chest':                                     (["#darkness in the Composers' Grave# hides", "the #Composer Brothers hid#"], None, ['overworld', 'sometimes']),
+    'Composer Grave Chest':                                     (["#flames in the Composers' Grave# reveal", "the #Composer Brothers hid#"], None, ['overworld', 'sometimes']),
     'Zoras Fountain Bottom Freestanding PoH':                   ("#under the icy waters# lies", None, ['overworld', 'sometimes']),
     'Goron City Pot Freestanding PoH':                          ("spinning #Goron pottery# contains", None, ['overworld', 'sometimes']),
     'King Zora Thawed':                                         ("unfreezing #King Zora# grants", None, ['overworld', 'sometimes']),
@@ -235,10 +231,9 @@ hintTable = {
     'GS Jabu Jabu MQ Invisible Enemies Room':                   ("a spider surrounded by #shadows in the belly of a deity# holds", None, ['dungeon', 'sometimes']),
     'GS Jabu Jabu MQ Boomerang Room':                           ("a spider under a #temporal stone in the stomach of a deity# holds", None, ['dungeon', 'sometimes']),
     'Jabu Jabus Belly MQ Cow':                                  ("a #cow swallowed by a deity# gifts", None, ['dungeon', 'sometimes']),
-    'Forest Temple Floormaster Chest':                          ("#shadows in the forest# guard", "a #Floormaster in the Forest Temple# guards", ['dungeon', 'sometimes']),
-    'Forest Temple MQ NE Outdoors Lower Chest':                 ("a chest on an #island in the forest# contains", "a chest on an #island in the Forest Temple# contains", ['dungeon', 'sometimes']),
     'Fire Temple Scarecrow Chest':                              ("a #scarecrow atop the volcano# hides", "#Pierre atop the Fire Temple# hides", ['dungeon', 'sometimes']),
-    'Fire Temple Megaton Hammer Chest':                         ("the #Flare Dancer atop the volcano# leads to", "the #Flare Dancer atop the Fire Temple# leads to", ['dungeon', 'sometimes']),
+    'Fire Temple Megaton Hammer Chest':                         ("the #Flare Dancer atop the volcano# guards a chest containing", "the #Flare Dancer atop the Fire Temple# guards a chest containing", ['dungeon', 'sometimes']),
+    'Fire Temple MQ West Tower Top Chest':                      ("the #Flare Dancer atop the volcano# guards a chest containing", "the #Flare Dancer atop the Fire Temple# guards a chest containing", ['dungeon', 'sometimes']),
     'GS Fire Temple MQ East Tower Top':                         ("a #spider under a block in the volcano# holds", "a #spider under a block in the Fire Temple# holds", ['dungeon', 'sometimes']),
     'Water Temple River Chest':                                 ("beyond the #river under the lake# waits", "beyond the #river in the Water Temple# waits", ['dungeon', 'sometimes']),
     'Water Temple Boss Key Chest':                              ("dodging #rolling boulders under the lake# leads to", "dodging #rolling boulders in the Water Temple# leads to", ['dungeon', 'sometimes']),
@@ -257,8 +252,8 @@ hintTable = {
     'Spirit Temple MQ Child Center Chest':                      ("a #temporal paradox in the Colossus# yields", "a #temporal paradox in the Spirit Temple# yields", ['dungeon', 'sometimes']),
     'Spirit Temple MQ Lower Adult Right Chest':                 ("a #symphony in the Colossus# yields", "a #symphony in the Spirit Temple# yields", ['dungeon', 'sometimes']),
     'GS Spirit Temple MQ Lower Adult Right':                    ("a #spider's symphony in the Colossus# yields", "a #spider's symphony in the Spirit Temple# yields", ['dungeon', 'sometimes']),
-    'Shadow Temple Hidden Floormaster Chest':                   ("#shadows in an invisible maze# guard", "a #Floormaster in the Shadow Temple# guards", ['dungeon', 'sometimes']),
-    'GS Shadow Temple Near Ship':                               ("a #spider near a boat# holds", None, ['dungeon', 'sometimes']),
+    'Shadow Temple Hidden Floormaster Chest':                   ("shadows in an #invisible maze# guard", None, ['dungeon', 'sometimes']),
+    'Shadow Temple MQ Bomb Flower Chest':                       ("shadows in an #invisible maze# guard", None, ['dungeon', 'sometimes']),
     'Shadow Temple MQ Beamos Silver Rupees Chest':              ("reaching #silver rupees above a Beamos# yields", None, ['dungeon', 'sometimes']),
 
     'Desert Colossus -> Desert Colossus Grotto':                ("lifting a #rock in the desert# reveals", None, 'entrance'),
