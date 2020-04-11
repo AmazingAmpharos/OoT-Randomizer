@@ -196,15 +196,6 @@ hintTable = {
     'Sheik in Kakariko':                                        ("a #ravaged village# mourns with", None, ['song', 'sometimes']),
     'Sheik at Colossus':                                        ("a hero ventures #beyond the wasteland# to learn", None, ['song', 'sometimes']),
 
-    'Child Fishing':                                            ("#fishing in youth# bestows", None, 'minigame'),
-    'Adult Fishing':                                            ("#fishing in maturity# bestows", None, 'minigame'),
-    'Child Shooting Gallery':                                   ("#shooting in youth# grants", None, 'minigame'),
-    'Adult Shooting Gallery':                                   ("#shooting in maturity# grants", None, ['minigame', 'sometimes']),
-    'Bombchu Bowling Piece of Heart':                           ("the #second explosive prize# is", None, 'minigame'),
-    'Treasure Chest Game':                                      (["#gambling# grants", "there is a #1/32 chance# to win"], "the #treasure chest game# grants", ['minigame', 'sometimes']),
-    'Horseback Archery 1500 Points':                            ("mastery of #horseback archery# grants", "scoring 1500 in #horseback archery# grants", ['minigame', 'sometimes']),
-    'Links House Cow':                                          ("the #bovine bounty of a horseback hustle# gifts", "#Malon's obstacle course# leads to", ['minigame', 'sometimes']),
-
     '10 Big Poes':                                              ("#ghost hunters# will be rewarded with", "catching #Big Poes# leads to", ['overworld', 'sometimes']),
     'Deku Theater Skull Mask':                                  ("the #Skull Mask# yields", None, ['overworld', 'sometimes']),
     'Ocarina of Time':                                          ("the #treasure thrown by Princess Zelda# is", None, ['overworld', 'sometimes']),
@@ -217,6 +208,8 @@ hintTable = {
     'Darunias Joy':                                             ("#Darunia's dance# leads to", None, ['overworld', 'sometimes']),
     'Skull Kid':                                                ("the #Skull Kid# grants", None, ['overworld', 'sometimes']),
     'Lake Hylia Sun':                                           ("staring into #the sun# grants", "shooting #the sun# grants", ['overworld', 'sometimes']),
+    'Treasure Chest Game':                                      (["#gambling# grants", "there is a #1/32 chance# to win"], "the #treasure chest game# grants", ['overworld', 'sometimes']),
+    'Horseback Archery 1500 Points':                            ("mastery of #horseback archery# grants", "scoring 1500 in #horseback archery# grants", ['overworld', 'sometimes']),
     'Heart Piece Grave Chest':                                  ("playing #Sun's Song# in a grave spawns", None, ['overworld', 'sometimes']),
     'Goron City Leftmost Maze Chest':                           ("in #Goron City# the hammer unlocks", None, ['overworld', 'sometimes']),
     'Gerudo Valley Hammer Rocks Chest':                         ("in #Gerudo Valley# the hammer unlocks", None, ['overworld', 'sometimes']),
@@ -496,7 +489,6 @@ def hintExclusions(world, clear_cache=False):
         if any(item in hint.type for item in 
                 ['always',
                  'sometimes',
-                 'minigame',
                  'overworld',
                  'dungeon',
                  'song']):
