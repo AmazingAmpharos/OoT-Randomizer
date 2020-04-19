@@ -408,7 +408,7 @@
         "region_name": "Temple of Time",
         "hint": "Temple of Time",
         "locations": {
-            "Zelda": "is_adult and can_trigger_lacs"
+            "Light Arrows Cutscene": "is_adult and can_trigger_lacs"
         },
         "exits": {
             "Castle Town": "True",
@@ -587,7 +587,7 @@
                 is_child and (Slingshot or has_bombchus or 
                     ( (Sticks or Kokiri_Sword) and
                     ( can_live_dmg(0.5) or Fairy or can_use(Nayrus_Love) ) ) )",
-            "GS Kakariko Above Impa's House": "can_use(Hookshot) and at_night",
+            "GS Kakariko Above Impas House": "can_use(Hookshot) and at_night",
             "Bug Rock": "has_bottle"
         },
         "exits": {
@@ -632,7 +632,7 @@
     {
         "region_name": "Impas House Back",
         "locations": {
-            "Impa House Freestanding PoH": "True",
+            "Impas House Freestanding PoH": "True",
             "Impas House Cow": "can_play(Eponas_Song)"
         }
     },

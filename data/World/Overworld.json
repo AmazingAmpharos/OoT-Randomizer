@@ -604,7 +604,7 @@
         "region_name": "Temple of Time",
         "hint": "Temple of Time",
         "locations": {
-            "Zelda": "is_adult and can_trigger_lacs"
+            "Light Arrows Cutscene": "is_adult and can_trigger_lacs"
         },
         "exits": {
             "Temple of Time Exterior": "True",
@@ -836,7 +836,7 @@
                 is_child and (Slingshot or has_bombchus or 
                     (logic_kakariko_tower_gs and (Sticks or Kokiri_Sword) and
                     (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love)))) and at_night",
-            "GS Kakariko Above Impa's House": "can_use(Hookshot) and at_night",
+            "GS Kakariko Above Impas House": "can_use(Hookshot) and at_night",
             "Bug Rock": "has_bottle"
         },
         "exits": {
@@ -851,7 +851,7 @@
                 'Drain Well' and (is_child or shuffle_dungeon_entrances)",
             "Kakariko Potion Shop Front": "is_child or at_day",
             "Kakariko Bombable Grotto": "can_open_bomb_grotto",
-            "Kakariko Impa Ledge": "
+            "Kakariko Impas Ledge": "
                 (is_child and at_day) or (is_adult and logic_visible_collisions) or can_use(Hookshot)",
             "Kakariko Rooftop": "
                 can_use(Hookshot) or 
@@ -865,7 +865,7 @@
         }
     },
     {
-        "region_name": "Kakariko Impa Ledge",
+        "region_name": "Kakariko Impas Ledge",
         "scene": "Kakariko Village",
         "hint": "Kakariko Village",
         "exits": {
@@ -927,10 +927,10 @@
     {
         "region_name": "Impas House Back",
         "locations": {
-            "Impa House Freestanding PoH": "True"
+            "Impas House Freestanding PoH": "True"
         },
         "exits": {
-            "Kakariko Impa Ledge": "True",
+            "Kakariko Impas Ledge": "True",
             "Impas House Near Cow": "True"
         }
     },
@@ -1187,7 +1187,7 @@
         "region_name": "Death Mountain Summit Owl Flight",
         "scene": "Death Mountain",
         "exits": {
-            "Kakariko Impa Ledge": "True"
+            "Kakariko Impas Ledge": "True"
         }
     },
     {

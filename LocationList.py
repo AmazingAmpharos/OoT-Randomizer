@@ -33,7 +33,7 @@ location_table = {
     "Top of Crater Grotto Chest":                      ("Chest",       0x3E,  0x1A, None,                     ("Death Mountain Crater", "Death Mountain", "Grottos")),
     "Treasure Chest Game":                             ("Chest",       0x10,  0x0A, None,                     ("the Market", "Castle Town", "Minigames")),
 
-    "Zelda":                                           ("Cutscene",    0xFF,  0x01, None,                     ("Temple of Time", "Castle Town",)),
+    "Light Arrows Cutscene":                                           ("Cutscene",    0xFF,  0x01, None,                     ("Temple of Time", "Castle Town",)),
     "Gift from Saria":                                 ("Cutscene",    0xFF,  0x02, None,                     ("the Lost Woods", "Forest",)),
     "Zoras Fountain Fairy Reward":                     ("Cutscene",    0xFF,  0x10, None,                     ("Zora's Fountain", "Fairies",)),
     "Hyrule Castle Fairy Reward":                      ("Cutscene",    0xFF,  0x11, None,                     ("Hyrule Castle", "Castle Town", "Fairies")),
@@ -98,7 +98,7 @@ location_table = {
     "Ocarina of Time":                                 ("NPC",         0x51,  0x0C, None,                     ("Hyrule Field", "Need Spiritual Stones",)),
     "Haunted Wasteland Bombchu Salesman":              ("NPC",         None,  None, None,                     ("Haunted Wasteland",)),
 
-    "Impa House Freestanding PoH":                     ("Collectable", 0x37,  0x01, None,                     ("Kakariko Village", "Kakariko",)),
+    "Impas House Freestanding PoH":                     ("Collectable", 0x37,  0x01, None,                     ("Kakariko Village", "Kakariko",)),
     "Tektite Grotto Freestanding PoH":                 ("Collectable", 0x3E,  0x01, None,                     ("Hyrule Field", "Grottos",)),
     "Windmill Freestanding PoH":                       ("Collectable", 0x48,  0x01, None,                     ("Kakariko Village", "Kakariko",)),
     "Dampe Race Freestanding PoH":                     ("Collectable", 0x48,  0x07, None,                     ("the Graveyard", "Kakariko", "Minigames")),
@@ -604,7 +604,7 @@ location_table = {
     "GS Kakariko Guard's House":                       ("GS Token",    0x10,  0x02, None,                     ("Kakariko Village", "Skulltulas",)),
     "GS Kakariko Tree":                                ("GS Token",    0x10,  0x20, None,                     ("Kakariko Village", "Skulltulas",)),
     "GS Kakariko Watchtower":                          ("GS Token",    0x10,  0x04, None,                     ("Kakariko Village", "Skulltulas",)),
-    "GS Kakariko Above Impa's House":                  ("GS Token",    0x10,  0x40, None,                     ("Kakariko Village", "Skulltulas",)),
+    "GS Kakariko Above Impas House":                  ("GS Token",    0x10,  0x40, None,                     ("Kakariko Village", "Skulltulas",)),
     "GS Graveyard Wall":                               ("GS Token",    0x10,  0x80, None,                     ("the Graveyard", "Skulltulas",)),
     "GS Graveyard Bean Patch":                         ("GS Token",    0x10,  0x01, None,                     ("the Graveyard", "Skulltulas",)),
     "GS Zora River Ladder":                            ("GS Token",    0x11,  0x01, None,                     ("Zora's River", "Skulltulas",)),

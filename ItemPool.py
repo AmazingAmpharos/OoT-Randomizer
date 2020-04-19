@@ -412,7 +412,7 @@ skulltula_locations = ([
     'GS Kakariko Guard\'s House',
     'GS Kakariko Tree',
     'GS Kakariko Watchtower',
-    'GS Kakariko Above Impa\'s House',
+    'GS Kakariko Above Impas House',
     'GS Graveyard Wall',
     'GS Graveyard Bean Patch',
     'GS Mountain Trail Bean Patch',
