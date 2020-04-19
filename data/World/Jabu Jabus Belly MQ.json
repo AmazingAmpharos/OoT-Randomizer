@@ -5,7 +5,7 @@
         "locations": {
             "Nut Pot": "True",
             "Jabu Jabus Belly MQ Map Chest": "can_blast_or_smash",
-            "Jabu Jabus Belly MQ Entry Side Chest": "can_use(Slingshot)"
+            "Jabu Jabus Belly MQ Entry Small Chest": "can_use(Slingshot)"
         },
         "exits": {
             "Zoras Fountain": "True",
@@ -24,8 +24,8 @@
             "Jabu Jabus Belly MQ Basement South Chest": "True",
             "Jabu Jabus Belly MQ Basement North Chest": "True",
             "Jabu Jabus Belly MQ Boomerang Room Small Chest": "True",
-            "MQ Boomerang Chest": "True",
-            "GS Jabu Jabu MQ Boomerang Room": "
+            "Jabu Jabus Belly MQ Boomerang Chest": "True",
+            "Jabu Jabus Belly MQ GS Boomerang Chest Room": "
                 can_play(Song_of_Time) or (logic_jabu_mq_sot_gs and can_use(Boomerang))"
         },
         "exits": {
@@ -38,8 +38,8 @@
         "dungeon": "Jabu Jabus Belly",
         "locations": {
             "Jabu Jabus Belly MQ Falling Like Like Room Chest": "True",
-            "GS Jabu Jabu MQ Tailpasaran Room": "Sticks or can_use(Dins_Fire)",
-            "GS Jabu Jabu MQ Invisible Enemies Room": "
+            "Jabu Jabus Belly MQ GS Tailpasaran Room": "Sticks or can_use(Dins_Fire)",
+            "Jabu Jabus Belly MQ GS Invisible Enemies Room": "
                 can_see_with_lens or
                 at('Jabu Jabus Belly Main', can_use(Hover_Boots))"
         },
@@ -54,9 +54,9 @@
         "locations": {
             "Jabu Jabus Belly MQ Cow" : "can_play(Eponas_Song)",
             "Jabu Jabus Belly MQ Near Boss Chest": "True",
-            "Barinade Heart": "True",
+            "Jabu Jabus Belly Barinade": "True",
             "Barinade": "True",
-            "GS Jabu Jabu MQ Near Boss": "True",
+            "Jabu Jabus Belly MQ GS Near Boss": "True",
             "Fairy Pot": "has_bottle"
         },
         "exits": {

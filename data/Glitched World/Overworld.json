@@ -30,13 +30,13 @@
             "Showed Mido Sword & Shield": "open_forest == 'open' or (is_child and Kokiri_Sword and Buy_Deku_Shield)"
         },
         "locations": {
-            "Kokiri Sword Chest": "is_child",
-            "GS Kokiri Know It All House": "
+            "Kokiri Forest Chest": "is_child",
+            "Kokiri Forest GS Know It All House": "
                 is_child and at_night and 
                 (had_night_start or can_leave_forest or can_play(Suns_Song)) and can_child_attack",
-            "GS Kokiri Bean Patch": "
+            "Kokiri Forest GS Bean Patch": "
                 can_plant_bugs and can_child_attack",
-            "GS Kokiri House of Twins": "
+            "Kokiri Forest GS House of Twins": "
                 is_adult and at_night and 
                 (can_use(Hookshot) or can_use(Hover_Boots) or can_isg)",
             "Kokiri Forest Gossip Stone": "True",
@@ -76,7 +76,7 @@
         "region_name": "Links House",
         "hint": "Kokiri Forest",
         "locations": {
-            "Links House Cow": "is_adult and can_play(Eponas_Song) and 'Links Cow'"
+            "Kokiri Forest Links House Cow": "is_adult and can_play(Eponas_Song) and 'Links Cow'"
         },
         "exits": {
             "Kokiri Forest": "True"
@@ -85,10 +85,10 @@
     {
         "region_name": "Mido House",
         "locations": {
-            "Mido Chest Top Left": "True",
-            "Mido Chest Top Right": "True",
-            "Mido Chest Bottom Left": "True",
-            "Mido Chest Bottom Right": "True"
+            "Kokiri Forest Mido Chest Top Left": "True",
+            "Kokiri Forest Mido Chest Top Right": "True",
+            "Kokiri Forest Mido Chest Bottom Left": "True",
+            "Kokiri Forest Mido Chest Bottom Right": "True"
         }
     },
     {
@@ -103,25 +103,25 @@
     {
         "region_name": "Kokiri Shop",
         "locations": {
-            "Kokiri Shop Item 1": "True",
-            "Kokiri Shop Item 2": "True",
-            "Kokiri Shop Item 3": "True",
-            "Kokiri Shop Item 4": "True",
-            "Kokiri Shop Item 5": "True",
-            "Kokiri Shop Item 6": "True",
-            "Kokiri Shop Item 7": "True",
-            "Kokiri Shop Item 8": "True"
+            "Kokiri Forest Shop Item 1": "True",
+            "Kokiri Forest Shop Item 2": "True",
+            "Kokiri Forest Shop Item 3": "True",
+            "Kokiri Forest Shop Item 4": "True",
+            "Kokiri Forest Shop Item 5": "True",
+            "Kokiri Forest Shop Item 6": "True",
+            "Kokiri Forest Shop Item 7": "True",
+            "Kokiri Forest Shop Item 8": "True"
         }
     },
     {
         "region_name": "Lost Woods",
         "hint": "the Lost Woods",
         "locations": {
-            "Skull Kid": "is_child and can_play(Sarias_Song)",
-            "Ocarina Memory Game": "is_child and Ocarina",
-            "Target in Woods": "can_use(Slingshot)",
-            "LW Deku Scrub Deku Stick Upgrade": "is_child and can_stun_deku",
-            "GS Lost Woods Bean Patch Near Bridge": "can_plant_bugs and can_child_attack",
+            "Lost Woods Skull Kid": "is_child and can_play(Sarias_Song)",
+            "Lost Woods Ocarina Memory Game": "is_child and Ocarina",
+            "Lost Woods Target in Woods": "can_use(Slingshot)",
+            "Lost Woods Deku Scrub Near Bridge": "is_child and can_stun_deku",
+            "Lost Woods GS Bean Patch Near Bridge": "can_plant_bugs and can_child_attack",
             "Lost Woods Gossip Stone": "True",
             "Bug Shrub": "is_child and can_cut_shrubs and has_bottle"
         },
@@ -138,17 +138,17 @@
         "region_name": "Lost Woods Beyond Mido",
         "hint": "the Lost Woods",
         "locations": {
-            "LW Deku Scrub Deku Nuts": "is_child and can_stun_deku",
-            "LW Deku Scrub Deku Sticks": "is_child and can_stun_deku",
-            "GS Lost Woods Above Stage": "is_adult and at_night and (here(can_plant_bean) or can_use(Longshot) or (has_bombchus and Progressive_Hookshot) or can_hover)",
-            "GS Lost Woods Bean Patch Near Stage": "
+            "Lost Woods Deku Scrub Near Forest Stage Right": "is_child and can_stun_deku",
+            "Lost Woods Deku Scrub Near Forest Stage Left": "is_child and can_stun_deku",
+            "Lost Woods GS Above Stage": "is_adult and at_night and (here(can_plant_bean) or can_use(Longshot) or (has_bombchus and Progressive_Hookshot) or can_hover)",
+            "Lost Woods GS Bean Patch Near Stage": "
                 can_plant_bugs and 
                 (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))"
         },
         "exits": {
             "Lost Woods": "True",
             "Sacred Forest Meadow Entryway": "True",
-            "Deku Theater": "True",
+            "Forest Stage": "True",
             "Lost Woods Sales Grotto": "can_blast_or_smash"
         }
     },
@@ -168,8 +168,8 @@
         "hint": "Sacred Forest Meadow",
         "locations": {
             "Song from Saria": "is_child and Zeldas_Letter",
-            "Sheik Forest Song": "is_adult",
-            "GS Sacred Forest Meadow": "(can_use(Hookshot) or can_hover) and at_night and is_adult",
+            "Sheik in Forest": "is_adult",
+            "Sacred Forest Meadow GS": "(can_use(Hookshot) or can_hover) and at_night and is_adult",
             "Sacred Forest Meadow Maze Gossip Stone (Lower)": "True",
             "Sacred Forest Meadow Maze Gossip Stone (Upper)": "True",
             "Sacred Forest Meadow Saria Gossip Stone": "True"
@@ -185,7 +185,7 @@
         "region_name": "Lost Woods Bridge",
         "hint": "the Lost Woods",
         "locations": {
-            "Gift from Saria": "True"
+            "Lost Woods Fairy Ocarina Cutscene": "True"
         },
         "exits": {
             "Kokiri Forest": "True",
@@ -197,7 +197,7 @@
         "hint": "Hyrule Field",
         "time_passes": true,
         "locations": {
-            "Ocarina of Time": "is_child and has_all_stones",
+            "Hyrule Field Ocarina of Time Cutscene": "is_child and has_all_stones",
             "Song from Ocarina of Time": "is_child and has_all_stones",
             "Big Poe Kill": "can_use(Bow) and can_ride_epona and has_bottle"
         },
@@ -229,18 +229,18 @@
         },
         "locations": {
             "Pierre": "is_adult and Bonooru and not free_scarecrow",
-            "Underwater Bottle": "is_child and can_dive",
+            "Lake Hylia Underwater Bottle": "is_child and can_dive",
             "Lake Hylia Sun": "
                 is_adult and 
                 (can_use(Distant_Scarecrow) or 'Water Temple Clear' or can_hover) and can_use(Bow)",
             "Lake Hylia Freestanding PoH": "
                 is_adult and
                 (can_use(Scarecrow) or here(can_plant_bean))",
-            "GS Lake Hylia Bean Patch": "can_plant_bugs and can_child_attack",
-            "GS Lake Hylia Lab Wall": "
+            "Lake Hylia GS Bean Patch": "can_plant_bugs and can_child_attack",
+            "Lake Hylia GS Lab Wall": "
                 is_child and (Boomerang or can_jumpslash) and at_night",
-            "GS Lake Hylia Small Island": "is_child and can_child_attack and at_night",
-            "GS Lake Hylia Giant Tree": "can_use(Hookshot) and at_night",
+            "Lake Hylia GS Small Island": "is_child and can_child_attack and at_night",
+            "Lake Hylia GS Tree": "can_use(Hookshot) and at_night",
             "Lake Hylia Lab Gossip Stone": "True",
             "Lake Hylia Gossip Stone (Southeast)": "True",
             "Lake Hylia Gossip Stone (Southwest)": "True",
@@ -259,18 +259,18 @@
     {
         "region_name": "Lake Hylia Lab",
         "locations": {
-            "Diving in the Lab": "
+            "Lake Hylia Lab Dive": "
                 (Progressive_Scale, 2) or
                 (Iron_Boots and can_use(Hookshot)) or (has_bottle and can_use(Hover_Boots))",
-            "GS Lab Underwater Crate": "Iron_Boots and can_use(Hookshot)"
+            "Lake Hylia GS Lab Crate": "Iron_Boots and can_use(Hookshot)"
         }
     },
     {
         "region_name": "Fishing Hole",
         "time_passes": true,
         "locations": {
-            "Child Fishing": "is_child",
-            "Adult Fishing": "is_adult"
+            "Lake Hylia Child Fishing": "is_child",
+            "Lake Hylia Adult Fishing": "is_adult"
         }
     },
     { 
@@ -281,8 +281,8 @@
             "Gerudo Valley Waterfall Freestanding PoH": "True",
             "Gerudo Valley Crate Freestanding PoH": "is_child or can_use(Longshot) or 
                 at('Gerudo Valley Far Side', (can_use(Hover_Boots) or can_mega) and (can_live_dmg(0.5) or has_bottle or can_use(Nayrus_Love)))",
-            "GS Gerudo Valley Small Bridge": "(can_use(Boomerang) or (can_hover and is_child)) and at_night",
-            "GS Gerudo Valley Bean Patch": "can_plant_bugs and can_child_attack",
+            "Gerudo Valley GS Small Bridge": "(can_use(Boomerang) or (can_hover and is_child)) and at_night",
+            "Gerudo Valley GS Bean Patch": "can_plant_bugs and can_child_attack",
             "Gerudo Valley Gossip Stone": "True",
             "Gerudo Valley Cow": "is_child and can_play(Eponas_Song)"
         },
@@ -299,9 +299,9 @@
         "hint": "Gerudo Valley",
         "time_passes": true,
         "locations": {
-            "Gerudo Valley Hammer Rocks Chest": "can_use(Hammer)",
-            "GS Gerudo Valley Behind Tent": "can_use(Hookshot) and at_night",
-            "GS Gerudo Valley Pillar": "can_use(Hookshot) and at_night"
+            "Gerudo Valley Chest": "can_use(Hammer)",
+            "Gerudo Valley GS Behind Tent": "can_use(Hookshot) and at_night",
+            "Gerudo Valley GS Pillar": "can_use(Hookshot) and at_night"
         },
         "exits": {
             "Gerudo Fortress": "True",
@@ -316,20 +316,20 @@
             "Gerudo Fortress Gate Open": "is_adult and Gerudo_Membership_Card"
         },
         "locations": {
-            "Gerudo Fortress Rooftop Chest": "(is_child and can_mega) or 
+            "Gerudo Fortress Chest": "(is_child and can_mega) or 
                 (is_adult and can_use(Hover_Boots) or can_use(Scarecrow) or can_use(Longshot) or can_mega)",
             #// known softlock if child opens this chest, so only put it in logic for adult
-            "Horseback Archery 1000 Points": "
+            "Gerudo Fortress Horseback Archery 1000 Points": "
                 Gerudo_Membership_Card and can_ride_epona and Bow and is_adult",
-            "Horseback Archery 1500 Points": "
+            "Gerudo Fortress Horseback Archery 1500 Points": "
                 Gerudo_Membership_Card and can_ride_epona and Bow and is_adult",
             "Gerudo Fortress North F1 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress North F2 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress South F1 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress South F2 Carpenter": "is_adult or (is_child and can_child_damage)",
             "Gerudo Fortress Membership Card": "can_finish_GerudoFortress",
-            "GS Gerudo Fortress Archery Range": "can_use(Hookshot) and at_night",
-            "GS Gerudo Fortress Top Floor": "at_night and is_adult"
+            "Gerudo Fortress GS Archery Range": "can_use(Hookshot) and at_night",
+            "Gerudo Fortress GS Top Floor": "at_night and is_adult"
         },
         "exits": {
             "Haunted Wasteland": "is_child or 'Gerudo Fortress Gate Open' or
@@ -341,9 +341,9 @@
         "region_name": "Haunted Wasteland",
         "hint": "Haunted Wasteland",
         "locations": {
-            "Haunted Wasteland Structure Chest": "has_fire_source",
+            "Haunted Wasteland Chest": "has_fire_source",
             "Haunted Wasteland Bombchu Salesman": "Progressive_Wallet and can_jumpslash",
-            "GS Wasteland Ruins": "can_use(Boomerang) or (is_adult and (Progressive_Hookshot or (Bombs and can_shield)))"
+            "Haunted Wasteland GS": "can_use(Boomerang) or (is_adult and (Progressive_Hookshot or (Bombs and can_shield)))"
         },
         "exits": {
             "Desert Colossus": "True",
@@ -355,14 +355,14 @@
         "hint": "Desert Colossus",
         "time_passes": true,
         "locations": {
-            "Colossus Freestanding PoH": "
+            "Desert Colossus Freestanding PoH": "
                 (is_adult and here(can_plant_bean)) or
                 at('Mirror Shield Hand', can_mega) or
                 at('Silver Gauntlets Hand', can_mega)",
             "Sheik at Colossus": "True",
-            "GS Desert Colossus Bean Patch": "can_plant_bugs and can_child_attack",
-            "GS Desert Colossus Tree": "can_use(Hookshot) and at_night",
-            "GS Desert Colossus Hill": "at_night",
+            "Desert Colossus GS Bean Patch": "can_plant_bugs and can_child_attack",
+            "Desert Colossus GS Tree": "can_use(Hookshot) and at_night",
+            "Desert Colossus GS Hill": "at_night",
             "Desert Colossus Gossip Stone": "True"
         },
         "exits": {
@@ -397,10 +397,10 @@
             "Castle Town Mask Shop": "is_child",
             "Castle Town Shooting Gallery": "is_child",
             "Castle Town Bombchu Bowling": "is_child",
-            "Castle Town Potion Shop": "is_child",
+            "Market Potion Shop": "is_child",
             "Castle Town Treasure Chest Game": "is_child",
             "Castle Town Bombchu Shop": "is_child",
-            "Castle Town Dog Lady": "is_child",
+            "Castle Town Market Dog Lady": "is_child",
             "Castle Town Man in Green House": "is_child"
         }
     },
@@ -408,7 +408,7 @@
         "region_name": "Temple of Time",
         "hint": "Temple of Time",
         "locations": {
-            "Zelda": "is_adult and can_trigger_lacs"
+            "Temple of Time Light Arrows Cutscene": "is_adult and can_trigger_lacs"
         },
         "exits": {
             "Castle Town": "True",
@@ -432,8 +432,8 @@
         "hint": "Hyrule Castle",
         "time_passes": true,
         "locations": {
-            "Malon Egg": "True",
-            "GS Hyrule Castle Tree": "can_child_attack",
+            "Hyrule Castle Malon Egg": "True",
+            "Hyrule Castle GS Tree": "can_child_attack",
             "Hyrule Castle Malon Gossip Stone": "True",
             "Hyrule Castle Rock Wall Gossip Stone": "True"
         },
@@ -449,8 +449,8 @@
         "region_name": "Hyrule Castle Garden",
         "hint": "Hyrule Castle",
         "locations": {
-            "Zeldas Letter": "True",
-            "Impa at Castle": "True"
+            "Hyrule Castle Zeldas Letter": "True",
+            "Song from Impa": "True"
         },
         "exits": {
             "Hyrule Castle Grounds": "True"
@@ -466,7 +466,7 @@
         "region_name": "Ganons Castle Grounds",
         "hint": "outside Ganon's Castle",
         "locations": {
-            "GS Outside Ganon's Castle": "True"
+            "Outside Ganons Castle GS": "True"
         },
         "exits": {
             "Castle Town": "True",
@@ -477,7 +477,7 @@
     {
         "region_name": "Ganons Castle Fairy",
         "locations": {
-            "Ganons Castle Fairy Reward": "can_play(Zeldas_Lullaby)"
+            "Outside Ganons Castle Fairy Reward": "can_play(Zeldas_Lullaby)"
         }
     },
     {
@@ -486,23 +486,23 @@
             "Sell Big Poe": "is_adult and Bottle_with_Big_Poe"
         },
         "locations": {
-            "10 Big Poes": "
+            "Market 10 Big Poes": "
                 is_adult and 
                 (Big_Poe or (Bottle_with_Big_Poe, big_poe_count))",
-            "GS Castle Market Guard House": "is_child"
+            "Market GS Guard House": "is_child"
         }
     },
     {
         "region_name": "Castle Town Bazaar",
         "locations": {
-            "Castle Town Bazaar Item 1": "True",
-            "Castle Town Bazaar Item 2": "True",
-            "Castle Town Bazaar Item 3": "True",
-            "Castle Town Bazaar Item 4": "True",
-            "Castle Town Bazaar Item 5": "True",
-            "Castle Town Bazaar Item 6": "True",
-            "Castle Town Bazaar Item 7": "True",
-            "Castle Town Bazaar Item 8": "True"
+            "Market Bazaar Item 1": "True",
+            "Market Bazaar Item 2": "True",
+            "Market Bazaar Item 3": "True",
+            "Market Bazaar Item 4": "True",
+            "Market Bazaar Item 5": "True",
+            "Market Bazaar Item 6": "True",
+            "Market Bazaar Item 7": "True",
+            "Market Bazaar Item 8": "True"
         }
     },
     {
@@ -518,53 +518,53 @@
     {
         "region_name": "Castle Town Shooting Gallery",
         "locations": {
-            "Child Shooting Gallery": "True"
+            "Market Child Shooting Gallery": "True"
         }
     },
     {
         "region_name": "Castle Town Bombchu Bowling",
         "locations": {
-            "Bombchu Bowling Bomb Bag": "found_bombchus",
-            "Bombchu Bowling Piece of Heart": "found_bombchus",
-            "Bombchu Bowling Bombchus": "found_bombchus"
+            "Market Bombchu Bowling Bomb Bag": "found_bombchus",
+            "Market Bombchu Bowling Piece of Heart": "found_bombchus",
+            "Market Bombchu Bowling Bombchus": "found_bombchus"
         }
     },
     {
-        "region_name": "Castle Town Potion Shop",
+        "region_name": "Market Potion Shop",
         "locations": {
-            "Castle Town Potion Shop Item 1": "True",
-            "Castle Town Potion Shop Item 2": "True",
-            "Castle Town Potion Shop Item 3": "True",
-            "Castle Town Potion Shop Item 4": "True",
-            "Castle Town Potion Shop Item 5": "True",
-            "Castle Town Potion Shop Item 6": "True",
-            "Castle Town Potion Shop Item 7": "True",
-            "Castle Town Potion Shop Item 8": "True"
+            "Market Potion Shop Item 1": "True",
+            "Market Potion Shop Item 2": "True",
+            "Market Potion Shop Item 3": "True",
+            "Market Potion Shop Item 4": "True",
+            "Market Potion Shop Item 5": "True",
+            "Market Potion Shop Item 6": "True",
+            "Market Potion Shop Item 7": "True",
+            "Market Potion Shop Item 8": "True"
         }
     },
     {
         "region_name": "Castle Town Treasure Chest Game",
         "locations": {
-            "Treasure Chest Game": "can_use(Lens_of_Truth)"
+            "Market Treasure Chest Game": "can_use(Lens_of_Truth)"
         }
     },
     {
         "region_name": "Castle Town Bombchu Shop",
         "locations": {
-            "Bombchu Shop Item 1": "True",
-            "Bombchu Shop Item 2": "True",
-            "Bombchu Shop Item 3": "True",
-            "Bombchu Shop Item 4": "True",
-            "Bombchu Shop Item 5": "True",
-            "Bombchu Shop Item 6": "True",
-            "Bombchu Shop Item 7": "True",
-            "Bombchu Shop Item 8": "True"
+            "Market Bombchu Shop Item 1": "True",
+            "Market Bombchu Shop Item 2": "True",
+            "Market Bombchu Shop Item 3": "True",
+            "Market Bombchu Shop Item 4": "True",
+            "Market Bombchu Shop Item 5": "True",
+            "Market Bombchu Shop Item 6": "True",
+            "Market Bombchu Shop Item 7": "True",
+            "Market Bombchu Shop Item 8": "True"
         }
     },
     {
-        "region_name": "Castle Town Dog Lady",
+        "region_name": "Castle Town Market Dog Lady",
         "locations": {
-            "Dog Lady": "True"
+            "Market Dog Lady": "True"
         }
     },
     {
@@ -574,20 +574,20 @@
         "region_name": "Kakariko Village",
         "hint": "Kakariko Village",
         "locations": {
-            "Man on Roof": "True",
-            "Anju as Adult": "is_adult",
-            "Anjus Chickens": "is_child",
+            "Kakariko Village Man on Roof": "True",
+            "Kakariko Village Anju as Adult": "is_adult",
+            "Kakariko Village Anjus Chickens": "is_child",
             "Sheik in Kakariko": "
                 is_adult and Forest_Medallion and Fire_Medallion and Water_Medallion",
-            "GS Kakariko House Under Construction": "is_child and at_night",
-            "GS Kakariko Skulltula House": "is_child and at_night",
-            "GS Kakariko Guard's House": "is_child and at_night",
-            "GS Kakariko Tree": "is_child and at_night",
-            "GS Kakariko Watchtower": "at_night and 
+            "Kakariko Village GS House Under Construction": "is_child and at_night",
+            "Kakariko Village GS Skulltula House": "is_child and at_night",
+            "Kakariko Village GS Bazaar": "is_child and at_night",
+            "Kakariko Village GS Tree": "is_child and at_night",
+            "Kakariko Village GS Watchtower": "at_night and 
                 is_child and (Slingshot or has_bombchus or 
                     ( (Sticks or Kokiri_Sword) and
                     ( can_live_dmg(0.5) or Fairy or can_use(Nayrus_Love) ) ) )",
-            "GS Kakariko Above Impa's House": "can_use(Hookshot) and at_night",
+            "Kakariko Village GS Above Impas House": "can_use(Hookshot) and at_night",
             "Bug Rock": "has_bottle"
         },
         "exits": {
@@ -619,11 +619,11 @@
     {
         "region_name": "House of Skulltula",
         "locations": {
-            "10 Gold Skulltula Reward": "(Gold_Skulltula_Token, 10)",
-            "20 Gold Skulltula Reward": "(Gold_Skulltula_Token, 20)",
-            "30 Gold Skulltula Reward": "(Gold_Skulltula_Token, 30)",
-            "40 Gold Skulltula Reward": "(Gold_Skulltula_Token, 40)",
-            "50 Gold Skulltula Reward": "(Gold_Skulltula_Token, 50)"
+            "Kakariko Village 10 Gold Skulltula Reward": "(Gold_Skulltula_Token, 10)",
+            "Kakariko Village 20 Gold Skulltula Reward": "(Gold_Skulltula_Token, 20)",
+            "Kakariko Village 30 Gold Skulltula Reward": "(Gold_Skulltula_Token, 30)",
+            "Kakariko Village 40 Gold Skulltula Reward": "(Gold_Skulltula_Token, 40)",
+            "Kakariko Village 50 Gold Skulltula Reward": "(Gold_Skulltula_Token, 50)"
         }
     },
     {
@@ -632,8 +632,8 @@
     {
         "region_name": "Impas House Back",
         "locations": {
-            "Impa House Freestanding PoH": "True",
-            "Impas House Cow": "can_play(Eponas_Song)"
+            "Kakariko Village Impa House Freestanding PoH": "True",
+            "Kakariko Village Impas House Cow": "can_play(Eponas_Song)"
         }
     },
     {
@@ -643,41 +643,41 @@
             "Drain Well": "is_child and can_play(Song_of_Storms)"
         },
         "locations": {
-            "Windmill Freestanding PoH": "is_adult or can_use(Boomerang)",
-            "Song at Windmill": "is_adult and Ocarina"
+            "Kakariko Village Windmill Freestanding PoH": "is_adult or can_use(Boomerang)",
+            "Song from Windmill": "is_adult and Ocarina"
         }
     },
     {
         "region_name": "Kakariko Bazaar",
         "locations": {
-            "Kakariko Bazaar Item 1": "True",
-            "Kakariko Bazaar Item 2": "True",
-            "Kakariko Bazaar Item 3": "True",
-            "Kakariko Bazaar Item 4": "True",
-            "Kakariko Bazaar Item 5": "True",
-            "Kakariko Bazaar Item 6": "True",
-            "Kakariko Bazaar Item 7": "True",
-            "Kakariko Bazaar Item 8": "True"
+            "Kakariko Village Bazaar Item 1": "True",
+            "Kakariko Village Bazaar Item 2": "True",
+            "Kakariko Village Bazaar Item 3": "True",
+            "Kakariko Village Bazaar Item 4": "True",
+            "Kakariko Village Bazaar Item 5": "True",
+            "Kakariko Village Bazaar Item 6": "True",
+            "Kakariko Village Bazaar Item 7": "True",
+            "Kakariko Village Bazaar Item 8": "True"
         }
     },
     {
         "region_name": "Kakariko Shooting Gallery",
         "locations": {
-            "Adult Shooting Gallery": "can_use(Bow)"
+            "Kakariko Village Adult Shooting Gallery": "can_use(Bow)"
         }
     },
     {
         "region_name": "Kakariko Potion Shop Front",
         "hint": "Kakariko Village",
         "locations": {
-            "Kakariko Potion Shop Item 1": "True",
-            "Kakariko Potion Shop Item 2": "True",
-            "Kakariko Potion Shop Item 3": "True",
-            "Kakariko Potion Shop Item 4": "True",
-            "Kakariko Potion Shop Item 5": "True",
-            "Kakariko Potion Shop Item 6": "True",
-            "Kakariko Potion Shop Item 7": "True",
-            "Kakariko Potion Shop Item 8": "True"
+            "Kakariko Village Potion Shop Item 1": "True",
+            "Kakariko Village Potion Shop Item 2": "True",
+            "Kakariko Village Potion Shop Item 3": "True",
+            "Kakariko Village Potion Shop Item 4": "True",
+            "Kakariko Village Potion Shop Item 5": "True",
+            "Kakariko Village Potion Shop Item 6": "True",
+            "Kakariko Village Potion Shop Item 7": "True",
+            "Kakariko Village Potion Shop Item 8": "True"
         }
     },
     {
@@ -693,9 +693,9 @@
             "Graveyard Freestanding PoH": "
                 (is_adult and here(can_plant_bean)) or
                 can_use(Hookshot) or can_hover",
-            "Gravedigging Tour": "is_child",
-            "GS Graveyard Wall": "(can_use(Boomerang) or (can_hover and is_child)) and at_night",
-            "GS Graveyard Bean Patch": "can_plant_bugs and can_child_attack"
+            "Graveyard Dampe Gravedigging Tour": "is_child",
+            "Graveyard GS Wall": "(can_use(Boomerang) or (can_hover and is_child)) and at_night",
+            "Graveyard GS Bean Patch": "can_plant_bugs and can_child_attack"
         },
         "exits": {
             "Shield Grave": "True",
@@ -710,19 +710,19 @@
     {
         "region_name": "Shield Grave",
         "locations": {
-            "Shield Grave Chest": "True"
+            "Graveyard Shield Grave Chest": "True"
         }
     },
     {
         "region_name": "Heart Piece Grave",
         "locations": {
-            "Heart Piece Grave Chest": "can_play(Suns_Song)"
+            "Graveyard Heart Piece Grave Chest": "can_play(Suns_Song)"
         }
     },
     {
         "region_name": "Composer Grave",
         "locations": {
-            "Composer Grave Chest": "has_fire_source or (is_child and Sticks and (can_live_dmg(0.75) or can_use(Nayrus_Love)))",
+            "Graveyard Composer Grave Chest": "has_fire_source or (is_child and Sticks and (can_live_dmg(0.75) or can_use(Nayrus_Love)))",
             "Song from Composer Grave": "
                 is_adult or 
                 (Slingshot or Boomerang or Sticks or 
@@ -733,8 +733,8 @@
         "region_name": "Dampes Grave",
         "hint": "the Graveyard",
         "locations": {
-            "Hookshot Chest": "True",
-            "Dampe Race Freestanding PoH": "True",
+            "Graveyard Hookshot Chest": "True",
+            "Graveyard Dampe Race Freestanding PoH": "True",
             "Nut Pot": "True"
         }
     },
@@ -757,17 +757,17 @@
         "hint": "Death Mountain Trail",
         "time_passes": true,
         "locations": {
-            "Death Mountain Bombable Chest": "
+            "Death Mountain Trail Chest": "
                 can_blast_or_smash or can_jumpslash or
                 (is_child and Progressive_Strength_Upgrade)",
-            "DM Trail Freestanding PoH": "
+            "Death Mountain Trail Freestanding PoH": "
                 is_child or can_live_dmg(0.5) or 
                 can_use(Nayrus_Love) or Fairy or Hover_Boots",
-            "GS Mountain Trail Bean Patch": "
+            "Death Mountain Trail GS Bean Patch": "
                 can_plant_bugs and (has_explosives or Progressive_Strength_Upgrade)",
-            "GS Mountain Trail Bomb Alcove": "can_blast_or_smash",
-            "GS Mountain Trail Path to Crater": "at_night and is_adult",
-            "GS Mountain Trail Above Dodongo's Cavern": "(can_use(Hammer) or can_use(Hookshot)) and at_night"
+            "Death Mountain Trail GS Near Kakariko Village": "can_blast_or_smash",
+            "Death Mountain Trail GS Falling Rocks Path": "at_night and is_adult",
+            "Death Mountain Trail GS Above Dodongos Cavern": "(can_use(Hammer) or can_use(Hookshot)) and at_night"
         },
         "exits": {
             "Kakariko Village": "True",
@@ -784,7 +784,7 @@
         "hint": "Death Mountain Trail",
         "time_passes": true,
         "locations": {
-            "Biggoron": "
+            "Death Mountain Trail Biggoron": "
                 is_adult and
                 (Claim_Check or (
                     at('Death Mountain Crater Upper', is_adult) and
@@ -815,25 +815,25 @@
                 can_blast_or_smash or can_use(Dins_Fire) or can_use(Bow) or Progressive_Strength_Upgrade"
         },
         "locations": {
-            "Goron City Leftmost Maze Chest": "
+            "Goron City Maze Left Chest": "
                 can_use(Hammer) or can_use(Silver_Gauntlets) or ((Progressive_Strength_Upgrade or has_explosives) and can_shield)
                 or (has_explosives and can_use(Hover_Boots))",
-            "Goron City Left Maze Chest": "
+            "Goron City Maze Center Chest": "
                 can_blast_or_smash or can_use(Silver_Gauntlets) or (Progressive_Strength_Upgrade and can_shield)",
-            "Goron City Right Maze Chest": "
+            "Goron City Maze Right Chest": "
                 can_blast_or_smash or can_use(Silver_Gauntlets) or (Progressive_Strength_Upgrade and can_shield)",
             "Goron City Pot Freestanding PoH": "
                 is_child and 
                 (has_explosives or Progressive_Strength_Upgrade) and 
                 (( (can_play(Zeldas_Lullaby) or can_shield) and Sticks) or can_use(Dins_Fire))",
-            "Rolling Goron as Child": "
+            "Goron City Child Rolling Goron": "
                 is_child and 
                 (has_explosives or Progressive_Strength_Upgrade)",
-            "Link the Goron": "
+            "Goron City Adult Rolling Goron": "
                 is_adult and 
                 (Progressive_Strength_Upgrade or has_explosives or Bow or can_use(Dins_Fire) or Blue_Fire)",
-            "GS Goron City Boulder Maze": "is_child and has_explosives",
-            "GS Goron City Center Platform": "is_adult",
+            "Goron City GS Boulder Maze": "is_child and has_explosives",
+            "Goron City GS Center Platform": "is_adult",
             "Goron City Maze Gossip Stone": "
                 can_blast_or_smash or can_use(Silver_Gauntlets) or (Progressive_Strength_Upgrade and can_shield)",
             "Goron City Medigoron Gossip Stone": "
@@ -875,7 +875,7 @@
             "Goron City Woods Warp Open": "is_child and Sticks"
         },
         "locations": {
-            "Darunias Joy": "is_child and can_play(Sarias_Song)"
+            "Goron City Darunias Joy": "is_child and can_play(Sarias_Song)"
         },
         "exits": {
             "Goron City": "True",
@@ -887,24 +887,24 @@
     {
         "region_name": "Goron Shop",
         "locations": {
-            "Goron Shop Item 1": "True",
-            "Goron Shop Item 2": "True",
-            "Goron Shop Item 3": "True",
-            "Goron Shop Item 4": "True",
-            "Goron Shop Item 5": "True",
-            "Goron Shop Item 6": "True",
-            "Goron Shop Item 7": "True",
-            "Goron Shop Item 8": "True"
+            "Goron City Shop Item 1": "True",
+            "Goron City Shop Item 2": "True",
+            "Goron City Shop Item 3": "True",
+            "Goron City Shop Item 4": "True",
+            "Goron City Shop Item 5": "True",
+            "Goron City Shop Item 6": "True",
+            "Goron City Shop Item 7": "True",
+            "Goron City Shop Item 8": "True"
         }
     },
     {
         "region_name": "Death Mountain Crater Upper",
         "hint": "Death Mountain Crater",
         "locations": {
-            "DM Crater Wall Freestanding PoH": "True",
-            "GS Death Mountain Crater Crate": "
+            "Death Mountain Crater Wall Freestanding PoH": "True",
+            "Death Mountain Crater GS Crate": "
                 is_child and can_child_attack",
-            "DMC Deku Scrub Bombs": "
+            "Death Mountain Crater Deku Scrub": "
                 is_child and can_stun_deku",
             "Death Mountain Crater Gossip Stone": "has_explosives"
         },
@@ -933,11 +933,11 @@
         "region_name": "Death Mountain Crater Central",
         "hint": "Death Mountain Crater",
         "locations": {
-            "DM Crater Volcano Freestanding PoH": "
+            "Death Mountain Crater Volcano Freestanding PoH": "
                 (is_adult and here(can_plant_bean)) or
                 can_use(Hover_Boots) or can_mega",
             "Sheik in Crater": "is_adult",
-            "GS Mountain Crater Bean Patch": "can_plant_bugs and can_child_attack"
+            "Death Mountain Crater GS Bean Patch": "can_plant_bugs and can_child_attack"
         },
         "exits": {
             "Death Mountain Crater Lower": "
@@ -949,13 +949,13 @@
     {
         "region_name": "Crater Fairy",
         "locations": {
-            "Crater Fairy Reward": "can_play(Zeldas_Lullaby)"
+            "Death Mountain Crater Fairy Reward": "can_play(Zeldas_Lullaby)"
         }
     },
     {
         "region_name": "Mountain Summit Fairy",
         "locations": {
-            "Mountain Summit Fairy Reward": "can_play(Zeldas_Lullaby)"
+            "Death Mountain Trail Fairy Reward": "can_play(Zeldas_Lullaby)"
         }
     },
     {
@@ -963,7 +963,7 @@
         "hint": "Zora's River",
         "time_passes": true,
         "locations": {
-            "GS Zora River Tree": "is_child and can_child_attack"
+            "Zora River GS Tree": "is_child and can_child_attack"
         },
         "exits": {
             "Zora River": "is_adult or has_explosives",
@@ -975,17 +975,17 @@
         "hint": "Zora's River",
         "time_passes": true,
         "locations": {
-            "Magic Bean Salesman": "is_child",
-            "Frog Ocarina Game": "
+            "Zora River Magic Bean Salesman": "is_child",
+            "Zora River Frog Ocarina Game": "
                 is_child and can_play(Zeldas_Lullaby) and can_play(Sarias_Song) and 
                 can_play(Suns_Song) and can_play(Eponas_Song) and 
                 can_play(Song_of_Time) and can_play(Song_of_Storms)",
-            "Frogs in the Rain": "is_child and can_play(Song_of_Storms)",
+            "Zora River Frogs in the Rain": "is_child and can_play(Song_of_Storms)",
             "Zora River Lower Freestanding PoH": "True",
             "Zora River Upper Freestanding PoH": "True",
-            "GS Zora River Ladder": "is_child and at_night and can_child_attack",
-            "GS Zora River Near Raised Grottos": "is_adult and (Progressive_Hookshot or can_hover) and at_night",
-            "GS Zora River Above Bridge": "can_use(Hookshot) and at_night",
+            "Zora River GS Ladder": "is_child and at_night and can_child_attack",
+            "Zora River GS Near Raised Grottos": "is_adult and (Progressive_Hookshot or can_hover) and at_night",
+            "Zora River GS Above Bridge": "can_use(Hookshot) and at_night",
             "Zoras River Plateau Gossip Stone": "True",
             "Zoras River Waterfall Gossip Stone": "True"
         },
@@ -1002,11 +1002,11 @@
         "region_name": "Zoras Domain",
         "hint": "Zora's Domain",
         "locations": {
-            "Diving Minigame": "is_child",
-            "Zoras Domain Torch Run": "can_use(Sticks)",
+            "Zoras Domain Diving Minigame": "is_child",
+            "Zoras Domain Chest": "can_use(Sticks)",
             "Deliver Ruto's Letter": "(is_child and Bottle_with_Letter) and zora_fountain != 'open'",
-            "King Zora Thawed": "is_adult",
-            "GS Zora's Domain Frozen Waterfall": "
+            "Zoras Domain King Zora": "is_adult",
+            "Zoras Domain GS Frozen Waterfall": "
                 is_adult and at_night and (Progressive_Hookshot or Bow or Magic_Meter or has_explosives or 
                 Biggoron_Sword or 
                 at('Goron City', is_adult and Progressive_Wallet and (can_blast_or_smash or Progressive_Strength_Upgrade or Blue_Fire)))",
@@ -1029,9 +1029,9 @@
         "locations": {
             "Zoras Fountain Iceberg Freestanding PoH": "is_adult",
             "Zoras Fountain Bottom Freestanding PoH": "is_adult and Iron_Boots",
-            "GS Zora's Fountain Tree": "is_child",
-            "GS Zora's Fountain Above the Log": "(can_use(Boomerang) or (can_hover and is_child)) and at_night",
-            "GS Zora's Fountain Hidden Cave": "at_night and 
+            "Zoras Fountain GS Tree": "is_child",
+            "Zoras Fountain GS Above the Log": "(can_use(Boomerang) or (can_hover and is_child)) and at_night",
+            "Zoras Fountain GS Hidden Cave": "at_night and 
                 (
                 ((can_use(Silver_Gauntlets) and can_blast_or_smash) or (has_explosives and can_shield and (can_use(Bow) or can_use(Hookshot))))
                     or (has_explosives and can_shield)
@@ -1050,14 +1050,14 @@
     {
         "region_name": "Zora Shop",
         "locations": {
-            "Zora Shop Item 1": "True",
-            "Zora Shop Item 2": "True",
-            "Zora Shop Item 3": "True",
-            "Zora Shop Item 4": "True",
-            "Zora Shop Item 5": "True",
-            "Zora Shop Item 6": "True",
-            "Zora Shop Item 7": "True",
-            "Zora Shop Item 8": "True"
+            "Zoras Domain Shop Item 1": "True",
+            "Zoras Domain Shop Item 2": "True",
+            "Zoras Domain Shop Item 3": "True",
+            "Zoras Domain Shop Item 4": "True",
+            "Zoras Domain Shop Item 5": "True",
+            "Zoras Domain Shop Item 6": "True",
+            "Zoras Domain Shop Item 7": "True",
+            "Zoras Domain Shop Item 8": "True"
         }
     },
     {
@@ -1075,10 +1075,10 @@
         },
         "locations": {
             "Song from Malon": "is_child and Zeldas_Letter and Ocarina",
-            "GS Lon Lon Ranch Tree": "is_child",
-            "GS Lon Lon Ranch Rain Shed": "is_child and at_night",
-            "GS Lon Lon Ranch House Window": "can_use(Boomerang) and at_night",
-            "GS Lon Lon Ranch Back Wall": "can_use(Boomerang) and at_night"
+            "Lon Lon Ranch GS Tree": "is_child",
+            "Lon Lon Ranch GS Rain Shed": "is_child and at_night",
+            "Lon Lon Ranch GS House Window": "can_use(Boomerang) and at_night",
+            "Lon Lon Ranch GS Back Wall": "can_use(Boomerang) and at_night"
         },
         "exits": {
             "Hyrule Field": "True",
@@ -1091,22 +1091,22 @@
     {
         "region_name": "Talon House",
         "locations": {
-            "Talons Chickens": "is_child and Zeldas_Letter"
+            "Lon Lon Ranch Talons Chickens": "is_child and Zeldas_Letter"
         }
     },
     {
         "region_name": "Ingo Barn",
 		"locations": {
-            "LLR Stables Left Cow": "can_play(Eponas_Song)",
-            "LLR Stables Right Cow": "can_play(Eponas_Song)"
+            "Lon Lon Ranch Stables Left Cow": "can_play(Eponas_Song)",
+            "Lon Lon Ranch Stables Right Cow": "can_play(Eponas_Song)"
         }
     },
     {
         "region_name": "Lon Lon Corner Tower",
         "locations": {
-            "Lon Lon Tower Freestanding PoH": "True",
-            "LLR Tower Left Cow": "can_play(Eponas_Song)",
-            "LLR Tower Right Cow": "can_play(Eponas_Song)"
+            "Lon Lon Ranch Freestanding PoH": "True",
+            "Lon Lon Ranch Tower Left Cow": "can_play(Eponas_Song)",
+            "Lon Lon Ranch Tower Right Cow": "can_play(Eponas_Song)"
         }
     },
     {
@@ -1128,12 +1128,12 @@
     {
         "region_name": "Lost Woods Generic Grotto",
         "locations": {
-            "Lost Woods Generic Grotto Chest": "True",
-            "Lost Woods Generic Grotto Gossip Stone": "True"
+            "Lost Woods Grotto Chest": "True",
+            "Lost Woods Grotto Gossip Stone": "True"
         }
     },
     {
-        "region_name": "Deku Theater",
+        "region_name": "Forest Stage",
         "locations": {
             "Deku Theater Skull Mask": "is_child and 'Skull Mask'",
             "Deku Theater Mask of Truth": "is_child and 'Mask of Truth'"
@@ -1142,8 +1142,8 @@
     {
         "region_name": "Lost Woods Sales Grotto",
         "locations": {
-            "LW Grotto Deku Scrub Arrows": "True",
-            "LW Grotto Deku Scrub Deku Nut Upgrade": "True"
+            "Lost Woods Grotto Deku Scrub Rear": "True",
+            "Lost Woods Grotto Deku Scrub Front": "True"
         }
     },
     {
@@ -1155,58 +1155,58 @@
     {
         "region_name": "Meadow Storms Grotto",
         "locations": {
-            "SFM Grotto Deku Scrub Red Potion": "True",
-            "SFM Grotto Deku Scrub Green Potion": "True"
+            "Sacred Forest Meadow Grotto Deku Scrub Rear": "True",
+            "Sacred Forest Meadow Grotto Deku Scrub Front": "True"
         }
     },
     {
         "region_name": "Front of Meadow Grotto",
         "locations": {
-            "Wolfos Grotto Chest": "True"
+            "Sacred Forest Meadow Wolfos Grotto Chest": "True"
         }
     },
     {
         "region_name": "Lon Lon Grotto",
         "locations": {
-            "LLR Grotto Deku Scrub Deku Nuts": "True",
-            "LLR Grotto Deku Scrub Bombs": "True",
-            "LLR Grotto Deku Scrub Arrows": "True"
+            "Lon Lon Ranch Grotto Deku Scrub Left": "True",
+            "Lon Lon Ranch Grotto Deku Scrub Right": "True",
+            "Lon Lon Ranch Grotto Deku Scrub Center": "True"
         }
     },
     {
         "region_name": "Remote Southern Grotto",
         "locations": {
-            "Remote Southern Grotto Chest": "True",
-            "Remote Southern Grotto Gossip Stone": "True"
+            "Hyrule Field Southeast Grotto Chest": "True",
+            "Hyrule Field Southeast Grotto Gossip Stone": "True"
         }
     },
     {
         "region_name": "Field Near Lake Outside Fence Grotto",
         "locations": {
-            "Field Near Lake Outside Fence Grotto Chest": "True",
-            "Field Near Lake Outside Fence Grotto Gossip Stone": "True"
+            "Hyrule Field Open Grotto Chest": "True",
+            "Hyrule Field Open Grotto Gossip Stone": "True"
         }
     },
     {
         "region_name": "Field Near Lake Inside Fence Grotto",
         "locations": {
-            "HF Grotto Deku Scrub Piece of Heart": "can_stun_deku"
+            "Hyrule Field Grotto Deku Scrub": "can_stun_deku"
         }
     },
     {
         "region_name": "Field Valley Grotto",
         "locations": {
-            "GS Hyrule Field Near Gerudo Valley": "
+            "Hyrule Field GS Cow Grotto": "
                 has_fire_source and (can_use(Hookshot) or can_use(Boomerang))",
-            "HF Grotto Cow": "has_fire_source and can_play(Eponas_Song)",
-            "Field Valley Grotto Gossip Stone": "has_fire_source"
+            "Hyrule Field Grotto Cow": "has_fire_source and can_play(Eponas_Song)",
+            "Hyrule Field Cow Grotto Gossip Stone": "has_fire_source"
         }
     },
     {
         "region_name": "Field West Castle Town Grotto",
         "locations": {
-            "Field West Castle Town Grotto Chest": "True",
-            "Field West Castle Town Grotto Gossip Stone": "True"
+            "Hyrule Field Near Market Grotto Chest": "True",
+            "Hyrule Field Near Market Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1215,70 +1215,70 @@
     {
         "region_name": "Field Kakariko Grotto",
         "locations": {
-            "GS Hyrule Field near Kakariko": "can_use(Boomerang) or can_use(Hookshot)"
+            "Hyrule Field GS Grotto Near Kakariko Village": "can_use(Boomerang) or can_use(Hookshot)"
         }
     },
     {
         "region_name": "Field North Lon Lon Grotto",
         "locations": {
-            "Tektite Grotto Freestanding PoH": "
+            "Hyrule Field Tektite Grotto Freestanding PoH": "
                 (Progressive_Scale, 2) or can_use(Iron_Boots)"
         }
     },
     {
         "region_name": "Castle Storms Grotto",
         "locations": {
-            "GS Hyrule Castle Grotto": "(can_use(Boomerang) or can_isg) and (has_explosives or Blue_Fire)",
-            "Castle Storms Grotto Gossip Stone": "has_explosives or Blue_Fire"
+            "Hyrule Castle GS Grotto": "(can_use(Boomerang) or can_isg) and (has_explosives or Blue_Fire)",
+            "Hyrule Castle Grotto Gossip Stone": "has_explosives or Blue_Fire"
         }
     },
     {
         "region_name": "Kakariko Bombable Grotto",
         "locations": {
-            "Redead Grotto Chest": "True"
+            "Kakariko Village Redead Grotto Chest": "True"
         }
     },
     {
         "region_name": "Kakariko Back Grotto",
         "locations": {
-            "Kakariko Back Grotto Chest": "True",
-            "Kakariko Back Grotto Gossip Stone": "True"
+            "Kakariko Village Open Grotto Chest": "True",
+            "Kakariko Village Open Grotto Gossip Stone": "True"
         }
     },
     {
         "region_name": "Mountain Bombable Grotto",
 		 "locations": {
-            "DMT Grotto Cow": "can_play(Eponas_Song)"
+            "Death Mountain Trail Grotto Cow": "can_play(Eponas_Song)"
         }
     },
     {
         "region_name": "Mountain Storms Grotto",
         "locations": {
-            "Mountain Storms Grotto Chest": "True",
-            "Mountain Storms Grotto Gossip Stone": "True"
+            "Death Mountain Trail Storms Grotto Chest": "True",
+            "Death Mountain Trail Storms Grotto Gossip Stone": "True"
         }
     },
     {
         "region_name": "Goron City Grotto",
         "locations": {
-            "Goron Grotto Deku Scrub Deku Nuts": "True",
-            "Goron Grotto Deku Scrub Bombs": "True",
-            "Goron Grotto Deku Scrub Arrows": "True"
+            "Goron City Grotto Deku Scrub Left": "True",
+            "Goron City Grotto Deku Scrub Right": "True",
+            "Goron City Grotto Deku Scrub Center": "True"
         }
     },
     {
         "region_name": "Top of Crater Grotto",
         "locations": {
-            "Top of Crater Grotto Chest": "True",
-            "Top of Crater Grotto Gossip Stone": "True"
+            "Death Mountain Crater Grotto Chest": "True",
+            "Death Mountain Crater Grotto Gossip Stone": "True"
         }
     },
     {
         "region_name": "DMC Hammer Grotto",
         "locations": {
-            "DMC Grotto Deku Scrub Deku Nuts": "True",
-            "DMC Grotto Deku Scrub Bombs": "True",
-            "DMC Grotto Deku Scrub Arrows": "True"
+            "Death Mountain Crater Grotto Deku Scrub Left": "True",
+            "Death Mountain Crater Grotto Deku Scrub Right": "True",
+            "Death Mountain Crater Grotto Deku Scrub Center": "True"
         }
     },
     {
@@ -1294,30 +1294,30 @@
     {
         "region_name": "Zora River Storms Grotto",
         "locations": {
-            "ZR Grotto Deku Scrub Red Potion": "True",
-            "ZR Grotto Deku Scrub Green Potion": "True"
+            "Zoras River Grotto Deku Scrub Rear": "True",
+            "Zoras River Grotto Deku Scrub Front": "True"
         }
     },
     {
         "region_name": "Lake Hylia Grotto",
         "locations": {
-            "LH Grotto Deku Scrub Deku Nuts": "True",
-            "LH Grotto Deku Scrub Bombs": "True",
-            "LH Grotto Deku Scrub Arrows": "True"
+            "Lake Hylia Grotto Deku Scrub Left": "True",
+            "Lake Hylia Grotto Deku Scrub Right": "True",
+            "Lake Hylia Grotto Deku Scrub Center": "True"
         }
     },
     {
         "region_name": "Desert Colossus Grotto",
         "locations": {
-            "Desert Grotto Deku Scrub Red Potion": "True",
-            "Desert Grotto Deku Scrub Green Potion": "True"
+            "Desert Colossus Grotto Deku Scrub Rear": "True",
+            "Desert Colossus Grotto Deku Scrub Front": "True"
         }
     },
     {
         "region_name": "Gerudo Valley Storms Grotto",
         "locations": {
-            "Valley Grotto Deku Scrub Red Potion": "True",
-            "Valley Grotto Deku Scrub Green Potion": "True"
+            "Gerudo Valley Grotto Deku Scrub Rear": "True",
+            "Gerudo Valley Grotto Deku Scrub Front": "True"
         }
     }
 ]

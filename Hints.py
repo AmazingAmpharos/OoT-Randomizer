@@ -48,8 +48,8 @@ gossipLocations = {
     0x040A: GossipStone('Graveyard (Shadow Temple)',            'Graveyard Gossip Stone'),
     0x0412: GossipStone('Hyrule Castle (Malon)',                'Hyrule Castle Malon Gossip Stone'),
     0x040B: GossipStone('Hyrule Castle (Rock Wall)',            'Hyrule Castle Rock Wall Gossip Stone'),
-    0x0413: GossipStone('Hyrule Castle (Storms Grotto)',        'Castle Storms Grotto Gossip Stone'),
-    0x041B: GossipStone('Hyrule Field (Hammer Grotto)',         'Field Valley Grotto Gossip Stone'),
+    0x0413: GossipStone('Hyrule Castle (Storms Grotto)',        'Hyrule Castle Grotto Gossip Stone'),
+    0x041B: GossipStone('Hyrule Field (Hammer Grotto)',         'Hyrule Field Cow Grotto Gossip Stone'),
     0x041F: GossipStone('Kokiri Forest (Deku Tree Left)',       'Deku Tree Gossip Stone (Left)'),
     0x0420: GossipStone('Kokiri Forest (Deku Tree Right)',      'Deku Tree Gossip Stone (Right)'),
     0x041E: GossipStone('Kokiri Forest (Storms)',               'Kokiri Forest Gossip Stone'),
@@ -70,15 +70,15 @@ gossipLocations = {
     0x040D: GossipStone('Zoras River (Plateau)',                'Zoras River Plateau Gossip Stone'),
     0x040C: GossipStone('Zoras River (Waterfall)',              'Zoras River Waterfall Gossip Stone'),
 
-    0x0430: GossipStone('Hyrule Field (Castle Moat Grotto)',    'Field West Castle Town Grotto Gossip Stone'),
-    0x0432: GossipStone('Hyrule Field (Rock Grotto)',           'Remote Southern Grotto Gossip Stone'),
-    0x0433: GossipStone('Hyrule Field (Open Grotto)',           'Field Near Lake Outside Fence Grotto Gossip Stone'),
-    0x0438: GossipStone('Kakariko (Potion Grotto)',             'Kakariko Back Grotto Gossip Stone'),
+    0x0430: GossipStone('Hyrule Field (Castle Moat Grotto)',    'Hyrule Field Near Market Grotto Gossip Stone'),
+    0x0432: GossipStone('Hyrule Field (Rock Grotto)',           'Hyrule Field Southeast Grotto Gossip Stone'),
+    0x0433: GossipStone('Hyrule Field (Open Grotto)',           'Hyrule Field Open Grotto Gossip Stone'),
+    0x0438: GossipStone('Kakariko (Potion Grotto)',             'Kakariko Village Open Grotto Gossip Stone'),
     0x0439: GossipStone('Zoras River (Open Grotto)',            'Zora River Plateau Open Grotto Gossip Stone'),
     0x043C: GossipStone('Kokiri Forest (Storms Grotto)',        'Kokiri Forest Storms Grotto Gossip Stone'),
-    0x0444: GossipStone('Lost Woods (Rock Grotto)',             'Lost Woods Generic Grotto Gossip Stone'),
-    0x0447: GossipStone('Death Mountain Trail (Storms Grotto)', 'Mountain Storms Grotto Gossip Stone'),
-    0x044A: GossipStone('Death Mountain Crater (Rock Grotto)',  'Top of Crater Grotto Gossip Stone'),
+    0x0444: GossipStone('Lost Woods (Rock Grotto)',             'Lost Woods Grotto Gossip Stone'),
+    0x0447: GossipStone('Death Mountain Trail (Storms Grotto)', 'Death Mountain Trail Storms Grotto Gossip Stone'),
+    0x044A: GossipStone('Death Mountain Crater (Rock Grotto)',  'Death Mountain Crater Grotto Gossip Stone'),
 }
 
 

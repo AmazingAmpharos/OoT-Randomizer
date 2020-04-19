@@ -158,7 +158,7 @@ logic_tricks = {
                     race as child in under a minute, but it is
                     a strict time limit.
                     '''},
-    'Man on Roof without Hookshot': {
+    'Kakariko Village Man on Roof without Hookshot': {
         'name'    : 'logic_man_on_roof',
         'tooltip' : '''\
                     Can be reached by side-hopping off
@@ -210,7 +210,7 @@ logic_tricks = {
                     - MQ Fire Temple Lizalfos Maze.
                     - MQ Spirit Trial.
                     '''},
-    'Bottom of the Well Basement Chest with Strength & Sticks': {
+    'Bottom of the Well Map Chest with Strength & Sticks': {
         'name'    : 'logic_botw_basement',
         'tooltip' : '''\
                     The chest in the basement can be reached with
@@ -458,7 +458,7 @@ logic_tricks = {
                     so that Link will grab the ledge from farther away than
                     is normally possible.
                     '''},
-    'Diving in the Lab without Gold Scale': {
+    'Lake Hylia Lab Dive without Gold Scale': {
         'name'    : 'logic_lab_diving',
         'tooltip' : '''\
                     Remove the Iron Boots in the midst of
@@ -631,7 +631,7 @@ logic_tricks = {
                     needing a Bow.
                     Applies in both vanilla and MQ Shadow.
                     '''},
-    'Stop Link the Goron with Din\'s Fire': {
+    'Stop Goron City Adult Rolling Goron with Din\'s Fire': {
         'name'    : 'logic_link_goron_dins',
         'tooltip' : '''\
                     The timing is quite awkward.
@@ -647,7 +647,7 @@ logic_tricks = {
                     A precise jump can be used to skip
                     pushing the block.
                     '''},
-    'Fire Temple MQ Big Lava Room Bombable Chest without Hookshot': {
+    'Fire Temple MQ Big Lava Room South Goron without Hookshot': {
         'name'    : 'logic_fire_mq_bombable_chest',
         'tooltip' : '''\
                     A precisely-angled jump can get over the wall
@@ -832,7 +832,7 @@ logic_tricks = {
                     coming into this room from above by going through
                     the serpent river.
                     '''},
-    'Goron City Leftmost Maze Chest with Hover Boots': {
+    'Goron City Maze Left Chest with Hover Boots': {
         'name'    : 'logic_goron_city_leftmost',
         'tooltip' : '''\
                     A precise backwalk starting from on top of the

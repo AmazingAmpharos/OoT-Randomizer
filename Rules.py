@@ -37,7 +37,7 @@ def set_rules(world):
         else:
             add_item_rule(location, lambda location, item: item.type != 'Shop')
 
-        if location.name == 'Forest Temple MQ First Chest' and world.shuffle_bosskeys == 'dungeon' and world.shuffle_smallkeys == 'dungeon' and world.tokensanity == 'off':
+        if location.name == 'Forest Temple MQ Entry Chest' and world.shuffle_bosskeys == 'dungeon' and world.shuffle_smallkeys == 'dungeon' and world.tokensanity == 'off':
             # This location needs to be a small key. Make sure the boss key isn't placed here.
             forbid_item(location, 'Boss Key (Forest Temple)')
 
