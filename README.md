@@ -290,7 +290,7 @@ player.
     * This allows playing with open bridge while still requiring dungeon completion
   * This replaces the Remove Ganon’s Boss Door Lock option
 * Plentiful Item Pool
-  * Duplicate Letter in a Bottle added to plentiful item pool
+  * Duplicate Ruto's Letter added to plentiful item pool
 * With `Start With Max Rupees` option enabled, wallet upgrades items now fill to max rupees
 
 #### Bug Fixes
@@ -372,7 +372,7 @@ player.
 * Start with Tycoon wallet
 * Open Zora's Fountain
   * King Zora is moved to the side from the start of the game.
-  * Letter in a Bottle is removed from the item pool and replaced with an Empty Bottle.
+  * Ruto's Letter is removed from the item pool and replaced with an Empty Bottle.
 * Randomize starting time of day
 * Ice traps setting
     * Off: All ice traps are removed

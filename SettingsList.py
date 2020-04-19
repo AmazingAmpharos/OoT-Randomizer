@@ -1369,16 +1369,16 @@ setting_infos = [
         },
         gui_tooltip    = '''\
             'Default Behavior': King Zora obstructs the way to
-            Zora's Fountain. Ruto's Letter must be shown as
+            Zora's Fountain. Rutos Letter must be shown as
             child in order to move him for both eras.
 
             'Open For Adult': King Zora is always moved in 
-            the adult era. This means Ruto's Letter is only
+            the adult era. This means Rutos Letter is only
             required to access Zora's Fountain as child.
 
             'Always Open': King Zora starts as moved in
             both the child and adult eras. This also removes 
-            Ruto's Letter from the pool since it can't be used.
+            Rutos Letter from the pool since it can't be used.
         ''',
         shared         = True,
         gui_params     = {
@@ -2424,8 +2424,8 @@ setting_infos = [
             Selecting multiple progressive items will give
             the appropriate number of upgrades.
             
-            If playing with Open Zora Fountain, the Bottle
-            with Letter is converted to a regular Bottle.
+            If playing with Open Zora Fountain, the Rutos Letter
+            is converted to a regular Bottle.
         ''',
     ),
     Setting_Info(

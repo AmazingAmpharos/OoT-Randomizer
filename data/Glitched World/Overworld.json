@@ -1004,7 +1004,7 @@
         "locations": {
             "Diving Minigame": "is_child",
             "Zoras Domain Torch Run": "can_use(Sticks)",
-            "Deliver Ruto's Letter": "(is_child and Bottle_with_Letter) and zora_fountain != 'open'",
+            "Deliver Rutos Letter": "(is_child and Rutos_Letter) and zora_fountain != 'open'",
             "King Zora Thawed": "is_adult",
             "GS Zora's Domain Frozen Waterfall": "
                 is_adult and at_night and (Progressive_Hookshot or Bow or Magic_Meter or has_explosives or 

@@ -598,7 +598,7 @@ class World(object):
             world_id = location.item.world.id
             item = location.item
 
-            if item.name == 'Bottle with Letter' and item.name in duplicate_item_woth[world_id]:
+            if item.name == 'Rutos Letter' and item.name in duplicate_item_woth[world_id]:
                 # Only the first Letter counts as a letter, subsequent ones are Bottles.
                 # It doesn't matter which one is considered bottle/letter, since they will
                 # both we considered not useless.
@@ -629,7 +629,7 @@ class World(object):
                     continue
 
                 is_bottle = False
-                if item.name == 'Bottle with Letter' and item.name in duplicate_item_woth[world_id]:
+                if item.name == 'Rutos Letter' and item.name in duplicate_item_woth[world_id]:
                     # If this is the required Letter then it is not useless
                     dupe_locations = duplicate_item_woth[world_id][item.name]
                     for dupe_location in dupe_locations:

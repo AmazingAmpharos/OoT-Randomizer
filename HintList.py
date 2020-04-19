@@ -120,7 +120,7 @@ hintTable = {
     'Nocturne of Shadow':                                       (["a song of spooky spirits", "a graveyard boogie", "a haunted hymn", "a purple spark trail"], "the Nocturne of Shadow", 'item'),
     'Prelude of Light':                                         (["a luminous prologue melody", "a yellow spark trail", "the temple traveler"], "the Prelude of Light", 'item'),
     'Bottle':                                                   (["a glass container", "an empty jar", "encased air"], "a Bottle", 'item'),
-    'Bottle with Letter':                                       (["a call for help", "the note that Mweeps", "an SOS call", "a fishy stationery"], "Ruto's Letter", 'item'),
+    'Rutos Letter':                                       (["a call for help", "the note that Mweeps", "an SOS call", "a fishy stationery"], "Rutos Letter", 'item'),
     'Bottle with Milk':                                         (["cow juice", "a white liquid", "a baby's breakfast"], "a Milk Bottle", 'item'),
     'Bottle with Red Potion':                                   (["a vitality vial", "a red liquid"], "a Red Potion Bottle", 'item'),
     'Bottle with Green Potion':                                 (["a magic mixture", "a green liquid"], "a Green Potion Bottle", 'item'),
