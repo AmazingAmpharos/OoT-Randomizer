@@ -162,7 +162,7 @@
                 (Small_Key_Spirit_Temple, 5) and 
                 (logic_spirit_wall or can_use(Longshot) or has_bombchus or 
                     ((Bombs or Nuts or can_use(Dins_Fire)) and 
-                        (Bow or can_use(Hookshot) or Hammer)))"
+                        (Bow or can_use(Hookshot) or Megaton_Hammer)))"
         }
     },
     {

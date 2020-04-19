@@ -833,7 +833,7 @@ class SaveContext():
         "Progressive Hookshot" : {'item_slot.hookshot'  : ['hookshot', 'longshot']},
         "Boomerang"      : {'item_slot.boomerang'       : 'boomerang'},
         "Lens of Truth"  : {'item_slot.lens'            : 'lens'},
-        "Hammer"         : {'item_slot.hammer'          : 'hammer'},
+        "Megaton_Hammer"         : {'item_slot.hammer'          : 'hammer'},
         "Pocket Egg"     : {'item_slot.adult_trade'     : 'pocket_egg'},
         "Pocket Cucco"   : {'item_slot.adult_trade'     : 'pocket_cucco'},
         "Cojiro"         : {'item_slot.adult_trade'     : 'cojiro'},

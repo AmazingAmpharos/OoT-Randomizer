@@ -74,7 +74,7 @@
             "Gerudo Training Grounds MQ Flame Circle Chest": "can_use(Hookshot) or Bow or has_explosives"
         },
         "exits": {
-            "Gerudo Training Grounds Central Maze Right": "Hammer",
+            "Gerudo Training Grounds Central Maze Right": "Megaton_Hammer",
             "Gerudo Training Grounds Right Side": "can_use(Longshot)"
         }
     },

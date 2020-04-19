@@ -42,13 +42,13 @@
         "dungeon": "Deku Tree",
         "events": {
             "Deku Tree Clear": "(Nuts or can_use(Slingshot) or has_bombchus or can_use(Hookshot) or can_use(Bow) or can_use(Boomerang)) and
-                ((here(has_shield or can_use(Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)"
+                ((here(has_shield or can_use(Megaton_Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)"
         },
         "locations": {
             "Queen Gohma Heart": "(Nuts or can_use(Slingshot) or has_bombchus or can_use(Hookshot) or can_use(Bow) or can_use(Boomerang)) and 
-                ((here(has_shield or can_use(Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)",
+                ((here(has_shield or can_use(Megaton_Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)",
             "Queen Gohma": "(Nuts or can_use(Slingshot) or has_bombchus or can_use(Hookshot) or can_use(Bow) or can_use(Boomerang)) and
-                ((here(has_shield or can_use(Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)"
+                ((here(has_shield or can_use(Megaton_Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)"
         },
         "exits": {
             "Deku Tree Lobby": "True"

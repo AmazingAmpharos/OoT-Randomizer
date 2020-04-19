@@ -5,9 +5,9 @@
         "locations": {},
         "exits": {
             "High Alcove": "is_adult or can_hover",
-            "Boss Area": "can_use(Longshot) or can_hover or (can_use(Hover_Boots) and (can_mega or Hammer))",
+            "Boss Area": "can_use(Longshot) or can_hover or (can_use(Hover_Boots) and (can_mega or Megaton_Hammer))",
             "Dark Link Area": "(at('High Alcove', can_play(Zeldas_Lullaby)) or 
-                    (can_use(Hover_Boots) and (can_mega or Hammer)))
+                    (can_use(Hover_Boots) and (can_mega or Megaton_Hammer)))
                 and (Small_Key_Water_Temple,5)",
             "Under Entrance Block": "can_use(Hookshot) and Iron_Boots",
             "Central Pillar from Lobby": "can_use(Hookshot) and Iron_Boots and

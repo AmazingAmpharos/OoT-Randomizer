@@ -86,25 +86,25 @@
         "dungeon": "Ganons Castle",
         "events": {
             "Spirit Trial Clear": "
-                can_use(Light_Arrows) and Hammer and 
+                can_use(Light_Arrows) and Megaton_Hammer and 
                 has_bombchus and Fire_Arrows and Mirror_Shield"
         },
         "locations": {
-            "Ganons Castle MQ Spirit Trial First Chest": "(Bow or logic_rusted_switches) and Hammer",
+            "Ganons Castle MQ Spirit Trial First Chest": "(Bow or logic_rusted_switches) and Megaton_Hammer",
             "Ganons Castle MQ Spirit Trial Second Chest": "
-                (Bow or logic_rusted_switches) and Hammer and 
+                (Bow or logic_rusted_switches) and Megaton_Hammer and 
                 has_bombchus and can_see_with_lens",
             "Ganons Castle MQ Spirit Trial Sun Front Left Chest": "
-                Hammer and has_bombchus and 
+                Megaton_Hammer and has_bombchus and 
                 can_use(Fire_Arrows) and Mirror_Shield",
             "Ganons Castle MQ Spirit Trial Sun Back Left Chest": "
-                Hammer and has_bombchus and 
+                Megaton_Hammer and has_bombchus and 
                 can_use(Fire_Arrows) and Mirror_Shield",
             "Ganons Castle MQ Spirit Trial Golden Gauntlets Chest": "
-                Hammer and has_bombchus and 
+                Megaton_Hammer and has_bombchus and 
                 can_use(Fire_Arrows) and Mirror_Shield",
             "Ganons Castle MQ Spirit Trial Sun Back Right Chest": "
-                Hammer and has_bombchus and 
+                Megaton_Hammer and has_bombchus and 
                 can_use(Fire_Arrows) and Mirror_Shield"
         }
     },

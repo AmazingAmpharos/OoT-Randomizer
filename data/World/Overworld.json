@@ -270,12 +270,12 @@
             "Remote Southern Grotto": "here(can_blast_or_smash)",
             "Field Near Lake Outside Fence Grotto": "True",
             "Field Near Lake Inside Fence Grotto": "can_open_bomb_grotto",
-            "Field Valley Grotto": "(can_use(Hammer) or is_child) and can_open_bomb_grotto",
+            "Field Valley Grotto": "(can_use(Megaton_Hammer) or is_child) and can_open_bomb_grotto",
                                    # There is a hammerable boulder as adult which is not there as child
             "Field West Castle Town Grotto": "here(can_blast_or_smash)",
             "Field Far West Castle Town Grotto": "here(can_blast_or_smash)",
             "Field Kakariko Grotto": "can_open_bomb_grotto",
-            "Field North Lon Lon Grotto": "can_open_bomb_grotto"
+            "Tektite Grotto": "can_open_bomb_grotto"
         }
     },
     {
@@ -411,7 +411,7 @@
             "Broken Sword Access": "is_adult and ('Poachers Saw Access' or Poachers_Saw)"
         },
         "locations": {
-            "Gerudo Valley Hammer Rocks Chest": "can_use(Hammer)",
+            "Gerudo Valley Hammer Rocks Chest": "can_use(Megaton_Hammer)",
             "GS Gerudo Valley Behind Tent": "can_use(Hookshot) and at_night",
             "GS Gerudo Valley Pillar": "can_use(Hookshot) and at_night"
         },
@@ -1139,7 +1139,7 @@
             "GS Mountain Trail Bomb Alcove": "can_blast_or_smash",
             "GS Mountain Trail Above Dodongo's Cavern": "
                 is_adult and at_night and
-                (can_use(Hammer) or (logic_trail_gs_lower_hookshot and can_use(Hookshot)) or
+                (can_use(Megaton_Hammer) or (logic_trail_gs_lower_hookshot and can_use(Hookshot)) or
                     (logic_trail_gs_lower_bean and here(can_plant_bean and (has_explosives or Progressive_Strength_Upgrade))))",
             "Bean Plant Fairy": "
                 can_plant_bean and can_play(Song_of_Storms) and has_bottle and
@@ -1170,7 +1170,7 @@
                     (guarantee_trade_path and 
                     ('Eyedrops Access' or (Eyedrops and disable_trade_revert))))",
             "GS Mountain Trail Path to Crater": "
-                is_adult and (can_use(Hammer) or logic_trail_gs_upper) and at_night",
+                is_adult and (can_use(Megaton_Hammer) or logic_trail_gs_upper) and at_night",
             "Death Mountain Trail Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Bug Rock": "is_child and has_bottle"
@@ -1213,12 +1213,12 @@
                     (logic_link_goron_dins and can_use(Dins_Fire)))"
         },
         "locations": {
-            "Goron City Leftmost Maze Chest": "
-                can_use(Hammer) or can_use(Silver_Gauntlets) or
+            "Goron City Maze Left Chest": "
+                can_use(Megaton_Hammer) or can_use(Silver_Gauntlets) or
                 (logic_goron_city_leftmost and has_explosives and can_use(Hover_Boots))",
-            "Goron City Left Maze Chest": "
+            "Goron City Maze Center Chest": "
                 can_blast_or_smash or can_use(Silver_Gauntlets)",
-            "Goron City Right Maze Chest": "
+            "Goron City Maze Right Chest": "
                 can_blast_or_smash or can_use(Silver_Gauntlets)",
             "Goron City Pot Freestanding PoH": "
                 is_child and 'Goron City Child Fire' and
@@ -1340,7 +1340,7 @@
             "Death Mountain Crater Upper Nearby": "is_adult",
             "Death Mountain Crater Lower Nearby": "
                 can_use(Hover_Boots) or
-                (logic_crater_upper_to_lower and can_use(Hammer))"
+                (logic_crater_upper_to_lower and can_use(Megaton_Hammer))"
         }
     },
     {
@@ -1350,8 +1350,8 @@
         "exits": {
             "Death Mountain Crater Lower Local": "can_use(Goron_Tunic)",
             "Darunias Chamber": "True",
-            "Crater Fairy": "can_use(Hammer)",
-            "DMC Hammer Grotto": "can_use(Hammer)"
+            "Crater Fairy": "can_use(Megaton_Hammer)",
+            "DMC Hammer Grotto": "can_use(Megaton_Hammer)"
         }
     },
     {
@@ -1834,7 +1834,7 @@
         }
     },
     {
-        "region_name": "Field North Lon Lon Grotto",
+        "region_name": "Tektite Grotto",
         "locations": {
             "Tektite Grotto Freestanding PoH": "
                 (Progressive_Scale, 2) or can_use(Iron_Boots)"

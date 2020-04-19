@@ -9,7 +9,7 @@ item_table = {
     'Boomerang':                        ('Item',     True,  0x06, None),
     'Deku Stick (1)':                   ('Item',     None,  0x07, None),
     'Lens of Truth':                    ('Item',     True,  0x0A, None),
-    'Hammer':                           ('Item',     True,  0x0D, None),
+    'Megaton Hammer':                   ('Item',     True,  0x0D, None),
     'Cojiro':                           ('Item',     True,  0x0E, None),
     'Bottle':                           ('Item',     True,  0x0F, {'bottle': float('Inf')}),
     'Bottle with Milk':                 ('Item',     True,  0x14, {'bottle': float('Inf')}),

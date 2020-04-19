@@ -54,7 +54,7 @@
         "region_name": "Ganons Castle Water Trial",
         "dungeon": "Ganons Castle",
         "events": {
-            "Water Trial Clear": "Blue_Fire and Hammer and can_use(Light_Arrows)"
+            "Water Trial Clear": "Blue_Fire and Megaton_Hammer and can_use(Light_Arrows)"
         },
         "locations": {
             "Ganons Castle Water Trial Left Chest": "True",
@@ -68,7 +68,7 @@
         "dungeon": "Ganons Castle",
         "events": {
             "Shadow Trial Clear": "
-                can_use(Light_Arrows) and Hammer and 
+                can_use(Light_Arrows) and Megaton_Hammer and 
                 ((Fire_Arrows and can_see_with_lens) or 
                     (can_use(Longshot) and (Hover_Boots or (Dins_Fire and can_see_with_lens))))"
         },

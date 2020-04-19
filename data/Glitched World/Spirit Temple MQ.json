@@ -43,7 +43,7 @@
         "dungeon": "Spirit Temple",
         "locations": {
             "Spirit Temple MQ Child Center Chest": "
-                (Small_Key_Spirit_Temple, 7) and Hammer and can_play(Requiem_of_Spirit)",
+                (Small_Key_Spirit_Temple, 7) and Megaton_Hammer and can_play(Requiem_of_Spirit)",
             "Spirit Temple MQ Child Climb South Chest": "(Small_Key_Spirit_Temple, 7)",
             "Spirit Temple MQ Lower NE Main Room Chest": "can_play(Zeldas_Lullaby)",
             "Spirit Temple MQ Upper NE Main Room Chest": "can_see_with_lens",
@@ -61,7 +61,7 @@
                     (logic_spirit_mq_lower_adult and can_use(Dins_Fire) and Bow)) and Mirror_Shield",
             "Spirit Temple Shared": "True",
             "Spirit Temple Boss Area": "
-                (Small_Key_Spirit_Temple, 6) and can_play(Zeldas_Lullaby) and Hammer",
+                (Small_Key_Spirit_Temple, 6) and can_play(Zeldas_Lullaby) and Megaton_Hammer",
             "Mirror Shield Hand": "
                 (Small_Key_Spirit_Temple, 5) and can_play(Song_of_Time) and can_see_with_lens"
         }
@@ -97,13 +97,13 @@
         "locations": {
             "Spirit Temple MQ Lower Adult Left Chest": "True",
             "Spirit Temple MQ Lower Adult Right Chest": "
-                (Small_Key_Spirit_Temple, 7) and Hammer and Ocarina and 
+                (Small_Key_Spirit_Temple, 7) and Megaton_Hammer and Ocarina and 
                 Song_of_Time and Eponas_Song and Suns_Song and 
                 Song_of_Storms and Zeldas_Lullaby",
-            "Spirit Temple MQ Entrance Front Right Chest": "Hammer",
+            "Spirit Temple MQ Entrance Front Right Chest": "Megaton_Hammer",
             "GS Spirit Temple MQ Lower Adult Left": "True",
             "GS Spirit Temple MQ Lower Adult Right": "
-                (Small_Key_Spirit_Temple, 7) and Hammer and Ocarina and 
+                (Small_Key_Spirit_Temple, 7) and Megaton_Hammer and Ocarina and 
                 Song_of_Time and Eponas_Song and Suns_Song and 
                 Song_of_Storms and Zeldas_Lullaby"
         }
