@@ -6,7 +6,7 @@
             "Water Temple Clear": "Boss_Key_Water_Temple and can_use(Longshot)"
         },
         "locations": {
-            "Morpha Heart": "Boss_Key_Water_Temple and can_use(Longshot)",
+            "Water Temple Morpha": "Boss_Key_Water_Temple and can_use(Longshot)",
             "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)"
         },
         "exits": {
@@ -38,8 +38,8 @@
                 can_use(Bow) or can_use(Dins_Fire) or 
                 at('Water Temple Lobby', can_use(Sticks) and has_explosives)",
             "Water Temple MQ Longshot Chest": "can_use(Hookshot)",
-            "GS Water Temple MQ Lizalfos Hallway": "can_use(Dins_Fire)",
-            "GS Water Temple MQ Before Upper Water Switch": "can_use(Longshot)"
+            "Water Temple MQ GS Lizalfos Hallway": "can_use(Dins_Fire)",
+            "Water Temple MQ GS Before Upper Water Switch": "can_use(Longshot)"
         }
     },
     {
@@ -47,7 +47,7 @@
         "dungeon": "Water Temple",
         "locations": {
             "Water Temple MQ Boss Key Chest": "can_use(Dins_Fire)",
-            "GS Water Temple MQ Serpent River": "True",
+            "Water Temple MQ GS River": "True",
             "Fairy Pot": "has_bottle",
             "Nut Pot": "True"
         },
@@ -63,9 +63,9 @@
         "locations": {
             "Water Temple MQ Freestanding Key": "
                 Hover_Boots or can_use(Scarecrow) or logic_water_north_basement_ledge_jump",
-            "GS Water Temple MQ South Basement": "
+            "Water Temple MQ GS South Basement": "
                 can_use(Fire_Arrows) and (Hover_Boots or can_use(Scarecrow))",
-            "GS Water Temple MQ North Basement": "
+            "Water Temple MQ GS North Basement": "
                 (Small_Key_Water_Temple, 2) and
                 (Hover_Boots or can_use(Scarecrow) or logic_water_north_basement_ledge_jump)"
         }

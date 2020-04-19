@@ -244,7 +244,7 @@ player.
 * Shuffle Magic Beans
   * A pack of 10 beans is shuffled into the pool and the Bean Salesman sells a random item once for 60 rupees.
 * Cucco Count
-  * The number of cuccos to be gathered for Anju can be reduced or randomized, and Anju will tell you in-game the target number to catch (similar to 10 Big Poes).
+  * The number of cuccos to be gathered for Anju can be reduced or randomized, and Anju will tell you in-game the target number to catch (similar to Market 10 Big Poes).
 * Enable Useful Cutscenes prevents some useful cutscenes from being skipped
   * Re-enables Poes at Forest Temple, Darunia at Fire Temple, and Twinrova at Spirit Temple
 
@@ -449,7 +449,7 @@ player.
   * Red Rupee
   * Textbox about Dampé's grave
 * "Ganon's Tower" is now just "Ganon's Castle".
-* Dampé's Gravedigging Tour reward correctly flags collection on pickup.
+* Dampé's Graveyard Dampe Gravedigging Tour reward correctly flags collection on pickup.
 * Castle Moat Bridge no longer closes when playing the Zelda Escape cutscene.
 * Various logic fixes
 

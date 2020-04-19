@@ -21,7 +21,7 @@
         },
         "locations": {
             "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)",
-            "Morpha Heart": "Boss_Key_Water_Temple and can_use(Longshot)",
+            "Water Temple Morpha": "Boss_Key_Water_Temple and can_use(Longshot)",
             "Fairy Pot": "has_bottle and can_use(Longshot)"
         },
         "exits": {
@@ -51,7 +51,7 @@
                 Progressive_Strength_Upgrade and can_play(Zeldas_Lullaby) and 
                 ((Bow and (logic_water_central_bow or Hover_Boots or can_use(Longshot))) or
                     (logic_water_central_bow and Child_Water_Temple and Slingshot and at('Water Temple Middle Water Level', True)))",
-            "GS Water Temple South Basement": "
+            "Water Temple GS South Basement": "
                 (can_use(Hookshot) or can_use(Hover_Boots)) and 
                 has_explosives and can_play(Zeldas_Lullaby) and
                 (can_use(Iron_Boots) or can_dive)"
@@ -84,7 +84,7 @@
                 (logic_water_bk_jump_dive or can_use(Iron_Boots)) and
                 ((logic_water_bk_chest and Iron_Boots) or logic_water_north_basement_ledge_jump or
                     (has_explosives and Progressive_Strength_Upgrade) or Hover_Boots)",
-            "GS Water Temple Near Boss Key Chest": "True",
+            "Water Temple GS Near Boss Key Chest": "True",
                 # Longshot just reaches without the need to actually go near,
                 # Otherwise you have hovers and just hover over and collect with a jump slash
             "Fairy Pot": "
@@ -115,7 +115,7 @@
             "Water Temple Central Pillar Chest": "
                 can_use(Iron_Boots) and can_use(Zora_Tunic) and can_use(Hookshot) and 
                 ((Small_Key_Water_Temple, 6) or can_use(Bow) or can_use(Dins_Fire))",
-            "GS Water Temple Central Room": "
+            "Water Temple GS Central Pillar": "
                 ((can_use(Longshot) or (can_use(Farores_Wind) and can_use(Hookshot))) and
                  ((Small_Key_Water_Temple, 6) or can_use(Bow) or can_use(Dins_Fire))) or
                 (Child_Water_Temple and Boomerang and can_use(Farores_Wind) and
@@ -129,13 +129,13 @@
         "region_name": "Water Temple Dark Link Region",
         "dungeon": "Water Temple",
         "locations": {
-            "Water Temple Dark Link Chest": "(Small_Key_Water_Temple, 6)",
+            "Water Temple Longshot Chest": "(Small_Key_Water_Temple, 6)",
             "Water Temple River Chest": "
                 (Small_Key_Water_Temple, 6) and can_play(Song_of_Time) and Bow",
-            "GS Water Temple Serpent River": "
+            "Water Temple GS River": "
                 can_play(Song_of_Time) and (Small_Key_Water_Temple, 6) and 
                 (Iron_Boots or (logic_water_river_gs and can_use(Longshot) and (Bow or has_bombchus)))",
-            "GS Water Temple Falling Platform Room": "
+            "Water Temple GS Falling Platform Room": "
                 can_use(Longshot) or
                 (logic_water_falling_platform_gs and can_use(Hookshot))",
             "Fairy Pot": 

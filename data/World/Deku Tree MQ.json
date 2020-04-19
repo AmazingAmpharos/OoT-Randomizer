@@ -3,11 +3,11 @@
         "region_name": "Deku Tree Lobby",
         "dungeon": "Deku Tree",
         "locations": {
-            "Deku Tree MQ Lobby Chest": "True",
+            "Deku Tree MQ Map Chest": "True",
             "Deku Tree MQ Slingshot Chest": "is_adult or can_child_attack",
             "Deku Tree MQ Slingshot Room Back Chest": "has_fire_source_with_torch or can_use(Bow)",
             "Deku Tree MQ Basement Chest": "has_fire_source_with_torch or can_use(Bow)",
-            "GS Deku Tree MQ Lobby": "is_adult or can_child_attack",
+            "Deku Tree MQ GS Lobby": "is_adult or can_child_attack",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
                 is_adult or Slingshot or Sticks or 
@@ -28,7 +28,7 @@
         "dungeon": "Deku Tree",
         "locations": {
             "Deku Tree MQ Compass Chest": "True",
-            "GS Deku Tree MQ Compass Room": "
+            "Deku Tree MQ GS Compass Room": "
                 (can_use(Hookshot) or can_use(Boomerang)) and
                 (has_bombchus or (Bombs and (here(is_adult) or can_play(Song_of_Time))))"
         },
@@ -54,10 +54,10 @@
         "region_name": "Deku Tree Basement Back Room",
         "dungeon": "Deku Tree",
         "locations": {
-            "GS Deku Tree MQ Basement Ceiling": "
+            "Deku Tree MQ GS Basement Graves Room": "
                 can_use(Longshot) or
                 (can_play(Song_of_Time) and (can_use(Boomerang) or can_use(Hookshot)))",
-            "GS Deku Tree MQ Basement Back Room": "
+            "Deku Tree MQ GS Basement Back Room": "
                 here(has_fire_source_with_torch) and
                 (can_use(Hookshot) or can_use(Boomerang))"
         },
@@ -71,8 +71,8 @@
         "region_name": "Deku Tree Basement Ledge",
         "dungeon": "Deku Tree",
         "locations": {
-            "DT MQ Deku Scrub Deku Shield": "can_stun_deku",
-            "Queen Gohma Heart": "
+            "Deku Tree MQ Deku Scrub": "can_stun_deku",
+            "Deku Tree Queen Gohma": "
                 here(has_fire_source_with_torch) and here(has_shield) and
                 (is_adult or Kokiri_Sword or Sticks)",
             "Queen Gohma": "

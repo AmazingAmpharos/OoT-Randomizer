@@ -26,9 +26,9 @@
             "Ice Cavern MQ Iron Boots Chest": "True",
             "Ice Cavern MQ Freestanding PoH": "has_explosives",
             "Sheik in Ice Cavern": "True",
-            "GS Ice Cavern MQ Red Ice": "can_play(Song_of_Time)",
-            "GS Ice Cavern MQ Ice Block": "True",
-            "GS Ice Cavern MQ Scarecrow": "
+            "Ice Cavern MQ GS Red Ice": "can_play(Song_of_Time)",
+            "Ice Cavern MQ GS Ice Block": "True",
+            "Ice Cavern MQ GS Scarecrow": "
                 can_use(Scarecrow) or (Hover_Boots and can_use(Longshot))"
         }
     }
