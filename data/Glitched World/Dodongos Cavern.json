@@ -16,10 +16,10 @@
                 is_adult or Sticks or 
                 (can_use(Dins_Fire) and (Slingshot or has_explosives or Kokiri_Sword))
                 or can_shield",
-            "Dodongos Cavern GS East Side Room": "
+            "Dodongos Cavern GS Side Room Near Lower Lizalfos": "
                 has_explosives or is_adult or can_child_attack or Blue_Fire",
             "Dodongos Cavern GS Scarecrow": "True",
-            "Dodongos Cavern Deku Scrub East Side Room": "
+            "Dodongos Cavern Deku Scrub Side Room Near Dodongos": "
                 is_adult or Slingshot or Sticks or 
                 has_explosives or Kokiri_Sword or can_shield",
             "Dodongos Cavern Deku Scrub Lobby": "True",

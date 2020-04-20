@@ -63,9 +63,9 @@
         "locations": {
             "Water Temple MQ Freestanding Key": "
                 Hover_Boots or can_use(Scarecrow) or logic_water_north_basement_ledge_jump",
-            "Water Temple MQ GS South Basement": "
+            "Water Temple MQ GS Triple Wall Torch": "
                 can_use(Fire_Arrows) and (Hover_Boots or can_use(Scarecrow))",
-            "Water Temple MQ GS North Basement": "
+            "Water Temple MQ GS Freestanding Key Area": "
                 (Small_Key_Water_Temple, 2) and
                 (Hover_Boots or can_use(Scarecrow) or logic_water_north_basement_ledge_jump)"
         }

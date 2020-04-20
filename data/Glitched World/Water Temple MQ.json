@@ -51,8 +51,8 @@
         "dungeon": "Water Temple",
         "locations": {
             "Water Temple MQ Freestanding Key": "True",
-            "Water Temple MQ GS South Basement": "can_use(Fire_Arrows)",
-            "Water Temple MQ GS North Basement": "(Small_Key_Water_Temple, 2)"
+            "Water Temple MQ GS Triple Wall Torch": "can_use(Fire_Arrows)",
+            "Water Temple MQ GS Freestanding Key Area": "(Small_Key_Water_Temple, 2)"
         }
     }
 ]

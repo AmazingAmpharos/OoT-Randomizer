@@ -51,7 +51,7 @@
                 Progressive_Strength_Upgrade and can_play(Zeldas_Lullaby) and 
                 ((Bow and (logic_water_central_bow or Hover_Boots or can_use(Longshot))) or
                     (logic_water_central_bow and Child_Water_Temple and Slingshot and at('Water Temple Middle Water Level', True)))",
-            "Water Temple GS South Basement": "
+            "Water Temple GS Behind Gate": "
                 (can_use(Hookshot) or can_use(Hover_Boots)) and 
                 has_explosives and can_play(Zeldas_Lullaby) and
                 (can_use(Iron_Boots) or can_dive)"

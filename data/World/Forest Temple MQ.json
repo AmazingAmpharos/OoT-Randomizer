@@ -3,7 +3,7 @@
         "region_name": "Forest Temple Lobby",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple MQ Entry Chest": "
+            "Forest Temple MQ First Room Chest": "
                 is_adult or Bombs or can_use(Sticks) or Nuts or can_use(Boomerang) or
                 can_use(Dins_Fire) or Kokiri_Sword or can_use(Slingshot)",
             "Forest Temple MQ GS First Hallway": "can_use(Hookshot) or can_use(Boomerang)"
@@ -66,7 +66,7 @@
         "region_name": "Forest Temple NW Outdoors",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple MQ GS West Courtyard": "True"
+            "Forest Temple MQ GS Level Island Courtyard": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors": "
@@ -80,7 +80,7 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple MQ Well Chest": "can_use(Bow) or can_use(Slingshot)",
-            "Forest Temple MQ GS East Courtyard": "can_use(Hookshot) or can_use(Boomerang)",
+            "Forest Temple MQ GS Raised Island Courtyard": "can_use(Hookshot) or can_use(Boomerang)",
             "Forest Temple MQ GS Well": "
                 (can_use(Iron_Boots) and can_use(Hookshot)) or can_use(Bow) or can_use(Slingshot)",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
@@ -100,7 +100,7 @@
         "region_name": "Forest Temple Outdoors Top Ledges",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple MQ East Courtyard Upper Chest": "True"
+            "Forest Temple MQ Raised Island Courtyard Upper Chest": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors": "True",
@@ -111,7 +111,7 @@
         "region_name": "Forest Temple NE Outdoors Ledge",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple MQ East Courtyard Lower Chest": "True"
+            "Forest Temple MQ Raised Island Courtyard Lower Chest": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors": "True",

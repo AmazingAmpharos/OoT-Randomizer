@@ -67,7 +67,7 @@
                     or can_use(Fire_Arrows) ))"
         },
         "locations": {
-            "Ganons Castle Shadow Trial First Chest": "
+            "Ganons Castle Shadow Trial Small Chest": "
                 can_use(Fire_Arrows) or can_use(Hookshot) or 
                 Hover_Boots or can_play(Song_of_Time) or can_mega",
             "Ganons Castle Shadow Trial Golden Gauntlets Chest": "(has_bombchus and can_isg) or 

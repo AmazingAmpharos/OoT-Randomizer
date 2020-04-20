@@ -8,7 +8,7 @@
             #by putting the babas here.
             "Forest Temple Deku Baba Nuts": "True",
             "Forest Temple Deku Baba Sticks": "True",
-            "Forest Temple MQ Entry Chest": "True",
+            "Forest Temple MQ First Room Chest": "True",
             "Forest Temple MQ GS First Hallway": "True"
         },
         "exits": {
@@ -59,7 +59,7 @@
         "region_name": "Forest Temple NW Outdoors",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple MQ GS West Courtyard": "True"
+            "Forest Temple MQ GS Level Island Courtyard": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors": "
@@ -73,7 +73,7 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple MQ Well Chest": "can_use(Bow)",
-            "Forest Temple MQ GS East Courtyard": "True",
+            "Forest Temple MQ GS Raised Island Courtyard": "True",
             "Forest Temple MQ GS Well": "can_use(Iron_Boots) or can_use(Bow)"
         },
         "exits": {
@@ -87,7 +87,7 @@
         "region_name": "Forest Temple Outdoors Top Ledges",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple MQ East Courtyard Upper Chest": "True"
+            "Forest Temple MQ Raised Island Courtyard Upper Chest": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors": "True"
@@ -97,7 +97,7 @@
         "region_name": "Forest Temple NE Outdoors Ledge",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple MQ East Courtyard Lower Chest": "True"
+            "Forest Temple MQ Raised Island Courtyard Lower Chest": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors": "True",
