@@ -3,9 +3,9 @@
     "zora_fountain": "open"
   },
   "locations": {
-    "Kokiri Forest Mido Chest Top Left":                                   "Bottle with Milk",
-    "Kokiri Forest Mido Chest Top Right":                                  "Bottle with Milk",
-    "Kokiri Forest Mido Chest Bottom Left":                                "Bottle with Milk",
-    "Kokiri Forest Mido Chest Bottom Right":                               "Bottle with Milk"
+    "KF Mido Chest Top Left":                                   "Bottle with Milk",
+    "KF Mido Chest Top Right":                                  "Bottle with Milk",
+    "KF Mido Chest Bottom Left":                                "Bottle with Milk",
+    "KF Mido Chest Bottom Right":                               "Bottle with Milk"
   }
 }

@@ -37,9 +37,9 @@
     "logic_lens": "all",
     "disabled_locations": [
       "Deku Theater Mask of Truth",
-      "Kakariko Village 40 Gold Skulltula Reward",
-      "Kakariko Village 50 Gold Skulltula Reward",
-      "Gerudo Fortress Horseback Archery 1500 Points"
+      "Kak 40 Gold Skulltula Reward",
+      "Kak 50 Gold Skulltula Reward",
+      "GF HBA 1500 Points"
     ],
     "allowed_tricks": [],
     "no_escape_sequence": true,
@@ -191,11 +191,11 @@
     "logic_no_night_tokens_without_suns_song": false,
     "logic_lens": "chest-wasteland",
     "disabled_locations": [
-      "Kakariko Village 40 Gold Skulltula Reward",
-      "Kakariko Village 50 Gold Skulltula Reward",
+      "Kak 40 Gold Skulltula Reward",
+      "Kak 50 Gold Skulltula Reward",
       "Deku Theater Skull Mask",
       "Deku Theater Mask of Truth",
-      "Death Mountain Crater Deku Scrub"
+      "DMC Deku Scrub"
     ],
     "allowed_tricks": [
       "logic_fewer_tunic_requirements"
@@ -266,9 +266,9 @@
     "logic_no_night_tokens_without_suns_song": false,
     "logic_lens": "all",
     "disabled_locations": [
-      "Kakariko Village 40 Gold Skulltula Reward",
-      "Kakariko Village 50 Gold Skulltula Reward",
-      "Gerudo Fortress Horseback Archery 1500 Points",
+      "Kak 40 Gold Skulltula Reward",
+      "Kak 50 Gold Skulltula Reward",
+      "GF HBA 1500 Points",
       "Deku Theater Mask of Truth"
     ],
     "allowed_tricks": [
@@ -345,10 +345,10 @@
     "logic_no_night_tokens_without_suns_song": false,
     "logic_lens": "chest",
     "disabled_locations": [
-      "Kokiri Forest Chest",
-      "Kokiri Forest Mido Chest Top Left",
-      "Kokiri Forest Mido Chest Top Right",
-      "Kokiri Forest Mido Chest Bottom Left"
+      "KF Chest",
+      "KF Mido Chest Top Left",
+      "KF Mido Chest Top Right",
+      "KF Mido Chest Bottom Left"
     ],
     "allowed_tricks": [
       "logic_child_rolling_with_strength",

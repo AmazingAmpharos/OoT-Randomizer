@@ -1,8 +1,8 @@
 {
   "locations": {
-    "Kokiri Forest Mido Chest Top Left":                                   {"item": ["Bow", "Light Arrows", "Magic Meter"]},
-    "Kokiri Forest Mido Chest Top Right":                                  {"item": ["Bow", "Light Arrows", "Magic Meter"]},
-    "Kokiri Forest Mido Chest Bottom Left":                                {"item": ["Bow", "Light Arrows", "Magic Meter"]},
-    "Kokiri Forest Mido Chest Bottom Right":                               {"item": ["Bow", "Light Arrows", "Magic Meter"]}
+    "KF Mido Chest Top Left":                                   {"item": ["Bow", "Light Arrows", "Magic Meter"]},
+    "KF Mido Chest Top Right":                                  {"item": ["Bow", "Light Arrows", "Magic Meter"]},
+    "KF Mido Chest Bottom Left":                                {"item": ["Bow", "Light Arrows", "Magic Meter"]},
+    "KF Mido Chest Bottom Right":                               {"item": ["Bow", "Light Arrows", "Magic Meter"]}
   }
 }
