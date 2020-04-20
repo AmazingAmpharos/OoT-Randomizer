@@ -1337,7 +1337,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 rom.write_int16(0xD7E8D6, bit_mask_pointer)
                 rom.write_int16(0xD7E786, bit_mask_pointer)
                 rom.write_byte(0x29BECB9, special['text_id']) #Fix text box
-            elif location.name == 'Song from Composer Grave':
+            elif location.name == 'Song from Composers Grave':
                 rom.write_int16(0xE09F66, bit_mask_pointer)
                 rom.write_byte(0x332A87D, special['text_id']) #Fix text box
             elif location.name == 'Song from Saria':

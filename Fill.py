@@ -24,7 +24,7 @@ class FillError(ShuffleError):
 # Places all items into the world
 def distribute_items_restrictive(window, worlds, fill_locations=None):
     song_locations = [world.get_location(location) for world in worlds for location in
-        ['Song from Composer Grave', 'Song from Impa', 'Song from Malon', 'Song from Saria',
+        ['Song from Composers Grave', 'Song from Impa', 'Song from Malon', 'Song from Saria',
         'Song from Ocarina of Time', 'Song from Windmill', 'Sheik in Forest', 'Sheik at Temple',
         'Sheik in Crater', 'Sheik in Ice Cavern', 'Sheik in Kakariko', 'Sheik at Colossus']]
 

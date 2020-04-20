@@ -549,7 +549,7 @@
     {
         "region_name": "Colossus Fairy",
         "locations": {
-            "Desert Colossus Fairy Reward": "can_play(Zeldas_Lullaby)"
+            "Desert Colossus Great Fairy": "can_play(Zeldas_Lullaby)"
         },
         "exits": {
             "Desert Colossus": "True"
@@ -667,7 +667,7 @@
     {
         "region_name": "Hyrule Castle Fairy",
         "locations": {
-            "Hyrule Castle Fairy Reward": "can_play(Zeldas_Lullaby)"
+            "Hyrule Castle Great Fairy": "can_play(Zeldas_Lullaby)"
         },
         "exits": {
             "Castle Grounds": "True"
@@ -689,7 +689,7 @@
     {
         "region_name": "Ganons Castle Fairy",
         "locations": {
-            "Outside Ganons Castle Fairy Reward": "can_play(Zeldas_Lullaby)"
+            "Outside Ganons Castle Great Fairy": "can_play(Zeldas_Lullaby)"
         },
         "exits": {
             "Castle Grounds": "True"
@@ -751,8 +751,8 @@
     {
         "region_name": "Castle Town Bombchu Bowling",
         "locations": {
-            "Market Bombchu Bowling Bomb Bag": "found_bombchus",
-            "Market Bombchu Bowling Piece of Heart": "found_bombchus",
+            "Market Bombchu Bowling First Prize": "found_bombchus",
+            "Market Bombchu Bowling Second Prize": "found_bombchus",
             "Market Bombchu Bowling Bombchus": "found_bombchus"
         },
         "exits": {
@@ -1036,7 +1036,7 @@
         },
         "exits": {
             "Shield Grave": "is_adult or at_night",
-            "Composer Grave": "can_play(Zeldas_Lullaby)",
+            "Composers Grave": "can_play(Zeldas_Lullaby)",
             "Heart Piece Grave": "is_adult or at_night",
             "Dampes Grave": "is_adult",
             "Dampes House": "is_adult or at_dampe_time",
@@ -1063,10 +1063,10 @@
         }
     },
     {
-        "region_name": "Composer Grave",
+        "region_name": "Composers Grave",
         "locations": {
-            "Graveyard Composer Grave Chest": "has_fire_source",
-            "Song from Composer Grave": "
+            "Graveyard Composers Grave Chest": "has_fire_source",
+            "Song from Composers Grave": "
                 is_adult or 
                 (Slingshot or Boomerang or Sticks or 
                     has_explosives or Kokiri_Sword)"
@@ -1081,7 +1081,7 @@
             "Dampes Windmill Access": "is_adult and can_play(Song_of_Time)"
         },
         "locations": {
-            "Graveyard Hookshot Chest": "True",
+            "Graveyard Dampe Race Chest": "True",
             "Graveyard Dampe Race Freestanding PoH": "is_adult or logic_child_dampe_race_poh",
             "Nut Pot": "True"
         },
@@ -1412,7 +1412,7 @@
     {
         "region_name": "Crater Fairy",
         "locations": {
-            "Death Mountain Crater Fairy Reward": "can_play(Zeldas_Lullaby)"
+            "Death Mountain Crater Great Fairy": "can_play(Zeldas_Lullaby)"
         },
         "exits": {
             "Death Mountain Crater Lower Local": "True"
@@ -1421,7 +1421,7 @@
     {
         "region_name": "Mountain Summit Fairy",
         "locations": {
-            "Death Mountain Trail Fairy Reward": "can_play(Zeldas_Lullaby)"
+            "Death Mountain Trail Great Fairy": "can_play(Zeldas_Lullaby)"
         },
         "exits": {
             "Death Mountain Summit": "True"
@@ -1447,7 +1447,7 @@
         "time_passes": true,
         "locations": {
             "Zora River Magic Bean Salesman": "is_child",
-            "Zora River Frog Ocarina Game": "
+            "Zora River Frogs Ocarina Game": "
                 is_child and can_play(Zeldas_Lullaby) and can_play(Sarias_Song) and 
                 can_play(Suns_Song) and can_play(Eponas_Song) and 
                 can_play(Song_of_Time) and can_play(Song_of_Storms)",
@@ -1491,9 +1491,9 @@
         "scene": "Zoras Domain",
         "hint": "Zora's Domain",
         "events": {
-            "Zora Thawed": "is_adult and Blue_Fire",
+            "King Zora Thawed": "is_adult and Blue_Fire",
             "Eyeball Frog Access": "
-                is_adult and 'Zora Thawed' and 
+                is_adult and 'King Zora Thawed' and 
                 (Eyedrops or Eyeball_Frog or Prescription or 'Prescription Access')"
         },
         "locations": {
@@ -1501,7 +1501,7 @@
             "Zoras Domain Chest": "can_use(Sticks)",
             "Deliver Rutos Letter": "
                 is_child and Rutos_Letter and zora_fountain != 'open'",
-            "Zoras Domain King Zora": "'Zora Thawed'",
+            "Zoras Domain King Zora Trade": "'King Zora Thawed'",
             "Zoras Domain GS Frozen Waterfall": "
                 is_adult and at_night and (Progressive_Hookshot or Bow or Magic_Meter)",
             "Zoras Domain Gossip Stone": "True",
@@ -1574,7 +1574,7 @@
     {
         "region_name": "Zoras Fountain Fairy",
         "locations": {
-            "Zoras Fountain Fairy Reward": "can_play(Zeldas_Lullaby)"
+            "Zoras Fountain Great Fairy": "can_play(Zeldas_Lullaby)"
         },
         "exits": {
             "Zoras Fountain": "True"
