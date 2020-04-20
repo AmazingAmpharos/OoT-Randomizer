@@ -46,15 +46,15 @@
         },
         "exits": {
             "Links House": "True",
-            "Mido House": "True",
-            "Saria House": "True",
+            "Midos House": "True",
+            "Sarias House": "True",
             "House of Twins": "True",
             "Know It All House": "True",
             "Kokiri Shop": "True",
             "Outside Deku Tree": "is_adult or 'Showed Mido Sword & Shield'",
             "Lost Woods": "True",
-            "Lost Woods Bridge From Forest": "can_leave_forest",
-            "Kokiri Forest Storms Grotto": "can_open_storm_grotto"
+            "LW Bridge From Forest": "can_leave_forest",
+            "KF Storms Grotto": "can_open_storm_grotto"
         }
     },
     {
@@ -88,7 +88,7 @@
         }
     },
     {
-        "region_name": "Mido House",
+        "region_name": "Midos House",
         "locations": {
             "KF Mido Chest Top Left": "True",
             "KF Mido Chest Top Right": "True",
@@ -100,7 +100,7 @@
         }
     },
     {
-        "region_name": "Saria House",
+        "region_name": "Sarias House",
         "exits": {
             "Kokiri Forest": "True"
         }
@@ -134,7 +134,7 @@
         }
     },
     {
-        "region_name": "Lost Woods Forest Exit",
+        "region_name": "LW Forest Exit",
         "scene": "Lost Woods",
         "exits": {
             "Kokiri Forest": "True"
@@ -154,58 +154,58 @@
             "LW Target in Woods": "can_use(Slingshot)",
             "LW Deku Scrub Near Bridge": "is_child and can_stun_deku",
             "LW GS Bean Patch Near Bridge": "can_plant_bugs and can_child_attack",
-            "Lost Woods Gossip Stone": "True",
+            "LW Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle",
             "Bean Plant Fairy": "can_plant_bean and can_play(Song_of_Storms) and has_bottle",
             "Bug Shrub": "is_child and can_cut_shrubs and has_bottle"
         },
         "exits": {
-            "Lost Woods Forest Exit": "True",
+            "LW Forest Exit": "True",
             "Goron City Woods Warp": "True",
-            "Lost Woods Bridge": "
+            "LW Bridge": "
                 is_adult and
                 (can_use(Hover_Boots) or can_use(Longshot) or
                     here(can_plant_bean) or logic_lost_woods_bridge)",
             "Zora River": "can_leave_forest and (can_dive or can_use(Iron_Boots))",
-            "Lost Woods Beyond Mido": "is_child or logic_mido_backflip or can_play(Sarias_Song)",
-            "Lost Woods Generic Grotto": "here(can_blast_or_smash)"
+            "LW Beyond Mido": "is_child or logic_mido_backflip or can_play(Sarias_Song)",
+            "LW Generic Grotto": "here(can_blast_or_smash)"
         }
     },
     {
-        "region_name": "Lost Woods Beyond Mido",
+        "region_name": "LW Beyond Mido",
         "scene": "Lost Woods",
         "hint": "the Lost Woods",
         "locations": {
-            "LW Deku Scrub Near Forest Stage Right": "is_child and can_stun_deku",
-            "LW Deku Scrub Near Forest Stage Left": "is_child and can_stun_deku",
-            "LW GS Above Stage": "
+            "LW Deku Scrub Near Deku Theater Right": "is_child and can_stun_deku",
+            "LW Deku Scrub Near Deku Theater Left": "is_child and can_stun_deku",
+            "LW GS Above Theater": "
                 is_adult and at_night and
                 (here(can_plant_bean) or
                      (logic_lost_woods_gs_bean and can_use(Hookshot) and
                      (can_use(Longshot) or can_use(Bow) or has_bombchus or can_use(Dins_Fire))))",
-            "LW GS Bean Patch Near Stage": "
+            "LW GS Bean Patch Near Theater": "
                 can_plant_bugs and 
                 (can_child_attack or (shuffle_scrubs == 'off' and Buy_Deku_Shield))",
             "Butterfly Fairy": "can_use(Sticks) and has_bottle"
         },
         "exits": {
-            "Lost Woods Forest Exit": "True",
+            "LW Forest Exit": "True",
             "Lost Woods": "is_child or can_play(Sarias_Song)",
-            "Sacred Forest Meadow Entryway": "True",
-            "Forest Stage": "True",
-            "Lost Woods Sales Grotto": "here(can_blast_or_smash)"
+            "SFM Entryway": "True",
+            "Deku Theater": "True",
+            "LW Scrubs Grotto": "here(can_blast_or_smash)"
         }
     },
     {
-        "region_name": "Sacred Forest Meadow Entryway",
+        "region_name": "SFM Entryway",
         "scene": "Sacred Forest Meadow",
         "hint": "Sacred Forest Meadow",
         "exits": {
-            "Lost Woods Beyond Mido": "True",
+            "LW Beyond Mido": "True",
             "Sacred Forest Meadow": "
                 is_adult or Slingshot or Sticks or 
                 Kokiri_Sword or can_use(Dins_Fire)",
-            "Front of Meadow Grotto": "can_open_bomb_grotto"
+            "SFM Wolfos Grotto": "can_open_bomb_grotto"
         }
     },
     {
@@ -216,31 +216,31 @@
             "Song from Saria": "is_child and Zeldas_Letter",
             "Sheik in Forest": "is_adult",
             "SFM GS": "can_use(Hookshot) and at_night",
-            "Sacred Forest Meadow Maze Gossip Stone (Lower)": "True",
-            "Sacred Forest Meadow Maze Gossip Stone (Upper)": "True",
-            "Sacred Forest Meadow Saria Gossip Stone": "True",
+            "SFM Maze Gossip Stone (Lower)": "True",
+            "SFM Maze Gossip Stone (Upper)": "True",
+            "SFM Saria Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle"
         },
         "exits": {
-            "Sacred Forest Meadow Entryway": "True",
+            "SFM Entryway": "True",
             "Forest Temple Lobby": "can_use(Hookshot)",
-            "Meadow Fairy Grotto": "True",
-            "Meadow Storms Grotto": "can_open_storm_grotto"
+            "SFM Fairy Grotto": "True",
+            "SFM Storms Grotto": "can_open_storm_grotto"
         }
     },
     {
-        "region_name": "Lost Woods Bridge From Forest",
+        "region_name": "LW Bridge From Forest",
         "scene": "Lost Woods",
         "hint": "the Lost Woods",
         "locations": {
             "LW Fairy Ocarina Item": "True"
         },
         "exits": {
-            "Lost Woods Bridge": "True"
+            "LW Bridge": "True"
         }
     },
     {
-        "region_name": "Lost Woods Bridge",
+        "region_name": "LW Bridge",
         "scene": "Lost Woods",
         "hint": "the Lost Woods",
         "exits": {
@@ -260,7 +260,7 @@
             "Big Poe Kill": "can_use(Bow) and can_ride_epona and has_bottle"
         },
         "exits": {
-            "Lost Woods Bridge": "True",
+            "LW Bridge": "True",
             "Lake Hylia": "True",
             "Gerudo Valley": "True",
             "Castle Town Entrance": "True",
@@ -1597,14 +1597,14 @@
         },
         "exits": {
             "Hyrule Field": "True",
-            "Talon House": "is_adult or at_day",
+            "Talons House": "is_adult or at_day",
             "Ingo Barn": "True",
             "Lon Lon Corner Tower": "True",
             "Lon Lon Grotto": "is_child"
         }
     },
     {
-        "region_name": "Talon House",
+        "region_name": "Talons House",
         "locations": {
             "LLR Talons Chickens": "is_child and at_day and Zeldas_Letter"
         },
@@ -1661,10 +1661,10 @@
         }
     },
     {
-        "region_name": "Kokiri Forest Storms Grotto",
+        "region_name": "KF Storms Grotto",
         "locations": {
             "KF Storms Grotto Chest": "True",
-            "Kokiri Forest Storms Grotto Gossip Stone": "True",
+            "KF Storms Grotto Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
@@ -1675,10 +1675,10 @@
         }
     },
     {
-        "region_name": "Lost Woods Generic Grotto",
+        "region_name": "LW Generic Grotto",
         "locations": {
-            "LW Grotto Chest": "True",
-            "Lost Woods Grotto Gossip Stone": "True",
+            "LW Generic Grotto Chest": "True",
+            "LW Generic Grotto Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
@@ -1689,27 +1689,27 @@
         }
     },
     {
-        "region_name": "Forest Stage",
+        "region_name": "Deku Theater",
         "locations": {
             "Deku Theater Skull Mask": "is_child and 'Skull Mask'",
             "Deku Theater Mask of Truth": "is_child and 'Mask of Truth'"
         },
         "exits": {
-            "Lost Woods Beyond Mido": "True"
+            "LW Beyond Mido": "True"
         }
     },
     {
-        "region_name": "Lost Woods Sales Grotto",
+        "region_name": "LW Scrubs Grotto",
         "locations": {
             "LW Grotto Deku Scrub Rear": "can_stun_deku",
             "LW Grotto Deku Scrub Front": "can_stun_deku"
         },
         "exits": {
-            "Lost Woods Beyond Mido": "True"
+            "LW Beyond Mido": "True"
         }
     },
     {
-        "region_name": "Meadow Fairy Grotto",
+        "region_name": "SFM Fairy Grotto",
         "locations": {
             "Free Fairies": "has_bottle"
         },
@@ -1718,7 +1718,7 @@
         }
     },
     {
-        "region_name": "Meadow Storms Grotto",
+        "region_name": "SFM Storms Grotto",
         "locations": {
             "SFM Grotto Deku Scrub Rear": "can_stun_deku",
             "SFM Grotto Deku Scrub Front": "can_stun_deku"
@@ -1728,14 +1728,14 @@
         }
     },
     {
-        "region_name": "Front of Meadow Grotto",
+        "region_name": "SFM Wolfos Grotto",
         "locations": {
             "SFM Wolfos Grotto Chest": "
                 is_adult or Slingshot or Sticks or 
                 Kokiri_Sword or can_use(Dins_Fire)"
         },
         "exits": {
-            "Sacred Forest Meadow Entryway": "True"
+            "SFM Entryway": "True"
         }
     },
     {
