@@ -38,7 +38,7 @@
         "region_name": "Caged Skulltula",
         "dungeon": "Water Temple",
         "locations": {
-            "Water Temple GS South Basement": "(can_use(Hover_Boots) or can_hover or can_use(Hookshot)) and 
+            "Water Temple GS Behind Gate": "(can_use(Hover_Boots) or can_hover or can_use(Hookshot)) and 
                 (can_jumpslash or has_explosives)"
         }
     },

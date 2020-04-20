@@ -113,7 +113,7 @@
             "Spirit Temple Statue Room Northeast Chest": "
                 (Small_Key_Spirit_Temple, 3) and can_use(Silver_Gauntlets) and can_play(Zeldas_Lullaby) and 
                 (Progressive_Hookshot or Hover_Boots)",
-            "Spirit Temple GS Hall to West Iron Knuckle": "
+            "Spirit Temple GS Hall After Sun Block Room": "
                 (has_explosives and Boomerang and Progressive_Hookshot) or 
                 (can_use(Boomerang) and (Small_Key_Spirit_Temple, 5) and has_explosives) or 
                 (Progressive_Hookshot and can_use(Silver_Gauntlets) and 

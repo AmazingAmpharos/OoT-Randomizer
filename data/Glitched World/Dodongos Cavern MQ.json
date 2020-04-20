@@ -39,7 +39,7 @@
             "Dodongos Cavern MQ Deku Scrub Lobby Rear": "can_stun_deku",
             "Dodongos Cavern MQ Deku Scrub Lobby Front": "can_stun_deku",
             "Dodongos Cavern MQ Deku Scrub Staircase": "can_stun_deku",
-            "Dodongos Cavern MQ Deku Scrub East Side Room": "
+            "Dodongos Cavern MQ Deku Scrub Side Room Near Lower Lizalfos": "
                 is_adult or has_explosives or 
                 ((Sticks or can_use(Dins_Fire)) and 
                     (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love)))",

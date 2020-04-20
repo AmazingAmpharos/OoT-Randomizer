@@ -45,7 +45,7 @@
         "region_name": "Dodongos Cavern Lower Right Side",
         "dungeon": "Dodongos Cavern",
         "locations": {
-            "Dodongos Cavern MQ Deku Scrub East Side Room": "can_stun_deku"
+            "Dodongos Cavern MQ Deku Scrub Side Room Near Lower Lizalfos": "can_stun_deku"
         },
         "exits": {
             "Dodongos Cavern Bomb Bag Area": "

@@ -16,13 +16,13 @@
             "Dodongos Cavern Compass Chest": "
                 is_adult or Sticks or 
                 (can_use(Dins_Fire) and (Slingshot or has_explosives or Kokiri_Sword))",
-            "Dodongos Cavern GS East Side Room": "
+            "Dodongos Cavern GS Side Room Near Lower Lizalfos": "
                 has_explosives or is_adult or Slingshot or 
                 Boomerang or Sticks or Kokiri_Sword",
             "Dodongos Cavern GS Scarecrow": "
                 can_use(Scarecrow) or can_use(Longshot) or 
                 (logic_dc_scarecrow_gs and (is_adult or can_child_attack))",
-            "Dodongos Cavern Deku Scrub East Side Room": "
+            "Dodongos Cavern Deku Scrub Side Room Near Dodongos": "
                 is_adult or Slingshot or Sticks or 
                 has_explosives or Kokiri_Sword",
             "Dodongos Cavern Deku Scrub Lobby": "True",
