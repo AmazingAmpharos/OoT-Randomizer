@@ -742,7 +742,7 @@
     {
         "region_name": "Castle Town Shooting Gallery",
         "locations": {
-            "Market Child Shooting Gallery": "is_child"
+            "Market Shooting Gallery": "is_child"
         },
         "exits": {
             "Castle Town": "True"
@@ -927,7 +927,7 @@
     {
         "region_name": "Impas House Back",
         "locations": {
-            "Kakariko Village Impa House Freestanding PoH": "True"
+            "Kakariko Village Impas House Freestanding PoH": "True"
         },
         "exits": {
             "Kakariko Impas Ledge": "True",
@@ -978,7 +978,7 @@
     {
         "region_name": "Kakariko Shooting Gallery",
         "locations": {
-            "Kakariko Village Adult Shooting Gallery": "is_adult and Bow"
+            "Kakariko Village Shooting Gallery": "is_adult and Bow"
         },
         "exits": {
             "Kakariko Village": "True"

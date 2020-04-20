@@ -518,7 +518,7 @@
     {
         "region_name": "Castle Town Shooting Gallery",
         "locations": {
-            "Market Child Shooting Gallery": "True"
+            "Market Shooting Gallery": "True"
         }
     },
     {
@@ -632,7 +632,7 @@
     {
         "region_name": "Impas House Back",
         "locations": {
-            "Kakariko Village Impa House Freestanding PoH": "True",
+            "Kakariko Village Impas House Freestanding PoH": "True",
             "Kakariko Village Impas House Cow": "can_play(Eponas_Song)"
         }
     },
@@ -663,7 +663,7 @@
     {
         "region_name": "Kakariko Shooting Gallery",
         "locations": {
-            "Kakariko Village Adult Shooting Gallery": "can_use(Bow)"
+            "Kakariko Village Shooting Gallery": "can_use(Bow)"
         }
     },
     {

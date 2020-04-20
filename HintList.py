@@ -198,8 +198,8 @@ hintTable = {
 
     'Lake Hylia Child Fishing':                                            ("#fishing in youth# bestows", None, 'minigame'),
     'Lake Hylia Adult Fishing':                                            ("#fishing in maturity# bestows", None, 'minigame'),
-    'Market Child Shooting Gallery':                                   ("#shooting in youth# grants", None, 'minigame'),
-    'Kakariko Village Adult Shooting Gallery':                                   ("#shooting in maturity# grants", None, ['minigame', 'sometimes']),
+    'Market Shooting Gallery':                                   ("#shooting in youth# grants", None, 'minigame'),
+    'Kakariko Village Shooting Gallery':                                   ("#shooting in maturity# grants", None, ['minigame', 'sometimes']),
     'Market Bombchu Bowling First Prize':                                 ("the #first explosive prize# is", None, 'minigame'),
     'Market Bombchu Bowling Second Prize':                           ("the #second explosive prize# is", None, 'minigame'),
     'Treasure Chest Game':                                      (["#gambling# grants", "there is a #1/32 chance# to win"], "the #treasure chest game# grants", ['minigame', 'sometimes']),
