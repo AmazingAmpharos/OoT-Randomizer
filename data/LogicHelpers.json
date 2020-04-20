@@ -77,7 +77,7 @@
     # Biggoron's trade path
     # ER with these settings disables timers and prevents items from reverting on save warp.
     # Otherwise, to get to Biggoron requires: a trick, clearing boulders on DMT, or Darunia's Chamber
-    "guarantee_trade_path": "shuffle_interior_entrances or shuffle_overworld_entrances or logic_biggoron_bolero or can_blast_or_smash or 'Stop Goron City Adult Rolling Goron'",
+    "guarantee_trade_path": "shuffle_interior_entrances or shuffle_overworld_entrances or logic_biggoron_bolero or can_blast_or_smash or 'Stop GC Rolling Goron as Adult'",
     "guarantee_hint": "(hints == 'mask' and Mask_of_Truth) or (hints == 'agony' and Stone_of_Agony) or (hints != 'mask' and hints != 'agony')",
     "has_fire_source": "can_use(Dins_Fire) or can_use(Fire_Arrows)",
     "has_fire_source_with_torch": "has_fire_source or (is_child and Sticks)",
