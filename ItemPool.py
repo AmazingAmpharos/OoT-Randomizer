@@ -252,22 +252,22 @@ shopsanity_rupees = (
 
 
 vanilla_shop_items = {
-    'Kokiri Forest Shop Item 1': 'Buy Deku Shield',
-    'Kokiri Forest Shop Item 2': 'Buy Deku Nut (5)',
-    'Kokiri Forest Shop Item 3': 'Buy Deku Nut (10)',
-    'Kokiri Forest Shop Item 4': 'Buy Deku Stick (1)',
-    'Kokiri Forest Shop Item 5': 'Buy Deku Seeds (30)',
-    'Kokiri Forest Shop Item 6': 'Buy Arrows (10)',
-    'Kokiri Forest Shop Item 7': 'Buy Arrows (30)',
-    'Kokiri Forest Shop Item 8': 'Buy Heart',
-    'Kakariko Village Potion Shop Item 1': 'Buy Deku Nut (5)',
-    'Kakariko Village Potion Shop Item 2': 'Buy Fish',
-    'Kakariko Village Potion Shop Item 3': 'Buy Red Potion [30]',
-    'Kakariko Village Potion Shop Item 4': 'Buy Green Potion',
-    'Kakariko Village Potion Shop Item 5': 'Buy Blue Fire',
-    'Kakariko Village Potion Shop Item 6': 'Buy Bottle Bug',
-    'Kakariko Village Potion Shop Item 7': 'Buy Poe',
-    'Kakariko Village Potion Shop Item 8': 'Buy Fairy\'s Spirit',
+    'KF Shop Item 1': 'Buy Deku Shield',
+    'KF Shop Item 2': 'Buy Deku Nut (5)',
+    'KF Shop Item 3': 'Buy Deku Nut (10)',
+    'KF Shop Item 4': 'Buy Deku Stick (1)',
+    'KF Shop Item 5': 'Buy Deku Seeds (30)',
+    'KF Shop Item 6': 'Buy Arrows (10)',
+    'KF Shop Item 7': 'Buy Arrows (30)',
+    'KF Shop Item 8': 'Buy Heart',
+    'Kak Potion Shop Item 1': 'Buy Deku Nut (5)',
+    'Kak Potion Shop Item 2': 'Buy Fish',
+    'Kak Potion Shop Item 3': 'Buy Red Potion [30]',
+    'Kak Potion Shop Item 4': 'Buy Green Potion',
+    'Kak Potion Shop Item 5': 'Buy Blue Fire',
+    'Kak Potion Shop Item 6': 'Buy Bottle Bug',
+    'Kak Potion Shop Item 7': 'Buy Poe',
+    'Kak Potion Shop Item 8': 'Buy Fairy\'s Spirit',
     'Market Bombchu Shop Item 1': 'Buy Bombchu (5)',
     'Market Bombchu Shop Item 2': 'Buy Bombchu (10)',
     'Market Bombchu Shop Item 3': 'Buy Bombchu (10)',
@@ -292,30 +292,30 @@ vanilla_shop_items = {
     'Market Bazaar Item 6': 'Buy Arrows (50)',
     'Market Bazaar Item 7': 'Buy Deku Stick (1)',
     'Market Bazaar Item 8': 'Buy Arrows (30)',
-    'Kakariko Village Bazaar Item 1': 'Buy Hylian Shield',
-    'Kakariko Village Bazaar Item 2': 'Buy Bombs (5) [35]',
-    'Kakariko Village Bazaar Item 3': 'Buy Deku Nut (5)',
-    'Kakariko Village Bazaar Item 4': 'Buy Heart',
-    'Kakariko Village Bazaar Item 5': 'Buy Arrows (10)',
-    'Kakariko Village Bazaar Item 6': 'Buy Arrows (50)',
-    'Kakariko Village Bazaar Item 7': 'Buy Deku Stick (1)',
-    'Kakariko Village Bazaar Item 8': 'Buy Arrows (30)',
-    'Zoras Domain Shop Item 1': 'Buy Zora Tunic',
-    'Zoras Domain Shop Item 2': 'Buy Arrows (10)',
-    'Zoras Domain Shop Item 3': 'Buy Heart',
-    'Zoras Domain Shop Item 4': 'Buy Arrows (30)',
-    'Zoras Domain Shop Item 5': 'Buy Deku Nut (5)',
-    'Zoras Domain Shop Item 6': 'Buy Arrows (50)',
-    'Zoras Domain Shop Item 7': 'Buy Fish',
-    'Zoras Domain Shop Item 8': 'Buy Red Potion [50]',
-    'Goron City Shop Item 1': 'Buy Bombs (5) [25]',
-    'Goron City Shop Item 2': 'Buy Bombs (10)',
-    'Goron City Shop Item 3': 'Buy Bombs (20)',
-    'Goron City Shop Item 4': 'Buy Bombs (30)',
-    'Goron City Shop Item 5': 'Buy Goron Tunic',
-    'Goron City Shop Item 6': 'Buy Heart',
-    'Goron City Shop Item 7': 'Buy Red Potion [40]',
-    'Goron City Shop Item 8': 'Buy Heart',
+    'Kak Bazaar Item 1': 'Buy Hylian Shield',
+    'Kak Bazaar Item 2': 'Buy Bombs (5) [35]',
+    'Kak Bazaar Item 3': 'Buy Deku Nut (5)',
+    'Kak Bazaar Item 4': 'Buy Heart',
+    'Kak Bazaar Item 5': 'Buy Arrows (10)',
+    'Kak Bazaar Item 6': 'Buy Arrows (50)',
+    'Kak Bazaar Item 7': 'Buy Deku Stick (1)',
+    'Kak Bazaar Item 8': 'Buy Arrows (30)',
+    'ZD Shop Item 1': 'Buy Zora Tunic',
+    'ZD Shop Item 2': 'Buy Arrows (10)',
+    'ZD Shop Item 3': 'Buy Heart',
+    'ZD Shop Item 4': 'Buy Arrows (30)',
+    'ZD Shop Item 5': 'Buy Deku Nut (5)',
+    'ZD Shop Item 6': 'Buy Arrows (50)',
+    'ZD Shop Item 7': 'Buy Fish',
+    'ZD Shop Item 8': 'Buy Red Potion [50]',
+    'GC Shop Item 1': 'Buy Bombs (5) [25]',
+    'GC Shop Item 2': 'Buy Bombs (10)',
+    'GC Shop Item 3': 'Buy Bombs (20)',
+    'GC Shop Item 4': 'Buy Bombs (30)',
+    'GC Shop Item 5': 'Buy Goron Tunic',
+    'GC Shop Item 6': 'Buy Heart',
+    'GC Shop Item 7': 'Buy Red Potion [40]',
+    'GC Shop Item 8': 'Buy Heart',
 }
 
 
@@ -339,30 +339,30 @@ min_shop_items = (
 
 
 vanilla_deku_scrubs = {
-    'Zoras River Grotto Deku Scrub Rear': 'Buy Red Potion [30]',
-    'Zoras River Grotto Deku Scrub Front': 'Buy Green Potion',
-    'Sacred Forest Meadow Grotto Deku Scrub Rear': 'Buy Red Potion [30]',
-    'Sacred Forest Meadow Grotto Deku Scrub Front': 'Buy Green Potion',
-    'Lake Hylia Grotto Deku Scrub Left': 'Buy Deku Nut (5)',
-    'Lake Hylia Grotto Deku Scrub Right': 'Buy Bombs (5) [35]',
-    'Lake Hylia Grotto Deku Scrub Center': 'Buy Arrows (30)',
-    'Gerudo Valley Grotto Deku Scrub Rear': 'Buy Red Potion [30]',
-    'Gerudo Valley Grotto Deku Scrub Front': 'Buy Green Potion',
-    'Lost Woods Deku Scrub Near Forest Stage Right': 'Buy Deku Nut (5)',
-    'Lost Woods Deku Scrub Near Forest Stage Left': 'Buy Deku Stick (1)',
-    'Lost Woods Grotto Deku Scrub Rear': 'Buy Arrows (30)',
-    'Desert Colossus Grotto Deku Scrub Rear': 'Buy Red Potion [30]',
-    'Desert Colossus Grotto Deku Scrub Front': 'Buy Green Potion',
-    'Death Mountain Crater Deku Scrub': 'Buy Bombs (5) [35]',
-    'Death Mountain Crater Grotto Deku Scrub Left': 'Buy Deku Nut (5)',
-    'Death Mountain Crater Grotto Deku Scrub Right': 'Buy Bombs (5) [35]',
-    'Death Mountain Crater Grotto Deku Scrub Center': 'Buy Arrows (30)',
-    'Goron City Grotto Deku Scrub Left': 'Buy Deku Nut (5)',
-    'Goron City Grotto Deku Scrub Right': 'Buy Bombs (5) [35]',
-    'Goron City Grotto Deku Scrub Center': 'Buy Arrows (30)',
-    'Lon Lon Ranch Grotto Deku Scrub Left': 'Buy Deku Nut (5)',
-    'Lon Lon Ranch Grotto Deku Scrub Right': 'Buy Bombs (5) [35]',
-    'Lon Lon Ranch Grotto Deku Scrub Center': 'Buy Arrows (30)',
+    'ZR Grotto Deku Scrub Rear': 'Buy Red Potion [30]',
+    'ZR Grotto Deku Scrub Front': 'Buy Green Potion',
+    'SFM Grotto Deku Scrub Rear': 'Buy Red Potion [30]',
+    'SFM Grotto Deku Scrub Front': 'Buy Green Potion',
+    'LH Grotto Deku Scrub Left': 'Buy Deku Nut (5)',
+    'LH Grotto Deku Scrub Right': 'Buy Bombs (5) [35]',
+    'LH Grotto Deku Scrub Center': 'Buy Arrows (30)',
+    'GV Grotto Deku Scrub Rear': 'Buy Red Potion [30]',
+    'GV Grotto Deku Scrub Front': 'Buy Green Potion',
+    'LW Deku Scrub Near Forest Stage Right': 'Buy Deku Nut (5)',
+    'LW Deku Scrub Near Forest Stage Left': 'Buy Deku Stick (1)',
+    'LW Grotto Deku Scrub Rear': 'Buy Arrows (30)',
+    'Colossus Grotto Deku Scrub Rear': 'Buy Red Potion [30]',
+    'Colossus Grotto Deku Scrub Front': 'Buy Green Potion',
+    'DMC Deku Scrub': 'Buy Bombs (5) [35]',
+    'DMC Grotto Deku Scrub Left': 'Buy Deku Nut (5)',
+    'DMC Grotto Deku Scrub Right': 'Buy Bombs (5) [35]',
+    'DMC Grotto Deku Scrub Center': 'Buy Arrows (30)',
+    'GC Grotto Deku Scrub Left': 'Buy Deku Nut (5)',
+    'GC Grotto Deku Scrub Right': 'Buy Bombs (5) [35]',
+    'GC Grotto Deku Scrub Center': 'Buy Arrows (30)',
+    'LLR Grotto Deku Scrub Left': 'Buy Deku Nut (5)',
+    'LLR Grotto Deku Scrub Right': 'Buy Bombs (5) [35]',
+    'LLR Grotto Deku Scrub Center': 'Buy Arrows (30)',
 }
 
 
@@ -390,62 +390,62 @@ songlist = [
 
 
 skulltula_locations = ([
-    'Kokiri Forest GS Know It All House',
-    'Kokiri Forest GS Bean Patch',
-    'Kokiri Forest GS House of Twins',
-    'Lost Woods GS Bean Patch Near Bridge',
-    'Lost Woods GS Bean Patch Near Stage',
-    'Lost Woods GS Above Stage',
-    'Sacred Forest Meadow GS',
-    'Hyrule Field GS Grotto Near Kakariko Village',
-    'Hyrule Field GS Cow Grotto',
+    'KF GS Know It All House',
+    'KF GS Bean Patch',
+    'KF GS House of Twins',
+    'LW GS Bean Patch Near Bridge',
+    'LW GS Bean Patch Near Stage',
+    'LW GS Above Stage',
+    'SFM GS',
+    'HF GS Grotto Near Kak',
+    'HF GS Cow Grotto',
     'Market GS Guard House',
-    'Hyrule Castle GS Tree',
-    'Hyrule Castle GS Grotto',
-    'Outside Ganons Castle GS',
-    'Lon Lon Ranch GS Tree',
-    'Lon Lon Ranch GS Rain Shed',
-    'Lon Lon Ranch GS House Window',
-    'Lon Lon Ranch GS Back Wall',
-    'Kakariko Village GS House Under Construction',
-    'Kakariko Village GS Skulltula House',
-    'Kakariko Village GS Guards House',
-    'Kakariko Village GS Tree',
-    'Kakariko Village GS Watchtower',
-    'Kakariko Village GS Above Impas House',
+    'HC GS Tree',
+    'HC GS Grotto',
+    'OGC GS',
+    'LLR GS Tree',
+    'LLR GS Rain Shed',
+    'LLR GS House Window',
+    'LLR GS Back Wall',
+    'Kak GS House Under Construction',
+    'Kak GS Skulltula House',
+    'Kak GS Guards House',
+    'Kak GS Tree',
+    'Kak GS Watchtower',
+    'Kak GS Above Impas House',
     'Graveyard GS Wall',
     'Graveyard GS Bean Patch',
-    'Death Mountain Trail GS Bean Patch',
-    'Death Mountain Trail GS Near Kakariko Village',
-    'Death Mountain Trail GS Falling Rocks Path',
-    'Death Mountain Trail GS Above Dodongos Cavern',
-    'Goron City GS Boulder Maze',
-    'Goron City GS Center Platform',
-    'Death Mountain Crater GS Crate',
-    'Death Mountain Crater GS Bean Patch',
-    'Zora River GS Ladder',
-    'Zora River GS Tree',
-    'Zora River GS Near Raised Grottos',
-    'Zora River GS Above Bridge',
-    'Zoras Domain GS Frozen Waterfall',
-    'Zoras Fountain GS Tree',
-    'Zoras Fountain GS Above the Log',
-    'Zoras Fountain GS Hidden Cave',
-    'Lake Hylia GS Bean Patch',
-    'Lake Hylia GS Lab Wall',
-    'Lake Hylia GS Small Island',
-    'Lake Hylia GS Tree',
-    'Lake Hylia GS Lab Crate',
-    'Gerudo Valley GS Small Bridge',
-    'Gerudo Valley GS Bean Patch',
-    'Gerudo Valley GS Behind Tent',
-    'Gerudo Valley GS Pillar',
-    'Gerudo Fortress GS Archery Range',
-    'Gerudo Fortress GS Top Floor',
-    'Haunted Wasteland GS',
-    'Desert Colossus GS Bean Patch',
-    'Desert Colossus GS Tree',
-    'Desert Colossus GS Hill'])
+    'DMT GS Bean Patch',
+    'DMT GS Near Kakariko Village',
+    'DMT GS Falling Rocks Path',
+    'DMT GS Above Dodongos Cavern',
+    'GC GS Boulder Maze',
+    'GC GS Center Platform',
+    'DMC GS Crate',
+    'DMC GS Bean Patch',
+    'ZR GS Ladder',
+    'ZR GS Tree',
+    'ZR GS Near Raised Grottos',
+    'ZR GS Above Bridge',
+    'ZD GS Frozen Waterfall',
+    'ZF GS Tree',
+    'ZF GS Above the Log',
+    'ZF GS Hidden Cave',
+    'LH GS Bean Patch',
+    'LH GS Lab Wall',
+    'LH GS Small Island',
+    'LH GS Tree',
+    'LH GS Lab Crate',
+    'GV GS Small Bridge',
+    'GV GS Bean Patch',
+    'GV GS Behind Tent',
+    'GV GS Pillar',
+    'GF GS Archery Range',
+    'GF GS Top Floor',
+    'Wasteland GS',
+    'Colossus GS Bean Patch',
+    'Colossus GS Tree',
+    'Colossus GS Hill'])
 
 
 tradeitems = (
@@ -475,12 +475,12 @@ tradeitemoptions = (
 
 fixedlocations = {
     'Ganon': 'Triforce',
-    'Hyrule Castle Zeldas Letter': 'Zeldas Letter',
+    'HC Zeldas Letter': 'Zeldas Letter',
     'Pierre': 'Scarecrow Song',
     'Deliver Rutos Letter': 'Deliver Letter',
     'Master Sword Pedestal': 'Time Travel',
     'Market Bombchu Bowling Bombchus': 'Bombchu Drop',
-    'Haunted Wasteland Bombchu Salesman': 'Bombchus',
+    'Wasteland Bombchu Salesman': 'Bombchus',
 }
 
 droplocations = {
@@ -808,7 +808,7 @@ def get_pool_core(world):
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')
     else:
-        placed_items['Kokiri Forest Chest'] = 'Kokiri Sword'
+        placed_items['KF Chest'] = 'Kokiri Sword'
 
     ruto_bottles = 1
     if world.zora_fountain == 'open':
@@ -819,26 +819,26 @@ def get_pool_core(world):
     if world.shuffle_weird_egg:
         pool.append('Weird Egg')
     else:
-        placed_items['Hyrule Castle Malon Egg'] = 'Weird Egg'
+        placed_items['HC Malon Egg'] = 'Weird Egg'
 
     if world.shuffle_ocarinas:
         pool.extend(['Ocarina'] * 2)
     else:
-        placed_items['Lost Woods Fairy Ocarina Cutscene'] = 'Ocarina'
-        placed_items['Hyrule Field Ocarina of Time Item'] = 'Ocarina'
+        placed_items['LW Fairy Ocarina Item'] = 'Ocarina'
+        placed_items['HF Ocarina of Time Item'] = 'Ocarina'
 
     if world.shuffle_cows:
         pool.extend(get_junk_item(10 if world.dungeon_mq['Jabu Jabus Belly'] else 9))
     else:
-        placed_items['Lon Lon Ranch Stables Left Cow'] = 'Milk'
-        placed_items['Lon Lon Ranch Stables Right Cow'] = 'Milk'
-        placed_items['Lon Lon Ranch Tower Left Cow'] = 'Milk'
-        placed_items['Lon Lon Ranch Tower Right Cow'] = 'Milk'
-        placed_items['Kokiri Forest Links House Cow'] = 'Milk'
-        placed_items['Kakariko Village Impas House Cow'] = 'Milk'
-        placed_items['Gerudo Valley Cow'] = 'Milk'
-        placed_items['Death Mountain Trail Grotto Cow'] = 'Milk'
-        placed_items['Hyrule Field Grotto Cow'] = 'Milk'
+        placed_items['LLR Stables Left Cow'] = 'Milk'
+        placed_items['LLR Stables Right Cow'] = 'Milk'
+        placed_items['LLR Tower Left Cow'] = 'Milk'
+        placed_items['LLR Tower Right Cow'] = 'Milk'
+        placed_items['KF Links House Cow'] = 'Milk'
+        placed_items['Kak Impas House Cow'] = 'Milk'
+        placed_items['GV Cow'] = 'Milk'
+        placed_items['DMT Grotto Cow'] = 'Milk'
+        placed_items['HF Grotto Cow'] = 'Milk'
         if world.dungeon_mq['Jabu Jabus Belly']:
             placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
 
@@ -848,7 +848,7 @@ def get_pool_core(world):
         else:
             pool.extend(get_junk_item())
     else:
-        placed_items['Zora River Magic Bean Salesman'] = 'Magic Bean'
+        placed_items['ZR Magic Bean Salesman'] = 'Magic Bean'
 
     if world.dungeon_mq['Deku Tree']:
         skulltula_locations_final = skulltula_locations + [
@@ -1030,44 +1030,44 @@ def get_pool_core(world):
         pool.extend(['Ice Trap'] * 4)
 
     if world.gerudo_fortress == 'open':
-        placed_items['Gerudo Fortress North F1 Carpenter'] = 'Recovery Heart'
-        placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
-        placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
-        placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+        placed_items['GF North F1 Carpenter'] = 'Recovery Heart'
+        placed_items['GF North F2 Carpenter'] = 'Recovery Heart'
+        placed_items['GF South F1 Carpenter'] = 'Recovery Heart'
+        placed_items['GF South F2 Carpenter'] = 'Recovery Heart'
     elif world.shuffle_smallkeys == 'keysanity':
         if world.gerudo_fortress == 'fast':
             pool.append('Small Key (Gerudo Fortress)')
-            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
-            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
-            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+            placed_items['GF North F2 Carpenter'] = 'Recovery Heart'
+            placed_items['GF South F1 Carpenter'] = 'Recovery Heart'
+            placed_items['GF South F2 Carpenter'] = 'Recovery Heart'
         else:
             pool.extend(['Small Key (Gerudo Fortress)'] * 4)
     else:
         if world.gerudo_fortress == 'fast':
-            placed_items['Gerudo Fortress North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
-            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
-            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
-            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+            placed_items['GF North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['GF North F2 Carpenter'] = 'Recovery Heart'
+            placed_items['GF South F1 Carpenter'] = 'Recovery Heart'
+            placed_items['GF South F2 Carpenter'] = 'Recovery Heart'
         else:
-            placed_items['Gerudo Fortress North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
-            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
-            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
-            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['GF North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['GF North F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['GF South F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['GF South F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
 
     if world.shuffle_gerudo_card and world.gerudo_fortress != 'open':
         pool.append('Gerudo Membership Card')
     elif world.shuffle_gerudo_card:
         pending_junk_pool.append('Gerudo Membership Card')
-        placed_items['Gerudo Fortress Membership Card'] = 'Ice Trap'
+        placed_items['GF Gerudo Membership Card'] = 'Ice Trap'
     else:
-        placed_items['Gerudo Fortress Membership Card'] = 'Gerudo Membership Card'
+        placed_items['GF Gerudo Membership Card'] = 'Gerudo Membership Card'
 
     if world.shopsanity == 'off':
         placed_items.update(vanilla_shop_items)
         if world.bombchus_in_logic:
-            placed_items['Kokiri Forest Shop Item 8'] = 'Buy Bombchu (5)'
+            placed_items['KF Shop Item 8'] = 'Buy Bombchu (5)'
             placed_items['Market Bazaar Item 4'] = 'Buy Bombchu (5)'
-            placed_items['Kakariko Village Bazaar Item 4'] = 'Buy Bombchu (5)'
+            placed_items['Kak Bazaar Item 4'] = 'Buy Bombchu (5)'
         pool.extend(normal_rupees)
 
     else:

@@ -786,7 +786,7 @@ skip_GS_BGS_text:
 .orga 0xD35EFC
     nop
 
-; Fix Goron City Adult Rolling Goron to always work
+; Fix GC Rolling Goron as Adult to always work
 .orga 0xED2FAC
     lb      t6, 0x0F18(v1)
 

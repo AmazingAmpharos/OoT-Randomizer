@@ -158,7 +158,7 @@ logic_tricks = {
                     race as child in under a minute, but it is
                     a strict time limit.
                     '''},
-    'Kakariko Village Man on Roof without Hookshot': {
+    'Kak Man on Roof without Hookshot': {
         'name'    : 'logic_man_on_roof',
         'tooltip' : '''\
                     Can be reached by side-hopping off
@@ -305,7 +305,7 @@ logic_tricks = {
                     and then swim straight to the exit. You should grab the
                     ledge as you surface. It works best if you don't mash B.
                     '''},
-    'Adult Kokiri Forest GS with Hover Boots': {
+    'Adult KF GS with Hover Boots': {
         'name'    : 'logic_adult_kokiri_gs',
         'tooltip' : '''\
                     Can be obtained without Hookshot by using the Hover
@@ -458,7 +458,7 @@ logic_tricks = {
                     so that Link will grab the ledge from farther away than
                     is normally possible.
                     '''},
-    'Lake Hylia Lab Dive without Gold Scale': {
+    'LH Lab Dive without Gold Scale': {
         'name'    : 'logic_lab_diving',
         'tooltip' : '''\
                     Remove the Iron Boots in the midst of
@@ -631,7 +631,7 @@ logic_tricks = {
                     needing a Bow.
                     Applies in both vanilla and MQ Shadow.
                     '''},
-    'Stop Goron City Adult Rolling Goron with Din\'s Fire': {
+    'Stop GC Rolling Goron as Adult with Din\'s Fire': {
         'name'    : 'logic_link_goron_dins',
         'tooltip' : '''\
                     The timing is quite awkward.
@@ -832,7 +832,7 @@ logic_tricks = {
                     coming into this room from above by going through
                     the serpent river.
                     '''},
-    'Goron City Maze Left Chest with Hover Boots': {
+    'GC Maze Left Chest with Hover Boots': {
         'name'    : 'logic_goron_city_leftmost',
         'tooltip' : '''\
                     A precise backwalk starting from on top of the
