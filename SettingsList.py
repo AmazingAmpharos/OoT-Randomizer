@@ -158,7 +158,7 @@ logic_tricks = {
                     race as child in under a minute, but it is
                     a strict time limit.
                     '''},
-    'Kak Man on Roof without Hookshot': {
+    'Man on Roof without Hookshot': {
         'name'    : 'logic_man_on_roof',
         'tooltip' : '''\
                     Can be reached by side-hopping off
@@ -283,7 +283,7 @@ logic_tricks = {
                     and the wall. Through that gap you can hookshot
                     the target on the ceiling.
                     '''},
-    'Death Mountain Trail Bombable Chest with Strength': {
+    'DMT Chest with Strength': {
         'name'    : 'logic_dmt_bombable',
         'tooltip' : '''\
                     Child Link can blow up the wall using a nearby bomb
@@ -305,7 +305,7 @@ logic_tricks = {
                     and then swim straight to the exit. You should grab the
                     ledge as you surface. It works best if you don't mash B.
                     '''},
-    'Adult KF GS with Hover Boots': {
+    'Adult Kokiri Forest GS with Hover Boots': {
         'name'    : 'logic_adult_kokiri_gs',
         'tooltip' : '''\
                     Can be obtained without Hookshot by using the Hover
@@ -354,7 +354,7 @@ logic_tricks = {
                     Allow the Boomerang to return to you through
                     the Song of Time block to grab the token.
                     '''},
-    'Bottom of the Well Cage GS without Boomerang': {
+    'Bottom of the Well Like Like GS without Boomerang': {
         'name'    : 'logic_botw_cage_gs',
         'tooltip' : '''\
                     After killing the Skulltula, the Like Like
@@ -483,7 +483,7 @@ logic_tricks = {
                     You can beat the quicksand by backwalking across it
                     in a specific way.
                     '''},
-    'Desert Colossus Hill GS with Hookshot': {
+    'Colossus Hill GS with Hookshot': {
         'name'    : 'logic_colossus_gs',
         'tooltip' : '''\
                     Somewhat precise. If you kill enough Leevers
@@ -499,7 +499,7 @@ logic_tricks = {
                     The jump to the alcove can be a pit picky when
                     done as child.
                     '''},
-    'Kakariko Tower GS with Jump Slash': {
+    'Kak Tower GS with Jump Slash': {
         'name'    : 'logic_kakariko_tower_gs',
         'tooltip' : '''\
                     Climb the tower as high as you can without
@@ -507,7 +507,7 @@ logic_tricks = {
                     jump slash immediately. You will take fall
                     damage.
                     '''},
-    'Lake Hylia Lab Wall GS with Jump Slash': {
+    'LH Lab Wall GS with Jump Slash': {
         'name'    : 'logic_lab_wall_gs',
         'tooltip' : '''\
                     The jump slash to actually collect the
@@ -572,7 +572,7 @@ logic_tricks = {
                     If you stand on the very edge of the platform, this
                     Gold Skulltula can be obtained with only the Hookshot.
                     '''},
-    'Water Temple Serpent River GS without Iron Boots': {
+    'Water Temple River GS without Iron Boots': {
         'name'    : 'logic_water_river_gs',
         'tooltip' : '''\
                     Standing on the exposed ground toward the end of
@@ -590,20 +590,20 @@ logic_tricks = {
                     standing in a particular spot, the switch can be hit
                     with only the reach of the Hookshot.
                     '''},
-    'Death Mountain Trail Upper Red Rock GS without Hammer': {
+    'DMT Upper Red Rock GS without Hammer': {
         'name'    : 'logic_trail_gs_upper',
         'tooltip' : '''\
                     After killing the Skulltula, the token can be collected
                     by backflipping into the rock at the correct angle.
                     '''},
-    'Death Mountain Trail Lower Red Rock GS with Hookshot': {
+    'DMT Lower Red Rock GS with Hookshot': {
         'name'    : 'logic_trail_gs_lower_hookshot',
         'tooltip' : '''\
                     After killing the Skulltula, the token can be fished
                     out of the rock without needing to destroy it, by
                     using the Hookshot in the correct way.
                     '''},
-    'Death Mountain Trail Lower Red Rock GS with Magic Bean': {
+    'DMT Lower Red Rock GS with Magic Bean': {
         'name'    : 'logic_trail_gs_lower_bean',
         'tooltip' : '''\
                     After killing the Skulltula, the token can be
@@ -611,7 +611,7 @@ logic_tricks = {
                     jumping down onto it from the bean plant,
                     midflight, with precise timing and positioning.
                     '''},
-    'Death Mountain Crater Upper to Lower with Hammer': {
+    'DMC Upper to Lower with Hammer': {
         'name'    : 'logic_crater_upper_to_lower',
         'tooltip' : '''\
                     With the Hammer, you can jumpslash the rock twice
@@ -631,7 +631,7 @@ logic_tricks = {
                     needing a Bow.
                     Applies in both vanilla and MQ Shadow.
                     '''},
-    'Stop GC Rolling Goron as Adult with Din\'s Fire': {
+    'Stop Link the Goron with Din\'s Fire': {
         'name'    : 'logic_link_goron_dins',
         'tooltip' : '''\
                     The timing is quite awkward.
@@ -647,7 +647,7 @@ logic_tricks = {
                     A precise jump can be used to skip
                     pushing the block.
                     '''},
-    'Fire Temple MQ Big Lava Room South Goron without Hookshot': {
+    'Fire Temple MQ Big Lava Room Blocked Door without Hookshot': {
         'name'    : 'logic_fire_mq_bombable_chest',
         'tooltip' : '''\
                     A precisely-angled jump can get over the wall
@@ -699,7 +699,7 @@ logic_tricks = {
                     the tongue. It works best if you Longshot the right
                     torch from the left side of the room.
                     '''},
-    'Lost Woods Adult GS without Bean': {
+    'LW Adult GS without Bean': {
         'name'    : 'logic_lost_woods_gs_bean',
         'tooltip' : '''\
                     You can collect the token with a precise
@@ -725,7 +725,7 @@ logic_tricks = {
                     the Piece of Heart by having the Boomerang
                     interact with it along the return path.
                     '''},
-    'Death Mountain Trail Soil GS without Destroying Boulder': {
+    'DMT Soil GS without Destroying Boulder': {
         'name'    : 'logic_dmt_soil_gs',
         'tooltip' : '''\
                     Bugs will go into the soft soil even while the boulder is
@@ -832,7 +832,7 @@ logic_tricks = {
                     coming into this room from above by going through
                     the serpent river.
                     '''},
-    'GC Maze Left Chest with Hover Boots': {
+    'Goron City Maze Left Chest with Hover Boots': {
         'name'    : 'logic_goron_city_leftmost',
         'tooltip' : '''\
                     A precise backwalk starting from on top of the

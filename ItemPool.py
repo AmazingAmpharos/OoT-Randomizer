@@ -612,7 +612,7 @@ vanillaSK = {
 
     'Bottom of the Well MQ Dead Hand Freestanding Key': 'Small Key (Bottom of the Well)',
     'Bottom of the Well MQ East Inner Room Freestanding Key': 'Small Key (Bottom of the Well)',
-    'Fire Temple MQ Big Lava Room South Goron': 'Small Key (Fire Temple)',
+    'Fire Temple MQ Big Lava Room Blocked Door': 'Small Key (Fire Temple)',
     'Fire Temple MQ Chest Near Boss': 'Small Key (Fire Temple)',
     'Fire Temple MQ Lizalfos Maze Side Room': 'Small Key (Fire Temple)',
     'Fire Temple MQ Chest On Fire': 'Small Key (Fire Temple)',

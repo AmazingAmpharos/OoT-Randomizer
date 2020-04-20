@@ -37,7 +37,7 @@
             "Fire Temple MQ Boss Key Chest": "
                 has_fire_source and (Bow or logic_fire_mq_bk_chest) and 
                 Progressive_Hookshot",
-            "Fire Temple MQ Big Lava Room South Goron": "
+            "Fire Temple MQ Big Lava Room Blocked Door": "
                 has_fire_source and Progressive_Hookshot and has_explosives",
             "Fire Temple MQ GS Big Lava Room Open Door": "True"
         },
