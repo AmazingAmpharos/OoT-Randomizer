@@ -30,7 +30,7 @@ location_table = {
     "KF Storms Grotto Chest":                          ("Chest",       0x3E,  0x0C, None,                     ("Kokiri Forest", "Forest", "Grottos")),
     "LW Generic Grotto Chest":                         ("Chest",       0x3E,  0x14, None,                     ("the Lost Woods", "Forest", "Grottos")),
     "DMT Storms Grotto Chest":                         ("Chest",       0x3E,  0x17, None,                     ("Death Mountain Trail", "Death Mountain", "Grottos")),
-    "DMC Grotto Chest":                                ("Chest",       0x3E,  0x1A, None,                     ("Death Mountain Crater", "Death Mountain", "Grottos")),
+    "DMC Generic Grotto Chest":                                ("Chest",       0x3E,  0x1A, None,                     ("Death Mountain Crater", "Death Mountain", "Grottos")),
     "Market Treasure Chest Game":                      ("Chest",       0x10,  0x0A, None,                     ("the Market", "Castle Town", "Minigames")),
 
     "ToT LACS":                                        ("Cutscene",    0xFF,  0x01, None,                     ("Temple of Time", "Castle Town",)),

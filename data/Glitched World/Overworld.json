@@ -19,7 +19,7 @@
             "Sacred Forest Meadow": "can_play(Minuet_of_Forest)",
             "DMC Central": "can_play(Bolero_of_Fire) and can_leave_forest",
             "Lake Hylia": "can_play(Serenade_of_Water) and can_leave_forest",
-            "Shadow Temple Warp Region": "can_play(Nocturne_of_Shadow) and can_leave_forest",
+            "Graveyard Warp Pad Region": "can_play(Nocturne_of_Shadow) and can_leave_forest",
             "Desert Colossus": "can_play(Requiem_of_Spirit) and can_leave_forest"
         }
     },
@@ -207,7 +207,7 @@
             "Gerudo Valley": "True",
             "Castle Town": "True",
             "Kakariko Village": "True",
-            "Zora River Front": "True",
+            "ZR Front": "True",
             "Lon Lon Ranch": "True",
             "HF Southeast Grotto": "can_blast_or_smash",
             "HF Open Grotto": "True",
@@ -699,12 +699,12 @@
         },
         "exits": {
             "Graveyard Shield Grave": "True",
-            "Graveyard Composers Grave": "can_play(Zeldas_Lullaby) or at('Shadow Temple Warp Region', True)",
+            "Graveyard Composers Grave": "can_play(Zeldas_Lullaby) or at('Graveyard Warp Pad Region', True)",
             "Graveyard Heart Piece Grave": "True",
-            "Graveyard Dampes Grave": "is_adult or at('Shadow Temple Warp Region', True)",
+            "Graveyard Dampes Grave": "is_adult or at('Graveyard Warp Pad Region', True)",
             "Graveyard Dampes House": "True",
             "Kakariko Village": "True",
-            "Shadow Temple Warp Region": "can_hover or can_use(Hookshot)"
+            "Graveyard Warp Pad Region": "can_hover or can_use(Hookshot)"
         }
     },
     {
@@ -742,7 +742,7 @@
         "region_name": "Graveyard Dampes House"
     },
     {
-        "region_name": "Shadow Temple Warp Region",
+        "region_name": "Graveyard Warp Pad Region",
         "hint": "the Graveyard",
         "locations": {
             "Graveyard Gossip Stone": "True"
@@ -843,13 +843,13 @@
         "exits": {
             "Death Mountain": "True",
             "GC Woods Warp": "'GC Woods Warp Open'",
-            "Goron Shop": "
+            "GC Shop": "
                 has_explosives or Progressive_Strength_Upgrade or can_use(Bow) or 
                 (is_child and (can_use(Dins_Fire) or (can_play(Zeldas_Lullaby) and Sticks)))",
-            "Darunias Chamber": "
+            "GC Darunias Chamber": "
                     (is_child and (can_play(Zeldas_Lullaby) or ((Progressive_Strength_Upgrade or has_explosives) and can_shield))) or 
                     (is_adult and (Progressive_Strength_Upgrade or has_explosives or Bow))",
-            "Goron City Grotto": "can_hover or (
+            "GC Grotto": "can_hover or (
                 is_adult and 
                 ( (can_play(Song_of_Time) and 
                     (can_live_dmg(1) or can_use(Goron_Tunic) or can_use(Longshot) or can_use(Nayrus_Love)) ) or 
@@ -869,7 +869,7 @@
     },
 
     {
-        "region_name": "Darunias Chamber",
+        "region_name": "GC Darunias Chamber",
         "hint": "Goron City",
         "events": {
             "GC Woods Warp Open": "is_child and Sticks"
@@ -879,13 +879,13 @@
         },
         "exits": {
             "Goron City": "True",
-            "Death Mountain Crater Lower": "is_adult or
+            "DMC Lower": "is_adult or
                 (is_child and
                     (can_mega or (can_live_dmg(0.5) and has_explosives) or can_shield))"
         }
     },
     {
-        "region_name": "Goron Shop",
+        "region_name": "GC Shop",
         "locations": {
             "GC Shop Item 1": "True",
             "GC Shop Item 2": "True",
@@ -910,19 +910,19 @@
         },
         "exits": {
             "Death Mountain Summit": "True",
-            "Death Mountain Crater Lower": "can_use(Hover_Boots) or can_mega",
+            "DMC Lower": "can_use(Hover_Boots) or can_mega",
             "DMC Central": "(is_child and can_mega and (can_live_dmg(1) or Fairy or can_use(Nayrus_Love)) and Hylian_Shield) or
                 (is_adult and can_use(Goron_Tunic) and (can_use(Distant_Scarecrow) or can_mega) and 
                 (can_live_dmg(1) or Fairy or can_use(Nayrus_Love)))",
-            "Top of Crater Grotto": "here(can_blast_or_smash)"
+            "DMC Generic Grotto": "here(can_blast_or_smash)"
         }
     },
     {
-        "region_name": "Death Mountain Crater Lower",
+        "region_name": "DMC Lower",
         "hint": "Death Mountain Crater",
         "exits": {
-            "Darunias Chamber": "True",
-            "Crater Fairy": "can_use(Megaton_Hammer) or can_mega or is_child",
+            "GC Darunias Chamber": "True",
+            "DMC Great Fairy Fountain": "can_use(Megaton_Hammer) or can_mega or is_child",
             "DMC Central": "
                 can_use(Hover_Boots) or can_use(Hookshot) or can_mega",
             "DMC Upper": "True",
@@ -940,14 +940,14 @@
             "DMC GS Bean Patch": "can_plant_bugs and can_child_attack"
         },
         "exits": {
-            "Death Mountain Crater Lower": "
+            "DMC Lower": "
                 (is_adult and here(can_plant_bean)) or
                 can_use(Hover_Boots) or can_use(Hookshot)",
             "Fire Temple Lower": "is_adult"
         }
     },
     {
-        "region_name": "Crater Fairy",
+        "region_name": "DMC Great Fairy Fountain",
         "locations": {
             "DMC Great Fairy Reward": "can_play(Zeldas_Lullaby)"
         }
@@ -959,7 +959,7 @@
         }
     },
     {
-        "region_name": "Zora River Front",
+        "region_name": "ZR Front",
         "hint": "Zora's River",
         "time_passes": true,
         "locations": {
@@ -990,11 +990,11 @@
             "Zoras River Waterfall Gossip Stone": "True"
         },
         "exits": {
-            "Zora River Front": "True",
-            "Zora River Plateau Open Grotto": "True",
-            "Zora River Plateau Bombable Grotto": "can_blast_or_smash",
+            "ZR Front": "True",
+            "ZR Open Grotto": "True",
+            "ZR Plateau Bombable Grotto": "can_blast_or_smash",
             "Lost Woods": "can_dive or can_use(Iron_Boots) or (is_child and (can_isg or Nuts)) or can_mega",
-            "Zora River Storms Grotto": "can_play(Song_of_Storms) and can_stun_deku",
+            "ZR Storms Grotto": "can_play(Song_of_Storms) and can_stun_deku",
             "Zoras Domain": "can_play(Zeldas_Lullaby) or can_mega or can_use(Hover_Boots) or is_child"
         }
     },
@@ -1020,7 +1020,7 @@
             "Lake Hylia": "True",
             "Zoras Fountain": "zora_fountain == 'open' or Deliver_Letter
                 or is_adult or (can_shield and has_bombchus)",
-            "Zora Shop": "True"
+            "ZD Shop": "True"
         }
     },
     {
@@ -1044,11 +1044,11 @@
             "Jabu Jabus Belly Beginning": "(is_child and (can_jumpslash or Fish)) or 
                 (is_adult and Hover_Boots and has_bombchus and can_shield)",
             "Ice Cavern": "is_adult or (is_child and can_hover)",
-            "Zoras Fountain Fairy": "has_explosives or can_use(Hookshot)"
+            "ZF Great Fairy Fountain": "has_explosives or can_use(Hookshot)"
         }
     },
     {
-        "region_name": "Zora Shop",
+        "region_name": "ZD Shop",
         "locations": {
             "ZD Shop Item 1": "True",
             "ZD Shop Item 2": "True",
@@ -1061,7 +1061,7 @@
         }
     },
     {
-        "region_name": "Zoras Fountain Fairy",
+        "region_name": "ZF Great Fairy Fountain",
         "locations": {
             "ZF Great Fairy Reward": "can_play(Zeldas_Lullaby)"
         }
@@ -1082,27 +1082,27 @@
         },
         "exits": {
             "Hyrule Field": "True",
-            "Talons House": "True",
-            "Ingo Barn": "True",
-            "Lon Lon Corner Tower": "True",
+            "LLR Talons House": "True",
+            "LLR Stables": "True",
+            "LLR Tower": "True",
             "LLR Grotto": "is_child and can_stun_deku"
         }
     },
     {
-        "region_name": "Talons House",
+        "region_name": "LLR Talons House",
         "locations": {
             "LLR Talons Chickens": "is_child and Zeldas_Letter"
         }
     },
     {
-        "region_name": "Ingo Barn",
+        "region_name": "LLR Stables",
 		"locations": {
             "LLR Stables Left Cow": "can_play(Eponas_Song)",
             "LLR Stables Right Cow": "can_play(Eponas_Song)"
         }
     },
     {
-        "region_name": "Lon Lon Corner Tower",
+        "region_name": "LLR Tower",
         "locations": {
             "LLR Freestanding PoH": "True",
             "LLR Tower Left Cow": "can_play(Eponas_Song)",
@@ -1259,7 +1259,7 @@
         }
     },
     {
-        "region_name": "Goron City Grotto",
+        "region_name": "GC Grotto",
         "locations": {
             "GC Grotto Deku Scrub Left": "True",
             "GC Grotto Deku Scrub Right": "True",
@@ -1267,9 +1267,9 @@
         }
     },
     {
-        "region_name": "Top of Crater Grotto",
+        "region_name": "DMC Generic Grotto",
         "locations": {
-            "DMC Grotto Chest": "True",
+            "DMC Generic Grotto Chest": "True",
             "Death Mountain Crater Grotto Gossip Stone": "True"
         }
     },
@@ -1282,17 +1282,17 @@
         }
     },
     {
-        "region_name": "Zora River Plateau Open Grotto",
+        "region_name": "ZR Open Grotto",
         "locations": {
             "ZR Open Grotto Chest": "True",
             "Zora River Plateau Open Grotto Gossip Stone": "True"
         }
     },
     {
-        "region_name": "Zora River Plateau Bombable Grotto"
+        "region_name": "ZR Plateau Bombable Grotto"
     },
     {
-        "region_name": "Zora River Storms Grotto",
+        "region_name": "ZR Storms Grotto",
         "locations": {
             "ZR Grotto Deku Scrub Rear": "True",
             "ZR Grotto Deku Scrub Front": "True"

@@ -87,7 +87,7 @@
     "Kak Redead Grotto Chest":                                   ["Bow", "Light Arrows", "Magic Meter", "#AdultTrade"],
     "Kak Open Grotto Chest":                            ["Bow", "Light Arrows", "Magic Meter", "#AdultTrade"],
     "DMT Storms Grotto Chest":                          ["Bow", "Light Arrows", "Magic Meter", "#AdultTrade"],
-    "DMC Grotto Chest":                            ["Bow", "Light Arrows", "Magic Meter", "#AdultTrade"],
+    "DMC Generic Grotto Chest":                            ["Bow", "Light Arrows", "Magic Meter", "#AdultTrade"],
     "ZR Open Grotto Chest":                  ["Bow", "Light Arrows", "Magic Meter", "#AdultTrade"]
   }
 }
