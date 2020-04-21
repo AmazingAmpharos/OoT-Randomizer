@@ -894,7 +894,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     if world.shuffle_interior_entrances:
         # Change the Happy Mask Shop "throw out" entrance index to the new one (hardcode located in the shop actor)
-        rom.write_int16(0xC6DA5E, world.get_entrance('Castle Town Mask Shop -> Castle Town').replaces.data['index'])
+        rom.write_int16(0xC6DA5E, world.get_entrance('Market Mask Shop -> Market').replaces.data['index'])
 
         set_entrance_updates(world.get_shuffled_entrances(type='Interior') + world.get_shuffled_entrances(type='SpecialInterior'))
 
@@ -1419,7 +1419,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # castle town bazaar
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Castle Town Bazaar').locations)
+        world.get_region('Market Bazaar').locations)
     shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
     rom.write_byte(bazaar_room_file.start + 0x29, len(shop_objs))
     rom.write_int32(bazaar_room_file.start + 0x2C, 0x03007A40)
@@ -1451,7 +1451,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # market potion shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Castle Town Potion Shop').locations)
+        world.get_region('Market Potion Shop').locations)
     shop_objs |= {0x0159, 0x00B2, 0x0175, 0x00C5, 0x010C, 0x016B} # Shop objects
     rom.write_byte(0x2DB0029, len(shop_objs))
     rom.write_int32(0x2DB002C, 0x03004E40)
@@ -1459,7 +1459,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # bombchu shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Castle Town Bombchu Shop').locations)
+        world.get_region('Market Bombchu Shop').locations)
     shop_objs |= {0x0165, 0x00B2} # Shop objects
     rom.write_byte(0x2DD8029, len(shop_objs))
     rom.write_int32(0x2DD802C, 0x03006A40)

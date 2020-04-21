@@ -263,7 +263,7 @@
             "LW Bridge": "True",
             "Lake Hylia": "True",
             "Gerudo Valley": "True",
-            "Castle Town Entrance": "True",
+            "Market Entrance": "True",
             "Kakariko Village": "True",
             "ZR Front": "True",
             "Lon Lon Ranch": "True",
@@ -556,32 +556,32 @@
         }
     },
     {
-        "region_name": "Castle Town Entrance",
-        "scene": "Castle Town Entrance",
+        "region_name": "Market Entrance",
+        "scene": "Market Entrance",
         "hint": "the Market",
         "exits": {
             "Hyrule Field": "is_adult or at_day",
-            "Castle Town": "True",
-            "Castle Town Rupee Room": "True"
+            "Market": "True",
+            "Market Guard House": "True"
         }
     },
     {
-        "region_name": "Castle Town",
-        "scene": "Castle Town",
+        "region_name": "Market",
+        "scene": "Market",
         "hint": "the Market",
         "exits": {
-            "Castle Town Entrance": "True",
+            "Market Entrance": "True",
             "Temple of Time Exterior": "True",
             "Castle Grounds": "True",
-            "Castle Town Bazaar": "is_child and at_day",
-            "Castle Town Mask Shop": "is_child and at_day",
-            "Castle Town Shooting Gallery": "is_child and at_day",
-            "Castle Town Bombchu Bowling": "is_child",
-            "Castle Town Potion Shop": "is_child and at_day",
-            "Castle Town Treasure Chest Game": "is_child and at_night",
-            "Castle Town Bombchu Shop": "is_child and at_night",
-            "Castle Town Market Dog Lady": "is_child",
-            "Castle Town Man in Green House": "is_child and at_night"
+            "Market Bazaar": "is_child and at_day",
+            "Market Mask Shop": "is_child and at_day",
+            "Market Shooting Gallery": "is_child and at_day",
+            "Market Bombchu Bowling": "is_child",
+            "Market Potion Shop": "is_child and at_day",
+            "Market Treasure Chest Game": "is_child and at_night",
+            "Market Bombchu Shop": "is_child and at_night",
+            "Market Market Dog Lady": "is_child",
+            "Market Man in Green House": "is_child and at_night"
         }
     },
     {
@@ -596,7 +596,7 @@
             "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle"
         },
         "exits": {
-            "Castle Town": "True",
+            "Market": "True",
             "Temple of Time": "True"
         }
     },
@@ -626,7 +626,7 @@
         "region_name": "Castle Grounds",
         "scene": "Castle Grounds",
         "exits": {
-            "Castle Town": "True",
+            "Market": "True",
             "Hyrule Castle Grounds": "is_child",
             "Ganons Castle Grounds": "is_adult"
         }
@@ -646,7 +646,7 @@
             "Bug Rock": "has_bottle"
         },
         "exits": {
-            "Castle Town": "True",
+            "Market": "True",
             "HC Garden": "Weird_Egg or (not shuffle_weird_egg)",
             "HC Great Fairy Fountain": "has_explosives",
             "HC Storms Grotto": "can_open_storm_grotto"
@@ -696,7 +696,7 @@
         }
     },
     {
-        "region_name": "Castle Town Rupee Room",
+        "region_name": "Market Guard House",
         "events": {
             "Sell Big Poe": "is_adult and Bottle_with_Big_Poe"
         },
@@ -707,11 +707,11 @@
             "Market GS Guard House": "is_child"
         },
         "exits": {
-            "Castle Town Entrance": "True"
+            "Market Entrance": "True"
         }
     },
     {
-        "region_name": "Castle Town Bazaar",
+        "region_name": "Market Bazaar",
         "locations": {
             "Market Bazaar Item 1": "True",
             "Market Bazaar Item 2": "True",
@@ -723,11 +723,11 @@
             "Market Bazaar Item 8": "True"
         },
         "exits": {
-            "Castle Town": "True"
+            "Market": "True"
         }
     },
     {
-        "region_name": "Castle Town Mask Shop",
+        "region_name": "Market Mask Shop",
         "events": {
             "Skull Mask": "at('Kakariko Village', is_child and Zeldas_Letter)",
             "Mask of Truth": "'Skull Mask' and
@@ -736,31 +736,31 @@
                 at('Hyrule Field', is_child and has_all_stones)"
         },
         "exits": {
-            "Castle Town": "True"
+            "Market": "True"
         }
     },
     {
-        "region_name": "Castle Town Shooting Gallery",
+        "region_name": "Market Shooting Gallery",
         "locations": {
             "Market Shooting Gallery": "is_child"
         },
         "exits": {
-            "Castle Town": "True"
+            "Market": "True"
         }
     },
     {
-        "region_name": "Castle Town Bombchu Bowling",
+        "region_name": "Market Bombchu Bowling",
         "locations": {
             "Market Bombchu Bowling First Prize": "found_bombchus",
             "Market Bombchu Bowling Second Prize": "found_bombchus",
             "Market Bombchu Bowling Bombchus": "found_bombchus"
         },
         "exits": {
-            "Castle Town": "True"
+            "Market": "True"
         }
     },
     {
-        "region_name": "Castle Town Potion Shop",
+        "region_name": "Market Potion Shop",
         "locations": {
             "Market Potion Shop Item 1": "True",
             "Market Potion Shop Item 2": "True",
@@ -772,20 +772,20 @@
             "Market Potion Shop Item 8": "True"
         },
         "exits": {
-            "Castle Town": "True"
+            "Market": "True"
         }
     },
     {
-        "region_name": "Castle Town Treasure Chest Game",
+        "region_name": "Market Treasure Chest Game",
         "locations": {
             "Market Treasure Chest Game": "can_use(Lens_of_Truth)"
         },
         "exits": {
-            "Castle Town": "True"
+            "Market": "True"
         }
     },
     {
-        "region_name": "Castle Town Bombchu Shop",
+        "region_name": "Market Bombchu Shop",
         "locations": {
             "Market Bombchu Shop Item 1": "True",
             "Market Bombchu Shop Item 2": "True",
@@ -797,22 +797,22 @@
             "Market Bombchu Shop Item 8": "True"
         },
         "exits": {
-            "Castle Town": "True"
+            "Market": "True"
         }
     },
     {
-        "region_name": "Castle Town Market Dog Lady",
+        "region_name": "Market Market Dog Lady",
         "locations": {
             "Market Dog Lady": "at_night"
         },
         "exits": {
-            "Castle Town": "True"
+            "Market": "True"
         }
     },
     {
-        "region_name": "Castle Town Man in Green House",
+        "region_name": "Market Man in Green House",
         "exits": {
-            "Castle Town": "True"
+            "Market": "True"
         }
     },
     {
@@ -846,7 +846,7 @@
             "Kak Impas House": "True",
             "Kak Windmill": "True",
             "Kak Bazaar": "is_adult and at_day",
-            "Kak Adult Shooting Gallery": "is_adult and at_day",
+            "Kak Shooting Gallery": "is_adult and at_day",
             "Bottom of the Well": "
                 'Drain Well' and (is_child or shuffle_dungeon_entrances)",
             "Kak Potion Shop Front": "is_child or at_day",
@@ -976,7 +976,7 @@
         }
     },
     {
-        "region_name": "Kak Adult Shooting Gallery",
+        "region_name": "Kak Shooting Gallery",
         "locations": {
             "Kak Shooting Gallery": "is_adult and Bow"
         },
