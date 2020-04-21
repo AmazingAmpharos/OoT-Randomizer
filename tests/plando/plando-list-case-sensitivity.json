@@ -17,11 +17,11 @@
     "gf hba 1500 points":                                       ["Bow", "Magic Meter", "Light Arrows"],
     "wasteland chest":                                          ["Bow", "Magic Meter", "Light Arrows"],
     "colossus freestanding poh":                                ["Bow", "Magic Meter", "Light Arrows"],
-    "colossus great fairy":                                     ["Bow", "Magic Meter", "Light Arrows"],
+    "colossus great fairy reward":                              ["Bow", "Magic Meter", "Light Arrows"],
     "tot lacs":                                                 ["Bow", "Magic Meter", "Light Arrows"],
     "hc malon egg":                                             ["Bow", "Magic Meter", "Light Arrows"],
-    "hc great fairy":                                           ["Bow", "Magic Meter", "Light Arrows"],
-    "ogc great fairy":                                          ["Bow", "Magic Meter", "Light Arrows"],
+    "hc great fairy reward":                                    ["Bow", "Magic Meter", "Light Arrows"],
+    "ogc great fairy reward":                                   ["Bow", "Magic Meter", "Light Arrows"],
     "market 10 big poes":                                       ["Bow", "Magic Meter", "Light Arrows"],
     "market shooting gallery":                                  ["Bow", "Magic Meter", "Light Arrows"],
     "market bombchu bowling first prize":                       ["Bow", "Magic Meter", "Light Arrows"],
@@ -58,8 +58,8 @@
     "gc darunias joy":                                          ["Bow", "Magic Meter", "Light Arrows"],
     "dmc wall freestanding poh":                                ["Bow", "Magic Meter", "Light Arrows"],
     "dmc volcano freestanding poh":                             ["Bow", "Magic Meter", "Light Arrows"],
-    "dmc great fairy":                                          ["Bow", "Magic Meter", "Light Arrows"],
-    "dmt great fairy":                                          ["Bow", "Magic Meter", "Light Arrows"],
+    "dmc great fairy reward":                                   ["Bow", "Magic Meter", "Light Arrows"],
+    "dmt great fairy reward":                                   ["Bow", "Magic Meter", "Light Arrows"],
     "zr frogs ocarina game":                                    ["Bow", "Magic Meter", "Light Arrows"],
     "zr frogs in the rain":                                     ["Bow", "Magic Meter", "Light Arrows"],
     "zr near open grotto freestanding poh":                     ["Bow", "Magic Meter", "Light Arrows"],
@@ -69,7 +69,7 @@
     "zd king zora thawed":                                      ["Bow", "Magic Meter", "Light Arrows"],
     "zf iceberg freestanding poh":                              ["Bow", "Magic Meter", "Light Arrows"],
     "zf bottom freestanding poh":                               ["Bow", "Magic Meter", "Light Arrows"],
-    "zf great fairy":                                           ["Bow", "Magic Meter", "Light Arrows"],
+    "zf great fairy reward":                                    ["Bow", "Magic Meter", "Light Arrows"],
     "llr talons chickens":                                      ["Bow", "Magic Meter", "Light Arrows"],
     "llr freestanding poh":                                     ["Bow", "Magic Meter", "Light Arrows"],
     "ganons tower boss key chest":                              ["Bow", "Magic Meter", "Light Arrows"],
@@ -87,6 +87,6 @@
     "kak redead grotto chest":                                  ["Bow", "Magic Meter", "Light Arrows"],
     "kak open grotto chest":                                    ["Bow", "Magic Meter", "Light Arrows"],
     "dmt storms grotto chest":                                  ["Bow", "Magic Meter", "Light Arrows"],
-    "dmc grotto chest":                                         ["Bow", "Magic Meter", "Light Arrows"]
+    "dmc generic grotto chest":                                 ["Bow", "Magic Meter", "Light Arrows"]
   }
 }
