@@ -1411,7 +1411,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # kakariko bazaar
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Kakariko Bazaar').locations)
+        world.get_region('Kak Bazaar').locations)
     shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
     rom.write_byte(0x28E4029, len(shop_objs))
     rom.write_int32(0x28E402C, 0x03007A40)
@@ -1443,7 +1443,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # kakariko potion shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Kakariko Potion Shop Front').locations)
+        world.get_region('Kak Potion Shop Front').locations)
     shop_objs |= {0x0159, 0x00B2, 0x0175, 0x0122} # Shop objects
     rom.write_byte(0x2D83029, len(shop_objs))
     rom.write_int32(0x2D8302C, 0x0300A500)
@@ -1451,7 +1451,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # market potion shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Market Potion Shop').locations)
+        world.get_region('Castle Town Potion Shop').locations)
     shop_objs |= {0x0159, 0x00B2, 0x0175, 0x00C5, 0x010C, 0x016B} # Shop objects
     rom.write_byte(0x2DB0029, len(shop_objs))
     rom.write_int32(0x2DB002C, 0x03004E40)

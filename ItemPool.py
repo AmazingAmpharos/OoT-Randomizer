@@ -401,7 +401,7 @@ skulltula_locations = ([
     'HF GS Cow Grotto',
     'Market GS Guard House',
     'HC GS Tree',
-    'HC Storms Grotto GS',
+    'HC GS Storms Grotto',
     'OGC GS',
     'LLR GS Tree',
     'LLR GS Rain Shed',
@@ -837,8 +837,8 @@ def get_pool_core(world):
         placed_items['KF Links House Cow'] = 'Milk'
         placed_items['Kak Impas House Cow'] = 'Milk'
         placed_items['GV Cow'] = 'Milk'
-        placed_items['DMT Grotto Cow'] = 'Milk'
-        placed_items['HF Grotto Cow'] = 'Milk'
+        placed_items['DMT Cow Grotto Cow'] = 'Milk'
+        placed_items['HF Cow Grotto Cow'] = 'Milk'
         if world.dungeon_mq['Jabu Jabus Belly']:
             placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
 
