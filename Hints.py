@@ -49,7 +49,7 @@ gossipLocations = {
     0x0412: GossipStone('HC (Malon)',                           'HC Malon Gossip Stone'),
     0x040B: GossipStone('HC (Rock Wall)',                       'HC Rock Wall Gossip Stone'),
     0x0413: GossipStone('HC (Storms Grotto)',                   'HC Storms Grotto Gossip Stone'),
-    0x041B: GossipStone('HF (Valley Grotto)',                   'HF Cow Grotto Gossip Stone'),
+    0x041B: GossipStone('HF (Cow Grotto)',                   'HF Cow Grotto Gossip Stone'),
     0x041F: GossipStone('KF (Deku Tree Left)',                  'KF Deku Tree Gossip Stone (Left)'),
     0x0420: GossipStone('KF (Deku Tree Right)',                 'KF Deku Tree Gossip Stone (Right)'),
     0x041E: GossipStone('KF (Outside Storms)',                  'KF Gossip Stone'),

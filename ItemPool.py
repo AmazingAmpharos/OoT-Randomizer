@@ -1177,7 +1177,7 @@ def get_pool_core(world):
             bottle = random.choice(normal_bottles)
             pool.append(bottle)
         else:
-            pool.append('Rutos Letter')
+            pool.append('Ruto\'s Letter')
 
     earliest_trade = tradeitemoptions.index(world.logic_earliest_adult_trade)
     latest_trade = tradeitemoptions.index(world.logic_latest_adult_trade)
