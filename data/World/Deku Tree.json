@@ -27,7 +27,7 @@
                 has_explosives or Kokiri_Sword or can_use(Dins_Fire)"
         },
         "exits": {
-            "Outside Deku Tree": "True",
+            "KF Outside Deku Tree": "True",
             "Deku Tree Slingshot Room": "here(has_shield)",
             "Deku Tree Boss Room": "
                 here(has_fire_source_with_torch or

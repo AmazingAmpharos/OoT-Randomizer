@@ -12,7 +12,7 @@
     {
         "region_name": "Root Exits",
         "exits": {
-            "Links House": "is_child",
+            "KF Links House": "is_child",
             "Temple of Time": "
                 is_adult or 
                 (can_play(Prelude_of_Light) and can_leave_forest)",
@@ -39,32 +39,32 @@
             "KF GS House of Twins": "
                 is_adult and at_night and 
                 (can_use(Hookshot) or can_use(Hover_Boots) or can_isg)",
-            "Kokiri Forest Gossip Stone": "True",
+            "KF Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle"
         },
         "exits": {
-            "Links House": "True",
-            "Midos House": "True",
-            "Sarias House": "True",
-            "House of Twins": "True",
-            "Know It All House": "True",
-            "Kokiri Shop": "True",
-            "Outside Deku Tree": "'Showed Mido Sword & Shield' or Sticks or is_adult",
+            "KF Links House": "True",
+            "KF Midos House": "True",
+            "KF Sarias House": "True",
+            "KF House of Twins": "True",
+            "KF Know It All House": "True",
+            "KF Kokiri Shop": "True",
+            "KF Outside Deku Tree": "'Showed Mido Sword & Shield' or Sticks or is_adult",
             "Lost Woods": "True",
             "LW Bridge": "can_leave_forest",
             "KF Storms Grotto": "can_play(Song_of_Storms)"
         }
     },
     {
-        "region_name": "Outside Deku Tree",
+        "region_name": "KF Outside Deku Tree",
         "hint": "Kokiri Forest",
         "locations": {
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
             "Deku Baba Nuts": "
                 is_adult or Slingshot or Sticks or 
                 has_explosives or Kokiri_Sword or can_use(Dins_Fire)",
-            "Deku Tree Gossip Stone (Left)": "True",
-            "Deku Tree Gossip Stone (Right)": "True"
+            "KF Deku Tree Gossip Stone (Left)": "True",
+            "KF Deku Tree Gossip Stone (Right)": "True"
         },
         "exits": {
             #// Adult would technically come from Kokiri Forest, but the transition in both directions is True
@@ -73,7 +73,7 @@
         }
     },
     {
-        "region_name": "Links House",
+        "region_name": "KF Links House",
         "hint": "Kokiri Forest",
         "locations": {
             "KF Links House Cow": "is_adult and can_play(Eponas_Song) and 'Links Cow'"
@@ -83,7 +83,7 @@
         }
     },
     {
-        "region_name": "Midos House",
+        "region_name": "KF Midos House",
         "locations": {
             "KF Mido Chest Top Left": "True",
             "KF Mido Chest Top Right": "True",
@@ -92,16 +92,16 @@
         }
     },
     {
-        "region_name": "Sarias House"
+        "region_name": "KF Sarias House"
     },
     {
-        "region_name": "House of Twins"
+        "region_name": "KF House of Twins"
     },
     {
-        "region_name": "Know It All House"
+        "region_name": "KF Know It All House"
     },
     {
-        "region_name": "Kokiri Shop",
+        "region_name": "KF Kokiri Shop",
         "locations": {
             "KF Shop Item 1": "True",
             "KF Shop Item 2": "True",
@@ -207,17 +207,17 @@
             "Gerudo Valley": "True",
             "Castle Town": "True",
             "Kakariko Village": "True",
-            "Zora River Front": "True",
+            "Zoras River Front": "True",
             "Lon Lon Ranch": "True",
-            "Remote Southern Grotto": "can_blast_or_smash",
-            "Field Near Lake Outside Fence Grotto": "True",
-            "Field Near Lake Inside Fence Grotto": "can_blast_or_smash",
-            "Field Valley Grotto": "
+            "HF Woods Grotto": "can_blast_or_smash",
+            "HF Open Grotto": "True",
+            "HF Inside Fence Grotto": "can_blast_or_smash",
+            "HF Valley Grotto": "
                 (is_child and has_explosives) or (is_adult and (Megaton_Hammer or (has_explosives and can_shield)))",
-            "Field West Castle Town Grotto": "can_blast_or_smash",
-            "Field Far West Castle Town Grotto": "can_blast_or_smash",
-            "Field Kakariko Grotto": "can_blast_or_smash",
-            "Tektite Grotto": "can_blast_or_smash"
+            "HF Near Market Grotto": "can_blast_or_smash",
+            "HF Fairy Grotto": "can_blast_or_smash",
+            "HF Near Kak Grotto": "can_blast_or_smash",
+            "HF Tektite Grotto": "can_blast_or_smash"
         }
     },
     {
@@ -434,19 +434,19 @@
         "locations": {
             "HC Malon Egg": "True",
             "HC GS Tree": "can_child_attack",
-            "Hyrule Castle Malon Gossip Stone": "True",
-            "Hyrule Castle Rock Wall Gossip Stone": "True"
+            "HC Malon Gossip Stone": "True",
+            "HC Rock Wall Gossip Stone": "True"
         },
         "exits": {
             "Castle Town": "True",
             #// garden will logically need weird-egg as letter first can screw over the mask quest
-            "Hyrule Castle Garden": "Weird_Egg or (not shuffle_weird_egg)",
-            "Hyrule Castle Fairy": "True",
-            "Castle Storms Grotto": "can_play(Song_of_Storms)"
+            "HC Garden": "Weird_Egg or (not shuffle_weird_egg)",
+            "HC Great Fairy": "True",
+            "HC Storms Grotto": "can_play(Song_of_Storms)"
         }
     },
     {
-        "region_name": "Hyrule Castle Garden",
+        "region_name": "HC Garden",
         "hint": "Hyrule Castle",
         "locations": {
             "HC Zeldas Letter": "True",
@@ -457,7 +457,7 @@
         }
     },
     {
-        "region_name": "Hyrule Castle Fairy",
+        "region_name": "HC Great Fairy",
         "locations": {
             "HC Great Fairy": "can_play(Zeldas_Lullaby)"
         }
@@ -1085,7 +1085,7 @@
             "Talons House": "True",
             "Ingo Barn": "True",
             "Lon Lon Corner Tower": "True",
-            "Lon Lon Grotto": "is_child and can_stun_deku"
+            "LLR Grotto": "is_child and can_stun_deku"
         }
     },
     {
@@ -1166,7 +1166,7 @@
         }
     },
     {
-        "region_name": "Lon Lon Grotto",
+        "region_name": "LLR Grotto",
         "locations": {
             "LLR Grotto Deku Scrub Left": "True",
             "LLR Grotto Deku Scrub Right": "True",
@@ -1174,62 +1174,62 @@
         }
     },
     {
-        "region_name": "Remote Southern Grotto",
+        "region_name": "HF Woods Grotto",
         "locations": {
-            "HF Southeast Grotto Chest": "True",
-            "Hyrule Field Southeast Grotto Gossip Stone": "True"
+            "HF Woods Grotto Chest": "True",
+            "HF Woods Grotto Gossip Stone": "True"
         }
     },
     {
-        "region_name": "Field Near Lake Outside Fence Grotto",
+        "region_name": "HF Open Grotto",
         "locations": {
             "HF Open Grotto Chest": "True",
-            "Hyrule Field Open Grotto Gossip Stone": "True"
+            "HF Open Grotto Gossip Stone": "True"
         }
     },
     {
-        "region_name": "Field Near Lake Inside Fence Grotto",
+        "region_name": "HF Inside Fence Grotto",
         "locations": {
             "HF Grotto Deku Scrub": "can_stun_deku"
         }
     },
     {
-        "region_name": "Field Valley Grotto",
+        "region_name": "HF Valley Grotto",
         "locations": {
-            "HF GS Cow Grotto": "
+            "HF Valley Grotto GS": "
                 has_fire_source and (can_use(Hookshot) or can_use(Boomerang))",
-            "HF Grotto Cow": "has_fire_source and can_play(Eponas_Song)",
-            "Hyrule Field Cow Grotto Gossip Stone": "has_fire_source"
+            "HF Valley Grotto Cow": "has_fire_source and can_play(Eponas_Song)",
+            "HF Valley Grotto Gossip Stone": "has_fire_source"
         }
     },
     {
-        "region_name": "Field West Castle Town Grotto",
+        "region_name": "HF Near Market Grotto",
         "locations": {
             "HF Near Market Grotto Chest": "True",
-            "Hyrule Field Near Market Grotto Gossip Stone": "True"
+            "HF Near Market Grotto Gossip Stone": "True"
         }
     },
     {
-        "region_name": "Field Far West Castle Town Grotto"
+        "region_name": "HF Fairy Grotto"
     },
     {
-        "region_name": "Field Kakariko Grotto",
+        "region_name": "HF Near Kak Grotto",
         "locations": {
-            "HF GS Grotto Near Kak": "can_use(Boomerang) or can_use(Hookshot)"
+            "HF Near Kak Grotto GS": "can_use(Boomerang) or can_use(Hookshot)"
         }
     },
     {
-        "region_name": "Tektite Grotto",
+        "region_name": "HF Tektite Grotto",
         "locations": {
             "HF Tektite Grotto Freestanding PoH": "
                 (Progressive_Scale, 2) or can_use(Iron_Boots)"
         }
     },
     {
-        "region_name": "Castle Storms Grotto",
+        "region_name": "HC Storms Grotto",
         "locations": {
-            "HC GS Grotto": "(can_use(Boomerang) or can_isg) and (has_explosives or Blue_Fire)",
-            "Hyrule Castle Grotto Gossip Stone": "has_explosives or Blue_Fire"
+            "HC Storms Grotto GS": "(can_use(Boomerang) or can_isg) and (has_explosives or Blue_Fire)",
+            "HC Storms Grotto Gossip Stone": "has_explosives or Blue_Fire"
         }
     },
     {

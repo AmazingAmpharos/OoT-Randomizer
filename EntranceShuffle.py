@@ -50,8 +50,8 @@ def assume_pool_reachable(world, entrance_pool):
 
 
 entrance_shuffle_table = [
-    ('Dungeon',         ('Outside Deku Tree -> Deku Tree Lobby',                            { 'index': 0x0000 }),
-                        ('Deku Tree Lobby -> Outside Deku Tree',                            { 'index': 0x0209, 'blue_warp': 0x0457 })),
+    ('Dungeon',         ('KF Outside Deku Tree -> Deku Tree Lobby',                            { 'index': 0x0000 }),
+                        ('Deku Tree Lobby -> KF Outside Deku Tree',                            { 'index': 0x0209, 'blue_warp': 0x0457 })),
     ('Dungeon',         ('Dodongos Cavern Entryway -> Dodongos Cavern Beginning',           { 'index': 0x0004 }),
                         ('Dodongos Cavern Beginning -> Dodongos Cavern Entryway',           { 'index': 0x0242, 'blue_warp': 0x047A })),
     ('Dungeon',         ('Zoras Fountain -> Jabu Jabus Belly Beginning',                    { 'index': 0x0028 }),
@@ -73,16 +73,16 @@ entrance_shuffle_table = [
     ('Dungeon',         ('Gerudo Fortress -> Gerudo Training Grounds Lobby',                { 'index': 0x0008 }),
                         ('Gerudo Training Grounds Lobby -> Gerudo Fortress',                { 'index': 0x03A8 })),
 
-    ('Interior',        ('Kokiri Forest -> Midos House',                                    { 'index': 0x0433 }),
-                        ('Midos House -> Kokiri Forest',                                    { 'index': 0x0443 })),
-    ('Interior',        ('Kokiri Forest -> Sarias House',                                    { 'index': 0x0437 }),
-                        ('Sarias House -> Kokiri Forest',                                    { 'index': 0x0447 })),
-    ('Interior',        ('Kokiri Forest -> House of Twins',                                 { 'index': 0x009C }),
-                        ('House of Twins -> Kokiri Forest',                                 { 'index': 0x033C })),
-    ('Interior',        ('Kokiri Forest -> Know It All House',                              { 'index': 0x00C9 }),
-                        ('Know It All House -> Kokiri Forest',                              { 'index': 0x026A })),
-    ('Interior',        ('Kokiri Forest -> Kokiri Shop',                                    { 'index': 0x00C1 }),
-                        ('Kokiri Shop -> Kokiri Forest',                                    { 'index': 0x0266 })),
+    ('Interior',        ('Kokiri Forest -> KF Midos House',                                    { 'index': 0x0433 }),
+                        ('KF Midos House -> Kokiri Forest',                                    { 'index': 0x0443 })),
+    ('Interior',        ('Kokiri Forest -> KF Sarias House',                                    { 'index': 0x0437 }),
+                        ('KF Sarias House -> Kokiri Forest',                                    { 'index': 0x0447 })),
+    ('Interior',        ('Kokiri Forest -> KF House of Twins',                                 { 'index': 0x009C }),
+                        ('KF House of Twins -> Kokiri Forest',                                 { 'index': 0x033C })),
+    ('Interior',        ('Kokiri Forest -> KF Know It All House',                              { 'index': 0x00C9 }),
+                        ('KF Know It All House -> Kokiri Forest',                              { 'index': 0x026A })),
+    ('Interior',        ('Kokiri Forest -> KF Kokiri Shop',                                    { 'index': 0x00C1 }),
+                        ('KF Kokiri Shop -> Kokiri Forest',                                    { 'index': 0x0266 })),
     ('Interior',        ('Lake Hylia -> Lake Hylia Lab',                                    { 'index': 0x0043 }),
                         ('Lake Hylia Lab -> Lake Hylia',                                    { 'index': 0x03CC })),
     ('Interior',        ('Lake Hylia -> Fishing Hole',                                      { 'index': 0x045F }),
@@ -135,8 +135,8 @@ entrance_shuffle_table = [
                         ('Kakariko Shooting Gallery -> Kakariko Village',                   { 'index': 0x0463, 'dynamic_address': 0xBEFD7A })),
     ('Interior',        ('Desert Colossus -> Colossus Fairy',                               { 'index': 0x0588 }),
                         ('Colossus Fairy -> Desert Colossus',                               { 'index': 0x057C, 'dynamic_address': 0xBEFD82 })),
-    ('Interior',        ('Hyrule Castle Grounds -> Hyrule Castle Fairy',                    { 'index': 0x0578 }),
-                        ('Hyrule Castle Fairy -> Castle Grounds',                           { 'index': 0x0340, 'dynamic_address': 0xBEFD80 })),
+    ('Interior',        ('Hyrule Castle Grounds -> HC Great Fairy',                    { 'index': 0x0578 }),
+                        ('HC Great Fairy -> Castle Grounds',                           { 'index': 0x0340, 'dynamic_address': 0xBEFD80 })),
     ('Interior',        ('Ganons Castle Grounds -> Ganons Castle Fairy',                    { 'index': 0x04C2 }),
                         ('Ganons Castle Fairy -> Castle Grounds',                           { 'index': 0x0340, 'dynamic_address': 0xBEFD6C })),
     ('Interior',        ('Death Mountain Crater Lower Nearby -> Crater Fairy',              { 'index': 0x04BE }),
@@ -146,8 +146,8 @@ entrance_shuffle_table = [
     ('Interior',        ('Zoras Fountain -> Zoras Fountain Fairy',                          { 'index': 0x0371 }),
                         ('Zoras Fountain Fairy -> Zoras Fountain',                          { 'index': 0x0394, 'dynamic_address': 0xBEFD7E })),
 
-    ('SpecialInterior', ('Kokiri Forest -> Links House',                                    { 'index': 0x0272 }),
-                        ('Links House -> Kokiri Forest',                                    { 'index': 0x0211 })),
+    ('SpecialInterior', ('Kokiri Forest -> KF Links House',                                    { 'index': 0x0272 }),
+                        ('KF Links House -> Kokiri Forest',                                    { 'index': 0x0211 })),
     ('SpecialInterior', ('Temple of Time Exterior -> Temple of Time',                       { 'index': 0x0053 }),
                         ('Temple of Time -> Temple of Time Exterior',                       { 'index': 0x0472 })),
     ('SpecialInterior', ('Kakariko Village -> Windmill',                                    { 'index': 0x0453 }),
@@ -181,32 +181,32 @@ entrance_shuffle_table = [
                         ('Kakariko Back Grotto -> Kakariko Village Backyard',               { 'grotto_id': 0x0A })),
     ('Grotto',          ('Kakariko Village -> Kakariko Bombable Grotto',                    { 'grotto_id': 0x0B, 'entrance': 0x05A0, 'content': 0xE7, 'scene': 0x52 }),
                         ('Kakariko Bombable Grotto -> Kakariko Village',                    { 'grotto_id': 0x0B })),
-    ('Grotto',          ('Hyrule Castle Grounds -> Castle Storms Grotto',                   { 'grotto_id': 0x0C, 'entrance': 0x05B8, 'content': 0xF6, 'scene': 0x5F }),
-                        ('Castle Storms Grotto -> Hyrule Castle Grounds',                   { 'grotto_id': 0x0C })),
-    ('Grotto',          ('Hyrule Field -> Tektite Grotto',                                  { 'grotto_id': 0x0D, 'entrance': 0x05C0, 'content': 0xE1, 'scene': 0x51 }),
-                        ('Tektite Grotto -> Hyrule Field',                                  { 'grotto_id': 0x0D })),
-    ('Grotto',          ('Hyrule Field -> Field Kakariko Grotto',                           { 'grotto_id': 0x0E, 'entrance': 0x0598, 'content': 0xE5, 'scene': 0x51 }),
-                        ('Field Kakariko Grotto -> Hyrule Field',                           { 'grotto_id': 0x0E })),
-    ('Grotto',          ('Hyrule Field -> Field Far West Castle Town Grotto',               { 'grotto_id': 0x0F, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x51 }),
-                        ('Field Far West Castle Town Grotto -> Hyrule Field',               { 'grotto_id': 0x0F })),
-    ('Grotto',          ('Hyrule Field -> Field West Castle Town Grotto',                   { 'grotto_id': 0x10, 'entrance': 0x003F, 'content': 0x00, 'scene': 0x51 }),
-                        ('Field West Castle Town Grotto -> Hyrule Field',                   { 'grotto_id': 0x10 })),
-    ('Grotto',          ('Hyrule Field -> Field Valley Grotto',                             { 'grotto_id': 0x11, 'entrance': 0x05A8, 'content': 0xE4, 'scene': 0x51 }),
-                        ('Field Valley Grotto -> Hyrule Field',                             { 'grotto_id': 0x11 })),
-    ('Grotto',          ('Hyrule Field -> Field Near Lake Inside Fence Grotto',             { 'grotto_id': 0x12, 'entrance': 0x059C, 'content': 0xE6, 'scene': 0x51 }),
-                        ('Field Near Lake Inside Fence Grotto -> Hyrule Field',             { 'grotto_id': 0x12 })),
-    ('Grotto',          ('Hyrule Field -> Field Near Lake Outside Fence Grotto',            { 'grotto_id': 0x13, 'entrance': 0x003F, 'content': 0x03, 'scene': 0x51 }),
-                        ('Field Near Lake Outside Fence Grotto -> Hyrule Field',            { 'grotto_id': 0x13 })),
-    ('Grotto',          ('Hyrule Field -> Remote Southern Grotto',                          { 'grotto_id': 0x14, 'entrance': 0x003F, 'content': 0x22, 'scene': 0x51 }),
-                        ('Remote Southern Grotto -> Hyrule Field',                          { 'grotto_id': 0x14 })),
-    ('Grotto',          ('Lon Lon Ranch -> Lon Lon Grotto',                                 { 'grotto_id': 0x15, 'entrance': 0x05A4, 'content': 0xFC, 'scene': 0x63 }),
-                        ('Lon Lon Grotto -> Lon Lon Ranch',                                 { 'grotto_id': 0x15 })),
-    ('Grotto',          ('SFM Entryway -> SFM Wolfos Grotto',                                   { 'grotto_id': 0x16, 'entrance': 0x05B4, 'content': 0xED, 'scene': 0x56 }),
-                        ('SFM Wolfos Grotto -> SFM Entryway',                                   { 'grotto_id': 0x16 })),
-    ('Grotto',          ('Sacred Forest Meadow -> SFM Storms Grotto',                    { 'grotto_id': 0x17, 'entrance': 0x05BC, 'content': 0xEE, 'scene': 0x56 }),
-                        ('SFM Storms Grotto -> Sacred Forest Meadow',                    { 'grotto_id': 0x17 })),
-    ('Grotto',          ('Sacred Forest Meadow -> SFM Fairy Grotto',                     { 'grotto_id': 0x18, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x56 }),
-                        ('SFM Fairy Grotto -> Sacred Forest Meadow',                     { 'grotto_id': 0x18 })),
+    ('Grotto',          ('Hyrule Castle Grounds -> HC Storms Grotto',                   { 'grotto_id': 0x0C, 'entrance': 0x05B8, 'content': 0xF6, 'scene': 0x5F }),
+                        ('HC Storms Grotto -> Hyrule Castle Grounds',                   { 'grotto_id': 0x0C })),
+    ('Grotto',          ('Hyrule Field -> HF Tektite Grotto',                               { 'grotto_id': 0x0D, 'entrance': 0x05C0, 'content': 0xE1, 'scene': 0x51 }),
+                        ('HF Tektite Grotto -> Hyrule Field',                               { 'grotto_id': 0x0D })),
+    ('Grotto',          ('Hyrule Field -> HF Near Kak Grotto',                              { 'grotto_id': 0x0E, 'entrance': 0x0598, 'content': 0xE5, 'scene': 0x51 }),
+                        ('HF Near Kak Grotto -> Hyrule Field',                              { 'grotto_id': 0x0E })),
+    ('Grotto',          ('Hyrule Field -> HF Fairy Grotto',                                 { 'grotto_id': 0x0F, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x51 }),
+                        ('HF Fairy Grotto -> Hyrule Field',                                 { 'grotto_id': 0x0F })),
+    ('Grotto',          ('Hyrule Field -> HF Near Market Grotto',                           { 'grotto_id': 0x10, 'entrance': 0x003F, 'content': 0x00, 'scene': 0x51 }),
+                        ('HF Near Market Grotto -> Hyrule Field',                           { 'grotto_id': 0x10 })),
+    ('Grotto',          ('Hyrule Field -> HF Valley Grotto',                                { 'grotto_id': 0x11, 'entrance': 0x05A8, 'content': 0xE4, 'scene': 0x51 }),
+                        ('HF Valley Grotto -> Hyrule Field',                                { 'grotto_id': 0x11 })),
+    ('Grotto',          ('Hyrule Field -> HF Inside Fence Grotto',                          { 'grotto_id': 0x12, 'entrance': 0x059C, 'content': 0xE6, 'scene': 0x51 }),
+                        ('HF Inside Fence Grotto -> Hyrule Field',                          { 'grotto_id': 0x12 })),
+    ('Grotto',          ('Hyrule Field -> HF Open Grotto',                                  { 'grotto_id': 0x13, 'entrance': 0x003F, 'content': 0x03, 'scene': 0x51 }),
+                        ('HF Open Grotto -> Hyrule Field',                                  { 'grotto_id': 0x13 })),
+    ('Grotto',          ('Hyrule Field -> HF Woods Grotto',                                 { 'grotto_id': 0x14, 'entrance': 0x003F, 'content': 0x22, 'scene': 0x51 }),
+                        ('HF Woods Grotto -> Hyrule Field',                                 { 'grotto_id': 0x14 })),
+    ('Grotto',          ('Lon Lon Ranch -> LLR Grotto',                                 { 'grotto_id': 0x15, 'entrance': 0x05A4, 'content': 0xFC, 'scene': 0x63 }),
+                        ('LLR Grotto -> Lon Lon Ranch',                                 { 'grotto_id': 0x15 })),
+    ('Grotto',          ('SFM Entryway -> SFM Wolfos Grotto',                               { 'grotto_id': 0x16, 'entrance': 0x05B4, 'content': 0xED, 'scene': 0x56 }),
+                        ('SFM Wolfos Grotto -> SFM Entryway',                               { 'grotto_id': 0x16 })),
+    ('Grotto',          ('Sacred Forest Meadow -> SFM Storms Grotto',                       { 'grotto_id': 0x17, 'entrance': 0x05BC, 'content': 0xEE, 'scene': 0x56 }),
+                        ('SFM Storms Grotto -> Sacred Forest Meadow',                       { 'grotto_id': 0x17 })),
+    ('Grotto',          ('Sacred Forest Meadow -> SFM Fairy Grotto',                        { 'grotto_id': 0x18, 'entrance': 0x036D, 'content': 0xFF, 'scene': 0x56 }),
+                        ('SFM Fairy Grotto -> Sacred Forest Meadow',                        { 'grotto_id': 0x18 })),
     ('Grotto',          ('LW Beyond Mido -> LW Scrubs Grotto',                              { 'grotto_id': 0x19, 'entrance': 0x05B0, 'content': 0xF5, 'scene': 0x5B }),
                         ('LW Scrubs Grotto -> LW Beyond Mido',                              { 'grotto_id': 0x19 })),
     ('Grotto',          ('Lost Woods -> LW Generic Grotto',                                 { 'grotto_id': 0x1A, 'entrance': 0x003F, 'content': 0x14, 'scene': 0x5B }),
@@ -341,9 +341,9 @@ def shuffle_random_entrances(worlds):
             # a forest escape via the hands of spirit on Deku leading to Deku on spirit in logic. This is
             # not really a closed forest anymore, so specifically remove Deku Tree from closed forest.
             if worlds[0].open_forest == 'closed':
-                entrance_pools['Dungeon'].remove(world.get_entrance('Outside Deku Tree -> Deku Tree Lobby'))
-                world.get_entrance('Outside Deku Tree -> Deku Tree Lobby').shuffled = False
-                world.get_entrance('Deku Tree Lobby -> Outside Deku Tree').shuffled = False
+                entrance_pools['Dungeon'].remove(world.get_entrance('KF Outside Deku Tree -> Deku Tree Lobby'))
+                world.get_entrance('KF Outside Deku Tree -> Deku Tree Lobby').shuffled = False
+                world.get_entrance('Deku Tree Lobby -> KF Outside Deku Tree').shuffled = False
 
         if worlds[0].shuffle_interior_entrances:
             entrance_pools['Interior'] = entrance_instances(world, get_entrance_pool('Interior')) + entrance_pools.get('SpecialInterior', [])
@@ -382,7 +382,7 @@ def shuffle_random_entrances(worlds):
             if pool_type == 'SpecialInterior':
                 # When placing special interiors, we pre place ToT and Links House first, making sure the assumed access rules are always valid
                 temple_of_time_exit = world.get_entrance('Temple of Time -> Temple of Time Exterior')
-                links_house_exit = world.get_entrance('Links House -> Kokiri Forest')
+                links_house_exit = world.get_entrance('KF Links House -> Kokiri Forest')
                 for target in target_entrance_pools[pool_type]:
                     target.set_rule(lambda state, age=None, **kwargs: temple_of_time_exit.connected_region == None or (links_house_exit.connected_region == None and age == 'child'))
                 shuffle_entrance_pool(worlds, [temple_of_time_exit], target_entrance_pools[pool_type], locations_to_ensure_reachable)
@@ -549,7 +549,7 @@ def validate_worlds(worlds, entrance_placed, locations_to_ensure_reachable, item
 
         for world in worlds:
             # Links House entrance should be reachable as child at some point in the seed
-            links_house_entrance = get_entrance_replacing(world.get_region('Links House'), 'Kokiri Forest -> Links House')
+            links_house_entrance = get_entrance_replacing(world.get_region('KF Links House'), 'Kokiri Forest -> KF Links House')
             if not max_search.spot_access(links_house_entrance, age='child'):
                 raise EntranceShuffleError('Links House Entrance is never reachable as child')
 
