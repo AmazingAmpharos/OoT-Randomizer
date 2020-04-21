@@ -283,7 +283,7 @@ logic_tricks = {
                     and the wall. Through that gap you can hookshot
                     the target on the ceiling.
                     '''},
-    'DMT Chest with Strength': {
+    'Death Mountain Trail Chest with Strength': {
         'name'    : 'logic_dmt_bombable',
         'tooltip' : '''\
                     Child Link can blow up the wall using a nearby bomb
@@ -458,7 +458,7 @@ logic_tricks = {
                     so that Link will grab the ledge from farther away than
                     is normally possible.
                     '''},
-    'LH Lab Dive without Gold Scale': {
+    'Lake Hylia Lab Dive without Gold Scale': {
         'name'    : 'logic_lab_diving',
         'tooltip' : '''\
                     Remove the Iron Boots in the midst of
@@ -499,7 +499,7 @@ logic_tricks = {
                     The jump to the alcove can be a pit picky when
                     done as child.
                     '''},
-    'Kak Tower GS with Jump Slash': {
+    'Kakariko Tower GS with Jump Slash': {
         'name'    : 'logic_kakariko_tower_gs',
         'tooltip' : '''\
                     Climb the tower as high as you can without
@@ -507,7 +507,7 @@ logic_tricks = {
                     jump slash immediately. You will take fall
                     damage.
                     '''},
-    'LH Lab Wall GS with Jump Slash': {
+    'Lake Hylia Lab Wall GS with Jump Slash': {
         'name'    : 'logic_lab_wall_gs',
         'tooltip' : '''\
                     The jump slash to actually collect the
@@ -590,20 +590,20 @@ logic_tricks = {
                     standing in a particular spot, the switch can be hit
                     with only the reach of the Hookshot.
                     '''},
-    'DMT Upper Red Rock GS without Hammer': {
+    'Death Mountain Trail Upper Red Rock GS without Hammer': {
         'name'    : 'logic_trail_gs_upper',
         'tooltip' : '''\
                     After killing the Skulltula, the token can be collected
                     by backflipping into the rock at the correct angle.
                     '''},
-    'DMT Lower Red Rock GS with Hookshot': {
+    'Death Mountain Trail Lower Red Rock GS with Hookshot': {
         'name'    : 'logic_trail_gs_lower_hookshot',
         'tooltip' : '''\
                     After killing the Skulltula, the token can be fished
                     out of the rock without needing to destroy it, by
                     using the Hookshot in the correct way.
                     '''},
-    'DMT Lower Red Rock GS with Magic Bean': {
+    'Death Mountain Trail Lower Red Rock GS with Magic Bean': {
         'name'    : 'logic_trail_gs_lower_bean',
         'tooltip' : '''\
                     After killing the Skulltula, the token can be
@@ -611,7 +611,7 @@ logic_tricks = {
                     jumping down onto it from the bean plant,
                     midflight, with precise timing and positioning.
                     '''},
-    'DMC Upper to Lower with Hammer': {
+    'Death Mountain Crater Upper to Lower with Hammer': {
         'name'    : 'logic_crater_upper_to_lower',
         'tooltip' : '''\
                     With the Hammer, you can jumpslash the rock twice
@@ -699,7 +699,7 @@ logic_tricks = {
                     the tongue. It works best if you Longshot the right
                     torch from the left side of the room.
                     '''},
-    'LW Adult GS without Bean': {
+    'Lost Woods Adult GS without Bean': {
         'name'    : 'logic_lost_woods_gs_bean',
         'tooltip' : '''\
                     You can collect the token with a precise
@@ -725,7 +725,7 @@ logic_tricks = {
                     the Piece of Heart by having the Boomerang
                     interact with it along the return path.
                     '''},
-    'DMT Soil GS without Destroying Boulder': {
+    'Death Mountain Trail Soil GS without Destroying Boulder': {
         'name'    : 'logic_dmt_soil_gs',
         'tooltip' : '''\
                     Bugs will go into the soft soil even while the boulder is
