@@ -35,7 +35,7 @@ def getHintGroup(group, world):
 
         # Some hints have a confusing text in the scope of grotto entrance shuffle so we exclude them
         if world.shuffle_grotto_entrances:
-            if name == 'HC Storms Grotto GS' or name == 'HF Valley Grotto GS':
+            if name == 'HC Storms Grotto GS' or name == 'HF GS Cow Grotto':
                 continue
 
         hint = getHint(name, world.clearer_hints)
@@ -222,7 +222,7 @@ hintTable = {
     'GC Maze Left Chest':                           ("in #Goron City# the hammer unlocks", None, ['overworld', 'sometimes']),
     'GV Chest':                         ("in #Gerudo Valley# the hammer unlocks", None, ['overworld', 'sometimes']),
     'HC Storms Grotto GS':                                  ("a #storm near the castle# reveals", None, ['overworld', 'sometimes']),
-    'HF Valley Grotto GS':                       ("buried near #the valley# a spider holds", None, ['overworld', 'sometimes']),
+    'HF GS Cow Grotto':                       ("buried near #the valley# a spider holds", None, ['overworld', 'sometimes']),
     'ZF GS Hidden Cave':                          ("a spider high above the #icy waters# holds", None, ['overworld', 'sometimes']),
     'Wasteland Chest':                        (["deep in the #Wasteland# is", "beneath #the sands#, flames reveal"], None, ['overworld', 'sometimes']),
     'Wasteland GS':                                       ("a #spider in the Wasteland# hold", None, ['overworld', 'sometimes']),

@@ -71,7 +71,7 @@ gossipLocations = {
     0x040C: GossipStone('Zoras River (Waterfall)',              'Zoras River Waterfall Gossip Stone'),
 
     0x0430: GossipStone('HF (Near Market Grotto)',    'HF Near Market Grotto Gossip Stone'),
-    0x0432: GossipStone('HF (Woods Grotto)',           'HF Woods Grotto Gossip Stone'),
+    0x0432: GossipStone('HF (Woods Grotto)',           'HF Southeast Grotto Gossip Stone'),
     0x0433: GossipStone('HF (Open Grotto)',           'HF Open Grotto Gossip Stone'),
     0x0438: GossipStone('Kakariko (Potion Grotto)',             'Kakariko Village Open Grotto Gossip Stone'),
     0x0439: GossipStone('Zoras River (Open Grotto)',            'Zora River Plateau Open Grotto Gossip Stone'),

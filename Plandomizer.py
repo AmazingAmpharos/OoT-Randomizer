@@ -1098,7 +1098,7 @@ def pattern_dict_items(pattern_dict):
     """
     # TODO: This has the same issue with the invert pattern as items do.
     #  It pulls randomly(?) from all locations instead of ones that make sense.
-    #  e.g. "!Queen Gohma" results in "KF Chest"
+    #  e.g. "!Queen Gohma" results in "KF Kokiri Sword Chest"
     for (key, value) in pattern_dict.items():
         if is_pattern(key):
             pattern = lambda loc: pattern_matcher(key)(loc.name)

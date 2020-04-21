@@ -397,8 +397,8 @@ skulltula_locations = ([
     'LW GS Bean Patch Near Theater',
     'LW GS Above Theater',
     'SFM GS',
-    'HF Near Kak Grotto GS',
-    'HF Valley Grotto GS',
+    'HF GS Near Kak Grotto',
+    'HF GS Cow Grotto',
     'Market GS Guard House',
     'HC GS Tree',
     'HC Storms Grotto GS',
@@ -416,7 +416,7 @@ skulltula_locations = ([
     'Graveyard GS Wall',
     'Graveyard GS Bean Patch',
     'DMT GS Bean Patch',
-    'DMT GS Near Kakariko Village',
+    'DMT GS Near Kak',
     'DMT GS Falling Rocks Path',
     'DMT GS Above Dodongos Cavern',
     'GC GS Boulder Maze',
@@ -808,7 +808,7 @@ def get_pool_core(world):
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')
     else:
-        placed_items['KF Chest'] = 'Kokiri Sword'
+        placed_items['KF Kokiri Sword Chest'] = 'Kokiri Sword'
 
     ruto_bottles = 1
     if world.zora_fountain == 'open':
@@ -824,7 +824,7 @@ def get_pool_core(world):
     if world.shuffle_ocarinas:
         pool.extend(['Ocarina'] * 2)
     else:
-        placed_items['LW Fairy Ocarina Item'] = 'Ocarina'
+        placed_items['LW Gift from Saria'] = 'Ocarina'
         placed_items['HF Ocarina of Time Item'] = 'Ocarina'
 
     if world.shuffle_cows:
