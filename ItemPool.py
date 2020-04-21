@@ -864,11 +864,11 @@ def get_pool_core(world):
             'Deku Tree GS Basement Back Room']
     if world.dungeon_mq['Dodongos Cavern']:
         skulltula_locations_final.extend([
-            'Dodongos Cavern GS MQ Scrub Room',
-            'Dodongos Cavern GS MQ Song of Time Block Room',
-            'Dodongos Cavern GS MQ Lizalfos Room',
-            'Dodongos Cavern GS MQ Larva Room',
-            'Dodongos Cavern GS MQ Back Area'])
+            'Dodongos Cavern MQ GS Scrub Room',
+            'Dodongos Cavern MQ GS Song of Time Block Room',
+            'Dodongos Cavern MQ GS Lizalfos Room',
+            'Dodongos Cavern MQ GS Larva Room',
+            'Dodongos Cavern MQ GS Back Area'])
     else:
         skulltula_locations_final.extend([
             'Dodongos Cavern GS Side Room Near Lower Lizalfos',
@@ -1255,7 +1255,7 @@ def get_pool_core(world):
         pending_junk_pool.extend(['Triforce Piece'] * triforce_count)
 
     if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
-        placed_items['Zelda'] = 'Boss Key (Ganons Castle)'
+        placed_items['ToT Light Arrows Cutscene'] = 'Boss Key (Ganons Castle)'
     elif world.shuffle_ganon_bosskey == 'vanilla':
         placed_items['Ganons Tower Boss Key Chest'] = 'Boss Key (Ganons Castle)'
 

@@ -130,7 +130,7 @@
             "GC Woods Warp": "True",
             "Zora River": "(can_dive or can_jumpslash) and can_leave_forest",
             "LW Beyond Mido": "True",
-            "LW Generic Grotto": "can_blast_or_smash"
+            "LW Near Shortcut Grotto": "can_blast_or_smash"
             #//Can Exit to Woods bridge with megaflip, but walking through kokiri forest is true anyway
         }
     },
@@ -209,7 +209,7 @@
             "Kakariko Village": "True",
             "ZR Front": "True",
             "Lon Lon Ranch": "True",
-            "HF Southeast Grotto": "can_blast_or_smash",
+            "HF Woods Grotto": "can_blast_or_smash",
             "HF Open Grotto": "True",
             "HF Inside Fence Grotto": "can_blast_or_smash",
             "HF Cow Grotto": "
@@ -408,7 +408,7 @@
         "region_name": "Temple of Time",
         "hint": "Temple of Time",
         "locations": {
-            "ToT LACS": "is_adult and can_trigger_lacs"
+            "ToT Light Arrows Cutscene": "is_adult and can_trigger_lacs"
         },
         "exits": {
             "Market": "True",
@@ -914,7 +914,7 @@
             "DMC Central": "(is_child and can_mega and (can_live_dmg(1) or Fairy or can_use(Nayrus_Love)) and Hylian_Shield) or
                 (is_adult and can_use(Goron_Tunic) and (can_use(Distant_Scarecrow) or can_mega) and 
                 (can_live_dmg(1) or Fairy or can_use(Nayrus_Love)))",
-            "DMC Generic Grotto": "here(can_blast_or_smash)"
+            "DMC Upper Grotto": "here(can_blast_or_smash)"
         }
     },
     {
@@ -986,13 +986,13 @@
             "ZR GS Ladder": "is_child and at_night and can_child_attack",
             "ZR GS Near Raised Grottos": "is_adult and (Progressive_Hookshot or can_hover) and at_night",
             "ZR GS Above Bridge": "can_use(Hookshot) and at_night",
-            "ZR Plateau Gossip Stone": "True",
-            "ZR Waterfall Gossip Stone": "True"
+            "ZR Near Grottoes Gossip Stone": "True",
+            "ZR Near Domain Gossip Stone": "True"
         },
         "exits": {
             "ZR Front": "True",
             "ZR Open Grotto": "True",
-            "ZR Plateau Bombable Grotto": "can_blast_or_smash",
+            "ZR Fairy Grotto": "can_blast_or_smash",
             "Lost Woods": "can_dive or can_use(Iron_Boots) or (is_child and (can_isg or Nuts)) or can_mega",
             "ZR Storms Grotto": "can_play(Song_of_Storms) and can_stun_deku",
             "Zoras Domain": "can_play(Zeldas_Lullaby) or can_mega or can_use(Hover_Boots) or is_child"
@@ -1126,10 +1126,10 @@
         }
     },
     {
-        "region_name": "LW Generic Grotto",
+        "region_name": "LW Near Shortcut Grotto",
         "locations": {
-            "LW Generic Grotto Chest": "True",
-            "LW Generic Grotto Gossip Stone": "True"
+            "LW Near Shortcut Grotto Chest": "True",
+            "LW Near Shortcut Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1174,10 +1174,10 @@
         }
     },
     {
-        "region_name": "HF Southeast Grotto",
+        "region_name": "HF Woods Grotto",
         "locations": {
-            "HF Southeast Grotto Chest": "True",
-            "HF Southeast Grotto Gossip Stone": "True"
+            "HF Woods Grotto Chest": "True",
+            "HF Woods Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1267,10 +1267,10 @@
         }
     },
     {
-        "region_name": "DMC Generic Grotto",
+        "region_name": "DMC Upper Grotto",
         "locations": {
-            "DMC Generic Grotto Chest": "True",
-            "DMC Generic Grotto Gossip Stone": "True"
+            "DMC Upper Grotto Chest": "True",
+            "DMC Upper Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1289,7 +1289,7 @@
         }
     },
     {
-        "region_name": "ZR Plateau Bombable Grotto"
+        "region_name": "ZR Fairy Grotto"
     },
     {
         "region_name": "ZR Storms Grotto",

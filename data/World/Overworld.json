@@ -168,7 +168,7 @@
                     here(can_plant_bean) or logic_lost_woods_bridge)",
             "Zora River": "can_leave_forest and (can_dive or can_use(Iron_Boots))",
             "LW Beyond Mido": "is_child or logic_mido_backflip or can_play(Sarias_Song)",
-            "LW Generic Grotto": "here(can_blast_or_smash)"
+            "LW Near Shortcut Grotto": "here(can_blast_or_smash)"
         }
     },
     {
@@ -267,7 +267,7 @@
             "Kakariko Village": "True",
             "ZR Front": "True",
             "Lon Lon Ranch": "True",
-            "HF Southeast Grotto": "here(can_blast_or_smash)",
+            "HF Woods Grotto": "here(can_blast_or_smash)",
             "HF Open Grotto": "True",
             "HF Inside Fence Grotto": "can_open_bomb_grotto",
             "HF Cow Grotto": "(can_use(Megaton_Hammer) or is_child) and can_open_bomb_grotto",
@@ -571,7 +571,7 @@
         "hint": "the Market",
         "exits": {
             "Market Entrance": "True",
-            "Temple of Time Exterior": "True",
+            "ToT Entrance": "True",
             "Castle Grounds": "True",
             "Market Bazaar": "is_child and at_day",
             "Market Mask Shop": "is_child and at_day",
@@ -585,8 +585,8 @@
         }
     },
     {
-        "region_name": "Temple of Time Exterior",
-        "scene": "Temple of Time Exterior",
+        "region_name": "ToT Entrance",
+        "scene": "ToT Entrance",
         "hint": "the Market",
         "locations": {
             "ToT Gossip Stone (Left)": "True",
@@ -604,10 +604,10 @@
         "region_name": "Temple of Time",
         "hint": "Temple of Time",
         "locations": {
-            "ToT LACS": "is_adult and can_trigger_lacs"
+            "ToT Light Arrows Cutscene": "is_adult and can_trigger_lacs"
         },
         "exits": {
-            "Temple of Time Exterior": "True",
+            "ToT Entrance": "True",
             "Beyond Door of Time": "can_play(Song_of_Time) or open_door_of_time"
         }
     },
@@ -1306,7 +1306,7 @@
         "exits": {
             "DMC Upper Local": "can_use(Goron_Tunic)",
             "Death Mountain Summit": "True",
-            "DMC Generic Grotto": "here(can_blast_or_smash)"
+            "DMC Upper Grotto": "here(can_blast_or_smash)"
         }
     },
     {
@@ -1459,8 +1459,8 @@
             "ZR GS Ladder": "is_child and at_night and can_child_attack",
             "ZR GS Near Raised Grottos": "can_use(Hookshot) and at_night",
             "ZR GS Above Bridge": "can_use(Hookshot) and at_night",
-            "ZR Plateau Gossip Stone": "True",
-            "ZR Waterfall Gossip Stone": "True",
+            "ZR Near Grottoes Gossip Stone": "True",
+            "ZR Near Domain Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Bean Plant Fairy": "can_plant_bean and can_play(Song_of_Storms) and has_bottle",
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
@@ -1469,7 +1469,7 @@
         "exits": {
             "ZR Front": "True",
             "ZR Open Grotto": "True",
-            "ZR Plateau Bombable Grotto": "here(can_blast_or_smash)",
+            "ZR Fairy Grotto": "here(can_blast_or_smash)",
             "Lost Woods": "can_dive or can_use(Iron_Boots)",
             "ZR Storms Grotto": "can_open_storm_grotto",
             "ZR Behind Waterfall": "
@@ -1675,10 +1675,10 @@
         }
     },
     {
-        "region_name": "LW Generic Grotto",
+        "region_name": "LW Near Shortcut Grotto",
         "locations": {
-            "LW Generic Grotto Chest": "True",
-            "LW Generic Grotto Gossip Stone": "True",
+            "LW Near Shortcut Grotto Chest": "True",
+            "LW Near Shortcut Grotto Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
@@ -1750,10 +1750,10 @@
         }
     },
     {
-        "region_name": "HF Southeast Grotto",
+        "region_name": "HF Woods Grotto",
         "locations": {
-            "HF Southeast Grotto Chest": "True",
-            "HF Southeast Grotto Gossip Stone": "True",
+            "HF Woods Grotto Chest": "True",
+            "HF Woods Grotto Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
@@ -1916,10 +1916,10 @@
         }
     },
     {
-        "region_name": "DMC Generic Grotto",
+        "region_name": "DMC Upper Grotto",
         "locations": {
-            "DMC Generic Grotto Chest": "True",
-            "DMC Generic Grotto Gossip Stone": "True",
+            "DMC Upper Grotto Chest": "True",
+            "DMC Upper Grotto Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
@@ -1955,7 +1955,7 @@
         }
     },
     {
-        "region_name": "ZR Plateau Bombable Grotto",
+        "region_name": "ZR Fairy Grotto",
         "locations": {
             "Free Fairies": "has_bottle"
         },

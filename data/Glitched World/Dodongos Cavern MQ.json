@@ -13,7 +13,7 @@
         "locations": {
             "Dodongos Cavern MQ Map Chest": "True",
             "Dodongos Cavern MQ Compass Chest": "is_adult or can_child_attack or Nuts",
-            "Dodongos Cavern MQ Larvae Room Chest": "can_use(Sticks) or has_fire_source",
+            "Dodongos Cavern MQ Larva Room Chest": "can_use(Sticks) or has_fire_source",
             "Dodongos Cavern MQ Torch Puzzle Room Chest": "
                 can_blast_or_smash or can_use(Sticks) or can_use(Dins_Fire) or 
                 (is_adult and (logic_dc_jump or Hover_Boots or Progressive_Hookshot))",
@@ -25,7 +25,7 @@
                             (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love)))))",
             "Dodongos Cavern MQ GS Song of Time Block Room": "
                 can_play(Song_of_Time) and (can_child_attack or is_adult)",
-            "Dodongos Cavern MQ GS Larvae Room": "can_use(Sticks) or has_fire_source",
+            "Dodongos Cavern MQ GS Larva Room": "can_use(Sticks) or has_fire_source",
             "Dodongos Cavern MQ GS Lizalfos Room": "can_blast_or_smash",
             "Dodongos Cavern MQ GS Scrub Room": "
                 (can_use(Boomerang) and (Slingshot or (can_become_adult and has_explosives)) and 
