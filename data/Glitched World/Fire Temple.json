@@ -25,8 +25,8 @@
         "region_name": "Fire Temple Big Lava Room",
         "dungeon": "Fire Temple",
         "locations": {
-            "Fire Temple Big Lava Room North Goron": "True",
-            "Fire Temple Big Lava Room South Goron": "has_explosives",
+            "Fire Temple Big Lava Room Lower Open Door": "True",
+            "Fire Temple Big Lava Room Blocked Door": "has_explosives",
             "Fire Temple GS Song of Time Room": "is_adult"
         },
         "exits": {

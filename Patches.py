@@ -894,7 +894,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     if world.shuffle_interior_entrances:
         # Change the Happy Mask Shop "throw out" entrance index to the new one (hardcode located in the shop actor)
-        rom.write_int16(0xC6DA5E, world.get_entrance('Castle Town Mask Shop -> Castle Town').replaces.data['index'])
+        rom.write_int16(0xC6DA5E, world.get_entrance('Market Mask Shop -> Market').replaces.data['index'])
 
         set_entrance_updates(world.get_shuffled_entrances(type='Interior') + world.get_shuffled_entrances(type='SpecialInterior'))
 
@@ -1403,7 +1403,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # kokiri shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Kokiri Shop').locations, True)
+        world.get_region('KF Kokiri Shop').locations, True)
     shop_objs |= {0x00FC, 0x00B2, 0x0101, 0x0102, 0x00FD, 0x00C5} # Shop objects
     rom.write_byte(0x2587029, len(shop_objs))
     rom.write_int32(0x258702C, 0x0300F600)
@@ -1411,7 +1411,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # kakariko bazaar
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Kakariko Bazaar').locations)
+        world.get_region('Kak Bazaar').locations)
     shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
     rom.write_byte(0x28E4029, len(shop_objs))
     rom.write_int32(0x28E402C, 0x03007A40)
@@ -1419,7 +1419,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # castle town bazaar
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Castle Town Bazaar').locations)
+        world.get_region('Market Bazaar').locations)
     shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
     rom.write_byte(bazaar_room_file.start + 0x29, len(shop_objs))
     rom.write_int32(bazaar_room_file.start + 0x2C, 0x03007A40)
@@ -1427,7 +1427,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # goron shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Goron Shop').locations)
+        world.get_region('GC Shop').locations)
     shop_objs |= {0x00C9, 0x00B2, 0x0103, 0x00AF} # Shop objects
     rom.write_byte(0x2D33029, len(shop_objs))
     rom.write_int32(0x2D3302C, 0x03004340)
@@ -1435,7 +1435,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # zora shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Zora Shop').locations)
+        world.get_region('ZD Shop').locations)
     shop_objs |= {0x005B, 0x00B2, 0x0104, 0x00FE} # Shop objects
     rom.write_byte(0x2D5B029, len(shop_objs))
     rom.write_int32(0x2D5B02C, 0x03004B40)
@@ -1443,7 +1443,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # kakariko potion shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Kakariko Potion Shop Front').locations)
+        world.get_region('Kak Potion Shop Front').locations)
     shop_objs |= {0x0159, 0x00B2, 0x0175, 0x0122} # Shop objects
     rom.write_byte(0x2D83029, len(shop_objs))
     rom.write_int32(0x2D8302C, 0x0300A500)
@@ -1459,7 +1459,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # bombchu shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Castle Town Bombchu Shop').locations)
+        world.get_region('Market Bombchu Shop').locations)
     shop_objs |= {0x0165, 0x00B2} # Shop objects
     rom.write_byte(0x2DD8029, len(shop_objs))
     rom.write_int32(0x2DD802C, 0x03006A40)

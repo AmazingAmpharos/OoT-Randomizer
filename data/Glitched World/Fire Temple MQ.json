@@ -12,7 +12,7 @@
                         Bow or (Progressive_Hookshot, 2)))))"
         },
         "exits": {
-            "Death Mountain Crater Central": "True",
+            "DMC Central": "True",
             "Fire Boss Room": "
                 has_fire_source and can_use(Goron_Tunic) and Megaton_Hammer and Boss_Key_Fire_Temple and
                 (logic_fire_boss_door_jump or Hover_Boots or at('Fire Temple Upper', True))",
@@ -37,9 +37,9 @@
             "Fire Temple MQ Boss Key Chest": "
                 has_fire_source and (Bow or logic_fire_mq_bk_chest) and 
                 Progressive_Hookshot",
-            "Fire Temple MQ Big Lava Room South Goron": "
+            "Fire Temple MQ Big Lava Room Blocked Door": "
                 has_fire_source and Progressive_Hookshot and has_explosives",
-            "Fire Temple MQ GS Big Lava Room North Goron": "True"
+            "Fire Temple MQ GS Big Lava Room Open Door": "True"
         },
         "exits": {
             "Fire Lower Maze": "
@@ -65,7 +65,7 @@
         "locations": {
             "Fire Temple MQ Lizalfos Maze Upper Chest": "True",
             "Fire Temple MQ Compass Chest": "has_explosives",
-            "Fire Temple MQ GS East Tower Top": "
+            "Fire Temple MQ GS Skull On Fire": "
                 can_play(Song_of_Time) or can_use(Longshot)"
         },
         "exits": {
@@ -77,7 +77,7 @@
         "dungeon": "Fire Temple",
         "locations": {
             "Fire Temple MQ Freestanding Key": "True",
-            "Fire Temple MQ West Tower Top Chest": "(Small_Key_Fire_Temple, 4)",
+            "Fire Temple MQ Chest On Fire": "(Small_Key_Fire_Temple, 4)",
             "Fire Temple MQ GS Fire Wall Maze Side Room": "
                 can_play(Song_of_Time) or Hover_Boots",
             "Fire Temple MQ GS Fire Wall Maze Center": "has_explosives",

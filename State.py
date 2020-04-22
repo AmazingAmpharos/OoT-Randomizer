@@ -65,8 +65,8 @@ class State(object):
 
 
     def has_bottle(self, **kwargs):
-        # Extra Rutos Letter are automatically emptied
-        return self.has_any_of(ItemInfo.bottles) or self.has('Rutos Letter', 2)
+        # Extra Ruto's Letter are automatically emptied
+        return self.has_any_of(ItemInfo.bottles) or self.has('Ruto\'s Letter', 2)
 
 
     def has_hearts(self, count):

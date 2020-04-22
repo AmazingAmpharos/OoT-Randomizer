@@ -348,8 +348,8 @@ vanilla_deku_scrubs = {
     'LH Grotto Deku Scrub Center': 'Buy Arrows (30)',
     'GV Grotto Deku Scrub Rear': 'Buy Red Potion [30]',
     'GV Grotto Deku Scrub Front': 'Buy Green Potion',
-    'LW Deku Scrub Near Forest Stage Right': 'Buy Deku Nut (5)',
-    'LW Deku Scrub Near Forest Stage Left': 'Buy Deku Stick (1)',
+    'LW Deku Scrub Near Deku Theater Right': 'Buy Deku Nut (5)',
+    'LW Deku Scrub Near Deku Theater Left': 'Buy Deku Stick (1)',
     'LW Grotto Deku Scrub Rear': 'Buy Arrows (30)',
     'Colossus Grotto Deku Scrub Rear': 'Buy Red Potion [30]',
     'Colossus Grotto Deku Scrub Front': 'Buy Green Potion',
@@ -394,14 +394,14 @@ skulltula_locations = ([
     'KF GS Bean Patch',
     'KF GS House of Twins',
     'LW GS Bean Patch Near Bridge',
-    'LW GS Bean Patch Near Stage',
-    'LW GS Above Stage',
+    'LW GS Bean Patch Near Theater',
+    'LW GS Above Theater',
     'SFM GS',
-    'HF GS Grotto Near Kak',
+    'HF GS Near Kak Grotto',
     'HF GS Cow Grotto',
     'Market GS Guard House',
     'HC GS Tree',
-    'HC GS Grotto',
+    'HC GS Storms Grotto',
     'OGC GS',
     'LLR GS Tree',
     'LLR GS Rain Shed',
@@ -416,7 +416,7 @@ skulltula_locations = ([
     'Graveyard GS Wall',
     'Graveyard GS Bean Patch',
     'DMT GS Bean Patch',
-    'DMT GS Near Kakariko Village',
+    'DMT GS Near Kak',
     'DMT GS Falling Rocks Path',
     'DMT GS Above Dodongos Cavern',
     'GC GS Boulder Maze',
@@ -569,8 +569,8 @@ vanillaSK = {
     'Bottom of the Well Front Left Fake Wall': 'Small Key (Bottom of the Well)',
     'Bottom of the Well Right Bottom Fake Wall': 'Small Key (Bottom of the Well)',
     'Bottom of the Well Freestanding Key': 'Small Key (Bottom of the Well)',
-    'Fire Temple Big Lava Room South Goron': 'Small Key (Fire Temple)',
-    'Fire Temple Big Lava Room North Goron': 'Small Key (Fire Temple)',
+    'Fire Temple Big Lava Room Blocked Door': 'Small Key (Fire Temple)',
+    'Fire Temple Big Lava Room Lower Open Door': 'Small Key (Fire Temple)',
     'Fire Temple Boulder Maze Shortcut Chest': 'Small Key (Fire Temple)',
     'Fire Temple Boulder Maze Lower Chest': 'Small Key (Fire Temple)',
     'Fire Temple Boulder Maze Side Room Chest': 'Small Key (Fire Temple)',
@@ -578,7 +578,7 @@ vanillaSK = {
     'Fire Temple Chest Near Boss': 'Small Key (Fire Temple)',
     'Fire Temple Highest Goron Chest': 'Small Key (Fire Temple)',
     'Forest Temple First Stalfos Chest': 'Small Key (Forest Temple)',
-    'Forest Temple Entry Chest': 'Small Key (Forest Temple)',
+    'Forest Temple First Room Chest': 'Small Key (Forest Temple)',
     'Forest Temple Floormaster Chest': 'Small Key (Forest Temple)',
     'Forest Temple Red Poe Chest': 'Small Key (Forest Temple)',
     'Forest Temple Well Chest': 'Small Key (Forest Temple)',
@@ -612,15 +612,15 @@ vanillaSK = {
 
     'Bottom of the Well MQ Dead Hand Freestanding Key': 'Small Key (Bottom of the Well)',
     'Bottom of the Well MQ East Inner Room Freestanding Key': 'Small Key (Bottom of the Well)',
-    'Fire Temple MQ Big Lava Room South Goron': 'Small Key (Fire Temple)',
+    'Fire Temple MQ Big Lava Room Blocked Door': 'Small Key (Fire Temple)',
     'Fire Temple MQ Chest Near Boss': 'Small Key (Fire Temple)',
     'Fire Temple MQ Lizalfos Maze Side Room': 'Small Key (Fire Temple)',
-    'Fire Temple MQ West Tower Top Chest': 'Small Key (Fire Temple)',
+    'Fire Temple MQ Chest On Fire': 'Small Key (Fire Temple)',
     'Fire Temple MQ Freestanding Key': 'Small Key (Fire Temple)',
     'Forest Temple MQ Wolfos Chest': 'Small Key (Forest Temple)',
-    'Forest Temple MQ Entry Chest': 'Small Key (Forest Temple)',
-    'Forest Temple MQ East Courtyard Lower Chest': 'Small Key (Forest Temple)',
-    'Forest Temple MQ East Courtyard Upper Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ First Room Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ Raised Island Courtyard Lower Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ Raised Island Courtyard Upper Chest': 'Small Key (Forest Temple)',
     'Forest Temple MQ Redead Chest': 'Small Key (Forest Temple)',
     'Forest Temple MQ Well Chest': 'Small Key (Forest Temple)',
     'Ganons Castle MQ Shadow Trial Eye Switch Chest': 'Small Key (Ganons Castle)',
@@ -808,7 +808,7 @@ def get_pool_core(world):
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')
     else:
-        placed_items['KF Chest'] = 'Kokiri Sword'
+        placed_items['KF Kokiri Sword Chest'] = 'Kokiri Sword'
 
     ruto_bottles = 1
     if world.zora_fountain == 'open':
@@ -824,7 +824,7 @@ def get_pool_core(world):
     if world.shuffle_ocarinas:
         pool.extend(['Ocarina'] * 2)
     else:
-        placed_items['LW Fairy Ocarina Item'] = 'Ocarina'
+        placed_items['LW Gift from Saria'] = 'Ocarina'
         placed_items['HF Ocarina of Time Item'] = 'Ocarina'
 
     if world.shuffle_cows:
@@ -837,8 +837,8 @@ def get_pool_core(world):
         placed_items['KF Links House Cow'] = 'Milk'
         placed_items['Kak Impas House Cow'] = 'Milk'
         placed_items['GV Cow'] = 'Milk'
-        placed_items['DMT Grotto Cow'] = 'Milk'
-        placed_items['HF Grotto Cow'] = 'Milk'
+        placed_items['DMT Cow Grotto Cow'] = 'Milk'
+        placed_items['HF Cow Grotto Cow'] = 'Milk'
         if world.dungeon_mq['Jabu Jabus Belly']:
             placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
 
@@ -864,14 +864,14 @@ def get_pool_core(world):
             'Deku Tree GS Basement Back Room']
     if world.dungeon_mq['Dodongos Cavern']:
         skulltula_locations_final.extend([
-            'Dodongos Cavern GS MQ Scrub Room',
-            'Dodongos Cavern GS MQ Song of Time Block Room',
-            'Dodongos Cavern GS MQ Lizalfos Room',
-            'Dodongos Cavern GS MQ Larva Room',
-            'Dodongos Cavern GS MQ Back Area'])
+            'Dodongos Cavern MQ GS Scrub Room',
+            'Dodongos Cavern MQ GS Song of Time Block Room',
+            'Dodongos Cavern MQ GS Lizalfos Room',
+            'Dodongos Cavern MQ GS Larvae Room',
+            'Dodongos Cavern MQ GS Back Area'])
     else:
         skulltula_locations_final.extend([
-            'Dodongos Cavern GS East Side Room',
+            'Dodongos Cavern GS Side Room Near Lower Lizalfos',
             'Dodongos Cavern GS Vines Above Stairs',
             'Dodongos Cavern GS Back Room',
             'Dodongos Cavern GS Alcove Above Stairs',
@@ -892,23 +892,23 @@ def get_pool_core(world):
         skulltula_locations_final.extend([
             'Forest Temple MQ GS First Hallway',
             'Forest Temple MQ GS Block Push Room',
-            'Forest Temple MQ GS East Courtyard',
-            'Forest Temple MQ GS West Courtyard',
+            'Forest Temple MQ GS Raised Island Courtyard',
+            'Forest Temple MQ GS Level Island Courtyard',
             'Forest Temple MQ GS Well'])
     else:
         skulltula_locations_final.extend([
             'Forest Temple GS First Room',
             'Forest Temple GS Lobby',
-            'Forest Temple GS East Courtyard',
-            'Forest Temple GS West Courtyard',
+            'Forest Temple GS Raised Island Courtyard',
+            'Forest Temple GS Level Island Courtyard',
             'Forest Temple GS Basement'])
     if world.dungeon_mq['Fire Temple']:
         skulltula_locations_final.extend([
             'Fire Temple MQ GS Above Fire Wall Maze',
             'Fire Temple MQ GS Fire Wall Maze Center',
-            'Fire Temple MQ GS Big Lava Room North Goron',
+            'Fire Temple MQ GS Big Lava Room Open Door',
             'Fire Temple MQ GS Fire Wall Maze Side Room',
-            'Fire Temple MQ GS East Tower Top'])
+            'Fire Temple MQ GS Skull On Fire'])
     else:
         skulltula_locations_final.extend([
             'Fire Temple GS Song of Time Room',
@@ -919,13 +919,13 @@ def get_pool_core(world):
     if world.dungeon_mq['Water Temple']:
         skulltula_locations_final.extend([
             'Water Temple MQ GS Before Upper Water Switch',
-            'Water Temple MQ GS North Basement',
+            'Water Temple MQ GS Freestanding Key Area',
             'Water Temple MQ GS Lizalfos Hallway',
             'Water Temple MQ GS River',
-            'Water Temple MQ GS South Basement'])
+            'Water Temple MQ GS Triple Wall Torch'])
     else:
         skulltula_locations_final.extend([
-            'Water Temple GS South Basement',
+            'Water Temple GS Behind Gate',
             'Water Temple GS River',
             'Water Temple GS Falling Platform Room',
             'Water Temple GS Central Pillar',
@@ -941,7 +941,7 @@ def get_pool_core(world):
         skulltula_locations_final.extend([
             'Spirit Temple GS Metal Fence',
             'Spirit Temple GS Sun on Floor Room',
-            'Spirit Temple GS Hall to West Iron Knuckle',
+            'Spirit Temple GS Hall After Sun Block Room',
             'Spirit Temple GS Boulder Room',
             'Spirit Temple GS Lobby'])
     if world.dungeon_mq['Shadow Temple']:
@@ -1112,10 +1112,10 @@ def get_pool_core(world):
             placed_items['Dodongos Cavern MQ Deku Scrub Lobby Rear'] = 'Buy Deku Stick (1)'
             placed_items['Dodongos Cavern MQ Deku Scrub Lobby Front'] = 'Buy Deku Seeds (30)'
             placed_items['Dodongos Cavern MQ Deku Scrub Staircase'] = 'Buy Deku Shield'
-            placed_items['Dodongos Cavern MQ Deku Scrub East Side Room'] = 'Buy Red Potion [30]'
+            placed_items['Dodongos Cavern MQ Deku Scrub Side Room Near Lower Lizalfos'] = 'Buy Red Potion [30]'
         else:
             placed_items['Dodongos Cavern Deku Scrub Near Bomb Bag Left'] = 'Buy Deku Nut (5)'
-            placed_items['Dodongos Cavern Deku Scrub East Side Room'] = 'Buy Deku Stick (1)'
+            placed_items['Dodongos Cavern Deku Scrub Side Room Near Dodongos'] = 'Buy Deku Stick (1)'
             placed_items['Dodongos Cavern Deku Scrub Near Bomb Bag Right'] = 'Buy Deku Seeds (30)'
             placed_items['Dodongos Cavern Deku Scrub Lobby'] = 'Buy Deku Shield'
         if not world.dungeon_mq['Jabu Jabus Belly']:
@@ -1177,7 +1177,7 @@ def get_pool_core(world):
             bottle = random.choice(normal_bottles)
             pool.append(bottle)
         else:
-            pool.append('Rutos Letter')
+            pool.append('Ruto\'s Letter')
 
     earliest_trade = tradeitemoptions.index(world.logic_earliest_adult_trade)
     latest_trade = tradeitemoptions.index(world.logic_latest_adult_trade)
@@ -1255,7 +1255,7 @@ def get_pool_core(world):
         pending_junk_pool.extend(['Triforce Piece'] * triforce_count)
 
     if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
-        placed_items['Zelda'] = 'Boss Key (Ganons Castle)'
+        placed_items['ToT Light Arrows Cutscene'] = 'Boss Key (Ganons Castle)'
     elif world.shuffle_ganon_bosskey == 'vanilla':
         placed_items['Ganons Tower Boss Key Chest'] = 'Boss Key (Ganons Castle)'
 

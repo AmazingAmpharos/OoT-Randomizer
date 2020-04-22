@@ -345,10 +345,10 @@
     "logic_no_night_tokens_without_suns_song": false,
     "logic_lens": "chest",
     "disabled_locations": [
-      "KF Chest",
-      "KF Mido Chest Top Left",
-      "KF Mido Chest Top Right",
-      "KF Mido Chest Bottom Left"
+      "KF Kokiri Sword Chest",
+      "KF Midos Chest Top Left",
+      "KF Midos Chest Top Right",
+      "KF Midos Chest Bottom Left"
     ],
     "allowed_tricks": [
       "logic_child_rolling_with_strength",

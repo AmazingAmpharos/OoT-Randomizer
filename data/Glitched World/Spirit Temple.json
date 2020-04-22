@@ -81,7 +81,7 @@
                 and can_jumpslash",
             "Spirit Temple Statue Room Northeast Chest": "can_play(Zeldas_Lullaby) and can_jumpslash and
                 (can_use(Hookshot) or can_use(Hover_Boots) or can_mega)",
-            "Spirit Temple GS Hall to West Iron Knuckle": "can_use(Hookshot) or can_use(Boomerang) or can_hover",
+            "Spirit Temple GS Hall After Sun Block Room": "can_use(Hookshot) or can_use(Boomerang) or can_hover",
             "Spirit Temple GS Lobby": "can_use(Hookshot) or can_use(Boomerang) or can_hover
                 or can_use(Hover_Boots)"
         },
