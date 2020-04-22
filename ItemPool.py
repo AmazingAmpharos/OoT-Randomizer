@@ -867,7 +867,7 @@ def get_pool_core(world):
             'Dodongos Cavern MQ GS Scrub Room',
             'Dodongos Cavern MQ GS Song of Time Block Room',
             'Dodongos Cavern MQ GS Lizalfos Room',
-            'Dodongos Cavern MQ GS Larva Room',
+            'Dodongos Cavern MQ GS Larvae Room',
             'Dodongos Cavern MQ GS Back Area'])
     else:
         skulltula_locations_final.extend([

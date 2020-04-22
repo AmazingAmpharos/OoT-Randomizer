@@ -66,19 +66,19 @@ gossipLocations = {
     0x0409: GossipStone('ZD (Mweep)',                       'ZD Gossip Stone'),
     0x0401: GossipStone('ZF (Fairy)',                       'ZF Fairy Gossip Stone'),
     0x0402: GossipStone('ZF (Jabu)',                        'ZF Jabu Gossip Stone'),
-    0x040D: GossipStone('ZR (Near Grottoes)',               'ZR Near Grottoes Gossip Stone'),
-    0x040C: GossipStone('ZR (Near Domain)',                   'ZR Near Domain Gossip Stone'),
-    0x041B: GossipStone('HF (Cow Grotto)',                   'HF Cow Grotto Gossip Stone'),
+    0x040D: GossipStone('ZR (Near Grottos)',                'ZR Near Grottos Gossip Stone'),
+    0x040C: GossipStone('ZR (Near Domain)',                 'ZR Near Domain Gossip Stone'),
+    0x041B: GossipStone('HF (Cow Grotto)',                  'HF Cow Grotto Gossip Stone'),
 
     0x0430: GossipStone('HF (Near Market Grotto)',          'HF Near Market Grotto Gossip Stone'),
-    0x0432: GossipStone('HF (Woods Grotto)',                'HF Woods Grotto Gossip Stone'),
+    0x0432: GossipStone('HF (Southeast Grotto)',            'HF Southeast Grotto Gossip Stone'),
     0x0433: GossipStone('HF (Open Grotto)',                 'HF Open Grotto Gossip Stone'),
     0x0438: GossipStone('Kak (Open Grotto)',                'Kak Open Grotto Gossip Stone'),
     0x0439: GossipStone('ZR (Open Grotto)',                 'ZR Open Grotto Gossip Stone'),
     0x043C: GossipStone('KF (Storms Grotto)',               'KF Storms Grotto Gossip Stone'),
-    0x0444: GossipStone('LW (Near Shortcut Grotto)',        'LW Near Shortcut Grotto Gossip Stone'),
+    0x0444: GossipStone('LW (Near Shortcuts Grotto)',       'LW Near Shortcuts Grotto Gossip Stone'),
     0x0447: GossipStone('DMT (Storms Grotto)',              'DMT Storms Grotto Gossip Stone'),
-    0x044A: GossipStone('DMC (Upper Grotto)',             'DMC Upper Grotto Gossip Stone'),
+    0x044A: GossipStone('DMC (Upper Grotto)',               'DMC Upper Grotto Gossip Stone'),
 }
 
 

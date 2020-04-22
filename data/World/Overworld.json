@@ -168,7 +168,7 @@
                     here(can_plant_bean) or logic_lost_woods_bridge)",
             "Zora River": "can_leave_forest and (can_dive or can_use(Iron_Boots))",
             "LW Beyond Mido": "is_child or logic_mido_backflip or can_play(Sarias_Song)",
-            "LW Near Shortcut Grotto": "here(can_blast_or_smash)"
+            "LW Near Shortcuts Grotto": "here(can_blast_or_smash)"
         }
     },
     {
@@ -267,7 +267,7 @@
             "Kakariko Village": "True",
             "ZR Front": "True",
             "Lon Lon Ranch": "True",
-            "HF Woods Grotto": "here(can_blast_or_smash)",
+            "HF Southeast Grotto": "here(can_blast_or_smash)",
             "HF Open Grotto": "True",
             "HF Inside Fence Grotto": "can_open_bomb_grotto",
             "HF Cow Grotto": "(can_use(Megaton_Hammer) or is_child) and can_open_bomb_grotto",
@@ -850,7 +850,7 @@
             "Bottom of the Well": "
                 'Drain Well' and (is_child or shuffle_dungeon_entrances)",
             "Kak Potion Shop Front": "is_child or at_day",
-            "Kak Bombable Grotto": "can_open_bomb_grotto",
+            "Kak Redead Grotto": "can_open_bomb_grotto",
             "Kak Impas Ledge": "
                 (is_child and at_day) or (is_adult and logic_visible_collisions) or can_use(Hookshot)",
             "Kak Rooftop": "
@@ -890,7 +890,7 @@
         "hint": "Kakariko Village",
         "exits": {
             "Kakariko Village": "True",
-            "Kak Back Grotto": "True",
+            "Kak Open Grotto": "True",
             "Kak Odd Medicine Building": "is_adult",
             "Kak Potion Shop Back": "is_adult and at_day"
         }
@@ -1459,7 +1459,7 @@
             "ZR GS Ladder": "is_child and at_night and can_child_attack",
             "ZR GS Near Raised Grottos": "can_use(Hookshot) and at_night",
             "ZR GS Above Bridge": "can_use(Hookshot) and at_night",
-            "ZR Near Grottoes Gossip Stone": "True",
+            "ZR Near Grottos Gossip Stone": "True",
             "ZR Near Domain Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Bean Plant Fairy": "can_plant_bean and can_play(Song_of_Storms) and has_bottle",
@@ -1675,10 +1675,10 @@
         }
     },
     {
-        "region_name": "LW Near Shortcut Grotto",
+        "region_name": "LW Near Shortcuts Grotto",
         "locations": {
-            "LW Near Shortcut Grotto Chest": "True",
-            "LW Near Shortcut Grotto Gossip Stone": "True",
+            "LW Near Shortcuts Grotto Chest": "True",
+            "LW Near Shortcuts Grotto Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
@@ -1750,10 +1750,10 @@
         }
     },
     {
-        "region_name": "HF Woods Grotto",
+        "region_name": "HF Southeast Grotto",
         "locations": {
-            "HF Woods Grotto Chest": "True",
-            "HF Woods Grotto Gossip Stone": "True",
+            "HF Southeast Grotto Chest": "True",
+            "HF Southeast Grotto Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
             "Bug Shrub": "can_cut_shrubs and has_bottle",
@@ -1857,7 +1857,7 @@
         }
     },
     {
-        "region_name": "Kak Bombable Grotto",
+        "region_name": "Kak Redead Grotto",
         "locations": {
             "Kak Redead Grotto Chest": "
                 is_adult or 
@@ -1868,7 +1868,7 @@
         }
     },
     {
-        "region_name": "Kak Back Grotto",
+        "region_name": "Kak Open Grotto",
         "locations": {
             "Kak Open Grotto Chest": "True",
             "Kak Open Grotto Gossip Stone": "True",

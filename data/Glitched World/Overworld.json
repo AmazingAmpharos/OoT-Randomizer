@@ -130,7 +130,7 @@
             "GC Woods Warp": "True",
             "Zora River": "(can_dive or can_jumpslash) and can_leave_forest",
             "LW Beyond Mido": "True",
-            "LW Near Shortcut Grotto": "can_blast_or_smash"
+            "LW Near Shortcuts Grotto": "can_blast_or_smash"
             #//Can Exit to Woods bridge with megaflip, but walking through kokiri forest is true anyway
         }
     },
@@ -209,7 +209,7 @@
             "Kakariko Village": "True",
             "ZR Front": "True",
             "Lon Lon Ranch": "True",
-            "HF Woods Grotto": "can_blast_or_smash",
+            "HF Southeast Grotto": "can_blast_or_smash",
             "HF Open Grotto": "True",
             "HF Inside Fence Grotto": "can_blast_or_smash",
             "HF Cow Grotto": "
@@ -604,11 +604,11 @@
             "Kak Potion Shop Front": "is_adult",
             "Kak Potion Shop Back": "is_adult",
             "Kak Odd Medicine Building": "is_adult",
-            "Kak Bombable Grotto": "
+            "Kak Redead Grotto": "
                 can_blast_or_smash and 
                 (is_adult or 
                     (Sticks or Kokiri_Sword or can_use(Dins_Fire)))",
-            "Kak Back Grotto": "True",
+            "Kak Open Grotto": "True",
             "Graveyard": "True",
             "Death Mountain": "Zeldas_Letter or is_adult or can_hover"
         }
@@ -986,7 +986,7 @@
             "ZR GS Ladder": "is_child and at_night and can_child_attack",
             "ZR GS Near Raised Grottos": "is_adult and (Progressive_Hookshot or can_hover) and at_night",
             "ZR GS Above Bridge": "can_use(Hookshot) and at_night",
-            "ZR Near Grottoes Gossip Stone": "True",
+            "ZR Near Grottos Gossip Stone": "True",
             "ZR Near Domain Gossip Stone": "True"
         },
         "exits": {
@@ -1126,10 +1126,10 @@
         }
     },
     {
-        "region_name": "LW Near Shortcut Grotto",
+        "region_name": "LW Near Shortcuts Grotto",
         "locations": {
-            "LW Near Shortcut Grotto Chest": "True",
-            "LW Near Shortcut Grotto Gossip Stone": "True"
+            "LW Near Shortcuts Grotto Chest": "True",
+            "LW Near Shortcuts Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1174,10 +1174,10 @@
         }
     },
     {
-        "region_name": "HF Woods Grotto",
+        "region_name": "HF Southeast Grotto",
         "locations": {
-            "HF Woods Grotto Chest": "True",
-            "HF Woods Grotto Gossip Stone": "True"
+            "HF Southeast Grotto Chest": "True",
+            "HF Southeast Grotto Gossip Stone": "True"
         }
     },
     {
@@ -1233,13 +1233,13 @@
         }
     },
     {
-        "region_name": "Kak Bombable Grotto",
+        "region_name": "Kak Redead Grotto",
         "locations": {
             "Kak Redead Grotto Chest": "True"
         }
     },
     {
-        "region_name": "Kak Back Grotto",
+        "region_name": "Kak Open Grotto",
         "locations": {
             "Kak Open Grotto Chest": "True",
             "Kak Open Grotto Gossip Stone": "True"

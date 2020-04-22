@@ -18,7 +18,7 @@
     "wasteland chest":                                          ["Bow", "Magic Meter", "Light Arrows"],
     "colossus freestanding poh":                                ["Bow", "Magic Meter", "Light Arrows"],
     "colossus great fairy reward":                              ["Bow", "Magic Meter", "Light Arrows"],
-    "tot light arrows cutscene":                                                 ["Bow", "Magic Meter", "Light Arrows"],
+    "tot light arrows cutscene":                                ["Bow", "Magic Meter", "Light Arrows"],
     "hc malon egg":                                             ["Bow", "Magic Meter", "Light Arrows"],
     "hc great fairy reward":                                    ["Bow", "Magic Meter", "Light Arrows"],
     "ogc great fairy reward":                                   ["Bow", "Magic Meter", "Light Arrows"],
@@ -74,12 +74,12 @@
     "llr freestanding poh":                                     ["Bow", "Magic Meter", "Light Arrows"],
     "ganons tower boss key chest":                              ["Bow", "Magic Meter", "Light Arrows"],
     "kf storms grotto chest":                                   ["Bow", "Magic Meter", "Light Arrows"],
-    "lw near shortcut grotto chest":                                  ["Bow", "Magic Meter", "Light Arrows"],
+    "lw near shortcuts grotto chest":                           ["Bow", "Magic Meter", "Light Arrows"],
     "deku theater skull mask":                                  ["Bow", "Magic Meter", "Light Arrows"],
     "deku theater mask of truth":                               ["Bow", "Magic Meter", "Light Arrows"],
     "lw grotto deku scrub front":                               ["Bow", "Magic Meter", "Light Arrows"],
     "sfm wolfos grotto chest":                                  ["Bow", "Magic Meter", "Light Arrows"],
-    "hf woods grotto chest":                                ["Bow", "Magic Meter", "Light Arrows"],
+    "hf southeast grotto chest":                                ["Bow", "Magic Meter", "Light Arrows"],
     "hf open grotto chest":                                     ["Bow", "Magic Meter", "Light Arrows"],
     "hf grotto deku scrub":                                     ["Bow", "Magic Meter", "Light Arrows"],
     "hf near market grotto chest":                              ["Bow", "Magic Meter", "Light Arrows"],
@@ -87,6 +87,6 @@
     "kak redead grotto chest":                                  ["Bow", "Magic Meter", "Light Arrows"],
     "kak open grotto chest":                                    ["Bow", "Magic Meter", "Light Arrows"],
     "dmt storms grotto chest":                                  ["Bow", "Magic Meter", "Light Arrows"],
-    "dmc upper grotto chest":                                 ["Bow", "Magic Meter", "Light Arrows"]
+    "dmc upper grotto chest":                                   ["Bow", "Magic Meter", "Light Arrows"]
   }
 }

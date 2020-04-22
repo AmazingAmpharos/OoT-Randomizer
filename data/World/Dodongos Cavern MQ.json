@@ -15,13 +15,13 @@
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or can_use(Boomerang)",
             "Dodongos Cavern MQ Map Chest": "True",
             "Dodongos Cavern MQ Compass Chest": "is_adult or can_child_attack or Nuts",
-            "Dodongos Cavern MQ Larva Room Chest": "can_use(Sticks) or has_fire_source",
+            "Dodongos Cavern MQ Larvae Room Chest": "can_use(Sticks) or has_fire_source",
             "Dodongos Cavern MQ Torch Puzzle Room Chest": "
                 can_blast_or_smash or can_use(Sticks) or can_use(Dins_Fire) or 
                 (is_adult and (logic_dc_jump or Hover_Boots or Progressive_Hookshot))",
             "Dodongos Cavern MQ GS Song of Time Block Room": "
                 can_play(Song_of_Time) and (can_child_attack or is_adult)",
-            "Dodongos Cavern MQ GS Larva Room": "can_use(Sticks) or has_fire_source",
+            "Dodongos Cavern MQ GS Larvae Room": "can_use(Sticks) or has_fire_source",
             "Dodongos Cavern MQ GS Lizalfos Room": "can_blast_or_smash",
             "Dodongos Cavern MQ Deku Scrub Lobby Rear": "can_stun_deku",
             "Dodongos Cavern MQ Deku Scrub Lobby Front": "can_stun_deku",
