@@ -250,7 +250,7 @@
             "Hyrule Field": "True",
             "Zoras Domain": "True",
             "LH Lab": "True",
-            "Fishing Hole": "
+            "LH Fishing Hole": "
                 is_child or can_use(Scarecrow) or here(can_plant_bean) or 'Water Temple Clear' or can_isg",
             "Water Temple Lobby": "True",
             "LH Grotto": "can_stun_deku"
@@ -266,7 +266,7 @@
         }
     },
     {
-        "region_name": "Fishing Hole",
+        "region_name": "LH Fishing Hole",
         "time_passes": true,
         "locations": {
             "LH Child Fishing": "is_child",

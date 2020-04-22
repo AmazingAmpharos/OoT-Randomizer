@@ -313,7 +313,7 @@
             "Zoras Domain": "is_child and can_dive",
             "LH Owl Flight": "is_child",
             "LH Lab": "True",
-            "Fishing Hole": "
+            "LH Fishing Hole": "
                 is_child or can_use(Scarecrow) or
                 here(can_plant_bean) or 'Water Temple Clear'",
             "Water Temple Lobby": "
@@ -348,7 +348,7 @@
         }
     },
     {
-        "region_name": "Fishing Hole",
+        "region_name": "LH Fishing Hole",
         "locations": {
             "LH Child Fishing": "is_child",
             "LH Adult Fishing": "is_adult"
@@ -424,12 +424,12 @@
             "Gerudo Valley": "
                 is_child or can_ride_epona or can_use(Longshot) or
                 gerudo_fortress == 'open' or 'Carpenter Rescue'",
-            "Carpenter Tent": "is_adult", # Invisible as child so not in logic
+            "GV Carpenter Tent": "is_adult", # Invisible as child so not in logic
             "GV Storms Grotto": "is_adult and can_open_storm_grotto" # Not there as child
         }
     },
     {
-        "region_name": "Carpenter Tent",
+        "region_name": "GV Carpenter Tent",
         "exits": {
             "GV Fortress Side": "True"
         }
