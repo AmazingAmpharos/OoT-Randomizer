@@ -167,7 +167,10 @@ class SaveContext():
 
         for ammo, (upgrade, maxes) in ammo_maxes.items():
             upgrade_count = self.addresses['upgrades'][upgrade].get_value()
-            ammo_max = maxes[upgrade_count]
+            try:
+                ammo_max = maxes[upgrade_count]
+            except IndexError:
+                ammo_max = maxes[-1]
             if ammo == 'rupees':
                 self.addresses[ammo].max = ammo_max
             else:
@@ -223,6 +226,8 @@ class SaveContext():
             self.give_health(count / 4)
         elif item == "Heart Container":
             self.give_health(count)
+        elif item == "Bombchu Item":
+            self.give_bombchu_item()
         elif item in SaveContext.save_writes_table:
             for address, value in SaveContext.save_writes_table[item].items():
                 if value is None:
@@ -244,7 +249,7 @@ class SaveContext():
                     address_value = address_value[sub_address]
                     prev_sub_address = sub_address
                 if not isinstance(address_value, Address):
-                    raise ValueError('%s does not resolve to an Adress in SaveContext' % (sub_address))
+                    raise ValueError('%s does not resolve to an Address in SaveContext' % (sub_address))
 
                 if isinstance(value, int) and value < address_value.get_value():
                     continue
@@ -252,6 +257,10 @@ class SaveContext():
                 address_value.value = value
         else:
             raise ValueError("Cannot give unknown starting item %s" % item)
+
+
+    def give_bombchu_item(self):
+        self.give_item("Bombchus", 0)
 
 
     def equip_default_items(self, age):
@@ -286,7 +295,7 @@ class SaveContext():
                     item_value = self.addresses['equip_items'][item].get_value_raw()
                     self.addresses[equip_type]['equips'][equip_item].set_value_raw(item_value)
                     if equip_item == 'tunic':
-                        self.addresses[equip_type]['equips'][equip_item].value = 0
+                        self.addresses[equip_type]['equips'][equip_item].value = 1
                     if equip_item == 'sword':
                         self.addresses[equip_type]['button_items']['b'].value = item
                     break

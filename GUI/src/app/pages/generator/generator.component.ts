@@ -207,8 +207,32 @@ export class GeneratorComponent implements OnInit {
 
       this.global.generateSeedWeb(webRaceSeed, this.seedString.length > 0 ? this.seedString : "").then(seedID => {
 
-        //Save last seed id in browser cache
-        localStorage.setItem("lastSeed", seedID);
+        try {
+          //Save last seed id in browser cache
+          localStorage.setItem("lastSeed", seedID);
+
+          //Save up to 10 seed ids in a sliding array in browser cache
+          let seedHistory = localStorage.getItem("seedHistory");
+
+          if (seedHistory == null || seedHistory.length < 1) { //First entry
+            localStorage.setItem("seedHistory", JSON.stringify([seedID]));
+          }
+          else { //Update array (10 entries max)
+            let seedHistoryArray = JSON.parse(seedHistory);
+
+            if (seedHistoryArray && typeof (seedHistoryArray) == "object" && Array.isArray(seedHistoryArray)) {
+
+              if (seedHistoryArray.length > 9) {
+                seedHistoryArray.shift();
+              }
+
+              seedHistoryArray.push(seedID);
+              localStorage.setItem("seedHistory", JSON.stringify(seedHistoryArray));
+            }
+          }
+        } catch (e) {
+          //Browser doesn't allow localStorage access
+        }
 
         //Re-direct to seed (waiting) page
         let seedURL = (<any>window).location.protocol + "//" + (<any>window).location.host + "/seed/get?id=" + seedID;
@@ -347,7 +371,10 @@ export class GeneratorComponent implements OnInit {
   }
 
   getPresetArray() {
-    return Object.keys(this.global.generator_presets);
+    if (typeof (this.global.generator_presets) == "object")
+      return Object.keys(this.global.generator_presets);
+    else
+      return [];
   }
 
   loadPreset() {

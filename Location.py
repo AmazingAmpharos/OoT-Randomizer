@@ -24,6 +24,8 @@ class Location(object):
         self.minor_only = False
         self.world = None
         self.disabled = DisableType.ENABLED
+        self.always = False
+        self.never = False
         if filter_tags is None:
             self.filter_tags = None
         else:
@@ -43,11 +45,19 @@ class Location(object):
         new_location.internal = self.internal
         new_location.minor_only = self.minor_only
         new_location.disabled = self.disabled
+        new_location.always = self.always
+        new_location.never = self.never
 
         return new_location
 
 
     def add_rule(self, lambda_rule):
+        if self.always:
+            self.set_rule(lambda_rule)
+            self.always = False
+            return
+        if self.never:
+            return
         self.access_rules.append(lambda_rule)
         self.access_rule = lambda state, **kwargs: all(rule(state, **kwargs) for rule in self.access_rules)
 
@@ -113,11 +123,15 @@ def LocationFactory(locations, world=None):
         singleton = True
     for location in locations:
         if location in location_table:
-            type, scene, default, addresses, filter_tags = location_table[location]
+            match_location = location
+        else:
+            match_location = next(filter(lambda k: k.lower() == location.lower(), location_table), None)
+        if match_location:
+            type, scene, default, addresses, filter_tags = location_table[match_location]
             if addresses is None:
                 addresses = (None, None)
             address, address2 = addresses
-            ret.append(Location(location, address, address2, default, type, scene, filter_tags=filter_tags))
+            ret.append(Location(match_location, address, address2, default, type, scene, filter_tags=filter_tags))
         else:
             raise KeyError('Unknown Location: %s', location)
 

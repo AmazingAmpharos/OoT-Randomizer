@@ -17,7 +17,11 @@ uint8_t get_chest_override_size(z64_actor_t *actor) {
 		return ((uint8_t*)actor)[0x01E9]; // Chest type
 	}
 
-	item_row_t *item_row = get_item_row(override.value.item_id);
+	item_row_t *item_row = get_item_row(override.value.looks_like_item_id);
+	if (item_row == NULL) {
+	    item_row = get_item_row(override.value.item_id);
+    }
+
 	if (item_row->chest_type & 0x01) {
 		// Small chest
 		return 5;
@@ -44,8 +48,12 @@ uint8_t get_chest_override_color(z64_actor_t *actor) {
 		return ((uint8_t*)actor)[0x01E9]; // Chest type
 	}
 
-	item_row_t *item_row = get_item_row(override.value.item_id);
-	if (item_row->chest_type & 0x02) {
+	item_row_t *item_row = get_item_row(override.value.looks_like_item_id);
+	if (item_row == NULL) {
+	    item_row = get_item_row(override.value.item_id);
+    }
+
+    if (item_row->chest_type & 0x02) {
 		// Gold chest
 		return 2;
 	}

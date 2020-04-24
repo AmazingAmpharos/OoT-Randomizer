@@ -1,6 +1,12 @@
 .n64
 .relativeinclude on
 
+// version guard, prevent people from building with older armips versions
+.if (version() < 101)
+.notice version()
+.error   "Detected armips build is too old. Please install https://github.com/Kingcom/armips from HEAD, then locally remove this notice, or increase the ARMIPS_VERSION_REVISION in armips and rebuild to bypass this notice."
+.endif
+
 .create "../roms/patched.z64", 0
 .incbin "../roms/base.z64"
 .include "macros.asm"
@@ -64,7 +70,7 @@ RANDO_CONTEXT:
 .include "dpad.asm"
 .include "chests.asm"
 .include "bunny_hood.asm"
-.include "magic_color.asm"
+.include "colors.asm"
 .include "debug.asm"
 .include "extended_objects.asm"
 .include "cow.asm"
@@ -79,6 +85,8 @@ RANDO_CONTEXT:
 .include "king_zora.asm"
 .include "agony.asm"
 .include "horseback_archery.asm"
+
+.align 0x10
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:

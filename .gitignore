@@ -2,15 +2,18 @@
 /.vs
 /.vscode
 /.idea
+/ASM/build/bin
 /Output
 /build
 /dist
 /Logs
-/__pychache__
+/testlogs
+/__pycache__
 ARCHIVE.bin
 
 *.[nz]64
 *.[nz]64.bak
+*.prof
 *.pyc
 *.pyo
 *.sav
@@ -22,3 +25,5 @@ tests/Output
 
 # In order to keep this file tidy, please add any personal conventions to your
 # global git configuration.
+/ASM/build/bundle_r.txt
+/ASM/build/bundle_d.txt

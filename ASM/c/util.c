@@ -1,10 +1,10 @@
 #include "util.h"
 
-extern char C_HEAP;
-char *heap_next = NULL;
+extern char C_HEAP[];
+void *heap_next = NULL;
 
 void heap_init() {
-    heap_next = &C_HEAP;
+    heap_next = &C_HEAP[0];
 }
 
 void *heap_alloc(int bytes) {
@@ -12,7 +12,7 @@ void *heap_alloc(int bytes) {
     if (rem) bytes += 16 - rem;
 
     void *result = heap_next;
-    heap_next += bytes;
+    heap_next = (char*)heap_next + bytes;
     return result;
 }
 

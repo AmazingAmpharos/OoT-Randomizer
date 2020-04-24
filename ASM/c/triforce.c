@@ -73,7 +73,8 @@ void draw_triforce_count(z64_disp_buf_t *db) {
     int draw_y_triforce = Z64_SCREEN_HEIGHT - (triforce_sprite.tile_h * 1.5) + 3 + 1;
 
     // Create collected/required string
-    char text[str_len];
+    char text[str_len + 1];
+    text[str_len] = 0;
     pieces_copy = pieces;
     for(int i = pieces_digits - 1; i >= 0; i--) {
         text[i] = (pieces_copy % 10) + '0';

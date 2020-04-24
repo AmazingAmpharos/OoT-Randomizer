@@ -66,7 +66,7 @@ class Sounds(Enum):
     CHILD_HURT         = Sound(0x6825, 'child-hurt',            'Child Hurt',                [Tags.PAINFUL])
     CHILD_OWO          = Sound(0x6823, 'child-owo',             'Child owo',                 [Tags.PAINFUL])
     CHILD_PANT         = Sound(0x6829, 'child-pant',            'Child Pant',                [Tags.IMMEDIATE])
-    CHILD_SCREAM       = Sound(0x6828, 'child-scream',          'Child Scream',              [Tags.PAINFUL, Tags.IMMEDIATE, Tags.MENUMOVE, Tags.HORSE])
+    CHILD_SCREAM       = Sound(0x6828, 'child-scream',          'Child Scream',              [Tags.PAINFUL, Tags.IMMEDIATE, Tags.MENUSELECT, Tags.HORSE])
     CUCCO_CLUCK        = Sound(0x2812, 'cluck',                 'Cluck',                     [Tags.BRIEF, Tags.NAVI, Tags.HPLOW])
     CUCCO_CROW         = Sound(0x2813, 'cockadoodledoo',        'Cockadoodledoo',            [Tags.PAINFUL, Tags.NAVI, Tags.NIGHTFALL])
     CURSED_ATTACK      = Sound(0x6868, 'cursed-attack',         'Cursed Attack',             [Tags.PAINFUL, Tags.IMMEDIATE])
@@ -169,10 +169,10 @@ class SoundHooks(Enum):
     HP_LOW          = SoundHook('Low Health',       hp_low,      [0xADBA1A])
     BOOTS_HOVER     = SoundHook('Hover Boots',      hover_boots, [0xBDBD8A])
     NIGHTFALL       = SoundHook('Nightfall',        nightfall,   [0xAD3466, 0xAD7A2E])
-    MENU_SELECT     = SoundHook('Menu Select',      no_painful,  [
+    MENU_SELECT     = SoundHook('Menu Select',      no_painful + menu_select,  [
                         0xBA1BBE, 0xBA23CE, 0xBA2956, 0xBA321A, 0xBA72F6, 0xBA8106, 0xBA82EE,
                         0xBA9DAE, 0xBA9EAE, 0xBA9FD2, 0xBAE6D6])
-    MENU_CURSOR     = SoundHook('Menu Cursor',      no_painful,  [
+    MENU_CURSOR     = SoundHook('Menu Cursor',      no_painful + menu_cursor,  [
                         0xBA165E, 0xBA1C1A, 0xBA2406, 0xBA327E, 0xBA3936, 0xBA77C2, 0xBA7886,
                         0xBA7A06, 0xBA7A6E, 0xBA7AE6, 0xBA7D6A, 0xBA8186, 0xBA822E, 0xBA82A2,
                         0xBAA11E, 0xBAE7C6])
@@ -200,7 +200,7 @@ def get_hook_pool(sound_hook, earsafeonly = "FALSE"):
 
 def get_setting_choices(sound_hook):
     pool     = sound_hook.value.pool
-    choices  = {s.value.keyword: s.value.label for s in pool}
+    choices  = {s.value.keyword: s.value.label for s in sorted(pool, key=lambda s: s.value.label)}
     result   = {
         'default':           'Default',
         'completely-random': 'Completely Random',

@@ -7,6 +7,7 @@ from Entrance import Entrance
 from HintList import getRequiredHints
 from Hints import get_hint_area
 from Item import Item, ItemFactory, MakeEventItem
+from ItemList import item_table
 from Location import Location, LocationFactory
 from LocationList import business_scrubs
 from Region import Region, TimeOfDay
@@ -24,7 +25,6 @@ class World(object):
         self.dungeons = []
         self.regions = []
         self.itempool = []
-        self.state = State(self)
         self._cached_locations = None
         self._entrance_cache = {}
         self._region_cache = {}
@@ -104,6 +104,21 @@ class World(object):
         self.resolve_random_settings()
 
         self.always_hints = [hint.name for hint in getRequiredHints(self)]
+        self.state = State(self)
+
+        # Allows us to cut down on checking whether some items are required
+        self.max_progressions = {
+                item: value[3].get('progressive', 1) if value[3] else 1
+                for item, value in item_table.items()
+        }
+        max_tokens = 0
+        if self.bridge == 'tokens':
+            max_tokens = self.bridge_tokens
+        tokens = [50, 40, 30, 20, 10]
+        for t in tokens:
+            if t > max_tokens and f'{t} Gold Skulltula Reward' not in self.disabled_locations:
+                max_tokens = t
+        self.max_progressions['Gold Skulltula Token'] = max_tokens
 
 
     def copy(self):
@@ -135,6 +150,7 @@ class World(object):
             setattr(new_world, randomized_item, getattr(self, randomized_item))
 
         new_world.always_hints = list(self.always_hints)
+        new_world.max_progressions = copy.copy(self.max_progressions)
 
         return new_world
 
@@ -217,6 +233,9 @@ class World(object):
                     new_location.rule_string = rule
                     if self.logic_rules != 'none':
                         self.parser.parse_spot_rule(new_location)
+                    if new_location.never:
+                        # We still need to fill the location even if ALR is off.
+                        logging.getLogger('').debug('Unreachable location: %s', new_location.name)
                     new_location.world = self
                     new_region.locations.append(new_location)
             if 'events' in region:
@@ -227,9 +246,12 @@ class World(object):
                     new_location.rule_string = rule
                     if self.logic_rules != 'none':
                         self.parser.parse_spot_rule(new_location)
-                    new_location.world = self
-                    new_region.locations.append(new_location)
-                    MakeEventItem(event, new_location)
+                    if new_location.never:
+                        logging.getLogger('').debug('Dropping unreachable event: %s', new_location.name)
+                    else:
+                        new_location.world = self
+                        new_region.locations.append(new_location)
+                        MakeEventItem(event, new_location)
             if 'exits' in region:
                 for exit, rule in region['exits'].items():
                     new_exit = Entrance('%s -> %s' % (new_region.name, exit), new_region)
@@ -237,7 +259,10 @@ class World(object):
                     new_exit.rule_string = rule
                     if self.logic_rules != 'none':
                         self.parser.parse_spot_rule(new_exit)
-                    new_region.exits.append(new_exit)
+                    if new_exit.never:
+                        logging.getLogger('').debug('Dropping unreachable exit: %s', new_exit.name)
+                    else:
+                        new_region.exits.append(new_exit)
             self.regions.append(new_region)
 
 

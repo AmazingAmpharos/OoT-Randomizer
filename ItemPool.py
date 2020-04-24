@@ -1,6 +1,7 @@
 from collections import namedtuple
 import logging
 import random
+from itertools import chain
 from Utils import random_choices
 from Item import ItemFactory
 from ItemList import item_table
@@ -701,7 +702,7 @@ item_groups = {
 }
 
 
-def get_junk_item(count=1):
+def get_junk_item(count=1, pool=None, plando_pool=None):
     if count < 1:
         raise ValueError("get_junk_item argument 'count' must be greater than 0.")
 
@@ -711,7 +712,15 @@ def get_junk_item(count=1):
         return_pool = [pending_junk_pool.pop() for _ in range(pending_count)]
         count -= pending_count
 
-    junk_items, junk_weights = zip(*junk_pool)
+    if pool and plando_pool:
+        jw_list = [(junk, weight) for (junk, weight) in junk_pool
+                   if junk not in plando_pool or pool.count(junk) < plando_pool[junk].count]
+        try:
+            junk_items, junk_weights = zip(*jw_list)
+        except ValueError:
+            raise RuntimeError("Not enough junk is available in the item pool to replace removed items.")
+    else:
+        junk_items, junk_weights = zip(*junk_pool)
     return_pool.extend(random_choices(junk_items, weights=junk_weights, k=count))
 
     return return_pool
@@ -756,6 +765,42 @@ def generate_itempool(world):
     world.distribution.set_complete_itempool(world.itempool)
 
 
+def try_collect_heart_container(world, pool):
+    if 'Heart Container' in pool:
+        pool.remove('Heart Container')
+        pool.extend(get_junk_item())
+        world.state.collect(ItemFactory('Heart Container'))
+        return True
+    return False
+
+
+def try_collect_pieces_of_heart(world, pool):
+    n = pool.count('Piece of Heart') + pool.count('Piece of Heart (Treasure Chest Game)')
+    if n >= 4:
+        for i in range(4):
+            if 'Piece of Heart' in pool:
+                pool.remove('Piece of Heart')
+                world.state.collect(ItemFactory('Piece of Heart'))
+            else:
+                pool.remove('Piece of Heart (Treasure Chest Game)')
+                world.state.collect(ItemFactory('Piece of Heart (Treasure Chest Game)'))
+            pool.extend(get_junk_item())
+        return True
+    return False
+
+
+def collect_pieces_of_heart(world, pool):
+    success = try_collect_pieces_of_heart(world, pool)
+    if not success:
+        try_collect_heart_container(world, pool)
+
+
+def collect_heart_container(world, pool):
+    success = try_collect_heart_container(world, pool)
+    if not success:
+        try_collect_pieces_of_heart(world, pool)
+
+
 def get_pool_core(world):
     pool = []
     placed_items = {}
@@ -798,7 +843,10 @@ def get_pool_core(world):
             placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
 
     if world.shuffle_beans:
-        pool.append('Magic Bean Pack')
+        if world.distribution.get_starting_item('Magic Bean') < 10:
+            pool.append('Magic Bean Pack')
+        else:
+            pool.extend(get_junk_item())
     else:
         placed_items['Magic Bean Salesman'] = 'Magic Bean'
 
@@ -1203,8 +1251,8 @@ def get_pool_core(world):
         world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
     if world.triforce_hunt:
-        trifroce_count = int(world.triforce_goal_per_world * TriforceCounts[world.item_pool_value])
-        pending_junk_pool.extend(['Triforce Piece'] * trifroce_count)
+        triforce_count = int(round(world.triforce_goal_per_world * TriforceCounts[world.item_pool_value]))
+        pending_junk_pool.extend(['Triforce Piece'] * triforce_count)
 
     if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
         placed_items['Zelda'] = 'Boss Key (Ganons Castle)'
@@ -1245,7 +1293,7 @@ def get_pool_core(world):
 
     world.distribution.alter_pool(world, pool)
 
-    world.distribution.configure_stating_items_settings(world)
+    world.distribution.configure_starting_items_settings(world)
     world.distribution.collect_starters(world.state)
 
     return (pool, placed_items)
