@@ -28,7 +28,6 @@
 00DE1020 .byt:0020
 00DF2647 .byt:0001
 00E11EAC @@return
-00E1F750 @medigoron_check_2nd_part
 00E1F794 @medigoron_check_return
 00E2B43C .byt:0028
 00E2CC50 @skip_eyedrops_dialog
@@ -468,9 +467,10 @@
 80402A98 .byt:0001
 80402A98 SHUFFLE_MEDIGORON
 80402A9C medigoron_inital_check
-80402ADC @@return
-80402AE4 medigoron_buy_item_hook
-80402B04 @@return
+80402AB8 @@child
+80402AE0 @@return
+80402AE8 medigoron_buy_item_hook
+80402B08 @@return
 80402B10 agony_inside_radius_setup,00000008
 80402B18 agony_outside_radius_setup,0000002C
 80402B44 agony_vibrate_setup,00000034

@@ -1606,15 +1606,14 @@ skip_GS_BGS_text:
 ; @medigoron_check_2nd_part:
 .orga 0xE1F72C
     addiu   sp, sp, -0x18
-    jal     medigoron_inital_check
     sw      ra, 0x14(sp)
+    jal     medigoron_inital_check
+    nop
     lw      ra, 0x14(sp)
-    bnez    v0, @medigoron_check_return
     addiu   sp, sp, 0x18
-    beq     t6, zero, @medigoron_check_2nd_part
-    addiu   v0, zero, 0x0011
-    addiu   v0, zero, 0x0005
-@medigoron_check_2nd_part:
+    slti    at, v0, 5
+    bnez    at, @medigoron_check_return
+    nop
 
 .orga 0xE1F794
 @medigoron_check_return:

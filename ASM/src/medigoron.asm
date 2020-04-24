@@ -10,12 +10,13 @@ medigoron_inital_check:
     addiu   v1, v1, 0xA5D0
     lw      t6, 0x0004(v1)      ; current age
     addiu   at, zero, 0x0005
+    bnez    t6, @@child
+    addiu   v0, zero, 0x0005    ; child default value for v0
+    addiu   v0, zero, 0x0011    ; adult default value for v0
+@@child:
 
     lb      t0, SHUFFLE_MEDIGORON
     beqz    t0, @@return        ; skip if the salesman isn't randomized
-    li      v0, 0               ; returning with v0 = 0 by default to continue with normal checks
-
-    bnez    t6, @@return        ; skip as child to continue with the normal child behavior
 
     la      t1, GLOBAL_CONTEXT
     lw      t0, 0x1D44(t1)      ; load scene collectible flags (Goron City)
