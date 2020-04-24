@@ -6,8 +6,9 @@ CHAIN_HBA_REWARDS:
 ; Should return: v0 = return value of 0x80022AD0 / v1 = routine function to run during the next actor update
 handle_hba_rewards_chain:
     addiu   sp, sp, -0x18
-    jal     0x80022AD0          ; displaced call
     sw      ra, 0x14(sp)
+    jal     0x80022AD0          ; displaced call
+    nop
     lw      ra, 0x14(sp)
     addiu   sp, sp, 0x18
 
