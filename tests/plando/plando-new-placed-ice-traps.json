@@ -1,0 +1,9 @@
+{
+  "item_pool": {
+    "Ice Trap": 1
+  },
+  "locations": {
+    "Gerudo Valley Crate Freestanding PoH":                  "Ice Trap",
+    "Gerudo Valley Hammer Rocks Chest":                      "Ice Trap"
+  }
+}

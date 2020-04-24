@@ -1,0 +1,9 @@
+{
+  "locations": {
+    "Phantom Ganon":  ["Light Medallion", "Forest Medallion", "Fire Medallion", "Water Medallion", "Shadow Medallion", "Spirit Medallion"],
+    "Volvagia":       ["Light Medallion", "Forest Medallion", "Fire Medallion", "Water Medallion", "Shadow Medallion", "Spirit Medallion"],
+    "Morpha":         ["Light Medallion", "Forest Medallion", "Fire Medallion", "Water Medallion", "Shadow Medallion", "Spirit Medallion"],
+    "Bongo Bongo":    ["Light Medallion", "Forest Medallion", "Fire Medallion", "Water Medallion", "Shadow Medallion", "Spirit Medallion"],
+    "Twinrova":       ["Light Medallion", "Forest Medallion", "Fire Medallion", "Water Medallion", "Shadow Medallion", "Spirit Medallion"]
+  }
+}

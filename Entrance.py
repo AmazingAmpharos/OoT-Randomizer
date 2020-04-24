@@ -17,6 +17,8 @@ class Entrance(object):
         self.shuffled = False
         self.data = None
         self.primary = False
+        self.always = False
+        self.never = False
 
 
     def copy(self, new_region):
@@ -31,11 +33,19 @@ class Entrance(object):
         new_entrance.shuffled = self.shuffled
         new_entrance.data = self.data
         new_entrance.primary = self.primary
+        new_entrance.always = self.always
+        new_entrance.never = self.never
 
         return new_entrance
 
 
     def add_rule(self, lambda_rule):
+        if self.always:
+            self.set_rule(lambda_rule)
+            self.always = False
+            return
+        if self.never:
+            return
         self.access_rules.append(lambda_rule)
         self.access_rule = lambda state, **kwargs: all(rule(state, **kwargs) for rule in self.access_rules)
 

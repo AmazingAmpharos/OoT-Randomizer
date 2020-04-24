@@ -268,7 +268,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     def visit_BoolOp(self, node):
         # Everything else must be visited, then can be removed/reduced to.
         early_return = isinstance(node.op, ast.Or)
-        groupable = 'has_any_if' if early_return else 'has_all_of'
+        groupable = 'has_any_of' if early_return else 'has_all_of'
         items = set()
         new_values = []
         # if any elt is True(And)/False(Or), we can omit it
@@ -365,11 +365,18 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
             self.current_spot = event
             # This could, in theory, create further subrules.
-            event.access_rule = self.make_access_rule(self.visit(node))
-            event.set_rule(event.access_rule)
-            region.locations.append(event)
+            access_rule = self.make_access_rule(self.visit(node))
+            if access_rule is self.rule_cache.get('NameConstant(False)'):
+                event.access_rule = None
+                event.never = True
+                logging.getLogger('').debug('Dropping unreachable delayed event: %s', event.name)
+            else:
+                if access_rule is self.rule_cache.get('NameConstant(True)'):
+                    event.always = True
+                event.set_rule(access_rule)
+                region.locations.append(event)
 
-            MakeEventItem(subrule_name, event)
+                MakeEventItem(subrule_name, event)
         # Safeguard in case this is called multiple times per world
         self.delayed_rules.clear()
 
@@ -455,5 +462,9 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     def parse_spot_rule(self, spot):
         rule = spot.rule_string.split('#', 1)[0].strip()
 
-        spot.access_rule = self.parse_rule(rule, spot)
-        spot.set_rule(spot.access_rule)
+        access_rule = self.parse_rule(rule, spot)
+        spot.set_rule(access_rule)
+        if access_rule is self.rule_cache.get('NameConstant(False)'):
+            spot.never = True
+        elif access_rule is self.rule_cache.get('NameConstant(True)'):
+            spot.always = True

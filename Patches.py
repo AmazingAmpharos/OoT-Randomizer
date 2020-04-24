@@ -3,6 +3,7 @@ import struct
 import itertools
 import re
 import zlib
+from collections import defaultdict
 
 from World import World
 from Rom import Rom
@@ -18,6 +19,7 @@ from Messages import read_messages, update_message_by_id, read_shop_items, \
 from OcarinaSongs import replace_songs
 from MQ import patch_files, File, update_dmadata, insert_space, add_relocations
 from SaveContext import SaveContext
+import StartingItems
 
 
 def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
@@ -159,8 +161,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # songs as items flag
     songs_as_items = world.shuffle_song_items or \
-                     world.start_with_fast_travel or \
-                     world.distribution.song_as_items
+                     world.distribution.song_as_items or \
+                     world.starting_songs
 
     # Speed learning Zelda's Lullaby
     rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001]) # Terminator Execution

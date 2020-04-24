@@ -2,15 +2,13 @@
 import argparse
 import os
 import logging
-import random
 import textwrap
-import sys
 import time
 import datetime
 
 from Gui import guiMain
 from Main import main, from_patch_file, cosmetic_patch
-from Utils import is_bundled, close_console, check_version, VersionError, check_python_version, local_path
+from Utils import check_version, VersionError, check_python_version, local_path
 from Settings import get_settings_from_command_line_args
 
 
@@ -23,15 +21,6 @@ class ArgumentDefaultsHelpFormatter(argparse.RawTextHelpFormatter):
 def start():
 
     settings, gui, args_loglevel, no_log_file = get_settings_from_command_line_args()
-
-    if is_bundled() and len(sys.argv) == 1:
-        # for the bundled builds, if we have no arguments, the user
-        # probably wants the gui. Users of the bundled build who want the command line
-        # interface shouuld specify at least one option, possibly setting a value to a
-        # default if they like all the defaults
-        close_console()
-        guiMain()
-        sys.exit(0)
 
     # set up logger
     loglevel = {'error': logging.ERROR, 'info': logging.INFO, 'warning': logging.WARNING, 'debug': logging.DEBUG}[args_loglevel]
@@ -52,7 +41,7 @@ def start():
 
     if not settings.check_version:
         try:
-            version_error = check_version(settings.checked_version)
+            check_version(settings.checked_version)
         except VersionError as e:
             logger.warning(str(e))
 

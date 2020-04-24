@@ -3,7 +3,7 @@ from collections import defaultdict
 import itertools
 
 from Region import TimeOfDay
-
+from State import State
 
 class Search(object):
 
@@ -163,12 +163,18 @@ class Search(object):
             # and check if they can be reached. Collect them.
             had_reachable_locations = False
             for loc in item_locations:
-                if (loc not in visited_locations
-                    # Check adult first; it's the most likely.
-                    and (loc.parent_region in adult_regions
-                         and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='adult')
-                         or (loc.parent_region in child_regions
-                             and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='child')))):
+                if loc in visited_locations:
+                    continue
+                # Check adult first; it's the most likely.
+                if (loc.parent_region in adult_regions
+                        and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='adult')):
+                    had_reachable_locations = True
+                    # Mark it visited for this algorithm
+                    visited_locations.add(loc)
+                    yield loc
+
+                elif (loc.parent_region in child_regions
+                      and loc.access_rule(self.state_list[loc.world.id], spot=loc, age='child')):
                     had_reachable_locations = True
                     # Mark it visited for this algorithm
                     visited_locations.add(loc)
@@ -210,16 +216,8 @@ class Search(object):
     # or just a function(state_list)
     def can_beat_game(self, scan_for_items=True):
 
-        # This currently assumed all worlds have the same win condition.
-        # This might not be true in the future
-        def won(state):
-            if state.world.triforce_hunt:
-                return state.has('Triforce Piece', state.world.triforce_count)
-            else:
-                return state.has('Triforce')
-
         # Check if already beaten
-        if all(map(won, self.state_list)):
+        if all(map(State.won, self.state_list)):
             return True
 
         if scan_for_items:
@@ -228,7 +226,7 @@ class Search(object):
             search = self.copy()
             search.collect_locations()
             # if every state got the Triforce, then return True
-            return all(map(won, search.state_list))
+            return all(map(State.won, search.state_list))
         else:
             return False
 

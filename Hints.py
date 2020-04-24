@@ -720,16 +720,23 @@ def buildGanonText(world, messages):
     update_message_by_id(messages, 0x70CB, text)
 
     # light arrow hint or validation chest item
-    text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
     if world.distribution.get_starting_item('Light Arrows') > 0:
+        text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
         text += "\x05\x42your pocket\x05\x40"
-    else:
+    elif world.light_arrow_location:
+        text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
         location = world.light_arrow_location
         location_hint = get_hint_area(location).replace('Ganon\'s Castle', 'my castle')
         if world.id != location.world.id:
             text += "\x05\x42Player %d's\x05\x40 %s" % (location.world.id +1, get_raw_text(location_hint))
         else:
             text += get_raw_text(location_hint)
+    else:
+        text = get_raw_text(getHint('Validation Line', world.clearer_hints).text)
+        for location in world.get_filled_locations():
+            if location.name == 'Ganons Tower Boss Key Chest':
+                text += get_raw_text(getHint(getItemGenericName(location.item), world.clearer_hints).text)
+                break
     text += '!'
 
     update_message_by_id(messages, 0x70CC, text)

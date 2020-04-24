@@ -319,6 +319,15 @@ async function runAngularDevServer() {
     }   
 }
 
+async function generateWebTestSettingsMap() {
+
+    console.log("Generating settings map...");
+
+    await spawnChildSubProcess("node", ["index.js"], true, false, "pipe", "webTest/settingsParser").catch(err => { throw Error("Failed to launch settings parser"); });
+
+    console.log("Settings map generated");
+}
+
 async function runWebTestServer() {
  
     console.log("Running Web Server...");
@@ -519,6 +528,9 @@ async function main(commandLine) {
     if (webMode) { //Web mode
         if (!fs.existsSync("webTest/node_modules") || forceRecompile)
             await setupWebTestNodeEnvironment();
+
+        //Generate settings map
+        await generateWebTestSettingsMap();
 
         //Spawn web server
         await runWebTestServer();
