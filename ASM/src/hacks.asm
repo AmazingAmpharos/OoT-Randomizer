@@ -1579,27 +1579,22 @@ skip_GS_BGS_text:
 ;==================================================================================================
 ; Make Twinrova Wait For Link
 ;==================================================================================================
-
 ;Hook into twinrova update function and check for links height
-; Replaces: 
-;           sw      s2, 0x44(sp)
+; Replaces: sw      s2, 0x44(sp)
 ;           sw      s0, 0x3C(sp)
-
 .orga 0xD68D68
     jal     rova_check_pos
     sw      s2, 0x44(sp)
 
 ;If the height check hasnt been met yet, branch to the end of the update function
 ;This freezes twinrova until the condition is met
-; Replaces: 
-;           sdc1    f24, 0x30(sp)
+; Replaces: sdc1    f24, 0x30(sp)
 ;           lw      s2, 0x1C44(s3)
 ;           addiu   t6, r0, 0x03
 ;           sb      t6, 0x05B0(s1)
 ;           lbu     t7, 0x07AF(s3)
 ;           mfc1    a2, f22
 ;           mfc1    a3, f20
-
 .orga 0xD68D70
     la      t1, START_TWINROVA_FIGHT
     lb      t1, 0x00(t1)
@@ -1607,14 +1602,11 @@ skip_GS_BGS_text:
     lw      ra, 0x4C(sp)
     jal     twinrova_displaced
     sdc1    f24, 0x30(sp)
-
 .orga 0xD69398
 @Twinrova_Update_Return:
 
 ;Remove the function call to set the boss music in Init
-; Replaces: 
-;           jal     800CAA70
-
+; Replaces: jal     0x800CAA70
 .orga 0xD62128
     nop
 
@@ -1623,10 +1615,8 @@ skip_GS_BGS_text:
 ;==================================================================================================
 
 ;Hook great fairy update function and set position/angle when conditions are met
-; Replaces: 
-;           or      a0, s0, r0
+; Replaces: or      a0, s0, r0
 ;           or      a1, s1, r0
-
 .orga 0xC8B24C
     jal     fountain_set_posrot
     or      a0, s0, r0
@@ -1634,22 +1624,17 @@ skip_GS_BGS_text:
 ;==================================================================================================
 ; Speed Up Gate in Kakariko
 ;==================================================================================================
-
 ; gate opening x
-; Replaces: 
-;           lui     at, 0x4000 ;2.0f
-
+; Replaces: lui     at, 0x4000 ;2.0f
 .orga 0xDD366C
     lui     at, 0x40D0 ;6.5f
 
 ; gate opening z
-; Replaces: 
-;           lui     a2, 0x3F4C
+; Replaces: lui     a2, 0x3F4C
 ;           sub.s   f8, f4, f6
 ;           lui     a3, 0x3E99
 ;           ori     a3, a3, 0x999A
 ;           ori     a2, a2, 0xCCCD
-
 .orga 0xDD367C
     lui     a2, 0x4000
     sub.s   f8, f4, f6
@@ -1658,20 +1643,16 @@ skip_GS_BGS_text:
     nop
 
 ; gate closing x
-; Replaces: 
-;           lui     at, 0x4000 ;2.0f
-
+; Replaces: lui     at, 0x4000 ;2.0f
 .orga 0xDD3744
     lui     at, 0x40D0 ;6.5f
 
 ; gate closing z
-; Replaces: 
-;           lui     a2, 0x3F4C
+; Replaces: lui     a2, 0x3F4C
 ;           add.s   f8, f4, f6
 ;           lui     a3, 0x3E99
 ;           ori     a3, a3, 0x999A
 ;           ori     a2, a2, 0xCCCD
-
 .orga 0xDD3754
     lui     a2, 0x4000
     add.s   f8, f4, f6
@@ -1680,13 +1661,57 @@ skip_GS_BGS_text:
     nop
 
 ;==================================================================================================
-; Fix Carpenter Boss Softlock
+; Prevent Carpenter Boss Softlock
 ;==================================================================================================
-; Replaces: 
-;           or      a1, s1, r0
-;           addiu   a2, r0, 0x22
-
+; Replaces: or      a1, s1, r0
+;           addiu   a2, r0, 0x22 
 .orga 0xE0EC50
     jal     prevent_carpenter_boss_softlock
     or      a1, s1, r0
 
+;==================================================================================================
+; Skip Song of Storms Demonstration
+;==================================================================================================
+;skip setting cutscene trigger
+; Replaces: sb      t0, 0xB9E4(at)
+.orga 0xE42AB4
+    nop
+
+;if songs as items is enabled branch directly to getting the item
+; Replaces: or      a2, a0, r0
+;           or      a3, a1, r0
+;           lui     v0, 0x0001
+;           addu    v0, v0, a3   
+.orga 0xE429DC
+    jal     sos_song_as_item
+    or      a2, a0, r0
+    bnez_a  t0, 0xE42A4C
+    nop
+
+
+;replace the check for dialog state 7 with a function call that hides the HUD
+; Replaces: bne     v0, at
+.orga 0xE42B78
+    jal     sos_fix_alpha
+
+;if songs as items is enabled skip showing the song staff
+; Replaces: jal     0x800DD400 ;shows song staff
+.orga 0xE42B84
+    jal     sos_staff
+
+
+;skip playing the song demonstration and set state to prevent slashing sword
+; Replaces: jal     0x800DD400 ;plays song demo
+.orga 0xE42C00
+    jal     sos_set_state
+
+;dont allow link to talk to the windmill guy if he is recieving an item
+; Replaces: lh      t6, 0x8A(s0)
+;           lh      t7, 0xB6(s0)
+;           lhu     t9, 0xB4AE(t9)
+;           lw      v1, 0x1C44(s1)
+.orga 0xE42C44
+    jal     sos_talk_prevention
+    lh      t6, 0x8A(s0)   ;displaced
+    bnez_a  t2, 0xE42D64
+    lw      v1, 0x1C44(s1) ;displaced

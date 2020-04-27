@@ -308,15 +308,17 @@ warp_speedup:
 
 ;If PLAYED_WARP_SONG is set, override the transition fade-in type to be 03 (medium speed white)
 set_fade_in:
-    ori    at, at, 0x241C ;displaced
-
+    ori    at, at, 0x241C   ;displaced
     la     t5, PLAYED_WARP_SONG
     lb     t1, 0x00(t5)
     beqz   t1, @@return
-    la     t4, 0x801D84A0  ;globalctx+10000
+    lh     t2, 0xA4(s1)     ;scene number
+    li     t3, 0x5E
+    beq    t2, t3, @@return ;dont set fade if current scene is wasteland
+    la     t4, 0x801D84A0   ;globalctx+10000
     li     t1, 0x03
-    sb     t1, 0x1E5E(t4)  ;transition fade type
-    sb     r0, 0x00(t5)    ;clear warp song flag
+    sb     t1, 0x1E5E(t4)   ;transition fade type
+    sb     r0, 0x00(t5)     ;clear warp song flag
 
     @@return:
     jr     ra
@@ -466,4 +468,62 @@ fountain_set_posrot:
     jr      ra
     nop
 
+;==================================================================================================
+SOS_ITEM_GIVEN:
+.byte 0x00
+.align 4
 
+sos_set_state:
+    la      t2, PLAYER_ACTOR
+    lw      t3, 0x66C(t2)
+    li      t4, 0xCFFFFFFF ;~30000000
+    and     t3, t3, t4
+    jr      ra
+    sw      t3, 0x66C(t2)  ;unset flag early so link can receive item asap 
+
+sos_fix_alpha:
+    addiu   sp, sp, -0x18
+    sw      ra, 0x14(sp)
+    li      a0, 0x01
+    sb      a0, SOS_ITEM_GIVEN ;set item given flag
+    jal     0x8006D8E0         ;Interface_ChangeAlpha
+    nop
+    lw      ra, 0x14(sp)
+    jr      ra
+    addiu   sp, sp, 0x18
+
+sos_staff:
+    addiu   sp, sp, -0x18
+    sw      ra, 0x14(sp)
+    lb      t0, SONGS_AS_ITEMS
+    bnez    t0, @@skip_staff
+    nop
+    jal     0x800DD400 ;show song staff
+    nop
+    @@skip_staff:
+    lw      ra, 0x14(sp)
+    jr      ra
+    addiu   sp, sp, 0x18
+
+sos_song_as_item:
+    or      a3, a1, r0     ;displaced
+    lui     v0, 0x0001     ;displaced
+    lb      t0, SONGS_AS_ITEMS
+    beqz    t0, @@return
+    addu    v0, v0, a3     ;displaced
+    sw      a3, 0x1C(sp)
+    @@return:
+    jr      ra
+    nop
+
+sos_talk_prevention:
+    lh      t7, 0xB6(s0)   ;displaced
+    lhu     t9, 0xB4AE(t9) ;displaced
+    la      t1, SOS_ITEM_GIVEN
+    lb      t2, 0(t1)
+    beqz    t2, @@return
+    nop
+    sb      r0, 0(t1)      ;0 out the flag after 1 frame
+    @@return:
+    jr      ra
+    nop

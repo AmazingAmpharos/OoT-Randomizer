@@ -84,8 +84,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Set starting entrance for debugging purposes
     # REMEMBER TO REMOVE THIS IDIOT
     rom.write_int32(0xB06318, 0x00000000)
-    rom.write_bytes(0xB06342, [0x03, 0xD0])
-    rom.write_bytes(0xB06332, [0x03, 0xD0])
+    rom.write_bytes(0xB06342, [0x04, 0x53])
+    rom.write_bytes(0xB06332, [0x04, 0x53])
 
     # Increase the instance size of Bombchus prevent the heap from becoming corrupt when
     # a Dodongo eats a Bombchu. Does not fix stale pointer issues with the animation
@@ -169,6 +169,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     songs_as_items = world.shuffle_song_items or \
                      world.distribution.song_as_items or \
                      world.starting_songs
+
+    if songs_as_items:
+        rom.write_byte(rom.sym('SONGS_AS_ITEMS'), 1)
 
     # Speed learning Zelda's Lullaby
     rom.write_int32s(0x02E8E90C, [0x000003E8, 0x00000001]) # Terminator Execution
