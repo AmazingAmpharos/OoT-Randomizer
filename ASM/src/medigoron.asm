@@ -9,11 +9,9 @@ medigoron_inital_check:
     lui     v1, 0x8012
     addiu   v1, v1, 0xA5D0
     lw      t6, 0x0004(v1)      ; current age
-    addiu   at, zero, 0x0005
-    bnez    t6, @@child
+    bnez    t6, @@return
     addiu   v0, zero, 0x0005    ; child default value for v0
     addiu   v0, zero, 0x0011    ; adult default value for v0
-@@child:
 
     lb      t0, SHUFFLE_MEDIGORON
     beqz    t0, @@return        ; skip if the salesman isn't randomized

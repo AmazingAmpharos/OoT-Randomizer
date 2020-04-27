@@ -1613,7 +1613,7 @@ skip_GS_BGS_text:
     addiu   sp, sp, 0x18
     slti    at, v0, 5
     bnez    at, @medigoron_check_return
-    nop
+    addiu   at, zero, 0x0005
 
 .orga 0xE1F794
 @medigoron_check_return:
