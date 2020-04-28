@@ -232,7 +232,9 @@ class TestPlandomizer(unittest.TestCase):
             "plando-num-adult-trade-item-good",
             "plando-num-weird-egg-item-good",
             "plando-num-bottles-fountain-closed-good",
-            "plando-num-bottles-fountain-open-good"
+            "plando-num-bottles-fountain-open-good",
+            "plando-change-triforce-piece-count",
+            "plando-use-normal-triforce-piece-count"
         ]
         for filename in filenames:
             with self.subTest(filename):
@@ -253,7 +255,9 @@ class TestPlandomizer(unittest.TestCase):
         filenames = [
             "empty",
             "plando-list",
-            "plando-item-pool-matches-items-placed-after-starting-items-replaced"
+            "plando-item-pool-matches-items-placed-after-starting-items-replaced",
+            "plando-change-triforce-piece-count",
+            "plando-use-normal-triforce-piece-count",
         ]
         for filename in filenames:
             with self.subTest(filename + " pool accuracy"):
