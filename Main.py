@@ -303,7 +303,7 @@ def patch_and_output(settings, window, spoiler, rom, start):
         cosmetics_log.to_file(cosmetic_path)
         logger.info("Created cosmetic log at: %s" % cosmetic_path)
 
-    if settings.using_distribution_file:
+    if settings.enable_distribution_file:
         window.update_status('Copying Distribution File')
         try:
             filename = os.path.join(output_dir, '%s_Distribution.json' % outfilebase)
