@@ -27,7 +27,7 @@ void before_game_state_update() {
     handle_pending_items();
     handle_dpad();
     update_color();
-    update_heart_colors();
+    update_hud_colors();
     process_extern_ctxt();
     override_fog_state();
 }

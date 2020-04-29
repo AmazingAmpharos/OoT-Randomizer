@@ -4,6 +4,7 @@ OBJDUMP = mips64-objdump
 
 CFLAGS = -O1 -fno-reorder-blocks -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt -mdivide-breaks \
 	-mexplicit-relocs
+CPPFLAGS = -DF3DEX_GBI_2
 
 OUTDIR := build
 OBJDIR := build/bin
@@ -18,7 +19,7 @@ OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(sort $(wildcard $(SRCDIR)/*.c
 all: clean bundle symbols
 
 $(OBJDIR)/%.o: %.c 
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< $(CFLAGS) $(CPPFLAGS)
 ifdef RUN_OBJDUMP
 		$(OBJDUMP) -d $@ | tr -d '\015' > $@_d.txt
 		$(OBJDUMP) -r $@ | tr -d '\015' > $@_r.txt
