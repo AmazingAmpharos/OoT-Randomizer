@@ -1715,3 +1715,11 @@ skip_GS_BGS_text:
     lh      t6, 0x8A(s0)   ;displaced
     bnez_a  t2, 0xE42D64
     lw      v1, 0x1C44(s1) ;displaced
+
+;==================================================================================================
+; Fix Zelda in Final Battle
+;==================================================================================================
+;change her actionFunc index from 07 to 0C
+; Replaces: addiu    t6, r0, 0x07
+.orga 0xE7CC90
+    addiu    t6, r0, 0x0C
