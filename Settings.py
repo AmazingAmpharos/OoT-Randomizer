@@ -189,6 +189,7 @@ class Settings:
         self.numeric_seed = self.get_numeric_seed()
 
     def load_distribution(self):
+        self.using_distribution_file = False
         if self.enable_distribution_file:
             if self.distribution_file:
                 try:
