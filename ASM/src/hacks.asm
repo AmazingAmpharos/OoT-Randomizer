@@ -1623,6 +1623,13 @@ skip_GS_BGS_text:
     jal     skip_3_down_copy_to
     sh      t9, 0xCA2A(at)
 
+;Special Case For Copy File 2 Down
+; Replaces: sh      t3, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA1D04
+    jal     skip_3_down_copy_to_2
+    nop
+
 ;Erase Up
 ; Replaces: sh      t9, 0xCA2A(at)
 ;           lh      v1, 0x4A2A(t0)
