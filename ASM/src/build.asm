@@ -86,6 +86,7 @@ RANDO_CONTEXT:
 .include "carpenter_boss.asm"
 .include "twinrova_wait.asm"
 .include "file_select.asm"
+.include "zelda.asm"
 .include "agony.asm"
 
 .align 0x10

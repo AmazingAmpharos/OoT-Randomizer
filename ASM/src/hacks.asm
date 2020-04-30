@@ -1794,8 +1794,25 @@ skip_GS_BGS_text:
 ;==================================================================================================
 ; Fix Zelda in Final Battle
 ;==================================================================================================
-;change her actionFunc index from 07 to 0C
+;change zeldas actionFunc index from 07 to 0C
 ; Replaces: addiu    t6, r0, 0x07
 .orga 0xE7CC90
     addiu    t6, r0, 0x0C
 
+;change animation to wait anim if its not set yet
+; Replaces: beqz     a1
+;           or       a2, r0, r0
+;           lui      a1, 0x0600
+;           addiu    a1, a1, 0x6F04
+;           addiu    a3, r0, 0x0000
+.orga 0xE7D19C
+    jal      zelda_check_anim
+    lui      a1, 0x0600
+    beq_a    a1, t0, 0xE7D1B4
+    or       a2, r0, r0
+    addiu    a3, r0, 0x0000
+
+;set flag so tower collapse cs never attempts to play (tower collapse sequence on)
+; Replaces: andi     t7, t6, 0xFF7F
+.orga 0xE81128
+    ori     t7, t6, 0x0080
