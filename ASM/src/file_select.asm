@@ -84,6 +84,20 @@ skip_3_down_copy_to:
     jr      ra
     addiu   sp, sp, 0x18
 
+skip_3_down_copy_to_2:
+    addiu   sp, sp, -0x18
+    sw      t2, 0x04(sp)
+    sh      t3, 0xCA2A(at)
+    li      t2, 0x02
+    bne     t3, t2, @@return
+    li      t2, 0x03
+    sh      t2, 0x4A2A(t0)
+    @@return:
+    lh      v1, 0x4A2A(t0)
+    lw      t2, 0x04(sp)
+    jr      ra
+    addiu   sp, sp, 0x18
+
 skip_3_up_erase:
     addiu   sp, sp, -0x18
     sw      t2, 0x04(sp)
