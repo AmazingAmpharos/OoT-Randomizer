@@ -374,7 +374,7 @@ logic_tricks = {
                     '''},
     'Jabu Scrub as Adult with Jump Dive': {
         'name'    : 'logic_jabu_scrub_jump_dive',
-        'tags'    : ("Jabu Jabu\'s Belly","Entrance",),
+        'tags'    : ("Jabu Jabu's Belly","Entrance",),
         'tooltip' : '''\
                     Standing above the underwater tunnel leading to the scrub,
                     jump down and swim through the tunnel. This allows adult to
@@ -382,7 +382,7 @@ logic_tricks = {
                     '''},
     'Jabu MQ Song of Time Block GS with Boomerang': {
         'name'    : 'logic_jabu_mq_sot_gs',
-        'tags'    : ("Jabu Jabu\"s Belly","Skulltulas",),
+        'tags'    : ("Jabu Jabu's Belly","Skulltulas",),
         'tooltip' : '''\
                     Allow the Boomerang to return to you through
                     the Song of Time block to grab the token.
