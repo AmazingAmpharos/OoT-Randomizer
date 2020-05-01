@@ -87,6 +87,7 @@ RANDO_CONTEXT:
 .include "twinrova_wait.asm"
 .include "file_select.asm"
 .include "zelda.asm"
+.include "link_anim.asm"
 .include "agony.asm"
 
 .align 0x10

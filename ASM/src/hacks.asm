@@ -1763,7 +1763,6 @@ skip_GS_BGS_text:
     bnez_a  t0, 0xE42A4C
     nop
 
-
 ;replace the check for dialog state 7 with a function call that hides the HUD
 ; Replaces: bne     v0, at
 .orga 0xE42B78
@@ -1773,7 +1772,6 @@ skip_GS_BGS_text:
 ; Replaces: jal     0x800DD400 ;shows song staff
 .orga 0xE42B84
     jal     sos_staff
-
 
 ;skip playing the song demonstration and set state to prevent slashing sword
 ; Replaces: jal     0x800DD400 ;plays song demo
@@ -1816,3 +1814,11 @@ skip_GS_BGS_text:
 ; Replaces: andi     t7, t6, 0xFF7F
 .orga 0xE81128
     ori     t7, t6, 0x0080
+
+;==================================================================================================
+; Override call to SkelAnime_ChangeLinkAnimDefaultStop
+;==================================================================================================
+;override the call to SkelAnime_ChangeLinkAnimDefaultStop to allow for special cases
+; Replaces: jal      0x8008C178
+.orga 0xBCDBD8
+    jal     override_changelinkanimdefaultstop
