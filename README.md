@@ -98,6 +98,7 @@ player.
 #### Bug Fixes
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
 * Prevent an errant `@` from showing up in Triforce Hunt.
+* Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
 
 #### Other Changes
 * Performance improvements to seed generation.
