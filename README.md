@@ -99,6 +99,9 @@ player.
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
+* Fix some issues with `Randomize Main Rules`:
+  * Closed Forest implies starting as child.
+  * Triforce Hunt won't accidentally place the Boss Key for Ganon's Castle.
 
 #### Other Changes
 * Performance improvements to seed generation.

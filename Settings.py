@@ -248,7 +248,7 @@ class Settings:
             if self.check_dependency(info.name, check_random=True):
                 continue
 
-            if 'randomize_key' in info.gui_params and self.__dict__[info.gui_params['randomize_key']]:               
+            if 'randomize_key' in info.gui_params and self.__dict__[info.gui_params['randomize_key']]:
                 choices, weights = zip(*info.gui_params['distribution'])
                 self.__dict__[info.name] = random_choices(choices, weights=weights)[0]
 

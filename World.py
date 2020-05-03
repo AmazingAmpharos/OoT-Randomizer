@@ -63,6 +63,11 @@ class World(object):
 
         self.triforce_goal = self.triforce_goal_per_world * settings.world_count
 
+        if self.triforce_hunt:
+            # Pin shuffle_ganon_bosskey to 'triforce' when triforce_hunt is enabled
+            # (specifically, for randomize_settings)
+            self.shuffle_ganon_bosskey = 'triforce'
+
         # Determine LACS Condition
         if self.shuffle_ganon_bosskey == 'lacs_medallions':
             self.lacs_condition = 'medallions'
@@ -174,7 +179,11 @@ class World(object):
             self.starting_tod = random.choice(choices)
             self.randomized_list.append('starting_tod')
         if self.starting_age == 'random':
-            self.starting_age = random.choice(['child', 'adult'])
+            if self.settings.open_forest == 'closed':
+                # adult is not compatible
+                self.starting_age = 'child'
+            else:
+                self.starting_age = random.choice(['child', 'adult'])
             self.randomized_list.append('starting_age')
         if self.chicken_count_random:
             self.chicken_count = random.randint(0, 7)
