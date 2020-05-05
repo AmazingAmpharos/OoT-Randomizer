@@ -247,6 +247,7 @@ class Settings:
         sorted_infos = list(setting_infos)
         sort_key = lambda info: 0 if info.dependency is None else 1
         sorted_infos.sort(key=sort_key)
+        randomize_keys_enabled = set()
 
         for info in sorted_infos:
             # only randomize cosmetics options or non-cosmetic
@@ -263,8 +264,23 @@ class Settings:
                 continue
 
             if self.__dict__[info.gui_params['randomize_key']]:
+                randomize_keys_enabled.add(info.gui_params['randomize_key'])
                 choices, weights = zip(*info.gui_params['distribution'])
                 self.__dict__[info.name] = random_choices(choices, weights=weights)[0]
+
+        # Second pass to make sure disabled settings are set properly.
+        # Stupid hack: disable randomize keys, then re-enable.
+        for randomize_keys in randomize_keys_enabled:
+            self.__dict__[randomize_keys] = False
+        for info in sorted_infos:
+            if cosmetic == info.shared:
+                continue
+            dependency = self.get_dependency(info.name, check_random=False)
+            if dependency is None:
+                continue
+            self.__dict__[info.name] = dependency
+        for randomize_keys in randomize_keys_enabled:
+            self.__dict__[randomize_keys] = True
 
 
     # add the settings as fields, and calculate information based on them
