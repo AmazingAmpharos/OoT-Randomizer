@@ -154,8 +154,8 @@
         "dungeon": "Spirit Temple",
         "locations": {
             "Spirit Temple Near Four Armos Chest": "Mirror_Shield and has_explosives",
-            "Spirit Temple Hallway Left Invisible Chest": "can_see_with_lens and has_explosives",
-            "Spirit Temple Hallway Right Invisible Chest": "can_see_with_lens and has_explosives"
+            "Spirit Temple Hallway Left Invisible Chest": "(logic_lens_spirit or can_use(Lens_of_Truth)) and has_explosives",
+            "Spirit Temple Hallway Right Invisible Chest": "(logic_lens_spirit or can_use(Lens_of_Truth)) and has_explosives"
         },
         "exits": {
             "Spirit Temple Beyond Final Locked Door": "

@@ -35,7 +35,7 @@
         "locations": {
             "Jabu Jabus Belly MQ Falling Like Like Room Chest": "True",
             "GS Jabu Jabu MQ Tailpasaran Room": "Sticks or can_use(Dins_Fire)",
-            "GS Jabu Jabu MQ Invisible Enemies Room": "can_see_with_lens"
+            "GS Jabu Jabu MQ Invisible Enemies Room": "logic_lens_jabu_mq or can_use(Lens_of_Truth)"
         },
         "exits": {
             "Jabu Jabus Belly Main": "True",

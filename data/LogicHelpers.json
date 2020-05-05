@@ -45,7 +45,6 @@
     "can_leave_forest": "open_forest != 'closed' or is_adult or is_glitched or Deku_Tree_Clear",
     "can_plant_bugs": "is_child and Bugs",
     "can_ride_epona": "is_adult and Epona and (can_play(Eponas_Song) or (is_glitched and can_hover))",
-    "can_see_with_lens": "logic_lens != 'all' or (Magic_Meter and Lens_of_Truth)",
     "can_stun_deku": "is_adult or (Slingshot or Boomerang or Sticks or Kokiri_Sword or has_explosives or can_use(Dins_Fire) or Nuts or Deku_Shield)",
     "can_summon_gossip_fairy": "Ocarina and (Zeldas_Lullaby or Eponas_Song or Song_of_Time or Suns_Song)",
     "can_summon_gossip_fairy_without_suns": "Ocarina and (Zeldas_Lullaby or Eponas_Song or Song_of_Time)",

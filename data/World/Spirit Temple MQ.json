@@ -49,7 +49,7 @@
         "locations": {
             "Spirit Temple MQ Child Climb South Chest": "(Small_Key_Spirit_Temple, 7)",
             "Spirit Temple MQ Lower NE Main Room Chest": "can_play(Zeldas_Lullaby)",
-            "Spirit Temple MQ Upper NE Main Room Chest": "can_see_with_lens",
+            "Spirit Temple MQ Upper NE Main Room Chest": "logic_lens_spirit_mq or can_use(Lens_of_Truth)",
             "Spirit Temple MQ Beamos Room Chest": "(Small_Key_Spirit_Temple, 5)",
             "Spirit Temple MQ Ice Trap Chest": "
                 (Small_Key_Spirit_Temple, 5) and can_play(Song_of_Time)",
@@ -66,7 +66,7 @@
             "Spirit Temple Boss Area": "
                 (Small_Key_Spirit_Temple, 6) and can_play(Zeldas_Lullaby) and Hammer",
             "Mirror Shield Hand": "
-                (Small_Key_Spirit_Temple, 5) and can_play(Song_of_Time) and can_see_with_lens"
+                (Small_Key_Spirit_Temple, 5) and can_play(Song_of_Time) and (logic_lens_spirit_mq or can_use(Lens_of_Truth))"
         }
     },
     {
@@ -91,11 +91,11 @@
             "Silver Gauntlets Hand": "
                 ((Small_Key_Spirit_Temple, 7) and (can_play(Song_of_Time) or is_adult)) or 
                 ((Small_Key_Spirit_Temple, 4) and can_play(Song_of_Time) and 
-                 can_see_with_lens)",
+                 (logic_lens_spirit_mq or can_use(Lens_of_Truth)))",
             "Desert Colossus": "
                 ((Small_Key_Spirit_Temple, 7) and (can_play(Song_of_Time) or is_adult)) or
                 ((Small_Key_Spirit_Temple, 4) and can_play(Song_of_Time) and
-                 can_see_with_lens and is_adult)"
+                 (logic_lens_spirit_mq or can_use(Lens_of_Truth)) and is_adult)"
         }
     },
     {
@@ -119,7 +119,7 @@
         "region_name": "Spirit Temple Boss Area",
         "dungeon": "Spirit Temple",
         "locations": {
-            "Spirit Temple MQ Mirror Puzzle Invisible Chest": "can_see_with_lens",
+            "Spirit Temple MQ Mirror Puzzle Invisible Chest": "logic_lens_spirit_mq or can_use(Lens_of_Truth)",
             "Twinrova Heart": "Mirror_Shield and Boss_Key_Spirit_Temple",
             "Twinrova": "Mirror_Shield and Boss_Key_Spirit_Temple"
         }

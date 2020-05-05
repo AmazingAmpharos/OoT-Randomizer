@@ -752,9 +752,8 @@ logic_tricks = {
                     Wasteland in reverse.
                     Note that jumping to the carpet merchant as child
                     requires a fairly precise jumpslash.
-                    To enable the equivalent trick for going forward
-                    through the Wasteland, set the Lens of Truth logic
-                    to "Only Chest Minigame."
+                    The equivalent trick for going forward through the 
+                    Wasteland is "Lensless Wasteland".
                     To cross the river of sand with no additional items,
                     be sure to also enable "Wasteland Crossing without
                     Hover Boots or Longshot."
@@ -1069,6 +1068,107 @@ logic_tricks = {
                     open the Shadow Temple entrance with just Fire
                     Arrows, but you must be very quick, precise,
                     and strategic with how you take your shots.
+                    '''},
+    'Lensless Wasteland': {
+        'name'    : 'logic_lens_wasteland',
+        'tags'    : ("Lens of Truth","Haunted Wasteland",),
+        'tooltip' : '''\
+                    By memorizing the path, you can travel through the
+                    Wasteland without using the Lens of Truth to see 
+                    the Poe.
+                    The equivalent trick for going in reverse through
+                    the Wasteland is "Reverse Wasteland".
+                    '''},
+    'Bottom of the Well MQ without Lens of Truth': {
+        'name'    : 'logic_lens_botw_mq',
+        'tags'    : ("Lens of Truth","Bottom of the Well",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Bottom of the Well MQ.
+                    '''},
+    'Bottom of the Well without Lens of Truth': {
+        'name'    : 'logic_lens_botw',
+        'tags'    : ("Lens of Truth","Bottom of the Well",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Bottom of the Well.
+                    '''},
+    'Ganon\'s Castle MQ without Lens of Truth': {
+        'name'    : 'logic_lens_castle_mq',
+        'tags'    : ("Lens of Truth","Ganon's Castle",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Ganon's Castle MQ.
+                    '''},
+    'Ganon\'s Castle without Lens of Truth': {
+        'name'    : 'logic_lens_castle',
+        'tags'    : ("Lens of Truth","Ganon's Castle",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Ganon's Castle.
+                    '''},
+    'Gerudo Training Grounds MQ without Lens of Truth': {
+        'name'    : 'logic_lens_gtg_mq',
+        'tags'    : ("Lens of Truth","Gerudo Training Grounds",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Gerudo Training Grounds MQ.
+                    '''},
+    'Gerudo Training Grounds without Lens of Truth': {
+        'name'    : 'logic_lens_gtg',
+        'tags'    : ("Lens of Truth","Gerudo Training Grounds",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Gerudo Training Grounds.
+                    '''},
+    'Jabu MQ without Lens of Truth': {
+        'name'    : 'logic_lens_jabu_mq',
+        'tags'    : ("Lens of Truth","Jabu Jabu's Belly",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Jabu MQ.
+                    '''},
+    'Shadow Temple MQ before Huge Pit without Lens of Truth': {
+        'name'    : 'logic_lens_shadow_mq',
+        'tags'    : ("Lens of Truth","Shadow Temple",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Shadow Temple MQ before the Huge Pit room.
+                    '''},
+    'Shadow Temple MQ beyond Huge Pit without Lens of Truth': {
+        'name'    : 'logic_lens_shadow_mq_back',
+        'tags'    : ("Lens of Truth","Shadow Temple",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Shadow Temple MQ beyond the Huge Pit room.
+                    '''},
+    'Shadow Temple before Huge Pit without Lens of Truth': {
+        'name'    : 'logic_lens_shadow',
+        'tags'    : ("Lens of Truth","Shadow Temple",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Shadow Temple before the Huge Pit room.
+                    '''},
+    'Shadow Temple beyond Huge Pit without Lens of Truth': {
+        'name'    : 'logic_lens_shadow_back',
+        'tags'    : ("Lens of Truth","Shadow Temple",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Shadow Temple beyond the Huge Pit room.
+                    '''},
+    'Spirit Temple MQ without Lens of Truth': {
+        'name'    : 'logic_lens_spirit_mq',
+        'tags'    : ("Lens of Truth","Spirit Temple",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Spirit Temple MQ.
+                    '''},
+    'Spirit Temple without Lens of Truth': {
+        'name'    : 'logic_lens_spirit',
+        'tags'    : ("Lens of Truth","Spirit Temple",),
+        'tooltip' : '''\
+                    Removes the requirements for the Lens of Truth
+                    in Spirit Temple.
                     '''},
 }
 
@@ -2487,27 +2587,6 @@ setting_infos = [
         },
         gui_tooltip    = '''\
             Select the latest item that can appear in the adult trade sequence.
-        ''',
-        shared         = True,
-    ),
-    Combobox(
-        name           = 'logic_lens',
-        gui_text       = 'Lens of Truth',
-        default        = 'all',
-        choices        = {
-            'all':             'Required Everywhere',
-            'chest-wasteland': 'Wasteland and Chest Minigame',
-            'chest':           'Only Chest Minigame',
-        },
-        gui_tooltip    = '''\
-            'Required everywhere': every invisible or
-            fake object will expect you to have the
-            Lens of Truth and Magic. The exception is
-            passing through the first wall in Bottom of
-            the Well, since that is required in vanilla.
-
-            'Wasteland': The lens is needed to follow
-            the ghost guide across the Haunted Wasteland.
         ''',
         shared         = True,
     ),

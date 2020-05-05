@@ -5,7 +5,7 @@
         "exits": {
             "Shadow Temple Warp Region": "True",
             "Shadow Temple Beginning": "
-                can_see_with_lens and
+                (logic_lens_shadow_mq or can_use(Lens_of_Truth)) and
                 (can_use(Hover_Boots) or can_use(Hookshot))"
         }
     },
@@ -44,11 +44,11 @@
         "region_name": "Shadow Temple Upper Huge Pit",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple MQ Invisible Blades Visible Chest": "can_play(Song_of_Time)",
-            "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time)"
+            "Shadow Temple MQ Invisible Blades Visible Chest": "can_play(Song_of_Time) and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth))",
+            "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time) and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth))"
         },
         "exits": {
-            "Shadow Temple Lower Huge Pit": "has_fire_source or logic_shadow_mq_huge_pit"
+            "Shadow Temple Lower Huge Pit": "logic_shadow_mq_huge_pit or (has_fire_source and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth)))"
         }
     },
     {
@@ -61,14 +61,17 @@
                 (logic_shadow_umbrella and Hover_Boots) or Progressive_Strength_Upgrade",
             "Shadow Temple MQ Falling Spikes Switch Chest": "
                 (logic_shadow_umbrella and Hover_Boots) or Progressive_Strength_Upgrade",
-            "Shadow Temple MQ Invisible Spikes Chest": "Hover_Boots and (Small_Key_Shadow_Temple, 3)",
+            "Shadow Temple MQ Invisible Spikes Chest": "
+                Hover_Boots and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth)) and (Small_Key_Shadow_Temple, 3)",
             "Shadow Temple MQ Stalfos Room Chest": "
-                Hover_Boots and (Small_Key_Shadow_Temple, 3) and Progressive_Hookshot",
+                Hover_Boots and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth)) and (Small_Key_Shadow_Temple, 3) 
+                and Progressive_Hookshot",
             "GS Shadow Temple MQ Crusher Room": "Progressive_Hookshot"
         },
         "exits": {
             "Shadow Temple Wind Tunnel": "
-                Hover_Boots and Progressive_Hookshot and (Small_Key_Shadow_Temple, 4)"
+                Hover_Boots and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth)) and 
+                Progressive_Hookshot and (Small_Key_Shadow_Temple, 4)"
         }
     },
     {
