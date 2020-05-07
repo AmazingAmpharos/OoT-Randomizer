@@ -543,7 +543,7 @@ move_royal_tombstone:
 
 heavy_block_set_switch:
     addiu   a1, s0, 0x01A4 ;displaced
-    addiu   sp, sp, -0x1C
+    addiu   sp, sp, -0x20
     sw      ra, 0x14(sp)
     sw      a1, 0x18(sp)
     lh      a1, 0x1C(s1)
@@ -553,7 +553,7 @@ heavy_block_set_switch:
     lw      a1, 0x18(sp)
     lw      ra, 0x14(sp)
     jr      ra
-    addiu   sp, sp, 0x1C
+    addiu   sp, sp, 0x20
 
 heavy_block_set_link_action:
     la      t0, PLAYER_ACTOR

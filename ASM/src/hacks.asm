@@ -1878,3 +1878,26 @@ skip_GS_BGS_text:
 ;Replaces: lui        at, 0x4220
 .orga 0xBE1C98
     lui    at, 0x4218
+
+;==================================================================================================
+; Fix B Button Icon for Minigames When Swordless
+;==================================================================================================
+;remove both checks for gSaveContext.equips.buttonItems[0] != ITEM_NONE
+;Replaces: beq      t5, t6
+.orga 0xAE4360
+    nop
+
+;for the second check, replace it with a functon that sets a flag if current B item is ITEM_NONE
+;Replaces: beq      t5, v1
+.orga 0xAE43B0
+    jal    minigames_check_b
+
+;if the swordless minigame flag is set, restore B back to blank and unset flag
+;Replaces: jal      0x8006FB50
+.orga 0xAE4BD8
+    jal    minigames_restore_b
+
+;same as above for the case where you leave bowling without ending the game
+;Replaces: jal      0x8006FB50
+.orga 0xAE4B30
+    jal    minigames_restore_b

@@ -84,10 +84,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Set starting entrance for debugging purposes
     # REMEMBER TO REMOVE THIS IDIOT
     rom.write_int32(0xB06318, 0x00000000)
-    rom.write_bytes(0xB06342, [0x04, 0x67])
-    rom.write_bytes(0xB06332, [0x04, 0x67])
-    #rom.write_bytes(0xB06342, [0x03, 0x40])
-    #rom.write_bytes(0xB06332, [0x03, 0x40])
+    rom.write_bytes(0xB06342, [0x03, 0xb8])
+    rom.write_bytes(0xB06332, [0x03, 0xb8])
+    
+
     # Increase the instance size of Bombchus prevent the heap from becoming corrupt when
     # a Dodongo eats a Bombchu. Does not fix stale pointer issues with the animation
     rom.write_int32(0xD6002C, 0x1F0)
@@ -933,7 +933,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context = SaveContext()
 
     # Initial Save Data
-
     if not world.useful_cutscenes:
         save_context.write_bits(0x00D4 + 0x03 * 0x1C + 0x04 + 0x0, 0x08) # Forest Temple switch flag (Poe Sisters cutscene)
     save_context.write_bits(0x00D4 + 0x05 * 0x1C + 0x04 + 0x1, 0x01) # Water temple switch flag (Ruto)
@@ -976,8 +975,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     save_context.write_bits(0x0EE2, 0x01) # "Began Ganondorf Battle"
     save_context.write_bits(0x0EE3, 0x80) # "Began Bongo Bongo Battle"
     save_context.write_bits(0x0EE3, 0x40) # "Began Barinade Battle"
-    if not world.useful_cutscenes:
-        save_context.write_bits(0x0EE3, 0x20) # "Began Twinrova Battle"
+    save_context.write_bits(0x0EE3, 0x20) # "Began Twinrova Battle"
     save_context.write_bits(0x0EE3, 0x10) # "Began Morpha Battle"
     save_context.write_bits(0x0EE3, 0x08) # "Began Volvagia Battle"
     save_context.write_bits(0x0EE3, 0x04) # "Began Phantom Ganon Battle"

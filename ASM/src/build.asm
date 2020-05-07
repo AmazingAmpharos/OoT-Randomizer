@@ -88,6 +88,7 @@ RANDO_CONTEXT:
 .include "file_select.asm"
 .include "zelda.asm"
 .include "link_anim.asm"
+.include "minigames.asm"
 .include "agony.asm"
 
 .align 0x10
