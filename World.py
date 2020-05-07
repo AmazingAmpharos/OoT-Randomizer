@@ -119,6 +119,8 @@ class World(object):
             if t > max_tokens and f'{t} Gold Skulltula Reward' not in self.disabled_locations:
                 max_tokens = t
         self.max_progressions['Gold Skulltula Token'] = max_tokens
+        # Additional Bottle with Letter become Bottle, so we may have to collect two.
+        self.max_progressions['Bottle with Letter'] = 2
 
 
     def copy(self):
