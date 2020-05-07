@@ -1816,9 +1816,65 @@ skip_GS_BGS_text:
     ori     t7, t6, 0x0080
 
 ;==================================================================================================
-; Override call to SkelAnime_ChangeLinkAnimDefaultStop
+; Override Links call to SkelAnime_ChangeLinkAnimDefaultStop
 ;==================================================================================================
-;override the call to SkelAnime_ChangeLinkAnimDefaultStop to allow for special cases
+;override the call to SkelAnime_ChangeLinkAnimDefaultStop in 80388BBC to allow for 
+;special cases when changing links animation
 ; Replaces: jal      0x8008C178
 .orga 0xBCDBD8
     jal     override_changelinkanimdefaultstop
+
+;==================================================================================================
+; Fix Royal Tombstone Cutscene
+;==================================================================================================
+;when the cutscene starts, move the grave back a bit so that the hole is not covered
+; Replaces: sw       a1, 0x44(sp)
+;           lw       t6, 0x44(sp)
+.orga 0xCF7AD4
+    jal     move_royal_tombstone
+    sw      a1, 0x44(sp)
+
+;==================================================================================================
+; Speed Up Gold Gauntlets Rock Throw
+;==================================================================================================
+;replace onepointdemo calls for the different cases so the cutscene never plays
+;for cases 0 and 4 set position so that the rock lands in the right place
+
+;case 1: light trial (breaks on impact)
+; Replaces: jal       0x8006B6FC
+.orga 0xCDF3EC
+    nop
+
+;case 0: fire trial
+; Replaces: jal       0x8006B6FC
+.orga 0xCDF404
+    nop
+
+;case 4: outside ganons castle
+; Replaces: jal       0x8006B6FC
+.orga 0xCDF420 
+    jal     heavy_block_set_switch
+
+;set links action to 7 so he can move again
+; Replaces: swc1      f4, 0x34(sp)
+;           lwc1      f6, 0x0C(s0)
+.orga 0xCDF638
+    jal     heavy_block_set_link_action
+    swc1    f4, 0x34(sp)
+
+;reduce quake timer for case 1
+;Replaces: addiu      a1, r0, 0x03E7
+.orga 0xCDF790
+    addiu      a1, r0, 0x1E
+
+;skip parts of links lifting animation
+;Replaces: sw         a1, 0x34(sp)
+;          addiu      a1, s0, 0x01A4
+.orga 0xBE1BC8
+    jal    heavy_block_shorten_anim
+    sw     a1, 0x34(sp)
+
+;slightly change rock throw trajectory to land in the right place
+;Replaces: lui        at, 0x4220
+.orga 0xBE1C98
+    lui    at, 0x4218

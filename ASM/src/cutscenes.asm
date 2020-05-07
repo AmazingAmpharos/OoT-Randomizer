@@ -527,3 +527,63 @@ sos_talk_prevention:
     @@return:
     jr      ra
     nop
+
+;==================================================================================================
+;move royal tombstone if draw function is null
+move_royal_tombstone:
+    lw      t6, 0x134(a0)  ;grave draw function
+    bnez    t6, @@return
+    li      t6, 0x44800000 ;new x pos
+    sw      t6, 0x24(a0)
+    @@return:
+    jr      ra
+    lw      t6, 0x44(sp)
+
+;==================================================================================================
+
+heavy_block_set_switch:
+    addiu   a1, s0, 0x01A4 ;displaced
+    addiu   sp, sp, -0x1C
+    sw      ra, 0x14(sp)
+    sw      a1, 0x18(sp)
+    lh      a1, 0x1C(s1)
+    sra     a1, a1, 8
+    jal     0x800204D0     ;set switch flag
+    andi    a1, a1, 0x3F
+    lw      a1, 0x18(sp)
+    lw      ra, 0x14(sp)
+    jr      ra
+    addiu   sp, sp, 0x1C
+
+heavy_block_set_link_action:
+    la      t0, PLAYER_ACTOR
+    lb      t2, 0x0434(t0)
+    li      t3, 0x08
+    bne     t2, t3, @@return
+    li      t1, 0x07       ;action 7
+    sb      t1, 0x0434(t0) ;links action
+    @@return:
+    jr      ra
+    lwc1    f6, 0x0C(s0)   ;displaced
+    
+heavy_block_shorten_anim:
+    la      t0, PLAYER_ACTOR
+    lw      t1, 0x01AC(t0)   ;current animation
+    li      t2, 0x04002F98   ;heavy block lift animation
+    bne     t1, t2, @@return ;return if not heavy block lift
+    lw      t3, 0x1BC(t0)    ;current animation frame 
+    li      t4, 0x42CF0000   
+    bne     t3, t4, @@check_end
+    li      t5, 0x43640000   ;228.0f
+    b       @@return
+    sw      t5, 0x1BC(t0)    ;throw block
+    @@check_end:
+    li      t4, 0x43790000   ;249.0f
+    bne     t3, t4, @@return
+    li      t1, 0x803A967C
+    sw      t1, 0x664(t0)
+    @@return:
+    jr      ra
+    addiu   a1, s0, 0x01A4      ;displaced
+    
+    

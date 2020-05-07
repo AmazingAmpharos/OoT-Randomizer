@@ -18,11 +18,20 @@ override_changelinkanimdefaultstop:
 
     ;if next animation is heavy rock pickup, change speed
     li      t0, 0x040032B0
-    bne     a2, t0, @@skip
+    bne     a2, t0, @@skip2
     nop
     lui     a3, 0x4040 ;3.0f
-
-    @@skip:
+   ;b       @@skip2
+   ; 
+   ; @@skip1:
+   ; ;if next animtion is gold gauntlet rock pickup, change speed
+   ; li      t0, 0x04002F98
+   ; bne     a2, t0, @@skip2
+   ; nop
+   ; lui     a3, 0x4000 ;2.0f
+   ; b       @@skip2
+   ; nop
+    @@skip2:
     swc1    f6, 0x0014(sp)           
     swc1    f0, 0x0010(sp)           
     jal     0x8008C000      ;SkelAnime_ChangeLinkAnim
