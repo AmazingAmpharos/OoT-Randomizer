@@ -23,7 +23,7 @@ rova_check_pos:
     nop
     lw      ra, 0x00(sp)
 
-    @@return:
+@@return:
     jr      ra
     addiu   sp, sp, 0x10
     

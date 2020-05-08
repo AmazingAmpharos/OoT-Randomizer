@@ -320,7 +320,7 @@ set_fade_in:
     sb     t1, 0x1E5E(t4)   ;transition fade type
     sb     r0, 0x00(t5)     ;clear warp song flag
 
-    @@return:
+@@return:
     jr     ra
     nop
 
@@ -455,7 +455,7 @@ fountain_set_posrot:
     li      t5, 0xC4458000
     sw      t5, 0x2C(t2)   ;set z
 
-    @@skip:
+@@skip:
     beqz    t6, @@return
     nop
     bnez    t3, @@return
@@ -464,7 +464,7 @@ fountain_set_posrot:
 
     sb      r0, 0x0(t1)    ;set flag to 0
 
-    @@return:
+@@return:
     jr      ra
     nop
 
@@ -500,7 +500,7 @@ sos_staff:
     nop
     jal     0x800DD400 ;show song staff
     nop
-    @@skip_staff:
+@@skip_staff:
     lw      ra, 0x14(sp)
     jr      ra
     addiu   sp, sp, 0x18
@@ -512,7 +512,7 @@ sos_song_as_item:
     beqz    t0, @@return
     addu    v0, v0, a3     ;displaced
     sw      a3, 0x1C(sp)
-    @@return:
+@@return:
     jr      ra
     nop
 
@@ -524,7 +524,7 @@ sos_talk_prevention:
     beqz    t2, @@return
     nop
     sb      r0, 0(t1)      ;0 out the flag after 1 frame
-    @@return:
+@@return:
     jr      ra
     nop
 
@@ -535,7 +535,7 @@ move_royal_tombstone:
     bnez    t6, @@return
     li      t6, 0x44800000 ;new x pos
     sw      t6, 0x24(a0)
-    @@return:
+@@return:
     jr      ra
     lw      t6, 0x44(sp)
 
@@ -562,7 +562,7 @@ heavy_block_set_link_action:
     bne     t2, t3, @@return
     li      t1, 0x07       ;action 7
     sb      t1, 0x0434(t0) ;links action
-    @@return:
+@@return:
     jr      ra
     lwc1    f6, 0x0C(s0)   ;displaced
     
@@ -577,12 +577,12 @@ heavy_block_shorten_anim:
     li      t5, 0x43640000   ;228.0f
     b       @@return
     sw      t5, 0x1BC(t0)    ;throw block
-    @@check_end:
+@@check_end:
     li      t4, 0x43790000   ;249.0f
     bne     t3, t4, @@return
     li      t1, 0x803A967C
     sw      t1, 0x664(t0)
-    @@return:
+@@return:
     jr      ra
     addiu   a1, s0, 0x01A4      ;displaced
     

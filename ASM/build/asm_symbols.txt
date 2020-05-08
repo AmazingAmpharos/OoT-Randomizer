@@ -508,7 +508,7 @@
 80402DD4 zelda_check_anim
 80402DFC @@return
 80402E04 override_changelinkanimdefaultstop
-80402E58 @@skip2
+80402E58 @@skip
 80402E78 .byt:0001
 80402E78 MINIGAME_SWORDLESS
 80402E7C minigames_check_b

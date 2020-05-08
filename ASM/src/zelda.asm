@@ -9,6 +9,6 @@ zelda_check_anim:
     li       t3, 0xC3240000 ;-164.0f
     sw       t2, 0x24(t1)   ;x
     sw       t3, 0x2C(t1)   ;z
-    @@return:
+@@return:
     jr       ra
     nop

@@ -81,13 +81,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     rom.write_byte(0x3E, 0x45)
     rom.force_patch.append(0x3E)
 
-    # Set starting entrance for debugging purposes
-    # REMEMBER TO REMOVE THIS IDIOT
-    rom.write_int32(0xB06318, 0x00000000)
-    rom.write_bytes(0xB06342, [0x03, 0xb8])
-    rom.write_bytes(0xB06332, [0x03, 0xb8])
-    
-
     # Increase the instance size of Bombchus prevent the heap from becoming corrupt when
     # a Dodongo eats a Bombchu. Does not fix stale pointer issues with the animation
     rom.write_int32(0xD6002C, 0x1F0)

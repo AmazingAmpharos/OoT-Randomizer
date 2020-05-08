@@ -8,7 +8,7 @@ skip_3_up_main:
     bne     t7, t2, @@return
     li      t2, 0x01
     sh      t2, 0x4A2A(v1)
-    @@return:
+@@return:
     lh      t7, 0x4A2A(v1)
     lw      t2, 0x04(sp)
     jr      ra
@@ -22,7 +22,7 @@ skip_3_down_main:
     bne     t6, t2, @@return
     li      t2, 0x03
     sh      t2, 0x4A2A(v1)
-    @@return:
+@@return:
     lh      t6, 0x4A2A(v1)
     lw      t2, 0x04(sp)
     jr      ra
@@ -36,7 +36,7 @@ skip_3_up_copy_from:
     bne     v1, t2, @@return
     li      t2, 0x01
     sh      t2, 0x4A2A(t0)
-    @@return:
+@@return:
     lh      v1, 0x4A2A(t0)
     lw      t2, 0x04(sp)
     jr      ra
@@ -50,7 +50,7 @@ skip_3_down_copy_from:
     bne     v1, t2, @@return
     li      t2, 0x03
     sh      t2, 0x4A2A(t0)
-    @@return:
+@@return:
     lh      v1, 0x4A2A(t0)
     lw      t2, 0x04(sp)
     jr      ra
@@ -64,7 +64,7 @@ skip_3_up_copy_to:
     bne     v1, t2, @@return
     li      t2, 0x01
     sh      t2, 0x4A2A(t0)
-    @@return:
+@@return:
     lh      v1, 0x4A2A(t0)
     lw      t2, 0x04(sp)
     jr      ra
@@ -78,7 +78,7 @@ skip_3_down_copy_to:
     bne     v1, t2, @@return
     li      t2, 0x03
     sh      t2, 0x4A2A(t0)
-    @@return:
+@@return:
     lh      v1, 0x4A2A(t0)
     lw      t2, 0x04(sp)
     jr      ra
@@ -92,7 +92,7 @@ skip_3_down_copy_to_2:
     bne     t3, t2, @@return
     li      t2, 0x03
     sh      t2, 0x4A2A(t0)
-    @@return:
+@@return:
     lh      v1, 0x4A2A(t0)
     lw      t2, 0x04(sp)
     jr      ra
@@ -106,7 +106,7 @@ skip_3_up_erase:
     bne     v1, t2, @@return
     li      t2, 0x01
     sh      t2, 0x4A2A(t0)
-    @@return:
+@@return:
     lh      v1, 0x4A2A(t0)
     lw      t2, 0x04(sp)
     jr      ra
@@ -120,7 +120,7 @@ skip_3_down_erase:
     bne     v1, t2, @@return
     li      t2, 0x03
     sh      t2, 0x4A2A(t0)
-    @@return:
+@@return:
     lh      v1, 0x4A2A(t0)
     lw      t2, 0x04(sp)
     jr      ra
