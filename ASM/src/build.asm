@@ -89,6 +89,8 @@ RANDO_CONTEXT:
 .include "zelda.asm"
 .include "link_anim.asm"
 .include "minigames.asm"
+.include "malon_hooks.asm"
+.include "bigocto.asm"
 .include "agony.asm"
 
 .align 0x10

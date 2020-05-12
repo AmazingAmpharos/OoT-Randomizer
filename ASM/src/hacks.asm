@@ -1901,3 +1901,37 @@ skip_GS_BGS_text:
 ;Replaces: jal      0x8006FB50
 .orga 0xAE4B30
     jal    minigames_restore_b
+
+;;==================================================================================================
+;; Skip Eponas Song Demonstration
+;;==================================================================================================
+;;skip function call to show song demonstration
+;.orga 0xD7EB4C
+;    nop
+;
+;;skip check for dialog state to be 7
+;.orga 0xD7EBBC
+;    nop
+;
+;;dont trigger a load after learning the song
+;.orga 0xD7EC54
+;    nop
+;
+;;add give item functionality to the empty function
+;.orga 0xD7EC70
+;    j    malon_give_item
+
+;==================================================================================================
+; Clean Up Big Octo Room For Multiple Visits
+;==================================================================================================
+;make link drop ruto if big octo defeated flag is set
+;Replaces: jal    Flags_SetSwitch
+.orga 0xD4BD78
+    jal    drop_ruto
+
+;kill the sapphire actor if big octo defeated flag is set
+;Replaces: sw     a1, 0x64(sp)
+;          lh     v0, 0x1C(s0)
+.orga 0xCC85B8
+    jal    check_kill_sapphire
+    sw     a1, 0x64(sp)

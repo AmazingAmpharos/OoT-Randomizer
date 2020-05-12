@@ -15,6 +15,13 @@
 ; we are expected to return 1 if Malon should spawn, and 0 if she should not
 
 ;function 809F0C54 to 809F0D98, 0xD7E344 to 00D7E488
+
+;force malon to spawn always for debugging purposes
+;REMEMBER TO REMOVE THIS
+.orga 0xD7E344
+    jr   ra                     
+    li   v0,1
+
 .orga 0xD7E398
                                 ; this is the state we need for Malon to move to Lon Lon Ranch
     lhu  t1,0x0ed6(a0)          ; this half holds both the following flags
@@ -116,7 +123,7 @@ return_from_the_other_function:
     li      t3,0x14             ; t3 = 0x14 which is the value if both flags are set
     lui     t6,0x8010
     or      t2,t2,t3            ; t2 = combination of the flags
-    bne     t2,t3,ev0_return    ; check that both flags are true to continue this path
+    bne     t2,t3,ev0_return    ; check that both flags are true to continue this path 
     lh      t9,0x01D8(a0)
 
 @@not_hyrule:
@@ -128,52 +135,6 @@ return_from_the_other_function:
 
 .orga 0xD7E920
 ev0_return:
-
-
-;
-; ; Replaces:
-; ;   addiu v0,v0,0xa5d0
-; .orga 0xD7E760
-;     lw    t8,68(sp)         ; t8 = global context
-;
-; ; Replaces:
-; ;   lhu   t8,3798(v0)
-; .orga 0xD7E76C
-;     lh    t8,0xA4(t8)       ; t8 = current scene number
-;
-; ; Replaces:
-; ;   andi  t9,t8,0x10
-; ;   beqz  t9,ev_egg
-; .orga 0xD7E778
-;     li    t9,0x5f           ; t9 = 0x5f (Hyrule Castle)
-;     beq   t8,t9,ev_egg      ; jump if the scene is Hyrule Castle
-;
-; ; Replace:
-; ;   lw  t1,164(v0)
-; .orga 0xD7E788
-;     lw  t1,0xA674(v0)       ; t1 = quest status
-;
-; .orga 0xD7E7A0
-; ev_egg:
-
-
-; This is the hook to change Malon's event ev1
-; See malon_extra.asm for description of what this is changing
-; Replaces:
-;   lui   t2,0x8012
-;   lhu   t2,-19290(t2)
-;   andi  t3,t2,0x40
-;   beqzl t3,@@return_block
-;   lw    ra,28(sp)
-;.orga 0xD7EA48
-;    lw    a1,44(sp)         ; a1 = pointer to the global context
-;    jal   malon_ev1_hack    ; run the extra checks
-;    nop                     ; Note that malon_ev1_hack will be able to return
-;    nop                     ; to the return address of the current function
-;    nop                     ; (fixing the stack appropriately)
-
-
-
 
 ; 0xD7E670 is Malon's initialization function
 ; the original check sets event to cb0 if Talon has fled, or Epona's Song is owned, and sets cb1 otherwise
@@ -209,20 +170,9 @@ ev0_return:
 set_ev1:
 
 
-.orga 0xD7EBBC
-    jal override_epona_song ;bne v0,at,loc_0x00000408 ; if v0? == 7 then: Return // if preview is not done
+;.orga 0xD7EBBC
+;    jal override_epona_song ;bne v0,at,loc_0x00000408 ; if v0? == 7 then: Return // if preview is not done
 
 .orga 0xD7EC1C
     nop     ; bne t8,at,loc_0x00000488 ; if t8 != 3 then: Return // if song not played successfully
     li t1,5 ;li  t1,42        ; t1 = 0x2A
-
-
-;ctx = 0x801C84A0
-;1da2ba = 0157 = Entrance
-;1da2fe = 2a -> fade swipe = white circle
-;         03 -> fade swipe = white fade
-;1da2b5 = 1a -> start transition
-
-;12B9E2 = fff1 ????
-
-;#5f0
