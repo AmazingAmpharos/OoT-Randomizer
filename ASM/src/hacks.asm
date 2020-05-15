@@ -797,7 +797,7 @@ skip_GS_BGS_text:
     li      t6, 0
 
 
-; Fix Zoras Domain King Zora to always work
+; Fix King Zora Thawed to always work
 .orga 0xE55C4C
     li t4, 0
 

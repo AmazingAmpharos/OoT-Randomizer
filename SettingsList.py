@@ -2424,7 +2424,7 @@ setting_infos = [
             Selecting multiple progressive items will give
             the appropriate number of upgrades.
             
-            If playing with Open Zora Fountain, the Rutos Letter
+            If playing with Open Zora Fountain, the Ruto's Letter
             is converted to a regular Bottle.
         ''',
     ),
