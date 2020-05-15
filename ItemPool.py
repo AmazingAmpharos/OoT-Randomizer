@@ -477,7 +477,7 @@ fixedlocations = {
     'Ganon': 'Triforce',
     'HC Zeldas Letter': 'Zeldas Letter',
     'Pierre': 'Scarecrow Song',
-    'Deliver Rutos Letter': 'Deliver Letter',
+    'Deliver Ruto\'s Letter': 'Deliver Letter',
     'Master Sword Pedestal': 'Time Travel',
     'Market Bombchu Bowling Bombchus': 'Bombchu Drop',
     'Wasteland Bombchu Salesman': 'Bombchus',
