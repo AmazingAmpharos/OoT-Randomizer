@@ -88,6 +88,9 @@ player.
 ### Dev
 
 #### New Features
+* New setting `Skip Some Minigame Phases`
+  * Allows getting both rewards for Horseback Archery and Dampé Race in a single go!
+  * Replaces the `Skip First Dampé Race` setting.
 * New cosmetic setting `HUD Button Colors`
   * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme.
   * Or you can completely randomize all the button colors.

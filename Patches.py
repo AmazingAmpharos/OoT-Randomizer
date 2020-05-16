@@ -1255,7 +1255,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         symbol = rom.sym('JABU_ELEVATOR_ENABLE')
         rom.write_byte(symbol, 0x01)
 
-    if world.no_first_minigame_phases:
+    if world.settings.skip_some_minigame_phases:
         save_context.write_bits(0x00D4 + 0x48 * 0x1C + 0x08 + 0x3, 0x10) # Beat First Dampe Race (& Chest Spawned)
         rom.write_byte(rom.sym('CHAIN_HBA_REWARDS'), 1)
         # Update the first horseback archery text to make it clear both rewards are available from the start

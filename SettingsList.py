@@ -1657,10 +1657,10 @@ setting_infos = [
         shared         = True,
     ),
     Checkbutton(
-        name           = 'no_first_minigame_phases',
-        gui_text       = 'Skip First Minigame Phases',
+        name           = 'skip_some_minigame_phases',
+        gui_text       = 'Skip Some Minigame Phases',
         gui_tooltip    = '''\
-            Skip the first phase of two-phase minigames:
+            Awards all eligible prizes after the first attempt for
             Dampe Race and Gerudo Horseback Archery.
 
             Dampe will start with the second race so you can finish 
