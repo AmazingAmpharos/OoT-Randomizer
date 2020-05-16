@@ -97,6 +97,8 @@ player.
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
+* New button color presets matching those from Majora's Mask.
+  * The "Random Choice" option may pick one of these.
 
 #### Bug Fixes
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
