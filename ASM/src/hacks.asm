@@ -1569,3 +1569,16 @@ skip_GS_BGS_text:
     jr      ra
     nop
 .endarea
+
+; ==================================================================================================
+; Chain Horseback Archery Rewards
+; ==================================================================================================
+; Replaces: jal     0x80022AD0
+;           sw      a0, 0x0018(sp)
+.orga 0xE12A04
+    jal     handle_hba_rewards_chain
+    sw      a0, 0x0018(sp)
+
+; Replaces: sw      t6, 0x02A4(a0)
+.orga 0xE12A20
+    sw      v1, 0x02A4(a0)
