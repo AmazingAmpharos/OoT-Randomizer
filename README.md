@@ -110,6 +110,7 @@ player.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
 * Added decompressor source and updated Decompress binaries.
+* OoTRandomizer.py returns an error code on failure to interact better with user scripting.
 * Mweep.
 
 ### 5.2

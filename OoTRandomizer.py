@@ -5,6 +5,7 @@ import logging
 import textwrap
 import time
 import datetime
+import sys
 
 from Gui import guiMain
 from Main import main, from_patch_file, cosmetic_patch
@@ -61,6 +62,7 @@ def start():
             main(settings)
     except Exception as ex:
         logger.exception(ex)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
