@@ -1909,7 +1909,14 @@ skip_GS_BGS_text:
 .orga 0xD7EB4C
     nop
 
-;skip check for dialog state to be 7
+;go straight to item function for songs as items
+;Replaces: sw     t0, 0x04(a2)
+;          sw     t1, 0x0180(a2)
+.orga 0xD7EB70
+    jal    malon_goto_item
+    sw     t0, 0x04(a2)
+
+;skip check for dialog state to be 7 (demonstration finished)
 .orga 0xD7EBBC
     nop
 
@@ -1938,11 +1945,11 @@ skip_GS_BGS_text:
 .skip 4 * 4    
     nop        ;dont set load flag 
 .skip 4 * 2  
-    j      malon_jr_displaced ;restore ra
+    j      malon_check_give_item
 
 ;add give item functionality to an empty function
 .orga 0xD7EC70
-    j    malon_give_item 
+    j    malon_set_wait
 
 ;==================================================================================================
 ; Clean Up Big Octo Room For Multiple Visits

@@ -15,13 +15,6 @@
 ; we are expected to return 1 if Malon should spawn, and 0 if she should not
 
 ;function 809F0C54 to 809F0D98, 0xD7E344 to 00D7E488
-
-;force malon to spawn always for debugging purposes
-;REMEMBER TO REMOVE THIS
-.orga 0xD7E344
-    jr   ra                     
-    li   v0,1
-
 .orga 0xD7E398
                                 ; this is the state we need for Malon to move to Lon Lon Ranch
     lhu  t1,0x0ed6(a0)          ; this half holds both the following flags
@@ -168,11 +161,3 @@ ev0_return:
 
 .orga 0xD7E7B8
 set_ev1:
-
-
-;.orga 0xD7EBBC
-;    jal override_epona_song ;bne v0,at,loc_0x00000408 ; if v0? == 7 then: Return // if preview is not done
-
-;.orga 0xD7EC1C
-;    nop     ; bne t8,at,loc_0x00000488 ; if t8 != 3 then: Return // if song not played successfully
-;    li t1,5 ;li  t1,42        ; t1 = 0x2A
