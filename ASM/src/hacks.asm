@@ -1902,36 +1902,68 @@ skip_GS_BGS_text:
 .orga 0xAE4B30
     jal    minigames_restore_b
 
-;;==================================================================================================
-;; Skip Eponas Song Demonstration
-;;==================================================================================================
-;;skip function call to show song demonstration
-;.orga 0xD7EB4C
-;    nop
-;
-;;skip check for dialog state to be 7
-;.orga 0xD7EBBC
-;    nop
-;
-;;dont trigger a load after learning the song
-;.orga 0xD7EC54
-;    nop
-;
-;;add give item functionality to the empty function
-;.orga 0xD7EC70
-;    j    malon_give_item
+;==================================================================================================
+; Skip Eponas Song Demonstration
+;==================================================================================================
+;skip function call to show song demonstration
+.orga 0xD7EB4C
+    nop
+
+;skip check for dialog state to be 7
+.orga 0xD7EBBC
+    nop
+
+;check for songs to handle song staff
+;Replaces: jal    0x800DD400
+.orga 0xD7EBC8
+    jal    malon_handle_staff
+
+;various changes to final actionFunc before normal cutscene would start
+.orga 0xD7EBF0
+    addiu   sp, sp, -0x18 ;move stuff around to save ra
+    sw      ra, 0x14(sp)
+    jal     malon_ra_displaced
+    lw      v0, 0x1C44(a1)
+.skip 4 * 1
+    addiu  t9, r0, 0x02AE ;from malon entrance
+.skip 4 * 2
+    jal    malon_songs_as_items ;make branch fail if songs as items is on
+    lhu    t8, 0x04C6(t8)
+.skip 4 * 5
+    sh     t9, 0x02(a3) ;set entrance from cutscene
+.skip 4 * 1
+    nop        ;dont set next cutscene index
+.skip 4 * 2
+    nop        ;dont set transition fade type
+.skip 4 * 4    
+    nop        ;dont set load flag 
+.skip 4 * 2  
+    j      malon_jr_displaced ;restore ra
+
+;add give item functionality to an empty function
+.orga 0xD7EC70
+    j    malon_give_item 
 
 ;==================================================================================================
 ; Clean Up Big Octo Room For Multiple Visits
 ;==================================================================================================
-;make link drop ruto if big octo defeated flag is set
-;Replaces: jal    Flags_SetSwitch
-.orga 0xD4BD78
+;make link drop ruto if "visited big octo" flag is set
+;Replaces: lh     t9, 0x1C(s0)
+;          lh     t6, 0x1C(s0)
+.orga 0xD4BCB0
     jal    drop_ruto
+    lh     t9, 0x1C(s0)
 
-;kill the sapphire actor if big octo defeated flag is set
+;kill Demo_Effect if "visited big octo" flag is set
 ;Replaces: sw     a1, 0x64(sp)
 ;          lh     v0, 0x1C(s0)
 .orga 0xCC85B8
     jal    check_kill_sapphire
     sw     a1, 0x64(sp)
+
+;kill Elf_Msg2 if "visited big octo" flag is set
+;Replaces: lh     t7, 0x32(s0)
+;          or     a0, s0, r0
+.orga 0xE6F758
+    jal    check_kill_target
+    lh     t7, 0x32(s0)

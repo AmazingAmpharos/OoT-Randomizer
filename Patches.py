@@ -88,8 +88,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Set starting entrance for debugging purposes
     # REMEMBER TO REMOVE THIS IDIOT
     rom.write_int32(0xB06318, 0x00000000)
-    rom.write_bytes(0xB06342, [0x00, 0x28])
-    rom.write_bytes(0xB06332, [0x00, 0x28])
+    rom.write_bytes(0xB06342, [0x02, 0xae])
+    rom.write_bytes(0xB06332, [0x02, 0xae])
     #rom.write_bytes(0xB06342, [0x04, 0x53])
     #rom.write_bytes(0xB06332, [0x04, 0x53])
 
@@ -1343,9 +1343,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 rom.write_byte(0x0D12ECB, special['item_id'])
                 rom.write_byte(0x2E8E931, special['text_id']) #Fix text box
             elif location.name == 'Song from Malon':
-                rom.write_int16(0xD7E142, bit_mask_pointer)
-                rom.write_int16(0xD7E8D6, bit_mask_pointer)
-                rom.write_int16(0xD7E786, bit_mask_pointer)
+                #rom.write_int16(0xD7E142, bit_mask_pointer)
+                #rom.write_int16(0xD7E8D6, bit_mask_pointer)
+                #rom.write_int16(0xD7E786, bit_mask_pointer)
                 rom.write_byte(0x29BECB9, special['text_id']) #Fix text box
             elif location.name == 'Song from Composer Grave':
                 rom.write_int16(0xE09F66, bit_mask_pointer)

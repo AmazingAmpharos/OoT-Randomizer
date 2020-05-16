@@ -154,7 +154,7 @@ ev0_return:
     addiu   t3,t3,lo(0x809F1128); ( ev0 )
 
     li      t0,0x01             ; mutated by Patches.py
-    ;lw      t0,-29660(t0)      ; t0 = malon's song mask
+    ;;lw      t0,-29660(t0)      ; t0 = malon's song mask
 
     move    a0,s0               ; a0 = actor pointer to set up function call
     lui     t4,hi(0x809F12E8)
@@ -173,6 +173,6 @@ set_ev1:
 ;.orga 0xD7EBBC
 ;    jal override_epona_song ;bne v0,at,loc_0x00000408 ; if v0? == 7 then: Return // if preview is not done
 
-.orga 0xD7EC1C
-    nop     ; bne t8,at,loc_0x00000488 ; if t8 != 3 then: Return // if song not played successfully
-    li t1,5 ;li  t1,42        ; t1 = 0x2A
+;.orga 0xD7EC1C
+;    nop     ; bne t8,at,loc_0x00000488 ; if t8 != 3 then: Return // if song not played successfully
+;    li t1,5 ;li  t1,42        ; t1 = 0x2A
