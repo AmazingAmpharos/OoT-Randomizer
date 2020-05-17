@@ -85,14 +85,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # a Dodongo eats a Bombchu. Does not fix stale pointer issues with the animation
     rom.write_int32(0xD6002C, 0x1F0)
 
-    # Set starting entrance for debugging purposes
-    # REMEMBER TO REMOVE THIS IDIOT
-    rom.write_int32(0xB06318, 0x00000000)
-    rom.write_bytes(0xB06342, [0x02, 0xae])
-    rom.write_bytes(0xB06332, [0x02, 0xae])
-    #rom.write_bytes(0xB06342, [0x04, 0x53])
-    #rom.write_bytes(0xB06332, [0x04, 0x53])
-
     # Can always return to youth
     rom.write_byte(0xCB6844, 0x35)
     rom.write_byte(0x253C0E2, 0x03) # Moves sheik from pedestal
