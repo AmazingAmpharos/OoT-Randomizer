@@ -1,13 +1,33 @@
 def shop_address(shop_id, shelf_id):
     return 0xC71ED0 + (0x40 * shop_id) + (0x08 * shelf_id)
 
+#   Abbreviations
+#       DMC     Death Mountain Crater
+#       DMT     Death Mountain Trail
+#       GC      Goron City
+#       GF      Gerudo Fortress
+#       GS      Gold Skulltula
+#       GV      Gerudo Valley
+#       HC      Hyrule Castle
+#       HF      Hyrule Field
+#       KF      Kokiri Forest
+#       LH      Lake Hylia
+#       LLR     Lon Lon Ranch
+#       LW      Lost Woods
+#       OGC     Outside Ganon's Castle
+#       SFM     Sacred Forest Meadow
+#       ToT     Temple of Time
+#       ZD      Zora's Domain
+#       ZF      Zora's Fountain
+#       ZR      Zora's River
+
 #   Location:                                           Type          Scene Default Addresses                 Categories
 location_table = {
     "KF Kokiri Sword Chest":                           ("Chest",       0x55,  0x00, None,                     ("Kokiri Forest", "Forest",)),
-    "KF Midos Chest Top Left":                         ("Chest",       0x28,  0x00, None,                     ("Kokiri Forest", "Forest",)),
-    "KF Midos Chest Top Right":                        ("Chest",       0x28,  0x01, None,                     ("Kokiri Forest", "Forest",)),
-    "KF Midos Chest Bottom Left":                      ("Chest",       0x28,  0x02, None,                     ("Kokiri Forest", "Forest",)),
-    "KF Midos Chest Bottom Right":                     ("Chest",       0x28,  0x03, None,                     ("Kokiri Forest", "Forest",)),
+    "KF Midos Top Left Chest":                         ("Chest",       0x28,  0x00, None,                     ("Kokiri Forest", "Forest",)),
+    "KF Midos Top Right Chest":                        ("Chest",       0x28,  0x01, None,                     ("Kokiri Forest", "Forest",)),
+    "KF Midos Bottom Left Chest":                      ("Chest",       0x28,  0x02, None,                     ("Kokiri Forest", "Forest",)),
+    "KF Midos Bottom Right Chest":                     ("Chest",       0x28,  0x03, None,                     ("Kokiri Forest", "Forest",)),
     "Graveyard Shield Grave Chest":                    ("Chest",       0x40,  0x00, None,                     ("the Graveyard", "Kakariko",)),
     "Graveyard Heart Piece Grave Chest":               ("Chest",       0x3F,  0x00, None,                     ("the Graveyard", "Kakariko",)),
     "Graveyard Composers Grave Chest":                 ("Chest",       0x41,  0x00, None,                     ("the Graveyard", "Kakariko",)),
@@ -88,7 +108,7 @@ location_table = {
     "Deku Theater Mask of Truth":                      ("NPC",         0x3E,  0x7A, None,                     ("the Lost Woods", "Forest", "Need Spiritual Stones", "Grottos")),
     "Kak Anju as Adult":                               ("NPC",         0x52,  0x1D, None,                     ("Kakariko Village", "Kakariko",)),
     "DMT Biggoron":                                    ("NPC",         0x60,  0x57, None,                     ("Death Mountain Trail", "Death Mountain",)),
-    "Kak Anjus Chickens":                              ("NPC",         0x52,  0x0F, None,                     ("Kakariko Village", "Kakariko", "Minigames")),
+    "Kak Anju as Child":                               ("NPC",         0x52,  0x0F, None,                     ("Kakariko Village", "Kakariko", "Minigames")),
     "LLR Talons Chickens":                             ("NPC",         0x4C,  0x14, None,                     ("Lon Lon Ranch", "Kakariko", "Minigames")),
     "Market 10 Big Poes":                              ("NPC",         0x4D,  0x0F, None,                     ("the Market", "Hyrule Castle",)),
     "GC Rolling Goron as Child":                       ("NPC",         0x62,  0x34, None,                     ("Goron City",)),
@@ -167,7 +187,7 @@ location_table = {
     # Dodongo's Cavern vanilla
     "Dodongos Cavern Map Chest":                       ("Chest",       0x01,  0x08, None,                     ("Dodongo's Cavern",)),
     "Dodongos Cavern Compass Chest":                   ("Chest",       0x01,  0x05, None,                     ("Dodongo's Cavern",)),
-    "Dodongos Cavern Bomb Flower Platform":            ("Chest",       0x01,  0x06, None,                     ("Dodongo's Cavern",)),
+    "Dodongos Cavern Bomb Flower Platform Chest":      ("Chest",       0x01,  0x06, None,                     ("Dodongo's Cavern",)),
     "Dodongos Cavern Bomb Bag Chest":                  ("Chest",       0x01,  0x04, None,                     ("Dodongo's Cavern",)),
     "Dodongos Cavern End of Bridge Chest":             ("Chest",       0x01,  0x0A, None,                     ("Dodongo's Cavern",)),
     # Dodongo's Cavern MQ
@@ -183,7 +203,7 @@ location_table = {
     "Jabu Jabus Belly Map Chest":                      ("Chest",       0x02,  0x02, None,                     ("Jabu Jabu's Belly",)),
     "Jabu Jabus Belly Compass Chest":                  ("Chest",       0x02,  0x04, None,                     ("Jabu Jabu's Belly",)),
     # Jabu Jabu's Belly MQ
-    "Jabu Jabus Belly MQ Entry Small Chest":           ("Chest",       0x02,  0x05, None,                     ("Jabu Jabu's Belly",)),
+    "Jabu Jabus Belly MQ First Room Side Chest":       ("Chest",       0x02,  0x05, None,                     ("Jabu Jabu's Belly",)),
     "Jabu Jabus Belly MQ Map Chest":                   ("Chest",       0x02,  0x03, None,                     ("Jabu Jabu's Belly",)),
     "Jabu Jabus Belly MQ Second Room Lower Chest":     ("Chest",       0x02,  0x02, None,                     ("Jabu Jabu's Belly",)),
     "Jabu Jabus Belly MQ Compass Chest":               ("Chest",       0x02,  0x00, None,                     ("Jabu Jabu's Belly",)),
@@ -225,11 +245,11 @@ location_table = {
     "Forest Temple MQ Boss Key Chest":                       ("Chest",       0x03,  0x0E, None,                     ("Forest Temple",)),
 
     # Fire Temple vanilla
-    "Fire Temple Chest Near Boss":                     ("Chest",       0x04,  0x01, None,                     ("Fire Temple",)),
+    "Fire Temple Near Boss Chest":                     ("Chest",       0x04,  0x01, None,                     ("Fire Temple",)),
     "Fire Temple Flare Dancer Chest":                  ("Chest",       0x04,  0x00, None,                     ("Fire Temple",)),
     "Fire Temple Boss Key Chest":                      ("Chest",       0x04,  0x0C, None,                     ("Fire Temple",)),
-    "Fire Temple Big Lava Room Blocked Door":          ("Chest",       0x04,  0x02, None,                     ("Fire Temple",)),
-    "Fire Temple Big Lava Room Lower Open Door":       ("Chest",       0x04,  0x04, None,                     ("Fire Temple",)),
+    "Fire Temple Big Lava Room Blocked Door Chest":    ("Chest",       0x04,  0x02, None,                     ("Fire Temple",)),
+    "Fire Temple Big Lava Room Lower Open Door Chest": ("Chest",       0x04,  0x04, None,                     ("Fire Temple",)),
     "Fire Temple Boulder Maze Lower Chest":            ("Chest",       0x04,  0x03, None,                     ("Fire Temple",)),
     "Fire Temple Boulder Maze Upper Chest":            ("Chest",       0x04,  0x06, None,                     ("Fire Temple",)),
     "Fire Temple Boulder Maze Side Room Chest":        ("Chest",       0x04,  0x08, None,                     ("Fire Temple",)),
@@ -240,17 +260,17 @@ location_table = {
     "Fire Temple Highest Goron Chest":                 ("Chest",       0x04,  0x09, None,                     ("Fire Temple",)),
     "Fire Temple Megaton Hammer Chest":                ("Chest",       0x04,  0x05, None,                     ("Fire Temple",)),
     # Fire Temple MQ
-    "Fire Temple MQ Chest Near Boss":                  ("Chest",       0x04,  0x07, None,                     ("Fire Temple",)),
+    "Fire Temple MQ Near Boss Chest":                  ("Chest",       0x04,  0x07, None,                     ("Fire Temple",)),
     "Fire Temple MQ Megaton Hammer Chest":             ("Chest",       0x04,  0x00, None,                     ("Fire Temple",)),
     "Fire Temple MQ Compass Chest":                    ("Chest",       0x04,  0x0B, None,                     ("Fire Temple",)),
     "Fire Temple MQ Lizalfos Maze Lower Chest":        ("Chest",       0x04,  0x03, None,                     ("Fire Temple",)),
     "Fire Temple MQ Lizalfos Maze Upper Chest":        ("Chest",       0x04,  0x06, None,                     ("Fire Temple",)),
     "Fire Temple MQ Chest On Fire":                    ("Chest",       0x04,  0x05, None,                     ("Fire Temple",)),
-    "Fire Temple MQ Map Room Small Chest":             ("Chest",       0x04,  0x02, None,                     ("Fire Temple",)),
+    "Fire Temple MQ Map Room Side Chest":              ("Chest",       0x04,  0x02, None,                     ("Fire Temple",)),
     "Fire Temple MQ Map Chest":                        ("Chest",       0x04,  0x0C, None,                     ("Fire Temple",)),
     "Fire Temple MQ Boss Key Chest":                   ("Chest",       0x04,  0x04, None,                     ("Fire Temple",)),
-    "Fire Temple MQ Big Lava Room Blocked Door":       ("Chest",       0x04,  0x01, None,                     ("Fire Temple",)),
-    "Fire Temple MQ Lizalfos Maze Side Room":          ("Chest",       0x04,  0x08, None,                     ("Fire Temple",)),
+    "Fire Temple MQ Big Lava Room Blocked Door Chest": ("Chest",       0x04,  0x01, None,                     ("Fire Temple",)),
+    "Fire Temple MQ Lizalfos Maze Side Room Chest":    ("Chest",       0x04,  0x08, None,                     ("Fire Temple",)),
     "Fire Temple MQ Freestanding Key":                 ("Collectable", 0x04,  0x1C, None,                     ("Fire Temple",)),
 
     # Water Temple vanilla
@@ -300,7 +320,7 @@ location_table = {
     "Spirit Temple MQ Entrance Back Left Chest":       ("Chest",       0x06,  0x1E, None,                     ("Spirit Temple",)),
     "Spirit Temple MQ Child Hammer Switch Chest":      ("Chest",       0x06,  0x1D, None,                     ("Spirit Temple",)),
     "Spirit Temple MQ Map Chest":                      ("Chest",       0x06,  0x00, None,                     ("Spirit Temple",)),
-    "Spirit Temple MQ Map Room Small Chest":           ("Chest",       0x06,  0x08, None,                     ("Spirit Temple",)),
+    "Spirit Temple MQ Map Room Enemy Chest":           ("Chest",       0x06,  0x08, None,                     ("Spirit Temple",)),
     "Spirit Temple MQ Child Climb North Chest":        ("Chest",       0x06,  0x06, None,                     ("Spirit Temple",)),
     "Spirit Temple MQ Child Climb South Chest":        ("Chest",       0x06,  0x0C, None,                     ("Spirit Temple",)),
     "Spirit Temple MQ Compass Chest":                  ("Chest",       0x06,  0x03, None,                     ("Spirit Temple",)),
@@ -356,12 +376,12 @@ location_table = {
     "Shadow Temple MQ Freestanding Key":                 ("Collectable", 0x07,  0x06, None,                     ("Shadow Temple",)),
 
     # Bottom of the Well vanilla
-    "Bottom of the Well Front Left Fake Wall":        ("Chest",       0x08,  0x08, None,                     ("Bottom of the Well",)),
-    "Bottom of the Well Front Center Bombable":       ("Chest",       0x08,  0x02, None,                     ("Bottom of the Well",)),
-    "Bottom of the Well Right Bottom Fake Wall":      ("Chest",       0x08,  0x05, None,                     ("Bottom of the Well",)),
+    "Bottom of the Well Front Left Fake Wall Chest":  ("Chest",       0x08,  0x08, None,                     ("Bottom of the Well",)),
+    "Bottom of the Well Front Center Bombable Chest": ("Chest",       0x08,  0x02, None,                     ("Bottom of the Well",)),
+    "Bottom of the Well Right Bottom Fake Wall Chest":("Chest",       0x08,  0x05, None,                     ("Bottom of the Well",)),
     "Bottom of the Well Compass Chest":               ("Chest",       0x08,  0x01, None,                     ("Bottom of the Well",)),
-    "Bottom of the Well Center Small Chest":          ("Chest",       0x08,  0x0E, None,                     ("Bottom of the Well",)),
-    "Bottom of the Well Back Left Bombable":          ("Chest",       0x08,  0x04, None,                     ("Bottom of the Well",)),
+    "Bottom of the Well Center Skulltula Chest":      ("Chest",       0x08,  0x0E, None,                     ("Bottom of the Well",)),
+    "Bottom of the Well Back Left Bombable Chest":    ("Chest",       0x08,  0x04, None,                     ("Bottom of the Well",)),
     "Bottom of the Well Lens of Truth Chest":         ("Chest",       0x08,  0x03, None,                     ("Bottom of the Well",)),
     "Bottom of the Well Invisible Chest":             ("Chest",       0x08,  0x14, None,                     ("Bottom of the Well",)),
     "Bottom of the Well Underwater Front Chest":      ("Chest",       0x08,  0x10, None,                     ("Bottom of the Well",)),
@@ -436,7 +456,7 @@ location_table = {
     "Ganons Castle Forest Trial Chest":                     ("Chest",       0x0D,  0x09, None,                     ("Ganon's Castle",)),
     "Ganons Castle Water Trial Left Chest":                 ("Chest",       0x0D,  0x07, None,                     ("Ganon's Castle",)),
     "Ganons Castle Water Trial Right Chest":                ("Chest",       0x0D,  0x06, None,                     ("Ganon's Castle",)),
-    "Ganons Castle Shadow Trial Small Chest":               ("Chest",       0x0D,  0x08, None,                     ("Ganon's Castle",)),
+    "Ganons Castle Shadow Trial Front Chest":               ("Chest",       0x0D,  0x08, None,                     ("Ganon's Castle",)),
     "Ganons Castle Shadow Trial Golden Gauntlets Chest":    ("Chest",       0x0D,  0x05, None,                     ("Ganon's Castle",)),
     "Ganons Castle Spirit Trial Crystal Switch Chest":      ("Chest",       0x0D,  0x12, None,                     ("Ganon's Castle",)),
     "Ganons Castle Spirit Trial Invisible Chest":           ("Chest",       0x0D,  0x14, None,                     ("Ganon's Castle",)),
@@ -450,8 +470,8 @@ location_table = {
     "Ganons Castle Light Trial Lullaby Chest":              ("Chest",       0x0D,  0x11, None,                     ("Ganon's Castle",)),
     # Ganon's Castle MQ
     "Ganons Castle MQ Water Trial Chest":                   ("Chest",       0x0D,  0x01, None,                     ("Ganon's Castle",)),
-    "Ganons Castle MQ Forest Trial Eye Switch":             ("Chest",       0x0D,  0x02, None,                     ("Ganon's Castle",)),
-    "Ganons Castle MQ Forest Trial Frozen Eye Switch":      ("Chest",       0x0D,  0x03, None,                     ("Ganon's Castle",)),
+    "Ganons Castle MQ Forest Trial Eye Switch Chest":       ("Chest",       0x0D,  0x02, None,                     ("Ganon's Castle",)),
+    "Ganons Castle MQ Forest Trial Frozen Eye Switch Chest":("Chest",       0x0D,  0x03, None,                     ("Ganon's Castle",)),
     "Ganons Castle MQ Light Trial Lullaby Chest":           ("Chest",       0x0D,  0x04, None,                     ("Ganon's Castle",)),
     "Ganons Castle MQ Shadow Trial Bomb Flower Chest":      ("Chest",       0x0D,  0x00, None,                     ("Ganon's Castle",)),
     "Ganons Castle MQ Shadow Trial Eye Switch Chest":       ("Chest",       0x0D,  0x05, None,                     ("Ganon's Castle",)),
@@ -748,23 +768,23 @@ location_table = {
 
     "Deku Tree MQ Deku Scrub":                              ("NPC",         0x00,  0x34, None,                     ("Deku Tree", "Deku Scrub",)),
 
-    "HF Grotto Deku Scrub":                                 ("GrottoNPC",   0xE6,  0x3E, None,                     ("Hyrule Field", "Deku Scrub", "Deku Scrub Upgrades", "Grottos")),
-    "LLR Grotto Deku Scrub Left":                           ("GrottoNPC",   0xFC,  0x30, None,                     ("Lon Lon Ranch", "Deku Scrub", "Grottos")),
-    "LLR Grotto Deku Scrub Right":                          ("GrottoNPC",   0xFC,  0x37, None,                     ("Lon Lon Ranch", "Deku Scrub", "Grottos")),
-    "LLR Grotto Deku Scrub Center":                         ("GrottoNPC",   0xFC,  0x33, None,                     ("Lon Lon Ranch", "Deku Scrub", "Grottos")),
+    "HF Deku Scrub Grotto":                                 ("GrottoNPC",   0xE6,  0x3E, None,                     ("Hyrule Field", "Deku Scrub", "Deku Scrub Upgrades", "Grottos")),
+    "LLR Deku Scrub Grotto Left":                           ("GrottoNPC",   0xFC,  0x30, None,                     ("Lon Lon Ranch", "Deku Scrub", "Grottos")),
+    "LLR Deku Scrub Grotto Right":                          ("GrottoNPC",   0xFC,  0x37, None,                     ("Lon Lon Ranch", "Deku Scrub", "Grottos")),
+    "LLR Deku Scrub Grotto Center":                         ("GrottoNPC",   0xFC,  0x33, None,                     ("Lon Lon Ranch", "Deku Scrub", "Grottos")),
 
     "LW Deku Scrub Near Deku Theater Right":                ("NPC",         0x5B,  0x30, None,                     ("the Lost Woods", "Forest", "Deku Scrub")),
     "LW Deku Scrub Near Deku Theater Left":                 ("NPC",         0x5B,  0x31, None,                     ("the Lost Woods", "Forest", "Deku Scrub")),
     "LW Deku Scrub Near Bridge":                            ("NPC",         0x5B,  0x77, None,                     ("the Lost Woods", "Forest", "Deku Scrub", "Deku Scrub Upgrades")),
-    "LW Grotto Deku Scrub Rear":                            ("GrottoNPC",   0xF5,  0x33, None,                     ("the Lost Woods", "Forest", "Deku Scrub", "Grottos")),
-    "LW Grotto Deku Scrub Front":                           ("GrottoNPC",   0xF5,  0x79, None,                     ("the Lost Woods", "Forest", "Deku Scrub", "Deku Scrub Upgrades", "Grottos")),
+    "LW Deku Scrub Grotto Rear":                            ("GrottoNPC",   0xF5,  0x33, None,                     ("the Lost Woods", "Forest", "Deku Scrub", "Grottos")),
+    "LW Deku Scrub Grotto Front":                           ("GrottoNPC",   0xF5,  0x79, None,                     ("the Lost Woods", "Forest", "Deku Scrub", "Deku Scrub Upgrades", "Grottos")),
 
-    "SFM Grotto Deku Scrub Rear":                           ("GrottoNPC",   0xEE,  0x39, None,                     ("Sacred Forest Meadow", "Forest", "Deku Scrub", "Grottos")),
-    "SFM Grotto Deku Scrub Front":                          ("GrottoNPC",   0xEE,  0x3A, None,                     ("Sacred Forest Meadow", "Forest", "Deku Scrub", "Grottos")),
+    "SFM Deku Scrub Grotto Rear":                           ("GrottoNPC",   0xEE,  0x39, None,                     ("Sacred Forest Meadow", "Forest", "Deku Scrub", "Grottos")),
+    "SFM Deku Scrub Grotto Front":                          ("GrottoNPC",   0xEE,  0x3A, None,                     ("Sacred Forest Meadow", "Forest", "Deku Scrub", "Grottos")),
 
-    "GC Grotto Deku Scrub Left":                            ("GrottoNPC",   0xFB,  0x30, None,                     ("Goron City", "Deku Scrub", "Grottos")),
-    "GC Grotto Deku Scrub Right":                           ("GrottoNPC",   0xFB,  0x37, None,                     ("Goron City", "Deku Scrub", "Grottos")),
-    "GC Grotto Deku Scrub Center":                          ("GrottoNPC",   0xFB,  0x33, None,                     ("Goron City", "Deku Scrub", "Grottos")),
+    "GC Deku Scrub Grotto Left":                            ("GrottoNPC",   0xFB,  0x30, None,                     ("Goron City", "Deku Scrub", "Grottos")),
+    "GC Deku Scrub Grotto Right":                           ("GrottoNPC",   0xFB,  0x37, None,                     ("Goron City", "Deku Scrub", "Grottos")),
+    "GC Deku Scrub Grotto Center":                          ("GrottoNPC",   0xFB,  0x33, None,                     ("Goron City", "Deku Scrub", "Grottos")),
     
     "Dodongos Cavern Deku Scrub Near Bomb Bag Left":        ("NPC",         0x01,  0x30, None,                     ("Dodongo's Cavern", "Deku Scrub",)),
     "Dodongos Cavern Deku Scrub Side Room Near Dodongos":   ("NPC",         0x01,  0x31, None,                     ("Dodongo's Cavern", "Deku Scrub",)),
@@ -777,24 +797,24 @@ location_table = {
     "Dodongos Cavern MQ Deku Scrub Side Room Near Lower Lizalfos":  ("NPC",         0x01,  0x39, None,                     ("Dodongo's Cavern", "Deku Scrub",)),
 
     "DMC Deku Scrub":                                       ("NPC",         0x61,  0x37, None,                     ("Death Mountain Crater", "Death Mountain", "Deku Scrub")),
-    "DMC Grotto Deku Scrub Left":                           ("GrottoNPC",   0xF9,  0x30, None,                     ("Death Mountain Crater", "Death Mountain", "Deku Scrub", "Grottos")),
-    "DMC Grotto Deku Scrub Right":                          ("GrottoNPC",   0xF9,  0x37, None,                     ("Death Mountain Crater", "Death Mountain", "Deku Scrub", "Grottos")),
-    "DMC Grotto Deku Scrub Center":                         ("GrottoNPC",   0xF9,  0x33, None,                     ("Death Mountain Crater", "Death Mountain", "Deku Scrub", "Grottos")),
+    "DMC Deku Scrub Grotto Left":                           ("GrottoNPC",   0xF9,  0x30, None,                     ("Death Mountain Crater", "Death Mountain", "Deku Scrub", "Grottos")),
+    "DMC Deku Scrub Grotto Right":                          ("GrottoNPC",   0xF9,  0x37, None,                     ("Death Mountain Crater", "Death Mountain", "Deku Scrub", "Grottos")),
+    "DMC Deku Scrub Grotto Center":                         ("GrottoNPC",   0xF9,  0x33, None,                     ("Death Mountain Crater", "Death Mountain", "Deku Scrub", "Grottos")),
 
-    "ZR Grotto Deku Scrub Rear":                            ("GrottoNPC",   0xEB,  0x39, None,                     ("Zora's River", "Deku Scrub", "Grottos")),
-    "ZR Grotto Deku Scrub Front":                           ("GrottoNPC",   0xEB,  0x3A, None,                     ("Zora's River", "Deku Scrub", "Grottos")),
+    "ZR Deku Scrub Grotto Rear":                            ("GrottoNPC",   0xEB,  0x39, None,                     ("Zora's River", "Deku Scrub", "Grottos")),
+    "ZR Deku Scrub Grotto Front":                           ("GrottoNPC",   0xEB,  0x3A, None,                     ("Zora's River", "Deku Scrub", "Grottos")),
 
     "Jabu Jabus Belly Deku Scrub":                          ("NPC",         0x02,  0x30, None,                     ("Jabu Jabu's Belly", "Deku Scrub",)),
 
-    "LH Grotto Deku Scrub Left":                            ("GrottoNPC",   0xEF,  0x30, None,                     ("Lake Hylia", "Deku Scrub", "Grottos")),
-    "LH Grotto Deku Scrub Right":                           ("GrottoNPC",   0xEF,  0x37, None,                     ("Lake Hylia", "Deku Scrub", "Grottos")),
-    "LH Grotto Deku Scrub Center":                          ("GrottoNPC",   0xEF,  0x33, None,                     ("Lake Hylia", "Deku Scrub", "Grottos")),
+    "LH Deku Scrub Grotto Left":                            ("GrottoNPC",   0xEF,  0x30, None,                     ("Lake Hylia", "Deku Scrub", "Grottos")),
+    "LH Deku Scrub Grotto Right":                           ("GrottoNPC",   0xEF,  0x37, None,                     ("Lake Hylia", "Deku Scrub", "Grottos")),
+    "LH Deku Scrub Grotto Center":                          ("GrottoNPC",   0xEF,  0x33, None,                     ("Lake Hylia", "Deku Scrub", "Grottos")),
 
-    "GV Grotto Deku Scrub Rear":                            ("GrottoNPC",   0xF0,  0x39, None,                     ("Gerudo Valley", "Gerudo", "Deku Scrub", "Grottos")),
-    "GV Grotto Deku Scrub Front":                           ("GrottoNPC",   0xF0,  0x3A, None,                     ("Gerudo Valley", "Gerudo", "Deku Scrub", "Grottos")),
+    "GV Deku Scrub Grotto Rear":                            ("GrottoNPC",   0xF0,  0x39, None,                     ("Gerudo Valley", "Gerudo", "Deku Scrub", "Grottos")),
+    "GV Deku Scrub Grotto Front":                           ("GrottoNPC",   0xF0,  0x3A, None,                     ("Gerudo Valley", "Gerudo", "Deku Scrub", "Grottos")),
 
-    "Colossus Grotto Deku Scrub Rear":                      ("GrottoNPC",   0xFD,  0x39, None,                     ("Desert Colossus", "Deku Scrub", "Grottos")),
-    "Colossus Grotto Deku Scrub Front":                     ("GrottoNPC",   0xFD,  0x3A, None,                     ("Desert Colossus", "Deku Scrub", "Grottos")),
+    "Colossus Deku Scrub Grotto Rear":                      ("GrottoNPC",   0xFD,  0x39, None,                     ("Desert Colossus", "Deku Scrub", "Grottos")),
+    "Colossus Deku Scrub Grotto Front":                     ("GrottoNPC",   0xFD,  0x3A, None,                     ("Desert Colossus", "Deku Scrub", "Grottos")),
 
     "Ganons Castle Deku Scrub Center-Left":                 ("NPC",         0x0D,  0x37, None,                     ("Ganon's Castle", "Deku Scrub",)),
     "Ganons Castle Deku Scrub Center-Right":                ("NPC",         0x0D,  0x33, None,                     ("Ganon's Castle", "Deku Scrub",)),

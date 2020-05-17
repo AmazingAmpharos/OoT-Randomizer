@@ -44,7 +44,7 @@
         "region_name": "Dodongos Cavern Climb",
         "dungeon": "Dodongos Cavern",
         "locations": {
-            "Dodongos Cavern Bomb Flower Platform": "True",
+            "Dodongos Cavern Bomb Flower Platform Chest": "True",
             "Dodongos Cavern GS Vines Above Stairs": "True",
             "Dodongos Cavern Deku Scrub Near Bomb Bag Right": "can_blast_or_smash",
             "Dodongos Cavern Deku Scrub Near Bomb Bag Left": "can_blast_or_smash"

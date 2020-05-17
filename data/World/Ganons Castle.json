@@ -73,7 +73,7 @@
                     (can_use(Longshot) and (Hover_Boots or (Dins_Fire and can_see_with_lens))))"
         },
         "locations": {
-            "Ganons Castle Shadow Trial Small Chest": "
+            "Ganons Castle Shadow Trial Front Chest": "
                 can_use(Fire_Arrows) or Progressive_Hookshot or 
                 Hover_Boots or can_play(Song_of_Time)",
             "Ganons Castle Shadow Trial Golden Gauntlets Chest": "

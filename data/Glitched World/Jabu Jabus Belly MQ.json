@@ -4,7 +4,7 @@
         "dungeon": "Jabu Jabus Belly",
         "locations": {
             "Jabu Jabus Belly MQ Map Chest": "has_explosives",
-            "Jabu Jabus Belly MQ Entry Small Chest": "Slingshot"
+            "Jabu Jabus Belly MQ First Room Side Chest": "Slingshot"
         },
         "exits": {
             "Zoras Fountain": "True",

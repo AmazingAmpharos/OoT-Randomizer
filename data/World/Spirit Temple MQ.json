@@ -24,7 +24,7 @@
         "locations": {
             "Spirit Temple MQ Child Hammer Switch Chest": "
                 at('Adult Spirit Temple', (Small_Key_Spirit_Temple, 7) and Megaton_Hammer)",
-            "Spirit Temple MQ Map Room Small Chest": "
+            "Spirit Temple MQ Map Room Enemy Chest": "
                 (Sticks or Kokiri_Sword) and 
                 has_bombchus and Slingshot and can_use(Dins_Fire)",
             "Spirit Temple MQ Map Chest": "

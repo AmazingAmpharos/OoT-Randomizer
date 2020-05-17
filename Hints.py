@@ -36,6 +36,21 @@ class GossipText():
     def __str__(self):
         return get_raw_text(line_wrap(colorText(self)))
 
+#   Abbreviations
+#       DMC     Death Mountain Crater
+#       DMT     Death Mountain Trail
+#       GC      Goron City
+#       GV      Gerudo Valley
+#       HC      Hyrule Castle
+#       HF      Hyrule Field
+#       KF      Kokiri Forest
+#       LH      Lake Hylia
+#       LW      Lost Woods
+#       SFM     Sacred Forest Meadow
+#       ToT     Temple of Time
+#       ZD      Zora's Domain
+#       ZF      Zora's Fountain
+#       ZR      Zora's River
 
 gossipLocations = {
     0x0405: GossipStone('DMC (Bombable Wall)',              'DMC Gossip Stone'),

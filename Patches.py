@@ -1479,9 +1479,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         return message
 
     single_item_scrubs = {
-        0x3E: world.get_location("HF Grotto Deku Scrub"),
+        0x3E: world.get_location("HF Deku Scrub Grotto"),
         0x77: world.get_location("LW Deku Scrub Near Bridge"),
-        0x79: world.get_location("LW Grotto Deku Scrub Front"),
+        0x79: world.get_location("LW Deku Scrub Grotto Front"),
     }
 
     scrub_message_dict = {}

@@ -48,6 +48,25 @@ def assume_pool_reachable(world, entrance_pool):
         assumed_pool.append(assumed_forward)
     return assumed_pool
 
+#   Abbreviations
+#       DMC     Death Mountain Crater
+#       DMT     Death Mountain Trail
+#       GC      Goron City
+#       GF      Gerudo Fortress
+#       GS      Gold Skulltula
+#       GV      Gerudo Valley
+#       HC      Hyrule Castle
+#       HF      Hyrule Field
+#       KF      Kokiri Forest
+#       LH      Lake Hylia
+#       LLR     Lon Lon Ranch
+#       LW      Lost Woods
+#       OGC     Outside Ganon's Castle
+#       SFM     Sacred Forest Meadow
+#       ToT     Temple of Time
+#       ZD      Zora's Domain
+#       ZF      Zora's Fountain
+#       ZR      Zora's River
 
 entrance_shuffle_table = [
     ('Dungeon',         ('KF Outside Deku Tree -> Deku Tree Lobby',                         { 'index': 0x0000 }),

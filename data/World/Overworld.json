@@ -90,10 +90,10 @@
     {
         "region_name": "KF Midos House",
         "locations": {
-            "KF Midos Chest Top Left": "True",
-            "KF Midos Chest Top Right": "True",
-            "KF Midos Chest Bottom Left": "True",
-            "KF Midos Chest Bottom Right": "True"
+            "KF Midos Top Left Chest": "True",
+            "KF Midos Top Right Chest": "True",
+            "KF Midos Bottom Left Chest": "True",
+            "KF Midos Bottom Right Chest": "True"
         },
         "exits": {
             "Kokiri Forest": "True"
@@ -827,7 +827,7 @@
             "Sheik in Kakariko": "
                 is_adult and Forest_Medallion and Fire_Medallion and Water_Medallion",
             "Kak Anju as Adult": "is_adult and at_day",
-            "Kak Anjus Chickens": "is_child and at_day",
+            "Kak Anju as Child": "is_child and at_day",
             "Kak GS House Under Construction": "is_child and at_night",
             "Kak GS Skulltula House": "is_child and at_night",
             "Kak GS Guards House": "is_child and at_night",
@@ -1701,8 +1701,8 @@
     {
         "region_name": "LW Scrubs Grotto",
         "locations": {
-            "LW Grotto Deku Scrub Rear": "can_stun_deku",
-            "LW Grotto Deku Scrub Front": "can_stun_deku"
+            "LW Deku Scrub Grotto Rear": "can_stun_deku",
+            "LW Deku Scrub Grotto Front": "can_stun_deku"
         },
         "exits": {
             "LW Beyond Mido": "True"
@@ -1720,8 +1720,8 @@
     {
         "region_name": "SFM Storms Grotto",
         "locations": {
-            "SFM Grotto Deku Scrub Rear": "can_stun_deku",
-            "SFM Grotto Deku Scrub Front": "can_stun_deku"
+            "SFM Deku Scrub Grotto Rear": "can_stun_deku",
+            "SFM Deku Scrub Grotto Front": "can_stun_deku"
         },
         "exits": {
             "Sacred Forest Meadow": "True"
@@ -1741,9 +1741,9 @@
     {
         "region_name": "LLR Grotto",
         "locations": {
-            "LLR Grotto Deku Scrub Left": "can_stun_deku",
-            "LLR Grotto Deku Scrub Right": "can_stun_deku",
-            "LLR Grotto Deku Scrub Center": "can_stun_deku"
+            "LLR Deku Scrub Grotto Left": "can_stun_deku",
+            "LLR Deku Scrub Grotto Right": "can_stun_deku",
+            "LLR Deku Scrub Grotto Center": "can_stun_deku"
         },
         "exits": {
             "Lon Lon Ranch": "True"
@@ -1780,7 +1780,7 @@
     {
         "region_name": "HF Inside Fence Grotto",
         "locations": {
-            "HF Grotto Deku Scrub": "can_stun_deku"
+            "HF Deku Scrub Grotto": "can_stun_deku"
         },
         "exits": {
             "Hyrule Field": "True"
@@ -1907,9 +1907,9 @@
     {
         "region_name": "GC Grotto",
         "locations": {
-            "GC Grotto Deku Scrub Left": "can_stun_deku",
-            "GC Grotto Deku Scrub Right": "can_stun_deku",
-            "GC Grotto Deku Scrub Center": "can_stun_deku"
+            "GC Deku Scrub Grotto Left": "can_stun_deku",
+            "GC Deku Scrub Grotto Right": "can_stun_deku",
+            "GC Deku Scrub Grotto Center": "can_stun_deku"
         },
         "exits": {
             "Goron City": "True"
@@ -1932,9 +1932,9 @@
     {
         "region_name": "DMC Hammer Grotto",
         "locations": {
-            "DMC Grotto Deku Scrub Left": "can_stun_deku",
-            "DMC Grotto Deku Scrub Right": "can_stun_deku",
-            "DMC Grotto Deku Scrub Center": "can_stun_deku"
+            "DMC Deku Scrub Grotto Left": "can_stun_deku",
+            "DMC Deku Scrub Grotto Right": "can_stun_deku",
+            "DMC Deku Scrub Grotto Center": "can_stun_deku"
         },
         "exits": {
             "DMC Lower Local": "True"
@@ -1966,8 +1966,8 @@
     {
         "region_name": "ZR Storms Grotto",
         "locations": {
-            "ZR Grotto Deku Scrub Rear": "can_stun_deku",
-            "ZR Grotto Deku Scrub Front": "can_stun_deku"
+            "ZR Deku Scrub Grotto Rear": "can_stun_deku",
+            "ZR Deku Scrub Grotto Front": "can_stun_deku"
         },
         "exits": {
             "Zora River": "True"
@@ -1976,9 +1976,9 @@
     {
         "region_name": "LH Grotto",
         "locations": {
-            "LH Grotto Deku Scrub Left": "can_stun_deku",
-            "LH Grotto Deku Scrub Right": "can_stun_deku",
-            "LH Grotto Deku Scrub Center": "can_stun_deku"
+            "LH Deku Scrub Grotto Left": "can_stun_deku",
+            "LH Deku Scrub Grotto Right": "can_stun_deku",
+            "LH Deku Scrub Grotto Center": "can_stun_deku"
         },
         "exits": {
             "Lake Hylia": "True"
@@ -1987,8 +1987,8 @@
     {
         "region_name": "Colossus Grotto",
         "locations": {
-            "Colossus Grotto Deku Scrub Rear": "can_stun_deku",
-            "Colossus Grotto Deku Scrub Front": "can_stun_deku"
+            "Colossus Deku Scrub Grotto Rear": "can_stun_deku",
+            "Colossus Deku Scrub Grotto Front": "can_stun_deku"
         },
         "exits": {
             "Desert Colossus": "True"
@@ -2003,8 +2003,8 @@
     {
         "region_name": "GV Storms Grotto",
         "locations": {
-            "GV Grotto Deku Scrub Rear": "can_stun_deku",
-            "GV Grotto Deku Scrub Front": "can_stun_deku"
+            "GV Deku Scrub Grotto Rear": "can_stun_deku",
+            "GV Deku Scrub Grotto Front": "can_stun_deku"
         },
         "exits": {
             "GV Fortress Side": "True"

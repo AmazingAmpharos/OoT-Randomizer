@@ -1,5 +1,23 @@
 import random
 
+#   Abbreviations
+#       DMC     Death Mountain Crater
+#       DMT     Death Mountain Trail
+#       GC      Goron City
+#       GF      Gerudo Fortress
+#       GS      Gold Skulltula
+#       GV      Gerudo Valley
+#       HC      Hyrule Castle
+#       HF      Hyrule Field
+#       KF      Kokiri Forest
+#       LH      Lake Hylia
+#       LLR     Lon Lon Ranch
+#       LW      Lost Woods
+#       OGC     Outside Ganon's Castle
+#       SFM     Sacred Forest Meadow
+#       ZD      Zora's Domain
+#       ZF      Zora's Fountain
+#       ZR      Zora's River
 
 class Hint(object):
     name = ""
@@ -214,7 +232,7 @@ hintTable = {
     'Kak 40 Gold Skulltula Reward':                             ("slaying #40 Gold Skulltulas# reveals", None, ['overworld', 'sometimes']),
     'Kak 30 Gold Skulltula Reward':                             ("slaying #30 Gold Skulltulas# reveals", None, ['overworld', 'sometimes']),
     'Kak 20 Gold Skulltula Reward':                             ("slaying #20 Gold Skulltulas# reveals", None, ['overworld', 'sometimes']),
-    'Kak Anjus Chickens':                                       ("#collecting cuccos# rewards", None, 'sometimes'),
+    'Kak Anju as Child':                                        ("#collecting cuccos# rewards", None, 'sometimes'),
     'GC Darunias Joy':                                          ("#Darunia's dance# leads to", None, ['overworld', 'sometimes']),
     'LW Skull Kid':                                             ("the #Lost Woods Skull Kid# grants", None, ['overworld', 'sometimes']),
     'LH Sun':                                                   ("staring into #the sun# grants", "shooting #the sun# grants", ['overworld', 'sometimes']),
@@ -270,7 +288,7 @@ hintTable = {
     'Ganons Castle Grounds -> OGC Great Fairy Fountain':        ("a heavy pillar #outside the castle# obstructs", None, 'entrance'),
     'DMC Lower Nearby -> DMC Great Fairy Fountain':             ("using a hammer #in the Crater# opens the path to", None, 'entrance'),
     'Zoras Fountain -> ZF Great Fairy Fountain':                ("a particular wall in #Zora's Fountain# hides", None, 'entrance'),
-    'GV Fortress Side -> GV Carpenter Tent':                       ("a #tent in the valley# covers", None, 'entrance'),
+    'GV Fortress Side -> GV Carpenter Tent':                    ("a #tent in the valley# covers", None, 'entrance'),
     'Graveyard Warp Pad Region -> Shadow Temple Entryway':      ("at the back of #the Graveyard#, there is", None, 'entrance'),
     'Lake Hylia -> Water Temple Lobby':                         ("deep #under a vast lake#, one can find", None, 'entrance'),
     'Sacred Forest Meadow -> Forest Temple Lobby':              ("deep #within the Meadow#, one can find", None, 'entrance'),

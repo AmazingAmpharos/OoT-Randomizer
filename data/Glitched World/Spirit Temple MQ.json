@@ -22,7 +22,7 @@
         "region_name": "Child Spirit Temple",
         "dungeon": "Spirit Temple",
         "locations": {
-            "Spirit Temple MQ Map Room Small Chest": "
+            "Spirit Temple MQ Map Room Enemy Chest": "
                 (Sticks or Kokiri_Sword) and 
                 has_bombchus and Slingshot and can_use(Dins_Fire)",
             "Spirit Temple MQ Map Chest": "

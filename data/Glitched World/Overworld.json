@@ -85,10 +85,10 @@
     {
         "region_name": "KF Midos House",
         "locations": {
-            "KF Midos Chest Top Left": "True",
-            "KF Midos Chest Top Right": "True",
-            "KF Midos Chest Bottom Left": "True",
-            "KF Midos Chest Bottom Right": "True"
+            "KF Midos Top Left Chest": "True",
+            "KF Midos Top Right Chest": "True",
+            "KF Midos Bottom Left Chest": "True",
+            "KF Midos Bottom Right Chest": "True"
         }
     },
     {
@@ -576,7 +576,7 @@
         "locations": {
             "Kak Man on Roof": "True",
             "Kak Anju as Adult": "is_adult",
-            "Kak Anjus Chickens": "is_child",
+            "Kak Anju as Child": "is_child",
             "Sheik in Kakariko": "
                 is_adult and Forest_Medallion and Fire_Medallion and Water_Medallion",
             "Kak GS House Under Construction": "is_child and at_night",
@@ -1142,8 +1142,8 @@
     {
         "region_name": "LW Scrubs Grotto",
         "locations": {
-            "LW Grotto Deku Scrub Rear": "True",
-            "LW Grotto Deku Scrub Front": "True"
+            "LW Deku Scrub Grotto Rear": "True",
+            "LW Deku Scrub Grotto Front": "True"
         }
     },
     {
@@ -1155,8 +1155,8 @@
     {
         "region_name": "SFM Storms Grotto",
         "locations": {
-            "SFM Grotto Deku Scrub Rear": "True",
-            "SFM Grotto Deku Scrub Front": "True"
+            "SFM Deku Scrub Grotto Rear": "True",
+            "SFM Deku Scrub Grotto Front": "True"
         }
     },
     {
@@ -1168,9 +1168,9 @@
     {
         "region_name": "LLR Grotto",
         "locations": {
-            "LLR Grotto Deku Scrub Left": "True",
-            "LLR Grotto Deku Scrub Right": "True",
-            "LLR Grotto Deku Scrub Center": "True"
+            "LLR Deku Scrub Grotto Left": "True",
+            "LLR Deku Scrub Grotto Right": "True",
+            "LLR Deku Scrub Grotto Center": "True"
         }
     },
     {
@@ -1190,7 +1190,7 @@
     {
         "region_name": "HF Inside Fence Grotto",
         "locations": {
-            "HF Grotto Deku Scrub": "can_stun_deku"
+            "HF Deku Scrub Grotto": "can_stun_deku"
         }
     },
     {
@@ -1261,9 +1261,9 @@
     {
         "region_name": "GC Grotto",
         "locations": {
-            "GC Grotto Deku Scrub Left": "True",
-            "GC Grotto Deku Scrub Right": "True",
-            "GC Grotto Deku Scrub Center": "True"
+            "GC Deku Scrub Grotto Left": "True",
+            "GC Deku Scrub Grotto Right": "True",
+            "GC Deku Scrub Grotto Center": "True"
         }
     },
     {
@@ -1276,9 +1276,9 @@
     {
         "region_name": "DMC Hammer Grotto",
         "locations": {
-            "DMC Grotto Deku Scrub Left": "True",
-            "DMC Grotto Deku Scrub Right": "True",
-            "DMC Grotto Deku Scrub Center": "True"
+            "DMC Deku Scrub Grotto Left": "True",
+            "DMC Deku Scrub Grotto Right": "True",
+            "DMC Deku Scrub Grotto Center": "True"
         }
     },
     {
@@ -1294,30 +1294,30 @@
     {
         "region_name": "ZR Storms Grotto",
         "locations": {
-            "ZR Grotto Deku Scrub Rear": "True",
-            "ZR Grotto Deku Scrub Front": "True"
+            "ZR Deku Scrub Grotto Rear": "True",
+            "ZR Deku Scrub Grotto Front": "True"
         }
     },
     {
         "region_name": "LH Grotto",
         "locations": {
-            "LH Grotto Deku Scrub Left": "True",
-            "LH Grotto Deku Scrub Right": "True",
-            "LH Grotto Deku Scrub Center": "True"
+            "LH Deku Scrub Grotto Left": "True",
+            "LH Deku Scrub Grotto Right": "True",
+            "LH Deku Scrub Grotto Center": "True"
         }
     },
     {
         "region_name": "Colossus Grotto",
         "locations": {
-            "Colossus Grotto Deku Scrub Rear": "True",
-            "Colossus Grotto Deku Scrub Front": "True"
+            "Colossus Deku Scrub Grotto Rear": "True",
+            "Colossus Deku Scrub Grotto Front": "True"
         }
     },
     {
         "region_name": "GV Storms Grotto",
         "locations": {
-            "GV Grotto Deku Scrub Rear": "True",
-            "GV Grotto Deku Scrub Front": "True"
+            "GV Deku Scrub Grotto Rear": "True",
+            "GV Deku Scrub Grotto Front": "True"
         }
     }
 ]

@@ -5,7 +5,7 @@
         "locations": {
             "Nut Pot": "True",
             "Jabu Jabus Belly MQ Map Chest": "can_blast_or_smash",
-            "Jabu Jabus Belly MQ Entry Small Chest": "can_use(Slingshot)"
+            "Jabu Jabus Belly MQ First Room Side Chest": "can_use(Slingshot)"
         },
         "exits": {
             "Zoras Fountain": "True",

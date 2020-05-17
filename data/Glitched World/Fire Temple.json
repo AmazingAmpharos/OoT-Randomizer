@@ -3,7 +3,7 @@
         "region_name": "Fire Temple Lower",
         "dungeon": "Fire Temple",
         "locations": {
-            "Fire Temple Chest Near Boss" : "True",
+            "Fire Temple Near Boss Chest" : "True",
             "Fire Temple Flare Dancer Chest": "
                 ((Small_Key_Fire_Temple, 8) or not keysanity) and (can_use(Megaton_Hammer) or can_use(Hookshot) or has_explosives)",
             "Fire Temple Boss Key Chest": "(
@@ -25,8 +25,8 @@
         "region_name": "Fire Temple Big Lava Room",
         "dungeon": "Fire Temple",
         "locations": {
-            "Fire Temple Big Lava Room Lower Open Door": "True",
-            "Fire Temple Big Lava Room Blocked Door": "has_explosives",
+            "Fire Temple Big Lava Room Lower Open Door Chest": "True",
+            "Fire Temple Big Lava Room Blocked Door Chest": "has_explosives",
             "Fire Temple GS Song of Time Room": "is_adult"
         },
         "exits": {
