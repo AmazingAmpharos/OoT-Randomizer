@@ -436,7 +436,7 @@ gerudo_caught_entrance:
 GET_ITEM_TRIGGERED:
 .byte 0x00
 .align 4
-;this is hella broken, skip is assuming registers are set when they are not
+
 fountain_set_posrot:
     or      a1, s1, r0      ;displaced
 
