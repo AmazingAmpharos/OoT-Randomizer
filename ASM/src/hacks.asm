@@ -1903,7 +1903,7 @@ skip_GS_BGS_text:
     jal    minigames_restore_b
 
 ;==================================================================================================
-; Skip Eponas Song Demonstration
+; Skip Malons Song Demonstration
 ;==================================================================================================
 ;skip function call to show song demonstration
 .orga 0xD7EB4C
@@ -1920,7 +1920,7 @@ skip_GS_BGS_text:
 .orga 0xD7EBBC
     nop
 
-;check for songs to handle song staff
+;check for songs as items to handle song staff
 ;Replaces: jal    0x800DD400
 .orga 0xD7EBC8
     jal    malon_handle_staff
@@ -1947,7 +1947,7 @@ skip_GS_BGS_text:
 .skip 4 * 2  
     j      malon_check_give_item
 
-;add give item functionality to an empty function
+;set relevant flags and restore malon so she can talk again
 .orga 0xD7EC70
     j    malon_set_wait
 
@@ -1965,12 +1965,5 @@ skip_GS_BGS_text:
 ;Replaces: sw     a1, 0x64(sp)
 ;          lh     v0, 0x1C(s0)
 .orga 0xCC85B8
-    jal    check_kill_sapphire
+    jal    check_kill_demoeffect
     sw     a1, 0x64(sp)
-
-;kill Elf_Msg2 if "visited big octo" flag is set
-;Replaces: lh     t7, 0x32(s0)
-;          or     a0, s0, r0
-.orga 0xE6F758
-    jal    check_kill_target
-    lh     t7, 0x32(s0)

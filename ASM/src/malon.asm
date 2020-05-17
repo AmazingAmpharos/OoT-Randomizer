@@ -120,7 +120,6 @@ return_from_the_other_function:
     lh      t9,0x01D8(a0)
 
 @@not_hyrule:
-; D7E8D4 ; mutated by Patches.py
     li      t6,0x01
     lb      t7,0x0EDE(v0)       ; check learned song from malon flag
     and     t8,t6,t7            ; t8 = "Has Epona's Song"
@@ -140,13 +139,9 @@ ev0_return:
     lui     t3,hi(0x809F1128)
     lui     t0,0x8010
     lh      t8,0xA4(t8)         ; t8 = current scene number
-
-    lb      t1,0x0EDE(v0)       ; mutated by Patches.py
-
+    lb      t1,0x0EDE(v0)
     addiu   t3,t3,lo(0x809F1128); ( ev0 )
-
-    li      t0,0x01             ; mutated by Patches.py
-
+    li      t0,0x01
     move    a0,s0               ; a0 = actor pointer to set up function call
     lui     t4,hi(0x809F12E8)
     addiu   t4,t4,lo(0x809F12E8); ( ev1 )

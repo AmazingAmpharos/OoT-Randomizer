@@ -36,7 +36,7 @@ drop_ruto:
     jr      ra
     addiu   sp, sp, 0x30
 
-check_kill_sapphire:
+check_kill_demoeffect:
     addiu   sp, sp, -0x30
     sw      ra, 0x14(sp)
     sw      t0, 0x18(sp)
@@ -56,7 +56,6 @@ check_kill_sapphire:
     nop
     jal     0x80020EB4       ;Actor_Kill 
     nop
-
 @@return:
     lw      t2, 0x20(sp)
     lw      t1, 0x1C(sp)
@@ -65,19 +64,3 @@ check_kill_sapphire:
     lh      v0, 0x1C(s0)     ;displaced
     jr      ra
     addiu   sp, sp, 0x30
-
-check_kill_target:
-    addiu   sp, sp, -0x18
-    sw      ra, 0x14(sp)
-    or      a0, s0, r0        ;displaced
-    la      t0, SAVE_CONTEXT
-    lh      t1, 0x0F20(t0)   ;infTable+0x28
-    andi    t1, t1, 0x0040   ;big octo visited bit
-    beqz    t1, @@return     ;return if flag is not set
-    nop
-    jal     0x80020EB4       ;Actor_Kill 
-    nop
-@@return:
-    lw      ra, 0x14(sp)
-    jr      ra
-    addiu   sp, sp, 0x18
