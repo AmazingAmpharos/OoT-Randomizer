@@ -1582,3 +1582,12 @@ skip_GS_BGS_text:
 ; Replaces: sw      t6, 0x02A4(a0)
 .orga 0xE12A20
     sw      v1, 0x02A4(a0)
+
+;==================================================================================================
+; Jabu Spiritual Stone Actor Override
+;==================================================================================================
+; Replaces: addiu   t8, zero, 0x0006
+;           sh      t8, 0x017C(a0)
+.orga 0xCC8594
+    jal     demo_effect_medal_init
+    addiu   t8, zero, 0x0006
