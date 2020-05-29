@@ -823,6 +823,8 @@ def get_pool_core(world):
 
     if world.shuffle_ocarinas:
         pool.extend(['Ocarina'] * 2)
+        if world.item_pool_value == 'plentiful':
+            pending_junk_pool.extend(['Ocarina'])
     else:
         placed_items['Gift from Saria'] = 'Ocarina'
         placed_items['Ocarina of Time'] = 'Ocarina'
@@ -845,6 +847,8 @@ def get_pool_core(world):
     if world.shuffle_beans:
         if world.distribution.get_starting_item('Magic Bean') < 10:
             pool.append('Magic Bean Pack')
+            if world.item_pool_value == 'plentiful':
+                pending_junk_pool.extend(['Magic Bean Pack'])
         else:
             pool.extend(get_junk_item())
     else:
@@ -1061,6 +1065,8 @@ def get_pool_core(world):
         placed_items['Gerudo Fortress Membership Card'] = 'Ice Trap'
     else:
         placed_items['Gerudo Fortress Membership Card'] = 'Gerudo Membership Card'
+    if world.shuffle_gerudo_card and world.item_pool_value == 'plentiful':
+        pending_junk_pool.extend(['Gerudo Membership Card'])
 
     if world.shopsanity == 'off':
         placed_items.update(vanilla_shop_items)
@@ -1190,7 +1196,7 @@ def get_pool_core(world):
     pool.extend(songlist)
     if world.shuffle_song_items and world.item_pool_value == 'plentiful':
         pending_junk_pool.extend(songlist)
-        
+
     if world.free_scarecrow:
         world.state.collect(ItemFactory('Scarecrow Song'))
     
