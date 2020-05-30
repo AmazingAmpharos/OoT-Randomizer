@@ -1046,6 +1046,8 @@ def get_pool_core(world):
             placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
         else:
             pool.extend(['Small Key (Gerudo Fortress)'] * 4)
+        if world.item_pool_value == 'plentiful':
+            pending_junk_pool.extend(['Small Key (Gerudo Fortress)'])
     else:
         if world.gerudo_fortress == 'fast':
             placed_items['Gerudo Fortress North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
@@ -1067,6 +1069,12 @@ def get_pool_core(world):
         placed_items['Gerudo Fortress Membership Card'] = 'Gerudo Membership Card'
     if world.shuffle_gerudo_card and world.item_pool_value == 'plentiful':
         pending_junk_pool.extend(['Gerudo Membership Card'])
+
+    if world.shuffle_smallkeys == 'keysanity' and world.item_pool_value == 'plentiful':
+        dungeons_with_keys = ['(Bottom of the Well)', '(Forest Temple)', '(Fire Temple)', '(Water Temple)',
+                              '(Shadow Temple)', '(Spirit Temple)', '(Ganons Castle)']
+        for dungeon in dungeons_with_keys:
+            pending_junk_pool.append('Small Key ' + dungeon)
 
     if world.shopsanity == 'off':
         placed_items.update(vanilla_shop_items)
