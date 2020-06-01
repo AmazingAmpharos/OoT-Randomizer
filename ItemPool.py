@@ -1087,6 +1087,9 @@ def get_pool_core(world):
         pending_junk_pool.append('Boss Key (Shadow Temple)')
         pending_junk_pool.append('Boss Key (Spirit Temple)')
 
+    if world.item_pool_value == 'plentiful' and world.shuffle_ganon_bosskey == 'keysanity':
+        pending_junk_pool.append('Boss Key (Ganons Castle)')
+
     if world.shopsanity == 'off':
         placed_items.update(vanilla_shop_items)
         if world.bombchus_in_logic:
