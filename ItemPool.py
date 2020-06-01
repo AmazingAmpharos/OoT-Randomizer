@@ -1070,11 +1070,22 @@ def get_pool_core(world):
     if world.shuffle_gerudo_card and world.item_pool_value == 'plentiful':
         pending_junk_pool.extend(['Gerudo Membership Card'])
 
-    if world.shuffle_smallkeys == 'keysanity' and world.item_pool_value == 'plentiful':
-        dungeons_with_keys = ['(Bottom of the Well)', '(Forest Temple)', '(Fire Temple)', '(Water Temple)',
-                              '(Shadow Temple)', '(Spirit Temple)', '(Ganons Castle)']
-        for dungeon in dungeons_with_keys:
-            pending_junk_pool.append('Small Key ' + dungeon)
+    if world.item_pool_value == 'plentiful' and world.shuffle_smallkeys == 'keysanity':
+        pending_junk_pool.append('Small Key (Bottom of the Well)')
+        pending_junk_pool.append('Small Key (Forest Temple)')
+        pending_junk_pool.append('Small Key (Fire Temple)')
+        pending_junk_pool.append('Small Key (Water Temple)')
+        pending_junk_pool.append('Small Key (Shadow Temple)')
+        pending_junk_pool.append('Small Key (Spirit Temple)')
+        pending_junk_pool.append('Small Key (Gerudo Training Grounds)')
+        pending_junk_pool.append('Small Key (Ganons Castle)')
+
+    if world.item_pool_value == 'plentiful' and world.shuffle_bosskeys == 'keysanity':
+        pending_junk_pool.append('Boss Key (Forest Temple)')
+        pending_junk_pool.append('Boss Key (Fire Temple)')
+        pending_junk_pool.append('Boss Key (Water Temple)')
+        pending_junk_pool.append('Boss Key (Shadow Temple)')
+        pending_junk_pool.append('Boss Key (Spirit Temple)')
 
     if world.shopsanity == 'off':
         placed_items.update(vanilla_shop_items)
