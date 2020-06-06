@@ -1582,3 +1582,78 @@ skip_GS_BGS_text:
 ; Replaces: sw      t6, 0x02A4(a0)
 .orga 0xE12A20
     sw      v1, 0x02A4(a0)
+
+;==================================================================================================
+; Remove File 3 From File Select
+;==================================================================================================
+;Main Menu Up
+; Replaces: sh      t6, 0xCA2A(at)
+;           lh      t7, 0x4A2A(v1)
+.orga 0xBAA168
+    jal     skip_3_up_main
+    sh      t6, 0xCA2A(at)
+
+;Main Menu Down
+; Replaces: sh      t5, 0xCA2A(at)
+;           lh      t6, 0x4A2A(v1)
+.orga 0xBAA198
+    jal     skip_3_down_main
+    sh      t5, 0xCA2A(at)
+
+;Copy From Up
+; Replaces: sh      t7, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA16AC
+    jal     skip_3_up_copy_from
+    sh      t7, 0xCA2A(at)
+
+;Copy From Down
+; Replaces: sh      t9, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA16E0
+    jal     skip_3_down_copy_from
+    sh      t9, 0xCA2A(at)
+
+;Copy To Up
+; Replaces: sh      t5, 0xCA2A(at)
+;           lh      t6, 0x4A38(t0)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA1C68
+    jal     skip_3_up_copy_to
+    sh      t5, 0xCA2A(at)
+    lh      t6, 0x4A38(t0)
+
+;Copy To Down
+; Replaces: sh      t9, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA1CD0
+    jal     skip_3_down_copy_to
+    sh      t9, 0xCA2A(at)
+
+;Special Case For Copy File 2 Down
+; Replaces: sh      t3, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA1D04
+    jal     skip_3_down_copy_to_2
+    nop
+
+;Erase Up
+; Replaces: sh      t9, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA32CC
+    jal     skip_3_up_erase
+    sh      t9, 0xCA2A(at)
+
+;Erase Down
+; Replaces: sh      t3, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA3300
+    jal     skip_3_down_erase
+    sh      t3, 0xCA2A(at)
+
+;File 3 Position
+; Replaces: or      a0, s0, r0
+;           lh      t3, 0x4A2E(a2)
+.orga 0xBAF4F4
+    jal     move_file_3
+    or      a0, s0, r0

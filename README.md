@@ -112,6 +112,7 @@ player.
 * Minor plandomizer fixes and improvements.
 
 #### Other Changes
+* File 3 has been removed from generated ROMs to free up some space.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
 * Added decompressor source and updated Decompress binaries.

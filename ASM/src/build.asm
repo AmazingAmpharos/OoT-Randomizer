@@ -83,6 +83,7 @@ RANDO_CONTEXT:
 .include "deku_mouth_condition.asm"
 .include "audio.asm"
 .include "king_zora.asm"
+.include "file_select.asm"
 .include "agony.asm"
 .include "horseback_archery.asm"
 
