@@ -204,10 +204,17 @@ class Settings:
         else:
             self.distribution = Distribution(self)
 
+        self.reset_distribution()
+
+        self.numeric_seed = self.get_numeric_seed()
+
+
+    def reset_distribution(self):
+        self.distribution.reset()
+
         for location in self.disabled_locations:
             self.distribution.add_location(location, '#Junk')
 
-        self.numeric_seed = self.get_numeric_seed()
 
     def check_dependency(self, setting_name, check_random=True):
         return self.get_dependency(setting_name, check_random) == None

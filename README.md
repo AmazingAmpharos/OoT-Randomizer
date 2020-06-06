@@ -108,6 +108,7 @@ player.
 * Fix some issues with `Randomize Main Rules`:
   * Closed Forest implies starting as child.
   * Triforce Hunt won't accidentally place the Boss Key for Ganon's Castle.
+* The seed generator can now retry a few times in case of failure.
 
 #### Other Changes
 * Performance improvements to seed generation.
