@@ -120,7 +120,7 @@ class Scale(Setting_Info):
 logic_tricks = {
     'Fewer Tunic Requirements': {
         'name'    : 'logic_fewer_tunic_requirements',
-        'tags'    : ("General","Fire Temple","Water Temple","Gerudo Training Grounds","Zora's Fountain",),
+        'tags'    : ("General", "Fire Temple", "Water Temple", "Gerudo Training Grounds", "Zora's Fountain",),
         'tooltip' : '''\
                     Allows the following possible without Tunics:
                     - Enter Water Temple. The key below the center
@@ -135,7 +135,7 @@ logic_tricks = {
                     '''},
     'Hidden Grottos without Stone of Agony': {
         'name'    : 'logic_grottos_without_agony',
-        'tags'    : ("General","Entrance"),
+        'tags'    : ("General", "Entrance"),
         'tooltip' : '''\
                     Allows entering hidden grottos without the
                     Stone of Agony.
@@ -192,13 +192,13 @@ logic_tricks = {
                     '''},
     'Deku Tree Basement Vines GS with Jump Slash': {
         'name'    : 'logic_deku_basement_gs',
-        'tags'    : ("Deku Tree","Skulltulas",),
+        'tags'    : ("Deku Tree", "Skulltulas",),
         'tooltip' : '''\
                     Can be defeated by doing a precise jump slash.
                     '''},
     'Deku Tree Basement Webs with Bow': {
         'name'    : 'logic_deku_b1_webs_with_bow',
-        'tags'    : ("Deku Tree","Entrance",),
+        'tags'    : ("Deku Tree", "Entrance",),
         'tooltip' : '''\
                     All spider web walls in Deku Tree basement can be burnt
                     by adult using just a bow shooting through torches. Applies
@@ -215,7 +215,7 @@ logic_tricks = {
                     '''},
     'Hammer Rusted Switches Through Walls': {
         'name'    : 'logic_rusted_switches',
-        'tags'    : ("Fire Temple","Ganon's Castle",),
+        'tags'    : ("Fire Temple", "Ganon's Castle",),
         'tooltip' : '''\
                     Applies to:
                     - Fire Temple Highest Goron Chest.
@@ -283,7 +283,7 @@ logic_tricks = {
                     '''},
     'Forest Temple East Courtyard GS with Boomerang': {
         'name'    : 'logic_forest_outdoor_east_gs',
-        'tags'    : ("Forest Temple","Entrance","Skulltulas",),
+        'tags'    : ("Forest Temple", "Entrance", "Skulltulas",),
         'tooltip' : '''\
                     Precise Boomerang throws can allow child to
                     kill the Skulltula and collect the token.
@@ -333,7 +333,7 @@ logic_tricks = {
                     '''},
     'Adult Kokiri Forest GS with Hover Boots': {
         'name'    : 'logic_adult_kokiri_gs',
-        'tags'    : ("Kokiri Forest","Skulltulas",),
+        'tags'    : ("Kokiri Forest", "Skulltulas",),
         'tooltip' : '''\
                     Can be obtained without Hookshot by using the Hover
                     Boots off of one of the roots.
@@ -356,7 +356,7 @@ logic_tricks = {
                     '''},
     'Spirit Temple Main Room GS with Boomerang': {
         'name'    : 'logic_spirit_lobby_gs',
-        'tags'    : ("Spirit Temple","Skulltulas",),
+        'tags'    : ("Spirit Temple", "Skulltulas",),
         'tooltip' : '''\
                     Standing on the highest part of the arm of the statue, a
                     precise Boomerang throw can kill and obtain this Gold
@@ -366,7 +366,7 @@ logic_tricks = {
                     '''},
     'Spirit Temple MQ Sun Block Room GS with Boomerang': {
         'name'    : 'logic_spirit_mq_sun_block_gs',
-        'tags'    : ("Spirit Temple","Skulltulas",),
+        'tags'    : ("Spirit Temple", "Skulltulas",),
         'tooltip' : '''\
                     Throw the Boomerang in such a way that it
                     curves through the side of the glass block
@@ -374,7 +374,7 @@ logic_tricks = {
                     '''},
     'Jabu Scrub as Adult with Jump Dive': {
         'name'    : 'logic_jabu_scrub_jump_dive',
-        'tags'    : ("Jabu Jabu's Belly","Entrance",),
+        'tags'    : ("Jabu Jabu's Belly", "Entrance",),
         'tooltip' : '''\
                     Standing above the underwater tunnel leading to the scrub,
                     jump down and swim through the tunnel. This allows adult to
@@ -382,14 +382,14 @@ logic_tricks = {
                     '''},
     'Jabu MQ Song of Time Block GS with Boomerang': {
         'name'    : 'logic_jabu_mq_sot_gs',
-        'tags'    : ("Jabu Jabu's Belly","Skulltulas",),
+        'tags'    : ("Jabu Jabu's Belly", "Skulltulas",),
         'tooltip' : '''\
                     Allow the Boomerang to return to you through
                     the Song of Time block to grab the token.
                     '''},
     'Bottom of the Well Cage GS without Boomerang': {
         'name'    : 'logic_botw_cage_gs',
-        'tags'    : ("Bottom of the Well","Skulltulas",),
+        'tags'    : ("Bottom of the Well", "Skulltulas",),
         'tooltip' : '''\
                     After killing the Skulltula, the Like Like
                     can be used to boost you into the token.
@@ -535,7 +535,7 @@ logic_tricks = {
                     '''},
     'Desert Colossus Hill GS with Hookshot': {
         'name'    : 'logic_colossus_gs',
-        'tags'    : ("Desert Colossus","Skulltulas",),
+        'tags'    : ("Desert Colossus", "Skulltulas",),
         'tooltip' : '''\
                     Somewhat precise. If you kill enough Leevers
                     you can get enough of a break to take some time
@@ -543,7 +543,7 @@ logic_tricks = {
                     '''},
     'Dodongo\'s Cavern Scarecrow GS with Armos Statue': {
         'name'    : 'logic_dc_scarecrow_gs',
-        'tags'    : ("Dodongo's Cavern","Skulltulas",),
+        'tags'    : ("Dodongo's Cavern", "Skulltulas",),
         'tooltip' : '''\
                     You can jump off an Armos Statue to reach the
                     alcove with the Gold Skulltula. It takes quite
@@ -553,7 +553,7 @@ logic_tricks = {
                     '''},
     'Kakariko Tower GS with Jump Slash': {
         'name'    : 'logic_kakariko_tower_gs',
-        'tags'    : ("Kakariko Village","Skulltulas",),
+        'tags'    : ("Kakariko Village", "Skulltulas",),
         'tooltip' : '''\
                     Climb the tower as high as you can without
                     touching the Gold Skulltula, then let go and
@@ -562,7 +562,7 @@ logic_tricks = {
                     '''},
     'Lake Hylia Lab Wall GS with Jump Slash': {
         'name'    : 'logic_lab_wall_gs',
-        'tags'    : ("Lake Hylia","Skulltulas",),
+        'tags'    : ("Lake Hylia", "Skulltulas",),
         'tooltip' : '''\
                     The jump slash to actually collect the
                     token is somewhat precise.
@@ -606,7 +606,7 @@ logic_tricks = {
                     '''},
     'Forest Temple NE Outdoors Ledge with Hover Boots': {
         'name'    : 'logic_forest_outdoors_ledge',
-        'tags'    : ("Forest Temple","Entrance",),
+        'tags'    : ("Forest Temple", "Entrance",),
         'tooltip' : '''\
                     With precise Hover Boots movement you can fall down
                     to this ledge from upper balconies. If done precisely
@@ -628,14 +628,14 @@ logic_tricks = {
                     '''},
     'Water Temple Falling Platform Room GS with Hookshot': {
         'name'    : 'logic_water_falling_platform_gs',
-        'tags'    : ("Water Temple","Skulltulas",),
+        'tags'    : ("Water Temple", "Skulltulas",),
         'tooltip' : '''\
                     If you stand on the very edge of the platform, this
                     Gold Skulltula can be obtained with only the Hookshot.
                     '''},
     'Water Temple Serpent River GS without Iron Boots': {
         'name'    : 'logic_water_river_gs',
-        'tags'    : ("Water Temple","Skulltulas",),
+        'tags'    : ("Water Temple", "Skulltulas",),
         'tooltip' : '''\
                     Standing on the exposed ground toward the end of
                     the river, a precise Longshot use can obtain the
@@ -655,14 +655,14 @@ logic_tricks = {
                     '''},
     'Death Mountain Trail Upper Red Rock GS without Hammer': {
         'name'    : 'logic_trail_gs_upper',
-        'tags'    : ("Death Mountain Trail","Skulltulas",),
+        'tags'    : ("Death Mountain Trail", "Skulltulas",),
         'tooltip' : '''\
                     After killing the Skulltula, the token can be collected
                     by backflipping into the rock at the correct angle.
                     '''},
     'Death Mountain Trail Lower Red Rock GS with Hookshot': {
         'name'    : 'logic_trail_gs_lower_hookshot',
-        'tags'    : ("Death Mountain Trail","Skulltulas",),
+        'tags'    : ("Death Mountain Trail", "Skulltulas",),
         'tooltip' : '''\
                     After killing the Skulltula, the token can be fished
                     out of the rock without needing to destroy it, by
@@ -670,7 +670,7 @@ logic_tricks = {
                     '''},
     'Death Mountain Trail Lower Red Rock GS with Magic Bean': {
         'name'    : 'logic_trail_gs_lower_bean',
-        'tags'    : ("Death Mountain Trail","Skulltulas",),
+        'tags'    : ("Death Mountain Trail", "Skulltulas",),
         'tooltip' : '''\
                     After killing the Skulltula, the token can be
                     collected without needing to destroy the rock by
@@ -708,7 +708,7 @@ logic_tricks = {
                     '''},
     'Fire Temple Song of Time Room GS without Song of Time': {
         'name'    : 'logic_fire_song_of_time',
-        'tags'    : ("Fire Temple","Skulltulas",),
+        'tags'    : ("Fire Temple", "Skulltulas",),
         'tooltip' : '''\
                     A precise jump can be used to reach this room.
                     '''},
@@ -740,7 +740,7 @@ logic_tricks = {
                     '''},
     'Ice Cavern MQ Scarecrow GS with No Additional Items': {
         'name'    : 'logic_ice_mq_scarecrow',
-        'tags'    : ("Ice Cavern","Skulltulas",),
+        'tags'    : ("Ice Cavern", "Skulltulas",),
         'tooltip' : '''\
                     A precise jump can be used to reach this alcove.
                     '''},
@@ -779,7 +779,7 @@ logic_tricks = {
                     '''},
     'Lost Woods Adult GS without Bean': {
         'name'    : 'logic_lost_woods_gs_bean',
-        'tags'    : ("the Lost Woods","Skulltulas",),
+        'tags'    : ("the Lost Woods", "Skulltulas",),
         'tooltip' : '''\
                     You can collect the token with a precise
                     Hookshot use, as long as you can kill the
@@ -788,7 +788,7 @@ logic_tricks = {
                     '''},
     'Jabu Near Boss GS without Boomerang as Adult': {
         'name'    : 'logic_jabu_boss_gs_adult',
-        'tags'    : ("Jabu Jabu's Belly","Skulltulas","Entrance",),
+        'tags'    : ("Jabu Jabu's Belly", "Skulltulas", "Entrance",),
         'tooltip' : '''\
                     You can easily get over to the door to the
                     near boss area early with Hover Boots. The
@@ -808,7 +808,7 @@ logic_tricks = {
                     '''},
     'Death Mountain Trail Soil GS without Destroying Boulder': {
         'name'    : 'logic_dmt_soil_gs',
-        'tags'    : ("Death Mountain Trail","Skulltulas",),
+        'tags'    : ("Death Mountain Trail", "Skulltulas",),
         'tooltip' : '''\
                     Bugs will go into the soft soil even while the boulder is
                     still blocking the entrance.
@@ -1018,7 +1018,7 @@ logic_tricks = {
                     '''},
     'Jump onto the Lost Woods Bridge as Adult with Nothing': {
         'name'    : 'logic_lost_woods_bridge',
-        'tags'    : ("the Lost Woods","Entrance",),
+        'tags'    : ("the Lost Woods", "Entrance",),
         'tooltip' : '''\
                     With very precise movement it's possible for
                     adult to jump onto the bridge without needing
