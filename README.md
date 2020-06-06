@@ -99,6 +99,7 @@ player.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
 * New button color presets matching those from Majora's Mask.
   * The "Random Choice" option may pick one of these.
+* Tricks can be filtered in the GUI using a new dropdown.
 
 #### Bug Fixes
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
