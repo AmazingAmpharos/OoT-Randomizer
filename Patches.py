@@ -1654,6 +1654,15 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_bytes(0xE2ADB6, [0x70, 0x57])
         buildBossRewardHints(world, messages)
 
+    # Set Dungeon Reward Actor in Jabu Jabu to be accurate
+    # Vanilla and MQ Jabu Jabu addresses are the same for this object and actor
+    jabu_stone_object = world.get_location('Barinade').item.special['object_id']
+    rom.write_int16(0x277D068, jabu_stone_object)
+    rom.write_int16(0x277D168, jabu_stone_object)
+    jabu_stone_type = world.get_location('Barinade').item.special['actor_type']
+    rom.write_byte(0x277D0BB, jabu_stone_type)
+    rom.write_byte(0x277D19B, jabu_stone_type)
+
     # update happy mask shop to use new SOLD OUT text id
     rom.write_int16(shop_item_file.start + 0x1726, shop_items[0x26].description_message)
 

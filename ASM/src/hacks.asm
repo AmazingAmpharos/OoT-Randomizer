@@ -1657,3 +1657,12 @@ skip_GS_BGS_text:
 .orga 0xBAF4F4
     jal     move_file_3
     or      a0, s0, r0
+
+;==================================================================================================
+; Jabu Spiritual Stone Actor Override
+;==================================================================================================
+; Replaces: addiu   t8, zero, 0x0006
+;           sh      t8, 0x017C(a0)
+.orga 0xCC8594
+    jal     demo_effect_medal_init
+    addiu   t8, zero, 0x0006

@@ -113,6 +113,7 @@ player.
 
 #### Other Changes
 * File 3 has been removed from generated ROMs to free up some space.
+* The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
 * Added decompressor source and updated Decompress binaries.

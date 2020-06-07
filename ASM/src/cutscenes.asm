@@ -390,3 +390,31 @@ gerudo_caught_entrance:
 @@return:
     jr      ra
     nop
+
+; Override Demo_Effect init data for medallions
+demo_effect_medal_init:
+    sh      t8, 0x17C(a0)      ; displaced code
+
+    la      t0, GLOBAL_CONTEXT
+    lh      t1, 0xA4(t0)       ; current scene
+    li      t2, 0x02
+    bne     t1, t2, @@return   ; skip overrides if scene isn't "Inside Jabu Jabu's Belly"
+
+    lw      t1, 0x138(a0)      ; pointer to actor overlay table entry
+    lw      t1, 0x10(t1)       ; actor overlay loaded ram address
+    addiu   t2, t1, 0x3398
+    sw      t2, 0x184(a0)      ; override update routine to child spritiual stone (8092E058)
+    li      t3, 1
+    sh      t3, 0x17C(a0)      ; set cutscene NPC id to child ruto
+
+    addiu   sp, sp, -0x18
+    sw      ra, 0x14(sp)
+    li      a1, 0.1
+    jal     0x80020F88         ; set actor scale to 0.1
+    nop
+    lw      ra, 0x14(sp)
+    addiu   sp, sp, 0x18
+
+@@return:
+    jr      ra
+    nop
