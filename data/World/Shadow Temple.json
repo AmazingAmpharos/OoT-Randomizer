@@ -75,7 +75,7 @@
             "Shadow Temple Spike Walls Left Chest": "can_use(Dins_Fire)",
             "Shadow Temple Boss Key Chest": "can_use(Dins_Fire)",
             "Shadow Temple Invisible Floormaster Chest": "True",
-            "Shadow Temple Bongo Bongo": "
+            "Shadow Temple Bongo Bongo Heart": "
                 (Small_Key_Shadow_Temple, 5) and Boss_Key_Shadow_Temple and
                 (Bow or can_use(Distant_Scarecrow) or (logic_shadow_statue and has_bombchus))",
             "Bongo Bongo": "

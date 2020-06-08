@@ -21,7 +21,7 @@
         },
         "locations": {
             "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)",
-            "Water Temple Morpha": "Boss_Key_Water_Temple and can_use(Longshot)",
+            "Water Temple Morpha Heart": "Boss_Key_Water_Temple and can_use(Longshot)",
             "Fairy Pot": "has_bottle and can_use(Longshot)"
         },
         "exits": {

@@ -154,7 +154,7 @@
         "region_name": "Forest Temple Boss Room",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple Phantom Ganon": "(can_use(Hookshot) or can_use(Bow)) or 
+            "Forest Temple Phantom Ganon Heart": "(can_use(Hookshot) or can_use(Bow)) or 
                 (can_use(Slingshot) and (Kokiri_Sword or Sticks))",
             "Phantom Ganon": "(can_use(Hookshot) or can_use(Bow)) or 
                 (can_use(Slingshot) and (Kokiri_Sword or Sticks))"

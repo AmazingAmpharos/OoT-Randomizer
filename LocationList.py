@@ -494,14 +494,14 @@ location_table = {
     "Bongo Bongo":                                          ("Boss",        None,  0x6A, (0x0CA3F43, 0x0D13E19),   None),
     "Ganon":                                                ("Event",       None,  None, None,                     None),
 
-    "Deku Tree Queen Gohma":                                ("BossHeart",   0x11,  0x4F, None,                     ("Deku Tree",)),
-    "Dodongos Cavern King Dodongo":                         ("BossHeart",   0x12,  0x4F, None,                     ("Dodongo's Cavern",)),
-    "Jabu Jabus Belly Barinade":                            ("BossHeart",   0x13,  0x4F, None,                     ("Jabu Jabu's Belly",)),
-    "Forest Temple Phantom Ganon":                          ("BossHeart",   0x14,  0x4F, None,                     ("Forest Temple",)),
-    "Fire Temple Volvagia":                                 ("BossHeart",   0x15,  0x4F, None,                     ("Fire Temple",)),
-    "Water Temple Morpha":                                  ("BossHeart",   0x16,  0x4F, None,                     ("Water Temple",)),
-    "Spirit Temple Twinrova":                               ("BossHeart",   0x17,  0x4F, None,                     ("Spirit Temple",)),
-    "Shadow Temple Bongo Bongo":                            ("BossHeart",   0x18,  0x4F, None,                     ("Shadow Temple",)),
+    "Deku Tree Queen Gohma Heart":                          ("BossHeart",   0x11,  0x4F, None,                     ("Deku Tree",)),
+    "Dodongos Cavern King Dodongo Heart":                   ("BossHeart",   0x12,  0x4F, None,                     ("Dodongo's Cavern",)),
+    "Jabu Jabus Belly Barinade Heart":                      ("BossHeart",   0x13,  0x4F, None,                     ("Jabu Jabu's Belly",)),
+    "Forest Temple Phantom Ganon Heart":                    ("BossHeart",   0x14,  0x4F, None,                     ("Forest Temple",)),
+    "Fire Temple Volvagia Heart":                           ("BossHeart",   0x15,  0x4F, None,                     ("Fire Temple",)),
+    "Water Temple Morpha Heart":                            ("BossHeart",   0x16,  0x4F, None,                     ("Water Temple",)),
+    "Spirit Temple Twinrova Heart":                         ("BossHeart",   0x17,  0x4F, None,                     ("Spirit Temple",)),
+    "Shadow Temple Bongo Bongo Heart":                      ("BossHeart",   0x18,  0x4F, None,                     ("Shadow Temple",)),
 
     # note that the scene for skulltulas is not the actual scene the token appears in
     # rather, it is the index of the grouping used when storing skulltula collection

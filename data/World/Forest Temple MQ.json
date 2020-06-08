@@ -153,7 +153,7 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple MQ Basement Chest": "True",
-            "Forest Temple Phantom Ganon": "Boss_Key_Forest_Temple",
+            "Forest Temple Phantom Ganon Heart": "Boss_Key_Forest_Temple",
             "Phantom Ganon": "Boss_Key_Forest_Temple"
         }
     }

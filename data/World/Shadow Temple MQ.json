@@ -91,7 +91,7 @@
         "region_name": "Shadow Temple Beyond Boat",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Bongo Bongo": "
+            "Shadow Temple Bongo Bongo Heart": "
                 (Bow or (logic_shadow_statue and has_bombchus)) and
                 Boss_Key_Shadow_Temple",
             "Bongo Bongo": "

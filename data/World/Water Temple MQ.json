@@ -6,7 +6,7 @@
             "Water Temple Clear": "Boss_Key_Water_Temple and can_use(Longshot)"
         },
         "locations": {
-            "Water Temple Morpha": "Boss_Key_Water_Temple and can_use(Longshot)",
+            "Water Temple Morpha Heart": "Boss_Key_Water_Temple and can_use(Longshot)",
             "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)"
         },
         "exits": {

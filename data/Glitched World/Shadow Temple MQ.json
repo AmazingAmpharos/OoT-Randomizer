@@ -76,7 +76,7 @@
         "region_name": "Shadow Temple Beyond Boat",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Bongo Bongo": "Bow and Boss_Key_Shadow_Temple",
+            "Shadow Temple Bongo Bongo Heart": "Bow and Boss_Key_Shadow_Temple",
             "Bongo Bongo": "Bow and Boss_Key_Shadow_Temple",
             "Shadow Temple MQ GS After Ship": "True",
             "Shadow Temple MQ GS Near Boss": "Bow"

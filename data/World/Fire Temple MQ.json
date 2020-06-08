@@ -102,7 +102,7 @@
         "region_name": "Fire Boss Room",
         "dungeon": "Fire Temple",
         "locations": {
-            "Fire Temple Volvagia": "True",
+            "Fire Temple Volvagia Heart": "True",
             "Volvagia": "True"
         }
     }

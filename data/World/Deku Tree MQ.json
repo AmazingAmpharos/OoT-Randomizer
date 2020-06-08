@@ -72,7 +72,7 @@
         "dungeon": "Deku Tree",
         "locations": {
             "Deku Tree MQ Deku Scrub": "can_stun_deku",
-            "Deku Tree Queen Gohma": "
+            "Deku Tree Queen Gohma Heart": "
                 here(has_fire_source_with_torch) and here(has_shield) and
                 (is_adult or Kokiri_Sword or Sticks)",
             "Queen Gohma": "

@@ -168,7 +168,7 @@
         },
         "locations": {
             "Morpha": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)",
-            "Water Temple Morpha": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)"
+            "Water Temple Morpha Heart": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)"
         }
     }
 ]

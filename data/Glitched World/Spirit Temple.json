@@ -164,7 +164,7 @@
         "region_name": "Spirit Temple Boss",
         "dungeon": "Spirit Temple",
         "locations": {
-            "Spirit Temple Twinrova": "True",
+            "Spirit Temple Twinrova Heart": "True",
             "Twinrova": "True"
         }
     }

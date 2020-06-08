@@ -101,7 +101,7 @@
         "region_name": "Shadow Boss",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple Bongo Bongo": "True",
+            "Shadow Temple Bongo Bongo Heart": "True",
             "Bongo Bongo": "True"
         }
     }

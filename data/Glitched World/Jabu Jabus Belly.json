@@ -38,7 +38,7 @@
         "region_name": "Jabu Jabus Belly Boss Area",
         "dungeon": "Jabu Jabus Belly",
         "locations": {
-            "Jabu Jabus Belly Barinade": "can_use(Boomerang) and (Sticks or Kokiri_Sword)",
+            "Jabu Jabus Belly Barinade Heart": "can_use(Boomerang) and (Sticks or Kokiri_Sword)",
             "Barinade": "can_use(Boomerang) and (Sticks or Kokiri_Sword)",
             "Jabu Jabus Belly GS Near Boss": "True"
         },

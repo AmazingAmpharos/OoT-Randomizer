@@ -120,7 +120,7 @@
         "dungeon": "Spirit Temple",
         "locations": {
             "Spirit Temple MQ Mirror Puzzle Invisible Chest": "can_see_with_lens",
-            "Spirit Temple Twinrova": "Mirror_Shield and Boss_Key_Spirit_Temple",
+            "Spirit Temple Twinrova Heart": "Mirror_Shield and Boss_Key_Spirit_Temple",
             "Twinrova": "Mirror_Shield and Boss_Key_Spirit_Temple"
         }
     },

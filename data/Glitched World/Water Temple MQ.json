@@ -13,7 +13,7 @@
             # If the player leaves the dungeon without collecting the item at Morpha Heart,
             # they won't be able to come back without Iron Boots.
             # If it is the Iron Boots or an item required to get them, it means a soft-lock.
-            "Water Temple Morpha": "
+            "Water Temple Morpha Heart": "
                 Boss_Key_Water_Temple and can_use(Longshot) and Iron_Boots",
             "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)"
         },

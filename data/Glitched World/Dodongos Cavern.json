@@ -72,7 +72,7 @@
         "dungeon": "Dodongos Cavern",
         "locations": {
             "Dodongos Cavern Boss Room Chest": "True",
-            "Dodongos Cavern King Dodongo": "
+            "Dodongos Cavern King Dodongo Heart": "
                 (Bombs or Progressive_Strength_Upgrade or
                     (has_bombchus and ((is_adult and can_shield) or (is_child and can_isg)))
                 ) and 

@@ -146,7 +146,7 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple Basement Chest": "True",
-            "Forest Temple Phantom Ganon": "Boss_Key_Forest_Temple",
+            "Forest Temple Phantom Ganon Heart": "Boss_Key_Forest_Temple",
             "Phantom Ganon": "Boss_Key_Forest_Temple",
             "Forest Temple GS Basement": "can_use(Hookshot) or can_use(Boomerang)"
         }
