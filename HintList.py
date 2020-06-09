@@ -223,13 +223,11 @@ hintTable = {
     'DMC Deku Scrub Bombs':                                     ("a single #scrub in the crater# sells", None, ['overworld', 'sometimes']),
     'GS Death Mountain Crater Crate':                           ("a spider under a #crate in the crater# holds", None, ['overworld', 'sometimes']),
 
-    'GS Deku Tree Basement Back Room':                          ("a #spider in the back of a tree# holds", None, ['dungeon', 'sometimes']),
     'Deku Tree MQ After Spinning Log Chest':                    ("a #temporal stone within a tree# contains", None, ['dungeon', 'sometimes']),
     'GS Deku Tree MQ Basement Ceiling':                         ("a #spider on the ceiling of a tree# holds", None, ['dungeon', 'sometimes']),
     'GS Dodongo\'s Cavern MQ Song of Time Block Room':          ("a spider under #temporal stones in a cavern# holds", None, ['dungeon', 'sometimes']),
     'Boomerang Chest':                                          ("a school of #stingers swallowed by a deity# guard", None, ['dungeon', 'sometimes']),
     'GS Jabu Jabu MQ Invisible Enemies Room':                   ("a spider surrounded by #shadows in the belly of a deity# holds", None, ['dungeon', 'sometimes']),
-    'GS Jabu Jabu MQ Boomerang Room':                           ("a spider under a #temporal stone in the stomach of a deity# holds", None, ['dungeon', 'sometimes']),
     'Jabu Jabus Belly MQ Cow':                                  ("a #cow swallowed by a deity# gifts", None, ['dungeon', 'sometimes']),
     'Fire Temple Scarecrow Chest':                              ("a #scarecrow atop the volcano# hides", "#Pierre atop the Fire Temple# hides", ['dungeon', 'sometimes']),
     'Fire Temple Megaton Hammer Chest':                         ("the #Flare Dancer atop the volcano# guards a chest containing", "the #Flare Dancer atop the Fire Temple# guards a chest containing", ['dungeon', 'sometimes']),
@@ -254,10 +252,9 @@ hintTable = {
     'GS Spirit Temple MQ Lower Adult Right':                    ("a #spider's symphony in the Colossus# yields", "a #spider's symphony in the Spirit Temple# yields", ['dungeon', 'sometimes']),
     'Shadow Temple Hidden Floormaster Chest':                   ("shadows in an #invisible maze# guard", None, ['dungeon', 'sometimes']),
     'Shadow Temple MQ Bomb Flower Chest':                       ("shadows in an #invisible maze# guard", None, ['dungeon', 'sometimes']),
-    'Shadow Temple MQ Beamos Silver Rupees Chest':              ("reaching #silver rupees above a Beamos# yields", None, ['dungeon', 'sometimes']),
 
     'Desert Colossus -> Desert Colossus Grotto':                ("lifting a #rock in the desert# reveals", None, 'entrance'),
-    'Gerudo Valley -> Gerudo Valley Octorok Grotto':            ("on #a ledge in the valley#, a silver rock hides", None, 'entrance'),
+    'Gerudo Valley -> Gerudo Valley Octorok Grotto':            ("a rock on #a ledge in the valley# hides", None, 'entrance'),
     'Goron City -> Goron City Grotto':                          ("a #pool of lava# in Goron City blocks the way to", None, 'entrance'),
     'Gerudo Fortress -> Gerudo Fortress Storms Grotto':         ("a #storm within Gerudo's Fortress# reveals", None, 'entrance'),
     'Zoras Domain -> Zoras Domain Storms Grotto':               ("a #storm within Zora's Domain# reveals", None, 'entrance'),
@@ -270,7 +267,6 @@ hintTable = {
     'Shadow Temple Warp Region -> Shadow Temple Entryway':      ("at the #back of the Graveyard#, there is", None, 'entrance'),
     'Lake Hylia -> Water Temple Lobby':                         ("deep #under a vast lake#, one can find", None, 'entrance'),
     'Gerudo Fortress -> Gerudo Training Grounds Lobby':         ("paying a #fee to the Gerudos# grants access to", None, 'entrance'),
-    'Zoras Fountain -> Ice Cavern Beginning':                   ("an #opening in a frozen fountain# leads to", None, 'entrance'),
     'Zoras Fountain -> Jabu Jabus Belly Beginning':             ("inside #Jabu Jabu#, one can find", None, 'entrance'),
     'Kakariko Village -> Bottom of the Well':                   ("a #village well# leads to", None, 'entrance'),
 
