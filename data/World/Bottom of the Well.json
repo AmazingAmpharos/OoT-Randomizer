@@ -16,7 +16,7 @@
             "Bottom of the Well Right Bottom Hidden Wall": "logic_lens_botw or can_use(Lens_of_Truth)",
             "Bottom of the Well Center Large Chest": "logic_lens_botw or can_use(Lens_of_Truth)",
             "Bottom of the Well Center Small Chest": "logic_lens_botw or can_use(Lens_of_Truth)",
-            "Bottom of the Well Back Left Bombable": "has_explosives",
+            "Bottom of the Well Back Left Bombable": "has_explosives and (logic_lens_botw or can_use(Lens_of_Truth))",
             "Bottom of the Well Freestanding Key": "Sticks or can_use(Dins_Fire)",
             "Bottom of the Well Defeat Boss": "
                 can_play(Zeldas_Lullaby) and 

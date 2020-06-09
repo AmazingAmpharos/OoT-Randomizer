@@ -44,11 +44,11 @@
         "region_name": "Shadow Temple Upper Huge Pit",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple MQ Invisible Blades Visible Chest": "can_play(Song_of_Time) and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth))",
-            "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time) and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth))"
+            "Shadow Temple MQ Invisible Blades Visible Chest": "can_play(Song_of_Time)",
+            "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time)"
         },
         "exits": {
-            "Shadow Temple Lower Huge Pit": "logic_shadow_mq_huge_pit or (has_fire_source and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth)))"
+            "Shadow Temple Lower Huge Pit": "has_fire_source or logic_shadow_mq_huge_pit"
         }
     },
     {

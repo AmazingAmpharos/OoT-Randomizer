@@ -1079,13 +1079,6 @@ logic_tricks = {
                     The equivalent trick for going in reverse through
                     the Wasteland is "Reverse Wasteland".
                     '''},
-    'Bottom of the Well MQ without Lens of Truth': {
-        'name'    : 'logic_lens_botw_mq',
-        'tags'    : ("Lens of Truth","Bottom of the Well",),
-        'tooltip' : '''\
-                    Removes the requirements for the Lens of Truth
-                    in Bottom of the Well MQ.
-                    '''},
     'Bottom of the Well without Lens of Truth': {
         'name'    : 'logic_lens_botw',
         'tags'    : ("Lens of Truth","Bottom of the Well",),
