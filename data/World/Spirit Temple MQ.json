@@ -22,9 +22,9 @@
         "region_name": "Child Spirit Temple",
         "dungeon": "Spirit Temple",
         "locations": {
-            "Spirit Temple MQ Child Center Chest": "
-                at('Adult Spirit Temple', (Small_Key_Spirit_Temple, 7) and Hammer)",
-            "Spirit Temple MQ Child Left Chest": "
+            "Spirit Temple MQ Child Hammer Switch Chest": "
+                at('Adult Spirit Temple', (Small_Key_Spirit_Temple, 7) and Megaton_Hammer)",
+            "Spirit Temple MQ Map Room Enemy Chest": "
                 (Sticks or Kokiri_Sword) and 
                 has_bombchus and Slingshot and can_use(Dins_Fire)",
             "Spirit Temple MQ Map Chest": "
@@ -48,15 +48,15 @@
         "dungeon": "Spirit Temple",
         "locations": {
             "Spirit Temple MQ Child Climb South Chest": "(Small_Key_Spirit_Temple, 7)",
-            "Spirit Temple MQ Lower NE Main Room Chest": "can_play(Zeldas_Lullaby)",
-            "Spirit Temple MQ Upper NE Main Room Chest": "can_see_with_lens",
+            "Spirit Temple MQ Statue Room Lullaby Chest": "can_play(Zeldas_Lullaby)",
+            "Spirit Temple MQ Statue Room Invisible Chest": "can_see_with_lens",
             "Spirit Temple MQ Beamos Room Chest": "(Small_Key_Spirit_Temple, 5)",
-            "Spirit Temple MQ Ice Trap Chest": "
+            "Spirit Temple MQ Chest Switch Chest": "
                 (Small_Key_Spirit_Temple, 5) and can_play(Song_of_Time)",
             "Spirit Temple MQ Boss Key Chest": "
                 (Small_Key_Spirit_Temple, 5) and can_play(Song_of_Time) and Mirror_Shield",
-            "GS Spirit Temple MQ Iron Knuckle West": "(Small_Key_Spirit_Temple, 7)",
-            "GS Spirit Temple MQ Iron Knuckle North": "(Small_Key_Spirit_Temple, 7)"
+            "Spirit Temple MQ GS Nine Thrones Room West": "(Small_Key_Spirit_Temple, 7)",
+            "Spirit Temple MQ GS Nine Thrones Room North": "(Small_Key_Spirit_Temple, 7)"
         },
         "exits": {
             "Lower Adult Spirit Temple": "
@@ -64,7 +64,7 @@
                     (logic_spirit_mq_lower_adult and can_use(Dins_Fire) and Bow)) and Mirror_Shield",
             "Spirit Temple Shared": "True",
             "Spirit Temple Boss Area": "
-                (Small_Key_Spirit_Temple, 6) and can_play(Zeldas_Lullaby) and Hammer",
+                (Small_Key_Spirit_Temple, 6) and can_play(Zeldas_Lullaby) and Megaton_Hammer",
             "Mirror Shield Hand": "
                 (Small_Key_Spirit_Temple, 5) and can_play(Song_of_Time) and can_see_with_lens"
         }
@@ -83,7 +83,7 @@
                 can_use(Bow) or
                 (Bow and Slingshot)",
             "Spirit Temple MQ Sun Block Room Chest": " can_play(Song_of_Time) or is_adult",
-            "GS Spirit Temple MQ Sun Block Room": "
+            "Spirit Temple MQ GS Sun Block Room": "
                 (logic_spirit_mq_sun_block_gs and can_play(Song_of_Time) and Boomerang) or
                 is_adult"
         },
@@ -102,15 +102,15 @@
         "region_name": "Lower Adult Spirit Temple",
         "dungeon": "Spirit Temple",
         "locations": {
-            "Spirit Temple MQ Lower Adult Left Chest": "True",
-            "Spirit Temple MQ Lower Adult Right Chest": "
-                (Small_Key_Spirit_Temple, 7) and Hammer and Ocarina and 
+            "Spirit Temple MQ Leever Room Chest": "True",
+            "Spirit Temple MQ Symphony Room Chest": "
+                (Small_Key_Spirit_Temple, 7) and Megaton_Hammer and Ocarina and 
                 Song_of_Time and Eponas_Song and Suns_Song and 
                 Song_of_Storms and Zeldas_Lullaby",
-            "Spirit Temple MQ Entrance Front Right Chest": "Hammer",
-            "GS Spirit Temple MQ Lower Adult Left": "True",
-            "GS Spirit Temple MQ Lower Adult Right": "
-                (Small_Key_Spirit_Temple, 7) and Hammer and Ocarina and 
+            "Spirit Temple MQ Entrance Front Right Chest": "Megaton_Hammer",
+            "Spirit Temple MQ GS Leever Room": "True",
+            "Spirit Temple MQ GS Symphony Room": "
+                (Small_Key_Spirit_Temple, 7) and Megaton_Hammer and Ocarina and 
                 Song_of_Time and Eponas_Song and Suns_Song and 
                 Song_of_Storms and Zeldas_Lullaby"
         }
@@ -120,7 +120,7 @@
         "dungeon": "Spirit Temple",
         "locations": {
             "Spirit Temple MQ Mirror Puzzle Invisible Chest": "can_see_with_lens",
-            "Twinrova Heart": "Mirror_Shield and Boss_Key_Spirit_Temple",
+            "Spirit Temple Twinrova Heart": "Mirror_Shield and Boss_Key_Spirit_Temple",
             "Twinrova": "Mirror_Shield and Boss_Key_Spirit_Temple"
         }
     },
@@ -128,14 +128,14 @@
         "region_name": "Mirror Shield Hand",
         "dungeon": "Spirit Temple",
         "locations": {
-            "Mirror Shield Chest": "True"
+            "Spirit Temple Mirror Shield Chest": "True"
         }
     },
     {
         "region_name": "Silver Gauntlets Hand",
         "dungeon": "Spirit Temple",
         "locations": {
-            "Silver Gauntlets Chest": "True"
+            "Spirit Temple Silver Gauntlets Chest": "True"
         }
     }
 ]

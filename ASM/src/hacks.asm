@@ -47,9 +47,9 @@
 ;==================================================================================================
 
 ; Patch NPCs to give override-compatible items
-.orga 0xDB13D3 :: .byte 0x76 ; Frog Ocarina Game
+.orga 0xDB13D3 :: .byte 0x76 ; Frogs Ocarina Game
 .orga 0xDF2647 :: .byte 0x76 ; Ocarina memory game
-.orga 0xE2F093 :: .byte 0x34 ; Bombchu Bowling Bomb Bag
+.orga 0xE2F093 :: .byte 0x34 ; Market Bombchu Bowling Bomb Bag
 .orga 0xEC9CE7 :: .byte 0x7A ; Deku Theater Mask of Truth
 
 ; Runs when storing an incoming item to the player instance
@@ -786,7 +786,7 @@ skip_GS_BGS_text:
 .orga 0xD35EFC
     nop
 
-; Fix Link the Goron to always work
+; Fix GC Rolling Goron as Adult to always work
 .orga 0xED2FAC
     lb      t6, 0x0F18(v1)
 

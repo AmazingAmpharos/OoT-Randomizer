@@ -193,7 +193,7 @@ void ocarina_of_time_draw(z64_actor_t *actor, z64_game_t *game) {
 void item_etcetera_draw(z64_actor_t *actor, z64_game_t *game) {
     override_t override = { 0 };
     if (actor->variable == 0x01) {
-        // Ruto's letter
+        // Ruto's Letter
         override = lookup_override(actor, game->scene_index, 0x15);
     } else if (actor->variable == 0x07) {
         // Fire Arrow

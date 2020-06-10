@@ -11,11 +11,11 @@
         "region_name": "Jabu Jabus Belly Main",
         "dungeon": "Jabu Jabus Belly",
         "locations": {
-            "Boomerang Chest": "True",
-            "GS Jabu Jabu Water Switch Room": "True",
-            "GS Jabu Jabu Lobby Basement Lower": "can_use(Boomerang) or can_use(Hookshot)",
-            "GS Jabu Jabu Lobby Basement Upper": "can_use(Boomerang) or can_use(Hookshot)",
-            "Jabu Deku Scrub Deku Nuts": "
+            "Jabu Jabus Belly Boomerang Chest": "True",
+            "Jabu Jabus Belly GS Water Switch Room": "True",
+            "Jabu Jabus Belly GS Lobby Basement Lower": "can_use(Boomerang) or can_use(Hookshot)",
+            "Jabu Jabus Belly GS Lobby Basement Upper": "can_use(Boomerang) or can_use(Hookshot)",
+            "Jabu Jabus Belly Deku Scrub": "
                 can_dive or is_child or logic_jabu_scrub_jump_dive or can_use(Iron_Boots)",
             "Fairy Pot": "has_bottle"
         },
@@ -41,9 +41,9 @@
         "region_name": "Jabu Jabus Belly Boss Area",
         "dungeon": "Jabu Jabus Belly",
         "locations": {
-            "Barinade Heart": "can_use(Boomerang)",
+            "Jabu Jabus Belly Barinade Heart": "can_use(Boomerang)",
             "Barinade": "can_use(Boomerang)",
-            "GS Jabu Jabu Near Boss": "True",
+            "Jabu Jabus Belly GS Near Boss": "True",
             "Nut Pot": "True"
         },
         "exits": {

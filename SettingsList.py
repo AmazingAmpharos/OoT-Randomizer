@@ -222,7 +222,7 @@ logic_tricks = {
                     - MQ Fire Temple Lizalfos Maze.
                     - MQ Spirit Trial.
                     '''},
-    'Bottom of the Well Basement Chest with Strength & Sticks': {
+    'Bottom of the Well Map Chest with Strength & Sticks': {
         'name'    : 'logic_botw_basement',
         'tags'    : ("Bottom of the Well",),
         'tooltip' : '''\
@@ -306,7 +306,7 @@ logic_tricks = {
                     and the wall. Through that gap you can hookshot
                     the target on the ceiling.
                     '''},
-    'Death Mountain Trail Bombable Chest with Strength': {
+    'Death Mountain Trail Chest with Strength': {
         'name'    : 'logic_dmt_bombable',
         'tags'    : ("Death Mountain Trail",),
         'tooltip' : '''\
@@ -387,7 +387,7 @@ logic_tricks = {
                     Allow the Boomerang to return to you through
                     the Song of Time block to grab the token.
                     '''},
-    'Bottom of the Well Cage GS without Boomerang': {
+    'Bottom of the Well Like Like GS without Boomerang': {
         'name'    : 'logic_botw_cage_gs',
         'tags'    : ("Bottom of the Well", "Skulltulas",),
         'tooltip' : '''\
@@ -505,7 +505,7 @@ logic_tricks = {
                     so that Link will grab the ledge from farther away than
                     is normally possible.
                     '''},
-    'Diving in the Lab without Gold Scale': {
+    'Lake Hylia Lab Dive without Gold Scale': {
         'name'    : 'logic_lab_diving',
         'tags'    : ("Lake Hylia",),
         'tooltip' : '''\
@@ -533,7 +533,7 @@ logic_tricks = {
                     You can beat the quicksand by backwalking across it
                     in a specific way.
                     '''},
-    'Desert Colossus Hill GS with Hookshot': {
+    'Colossus Hill GS with Hookshot': {
         'name'    : 'logic_colossus_gs',
         'tags'    : ("Desert Colossus", "Skulltulas",),
         'tooltip' : '''\
@@ -633,7 +633,7 @@ logic_tricks = {
                     If you stand on the very edge of the platform, this
                     Gold Skulltula can be obtained with only the Hookshot.
                     '''},
-    'Water Temple Serpent River GS without Iron Boots': {
+    'Water Temple River GS without Iron Boots': {
         'name'    : 'logic_water_river_gs',
         'tags'    : ("Water Temple", "Skulltulas",),
         'tooltip' : '''\
@@ -719,7 +719,7 @@ logic_tricks = {
                     A precise jump can be used to skip
                     pushing the block.
                     '''},
-    'Fire Temple MQ Big Lava Room Bombable Chest without Hookshot': {
+    'Fire Temple MQ Big Lava Room Blocked Door without Hookshot': {
         'name'    : 'logic_fire_mq_bombable_chest',
         'tags'    : ("Fire Temple",),
         'tooltip' : '''\
@@ -923,7 +923,7 @@ logic_tricks = {
                     coming into this room from above by going through
                     the serpent river.
                     '''},
-    'Goron City Leftmost Maze Chest with Hover Boots': {
+    'Goron City Maze Left Chest with Hover Boots': {
         'name'    : 'logic_goron_city_leftmost',
         'tags'    : ("Goron City",),
         'tooltip' : '''\
@@ -2540,8 +2540,8 @@ setting_infos = [
             Selecting multiple progressive items will give
             the appropriate number of upgrades.
             
-            If playing with Open Zora Fountain, the Bottle
-            with Letter is converted to a regular Bottle.
+            If playing with Open Zora Fountain, the Ruto's Letter
+            is converted to a regular Bottle.
         ''',
     ),
     Setting_Info(

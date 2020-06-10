@@ -17,7 +17,7 @@ HASH_ICONS = [
     'Boomerang',
     'Lens of Truth',
     'Beans',
-    'Hammer',
+    'Megaton Hammer',
     'Bottled Fish',
     'Bottled Milk',
     'Mask of Truth',

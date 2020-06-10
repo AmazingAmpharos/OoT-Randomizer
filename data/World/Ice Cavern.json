@@ -23,10 +23,10 @@
                 (is_adult or Slingshot or Sticks or 
                     Kokiri_Sword or can_use(Dins_Fire))",
             "Ice Cavern Freestanding PoH": "Blue_Fire",
-            "GS Ice Cavern Spinning Scythe Room": "can_use(Hookshot) or can_use(Boomerang)",
-            "GS Ice Cavern Heart Piece Room": "
+            "Ice Cavern GS Spinning Scythe Room": "can_use(Hookshot) or can_use(Boomerang)",
+            "Ice Cavern GS Heart Piece Room": "
                 Blue_Fire and (can_use(Hookshot) or can_use(Boomerang))",
-            "GS Ice Cavern Push Block Room": "
+            "Ice Cavern GS Push Block Room": "
                 Blue_Fire and (can_use(Hookshot) or can_use(Boomerang))",
             "Blue Fire": "is_adult and has_bottle"
         }

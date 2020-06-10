@@ -890,9 +890,9 @@ class Distribution(object):
                 if not item.special:
                     data[item.itemname] += 1
                 else:
-                    if item.itemname == 'Bottle with Letter' and self.settings.zora_fountain != 'open':
-                        data['Bottle with Letter'] = 1
-                    elif item.itemname in ['Bottle', 'Bottle with Letter']:
+                    if item.itemname == 'Ruto\'s Letter' and self.settings.zora_fountain != 'open':
+                        data['Ruto\'s Letter'] = 1
+                    elif item.itemname in ['Bottle', 'Ruto\'s Letter']:
                         data['Bottle'] += 1
                     else:
                         raise KeyError("invalid special item: {}".format(item.itemname))
@@ -1100,7 +1100,7 @@ def pattern_dict_items(pattern_dict):
     """
     # TODO: This has the same issue with the invert pattern as items do.
     #  It pulls randomly(?) from all locations instead of ones that make sense.
-    #  e.g. "!Queen Gohma" results in "Kokiri Sword Chest"
+    #  e.g. "!Queen Gohma" results in "KF Kokiri Sword Chest"
     for (key, value) in pattern_dict.items():
         if is_pattern(key):
             pattern = lambda loc: pattern_matcher(key)(loc.name)

@@ -580,7 +580,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Speed up Death Mountain Trail Owl Flight
     rom.write_bytes(0x223B6B2, [0x00, 0x01])
 
-    # Poacher's Saw no longer messes up Deku Theater
+    # Poacher's Saw no longer messes up Forest Stage
     rom.write_bytes(0xAE72CC, [0x00, 0x00, 0x00, 0x00])
 
     # Change Prelude CS to check for medallion
@@ -894,7 +894,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     if world.shuffle_interior_entrances:
         # Change the Happy Mask Shop "throw out" entrance index to the new one (hardcode located in the shop actor)
-        rom.write_int16(0xC6DA5E, world.get_entrance('Castle Town Mask Shop -> Castle Town').replaces.data['index'])
+        rom.write_int16(0xC6DA5E, world.get_entrance('Market Mask Shop -> Market').replaces.data['index'])
 
         set_entrance_updates(world.get_shuffled_entrances(type='Interior') + world.get_shuffled_entrances(type='SpecialInterior'))
 
@@ -1332,7 +1332,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
             rom.write_byte(locationaddress, special['song_id'])
             next_song_id = special['song_id'] + 0x0D
             rom.write_byte(secondaryaddress, next_song_id)
-            if location.name == 'Impa at Castle':
+            if location.name == 'Song from Impa':
                 rom.write_byte(0x0D12ECB, special['item_id'])
                 rom.write_byte(0x2E8E931, special['text_id']) #Fix text box
             elif location.name == 'Song from Malon':
@@ -1340,7 +1340,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 rom.write_int16(0xD7E8D6, bit_mask_pointer)
                 rom.write_int16(0xD7E786, bit_mask_pointer)
                 rom.write_byte(0x29BECB9, special['text_id']) #Fix text box
-            elif location.name == 'Song from Composer Grave':
+            elif location.name == 'Song from Composers Grave':
                 rom.write_int16(0xE09F66, bit_mask_pointer)
                 rom.write_byte(0x332A87D, special['text_id']) #Fix text box
             elif location.name == 'Song from Saria':
@@ -1348,10 +1348,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 rom.write_byte(0x20B1DBD, special['text_id']) #Fix text box
             elif location.name == 'Song from Ocarina of Time':
                 rom.write_byte(0x252FC95, special['text_id']) #Fix text box
-            elif location.name == 'Song at Windmill':
+            elif location.name == 'Song from Windmill':
                 rom.write_byte(0x0E42ABF, special['item_id'])
                 rom.write_byte(0x3041091, special['text_id']) #Fix text box
-            elif location.name == 'Sheik Forest Song':
+            elif location.name == 'Sheik in Forest':
                 rom.write_byte(0x0C7BAA3, special['item_id'])
                 rom.write_byte(0x20B0815, special['text_id']) #Fix text box
             elif location.name == 'Sheik at Temple':
@@ -1406,7 +1406,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # kokiri shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Kokiri Shop').locations, True)
+        world.get_region('KF Kokiri Shop').locations, True)
     shop_objs |= {0x00FC, 0x00B2, 0x0101, 0x0102, 0x00FD, 0x00C5} # Shop objects
     rom.write_byte(0x2587029, len(shop_objs))
     rom.write_int32(0x258702C, 0x0300F600)
@@ -1414,7 +1414,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # kakariko bazaar
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Kakariko Bazaar').locations)
+        world.get_region('Kak Bazaar').locations)
     shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
     rom.write_byte(0x28E4029, len(shop_objs))
     rom.write_int32(0x28E402C, 0x03007A40)
@@ -1422,7 +1422,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # castle town bazaar
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Castle Town Bazaar').locations)
+        world.get_region('Market Bazaar').locations)
     shop_objs |= {0x005B, 0x00B2, 0x00C5, 0x0107, 0x00C9, 0x016B} # Shop objects
     rom.write_byte(bazaar_room_file.start + 0x29, len(shop_objs))
     rom.write_int32(bazaar_room_file.start + 0x2C, 0x03007A40)
@@ -1430,7 +1430,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # goron shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Goron Shop').locations)
+        world.get_region('GC Shop').locations)
     shop_objs |= {0x00C9, 0x00B2, 0x0103, 0x00AF} # Shop objects
     rom.write_byte(0x2D33029, len(shop_objs))
     rom.write_int32(0x2D3302C, 0x03004340)
@@ -1438,7 +1438,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # zora shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Zora Shop').locations)
+        world.get_region('ZD Shop').locations)
     shop_objs |= {0x005B, 0x00B2, 0x0104, 0x00FE} # Shop objects
     rom.write_byte(0x2D5B029, len(shop_objs))
     rom.write_int32(0x2D5B02C, 0x03004B40)
@@ -1446,7 +1446,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # kakariko potion shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Kakariko Potion Shop Front').locations)
+        world.get_region('Kak Potion Shop Front').locations)
     shop_objs |= {0x0159, 0x00B2, 0x0175, 0x0122} # Shop objects
     rom.write_byte(0x2D83029, len(shop_objs))
     rom.write_int32(0x2D8302C, 0x0300A500)
@@ -1454,7 +1454,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # market potion shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Castle Town Potion Shop').locations)
+        world.get_region('Market Potion Shop').locations)
     shop_objs |= {0x0159, 0x00B2, 0x0175, 0x00C5, 0x010C, 0x016B} # Shop objects
     rom.write_byte(0x2DB0029, len(shop_objs))
     rom.write_int32(0x2DB002C, 0x03004E40)
@@ -1462,7 +1462,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # bombchu shop
     shop_objs = place_shop_items(rom, world, shop_items, messages,
-        world.get_region('Castle Town Bombchu Shop').locations)
+        world.get_region('Market Bombchu Shop').locations)
     shop_objs |= {0x0165, 0x00B2} # Shop objects
     rom.write_byte(0x2DD8029, len(shop_objs))
     rom.write_int32(0x2DD802C, 0x03006A40)
@@ -1482,9 +1482,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         return message
 
     single_item_scrubs = {
-        0x3E: world.get_location("HF Grotto Deku Scrub Piece of Heart"),
-        0x77: world.get_location("LW Deku Scrub Deku Stick Upgrade"),
-        0x79: world.get_location("LW Grotto Deku Scrub Deku Nut Upgrade"),
+        0x3E: world.get_location("HF Deku Scrub Grotto"),
+        0x77: world.get_location("LW Deku Scrub Near Bridge"),
+        0x79: world.get_location("LW Deku Scrub Grotto Front"),
     }
 
     scrub_message_dict = {}
@@ -1588,7 +1588,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         
         # Move Silver Gauntlets chest if it is small so it is reachable from Spirit Hover Seam
         if world.logic_rules != 'glitchless':
-            chest_name = 'Silver Gauntlets Chest'
+            chest_name = 'Spirit Temple Silver Gauntlets Chest'
             chest_address_0 = 0x21A02D0  # Address in setup 0
             chest_address_2 = 0x21A06E4  # Address in setup 2
             location = world.get_location(chest_name)

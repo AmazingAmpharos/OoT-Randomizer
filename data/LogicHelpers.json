@@ -37,7 +37,7 @@
     "is_adult": "age == 'adult'",
     "is_starting_age": "age == starting_age",
     "is_glitched": "logic_rules != 'glitchless'",
-    "can_blast_or_smash": "has_explosives or can_use(Hammer)",
+    "can_blast_or_smash": "has_explosives or can_use(Megaton_Hammer)",
     "can_child_attack": "is_child and (Slingshot or Boomerang or Sticks or Kokiri_Sword or has_explosives or can_use(Dins_Fire))",
     "can_child_damage": "is_child and (Slingshot or Sticks or Kokiri_Sword or has_explosives or can_use(Dins_Fire))",
     "can_cut_shrubs": "is_adult or Sticks or Kokiri_Sword or Boomerang or has_explosives",
@@ -70,14 +70,14 @@
             or (_is_magic_arrow(item) and is_adult and item and Bow and Magic_Meter)
             or (_is_child_item(item) and is_child and item)",
     "_is_magic_item(item)": "item == Dins_Fire or item == Farores_Wind or item == Nayrus_Love or item == Lens_of_Truth",
-    "_is_adult_item(item)": "item == Bow or item == Hammer or item == Iron_Boots or item == Hover_Boots or item == Hookshot or item == Longshot or item == Silver_Gauntlets or item == Golden_Gauntlets or item == Goron_Tunic or item == Zora_Tunic or item == Scarecrow or item == Distant_Scarecrow",
+    "_is_adult_item(item)": "item == Bow or item == Megaton_Hammer or item == Iron_Boots or item == Hover_Boots or item == Hookshot or item == Longshot or item == Silver_Gauntlets or item == Golden_Gauntlets or item == Goron_Tunic or item == Zora_Tunic or item == Scarecrow or item == Distant_Scarecrow",
     "_is_child_item(item)": "item == Slingshot or item == Boomerang or item == Kokiri_Sword or item == Sticks or item == Deku_Shield",
     "_is_magic_arrow(item)": "item == Fire_Arrows or item == Light_Arrows",
 
     # Biggoron's trade path
     # ER with these settings disables timers and prevents items from reverting on save warp.
     # Otherwise, to get to Biggoron requires: a trick, clearing boulders on DMT, or Darunia's Chamber
-    "guarantee_trade_path": "shuffle_interior_entrances or shuffle_overworld_entrances or logic_biggoron_bolero or can_blast_or_smash or 'Stop Link the Goron'",
+    "guarantee_trade_path": "shuffle_interior_entrances or shuffle_overworld_entrances or logic_biggoron_bolero or can_blast_or_smash or 'Stop GC Rolling Goron as Adult'",
     "guarantee_hint": "(hints == 'mask' and Mask_of_Truth) or (hints == 'agony' and Stone_of_Agony) or (hints != 'mask' and hints != 'agony')",
     "has_fire_source": "can_use(Dins_Fire) or can_use(Fire_Arrows)",
     "has_fire_source_with_torch": "has_fire_source or (is_child and Sticks)",

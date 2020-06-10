@@ -5,9 +5,9 @@
         "locations": {},
         "exits": {
             "High Alcove": "is_adult or can_hover",
-            "Boss Area": "can_use(Longshot) or can_hover or (can_use(Hover_Boots) and (can_mega or Hammer))",
+            "Boss Area": "can_use(Longshot) or can_hover or (can_use(Hover_Boots) and (can_mega or Megaton_Hammer))",
             "Dark Link Area": "(at('High Alcove', can_play(Zeldas_Lullaby)) or 
-                    (can_use(Hover_Boots) and (can_mega or Hammer)))
+                    (can_use(Hover_Boots) and (can_mega or Megaton_Hammer)))
                 and (Small_Key_Water_Temple,5)",
             "Under Entrance Block": "can_use(Hookshot) and Iron_Boots",
             "Central Pillar from Lobby": "can_use(Hookshot) and Iron_Boots and
@@ -38,7 +38,7 @@
         "region_name": "Caged Skulltula",
         "dungeon": "Water Temple",
         "locations": {
-            "GS Water Temple South Basement": "(can_use(Hover_Boots) or can_hover or can_use(Hookshot)) and 
+            "Water Temple GS Behind Gate": "(can_use(Hover_Boots) or can_hover or can_use(Hookshot)) and 
                 (can_jumpslash or has_explosives)"
         }
     },
@@ -95,7 +95,7 @@
         "locations": {
             "Water Temple Central Pillar Chest": "can_use(Iron_Boots) and can_use(Hookshot) and
                 (at('Central Pillar from Lobby', True) or can_play(Zeldas_Lullaby))",
-            "GS Water Temple Central Room": "at('Central Pillar from Lobby', True) or
+            "Water Temple GS Central Pillar": "at('Central Pillar from Lobby', True) or
                 can_use(Longshot) or
                 at('High Alcove',
                     can_use(Farores_Wind) and can_play(Zeldas_Lullaby)
@@ -114,7 +114,7 @@
         "locations": {
             "Water Temple Boss Key Chest": "(Small_Key_Water_Temple,6) and
                 (is_adult or can_hover)",
-            "GS Water Temple Near Boss Key Chest": "(is_adult or can_hover) and
+            "Water Temple GS Near Boss Key Chest": "(is_adult or can_hover) and
                 (can_use(Hookshot) or can_use(Boomerang) or can_mega)"
         }
     },
@@ -122,8 +122,8 @@
         "region_name": "Dark Link Area",
         "dungeon": "Water Temple",
         "locations": {
-            "Water Temple Dark Link Chest": "can_use(Hookshot)",
-            "GS Water Temple Falling Platform Room": "can_use(Hookshot)"
+            "Water Temple Longshot Chest": "can_use(Hookshot)",
+            "Water Temple GS Falling Platform Room": "can_use(Hookshot)"
         },
         "exits": {
             "River": "can_play(Song_of_Time) or (can_use(Hookshot) and (Hover_Boots or (Bombs and can_live_dmg(0.5))))"
@@ -133,7 +133,7 @@
         "region_name": "River",
         "dungeon": "Water Temple",
         "locations": {
-            "GS Water Temple Serpent River": "can_use(Longshot) or (Iron_Boots and can_use(Hookshot))"
+            "Water Temple GS River": "can_use(Longshot) or (Iron_Boots and can_use(Hookshot))"
         },
         "exits": {
             "River Chest": "can_use(Bow) or (can_use(Longshot) and has_bottle and Iron_Boots)"
@@ -168,7 +168,7 @@
         },
         "locations": {
             "Morpha": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)",
-            "Morpha Heart": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)"
+            "Water Temple Morpha Heart": "can_jumpslash and (can_hover or Boss_Key_Water_Temple)"
         }
     }
 ]
