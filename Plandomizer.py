@@ -444,10 +444,7 @@ class WorldDistribution(object):
     def collect_starters(self, state):
         for (name, record) in self.starting_items.items():
             for _ in range(record.count):
-                try:
-                    item = ItemFactory("Bottle" if name == "Bottle with Milk (Half)" else name)
-                except KeyError:
-                    continue
+                item = ItemFactory("Bottle" if name == "Bottle with Milk (Half)" else name)
                 state.collect(item)
 
 

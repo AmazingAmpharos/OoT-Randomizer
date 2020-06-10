@@ -1,7 +1,7 @@
 # Progressive: True  -> Advancement
 #              False -> Priority
 #              None  -> Normal
-#    Item:                                            (type, Progessive, GetItemID, special),
+#    Item:                                            (type, Progressive, GetItemID, special),
 item_table = {
     'Bombs (5)':                                       ('Item',     None,  0x01, None),
     'Deku Nuts (5)':                                   ('Item',     None,  0x02, None),
@@ -162,6 +162,11 @@ item_table = {
     'Bugs':                             ('Drop',     True,  None, None),
     'Big Poe':                          ('Drop',     True,  None, None),
     'Bombchu Drop':                     ('Drop',     True,  None, None),
+
+    # Consumable refills defined mostly to placate 'starting with' options
+    'Deku Sticks':                      ('Refill',   None,  None, None),
+    'Deku Nuts':                        ('Refill',   None,  None, None),
+    'Rupees':                           ('Refill',   None,  None, None),
 
     'Minuet of Forest':                 ('Song',     True,  0xBB,
                                             {
