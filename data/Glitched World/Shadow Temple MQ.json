@@ -4,7 +4,7 @@
         "dungeon": "Shadow Temple",
         "exits": {
             "Shadow Temple Beginning": "
-                can_see_with_lens and
+                (logic_lens_shadow_mq or can_use(Lens_of_Truth)) and
                 (can_use(Hover_Boots) or can_use(Hookshot))"
         }
     },

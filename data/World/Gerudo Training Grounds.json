@@ -22,7 +22,7 @@
         "region_name": "Gerudo Training Grounds Central Maze",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds Hidden Ceiling Chest": "(Small_Key_Gerudo_Training_Grounds, 3) and can_see_with_lens",
+            "Gerudo Training Grounds Hidden Ceiling Chest": "(Small_Key_Gerudo_Training_Grounds, 3) and (logic_lens_gtg or can_use(Lens_of_Truth))",
             "Gerudo Training Grounds Maze Path First Chest": "(Small_Key_Gerudo_Training_Grounds, 4)",
             "Gerudo Training Grounds Maze Path Second Chest": "(Small_Key_Gerudo_Training_Grounds, 6)",
             "Gerudo Training Grounds Maze Path Third Chest": "(Small_Key_Gerudo_Training_Grounds, 7)",
@@ -99,10 +99,10 @@
         },
         "exits": {
             "Gerudo Training Grounds Eye Statue Upper": "
-                can_see_with_lens and
+                (logic_lens_gtg or can_use(Lens_of_Truth)) and
                 (can_use(Hookshot) or (logic_gtg_fake_wall and can_use(Hover_Boots)))",
             "Gerudo Training Grounds Like Like Room": "
-                can_use(Silver_Gauntlets) and can_see_with_lens and
+                can_use(Silver_Gauntlets) and (logic_lens_gtg or can_use(Lens_of_Truth)) and
                 (can_use(Hookshot) or (logic_gtg_fake_wall and can_use(Hover_Boots)))"
         }
     },

@@ -507,7 +507,7 @@
             "Nut Pot": "True"
         },
         "exits": {
-            "Wasteland Near Colossus": "(logic_lens == 'chest') or can_use(Lens_of_Truth)",
+            "Wasteland Near Colossus": "logic_lens_wasteland or can_use(Lens_of_Truth)",
             "Wasteland Near Fortress": "
                 logic_wasteland_crossing or can_use(Hover_Boots) or can_use(Longshot)"
         }

@@ -16,7 +16,7 @@
                 (skipped_trials[Shadow] or 'Shadow Trial Clear') and 
                 (skipped_trials[Spirit] or 'Spirit Trial Clear') and 
                 (skipped_trials[Light] or 'Light Trial Clear')",
-            "Ganons Castle Deku Scrubs": "can_see_with_lens"
+            "Ganons Castle Deku Scrubs": "logic_lens_castle_mq or can_use(Lens_of_Truth)"
         }
     },
     {
@@ -68,16 +68,16 @@
         "dungeon": "Ganons Castle",
         "events": {
             "Shadow Trial Clear": "
-                can_use(Light_Arrows) and can_see_with_lens and 
+                can_use(Light_Arrows) and (logic_lens_castle_mq or can_use(Lens_of_Truth)) and 
                 (Hover_Boots or (Progressive_Hookshot and has_fire_source))"
         },
         "locations": {
             "Ganons Castle MQ Shadow Trial Bomb Flower Chest": "
                 (Bow and (Progressive_Hookshot or Hover_Boots)) or 
-                (Hover_Boots and can_see_with_lens and 
+                (Hover_Boots and (logic_lens_castle_mq or can_use(Lens_of_Truth)) and 
                     (has_explosives or Progressive_Strength_Upgrade or can_use(Dins_Fire)))",
             "Ganons Castle MQ Shadow Trial Eye Switch Chest": "
-                Bow and can_see_with_lens and 
+                Bow and (logic_lens_castle_mq or can_use(Lens_of_Truth)) and 
                 (Hover_Boots or (Progressive_Hookshot and has_fire_source))"
         }
     },
@@ -93,7 +93,7 @@
             "Ganons Castle MQ Spirit Trial First Chest": "(Bow or logic_rusted_switches) and Megaton_Hammer",
             "Ganons Castle MQ Spirit Trial Invisible Chest": "
                 (Bow or logic_rusted_switches) and Megaton_Hammer and 
-                has_bombchus and can_see_with_lens",
+                has_bombchus and (logic_lens_castle_mq or can_use(Lens_of_Truth))",
             "Ganons Castle MQ Spirit Trial Sun Front Left Chest": "
                 Megaton_Hammer and has_bombchus and 
                 can_use(Fire_Arrows) and Mirror_Shield",

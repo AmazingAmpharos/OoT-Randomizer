@@ -40,7 +40,7 @@
             "Jabu Jabus Belly MQ Falling Like Like Room Chest": "True",
             "Jabu Jabus Belly MQ GS Tailpasaran Room": "Sticks or can_use(Dins_Fire)",
             "Jabu Jabus Belly MQ GS Invisible Enemies Room": "
-                can_see_with_lens or
+                (logic_lens_jabu_mq or can_use(Lens_of_Truth)) or
                 at('Jabu Jabus Belly Main', can_use(Hover_Boots))"
         },
         "exits": {

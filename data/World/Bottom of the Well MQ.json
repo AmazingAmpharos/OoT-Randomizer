@@ -25,7 +25,7 @@
             "Bottom of the Well MQ GS Basement": "can_child_attack",
             "Bottom of the Well MQ GS West Inner Room": "
                 can_child_attack and 
-                (can_play(Zeldas_Lullaby) or has_explosives) and can_see_with_lens",
+                (can_play(Zeldas_Lullaby) or has_explosives)",
             "Bottom of the Well MQ GS Coffin Room": "
                 can_child_attack and 
                 (Small_Key_Bottom_of_the_Well, 2)",

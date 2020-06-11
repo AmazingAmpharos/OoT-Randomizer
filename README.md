@@ -91,6 +91,12 @@ player.
 * New setting `Skip Some Minigame Phases`
   * Allows getting both rewards for Horseback Archery and Dampé Race in a single go!
   * Replaces the `Skip First Dampé Race` setting.
+* `Lens of Truth` setting has been removed and replaced with several independent tricks.
+  * `Lensless Wasteland`: assumes you can navigate the Wasteland to the Colossus without the Lens of Truth.
+  * `<Area> without Lens of Truth`: assumes you can complete the given area without the Lens of Truth. Note that MQ and Vanilla dungeons have separate tricks.
+  * Shadow Temples are split into two separate areas for these tricks.
+  * Glitchless logic now requires Lens (or an appropriate trick) for some checks, particularly in Shadow Temple.
+  * Glitched logic may sometimes assume you can do something without lens regardless of trick settings.
 * New cosmetic setting `HUD Button Colors`
   * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme, of OoT or MM.
   * Or you can completely randomize all the button colors.

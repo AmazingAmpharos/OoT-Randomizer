@@ -206,11 +206,10 @@
           "name": "main_section",
           "text": "",
           "col_span": 4,
-          "row_span": [3,3,3],
+          "row_span": [1,1,1],
           "settings": [
             "all_reachable",
-            "logic_no_night_tokens_without_suns_song",
-            "logic_lens"
+            "logic_no_night_tokens_without_suns_song"
           ]
         },
         {
