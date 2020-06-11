@@ -92,13 +92,11 @@ player.
   * Allows getting both rewards for Horseback Archery and Dampé Race in a single go!
   * Replaces the `Skip First Dampé Race` setting.
 * New cosmetic setting `HUD Button Colors`
-  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme.
+  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme, of OoT or MM.
   * Or you can completely randomize all the button colors.
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
-* New button color presets matching those from Majora's Mask.
-  * The "Random Choice" option may pick one of these.
 * Tricks can be filtered in the GUI using a new dropdown.
 
 #### Bug Fixes
@@ -112,6 +110,8 @@ player.
 * Minor plandomizer fixes and improvements.
 
 #### Other Changes
+* Most locations and a few items have been renamed to improve spoiler output and standardize.
+  * This will break settings and distribution files from previous versions that reference these locations and items.
 * File 3 has been removed from generated ROMs to free up some space.
 * The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
 * Performance improvements to seed generation.
