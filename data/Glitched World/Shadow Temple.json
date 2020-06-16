@@ -45,9 +45,9 @@
             "Shadow Temple Freestanding Key": "
                 (Small_Key_Shadow_Temple, 5) and (can_use(Hookshot) or can_hover) 
                 and (Progressive_Strength_Upgrade or has_explosives)",
-            "GS Shadow Temple Like Like Room": "is_adult or can_use(Boomerang) or can_hover",
-            "GS Shadow Temple Crusher Room": "can_use(Hookshot) or (is_adult and can_mega) or (is_child and can_hover)",
-            "GS Shadow Temple Single Giant Pot": "(Small_Key_Shadow_Temple, 5) and (can_use(Hookshot) or can_hover)"
+            "Shadow Temple GS Like Like Room": "is_adult or can_use(Boomerang) or can_hover",
+            "Shadow Temple GS Falling Spikes Room": "can_use(Hookshot) or (is_adult and can_mega) or (is_child and can_hover)",
+            "Shadow Temple GS Single Giant Pot": "(Small_Key_Shadow_Temple, 5) and (can_use(Hookshot) or can_hover)"
         },
         "exits": {
             "Shadow Temple Wind Tunnel": "(can_use(Hookshot) or can_hover) and (Small_Key_Shadow_Temple, 5)"
@@ -70,7 +70,7 @@
         "region_name": "Shadow Temple Boat",
         "dungeon": "Shadow Temple",
         "locations": {
-            "GS Shadow Temple Near Ship": "can_use(Longshot) or (can_use(Hover_Boots) and can_mega)
+            "Shadow Temple GS Near Ship": "can_use(Longshot) or (can_use(Hover_Boots) and can_mega)
                 or (is_child and can_hover)"
         },
         "exits": {
@@ -87,8 +87,8 @@
                 (can_use(Hookshot) and can_mega)",
             "Shadow Temple Boss Key Chest": "can_use(Dins_Fire) or can_live_dmg(0.5) or Fairy or can_use(Nayrus_Love) or
                 (can_use(Hookshot) and can_mega)",
-            "Shadow Temple Hidden Floormaster Chest": "True",
-            "GS Shadow Temple Triple Giant Pot": "True"
+            "Shadow Temple Invisible Floormaster Chest": "True",
+            "Shadow Temple GS Triple Giant Pot": "True"
         },
         "exits": {
             "Shadow Boss": "(has_bombchus or can_use(Distant_Scarecrow) or Bow or 
@@ -101,7 +101,7 @@
         "region_name": "Shadow Boss",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Bongo Bongo Heart": "True",
+            "Shadow Temple Bongo Bongo Heart": "True",
             "Bongo Bongo": "True"
         }
     }

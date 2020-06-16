@@ -262,7 +262,7 @@ init_adult_button:
 ; Items that can populate empty adult C-buttons, by inventory index
 ADULT_INIT_ITEMS:
 .byte 0x09 ; Hookshot
-.byte 0x0F ; Hammer
+.byte 0x0F ; Megaton Hammer
 .byte 0x02 ; Bombs
 .byte 0x03 ; Bow
 .byte 0x01 ; Deku Nuts
@@ -289,7 +289,7 @@ ADULT_VALID_ITEMS:
 .byte 0 ; Boomerang
 .byte 1 ; Lens of Truth
 .byte 0 ; Magic Beans
-.byte 1 ; Hammer
+.byte 1 ; Megaton Hammer
 .byte 1 ; Light Arrows
 .byte 1 ; Nayru's Love
 

@@ -16,7 +16,7 @@ alwaysitems = ([
     'Biggoron Sword',
     'Boomerang',
     'Lens of Truth',
-    'Hammer',
+    'Megaton Hammer',
     'Iron Boots',
     'Goron Tunic',
     'Zora Tunic',
@@ -57,7 +57,7 @@ easy_items = ([
     'Kokiri Sword',
     'Boomerang',
     'Lens of Truth',
-    'Hammer',
+    'Megaton Hammer',
     'Iron Boots',
     'Goron Tunic',
     'Zora Tunic',
@@ -252,70 +252,70 @@ shopsanity_rupees = (
 
 
 vanilla_shop_items = {
-    'Kokiri Shop Item 1': 'Buy Deku Shield',
-    'Kokiri Shop Item 2': 'Buy Deku Nut (5)',
-    'Kokiri Shop Item 3': 'Buy Deku Nut (10)',
-    'Kokiri Shop Item 4': 'Buy Deku Stick (1)',
-    'Kokiri Shop Item 5': 'Buy Deku Seeds (30)',
-    'Kokiri Shop Item 6': 'Buy Arrows (10)',
-    'Kokiri Shop Item 7': 'Buy Arrows (30)',
-    'Kokiri Shop Item 8': 'Buy Heart',
-    'Kakariko Potion Shop Item 1': 'Buy Deku Nut (5)',
-    'Kakariko Potion Shop Item 2': 'Buy Fish',
-    'Kakariko Potion Shop Item 3': 'Buy Red Potion [30]',
-    'Kakariko Potion Shop Item 4': 'Buy Green Potion',
-    'Kakariko Potion Shop Item 5': 'Buy Blue Fire',
-    'Kakariko Potion Shop Item 6': 'Buy Bottle Bug',
-    'Kakariko Potion Shop Item 7': 'Buy Poe',
-    'Kakariko Potion Shop Item 8': 'Buy Fairy\'s Spirit',
-    'Bombchu Shop Item 1': 'Buy Bombchu (5)',
-    'Bombchu Shop Item 2': 'Buy Bombchu (10)',
-    'Bombchu Shop Item 3': 'Buy Bombchu (10)',
-    'Bombchu Shop Item 4': 'Buy Bombchu (10)',
-    'Bombchu Shop Item 5': 'Buy Bombchu (20)',
-    'Bombchu Shop Item 6': 'Buy Bombchu (20)',
-    'Bombchu Shop Item 7': 'Buy Bombchu (20)',
-    'Bombchu Shop Item 8': 'Buy Bombchu (20)',
-    'Castle Town Potion Shop Item 1': 'Buy Green Potion',
-    'Castle Town Potion Shop Item 2': 'Buy Blue Fire',
-    'Castle Town Potion Shop Item 3': 'Buy Red Potion [30]',
-    'Castle Town Potion Shop Item 4': 'Buy Fairy\'s Spirit',
-    'Castle Town Potion Shop Item 5': 'Buy Deku Nut (5)',
-    'Castle Town Potion Shop Item 6': 'Buy Bottle Bug',
-    'Castle Town Potion Shop Item 7': 'Buy Poe',
-    'Castle Town Potion Shop Item 8': 'Buy Fish',
-    'Castle Town Bazaar Item 1': 'Buy Hylian Shield',
-    'Castle Town Bazaar Item 2': 'Buy Bombs (5) [35]',
-    'Castle Town Bazaar Item 3': 'Buy Deku Nut (5)',
-    'Castle Town Bazaar Item 4': 'Buy Heart',
-    'Castle Town Bazaar Item 5': 'Buy Arrows (10)',
-    'Castle Town Bazaar Item 6': 'Buy Arrows (50)',
-    'Castle Town Bazaar Item 7': 'Buy Deku Stick (1)',
-    'Castle Town Bazaar Item 8': 'Buy Arrows (30)',
-    'Kakariko Bazaar Item 1': 'Buy Hylian Shield',
-    'Kakariko Bazaar Item 2': 'Buy Bombs (5) [35]',
-    'Kakariko Bazaar Item 3': 'Buy Deku Nut (5)',
-    'Kakariko Bazaar Item 4': 'Buy Heart',
-    'Kakariko Bazaar Item 5': 'Buy Arrows (10)',
-    'Kakariko Bazaar Item 6': 'Buy Arrows (50)',
-    'Kakariko Bazaar Item 7': 'Buy Deku Stick (1)',
-    'Kakariko Bazaar Item 8': 'Buy Arrows (30)',
-    'Zora Shop Item 1': 'Buy Zora Tunic',
-    'Zora Shop Item 2': 'Buy Arrows (10)',
-    'Zora Shop Item 3': 'Buy Heart',
-    'Zora Shop Item 4': 'Buy Arrows (30)',
-    'Zora Shop Item 5': 'Buy Deku Nut (5)',
-    'Zora Shop Item 6': 'Buy Arrows (50)',
-    'Zora Shop Item 7': 'Buy Fish',
-    'Zora Shop Item 8': 'Buy Red Potion [50]',
-    'Goron Shop Item 1': 'Buy Bombs (5) [25]',
-    'Goron Shop Item 2': 'Buy Bombs (10)',
-    'Goron Shop Item 3': 'Buy Bombs (20)',
-    'Goron Shop Item 4': 'Buy Bombs (30)',
-    'Goron Shop Item 5': 'Buy Goron Tunic',
-    'Goron Shop Item 6': 'Buy Heart',
-    'Goron Shop Item 7': 'Buy Red Potion [40]',
-    'Goron Shop Item 8': 'Buy Heart',
+    'KF Shop Item 1': 'Buy Deku Shield',
+    'KF Shop Item 2': 'Buy Deku Nut (5)',
+    'KF Shop Item 3': 'Buy Deku Nut (10)',
+    'KF Shop Item 4': 'Buy Deku Stick (1)',
+    'KF Shop Item 5': 'Buy Deku Seeds (30)',
+    'KF Shop Item 6': 'Buy Arrows (10)',
+    'KF Shop Item 7': 'Buy Arrows (30)',
+    'KF Shop Item 8': 'Buy Heart',
+    'Kak Potion Shop Item 1': 'Buy Deku Nut (5)',
+    'Kak Potion Shop Item 2': 'Buy Fish',
+    'Kak Potion Shop Item 3': 'Buy Red Potion [30]',
+    'Kak Potion Shop Item 4': 'Buy Green Potion',
+    'Kak Potion Shop Item 5': 'Buy Blue Fire',
+    'Kak Potion Shop Item 6': 'Buy Bottle Bug',
+    'Kak Potion Shop Item 7': 'Buy Poe',
+    'Kak Potion Shop Item 8': 'Buy Fairy\'s Spirit',
+    'Market Bombchu Shop Item 1': 'Buy Bombchu (5)',
+    'Market Bombchu Shop Item 2': 'Buy Bombchu (10)',
+    'Market Bombchu Shop Item 3': 'Buy Bombchu (10)',
+    'Market Bombchu Shop Item 4': 'Buy Bombchu (10)',
+    'Market Bombchu Shop Item 5': 'Buy Bombchu (20)',
+    'Market Bombchu Shop Item 6': 'Buy Bombchu (20)',
+    'Market Bombchu Shop Item 7': 'Buy Bombchu (20)',
+    'Market Bombchu Shop Item 8': 'Buy Bombchu (20)',
+    'Market Potion Shop Item 1': 'Buy Green Potion',
+    'Market Potion Shop Item 2': 'Buy Blue Fire',
+    'Market Potion Shop Item 3': 'Buy Red Potion [30]',
+    'Market Potion Shop Item 4': 'Buy Fairy\'s Spirit',
+    'Market Potion Shop Item 5': 'Buy Deku Nut (5)',
+    'Market Potion Shop Item 6': 'Buy Bottle Bug',
+    'Market Potion Shop Item 7': 'Buy Poe',
+    'Market Potion Shop Item 8': 'Buy Fish',
+    'Market Bazaar Item 1': 'Buy Hylian Shield',
+    'Market Bazaar Item 2': 'Buy Bombs (5) [35]',
+    'Market Bazaar Item 3': 'Buy Deku Nut (5)',
+    'Market Bazaar Item 4': 'Buy Heart',
+    'Market Bazaar Item 5': 'Buy Arrows (10)',
+    'Market Bazaar Item 6': 'Buy Arrows (50)',
+    'Market Bazaar Item 7': 'Buy Deku Stick (1)',
+    'Market Bazaar Item 8': 'Buy Arrows (30)',
+    'Kak Bazaar Item 1': 'Buy Hylian Shield',
+    'Kak Bazaar Item 2': 'Buy Bombs (5) [35]',
+    'Kak Bazaar Item 3': 'Buy Deku Nut (5)',
+    'Kak Bazaar Item 4': 'Buy Heart',
+    'Kak Bazaar Item 5': 'Buy Arrows (10)',
+    'Kak Bazaar Item 6': 'Buy Arrows (50)',
+    'Kak Bazaar Item 7': 'Buy Deku Stick (1)',
+    'Kak Bazaar Item 8': 'Buy Arrows (30)',
+    'ZD Shop Item 1': 'Buy Zora Tunic',
+    'ZD Shop Item 2': 'Buy Arrows (10)',
+    'ZD Shop Item 3': 'Buy Heart',
+    'ZD Shop Item 4': 'Buy Arrows (30)',
+    'ZD Shop Item 5': 'Buy Deku Nut (5)',
+    'ZD Shop Item 6': 'Buy Arrows (50)',
+    'ZD Shop Item 7': 'Buy Fish',
+    'ZD Shop Item 8': 'Buy Red Potion [50]',
+    'GC Shop Item 1': 'Buy Bombs (5) [25]',
+    'GC Shop Item 2': 'Buy Bombs (10)',
+    'GC Shop Item 3': 'Buy Bombs (20)',
+    'GC Shop Item 4': 'Buy Bombs (30)',
+    'GC Shop Item 5': 'Buy Goron Tunic',
+    'GC Shop Item 6': 'Buy Heart',
+    'GC Shop Item 7': 'Buy Red Potion [40]',
+    'GC Shop Item 8': 'Buy Heart',
 }
 
 
@@ -339,30 +339,30 @@ min_shop_items = (
 
 
 vanilla_deku_scrubs = {
-    'ZR Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
-    'ZR Grotto Deku Scrub Green Potion': 'Buy Green Potion',
-    'SFM Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
-    'SFM Grotto Deku Scrub Green Potion': 'Buy Green Potion',
-    'LH Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'LH Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
-    'LH Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
-    'Valley Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
-    'Valley Grotto Deku Scrub Green Potion': 'Buy Green Potion',
-    'LW Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'LW Deku Scrub Deku Sticks': 'Buy Deku Stick (1)',
-    'LW Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
-    'Desert Grotto Deku Scrub Red Potion': 'Buy Red Potion [30]',
-    'Desert Grotto Deku Scrub Green Potion': 'Buy Green Potion',
-    'DMC Deku Scrub Bombs': 'Buy Bombs (5) [35]',
-    'DMC Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'DMC Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
-    'DMC Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
-    'Goron Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'Goron Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
-    'Goron Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
-    'LLR Grotto Deku Scrub Deku Nuts': 'Buy Deku Nut (5)',
-    'LLR Grotto Deku Scrub Bombs': 'Buy Bombs (5) [35]',
-    'LLR Grotto Deku Scrub Arrows': 'Buy Arrows (30)',
+    'ZR Deku Scrub Grotto Rear': 'Buy Red Potion [30]',
+    'ZR Deku Scrub Grotto Front': 'Buy Green Potion',
+    'SFM Deku Scrub Grotto Rear': 'Buy Red Potion [30]',
+    'SFM Deku Scrub Grotto Front': 'Buy Green Potion',
+    'LH Deku Scrub Grotto Left': 'Buy Deku Nut (5)',
+    'LH Deku Scrub Grotto Right': 'Buy Bombs (5) [35]',
+    'LH Deku Scrub Grotto Center': 'Buy Arrows (30)',
+    'GV Deku Scrub Grotto Rear': 'Buy Red Potion [30]',
+    'GV Deku Scrub Grotto Front': 'Buy Green Potion',
+    'LW Deku Scrub Near Deku Theater Right': 'Buy Deku Nut (5)',
+    'LW Deku Scrub Near Deku Theater Left': 'Buy Deku Stick (1)',
+    'LW Deku Scrub Grotto Rear': 'Buy Arrows (30)',
+    'Colossus Deku Scrub Grotto Rear': 'Buy Red Potion [30]',
+    'Colossus Deku Scrub Grotto Front': 'Buy Green Potion',
+    'DMC Deku Scrub': 'Buy Bombs (5) [35]',
+    'DMC Deku Scrub Grotto Left': 'Buy Deku Nut (5)',
+    'DMC Deku Scrub Grotto Right': 'Buy Bombs (5) [35]',
+    'DMC Deku Scrub Grotto Center': 'Buy Arrows (30)',
+    'GC Deku Scrub Grotto Left': 'Buy Deku Nut (5)',
+    'GC Deku Scrub Grotto Right': 'Buy Bombs (5) [35]',
+    'GC Deku Scrub Grotto Center': 'Buy Arrows (30)',
+    'LLR Deku Scrub Grotto Left': 'Buy Deku Nut (5)',
+    'LLR Deku Scrub Grotto Right': 'Buy Bombs (5) [35]',
+    'LLR Deku Scrub Grotto Center': 'Buy Arrows (30)',
 }
 
 
@@ -390,62 +390,62 @@ songlist = [
 
 
 skulltula_locations = ([
-    'GS Kokiri Know It All House',
-    'GS Kokiri Bean Patch',
-    'GS Kokiri House of Twins',
-    'GS Lost Woods Bean Patch Near Bridge',
-    'GS Lost Woods Bean Patch Near Stage',
-    'GS Lost Woods Above Stage',
-    'GS Sacred Forest Meadow',
-    'GS Hyrule Field near Kakariko',
-    'GS Hyrule Field Near Gerudo Valley',
-    'GS Castle Market Guard House',
-    'GS Hyrule Castle Tree',
-    'GS Hyrule Castle Grotto',
-    'GS Outside Ganon\'s Castle',
-    'GS Lon Lon Ranch Tree',
-    'GS Lon Lon Ranch Rain Shed',
-    'GS Lon Lon Ranch House Window',
-    'GS Lon Lon Ranch Back Wall',
-    'GS Kakariko House Under Construction',
-    'GS Kakariko Skulltula House',
-    'GS Kakariko Guard\'s House',
-    'GS Kakariko Tree',
-    'GS Kakariko Watchtower',
-    'GS Kakariko Above Impa\'s House',
-    'GS Graveyard Wall',
-    'GS Graveyard Bean Patch',
-    'GS Mountain Trail Bean Patch',
-    'GS Mountain Trail Bomb Alcove',
-    'GS Mountain Trail Path to Crater',
-    'GS Mountain Trail Above Dodongo\'s Cavern',
-    'GS Goron City Boulder Maze',
-    'GS Goron City Center Platform',
-    'GS Death Mountain Crater Crate',
-    'GS Mountain Crater Bean Patch',
-    'GS Zora River Ladder',
-    'GS Zora River Tree',
-    'GS Zora River Near Raised Grottos',
-    'GS Zora River Above Bridge',
-    'GS Zora\'s Domain Frozen Waterfall',
-    'GS Zora\'s Fountain Tree',
-    'GS Zora\'s Fountain Above the Log',
-    'GS Zora\'s Fountain Hidden Cave',
-    'GS Lake Hylia Bean Patch',
-    'GS Lake Hylia Lab Wall',
-    'GS Lake Hylia Small Island',
-    'GS Lake Hylia Giant Tree',
-    'GS Lab Underwater Crate',
-    'GS Gerudo Valley Small Bridge',
-    'GS Gerudo Valley Bean Patch',
-    'GS Gerudo Valley Behind Tent',
-    'GS Gerudo Valley Pillar',
-    'GS Gerudo Fortress Archery Range',
-    'GS Gerudo Fortress Top Floor',
-    'GS Wasteland Ruins',
-    'GS Desert Colossus Bean Patch',
-    'GS Desert Colossus Tree',
-    'GS Desert Colossus Hill'])
+    'KF GS Know It All House',
+    'KF GS Bean Patch',
+    'KF GS House of Twins',
+    'LW GS Bean Patch Near Bridge',
+    'LW GS Bean Patch Near Theater',
+    'LW GS Above Theater',
+    'SFM GS',
+    'HF GS Near Kak Grotto',
+    'HF GS Cow Grotto',
+    'Market GS Guard House',
+    'HC GS Tree',
+    'HC GS Storms Grotto',
+    'OGC GS',
+    'LLR GS Tree',
+    'LLR GS Rain Shed',
+    'LLR GS House Window',
+    'LLR GS Back Wall',
+    'Kak GS House Under Construction',
+    'Kak GS Skulltula House',
+    'Kak GS Guards House',
+    'Kak GS Tree',
+    'Kak GS Watchtower',
+    'Kak GS Above Impas House',
+    'Graveyard GS Wall',
+    'Graveyard GS Bean Patch',
+    'DMT GS Bean Patch',
+    'DMT GS Near Kak',
+    'DMT GS Falling Rocks Path',
+    'DMT GS Above Dodongos Cavern',
+    'GC GS Boulder Maze',
+    'GC GS Center Platform',
+    'DMC GS Crate',
+    'DMC GS Bean Patch',
+    'ZR GS Ladder',
+    'ZR GS Tree',
+    'ZR GS Near Raised Grottos',
+    'ZR GS Above Bridge',
+    'ZD GS Frozen Waterfall',
+    'ZF GS Tree',
+    'ZF GS Above the Log',
+    'ZF GS Hidden Cave',
+    'LH GS Bean Patch',
+    'LH GS Lab Wall',
+    'LH GS Small Island',
+    'LH GS Tree',
+    'LH GS Lab Crate',
+    'GV GS Small Bridge',
+    'GV GS Bean Patch',
+    'GV GS Behind Tent',
+    'GV GS Pillar',
+    'GF GS Archery Range',
+    'GF GS Top Floor',
+    'Wasteland GS',
+    'Colossus GS Bean Patch',
+    'Colossus GS Tree',
+    'Colossus GS Hill'])
 
 
 tradeitems = (
@@ -475,12 +475,12 @@ tradeitemoptions = (
 
 fixedlocations = {
     'Ganon': 'Triforce',
-    'Zeldas Letter': 'Zeldas Letter',
+    'HC Zeldas Letter': 'Zeldas Letter',
     'Pierre': 'Scarecrow Song',
     'Deliver Ruto\'s Letter': 'Deliver Letter',
     'Master Sword Pedestal': 'Time Travel',
-    'Bombchu Bowling Bombchus': 'Bombchu Drop',
-    'Haunted Wasteland Bombchu Salesman': 'Bombchus',
+    'Market Bombchu Bowling Bombchus': 'Bombchu Drop',
+    'Wasteland Bombchu Salesman': 'Bombchus',
 }
 
 droplocations = {
@@ -520,7 +520,7 @@ vanillaBK = {
 }
 
 vanillaMC = {
-    'Bottom of the Well Center Large Chest': 'Compass (Bottom of the Well)',
+    'Bottom of the Well Compass Chest': 'Compass (Bottom of the Well)',
     'Deku Tree Compass Chest': 'Compass (Deku Tree)',
     'Dodongos Cavern Compass Chest': 'Compass (Dodongos Cavern)',
     'Fire Temple Compass Chest': 'Compass (Fire Temple)',
@@ -531,8 +531,8 @@ vanillaMC = {
     'Spirit Temple Compass Chest': 'Compass (Spirit Temple)',
     'Water Temple Compass Chest': 'Compass (Water Temple)',
 
-    'Bottom of the Well Basement Chest': 'Map (Bottom of the Well)',
-    'Deku Tree Lobby Chest': 'Map (Deku Tree)',
+    'Bottom of the Well Map Chest': 'Map (Bottom of the Well)',
+    'Deku Tree Map Chest': 'Map (Deku Tree)',
     'Dodongos Cavern Map Chest': 'Map (Dodongos Cavern)',
     'Fire Temple Map Chest': 'Map (Fire Temple)',
     'Forest Temple Map Chest': 'Map (Forest Temple)',
@@ -554,7 +554,7 @@ vanillaMC = {
     'Water Temple MQ Compass Chest': 'Compass (Water Temple)',
 
     'Bottom of the Well MQ Map Chest': 'Map (Bottom of the Well)',
-    'Deku Tree MQ Lobby Chest': 'Map (Deku Tree)',
+    'Deku Tree MQ Map Chest': 'Map (Deku Tree)',
     'Dodongos Cavern MQ Map Chest': 'Map (Dodongos Cavern)',
     'Fire Temple MQ Map Chest': 'Map (Fire Temple)',
     'Forest Temple MQ Map Chest': 'Map (Forest Temple)',
@@ -566,19 +566,19 @@ vanillaMC = {
 }
 
 vanillaSK = {
-    'Bottom of the Well Front Left Hidden Wall': 'Small Key (Bottom of the Well)',
-    'Bottom of the Well Right Bottom Hidden Wall': 'Small Key (Bottom of the Well)',
+    'Bottom of the Well Front Left Fake Wall Chest': 'Small Key (Bottom of the Well)',
+    'Bottom of the Well Right Bottom Fake Wall Chest': 'Small Key (Bottom of the Well)',
     'Bottom of the Well Freestanding Key': 'Small Key (Bottom of the Well)',
-    'Fire Temple Big Lava Room Bombable Chest': 'Small Key (Fire Temple)',
-    'Fire Temple Big Lava Room Open Chest': 'Small Key (Fire Temple)',
-    'Fire Temple Boulder Maze Bombable Pit': 'Small Key (Fire Temple)',
+    'Fire Temple Big Lava Room Blocked Door Chest': 'Small Key (Fire Temple)',
+    'Fire Temple Big Lava Room Lower Open Door Chest': 'Small Key (Fire Temple)',
+    'Fire Temple Boulder Maze Shortcut Chest': 'Small Key (Fire Temple)',
     'Fire Temple Boulder Maze Lower Chest': 'Small Key (Fire Temple)',
-    'Fire Temple Boulder Maze Side Room': 'Small Key (Fire Temple)',
+    'Fire Temple Boulder Maze Side Room Chest': 'Small Key (Fire Temple)',
     'Fire Temple Boulder Maze Upper Chest': 'Small Key (Fire Temple)',
-    'Fire Temple Chest Near Boss': 'Small Key (Fire Temple)',
+    'Fire Temple Near Boss Chest': 'Small Key (Fire Temple)',
     'Fire Temple Highest Goron Chest': 'Small Key (Fire Temple)',
-    'Forest Temple Chest Behind Lobby': 'Small Key (Forest Temple)',
-    'Forest Temple First Chest': 'Small Key (Forest Temple)',
+    'Forest Temple First Stalfos Chest': 'Small Key (Forest Temple)',
+    'Forest Temple First Room Chest': 'Small Key (Forest Temple)',
     'Forest Temple Floormaster Chest': 'Small Key (Forest Temple)',
     'Forest Temple Red Poe Chest': 'Small Key (Forest Temple)',
     'Forest Temple Well Chest': 'Small Key (Forest Temple)',
@@ -596,12 +596,12 @@ vanillaSK = {
     'Shadow Temple After Wind Hidden Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple Early Silver Rupee Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple Falling Spikes Switch Chest': 'Small Key (Shadow Temple)',
-    'Shadow Temple Hidden Floormaster Chest': 'Small Key (Shadow Temple)',
+    'Shadow Temple Invisible Floormaster Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple Freestanding Key': 'Small Key (Shadow Temple)',
-    'Spirit Temple Child Right Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple Child Early Torches Chest': 'Small Key (Spirit Temple)',
     'Spirit Temple Early Adult Right Chest': 'Small Key (Spirit Temple)',
     'Spirit Temple Near Four Armos Chest': 'Small Key (Spirit Temple)',
-    'Spirit Temple Statue Hand Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple Statue Room Hand Chest': 'Small Key (Spirit Temple)',
     'Spirit Temple Sun Block Room Chest': 'Small Key (Spirit Temple)',
     'Water Temple Central Bow Target Chest': 'Small Key (Water Temple)',
     'Water Temple Central Pillar Chest': 'Small Key (Water Temple)',
@@ -612,18 +612,18 @@ vanillaSK = {
 
     'Bottom of the Well MQ Dead Hand Freestanding Key': 'Small Key (Bottom of the Well)',
     'Bottom of the Well MQ East Inner Room Freestanding Key': 'Small Key (Bottom of the Well)',
-    'Fire Temple MQ Big Lava Room Bombable Chest': 'Small Key (Fire Temple)',
-    'Fire Temple MQ Chest Near Boss': 'Small Key (Fire Temple)',
-    'Fire Temple MQ Maze Side Room': 'Small Key (Fire Temple)',
-    'Fire Temple MQ West Tower Top Chest': 'Small Key (Fire Temple)',
+    'Fire Temple MQ Big Lava Room Blocked Door Chest': 'Small Key (Fire Temple)',
+    'Fire Temple MQ Near Boss Chest': 'Small Key (Fire Temple)',
+    'Fire Temple MQ Lizalfos Maze Side Room Chest': 'Small Key (Fire Temple)',
+    'Fire Temple MQ Chest On Fire': 'Small Key (Fire Temple)',
     'Fire Temple MQ Freestanding Key': 'Small Key (Fire Temple)',
-    'Forest Temple MQ Chest Behind Lobby': 'Small Key (Forest Temple)',
-    'Forest Temple MQ First Chest': 'Small Key (Forest Temple)',
-    'Forest Temple MQ NE Outdoors Lower Chest': 'Small Key (Forest Temple)',
-    'Forest Temple MQ NE Outdoors Upper Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ Wolfos Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ First Room Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ Raised Island Courtyard Lower Chest': 'Small Key (Forest Temple)',
+    'Forest Temple MQ Raised Island Courtyard Upper Chest': 'Small Key (Forest Temple)',
     'Forest Temple MQ Redead Chest': 'Small Key (Forest Temple)',
     'Forest Temple MQ Well Chest': 'Small Key (Forest Temple)',
-    'Ganons Castle MQ Shadow Trial Second Chest': 'Small Key (Ganons Castle)',
+    'Ganons Castle MQ Shadow Trial Eye Switch Chest': 'Small Key (Ganons Castle)',
     'Ganons Castle MQ Spirit Trial Sun Back Left Chest': 'Small Key (Ganons Castle)',
     'Ganons Castle MQ Forest Trial Freestanding Key': 'Small Key (Ganons Castle)',
     'Gerudo Training Grounds MQ Dinolfos Chest': 'Small Key (Gerudo Training Grounds)',
@@ -635,9 +635,9 @@ vanillaSK = {
     'Shadow Temple MQ Near Ship Invisible Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Wind Hint Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Freestanding Key': 'Small Key (Shadow Temple)',
-    'Spirit Temple MQ Child Center Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple MQ Child Hammer Switch Chest': 'Small Key (Spirit Temple)',
     'Spirit Temple MQ Child Climb South Chest': 'Small Key (Spirit Temple)',
-    'Spirit Temple MQ Child Left Chest': 'Small Key (Spirit Temple)',
+    'Spirit Temple MQ Map Room Enemy Chest': 'Small Key (Spirit Temple)',
     'Spirit Temple MQ Entrance Back Left Chest': 'Small Key (Spirit Temple)',
     'Spirit Temple MQ Entrance Front Right Chest': 'Small Key (Spirit Temple)',
     'Spirit Temple MQ Mirror Puzzle Invisible Chest': 'Small Key (Spirit Temple)',
@@ -808,7 +808,7 @@ def get_pool_core(world):
     if world.shuffle_kokiri_sword:
         pool.append('Kokiri Sword')
     else:
-        placed_items['Kokiri Sword Chest'] = 'Kokiri Sword'
+        placed_items['KF Kokiri Sword Chest'] = 'Kokiri Sword'
 
     ruto_bottles = 1
     if world.zora_fountain == 'open':
@@ -819,15 +819,15 @@ def get_pool_core(world):
     if world.shuffle_weird_egg:
         pool.append('Weird Egg')
     else:
-        placed_items['Malon Egg'] = 'Weird Egg'
+        placed_items['HC Malon Egg'] = 'Weird Egg'
 
     if world.shuffle_ocarinas:
         pool.extend(['Ocarina'] * 2)
         if world.item_pool_value == 'plentiful':
             pending_junk_pool.append('Ocarina')
     else:
-        placed_items['Gift from Saria'] = 'Ocarina'
-        placed_items['Ocarina of Time'] = 'Ocarina'
+        placed_items['LW Gift from Saria'] = 'Ocarina'
+        placed_items['HF Ocarina of Time Item'] = 'Ocarina'
 
     if world.shuffle_cows:
         pool.extend(get_junk_item(10 if world.dungeon_mq['Jabu Jabus Belly'] else 9))
@@ -836,11 +836,11 @@ def get_pool_core(world):
         placed_items['LLR Stables Right Cow'] = 'Milk'
         placed_items['LLR Tower Left Cow'] = 'Milk'
         placed_items['LLR Tower Right Cow'] = 'Milk'
-        placed_items['Links House Cow'] = 'Milk'
-        placed_items['Impas House Cow'] = 'Milk'
-        placed_items['Gerudo Valley Cow'] = 'Milk'
-        placed_items['DMT Grotto Cow'] = 'Milk'
-        placed_items['HF Grotto Cow'] = 'Milk'
+        placed_items['KF Links House Cow'] = 'Milk'
+        placed_items['Kak Impas House Cow'] = 'Milk'
+        placed_items['GV Cow'] = 'Milk'
+        placed_items['DMT Cow Grotto Cow'] = 'Milk'
+        placed_items['HF Cow Grotto Cow'] = 'Milk'
         if world.dungeon_mq['Jabu Jabus Belly']:
             placed_items['Jabu Jabus Belly MQ Cow'] = 'Milk'
 
@@ -852,136 +852,136 @@ def get_pool_core(world):
         else:
             pool.extend(get_junk_item())
     else:
-        placed_items['Magic Bean Salesman'] = 'Magic Bean'
+        placed_items['ZR Magic Bean Salesman'] = 'Magic Bean'
 
     if world.dungeon_mq['Deku Tree']:
         skulltula_locations_final = skulltula_locations + [
-            'GS Deku Tree MQ Lobby',
-            'GS Deku Tree MQ Compass Room',
-            'GS Deku Tree MQ Basement Ceiling',
-            'GS Deku Tree MQ Basement Back Room']
+            'Deku Tree MQ GS Lobby',
+            'Deku Tree MQ GS Compass Room',
+            'Deku Tree MQ GS Basement Graves Room',
+            'Deku Tree MQ GS Basement Back Room']
     else:
         skulltula_locations_final = skulltula_locations + [
-            'GS Deku Tree Compass Room',
-            'GS Deku Tree Basement Vines',
-            'GS Deku Tree Basement Gate',
-            'GS Deku Tree Basement Back Room']
+            'Deku Tree GS Compass Room',
+            'Deku Tree GS Basement Vines',
+            'Deku Tree GS Basement Gate',
+            'Deku Tree GS Basement Back Room']
     if world.dungeon_mq['Dodongos Cavern']:
         skulltula_locations_final.extend([
-            'GS Dodongo\'s Cavern MQ Scrub Room',
-            'GS Dodongo\'s Cavern MQ Song of Time Block Room',
-            'GS Dodongo\'s Cavern MQ Lizalfos Room',
-            'GS Dodongo\'s Cavern MQ Larva Room',
-            'GS Dodongo\'s Cavern MQ Back Area'])
+            'Dodongos Cavern MQ GS Scrub Room',
+            'Dodongos Cavern MQ GS Song of Time Block Room',
+            'Dodongos Cavern MQ GS Lizalfos Room',
+            'Dodongos Cavern MQ GS Larvae Room',
+            'Dodongos Cavern MQ GS Back Area'])
     else:
         skulltula_locations_final.extend([
-            'GS Dodongo\'s Cavern East Side Room',
-            'GS Dodongo\'s Cavern Vines Above Stairs',
-            'GS Dodongo\'s Cavern Back Room',
-            'GS Dodongo\'s Cavern Alcove Above Stairs',
-            'GS Dodongo\'s Cavern Scarecrow'])
+            'Dodongos Cavern GS Side Room Near Lower Lizalfos',
+            'Dodongos Cavern GS Vines Above Stairs',
+            'Dodongos Cavern GS Back Room',
+            'Dodongos Cavern GS Alcove Above Stairs',
+            'Dodongos Cavern GS Scarecrow'])
     if world.dungeon_mq['Jabu Jabus Belly']:
         skulltula_locations_final.extend([
-            'GS Jabu Jabu MQ Tailpasaran Room',
-            'GS Jabu Jabu MQ Invisible Enemies Room',
-            'GS Jabu Jabu MQ Boomerang Room',
-            'GS Jabu Jabu MQ Near Boss'])
+            'Jabu Jabus Belly MQ GS Tailpasaran Room',
+            'Jabu Jabus Belly MQ GS Invisible Enemies Room',
+            'Jabu Jabus Belly MQ GS Boomerang Chest Room',
+            'Jabu Jabus Belly MQ GS Near Boss'])
     else:
         skulltula_locations_final.extend([
-            'GS Jabu Jabu Water Switch Room',
-            'GS Jabu Jabu Lobby Basement Lower',
-            'GS Jabu Jabu Lobby Basement Upper',
-            'GS Jabu Jabu Near Boss'])
+            'Jabu Jabus Belly GS Water Switch Room',
+            'Jabu Jabus Belly GS Lobby Basement Lower',
+            'Jabu Jabus Belly GS Lobby Basement Upper',
+            'Jabu Jabus Belly GS Near Boss'])
     if world.dungeon_mq['Forest Temple']:
         skulltula_locations_final.extend([
-            'GS Forest Temple MQ First Hallway',
-            'GS Forest Temple MQ Block Push Room',
-            'GS Forest Temple MQ Outdoor East',
-            'GS Forest Temple MQ Outdoor West',
-            'GS Forest Temple MQ Well'])
+            'Forest Temple MQ GS First Hallway',
+            'Forest Temple MQ GS Block Push Room',
+            'Forest Temple MQ GS Raised Island Courtyard',
+            'Forest Temple MQ GS Level Island Courtyard',
+            'Forest Temple MQ GS Well'])
     else:
         skulltula_locations_final.extend([
-            'GS Forest Temple First Room',
-            'GS Forest Temple Lobby',
-            'GS Forest Temple Outdoor East',
-            'GS Forest Temple Outdoor West',
-            'GS Forest Temple Basement'])
+            'Forest Temple GS First Room',
+            'Forest Temple GS Lobby',
+            'Forest Temple GS Raised Island Courtyard',
+            'Forest Temple GS Level Island Courtyard',
+            'Forest Temple GS Basement'])
     if world.dungeon_mq['Fire Temple']:
         skulltula_locations_final.extend([
-            'GS Fire Temple MQ Above Fire Wall Maze',
-            'GS Fire Temple MQ Fire Wall Maze Center',
-            'GS Fire Temple MQ Big Lava Room',
-            'GS Fire Temple MQ Fire Wall Maze Side Room',
-            'GS Fire Temple MQ East Tower Top'])
+            'Fire Temple MQ GS Above Fire Wall Maze',
+            'Fire Temple MQ GS Fire Wall Maze Center',
+            'Fire Temple MQ GS Big Lava Room Open Door',
+            'Fire Temple MQ GS Fire Wall Maze Side Room',
+            'Fire Temple MQ GS Skull On Fire'])
     else:
         skulltula_locations_final.extend([
-            'GS Fire Temple Song of Time Room',
-            'GS Fire Temple Unmarked Bomb Wall',
-            'GS Fire Temple East Tower Climb',
-            'GS Fire Temple East Tower Top',
-            'GS Fire Temple Basement'])
+            'Fire Temple GS Song of Time Room',
+            'Fire Temple GS Boulder Maze',
+            'Fire Temple GS Scarecrow Climb',
+            'Fire Temple GS Scarecrow Top',
+            'Fire Temple GS Boss Key Loop'])
     if world.dungeon_mq['Water Temple']:
         skulltula_locations_final.extend([
-            'GS Water Temple MQ Before Upper Water Switch',
-            'GS Water Temple MQ North Basement',
-            'GS Water Temple MQ Lizalfos Hallway',
-            'GS Water Temple MQ Serpent River',
-            'GS Water Temple MQ South Basement'])
+            'Water Temple MQ GS Before Upper Water Switch',
+            'Water Temple MQ GS Freestanding Key Area',
+            'Water Temple MQ GS Lizalfos Hallway',
+            'Water Temple MQ GS River',
+            'Water Temple MQ GS Triple Wall Torch'])
     else:
         skulltula_locations_final.extend([
-            'GS Water Temple South Basement',
-            'GS Water Temple Serpent River',
-            'GS Water Temple Falling Platform Room',
-            'GS Water Temple Central Room',
-            'GS Water Temple Near Boss Key Chest'])
+            'Water Temple GS Behind Gate',
+            'Water Temple GS River',
+            'Water Temple GS Falling Platform Room',
+            'Water Temple GS Central Pillar',
+            'Water Temple GS Near Boss Key Chest'])
     if world.dungeon_mq['Spirit Temple']:
         skulltula_locations_final.extend([
-            'GS Spirit Temple MQ Lower Adult Right',
-            'GS Spirit Temple MQ Lower Adult Left',
-            'GS Spirit Temple MQ Iron Knuckle West',
-            'GS Spirit Temple MQ Iron Knuckle North',
-            'GS Spirit Temple MQ Sun Block Room'])
+            'Spirit Temple MQ GS Symphony Room',
+            'Spirit Temple MQ GS Leever Room',
+            'Spirit Temple MQ GS Nine Thrones Room West',
+            'Spirit Temple MQ GS Nine Thrones Room North',
+            'Spirit Temple MQ GS Sun Block Room'])
     else:
         skulltula_locations_final.extend([
-            'GS Spirit Temple Metal Fence',
-            'GS Spirit Temple Bomb for Light Room',
-            'GS Spirit Temple Hall to West Iron Knuckle',
-            'GS Spirit Temple Boulder Room',
-            'GS Spirit Temple Lobby'])
+            'Spirit Temple GS Metal Fence',
+            'Spirit Temple GS Sun on Floor Room',
+            'Spirit Temple GS Hall After Sun Block Room',
+            'Spirit Temple GS Boulder Room',
+            'Spirit Temple GS Lobby'])
     if world.dungeon_mq['Shadow Temple']:
         skulltula_locations_final.extend([
-            'GS Shadow Temple MQ Crusher Room',
-            'GS Shadow Temple MQ Wind Hint Room',
-            'GS Shadow Temple MQ After Wind',
-            'GS Shadow Temple MQ After Ship',
-            'GS Shadow Temple MQ Near Boss'])
+            'Shadow Temple MQ GS Falling Spikes Room',
+            'Shadow Temple MQ GS Wind Hint Room',
+            'Shadow Temple MQ GS After Wind',
+            'Shadow Temple MQ GS After Ship',
+            'Shadow Temple MQ GS Near Boss'])
     else:
         skulltula_locations_final.extend([
-            'GS Shadow Temple Like Like Room',
-            'GS Shadow Temple Crusher Room',
-            'GS Shadow Temple Single Giant Pot',
-            'GS Shadow Temple Near Ship',
-            'GS Shadow Temple Triple Giant Pot'])
+            'Shadow Temple GS Like Like Room',
+            'Shadow Temple GS Falling Spikes Room',
+            'Shadow Temple GS Single Giant Pot',
+            'Shadow Temple GS Near Ship',
+            'Shadow Temple GS Triple Giant Pot'])
     if world.dungeon_mq['Bottom of the Well']:
         skulltula_locations_final.extend([
-            'GS Well MQ Basement',
-            'GS Well MQ Coffin Room',
-            'GS Well MQ West Inner Room'])
+            'Bottom of the Well MQ GS Basement',
+            'Bottom of the Well MQ GS Coffin Room',
+            'Bottom of the Well MQ GS West Inner Room'])
     else:
         skulltula_locations_final.extend([
-            'GS Well West Inner Room',
-            'GS Well East Inner Room',
-            'GS Well Like Like Cage'])
+            'Bottom of the Well GS West Inner Room',
+            'Bottom of the Well GS East Inner Room',
+            'Bottom of the Well GS Like Like Cage'])
     if world.dungeon_mq['Ice Cavern']:
         skulltula_locations_final.extend([
-            'GS Ice Cavern MQ Scarecrow',
-            'GS Ice Cavern MQ Ice Block',
-            'GS Ice Cavern MQ Red Ice'])
+            'Ice Cavern MQ GS Scarecrow',
+            'Ice Cavern MQ GS Ice Block',
+            'Ice Cavern MQ GS Red Ice'])
     else:
         skulltula_locations_final.extend([
-            'GS Ice Cavern Spinning Scythe Room',
-            'GS Ice Cavern Heart Piece Room',
-            'GS Ice Cavern Push Block Room'])
+            'Ice Cavern GS Spinning Scythe Room',
+            'Ice Cavern GS Heart Piece Room',
+            'Ice Cavern GS Push Block Room'])
     if world.tokensanity == 'off':
         for location in skulltula_locations_final:
             placed_items[location] = 'Gold Skulltula Token'
@@ -1034,39 +1034,39 @@ def get_pool_core(world):
         pool.extend(['Ice Trap'] * 4)
 
     if world.gerudo_fortress == 'open':
-        placed_items['Gerudo Fortress North F1 Carpenter'] = 'Recovery Heart'
-        placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
-        placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
-        placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+        placed_items['GF North F1 Carpenter'] = 'Recovery Heart'
+        placed_items['GF North F2 Carpenter'] = 'Recovery Heart'
+        placed_items['GF South F1 Carpenter'] = 'Recovery Heart'
+        placed_items['GF South F2 Carpenter'] = 'Recovery Heart'
     elif world.shuffle_smallkeys == 'keysanity':
         if world.gerudo_fortress == 'fast':
             pool.append('Small Key (Gerudo Fortress)')
-            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
-            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
-            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+            placed_items['GF North F2 Carpenter'] = 'Recovery Heart'
+            placed_items['GF South F1 Carpenter'] = 'Recovery Heart'
+            placed_items['GF South F2 Carpenter'] = 'Recovery Heart'
         else:
             pool.extend(['Small Key (Gerudo Fortress)'] * 4)
         if world.item_pool_value == 'plentiful':
             pending_junk_pool.append('Small Key (Gerudo Fortress)')
     else:
         if world.gerudo_fortress == 'fast':
-            placed_items['Gerudo Fortress North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
-            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Recovery Heart'
-            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Recovery Heart'
-            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Recovery Heart'
+            placed_items['GF North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['GF North F2 Carpenter'] = 'Recovery Heart'
+            placed_items['GF South F1 Carpenter'] = 'Recovery Heart'
+            placed_items['GF South F2 Carpenter'] = 'Recovery Heart'
         else:
-            placed_items['Gerudo Fortress North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
-            placed_items['Gerudo Fortress North F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
-            placed_items['Gerudo Fortress South F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
-            placed_items['Gerudo Fortress South F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['GF North F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['GF North F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['GF South F1 Carpenter'] = 'Small Key (Gerudo Fortress)'
+            placed_items['GF South F2 Carpenter'] = 'Small Key (Gerudo Fortress)'
 
     if world.shuffle_gerudo_card and world.gerudo_fortress != 'open':
         pool.append('Gerudo Membership Card')
     elif world.shuffle_gerudo_card:
         pending_junk_pool.append('Gerudo Membership Card')
-        placed_items['Gerudo Fortress Membership Card'] = 'Ice Trap'
+        placed_items['GF Gerudo Membership Card'] = 'Ice Trap'
     else:
-        placed_items['Gerudo Fortress Membership Card'] = 'Gerudo Membership Card'
+        placed_items['GF Gerudo Membership Card'] = 'Gerudo Membership Card'
     if world.shuffle_gerudo_card and world.item_pool_value == 'plentiful':
         pending_junk_pool.append('Gerudo Membership Card')
 
@@ -1093,9 +1093,9 @@ def get_pool_core(world):
     if world.shopsanity == 'off':
         placed_items.update(vanilla_shop_items)
         if world.bombchus_in_logic:
-            placed_items['Kokiri Shop Item 8'] = 'Buy Bombchu (5)'
-            placed_items['Castle Town Bazaar Item 4'] = 'Buy Bombchu (5)'
-            placed_items['Kakariko Bazaar Item 4'] = 'Buy Bombchu (5)'
+            placed_items['KF Shop Item 8'] = 'Buy Bombchu (5)'
+            placed_items['Market Bazaar Item 4'] = 'Buy Bombchu (5)'
+            placed_items['Kak Bazaar Item 4'] = 'Buy Bombchu (5)'
         pool.extend(normal_rupees)
 
     else:
@@ -1135,30 +1135,30 @@ def get_pool_core(world):
 
     else:
         if world.dungeon_mq['Deku Tree']:
-            placed_items['DT MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
+            placed_items['Deku Tree MQ Deku Scrub'] = 'Buy Deku Shield'
         if world.dungeon_mq['Dodongos Cavern']:
-            placed_items['DC MQ Deku Scrub Deku Sticks'] = 'Buy Deku Stick (1)'
-            placed_items['DC MQ Deku Scrub Deku Seeds'] = 'Buy Deku Seeds (30)'
-            placed_items['DC MQ Deku Scrub Deku Shield'] = 'Buy Deku Shield'
-            placed_items['DC MQ Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
+            placed_items['Dodongos Cavern MQ Deku Scrub Lobby Rear'] = 'Buy Deku Stick (1)'
+            placed_items['Dodongos Cavern MQ Deku Scrub Lobby Front'] = 'Buy Deku Seeds (30)'
+            placed_items['Dodongos Cavern MQ Deku Scrub Staircase'] = 'Buy Deku Shield'
+            placed_items['Dodongos Cavern MQ Deku Scrub Side Room Near Lower Lizalfos'] = 'Buy Red Potion [30]'
         else:
-            placed_items['DC Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
-            placed_items['DC Deku Scrub Deku Sticks'] = 'Buy Deku Stick (1)'
-            placed_items['DC Deku Scrub Deku Seeds'] = 'Buy Deku Seeds (30)'
-            placed_items['DC Deku Scrub Deku Shield'] = 'Buy Deku Shield'
+            placed_items['Dodongos Cavern Deku Scrub Near Bomb Bag Left'] = 'Buy Deku Nut (5)'
+            placed_items['Dodongos Cavern Deku Scrub Side Room Near Dodongos'] = 'Buy Deku Stick (1)'
+            placed_items['Dodongos Cavern Deku Scrub Near Bomb Bag Right'] = 'Buy Deku Seeds (30)'
+            placed_items['Dodongos Cavern Deku Scrub Lobby'] = 'Buy Deku Shield'
         if not world.dungeon_mq['Jabu Jabus Belly']:
-            placed_items['Jabu Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
+            placed_items['Jabu Jabus Belly Deku Scrub'] = 'Buy Deku Nut (5)'
         if world.dungeon_mq['Ganons Castle']:
-            placed_items['GC MQ Deku Scrub Deku Nuts'] = 'Buy Deku Nut (5)'
-            placed_items['GC MQ Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
-            placed_items['GC MQ Deku Scrub Arrows'] = 'Buy Arrows (30)'
-            placed_items['GC MQ Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
-            placed_items['GC MQ Deku Scrub Green Potion'] = 'Buy Green Potion'
+            placed_items['Ganons Castle MQ Deku Scrub Right'] = 'Buy Deku Nut (5)'
+            placed_items['Ganons Castle MQ Deku Scrub Center-Left'] = 'Buy Bombs (5) [35]'
+            placed_items['Ganons Castle MQ Deku Scrub Center'] = 'Buy Arrows (30)'
+            placed_items['Ganons Castle MQ Deku Scrub Center-Right'] = 'Buy Red Potion [30]'
+            placed_items['Ganons Castle MQ Deku Scrub Left'] = 'Buy Green Potion'
         else:
-            placed_items['GC Deku Scrub Bombs'] = 'Buy Bombs (5) [35]'
-            placed_items['GC Deku Scrub Arrows'] = 'Buy Arrows (30)'
-            placed_items['GC Deku Scrub Red Potion'] = 'Buy Red Potion [30]'
-            placed_items['GC Deku Scrub Green Potion'] = 'Buy Green Potion'
+            placed_items['Ganons Castle Deku Scrub Center-Left'] = 'Buy Bombs (5) [35]'
+            placed_items['Ganons Castle Deku Scrub Center-Right'] = 'Buy Arrows (30)'
+            placed_items['Ganons Castle Deku Scrub Right'] = 'Buy Red Potion [30]'
+            placed_items['Ganons Castle Deku Scrub Left'] = 'Buy Green Potion'
         placed_items.update(vanilla_deku_scrubs)
 
     pool.extend(alwaysitems)
@@ -1205,7 +1205,7 @@ def get_pool_core(world):
             bottle = random.choice(normal_bottles)
             pool.append(bottle)
         else:
-            pool.append('Bottle with Letter')
+            pool.append('Ruto\'s Letter')
 
     earliest_trade = tradeitemoptions.index(world.logic_earliest_adult_trade)
     latest_trade = tradeitemoptions.index(world.logic_latest_adult_trade)
@@ -1286,7 +1286,7 @@ def get_pool_core(world):
         pending_junk_pool.extend(['Triforce Piece'] * triforce_count)
 
     if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
-        placed_items['Zelda'] = 'Boss Key (Ganons Castle)'
+        placed_items['ToT Light Arrows Cutscene'] = 'Boss Key (Ganons Castle)'
     elif world.shuffle_ganon_bosskey == 'vanilla':
         placed_items['Ganons Tower Boss Key Chest'] = 'Boss Key (Ganons Castle)'
 
@@ -1307,8 +1307,21 @@ def get_pool_core(world):
     for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
 
+    world.distribution.alter_pool(world, pool)
+
     # Make sure our pending_junk_pool is empty. If not, remove some random junk here.
     if pending_junk_pool:
+        for item in set(pending_junk_pool):
+            # Ensure pending_junk_pool contents don't exceed values given by distribution file
+            if item in world.distribution.item_pool:
+                while pending_junk_pool.count(item) > world.distribution.item_pool[item].count:
+                    pending_junk_pool.remove(item)
+                # Remove pending junk already added to the pool by alter_pool from the pending_junk_pool
+                if item in pool:
+                    count = pool.count(item)
+                    for _ in range(count):
+                        pending_junk_pool.remove(item)
+
         remove_junk_pool, _ = zip(*junk_pool_base)
         remove_junk_pool = list(remove_junk_pool) + ['Recovery Heart', 'Bombs (20)', 'Arrows (30)', 'Ice Trap']
 
@@ -1321,8 +1334,6 @@ def get_pool_core(world):
             junk_candidates.remove(junk_item)
             pool.remove(junk_item)
             pool.append(pending_item)
-
-    world.distribution.alter_pool(world, pool)
 
     world.distribution.configure_starting_items_settings(world)
     world.distribution.collect_starters(world.state)

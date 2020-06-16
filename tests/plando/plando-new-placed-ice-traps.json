@@ -3,7 +3,7 @@
     "Ice Trap": 1
   },
   "locations": {
-    "Gerudo Valley Crate Freestanding PoH":                  "Ice Trap",
-    "Gerudo Valley Hammer Rocks Chest":                      "Ice Trap"
+    "GV Crate Freestanding PoH":                  "Ice Trap",
+    "GV Chest":                      "Ice Trap"
   }
 }

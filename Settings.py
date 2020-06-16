@@ -193,21 +193,29 @@ class Settings:
             if self.distribution_file:
                 try:
                     self.distribution = Distribution.from_file(self, self.distribution_file)
-                    self.using_distribution_file = True
                 except FileNotFoundError:
                     logging.getLogger('').warning("Distribution file not found at %s" % (self.distribution_file))
+                    self.enable_distribution_file = False
             else:
                 logging.getLogger('').warning("Plandomizer enabled, but no distribution file provided.")
+                self.enable_distribution_file = False
         elif self.distribution_file:
             logging.getLogger('').warning("Distribution file provided, but using it not enabled. "
                     "Did you mean to set enable_distribution_file?")
         else:
             self.distribution = Distribution(self)
 
+        self.reset_distribution()
+
+        self.numeric_seed = self.get_numeric_seed()
+
+
+    def reset_distribution(self):
+        self.distribution.reset()
+
         for location in self.disabled_locations:
             self.distribution.add_location(location, '#Junk')
 
-        self.numeric_seed = self.get_numeric_seed()
 
     def check_dependency(self, setting_name, check_random=True):
         return self.get_dependency(setting_name, check_random) == None

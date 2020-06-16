@@ -17,17 +17,17 @@
                 (skipped_trials[Shadow] or 'Shadow Trial Clear') and 
                 (skipped_trials[Spirit] or 'Spirit Trial Clear') and 
                 (skipped_trials[Light] or 'Light Trial Clear')",
-            "Ganons Castle Deku Scrubs": "can_see_with_lens"
+            "Ganons Castle Deku Scrubs": "logic_lens_castle or can_use(Lens_of_Truth)"
         }
     },
     {
         "region_name": "Ganons Castle Deku Scrubs",
         "dungeon": "Ganons Castle",
         "locations": {
-            "GC Deku Scrub Bombs": "True",
-            "GC Deku Scrub Arrows": "True",
-            "GC Deku Scrub Red Potion": "True",
-            "GC Deku Scrub Green Potion": "True",
+            "Ganons Castle Deku Scrub Center-Left": "True",
+            "Ganons Castle Deku Scrub Center-Right": "True",
+            "Ganons Castle Deku Scrub Right": "True",
+            "Ganons Castle Deku Scrub Left": "True",
             "Free Fairies": "has_bottle"
         }
     },
@@ -54,7 +54,7 @@
         "region_name": "Ganons Castle Water Trial",
         "dungeon": "Ganons Castle",
         "events": {
-            "Water Trial Clear": "Blue_Fire and Hammer and can_use(Light_Arrows)"
+            "Water Trial Clear": "Blue_Fire and Megaton_Hammer and can_use(Light_Arrows)"
         },
         "locations": {
             "Ganons Castle Water Trial Left Chest": "True",
@@ -68,15 +68,15 @@
         "dungeon": "Ganons Castle",
         "events": {
             "Shadow Trial Clear": "
-                can_use(Light_Arrows) and Hammer and 
-                ((Fire_Arrows and can_see_with_lens) or 
-                    (can_use(Longshot) and (Hover_Boots or (Dins_Fire and can_see_with_lens))))"
+                can_use(Light_Arrows) and Megaton_Hammer and 
+                ((Fire_Arrows and (logic_lens_castle or can_use(Lens_of_Truth))) or 
+                    (can_use(Longshot) and (Hover_Boots or (Dins_Fire and (logic_lens_castle or can_use(Lens_of_Truth))))))"
         },
         "locations": {
-            "Ganons Castle Shadow Trial First Chest": "
+            "Ganons Castle Shadow Trial Front Chest": "
                 can_use(Fire_Arrows) or Progressive_Hookshot or 
                 Hover_Boots or can_play(Song_of_Time)",
-            "Ganons Castle Shadow Trial Second Chest": "
+            "Ganons Castle Shadow Trial Golden Gauntlets Chest": "
                 can_use(Fire_Arrows) or 
                 (can_use(Longshot) and (Hover_Boots or can_use(Dins_Fire)))"
         }
@@ -90,11 +90,11 @@
                 (logic_spirit_trial_hookshot or Progressive_Hookshot)"
         },
         "locations": {
-            "Ganons Castle Spirit Trial First Chest": "
+            "Ganons Castle Spirit Trial Crystal Switch Chest": "
                 (logic_spirit_trial_hookshot or Progressive_Hookshot)",
-            "Ganons Castle Spirit Trial Second Chest": "
+            "Ganons Castle Spirit Trial Invisible Chest": "
                 (logic_spirit_trial_hookshot or Progressive_Hookshot) and
-                has_bombchus and can_see_with_lens",
+                has_bombchus and (logic_lens_castle or can_use(Lens_of_Truth))",
             "Nut Pot": "
                 (logic_spirit_trial_hookshot or Progressive_Hookshot) and
                 has_bombchus and Bow and Mirror_Shield"
@@ -106,7 +106,7 @@
         "events": {
             "Light Trial Clear": "
                 can_use(Light_Arrows) and Progressive_Hookshot and 
-                (Small_Key_Ganons_Castle, 2) and can_see_with_lens"
+                (Small_Key_Ganons_Castle, 2) and (logic_lens_castle or can_use(Lens_of_Truth))"
         },
         "locations": {
             "Ganons Castle Light Trial First Left Chest": "True",
@@ -115,7 +115,7 @@
             "Ganons Castle Light Trial First Right Chest": "True",
             "Ganons Castle Light Trial Second Right Chest": "True",
             "Ganons Castle Light Trial Third Right Chest": "True",
-            "Ganons Castle Light Trial Invisible Enemies Chest": "can_see_with_lens",
+            "Ganons Castle Light Trial Invisible Enemies Chest": "logic_lens_castle or can_use(Lens_of_Truth)",
             "Ganons Castle Light Trial Lullaby Chest": "
                 can_play(Zeldas_Lullaby) and (Small_Key_Ganons_Castle, 1)"
         }

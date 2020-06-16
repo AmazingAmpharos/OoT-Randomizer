@@ -91,14 +91,19 @@ player.
 * New setting `Skip Some Minigame Phases`
   * Allows getting both rewards for Horseback Archery and Dampé Race in a single go!
   * Replaces the `Skip First Dampé Race` setting.
+* `Lens of Truth` setting has been removed and replaced with several independent tricks.
+  * `Lensless Wasteland`: assumes you can navigate the Wasteland to the Colossus without the Lens of Truth.
+  * `<Area> without Lens of Truth`: assumes you can complete the given area without the Lens of Truth. Note that MQ and Vanilla dungeons have separate tricks.
+  * Shadow Temples are split into two separate areas for these tricks.
+  * Glitchless logic now requires Lens (or an appropriate trick) for some checks, particularly in Shadow Temple.
+  * Glitched logic may sometimes assume you can do something without lens regardless of trick settings.
 * New cosmetic setting `HUD Button Colors`
-  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme.
+  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme, of OoT or MM.
   * Or you can completely randomize all the button colors.
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
-* New button color presets matching those from Majora's Mask.
-  * The "Random Choice" option may pick one of these.
+* Tricks can be filtered in the GUI using a new dropdown.
 
 #### Bug Fixes
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
@@ -107,12 +112,19 @@ player.
 * Fix some issues with `Randomize Main Rules`:
   * Closed Forest implies starting as child.
   * Triforce Hunt won't accidentally place the Boss Key for Ganon's Castle.
+* The seed generator can now retry a few times in case of failure.
+* Minor plandomizer fixes and improvements.
 
 #### Other Changes
+* Most locations and a few items have been renamed to improve spoiler output and standardize.
+  * This will break settings and distribution files from previous versions that reference these locations and items.
+* File 3 has been removed from generated ROMs to free up some space.
+* The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
 * Added decompressor source and updated Decompress binaries.
 * OoTRandomizer.py returns an error code on failure to interact better with user scripting.
+* Plandomizer distribution files are copied to the Output directory next to the Spoiler and Cosmetics logs.
 * Mweep.
 
 ### 5.2
@@ -300,7 +312,7 @@ player.
     * This allows playing with open bridge while still requiring dungeon completion
   * This replaces the Remove Ganon’s Boss Door Lock option
 * Plentiful Item Pool
-  * Duplicate Letter in a Bottle added to plentiful item pool
+  * Duplicate Ruto's Letter added to plentiful item pool
 * With `Start With Max Rupees` option enabled, wallet upgrades items now fill to max rupees
 
 #### Bug Fixes
@@ -382,7 +394,7 @@ player.
 * Start with Tycoon wallet
 * Open Zora's Fountain
   * King Zora is moved to the side from the start of the game.
-  * Letter in a Bottle is removed from the item pool and replaced with an Empty Bottle.
+  * Ruto's Letter is removed from the item pool and replaced with an Empty Bottle.
 * Randomize starting time of day
 * Ice traps setting
     * Off: All ice traps are removed

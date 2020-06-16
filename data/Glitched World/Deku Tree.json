@@ -3,14 +3,14 @@
         "region_name": "Deku Tree Lobby",
         "dungeon": "Deku Tree",
         "locations": {
-            "Deku Tree Lobby Chest": "True",
+            "Deku Tree Map Chest": "True",
             "Deku Tree Compass Chest": "True",
             "Deku Tree Compass Room Side Chest": "True",
             "Deku Tree Basement Chest": "is_adult or can_child_attack or Nuts",
-            "GS Deku Tree Compass Room": "is_adult or can_child_attack",
-            "GS Deku Tree Basement Vines": "is_adult or can_child_attack",
-            "GS Deku Tree Basement Gate": "is_adult or can_child_attack",
-            "GS Deku Tree Basement Back Room": "
+            "Deku Tree GS Compass Room": "is_adult or can_child_attack",
+            "Deku Tree GS Basement Vines": "is_adult or can_child_attack",
+            "Deku Tree GS Basement Gate": "is_adult or can_child_attack",
+            "Deku Tree GS Basement Back Room": "
                 (here(has_fire_source_with_torch or can_use(Bow)) and
                  here(can_use(Slingshot) or can_use(Bow)) and
                  here(can_blast_or_smash) and
@@ -42,13 +42,13 @@
         "dungeon": "Deku Tree",
         "events": {
             "Deku Tree Clear": "(Nuts or can_use(Slingshot) or has_bombchus or can_use(Hookshot) or can_use(Bow) or can_use(Boomerang)) and
-                ((here(has_shield or can_use(Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)"
+                ((here(has_shield or can_use(Megaton_Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)"
         },
         "locations": {
-            "Queen Gohma Heart": "(Nuts or can_use(Slingshot) or has_bombchus or can_use(Hookshot) or can_use(Bow) or can_use(Boomerang)) and 
-                ((here(has_shield or can_use(Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)",
+            "Deku Tree Queen Gohma Heart": "(Nuts or can_use(Slingshot) or has_bombchus or can_use(Hookshot) or can_use(Bow) or can_use(Boomerang)) and 
+                ((here(has_shield or can_use(Megaton_Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)",
             "Queen Gohma": "(Nuts or can_use(Slingshot) or has_bombchus or can_use(Hookshot) or can_use(Bow) or can_use(Boomerang)) and
-                ((here(has_shield or can_use(Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)"
+                ((here(has_shield or can_use(Megaton_Hammer)) and (is_adult or Kokiri_Sword or Sticks)) or is_adult)"
         },
         "exits": {
             "Deku Tree Lobby": "True"

@@ -30,8 +30,8 @@
         "locations": {
             "Ice Cavern MQ Iron Boots Chest": "is_adult",
             "Sheik in Ice Cavern": "is_adult",
-            "GS Ice Cavern MQ Ice Block": "is_adult or can_child_attack",
-            "GS Ice Cavern MQ Scarecrow": "
+            "Ice Cavern MQ GS Ice Block": "is_adult or can_child_attack",
+            "Ice Cavern MQ GS Scarecrow": "
                 can_use(Scarecrow) or (Hover_Boots and can_use(Longshot)) or
                 (logic_ice_mq_scarecrow and is_adult)"
         }
@@ -42,7 +42,7 @@
         "locations": {
             "Ice Cavern MQ Compass Chest": "True",
             "Ice Cavern MQ Freestanding PoH": "has_explosives",
-            "GS Ice Cavern MQ Red Ice": "can_play(Song_of_Time)"
+            "Ice Cavern MQ GS Red Ice": "can_play(Song_of_Time)"
         }
     }
 ]
