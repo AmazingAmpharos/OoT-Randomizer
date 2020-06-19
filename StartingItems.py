@@ -21,6 +21,7 @@ def _entry(settingname, itemname=None, available=1, guitext=None, special=False,
             result.append((name, _Entry(name, itemname, available, guitext, special, ammo)))
         return result
 
+# Ammo items must be declared in ItemList.py.
 inventory = dict(chain(
     _entry('deku_stick', 'Deku Stick Capacity', available=2, ammo={'Deku Sticks': (20, 30)}),
     _entry('deku_nut', 'Deku Nut Capacity', available=2, ammo={'Deku Nuts': (30, 40)}),
