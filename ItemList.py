@@ -166,6 +166,7 @@ item_table = {
     # Consumable refills defined mostly to placate 'starting with' options
     'Arrows':                           ('Refill',   None,  None, None),
     'Bombs':                            ('Refill',   None,  None, None),
+    'Deku Seeds':                       ('Refill',   None,  None, None),
     'Deku Sticks':                      ('Refill',   None,  None, None),
     'Deku Nuts':                        ('Refill',   None,  None, None),
     'Rupees':                           ('Refill',   None,  None, None),
