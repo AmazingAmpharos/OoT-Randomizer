@@ -477,7 +477,7 @@ fixedlocations = {
     'Ganon': 'Triforce',
     'HC Zeldas Letter': 'Zeldas Letter',
     'Pierre': 'Scarecrow Song',
-    'Deliver Ruto\'s Letter': 'Deliver Letter',
+    'Deliver Rutos Letter': 'Deliver Letter',
     'Master Sword Pedestal': 'Time Travel',
     'Market Bombchu Bowling Bombchus': 'Bombchu Drop',
     'Wasteland Bombchu Salesman': 'Bombchus',
@@ -1177,7 +1177,7 @@ def get_pool_core(world):
             bottle = random.choice(normal_bottles)
             pool.append(bottle)
         else:
-            pool.append('Ruto\'s Letter')
+            pool.append('Rutos Letter')
 
     earliest_trade = tradeitemoptions.index(world.logic_earliest_adult_trade)
     latest_trade = tradeitemoptions.index(world.logic_latest_adult_trade)

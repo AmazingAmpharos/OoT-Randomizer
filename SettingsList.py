@@ -1121,33 +1121,33 @@ logic_tricks = {
                     Removes the requirements for the Lens of Truth
                     in Jabu MQ.
                     '''},
-    'Shadow Temple MQ before Huge Pit without Lens of Truth': {
+    'Shadow Temple MQ before Invisible Moving Platform without Lens of Truth': {
         'name'    : 'logic_lens_shadow_mq',
         'tags'    : ("Lens of Truth","Shadow Temple",),
         'tooltip' : '''\
                     Removes the requirements for the Lens of Truth
-                    in Shadow Temple MQ before the Huge Pit room.
+                    in Shadow Temple MQ before the invisible moving platform.
                     '''},
-    'Shadow Temple MQ beyond Huge Pit without Lens of Truth': {
+    'Shadow Temple MQ beyond Invisible Moving Platform without Lens of Truth': {
         'name'    : 'logic_lens_shadow_mq_back',
         'tags'    : ("Lens of Truth","Shadow Temple",),
         'tooltip' : '''\
                     Removes the requirements for the Lens of Truth
-                    in Shadow Temple MQ beyond the Huge Pit room.
+                    in Shadow Temple MQ beyond the invisible moving platform.
                     '''},
-    'Shadow Temple before Huge Pit without Lens of Truth': {
+    'Shadow Temple before Invisible Moving Platform without Lens of Truth': {
         'name'    : 'logic_lens_shadow',
         'tags'    : ("Lens of Truth","Shadow Temple",),
         'tooltip' : '''\
                     Removes the requirements for the Lens of Truth
-                    in Shadow Temple before the Huge Pit room.
+                    in Shadow Temple before the invisible moving platform.
                     '''},
-    'Shadow Temple beyond Huge Pit without Lens of Truth': {
+    'Shadow Temple beyond Invisible Moving Platform without Lens of Truth': {
         'name'    : 'logic_lens_shadow_back',
         'tags'    : ("Lens of Truth","Shadow Temple",),
         'tooltip' : '''\
                     Removes the requirements for the Lens of Truth
-                    in Shadow Temple beyond the Huge Pit room.
+                    in Shadow Temple beyond the invisible moving platform.
                     '''},
     'Spirit Temple MQ without Lens of Truth': {
         'name'    : 'logic_lens_spirit_mq',

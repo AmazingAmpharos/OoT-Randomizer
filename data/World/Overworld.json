@@ -1499,7 +1499,7 @@
         "locations": {
             "ZD Diving Minigame": "is_child",
             "ZD Chest": "can_use(Sticks)",
-            "Deliver Ruto's Letter": "
+            "Deliver Rutos Letter": "
                 is_child and Rutos_Letter and zora_fountain != 'open'",
             "ZD King Zora Thawed": "'King Zora Thawed'",
             "ZD GS Frozen Waterfall": "

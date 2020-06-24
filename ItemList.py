@@ -13,7 +13,7 @@ item_table = {
     'Cojiro':                                          ('Item',     True,  0x0E, None),
     'Bottle':                                          ('Item',     True,  0x0F, {'bottle': float('Inf')}),
     'Bottle with Milk':                                ('Item',     True,  0x14, {'bottle': float('Inf')}),
-    'Ruto\'s Letter':                                  ('Item',     True,  0x15, None),
+    'Rutos Letter':                                    ('Item',     True,  0x15, None),
     'Deliver Letter':                                  ('Item',     True,  None, {'bottle': float('Inf')}),
     'Sell Big Poe':                                    ('Item',     True,  None, {'bottle': float('Inf')}),
     'Magic Bean':                                      ('Item',     True,  0x16, None),
