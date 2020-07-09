@@ -45,9 +45,27 @@ class dummy_window():
 
 
 def main(settings, window=dummy_window()):
-
+    logger = logging.getLogger('')
     start = time.process_time()
 
+    rom = resolve_settings(settings, window=window)
+
+    max_attempts = 10
+    for attempt in range(1, max_attempts + 1):
+        try:
+            spoiler = generate(settings, window=window)
+            break
+        except ShuffleError as e:
+            logger.warning('Failed attempt %d of %d: %s', attempt, max_attempts, e)
+            if attempt >= max_attempts:
+                raise
+            else:
+                logger.info('Retrying...\n\n')
+            settings.reset_distribution()
+    return patch_and_output(settings, window, spoiler, rom, start)
+
+
+def resolve_settings(settings, window=dummy_window()):
     logger = logging.getLogger('')
 
     old_tricks = settings.allowed_tricks
@@ -90,22 +108,16 @@ def main(settings, window=dummy_window()):
     random.seed(settings.numeric_seed)
     settings.resolve_random_settings(cosmetic=False)
     logger.debug(settings.get_settings_display())
-    max_attempts = 10
-    for attempt in range(1, max_attempts + 1):
-        try:
-            spoiler = generate(settings, window)
-            break
-        except ShuffleError as e:
-            logger.warning('Failed attempt %d of %d: %s', attempt, max_attempts, e)
-            if attempt >= max_attempts:
-                raise
-            else:
-                logger.info('Retrying...\n\n')
-            settings.reset_distribution()
-    return patch_and_output(settings, window, spoiler, rom, start)
+    return rom
 
 
-def generate(settings, window):
+def generate(settings, window=dummy_window()):
+    worlds = build_world_graphs(settings, window=window)
+    place_items(settings, worlds, window=window)
+    return make_spoiler(settings, worlds, window=window)
+
+
+def build_world_graphs(settings, window=dummy_window()):
     logger = logging.getLogger('')
     worlds = []
     for i in range(0, settings.world_count):
@@ -148,12 +160,19 @@ def generate(settings, window):
 
     logger.info('Setting Entrances.')
     set_entrances(worlds)
+    return worlds
 
+
+def place_items(settings, worlds, window=dummy_window()):
+    logger = logging.getLogger('')
     window.update_status('Placing the Items')
     logger.info('Fill the world.')
     distribute_items_restrictive(window, worlds)
     window.update_progress(35)
 
+
+def make_spoiler(settings, worlds, window=dummy_window()):
+    logger = logging.getLogger('')
     spoiler = Spoiler(worlds)
     if settings.create_spoiler:
         window.update_status('Calculating Spoiler Data')
