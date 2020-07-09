@@ -315,7 +315,7 @@ hintTable = {
     'Market Man in Green House':                                ("Man in Green's House", None, 'region'),
     'Kak Windmill':                                             ("the #Windmill#", None, 'region'),
     'Kak Carpenter Boss House':                                 ("the #Carpenters' Boss House#", None, 'region'),
-    'Kak House of Skulltula':                                   ("the #Kak House of Skulltulas#", None, 'region'),
+    'Kak House of Skulltula':                                   ("the #House of Skulltulas#", None, 'region'),
     'Kak Impas House':                                          ("Impa's House", None, 'region'),
     'Kak Impas House Back':                                     ("Impa's cow cage", None, 'region'),
     'Kak Odd Medicine Building':                                ("Granny's Potion Shop", None, 'region'),

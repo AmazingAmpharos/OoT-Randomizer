@@ -400,7 +400,7 @@
             "Market Potion Shop": "is_child",
             "Market Treasure Chest Game": "is_child",
             "Market Bombchu Shop": "is_child",
-            "Market Market Dog Lady": "is_child",
+            "Market Dog Lady": "is_child",
             "Market Man in Green House": "is_child"
         }
     },
@@ -562,7 +562,7 @@
         }
     },
     {
-        "region_name": "Market Market Dog Lady",
+        "region_name": "Market Dog Lady",
         "locations": {
             "Market Dog Lady": "True"
         }
