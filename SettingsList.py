@@ -548,7 +548,7 @@ logic_tricks = {
                     You can jump off an Armos Statue to reach the
                     alcove with the Gold Skulltula. It takes quite
                     a long time to pull the statue the entire way.
-                    The jump to the alcove can be a pit picky when
+                    The jump to the alcove can be a bit picky when
                     done as child.
                     '''},
     'Kakariko Tower GS with Jump Slash': {
