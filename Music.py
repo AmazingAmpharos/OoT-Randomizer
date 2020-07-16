@@ -158,7 +158,7 @@ def process_sequences(rom, sequences, target_sequences, ids, seq_type = 'bgm'):
 def shuffle_music(sequences, target_sequences, log):
     # Shuffle the sequences
     if len(sequences) < len(target_sequences):
-        random.choices(sequences, k=len(target_sequences))
+        sequences = random.choices(sequences, k=len(target_sequences))
     else:
         random.shuffle(sequences)
 
