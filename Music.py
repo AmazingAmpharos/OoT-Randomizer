@@ -158,7 +158,7 @@ def process_sequences(rom, sequences, target_sequences, ids, seq_type = 'bgm'):
 def shuffle_music(sequences, target_sequences, log):
     # Shuffle the sequences
     if len(sequences) < len(target_sequences):
-        raise IndexError("Not enough custom music/fanfares to omit base Ocarina of Time sequences.")
+        raise Exception("Not enough custom music/fanfares to omit base Ocarina of Time sequences.")
     random.shuffle(sequences)
 
     for i in range(len(target_sequences)):
