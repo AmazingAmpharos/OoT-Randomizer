@@ -646,7 +646,7 @@
             "Bug Rock": "has_bottle"
         },
         "exits": {
-            "Market": "True",
+            "Castle Grounds": "True",
             "HC Garden": "Weird_Egg or (not shuffle_weird_egg)",
             "HC Great Fairy Fountain": "has_explosives",
             "HC Storms Grotto": "can_open_storm_grotto"
