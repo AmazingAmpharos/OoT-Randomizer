@@ -729,11 +729,12 @@
     {
         "region_name": "Market Mask Shop",
         "events": {
-            "Skull Mask": "at('Kakariko Village', is_child and Zeldas_Letter)",
+            "Skull Mask": "Zeldas_Letter and (complete_mask_quest or at('Kakariko Village', is_child))",
             "Mask of Truth": "'Skull Mask' and
-                at('Lost Woods', is_child and can_play(Sarias_Song)) and
-                at('Graveyard', is_child and at_day) and
-                at('Hyrule Field', is_child and has_all_stones)"
+                (complete_mask_quest or
+                (at('Lost Woods', is_child and can_play(Sarias_Song)) and
+                 at('Graveyard', is_child and at_day) and
+                 at('Hyrule Field', is_child and has_all_stones)))"
         },
         "exits": {
             "Market": "True"
@@ -821,7 +822,7 @@
         "hint": "Kakariko Village",
         "events": {
             "Cojiro Access": "is_adult and 'Wake Up Adult Talon'",
-            "Kakariko Village Gate Open": "is_child and Zeldas_Letter"
+            "Kakariko Village Gate Open": "is_child and (Zeldas_Letter or open_kakariko == 'open')"
         },
         "locations": {
             "Sheik in Kakariko": "
@@ -1116,7 +1117,7 @@
         "scene": "Kakariko Village",
         "exits": {
             "Kakariko Village": "
-                is_adult or logic_visible_collisions or 'Kakariko Village Gate Open'",
+                is_adult or logic_visible_collisions or 'Kakariko Village Gate Open' or open_kakariko == 'open'",
             "Death Mountain": "True"
         }
     },

@@ -1544,6 +1544,37 @@ setting_infos = [
             ],
         },
     ),
+    Combobox(
+        name           = 'open_kakariko',
+        gui_text       = 'Kakariko Gate',
+        default        = 'closed',
+        choices        = {
+            'open':   'Open Gate',
+            'zelda':  "Zelda's Letter Opens Gate",
+            'closed': 'Closed Gate',
+            },
+        gui_tooltip    = '''\
+            This changes the behavior of the Kakariko Gate to
+            Death Mountain Trail as child. The gate is always
+            open as adult.
+            
+            "Open Gate": The gate is always open instead of
+            needing Zelda's Letter. The Happy Mask Shop opens
+            upon obtaining Zelda's Letter without needing to
+            show it to the guard.
+            
+            "Zelda's Letter Opens Gate": The gate is closed at
+            the start, but opens automatically along with the
+            Happy Mask Shop upon obtaining Zelda's Letter.
+            
+            "Closed": The gate and the Happy Mask Shop both remain closed
+            until showing Zelda's Letter to the guard in Kakariko.
+        ''',
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
     Checkbutton(
         name           = 'open_door_of_time',
         gui_text       = 'Open Door of Time',
@@ -1882,6 +1913,15 @@ setting_infos = [
             The cutscenes of the Poes in Forest Temple,
             Darunia in Fire Temple, and the introduction
             to Twinrova will not be skipped.
+        ''',
+        shared         = True,
+    ),
+    Checkbutton(
+        name           = 'complete_mask_quest',
+        gui_text       = 'Complete Mask Quest',
+        gui_tooltip    = '''\
+            Once the Happy Mask Shop is opened,
+            all masks will be available to be borrowed.
         ''',
         shared         = True,
     ),

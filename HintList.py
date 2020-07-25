@@ -78,7 +78,8 @@ def getRequiredHints(world):
 # Hints required under certain settings
 conditional_always = {
     'Market 10 Big Poes':               lambda world: world.big_poe_count > 3,
-    'Deku Theater Skull Mask':   lambda world: world.hint_dist == 'tournament',
+    'Deku Theater Skull Mask':    lambda world: world.hint_dist == 'tournament' and world.open_kakariko == 'closed',
+    'Deku Theater Mask of Truth': lambda world: not world.complete_mask_quest,
     'Song from Ocarina of Time': lambda world: world.bridge not in ('stones', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_stones', 'lacs_dungeons'),
     'HF Ocarina of Time Item':           lambda world: world.bridge not in ('stones', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_stones', 'lacs_dungeons'),
     'Sheik in Kakariko':         lambda world: world.bridge not in ('medallions', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_medallions', 'lacs_dungeons'),
@@ -202,7 +203,7 @@ hintTable = {
     'Deku Seeds (30)':                                          (["catapult ammo", "lots-o-seeds"], "Deku Seeds (30 pieces)", 'item'),
     'Gold Skulltula Token':                                     (["proof of destruction", "an arachnid chip", "spider remains", "one percent of a curse"], "a Gold Skulltula Token", 'item'),
 
-    'Deku Theater Mask of Truth':                               ("the #Mask of Truth# yields", None, 'always'),
+    'Deku Theater Mask of Truth':                               ("the #Mask of Truth# yields", None, ['overworld', 'sometimes']),
     'ZR Frogs Ocarina Game':                                    (["an #amphibian feast# yields", "the #croaking choir's magnum opus# awards", "the #froggy finale# yields"], "the final reward from the #Frogs of Zora's River# is", 'always'),
 
     'Song from Ocarina of Time':                                ("the #Ocarina of Time# teaches", None, ['song', 'sometimes']),

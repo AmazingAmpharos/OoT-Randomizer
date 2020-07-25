@@ -508,11 +508,12 @@
     {
         "region_name": "Market Mask Shop",
         "events": {
-            "Skull Mask": "at('Kakariko Village', is_child and Zeldas_Letter)",
+            "Skull Mask": "Zeldas_Letter and (complete_mask_quest or at('Kakariko Village', is_child))",
             "Mask of Truth": "'Skull Mask' and
-                at('Lost Woods', is_child and can_play(Sarias_Song)) and
-                at('Graveyard', is_child and at_day) and
-                at('Hyrule Field', is_child and Kokiri_Emerald and Goron_Ruby and Zora_Sapphire)"
+                (complete_mask_quest or
+                (at('Lost Woods', is_child and can_play(Sarias_Song)) and
+                 at('Graveyard', is_child and at_day) and
+                 at('Hyrule Field', is_child and has_all_stones)))"
         }
     },
     {
@@ -610,7 +611,7 @@
                     (Sticks or Kokiri_Sword or can_use(Dins_Fire)))",
             "Kak Open Grotto": "True",
             "Graveyard": "True",
-            "Death Mountain": "Zeldas_Letter or is_adult or can_hover"
+            "Death Mountain": "Zeldas_Letter or is_adult or open_kakariko == 'open' or can_hover"
         }
     },
     {

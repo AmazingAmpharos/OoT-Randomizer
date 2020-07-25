@@ -142,6 +142,7 @@
           "row_span": [6,6,9],
           "settings": [
             "open_forest",
+            "open_kakariko",
             "open_door_of_time",
             "zora_fountain",
             "gerudo_fortress",
@@ -289,6 +290,7 @@
             "no_guard_stealth",
             "no_epona_race",
             "skip_some_minigame_phases",
+            "complete_mask_quest",
             "useful_cutscenes",
             "fast_chests",
             "free_scarecrow",

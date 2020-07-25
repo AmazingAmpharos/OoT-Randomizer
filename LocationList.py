@@ -76,7 +76,7 @@ location_table = {
     "Song from Windmill":                              ("Song",        0xFF,  0x2B, (0x0E42C07, 0x0E42B8B),   ("Kakariko Village", "Kakariko", "Songs")),
 
     "HC Malon Egg":                                    ("NPC",         0x5F,  0x47, None,                     ("Hyrule Castle", "Market",)),
-    "HC Zeldas Letter":                                ("NPC",         None,  None, None,                     ("Hyrule Castle", "Market",)),
+    "HC Zeldas Letter":                                ("NPC",         0x4A,  0x0B, None,                     ("Hyrule Castle", "Market",)),
     "GC Darunias Joy":                                 ("NPC",         0x62,  0x54, None,                     ("Goron City",)),
     "ZD Diving Minigame":                              ("NPC",         0x58,  0x37, None,                     ("Zora's Domain", "Minigames",)),
     "LH Child Fishing":                                ("NPC",         0x49,  0x3E, None,                     ("Lake Hylia", "Minigames",)),
