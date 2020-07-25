@@ -143,7 +143,7 @@ location_table = {
     "GF South F2 Carpenter":                           ("Collectable", 0x0C,  0x0F, None,                     ("Gerudo's Fortress", "Gerudo",)),
 
     "Pierre":                                          ("Event",       None,  None, None,                     None),
-    "Deliver Ruto's Letter":                           ("Event",       None,  None, None,                     None),
+    "Deliver Rutos Letter":                           ("Event",       None,  None, None,                     None),
     "Master Sword Pedestal":                           ("Event",       None,  None, None,                     None),
 
     "Deku Baba Sticks":                                ("Drop",        None,  None, None,                     None),

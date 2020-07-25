@@ -887,9 +887,9 @@ class Distribution(object):
                 if not item.special:
                     data[item.itemname] += 1
                 else:
-                    if item.itemname == 'Ruto\'s Letter' and self.settings.zora_fountain != 'open':
-                        data['Ruto\'s Letter'] = 1
-                    elif item.itemname in ['Bottle', 'Ruto\'s Letter']:
+                    if item.itemname == 'Rutos Letter' and self.settings.zora_fountain != 'open':
+                        data['Rutos Letter'] = 1
+                    elif item.itemname in ['Bottle', 'Rutos Letter']:
                         data['Bottle'] += 1
                     else:
                         raise KeyError("invalid special item: {}".format(item.itemname))

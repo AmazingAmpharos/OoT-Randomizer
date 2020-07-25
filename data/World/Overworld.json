@@ -580,7 +580,7 @@
             "Market Potion Shop": "is_child and at_day",
             "Market Treasure Chest Game": "is_child and at_night",
             "Market Bombchu Shop": "is_child and at_night",
-            "Market Market Dog Lady": "is_child",
+            "Market Dog Lady": "is_child",
             "Market Man in Green House": "is_child and at_night"
         }
     },
@@ -802,7 +802,7 @@
         }
     },
     {
-        "region_name": "Market Market Dog Lady",
+        "region_name": "Market Dog Lady",
         "locations": {
             "Market Dog Lady": "at_night"
         },
@@ -1500,7 +1500,7 @@
         "locations": {
             "ZD Diving Minigame": "is_child",
             "ZD Chest": "can_use(Sticks)",
-            "Deliver Ruto's Letter": "
+            "Deliver Rutos Letter": "
                 is_child and Rutos_Letter and zora_fountain != 'open'",
             "ZD King Zora Thawed": "'King Zora Thawed'",
             "ZD GS Frozen Waterfall": "

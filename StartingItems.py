@@ -42,7 +42,7 @@ inventory = dict(chain(
     _entry('light_arrow', 'Light Arrows'),
     _entry('nayrus_love', 'Nayrus Love', guitext="Nayru's Love"),
     _entry('bottle', available=3, special=True),
-    _entry('letter', 'Ruto\'s Letter', special=True),
+    _entry('letter', 'Rutos Letter', guitext="Ruto's Letter", special=True),
 ))
 
 songs = dict(chain(
