@@ -2938,9 +2938,10 @@ setting_infos = [
         gui_text       = 'Background Music',
         default        = 'normal',
         choices        = {
-            'normal': 'Normal',
-            'off':    'No Music',
-            'random': 'Random',
+            'normal':               'Normal',
+            'off':                  'No Music',
+            'random':               'Random',
+            'random_custom_only':   'Random (Custom Only)',
         },
         gui_tooltip    = '''\
             'No Music': No background music is played.
@@ -2960,9 +2961,10 @@ setting_infos = [
         gui_text       = 'Fanfares',
         default        = 'normal',
         choices        = {
-            'normal': 'Normal',
-            'off':    'No Fanfares',
-            'random': 'Random',
+            'normal':               'Normal',
+            'off':                  'No Fanfares',
+            'random':               'Random',
+            'random_custom_only':   'Random (Custom Only)',
         },
         disable        = {
             'normal' : {'settings' : ['ocarina_fanfares']},
