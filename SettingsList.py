@@ -59,6 +59,8 @@ class Setting_Info():
             self.default = 0
         elif self.type == list:
             self.default = []
+        elif self.type == dict:
+            self.default = {}
 
         # default value if disabled
         if disabled_default == None:
@@ -2537,6 +2539,8 @@ setting_infos = [
         ''',
         shared         = True,
     ),
+    Setting_Info('always_hints_user',    list, None, None, True, {}),
+    Setting_Info('hint_dist_user',    dict, None, None, True, {}),
     Combobox(
         name           = 'text_shuffle',
         gui_text       = 'Text Shuffle',

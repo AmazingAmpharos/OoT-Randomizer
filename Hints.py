@@ -529,6 +529,21 @@ hint_dist_sets = {
     }),
 }
 
+hint_dist_keys = {
+    'trial',
+    'always',
+    'woth',
+    'barren',
+    'item',
+    'song',
+    'minigame',
+    'ow',
+    'dungeon',
+    'entrance',
+    'sometimes',
+    'random',
+    'junk'
+}
 
 def buildGossipHints(spoiler, worlds):
     checkedLocations = dict()
@@ -573,7 +588,29 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
     random.shuffle(stoneIDs)
 
-    hint_dist = hint_dist_sets[world.hint_dist]
+    # Load hint distro from distribution file
+    # Structure is the same as built-in sets
+    #
+    # 'total' key is used to mimic the tournament distribution, creating a list of fixed hint types to fill
+    # Once the fixed hint type list is exhausted, weighted random choices are taken like all non-tournament sets
+    # This diverges from the tournament distribution where leftover stones are filled with sometimes hints (or random if no sometimes locations remain to be hinted)
+    if world.hint_dist == 'custom':
+        sorted_dist = {}
+        type_count = 1
+        hint_dist = OrderedDict({})
+        fixed_hint_types = []
+        for hint_type in world.hint_dist_user:
+            if world.hint_dist_user[hint_type]['order'] > 0:
+                sorted_dist[int(world.hint_dist_user[hint_type]['order'])] = hint_type
+                type_count = type_count + 1
+        for i in range(1, type_count):
+            hint_type = sorted_dist[i]
+            hint_dist[hint_type] = (world.hint_dist_user[hint_type]['weight'], world.hint_dist_user[hint_type]['stones'])
+            hint_dist.move_to_end(hint_type)
+            fixed_hint_types.extend([hint_type] * int(world.hint_dist_user[hint_type]['fixed']))
+    else:
+        hint_dist = hint_dist_sets[world.hint_dist]
+
     hint_types, hint_prob = zip(*hint_dist.items())
     hint_prob, _ = zip(*hint_prob)
 
@@ -614,13 +651,30 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
         fill_hint_types = ['sometimes', 'random']
         current_fill_type = fill_hint_types.pop(0)
 
+    custom_fixed = True
     while stoneIDs:
         if world.hint_dist == "tournament":
             if fixed_hint_types:
                 hint_type = fixed_hint_types.pop(0)
             else:
                 hint_type = current_fill_type
+        elif world.hint_dist == "custom" and fixed_hint_types:
+            hint_type = fixed_hint_types.pop(0)
+            if hint_dist[hint_type][1] > len(stoneIDs):
+                raise Exception('Not enough gossip stone locations for fixed hint type %s.', hint_type)
         else:
+            if world.hint_dist == "custom":
+                custom_fixed = False
+                # Make sure there are enough stones left for each hint type
+                num_types = len(hint_types)
+                hint_types = list(filter(lambda htype: hint_dist[htype][1] <= len(stoneIDs), hint_types))
+                new_num_types = len(hint_types)
+                if new_num_types == 0:
+                    raise Exception('Not enough gossip stone locations for remaining weighted hint types.')
+                elif new_num_types < num_types:
+                    hint_prob = []
+                    for htype in hint_types:
+                        hint_prob.append(hint_dist[htype][0])
             try:
                 # Weight the probabilities such that hints that are over the expected proportion
                 # will be drawn less, and hints that are under will be drawn more.
@@ -657,7 +711,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
             place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, hint_dist[hint_type][1], location)
             if place_ok:
                 hint_counts[hint_type] = hint_counts.get(hint_type, 0) + 1
-            if not place_ok and world.hint_dist == "tournament":
+            if not place_ok and (world.hint_dist == "tournament" or (world.hint_dist == "custom" and custom_fixed)):
                 logging.getLogger('').debug('Failed to place %s hint for %s.', hint_type, location.name)
                 fixed_hint_types.insert(0, hint_type)
 

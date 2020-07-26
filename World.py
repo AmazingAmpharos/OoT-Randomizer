@@ -5,11 +5,12 @@ import random
 from DungeonList import create_dungeons
 from Entrance import Entrance
 from HintList import getRequiredHints
-from Hints import get_hint_area
+from Hints import get_hint_area, hint_dist_keys
 from Item import Item, ItemFactory, MakeEventItem
 from ItemList import item_table
 from Location import Location, LocationFactory
 from LocationList import business_scrubs
+from Plandomizer import InvalidFileException
 from Region import Region, TimeOfDay
 from Rules import set_rules, set_shop_rules
 from RuleParser import Rule_AST_Transformer
@@ -108,7 +109,26 @@ class World(object):
 
         self.resolve_random_settings()
 
-        self.always_hints = [hint.name for hint in getRequiredHints(self)]
+        # Validate custom hint distribution format
+        if len(settings.hint_dist_user) > 0:
+            hint_dist_valid = False
+            if all(key in settings.hint_dist_user for key in hint_dist_keys):
+                hint_dist_valid = True
+                sub_keys = {'order', 'weight', 'fixed', 'stones'}
+                for key in settings.hint_dist_user:
+                    if not all(sub_key in sub_keys for sub_key in settings.hint_dist_user[key]):
+                        hint_dist_valid = False
+            if hint_dist_valid:
+                self.hint_dist = 'custom'
+            else:
+                raise InvalidFileException("Custom hint distributions require all hint types be present in the distro (trial, always, woth, barren, item, song, minigame, ow, dungeon, entrance, sometimes, random, junk). If a hint type should not be shuffled, set its order to 0. Hint type format is \"type\": { \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"stones\": 0 }")
+        
+        # Override conditional always logic if custom list provided
+        if len(settings.always_hints_user) > 0:
+            self.always_hints = settings.always_hints_user
+        else:
+            self.always_hints = [hint.name for hint in getRequiredHints(self)]
+        
         self.state = State(self)
 
         # Allows us to cut down on checking whether some items are required

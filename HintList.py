@@ -40,6 +40,10 @@ def getHintGroup(group, world):
 
         hint = getHint(name, world.clearer_hints)
 
+        # Downgrade hard always hints to sometimes if not listed in custom always hint list
+        if len(world.always_hints_user) > 0 and hint.type == 'always' and not (hint.name in world.always_hints):
+            hint.type = 'sometimes'
+
         if hint.name in world.always_hints:
             hint.type = 'always'
 
