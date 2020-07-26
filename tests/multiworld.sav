@@ -39,12 +39,12 @@
 "mq_dungeons_random": false,
 "mq_dungeons": 0,
 "disabled_locations": [
-"10 Big Poes",
-"Frog Ocarina Game",
-"Horseback Archery 1500 Points",
+"Market 10 Big Poes",
+"ZR Frogs Ocarina Game",
+"GF HBA 1500 Points",
 "Deku Theater Mask of Truth",
-"Haunted Wasteland Structure Chest",
-"DMC Deku Scrub Bombs"
+"Wasteland Chest",
+"DMC Deku Scrub"
 ],
 "allowed_tricks": ["logic_fewer_tunic_requirements"],
 "starting_equipment": [],

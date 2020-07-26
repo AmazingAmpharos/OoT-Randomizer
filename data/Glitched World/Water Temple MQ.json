@@ -13,7 +13,7 @@
             # If the player leaves the dungeon without collecting the item at Morpha Heart,
             # they won't be able to come back without Iron Boots.
             # If it is the Iron Boots or an item required to get them, it means a soft-lock.
-            "Morpha Heart": "
+            "Water Temple Morpha Heart": "
                 Boss_Key_Water_Temple and can_use(Longshot) and Iron_Boots",
             "Morpha": "Boss_Key_Water_Temple and can_use(Longshot)"
         },
@@ -30,8 +30,8 @@
         "locations": {
             "Water Temple MQ Compass Chest": "Bow or can_use(Dins_Fire)",
             "Water Temple MQ Longshot Chest": "True",
-            "GS Water Temple MQ Lizalfos Hallway": "can_use(Dins_Fire)",
-            "GS Water Temple MQ Before Upper Water Switch": "can_use(Longshot)"
+            "Water Temple MQ GS Lizalfos Hallway": "can_use(Dins_Fire)",
+            "Water Temple MQ GS Before Upper Water Switch": "can_use(Longshot)"
         }
     },
     {
@@ -39,7 +39,7 @@
         "dungeon": "Water Temple",
         "locations": {
             "Water Temple MQ Boss Key Chest": "can_use(Dins_Fire)",
-            "GS Water Temple MQ Serpent River": "True"
+            "Water Temple MQ GS River": "True"
         },
         "exits": {
             "Water Temple Basement Gated Areas": "
@@ -51,8 +51,8 @@
         "dungeon": "Water Temple",
         "locations": {
             "Water Temple MQ Freestanding Key": "True",
-            "GS Water Temple MQ South Basement": "can_use(Fire_Arrows)",
-            "GS Water Temple MQ North Basement": "(Small_Key_Water_Temple, 2)"
+            "Water Temple MQ GS Triple Wall Torch": "can_use(Fire_Arrows)",
+            "Water Temple MQ GS Freestanding Key Area": "(Small_Key_Water_Temple, 2)"
         }
     }
 ]

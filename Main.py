@@ -7,6 +7,7 @@ import logging
 import os, os.path
 import platform
 import random
+import shutil
 import subprocess
 import sys
 import struct
@@ -89,7 +90,7 @@ def main(settings, window=dummy_window()):
     random.seed(settings.numeric_seed)
     settings.resolve_random_settings(cosmetic=False)
     logger.debug(settings.get_settings_display())
-    max_attempts = 1
+    max_attempts = 10
     for attempt in range(1, max_attempts + 1):
         try:
             spoiler = generate(settings, window)
@@ -100,6 +101,7 @@ def main(settings, window=dummy_window()):
                 raise
             else:
                 logger.info('Retrying...\n\n')
+            settings.reset_distribution()
     return patch_and_output(settings, window, spoiler, rom, start)
 
 
@@ -301,6 +303,15 @@ def patch_and_output(settings, window, spoiler, rom, start):
         cosmetic_path = os.path.join(output_dir, filename)
         cosmetics_log.to_file(cosmetic_path)
         logger.info("Created cosmetic log at: %s" % cosmetic_path)
+
+    if settings.enable_distribution_file:
+        window.update_status('Copying Distribution File')
+        try:
+            filename = os.path.join(output_dir, '%s_Distribution.json' % outfilebase)
+            shutil.copyfile(settings.distribution_file, filename)
+            logger.info("Copied distribution file to: %s" % filename)
+        except:
+            logger.info('Distribution file copy failed.')
 
     window.update_progress(100)
     if cosmetics_log and cosmetics_log.error:

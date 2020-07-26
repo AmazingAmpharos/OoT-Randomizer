@@ -1,7 +1,8 @@
 {
 "seed": "TESTTESTTEST",
 "cosmetics_only": false,
-"world_count": 2,
+"count": 1,
+"world_count": 1,
 "player_num": 1,
 "create_spoiler": true,
 "create_cosmetics_log": false,
@@ -13,6 +14,7 @@
 "gerudo_fortress": "fast",
 "bridge": "medallions",
 "triforce_hunt": true,
+"triforce_goal_per_world": 100,
 "logic_rules": "glitchless",
 "all_reachable": true,
 "bombchus_in_logic": true,
@@ -21,7 +23,7 @@
 "trials": 0,
 "logic_no_night_tokens_without_suns_song": false,
 "free_scarecrow": false,
-"start_with_consumables": false,
+"start_with_consumables": true,
 "big_poe_count_random": false,
 "big_poe_count": 1,
 "shuffle_kokiri_sword": true,
@@ -30,7 +32,7 @@
 "shuffle_gerudo_card": false,
 "shuffle_song_items": false,
 "shuffle_cows": false,
-"shuffle_scrubs": "off",
+"shuffle_scrubs": "low",
 "shopsanity": "off",
 "tokensanity": "off",
 "shuffle_mapcompass": "startwith",
@@ -41,19 +43,13 @@
 "mq_dungeons_random": false,
 "mq_dungeons": 0,
 "disabled_locations": [
-"Market 10 Big Poes",
-"ZR Frogs Ocarina Game",
-"GF HBA 1500 Points",
-"Deku Theater Mask of Truth",
-"Wasteland Chest",
-"DMC Deku Scrub"
+  "Deku Theater Mask of Truth"
 ],
 "allowed_tricks": ["logic_fewer_tunic_requirements"],
 "logic_earliest_adult_trade": "prescription",
 "logic_latest_adult_trade": "claim_check",
 "logic_lens": "all",
 "ocarina_songs": false,
-"correct_chest_sizes": false,
 "clearer_hints": true,
 "hints": "always",
 "hint_dist": "tournament",
@@ -61,5 +57,6 @@
 "junk_ice_traps": "normal",
 "item_pool_value": "balanced",
 "damage_multiplier": "normal",
-"starting_tod": "default"
+"starting_tod": "default",
+"starting_hearts": 20
 }

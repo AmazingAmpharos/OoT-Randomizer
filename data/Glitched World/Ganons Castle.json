@@ -18,10 +18,10 @@
         "region_name": "Ganons Castle Deku Scrubs",
         "dungeon": "Ganons Castle",
         "locations": {
-            "GC Deku Scrub Bombs": "True",
-            "GC Deku Scrub Arrows": "True",
-            "GC Deku Scrub Red Potion": "True",
-            "GC Deku Scrub Green Potion": "True"
+            "Ganons Castle Deku Scrub Center-Left": "True",
+            "Ganons Castle Deku Scrub Center-Right": "True",
+            "Ganons Castle Deku Scrub Right": "True",
+            "Ganons Castle Deku Scrub Left": "True"
         }
     },
     {
@@ -47,7 +47,7 @@
         "region_name": "Ganons Castle Water Trial",
         "dungeon": "Ganons Castle",
         "events": {
-            "Water Trial Clear": "(Blue_Fire or can_use(Hookshot)) and Hammer and can_use(Light_Arrows)"
+            "Water Trial Clear": "(Blue_Fire or can_use(Hookshot)) and Megaton_Hammer and can_use(Light_Arrows)"
         },
         "locations": {
             "Ganons Castle Water Trial Left Chest": "True",
@@ -60,17 +60,17 @@
         "dungeon": "Ganons Castle",
         "events": {
             "Shadow Trial Clear": "
-                can_use(Light_Arrows) and Hammer and (
+                can_use(Light_Arrows) and Megaton_Hammer and (
                 (has_bombchus and can_isg) or 
                 (has_explosives and Hover_Boots and can_shield) or
                 ( (can_use(Longshot) and (Hover_Boots or can_use(Dins_Fire))) 
                     or can_use(Fire_Arrows) ))"
         },
         "locations": {
-            "Ganons Castle Shadow Trial First Chest": "
+            "Ganons Castle Shadow Trial Front Chest": "
                 can_use(Fire_Arrows) or can_use(Hookshot) or 
                 Hover_Boots or can_play(Song_of_Time) or can_mega",
-            "Ganons Castle Shadow Trial Second Chest": "(has_bombchus and can_isg) or 
+            "Ganons Castle Shadow Trial Golden Gauntlets Chest": "(has_bombchus and can_isg) or 
                 (has_explosives and Hover_Boots and can_shield) or
                 ( (can_use(Longshot) and (Hover_Boots or can_use(Dins_Fire))) 
                     or can_use(Fire_Arrows) )"
@@ -86,9 +86,9 @@
                 (has_bombchus or (can_shield and (can_use(Longshot) or Bow)))"
         },
         "locations": {
-            "Ganons Castle Spirit Trial First Chest": "True",
+            "Ganons Castle Spirit Trial Crystal Switch Chest": "True",
             # include req for silver rupees here
-            "Ganons Castle Spirit Trial Second Chest": "
+            "Ganons Castle Spirit Trial Invisible Chest": "
                 has_bombchus or (can_shield and (can_use(Longshot) or Bow))"
         }
     },

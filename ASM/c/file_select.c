@@ -26,7 +26,7 @@ hash_symbol_t hash_symbols[32] = {
     { 0, 14 }, // Boomerang
     { 0, 15 }, // Lens of Truth
     { 0, 16 }, // Beans
-    { 0, 17 }, // Hammer
+    { 0, 17 }, // Megaton Hammer
     { 0, 25 }, // Bottled Fish
     { 0, 26 }, // Bottled Milk
     { 0, 43 }, // Mask of Truth

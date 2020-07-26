@@ -65,7 +65,7 @@
         "dungeon": "Gerudo Training Grounds",
         "locations": {
             "Gerudo Training Grounds Hammer Room Clear Chest": "True",
-            "Gerudo Training Grounds Hammer Room Switch Chest": "can_use(Hammer) or 
+            "Gerudo Training Grounds Hammer Room Switch Chest": "can_use(Megaton_Hammer) or 
                 can_live_dmg(0.5) or can_use(Nayrus_Love)"
         },
         "exits": {

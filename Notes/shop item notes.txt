@@ -933,7 +933,7 @@ ext_func_0x71420_AE7370:
     0x00000464: beq $v0, $at, 0x4c8
     0x00000468: sra $a0, $a0, 0x10       ; a0 = v1 & 0x0000FFFF
     0x0000046c: addiu $at, $zero, 0x1b
-    0x00000470: beq $v0, $at, 0x4c8      ; if item id == 0x1B ; ruto's letter
+    0x00000470: beq $v0, $at, 0x4c8      ; if item id == 0x1B ; Ruto's Letter
     0x00000474: lui $t8, 0x8012
     0x00000478: addiu $at, $zero, 0x82
     0x0000047c: bne $v0, $at, 0x48c      ; if item id == 0x82 ; milk
@@ -957,7 +957,7 @@ ext_func_0x71420_AE7370:
     0x000004c0: b 0x52c                  ; return ??
     0x000004c4: nop
 
-    ; ruto's letter
+    ; Ruto's Letter
     0x000004c8: lui $t1, 0x8012
     0x000004cc: addiu $t1, $t1, -0x5a30  ; t1 = inventory
     0x000004d0: addu $v1, $a0, $t1       ; v1 = inventory item slot
