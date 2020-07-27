@@ -121,7 +121,7 @@ class World(object):
             if hint_dist_valid:
                 self.hint_dist = 'custom'
             else:
-                raise InvalidFileException("Custom hint distributions require all hint types be present in the distro (trial, always, woth, barren, item, song, minigame, ow, dungeon, entrance, sometimes, random, junk). If a hint type should not be shuffled, set its order to 0. Hint type format is \"type\": { \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"stones\": 0 }")
+                raise InvalidFileException("Custom hint distributions require all hint types be present in the distro (trial, always, woth, barren, item, song, ow, dungeon, entrance, sometimes, random, junk). If a hint type should not be shuffled, set its order to 0. Hint type format is \"type\": { \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"stones\": 0 }")
         
         # Override conditional always logic if custom list provided
         if len(settings.always_hints_user) > 0:

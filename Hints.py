@@ -542,7 +542,6 @@ hint_dist_keys = {
     'barren',
     'item',
     'song',
-    'minigame',
     'ow',
     'dungeon',
     'entrance',
@@ -605,10 +604,16 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
         type_count = 1
         hint_dist = OrderedDict({})
         fixed_hint_types = []
+        max_order = 0
         for hint_type in world.hint_dist_user:
             if world.hint_dist_user[hint_type]['order'] > 0:
-                sorted_dist[int(world.hint_dist_user[hint_type]['order'])] = hint_type
+                hint_order = int(world.hint_dist_user[hint_type]['order'])
+                sorted_dist[hint_order] = hint_type
+                if max_order < hint_order:
+                    max_order = hint_order
                 type_count = type_count + 1
+        if (type_count - 1) < max_order:
+            raise Exception("There are gaps in the custom hint orders. Please revise your plando file to remove them.")
         for i in range(1, type_count):
             hint_type = sorted_dist[i]
             hint_dist[hint_type] = (world.hint_dist_user[hint_type]['weight'], world.hint_dist_user[hint_type]['stones'])
