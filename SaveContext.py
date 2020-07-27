@@ -765,7 +765,7 @@ class SaveContext():
         "Bottle with Fairy"        : 'fairy',
         "Bottle with Fish"         : 'fish',
         "Bottle with Milk"         : 'milk',
-        "Ruto\'s Letter"           : 'letter',
+        "Rutos Letter"             : 'letter',
         "Bottle with Blue Fire"    : 'blue_fire',
         "Bottle with Bugs"         : 'bug',
         "Bottle with Big Poe"      : 'big_poe',

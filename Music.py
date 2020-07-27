@@ -157,6 +157,8 @@ def process_sequences(rom, sequences, target_sequences, ids, seq_type = 'bgm'):
 
 def shuffle_music(sequences, target_sequences, log):
     # Shuffle the sequences
+    if len(sequences) < len(target_sequences):
+        raise Exception("Not enough custom music/fanfares to omit base Ocarina of Time sequences.")
     random.shuffle(sequences)
 
     for i in range(len(target_sequences)):
@@ -332,12 +334,16 @@ def randomize_music(rom, settings):
 
     # If not creating patch file, shuffle audio sequences. Otherwise, shuffle pointer table
     if settings.compress_rom != 'Patch':
-        if settings.background_music == 'random':
+        if settings.background_music in ['random', 'random_custom_only']:
             sequences, target_sequences = process_sequences(rom, sequences, target_sequences, bgm_sequence_ids)
+            if settings.background_music == 'random_custom_only':
+                sequences = [seq for seq in sequences if seq.cosmetic_name not in [x[0] for x in bgm_sequence_ids]]
             sequences, log = shuffle_music(sequences, target_sequences, log)
 
-        if settings.fanfares == 'random':
+        if settings.fanfares in ['random', 'random_custom_only']:
             fanfare_sequences, fanfare_target_sequences = process_sequences(rom, fanfare_sequences, fanfare_target_sequences, ff_ids, 'fanfare')
+            if settings.fanfares == 'random_custom_only':
+                fanfare_sequences = [seq for seq in fanfare_sequences if seq.cosmetic_name not in [x[0] for x in fanfare_sequence_ids]]
             fanfare_sequences, log = shuffle_music(fanfare_sequences, fanfare_target_sequences, log)
 
         log = rebuild_sequences(rom, sequences + fanfare_sequences, log)

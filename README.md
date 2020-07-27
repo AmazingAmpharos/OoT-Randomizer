@@ -97,12 +97,19 @@ player.
   * Shadow Temples are split into two separate areas for these tricks.
   * Glitchless logic now requires Lens (or an appropriate trick) for some checks, particularly in Shadow Temple.
   * Glitched logic may sometimes assume you can do something without lens regardless of trick settings.
+* New setting `Kakariko Gate`
+  * Allows configuring how the Kakariko Gate and the Happy Mask Shop will open.
+  * Default (vanilla) behavior requires showing Zelda's Letter to the guard to open the gate and the shop.
+  * You can configure the gate to be always open or to open automatically upon obtaining the Letter. Both of these options will also open the Happy Mask Shop upon obtaining the Letter.
+* New setting `Complete Mask Quest`
+  * Marks all the mask sales complete so that the shop has all masks available to borrow as soon as it opens.
 * New cosmetic setting `HUD Button Colors`
   * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme, of OoT or MM.
   * Or you can completely randomize all the button colors.
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
+* Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
 * Tricks can be filtered in the GUI using a new dropdown.
 
 #### Bug Fixes
@@ -119,6 +126,7 @@ player.
 #### Other Changes
 * Most locations and a few items have been renamed to improve spoiler output and standardize.
   * This will break settings and distribution files from previous versions that reference these locations and items.
+* Updates to in-game hints.
 * File 3 has been removed from generated ROMs to free up some space.
 * The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
 * Performance improvements to seed generation.

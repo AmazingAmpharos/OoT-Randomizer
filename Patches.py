@@ -1007,7 +1007,17 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     rom.write_int16(0x00E1F3CC, 0x5036)
 
     # Make the Kakariko Gate not open with the MS
-    rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
+    if world.open_kakariko != 'open':
+        rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
+    if world.open_kakariko == 'closed':
+        rom.write_byte(rom.sym('OPEN_KAKARIKO'), 0)
+    else:
+        rom.write_byte(rom.sym('OPEN_KAKARIKO'), 1)
+
+    if world.complete_mask_quest:
+        rom.write_byte(rom.sym('COMPLETE_MASK_QUEST'), 1)
+    else:
+        rom.write_byte(rom.sym('COMPLETE_MASK_QUEST'), 0)
 
     if world.zora_fountain == 'open':
         save_context.write_bits(0x0EDB, 0x08) # "Moved King Zora"
