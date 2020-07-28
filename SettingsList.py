@@ -1531,10 +1531,12 @@ setting_infos = [
             needed to clear the Deku Tree will be available within the
             forest, including the Kokiri Sword and access to a Deku
             Shield. A Slingshot will also be available unless the "Deku
-            Tree Basement without Slingshot" trick is enabled. The
-            Starting Age will be forced to Child. If shuffling "All Indoors"
+            Tree Basement without Slingshot" trick is enabled. This setting
+            is incompatible with a Starting Age of Adult, and so Starting
+            Age will be forced to Child. If shuffling "All Indoors"
             and/or "Overworld" entrances, Closed Forest will instead be
-            treated as Closed Deku.
+            treated as Closed Deku with Starting Age of Child and WILL NOT
+            guarantee that these items are available in the forest.
         ''',
         shared         = True,
         disable        = {
