@@ -242,7 +242,7 @@ hintTable = {
     'Colossus Deku Scrub Grotto Front':                         ("a single #scrub in the crater# sells", None, ['overworld', 'sometimes']),
     'GC GS Boulder Maze':                                       ("a spider under a #crate in the crater# holds", None, ['overworld', 'sometimes']),
 
-    'Deku Tree MQ After Spinning Log Chest':                    ("a #temporal stone within a tree# contains", "a #temporal stone within the Deku Tree$ contains", ['dungeon', 'sometimes']),
+    'Deku Tree MQ After Spinning Log Chest':                    ("a #temporal stone within a tree# contains", "a #temporal stone within the Deku Tree# contains", ['dungeon', 'sometimes']),
     'Deku Tree MQ GS Basement Graves Room':                     ("a #spider on a ceiling in a tree# holds", "a #spider on a ceiling in the Deku Tree# holds", ['dungeon', 'sometimes']),
     'GS Dodongo\'s Cavern MQ Song of Time Block Room':          ("a spider under #temporal stones in a cavern# holds", "a spider under #temporal stones in Dodongo's Cavern# holds", ['dungeon', 'sometimes']),
     'Jabu Jabus Belly Boomerang Chest':                         ("a school of #stingers swallowed by a deity# guard", "a school of #stingers swallowed by Jabu Jabu# guard", ['dungeon', 'sometimes']),
