@@ -90,8 +90,7 @@
             # access via Early Adult Spirit Temple requires 2 keys (+ jumpslash + explosives)
             # access to Early Adult Spirit Temple guaranteed via can_jumpslash from here
             "Spirit Temple Beyond Central Locked Door": "can_jumpslash and (
-                (Small_Key_Spirit_Temple,
-            2) or
+                (Small_Key_Spirit_Temple, 2) or
                 can_hover or
                 can_use(Hookshot)) and has_explosives",
             "Child Spirit Temple Climb": "True",
