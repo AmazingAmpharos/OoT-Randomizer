@@ -6,6 +6,7 @@ from Utils import random_choices
 from Item import ItemFactory
 from ItemList import item_table
 from LocationList import location_groups
+from decimal import Decimal, ROUND_HALF_UP
 
 
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
@@ -121,10 +122,10 @@ item_difficulty_max = {
 }
 
 TriforceCounts = {
-    'plentiful': 2.00,
-    'balanced':  1.50,
-    'scarce':    1.25,
-    'minimal':   1.00,
+    'plentiful': Decimal(2.00),
+    'balanced':  Decimal(1.50),
+    'scarce':    Decimal(1.25),
+    'minimal':   Decimal(1.00),
 }
 
 DT_vanilla = (
@@ -1283,7 +1284,7 @@ def get_pool_core(world):
         world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
     if world.triforce_hunt:
-        triforce_count = int(round(world.triforce_goal_per_world * TriforceCounts[world.item_pool_value]))
+        triforce_count = int((TriforceCounts[world.item_pool_value] * world.triforce_goal_per_world).to_integral_value(rounding=ROUND_HALF_UP))
         pending_junk_pool.extend(['Triforce Piece'] * triforce_count)
 
     if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
