@@ -9,6 +9,7 @@ import Sounds as sfx
 from Utils import data_path
 from itertools import chain
 import StartingItems
+from Hints import HintDistList, HintDistTips
 
 # holds the info for a single setting
 class Setting_Info():
@@ -2737,28 +2738,11 @@ setting_infos = [
         name           = 'hint_dist',
         gui_text       = 'Hint Distribution',
         default        = 'balanced',
-        choices        = {
-            'useless':     'Useless',
-            'balanced':    'Balanced',
-            'strong':      'Strong',
-            'very_strong': 'Very Strong',
-            'tournament':  'Tournament',
-        },
-        gui_tooltip    = '''\
-            'Useless': Only junk hints.
-
-            'Balanced': Recommended hint spread.
-
-            'Strong': More useful hints.
-
-            'Very Strong': Many powerful hints.
-
-            'Tournament': Fixed number of hints 
-            for each type, contains duplicates,
-            and only useful hints.
-        ''',
+        choices        = HintDistList(),
+        gui_tooltip    = HintDistTips(),
         shared         = True,
     ),
+    Setting_Info('item_hints',    list, None, None, True, {}),
     Setting_Info('always_hints_user',    list, None, None, True, {}),
     Setting_Info('hint_dist_user',    dict, None, None, True, {}),
     Combobox(

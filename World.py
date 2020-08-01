@@ -1,6 +1,7 @@
 import copy
 import logging
 import random
+import os
 
 from DungeonList import create_dungeons
 from Entrance import Entrance
@@ -16,7 +17,7 @@ from Rules import set_rules, set_shop_rules
 from RuleParser import Rule_AST_Transformer
 from SettingsList import get_setting_info, get_settings_from_section
 from State import State
-from Utils import read_json
+from Utils import read_json, data_path
 
 class World(object):
 
@@ -109,25 +110,57 @@ class World(object):
 
         self.resolve_random_settings()
 
-        # Validate custom hint distribution format
-        if len(settings.hint_dist_user) > 0:
-            hint_dist_valid = False
-            if all(key in settings.hint_dist_user for key in hint_dist_keys):
-                hint_dist_valid = True
-                sub_keys = {'order', 'weight', 'fixed', 'stones'}
-                for key in settings.hint_dist_user:
-                    if not all(sub_key in sub_keys for sub_key in settings.hint_dist_user[key]):
-                        hint_dist_valid = False
-            if hint_dist_valid:
-                self.hint_dist = 'custom'
-            else:
-                raise InvalidFileException("Custom hint distributions require all hint types be present in the distro (trial, always, woth, barren, item, song, ow, dungeon, entrance, sometimes, random, junk). If a hint type should not be shuffled, set its order to 0. Hint type format is \"type\": { \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"stones\": 0 }")
-        
-        # Override conditional always logic if custom list provided
-        if len(settings.always_hints_user) > 0:
-            self.always_hints = settings.always_hints_user
+        if len(settings.hint_dist_user) == 0:
+            dists_json = os.listdir(data_path('Hints/'))
+            for d in dists_json:
+                dist = read_json(os.path.join(data_path('Hints/'), d))
+                if dist['name'] == self.hint_dist:
+                    self.hint_dist_user = dist
         else:
-            self.always_hints = [hint.name for hint in getRequiredHints(self)]
+            self.hint_dist = 'custom'
+            
+        # Validate hint distribution format
+        hint_dist_valid = False
+        if all(key in self.hint_dist_user['distribution'] for key in hint_dist_keys):
+            hint_dist_valid = True
+            sub_keys = {'order', 'weight', 'fixed', 'stones'}
+            for key in self.hint_dist_user['distribution']:
+                if not all(sub_key in sub_keys for sub_key in self.hint_dist_user['distribution'][key]):
+                    hint_dist_valid = False
+        if not hint_dist_valid:
+            raise InvalidFileException("Hint distributions require all hint types be present in the distro (trial, always, woth, barren, item, song, ow, dungeon, entrance, sometimes, random, junk, named-item). If a hint type should not be shuffled, set its order to 0. Hint type format is \"type\": { \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"stones\": 0 }")
+        
+        self.added_hint_types = {}
+        for dist in hint_dist_keys:
+            self.added_hint_types[dist] = []
+            for loc in self.hint_dist_user['add_locations']:
+                if dist in loc['types']:
+                    self.added_hint_types[dist].append(loc['location'])
+
+        self.item_added_hint_types = {}
+        for dist in hint_dist_keys:
+            self.item_added_hint_types[dist] = []
+            for i in self.hint_dist_user['add_items']:
+                if dist in i['types']:
+                    self.item_added_hint_types[dist].append(i['item'])
+
+        hint_overrides = hint_dist_keys
+        hint_overrides.update({'woth','barren'})
+        self.hint_type_overrides = {}
+        for dist in hint_overrides:
+            self.hint_type_overrides[dist] = []
+            for loc in self.hint_dist_user['remove_locations']:
+                if dist in loc['types']:
+                    self.hint_type_overrides[dist].append(loc['location'])
+                    
+        self.item_hint_type_overrides = {}
+        for dist in hint_overrides:
+            self.item_hint_type_overrides[dist] = []
+            for i in self.hint_dist_user['remove_items']:
+                if dist in i['types']:
+                    self.item_hint_type_overrides[dist].append(i['item'])
+
+        self.always_hints = [hint.name for hint in getRequiredHints(self)]
         
         self.state = State(self)
 

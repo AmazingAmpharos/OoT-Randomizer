@@ -53,14 +53,14 @@ def getHintGroup(group, world):
 
         hint = getHint(name, world.clearer_hints)
 
-        # Downgrade hard always hints to sometimes if not listed in custom always hint list
-        if len(world.always_hints_user) > 0 and hint.type == 'always' and not (hint.name in world.always_hints):
-            hint.type = 'sometimes'
-
         if hint.name in world.always_hints:
             hint.type = 'always'
 
-        if group in hint.type and not (name in hintExclusions(world)):
+        # Hint inclusion override from distribution
+        if hint.name in world.added_hint_types[group]:
+            hint.type = group
+
+        if group in hint.type and not (name in hintExclusions(world)) and not (name in world.hint_type_overrides[group]):
             ret.append(hint)
     return ret
 
@@ -77,7 +77,6 @@ def getRequiredHints(world):
 # Hints required under certain settings
 conditional_always = {
     'Market 10 Big Poes':           lambda world: world.big_poe_count > 3,
-    'Deku Theater Skull Mask':      lambda world: world.hint_dist == 'tournament' and world.open_kakariko == 'closed',
     'Deku Theater Mask of Truth':   lambda world: not world.complete_mask_quest,
     'Song from Ocarina of Time':    lambda world: world.bridge not in ('stones', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_stones', 'lacs_dungeons'),
     'HF Ocarina of Time Item':      lambda world: world.bridge not in ('stones', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_stones', 'lacs_dungeons'),
