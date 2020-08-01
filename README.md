@@ -120,15 +120,18 @@ player.
   * Closed Forest implies starting as child.
   * Triforce Hunt won't accidentally place the Boss Key for Ganon's Castle.
 * Fix a rare issue in ER with using time-passing regions to gain new access.
+* Fix a rare issue where settings strings weren't allocated enough bits.
 * The seed generator can now retry a few times in case of failure.
 * Minor plandomizer fixes and improvements.
+* Various logic fixes.
 
 #### Other Changes
 * Most locations and a few items have been renamed to improve spoiler output and standardize.
   * This will break settings and distribution files from previous versions that reference these locations and items.
-* Updates to in-game hints.
+* In-game hints overhaul.
 * File 3 has been removed from generated ROMs to free up some space.
 * The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
+* The number of Triforces available in Triforce Hunt now rounds to the nearest whole number instead of the nearest whole **even** number.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
 * Added decompressor source and updated Decompress binaries.

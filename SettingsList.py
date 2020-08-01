@@ -77,6 +77,9 @@ class Setting_Info():
     def calc_bitwidth(self, choices):
         count = len(choices)
         if count > 0:
+            if self.type == list:
+                # Need two special values for terminating additive and subtractive lists
+                count = count + 2
             return math.ceil(math.log(count, 2))
         return 0
 
