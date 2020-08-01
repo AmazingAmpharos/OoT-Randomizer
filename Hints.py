@@ -656,7 +656,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
             location_text = '#%s#' % location_text
         item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
         add_hint(spoiler, world, stoneIDs, GossipText('%s #%s#.' % (location_text, item_text), ['Green', 'Red']), hint_dist['always'][1], location, force_reachable=True)
-        logging.getLogger('').info('Placed always hint for %s.', location.name)
+        logging.getLogger('').debug('Placed always hint for %s.', location.name)
 
     # Add trial hints
     if world.trials_random and world.trials == 6:
@@ -740,9 +740,9 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
             if place_ok:
                 hint_counts[hint_type] = hint_counts.get(hint_type, 0) + 1
                 if location is None:
-                    logging.getLogger('').info('Placed %s hint.', hint_type)
+                    logging.getLogger('').debug('Placed %s hint.', hint_type)
                 else:
-                    logging.getLogger('').info('Placed %s hint for %s.', hint_type, location.name)
+                    logging.getLogger('').debug('Placed %s hint for %s.', hint_type, location.name)
             if not place_ok and custom_fixed:
                 logging.getLogger('').debug('Failed to place %s fixed hint for %s.', hint_type, location.name)
                 fixed_hint_types.insert(0, hint_type)
