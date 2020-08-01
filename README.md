@@ -126,7 +126,7 @@ player.
 #### Other Changes
 * Most locations and a few items have been renamed to improve spoiler output and standardize.
   * This will break settings and distribution files from previous versions that reference these locations and items.
-* Updates to in-game hints.
+* In-game hints overhaul.
 * File 3 has been removed from generated ROMs to free up some space.
 * The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
 * Performance improvements to seed generation.
