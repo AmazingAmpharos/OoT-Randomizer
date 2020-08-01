@@ -1,5 +1,5 @@
-[    
-	{
+[
+    {
         "region_name": "Spirit Temple Lobby",
         "dungeon": "Spirit Temple",
         "exits": {
@@ -61,7 +61,7 @@
         "locations": {
             "Spirit Temple Compass Chest": "can_play(Zeldas_Lullaby) and
                 (can_use(Hookshot) or can_hover) and has_projectile(either)",
-            "Spirit Temple Early Adult Right Chest": "has_projectile(either)", 
+            "Spirit Temple Early Adult Right Chest": "has_projectile(either)",
             "Spirit Temple First Mirror Left Chest": "(Small_Key_Spirit_Temple, 2)",
             "Spirit Temple First Mirror Right Chest": "(Small_Key_Spirit_Temple, 2)",
             "Spirit Temple GS Boulder Room": "has_projectile(either) and
@@ -143,7 +143,7 @@
             "Spirit Temple Beyond Final Locked Door": "(Small_Key_Spirit_Temple,5) and
                 (can_use(Hookshot) or has_explosives)",
             "Mirror Shield Hand": "True",
-            "Spirit Temple Central Chamber": "has_explosives" 
+            "Spirit Temple Central Chamber": "has_explosives"
         }
     },
     {
@@ -153,7 +153,7 @@
             "Spirit Temple Boss Key Chest": "
                 can_play(Zeldas_Lullaby) and (can_live_dmg(1.0) or (Bow and 
                 Progressive_Hookshot))",
-            "Spirit Temple Topmost Chest": "Mirror_Shield"
+            "Spirit Temple Topmost Chest": "can_use(Mirror_Shield)"
         },
         "exits": {
             "Spirit Temple Boss": "can_use(Mirror_Shield)",

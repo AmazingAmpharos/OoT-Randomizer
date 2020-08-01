@@ -123,6 +123,7 @@ player.
 * Fix a rare issue where settings strings weren't allocated enough bits.
 * The seed generator can now retry a few times in case of failure.
 * Minor plandomizer fixes and improvements.
+* Various logic fixes.
 
 #### Other Changes
 * Most locations and a few items have been renamed to improve spoiler output and standardize.
