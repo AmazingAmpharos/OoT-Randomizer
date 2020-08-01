@@ -285,7 +285,9 @@ def get_woth_hint(spoiler, world, checked):
     locations = list(filter(lambda location: 
         location.name not in checked and \
         not (world.woth_dungeon >= world.hint_dist_user['dungeons_woth_limit'] and \
-        location.parent_region.dungeon), 
+        location.parent_region.dungeon) and \
+        not (location.name in world.hint_type_overrides['woth']) and \
+        not (location.item.name in world.item_hint_type_overrides['woth']), 
         locations))
 
     if not locations:
@@ -334,8 +336,12 @@ def is_not_checked(location, checked):
 def get_good_item_hint(spoiler, world, checked):
     locations = [location for location in world.get_filled_locations()
             if is_not_checked(location, checked) and \
-            location.item.majoritem and \
-            not location.locked]
+            (location.item.majoritem or \
+            location.name in world.added_hint_types['item'] or \
+            location.item.name in world.item_added_hint_types['item']) and \
+            not location.locked and \
+            not (location.name in world.hint_type_overrides['item']) and \
+            not (location.item.name in world.item_hint_type_overrides['item'])]
     if not locations:
         return None
 
@@ -378,7 +384,9 @@ def get_random_location_hint(spoiler, world, checked):
             location.item.type not in ('Drop', 'Event', 'Shop', 'DungeonReward') and \
             not (location.parent_region.dungeon and \
                 isRestrictedDungeonItem(location.parent_region.dungeon, location.item)) and
-            not location.locked]
+            not location.locked and \
+            not (location.name in world.hint_type_overrides['item']) and \
+            not (location.item.name in world.item_hint_type_overrides['item'])]
     if not locations:
         return None
 
@@ -489,75 +497,6 @@ hint_func = {
     'named-item': get_specific_item_hint
 }
 
-
-# (relative weight, count)
-# count: number of times each hint is placed. 0 means none!
-# trial and always are special, and their weights irrelevant.
-hint_dist_sets = {
-    'useless': {
-        'trial':    (0.0, 0),
-        'always':   (0.0, 0),
-        'woth':     (0.0, 0),
-        'barren':   (0.0, 0),
-        'item':     (0.0, 0),
-        'song':     (0.0, 0),
-        'ow':       (0.0, 0),
-        'dungeon':  (0.0, 0),
-        'entrance': (0.0, 0),
-        'random':   (0.0, 0),
-        'junk':     (9.0, 1),
-    },
-    'balanced': {
-        'trial':    (0.0, 1),
-        'always':   (0.0, 1),
-        'woth':     (3.5, 1),
-        'barren':   (2.0, 1),
-        'item':     (5.0, 1),
-        'song':     (1.0, 1),
-        'ow':       (2.0, 1),
-        'dungeon':  (1.5, 1),
-        'entrance': (3.0, 1),
-        'random':   (6.0, 1),
-        'junk':     (3.0, 1),
-    },
-    'strong': {
-        'trial':    (0.0, 1),
-        'always':   (0.0, 2),
-        'woth':     (3.0, 2),
-        'barren':   (3.0, 1),
-        'item':     (1.0, 1),
-        'song':     (0.33, 1),
-        'ow':       (0.66, 1),
-        'dungeon':  (0.66, 1),
-        'entrance': (1.0, 1),
-        'random':   (2.0, 1),
-        'junk':     (0.0, 0),
-    },
-    'very_strong': {
-        'trial':    (0.0, 1),
-        'always':   (0.0, 2),
-        'woth':     (3.0, 2),
-        'barren':   (3.0, 1),
-        'item':     (1.0, 1),
-        'song':     (0.5, 1),
-        'ow':       (1.5, 1),
-        'dungeon':  (1.5, 1),
-        'entrance': (2.0, 1),
-        'random':   (0.0, 0),
-        'junk':     (0.0, 0),
-    },
-    'tournament': OrderedDict({
-        # (number of hints, count per hint)
-        'trial':     (0.0, 2),
-        'always':    (0.0, 2),
-        'woth':      (5.0, 2),
-        'barren':    (3.0, 2),
-        'entrance':  (4.0, 2),
-        'sometimes': (0.0, 2),
-        'random':    (0.0, 2),
-    }),
-}
-
 hint_dist_keys = {
     'trial',
     'always',
@@ -565,7 +504,7 @@ hint_dist_keys = {
     'barren',
     'item',
     'song',
-    'ow',
+    'overworld',
     'dungeon',
     'entrance',
     'sometimes',

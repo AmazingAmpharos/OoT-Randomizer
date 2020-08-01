@@ -20,7 +20,7 @@
         "random":     {"order":  7, "weight": 9.0, "fixed":   0, "stones": 2},
         "item":       {"order":  0, "weight": 0.0, "fixed":   0, "stones": 2},
         "song":       {"order":  0, "weight": 0.0, "fixed":   0, "stones": 2},
-        "ow":         {"order":  0, "weight": 0.0, "fixed":   0, "stones": 2},
+        "overworld":  {"order":  0, "weight": 0.0, "fixed":   0, "stones": 2},
         "dungeon":    {"order":  0, "weight": 0.0, "fixed":   0, "stones": 2},
         "junk":       {"order":  0, "weight": 0.0, "fixed":   0, "stones": 2},
         "named-item": {"order":  0, "weight": 0.0, "fixed":   0, "stones": 2}

@@ -128,7 +128,7 @@ class World(object):
                 if not all(sub_key in sub_keys for sub_key in self.hint_dist_user['distribution'][key]):
                     hint_dist_valid = False
         if not hint_dist_valid:
-            raise InvalidFileException("Hint distributions require all hint types be present in the distro (trial, always, woth, barren, item, song, ow, dungeon, entrance, sometimes, random, junk, named-item). If a hint type should not be shuffled, set its order to 0. Hint type format is \"type\": { \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"stones\": 0 }")
+            raise InvalidFileException("Hint distributions require all hint types be present in the distro (trial, always, woth, barren, item, song, overworld, dungeon, entrance, sometimes, random, junk, named-item). If a hint type should not be shuffled, set its order to 0. Hint type format is \"type\": { \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"stones\": 0 }")
         
         self.added_hint_types = {}
         for dist in hint_dist_keys:
@@ -145,7 +145,7 @@ class World(object):
                     self.item_added_hint_types[dist].append(i['item'])
 
         hint_overrides = hint_dist_keys
-        hint_overrides.update({'woth','barren'})
+        hint_overrides.update({'woth'})
         self.hint_type_overrides = {}
         for dist in hint_overrides:
             self.hint_type_overrides[dist] = []

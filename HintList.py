@@ -59,6 +59,21 @@ def getHintGroup(group, world):
         # Hint inclusion override from distribution
         if hint.name in world.added_hint_types[group]:
             hint.type = group
+        location_check = False
+        if isinstance(hint.type, list):
+            for htype in hint.type:
+                if htype in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and not (name in hintExclusions(world)):
+                    location_check = True
+        elif hint.type in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and not (name in hintExclusions(world)):
+            location_check = True
+        if location_check:
+            location = world.get_location(name)
+            for i in world.item_added_hint_types[group]:
+                if i == location.item.name:
+                    hint.type = group
+            for i in world.item_hint_type_overrides[group]:
+                if i == location.item.name:
+                    hint.type = []
 
         if group in hint.type and not (name in hintExclusions(world)) and not (name in world.hint_type_overrides[group]):
             ret.append(hint)
@@ -235,7 +250,7 @@ hintTable = {
     'HC GS Storms Grotto':                                      ("a #spider behind a muddy wall# in a grotto holds", None, ['overworld', 'sometimes']),
     'HF GS Cow Grotto':                                         ("a #spider behind webs# in a grotto holds", None, ['overworld', 'sometimes']),
     'HF Cow Grotto Cow':                                        ("a #cow behind webs# in a grotto gifts", None, ['overworld', 'sometimes']),
-    'GS Zora\'s Fountain Hidden Cave':                          ("a spider high #above the icy waters# holds", None, ['overworld', 'sometimes']),
+    'ZF GS Hidden Cave':                                        ("a spider high #above the icy waters# holds", None, ['overworld', 'sometimes']),
     'Wasteland Chest':                                          (["#deep in the wasteland# is", "beneath #the sands#, flames reveal"], None, ['overworld', 'sometimes']),
     'Colossus GS Bean Patch':                                   ("a #spider in the wasteland# holds", None, ['overworld', 'sometimes']),
     'Graveyard Composers Grave Chest':                          (["#flames in the Composers' Grave# reveal", "the #Composer Brothers hid#"], None, ['overworld', 'sometimes']),
@@ -247,7 +262,7 @@ hintTable = {
 
     'Deku Tree MQ After Spinning Log Chest':                    ("a #temporal stone within a tree# contains", "a #temporal stone within the Deku Tree# contains", ['dungeon', 'sometimes']),
     'Deku Tree MQ GS Basement Graves Room':                     ("a #spider on a ceiling in a tree# holds", "a #spider on a ceiling in the Deku Tree# holds", ['dungeon', 'sometimes']),
-    'GS Dodongo\'s Cavern MQ Song of Time Block Room':          ("a spider under #temporal stones in a cavern# holds", "a spider under #temporal stones in Dodongo's Cavern# holds", ['dungeon', 'sometimes']),
+    'Dodongos Cavern MQ GS Song of Time Block Room':            ("a spider under #temporal stones in a cavern# holds", "a spider under #temporal stones in Dodongo's Cavern# holds", ['dungeon', 'sometimes']),
     'Jabu Jabus Belly Boomerang Chest':                         ("a school of #stingers swallowed by a deity# guard", "a school of #stingers swallowed by Jabu Jabu# guard", ['dungeon', 'sometimes']),
     'Jabu Jabus Belly MQ GS Invisible Enemies Room':            ("a spider surrounded by #shadows in the belly of a deity# holds", "a spider surrounded by #shadows in Jabu Jabu's Belly# holds", ['dungeon', 'sometimes']),
     'Jabu Jabus Belly MQ Cow':                                  ("a #cow swallowed by a deity# gifts", "a #cow swallowed by Jabu Jabu# gifts", ['dungeon', 'sometimes']),

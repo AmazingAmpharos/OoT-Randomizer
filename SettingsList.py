@@ -2746,7 +2746,6 @@ setting_infos = [
         shared         = True,
     ),
     Setting_Info('item_hints',    list, None, None, True, {}),
-    Setting_Info('always_hints_user',    list, None, None, True, {}),
     Setting_Info('hint_dist_user',    dict, None, None, True, {}),
     Combobox(
         name           = 'text_shuffle',
