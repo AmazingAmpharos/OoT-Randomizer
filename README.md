@@ -120,6 +120,7 @@ player.
   * Closed Forest implies starting as child.
   * Triforce Hunt won't accidentally place the Boss Key for Ganon's Castle.
 * Fix a rare issue in ER with using time-passing regions to gain new access.
+* Fix a rare issue where settings strings weren't allocated enough bits.
 * The seed generator can now retry a few times in case of failure.
 * Minor plandomizer fixes and improvements.
 
