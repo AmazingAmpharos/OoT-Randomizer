@@ -482,18 +482,18 @@ def get_junk_hint(spoiler, world, checked):
 
 
 hint_func = {
-    'trial':    lambda spoiler, world, checked: None,
-    'always':   lambda spoiler, world, checked: None,
-    'woth':     get_woth_hint,
-    'barren':   get_barren_hint,
-    'item':     get_good_item_hint,
-    'sometimes':get_sometimes_hint,    
-    'song':     get_song_hint,
-    'ow':       get_overworld_hint,
-    'dungeon':  get_dungeon_hint,
-    'entrance': get_entrance_hint,
-    'random':   get_random_location_hint,
-    'junk':     get_junk_hint,
+    'trial':      lambda spoiler, world, checked: None,
+    'always':     lambda spoiler, world, checked: None,
+    'woth':       get_woth_hint,
+    'barren':     get_barren_hint,
+    'item':       get_good_item_hint,
+    'sometimes':  get_sometimes_hint,    
+    'song':       get_song_hint,
+    'overworld':  get_overworld_hint,
+    'dungeon':    get_dungeon_hint,
+    'entrance':   get_entrance_hint,
+    'random':     get_random_location_hint,
+    'junk':       get_junk_hint,
     'named-item': get_specific_item_hint
 }
 
@@ -613,14 +613,14 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
     # Add user-specified hinted item locations if using a built-in hint distribution
     # Assume 2 stones/hint
-    if len(world.item_hints) > 0 and world.hint_dist != 'custom':
+    if len(world.item_hints) > 0 and world.hint_dist_user['named_items_required']:
         for i in range(0, len(world.item_hints)):
             hint = get_specific_item_hint(spoiler, world, checkedLocations)
             if hint == None:
                 raise Exception('No valid hints for user-provided item')
             else:
                 gossip_text, location = hint
-                place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, 2, location)
+                place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, hint_dist['named-item'][1], location)
                 if not place_ok:
                     raise Exception('Not enough gossip stones for user-provided item hints')
 
