@@ -239,7 +239,7 @@ hintTable = {
     'ZF Bottom Freestanding PoH':                               ("#under the icy waters# lies", None, ['overworld', 'sometimes']),
     'GC Pot Freestanding PoH':                                  ("spinning #Goron pottery# contains", None, ['overworld', 'sometimes']),
     'ZD King Zora Thawed':                                      ("unfreezing #King Zora# grants", None, ['overworld', 'sometimes']),
-    'Colossus Deku Scrub Grotto Front':                         ("a single #scrub in the crater# sells", None, ['overworld', 'sometimes']),
+    'DMC Deku Scrub':                                           ("a single #scrub in the crater# sells", None, ['overworld', 'sometimes']),
     'GC GS Boulder Maze':                                       ("a spider under a #crate in the crater# holds", None, ['overworld', 'sometimes']),
 
     'Deku Tree MQ After Spinning Log Chest':                    ("a #temporal stone within a tree# contains", "a #temporal stone within the Deku Tree# contains", ['dungeon', 'sometimes']),
