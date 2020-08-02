@@ -53,7 +53,7 @@ def getHintGroup(group, world):
 
         hint = getHint(name, world.clearer_hints)
 
-        if hint.name in world.always_hints:
+        if hint.name in world.always_hints and group == 'always':
             hint.type = 'always'
 
         # Hint inclusion override from distribution
