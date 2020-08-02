@@ -2005,7 +2005,7 @@ def create_fake_name(name):
     
     # keeping the game E...
     new_name = ''.join(list_name)
-    censor = ['cum', 'cunt', 'dike', 'penis', 'puss', 'shit']
+    censor = ['cum', 'cunt', 'dike', 'penis', 'puss', 'rape', 'shit']
     new_name_az = re.sub(r'[^a-zA-Z]', '', new_name.lower(), re.UNICODE)
     for cuss in censor:
         if cuss in new_name_az:
