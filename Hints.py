@@ -413,7 +413,10 @@ def get_specific_hint(spoiler, world, checked, type):
     location = world.get_location(hint.name)
     checked.add(location.name)
 
-    location_text = hint.text
+    if location.name in world.hint_text_overrides:
+        location_text = world.hint_text_overrides[location.name]
+    else:
+        location_text = hint.text
     if '#' not in location_text:
         location_text = '#%s#' % location_text   
     item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
@@ -590,7 +593,10 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
         location = world.get_location(hint.name)
         checkedLocations.add(hint.name)
 
-        location_text = getHint(location.name, world.clearer_hints).text
+        if location.name in world.hint_text_overrides:
+            location_text = world.hint_text_overrides[location.name]
+        else:
+            location_text = getHint(location.name, world.clearer_hints).text
         if '#' not in location_text:
             location_text = '#%s#' % location_text
         item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text

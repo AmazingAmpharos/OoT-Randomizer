@@ -57,25 +57,30 @@ def getHintGroup(group, world):
             hint.type = 'always'
 
         # Hint inclusion override from distribution
-        if hint.name in world.added_hint_types[group]:
-            hint.type = group
-        location_check = False
-        if isinstance(hint.type, list):
-            for htype in hint.type:
-                if htype in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and not (name in hintExclusions(world)):
-                    location_check = True
-        elif hint.type in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and not (name in hintExclusions(world)):
-            location_check = True
-        if location_check:
-            location = world.get_location(name)
-            for i in world.item_added_hint_types[group]:
-                if i == location.item.name:
-                    hint.type = group
-            for i in world.item_hint_type_overrides[group]:
-                if i == location.item.name:
-                    hint.type = []
+        if group in world.added_hint_types:
+            if hint.name in world.added_hint_types[group]:
+                hint.type = group
+            location_check = False
+            if isinstance(hint.type, list):
+                for htype in hint.type:
+                    if htype in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and not (name in hintExclusions(world)):
+                        location_check = True
+            elif hint.type in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and not (name in hintExclusions(world)):
+                location_check = True
+            if location_check:
+                location = world.get_location(name)
+                for i in world.item_added_hint_types[group]:
+                    if i == location.item.name:
+                        hint.type = group
+                for i in world.item_hint_type_overrides[group]:
+                    if i == location.item.name:
+                        hint.type = []
+        type_override = False
+        if group in world.hint_type_overrides:
+            if name in world.hint_type_overrides[group]:
+                type_override = True
 
-        if group in hint.type and not (name in hintExclusions(world)) and not (name in world.hint_type_overrides[group]):
+        if group in hint.type and not (name in hintExclusions(world)) and not type_override:
             ret.append(hint)
     return ret
 
@@ -991,84 +996,84 @@ hintTable = {
     'Zoras Fountain -> Jabu Jabus Belly Beginning':             ("inside #Jabu Jabu#, one can find", None, 'entrance'),
     'Kakariko Village -> Bottom of the Well':                   ("a #village well# leads to", None, 'entrance'),
 
-    'KF Links House':                                           ("Link's House", None, 'region'),
-    'Temple of Time':                                           ("the #Temple of Time#", None, 'region'),
-    'KF Midos House':                                           ("Mido's house", None, 'region'),
-    'KF Sarias House':                                          ("Saria's House", None, 'region'),
-    'KF House of Twins':                                        ("the #House of Twins#", None, 'region'),
-    'KF Know It All House':                                     ("Know-It-All Brothers' House", None, 'region'),
-    'KF Kokiri Shop':                                           ("the #Kokiri Shop#", None, 'region'),
-    'LH Lab':                                                   ("the #Lakeside Laboratory#", None, 'region'),
-    'LH Fishing Hole':                                          ("the #Fishing Pond#", None, 'region'),
-    'GV Carpenter Tent':                                        ("the #Carpenters' tent#", None, 'region'),
-    'Market Guard House':                                       ("the #Guard House#", None, 'region'),
-    'Market Mask Shop':                                         ("the #Happy Mask Shop#", None, 'region'),
-    'Market Bombchu Bowling':                                   ("the #Bombchu Bowling Alley#", None, 'region'),
-    'Market Potion Shop':                                       ("the #Market Potion Shop#", None, 'region'),
-    'Market Treasure Chest Game':                               ("the #Treasure Chest Game#", None, 'region'),
-    'Market Bombchu Shop':                                      ("the #Bombchu Shop#", None, 'region'),
-    'Market Man in Green House':                                ("Man in Green's House", None, 'region'),
-    'Kak Windmill':                                             ("the #Windmill#", None, 'region'),
-    'Kak Carpenter Boss House':                                 ("the #Carpenters' Boss House#", None, 'region'),
-    'Kak House of Skulltula':                                   ("the #House of Skulltula#", None, 'region'),
-    'Kak Impas House':                                          ("Impa's House", None, 'region'),
-    'Kak Impas House Back':                                     ("Impa's cow cage", None, 'region'),
-    'Kak Odd Medicine Building':                                ("Granny's Potion Shop", None, 'region'),
-    'Graveyard Dampes House':                                   ("Dampe's Hut", None, 'region'),
-    'GC Shop':                                                  ("the #Goron Shop#", None, 'region'),
-    'ZD Shop':                                                  ("the #Zora Shop#", None, 'region'),
-    'LLR Talons House':                                         ("Talon's House", None, 'region'),
-    'LLR Stables':                                              ("a #stable#", None, 'region'),
-    'LLR Tower':                                                ("the #Lon Lon Tower#", None, 'region'),
-    'Market Bazaar':                                            ("the #Market Bazaar#", None, 'region'),
-    'Market Shooting Gallery':                                  ("a #Slingshot Shooting Gallery#", None, 'region'),
-    'Kak Bazaar':                                               ("the #Kakariko Bazaar#", None, 'region'),
-    'Kak Potion Shop Front':                                    ("the #Kakariko Potion Shop#", None, 'region'),
-    'Kak Potion Shop Back':                                     ("the #Kakariko Potion Shop#", None, 'region'),
-    'Kak Shooting Gallery':                                     ("a #Bow Shooting Gallery#", None, 'region'),
-    'Colossus Great Fairy Fountain':                            ("a #Great Fairy Fountain#", None, 'region'),
-    'HC Great Fairy Fountain':                                  ("a #Great Fairy Fountain#", None, 'region'),
-    'OGC Great Fairy Fountain':                                 ("a #Great Fairy Fountain#", None, 'region'),
-    'DMC Great Fairy Fountain':                                 ("a #Great Fairy Fountain#", None, 'region'),
-    'DMT Great Fairy Fountain':                                 ("a #Great Fairy Fountain#", None, 'region'),
-    'ZF Great Fairy Fountain':                                  ("a #Great Fairy Fountain#", None, 'region'),
-    'Graveyard Shield Grave':                                   ("a #grave with a free chest#", None, 'region'),
-    'Graveyard Heart Piece Grave':                              ("a chest spawned by #Sun's Song#", None, 'region'),
-    'Graveyard Composers Grave':                                ("the #Composers' Grave#", None, 'region'),
-    'Graveyard Dampes Grave':                                   ("Dampe's Grave", None, 'region'),
-    'DMT Cow Grotto':                                           ("a solitary #Cow#", None, 'region'),
-    'HC Storms Grotto':                                         ("a sandy grotto with #fragile walls#", None, 'region'),
-    'HF Tektite Grotto':                                        ("a pool guarded by a #Tektite#", None, 'region'),
-    'HF Near Kak Grotto':                                       ("a #Big Skulltula# guarding a Gold one", None, 'region'),
-    'HF Cow Grotto':                                            ("a grotto full of #spider webs#", None, 'region'),
-    'Kak Redead Grotto':                                        ("#ReDeads# guarding a chest", None, 'region'),
-    'SFM Wolfos Grotto':                                        ("#Wolfos# guarding a chest", None, 'region'),
-    'GV Octorok Grotto':                                        ("an #Octorok# guarding a rich pool", None, 'region'),
-    'Deku Theater':                                             ("the #Lost Woods Stage#", None, 'region'),
-    'ZR Open Grotto':                                           ("a #generic grotto#", None, 'region'),
-    'DMC Upper Grotto':                                         ("a #generic grotto#", None, 'region'),
-    'DMT Storms Grotto':                                        ("a #generic grotto#", None, 'region'),
-    'Kak Open Grotto':                                          ("a #generic grotto#", None, 'region'),
-    'HF Near Market Grotto':                                    ("a #generic grotto#", None, 'region'),
-    'HF Open Grotto':                                           ("a #generic grotto#", None, 'region'),
-    'HF Southeast Grotto':                                      ("a #generic grotto#", None, 'region'),
-    'KF Storms Grotto':                                         ("a #generic grotto#", None, 'region'),
-    'LW Near Shortcuts Grotto':                                 ("a #generic grotto#", None, 'region'),
-    'HF Inside Fence Grotto':                                   ("a #single Upgrade Deku Scrub#", None, 'region'),
-    'LW Scrubs Grotto':                                         ("#2 Deku Scrubs# including an Upgrade one", None, 'region'),
-    'Colossus Grotto':                                          ("2 Deku Scrubs", None, 'region'),
-    'ZR Storms Grotto':                                         ("2 Deku Scrubs", None, 'region'),
-    'SFM Storms Grotto':                                        ("2 Deku Scrubs", None, 'region'),
-    'GV Storms Grotto':                                         ("2 Deku Scrubs", None, 'region'),
-    'LH Grotto':                                                ("3 Deku Scrubs", None, 'region'),
-    'DMC Hammer Grotto':                                        ("3 Deku Scrubs", None, 'region'),
-    'GC Grotto':                                                ("3 Deku Scrubs", None, 'region'),
-    'LLR Grotto':                                               ("3 Deku Scrubs", None, 'region'),
-    'ZR Fairy Grotto':                                          ("a small #Fairy Fountain#", None, 'region'),
-    'HF Fairy Grotto':                                          ("a small #Fairy Fountain#", None, 'region'),
-    'SFM Fairy Grotto':                                         ("a small #Fairy Fountain#", None, 'region'),
-    'ZD Storms Grotto':                                         ("a small #Fairy Fountain#", None, 'region'),
-    'GF Storms Grotto':                                         ("a small #Fairy Fountain#", None, 'region'),
+    #'KF Links House':                                           ("Link's House", None, 'region'),
+    #'Temple of Time':                                           ("the #Temple of Time#", None, 'region'),
+    #'KF Midos House':                                           ("Mido's house", None, 'region'),
+    #'KF Sarias House':                                          ("Saria's House", None, 'region'),
+    #'KF House of Twins':                                        ("the #House of Twins#", None, 'region'),
+    #'KF Know It All House':                                     ("Know-It-All Brothers' House", None, 'region'),
+    #'KF Kokiri Shop':                                           ("the #Kokiri Shop#", None, 'region'),
+    #'LH Lab':                                                   ("the #Lakeside Laboratory#", None, 'region'),
+    #'LH Fishing Hole':                                          ("the #Fishing Pond#", None, 'region'),
+    #'GV Carpenter Tent':                                        ("the #Carpenters' tent#", None, 'region'),
+    #'Market Guard House':                                       ("the #Guard House#", None, 'region'),
+    #'Market Mask Shop':                                         ("the #Happy Mask Shop#", None, 'region'),
+    #'Market Bombchu Bowling':                                   ("the #Bombchu Bowling Alley#", None, 'region'),
+    #'Market Potion Shop':                                       ("the #Market Potion Shop#", None, 'region'),
+    #'Market Treasure Chest Game':                               ("the #Treasure Chest Game#", None, 'region'),
+    #'Market Bombchu Shop':                                      ("the #Bombchu Shop#", None, 'region'),
+    #'Market Man in Green House':                                ("Man in Green's House", None, 'region'),
+    #'Kak Windmill':                                             ("the #Windmill#", None, 'region'),
+    #'Kak Carpenter Boss House':                                 ("the #Carpenters' Boss House#", None, 'region'),
+    #'Kak House of Skulltula':                                   ("the #House of Skulltula#", None, 'region'),
+    #'Kak Impas House':                                          ("Impa's House", None, 'region'),
+    #'Kak Impas House Back':                                     ("Impa's cow cage", None, 'region'),
+    #'Kak Odd Medicine Building':                                ("Granny's Potion Shop", None, 'region'),
+    #'Graveyard Dampes House':                                   ("Dampe's Hut", None, 'region'),
+    #'GC Shop':                                                  ("the #Goron Shop#", None, 'region'),
+    #'ZD Shop':                                                  ("the #Zora Shop#", None, 'region'),
+    #'LLR Talons House':                                         ("Talon's House", None, 'region'),
+    #'LLR Stables':                                              ("a #stable#", None, 'region'),
+    #'LLR Tower':                                                ("the #Lon Lon Tower#", None, 'region'),
+    #'Market Bazaar':                                            ("the #Market Bazaar#", None, 'region'),
+    #'Market Shooting Gallery':                                  ("a #Slingshot Shooting Gallery#", None, 'region'),
+    #'Kak Bazaar':                                               ("the #Kakariko Bazaar#", None, 'region'),
+    #'Kak Potion Shop Front':                                    ("the #Kakariko Potion Shop#", None, 'region'),
+    #'Kak Potion Shop Back':                                     ("the #Kakariko Potion Shop#", None, 'region'),
+    #'Kak Shooting Gallery':                                     ("a #Bow Shooting Gallery#", None, 'region'),
+    #'Colossus Great Fairy Fountain':                            ("a #Great Fairy Fountain#", None, 'region'),
+    #'HC Great Fairy Fountain':                                  ("a #Great Fairy Fountain#", None, 'region'),
+    #'OGC Great Fairy Fountain':                                 ("a #Great Fairy Fountain#", None, 'region'),
+    #'DMC Great Fairy Fountain':                                 ("a #Great Fairy Fountain#", None, 'region'),
+    #'DMT Great Fairy Fountain':                                 ("a #Great Fairy Fountain#", None, 'region'),
+    #'ZF Great Fairy Fountain':                                  ("a #Great Fairy Fountain#", None, 'region'),
+    #'Graveyard Shield Grave':                                   ("a #grave with a free chest#", None, 'region'),
+    #'Graveyard Heart Piece Grave':                              ("a chest spawned by #Sun's Song#", None, 'region'),
+    #'Graveyard Composers Grave':                                ("the #Composers' Grave#", None, 'region'),
+    #'Graveyard Dampes Grave':                                   ("Dampe's Grave", None, 'region'),
+    #'DMT Cow Grotto':                                           ("a solitary #Cow#", None, 'region'),
+    #'HC Storms Grotto':                                         ("a sandy grotto with #fragile walls#", None, 'region'),
+    #'HF Tektite Grotto':                                        ("a pool guarded by a #Tektite#", None, 'region'),
+    #'HF Near Kak Grotto':                                       ("a #Big Skulltula# guarding a Gold one", None, 'region'),
+    #'HF Cow Grotto':                                            ("a grotto full of #spider webs#", None, 'region'),
+    #'Kak Redead Grotto':                                        ("#ReDeads# guarding a chest", None, 'region'),
+    #'SFM Wolfos Grotto':                                        ("#Wolfos# guarding a chest", None, 'region'),
+    #'GV Octorok Grotto':                                        ("an #Octorok# guarding a rich pool", None, 'region'),
+    #'Deku Theater':                                             ("the #Lost Woods Stage#", None, 'region'),
+    #'ZR Open Grotto':                                           ("a #generic grotto#", None, 'region'),
+    #'DMC Upper Grotto':                                         ("a #generic grotto#", None, 'region'),
+    #'DMT Storms Grotto':                                        ("a #generic grotto#", None, 'region'),
+    #'Kak Open Grotto':                                          ("a #generic grotto#", None, 'region'),
+    #'HF Near Market Grotto':                                    ("a #generic grotto#", None, 'region'),
+    #'HF Open Grotto':                                           ("a #generic grotto#", None, 'region'),
+    #'HF Southeast Grotto':                                      ("a #generic grotto#", None, 'region'),
+    #'KF Storms Grotto':                                         ("a #generic grotto#", None, 'region'),
+    #'LW Near Shortcuts Grotto':                                 ("a #generic grotto#", None, 'region'),
+    #'HF Inside Fence Grotto':                                   ("a #single Upgrade Deku Scrub#", None, 'region'),
+    #'LW Scrubs Grotto':                                         ("#2 Deku Scrubs# including an Upgrade one", None, 'region'),
+    #'Colossus Grotto':                                          ("2 Deku Scrubs", None, 'region'),
+    #'ZR Storms Grotto':                                         ("2 Deku Scrubs", None, 'region'),
+    #'SFM Storms Grotto':                                        ("2 Deku Scrubs", None, 'region'),
+    #'GV Storms Grotto':                                         ("2 Deku Scrubs", None, 'region'),
+    #'LH Grotto':                                                ("3 Deku Scrubs", None, 'region'),
+    #'DMC Hammer Grotto':                                        ("3 Deku Scrubs", None, 'region'),
+    #'GC Grotto':                                                ("3 Deku Scrubs", None, 'region'),
+    #'LLR Grotto':                                               ("3 Deku Scrubs", None, 'region'),
+    #'ZR Fairy Grotto':                                          ("a small #Fairy Fountain#", None, 'region'),
+    #'HF Fairy Grotto':                                          ("a small #Fairy Fountain#", None, 'region'),
+    #'SFM Fairy Grotto':                                         ("a small #Fairy Fountain#", None, 'region'),
+    #'ZD Storms Grotto':                                         ("a small #Fairy Fountain#", None, 'region'),
+    #'GF Storms Grotto':                                         ("a small #Fairy Fountain#", None, 'region'),
 
     '1001':                                                     ("Ganondorf 2020!", None, 'junk'),
     '1002':                                                     ("They say that monarchy is a terrible system of governance.", None, 'junk'),

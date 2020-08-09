@@ -120,6 +120,8 @@ class World(object):
             self.hint_dist = 'custom'
             
         # Validate hint distribution format
+        # Originally built when I was just adding the type distributions
+        # Location/Item Additions and Overrides are not validated
         hint_dist_valid = False
         if all(key in self.hint_dist_user['distribution'] for key in hint_dist_keys):
             hint_dist_valid = True
@@ -134,8 +136,17 @@ class World(object):
         for dist in hint_dist_keys:
             self.added_hint_types[dist] = []
             for loc in self.hint_dist_user['add_locations']:
-                if dist in loc['types']:
-                    self.added_hint_types[dist].append(loc['location'])
+                if 'types' in loc:
+                    if dist in loc['types']:
+                        self.added_hint_types[dist].append(loc['location'])
+
+        self.hint_text_overrides = {}
+        for loc in self.hint_dist_user['add_locations']:
+            if 'text' in loc:
+                # Arbitrarily throw an error at 80 characters to prevent overfilling the text box.
+                if len(loc['text']) > 80:
+                    raise Exception('Custom hint text too large for %s', loc['location'])
+                self.hint_text_overrides.update({loc['location']: loc['text']})
 
         self.item_added_hint_types = {}
         for dist in hint_dist_keys:
@@ -145,7 +156,7 @@ class World(object):
                     self.item_added_hint_types[dist].append(i['item'])
 
         hint_overrides = hint_dist_keys
-        hint_overrides.update({'woth'})
+        #hint_overrides.update({'woth', 'barren'})
         self.hint_type_overrides = {}
         for dist in hint_overrides:
             self.hint_type_overrides[dist] = []
@@ -649,6 +660,14 @@ class World(object):
             exclude_item_list.append('Serenade of Water')
             exclude_item_list.append('Prelude of Light')
 
+        for i in self.item_hint_type_overrides['barren']:
+            if i in exclude_item_list:
+                exclude_item_list.remove(i)
+
+        for i in self.item_added_hint_types['barren']:
+            if not (i in exclude_item_list):
+                exclude_item_list.append(i)
+
         # The idea here is that if an item shows up in woth, then the only way
         # that another copy of that major item could ever be required is if it
         # is a progressive item. Normally this applies to things like bows, bombs
@@ -688,7 +707,8 @@ class World(object):
                 world_id = location.item.world.id
                 item = location.item
 
-                if (not location.item.majoritem) or (location.item.name in exclude_item_list):
+                if ((not location.item.majoritem) or (location.item.name in exclude_item_list)) and \
+                    (not location.item.name in self.item_hint_type_overrides['barren']):
                     # Minor items are always useless in logic
                     continue
 
