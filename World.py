@@ -133,12 +133,27 @@ class World(object):
             raise InvalidFileException("Hint distributions require all hint types be present in the distro (trial, always, woth, barren, item, song, overworld, dungeon, entrance, sometimes, random, junk, named-item). If a hint type should not be shuffled, set its order to 0. Hint type format is \"type\": { \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"stones\": 0 }")
         
         self.added_hint_types = {}
+        self.item_added_hint_types = {}
+        self.hint_type_overrides = {}
+        self.item_hint_type_overrides = {}
         for dist in hint_dist_keys:
             self.added_hint_types[dist] = []
             for loc in self.hint_dist_user['add_locations']:
                 if 'types' in loc:
                     if dist in loc['types']:
                         self.added_hint_types[dist].append(loc['location'])
+            self.item_added_hint_types[dist] = []
+            for i in self.hint_dist_user['add_items']:
+                if dist in i['types']:
+                    self.item_added_hint_types[dist].append(i['item'])
+            self.hint_type_overrides[dist] = []
+            for loc in self.hint_dist_user['remove_locations']:
+                if dist in loc['types']:
+                    self.hint_type_overrides[dist].append(loc['location'])
+            self.item_hint_type_overrides[dist] = []
+            for i in self.hint_dist_user['remove_items']:
+                if dist in i['types']:
+                    self.item_hint_type_overrides[dist].append(i['item'])
 
         self.hint_text_overrides = {}
         for loc in self.hint_dist_user['add_locations']:
@@ -147,29 +162,6 @@ class World(object):
                 if len(loc['text']) > 80:
                     raise Exception('Custom hint text too large for %s', loc['location'])
                 self.hint_text_overrides.update({loc['location']: loc['text']})
-
-        self.item_added_hint_types = {}
-        for dist in hint_dist_keys:
-            self.item_added_hint_types[dist] = []
-            for i in self.hint_dist_user['add_items']:
-                if dist in i['types']:
-                    self.item_added_hint_types[dist].append(i['item'])
-
-        hint_overrides = hint_dist_keys
-        #hint_overrides.update({'woth', 'barren'})
-        self.hint_type_overrides = {}
-        for dist in hint_overrides:
-            self.hint_type_overrides[dist] = []
-            for loc in self.hint_dist_user['remove_locations']:
-                if dist in loc['types']:
-                    self.hint_type_overrides[dist].append(loc['location'])
-                    
-        self.item_hint_type_overrides = {}
-        for dist in hint_overrides:
-            self.item_hint_type_overrides[dist] = []
-            for i in self.hint_dist_user['remove_items']:
-                if dist in i['types']:
-                    self.item_hint_type_overrides[dist].append(i['item'])
 
         self.always_hints = [hint.name for hint in getRequiredHints(self)]
         
