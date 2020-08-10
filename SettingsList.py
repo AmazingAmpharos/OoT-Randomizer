@@ -186,6 +186,15 @@ logic_tricks = {
         'tooltip' : '''\
                     Jump is adult only.
                     '''},
+    'Dodongo\'s Cavern Vines GS from Below with Longshot': {
+        'name'    : 'logic_dc_vines_gs',
+        'tags'    : ("Dodongo's Cavern", "Skulltulas",),
+        'tooltip' : '''\
+                    The vines upon which this Skulltula rests are one-
+                    sided collision. You can use the Longshot to get it
+                    from below, by shooting it through the vines,
+                    bypassing the need to lower the staircase.
+                    '''},
     'Gerudo Fortress "Kitchen" with No Additional Items': {
         'name'    : 'logic_gerudo_kitchen',
         'tags'    : ("Gerudo's Fortress",),
@@ -291,6 +300,17 @@ logic_tricks = {
                     Precise Boomerang throws can allow child to
                     kill the Skulltula and collect the token.
                     '''},
+    'Forest Temple First Room GS with Difficult-to-Use Weapons': {
+        'name'    : 'logic_forest_first_gs',
+        'tags'    : ("Forest Temple", "Entrance", "Skulltulas",),
+        'tooltip' : '''\
+                    Allows killing this Skulltula with Sword or Sticks by
+                    jumpslashing it as you let go from the vines. You will
+                    take fall damage.
+                    Also allows killing it as Child with a Bomb throw. It's
+                    much more difficult to use a Bomb as child due to
+                    Child Link's shorter height.
+                    '''},
     'Swim Through Forest Temple MQ Well with Hookshot': {
         'name'    : 'logic_forest_well_swim',
         'tags'    : ("Forest Temple",),
@@ -325,15 +345,6 @@ logic_tricks = {
                     Pot using a bomb flower alone, requiring 
                     strength in lieu of inventory explosives.
                     '''},
-    'Water Temple Boss Key Chest with Iron Boots': {
-        'name'    : 'logic_water_bk_chest',
-        'tags'    : ("Water Temple",),
-        'tooltip' : '''\
-                    Stand on the blue switch in the Stinger room with the
-                    Iron Boots, wait for the water to rise all the way up,
-                    and then swim straight to the exit. You should grab the
-                    ledge as you surface. It works best if you don't mash B.
-                    '''},
     'Adult Kokiri Forest GS with Hover Boots': {
         'name'    : 'logic_adult_kokiri_gs',
         'tags'    : ("Kokiri Forest", "Skulltulas",),
@@ -366,6 +377,15 @@ logic_tricks = {
                     Skulltula. You must throw the Boomerang slightly off to
                     the side so that it curves into the Skulltula, as aiming
                     directly at it will clank off of the wall in front.
+                    '''},
+    'Spirit Temple Main Room Jump from Hands to Upper Ledges': {
+        'name'    : 'logic_spirit_lobby_jump',
+        'tags'    : ("Spirit Temple"),
+        'tooltip' : '''\
+                    A precise jump to obtain the following as adult
+                    without needing one of Hookshot or Hover Boots:
+                    - Spirit Temple Statue Room Northeast Chest
+                    - Spirit Temple GS Lobby
                     '''},
     'Spirit Temple MQ Sun Block Room GS with Boomerang': {
         'name'    : 'logic_spirit_mq_sun_block_gs',
@@ -419,7 +439,7 @@ logic_tricks = {
                     '''},
     'Fire Temple MQ Flame Wall Maze Skip': {
         'name'    : 'logic_fire_mq_flame_maze',
-        'tags'    : ("Fire Temple",),
+        'tags'    : ("Fire Temple", "Skulltulas"),
         'tooltip' : '''\
                     If you move quickly you can sneak past the edge of
                     a flame wall before it can rise up to block you.
@@ -630,11 +650,18 @@ logic_tricks = {
                     just the Hover Boots.
                     '''},
     'Water Temple Falling Platform Room GS with Hookshot': {
-        'name'    : 'logic_water_falling_platform_gs',
+        'name'    : 'logic_water_falling_platform_gs_hookshot',
         'tags'    : ("Water Temple", "Skulltulas",),
         'tooltip' : '''\
                     If you stand on the very edge of the platform, this
                     Gold Skulltula can be obtained with only the Hookshot.
+                    '''},
+    'Water Temple Falling Platform Room GS with Boomerang': {
+        'name'    : 'logic_water_falling_platform_gs_boomerang',
+        'tags'    : ("Water Temple", "Skulltulas", "Entrance",),
+        'tooltip' : '''\
+                    If you stand on the very edge of the platform, this
+                    Gold Skulltula can be obtained with only the Boomerang.
                     '''},
     'Water Temple River GS without Iron Boots': {
         'name'    : 'logic_water_river_gs',
@@ -655,6 +682,14 @@ logic_tricks = {
                     able to hit the switch and open the gate. But, by
                     standing in a particular spot, the switch can be hit
                     with only the reach of the Hookshot.
+                    '''},
+    'Death Mountain Trail Climb with Hover Boots': {
+        'name'    : 'logic_dmt_climb_hovers',
+        'tags'    : ("Death Mountain Trail",),
+        'tooltip' : '''\
+                    It is possible to use the Hover Boots to bypass
+                    needing to destroy the boulders blocking the path
+                    to the top of Death Mountain.
                     '''},
     'Death Mountain Trail Upper Red Rock GS without Hammer': {
         'name'    : 'logic_trail_gs_upper',
@@ -693,6 +728,15 @@ logic_tricks = {
         'tags'    : ("Zora's River",),
         'tooltip' : '''\
                     Can hover behind the waterfall as adult.
+                    '''},
+    'Zora\'s Domain GS with No Additional Items': {
+        'name'    : 'logic_domain_gs',
+        'tags'    : ("Zora's Domain", "Skulltulas",),
+        'tooltip' : '''\
+                    A precise jumpslash can kill the Skulltula and
+                    recoil back onto the top of the frozen waterfall.
+                    To kill it, the logic normally guarantees one of
+                    Hookshot, Bow, or Magic.
                     '''},
     'Shadow Temple River Statue with Bombchu': {
         'name'    : 'logic_shadow_statue',
@@ -746,6 +790,13 @@ logic_tricks = {
         'tags'    : ("Ice Cavern", "Skulltulas",),
         'tooltip' : '''\
                     A precise jump can be used to reach this alcove.
+                    '''},
+    'Ice Cavern Block Room GS with Hover Boots': {
+        'name'    : 'logic_ice_block_gs',
+        'tags'    : ("Ice Cavern", "Skulltulas",),
+        'tooltip' : '''\
+                    The Hover Boots can be used to kill the Skulltula
+                    and obtain the Token, without Hookshot or Boomerang.
                     '''},
     'Reverse Wasteland': {
         'name'    : 'logic_reverse_wasteland',
@@ -807,6 +858,14 @@ logic_tricks = {
                     Using a precise moving setup you can obtain
                     the Piece of Heart by having the Boomerang
                     interact with it along the return path.
+                    '''},
+    'Hyrule Castle Storms Grotto GS with Just Boomerang': {
+        'name'    : 'logic_castle_storms_gs',
+        'tags'    : ("Hyrule Castle", "Skulltulas"),
+        'tooltip' : '''\
+                    With precise throws, the Boomerang alone can
+                    kill the Skulltula and collect the token,
+                    without first needing to blow up the wall.
                     '''},
     'Death Mountain Trail Soil GS without Destroying Boulder': {
         'name'    : 'logic_dmt_soil_gs',
@@ -875,8 +934,7 @@ logic_tricks = {
                     vanilla Water Temple, boulders roll out into the room.
                     Normally to jump directly to this ledge logically
                     requires the Hover Boots, but with precise jump, it can
-                    be done without them. This trick supersedes "Water Temple
-                    Boss Key Chest with Iron Boots" and applies to both
+                    be done without them. This trick applies to both
                     Vanilla and Master Quest.
                     '''},
     'Water Temple Torch Longshot': {
@@ -890,6 +948,18 @@ logic_tricks = {
                     The majority of the tricks that allow you to skip Iron Boots
                     in the Water Temple are not going to be relevant unless this
                     trick is first enabled.
+                    '''},
+    'Water Temple Central Pillar GS with Neither Longshot nor Farore\'s Wind': {
+        'name'    : 'logic_water_central_gs_no_fw',
+        'tags'    : ("Water Temple", "Skulltulas",),
+        'tooltip' : '''\
+                    After opening the middle water level door into the
+                    central pillar, the door will stay unbarred so long
+                    as you do not leave the room -- even if you were to
+                    raise the water up to the highest level. With the
+                    Iron Boots to go through the door after the water has
+                    been raised, you can obtain the Skulltula Token with
+                    the Hookshot.
                     '''},
     'Water Temple Boss Key Jump Dive': {
         'name'    : 'logic_water_bk_jump_dive',
@@ -913,17 +983,34 @@ logic_tricks = {
                     with the Bow, and then quickly get through the
                     tunnel before the gate closes.
                     '''},
-    'Water Temple Dragon Statue with Bombchu': {
-        'name'    : 'logic_water_dragon_bombchu',
+    'Water Temple Dragon Statue Switch from Above the Water as Adult': {
+        'name'    : 'logic_water_dragon_adult',
         'tags'    : ("Water Temple",),
         'tooltip' : '''\
-                    You can hit the switch in the dragon statue room
-                    with a Bombchu. Use the time that the Bombchu is
-                    traveling to the switch to begin a dive (with at
-                    least Silver Scale) into the tunnel. This allows
-                    you to reach the chest without Iron Boots or
-                    coming into this room from above by going through
-                    the serpent river.
+                    Normally you need both Hookshot and Iron Boots to hit the
+                    switch and swim through the tunnel to get to the chest. But
+                    by hitting the switch from dry land, using one of Bombchus,
+                    Hookshot, or Bow, it is possible to skip one or both of
+                    those requirements. After the gate has been opened, besides 
+                    just using the Iron Boots, a well-timed dive with at least
+                    the Silver Scale could be used swim through the tunnel. If
+                    coming from the serpent river, a jump dive can also be used
+                    to get into the tunnel, so this trick supersedes "Water
+                    Temple Dragon Statue Jump Dive".
+                    '''},
+    'Water Temple Dragon Statue Switch from Above the Water as Child': {
+        'name'    : 'logic_water_dragon_child',
+        'tags'    : ("Water Temple", "Entrance",),
+        'tooltip' : '''\
+                    It is possible for child to hit the switch from dry land
+                    using one of Bombchus, Slingshot or Boomerang. Then, to
+                    get to the chest, child can dive through the tunnel using
+                    at least the Silver Scale. The timing and positioning of
+                    this dive needs to be perfect to actually make it under the
+                    gate, and it all needs to be done very quickly to be able to
+                    get through before the gate closes. Be sure to enable "Water
+                    Temple Dragon Statue Switch from Above the Water as Adult"
+                    for adult's variant of this trick.
                     '''},
     'Goron City Maze Left Chest with Hover Boots': {
         'name'    : 'logic_goron_city_leftmost',
@@ -933,6 +1020,15 @@ logic_tricks = {
                     crate and ending with a precisely-timed backflip
                     can reach this chest without needing either
                     the Hammer or Silver Gauntlets.
+                    '''},
+    'Goron City Grotto with Hookshot While Taking Damage': {
+        'name'    : 'logic_goron_grotto',
+        'tags'    : ("Goron City", "Entrance"),
+        'tooltip' : '''\
+                    It is possible to reach the Goron City Grotto by
+                    quickly using the Hookshot while in the midst of
+                    taking damage from the lava floor. This trick will
+                    not be expected on OHKO or quadruple damage.
                     '''},
     'Deku Tree Basement without Slingshot': {
         'name'    : 'logic_deku_b1_skip',
@@ -982,6 +1078,15 @@ logic_tricks = {
                     can reach the Bomb Bag area as only child
                     without needing a Slingshot. You will
                     take fall damage.
+                    '''},
+    'Dodongo\'s Cavern Two Scrub Room with Strength': {
+        'name'    : 'logic_dc_scrub_room',
+        'tags'    : ("Dodongo's Cavern",),
+        'tooltip' : '''\
+                    With help from a conveniently-positioned block,
+                    Adult can quickly carry a bomb flower over to
+                    destroy the mud wall blockng the room with two
+                    Deku Scrubs.
                     '''},
     'Dodongo\'s Cavern Child Slingshot Skips': {
         'name'    : 'logic_dc_slingshot_skip',
@@ -1042,6 +1147,17 @@ logic_tricks = {
                     on top of the crushing spikes without
                     needing to pull the block. Applies to
                     both Vanilla and Master Quest.
+                    '''},
+    'Shadow Temple Falling Spikes GS with Hover Boots': {
+        'name'    : 'logic_shadow_umbrella_gs',
+        'tags'    : ("Shadow Temple", "Skulltulas",),
+        'tooltip' : '''\
+                    After killing the Skulltula, a very precise Hover Boots
+                    movement from off of the lower chest can get you on top
+                    of the crushing spikes without needing to pull the block.
+                    From there, another very precise Hover Boots movement can
+                    be used to obtain the token without needing the Hookshot.
+                    Applies to both Vanilla and Master Quest.
                     '''},
     'Water Temple Central Bow Target without Longshot or Hover Boots': {
         'name'    : 'logic_water_central_bow',
