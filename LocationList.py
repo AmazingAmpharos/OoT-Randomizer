@@ -51,7 +51,7 @@ location_table = {
     "LW Near Shortcuts Grotto Chest":                  ("Chest",       0x3E,  0x14, None,                     ("the Lost Woods", "Forest", "Grottos")),
     "DMT Storms Grotto Chest":                         ("Chest",       0x3E,  0x17, None,                     ("Death Mountain Trail", "Death Mountain", "Grottos")),
     "DMC Upper Grotto Chest":                          ("Chest",       0x3E,  0x1A, None,                     ("Death Mountain Crater", "Death Mountain", "Grottos")),
-    "Market Treasure Chest Game":                      ("Chest",       0x10,  0x0A, None,                     ("the Market", "Market", "Minigames")),
+    "Market Treasure Chest Game Reward":               ("Chest",       0x10,  0x0A, None,                     ("the Market", "Market", "Minigames")),
 
     "ToT Light Arrows Cutscene":                       ("Cutscene",    0xFF,  0x01, None,                     ("Temple of Time", "Market",)),
     "LW Gift from Saria":                              ("Cutscene",    0xFF,  0x02, None,                     ("the Lost Woods", "Forest",)),
@@ -87,7 +87,7 @@ location_table = {
     "Market Bombchu Bowling First Prize":              ("NPC",         0x4B,  0x34, None,                     ("the Market", "Market", "Minigames")),
     "Market Bombchu Bowling Second Prize":             ("NPC",         0x4B,  0x3E, None,                     ("the Market", "Market", "Minigames")),
     "Market Bombchu Bowling Bombchus":                 ("NPC",         0x4B,  None, None,                     ("the Market", "Market", "Minigames")),
-    "Market Dog Lady":                                 ("NPC",         0x35,  0x3E, None,                     ("the Market", "Market",)),
+    "Market Lost Dog":                                 ("NPC",         0x35,  0x3E, None,                     ("the Market", "Market",)),
     "LW Skull Kid":                                    ("NPC",         0x5B,  0x3E, None,                     ("the Lost Woods", "Forest",)),
     "LW Ocarina Memory Game":                          ("NPC",         0x5B,  0x76, None,                     ("the Lost Woods", "Forest", "Minigames")),
     "Kak 10 Gold Skulltula Reward":                    ("NPC",         0x50,  0x45, None,                     ("Kakariko Village", "Kakariko", "Skulltula House")),
@@ -101,8 +101,8 @@ location_table = {
     "ZR Frogs in the Rain":                            ("NPC",         0x54,  0x3E, None,                     ("Zora's River", "Minigames",)),
     "GF HBA 1000 Points":                              ("NPC",         0x5D,  0x3E, None,                     ("Gerudo's Fortress", "Gerudo", "Minigames")),
     "GF HBA 1500 Points":                              ("NPC",         0x5D,  0x30, None,                     ("Gerudo's Fortress", "Gerudo", "Minigames")),
-    "Market Shooting Gallery":                         ("NPC",         0x42,  0x60, None,                     ("the Market", "Market", "Minigames")),
-    "Kak Shooting Gallery":                            ("NPC",         0x42,  0x30, None,                     ("Kakariko Village", "Kakariko", "Minigames")),
+    "Market Shooting Gallery Reward":                  ("NPC",         0x42,  0x60, None,                     ("the Market", "Market", "Minigames")),
+    "Kak Shooting Gallery Reward":                     ("NPC",         0x42,  0x30, None,                     ("Kakariko Village", "Kakariko", "Minigames")),
     "LW Target in Woods":                              ("NPC",         0x5B,  0x60, None,                     ("the Lost Woods", "Forest",)),
     "Deku Theater Skull Mask":                         ("NPC",         0x3E,  0x77, None,                     ("the Lost Woods", "Forest", "Grottos")),
     "Deku Theater Mask of Truth":                      ("NPC",         0x3E,  0x7A, None,                     ("the Lost Woods", "Forest", "Need Spiritual Stones", "Grottos")),
@@ -143,7 +143,7 @@ location_table = {
     "GF South F2 Carpenter":                           ("Collectable", 0x0C,  0x0F, None,                     ("Gerudo's Fortress", "Gerudo",)),
 
     "Pierre":                                          ("Event",       None,  None, None,                     None),
-    "Deliver Rutos Letter":                           ("Event",       None,  None, None,                     None),
+    "Deliver Rutos Letter":                            ("Event",       None,  None, None,                     None),
     "Master Sword Pedestal":                           ("Event",       None,  None, None,                     None),
 
     "Deku Baba Sticks":                                ("Drop",        None,  None, None,                     None),

@@ -223,7 +223,7 @@ hintTable = {
     'GC Darunias Joy':                                          ("#Darunia's dance# leads to", None, ['overworld', 'sometimes']),
     'LW Skull Kid':                                             ("the #Skull Kid# grants", None, ['overworld', 'sometimes']),
     'LH Sun':                                                   ("staring into #the sun# grants", "shooting #the sun# grants", ['overworld', 'sometimes']),
-    'Market Treasure Chest Game':                               (["#gambling# grants", "there is a #1/32 chance# to win"], "the #treasure chest game# grants", ['overworld', 'sometimes']),
+    'Market Treasure Chest Game Reward':                        (["#gambling# grants", "there is a #1/32 chance# to win"], "the #Treasure Chest Game# grants", ['overworld', 'sometimes']),
     'GF HBA 1500 Points':                                       ("mastery of #horseback archery# grants", "scoring 1500 in #horseback archery# grants", ['overworld', 'sometimes']),
     'Graveyard Heart Piece Grave Chest':                        ("playing #Sun's Song# in a grave spawns", None, ['overworld', 'sometimes']),
     'GC Maze Left Chest':                                       ("in #Goron City# the hammer unlocks", None, ['overworld', 'sometimes']),

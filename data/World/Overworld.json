@@ -580,7 +580,7 @@
             "Market Potion Shop": "is_child and at_day",
             "Market Treasure Chest Game": "is_child and at_night",
             "Market Bombchu Shop": "is_child and at_night",
-            "Market Dog Lady": "is_child",
+            "Market Dog Lady House": "is_child",
             "Market Man in Green House": "is_child and at_night"
         }
     },
@@ -743,7 +743,7 @@
     {
         "region_name": "Market Shooting Gallery",
         "locations": {
-            "Market Shooting Gallery": "is_child"
+            "Market Shooting Gallery Reward": "is_child"
         },
         "exits": {
             "Market": "True"
@@ -779,7 +779,7 @@
     {
         "region_name": "Market Treasure Chest Game",
         "locations": {
-            "Market Treasure Chest Game": "can_use(Lens_of_Truth)"
+            "Market Treasure Chest Game Reward": "can_use(Lens_of_Truth)"
         },
         "exits": {
             "Market": "True"
@@ -802,9 +802,9 @@
         }
     },
     {
-        "region_name": "Market Dog Lady",
+        "region_name": "Market Dog Lady House",
         "locations": {
-            "Market Dog Lady": "at_night"
+            "Market Lost Dog": "at_night"
         },
         "exits": {
             "Market": "True"
@@ -979,7 +979,7 @@
     {
         "region_name": "Kak Shooting Gallery",
         "locations": {
-            "Kak Shooting Gallery": "is_adult and Bow"
+            "Kak Shooting Gallery Reward": "is_adult and Bow"
         },
         "exits": {
             "Kakariko Village": "True"
