@@ -373,7 +373,6 @@ hintTable = {
     '1003':                                                     ("They say that Zelda is a poor leader.", None, 'junk'),
     '1004':                                                     ("These hints can be quite useful. This is an exception.", None, 'junk'),
     '1006':                                                     ("They say that all the Zora drowned in Wind Waker.", None, 'junk'),
-    '1007':                                                     ("They say that PJ64 is a terrible emulator.", None, 'junk'),
     '1008':                                                     ("'Member when Ganon was a blue pig?^I 'member.", None, 'junk'),
     '1009':                                                     ("One who does not have Triforce can't go in.", None, 'junk'),
     '1010':                                                     ("Save your future, end the Happy Mask Salesman.", None, 'junk'),
