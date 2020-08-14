@@ -380,7 +380,7 @@ logic_tricks = {
                     '''},
     'Spirit Temple Main Room Jump from Hands to Upper Ledges': {
         'name'    : 'logic_spirit_lobby_jump',
-        'tags'    : ("Spirit Temple"),
+        'tags'    : ("Spirit Temple", "Skulltulas"),
         'tooltip' : '''\
                     A precise jump to obtain the following as adult
                     without needing one of Hookshot or Hover Boots:
@@ -1023,7 +1023,7 @@ logic_tricks = {
                     '''},
     'Goron City Grotto with Hookshot While Taking Damage': {
         'name'    : 'logic_goron_grotto',
-        'tags'    : ("Goron City", "Entrance"),
+        'tags'    : ("Goron City"),
         'tooltip' : '''\
                     It is possible to reach the Goron City Grotto by
                     quickly using the Hookshot while in the midst of
@@ -1157,7 +1157,9 @@ logic_tricks = {
                     of the crushing spikes without needing to pull the block.
                     From there, another very precise Hover Boots movement can
                     be used to obtain the token without needing the Hookshot.
-                    Applies to both Vanilla and Master Quest.
+                    Applies to both Vanilla and Master Quest. For obtaining
+                    the chests in this room with just Hover Boots, be sure to
+                    enable "Shadow Temple Stone Umbrella Skip".
                     '''},
     'Water Temple Central Bow Target without Longshot or Hover Boots': {
         'name'    : 'logic_water_central_bow',
