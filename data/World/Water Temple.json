@@ -7,7 +7,8 @@
                 # Child can access only the falling platform room as the sole entrant into Water Temple.
                 # Use Child_Water_Temple for cases where child assists after the water is lowered.
             "Raise Water Level": "
-                ((is_adult or not shuffle_overworld_entrances) and (Hookshot or Hover_Boots or Bow)) or
+                ((is_adult or (not shuffle_overworld_entrances and not shuffle_special_indoor_entrances)) and
+                    (Hookshot or Hover_Boots or Bow)) or
                 (has_fire_source_with_torch and can_use_projectile)"
                 # Ensure that the water level can be raised if it were to be lowered.
         },
