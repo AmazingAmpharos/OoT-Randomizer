@@ -78,6 +78,7 @@ easy_items = ([
     'Slingshot', 
     'Bomb Bag',
     'Double Defense'] +
+    #'Farores Wind'] +
     ['Heart Container'] * 16 +
     ['Piece of Heart'] * 3)
 
@@ -1220,7 +1221,6 @@ def get_pool_core(world):
     pool.extend(songlist)
     if world.shuffle_song_items and world.item_pool_value == 'plentiful':
         pending_junk_pool.extend(songlist)
-
     if world.free_scarecrow:
         world.state.collect(ItemFactory('Scarecrow Song'))
     
