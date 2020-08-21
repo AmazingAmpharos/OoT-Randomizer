@@ -1010,7 +1010,7 @@ hintTable = {
     'Market Mask Shop':                                         ("the #Happy Mask Shop#", None, 'region'),
     'Market Bombchu Bowling':                                   ("the #Bombchu Bowling Alley#", None, 'region'),
     'Market Potion Shop':                                       ("the #Market Potion Shop#", None, 'region'),
-    'Market Treasure Chest Game':                               ("the #Treasure Chest Game#", None, 'region'),
+    'Market Treasure Chest Game':                               ("the #Treasure Box Shop#", None, 'region'),
     'Market Bombchu Shop':                                      ("the #Bombchu Shop#", None, 'region'),
     'Market Man in Green House':                                ("Man in Green's House", None, 'region'),
     'Kak Windmill':                                             ("the #Windmill#", None, 'region'),
