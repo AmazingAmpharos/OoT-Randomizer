@@ -400,7 +400,7 @@
             "Market Potion Shop": "is_child",
             "Market Treasure Chest Game": "is_child",
             "Market Bombchu Shop": "is_child",
-            "Market Dog Lady": "is_child",
+            "Market Dog Lady House": "is_child",
             "Market Man in Green House": "is_child"
         }
     },
@@ -519,7 +519,7 @@
     {
         "region_name": "Market Shooting Gallery",
         "locations": {
-            "Market Shooting Gallery": "True"
+            "Market Shooting Gallery Reward": "True"
         }
     },
     {
@@ -546,7 +546,7 @@
     {
         "region_name": "Market Treasure Chest Game",
         "locations": {
-            "Market Treasure Chest Game": "can_use(Lens_of_Truth)"
+            "Market Treasure Chest Game Reward": "can_use(Lens_of_Truth)"
         }
     },
     {
@@ -563,9 +563,9 @@
         }
     },
     {
-        "region_name": "Market Dog Lady",
+        "region_name": "Market Dog Lady House",
         "locations": {
-            "Market Dog Lady": "True"
+            "Market Lost Dog": "True"
         }
     },
     {
@@ -664,7 +664,7 @@
     {
         "region_name": "Kak Shooting Gallery",
         "locations": {
-            "Kak Shooting Gallery": "can_use(Bow)"
+            "Kak Shooting Gallery Reward": "can_use(Bow)"
         }
     },
     {
