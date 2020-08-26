@@ -12,11 +12,11 @@ bunny_hood :
     nop
     mul.s   f12, f12, f22
 
-    lbu     t1, 0x14f(t1)   ; Worn Mask
-    bne     t0, t1, @@return
+    lbu     a3, 0x14f(t1)   ; Worn Mask
+    bne     t0, a3, @@return
     mtc1    t7, f4          ; Displaced
  
-    lui     t0, 0x40B0
+    lw      t0, 0x0870(t1)  ; Max running speed
     bne     t0, a1, @@return
     nop
 
