@@ -1,4 +1,4 @@
-.definelabel WALK_RUN_STATE, 0x80398BC0
+.definelabel WALK_RUN_STATE, 0x80398BC0 ; Function pointer for Link's walking / running state
 
 SPEED_MULTIPLIER:
     .float 1.0
