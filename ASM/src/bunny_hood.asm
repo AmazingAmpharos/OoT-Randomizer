@@ -1,4 +1,4 @@
-.definelabel WALK_RUN_STATE, 0x80398BC0 ; Function pointer for Link's walking / running state
+.definelabel PLAYER_WALK_RUN, 0x80398BC0 ; Function called when Link is walking / running
 
 SPEED_MULTIPLIER:
     .float 1.0
@@ -18,7 +18,7 @@ bunny_hood :
     bne     t0, a3, @@return
     mtc1    t7, f4             ; Displaced
  
-    la      a3, WALK_RUN_STATE
+    la      a3, PLAYER_WALK_RUN
     lw      t0, 0x0664(t1)     ; Link State function pointer
     bne     t0, a3, @@return   ; Branch if Link is not walking or running forward
     nop
