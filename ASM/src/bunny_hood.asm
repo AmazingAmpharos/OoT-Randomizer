@@ -1,4 +1,4 @@
-.definelabel PLAYER_WALK_RUN, 0x80398BC0 ; Function called when Link is walking / running
+.definelabel PLAYER_WALK_RUN, 0x80398BC0 ; Function called when Link is walking or running
 
 SPEED_MULTIPLIER:
     .float 1.0
