@@ -1666,3 +1666,13 @@ skip_GS_BGS_text:
 .orga 0xCC8594
     jal     demo_effect_medal_init
     addiu   t8, zero, 0x0006
+
+;==================================================================================================
+; Fix Equip Swap Crashes
+;==================================================================================================
+; Deku Stick
+; Replaces: lui     t2, 0x0600
+;           addiu   t2, t2, 0x6CC0
+.orga 0xAF180C
+    jal     equip_swap_stick
+    nop

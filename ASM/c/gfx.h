@@ -4,6 +4,7 @@
 #include "z64.h"
 
 extern Gfx setup_db[];
+extern Gfx empty_dlist[];
 
 typedef struct {
     uint8_t *buf;
