@@ -1678,8 +1678,8 @@ skip_GS_BGS_text:
     nop
 
 ; Masks
-; Replaces: addu    t6, t6, t4
-;           lw      t6, 0xB098(t6)
-.orga 0x00BE5D80
+; Replaces: sw      t6, 0x0004(v0)
+;           lb      t7, 0x013F(s0)
+.orga 0xBE5D8C
     jal     equip_swap_mask
     nop
