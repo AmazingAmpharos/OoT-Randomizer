@@ -20,6 +20,5 @@ equip_swap_mask:
     la    t6, empty_dlist    ; Load empty display list if adult
 @@return:
     sw    t6, 0x0004(v0)
-    lb    t7, 0x013F(s0)
     jr    ra
-    nop
+    lb    t7, 0x013F(s0)
