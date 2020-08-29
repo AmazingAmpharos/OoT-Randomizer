@@ -1676,3 +1676,10 @@ skip_GS_BGS_text:
 .orga 0xAF180C
     jal     equip_swap_stick
     nop
+
+; Masks
+; Replaces: addu    t6, t6, t4
+;           lw      t6, 0xB098(t6)
+.orga 0x00BE5D80
+    jal     equip_swap_mask
+    nop
