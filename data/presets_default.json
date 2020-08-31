@@ -5,6 +5,7 @@
     "randomize_settings": false,
     "logic_rules": "glitchless",
     "open_forest": "closed",
+    "open_kakariko": "closed",
     "open_door_of_time": true,
     "zora_fountain": "closed",
     "gerudo_fortress": "fast",
@@ -67,12 +68,13 @@
     "logic_earliest_adult_trade": "prescription",
     "logic_latest_adult_trade": "claim_check"
   },
-  "Standard Weekly (2020-02-23)": {
+  "Standard Weekly (2020-03-21)": {
     "create_spoiler": true,
     "world_count": 1,
     "randomize_settings": false,
     "logic_rules": "glitchless",
     "open_forest": "open",
+    "open_kakariko": "closed",
     "open_door_of_time": true,
     "zora_fountain": "closed",
     "gerudo_fortress": "fast",
@@ -164,6 +166,7 @@
     "logic_rules": "glitchless",
     "open_forest": "open",
     "open_door_of_time": true,
+    "open_kakariko": "closed",
     "zora_fountain": "closed",
     "gerudo_fortress": "fast",
     "bridge": "medallions",
@@ -249,6 +252,7 @@
     "randomize_settings": false,
     "logic_rules": "glitchless",
     "open_forest": "closed_deku",
+    "open_kakariko": "closed",
     "open_door_of_time": false,
     "zora_fountain": "closed",
     "gerudo_fortress": "normal",

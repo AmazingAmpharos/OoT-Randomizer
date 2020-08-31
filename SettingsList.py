@@ -74,6 +74,9 @@ class Setting_Info():
     def calc_bitwidth(self, choices):
         count = len(choices)
         if count > 0:
+            if self.type == list:
+                # Need two special values for terminating additive and subtractive lists
+                count = count + 2
             return math.ceil(math.log(count, 2))
         return 0
 
@@ -548,7 +551,7 @@ logic_tricks = {
                     You can jump off an Armos Statue to reach the
                     alcove with the Gold Skulltula. It takes quite
                     a long time to pull the statue the entire way.
-                    The jump to the alcove can be a pit picky when
+                    The jump to the alcove can be a bit picky when
                     done as child.
                     '''},
     'Kakariko Tower GS with Jump Slash': {
@@ -1121,33 +1124,33 @@ logic_tricks = {
                     Removes the requirements for the Lens of Truth
                     in Jabu MQ.
                     '''},
-    'Shadow Temple MQ before Huge Pit without Lens of Truth': {
+    'Shadow Temple MQ before Invisible Moving Platform without Lens of Truth': {
         'name'    : 'logic_lens_shadow_mq',
         'tags'    : ("Lens of Truth","Shadow Temple",),
         'tooltip' : '''\
                     Removes the requirements for the Lens of Truth
-                    in Shadow Temple MQ before the Huge Pit room.
+                    in Shadow Temple MQ before the invisible moving platform.
                     '''},
-    'Shadow Temple MQ beyond Huge Pit without Lens of Truth': {
+    'Shadow Temple MQ beyond Invisible Moving Platform without Lens of Truth': {
         'name'    : 'logic_lens_shadow_mq_back',
         'tags'    : ("Lens of Truth","Shadow Temple",),
         'tooltip' : '''\
                     Removes the requirements for the Lens of Truth
-                    in Shadow Temple MQ beyond the Huge Pit room.
+                    in Shadow Temple MQ beyond the invisible moving platform.
                     '''},
-    'Shadow Temple before Huge Pit without Lens of Truth': {
+    'Shadow Temple before Invisible Moving Platform without Lens of Truth': {
         'name'    : 'logic_lens_shadow',
         'tags'    : ("Lens of Truth","Shadow Temple",),
         'tooltip' : '''\
                     Removes the requirements for the Lens of Truth
-                    in Shadow Temple before the Huge Pit room.
+                    in Shadow Temple before the invisible moving platform.
                     '''},
-    'Shadow Temple beyond Huge Pit without Lens of Truth': {
+    'Shadow Temple beyond Invisible Moving Platform without Lens of Truth': {
         'name'    : 'logic_lens_shadow_back',
         'tags'    : ("Lens of Truth","Shadow Temple",),
         'tooltip' : '''\
                     Removes the requirements for the Lens of Truth
-                    in Shadow Temple beyond the Huge Pit room.
+                    in Shadow Temple beyond the invisible moving platform.
                     '''},
     'Spirit Temple MQ without Lens of Truth': {
         'name'    : 'logic_lens_spirit_mq',
@@ -1544,6 +1547,37 @@ setting_infos = [
             ],
         },
     ),
+    Combobox(
+        name           = 'open_kakariko',
+        gui_text       = 'Kakariko Gate',
+        default        = 'closed',
+        choices        = {
+            'open':   'Open Gate',
+            'zelda':  "Zelda's Letter Opens Gate",
+            'closed': 'Closed Gate',
+            },
+        gui_tooltip    = '''\
+            This changes the behavior of the Kakariko Gate to
+            Death Mountain Trail as child. The gate is always
+            open as adult.
+            
+            "Open Gate": The gate is always open instead of
+            needing Zelda's Letter. The Happy Mask Shop opens
+            upon obtaining Zelda's Letter without needing to
+            show it to the guard.
+            
+            "Zelda's Letter Opens Gate": The gate is closed at
+            the start, but opens automatically along with the
+            Happy Mask Shop upon obtaining Zelda's Letter.
+            
+            "Closed": The gate and the Happy Mask Shop both remain closed
+            until showing Zelda's Letter to the guard in Kakariko.
+        ''',
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
     Checkbutton(
         name           = 'open_door_of_time',
         gui_text       = 'Open Door of Time',
@@ -1882,6 +1916,15 @@ setting_infos = [
             The cutscenes of the Poes in Forest Temple,
             Darunia in Fire Temple, and the introduction
             to Twinrova will not be skipped.
+        ''',
+        shared         = True,
+    ),
+    Checkbutton(
+        name           = 'complete_mask_quest',
+        gui_text       = 'Complete Mask Quest',
+        gui_tooltip    = '''\
+            Once the Happy Mask Shop is opened,
+            all masks will be available to be borrowed.
         ''',
         shared         = True,
     ),
@@ -2898,9 +2941,10 @@ setting_infos = [
         gui_text       = 'Background Music',
         default        = 'normal',
         choices        = {
-            'normal': 'Normal',
-            'off':    'No Music',
-            'random': 'Random',
+            'normal':               'Normal',
+            'off':                  'No Music',
+            'random':               'Random',
+            'random_custom_only':   'Random (Custom Only)',
         },
         gui_tooltip    = '''\
             'No Music': No background music is played.
@@ -2920,9 +2964,10 @@ setting_infos = [
         gui_text       = 'Fanfares',
         default        = 'normal',
         choices        = {
-            'normal': 'Normal',
-            'off':    'No Fanfares',
-            'random': 'Random',
+            'normal':               'Normal',
+            'off':                  'No Fanfares',
+            'random':               'Random',
+            'random_custom_only':   'Random (Custom Only)',
         },
         disable        = {
             'normal' : {'settings' : ['ocarina_fanfares']},

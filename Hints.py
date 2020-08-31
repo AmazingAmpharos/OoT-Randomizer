@@ -399,10 +399,6 @@ def get_song_hint(spoiler, world, checked):
     return get_specific_hint(spoiler, world, checked, 'song')
 
 
-def get_minigame_hint(spoiler, world, checked):
-    return get_specific_hint(spoiler, world, checked, 'minigame')
-
-
 def get_overworld_hint(spoiler, world, checked):
     return get_specific_hint(spoiler, world, checked, 'overworld')
 
@@ -463,7 +459,6 @@ hint_func = {
     'item':     get_good_item_hint,
     'sometimes':get_sometimes_hint,    
     'song':     get_song_hint,
-    'minigame': get_minigame_hint,
     'ow':       get_overworld_hint,
     'dungeon':  get_dungeon_hint,
     'entrance': get_entrance_hint,
@@ -483,7 +478,6 @@ hint_dist_sets = {
         'barren':   (0.0, 0),
         'item':     (0.0, 0),
         'song':     (0.0, 0),
-        'minigame': (0.0, 0),
         'ow':       (0.0, 0),
         'dungeon':  (0.0, 0),
         'entrance': (0.0, 0),
@@ -497,7 +491,6 @@ hint_dist_sets = {
         'barren':   (2.0, 1),
         'item':     (5.0, 1),
         'song':     (1.0, 1),
-        'minigame': (0.5, 1),
         'ow':       (2.0, 1),
         'dungeon':  (1.5, 1),
         'entrance': (3.0, 1),
@@ -511,7 +504,6 @@ hint_dist_sets = {
         'barren':   (3.0, 1),
         'item':     (1.0, 1),
         'song':     (0.33, 1),
-        'minigame': (0.33, 1),
         'ow':       (0.66, 1),
         'dungeon':  (0.66, 1),
         'entrance': (1.0, 1),
@@ -525,7 +517,6 @@ hint_dist_sets = {
         'barren':   (3.0, 1),
         'item':     (1.0, 1),
         'song':     (0.5, 1),
-        'minigame': (0.5, 1),
         'ow':       (1.5, 1),
         'dungeon':  (1.5, 1),
         'entrance': (2.0, 1),
