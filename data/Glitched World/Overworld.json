@@ -369,7 +369,7 @@
             "Colossus Great Fairy Fountain": "has_explosives or (can_use(Hookshot) and can_use(Hover_Boots))",
             "Spirit Temple Lobby": "True",
             "Colossus Grotto": "can_use(Silver_Gauntlets)",
-            "Spirit Temple Outdoor Hands": "can_hover"
+            "Spirit Temple Outdoor Hands": "can_hover and can_use(Hover_Boots)"
         }
     },
     {
