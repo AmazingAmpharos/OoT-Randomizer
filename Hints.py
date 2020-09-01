@@ -286,8 +286,8 @@ def get_woth_hint(spoiler, world, checked):
         location.name not in checked and \
         not (world.woth_dungeon >= world.hint_dist_user['dungeons_woth_limit'] and \
         location.parent_region.dungeon) and \
-        not (location.name in world.hint_type_overrides['woth']) and \
-        not (location.item.name in world.item_hint_type_overrides['woth']), 
+        (location.name not in world.hint_type_overrides['woth']) and \
+        (location.item.name not in world.item_hint_type_overrides['woth']), 
         locations))
 
     if not locations:
@@ -340,8 +340,8 @@ def get_good_item_hint(spoiler, world, checked):
             location.name in world.added_hint_types['item'] or \
             location.item.name in world.item_added_hint_types['item']) and \
             not location.locked and \
-            not (location.name in world.hint_type_overrides['item']) and \
-            not (location.item.name in world.item_hint_type_overrides['item'])]
+            (location.name not in world.hint_type_overrides['item']) and \
+            (location.item.name not in world.item_hint_type_overrides['item'])]
     if not locations:
         return None
 
@@ -385,8 +385,8 @@ def get_random_location_hint(spoiler, world, checked):
             not (location.parent_region.dungeon and \
                 isRestrictedDungeonItem(location.parent_region.dungeon, location.item)) and
             not location.locked and \
-            not (location.name in world.hint_type_overrides['item']) and \
-            not (location.item.name in world.item_hint_type_overrides['item'])]
+            (location.name not in world.hint_type_overrides['item']) and \
+            (location.item.name not in world.item_hint_type_overrides['item'])]
     if not locations:
         return None
 
@@ -580,7 +580,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
         raise Exception("There are gaps in the custom hint orders. Please revise your plando file to remove them.")
     for i in range(1, type_count):
         hint_type = sorted_dist[i]
-        hint_dist[hint_type] = (world.hint_dist_user['distribution'][hint_type]['weight'], world.hint_dist_user['distribution'][hint_type]['stones'])
+        hint_dist[hint_type] = (world.hint_dist_user['distribution'][hint_type]['weight'], world.hint_dist_user['distribution'][hint_type]['copies'])
         hint_dist.move_to_end(hint_type)
         fixed_hint_types.extend([hint_type] * int(world.hint_dist_user['distribution'][hint_type]['fixed']))
     

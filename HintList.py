@@ -63,9 +63,9 @@ def getHintGroup(group, world):
             location_check = False
             if isinstance(hint.type, list):
                 for htype in hint.type:
-                    if htype in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and not (name in hintExclusions(world)):
+                    if htype in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and (name not in hintExclusions(world)):
                         location_check = True
-            elif hint.type in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and not (name in hintExclusions(world)):
+            elif hint.type in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and (name not in hintExclusions(world)):
                 location_check = True
             if location_check:
                 location = world.get_location(name)
@@ -80,7 +80,7 @@ def getHintGroup(group, world):
             if name in world.hint_type_overrides[group]:
                 type_override = True
 
-        if group in hint.type and not (name in hintExclusions(world)) and not type_override:
+        if group in hint.type and (name not in hintExclusions(world)) and not type_override:
             ret.append(hint)
     return ret
 
@@ -384,14 +384,14 @@ hintTable = {
     'Deku Tree Map Chest':                                         ("in the #center of the Deku Tree# lies", None, 'exclude'),
     'Deku Tree Slingshot Chest':                                   ("the #treasure guarded by a scrub# in the Deku Tree is", None, 'exclude'),
     'Deku Tree Slingshot Room Side Chest':                         ("the #treasure guarded by a scrub# in the Deku Tree is", None, 'exclude'),
-    'Deku Tree Compass Chest':                                     ("#pillars of wood# in the Deku Tree leads to", None, 'exclude'),
-    'Deku Tree Compass Room Side Chest':                           ("#pillars of wood# in the Deku Tree leads to", None, 'exclude'),
+    'Deku Tree Compass Chest':                                     ("#pillars of wood# in the Deku Tree lead to", None, 'exclude'),
+    'Deku Tree Compass Room Side Chest':                           ("#pillars of wood# in the Deku Tree lead to", None, 'exclude'),
     'Deku Tree Basement Chest':                                    ("#webs in the Deku Tree# hide", None, 'exclude'),
 
     'Deku Tree MQ Map Chest':                                      ("in the #center of the Deku Tree# lies", None, 'exclude'),
-    'Deku Tree MQ Compass Chest':                                  ("in #treasure guarded by a large spider# in the Deku Tree is", None, 'exclude'),
-    'Deku Tree MQ Slingshot Chest':                                ("#pillars of wood# in the Deku Tree leads to", None, 'exclude'),
-    'Deku Tree MQ Slingshot Room Back Chest':                      ("#pillars of wood# in the Deku Tree leads to", None, 'exclude'),
+    'Deku Tree MQ Compass Chest':                                  ("a #treasure guarded by a large spider# in the Deku Tree is", None, 'exclude'),
+    'Deku Tree MQ Slingshot Chest':                                ("#pillars of wood# in the Deku Tree lead to", None, 'exclude'),
+    'Deku Tree MQ Slingshot Room Back Chest':                      ("#pillars of wood# in the Deku Tree lead to", None, 'exclude'),
     'Deku Tree MQ Basement Chest':                                 ("#webs in the Deku Tree# hide", None, 'exclude'),
     'Deku Tree MQ Before Spinning Log Chest':                      ("#magical fire in the Deku Tree# leads to", None, 'exclude'),
 
@@ -420,8 +420,8 @@ hintTable = {
     'Jabu Jabus Belly MQ Second Room Upper Chest':                 ("#moving anatomy# creates a path to", None, 'exclude'),
     'Jabu Jabus Belly MQ Basement Near Switches Chest':            ("a #pair of digested cows# hold", None, 'exclude'),
     'Jabu Jabus Belly MQ Basement Near Vines Chest':               ("a #pair of digested cows# hold", None, 'exclude'),
-    'Jabu Jabus Belly MQ Near Boss Chest':                         ("the #final cows' reward# is", None, 'exclude'),
-    'Jabu Jabus Belly MQ Falling Like Like Room Chest':            ("#trapped cows# guard", None, 'exclude'),
+    'Jabu Jabus Belly MQ Near Boss Chest':                         ("the #final cows' reward# in a deity's belly is", None, 'exclude'),
+    'Jabu Jabus Belly MQ Falling Like Like Room Chest':            ("#cows protected by falling monsters# in a deity's belly guard", None, 'exclude'),
     'Jabu Jabus Belly MQ Boomerang Room Small Chest':              ("a school of #stingers swallowed by a deity# guard", "a school of #stingers swallowed by Jabu Jabu# guard", 'exclude'),
     'Jabu Jabus Belly MQ Boomerang Chest':                         ("a school of #stingers swallowed by a deity# guard", "a school of #stingers swallowed by Jabu Jabu# guard", 'exclude'),
 
@@ -493,7 +493,7 @@ hintTable = {
     'Water Temple MQ Map Chest':                                   ("#sparring soldiers# in the Water Temple guard", None, 'exclude'),
 
     'Spirit Temple Child Bridge Chest':                            ("a child conquers a #skull in green fire# in the Spirit Temple to reach", None, 'exclude'),
-    'Spirit Temple Child Early Torches Chest':                     ("a child can find a #caged chest in Spirit Temple# with", None, 'exclude'),
+    'Spirit Temple Child Early Torches Chest':                     ("a child can find a #caged chest# in Spirit Temple with", None, 'exclude'),
     'Spirit Temple Compass Chest':                                 ("#across a pit of sand# in the Spirit Temple lies", None, 'exclude'),
     'Spirit Temple Early Adult Right Chest':                       ("#dodging boulders to collect silver rupees# in the Spirit Temple yields", None, 'exclude'),
     'Spirit Temple First Mirror Left Chest':                       ("a #shadow circling reflected light# in the Spirit Temple guards", None, 'exclude'),
@@ -520,7 +520,7 @@ hintTable = {
     'Spirit Temple MQ Child Climb South Chest':                    ("#trapped by falling enemies# within the Spirit Temple is", None, 'exclude'),
     'Spirit Temple MQ Compass Chest':                              ("#blinding the colossus# unveils", None, 'exclude'),
     'Spirit Temple MQ Statue Room Lullaby Chest':                  ("a #royal melody awakens the colossus# to reveal", None, 'exclude'),
-    'Spirit Temple MQ Statue Room Invisible Chest':                ("the #Eye of Truth# finds the colossus' hidden", None, 'exclude'),
+    'Spirit Temple MQ Statue Room Invisible Chest':                ("the #Eye of Truth# finds the colossus's hidden", None, 'exclude'),
     'Spirit Temple MQ Silver Block Hallway Chest':                 ("#the old hide what the young find# to reveal", None, 'exclude'),
     'Spirit Temple MQ Sun Block Room Chest':                       ("#sunlight in a maze of fire# hides", None, 'exclude'),
     'Spirit Temple MQ Leever Room Chest':                          ("#across a pit of sand# in the Spirit Temple lies", None, 'exclude'),
@@ -557,7 +557,7 @@ hintTable = {
     'Shadow Temple MQ Invisible Spikes Chest':                     ("the #dead roam among invisible spikes# guarding", None, 'exclude'),
     'Shadow Temple MQ Boss Key Chest':                             ("#walls consumed by a ball of fire# reveal", None, 'exclude'),
     'Shadow Temple MQ Spike Walls Left Chest':                     ("#walls consumed by a ball of fire# reveal", None, 'exclude'),
-    'Shadow Temple MQ Stalfos Room Chest':                         ("near an #empty pedastal# within the Shadow Temple lies", None, 'exclude'),
+    'Shadow Temple MQ Stalfos Room Chest':                         ("near an #empty pedestal# within the Shadow Temple lies", None, 'exclude'),
     'Shadow Temple MQ Invisible Blades Invisible Chest':           ("#invisible blades# guard", None, 'exclude'),
     'Shadow Temple MQ Invisible Blades Visible Chest':             ("#invisible blades# guard", None, 'exclude'),
     'Shadow Temple MQ Wind Hint Chest':                            ("an #invisible chest guarded by the dead# holds", None, 'exclude'),
@@ -590,7 +590,7 @@ hintTable = {
     'Ice Cavern Iron Boots Chest':                                 ("a #monster in a frozen cavern# guards", None, 'exclude'),
     'Ice Cavern Freestanding PoH':                                 ("a #wall of ice# protects", None, 'exclude'),
 
-    'Ice Cavern MQ Iron Boots Chest':                              ("a #monster in a frozen cavern# guard", None, 'exclude'),
+    'Ice Cavern MQ Iron Boots Chest':                              ("a #monster in a frozen cavern# guards", None, 'exclude'),
     'Ice Cavern MQ Compass Chest':                                 ("#winds of ice# surround", None, 'exclude'),
     'Ice Cavern MQ Map Chest':                                     ("a #wall of ice# protects", None, 'exclude'),
     'Ice Cavern MQ Freestanding PoH':                              ("#winds of ice# surround", None, 'exclude'),
@@ -605,7 +605,7 @@ hintTable = {
     'Gerudo Training Grounds Maze Path Third Chest':               ("the third prize of #the thieves' training# is", None, 'exclude'),
     'Gerudo Training Grounds Maze Right Central Chest':            ("the #Song of Time# in the Gerudo Training Grounds leads to", None, 'exclude'),
     'Gerudo Training Grounds Maze Right Side Chest':               ("the #Song of Time# in the Gerudo Training Grounds leads to", None, 'exclude'),
-    'Gerudo Training Grounds Hammer Room Clear Chest':             ("#firey foes# in the Gerudo Training Grounds guard", None, 'exclude'),
+    'Gerudo Training Grounds Hammer Room Clear Chest':             ("#fiery foes# in the Gerudo Training Grounds guard", None, 'exclude'),
     'Gerudo Training Grounds Hammer Room Switch Chest':            ("#engulfed in flame# where thieves train lies", None, 'exclude'),
     'Gerudo Training Grounds Eye Statue Chest':                    ("thieves #blind four faces# to find", None, 'exclude'),
     'Gerudo Training Grounds Near Scarecrow Chest':                ("thieves #blind four faces# to find", None, 'exclude'),
@@ -622,7 +622,7 @@ hintTable = {
     'Gerudo Training Grounds MQ Before Heavy Block Chest':         ("#before a block of silver# thieves can find", None, 'exclude'),
     'Gerudo Training Grounds MQ Eye Statue Chest':                 ("thieves #blind four faces# to find", None, 'exclude'),
     'Gerudo Training Grounds MQ Flame Circle Chest':               ("#engulfed in flame# where thieves train lies", None, 'exclude'),
-    'Gerudo Training Grounds MQ Second Iron Knuckle Chest':        ("#firey foes# in the Gerudo Training Grounds guard", None, 'exclude'),
+    'Gerudo Training Grounds MQ Second Iron Knuckle Chest':        ("#fiery foes# in the Gerudo Training Grounds guard", None, 'exclude'),
     'Gerudo Training Grounds MQ Dinolfos Chest':                   ("#reptilian warriors# in the Gerudo Training Grounds protect", None, 'exclude'),
     'Gerudo Training Grounds MQ Maze Right Central Chest':         ("a #path of fire# leads thieves to", None, 'exclude'),
     'Gerudo Training Grounds MQ Maze Path First Chest':            ("the first prize of #the thieves' training# is", None, 'exclude'),
@@ -664,14 +664,14 @@ hintTable = {
     'Ganons Castle MQ Spirit Trial Invisible Chest':               ("#reflected light in the test of the sands# reveals", None, 'exclude'),
     'Ganons Castle MQ Forest Trial Freestanding Key':              ("the #test of the wilds# holds", None, 'exclude'),
 
-    'Deku Tree Queen Gohma Heart':                                 ("the #Parasitic Armored Arachnid# guards", "#Queen Gohma# guards", 'exclude'),
-    'Dodongos Cavern King Dodongo Heart':                          ("the #Infernal Dinosaur# guards", "#King Dodongo# guards", 'exclude'),
-    'Jabu Jabus Belly Barinade Heart':                             ("the #Bio-Electric Anemone# guards", "#Barinade# guards", 'exclude'),
-    'Forest Temple Phantom Ganon Heart':                           ("the #Evil Spirit from Beyond# guards", "#Phantom Ganon# guards", 'exclude'),
-    'Fire Temple Volvagia Heart':                                  ("the #Subterranean Lava Dragon# guards", "#Volvagia# guards", 'exclude'),
-    'Water Temple Morpha Heart':                                   ("the #Giant Aquatic Amoeba# guards", "#Morpha# guards", 'exclude'),
-    'Spirit Temple Twinrova Heart':                                ("the #Sorceress Sisters# hold", "#Twinrova# guards", 'exclude'),
-    'Shadow Temple Bongo Bongo Heart':                             ("the #Phantom Shadow Beast# guards", "#Bongo Bongo# guards", 'exclude'),
+    'Deku Tree Queen Gohma Heart':                                 ("the #Parasitic Armored Arachnid# holds", "#Queen Gohma# holds", 'exclude'),
+    'Dodongos Cavern King Dodongo Heart':                          ("the #Infernal Dinosaur# holds", "#King Dodongo# holds", 'exclude'),
+    'Jabu Jabus Belly Barinade Heart':                             ("the #Bio-Electric Anemone# holds", "#Barinade# holds", 'exclude'),
+    'Forest Temple Phantom Ganon Heart':                           ("the #Evil Spirit from Beyond# holds", "#Phantom Ganon# holds", 'exclude'),
+    'Fire Temple Volvagia Heart':                                  ("the #Subterranean Lava Dragon# holds", "#Volvagia# holds", 'exclude'),
+    'Water Temple Morpha Heart':                                   ("the #Giant Aquatic Amoeba# holds", "#Morpha# holds", 'exclude'),
+    'Spirit Temple Twinrova Heart':                                ("the #Sorceress Sisters# hold", "#Twinrova# holds", 'exclude'),
+    'Shadow Temple Bongo Bongo Heart':                             ("the #Phantom Shadow Beast# holds", "#Bongo Bongo# holds", 'exclude'),
 
     'Deku Tree GS Basement Back Room':                             ("a #spider deep within the Deku Tree# hides", None, 'exclude'),
     'Deku Tree GS Basement Gate':                                  ("a #web protects a spider# within the Deku Tree holding", None, 'exclude'),
@@ -720,10 +720,10 @@ hintTable = {
     'Fire Temple GS Scarecrow Top':                                ("a #spider-friendly scarecrow# atop a volcano hides", "a #spider-friendly scarecrow# atop the Fire Temple hides", 'exclude'),
     'Fire Temple GS Scarecrow Climb':                              ("a #spider-friendly scarecrow# atop a volcano hides", "a #spider-friendly scarecrow# atop the Fire Temple hides", 'exclude'),
 
-    'Fire Temple MQ GS Above Fire Wall Maze':                      ("a #spider above a firey maze# holds", None, 'exclude'),
-    'Fire Temple MQ GS Fire Wall Maze Center':                     ("a #spider within a firey maze# holds", None, 'exclude'),
+    'Fire Temple MQ GS Above Fire Wall Maze':                      ("a #spider above a fiery maze# holds", None, 'exclude'),
+    'Fire Temple MQ GS Fire Wall Maze Center':                     ("a #spider within a fiery maze# holds", None, 'exclude'),
     'Fire Temple MQ GS Big Lava Room Open Door':                   ("a #Goron trapped near lava# befriended a spider with", None, 'exclude'),
-    'Fire Temple MQ GS Fire Wall Maze Side Room':                  ("a #spider beside a firey maze# holds", None, 'exclude'),
+    'Fire Temple MQ GS Fire Wall Maze Side Room':                  ("a #spider beside a fiery maze# holds", None, 'exclude'),
 
     'Water Temple GS Falling Platform Room':                       ("a #spider over a waterfall# in the Water Temple holds", None, 'exclude'),
     'Water Temple GS Central Pillar':                              ("a #spider in the center of the Water Temple# holds", None, 'exclude'),
@@ -771,7 +771,7 @@ hintTable = {
 
     'Ice Cavern MQ GS Scarecrow':                                  ("a #spider above icy pits# holds", None, 'exclude'),
     'Ice Cavern MQ GS Ice Block':                                  ("a #web of ice# surrounds a spider with", None, 'exclude'),
-    'Ice Cavern MQ GS Red Ice':                                    ("a #spider in firey ice# hoards", None, 'exclude'),
+    'Ice Cavern MQ GS Red Ice':                                    ("a #spider in fiery ice# hoards", None, 'exclude'),
 
     'HF GS Near Kak Grotto':                                       ("a #spider-guarded spider in a hole# hoards", None, 'exclude'),
 

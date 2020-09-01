@@ -125,12 +125,16 @@ class World(object):
         hint_dist_valid = False
         if all(key in self.hint_dist_user['distribution'] for key in hint_dist_keys):
             hint_dist_valid = True
-            sub_keys = {'order', 'weight', 'fixed', 'stones'}
+            sub_keys = {'order', 'weight', 'fixed', 'copies'}
             for key in self.hint_dist_user['distribution']:
                 if not all(sub_key in sub_keys for sub_key in self.hint_dist_user['distribution'][key]):
                     hint_dist_valid = False
         if not hint_dist_valid:
-            raise InvalidFileException("Hint distributions require all hint types be present in the distro (trial, always, woth, barren, item, song, overworld, dungeon, entrance, sometimes, random, junk, named-item). If a hint type should not be shuffled, set its order to 0. Hint type format is \"type\": { \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"stones\": 0 }")
+            raise InvalidFileException("""Hint distributions require all hint types be present in the distro 
+                                          (trial, always, woth, barren, item, song, overworld, dungeon, entrance,
+                                          sometimes, random, junk, named-item). If a hint type should not be
+                                          shuffled, set its order to 0. Hint type format is \"type\": { 
+                                          \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"copies\": 0 }""")
         
         self.added_hint_types = {}
         self.item_added_hint_types = {}
@@ -700,7 +704,7 @@ class World(object):
                 item = location.item
 
                 if ((not location.item.majoritem) or (location.item.name in exclude_item_list)) and \
-                    (not location.item.name in self.item_hint_type_overrides['barren']):
+                    (location.item.name not in self.item_hint_type_overrides['barren']):
                     # Minor items are always useless in logic
                     continue
 
