@@ -2,9 +2,7 @@
     "name":                  "tournament",
     "gui_name":              "Tournament",
     "description":           "Fixed number of hints for each type, contains duplicates, and only useful hints.",
-    "add_locations":         [
-        { "location": "Deku Theater Skull Mask", "types": ["always"] }
-    ],
+    "add_locations":         [],
     "remove_locations":      [],
     "add_items":             [],
     "remove_items":          [],
