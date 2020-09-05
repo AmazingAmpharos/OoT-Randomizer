@@ -494,7 +494,7 @@ hintTable = {
     'Water Temple MQ Map Chest':                                   ("#sparring soldiers# in the Water Temple guard", None, 'exclude'),
 
     'Spirit Temple Child Bridge Chest':                            ("a child conquers a #skull in green fire# in the Spirit Temple to reach", None, 'exclude'),
-    'Spirit Temple Child Early Torches Chest':                     ("a child can find a #caged chest# in Spirit Temple with", None, 'exclude'),
+    'Spirit Temple Child Early Torches Chest':                     ("a child can find a #caged chest# in the Spirit Temple with", None, 'exclude'),
     'Spirit Temple Compass Chest':                                 ("#across a pit of sand# in the Spirit Temple lies", None, 'exclude'),
     'Spirit Temple Early Adult Right Chest':                       ("#dodging boulders to collect silver rupees# in the Spirit Temple yields", None, 'exclude'),
     'Spirit Temple First Mirror Left Chest':                       ("a #shadow circling reflected light# in the Spirit Temple guards", None, 'exclude'),
