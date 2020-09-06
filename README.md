@@ -140,6 +140,7 @@ player.
 * The number of Triforces available in Triforce Hunt now rounds to the nearest whole number instead of the nearest whole **even** number.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
+* Changed some C code to support GCC 10 in development n64 compilation.
 * Added decompressor source and updated Decompress binaries.
 * OoTRandomizer.py returns an error code on failure to interact better with user scripting.
 * Plandomizer distribution files are copied to the Output directory next to the Spoiler and Cosmetics logs.
