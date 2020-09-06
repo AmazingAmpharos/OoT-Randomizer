@@ -222,7 +222,7 @@ hintTable = {
     'Deku Seeds (30)':                                          (["catapult ammo", "lots-o-seeds"], "Deku Seeds (30 pieces)", 'item'),
     'Gold Skulltula Token':                                     (["proof of destruction", "an arachnid chip", "spider remains", "one percent of a curse"], "a Gold Skulltula Token", 'item'),
 
-    'Deku Theater Mask of Truth':                                  (["Exposing scrubs to the #Truth# yields", "showing a #truthful eye to the crowd# rewards"], "the #Mask of Truth# yields", ['overworld', 'sometimes']),
+    'Deku Theater Mask of Truth':                                  ("showing a #truthful eye to the crowd# rewards", "the #Mask of Truth# yields", ['overworld', 'sometimes']),
     'ZR Frogs Ocarina Game':                                       (["an #amphibian feast# yields", "the #croaking choir's magnum opus# awards", "the #froggy finale# yields"], "the final reward from the #Frogs of Zora's River# is", 'always'),
     'KF Links House Cow':                                          ("the #bovine bounty of a horseback hustle# gifts", "#Malon's obstacle course# leads to", 'always'),
 
@@ -236,7 +236,7 @@ hintTable = {
     'Sheik at Colossus':                                           ("a hero ventures #beyond the wasteland# to learn", None, ['song', 'sometimes']),
 
     'Market 10 Big Poes':                                          ("#ghost hunters# will be rewarded with", "catching #Big Poes# leads to", ['overworld', 'sometimes']),
-    'Deku Theater Skull Mask':                                     ("Exposing scrubs to a #fleshless façade# yields", "the #Skull Mask# yields", ['overworld', 'sometimes']),
+    'Deku Theater Skull Mask':                                     ("the #Skull Mask# yields", None, ['overworld', 'sometimes']),
     'HF Ocarina of Time Item':                                     ("the #treasure thrown by Princess Zelda# is", None, ['overworld', 'sometimes']),
     'DMT Biggoron':                                                ("a #squinty salesman# trades", "#Biggoron# crafts", ['overworld', 'sometimes']),
     'Kak 50 Gold Skulltula Reward':                                (["#50 bug badges# rewards", "#50 spider souls# yields", "#50 auriferous arachnids# lead to"], "slaying #50 Gold Skulltulas# reveals", ['overworld', 'sometimes']),
@@ -296,7 +296,7 @@ hintTable = {
     'Shadow Temple Invisible Floormaster Chest':                   ("shadows in an #invisible maze# guard", None, ['dungeon', 'sometimes']),
     'Shadow Temple MQ Bomb Flower Chest':                          ("shadows in an #invisible maze# guard", None, ['dungeon', 'sometimes']),
 
-    'KF Kokiri Sword Chest':                                       (["a #child's toy chest# holds", "inside a #butter cutter box# lies"], "the #treasure of the Kokiri# is", 'exclude'),
+    'KF Kokiri Sword Chest':                                       ("the #hidden treasure of the Kokiri# is", None, 'exclude'),
     'KF Midos Top Left Chest':                                     ("the #leader of the Kokiri# hides", "#inside Mido's house# is", 'exclude'),
     'KF Midos Top Right Chest':                                    ("the #leader of the Kokiri# hides", "#inside Mido's house# is", 'exclude'),
     'KF Midos Bottom Left Chest':                                  ("the #leader of the Kokiri# hides", "#inside Mido's house# is", 'exclude'),
