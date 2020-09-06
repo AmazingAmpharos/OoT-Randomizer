@@ -117,6 +117,7 @@ player.
 * Tricks can be filtered in the GUI using a new dropdown.
 
 #### Bug Fixes
+* Bunny Hood speed bonus now applies correctly in cases other than child running at full speed.
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
