@@ -109,6 +109,10 @@ player.
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
+* New "Hint Distribution" customization options
+  * Old hardcoded hint distributions are now defined by json files in `data/Hints`.
+  * Custom hint distributions can be added to this folder, or defined directly in Plando files.
+  * Many locations that did not previously have item hints now have hints, in case a custom hint distribution makes use of them.
 * Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
 * Tricks can be filtered in the GUI using a new dropdown.
 
