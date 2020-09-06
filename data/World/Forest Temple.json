@@ -102,7 +102,7 @@
             "Forest Temple Bow Region": "
                 Progressive_Strength_Upgrade and (Small_Key_Forest_Temple, 3) and is_adult",
             "Forest Temple Straightened Hall": "
-                Progressive_Strength_Upgrade and (Small_Key_Forest_Temple, 2) and can_use(Bow) and is_adult"
+                Progressive_Strength_Upgrade and (Small_Key_Forest_Temple, 2) and can_use(Bow)"
         }
     },
     {
