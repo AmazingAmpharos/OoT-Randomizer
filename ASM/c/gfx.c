@@ -27,6 +27,8 @@ Gfx setup_db[] =
     gsSPEndDisplayList()
 };
 
+Gfx empty_dlist[] = { gsSPEndDisplayList() };
+
 sprite_t stones_sprite = {
     NULL, 16, 16, 3,
     G_IM_FMT_RGBA, G_IM_SIZ_32b, 4
