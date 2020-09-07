@@ -58,7 +58,7 @@
                 can_play(Zeldas_Lullaby) and
                     (((can_use(Longshot) or (can_use(Hookshot) and can_use(Farores_Wind))) and 
                         ((Small_Key_Water_Temple, 6) or can_use(Bow) or can_use(Dins_Fire))) or
-                    (logic_water_central_gs_no_fw and can_use(Hookshot) and can_use(Iron_Boots) and
+                    (logic_water_central_gs_irons and can_use(Hookshot) and can_use(Iron_Boots) and
                         (can_use(Bow) or can_use(Dins_Fire))) or
                     (Child_Water_Temple and Boomerang and can_use(Farores_Wind) and
                         (Sticks or can_use(Dins_Fire) or
