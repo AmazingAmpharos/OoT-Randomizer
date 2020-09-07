@@ -559,6 +559,14 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
     random.shuffle(stoneIDs)
 
+    ###Create the bingo hints here
+    # If no bingosync board is supplied, use generic bingo item hints
+    # Else, create list of required items and songs to be hinted based on the card
+    ## use API get request to get goals from the board
+    ## use read_json to load in required items for each goal
+    ## construct list of required items based on goals on card
+    ## construct custom hint_distro_user keeping track of number of hints needed (extra hints 'sometimes' hints or 'junk', probably)
+
     # Load hint distro from distribution file or pre-defined settings
     #
     # 'fixed' key is used to mimic the tournament distribution, creating a list of fixed hint types to fill
