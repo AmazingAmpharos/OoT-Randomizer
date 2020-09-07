@@ -795,8 +795,10 @@ logic_tricks = {
         'name'    : 'logic_ice_block_gs',
         'tags'    : ("Ice Cavern", "Skulltulas",),
         'tooltip' : '''\
-                    The Hover Boots can be used to kill the Skulltula
-                    and obtain the Token, without Hookshot or Boomerang.
+                    The Hover Boots can be used to get in front of the
+                    Skulltula to kill it with a jumpslash. Then, the
+                    Hover Boots can again be used to obtain the Token,
+                    all without Hookshot or Boomerang.
                     '''},
     'Reverse Wasteland': {
         'name'    : 'logic_reverse_wasteland',
@@ -949,8 +951,8 @@ logic_tricks = {
                     in the Water Temple are not going to be relevant unless this
                     trick is first enabled.
                     '''},
-    'Water Temple Central Pillar GS with Neither Longshot nor Farore\'s Wind': {
-        'name'    : 'logic_water_central_gs_no_fw',
+    'Water Temple Central Pillar GS with Iron Boots': {
+        'name'    : 'logic_water_central_gs_irons',
         'tags'    : ("Water Temple", "Skulltulas",),
         'tooltip' : '''\
                     After opening the middle water level door into the
@@ -1085,7 +1087,7 @@ logic_tricks = {
         'tooltip' : '''\
                     With help from a conveniently-positioned block,
                     Adult can quickly carry a bomb flower over to
-                    destroy the mud wall blockng the room with two
+                    destroy the mud wall blocking the room with two
                     Deku Scrubs.
                     '''},
     'Dodongo\'s Cavern Child Slingshot Skips': {
