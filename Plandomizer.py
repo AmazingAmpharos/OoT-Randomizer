@@ -894,7 +894,7 @@ class Distribution(object):
                     else:
                         raise KeyError("invalid special item: {}".format(item.itemname))
             else:
-                raise KeyError("invalid starting item: {}".format(item.itemname))
+                raise KeyError("invalid starting item: {}".format(itemsetting))
 
         # add ammo
         for item in list(data.keys()):
