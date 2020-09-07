@@ -1,4 +1,4 @@
-from LocationList import location_table
+from LocationList import location_table, location_is_viewable
 from Region import TimeOfDay
 from enum import Enum
 
@@ -88,13 +88,7 @@ class Location(object):
     # Can the player see what's placed at this location without collecting it?
     # Used to reduce JSON spoiler noise
     def has_preview(self):
-        if self.type in ('Collectable', 'BossHeart', 'GS Token', 'Shop'):
-            return True
-        if self.type == 'Chest':
-            return self.scene == 0x10 or self.world.correct_chest_sizes  # Treasure Chest Game Prize or CSMC
-        if self.type == 'NPC':
-            return self.scene in (0x4B, 0x51, 0x57) # Bombchu Bowling, Hyrule Field (OoT), Lake Hylia (RL/FA)
-        return False
+        return location_is_viewable(self.name, self.world.correct_chest_sizes)
 
 
     def has_item(self):

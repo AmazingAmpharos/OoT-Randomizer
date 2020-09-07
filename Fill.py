@@ -71,7 +71,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # Extend with ice traps manually placed in plandomizer
     ice_traps.extend(
         location.item for location in cloakable_locations
-        if (location.name in location_groups['CanSee']
+        if (location.has_preview()
             and location.item is not None
             and location.item.name == 'Ice Trap'
             and location.item.looks_like_item is None))

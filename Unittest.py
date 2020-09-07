@@ -9,7 +9,7 @@ import unittest
 
 from ItemList import item_table
 from ItemPool import remove_junk_items, item_groups
-from LocationList import location_groups
+from LocationList import location_groups, location_is_viewable
 from Main import main
 from Settings import Settings
 
@@ -201,9 +201,9 @@ class TestPlandomizer(unittest.TestCase):
         for filename in filenames:
             with self.subTest(filename):
                 distribution_file, spoiler = generate_with_plandomizer(filename)
-                locations_with_previews = location_groups['CanSee']
-                for location in locations_with_previews:
-                    if location in spoiler['locations']:
+                csmc = spoiler['settings'].get('correct_chest_sizes')
+                for location in spoiler['locations']:
+                    if location_is_viewable(location, csmc):
                         item = spoiler['locations'][location]
                         if isinstance(item, dict):
                             if item['item'] == "Ice Trap":
