@@ -5,6 +5,9 @@ import os
 import struct
 import random
 from collections import OrderedDict
+import urllib.request
+from urllib.error import URLError, HTTPError
+import json
 
 from HintList import getHint, getHintGroup, Hint, hintExclusions
 from Item import MakeEventItem
@@ -516,6 +519,37 @@ hint_dist_keys = {
     'named-item'
 }
 
+def buildBingoHintList(boardURL):
+    try:
+        with urllib.request.urlopen(boardURL+"/board") as board:
+            goalList=board.read()
+    except (URLError, HTTPError) as e:
+            logger = logging.getLogger('')
+            logger.warning("Could not retrieve board info. Using default bingo hints instead: " + str(e))
+            genericBingo=read_json('data/Bingo/generic_bingo_hints.json')
+            return genericBingo['settings']['item_hints']
+
+    goalList=json.loads(goalList)
+    goalList=[goal['name'] for goal in goalList]
+    
+    with open("data/Bingo/bingo_goals.json", "r") as f:
+        goalHintRequirements=json.load(f)
+        
+    hintsToAdd={}
+    for goal in goalList:
+        requirements=goalHintRequirements.get(goal,{})
+        if len(requirements)!=0:
+            for item in requirements:
+                hintsToAdd[item]=max(hintsToAdd.get(item,0), requirements[item]['count'])
+    
+    hints=[]
+    for key, value in hintsToAdd.items():
+        for _ in range(value):
+            hints.append(key)
+    return hints
+
+
+
 def buildGossipHints(spoiler, worlds):
     checkedLocations = dict()
     # Add Light Arrow locations to "checked" locations if Ganondorf is reachable without it.
@@ -559,13 +593,11 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
     random.shuffle(stoneIDs)
 
-    ###Create the bingo hints here
-    # If no bingosync board is supplied, use generic bingo item hints
-    # Else, create list of required items and songs to be hinted based on the card
-    ## use API get request to get goals from the board
-    ## use read_json to load in required items for each goal
-    ## construct list of required items based on goals on card
-    ## construct custom hint_distro_user keeping track of number of hints needed (extra hints 'sometimes' hints or 'junk', probably)
+    #Create board-specific, required-item hints
+    logger = logging.getLogger('')
+    if world.bingosyncURL is not None:
+        world.item_hints=buildBingoHintList(world.bingosyncURL)
+        
 
     # Load hint distro from distribution file or pre-defined settings
     #
