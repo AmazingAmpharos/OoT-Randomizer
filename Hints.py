@@ -529,19 +529,18 @@ def buildBingoHintList(boardURL):
             genericBingo=read_json('data/Bingo/generic_bingo_hints.json')
             return genericBingo['settings']['item_hints']
 
-    goalList=json.loads(goalList)
-    goalList=[goal['name'] for goal in goalList]
+    goalList=[goal['name'] for goal in json.loads(goalList)]
+    goalHintRequirements=read_json("data/Bingo/bingo_goals.json")
     
-    with open("data/Bingo/bingo_goals.json", "r") as f:
-        goalHintRequirements=json.load(f)
-        
     hintsToAdd={}
     for goal in goalList:
+        #Using 'get' here ensures some level of forward compatibility, where new goals added to randomiser bingo won't cause the generator to crash (though those hints won't have item hints for them)
         requirements=goalHintRequirements.get(goal,{})
         if len(requirements)!=0:
             for item in requirements:
                 hintsToAdd[item]=max(hintsToAdd.get(item,0), requirements[item]['count'])
-    
+
+    #Items to be hinted need to be included in the item_hints list once for each instance you want hinted (e.g. if you want all three strength upgrades to be hintes it needs to be in the list three times)
     hints=[]
     for key, value in hintsToAdd.items():
         for _ in range(value):
@@ -593,8 +592,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
     random.shuffle(stoneIDs)
 
-    #Create board-specific, required-item hints
-    logger = logging.getLogger('')
+    #Create bingo board-specific, required-item hints. All other hints are filled with junk
     if world.bingosyncURL is not None:
         world.item_hints=buildBingoHintList(world.bingosyncURL)
         
