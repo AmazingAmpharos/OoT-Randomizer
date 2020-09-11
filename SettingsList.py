@@ -2760,9 +2760,10 @@ setting_infos = [
         gui_text       ="Bingosync URL",
         shared         = True,
         gui_tooltip    = '''\
-            Enter a URL to a Bingosync bingo board in order to have hints specific to items needed to beat the board.
+            Enter a URL to a Bingosync bingo board in order to have hints specific to items needed to beat the board. Goals which involve finding an item are not directly hinted.
 
-            Leaving this entry blank will generate generic item hints designed to allow completion of most bingo goals.
+            Leaving this entry blank or providing an invalid URL will generate generic item hints designed to allow completion of most bingo goals.
+            Non Bingosync bingo boards are not directly supported, and will also generate generic item hints.
 
         ''',
         disabled_default=None,

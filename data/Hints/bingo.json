@@ -1,7 +1,7 @@
 {
     "name":                  "bingo",
     "gui_name":              "Bingo",
-    "description":           "Hints locations for items required for most bingo goals. Can be made board-spercific.",
+    "description":           "Hints locations for items required for most bingo goals. Can be made board-specific by entering a Bingosync URL.",
     "add_locations":         [],
     "remove_locations":      [
           { "location": "ZR Frogs Ocarina Game",        "types": ["always"] },
