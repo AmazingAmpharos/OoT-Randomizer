@@ -362,10 +362,17 @@ def get_good_item_hint(spoiler, world, checked):
 
 def get_specific_item_hint(spoiler, world, checked):
     itemname = world.item_hints.pop(0)
-    locations = [location for location in world.get_filled_locations()
-            if is_not_checked(location, checked) and \
-            location.item.name == itemname and \
-            not location.locked]
+    if itemname=="Bottle":
+        locations = [location for location in world.get_filled_locations()
+        if is_not_checked(location, checked) and \
+        location.item.name in location.item.name in ("Bottle", "Bottle with Red Potion","Bottle with Green Potion", "Bottle with Blue Potion", 
+                                                     "Bottle with Fairy", "Bottle with Fish", "Bottle with Blue Fire", "Bottle with Bugs", "Bottle with Big Poe", "Bottle with Poe") and \
+        not location.locked]      
+    else:
+        locations = [location for location in world.get_filled_locations()
+        if is_not_checked(location, checked) and \
+        location.item.name == itemname and \
+        not location.locked]
     if not locations:
         return None
 
@@ -519,6 +526,7 @@ hint_dist_keys = {
     'named-item'
 }
 
+
 def buildBingoHintList(boardURL):
     try:
         with urllib.request.urlopen(boardURL+"/board") as board:
@@ -592,9 +600,22 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
     random.shuffle(stoneIDs)
 
-    #Create bingo board-specific, required-item hints. All other hints are filled with junk
-    if world.bingosyncURL is not None:
-        world.item_hints=buildBingoHintList(world.bingosyncURL)
+    #Create list of items for which we want hints. If Bingosync URL is supplied, include items specific to that bingo. If not (or if the URL is invalid), use generic bingo hints
+    if world.hint_dist=="bingo":
+        bingoDefaults=read_json("data/Bingo/generic_bingo_hints.json")
+        if world.bingosyncURL is not None and "https://bingosync.com" in world.bingosyncURL: #Verify that user actually entered a bingosync URL 
+            world.item_hints=buildBingoHintList(world.bingosyncURL)
+            world.hint_dist_user=bingoDefaults['settings']['hint_dist_user']            
+        else:
+            world.item_hints=bingoDefaults['settings']['item_hints']
+            world.hint_dist_user=bingoDefaults['settings']['hint_dist_user']
+
+        if world.tokensanity in ("overworld","all") and "Suns Song" not in world.item_hints:
+            world.item_hints.append("Suns Song")
+
+        if world.shopsanity !="off" and "Progressive Wallet" not in world.item_hints:
+            world.item_hints.append("Progressive Wallet")
+
         
 
     # Load hint distro from distribution file or pre-defined settings

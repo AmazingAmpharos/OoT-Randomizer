@@ -2767,6 +2767,7 @@ setting_infos = [
         ''',
         disabled_default=None,
         gui_params     = {
+            "size"               : "full",
             "hide_when_disabled": True,
         },
     ),
