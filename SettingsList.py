@@ -2745,15 +2745,15 @@ setting_infos = [
         gui_tooltip    = HintDistTips(),
         shared         = True,
         disable        = {
-            'balanced'  : {'settings' : ['bingosync_URL']},
-            'strong'  : {'settings' : ['bingosync_URL']},
-            'tournament'  : {'settings' : ['bingosync_URL']},
-            'useless'  : {'settings' : ['bingosync_URL']},
-            'very_strong'  : {'settings' : ['bingosync_URL']}
+            'balanced'  : {'settings' : ['bingosyncURL']},
+            'strong'  : {'settings' : ['bingosyncURL']},
+            'tournament'  : {'settings' : ['bingosyncURL']},
+            'useless'  : {'settings' : ['bingosyncURL']},
+            'very_strong'  : {'settings' : ['bingosyncURL']}
         },
     ),
     Setting_Info(
-        name           ="bingosync_URL",
+        name           ="bingosyncURL",
         type           =str,
         choices        ={},
         gui_type       ="Textinput",
@@ -2761,6 +2761,7 @@ setting_infos = [
         shared         = True,
         gui_tooltip    = '''\
             Enter a URL to a Bingosync bingo board in order to have hints specific to items needed to beat the board. Goals which involve finding an item are not directly hinted.
+            In addition, overworld tokensanity adds Sun's Song as a hint and shopsanity adds a wallet as a hint.
 
             Leaving this entry blank or providing an invalid URL will generate generic item hints designed to allow completion of most bingo goals.
             Non Bingosync bingo boards are not directly supported, and will also generate generic item hints.

@@ -533,7 +533,7 @@ def buildBingoHintList(boardURL):
             goalList=board.read()
     except (URLError, HTTPError) as e:
             logger = logging.getLogger('')
-            logger.warning("Could not retrieve board info. Using default bingo hints instead: " + str(e))
+            logger.info("Could not retrieve board info. Using default bingo hints instead: " + str(e))
             genericBingo=read_json('data/Bingo/generic_bingo_hints.json')
             return genericBingo['settings']['item_hints']
 
@@ -603,7 +603,9 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
     #Create list of items for which we want hints. If Bingosync URL is supplied, include items specific to that bingo. If not (or if the URL is invalid), use generic bingo hints
     if world.hint_dist=="bingo":
         bingoDefaults=read_json("data/Bingo/generic_bingo_hints.json")
-        if world.bingosyncURL is not None and "https://bingosync.com" in world.bingosyncURL: #Verify that user actually entered a bingosync URL 
+        if world.bingosyncURL is not None and "https://bingosync.com" in world.bingosyncURL: #Verify that user actually entered a bingosync URL
+            logger = logging.getLogger('')
+            logger.info("Bingosync URL inputed. Building board-specific goals.")            
             world.item_hints=buildBingoHintList(world.bingosyncURL)
             world.hint_dist_user=bingoDefaults['settings']['hint_dist_user']            
         else:

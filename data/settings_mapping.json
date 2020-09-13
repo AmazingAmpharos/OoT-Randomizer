@@ -310,7 +310,7 @@
             "clearer_hints",
             "hints",
             "hint_dist",
-            "bingosync_URL",
+            "bingosyncURL",
             "text_shuffle",
             "damage_multiplier",
             "starting_tod"
