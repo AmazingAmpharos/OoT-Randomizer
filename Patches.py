@@ -78,7 +78,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     add_to_extended_object_table(rom, 0x194, dd_obj_file)
 
     # Create an option so that hearts no longer drop by removing all hearts (and flexible drops) from drop tables.
-    if world.no_collectible_hearts != 'yes':
+    if world.no_collectible_hearts != 'true':
         rom.write_bytes(0xB5D76B, [0x00, 0x00, 0xFF, 0x0F, 0x00])
         rom.write_bytes(0xB5D778, [0x00, 0xFF, 0x00, 0xFF, 0x00])
         rom.write_bytes(0xB5D788, [0x00, 0xFF, 0xFF, 0x00, 0x10, 0x10, 0xFF, 0x04, 0xFF, 0x00])
