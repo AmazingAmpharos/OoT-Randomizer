@@ -2710,6 +2710,16 @@ setting_infos = [
         shared         = True,
         default        = True,
     ),
+    Checkbutton(
+        name           = 'no_collectible_hearts',
+        gui_text       = 'No Dropped Recovery Hearts',
+        gui_tooltip    = '''\
+            No recovery hearts will drop from 
+            enemies or objects.
+        ''',
+        default        = False,
+        shared         = True,
+    ),
     Combobox(
         name           = 'hints',
         gui_text       = 'Gossip Stones',
