@@ -2108,22 +2108,37 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
     ),
-    Checkbutton(
+    Combobox(
         name           = 'shuffle_song_items',
-        gui_text       = 'Shuffle Songs with Items',
+        gui_text       = 'Shuffle Songs',
+        default        = 'song',
+        choices        = {
+            'song':    'Song Locations',
+            'dungeon': 'Dungeon Rewards',
+            'any':     'Anywhere',
+            },
         gui_tooltip    = '''\
-            Enabling this shuffles the songs into the rest of the
-            item pool.
+            This restricts where song items can appear.
 
-            This means that song locations can contain other items,
-            and any location can contain a song. Otherwise, songs
-            are only shuffled among themselves.
+            'Song Locations': Song will only appear at vanilla song
+            locations. In Multiworld, songs will only appear in their
+            own world.
+
+            'Dungeon Rewards': Songs appear at the end of dungeons.
+            For major dungeons, they will be at the boss heart
+            container location. The remaining 4 songs are placed at:
+
+            - Zelda's Lulluby Location
+            - Ice Cavern's Serenade of Water Location
+            - Bottom of the Well's Lens of Truth Location
+            - Gerudo Training Ground's Ice Arrow Location
+
+            'Anywhere': Songs can appear in any location.
         ''',
-        default        = False,
-        shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
         },
+        shared         = True,
     ),
     Checkbutton(
         name           = 'shuffle_cows',

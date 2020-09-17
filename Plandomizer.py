@@ -617,14 +617,14 @@ class WorldDistribution(object):
             if record.item in item_groups['DungeonReward']:
                 raise RuntimeError('Cannot place dungeon reward %s in world %d in location %s.' % (record.item, self.id + 1, location_name))
 
-            if record.item == '#Junk' and location.type == 'Song' and not world.shuffle_song_items:
+            if record.item == '#Junk' and location.type == 'Song' and world.shuffle_song_items == 'song':
                 record.item = '#JunkSong'
 
             ignore_pools = None
             is_invert = pattern_matcher(record.item)('!')
-            if is_invert and location.type != 'Song' and not world.shuffle_song_items:
+            if is_invert and location.type != 'Song' and world.shuffle_song_items == 'song':
                 ignore_pools = [2]
-            if is_invert and location.type == 'Song' and not world.shuffle_song_items:
+            if is_invert and location.type == 'Song' and world.shuffle_song_items == 'song':
                 ignore_pools = [i for i in range(len(item_pools)) if i != 2]
             if location.type == 'Shop':
                 ignore_pools = [i for i in range(len(item_pools)) if i != 0]

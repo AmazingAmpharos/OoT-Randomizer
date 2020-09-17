@@ -23,10 +23,32 @@ class FillError(ShuffleError):
 
 # Places all items into the world
 def distribute_items_restrictive(window, worlds, fill_locations=None):
-    song_locations = [world.get_location(location) for world in worlds for location in
-        ['Song from Composers Grave', 'Song from Impa', 'Song from Malon', 'Song from Saria',
-        'Song from Ocarina of Time', 'Song from Windmill', 'Sheik in Forest', 'Sheik at Temple',
-        'Sheik in Crater', 'Sheik in Ice Cavern', 'Sheik in Kakariko', 'Sheik at Colossus']]
+    if worlds[0].shuffle_song_items == 'song':
+        song_location_names = [
+            'Song from Composers Grave', 'Song from Impa', 'Song from Malon', 'Song from Saria',
+            'Song from Ocarina of Time', 'Song from Windmill', 'Sheik in Forest', 'Sheik at Temple',
+            'Sheik in Crater', 'Sheik in Ice Cavern', 'Sheik in Kakariko', 'Sheik at Colossus']
+    elif worlds[0].shuffle_song_items == 'dungeon':
+        song_location_names = [
+            'Deku Tree Queen Gohma Heart', 'Dodongos Cavern King Dodongo Heart',
+            'Jabu Jabus Belly Barinade Heart', 'Forest Temple Phantom Ganon Heart',
+            'Fire Temple Volvagia Heart', 'Water Temple Morpha Heart',
+            'Spirit Temple Twinrova Heart', 'Shadow Temple Bongo Bongo Heart',
+            'Sheik in Ice Cavern', 'Song from Impa',
+            'Gerudo Training Grounds MQ Ice Arrows Chest',
+            'Gerudo Training Grounds Maze Path Final Chest',
+            'Bottom of the Well Lens of Truth Chest',
+            'Bottom of the Well MQ Lens of Truth Chest']
+    else:
+        song_location_names = []
+
+    song_locations = []
+    for world in worlds:
+        for location in song_location_names:
+            try:
+                song_locations.append(world.get_location(location))
+            except KeyError:
+                pass
 
     shop_locations = [location for world in worlds for location in world.get_unfilled_locations() if location.type == 'Shop' and location.price == None]
 
@@ -46,11 +68,9 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     songitempool = [item for world in worlds for item in world.itempool if item.type == 'Song']
     itempool =     [item for world in worlds for item in world.itempool if item.type != 'Shop' and item.type != 'Song']
 
-    if worlds[0].shuffle_song_items:
+    if worlds[0].shuffle_song_items == 'any':
         itempool.extend(songitempool)
-        fill_locations.extend(song_locations)
         songitempool = []
-        song_locations = []
 
     # add unrestricted dungeon items to main item pool
     itempool.extend([item for world in worlds for item in world.get_unrestricted_dungeon_items()])
@@ -130,7 +150,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # Placing songs on their own since they have a relatively high chance
     # of failing compared to other item type. So this way we only have retry
     # the song locations only.
-    if not worlds[0].shuffle_song_items:
+    if worlds[0].shuffle_song_items != 'any':
         logger.info('Placing song items.')
         fill_ownworld_restrictive(window, worlds, search, song_locations, songitempool, progitempool, "song")
         search.collect_locations()
