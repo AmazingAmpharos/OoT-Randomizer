@@ -12,7 +12,20 @@
           { "location": "Kak 50 Gold Skulltula Reward", "types": ["always"] }
       ],
     "add_items":             [],
-    "remove_items":          [],
+    "remove_items": [
+    { "item": "Zeldas Lullaby",     "types": ["woth"] },
+    { "item": "Eponas Song",        "types": ["woth"] },
+    { "item": "Sarias Song",        "types": ["woth"] },
+    { "item": "Suns Song",          "types": ["woth"] },
+    { "item": "Song of Time",       "types": ["woth"] },
+    { "item": "Song of Storms",     "types": ["woth"] },
+    { "item": "Minuet of Forest",   "types": ["woth"] },
+    { "item": "Bolero of Fire",     "types": ["woth"] },
+    { "item": "Serenade of Water",  "types": ["woth"] },
+    { "item": "Requiem of Spirit",  "types": ["woth"] },
+    { "item": "Nocturne of Shadow", "types": ["woth"] },
+    { "item": "Prelude of Light",   "types": ["woth"] }
+    ],
     "dungeons_woth_limit":   2,
     "dungeons_barren_limit": 1,
     "named_items_required":  true,
