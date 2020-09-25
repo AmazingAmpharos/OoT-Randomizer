@@ -117,7 +117,7 @@ location_table = {
     "GF Gerudo Membership Card":                       ("NPC",         0x0C,  0x3A, None,                     ("Gerudo's Fortress", "Gerudo",)),
     "HF Ocarina of Time Item":                         ("NPC",         0x51,  0x0C, None,                     ("Hyrule Field", "Need Spiritual Stones",)),
     "Wasteland Bombchu Salesman":                      ("NPC",         0x5E,  0x03, None,                     ("Haunted Wasteland",)),
-    "Medigoron":                                       ("NPC",         0x62,  0x28, None,                     ("Goron City",)),
+    "GC Medigoron":                                    ("NPC",         0x62,  0x28, None,                     ("Goron City",)),
 
     "Kak Impas House Freestanding PoH":                ("Collectable", 0x37,  0x01, None,                     ("Kakariko Village", "Kakariko",)),
     "HF Tektite Grotto Freestanding PoH":              ("Collectable", 0x3E,  0x01, None,                     ("Hyrule Field", "Grottos",)),

@@ -858,7 +858,7 @@ def get_pool_core(world):
     if world.shuffle_medigoron_carpet_salesman:
         pool.append('Giants Knife')
     else:
-        placed_items['Medigoron'] = 'Giants Knife'
+        placed_items['GC Medigoron'] = 'Giants Knife'
 
     if world.dungeon_mq['Deku Tree']:
         skulltula_locations_final = skulltula_locations + [
