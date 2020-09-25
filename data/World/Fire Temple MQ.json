@@ -78,7 +78,7 @@
             "Fire Temple MQ Compass Chest": "has_explosives",
             "Fire Temple MQ GS Skull On Fire": "
                 can_play(Song_of_Time) or can_use(Longshot)",
-            "Wall Switch Fairy": "
+            "Wall Fairy": "
                 has_bottle and (can_play(Song_of_Time) or can_use(Longshot))"
         },
         "exits": {
