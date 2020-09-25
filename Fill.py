@@ -24,8 +24,8 @@ class FillError(ShuffleError):
 # Places all items into the world
 def distribute_items_restrictive(window, worlds, fill_locations=None):
     song_locations = [world.get_location(location) for world in worlds for location in
-        ['Song from Composer Grave', 'Impa at Castle', 'Song from Malon', 'Song from Saria',
-        'Song from Ocarina of Time', 'Song at Windmill', 'Sheik Forest Song', 'Sheik at Temple',
+        ['Song from Composers Grave', 'Song from Impa', 'Song from Malon', 'Song from Saria',
+        'Song from Ocarina of Time', 'Song from Windmill', 'Sheik in Forest', 'Sheik at Temple',
         'Sheik in Crater', 'Sheik in Ice Cavern', 'Sheik in Kakariko', 'Sheik at Colossus']]
 
     shop_locations = [location for world in worlds for location in world.get_unfilled_locations() if location.type == 'Shop' and location.price == None]
@@ -71,7 +71,7 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     # Extend with ice traps manually placed in plandomizer
     ice_traps.extend(
         location.item for location in cloakable_locations
-        if (location.name in location_groups['CanSee']
+        if (location.has_preview()
             and location.item is not None
             and location.item.name == 'Ice Trap'
             and location.item.looks_like_item is None))

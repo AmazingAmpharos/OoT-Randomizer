@@ -47,9 +47,9 @@
 ;==================================================================================================
 
 ; Patch NPCs to give override-compatible items
-.orga 0xDB13D3 :: .byte 0x76 ; Frog Ocarina Game
+.orga 0xDB13D3 :: .byte 0x76 ; Frogs Ocarina Game
 .orga 0xDF2647 :: .byte 0x76 ; Ocarina memory game
-.orga 0xE2F093 :: .byte 0x34 ; Bombchu Bowling Bomb Bag
+.orga 0xE2F093 :: .byte 0x34 ; Market Bombchu Bowling Bomb Bag
 .orga 0xEC9CE7 :: .byte 0x7A ; Deku Theater Mask of Truth
 
 ; Runs when storing an incoming item to the player instance
@@ -786,7 +786,7 @@ skip_GS_BGS_text:
 .orga 0xD35EFC
     nop
 
-; Fix Link the Goron to always work
+; Fix GC Rolling Goron as Adult to always work
 .orga 0xED2FAC
     lb      t6, 0x0F18(v1)
 
@@ -1569,6 +1569,120 @@ skip_GS_BGS_text:
     jr      ra
     nop
 .endarea
+
+; ==================================================================================================
+; Chain Horseback Archery Rewards
+; ==================================================================================================
+; Replaces: jal     0x80022AD0
+;           sw      a0, 0x0018(sp)
+.orga 0xE12A04
+    jal     handle_hba_rewards_chain
+    sw      a0, 0x0018(sp)
+
+; Replaces: sw      t6, 0x02A4(a0)
+.orga 0xE12A20
+    sw      v1, 0x02A4(a0)
+
+;==================================================================================================
+; Remove File 3 From File Select
+;==================================================================================================
+;Main Menu Up
+; Replaces: sh      t6, 0xCA2A(at)
+;           lh      t7, 0x4A2A(v1)
+.orga 0xBAA168
+    jal     skip_3_up_main
+    sh      t6, 0xCA2A(at)
+
+;Main Menu Down
+; Replaces: sh      t5, 0xCA2A(at)
+;           lh      t6, 0x4A2A(v1)
+.orga 0xBAA198
+    jal     skip_3_down_main
+    sh      t5, 0xCA2A(at)
+
+;Copy From Up
+; Replaces: sh      t7, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA16AC
+    jal     skip_3_up_copy_from
+    sh      t7, 0xCA2A(at)
+
+;Copy From Down
+; Replaces: sh      t9, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA16E0
+    jal     skip_3_down_copy_from
+    sh      t9, 0xCA2A(at)
+
+;Copy To Up
+; Replaces: sh      t5, 0xCA2A(at)
+;           lh      t6, 0x4A38(t0)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA1C68
+    jal     skip_3_up_copy_to
+    sh      t5, 0xCA2A(at)
+    lh      t6, 0x4A38(t0)
+
+;Copy To Down
+; Replaces: sh      t9, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA1CD0
+    jal     skip_3_down_copy_to
+    sh      t9, 0xCA2A(at)
+
+;Special Case For Copy File 2 Down
+; Replaces: sh      t3, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA1D04
+    jal     skip_3_down_copy_to_2
+    nop
+
+;Erase Up
+; Replaces: sh      t9, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA32CC
+    jal     skip_3_up_erase
+    sh      t9, 0xCA2A(at)
+
+;Erase Down
+; Replaces: sh      t3, 0xCA2A(at)
+;           lh      v1, 0x4A2A(t0)
+.orga 0xBA3300
+    jal     skip_3_down_erase
+    sh      t3, 0xCA2A(at)
+
+;File 3 Position
+; Replaces: or      a0, s0, r0
+;           lh      t3, 0x4A2E(a2)
+.orga 0xBAF4F4
+    jal     move_file_3
+    or      a0, s0, r0
+
+;==================================================================================================
+; Jabu Spiritual Stone Actor Override
+;==================================================================================================
+; Replaces: addiu   t8, zero, 0x0006
+;           sh      t8, 0x017C(a0)
+.orga 0xCC8594
+    jal     demo_effect_medal_init
+    addiu   t8, zero, 0x0006
+
+;==================================================================================================
+; Fix Equip Swap Crashes
+;==================================================================================================
+; Deku Stick
+; Replaces: lui     t2, 0x0600
+;           addiu   t2, t2, 0x6CC0
+.orga 0xAF180C
+    jal     equip_swap_stick
+    nop
+
+; Masks
+; Replaces: sw      t6, 0x0004(v0)
+;           lb      t7, 0x013F(s0)
+.orga 0xBE5D8C
+    jal     equip_swap_mask
+    nop
 
 ;==================================================================================================
 ; Carpet Salesman Shop Shuffle

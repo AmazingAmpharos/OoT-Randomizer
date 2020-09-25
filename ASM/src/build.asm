@@ -2,9 +2,9 @@
 .relativeinclude on
 
 // version guard, prevent people from building with older armips versions
-.if (version() < 101)
+.if (version() < 110)
 .notice version()
-.error   "Detected armips build is too old. Please install https://github.com/Kingcom/armips from HEAD, then locally remove this notice, or increase the ARMIPS_VERSION_REVISION in armips and rebuild to bypass this notice."
+.error   "Detected armips build is too old. Please install https://github.com/Kingcom/armips version 0.11 or later."
 .endif
 
 .create "../roms/patched.z64", 0
@@ -83,7 +83,10 @@ RANDO_CONTEXT:
 .include "deku_mouth_condition.asm"
 .include "audio.asm"
 .include "king_zora.asm"
+.include "file_select.asm"
 .include "agony.asm"
+.include "horseback_archery.asm"
+.include "equip_swap_fix.asm"
 .include "carpet_salesman.asm"
 .include "medigoron.asm"
 

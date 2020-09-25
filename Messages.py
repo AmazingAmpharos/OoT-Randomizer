@@ -862,9 +862,13 @@ def shuffle_messages(messages, except_hints=True, always_allow_skip=True):
             GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT +
             list(KEYSANITY_MESSAGES.keys()) + shuffle_messages.shop_item_messages
         )
+        shuffle_exempt = [
+            0x208D,         # "One more lap!" for Cow in House race.
+        ]
         is_hint = (except_hints and m.id in hint_ids)
         is_error_message = (m.id == ERROR_MESSAGE)
-        return (is_hint or is_error_message or m.is_id_message())
+        is_shuffle_exempt = (m.id in shuffle_exempt)
+        return (is_hint or is_error_message or m.is_id_message() or is_shuffle_exempt)
 
     have_goto         = list( filter(lambda m: not is_exempt(m) and m.has_goto,         messages) )
     have_keep_open    = list( filter(lambda m: not is_exempt(m) and m.has_keep_open,    messages) )

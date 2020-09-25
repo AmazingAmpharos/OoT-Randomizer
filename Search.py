@@ -101,6 +101,12 @@ class Search(object):
             if exit.connected_region and exit.connected_region not in regions:
                 # Evaluate the access rule directly, without tod
                 if exit.access_rule(self.state_list[exit.world.id], spot=exit, age=age):
+                    # If it found a new tod, make sure we try other entrances again.
+                    # Probably would take too long and not be worth it if we only grabbed the exits
+                    # for the given world...
+                    if exit.connected_region.provides_time and not regions[exit.world.get_region('Root')] & exit.connected_region.provides_time:
+                        exit_queue.extend(failed)
+                        failed = []
                     regions[exit.connected_region] = exit.connected_region.provides_time
                     regions[exit.world.get_region('Root')] |= exit.connected_region.provides_time
                     exit_queue.extend(exit.connected_region.exits)

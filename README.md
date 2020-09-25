@@ -88,21 +88,65 @@ player.
 ### Dev
 
 #### New Features
+* New setting `Skip Some Minigame Phases`
+  * Allows getting both rewards for Horseback Archery and Dampé Race in a single go!
+  * Replaces the `Skip First Dampé Race` setting.
+* `Lens of Truth` setting has been removed and replaced with several independent tricks.
+  * `Lensless Wasteland`: assumes you can navigate the Wasteland to the Colossus without the Lens of Truth.
+  * `<Area> without Lens of Truth`: assumes you can complete the given area without the Lens of Truth. Note that MQ and Vanilla dungeons have separate tricks.
+  * Shadow Temples are split into two separate areas for these tricks.
+  * Glitchless logic now requires Lens (or an appropriate trick) for some checks, particularly in Shadow Temple.
+  * Glitched logic may sometimes assume you can do something without lens regardless of trick settings.
+* New setting `Kakariko Gate`
+  * Allows configuring how the Kakariko Gate and the Happy Mask Shop will open.
+  * Default (vanilla) behavior requires showing Zelda's Letter to the guard to open the gate and the shop.
+  * You can configure the gate to be always open or to open automatically upon obtaining the Letter. Both of these options will also open the Happy Mask Shop upon obtaining the Letter.
+* New setting `Complete Mask Quest`
+  * Marks all the mask sales complete so that the shop has all masks available to borrow as soon as it opens.
 * New cosmetic setting `HUD Button Colors`
-  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme.
+  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme, of OoT or MM.
   * Or you can completely randomize all the button colors.
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
+* New "Hint Distribution" customization options
+  * Old hardcoded hint distributions are now defined by json files in `data/Hints`.
+  * Custom hint distributions can be added to this folder, or defined directly in Plando files.
+  * Many locations that did not previously have item hints now have hints, in case a custom hint distribution makes use of them.
+* Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
+* Tricks can be filtered in the GUI using a new dropdown.
 
 #### Bug Fixes
+* Bunny Hood speed bonus now applies correctly in cases other than child running at full speed.
+* Avoid crashing on some systems when using child items as adult.
+* Ensure Ice Traps have valid models if they can be seen.
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
 * Prevent an errant `@` from showing up in Triforce Hunt.
+* Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
+* Fix some issues with `Randomize Main Rules`:
+  * Closed Forest implies starting as child.
+  * Triforce Hunt won't accidentally place the Boss Key for Ganon's Castle.
+* Fix a rare issue in ER with using time-passing regions to gain new access.
+* Fix a rare issue where settings strings weren't allocated enough bits.
+* Fix some locations and regions sharing names.
+* The seed generator can now retry a few times in case of failure.
+* Exclude a line from text shuffle so the Malon race is completable.
+* Minor plandomizer fixes and improvements.
+* Various logic fixes.
 
 #### Other Changes
+* Most locations and a few items have been renamed to improve spoiler output and standardize.
+  * This will break settings and distribution files from previous versions that reference these locations and items.
+* In-game hints overhaul.
+* File 3 has been removed from generated ROMs to free up some space.
+* The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
+* The number of Triforces available in Triforce Hunt now rounds to the nearest whole number instead of the nearest whole **even** number.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
+* Changed some C code to support GCC 10 in development n64 compilation.
 * Added decompressor source and updated Decompress binaries.
+* OoTRandomizer.py returns an error code on failure to interact better with user scripting.
+* Plandomizer distribution files are copied to the Output directory next to the Spoiler and Cosmetics logs.
 * Mweep.
 
 ### 5.2
@@ -290,7 +334,7 @@ player.
     * This allows playing with open bridge while still requiring dungeon completion
   * This replaces the Remove Ganon’s Boss Door Lock option
 * Plentiful Item Pool
-  * Duplicate Letter in a Bottle added to plentiful item pool
+  * Duplicate Ruto's Letter added to plentiful item pool
 * With `Start With Max Rupees` option enabled, wallet upgrades items now fill to max rupees
 
 #### Bug Fixes
@@ -372,7 +416,7 @@ player.
 * Start with Tycoon wallet
 * Open Zora's Fountain
   * King Zora is moved to the side from the start of the game.
-  * Letter in a Bottle is removed from the item pool and replaced with an Empty Bottle.
+  * Ruto's Letter is removed from the item pool and replaced with an Empty Bottle.
 * Randomize starting time of day
 * Ice traps setting
     * Off: All ice traps are removed

@@ -21,6 +21,7 @@ def _entry(settingname, itemname=None, available=1, guitext=None, special=False,
             result.append((name, _Entry(name, itemname, available, guitext, special, ammo)))
         return result
 
+# Ammo items must be declared in ItemList.py.
 inventory = dict(chain(
     _entry('deku_stick', 'Deku Stick Capacity', available=2, ammo={'Deku Sticks': (20, 30)}),
     _entry('deku_nut', 'Deku Nut Capacity', available=2, ammo={'Deku Nuts': (30, 40)}),
@@ -37,11 +38,11 @@ inventory = dict(chain(
     _entry('boomerang'),
     _entry('lens', 'Lens of Truth'),
     _entry('beans', 'Magic Bean', ammo={'Magic Bean': (9,)}), # start with additional beans
-    _entry('hammer'),
+    _entry('megaton_hammer', 'Megaton Hammer', guitext = 'Megaton Hammer'),
     _entry('light_arrow', 'Light Arrows'),
     _entry('nayrus_love', 'Nayrus Love', guitext="Nayru's Love"),
     _entry('bottle', available=3, special=True),
-    _entry('letter', 'Bottle with Letter', special=True),
+    _entry('letter', 'Rutos Letter', guitext="Ruto's Letter", special=True),
 ))
 
 songs = dict(chain(

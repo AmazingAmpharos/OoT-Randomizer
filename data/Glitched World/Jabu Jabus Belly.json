@@ -10,11 +10,11 @@
         "region_name": "Jabu Jabus Belly Main",
         "dungeon": "Jabu Jabus Belly",
         "locations": {
-            "Boomerang Chest": "True",
-            "GS Jabu Jabu Water Switch Room": "True",
-            "GS Jabu Jabu Lobby Basement Lower": "can_use(Boomerang) or can_use(Hookshot) or can_hover",
-            "GS Jabu Jabu Lobby Basement Upper": "can_use(Boomerang) or can_use(Hookshot) or can_hover",
-            "Jabu Deku Scrub Deku Nuts": "True"
+            "Jabu Jabus Belly Boomerang Chest": "True",
+            "Jabu Jabus Belly GS Water Switch Room": "True",
+            "Jabu Jabus Belly GS Lobby Basement Lower": "can_use(Boomerang) or can_use(Hookshot) or can_hover",
+            "Jabu Jabus Belly GS Lobby Basement Upper": "can_use(Boomerang) or can_use(Hookshot) or can_hover",
+            "Jabu Jabus Belly Deku Scrub": "True"
         },
         "exits": {
             "Jabu Jabus Belly Beginning": "True",
@@ -38,9 +38,9 @@
         "region_name": "Jabu Jabus Belly Boss Area",
         "dungeon": "Jabu Jabus Belly",
         "locations": {
-            "Barinade Heart": "can_use(Boomerang) and (Sticks or Kokiri_Sword)",
+            "Jabu Jabus Belly Barinade Heart": "can_use(Boomerang) and (Sticks or Kokiri_Sword)",
             "Barinade": "can_use(Boomerang) and (Sticks or Kokiri_Sword)",
-            "GS Jabu Jabu Near Boss": "True"
+            "Jabu Jabus Belly GS Near Boss": "True"
         },
         "exits": {
             "Jabu Jabus Belly Main": "True"
