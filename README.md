@@ -106,6 +106,24 @@ player.
 * New cosmetic setting `HUD Button Colors`
   * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme, of OoT or MM.
   * Or you can completely randomize all the button colors.
+* New tricks
+  * `Dodongo's Cavern Vines GS from Below with Longshot` - use the Longshot to avoid the staircase.
+  * `Forest Temple First Room GS with Difficult-to-Use Weapons` - use a sword or Deku Sticks to jumpslash, or Bombs as child.
+  * `Spirit Temple Main Room Jump from Hands to Upper Ledges` - make a precise jump without Hookshot or Hover Boots.
+  * `Water Temple Falling Platform Room GS with Boomerang` - use the Boomerang from the very edge of the platform.
+  * `Death Mountain Trail Climb with Hover Boots` - get past the boulders without destroying them.
+  * `Zora's Domain GS with No Additional Items` - use only a jumpslash.
+  * `Ice Cavern Block Room GS with Hover Boots` - reach the GS with the Hover Boots to jumpslash it.
+  * `Hyrule Castle Storms Grotto GS with Just Boomerang` - make a precise throw with the Boomerang to send it behind the wall.
+  * `Water Temple Central Pillar GS with Iron Boots` - unlock the door on the middle level before raising the water.
+  * `Water Temple Dragon Statue Switch from Above the Water as Adult` - trigger the switch from dry land, then use Iron Boots, any Scale, or a jump dive coming from the river.
+  * `Water Temple Dragon Statue Switch from Above the Water as Child` - same but for child. The Scale dive is very precise.
+  * `Goron City Grotto with Hookshot While Taking Damage` - brave the heat, but be quick.
+  * `Dodongo's Cavern Two Scrub Room with Strength` - position a block correctly and adult can bring a bomb flower to the wall.
+  * `Shadow Temple Falling Spikes GS with Hover Boots` - make a precise move to get on the falling spikes, then another precise move to grab the token.
+* Removed tricks
+  * `Water Temple Boss Key Chest with Iron Boots`
+  * `Water Temple Dragon Statue with Bombchu` - superseded by the new Dragon Statue tricks.
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
@@ -128,7 +146,6 @@ player.
   * Triforce Hunt won't accidentally place the Boss Key for Ganon's Castle.
 * Fix a rare issue in ER with using time-passing regions to gain new access.
 * Fix a rare issue where settings strings weren't allocated enough bits.
-* Fix some locations and regions sharing names.
 * The seed generator can now retry a few times in case of failure.
 * Exclude a line from text shuffle so the Malon race is completable.
 * Minor plandomizer fixes and improvements.
