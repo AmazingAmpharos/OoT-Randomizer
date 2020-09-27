@@ -88,7 +88,7 @@ issue. You should always Hard Reset to avoid this issue entirely.
 * Versions older than 2.4 of Project64 have known compatablity issues with OoTR. To avoid this either 
 [update to v2.4 and follow the rest of our PJ64 guide](https://wiki.ootrandomizer.com/index.php?title=Project64) or change to one of our other two supported emulators.
 * Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.
-In particular, there is a risk of softlocking when giving the Poacher's Saw to the carpenter and mashing through the text.
+In particular, there is a risk of softlocking when giving the Poacher's Saw to the carpenter and mashing through the text with B.
 * Saving and quitting on the very first frame after becoming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
 do that.
 * This randomizer is based on the 1.0 version of _Ocarina of Time_, so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantageous to the
