@@ -131,6 +131,7 @@ player.
   * Old hardcoded hint distributions are now defined by json files in `data/Hints`.
   * Custom hint distributions can be added to this folder, or defined directly in Plando files.
   * Many locations that did not previously have item hints now have hints, in case a custom hint distribution makes use of them.
+  * Using the hint distribution "Bingo" allows setting a "Bingosync URL" to build hints for the specific OoTR Bingo board. Otherwise it's a generic hint distribution for OoTR Bingo.
 * Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
 * Tricks can be filtered in the GUI using a new dropdown.
 

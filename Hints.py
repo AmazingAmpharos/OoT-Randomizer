@@ -17,6 +17,12 @@ from TextBox import line_wrap
 from Utils import random_choices, data_path, read_json
 
 
+bingoBottlesForHints = (
+    "Bottle", "Bottle with Red Potion","Bottle with Green Potion", "Bottle with Blue Potion",
+    "Bottle with Fairy", "Bottle with Fish", "Bottle with Blue Fire", "Bottle with Bugs",
+    "Bottle with Big Poe", "Bottle with Poe",
+)
+
 
 class GossipStone():
     def __init__(self, name, location):
@@ -167,7 +173,7 @@ def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reach
                 else:
                     # If flagged to guarantee reachable, then skip
                     # If no stones are reachable, then this will place nothing
-                    skipped_ids.append(id)                
+                    skipped_ids.append(id)
         else:
             # Out of IDs
             if not force_reachable and len(duplicates) >= total:
@@ -261,7 +267,7 @@ def colorText(gossip_text):
                 splitText[0] += splitText[1][:len(prefix)]
                 splitText[1] = splitText[1][len(prefix):]
                 break
-        
+
         splitText[1] = '\x05' + colorMap[color] + splitText[1] + '\x05\x40'
         text = ''.join(splitText)
 
@@ -273,7 +279,7 @@ def get_hint_area(spot):
         return spot.parent_region.dungeon.hint
     elif spot.parent_region.hint:
         return spot.parent_region.hint
-    #Breadth first search for connected regions with a max depth of 2
+    # Breadth first search for connected regions with a max depth of 2
     for entrance in spot.parent_region.entrances:
         if entrance.parent_region.hint:
             return entrance.parent_region.hint
@@ -286,12 +292,12 @@ def get_hint_area(spot):
 
 def get_woth_hint(spoiler, world, checked):
     locations = spoiler.required_locations[world.id]
-    locations = list(filter(lambda location: 
+    locations = list(filter(lambda location:
         location.name not in checked and \
         not (world.woth_dungeon >= world.hint_dist_user['dungeons_woth_limit'] and \
         location.parent_region.dungeon) and \
         (location.name not in world.hint_type_overrides['woth']) and \
-        (location.item.name not in world.item_hint_type_overrides['woth']), 
+        (location.item.name not in world.item_hint_type_overrides['woth']),
         locations))
 
     if not locations:
@@ -313,7 +319,7 @@ def get_woth_hint(spoiler, world, checked):
 
 
 def get_barren_hint(spoiler, world, checked):
-    areas = list(filter(lambda area: 
+    areas = list(filter(lambda area:
         area not in checked and \
         not (world.barren_dungeon >= world.hint_dist_user['dungeons_barren_limit'] and \
         world.empty_areas[area]['dungeon']),
@@ -364,18 +370,19 @@ def get_good_item_hint(spoiler, world, checked):
 def get_specific_item_hint(spoiler, world, checked):
     itemname = world.item_hints.pop(0)
     if itemname == "Bottle" and world.hint_dist == "bingo":
-            bottleList = ("Bottle", "Bottle with Red Potion","Bottle with Green Potion", "Bottle with Blue Potion", 
-                        "Bottle with Fairy", "Bottle with Fish", "Bottle with Blue Fire", "Bottle with Bugs", "Bottle with Big Poe", "Bottle with Poe")
-                
-            locations = [location for location in world.get_filled_locations()
-                         if is_not_checked(location, checked) and \
-                         location.item.name in bottleList and \
-                         not location.locked]           
+        locations = [
+            location for location in world.get_filled_locations()
+            if (is_not_checked(location, checked)
+                and location.item.name in bingoBottlesForHints
+                and not location.locked)
+        ]
     else:
-        locations = [location for location in world.get_filled_locations()
-                     if is_not_checked(location, checked) and \
-                     location.item.name == itemname and \
-                     not location.locked]
+        locations = [
+            location for location in world.get_filled_locations()
+            if (is_not_checked(location, checked)
+                and location.item.name == itemname
+                and not location.locked)
+        ]
     if not locations:
         return None
 
@@ -431,7 +438,7 @@ def get_specific_hint(spoiler, world, checked, type):
     else:
         location_text = hint.text
     if '#' not in location_text:
-        location_text = '#%s#' % location_text   
+        location_text = '#%s#' % location_text
     item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
 
     return (GossipText('%s #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
@@ -503,7 +510,7 @@ hint_func = {
     'woth':       get_woth_hint,
     'barren':     get_barren_hint,
     'item':       get_good_item_hint,
-    'sometimes':  get_sometimes_hint,    
+    'sometimes':  get_sometimes_hint,
     'song':       get_song_hint,
     'overworld':  get_overworld_hint,
     'dungeon':    get_dungeon_hint,
@@ -532,30 +539,30 @@ hint_dist_keys = {
 
 def buildBingoHintList(boardURL):
     try:
-        with urllib.request.urlopen(boardURL+"/board") as board:
+        with urllib.request.urlopen(boardURL + "/board") as board:
             goalList = board.read()
     except (URLError, HTTPError) as e:
-            logger = logging.getLogger('')
-            logger.info("Could not retrieve board info. Using default bingo hints instead: " + str(e))
-            genericBingo = read_json(data_path('Bingo/generic_bingo_hints.json'))
-            return genericBingo['settings']['item_hints']
+        logger = logging.getLogger('')
+        logger.info(f"Could not retrieve board info. Using default bingo hints instead: {e}")
+        genericBingo = read_json(data_path('Bingo/generic_bingo_hints.json'))
+        return genericBingo['settings']['item_hints']
 
-    #Goal list returned from Bingosync is a sequential list of all of the goals on the bingo board, starting at top-left and moving to the right.
-    #Each goal is a dictionary with attributes for name, slot, and colours. The only one we use is the name
+    # Goal list returned from Bingosync is a sequential list of all of the goals on the bingo board, starting at top-left and moving to the right.
+    # Each goal is a dictionary with attributes for name, slot, and colours. The only one we use is the name
     goalList = [goal['name'] for goal in json.loads(goalList)]
     goalHintRequirements = read_json(data_path('Bingo/bingo_goals.json'))
-    
+
     hintsToAdd = {}
     for goal in goalList:
-        #Using 'get' here ensures some level of forward compatibility, where new goals added to randomiser bingo won't
-        #cause the generator to crash (though those hints won't have item hints for them)
+        # Using 'get' here ensures some level of forward compatibility, where new goals added to randomiser bingo won't
+        # cause the generator to crash (though those hints won't have item hints for them)
         requirements = goalHintRequirements.get(goal,{})
         if len(requirements) != 0:
             for item in requirements:
-                hintsToAdd[item] = max(hintsToAdd.get(item,0), requirements[item]['count'])
+                hintsToAdd[item] = max(hintsToAdd.get(item, 0), requirements[item]['count'])
 
-    #Items to be hinted need to be included in the item_hints list once for each instance you want hinted
-    #(e.g. if you want all three strength upgrades to be hintes it needs to be in the list three times)
+    # Items to be hinted need to be included in the item_hints list once for each instance you want hinted
+    # (e.g. if you want all three strength upgrades to be hintes it needs to be in the list three times)
     hints = []
     for key, value in hintsToAdd.items():
         for _ in range(value):
@@ -584,7 +591,7 @@ def buildGossipHints(spoiler, worlds):
         buildWorldGossipHints(spoiler, world, checkedLocations.pop(world.id, None))
 
 
-#builds out general hints based on location and whether an item is required or not
+# builds out general hints based on location and whether an item is required or not
 def buildWorldGossipHints(spoiler, world, checkedLocations=None):
     # rebuild hint exclusion list
     hintExclusions(world, clear_cache=True)
@@ -607,26 +614,25 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
     random.shuffle(stoneIDs)
 
-    #Create list of items for which we want hints. If Bingosync URL is supplied, include items specific to that bingo.
-    #If not (or if the URL is invalid), use generic bingo hints
+    # Create list of items for which we want hints. If Bingosync URL is supplied, include items specific to that bingo.
+    # If not (or if the URL is invalid), use generic bingo hints
     if world.hint_dist == "bingo":
         bingoDefaults = read_json(data_path('Bingo/generic_bingo_hints.json'))
-        if world.bingosync_URL is not None and "https://bingosync.com" in world.bingosync_URL: #Verify that user actually entered a bingosync URL
+        if world.bingosync_url is not None and "https://bingosync.com" in world.bingosync_url: # Verify that user actually entered a bingosync URL
             logger = logging.getLogger('')
-            logger.info("Bingosync URL inputed. Building board-specific goals.")            
-            world.item_hints = buildBingoHintList(world.bingosync_URL)
-            world.hint_dist_user = bingoDefaults['settings']['hint_dist_user']            
+            logger.info("Got Bingosync URL. Building board-specific goals.")
+            world.item_hints = buildBingoHintList(world.bingosync_url)
+            world.hint_dist_user = bingoDefaults['settings']['hint_dist_user']
         else:
-            world.item_hints=bingoDefaults['settings']['item_hints']
+            world.item_hints = bingoDefaults['settings']['item_hints']
             world.hint_dist_user=bingoDefaults['settings']['hint_dist_user']
 
-        if world.tokensanity in ("overworld","all") and "Suns Song" not in world.item_hints:
+        if world.tokensanity in ("overworld", "all") and "Suns Song" not in world.item_hints:
             world.item_hints.append("Suns Song")
 
-        if world.shopsanity !="off" and "Progressive Wallet" not in world.item_hints:
+        if world.shopsanity != "off" and "Progressive Wallet" not in world.item_hints:
             world.item_hints.append("Progressive Wallet")
 
-        
 
     # Load hint distro from distribution file or pre-defined settings
     #
@@ -652,7 +658,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
         hint_dist[hint_type] = (world.hint_dist_user['distribution'][hint_type]['weight'], world.hint_dist_user['distribution'][hint_type]['copies'])
         hint_dist.move_to_end(hint_type)
         fixed_hint_types.extend([hint_type] * int(world.hint_dist_user['distribution'][hint_type]['fixed']))
-    
+
     hint_types, hint_prob = zip(*hint_dist.items())
     hint_prob, _ = zip(*hint_prob)
 
@@ -766,8 +772,8 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 def buildBossRewardHints(world, messages):
     # text that appears at altar as a child.
     bossRewardsSpiritualStones = [
-        ('Kokiri Emerald',   'Green'), 
-        ('Goron Ruby',       'Red'), 
+        ('Kokiri Emerald',   'Green'),
+        ('Goron Ruby',       'Red'),
         ('Zora Sapphire',    'Blue'),
     ]
     child_text = '\x08'
@@ -848,11 +854,11 @@ def get_raw_text(string):
         if char == '^':
             text += '\x04' # box break
         elif char == '&':
-            text += '\x01' #new line
+            text += '\x01' # new line
         elif char == '@':
-            text += '\x0F' #print player name
+            text += '\x0F' # print player name
         elif char == '#':
-            text += '\x05\x40' #sets color to white
+            text += '\x05\x40' # sets color to white
         else:
             text += char
     return text
@@ -866,7 +872,7 @@ def HintDistList():
         gui_name = dist['gui_name']
         dists.update({ dist_name: gui_name })
     return dists
-    
+
 def HintDistTips():
     dists_json = os.listdir(data_path('Hints/'))
     tips = ""

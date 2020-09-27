@@ -1,5 +1,5 @@
 {
-  "settings":            {
+  "settings": {
     "bingosyncURL": "",
     "item_hints": [],
     "hint_dist_user": {
@@ -8,11 +8,11 @@
       "description":           "for debugging",
       "add_locations":         [],
       "remove_locations":      [
-          { "location": "ZR Frogs Ocarina Game",        "types": ["always"] },
-          { "location": "Song from Ocarina of Time",        "types": ["always"] },
-          { "location": "DMT Biggoron",        "types": ["always"] },
-          { "location": "Kak 30 Gold Skulltula Reward",        "types": ["always"] },
-          { "location": "Kak 40 Gold Skulltula Reward",        "types": ["always"] },
+          { "location": "ZR Frogs Ocarina Game", "types": ["always"] },
+          { "location": "Song from Ocarina of Time", "types": ["always"] },
+          { "location": "DMT Biggoron", "types": ["always"] },
+          { "location": "Kak 30 Gold Skulltula Reward", "types": ["always"] },
+          { "location": "Kak 40 Gold Skulltula Reward", "types": ["always"] },
           { "location": "Kak 50 Gold Skulltula Reward", "types": ["always"] }
       ],
       "add_items":             [],
@@ -37,11 +37,7 @@
       }
     }
   },
-  "randomized_settings": {},
-  "starting_items":      {},
-  "item_pool":           {
-        "Bottle": 3
-    },
-  "entrances":           {},
-  "locations":           {}
+  "item_pool": {
+      "Bottle": 3
+  }
 }

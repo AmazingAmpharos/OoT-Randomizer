@@ -2863,22 +2863,22 @@ setting_infos = [
         default        = 'balanced',
         choices        = HintDistList(),
         gui_tooltip    = HintDistTips(),
-        shared         = False,
+        shared         = True,
         disable        = {
-            'balanced'     : {'settings' : ['bingosync_URL']},
-            'strong'       : {'settings' : ['bingosync_URL']},
-            'tournament'   : {'settings' : ['bingosync_URL']},
-            'useless'      : {'settings' : ['bingosync_URL']},
-            'very_strong'  : {'settings' : ['bingosync_URL']}
+            'balanced'     : {'settings' : ['bingosync_url']},
+            'strong'       : {'settings' : ['bingosync_url']},
+            'tournament'   : {'settings' : ['bingosync_url']},
+            'useless'      : {'settings' : ['bingosync_url']},
+            'very_strong'  : {'settings' : ['bingosync_url']}
         },
     ),
     Setting_Info(
-        name           ="bingosync_URL",
-        type           =str,
-        choices        ={},
-        gui_type       ="Textinput",
-        gui_text       ="Bingosync URL",
-        shared         = True,
+        name           = "bingosync_url",
+        type           = str,
+        choices        = {},
+        gui_type       = "Textinput",
+        gui_text       = "Bingosync URL",
+        shared         = False,
         gui_tooltip    = '''\
             Enter a URL to a Bingosync bingo board in
             order to have hints specific to items needed
@@ -2894,12 +2894,11 @@ setting_infos = [
             designed to allow completion of most bingo goals.
             Non Bingosync bingo boards are not directly
             supported, and will also generate generic item hints.
-
         ''',
-        disabled_default=None,
-        gui_params     = {
+        disabled_default = None,
+        gui_params       = {
             "size"               : "full",
-            "hide_when_disabled": True,
+            "hide_when_disabled" : True,
         },
     ),
     Setting_Info('item_hints',    list, None, None, True, {}),
