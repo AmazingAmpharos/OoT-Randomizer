@@ -37,6 +37,7 @@ class World(object):
         self.maximum_wallets = 0
         self.light_arrow_location = None
         self.triforce_count = 0
+        self.bingosync_URL=None
 
         self.parser = Rule_AST_Transformer(self)
         self.event_items = set()

@@ -2863,7 +2863,44 @@ setting_infos = [
         default        = 'balanced',
         choices        = HintDistList(),
         gui_tooltip    = HintDistTips(),
+        shared         = False,
+        disable        = {
+            'balanced'     : {'settings' : ['bingosync_URL']},
+            'strong'       : {'settings' : ['bingosync_URL']},
+            'tournament'   : {'settings' : ['bingosync_URL']},
+            'useless'      : {'settings' : ['bingosync_URL']},
+            'very_strong'  : {'settings' : ['bingosync_URL']}
+        },
+    ),
+    Setting_Info(
+        name           ="bingosync_URL",
+        type           =str,
+        choices        ={},
+        gui_type       ="Textinput",
+        gui_text       ="Bingosync URL",
         shared         = True,
+        gui_tooltip    = '''\
+            Enter a URL to a Bingosync bingo board in
+            order to have hints specific to items needed
+            to beat the board. Goals which are completed simply
+            by finding a specific item are not hinted
+            (e.g. "Boomerang"). 
+            In addition, overworld tokensanity will always
+            hint the location of Sun's Song, and shopsanity
+            will always hint the location of a wallet.
+
+            Leaving this entry blank or providing an
+            invalid URL will generate generic item hints
+            designed to allow completion of most bingo goals.
+            Non Bingosync bingo boards are not directly
+            supported, and will also generate generic item hints.
+
+        ''',
+        disabled_default=None,
+        gui_params     = {
+            "size"               : "full",
+            "hide_when_disabled": True,
+        },
     ),
     Setting_Info('item_hints',    list, None, None, True, {}),
     Setting_Info('hint_dist_user',    dict, None, None, True, {}),
