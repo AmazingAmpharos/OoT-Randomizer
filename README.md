@@ -28,10 +28,13 @@ the user wishes a pre-decompressed ROM may be supplied as input. Please be sure 
 playing via any means other than on real N64 hardware, the use of the "Compress patched ROM" flag is strongly encouraged as uncompressed ROMs are
 impossible to inject for the Virtual Console and have random crashing problems on all emulators.
 
-For general use, the recommended emulator is RetroArch; it has been shown to work with minimal issues. Bizhawk and Mupen64plus are generally good choices
-too. If you want to play on Project 64 for whatever reason, you can, but you will need to set the rando to use 8 MB of RAM and will want to play with the
-cheat code ```8109C58A 0000``` to partially fix Project 64's tragically poor handling of OoT's pause menu. Project 64 also has one particular crash that only
-happens for some unknown settings configurations; we cannot support this. We cannot emphasize enough that it is a discouraged emulator to use.
+For general use, there are three recommended emulators: [RetroArch](https://wiki.ootrandomizer.com/index.php?title=Retroarch), 
+[Bizhawk](https://wiki.ootrandomizer.com/index.php?title=Bizhawk) and [Project 64 (v2.4+)](https://wiki.ootrandomizer.com/index.php?title=Project64). 
+In a nutshell the differences are: Bizhawk is resource-intensive, but easy to set up and the only emulator to support 
+[Multiworld](https://wiki.ootrandomizer.com/index.php?title=Multiworld); RetroArch is less resource-intensive but can be frustrating to set up; 
+Project64 is easy to set up and the least resource-intensive, but versions compatible with OoTR are banned for races organized by our community. 
+Please follow the guides on our wiki carefully to ensure a stable game experience. For questions and tech support we kindly refer you to our 
+[Discord](https://discord.gg/ootrandomizer).
 
 ## General Description
 
@@ -43,12 +46,15 @@ Glitchless can still mean that clever or unintuitive strategies may be required 
 
 Each major dungeon will earn you a random Spiritual Stone or Medallion once completed.
 The particular dungeons where these can be found, as well as other relevant dungeon information can be viewed in the pause menu by holding the "A" button on the C-Item Menu.
+Note, however, that the unlock conditions for dungeon information is settings-dependant.
 
-As a service to the player in this very long game, many cutscenes have been greatly shortened, and text is as often as possible either omitted or sped up. It is likely that someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
+As a service to the player in this very long game, many cutscenes have been greatly shortened or removed, and text is as often as possible either omitted or sped up. It is likely that someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
 
 ### Getting Stuck
 
-With a game the size of _Ocarina of Time_, it's quite easy for new Randomizer players to get stuck in certain situations with no apparent path to progressing. Before reporting an issue, please make sure to check out [our Logic wiki page](https://wiki.ootrandomizer.com/index.php?title=Logic).
+With a game the size of _Ocarina of Time_, it's quite easy for new Randomizer players to get stuck in certain situations with no apparent path to progressing. 
+Before reporting an issue, please make sure to check out [our Logic wiki page](https://wiki.ootrandomizer.com/index.php?title=Logic). 
+We also have many community members who can help you out in our [Discord](https://discord.gg/ootrandomizer).
 
 ### Settings
 
@@ -75,9 +81,10 @@ Unfortunately, a few known issues exist. These will hopefully be addressed in fu
 
 * The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and Hard Reset (NOT savestate) and return to fix the
 issue. You should always Hard Reset to avoid this issue entirely.
-* Draining the Bottom of the Well with Song of Storms sometimes crashes on specific configurations of Project 64. We aren't sure of the exact story, but this bug is
-easily avoided by playing on a different emulator and probably also avoidable by changing your settings and maybe graphics plug-in.
+* Versions older than 2.4 of Project64 have known compatablity issues with OoTR. To avoid this either 
+[update to v2.4 and follow the rest of our PJ64 guide](https://wiki.ootrandomizer.com/index.php?title=Project64) or change to one of our other two supported emulators.
 * Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.
+In particular, there is a risk of softlocking when giving the Poacher's Saw to the carpenter and mashing through the text.
 * Saving and quitting on the very first frame after becoming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
 do that.
 * This randomizer is based on the 1.0 version of _Ocarina of Time_, so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantageous to the
