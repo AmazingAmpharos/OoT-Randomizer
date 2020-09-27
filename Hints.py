@@ -571,6 +571,16 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
     world.distribution.configure_gossip(spoiler, stoneIDs)
 
+    if 'disabled' in world.hint_dist_user:
+        for stone_name in world.hint_dist_user['disabled']:
+            try:
+                stone_id = gossipLocations_reversemap[stone_name]
+            except KeyError:
+                raise ValueError(f'Gossip stone location "{stone_name}" is not valid')
+            stoneIDs.remove(stone_id)
+            (gossip_text, _) = get_junk_hint(spoiler, world, checkedLocations)
+            spoiler.hints[world.id][stone_id] = gossip_text
+
     stoneGroups = []
     if 'groups' in world.hint_dist_user:
         for group_names in world.hint_dist_user['groups']:
