@@ -96,6 +96,9 @@ gossipLocations = {
     0x044A: GossipStone('DMC (Upper Grotto)',               'DMC Upper Grotto Gossip Stone'),
 }
 
+gossipLocations_reversemap = {
+    stone.name : stone_id for stone_id, stone in gossipLocations.items()
+}
 
 def getItemGenericName(item):
     if item.dungeonitem:
@@ -116,7 +119,7 @@ def isRestrictedDungeonItem(dungeon, item):
 
 def add_hint(spoiler, world, groups, gossip_text, count, location=None, force_reachable=False):
     random.shuffle(groups)
-    skipped_ids = []
+    skipped_groups = []
     duplicates = []
     first = True
     success = True
@@ -135,13 +138,17 @@ def add_hint(spoiler, world, groups, gossip_text, count, location=None, force_re
                 if not first or any(map(lambda stone_location: can_reach_stone(spoiler.worlds, stone_location, location), stone_locations)):
                     if first and location:
                         # just name the event item after the gossip stone directly
+                        event_item = None
                         for i, stone_name in enumerate(stone_names):
-                            MakeEventItem(stone_name, stone_locations[i])
+                            # place the same event item in each location in the group
+                            if event_item is None:
+                                event_item = MakeEventItem(stone_name, stone_locations[i], event_item)
+                            else:
+                                MakeEventItem(stone_name, stone_locations[i], event_item)
 
                         # This mostly guarantees that we don't lock the player out of an item hint
                         # by establishing a (hint -> item) -> hint -> item -> (first hint) loop
-                        group_rule = ' or '.join(stone_names)
-                        location.add_rule(world.parser.parse_rule(repr(group_rule)))
+                        location.add_rule(world.parser.parse_rule(repr(event_item.name)))
 
                     total -= 1
                     first = False
@@ -169,7 +176,7 @@ def add_hint(spoiler, world, groups, gossip_text, count, location=None, force_re
                 else:
                     # If flagged to guarantee reachable, then skip
                     # If no stones are reachable, then this will place nothing
-                    skipped_ids.append(group)
+                    skipped_groups.append(group)
         else:
             # Out of groups
             if not force_reachable and len(duplicates) >= total:
@@ -187,7 +194,7 @@ def add_hint(spoiler, world, groups, gossip_text, count, location=None, force_re
             success = False
             break
     groups.extend(duplicates)
-    groups.extend(skipped_ids)
+    groups.extend(skipped_groups)
     return success
 
 
@@ -569,11 +576,13 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
         for group_names in world.hint_dist_user['groups']:
             group = []
             for stone_name in group_names:
-                id = next((id for id in stoneIDs if stone_name == gossipLocations[id].name or stone_name == gossipLocations[id].location), None)
-                if id is None:
-                    raise ArgumentException(f'Gossip stone location "{stone_name}" is not valid')
-                stoneIDs.remove(id)
-                group.append(id)
+                try:
+                    stone_id = gossipLocations_reversemap[stone_name]
+                except KeyError:
+                    raise ValueError(f'Gossip stone location "{stone_name}" is not valid')
+
+                stoneIDs.remove(stone_id)
+                group.append(stone_id)
             stoneGroups.append(group)
     # put the remaining locations into singleton groups
     stoneGroups.extend([[id] for id in stoneIDs])
