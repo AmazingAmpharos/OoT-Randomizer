@@ -2120,15 +2120,15 @@ setting_infos = [
         gui_tooltip    = '''\
             This restricts where song items can appear.
 
-            'Song Locations': Song will only appear at vanilla song
-            locations. In Multiworld, songs will only appear in their
-            own world.
+            'Song Locations': Song will only appear at locations that
+            normally teach songs. In Multiworld, songs will only 
+            appear in their own world.
 
             'Dungeon Rewards': Songs appear at the end of dungeons.
             For major dungeons, they will be at the boss heart
             container location. The remaining 4 songs are placed at:
 
-            - Zelda's Lulluby Location
+            - Zelda's Lullaby Location
             - Ice Cavern's Serenade of Water Location
             - Bottom of the Well's Lens of Truth Location
             - Gerudo Training Ground's Ice Arrow Location
@@ -2137,6 +2137,11 @@ setting_infos = [
         ''',
         gui_params     = {
             'randomize_key': 'randomize_settings',
+            'distribution':  [
+                ('song', 2),
+                ('dungeon', 1),
+                ('any', 1),
+            ],
         },
         shared         = True,
     ),
