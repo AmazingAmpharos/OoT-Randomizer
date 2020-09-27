@@ -576,7 +576,7 @@ class WorldDistribution(object):
         world = worlds[self.id]
         locations = {}
         if self.locations:
-            locations = {loc: self.locations[loc] for loc in random.sample(self.locations.keys(), len(self.locations))}
+            locations = {loc: self.locations[loc] for loc in random.sample(sorted(self.locations), len(self.locations))}
         used_items = []
         for (location_name, record) in pattern_dict_items(locations):
             if record.item is None:
