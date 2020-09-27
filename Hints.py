@@ -363,18 +363,14 @@ def get_good_item_hint(spoiler, world, checked):
 
 def get_specific_item_hint(spoiler, world, checked):
     itemname = world.item_hints.pop(0)
-    if itemname == "Bottle":
-        if world.hint_dist == "bingo":
+    if itemname == "Bottle" and world.hint_dist == "bingo":
             bottleList = ("Bottle", "Bottle with Red Potion","Bottle with Green Potion", "Bottle with Blue Potion", 
                         "Bottle with Fairy", "Bottle with Fish", "Bottle with Blue Fire", "Bottle with Bugs", "Bottle with Big Poe", "Bottle with Poe")
-        else:
-            bottleList = ("Bottle", "Bottle with Red Potion","Bottle with Green Potion", "Bottle with Blue Potion", "Rutos Letter", 
-            "Bottle with Fairy", "Bottle with Fish", "Bottle with Blue Fire", "Bottle with Bugs", "Bottle with Big Poe", "Bottle with Poe")
-            
-        locations = [location for location in world.get_filled_locations()
-                     if is_not_checked(location, checked) and \
-                     location.item.name in bottleList and \
-                     not location.locked]           
+                
+            locations = [location for location in world.get_filled_locations()
+                         if is_not_checked(location, checked) and \
+                         location.item.name in bottleList and \
+                         not location.locked]           
     else:
         locations = [location for location in world.get_filled_locations()
                      if is_not_checked(location, checked) and \
