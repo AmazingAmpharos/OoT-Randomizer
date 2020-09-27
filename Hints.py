@@ -106,6 +106,9 @@ gossipLocations = {
     0x044A: GossipStone('DMC (Upper Grotto)',               'DMC Upper Grotto Gossip Stone'),
 }
 
+gossipLocations_reversemap = {
+    stone.name : stone_id for stone_id, stone in gossipLocations.items()
+}
 
 def getItemGenericName(item):
     if item.dungeonitem:
@@ -124,73 +127,84 @@ def isRestrictedDungeonItem(dungeon, item):
     return False
 
 
-def add_hint(spoiler, world, IDs, gossip_text, count, location=None, force_reachable=False):
-    random.shuffle(IDs)
-    skipped_ids = []
+def add_hint(spoiler, world, groups, gossip_text, count, location=None, force_reachable=False):
+    random.shuffle(groups)
+    skipped_groups = []
     duplicates = []
     first = True
     success = True
     # early failure if not enough
-    if len(IDs) < int(count):
+    if len(groups) < int(count):
         return False
-    # Randomly round up, if we have enough IDs left
-    total = int(random.random() + count) if len(IDs) > count else int(count)
+    # Randomly round up, if we have enough groups left
+    total = int(random.random() + count) if len(groups) > count else int(count)
     while total:
-        if IDs:
-            id = IDs.pop(0)
+        if groups:
+            group = groups.pop(0)
 
-            if gossipLocations[id].reachable:
-                stone_name = gossipLocations[id].location
-                stone_location = world.get_location(stone_name)
-                if not first or can_reach_stone(spoiler.worlds, stone_location, location):
+            if any(map(lambda id: gossipLocations[id].reachable, group)):
+                stone_names = [gossipLocations[id].location for id in group]
+                stone_locations = [world.get_location(stone_name) for stone_name in stone_names]
+                if not first or any(map(lambda stone_location: can_reach_stone(spoiler.worlds, stone_location, location), stone_locations)):
                     if first and location:
                         # just name the event item after the gossip stone directly
-                        MakeEventItem(stone_name, stone_location)
+                        event_item = None
+                        for i, stone_name in enumerate(stone_names):
+                            # place the same event item in each location in the group
+                            if event_item is None:
+                                event_item = MakeEventItem(stone_name, stone_locations[i], event_item)
+                            else:
+                                MakeEventItem(stone_name, stone_locations[i], event_item)
+
                         # This mostly guarantees that we don't lock the player out of an item hint
                         # by establishing a (hint -> item) -> hint -> item -> (first hint) loop
-                        location.add_rule(world.parser.parse_rule(repr(stone_name)))
+                        location.add_rule(world.parser.parse_rule(repr(event_item.name)))
 
                     total -= 1
                     first = False
-                    spoiler.hints[world.id][id] = gossip_text
+                    for id in group:
+                        spoiler.hints[world.id][id] = gossip_text
                     # Immediately start choosing duplicates from stones we passed up earlier
                     while duplicates and total:
-                        id = duplicates.pop(0)
+                        group = duplicates.pop(0)
                         total -= 1
-                        spoiler.hints[world.id][id] = gossip_text
+                        for id in group:
+                            spoiler.hints[world.id][id] = gossip_text
                 else:
                     # Temporarily skip this stone but consider it for duplicates
-                    duplicates.append(id)
+                    duplicates.append(group)
             else:
                 if not force_reachable:
                     # The stones are not readable at all in logic, so we ignore any kind of logic here
                     if not first:
                         total -= 1
-                        spoiler.hints[world.id][id] = gossip_text
+                        for id in group:
+                            spoiler.hints[world.id][id] = gossip_text
                     else:
                         # Temporarily skip this stone but consider it for duplicates
-                        duplicates.append(id)
+                        duplicates.append(group)
                 else:
                     # If flagged to guarantee reachable, then skip
                     # If no stones are reachable, then this will place nothing
-                    skipped_ids.append(id)
+                    skipped_groups.append(group)
         else:
-            # Out of IDs
+            # Out of groups
             if not force_reachable and len(duplicates) >= total:
                 # Didn't find any appropriate stones for this hint, but maybe enough completely unreachable ones.
                 # We'd rather not use reachable stones for this.
-                unr = [id for id in duplicates if not gossipLocations[id].reachable]
+                unr = [group for group in duplicates if all(map(lambda id: not gossipLocations[id].reachable, group))]
                 if len(unr) >= total:
-                    duplicates = [id for id in duplicates if id not in unr[:total]]
-                    for id in unr[:total]:
-                        spoiler.hints[world.id][id] = gossip_text
+                    duplicates = [group for group in duplicates if group not in unr[:total]]
+                    for group in unr[:total]:
+                        for id in group:
+                            spoiler.hints[world.id][id] = gossip_text
                     # Success
                     break
             # Failure
             success = False
             break
-    IDs.extend(duplicates)
-    IDs.extend(skipped_ids)
+    groups.extend(duplicates)
+    groups.extend(skipped_groups)
     return success
 
 
@@ -612,7 +626,33 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
     world.distribution.configure_gossip(spoiler, stoneIDs)
 
-    random.shuffle(stoneIDs)
+    if 'disabled' in world.hint_dist_user:
+        for stone_name in world.hint_dist_user['disabled']:
+            try:
+                stone_id = gossipLocations_reversemap[stone_name]
+            except KeyError:
+                raise ValueError(f'Gossip stone location "{stone_name}" is not valid')
+            stoneIDs.remove(stone_id)
+            (gossip_text, _) = get_junk_hint(spoiler, world, checkedLocations)
+            spoiler.hints[world.id][stone_id] = gossip_text
+
+    stoneGroups = []
+    if 'groups' in world.hint_dist_user:
+        for group_names in world.hint_dist_user['groups']:
+            group = []
+            for stone_name in group_names:
+                try:
+                    stone_id = gossipLocations_reversemap[stone_name]
+                except KeyError:
+                    raise ValueError(f'Gossip stone location "{stone_name}" is not valid')
+
+                stoneIDs.remove(stone_id)
+                group.append(stone_id)
+            stoneGroups.append(group)
+    # put the remaining locations into singleton groups
+    stoneGroups.extend([[id] for id in stoneIDs])
+
+    random.shuffle(stoneGroups)
 
     # Create list of items for which we want hints. If Bingosync URL is supplied, include items specific to that bingo.
     # If not (or if the URL is invalid), use generic bingo hints
@@ -675,22 +715,22 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
         if '#' not in location_text:
             location_text = '#%s#' % location_text
         item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
-        add_hint(spoiler, world, stoneIDs, GossipText('%s #%s#.' % (location_text, item_text), ['Green', 'Red']), hint_dist['always'][1], location, force_reachable=True)
+        add_hint(spoiler, world, stoneGroups, GossipText('%s #%s#.' % (location_text, item_text), ['Green', 'Red']), hint_dist['always'][1], location, force_reachable=True)
         logging.getLogger('').debug('Placed always hint for %s.', location.name)
 
     # Add trial hints
     if world.trials_random and world.trials == 6:
-        add_hint(spoiler, world, stoneIDs, GossipText("#Ganon's Tower# is protected by a powerful barrier.", ['Pink']), hint_dist['trial'][1], force_reachable=True)
+        add_hint(spoiler, world, stoneGroups, GossipText("#Ganon's Tower# is protected by a powerful barrier.", ['Pink']), hint_dist['trial'][1], force_reachable=True)
     elif world.trials_random and world.trials == 0:
-        add_hint(spoiler, world, stoneIDs, GossipText("Sheik dispelled the barrier around #Ganon's Tower#.", ['Yellow']), hint_dist['trial'][1], force_reachable=True)
+        add_hint(spoiler, world, stoneGroups, GossipText("Sheik dispelled the barrier around #Ganon's Tower#.", ['Yellow']), hint_dist['trial'][1], force_reachable=True)
     elif world.trials < 6 and world.trials > 3:
         for trial,skipped in world.skipped_trials.items():
             if skipped:
-                add_hint(spoiler, world, stoneIDs,GossipText("the #%s Trial# was dispelled by Sheik." % trial, ['Yellow']), hint_dist['trial'][1], force_reachable=True)
+                add_hint(spoiler, world, stoneGroups,GossipText("the #%s Trial# was dispelled by Sheik." % trial, ['Yellow']), hint_dist['trial'][1], force_reachable=True)
     elif world.trials <= 3 and world.trials > 0:
         for trial,skipped in world.skipped_trials.items():
             if not skipped:
-                add_hint(spoiler, world, stoneIDs, GossipText("the #%s Trial# protects Ganon's Tower." % trial, ['Pink']), hint_dist['trial'][1], force_reachable=True)
+                add_hint(spoiler, world, stoneGroups, GossipText("the #%s Trial# protects Ganon's Tower." % trial, ['Pink']), hint_dist['trial'][1], force_reachable=True)
 
     # Add user-specified hinted item locations if using a built-in hint distribution
     # Assume 2 stones/hint
@@ -701,7 +741,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
                 raise Exception('No valid hints for user-provided item')
             else:
                 gossip_text, location = hint
-                place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, hint_dist['named-item'][1], location)
+                place_ok = add_hint(spoiler, world, stoneGroups, gossip_text, hint_dist['named-item'][1], location)
                 if not place_ok:
                     raise Exception('Not enough gossip stones for user-provided item hints')
 
@@ -710,16 +750,16 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
     hint_counts = {}
 
     custom_fixed = True
-    while stoneIDs:
+    while stoneGroups:
         if fixed_hint_types:
             hint_type = fixed_hint_types.pop(0)
-            if hint_dist[hint_type][1] > len(stoneIDs):
+            if hint_dist[hint_type][1] > len(stoneGroups):
                 raise Exception('Not enough gossip stone locations for fixed hint type %s.' % hint_type)
         else:
             custom_fixed = False
             # Make sure there are enough stones left for each hint type
             num_types = len(hint_types)
-            hint_types = list(filter(lambda htype: hint_dist[htype][1] <= len(stoneIDs), hint_types))
+            hint_types = list(filter(lambda htype: hint_dist[htype][1] <= len(stoneGroups), hint_types))
             new_num_types = len(hint_types)
             if new_num_types == 0:
                 raise Exception('Not enough gossip stone locations for remaining weighted hint types.')
@@ -756,7 +796,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
             hint_dist[hint_type] = (0.0, hint_dist[hint_type][1])
         else:
             gossip_text, location = hint
-            place_ok = add_hint(spoiler, world, stoneIDs, gossip_text, hint_dist[hint_type][1], location)
+            place_ok = add_hint(spoiler, world, stoneGroups, gossip_text, hint_dist[hint_type][1], location)
             if place_ok:
                 hint_counts[hint_type] = hint_counts.get(hint_type, 0) + 1
                 if location is None:
