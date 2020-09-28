@@ -135,10 +135,9 @@ player.
 * Hint distributions can configure groups of stones to all have the same hint, and can also disable stones from receiving useful hints (give them junk hints instead).
 * Tournament hint distribution changes <!-- keep updated if there are changes later -->
   * Temple of Time stones all provide the same hint.
-  * Grotto stones now all provide the same hint.
-  * The stones at the waterfall in Gerudo Valley and in the Hyrule Castle storms grotto have junk hints.
+  * Grotto stones are disabled and only provide junk hints.
   * Only "always" and "WotH" hints have duplicates now.
-  * Number of unique hints of each type are now: 7 always, 4 WotH, 0 barren, 4(remainder) sometimes.
+  * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 0 barren, 4(remainder) sometimes.
 * Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
 * Tricks can be filtered in the GUI using a new dropdown.
 
