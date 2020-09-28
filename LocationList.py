@@ -160,7 +160,7 @@ location_table = {
     "Wandering Bugs":                                  ("Drop",        None,  None, None,                     None),
     "Fairy Pot":                                       ("Drop",        None,  None, None,                     None),
     "Free Fairies":                                    ("Drop",        None,  None, None,                     None),
-    "Wall Switch Fairy":                               ("Drop",        None,  None, None,                     None),
+    "Wall Fairy":                                      ("Drop",        None,  None, None,                     None),
     "Butterfly Fairy":                                 ("Drop",        None,  None, None,                     None),
     "Gossip Stone Fairy":                              ("Drop",        None,  None, None,                     None),
     "Bean Plant Fairy":                                ("Drop",        None,  None, None,                     None),
