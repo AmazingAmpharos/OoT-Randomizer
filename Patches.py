@@ -1664,14 +1664,15 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_bytes(0xE2ADB6, [0x70, 0x57])
         buildBossRewardHints(world, messages)
 
-    # Set Dungeon Reward Actor in Jabu Jabu to be accurate
-    # Vanilla and MQ Jabu Jabu addresses are the same for this object and actor
-    jabu_stone_object = world.get_location('Barinade').item.special['object_id']
-    rom.write_int16(0x277D068, jabu_stone_object)
-    rom.write_int16(0x277D168, jabu_stone_object)
-    jabu_stone_type = world.get_location('Barinade').item.special['actor_type']
-    rom.write_byte(0x277D0BB, jabu_stone_type)
-    rom.write_byte(0x277D19B, jabu_stone_type)
+    # Set Dungeon Reward actors in Jabu Jabu to be accurate
+    jabu_actor_type = world.get_location('Barinade').item.special['actor_type']
+    set_jabu_stone_actors(rom, jabu_actor_type)
+    # Also set the right object for the actor, since medallions and stones require different objects
+    # MQ is handled separately, as we include both objects in the object list in mqu.json (Scene 2, Room 6)
+    if not world.dungeon_mq['Jabu Jabus Belly']:
+        jabu_stone_object = world.get_location('Barinade').item.special['object_id']
+        rom.write_int16(0x277D068, jabu_stone_object)
+        rom.write_int16(0x277D168, jabu_stone_object)
 
     # update happy mask shop to use new SOLD OUT text id
     rom.write_int16(shop_item_file.start + 0x1726, shop_items[0x26].description_message)
@@ -1968,6 +1969,16 @@ def set_deku_salesman_data(rom):
                 rom.write_int16(actor + 14, 0x0003)
 
     get_actor_list(rom, set_deku_salesman)
+
+
+def set_jabu_stone_actors(rom, jabu_actor_type):
+    def set_jabu_stone_actor(rom, actor_id, actor, scene):
+        if scene == 2 and actor_id == 0x008B: # Demo_Effect in Jabu Jabu
+            actor_type = rom.read_byte(actor + 15)
+            if actor_type == 0x15:
+                rom.write_byte(actor + 15, jabu_actor_type)
+
+    get_actor_list(rom, set_jabu_stone_actor)
 
 
 def get_locked_doors(rom, world):
