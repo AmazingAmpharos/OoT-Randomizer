@@ -87,6 +87,8 @@ RANDO_CONTEXT:
 .include "agony.asm"
 .include "horseback_archery.asm"
 .include "equip_swap_fix.asm"
+.include "carpet_salesman.asm"
+.include "medigoron.asm"
 
 .align 0x10
 .importobj "../build/bundle.o"

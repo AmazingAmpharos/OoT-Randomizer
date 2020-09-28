@@ -129,6 +129,7 @@ hintTable = {
     'Iron Boots':                                               (["sink shoes", "clank cleats"], "the Iron Boots", 'item'),
     'Hover Boots':                                              (["butter boots", "sacred slippers", "spacewalkers"], "the Hover Boots", 'item'),
     'Kokiri Sword':                                             (["a butter knife", "a starter slasher", "a switchblade"], "the Kokiri Sword", 'item'),
+    'Giants Knife':                                             (["a fragile blade", "a breakable cleaver"], "the Giant's Knife", 'item'),
     'Biggoron Sword':                                           (["the biggest blade", "a colossal cleaver"], "the Biggoron Sword", 'item'),
     'Master Sword':                                             (["evil's bane"], "the Master Sword", 'item'),
     'Deku Shield':                                              (["a wooden ward", "a burnable barrier"], "a Deku Shield", 'item'),
