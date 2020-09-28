@@ -109,7 +109,10 @@ player.
   * In multiworld, as before, only the "anywhere" setting will allow songs to be placed in other players' worlds.
 * New cosmetic setting `HUD Button Colors`
   * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme, of OoT or MM.
-  * Or you can completely randomize all the button colors.
+  * Or you can randomize the button color scheme. (We'll try to keep the button text readable.)
+* New cosmetic setting `Item Model Colors Match Cosmetics`
+  * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
+  * Tunics are not affected, in order to keep freestanding tunics recognizable.
 * New tricks
   * `Dodongo's Cavern Vines GS from Below with Longshot` - use the Longshot to avoid the staircase.
   * `Forest Temple First Room GS with Difficult-to-Use Weapons` - use a sword or Deku Sticks to jumpslash, or Bombs as child.
@@ -128,9 +131,6 @@ player.
 * Removed tricks
   * `Water Temple Boss Key Chest with Iron Boots`
   * `Water Temple Dragon Statue with Bombchu` - superseded by the new Dragon Statue tricks.
-* New cosmetic setting `Item Model Colors Match Cosmetics`
-  * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
-  * Tunics are not affected, in order to keep freestanding tunics recognizable.
 * New "Hint Distribution" customization options
   * Old hardcoded hint distributions are now defined by json files in `data/Hints`.
   * Custom hint distributions can be added to this folder, or defined directly in Plando files.
