@@ -21,7 +21,7 @@
     "tokensanity": "dungeons",
     "shuffle_scrubs": "off",
     "shuffle_cows": false,
-    "shuffle_song_items": false,
+    "shuffle_song_items": "song",
     "shuffle_kokiri_sword": false,
     "shuffle_ocarinas": false,
     "shuffle_weird_egg": false,

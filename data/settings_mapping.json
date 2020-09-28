@@ -172,11 +172,11 @@
           "text": "Shuffle",
           "row_span": [6,6,9],
           "settings": [
+            "shuffle_song_items",
             "shopsanity",
             "tokensanity",
             "shuffle_scrubs",
             "shuffle_cows",
-            "shuffle_song_items",
             "shuffle_kokiri_sword",
             "shuffle_ocarinas",
             "shuffle_weird_egg",

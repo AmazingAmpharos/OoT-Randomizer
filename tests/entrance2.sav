@@ -24,7 +24,7 @@
 "shuffle_ocarinas": false,
 "shuffle_weird_egg": false,
 "shuffle_gerudo_card": false,
-"shuffle_song_items": false,
+"shuffle_song_items": "song",
 "shuffle_cows": false,
 "entrance_shuffle": "simple-indoors",
 "shuffle_scrubs": "off",

@@ -27,7 +27,7 @@
 "shuffle_ocarinas": true,
 "shuffle_weird_egg": true,
 "shuffle_gerudo_card": true,
-"shuffle_song_items": true,
+"shuffle_song_items": "any",
 "shuffle_cows": true,
 "shuffle_scrubs": "random",
 "shopsanity": "4",

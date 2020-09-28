@@ -160,7 +160,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     rom.write_bytes(0x1FC0CF8, Block_code)
 
     # songs as items flag
-    songs_as_items = world.shuffle_song_items or \
+    songs_as_items = world.shuffle_song_items != 'song' or \
                      world.distribution.song_as_items or \
                      world.starting_songs
 
