@@ -38,7 +38,7 @@ In a nutshell the differences are: Bizhawk is resource-intensive, but easy to se
 [Multiworld](https://wiki.ootrandomizer.com/index.php?title=Multiworld); RetroArch is less resource-intensive but can be frustrating to set up; 
 Project64 is easy to set up and the least resource-intensive, but versions compatible with OoTR are banned for races organized by our community. 
 Please follow the guides on our wiki carefully to ensure a stable game experience. For questions and tech support we kindly refer you to our 
-[Discord](https://discord.gg/ootrandomizer).
+[Discord](https://discord.gg/q6m6kzK).
 
 ## General Description
 
@@ -58,7 +58,7 @@ As a service to the player in this very long game, many cutscenes have been grea
 
 With a game the size of _Ocarina of Time_, it's quite easy for new Randomizer players to get stuck in certain situations with no apparent path to progressing. 
 Before reporting an issue, please make sure to check out [our Logic wiki page](https://wiki.ootrandomizer.com/index.php?title=Logic). 
-We also have many community members who can help you out in our [Discord](https://discord.gg/ootrandomizer).
+We also have many community members who can help out in our [Discord](https://discord.gg/8nmX7fa).
 
 ### Settings
 
