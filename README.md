@@ -150,6 +150,7 @@ player.
 * Avoid crashing on some systems when using child items as adult.
 * Ensure Ice Traps have valid models if they can be seen.
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
+* Prevent Gerudo guards from throwing child Link in jail.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
 * Fix some issues with `Randomize Main Rules`:

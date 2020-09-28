@@ -183,7 +183,7 @@
 804012E0 ingo_race_win
 80401300 @@return
 8040130C gerudo_caught_entrance
-80401338 @@fortress
+8040132C @@fortress
 8040135C @@fortress_entrance
 80401364 @@return
 8040136C demo_effect_medal_init
