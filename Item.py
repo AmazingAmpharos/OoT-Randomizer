@@ -119,7 +119,7 @@ class Item(object):
     @property
     def majoritem(self):
         if self.type == 'Token':
-            return self.world.bridge == 'tokens'
+            return self.world.bridge == 'tokens' or self.world.lacs_condition == 'tokens'
 
         if self.type in ('Drop', 'Event', 'Shop', 'DungeonReward') or not self.advancement:
             return False

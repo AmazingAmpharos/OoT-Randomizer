@@ -6,6 +6,8 @@ lacs_condition_check:
     beq     t1, t2, @@dungeons
     li      t2, 3
     beq     t1, t2, @@stones
+    li      t2, 4
+    beq     t1, t2, @@tokens
     nop
 
 @@vanilla:
@@ -134,6 +136,9 @@ lacs_condition_check:
 @@stones_3:
     b       @@count
     nop
+
+@@tokens:
+    lh      t4, 0xD0(s0) ; Gold Skulltulas
 
 @@count:
     li      at, 0

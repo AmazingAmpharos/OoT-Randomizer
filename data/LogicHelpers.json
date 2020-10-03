@@ -108,5 +108,6 @@
         (lacs_condition == 'vanilla' and Shadow_Medallion and Spirit_Medallion) or
         (lacs_condition == 'stones' and has_stones(lacs_stones)) or
         (lacs_condition == 'medallions' and has_medallions(lacs_medallions)) or
-        (lacs_condition == 'dungeons' and has_dungeon_rewards(lacs_rewards)))"
+        (lacs_condition == 'dungeons' and has_dungeon_rewards(lacs_rewards)) or
+        (lacs_condition == 'tokens' and (Gold_Skulltula_Token, lacs_tokens)))"
 }

@@ -127,6 +127,8 @@ def tokens_required_by_settings(world):
     tokens = 0
     if world.bridge == 'tokens':
         tokens = max(tokens, world.bridge_tokens)
+    if world.shuffle_ganon_bosskey == 'lacs_tokens':
+        tokens = max(tokens, world.lacs_tokens)
 
     return tokens
 

@@ -2663,6 +2663,7 @@ setting_infos = [
             'lacs_medallions': "On LACS: Medallions",
             'lacs_stones':     "On LACS: Stones",
             'lacs_dungeons':   "On LACS: Dungeons",
+            'lacs_tokens':     "On LACS: Tokens",
         },
         gui_tooltip    = '''\
             'Remove': Ganon's Castle Boss Key is removed
@@ -2684,19 +2685,21 @@ setting_infos = [
             'On LACS: Vanilla': Shadow and Spirit Medallions.
             'On LACS: Medallions': A configurable amount of Medallions.
             'On LACS: Stones': A configurable amount of Spiritual Stones.
-            'On LACS: Dungeons': A configurable amount of Dungeon Rewards
+            'On LACS: Dungeons': A configurable amount of Dungeon Rewards.
                                  (Spiritual Stones & Medallions).
+            'On LACS: Tokens': A configurable amount of Gold Skulltula Tokens.
         ''',
         shared         = True,
         disable={
-            'remove':           {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards']},
-            'vanilla':          {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards']},
-            'dungeon':          {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards']},
-            'keysanity':        {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards']},
-            'lacs_vanilla':     {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards']},
-            'lacs_medallions':  {'settings': ['lacs_stones', 'lacs_rewards']},
-            'lacs_stones':      {'settings': ['lacs_medallions', 'lacs_rewards']},
-            'lacs_dungeons':    {'settings': ['lacs_medallions', 'lacs_stones']},
+            'remove':           {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'vanilla':          {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'dungeon':          {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'keysanity':        {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'lacs_vanilla':     {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'lacs_medallions':  {'settings': ['lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'lacs_stones':      {'settings': ['lacs_medallions', 'lacs_rewards', 'lacs_tokens']},
+            'lacs_dungeons':    {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_tokens']},
+            'lacs_tokens':      {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards']},
         },
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -2750,6 +2753,22 @@ setting_infos = [
         max            = 9,
         gui_tooltip    = '''\
             Select the amount of Dungeon Rewards (Medallions and Spiritual Stones)
+            required to trigger the Light Arrow Cutscene.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
+        },
+    ),
+    Scale(
+        name           = 'lacs_tokens',
+        gui_text       = "Gold Skulltula Tokens Required for LACS",
+        default        = 100,
+        min            = 1,
+        max            = 100,
+        gui_tooltip    = '''\
+            Select the amount of Gold Skulltula Tokens
             required to trigger the Light Arrow Cutscene.
         ''',
         shared         = True,

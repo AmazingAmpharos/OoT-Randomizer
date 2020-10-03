@@ -1065,6 +1065,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     elif world.lacs_condition == 'stones':
         rom.write_int32(symbol, 3)
         rom.write_int16(count_symbol, world.lacs_stones)
+    elif world.lacs_condition == 'tokens':
+        rom.write_int32(symbol, 4)
+        rom.write_int16(count_symbol, world.lacs_tokens)
     else:
         rom.write_int32(symbol, 0)
 
