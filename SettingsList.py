@@ -141,7 +141,7 @@ logic_tricks = {
                     '''},
     'Hidden Grottos without Stone of Agony': {
         'name'    : 'logic_grottos_without_agony',
-        'tags'    : ("General", "Entrance"),
+        'tags'    : ("General", "Entrance",),
         'tooltip' : '''\
                     Allows entering hidden grottos without the
                     Stone of Agony.
@@ -383,7 +383,7 @@ logic_tricks = {
                     '''},
     'Spirit Temple Main Room Jump from Hands to Upper Ledges': {
         'name'    : 'logic_spirit_lobby_jump',
-        'tags'    : ("Spirit Temple", "Skulltulas"),
+        'tags'    : ("Spirit Temple", "Skulltulas",),
         'tooltip' : '''\
                     A precise jump to obtain the following as adult
                     without needing one of Hookshot or Hover Boots:
@@ -442,7 +442,7 @@ logic_tricks = {
                     '''},
     'Fire Temple MQ Flame Wall Maze Skip': {
         'name'    : 'logic_fire_mq_flame_maze',
-        'tags'    : ("Fire Temple", "Skulltulas"),
+        'tags'    : ("Fire Temple", "Skulltulas",),
         'tooltip' : '''\
                     If you move quickly you can sneak past the edge of
                     a flame wall before it can rise up to block you.
@@ -866,7 +866,7 @@ logic_tricks = {
                     '''},
     'Hyrule Castle Storms Grotto GS with Just Boomerang': {
         'name'    : 'logic_castle_storms_gs',
-        'tags'    : ("Hyrule Castle", "Skulltulas"),
+        'tags'    : ("Hyrule Castle", "Skulltulas",),
         'tooltip' : '''\
                     With precise throws, the Boomerang alone can
                     kill the Skulltula and collect the token,
@@ -1028,7 +1028,7 @@ logic_tricks = {
                     '''},
     'Goron City Grotto with Hookshot While Taking Damage': {
         'name'    : 'logic_goron_grotto',
-        'tags'    : ("Goron City"),
+        'tags'    : ("Goron City",),
         'tooltip' : '''\
                     It is possible to reach the Goron City Grotto by
                     quickly using the Hookshot while in the midst of
