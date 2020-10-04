@@ -44,6 +44,7 @@ tunic_colors = {
 
 
 NaviColors = {          # Inner Core Color         Outer Glow Color
+    "Rainbow":           (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
     "Gold":              (Color(0xFE, 0xCC, 0x3C), Color(0xFE, 0xC0, 0x07)),
     "White":             (Color(0xFF, 0xFF, 0xFF), Color(0x00, 0x00, 0xFF)),
     "Green":             (Color(0x00, 0xFF, 0x00), Color(0x00, 0xFF, 0x00)),
@@ -319,18 +320,23 @@ def patch_navi_colors(rom, settings, log, symbols):
     navi = [
         # colors for Navi
         ('Navi Idle',            settings.navi_color_default_inner, settings.navi_color_default_outer,
-            [0x00B5E184]), # Default
+            [0x00B5E184], # Default (Player)
+            symbols['CFG_RAINBOW_NAVI_IDLE_INNER_ENABLED'], symbols['CFG_RAINBOW_NAVI_IDLE_OUTER_ENABLED']),
         ('Navi Targeting Enemy', settings.navi_color_enemy_inner,   settings.navi_color_enemy_outer,
-            [0x00B5E19C, 0x00B5E1BC]), # Enemy, Boss
+            [0x00B5E19C, 0x00B5E1BC],  # Enemy, Boss
+            symbols['CFG_RAINBOW_NAVI_ENEMY_INNER_ENABLED'], symbols['CFG_RAINBOW_NAVI_ENEMY_OUTER_ENABLED']),
         ('Navi Targeting NPC',   settings.navi_color_npc_inner,     settings.navi_color_npc_outer,
-            [0x00B5E194]), # NPC
+            [0x00B5E194], # NPC
+            symbols['CFG_RAINBOW_NAVI_NPC_INNER_ENABLED'], symbols['CFG_RAINBOW_NAVI_NPC_OUTER_ENABLED']),
         ('Navi Targeting Prop',  settings.navi_color_prop_inner,    settings.navi_color_prop_outer,
-            [0x00B5E174, 0x00B5E17C, 0x00B5E18C,
-            0x00B5E1A4, 0x00B5E1AC, 0x00B5E1B4,
-            0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4]), # Everything else
+            [0x00B5E174, 0x00B5E17C, 0x00B5E18C, 0x00B5E1A4, 0x00B5E1AC,
+             0x00B5E1B4, 0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4], # Everything else
+            symbols['CFG_RAINBOW_NAVI_PROP_INNER_ENABLED'], symbols['CFG_RAINBOW_NAVI_PROP_OUTER_ENABLED']),
     ]
+
     navi_color_list = get_navi_colors()
-    for navi_action, navi_option_inner, navi_option_outer, navi_addresses in navi:
+
+    for navi_action, navi_option_inner, navi_option_outer, navi_addresses, rainbow_inner_symbol, rainbow_outer_symbol in navi:
 
         # choose a random choice for the whole group
         if navi_option_inner == 'Random Choice':
@@ -345,6 +351,14 @@ def patch_navi_colors(rom, settings, log, symbols):
         outer_color = None
         colors = []
         for address in navi_addresses:
+            # set rainbow option
+            if navi_option_inner == 'Rainbow':
+                rom.write_byte(rainbow_inner_symbol, 0x01)
+                inner_color = [0x00, 0x00, 0x00]
+            if navi_option_outer == 'Rainbow':
+                rom.write_byte(rainbow_outer_symbol, 0x01)
+                outer_color = [0x00, 0x00, 0x00]
+
             # completely random is random for every subgroup
             if navi_option_inner == 'Completely Random':
                 inner_color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
@@ -687,7 +701,6 @@ global_patch_sets = [
     patch_targeting,
     patch_music,
     patch_tunic_colors,
-    patch_navi_colors,
     patch_gauntlet_colors,
     patch_sfx,
     patch_instrument,    
@@ -752,6 +765,38 @@ patch_sets = {
             "CFG_DISPLAY_DPAD": 0x003A,
             "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x003B,
             "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x003C,
+        }
+    },
+    0x1F073FD8: {
+        "patches": [
+            patch_dpad,
+            patch_sword_trails,
+            patch_heart_colors,
+            patch_magic_colors,
+            patch_button_colors,
+            patch_navi_colors,
+        ],
+        "symbols": {
+            "CFG_MAGIC_COLOR": 0x0004,
+            "CFG_HEART_COLOR": 0x000A,
+            "CFG_A_BUTTON_COLOR": 0x0010,
+            "CFG_B_BUTTON_COLOR": 0x0016,
+            "CFG_C_BUTTON_COLOR": 0x001C,
+            "CFG_TEXT_CURSOR_COLOR": 0x0022,
+            "CFG_SHOP_CURSOR_COLOR": 0x0028,
+            "CFG_A_NOTE_COLOR": 0x002E,
+            "CFG_C_NOTE_COLOR": 0x0034,
+            "CFG_DISPLAY_DPAD": 0x003A,
+            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x003B,
+            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x003C,
+            "CFG_RAINBOW_NAVI_IDLE_INNER_ENABLED": 0x003D,
+            "CFG_RAINBOW_NAVI_IDLE_OUTER_ENABLED": 0x003E,
+            "CFG_RAINBOW_NAVI_ENEMY_INNER_ENABLED": 0x003F,
+            "CFG_RAINBOW_NAVI_ENEMY_OUTER_ENABLED": 0x0040,
+            "CFG_RAINBOW_NAVI_NPC_INNER_ENABLED": 0x0041,
+            "CFG_RAINBOW_NAVI_NPC_OUTER_ENABLED": 0x0042,
+            "CFG_RAINBOW_NAVI_PROP_INNER_ENABLED": 0x0043,
+            "CFG_RAINBOW_NAVI_PROP_OUTER_ENABLED": 0x0044,
         }
     },
 }

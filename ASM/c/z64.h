@@ -2,6 +2,7 @@
 #define Z64_H
 #include <stdint.h>
 #include <n64.h>
+#include "color.h"
 
 #define Z64_OOT10             0x00
 #define Z64_OOT11             0x01
@@ -700,6 +701,21 @@ typedef struct
   int8_t        y;
 } z64_controller_t;
 
+typedef enum {
+    ACTORTYPE_SWITCH,
+    ACTORTYPE_BG,
+    ACTORTYPE_PLAYER,
+    ACTORTYPE_EXPLOSIVES,
+    ACTORTYPE_NPC,
+    ACTORTYPE_ENEMY,
+    ACTORTYPE_PROP,
+    ACTORTYPE_ITEMACTION,
+    ACTORTYPE_MISC,
+    ACTORTYPE_BOSS,
+    ACTORTYPE_DOOR,
+    ACTORTYPE_CHEST
+} actor_type_t;
+
 typedef struct z64_actor_s z64_actor_t;
 struct z64_actor_s
 {
@@ -776,13 +792,15 @@ typedef struct
   char         unk_03_[0x0237];      /* 0x0435 */
   uint32_t     state_flags_1;        /* 0x066C */
   uint32_t     state_flags_2;        /* 0x0670 */
-  char         unk_04_[0x01B4];      /* 0x0674 */
+  char         unk_04_[0x0008];      /* 0x0674 */
+  z64_actor_t *navi_actor;           /* 0x067C */
+  char         unk_05_[0x01A8];      /* 0x0680 */
   float        linear_vel;           /* 0x0828 */
-  char         unk_05_[0x0002];      /* 0x082C */
+  char         unk_06_[0x0002];      /* 0x082C */
   uint16_t     target_yaw;           /* 0x082E */
-  char         unk_06_[0x0003];      /* 0x0830 */
+  char         unk_07_[0x0003];      /* 0x0830 */
   int8_t       sword_state;          /* 0x0833 */
-  char         unk_07_[0x0050];      /* 0x0834 */
+  char         unk_08_[0x0050];      /* 0x0834 */
   int16_t      drop_y;               /* 0x0884 */
   int16_t      drop_distance;        /* 0x0886 */
                                      /* 0x0888 */
@@ -1007,7 +1025,16 @@ typedef struct
   char             unk_0B_[0x0038];        /* 0x01C90 */
   z64_actor_t     *arrow_actor;            /* 0x01CC8 */
   z64_actor_t     *target_actor;           /* 0x01CCC */
-  char             unk_0C_[0x0058];        /* 0x01CD0 */
+  char             unk_0C_1_[0x000A];      /* 0x01CD0 */
+  uint8_t          target_actor_type;      /* 0x01CDA */
+  char             unk_0C_2_[0x0005];      /* 0x01CDB */
+  struct
+  {
+    z64_xyzf_t     pos;
+    float          unk;
+    colorRGB8_t    color;
+  }                target_arr[3];          /* 0x01CE0 */
+  char             unk_0C_3_[0x000C];      /* 0x01D1C */
   uint32_t         swch_flags;             /* 0x01D28 */
   uint32_t         temp_swch_flags;        /* 0x01D2C */
   uint32_t         unk_flags_0;            /* 0x01D30 */
