@@ -20,7 +20,9 @@
         "exits": {
             "KF Outside Deku Tree": "True",
             "Deku Tree Slingshot Room": "here(has_shield)",
-            "Deku Tree Basement Backroom": "(here(has_fire_source_with_torch or (can_use(Bow) and logic_deku_b1_webs_with_bow))) and here(can_use(Slingshot) or can_use(Bow))) or
+            "Deku Tree Basement Backroom": "
+                (here(has_fire_source_with_torch or (can_use(Bow) and logic_deku_b1_webs_with_bow))) and
+                here(can_use(Slingshot) or can_use(Bow))) or
                 (is_child and logic_deku_b1_skip)",
             "Deku Tree Boss Room": "
                 here(has_fire_source_with_torch or
@@ -47,6 +49,9 @@
                 here(has_fire_source_with_torch or can_use(Bow)) and
                 here(can_blast_or_smash) and
                 (can_use(Boomerang) or can_use(Hookshot))"
+        },
+        "exits": {
+            "Deku Tree Lobby": "True"
         }
     },
     {
