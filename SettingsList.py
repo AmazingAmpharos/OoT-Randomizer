@@ -3211,7 +3211,7 @@ setting_infos = [
         ''',
         default        = False,
         disable    = {
-            True : {'sections' : [ "equipment_section", "ui_section", "misc_section" ]
+            True : {'sections' : [ "equipment_color_section", "ui_color_section", "misc_color_section" ]
             }
         }
     ),

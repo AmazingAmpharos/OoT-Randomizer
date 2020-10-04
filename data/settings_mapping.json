@@ -349,8 +349,8 @@
           ]
         },
         {
-          "name": "equipment_section",
-          "text": "Equipment",
+          "name": "equipment_color_section",
+          "text": "Equipment Colors",
           "is_colors": true,
           "col_span": 1,
           "row_span": [5,5,5],
@@ -363,7 +363,7 @@
           ]
         },
         {
-          "name": "ui_section",
+          "name": "ui_color_section",
           "text": "UI Colors",
           "is_colors": true,
           "col_span": 1,
@@ -375,8 +375,8 @@
           ]
         },
         {
-          "name": "misc_section",
-          "text": "Misc.",
+          "name": "misc_color_section",
+          "text": "Misc. Colors",
           "is_colors": true,
           "col_span": 2,
           "row_span": [5,5,5],
